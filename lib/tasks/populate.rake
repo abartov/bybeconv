@@ -21,7 +21,7 @@ def traverse(dir, t)
         h = HtmlFile.new(:path => thefile, :status => "Unknown")
         h.save!
       else
-        if h.last_updated_on < File.mtime(thefile) # file updated since last analyzed
+        if h.updated_at < File.mtime(thefile) # file updated since last analyzed
           t[:upd]=t[:upd]+1
           h.status = "Unknown"
           h.save!
