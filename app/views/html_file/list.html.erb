@@ -1,0 +1,10 @@
+<h1>HtmlFile#list</h1>
+
+<table>
+<th>path</th><th>status</th><th>tables?</th><th>footnotes?</th><th>images?</th>
+<% @texts.each { |t| %>
+<tr><td><%= t.path.sub('/mnt/by/','') %></td><td><%= t.status %></td><td><%= t.tables %></td><td><%= t.footnotes %></td><td><%= t.images %></td></tr>
+
+<% } %>
+</table>
+<%= will_paginate @texts %>

@@ -31,6 +31,7 @@ gem 'execjs'
 gem 'therubyracer'
 
 gem 'htmlentities'
+gem 'will_paginate'
 
 # To use debugger
 gem 'ruby-debug19', :require => 'ruby-debug'
