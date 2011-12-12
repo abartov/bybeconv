@@ -1,4 +1,10 @@
 Bybeconv::Application.routes.draw do
+  get "html_file/analyze"
+
+  get "html_file/analyze_all"
+
+  get "html_file/list"
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
