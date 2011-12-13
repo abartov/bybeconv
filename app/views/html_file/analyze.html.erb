@@ -1,2 +1,7 @@
-<h1>HtmlFile#analyze</h1>
-<p>Find me in app/views/html_file/analyze.html.erb</p>
+<h1>File: <%= @text.path.sub('/mnt/by/','') %></h1>
+
+<p>Footnotes: <%= @text.footnotes %></p>
+<p>Images: <%= @text.images %></p>
+<p>Tables: <%= @text.tables %></p>
+
+<%= link_to 'Back', :action => :list %>

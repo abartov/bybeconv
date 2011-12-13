@@ -18,6 +18,7 @@ class HtmlFile < ActiveRecord::Base
       buf = $' # postmatch
     end
     # debugging # print "Analysis results -- footnotes: #{self.footnotes}, images: #{self.images}, tables: #{self.tables}\n"
+    self.status = 'Analyzed' if self.status == 'Unknown' 
     self.save!
   end
 
