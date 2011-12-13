@@ -5,7 +5,7 @@ class HtmlFileController < ApplicationController
   end
 
   def analyze_all
-    HtmlFile.find_all_by_status('Unknown').each { |h| h.analyze }
+    HtmlFile.analyze_all
     redirect_to :action => :list
   end
 
@@ -16,6 +16,8 @@ class HtmlFileController < ApplicationController
     @total_images = HtmlFile.count(:conditions => "images = 't'")
     @total_footnotes = HtmlFile.count(:conditions => "footnotes = 't'")
     @total_tables = HtmlFile.count(:conditions => "tables = 't'")
+    @total_badenc = HtmlFile.count(:conditions => "status = 'BadCP1255'")
+    @total_fileerr = HtmlFile.count(:conditions => "status = 'FileError'")
     @texts = HtmlFile.page(params[:page]).order('status ASC')
   end
 

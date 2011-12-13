@@ -1,3 +1,4 @@
 - add detection of encoding problems to HtmlFile.analyze, and to appropriate tallies etc.
   - possibly implement an auto-fixer for those?
+    - yes!  Today we have learned that 0xCA is invalid in CP-1255, and yet Word sometimes(?) generates that instead of a proper xolam (0xC9) for some obscure reason.  We'll sub() this.
 

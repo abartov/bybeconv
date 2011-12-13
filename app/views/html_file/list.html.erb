@@ -1,6 +1,6 @@
 <h1>Conversion Dashboard</h1>
 
-<p>Totals: <%= @total_texts %> texts, <%= @total_known %> analyzed -- <%= @total_footnotes %> with footnotes, <%= @total_images %> with images, <%= @total_tables %> with tables</p>
+<p>Totals: <%= @total_texts %> texts, <%= @total_known %> analyzed -- of those: <%= @total_footnotes %> with footnotes, <%= @total_images %> with images, <%= @total_tables %> with tables, <%= @total_badenc %> bad CP1255 encodings, <%= @total_fileerr %> other file errors</p>
 <p><%= link_to "analyze all unknown!", :action => 'analyze_all' %></p>
 <table>
 <th>path</th><th>status</th><th>tables?</th><th>footnotes?</th><th>images?</th><th>action</th>
