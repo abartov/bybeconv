@@ -1,0 +1,3 @@
+- add detection of encoding problems to HtmlFile.analyze, and to appropriate tallies etc.
+  - possibly implement an auto-fixer for those?
+
