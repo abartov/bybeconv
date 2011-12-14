@@ -36,4 +36,24 @@ class HtmlFile < ActiveRecord::Base
   def self.analyze_all # class method
     HtmlFile.find_all_by_status('Unknown').each { |h| h.analyze }
   end
+  def fix_encoding
+    if self.status == 'BadCP1255'
+      raw = IO.binread(self.path)
+      raw.gsub!("\xCA","\xC9") # fix weird invalid chars instead of proper Hebrew xolams
+      newfile = self.path + '.fixed_encoding'
+      # IO.binwrite(newfile, raw) # this works only on Ruby 1.9.3+
+      File.open(newfile, 'wb') {|f| f.write(raw) } # works on any modern Ruby
+      begin
+        html = File.open(newfile, "r:windows-1255:UTF-8").read
+        # yay! The file is now valid and converts fine to UTF-8! :)
+        print "Success! #{newfile} is valid!  Please replace the live file #{self.path} with #{newfile} manually, for safety." 
+        self.status = 'Unknown' # so that this file gets re-analyzed after the manual copy
+        self.save!
+      rescue
+        print "fix_encoding replaced 0xCA with 0xC9 but fixed file #{newfile} is still unreadable!  Error: #{$!}\n" # debug
+      end
+    else
+      print 'fix_encoding called but status doesn''t indicate BadCP1255... Ignoring.' # debug
+    end
+  end
 end
