@@ -1,3 +1,76 @@
+class NokoDoc < Nokogiri::XML::SAX::Document
+  def initialize
+    @markdown = ''
+    @in_title = false
+    @title = ''
+    @anything = false
+    @spans = [] # a span/style stack
+  end
+  def start_element name, attributes
+    #puts "found a #{name} with attributes: #{attributes}"
+    if name == 'title' 
+      @in_title = true
+    elsif name == 'span'
+      style_attr = attributes.assoc('style')
+      style = {}
+      unless style_attr.nil?
+        # TODO: handle style=
+        stylestr = style_attr[1]
+        if stylestr =~ /font-family:David/
+          style[:font] = 'David'
+        elsif m = /font-size:(\d\d)\.0pt/.match(stylestr)
+          style[:size] = m[1] # $1
+        end
+      end
+      @spans.push({:style => style, :markdown => '', :anything => false})
+    end	
+  end
+  def characters s
+    if s =~ /\S/
+      @spans.last[:anything] = true if @spans.count > 0 
+    end
+    reformat = s.sub("\n", ' ')
+    if @in_title
+      @title += reformat
+    elsif not @spans.empty?
+      @spans.last[:markdown] += reformat
+    else
+      @markdown += reformat
+    end
+  end
+  def error e
+    puts "ERROR: #{e}"
+  end
+  def end_element name
+    #puts "end element #{name}"
+    if name == 'title' 
+      @in_title = false
+      puts "title found: #{@title}"
+    elsif name == 'span'
+      span = @spans.pop
+      if span[:anything] # don't emit any formatting for the (numerous) useless spans Word generated
+        # TODO: determine formatting
+        # TODO: start formatting
+        @markdown += span[:markdown] # payload
+        # TODO: end formatting
+      else
+        @markdown += span[:markdown] # just copy the content, no formatting change
+      end
+    elsif name == 'br' || name == 'p'
+      unless @spans.empty?
+        @spans.last[:markdown] += "\n\n"
+      else
+        @markdown += "\n\n"
+      end
+    end
+  end
+
+  def save(fname)
+    File.open("/tmp/markdown.txt", 'wb') {|f| f.write(@markdown) } # tmp debug
+    File.open(fname, 'wb') {|f| f.write(@markdown) } # works on any modern Ruby
+  end
+end
+
 class HtmlFile < ActiveRecord::Base
 
   def analyze
@@ -56,4 +129,13 @@ class HtmlFile < ActiveRecord::Base
       print 'fix_encoding called but status doesn''t indicate BadCP1255... Ignoring.' # debug
     end
   end
+
+  def parse
+    html = File.open(self.path, "r:windows-1255:UTF-8").read
+    ndoc = NokoDoc.new
+    parser = Nokogiri::HTML::SAX::Parser.new(ndoc)
+    parser.parse(html)
+    ndoc.save(self.path+'.markdown')
+  end
 end
+
