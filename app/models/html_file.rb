@@ -16,8 +16,8 @@ class NokoDoc < Nokogiri::XML::SAX::Document
       unless style_attr.nil?
         # TODO: handle style=
         stylestr = style_attr[1]
-        if stylestr =~ /font-family:David/
-          style[:font] = 'David'
+        if m = /font-family:([^;\"]+)/.match(stylestr)
+          style[:font] = m[1]
         elsif m = /font-size:(\d\d)\.0pt/.match(stylestr)
           style[:size] = m[1] # $1
         end
@@ -50,6 +50,7 @@ class NokoDoc < Nokogiri::XML::SAX::Document
       span = @spans.pop
       if span[:anything] # don't emit any formatting for the (numerous) useless spans Word generated
         # TODO: determine formatting
+        # poetry, bold, underline, indents, size, footnotes, links
         # TODO: start formatting
         @markdown += span[:markdown] # payload
         # TODO: end formatting

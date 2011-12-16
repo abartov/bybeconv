@@ -4,4 +4,4 @@
 - detect indentation? (poetry, letter signatures, etc.)
 - detect size changes
 - handle footnotes
-
+- handle ul and ol tags?
