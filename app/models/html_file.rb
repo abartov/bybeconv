@@ -6,6 +6,9 @@ class NokoDoc < Nokogiri::XML::SAX::Document
     @anything = false
     @spans = [] # a span/style stack
   end
+  def push_style(style)
+    @spans.push({:style => style, :markdown => '', :anything => false})
+  end
   def start_element name, attributes
     #puts "found a #{name} with attributes: #{attributes}"
     if name == 'title' 
@@ -18,12 +21,15 @@ class NokoDoc < Nokogiri::XML::SAX::Document
         stylestr = style_attr[1]
         if m = /font-family:([^;\"]+)/.match(stylestr)
           style[:font] = m[1]
-        elsif m = /font-size:(\d\d)\.0pt/.match(stylestr)
+        end
+        if m = /font-size:(\d\d)\.0pt/.match(stylestr)
           style[:size] = m[1] # $1
         end
       end
-      @spans.push({:style => style, :markdown => '', :anything => false})
-    end	
+      push_style(style)
+    elsif name == 'b'
+      push_style({:decoration => :bold})
+    end
   end
   def characters s
     if s =~ /\S/
@@ -46,10 +52,16 @@ class NokoDoc < Nokogiri::XML::SAX::Document
     if name == 'title' 
       @in_title = false
       puts "title found: #{@title}"
-    elsif name == 'span'
+    elsif name == 'span' || name == 'b'
       span = @spans.pop
       if span[:anything] # don't emit any formatting for the (numerous) useless spans Word generated
         # TODO: determine formatting
+        start_formatting = ''
+        end_formatting = ''
+        if span[:decoration] == :bold 
+          start_formatting += "'''" # wikitext
+          end_formatting += "'''"
+        end
         # poetry, bold, underline, indents, size, footnotes, links
         # TODO: start formatting
         @markdown += span[:markdown] # payload
