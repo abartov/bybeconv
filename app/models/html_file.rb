@@ -15,20 +15,28 @@ class NokoDoc < Nokogiri::XML::SAX::Document
       @in_title = true
     elsif name == 'span'
       style_attr = attributes.assoc('style')
-      style = {}
+      style = {:decoration => []}
       unless style_attr.nil?
         # TODO: handle style=
         stylestr = style_attr[1]
-        if m = /font-family:([^;\"]+)/.match(stylestr)
+        if m = /font-family:([^;\"]+)/i.match(stylestr)
           style[:font] = m[1]
         end
-        if m = /font-size:(\d\d)\.0pt/.match(stylestr)
+        if m = /font-size:(\d\d)\.0pt/i.match(stylestr)
           style[:size] = m[1] # $1
+        end
+        if m = /text-decoration:underline/i.match(stylestr)
+          style[:decoration].push(:underline)
+        end
+        if m = /font-weight:bold/i.match(stylestr)
+          style[:decoration].push(:bold)
         end
       end
       push_style(style)
     elsif name == 'b'
-      push_style({:decoration => :bold})
+      push_style({:decoration => [:bold]})
+    elsif name == 'u'
+      push_style({:decoration => [:underline]})
     end
   end
   def characters s
@@ -44,27 +52,27 @@ class NokoDoc < Nokogiri::XML::SAX::Document
       @markdown += reformat
     end
   end
-  def error e
-    puts "ERROR: #{e}"
+  def error(e)
+    puts "ERROR: #{e}" unless /Tag o:p/.match(e) # ignore useless Office tags
   end
-  def end_element name
+  def end_element(name)
     #puts "end element #{name}"
     if name == 'title' 
       @in_title = false
       puts "title found: #{@title}"
-    elsif name == 'span' || name == 'b'
+    elsif name == 'span' || name == 'b' || name == 'u'
       span = @spans.pop
       if span[:anything] # don't emit any formatting for the (numerous) useless spans Word generated
         # TODO: determine formatting
         start_formatting = ''
         end_formatting = ''
-        if span[:decoration] == :bold 
+        if span[:style][:decoration].include? :bold 
           start_formatting += "'''" # wikitext
           end_formatting += "'''"
         end
         # poetry, bold, underline, indents, size, footnotes, links
         # TODO: start formatting
-        @markdown += span[:markdown] # payload
+        @markdown += start_formatting + span[:markdown] + end_formatting # payload
         # TODO: end formatting
       else
         @markdown += span[:markdown] # just copy the content, no formatting change
