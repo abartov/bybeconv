@@ -1,3 +1,5 @@
+require 'multimarkdown'
+
 class NokoDoc < Nokogiri::XML::SAX::Document
   def initialize
     @markdown = ''
@@ -40,10 +42,10 @@ class NokoDoc < Nokogiri::XML::SAX::Document
     end
   end
   def characters s
-    if s =~ /\S/
+    if (s =~ /\S/)
       @spans.last[:anything] = true if @spans.count > 0 
     end
-    reformat = s.sub("\n", ' ')
+    reformat = s.gsub("\n", ' ')
     if @in_title
       @title += reformat
     elsif not @spans.empty?
@@ -60,22 +62,27 @@ class NokoDoc < Nokogiri::XML::SAX::Document
     if name == 'title' 
       @in_title = false
       puts "title found: #{@title}"
+      @markdown += "# #{@title}\n"
     elsif name == 'span' || name == 'b' || name == 'u'
       span = @spans.pop
+      new_markdown = ''
       if span[:anything] # don't emit any formatting for the (numerous) useless spans Word generated
         # TODO: determine formatting
         start_formatting = ''
         end_formatting = ''
         if span[:style][:decoration].include? :bold 
-          start_formatting += "'''" # wikitext
-          end_formatting += "'''"
+          start_formatting += "**" # MultiMarkdown
+          end_formatting += "**"
         end
         # poetry, bold, underline, indents, size, footnotes, links
-        # TODO: start formatting
-        @markdown += start_formatting + span[:markdown] + end_formatting # payload
-        # TODO: end formatting
+        new_markdown += start_formatting + span[:markdown] + end_formatting # payload
       else
-        @markdown += span[:markdown] # just copy the content, no formatting change
+        new_markdown += span[:markdown] # just copy the content, no formatting change
+      end
+      unless @spans.empty?
+        @spans.last[:markdown] += new_markdown
+      else
+        @markdown += new_markdown
       end
     elsif name == 'br' || name == 'p'
       unless @spans.empty?
@@ -88,6 +95,7 @@ class NokoDoc < Nokogiri::XML::SAX::Document
 
   def save(fname)
     File.open("/tmp/markdown.txt", 'wb') {|f| f.write(@markdown) } # tmp debug
+    File.open("/tmp/markdown.html", 'wb') {|f| f.write(MultiMarkdown.new(@markdown).to_html) }
     File.open(fname, 'wb') {|f| f.write(@markdown) } # works on any modern Ruby
   end
 end

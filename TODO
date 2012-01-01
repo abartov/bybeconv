@@ -1,7 +1,15 @@
 + add detection of encoding problems to HtmlFile.analyze, and to appropriate tallies etc.
   + possibly implement an auto-fixer for those?
     + yes!  Today we have learned that 0xCA is invalid in CP-1255, and yet Word sometimes(?) generates that instead of a proper xolam (0xC9) for some obscure reason.  We'll sub() this.
+- emit MultiMarkdown 
+-- http://daringfireball.net/projects/markdown/basics 
+-- http://daringfireball.net/projects/markdown/syntax
 - detect indentation? (poetry, letter signatures, etc.)
 - detect size changes
 - handle footnotes
 - handle ul and ol tags?
+- handle links
+- handle titles
+- handle subtitles
+- handle entities, and escaping
+- handle asterisks, horizontal rules
