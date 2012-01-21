@@ -165,6 +165,8 @@ class HtmlFile < ActiveRecord::Base
     parser = Nokogiri::HTML::SAX::Parser.new(ndoc)
     parser.parse(html)
     ndoc.save(self.path+'.markdown')
+    self.status = 'Parsed' # TODO: error checking?
+    self.save!
   end
 end
 
