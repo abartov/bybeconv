@@ -7,6 +7,7 @@ class NokoDoc < Nokogiri::XML::SAX::Document
     @title = ''
     @anything = false
     @spans = [] # a span/style stack
+    @links = [] # a links stack
   end
   def push_style(style)
     @spans.push({:style => style, :markdown => '', :anything => false})
@@ -39,19 +40,29 @@ class NokoDoc < Nokogiri::XML::SAX::Document
       push_style({:decoration => [:bold]})
     elsif name == 'u'
       push_style({:decoration => [:underline]})
+    elsif name == 'a'
+      # filter out the index.html and root links
+      src = attributes.assoc('src')
+      ignore = false
+      if ['index.html','/','http://benyehuda.org','http://www.benyehuda.org','http://benyehuda.org/','http://www.benyehuda.org/'].include? src # TODO: de-uglify
+        ignore = true
+      end
+      @links.push({:src => src, :ignore => ignore})
     end
   end
   def characters s
-    if (s =~ /\S/)
-      @spans.last[:anything] = true if @spans.count > 0 
-    end
-    reformat = s.gsub("\n", ' ')
-    if @in_title
-      @title += reformat
-    elsif not @spans.empty?
-      @spans.last[:markdown] += reformat
-    else
-      @markdown += reformat
+    if @links.empty? or @links.last['ignore']
+      if (s =~ /\S/)
+        @spans.last[:anything] = true if @spans.count > 0 
+      end
+      reformat = s.gsub("\n", ' ')
+      if @in_title
+        @title += reformat
+      elsif not @spans.empty?
+        @spans.last[:markdown] += reformat
+      else
+        @markdown += reformat
+      end
     end
   end
   def error(e)
@@ -90,6 +101,8 @@ class NokoDoc < Nokogiri::XML::SAX::Document
       else
         @markdown += "\n\n"
       end
+    elsif name == 'a'
+      link = @links.pop
     end
   end
 
