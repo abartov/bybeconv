@@ -20,7 +20,7 @@ class NokoDoc < Nokogiri::XML::SAX::Document
       style_attr = attributes.assoc('style')
       style = {:decoration => []}
       unless style_attr.nil?
-        # TODO: handle style=
+        # handle style=
         stylestr = style_attr[1]
         if m = /font-family:([^;\"]+)/i.match(stylestr)
           style[:font] = m[1]
@@ -107,6 +107,7 @@ class NokoDoc < Nokogiri::XML::SAX::Document
   end
 
   def save(fname)
+    @markdown.gsub!("\r",'') # farewell, DOS! :)
     File.open("/tmp/markdown.txt", 'wb') {|f| f.write(@markdown) } # tmp debug
     File.open("/tmp/markdown.html", 'wb') {|f| f.write(MultiMarkdown.new(@markdown).to_html) }
     File.open(fname, 'wb') {|f| f.write(@markdown) } # works on any modern Ruby

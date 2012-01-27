@@ -31,4 +31,36 @@ class HtmlFileController < ApplicationController
     @markdown = File.open(@text.path+'.markdown', 'r:UTF-8').read
     @html = MultiMarkdown.new(@markdown).to_html.force_encoding('UTF-8') # TODO: figure out why to_html defaults to ASCII 8-bit
   end
+  def chop3
+    chopN(3)
+    redirect_to :action => :render_html, :id => params[:id]
+  end
+  def chop2
+    chopN(2)
+    redirect_to :action => :render_html, :id => params[:id]
+  end
+  def chop1
+    chopN(1)
+    redirect_to :action => :render_html, :id => params[:id]
+  end
+
+  protected
+  def chopN(line_count)
+    @text = HtmlFile.find(params[:id])
+    @markdown = File.open(@text.path+'.markdown', 'r:UTF-8').read
+    lines = @markdown.split "\n"
+    new_lines = []
+    while line_count > 0
+      line = lines.shift
+      if line.match /\S/ and not line.match /#\s+\S+/ # ignore our own generated title / author line
+        line_count -= 1 # skip one non-empty line and decrement
+      else
+        new_lines.push line # preserve whitespace lines
+      end
+      next
+    end
+    new_lines += lines # just append the remaining lines
+    @markdown = new_lines.join "\n"
+    File.open(@text.path+'.markdown', 'wb') {|f| f.write(@markdown) } # write back
+  end
 end

@@ -18,8 +18,11 @@ jQuery(document).ready(function() {
 
 <p class="heading">Here's the raw MultiMarkDown, in case you care.</p>
 
-<div class="markdown"><%= @markdown %></div
+<div class="markdown"><%= raw(@markdown.gsub("\n",'<br/>')) %></div>
 
-<p>You can [do something about it]...</p>
+<p>You can:</p>
+<ul><li>chop off <%= link_to 'first 1', :action => :chop1, :id => @text %>, <%= link_to 'first 2', :action => :chop2, :id => @text %>, or <%= link_to 'first 3', :action => :chop3, :id => @text %> lines
+</ul>
+<p> [do some other things about it]...</p>
 
 <p>Or <%= link_to 'Back', :action => :list %> to the conversion dashboard.</p>

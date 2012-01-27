@@ -6,6 +6,9 @@ Bybeconv::Application.routes.draw do
   get "html_file/list"
   get "html_file/parse"
   get "html_file/render_html"
+  get "html_file/chop1"
+  get "html_file/chop2"
+  get "html_file/chop3"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
