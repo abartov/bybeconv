@@ -8,6 +8,7 @@ class NokoDoc < Nokogiri::XML::SAX::Document
     @anything = false
     @spans = [] # a span/style stack
     @links = [] # a links stack
+    @footnote_placeholders = {}
   end
   def push_style(style)
     @spans.push({:style => style, :markdown => '', :anything => false})
@@ -46,6 +47,12 @@ class NokoDoc < Nokogiri::XML::SAX::Document
       ignore = false
       if ['index.html','/','http://benyehuda.org','http://www.benyehuda.org','http://benyehuda.org/','http://www.benyehuda.org/'].include? src # TODO: de-uglify
         ignore = true
+      else
+        # probably a footnote, but could be anything
+        # Word-generated footnote references look like this: <a style='mso-footnote-id:ftn12' href="#_ftn12" name="_ftnref12" title="">  (followed by a zillion pointless <span> tags...)
+        # Then, the footnote itself looks like this: <a style='mso-footnote-id:ftn12' href="#_ftnref12" name="_ftn12" title="">
+        # TODO: emit markdown for footnote with placeholder for actual content, to be sub()ed later
+        # TODO: handle (preserve) non-footnote links
       end
       @links.push({:src => src, :ignore => ignore})
     end
