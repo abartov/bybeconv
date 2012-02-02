@@ -172,7 +172,7 @@ class NokoDoc < Nokogiri::XML::SAX::Document
     @footnotes.each { |f|
       markdown += f[:markdown]
     }
-    @markdown += markdown # append the entire footnotes section
+    @markdown += markdown.gsub("\n\n[^","\n[^") # append the entire footnotes section, trimming double newlines
   end
 end
 
