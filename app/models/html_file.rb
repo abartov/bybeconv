@@ -4,15 +4,20 @@ class NokoDoc < Nokogiri::XML::SAX::Document
   def initialize
     @markdown = ''
     @in_title = false
+    @in_footnote = false
     @title = ''
     @anything = false
     @spans = [] # a span/style stack
     @links = [] # a links stack
-    @footnote_placeholders = {}
+    @footnotes = []
+    @footnote = {}
+    @post_processing_done = false
   end
+
   def push_style(style)
     @spans.push({:style => style, :markdown => '', :anything => false})
   end
+
   def start_element name, attributes
     #puts "found a #{name} with attributes: #{attributes}"
     if name == 'title' 
@@ -43,20 +48,43 @@ class NokoDoc < Nokogiri::XML::SAX::Document
       push_style({:decoration => [:underline]})
     elsif name == 'a'
       # filter out the index.html and root links
-      src = attributes.assoc('src')
+      href = attributes.assoc('href') ? attributes.assoc('href')[1] : ''
       ignore = false
-      if ['index.html','/','http://benyehuda.org','http://www.benyehuda.org','http://benyehuda.org/','http://www.benyehuda.org/'].include? src # TODO: de-uglify
+      footnote = false
+      if ['index.html','/','http://benyehuda.org','http://www.benyehuda.org','http://benyehuda.org/','http://www.benyehuda.org/'].include? href # TODO: de-uglify
         ignore = true
       else
         # probably a footnote, but could be anything
-        # Word-generated footnote references look like this: <a style='mso-footnote-id:ftn12' href="#_ftn12" name="_ftnref12" title="">  (followed by a zillion pointless <span> tags...)
-        # Then, the footnote itself looks like this: <a style='mso-footnote-id:ftn12' href="#_ftnref12" name="_ftn12" title="">
-        # TODO: emit markdown for footnote with placeholder for actual content, to be sub()ed later
-        # TODO: handle (preserve) non-footnote links
+        # Word-generated footnote references look like this: 
+        # <a style='mso-footnote-id:ftn12' href="#_ftn12" name="_ftnref12" title="">
+        # (followed by a zillion pointless <span> tags...)
+        # Then, the footnote itself looks like this:
+        # <a style='mso-footnote-id:ftn12' href="#_ftnref12" name="_ftn12" title="">
+        if href.match /_ftn(\d+)/
+          footnote_id = $1
+          @markdown += "[^ftn#{footnote_id}]" # this is the multimarkdown for a footnote reference
+          # nothing useful in the content of the anchor of the footnote 
+          # reference -- a hyperlink to and from the footnote will be 
+          # auto-generated when rendering HTML, PDF, etc.
+          ignore = true
+        elsif href.match /_ftnref(\d+)/
+          # the beginning of another footnote body (identified through the 
+          # hyperlink to the footnote reference) is really our only sign that 
+          # the previous footnote body ended...
+          end_footnote(@footnote)
+          # start a new footnote, remembering this till the next footnote beginning
+          @footnote = {:key => $1, :body => '', :markdown => '' } 
+          @in_footnote = true
+          ignore = true # nothing useful, see in the if block just above
+        else
+          # TODO: handle (preserve) non-footnote links
+          ignore = true # TODO: set this to false and actually handle this...
+        end
       end
-      @links.push({:src => src, :ignore => ignore})
+      @links.push({:href => href, :ignore => ignore})
     end
   end
+
   def characters s
     if @links.empty? or @links.last['ignore']
       if (s =~ /\S/)
@@ -65,6 +93,8 @@ class NokoDoc < Nokogiri::XML::SAX::Document
       reformat = s.gsub("\n", ' ')
       if @in_title
         @title += reformat
+      elsif @in_footnote # buffer footnote bodies separately
+        @footnote[:body] += reformat 
       elsif not @spans.empty?
         @spans.last[:markdown] += reformat
       else
@@ -72,9 +102,11 @@ class NokoDoc < Nokogiri::XML::SAX::Document
       end
     end
   end
+
   def error(e)
     puts "ERROR: #{e}" unless /Tag o:p/.match(e) # ignore useless Office tags
   end
+
   def end_element(name)
     #puts "end element #{name}"
     if name == 'title' 
@@ -114,10 +146,33 @@ class NokoDoc < Nokogiri::XML::SAX::Document
   end
 
   def save(fname)
+    unless @post_processing_done
+      post_process
+      @post_processing_done = true
+    end
     @markdown.gsub!("\r",'') # farewell, DOS! :)
     File.open("/tmp/markdown.txt", 'wb') {|f| f.write(@markdown) } # tmp debug
     File.open("/tmp/markdown.html", 'wb') {|f| f.write(MultiMarkdown.new(@markdown).to_html) }
     File.open(fname, 'wb') {|f| f.write(@markdown) } # works on any modern Ruby
+  end
+
+  def end_footnote(f)
+    debugger
+    unless f == {}
+      # generate MultiMarkDown for the footnote body and stash it for later
+      f[:markdown] = "\n[^ftn#{f[:key]}]: " + f[:body] # make sure the footnote body starts on a newline; superfluous newlines will be removed at post-processing 
+      @footnotes.push f
+    end
+  end
+
+  def post_process # handle any wrap up 
+    end_footnote(@footnote) # where footnotes exist at all, the last footnote will be pending
+    # emit all accumulated footnotes
+    markdown = ''
+    @footnotes.each { |f|
+      markdown += f[:markdown]
+    }
+    @markdown += markdown # append the entire footnotes section
   end
 end
 
