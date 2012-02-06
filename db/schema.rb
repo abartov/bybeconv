@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111204224641) do
+ActiveRecord::Schema.define(:version => 20120203210523) do
 
   create_table "html_files", :force => true do |t|
     t.string   "path"
@@ -23,6 +23,10 @@ ActiveRecord::Schema.define(:version => 20111204224641) do
     t.boolean  "tables"
     t.boolean  "footnotes"
     t.boolean  "images"
+    t.string   "nikkud"
+    t.boolean  "line_numbers"
+    t.string   "indentation"
+    t.string   "headings"
   end
 
 end
