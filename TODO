@@ -15,6 +15,6 @@
 - handle asterisks, horizontal rules
 - gather info for later cataloguing -- title, author, translator, copyright status, dedication/epigraph, year/location, ...?
 - add markdown manipulations post-parsing
--- chop title/author lines from top
+-+ chop title/author lines from top
 -- raw edit (versioned?  just backup/undo?)
 

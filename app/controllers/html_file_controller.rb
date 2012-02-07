@@ -20,7 +20,14 @@ class HtmlFileController < ApplicationController
     @total_fileerr = HtmlFile.count(:conditions => "status = 'FileError'")
     @total_parsed = HtmlFile.count(:conditions => "status = 'Parsed'")
     @total_accepted = HtmlFile.count(:conditions => "status = 'Accepted'")
-    @texts = HtmlFile.page(params[:page]).order('status ASC')
+    # build query condition
+    query = {}
+    session[:html_q_params] = params unless params[:commit].blank? # make prev. params accessible to view
+    f, n = session[:html_q_params][:footnotes], session[:html_q_params][:nikkud] # retrieve query params whether or not they were POSTed
+    query.merge!({ :footnotes => f }) unless f.blank? 
+    query.merge!({ :nikkud => n }) unless n.blank?
+    @texts = HtmlFile.where(query).page(params[:page]).order('status ASC')
+    #@texts = HtmlFile.page(params[:page]).order('status ASC')
   end
   def parse
     @text = HtmlFile.find(params[:id])

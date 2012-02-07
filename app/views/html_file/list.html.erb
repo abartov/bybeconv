@@ -2,11 +2,21 @@
 
 <p>Totals: <%= @total_texts %> texts, <%= @total_known %> analyzed -- of those: <%= @total_footnotes %> with footnotes, <%= @total_images %> with images, <%= @total_tables %> with tables, <%= @total_badenc %> bad CP1255 encodings, <%= @total_fileerr %> other file errors, <%= @total_parsed %> parsed, <%= @total_accepted %> accepted (yay!)</p>
 <p><b><%= link_to "analyze all unknown!", :action => 'analyze_all' %></b></p>
+<!-- query interface -->
+<p><%= form_tag(:action => "list") do %>
+     <%= label_tag(:nikkud_l, "Nikkud:") %>
+     <%= select_tag(:nikkud, options_for_select([['','',], ['None', :none], ['Some', :some], ['Full', :full]], session[:html_q_params][:nikkud])) %>
+
+     <%= label_tag(:footnotes_l, "Footnotes:") %>
+     <%= select_tag(:footnotes, options_for_select([['',''], ['No', :f], ['Yes', :t]], session[:html_q_params][:footnotes])) %>
+     <%= submit_tag("Filter!") %>
+   <% end %></p>
+<!-- end query interface -->
 <table>
-<th>path</th><th>status</th><th>tables?</th><th>footnotes?</th><th>images?</th><th>action</th>
+<th>path</th><th>status</th><th>nikkud?</th><th>tables?</th><th>footnotes?</th><th>images?</th><th>action</th>
 <% @texts.each { |t| %>
 <tr>
-  <td><%= t.path.sub('/mnt/by/','') %></td><td><%= t.status %></td><td><%= t.tables %></td><td><%= t.footnotes %></td><td><%= t.images %></td><td><%= link_to "analyze", :action => 'analyze', :id => t %> | <%= link_to "parse", :action => 'parse', :id => t %> 
+  <td><%= t.path.sub('/mnt/by/','') %></td><td><%= t.status %></td><td><%= t.nikkud %></td><td><%= t.tables %></td><td><%= t.footnotes %></td><td><%= t.images %></td><td><%= link_to "analyze", :action => 'analyze', :id => t %> | <%= link_to "parse", :action => 'parse', :id => t %> 
 <% if t.status == 'Parsed' %>
 | <%= link_to "render!", :action => 'render_html', :id => t %>
 <% end %></td>
