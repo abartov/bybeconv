@@ -157,7 +157,6 @@ class NokoDoc < Nokogiri::XML::SAX::Document
   end
 
   def end_footnote(f)
-    debugger
     unless f == {}
       # generate MultiMarkDown for the footnote body and stash it for later
       f[:markdown] = "\n[^ftn#{f[:key]}]: " + f[:body] # make sure the footnote body starts on a newline; superfluous newlines will be removed at post-processing 
@@ -187,7 +186,6 @@ class HtmlFile < ActiveRecord::Base
       self.images = (html =~ /<img/) ? true : false
       # Word tables magic word (beyond the basic BY formatting table for prose!):
       buf = html
-      debugger
       html.match /<body[^>]*>(.*)<\/body>/m
       nikkud_info = count_nikkud($1)
       case
@@ -263,7 +261,6 @@ class HtmlFile < ActiveRecord::Base
   # return a hash like {:total => total_number_of_non_tags_characters, :nikkud => total_number_of_nikkud_characters, :ratio => :nikkud/:total }
   def count_nikkud(text)
     info = { :total => 0, :nikkud => 0, :ratio => nil }
-    debugger 
     ignore = false
     text.each_char {|c|
       if c == '<'

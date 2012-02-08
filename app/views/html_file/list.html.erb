@@ -9,6 +9,8 @@
 
      <%= label_tag(:footnotes_l, "Footnotes:") %>
      <%= select_tag(:footnotes, options_for_select([['',''], ['No', :f], ['Yes', :t]], session[:html_q_params][:footnotes])) %>
+     <%= label_tag(:status_l, "Status:") %>
+     <%= select_tag(:status, options_for_select([['',''], ['Unknown', :Unknown], ['FileError', :FileError], ['Bad Encoding', :BadCP1255], ['Parsed', :Parsed], ['Accepted', :Accepted], ['Analyzed', :Analyzed]], session[:html_q_params][:status])) %>
      <%= submit_tag("Filter!") %>
    <% end %></p>
 <!-- end query interface -->
