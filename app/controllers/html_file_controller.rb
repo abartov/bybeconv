@@ -20,6 +20,8 @@ class HtmlFileController < ApplicationController
     @total_fileerr = HtmlFile.count(:conditions => "status = 'FileError'")
     @total_parsed = HtmlFile.count(:conditions => "status = 'Parsed'")
     @total_accepted = HtmlFile.count(:conditions => "status = 'Accepted'")
+    @total_nikkud_full = HtmlFile.count(:conditions => "nikkud = 'full'")
+    @total_nikkud_some = HtmlFile.count(:conditions => "nikkud = 'some'")
     # build query condition
     query = {}
     session[:html_q_params] = params unless params[:commit].blank? # make prev. params accessible to view
