@@ -24,7 +24,11 @@ class HtmlFileController < ApplicationController
     @total_nikkud_some = HtmlFile.count(:conditions => "nikkud = 'some'")
     # build query condition
     query = {}
-    session[:html_q_params] = params unless params[:commit].blank? # make prev. params accessible to view
+    unless params[:commit].blank?
+      session[:html_q_params] = params # make prev. params accessible to view
+    else
+      session[:html_q_params] = { :footnotes => '', :nikkud => '', :status => '' }
+    end
     f, n, s = session[:html_q_params][:footnotes], session[:html_q_params][:nikkud], session[:html_q_params][:status] # retrieve query params whether or not they were POSTed
     query.merge!({ :footnotes => f }) unless f.blank? 
     query.merge!({ :nikkud => n }) unless n.blank?

@@ -1,23 +1,22 @@
 <script type="text/javascript">
 jQuery(document).ready(function() {
   jQuery(".markdown").hide();
-  //toggle the componenet with class msg_body
   jQuery(".heading").click(function()
   {
     jQuery(this).next(".markdown").slideToggle(500);
   });
+$("#bDavid").click(function() { $("p").css("font-family","Times New Roman") });
+$('#bTimes').click(function() { $("p").css("font-style", "italic") } );
+$('#bLarger').click(function() {});
+$('#bSmaller').click(function() {});
 });
+
 </script>
-
-
 <h1>File: <%= @text.path.sub('/mnt/by/','') %></h1>
-
+<button id="bDavid">David</button> <button id="bTimes">Times</button> <button id="bLarger">Larger text</button> <button id="bSmaller">Smaller text</button>
 <h2>Rendering MultiMarkDown as HTML</h2>
-
 <%= raw(@html) %>
-
 <p class="heading">Here's the raw MultiMarkDown, in case you care.</p>
-
 <div class="markdown"><%= raw(@markdown.gsub("\n",'<br/>')) %></div>
 
 <p>You can:</p>
@@ -26,3 +25,7 @@ jQuery(document).ready(function() {
 <p> [do some other things about it]...</p>
 
 <p>Or <%= link_to 'Back', :action => :list %> to the conversion dashboard.</p>
+
+<script type="text/javascript">
+
+</script>
