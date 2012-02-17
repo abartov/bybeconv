@@ -150,7 +150,6 @@ class NokoDoc < Nokogiri::XML::SAX::Document
       post_process
       @post_processing_done = true
     end
-    @markdown.gsub!("\r",'') # farewell, DOS! :)
     File.open("/tmp/markdown.txt", 'wb') {|f| f.write(@markdown) } # tmp debug
     File.open("/tmp/markdown.html", 'wb') {|f| f.write(MultiMarkdown.new(@markdown).to_html) }
     File.open(fname, 'wb') {|f| f.write(@markdown) } # works on any modern Ruby
@@ -172,6 +171,13 @@ class NokoDoc < Nokogiri::XML::SAX::Document
       markdown += f[:markdown]
     }
     @markdown += markdown.gsub("\n\n[^","\n[^") # append the entire footnotes section, trimming double newlines
+    @markdown.gsub!("\r",'') # farewell, DOS! :)
+    debugger
+    # remove first line's whitespace
+    lines = @markdown.split "\n\n" # by newline by default
+    z = /\n[\s]*/.match lines[0]
+    lines[0] = z.pre_match + "\n" + z.post_match
+    @markdown = lines.join "\n\n" 
   end
 end
 

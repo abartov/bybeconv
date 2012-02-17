@@ -1,20 +1,38 @@
 <script type="text/javascript">
+var font_size = 12
 jQuery(document).ready(function() {
   jQuery(".markdown").hide();
   jQuery(".heading").click(function()
   {
     jQuery(this).next(".markdown").slideToggle(500);
   });
-$("#bDavid").click(function() { $("p").css("font-family","Times New Roman") });
-$('#bTimes').click(function() { $("p").css("font-style", "italic") } );
-$('#bLarger').click(function() {});
-$('#bSmaller').click(function() {});
+  var originalFontSize = $('p').css('font-size');
+    $("#bResetSize").click(function(){
+    $('p').css('font-size', originalFontSize);
+  });
+  // Increase Font Size
+  $("#bLarger").click(function(){
+    var currentFontSize = $('p').css('font-size');
+    var currentFontSizeNum = parseFloat(currentFontSize, 10);
+    var newFontSize = currentFontSizeNum*1.2;
+    $('p').css('font-size', newFontSize);
+    return false;
+  });
+  // Decrease Font Size
+  $("#bSmaller").click(function(){
+    var currentFontSize = $('p').css('font-size');
+    var currentFontSizeNum = parseFloat(currentFontSize, 10);
+    var newFontSize = currentFontSizeNum*0.8;
+    $('p').css('font-size', newFontSize);
+    return false;
+  });
+$("#bDavid").click(function() { $("p").css("font-family","David CLM, David, Serif") });
+$('#bTimes').click(function() { $("p").css("font-family", "Times New Roman") } );
 });
 
 </script>
-<h1>File: <%= @text.path.sub('/mnt/by/','') %></h1>
-<button id="bDavid">David</button> <button id="bTimes">Times</button> <button id="bLarger">Larger text</button> <button id="bSmaller">Smaller text</button>
-<h2>Rendering MultiMarkDown as HTML</h2>
+<h2>Rendering MultiMarkDown as HTML for File: <%= @text.path.sub('/mnt/by/','') %></h2>
+<button id="bDavid">David</button> <button id="bTimes">Times</button> <button id="bLarger">Larger text</button> <button id="bSmaller">Smaller text</button> <button id="bResetSize">Reset size</button>
 <%= raw(@html) %>
 <p class="heading">Here's the raw MultiMarkDown, in case you care.</p>
 <div class="markdown"><%= raw(@markdown.gsub("\n",'<br/>')) %></div>
