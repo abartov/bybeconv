@@ -39,6 +39,8 @@ gem 'rpeg-multimarkdown'
 # TODO: re-enable this, following ruby 1.9.3 upgrade...
 #gem 'ruby-debug19', :require => 'ruby-debug'
 
+gem 'app_constants' # anything more Railsy?
+
 group :test do
   # Pretty printed test output
   gem 'turn', '0.8.2', :require => false

@@ -1,6 +1,6 @@
 desc "Populate the DB with all the HtmlFiles from benyehuda, recording original mtime and ctime (run on Windows!)"
 task :populate => :environment do
-  thedir = HtmlFile::BASE_DIR
+  thedir =  AppConstants.base_dir # environment-sensitive constant
   #thedir = '/mnt/by' 
   tot = { :dir => 0, :files => 0, :new => 0, :upd => 0 }
   traverse(thedir, tot)
