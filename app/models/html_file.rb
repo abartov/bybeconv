@@ -1,5 +1,7 @@
 require 'multimarkdown'
 
+BASE_DIR = '/mnt/by'
+
 class NokoDoc < Nokogiri::XML::SAX::Document
   def initialize
     @markdown = ''

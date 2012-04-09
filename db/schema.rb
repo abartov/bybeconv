@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120409041811) do
+ActiveRecord::Schema.define(:version => 20120409045525) do
 
   create_table "html_files", :force => true do |t|
     t.string   "path"
@@ -30,5 +30,7 @@ ActiveRecord::Schema.define(:version => 20120409041811) do
     t.string   "orig_mtime"
     t.string   "orig_ctime"
   end
+
+  add_index "html_files", ["path"], :name => "index_html_files_on_path"
 
 end
