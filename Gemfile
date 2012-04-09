@@ -37,7 +37,7 @@ gem 'rpeg-multimarkdown'
 
 # To use debugger
 # TODO: re-enable this, following ruby 1.9.3 upgrade...
-gem 'ruby-debug19', :require => 'ruby-debug'
+#gem 'ruby-debug19', :require => 'ruby-debug'
 
 group :test do
   # Pretty printed test output

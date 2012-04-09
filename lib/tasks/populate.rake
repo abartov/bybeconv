@@ -1,4 +1,4 @@
-desc "Populate the DB with all the HtmlFiles from benyehuda"
+desc "Populate the DB with all the HtmlFiles from benyehuda, recording original mtime and ctime (run on Windows!)"
 task :populate => :environment do
   thedir = '/mnt/by' 
   tot = { :dir => 0, :files => 0, :new => 0, :upd => 0 }
@@ -18,7 +18,7 @@ def traverse(dir, t)
       h = HtmlFile.find_by_path(thefile)
       if h.nil?
         t[:new]=t[:new]+1
-        h = HtmlFile.new(:path => thefile, :status => "Unknown")
+        h = HtmlFile.new(:path => thefile, :status => "Unknown", :orig_ctime => File.ctime(thefile), :orig_mtime => File.mtime(thefile))
         h.save!
       else
         if h.updated_at < File.mtime(thefile) # file updated since last analyzed
