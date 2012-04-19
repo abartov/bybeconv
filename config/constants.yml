@@ -1,7 +1,7 @@
 # Enter your per-environment constants below
 
 development: &default
-  base_dir:  "/mnt/by"
+  base_dir:  "/home/bybe/dev_data"
 
 production:
   <<: *default
