@@ -4,9 +4,9 @@
 + emit MultiMarkdown 
 -- http://daringfireball.net/projects/markdown/basics 
 -- http://daringfireball.net/projects/markdown/syntax
++ handle footnotes
 - detect indentation? (poetry, letter signatures, etc.)
 - detect size changes
-- handle footnotes
 - handle ul and ol tags?
 - handle links
 - handle titles
