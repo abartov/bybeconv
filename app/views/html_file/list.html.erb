@@ -18,7 +18,7 @@
 <th>path</th><th>status</th><th>nikkud?</th><th>tables?</th><th>footnotes?</th><th>images?</th><th>action</th>
 <% @texts.each { |t| %>
 <tr>
-  <td><%= t.path.sub('/mnt/by/','') %></td><td><%= t.status %></td><td><%= t.nikkud %></td><td><%= t.tables %></td><td><%= t.footnotes %></td><td><%= t.images %></td><td><%= link_to "analyze", :action => 'analyze', :id => t %> | <%= link_to "parse", :action => 'parse', :id => t %> 
+  <td><%= t.path.sub(AppConstants.base_dir,'') %></td><td><%= t.status %></td><td><%= t.nikkud %></td><td><%= t.tables %></td><td><%= t.footnotes %></td><td><%= t.images %></td><td><%= link_to "analyze", :action => 'analyze', :id => t %> | <%= link_to "parse", :action => 'parse', :id => t %> 
 <% if t.status == 'Parsed' %>
 | <%= link_to "render!", :action => 'render_html', :id => t %>
 <% end %></td>
