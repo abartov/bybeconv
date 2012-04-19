@@ -6,6 +6,7 @@ gem 'rails', '3.1.3'
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
 gem 'sqlite3'
+gem 'mysql'
 
 
 # Gems used only for assets and not required
@@ -37,7 +38,9 @@ gem 'rpeg-multimarkdown'
 
 # To use debugger
 # TODO: re-enable this, following ruby 1.9.3 upgrade...
-gem 'ruby-debug19', :require => 'ruby-debug'
+#gem 'ruby-debug19', :require => 'ruby-debug'
+
+gem 'app_constants' # anything more Railsy?
 
 group :test do
   # Pretty printed test output

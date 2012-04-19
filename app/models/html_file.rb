@@ -261,7 +261,9 @@ class HtmlFile < ActiveRecord::Base
     self.status = 'Parsed' # TODO: error checking?
     self.save!
   end
-
+  def self.new_since(t) # pass a DateTime
+    where("datetime(created_at) < ?", t.to_s(:db))
+  end
   protected
 
   # return a hash like {:total => total_number_of_non_tags_characters, :nikkud => total_number_of_nikkud_characters, :ratio => :nikkud/:total }

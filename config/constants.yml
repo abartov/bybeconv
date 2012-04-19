@@ -1,0 +1,11 @@
+# Enter your per-environment constants below
+
+development: &default
+  base_dir:  "/mnt/by"
+
+production:
+  <<: *default
+  base_dir:  "/var/www/benyehuda.org"
+  
+test:
+  <<: *default
