@@ -28,7 +28,7 @@ def traverse(dir, t)
           h.save!
         end # else skip known files
       end
-    elsif File.directory?(thefile) and fname !~ /^_/ and fname !~ /^\./
+    elsif File.directory?(thefile) and fname !~ /^_/ and fname !~ /^\./ and not AppConstants.populate_exclude.split(';').include? fname
       traverse(thefile, t) # recurse
     end
   }

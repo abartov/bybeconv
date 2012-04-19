@@ -17,4 +17,5 @@
 - add markdown manipulations post-parsing
 -+ chop title/author lines from top
 -- raw edit (versioned?  just backup/undo?)
+- add an exclusion list to rake populate
 
