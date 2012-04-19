@@ -1,0 +1,25 @@
+MsoHeading8  -- sub-subtitle (right-aligned)
+
+A subtitle:
+<p class=MsoNormal align=center dir=RTL style='text-align:center;line-height:
+  150%'><b><span lang=HE style='font-size:16.0pt;mso-ansi-font-size:17.0pt;
+  font-family:David'>áâàìéöéä<a name=galicia></a><o:p></o:p></span></b></p>
+  
+Another type of subtitle (yes, class=aa, gordon_ad/_______):
+<p class=aa dir=RTL><span lang=HE style='font-family:David'>&#1488;&#1504;&#1493;
+  &#1489;&#1488;&#1497;&#1501; &#1500;&#1488; &#1512;&#1511;
+  &#1500;&#1490;&#1491;&#1500; &#1510;&#1502;&#1495;&#1497;&#1501;
+  &#1493;&#1489;&#1492;&#1502;&#1493;&#1514;, &#1499;&#1497; &#1488;&#1501;
+  &#1490;&#1501; &#1489;&#1504;&#1497; &#1488;&#1491;&#1501; <o:p></o:p></span></p>
+  
+And another (regelson/akdamot.html)
+  <p class=a align=center dir=RTL style='text-align:center'><b><span lang=HE
+  style='font-size:14.0pt;font-family:David'>שלושה רבדים<o:p></o:p></span></b></p>
+  
+And another (berdi/miymey_moshe_egypt.html):
+ <p class=a1 dir=RTL><span lang=HE style='font-family:David'><span
+  style='mso-tab-count:1'>&nbsp; </span>פַּרְעֹה</span><span dir=LTR></span><span
+  lang=HE dir=LTR><span dir=LTR></span> </span></p>
+  <p class=a1 dir=RTL><span lang=HE style='font-family:David'>א.<o:p></o:p></span></p>
+  (same in yavets/03_totsaot.html)
+  <p class=a1 dir=RTL><span lang=HE style='font-family:David'>החטיטות והחקיקות<o:p></o:p></span></p>
