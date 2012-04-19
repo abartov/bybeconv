@@ -1,11 +1,12 @@
 # Enter your per-environment constants below
 
 development: &default
-  base_dir:  "/home/bybe/dev_data"
+  base_dir:  "/home/me/my_dev_data"
+  populate_exclude: "w3c;img"
 
 production:
   <<: *default
-  base_dir:  "/var/www/benyehuda.org"
+  base_dir:  "/var/www/my_actual_static_files_dir"
   
 test:
   <<: *default
