@@ -58,7 +58,7 @@ def behead_traverse(dir, t, payload)
       rescue
         t[:badenc].push thefile
       end
-    elsif File.directory?(thefile) and fname !~ /^_/ and fname !~ /^\./
+    elsif File.directory?(thefile) and fname !~ /^_/ and fname !~ /^\./ and not AppConstants.populate_exclude.split(';').include? fname
       behead_traverse(thefile, t, payload) # recurse
     end
   }
