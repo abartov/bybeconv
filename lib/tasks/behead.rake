@@ -15,8 +15,8 @@ task :behead => :environment do
   # traverse tree and process all HTML files
   behead_traverse(thedir, tot, payload)
 
-  print "\n#{tot[:dir]} directories containing #{tot[:files]} files scanned: #{tot[:new]} new files beheaded, #{tot[:upd]} files updated with new payload, #{tot[:badenc].count} files skipped due to mixed encoding.\n"
   tot[:badenc].each {|f| print "#{f} has mixed encoding.\n" }
+  print "\n#{tot[:dir]} directories containing #{tot[:files]} files scanned: #{tot[:new]} new files beheaded, #{tot[:upd]} files updated with new payload, #{tot[:badenc].count} files skipped due to mixed encoding.\n"
 end
 
 private
