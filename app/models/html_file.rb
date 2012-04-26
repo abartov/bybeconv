@@ -231,6 +231,8 @@ class HtmlFile < ActiveRecord::Base
   def self.analyze_all # class method
     HtmlFile.find_all_by_status('Unknown').each { |h| h.analyze }
   end
+
+  # this method is, for now, deliberately only callable manually, via the console
   def fix_encoding
     if self.status == 'BadCP1255'
       raw = IO.binread(self.path)
@@ -241,7 +243,12 @@ class HtmlFile < ActiveRecord::Base
       begin
         html = File.open(newfile, "r:windows-1255:UTF-8").read
         # yay! The file is now valid and converts fine to UTF-8! :)
-        print "Success! #{newfile} is valid!  Please replace the live file #{self.path} with #{newfile} manually, for safety." 
+        print "Success! #{newfile} is valid!  Please replace the live file #{self.path} with #{newfile} manually, for safety.\nI'll wait for you to verify: type 'y' if you want to do this switcheroo NOW: " 
+        yes = ARGF.read
+        if yes == "y\n"
+          File.rename(self.path, "#{self.path}.bad_encoding")
+          File.rename(newfile, self.path)
+        end 
         self.status = 'Unknown' # so that this file gets re-analyzed after the manual copy
         self.save!
       rescue
@@ -251,7 +258,6 @@ class HtmlFile < ActiveRecord::Base
       print 'fix_encoding called but status doesn''t indicate BadCP1255... Ignoring.' # debug
     end
   end
-
   def parse
     html = File.open(self.path, "r:windows-1255:UTF-8").read
     ndoc = NokoDoc.new
