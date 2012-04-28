@@ -25,6 +25,7 @@ def traverse(dir, t)
         if h.updated_at < File.mtime(thefile) # file updated since last analyzed
           t[:upd]=t[:upd]+1
           h.status = "Unknown"
+          h.update_attribute(:updated_at, Time.now)
           h.save!
         end # else skip known files
       end
