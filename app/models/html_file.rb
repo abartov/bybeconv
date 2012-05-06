@@ -2,6 +2,12 @@
 
 require 'multimarkdown'
 
+ENCODING_SUBSTS = [{ :from => "\xCA", :to => "\xC9" }, # fix weird invalid chars instead of proper Hebrew xolams
+    { :from => "\xFC", :to => "&uuml;"}, # fix u-umlaut
+    { :from => "\xFB", :to => "&ucirc;"},
+    { :from => "\xFF", :to => "&yuml;"}] # fix u-circumflex
+
+
 class NokoDoc < Nokogiri::XML::SAX::Document
   def initialize
     @markdown = ''
@@ -238,7 +244,12 @@ class HtmlFile < ActiveRecord::Base
   def fix_encoding
     if self.status == 'BadCP1255'
       raw = IO.binread(self.path)
-      raw.gsub!("\xCA","\xC9") # fix weird invalid chars instead of proper Hebrew xolams
+      ENCODING_SUBSTS.each { |s|
+        raw.gsub!(s[:from], s[:to])
+      }
+      #raw.gsub!("\xCA","\xC9") # fix weird invalid chars instead of proper Hebrew xolams
+      #raw.gsub!("\xFC","&uuml;") # fix u-umlaut with a character entity
+      #raw.gsub!("\xFB","&uuml;") # fix u-umlaut with a character entity
       newfile = self.path + '.fixed_encoding'
       # IO.binwrite(newfile, raw) # this works only on Ruby 1.9.3+
       File.open(newfile, 'wb') {|f| f.write(raw) } # works on any modern Ruby
@@ -246,8 +257,8 @@ class HtmlFile < ActiveRecord::Base
         html = File.open(newfile, "r:windows-1255:UTF-8").read
         # yay! The file is now valid and converts fine to UTF-8! :)
         print "Success! #{newfile} is valid!  Please replace the live file #{self.path} with #{newfile} manually, for safety.\nI'll wait for you to verify: type 'y' if you want to do this switcheroo NOW: " 
-        yes = ARGF.read
-        if yes == "y\n"
+        yes = gets.chomp
+        if yes == "y"
           File.rename(self.path, "#{self.path}.bad_encoding")
           File.rename(newfile, self.path)
         end 
