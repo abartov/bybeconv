@@ -1,23 +1,31 @@
 desc "Create the 'what's new?' table as an HTML fragment to be pasted into the site's (static) main page"
 task :whatsnew, [:fromdate] => :environment do |taskname, args|
-  args.with_defaults(:fromdate => Date.today-30.days)
+  args.with_defaults(:fromdate => (Date.today-30.days).to_s)
   print "args.fromdate seems to be #{args.fromdate}\n"
 
   thedir = AppConstants.base_dir # environment-sensitive constant
   tot = { :dir => 0, :files => 0, :new => 0, :upd => 0 }
-  newfiles = HtmlFile.new_since(Date.new(args.fromdate))
+  newfiles = HtmlFile.new_since(Date.parse(args.fromdate).to_time)
   
   print "\n#{newfiles.count} new files found since #{args.fromdate}.\n"
-  file_by_author = {}
-  newfiles.each { |h|
+  files_by_author = {}
+  progress = 0
+  #newfiles.each { |h|
+  newfiles.each_index { |i|
+    h = newfiles[i]
     relpath = h.path.sub(AppConstants.base_dir,'')
+    print "DBG: #{relpath} and NEXT: #{newfiles[i+1].path}\n"
     authordir = relpath[1..-1].sub(/\/.*/,'')
     author = author_name_from_dir(authordir)
-    files_by_author[author] = '' if files_by_author[author].nil? # initialize array for author if first new work by that author
-    files_by_author[author] += "<a href=\"#{relpath}\">#{title_from_file(h.path)}</a>; "
+    files_by_author[author] = [] if files_by_author[author].nil? # initialize array for author if first new work by that author
+    files_by_author[author].push "<a href=\"#{relpath}\">#{title_from_file(h.path)}</a>"
+    print "\rHandled #{progress} files so far.     " if progress % 10 == 0
+    progress += 1
   }
-  files_by_author.each {|a|
-    # TODO: complete this
+  File.open("whatsnew.html", "w") {|f|
+    files_by_author.each {|a, files|
+      f.write("#{a}: #{files.join('; ')}\n")
+    }
   }
 end
 
@@ -32,7 +40,7 @@ def title_from_html(h)
       title = res.pre_match
     end
     title.sub!(/ - .*/, '') # remove " - toxen inyanim"
-    title.sub!(/ \x{2013}.*/, '') # ditto, with an em-dash
+    title.sub!(/ \u2013.*/, '') # ditto, with an em-dash
   end
   return title
 end
@@ -41,6 +49,8 @@ def title_from_file(f)
   return title_from_html(html)
 end        
 def author_name_from_dir(d)
-  html = File.open(AppConstants.base_dir+'/'+d+'/index.html', "r:windows-1255:UTF-8").read # slurp the file (lazy, I know)
+  mode = "r"
+  mode += ":windows-1255:UTF-8" unless d == "regelson" # horrible, filthy, ugh!  But yeah, Regelson's index is in UTF-8, and not maintained in Word(!)
+  html = File.open(AppConstants.base_dir+'/'+d+'/index.html', mode).read # slurp the file (lazy, I know)
   return title_from_html(html)
 end

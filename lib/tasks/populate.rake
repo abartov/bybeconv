@@ -1,7 +1,6 @@
 desc "Populate the DB with all the HtmlFiles from benyehuda, recording original mtime and ctime (run on Windows!)"
 task :populate => :environment do
   thedir =  AppConstants.base_dir # environment-sensitive constant
-  #thedir = '/mnt/by' 
   tot = { :dir => 0, :files => 0, :new => 0, :upd => 0 }
   traverse(thedir, tot)
   
@@ -14,7 +13,7 @@ def traverse(dir, t)
   print "traversing directory ##{t[:dir]} - #{dir}                \r"
   Dir.foreach(dir) { |fname|
     thefile = dir+'/'+fname
-    if !(File.directory?(thefile)) and fname =~ /\.html$/ and not fname == 'index.html'
+    if !(File.directory?(thefile)) and fname =~ /\.html$/ and not fname == 'index.html' and not dir == AppConstants.base_dir # ignore HTML files on root directory
       t[:files]=t[:files]+1
       h = HtmlFile.find_by_path(thefile)
       if h.nil?

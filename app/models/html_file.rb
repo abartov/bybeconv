@@ -280,8 +280,8 @@ class HtmlFile < ActiveRecord::Base
     self.status = 'Parsed' # TODO: error checking?
     self.save!
   end
-  def self.new_since(t) # pass a DateTime
-    where("datetime(created_at) < ?", t.to_s(:db))
+  def self.new_since(t) # pass a Time
+    where("created_at > ?", t.to_s(:db))
   end
   protected
 
