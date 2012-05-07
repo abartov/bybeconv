@@ -1,4 +1,4 @@
-- complete lib/tasks/whatsnew.rake
++ complete lib/tasks/whatsnew.rake
 + add detection of encoding problems to HtmlFile.analyze, and to appropriate tallies etc.
   + possibly implement an auto-fixer for those?
     + yes!  Today we have learned that 0xCA is invalid in CP-1255, and yet Word sometimes(?) generates that instead of a proper xolam (0xC9) for some obscure reason.  We'll sub() this.
@@ -14,9 +14,11 @@
 - handle subtitles
 - handle entities, and escaping
 - handle asterisks, horizontal rules
+- detect and do something intelligent about extraneous spaces at beginning of paragraphs, avoiding letting them become PRE blocks
 - gather info for later cataloguing -- title, author, translator, copyright status, dedication/epigraph, year/location, ...?
 - add markdown manipulations post-parsing
 -+ chop title/author lines from top
 -- raw edit (versioned?  just backup/undo?)
 - add an exclusion list to rake populate
-
+- add way to bless markdown by human reviewer
+-- blessing should, whether automatically or as an extra human-chosen step, also post the blessed markdown (with path info etc.) to the CONTENT system, so it can be rendered from it INSTEAD of the old HTML file (preserving the *.html URL)
