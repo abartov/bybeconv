@@ -10,7 +10,7 @@ class CreateManifestations < ActiveRecord::Migration
       t.string :publication_place
       t.string :publication_date
       t.string :series_statement
-      t.tinytext :comment
+      t.text :comment
 
       t.timestamps
     end

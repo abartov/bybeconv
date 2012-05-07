@@ -4,7 +4,7 @@ class CreateWorks < ActiveRecord::Migration
       t.string :title
       t.string :form
       t.string :date
-      t.tinytext :comment
+      t.text :comment
 
       t.timestamps
     end

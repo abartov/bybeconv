@@ -5,7 +5,7 @@ class CreateExpressions < ActiveRecord::Migration
       t.string :form
       t.string :date
       t.string :language
-      t.tinytext :comment
+      t.text :comment
 
       t.timestamps
     end

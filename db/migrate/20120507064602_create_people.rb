@@ -7,7 +7,7 @@ class CreatePeople < ActiveRecord::Migration
       t.string :other_designation
       t.string :affiliation
       t.string :country
-      t.tinytext :comment
+      t.text :comment
 
       t.timestamps
     end
