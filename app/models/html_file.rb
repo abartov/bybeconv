@@ -190,7 +190,7 @@ class NokoDoc < Nokogiri::XML::SAX::Document
 end
 
 class HtmlFile < ActiveRecord::Base
-
+  has_and_belongs_to_many :manifestations
   def analyze
     # Word footnotes magic word 'mso-footnote-id'
     begin
@@ -283,6 +283,21 @@ class HtmlFile < ActiveRecord::Base
   def self.new_since(t) # pass a Time
     where("created_at > ?", t.to_s(:db))
   end
+  def self.title_from_file(f)
+    html = File.open(f, "r:windows-1255:UTF-8").read # slurp the file (lazy, I know)
+    return title_from_html(html)
+  end
+  def self.author_name_from_dir(d, known_names)
+    if known_names[d].nil?
+      mode = "r"
+      mode += ":windows-1255:UTF-8" unless ["regelson", "ibnezra_m"].include? d # horrible, filthy, ugh!  But yeah, Regelson's index is in UTF-8, and not maintained in Word(!)
+      html = File.open(AppConstants.base_dir+'/'+d+'/index.html', mode).read # slurp the file (lazy, I know)
+
+      known_names[d] = self.title_from_html(html)
+    end
+    return known_names[d]
+  end
+
   protected
 
   # return a hash like {:total => total_number_of_non_tags_characters, :nikkud => total_number_of_nikkud_characters, :ratio => :nikkud/:total }
@@ -305,6 +320,20 @@ class HtmlFile < ActiveRecord::Base
     info[:ratio] = info[:nikkud].to_f / info[:total] 
     puts "DBG: total #{info[:total]} - nikkud #{info[:nikkud]} - ratio #{info[:ratio]}"
     return info
+  end
+  def self.title_from_html(h)
+    title = nil
+    h.gsub!("\n",'') # ensure no newlines interfere with the full content of <title>...</title>
+    if /<title>(.*)<\/title>/.match(h)
+      title = $1
+      res = /\//.match(title)
+      if(res)
+        title = res.pre_match
+      end
+      title.sub!(/ - .*/, '') # remove " - toxen inyanim"
+      title.sub!(/ \u2013.*/, '') # ditto, with an em-dash
+    end
+    return title
   end
 end
 
