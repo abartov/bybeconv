@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120507064602) do
+ActiveRecord::Schema.define(:version => 20120507071028) do
 
   create_table "expressions", :force => true do |t|
     t.string   "title"
@@ -49,6 +49,20 @@ ActiveRecord::Schema.define(:version => 20120507064602) do
   end
 
   add_index "html_files", ["path"], :name => "index_html_files_on_path"
+
+  create_table "html_files_manifestations", :id => false, :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "html_file_id"
+    t.integer  "manifestation_id"
+  end
+
+  create_table "html_files_works", :id => false, :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "html_file_id"
+    t.integer  "work_id"
+  end
 
   create_table "manifestations", :force => true do |t|
     t.string   "title"

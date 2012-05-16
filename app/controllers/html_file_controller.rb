@@ -57,6 +57,14 @@ class HtmlFileController < ApplicationController
     chopN(1)
     redirect_to :action => :render_html, :id => params[:id]
   end
+  def publish
+    @text = HtmlFile.find(params[:id])
+    @text.status = 'Published'
+    m = Manifestation.new(:title => HtmlFile.title_from_file(@text.path), :responsibility_statement => HtmlFile.author_name_from_dir(@text.path, []), :medium => 'e-text', :publisher => AppConstants.our_publisher, :publication_date => Date.now)
+    m.save!
+    @text.manifestations << m
+    @text.save!
+  end
 
   protected
   def chopN(line_count)
