@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120507071028) do
+ActiveRecord::Schema.define(:version => 20120518075719) do
 
   create_table "expressions", :force => true do |t|
     t.string   "title"
@@ -57,13 +57,6 @@ ActiveRecord::Schema.define(:version => 20120507071028) do
     t.integer  "manifestation_id"
   end
 
-  create_table "html_files_works", :id => false, :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "html_file_id"
-    t.integer  "work_id"
-  end
-
   create_table "manifestations", :force => true do |t|
     t.string   "title"
     t.string   "responsibility_statement"
@@ -77,6 +70,7 @@ ActiveRecord::Schema.define(:version => 20120507071028) do
     t.text     "comment"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "markdown_path"
   end
 
   create_table "manifestations_people", :id => false, :force => true do |t|

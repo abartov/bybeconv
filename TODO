@@ -19,4 +19,7 @@
 -+ chop title/author lines from top
 -- raw edit (versioned?  just backup/undo?)
 - add an exclusion list to rake populate
+- when publishing a parsed HtmlFile:
+  - allow to verify/edit title and author
+  - allow to insert magic sequences to break between different Works in the HtmlFile (think short poems), and post-submit show a form for titles for each before publishing separate Manifestations and Works for each
 

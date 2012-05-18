@@ -39,6 +39,7 @@ $('#bTimes').click(function() { $("p").css("font-family", "Times New Roman") } )
 
 <p>You can:</p>
 <ul><li>chop off <%= link_to 'first 1', :action => :chop1, :id => @text %>, <%= link_to 'first 2', :action => :chop2, :id => @text %>, or <%= link_to 'first 3', :action => :chop3, :id => @text %> lines
+<li>ACCEPT this and <%= link_to 'publish!', :action => :publish, :id => @text %>
 </ul>
 <p> [do some other things about it]...</p>
 
