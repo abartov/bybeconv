@@ -61,9 +61,9 @@ class HtmlFileController < ApplicationController
     @text = HtmlFile.find(params[:id])
     if @text.status == 'Parsed'
       @text.status = 'Published'
-      m = Manifestation.new(:title => HtmlFile.title_from_file(@text.path), :responsibility_statement => HtmlFile.author_name_from_dir(@text.path, []), :medium => 'e-text', :publisher => AppConstants.our_publisher, :publication_date => Date.now, markdown_path => @text.path+'.markdown')
-      m.save!
-      @text.manifestations << m
+      @m = Manifestation.new(:title => HtmlFile.title_from_file(@text.path), :responsibility_statement => HtmlFile.author_name_from_dir(@text.author_dir, {}), :medium => 'e-text', :publisher => AppConstants.our_publisher, :publication_date => Date.today, :markdown_path => @text.path+'.markdown')
+      @m.save!
+      @text.manifestations << @m
       @text.save!
     else
       flash[:error] = "Can't publish before parsing."

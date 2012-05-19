@@ -11,9 +11,7 @@ task :whatsnew, [:fromdate] => :environment do |taskname, args|
   files_by_author = {}
   progress = 0
   newfiles.each { |h|
-    relpath = h.path.sub(AppConstants.base_dir,'')
-    authordir = relpath[1..-1].sub(/\/.*/,'')
-    author = HtmlFile.author_name_from_dir(authordir, known_authors)
+    author = HtmlFile.author_name_from_dir(h.author_dir, known_authors)
     files_by_author[author] = [] if files_by_author[author].nil? # initialize array for author if first new work by that author
     files_by_author[author].push "<a href=\"#{relpath}\">#{HtmlFile.title_from_file(h.path)}</a>"
     print "\rHandled #{progress} files so far.     " if progress % 10 == 0
