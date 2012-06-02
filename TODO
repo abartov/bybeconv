@@ -23,4 +23,8 @@
   - allow to verify/edit title and author
   - allow to insert magic sequences to break between different Works in the HtmlFile (think short poems), and post-submit show a form for titles for each before publishing separate Manifestations and Works for each
 - BUG: footnote conversion problem in /zitron/din_tora.html
+- support a configurable set of auto fixes for post-processing markdown
+  - e.g. match_all nun-sofit+non-whitespace, offer to replace with vav
+  - e.g. match_all ' " ' for mis-spaced quotes
+  - e.g. match sofiyot in middle of words
 
