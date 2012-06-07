@@ -53,8 +53,8 @@ class NokoDoc < Nokogiri::XML::SAX::Document
       end
       push_style(style)
     elsif name == 'p' 
-      class_attr = attributes.assoc('class')
-      if class_attr == 'aa' # one heading style in PBY texts, see doc/guide_to_icky_Word_html.txt
+      class_attr = attributes.assoc('class')[1] || ''
+      if ['aa','a1'].include? class_attr # one heading style in PBY texts, see doc/guide_to_icky_Word_html.txt
         @in_subhead = true
       end
     elsif name == 'b'
@@ -155,7 +155,8 @@ class NokoDoc < Nokogiri::XML::SAX::Document
       toadd = "\n\n"
       if @in_subhead
         @in_subhead = false
-        toadd = '## '+@subhead + toadd
+        toadd = "\n## "+@subhead + toadd
+        @subhead = '' 
       end
       unless @spans.empty?
         @spans.last[:markdown] += toadd
