@@ -22,5 +22,5 @@
 - when publishing a parsed HtmlFile:
   - allow to verify/edit title and author
   - allow to insert magic sequences to break between different Works in the HtmlFile (think short poems), and post-submit show a form for titles for each before publishing separate Manifestations and Works for each
-- BUG: footnote conversion problem in /zitron/din_tora.html
+
 
