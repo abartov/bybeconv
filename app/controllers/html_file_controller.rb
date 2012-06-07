@@ -5,8 +5,6 @@ class HtmlFileController < ApplicationController
   end
 
   def analyze_all
-    HtmlFile.analyze_all
-    redirect_to :action => :list
   end
 
   def list
@@ -27,13 +25,18 @@ class HtmlFileController < ApplicationController
     unless params[:commit].blank?
       session[:html_q_params] = params # make prev. params accessible to view
     else
-      session[:html_q_params] = { :footnotes => '', :nikkud => '', :status => '' }
+      session[:html_q_params] = { :footnotes => '', :nikkud => '', :status => '', :path => '' }
     end
-    f, n, s = session[:html_q_params][:footnotes], session[:html_q_params][:nikkud], session[:html_q_params][:status] # retrieve query params whether or not they were POSTed
+    f, n, s, p = session[:html_q_params][:footnotes], session[:html_q_params][:nikkud], session[:html_q_params][:status], session[:html_q_params][:path] # retrieve query params whether or not they were POSTed
     query.merge!({ :footnotes => f }) unless f.blank? 
     query.merge!({ :nikkud => n }) unless n.blank?
     query.merge!({ :status => s }) unless s.blank?
-    @texts = HtmlFile.where(query).page(params[:page]).order('status ASC')
+    # TODO: figure out how to include filter by path without making the query fugly
+    if p.blank?
+      @texts = HtmlFile.where(query).page(params[:page]).order('status ASC')
+    else
+      @texts = HtmlFile.where("path like ?", '%'+params[:path]+'%').page(params[:page]).order('status ASC')
+    end  
     #@texts = HtmlFile.page(params[:page]).order('status ASC')
   end
   def parse

@@ -12,8 +12,10 @@ class NokoDoc < Nokogiri::XML::SAX::Document
   def initialize
     @markdown = ''
     @in_title = false
-    @in_footnote = false
     @title = ''
+    @in_footnote = false
+    @in_subhead = false
+    @subhead = ''
     @anything = false
     @spans = [] # a span/style stack
     @links = [] # a links stack
@@ -50,6 +52,11 @@ class NokoDoc < Nokogiri::XML::SAX::Document
         end
       end
       push_style(style)
+    elsif name == 'p' 
+      class_attr = attributes.assoc('class')
+      if class_attr == 'aa' # one heading style in PBY texts, see doc/guide_to_icky_Word_html.txt
+        @in_subhead = true
+      end
     elsif name == 'b'
       push_style({:decoration => [:bold]})
     elsif name == 'u'
@@ -96,11 +103,13 @@ class NokoDoc < Nokogiri::XML::SAX::Document
   def characters s
     if @links.empty? or @links.last['ignore']
       if (s =~ /\S/)
-        @spans.last[:anything] = true if @spans.count > 0 
+        @spans.last[:anything] = true if @spans.count > 0  # TODO: optimize, add unless @spans.last[:anything] maybe
       end
       reformat = s.gsub("\n", ' ')
       if @in_title
         @title += reformat
+      elsif @in_subhead
+        @subhead += reformat
       elsif @in_footnote # buffer footnote bodies separately
         @footnote[:body] += reformat 
       elsif not @spans.empty?
@@ -143,10 +152,15 @@ class NokoDoc < Nokogiri::XML::SAX::Document
         @markdown += new_markdown
       end
     elsif name == 'br' || name == 'p'
+      toadd = "\n\n"
+      if @in_subhead
+        @in_subhead = false
+        toadd = '## '+@subhead + toadd
+      end
       unless @spans.empty?
-        @spans.last[:markdown] += "\n\n"
+        @spans.last[:markdown] += toadd
       else
-        @markdown += "\n\n"
+        @markdown += toadd
       end
     elsif name == 'a'
       link = @links.pop
