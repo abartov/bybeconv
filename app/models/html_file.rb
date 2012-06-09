@@ -155,7 +155,7 @@ class NokoDoc < Nokogiri::XML::SAX::Document
       toadd = "\n\n"
       if @in_subhead
         @in_subhead = false
-        toadd = "\n## "+@subhead + toadd
+        toadd = "\n## "+@subhead + toadd if @subhead.match /\S/
         @subhead = '' 
       end
       unless @spans.empty?
@@ -195,7 +195,7 @@ class NokoDoc < Nokogiri::XML::SAX::Document
     }
     @markdown += markdown.gsub("\n\n[^","\n[^") # append the entire footnotes section, trimming double newlines
     @markdown.gsub!("\r",'') # farewell, DOS! :)
-    debugger
+    #debugger
     # remove first line's whitespace
     lines = @markdown.split "\n\n" # by newline by default
     z = /\n[\s]*/.match lines[0]
