@@ -295,12 +295,25 @@ class HtmlFile < ActiveRecord::Base
     self.status = 'Parsed' # TODO: error checking?
     self.save!
   end
-  def make_pdf
+# TODO: move those to be controller actions
+  def make_html(filename)
     if ['Parsed', 'Published'].include? self.status
       markdown = File.open(self.path+'.markdown', 'r:UTF-8').read # slurp markdown
-      File.open(self.path+'.latex', 'wb') { |f| f.write("\\documentclass[12pt,twoside]{book}\n\\usepackage[utf8x]{inputenc}\n\\usepackage[english,hebrew]{babel}\n\\usepackage{hebfont}\n\\begin{document}"+MultiMarkdown.new(markdown).to_latex.force_encoding('UTF-8')+"\n\\end{document}") }
-      # TODO: find a way to do this without a system() call?
-      result = `pdflatex -halt-on-error #{self.path+'.latex'}`
+      erb = ERB.new 
+      fname = filename || self.path+'.html'
+      File.open(fname, 'wb') {|f|
+        f.write("<html><head><meta charset='utf-8'><title></title></head><body>"+MultiMarkdown.new(markdown).to_html.force_encoding('UTF-8')+"</body></html>")
+      }
+    end
+  end
+  def make_pdf
+    if ['Parsed', 'Published'].include? self.status
+      #markdown = File.open(self.path+'.markdown', 'r:UTF-8').read # slurp markdown
+      #File.open(self.path+'.latex', 'wb') { |f| f.write("\\documentclass[12pt,twoside]{book}\n\\usepackage[utf8x]{inputenc}\n\\usepackage[english,hebrew]{babel}\n\\usepackage{hebfont}\n\\begin{document}"+MultiMarkdown.new(markdown).to_latex.force_encoding('UTF-8')+"\n\\end{document}") }
+      ## TODO: find a way to do this without a system() call?
+      #result = `pdflatex -halt-on-error #{self.path+'.latex'}`
+      self.make_html(nil)
+      result = `wkhtmltopdf page #{self.path+'.html '+self.path+'.pdf'}`
       # TODO: validate result
     end
   end
