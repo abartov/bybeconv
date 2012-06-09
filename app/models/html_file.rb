@@ -173,8 +173,8 @@ class NokoDoc < Nokogiri::XML::SAX::Document
       post_process
       @post_processing_done = true
     end
-    File.open("/tmp/markdown.txt", 'wb') {|f| f.write(@markdown) } # tmp debug
-    File.open("/tmp/markdown.html", 'wb') {|f| f.write(MultiMarkdown.new(@markdown).to_html) }
+    #File.open("/tmp/markdown.txt", 'wb') {|f| f.write(@markdown) } # tmp debug
+    #File.open("/tmp/markdown.html", 'wb') {|f| f.write(MultiMarkdown.new(@markdown).to_html) }
     File.open(fname, 'wb') {|f| f.write(@markdown) } # works on any modern Ruby
   end
 
@@ -294,6 +294,15 @@ class HtmlFile < ActiveRecord::Base
     ndoc.save(self.path+'.markdown')
     self.status = 'Parsed' # TODO: error checking?
     self.save!
+  end
+  def make_pdf
+    if ['Parsed', 'Published'].include? self.status
+      markdown = File.open(self.path+'.markdown', 'r:UTF-8').read # slurp markdown
+      File.open(self.path+'.latex', 'wb') { |f| f.write("\\documentclass[12pt,twoside]{book}\n\\usepackage[utf8x]{inputenc}\n\\usepackage[english,hebrew]{babel}\n\\usepackage{hebfont}\n\\begin{document}"+MultiMarkdown.new(markdown).to_latex.force_encoding('UTF-8')+"\n\\end{document}") }
+      # TODO: find a way to do this without a system() call?
+      result = `pdflatex -halt-on-error #{self.path+'.latex'}`
+      # TODO: validate result
+    end
   end
   def self.new_since(t) # pass a Time
     where("created_at > ?", t.to_s(:db))
