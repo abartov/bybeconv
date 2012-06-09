@@ -195,10 +195,7 @@ class NokoDoc < Nokogiri::XML::SAX::Document
     }
     @markdown += markdown.gsub("\n\n[^","\n[^") # append the entire footnotes section, trimming double newlines
     @markdown.gsub!("\r",'') # farewell, DOS! :)
-<<<<<<< HEAD
     #debugger
-=======
->>>>>>> d11016e52bee5878c3c5c3234622e65adc748756
     # remove first line's whitespace
     lines = @markdown.split "\n\n" # by newline by default
     z = /\n[\s]*/.match lines[0]
