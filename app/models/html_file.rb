@@ -12,8 +12,10 @@ class NokoDoc < Nokogiri::XML::SAX::Document
   def initialize
     @markdown = ''
     @in_title = false
-    @in_footnote = false
     @title = ''
+    @in_footnote = false
+    @in_subhead = false
+    @subhead = ''
     @anything = false
     @spans = [] # a span/style stack
     @links = [] # a links stack
@@ -50,6 +52,11 @@ class NokoDoc < Nokogiri::XML::SAX::Document
         end
       end
       push_style(style)
+    elsif name == 'p' 
+      class_attr = attributes.assoc('class')[1] || ''
+      if ['aa','a1'].include? class_attr # one heading style in PBY texts, see doc/guide_to_icky_Word_html.txt
+        @in_subhead = true
+      end
     elsif name == 'b'
       push_style({:decoration => [:bold]})
     elsif name == 'u'
@@ -96,11 +103,13 @@ class NokoDoc < Nokogiri::XML::SAX::Document
   def characters s
     if @links.empty? or @links.last['ignore']
       if (s =~ /\S/)
-        @spans.last[:anything] = true if @spans.count > 0 
+        @spans.last[:anything] = true if @spans.count > 0  # TODO: optimize, add unless @spans.last[:anything] maybe
       end
       reformat = s.gsub("\n", ' ')
       if @in_title
         @title += reformat
+      elsif @in_subhead
+        @subhead += reformat
       elsif @in_footnote # buffer footnote bodies separately
         @footnote[:body] += reformat 
       elsif not @spans.empty?
@@ -143,10 +152,16 @@ class NokoDoc < Nokogiri::XML::SAX::Document
         @markdown += new_markdown
       end
     elsif name == 'br' || name == 'p'
+      toadd = "\n\n"
+      if @in_subhead
+        @in_subhead = false
+        toadd = "\n## "+@subhead + toadd
+        @subhead = '' 
+      end
       unless @spans.empty?
-        @spans.last[:markdown] += "\n\n"
+        @spans.last[:markdown] += toadd
       else
-        @markdown += "\n\n"
+        @markdown += toadd
       end
     elsif name == 'a'
       link = @links.pop
@@ -158,8 +173,8 @@ class NokoDoc < Nokogiri::XML::SAX::Document
       post_process
       @post_processing_done = true
     end
-    File.open("/tmp/markdown.txt", 'wb') {|f| f.write(@markdown) } # tmp debug
-    File.open("/tmp/markdown.html", 'wb') {|f| f.write(MultiMarkdown.new(@markdown).to_html) }
+    #File.open("/tmp/markdown.txt", 'wb') {|f| f.write(@markdown) } # tmp debug
+    #File.open("/tmp/markdown.html", 'wb') {|f| f.write(MultiMarkdown.new(@markdown).to_html) }
     File.open(fname, 'wb') {|f| f.write(@markdown) } # works on any modern Ruby
   end
 
@@ -282,6 +297,28 @@ class HtmlFile < ActiveRecord::Base
     ndoc.save(self.path+'.markdown')
     self.status = 'Parsed' # TODO: error checking?
     self.save!
+  end
+# TODO: move those to be controller actions
+  def make_html(filename)
+    if ['Parsed', 'Published'].include? self.status
+      markdown = File.open(self.path+'.markdown', 'r:UTF-8').read # slurp markdown
+      erb = ERB.new 
+      fname = filename || self.path+'.html'
+      File.open(fname, 'wb') {|f|
+        f.write("<html><head><meta charset='utf-8'><title></title></head><body>"+MultiMarkdown.new(markdown).to_html.force_encoding('UTF-8')+"</body></html>")
+      }
+    end
+  end
+  def make_pdf
+    if ['Parsed', 'Published'].include? self.status
+      #markdown = File.open(self.path+'.markdown', 'r:UTF-8').read # slurp markdown
+      #File.open(self.path+'.latex', 'wb') { |f| f.write("\\documentclass[12pt,twoside]{book}\n\\usepackage[utf8x]{inputenc}\n\\usepackage[english,hebrew]{babel}\n\\usepackage{hebfont}\n\\begin{document}"+MultiMarkdown.new(markdown).to_latex.force_encoding('UTF-8')+"\n\\end{document}") }
+      ## TODO: find a way to do this without a system() call?
+      #result = `pdflatex -halt-on-error #{self.path+'.latex'}`
+      self.make_html(nil)
+      result = `wkhtmltopdf page #{self.path+'.html '+self.path+'.pdf'}`
+      # TODO: validate result
+    end
   end
   def self.new_since(t) # pass a Time
     where("created_at > ?", t.to_s(:db))
