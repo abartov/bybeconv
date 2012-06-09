@@ -195,7 +195,10 @@ class NokoDoc < Nokogiri::XML::SAX::Document
     }
     @markdown += markdown.gsub("\n\n[^","\n[^") # append the entire footnotes section, trimming double newlines
     @markdown.gsub!("\r",'') # farewell, DOS! :)
+<<<<<<< HEAD
     #debugger
+=======
+>>>>>>> d11016e52bee5878c3c5c3234622e65adc748756
     # remove first line's whitespace
     lines = @markdown.split "\n\n" # by newline by default
     z = /\n[\s]*/.match lines[0]
@@ -295,6 +298,7 @@ class HtmlFile < ActiveRecord::Base
     parser = Nokogiri::HTML::SAX::Parser.new(ndoc)
     parser.parse(html)
     ndoc.save(self.path+'.markdown')
+    self.split_long_lines # split very long lines, to accommodate MultiMarkDown limitation
     self.status = 'Parsed' # TODO: error checking?
     self.save!
   end
@@ -375,5 +379,24 @@ class HtmlFile < ActiveRecord::Base
     end
     return title
   end
+  def split_long_lines
+    markdown = File.open(self.path+'.markdown', 'r:UTF-8').read
+    debugger
+    splitted = ''
+    markdown.each_line {|l| 
+      if l.length <= 200
+        splitted += l + "\n"
+      else
+        while(l.length > 200)
+          pos = l[1..200].rindex(' ')
+          splitted += l[1..pos] + "\n"
+          l = l[pos+1..-1]
+        end
+        splitted += l + "\n"
+      end
+    }
+    File.open(self.path+'.unsplit.markdown', 'w:UTF-8').write(markdown)
+    File.open(self.path+'.markdown', 'w:UTF-8').write(splitted)
+  end 
 end
 
