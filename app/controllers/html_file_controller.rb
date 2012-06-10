@@ -43,10 +43,22 @@ class HtmlFileController < ApplicationController
     @text = HtmlFile.find(params[:id])
     @text.parse
   end
-  def render_html
+  def unsplit
     @text = HtmlFile.find(params[:id])
     @markdown = File.open(@text.path+'.markdown', 'r:UTF-8').read
-    @html = MultiMarkdown.new(@markdown).to_html.force_encoding('UTF-8') # TODO: figure out why to_html defaults to ASCII 8-bit
+    @markdown.gsub!('__SPLIT__','') # remove magic words
+    @text.update_markdown(@markdown)
+    redirect_to :action => :render_html, :id => params[:id]
+  end
+  def render_html
+    @text = HtmlFile.find(params[:id])
+    if params[:markdown].nil?
+      @markdown = File.open(@text.path+'.markdown', 'r:UTF-8').read
+    else
+      @markdown = params[:markdown] # TODO: make secure
+      @text.update_markdown(@markdown.gsub('__________','__SPLIT__') ) # TODO: add locking of some sort to avoid concurrent overwrites
+    end
+    @html = MultiMarkdown.new(@markdown.gsub('__SPLIT__','__________')).to_html.force_encoding('UTF-8') # TODO: figure out why to_html defaults to ASCII 8-bit
   end
   def chop3
     chopN(3)

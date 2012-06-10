@@ -155,7 +155,7 @@ class NokoDoc < Nokogiri::XML::SAX::Document
       toadd = "\n\n"
       if @in_subhead
         @in_subhead = false
-        toadd = "\n## "+@subhead + toadd
+        toadd = "\n## "+@subhead + toadd if @subhead =~ /\S/
         @subhead = '' 
       end
       unless @spans.empty?
@@ -320,6 +320,10 @@ class HtmlFile < ActiveRecord::Base
   def self.new_since(t) # pass a Time
     where("created_at > ?", t.to_s(:db))
   end
+  def update_markdown(markdown)
+    File.open(self.path+'.markdown', 'wb') { |f| f.write(markdown) }    
+  end
+
   protected
 
   # return a hash like {:total => total_number_of_non_tags_characters, :nikkud => total_number_of_nikkud_characters, :ratio => :nikkud/:total }
