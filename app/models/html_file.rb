@@ -155,7 +155,7 @@ class NokoDoc < Nokogiri::XML::SAX::Document
       toadd = "\n\n"
       if @in_subhead
         @in_subhead = false
-        toadd = "\n## "+@subhead + toadd if @subhead.match /\S/
+        toadd = "\n## "+@subhead + toadd if @subhead =~ /\S/
         @subhead = '' 
       end
       unless @spans.empty?
@@ -337,6 +337,9 @@ class HtmlFile < ActiveRecord::Base
       known_names[d] = self.title_from_html(html)
     end
     return known_names[d]
+  end
+  def update_markdown(markdown)
+    File.open(self.path+'.markdown', 'wb') { |f| f.write(markdown) }    
   end
 
   protected

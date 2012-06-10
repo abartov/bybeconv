@@ -8,6 +8,8 @@ Bybeconv::Application.routes.draw do
   get "html_file/publish"
   get "html_file/parse"
   get "html_file/render_html"
+  post "html_file/render_html"
+  get "html_file/unsplit"
   get "html_file/chop1"
   get "html_file/chop2"
   get "html_file/chop3"
