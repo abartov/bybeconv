@@ -1,4 +1,10 @@
 Bybeconv::Application.routes.draw do
+  get "manifestation/show"
+
+  get "manifestation/render"
+
+  get "manifestation/edit"
+
   get "html_file/analyze"
 
   get "html_file/analyze_all"

@@ -35,6 +35,7 @@ gem 'htmlentities'
 gem 'will_paginate'
 gem 'nokogiri'
 gem 'rpeg-multimarkdown'
+#gem 'epubbery' # for epubs
 
 # To use debugger
 # TODO: re-enable this, following ruby 1.9.3 upgrade...
