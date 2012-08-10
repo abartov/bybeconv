@@ -1,0 +1,22 @@
+<h1>Ben-Yehuda Catalogue</h1>
+
+<p>Totals: <%= @total %> manifestations</p>
+<!-- query interface -->
+<p><%= form_tag(:action => "list") do %>
+     <%= label_tag(:title_l, "Title:") %>
+     <%= text_field_tag(:title, session[:mft_q_params][:title]) %>
+     <%= label_tag(:author_l, "Author:") %>
+     <%= text_field_tag(:author, session[:mft_q_params][:author]) %>
+     <%= submit_tag("Filter!") %>
+   <% end %></p>
+<!-- end query interface -->
+<table>
+<th>author</th><th>title</th><th>...</th><th>...</th>
+<% @manifestations.each { |m| %>
+<tr>
+  <td><%= m.expressions[0].works[0].authors[0] %></td><td><%= m.title %></td><td>...</td><td>...</td><td><%= link_to "render!", :action => 'render', :id => m %></td>
+</tr>
+
+<% } %>
+</table>
+<%= will_paginate @manifestations, :params => session[:mft_q_params] %> 

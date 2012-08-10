@@ -79,7 +79,7 @@ class HtmlFileController < ApplicationController
       markdown = File.open(@text.path+'.markdown', 'r:UTF-8').read
       title = HtmlFile.title_from_file(@text.path)
       @w = Work.new(:title => title)
-      @e = Expression.new(:title => title, :language => "עברית")
+      @e = Expression.new(:title => title, :language => "Hebrew")
       @w.expressions << @e
       @w.save!
       @m = Manifestation.new(:title => title, :responsibility_statement => HtmlFile.author_name_from_dir(@text.author_dir, {}), :medium => 'e-text', :publisher => AppConstants.our_publisher, :publication_date => Date.today, :markdown => markdown)
