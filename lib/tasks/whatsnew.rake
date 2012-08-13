@@ -21,14 +21,14 @@ task :whatsnew, [:fromdate] => :environment do |taskname, args|
   }
   print "\nEmitting whatsnew.html... "
   File.open("whatsnew.html", "w") {|f|
-    f.write('<?xml version="1.0" encoding="utf8"?>\n<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="he"><body dir="rtl" align="right"><table>')
+    f.write('<?xml version="1.0" encoding="utf8"?>\n<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="he"><body dir="rtl" align="right"><table>'+"\n")
     files_by_author.each {|a, files|
       #print "DBG: a = #{a}\n"
       #print "DBG: files = #{files.join('\; ')}\n"
 
-      f.write("<tr><td>#{a}:</td><td><b><u>_______:</u></b> #{files.join('; ')}</td></tr>")
+      f.write("<tr><td><b><u>_______:</u></b> #{files.join('; ')}</td><tr><td><b>#{a}</b></td></tr>")
     }
-    f.write('</table></body></html>')
+    f.write("\n</table></body></html>")
   }
   print "done!\n"
 end
