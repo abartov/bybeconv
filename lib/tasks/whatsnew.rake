@@ -26,7 +26,7 @@ task :whatsnew, [:fromdate] => :environment do |taskname, args|
       #print "DBG: a = #{a}\n"
       #print "DBG: files = #{files.join('\; ')}\n"
 
-      f.write("<tr><td><b><u>_______:</u></b> #{files.join('; ')}</td><tr><td><b>#{a}</b></td></tr>")
+      f.write("<tr><td><b><u>_______:</u></b> #{files.join('; ')}</td><td><b>#{a}</b></td></tr>")
     }
     f.write("\n</table></body></html>")
   }
