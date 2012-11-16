@@ -323,7 +323,31 @@ class HtmlFile < ActiveRecord::Base
   def update_markdown(markdown)
     File.open(self.path+'.markdown', 'wb') { |f| f.write(markdown) }    
   end
-
+  def self.title_from_html(h)
+  title = nil
+  h.gsub!("\n",'') # ensure no newlines interfere with the full content of <title>...</title>
+  if /<title>(.*)<\/title>/.match(h)
+    title = $1
+    res = /\//.match(title)
+    if(res)
+      title = res.pre_match
+    end
+    title.sub!(/ - .*/, '') # remove " - toxen inyanim"
+    title.sub!(/ \u2013.*/, '') # ditto, with an em-dash
+  end
+  return title
+  end
+def self.title_from_file(f)
+  raw = IO.binread(f).force_encoding('windows-1255')
+  raw = fix_encoding(raw)
+  tmpfile = Tempfile.new(f.sub(AppConstants.base_dir,'').sub('/',''))
+  tmpfile.write(raw)
+  tmpfilename = tmpfile.path
+  tmpfile.close
+  html = File.open(tmpfilename, "r:windows-1255:UTF-8").read # slurp the file (lazy, I know)
+  return title_from_html(html)
+end
+ 
   protected
 
   # return a hash like {:total => total_number_of_non_tags_characters, :nikkud => total_number_of_nikkud_characters, :ratio => :nikkud/:total }

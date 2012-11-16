@@ -11,9 +11,9 @@ class HtmlFileController < ApplicationController
     # calculate tallies
     @total_texts = HtmlFile.count
     @total_known = HtmlFile.count(:conditions => "status <> 'Unknown'")
-    @total_images = HtmlFile.count(:conditions => "images = 't'")
-    @total_footnotes = HtmlFile.count(:conditions => "footnotes = 't'")
-    @total_tables = HtmlFile.count(:conditions => "tables = 't'")
+    @total_images = HtmlFile.count(:conditions => "images = 1")
+    @total_footnotes = HtmlFile.count(:conditions => "footnotes = 1")
+    @total_tables = HtmlFile.count(:conditions => "tables = 1")
     @total_badenc = HtmlFile.count(:conditions => "status = 'BadCP1255'")
     @total_fileerr = HtmlFile.count(:conditions => "status = 'FileError'")
     @total_parsed = HtmlFile.count(:conditions => "status = 'Parsed'")
