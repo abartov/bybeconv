@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  from: MyString
+  about: MyString
+  what: MyText
+  subscribe: false
+
+two:
+  from: MyString
+  about: MyString
+  what: MyText
+  subscribe: false

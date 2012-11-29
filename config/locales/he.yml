@@ -1,0 +1,8 @@
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+he:
+  proof_thanks_title: קיבלנו, תודה!
+  proof_thanks_html: תודה רבה על שטרחת לשלוח אלינו הגהה או הערה!  נעיין בה בקפידה ונתקן את הטקסט במידת הצורך, ונעדכן אותך כשנעשה זאת.
+  proof_subscribed: אנו שמחים שברצונך לקבל עדכונים מפרויקט בן-יהודה בעתיד.  נוסיף אותך לרשימת הדיוור שלנו בהקדם, בכתובת %{email}
+  proof_contact_html: "בכל שאלה, תוכלו לכתוב אל צוות העורכים, בכתובת <a href=\"mailto:editor@benyehuda.org\">editor@benyehuda.org</a>."
+# TODO: add notification e-mail when resolving a proof

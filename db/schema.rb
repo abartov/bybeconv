@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120419004222) do
+ActiveRecord::Schema.define(:version => 20121129221736) do
 
   create_table "html_files", :force => true do |t|
     t.string   "path"
@@ -32,6 +32,17 @@ ActiveRecord::Schema.define(:version => 20120419004222) do
   end
 
   add_index "html_files", ["path"], :name => "index_html_files_on_path"
+
+  create_table "proofs", :force => true do |t|
+    t.string   "from"
+    t.string   "about"
+    t.text     "what"
+    t.boolean  "subscribe"
+    t.string   "status"
+    t.string   "assignee"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "sessions", :force => true do |t|
     t.string   "session_id", :null => false
