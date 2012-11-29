@@ -1,3 +1,11 @@
+require 'tempfile' 
+
+ENCODING_SUBSTS = [{ :from => "\xCA", :to => "\xC9" }, # fix weird invalid chars instead of proper Hebrew xolams
+    { :from => "\xFC", :to => "&uuml;"}, # fix u-umlaut
+    { :from => "\xFB", :to => "&ucirc;"},
+    { :from => "\xFF", :to => "&yuml;"}] # fix u-circumflex
+
+
 desc "Create the 'what's new?' table as an HTML fragment to be pasted into the site's (static) main page"
 task :whatsnew, [:fromdate] => :environment do |taskname, args|
   args.with_defaults(:fromdate => (Date.today-30.days).to_s)
@@ -9,14 +17,16 @@ task :whatsnew, [:fromdate] => :environment do |taskname, args|
   
   print "\n#{newfiles.count} new files found since #{args.fromdate}.\n"
   files_by_author = {}
-  progress = 0
+  progress = 1
   newfiles.each { |h|
+    #debugger
     relpath = h.path.sub(AppConstants.base_dir,'')
     authordir = relpath[1..-1].sub(/\/.*/,'')
     author = author_name_from_dir(authordir, known_authors)
     files_by_author[author] = [] if files_by_author[author].nil? # initialize array for author if first new work by that author
+    print "DBG: trying to retrieve title from #{h.path}\n"
     files_by_author[author].push "<a href=\"#{relpath}\">#{title_from_file(h.path)}</a>"
-    print "\rHandled #{progress} files so far.     " if progress % 10 == 0
+    print "\rHandled #{progress} files so far.     " #if progress % 10 == 0
     progress += 1
   }
   print "\nEmitting whatsnew.html... "
@@ -35,30 +45,21 @@ task :whatsnew, [:fromdate] => :environment do |taskname, args|
 end
 
 private 
-def title_from_html(h)
-  title = nil
-  h.gsub!("\n",'') # ensure no newlines interfere with the full content of <title>...</title>
-  if /<title>(.*)<\/title>/.match(h)
-    title = $1
-    res = /\//.match(title)
-    if(res)
-      title = res.pre_match
-    end
-    title.sub!(/ - .*/, '') # remove " - toxen inyanim"
-    title.sub!(/ \u2013.*/, '') # ditto, with an em-dash
-  end
-  return title
-end
-def title_from_file(f)
-  html = File.open(f, "r:windows-1255:UTF-8").read # slurp the file (lazy, I know)
-  return title_from_html(html)
-end        
+
+def fix_encoding(buf)
+  # TODO: move to application.rb or something
+  newbuf = buf.force_encoding('windows-1255')
+      ENCODING_SUBSTS.each { |s|
+        newbuf.gsub!(s[:from], s[:to])
+      }
+  return newbuf
+end 
 def author_name_from_dir(d, known_names)
   if known_names[d].nil?
     mode = "r"
     mode += ":windows-1255:UTF-8" unless ["regelson", "ibnezra_m"].include? d # horrible, filthy, ugh!  But yeah, Regelson's index is in UTF-8, and not maintained in Word(!)
     html = File.open(AppConstants.base_dir+'/'+d+'/index.html', mode).read # slurp the file (lazy, I know)
-
+    html = fix_encoding(html) unless mode =~ /1255/
     known_names[d] = title_from_html(html)
   end
   return known_names[d]

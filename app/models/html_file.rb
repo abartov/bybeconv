@@ -260,11 +260,8 @@ class HtmlFile < ActiveRecord::Base
     if self.status == 'BadCP1255'
       raw = IO.binread(self.path)
       ENCODING_SUBSTS.each { |s|
-        raw.gsub!(s[:from], s[:to])
+        raw.gsub!(s[:from].force_encoding('windows-1255'), s[:to])
       }
-      #raw.gsub!("\xCA","\xC9") # fix weird invalid chars instead of proper Hebrew xolams
-      #raw.gsub!("\xFC","&uuml;") # fix u-umlaut with a character entity
-      #raw.gsub!("\xFB","&ucirc;") # fix u-circumflex with a character entity
       newfile = self.path + '.fixed_encoding'
       # IO.binwrite(newfile, raw) # this works only on Ruby 1.9.3+
       File.open(newfile, 'wb') {|f| f.write(raw) } # works on any modern Ruby
