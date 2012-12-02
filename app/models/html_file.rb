@@ -181,7 +181,7 @@ class NokoDoc < Nokogiri::XML::SAX::Document
   def end_footnote(f)
     unless f == {}
       # generate MultiMarkDown for the footnote body and stash it for later
-      f[:markdown] = "\n[^ftn#{f[:key]}]: " + f[:body] # make sure the footnote body starts on a newline; superfluous newlines will be removed at post-processing 
+      f[:markdown] = "\n[^ftn#{f[:key]}]: " + f[:body] + "\n" # make sure the footnote body starts on a newline; the newlines are necessary for footnote parsing by MultiMarkDown
       @footnotes.push f
     end
   end
@@ -193,7 +193,7 @@ class NokoDoc < Nokogiri::XML::SAX::Document
     @footnotes.each { |f|
       markdown += f[:markdown]
     }
-    @markdown += markdown.gsub("\n\n[^","\n[^") # append the entire footnotes section, trimming double newlines
+    @markdown += markdown # append the entire footnotes section
     @markdown.gsub!("\r",'') # farewell, DOS! :)
     debugger
     # remove first line's whitespace
