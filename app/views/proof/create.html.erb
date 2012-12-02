@@ -1,1 +1,8 @@
-<h1>Stub</h1>
+<h1><%= t(:proof_thanks_title)%></h1>
+<p><%= t(:proof_thanks_html, :email => @p.from, :what => @p.what) %></p>
+
+<% if @p.subscribe %>
+  <p><%= t(:proof_subscribed, :email => @p.from) %></p>
+<% end %>
+
+<p><%= t(:proof_contact_html) %></p>
