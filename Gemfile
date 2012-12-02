@@ -6,9 +6,6 @@ gem 'rails', '~> 3.2.14'
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
-#gem 'sqlite3'
-#gem 'mongrel', '>= 1.2.0.pre2' # for deployment on benyehuda.org
-
 gem 'mysql'
 gem 'mysql2'
 
@@ -41,7 +38,7 @@ gem 'nokogiri'
 gem 'rpeg-multimarkdown' # note: gem unmaintained, native part doesn't build under Ruby 2.1 -- may need updating the native part from the actual peg-multimarkdown implementation.
 
 # To use debugger
-gem 'debugger'
+#gem 'debugger'
 
 gem 'app_constants' # anything more Railsy?
 gem 'hebrew' # https://github.com/abartov/hebrew
