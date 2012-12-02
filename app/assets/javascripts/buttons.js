@@ -61,7 +61,7 @@ $('input#proof_btn').click(function() {
         sub = $('input#proof_sub').val();
         response_message = "Thank you for your comment, see ya!"
  
-        dataString = 'email=' + email + '&about=' + about + '&subscribe=' + sub + '&message=' + what;
+        dataString = 'email=' + email + '&about=' + about + '&subscribe=' + sub + '&what=' + what;
  
         $.ajax({
           type: "POST",
@@ -75,7 +75,7 @@ $('input#proof_btn').click(function() {
             .animate({opacity: 1.0}, 1000)
             .fadeIn(0, function(){
                 $('.proof-panel')
-                .animate({left:'-' + (proofTab.containerWidth + proofTab.tabWidth)}, 
+                .animate({left:'-' + (proofTab.containerWidth)}, 
                 (proofTab.speed))
                 .removeClass('open');
             })
