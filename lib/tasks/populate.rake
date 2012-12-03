@@ -18,7 +18,7 @@ def traverse(dir, t)
       h = HtmlFile.find_by_path(thefile)
       if h.nil?
         t[:new]=t[:new]+1
-        h = HtmlFile.new(:path => thefile, :status => "Unknown", :orig_ctime => File.ctime(thefile), :orig_mtime => File.mtime(thefile))
+        h = HtmlFile.new(:path => thefile, :url => thefile.sub(AppConstants.base_dir,''), :status => "Unknown", :orig_ctime => File.ctime(thefile), :orig_mtime => File.mtime(thefile))
         h.save!
       else
         if h.updated_at < File.mtime(thefile) # file updated since last analyzed
