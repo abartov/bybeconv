@@ -105,7 +105,7 @@ class NokoDoc < Nokogiri::XML::SAX::Document
       if (s =~ /\S/)
         @spans.last[:anything] = true if @spans.count > 0  # TODO: optimize, add unless @spans.last[:anything] maybe
       end
-      reformat = s.gsub("\n", ' ')
+      reformat = s.gsub("\n", ' ').gsub('[','\[').gsub(']','\]') # avoid accidental hyperlinks
       if @in_title
         @title += reformat
       elsif @in_subhead
@@ -141,6 +141,7 @@ class NokoDoc < Nokogiri::XML::SAX::Document
           start_formatting += "**" # MultiMarkdown
           end_formatting += "**"
         end
+        span[:markdown].strip! # trim whitespace from both sides, to avoid PRE lines in output
         # poetry, bold, underline, indents, size, footnotes, links
         new_markdown += start_formatting + span[:markdown] + end_formatting # payload
       else
