@@ -318,12 +318,27 @@ class HtmlFile < ActiveRecord::Base
       # TODO: validate result
     end
   end
+
   def self.new_since(t) # pass a Time
     where("created_at > ?", t.to_s(:db))
   end
+
   def update_markdown(markdown)
     File.open(self.path+'.markdown', 'wb') { |f| f.write(markdown) }    
   end
+
+  # this one might be useful to handle poetry
+  def paras_to_lines
+    old_markdown = File.open(self.path+'.markdown', 'r:UTF-8').read
+    old_markdown.gsub!("\n\n", "\n")
+    old_markdown =~ /\n/
+    body = $' # after title
+    title = $`
+    body.gsub!("\n","\n    ") # make the lines PRE in Markdown
+    new_markdown = title + "\n\n    " + body
+    update_markdown(new_markdown)
+  end
+
   def self.title_from_html(h)
   title = nil
   h.gsub!("\n",'') # ensure no newlines interfere with the full content of <title>...</title>
