@@ -77,7 +77,11 @@ class NokoDoc < Nokogiri::XML::SAX::Document
         # <a style='mso-footnote-id:ftn12' href="#_ftnref12" name="_ftn12" title="">
         if href.match /_ftn(\d+)/
           footnote_id = $1
-          @markdown += "[^ftn#{footnote_id}]" # this is the multimarkdown for a footnote reference
+          if not @spans.empty?
+            @spans.last[:markdown] += "[^ftn#{footnote_id}]"
+          else
+            @markdown += "[^ftn#{footnote_id}]" # this is the multimarkdown for a footnote reference
+          end
           # nothing useful in the content of the anchor of the footnote 
           # reference -- a hyperlink to and from the footnote will be 
           # auto-generated when rendering HTML, PDF, etc.
@@ -196,7 +200,6 @@ class NokoDoc < Nokogiri::XML::SAX::Document
     }
     @markdown += markdown # append the entire footnotes section
     @markdown.gsub!("\r",'') # farewell, DOS! :)
-    debugger
     # remove first line's whitespace
     lines = @markdown.split "\n\n" # by newline by default
     z = /\n[\s]*/.match lines[0]
