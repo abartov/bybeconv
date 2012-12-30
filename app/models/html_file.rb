@@ -328,7 +328,7 @@ class HtmlFile < ActiveRecord::Base
   end
 
   # this one might be useful to handle poetry
-  def paras_to_lines
+  def paras_to_lines!
     old_markdown = File.open(self.path+'.markdown', 'r:UTF-8').read
     old_markdown.gsub!("\n\n", "\n")
     old_markdown =~ /\n/

@@ -60,6 +60,12 @@ class HtmlFileController < ApplicationController
     end
     @html = MultiMarkdown.new(@markdown.gsub('__SPLIT__','__________')).to_html.force_encoding('UTF-8') # TODO: figure out why to_html defaults to ASCII 8-bit
   end
+  def poetry
+    @text = HtmlFile.find(params[:id])
+    @text.paras_to_lines!
+    @text.save!
+    redirect_to :action => :render_html, :id => params[:id]
+  end
   def chop3
     chopN(3)
     redirect_to :action => :render_html, :id => params[:id]

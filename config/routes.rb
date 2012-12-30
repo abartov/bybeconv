@@ -14,6 +14,7 @@ Bybeconv::Application.routes.draw do
   get "html_file/chop1"
   get "html_file/chop2"
   get "html_file/chop3"
+  get "html_file/poetry"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
