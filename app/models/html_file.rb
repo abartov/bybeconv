@@ -204,6 +204,14 @@ class NokoDoc < Nokogiri::XML::SAX::Document
     lines = @markdown.split "\n\n" # by newline by default
     z = /\n[\s]*/.match lines[0]
     lines[0] = z.pre_match + "\n" + z.post_match
+    lines[1..-1].each_index {|i|
+      #text_only = Nokogiri::HTML(l).xpath("//text()").remove.to_s
+      nikkud = HtmlFile.count_nikkud(lines[i])
+      if (nikkud[:total] > 1000 and nikkud[:ratio] > 0.6) or (nikkud[:total] <= 1000 and nikkud[:ratio] > 0.3)
+        # make full-nikkud lines PRE
+        lines[i] = '    '+lines[i] # at least four spaces make a PRE in Markdown
+      end
+    }
     @markdown = lines.join "\n\n" 
   end
 end
@@ -367,7 +375,7 @@ end
   protected
 
   # return a hash like {:total => total_number_of_non_tags_characters, :nikkud => total_number_of_nikkud_characters, :ratio => :nikkud/:total }
-  def count_nikkud(text)
+  def self.count_nikkud(text)
     info = { :total => 0, :nikkud => 0, :ratio => nil }
     ignore = false
     text.each_char {|c|
