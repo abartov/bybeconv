@@ -362,13 +362,22 @@ class HtmlFile < ActiveRecord::Base
   return title
   end
 def self.title_from_file(f)
-  raw = IO.binread(f).force_encoding('windows-1255')
-  raw = fix_encoding(raw)
-  tmpfile = Tempfile.new(f.sub(AppConstants.base_dir,'').sub('/',''))
-  tmpfile.write(raw)
-  tmpfilename = tmpfile.path
-  tmpfile.close
-  html = File.open(tmpfilename, "r:windows-1255:UTF-8").read # slurp the file (lazy, I know)
+  html = ''
+  begin 
+    html = File.open(f, "r:windows-1255:UTF-8").read
+  rescue
+    raw = IO.binread(f).force_encoding('windows-1255')
+    raw = fix_encoding(raw)
+    tmpfile = Tempfile.new(f.sub(AppConstants.base_dir,'').gsub('/',''))
+    begin
+      tmpfile.write(raw)
+      tmpfilename = tmpfile.path
+      html = File.open(tmpfilename, "r:windows-1255:UTF-8").read # slurp the file (lazy, I know)
+      tmpfile.close
+    rescue
+      return "BAD_ENCODING!"
+    end
+  end
   return title_from_html(html)
 end
  

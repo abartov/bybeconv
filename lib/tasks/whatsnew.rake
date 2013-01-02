@@ -3,7 +3,7 @@ require 'tempfile'
 ENCODING_SUBSTS = [{ :from => "\xCA", :to => "\xC9" }, # fix weird invalid chars instead of proper Hebrew xolams
     { :from => "\xFC", :to => "&uuml;"}, # fix u-umlaut
     { :from => "\xFB", :to => "&ucirc;"},
-    { :from => "\xFF", :to => "&yuml;"}] # fix u-circumflex
+    { :from => "\xFF".force_encoding('windows-1255'), :to => "&yuml;"}] # fix u-circumflex
 
 
 desc "Create the 'what's new?' table as an HTML fragment to be pasted into the site's (static) main page"
@@ -19,13 +19,12 @@ task :whatsnew, [:fromdate] => :environment do |taskname, args|
   files_by_author = {}
   progress = 1
   newfiles.each { |h|
-    #debugger
     relpath = h.path.sub(AppConstants.base_dir,'')
     authordir = relpath[1..-1].sub(/\/.*/,'')
     author = author_name_from_dir(authordir, known_authors)
     files_by_author[author] = [] if files_by_author[author].nil? # initialize array for author if first new work by that author
     print "DBG: trying to retrieve title from #{h.path}\n"
-    files_by_author[author].push "<a href=\"#{relpath}\">#{title_from_file(h.path)}</a>"
+    files_by_author[author].push "<a href=\"#{relpath}\">#{HtmlFile.title_from_file(h.path)}</a>"
     print "\rHandled #{progress} files so far.     " #if progress % 10 == 0
     progress += 1
   }
@@ -50,17 +49,18 @@ def fix_encoding(buf)
   # TODO: move to application.rb or something
   newbuf = buf.force_encoding('windows-1255')
       ENCODING_SUBSTS.each { |s|
-        newbuf.gsub!(s[:from], s[:to])
+        newbuf.gsub!(s[:from].force_encoding('windows-1255'), s[:to])
       }
   return newbuf
 end 
-def author_name_from_dir(d, known_names)
-  if known_names[d].nil?
-    mode = "r"
-    mode += ":windows-1255:UTF-8" unless ["regelson", "ibnezra_m"].include? d # horrible, filthy, ugh!  But yeah, Regelson's index is in UTF-8, and not maintained in Word(!)
-    html = File.open(AppConstants.base_dir+'/'+d+'/index.html', mode).read # slurp the file (lazy, I know)
-    html = fix_encoding(html) unless mode =~ /1255/
-    known_names[d] = title_from_html(html)
+def author_name_from_dir(d, known_authors)
+  if known_authors[d].nil?
+    thedir = HtmlDir.find_by_path(d)
+    if thedir.nil?
+      thedir = HtmlDir.new(:path => d, :author => "__edit__#{d}")
+      thedir.save! # to be filled later
+    end
+    known_authors[d] = thedir.author
   end
-  return known_names[d]
+  return known_authors[d]
 end

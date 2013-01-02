@@ -11,7 +11,14 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121129221736) do
+ActiveRecord::Schema.define(:version => 20130101201549) do
+
+  create_table "html_dirs", :force => true do |t|
+    t.string   "path"
+    t.string   "author"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "html_files", :force => true do |t|
     t.string   "path"

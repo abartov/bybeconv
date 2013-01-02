@@ -1,4 +1,6 @@
 Bybeconv::Application.routes.draw do
+  resources :html_dirs
+
   resources :proof
 
   get "html_file/analyze"
