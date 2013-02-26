@@ -359,7 +359,7 @@ class HtmlFile < ActiveRecord::Base
     title.sub!(/ - .*/, '') # remove " - toxen inyanim"
     title.sub!(/ \u2013.*/, '') # ditto, with an em-dash
   end
-  return title
+  return title.strip
   end
 def self.title_from_file(f)
   html = ''
