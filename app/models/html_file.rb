@@ -372,7 +372,7 @@ def self.title_from_file(f)
     begin
       tmpfile.write(raw)
       tmpfilename = tmpfile.path
-      html = File.open(tmpfilename, "r:windows-1255:UTF-8").read # slurp the file (lazy, I know)
+      html = File.open(tmpfilename, "r:windows-1255:UTF-8").read 
       tmpfile.close
     rescue
       return "BAD_ENCODING!"
