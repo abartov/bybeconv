@@ -41,6 +41,7 @@ gem 'rpeg-multimarkdown'
 gem 'ruby-debug19', :require => 'ruby-debug'
 
 gem 'app_constants' # anything more Railsy?
+gem 'hebrew' # https://github.com/abartov/hebrew
 
 group :test do
   # Pretty printed test output

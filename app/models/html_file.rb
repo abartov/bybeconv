@@ -1,6 +1,7 @@
 # This model implements parsing and rendering down of icky fatty Microsoft-Word-generated HTML files into reasonable MultiMarkDown texts.  It makes no attempt at being general-purpose -- it is designed to mass-convert files from Project Ben-Yehuda (http://benyehuda.org), but it is hoped it would be easily adaptable to other mass-conversion efforts of Word-generated HTML files, with some tweaking of the regexps and the markdown generation. --abartov
 
 require 'multimarkdown'
+include BybeUtils
 
 ENCODING_SUBSTS = [{ :from => "\xCA", :to => "\xC9" }, # fix weird invalid chars instead of proper Hebrew xolams
     { :from => "\xFC", :to => "&uuml;"}, # fix u-umlaut
@@ -206,7 +207,7 @@ class NokoDoc < Nokogiri::XML::SAX::Document
     lines[0] = z.pre_match + "\n" + z.post_match
     lines[1..-1].each_index {|i|
       #text_only = Nokogiri::HTML(l).xpath("//text()").remove.to_s
-      nikkud = HtmlFile.count_nikkud(lines[i])
+      nikkud = count_nikkud(lines[i])
       if (nikkud[:total] > 1000 and nikkud[:ratio] > 0.6) or (nikkud[:total] <= 1000 and nikkud[:ratio] > 0.3)
         # make full-nikkud lines PRE
         lines[i] = '    '+lines[i] # at least four spaces make a PRE in Markdown
@@ -217,6 +218,8 @@ class NokoDoc < Nokogiri::XML::SAX::Document
 end
 
 class HtmlFile < ActiveRecord::Base
+  scope :with_nikkud, where("nikkud IS NOT NULL and nikkud <> 'none'")
+  scope :not_stripped, where("stripped_nikkud IS NULL or stripped_nikkud = 0")
 
   def analyze
     # Word footnotes magic word 'mso-footnote-id'
@@ -348,61 +351,37 @@ class HtmlFile < ActiveRecord::Base
   end
 
   def self.title_from_html(h)
-  title = nil
-  h.gsub!("\n",'') # ensure no newlines interfere with the full content of <title>...</title>
-  if /<title>(.*)<\/title>/.match(h)
-    title = $1
-    res = /\//.match(title)
-    if(res)
-      title = res.pre_match
+    title = nil
+    h.gsub!("\n",'') # ensure no newlines interfere with the full content of <title>...</title>
+    if /<title>(.*)<\/title>/.match(h)
+      title = $1
+      res = /\//.match(title)
+      if(res)
+        title = res.pre_match
+      end
+      title.sub!(/ - .*/, '') # remove " - toxen inyanim"
+      title.sub!(/ \u2013.*/, '') # ditto, with an em-dash
     end
-    title.sub!(/ - .*/, '') # remove " - toxen inyanim"
-    title.sub!(/ \u2013.*/, '') # ditto, with an em-dash
+    return title.strip
   end
-  return title.strip
-  end
-def self.title_from_file(f)
-  html = ''
-  begin 
-    html = File.open(f, "r:windows-1255:UTF-8").read
-  rescue
-    raw = IO.binread(f).force_encoding('windows-1255')
-    raw = fix_encoding(raw)
-    tmpfile = Tempfile.new(f.sub(AppConstants.base_dir,'').gsub('/',''))
-    begin
-      tmpfile.write(raw)
-      tmpfilename = tmpfile.path
-      html = File.open(tmpfilename, "r:windows-1255:UTF-8").read 
-      tmpfile.close
+  def self.title_from_file(f)
+    html = ''
+    begin 
+      html = File.open(f, "r:windows-1255:UTF-8").read
     rescue
-      return "BAD_ENCODING!"
+      raw = IO.binread(f).force_encoding('windows-1255')
+      raw = fix_encoding(raw)
+      tmpfile = Tempfile.new(f.sub(AppConstants.base_dir,'').gsub('/',''))
+      begin
+        tmpfile.write(raw)
+        tmpfilename = tmpfile.path
+        html = File.open(tmpfilename, "r:windows-1255:UTF-8").read 
+        tmpfile.close
+      rescue
+        return "BAD_ENCODING!"
+      end
     end
-  end
-  return title_from_html(html)
-end
- 
-  protected
-
-  # return a hash like {:total => total_number_of_non_tags_characters, :nikkud => total_number_of_nikkud_characters, :ratio => :nikkud/:total }
-  def self.count_nikkud(text)
-    info = { :total => 0, :nikkud => 0, :ratio => nil }
-    ignore = false
-    text.each_char {|c|
-      if c == '<'
-        ignore = true
-      elsif c == '>' 
-        ignore = false
-        next
-      end
-      unless ignore or c.match /\s/ # ignore tags and whitespace
-        info[:nikkud] += 1 if ["\u05B0","\u05B1","\u05B2","\u05B3","\u05B4","\u05B5","\u05B6","\u05B7","\u05B8","\u05B9","\u05BB","\u05BC","\u05C1","\u05C2"].include? c
-        info[:total] += 1
-      end
-    }
-    info[:total] -= 35 # rough compensation for text of index and main page links, to mitigate ratio problem for very short texts
-    info[:ratio] = info[:nikkud].to_f / info[:total] 
-    puts "DBG: total #{info[:total]} - nikkud #{info[:nikkud]} - ratio #{info[:ratio]}"
-    return info
+    return title_from_html(html)
   end
 end
 

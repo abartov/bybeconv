@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130101201549) do
+ActiveRecord::Schema.define(:version => 20130910000302) do
 
   create_table "html_dirs", :force => true do |t|
     t.string   "path"
@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(:version => 20130101201549) do
     t.string   "headings"
     t.string   "orig_mtime"
     t.string   "orig_ctime"
+    t.boolean  "stripped_nikkud"
   end
 
   add_index "html_files", ["path"], :name => "index_html_files_on_path"
