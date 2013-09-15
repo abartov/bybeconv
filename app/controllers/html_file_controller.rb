@@ -5,6 +5,7 @@ class HtmlFileController < ApplicationController
   end
 
   def analyze_all
+    # TODO: implement, but only with some safety -- this can take a while!
   end
 
   def list
@@ -50,6 +51,21 @@ class HtmlFileController < ApplicationController
     @text.update_markdown(@markdown)
     redirect_to :action => :render_html, :id => params[:id]
   end
+  def render_by_legacy_url
+    the_url = params[:path]+'.html'
+    the_url = '/'+the_url if the_url[0] != '/' # prepend slash if necessary
+    h = HtmlFile.find_by_url(the_url)
+    unless h.nil?
+    # TODO: handle errors, at least path not found
+      if h.status != 'Published'
+        @html = "<h1>יצירה זו אינה מוכנה עדיין.</h1>"
+      else
+        @html = render_from_markdown(h)
+      end
+    else
+      @html = "<h1>כתובת הדף אינה תקינה</h1>"
+    end
+  end
   def render_html
     @text = HtmlFile.find(params[:id])
     if params[:markdown].nil?
@@ -80,6 +96,12 @@ class HtmlFileController < ApplicationController
   end
 
   protected
+
+  def render_from_markdown(htmlfile)
+    markdown = File.open(htmlfile.path+'.markdown', 'r:UTF-8').read
+    html = MultiMarkdown.new(markdown.gsub('__SPLIT__','__________')).to_html.force_encoding('UTF-8') # TODO: figure out why to_html defaults to ASCII 8-bit
+    return html
+  end
   def chopN(line_count)
     @text = HtmlFile.find(params[:id])
     @markdown = File.open(@text.path+'.markdown', 'r:UTF-8').read
