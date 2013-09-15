@@ -138,7 +138,7 @@ class NokoDoc < Nokogiri::XML::SAX::Document
     if name == 'title' 
       @in_title = false
       puts "title found: #{@title}"
-      @markdown += "# #{@title}\n"
+      @markdown += "\n# #{@title}\n"
     elsif name == 'span' || name == 'b' || name == 'u'
       span = @spans.pop
       new_markdown = ''
@@ -207,17 +207,21 @@ class NokoDoc < Nokogiri::XML::SAX::Document
     @markdown.gsub!("\r",'') # farewell, DOS! :)
     # remove first line's whitespace
     lines = @markdown.split "\n\n" # by newline by default
+    lines.shift while lines[0] !~ /\S/ # get rid of leading whitespace lines
+    lines[0] = lines[0][1..-1] if lines[0] == "\n"
     z = /\n[\s]*/.match lines[0]
     lines[0] = z.pre_match + "\n" + z.post_match
     lines[1..-1].each_index {|i|
       #text_only = Nokogiri::HTML(l).xpath("//text()").remove.to_s
-      nikkud = count_nikkud(lines[i])
+      nikkud = count_nikkud(lines[i+1])
       if (nikkud[:total] > 1000 and nikkud[:ratio] > 0.6) or (nikkud[:total] <= 1000 and nikkud[:ratio] > 0.3)
         # make full-nikkud lines PRE
-        lines[i] = '    '+lines[i] # at least four spaces make a PRE in Markdown
+        lines[i+1] = '    '+lines[i+1] # at least four spaces make a PRE in Markdown
       end
     }
-    @markdown = lines.join "\n\n" 
+    new_buffer = lines.join "\n\n" 
+    /\S/.match new_buffer
+    @markdown = $& + $' # skip all initial whitespace
   end
 end
 
@@ -311,14 +315,27 @@ class HtmlFile < ActiveRecord::Base
     self.status = 'Parsed' # TODO: error checking?
     self.save!
   end
+  def publish
+    self.status = 'Published'
+    self.save!
+  end
+  def html_ready?
+    File.exists? self.path+'.html'
+  end
 # TODO: move those to be controller actions
-  def make_html(filename)
+  def make_html
+    make_html_with_params(self.path+'.html', false)
+  end
+  def make_html_with_params(filename, with_wrapper)
     if ['Parsed', 'Published'].include? self.status
       markdown = File.open(self.path+'.markdown', 'r:UTF-8').read # slurp markdown
-      erb = ERB.new 
-      fname = filename || self.path+'.html'
-      File.open(fname, 'wb') {|f|
-        f.write("<html><head><meta charset='utf-8'><title></title></head><body>"+MultiMarkdown.new(markdown).to_html.force_encoding('UTF-8')+"</body></html>")
+      #erb = ERB.new 
+      File.open(filename, 'wb') {|f|
+        if with_wrapper
+          f.write("<html><head><meta charset='utf-8'><title></title></head><body>"+MultiMarkdown.new(markdown).to_html.force_encoding('UTF-8')+"</body></html>")
+        else
+          f.write(MultiMarkdown.new(markdown).to_html.force_encoding('UTF-8'))
+        end
       }
     end
   end

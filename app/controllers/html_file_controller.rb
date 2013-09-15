@@ -44,6 +44,14 @@ class HtmlFileController < ApplicationController
     @text = HtmlFile.find(params[:id])
     @text.parse
   end
+  def publish
+    @text = HtmlFile.find(params[:id])
+    unless @text.html_ready?
+      @text.make_html
+    end
+    @text.publish
+    redirect_to :action => :list
+  end
   def unsplit
     @text = HtmlFile.find(params[:id])
     @markdown = File.open(@text.path+'.markdown', 'r:UTF-8').read
@@ -60,7 +68,10 @@ class HtmlFileController < ApplicationController
       if h.status != 'Published'
         @html = "<h1>יצירה זו אינה מוכנה עדיין.</h1>"
       else
-        @html = render_from_markdown(h)
+        unless h.html_ready?
+          h.make_html
+        end
+        @html = File.open(h.path+'.html','r').read
       end
     else
       @html = "<h1>כתובת הדף אינה תקינה</h1>"
