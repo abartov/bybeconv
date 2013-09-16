@@ -102,10 +102,10 @@ class NokoDoc < Nokogiri::XML::SAX::Document
           ignore = true # nothing useful, see in the if block just above
         else
           # TODO: handle (preserve) non-footnote links
-          ignore = true # TODO: set this to false and actually handle this...
+          ignore = false # TODO: set this to false and actually handle this...
         end
       end
-      @links.push({:href => href, :ignore => ignore})
+      @links.push({:href => href, :ignore => ignore, :markdown => ''})
     end
   end
 
@@ -125,6 +125,10 @@ class NokoDoc < Nokogiri::XML::SAX::Document
         @spans.last[:markdown] += reformat
       else
         @markdown += reformat
+      end
+    else
+      unless @links.empty?
+        @links.last[:markdown] += s
       end
     end
   end
@@ -156,11 +160,7 @@ class NokoDoc < Nokogiri::XML::SAX::Document
       else
         new_markdown += span[:markdown] # just copy the content, no formatting change
       end
-      unless @spans.empty?
-        @spans.last[:markdown] += new_markdown
-      else
-        @markdown += new_markdown
-      end
+      add_markup(new_markdown)
     elsif name == 'br' || name == 'p'
       toadd = "\n\n"
       if @in_subhead
@@ -168,16 +168,15 @@ class NokoDoc < Nokogiri::XML::SAX::Document
         toadd = "\n## "+@subhead + toadd if @subhead =~ /\S/
         @subhead = '' 
       end
-      unless @spans.empty?
-        @spans.last[:markdown] += toadd
-      else
-        @markdown += toadd
-      end
+      add_markup(toadd)
     elsif name == 'a'
       link = @links.pop
+      unless link[:ignore] # emit non-footnote non-index links
+        add_markup("[#{link[:markdown]}](#{link[:href]})")
+      end
     end
   end
-
+  
   def save(fname)
     unless @post_processing_done
       post_process
@@ -222,6 +221,13 @@ class NokoDoc < Nokogiri::XML::SAX::Document
     new_buffer = lines.join "\n\n" 
     /\S/.match new_buffer
     @markdown = $& + $' # skip all initial whitespace
+  end
+  def add_markup(toadd)
+    unless @spans.empty?
+      @spans.last[:markdown] += toadd
+    else
+      @markdown += toadd
+    end
   end
 end
 
