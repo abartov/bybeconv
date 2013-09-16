@@ -84,6 +84,7 @@ class HtmlFileController < ApplicationController
     else
       @markdown = params[:markdown] # TODO: make secure
       @text.update_markdown(@markdown.gsub('__________','__SPLIT__') ) # TODO: add locking of some sort to avoid concurrent overwrites
+      @text.delete_pregen
     end
     @html = MultiMarkdown.new(@markdown.gsub('__SPLIT__','__________')).to_html.force_encoding('UTF-8') # TODO: figure out why to_html defaults to ASCII 8-bit
   end

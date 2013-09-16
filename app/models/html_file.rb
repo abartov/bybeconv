@@ -328,6 +328,11 @@ class HtmlFile < ActiveRecord::Base
   def html_ready?
     File.exists? self.path+'.html'
   end
+  def delete_pregen
+    if html_ready?
+      File.delete self.path+'.html'
+    end
+  end
 # TODO: move those to be controller actions
   def make_html
     make_html_with_params(self.path+'.html', false)

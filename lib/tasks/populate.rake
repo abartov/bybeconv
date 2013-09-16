@@ -41,6 +41,7 @@ def traverse(dir, t, no_nikkuds)
           t[:upd] += 1
           h.status = "Unknown"
           h.stripped_nikkud = false # may need to re-strip 
+          h.delete_pregen # delete pre-generated HTML file
           h.update_attribute(:updated_at, Time.now)
           h.save!
         end # else skip known files
