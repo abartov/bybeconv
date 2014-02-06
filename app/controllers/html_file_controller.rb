@@ -66,7 +66,8 @@ class HtmlFileController < ApplicationController
     unless h.nil?
     # TODO: handle errors, at least path not found
       if h.status != 'Published'
-        @html = "<h1>יצירה זו אינה מוכנה עדיין.</h1>"
+        @html = "<h1>not yet.</h1>"
+        # @html = "<h1>יצירה זו אינה מוכנה עדיין.</h1>"
       else
         unless h.html_ready?
           h.make_html
@@ -74,7 +75,8 @@ class HtmlFileController < ApplicationController
         @html = File.open(h.path+'.html','r').read
       end
     else
-      @html = "<h1>כתובת הדף אינה תקינה</h1>"
+      @html = "<h1>bad path</h1>"
+      #@html = "<h1>כתובת הדף אינה תקינה</h1>"
     end
   end
   def render_html

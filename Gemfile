@@ -6,14 +6,15 @@ gem 'rails', '~> 3.2.14'
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
 gem 'sqlite3'
-gem 'mysql'
+gem 'mysql', '~> 2.8.1'
+gem 'mongrel', '>= 1.2.0.pre2' # for deployment on benyehuda.org
 
 
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'sass-rails' #,   '~> 3.1.5'
-  gem 'coffee-rails' # , '~> 3.1.1'
+  gem 'sass-rails'
+  gem 'coffee-rails'
   gem 'uglifier', '>= 1.0.3'
 end
 
@@ -38,16 +39,12 @@ gem 'nokogiri'
 gem 'rpeg-multimarkdown'
 
 # To use debugger
-# TODO: re-enable this, following ruby 1.9.3 upgrade...
-#gem 'linecache19', '0.5.12', :path => "~/.rvm/gems/ruby-2.0.0-p247/gems/linecache19-0.5.12/"
-
-#gem 'ruby-debug19', :require => 'ruby-debug'
 gem 'debugger'
+
 gem 'app_constants' # anything more Railsy?
 gem 'hebrew' # https://github.com/abartov/hebrew
 gem 'haml'
 
 group :test do
-  # Pretty printed test output
   gem 'turn', '0.8.2', :require => false
 end
