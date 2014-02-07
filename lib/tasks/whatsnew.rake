@@ -33,9 +33,6 @@ task :whatsnew, [:fromdate] => :environment do |taskname, args|
   File.open("whatsnew.html", "w") {|f|
     f.write('<?xml version="1.0" encoding="utf8"?>\n<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="he"><body dir="rtl" align="right"><table>'+"\n")
     files_by_author.each {|a, files|
-      #print "DBG: a = #{a}\n"
-      #print "DBG: files = #{files.join('\; ')}\n"
-
       f.write("<tr><td><b><u>_______:</u></b> #{files.join('; ')}</td><td><a href=\"#{dirs[a]}/\">#{a}</a></td></tr>")
     }
     f.write("\n</table></body></html>")
@@ -60,7 +57,7 @@ def author_name_from_dir(d, known_authors)
       thedir = HtmlDir.new(:path => d, :author => "__edit__#{d}")
       thedir.save! # to be filled later
     end
-    known_authors[d] = thedir.author
+    known_authors[d] = thedir.author.force_encoding('utf-8')
   end
   return known_authors[d]
 end
