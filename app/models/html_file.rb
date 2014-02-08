@@ -363,7 +363,7 @@ class HtmlFile < ActiveRecord::Base
   end
 
   def self.new_since(t) # pass a Time
-    where("created_at > ?", t.to_s(:db))
+    where(["created_at > ?", t.to_s(:db)])
   end
 
   def update_markdown(markdown)

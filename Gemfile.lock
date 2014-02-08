@@ -67,6 +67,7 @@ GEM
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
+<<<<<<< Updated upstream
     mime-types (1.25.1)
     mini_portile (0.5.2)
     mongrel (1.2.0.pre2)
@@ -75,6 +76,14 @@ GEM
     multi_json (1.8.4)
     mysql (2.8.1)
     nokogiri (1.6.1)
+=======
+    mime-types (1.25)
+    mini_portile (0.5.1)
+    multi_json (1.8.0)
+    mysql (2.9.1)
+    mysql2 (0.3.11)
+    nokogiri (1.6.0)
+>>>>>>> Stashed changes
       mini_portile (~> 0.5.0)
     polyglot (0.3.3)
     rack (1.4.5)
@@ -144,8 +153,13 @@ DEPENDENCIES
   htmlentities
   jquery-rails
   jquery-ui-rails (~> 4.0.4)
+<<<<<<< Updated upstream
   mongrel (>= 1.2.0.pre2)
   mysql (~> 2.8.1)
+=======
+  mysql
+  mysql2
+>>>>>>> Stashed changes
   nokogiri
   rails (~> 3.2.14)
   rpeg-multimarkdown

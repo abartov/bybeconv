@@ -1,14 +1,16 @@
 source 'http://rubygems.org'
 
 gem 'rails', '~> 3.2.14'
+#gem 'rails'
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
-gem 'sqlite3'
-gem 'mysql', '~> 2.8.1'
-gem 'mongrel', '>= 1.2.0.pre2' # for deployment on benyehuda.org
+#gem 'sqlite3'
+#gem 'mongrel', '>= 1.2.0.pre2' # for deployment on benyehuda.org
 
+gem 'mysql'
+gem 'mysql2'
 
 # Gems used only for assets and not required
 # in production environments by default.
