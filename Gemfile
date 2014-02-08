@@ -38,7 +38,7 @@ gem 'therubyracer'
 gem 'htmlentities'
 gem 'will_paginate'
 gem 'nokogiri'
-gem 'rpeg-multimarkdown'
+gem 'rpeg-multimarkdown' # note: gem unmaintained, native part doesn't build under Ruby 2.1 -- may need updating the native part from the actual peg-multimarkdown implementation.
 
 # To use debugger
 gem 'debugger'
