@@ -28,7 +28,7 @@ module BybeUtils
         thedir = HtmlDir.new(:path => d, :author => "__edit__#{d}")
         thedir.save! # to be filled later
       end
-      known_authors[d] = thedir.author
+      known_authors[d] = thedir.author.force_encoding('utf-8')
     end
     return known_authors[d]
   end
