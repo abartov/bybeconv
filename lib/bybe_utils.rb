@@ -20,4 +20,16 @@ module BybeUtils
     puts "DBG: total #{info[:total]} - nikkud #{info[:nikkud]} - ratio #{info[:ratio]}"
     return info
   end
+  # retrieve author name for (relative) directory name d, using provided hash known_authors to cache results
+  def author_name_from_dir(d, known_authors)
+    if known_authors[d].nil?
+      thedir = HtmlDir.find_by_path(d)
+      if thedir.nil?
+        thedir = HtmlDir.new(:path => d, :author => "__edit__#{d}")
+        thedir.save! # to be filled later
+      end
+      known_authors[d] = thedir.author
+    end
+    return known_authors[d]
+  end
 end
