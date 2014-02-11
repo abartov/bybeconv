@@ -62,14 +62,3 @@ def fix_encoding(buf)
       }
   return newbuf
 end 
-def author_name_from_dir(d, known_authors)
-  if known_authors[d].nil?
-    thedir = HtmlDir.find_by_path(d)
-    if thedir.nil?
-      thedir = HtmlDir.new(:path => d, :author => "__edit__#{d}")
-      thedir.save! # to be filled later
-    end
-    known_authors[d] = thedir.author.force_encoding('utf-8')
-  end
-  return known_authors[d]
-end
