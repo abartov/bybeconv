@@ -74,20 +74,8 @@ class HtmlFileController < ApplicationController
   end
   def publish
     @text = HtmlFile.find(params[:id])
-    if @text.status == 'Parsed'
-      @text.status = 'Published'
-      markdown = File.open(@text.path+'.markdown', 'r:UTF-8').read
-      title = HtmlFile.title_from_file(@text.path)
-      @w = Work.new(:title => title)
-      @e = Expression.new(:title => title, :language => "Hebrew")
-      @w.expressions << @e
-      @w.save!
-      @m = Manifestation.new(:title => title, :responsibility_statement => HtmlFile.author_name_from_dir(@text.author_dir, {}), :medium => 'e-text', :publisher => AppConstants.our_publisher, :publication_date => Date.today, :markdown => markdown)
-      @m.save!
-      @e.manifestations << @m
-      @e.save!
-      @text.manifestations << @m
-      @text.save!
+    if @text.publish
+      # success
     else
       flash[:error] = "Can't publish before parsing."
     end

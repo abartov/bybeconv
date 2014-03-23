@@ -341,6 +341,25 @@ class HtmlFile < ActiveRecord::Base
   def update_markdown(markdown)
     File.open(self.path+'.markdown', 'wb') { |f| f.write(markdown) }    
   end
+  def publish
+    if status == 'Parsed'
+      status = 'Published'
+      markdown = File.open(path+'.markdown', 'r:UTF-8').read
+      title = HtmlFile.title_from_file(path)
+      w = Work.new(:title => title)
+      e = Expression.new(:title => title, :language => "Hebrew")
+      w.expressions << e
+      w.save!
+      m = Manifestation.new(:title => title, :responsibility_statement => HtmlFile.author_name_from_dir(author_dir, {}), :medium => 'e-text', :publisher => AppConstants.our_publisher, :publication_date => Date.today, :markdown => markdown)
+      m.save!
+      e.manifestations << m
+      e.save!
+      manifestations << m
+      save!
+    else
+      return false
+    end
+  end
 
   protected
 
