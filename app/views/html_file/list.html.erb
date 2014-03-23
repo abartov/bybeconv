@@ -10,7 +10,7 @@
      <%= label_tag(:footnotes_l, "Footnotes:") %>
      <%= select_tag(:footnotes, options_for_select([['',''], ['No', :f], ['Yes', :t]], session[:html_q_params][:footnotes])) %>
      <%= label_tag(:status_l, "Status:") %>
-     <%= select_tag(:status, options_for_select([['',''], ['Unknown', :Unknown], ['FileError', :FileError], ['Bad Encoding', :BadCP1255], ['Parsed', :Parsed], ['Accepted', :Accepted], ['Analyzed', :Analyzed]], session[:html_q_params][:status])) %>
+     <%= select_tag(:status, options_for_select([['',''], ['Unknown', :Unknown], ['FileError', :FileError], ['Bad Encoding', :BadCP1255], ['Parsed', :Parsed], ['Accepted', :Accepted], ['Analyzed', :Analyzed], ['Published',:Published]], session[:html_q_params][:status])) %>
      <%= label_tag(:path_l, "Path:") %>
      <%= text_field_tag(:path, session[:html_q_params][:path]) %>
      <%= submit_tag("Filter!") %>
@@ -22,8 +22,10 @@
 <tr>
   <td><%= t.path.sub(AppConstants.base_dir,'') %></td><td><%= t.status %></td><td><%= t.nikkud %></td><td><%= t.tables %></td><td><%= t.footnotes %></td><td><%= t.images %></td><td><%= link_to "analyze", :action => 'analyze', :id => t %> | <%= link_to "parse", :action => 'parse', :id => t %> 
 <% if t.status == 'Parsed' %>
-| <%= link_to "render!", :action => 'render_html', :id => t %>
-<% end %></td>
+  | <%= link_to "render!", :action => 'render_html', :id => t %> | <%= link_to "publish!", :action => 'publish', :id => t %>
+<% end %>
+
+</td>
 </tr>
 
 <% } %>

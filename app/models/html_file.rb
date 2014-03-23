@@ -1,6 +1,7 @@
 # This model implements parsing and rendering down of icky fatty Microsoft-Word-generated HTML files into reasonable MultiMarkDown texts.  It makes no attempt at being general-purpose -- it is designed to mass-convert files from Project Ben-Yehuda (http://benyehuda.org), but it is hoped it would be easily adaptable to other mass-conversion efforts of Word-generated HTML files, with some tweaking of the regexps and the markdown generation. --abartov
 
 require 'multimarkdown'
+include BybeUtils
 
 ENCODING_SUBSTS = [{ :from => "\xCA", :to => "\xC9" }, # fix weird invalid chars instead of proper Hebrew xolams
     { :from => "\xFC", :to => "&uuml;"}, # fix u-umlaut
@@ -52,8 +53,12 @@ class NokoDoc < Nokogiri::XML::SAX::Document
         end
       end
       push_style(style)
-    elsif name == 'p' 
-      class_attr = attributes.assoc('class')[1] || ''
+    elsif name == 'p'
+      if attributes.assoc('class').nil?
+        class_attr = ''
+      else
+        class_attr = attributes.assoc('class')[1]
+      end
       if ['aa','a1'].include? class_attr # one heading style in PBY texts, see doc/guide_to_icky_Word_html.txt
         @in_subhead = true
       end
@@ -77,7 +82,11 @@ class NokoDoc < Nokogiri::XML::SAX::Document
         # <a style='mso-footnote-id:ftn12' href="#_ftnref12" name="_ftn12" title="">
         if href.match /_ftn(\d+)/
           footnote_id = $1
-          @markdown += "[^ftn#{footnote_id}]" # this is the multimarkdown for a footnote reference
+          if not @spans.empty?
+            @spans.last[:markdown] += "[^ftn#{footnote_id}]"
+          else
+            @markdown += "[^ftn#{footnote_id}]" # this is the multimarkdown for a footnote reference
+          end
           # nothing useful in the content of the anchor of the footnote 
           # reference -- a hyperlink to and from the footnote will be 
           # auto-generated when rendering HTML, PDF, etc.
@@ -93,10 +102,10 @@ class NokoDoc < Nokogiri::XML::SAX::Document
           ignore = true # nothing useful, see in the if block just above
         else
           # TODO: handle (preserve) non-footnote links
-          ignore = true # TODO: set this to false and actually handle this...
+          ignore = false # TODO: set this to false and actually handle this...
         end
       end
-      @links.push({:href => href, :ignore => ignore})
+      @links.push({:href => href, :ignore => ignore, :markdown => ''})
     end
   end
 
@@ -105,7 +114,7 @@ class NokoDoc < Nokogiri::XML::SAX::Document
       if (s =~ /\S/)
         @spans.last[:anything] = true if @spans.count > 0  # TODO: optimize, add unless @spans.last[:anything] maybe
       end
-      reformat = s.gsub("\n", ' ')
+      reformat = s.gsub("\n", ' ').gsub('[','\[').gsub(']','\]') # avoid accidental hyperlinks
       if @in_title
         @title += reformat
       elsif @in_subhead
@@ -116,6 +125,10 @@ class NokoDoc < Nokogiri::XML::SAX::Document
         @spans.last[:markdown] += reformat
       else
         @markdown += reformat
+      end
+    else
+      unless @links.empty?
+        @links.last[:markdown] += s
       end
     end
   end
@@ -129,7 +142,7 @@ class NokoDoc < Nokogiri::XML::SAX::Document
     if name == 'title' 
       @in_title = false
       puts "title found: #{@title}"
-      @markdown += "# #{@title}\n"
+      @markdown += "\n# #{@title}\n"
     elsif name == 'span' || name == 'b' || name == 'u'
       span = @spans.pop
       new_markdown = ''
@@ -141,16 +154,13 @@ class NokoDoc < Nokogiri::XML::SAX::Document
           start_formatting += "**" # MultiMarkdown
           end_formatting += "**"
         end
+        span[:markdown].strip! # trim whitespace from both sides, to avoid PRE lines in output
         # poetry, bold, underline, indents, size, footnotes, links
         new_markdown += start_formatting + span[:markdown] + end_formatting # payload
       else
         new_markdown += span[:markdown] # just copy the content, no formatting change
       end
-      unless @spans.empty?
-        @spans.last[:markdown] += new_markdown
-      else
-        @markdown += new_markdown
-      end
+      add_markup(new_markdown)
     elsif name == 'br' || name == 'p'
       toadd = "\n\n"
       if @in_subhead
@@ -158,16 +168,15 @@ class NokoDoc < Nokogiri::XML::SAX::Document
         toadd = "\n## "+@subhead + toadd if @subhead =~ /\S/
         @subhead = '' 
       end
-      unless @spans.empty?
-        @spans.last[:markdown] += toadd
-      else
-        @markdown += toadd
-      end
+      add_markup(toadd)
     elsif name == 'a'
       link = @links.pop
+      unless link[:ignore] # emit non-footnote non-index links
+        add_markup("[#{link[:markdown]}](#{link[:href]})")
+      end
     end
   end
-
+  
   def save(fname)
     unless @post_processing_done
       post_process
@@ -181,7 +190,7 @@ class NokoDoc < Nokogiri::XML::SAX::Document
   def end_footnote(f)
     unless f == {}
       # generate MultiMarkDown for the footnote body and stash it for later
-      f[:markdown] = "\n[^ftn#{f[:key]}]: " + f[:body] # make sure the footnote body starts on a newline; superfluous newlines will be removed at post-processing 
+      f[:markdown] = "\n[^ftn#{f[:key]}]: " + f[:body] + "\n" # make sure the footnote body starts on a newline; the newlines are necessary for footnote parsing by MultiMarkDown
       @footnotes.push f
     end
   end
@@ -193,19 +202,40 @@ class NokoDoc < Nokogiri::XML::SAX::Document
     @footnotes.each { |f|
       markdown += f[:markdown]
     }
-    @markdown += markdown.gsub("\n\n[^","\n[^") # append the entire footnotes section, trimming double newlines
+    @markdown += markdown # append the entire footnotes section
     @markdown.gsub!("\r",'') # farewell, DOS! :)
-    #debugger
     # remove first line's whitespace
     lines = @markdown.split "\n\n" # by newline by default
+    lines.shift while lines[0] !~ /\S/ # get rid of leading whitespace lines
+    lines[0] = lines[0][1..-1] if lines[0] == "\n"
     z = /\n[\s]*/.match lines[0]
     lines[0] = z.pre_match + "\n" + z.post_match
-    @markdown = lines.join "\n\n" 
+    lines[1..-1].each_index {|i|
+      #text_only = Nokogiri::HTML(l).xpath("//text()").remove.to_s
+      nikkud = count_nikkud(lines[i+1])
+      if (nikkud[:total] > 1000 and nikkud[:ratio] > 0.6) or (nikkud[:total] <= 1000 and nikkud[:ratio] > 0.3)
+        # make full-nikkud lines PRE
+        lines[i+1] = '    '+lines[i+1] # at least four spaces make a PRE in Markdown
+      end
+    }
+    new_buffer = lines.join "\n\n" 
+    /\S/.match new_buffer
+    @markdown = $& + $' # skip all initial whitespace
+  end
+  def add_markup(toadd)
+    unless @spans.empty?
+      @spans.last[:markdown] += toadd
+    else
+      @markdown += toadd
+    end
   end
 end
 
 class HtmlFile < ActiveRecord::Base
   has_and_belongs_to_many :manifestations
+  scope :with_nikkud, where("nikkud IS NOT NULL and nikkud <> 'none'")
+  scope :not_stripped, where("stripped_nikkud IS NULL or stripped_nikkud = 0")
+
   def analyze
     # Word footnotes magic word 'mso-footnote-id'
     begin
@@ -263,11 +293,8 @@ class HtmlFile < ActiveRecord::Base
     if self.status == 'BadCP1255'
       raw = IO.binread(self.path)
       ENCODING_SUBSTS.each { |s|
-        raw.gsub!(s[:from], s[:to])
+        raw.gsub!(s[:from].force_encoding('windows-1255'), s[:to])
       }
-      #raw.gsub!("\xCA","\xC9") # fix weird invalid chars instead of proper Hebrew xolams
-      #raw.gsub!("\xFC","&uuml;") # fix u-umlaut with a character entity
-      #raw.gsub!("\xFB","&uuml;") # fix u-umlaut with a character entity
       newfile = self.path + '.fixed_encoding'
       # IO.binwrite(newfile, raw) # this works only on Ruby 1.9.3+
       File.open(newfile, 'wb') {|f| f.write(raw) } # works on any modern Ruby
@@ -299,14 +326,32 @@ class HtmlFile < ActiveRecord::Base
     self.status = 'Parsed' # TODO: error checking?
     self.save!
   end
+  def publish
+    self.status = 'Published'
+    self.save!
+  end
+  def html_ready?
+    File.exists? self.path+'.html'
+  end
+  def delete_pregen
+    if html_ready?
+      File.delete self.path+'.html'
+    end
+  end
 # TODO: move those to be controller actions
-  def make_html(filename)
+  def make_html
+    make_html_with_params(self.path+'.html', false)
+  end
+  def make_html_with_params(filename, with_wrapper)
     if ['Parsed', 'Published'].include? self.status
       markdown = File.open(self.path+'.markdown', 'r:UTF-8').read # slurp markdown
-      erb = ERB.new 
-      fname = filename || self.path+'.html'
-      File.open(fname, 'wb') {|f|
-        f.write("<html><head><meta charset='utf-8'><title></title></head><body>"+MultiMarkdown.new(markdown).to_html.force_encoding('UTF-8')+"</body></html>")
+      #erb = ERB.new 
+      File.open(filename, 'wb') {|f|
+        if with_wrapper
+          f.write("<html><head><meta charset='utf-8'><title></title></head><body>"+MultiMarkdown.new(markdown).to_html.force_encoding('UTF-8')+"</body></html>")
+        else
+          f.write(MultiMarkdown.new(markdown).to_html.force_encoding('UTF-8'))
+        end
       }
     end
   end
@@ -321,22 +366,9 @@ class HtmlFile < ActiveRecord::Base
       # TODO: validate result
     end
   end
-  def self.new_since(t) # pass a Time
-    where("created_at > ?", t.to_s(:db))
-  end
-  def self.title_from_file(f)
-    html = File.open(f, "r:windows-1255:UTF-8").read # slurp the file (lazy, I know)
-    return title_from_html(html)
-  end
-  def self.author_name_from_dir(d, known_names)
-    if known_names[d].nil?
-      mode = "r"
-      mode += ":windows-1255:UTF-8" unless ["regelson", "ibnezra_m"].include? d # horrible, filthy, ugh!  But yeah, Regelson's index is in UTF-8, and not maintained in Word(!)
-      html = File.open(AppConstants.base_dir+'/'+d+'/index.html', mode).read # slurp the file (lazy, I know)
 
-      known_names[d] = self.title_from_html(html)
-    end
-    return known_names[d]
+  def self.new_since(t) # pass a Time
+    where(["created_at > ?", t.to_s(:db)])
   end
   def update_markdown(markdown)
     File.open(self.path+'.markdown', 'wb') { |f| f.write(markdown) }    
@@ -361,28 +393,50 @@ class HtmlFile < ActiveRecord::Base
     end
   end
 
-  protected
+  # this one might be useful to handle poetry
+  def paras_to_lines!
+    old_markdown = File.open(self.path+'.markdown', 'r:UTF-8').read
+    old_markdown.gsub!("\n\n", "\n")
+    old_markdown =~ /\n/
+    body = $' # after title
+    title = $`
+    body.gsub!("\n","\n    ") # make the lines PRE in Markdown
+    new_markdown = title + "\n\n    " + body
+    update_markdown(new_markdown)
+  end
 
-  # return a hash like {:total => total_number_of_non_tags_characters, :nikkud => total_number_of_nikkud_characters, :ratio => :nikkud/:total }
-  def count_nikkud(text)
-    info = { :total => 0, :nikkud => 0, :ratio => nil }
-    ignore = false
-    text.each_char {|c|
-      if c == '<'
-        ignore = true
-      elsif c == '>' 
-        ignore = false
-        next
+  def self.title_from_html(h)
+    title = nil
+    h.gsub!("\n",'') # ensure no newlines interfere with the full content of <title>...</title>
+    if /<title>(.*)<\/title>/.match(h)
+      title = $1
+      res = /\//.match(title)
+      if(res)
+        title = res.pre_match
       end
-      unless ignore or c.match /\s/ # ignore tags and whitespace
-        info[:nikkud] += 1 if ["\u05B0","\u05B1","\u05B2","\u05B3","\u05B4","\u05B5","\u05B6","\u05B7","\u05B8","\u05B9","\u05BB","\u05BC","\u05C1","\u05C2"].include? c
-        info[:total] += 1
+      title.sub!(/ - .*/, '') # remove " - toxen inyanim"
+      title.sub!(/ \u2013.*/, '') # ditto, with an em-dash
+    end
+    return title.strip
+  end
+  def self.title_from_file(f)
+    html = ''
+    begin 
+      html = File.open(f, "r:windows-1255:UTF-8").read
+    rescue
+      raw = IO.binread(f).force_encoding('windows-1255')
+      raw = fix_encoding(raw)
+      tmpfile = Tempfile.new(f.sub(AppConstants.base_dir,'').gsub('/',''))
+      begin
+        tmpfile.write(raw)
+        tmpfilename = tmpfile.path
+        html = File.open(tmpfilename, "r:windows-1255:UTF-8").read 
+        tmpfile.close
+      rescue
+        return "BAD_ENCODING!"
       end
-    }
-    info[:total] -= 35 # rough compensation for text of index and main page links, to mitigate ratio problem for very short texts
-    info[:ratio] = info[:nikkud].to_f / info[:total] 
-    puts "DBG: total #{info[:total]} - nikkud #{info[:nikkud]} - ratio #{info[:ratio]}"
-    return info
+    end
+    return title_from_html(html)
   end
   def self.title_from_html(h)
     title = nil

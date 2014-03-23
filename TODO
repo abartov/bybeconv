@@ -9,7 +9,7 @@
 - detect indentation? (poetry, letter signatures, etc.)
 - detect size changes
 - handle ul and ol tags?
-- handle non-footnote links
++ handle non-footnote links
 - handle titles
 - handle subtitles
 - handle entities, and escaping
@@ -23,7 +23,7 @@
 - when publishing a parsed HtmlFile:
   - allow to verify/edit title and author
   - allow to insert magic sequences to break between different Works in the HtmlFile (think short poems), and post-submit show a form for titles for each before publishing separate Manifestations and Works for each
-- add way to bless markdown by human reviewer
++ add way to bless markdown by human reviewer
 -- blessing should, whether automatically or as an extra human-chosen step, also post the blessed markdown (with path info etc.) to the CONTENT system, so it can be rendered from it INSTEAD of the old HTML file (preserving the *.html URL)
 - support a configurable set of auto fixes for post-processing markdown
   - e.g. match_all nun-sofit+non-whitespace, offer to replace with vav

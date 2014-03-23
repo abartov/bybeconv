@@ -11,8 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120615182745) do
-
+ActiveRecord::Schema.define(:version => 20130910000302) do
   create_table "expressions", :force => true do |t|
     t.string   "title"
     t.string   "form"
@@ -28,6 +27,13 @@ ActiveRecord::Schema.define(:version => 20120615182745) do
     t.datetime "updated_at"
     t.integer  "expression_id"
     t.integer  "person_id"
+  end
+
+  create_table "html_dirs", :force => true do |t|
+    t.string   "path"
+    t.string   "author"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "html_files", :force => true do |t|
@@ -46,6 +52,7 @@ ActiveRecord::Schema.define(:version => 20120615182745) do
     t.string   "headings"
     t.string   "orig_mtime"
     t.string   "orig_ctime"
+    t.boolean  "stripped_nikkud"
   end
 
   add_index "html_files", ["path"], :name => "index_html_files_on_path"
@@ -95,6 +102,17 @@ ActiveRecord::Schema.define(:version => 20120615182745) do
     t.string   "affiliation"
     t.string   "country"
     t.text     "comment"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "proofs", :force => true do |t|
+    t.string   "from"
+    t.string   "about"
+    t.text     "what"
+    t.boolean  "subscribe"
+    t.string   "status"
+    t.string   "assignee"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

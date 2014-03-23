@@ -26,15 +26,17 @@ jQuery(document).ready(function() {
     $('p').css('font-size', newFontSize);
     return false;
   });
+
 $("#bDavid").click(function() { $("p").css("font-family","David CLM, David, Serif") });
 $('#bTimes').click(function() { $("p").css("font-family", "Times New Roman") } );
+$('#bPoetry').click(function() { document.location.href='<%=  url_for(:controller => :html_file, :action => :poetry, :id => @text.id) %>'; return false;});
 });
 
 </script>
 <h2>Rendering MultiMarkDown as HTML for File: <%= @text.path.sub('/mnt/by/','') %></h2>
-<button id="bDavid">David</button> <button id="bTimes">Times</button> <button id="bLarger">Larger text</button> <button id="bSmaller">Smaller text</button> <button id="bResetSize">Reset size</button>
+<button id="bDavid">David</button> <button id="bTimes">Times</button> <button id="bLarger">Larger text</button> <button id="bSmaller">Smaller text</button> <button id="bResetSize">Reset size</button><button id="bPoetry">Treat as Poetry</button>
 <%= raw(@html) %>
-<p class="heading">Here's the raw MultiMarkDown.  Make any corrections needed, and add the __SPLIT__ magic word to split the markdown into separate works. Also, here's <a href="<%= AppConstants.base_uri + @text.path %>">the original HTML file, for comparison</a></p>
+<p class="heading">Here's the raw MultiMarkDown.  Make any corrections needed, and add the __SPLIT__ magic word to split the markdown into separate works. Also, here's <a href="<%= AppConstants.base_uri + @text.url %>">the original HTML file, for comparison</a></p>
 <div class="markdown">
 <p><%= form_tag(:action => "render_html", :id => @text) do %>
      <%= text_area_tag(:markdown, raw(@markdown), :size => "80x40" ) %>

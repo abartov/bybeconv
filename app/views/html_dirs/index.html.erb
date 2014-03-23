@@ -1,0 +1,25 @@
+<h1>Listing html_dirs</h1>
+
+<table>
+  <tr>
+    <th>Path</th>
+    <th>Author</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @html_dirs.each do |html_dir| %>
+  <tr>
+    <td><%= html_dir.path %></td>
+    <td><%= html_dir.author %></td>
+    <td><%= link_to 'Show', html_dir %></td>
+    <td><%= link_to 'Edit', edit_html_dir_path(html_dir) %></td>
+    <td><%= link_to 'Destroy', html_dir, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Html dir', new_html_dir_path %>

@@ -1,15 +1,16 @@
 Bybeconv::Application.routes.draw do
   get "manifestation/show"
-
   get "manifestation/render"
-
   get "manifestation/edit"
+  resources :html_dirs
+  resources :proof
 
   get "html_file/analyze"
 
   get "html_file/analyze_all"
 
   get "html_file/list"
+  get "html_file/publish"
   post "html_file/list"
   get "html_file/publish"
   get "html_file/parse"
@@ -19,6 +20,7 @@ Bybeconv::Application.routes.draw do
   get "html_file/chop1"
   get "html_file/chop2"
   get "html_file/chop3"
+  get "html_file/poetry"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
@@ -76,4 +78,7 @@ Bybeconv::Application.routes.draw do
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id(.:format)))'
+  #
+  # match legacy BY urls
+  match '*path' => "html_file#render_by_legacy_url"
 end

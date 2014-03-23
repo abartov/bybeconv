@@ -2,7 +2,8 @@
 
 development: &default
   base_dir:  "/home/me/my_dev_data"
-  populate_exclude: "w3c;img"
+  populate_exclude: "w3c;img;stats"
+  no_nikkud_insert: '/home/me/my_dev_data/no_nikkud_insert.txt' 
 
 production:
   <<: *default
