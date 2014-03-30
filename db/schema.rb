@@ -11,20 +11,21 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130910000302) do
+ActiveRecord::Schema.define(:version => 20140323212606) do
+
   create_table "expressions", :force => true do |t|
     t.string   "title"
     t.string   "form"
     t.string   "date"
     t.string   "language"
     t.text     "comment"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "expressions_people", :id => false, :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
     t.integer  "expression_id"
     t.integer  "person_id"
   end
@@ -58,17 +59,10 @@ ActiveRecord::Schema.define(:version => 20130910000302) do
   add_index "html_files", ["path"], :name => "index_html_files_on_path"
 
   create_table "html_files_manifestations", :id => false, :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
     t.integer  "html_file_id"
     t.integer  "manifestation_id"
-  end
-
-  create_table "html_files_works", :id => false, :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "html_file_id"
-    t.integer  "work_id"
   end
 
   create_table "manifestations", :force => true do |t|
@@ -82,14 +76,14 @@ ActiveRecord::Schema.define(:version => 20130910000302) do
     t.string   "publication_date"
     t.string   "series_statement"
     t.text     "comment"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",               :null => false
+    t.datetime "updated_at",               :null => false
     t.text     "markdown"
   end
 
   create_table "manifestations_people", :id => false, :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
     t.integer  "manifestation_id"
     t.integer  "person_id"
   end
@@ -102,8 +96,10 @@ ActiveRecord::Schema.define(:version => 20130910000302) do
     t.string   "affiliation"
     t.string   "country"
     t.text     "comment"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+    t.string   "viaf_id"
+    t.string   "nli_id"
   end
 
   create_table "proofs", :force => true do |t|
@@ -132,13 +128,13 @@ ActiveRecord::Schema.define(:version => 20130910000302) do
     t.string   "form"
     t.string   "date"
     t.text     "comment"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "works_people", :id => false, :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
     t.integer  "work_id"
     t.integer  "person_id"
   end

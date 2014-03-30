@@ -1,6 +1,7 @@
 # This model implements parsing and rendering down of icky fatty Microsoft-Word-generated HTML files into reasonable MultiMarkDown texts.  It makes no attempt at being general-purpose -- it is designed to mass-convert files from Project Ben-Yehuda (http://benyehuda.org), but it is hoped it would be easily adaptable to other mass-conversion efforts of Word-generated HTML files, with some tweaking of the regexps and the markdown generation. --abartov
 
 require 'multimarkdown'
+require 'zoom' # Z39.50 queries
 include BybeUtils
 
 ENCODING_SUBSTS = [{ :from => "\xCA", :to => "\xC9" }, # fix weird invalid chars instead of proper Hebrew xolams
@@ -326,10 +327,6 @@ class HtmlFile < ActiveRecord::Base
     self.status = 'Parsed' # TODO: error checking?
     self.save!
   end
-  def publish
-    self.status = 'Published'
-    self.save!
-  end
   def html_ready?
     File.exists? self.path+'.html'
   end
@@ -370,14 +367,51 @@ class HtmlFile < ActiveRecord::Base
   def self.new_since(t) # pass a Time
     where(["created_at > ?", t.to_s(:db)])
   end
+  
   def update_markdown(markdown)
     File.open(self.path+'.markdown', 'wb') { |f| f.write(markdown) }    
   end
+
+  def metadata_ready?
+    ret = true
+    ret = false if manifestations.empty? # ensure WEM created
+    return ret
+  end
+
+  def guess_authors
+    author_from_dir = HtmlFile.author_name_from_dir(author_dir, {})
+    author_string = HtmlFile.title_from_file(path)[1]
+
+    # Try VIAF first
+    viaf = Net::HTTP.new('www.viaf.org')
+    viaf.start unless viaf.started?
+    viaf_json = viaf.get("/viaf/AutoSuggest?query=#{URI.escape(author_string)}").body
+
+    # Try NLI first
+    
+    #ZOOM::Connection.open('aleph.nli.org.il', 9991) do |conn|
+    #  conn.database_name = 'NNL01'
+    #  conn.preferred_record_syntax = 'XML'
+    #  #conn.preferred_record_syntax = 'USMARC'
+    #  rset = conn.search("@attr 1=1003 @attr 2=3 @attr 4=1 @attr 5=100 \"#{author_string}\"")
+    #  p rset[0]
+    #end
+
+  end
+  
   def publish
-    if status == 'Parsed'
+    if status == 'Parsed' and metadata_ready?
       status = 'Published'
+      save!
+    else
+      return false
+    end
+  end
+  
+  def create_frbr_entities
+    if status == 'Parsed' and metadata_ready?
       markdown = File.open(path+'.markdown', 'r:UTF-8').read
-      title = HtmlFile.title_from_file(path)
+      title = HtmlFile.title_from_file(path)[0]
       w = Work.new(:title => title)
       e = Expression.new(:title => title, :language => "Hebrew")
       w.expressions << e
@@ -413,11 +447,12 @@ class HtmlFile < ActiveRecord::Base
       res = /\//.match(title)
       if(res)
         title = res.pre_match
+        author = res.post_match
       end
       title.sub!(/ - .*/, '') # remove " - toxen inyanim"
       title.sub!(/ \u2013.*/, '') # ditto, with an em-dash
     end
-    return title.strip
+    return [title.strip, author.strip]
   end
   def self.title_from_file(f)
     html = ''
@@ -437,20 +472,6 @@ class HtmlFile < ActiveRecord::Base
       end
     end
     return title_from_html(html)
-  end
-  def self.title_from_html(h)
-    title = nil
-    h.gsub!("\n",'') # ensure no newlines interfere with the full content of <title>...</title>
-    if /<title>(.*)<\/title>/.match(h)
-      title = $1
-      res = /\//.match(title)
-      if(res)
-        title = res.pre_match
-      end
-      title.sub!(/ - .*/, '') # remove " - toxen inyanim"
-      title.sub!(/ \u2013.*/, '') # ditto, with an em-dash
-    end
-    return title
   end
   def split_long_lines
     markdown = File.open(self.path+'.markdown', 'r:UTF-8').read

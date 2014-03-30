@@ -29,4 +29,7 @@
   - e.g. match_all nun-sofit+non-whitespace, offer to replace with vav
   - e.g. match_all ' " ' for mis-spaced quotes
   - e.g. match sofiyot in middle of words
+- figure out if the NLI can give us anything useful via Z39.50 re author identities.  http://web.nli.org.il/sites/NLI/English/infochannels/librarians/Pages/Z39.50.aspx  (on the face of it, it doesn't look as though we can query the authority file itself!)  
+  - other useful URLs: http://www.loc.gov/z3950/agency/defns/bib1.html  http://ruby-zoom.rubyforge.org/ https://github.com/bricestacey/ruby-zoom/blob/master/sample/needle.rb
 
+- 

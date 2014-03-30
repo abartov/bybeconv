@@ -49,7 +49,12 @@ class HtmlFileController < ApplicationController
     unless @text.html_ready?
       @text.make_html
     end
-    @text.publish
+    if @text.metadata_ready?
+      @text.publish
+      flash[:notice] = 'Published!'
+    else
+      flash[:error] = 'Metadata not ready yet!'
+    end
     redirect_to :action => :list
   end
   def unsplit
@@ -108,13 +113,9 @@ class HtmlFileController < ApplicationController
     chopN(1)
     redirect_to :action => :render_html, :id => params[:id]
   end
-  def publish
+  def metadata
     @text = HtmlFile.find(params[:id])
-    if @text.publish
-      # success
-    else
-      flash[:error] = "Can't publish before parsing."
-    end
+    @authors = @text.guess_authors
   end
 
   protected

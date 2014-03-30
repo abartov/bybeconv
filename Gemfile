@@ -43,6 +43,7 @@ gem 'rpeg-multimarkdown' # note: gem unmaintained, native part doesn't build und
 gem 'app_constants' # anything more Railsy?
 gem 'hebrew' # https://github.com/abartov/hebrew
 gem 'haml'
+gem 'zoom', '~>0.4.1', :git => 'https://github.com/bricestacey/ruby-zoom.git' # for Z39.50 queries to libraries
 
 group :test do
   gem 'turn', '0.8.2', :require => false
