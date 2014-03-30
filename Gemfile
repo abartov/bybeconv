@@ -30,6 +30,7 @@ gem "jquery-ui-rails", "~> 4.0.4"
 
 gem 'execjs'
 gem 'therubyracer'
+gem 'thin'
 
 gem 'htmlentities'
 gem 'will_paginate'

@@ -3,7 +3,10 @@ class HtmlFileController < ApplicationController
     @text = HtmlFile.find(params[:id])
     @text.analyze
   end
+  def edit
+    @text = HtmlFile.find(params[:id])
 
+  end
   def analyze_all
     # TODO: implement, but only with some safety -- this can take a while!
   end

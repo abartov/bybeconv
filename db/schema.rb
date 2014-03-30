@@ -11,7 +11,24 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130910000302) do
+ActiveRecord::Schema.define(:version => 20140330225214) do
+
+  create_table "expressions", :force => true do |t|
+    t.string   "title"
+    t.string   "form"
+    t.string   "date"
+    t.string   "language"
+    t.text     "comment"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "expressions_people", :id => false, :force => true do |t|
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+    t.integer  "expression_id"
+    t.integer  "person_id"
+  end
 
   create_table "html_dirs", :force => true do |t|
     t.string   "path"
@@ -37,9 +54,56 @@ ActiveRecord::Schema.define(:version => 20130910000302) do
     t.string   "orig_mtime"
     t.string   "orig_ctime"
     t.boolean  "stripped_nikkud"
+    t.string   "orig_lang"
+    t.string   "year_published"
+    t.string   "orig_year_published"
   end
 
   add_index "html_files", ["path"], :name => "index_html_files_on_path"
+
+  create_table "html_files_manifestations", :id => false, :force => true do |t|
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+    t.integer  "html_file_id"
+    t.integer  "manifestation_id"
+  end
+
+  create_table "manifestations", :force => true do |t|
+    t.string   "title"
+    t.string   "responsibility_statement"
+    t.string   "edition"
+    t.string   "identifier"
+    t.string   "medium"
+    t.string   "publisher"
+    t.string   "publication_place"
+    t.string   "publication_date"
+    t.string   "series_statement"
+    t.text     "comment"
+    t.datetime "created_at",               :null => false
+    t.datetime "updated_at",               :null => false
+    t.text     "markdown"
+  end
+
+  create_table "manifestations_people", :id => false, :force => true do |t|
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+    t.integer  "manifestation_id"
+    t.integer  "person_id"
+  end
+
+  create_table "people", :force => true do |t|
+    t.string   "name"
+    t.string   "dates"
+    t.string   "title"
+    t.string   "other_designation"
+    t.string   "affiliation"
+    t.string   "country"
+    t.text     "comment"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+    t.string   "viaf_id"
+    t.string   "nli_id"
+  end
 
   create_table "proofs", :force => true do |t|
     t.string   "from"
@@ -61,5 +125,21 @@ ActiveRecord::Schema.define(:version => 20130910000302) do
 
   add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
+
+  create_table "works", :force => true do |t|
+    t.string   "title"
+    t.string   "form"
+    t.string   "date"
+    t.text     "comment"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "works_people", :id => false, :force => true do |t|
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.integer  "work_id"
+    t.integer  "person_id"
+  end
 
 end

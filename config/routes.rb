@@ -4,7 +4,8 @@ Bybeconv::Application.routes.draw do
   resources :proof
 
   get "html_file/analyze"
-
+  match "html_file/:id/edit" => 'html_file#edit'
+  post "html_file/:id/update" => 'html_file#update'
   get "html_file/analyze_all"
 
   get "html_file/list"
@@ -42,20 +43,6 @@ Bybeconv::Application.routes.draw do
   #
   #     collection do
   #       get 'sold'
-  #     end
-  #   end
-
-  # Sample resource route with sub-resources:
-  #   resources :products do
-  #     resources :comments, :sales
-  #     resource :seller
-  #   end
-
-  # Sample resource route with more complex sub-resources
-  #   resources :products do
-  #     resources :comments
-  #     resources :sales do
-  #       get 'recent', :on => :collection
   #     end
   #   end
 

@@ -328,6 +328,14 @@ class HtmlFile < ActiveRecord::Base
   def html_ready?
     File.exists? self.path+'.html'
   end
+  def title_string
+    return HtmlFile.title_from_file(path)
+  end
+  def author_string
+    relpath = path.sub(AppConstants.base_dir,'')
+    authordir = relpath[1..-1].sub(/\/.*/,'')
+    return author_name_from_dir(authordir, {})
+  end
   def delete_pregen
     if html_ready?
       File.delete self.path+'.html'
