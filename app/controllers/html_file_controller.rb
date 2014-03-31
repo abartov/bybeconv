@@ -1,11 +1,18 @@
 class HtmlFileController < ApplicationController
+  
+  before_filter :require_user, :only => [:edit, :update]
+
+  before_filter :require_admin, :only => [:analyze, :analyze_all, :list, :parse, :publish, :unsplit, :chop1, :chop2, :chop3, :poetry]
+
   def analyze
     @text = HtmlFile.find(params[:id])
     @text.analyze
   end
   def edit
     @text = HtmlFile.find(params[:id])
-
+  end
+  def update
+    @text = HtmlFile.find(params[:id])
   end
   def analyze_all
     # TODO: implement, but only with some safety -- this can take a while!

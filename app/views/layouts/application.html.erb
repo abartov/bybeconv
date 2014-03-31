@@ -8,6 +8,14 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
+<div id="user-widget">
+  <% if current_user %>
+    Welcome <strong><%= current_user.name %></strong>!
+    <%= link_to "Sign out", signout_path, id: "sign_out" %>
+  <% else %>
+    <%= link_to "Sign in with Google/Twitter", "/session/login", id: "sign_in" %>
+  <% end %>
+</div>
 
 <%= yield %>
 

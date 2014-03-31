@@ -1,4 +1,6 @@
 class HtmlDirsController < ApplicationController
+  before_filter :require_admin
+
   # GET /html_dirs
   # GET /html_dirs.json
   def index

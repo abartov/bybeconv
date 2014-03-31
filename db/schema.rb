@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140330225214) do
+ActiveRecord::Schema.define(:version => 20140331001120) do
 
   create_table "expressions", :force => true do |t|
     t.string   "title"
@@ -125,6 +125,18 @@ ActiveRecord::Schema.define(:version => 20140330225214) do
 
   add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
+
+  create_table "users", :force => true do |t|
+    t.string   "name"
+    t.string   "email"
+    t.string   "provider"
+    t.string   "uid"
+    t.string   "oauth_token"
+    t.datetime "oauth_expires_at"
+    t.boolean  "admin"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
 
   create_table "works", :force => true do |t|
     t.string   "title"

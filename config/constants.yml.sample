@@ -4,6 +4,10 @@ development: &default
   base_dir:  "/home/me/my_dev_data"
   populate_exclude: "w3c;img;stats"
   no_nikkud_insert: '/home/me/my_dev_data/no_nikkud_insert.txt' 
+  google_oauth_client_id: 'bla'
+  google_oauth_client_secret: 'bla'
+  twitter_consumer_key: 'bla'
+  twitter_consumer_secret: 'bla'
 
 production:
   <<: *default
