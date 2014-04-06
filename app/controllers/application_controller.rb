@@ -10,6 +10,7 @@ class ApplicationController < ActionController::Base
   private
   def require_admin
     return true if current_user && current_user.admin?
+    redirect_to '/', flash: {error: 'Not an admin'}
     return false
   end
   def require_user
