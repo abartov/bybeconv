@@ -2,7 +2,7 @@ class SessionController < ApplicationController
   skip_before_filter :verify_authenticity_token, :only => :create
   def login
   end
-  def dologin
+  def do_login
     case params[:commit]
     when 'Google'
       redirect_to '/auth/google_oauth2'

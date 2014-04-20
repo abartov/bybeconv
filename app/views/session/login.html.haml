@@ -1,6 +1,6 @@
 %h1= 'נא לבחור שיטת אימות'
 
-= form_tag url_for(action: :do_login) do
+= form_tag session_do_login_path do
   %p
     = submit_tag 'Google'
   %p

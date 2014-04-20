@@ -8,6 +8,8 @@ Bybeconv::Application.routes.draw do
   get "session/create"
   get "session/destroy"
   get "session/login"
+  post "session/do_login"
+
   match '/auth/:provider/callback', to: 'session#create', via: [:get, :post]
   match 'auth/failure', to: redirect('/'), via: [:get, :post]
   match 'signout', to: 'session#destroy', as: 'signout', via: [:get, :post]
