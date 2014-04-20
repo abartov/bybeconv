@@ -1,4 +1,8 @@
 Bybeconv::Application.routes.draw do
+  get "user/list"
+  get "user/:id/make_editor" => 'user#make_editor', as: 'user_make_editor'
+  get "user/:id/unmake_editor" => 'user#unmake_editor', as: 'user_unmake_editor'
+
   get "welcome/index"
 
   get "session/create"

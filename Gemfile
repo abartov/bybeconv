@@ -35,7 +35,8 @@ gem 'therubyracer'
 gem 'thin'
 
 gem 'htmlentities'
-gem 'will_paginate'
+#gem 'will_paginate'
+gem 'kaminari' # pagination
 gem 'nokogiri'
 gem 'rpeg-multimarkdown' # note: gem unmaintained, native part doesn't build under Ruby 2.1 -- may need updating the native part from the actual peg-multimarkdown implementation.
 
@@ -45,6 +46,7 @@ gem 'debugger'
 gem 'app_constants' # anything more Railsy?
 gem 'hebrew' # https://github.com/abartov/hebrew
 gem 'haml'
+gem 'haml-rails'
 
 group :test do
   gem 'turn', '0.8.2', :require => false

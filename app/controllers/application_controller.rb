@@ -8,15 +8,17 @@ class ApplicationController < ActionController::Base
   end
 
   private
+  def require_editor
+    return true if current_user && current_user.editor?
+    redirect_to '/', flash: {error: 'Not an editor'}
+  end
   def require_admin
     return true if current_user && current_user.admin?
     redirect_to '/', flash: {error: 'Not an admin'}
-    return false
   end
   def require_user
     return true if current_user
     redirect_to session_login_path, flash: {error: 'You must be logged in to access this page'}
-    return false
   end
   def current_user
     @current_user ||= User.find(session[:user_id]) if session[:user_id]

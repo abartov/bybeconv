@@ -1,0 +1,9 @@
+%h1 BYBE
+- if current_user.admin?
+  %h2 Admin actions
+  %p
+    = link_to 'User management', user_list_path
+  %p
+    = link_to 'HTML dirs list', html_dirs_path
+  %p
+    = link_to 'HTML file list', html_file_list_path
