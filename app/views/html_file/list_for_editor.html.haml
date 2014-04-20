@@ -1,0 +1,11 @@
+- if @dirs.nil?
+  %h1= 'רשימת יצירות '+@author
+  - @texts.each do |t|
+    %p
+      = link_to "#{html_entities_coder.decode(t.title_string)}", html_file_edit_path(t)
+- else
+  %h1= 'רשימת מחברים'
+  - @dirs.each do |d|
+    %p
+      = link_to 'רשימת יצירות'+d.author, html_file_list_for_editor_path(path: d.path, author: d.author)
+

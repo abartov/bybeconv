@@ -1,6 +1,6 @@
 class HtmlFileController < ApplicationController
   
-  before_filter :require_editor, :only => [:edit, :update]
+  before_filter :require_editor, :only => [:edit, :update, :list_for_editor]
   #before_filter :require_user, :only => [:edit, :update]
 
   before_filter :require_admin, :only => [:analyze, :analyze_all, :list, :parse, :publish, :unsplit, :chop1, :chop2, :chop3, :poetry]
@@ -18,7 +18,14 @@ class HtmlFileController < ApplicationController
   def analyze_all
     # TODO: implement, but only with some safety -- this can take a while!
   end
-
+  def list_for_editor
+    if params[:path].blank?
+      @dirs = HtmlDir.all
+    else
+      @author = params[:author]
+      @texts = HtmlFile.where("path like ?", '%/'+params[:path]+'/%').order('status ASC').page(params[:page])
+    end
+  end
   def list
     # calculate tallies
     @total_texts = HtmlFile.count

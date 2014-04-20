@@ -17,11 +17,12 @@ Bybeconv::Application.routes.draw do
   resources :proof
 
   get "html_file/analyze"
-  match "html_file/:id/edit" => 'html_file#edit'
+  match "html_file/:id/edit" => 'html_file#edit', as: 'html_file_edit', via: [:get, :post]
   post "html_file/:id/update" => 'html_file#update'
   get "html_file/analyze_all"
 
   get "html_file/list"
+  match "html_file/list_for_editor"
   get "html_file/publish"
   post "html_file/list"
   get "html_file/parse"
