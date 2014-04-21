@@ -25,7 +25,7 @@ task :whatsnew, [:fromdate] => :environment do |taskname, args|
     author = author_name_from_dir(authordir, known_authors)
     files_by_author[author] = [] if files_by_author[author].nil? # initialize array for author if first new work by that author
     print "DBG: trying to retrieve title from #{h.path}\n"
-    files_by_author[author].push "<a href=\"#{relpath}\">#{HtmlFile.title_from_file(h.path).strip}</a>"
+    files_by_author[author].push "<a href=\"#{relpath}\">#{HtmlFile.title_from_file(h.path)[0].strip}</a>"
     print "\rHandled #{progress} files so far.     " #if progress % 10 == 0
     progress += 1
   }

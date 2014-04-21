@@ -328,8 +328,11 @@ class HtmlFile < ActiveRecord::Base
   def html_ready?
     File.exists? self.path+'.html'
   end
+  def complete_author_string
+    return HtmlFile.title_from_file(path)[1]
+  end
   def title_string
-    return HtmlFile.title_from_file(path)
+    return HtmlFile.title_from_file(path)[0]
   end
   def author_string
     relpath = path.sub(AppConstants.base_dir,'')
@@ -395,14 +398,16 @@ class HtmlFile < ActiveRecord::Base
     h.gsub!("\n",'') # ensure no newlines interfere with the full content of <title>...</title>
     if /<title>(.*)<\/title>/.match(h)
       title = $1
+      author = $1 # return whole thing if we can't do better
       res = /\//.match(title)
       if(res)
         title = res.pre_match
+        author = res.post_match.strip
       end
       title.sub!(/ - .*/, '') # remove " - toxen inyanim"
       title.sub!(/ \u2013.*/, '') # ditto, with an em-dash
     end
-    return title.strip
+    return [title.strip, author]
   end
   def self.title_from_file(f)
     html = ''

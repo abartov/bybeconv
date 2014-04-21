@@ -5,11 +5,11 @@
   = @text.url
 %p
   = 'כותרת: '
-  = @text.title_string
+  = html_entities_coder.decode(@text.title_string)
 
 %p
   = 'מחבר/ים: '
-  = @text.author_string
+  = html_entities_coder.decode(@text.complete_author_string.force_encoding('UTF-8'))
  
 %h2 שדות להשלמה
 = form_tag url_for(controller: :html_file, action: :update, id: @text.id), method: 'post' do
