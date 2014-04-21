@@ -18,10 +18,11 @@ class HtmlFileController < ApplicationController
     @text.orig_year_published = params[:orig_year_published]
     @text.orig_lang = params[:orig_lang]
     if @text.save
-      redirect_to :action => :list_for_editor, flash: {notice: 'הנתונים עודכנו!'}
+      flash[:notice] = 'הנתונים עודכנו!'
     else
-      redirect_to :action => :list_for_editor, flash: {error: 'אירעה שגיאה.  הנתונים לא נשמרו.  סליחה.'}
+      flash[:error] = 'אירעה שגיאה.  הנתונים לא נשמרו.  סליחה.'
     end
+    redirect_to :action => :list_for_editor
   end
   def analyze_all
     # TODO: implement, but only with some safety -- this can take a while!
