@@ -14,7 +14,7 @@ class HtmlFileController < ApplicationController
   end
   def update
     @text = HtmlFile.find(params[:id])
-    if @text.update(params)
+    if @text.update_attributes(params)
       redirect_to :action => :list_for_editor, flash: {notice: 'הנתונים עודכנו!'}
     else
       redirect_to :action => :list_for_editor, flash: {error: 'אירעה שגיאה.  הנתונים לא נשמרו.  סליחה.'}
