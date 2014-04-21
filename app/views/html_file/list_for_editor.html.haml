@@ -13,7 +13,7 @@
         %td= t.orig_lang
         %td= t.orig_year_published
     
-  - paginate @texts
+  != paginate @texts
 - else
   %h1= 'רשימת מחברים'
   - @dirs.each do |d|
