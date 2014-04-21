@@ -14,7 +14,10 @@ class HtmlFileController < ApplicationController
   end
   def update
     @text = HtmlFile.find(params[:id])
-    if @text.update_attributes(params)
+    @text.year_published = params[:year_published]
+    @text.orig_year_published = params[:orig_year_published]
+    @text.orig_lang = params[:orig_lang]
+    if @text.save
       redirect_to :action => :list_for_editor, flash: {notice: 'הנתונים עודכנו!'}
     else
       redirect_to :action => :list_for_editor, flash: {error: 'אירעה שגיאה.  הנתונים לא נשמרו.  סליחה.'}
