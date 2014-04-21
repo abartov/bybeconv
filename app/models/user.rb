@@ -14,8 +14,8 @@ class User < ActiveRecord::Base
       user.email = auth.info.email
       user.oauth_token = auth.credentials.token
       user.oauth_expires_at = Time.at(auth.credentials.expires_at) unless auth.credentials.expires_at.nil?
-      user.admin = false
-      user.editor = false
+      user.admin = false if user.admin.nil?
+      user.editor = false if user.editor.nil?
       user.save!
     end
   end
