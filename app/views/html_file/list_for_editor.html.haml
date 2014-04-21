@@ -6,12 +6,12 @@
       %th שנת פרסום
       %th שפת מקור 
       %th שנת פרסום מקור
-  - @texts.each do |t|
-    %tr
-      %td= link_to "#{html_entities_coder.decode(t.title_string.force_encoding('UTF-8'))}", html_file_edit_path(t)
-      %td= t.year_published
-      %td= t.orig_lang
-      %td= t.orig_year_published
+    - @texts.each do |t|
+      %tr
+        %td= link_to "#{html_entities_coder.decode(t.title_string.force_encoding('UTF-8'))}", html_file_edit_path(t)
+        %td= t.year_published
+        %td= t.orig_lang
+        %td= t.orig_year_published
     
   - paginate @texts
 - else
