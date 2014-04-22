@@ -339,6 +339,9 @@ class HtmlFile < ActiveRecord::Base
     authordir = relpath[1..-1].sub(/\/.*/,'')
     return author_name_from_dir(authordir, {})
   end
+  def filepart
+    return path[path.rindex('/')+1..-1]
+  end
   def delete_pregen
     if html_ready?
       File.delete self.path+'.html'
@@ -375,6 +378,9 @@ class HtmlFile < ActiveRecord::Base
 
   def self.new_since(t) # pass a Time
     where(["created_at > ?", t.to_s(:db)])
+  end
+  def self.of_dir(d) # pass a dir part
+    where(["path like ?", "%/#{d}/%"])
   end
 
   def update_markdown(markdown)

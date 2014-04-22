@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140420152251) do
+ActiveRecord::Schema.define(:version => 20140422185338) do
 
   create_table "expressions", :force => true do |t|
     t.string   "title"
@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(:version => 20140420152251) do
     t.string   "author"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "need_resequence"
   end
 
   create_table "html_files", :force => true do |t|
@@ -57,6 +58,7 @@ ActiveRecord::Schema.define(:version => 20140420152251) do
     t.string   "orig_lang"
     t.string   "year_published"
     t.string   "orig_year_published"
+    t.integer  "seqno"
   end
 
   add_index "html_files", ["path"], :name => "index_html_files_on_path"
