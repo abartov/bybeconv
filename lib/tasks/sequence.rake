@@ -4,7 +4,9 @@ task :sequence => :environment do
   HtmlDir.where(need_resequence: true).each {|d|
     # read respective index.html, build a hash of filenames and sequences
     puts "Processing dir: #{d.path}."
-    index = File.open("#{AppConstants.base_dir}/#{d.path}/index.html", 'rb').read.gsub(/[\r\n]/,'') # slurp whole thing, lose newlines
+    fname = "#{AppConstants.base_dir}/#{d.path}/index.html"
+    next unless File.exists? fname
+    index = File.open(fname, 'rb').read.gsub(/[\r\n]/,'') # slurp whole thing, lose newlines
     links = index.scan /[A-Za-z_0-9]*?\.html/
     links.uniq!
     linkhash = {}
@@ -17,7 +19,7 @@ task :sequence => :environment do
     HtmlFile.of_dir(d.path).each {|h|
       seq = linkhash[h.filepart]
       if seq.nil?
-        puts "ERROR: file #{h.filepart} not found in linkhash!"
+        puts "ERROR: file #{d.path}/#{h.filepart} not found in linkhash!"
         error = true
       else
         h.seqno = seq
