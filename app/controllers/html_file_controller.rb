@@ -32,7 +32,7 @@ class HtmlFileController < ApplicationController
       @dirs = HtmlDir.all
     else
       @author = params[:author]
-      @texts = HtmlFile.where("path like ?", '%/'+params[:path]+'/%').order('status ASC').page(params[:page])
+      @texts = HtmlFile.where("path like ?", '%/'+params[:path]+'/%').order('seqno ASC').page(params[:page])
     end
   end
   def list
