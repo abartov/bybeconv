@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140422185338) do
+ActiveRecord::Schema.define(:version => 20140423152015) do
 
   create_table "expressions", :force => true do |t|
     t.string   "title"
@@ -59,6 +59,8 @@ ActiveRecord::Schema.define(:version => 20140422185338) do
     t.string   "year_published"
     t.string   "orig_year_published"
     t.integer  "seqno"
+    t.string   "orig_author"
+    t.string   "orig_author_url"
   end
 
   add_index "html_files", ["path"], :name => "index_html_files_on_path"

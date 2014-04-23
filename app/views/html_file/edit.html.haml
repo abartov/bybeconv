@@ -23,5 +23,11 @@
     = 'שנת פרסום מקור: '
     = text_field_tag :orig_year_published, @text.orig_year_published
   %p
+    = 'שם מחבר מקור: '
+    = text_field_tag :orig_author, @text.orig_author
+  %p
+    = 'קישורית למידע על מחבר (ויקיפדיה וכו'')'
+    = text_field_tag :orig_author_url, @text.orig_author_url
+  %p
     = submit_tag 'Update'
 

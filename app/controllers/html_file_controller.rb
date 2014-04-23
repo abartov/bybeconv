@@ -17,6 +17,8 @@ class HtmlFileController < ApplicationController
     @text.year_published = params[:year_published]
     @text.orig_year_published = params[:orig_year_published]
     @text.orig_lang = params[:orig_lang]
+    @text.orig_author = params[:orig_author]
+    @text.orig_author_url = params[:orig_author_url]
     if @text.save
       flash[:notice] = 'הנתונים עודכנו!'
     else
