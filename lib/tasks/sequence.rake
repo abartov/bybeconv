@@ -7,7 +7,7 @@ task :sequence => :environment do
     fname = "#{AppConstants.base_dir}/#{d.path}/index.html"
     next unless File.exists? fname
     index = File.open(fname, 'rb').read.gsub(/[\r\n]/,'') # slurp whole thing, lose newlines
-    links = index.scan /[A-Za-z_0-9]*?\.html/
+    links = index.scan /[A-Za-z\-_0-9]*?\.html/
     links.uniq!
     linkhash = {}
     seqno = 1
@@ -19,7 +19,7 @@ task :sequence => :environment do
     HtmlFile.of_dir(d.path).each {|h|
       seq = linkhash[h.filepart]
       if seq.nil?
-        puts "ERROR: file #{d.path}/#{h.filepart} not found in linkhash!"
+        puts "ERROR: file #{d.path}/#{h.filepart} ID #{h.id} not found in linkhash!"
         error = true
       else
         h.seqno = seq
