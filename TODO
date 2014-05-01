@@ -16,6 +16,7 @@ check HtmlFile id 4291 in production (Sokolov) -- currently crashing on charset
 - gather info for later cataloguing -- title, author, translator, copyright status, dedication/epigraph, year/location, ...?
 - add markdown manipulations post-parsing
 -+ chop title/author lines from top
+-+ treat as poetry (<code><pre>)
 -- raw edit (versioned?  just backup/undo?)
 - add an exclusion list to rake populate
 + add way to bless markdown by human reviewer
