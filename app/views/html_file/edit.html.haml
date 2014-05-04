@@ -16,6 +16,7 @@
   %p
     = 'שנת פרסום: '
     = text_field_tag :year_published, @text.year_published
+%h2 שדות להשלמה עבור תרגומים (בלבד)
   %p
     = 'שפת מקור: '
     = text_field_tag :orig_lang, @text.orig_lang
@@ -26,7 +27,7 @@
     = 'שם מחבר מקור: '
     = text_field_tag :orig_author, @text.orig_author
   %p
-    = 'קישורית למידע על מחבר (ויקיפדיה וכו'')'
+    = 'קישורית למידע על מחבר מקור (ויקיפדיה וכו'')'
     = text_field_tag :orig_author_url, @text.orig_author_url
   %p
     = submit_tag 'Update'
