@@ -7,7 +7,19 @@
 
   <%= csrf_meta_tags %>
 </head>
-<body>
+<body dir="rtl" align="right">
+    <% flash.each do |name, msg| -%>
+          <%= content_tag :div, msg, class: name %>
+    <% end -%>
+
+<div id="user-widget">
+  <% if current_user %>
+    Welcome <strong><%= current_user.name %></strong>!
+    <%= link_to "Sign out", signout_path, id: "sign_out" %>
+  <% else %>
+    <%= link_to "Sign in with Google/Twitter", "/session/login", id: "sign_in" %>
+  <% end %>
+</div>
 
 <%= yield %>
 

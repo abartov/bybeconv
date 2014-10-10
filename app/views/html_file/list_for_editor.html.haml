@@ -1,0 +1,26 @@
+- if @dirs.nil?
+  %h1= 'רשימת יצירות '+@author
+  %table{dir: 'rtl', align: 'right', class: 'border1px'}
+    %tr
+      %th כותרת
+      %th שנת פרסום
+      %th שפת מקור 
+      %th שנת פרסום מקור
+      %th קישורית על מחבר מקור
+    - @texts.each do |t|
+      %tr
+        %td= link_to "#{html_entities_coder.decode(t.title_string.force_encoding('UTF-8'))}", html_file_edit_path(t)
+        %td= t.year_published
+        %td= t.orig_lang
+        %td= t.orig_year_published
+        %td= link_to url_tag(t.orig_author_url), t.orig_author_url
+    
+  != paginate @texts
+- else
+  %h1= 'רשימת מחברים'
+  - @dirs.each do |d|
+    - auth = d.author.force_encoding('UTF-8')
+    = 'רשימת יצירות '
+    = link_to auth, html_file_list_for_editor_path(path: d.path, author: auth)
+    %br
+

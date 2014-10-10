@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140323212606) do
+ActiveRecord::Schema.define(:version => 20140423152015) do
 
   create_table "expressions", :force => true do |t|
     t.string   "title"
@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(:version => 20140323212606) do
     t.string   "author"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "need_resequence"
   end
 
   create_table "html_files", :force => true do |t|
@@ -54,6 +55,12 @@ ActiveRecord::Schema.define(:version => 20140323212606) do
     t.string   "orig_mtime"
     t.string   "orig_ctime"
     t.boolean  "stripped_nikkud"
+    t.string   "orig_lang"
+    t.string   "year_published"
+    t.string   "orig_year_published"
+    t.integer  "seqno"
+    t.string   "orig_author"
+    t.string   "orig_author_url"
   end
 
   add_index "html_files", ["path"], :name => "index_html_files_on_path"
@@ -122,6 +129,19 @@ ActiveRecord::Schema.define(:version => 20140323212606) do
 
   add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
+
+  create_table "users", :force => true do |t|
+    t.string   "name"
+    t.string   "email"
+    t.string   "provider"
+    t.string   "uid"
+    t.string   "oauth_token"
+    t.datetime "oauth_expires_at"
+    t.boolean  "admin"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+    t.boolean  "editor"
+  end
 
   create_table "works", :force => true do |t|
     t.string   "title"

@@ -2,14 +2,31 @@ Bybeconv::Application.routes.draw do
   get "manifestation/show"
   get "manifestation/render"
   get "manifestation/edit"
+  get "user/list"
+  get "user/:id/make_editor" => 'user#make_editor', as: 'user_make_editor'
+  get "user/:id/unmake_editor" => 'user#unmake_editor', as: 'user_unmake_editor'
+
+  get "welcome/index"
+
+  get "session/create"
+  get "session/destroy"
+  get "session/login"
+  post "session/do_login"
+
+  match '/auth/:provider/callback', to: 'session#create', via: [:get, :post]
+  match 'auth/failure', to: redirect('/'), via: [:get, :post]
+  match 'signout', to: 'session#destroy', as: 'signout', via: [:get, :post]
+
   resources :html_dirs
   resources :proof
 
   get "html_file/analyze"
-
+  match "html_file/:id/edit" => 'html_file#edit', as: 'html_file_edit', via: [:get, :post]
+  post "html_file/:id/update" => 'html_file#update'
   get "html_file/analyze_all"
 
   get "html_file/list"
+  match "html_file/list_for_editor"
   get "html_file/publish"
   post "html_file/list"
   get "html_file/publish"
@@ -48,20 +65,6 @@ Bybeconv::Application.routes.draw do
   #     end
   #   end
 
-  # Sample resource route with sub-resources:
-  #   resources :products do
-  #     resources :comments, :sales
-  #     resource :seller
-  #   end
-
-  # Sample resource route with more complex sub-resources
-  #   resources :products do
-  #     resources :comments
-  #     resources :sales do
-  #       get 'recent', :on => :collection
-  #     end
-  #   end
-
   # Sample resource route within a namespace:
   #   namespace :admin do
   #     # Directs /admin/products/* to Admin::ProductsController
@@ -71,7 +74,7 @@ Bybeconv::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-  # root :to => 'welcome#index'
+  root :to => 'welcome#index'
 
   # See how all your routes lay out with "rake routes"
 

@@ -1,0 +1,34 @@
+%h1 עריכת קטלוג
+%h2 פרטים כלליים
+%p
+  = 'URL: '
+  = @text.url
+%p
+  = 'כותרת: '
+  = html_entities_coder.decode(@text.title_string)
+
+%p
+  = 'מחבר/ים: '
+  = html_entities_coder.decode(@text.complete_author_string.force_encoding('UTF-8'))
+ 
+%h2 שדות להשלמה
+= form_tag url_for(controller: :html_file, action: :update, id: @text.id), method: 'post' do
+  %p
+    = 'שנת פרסום: '
+    = text_field_tag :year_published, @text.year_published
+%h2 שדות להשלמה עבור תרגומים (בלבד)
+  %p
+    = 'שפת מקור: '
+    = text_field_tag :orig_lang, @text.orig_lang
+  %p
+    = 'שנת פרסום מקור: '
+    = text_field_tag :orig_year_published, @text.orig_year_published
+  %p
+    = 'שם מחבר מקור: '
+    = text_field_tag :orig_author, @text.orig_author
+  %p
+    = 'קישורית למידע על מחבר מקור (ויקיפדיה וכו'')'
+    = text_field_tag :orig_author_url, @text.orig_author_url
+  %p
+    = submit_tag 'Update'
+

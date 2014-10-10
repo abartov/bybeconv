@@ -330,6 +330,20 @@ class HtmlFile < ActiveRecord::Base
   def html_ready?
     File.exists? self.path+'.html'
   end
+  def complete_author_string
+    return HtmlFile.title_from_file(path)[1]
+  end
+  def title_string
+    return HtmlFile.title_from_file(path)[0]
+  end
+  def author_string
+    relpath = path.sub(AppConstants.base_dir,'')
+    authordir = relpath[1..-1].sub(/\/.*/,'')
+    return author_name_from_dir(authordir, {})
+  end
+  def filepart
+    return path[path.rindex('/')+1..-1]
+  end
   def delete_pregen
     if html_ready?
       File.delete self.path+'.html'
@@ -363,11 +377,28 @@ class HtmlFile < ActiveRecord::Base
       # TODO: validate result
     end
   end
+  def self.pdf_from_any_html(html_buffer)
+    tmpfile = Tempfile.new("pdf2html__")
+    begin
+      tmpfile.write(html_buffer)
+      tmpfilename = tmpfile.path
+      tmpfile.close
+      result = `wkhtmltopdf page #{tmpfilename} #{tmpfilename}.pdf`
+    rescue
+      return nil
+    end
+    return "#{tmpfilename}.pdf"
+  end
+ 
 
   def self.new_since(t) # pass a Time
     where(["created_at > ?", t.to_s(:db)])
   end
   
+  def self.of_dir(d) # pass a dir part
+    where(["path like ?", "%/#{d}/%"])
+  end
+
   def update_markdown(markdown)
     File.open(self.path+'.markdown', 'wb') { |f| f.write(markdown) }    
   end
@@ -444,15 +475,16 @@ class HtmlFile < ActiveRecord::Base
     h.gsub!("\n",'') # ensure no newlines interfere with the full content of <title>...</title>
     if /<title>(.*)<\/title>/.match(h)
       title = $1
+      author = $1 # return whole thing if we can't do better
       res = /\//.match(title)
       if(res)
         title = res.pre_match
-        author = res.post_match
+        author = res.post_match.strip
       end
       title.sub!(/ - .*/, '') # remove " - toxen inyanim"
       title.sub!(/ \u2013.*/, '') # ditto, with an em-dash
     end
-    return [title.strip, author.strip]
+    return [title.strip, author]
   end
   def self.title_from_file(f)
     html = ''

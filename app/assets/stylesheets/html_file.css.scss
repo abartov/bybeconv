@@ -21,4 +21,8 @@ h3 { text-align:right; direction:rtl; }
 pre { text-align:right; direction:rtl; font-family:David, David CLM; font-size:14pt; }
 code { text-align:right; direction:rtl; font-family:David, David CLM; font-size:14pt; }
 
-
+.border1px {
+  table, td, th { border:1px solid; }
+  table { border-collapse:collapse; border-spacing:0; }
+  td, th { padding:10px; border-spacing:0; }
+}

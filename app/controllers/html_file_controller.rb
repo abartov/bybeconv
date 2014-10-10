@@ -1,13 +1,42 @@
 class HtmlFileController < ApplicationController
+  
+  before_filter :require_editor, :only => [:edit, :update, :list_for_editor]
+  #before_filter :require_user, :only => [:edit, :update]
+
+  before_filter :require_admin, :only => [:analyze, :analyze_all, :list, :parse, :publish, :unsplit, :chop1, :chop2, :chop3, :poetry]
+
   def analyze
     @text = HtmlFile.find(params[:id])
     @text.analyze
   end
-
+  def edit
+    @text = HtmlFile.find(params[:id])
+  end
+  def update
+    @text = HtmlFile.find(params[:id])
+    @text.year_published = params[:year_published]
+    @text.orig_year_published = params[:orig_year_published]
+    @text.orig_lang = params[:orig_lang]
+    @text.orig_author = params[:orig_author]
+    @text.orig_author_url = params[:orig_author_url]
+    if @text.save
+      flash[:notice] = 'הנתונים עודכנו!'
+    else
+      flash[:error] = 'אירעה שגיאה.  הנתונים לא נשמרו.  סליחה.'
+    end
+    redirect_to :action => :list_for_editor
+  end
   def analyze_all
     # TODO: implement, but only with some safety -- this can take a while!
   end
-
+  def list_for_editor
+    if params[:path].blank?
+      @dirs = HtmlDir.all
+    else
+      @author = params[:author]
+      @texts = HtmlFile.where("path like ?", '%/'+params[:path]+'/%').order('seqno ASC').page(params[:page])
+    end
+  end
   def list
     # calculate tallies
     @total_texts = HtmlFile.count

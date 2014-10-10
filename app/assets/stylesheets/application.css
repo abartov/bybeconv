@@ -6,3 +6,13 @@
  *= require_tree . 
  *= require jquery.ui.all
 */
+
+.error {
+  border: solid 4px #900;
+  background-color: #FF6565;
+}
+.notice {
+   border: solid 4px #26722D;
+   background-color: #A4E7A0;
+}
+

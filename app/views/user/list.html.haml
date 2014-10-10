@@ -1,0 +1,16 @@
+%h1 User list
+%table
+  %tr
+    %th Name
+    %th e-mail
+    %th Editor?
+    %th Actions
+  - @user_list.each do |u|
+    %tr
+      %td= u.name
+      %td= u.email
+      %td= u.editor
+      %td= link_to 'Make editor!', user_make_editor_path(u)
+
+!= paginate @user_list
+

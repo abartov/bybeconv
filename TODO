@@ -1,10 +1,8 @@
-+ complete lib/tasks/whatsnew.rake
+check HtmlFile id 4291 in production (Sokolov) -- currently crashing on charset 
++ add an auth system
 + add detection of encoding problems to HtmlFile.analyze, and to appropriate tallies etc.
   + possibly implement an auto-fixer for those?
     + yes!  Today we have learned that 0xCA is invalid in CP-1255, and yet Word sometimes(?) generates that instead of a proper xolam (0xC9) for some obscure reason.  We'll sub() this.
-+ emit MultiMarkdown 
--- http://daringfireball.net/projects/markdown/basics 
--- http://daringfireball.net/projects/markdown/syntax
 + handle footnotes
 - detect indentation? (poetry, letter signatures, etc.)
 - detect size changes
@@ -18,6 +16,7 @@
 - gather info for later cataloguing -- title, author, translator, copyright status, dedication/epigraph, year/location, ...?
 - add markdown manipulations post-parsing
 -+ chop title/author lines from top
+-+ treat as poetry (<code><pre>)
 -- raw edit (versioned?  just backup/undo?)
 - add an exclusion list to rake populate
 - when publishing a parsed HtmlFile:
