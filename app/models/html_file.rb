@@ -375,6 +375,19 @@ class HtmlFile < ActiveRecord::Base
       # TODO: validate result
     end
   end
+  def self.pdf_from_any_html(html_buffer)
+    tmpfile = Tempfile.new("pdf2html__")
+    begin
+      tmpfile.write(html_buffer)
+      tmpfilename = tmpfile.path
+      tmpfile.close
+      result = `wkhtmltopdf page #{tmpfilename} #{tmpfilename}.pdf`
+    rescue
+      return nil
+    end
+    return "#{tmpfilename}.pdf"
+  end
+ 
 
   def self.new_since(t) # pass a Time
     where(["created_at > ?", t.to_s(:db)])
