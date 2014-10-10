@@ -1,3 +1,4 @@
+continue implementing HtmlFile.guess_authors, and creation of Person entity with WEM in create_frbr_entities
 check HtmlFile id 4291 in production (Sokolov) -- currently crashing on charset 
 + add an auth system
 + add detection of encoding problems to HtmlFile.analyze, and to appropriate tallies etc.

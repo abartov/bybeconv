@@ -441,21 +441,27 @@ class HtmlFile < ActiveRecord::Base
   
   def create_frbr_entities
     if status == 'Parsed' and metadata_ready?
-      markdown = File.open(path+'.markdown', 'r:UTF-8').read
-      title = HtmlFile.title_from_file(path)[0]
-      w = Work.new(:title => title)
-      e = Expression.new(:title => title, :language => "Hebrew")
-      w.expressions << e
-      w.save!
-      m = Manifestation.new(:title => title, :responsibility_statement => HtmlFile.author_name_from_dir(author_dir, {}), :medium => 'e-text', :publisher => AppConstants.our_publisher, :publication_date => Date.today, :markdown => markdown)
-      m.save!
-      e.manifestations << m
-      e.save!
-      manifestations << m
-      save!
-    else
-      return false
+      begin
+        # TODO: add Person instantiation IF necessary and link WEM to Person.
+        markdown = File.open(path+'.markdown', 'r:UTF-8').read
+        title = HtmlFile.title_from_file(path)[0]
+        w = Work.new(:title => title)
+        e = Expression.new(:title => title, :language => "he") # ISO codes
+        w.expressions << e
+        w.save!
+        m = Manifestation.new(:title => title, :responsibility_statement => HtmlFile.author_name_from_dir(author_dir, {}), :medium => 'e-text', :publisher => AppConstants.our_publisher, :publication_date => Date.today, :markdown => markdown)
+        m.save!
+        e.manifestations << m
+        e.save!
+        manifestations << m # this HtmlFile itself
+        save!
+        
+        return true
+      rescue
+        flash[:error] = "Error while create FRBR entities from HTML file!"
+      end
     end
+    return false
   end
 
   # this one might be useful to handle poetry
