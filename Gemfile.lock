@@ -203,5 +203,4 @@ DEPENDENCIES
   thin
   turn (= 0.8.2)
   uglifier (>= 1.0.3)
-  will_paginate
   zoom (~> 0.4.1)!

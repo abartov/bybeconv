@@ -408,27 +408,6 @@ class HtmlFile < ActiveRecord::Base
     ret = false if manifestations.empty? # ensure WEM created
     return ret
   end
-
-  def guess_authors
-    author_from_dir = HtmlFile.author_name_from_dir(author_dir, {})
-    author_string = HtmlFile.title_from_file(path)[1]
-
-    # Try VIAF first
-    viaf = Net::HTTP.new('www.viaf.org')
-    viaf.start unless viaf.started?
-    viaf_json = viaf.get("/viaf/AutoSuggest?query=#{URI.escape(author_string)}").body
-
-    # Try NLI first
-    
-    #ZOOM::Connection.open('aleph.nli.org.il', 9991) do |conn|
-    #  conn.database_name = 'NNL01'
-    #  conn.preferred_record_syntax = 'XML'
-    #  #conn.preferred_record_syntax = 'USMARC'
-    #  rset = conn.search("@attr 1=1003 @attr 2=3 @attr 4=1 @attr 5=100 \"#{author_string}\"")
-    #  p rset[0]
-    #end
-
-  end
   
   def publish
     if status == 'Parsed' and metadata_ready?

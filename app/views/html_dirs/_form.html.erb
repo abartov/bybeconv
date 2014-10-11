@@ -19,6 +19,16 @@
     <%= f.label :author %><br />
     <%= f.text_field :author %>
   </div>
+  <% if @html_dir.person.nil? %>
+    <!-- get VIAF suggestions -->
+    <%= link_to "Send to VIAF", {:controller => :html_dir, :action => :guess_author, :id => @html_dir, :remote => true}, {:class => "viaf_link", "data-done-msg" => "Output in box" } %>
+
+  <% else %>
+    <div class="field">
+      <%= f.label :viaf_id %><br />
+      <%= f.label @html_dir.person.name %>
+    </div>
+  <% end %>
   <div class="actions">
     <%= f.submit %>
   </div>
