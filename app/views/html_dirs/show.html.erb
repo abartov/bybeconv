@@ -11,8 +11,8 @@
 </p>
 <p>
   <b>Person entity:</b>
-  <% if @html_dir.person.empty? %>
-    <p color="red">None yet!  Click Edit to associate with a person entity.</p>
+  <% if @html_dir.person.nil? %>
+    <p style="color:red">None yet!  Click Edit to associate with a person entity.</p>
   <% else %>
     <%= @html_dir.person.name %> (VIAF: <%= @html_dir.person.viaf_id %>)
   <% end %>

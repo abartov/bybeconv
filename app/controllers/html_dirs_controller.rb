@@ -1,4 +1,5 @@
 class HtmlDirsController < ApplicationController
+  include BybeUtils
   before_filter :require_admin
 
   # GET /html_dirs
@@ -11,7 +12,20 @@ class HtmlDirsController < ApplicationController
       format.json { render json: @html_dirs }
     end
   end
-
+  def guess_author
+    @html_dir = HtmlDir.find(params[:id])
+    @viaf_list = guess_authors_viaf(@html_dir.author)
+    respond_to do |format|
+      format.json { render json: @viaf_list }
+    end
+  end
+  def associate_viaf
+    @html_dir = HtmlDir.find(params[:id])
+    person = Person.create_or_get_person_by_viaf(params[:viaf])
+    @html_dir.person = person
+    @html_dir.save!
+    redirect_to @html_dir, notice: "Associated with VIAF id #{params[:viaf]}"
+  end
   # GET /html_dirs/1
   # GET /html_dirs/1.json
   def show

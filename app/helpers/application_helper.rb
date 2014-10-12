@@ -10,4 +10,12 @@ module ApplicationHelper
     return 'VIAF' if u =~ /https?:\/\/viaf.org\/viaf\//
     return 'אחר' 
   end
+
+  def viaf_json_to_html(json)
+    ret = '<ul>'
+    json.each do |j|
+      ret += "<li>#{j[0]} (VIAF: #{j[1]})\n"
+    end
+    ret += '</ul>'
+  end
 end

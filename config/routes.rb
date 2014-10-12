@@ -19,7 +19,8 @@ Bybeconv::Application.routes.draw do
 
   resources :html_dirs
   resources :proof
-
+  match "html_dirs/:id/guess_author" => 'html_dirs#guess_author'
+  match "html_dirs/:id/associate_viaf" => 'html_dirs#associate_viaf', as: 'html_dirs_associate_viaf'
   get "html_file/analyze"
   match "html_file/:id/edit" => 'html_file#edit', as: 'html_file_edit', via: [:get, :post]
   post "html_file/:id/update" => 'html_file#update'

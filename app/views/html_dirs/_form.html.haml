@@ -16,13 +16,36 @@
     %br
     = f.text_field :author
   - if @html_dir.person.nil? 
-    = link_to "Send to VIAF", {:controller => :html_dir, :action => :guess_author, :id => @html_dir, :remote => true}, {:class => "viaf_link", "data-done-msg" => "Output in box" } 
+    = link_to "Send to VIAF", {:controller => :html_dirs, :action => :guess_author, :id => @html_dir, :remote => true}, {:id => "viaf_link", "data-done-msg" => "Output in box" } 
+    %p
+      #viaf_results
   - else
-  .field
-    = f.label :viaf_id 
-    %br
-    = f.label @html_dir.person.name 
-  - end
+    .field
+      = f.label :viaf_id 
+      %br
+      = f.label @html_dir.person.name 
   .actions
     = f.submit
+:javascript
+  $(document).ready(function() {
+    $("#viaf_link").bind("ajax:success", function(evt, xhr, settings) {
+      var arr = xhr;
+      if(arr == null) {
+        $("#viaf_results").append("<span style='color:#e00000'>Nothing found! (try just surname)</span>");
+      }
+      else {
+        var html = "<ul>";
+        var item_id = #{@html_dir.id}
+        for (var i = 0; i < arr.length; i++) {
+          html += "<li>"+arr[i][0]+" (VIAF: "+arr[i][1]+") -&rlm; <a href=\"/html_dirs/"+item_id+"/associate_viaf?viaf="+arr[i][1]+"\">Associate with this VIAF identity</a>\n";
+        }
+        html += "</ul>";
+        $("#viaf_results").append(html);
+     }    
+    });
+    $("#viaf_link").bind("ajax:beforeSend", function(evt, xhr, settings) {
+      $("#viaf_results").append("<h2>Wait...</h2>");
+    });
+
+  });
 
