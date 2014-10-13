@@ -4,7 +4,7 @@ class ProofController < ApplicationController
   before_filter :require_editor, :only => [:list, :show, :resolve]
 
   def create
-    @p = Proof.new(:from => params['email'], :about => params['about'] || request.env["HTTP_REFERER"] || 'none', :what => params['what'], :subscribe => (params['subscribe'] == "yes" ? true : false), :status => 'new')
+    @p = Proof.new(:from => params['email'].force_encoding('utf-8'), :about => params['about'].force_encoding('utf-8') || request.env["HTTP_REFERER"].force_encoding('utf-8') || 'none', :what => params['what'].force_encoding('utf-8'), :subscribe => (params['subscribe'] == "yes" ? true : false), :status => 'new')
     h = HtmlFile.find_by_url(@p.about.sub(/https?:\/\/.*benyehuda.org\//, ''))
     @p.html_file = h unless h.nil?
     @p.save!
