@@ -41,6 +41,9 @@ def behead_traverse(dir, t, payload)
           rescue
             html = File.open(thefile, 'r:UTF-8').read
           end
+        elsif pre_read =~ /charset=UTF-8/
+          cp = 8
+          html = File.open(thefile, 'r:UTF-8').read
         else
           cp = 1255
           html = File.open(thefile, 'r:windows-1255:UTF-8').read
@@ -54,7 +57,8 @@ def behead_traverse(dir, t, payload)
           t[:upd] += 1
         end
         # keep a backup in case of catastrophe (e.g. power off) in the midst of live file update
-        if cp == 1252
+        if [8, 1252].include?(cp)
+          html.sub!('charset=windows-1252', 'charset=UTF-8')
           wenc = 'w:UTF-8'
         else
           wenc = 'w:windows-1255'
