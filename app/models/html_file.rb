@@ -285,7 +285,7 @@ class HtmlFile < ActiveRecord::Base
   end
 
   # this method is, for now, deliberately only callable manually, via the console
-  def fix_encoding
+  def manual_fix_encoding
     if self.status == 'BadCP1255'
       raw = IO.binread(self.path)
       ENCODING_SUBSTS.each { |s|

@@ -1,4 +1,5 @@
 require 'tempfile' 
+include BybeUtils
 
 ENCODING_SUBSTS = [{ :from => "\xCA", :to => "\xC9" }, # fix weird invalid chars instead of proper Hebrew xolams
     { :from => "\xFC", :to => "&uuml;"}, # fix u-umlaut
@@ -52,13 +53,3 @@ task :whatsnew, [:fromdate] => :environment do |taskname, args|
   print "done!\n"
 end
 
-private 
-
-def fix_encoding(buf)
-  # TODO: move to application.rb or something
-  newbuf = buf.force_encoding('windows-1255')
-      ENCODING_SUBSTS.each { |s|
-        newbuf.gsub!(s[:from].force_encoding('windows-1255'), s[:to])
-      }
-  return newbuf
-end 

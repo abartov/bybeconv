@@ -32,4 +32,12 @@ module BybeUtils
     end
     return known_authors[d]
   end
+
+  def fix_encoding(buf)
+    newbuf = buf.force_encoding('windows-1255')
+        ENCODING_SUBSTS.each { |s|
+          newbuf.gsub!(s[:from].force_encoding('windows-1255'), s[:to])
+        }
+    return newbuf
+  end
 end
