@@ -1,0 +1,13 @@
+%h1= "proof for #{@p.about}"
+%p= "from: #{@p.from}"
+%p
+  = 'content:'
+  %br
+  != @p.what.sub("\n","<br/>")
+%p= "submitted at: #{@p.created_at.to_s}"
+%hr
+%p
+  = link_to t(:resolve_as_fixed), proof_resolve_path(@p, :fixed => 'yes')
+%p
+  = link_to t(:resolve_as_wontfix), proof_resolve_path(@p, :fixed => 'no')
+
