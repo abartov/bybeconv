@@ -55,10 +55,10 @@ def behead_traverse(dir, t, payload)
         }
         File.utime(orig_atime, orig_mtime, thefile) # restore (falsify, heh) previous mtime/atime to avoid throwing off date-based manual BY site updates
         # get rid of backup upon successful update.  This allows the _existence_ of the file to be a sign of trouble :)
-        File.delete('behead.backup')
       rescue
         t[:badenc].push thefile
       end
+      File.delete('behead.backup')
     elsif File.directory?(thefile) and fname !~ /^_/ and fname !~ /[\._]files/ and fname !~ /^\./ and not AppConstants.populate_exclude.split(';').include? fname
       behead_traverse(thefile, t, payload) # recurse
     else
