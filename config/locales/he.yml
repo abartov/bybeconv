@@ -6,3 +6,5 @@ he:
   proof_subscribed: אנו שמחים שברצונך לקבל עדכונים מפרויקט בן-יהודה בעתיד.  נוסיף אותך לרשימת הדיוור שלנו בהקדם, בכתובת %{email}
   proof_contact_html: "בכל שאלה, תוכלו לכתוב אל צוות העורכים, בכתובת <a href=\"mailto:editor@benyehuda.org\">editor@benyehuda.org</a>."
 # TODO: add notification e-mail when resolving a proof
+  proof_show_text: הצג את הטקסט בחלון נפרד
+
