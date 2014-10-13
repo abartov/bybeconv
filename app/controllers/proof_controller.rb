@@ -16,7 +16,7 @@ class ProofController < ApplicationController
     # calculate tallies
     @count = { :all => Proof.count, :open => Proof.where(status: 'new').count, :resolved => Proof.where(status: 'resolved').count, :wontfix => Proof.where(status: 'wontfix').count }
     if params[:status].nil?
-      @proofs = Proof.all.page(params[:page]) 
+      @proofs = Proof.page(params[:page]) 
     else
       @proofs = Proof.where(status: params[:status]).page(params[:page])
     end
