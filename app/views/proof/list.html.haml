@@ -5,10 +5,10 @@
 
 %table
   %tr
-    %th= file
-    %th= email
-    %th= 'when'
-    %th= status
+    %th file
+    %th email
+    %th 'when'
+    %th status
   - @proofs.each do |p|
     %tr
       %td= link_to p.about, proof_show_path(p)

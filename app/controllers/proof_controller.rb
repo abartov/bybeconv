@@ -10,7 +10,7 @@ class ProofController < ApplicationController
     @p.save!
   end
   def index
-    list
+    redirect_to :action => :list
   end
   def list
     # calculate tallies
