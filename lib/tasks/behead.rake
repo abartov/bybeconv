@@ -32,7 +32,19 @@ def behead_traverse(dir, t, payload)
     if !(File.directory?(thefile)) and fname =~ /\.html$/ and not fname == 'index.html' and fname !~ /_no_nikkud/ and not dir == AppConstants.base_dir 
       t[:files] += 1 
       begin
-        html = File.open(thefile, 'r:windows-1255:UTF-8').read
+        # fugly hack
+        pre_read = File.open(thefile, 'rb').read(2000)
+        if pre_read =~ /windows-1252/
+          cp = 1252
+          begin
+            html = File.open(thefile, 'r:windows-1252:UTF-8').read
+          rescue
+            html = File.open(thefile, 'r:UTF-8').read
+          end
+        else
+          cp = 1255
+          html = File.open(thefile, 'r:windows-1255:UTF-8').read
+        end
         orig_mtime = File.mtime(thefile)
         orig_atime = File.atime(thefile)
         unless has_placeholders?(html)
@@ -42,27 +54,31 @@ def behead_traverse(dir, t, payload)
           t[:upd] += 1
         end
         # keep a backup in case of catastrophe (e.g. power off) in the midst of live file update
-        File.open('behead.backup', 'w:windows-1255') { |f| 
+        if cp == 1252
+          wenc = 'w:UTF-8'
+        else
+          wenc = 'w:windows-1255'
+        end
+        File.open('behead.backup', wenc) { |f| 
           f.truncate(0)
           f.write(thefile + "\n")
           f.write(html)
         }
         newhtml = update_payload(html, payload)
         # DBG File.open("/tmp/__#{thefile.sub('/','_')}", 'w:windows-1255') { |f| 
-        File.open(thefile, 'w:windows-1255') { |f| 
+        File.open(thefile, wenc) { |f| 
           f.truncate(0)
           f.write(newhtml) 
         }
         File.utime(orig_atime, orig_mtime, thefile) # restore (falsify, heh) previous mtime/atime to avoid throwing off date-based manual BY site updates
         # get rid of backup upon successful update.  This allows the _existence_ of the file to be a sign of trouble :)
       rescue
+        puts "Bad encoding: #{thefile}"
         t[:badenc].push thefile
       end
-      File.delete('behead.backup')
+      File.delete('behead.backup') if File.exist?('behead.backup')
     elsif File.directory?(thefile) and fname !~ /^_/ and fname !~ /[\._]files/ and fname !~ /^\./ and not AppConstants.populate_exclude.split(';').include? fname
       behead_traverse(thefile, t, payload) # recurse
-    else
-      puts "skipping #{thefile}" # DBG
     end
   }
 end
