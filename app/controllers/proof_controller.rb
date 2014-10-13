@@ -35,7 +35,7 @@ class ProofController < ApplicationController
     end
     @p.resolved_by = session[:user]
     @p.save!
-    redirect_to :list, notice: t(:resolved_as, :fixed => (params[:fixed] ? 'תוקן' : 'כבר תקין'))
+    redirect_to :action => :list, notice: t(:resolved_as, :fixed => (params[:fixed] == 'yes' ? 'תוקן' : 'כבר תקין'))
   end
 
 end
