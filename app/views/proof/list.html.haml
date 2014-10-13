@@ -11,7 +11,7 @@
     %th status
   - @proofs.each do |p|
     %tr
-      %td= link_to p.about, proof_show_path(p)
+      %td= link_to p.about, proof_path(p)
       %td= p.from
       %td= p.created_at
       %td= p.status
