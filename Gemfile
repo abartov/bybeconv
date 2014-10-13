@@ -5,7 +5,6 @@ gem 'rails', '~> 3.2.14'
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
-gem 'mysql'
 gem 'mysql2'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-twitter'
