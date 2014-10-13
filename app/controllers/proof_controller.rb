@@ -9,7 +9,9 @@ class ProofController < ApplicationController
     @p.html_file = h unless h.nil?
     @p.save!
   end
-
+  def index
+    list
+  end
   def list
     # calculate tallies
     @count = { :all => Proof.count, :open => Proof.count(status: 'new'), :resolved => Proof.count(status: 'resolved'), :wontfix => Proof.count(status: 'wontfix') }
