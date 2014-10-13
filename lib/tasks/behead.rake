@@ -9,8 +9,8 @@ task :behead => :environment do
 
   payload = YAML::load(f.read) # read payload hash
   # convert the payload to Windows-1255, to match the HTML files.   fugly, I know...
-#  payload['head'].encode!('windows-1255')
-#  payload['body'].encode!('windows-1255')
+  #payload['head'].encode!('windows-1255')
+  #payload['body'].encode!('windows-1255')
 
   # traverse tree and process all HTML files
   behead_traverse(thedir, tot, payload)
@@ -29,10 +29,10 @@ def behead_traverse(dir, t, payload)
   print "traversing directory ##{t[:dir]} - #{dir}                \r"
   Dir.foreach(dir) { |fname|
     thefile = dir+'/'+fname
-    if !(File.directory?(thefile)) and fname =~ /\.html$/
+    if !(File.directory?(thefile)) and fname =~ /\.html$/ and not fname == 'index.html' and fname !~ /_no_nikkud/ and not dir == AppConstants.base_dir 
       t[:files] += 1 
       begin
-        html = File.open(thefile, 'r:windows-1255').read
+        html = File.open(thefile, 'r:windows-1255:UTF-8').read
         orig_mtime = File.mtime(thefile)
         orig_atime = File.atime(thefile)
         unless has_placeholders?(html)
@@ -48,6 +48,7 @@ def behead_traverse(dir, t, payload)
           f.write(html)
         }
         newhtml = update_payload(html, payload)
+        # DBG File.open("/tmp/__#{thefile.sub('/','_')}", 'w:windows-1255') { |f| 
         File.open(thefile, 'w:windows-1255') { |f| 
           f.truncate(0)
           f.write(newhtml) 
@@ -58,8 +59,10 @@ def behead_traverse(dir, t, payload)
       rescue
         t[:badenc].push thefile
       end
-    elsif File.directory?(thefile) and fname !~ /^_/ and fname !~ /^\./ and not AppConstants.populate_exclude.split(';').include? fname
+    elsif File.directory?(thefile) and fname !~ /^_/ and fname !~ /[\._]files/ and fname !~ /^\./ and not AppConstants.populate_exclude.split(';').include? fname
       behead_traverse(thefile, t, payload) # recurse
+    else
+      puts "skipping #{thefile}" # DBG
     end
   }
 end
