@@ -26,7 +26,7 @@ class ProofController < ApplicationController
     @p = Proof.find(params[:id])
   end
 
-  def resolve(fixed)
+  def resolve
     @p = Proof.find(params[:id])
     if params[:fixed] == 'yes'
       @p.status = 'resolved'
@@ -35,7 +35,7 @@ class ProofController < ApplicationController
     end
     @p.resolved_by = session[:user]
     @p.save!
-    redirect_to :list, notice: t(:resolved_as, fixed => (params[:fixed] ? 'תוקן' : 'כבר תקין'))
+    redirect_to :list, notice: t(:resolved_as, :fixed => (params[:fixed] ? 'תוקן' : 'כבר תקין'))
   end
 
 end
