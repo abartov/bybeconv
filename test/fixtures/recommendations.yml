@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  from: MyString
+  about: MyString
+  what: MyString
+  subscribe: false
+  status: MyString
+  resolved_by: 1
+
+two:
+  from: MyString
+  about: MyString
+  what: MyString
+  subscribe: false
+  status: MyString
+  resolved_by: 1

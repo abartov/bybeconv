@@ -1,0 +1,23 @@
+- if params[:status].nil?
+  %h1= t(:all_recommendations)
+- else
+  %h1= t(:recommendations_by_status, :status => params[:status])
+
+%table
+  %tr
+    %th file
+    %th email
+    %th 'when'
+    %th status
+  - @recs.each do |p|
+    %tr
+      %td= link_to p.about, recommendation_path(p)
+      %td= p.from
+      %td= p.created_at
+      %td= p.status
+
+%p
+  = link_to t(:show_all_recommendations), recommendation_list_path(:status => nil)
+%p
+  = link_to t(:show_open_recommendations), recommendation_list_path(:status => 'new')
+

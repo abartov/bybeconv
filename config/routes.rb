@@ -19,6 +19,11 @@ Bybeconv::Application.routes.draw do
   get "proof/list"
   get "proof/:id/resolve" => 'proof#resolve', as: 'proof_resolve'
   resources :proof
+
+  get "recommendation/list"
+  get "recommendation/:id/resolve" => 'recommendation#resolve', as: 'recommendation_resolve'
+  resources :recommendation
+
   get "html_file/analyze"
   match "html_file/:id/edit" => 'html_file#edit', as: 'html_file_edit', via: [:get, :post]
   post "html_file/:id/update" => 'html_file#update'
