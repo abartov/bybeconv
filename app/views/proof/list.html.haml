@@ -1,7 +1,7 @@
 - if params[:status].nil?
   %h1= t(:all_proofs)
 - else
-  %h1= t(:proofs_by_status, status => params[:status])
+  %h1= t(:proofs_by_status, :status => params[:status])
 
 %table
   %tr
@@ -17,5 +17,7 @@
       %td= p.status
 
 %p
-  fesh
+  = link_to t(:show_all_proofs), proof_list_path(:status => nil)
+%p
+  = link_to t(:show_open_proofs), proof_list_path(:status => 'new')
 
