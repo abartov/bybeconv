@@ -1,5 +1,5 @@
 require 'tempfile' 
-include BybeUtils
+require 'bybe_utils'
 
 ENCODING_SUBSTS = [{ :from => "\xCA", :to => "\xC9" }, # fix weird invalid chars instead of proper Hebrew xolams
     { :from => "\xFC", :to => "&uuml;"}, # fix u-umlaut
