@@ -1,7 +1,7 @@
 desc "Regenerate the sequence numbers for extant HtmlFiles according to current contents of the index.html files"
 task :sequence => :environment do
-  error = false
   HtmlDir.where(need_resequence: true).each {|d|
+    error = false
     # read respective index.html, build a hash of filenames and sequences
     puts "Processing dir: #{d.path}."
     fname = "#{AppConstants.base_dir}/#{d.path}/index.html"
@@ -30,6 +30,8 @@ task :sequence => :environment do
       d.need_resequence = false
       d.save!
     end
+    puts "#{HtmlDir.where(need_resequence: true).count} to go"
+    #break
   }
 end
 
