@@ -34,7 +34,7 @@ def behead_traverse(dir, t, payload)
       begin
         # fugly hack
         pre_read = File.open(thefile, 'rb').read(2000)
-        if pre_read =~ /windows-1252/
+        if pre_read =~ /windows-1252/ or pre_read =~ /ISO-8859-1/
           cp = 1252
           begin
             html = File.open(thefile, 'r:windows-1252:UTF-8').read
@@ -60,6 +60,7 @@ def behead_traverse(dir, t, payload)
         # keep a backup in case of catastrophe (e.g. power off) in the midst of live file update
         if [8, 1252].include?(cp)
           html.sub!('charset=windows-1252', 'charset=UTF-8')
+          html.sub!('charset=ISO-8859-1', 'charset=UTF-8')
           wenc = 'w:UTF-8'
         else
           wenc = 'w:windows-1255'
