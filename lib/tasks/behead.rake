@@ -50,6 +50,7 @@ def behead_traverse(dir, t, payload)
         end
         orig_mtime = File.mtime(thefile)
         orig_atime = File.atime(thefile)
+        html = remove_font_cruft(html) # remove Word-generated useless font-face list
         unless has_placeholders?(html)
           html = insert_payload_placeholders(html) 
           t[:new] += 1
@@ -92,10 +93,10 @@ def has_placeholders?(buf)
 end
 def insert_payload_placeholders(buf)
   # insert section in HEAD
-  m = buf.match(/<\/head>/)
+  m = buf.match(/<\/head>/i)
   buf = $` + "<!-- begin BY head --><!-- end BY head -->" + $& + $'
   # insert section in BODY
-  m = buf.match(/<body[^>]*>/)
+  m = buf.match(/<body[^>]*>/i)
   buf = $` + $& + "<!-- begin BY body --><!-- end BY body -->" + $'
   return buf
 end
@@ -109,5 +110,18 @@ def update_payload(buf, payload)
   m = tmpbuf.match(/<!-- end BY body -->/)
   newbuf += $& + $'
   return newbuf
+end
+def remove_font_cruft(buf)
+  dbg_size = buf.length
+  m = buf.match(/\/\* Font Definitions \*\//)
+  return buf if m.nil? 
+  tmpbuf = $`
+  remainder = $'
+  m = remainder.match(/\/\* Style Definitions \*\//)
+  tmpbuf += $& + $' # effectively skip the whole interminable font-face definitions
+  dbg_newlen = tmpbuf.length
+  ratio = dbg_newlen.to_f/dbg_size*100
+  puts "DBG: #{dbg_size-dbg_newlen} bytes removed (now #{ratio.round(2)}%)" if ratio < 90.0
+  return tmpbuf
 end
 
