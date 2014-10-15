@@ -94,6 +94,7 @@ end
 def insert_payload_placeholders(buf)
   # insert section in HEAD
   m = buf.match(/<\/head>/i)
+  return buf if m.nil? # though, seriously?
   buf = $` + "<!-- begin BY head --><!-- end BY head -->" + $& + $'
   # insert section in BODY
   m = buf.match(/<body[^>]*>/i)
@@ -102,6 +103,7 @@ def insert_payload_placeholders(buf)
 end
 def update_payload(buf, payload)
   m = buf.match(/<!-- begin BY head -->/)
+  return buf if m.nil? # though, seriously?
   tmpbuf = $` + $& + payload['head']
   m = buf.match(/<!-- end BY head -->/)
   tmpbuf += $& + $'
