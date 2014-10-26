@@ -1,7 +1,7 @@
 class ProofController < ApplicationController
 
   protect_from_forgery :except => :submit # allow submission from outside the app
-  before_filter :require_editor, :only => [:list, :show, :resolve]
+  before_filter :require_editor, :only => [:list, :show, :resolve, :purge]
 
   def create
     @p = Proof.new(:from => params['email'], :about => params['about'] || request.env["HTTP_REFERER"] || 'none', :what => params['what'], :subscribe => (params['subscribe'] == "yes" ? true : false), :status => 'new')
@@ -35,7 +35,12 @@ class ProofController < ApplicationController
     end
     @p.resolved_by = session[:user]
     @p.save!
-    redirect_to :action => :list, notice: t(:resolved_as, :fixed => (params[:fixed] == 'yes' ? 'תוקן' : 'כבר תקין'))
+    flash[:notice] = t(:resolved_as, :fixed => (params[:fixed] == 'yes' ? 'תוקן' : 'כבר תקין'))
+    redirect_to :action => :list
   end
-
+  def purge
+    Proof.where(status: 'wontfix').delete_all
+    flash[:notice] = t(:purged)
+    redirect_to :action => :list
+  end
 end

@@ -17,10 +17,12 @@ Bybeconv::Application.routes.draw do
   resources :html_dirs
 
   get "proof/list"
+  get "proof/purge" => 'proof#purge', as: 'proof_purge'
   get "proof/:id/resolve" => 'proof#resolve', as: 'proof_resolve'
   resources :proof
 
   get "recommendation/list"
+  get "recommendation/purge" => 'recommendation#purge', as: 'recommendation_purge'
   get "recommendation/:id/resolve" => 'recommendation#resolve', as: 'recommendation_resolve'
   resources :recommendation
 

@@ -7,4 +7,34 @@ he:
   proof_contact_html: "בכל שאלה, תוכלו לכתוב אל צוות העורכים, בכתובת <a href=\"mailto:editor@benyehuda.org\">editor@benyehuda.org</a>."
 # TODO: add notification e-mail when resolving a proof
   proof_show_text: הצג את הטקסט בחלון נפרד
-
+  purged: הפריטים הוסרו.
+  rec_file: קובץ
+  rec_when: מתי
+  status: סטטוס
+  email: דואל
+  proof_file: קובץ
+  proof_when: מתי
+  all_recommendations: כל ההמלצות
+  show_all_recommendations: הצג את כל ההמלצות
+  show_open_recommendations: הצג המלצות חדשות
+  purge_rejected_recommendations: מחק המלצות שנדחו
+  back_to_dashboard: חזרה למרכז הפעילות
+  recommendations_by_status: המלצות לפי סטטוס %{status}
+  sign_in_google_twitter: התחברו באמצעות זהות גוגל או טוויטר
+  sign_out: התנתקות
+  show_all_proofs: הצג את כל ההגהות
+  show_open_proofs: הצג הגהות חדשות
+  purge_wontfix_proofs: מחק המלצות שנדחו
+  all_proofs: כל ההגהות
+  proofs_by_status: הגהות לפי סטטוס %{status}
+  welcome: 'שלום '
+  please_log_in: אין מה לראות לפני התחברות למערכת.
+  user_management: ניהול משתמשים
+  editor_actions: פעולות עורך
+  admin_actions: פעולות מנהל
+  proof_for: הגהה עבור הקובץ
+  from: מאת
+  content: תוכן
+  submitted_at: התקבל בתאריך 
+  html_dirs_list: רשימת תיקיות
+  html_files_list: רשימת קבצים

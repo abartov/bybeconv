@@ -35,7 +35,12 @@ class RecommendationController < ApplicationController
     end
     @p.resolved_by = session[:user]
     @p.save!
-    redirect_to :action => :list, notice: t(:resolved_as, :fixed => (params[:accept] == 'yes' ? 'אושר' : 'נדחה'))
+    flash[:notice] = t(:resolved_as, :fixed => (params[:accept] == 'yes' ? 'אושר' : 'נדחה'))
+    redirect_to :action => :list
   end
-
+  def purge
+    Recommendation.where(status: 'rejected').delete_all
+    flash[:notice] = t(:purged)
+    redirect_to :action => :list
+  end
 end

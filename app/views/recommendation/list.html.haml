@@ -5,10 +5,10 @@
 
 %table
   %tr
-    %th file
-    %th email
-    %th 'when'
-    %th status
+    %th= t(:rec_file)
+    %th= t(:email)
+    %th= t(:rec_when)
+    %th= t(:status)
   - @recs.each do |p|
     %tr
       %td= link_to p.about, recommendation_path(p)
@@ -20,4 +20,5 @@
   = link_to t(:show_all_recommendations), recommendation_list_path(:status => nil)
 %p
   = link_to t(:show_open_recommendations), recommendation_list_path(:status => 'new')
-
+%p
+  = link_to t(:purge_rejected_recommendations), recommendation_purge_path

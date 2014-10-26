@@ -1,14 +1,14 @@
 %h1
-  = "proof for"
+  = t(:proof_for)
   = @p.about
 %p
   = link_to t(:proof_show_text), @p.about, :target => "_blank"
-%p= "from: #{@p.from}"
+%p= "#{t(:from)} #{@p.from}"
 %p
-  = 'content:'
+  = t(:content)
   %br
   != @p.what.sub("\n","<br/>")
-%p= "submitted at: #{@p.created_at.to_s}"
+%p= "#{t(:submitted_at)} #{@p.created_at.to_s}"
 %hr
 %p
   = link_to t(:resolve_as_fixed), proof_resolve_path(@p, :fixed => 'yes')
