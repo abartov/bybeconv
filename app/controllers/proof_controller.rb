@@ -24,6 +24,7 @@ class ProofController < ApplicationController
 
   def show
     @p = Proof.find(params[:id])
+    @p.what = '' if @p.what.nil?
   end
   def resolve
     fix_text = ''

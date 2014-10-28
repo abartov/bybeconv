@@ -24,6 +24,7 @@ class RecommendationController < ApplicationController
 
   def show
     @p = Recommendation.find(params[:id])
+    @p.what = '' if @p.what.nil?
   end
 
   def resolve
