@@ -41,6 +41,8 @@ he:
   resolve_as_fixed: השגיאה תוקנה (שולח דואל!)
   resolve_as_wontfix: לא שגיאה, או לא יתוקן (שולח דואל!)
   resolve_as_spam: דיווח זבל -> למחיקה
+  resolve_as_accepted: קבל המלצה (שולח דואל!)
+  resolve_as_rejected: דחה המלצה -> למחיקה
   resolved_as: טופל ועבר לסטטוס %{fixed}
   hello_x: שלום %{name}
   hello_anon: שלום רב!
