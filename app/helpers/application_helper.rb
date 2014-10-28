@@ -10,4 +10,7 @@ module ApplicationHelper
     return 'VIAF' if u =~ /https?:\/\/viaf.org\/viaf\//
     return 'אחר' 
   end
+  def absolute_url_from_urlpart(u)
+    return AppConstants.base_dir+u
+  end
 end

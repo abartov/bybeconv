@@ -17,14 +17,14 @@ he:
   all_recommendations: כל ההמלצות
   show_all_recommendations: הצג את כל ההמלצות
   show_open_recommendations: הצג המלצות חדשות
-  purge_rejected_recommendations: מחק המלצות שנדחו
+  purge_rejected_recommendations: מחק המלצות שנדחו וזבל
   back_to_dashboard: חזרה למרכז הפעילות
   recommendations_by_status: המלצות לפי סטטוס %{status}
   sign_in_google_twitter: התחברו באמצעות זהות גוגל או טוויטר
   sign_out: התנתקות
   show_all_proofs: הצג את כל ההגהות
   show_open_proofs: הצג הגהות חדשות
-  purge_wontfix_proofs: מחק המלצות שנדחו
+  purge_spam_proofs: מחק הגהות זבל
   all_proofs: כל ההגהות
   proofs_by_status: הגהות לפי סטטוס %{status}
   welcome: 'שלום '
@@ -38,3 +38,17 @@ he:
   submitted_at: התקבל בתאריך 
   html_dirs_list: רשימת תיקיות
   html_files_list: רשימת קבצים
+  resolve_as_fixed: השגיאה תוקנה )שולח דואל!(
+  resolve_as_wontfix: לא שגיאה, או לא יתוקן )שולח דואל!(
+  resolve_as_wontfix: דיווח זבל -> למחיקה
+  notifications.proof_fixed.subject: תודה על ההגהה!
+  notifications.proof_wontfix.subject: תודה על ההגהה!
+  notifications.recommendation_accepted.subject: תודה על ההמלצה!
+  notifications.recommendation_blogged.subject: המלצתך פורסמה ביומן הרשת!
+  hello_x: שלום %{name}
+  email_footer: "בברכה, צוות פרויקט בן-יהודה."
+  proof_fixed: "תודה רבה על ההגהה ששלחת עבור היצירה בכתובת:\n\n%{url}\n\nלאחר בדיקה, תיקנו את הטקסט באתר.  נשמח לקבל הצעות הגהה גם בעתיד!"
+  proof_wontfix: "תודה רבה על ההגהה ששלחת עבור היצירה בכתובת:\n\n%{url}\n\nלאחר בדיקה, הגענו למסקנה שאין מדובר בשגיאה, אלא בשימוש לשון בלתי-שכיח, ובכל אופן כך מופיע במקור.  לכן לא נתקן את הטקסט באתר.  נשמח לקבל הצעות הגהה גם בעתיד!"
+  rec_accepted: "קיבלנו בתודה את המלצתך על היצירה:\n\n%{url}\n\nכשנתפנה לעיין בה, נשקול לשלב אותה ברשומה ביומן הרשת שלנו, כדי שגם אחרים ייהנו."
+  rec_blogged: "המלצתך על היצירה בכתובת:\n\n%{url}\n\nשולבה עתה ברשומה ביומן הרשת של פרויקט בן-יהודה, כאן:\n\n%{blog_url}\n"
+

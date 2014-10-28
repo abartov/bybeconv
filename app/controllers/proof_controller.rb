@@ -16,7 +16,7 @@ class ProofController < ApplicationController
     # calculate tallies
     @count = { :all => Proof.count, :open => Proof.where(status: 'new').count, :resolved => Proof.where(status: 'resolved').count, :wontfix => Proof.where(status: 'wontfix').count }
     if params[:status].nil?
-      @proofs = Proof.page(params[:page]) 
+      @proofs = Proof.where('status != "spam"').page(params[:page]) 
     else
       @proofs = Proof.where(status: params[:status]).page(params[:page])
     end
@@ -25,21 +25,28 @@ class ProofController < ApplicationController
   def show
     @p = Proof.find(params[:id])
   end
-
   def resolve
+    fix_text = ''
     @p = Proof.find(params[:id])
     if params[:fixed] == 'yes'
       @p.status = 'resolved'
-    else
+      Notifications.proof_fixed(@p, @p.about)
+      fix_text = 'תוקן )ונשלח דואל('
+    elsif params[:fixed] == 'no'
       @p.status = 'wontfix'
+      Notifications.proof_wontfix(@p, @p.about)
+      fix_text = 'כבר תקין )ונשלח דואל('
+    else # spam, just ignore
+      @p.status = 'spam'
+      fix_text = 'זבל'
     end
     @p.resolved_by = session[:user]
     @p.save!
-    flash[:notice] = t(:resolved_as, :fixed => (params[:fixed] == 'yes' ? 'תוקן' : 'כבר תקין'))
+    flash[:notice] = t(:resolved_as, :fixed => fix_text)
     redirect_to :action => :list
   end
   def purge
-    Proof.where(status: 'wontfix').delete_all
+    Proof.where(status: 'spam').delete_all
     flash[:notice] = t(:purged)
     redirect_to :action => :list
   end

@@ -14,4 +14,6 @@
   = link_to t(:resolve_as_fixed), proof_resolve_path(@p, :fixed => 'yes')
 %p
   = link_to t(:resolve_as_wontfix), proof_resolve_path(@p, :fixed => 'no')
+%p
+  = link_to t(:resolve_as_spam), proof_resolve_path(@p, :fixed => 'spam')
 
