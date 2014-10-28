@@ -1,5 +1,6 @@
 check HtmlFile id 4291 in production (Sokolov) -- currently crashing on charset 
 - add auto-expiration (or hiding?) of wontfix proofs and rejected recommendations
+- add JS input for blog url when announcing blogged recommendation
 + add an auth system
 + add detection of encoding problems to HtmlFile.analyze, and to appropriate tallies etc.
   + possibly implement an auto-fixer for those?

@@ -31,12 +31,17 @@ class RecommendationController < ApplicationController
     @p = Recommendation.find(params[:id])
     if params[:accept] == 'yes'
       @p.status = 'accepted'
-    else
+      text = 'ההמלצה התקבלה וממתיה לשילוב ביומן הרשת'
+    elsif params[:accept] == 'no'
       @p.status = 'rejected'
+      text = 'ההמלצה נדחתה ותימחק עם השאר'
+    else
+      @p.status = 'archived'
+      text = 'ההמלצה אורכבה ונשלח דואל לממליץ/ה'
     end
     @p.resolved_by = session[:user]
     @p.save!
-    flash[:notice] = t(:resolved_as, :fixed => (params[:accept] == 'yes' ? 'אושר' : 'נדחה'))
+    flash[:notice] = t(:resolved_as, :fixed => text)
     redirect_to :action => :list
   end
   def purge
