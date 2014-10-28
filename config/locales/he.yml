@@ -41,6 +41,7 @@ he:
   resolve_as_fixed: השגיאה תוקנה (שולח דואל!)
   resolve_as_wontfix: לא שגיאה, או לא יתוקן (שולח דואל!)
   resolve_as_spam: דיווח זבל -> למחיקה
+  resolved_as: טופל ועבר לסטטוס %{fixed}
   notifications.proof_fixed.subject: תודה על ההגהה!
   notifications.proof_wontfix.subject: תודה על ההגהה!
   notifications.recommendation_accepted.subject: תודה על ההמלצה!
