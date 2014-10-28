@@ -7,7 +7,7 @@ class Notifications < ActionMailer::Base
   #   en.notifications.proof_fixed.subject
   #
   def proof_fixed(proof, url)
-    @greeting = t(:hello_x, {:name => user.name})
+    @greeting = t(:hello_anon)
     @proof = proof
     @url = url
     mail to: proof.from
@@ -19,7 +19,7 @@ class Notifications < ActionMailer::Base
   #   en.notifications.proof_wontfix.subject
   #
   def proof_wontfix(proof, url)
-    @greeting = t(:hello_x, {:name => user.name})
+    @greeting = t(:hello_anon)
     @proof = proof
     @url = url
     mail to: proof.from
@@ -31,7 +31,7 @@ class Notifications < ActionMailer::Base
   #   en.notifications.recommendation_accepted.subject
   #
   def recommendation_accepted(rec, url)
-    @greeting = t(:hello_x, {:name => user.name})
+    @greeting = t(:hello_anon)
     @rec = rec
     @url = url
 
@@ -44,7 +44,7 @@ class Notifications < ActionMailer::Base
   #   en.notifications.recommendation_blogged.subject
   #
   def recommendation_blogged(rec, html_url, blog_url)
-    @greeting = t(:hello_x, {:name => user.name})
+    @greeting = t(:hello_anon)
     @blog_url = blog_url
     @rec = rec
     @url = html_url
