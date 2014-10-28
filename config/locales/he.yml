@@ -42,10 +42,6 @@ he:
   resolve_as_wontfix: לא שגיאה, או לא יתוקן (שולח דואל!)
   resolve_as_spam: דיווח זבל -> למחיקה
   resolved_as: טופל ועבר לסטטוס %{fixed}
-  notifications.proof_fixed.subject: תודה על ההגהה!
-  notifications.proof_wontfix.subject: תודה על ההגהה!
-  notifications.recommendation_accepted.subject: תודה על ההמלצה!
-  notifications.recommendation_blogged.subject: המלצתך פורסמה ביומן הרשת!
   hello_x: שלום %{name}
   hello_anon: שלום רב!
   email_footer: "בברכה, צוות פרויקט בן-יהודה."
@@ -53,4 +49,12 @@ he:
   proof_wontfix: "תודה רבה על ההגהה ששלחת עבור היצירה בכתובת:\n\n%{url}\n\nלאחר בדיקה, הגענו למסקנה שאין מדובר בשגיאה, אלא בשימוש לשון בלתי-שכיח, ובכל אופן כך מופיע במקור.  לכן לא נתקן את הטקסט באתר.  נשמח לקבל הצעות הגהה גם בעתיד!"
   rec_accepted: "קיבלנו בתודה את המלצתך על היצירה:\n\n%{url}\n\nכשנתפנה לעיין בה, נשקול לשלב אותה ברשומה ביומן הרשת שלנו, כדי שגם אחרים ייהנו."
   rec_blogged: "המלצתך על היצירה בכתובת:\n\n%{url}\n\nשולבה עתה ברשומה ביומן הרשת של פרויקט בן-יהודה, כאן:\n\n%{blog_url}\n"
-
+  notifications:
+    proof_fixed:
+      subject: תודה על ההגהה!
+    proof_wontfix:
+      subject: תודה על ההגהה!
+    recommendation_accepted:
+      subject: תודה על ההמלצה!
+    recommendation_blogged:
+      subject: המלצתך פורסמה ביומן הרשת!
