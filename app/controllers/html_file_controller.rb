@@ -97,7 +97,8 @@ class HtmlFileController < ApplicationController
       if h.status != 'Published'
         @html = "<h1>not yet.</h1>"
         #@html = "<h1>not yet.</h1>"
-        @html = File.open(h.path, 'r:windows-1255:UTF-8').read
+        @html = File.open(h.path, 'r:UTF-8').read
+        #@html = File.open(h.path, 'r:windows-1255:UTF-8').read
         # @html = "<h1>יצירה זו אינה מוכנה עדיין.</h1>"
       else
         unless h.html_ready?

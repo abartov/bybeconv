@@ -31,12 +31,18 @@ class RecommendationController < ApplicationController
     @p = Recommendation.find(params[:id])
     if params[:accept] == 'yes'
       @p.status = 'accepted'
+      unless @p.from.nil? or @p.from !~ /\w+@\w+\.\w+/
+        Notification.recommendation_accepted(@p, @p.about).deliver
+      end
       text = 'ההמלצה התקבלה וממתיה לשילוב ביומן הרשת'
     elsif params[:accept] == 'no'
       @p.status = 'rejected'
       text = 'ההמלצה נדחתה ותימחק עם השאר'
     else
-      @p.status = 'archived'
+      @p.status = 'archived' 
+      unless @p.from.nil? or @p.from !~ /\w+@\w+\.\w+/ 
+        Notification.recommendation_blogged(@p, @p.about, params[:blog_url]).deliver # send "blogged" notice
+      end
       text = 'ההמלצה אורכבה ונשלח דואל לממליץ/ה'
     end
     @p.resolved_by = session[:user]

@@ -31,11 +31,15 @@ class ProofController < ApplicationController
     @p = Proof.find(params[:id])
     if params[:fixed] == 'yes'
       @p.status = 'resolved'
-      Notifications.proof_fixed(@p, @p.about).deliver
+      unless @p.from.nil? or @p.from !~ /\w+@\w+\.\w+/
+        Notifications.proof_fixed(@p, @p.about).deliver
+      end
       fix_text = 'תוקן )ונשלח דואל('
     elsif params[:fixed] == 'no'
       @p.status = 'wontfix'
-      Notifications.proof_wontfix(@p, @p.about).deliver
+      unless @p.from.nil? or @p.from !~ /\w+@\w+\.\w+/
+        Notifications.proof_wontfix(@p, @p.about).deliver
+      end
       fix_text = 'כבר תקין )ונשלח דואל('
     else # spam, just ignore
       @p.status = 'spam'
