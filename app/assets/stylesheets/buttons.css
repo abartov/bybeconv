@@ -73,8 +73,8 @@
     width: 350px;
     background: #bab6d8;
     border: #29216d 1px solid;
-    position:absolute;
-    top:100px;
+    position:fixed;
+    top:70px;
     left:-393px;
     direction:rtl;
 }
@@ -101,8 +101,8 @@
     width: 350px;
     background: #bab6d8;
     border: #29216d 1px solid;
-    position:absolute;
-    top:300px;
+    position:fixed;
+    top:215px;
     left:-393px;
     direction:rtl;
 }
