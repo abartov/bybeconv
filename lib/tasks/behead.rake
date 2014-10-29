@@ -62,13 +62,11 @@ def behead_traverse(dir, t, payload)
           t[:upd] += 1
         end
         # keep a backup in case of catastrophe (e.g. power off) in the midst of live file update
-        if [8, 1252].include?(cp)
-          html.sub!('charset=windows-1252', 'charset=UTF-8')
-          html.sub!('charset=ISO-8859-1', 'charset=UTF-8')
-          wenc = 'w:UTF-8'
-        else
-          wenc = 'w:windows-1255'
-        end
+        html.sub!('charset=windows-1252', 'charset=UTF-8')
+        html.sub!('charset=ISO-8859-1', 'charset=UTF-8')
+        html.sub!('charset=windows-1255', 'charset=UTF-8')
+        wenc = 'w:UTF-8' # no matter what, we write UTF-8 files from now on!
+        #wenc = 'w:windows-1255'
         File.open('behead.backup', wenc) { |f| 
           f.truncate(0)
           f.write(thefile + "\n")
