@@ -1,8 +1,11 @@
 #require "yaml"
 desc "add/update two optional sections on all BY HTML files -- input file is assumed to be config/behead.payload off ROOT"
-task :behead => :environment do
+task :behead, [:limit] => :environment do |taskname, args|
   thedir = AppConstants.base_dir
-  tot = { :dir => 0, :files => 0, :new => 0, :upd => 0, :badenc => [] }
+  tot = { :dir => 0, :files => 0, :new => 0, :upd => 0, :badenc => [], :limit => nil }
+  unless args.limit.nil?
+    tot[:limit] = args.limit.to_i
+  end
   # read payload data
   f = File.open('config/behead.payload', 'rb')
   usage if f.nil?
@@ -28,6 +31,7 @@ def behead_traverse(dir, t, payload)
   t[:dir]=t[:dir]+1
   print "traversing directory ##{t[:dir]} - #{dir}                \r"
   Dir.foreach(dir) { |fname|
+    break unless t[:limit].nil? or t[:files] <= t[:limit]
     thefile = dir+'/'+fname
     if !(File.directory?(thefile)) and fname =~ /\.html$/ and not fname == 'index.html' and fname !~ /_no_nikkud/ and not dir == AppConstants.base_dir 
       t[:files] += 1 
