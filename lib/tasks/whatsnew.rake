@@ -14,9 +14,8 @@ task :whatsnew, [:fromdate] => :environment do |taskname, args|
   known_authors = {}
   thedir = AppConstants.base_dir # environment-sensitive constant
   tot = { :dir => 0, :files => 0, :new => 0, :upd => 0 }
-  debugger
   newfiles = HtmlFile.new_since(Date.parse(args.fromdate).to_time)
-  debugger 
+  #debugger 
   print "\n#{newfiles.count} new files found since #{args.fromdate}.\n"
   files_by_author = {}
   progress = 1
