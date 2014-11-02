@@ -15,7 +15,10 @@
 /tmp
 *.swp
 
+# ignore symlink
+/by
 # ignore site-specific config
 /config/database.yml
 /config/constants.yml
+/config/s3.yml
 /config/behead.payload
