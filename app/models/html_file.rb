@@ -429,20 +429,25 @@ class HtmlFile < ActiveRecord::Base
     return [title.strip, author]
   end
   def self.title_from_file(f)
+    puts "title_from_file: #{f}" # DBG
     html = ''
     begin 
-      html = File.open(f, "r:windows-1255:UTF-8").read
+      html = File.open(f, "r:UTF-8").read
     rescue
-      raw = IO.binread(f).force_encoding('windows-1255')
-      raw = fix_encoding(raw)
-      tmpfile = Tempfile.new(f.sub(AppConstants.base_dir,'').gsub('/',''))
       begin
-        tmpfile.write(raw)
-        tmpfilename = tmpfile.path
-        html = File.open(tmpfilename, "r:windows-1255:UTF-8").read 
-        tmpfile.close
+        html = File.open(f, "r:windows-1255:UTF-8").read
       rescue
-        return "BAD_ENCODING!"
+        raw = IO.binread(f).force_encoding('windows-1255')
+        raw = fix_encoding(raw)
+        tmpfile = Tempfile.new(f.sub(AppConstants.base_dir,'').gsub('/',''))
+        begin
+          tmpfile.write(raw)
+          tmpfilename = tmpfile.path
+          html = File.open(tmpfilename, "r:windows-1255:UTF-8").read 
+          tmpfile.close
+        rescue
+          return "BAD_ENCODING!"
+        end
       end
     end
     return title_from_html(html)
