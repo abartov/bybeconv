@@ -34,7 +34,7 @@ class RecommendationController < ApplicationController
     if params[:accept] == 'yes'
       @p.status = 'accepted'
       unless @p.from.nil? or @p.from !~ /\w+@\w+\.\w+/
-        Notification.recommendation_accepted(@p, @p.about).deliver
+        Notifications.recommendation_accepted(@p, @p.about).deliver
       end
       text = 'ההמלצה התקבלה וממתיה לשילוב ביומן הרשת'
     elsif params[:accept] == 'no'
@@ -43,7 +43,7 @@ class RecommendationController < ApplicationController
     else
       @p.status = 'archived' 
       unless @p.from.nil? or @p.from !~ /\w+@\w+\.\w+/ 
-        Notification.recommendation_blogged(@p, @p.about, params[:blog_url]).deliver # send "blogged" notice
+        Notifications.recommendation_blogged(@p, @p.about, params[:blog_url]).deliver # send "blogged" notice
       end
       text = 'ההמלצה אורכבה ונשלח דואל לממליץ/ה'
     end
