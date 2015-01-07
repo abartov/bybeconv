@@ -17,9 +17,9 @@
       %td= p.status
 
 %p
-  = link_to t(:show_all_proofs), proof_list_path(:status => nil)
+  = link_to t(:show_all_proofs), proof_list_path(:show_status => nil)
 %p
-  = link_to t(:show_open_proofs), proof_list_path(:status => 'new')
+  = link_to t(:show_open_proofs), proof_list_path(:show_status => 'new')
 %p
   = link_to t(:purge_spam_proofs), proof_purge_path
 %hr
