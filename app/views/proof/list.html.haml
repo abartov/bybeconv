@@ -22,4 +22,5 @@
   = link_to t(:show_open_proofs), proof_list_path(:status => 'new')
 %p
   = link_to t(:purge_spam_proofs), proof_purge_path
-
+%hr
+!= paginate @proofs

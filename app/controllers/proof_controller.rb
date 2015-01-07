@@ -50,7 +50,7 @@ class ProofController < ApplicationController
     @p.resolved_by = session[:user]
     @p.save!
     flash[:notice] = t(:resolved_as, :fixed => fix_text)
-    redirect_to :action => :list
+    redirect_to :action => :list, :status => 'new'
   end
   def purge
     Proof.where(status: 'spam').delete_all
