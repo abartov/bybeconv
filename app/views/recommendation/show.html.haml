@@ -9,7 +9,9 @@
 %p
   = link_to t(:resolve_as_accepted), recommendation_resolve_path(@p, :accept => 'yes')
 %p
-  = link_to t(:resolve_as_blogged), recommendation_resolve_path(@p, :accept => 'blogged')
-%p
   = link_to t(:resolve_as_rejected), recommendation_resolve_path(@p, :accept => 'no')
+%hr
+%form
+%p
+  = link_to t(:resolve_as_blogged), recommendation_resolve_path(@p, :accept => 'blogged'), {:class => 'blogged_btn'}
 

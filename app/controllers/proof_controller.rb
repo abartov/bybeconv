@@ -17,10 +17,10 @@ class ProofController < ApplicationController
   def list
     # calculate tallies
     @count = { :all => Proof.count, :open => Proof.where(status: 'new').count, :resolved => Proof.where(status: 'resolved').count, :wontfix => Proof.where(status: 'wontfix').count }
-    if params[:status].nil?
+    if params[:show_status].nil?
       @proofs = Proof.where('status != "spam"').page(params[:page]) 
     else
-      @proofs = Proof.where(status: params[:status]).page(params[:page])
+      @proofs = Proof.where(status: params[:show_status]).page(params[:page])
     end
   end
 
@@ -50,7 +50,7 @@ class ProofController < ApplicationController
     @p.resolved_by = session[:user]
     @p.save!
     flash[:notice] = t(:resolved_as, :fixed => fix_text)
-    redirect_to :action => :list, :status => 'new'
+    redirect_to :action => :list, :show_status => 'new'
   end
   def purge
     Proof.where(status: 'spam').delete_all
