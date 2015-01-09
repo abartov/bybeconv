@@ -433,10 +433,14 @@ class HtmlFile < ActiveRecord::Base
     html = ''
     begin 
       html = File.open(f, "r:UTF-8").read
+      z = html.gsub("\n", ' ') # ensure no bad encoding
+      puts "read as UTF8" # DBG
     rescue
       begin
         html = File.open(f, "r:windows-1255:UTF-8").read
+        puts "read as UTF8 convering from 1255" # DBG
       rescue
+        puts "read as binary, fixing encoding and trying to reread" # DBG
         raw = IO.binread(f).force_encoding('windows-1255')
         raw = fix_encoding(raw)
         tmpfile = Tempfile.new(f.sub(AppConstants.base_dir,'').gsub('/',''))
@@ -445,6 +449,7 @@ class HtmlFile < ActiveRecord::Base
           tmpfilename = tmpfile.path
           html = File.open(tmpfilename, "r:windows-1255:UTF-8").read 
           tmpfile.close
+          puts "read as UTF8 from 1255 after binary fixing" #DBG
         rescue
           return "BAD_ENCODING!"
         end
