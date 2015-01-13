@@ -18,9 +18,9 @@ class ProofController < ApplicationController
     # calculate tallies
     @count = { :all => Proof.count, :open => Proof.where(status: 'new').count, :resolved => Proof.where(status: 'resolved').count, :wontfix => Proof.where(status: 'wontfix').count }
     if params[:show_status].nil?
-      @proofs = Proof.where('status != "spam"').page(params[:page]) 
+      @proofs = Proof.where('status != "spam"').order(about: :asc).page(params[:page]) 
     else
-      @proofs = Proof.where(status: params[:show_status]).page(params[:page])
+      @proofs = Proof.where(status: params[:show_status]).order(about: :asc).page(params[:page])
     end
   end
 
