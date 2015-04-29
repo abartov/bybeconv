@@ -37,15 +37,15 @@ def behead_traverse(dir, t, payload)
       t[:files] += 1 
       begin
         # fugly hack
-        pre_read = File.open(thefile, 'rb').read(2000)
-        if pre_read =~ /windows-1252/ or pre_read =~ /ISO-8859-1/
+        pre_read = File.open(thefile, 'rb').read(2000).upcase
+        if pre_read =~ /WINDOWS-1252/ or pre_read =~ /ISO-8859-1/
           cp = 1252
           begin
             html = File.open(thefile, 'r:windows-1252:UTF-8').read
           rescue
             html = File.open(thefile, 'r:UTF-8').read
           end
-        elsif pre_read =~ /charset=UTF-8/
+        elsif pre_read =~ /CHARSET=UTF-8/
           cp = 8
           html = File.open(thefile, 'r:UTF-8').read
         else
