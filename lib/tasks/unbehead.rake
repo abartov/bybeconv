@@ -9,7 +9,7 @@ task :unbehead, [:limit] => :environment do |taskname, args|
   end
 
   # traverse tree and process all HTML files
-  behead_traverse(thedir, tot)
+  unbehead_traverse(thedir, tot)
 
   tot[:badenc].each {|f| print "#{f} has mixed encoding.\n" }
   tot[:utf16].each {|f| print "#{f} has UTF-16 I can't convert!\n" }
@@ -17,7 +17,7 @@ task :unbehead, [:limit] => :environment do |taskname, args|
 end
 
 private
-def behead_traverse(dir, t)
+def unbehead_traverse(dir, t)
   t[:dir]=t[:dir]+1
   print "traversing directory ##{t[:dir]} - #{dir}                \r"
   Dir.foreach(dir) { |fname|
@@ -83,7 +83,7 @@ def behead_traverse(dir, t)
       end
       File.delete('behead.backup') if File.exist?('behead.backup')
     elsif File.directory?(thefile) and fname !~ /^_/ and fname !~ /[\._]files/ and fname !~ /^\./ and not AppConstants.populate_exclude.split(';').include? fname
-      behead_traverse(thefile, t) # recurse
+      unbehead_traverse(thefile, t) # recurse
     end
   }
 end
