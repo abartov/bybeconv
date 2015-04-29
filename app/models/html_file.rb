@@ -1,6 +1,6 @@
 # This model implements parsing and rendering down of icky fatty Microsoft-Word-generated HTML files into reasonable MultiMarkDown texts.  It makes no attempt at being general-purpose -- it is designed to mass-convert files from Project Ben-Yehuda (http://benyehuda.org), but it is hoped it would be easily adaptable to other mass-conversion efforts of Word-generated HTML files, with some tweaking of the regexps and the markdown generation. --abartov
 
-require 'multimarkdown'
+require 'rmultimarkdown'
 include BybeUtils
 
 ENCODING_SUBSTS = [{ :from => "\xCA", :to => "\xC9" }, # fix weird invalid chars instead of proper Hebrew xolams
@@ -59,7 +59,7 @@ class NokoDoc < Nokogiri::XML::SAX::Document
       else
         class_attr = attributes.assoc('class')[1]
       end
-      if ['aa','a1'].include? class_attr # one heading style in PBY texts, see doc/guide_to_icky_Word_html.txt
+      if ['aa','a1','a'].include? class_attr # one heading style in PBY texts, see doc/guide_to_icky_Word_html.txt
         @in_subhead = true
       end
     elsif name == 'b'
@@ -109,7 +109,7 @@ class NokoDoc < Nokogiri::XML::SAX::Document
     end
   end
 
-  def characters s
+  def characters(s)
     if @links.empty? or @links.last['ignore']
       if (s =~ /\S/)
         @spans.last[:anything] = true if @spans.count > 0  # TODO: optimize, add unless @spans.last[:anything] maybe

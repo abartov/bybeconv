@@ -37,10 +37,13 @@ gem 'htmlentities'
 #gem 'will_paginate'
 gem 'kaminari' # pagination
 gem 'nokogiri'
-gem 'rpeg-multimarkdown' # note: gem unmaintained, native part doesn't build under Ruby 2.1 -- may need updating the native part from the actual peg-multimarkdown implementation.
+gem 'rmultimarkdown' # new wrapper over Fletcher Penney's MultiMarkDown 4 (MMD 4)
+
+#gem 'rpeg-multimarkdown', :github => 'djungelvral/rpeg-multimarkdown' # note: gem unmaintained, native part doesn't build under Ruby 2.1 -- may need updating the native part from the actual peg-multimarkdown implementation.
 
 # To use debugger
-gem 'debugger'
+#gem 'debugger'
+#gem 'byebug'
 
 gem 'app_constants' # anything more Railsy?
 gem 'hebrew' # https://github.com/abartov/hebrew

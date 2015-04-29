@@ -42,14 +42,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.7.0)
-    columnize (0.3.6)
     daemons (1.1.9)
-    debugger (1.6.5)
-      columnize (>= 0.3.1)
-      debugger-linecache (~> 1.2.0)
-      debugger-ruby_core_source (~> 1.3.1)
-    debugger-linecache (1.2.0)
-    debugger-ruby_core_source (1.3.1)
     erubis (2.7.0)
     eventmachine (1.0.3)
     execjs (2.0.2)
@@ -142,7 +135,8 @@ GEM
     rdoc (3.12.2)
       json (~> 1.4)
     ref (1.0.5)
-    rpeg-multimarkdown (0.1.1)
+    rmultimarkdown (4.7.1.1)
+      bundler
     sass (3.2.14)
     sass-rails (3.2.6)
       railties (~> 3.2.0)
@@ -179,7 +173,6 @@ DEPENDENCIES
   app_constants
   clockwork
   coffee-rails
-  debugger
   execjs
   haml
   haml-rails
@@ -193,7 +186,7 @@ DEPENDENCIES
   omniauth-google-oauth2
   omniauth-twitter
   rails (~> 3.2.14)
-  rpeg-multimarkdown
+  rmultimarkdown
   sass-rails
   therubyracer
   thin
