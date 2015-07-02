@@ -40,4 +40,12 @@ module BybeUtils
         }
     return newbuf
   end
+  def is_blacklisted_ip(ip)
+    # check posting IP against HTTP:BL
+    unless AppConstants.project_honeypot_api_key.nil?
+      listing = ProjectHoneypot.lookup(AppConstants.project_honeypot_api_key, ip)
+      return true if listing.comment_spammer? or listing.suspicious? # silently ignore spam submissions
+    end
+    return false  
+  end
 end

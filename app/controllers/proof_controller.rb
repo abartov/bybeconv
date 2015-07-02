@@ -4,7 +4,7 @@ class ProofController < ApplicationController
   before_filter :require_editor, :only => [:list, :show, :resolve, :purge]
 
   def create
-    unless params['what'].nil? or params['what'].empty? # don't bother capturing null submissions
+    unless params['what'].nil? or params['what'].empty? or is_blacklisted_ip(request.remote_ip) # don't bother capturing null submissions, and filter out spam
       @p = Proof.new(:from => params['email'], :about => params['about'] || request.env["HTTP_REFERER"] || 'none', :what => params['what'], :subscribe => (params['subscribe'] == "yes" ? true : false), :status => 'new')
       h = HtmlFile.find_by_url(@p.about.sub(/https?:\/\/.*benyehuda.org\//, ''))
       @p.html_file = h unless h.nil?

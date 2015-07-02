@@ -49,6 +49,7 @@ gem 'app_constants' # anything more Railsy?
 gem 'hebrew' # https://github.com/abartov/hebrew
 gem 'haml'
 gem 'haml-rails'
+gem 'project-honeypot' # for HTTP:BL service by Project Honeypot
 
 group :test do
   gem 'turn', '0.8.2', :require => false
