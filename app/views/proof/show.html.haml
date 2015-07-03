@@ -7,7 +7,7 @@
 %p
   = t(:content)
   %br
-  != @p.what.sub("\n","<br/>")
+  != @p.what.gsub("\n","<br/>")
 %p= "#{t(:submitted_at)} #{@p.created_at.to_s}"
 %hr
 %p
