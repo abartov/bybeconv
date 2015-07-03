@@ -66,6 +66,7 @@ def behead_traverse(dir, t, payload)
         orig_mtime = File.mtime(thefile)
         orig_atime = File.atime(thefile)
         html = remove_font_cruft(html) # remove Word-generated useless font-face list
+        html = remove_old_footer(html) # remove the old footer if there
         dbg += "\nremoved cruft"
         unless has_placeholders?(html)
           dbg += "\nno payload found. inserting..."
@@ -142,6 +143,15 @@ def update_payload(buf, payload)
   m = tmpbuf.match(/<!-- end BY body -->/)
   newbuf += $& + $'
   return newbuf
+end
+def remove_old_footer(buf)
+  m = buf.match(/<!-- footer -->/)
+  return buf if m.nil?
+  tmpbuf = $`
+  buf = $'
+  m = buf.match(/<!-- end footer -->/)
+  tmpbuf += $'
+  return tmpbuf
 end
 def remove_font_cruft(buf)
   dbg_size = buf.length
