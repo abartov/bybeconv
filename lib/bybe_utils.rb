@@ -17,7 +17,7 @@ module BybeUtils
     }
     info[:total] -= 35 # rough compensation for text of index and main page links, to mitigate ratio problem for very short texts
     info[:ratio] = info[:nikkud].to_f / info[:total]
-    puts "DBG: total #{info[:total]} - nikkud #{info[:nikkud]} - ratio #{info[:ratio]}"
+#    puts "DBG: total #{info[:total]} - nikkud #{info[:nikkud]} - ratio #{info[:ratio]}"
     return info
   end
   # retrieve author name for (relative) directory name d, using provided hash known_authors to cache results
@@ -44,8 +44,15 @@ module BybeUtils
     # check posting IP against HTTP:BL
     unless AppConstants.project_honeypot_api_key.nil?
       listing = ProjectHoneypot.lookup(AppConstants.project_honeypot_api_key, ip)
-      return true if listing.comment_spammer? or listing.suspicious? # silently ignore spam submissions
+      if listing.comment_spammer? or listing.suspicious? # silently ignore spam submissions
+        logger.info "SPAM IP identified by HTTP:BL lookup.  Ignoring form submission."
+        return true 
+      end
     end
     return false  
+  end
+  def client_ip
+    #logger.debug "client_ip - request.env dump follows\n#{request.env.to_s}"
+    request.env['HTTP_X_FORWARDED_FOR'] || request.remote_ip
   end
 end
