@@ -11,7 +11,7 @@ module BybeUtils
         next
       end
       unless ignore or c.match /\s/ # ignore tags and whitespace
-        info[:nikkud] += 1 if ["\u05B0","\u05B1","\u05B2","\u05B3","\u05B4","\u05B5","\u05B6","\u05B7","\u05B8","\u05B9","\u05BB","\u05BC","\u05C1","\u05C2"].include? c
+        info[:nikkud] += 1 if text.is_nikkud(c)
         info[:total] += 1
       end
     }

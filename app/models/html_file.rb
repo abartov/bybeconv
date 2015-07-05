@@ -238,7 +238,7 @@ class HtmlFile < ActiveRecord::Base
   def analyze
     # Word footnotes magic word 'mso-footnote-id'
     begin
-      html = File.open(self.path, "r:windows-1255:UTF-8").read
+      html = File.open(self.path, "r:UTF-8").read
       self.footnotes = (html =~ /mso-footnote-id/) ? true : false
       # Word images magic word: '<img'
       self.images = (html =~ /<img/) ? true : false
@@ -266,19 +266,18 @@ class HtmlFile < ActiveRecord::Base
         buf = $' # postmatch
       end
       # debugging # print "Analysis results -- footnotes: #{self.footnotes}, images: #{self.images}, tables: #{self.tables}\n"
-      self.status = 'Analyzed' if ['Unknown','FileError', 'BadCP1255'].include? self.status
-      self.save!
+      self.status = 'Analyzed' if ['Unknown','FileError', 'BadUTF8'].include? self.status
     rescue 
       print "error: #{$!}\n"
       if $!.to_s =~ /conversion/
         print "match!"
-        self.status = 'BadCP1255'
+        self.status = 'BadUTF8'
       else
         print "no match?! err = #{$!}\n"
         self.status = 'FileError'
       end
-      self.save!
     end
+    self.save!
   end
   def self.analyze_all # class method
     HtmlFile.find_all_by_status('Unknown').each { |h| h.analyze }
@@ -313,7 +312,7 @@ class HtmlFile < ActiveRecord::Base
     end
   end
   def parse
-    html = File.open(self.path, "r:windows-1255:UTF-8").read
+    html = File.open(self.path, "r:UTF-8").read
     ndoc = NokoDoc.new
     parser = Nokogiri::HTML::SAX::Parser.new(ndoc)
     parser.parse(html)
