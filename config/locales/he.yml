@@ -39,6 +39,7 @@ he:
   html_dirs_list: רשימת תיקיות
   html_files_list: רשימת קבצים
   resolve_as_fixed: השגיאה תוקנה (שולח דואל!)
+  resolve_as_fixed_no_email: השגיאה תוקנה (ללא דואל, למקרה של ריבוי דיווחים תקינים, לאחר שליחת דואל עבור הראשון)
   resolve_as_wontfix: לא שגיאה, או לא יתוקן (שולח דואל!)
   resolve_as_spam: דיווח זבל -> למחיקה
   resolve_as_accepted: קבל המלצה (שולח דואל!)

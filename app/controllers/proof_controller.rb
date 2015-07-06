@@ -33,10 +33,13 @@ class ProofController < ApplicationController
     @p = Proof.find(params[:id])
     if params[:fixed] == 'yes'
       @p.status = 'resolved'
-      unless @p.from.nil? or @p.from !~ /\w+@\w+\.\w+/
+      unless params[:email] == 'no' or @p.from.nil? or @p.from !~ /\w+@\w+\.\w+/
         Notifications.proof_fixed(@p, @p.about).deliver
+		fix_text = 'תוקן (ונשלח דואל)'
+      else
+	    fix_text = 'תוקן, בלי לשלוח דואל'
       end
-      fix_text = 'תוקן )ונשלח דואל('
+      
     elsif params[:fixed] == 'no'
       @p.status = 'wontfix'
       unless @p.from.nil? or @p.from !~ /\w+@\w+\.\w+/
