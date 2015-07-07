@@ -44,6 +44,9 @@ class NokoDoc < Nokogiri::XML::SAX::Document
         end
         if m = /font-size:(\d\d)\.0pt/i.match(stylestr)
           style[:size] = m[1] # $1
+          if style[:size].to_i > 13 # subheadings are usually 16pt, sometimes 14pt
+            @in_subhead = true
+          end
         end
         if m = /text-decoration:underline/i.match(stylestr)
           style[:decoration].push(:underline)
@@ -53,13 +56,15 @@ class NokoDoc < Nokogiri::XML::SAX::Document
         end
       end
       push_style(style)
+    elsif name == 'h2'
+      @in_subhead = true
     elsif name == 'p'
       if attributes.assoc('class').nil?
         class_attr = ''
       else
         class_attr = attributes.assoc('class')[1]
       end
-      if ['aa','a1','a'].include? class_attr # one heading style in PBY texts, see doc/guide_to_icky_Word_html.txt
+      if ['aa','a1'].include? class_attr # one heading style in PBY texts, see doc/guide_to_icky_Word_html.txt
         @in_subhead = true
       end
     elsif name == 'b'
@@ -150,18 +155,25 @@ class NokoDoc < Nokogiri::XML::SAX::Document
         # TODO: determine formatting
         start_formatting = ''
         end_formatting = ''
-        if span[:style][:decoration].include? :bold 
-          start_formatting += "**" # MultiMarkdown
-          end_formatting += "**"
+        if @in_subhead
+          @in_subhead = false
+          new_markdown += "\n## "+@subhead if @subhead =~ /\S/
+          @subhead = ''
+        else
+          if span[:style][:decoration].include? :bold 
+            start_formatting += "**" # MultiMarkdown
+            end_formatting += "**"
+          end
+
+          span[:markdown].strip! # trim whitespace from both sides, to avoid PRE lines in output
+          # poetry, bold, underline, indents, size, footnotes, links
+          new_markdown += start_formatting + span[:markdown] + end_formatting # payload
         end
-        span[:markdown].strip! # trim whitespace from both sides, to avoid PRE lines in output
-        # poetry, bold, underline, indents, size, footnotes, links
-        new_markdown += start_formatting + span[:markdown] + end_formatting # payload
       else
         new_markdown += span[:markdown] # just copy the content, no formatting change
       end
       add_markup(new_markdown)
-    elsif name == 'br' || name == 'p'
+    elsif ['br','p','h2'].include?(name)
       toadd = "\n\n"
       if @in_subhead
         @in_subhead = false
