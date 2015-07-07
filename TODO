@@ -1,15 +1,12 @@
-check HtmlFile id 4291 in production (Sokolov) -- currently crashing on charset 
-- add auto-expiration (or hiding?) of wontfix proofs and rejected recommendations
-- add JS input for blog url when announcing blogged recommendation
-+ add an auth system
-+ add detection of encoding problems to HtmlFile.analyze, and to appropriate tallies etc.
-  + possibly implement an auto-fixer for those?
-    + yes!  Today we have learned that 0xCA is invalid in CP-1255, and yet Word sometimes(?) generates that instead of a proper xolam (0xC9) for some obscure reason.  We'll sub() this.
-+ handle footnotes
+Urgent
+------
+- check HtmlFile id 4291 in production (Sokolov) -- currently crashing on charset 
+
+Conversion system
+-----------------
 - detect indentation? (poetry, letter signatures, etc.)
 - detect size changes
 - handle ul and ol tags?
-+ handle non-footnote links
 - handle titles
 - handle subtitles
 - handle entities, and escaping
@@ -19,7 +16,28 @@ check HtmlFile id 4291 in production (Sokolov) -- currently crashing on charset
 - add markdown manipulations post-parsing
 -+ chop title/author lines from top
 -+ treat as poetry (<code><pre>)
+-- compress spaces
 -- raw edit (versioned?  just backup/undo?)
 - add an exclusion list to rake populate
 + add way to bless markdown by human reviewer
 -- blessing should, whether automatically or as an extra human-chosen step, also post the blessed markdown (with path info etc.) to the CONTENT system, so it can be rendered from it INSTEAD of the old HTML file (preserving the *.html URL)
+- research and possibly integrate good editor -- or just spiff up ContentEditable?
+
+Content system
+--------------
+- model the Manifestation, Expression, and Work entities
+- model relationships between the entities (at least sequence and containment)
+- given blessed text:
+-- extract metadata
+-- create Manifestation
+-- prompt for creating Expression and Work
+-- optionally link to external IDs for e.g. translated work, Wikipedia/Wikidata/VIAF for author if not already known
+- model Person entity
+- model Person<->WEM relationships
+- model aboutness
+
+Proof and Recommendation feature
+--------------------------------
+- add JS input for blog url when announcing blogged recommendation
+- add auto-expiration (or hiding?) of wontfix proofs and rejected recommendations
+

@@ -49,7 +49,7 @@ def traverse(dir, t, no_nikkuds, need_resequence)
         if d.nil?
           puts "ERROR: dir not found by dirpart '#{dirpart}'" 
         else
-          need_resequence << d
+          need_resequence << d unless need_resequence.include?(d)
         end
       else
         if h.updated_at < File.mtime(thefile) # file updated since last analyzed
