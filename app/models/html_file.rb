@@ -222,16 +222,17 @@ class NokoDoc < Nokogiri::XML::SAX::Document
     lines[0] = lines[0][1..-1] if lines[0] == "\n"
     z = /\n[\s]*/.match lines[0]
     lines[0] = z.pre_match + "\n" + z.post_match
-    lines[1..-1].each_index {|i|
+    (1..lines.length-1).each {|i|
       #text_only = Nokogiri::HTML(l).xpath("//text()").remove.to_s
-      nikkud = count_nikkud(lines[i+1])
+      lines[i].strip!
+      nikkud = count_nikkud(lines[i])
       if (nikkud[:total] > 1000 and nikkud[:ratio] > 0.6) or (nikkud[:total] <= 1000 and nikkud[:ratio] > 0.3)
         # make full-nikkud lines PRE
-        lines[i+1] = '    '+lines[i+1] # at least four spaces make a PRE in Markdown
+        lines[i] = '    '+lines[i] # at least four spaces make a PRE in Markdown
       end
     }
     new_buffer = lines.join "\n\n" 
-    /\S/.match new_buffer
+    /\S/.match new_buffer # first non-whitespace char
     @markdown = $& + $' # skip all initial whitespace
   end
   def add_markup(toadd)

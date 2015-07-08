@@ -8,8 +8,9 @@ Conversion system
 - detect size changes
 - handle ul and ol tags?
 - handle titles
-- handle subtitles
-- handle entities, and escaping
++ handle subtitles
+  - test on greater variety of files to ensure it works
++ handle entities, and escaping
 - handle asterisks, horizontal rules
 - detect and do something intelligent about extraneous spaces at beginning of paragraphs, avoiding letting them become PRE blocks
 - gather info for later cataloguing -- title, author, translator, copyright status, dedication/epigraph, year/location, ...?
