@@ -226,7 +226,8 @@ class NokoDoc < Nokogiri::XML::SAX::Document
     (1..lines.length-1).each {|i|
       #text_only = Nokogiri::HTML(l).xpath("//text()").remove.to_s
       lines[i].strip!
-      if lines[i].gsub(/[\s\u00a0]/,'').chars.uniq == ['*'] # if the line only contains asterisks
+      uniq_chars = lines[i].gsub(/[\s\u00a0]/,'').chars.uniq
+      if uniq_chars == ['*'] or uniq_chars == ["\u2013"] # if the line only contains asterisks, or Unicode En-Dash (U+2013)
         lines[i] = '***' # make it a Markdown horizontal rule
       else
         nikkud = count_nikkud(lines[i])

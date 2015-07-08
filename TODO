@@ -12,15 +12,15 @@ Conversion system
   - test on greater variety of files to ensure it works
 + handle entities, and escaping
 + handle asterisk-separator-lines as horizontal rules
-- handle Word's horizontal rules
++ handle En-dash horizontal rules
 - detect and do something intelligent about extraneous spaces at beginning of paragraphs, avoiding letting them become PRE blocks
 - gather info for later cataloguing -- title, author, translator, copyright status, dedication/epigraph, year/location, ...?
 - add markdown manipulations post-parsing
 -+ chop title/author lines from top
 -+ treat as poetry (<code><pre>)
--- compress spaces
+-+ compress spaces
 -- raw edit (versioned?  just backup/undo?)
-- add an exclusion list to rake populate
++ add an exclusion list to rake populate
 + add way to bless markdown by human reviewer
 -- blessing should, whether automatically or as an extra human-chosen step, also post the blessed markdown (with path info etc.) to the CONTENT system, so it can be rendered from it INSTEAD of the old HTML file (preserving the *.html URL)
 - research and possibly integrate good editor -- or just spiff up ContentEditable?
