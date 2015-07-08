@@ -11,7 +11,8 @@ Conversion system
 + handle subtitles
   - test on greater variety of files to ensure it works
 + handle entities, and escaping
-- handle asterisks, horizontal rules
++ handle asterisk-separator-lines as horizontal rules
+- handle Word's horizontal rules
 - detect and do something intelligent about extraneous spaces at beginning of paragraphs, avoiding letting them become PRE blocks
 - gather info for later cataloguing -- title, author, translator, copyright status, dedication/epigraph, year/location, ...?
 - add markdown manipulations post-parsing

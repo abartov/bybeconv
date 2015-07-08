@@ -226,10 +226,14 @@ class NokoDoc < Nokogiri::XML::SAX::Document
     (1..lines.length-1).each {|i|
       #text_only = Nokogiri::HTML(l).xpath("//text()").remove.to_s
       lines[i].strip!
-      nikkud = count_nikkud(lines[i])
-      if (nikkud[:total] > 1000 and nikkud[:ratio] > 0.6) or (nikkud[:total] <= 1000 and nikkud[:ratio] > 0.3)
-        # make full-nikkud lines PRE
-        lines[i] = '    '+lines[i] # at least four spaces make a PRE in Markdown
+      if lines[i].gsub(/[\s\u00a0]/,'').chars.uniq == ['*'] # if the line only contains asterisks
+        lines[i] = '***' # make it a Markdown horizontal rule
+      else
+        nikkud = count_nikkud(lines[i])
+        if (nikkud[:total] > 1000 and nikkud[:ratio] > 0.6) or (nikkud[:total] <= 1000 and nikkud[:ratio] > 0.3)
+          # make full-nikkud lines PRE
+          lines[i] = '    '+lines[i] # at least four spaces make a PRE in Markdown
+        end
       end
     }
     lines.select! {|line| line =~ /\S/}
