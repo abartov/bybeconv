@@ -217,6 +217,7 @@ class NokoDoc < Nokogiri::XML::SAX::Document
     @markdown += markdown # append the entire footnotes section
     @markdown.gsub!("\r",'') # farewell, DOS! :)
     # remove first line's whitespace
+    @markdown.gsub!(/\u00a0/,' ') # convert non-breaking spaces to regular spaces, to later get counted as whitespace when compressing
     lines = @markdown.split "\n\n" # by newline by default
     lines.shift while lines[0] !~ /\S/ # get rid of leading whitespace lines
     lines[0] = lines[0][1..-1] if lines[0] == "\n"
@@ -231,7 +232,9 @@ class NokoDoc < Nokogiri::XML::SAX::Document
         lines[i] = '    '+lines[i] # at least four spaces make a PRE in Markdown
       end
     }
+    lines.select! {|line| line =~ /\S/}
     new_buffer = lines.join "\n\n" 
+    new_buffer.gsub!("\n\n\n", "\n\n")
     /\S/.match new_buffer # first non-whitespace char
     @markdown = $& + $' # skip all initial whitespace
   end
