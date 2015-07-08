@@ -56,7 +56,7 @@ class NokoDoc < Nokogiri::XML::SAX::Document
         end
       end
       push_style(style)
-    elsif name == 'h2'
+    elsif name == 'h2' || name == 'h1'
       @in_subhead = true
     elsif name == 'p'
       if attributes.assoc('class').nil?
@@ -173,11 +173,11 @@ class NokoDoc < Nokogiri::XML::SAX::Document
         new_markdown += span[:markdown] # just copy the content, no formatting change
       end
       add_markup(new_markdown)
-    elsif ['br','p','h2'].include?(name)
+    elsif ['br','p','h2', 'h1'].include?(name)
       toadd = "\n\n"
       if @in_subhead
         @in_subhead = false
-        toadd = "\n## "+@subhead + toadd if @subhead =~ /\S/
+        toadd += "\n## "+@subhead + toadd if @subhead =~ /\S/
         @subhead = '' 
       end
       add_markup(toadd)
