@@ -15,4 +15,8 @@
    border: solid 4px #26722D;
    background-color: #A4E7A0;
 }
-
+/*
+@font-face { font-family: "Alef"; src: url('/assets/Alef-Regular.eot'); src: url('/assets/Alef-Regular.eot?#iefix') format('embedded-opentype'), url('/assets/Alef-Regular.woff') format('woff'), url('/assets/Alef-Regular.ttf') format('truetype'), url('/assets/Alef-Regular.svg#alefregular') format('svg'); font-weight: normal; font-style: normal; }
+@font-face { font-family: "AlefBold"; src: url('/assets/Alef-Bold.eot'); src: url('/assets/Alef-Bold.eot?#iefix') format('embedded-opentype'), url('/assets/Alef-Bold.woff') format('woff'), url('/assets/Alef-Bold.ttf') format('truetype'), url('/assets/Alef-Bold.svg#alefbold') format('svg'); font-weight: bold; font-style: normal; }
+*/
+@import url(http://fonts.googleapis.com/earlyaccess/alefhebrew.css);
