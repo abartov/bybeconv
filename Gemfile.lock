@@ -1,9 +1,3 @@
-GIT
-  remote: https://github.com/bricestacey/ruby-zoom.git
-  revision: 9a3787008e0385f8d9085bbfb2b27096e1bcb528
-  specs:
-    zoom (0.4.1)
-
 GEM
   remote: http://rubygems.org/
   specs:
@@ -277,4 +271,6 @@ DEPENDENCIES
   thin
   turn (= 0.8.2)
   uglifier (>= 1.0.3)
-  zoom (~> 0.4.1)!
+
+BUNDLED WITH
+   1.10.5

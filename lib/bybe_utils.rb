@@ -78,14 +78,14 @@ module BybeUtils
     })
     ret = {}
     query.execute(graph) do |entity|
-      ret["birthDate"] = entity.birthDate.to_s unless entity.birthDate.nil?
-      ret["deathDate"] = entity.deathDate.to_s unless entity.deathDate.nil?
+      ret['birthDate'] = entity.birthDate.to_s unless entity.birthDate.nil?
+      ret['deathDate'] = entity.deathDate.to_s unless entity.deathDate.nil?
     end
-    ret["labels"] = []
-    ret["labels"] += rdf_collect(graph, RDF::URI("http://www.w3.org/2004/02/skos/core#prefLabel"))
-    ret["labels"] += rdf_collect(graph, RDF::SKOS.prefLabel)
-    if ret["labels"].empty? # if there are no Hebrew prefLabels, try the altLabels
-      ret["labels"] += rdf_collect(graph, RDF::SKOS.altLabel)
+    ret['labels'] = []
+    ret['labels'] += rdf_collect(graph, RDF::URI('http://www.w3.org/2004/02/skos/core#prefLabel'))
+    ret['labels'] += rdf_collect(graph, RDF::SKOS.prefLabel)
+    if ret['labels'].empty? # if there are no Hebrew prefLabels, try the altLabels
+      ret['labels'] += rdf_collect(graph, RDF::SKOS.altLabel)
     end
 
     return ret   
