@@ -1,22 +1,23 @@
 class ManifestationController < ApplicationController
   def list
     # calculations
-    @total = Manifestation.count  
+    @total = Manifestation.count
     # form input
     unless params[:commit].blank?
       session[:mft_q_params] = params # make prev. params accessible to view
     else
-      session[:mft_q_params] = { :title => '', :author => '' }
+      session[:mft_q_params] = { title: '', author: '' }
     end
- 
+
     # DB
     p = param(:path)
     if p.blank?
       @manifestations = Manifestation.all.page(params[:page]).order('title ASC')
     else
-      @manifestations = Manifestation.where("path like ?", '%'+p+'%').page(params[:page]).order('title ASC') 
+      @manifestations = Manifestation.where('path like ?', '%' + p + '%').page(params[:page]).order('title ASC')
     end
   end
+
   def show
   end
 
@@ -27,5 +28,4 @@ class ManifestationController < ApplicationController
 
   def edit
   end
-
 end

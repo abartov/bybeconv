@@ -1,9 +1,8 @@
 class ProofController < ApplicationController
-
-  protect_from_forgery :except => :submit # allow submission from outside the app
+  protect_from_forgery except: :submit # allow submission from outside the app
 
   def create
-    @p = Proof.new(:from => params['email'], :about => params['about'] || request.env["HTTP_REFERER"] || 'none', :what => params['what'], :subscribe => (params['subscribe'] == "yes" ? true : false), :status => 'new')
+    @p = Proof.new(from: params['email'], about: params['about'] || request.env['HTTP_REFERER'] || 'none', what: params['what'], subscribe: (params['subscribe'] == 'yes' ? true : false), status: 'new')
     @p.save
   end
 
@@ -21,5 +20,4 @@ class ProofController < ApplicationController
     @p.assignee = session[:user]
     @p.save
   end
-
 end

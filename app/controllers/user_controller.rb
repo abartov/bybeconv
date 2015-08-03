@@ -1,5 +1,5 @@
 class UserController < ApplicationController
-  before_filter :require_admin
+  before_action :require_admin
 
   def list
     @user_list = User.page params[:page]
@@ -9,7 +9,7 @@ class UserController < ApplicationController
     u = User.find(params[:id])
     u.editor = true
     u.save!
-    redirect_to '/', flash: {notice: "#{u.name} is now an editor."}
+    redirect_to '/', flash: { notice: "#{u.name} is now an editor." }
   end
 
   def unmake_editor

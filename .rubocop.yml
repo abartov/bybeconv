@@ -11,5 +11,5 @@ AllCops:
 
 # other configuration
 Metrics/LineLength:
-  Max: 99
+  Max: 150
 # ...
