@@ -1,8 +1,8 @@
 class HtmlFileController < ApplicationController
-  before_action :require_editor, only: [:edit, :update, :list_for_editor]
+  before_filter :require_editor, only: [:edit, :update, :list_for_editor]
   # before_filter :require_user, :only => [:edit, :update]
 
-  before_action :require_admin, only: [:analyze, :analyze_all, :list, :parse, :publish, :unsplit, :chop1, :chop2, :chop3, :poetry]
+  before_filter :require_admin, only: [:analyze, :analyze_all, :list, :parse, :publish, :unsplit, :chop1, :chop2, :chop3, :poetry]
 
   def analyze
     @text = HtmlFile.find(params[:id])

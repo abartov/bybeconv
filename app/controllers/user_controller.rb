@@ -1,5 +1,5 @@
 class UserController < ApplicationController
-  before_action :require_admin
+  before_filter :require_admin
 
   def list
     @user_list = User.page params[:page]
