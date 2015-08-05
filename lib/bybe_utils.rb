@@ -15,11 +15,20 @@ module BybeUtils
         info[:total] += 1
       end
     }
-    info[:total] -= 35 # rough compensation for text of index and main page links, to mitigate ratio problem for very short texts
+    if text.length < 200 and text.length > 50
+      info[:total] -= 35 # rough compensation for text of index and main page links, to mitigate ratio problem for very short texts
+    end
     info[:ratio] = info[:nikkud].to_f / info[:total]
 #    puts "DBG: total #{info[:total]} - nikkud #{info[:nikkud]} - ratio #{info[:ratio]}"
     return info
   end
+
+  # just return a boolean if the buffer is "full" nikkud
+  def full_nikkud(text)
+    info = count_nikkud(text)
+    false || (info[:total] > 1000 and info[:ratio] > 0.5) || (info[:total] <= 1000 and info[:ratio] > 0.3)
+  end
+
   # retrieve author name for (relative) directory name d, using provided hash known_authors to cache results
   def author_name_from_dir(d, known_authors)
     if known_authors[d].nil?

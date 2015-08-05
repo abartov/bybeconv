@@ -10,12 +10,13 @@ ENCODING_SUBSTS = [{ :from => "\xCA", :to => "\xC9" }, # fix weird invalid chars
 
 
 class NokoDoc < Nokogiri::XML::SAX::Document
-  def initialize(poetry = false)
+  def initialize
     @markdown = ''
     @in_title = false
     @title = ''
     @in_footnote = false
     @in_subhead = false
+    @subhead_fontsize = 0
     @subhead = ''
     @anything = false
     @spans = [] # a span/style stack
@@ -23,7 +24,6 @@ class NokoDoc < Nokogiri::XML::SAX::Document
     @footnotes = []
     @footnote = {}
     @post_processing_done = false
-    @poetry = poetry
   end
 
   def push_style(style)
@@ -45,7 +45,8 @@ class NokoDoc < Nokogiri::XML::SAX::Document
         end
         if m = /font-size:(\d\d)\.0pt/i.match(stylestr)
           style[:size] = m[1] # $1
-          if style[:size].to_i > (@poetry ? 14 : 13) # subheadings in prose are usually 16pt, sometimes 14p; in poetry, always greater than 14t
+          if style[:size].to_i > 13 # subheadings in prose are usually 16pt, sometimes 14p; in poetry, always greater than 14pt
+            @subhead_fontsize = style[:size].to_i # at end_element, when we know if we're looking at full-nikkud text, we'll determine if it's actually a sub-head
             @in_subhead = true
           end
         end
@@ -156,8 +157,12 @@ class NokoDoc < Nokogiri::XML::SAX::Document
         # TODO: determine formatting
         start_formatting = ''
         end_formatting = ''
+        if @in_subhead and full_nikkud(@subhead) and @subhead_fontsize < 16
+          @in_subhead = false # special case for poetry, where 14pt is the norm!
+        end
         if @in_subhead
           @in_subhead = false
+          
           new_markdown += "\n## "+@subhead if @subhead =~ /\S/
           @subhead = ''
         else
@@ -335,7 +340,7 @@ class HtmlFile < ActiveRecord::Base
   end
   def parse
     html = File.open(self.path, "r:UTF-8").read
-    ndoc = NokoDoc.new(self.nikkud == 'full' ? true : false) # parser treats sub-headings differently for poetry
+    ndoc = NokoDoc.new
     parser = Nokogiri::HTML::SAX::Parser.new(ndoc)
     parser.parse(remove_payload(html)) # parse without whatever "behead" payload is on the static files
     ndoc.save(self.path+'.markdown')
