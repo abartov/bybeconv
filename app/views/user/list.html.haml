@@ -10,7 +10,10 @@
       %td= u.name
       %td= u.email
       %td= u.editor
-      %td= link_to 'Make editor!', user_make_editor_path(u)
+      %td
+        = link_to 'Make editor!', user_make_editor_path(u)
+        = ' | '
+        = link_to 'Make admin!', user_make_admin_path(u)
 
 != paginate @user_list
 
