@@ -55,4 +55,16 @@ module BybeUtils
     #logger.debug "client_ip - request.env dump follows\n#{request.env.to_s}"
     request.env['HTTP_X_FORWARDED_FOR'] || request.remote_ip
   end
+  def remove_payload(buf)
+    m = buf.match(/<!-- begin BY head -->/)
+    return buf if m.nil? # though, seriously?
+    tmpbuf = $`
+    m = buf.match(/<!-- end BY head -->/)
+    tmpbuf += $'
+    m = tmpbuf.match(/<!-- begin BY body -->/)
+    newbuf = $`
+    m = tmpbuf.match(/<!-- end BY body -->/)
+    newbuf += $'
+    return newbuf
+  end
 end

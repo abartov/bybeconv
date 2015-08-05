@@ -336,7 +336,7 @@ class HtmlFile < ActiveRecord::Base
     html = File.open(self.path, "r:UTF-8").read
     ndoc = NokoDoc.new
     parser = Nokogiri::HTML::SAX::Parser.new(ndoc)
-    parser.parse(html)
+    parser.parse(remove_payload(html)) # parse without whatever "behead" payload is on the static files
     ndoc.save(self.path+'.markdown')
     self.status = 'Parsed' # TODO: error checking?
     self.save!

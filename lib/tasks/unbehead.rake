@@ -91,18 +91,6 @@ end
 def has_placeholders?(buf)
   return (buf.match(/<!-- begin BY head -->/)) && (buf.match(/<!-- begin BY body -->/))
 end
-def remove_payload(buf)
-  m = buf.match(/<!-- begin BY head -->/)
-  return buf if m.nil? # though, seriously?
-  tmpbuf = $`
-  m = buf.match(/<!-- end BY head -->/)
-  tmpbuf += $'
-  m = tmpbuf.match(/<!-- begin BY body -->/)
-  newbuf = $`
-  m = tmpbuf.match(/<!-- end BY body -->/)
-  newbuf += $'
-  return newbuf
-end
 def remove_font_cruft(buf)
   dbg_size = buf.length
   m = buf.match(/\/\* Font Definitions \*\//)
