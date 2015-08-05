@@ -118,7 +118,7 @@ class NokoDoc < Nokogiri::XML::SAX::Document
 
   def characters(s)
     if @links.empty? or @links.last['ignore']
-      if (s =~ /\S/)
+      if (s =~ /\p{Word}/) 
         @spans.last[:anything] = true if @spans.count > 0  # TODO: optimize, add unless @spans.last[:anything] maybe
       end
       reformat = s.gsub("\n", ' ').gsub('[','\[').gsub(']','\]') # avoid accidental hyperlinks
@@ -159,12 +159,16 @@ class NokoDoc < Nokogiri::XML::SAX::Document
         end_formatting = ''
         if @in_subhead and full_nikkud(@subhead) and @subhead_fontsize < 16
           @in_subhead = false # special case for poetry, where 14pt is the norm!
+          span[:markdown] += "\n#{@subhead}" if @subhead =~ /\p{Word}/
+          @subhead = ''
+          @subhead_fontsize = 0
         end
         if @in_subhead
           @in_subhead = false
-          
-          new_markdown += "\n## "+@subhead if @subhead =~ /\S/
+          #debugger
+          new_markdown += "\n## "+@subhead if @subhead =~ /\p{Word}/
           @subhead = ''
+          @subhead_fontsize = 0
         else
           if span[:style][:decoration].include? :bold 
             start_formatting += "**" # MultiMarkdown
@@ -181,10 +185,20 @@ class NokoDoc < Nokogiri::XML::SAX::Document
       add_markup(new_markdown)
     elsif ['br','p','h2', 'h1'].include?(name)
       toadd = "\n\n"
-      if @in_subhead
+      if @in_subhead and full_nikkud(@subhead) and @subhead_fontsize < 16 and name != 'h2' # h2 should override the font-size hack in poetry
+        #debugger
         @in_subhead = false
-        toadd += "\n## "+@subhead + toadd if @subhead =~ /\S/
+        toadd += "\n"+@subhead + toadd if @subhead =~ /\p{Word}/
+        @subhead = ''
+        @subhead_fontsize = 0
+      end
+      if @in_subhead
+        #debugger
+        @in_subhead = false
+        toadd += "\n## "+@subhead + toadd if @subhead =~ /\p{Word}/
         @subhead = '' 
+        @subhead_fontsize = 0
+
       end
       add_markup(toadd)
     elsif name == 'a'
@@ -225,7 +239,7 @@ class NokoDoc < Nokogiri::XML::SAX::Document
     # remove first line's whitespace
     @markdown.gsub!(/\u00a0/,' ') # convert non-breaking spaces to regular spaces, to later get counted as whitespace when compressing
     lines = @markdown.split "\n\n" # by newline by default
-    lines.shift while lines[0] !~ /\S/ # get rid of leading whitespace lines
+    lines.shift while lines[0] !~ /\p{Word}/ # get rid of leading whitespace lines
     lines[0] = lines[0][1..-1] if lines[0] == "\n"
     z = /\n[\s]*/.match lines[0]
     lines[0] = z.pre_match + "\n" + z.post_match
@@ -243,10 +257,10 @@ class NokoDoc < Nokogiri::XML::SAX::Document
         end
       end
     }
-    lines.select! {|line| line =~ /\S/}
+    lines.select! {|line| line =~ /\p{Word}/}
     new_buffer = lines.join "\n\n" 
     new_buffer.gsub!("\n\n\n", "\n\n")
-    /\S/.match new_buffer # first non-whitespace char
+    /\p{Word}/.match new_buffer # first non-whitespace char
     @markdown = $& + $' # skip all initial whitespace
   end
   def add_markup(toadd)
