@@ -10,7 +10,7 @@ ENCODING_SUBSTS = [{ :from => "\xCA", :to => "\xC9" }, # fix weird invalid chars
 
 
 class NokoDoc < Nokogiri::XML::SAX::Document
-  def initialize
+  def initialize(poetry = false)
     @markdown = ''
     @in_title = false
     @title = ''
@@ -23,6 +23,7 @@ class NokoDoc < Nokogiri::XML::SAX::Document
     @footnotes = []
     @footnote = {}
     @post_processing_done = false
+    @poetry = poetry
   end
 
   def push_style(style)
@@ -44,7 +45,7 @@ class NokoDoc < Nokogiri::XML::SAX::Document
         end
         if m = /font-size:(\d\d)\.0pt/i.match(stylestr)
           style[:size] = m[1] # $1
-          if style[:size].to_i > 13 # subheadings are usually 16pt, sometimes 14pt
+          if style[:size].to_i > (@poetry ? 14 : 13) # subheadings in prose are usually 16pt, sometimes 14p; in poetry, always greater than 14t
             @in_subhead = true
           end
         end
@@ -334,7 +335,7 @@ class HtmlFile < ActiveRecord::Base
   end
   def parse
     html = File.open(self.path, "r:UTF-8").read
-    ndoc = NokoDoc.new
+    ndoc = NokoDoc.new(self.nikkud == 'full' ? true : false) # parser treats sub-headings differently for poetry
     parser = Nokogiri::HTML::SAX::Parser.new(ndoc)
     parser.parse(remove_payload(html)) # parse without whatever "behead" payload is on the static files
     ndoc.save(self.path+'.markdown')
