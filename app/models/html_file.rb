@@ -228,7 +228,7 @@ class NokoDoc < Nokogiri::XML::SAX::Document
   end
 
   def post_process # handle any wrap up 
-    debugger
+    #debugger
     end_footnote(@footnote) # where footnotes exist at all, the last footnote will be pending
     # emit all accumulated footnotes
     markdown = ''
