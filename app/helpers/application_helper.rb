@@ -19,4 +19,7 @@ module ApplicationHelper
     end
     ret += '</ul>'
   end
+  def absolute_url_from_urlpart(u)
+    return AppConstants.base_dir+u
+  end
 end

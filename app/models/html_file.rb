@@ -1,7 +1,7 @@
 # This model implements parsing and rendering down of icky fatty Microsoft-Word-generated HTML files into reasonable MultiMarkDown texts.  It makes no attempt at being general-purpose -- it is designed to mass-convert files from Project Ben-Yehuda (http://benyehuda.org), but it is hoped it would be easily adaptable to other mass-conversion efforts of Word-generated HTML files, with some tweaking of the regexps and the markdown generation. --abartov
 
-require 'multimarkdown'
 # require 'zoom' # Z39.50 queries
+require 'rmultimarkdown'
 include BybeUtils
 
 ENCODING_SUBSTS = [{ from: "\xCA", to: "\xC9" }, # fix weird invalid chars instead of proper Hebrew xolams
@@ -16,6 +16,7 @@ class NokoDoc < Nokogiri::XML::SAX::Document
     @title = ''
     @in_footnote = false
     @in_subhead = false
+    @subhead_fontsize = 0
     @subhead = ''
     @anything = false
     @spans = [] # a span/style stack
@@ -44,6 +45,10 @@ class NokoDoc < Nokogiri::XML::SAX::Document
         end
         if m = /font-size:(\d\d)\.0pt/i.match(stylestr)
           style[:size] = m[1] # $1
+          if style[:size].to_i > 13 # subheadings in prose are usually 16pt, sometimes 14p; in poetry, always greater than 14pt
+            @subhead_fontsize = style[:size].to_i # at end_element, when we know if we're looking at full-nikkud text, we'll determine if it's actually a sub-head
+            @in_subhead = true
+          end
         end
         if m = /text-decoration:underline/i.match(stylestr)
           style[:decoration].push(:underline)
@@ -53,6 +58,8 @@ class NokoDoc < Nokogiri::XML::SAX::Document
         end
       end
       push_style(style)
+    elsif name == 'h2' || name == 'h1'
+      @in_subhead = true
     elsif name == 'p'
       if attributes.assoc('class').nil?
         class_attr = ''
@@ -108,8 +115,8 @@ class NokoDoc < Nokogiri::XML::SAX::Document
   end
 
   def characters(s)
-    if @links.empty? || @links.last['ignore']
-      if s =~ /\S/
+    if @links.empty? or @links.last['ignore']
+      if (s =~ /\p{Word}/)
         @spans.last[:anything] = true if @spans.count > 0  # TODO: optimize, add unless @spans.last[:anything] maybe
       end
       reformat = s.gsub("\n", ' ').gsub('[', '\[').gsub(']', '\]') # avoid accidental hyperlinks
@@ -146,23 +153,48 @@ class NokoDoc < Nokogiri::XML::SAX::Document
         # TODO: determine formatting
         start_formatting = ''
         end_formatting = ''
-        if span[:style][:decoration].include? :bold
-          start_formatting += '**' # MultiMarkdown
-          end_formatting += '**'
+        if @in_subhead and full_nikkud(@subhead) and @subhead_fontsize < 16
+          @in_subhead = false # special case for poetry, where 14pt is the norm!
+          span[:markdown] += "\n#{@subhead}" if @subhead =~ /\p{Word}/
+          @subhead = ''
+          @subhead_fontsize = 0
         end
-        span[:markdown].strip! # trim whitespace from both sides, to avoid PRE lines in output
-        # poetry, bold, underline, indents, size, footnotes, links
-        new_markdown += start_formatting + span[:markdown] + end_formatting # payload
+        if @in_subhead
+          @in_subhead = false
+          #debugger
+          new_markdown += "\n## "+@subhead if @subhead =~ /\p{Word}/
+          @subhead = ''
+          @subhead_fontsize = 0
+        else
+          if span[:style][:decoration].include? :bold
+            start_formatting += "**" # MultiMarkdown
+            end_formatting += "**"
+          end
+
+          span[:markdown].strip! # trim whitespace from both sides, to avoid PRE lines in output
+          # poetry, bold, underline, indents, size, footnotes, links
+          new_markdown += start_formatting + span[:markdown] + end_formatting # payload
+        end
       else
         new_markdown += span[:markdown] # just copy the content, no formatting change
       end
       add_markup(new_markdown)
-    elsif name == 'br' || name == 'p'
+    elsif ['br','p','h2', 'h1'].include?(name)
       toadd = "\n\n"
-      if @in_subhead
+      if @in_subhead and full_nikkud(@subhead) and @subhead_fontsize < 16 and name != 'h2' # h2 should override the font-size hack in poetry
+        #debugger
         @in_subhead = false
-        toadd = "\n## " + @subhead + toadd if @subhead =~ /\S/
+        toadd += "\n"+@subhead + toadd if @subhead =~ /\p{Word}/
         @subhead = ''
+        @subhead_fontsize = 0
+      end
+      if @in_subhead
+        #debugger
+        @in_subhead = false
+        toadd += "\n## "+@subhead + toadd if @subhead =~ /\p{Word}/
+        @subhead = ''
+        @subhead_fontsize = 0
+
       end
       add_markup(toadd)
     elsif name == 'a'
@@ -190,6 +222,7 @@ class NokoDoc < Nokogiri::XML::SAX::Document
   end
 
   def post_process # handle any wrap up
+    #debugger
     end_footnote(@footnote) # where footnotes exist at all, the last footnote will be pending
     # emit all accumulated footnotes
     markdown = ''
@@ -199,21 +232,30 @@ class NokoDoc < Nokogiri::XML::SAX::Document
     @markdown += markdown # append the entire footnotes section
     @markdown.gsub!("\r", '') # farewell, DOS! :)
     # remove first line's whitespace
+    @markdown.gsub!(/\u00a0/,' ') # convert non-breaking spaces to regular spaces, to later get counted as whitespace when compressing
     lines = @markdown.split "\n\n" # by newline by default
-    lines.shift while lines[0] !~ /\S/ # get rid of leading whitespace lines
-    lines[0] = lines[0][1..-1] if lines[0] == "\n"
+    lines.shift while lines[0] !~ /\p{Word}/ # get rid of leading whitespace lines
+    lines[0] = lines[0][1..-1] if lines[0][0] == "\n"
     z = /\n[\s]*/.match lines[0]
     lines[0] = z.pre_match + "\n" + z.post_match
-    lines[1..-1].each_index do|i|
-      # text_only = Nokogiri::HTML(l).xpath("//text()").remove.to_s
-      nikkud = count_nikkud(lines[i + 1])
-      if (nikkud[:total] > 1000 && nikkud[:ratio] > 0.6) || (nikkud[:total] <= 1000 && nikkud[:ratio] > 0.3)
-        # make full-nikkud lines PRE
-        lines[i + 1] = '    ' + lines[i + 1] # at least four spaces make a PRE in Markdown
+    (1..lines.length-1).each {|i|
+      #text_only = Nokogiri::HTML(l).xpath("//text()").remove.to_s
+      lines[i].strip!
+      uniq_chars = lines[i].gsub(/[\s\u00a0]/,'').chars.uniq
+      if uniq_chars == ['*'] or uniq_chars == ["\u2013"] # if the line only contains asterisks, or Unicode En-Dash (U+2013)
+        lines[i] = '***' # make it a Markdown horizontal rule
+      else
+        nikkud = count_nikkud(lines[i])
+        if (nikkud[:total] > 1000 and nikkud[:ratio] > 0.6) or (nikkud[:total] <= 1000 and nikkud[:ratio] > 0.3)
+          # make full-nikkud lines PRE
+          lines[i] = '    '+lines[i] unless lines[i] =~ /\[\^ftn/ # at least four spaces make a PRE in Markdown
+        end
       end
-    end
+    }
+    lines.select! {|line| line =~ /\p{Word}/}
     new_buffer = lines.join "\n\n"
-    /\S/.match new_buffer
+    new_buffer.gsub!("\n\n\n", "\n\n")
+    /#|\p{Word}/.match new_buffer # first non-whitespace char
     @markdown = $& + $' # skip all initial whitespace
   end
 
@@ -233,43 +275,45 @@ class HtmlFile < ActiveRecord::Base
 
   def analyze
     # Word footnotes magic word 'mso-footnote-id'
-
-    html = File.open(path, 'r:windows-1255:UTF-8').read
-    self.footnotes = (html =~ /mso-footnote-id/) ? true : false
-    # Word images magic word: '<img'
-    self.images = (html =~ /<img/) ? true : false
-    # Word tables magic word (beyond the basic BY formatting table for prose!):
-    buf = html
-    html.match /<body[^>]*>(.*)<\/body>/m
-    nikkud_info = count_nikkud(Regexp.last_match(1))
-    case
-    when nikkud_info[:nikkud] == 0
-      self.nikkud = 'none'
-    when (nikkud_info[:total] > 1000 && nikkud_info[:ratio] < 0.6)
-      self.nikkud = 'some'
-    when (nikkud_info[:total] <= 1000 && nikkud_info[:ratio] < 0.3)
-      self.nikkud = 'some'
-    else
-      self.nikkud = 'full'
-    end
-    self.tables = false # unless proven otherwise below
-    while buf =~ /<table[^>]*>/
-      # ignore the Ben-Yehuda standard prose 70% table
-      thematch = $LAST_MATCH_INFO.to_s
-      self.tables = true if thematch !~ /<table[^>]*width=\"70%\"[^>]*>/
-      buf = $' # postmatch
-    end
-    # debugging # print "Analysis results -- footnotes: #{self.footnotes}, images: #{self.images}, tables: #{self.tables}\n"
-    self.status = 'Analyzed' if %w(Unknown FileError BadCP1255).include? status
-    self.save!
-  rescue
-    print "error: #{$ERROR_INFO}\n"
-    if $ERROR_INFO.to_s =~ /conversion/
-      print 'match!'
-      self.status = 'BadCP1255'
-    else
-      print "no match?! err = #{$ERROR_INFO}\n"
-      self.status = 'FileError'
+    begin
+      html = File.open(self.path, "r:UTF-8").read
+      self.footnotes = (html =~ /mso-footnote-id/) ? true : false
+      # Word images magic word: '<img'
+      self.images = (html =~ /<img/) ? true : false
+      # Word tables magic word (beyond the basic BY formatting table for prose!):
+      buf = html
+      html.match /<body[^>]*>(.*)<\/body>/m
+      nikkud_info = count_nikkud($1)
+      case
+        when nikkud_info[:nikkud] == 0
+          self.nikkud = "none"
+        when (nikkud_info[:total] > 1000 and nikkud_info[:ratio] < 0.5)
+          self.nikkud = "some"
+        when (nikkud_info[:total] <= 1000 and nikkud_info[:ratio] < 0.3)
+          self.nikkud = "some"
+        else
+          self.nikkud = "full"
+      end
+      self.tables = false # unless proven otherwise below
+      while buf =~ /<table[^>]*>/ do
+        # ignore the Ben-Yehuda standard prose 70% table
+        thematch = $~.to_s
+        if thematch !~ /<table[^>]*width=\"70%\"[^>]*>/
+          self.tables = true
+        end
+        buf = $' # postmatch
+      end
+      # debugging # print "Analysis results -- footnotes: #{self.footnotes}, images: #{self.images}, tables: #{self.tables}\n"
+      self.status = 'Analyzed' if ['Unknown','FileError', 'BadUTF8'].include? self.status
+    rescue
+      print "error: #{$!}\n"
+      if $!.to_s =~ /conversion/
+        print "match!"
+        self.status = 'BadUTF8'
+      else
+        print "no match?! err = #{$!}\n"
+        self.status = 'FileError'
+      end
     end
     self.save!
   end
@@ -281,10 +325,10 @@ class HtmlFile < ActiveRecord::Base
     relpath[1..-1].sub(/\/.*/, '')
   end
   # this method is, for now, deliberately only callable manually, via the console
-  def fix_encoding
-    if status == 'BadCP1255'
-      raw = IO.binread(path)
-      ENCODING_SUBSTS.each do |s|
+  def manual_fix_encoding
+    if self.status == 'BadCP1255'
+      raw = IO.binread(self.path)
+      ENCODING_SUBSTS.each { |s|
         raw.gsub!(s[:from].force_encoding('windows-1255'), s[:to])
       end
       newfile = path + '.fixed_encoding'
@@ -310,12 +354,11 @@ class HtmlFile < ActiveRecord::Base
   end
 
   def parse
-    html = File.open(path, 'r:windows-1255:UTF-8').read
+    html = File.open(self.path, "r:UTF-8").read
     ndoc = NokoDoc.new
     parser = Nokogiri::HTML::SAX::Parser.new(ndoc)
-    parser.parse(html)
-    ndoc.save(path + '.markdown')
-    split_long_lines # split very long lines, to accommodate MultiMarkDown limitation
+    parser.parse(remove_payload(html)) # parse without whatever "behead" payload is on the static files
+    ndoc.save(self.path+'.markdown')
     self.status = 'Parsed' # TODO: error checking?
     self.save!
   end
@@ -469,20 +512,30 @@ class HtmlFile < ActiveRecord::Base
     [title.strip, author]
   end
   def self.title_from_file(f)
+    puts "title_from_file: #{f}" # DBG
     html = ''
     begin
-      html = File.open(f, 'r:windows-1255:UTF-8').read
+      html = File.open(f, "r:UTF-8").read
+      z = html.gsub("\n", ' ') # ensure no bad encoding
+      puts "read as UTF8" # DBG
     rescue
-      raw = IO.binread(f).force_encoding('windows-1255')
-      raw = fix_encoding(raw)
-      tmpfile = Tempfile.new(f.sub(AppConstants.base_dir, '').gsub('/', ''))
       begin
-        tmpfile.write(raw)
-        tmpfilename = tmpfile.path
-        html = File.open(tmpfilename, 'r:windows-1255:UTF-8').read
-        tmpfile.close
+        html = File.open(f, "r:windows-1255:UTF-8").read
+        puts "read as UTF8 convering from 1255" # DBG
       rescue
-        return 'BAD_ENCODING!'
+        puts "read as binary, fixing encoding and trying to reread" # DBG
+        raw = IO.binread(f).force_encoding('windows-1255')
+        raw = fix_encoding(raw)
+        tmpfile = Tempfile.new(f.sub(AppConstants.base_dir,'').gsub('/',''))
+        begin
+          tmpfile.write(raw)
+          tmpfilename = tmpfile.path
+          html = File.open(tmpfilename, "r:windows-1255:UTF-8").read
+          tmpfile.close
+          puts "read as UTF8 from 1255 after binary fixing" #DBG
+        rescue
+          return "BAD_ENCODING!"
+        end
       end
     end
     title_from_html(html)

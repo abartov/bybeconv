@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141011224724) do
+ActiveRecord::Schema.define(:version => 20141013043434) do
 
   create_table "expressions", :force => true do |t|
     t.string   "title"
@@ -33,8 +33,8 @@ ActiveRecord::Schema.define(:version => 20141011224724) do
   create_table "html_dirs", :force => true do |t|
     t.string   "path"
     t.string   "author"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
     t.boolean  "need_resequence"
     t.integer  "person_id"
   end
@@ -44,8 +44,8 @@ ActiveRecord::Schema.define(:version => 20141011224724) do
     t.string   "url"
     t.string   "status"
     t.string   "problem"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
     t.boolean  "tables"
     t.boolean  "footnotes"
     t.boolean  "images"
@@ -116,16 +116,29 @@ ActiveRecord::Schema.define(:version => 20141011224724) do
     t.text     "what"
     t.boolean  "subscribe"
     t.string   "status"
-    t.string   "assignee"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+    t.integer  "html_file_id"
+    t.integer  "resolved_by"
+  end
+
+  create_table "recommendations", :force => true do |t|
+    t.string   "from"
+    t.string   "about"
+    t.string   "what"
+    t.boolean  "subscribe"
+    t.string   "status"
+    t.integer  "resolved_by"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+    t.integer  "html_file_id"
   end
 
   create_table "sessions", :force => true do |t|
     t.string   "session_id", :null => false
     t.text     "data"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"

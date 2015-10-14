@@ -14,14 +14,15 @@
 
 <div id="user-widget">
   <% if current_user %>
-    Welcome <strong><%= current_user.name %></strong>!
-    <%= link_to "Sign out", signout_path, id: "sign_out" %>
+    <%= t(:welcome) %> <strong><%= current_user.name %></strong>!
+    <%= link_to t(:sign_out), signout_path, id: "sign_out" %>
   <% else %>
-    <%= link_to "Sign in with Google/Twitter", "/session/login", id: "sign_in" %>
+    <%= link_to t(:sign_in_google_twitter), "/session/login", id: "sign_in" %>
   <% end %>
 </div>
 
 <%= yield %>
-
+<hr/>
+<%= link_to t(:back_to_dashboard), "/" %>
 </body>
 </html>

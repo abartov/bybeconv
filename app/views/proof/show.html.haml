@@ -1,0 +1,21 @@
+%h1
+  = t(:proof_for)
+  = @p.about
+%p
+  = link_to t(:proof_show_text), @p.about, :target => "_blank"
+%p= "#{t(:from)} #{@p.from}"
+%p
+  = t(:content)
+  %br
+  != @p.what.gsub("\n","<br/>")
+%p= "#{t(:submitted_at)} #{@p.created_at.to_s}"
+%hr
+%p
+  = link_to t(:resolve_as_fixed), proof_resolve_path(@p, :fixed => 'yes', :email => 'yes')
+%p
+  = link_to t(:resolve_as_fixed_no_email), proof_resolve_path(@p, :fixed => 'yes', :email => 'no')
+%p
+  = link_to t(:resolve_as_wontfix), proof_resolve_path(@p, :fixed => 'no')
+%p
+  = link_to t(:resolve_as_spam), proof_resolve_path(@p, :fixed => 'spam')
+

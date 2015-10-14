@@ -1,0 +1,26 @@
+- if params[:status].nil?
+  %h1= t(:all_proofs)
+- else
+  %h1= t(:proofs_by_status, :status => params[:status])
+
+%table
+  %tr
+    %th= t(:proof_file)
+    %th= t(:email)
+    %th= t(:proof_when)
+    %th= t(:status)
+  - @proofs.each do |p|
+    %tr
+      %td= link_to p.about, proof_path(p)
+      %td= p.from
+      %td= p.created_at
+      %td= p.status
+
+%p
+  = link_to t(:show_all_proofs), proof_list_path(:show_status => nil)
+%p
+  = link_to t(:show_open_proofs), proof_list_path(:show_status => 'new')
+%p
+  = link_to t(:purge_spam_proofs), proof_purge_path
+%hr
+!= paginate @proofs

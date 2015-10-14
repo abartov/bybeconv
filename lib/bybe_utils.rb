@@ -7,23 +7,32 @@ module BybeUtils
   def count_nikkud(text)
     info = { total: 0, nikkud: 0, ratio: nil }
     ignore = false
-    text.each_char do|c|
+    text.each_char do |c|
       if c == '<'
         ignore = true
       elsif c == '>'
         ignore = false
         next
       end
-      unless ignore || c.match(/\s/) # ignore tags and whitespace
-        info[:nikkud] += 1 if ["\u05B0", "\u05B1", "\u05B2", "\u05B3", "\u05B4", "\u05B5", "\u05B6", "\u05B7", "\u05B8", "\u05B9", "\u05BB", "\u05BC", "\u05C1", "\u05C2"].include? c
+      unless ignore or c.match /\s/ # ignore tags and whitespace
+        info[:nikkud] += 1 if text.is_nikkud(c)
         info[:total] += 1
       end
     end
-    info[:total] -= 35 # rough compensation for text of index and main page links, to mitigate ratio problem for very short texts
+    if text.length < 200 and text.length > 50
+      info[:total] -= 35 # rough compensation for text of index and main page links, to mitigate ratio problem for very short texts
+    end
     info[:ratio] = info[:nikkud].to_f / info[:total]
-    puts "DBG: total #{info[:total]} - nikkud #{info[:nikkud]} - ratio #{info[:ratio]}"
-    info
+#    puts "DBG: total #{info[:total]} - nikkud #{info[:nikkud]} - ratio #{info[:ratio]}"
+    return info
   end
+
+  # just return a boolean if the buffer is "full" nikkud
+  def full_nikkud(text)
+    info = count_nikkud(text)
+    false || (info[:total] > 1000 and info[:ratio] > 0.5) || (info[:total] <= 1000 and info[:ratio] > 0.3)
+  end
+
   # retrieve author name for (relative) directory name d, using provided hash known_authors to cache results
   def author_name_from_dir(d, known_authors)
     if known_authors[d].nil?
@@ -90,5 +99,40 @@ module BybeUtils
     end
 
     ret
+  end
+
+  def fix_encoding(buf)
+    newbuf = buf.force_encoding('windows-1255')
+        ENCODING_SUBSTS.each { |s|
+          newbuf.gsub!(s[:from].force_encoding('windows-1255'), s[:to])
+        }
+    return newbuf
+  end
+  def is_blacklisted_ip(ip)
+    # check posting IP against HTTP:BL
+    unless AppConstants.project_honeypot_api_key.nil?
+      listing = ProjectHoneypot.lookup(AppConstants.project_honeypot_api_key, ip)
+      if listing.comment_spammer? or listing.suspicious? # silently ignore spam submissions
+        logger.info "SPAM IP identified by HTTP:BL lookup.  Ignoring form submission."
+        return true
+      end
+    end
+    return false
+  end
+  def client_ip
+    #logger.debug "client_ip - request.env dump follows\n#{request.env.to_s}"
+    request.env['HTTP_X_FORWARDED_FOR'] || request.remote_ip
+  end
+  def remove_payload(buf)
+    m = buf.match(/<!-- begin BY head -->/)
+    return buf if m.nil? # though, seriously?
+    tmpbuf = $`
+    m = buf.match(/<!-- end BY head -->/)
+    tmpbuf += $'
+    m = tmpbuf.match(/<!-- begin BY body -->/)
+    newbuf = $`
+    m = tmpbuf.match(/<!-- end BY body -->/)
+    newbuf += $'
+    return newbuf
   end
 end

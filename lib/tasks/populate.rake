@@ -20,7 +20,7 @@ task :populate => :environment do
   puts "don't forget to run 'rake sequence'!"
 end
 
-private 
+private
 def fix_links(f)
   # bad links look like this:  <a href="&#22649;&#62593;&#7483;&#18559;&#11439;&#23938;&#34244;&#25383;"> and should be <a href="/">
   raw = IO.binread(f)
@@ -44,18 +44,18 @@ def traverse(dir, t, no_nikkuds, need_resequence)
         h.save!
         # also mark the HtmlDir as needing a re-sequencing
         dirpart = dir[dir.rindex('/')+1..-1]
-        dummy = author_name_from_dir(dirpart,{}) # silly call because that would create the HtmlDir object # TODO: fix this 
+        dummy = author_name_from_dir(dirpart,{}) # silly call because that would create the HtmlDir object # TODO: fix this
         d = HtmlDir.find_by_path(dirpart)
         if d.nil?
-          puts "ERROR: dir not found by dirpart '#{dirpart}'" 
+          puts "ERROR: dir not found by dirpart '#{dirpart}'"
         else
-          need_resequence << d
+          need_resequence << d unless need_resequence.include?(d)
         end
       else
         if h.updated_at < File.mtime(thefile) # file updated since last analyzed
           t[:upd] += 1
           h.status = "Unknown"
-          h.stripped_nikkud = false # may need to re-strip 
+          h.stripped_nikkud = false # may need to re-strip
           h.delete_pregen # delete pre-generated HTML file
           h.update_attribute(:updated_at, Time.now)
           h.save!

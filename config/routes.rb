@@ -4,6 +4,7 @@ Bybeconv::Application.routes.draw do
   get "manifestation/edit"
   get "user/list"
   get "user/:id/make_editor" => 'user#make_editor', as: 'user_make_editor'
+  get "user/:id/make_admin" => 'user#make_admin', as: 'user_make_admin'
   get "user/:id/unmake_editor" => 'user#unmake_editor', as: 'user_unmake_editor'
 
   get "welcome/index"
@@ -18,9 +19,19 @@ Bybeconv::Application.routes.draw do
   match 'signout', to: 'session#destroy', as: 'signout', via: [:get, :post]
 
   resources :html_dirs
-  resources :proof
   match "html_dirs/:id/guess_author" => 'html_dirs#guess_author'
   match "html_dirs/:id/associate_viaf" => 'html_dirs#associate_viaf', as: 'html_dirs_associate_viaf'
+
+  get "proof/list"
+  get "proof/purge" => 'proof#purge', as: 'proof_purge'
+  get "proof/:id/resolve" => 'proof#resolve', as: 'proof_resolve'
+  resources :proof
+
+  get "recommendation/list"
+  get "recommendation/purge" => 'recommendation#purge', as: 'recommendation_purge'
+  get "recommendation/:id/resolve" => 'recommendation#resolve', as: 'recommendation_resolve'
+  resources :recommendation
+
   get "html_file/analyze"
   match "html_file/:id/edit" => 'html_file#edit', as: 'html_file_edit', via: [:get, :post]
   post "html_file/:id/update" => 'html_file#update'

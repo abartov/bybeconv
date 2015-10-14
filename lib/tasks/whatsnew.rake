@@ -1,4 +1,5 @@
-require 'tempfile' 
+require 'tempfile'
+require 'bybe_utils'
 
 ENCODING_SUBSTS = [{ :from => "\xCA", :to => "\xC9" }, # fix weird invalid chars instead of proper Hebrew xolams
     { :from => "\xFC", :to => "&uuml;"}, # fix u-umlaut
@@ -13,9 +14,8 @@ task :whatsnew, [:fromdate] => :environment do |taskname, args|
   known_authors = {}
   thedir = AppConstants.base_dir # environment-sensitive constant
   tot = { :dir => 0, :files => 0, :new => 0, :upd => 0 }
-  debugger
   newfiles = HtmlFile.new_since(Date.parse(args.fromdate).to_time)
-  debugger 
+  #debugger
   print "\n#{newfiles.count} new files found since #{args.fromdate}.\n"
   files_by_author = {}
   progress = 1
@@ -36,7 +36,6 @@ task :whatsnew, [:fromdate] => :environment do |taskname, args|
       #debugger
       #print "DBG: a = #{a}\n"
       #print "DBG: files = #{files.join('\; ')}\n"
-      
       #f.write("<tr><td><b><u>_______:</u></b> ")
       #f.write(files.join('; '))
       #f.write('</td><td><a href="')
@@ -50,13 +49,3 @@ task :whatsnew, [:fromdate] => :environment do |taskname, args|
   print "done!\n"
 end
 
-private 
-
-def fix_encoding(buf)
-  # TODO: move to application.rb or something
-  newbuf = buf.force_encoding('windows-1255')
-      ENCODING_SUBSTS.each { |s|
-        newbuf.gsub!(s[:from].force_encoding('windows-1255'), s[:to])
-      }
-  return newbuf
-end 
