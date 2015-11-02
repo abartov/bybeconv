@@ -228,6 +228,7 @@ class NokoDoc < Nokogiri::XML::SAX::Document
   end
 
   def post_process # handle any wrap up 
+    #debugger
     end_footnote(@footnote) # where footnotes exist at all, the last footnote will be pending
     # emit all accumulated footnotes
     markdown = ''
@@ -240,7 +241,7 @@ class NokoDoc < Nokogiri::XML::SAX::Document
     @markdown.gsub!(/\u00a0/,' ') # convert non-breaking spaces to regular spaces, to later get counted as whitespace when compressing
     lines = @markdown.split "\n\n" # by newline by default
     lines.shift while lines[0] !~ /\p{Word}/ # get rid of leading whitespace lines
-    lines[0] = lines[0][1..-1] if lines[0] == "\n"
+    lines[0] = lines[0][1..-1] if lines[0][0] == "\n"
     z = /\n[\s]*/.match lines[0]
     lines[0] = z.pre_match + "\n" + z.post_match
     (1..lines.length-1).each {|i|
@@ -260,7 +261,7 @@ class NokoDoc < Nokogiri::XML::SAX::Document
     lines.select! {|line| line =~ /\p{Word}/}
     new_buffer = lines.join "\n\n" 
     new_buffer.gsub!("\n\n\n", "\n\n")
-    /\p{Word}/.match new_buffer # first non-whitespace char
+    /#|\p{Word}/.match new_buffer # first non-whitespace char
     @markdown = $& + $' # skip all initial whitespace
   end
   def add_markup(toadd)
