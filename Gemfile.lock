@@ -63,7 +63,7 @@ GEM
       haml (>= 3.1, < 4.1)
       railties (>= 3.1, < 4.1)
     hashie (3.4.2)
-    hebrew (0.1.7)
+    hebrew (0.1.9)
     hike (1.2.3)
     htmlentities (4.3.3)
     i18n (0.7.0)
@@ -203,3 +203,6 @@ DEPENDENCIES
   thin
   turn (= 0.8.2)
   uglifier (>= 1.0.3)
+
+BUNDLED WITH
+   1.10.6
