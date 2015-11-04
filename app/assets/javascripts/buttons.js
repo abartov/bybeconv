@@ -1,17 +1,17 @@
 
 var proofTab = {
- 
+
     speed:300,
     containerWidth:$('.proof-panel').outerWidth(),
     containerHeight:$('.proof-panel').outerHeight(),
     tabWidth:$('.proof-tab').outerWidth(),
- 
+
     init:function(){
         this.containerWidth = $('.proof-panel').outerWidth();
         this.containerHeight = $('.proof-panel').outerHeight();
         this.tabWidth = $('.proof-tab').outerWidth();
 //        $('.proof-panel').css('height',proofTab.containerHeight + 'px');
- 
+
         $('a.proof-tab').click(function(event){
             if ($('.proof-panel').hasClass('open')) {
                 $('.proof-panel')
@@ -53,16 +53,16 @@ var recommendTab = {
     }
 };
 function initButtons() {
- 
+
 $('input#proof_btn').click(function() {
         email = $("input#proof_email").val();
         about = window.location.href
         what = $("textarea#proof_what").val();
         sub = $('input#proof_sub').val();
-        response_message = "Thank you for your comment, see ya!"
- 
+        response_message = "&#1514;&#1493;&#1491;&#1492;&#32;&#1506;&#1500;&#32;&#1492;&#1492;&#1490;&#1492;&#1492;&#33;&#32;&#32;&#1504;&#1496;&#1508;&#1500;&#32;&#1489;&#1492;&#1511;&#1491;&#1501;&#46;"; // hardcoding the Hebrew because in context of a cp1255 page
+
         dataString = 'email=' + email + '&about=' + about + '&subscribe=' + sub + '&what=' + what;
- 
+
         $.ajax({
           type: "POST",
           url: "http://bybeconv.benyehuda.org/proof",
@@ -75,7 +75,7 @@ $('input#proof_btn').click(function() {
             .animate({opacity: 1.0}, 1000)
             .fadeIn(0, function(){
                 $('.proof-panel')
-                .animate({left:'-' + (proofTab.containerWidth)}, 
+                .animate({left:'-' + (proofTab.containerWidth)},
                 (proofTab.speed))
                 .removeClass('open');
             })
@@ -84,16 +84,18 @@ $('input#proof_btn').click(function() {
         return false;
     });
 
-$('input#rec_btn').click(function() {  
-        email = $("input#email").val();
-        message = $("textarea#message").val();
-        response_message = "Thank you for your comment, see ya!"
+$('input#rec_btn').click(function() {
+        email = $("input#recommend_email").val();
+        what = $("textarea#rec_what").val();
+        response_message = "&#1514;&#1493;&#1491;&#1492;&#32;&#1506;&#1500;&#32;&#1492;&#1492;&#1502;&#1500;&#1510;&#1492;&#33;"; // hardcoding the Hebrew because in context of a cp1255 page
+        about = window.location.href
+        sub = $('input#rec_sub').val();
 
-        dataString = 'email=' + email + '&message=' + message;
+        dataString = 'email=' + email + '&about=' + about + '&subscribe=' + sub + '&what=' + what;
 
         $.ajax({
           type: "POST",
-          url: "http://bybeconv.benyehuda.org/recommend",
+          url: "http://bybeconv.benyehuda.org/recommendation",
           data: dataString,
           success: function() {
             $('#recommend-form-wrap').html("<div id='response-message'></div>");
