@@ -53,6 +53,7 @@ gem 'haml'
 gem 'haml-rails'
 gem 'linkeddata' # for RDF etc.
 gem 'project-honeypot', '>= 0.1.3' # for HTTP:BL service by Project Honeypot
+gem 'paper_trail', '~> 4.0.0' # for versioning entities
 
 group :test do
   gem 'turn', '0.8.2', :require => false

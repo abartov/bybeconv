@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20141013043434) do
+ActiveRecord::Schema.define(:version => 20151113102728) do
 
   create_table "expressions", :force => true do |t|
     t.string   "title"
@@ -144,6 +144,16 @@ ActiveRecord::Schema.define(:version => 20141013043434) do
   add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
 
+  create_table "tocs", :force => true do |t|
+    t.integer  "person_id"
+    t.text     "toc"
+    t.string   "status"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "tocs", ["person_id"], :name => "index_tocs_on_person_id"
+
   create_table "users", :force => true do |t|
     t.string   "name"
     t.string   "email"
@@ -156,6 +166,17 @@ ActiveRecord::Schema.define(:version => 20141013043434) do
     t.datetime "updated_at",       :null => false
     t.boolean  "editor"
   end
+
+  create_table "versions", :force => true do |t|
+    t.string   "item_type",                        :null => false
+    t.integer  "item_id",                          :null => false
+    t.string   "event",                            :null => false
+    t.string   "whodunnit"
+    t.text     "object",     :limit => 2147483647
+    t.datetime "created_at"
+  end
+
+  add_index "versions", ["item_type", "item_id"], :name => "index_versions_on_item_type_and_item_id"
 
   create_table "works", :force => true do |t|
     t.string   "title"

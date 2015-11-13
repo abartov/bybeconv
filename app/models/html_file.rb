@@ -269,6 +269,7 @@ class NokoDoc < Nokogiri::XML::SAX::Document
 end
 
 class HtmlFile < ActiveRecord::Base
+  has_paper_trail
   has_and_belongs_to_many :manifestations
   scope :with_nikkud, where("nikkud IS NOT NULL and nikkud <> 'none'")
   scope :not_stripped, where('stripped_nikkud IS NULL or stripped_nikkud = 0')
