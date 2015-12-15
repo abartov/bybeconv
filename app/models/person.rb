@@ -1,5 +1,6 @@
 include BybeUtils
 class Person < ActiveRecord::Base
+  belongs_to :toc
   def self.person_by_viaf(viaf_id)
     Person.find_by_viaf_id(viaf_id)
   end
