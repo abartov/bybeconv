@@ -16,6 +16,9 @@
   <% else %>
     <%= @html_dir.person.name %> (VIAF: <%= @html_dir.person.viaf_id %>)
   <% end %>
+
+<p>
+  <b>Public domain?</b> <%= @html_dir.public_domain ? "yes" : "no" %>
 </p>
 
 <%= link_to 'Edit', edit_html_dir_path(@html_dir) %> |

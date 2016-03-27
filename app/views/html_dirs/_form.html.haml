@@ -1,29 +1,34 @@
 = form_for(@html_dir) do |f|
-  - if @html_dir.errors.any? 
+  - if @html_dir.errors.any?
     #error_explanation
       %h2
-        = pluralize(@html_dir.errors.count, "error") 
+        = pluralize(@html_dir.errors.count, "error")
         = 'prohibited this html_dir from being saved:'
       %ul
-        - @html_dir.errors.full_messages.each do |msg| 
+        - @html_dir.errors.full_messages.each do |msg|
           %li= msg
   .field
-    = f.label :path 
+    = f.label :path
     %br
     = f.text_field :path
-  .field  
-    = f.label :author 
+  .field
+    = f.label :author
     %br
     = f.text_field :author
-  - if @html_dir.person.nil? 
-    = link_to "Send to VIAF", {:controller => :html_dirs, :action => :guess_author, :id => @html_dir, :remote => true}, {:id => "viaf_link", "data-done-msg" => "Output in box" } 
+  .field
+    = f.label :public_domain
+    %br
+    = f.check_box :public_domain
+
+  - if @html_dir.person.nil?
+    = link_to "Send to VIAF", {:controller => :html_dirs, :action => :guess_author, :id => @html_dir, :remote => true}, {:id => "viaf_link", "data-done-msg" => "Output in box" }
     %p
       #viaf_results
   - else
     .field
-      = f.label :viaf_id 
+      = f.label :viaf_id
       %br
-      = f.label @html_dir.person.name 
+      = f.label @html_dir.person.name
   .actions
     = f.submit
 :javascript
@@ -41,7 +46,7 @@
         }
         html += "</ul>";
         $("#viaf_results").append(html);
-     }    
+     }
     });
     $("#viaf_link").bind("ajax:beforeSend", function(evt, xhr, settings) {
       $("#viaf_results").append("<h2>Wait...</h2>");
