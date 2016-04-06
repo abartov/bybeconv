@@ -1,0 +1,18 @@
+%p#notice= notice
+
+%p
+  %b Email:
+  = @api_key.email
+%p
+  %b Description:
+  = @api_key.description
+%p
+  %b Key:
+  = @api_key.key
+%p
+  %b Status:
+  = @api_key.status
+
+= link_to 'Edit', edit_api_key_path(@api_key)
+\|
+= link_to 'Back', api_keys_path
