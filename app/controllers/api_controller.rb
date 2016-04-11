@@ -19,6 +19,9 @@ class ApiController < ApplicationController
         markdown = File.open(h.path+'.markdown')
         render json: { markdown: markdown }
       end
+    when 'put_markdown'
+      # TODO: implement
+      render :nothing => true, :status => 200
     else
       render json: "ERROR: Unsupported API action #{params[:action]}"
     end
