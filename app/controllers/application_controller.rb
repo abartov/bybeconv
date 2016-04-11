@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
+  before_filter :set_paper_trail_whodunnit
   after_filter :set_access_control_headers
 
   def set_access_control_headers 

@@ -9,6 +9,7 @@ gem 'mysql2'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-twitter'
 gem 'clockwork' # scheduler
+gem 'paper_trail' # ActiveRecord versioning
 
 # Gems used only for assets and not required
 # in production environments by default.
