@@ -11,7 +11,7 @@ class CreatePeople < ActiveRecord::Migration
 
       t.timestamps
     end
-    create_table :works_people, :id => false do |t|
+    create_table :people_works, :id => false do |t|
       t.timestamps
       t.integer :work_id
       t.integer :person_id

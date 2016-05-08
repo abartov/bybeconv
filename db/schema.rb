@@ -186,7 +186,7 @@ ActiveRecord::Schema.define(:version => 20160411031449) do
     t.datetime "updated_at", :null => false
   end
 
-  create_table "works_people", :id => false, :force => true do |t|
+  create_table "people_works", :id => false, :force => true do |t|
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
     t.integer  "work_id"

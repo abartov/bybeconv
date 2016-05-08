@@ -459,8 +459,8 @@ class HtmlFile < ActiveRecord::Base
     end
   end
 
-  def create_frbr_entities
-    if status == 'Parsed' && metadata_ready?
+  def create_WEM(person_id)
+    if status == 'Parsed'
       begin
         # TODO: add Person instantiation IF necessary and link WEM to Person.
         markdown = File.open(path + '.markdown', 'r:UTF-8').read
