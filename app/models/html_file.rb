@@ -331,7 +331,7 @@ class HtmlFile < ActiveRecord::Base
       raw = IO.binread(self.path)
       ENCODING_SUBSTS.each { |s|
         raw.gsub!(s[:from].force_encoding('windows-1255'), s[:to])
-      end
+      }
       newfile = path + '.fixed_encoding'
       # IO.binwrite(newfile, raw) # this works only on Ruby 1.9.3+
       File.open(newfile, 'wb') { |f| f.write(raw) } # works on any modern Ruby

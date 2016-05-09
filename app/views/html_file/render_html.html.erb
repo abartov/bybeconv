@@ -36,13 +36,22 @@ $('#bPoetry').click(function() { document.location.href='<%=  url_for(:controlle
 <h2>Rendering MultiMarkDown as HTML for File: <%= @text.path.sub('/mnt/by/','') %></h2>
 <button id="bDavid">David</button> <button id="bTimes">Times</button> <button id="bLarger">Larger text</button> <button id="bSmaller">Smaller text</button> <button id="bResetSize">Reset size</button><button id="bPoetry">Treat as Poetry</button>
 <%= raw(@html) %>
-<p class="heading">Here's the raw MultiMarkDown.  Make any corrections needed, and add the __SPLIT__ magic word to split the markdown into separate works. Also, here's <a href="<%= AppConstants.base_uri + @text.url %>">the original HTML file, for comparison</a></p>
-<div class="markdown">
+
 <p><%= form_tag(:action => "render_html", :id => @text) do %>
-     <%= text_area_tag(:markdown, raw(@markdown), :size => "80x40" ) %>
-     <%= submit_tag("Update!") %>
-   <% end %></p>
-     </div>
+  <%= label_tag 'Author' %><br/>
+  <%= text_field_tag(:author, @text.author_string) %>
+</p>
+ <p><%= label_tag 'Alternatives' %><br/><%= select_tag(:author_matches, options_for_select(@person_matches) ,{:include_blank => true}) %></p>
+
+<p class="heading">
+Here's the raw MultiMarkDown.  Make any corrections needed, and add the __SPLIT__ magic word to split the markdown into separate works. Also, here's <a href="<%= AppConstants.base_uri + @text.url %>">the original HTML file, for comparison</a></p>
+<div class="markdown">
+<p>     <%= text_area_tag(:markdown, raw(@markdown), :size => "80x40" ) %>
+   </p>
+</div>
+<%= submit_tag("Update!") %>
+<% end %> <!-- form -->
+
 <p>You can:</p>
 <ul>
   <li>chop off <%= link_to 'first 1', :action => :chop1, :id => @text %>, <%= link_to 'first 2', :action => :chop2, :id => @text %>, or <%= link_to 'first 3', :action => :chop3, :id => @text %> lines</li>

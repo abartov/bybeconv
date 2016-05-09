@@ -1,6 +1,11 @@
 require 'json' # for VIAF AutoSuggest
-require 'linkeddata'
+require 'rdf'
+require 'rdf/vocab'
 require 'hebrew'
+
+# temporary constants until I figure out what changed in RDF.rb's RDF::Vocab::SKOS
+SKOS_PREFLABEL = "http://www.w3.org/2004/02/skos/core#prefLabel"
+SKOS_ALTLABEL = "http://www.w3.org/2004/02/skos/core#altLabel"
 
 module BybeUtils
   # return a hash like {:total => total_number_of_non_tags_characters, :nikkud => total_number_of_nikkud_characters, :ratio => :nikkud/:total }
@@ -44,6 +49,14 @@ module BybeUtils
       known_authors[d] = thedir.author.force_encoding('utf-8')
     end
     known_authors[d]
+  end
+
+  # attempt to match a string against Person records
+  def match_person(str)
+    matches = Person.where(name: str)
+    return matches unless matches.nil?
+    lastname = str.split(' ')[-1]
+    return Person.where("name LIKE ?", "%#{lastname}%")
   end
 
   def guess_authors_viaf(author_string)
@@ -93,9 +106,9 @@ module BybeUtils
     end
     ret['labels'] = []
     ret['labels'] += rdf_collect(graph, RDF::URI('http://www.w3.org/2004/02/skos/core#prefLabel'))
-    ret['labels'] += rdf_collect(graph, RDF::SKOS.prefLabel)
+    ret['labels'] += rdf_collect(graph, RDF::URI(SKOS_PREFLABEL))
     if ret['labels'].empty? # if there are no Hebrew prefLabels, try the altLabels
-      ret['labels'] += rdf_collect(graph, RDF::SKOS.altLabel)
+      ret['labels'] += rdf_collect(graph, RDF::URI(SKOS_ALTLABEL))
     end
 
     ret

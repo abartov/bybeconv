@@ -134,6 +134,7 @@ class HtmlFileController < ApplicationController
       @text.delete_pregen
     end
     @html = MultiMarkdown.new(@markdown.gsub('__SPLIT__', '__________')).to_html.force_encoding('UTF-8') # TODO: figure out why to_html defaults to ASCII 8-bit
+    @person_matches = match_person(@text.author_string)
   end
 
   def poetry
