@@ -1,5 +1,7 @@
 include BybeUtils
 class Person < ActiveRecord::Base
+  attr_accessible :affiliation, :comment, :country, :dates, :name, :nli_id, :other_designation, :title, :viaf_id
+
   belongs_to :toc
   has_and_belongs_to_many :work
   has_and_belongs_to_many :expression

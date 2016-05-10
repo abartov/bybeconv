@@ -1,4 +1,7 @@
 Bybeconv::Application.routes.draw do
+  resources :people
+
+
   get "manifestation/show"
   get "manifestation/render"
   get "manifestation/edit"

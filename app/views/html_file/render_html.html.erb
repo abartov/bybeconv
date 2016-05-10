@@ -41,7 +41,7 @@ $('#bPoetry').click(function() { document.location.href='<%=  url_for(:controlle
   <%= label_tag 'Author' %><br/>
   <%= text_field_tag(:author, @text.author_string) %>
 </p>
- <p><%= label_tag 'Alternatives' %><br/><%= select_tag(:author_matches, options_for_select(@person_matches) ,{:include_blank => true}) %></p>
+ <p><%= label_tag 'Alternatives' %><br/><%= select_tag(:author_matches, options_from_collection_for_select(@person_matches, "id", "name") ,{:include_blank => true}) %></p>
 
 <p class="heading">
 Here's the raw MultiMarkDown.  Make any corrections needed, and add the __SPLIT__ magic word to split the markdown into separate works. Also, here's <a href="<%= AppConstants.base_uri + @text.url %>">the original HTML file, for comparison</a></p>
