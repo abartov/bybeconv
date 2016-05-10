@@ -271,6 +271,7 @@ end
 class HtmlFile < ActiveRecord::Base
   has_paper_trail
   has_and_belongs_to_many :manifestations
+  belongs_to :person # for simplicity, only a single author considered per HtmlFile -- additional authors can be added on the WEM entities later
   scope :with_nikkud, where("nikkud IS NOT NULL and nikkud <> 'none'")
   scope :not_stripped, where('stripped_nikkud IS NULL or stripped_nikkud = 0')
 
@@ -559,5 +560,10 @@ class HtmlFile < ActiveRecord::Base
     end
     File.open(path + '.unsplit.markdown', 'w:UTF-8').write(markdown)
     File.open(path + '.markdown', 'w:UTF-8').write(splitted)
+  end
+  def html_dir
+    d = path.sub(AppConstants.base_dir, '')
+    d = d[1..d.rindex('/')-1]
+    HtmlDir.find_by_path(d)
   end
 end

@@ -38,6 +38,7 @@ Bybeconv::Application.routes.draw do
   get "html_file/analyze"
   match "html_file/:id/edit" => 'html_file#edit', as: 'html_file_edit', via: [:get, :post]
   post "html_file/:id/update" => 'html_file#update'
+  match "html_file/:id/confirm_html_dir_person" => 'html_file#confirm_html_dir_person', as: 'html_file_confirm_html_dir_person', via: [:get, :post]
   get "html_file/analyze_all"
 
   get "html_file/list"

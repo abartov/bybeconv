@@ -163,7 +163,13 @@ class HtmlFileController < ApplicationController
     @text = HtmlFile.find(params[:id])
     @authors = @text.guess_authors
   end
-
+  def confirm_html_dir_person
+    @text = HtmlFile.find(params[:id])
+    @text.person = @text.html_dir.person
+    @text.save!
+    flash[:notice] = "Confirmed #{@text.person.name} as the author for this HTML file."
+    render json: nil
+  end
   protected
 
   def render_from_markdown(htmlfile)

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160411031449) do
+ActiveRecord::Schema.define(:version => 20160510033826) do
 
   create_table "expressions", :force => true do |t|
     t.string   "title"
@@ -63,6 +63,7 @@ ActiveRecord::Schema.define(:version => 20160411031449) do
     t.integer  "seqno"
     t.string   "orig_author"
     t.string   "orig_author_url"
+    t.integer  "person_id"
   end
 
   add_index "html_files", ["path"], :name => "index_html_files_on_path"
@@ -110,6 +111,13 @@ ActiveRecord::Schema.define(:version => 20160411031449) do
     t.string   "viaf_id"
     t.string   "nli_id"
     t.integer  "toc_id"
+  end
+
+  create_table "people_works", :id => false, :force => true do |t|
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.integer  "work_id"
+    t.integer  "person_id"
   end
 
   create_table "proofs", :force => true do |t|
@@ -184,13 +192,6 @@ ActiveRecord::Schema.define(:version => 20160411031449) do
     t.text     "comment"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
-  end
-
-  create_table "people_works", :id => false, :force => true do |t|
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-    t.integer  "work_id"
-    t.integer  "person_id"
   end
 
 end
