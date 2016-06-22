@@ -39,16 +39,28 @@ $('#bPoetry').click(function() { document.location.href='<%=  url_for(:controlle
 
 <p><%= form_tag(:action => "render_html", :id => @text) do %>
   <%= label_tag 'Associated person' %><br/>
-  <% if @text.html_dir.person.nil? %>
-    <span style='color:red'>Directory not yet associated with person!</span>
+  <% if @text.person.nil? %>
+    <% if @text.html_dir.person.nil? %>
+      <span style='color:red'>Directory not yet associated with person!</span>
+    <% else %>
+      <span style='color:green'><%= link_to @text.html_dir.person.name, person_path(@text.html_dir.person.id) %></span> <%= link_to 'Confirm!', html_file_confirm_html_dir_person_path(@text), {remote: true, :class => "ajax_link", "data-done-msg" => 'confirmed!', "data-doing-msg" => 'confirming...' } %>
+    <% end %>
   <% else %>
-    <span style='color:green'><%= link_to @text.html_dir.person.name, person_path(@text.html_dir.person.id) %></span> <%= link_to 'Confirm!', html_file_confirm_html_dir_person_path(@text), {remote: true, :class => "confirm_dir_person", "data-done-msg" => 'confirmed!' } %>
-  <% end %></p>
-<p>
-  <%= label_tag 'Author from file' %><br/>
-  <%= text_field_tag(:author, @text.author_string) %>
+    <span style='color:green'><%= @text.person.name %> (confirmed! :))</span>
+    <br />
+    <% if @text.metadata_ready? %>
+      <span style='color:green'><b>FRBR ready!</b></span>
+    <% else %>
+      <%= link_to 'FRBRize!', html_file_frbrize_path(@text) %>
+    <% end %>
+  <% end %>
 </p>
- <p><%= label_tag 'Alternatives' %><br/><%= select_tag(:author_matches, options_from_collection_for_select(@person_matches, "id", "name") ,{:include_blank => true}) %></p>
+<p>
+<!--  < %= label_tag 'Author from file (correct if necessary)' %><br/>
+  < %= text_field_tag(:author, @text.author_string) %> < %= link_to 'find matches', html_file_get_author_matches, {remote: true, class: "author_matches_link", "data-done-msg" => 'find matches', 'data-doing-msg' => 'searching...' } %>
+</p>
+ <p>< %= label_tag 'Alternatives' %><br/>< %= select_tag(:author_matches, options_from_collection_for_select(@person_matches, "id", "name") ,{:include_blank => true}) %> -->
+</p>
 
 <p class="heading">
 Here's the raw MultiMarkDown.  Make any corrections needed, and add the __SPLIT__ magic word to split the markdown into separate works. Also, here's <a href="<%= AppConstants.base_uri + @text.url %>">the original HTML file, for comparison</a></p>
@@ -71,15 +83,22 @@ Here's the raw MultiMarkDown.  Make any corrections needed, and add the __SPLIT_
 
 <script type="text/javascript">
 $(document).ready(function() {
-  $('.confirm_dir_person')
+  $('.ajax_link')
     .bind("ajax:beforeSend", function(evt, xhr, settings) {
       var $link = $(this);
-      $link.html( "<b>Confirming...</b>");
+      $link.html( "<b>"+$(this).data('doing-msg')+"</b>");
     })
     .bind("ajax:success", function(evt, data, status, xhr){
       $(this).html($(this).data('done-msg'));
-      $(this).disable();
-  })
+  });
+  $('.author_matches_link')
+    .bind("ajax:beforeSend", function(evt, xhr, settings) {
+      var $link = $(this);
+      $link.html( "<b>"+$(this).data('doing-msg')+"</b>");
+    })
+    .bind("ajax:success", function(evt, data, status, xhr){
+      $(this).html($(this).data('done-msg'));
+  });
 });
 
 </script>

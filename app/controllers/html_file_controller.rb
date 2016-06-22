@@ -2,7 +2,7 @@ class HtmlFileController < ApplicationController
   before_filter :require_editor, only: [:edit, :update, :list_for_editor]
   # before_filter :require_user, :only => [:edit, :update]
 
-  before_filter :require_admin, only: [:analyze, :analyze_all, :list, :parse, :publish, :unsplit, :chop1, :chop2, :chop3, :poetry]
+  before_filter :require_admin, only: [:analyze, :analyze_all, :list, :parse, :publish, :unsplit, :chop1, :chop2, :chop3, :poetry, :frbrize]
 
   def analyze
     @text = HtmlFile.find(params[:id])
@@ -81,7 +81,16 @@ class HtmlFileController < ApplicationController
     @text = HtmlFile.find(params[:id])
     @text.parse
   end
-
+  def frbrize
+    @text = HtmlFile.find(params[:id])
+    unless @text.person.nil?
+      @text.create_WEM(@text.person.id)
+      flash[:notice] = 'Created FRBR WEM entities! :)'
+    else
+      flash[:error] = 'Cannot create FRBR entities (not linked to person yet?)'
+    end
+    redirect_to action: :list
+  end
   def publish
     @text = HtmlFile.find(params[:id])
     @text.make_html unless @text.html_ready?

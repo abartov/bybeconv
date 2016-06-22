@@ -64,8 +64,11 @@ module BybeUtils
     viaf = Net::HTTP.new('www.viaf.org')
     viaf.start unless viaf.started?
     viaf_result = JSON.parse(viaf.get("/viaf/AutoSuggest?query=#{URI.escape(author_string)}").body)
+    logger.debug("viaf_result: #{viaf_result.to_s}")
+    logger.debug("viaf_result['result']: #{viaf_result['result'].to_s}")
     return nil if viaf_result['result'].nil?
     viaf_items = viaf_result['result'].map { |h| [h['term'], h['viafid']] }
+    logger.info("#{viaf_items.length} results from VIAF for #{author_string}")
     viaf_items
 
     # Try NLI
