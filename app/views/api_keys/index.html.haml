@@ -1,0 +1,25 @@
+%h1 Listing api_keys
+
+%table
+  %tr
+    %th Email
+    %th Description
+    %th Key
+    %th Status
+    %th
+    %th
+    %th
+
+  - @api_keys.each do |api_key|
+    %tr
+      %td= api_key.email
+      %td= api_key.description
+      %td= api_key.key
+      %td= api_key.status
+      %td= link_to 'Show', api_key
+      %td= link_to 'Edit', edit_api_key_path(api_key)
+      %td= link_to 'Destroy', api_key, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Api key', new_api_key_path
