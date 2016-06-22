@@ -1,6 +1,6 @@
 class ApiController < ApplicationController
-  respond_to :json
-  before_filter :ensure_json_request  
+  respond_to :json, :html
+#  before_filter :ensure_json_request  
 
   def ensure_json_request  
     return if request.format == :json
@@ -16,8 +16,12 @@ class ApiController < ApplicationController
       the_url = '/'+the_url if the_url[0] != '/' # prepend slash if necessary
       h = HtmlFile.find_by_url(the_url)
       unless h.nil?
-        markdown = File.open(h.path+'.markdown')
-        render json: { markdown: markdown }
+        markdown = File.open(h.path+'.markdown').read
+        puts "\n\nFILE FOUND, markdown size #{markdown.length}\n\n"
+        respond_to do |fmt|
+          fmt.html { render text: markdown }
+          fmt.json { render json: { markdown: markdown }}
+        end
       end
     when 'put_markdown'
       # TODO: implement
