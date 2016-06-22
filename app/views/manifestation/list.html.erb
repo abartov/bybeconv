@@ -14,9 +14,9 @@
 <th>author</th><th>title</th><th>...</th><th>...</th>
 <% @manifestations.each { |m| %>
 <tr>
-  <td><%= m.expressions[0].works[0].authors[0] %></td><td><%= m.title %></td><td>...</td><td>...</td><td><%= link_to "render!", :action => 'render', :id => m %></td>
+  <td><%= m.expressions[0].works[0].people[0].name %></td><td><%= m.title %></td><td>...</td><td>...</td><td><%= link_to "render!", :action => 'render_html', :id => m %></td>
 </tr>
 
 <% } %>
 </table>
-<%= will_paginate @manifestations, :params => session[:mft_q_params] %> 
+<%= paginate @manifestations, :params => session[:mft_q_params] %>

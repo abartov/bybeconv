@@ -10,9 +10,9 @@ class ManifestationController < ApplicationController
     end
 
     # DB
-    p = param(:path)
+    p = params[:path]
     if p.blank?
-      @manifestations = Manifestation.all.page(params[:page]).order('title ASC')
+      @manifestations = Manifestation.page(params[:page]).order('title ASC')
     else
       @manifestations = Manifestation.where('path like ?', '%' + p + '%').page(params[:page]).order('title ASC')
     end
@@ -21,7 +21,7 @@ class ManifestationController < ApplicationController
   def show
   end
 
-  def render
+  def render_html
     @m = Manifestation.find(params[:id])
     @html = MultiMarkdown.new(@m.markdown).to_html.force_encoding('UTF-8')
   end

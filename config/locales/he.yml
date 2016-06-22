@@ -38,6 +38,7 @@ he:
   submitted_at: התקבל בתאריך
   html_dirs_list: רשימת תיקיות
   html_files_list: רשימת קבצים
+  catalog_dashboard: קטלוג המערכת
   resolve_as_fixed: השגיאה תוקנה (שולח דואל!)
   resolve_as_fixed_no_email: השגיאה תוקנה (ללא דואל, למקרה של ריבוי דיווחים תקינים, לאחר שליחת דואל עבור הראשון)
   resolve_as_wontfix: לא שגיאה, או לא יתוקן (שולח דואל!)

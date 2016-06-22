@@ -3,8 +3,9 @@ Bybeconv::Application.routes.draw do
 
 
   get "manifestation/show"
-  get "manifestation/render"
+  get "manifestation/render_html"
   get "manifestation/edit"
+  get "manifestation/list"
   get "user/list"
   get "user/:id/make_editor" => 'user#make_editor', as: 'user_make_editor'
   get "user/:id/make_admin" => 'user#make_admin', as: 'user_make_admin'
