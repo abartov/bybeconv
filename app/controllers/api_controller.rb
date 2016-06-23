@@ -10,7 +10,7 @@ class ApiController < ApplicationController
   def query
     # TODO: add API key validation
     case params[:api_action]
-    when 'get_markdown'
+    when 'get_markdown_by_path'
       # TODO: replace this with serving from Expressions rather than HtmlFiles
       the_url = params[:path]
       the_url = '/'+the_url if the_url[0] != '/' # prepend slash if necessary
@@ -21,6 +21,15 @@ class ApiController < ApplicationController
         respond_to do |fmt|
           fmt.html { render text: markdown }
           fmt.json { render json: { markdown: markdown }}
+        end
+      end
+    when 'get_markdown'
+      # TODO: replace this with serving from Expressions rather than HtmlFiles
+      m = Manifestation.find(params[:mft])
+      unless m.nil?
+        respond_to do |fmt|
+          fmt.html { render text: m.markdown }
+          fmt.json { render json: { markdown: m.markdown }}
         end
       end
     when 'put_markdown'
