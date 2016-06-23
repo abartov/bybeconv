@@ -12,6 +12,12 @@ he:
   rec_when: מתי
   status: סטטוס
   email: דואל
+  total_manifestations: "סה\"כ יצירות: %{total}"
+  title: שם
+  filter: סינון
+  actions: פעולות
+  author: מחבר
+  render: הצג
   proof_file: קובץ
   proof_when: מתי
   all_recommendations: כל ההמלצות
@@ -39,6 +45,7 @@ he:
   html_dirs_list: רשימת תיקיות
   html_files_list: רשימת קבצים
   catalog_dashboard: קטלוג המערכת
+  catalog_title: קטלוג פרויקט בן-יהודה
   resolve_as_fixed: השגיאה תוקנה (שולח דואל!)
   resolve_as_fixed_no_email: השגיאה תוקנה (ללא דואל, למקרה של ריבוי דיווחים תקינים, לאחר שליחת דואל עבור הראשון)
   resolve_as_wontfix: לא שגיאה, או לא יתוקן (שולח דואל!)
