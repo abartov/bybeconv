@@ -28,4 +28,5 @@ class ManifestationController < ApplicationController
 
   def edit
   end
+
 end

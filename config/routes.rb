@@ -1,11 +1,14 @@
 Bybeconv::Application.routes.draw do
   resources :people
 
-
   get "manifestation/show"
   get "manifestation/render_html"
   get "manifestation/edit"
   get "manifestation/list"
+
+  get "api/query"
+  resources :api_keys
+
   get "user/list"
   get "user/:id/make_editor" => 'user#make_editor', as: 'user_make_editor'
   get "user/:id/make_admin" => 'user#make_admin', as: 'user_make_admin'
