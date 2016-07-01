@@ -1,4 +1,9 @@
 Bybeconv::Application.routes.draw do
+  get "api/query"
+
+  resources :api_keys
+
+
   get "user/list"
   get "user/:id/make_editor" => 'user#make_editor', as: 'user_make_editor'
   get "user/:id/make_admin" => 'user#make_admin', as: 'user_make_admin'
