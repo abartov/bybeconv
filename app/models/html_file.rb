@@ -470,12 +470,12 @@ class HtmlFile < ActiveRecord::Base
     return [title.strip, author]
   end
   def self.title_from_file(f)
-    puts "title_from_file: #{f}" # DBG
+    #puts "title_from_file: #{f}" # DBG
     html = ''
     begin 
       html = File.open(f, "r:UTF-8").read
       z = html.gsub("\n", ' ') # ensure no bad encoding
-      puts "read as UTF8" # DBG
+      #puts "read as UTF8" # DBG
     rescue
       begin
         html = File.open(f, "r:windows-1255:UTF-8").read
