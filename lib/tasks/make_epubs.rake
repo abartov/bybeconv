@@ -20,8 +20,12 @@ task :make_ebooks => :environment do
         book.add_item(f.url).add_content(StringIO.new(buf)).toc_text(HtmlFile.title_from_file(f.path)[0].strip)
       }
     }
-    puts "writing epub..."
-    book.generate_epub(AppConstants.base_dir+"/#{dir.path}/#{dir.path}.epub")
+    if files.length > 0
+      puts "writing epub..."
+      book.generate_epub(AppConstants.base_dir+"/#{dir.path}/#{dir.path}.epub")
+    else
+      puts "skipping ebook for dir with no HtmlFiles"
+    end
   }
 
 end

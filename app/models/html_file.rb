@@ -456,7 +456,7 @@ class HtmlFile < ActiveRecord::Base
   def self.title_from_html(h)
     title = nil
     h.gsub!("\n",'') # ensure no newlines interfere with the full content of <title>...</title>
-    if /<title>(.*)<\/title>/.match(h)
+    if /<title>(.*)<\/title>/i.match(h)
       title = $1
       author = $1 # return whole thing if we can't do better
       res = /\//.match(title)
