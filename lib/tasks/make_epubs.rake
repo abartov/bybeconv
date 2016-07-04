@@ -1,7 +1,10 @@
 require 'gepub'
+require 'htmlentities'
 
 desc "Make ebooks for all authors"
 task :make_ebooks => :environment do
+  coder = HTMLEntities.new
+
   dirs = HtmlDir.all
   dirs.each {|dir|
     author = dir.author
@@ -17,7 +20,7 @@ task :make_ebooks => :environment do
     book.ordered {
       files.each {|f| 
         buf = remove_payload(File.open(f.path).read) # remove donation banner and proof/recommend buttons
-        book.add_item(f.url).add_content(StringIO.new(buf)).toc_text(HtmlFile.title_from_file(f.path)[0].strip)
+        book.add_item(f.url).add_content(StringIO.new(coder.decode(buf))).toc_text(coder.decode(HtmlFile.title_from_file(f.path)[0].strip))
       }
     }
     if files.length > 0
