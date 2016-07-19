@@ -41,11 +41,11 @@ class Notifications < ActionMailer::Base
   # Subject can be set in your I18n file at config/locales/en.yml
   # with the following lookup:
   #
-  #   en.notifications.recommendation_blogged.subject
+  #   en.notifications.recommendation_published.subject
   #
   def recommendation_published(rec, html_url, blog_url)
     @greeting = t(:hello_anon)
-    @blog_url = blog_url
+    @published_url = blog_url
     @rec = rec
     @url = html_url
     mail to: rec.from
