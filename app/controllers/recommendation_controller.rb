@@ -35,25 +35,38 @@ class RecommendationController < ApplicationController
 
   def resolve
     @p = Recommendation.find(params[:id])
-    if params[:accept] == 'yes'
-      @p.status = 'accepted'
-      unless @p.from.nil? or @p.from !~ /\w+@\w+\.\w+/
-        Notifications.recommendation_accepted(@p, @p.about).deliver
-      end
-      text = 'ההמלצה התקבלה וממתיה לשילוב ביומן הרשת'
-    elsif params[:accept] == 'no'
-      @p.status = 'rejected'
-      text = 'ההמלצה נדחתה ותימחק עם השאר'
+    error = nil
+    if @p.nil?
+      error = t(:no_such_item)
     else
-      @p.status = 'archived' 
-      unless @p.from.nil? or @p.from !~ /\w+@\w+\.\w+/ 
-        Notifications.recommendation_blogged(@p, @p.about, params[:blog_url]).deliver # send "blogged" notice
+      if params[:accept] == 'yes'
+        @p.status = 'accepted'
+        unless @p.from.nil? or @p.from !~ /\w+@\w+\.\w+/
+          Notifications.recommendation_accepted(@p, @p.about).deliver
+        end
+        text = 'ההמלצה התקבלה וממתינה לשילוב ביומן הרשת'
+      elsif params[:accept] == 'no'
+        @p.status = 'rejected'
+        text = 'ההמלצה נדחתה ותימחק עם השאר'
+      elsif params[:accept] == 'blogged'
+        if params[:url].nil? or params[:url].empty?
+          error = t(:no_url_specified)
+        else
+          @p.status = 'archived' 
+          unless @p.from.nil? or @p.from !~ /\w+@\w+\.\w+/ 
+            Notifications.recommendation_published(@p, @p.about, params[:blog_url]).deliver # send "blogged" notice
+          end
+          text = 'ההמלצה אורכבה ונשלח דואל לממליץ/ה'
+        end
       end
-      text = 'ההמלצה אורכבה ונשלח דואל לממליץ/ה'
     end
-    @p.resolved_by = session[:user]
-    @p.save!
-    flash[:notice] = t(:resolved_as, :fixed => text)
+    if error.nil?
+      @p.resolved_by = session[:user]
+      @p.save!
+      flash[:notice] = t(:resolved_as, :fixed => text)
+    else
+      flash[:error] = error
+    end
     redirect_to :action => :list
   end
   def purge
