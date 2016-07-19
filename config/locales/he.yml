@@ -72,5 +72,5 @@ he:
       subject: תודה על ההגהה!
     recommendation_accepted:
       subject: תודה על ההמלצה!
-    recommendation_blogged:
-      subject: המלצתך פורסמה ביומן הרשת!
+    recommendation_published:
+      subject: המלצתך שולבה בטקסט שפרסמנו!

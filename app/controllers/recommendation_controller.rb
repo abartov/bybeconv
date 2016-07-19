@@ -54,7 +54,7 @@ class RecommendationController < ApplicationController
         else
           @p.status = 'archived' 
           unless @p.from.nil? or @p.from !~ /\w+@\w+\.\w+/ 
-            Notifications.recommendation_published(@p, @p.about, params[:blog_url]).deliver # send "blogged" notice
+            Notifications.recommendation_published(@p, @p.about, params[:url]).deliver # send "blogged" notice
           end
           text = 'ההמלצה אורכבה ונשלח דואל לממליץ/ה'
         end
