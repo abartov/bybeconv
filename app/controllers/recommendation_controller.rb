@@ -22,9 +22,9 @@ class RecommendationController < ApplicationController
     # calculate tallies
     @count = { :all => Recommendation.count, :open => Recommendation.where(status: 'new').count, :accepted => Recommendation.where(status: 'accepted').count, :rejected => Recommendation.where(status: 'rejected').count }
     if params[:status].nil?
-      @recs = Recommendation.page(params[:page]) 
+      @recs = Recommendation.page(params[:page]).order(:about)
     else
-      @recs = Recommendation.where(status: params[:status]).page(params[:page])
+      @recs = Recommendation.where(status: params[:status]).page(params[:page]).order(:about)
     end
   end
 
