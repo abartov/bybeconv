@@ -52,6 +52,7 @@ gem 'haml'
 gem 'haml-rails'
 gem 'project-honeypot', '>= 0.1.3' # for HTTP:BL service by Project Honeypot
 gem 'gepub' # for generating EPUBs
+gem 'rmagick' # for generating cover images for EPUBs
 
 group :test do
   gem 'turn', '0.8.2', :require => false

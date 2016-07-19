@@ -1,5 +1,6 @@
 require 'gepub'
 require 'htmlentities'
+require 'RMagick'
 
 desc "Make ebooks for all authors"
 task :make_ebooks => :environment do
@@ -17,6 +18,21 @@ task :make_ebooks => :environment do
     book.add_creator(dir.author)
     puts "processing dir: #{dir.path}"
     files = HtmlFile.where("path like '%/#{dir.path}/%'").order('seqno asc')
+    # make cover image
+    canvas = Magick::Image.new(1200, 800){self.background_color = 'white'}
+    gc = Magick::Draw.new
+    gc.gravity = Magick::CenterGravity
+    gc.pointsize(50)
+    gc.text(0,0,"כתבי #{dir.author}".reverse.center(50))
+    gc.draw(canvas)
+    gc.pointsize(30)
+    gc.text(0,150,"פרי עמלם של מתנדבי פרויקט בן-יהודה".reverse.center(50))
+    gc.pointsize(20)
+    gc.text(0,250,Date.today.to_s+"מעודכן לתאריך: ".reverse.center(50))
+    gc.draw(canvas)
+    covername = AppConstants.base_dir+"/#{dir.path}/cover.jpg"
+    canvas.write(covername)
+    book.add_item(covername).cover_image
     book.ordered {
       files.each {|f| 
         buf = remove_payload(File.open(f.path).read) # remove donation banner and proof/recommend buttons

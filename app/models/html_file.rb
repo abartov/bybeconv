@@ -466,8 +466,9 @@ class HtmlFile < ActiveRecord::Base
       end
       title.sub!(/ - .*/, '') # remove " - toxen inyanim"
       title.sub!(/ \u2013.*/, '') # ditto, with an em-dash
+      title.strip!
     end
-    return [title.strip, author]
+    return [title, author]
   end
   def self.title_from_file(f)
     #puts "title_from_file: #{f}" # DBG
