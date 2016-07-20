@@ -54,6 +54,7 @@ he:
   resolve_as_accepted: קבל המלצה לעיון מאוחר יותר (שולח דואל!)
   resolve_as_rejected: דחה המלצה -> למחיקה
   resolve_as_blogged: קבל המלצה בציון פרסום ב-URL
+  resolve_as_archived: ארכב המלצה בלי לשלוח דואל
   resolved_as: טופל ועבר לסטטוס %{fixed}
   no_url_specified: לא צוינה כתובת URL.
   no_such_item: אין פריט כזה.

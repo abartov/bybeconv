@@ -48,6 +48,9 @@ class RecommendationController < ApplicationController
       elsif params[:accept] == 'no'
         @p.status = 'rejected'
         text = 'ההמלצה נדחתה ותימחק עם השאר'
+      elsif params[:accept] == 'archive'
+        @p.status = 'archived'
+        text = 'ההמלצה אורכבה בלי לשלוח דואל'
       elsif params[:accept] == 'blogged'
         if params[:url].nil? or params[:url].empty?
           error = t(:no_url_specified)
