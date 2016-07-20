@@ -20,6 +20,8 @@
   %p
     = link_to t(:resolve_as_accepted), recommendation_resolve_path(@p, :accept => 'yes')
 %p
+  = link_to t(:resolve_as_archived), recommendation_resolve_path(@p, :accept => 'archive')
+%p
   = link_to t(:resolve_as_rejected), recommendation_resolve_path(@p, :accept => 'no')
 %hr
 - if @p.status != 'archived'
