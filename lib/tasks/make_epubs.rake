@@ -35,7 +35,7 @@ task :make_ebooks => :environment do
     canvas.write(covername)
     book.add_item('cover.jpg',covername).cover_image
     book.ordered {
-      book.add_item('0_title.html').add_content(StringIO.new('<body dir="rtl" align="center"><h1>כתבי '+dir.author+'</h1><p/><p/><h2>פרי עמלם של מתנדבי פרויקט בן-יהודה</h2><p/><h3><a href="http://benyehuda.org/blog/%D7%A8%D7%95%D7%A6%D7%99%D7%9D-%D7%9C%D7%A2%D7%96%D7%95%D7%A8">(רוצים לעזור?)</a></h3><p/>מעודכן לתאריך: '+Date.today.to_s+'</body>'))
+      book.add_item('0_title.html').add_content(StringIO.new('<head><meta charset="UTF-8"><meta http-equiv="content-type" content="text/html; charset=UTF-8"></head><body dir="rtl" align="center"><h1>כתבי '+dir.author+'</h1><p/><p/><h2>פרי עמלם של מתנדבי פרויקט בן-יהודה</h2><p/><h3><a href="http://benyehuda.org/blog/%D7%A8%D7%95%D7%A6%D7%99%D7%9D-%D7%9C%D7%A2%D7%96%D7%95%D7%A8">(רוצים לעזור?)</a></h3><p/>מעודכן לתאריך: '+Date.today.to_s+'</body>'))
       files.each {|f| 
         buf = remove_payload(File.open(f.path).read) # remove donation banner and proof/recommend buttons
         buf = remove_toc_links(buf) # remove index and homepage links
@@ -44,7 +44,13 @@ task :make_ebooks => :environment do
     }
     if files.length > 0
       puts "writing epub..."
-      book.generate_epub(AppConstants.base_dir+"/#{dir.path}/#{dir.path}.epub")
+      fname = AppConstants.base_dir+"/#{dir.path}/#{dir.path}"
+      book.generate_epub(fname + '.epub')
+      # proceed to convert the EPUB to a MOBI too.  Assumes 'kindlegen' is in the system path.
+      puts "converting EPUB to MOBI..."
+      out = `kindlegen #{fname}.epub -c1 -verbose  -o #{dir.path}.mobi`
+      puts(out)
+      puts "done"
     else
       puts "skipping ebook for dir with no HtmlFiles"
     end
