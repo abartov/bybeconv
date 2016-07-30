@@ -76,4 +76,7 @@ module BybeUtils
     newbuf += $'
     return newbuf
   end
+  def remove_toc_links(buf)
+    return buf.gsub(/<a\s+?href="index.html">.*?<\/a>/mi, '').gsub(/<a\s+?href="\/">.*?<\/a>/mi,'').gsub(/<a\s+?href="http:\/\/benyehuda.org\/"/mi,'')
+  end
 end
