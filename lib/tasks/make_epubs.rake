@@ -16,6 +16,7 @@ task :make_ebooks => :environment do
    
     book.add_title('כתבי '+dir.author, nil, GEPUB::TITLE_TYPE::MAIN) 
     book.add_creator(dir.author)
+    book.page_progression_direction = 'rtl' # Hebrew! :)
     puts "processing dir: #{dir.path}"
     files = HtmlFile.where("path like '%/#{dir.path}/%'").order('seqno asc')
     # make cover image
@@ -32,7 +33,7 @@ task :make_ebooks => :environment do
     gc.draw(canvas)
     covername = AppConstants.base_dir+"/#{dir.path}/cover.jpg"
     canvas.write(covername)
-    book.add_item(covername).cover_image
+    book.add_item('cover.jpg',covername).cover_image
     book.ordered {
       files.each {|f| 
         buf = remove_payload(File.open(f.path).read) # remove donation banner and proof/recommend buttons
