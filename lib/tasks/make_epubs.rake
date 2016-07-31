@@ -61,7 +61,7 @@ task :make_ebooks => :environment do
       fname = AppConstants.base_dir+"/#{dir.path}/#{dir.path}"
       book.generate_epub(fname + '.epub')
       puts "converting #{i} HTML files to PDF..."
-      out = `wkhtmltopdf #{tmphtmldir}/*.html #{fname}.pdf` # NOTE: this relies on the static wkhtmltopdf built against patched Qt to work
+      out = `wkhtmltopdf #{tmphtmldir}/*.html #{fname}.pdf` # NOTE: this relies on the static wkhtmltopdf built against patched Qt to work.  Available here: http://wkhtmltopdf.org/downloads.html
       # proceed to convert the EPUB to a MOBI too.  Assumes 'kindlegen' is in the system path.
       puts "converting EPUB to MOBI..."
       out = `kindlegen #{fname}.epub -c1 -o #{dir.path}.mobi`
