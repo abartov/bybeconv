@@ -37,19 +37,31 @@ task :make_ebooks => :environment do
       gc.draw(canvas)
       covername = AppConstants.base_dir+"/#{dir.path}/cover.jpg"
       canvas.write(covername)
+      tmphtmldir = "/tmp/#{dir.path}" # temp dir for HTMLs to be converted into PDF later
+      `mkdir -p #{tmphtmldir}`
+      `rm -rf #{tmphtmldir}/*` # clean up any remains
       book.add_item('cover.jpg',covername).cover_image
       book.ordered {
-        book.add_item('0_title.html').add_content(StringIO.new('<head><meta charset="UTF-8"><meta http-equiv="content-type" content="text/html; charset=UTF-8"></head><body dir="rtl" align="center"><h1>כתבי '+dir.author+'</h1><p/><p/><h2>פרי עמלם של מתנדבי פרויקט בן-יהודה</h2><p/><h3><a href="http://benyehuda.org/blog/%D7%A8%D7%95%D7%A6%D7%99%D7%9D-%D7%9C%D7%A2%D7%96%D7%95%D7%A8">(רוצים לעזור?)</a></h3><p/>מעודכן לתאריך: '+Date.today.to_s+'</body>'))
+        buf = '<head><meta charset="UTF-8"><meta http-equiv="content-type" content="text/html; charset=UTF-8"></head><body dir="rtl" align="center"><h1>כתבי '+dir.author+'</h1><p/><p/><h3>פרי עמלם של מתנדבי</h3><p/><h2>פרויקט בן-יהודה</h2><p/><h3><a href="http://benyehuda.org/blog/%D7%A8%D7%95%D7%A6%D7%99%D7%9D-%D7%9C%D7%A2%D7%96%D7%95%D7%A8">(רוצים לעזור?)</a></h3><p/>מעודכן לתאריך: '+Date.today.to_s+'</body>'
+        book.add_item('0_title.html').add_content(StringIO.new(buf))
+        File.open(tmphtmldir + '/000_title.html','w') {|f| f.write(buf)} # write title page for PDF
+        fileno = 1
         files.each {|f| 
           buf = remove_payload(File.open(f.path).read) # remove donation banner and proof/recommend buttons
           buf = remove_toc_links(buf) # remove index and homepage links
           buf = remove_prose_table(buf)
-          book.add_item(f.url[1..-1]).add_content(StringIO.new(coder.decode(buf))).toc_text(coder.decode(HtmlFile.title_from_file(f.path)[0].strip))
+          buf = coder.decode(buf)
+          title = coder.decode(HtmlFile.title_from_file(f.path)[0].strip)
+          book.add_item(f.url[1..-1]).add_content(StringIO.new(buf)).toc_text(title)
+          File.open("#{tmphtmldir}/"+ "%03d" % fileno + '.html', 'w') {|f| f.write(buf)}
+          fileno += 1
         }
       }
       puts "writing epub..."
       fname = AppConstants.base_dir+"/#{dir.path}/#{dir.path}"
       book.generate_epub(fname + '.epub')
+      puts "converting #{i} HTML files to PDF..."
+      out = `wkhtmltopdf #{tmphtmldir}/*.html #{fname}.pdf` # NOTE: this relies on the static wkhtmltopdf built against patched Qt to work.  Available here: http://wkhtmltopdf.org/downloads.html
       # proceed to convert the EPUB to a MOBI too.  Assumes 'kindlegen' is in the system path.
       puts "converting EPUB to MOBI..."
       out = `kindlegen #{fname}.epub -c1 -o #{dir.path}.mobi`
