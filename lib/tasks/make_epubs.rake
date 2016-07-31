@@ -48,8 +48,7 @@ task :make_ebooks => :environment do
       book.generate_epub(fname + '.epub')
       # proceed to convert the EPUB to a MOBI too.  Assumes 'kindlegen' is in the system path.
       puts "converting EPUB to MOBI..."
-      out = `kindlegen #{fname}.epub -c1 -verbose  -o #{dir.path}.mobi`
-      puts(out)
+      out = `kindlegen #{fname}.epub -c1 -o #{dir.path}.mobi`
       puts "done"
     else
       puts "skipping ebook for dir with no HtmlFiles"
