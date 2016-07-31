@@ -7,6 +7,8 @@ task :make_ebooks => :environment do
   coder = HTMLEntities.new
 
   dirs = HtmlDir.all
+  total = dirs.length
+  i = 1
   dirs.each {|dir|
     author = dir.author
 
@@ -17,7 +19,7 @@ task :make_ebooks => :environment do
     book.add_title('כתבי '+dir.author, nil, GEPUB::TITLE_TYPE::MAIN) 
     book.add_creator(dir.author)
     book.page_progression_direction = 'rtl' # Hebrew! :)
-    puts "processing dir: #{dir.path}"
+    puts "processing dir: #{dir.path} #{i}/#{total}"
     files = HtmlFile.where("path like '%/#{dir.path}/%'").order('seqno asc')
     if files.length > 0
       # make cover image
@@ -53,6 +55,7 @@ task :make_ebooks => :environment do
     else
       puts "skipping ebook for dir with no HtmlFiles"
     end
+    i += 1
   }
 
 end
