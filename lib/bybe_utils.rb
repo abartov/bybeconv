@@ -79,4 +79,9 @@ module BybeUtils
   def remove_toc_links(buf)
     return buf.gsub(/<a\s+?href="index.html">.*?<\/a>/mi, '').gsub(/<a\s+?href="\/">.*?<\/a>/mi,'').gsub(/<a\s+?href="http:\/\/benyehuda.org\/"/mi,'')
   end
+  def remove_prose_table(buf)
+    buf =~ /<table.*? width="70%".*?>.*?<td.*?>(.*)<\/td>.*?<\/table>/im # if prose table exists, grab its contents
+    return buf if $1 == nil
+    return $` + $1 + $'
+  end
 end
