@@ -27,6 +27,7 @@ task :make_ebooks => :environment do
       gc = Magick::Draw.new
       gc.gravity = Magick::CenterGravity
       gc.pointsize(50)
+      gc.font('David CLM')
       gc.text(0,0,"כתבי #{dir.author}".reverse.center(50))
       gc.draw(canvas)
       gc.pointsize(30)
