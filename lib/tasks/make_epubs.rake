@@ -9,6 +9,7 @@ task :make_ebooks => :environment do
   dirs = HtmlDir.all
   total = dirs.length
   i = 1
+  dl_toc = []
   dirs.each {|dir|
     author = dir.author
 
@@ -47,14 +48,18 @@ task :make_ebooks => :environment do
         File.open(tmphtmldir + '/000_title.html','w') {|f| f.write(buf)} # write title page for PDF
         fileno = 1
         files.each {|f| 
-          buf = remove_payload(File.open(f.path).read) # remove donation banner and proof/recommend buttons
-          buf = remove_toc_links(buf) # remove index and homepage links
-          buf = remove_prose_table(buf)
-          buf = coder.decode(buf)
-          title = coder.decode(HtmlFile.title_from_file(f.path)[0].strip)
-          book.add_item(f.url[1..-1]).add_content(StringIO.new(buf)).toc_text(title)
-          File.open("#{tmphtmldir}/"+ "%03d" % fileno + '.html', 'w') {|f| f.write(buf)}
-          fileno += 1
+          begin
+            buf = remove_payload(File.open(f.path).read) # remove donation banner and proof/recommend buttons
+            buf = remove_toc_links(buf) # remove index and homepage links
+            buf = remove_prose_table(buf)
+            buf = coder.decode(buf)
+            title = coder.decode(HtmlFile.title_from_file(f.path)[0].strip)
+            book.add_item(f.url[1..-1]).add_content(StringIO.new(buf)).toc_text(title)
+            File.open("#{tmphtmldir}/"+ "%03d" % fileno + '.html', 'w') {|f| f.write(buf)}
+            fileno += 1
+          rescue
+            puts "! ERROR processing file #{f.path}!"
+          end
         }
       }
       puts "writing epub..."
@@ -66,12 +71,14 @@ task :make_ebooks => :environment do
       puts "converting EPUB to MOBI..."
       out = `kindlegen #{fname}.epub -c1 -o #{dir.path}.mobi`
       puts "done"
+      dl_toc << "<li>#{dir.author}: <a href=\"/#{dir.path}/#{dir.path}.epub\">EPUB</a>, <a href=\"/#{dir.path}/#{dir.path}.mobi\">MOBI</a>, <a href=\"/#{dir.path}/#{dir.path}.pdf\">PDF</a></li>"
     else
       puts "skipping ebook for dir with no HtmlFiles"
     end
     i += 1
   }
-
+  dl_toc.sort!
+  File.open(AppConstants.base_dir+"/ebooks.html","w") {|f| f.write("<html><head><meta charset=\"UTF-8\"></head><body dir=\"rtl\" align=\"right\"><h1>פרויקט בן-יהודה</h1><h2>ספרים אלקטרוניים להורדה</h2><p/><p>בחרו יוצר להלן, ולחצו על תבנית הקובץ הרצויה. (עבור קינדל, בחרו MOBI)</p><p/><ol>"+dl_toc.join("\n")+"</ol><p/><p>בשאלות, כתבו אלינו: <a href=\"mailto:editor@benyehuda.org\">editor@benyehuda.org</a></p><hr><a href=\"/\">חזרה לדף הבית</a></body></html>")}
 end
 
 private 
