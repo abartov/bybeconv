@@ -20,8 +20,8 @@ he:
   render: הצג
   show: הצג
   path: נתיב
-  yes: כן
-  no: לא
+  'yes': כן
+  'no': לא
   none: אין
   viaf_id: מזהה VIAF
   public_domain: נחלת הכלל
