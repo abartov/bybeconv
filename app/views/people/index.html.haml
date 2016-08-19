@@ -1,0 +1,35 @@
+%h1 Listing people
+
+%table
+  %tr
+    %th Name
+    %th Dates
+    %th Title
+    %th Other designation
+    %th Affiliation
+    %th Country
+    %th Comment
+    %th Viaf
+    %th Nli
+    %th
+    %th
+    %th
+
+  - @people.each do |person|
+    %tr
+      %td= person.name
+      %td= person.dates
+      %td= person.title
+      %td= person.other_designation
+      %td= person.affiliation
+      %td= person.country
+      %td= person.comment
+      %td= person.viaf_id
+      %td= person.nli_id
+      %td= link_to 'Show', person
+      %td= link_to 'Edit', edit_person_path(person)
+      %td= link_to 'Destroy', person, :method => :delete, :data => { :confirm => 'Are you sure?' }
+
+%br
+
+= link_to 'New Person', new_person_path

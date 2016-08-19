@@ -9,7 +9,7 @@ class UserController < ApplicationController
     u = User.find(params[:id])
     u.editor = true
     u.save!
-    redirect_to '/', flash: {notice: "#{u.name} is now an editor."}
+    redirect_to '/', flash: { notice: "#{u.name} is now an editor." }
   end
 
   def make_admin
@@ -25,5 +25,5 @@ class UserController < ApplicationController
     u.save!
     redirect_to '/', flash: {notice: "#{u.name} is no longer an editor."}
   end
-  
+
 end

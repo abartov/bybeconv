@@ -2,4 +2,9 @@ Some design considerations:
 
 Key principle: each manipulation to be done where it's easiest to do it, i.e. don't try to solve everything during the single-pass HTML parsing (many things are just easier to do as a manipulation of the clean markdown)
 
+PBY-icky-HTML to FRBR Entities logic: one HTML file becomes one (most commonly) or more (e.g. multiple short poems in one file) manifestations, each manifestation being of one expression (the markdown expression, also created) of one work (also created, but possibly already existing with another expression [e.g. multiple translations of same foreign work], and usually linked to an original expression elsewhere [e.g. Wikisource, Project Gutenberg]).
+
+Implementation notes for later:
+
+* when rendering an aggregate work as one output document (especially HTML), render each part, and post-process each output to rename the footnote anchors (if any) to avoid collisions (i.e. namespace each fragment or something).
 

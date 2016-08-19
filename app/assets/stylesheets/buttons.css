@@ -78,13 +78,13 @@
     left:-393px;
     direction:rtl;
 }
- 
+
 .proof-panel a.proof-tab {
     background:transparent url('http://bybe.benyehuda.org/assets/error.png') no-repeat scroll 0 0;
     border-width: 1px 1px 1px 0;
     display:block;
     height:141px;
-    left:54px; 
+    left:54px;
     bottom:21px;
     position:relative;
     float:right;
@@ -95,7 +95,7 @@
 .proof-panel textarea {
   width: 90%;
 }
- 
+
 .recommend-panel {
     padding:20px;
     width: 350px;

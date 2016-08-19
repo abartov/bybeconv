@@ -23,9 +23,9 @@ def unbehead_traverse(dir, t)
   Dir.foreach(dir) { |fname|
     break unless t[:limit].nil? or t[:files] <= t[:limit]
     thefile = dir+'/'+fname
-    if !(File.directory?(thefile)) and fname =~ /\.html$/ and not fname == 'index.html' and fname !~ /_no_nikkud/ and not dir == AppConstants.base_dir 
+    if !(File.directory?(thefile)) and fname =~ /\.html$/ and not fname == 'index.html' and fname !~ /_no_nikkud/ and not dir == AppConstants.base_dir
       puts "DBG: #{thefile}"
-      t[:files] += 1 
+      t[:files] += 1
       begin
         # fugly hack
         pre_read = File.open(thefile, 'rb').read(2000)
@@ -55,7 +55,7 @@ def unbehead_traverse(dir, t)
         orig_atime = File.atime(thefile)
         html = remove_font_cruft(html) # remove Word-generated useless font-face list
         if has_placeholders?(html)
-          html = remove_payload(html) 
+          html = remove_payload(html)
           t[:success] += 1
         end
         # keep a backup in case of catastrophe (e.g. power off) in the midst of live file update
@@ -65,15 +65,15 @@ def unbehead_traverse(dir, t)
         html.sub!('charset=unicode', 'charset=UTF-8')
         wenc = 'w:UTF-8' # no matter what, we write UTF-8 files from now on!
         #wenc = 'w:windows-1255'
-        File.open('behead.backup', wenc) { |f| 
+        File.open('behead.backup', wenc) { |f|
           f.truncate(0)
           f.write(thefile + "\n")
           f.write(html)
         }
-        # DBG File.open("/tmp/__#{thefile.sub('/','_')}", 'w:windows-1255') { |f| 
-        File.open(thefile, wenc) { |f| 
+        # DBG File.open("/tmp/__#{thefile.sub('/','_')}", 'w:windows-1255') { |f|
+        File.open(thefile, wenc) { |f|
           f.truncate(0)
-          f.write(html) 
+          f.write(html)
         }
         File.utime(orig_atime, orig_mtime, thefile) # restore (falsify, heh) previous mtime/atime to avoid throwing off date-based manual BY site updates
         # get rid of backup upon successful update.  This allows the _existence_ of the file to be a sign of trouble :)
@@ -94,7 +94,7 @@ end
 def remove_font_cruft(buf)
   dbg_size = buf.length
   m = buf.match(/\/\* Font Definitions \*\//)
-  return buf if m.nil? 
+  return buf if m.nil?
   tmpbuf = $`
   remainder = $'
   m = remainder.match(/\/\* Style Definitions \*\//)

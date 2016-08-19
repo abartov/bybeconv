@@ -1,5 +1,5 @@
 %h1= t(:proof_thanks_title)
-%p= t(:proof_thanks_html, :email => @p.from, :what => @p.what) 
+%p= t(:proof_thanks_html, :email => @p.from, :what => @p.what)
 - if @p.subscribe
   %p= t(:proof_subscribed, :email => @p.from)
 

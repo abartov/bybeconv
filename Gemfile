@@ -5,11 +5,10 @@ gem 'rails', '~> 3.2.14'
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
-gem 'mysql2'
+gem 'mysql2', '~> 0.3.11'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-twitter'
 gem 'clockwork' # scheduler
-gem 'paper_trail' # ActiveRecord versioning
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -38,6 +37,7 @@ gem 'htmlentities'
 #gem 'will_paginate'
 gem 'kaminari' # pagination
 gem 'nokogiri'
+#gem 'epubbery' # for epubs
 gem 'rmultimarkdown' # new wrapper over Fletcher Penney's MultiMarkDown 4 (MMD 4)
 
 #gem 'rpeg-multimarkdown', :github => 'djungelvral/rpeg-multimarkdown' # note: gem unmaintained, native part doesn't build under Ruby 2.1 -- may need updating the native part from the actual peg-multimarkdown implementation.
@@ -49,8 +49,12 @@ gem 'rmultimarkdown' # new wrapper over Fletcher Penney's MultiMarkDown 4 (MMD 4
 gem 'app_constants' # anything more Railsy?
 gem 'hebrew' # https://github.com/abartov/hebrew
 gem 'haml'
+#gem 'zoom', '~>0.4.1', :git => 'https://github.com/bricestacey/ruby-zoom.git' # for Z39.50 queries to libraries
 gem 'haml-rails'
+gem 'linkeddata' # for RDF etc.
+gem 'rdf-vocab' # for SKOS predefined vocab
 gem 'project-honeypot', '>= 0.1.3' # for HTTP:BL service by Project Honeypot
+gem 'paper_trail', '~> 4.0.0' # for versioning entities
 gem 'gepub' # for generating EPUBs
 gem 'rmagick' # for generating cover images for EPUBs
 

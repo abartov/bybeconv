@@ -1,4 +1,4 @@
-require 'tempfile' 
+require 'tempfile'
 require 'bybe_utils'
 
 ENCODING_SUBSTS = [{ :from => "\xCA", :to => "\xC9" }, # fix weird invalid chars instead of proper Hebrew xolams
@@ -15,14 +15,12 @@ task :whatsnew, [:fromdate] => :environment do |taskname, args|
   thedir = AppConstants.base_dir # environment-sensitive constant
   tot = { :dir => 0, :files => 0, :new => 0, :upd => 0 }
   newfiles = HtmlFile.new_since(Date.parse(args.fromdate).to_time)
-  #debugger 
+  #debugger
   print "\n#{newfiles.count} new files found since #{args.fromdate}.\n"
   files_by_author = {}
   progress = 1
   newfiles.each { |h|
-    relpath = h.path.sub(AppConstants.base_dir,'')
-    authordir = relpath[1..-1].sub(/\/.*/,'')
-    author = author_name_from_dir(authordir, known_authors)
+    author = HtmlFile.author_name_from_dir(h.author_dir, known_authors)
     files_by_author[author] = [] if files_by_author[author].nil? # initialize array for author if first new work by that author
     print "DBG: trying to retrieve title from #{h.path}\n"
     files_by_author[author].push "<a href=\"#{relpath}\">#{HtmlFile.title_from_file(h.path)[0].strip}</a>"
@@ -38,7 +36,6 @@ task :whatsnew, [:fromdate] => :environment do |taskname, args|
       #debugger
       #print "DBG: a = #{a}\n"
       #print "DBG: files = #{files.join('\; ')}\n"
-      
       #f.write("<tr><td><b><u>_______:</u></b> ")
       #f.write(files.join('; '))
       #f.write('</td><td><a href="')

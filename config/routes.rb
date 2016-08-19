@@ -1,8 +1,13 @@
 Bybeconv::Application.routes.draw do
+  resources :people
+
+  get "manifestation/show"
+  get "manifestation/render_html"
+  get "manifestation/edit"
+  get "manifestation/list"
+
   get "api/query"
-
   resources :api_keys
-
 
   get "user/list"
   get "user/:id/make_editor" => 'user#make_editor', as: 'user_make_editor'
@@ -21,6 +26,8 @@ Bybeconv::Application.routes.draw do
   match 'signout', to: 'session#destroy', as: 'signout', via: [:get, :post]
 
   resources :html_dirs
+  match "html_dirs/:id/guess_author" => 'html_dirs#guess_author'
+  match "html_dirs/:id/associate_viaf" => 'html_dirs#associate_viaf', as: 'html_dirs_associate_viaf'
 
   get "proof/list"
   get "proof/purge" => 'proof#purge', as: 'proof_purge'
@@ -35,12 +42,15 @@ Bybeconv::Application.routes.draw do
   get "html_file/analyze"
   match "html_file/:id/edit" => 'html_file#edit', as: 'html_file_edit', via: [:get, :post]
   post "html_file/:id/update" => 'html_file#update'
+  match "html_file/:id/confirm_html_dir_person" => 'html_file#confirm_html_dir_person', as: 'html_file_confirm_html_dir_person', via: [:get, :post]
   get "html_file/analyze_all"
+  match "html_file/:id/frbrize" => 'html_file#frbrize', as: 'html_file_frbrize', via: [:get]
 
   get "html_file/list"
   match "html_file/list_for_editor"
   get "html_file/publish"
   post "html_file/list"
+  get "html_file/publish"
   get "html_file/parse"
   get "html_file/render_html"
   post "html_file/render_html"

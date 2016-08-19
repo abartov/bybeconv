@@ -1,4 +1,4 @@
-require 'tempfile' 
+require 'tempfile'
 
 desc "Convert UTF-16 to UTF-8 of given file"
 task :to8, :filename do |t, args|

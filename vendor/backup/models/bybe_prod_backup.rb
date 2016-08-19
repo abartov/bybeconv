@@ -17,7 +17,7 @@ Model.new(:bybe_prod_backup, 'Description for bybe_prod_backup') do
   database MySQL do |db|
     # To dump all databases, set `db.name = :all` (or leave blank)
     DB = YAML.load_file("#{DIR}/config/database.yml")
-    # try to get RAILS_ENV variable, 
+    # try to get RAILS_ENV variable,
     # if it is not set, use 'production'
     RAILS_ENV = ENV.fetch('RAILS_ENV'){'production'}
     puts "DBG: env #{RAILS_ENV}"
@@ -42,7 +42,7 @@ Model.new(:bybe_prod_backup, 'Description for bybe_prod_backup') do
   #
   store_with S3 do |s3|
     S3 = YAML.load_file("#{DIR}/config/s3.yml")
- 
+
     # AWS Credentials
     s3.access_key_id     = S3[RAILS_ENV]['access_key_id']
     s3.secret_access_key = S3[RAILS_ENV]['secret_access_key']

@@ -13,7 +13,7 @@ class ProofController < ApplicationController
         @p.html_file = h unless h.nil?
         @p.save!
       end
-    end 
+    end
   end
   def index
     redirect_to :action => :list
@@ -22,7 +22,7 @@ class ProofController < ApplicationController
     # calculate tallies
     @count = { :all => Proof.count, :open => Proof.where(status: 'new').count, :resolved => Proof.where(status: 'resolved').count, :wontfix => Proof.where(status: 'wontfix').count }
     if params[:show_status].nil?
-      @proofs = Proof.where('status != "spam"').page(params[:page]).order(:about) 
+      @proofs = Proof.where('status != "spam"').page(params[:page]).order(:about)
     else
       @proofs = Proof.where(status: params[:show_status]).page(params[:page]).order(:about)
     end
@@ -43,7 +43,6 @@ class ProofController < ApplicationController
       else
 	    fix_text = 'תוקן, בלי לשלוח דואל'
       end
-      
     elsif params[:fixed] == 'no'
       @p.status = 'wontfix'
       unless @p.from.nil? or @p.from !~ /\w+@\w+\.\w+/

@@ -16,8 +16,8 @@ task :make_ebooks => :environment do
     book = GEPUB::Book.new
     book.set_main_id('http://benyehuda.org/ebook/'+dir.path+'/all', 'BookID', 'URL')
     book.language = 'he'
-   
-    book.add_title('כתבי '+dir.author, nil, GEPUB::TITLE_TYPE::MAIN) 
+
+    book.add_title('כתבי '+dir.author, nil, GEPUB::TITLE_TYPE::MAIN)
     book.add_creator(dir.author)
     book.page_progression_direction = 'rtl' # Hebrew! :)
     puts "processing dir: #{dir.path} #{i}/#{total}"
@@ -47,7 +47,7 @@ task :make_ebooks => :environment do
         book.add_item('0_title.html').add_content(StringIO.new(buf))
         File.open(tmphtmldir + '/000_title.html','w') {|f| f.write(buf)} # write title page for PDF
         fileno = 1
-        files.each {|f| 
+        files.each {|f|
           begin
             buf = remove_payload(File.open(f.path).read) # remove donation banner and proof/recommend buttons
             buf = remove_toc_links(buf) # remove index and homepage links
@@ -81,5 +81,5 @@ task :make_ebooks => :environment do
   File.open(AppConstants.base_dir+"/ebooks.html","w") {|f| f.write("<html><head><meta charset=\"UTF-8\"></head><body dir=\"rtl\" align=\"right\"><h1>פרויקט בן-יהודה</h1><h2>ספרים אלקטרוניים להורדה</h2><p/><p>בחרו יוצר להלן, ולחצו על תבנית הקובץ הרצויה. (עבור קינדל, בחרו MOBI)</p><p/><ol>"+dl_toc.join("\n")+"</ol><p/><p>בשאלות, כתבו אלינו: <a href=\"mailto:editor@benyehuda.org\">editor@benyehuda.org</a></p><hr><a href=\"/\">חזרה לדף הבית</a></body></html>")}
 end
 
-private 
+private
 

@@ -55,8 +55,8 @@ class RecommendationController < ApplicationController
         if params[:url].nil? or params[:url].empty?
           error = t(:no_url_specified)
         else
-          @p.status = 'archived' 
-          unless @p.from.nil? or @p.from !~ /\w+@\w+\.\w+/ 
+          @p.status = 'archived'
+          unless @p.from.nil? or @p.from !~ /\w+@\w+\.\w+/
             Notifications.recommendation_published(@p, @p.about, params[:url]).deliver # send "blogged" notice
           end
           text = 'ההמלצה אורכבה ונשלח דואל לממליץ/ה'

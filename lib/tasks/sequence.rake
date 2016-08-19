@@ -30,7 +30,7 @@ task :sequence => :environment do
         h.save!
       end
     }
-    unless error 
+    unless error
       d.need_resequence = false
       d.save!
     end

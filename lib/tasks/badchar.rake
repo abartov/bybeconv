@@ -1,4 +1,4 @@
-require 'tempfile' 
+require 'tempfile'
 
 desc "Figure out the character position with bad Windows-1255 encoding of given file"
 task :badchar, :filename do |t, args|

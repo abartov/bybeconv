@@ -1,0 +1,33 @@
+%p#notice= notice
+
+%p
+  %b Name:
+  = @person.name
+%p
+  %b Dates:
+  = @person.dates
+%p
+  %b Title:
+  = @person.title
+%p
+  %b Other designation:
+  = @person.other_designation
+%p
+  %b Affiliation:
+  = @person.affiliation
+%p
+  %b Country:
+  = @person.country
+%p
+  %b Comment:
+  = @person.comment
+%p
+  %b Viaf:
+  = @person.viaf_id
+%p
+  %b Nli:
+  = @person.nli_id
+
+= link_to 'Edit', edit_person_path(@person)
+\|
+= link_to 'Back', people_path

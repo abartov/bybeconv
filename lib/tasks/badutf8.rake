@@ -1,4 +1,4 @@
-require 'tempfile' 
+require 'tempfile'
 
 desc "Figure out the character position with bad UTF-8 encoding of given file"
 task :badutf8, :filename do |t, args|

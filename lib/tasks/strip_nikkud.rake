@@ -18,7 +18,7 @@ task :strip_nikkud => :environment do
       stripped.match /(<body[^>]*>)(.*)<\/body>/m
       stripped = $` + $1 + subbed + $2 + '</body>' + $'
       newpath = f.path[0..f.path.index('.html')-1] + '_no_nikkud.html'
-      
+
       File.open(newpath, 'w:UTF-8') {|out| out.write(stripped) }
       f.stripped_nikkud = true
       f.save!

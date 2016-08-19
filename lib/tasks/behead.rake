@@ -18,7 +18,7 @@ task :behead, [:limit] => :environment do |taskname, args|
   # traverse tree and process all HTML files
   behead_traverse(thedir, tot, payload)
 
-  tot[:badenc].each {|f| print "#{f} has mixed encoding.\n" } if tot[:badenc].count < 100 
+  tot[:badenc].each {|f| print "#{f} has mixed encoding.\n" } if tot[:badenc].count < 100
   print "\n#{tot[:dir]} directories containing #{tot[:files]} files scanned: #{tot[:new]} new files beheaded, #{tot[:upd]} files updated with new payload, #{tot[:badenc].count} files skipped due to mixed encoding, and #{tot[:unwritable]} files were unwritable due to permissions.\n"
 end
 
@@ -30,11 +30,12 @@ end
 def behead_traverse(dir, t, payload)
   t[:dir]=t[:dir]+1
   print "traversing directory ##{t[:dir]} - #{dir}                \r"
+  behead_index(dir)
   Dir.foreach(dir) { |fname|
     break unless t[:limit].nil? or t[:files] <= t[:limit]
     thefile = dir+'/'+fname
-    if !(File.directory?(thefile)) and fname =~ /\.html$/ and not fname == 'index.html' and fname !~ /_no_nikkud/ and not dir == AppConstants.base_dir 
-      t[:files] += 1 
+    if !(File.directory?(thefile)) and fname =~ /\.html$/ and not fname == 'index.html' and fname !~ /_no_nikkud/ and not dir == AppConstants.base_dir
+      t[:files] += 1
       dbg = thefile
       begin
         # fugly hack
@@ -70,7 +71,7 @@ def behead_traverse(dir, t, payload)
         dbg += "\nremoved cruft"
         unless has_placeholders?(html)
           dbg += "\nno payload found. inserting..."
-          html = insert_payload_placeholders(html) 
+          html = insert_payload_placeholders(html)
           t[:new] += 1
         else
           t[:upd] += 1
@@ -82,24 +83,23 @@ def behead_traverse(dir, t, payload)
         wenc = 'w:UTF-8' # no matter what, we write UTF-8 files from now on!
         #wenc = 'w:windows-1255'
         dbg += "\nbacking up"
-        File.open('behead.backup', wenc) { |f| 
+        File.open('behead.backup', wenc) { |f|
           f.truncate(0)
           f.write(thefile + "\n")
           f.write(html)
         }
         dbg += "\nupdating payload"
         newhtml = update_payload(html, payload)
-        # DBG File.open("/tmp/__#{thefile.sub('/','_')}", 'w:windows-1255') { |f| 
+        # DBG File.open("/tmp/__#{thefile.sub('/','_')}", 'w:windows-1255') { |f|
         dbg += "\nwriting back to orig file with payload"
-        if File.writable?(thefile) 
-          File.open(thefile, wenc) { |f| 
+        if File.writable?(thefile)
+          File.open(thefile, wenc) { |f|
             f.truncate(0)
-            f.write(newhtml) 
+            f.write(newhtml)
           }
-      
           dbg += "\nresetting mtime"
           File.utime(orig_atime, orig_mtime, thefile) # restore (falsify, heh) previous mtime/atime to avoid throwing off date-based manual BY site updates
-        else 
+        else
           puts "ERROR: #{thefile} not writable! Run 'chown -R www-data /BenYehuda/benyehuda.org/*' as root"
           t[:unwritable] += 1
         end
@@ -108,7 +108,7 @@ def behead_traverse(dir, t, payload)
         puts e
         puts "Bad encoding: #{thefile}\nwriting newhtml to DEBUG.zzz for manual inspection with 'rake badutf8'"
         File.open('DEBUG.zzz', 'wb') {|f| f.write(newhtml)}
-        
+
         puts "DEBUG\n\n#{dbg}\n\nEND DEBUG"
         t[:badenc].push thefile
       end
@@ -131,6 +131,10 @@ def insert_payload_placeholders(buf)
   m = buf.match(/<body[^>]*>/i)
   buf = $` + $& + "<!-- begin BY body --><!-- end BY body -->" + $'
   return buf
+end
+def behead_index(dir)
+  slurp = File.open(dir+'/index.html').read
+  # TODO: finish implementing (BEWARE repercussions of UTF8ing index.html!)
 end
 def update_payload(buf, payload)
   m = buf.match(/<!-- begin BY head -->/)
@@ -156,7 +160,7 @@ end
 def remove_font_cruft(buf)
   dbg_size = buf.length
   m = buf.match(/\/\* Font Definitions \*\//)
-  return buf if m.nil? 
+  return buf if m.nil?
   tmpbuf = $`
   remainder = $'
   m = remainder.match(/\/\* Style Definitions \*\//)

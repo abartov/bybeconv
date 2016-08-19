@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  person_id: 1
+  toc: MyText
+  status: MyString
+
+two:
+  person_id: 1
+  toc: MyText
+  status: MyString
