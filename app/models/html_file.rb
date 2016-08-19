@@ -377,6 +377,10 @@ class HtmlFile < ActiveRecord::Base
     HtmlFile.title_from_file(path)[0]
   end
 
+  def html_entities_coder
+    @html_entities_coder ||= HTMLEntities.new
+  end
+
   def author_string
     relpath = path.sub(AppConstants.base_dir, '')
     authordir = relpath[1..-1].sub(/\/.*/, '')
