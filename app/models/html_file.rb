@@ -377,7 +377,7 @@ class HtmlFile < ActiveRecord::Base
     HtmlFile.title_from_file(path)[0]
   end
 
-  def html_entities_coder
+  def self.html_entities_coder
     @html_entities_coder ||= HTMLEntities.new
   end
 
@@ -518,8 +518,8 @@ class HtmlFile < ActiveRecord::Base
       title.sub!(/ - .*/, '') # remove " - toxen inyanim"
       title.sub!(/ \u2013.*/, '') # ditto, with an em-dash
     end
-    title = html_entities_coder.decode(title)
-    author = html_entities_coder.decode(author)
+    title = self.html_entities_coder.decode(title)
+    author = self.html_entities_coder.decode(author)
     return [title, author]
   end
   def self.title_from_file(f)
