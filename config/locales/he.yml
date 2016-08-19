@@ -18,6 +18,15 @@ he:
   actions: פעולות
   author: מחבר
   render: הצג
+  show: הצג
+  path: נתיב
+  yes: כן
+  no: לא
+  none: אין
+  public_domain: נחלת הכלל
+  edit: ערוך
+  destroy: מחק
+  folder_list: רשימת תיקיות
   proof_file: קובץ
   proof_when: מתי
   all_recommendations: כל ההמלצות
