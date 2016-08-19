@@ -16,7 +16,7 @@ class Person < ActiveRecord::Base
       viaf_record = viaf_record_by_id(viaf_id)
       fail Exception if viaf_record.nil?
       #debugger
-      p = Person.new(dates: "#{viaf_record['birthDate']}-#{viaf_record['deathDate']}", name: viaf_record['labels'][0], viaf_id: viaf_id)
+      p = Person.new(dates: "#{viaf_record['birthDate'].encode('utf-8')}-#{viaf_record['deathDate'].encode('utf-8')}", name: viaf_record['labels'][0].encode('utf-8'), viaf_id: viaf_id)
       p.save!
     end
     p
