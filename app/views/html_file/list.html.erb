@@ -17,12 +17,12 @@
    <% end %></p>
 <!-- end query interface -->
 <table>
-<th>path</th><th>status</th><th>nikkud?</th><th>tables?</th><th>footnotes?</th><th>images?</th><th>action</th>
-<% @texts.each { |t| %>
+<th>path</th><th>status</th><th>WEM?</th><th>nikkud?</th><th>tables?</th><th>footnotes?</th><th>images?</th><th>action</th>
+<% @texts.each { |txt| %>
 <tr>
-  <td><%= t.path.sub(AppConstants.base_dir,'') %></td><td><%= t.status %></td><td><%= t.nikkud %></td><td><%= t.tables %></td><td><%= t.footnotes %></td><td><%= t.images %></td><td><%= link_to "analyze", :action => 'analyze', :id => t %> | <%= link_to "parse", :action => 'parse', :id => t %> 
-<% if t.status == 'Parsed' %>
-  | <%= link_to "render!", :action => 'render_html', :id => t %> | <%= link_to "publish!", :action => 'publish', :id => t %>
+  <td><%= txt.path.sub(AppConstants.base_dir,'') %></td><td><%= txt.status %></td><td><%= txt.manifestations.empty? ? t(:no) : t(:yes) %></td><td><%= txt.nikkud %></td><td><%= txt.tables %></td><td><%= txt.footnotes %></td><td><%= txt.images %></td><td><%= link_to "analyze", :action => 'analyze', :id => txt %> | <%= link_to "parse", :action => 'parse', :id => txt %> 
+<% if txt.status == 'Parsed' %>
+  | <%= link_to "render!", :action => 'render_html', :id => txt %> | <%= link_to "publish!", :action => 'publish', :id => txt %>
 <% end %>
 
 </td>

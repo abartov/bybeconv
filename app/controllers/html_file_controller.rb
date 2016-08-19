@@ -85,6 +85,7 @@ class HtmlFileController < ApplicationController
     @text = HtmlFile.find(params[:id])
     unless @text.person.nil?
       @text.create_WEM(@text.person.id)
+      @text.status
       flash[:notice] = 'Created FRBR WEM entities! :)'
     else
       flash[:error] = 'Cannot create FRBR entities (not linked to person yet?)'
