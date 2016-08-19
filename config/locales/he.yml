@@ -19,6 +19,11 @@ he:
   author: מחבר
   render: הצג
   show: הצג
+  path: נתיב
+  yes: כן
+  no: לא
+  none: אין
+  public_domain: נחלת הכלל
   edit: ערוך
   destroy: מחק
   folder_list: רשימת תיקיות
