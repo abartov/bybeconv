@@ -30,6 +30,7 @@ end
 def behead_traverse(dir, t, payload)
   t[:dir]=t[:dir]+1
   print "traversing directory ##{t[:dir]} - #{dir}                \r"
+  behead_index(dir)
   Dir.foreach(dir) { |fname|
     break unless t[:limit].nil? or t[:files] <= t[:limit]
     thefile = dir+'/'+fname
@@ -131,6 +132,10 @@ def insert_payload_placeholders(buf)
   m = buf.match(/<body[^>]*>/i)
   buf = $` + $& + "<!-- begin BY body --><!-- end BY body -->" + $'
   return buf
+end
+def behead_index(dir)
+  slurp = File.open(dir+'/index.html').read
+  # TODO: finish implementing (BEWARE repercussions of UTF8ing index.html!)
 end
 def update_payload(buf, payload)
   m = buf.match(/<!-- begin BY head -->/)

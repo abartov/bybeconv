@@ -8,3 +8,5 @@ body: |-
    and multi-line 
    too!
 
+index: |-
+  and payload for index files
