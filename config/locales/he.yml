@@ -39,6 +39,7 @@ he:
   editor_actions: פעולות עורך
   admin_actions: פעולות מנהל
   proof_for: הגהה עבור הקובץ
+  recommendation_for: המלצה עבור הקובץ
   from: מאת
   content: תוכן
   submitted_at: התקבל בתאריך
@@ -50,16 +51,21 @@ he:
   resolve_as_fixed_no_email: השגיאה תוקנה (ללא דואל, למקרה של ריבוי דיווחים תקינים, לאחר שליחת דואל עבור הראשון)
   resolve_as_wontfix: לא שגיאה, או לא יתוקן (שולח דואל!)
   resolve_as_spam: דיווח זבל -> למחיקה
-  resolve_as_accepted: קבל המלצה (שולח דואל!)
+  resolve_as_accepted: קבל המלצה לעיון מאוחר יותר (שולח דואל!)
   resolve_as_rejected: דחה המלצה -> למחיקה
+  resolve_as_blogged: קבל המלצה בציון פרסום ב-URL
+  resolve_as_archived: ארכב המלצה בלי לשלוח דואל
   resolved_as: טופל ועבר לסטטוס %{fixed}
+  no_url_specified: לא צוינה כתובת URL.
+  no_such_item: אין פריט כזה.
+  url: כתובת URL
   hello_x: שלום %{name}
   hello_anon: שלום רב!
   email_footer_html: "בברכה, צוות פרויקט בן-יהודה.\n\nאולי תמצא/י ענין ביומן הרשת של פרויקט בן-יהודה: http://benyehuda.org/blog/ \n\n או בערוץ היו-טיוב של פרויקט בן-יהודה: http://www.youtube.com/user/ProjectBenYehuda/videos?flow=grid&view=0"
   proof_fixed: "תודה רבה על ההגהה ששלחת עבור היצירה בכתובת:\n\n%{url}\n\nלאחר בדיקה, תיקנו את הטקסט באתר.  נשמח לקבל הצעות הגהה גם בעתיד!"
   proof_wontfix: "תודה רבה על ההגהה ששלחת עבור היצירה בכתובת:\n\n%{url}\n\nלאחר בדיקה, הגענו למסקנה שאין מדובר בשגיאה, אלא בשימוש לשון בלתי-שכיח, ובכל אופן כך מופיע במקור.  לכן לא נתקן את הטקסט באתר.  נשמח לקבל הצעות הגהה גם בעתיד!"
-  rec_accepted: "קיבלנו בתודה את המלצתך על היצירה:\n\n%{url}\n\nכשנתפנה לעיין בה, נשקול לשלב אותה ברשומה ביומן הרשת שלנו, כדי שגם אחרים ייהנו."
-  rec_blogged: "המלצתך על היצירה בכתובת:\n\n%{url}\n\nשולבה עתה ברשומה ביומן הרשת של פרויקט בן-יהודה, כאן:\n\n%{blog_url}\n"
+  rec_accepted: "קיבלנו בתודה את המלצתך על היצירה:\n\n%{url}\n\nכשנתפנה לעיין בה, נשקול לשלב אותה בפרסום בפייסבוק או ברשומה ביומן הרשת שלנו, כדי שגם אחרים ייהנו."
+  rec_published: "המלצתך על היצירה בכתובת:\n\n%{url}\n\nשולבה עתה בטקסט שפרסמנו כאן:\n\n%{published_url}\n"
   notifications:
     proof_fixed:
       subject: תודה על ההגהה!
@@ -67,5 +73,5 @@ he:
       subject: תודה על ההגהה!
     recommendation_accepted:
       subject: תודה על ההמלצה!
-    recommendation_blogged:
-      subject: המלצתך פורסמה ביומן הרשת!
+    recommendation_published:
+      subject: המלצתך שולבה בטקסט שפרסמנו!

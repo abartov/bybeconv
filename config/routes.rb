@@ -36,7 +36,7 @@ Bybeconv::Application.routes.draw do
 
   get "recommendation/list"
   get "recommendation/purge" => 'recommendation#purge', as: 'recommendation_purge'
-  get "recommendation/:id/resolve" => 'recommendation#resolve', as: 'recommendation_resolve'
+  match "recommendation/:id/resolve" => 'recommendation#resolve', as: 'recommendation_resolve', via: [:get, :post]
   resources :recommendation
 
   get "html_file/analyze"

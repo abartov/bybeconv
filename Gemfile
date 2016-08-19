@@ -43,7 +43,7 @@ gem 'rmultimarkdown' # new wrapper over Fletcher Penney's MultiMarkDown 4 (MMD 4
 #gem 'rpeg-multimarkdown', :github => 'djungelvral/rpeg-multimarkdown' # note: gem unmaintained, native part doesn't build under Ruby 2.1 -- may need updating the native part from the actual peg-multimarkdown implementation.
 
 # To use debugger
-gem 'debugger'
+#gem 'debugger'
 #gem 'byebug'
 
 gem 'app_constants' # anything more Railsy?
@@ -55,6 +55,8 @@ gem 'linkeddata' # for RDF etc.
 gem 'rdf-vocab' # for SKOS predefined vocab
 gem 'project-honeypot', '>= 0.1.3' # for HTTP:BL service by Project Honeypot
 gem 'paper_trail', '~> 4.0.0' # for versioning entities
+gem 'gepub' # for generating EPUBs
+gem 'rmagick' # for generating cover images for EPUBs
 
 group :test do
   gem 'turn', '0.8.2', :require => false

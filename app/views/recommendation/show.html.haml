@@ -1,17 +1,34 @@
-%h1= "recommendation for #{@p.about}"
-%p= "from: #{@p.from}"
+%h1
+  = t(:recommendation_for)
+  = @p.about
 %p
-  = 'content:'
+  = link_to t(:proof_show_text), @p.about, :target => "_blank"
+
+%p
+  %b= t(:from)
   %br
-  != @p.what.sub("\n","<br/>")
-%p= "submitted at: #{@p.created_at.to_s}"
-%hr
+  %p= @p.from
 %p
-  = link_to t(:resolve_as_accepted), recommendation_resolve_path(@p, :accept => 'yes')
+  %b= t(:content)
+  %br
+  %p
+    != @p.what.sub("\n","<br/>")
+%br
+%p= "#{t(:submitted_at)} #{@p.created_at.to_s}"
+%hr
+- if @p.status == 'new'
+  %p
+    = link_to t(:resolve_as_accepted), recommendation_resolve_path(@p, :accept => 'yes')
+%p
+  = link_to t(:resolve_as_archived), recommendation_resolve_path(@p, :accept => 'archive')
 %p
   = link_to t(:resolve_as_rejected), recommendation_resolve_path(@p, :accept => 'no')
 %hr
-%form
-%p
-  = link_to t(:resolve_as_blogged), recommendation_resolve_path(@p, :accept => 'blogged'), {:class => 'blogged_btn'}
+- if @p.status != 'archived'
+  = form_tag(controller: :recommendation, action: :resolve, params: {accept: 'blogged'}) do
+    %p
+      = "#{t(:url)} "
+      = text_field_tag :url
+    %p
+      = submit_tag t(:resolve_as_blogged)
 

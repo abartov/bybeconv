@@ -22,3 +22,6 @@
   = link_to t(:show_open_recommendations), recommendation_list_path(:status => 'new')
 %p
   = link_to t(:purge_rejected_recommendations), recommendation_purge_path
+
+!= paginate @recs
+

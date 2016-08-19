@@ -1,10 +1,12 @@
---- 
+---
 head: |-
   some
-   payload 
+   payload
    here
 body: |-
   more payload
-   and multi-line 
+   and multi-line
    too!
 
+index: |-
+  and payload for index files

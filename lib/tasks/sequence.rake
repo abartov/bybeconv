@@ -8,6 +8,10 @@ task :sequence => :environment do
     next unless File.exists? fname
     index = File.open(fname, 'rb').read.gsub(/[\r\n]/,'') # slurp whole thing, lose newlines
     links = index.scan /[A-Za-z\-_0-9]*?\.html/
+    if links.length == 0 # some index files are now UTF-16 because Word sucks
+      index = File.open(fname, 'rb:UTF-16LE:UTF-8').read.gsub(/[\r\n]/,'')
+      links = index.scan /[A-Za-z\-_0-9]*?\.html/
+    end
     links.uniq!
     linkhash = {}
     seqno = 1
