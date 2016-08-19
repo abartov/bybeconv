@@ -377,7 +377,7 @@ class HtmlFile < ActiveRecord::Base
     HtmlFile.title_from_file(path)[0]
   end
 
-  def html_entities_coder
+  def self.html_entities_coder
     @html_entities_coder ||= HTMLEntities.new
   end
 
@@ -476,7 +476,8 @@ class HtmlFile < ActiveRecord::Base
         w.save!
         w.people << p
         e.people << p
-        m = Manifestation.new(title: title, responsibility_statement: p.name, medium: 'e-text', publisher: AppConstants.our_publisher, publication_date: Date.today, markdown: markdown)
+        clean_utf8 = markdown.encode('utf-8') # for some reason, this string was not getting written properly to the DB
+        m = Manifestation.new(title: title, responsibility_statement: p.name, medium: 'e-text', publisher: AppConstants.our_publisher, publication_date: Date.today, markdown: clean_utf8)
         m.save!
         m.people << p
         e.manifestations << m
@@ -518,8 +519,8 @@ class HtmlFile < ActiveRecord::Base
       title.sub!(/ - .*/, '') # remove " - toxen inyanim"
       title.sub!(/ \u2013.*/, '') # ditto, with an em-dash
     end
-    title = html_entities_coder.decode(title)
-    author = html_entities_coder.decode(author)
+    title = self.html_entities_coder.decode(title)
+    author = self.html_entities_coder.decode(author)
     return [title, author]
   end
   def self.title_from_file(f)
