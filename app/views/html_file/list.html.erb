@@ -20,7 +20,14 @@
 <th>path</th><th>status</th><th>WEM?</th><th>nikkud?</th><th>tables?</th><th>footnotes?</th><th>images?</th><th>action</th>
 <% @texts.each { |txt| %>
 <tr>
-  <td><%= txt.path.sub(AppConstants.base_dir,'') %></td><td><%= txt.status %></td><td><%= txt.manifestations.empty? ? t(:no) : t(:yes) %></td><td><%= txt.nikkud %></td><td><%= txt.tables %></td><td><%= txt.footnotes %></td><td><%= txt.images %></td><td><%= link_to "analyze", :action => 'analyze', :id => txt %> | <%= link_to "parse", :action => 'parse', :id => txt %> 
+  <td><%= txt.path.sub(AppConstants.base_dir,'') %></td><td><%= txt.status %></td><td><%= txt.manifestations.empty? ? t(:no) : t(:yes) %></td><td><%= txt.nikkud %></td><td><%= txt.tables %></td><td><%= txt.footnotes %></td><td><%= txt.images %></td>
+
+  <td>
+  <% if txt.status == 'Published' %>
+    <%= link_to t(:to_the_work_in_the_catalog), :controller => 'manifestation', :action => 'show', :id => txt.manifestations[0] %>
+  <% else %>
+    <%= link_to "analyze", :action => 'analyze', :id => txt %> | <%= link_to "parse", :action => 'parse', :id => txt %>
+  <% end %>
 <% if txt.status == 'Parsed' %>
   | <%= link_to "render!", :action => 'render_html', :id => txt %> | <%= link_to "publish!", :action => 'publish', :id => txt %>
 <% end %>
@@ -30,4 +37,4 @@
 
 <% } %>
 </table>
-<%= paginate @texts, :params => session[:html_q_params] %> 
+<%= paginate @texts, :params => session[:html_q_params] %>
