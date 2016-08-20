@@ -17,8 +17,16 @@ he:
   filter: סינון
   actions: פעולות
   author: מחבר
-  render: הצג
-  show: הצג
+  render: הצג יצירה
+  show: הצג פרטים
+  date: תאריך
+  publisher_details: פרטי הוצאה לאור
+  language: שפה
+  work_entity_details: פרטי יישות יצירה
+  work_details: פרטי יצירה
+  expression_details: פרטי ביטוי
+  manifestation_details: פרטי מימוש
+  responsibility_statement: שורת אחריות
   path: נתיב
   'yes': כן
   'no': לא

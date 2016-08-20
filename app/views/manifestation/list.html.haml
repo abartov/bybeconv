@@ -12,7 +12,7 @@
     = submit_tag(t(:filter))
 
 / end query interface
-%table
+%table{cellspacing: 3,cellpadding: 3}
   %th= t(:author)
   %th= t(:title)
   %th= '...'
@@ -25,6 +25,8 @@
       %td= m.title
       %td= '...'
       %td= '...'
-      %td= link_to t(:render), :action => 'render_html', :id => m
+      %td
+        = link_to t(:show), :action => 'show', :id => m
+        = link_to t(:render), :action => 'render_html', :id => m
 
 != paginate @manifestations, :params => session[:mft_q_params]
