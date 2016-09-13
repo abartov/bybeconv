@@ -6,7 +6,10 @@
  *= require_tree .
  *= require jquery.ui.all
 */
-
+.container {
+  direction:rtl;
+}
+.row{padding-right:-15px;padding-left:-15px} /* missing from bootstrap-rtl */
 .error {
   border: solid 4px #900;
   background-color: #FF6565;
