@@ -15,6 +15,23 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
   <%= csrf_meta_tags %>
+<script>
+$(document).ready(function() {
+
+$("#increase_font").click(function() {
+  $("body").css("fontSize", "18px");
+});
+
+$("#default_font").click(function() {
+  $("body").css("fontSize", "14px");
+});
+
+$("#decrease_font").click(function() {
+  $("body").css("fontSize", "11px");
+});
+});
+</script>
+
 </head>
 <body dir="rtl" align="right">
     <% flash.each do |name, msg| -%>
@@ -27,7 +44,7 @@
   <a href="http://benyehuda.org/e_faq.html">English</a>
 </div>
 <div class="col-sm-4" id="font-size-selector" align="center">
-  <%= t(:font_size)+": "%> <span style="font-size: 75%">א</span>&nbsp;א&nbsp;<span style="font-size: 150%">א</span>
+  <%= t(:font_size)+": "%> <a href="javascript:void(0)" id="decrease_font" style="font-size: 75%">א</a>&nbsp;<a href="javascript:void(0)" id="default_font">א</a>&nbsp;<a href="javascript:void(0)" id="increase_font" style="font-size: 150%">א</a>
 </div>
 <div class="col-sm-4" id="user-widget">
   <% if current_user %>

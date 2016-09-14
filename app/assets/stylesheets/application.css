@@ -6,6 +6,12 @@
  *= require_tree .
  *= require jquery.ui.all
 */
+body{font-size:14px;} /* default */
+p{font-size:1em;}
+h1{font-size:3em;};
+h2{font-size:2em;};
+h3{font-size:1.5em;};
+
 .container {
   direction:rtl;
 }
