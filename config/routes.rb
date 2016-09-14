@@ -1,6 +1,7 @@
 Bybeconv::Application.routes.draw do
   resources :people
 
+  get "read/:id" => 'manifestation#read', as: 'manifestation_read'
   get "manifestation/show"
   get "manifestation/render_html"
   get "manifestation/edit"

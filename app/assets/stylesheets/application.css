@@ -11,7 +11,16 @@ p{font-size:1em;}
 h1{font-size:3em;};
 h2{font-size:2em;};
 h3{font-size:1.5em;};
-
+.navtabs {
+  font-size:2em;
+  font-color: blue;
+}
+.navtabs a {
+  color:blue;
+}
+.navtabs a:visited {
+  color: blue;
+}
 .container {
   direction:rtl;
 }

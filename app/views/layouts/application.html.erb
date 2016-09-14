@@ -13,7 +13,6 @@
   <meta charset="utf-8">
   <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
 
-
   <%= csrf_meta_tags %>
 <script>
 $(document).ready(function() {
@@ -67,8 +66,7 @@ $("#decrease_font").click(function() {
       <span class="glyphicon glyphicon-wrench"></span> (logo goes here) <span class="glyphicon glyphicon-wrench"></span>
     </div>
   </div>
-</div><br/>
-
+</div>
 <%= yield %>
 <hr/>
 <% if current_user %>

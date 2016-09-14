@@ -1,0 +1,22 @@
+/ standard display mode. "reading mode" to be implemented separately?
+= render partial: 'shared/breadcrumbs', locals: {pagetype: :manifestation, manifestation: @m}
+= render 'shared/tabs'
+.row
+  .col-sm-4
+    = render partial: 'shared/work_links', locals: {manifestation: @m}
+  .col-sm-2
+    = render partial: 'shared/copyright', locals: {manifestation: @m}
+  .col-sm-6
+    %h1
+      = @m.title
+.row
+  .col-sm-4
+    = render 'shared/read_controls'
+  .col-sm-8
+    = render 'metadata'
+.maintext
+  = render 'search_and_chapters'
+  = '(main text here)'
+  - if @m.chapters? and @m.long?
+    = '(next chapter link)'
+  = render 'sharing_etc'

@@ -1,5 +1,8 @@
 class ManifestationController < ApplicationController
   before_filter :require_editor, only: [:edit, :update]
+  def read
+    @m = Manifestation.find(params[:id])
+  end
 
   def list
     # calculations
