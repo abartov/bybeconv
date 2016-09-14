@@ -20,6 +20,8 @@ he:
   render: הצג יצירה
   show: הצג פרטים
   date: תאריך
+  advanced_search: חיפוש מתקדם
+  search_placeholder: חיפוש יצירות במאגר
   publisher_details: פרטי הוצאה לאור
   language: שפה
   work_entity_details: פרטי יישות יצירה

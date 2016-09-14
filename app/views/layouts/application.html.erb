@@ -38,24 +38,37 @@ $("#decrease_font").click(function() {
           <%= content_tag :div, msg, class: name %>
     <% end -%>
 <div class="container-fluid">
-<div class="row">
-<!-- until we switch to an RTL bootstrap, reverse the order here -->
-<div class="col-sm-4" id="english" align="left">
-  <a href="http://benyehuda.org/e_faq.html">English</a>
-</div>
-<div class="col-sm-4" id="font-size-selector" align="center">
-  <%= t(:font_size)+": "%> <a href="javascript:void(0)" id="decrease_font" style="font-size: 75%">א</a>&nbsp;<a href="javascript:void(0)" id="default_font">א</a>&nbsp;<a href="javascript:void(0)" id="increase_font" style="font-size: 150%">א</a>
-</div>
-<div class="col-sm-4" id="user-widget">
-  <% if current_user %>
-    <%= t(:welcome) %> <strong><%= current_user.name %></strong>!
-    <%= link_to t(:sign_out), signout_path, id: "sign_out" %>
-  <% else %>
-    <%= link_to t(:sign_in_google_twitter), "/session/login", id: "sign_in" %>
-  <% end %>
-</div>
-</div>
+  <div class="row">
+  <!-- until we switch to an RTL bootstrap, reverse the order here -->
+    <div class="col-sm-4" id="english" align="left">
+      <a href="http://benyehuda.org/e_faq.html">English</a>
+    </div>
+    <div class="col-sm-4" id="font-size-selector" align="center">
+      <%= t(:font_size)+": "%> <a href="javascript:void(0)" id="decrease_font" style="font-size: 75%">א</a>&nbsp;<a href="javascript:void(0)" id="default_font">א</a>&nbsp;<a href="javascript:void(0)" id="increase_font" style="font-size: 150%">א</a>
+    </div>
+    <div class="col-sm-4" id="user-widget">
+      <% if current_user %>
+        <%= t(:welcome) %> <strong><%= current_user.name %></strong>!
+        <%= link_to t(:sign_out), signout_path, id: "sign_out" %>
+      <% else %>
+        <%= link_to t(:sign_in_google_twitter), "/session/login", id: "sign_in" %>
+      <% end %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-4" id="search-bar" align="left">
+      <input class="search-field" type="text" placeholder="<%= t(:search_placeholder) %>"/>
+      <span class="glyphicon glyphicon-search"></span>
+      <%= link_to t(:advanced_search), :controller => :search %>
+    </div>
+    <div class="col-sm-4" id="blank-space">
+    </div>
+    <div class="col-sm-4" id="site-logo" align="right">
+      <span class="glyphicon glyphicon-wrench"></span> (logo goes here) <span class="glyphicon glyphicon-wrench"></span>
+    </div>
+  </div>
 </div><br/>
+
 <%= yield %>
 <hr/>
 <% if current_user %>
