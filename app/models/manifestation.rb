@@ -6,6 +6,9 @@ class Manifestation < ActiveRecord::Base
   def long?
     return false # TODO: implement
   end
+  def copyright?
+    return false # TODO: implement
+  end
   def chapters?
     return false # TODO: implement
   end

@@ -2,13 +2,13 @@
 = render partial: 'shared/breadcrumbs', locals: {pagetype: :manifestation, manifestation: @m}
 = render 'shared/tabs'
 .row
-  .col-sm-4
-    = render partial: 'shared/work_links', locals: {manifestation: @m}
-  .col-sm-2
-    = render partial: 'shared/copyright', locals: {manifestation: @m}
-  .col-sm-6
-    %h1
+  .col-sm-12
+    %span{:class => 'work_title'}
       = @m.title
+    = ' | '
+    = render partial: 'shared/copyright', locals: {manifestation: @m}
+    = ' | '
+    = render partial: 'shared/work_links', locals: {manifestation: @m}
 .row
   .col-sm-4
     = render 'shared/read_controls'

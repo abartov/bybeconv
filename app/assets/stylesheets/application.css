@@ -21,6 +21,9 @@ h3{font-size:1.5em;};
 .navtabs a:visited {
   color: blue;
 }
+.work_title {
+  font-size:3em;
+}
 .container {
   direction:rtl;
 }
@@ -33,7 +36,9 @@ h3{font-size:1.5em;};
    border: solid 4px #26722D;
    background-color: #A4E7A0;
 }
-
+.popover {
+  min-width: 250px;
+}
 #search-field {
   width: 20em;
 }
