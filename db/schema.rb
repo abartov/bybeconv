@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160915085325) do
+ActiveRecord::Schema.define(:version => 20160915095315) do
 
   create_table "api_keys", :force => true do |t|
     t.string   "email"
@@ -51,6 +51,15 @@ ActiveRecord::Schema.define(:version => 20160915085325) do
   create_table "expressions_works", :id => false, :force => true do |t|
     t.integer "expression_id"
     t.integer "work_id"
+  end
+
+  create_table "external_links", :force => true do |t|
+    t.string   "url"
+    t.string   "linktype"
+    t.integer  "status"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+    t.integer  "manifestation_id"
   end
 
   create_table "html_dirs", :force => true do |t|
