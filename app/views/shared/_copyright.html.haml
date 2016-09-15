@@ -1,8 +1,11 @@
 - if manifestation.copyright?
+  %span{:class => 'glyphicon glyphicon-copyright-mark'}
+  = ' '+t(:by_permission)+' '
+  = link_to '[?]', '#', 'data-toggle' => 'popover', title: t(:about_permission), 'data-content' => t(:permission_popover)
 - else
   = image_tag("16px_PD-icon.png")
-  = ' '+t(:public_domain)
-  = link_to ' [?] ', "#", 'data-toggle' => 'popover', title: t(:about_public_domain), 'data-content' => t(:public_domain_help)
+  = ' '+t(:public_domain)+' '
+  = link_to '[?]', '#', 'data-toggle' => 'popover', title: t(:about_public_domain), 'data-content' => t(:public_domain_popover)
 
 :javascript
   $('[data-toggle="popover"]').popover();

@@ -7,7 +7,7 @@ class Manifestation < ActiveRecord::Base
     return false # TODO: implement
   end
   def copyright?
-    return false # TODO: implement
+    return expressions[0].copyrighted # TODO: implement more generically
   end
   def chapters?
     return false # TODO: implement
