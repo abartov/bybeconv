@@ -1,4 +1,9 @@
 class ManifestationController < ApplicationController
+  before_filter :require_editor, only: [:edit, :update]
+  def read
+    @m = Manifestation.find(params[:id])
+  end
+
   def list
     # calculations
     @total = Manifestation.count
@@ -19,6 +24,10 @@ class ManifestationController < ApplicationController
   end
 
   def show
+    @m = Manifestation.find(params[:id])
+    @e = @m.expressions[0] # TODO: generalize?
+    @w = @e.works[0] # TODO: generalize!
+
   end
 
   def render_html

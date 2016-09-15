@@ -1,0 +1,12 @@
+.row
+  .col-sm-12
+    = link_to t(:homepage), '/'
+    = ' > '
+    - if pagetype == :manifestation
+      = link_to t(:authors), :controller => :authors
+      = ' > '
+      = link_to manifestation.people[0].name, :controller => :authors, :action => :show, :id => manifestation.people[0].id
+      = ' > '
+      = link_to t(manifestation.expressions[0].works[0].genre), :controller => :authors, :action => :show, :id => manifestation.people[0].id, :genre => manifestation.expressions[0].works[0].genre
+      = ' > '
+      %b= manifestation.title

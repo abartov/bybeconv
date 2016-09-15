@@ -11,7 +11,18 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160622124932) do
+ActiveRecord::Schema.define(:version => 20160915095315) do
+
+  create_table "api_keys", :force => true do |t|
+    t.string   "email"
+    t.string   "description"
+    t.string   "key"
+    t.integer  "status"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  add_index "api_keys", ["email"], :name => "index_api_keys_on_email", :unique => true
 
   create_table "expressions", :force => true do |t|
     t.string   "title"
@@ -19,8 +30,10 @@ ActiveRecord::Schema.define(:version => 20160622124932) do
     t.string   "date"
     t.string   "language"
     t.text     "comment"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
+    t.boolean  "copyrighted"
+    t.date     "copyright_expiration"
   end
 
   create_table "expressions_manifestations", :id => false, :force => true do |t|
@@ -38,6 +51,15 @@ ActiveRecord::Schema.define(:version => 20160622124932) do
   create_table "expressions_works", :id => false, :force => true do |t|
     t.integer "expression_id"
     t.integer "work_id"
+  end
+
+  create_table "external_links", :force => true do |t|
+    t.string   "url"
+    t.string   "linktype"
+    t.integer  "status"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+    t.integer  "manifestation_id"
   end
 
   create_table "html_dirs", :force => true do |t|
@@ -202,6 +224,7 @@ ActiveRecord::Schema.define(:version => 20160622124932) do
     t.text     "comment"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.string   "genre"
   end
 
 end

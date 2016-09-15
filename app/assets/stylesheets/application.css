@@ -6,7 +6,28 @@
  *= require_tree .
  *= require jquery.ui.all
 */
-
+body{font-size:14px;} /* default */
+p{font-size:1em;}
+h1{font-size:3em;};
+h2{font-size:2em;};
+h3{font-size:1.5em;};
+.navtabs {
+  font-size:2em;
+  font-color: blue;
+}
+.navtabs a {
+  color:blue;
+}
+.navtabs a:visited {
+  color: blue;
+}
+.work_title {
+  font-size:3em;
+}
+.container {
+  direction:rtl;
+}
+.row{padding-right:-15px;padding-left:-15px} /* missing from bootstrap-rtl */
 .error {
   border: solid 4px #900;
   background-color: #FF6565;
@@ -14,6 +35,12 @@
 .notice {
    border: solid 4px #26722D;
    background-color: #A4E7A0;
+}
+.popover {
+  min-width: 250px;
+}
+#search-field {
+  width: 20em;
 }
 /*
 @font-face { font-family: "Alef"; src: url('/assets/Alef-Regular.eot'); src: url('/assets/Alef-Regular.eot?#iefix') format('embedded-opentype'), url('/assets/Alef-Regular.woff') format('woff'), url('/assets/Alef-Regular.ttf') format('truetype'), url('/assets/Alef-Regular.svg#alefregular') format('svg'); font-weight: normal; font-style: normal; }

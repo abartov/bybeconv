@@ -17,8 +17,35 @@ he:
   filter: סינון
   actions: פעולות
   author: מחבר
-  render: הצג
-  show: הצג
+  render: הצג יצירה
+  show: הצג פרטים
+  date: תאריך
+  advanced_search: חיפוש מתקדם
+  search_placeholder: חיפוש יצירות במאגר
+  homepage: דף הבית
+  authors: יוצרים
+  works: יצירות
+  about: על אודות
+  periods: תקופות
+  how_to_help: 'רוצים לעזור?'
+  contact_us: יצירת קשר
+  poetry: שירה
+  prose: פרוזה
+  public_domain: נחלת הכלל
+  about_public_domain: 'מה פירוש נחלת הכלל?'
+  public_domain_popover: "חוק זכויות יוצרים מגן מפני שימוש בלתי-מורשה ביצירות למשך תקופת תוקפו (בישראל, שבעים שנה מסוף שנת מות היוצר).  עם פקוע הזכויות, הופכת היצירה 'נחלת הכלל', כלומר רכוש הציבור.  פירוש הדבר שהיצירה שייכת לכולנו, וכולנו רשאים לעשות בה כל שימוש, לרבות שימוש מסחרי, מבלי צורך לבקש רשות מאיש."
+  about_permission: 'מה פירוש ברשות פרסום?'
+  permission_popover: "על אף שהיצירה עדיין מוגנת בזכויות יוצרים, פרויקט בן-יהודה קיבל *רשות מפורשת לפרסם* את היצירה במאגר היצירה של פרויקט בן-יהודה, לשימוש הקהל הרחב לקריאה ומחקר.  שימושים אחרים (כגון המחזה, הלחנה, או ביצוע מסחרי) עדיין *טעונים אישור מפורש* מאת בעלי הזכויות."
+  by_permission: מוגש ברשות פרסום
+  publisher_details: פרטי הוצאה לאור
+  language: שפה
+  work_entity_details: פרטי יישות יצירה
+  work_details: פרטי יצירה
+  expression_details: פרטי ביטוי
+  manifestation_details: פרטי מימוש
+  responsibility_statement: שורת אחריות
+  default_page_title: פרויקט בן-יהודה
+  font_size: גודל גופן
   path: נתיב
   'yes': כן
   'no': לא

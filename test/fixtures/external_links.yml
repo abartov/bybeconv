@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  url: MyString
+  linktype: MyString
+  status: 1
+
+two:
+  url: MyString
+  linktype: MyString
+  status: 1
