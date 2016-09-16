@@ -12,7 +12,7 @@ h1{font-size:3em;};
 h2{font-size:2em;};
 h3{font-size:1.5em;};
 .navtabs {
-  font-size:2em;
+  font-size:1.8em;
   font-color: blue;
 }
 .navtabs a {
@@ -47,3 +47,72 @@ h3{font-size:1.5em;};
 @font-face { font-family: "AlefBold"; src: url('/assets/Alef-Bold.eot'); src: url('/assets/Alef-Bold.eot?#iefix') format('embedded-opentype'), url('/assets/Alef-Bold.woff') format('woff'), url('/assets/Alef-Bold.ttf') format('truetype'), url('/assets/Alef-Bold.svg#alefbold') format('svg'); font-weight: bold; font-style: normal; }
 */
 @import url(http://fonts.googleapis.com/earlyaccess/alefhebrew.css);
+
+/* icon font from fontello.com */
+
+@font-face {
+  font-family: 'bybe_glyphs';
+  src: url('bybe_glyphs.eot?69247430');
+  src: url('bybe_glyphs.eot?69247430#iefix') format('embedded-opentype'),
+       url('bybe_glyphs.woff2?69247430') format('woff2'),
+       url('bybe_glyphs.woff?69247430') format('woff'),
+       url('bybe_glyphs.ttf?69247430') format('truetype'),
+       url('bybe_glyphs.svg?69247430#bybe_glyphs') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+/* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
+/* Note, that will break hinting! In other OS-es font will be not as sharp as it could be */
+/*
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: 'bybe_glyphs';
+    src: url('../font/bybe_glyphs.svg?69247430#bybe_glyphs') format('svg');
+  }
+}
+*/
+
+ [class^="icon-"]:before, [class*=" icon-"]:before {
+  font-family: "bybe_glyphs";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  margin-right: .2em;
+  text-align: center;
+  /* opacity: .8; */
+
+  /* For safety - reset parent styles, that can break glyph codes*/
+  font-variant: normal;
+  text-transform: none;
+
+  /* fix buttons height, for twitter bootstrap */
+  line-height: 1em;
+
+  /* Animation center compensation - margins should be symmetric */
+  /* remove if not needed */
+  margin-left: .2em;
+
+  /* you can be more comfortable with increased icons size */
+  /* font-size: 120%; */
+
+  /* Font smoothing. That was taken from TWBS */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Uncomment for 3D effect */
+  /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+}
+
+.icon-video:before { content: '\e800'; } /* '' */
+.icon-link:before { content: '\e801'; } /* '' */
+.icon-wordpress:before { content: '\e802'; } /* '' */
+.icon-comment:before { content: '\e803'; } /* '' */
+.icon-cc-zero:before { content: '\e804'; } /* '' */
+.icon-cc-pd:before { content: '\e805'; } /* '' */
+.icon-cc:before { content: '\e806'; } /* '' */
+.icon-copyright:before { content: '\f1f9'; } /* '' */
+.icon-wikipedia-w:before { content: '\f266'; } /* '' */

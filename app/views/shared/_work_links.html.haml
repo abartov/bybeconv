@@ -1,0 +1,10 @@
+- manifestation.external_links.order('linktype').each do |link|
+  - case link.linktype
+  - when 'YouTube'
+    %span{:class => 'glyphicon glyphicon-film'}
+  - when 'Wikipedia'
+    %span{:class => 'icon-wikipedia-w'}
+  - when 'BY blog'
+    %span{:class => 'icon-wordpress'}
+  = ' '
+  = link_to t(link.linktype), link.url

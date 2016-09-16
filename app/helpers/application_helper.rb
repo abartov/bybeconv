@@ -22,4 +22,7 @@ module ApplicationHelper
   def absolute_url_from_urlpart(u)
     return AppConstants.base_dir+u
   end
+  def textify_external_link_type(linktype)
+    return I18n.t(linktype)
+  end
 end
