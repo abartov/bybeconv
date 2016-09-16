@@ -25,4 +25,8 @@ module ApplicationHelper
   def textify_external_link_type(linktype)
     return I18n.t(linktype)
   end
+  def options_for_shelves
+    # TODO: once user system is in place, add user's custom shelves
+    return '<option>'+t(:want_to_read)+'</option><option>'+t(:currently_reading)+'</option><option>'+t(:have_read)+'</option>'
+  end
 end

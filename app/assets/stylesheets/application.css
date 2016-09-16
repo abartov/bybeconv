@@ -27,7 +27,7 @@ h3{font-size:1.5em;};
 .container {
   direction:rtl;
 }
-.row{padding-right:-15px;padding-left:-15px} /* missing from bootstrap-rtl */
+/*.row{padding-right:-15px;padding-left:-15px} /* missing from bootstrap-rtl */
 .error {
   border: solid 4px #900;
   background-color: #FF6565;
@@ -114,5 +114,16 @@ h3{font-size:1.5em;};
 .icon-cc-zero:before { content: '\e804'; } /* '' */
 .icon-cc-pd:before { content: '\e805'; } /* '' */
 .icon-cc:before { content: '\e806'; } /* '' */
+.icon-mail:before { content: '\e807'; } /* '' */
+.icon-download-alt:before { content: '\e808'; } /* '' */
+.icon-print:before { content: '\e809'; } /* '' */
+.icon-quote-right:before { content: '\e80a'; } /* '' */
+.icon-bookmark:before { content: '\e80b'; } /* '' */
+.icon-heart-empty:before { content: '\e80c'; } /* '' */
+.icon-heart:before { content: '\e80d'; } /* '' */
 .icon-copyright:before { content: '\f1f9'; } /* '' */
 .icon-wikipedia-w:before { content: '\f266'; } /* '' */
+.icon-facebook-rect:before { content: '\f301'; } /* '' */
+.icon-twitter:before { content: '\f302'; } /* '' */
+.icon-twitter-bird:before { content: '\f303'; } /* '' */
+

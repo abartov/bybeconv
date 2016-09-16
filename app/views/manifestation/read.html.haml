@@ -11,12 +11,12 @@
     = render partial: 'shared/work_links', locals: {manifestation: @m}
 .row
   .col-sm-4
-    = render 'shared/read_controls'
+    = render partial: 'shared/read_controls'
   .col-sm-8
-    = render 'metadata'
+    = render partial: 'metadata'
 .maintext
-  = render 'search_and_chapters'
+  = render partial: 'search_and_chapters'
   = '(main text here)'
   - if @m.chapters? and @m.long?
     = '(next chapter link)'
-  = render 'sharing_etc'
+  = render partial: 'sharing_etc'

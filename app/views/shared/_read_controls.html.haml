@@ -1,0 +1,24 @@
+.read_controls{style: 'font-size:1.2em'}
+  = link_to "TODO: Facebook sharing link" do
+    %span{:class => 'icon-facebook-rect'}
+  = link_to "TODO: Twitter sharing link" do
+    %span{:class => 'icon-twitter-bird'}
+  = link_to "TODO: e-mail sharing link" do
+    %span{:class => 'icon-mail'}
+  = ' | '
+  = link_to "TODO: download link" do
+    %span{:class => 'icon-download-alt'}
+  = link_to "TODO: print link" do
+    %span{:class => 'icon-print'}
+  = link_to "TODO: quote link" do
+    %span{:class => 'icon-quote-right'}
+  %br
+  .heart_and_bookshelf{style:'border:2px solid gray;border-radius:7px;display:inline-block;padding:3px'}
+    / TODO: set the heart to filled if liked by user, once user system is in place
+    = link_to "TODO: like link" do
+      %span{:class => 'icon-heart-empty'}
+    = ' | '
+    .bookshelf{style:'display:inline'}
+      %span{:class => 'TODO: bookshelf icon'}
+      = select_tag 'shelves', options_for_shelves.html_safe
+
