@@ -24,6 +24,12 @@ he:
   search_placeholder: חיפוש יצירות במאגר
   homepage: דף הבית
   authors: יוצרים
+  author_name: "שם היוצר/ת"
+  genre: סוגה
+  published_in_book: פורסם בספר
+  edition_details: פרטי מהדורה ומידע נוסף
+  tags: תגיות
+  recommendations: המלצות
   works: יצירות
   about: על אודות
   periods: תקופות
