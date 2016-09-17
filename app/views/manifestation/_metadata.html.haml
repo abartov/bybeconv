@@ -4,11 +4,11 @@
     %b
       = t(:author_name)+': '
     = link_to @m.people[0].name, controller: :authors, action: :show, id: @m.people[0].id
-  .metadata_row
-    %b
-      = t(:published_in_book)+': '
-    = 'TODO: book details'
+  /  .metadata_row
+  /    %b
+  /      = t(:published_in_book)+': '
+  /    = 'TODO: book details'
   .metadata_row
     %b
       = t(:genre)+': '
-    = 'TODO: textify genre'
+    = textify_genre(@m.expressions[0].works[0].genre)

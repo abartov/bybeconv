@@ -29,4 +29,7 @@ module ApplicationHelper
     # TODO: once user system is in place, add user's custom shelves
     return '<option>'+t(:want_to_read)+'</option><option>'+t(:currently_reading)+'</option><option>'+t(:have_read)+'</option>'
   end
+  def textify_genre(genre)
+    return I18n.t(genre)
+  end
 end
