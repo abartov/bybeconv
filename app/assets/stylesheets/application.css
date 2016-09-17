@@ -121,6 +121,7 @@ h3{font-size:1.5em;};
 .icon-bookmark:before { content: '\e80b'; } /* '' */
 .icon-heart-empty:before { content: '\e80c'; } /* '' */
 .icon-heart:before { content: '\e80d'; } /* '' */
+.icon-bookshelf:before { content: '\e80e'; } /* '' */
 .icon-copyright:before { content: '\f1f9'; } /* '' */
 .icon-wikipedia-w:before { content: '\f266'; } /* '' */
 .icon-facebook-rect:before { content: '\f301'; } /* '' */

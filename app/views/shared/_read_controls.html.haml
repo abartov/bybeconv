@@ -1,7 +1,7 @@
 .read_controls{style: 'font-size:1.2em'}
-  = link_to "TODO: Facebook sharing link" do
+  = link_to "https://www.facebook.com/sharer/sharer.php?u=#{request.original_url}" do
     %span{:class => 'icon-facebook-rect'}
-  = link_to "TODO: Twitter sharing link" do
+  = link_to "https://twitter.com/home?status=#{request.original_url}" do
     %span{:class => 'icon-twitter-bird'}
   = link_to "TODO: e-mail sharing link" do
     %span{:class => 'icon-mail'}
@@ -19,6 +19,6 @@
       %span{:class => 'icon-heart-empty'}
     = ' | '
     .bookshelf{style:'display:inline'}
-      %span{:class => 'TODO: bookshelf icon'}
+      %span{:class => 'icon-bookshelf',style:'padding-left:1em'}
       = select_tag 'shelves', options_for_shelves.html_safe
 
