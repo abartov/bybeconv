@@ -17,7 +17,12 @@
 %hr
 .maintext
   = render partial: 'search_and_chapters'
-  = '(main text here)'
+  / TODO: more nuanced rendering here
+  - if @m.as_prose?
+    .maintext-prose-body
+      != raw(@html)
+  - else
+    .maintext-poetry-body
   - if @m.chapters? and @m.long?
     = '(next chapter link)'
   = render partial: 'sharing_etc'

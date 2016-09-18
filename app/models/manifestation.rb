@@ -19,4 +19,8 @@ class Manifestation < ActiveRecord::Base
   def approved_tags
     return Tag.find(self.taggings.approved.pluck(:tag_id))
   end
+  def as_prose?
+    # TODO: implement more generically
+    return expressions[0].works[0].genre == 'poetry' ? false : true
+  end
 end
