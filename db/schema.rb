@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160915095315) do
+ActiveRecord::Schema.define(:version => 20160918143949) do
 
   create_table "api_keys", :force => true do |t|
     t.string   "email"
@@ -185,6 +185,24 @@ ActiveRecord::Schema.define(:version => 20160915095315) do
 
   add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
+
+  create_table "taggings", :force => true do |t|
+    t.integer  "tag_id"
+    t.integer  "manifestation_id"
+    t.integer  "status"
+    t.integer  "suggested_by"
+    t.integer  "approved_by"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
+
+  create_table "tags", :force => true do |t|
+    t.string   "name"
+    t.integer  "status"
+    t.integer  "created_by"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "tocs", :force => true do |t|
     t.text     "toc"
