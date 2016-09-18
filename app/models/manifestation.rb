@@ -3,6 +3,7 @@ class Manifestation < ActiveRecord::Base
   has_and_belongs_to_many :people
   has_many :taggings
   has_many :tags, through: :taggings, class_name: 'Tag'
+  has_many :recommendations
 
   has_paper_trail
   has_many :external_links
