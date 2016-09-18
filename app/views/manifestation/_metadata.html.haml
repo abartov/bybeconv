@@ -13,6 +13,11 @@
       = t(:genre)+': '
     = textify_genre(@m.expressions[0].works[0].genre)
   .metadata_row
-    %b
-      = link_to t(:tags), 'TODO: tags'
-      = "(#{@m.approved_tags.count})"
+    .col-sm-6
+      %b
+        = link_to t(:tags), 'TODO: tags'
+        = "(#{@m.approved_tags.count})"
+    .col-sm-6
+      %b
+        = link_to (:recommendations), 'TODO: recommendations'
+        = "(#{@m.approved_recommendations.count})"

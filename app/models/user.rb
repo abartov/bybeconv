@@ -1,5 +1,9 @@
 class User < ActiveRecord::Base
   attr_accessible :email, :name, :oauth_expires_at, :oauth_token, :provider, :uid
+
+  has_many :recommendations, foreign_key: :recommended_by
+  # no apparent need to be able to retrieve all recommendations a particular (admin) user has *resolved*.  If one arises, use a separate association on the resolved_by foreign key
+
   def admin?
     admin
   end
