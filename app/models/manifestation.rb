@@ -2,12 +2,7 @@ class Manifestation < ActiveRecord::Base
   has_and_belongs_to_many :expressions
   has_and_belongs_to_many :people
   has_many :taggings
-  has_many :tags, through: :taggings do
-    def approved
-      where(status: 'approved')
-    end
-  end
-  #has_and_belongs_to_many :tags, -> { where "status = 'approved'" }
+  has_many :tags, through: :taggings, class_name: 'Tag'
 
   has_paper_trail
   has_many :external_links
@@ -20,5 +15,8 @@ class Manifestation < ActiveRecord::Base
   end
   def chapters?
     return false # TODO: implement
+  end
+  def approved_tags
+    return Tag.find(self.taggings.approved.pluck(:tag_id))
   end
 end

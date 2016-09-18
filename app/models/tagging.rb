@@ -4,8 +4,8 @@ class Tagging < ActiveRecord::Base
   PENDING = 0
   APPROVED = 1
 
-  belongs_to :tags
-  belongs_to :manifestations, :foreign_key => 'manifestation_id'
+  belongs_to :tags, foreign_key: 'tag_id'
+  belongs_to :manifestations, foreign_key: 'manifestation_id'
 
   scope :approved, where(status: APPROVED)
 end
