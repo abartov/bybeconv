@@ -14,5 +14,5 @@
     = textify_genre(@m.expressions[0].works[0].genre)
   .metadata_row
     %b
-      = link_to (:tags), 'TODO: tags'
-      = "(#{@m.tags.count})"
+      = link_to t(:tags), 'TODO: tags'
+      = "(#{@m.approved_tags.count})"
