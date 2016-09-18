@@ -2,7 +2,7 @@
 = render partial: 'shared/breadcrumbs', locals: {pagetype: :manifestation, manifestation: @m}
 = render 'shared/tabs'
 .row
-  .col-sm-12
+  .col-sm-11
     %span{:class => 'work_title'}
       = @m.title
     = ' | '
@@ -12,7 +12,7 @@
 .row
   .col-sm-4
     = render partial: 'shared/read_controls'
-  .col-sm-8
+  .col-sm-6
     = render partial: 'metadata'
 %hr
 .maintext
