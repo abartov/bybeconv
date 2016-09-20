@@ -21,10 +21,10 @@
     = render partial: 'toolbox'
     / TODO: more nuanced rendering here
     - if @m.as_prose?
-      .maintext-prose-body
+      #actualtext.maintext-prose-body
         != raw(@html)
     - else
-      .maintext-poetry-body
+      #actualtext.maintext-poetry-body
     - if @m.chapters? and @m.long?
       = '(next chapter link)'
     = render partial: 'sharing_etc'

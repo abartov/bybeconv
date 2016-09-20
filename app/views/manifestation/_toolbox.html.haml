@@ -4,11 +4,19 @@
   %button.btn= t(:bookmark)
   %button.btn= t(:like)
   %button.btn= t(:bookshelf)
-  %button.btn= t(:found_mistake)
+  %button.btn#found_mistake= t(:found_mistake)
   %button.btn= t(:share)
   %button.btn= t(:download)
   %button.btn= t(:print)
   %button.btn= t(:cite)
   %button.btn= t(:additional)
   %button.btn= t(:rollup)
+
+:javascript
+  $('#found_mistake').click(function() {
+    if(document.getSelection().toString() == '')
+      alert("#{t(:proof_please_select_something)}");
+    else
+      alert("selected:\n\n"+document.getSelection().toString()+"\n\nNow submitting..."); // TBD
+  });
 
