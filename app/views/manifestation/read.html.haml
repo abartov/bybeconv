@@ -1,32 +1,33 @@
 / standard display mode. "reading mode" to be implemented separately?
-= render partial: 'shared/breadcrumbs', locals: {pagetype: :manifestation, manifestation: @m}
-= render partial: 'shared/tabs', locals: {tabclass: @tabclass}
-.row
-  .col-sm-11
-    %span{:class => 'work_title'}
-      = @m.title
-    = ' | '
-    = render partial: 'shared/copyright', locals: {manifestation: @m}
-    = ' | '
-    = render partial: 'shared/work_links', locals: {manifestation: @m}
-.row
-  .col-sm-4
-    = render partial: 'shared/read_controls'
-  .col-sm-6
-    = render partial: 'metadata'
-%hr
-#maintext.maintext
-  = render partial: 'search_and_chapters'
-  = render partial: 'toolbox'
-  / TODO: more nuanced rendering here
-  - if @m.as_prose?
-    .maintext-prose-body
-      != raw(@html)
-  - else
-    .maintext-poetry-body
-  - if @m.chapters? and @m.long?
-    = '(next chapter link)'
-  = render partial: 'sharing_etc'
+.container-fluid
+  = render partial: 'shared/breadcrumbs', locals: {pagetype: :manifestation, manifestation: @m}
+  = render partial: 'shared/tabs', locals: {tabclass: @tabclass}
+  .row
+    .col-sm-11
+      %span{:class => 'work_title'}
+        = @m.title
+      = ' | '
+      = render partial: 'shared/copyright', locals: {manifestation: @m}
+      = ' | '
+      = render partial: 'shared/work_links', locals: {manifestation: @m}
+  .row
+    .col-sm-4
+      = render partial: 'shared/read_controls'
+    .col-sm-6
+      = render partial: 'metadata'
+  %hr
+  #maintext.maintext
+    = render partial: 'search_and_chapters'
+    = render partial: 'toolbox'
+    / TODO: more nuanced rendering here
+    - if @m.as_prose?
+      .maintext-prose-body
+        != raw(@html)
+    - else
+      .maintext-poetry-body
+    - if @m.chapters? and @m.long?
+      = '(next chapter link)'
+    = render partial: 'sharing_etc'
 
 :javascript
   $(window).scroll(function () {
