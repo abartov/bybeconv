@@ -20,4 +20,10 @@
 .maintext-poetry-body {
   p { font-size:1.5em; }
 }
-
+#toolbox{
+  border:1px solid black;
+  float:right;
+  position:absolute;
+  z-index:1;
+  //margin-right:-100px;
+}

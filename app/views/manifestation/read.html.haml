@@ -15,8 +15,9 @@
   .col-sm-6
     = render partial: 'metadata'
 %hr
-.maintext
+#maintext.maintext
   = render partial: 'search_and_chapters'
+  = render partial: 'toolbox'
   / TODO: more nuanced rendering here
   - if @m.as_prose?
     .maintext-prose-body
@@ -26,3 +27,32 @@
   - if @m.chapters? and @m.long?
     = '(next chapter link)'
   = render partial: 'sharing_etc'
+
+:javascript
+  $(window).scroll(function () {
+    var $floatingbox = $('#toolbox');
+    var bodyY = parseInt($('#maintext').offset().top) - 20;
+    var originalX = $floatingbox.css('margin-right');
+
+  	var scrollY = $(window).scrollTop();
+  	var isfixed = $floatingbox.css('position') == 'fixed';
+
+    if($floatingbox.length > 0){
+
+  	if ( scrollY > bodyY && !isfixed ) {
+  		$floatingbox.stop().css({
+  			position: 'fixed',
+  			//right: '50%',
+  			top: 20,
+  			//marginRight: -500
+  			});
+  	} else if ( scrollY < bodyY && isfixed ) {
+  		$floatingbox.css({
+  			position: 'relative',
+        //right: 0,
+  			top: 0,
+  			//marginRight: originalX
+  			});
+  		}
+  	}
+  });
