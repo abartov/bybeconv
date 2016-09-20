@@ -12,11 +12,34 @@
   %button.btn= t(:additional)
   %button.btn= t(:rollup)
 
+#proofDlg.dialog
+  = t(:found_mistake)
+
 :javascript
-  $('#found_mistake').click(function() {
+  function launchProof() {
     if(document.getSelection().toString() == '')
       alert("#{t(:proof_please_select_something)}");
     else
-      alert("selected:\n\n"+document.getSelection().toString()+"\n\nNow submitting..."); // TBD
+      $('#proofDlg').dialog("open");
+      //alert("selected:\n\n"+document.getSelection().toString()+"\n\nNow submitting..."); // TBDa
+    $('#found_mistake').click(hideProof);
+  };
+  function hideProof() {
+    $('#proofDlg').hide();
+    $('#found_mistake').click(launchProof);
+  };
+  function submitProof() {
+   // TBD
+  };
+  $('#proofDlg').dialog({
+    autoOpen: false,
+    height:500,
+    width:700,
+    modal:true,
+    buttons: {
+      "#{t(:submit_proof)}": submitProof,
+      Cancel: function() { this.dialog("close");}
+    }
   });
+  $('#found_mistake').click(launchProof);
 

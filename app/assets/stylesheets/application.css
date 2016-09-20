@@ -3,8 +3,9 @@
  * and any sub-directories. You're free to add application-wide styles to this file and they'll appear at
  * the top of the compiled file, but it's generally better to create a new file per style scope.
  *= require_self
+ *= require jquery-ui
  *= require_tree .
- *= require jquery.ui.all
+ *  old   = require jquery.ui.all
 */
 body{font-size:14px;} /* default */
 p{font-size:1em;}
