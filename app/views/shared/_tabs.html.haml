@@ -1,14 +1,18 @@
 .row
-  .col-sm-4.navtabs{ align: 'left' }
-    = link_to t(:contact_us), 'mailto:editor@benyehuda.org'
-    = ' | '
-    = link_to t(:how_to_help), 'http://benyehuda.org/blog/%D7%A8%D7%95%D7%A6%D7%99%D7%9D-%D7%9C%D7%A2%D7%96%D7%95%D7%A8'
-    = ' | '
-    = link_to t(:about), 'http://benyehuda.org/h_faq.html'
+  .col-sm-4{align:'left'}
+    %ul.nav.nav-tabs{style:'display: inline-block;'}
+      %li{role: 'presentation', :class => tabclass['contact']}
+        = link_to t(:contact_us), 'mailto:editor@benyehuda.org'
+      %li{role: 'presentation', :class => tabclass['help']}
+        = link_to t(:how_to_help), 'http://benyehuda.org/blog/%D7%A8%D7%95%D7%A6%D7%99%D7%9D-%D7%9C%D7%A2%D7%96%D7%95%D7%A8'
+      %li{role: 'presentation', :class => tabclass['faq']}
+        = link_to t(:about), 'http://benyehuda.org/h_faq.html'
   .col-sm-4
-  .col-sm-4.navtabs
-    = link_to t(:authors), :controller => :authors
-    = ' | '
-    = link_to t(:works), :controller => :manifestations
-    = ' | '
-    = link_to t(:periods), :controller => :periods
+  .col-sm-4
+    %ul.nav.nav-tabs{style:'display: inline-block;'}
+      %li{role: 'presentation', :class => tabclass['authors']}
+        = link_to t(:authors), :controller => :authors
+      %li{role: 'presentation', :class => tabclass['works']}
+        = link_to t(:works), :controller => :manifestations
+      %li{role: 'presentation', :class => tabclass['periods']}
+        = link_to t(:periods), :controller => :periods

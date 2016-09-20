@@ -3,6 +3,7 @@ class ManifestationController < ApplicationController
   def read
     @m = Manifestation.find(params[:id])
     @html = MultiMarkdown.new(@m.markdown.lines[1..-1].join("\n")).to_html.force_encoding('UTF-8')
+    @tabclass = set_tab('works')
   end
 
   def list

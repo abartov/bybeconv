@@ -1,6 +1,6 @@
 / standard display mode. "reading mode" to be implemented separately?
 = render partial: 'shared/breadcrumbs', locals: {pagetype: :manifestation, manifestation: @m}
-= render 'shared/tabs'
+= render partial: 'shared/tabs', locals: {tabclass: @tabclass}
 .row
   .col-sm-11
     %span{:class => 'work_title'}

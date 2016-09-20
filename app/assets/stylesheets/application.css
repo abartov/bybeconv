@@ -11,14 +11,14 @@ p{font-size:1em;}
 h1{font-size:3em;};
 h2{font-size:2em;};
 h3{font-size:1.5em;};
-.navtabs {
+.nav-tabs {
   font-size:1.8em;
   font-color: blue;
 }
-.navtabs a {
+.nav-tabs a {
   color:blue;
 }
-.navtabs a:visited {
+.nav-tabs a:visited {
   color: blue;
 }
 .work_title {

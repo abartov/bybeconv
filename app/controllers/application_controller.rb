@@ -35,6 +35,12 @@ class ApplicationController < ActionController::Base
   def html_entities_coder
     @html_entities_coder ||= HTMLEntities.new
   end
+  def set_tab(tab)
+    tabs = ['contact','help','faq','authors','works','periods']
+    ret = {}
+    tabs.each {|t| ret[t] = tab == t ? 'active' : ''}
+    return ret
+  end
 
   helper_method :current_user, :html_entities_coder
 end
