@@ -12,25 +12,25 @@
   %button.btn= t(:additional)
   %button.btn= t(:rollup)
 
-#proofDlg.dialog
-  = t(:found_mistake)
+#proofDlg
+  .container-fluid
+  .row
+    .col-sm-12
+      %p= t(:your_selected_text)+':'
+  .row
+    .col-sm-12
+      #proof_selected_text
+  .row
+  .row
+    .col-sm-3
+      %button.btn#copy_proof= t(:proof_copy_text)
+    .col-sm-9
+      = t(:proof_your_proofs)
+  .row
+    .col-sm-12
+      %textarea#prooftext{rows:10, cols:40}
 
 :javascript
-  function launchProof() {
-    if(document.getSelection().toString() == '')
-      alert("#{t(:proof_please_select_something)}");
-    else
-      $('#proofDlg').dialog("open");
-      //alert("selected:\n\n"+document.getSelection().toString()+"\n\nNow submitting..."); // TBDa
-    $('#found_mistake').click(hideProof);
-  };
-  function hideProof() {
-    $('#proofDlg').hide();
-    $('#found_mistake').click(launchProof);
-  };
-  function submitProof() {
-   // TBD
-  };
   $('#proofDlg').dialog({
     autoOpen: false,
     height:500,
@@ -38,8 +38,22 @@
     modal:true,
     buttons: {
       "#{t(:submit_proof)}": submitProof,
-      Cancel: function() { this.dialog("close");}
+      "#{t(:cancel)}": function() { $('#proofDlg').dialog("close");}
     }
   });
-  $('#found_mistake').click(launchProof);
+  function submitProof() {
+   // TBD
+  };
+  $('#copy_proof').click(function() {
+    $('#prooftext').text($('#proof_selected_text').text());
+  });
+  $('#found_mistake').click(function() {
+    if(document.getSelection().toString() == '')
+      alert("#{t(:proof_please_select_something)}");
+    else
+    {
+      $('#proof_selected_text').text(document.getSelection().toString());
+      $('#proofDlg').dialog("open");
+    }
+  });
 
