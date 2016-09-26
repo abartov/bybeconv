@@ -19,7 +19,7 @@
     <td><%= html_dir.person ? html_dir.person.viaf_id : t(:none) %></td>
     <td><%= link_to t(:show), html_dir %></td>
     <td><%= link_to t(:edit), edit_html_dir_path(html_dir) %></td>
-    <td><%= link_to t(:destroy), html_dir, confirm: 'Are you sure?', method: :delete %></td>
+    <td><%= link_to t(:destroy), html_dir, :data => { :confirm => 'Are you sure?' }, method: :delete %></td>
   </tr>
 <% end %>
 </table>

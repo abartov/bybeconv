@@ -4,7 +4,8 @@ require 'rails/all'
 
 if defined?(Bundler)
   # If you precompile assets before deploying to production, use this line
-  Bundler.require(*Rails.groups(:assets => %w(development test)))
+  Bundler.require(*Rails.groups)
+  #Bundler.require(*Rails.groups(:assets => %w(development test))) # line from Rails 3.2.x
   # If you want your assets lazily compiled in production, use this line
   # Bundler.require(:default, :assets, Rails.env)
 end
@@ -17,7 +18,6 @@ module Bybeconv
 
     # Custom directories with classes and modules you want to be autoloadable.
     # config.autoload_paths += %W(#{config.root}/extras)
-    
     # load stuff from lib
     config.autoload_paths += %W(#{config.root}/lib)
 

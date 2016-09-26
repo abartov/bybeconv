@@ -5,6 +5,6 @@ class Recommendation < ActiveRecord::Base
   belongs_to :manifestation # new system
   belongs_to :recommender, class_name: 'User', foreign_key: :recommended_by
 
-  scope :approved, where(status: 'approved')
+  scope :approved, -> { where status: 'approved' }
 
 end

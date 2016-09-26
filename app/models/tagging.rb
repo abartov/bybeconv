@@ -7,5 +7,5 @@ class Tagging < ActiveRecord::Base
   belongs_to :tags, foreign_key: 'tag_id'
   belongs_to :manifestations, foreign_key: 'manifestation_id'
 
-  scope :approved, where(status: APPROVED)
+  scope :approved, -> { where status: APPROVED }
 end

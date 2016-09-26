@@ -27,8 +27,8 @@ Bybeconv::Application.routes.draw do
   match 'signout', to: 'session#destroy', as: 'signout', via: [:get, :post]
 
   resources :html_dirs
-  match "html_dirs/:id/guess_author" => 'html_dirs#guess_author'
-  match "html_dirs/:id/associate_viaf" => 'html_dirs#associate_viaf', as: 'html_dirs_associate_viaf'
+  match "html_dirs/:id/guess_author" => 'html_dirs#guess_author', via: [:get, :post]
+  match "html_dirs/:id/associate_viaf" => 'html_dirs#associate_viaf', as: 'html_dirs_associate_viaf', via: [:get, :post]
 
   get "proof/list"
   get "proof/purge" => 'proof#purge', as: 'proof_purge'
@@ -48,7 +48,7 @@ Bybeconv::Application.routes.draw do
   match "html_file/:id/frbrize" => 'html_file#frbrize', as: 'html_file_frbrize', via: [:get]
 
   get "html_file/list"
-  match "html_file/list_for_editor"
+  get "html_file/list_for_editor"
   get "html_file/publish"
   post "html_file/list"
   get "html_file/publish"
@@ -105,5 +105,5 @@ Bybeconv::Application.routes.draw do
   # match ':controller(/:action(/:id(.:format)))'
   #
   # match legacy BY urls
-  match '*path' => "html_file#render_by_legacy_url"
+  match '*path' => "html_file#render_by_legacy_url", via: [:get]
 end

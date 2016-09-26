@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '~> 3.2.14' # what blocks upgrading?
+gem 'rails', '~> 4.0.4' # what blocks upgrading?
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
@@ -10,16 +10,12 @@ gem 'omniauth-google-oauth2'
 gem 'omniauth-twitter'
 gem 'clockwork' # scheduler
 
-# Gems used only for assets and not required
-# in production environments by default.
-group :assets do
-  gem 'sass-rails'
-  gem 'coffee-rails'
-  gem 'uglifier', '>= 1.0.3'
-end
-
 gem 'jquery-rails'
 gem "jquery-ui-rails"
+gem 'protected_attributes' # compatibility gem for 3.2.x-style attr_accessible
+gem 'rdf', '~> 2.0.1'
+gem 'sparql-client', '~> 2.0.1'
+gem 'activerecord-session_store'
 #gem "jquery-ui-rails", "~> 4.0.4"
 
 # To use ActiveModel has_secure_password
