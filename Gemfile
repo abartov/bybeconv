@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '~> 4.0.4' # what blocks upgrading?
+gem 'rails', '~> 4.1.8' # what blocks upgrading?
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
