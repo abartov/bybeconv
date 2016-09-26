@@ -9,6 +9,7 @@ development: &default
   twitter_consumer_key: 'bla'
   twitter_consumer_secret: 'bla'
   project_honeypot_api_key: 'bla'
+  secret_key_base: 'bla'
 
 production:
   <<: *default
