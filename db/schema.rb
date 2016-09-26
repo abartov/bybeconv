@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160918211750) do
+ActiveRecord::Schema.define(:version => 20160924005743) do
 
   create_table "api_keys", :force => true do |t|
     t.string   "email"
@@ -158,10 +158,13 @@ ActiveRecord::Schema.define(:version => 20160918211750) do
     t.text     "what"
     t.boolean  "subscribe"
     t.string   "status"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
     t.integer  "html_file_id"
     t.integer  "resolved_by"
+    t.text     "highlight"
+    t.integer  "reported_by"
+    t.integer  "manifestation_id"
   end
 
   create_table "recommendations", :force => true do |t|

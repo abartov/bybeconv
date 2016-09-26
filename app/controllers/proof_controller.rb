@@ -4,15 +4,24 @@ class ProofController < ApplicationController
   before_filter :require_editor, :only => [:list, :show, :resolve, :purge]
 
   def create
-    unless params['what'].nil? or params['what'].empty? # don't bother capturing null submissions
-      if is_blacklisted_ip(client_ip) # filter out spam
-        render :nothing
-      else
-        @p = Proof.new(:from => params['email'], :about => params['about'] || request.env["HTTP_REFERER"] || 'none', :what => params['what'], :subscribe => (params['subscribe'] == "yes" ? true : false), :status => 'new')
-        h = HtmlFile.find_by_url(@p.about.sub(/https?:\/\/.*benyehuda.org\//, ''))
-        @p.html_file = h unless h.nil?
-        @p.save!
+    if params['manifestation'].nil? # legacy site's buttons.js hack
+      unless params['what'].nil? or params['what'].empty? # don't bother capturing null submissions
+        if is_blacklisted_ip(client_ip) # filter out spam
+          render :nothing
+        else
+          @p = Proof.new(:from => params['email'], :about => params['about'] || request.env["HTTP_REFERER"] || 'none', :what => params['what'], :subscribe => (params['subscribe'] == "yes" ? true : false), :status => 'new')
+          h = HtmlFile.find_by_url(@p.about.sub(/https?:\/\/.*benyehuda.org\//, ''))
+          @p.html_file = h unless h.nil?
+          @p.save!
+        end
       end
+    else # new BYBE
+      @p = Proof.new(from: params['email'], manifestation_id: params['manifestation'].to_i, what: params['what'], highlight: params['highlight'], status: 'new')
+      @p.save!
+    end
+    respond_to do |fmt|
+      fmt.html { }
+      fmt.js { flash[:notice] = I18n.t(:proof_thanks_html) }
     end
   end
   def index

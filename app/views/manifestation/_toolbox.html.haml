@@ -12,28 +12,40 @@
   %button.btn= t(:additional)
   %button.btn= t(:rollup)
 
+#proofSent
+  %span{style:'color:green'}= t(:proof_thanks_html)
+
 #proofDlg
   .container-fluid
-  .row
-    .col-sm-12
-      %p= t(:your_selected_text)+':'
-  .row
-    .col-sm-12
-      #proof_selected_text
-  .row
-  .row
-    .col-sm-3
-      %button.btn#copy_proof= t(:proof_copy_text)
-    .col-sm-9
-      = t(:proof_your_proofs)
-  .row
-    .col-sm-12
-      %textarea#prooftext{rows:10, cols:40}
+    = form_tag('/proof', remote: true, id: 'proof_form') do
+      .row
+        .col-sm-12
+          = label_tag t(:your_selected_text)+':'
+      .row
+        .col-sm-12
+          = text_area_tag(:highlight, '', id: 'proof_selected_text', rows: 7, cols:40, readonly:true, style:'background:#e4e4e4; width:70%;')
+      .row
+        %p
+      .row
+        .col-sm-3
+          %button.btn#copy_proof{:type => 'button'}= t(:proof_copy_text)
+        .col-sm-9
+          = label_tag t(:proof_your_proofs)
+      .row
+        .col-sm-12
+          = text_area_tag(:what, '', id: 'prooftext', rows: 7, cols: 40)
+      .row
+        .col-sm-12
+          = label_tag t(:email)+':'
+          %br
+          = email_field_tag 'from', '', placeholder: t(:email)
+          = hidden_field_tag(:manifestation, @m.id)
+    #proof_status
 
 :javascript
   $('#proofDlg').dialog({
     autoOpen: false,
-    height:500,
+    height:600,
     width:700,
     modal:true,
     buttons: {
@@ -41,8 +53,16 @@
       "#{t(:cancel)}": function() { $('#proofDlg').dialog("close");}
     }
   });
+  $('#proofSent').dialog({autoOpen:false, height:250, width:500, modal:true,buttons:{"#{t(:close)}": function (){$('#proofSent').dialog('close');}}});
+
+  $('#proof_form').on('ajax:success', function(e, data, status, xhr) {
+    $('#proofDlg').dialog("close");
+    $('#proofSent').dialog('open');
+  }).on('ajax:error', function(e, xhr, status, error) {
+    $('#proof_status').html("<span style='color:red'>#{t(:proof_failed)}</span>");
+  });
   function submitProof() {
-   // TBD
+   $('#proof_form').submit(); // TBD
   };
   $('#copy_proof').click(function() {
     $('#prooftext').text($('#proof_selected_text').text());
