@@ -1,4 +1,11 @@
 Bybeconv::Application.routes.draw do
+  get "search/index"
+  get "search/results"
+  get "search/advanced"
+  get "authors/index"
+  get "authors/show"
+  get "authors/edit"
+  get "authors/list"
   resources :people
 
   get "read/:id" => 'manifestation#read', as: 'manifestation_read'
@@ -6,6 +13,7 @@ Bybeconv::Application.routes.draw do
   get "manifestation/render_html"
   get "manifestation/edit"
   get "manifestation/list"
+  get "manifestation/index", as: 'manifestation_index'
 
   get "api/query"
   resources :api_keys

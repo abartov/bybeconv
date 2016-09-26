@@ -16,6 +16,8 @@ gem 'protected_attributes' # compatibility gem for 3.2.x-style attr_accessible
 gem 'rdf', '~> 2.0.1'
 gem 'sparql-client', '~> 2.0.1'
 gem 'activerecord-session_store'
+gem 'sass-rails'
+gem 'coffee-script'
 #gem "jquery-ui-rails", "~> 4.0.4"
 
 # To use ActiveModel has_secure_password

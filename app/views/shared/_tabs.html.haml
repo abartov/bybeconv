@@ -12,6 +12,7 @@
       %li{role: 'presentation', :class => tabclass['authors']}
         = link_to t(:authors), :controller => :authors
       %li{role: 'presentation', :class => tabclass['works']}
-        = link_to t(:works), :controller => :manifestations
+        = link_to t(:works), :controller => :manifestation
       %li{role: 'presentation', :class => tabclass['periods']}
-        = link_to t(:periods), :controller => :periods
+        = t(:periods)
+        /= link_to t(:periods), :controller => :periods
