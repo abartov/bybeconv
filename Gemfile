@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '~> 4.1.8' # what blocks upgrading?
+gem 'rails', '~> 4.2.5' # what blocks upgrading?
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
@@ -59,4 +59,9 @@ gem 'rmagick' # for generating cover images for EPUBs
 
 group :test do
   gem 'turn', '0.8.2', :require => false
+end
+
+group :development do
+  gem 'byebug'
+  gem 'web-console', '~> 2.0'
 end
