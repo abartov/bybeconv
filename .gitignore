@@ -7,6 +7,10 @@
 # Ignore bundler config
 /.bundle
 
+# other misc
+*.gem
+.byebug*
+
 # Ignore the default SQLite database.
 /db/*.sqlite3
 
@@ -24,3 +28,4 @@
 /config/behead.payload
 
 do_chown.sh
+go.sh
