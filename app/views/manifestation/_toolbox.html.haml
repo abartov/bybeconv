@@ -1,6 +1,6 @@
 #toolbox.btn-group-vertical{role:'group', 'aria-label' => t(:toolbox)}
   %button.btn.btn-default= t(:reading_mode)
-  %button.btn= t(:font_size)
+  %button.btn#fontsize= t(:font_size)
   %button.btn= t(:bookmark)
   %button.btn= t(:like)
   %button.btn= t(:bookshelf)
@@ -14,7 +14,8 @@
 
 #proofSent
   %span{style:'color:green'}= t(:proof_thanks_html)
-
+#fontsizeDlg
+  = render partial: 'shared/fontsize'
 #proofDlg
   .container-fluid
     = form_tag('/proof', remote: true, id: 'proof_form') do
@@ -43,6 +44,7 @@
     #proof_status
 
 :javascript
+  // proof button
   $('#proofDlg').dialog({
     autoOpen: false,
     height:600,
@@ -53,7 +55,7 @@
       "#{t(:cancel)}": function() { $('#proofDlg').dialog("close");}
     }
   });
-  $('#proofSent').dialog({autoOpen:false, height:250, width:500, modal:true,buttons:{"#{t(:close)}": function (){$('#proofSent').dialog('close');}}});
+  $('#proofSent').dialog({autoOpen:false, height:150, width:500, modal:true,buttons:{"#{t(:close)}": function(){$('#proofSent').dialog('close');}}});
 
   $('#proof_form').on('ajax:success', function(e, data, status, xhr) {
     $('#proofDlg').dialog("close");
@@ -76,4 +78,8 @@
       $('#proofDlg').dialog("open");
     }
   });
-
+  // font size button
+  $('#fontsizeDlg').dialog({autoOpen:false, height:200, width:250, modal:false,buttons:{"#{t(:close)}": function(){$('#fontsizeDlg').dialog('close');}}});
+  $('#fontsize').click(function() {
+    $('#fontsizeDlg').dialog("open");
+  });

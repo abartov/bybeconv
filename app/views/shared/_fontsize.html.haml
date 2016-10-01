@@ -1,20 +1,21 @@
-= t(:font_size)+": "
-%a{href:"javascript:void(0)", id:"decrease_font",style:"font-size: 75%"}='א'
-!= '&nbsp;'
-%a{href:"javascript:void(0)", id:"default_font"}='א'
-!= '&nbsp;'
-%a{href:"javascript:void(0)", id:"increase_font", style:"font-size: 150%"}='א'
+.fontsize_container
+  = t(:font_size)+": "
+  %a{href:"javascript:void(0)", class:"decrease_font",style:"font-size: 75%"}='א'
+  != '&nbsp;'
+  %a{href:"javascript:void(0)", class:"default_font"}='א'
+  != '&nbsp;'
+  %a{href:"javascript:void(0)", class:"increase_font", style:"font-size: 150%"}='א'
 
 :javascript
-  $("#increase_font").click(function() {
+  $(".increase_font").click(function() {
     $("body").css("fontSize", "18px");
   });
 
-  $("#default_font").click(function() {
+  $(".default_font").click(function() {
     $("body").css("fontSize", "14px");
   });
 
-  $("#decrease_font").click(function() {
+  $(".decrease_font").click(function() {
     $("body").css("fontSize", "11px");
   });
 

@@ -25,6 +25,9 @@ h3{font-size:1.5em;};
 .work_title {
   font-size:3em;
 }
+.fontsize_container {
+  font-size:1.2em;
+}
 .container {
   direction:rtl;
 }
