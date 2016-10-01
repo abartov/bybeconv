@@ -27,5 +27,7 @@
 /config/s3.yml
 /config/behead.payload
 
+/public/assets/*
+
 do_chown.sh
 go.sh
