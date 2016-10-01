@@ -14,22 +14,6 @@
   <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
 
   <%= csrf_meta_tags %>
-<script>
-$(document).ready(function() {
-
-$("#increase_font").click(function() {
-  $("body").css("fontSize", "18px");
-});
-
-$("#default_font").click(function() {
-  $("body").css("fontSize", "14px");
-});
-
-$("#decrease_font").click(function() {
-  $("body").css("fontSize", "11px");
-});
-});
-</script>
 
 </head>
 <body dir="rtl" align="right">
@@ -43,7 +27,7 @@ $("#decrease_font").click(function() {
       <a href="http://benyehuda.org/e_faq.html">English</a>
     </div>
     <div class="col-sm-4" id="font-size-selector" align="center">
-      <%= t(:font_size)+": "%> <a href="javascript:void(0)" id="decrease_font" style="font-size: 75%">א</a>&nbsp;<a href="javascript:void(0)" id="default_font">א</a>&nbsp;<a href="javascript:void(0)" id="increase_font" style="font-size: 150%">א</a>
+      <%= render partial: 'shared/fontsize' %>
     </div>
     <div class="col-sm-4" id="user-widget">
       <% if current_user %>
