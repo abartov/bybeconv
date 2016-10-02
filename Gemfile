@@ -56,6 +56,7 @@ gem 'project-honeypot', '>= 0.1.3' # for HTTP:BL service by Project Honeypot
 gem 'paper_trail', '~> 4.0.0' # for versioning entities
 gem 'gepub' # for generating EPUBs
 gem 'rmagick' # for generating cover images for EPUBs
+gem 'pandoc-ruby' # for converting to DOCX
 
 group :test do
   gem 'turn', '0.8.2', :require => false

@@ -425,14 +425,15 @@ class HtmlFile < ActiveRecord::Base
     end
   end
   def self.pdf_from_any_html(html_buffer)
-    tmpfile = Tempfile.new('pdf2html__')
+    tmpfile = Tempfile.new(['pdf2html__','.html'])
     begin
       tmpfile.write(html_buffer)
       tmpfilename = tmpfile.path
-      tmpfile.close
-      result = `wkhtmltopdf page #{tmpfilename} #{tmpfilename}.pdf`
+      result = `wkhtmltopdf --encoding 'UTF-8' page #{tmpfilename} #{tmpfilename}.pdf`
     rescue
       return nil
+    ensure
+      tmpfile.close
     end
     "#{tmpfilename}.pdf"
   end
