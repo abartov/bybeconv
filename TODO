@@ -1,3 +1,5 @@
+* fix RTL alignment in downloaded DOC files
+* set fonts in HTML, DOC, PDF(?), EPUB(?), MOBI(?)
 fix circular logic of HtmlFile.metadata_ready?
 continue implementing creation of Person entity with WEM in create_frbr_entities
 check HtmlFile id 4291 in production (Sokolov) -- currently(??) crashing on charset

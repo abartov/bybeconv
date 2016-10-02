@@ -8,6 +8,10 @@
     %b= 'PDF'
     = t(:pdf_format)
     %p
+    = radio_button_tag 'format', 'html'
+    %b= 'HTML'
+    = t(:html_format)
+    %p
     = radio_button_tag 'format', 'doc'
     %b= 'DOC'
     = t(:doc_format)
