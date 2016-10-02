@@ -9,6 +9,7 @@ Bybeconv::Application.routes.draw do
   resources :people
 
   get "read/:id" => 'manifestation#read', as: 'manifestation_read'
+  match "download/:id" => 'manifestation#download', as: 'manifestation_download', via: [:get, :post]
   get "manifestation/show"
   get "manifestation/render_html"
   get "manifestation/edit"

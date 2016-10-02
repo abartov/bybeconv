@@ -2,6 +2,8 @@ require 'json' # for VIAF AutoSuggest
 require 'rdf'
 require 'rdf/vocab'
 require 'hebrew'
+require 'htmlentities'
+include ActionView::Helpers::SanitizeHelper
 
 # temporary constants until I figure out what changed in RDF.rb's RDF::Vocab::SKOS
 SKOS_PREFLABEL = "http://www.w3.org/2004/02/skos/core#prefLabel"
@@ -158,5 +160,9 @@ module BybeUtils
     buf =~ /<table.*? width="70%".*?>.*?<td.*?>(.*)<\/td>.*?<\/table>/im # if prose table exists, grab its contents
     return buf if $1 == nil
     return $` + $1 + $'
+  end
+  def html2txt(buf)
+    coder = HTMLEntities.new
+    return strip_tags(coder.decode(buf)).gsub(/<!\[.*?\]>/,'')
   end
 end

@@ -6,7 +6,7 @@
   %button.btn= t(:bookshelf)
   %button.btn#found_mistake= t(:found_mistake)
   %button.btn= t(:share)
-  %button.btn= t(:download)
+  %button.btn#download= t(:download)
   %button.btn= t(:print)
   %button.btn= t(:cite)
   %button.btn= t(:additional)
@@ -14,8 +14,6 @@
 
 #proofSent
   %span{style:'color:green'}= t(:proof_thanks_html)
-#fontsizeDlg
-  = render partial: 'shared/fontsize'
 #proofDlg
   .container-fluid
     = form_tag('/proof', remote: true, id: 'proof_form') do
@@ -42,6 +40,12 @@
           = email_field_tag 'from', '', placeholder: t(:email)
           = hidden_field_tag(:manifestation, @m.id)
     #proof_status
+
+#fontsizeDlg
+  = render partial: 'shared/fontsize'
+
+#downloadDlg
+  = render partial: 'shared/download', locals: {manifestation: @m}
 
 :javascript
   // proof button
@@ -78,8 +82,16 @@
       $('#proofDlg').dialog("open");
     }
   });
+
   // font size button
   $('#fontsizeDlg').dialog({autoOpen:false, height:200, width:250, modal:false,buttons:{"#{t(:close)}": function(){$('#fontsizeDlg').dialog('close');}}});
   $('#fontsize').click(function() {
     $('#fontsizeDlg').dialog("open");
   });
+
+  // download button
+  $('#downloadDlg').dialog({autoOpen:false, height:400, width:600, modal:true, buttons:{"#{t(:close)}": function(){$('#downloadDlg').dialog('close');}}});
+  $('#download').click(function() {
+    $('#downloadDlg').dialog('open');
+  });
+

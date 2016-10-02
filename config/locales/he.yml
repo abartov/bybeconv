@@ -12,10 +12,17 @@ he:
   proof_copy_text: העתק למטה
   your_selected_text: הטקסט שסימנת
   submit_proof: שמור הגהה
+  download_instructions: נא לבחור את תבנית הקובץ הרצויה (פורמט)
+  pdf_format: לצפייה באקרובט או להדפסה
+  doc_format: מסמך וורד
+  epub_format: לקוראים אלקטרוניים שאינם קינדל
+  mobi_format: לקורא האלקטרוני קינדל
+  txt_format: טקסט בלבד, ללא הדגשות ועיצוב
   reading_mode: מצב קריאה
   bookmark: סימניה
   cancel: ביטול
   close: סגירה
+  by: מאת
   proof_please_select_something: "מצוין, אבל ראשית נא לסמן (להאיר, לבחור) את הפיסקה השגויה (או כמה שורות, אם מדובר בשורות קצרצרות), כדי שנדע איפה לתקן.  אחרי הסימון, יש ללחוץ שוב על לחצן זה."
   like: אהבתי
   bookshelf: מדפים

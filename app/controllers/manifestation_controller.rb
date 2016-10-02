@@ -6,7 +6,28 @@ class ManifestationController < ApplicationController
     @tabclass = set_tab('works')
     @proof = Proof.new
   end
-
+  def download
+    @m = Manifestation.find(params[:id])
+    case params[:format]
+    when 'pdf'
+    when 'doc'
+    when 'txt'
+      txt = html2txt(MultiMarkdown.new(@m.markdown).to_html.force_encoding('UTF-8'))
+      begin
+        temp_file = Tempfile.new('tmp_txt_'+@m.id.to_s,'tmp/')
+        temp_file.puts(txt)
+        temp_file.chmod(0644)
+        send_file temp_file, type: 'text/plain', filename: @m.safe_filename+'.txt'
+      ensure
+        temp_file.close
+      end
+    when 'epub'
+    when 'mobi'
+    else
+      flash[:error] = t(:unrecognized_format)
+      redirect_back fallback_location: {action: read, id: @m.id}
+    end
+  end
   def list
     # calculations
     @total = Manifestation.count

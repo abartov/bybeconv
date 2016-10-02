@@ -24,4 +24,8 @@ class Manifestation < ActiveRecord::Base
     # TODO: implement more generically
     return expressions[0].works[0].genre == 'poetry' ? false : true
   end
+  def safe_filename
+    fname = "#{title} #{I18n.t(:by)} #{expressions[0].people[0].name}"
+    return fname.gsub(/[^0-9א-תA-Za-z.\-]/, '_')
+  end
 end

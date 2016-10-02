@@ -1,0 +1,28 @@
+.download_container
+  = t(:download_instructions)
+  %br
+  / = form_tag('/download/'+manifestation.id.to_s, remote: true, id: 'download_form') do
+  = form_tag('/download/'+manifestation.id.to_s, id: 'download_form') do
+    %p
+    = radio_button_tag 'format', 'pdf', true
+    %b= 'PDF'
+    = t(:pdf_format)
+    %p
+    = radio_button_tag 'format', 'doc'
+    %b= 'DOC'
+    = t(:doc_format)
+    %p
+    = radio_button_tag 'format', 'epub'
+    %b= 'EPUB'
+    = t(:epub_format)
+    %p
+    = radio_button_tag 'format', 'mobi'
+    %b= 'MOBI'
+    = t(:mobi_format)
+    %p
+    = radio_button_tag 'format', 'txt'
+    %b= 'TXT'
+    = t(:txt_format)
+    %p
+    %br
+    = submit_tag t(:download), {class: 'btn btn-lg btn-primary'}

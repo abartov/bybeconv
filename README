@@ -3,3 +3,7 @@ This project will be an evolving set of tools intended to convert the large (~10
 I make no effort to make the tools general, but if you're looking to do something similar, maybe you can adapt some of my code.
 
 The code is released into the public domain.
+
+External dependencies:
+* Pandoc for generating ebooks and other formats
+
