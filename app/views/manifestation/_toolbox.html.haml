@@ -6,7 +6,7 @@
   %button.btn= t(:bookshelf)
   %button.btn#found_mistake= t(:found_mistake)
   %button.btn= t(:share)
-  %button.btn#download= t(:download)
+  %button.btn.download= t(:download)
   %button.btn= t(:print)
   %button.btn= t(:cite)
   %button.btn= t(:additional)
@@ -91,7 +91,7 @@
 
   // download button
   $('#downloadDlg').dialog({autoOpen:false, height:400, width:600, modal:true, buttons:{"#{t(:close)}": function(){$('#downloadDlg').dialog('close');}}});
-  $('#download').click(function() {
+  $('.download').click(function() {
     $('#downloadDlg').dialog('open');
   });
 
