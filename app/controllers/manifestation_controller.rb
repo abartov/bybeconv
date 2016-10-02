@@ -58,8 +58,8 @@ class ManifestationController < ApplicationController
     when 'mobi'
       begin
         # TODO: figure out how not to go through epub
-        epubname = make_epub_from_single_html(html)
-        mobiname = epubname[0..-6]+'.mobi'
+        epubname = make_epub_from_single_html(html, @m)
+        mobiname = epubname[epubname.rindex('/')+1..-6]+'.mobi'
         out = `kindlegen #{epubname} -c1 -o #{mobiname}`
         mobi_data = File.read(mobiname)
         send_data mobi_data, type: 'application/x-mobipocket-ebook', filename: filename
