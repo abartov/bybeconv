@@ -49,7 +49,23 @@ class ManifestationController < ApplicationController
         temp_file.close
       end
     when 'epub'
+      begin
+        epubname = make_epub_from_single_html(html, @m)
+        epub_data = File.read(epubname)
+        send_data epub_data, type: 'application/epub+zip', filename: filename
+        File.delete(epubname) # delete temporary generated EPUB
+      end
     when 'mobi'
+      begin
+        # TODO: figure out how not to go through epub
+        epubname = make_epub_from_single_html(html)
+        mobiname = epubname[0..-6]+'.mobi'
+        out = `kindlegen #{epubname} -c1 -o #{mobiname}`
+        mobi_data = File.read(mobiname)
+        send_data mobi_data, type: 'application/x-mobipocket-ebook', filename: filename
+        File.delete(epubname) # delete temporary generated EPUB
+        File.delete(mobiname) # delete temporary generated MOBI
+      end
     else
       flash[:error] = t(:unrecognized_format)
       redirect_back fallback_location: {action: read, id: @m.id}

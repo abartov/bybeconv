@@ -28,4 +28,7 @@ class Manifestation < ActiveRecord::Base
     fname = "#{title} #{I18n.t(:by)} #{expressions[0].people[0].name}"
     return fname.gsub(/[^0-9א-תA-Za-z.\-]/, '_')
   end
+  def author_string
+    return expressions[0].people[0].name # TODO: be less naive
+  end
 end

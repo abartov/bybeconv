@@ -3,6 +3,9 @@ require 'rdf'
 require 'rdf/vocab'
 require 'hebrew'
 require 'htmlentities'
+require 'gepub'
+require 'rmagick'
+
 include ActionView::Helpers::SanitizeHelper
 
 # temporary constants until I figure out what changed in RDF.rb's RDF::Vocab::SKOS
@@ -10,6 +13,40 @@ SKOS_PREFLABEL = "http://www.w3.org/2004/02/skos/core#prefLabel"
 SKOS_ALTLABEL = "http://www.w3.org/2004/02/skos/core#altLabel"
 
 module BybeUtils
+  def make_epub_from_single_html(html, manifestation)
+    book = GEPUB::Book.new
+    book.set_main_id('http://benyehuda.org/read/'+manifestation.id.to_s, 'BookID', 'URL')
+    book.language = 'he'
+    title = manifestation.title+' מאת '+manifestation.author_string
+    book.add_title(title, nil, GEPUB::TITLE_TYPE::MAIN)
+    book.add_creator(manifestation.author_string)
+    book.page_progression_direction = 'rtl' # Hebrew! :)
+    # make cover image
+    canvas = Magick::Image.new(1200, 800){self.background_color = 'white'}
+    gc = Magick::Draw.new
+    gc.gravity = Magick::CenterGravity
+    gc.pointsize(50)
+    gc.font('David CLM')
+    gc.text(0,0,title.reverse.center(50))
+    gc.draw(canvas)
+    gc.pointsize(30)
+    gc.text(0,150,"פרי עמלם של מתנדבי פרויקט בן-יהודה".reverse.center(50))
+    gc.pointsize(20)
+    gc.text(0,250,Date.today.to_s+"מעודכן לתאריך: ".reverse.center(50))
+    gc.draw(canvas)
+    cover_file = Tempfile.new(['tmp_cover_'+manifestation.id.to_s,'.png'], 'tmp/')
+    canvas.write(cover_file.path)
+    book.add_item('cover.jpg',cover_file.path).cover_image
+    book.ordered {
+      buf = '<head><meta charset="UTF-8"><meta http-equiv="content-type" content="text/html; charset=UTF-8"></head><body dir="rtl" align="center"><h1>'+title+'</h1><p/><p/><h3>פרי עמלם של מתנדבי</h3><p/><h2>פרויקט בן-יהודה</h2><p/><h3><a href="http://benyehuda.org/blog/%D7%A8%D7%95%D7%A6%D7%99%D7%9D-%D7%9C%D7%A2%D7%96%D7%95%D7%A8">(רוצים לעזור?)</a></h3><p/>מעודכן לתאריך: '+Date.today.to_s+'</body>'
+      book.add_item('0_title.html').add_content(StringIO.new(buf))
+      book.add_item('1_text.html').add_content(StringIO.new(html)).toc_text(title)
+    }
+    fname = cover_file.path+'.epub'
+    book.generate_epub(fname)
+    cover_file.close
+    return fname
+  end
   # return a hash like {:total => total_number_of_non_tags_characters, :nikkud => total_number_of_nikkud_characters, :ratio => :nikkud/:total }
   def count_nikkud(text)
     info = { total: 0, nikkud: 0, ratio: nil }
