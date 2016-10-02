@@ -2,11 +2,19 @@ require 'pandoc-ruby'
 
 class ManifestationController < ApplicationController
   before_filter :require_editor, only: [:edit, :update]
+  #layout false, only: [:print]
+
   def read
     @m = Manifestation.find(params[:id])
     @html = MultiMarkdown.new(@m.markdown.lines[1..-1].join("\n")).to_html.force_encoding('UTF-8')
     @tabclass = set_tab('works')
     @proof = Proof.new
+    @print_url = url_for(action: :print, id: @m.id)
+  end
+  def print
+    @m = Manifestation.find(params[:id])
+    @html = MultiMarkdown.new(@m.markdown.lines[1..-1].join("\n")).to_html.force_encoding('UTF-8')
+    @print = true
   end
   def download
     @m = Manifestation.find(params[:id])

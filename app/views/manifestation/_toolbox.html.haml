@@ -7,7 +7,7 @@
   %button.btn#found_mistake= t(:found_mistake)
   %button.btn= t(:share)
   %button.btn.download= t(:download)
-  %button.btn= t(:print)
+  %button.btn.printbutton= t(:print)
   %button.btn= t(:cite)
   %button.btn= t(:additional)
   %button.btn= t(:rollup)
@@ -95,3 +95,7 @@
     $('#downloadDlg').dialog('open');
   });
 
+  // print button
+  $('.printbutton').click(function() {
+    window.open("#{@print_url}",'_new');
+  });

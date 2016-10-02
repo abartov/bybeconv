@@ -17,9 +17,12 @@
 
 </head>
 <body dir="rtl" align="right">
-    <% flash.each do |name, msg| -%>
+    <% unless @print
+       flash.each do |name, msg| -%>
           <%= content_tag :div, msg, class: name %>
+      <% end -%>
     <% end -%>
+<% unless @print %>
 <div class="container-fluid">
   <div class="row" style="margin-left:0; margin-right:0">
   <!-- until we switch to an RTL bootstrap, reverse the order here -->
@@ -51,15 +54,20 @@
     </div>
   </div>
 </div>
-<%= yield %>
-<hr/>
-<% if current_user %>
-  <%= link_to t(:back_to_dashboard), "/" %>
 <% end %>
-<p/>
-<div class="footer">
-  <b>פרויקט בן-יהודה</b> הוא מיזם התנדבותי ובמסגרתו פועלים מאות מתנדבים ליצירת מהדורות אלקטרוניות של ספרות עברית, והנגשתן לציבור, בחינם וללא פרסומות.<BR />
-  <B><A HREF="http://benyehuda.org/h_faq.html">שאלות נפוצות</A> · <A HREF="http://benyehuda.org/blog/%D7%A8%D7%95%D7%A6%D7%99%D7%9D-%D7%9C%D7%A2%D7%96%D7%95%D7%A8">מעוניינים להצטרף?</A></B>
-</div>
+<%= yield %>
+<% if @print %>
+  <%= t(:download_footer_html, url: url_for(action: :read, only_path:false, id: @m.id)) %>
+<% else %>
+  <hr/>
+  <% if current_user %>
+    <%= link_to t(:back_to_dashboard), "/" %>
+  <% end %>
+  <p/>
+  <div class="footer">
+    <b>פרויקט בן-יהודה</b> הוא מיזם התנדבותי ובמסגרתו פועלים מאות מתנדבים ליצירת מהדורות אלקטרוניות של ספרות עברית, והנגשתן לציבור, בחינם וללא פרסומות.<BR />
+    <B><A HREF="http://benyehuda.org/h_faq.html">שאלות נפוצות</A> · <A HREF="http://benyehuda.org/blog/%D7%A8%D7%95%D7%A6%D7%99%D7%9D-%D7%9C%D7%A2%D7%96%D7%95%D7%A8">מעוניינים להצטרף?</A></B>
+  </div>
+<% end %>
 </body>
 </html>

@@ -10,6 +10,7 @@ Bybeconv::Application.routes.draw do
 
   get "read/:id" => 'manifestation#read', as: 'manifestation_read'
   match "download/:id" => 'manifestation#download', as: 'manifestation_download', via: [:get, :post]
+  match "print/:id" => 'manifestation#print', as: 'manifestation_print', via: [:get, :post]
   get "manifestation/show"
   get "manifestation/render_html"
   get "manifestation/edit"
