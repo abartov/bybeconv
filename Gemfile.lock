@@ -351,6 +351,8 @@ GEM
       ansi (>= 1.2.2)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
+    uglifier (3.0.2)
+      execjs (>= 0.3.0, < 3)
     web-console (2.3.0)
       activemodel (>= 4.0)
       binding_of_caller (>= 0.7.2)
@@ -398,6 +400,7 @@ DEPENDENCIES
   therubyracer
   thin
   turn (= 0.8.2)
+  uglifier
   web-console (~> 2.0)
 
 BUNDLED WITH
