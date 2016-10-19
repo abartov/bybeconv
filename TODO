@@ -1,13 +1,12 @@
 * fix RTL alignment in downloaded DOC files
 * set fonts in HTML, DOC, PDF(?), EPUB(?), MOBI(?)
 fix circular logic of HtmlFile.metadata_ready?
-continue implementing creation of Person entity with WEM in create_frbr_entities
 check HtmlFile id 4291 in production (Sokolov) -- currently(??) crashing on charset
-+ add an auth system
-+ add detection of encoding problems to HtmlFile.analyze, and to appropriate tallies etc.
-  + possibly implement an auto-fixer for those?
-    + yes!  Today we have learned that 0xCA is invalid in CP-1255, and yet Word sometimes(?) generates that instead of a proper xolam (0xC9) for some obscure reason.  We'll sub() this.
-+ handle footnotes
+- maybe switch to a print CSS rather than a print action/view?  crucial code is @media print {
+  div.info, div#editStuff, div#navigation, div#debug {
+    display: none;
+  }
+}
 
 Conversion system
 -----------------
@@ -44,7 +43,6 @@ Conversion system
 
 Content system
 --------------
-- model the Manifestation, Expression, and Work entities
 - model relationships between the entities (at least sequence and containment)
 - given blessed text:
 -- extract metadata

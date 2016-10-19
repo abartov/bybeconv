@@ -29,9 +29,7 @@ class ManifestationController < ApplicationController
     when 'doc'
       begin
         temp_file = Tempfile.new('tmp_doc_'+@m.id.to_s, 'tmp/')
-        #temp_file.puts(PandocRuby.convert(html, from: :html, to: :odt).force_encoding('UTF-8'))
-        temp_file.puts(PandocRuby.convert(html, from: :html, to: :docx).force_encoding('UTF-8'))
-        #temp_file.puts(PandocRuby.convert(@m.markdown, from: :markdown, to: :docx).force_encoding('UTF-8'))
+        temp_file.puts(PandocRuby.convert(html, M: 'dir=rtl', from: :html, to: :docx).force_encoding('UTF-8')) # requires pandoc 1.17.3 or higher, for correct directionality
         temp_file.chmod(0644)
         send_file temp_file, type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', filename: filename
       ensure

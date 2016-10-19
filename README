@@ -5,5 +5,5 @@ I make no effort to make the tools general, but if you're looking to do somethin
 The code is released into the public domain.
 
 External dependencies:
-* Pandoc for generating ebooks and other formats
+* Pandoc 1.17.3 or higher for generating ebooks and other formats
 
