@@ -20,7 +20,7 @@ task :mass_export, [:to_path] => :environment do |taskname, args|
         path_part = f.path.sub(basedir+'/','')
         print "\r#{path_part} - #{tot[:files]} files processed. #{(tot[:files].to_f/tot[:todo]).round(5)*100}% done.     "
         #html = File.open(f.path, 'r:windows-1255:utf-8').read # slurp input and convert to UTF-8
-        utf_html = File.open(f.path, 'r:UTF-8').read
+        utf_html = remove_payload(File.open(f.path, 'r:UTF-8').read)
         # prepare output buffers
         plaintext = strip_tags(coder.decode(utf_html)).gsub(/<!\[.*?\]>/,'')
         stripped = plaintext.strip_nikkud
