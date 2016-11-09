@@ -45,11 +45,11 @@ def traverse(dir, t, no_nikkuds, need_resequence)
         # also mark the HtmlDir as needing a re-sequencing
         dirpart = dir[dir.rindex('/')+1..-1]
         dummy = author_name_from_dir(dirpart,{}) # silly call because that would create the HtmlDir object # TODO: fix this
-        d = HtmlDir.find_by_path(dirpart)
-        if d.nil?
+        d = HtmlDir.where(path: dirpart)
+        if d.nil? or d.empty?
           puts "ERROR: dir not found by dirpart '#{dirpart}'"
         else
-          need_resequence << d unless need_resequence.include?(d)
+          need_resequence << d[0] unless need_resequence.include?(d[0])
         end
       else
         if h.updated_at < File.mtime(thefile) # file updated since last analyzed
