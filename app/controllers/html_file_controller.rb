@@ -44,16 +44,16 @@ class HtmlFileController < ApplicationController
   def list
     # calculate tallies
     @total_texts = HtmlFile.count
-    @total_known = HtmlFile.count(conditions: "status <> 'Unknown'")
-    @total_images = HtmlFile.count(conditions: 'images = 1')
-    @total_footnotes = HtmlFile.count(conditions: 'footnotes = 1')
-    @total_tables = HtmlFile.count(conditions: 'tables = 1')
-    @total_badenc = HtmlFile.count(conditions: "status = 'BadCP1255'")
-    @total_fileerr = HtmlFile.count(conditions: "status = 'FileError'")
-    @total_parsed = HtmlFile.count(conditions: "status = 'Parsed'")
-    @total_accepted = HtmlFile.count(conditions: "status = 'Accepted'")
-    @total_nikkud_full = HtmlFile.count(conditions: "nikkud = 'full'")
-    @total_nikkud_some = HtmlFile.count(conditions: "nikkud = 'some'")
+    @total_known = HtmlFile.where.not(status: 'Unknown').count
+    @total_images = HtmlFile.where(images: true).count
+    @total_footnotes = HtmlFile.where(footnotes: true).count
+    @total_tables = HtmlFile.where(tables: true).count
+    @total_badenc = HtmlFile.where(status: 'BadCP1255').count
+    @total_fileerr = HtmlFile.where(status: 'FileError').count
+    @total_parsed = HtmlFile.where(status: 'Parsed').count
+    @total_accepted = HtmlFile.where(status: 'Accepted').count
+    @total_nikkud_full = HtmlFile.where(nikkud: 'full').count
+    @total_nikkud_some = HtmlFile.where(nikkud: 'some').count
     # build query condition
     query = {}
     unless params[:commit].blank?
