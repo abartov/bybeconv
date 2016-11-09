@@ -6,9 +6,11 @@ Bybeconv::Application.routes.draw do
   get "authors/show"
   get "authors/edit"
   get "authors/list"
+  get "authors/print"
   resources :people
 
   get "read/:id" => 'manifestation#read', as: 'manifestation_read'
+  get "author/:id" => 'authors#toc', as: 'author_toc'
   match "download/:id" => 'manifestation#download', as: 'manifestation_download', via: [:get, :post]
   match "print/:id" => 'manifestation#print', as: 'manifestation_print', via: [:get, :post]
   get "manifestation/show"
