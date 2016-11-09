@@ -5,7 +5,7 @@ class HtmlDirsController < ApplicationController
   # GET /html_dirs
   # GET /html_dirs.json
   def index
-    @html_dirs = HtmlDir.all(order: 'author ASC')
+    @html_dirs = HtmlDir.all.order('author ASC')
 
     respond_to do |format|
       format.html # index.html.erb

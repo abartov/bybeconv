@@ -133,7 +133,11 @@ def insert_payload_placeholders(buf)
   return buf
 end
 def behead_index(dir)
-  slurp = File.open(dir+'/index.html').read
+  begin
+    slurp = File.open(dir+'/index.html').read
+  rescue => e
+    puts "no index.html in #{dir}!"
+  end
   # TODO: finish implementing (BEWARE repercussions of UTF8ing index.html!)
 end
 def update_payload(buf, payload)

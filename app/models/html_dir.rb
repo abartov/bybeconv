@@ -1,5 +1,5 @@
 class HtmlDir < ActiveRecord::Base
   belongs_to :person
-  attr_accessible :public_domain, :author
+  attr_accessible :public_domain, :author, :path
 
 end
