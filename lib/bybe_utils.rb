@@ -204,7 +204,7 @@ module BybeUtils
     coder = HTMLEntities.new
     return strip_tags(coder.decode(buf)).gsub(/<!\[.*?\]>/,'')
   end
-  def author_surname_and_initials(author_string)
+  def author_surname_and_initials(author_string) # TODO: support multiple authors
     parts = author_string.split(' ')
     surname = parts.pop
     initials = ''
@@ -216,13 +216,13 @@ module BybeUtils
     end
     return surname + ', ' + initials
   end
-  def author_surname_and_firstname(author_string)
+  def author_surname_and_firstname(author_string) # TODO: support multiple authors
     parts = author_string.split(' ')
     surname = parts.pop
     return surname+', '+parts.join(' ')
   end
   def citation_date(date_str)
-    return I18n.t(:no_date)if date_str.nil?
+    return I18n.t(:no_date) if date_str.nil?
     if date.str =~ /\d\d\d+/
       return $&
     else
@@ -230,12 +230,12 @@ module BybeUtils
     end
   end
   def apa_citation(manifestation)
-    return author_surname_and_firstname(manifestation.author_string)+'. ('+citation_date(manifestation.expressions[0].date)+'). <strong>'+manifestation.title+'</strong>'+'. [גרסה אלקטרונית]. פרויקט בן-יהודה. נדלה בתאריך '+Date.today.to_s+". #{request.original_url}"
+    return author_surname_and_initials(manifestation.author_string)+'. ('+citation_date(manifestation.expressions[0].date)+'). <strong>'+manifestation.title+'</strong>'+'. [גרסה אלקטרונית]. פרויקט בן-יהודה. נדלה בתאריך '+Date.today.to_s+". #{request.original_url}"
   end
   def mla_citation(manifestation)
-
+    return author_surname_and_firstname(manifestation.author_string)+". \"#{manifestation.title}\". <u>פרויקט בן-יהודה</u>. #{citation_date(manifestation.expressions[0].date)}. #{Date.today.to_s}. &lt;#{request.original_url}&gt;"
   end
   def asa_citation(manifestation)
-
+    return author_surname_and_firstname(manifestation.author_string)+'. '+citation_date(manifestation.expressions[0].date)+". \"#{manifestation.title}\". <strong>פרויקט בן-יהודה</strong>. אוחזר בתאריך #{Date.today.to_s}. (#{request.original_url})"
   end
 end

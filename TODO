@@ -1,3 +1,4 @@
+* always: rake notes
 * fix RTL alignment in downloaded DOC files
 * set fonts in HTML, DOC, PDF(?), EPUB(?), MOBI(?)
 fix circular logic of HtmlFile.metadata_ready?
