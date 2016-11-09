@@ -13,6 +13,5 @@
         = link_to t(:authors), :controller => :authors
       %li{role: 'presentation', :class => tabclass['works']}
         = link_to t(:works), :controller => :manifestation
-      %li{role: 'presentation', :class => tabclass['periods']}
-        = t(:periods)
-        /= link_to t(:periods), :controller => :periods
+      /%li{role: 'presentation', :class => tabclass['periods']} TODO: implement period pages
+      / = link_to t(:periods), :controller => :periods
