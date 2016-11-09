@@ -8,7 +8,7 @@
   %button.btn= t(:share)
   %button.btn.download= t(:download)
   %button.btn.printbutton= t(:print)
-  %button.btn= t(:cite)
+  %button.btn.citebutton= t(:cite)
   %button.btn= t(:additional)
   %button.btn= t(:rollup)
 
@@ -46,6 +46,8 @@
 
 #downloadDlg
   = render partial: 'shared/download', locals: {manifestation: @m}
+#citeDlg
+  = render partial: 'shared/cite', locals: {manifestation: @m}
 
 :javascript
   // proof button
@@ -98,4 +100,10 @@
   // print button
   $('.printbutton').click(function() {
     window.open("#{@print_url}",'_new');
+  });
+
+  // cite button
+  $('#citeDlg').dialog({autoOpen:false, height:300, width:750, modal:true, buttons:{"#{t(:close)}": function(){$('#citeDlg').dialog('close');}}});
+  $('.citebutton').click(function() {
+    $('#citeDlg').dialog('open');
   });

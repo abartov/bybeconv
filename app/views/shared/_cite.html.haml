@@ -1,0 +1,14 @@
+.cite_container
+  = t(:cite_instructions)
+  %br
+  %b
+    != 'APA: &rlm;'
+  != apa_citation(manifestation)
+  %br
+  %b
+    != 'MLA: &rlm;'
+  = mla_citation(manifestation)
+  %br
+  %b
+    != 'ASA: &rlm;'
+  = asa_citation(manifestation)

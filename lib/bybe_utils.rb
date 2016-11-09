@@ -80,10 +80,12 @@ module BybeUtils
   # retrieve author name for (relative) directory name d, using provided hash known_authors to cache results
   def author_name_from_dir(d, known_authors)
     if known_authors[d].nil?
-      thedir = HtmlDir.find_by_path(d)
-      if thedir.nil?
+      thedir = HtmlDir.where(path: d)
+      if thedir.nil? or thedir.empty?
         thedir = HtmlDir.new(path: d, author: "__edit__#{d}")
         thedir.save! # to be filled later
+      else
+        thedir = thedir[0]
       end
       known_authors[d] = thedir.author.force_encoding('utf-8')
     end
@@ -201,5 +203,39 @@ module BybeUtils
   def html2txt(buf)
     coder = HTMLEntities.new
     return strip_tags(coder.decode(buf)).gsub(/<!\[.*?\]>/,'')
+  end
+  def author_surname_and_initials(author_string)
+    parts = author_string.split(' ')
+    surname = parts.pop
+    initials = ''
+    parts.each {|p| initials += p[0]}
+    if initials.length == 1
+      initials += "'"
+    else
+      initials = initials[0..-2] + '"' + initials[-1]
+    end
+    return surname + ', ' + initials
+  end
+  def author_surname_and_firstname(author_string)
+    parts = author_string.split(' ')
+    surname = parts.pop
+    return surname+', '+parts.join(' ')
+  end
+  def citation_date(date_str)
+    return I18n.t(:no_date)if date_str.nil?
+    if date.str =~ /\d\d\d+/
+      return $&
+    else
+      return date_str
+    end
+  end
+  def apa_citation(manifestation)
+    return author_surname_and_firstname(manifestation.author_string)+'. ('+citation_date(manifestation.expressions[0].date)+'). <strong>'+manifestation.title+'</strong>'+'. [גרסה אלקטרונית]. פרויקט בן-יהודה. נדלה בתאריך '+Date.today.to_s+". #{request.original_url}"
+  end
+  def mla_citation(manifestation)
+
+  end
+  def asa_citation(manifestation)
+
   end
 end
