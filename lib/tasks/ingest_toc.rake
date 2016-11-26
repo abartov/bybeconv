@@ -15,7 +15,7 @@ task :ingest_toc, [:dirname] => :environment do |taskname, args|
     # DEBUG utfindex = File.open(thedir+'/index.html', 'r:window-1255:UTF-8').read
     utfindex = File.open('by_index_utf8.html').read
     puts "success!"
-    new_toc = process_index(utfindex)
+    new_toc = process_index(args.dirname, utfindex)
     dir = HtmlDir.find_by_path(thedir)
     p = dir.person
     unless p.nil?
@@ -27,7 +27,7 @@ task :ingest_toc, [:dirname] => :environment do |taskname, args|
   end
 end
 
-def process_index(blob)
+def process_index(dirname, blob)
   debugger
   m = blob.match(/<body.*?>/)
   die("can't understand this file structure!") if m.nil?
@@ -42,7 +42,7 @@ def process_index(blob)
       buf = ''
     else
       linked_body += $`
-      linked_body += match_link($1, $2)
+      linked_body += match_link(dirname, $1, $2)
       buf = $'
     end
   end
@@ -56,8 +56,24 @@ def process_index(blob)
   return toc
 end
 
-def match_link(target, text)
- "LINK: #{text} ----> #{target}\n"
+def match_link(dirname, target, text)
+  return '' if target.strip[0..3] == 'name'
+  m = target.match(/href="(.*)"/)
+  return '' if m.nil?
+  url = $1
+  return '' if ['index.html','/'].includes?(url)
+  h = HtmlFile.where(url: "#{dirname}/#{url}")
+  if h.nil?
+    puts "ERROR: can't find HtmlFile for url #{dirname}/#{url}"
+    return "ERROR: #{text} ----> #{target}\n"
+  end
+  thefile = h[0]
+  if thefile.manifestations.empty?
+    the_id = "HF#{thefile.id}"
+  else
+    the_id = "M#{thefile.manifestations[0].id}"
+  end
+  return "&&&LINK: #{the_id} &&&TEXT: #{text.strip.gsub("\n",'')}"
 end
 
 def die(msg)
