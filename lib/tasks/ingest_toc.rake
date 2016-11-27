@@ -12,23 +12,22 @@ task :ingest_toc, [:dirname] => :environment do |taskname, args|
   end
   print "Reading... "
   begin
-    # DEBUG utfindex = File.open(thedir+'/index.html', 'r:window-1255:UTF-8').read
-    utfindex = File.open('by_index_utf8.html').read
+    die "Index file is not UTF-8! Can't proceed." unless `file #{thedir}/index.html` =~ /UTF-8/
+    utfindex = File.open(thedir+'/index.html', 'r:UTF-8').read
     puts "success!"
     new_toc = process_index(args.dirname, utfindex)
-    dir = HtmlDir.find_by_path(thedir)
-    p = dir.person
-    unless p.nil?
-      p.toc = new_toc
-      p.save!
-    end
   rescue
     puts "bad encoding. Run\n\nrake badchar[full_path_to_offending_file]\n\n to find what doesn't convert well."
+  end
+  dir = HtmlDir.find_by_path(args.dirname)
+  p = dir.person
+  unless p.nil?
+    p.toc = new_toc
+    p.save!
   end
 end
 
 def process_index(dirname, blob)
-  debugger
   m = blob.match(/<body.*?>/)
   die("can't understand this file structure!") if m.nil?
   body = $'.gsub(/<a(.*?)>(.*?)<\/a>/m,"[[a \\1]]\\2[[/a]]") # replace all links with placeholders
@@ -46,10 +45,6 @@ def process_index(dirname, blob)
       buf = $'
     end
   end
-
-  # TEMP DEBUG
-  File.open('dbg_ingest.txt','w') {|f| f.puts(linked_body) }
-  die("done for now")
 
   toc = Toc.new(toc: linked_body, status: 'Raw')
   toc.save
@@ -73,7 +68,7 @@ def match_link(dirname, target, text)
   else
     the_id = "M#{thefile.manifestations[0].id}"
   end
-  return "&&&LINK: #{the_id} &&&TEXT: #{text.strip.gsub("\r\n",'')}"
+  return "&&&LINK: #{the_id} &&&TEXT: #{text.strip.gsub("\r\n",'')}&&&"
 end
 
 def die(msg)
