@@ -13,7 +13,7 @@ task :ingest_toc, [:dirname] => :environment do |taskname, args|
   print "Reading... "
   begin
     die "Index file is not UTF-8! Can't proceed." unless `file #{thedir}/index.html` =~ /UTF-8/
-    utfindex = File.open(thedir+'/index.html', 'r:UTF-8').read
+    utfindex = File.open(thedir+'/index.html', 'r:UTF-8').read.gsub("\r\n","\n")
     puts "success!"
     new_toc = process_index(args.dirname, utfindex)
   rescue
@@ -45,10 +45,19 @@ def process_index(dirname, blob)
       buf = $'
     end
   end
-
+  linked_body = section_titles(linked_body)
   toc = Toc.new(toc: linked_body, status: 'Raw')
   toc.save
   return toc
+end
+
+def section_titles(buf)
+  lines = buf.split "\n"
+  lines.each
+  ['שירה','פרוזה','מאמרים ומסות','מאמרים, מסות, ועיון','עיון','יומנים ומכתבים','אגרות','תרגום','איגרות','זכרונות','מסות ומאמרים','מאמרים, מסות ועיון'].each {|title|
+    buf = buf.gsub("\n"+title, "\n## #{title}") # gsub, just in case there's a work with the genre name -- the mistake would be obvious and easy to fix manually
+  }
+  return buf
 end
 
 def match_link(dirname, target, text)
@@ -56,7 +65,7 @@ def match_link(dirname, target, text)
   m = target.match(/href="(.*)"/)
   return '' if m.nil?
   url = $1
-  return '' if ['index.html','/'].include?(url)
+  return '' if ['index.html','/','mailto:editor@benyehuda.org'].include?(url)
   h = HtmlFile.where(url: "/#{dirname}/#{url}")
   if h.empty?
     puts "ERROR: can't find HtmlFile for url #{dirname}/#{url}"
@@ -68,7 +77,7 @@ def match_link(dirname, target, text)
   else
     the_id = "M#{thefile.manifestations[0].id}"
   end
-  return "&&&LINK: #{the_id} &&&TEXT: #{text.strip.gsub("\r\n",'')}&&&"
+  return "&&&LINK: #{the_id} &&&TEXT: #{text.strip.gsub("\n",'')}&&&"
 end
 
 def die(msg)
