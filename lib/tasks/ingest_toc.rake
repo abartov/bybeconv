@@ -61,9 +61,9 @@ def match_link(dirname, target, text)
   m = target.match(/href="(.*)"/)
   return '' if m.nil?
   url = $1
-  return '' if ['index.html','/'].includes?(url)
-  h = HtmlFile.where(url: "#{dirname}/#{url}")
-  if h.nil?
+  return '' if ['index.html','/'].include?(url)
+  h = HtmlFile.where(url: "/#{dirname}/#{url}")
+  if h.empty?
     puts "ERROR: can't find HtmlFile for url #{dirname}/#{url}"
     return "ERROR: #{text} ----> #{target}\n"
   end
@@ -73,7 +73,7 @@ def match_link(dirname, target, text)
   else
     the_id = "M#{thefile.manifestations[0].id}"
   end
-  return "&&&LINK: #{the_id} &&&TEXT: #{text.strip.gsub("\n",'')}"
+  return "&&&LINK: #{the_id} &&&TEXT: #{text.strip.gsub("\r\n",'')}"
 end
 
 def die(msg)
