@@ -1,6 +1,7 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 he:
+  toc_edit_title: "תצוגת תוכן עניינים ליוצר/ת %{author}"
   proof_thanks_title: קיבלנו, תודה!
   proof_thanks_html: תודה רבה על שטרחת לשלוח אלינו הגהה או הערה!  נעיין בה בקפידה ונתקן את הטקסט במידת הצורך, ונעדכן אותך כשנעשה זאת.
   proof_subscribed: אנו שמחים שברצונך לקבל עדכונים מפרויקט בן-יהודה בעתיד.  נוסיף אותך לרשימת הדיוור שלנו בהקדם, בכתובת %{email}

@@ -483,7 +483,7 @@ class HtmlFile < ActiveRecord::Base
         m.people << p
         e.manifestations << m
         e.save!
-        manifestations << m # this HtmlFile itself
+        manifestations << m # this HtmlFile itself should know the manifestation created out of it
         save!
 
         return true
