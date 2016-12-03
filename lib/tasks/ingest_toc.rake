@@ -73,11 +73,11 @@ def match_link(dirname, target, text)
   end
   thefile = h[0]
   if thefile.manifestations.empty?
-    the_id = "HF#{thefile.id}"
+    the_id = "H#{thefile.id}"
   else
     the_id = "M#{thefile.manifestations[0].id}"
   end
-  return "&&&LINK: #{the_id} &&&TEXT: #{text.strip.gsub("\n",'')}&&&"
+  return "&&&LINK: #{the_id} &&&TEXT: #{text.strip.gsub("\n",' ')}&&&"
 end
 
 def die(msg)

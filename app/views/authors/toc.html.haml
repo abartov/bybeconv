@@ -1,0 +1,16 @@
+/ Main author page
+#maincontainer.container-fluid
+  = render partial: 'shared/breadcrumbs', locals: {pagetype: :author, author: @author}
+  = render partial: 'shared/tabs', locals: {tabclass: @tabclass}
+  .row
+    .col-sm-11
+      %span{:class => 'author_title'}
+        = @author.name
+        != '&nbsp;&nbsp;&nbsp;'
+        - unless (@author.dates.nil? or @author.dates.empty?)
+          = ')'+@author.dates+'('
+      = ' | '
+      = render partial: 'shared/copyright', locals: {copyright: (not @author.public_domain)}
+      = ' | '
+      = render partial: 'shared/author_links', locals: {author: @author}
+

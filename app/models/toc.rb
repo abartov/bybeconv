@@ -25,5 +25,6 @@ class Toc < ActiveRecord::Base
         ret += addition
       end
     end
+    return ret
   end
 end

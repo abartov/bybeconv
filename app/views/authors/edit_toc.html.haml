@@ -1,0 +1,11 @@
+%h2
+  = t(:toc_edit_title, author: @author.name)
+
+!= raw(@html)
+.markdown
+  %p
+    = text_area_tag(:markdown, raw(@toc), size: "80x40")
+    = submit_tag 'Update!'
+
+= link_to 'Back', :action => :list
+
