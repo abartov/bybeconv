@@ -9,6 +9,7 @@ gem 'mysql2', '~> 0.3.11'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-twitter'
 gem 'clockwork' # scheduler
+gem 'diffy'
 
 gem 'jquery-rails'
 gem "jquery-ui-rails"

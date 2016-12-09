@@ -65,6 +65,7 @@ GEM
     daemons (1.2.4)
     debug_inspector (0.0.2)
     diff-lcs (1.2.5)
+    diffy (3.1.0)
     ebnf (1.0.1)
       rdf (~> 2.0)
       sxp (~> 1.0)
@@ -374,6 +375,7 @@ DEPENDENCIES
   byebug
   clockwork
   coffee-script
+  diffy
   execjs
   gepub
   haml

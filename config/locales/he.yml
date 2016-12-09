@@ -3,6 +3,7 @@
 he:
   toc_edit_title: "תצוגת תוכן עניינים ליוצר/ת %{author}"
   no_toc_yet: "טרם נקלט תוכן עניינים ליוצר/ת"
+  update: עדכן!
   proof_thanks_title: קיבלנו, תודה!
   proof_thanks_html: תודה רבה על שטרחת לשלוח אלינו הגהה או הערה!  נעיין בה בקפידה ונתקן את הטקסט במידת הצורך, ונעדכן אותך כשנעשה זאת.
   proof_subscribed: אנו שמחים שברצונך לקבל עדכונים מפרויקט בן-יהודה בעתיד.  נוסיף אותך לרשימת הדיוור שלנו בהקדם, בכתובת %{email}
@@ -109,6 +110,7 @@ he:
   show_all_recommendations: הצג את כל ההמלצות
   show_open_recommendations: הצג המלצות חדשות
   purge_rejected_recommendations: מחק המלצות שנדחו וזבל
+  back: חזרה
   back_to_dashboard: חזרה למרכז הפעילות
   recommendations_by_status: המלצות לפי סטטוס %{status}
   sign_in_google_twitter: התחברו באמצעות זהות גוגל או טוויטר

@@ -1,3 +1,5 @@
+require 'diffy'
+
 class AuthorsController < ApplicationController
   def index
   end
@@ -29,15 +31,26 @@ class AuthorsController < ApplicationController
       flash[:error] = I18n.t('no_toc_yet')
       redirect_to '/'
     else
+      unless params[:markdown].nil? # handle update payload
+        if params[:old_timestamp].to_datetime != @author.toc.updated_at.to_datetime # check for update since form was issued
+          # reject update, provide diff and fresh editbox
+          @diff = Diffy::Diff.new(params[:markdown], @author.toc.toc)
+          @rejected_update = params[:markdown]
+        else
+          t = @author.toc
+          t.toc = params[:markdown]
+          t.save!
+        end
+      end
       old_toc = @author.toc.toc
       @toc = @author.toc.refresh_links
       if @toc != old_toc # update the TOC if there have been HtmlFiles published since last time, regardless of whether or not further editing would be saved.
         @author.toc.toc = @toc
         @author.toc.save!
       end
+      @toc_timestamp = @author.toc.updated_at
       markdown_toc = toc_links_to_markdown_links(@toc)
       @html = MultiMarkdown.new(markdown_toc).to_html.force_encoding('UTF-8')
-      @toc_timestamp = @author.toc.updated_at
     end
   end
 end
