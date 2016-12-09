@@ -31,7 +31,12 @@ def process_index(dirname, blob)
   m = blob.match(/<body.*?>/)
   die("can't understand this file structure!") if m.nil?
   body = $'.gsub(/<a(.*?)>(.*?)<\/a>/m,"[[a \\1]]\\2[[/a]]") # replace all links with placeholders
+  body = body.gsub('</p>','XYZZY') # save actual paragraph ends
   body = body.gsub(/<.*?>/m,'') # remove all remaining HTML tags
+  body = body.gsub('&nbsp;',' ') # remove hard spaces
+  body = body.gsub("\n",' ') # remove random HTML linebreaks
+  body = body.gsub('  ',' ') # condense spaces
+  body = body.gsub('XYZZY',"\n\n") # restore paragraph ends as linebreaks
   buf = body
   linked_body = ''
   until buf.empty?
@@ -45,6 +50,9 @@ def process_index(dirname, blob)
       buf = $'
     end
   end
+  lines = linked_body.split "\n"
+  lines.each {|l| l.strip!}
+  linked_body = lines.join ("\n")
   linked_body = section_titles(linked_body)
   toc = Toc.new(toc: linked_body, status: 'Raw')
   toc.save
@@ -52,8 +60,7 @@ def process_index(dirname, blob)
 end
 
 def section_titles(buf)
-  lines = buf.split "\n"
-  lines.each
+  debugger
   ['שירה','פרוזה','מאמרים ומסות','מאמרים, מסות, ועיון','עיון','יומנים ומכתבים','אגרות','תרגום','איגרות','זכרונות','מסות ומאמרים','מאמרים, מסות ועיון'].each {|title|
     buf = buf.gsub("\n"+title, "\n## #{title}") # gsub, just in case there's a work with the genre name -- the mistake would be obvious and easy to fix manually
   }
@@ -77,7 +84,7 @@ def match_link(dirname, target, text)
   else
     the_id = "מ#{thefile.manifestations[0].id}"
   end
-  return "&&&פריט: #{the_id} &&&כותרת: #{text.strip.gsub("\n",' ')}&&&"
+  return "&&&פריט: #{the_id} &&&כותרת: #{text.gsub("\n",' ').gsub('&nbsp;',' ').strip}&&&"
 end
 
 def die(msg)
