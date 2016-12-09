@@ -34,6 +34,7 @@ def process_index(dirname, blob)
   body = body.gsub('</p>','XYZZY') # save actual paragraph ends
   body = body.gsub(/<.*?>/m,'') # remove all remaining HTML tags
   body = body.gsub('&nbsp;',' ') # remove hard spaces
+  body = body.gsub('&#x000A;',"\n")
   body = body.gsub("\n",' ') # remove random HTML linebreaks
   body = body.gsub('  ',' ') # condense spaces
   body = body.gsub('XYZZY',"\n\n") # restore paragraph ends as linebreaks
@@ -60,10 +61,10 @@ def process_index(dirname, blob)
 end
 
 def section_titles(buf)
-  debugger
   ['שירה','פרוזה','מאמרים ומסות','מאמרים, מסות, ועיון','עיון','יומנים ומכתבים','אגרות','תרגום','איגרות','זכרונות','מסות ומאמרים','מאמרים, מסות ועיון'].each {|title|
     buf = buf.gsub("\n"+title, "\n## #{title}") # gsub, just in case there's a work with the genre name -- the mistake would be obvious and easy to fix manually
   }
+  buf.gsub!("\n·","\n*")
   return buf
 end
 
