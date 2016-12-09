@@ -16,7 +16,6 @@ class Toc < ActiveRecord::Base
         buf = $'
         if $1[0] == 'ה' # linking to a legacy HtmlFile
           h = HtmlFile.find($1[1..-1].to_i)
-          debugger
           unless h.nil?
             if h.status == 'Published'
               addition = "&&&פריט: מ#{h.manifestations[0].id} &&&כותרת: #{$2}&&&" # else, no manifestation yet, keep linking to the HtmlFile
