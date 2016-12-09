@@ -241,7 +241,7 @@ module BybeUtils
   def toc_links_to_markdown_links(buf)
     ret = ''
     until buf.empty?
-      m = buf.match /&&&LINK: (\w\d+) &&&TEXT: (.*?)&&&/
+      m = buf.match /&&&פריט: (\S\d+) &&&כותרת: (.*?)&&&/
       if m.nil?
         ret += buf
         buf = ''
@@ -249,7 +249,7 @@ module BybeUtils
         ret += $`
         addition = $& # by default
         buf = $'
-        if $1[0] == 'H' # linking to a legacy HtmlFile
+        if $1[0] == 'ה' # linking to a legacy HtmlFile
           h = HtmlFile.find($1[1..-1].to_i)
           unless h.nil?
             addition = "[#{$2}](#{h.url})"

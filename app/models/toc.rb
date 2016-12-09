@@ -6,7 +6,7 @@ class Toc < ActiveRecord::Base
     buf = toc
     ret = ''
     until buf.empty?
-      m = buf.match /&&&LINK: (\w\d+) &&&TEXT: (.*?)&&&/
+      m = buf.match /&&&פריט: (\w\d+) &&&כותרת: (.*?)&&&/
       if m.nil?
         ret += buf
         buf = ''
@@ -14,11 +14,12 @@ class Toc < ActiveRecord::Base
         ret += $`
         addition = $& # by default
         buf = $'
-        if $1[0] == 'H' # linking to a legacy HtmlFile
+        if $1[0] == 'ה' # linking to a legacy HtmlFile
           h = HtmlFile.find($1[1..-1].to_i)
+          debugger
           unless h.nil?
             if h.status == 'Published'
-              addition = "&&&LINK: M#{h.manifestations[0].id} &&&TEXT: #{$2}&&&" # else, no manifestation yet, keep linking to the HtmlFile
+              addition = "&&&פריט: מ#{h.manifestations[0].id} &&&כותרת: #{$2}&&&" # else, no manifestation yet, keep linking to the HtmlFile
             end
           end
         end

@@ -7,7 +7,7 @@ include BybeUtils
 ENCODING_SUBSTS = [{ from: "\xCA", to: "\xC9" }, # fix weird invalid chars instead of proper Hebrew xolams
                    { from: "\xFC", to: '&uuml;' }, # fix u-umlaut
                    { from: "\xFB", to: '&ucirc;' },
-                   { from: "\xFF", to: '&yuml;' }] # fix u-circumflex
+                   { from: "\xFF".force_encoding('windows-1255'), to: '&yuml;' }] # fix u-circumflex
 
 class NokoDoc < Nokogiri::XML::SAX::Document
   def initialize
