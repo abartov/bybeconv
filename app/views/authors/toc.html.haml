@@ -13,4 +13,4 @@
       = render partial: 'shared/copyright', locals: {copyright: (not @author.public_domain)}
       = ' | '
       = render partial: 'shared/author_links', locals: {author: @author}
-
+      = render partial: 'toc', locals: {author: @author, html: @html}
