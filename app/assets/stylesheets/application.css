@@ -22,7 +22,7 @@ h3{font-size:1.5em;};
 .nav-tabs a:visited {
   color: blue;
 }
-.cite_container table, tr, td {
+.cite_container td {
   padding: 1em;
 }
 .work_title {

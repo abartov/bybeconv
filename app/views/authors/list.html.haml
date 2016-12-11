@@ -1,2 +1,11 @@
-%h1 Authors#list
-%p Find me in app/views/authors/list.html.haml
+%h1= t(:authors)
+%table
+  - @authors.each do |author|
+    %tr
+      %td
+        = link_to author.name, author_toc_path(id: author.id)
+      %td
+        = link_to t(:show), authors_show_path(id: author.id)
+        != '&nbsp;'
+        = link_to t(:edit), authors_edit_path(id: author.id)
+!= paginate @authors

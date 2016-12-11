@@ -4,6 +4,7 @@ class AuthorsController < ApplicationController
   before_filter :require_editor, only: [:index, :show, :edit, :list, :edit_toc, :update]
 
   def index
+    list
   end
 
   def show
@@ -13,6 +14,7 @@ class AuthorsController < ApplicationController
   end
 
   def list
+    @authors = Person.page(params[:page]).order(params[:order]) # TODO: pagination
   end
 
   def toc
@@ -22,6 +24,7 @@ class AuthorsController < ApplicationController
     markdown_toc = toc_links_to_markdown_links(@author.toc.toc)
     @html = MultiMarkdown.new(markdown_toc).to_html.force_encoding('UTF-8')
   end
+
   def print
   end
 
