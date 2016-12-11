@@ -13,12 +13,20 @@ class AuthorsController < ApplicationController
       flash[:error] = t(:no_such_item)
       redirect_to '/'
     else
+      # TODO: add other types of content
       @count = {works: @author.work_ids.count}
     end
 
   end
 
   def edit
+    @author = Person.find(params[:id])
+    if @author.nil?
+      flash[:error] = t(:no_such_item)
+      redirect_to '/'
+    else
+      # do stuff
+    end
   end
 
   def list
