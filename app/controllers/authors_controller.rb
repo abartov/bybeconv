@@ -29,6 +29,22 @@ class AuthorsController < ApplicationController
     end
   end
 
+  def update
+    @author = Person.find(params[:id])
+    if @author.nil?
+      flash[:error] = t(:no_such_item)
+      redirect_to '/'
+    else
+      if @author.update_attributes(params[:author])
+        format.html { redirect_to @author, notice: t(:updated_successfully) }
+        format.json { head :ok }
+      else
+        format.html { render action: 'edit' }
+        format.json { render json: @author.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   def list
     @authors = Person.page(params[:page]).order(params[:order]) # TODO: pagination
   end
