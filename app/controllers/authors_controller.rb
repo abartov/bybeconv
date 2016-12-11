@@ -8,6 +8,14 @@ class AuthorsController < ApplicationController
   end
 
   def show
+    @author = Person.find(params[:id])
+    if @author.nil?
+      flash[:error] = t(:no_such_item)
+      redirect_to '/'
+    else
+      @count = {works: @author.work_ids.count}
+    end
+
   end
 
   def edit
