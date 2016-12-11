@@ -17,7 +17,7 @@
   %br
   = t(:viaf_id)
   = f.text_field :viaf_id
-  %br
-  = t(:name)
-  %br
-  = t(:name)
+  %p
+  = f.submit t(:update)
+%p
+= link_to t(:back), authors_show_path(id: @author.id)
