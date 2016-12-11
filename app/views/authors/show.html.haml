@@ -1,7 +1,10 @@
 %h1= @author.name
 / partials?
 %b{ style: 'font-size: 2rem'}
-  = link_to t(:edit), authors_edit_path(id: @author.id)
+  = link_to t(:edit_metadata), authors_edit_path(id: @author.id)
+%br
+%b{ style: 'font-size: 2rem'}
+  = link_to t(:edit_toc), authors_edit_toc_path(id: @author.id)
 %p
 %table
   %tr
@@ -31,17 +34,20 @@
       %b= t(:viaf_id)
       != "&rlm;"
       = @author.viaf_id
-%h2= t(:content)
-%b= t(:works)
-= link_to "#{@count[:works]} #{t(:works)}", author_toc_path(id: @author.id)
-%br
-%b= t(:translations_by)
-= t(:TBD)
-%br
-%b= t(:works_about)
-= t(:TBD)
-
-
+  %tr
+    %td
+      %h2= t(:content)
+      %b= t(:works)
+      = link_to "#{@count[:works]} #{t(:works)}", author_toc_path(id: @author.id)
+      %br
+      %b= t(:translations_by)
+      = t(:TBD)
+      %br
+      %b= t(:works_about)
+      = t(:TBD)
+    %td
+%p
+= link_to t(:back), authors_list_path
 
 /    t.string   "title",             limit: 255
 /    t.string   "other_designation", limit: 255
