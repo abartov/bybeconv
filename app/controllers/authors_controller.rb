@@ -1,6 +1,8 @@
 require 'diffy'
 
 class AuthorsController < ApplicationController
+  before_filter :require_editor, only: [:index, :show, :edit, :list, :edit_toc, :update]
+
   def index
   end
 
