@@ -162,3 +162,9 @@ he:
       subject: תודה על ההמלצה!
     recommendation_published:
       subject: המלצתך שולבה בטקסט שפרסמנו!
+  views:
+    pagination:
+      next: לדף הבא
+      last: אחרון
+      first: ראשון
+      previous: לדף הקודם
