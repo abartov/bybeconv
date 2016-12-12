@@ -7,9 +7,10 @@ Bybeconv::Application.routes.draw do
   get "authors/edit"
   get "authors/list"
   get "authors/print"
+  post "authors/update"
+  patch "authors/update"
   match 'author/:id/edit_toc' => 'authors#edit_toc', as: 'authors_edit_toc', via: [:get, :post]
   resources :people
-  resources :authors
 
   get "read/:id" => 'manifestation#read', as: 'manifestation_read'
   match 'author/:id' => 'authors#toc', as: 'author_toc', via: [:get, :post]

@@ -1,5 +1,5 @@
 %h1= "#{@author.name}: #{t(:edit_metadata)}"
-= form_for @author do |f|
+= form_for @author, url: {action: :update, id: @author.id} do |f|
   = t(:name)
   = f.text_field :name
   %br
