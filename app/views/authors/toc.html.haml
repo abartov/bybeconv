@@ -6,9 +6,9 @@
     .col-sm-11
       %span{:class => 'author_title'}
         = @author.name
-        != '&nbsp;&nbsp;&nbsp;'
+        != '&nbsp;'
         - unless (@author.dates.nil? or @author.dates.empty?)
-          = ')'+@author.dates+'('
+          = '('+@author.dates+')'
       = ' | '
       = render partial: 'shared/copyright', locals: {copyright: (not @author.public_domain)}
       = ' | '

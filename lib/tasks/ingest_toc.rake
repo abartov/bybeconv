@@ -62,7 +62,7 @@ end
 
 def section_titles(buf)
   ['שירה','פרוזה','מאמרים ומסות','מאמרים, מסות, ועיון','עיון','יומנים ומכתבים','אגרות','תרגום','איגרות','זכרונות','מסות ומאמרים','מאמרים, מסות ועיון'].each {|title|
-    buf = buf.gsub("\n"+title, "\n## #{title}") # gsub, just in case there's a work with the genre name -- the mistake would be obvious and easy to fix manually
+    buf = buf.gsub("\n"+title, "\n## #{title}\n") # gsub, just in case there's a work with the genre name -- the mistake would be obvious and easy to fix manually
   }
   buf.gsub!("\n·","\n*")
   return buf
@@ -74,6 +74,7 @@ def match_link(dirname, target, text)
   return '' if m.nil?
   url = $1
   return '' if ['index.html','/','mailto:editor@benyehuda.org'].include?(url)
+  return "[#{text}](#{url})" if url[0..3].upcase == 'HTTP' # preserve absolute links
   h = HtmlFile.where(url: "/#{dirname}/#{url}")
   if h.empty?
     puts "ERROR: can't find HtmlFile for url #{dirname}/#{url}"
