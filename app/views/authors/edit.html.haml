@@ -1,2 +1,23 @@
-%h1 Authors#edit
-%p Find me in app/views/authors/edit.html.haml
+%h1= "#{@author.name}: #{t(:edit_metadata)}"
+= form_for @author, url: {action: :update, id: @author.id} do |f|
+  = t(:name)
+  = f.text_field :name
+  %br
+  = t(:life_years)
+  = f.text_field :dates
+  %br
+  = t(:public_domain)
+  = f.check_box :public_domain
+  %br
+  = t(:comments)
+  = f.text_area :comment
+  %br
+  = t(:nli_id)
+  = f.text_field :nli_id
+  %br
+  = t(:viaf_id)
+  = f.text_field :viaf_id
+  %p
+  = f.submit t(:update)
+%p
+= link_to t(:back), authors_show_path(id: @author.id)

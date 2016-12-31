@@ -7,7 +7,7 @@
       %span{:class => 'work_title'}
         = @m.title
       = ' | '
-      = render partial: 'shared/copyright', locals: {manifestation: @m}
+      = render partial: 'shared/copyright', locals: {copyright: @m.copyright?}
       = ' | '
       = render partial: 'shared/work_links', locals: {manifestation: @m}
   .row

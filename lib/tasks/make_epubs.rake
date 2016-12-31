@@ -1,6 +1,6 @@
 require 'gepub'
 require 'htmlentities'
-require 'RMagick'
+require 'rmagick'
 
 desc "Make ebooks for all authors"
 task :make_ebooks => :environment do

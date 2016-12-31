@@ -1,12 +1,6 @@
 require 'tempfile'
 require 'bybe_utils'
 
-ENCODING_SUBSTS = [{ :from => "\xCA", :to => "\xC9" }, # fix weird invalid chars instead of proper Hebrew xolams
-    { :from => "\xFC", :to => "&uuml;"}, # fix u-umlaut
-    { :from => "\xFB", :to => "&ucirc;"},
-    { :from => "\xFF".force_encoding('windows-1255'), :to => "&yuml;"}] # fix u-circumflex
-
-
 desc "Create the 'what's new?' table as an HTML fragment to be pasted into the site's (static) main page"
 task :whatsnew, [:fromdate] => :environment do |taskname, args|
   args.with_defaults(:fromdate => (Date.today-30.days).to_s)

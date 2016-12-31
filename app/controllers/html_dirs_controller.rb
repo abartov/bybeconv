@@ -26,6 +26,8 @@ class HtmlDirsController < ApplicationController
     person = Person.create_or_get_person_by_viaf(params[:viaf])
     @html_dir.person = person
     @html_dir.save!
+    person.public_domain = html_dir.public_domain
+    person.save!
     redirect_to @html_dir, notice: "Associated with VIAF id #{params[:viaf]}"
   end
   # GET /html_dirs/1

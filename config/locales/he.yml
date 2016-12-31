@@ -1,6 +1,23 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 he:
+  toc_edit_title: "תצוגת תוכן עניינים ליוצר/ת %{author}"
+  no_toc_yet: "טרם נקלט תוכן עניינים ליוצר/ת"
+  update: עדכן!
+  updated_successfully: עודכן בהצלחה!
+  life_years: שנות חיים
+  identifiers: מזהים
+  toc_status: מצב תוכן עניינים
+  nli_id: מזהה בספרייה הלאומית
+  viaf_id: מזהה במאגר VIAF
+  TBD: (בעתיד)
+  name: שם
+  edit_metadata: עריכת מטא-דאטה
+  edit_toc: עריכת תוכן עניינים
+  works_about: "יצירות על אודותיו/ה"
+  translations_by: תרגומים
+  copyright_status: מצב זכויות יוצרים
+  basic_details: פרטים בסיסיים
   proof_thanks_title: קיבלנו, תודה!
   proof_thanks_html: תודה רבה על שטרחת לשלוח אלינו הגהה או הערה!  נעיין בה בקפידה ונתקן את הטקסט במידת הצורך, ונעדכן אותך כשנעשה זאת.
   proof_subscribed: אנו שמחים שברצונך לקבל עדכונים מפרויקט בן-יהודה בעתיד.  נוסיף אותך לרשימת הדיוור שלנו בהקדם, בכתובת %{email}
@@ -47,9 +64,10 @@ he:
   filter: סינון
   actions: פעולות
   author: מחבר
-  render: הצג יצירה
-  show: הצג פרטים
+  render: הצגת יצירה
+  show: הצגת פרטים
   date: תאריך
+  comments: הערות
   advanced_search: חיפוש מתקדם
   search_placeholder: חיפוש יצירות במאגר
   homepage: דף הבית
@@ -98,8 +116,8 @@ he:
   to_the_work_in_the_catalog: ליצירה בקטלוג
   viaf_id: מזהה VIAF
   public_domain: נחלת הכלל
-  edit: ערוך
-  destroy: מחק
+  edit: עריכה
+  destroy: מחיקה
   folder_list: רשימת תיקיות
   proof_file: קובץ
   proof_when: מתי
@@ -107,6 +125,7 @@ he:
   show_all_recommendations: הצג את כל ההמלצות
   show_open_recommendations: הצג המלצות חדשות
   purge_rejected_recommendations: מחק המלצות שנדחו וזבל
+  back: חזרה
   back_to_dashboard: חזרה למרכז הפעילות
   recommendations_by_status: המלצות לפי סטטוס %{status}
   sign_in_google_twitter: התחברו באמצעות זהות גוגל או טוויטר
@@ -158,3 +177,9 @@ he:
       subject: תודה על ההמלצה!
     recommendation_published:
       subject: המלצתך שולבה בטקסט שפרסמנו!
+  views:
+    pagination:
+      next: לדף הבא
+      last: אחרון
+      first: ראשון
+      previous: לדף הקודם

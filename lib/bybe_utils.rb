@@ -238,4 +238,31 @@ module BybeUtils
   def asa_citation(manifestation)
     return author_surname_and_firstname(manifestation.author_string)+'. '+citation_date(manifestation.expressions[0].date)+". \"#{manifestation.title}\". <strong>פרויקט בן-יהודה</strong>. אוחזר בתאריך #{Date.today.to_s}. (#{request.original_url})"
   end
+  def toc_links_to_markdown_links(buf)
+    ret = ''
+    until buf.empty?
+      m = buf.match /&&&פריט: (\S\d+) &&&כותרת: (.*?)&&&/
+      if m.nil?
+        ret += buf
+        buf = ''
+      else
+        ret += $`
+        addition = $& # by default
+        buf = $'
+        if $1[0] == 'ה' # linking to a legacy HtmlFile
+          h = HtmlFile.find($1[1..-1].to_i)
+          unless h.nil?
+            addition = "[#{$2}](#{h.url})"
+          end
+        else # manifestation
+          mft = Manifestation.find($1[1..-1].to_i)
+          unless mft.nil?
+            addition = "[#{$2}](#{url_for(controller: :manifestation, action: :read, id: mft.id)})"
+          end
+        end
+        ret += addition
+      end
+    end
+    return ret
+  end
 end

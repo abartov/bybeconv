@@ -7,7 +7,7 @@ include BybeUtils
 ENCODING_SUBSTS = [{ from: "\xCA", to: "\xC9" }, # fix weird invalid chars instead of proper Hebrew xolams
                    { from: "\xFC", to: '&uuml;' }, # fix u-umlaut
                    { from: "\xFB", to: '&ucirc;' },
-                   { from: "\xFF", to: '&yuml;' }] # fix u-circumflex
+                   { from: "\xFF".force_encoding('windows-1255'), to: '&yuml;' }] # fix u-circumflex
 
 class NokoDoc < Nokogiri::XML::SAX::Document
   def initialize
@@ -483,7 +483,7 @@ class HtmlFile < ActiveRecord::Base
         m.people << p
         e.manifestations << m
         e.save!
-        manifestations << m # this HtmlFile itself
+        manifestations << m # this HtmlFile itself should know the manifestation created out of it
         save!
 
         return true

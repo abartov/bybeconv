@@ -1,0 +1,20 @@
+= render partial: 'toc', locals: {author: @author, html: @html}
+
+- unless @diff.nil? # we have a rejected update
+  = t(:update_conflict)
+  %br
+  = t(:diff)
+  != raw(@diff.to_s(:html))
+  = t(:your_markdown)
+  = @rejected_update
+  %hr
+
+.markdown
+  = form_tag(action: :edit_toc, id: @author.id) do
+    %p
+      = text_area_tag(:markdown, raw(@toc), size: "100x40")
+      = hidden_field_tag(:old_timestamp, @toc_timestamp)
+      = submit_tag t(:update)
+
+= link_to t(:back), :action => :list
+

@@ -1,2 +1,63 @@
-%h1 Authors#show
-%p Find me in app/views/authors/show.html.haml
+%h1= @author.name
+/ partials?
+%b{ style: 'font-size: 2rem'}
+  = link_to t(:edit_metadata), authors_edit_path(id: @author.id)
+%br
+%b{ style: 'font-size: 2rem'}
+  = link_to t(:edit_toc), authors_edit_toc_path(id: @author.id)
+%p
+%table
+  %tr
+    %td
+      %h2= t(:basic_details)
+    %td
+      %h2= t(:identifiers)
+  %tr
+    %td
+      / basic info
+      %b= t(:life_years)
+      = @author.dates
+      %br
+      %b= t(:copyright_status)
+      = @author.public_domain ? t(:public_domain) : t(:by_permission)
+      %br
+      %b= t(:toc_status)
+      = t(@author.toc.status)
+      %br
+      %b= t(:comments)
+      = @author.comment
+    %td
+      / ===== Identifiers =====
+      %b= t(:nli_id)
+      = @author.nli_id
+      %br
+      %b= t(:viaf_id)
+      != "&rlm;"
+      = @author.viaf_id
+  %tr
+    %td
+      %h2= t(:content)
+      %b= t(:works)
+      = link_to "#{@count[:works]} #{t(:works)}", author_toc_path(id: @author.id)
+      %br
+      %b= t(:translations_by)
+      = t(:TBD)
+      %br
+      %b= t(:works_about)
+      = t(:TBD)
+    %td
+%p
+= link_to t(:back), authors_list_path
+
+/    t.string   "title",             limit: 255
+/    t.string   "other_designation", limit: 255
+/    t.string   "affiliation",       limit: 255
+/    t.string   "country",           limit: 255
+/    t.text     "comment",           limit: 65535
+/    t.datetime "created_at",                      null: false
+/    t.datetime "updated_at",                      null: false
+/    t.integer  "toc_id",            limit: 4
+/  has_and_belongs_to_many :work
+/  has_and_belongs_to_many :expression
+/  has_and_belongs_to_many :manifestation
+
