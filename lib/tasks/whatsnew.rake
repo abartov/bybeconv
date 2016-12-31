@@ -33,7 +33,7 @@ task :whatsnew, [:fromdate] => :environment do |taskname, args|
   print "\nEmitting whatsnew.html... "
   dirs = known_authors.invert
   File.open("whatsnew.html", "wb") {|f|
-    f.write('<?xml version="1.0" encoding="utf8"?>\n<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="he"><body dir="rtl" align="right"><table>'+"\n")
+    f.write('<?xml version="1.0" encoding="utf8"?>\n<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\n<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="he"><meta charset="UTF-8"><body dir="rtl" align="right"><table>'+"\n")
     files_by_author.each {|a, files|
       f.write("<tr><td><b><u>_______:</u></b> #{files.join('; ')}</td><td><a href=\"#{dirs[a]}/\">#{a}</a></td></tr>")
       #debugger
