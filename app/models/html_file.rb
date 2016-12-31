@@ -507,22 +507,27 @@ class HtmlFile < ActiveRecord::Base
   end
 
   def self.title_from_html(h)
-    title = nil
-    h.gsub!("\n",'') # ensure no newlines interfere with the full content of <title>...</title>
-    if /<title>(.*)<\/title>/i.match(h)
-      title = Regexp.last_match(1).strip
-      author = Regexp.last_match(1).strip # return whole thing if we can't do better
-      res = /\//.match(title)
-      if res
-        title = res.pre_match.strip
-        author = res.post_match.strip
-      end
-      title.sub!(/ - .*/, '') # remove " - toxen inyanim"
-      title.sub!(/ \u2013.*/, '') # ditto, with an em-dash
+    begin
+	    title = nil
+	    h.gsub!("\n",'') # ensure no newlines interfere with the full content of <title>...</title>
+	    if /<title>(.*)<\/title>/i.match(h)
+	      title = Regexp.last_match(1).strip
+	      author = Regexp.last_match(1).strip # return whole thing if we can't do better
+	      res = /\//.match(title)
+	      if res
+		title = res.pre_match.strip
+		author = res.post_match.strip
+	      end
+	      title.sub!(/ - .*/, '') # remove " - toxen inyanim"
+	      title.sub!(/ \u2013.*/, '') # ditto, with an em-dash
+	    end
+	    title = self.html_entities_coder.decode(title)
+	    author = self.html_entities_coder.decode(author)
+	    return [title, author]
+    rescue => e
+      puts "can't get title from html #{h}"
+      return ['','']
     end
-    title = self.html_entities_coder.decode(title)
-    author = self.html_entities_coder.decode(author)
-    return [title, author]
   end
   def self.title_from_file(f)
     #puts "title_from_file: #{f}" # DBG
