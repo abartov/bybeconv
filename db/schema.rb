@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161109063540) do
+ActiveRecord::Schema.define(version: 20170103052809) do
 
   create_table "api_keys", force: :cascade do |t|
     t.string   "email",       limit: 255
@@ -29,9 +29,9 @@ ActiveRecord::Schema.define(version: 20161109063540) do
     t.string   "form",                 limit: 255
     t.string   "date",                 limit: 255
     t.string   "language",             limit: 255
-    t.text     "comment",              limit: 65535
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.text     "comment",              limit: 16777215
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
     t.boolean  "copyrighted"
     t.date     "copyright_expiration"
   end
@@ -137,13 +137,17 @@ ActiveRecord::Schema.define(version: 20161109063540) do
     t.string   "other_designation", limit: 255
     t.string   "affiliation",       limit: 255
     t.string   "country",           limit: 255
-    t.text     "comment",           limit: 65535
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
+    t.text     "comment",           limit: 16777215
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
     t.string   "viaf_id",           limit: 255
     t.string   "nli_id",            limit: 255
     t.integer  "toc_id",            limit: 4
     t.boolean  "public_domain"
+    t.integer  "period_id",         limit: 4
+    t.text     "wikipedia_snippet", limit: 65535
+    t.string   "wikipedia_url",     limit: 255
+    t.string   "image_url",         limit: 255
   end
 
   create_table "people_works", id: false, force: :cascade do |t|
@@ -153,10 +157,18 @@ ActiveRecord::Schema.define(version: 20161109063540) do
     t.integer  "person_id",  limit: 4
   end
 
+  create_table "periods", force: :cascade do |t|
+    t.string   "name",          limit: 255
+    t.text     "comments",      limit: 65535
+    t.string   "wikipedia_url", limit: 255
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+  end
+
   create_table "proofs", force: :cascade do |t|
     t.string   "from",             limit: 255
     t.string   "about",            limit: 255
-    t.text     "what",             limit: 65535
+    t.text     "what",             limit: 16777215
     t.boolean  "subscribe"
     t.string   "status",           limit: 255
     t.datetime "created_at"
@@ -183,8 +195,8 @@ ActiveRecord::Schema.define(version: 20161109063540) do
   end
 
   create_table "sessions", force: :cascade do |t|
-    t.string   "session_id", limit: 255,   null: false
-    t.text     "data",       limit: 65535
+    t.string   "session_id", limit: 255,      null: false
+    t.text     "data",       limit: 16777215
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -245,9 +257,9 @@ ActiveRecord::Schema.define(version: 20161109063540) do
     t.string   "title",      limit: 255
     t.string   "form",       limit: 255
     t.string   "date",       limit: 255
-    t.text     "comment",    limit: 65535
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.text     "comment",    limit: 16777215
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
     t.string   "genre",      limit: 255
   end
 

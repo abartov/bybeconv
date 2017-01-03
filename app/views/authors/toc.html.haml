@@ -13,4 +13,14 @@
       = render partial: 'shared/copyright', locals: {copyright: (not @author.public_domain)}
       = ' | '
       = render partial: 'shared/author_links', locals: {author: @author}
+  .row
+    .col-sm-3
+      = render partial: 'controls', locals: {author: @author}
+    .col-sm-8
+      = render partial: 'wikipedia', locals: {author: @author}
+      = t(:period)+' '+@author.period
+    .col-sm-1
+      %img{ src: @author.image_url, width: "100%" }
+  .row
+    .col-sm-12
       = render partial: 'toc', locals: {author: @author, html: @html}
