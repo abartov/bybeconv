@@ -1,6 +1,6 @@
 %h1 Listing people
 
-%table
+%table{cellspacing: '10'}
   %tr
     %th Name
     %th Dates
@@ -26,9 +26,12 @@
       %td= person.comment
       %td= person.viaf_id
       %td= person.nli_id
-      %td= link_to 'Show', person
-      %td= link_to 'Edit', edit_person_path(person)
-      %td= link_to 'Destroy', person, :method => :delete, :data => { :confirm => 'Are you sure?' }
+      %td= link_to t(:show), person
+      %td= link_to t(:show_toc), author_toc_path(person)
+      %td= link_to t(:edit), edit_person_path(person)
+      %td= link_to t(:edit_toc), authors_edit_toc_path(person)
+      %td= link_to t(:destroy), person, :method => :delete, :data => { :confirm => t(:are_you_sure) }
+
 
 %br
 
