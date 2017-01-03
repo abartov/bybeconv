@@ -22,4 +22,8 @@ class Person < ActiveRecord::Base
     end
     p
   end
+  def period_string
+    return '' if period.nil?
+    return period.name
+  end
 end

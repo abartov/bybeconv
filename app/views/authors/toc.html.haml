@@ -7,8 +7,8 @@
       %span{:class => 'author_title'}
         = @author.name
         != '&nbsp;'
-        - unless (@author.dates.nil? or @author.dates.empty?)
-          = '('+@author.dates+')'
+      - unless (@author.dates.nil? or @author.dates.empty?)
+        = '('+@author.dates+')'
       = ' | '
       = render partial: 'shared/copyright', locals: {copyright: (not @author.public_domain)}
       = ' | '
@@ -18,7 +18,9 @@
       = render partial: 'controls', locals: {author: @author}
     .col-sm-8
       = render partial: 'wikipedia', locals: {author: @author}
-      = t(:period)+' '+@author.period
+      %br
+      %b= t(:period)+': '
+      = "  #{@author.period_string}"
     .col-sm-1
       %img{ src: @author.image_url, width: "100%" }
   .row
