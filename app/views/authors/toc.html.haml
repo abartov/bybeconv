@@ -15,7 +15,7 @@
       = render partial: 'shared/author_links', locals: {author: @author}
   .row
     .col-sm-3
-      = render partial: 'controls', locals: {author: @author}
+      = render partial: 'shared/read_controls', locals: {author: @author}
     .col-sm-8
       = render partial: 'wikipedia', locals: {author: @author}
       %br
