@@ -32,4 +32,8 @@ module ApplicationHelper
   def textify_genre(genre)
     return I18n.t(genre)
   end
+  def sitenotice
+    return ''
+  end
+
 end
