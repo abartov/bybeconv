@@ -10,6 +10,16 @@ class ApplicationController < ActionController::Base
     headers['Access-Control-Request-Method'] = '*'
   end
 
+  def s3_storage
+    @s3_storage ||= Fog::Storage.new(:provider => 'AWS', :aws_access_key_id => AppConstants.aws_access_key_id, :aws_secret_access_key => AppConstants.aws_secret_access_key)
+  end
+
+  def s3_put(key, localfile)
+    bucket = s3_storage.directories.get(AppConstants.aws_bucket_name)
+    file = bucket.files.create(key: key, body: File.open(localfile), public: true)
+    return file.save
+  end
+
   private
 
   def require_editor
