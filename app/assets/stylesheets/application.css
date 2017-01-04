@@ -214,12 +214,11 @@ p {
   background-color: #2b0d22;
   font-size: 1.4rem;
   color: #907989;
-  .link {
-    font-weight: bold;
-    :hover {
-      color: white;
-    }
-  }
+}
+
+.topbar a {
+  font-weight: bold;
+  color: white;
 }
 
 .notifications {
