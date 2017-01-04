@@ -10,6 +10,7 @@ gem 'omniauth-google-oauth2'
 gem 'omniauth-twitter'
 gem 'clockwork' # scheduler
 gem 'diffy'
+gem 'fog-aws' # for author images
 
 gem 'jquery-rails'
 gem "jquery-ui-rails"

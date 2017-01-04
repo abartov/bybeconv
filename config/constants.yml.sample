@@ -10,6 +10,9 @@ development: &default
   twitter_consumer_secret: 'bla'
   project_honeypot_api_key: 'bla'
   secret_key_base: 'bla'
+  aws_access_key_id: 'bla'
+  aws_secret_access_key: 'bla'
+  aws_bucket_name: 'bla'
 
 production:
   <<: *default
