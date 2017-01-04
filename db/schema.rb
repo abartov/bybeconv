@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170103052809) do
+ActiveRecord::Schema.define(version: 20170104064542) do
 
   create_table "api_keys", force: :cascade do |t|
     t.string   "email",       limit: 255
@@ -131,23 +131,27 @@ ActiveRecord::Schema.define(version: 20170103052809) do
   end
 
   create_table "people", force: :cascade do |t|
-    t.string   "name",              limit: 255
-    t.string   "dates",             limit: 255
-    t.string   "title",             limit: 255
-    t.string   "other_designation", limit: 255
-    t.string   "affiliation",       limit: 255
-    t.string   "country",           limit: 255
-    t.text     "comment",           limit: 16777215
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
-    t.string   "viaf_id",           limit: 255
-    t.string   "nli_id",            limit: 255
-    t.integer  "toc_id",            limit: 4
+    t.string   "name",                       limit: 255
+    t.string   "dates",                      limit: 255
+    t.string   "title",                      limit: 255
+    t.string   "other_designation",          limit: 255
+    t.string   "affiliation",                limit: 255
+    t.string   "country",                    limit: 255
+    t.text     "comment",                    limit: 16777215
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
+    t.string   "viaf_id",                    limit: 255
+    t.string   "nli_id",                     limit: 255
+    t.integer  "toc_id",                     limit: 4
     t.boolean  "public_domain"
-    t.integer  "period_id",         limit: 4
-    t.text     "wikipedia_snippet", limit: 65535
-    t.string   "wikipedia_url",     limit: 255
-    t.string   "image_url",         limit: 255
+    t.integer  "period_id",                  limit: 4
+    t.text     "wikipedia_snippet",          limit: 65535
+    t.string   "wikipedia_url",              limit: 255
+    t.string   "image_url",                  limit: 255
+    t.string   "profile_image_file_name",    limit: 255
+    t.string   "profile_image_content_type", limit: 255
+    t.integer  "profile_image_file_size",    limit: 4
+    t.datetime "profile_image_updated_at"
   end
 
   create_table "people_works", id: false, force: :cascade do |t|

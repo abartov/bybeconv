@@ -1,7 +1,7 @@
-%h1 Editing person
+%h1= t(:edit_person)
 
 = render 'form'
 
-= link_to 'Show', @person
+= link_to t(:show), @person
 \|
-= link_to 'Back', people_path
+= link_to t(:back), people_path

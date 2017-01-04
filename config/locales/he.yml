@@ -9,7 +9,7 @@ he:
   identifiers: מזהים
   toc_status: מצב תוכן עניינים
   nli_id: מזהה בספרייה הלאומית
-  viaf_id: מזהה במאגר VIAF
+  viaf_id: "מזהה במאגר VIAF‏"
   TBD: (בעתיד)
   name: שם
   edit_metadata: עריכת מטא-דאטה
@@ -44,6 +44,15 @@ he:
   cancel: ביטול
   close: סגירה
   by: מאת
+  dates: תאריכים
+  other_designation: כינויים אחרים
+  affiliation: השתייכות
+  country: מדינה
+  comment: הערה
+  edit_person: עריכת רשומת אישים
+  profile_image: תמונת פרופיל
+  upload_new_image: העלאת תמונה חדשה
+  current_image: תמונה נוכחית
   download_footer_html: "את הטקסט לעיל הפיקו מתנדבי <a href=\"http://benyehuda.org/\">פרויקט בן-יהודה באינטרנט</a>.  הוא זמין תמיד בכתובת הבאה:<br /><a href=\"%{url}\">%{url}</a>"
   proof_please_select_something: "מצוין, אבל ראשית נא לסמן (להאיר, לבחור) את הפיסקה השגויה (או כמה שורות, אם מדובר בשורות קצרצרות), כדי שנדע איפה לתקן.  אחרי הסימון, יש ללחוץ שוב על לחצן זה."
   like: אהבתי
@@ -120,7 +129,6 @@ he:
   'no': לא
   none: אין
   to_the_work_in_the_catalog: ליצירה בקטלוג
-  viaf_id: מזהה VIAF
   public_domain: נחלת הכלל
   edit: עריכה
   destroy: מחיקה

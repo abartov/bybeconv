@@ -1,33 +1,35 @@
 %p#notice= notice
 
 %p
-  %b Name:
+  %b= t(:name)
   = @person.name
 %p
-  %b Dates:
+  %b= t(:dates)
   = @person.dates
 %p
-  %b Title:
+  %b= t(:title)
   = @person.title
 %p
-  %b Other designation:
+  %b= t(:other_designation)
   = @person.other_designation
 %p
-  %b Affiliation:
+  %b= t(:affiliation)
   = @person.affiliation
 %p
-  %b Country:
+  %b= t(:country)
   = @person.country
 %p
-  %b Comment:
+  %b= t(:comment)
   = @person.comment
 %p
-  %b Viaf:
+  %b= t(:viaf_id)
   = @person.viaf_id
 %p
-  %b Nli:
+  %b= t(:nli_id)
   = @person.nli_id
+%p
+  = image_tag @person.profile_image.url(:thumb)
 
-= link_to 'Edit', edit_person_path(@person)
+= link_to t(:edit), edit_person_path(@person)
 \|
-= link_to 'Back', people_path
+= link_to t(:back), people_path

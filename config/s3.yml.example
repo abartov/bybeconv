@@ -5,6 +5,7 @@ development:
   secret_access_key: sample
   backup_bucket_name: sample
   backup_path: sample
+  bucket: sample # for profile images
 
 test:
   access_key_id: sample
