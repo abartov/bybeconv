@@ -41,6 +41,5 @@ class ApplicationController < ActionController::Base
     tabs.each {|t| ret[t] = tab == t ? 'active' : ''}
     return ret
   end
-
   helper_method :current_user, :html_entities_coder
 end

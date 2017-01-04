@@ -56,6 +56,8 @@ class AuthorsController < ApplicationController
     @print_url = url_for(action: :print, id: @author.id)
     markdown_toc = toc_links_to_markdown_links(@author.toc.toc)
     @html = MultiMarkdown.new(markdown_toc).to_html.force_encoding('UTF-8')
+    @pagetype = :author
+    @entity = @author
   end
 
   def print

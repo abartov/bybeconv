@@ -1,14 +1,14 @@
 = link_to t(:homepage), '/'
 = ' > '
-- if pagetype == :manifestation
+- if @pagetype == :manifestation
   = link_to t(:authors), :controller => :authors
   = ' > '
-  = link_to manifestation.people[0].name, :controller => :authors, :action => :show, :id => manifestation.people[0].id
+  = link_to @entity.people[0].name, :controller => :authors, :action => :show, :id => @entity.people[0].id
   = ' > '
-  = link_to t(manifestation.expressions[0].works[0].genre), :controller => :authors, :action => :show, :id => manifestation.people[0].id, :genre => manifestation.expressions[0].works[0].genre
+  = link_to t(@entity.expressions[0].works[0].genre), :controller => :authors, :action => :show, :id => @entity.people[0].id, :genre => @entity.expressions[0].works[0].genre
   = ' > '
   %b= manifestation.title
-- elsif pagetype == :author
+- elsif @pagetype == :author
   = link_to t(:authors), controller: :authors
   = ' > '
-  %b= author.name
+  %b= @entity.name

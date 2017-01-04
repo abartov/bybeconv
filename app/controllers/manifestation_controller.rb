@@ -10,6 +10,8 @@ class ManifestationController < ApplicationController
     @tabclass = set_tab('works')
     @proof = Proof.new
     @print_url = url_for(action: :print, id: @m.id)
+    @entity = @m
+    @pagetype = :manifestation
   end
   def print
     @m = Manifestation.find(params[:id])

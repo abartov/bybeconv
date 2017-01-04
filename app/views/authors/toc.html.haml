@@ -1,6 +1,5 @@
 / Main author page
 #maincontainer.container-fluid
-  = render partial: 'shared/breadcrumbs', locals: {pagetype: :author, author: @author}
   = render partial: 'shared/tabs', locals: {tabclass: @tabclass}
   .row
     .col-sm-11
@@ -16,12 +15,12 @@
   .row
     .col-sm-3
       = render partial: 'shared/read_controls', locals: {author: @author}
-    .col-sm-8
+    .col-sm-7
       = render partial: 'wikipedia', locals: {author: @author}
       %br
       %b= t(:period)+': '
       = "  #{@author.period_string}"
-    .col-sm-1
+    .col-sm-2
       %img{ src: @author.image_url, width: "100%" }
   .row
     .col-sm-12
