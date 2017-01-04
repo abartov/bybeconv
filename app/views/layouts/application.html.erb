@@ -29,20 +29,21 @@
       <%= sitenotice %>
     </div>
     <div class="top-nav">
-    <div class="row" style="margin-left:0; margin-right:0">
-    <!-- until we switch to an RTL bootstrap, reverse the order here -->
-    <div class="col-sm-4" id="user-widget">
-      <% if current_user %>
-        <%= t(:welcome) %> <strong><%= current_user.name %></strong>!
-        <%= link_to t(:sign_out), signout_path, id: "sign_out" %>
-      <% else %>
-        <%= link_to t(:sign_in_google_twitter), "/session/login", id: "sign_in" %>
-      <% end %>
+      <div class="row" style="margin-left:0; margin-right:0">
+      <!-- until we switch to an RTL bootstrap, reverse the order here -->
+        <div class="col-sm-4" id="user-widget">
+          <% if current_user %>
+            <%= t(:welcome) %> <strong><%= current_user.name %></strong>!
+            <%= link_to t(:sign_out), signout_path, id: "sign_out" %>
+          <% else %>
+            <%= link_to t(:sign_in_google_twitter), "/session/login", id: "sign_in" %>
+          <% end %>
+        </div>
+        <div class="col-sm-8">
+          <%= render partial: 'shared/breadcrumbs' %>
+        </div>
+      </div>
     </div>
-    <div class="col-sm-8">
-      <%= render partial: 'shared/breadcrumbs' %>
-    </div>
-  </div>
   </div>
   <div class="row" style="margin-left:0; margin-right:0">
     <div class="col-sm-4" id="english" align="left">
