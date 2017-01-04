@@ -17,7 +17,14 @@ class ApplicationController < ActionController::Base
   def s3_put(key, localfile)
     bucket = s3_storage.directories.get(AppConstants.aws_bucket_name)
     file = bucket.files.create(key: key, body: File.open(localfile), public: true)
-    return file.save
+    file.save
+    return file
+  end
+
+  def s3_get(key)
+    bucket = s3_storage.directories.get(AppConstants.aws_bucket_name)
+    file = bucket.files.get(key)
+    return file
   end
 
   private
