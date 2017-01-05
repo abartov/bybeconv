@@ -273,11 +273,11 @@ p {
 
 
 .navbar {
-  width: 150rem;
+  /* width: 150rem; */
   margin: auto;
 }
 .nav-additional {
-  width: 42rem;
+  /* width: 42rem; */
   float: left;
 }
 .nav-en {
@@ -299,7 +299,7 @@ p {
 .font-size a:active{ color: white; }
 
 .nav {
-  width: 108rem;
+  /* width: 108rem; */
   float: right;
 }
 .nav ul{ float:right;}
@@ -314,7 +314,7 @@ p {
 .welcome .icon a:hover{ color: #d9cdd5;}
 
 .welcome .welcome-content {
-  width: 84rem;
+  /* width: 84rem; */
   font-size: 1.8rem;
   text-align: center;
   color: white;
@@ -323,7 +323,7 @@ p {
 .welcome-content a:hover{ color: #2b0d22;}
 
 .welcome-bg {
-  width: 192rem;
+  /* width: 192rem; */
   margin: auto;
 }
 
