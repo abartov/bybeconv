@@ -3,7 +3,7 @@
   .metadata_row
     %b
       = t(:author_name)+': '
-    = link_to @m.people[0].name, controller: :authors, action: :show, id: @m.people[0].id
+    = link_to @m.people[0].name, author_toc_path(id: @m.people[0].id)
   /  .metadata_row
   /    %b
   /      = t(:published_in_book)+': '
