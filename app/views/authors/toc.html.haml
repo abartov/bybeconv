@@ -21,7 +21,7 @@
       %b= t(:period)+': '
       = "  #{@author.period_string}"
     .col-sm-2
-      %img{ src: @author.image_url, width: "100%" }
+      = image_tag @author.profile_image.url(:thumb)
   #maintext.row
     .col-sm-11
       = render partial: 'toc', locals: {author: @author, html: @html}
