@@ -58,6 +58,8 @@ class AuthorsController < ApplicationController
     @html = MultiMarkdown.new(markdown_toc).to_html.force_encoding('UTF-8')
     @pagetype = :author
     @entity = @author
+    @page_title = "#{@author.name} - #{t(:table_of_contents)}"
+
   end
 
   def print

@@ -19,6 +19,7 @@ class ManifestationController < ApplicationController
     @print_url = url_for(action: :print, id: @m.id)
     @entity = @m
     @pagetype = :manifestation
+    @page_title = "#{m.title} - #{t(:default_page_title)}"
   end
 
   def print
