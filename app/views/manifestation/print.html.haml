@@ -5,7 +5,7 @@
       %span{:class => 'work_title'}
         = @m.title + ' / ' + @m.author_string
       = ' | '
-      = render partial: 'shared/copyright', locals: {manifestation: @m}
+      = render partial: 'shared/copyright', locals: {copyright: @m.copyright?}
   %hr
   #maintext.maintext
     / TODO: more nuanced rendering here
