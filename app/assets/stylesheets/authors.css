@@ -6,3 +6,11 @@
 .author_title{
   font-size: 3rem;
 }
+#toolbox{
+  border:1px solid black;
+  float:right;
+  margin-top: 1rem;
+  position:absolute;
+  z-index:1;
+}
+

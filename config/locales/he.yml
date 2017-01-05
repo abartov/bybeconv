@@ -69,6 +69,7 @@ he:
   rec_when: מתי
   status: סטטוס
   email: דואל
+  toolbox: תיבת כלים
   total_manifestations: "סה\"כ יצירות: %{total}"
   title: שם
   filter: סינון

@@ -1,3 +1,11 @@
+- read mode
+- authors view
+- works view
+- home page
+- search
+- search results
+- backend
+
 * always: rake notes
 * fix RTL alignment in downloaded DOC files
 * set fonts in HTML, DOC, PDF(?), EPUB(?), MOBI(?)

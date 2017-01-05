@@ -22,6 +22,38 @@
       = "  #{@author.period_string}"
     .col-sm-2
       %img{ src: @author.image_url, width: "100%" }
-  .row
-    .col-sm-12
+  #maintext.row
+    .col-sm-11
       = render partial: 'toc', locals: {author: @author, html: @html}
+    .col-sm-1
+      = render partial: 'toolbox'
+
+:javascript
+  $(window).scroll(function () {
+    var $floatingbox = $('#toolbox');
+    var bodyY = parseInt($('#maintext').offset().top) - 20;
+    var originalX = $floatingbox.css('margin-right');
+
+    var scrollY = $(window).scrollTop();
+    var isfixed = $floatingbox.css('position') == 'fixed';
+
+    if($floatingbox.length > 0){
+
+    if ( scrollY > bodyY && !isfixed ) {
+      $floatingbox.stop().css({
+        position: 'fixed',
+        //right: '50%',
+        top: 20,
+        //marginRight: -500
+        });
+    } else if ( scrollY < bodyY && isfixed ) {
+      $floatingbox.css({
+        position: 'relative',
+        //right: 0,
+        top: 0,
+        //marginRight: originalX
+        });
+      }
+    }
+  });
+
