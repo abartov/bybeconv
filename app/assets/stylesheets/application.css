@@ -192,6 +192,26 @@ p {
   font-size: 1.4rem;
 }
 
+.mainlogo {
+  /*font-weight: bold;*/
+  font-size: 4rem;
+}
+
+.byfooter {
+  width: 100%;
+  /* height: 13rem; */
+  background-color: #2b0d22;
+  font-size: 1.4rem;
+  color: #d9cdd5;
+  margin-top: 8rem;
+}
+
+.byfooter a {
+  font-weight: bold;
+  color: white;
+}
+
+
 .icon {
   font-family: fontawesome;
   font-size: 2.4rem;
@@ -222,12 +242,12 @@ p {
 }
 
 .notifications {
-  width: 100%;
+/*  width: 100%; */
   vertical-align: center;
 }
 
 .top-nav {
-  width: 150rem;
+  /* width: 150rem; */
   margin: auto;
 }
 
@@ -334,21 +354,6 @@ p {
   margin: auto;
 }
 
-
-.footer {
-  width: 100%;
-  height: 13rem;
-  bg color: #2b0d22;
-  text-style: .small-text;
-  color: #d9cdd5;
-  margin-top: 8rem;
-  .link {
-    font-weight: bold;
-    :hover {
-      color: white;
-    }
-  }
-}
 
 .bottom-nav {
   width: 150rem;
