@@ -7,6 +7,7 @@ class ManifestationController < ApplicationController
   #############################################
   # public actions
   def works # /works dashboard
+    @tabclass = set_tab('works')
     # TODO
   end
 
