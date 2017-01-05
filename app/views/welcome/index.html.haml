@@ -1,6 +1,6 @@
-%h1 BYBE
 - if current_user.nil?
-  %h2= t(:please_log_in)
+  = render partial: 'homepage'
+  / %h2= t(:please_log_in)
 - elsif current_user.editor?
   %h2= t(:editor_actions)
   %p= link_to 'עריכת מטא-דאטה', html_file_list_for_editor_path

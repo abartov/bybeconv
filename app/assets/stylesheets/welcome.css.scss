@@ -1,3 +1,35 @@
 // Place all the styles related to the Welcome controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.welcome {
+  height: 30rem;
+  background-color: #d2cfcf;
+  box-shadow: inset 0px 3px 10px rgba(102, 2, 72, .35);
+
+  .icon {
+    :hover {
+      color: #d9cdd5;
+    }
+  }
+}
+
+.welcome-bg {
+  background-image: url('welcome_bg.png');
+  height: 30rem;
+  margin: auto;
+}
+
+
+.welcome-content {
+    width: 84rem;
+    font-size: 1.8rem;
+    text-align: center;
+    color: white;
+    .link {
+      color: #660248;
+      :hover {
+        color: #2b0d22;
+      }
+    }
+  }
