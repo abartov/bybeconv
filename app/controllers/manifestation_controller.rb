@@ -1,8 +1,14 @@
 require 'pandoc-ruby'
 
 class ManifestationController < ApplicationController
-  before_filter :require_editor, only: [:edit, :update]
+  before_filter :require_editor, only: [:list, :show, :edit, :update]
   #layout false, only: [:print]
+
+  #############################################
+  # public actions
+  def works # /works dashboard
+    # TODO
+  end
 
   def read
     @m = Manifestation.find(params[:id])
@@ -13,11 +19,13 @@ class ManifestationController < ApplicationController
     @entity = @m
     @pagetype = :manifestation
   end
+
   def print
     @m = Manifestation.find(params[:id])
     @html = MultiMarkdown.new(@m.markdown.lines[1..-1].join("\n")).to_html.force_encoding('UTF-8')
     @print = true
   end
+
   def download
     @m = Manifestation.find(params[:id])
     filename = @m.safe_filename+'.'+params[:format]
@@ -80,6 +88,14 @@ class ManifestationController < ApplicationController
       redirect_back fallback_location: {action: read, id: @m.id}
     end
   end
+
+  def render_html
+    @m = Manifestation.find(params[:id])
+    @html = MultiMarkdown.new(@m.markdown).to_html.force_encoding('UTF-8')
+  end
+
+  #############################################
+  # editor actions
   def list
     # calculations
     @total = Manifestation.count
@@ -104,11 +120,6 @@ class ManifestationController < ApplicationController
     @e = @m.expressions[0] # TODO: generalize?
     @w = @e.works[0] # TODO: generalize!
 
-  end
-
-  def render_html
-    @m = Manifestation.find(params[:id])
-    @html = MultiMarkdown.new(@m.markdown).to_html.force_encoding('UTF-8')
   end
 
   def edit
