@@ -1,10 +1,5 @@
 .read_controls{style: 'font-size:1.2em'}
-  = link_to "https://www.facebook.com/sharer/sharer.php?u=#{request.original_url}" do
-    %span{:class => 'icon-facebook-rect'}
-  = link_to "https://twitter.com/home?status=#{request.original_url}" do
-    %span{:class => 'icon-twitter-bird'}
-  = link_to "TODO: e-mail sharing link" do
-    %span{:class => 'icon-mail'}
+  = render partial: 'shared/share_controls'
   = ' | '
   %span{:class => 'icon-download-alt download'}
   %span{:class => 'icon-print printbutton'}

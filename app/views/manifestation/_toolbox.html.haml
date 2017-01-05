@@ -5,7 +5,7 @@
   %button.btn= t(:like)
   %button.btn= t(:bookshelf)
   %button.btn#found_mistake= t(:found_mistake)
-  %button.btn= t(:share)
+  %button.btn.share= t(:share)
   %button.btn.download= t(:download)
   %button.btn.printbutton= t(:print)
   %button.btn.citebutton= t(:cite)
@@ -48,8 +48,22 @@
   = render partial: 'shared/download', locals: {manifestation: @m}
 #citeDlg
   = render partial: 'shared/cite', locals: {manifestation: @m}
+#shareDlg
+  .container-fluid
+    = render partial: 'shared/share_controls'
 
 :javascript
+  // share button
+  $('#shareDlg').dialog({
+    autoOpen: false,
+    height: 200,
+    width: 250,
+    modal: true,
+    buttons: { "#{t(:cancel)}": function() { $('#shareDlg').dialog("close");} }
+    });
+  $('.share').click(function() {
+    $('#shareDlg').dialog('open');
+  });
   // proof button
   $('#proofDlg').dialog({
     autoOpen: false,
@@ -103,7 +117,7 @@
   });
 
   // cite button
-  $('#citeDlg').dialog({autoOpen:false, height:450, width:750, modal:true, buttons:{"#{t(:close)}": function(){$('#citeDlg').dialog('close');}}});
+  $('#citeDlg').dialog({autoOpen:false, height:550, width:790, modal:true, buttons:{"#{t(:close)}": function(){$('#citeDlg').dialog('close');}}});
   $('.citebutton').click(function() {
     $('#citeDlg').dialog('open');
   });
