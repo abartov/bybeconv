@@ -17,12 +17,14 @@
 .welcome-bg {
   background-image: url('welcome_bg.png');
   height: 30rem;
+  margin-top: 2rem;
+  margin-bottom: 3rem;
   margin: auto;
 }
 
-
 .welcome-content {
-    width: 84rem;
+    //width: 84rem;
+    margin: auto;
     font-size: 1.8rem;
     text-align: center;
     color: white;
