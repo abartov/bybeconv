@@ -1,4 +1,6 @@
 class PeopleController < ApplicationController
+  before_filter :require_editor
+
   # GET /people
   # GET /people.json
   def index
