@@ -10,6 +10,7 @@ development: &default
   twitter_consumer_secret: 'bla'
   project_honeypot_api_key: 'bla'
   secret_key_base: 'bla'
+  our_publisher: 'name to put in Manifestation entities'
 
 production:
   <<: *default
