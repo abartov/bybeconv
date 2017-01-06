@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170104064542) do
+ActiveRecord::Schema.define(version: 20170106051705) do
 
   create_table "api_keys", force: :cascade do |t|
     t.string   "email",       limit: 255
@@ -34,6 +34,7 @@ ActiveRecord::Schema.define(version: 20170104064542) do
     t.datetime "updated_at",                            null: false
     t.boolean  "copyrighted"
     t.date     "copyright_expiration"
+    t.string   "genre",                limit: 255
   end
 
   create_table "expressions_manifestations", id: false, force: :cascade do |t|
@@ -265,6 +266,7 @@ ActiveRecord::Schema.define(version: 20170104064542) do
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
     t.string   "genre",      limit: 255
+    t.string   "orig_lang",  limit: 255
   end
 
 end

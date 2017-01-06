@@ -1,36 +1,48 @@
 %h1
-  != t(:work_details)+": "+@m.title+" / "+link_to(@w.people[0].name, authors_show_path(id: @w.people[0]))
+  != t(:work_details)+': '+@m.title+" / "+link_to(@w.people[0].name, authors_show_path(id: @w.people[0]))
   - if @e.people[0] != @w.people[0]
     = ' / '+link_to(@e.people[0].name, authors_show_path(id: @e.people[0]))
 
 %h2= t(:work_entity_details)
 %p
-  %b= t(:title) + ": "
+  %b= t(:title) + ': '
   = @w.title
 %p
-  %b= t(:date) + ": "
+  %b= t(:genre) + ': '
+  = textify_genre(@w.genre)
+%p
+  %b= t(:language) + ': '
+  = textify_lang(@w.orig_lang)
+%p
+  %b= t(:date) + ': '
   = @w.date
 
 %h2= t(:expression_details)
 %p
-  %b= t(:title) + ": "
+  %b= t(:title) + ': '
   = @e.title
 %p
-  %b= t(:date) + ": "
+  %b= t(:genre) + ': '
+  = textify_genre(@e.genre)
+%p
+  %b= t(:date) + ': '
   = @e.date
 %p
-  %b= t(:language) + ": "
+  %b= t(:copyright_status)
+  = textify_copyright_status(@e.copyrighted)
+%p
+  %b= t(:language) + ': '
   = textify_lang(@e.language)
 
 %h2= t(:manifestation_details)
 %p
-  %b= t(:title) + ": "
+  %b= t(:title) + ': '
   = @m.title
 %p
-  %b= t(:responsibility_statement) + ": "
+  %b= t(:responsibility_statement) + ': '
   = @m.responsibility_statement
 %p
-  %b= t(:publisher_details) + ": "
+  %b= t(:publisher_details) + ': '
   = "#{@m.publisher}, #{@m.publication_place}: #{@m.publication_date}."
 %hr
 %h2= t(:external_links)

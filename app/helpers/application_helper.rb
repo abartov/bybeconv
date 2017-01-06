@@ -62,6 +62,11 @@ module ApplicationHelper
       return t(:unknown)
     end
   end
+
+  def textify_copyright_status(copyrighted)
+    copyrighted ? t(:by_permission) : t(:public_domain)
+  end
+
   def sitenotice
     return ''
   end

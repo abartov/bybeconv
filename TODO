@@ -12,8 +12,8 @@
 - search
 - search results
 - backend
-  - add genre fields to Work, Expression (do Manifestations have genre? probably not.)
-  - edit manifestations' metadata (genre!)
+  - edit WEM metadata
+  - means to select additional/different authors
 
 * always: rake notes
 * fix RTL alignment in downloaded DOC files

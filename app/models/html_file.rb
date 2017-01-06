@@ -471,8 +471,9 @@ class HtmlFile < ActiveRecord::Base
         p = Person.find(person_id)
         markdown = File.open(path + '.markdown', 'r:UTF-8').read
         title = HtmlFile.title_from_file(path)[0]
-        w = Work.new(title: title)
-        e = Expression.new(title: title, language: 'he') # ISO codes
+        w = Work.new(title: title, orig_lang: 'he') # TODO: un-hardcode?
+        copyrighted = (p.public_domain ? false : (p.public_domain.nil? ? nil : true)) # if author is PD, expression is PD # TODO: make this depend on both work and expression author, for translations
+        e = Expression.new(title: title, language: 'he', copyrighted: copyrighted) # ISO codes
         w.expressions << e
         w.save!
         w.people << p
