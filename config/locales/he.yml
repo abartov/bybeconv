@@ -146,6 +146,8 @@ he:
   purge_rejected_recommendations: מחק המלצות שנדחו וזבל
   back: חזרה
   back_to_dashboard: חזרה למרכז הפעילות
+  back_to_homepage: לדף הבית
+  homepage: דף הבית
   recommendations_by_status: המלצות לפי סטטוס %{status}
   sign_in_google_twitter: התחברו באמצעות זהות גוגל או טוויטר
   sign_out: התנתקות
@@ -161,6 +163,7 @@ he:
   admin_actions: פעולות מנהל
   proof_for: הגהה עבור הקובץ
   recommendation_for: המלצה עבור הקובץ
+  unknown: לא ידוע
   from: מאת
   content: תוכן
   submitted_at: התקבל בתאריך
@@ -203,3 +206,4 @@ he:
       last: אחרון
       first: ראשון
       previous: לדף הקודם
+      truncate: "..."

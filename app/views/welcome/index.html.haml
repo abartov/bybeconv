@@ -1,16 +1,1 @@
-- if current_user.nil?
-  = render partial: 'homepage'
-  / %h2= t(:please_log_in)
-- elsif current_user.editor?
-  %h2= t(:editor_actions)
-  %p= link_to 'עריכת מטא-דאטה', html_file_list_for_editor_path
-  %p= link_to 'עיון בהגהות מן הציבור ('+@open_proofs+')', proof_list_path(:status => 'new')
-  %p= link_to 'עיון בהמלצות מן הציבור ('+@open_recommendations+')', recommendation_list_path(:status => 'new')
-  - if current_user.admin?
-    %h2= t(:admin_actions)
-    %p= link_to t(:user_management), user_list_path
-    %p= link_to t(:html_dirs_list), html_dirs_path
-    %p= link_to t(:html_files_list), html_file_list_path
-    %b
-      %p= link_to t(:catalog_dashboard), manifestation_list_path
-      %p= link_to t(:manage_people), people_path
+= render partial: 'homepage'

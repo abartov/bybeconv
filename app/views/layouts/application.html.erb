@@ -72,8 +72,14 @@
   <%= t(:download_footer_html, url: url_for(action: :read, only_path:false, id: @m.id)) %>
 <% else %>
   <hr/>
+  <% unless @pagetype == :homepage %>
+    <%= link_to t(:back_to_homepage), "/" %>
+  <% end %>
   <% if current_user %>
-    <%= link_to t(:back_to_dashboard), "/" %>
+    <% if current_user.editor? %>
+      <br />
+      <%= link_to t(:back_to_dashboard), url_for(controller: :admin, action: :index) %>
+    <% end %>
   <% end %>
   <p/>
   <div class="byfooter">
