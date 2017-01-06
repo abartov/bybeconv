@@ -45,26 +45,28 @@
       </div>
     </div>
   </div>
-  <div class="row">
-    <div class="col-sm-4" id="search-bar" align="left">
-      <input class="search-field" type="text" placeholder="<%= t(:search_placeholder) %>"/>
-      <span class="glyphicon glyphicon-search"></span>
-      <%= link_to t(:advanced_search), :controller => :search %>
+  <% unless @readmode %>
+    <div class="row">
+      <div class="col-sm-4" id="search-bar" align="left">
+        <input class="search-field" type="text" placeholder="<%= t(:search_placeholder) %>"/>
+        <span class="glyphicon glyphicon-search"></span>
+        <%= link_to t(:advanced_search), :controller => :search %>
+      </div>
+      <div class="col-sm-4" id="blank-space">
+      </div>
+      <div class="col-sm-4" id="site-logo" align="right">
+        <span class="mainlogo">פְּרוֹיֶקְט בֶּן-יְהוּדָה</span>
+      </div>
     </div>
-    <div class="col-sm-4" id="blank-space">
+    <div class="row" style="margin-left:0; margin-right:0">
+      <div class="col-sm-4" id="english" align="left">
+        <a href="http://benyehuda.org/e_faq.html">English</a>
+      </div>
+      <div class="col-sm-4" id="font-size-selector" align="center">
+        <%= render partial: 'shared/fontsize' %>
+      </div>
     </div>
-    <div class="col-sm-4" id="site-logo" align="right">
-      <span class="mainlogo">פְּרוֹיֶקְט בֶּן-יְהוּדָה</span>
-    </div>
-  </div>
-  <div class="row" style="margin-left:0; margin-right:0">
-    <div class="col-sm-4" id="english" align="left">
-      <a href="http://benyehuda.org/e_faq.html">English</a>
-    </div>
-    <div class="col-sm-4" id="font-size-selector" align="center">
-      <%= render partial: 'shared/fontsize' %>
-    </div>
-  </div>
+  <% end %>
 </div>
 <% end %>
 <%= yield %>

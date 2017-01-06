@@ -29,6 +29,10 @@ class Manifestation < ActiveRecord::Base
     return fname.gsub(/[^0-9א-תA-Za-z.\-]/, '_')
   end
   def author_string
-    return expressions[0].people[0].name # TODO: be less naive
+    ret = expressions[0].works[0].people[0].name
+    if expressions[0].translation
+      ret += ' / '+expressions[0].people[0].name
+    end
+    return ret # TODO: be less naive
   end
 end

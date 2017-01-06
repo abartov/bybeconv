@@ -3,7 +3,12 @@
   .metadata_row
     %b
       = t(:author_name)+': '
-    = link_to @m.people[0].name, author_toc_path(id: @m.people[0].id)
+    = link_to @author.name, author_toc_path(id: @author.id)
+    - if @m.expressions[0].translation
+      %br
+      %b
+        = t(:translator)+': '
+      = link_to @translator.name, author_toc_path(id: @translator.id)
   /  .metadata_row
   /    %b
   /      = t(:published_in_book)+': '

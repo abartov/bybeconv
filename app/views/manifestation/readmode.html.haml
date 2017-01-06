@@ -1,0 +1,62 @@
+/ standard display mode. "reading mode" to be implemented separately?
+#maincontainer.container-fluid
+  .row
+    .col-sm-3
+      = render partial: 'shared/copyright', locals: {copyright: @m.copyright?}
+
+    .col-sm-6
+      %p
+        %span.readmode_author
+          = @m.author_string
+      %p
+        %span.readmode_title
+          = @m.title
+
+    .col-sm-3
+      / logo
+      %span{:class => 'mainlogo'}
+        = 'פְּרוֹיֶקְט בֶּן-יְהוּדָה'
+        / TODO: replace with graphic logo
+
+  %hr
+  #maintext.maintext
+    = render partial: 'search_and_chapters'
+    = render partial: 'toolbox'
+    / TODO: more nuanced rendering here
+    - if @m.as_prose?
+      #actualtext.maintext-prose-body
+        != raw(@html)
+    - else
+      #actualtext.maintext-poetry-body
+    - if @m.chapters? and @m.long?
+      = '(next chapter link)'
+    / = render partial: 'sharing_etc'
+
+:javascript
+  $(window).scroll(function () {
+    var $floatingbox = $('#toolbox');
+    var bodyY = parseInt($('#maintext').offset().top) - 20;
+    var originalX = $floatingbox.css('margin-right');
+
+  	var scrollY = $(window).scrollTop();
+  	var isfixed = $floatingbox.css('position') == 'fixed';
+
+    if($floatingbox.length > 0){
+
+  	if ( scrollY > bodyY && !isfixed ) {
+  		$floatingbox.stop().css({
+  			position: 'fixed',
+  			//right: '50%',
+  			top: 20,
+  			//marginRight: -500
+  			});
+  	} else if ( scrollY < bodyY && isfixed ) {
+  		$floatingbox.css({
+  			position: 'relative',
+        //right: 0,
+  			top: 0,
+  			//marginRight: originalX
+  			});
+  		}
+  	}
+  });

@@ -20,6 +20,13 @@ class ManifestationController < ApplicationController
     @entity = @m
     @pagetype = :manifestation
     @page_title = "#{@m.title} - #{t(:default_page_title)}"
+    @author = @m.expressions[0].works[0].people[0] # TODO: handle multiple authors
+    @translator = @m.expressions[0].people[0] # TODO: handle multiple translators
+  end
+
+  def readmode
+    @readmode = true
+    read
   end
 
   def print

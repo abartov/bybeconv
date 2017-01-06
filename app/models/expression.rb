@@ -7,12 +7,14 @@ class Expression < ActiveRecord::Base
 
   def determine_is_translation?
     # determine whether this expression is a translation or not, i.e. is in a different language to the work it expresses
+    return nil if works.empty?
     language != works[0].orig_lang # TODO: handle multiple works?
   end
 
   protected
   def set_translation
-    self.translation = determine_is_translation?
+    b = determine_is_translation?
+    self.translation = determine_is_translation? unless b.nil?
     return true
   end
 end

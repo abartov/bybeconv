@@ -1,7 +1,7 @@
 %h1
   != t(:work_details)+': '+@m.title+" / "+link_to(@w.people[0].name, authors_show_path(id: @w.people[0]))
   - if @e.people[0] != @w.people[0]
-    = ' / '+link_to(@e.people[0].name, authors_show_path(id: @e.people[0]))
+    != ' / '+link_to(@e.people[0].name, authors_show_path(id: @e.people[0]))
 
 %h2= t(:work_entity_details)
 %p
@@ -43,7 +43,7 @@
   = @m.responsibility_statement
 %p
   %b= t(:publisher_details) + ': '
-  = "#{@m.publisher}, #{@m.publication_place}: #{@m.publication_date}."
+  != "#{@m.publisher}, #{@m.publication_place}&rlm;: #{@m.publication_date}."
 %hr
 %h2= t(:external_links)
 %ol
