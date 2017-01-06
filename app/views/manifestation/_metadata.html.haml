@@ -12,6 +12,10 @@
     %b
       = t(:genre)+': '
     = textify_genre(@m.expressions[0].works[0].genre)
+    != "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+    %b
+      = t(:orig_lang)+': '
+    = textify_lang(@m.expressions[0].works[0].orig_lang)
   .metadata_row
     .col-sm-6
       %b
