@@ -25,8 +25,15 @@ class Person < ActiveRecord::Base
     end
     p
   end
+
   def period_string
     return '' if period.nil?
     return period.name
+  end
+
+  def has_comment?
+    return false if comment.nil?
+    return false if comment.empty?
+    return true
   end
 end

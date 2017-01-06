@@ -1,3 +1,24 @@
 // Place all the styles related to the people controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+td {
+  padding: 0.71rem;
+}
+td:nth-child(2n+1) {
+  background-color: #dcdcdc;
+}
+td:nth-child(2n) {
+  background-color: #ececec;
+}
+
+th {
+  padding: 0.7rem;
+}
+
+th:nth-child(2n+1) {
+  background-color: #dcdcdc;
+}
+th:nth-child(2n) {
+  background-color: #ececec;
+}

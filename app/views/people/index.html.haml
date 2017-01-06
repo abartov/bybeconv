@@ -1,32 +1,28 @@
 %h1= t(:list_people)
 
-%table{cellspacing: '10'}
+%table{style: 'cell-spacing: 10;'}
   %tr
-    %th Name
-    %th Dates
-    %th Title
-    %th Other designation
-    %th Affiliation
-    %th Country
-    %th Comment
-    %th Viaf
-    %th Nli
+    %th= t(:name)
+    %th= t(:dates)
+    /    %th= t(:title)
+    %th= t(:other_designation)
+    %th= t(:comment)
+    %th= t(:viaf_id)
+    %th= t(:nli_id)
+    %th
     %th
     %th
     %th
 
   - @people.each do |person|
     %tr
-      %td= person.name
+      %td= link_to person.name, person
       %td= person.dates
-      %td= person.title
+      / %td= person.title
       %td= person.other_designation
-      %td= person.affiliation
-      %td= person.country
-      %td= person.comment
+      %td= person.has_comment? ? '+' : ''
       %td= person.viaf_id
       %td= person.nli_id
-      %td= link_to t(:show), person
       %td= link_to t(:show_toc), author_toc_path(person)
       %td= link_to t(:edit), edit_person_path(person)
       %td= link_to t(:edit_toc), authors_edit_toc_path(person)
