@@ -13,11 +13,10 @@
 
 <% @html_dirs.each do |html_dir| %>
   <tr>
-    <td><%= html_dir.path %></td>
+    <td><%= link_to html_dir.path, html_dir %></td>
     <td><%= html_dir.author %></td>
     <td><%= html_dir.public_domain ? t(:yes) : t(:no) %></td>
     <td><%= html_dir.person ? html_dir.person.viaf_id : t(:none) %></td>
-    <td><%= link_to t(:show), html_dir %></td>
     <td><%= link_to t(:edit), edit_html_dir_path(html_dir) %></td>
     <td><%= link_to t(:destroy), html_dir, :data => { :confirm => 'Are you sure?' }, method: :delete %></td>
   </tr>
