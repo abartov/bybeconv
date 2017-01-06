@@ -33,6 +33,35 @@ module ApplicationHelper
     return I18n.t(:unknown) if genre.nil?
     return I18n.t(genre)
   end
+  def textify_lang(iso)
+    return I18n.t(:unknown) if iso.nil? or iso.empty?
+    case iso
+    when 'he'
+      return t(:hebrew)
+    when 'en'
+      return t(:english)
+    when 'de'
+      return t(:german)
+    when 'ru'
+      return t(:russian)
+    when 'yi'
+      return t(:yiddish)
+    when 'pl'
+      return t(:polish)
+    when 'fr'
+      return t(:french)
+    when 'ar'
+      return t(:arabic)
+    when 'el'
+      return t(:greek)
+    when 'la'
+      return t(:latin)
+    when 'grc'
+      return t(:ancient_greek)
+    else
+      return t(:unknown)
+    end
+  end
   def sitenotice
     return ''
   end

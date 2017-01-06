@@ -20,7 +20,7 @@
   = @e.date
 %p
   %b= t(:language) + ": "
-  = @e.language
+  = textify_lang(@e.language)
 
 %h2= t(:manifestation_details)
 %p

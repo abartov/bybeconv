@@ -122,7 +122,7 @@ he:
   "BY blog": 'התייחסויות ביומן הרשת של פב"י'
   Wikipedia: ערך בויקיפדיה
   YouTube: צפייה בהקראת היצירה
-  work_entity_details: פרטי יישות יצירה
+  work_entity_details: פרטי ישות יצירה
   work_details: פרטי יצירה
   expression_details: פרטי ביטוי
   manifestation_details: פרטי מימוש
@@ -190,6 +190,17 @@ he:
   proof_wontfix: "תודה רבה על ההגהה ששלחת עבור היצירה בכתובת:\n\n%{url}\n\nלאחר בדיקה, הגענו למסקנה שאין מדובר בשגיאה, אלא בשימוש לשון בלתי-שכיח, ובכל אופן כך מופיע במקור.  לכן לא נתקן את הטקסט באתר.  נשמח לקבל הצעות הגהה גם בעתיד!"
   rec_accepted: "קיבלנו בתודה את המלצתך על היצירה:\n\n%{url}\n\nכשנתפנה לעיין בה, נשקול לשלב אותה בפרסום בפייסבוק או ברשומה ביומן הרשת שלנו, כדי שגם אחרים ייהנו."
   rec_published: "המלצתך על היצירה בכתובת:\n\n%{url}\n\nשולבה עתה בטקסט שפרסמנו כאן:\n\n%{published_url}\n"
+  hebrew: עברית
+  english: אנגלית
+  german: גרמנית
+  french: צרפתית
+  russian: רוסית
+  yiddish: יידיש
+  arabic: ערבית
+  greek: יוונית
+  latin: לטינית
+  ancient_greek: יוונית עתיקה
+  polish: פולנית
 
   notifications:
     proof_fixed:

@@ -1,10 +1,19 @@
+- home page
+  - authors
+  - works
+  - whatsnew
+  - ?
+  - interactive features
 - read mode
+  - layout
+  - interactive features
 - authors view
 - works view
-- home page
 - search
 - search results
 - backend
+  - add genre fields to Work, Expression (do Manifestations have genre? probably not.)
+  - edit manifestations' metadata (genre!)
 
 * always: rake notes
 * fix RTL alignment in downloaded DOC files
