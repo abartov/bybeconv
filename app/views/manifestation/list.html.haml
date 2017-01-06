@@ -15,7 +15,7 @@
 %table{cellspacing: 3,cellpadding: 3}
   %th= t(:author)
   %th= t(:title)
-  %th= '...'
+  %th= t(:translation)+'?'
   %th= '...'
   %th= t(:actions)
 
@@ -23,7 +23,7 @@
     %tr
       %td= m.expressions[0].works[0].people[0].name
       %td= m.title
-      %td= '...'
+      %td= m.expressions[0].translation ? t(:yes)+" (#{textify_lang(m.expressions[0].works[0].orig_lang)})" : t(:no)
       %td= '...'
       %td
         = link_to t(:show), :action => 'show', :id => m
