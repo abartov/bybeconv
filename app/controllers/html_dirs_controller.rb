@@ -6,7 +6,7 @@ class HtmlDirsController < ApplicationController
   # GET /html_dirs.json
   def index
     unless params[:unassociated].nil?
-      @html_dirs = HtmlDir.order('viaf_id ASC')
+      @html_dirs = HtmlDir.order('person_id ASC')
     else
       @html_dirs = HtmlDir.order('author ASC')
     end
