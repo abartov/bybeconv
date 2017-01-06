@@ -5,7 +5,11 @@ class HtmlDirsController < ApplicationController
   # GET /html_dirs
   # GET /html_dirs.json
   def index
-    @html_dirs = HtmlDir.order('author ASC')
+    unless params[:unassociated].nil?
+      @html_dirs = HtmlDir.order('viaf_id ASC')
+    else
+      @html_dirs = HtmlDir.order('author ASC')
+    end
 
     respond_to do |format|
       format.html # index.html.erb

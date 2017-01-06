@@ -20,7 +20,10 @@ class Person < ActiveRecord::Base
       viaf_record = viaf_record_by_id(viaf_id)
       fail Exception if viaf_record.nil?
       #debugger
-      p = Person.new(dates: "#{viaf_record['birthDate'].encode('utf-8')}-#{viaf_record['deathDate'].encode('utf-8')}", name: viaf_record['labels'][0].encode('utf-8'), viaf_id: viaf_id)
+      bdate = viaf_record['birthDate'].nil? ? '?' : viaf_record['birthDate'].encode('utf-8')
+      ddate = viaf_record['deathDate'].nil? ? '?' : viaf_record['deathDate'].encode('utf-8')
+      datestr = bdate+'-'+ddate
+      p = Person.new(dates: datestr, name: viaf_record['labels'][0].encode('utf-8'), viaf_id: viaf_id)
       p.save!
     end
     p
