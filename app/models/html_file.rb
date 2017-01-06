@@ -478,7 +478,7 @@ class HtmlFile < ActiveRecord::Base
         w.people << p
         e.people << p
         clean_utf8 = markdown.encode('utf-8') # for some reason, this string was not getting written properly to the DB
-        m = Manifestation.new(title: title, responsibility_statement: p.name, medium: 'e-text', publisher: AppConstants.our_publisher, publication_date: Date.today, markdown: clean_utf8)
+        m = Manifestation.new(title: title, responsibility_statement: p.name, medium: 'e-text', publisher: AppConstants.our_publisher, publication_place: AppConstants.our_place_of_publication, publication_date: Date.today, markdown: clean_utf8)
         m.save!
         m.people << p
         e.manifestations << m
