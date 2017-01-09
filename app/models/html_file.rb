@@ -468,7 +468,6 @@ class HtmlFile < ActiveRecord::Base
   def create_WEM(person_id)
     if status == 'Parsed'
       begin
-        debugger
         p = Person.find(person_id)
         markdown = File.open(path + '.markdown', 'r:UTF-8').read
         title = HtmlFile.title_from_file(path)[0]
