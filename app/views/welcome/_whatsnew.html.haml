@@ -1,0 +1,17 @@
+.container-fluid
+  - @whatsnew.each do |author, works|
+    .whatsnew-author-card
+      .row
+        .col-sm-4
+          .author-pic{style:'padding-left:10px'}
+            = image_tag author.profile_image.url(:tiny)
+        .col-sm-8
+          .whatsnew-content
+            %h3
+              = link_to author.name, author_toc_path(author)
+            - worksbuf = ''
+            - works.each do |m|
+              - title = m.expressions[0].title
+              - title += (m.expressions[0].translation ? ' / '+m.expressions[0].works[0].people[0].name : '')
+              - worksbuf += (link_to(title, url_for(controller: :manifestation, action: :read, id: m.id)) + '; ')
+            != worksbuf[0..-3]

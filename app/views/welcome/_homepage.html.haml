@@ -13,9 +13,11 @@
       / space
 
   .row
-    .col-sm-3
-    / feature bar
-    .col-sm-1
+    .col-sm-4
+      / feature bar
+      %h2= t(:whats_new)
+      = render partial: 'whatsnew'
+    / .col-sm-1
     / space
     .col-sm-8
       / cards
