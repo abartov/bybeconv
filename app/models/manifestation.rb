@@ -1,4 +1,5 @@
 class Manifestation < ActiveRecord::Base
+  is_impressionable # for statistics
   has_and_belongs_to_many :expressions
   has_and_belongs_to_many :people
   has_many :taggings

@@ -2,6 +2,9 @@ require 'pandoc-ruby'
 
 class ManifestationController < ApplicationController
   before_filter :require_editor, only: [:list, :show, :edit, :update]
+
+  impressionist # log actions for pageview stats
+
   #layout false, only: [:print]
 
   #############################################

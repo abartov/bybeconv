@@ -1,6 +1,8 @@
 class ApiController < ApplicationController
   respond_to :json, :html
 #  before_filter :ensure_json_request
+  impressionist # log actions for pageview stats
+
 
   def ensure_json_request
     return if request.format == :json

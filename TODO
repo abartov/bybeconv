@@ -1,5 +1,6 @@
 - home page
   - authors
+    - infra: pageview stats
   - works
   - whatsnew
   - ?
@@ -13,6 +14,9 @@
 - backend
   - edit WEM metadata
   - means to select additional/different authors
+  - show revisions of manifestations/ToCs
+  - show diffs between revs
+  - restore rev over current
 
 * always: rake notes
 * fix RTL alignment in downloaded DOC files

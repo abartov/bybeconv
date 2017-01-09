@@ -46,6 +46,14 @@ class ApplicationController < ActionController::Base
       error: 'You must be logged in to access this page' }
   end
 
+  def calculate_popular_authors
+    return [Person.first, Person.last] # TODO: unhardcode
+  end
+
+  def popular_authors
+    return @popular_authors ||= calculate_popular_authors
+  end
+
   def current_user
     @current_user ||= User.find(session[:user_id]) if session[:user_id]
   end
@@ -53,6 +61,7 @@ class ApplicationController < ActionController::Base
   def html_entities_coder
     @html_entities_coder ||= HTMLEntities.new
   end
+
   def set_tab(tab)
     tabs = ['contact','help','faq','authors','works','periods']
     ret = {}

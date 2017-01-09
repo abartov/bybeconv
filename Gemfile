@@ -10,9 +10,9 @@ gem 'omniauth-google-oauth2'
 gem 'omniauth-twitter'
 gem 'clockwork' # scheduler
 gem 'diffy'
-# gem 'fog-aws' # for author images
-gem 'aws-sdk'
-gem 'paperclip'
+gem 'aws-sdk' # for the Amazon cloud
+gem 'paperclip' # for cloud files like author images
+gem 'impressionist' # for pageview stats
 
 gem 'jquery-rails'
 gem "jquery-ui-rails"

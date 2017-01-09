@@ -1,7 +1,9 @@
 class ProofController < ApplicationController
 
   protect_from_forgery :except => :submit # allow submission from outside the app
-  before_filter :require_editor, :only => [:list, :show, :resolve, :purge]
+  before_filter :require_editor, :only => [:index, :list, :show, :resolve, :purge]
+
+  impressionist # log actions for pageview stats
 
   def create
     if params['manifestation'].nil? # legacy site's buttons.js hack

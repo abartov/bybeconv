@@ -2,6 +2,7 @@ require 'diffy'
 
 class AuthorsController < ApplicationController
   before_filter :require_editor, only: [:index, :show, :edit, :list, :edit_toc, :update]
+  impressionist # log actions for pageview stats
 
   def index
     list

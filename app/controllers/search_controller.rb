@@ -1,4 +1,6 @@
 class SearchController < ApplicationController
+  impressionist # log actions for pageview stats
+
   def index
   end
 
