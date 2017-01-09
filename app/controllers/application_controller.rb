@@ -68,7 +68,6 @@ class ApplicationController < ActionController::Base
     list = []
     ceiling = [Person.has_toc.count - exclude_list.count, 10].min
     return list if ceiling == 0
-    debugger
     begin
       candidates = Person.has_toc.order('RAND()').limit(ceiling-list.size) # fetch as many as are still needed
       candidates.each { |author| list << author unless (exclude_list.include? author) or (list.include? author) }
