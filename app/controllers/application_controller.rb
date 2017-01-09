@@ -66,12 +66,13 @@ class ApplicationController < ActionController::Base
 
   def randomize_authors(exclude_list)
     list = []
-    ceiling = [Person.has_toc.count - exclude_list.count, 10].min
+    ceiling = [Person.has_toc.count - exclude_list.count - 1, 10].min
     return list if ceiling == 0
     begin
       candidates = Person.has_toc.order('RAND()').limit(ceiling-list.size) # fetch as many as are still needed
       candidates.each { |author| list << author unless (exclude_list.include? author) or (list.include? author) }
-    end until list.size == ceiling
+      puts "DBG: list.size = #{list.size}"
+    end until list.size >= ceiling
     return list
   end
 
