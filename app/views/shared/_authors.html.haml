@@ -1,10 +1,11 @@
 .authors
-  - authors.each do |author, count|
-    .card
-      .card-content
-        .author-card
+  .card
+    .card-content
+      - authors.each do |author, count|
+        .author-card{style: 'float:right;'}
           .pic-m
             %a{href: author_toc_path(author)}
               = image_tag author.profile_image.url(:thumb)
           .name
-            = author.name
+            %a{href: author_toc_path(author), style:'color: white'}
+              = author.name

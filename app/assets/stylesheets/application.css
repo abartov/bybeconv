@@ -445,6 +445,7 @@ p {
 }
 .card-content {
   padding: 1.6rem;
+  float: right;
 }
 
 .author-card {
@@ -452,6 +453,9 @@ p {
   height: 28rem; */
   max-width: 180px;
   z-index: 1;
+  float: right;
+  margin-left: 1.5rem;
+  margin-right: 1.5rem;
 }
 
 .author-card .pic-m {
@@ -463,7 +467,11 @@ p {
   color: white;
   font-weight: bold;
   text-align: center;
+  height: 5rem;
+  position: relative;
+  line-height: 5rem;
 }
+
 .author-card .most-read-badge {
   z-index: 2;
   float: right;
