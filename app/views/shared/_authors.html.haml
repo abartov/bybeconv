@@ -1,1 +1,10 @@
-= "Popular author count: #{authors.count}"
+.authors
+  - authors.each do |author, count|
+    .card
+      .card-content
+        .author-card
+          .pic-m
+            %a{href: author_toc_path(author)}
+              = image_tag author.profile_image.url(:thumb)
+          .name
+            = author.name

@@ -9,7 +9,7 @@ class Person < ActiveRecord::Base
   has_and_belongs_to_many :manifestation
   scope :has_toc, -> { where.not(toc_id: nil) }
 
-  has_attached_file :profile_image, styles: { full: "720x1040", medium: "360x520", thumb: "180x260"}, default_url: "/images/:style/missing.png", storage: :s3, s3_credentials: 'config/s3.yml', s3_region: 'us-east-1'
+  has_attached_file :profile_image, styles: { full: "720x1040", medium: "360x520", thumb: "180x260"}, default_url: "/assets/:style/missing.png", storage: :s3, s3_credentials: 'config/s3.yml', s3_region: 'us-east-1'
   validates_attachment_content_type :profile_image, content_type: /\Aimage\/.*\z/
 
   def self.person_by_viaf(viaf_id)

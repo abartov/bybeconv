@@ -419,7 +419,6 @@ p {
 .toolbox-header .chevron {
   font-size: 1.6rem;
   color: #d9cdd5;
-
 }
 
 .toolbox-cell {
@@ -437,4 +436,35 @@ p {
 .toolbox-cell .error-found {
   font-family: "ben-yehuda-03";
   font-size: 3.6rem;
+}
+
+.card {
+  background-color: light-grey;
+  border-radius: 0.3rem;
+  box-shadow: 0 0.1rem 0.3rem rgba(0,0,0, .4);
+}
+.card-content {
+  padding: 1.6rem;
+}
+
+.author-card {
+/*  width: 20rem;
+  height: 28rem; */
+  max-width: 180px;
+  z-index: 1;
+}
+
+.author-card .pic-m {
+/*  width: 16rem;
+  height: 23rem;*/
+}
+.author-card .name {
+  background-color: #660248;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+}
+.author-card .most-read-badge {
+  z-index: 2;
+  float: right;
 }

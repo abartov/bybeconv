@@ -4,7 +4,7 @@
       .col-sm-2
       / space
       .col-sm-8.welcome-content
-        %h2= t(:welcome_title)
+        %h2{style:'text-align:center'}= t(:welcome_title)
         %p{style: 'text-align: center'}= t(:welcome_paragraph_html)
         %p
         %br
@@ -13,10 +13,10 @@
       / space
 
   .row
+    .col-sm-3
+    / feature bar
+    .col-sm-1
+    / space
     .col-sm-8
       / cards
       = render partial: 'shared/authors', locals: {authors: @pop_authors}
-    .col-sm-1
-    / space
-    .col-sm-3
-    / feature bar
