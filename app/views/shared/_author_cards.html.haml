@@ -1,0 +1,12 @@
+%h2= title
+.card
+  .card-content
+    - authors[0..4].each do |author|
+      - last if author.nil? # devmode protection against fewer than 5 most-popular authors
+      .author-card{style: 'float:right;'}
+        .pic-m
+          %a{href: author_toc_path(author)}
+            = image_tag author.profile_image.url(:thumb)
+        .name
+          %a{href: author_toc_path(author), style:'color: white'}
+            = author.name

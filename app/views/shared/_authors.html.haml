@@ -1,11 +1,5 @@
 .authors
-  .card
-    .card-content
-      - authors.each do |author, count|
-        .author-card{style: 'float:right;'}
-          .pic-m
-            %a{href: author_toc_path(author)}
-              = image_tag author.profile_image.url(:thumb)
-          .name
-            %a{href: author_toc_path(author), style:'color: white'}
-              = author.name
+  = render partial: 'shared/author_cards', locals: {title: t(:most_popular_authors_this_month), authors: popular_authors}
+.authors
+  = render partial: 'shared/author_cards', locals: {title: t(:random_authors), authors: random_authors}
+

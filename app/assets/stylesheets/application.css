@@ -437,9 +437,11 @@ p {
   font-family: "ben-yehuda-03";
   font-size: 3.6rem;
 }
-
+.authors {
+  clear: both;
+}
 .card {
-  background-color: light-grey;
+  background-color: #eeeced;
   border-radius: 0.3rem;
   box-shadow: 0 0.1rem 0.3rem rgba(0,0,0, .4);
 }
