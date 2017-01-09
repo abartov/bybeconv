@@ -23,9 +23,15 @@
       %td= person.has_comment? ? '+' : ''
       %td= person.viaf_id
       %td= person.nli_id
-      %td= link_to t(:show_toc), author_toc_path(person)
+      %td
+        - if person.toc.nil?
+          %span{style: 'color: red'}= t(:no_toc_yet)
+        - else
+          = link_to t(:show_toc), author_toc_path(person)
       %td= link_to t(:edit), edit_person_path(person)
-      %td= link_to t(:edit_toc), authors_edit_toc_path(person)
+      %td
+        - unless person.toc.nil?
+          = link_to t(:edit_toc), authors_edit_toc_path(person)
       %td= link_to t(:destroy), person, :method => :delete, :data => { :confirm => t(:are_you_sure) }
 
 

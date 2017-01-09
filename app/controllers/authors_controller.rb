@@ -53,14 +53,20 @@ class AuthorsController < ApplicationController
 
   def toc
     @author = Person.find(params[:id])
-    @tabclass = set_tab('authors')
-    @print_url = url_for(action: :print, id: @author.id)
-    markdown_toc = toc_links_to_markdown_links(@author.toc.toc)
-    @html = MultiMarkdown.new(markdown_toc).to_html.force_encoding('UTF-8')
-    @pagetype = :author
-    @entity = @author
-    @page_title = "#{@author.name} - #{t(:table_of_contents)}"
+    # temporary protection against null ToCs while we're migrating
+    unless @author.toc.nil?
+      @tabclass = set_tab('authors')
+      @print_url = url_for(action: :print, id: @author.id)
 
+      markdown_toc = toc_links_to_markdown_links(@author.toc.toc)
+      @html = MultiMarkdown.new(markdown_toc).to_html.force_encoding('UTF-8')
+      @pagetype = :author
+      @entity = @author
+      @page_title = "#{@author.name} - #{t(:table_of_contents)}"
+    else
+      flash[:error] = I18n.t(:no_toc_yet)
+      redirect_to '/'
+    end
   end
 
   def print
