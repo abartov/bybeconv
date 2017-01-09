@@ -25,6 +25,7 @@ class ManifestationController < ApplicationController
     @page_title = "#{@m.title} - #{t(:default_page_title)}"
     @author = @m.expressions[0].works[0].people[0] # TODO: handle multiple authors
     @translator = @m.expressions[0].people[0] # TODO: handle multiple translators
+    impressionist(@author) # increment the author's popularity counter
   end
 
   def readmode

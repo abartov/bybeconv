@@ -47,11 +47,21 @@ class ApplicationController < ActionController::Base
   end
 
   def calculate_popular_authors
-    return [Person.first, Person.last] # TODO: unhardcode
+    # this is designed to only be called no more than once a day, by clockwork!
+    author_stats = {}
+    Person.has_toc.each {|p| # gather stats per author with ToC
+      author_stats[p] = p.impressions.count
+    }
+    top_authors = author_stats.sort_by {|k,v| v}
+    return top_authors[0..9] # top 10
   end
 
-  def popular_authors
-    return @popular_authors ||= calculate_popular_authors
+  def popular_authors(update = false)
+    unless update
+      return @popular_authors ||= calculate_popular_authors
+    else
+      @popular_authors = calculate_popular_authors
+    end
   end
 
   def current_user

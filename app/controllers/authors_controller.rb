@@ -2,7 +2,6 @@ require 'diffy'
 
 class AuthorsController < ApplicationController
   before_filter :require_editor, only: [:index, :show, :edit, :list, :edit_toc, :update]
-  impressionist # log actions for pageview stats
 
   def index
     list
@@ -63,6 +62,7 @@ class AuthorsController < ApplicationController
       @pagetype = :author
       @entity = @author
       @page_title = "#{@author.name} - #{t(:table_of_contents)}"
+      impressionist(@author) # log actions for pageview stats
     else
       flash[:error] = I18n.t(:no_toc_yet)
       redirect_to '/'

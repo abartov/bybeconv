@@ -12,10 +12,11 @@
       .col-sm-2
       / space
 
-    .row
-      .col-sm-8
-        / cards
-      .col-sm-1
-      / space
-      .col-sm-3
-      / feature bar
+  .row
+    .col-sm-8
+      / cards
+      = render partial: 'shared/authors', locals: {authors: @pop_authors}
+    .col-sm-1
+    / space
+    .col-sm-3
+    / feature bar
