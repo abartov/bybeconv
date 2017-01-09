@@ -74,6 +74,16 @@ class ApplicationController < ActionController::Base
     return list
   end
 
+  def whatsnew_anonymous
+    authors = {}
+    Manifestation.new_since(1.month.ago).each {|m|
+      person = m.expressions[0].people[0] # TODO: more nuance
+      authors[person] = [] if authors[person].nil?
+      authors[person] << m
+    }
+    return authors
+  end
+
   def current_user
     @current_user ||= User.find(session[:user_id]) if session[:user_id]
   end

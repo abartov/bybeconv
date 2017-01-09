@@ -8,6 +8,7 @@ class Manifestation < ActiveRecord::Base
 
   has_paper_trail
   has_many :external_links
+  scope :new_since, -> (since) { where('created_at > ?', since)}
 
   def long?
     return false # TODO: implement
