@@ -12,8 +12,9 @@ task :ingest_toc, [:dirname] => :environment do |taskname, args|
   end
   print "Reading... "
   begin
-    die "Index file is not UTF-8! Can't proceed." unless `file #{thedir}/index.html` =~ /UTF-8/
-    utfindex = File.open(thedir+'/index.html', 'r:UTF-8').read.gsub("\r\n","\n")
+    fname = File.exists?(thedir+'/index.html.utf8') ? 'index.html.utf8' : 'index.html'
+    die "Index file is not UTF-8! Can't proceed." unless `file #{thedir}/#{fname}` =~ /UTF-8/
+    utfindex = File.open("#{thedir}/#{fname}", 'r:UTF-8').read.gsub("\r\n","\n")
     puts "success!"
     new_toc = process_index(args.dirname, utfindex)
   rescue
