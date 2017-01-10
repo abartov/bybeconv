@@ -7,6 +7,9 @@
   %b= t(:dates)
   = @person.dates
 %p
+  %b= t(:copyright_status)
+  = @person.public_domain ? t(:public_domain) : t(:by_permission)
+%p
   %b= t(:title)
   = @person.title
 %p
