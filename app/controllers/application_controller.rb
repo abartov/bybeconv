@@ -46,6 +46,26 @@ class ApplicationController < ActionController::Base
       error: 'You must be logged in to access this page' }
   end
 
+  def calculate_popular_works
+    # THIS WILL TAKE A WHILE!
+    # it runs a JOIN on every single publishedManifestation!
+    # It is designed to only be called no more than once a day, by clockwork!
+    work_stats = {}
+    Manifestation.all.each {|m|
+      work_stats[m] = m.impressions.count
+    }
+    top_works = work_stats.sort_by {|k,v| v}
+    return top_works[0..9] # top 10
+  end
+
+  def popular_works(update = false)
+    unless update
+      return @popular_works ||= calculate_popular_works
+    else
+      @popular_works = calculate_popular_works # force update if requested
+    end
+  end
+
   def calculate_popular_authors
     # this is designed to only be called no more than once a day, by clockwork!
     author_stats = {}

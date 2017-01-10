@@ -1,3 +1,3 @@
 %ol
   - @pop_authors.each do |author|
-    %li= author.name
+    %li= link_to author.name, author_toc_path(author)
