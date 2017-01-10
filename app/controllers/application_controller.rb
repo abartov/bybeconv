@@ -67,7 +67,7 @@ class ApplicationController < ActionController::Base
   def randomize_authors(exclude_list)
     list = []
     ceiling = [Person.has_toc.count - exclude_list.count - 1, 10].min
-    return list if ceiling == 0
+    return list if ceiling <= 0
     i = 0
     begin
       candidates = Person.has_toc.order('RAND()').limit(ceiling-list.size) # fetch as many as are still needed

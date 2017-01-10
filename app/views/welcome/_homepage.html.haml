@@ -14,11 +14,27 @@
 
   .row
     .col-sm-4
-      / feature bar
+      / what's new
       %h2= t(:whats_new)
       = render partial: 'whatsnew'
     / .col-sm-1
     / space
     .col-sm-8
-      / cards
+      / author cards
       = render partial: 'shared/authors', locals: {popular_authors: @pop_authors, random_authors: @random_authors}
+  .row
+    .col-sm-4
+      / featured item
+    .col-sm-8
+      / work cards
+  .row
+    .col-sm-4
+      / extras
+    .col-sm-4
+      / 10 most read works
+      %h2= t(:top_ten_works)
+      = render partial: 'top_works'
+    .col-sm-4
+      / 10 most read authors
+      %h2= t(:top_ten_authors)
+      = render partial: 'top_authors'

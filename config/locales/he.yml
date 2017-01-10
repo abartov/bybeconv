@@ -3,6 +3,8 @@
 he:
   toc_edit_title: "תצוגת תוכן עניינים ליוצר/ת %{author}"
   no_toc_yet: "טרם נקלט תוכן עניינים ליוצר/ת"
+  top_ten_works: 10 היצירות הנקראות ביותר החודש
+  top_ten_authors: 10 היוצרים הנקראים ביותר החודש
   table_of_contents: תוכן עניינים
   new_person: "מחבר/ת חדש/ה"
   most_popular_authors_this_month: היוצרים הנקראים ביותר החודש
