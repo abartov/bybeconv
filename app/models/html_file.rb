@@ -400,7 +400,7 @@ class HtmlFile < ActiveRecord::Base
   end
 
   def make_html_with_params(filename, with_wrapper)
-    if %w(Parsed Published).include? status
+    if %w(Parsed Accepted Published).include? status
       markdown = File.open(path + '.markdown', 'r:UTF-8').read # slurp markdown
       # erb = ERB.new
       File.open(filename, 'wb') do|f|
@@ -414,7 +414,7 @@ class HtmlFile < ActiveRecord::Base
   end
 
   def make_pdf
-    if %w(Parsed Published).include? status
+    if %w(Parsed Accepted Published).include? status
       # markdown = File.open(self.path+'.markdown', 'r:UTF-8').read # slurp markdown
       # File.open(self.path+'.latex', 'wb') { |f| f.write("\\documentclass[12pt,twoside]{book}\n\\usepackage[utf8x]{inputenc}\n\\usepackage[english,hebrew]{babel}\n\\usepackage{hebfont}\n\\begin{document}"+MultiMarkdown.new(markdown).to_latex.force_encoding('UTF-8')+"\n\\end{document}") }
       ## TODO: find a way to do this without a system() call?
@@ -457,7 +457,7 @@ class HtmlFile < ActiveRecord::Base
   end
 
   def publish
-    if status == 'Parsed' && metadata_ready? && (not self.person.nil?)
+    if status == 'Accepted' && metadata_ready? && (not self.person.nil?)
       self.status = 'Published'
       save!
     else
