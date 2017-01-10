@@ -85,6 +85,10 @@ class NokoDoc < Nokogiri::XML::SAX::Document
         # (followed by a zillion pointless <span> tags...)
         # Then, the footnote itself looks like this:
         # <a style='mso-footnote-id:ftn12' href="#_ftnref12" name="_ftn12" title="">
+        # Likewise, endnote references look like this:
+        # <a style='mso-endnote-id:edn3' href="#_edn3" name="_ednref3" title="">
+        # and the endnote itself looks like this:
+        # <a style='mso-endnote-id:edn3' href="#_ednref3" name="_edn3" title="">
         if href.match /_ftn(\d+)/
           footnote_id = Regexp.last_match(1)
           if !@spans.empty?
@@ -102,6 +106,22 @@ class NokoDoc < Nokogiri::XML::SAX::Document
           # the previous footnote body ended...
           end_footnote(@footnote)
           # start a new footnote, remembering this till the next footnote beginning
+          @footnote = { key: Regexp.last_match(1), body: '', markdown: '' }
+          @in_footnote = true
+          ignore = true # nothing useful, see in the if block just above
+        elsif href.match /_edn(\d+)/
+          footnote_id = Regexp.last_match(1)+'א' # the aleph protects against identical numbering in footnotes and endnotes. bah.
+          if !@spans.empty?
+            @spans.last[:markdown] += "[^ftn#{footnote_id}]"
+          else
+            @markdown += "[^ftn#{footnote_id}]" # this is the multimarkdown for a footnote reference
+          end
+          # nothing useful in the content of the anchor of the footnote
+          # reference -- a hyperlink to and from the footnote will be
+          # auto-generated when rendering HTML, PDF, etc.
+          ignore = true
+        elsif href.match /_ednref(\d+)/
+          end_footnote(@footnote)
           @footnote = { key: Regexp.last_match(1), body: '', markdown: '' }
           @in_footnote = true
           ignore = true # nothing useful, see in the if block just above
