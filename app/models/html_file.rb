@@ -122,7 +122,7 @@ class NokoDoc < Nokogiri::XML::SAX::Document
           ignore = true
         elsif href.match /_ednref(\d+)/
           end_footnote(@footnote)
-          @footnote = { key: Regexp.last_match(1), body: '', markdown: '' }
+          @footnote = { key: Regexp.last_match(1)+'א', body: '', markdown: '' }
           @in_footnote = true
           ignore = true # nothing useful, see in the if block just above
         else
