@@ -73,7 +73,7 @@ Here's the raw MultiMarkDown.  Make any corrections needed, and add the __SPLIT_
 
 <p>You can:</p>
 <ul>
-  <li>chop off <%= link_to 'first 1', :action => :chop1, :id => @text %>, <%= link_to 'first 2', :action => :chop2, :id => @text %>, or <%= link_to 'first 3', :action => :chop3, :id => @text %> lines</li>
+  <li>chop off <%= link_to 'first 1', :action => :chop1, :id => @text.id %>, <%= link_to 'first 2', :action => :chop2, :id => @text %>, or <%= link_to 'first 3', :action => :chop3, :id => @text %> lines; chop off <%= link_to 'last 1', action: :choplast1, id: @text.id %>, or <%= link_to 'last 2', action: :choplast2, id: @text.id %> lines.</li>
   <li><%= link_to 'Undo any splits', :action => :unsplit, :id => @text %></li>
   <li>ACCEPT this and <%= link_to 'publish!', :action => :publish, :id => @text %>
 </ul>

@@ -2,7 +2,7 @@ class HtmlFileController < ApplicationController
   before_filter :require_editor, only: [:edit, :update, :list_for_editor]
   # before_filter :require_user, :only => [:edit, :update]
 
-  before_filter :require_admin, only: [:analyze, :analyze_all, :list, :parse, :publish, :unsplit, :chop1, :chop2, :chop3, :poetry, :frbrize]
+  before_filter :require_admin, only: [:analyze, :analyze_all, :list, :parse, :publish, :unsplit, :chop1, :chop2, :chop3, :choplast1, :choplast2, :poetry, :frbrize]
 
   def analyze
     @text = HtmlFile.find(params[:id])
@@ -176,6 +176,16 @@ class HtmlFileController < ApplicationController
     redirect_to action: :render_html, id: params[:id]
   end
 
+  def choplast1
+    choplastN(1)
+    redirect_to action: :render_html, id: params[:id]
+  end
+
+  def choplast2
+    choplastN(2)
+    redirect_to action: :render_html, id: params[:id]
+  end
+
   def metadata
     @text = HtmlFile.find(params[:id])
     @authors = @text.guess_authors
@@ -194,8 +204,12 @@ class HtmlFileController < ApplicationController
     html = MultiMarkdown.new(markdown.gsub('__SPLIT__', '__________')).to_html.force_encoding('UTF-8') # TODO: figure out why to_html defaults to ASCII 8-bit
     html
   end
-
-  def chopN(line_count)
+  def choplastN(line_count)
+    @text = HtmlFile.find(params[:id])
+    @markdown = File.open(@text.path + '.markdown', 'r:UTF-8').read
+    File.open(@text.path + '.markdown', 'wb') {|f| f.write(@markdown.split("\n")[0..-line_count].join("\n"))}
+  end
+  def chopN(line_count) # TODO: rewrite this weird mess
     @text = HtmlFile.find(params[:id])
     @markdown = File.open(@text.path + '.markdown', 'r:UTF-8').read
     lines = @markdown.split "\n"
