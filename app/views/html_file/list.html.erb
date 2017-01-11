@@ -25,11 +25,15 @@
   <td>
   <% if txt.status == 'Published' %>
     <%= link_to t(:to_the_work_in_the_catalog), :controller => 'manifestation', :action => 'show', :id => txt.manifestations[0] %>
-  <% else %>
+  | <%= link_to t(:to_the_work_in_the_site), manifestation_read_path(txt.manifestations[0].id) %>
+  <% elsif txt.status != 'Accepted' # don't allow re-parsing of possibly-improved markdown %>
     <%= link_to "analyze", :action => 'analyze', :id => txt %> | <%= link_to "parse", :action => 'parse', :id => txt %>
   <% end %>
-<% if txt.status == 'Parsed' %>
-  | <%= link_to "render!", :action => 'render_html', :id => txt %> | <%= link_to "publish!", :action => 'publish', :id => txt %>
+<% if ['Parsed','Accepted'].include? txt.status %>
+  | <%= link_to t(:render), :action => 'render_html', :id => txt %>
+<% end %>
+<% if txt.status == 'Accepted' %>
+ | <%= link_to t(:publish), :action => 'publish', :id => txt %>
 <% end %>
 
 </td>

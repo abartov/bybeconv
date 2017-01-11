@@ -7,6 +7,7 @@ he:
   top_ten_authors: 10 היוצרים הנקראים ביותר החודש
   table_of_contents: תוכן עניינים
   new_person: "מחבר/ת חדש/ה"
+  html_file_published: הקובץ מהמערכת הישנה פורסם עתה במערכת החדשה, ונוסף לקטלוג המערכת!
   most_popular_authors_this_month: היוצרים הנקראים ביותר החודש
   whats_new: מה חדש בפרויקט
   random_authors: יוצרים אקראיים
@@ -125,6 +126,8 @@ he:
   by_permission: מוגש ברשות פרסום
   publisher_details: פרטי הוצאה לאור
   language: שפה
+  save: שמירה
+  must_accept_before_publishing: יש לאשר את הסבת הקובץ לפני פרסום
   want_to_read: רוצה לקרוא
   currently_reading: "קורא/ת עכשיו"
   have_read: קראתי
@@ -143,7 +146,8 @@ he:
   'yes': כן
   'no': לא
   none: אין
-  to_the_work_in_the_catalog: ליצירה בקטלוג
+  to_the_work_in_the_catalog: לכרטיס הקטלוג של היצירה
+  to_the_work_in_the_site: ליצירה באתר
   public_domain: נחלת הכלל
   edit: עריכה
   destroy: מחיקה
@@ -178,7 +182,7 @@ he:
   content: תוכן
   submitted_at: התקבל בתאריך
   html_dirs_list: רשימת תיקיות
-  html_files_list: רשימת קבצים
+  html_files_list: הסבת קבצים מהמערכת הישנה
   catalog_dashboard: קטלוג המערכת
   catalog_title: קטלוג פרויקט בן-יהודה
   resolve_as_fixed: השגיאה תוקנה (שולח דואל!)

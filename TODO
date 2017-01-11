@@ -13,6 +13,8 @@
 - search results
 - backend
   - edit WEM metadata
+  - edit Manifestation markdown (+in the future: with Stackedit)
+  - have works automatically tagged as belonging to a book/collection (WEM!) according to (human-confirmed) heading from the ToC
   - means to select additional/different authors
   - show revisions of manifestations/ToCs
   - show diffs between revs

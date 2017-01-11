@@ -81,25 +81,32 @@ class HtmlFileController < ApplicationController
     @text = HtmlFile.find(params[:id])
     @text.parse
   end
+
   def frbrize
     @text = HtmlFile.find(params[:id])
     unless @text.person.nil?
-      @text.create_WEM(@text.person.id)
       @text.status = 'Accepted'
+      @text.save!
+      @text.create_WEM(@text.person.id)
       flash[:notice] = 'Created FRBR WEM entities! :)'
     else
       flash[:error] = 'Cannot create FRBR entities (not linked to person yet?)'
     end
     redirect_to action: :list
   end
+
   def publish
     @text = HtmlFile.find(params[:id])
-    @text.make_html unless @text.html_ready?
-    if @text.metadata_ready?
-      @text.publish
-      flash[:notice] = 'Published!'
+    if @text.status == 'Accepted'
+      @text.make_html unless @text.html_ready?
+      if @text.metadata_ready?
+        @text.publish
+        flash[:notice] = t(:html_file_published)
+      else
+        flash[:error] = 'Metadata not ready yet!'
+      end
     else
-      flash[:error] = 'Metadata not ready yet!'
+      flash[:error] = t(:must_accept_before_publishing)
     end
     redirect_to action: :list
   end

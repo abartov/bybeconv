@@ -471,9 +471,7 @@ class HtmlFile < ActiveRecord::Base
   end
 
   def metadata_ready?
-    ret = true
-    ret = false if manifestations.empty? # ensure WEM created
-    ret
+    manifestations.empty? ? false : true # ensure WEM created
   end
 
   def publish
@@ -486,7 +484,7 @@ class HtmlFile < ActiveRecord::Base
   end
 
   def create_WEM(person_id)
-    if status == 'Parsed'
+    if status == 'Accepted'
       begin
         p = Person.find(person_id)
         markdown = File.open(path + '.markdown', 'r:UTF-8').read
@@ -511,6 +509,8 @@ class HtmlFile < ActiveRecord::Base
       rescue
         flash[:error] = 'Error while create FRBR entities from HTML file!'
       end
+    else
+      flash[:error] = t(:must_accept_before_publishing)
     end
     false
   end
