@@ -132,10 +132,24 @@ class ManifestationController < ApplicationController
     @m = Manifestation.find(params[:id])
     @e = @m.expressions[0] # TODO: generalize?
     @w = @e.works[0] # TODO: generalize!
-
+    @html = MultiMarkdown.new(@m.markdown).to_html.force_encoding('UTF-8')
   end
 
   def edit
+    @m = Manifestation.find(params[:id])
+    @e = @m.expressions[0] # TODO: generalize?
+    @w = @e.works[0] # TODO: generalize!
+    @html = MultiMarkdown.new(@m.markdown).to_html.force_encoding('UTF-8')
   end
 
+  def update
+    @m = Manifestation.find(params[:id])
+    @e = @m.expressions[0] # TODO: generalize?
+    @w = @e.works[0] # TODO: generalize!
+    # update attributes
+    @m.markdown = params[:markdown]
+    @m.save!
+    flash[:notice] = I18n.t(:updated_successfully)
+    redirect_to action: :show, id: @m.id
+  end
 end

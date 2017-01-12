@@ -51,4 +51,7 @@
     %li
       = link_to link.url, link.url
       = "(#{textify_external_link_type(link.linktype)})"
-
+%hr
+!= raw(@html)
+%hr
+%b= link_to t(:edit), manifestation_edit_path(@m.id)

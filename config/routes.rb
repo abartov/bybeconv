@@ -20,11 +20,13 @@ Bybeconv::Application.routes.draw do
   match 'author/:id' => 'authors#toc', as: 'author_toc', via: [:get, :post]
   match "download/:id" => 'manifestation#download', as: 'manifestation_download', via: [:get, :post]
   match "print/:id" => 'manifestation#print', as: 'manifestation_print', via: [:get, :post]
-  get "manifestation/show"
+  get "manifestation/show/:id" => 'manifestation#show', as: 'manifestation_show'
   get "manifestation/render_html"
-  get "manifestation/edit"
+  get "manifestation/edit/:id" => 'manifestation#edit', as: 'manifestation_edit'
   get "manifestation/list"
   get "manifestation/index", as: 'manifestation_index'
+  post "manifestation/update"
+  patch "manifestation/update"
 
   get "api/query"
   resources :api_keys
@@ -76,7 +78,9 @@ Bybeconv::Application.routes.draw do
   post "html_file/render_html"
   get "html_file/unsplit"
   get "html_file/chop1"
+  get "html_file/choplast1"
   get "html_file/chop2"
+  get "html_file/choplast2"
   get "html_file/chop3"
   get "html_file/poetry"
 

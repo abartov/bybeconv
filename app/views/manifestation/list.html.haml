@@ -26,7 +26,8 @@
       %td= m.expressions[0].translation ? t(:yes)+" (#{textify_lang(m.expressions[0].works[0].orig_lang)})" : t(:no)
       %td= '...'
       %td
-        = link_to t(:show), :action => 'show', :id => m
+        = link_to t(:show), manifestation_show_path(m.id)
+        / = link_to t(:show), :action => 'show', :id => m
         = link_to t(:render), url_for(action: :read, id: m.id)
         / = link_to t(:render), :action => 'render_html', :id => m
 

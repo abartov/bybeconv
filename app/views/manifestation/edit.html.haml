@@ -1,0 +1,12 @@
+/ TODO: a whole bunch of editable WEM fields
+
+!= raw(@html)
+
+%hr
+%p
+  %b= t(:make_corrections_below)
+= form_tag(action: :update, id: @m.id) do
+  = text_area_tag(:markdown, raw(@m.markdown), cols: 80, rows: 40, :class => 'markdown_editbox')
+  %p
+    = submit_tag t(:save)
+

@@ -14,6 +14,9 @@ he:
   update: עדכן!
   updated_successfully: עודכן בהצלחה!
   life_years: שנות חיים
+  accept_conversion_and: אישור הסבת הטקסט ו
+  frbrize: יצירת ישויות קטלוגיות
+  you_can: באפשרותך
   identifiers: מזהים
   toc_status: מצב תוכן עניינים
   nli_id: מזהה בספרייה הלאומית
@@ -161,6 +164,7 @@ he:
   back: חזרה
   back_to_dashboard: חזרה למרכז הפעילות
   back_to_homepage: לדף הבית
+  make_corrections_below: "תיקונים יש לבצע בתיבת הטקסט להלן:"
   homepage: דף הבית
   recommendations_by_status: המלצות לפי סטטוס %{status}
   sign_in_google_twitter: התחברו באמצעות זהות גוגל או טוויטר
