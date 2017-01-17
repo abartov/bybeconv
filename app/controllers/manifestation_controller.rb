@@ -107,6 +107,10 @@ class ManifestationController < ApplicationController
     @html = MultiMarkdown.new(@m.markdown).to_html.force_encoding('UTF-8')
   end
 
+  def genre
+    @tabclass = set_tab('works')
+    @manifestations = Manifestation.where(genre: params[:genre]).page(params[:page]).order('title ASC')
+  end
   #############################################
   # editor actions
   def list
