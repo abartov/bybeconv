@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170109021824) do
+ActiveRecord::Schema.define(version: 20170117051149) do
 
   create_table "api_keys", force: :cascade do |t|
     t.string   "email",       limit: 255
@@ -98,6 +98,7 @@ ActiveRecord::Schema.define(version: 20170109021824) do
     t.string   "orig_author",         limit: 255
     t.string   "orig_author_url",     limit: 255
     t.integer  "person_id",           limit: 4
+    t.string   "genre",               limit: 255
   end
 
   add_index "html_files", ["path"], name: "index_html_files_on_path", using: :btree

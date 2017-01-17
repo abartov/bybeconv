@@ -29,6 +29,10 @@
   %p
     = 'קישורית למידע על מחבר מקור (ויקיפדיה וכו'')'
     = text_field_tag :orig_author_url, @text.orig_author_url
+
+  %p
+    = 'סוגה: '
+    = select_tag :genre, options_for_select(get_genres.map {|genre| [I18n.t(genre), genre]}), {include_blank: true}
   %p
     = submit_tag 'Update'
 

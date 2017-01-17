@@ -129,5 +129,5 @@ Bybeconv::Application.routes.draw do
   # match ':controller(/:action(/:id(.:format)))'
   #
   # match legacy BY urls
-  # match '*path' => "html_file#render_by_legacy_url", via: [:get]
+  match '*path' => "html_file#render_by_legacy_url", via: [:get]
 end

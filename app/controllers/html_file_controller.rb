@@ -20,6 +20,7 @@ class HtmlFileController < ApplicationController
     @text.orig_lang = params[:orig_lang]
     @text.orig_author = params[:orig_author]
     @text.orig_author_url = params[:orig_author_url]
+    @text.genre = params[:genre]
     if @text.save
       flash[:notice] = 'הנתונים עודכנו!'
     else
@@ -149,6 +150,8 @@ class HtmlFileController < ApplicationController
       @markdown = params[:markdown] # TODO: make secure
       @text.update_markdown(@markdown.gsub('__________', '__SPLIT__')) # TODO: add locking of some sort to avoid concurrent overwrites
       @text.delete_pregen
+      @text.genre = params[:genre]
+      @text.save
     end
     @html = MultiMarkdown.new(@markdown.gsub('__SPLIT__', '__________')).to_html.force_encoding('UTF-8') # TODO: figure out why to_html defaults to ASCII 8-bit
     @person_matches = match_person(@text.author_string)

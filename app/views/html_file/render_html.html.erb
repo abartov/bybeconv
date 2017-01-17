@@ -38,6 +38,9 @@ $('#bPoetry').click(function() { document.location.href='<%=  url_for(:controlle
 <%= raw(@html) %>
 
 <p><%= form_tag(:action => "render_html", :id => @text) do %>
+  <%= label_tag(:genre, t(:genre)) %>
+  <%= select_tag(:genre, options_for_select(get_genres.map {|genre| [I18n.t(genre), genre]}, @text.genre), {include_blank: true}) %>
+  <br />
   <%= label_tag 'Associated person' %><br/>
   <% if @text.person.nil? %>
     <% if @text.html_dir.person.nil? %>
@@ -73,7 +76,7 @@ Here's the raw MultiMarkDown.  Make any corrections needed, and add the __SPLIT_
 <ul>
   <li>chop off <%= link_to 'first 1', :action => :chop1, :id => @text.id %>, <%= link_to 'first 2', :action => :chop2, :id => @text %>, or <%= link_to 'first 3', :action => :chop3, :id => @text %> lines; chop off <%= link_to 'last 1', action: :choplast1, id: @text.id %>, or <%= link_to 'last 2', action: :choplast2, id: @text.id %> lines.</li>
   <li><%= link_to 'Undo any splits', :action => :unsplit, :id => @text %></li>
-  <li><%= t(:accept_conversion_and) + link_to t(:frbrize), html_file_frbrize_path(@text) %>
+  <li><%= raw(t(:accept_conversion_and) + link_to(t(:frbrize), html_file_frbrize_path(@text))) %>
 </ul>
 <p> [do some other things about it?]...</p>
 
