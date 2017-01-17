@@ -271,12 +271,19 @@ module BybeUtils
   def get_total_authors
     return HtmlDir.count + 20 # TODO: change this to People.count after the mass conversion is over. # TODO: *then* figure out how to meaningfully count only people for whom we have Hebrew works in the database (presumably authors of expressions with language: Hebrew?)
   end
+
   def get_total_headwords
     return 2213 # TODO: un-hardcode
   end
+
   def get_genres
     return ['poetry', 'prose', 'drama', 'article', 'memoir', 'letters', 'reference', 'lexicon'] # translations and icon-font refer to these keys!
   end
+
+  def get_langs
+    return ['he','en','fr','de','ru','yi','pl','ar','el','la','grc']
+  end
+
   def get_genres1 # just first row
     return get_genres[0..3]
   end

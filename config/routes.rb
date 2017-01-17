@@ -23,6 +23,7 @@ Bybeconv::Application.routes.draw do
   get "manifestation/show/:id" => 'manifestation#show', as: 'manifestation_show'
   get "manifestation/render_html"
   get "manifestation/edit/:id" => 'manifestation#edit', as: 'manifestation_edit'
+  get "manifestation/edit_metadata/:id" => 'manifestation#edit_metadata', as: 'manifestation_edit_metadata'
   get "manifestation/list"
   get "manifestation/genre" => 'manifestation#genre', as: 'manifestation_genre'
   get "manifestation/index", as: 'manifestation_index'

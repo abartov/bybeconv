@@ -16,6 +16,7 @@ he:
   random_works: יצירות אקראיות
   featured_item: זרקור על יצירה
   works_by_genre: יצירות על-פי סוגה
+  edit_markdown: עריכת הטקסט
   # genre key names are currently hard-coded in ApplicationController
   poetry: שירה
   prose: פרוזה
