@@ -4,4 +4,6 @@
   .row
     .col-sm-12
       / actual works
-
+      %ol
+        - @manifestations.each do |m|
+          %li= link_to m.title_and_authors, manifestation_read_path(m.id)

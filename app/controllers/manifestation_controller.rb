@@ -109,7 +109,7 @@ class ManifestationController < ApplicationController
 
   def genre
     @tabclass = set_tab('works')
-    @manifestations = Manifestation.where(genre: params[:genre]).page(params[:page]).order('title ASC')
+    @manifestations = Manifestation.joins(:expressions).where(expressions: {genre: params[:genre]}).page(params[:page]).order('title ASC')
   end
   #############################################
   # editor actions
