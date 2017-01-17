@@ -7,6 +7,8 @@ class WelcomeController < ApplicationController
     @pop_authors = popular_authors.map{|a| a[0]} # we don't need the actual counts here
     @pop_works = popular_works.map{|a| a[0]} # ditto
     @random_authors = randomize_authors(@pop_authors)
+    @random_works = randomize_works(5) # TODO: un-hardcode?
+    @works_by_genre = count_works_by_genre
     @whatsnew = whatsnew_anonymous # TODO: custom calculate for logged-in users
     @pagetype = :homepage
     @page_title = t(:default_page_title)+' - '+t(:homepage)

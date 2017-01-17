@@ -2,6 +2,107 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+/* BY icon font by Ruth Yoel */
+
+@charset "UTF-8";
+
+@font-face {
+  font-family: "ben-yehuda-03";
+  src:url("ben-yehuda-03.eot");
+  src:url("ben-yehuda-03.eot?#iefix") format("embedded-opentype"),
+    url("ben-yehuda-03.woff") format("woff"),
+    url("ben-yehuda-03.ttf") format("truetype"),
+    url("ben-yehuda-03.svg#ben-yehuda-03") format("svg");
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+[data-icon]:before {
+  font-family: "ben-yehuda-03" !important;
+  content: attr(data-icon);
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+[class^="icon-by"]:before,
+[class*=" icon-by"]:before {
+  font-family: "ben-yehuda-03" !important;
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-byarticle:before {
+  content: "\61";
+}
+.icon-bybookmark-add:before {
+  content: "\62";
+}
+.icon-bybookmark-delete:before {
+  content: "\63";
+}
+.icon-bybookmark-go-to:before {
+  content: "\64";
+}
+.icon-bybookmark-move:before {
+  content: "\65";
+}
+.icon-bylexicon:before {
+  content: "\66";
+}
+.icon-byerror-found:before {
+  content: "\67";
+}
+.icon-byfigure-outline:before {
+  content: "\68";
+}
+.icon-byfigure-outline-cut:before {
+  content: "\69";
+}
+.icon-bymemoir:before {
+  content: "\6a";
+}
+.icon-bydrama:before {
+  content: "\6b";
+}
+.icon-byprose:before {
+  content: "\6c";
+}
+.icon-byread-future:before {
+  content: "\6e";
+}
+.icon-byread-past:before {
+  content: "\6f";
+}
+.icon-byread-present:before {
+  content: "\70";
+}
+.icon-bysurprise-creation:before {
+  content: "\71";
+}
+.icon-bysurprise-creator:before {
+  content: "\72";
+}
+.icon-bytranslate:before {
+  content: "\73";
+}
+.icon-bypoetry:before {
+  content: "\74";
+}
+
+
 .whatsnew-author-card {
   height: 12rem;
   background-color: #d2cfcf;
@@ -16,6 +117,40 @@
   padding: 2.4rem 1.6rem 1.6rem 1.6rem;
   font-size: 1.2rem;
 }
+
+.genre-card {
+  /* width: 16rem; */
+/*  height: 13rem; */
+  color: #660248;
+  text-align: center;
+}
+.genre-card-content {
+  background-color: #d2cfcf;
+  width: 16rem;
+  height: 16rem;
+  margin: 0 3rem 2rem 3rem;
+  border-radius: 0.3rem;
+  box-shadow: 0 0.1rem 0.3rem rgba(0,0,0, .4);
+  padding: 1.6rem;
+  float:right;
+}
+
+.genre-icon {
+/*  margin: 8rem 0 1.4rem 0; */
+  font-family: 'ben-yehuda-03';
+  font-size: 3.6rem;
+}
+
+.lexicon-card {
+  width: 16rem;
+  height: 28rem;
+  color: #660248;
+  background-color: #d2cfcf;
+  text-align: center;
+  border-radius: 0.3rem;
+  box-shadow: 0 0.1rem 0.3rem rgba(0,0,0, .4);
+}
+
 
 .welcome {
   height: 30rem;

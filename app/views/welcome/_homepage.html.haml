@@ -25,11 +25,16 @@
   .row
     .col-sm-4
       / featured item
+      %h2= t(:featured_item)
     .col-sm-8
       / work cards
+      %h2= t(:works_by_genre)
+      = render partial: 'works'
   .row
     .col-sm-4
       / extras
+      %h2= t(:support_the_project)
+      = render partial: 'support'
     .col-sm-4
       / 10 most read works
       %h2= t(:top_ten_works)

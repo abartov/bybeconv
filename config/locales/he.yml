@@ -7,10 +7,27 @@ he:
   top_ten_authors: 10 היוצרים הנקראים ביותר החודש
   table_of_contents: תוכן עניינים
   new_person: "מחבר/ת חדש/ה"
+  join_volunteer: התנדבות להפקת תכנים
+  donate_money: תרומה כספית
   html_file_published: הקובץ מהמערכת הישנה פורסם עתה במערכת החדשה, ונוסף לקטלוג המערכת!
   most_popular_authors_this_month: היוצרים הנקראים ביותר החודש
   whats_new: מה חדש בפרויקט
   random_authors: יוצרים אקראיים
+  random_works: יצירות אקראיות
+  featured_item: זרקור על יצירה
+  works_by_genre: יצירות על-פי סוגה
+  # genre key names are currently hard-coded in ApplicationController
+  poetry: שירה
+  prose: פרוזה
+  article: מאמרים, מסות, ומחקר
+  drama: דרמה
+  memoir: זכרונות ויומנים
+  letters: מכתבים
+  reference: עיון
+  lexicon: מילונים ולקסיקונים
+  # end genres
+  most_popular_works_this_month: היצירות הנקראות ביותר החודש
+  support_the_project: הצטרפו לתומכי הפרויקט!
   update: עדכן!
   updated_successfully: עודכן בהצלחה!
   life_years: שנות חיים
@@ -90,6 +107,7 @@ he:
   welcome_stats_html: "כיום כלולות בפרויקט %{works} יצירות, מאת כ-%{authors} יוצרים, ו-%{headwords} ערכים מילוניים."
   total_manifestations: "סה\"כ יצירות: %{total}"
   title: שם
+  entries: ערכים
   filter: סינון
   actions: פעולות
   author: מחבר
@@ -114,10 +132,6 @@ he:
   manage_people: ניהול אישים
   how_to_help: 'רוצים לעזור?'
   contact_us: יצירת קשר
-  poetry: שירה
-  prose: פרוזה
-  essays_etc: מאמרים, מסות, ועיון
-  drama: מחזה
   list_people: ניהול אישים
   show_toc: הצג תוכן עניינים
   are_you_sure: נא לאשר מחיקה

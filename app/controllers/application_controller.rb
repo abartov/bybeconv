@@ -97,6 +97,18 @@ class ApplicationController < ActionController::Base
     return list
   end
 
+  def randomize_works(how_many)
+    return Manifestation.order('RAND()').limit(how_many)
+  end
+
+  def count_works_by_genre
+    ret = {}
+    get_genres.each {|g|
+      ret[g] = Manifestation.joins(:expressions).where(expressions: {genre: g}).count
+    }
+    return ret
+  end
+
   def whatsnew_anonymous
     authors = {}
     Manifestation.new_since(1.month.ago).each {|m|

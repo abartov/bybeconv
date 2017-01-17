@@ -274,5 +274,13 @@ module BybeUtils
   def get_total_headwords
     return 2213 # TODO: un-hardcode
   end
-
+  def get_genres
+    return ['poetry', 'prose', 'drama', 'article', 'memoir', 'letters', 'reference', 'lexicon'] # translations and icon-font refer to these keys!
+  end
+  def get_genres1 # just first row
+    return get_genres[0..3]
+  end
+  def get_genres2 # just second row
+    return get_genres[4..6]
+  end
 end
