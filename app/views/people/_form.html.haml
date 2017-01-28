@@ -13,6 +13,13 @@
     = f.label t(:dates)
     = f.text_field :dates
   .field
+    = f.label t(:copyright_status)
+    %br
+    = f.radio_button(:public_domain, true, checked: @person.public_domain && (not @person.public_domain.nil?))
+    = f.label t(:public_domain)
+    = f.radio_button(:public_domain, false, checked: (not @person.public_domain) && (not @person.public_domain.nil?))
+    = f.label t(:by_permission)
+  .field
     = f.label t(:title)
     = f.text_field :title
   .field

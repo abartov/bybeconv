@@ -1,5 +1,3 @@
-%p#notice= notice
-
 %p
   %b= t(:name)
   = @person.name
@@ -8,7 +6,8 @@
   = @person.dates
 %p
   %b= t(:copyright_status)
-  = @person.public_domain ? t(:public_domain) : t(:by_permission)
+  - unless @person.public_domain.nil?
+    = @person.public_domain ? t(:public_domain) : t(:by_permission)
 %p
   %b= t(:title)
   = @person.title

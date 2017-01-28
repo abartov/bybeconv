@@ -40,4 +40,8 @@ class Person < ActiveRecord::Base
     return false if comment.empty?
     return true
   end
+
+  def copyright_as_string
+    return public_domain ? I18n.t(:public_domain) : I18n.t(:by_permission)
+  end
 end

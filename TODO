@@ -8,7 +8,7 @@
 - search
 - search results
 - backend
-  - edit WEM metadata
+  - edit WEM associations -- external links, authors
   - edit Manifestation markdown with Stackedit
   - have works automatically tagged as belonging to a book/collection (WEM!) according to (human-confirmed) heading from the ToC
   - means to select additional/different authors
