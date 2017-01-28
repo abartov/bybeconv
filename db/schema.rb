@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170117051149) do
+ActiveRecord::Schema.define(version: 20170128060851) do
 
   create_table "api_keys", force: :cascade do |t|
     t.string   "email",       limit: 255
@@ -164,7 +164,7 @@ ActiveRecord::Schema.define(version: 20170117051149) do
     t.string   "name",                       limit: 255
     t.string   "dates",                      limit: 255
     t.string   "title",                      limit: 255
-    t.string   "other_designation",          limit: 255
+    t.string   "other_designation",          limit: 1024
     t.string   "affiliation",                limit: 255
     t.string   "country",                    limit: 255
     t.text     "comment",                    limit: 16777215
@@ -176,8 +176,8 @@ ActiveRecord::Schema.define(version: 20170117051149) do
     t.boolean  "public_domain"
     t.integer  "period_id",                  limit: 4
     t.text     "wikipedia_snippet",          limit: 65535
-    t.string   "wikipedia_url",              limit: 255
-    t.string   "image_url",                  limit: 255
+    t.string   "wikipedia_url",              limit: 1024
+    t.string   "image_url",                  limit: 1024
     t.string   "profile_image_file_name",    limit: 255
     t.string   "profile_image_content_type", limit: 255
     t.integer  "profile_image_file_size",    limit: 4
