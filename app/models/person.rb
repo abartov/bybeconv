@@ -1,6 +1,6 @@
 include BybeUtils
 class Person < ActiveRecord::Base
-  attr_accessible :affiliation, :comment, :country, :dates, :name, :nli_id, :other_designation, :title, :viaf_id, :public_domain, :profile_image
+  attr_accessible :affiliation, :comment, :country, :dates, :name, :nli_id, :other_designation, :viaf_id, :public_domain, :profile_image
   is_impressionable # for statistics
   belongs_to :toc
   belongs_to :period

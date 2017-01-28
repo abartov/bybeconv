@@ -20,9 +20,6 @@
     = f.radio_button(:public_domain, false, checked: (not @person.public_domain) && (not @person.public_domain.nil?))
     = f.label t(:by_permission)
   .field
-    = f.label t(:title)
-    = f.text_field :title
-  .field
     = f.label t(:other_designation)
     = f.text_field :other_designation
   .field

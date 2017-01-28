@@ -4,7 +4,6 @@
   %tr
     %th= t(:name)
     %th= t(:dates)
-    /    %th= t(:title)
     %th= t(:other_designation)
     %th= t(:comment)
     %th= t(:viaf_id)
@@ -18,7 +17,6 @@
     %tr
       %td= link_to person.name, person
       %td= person.dates
-      / %td= person.title
       %td= person.other_designation
       %td= person.has_comment? ? '+' : ''
       %td= person.viaf_id

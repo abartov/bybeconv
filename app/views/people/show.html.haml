@@ -9,9 +9,6 @@
   - unless @person.public_domain.nil?
     = @person.public_domain ? t(:public_domain) : t(:by_permission)
 %p
-  %b= t(:title)
-  = @person.title
-%p
   %b= t(:other_designation)
   = @person.other_designation
 %p
