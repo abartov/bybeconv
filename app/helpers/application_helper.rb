@@ -30,7 +30,7 @@ module ApplicationHelper
     return '<option>'+t(:want_to_read)+'</option><option>'+t(:currently_reading)+'</option><option>'+t(:have_read)+'</option>'
   end
   def textify_genre(genre)
-    return I18n.t(:unknown) if genre.nil?
+    return I18n.t(:unknown) if genre.nil? or genre.empty?
     return I18n.t(genre)
   end
   def textify_lang(iso)
