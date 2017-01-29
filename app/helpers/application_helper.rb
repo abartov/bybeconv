@@ -81,7 +81,7 @@ module ApplicationHelper
     case st
     when 'Unknown'
       return t(:unknown)
-    when 'BadEnc'
+    when 'BadUTF8'
       return t(:bad_enc)
     when 'FileError'
       return t(:file_err)
