@@ -7,6 +7,10 @@ class HtmlFileController < ApplicationController
   def analyze
     @text = HtmlFile.find(params[:id])
     @text.analyze
+    params['status'] = 'Analyzed'
+    params['commit'] = 'Commit'
+    list
+    render action: :list # help user find the newly-analyzed files
   end
 
   def edit
@@ -81,6 +85,10 @@ class HtmlFileController < ApplicationController
   def parse
     @text = HtmlFile.find(params[:id])
     @text.parse
+    params['status'] = 'Parsed'
+    params['commit'] = 'Commit'
+    list
+    render action: :list # help user find the newly-parsed files
   end
 
   def frbrize
@@ -210,7 +218,7 @@ class HtmlFileController < ApplicationController
   def choplastN(line_count)
     @text = HtmlFile.find(params[:id])
     @markdown = File.open(@text.path + '.markdown', 'r:UTF-8').read
-    File.open(@text.path + '.markdown', 'wb') {|f| f.write(@markdown.split("\n")[0..-line_count].join("\n"))}
+    File.open(@text.path + '.markdown', 'wb') {|f| f.write(@markdown.split("\n")[0..-(line_count+1)].join("\n"))}
   end
   def chopN(line_count) # TODO: rewrite this weird mess
     @text = HtmlFile.find(params[:id])
