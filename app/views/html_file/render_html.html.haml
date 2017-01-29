@@ -1,0 +1,69 @@
+%div{style: 'margin: 5px'}
+  %h2= t(:converted_output, {fname: @text.path.sub(AppConstants.base_dir,'')})
+  %button#bPoetry= t(:treat_as_poetry)
+  != raw(@html)
+  %p
+    = form_tag(action: 'render_html', id: @text.id) do
+      = label_tag(:genre, t(:genre))
+      = select_tag(:genre, options_for_select(get_genres.map {|genre| [I18n.t(genre), genre]}, @text.genre), {include_blank: true})
+      %br
+      = label_tag t(:associated_persons)
+      %br
+      - if @text.person.nil?
+        - if @text.html_dir.person.nil?
+          %span{style: 'color:red'}= link_to t(:dir_not_associated), url_for(controller: :html_dirs, action: :edit, id: @text.html_dir.id)
+        - else
+          %span{style: 'color:green'}= link_to @text.html_dir.person.name, person_path(@text.html_dir.person.id)
+          = link_to 'Confirm!', html_file_confirm_html_dir_person_path(@text), {remote: true, :class => "ajax_link", "data-done-msg" => 'confirmed!', "data-doing-msg" => 'confirming...' }
+      - else
+        %span{style: 'color:green'}= @text.person.name
+        != "&nbsp;&nbsp;"+t(:confirmed)
+        %br
+        - if @text.metadata_ready?
+          %b
+            %span{style: 'color:green'}= t(:frbr_ready)
+      %p{:class => 'heading'}= t(:raw_markdown_html, {orig_html: AppConstants.base_uri+ @text.url})
+      .markdown
+        %p
+          = text_area_tag(:markdown, raw(@markdown), size: "80x40")
+      = submit_tag t(:save)
+  %h3= t(:actions)
+  %ul
+    - [1, 2, 3].each do |i|
+      %li= link_to t(:chopN_html, {n: i}), action: "chop#{i}", id: @text.id
+    - [1, 2].each do |i|
+      %li= link_to t(:choplastN_html, {n: i}), action: "choplast#{i}", id: @text.id
+    %li
+      %b
+        != raw(t(:accept_conversion_and) + link_to(t(:frbrize), html_file_frbrize_path(@text)))
+%p= link_to t(:back_to_dashboard), :action => :list
+
+:javascript
+  var font_size = 12
+  jQuery(document).ready(function() {
+    jQuery(".markdown").hide();
+    jQuery(".heading").click(function()
+    {
+      jQuery(this).next(".markdown").slideToggle(500);
+    });
+  $('#bPoetry').click(function() { document.location.href="#{url_for(:controller => :html_file, :action => :poetry, :id => @text.id)}"; return false;});
+  });
+
+  $(document).ready(function() {
+    $('.ajax_link')
+      .bind("ajax:beforeSend", function(evt, xhr, settings) {
+        var $link = $(this);
+        $link.html( "<b>"+$(this).data('doing-msg')+"</b>");
+      })
+      .bind("ajax:success", function(evt, data, status, xhr){
+        $(this).html($(this).data('done-msg'));
+    });
+    $('.author_matches_link')
+      .bind("ajax:beforeSend", function(evt, xhr, settings) {
+        var $link = $(this);
+        $link.html( "<b>"+$(this).data('doing-msg')+"</b>");
+      })
+      .bind("ajax:success", function(evt, data, status, xhr){
+        $(this).html($(this).data('done-msg'));
+    });
+  });

@@ -272,7 +272,7 @@ class NokoDoc < Nokogiri::XML::SAX::Document
         end
       end
     }
-    lines.select! {|line| line =~ /\p{Word}/}
+    # lines.select! {|line| line =~ /\p{Word}/} # this seemed like a good idea, but actually loses the newlines between stanzas # TODO: revisit?
     new_buffer = lines.join "\n\n"
     new_buffer.gsub!("\n\n\n", "\n\n")
     /#|\p{Word}/.match new_buffer # first non-whitespace char
@@ -525,6 +525,8 @@ class HtmlFile < ActiveRecord::Base
     body = $' # after title
     title = $`
     body.gsub!("\n", "\n    ") # make the lines PRE in Markdown
+    body.gsub!("\n        ","\n    ") # but not twice, in case the button is pushed again (this one will undo the previous line) # TODO: make this less lazy code
+    body.gsub!("\n        ","\n    ") # but not twice, in case the button is pushed again (this one will actually remove extraneous spaces)
     new_markdown = title + "\n\n    " + body
     update_markdown(new_markdown)
   end
