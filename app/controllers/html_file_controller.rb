@@ -93,15 +93,22 @@ class HtmlFileController < ApplicationController
 
   def frbrize
     @text = HtmlFile.find(params[:id])
-    unless @text.person.nil?
-      @text.status = 'Accepted'
-      @text.save!
-      @text.create_WEM(@text.person.id)
-      flash[:notice] = 'Created FRBR WEM entities! :)'
+    if(@text.genre.nil? or @text.genre.empty?)
+      flash[:error] = t(:must_set_genre)
+      redirect_to action: :render_html, id: @text.id
     else
-      flash[:error] = 'Cannot create FRBR entities (not linked to person yet?)'
+      unless @text.person.nil?
+        @text.status = 'Accepted'
+        @text.genre = params['genre']
+        @text.save!
+        @text.create_WEM(@text.person.id)
+        flash[:notice] = t(:created_frbr)
+        redirect_to action: :list
+      else
+        flash[:error] = t(:cannot_create_frbr)
+        redirect_to action: :render_html, id: @text.id
+      end
     end
-    redirect_to action: :list
   end
 
   def publish
@@ -169,6 +176,26 @@ class HtmlFileController < ApplicationController
     @text = HtmlFile.find(params[:id])
     @text.paras_to_lines!
     @text.save!
+    redirect_to action: :render_html, id: params[:id]
+  end
+
+  def chop_title
+    @text = HtmlFile.find(params[:id])
+    markdown = File.open(@text.path + '.markdown', 'r:UTF-8').read # need to read the whole thing, to save it back
+    lines = markdown.split "\n"
+    title = lines.shift
+    new_title = lines.shift while new_title !~ /\p{Word}/
+    slashpos = new_title.index('/')
+    updated_title = new_title[0..slashpos-1].strip
+    unless slashpos.nil?
+      title =~ /\//
+      title = '# '+updated_title+' /'+$'
+      newbuf = title+"\n"+lines.join("\n")
+      File.open(@text.path + '.markdown', 'wb') {|f| f.write(newbuf)} # write back
+      flash[:notice] = t(:updated)
+    else
+      flash[:error] = t(:malformed_line)
+    end
     redirect_to action: :render_html, id: params[:id]
   end
 

@@ -10,7 +10,12 @@ he:
   raw_markdown_html: "הנה הטקסט המוסב.  אם דרושים תיקונים, עשו אותם כאן.  כמו כן, הנה <a href=\"%{orig_html}\"> קישורית לקובץ הישן, לשם השוואה</a>."
   chopN_html: קיצוץ %{n} שורות <b>ראשונות</b> (זהירות!)
   choplastN_html: קיצוץ %{n} שורות <b>אחרונות</b> (זהירות!)
+  chop_and_update_title: עדכן כותרת על-פי שורה ראשונה, וקצץ אותה
   conversion_dashboard: מרכז ההסבה
+  malformed_line: מבנה שורה לא ברור
+  must_set_genre: יש להגדיר סוגה לפני יצירת ישויות
+  created_frbr: הישויות הביבליוגרפיות נוצרו!
+  cannot_create_frbr: אי אפשר ליצור ישויות ביבליוגרפיות. אולי משום שטרם קושר יוצר.
   conversion_stats_html: "סטטיסטיקה -- %{total_texts} סך הכל קבצים ישנים, %{total_known} קבצים אובחנו, %{total_images} עם תמונות, %{total_footnotes} עם הערות שוליים, %{total_tables} עם טבלאות, %{total_nikkud_full} עם ניקוד מלא, %{total_nikkud_some} עם ניקוד חלקי. <p /> מצבים אחרים -- %{total_badenc} עם תקלת קידוד, %{total_fileerr} עם שגיאת קובץ אחרת, %{total_parsed} קבצים פוענחו, %{total_accepted} קבצים אושרו :(."
   analyze_all_unknown: "אבחון כל הקבצים הלא מאובחנים (עלול להימשך זמן רב)"
   nikkud: ניקוד

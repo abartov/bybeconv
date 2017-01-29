@@ -29,6 +29,7 @@
       = submit_tag t(:save)
   %h3= t(:actions)
   %ul
+    %li= link_to t(:chop_and_update_title), action: :chop_title, id: @text.id
     - [1, 2, 3].each do |i|
       %li= link_to t(:chopN_html, {n: i}), action: "chop#{i}", id: @text.id
     - [1, 2].each do |i|
