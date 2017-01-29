@@ -275,6 +275,9 @@ class NokoDoc < Nokogiri::XML::SAX::Document
     # lines.select! {|line| line =~ /\p{Word}/} # this seemed like a good idea, but actually loses the newlines between stanzas # TODO: revisit?
     new_buffer = lines.join "\n\n"
     new_buffer.gsub!("\n\n\n", "\n\n")
+    ['.',',',':',';','?','!'].each {|c|
+      new_buffer.gsub!(" #{c}",c) # remove spaces before punctuation
+    }
     /#|\p{Word}/.match new_buffer # first non-whitespace char
     @markdown = $& + $' # skip all initial whitespace
   end
