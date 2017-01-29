@@ -305,7 +305,9 @@ class HtmlFile < ActiveRecord::Base
       # Word tables magic word (beyond the basic BY formatting table for prose!):
       buf = html
       html.match /<body[^>]*>(.*)<\/body>/m
-      nikkud_info = count_nikkud($1)
+      coder = HTMLEntities.new
+      buf = coder.decode($1) # convert Unicode entities back to actual letters, important for counting nikkud!
+      nikkud_info = count_nikkud(buf)
       case
         when nikkud_info[:nikkud] == 0
           self.nikkud = "none"
