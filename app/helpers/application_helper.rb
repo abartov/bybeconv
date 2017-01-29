@@ -67,6 +67,37 @@ module ApplicationHelper
     copyrighted ? t(:by_permission) : t(:public_domain)
   end
 
+  def textify_boolean(bool)
+    bool ? t(:yes) : t(:no)
+  end
+
+  def textify_nikkud(nik)
+    return I18n.t(:unknown) if nik.nil? or nik.empty?
+    return I18n.t(nik)
+  end
+
+  def textify_htmlfile_status(st)
+    return I18n.t(:unknown) if st.nil? or st.empty?
+    case st
+    when 'Unknown'
+      return t(:unknown)
+    when 'BadEnc'
+      return t(:bad_enc)
+    when 'FileError'
+      return t(:file_err)
+    when 'Parsed'
+      return t(:parsed)
+    when 'Accepted'
+      return t(:accepted)
+    when 'Analyzed'
+      return t(:analyzed)
+    when 'Published'
+      return t(:published)
+    else
+      return t(:unknown)
+    end
+  end
+
   def sitenotice
     return ''
   end
