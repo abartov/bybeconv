@@ -193,7 +193,7 @@ class NokoDoc < Nokogiri::XML::SAX::Document
 
           span[:markdown].strip! # trim whitespace from both sides, to avoid PRE lines in output
           # poetry, bold, underline, indents, size, footnotes, links
-          new_markdown += start_formatting + span[:markdown] + end_formatting # payload
+          new_markdown += start_formatting + span[:markdown] + end_formatting+' ' # payload (extra space to handle Word's occasionally breaking lines without a space after bold tags
         end
       else
         new_markdown += span[:markdown] # just copy the content, no formatting change
