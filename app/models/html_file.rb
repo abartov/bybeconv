@@ -76,7 +76,7 @@ class NokoDoc < Nokogiri::XML::SAX::Document
       href = attributes.assoc('href') ? attributes.assoc('href')[1] : ''
       ignore = false
       footnote = false
-      if ['index.html', '/', 'http://benyehuda.org', 'http://www.benyehuda.org', 'http://benyehuda.org/', 'http://www.benyehuda.org/'].include? href # TODO: de-uglify
+      if ['index.html', '/', 'http://benyehuda.org', 'http://www.benyehuda.org', 'http://benyehuda.org/', 'http://www.benyehuda.org/'].include?(href) or href =~ /^[.\/]+$/ # TODO: de-uglify
         ignore = true
       else
         # probably a footnote, but could be anything
