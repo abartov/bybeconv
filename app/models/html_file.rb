@@ -342,7 +342,7 @@ class HtmlFile < ActiveRecord::Base
     self.save!
   end
   def self.analyze_all # class method
-    HtmlFile.find_all_by_status('Unknown').each(&:analyze)
+    HtmlFile.where(status: 'Unknown').each(&:analyze)
   end
   def author_dir
     relpath = path.sub(AppConstants.base_dir, '')
