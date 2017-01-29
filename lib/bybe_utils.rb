@@ -223,7 +223,7 @@ module BybeUtils
   end
   def citation_date(date_str)
     return I18n.t(:no_date) if date_str.nil?
-    if date.str =~ /\d\d\d+/
+    if date_str =~ /\d\d\d+/
       return $&
     else
       return date_str
