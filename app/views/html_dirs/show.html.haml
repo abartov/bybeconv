@@ -1,0 +1,20 @@
+%p
+  %b= t(:path)+': '
+  = @html_dir.path
+
+%p
+  %b= t(:author)+': '
+  = @html_dir.author
+%p
+  %b= t(:person_entity)
+  - if @html_dir.person.nil?
+    %p{style: 'color:red'}= t(:none_yet_click_edit_to_associate)
+  - else
+    = link_to "#{@html_dir.person.name} (VIAF: #{@html_dir.person.viaf_id})", person_path(id: @html_dir.person.id)
+%p
+  %b= t(:public_domain)+'?'
+  = @html_dir.public_domain ? t(:yes) : t(:no)
+
+= link_to t(:edit), edit_html_dir_path(@html_dir)
+= ' | '
+= link_to t(:back), html_dirs_path

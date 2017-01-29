@@ -32,7 +32,7 @@ class HtmlDirsController < ApplicationController
     @html_dir.save!
     person.public_domain = @html_dir.public_domain
     person.save!
-    redirect_to @html_dir, notice: "Associated with VIAF id #{params[:viaf]}"
+    redirect_to @html_dir, notice: t(:associated_with_viaf, viaf: params[:viaf])
   end
   # GET /html_dirs/1
   # GET /html_dirs/1.json
@@ -84,7 +84,7 @@ class HtmlDirsController < ApplicationController
 
     respond_to do |format|
       if @html_dir.update_attributes(params[:html_dir])
-        format.html { redirect_to @html_dir, notice: 'Html dir was successfully updated.' }
+        format.html { redirect_to @html_dir, notice: t(:updated_successfully) }
         format.json { head :ok }
       else
         format.html { render action: 'edit' }
