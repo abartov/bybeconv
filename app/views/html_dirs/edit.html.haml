@@ -1,0 +1,8 @@
+%div{style: 'margin:10px;'}
+  %h1= t(:editing_dir)
+
+  = render 'form'
+
+  = link_to t(:show), @html_dir
+  = ' | '
+  = link_to t(:back), html_dirs_path
