@@ -93,6 +93,8 @@ module ApplicationHelper
       return t(:analyzed)
     when 'Published'
       return t(:published)
+    when 'Manual'
+      return t(:manual)
     else
       return t(:unknown)
     end

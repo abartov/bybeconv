@@ -57,6 +57,8 @@ class HtmlFileController < ApplicationController
     @total_fileerr = HtmlFile.where(status: 'FileError').count
     @total_parsed = HtmlFile.where(status: 'Parsed').count
     @total_accepted = HtmlFile.where(status: 'Accepted').count
+    @total_published = HtmlFile.where(status: 'Published').count
+    @total_manual = HtmlFile.where(status: 'Manual').count
     @total_nikkud_full = HtmlFile.where(nikkud: 'full').count
     @total_nikkud_some = HtmlFile.where(nikkud: 'some').count
     # build query condition
@@ -89,6 +91,13 @@ class HtmlFileController < ApplicationController
     params['commit'] = 'Commit'
     list
     render action: :list # help user find the newly-parsed files
+  end
+
+  def mark_manual
+    @text = HtmlFile.find(params[:id])
+    @text.status = 'Manual'
+    @text.save!
+    redirect_to action: :list
   end
 
   def frbrize
@@ -252,9 +261,13 @@ class HtmlFileController < ApplicationController
     @markdown = File.open(@text.path + '.markdown', 'r:UTF-8').read
     lines = @markdown.split "\n"
     new_lines = []
+    if lines[0] =~ /^#\s+/
+      new_lines.push lines[0] # copy over our own generated title / author line
+      lines.shift
+    end
     while line_count > 0
       line = lines.shift
-      if line.match /\S/ and !line.match /#\s+\S+/ # ignore our own generated title / author line
+      if line.match /\S/
         line_count -= 1 # skip one non-empty line and decrement
       else
         new_lines.push line # preserve whitespace lines

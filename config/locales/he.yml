@@ -24,8 +24,9 @@ he:
   associate_with_viaf: קשר את התיקיה לרשומת ה-VIAF הזו
   associated_with_viaf: קושר לרשומה מספר %{viaf} במאגר VIAF
   nothing_found_try_surname: אין תוצאות.  נסו לעדכן (זמנית!) את שם המחבר לשם המשפחה בלבד וחפשו שוב.
-  conversion_stats_html: "סטטיסטיקה -- %{total_texts} סך הכל קבצים ישנים, %{total_known} קבצים אובחנו, %{total_images} עם תמונות, %{total_footnotes} עם הערות שוליים, %{total_tables} עם טבלאות, %{total_nikkud_full} עם ניקוד מלא, %{total_nikkud_some} עם ניקוד חלקי. <p /> מצבים אחרים -- %{total_badenc} עם תקלת קידוד, %{total_fileerr} עם שגיאת קובץ אחרת, %{total_parsed} קבצים פוענחו, %{total_accepted} קבצים אושרו :(."
+  conversion_stats_html: "סטטיסטיקה -- %{total_texts} סך הכל קבצים ישנים, %{total_known} קבצים אובחנו, %{total_images} עם תמונות, %{total_footnotes} עם הערות שוליים, %{total_tables} עם טבלאות, %{total_nikkud_full} עם ניקוד מלא, %{total_nikkud_some} עם ניקוד חלקי. <p /> מצבים אחרים -- %{total_badenc} עם תקלת קידוד, %{total_fileerr} עם שגיאת קובץ אחרת, %{total_parsed} קבצים פוענחו, %{total_accepted} קבצים אושרו, מספר%{total_published} ראו אור בקטלוג, %{total_manual} קבצים ממתינים להסבה ידנית."
   analyze_all_unknown: "אבחון כל הקבצים הלא מאובחנים (עלול להימשך זמן רב)"
+  mark_as_manual: סמן כדורש הסבה ידנית
   nikkud: ניקוד
   footnotes: הערות שוליים
   images: תמונות
@@ -42,6 +43,7 @@ he:
   accepted: אושר
   analyzed: אובחן
   published: פורסם בקטלוג
+  manual: ממתין להסבה ידנית
   WEM: ישויות ביבליוגרפיות
   toc_edit_title: "תצוגת תוכן עניינים ליוצר/ת %{author}"
   no_toc_yet: "טרם נקלט תוכן עניינים ליוצר/ת"

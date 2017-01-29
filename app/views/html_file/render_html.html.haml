@@ -34,6 +34,7 @@
       %li= link_to t(:chopN_html, {n: i}), action: "chop#{i}", id: @text.id
     - [1, 2].each do |i|
       %li= link_to t(:choplastN_html, {n: i}), action: "choplast#{i}", id: @text.id
+    %li= link_to t(:mark_as_manual), action: :mark_manual, id: @text.id
     %li
       %b
         != raw(t(:accept_conversion_and) + link_to(t(:frbrize), html_file_frbrize_path(@text)))
