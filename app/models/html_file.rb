@@ -266,7 +266,7 @@ class NokoDoc < Nokogiri::XML::SAX::Document
         lines[i] = '***' # make it a Markdown horizontal rule
       else
         nikkud = count_nikkud(lines[i])
-        if (nikkud[:total] > 1000 and nikkud[:ratio] > 0.6) or (nikkud[:total] <= 1000 and nikkud[:ratio] > 0.3)
+        if (nikkud[:total] > 2000 and nikkud[:ratio] > 0.6) or (nikkud[:total] <= 2000 and nikkud[:ratio] > 0.3)
           # make full-nikkud lines PRE
           lines[i] = '    '+lines[i] unless lines[i] =~ /\[\^ftn/ # at least four spaces make a PRE in Markdown
         end
