@@ -314,9 +314,9 @@ class HtmlFile < ActiveRecord::Base
       case
         when nikkud_info[:nikkud] == 0
           self.nikkud = "none"
-        when (nikkud_info[:total] > 2000 and nikkud_info[:ratio] < 0.6)
+        when (nikkud_info[:total] > 2000 and nikkud_info[:ratio] < 0.4)
           self.nikkud = "some"
-        when (nikkud_info[:total] <= 2000 and nikkud_info[:ratio] < 0.3)
+        when (nikkud_info[:total] <= 2000 and nikkud_info[:ratio] < 0.2)
           self.nikkud = "some"
         else
           self.nikkud = "full"
