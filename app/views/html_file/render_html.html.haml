@@ -38,7 +38,12 @@
     %li= link_to t(:mark_as_manual), action: :mark_manual, id: @text.id
     %li
       %b
-        != raw(t(:accept_conversion_and) + link_to(t(:frbrize), html_file_frbrize_path(@text)))
+        - if @text.genre.nil? or @text.genre.empty?
+          = t(:must_set_genre)
+        - elsif @text.status == 'Accepted'
+          != link_to t(:publish), action: :publish, id: @text.id
+        - else
+          != raw(t(:accept_conversion_and) + link_to(t(:frbrize), html_file_frbrize_path(@text)))
 %p= link_to t(:back_to_dashboard), :action => :list
 
 :javascript

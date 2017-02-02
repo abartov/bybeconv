@@ -27,15 +27,14 @@ check HtmlFile id 4291 in production (Sokolov) -- currently(??) crashing on char
   }
 }
 
-- published poetry still with spaces
 - chop_head didn't work on negev
 - kabak's ToC didn't update
 - parallel with original in render_html
 - spaces before/after bold
 - split birth date and death date
-- make public_domain non-boolean, to allow "published after failing to identify owners"
 - genre didn't update in kabak
 
+- make public_domain non-boolean, to allow "published after failing to identify owners"
 
 Conversion system
 -----------------
