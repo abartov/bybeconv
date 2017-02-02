@@ -38,6 +38,12 @@
     = f.label t(:nli_id)
     = f.text_field :nli_id
   .field
+    = t(:wikipedia_url)
+    = f.text_field :wikipedia_url
+  .field
+    = t(:wikipedia_snippet)
+    = f.text_area :wikipedia_snippet
+  .field
     = f.label t(:current_image)
     = image_tag @person.profile_image.url(:thumb)
   .field

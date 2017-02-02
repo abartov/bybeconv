@@ -17,6 +17,8 @@ he:
   created_frbr: הישויות הביבליוגרפיות נוצרו!
   cannot_create_frbr: אי אפשר ליצור ישויות ביבליוגרפיות. אולי משום שטרם קושר יוצר.
   editing_dir: עריכת תיקיה ישנה
+  wikipedia_snippet: תקציר מויקיפדיה
+  wikipedia_url: קישורית לויקיפדיה
   none_yet_click_edit_to_associate: טרם קושר. יש ללחוץ על עריכה כדי לקשר.
   send_to_viaf: חיפוש מחבר במאגר VIAF
   person_entity: ישות מחבר
@@ -95,6 +97,9 @@ he:
   orig_lang: שפת מקור
   full_mode: תצוגה מלאה
   rest_in_wikipedia: להמשך הערך בויקיפדיה העברית
+  to_the_wikipedia_article: לערך בויקיפדיה
+  wikidata_id: מזהה בויקינתונים
+  Raw: טרם עוּבַּד
   copyright_status: מצב זכויות יוצרים
   basic_details: פרטים בסיסיים
   proof_thanks_title: קיבלנו, תודה!

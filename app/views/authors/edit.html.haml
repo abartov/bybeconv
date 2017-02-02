@@ -17,6 +17,12 @@
   %br
   = t(:viaf_id)
   = f.text_field :viaf_id
+  %br
+  = t(:wikipedia_url)
+  = f.text_field :wikipedia_url
+  %br
+  = t(:wikipedia_snippet)
+  = f.text_area :wikipedia_snippet
   %p
   = f.submit t(:update)
 %p

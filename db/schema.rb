@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170202032538) do
+ActiveRecord::Schema.define(version: 20170202072151) do
 
   create_table "api_keys", force: :cascade do |t|
     t.string   "email",       limit: 255
@@ -183,6 +183,7 @@ ActiveRecord::Schema.define(version: 20170202032538) do
     t.string   "profile_image_content_type", limit: 255
     t.integer  "profile_image_file_size",    limit: 4
     t.datetime "profile_image_updated_at"
+    t.integer  "wikidata_id",                limit: 4
   end
 
   create_table "people_works", id: false, force: :cascade do |t|

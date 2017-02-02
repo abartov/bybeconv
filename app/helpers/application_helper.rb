@@ -100,6 +100,11 @@ module ApplicationHelper
     end
   end
 
+  def textify_toc_status(st)
+    return I18n.t(:unknown) if st.nil? or st.empty?
+    return I18n.t(st)
+  end
+
   def sitenotice
     return ''
   end

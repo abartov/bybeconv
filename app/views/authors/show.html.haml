@@ -22,7 +22,7 @@
       = @author.public_domain ? t(:public_domain) : t(:by_permission)
       %br
       %b= t(:toc_status)
-      = t(@author.toc.status)
+      != t(@author.toc.status)
       %br
       %b= t(:comments)
       = @author.comment
@@ -34,6 +34,13 @@
       %b= t(:viaf_id)
       != "&rlm;"
       = @author.viaf_id
+      %br
+      %b= t(:wikidata_id)
+      - unless @author.wikidata_id.nil?
+        %a{ href: "https://wikidata.org/wiki/Q#{@author.wikidata_id}"}= @author.wikidata_id.to_s
+      %br
+      %b= t(:wikipedia_url)
+      %a{ href: @author.wikipedia_url}= t(:to_the_wikipedia_article)
   %tr
     %td
       %h2= t(:content)

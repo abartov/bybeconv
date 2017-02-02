@@ -15,7 +15,7 @@
 
   - @people.each do |person|
     %tr
-      %td= link_to person.name, person
+      %td= link_to person.name, authors_show_path(id: person.id)
       %td= person.dates
       %td= person.other_designation
       %td= person.has_comment? ? '+' : ''
@@ -26,7 +26,7 @@
           %span{style: 'color: red'}= t(:no_toc_yet)
         - else
           = link_to t(:show_toc), author_toc_path(person)
-      %td= link_to t(:edit), edit_person_path(person)
+      %td= link_to t(:edit), authors_edit_path(id: person.id)
       %td
         - unless person.toc.nil?
           = link_to t(:edit_toc), authors_edit_toc_path(person)
