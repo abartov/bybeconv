@@ -241,7 +241,7 @@ module BybeUtils
   def toc_links_to_markdown_links(buf)
     ret = ''
     until buf.empty?
-      m = buf.match /&&&פריט: (\S\d+) &&&כותרת: (.*?)&&&/
+      m = buf.match /&&&\s*פריט: (\S\d+)\s*&&&\s*כותרת: (.*?)\s*&&&/ # tolerate whitespace; this will be edited manually
       if m.nil?
         ret += buf
         buf = ''

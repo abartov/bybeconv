@@ -87,7 +87,7 @@ def match_link(dirname, target, text)
   else
     the_id = "מ#{thefile.manifestations[0].id}"
   end
-  return "&&&פריט: #{the_id} &&&כותרת: #{text.gsub("\n",' ').gsub('&nbsp;',' ').strip}&&&"
+  return "&&& פריט: #{the_id} &&& כותרת: #{text.gsub("\n",' ').gsub('&nbsp;',' ').strip} &&&"
 end
 
 def die(msg)
