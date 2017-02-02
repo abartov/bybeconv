@@ -1,9 +1,9 @@
-= form_for @person do |f|
-  - if @person.errors.any?
+= form_for person, url: {action: :update, id: person.id} do |f|
+  - if person.errors.any?
     #error_explanation
-      %h2= "#{pluralize(@person.errors.count, "error")} prohibited this person from being saved:"
+      %h2= "#{pluralize(person.errors.count, "error")} prohibited this person from being saved:"
       %ul
-        - @person.errors.full_messages.each do |msg|
+        - person.errors.full_messages.each do |msg|
           %li= msg
 
   .field
@@ -15,9 +15,9 @@
   .field
     = f.label t(:copyright_status)
     %br
-    = f.radio_button(:public_domain, true, checked: @person.public_domain && (not @person.public_domain.nil?))
+    = f.radio_button(:public_domain, true, checked: person.public_domain && (not person.public_domain.nil?))
     = f.label t(:public_domain)
-    = f.radio_button(:public_domain, false, checked: (not @person.public_domain) && (not @person.public_domain.nil?))
+    = f.radio_button(:public_domain, false, checked: (not person.public_domain) && (not person.public_domain.nil?))
     = f.label t(:by_permission)
   .field
     = f.label t(:other_designation)
@@ -38,14 +38,18 @@
     = f.label t(:nli_id)
     = f.text_field :nli_id
   .field
+    = f.label t(:wikidata_id)
+    = f.text_field :wikidata_id, size: 10
+  .field
     = t(:wikipedia_url)
-    = f.text_field :wikipedia_url
+    = f.text_area :wikipedia_url, rows: 3, cols: 50
+  %br
   .field
     = t(:wikipedia_snippet)
-    = f.text_area :wikipedia_snippet
+    = f.text_area :wikipedia_snippet, rows: 8, cols: 50
   .field
     = f.label t(:current_image)
-    = image_tag @person.profile_image.url(:thumb)
+    = image_tag person.profile_image.url(:thumb)
   .field
     = f.label t(:upload_new_image)
     = f.file_field :profile_image

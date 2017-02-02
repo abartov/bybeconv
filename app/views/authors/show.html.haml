@@ -1,11 +1,13 @@
 %h1= @author.name
+%p
+  %b= t(:last_update)+': '
+  = @author.updated_at.to_s
 / partials?
 %b{ style: 'font-size: 2rem'}
   = link_to t(:edit_metadata), authors_edit_path(id: @author.id)
 %br
 %b{ style: 'font-size: 2rem'}
   = link_to t(:edit_toc), authors_edit_toc_path(id: @author.id)
-%p
 %table
   %tr
     %td
@@ -14,15 +16,21 @@
       %h2= t(:identifiers)
   %tr
     %td
-      / basic info
+      / ===== basic info =====
       %b= t(:life_years)
       = @author.dates
       %br
       %b= t(:copyright_status)
-      = @author.public_domain ? t(:public_domain) : t(:by_permission)
+      - unless @author.public_domain.nil?
+        = @author.public_domain ? t(:public_domain) : t(:by_permission)
       %br
+      %b= t(:other_designation)
+      = @author.other_designation
+      %br
+      %b= t(:country)
+      = @author.country
       %b= t(:toc_status)
-      != t(@author.toc.status)
+      = t(@author.toc.status)
       %br
       %b= t(:comments)
       = @author.comment
@@ -44,6 +52,10 @@
   %tr
     %td
       %h2= t(:content)
+    %td
+      %h2= t(:photo)
+  %tr
+    %td
       %b= t(:works)
       = link_to "#{@count[:works]} #{t(:works)}", author_toc_path(id: @author.id)
       %br
@@ -53,13 +65,11 @@
       %b= t(:works_about)
       = t(:TBD)
     %td
+      %p
+        = image_tag @author.profile_image.url(:thumb)
 %p
 = link_to t(:back), authors_list_path
 
-/    t.string   "title",             limit: 255
-/    t.string   "other_designation", limit: 255
-/    t.string   "affiliation",       limit: 255
-/    t.string   "country",           limit: 255
 /    t.text     "comment",           limit: 65535
 /    t.datetime "created_at",                      null: false
 /    t.datetime "updated_at",                      null: false

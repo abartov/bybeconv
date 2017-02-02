@@ -1,29 +1,4 @@
 %h1= "#{@author.name}: #{t(:edit_metadata)}"
-= form_for @author, url: {action: :update, id: @author.id} do |f|
-  = t(:name)
-  = f.text_field :name
-  %br
-  = t(:life_years)
-  = f.text_field :dates
-  %br
-  = t(:public_domain)
-  = f.check_box :public_domain
-  %br
-  = t(:comments)
-  = f.text_area :comment
-  %br
-  = t(:nli_id)
-  = f.text_field :nli_id
-  %br
-  = t(:viaf_id)
-  = f.text_field :viaf_id
-  %br
-  = t(:wikipedia_url)
-  = f.text_field :wikipedia_url
-  %br
-  = t(:wikipedia_snippet)
-  = f.text_area :wikipedia_snippet
-  %p
-  = f.submit t(:update)
+= render partial: 'form', locals: {person: @author}
 %p
 = link_to t(:back), authors_show_path(id: @author.id)

@@ -100,6 +100,8 @@ he:
   to_the_wikipedia_article: לערך בויקיפדיה
   wikidata_id: מזהה בויקינתונים
   Raw: טרם עוּבַּד
+  photo: תמונה
+  last_update: עדכון אחרון
   copyright_status: מצב זכויות יוצרים
   basic_details: פרטים בסיסיים
   proof_thanks_title: קיבלנו, תודה!
@@ -250,7 +252,7 @@ he:
   from: מאת
   content: תוכן
   submitted_at: התקבל בתאריך
-  html_dirs_list: רשימת תיקיות
+  html_dirs_list: רשימת תיקיות ישנות
   html_files_list: הסבת קבצים מהמערכת הישנה
   catalog_dashboard: קטלוג המערכת
   catalog_title: קטלוג פרויקט בן-יהודה
