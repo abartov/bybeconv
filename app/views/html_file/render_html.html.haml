@@ -1,6 +1,7 @@
 %div{style: 'margin: 5px'}
   %h2= t(:converted_output, {fname: @text.path.sub(AppConstants.base_dir,'')})
-  %button#bPoetry= t(:treat_as_poetry)
+  - unless @text.paras_condensed
+    %button#bPoetry= t(:treat_as_poetry)
   != raw(@html)
   %p
     = form_tag(action: 'render_html', id: @text.id) do
@@ -32,8 +33,8 @@
     %li= link_to t(:chop_and_update_title), action: :chop_title, id: @text.id
     - [1, 2, 3].each do |i|
       %li= link_to t(:chopN_html, {n: i}), action: "chop#{i}", id: @text.id
-    - [1, 2].each do |i|
-      %li= link_to t(:choplastN_html, {n: i}), action: "choplast#{i}", id: @text.id
+    / - [1, 2].each do |i|
+    /   %li= link_to t(:choplastN_html, {n: i}), action: "choplast#{i}", id: @text.id
     %li= link_to t(:mark_as_manual), action: :mark_manual, id: @text.id
     %li
       %b

@@ -184,6 +184,7 @@ class HtmlFileController < ApplicationController
   def poetry
     @text = HtmlFile.find(params[:id])
     @text.paras_to_lines!
+    @text.paras_condensed = true # running it again would lose stanzas!
     @text.save!
     redirect_to action: :render_html, id: params[:id]
   end
