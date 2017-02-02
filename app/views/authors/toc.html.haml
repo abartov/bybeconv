@@ -23,9 +23,9 @@
     .col-sm-2
       = image_tag @author.profile_image.url(:thumb)
   #maintext.row
-    .col-sm-11
+    .col-sm-10
       = render partial: 'toc', locals: {author: @author, html: @html}
-    .col-sm-1
+    .col-sm-2
       = render partial: 'toolbox'
 
 :javascript

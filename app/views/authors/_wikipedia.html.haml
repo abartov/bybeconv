@@ -1,3 +1,4 @@
-= author.wikipedia_snippet
-!= "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
-= link_to t(:rest_in_wikipedia), author.wikipedia_url
+- unless author.wikipedia_url.nil? or author.wikipedia_snippet.nil? or author.wikipedia_url.empty? or author.wikipedia_snippet.empty?
+  = author.wikipedia_snippet
+  != "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+  = link_to t(:rest_in_wikipedia), author.wikipedia_url
