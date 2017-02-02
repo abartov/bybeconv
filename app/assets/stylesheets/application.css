@@ -194,6 +194,11 @@ p {
   margin-bottom: 0.4rem;
 }
 
+a { color: #660248; text-decoration: none;
+}
+a:hover { text-decoration: none; }
+a:visited {text-decoration: none;}
+
 .small-text {
   font-size: 1.4rem;
 }
@@ -402,6 +407,10 @@ p {
   color: #907989;
 }
 .pagination a:active{ color: #660248;}
+
+.no_underline a:hover { color: black; text-decoration: none;}
+.no_underline a:active { color: black; text-decoration: none;}
+.no_underline a:visited { color: black; text-decoration: none;}
 
 .toolbox {
   width: 6rem;
