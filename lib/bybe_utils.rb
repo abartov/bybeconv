@@ -107,7 +107,10 @@ module BybeUtils
     viaf_result = JSON.parse(viaf.get("/viaf/AutoSuggest?query=#{URI.escape(author_string)}").body)
     logger.debug("viaf_result: #{viaf_result.to_s}")
     logger.debug("viaf_result['result']: #{viaf_result['result'].to_s}")
-    return nil if viaf_result['result'].nil?
+    if viaf_result['result'].nil?
+      viaf_result = JSON.parse(viaf.get("/viaf/AutoSuggest?query=#{URI.escape(author_string.split(/[, ]/)[0]))}").body) # try again with just the first word
+    end
+    return nil if viaf_result['result'].nil? # give up
     viaf_items = viaf_result['result'].map { |h| [h['term'], h['viafid']] }
     logger.info("#{viaf_items.length} results from VIAF for #{author_string}")
     viaf_items
