@@ -1,6 +1,6 @@
 include BybeUtils
 class Person < ActiveRecord::Base
-  attr_accessible :affiliation, :comment, :country, :dates, :name, :nli_id, :other_designation, :viaf_id, :public_domain, :profile_image
+  attr_accessible :affiliation, :comment, :country, :name, :nli_id, :other_designation, :viaf_id, :public_domain, :profile_image, :birthdate, :deathdate, :wikidata_id, :wikipedia_url, :wikipedia_snippet, :profile_image
   is_impressionable # for statistics
   belongs_to :toc
   belongs_to :period
@@ -24,10 +24,18 @@ class Person < ActiveRecord::Base
       bdate = viaf_record['birthDate'].nil? ? '?' : viaf_record['birthDate'].encode('utf-8')
       ddate = viaf_record['deathDate'].nil? ? '?' : viaf_record['deathDate'].encode('utf-8')
       datestr = bdate+'-'+ddate
-      p = Person.new(dates: datestr, name: viaf_record['labels'][0].encode('utf-8'), viaf_id: viaf_id)
+      p = Person.new(dates: datestr, name: viaf_record['labels'][0].encode('utf-8'), viaf_id: viaf_id, birthdate: bdate, deathdate: ddate)
       p.save!
     end
     p
+  end
+
+  def life_years
+    bpos = birthdate.index('-') # YYYYMMDD or YYYY is assumed
+    birthyear = bpos > 0 ? birthdate[0..bpos-1] : '?'
+    dpos = deathdate.index('-')
+    deathyear = dpos > 0 ? deathdate[0..dpos-1] : '?'
+    return "#{birthyear}-#{deathyear}"
   end
 
   def period_string
