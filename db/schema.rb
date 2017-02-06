@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170205055654) do
+ActiveRecord::Schema.define(version: 20170206074815) do
 
   create_table "api_keys", force: :cascade do |t|
     t.string   "email",       limit: 255
@@ -169,8 +169,8 @@ ActiveRecord::Schema.define(version: 20170205055654) do
     t.string   "affiliation",                limit: 255
     t.string   "country",                    limit: 255
     t.text     "comment",                    limit: 16777215
-    t.datetime "created_at",                                  null: false
-    t.datetime "updated_at",                                  null: false
+    t.datetime "created_at",                                                  null: false
+    t.datetime "updated_at",                                                  null: false
     t.string   "viaf_id",                    limit: 255
     t.string   "nli_id",                     limit: 255
     t.integer  "toc_id",                     limit: 4
@@ -186,6 +186,7 @@ ActiveRecord::Schema.define(version: 20170205055654) do
     t.integer  "wikidata_id",                limit: 4
     t.string   "birthdate",                  limit: 255
     t.string   "deathdate",                  limit: 255
+    t.boolean  "metadata_approved",                           default: false
   end
 
   create_table "people_works", id: false, force: :cascade do |t|

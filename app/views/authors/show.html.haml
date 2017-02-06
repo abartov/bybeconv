@@ -2,6 +2,9 @@
 %p
   %b= t(:last_update)+': '
   = @author.updated_at.to_s
+%p
+  %b= t(:metadata_approved)+': '
+  = @author.metadata_approved ? t(:yes) : t(:no)
 / partials?
 %b{ style: 'font-size: 2rem'}
   = link_to t(:edit_metadata), authors_edit_path(id: @author.id)
@@ -29,8 +32,9 @@
       %br
       %b= t(:country)
       = @author.country
+      %br
       %b= t(:toc_status)
-      = t(@author.toc.status)
+      = @author.toc.nil? ? t(:no_toc_yet) : t(@author.toc.status)
       %br
       %b= t(:comments)
       = @author.comment

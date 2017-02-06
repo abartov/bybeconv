@@ -4,7 +4,7 @@ class PeopleController < ApplicationController
   # GET /people
   # GET /people.json
   def index
-    @people = Person.page(params[:page]).order('name asc')
+    @people = Person.page(params[:page]).order('metadata_approved asc, name asc')
 
     respond_to do |format|
       format.html # index.html.erb

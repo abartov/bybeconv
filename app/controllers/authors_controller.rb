@@ -47,7 +47,8 @@ class AuthorsController < ApplicationController
   end
 
   def list
-    @authors = Person.page(params[:page]).order(params[:order]) # TODO: pagination
+    def_order = 'metadata_approved asc, name asc'
+    @people = Person.page(params[:page]).order(params[:order].nil? ? def_order : params[:order]) # TODO: pagination
   end
 
   def toc
