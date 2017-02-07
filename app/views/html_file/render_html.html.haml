@@ -2,32 +2,36 @@
   %h2= t(:converted_output, {fname: @text.path.sub(AppConstants.base_dir,'')})
   - unless @text.paras_condensed
     %button#bPoetry= t(:treat_as_poetry)
-  != raw(@html)
-  %p
-    = form_tag(action: 'render_html', id: @text.id) do
-      = label_tag(:genre, t(:genre))
-      = select_tag(:genre, options_for_select(get_genres.map {|genre| [I18n.t(genre), genre]}, @text.genre), {include_blank: true})
-      %br
-      = label_tag t(:associated_persons)
-      %br
-      - if @text.person.nil?
-        - if @text.html_dir.person.nil?
-          %span{style: 'color:red'}= link_to t(:dir_not_associated), url_for(controller: :html_dirs, action: :edit, id: @text.html_dir.id)
-        - else
-          %span{style: 'color:green'}= link_to @text.html_dir.person.name, person_path(@text.html_dir.person.id)
-          = link_to 'Confirm!', html_file_confirm_html_dir_person_path(@text), {remote: true, :class => "ajax_link", "data-done-msg" => 'confirmed!', "data-doing-msg" => 'confirming...' }
+  = form_tag(action: 'render_html', id: @text.id) do
+    .markdown_container
+      %div{ style:"vertical-align:top; width: 30%;display:flex;flex-direction:column;height:100%;box-sizing:border-box;float:left;padding-right:7px;"}
+        #legacy_markdown_link
+          %h2= t(:markdown)
+          = t(:raw_markdown_html, {orig_html: AppConstants.base_uri+ @text.url})
+        .markdown
+          = text_area_tag(:markdown, raw(@markdown), class: 'textarea100')
+      %div{ style:"vertical-align:top; width: 70%; padding-left:10px;background:#d2cfcf;"}
+        %h2= t(:display_text)
+        != raw(@html)
+    = label_tag(:genre, t(:genre))
+    = select_tag(:genre, options_for_select(get_genres.map {|genre| [I18n.t(genre), genre]}, @text.genre), {include_blank: true})
+    %br
+    = label_tag t(:associated_persons)
+    %br
+    - if @text.person.nil?
+      - if @text.html_dir.person.nil?
+        %span{style: 'color:red'}= link_to t(:dir_not_associated), url_for(controller: :html_dirs, action: :edit, id: @text.html_dir.id)
       - else
-        %span{style: 'color:green'}= @text.person.name
-        != "&nbsp;&nbsp;"+t(:confirmed)
-        %br
-        - if @text.metadata_ready?
-          %b
-            %span{style: 'color:green'}= t(:frbr_ready)
-      %p{:class => 'heading'}= t(:raw_markdown_html, {orig_html: AppConstants.base_uri+ @text.url})
-      .markdown
-        %p
-          = text_area_tag(:markdown, raw(@markdown), size: "80x40")
-      = submit_tag t(:save)
+        %span{style: 'color:green'}= link_to @text.html_dir.person.name, person_path(@text.html_dir.person.id)
+        = link_to 'Confirm!', html_file_confirm_html_dir_person_path(@text), {remote: true, :class => "ajax_link", "data-done-msg" => 'confirmed!', "data-doing-msg" => 'confirming...' }
+    - else
+      %span{style: 'color:green'}= @text.person.name
+      != "&nbsp;&nbsp;"+t(:confirmed)
+      %br
+      - if @text.metadata_ready?
+        %b
+          %span{style: 'color:green'}= t(:frbr_ready)
+    = submit_tag t(:save_and_update_display)
   %h3= t(:actions)
   %ul
     %li= link_to t(:chop_and_update_title), action: :chop_title, id: @text.id
@@ -49,7 +53,10 @@
 :javascript
   var font_size = 12
   jQuery(document).ready(function() {
-    jQuery(".markdown").hide();
+    var newsize = $('.markdown_container').height() - $('#legacy_markdown_link').height(); // this is horrible, but I've given up on getting the textarea to auto-fill the container height. :((
+    $('.markdown').css('height', newsize);
+    $('.textarea100').css('height', newsize);
+    //jQuery(".markdown").hide();
     jQuery(".heading").click(function()
     {
       jQuery(this).next(".markdown").slideToggle(500);

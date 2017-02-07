@@ -278,6 +278,7 @@ class NokoDoc < Nokogiri::XML::SAX::Document
     ['.',',',':',';','?','!'].each {|c|
       new_buffer.gsub!(" #{c}",c) # remove spaces before punctuation
     }
+    new_buffer.gsub!('©כל הזכויות', '© כל הזכויות') # fix an artifact of the conversion
     /#|\p{Word}/.match new_buffer # first non-whitespace char
     @markdown = $& + $' # skip all initial whitespace
   end

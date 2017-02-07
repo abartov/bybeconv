@@ -30,7 +30,7 @@ check HtmlFile id 4291 in production (Sokolov) -- currently(??) crashing on char
 - chop_head didn't work on negev
 - kabak's ToC didn't update
 - parallel with original in render_html
-- split birth date and death date
++ split birth date and death date
 + genre didn't update in kabak
 
 - make public_domain non-boolean, to allow "published after failing to identify owners"
