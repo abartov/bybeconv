@@ -12,6 +12,9 @@ class Person < ActiveRecord::Base
   has_attached_file :profile_image, styles: { full: "720x1040", medium: "360x520", thumb: "180x260", tiny: "90x120"}, default_url: "/assets/:style/missing.png", storage: :s3, s3_credentials: 'config/s3.yml', s3_region: 'us-east-1'
   validates_attachment_content_type :profile_image, content_type: /\Aimage\/.*\z/
 
+  # class variable
+  @@popular_authors = nil
+
   def self.person_by_viaf(viaf_id)
     Person.find_by_viaf_id(viaf_id)
   end
@@ -52,4 +55,22 @@ class Person < ActiveRecord::Base
   def copyright_as_string
     return public_domain ? I18n.t(:public_domain) : I18n.t(:by_permission)
   end
+
+  def self.recalc_popular
+    # this is designed to only be called no more than once a day, by clockwork!
+    author_stats = {}
+    Person.has_toc.each {|p| # gather stats per author with ToC
+      author_stats[p] = p.impressions.count
+    }
+    top_authors = author_stats.sort_by {|k,v| v}
+    @@popular_authors = top_authors[0..9] # top 10
+  end
+
+  def self.get_popular_authors
+    if @@popular_authors == nil
+      self.recalc_popular
+    end
+    return @@popular_authors
+  end
+
 end

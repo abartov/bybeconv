@@ -10,6 +10,9 @@ class Manifestation < ActiveRecord::Base
   has_many :external_links
   scope :new_since, -> (since) { where('created_at > ?', since)}
 
+  # class variable
+  @@popular_works = nil
+
   def long?
     return false # TODO: implement
   end
@@ -39,5 +42,23 @@ class Manifestation < ActiveRecord::Base
       ret += ' / '+expressions[0].people[0].name
     end
     return ret # TODO: be less naive
+  end
+  def self.recalc_popular
+    # THIS WILL TAKE A WHILE!
+    # it runs a JOIN on every single publishedManifestation!
+    # It is designed to only be called no more than once a day, by clockwork!
+    work_stats = {}
+    Manifestation.all.each {|m|
+      work_stats[m] = m.impressions.count
+    }
+    top_works = work_stats.sort_by {|k,v| v}
+    @@popular_works = top_works[0..9] # top 10
+  end
+
+  def self.get_popular_works
+    if @@popular_works == nil
+      self.recalc_popular
+    end
+    return @@popular_works
   end
 end
