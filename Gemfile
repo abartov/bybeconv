@@ -8,7 +8,10 @@ gem 'rails', '~> 4.2.5' # what blocks upgrading?
 gem 'mysql2', '~> 0.3.11'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-twitter'
-gem 'clockwork' # scheduler
+#gem 'clockwork' # scheduler
+gem 'protected_attributes' # compatibility gem for 3.2.x-style attr_accessible
+gem 'delayed_job_active_record' # scheduler
+
 gem 'diffy'
 gem 'aws-sdk' # for the Amazon cloud
 gem 'paperclip' # for cloud files like author images
@@ -16,7 +19,6 @@ gem 'impressionist' # for pageview stats
 
 gem 'jquery-rails'
 gem "jquery-ui-rails"
-gem 'protected_attributes' # compatibility gem for 3.2.x-style attr_accessible
 gem 'rdf', '~> 2.0.1'
 gem 'sparql-client', '~> 2.0.1'
 gem 'activerecord-session_store'

@@ -62,9 +62,6 @@ GEM
     byebug (9.0.5)
     climate_control (0.0.3)
       activesupport (>= 3.0)
-    clockwork (2.0.0)
-      activesupport
-      tzinfo
     cocaine (0.5.8)
       climate_control (>= 0.0.3, < 1.0)
     coffee-script (2.4.1)
@@ -76,6 +73,11 @@ GEM
       safe_yaml (~> 1.0.0)
     daemons (1.2.4)
     debug_inspector (0.0.2)
+    delayed_job (4.1.2)
+      activesupport (>= 3.0, < 5.1)
+    delayed_job_active_record (4.1.1)
+      activerecord (>= 3.0, < 5.1)
+      delayed_job (>= 3.0, < 5)
     diff-lcs (1.2.5)
     diffy (3.1.0)
     ebnf (1.0.1)
@@ -396,8 +398,8 @@ DEPENDENCIES
   app_constants
   aws-sdk
   byebug
-  clockwork
   coffee-script
+  delayed_job_active_record
   diffy
   execjs
   gepub
