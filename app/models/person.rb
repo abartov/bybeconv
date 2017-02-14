@@ -62,8 +62,8 @@ class Person < ActiveRecord::Base
     Person.has_toc.each {|p| # gather stats per author with ToC
       author_stats[p] = p.impressions.count
     }
-    top_authors = author_stats.sort_by {|k,v| v}
-    @@popular_authors = top_authors[0..9] # top 10
+    bottom_authors = author_stats.sort_by {|k,v| v}
+    @@popular_authors = bottom_authors.reverse[0..9] # top 10
   end
 
   def self.get_popular_authors
