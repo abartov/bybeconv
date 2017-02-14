@@ -51,8 +51,8 @@ class Manifestation < ActiveRecord::Base
     Manifestation.all.each {|m|
       work_stats[m] = m.impressions.count
     }
-    top_works = work_stats.sort_by {|k,v| v}
-    @@popular_works = top_works[0..9] # top 10
+    bottom_works = work_stats.sort_by {|k,v| v}
+    @@popular_works = bottom_works.reverse[0..9] # top 10
   end
 
   def self.get_popular_works
