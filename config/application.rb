@@ -1,6 +1,7 @@
 require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
+require 'active_job'
 
 if defined?(Bundler)
   # If you precompile assets before deploying to production, use this line
@@ -32,11 +33,6 @@ module Bybeconv
     # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
     # config.time_zone = 'Central Time (US & Canada)'
 
-    # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
-    # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
-    config.i18n.default_locale = :he
-    config.i18n.enforce_available_locales = true
-
     # Configure the default encoding used in templates for Ruby 1.9.
     config.encoding = "utf-8"
 
@@ -50,7 +46,13 @@ module Bybeconv
     config.assets.version = '1.0'
 
     config.active_record.raise_in_transactional_callbacks = true # opting in to new behavior
+    #config.active_job.queue_adapter = :inline # scheduler
+    #config.active_job.queue_adapter = :delayed_job # scheduler
 
+    # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
+    # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
+    config.i18n.default_locale = :he
+    config.i18n.enforce_available_locales = true
 
   end
 end

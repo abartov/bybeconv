@@ -73,11 +73,6 @@ GEM
       safe_yaml (~> 1.0.0)
     daemons (1.2.4)
     debug_inspector (0.0.2)
-    delayed_job (4.1.2)
-      activesupport (>= 3.0, < 5.1)
-    delayed_job_active_record (4.1.1)
-      activerecord (>= 3.0, < 5.1)
-      delayed_job (>= 3.0, < 5)
     diff-lcs (1.2.5)
     diffy (3.1.0)
     ebnf (1.0.1)
@@ -335,6 +330,8 @@ GEM
     ruby_parser (3.8.2)
       sexp_processor (~> 4.1)
     rubyzip (1.2.0)
+    rufus-scheduler (3.3.3)
+      tzinfo
     safe_yaml (1.0.4)
     sass (3.4.22)
     sass-rails (5.0.6)
@@ -399,7 +396,6 @@ DEPENDENCIES
   aws-sdk
   byebug
   coffee-script
-  delayed_job_active_record
   diffy
   execjs
   gepub
@@ -427,6 +423,7 @@ DEPENDENCIES
   responders
   rmagick
   rmultimarkdown
+  rufus-scheduler
   sass-rails
   sparql-client (~> 2.0.1)
   therubyracer

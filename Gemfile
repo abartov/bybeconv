@@ -10,7 +10,7 @@ gem 'omniauth-google-oauth2'
 gem 'omniauth-twitter'
 #gem 'clockwork' # scheduler
 gem 'protected_attributes' # compatibility gem for 3.2.x-style attr_accessible
-gem 'delayed_job_active_record' # scheduler
+gem 'rufus-scheduler' # scheduler
 
 gem 'diffy'
 gem 'aws-sdk' # for the Amazon cloud
