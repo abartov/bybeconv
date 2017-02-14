@@ -33,6 +33,8 @@ def process_index(dirname, blob)
   die("can't understand this file structure!") if m.nil?
   body = $'.gsub(/<a(.*?)>(.*?)<\/a>/m,"[[a \\1]]\\2[[/a]]") # replace all links with placeholders
   body = body.gsub('</p>','XYZZY') # save actual paragraph ends
+  body = body.gsub('</h1>','XYZZY') # save actual paragraph ends
+  body = body.gsub('</h2>','XYZZY') # save actual paragraph ends
   body = body.gsub(/<.*?>/m,'') # remove all remaining HTML tags
   body = body.gsub('&nbsp;',' ') # remove hard spaces
   body = body.gsub('&#x000A;',"\n")
