@@ -47,6 +47,7 @@
 a { color: #660248;
 }
 */
+
 .icon-byarticle:before {
   content: "\61";
 }
@@ -74,37 +75,42 @@ a { color: #660248;
 .icon-byfigure-outline-cut:before {
   content: "\69";
 }
+.icon-byreference:before {
+  content: "\76";
+}
+.icon-byletters:before {
+  content: "\77";
+}
 .icon-bymemoir:before {
   content: "\6a";
 }
 .icon-bydrama:before {
   content: "\6b";
 }
-.icon-byprose:before {
-  content: "\6c";
+.icon-bytranslate:before {
+  content: "\73";
 }
-.icon-byread-future:before {
-  content: "\6e";
+.icon-bysurprise-work:before {
+  content: "\71";
 }
-.icon-byread-past:before {
-  content: "\6f";
+.icon-bysurprise-author:before {
+  content: "\72";
 }
 .icon-byread-present:before {
   content: "\70";
 }
-.icon-bysurprise-creation:before {
-  content: "\71";
+.icon-byread-past:before {
+  content: "\6f";
 }
-.icon-bysurprise-creator:before {
-  content: "\72";
+.icon-byread-future:before {
+  content: "\6e";
 }
-.icon-bytranslate:before {
-  content: "\73";
+.icon-byprose:before {
+  content: "\6c";
 }
 .icon-bypoetry:before {
   content: "\74";
 }
-
 .featured_item {
   background-color: #d2cfcf;
 }

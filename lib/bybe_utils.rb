@@ -287,10 +287,7 @@ module BybeUtils
     return ['he','en','fr','de','ru','yi','pl','ar','el','la','grc']
   end
 
-  def get_genres1 # just first row
-    return get_genres[0..3]
-  end
-  def get_genres2 # just second row
-    return get_genres[4..6]
+  def get_genres_by_row(row) # just first row
+    return get_genres[row*3-3..row*3-1]
   end
 end

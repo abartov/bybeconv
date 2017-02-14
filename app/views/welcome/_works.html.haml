@@ -1,26 +1,14 @@
 .works
-  .genre-card
-    - get_genres1.each do |genre|
-      .genre-card-content
-        .genre-icon
+  - [1,2,3].each do |row|
+    .genre-card{style: 'clear: both'}
+      - get_genres_by_row(row).each do |genre|
+        .genre-card-content
+          .genre-icon
+            %a{ href: manifestation_genre_path(genre: genre)}
+              %span{:class => "icon-by#{genre}"}
           %a{ href: manifestation_genre_path(genre: genre)}
-            %span{:class => "icon-by#{genre}"}
-        %a{ href: manifestation_genre_path(genre: genre)}
-          %h3{style: 'text-align: center'}= t(genre)
-        %span{style: 'text-align: center'}= @works_by_genre[genre].to_s+' '+t(:works)
-  .genre-card{style: 'clear: both'}
-    - get_genres2.each do |genre|
-      .genre-card-content
-        .genre-icon
-          %a{ href: manifestation_genre_path(genre: genre)}
-            %span{:class => "icon-by#{genre}"}
-        %a{ href: manifestation_genre_path(genre: genre)}
-          %h3{style: 'text-align: center'}= t(genre)
-        %span{style: 'text-align: center'}= @works_by_genre[genre].to_s+' '+t(:works)
-    .genre-card-content
-      .genre-icon
-        %a{ href: manifestation_genre_path(genre: 'lexicon')}
-          %span{:class => 'icon-bylexicon'}
-      %a{ href: manifestation_genre_path(genre: 'lexicon')}
-        %h3{style: 'text-align: center'}= t(:lexicon)
-      %span{style: 'text-align: center'}= @totals[:headwords].to_s+' '+t(:entries)
+            %h3{style: 'text-align: center'}= t(genre)
+          - if genre == 'lexicon' # special case re count
+            %span{style: 'text-align: center'}= @totals[:headwords].to_s+' '+t(:entries)
+          - else
+            %span{style: 'text-align: center'}= @works_by_genre[genre].to_s+' '+t(:works)
