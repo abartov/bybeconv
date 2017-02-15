@@ -1,4 +1,5 @@
-= render partial: 'toc', locals: {author: @author, html: @html}
+#maintext
+  = render partial: 'toc', locals: {author: @author, html: @html}
 
 - unless @diff.nil? # we have a rejected update
   = t(:update_conflict)
