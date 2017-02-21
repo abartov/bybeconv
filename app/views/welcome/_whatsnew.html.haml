@@ -7,7 +7,7 @@
             = image_tag author.profile_image.url(:tiny)
         .col-sm-8
           .whatsnew-content
-            %h3
+            %h3{ style: 'margin-top: 0px;'}
               = link_to author.name, author_toc_path(author)
             - worksbuf = ''
             - works.each do |m|
