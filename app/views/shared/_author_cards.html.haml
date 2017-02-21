@@ -1,7 +1,7 @@
 %h2= title
 .card
   .card-content
-    - authors[0..9].each do |author|
+    - authors[0..3].each do |author|
       - last if author.nil? # devmode protection against fewer than 5 most-popular authors
       .author-card{style: 'float:right;'}
         .pic-m
