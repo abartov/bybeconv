@@ -38,7 +38,7 @@ class Person < ActiveRecord::Base
     birthyear = bpos.nil? ? birthdate : birthdate[0..bpos-1]
     dpos = deathdate.index('-')
     deathyear = dpos.nil? ? deathdate : deathdate[0..dpos-1]
-    return "#{birthyear}-#{deathyear}"
+    return "#{birthyear}&rlm;-#{deathyear}"
   end
 
   def period_string

@@ -21,7 +21,7 @@
     %td
       / ===== basic info =====
       %b= t(:life_years)
-      = @author.life_years
+      != @author.life_years
       %br
       %b= t(:copyright_status)
       - unless @author.public_domain.nil?
