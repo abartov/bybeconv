@@ -7,7 +7,7 @@ class Toc < ActiveRecord::Base
     buf = toc
     ret = ''
     until buf.empty?
-      m = buf.match /&&&\s*פריט: (\w\d+)\s*&&&\s*כותרת: (.*?)&&&/
+      m = buf.match /&&&\s*פריט: (.\d+)\s*&&&\s*כותרת: (.*?)&&&/
       if m.nil?
         ret += buf
         buf = ''
