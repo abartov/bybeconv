@@ -463,8 +463,8 @@ a:visited {text-decoration: none;}
 
 .author-card {
 /*  width: 20rem;
-  height: 28rem; */
-  max-width: 180px;
+  height: 28rem;
+  max-width: 180px; */
   z-index: 1;
   float: right;
   margin-left: 1.5rem;
@@ -480,9 +480,9 @@ a:visited {text-decoration: none;}
   color: white;
   font-weight: bold;
   text-align: center;
-  height: 5rem;
+  height: 1rem;
   position: relative;
-  line-height: 5rem;
+/*  line-height: 5rem;*/
 }
 
 .author-card .most-read-badge {
