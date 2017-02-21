@@ -480,9 +480,9 @@ a:visited {text-decoration: none;}
   color: white;
   font-weight: bold;
   text-align: center;
-  height: 1rem;
+  height: 5rem;
   position: relative;
-/*  line-height: 5rem;*/
+  line-height: 5rem;
 }
 
 .author-card .most-read-badge {
