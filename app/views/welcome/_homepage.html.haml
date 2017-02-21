@@ -13,21 +13,21 @@
       / space
 
   .row
-    .col-sm-4
+    .col-sm-3
       / what's new
       %h2= t(:whats_new)
       = render partial: 'whatsnew'
     / .col-sm-1
     / space
-    .col-sm-8
+    .col-sm-9
       / author cards
       = render partial: 'shared/authors', locals: {popular_authors: @pop_authors, random_authors: @random_authors}
   .row
-    .col-sm-4
+    .col-sm-3
       / featured item
       %h2= t(:featured_item)
       = render partial: 'featured_item'
-    .col-sm-8
+    .col-sm-9
       / work cards
       %h2= t(:works_by_genre)
       = render partial: 'works'
