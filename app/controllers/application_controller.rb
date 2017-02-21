@@ -65,7 +65,7 @@ class ApplicationController < ActionController::Base
       candidates = Person.has_toc.order('RAND()').limit(ceiling-list.size) # fetch as many as are still needed
       candidates.each { |author| list << author unless (exclude_list.include? author) or (list.include? author) }
       i += 1
-    end until list.size >= ceiling or i > 5
+    end until list.size >= ceiling or i > 10 # TODO: fix bug where only one author is retrieved by above block
     return list
   end
 

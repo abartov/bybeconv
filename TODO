@@ -1,4 +1,5 @@
-- CONVERT ToCs!
+- process ToCs
+  - process bad ToCs (bad_tocs.txt)
 - home page
   - ?
   - interactive features
