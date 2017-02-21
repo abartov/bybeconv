@@ -252,14 +252,15 @@ module BybeUtils
         ret += $`
         addition = $& # by default
         buf = $'
+        item = $1
         anchor_name = $2.gsub('[','\[').gsub(']','\]')
-        if $1[0] == 'ה' # linking to a legacy HtmlFile
-          h = HtmlFile.find($1[1..-1].to_i)
+        if item[0] == 'ה' # linking to a legacy HtmlFile
+          h = HtmlFile.find(item[1..-1].to_i)
           unless h.nil?
             addition = "[#{anchor_name}](#{h.url})"
           end
         else # manifestation
-          mft = Manifestation.find($1[1..-1].to_i)
+          mft = Manifestation.find(item[1..-1].to_i)
           unless mft.nil?
             addition = "[#{anchor_name}](#{url_for(controller: :manifestation, action: :read, id: mft.id)})"
           end
