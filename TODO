@@ -1,6 +1,5 @@
-- top popular authors
-  - not this month
-- why does publishing not convert links on ToC
+- homepage bottom -- popular authors *this month*
+  - need to calculate in controller
 - process ToCs
   - process bad ToCs (bad_tocs.txt)
 - home page

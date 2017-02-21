@@ -35,9 +35,9 @@ class Person < ActiveRecord::Base
 
   def life_years
     bpos = birthdate.index('-') # YYYYMMDD or YYYY is assumed
-    birthyear = bpos > 0 ? birthdate[0..bpos-1] : '?'
+    birthyear = bpos.nil? ? birthdate : birthdate[0..bpos-1]
     dpos = deathdate.index('-')
-    deathyear = dpos > 0 ? deathdate[0..dpos-1] : '?'
+    deathyear = dpos.nil? ? deathdate : deathdate[0..dpos-1]
     return "#{birthyear}-#{deathyear}"
   end
 
