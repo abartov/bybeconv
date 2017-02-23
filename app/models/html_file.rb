@@ -268,7 +268,7 @@ class NokoDoc < Nokogiri::XML::SAX::Document
         nikkud = count_nikkud(lines[i])
         if (nikkud[:total] > 2000 and nikkud[:ratio] > 0.6) or (nikkud[:total] <= 2000 and nikkud[:ratio] > 0.3)
           # make full-nikkud lines PRE
-          lines[i] = '    '+lines[i] unless lines[i] =~ /\[\^ftn/ # at least four spaces make a PRE in Markdown
+          lines[i] = '> '+lines[i] unless lines[i] =~ /\[\^ftn/ # produce a blockquote (PRE would ignore bold and other markup)
         end
       end
     }
