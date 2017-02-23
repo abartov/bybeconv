@@ -24,6 +24,7 @@
         != raw(@html)
     - else
       #actualtext.maintext-poetry-body
+        != raw(@html)
     - if @m.chapters? and @m.long?
       = '(next chapter link)'
     = render partial: 'sharing_etc'
