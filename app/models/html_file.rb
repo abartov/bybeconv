@@ -525,6 +525,8 @@ class HtmlFile < ActiveRecord::Base
   def paras_to_lines!
     old_markdown = File.open(path + '.markdown', 'r:UTF-8').read
     old_markdown.gsub!("\n\n", "\n")
+    old_markdown.gsub!("\r\n", "\n") # files have DOS line-endings
+    old_markdown.gsub!("\n    \n", "\n") # remove empty lines
     old_markdown =~ /\n/
     body = $' # after title
     title = $`
