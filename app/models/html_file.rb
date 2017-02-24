@@ -274,11 +274,13 @@ class NokoDoc < Nokogiri::XML::SAX::Document
     }
     # lines.select! {|line| line =~ /\p{Word}/} # this seemed like a good idea, but actually loses the newlines between stanzas # TODO: revisit?
     new_buffer = lines.join "\n\n"
-    new_buffer.gsub!("\n\n\n", "\n\n")
+    new_buffer.gsub!("\n\s*\n\s*\n", "\n\n")
     ['.',',',':',';','?','!'].each {|c|
       new_buffer.gsub!(" #{c}",c) # remove spaces before punctuation
     }
     new_buffer.gsub!('©כל הזכויות', '© כל הזכויות') # fix an artifact of the conversion
+    new_buffer.gsub!(/> (.*?)\n\s*\n\s*\n/, "> \\1\n\n<br>\n") # add <br> tags for poetry, as a workaround to preserve stanza breaks
+    new_buffer.gsub!("\n<br>","<br>  ") # sigh
     /#|\p{Word}/.match new_buffer # first non-whitespace char
     @markdown = $& + $' # skip all initial whitespace
   end
