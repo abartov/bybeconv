@@ -5,8 +5,9 @@
       / space
       .col-sm-8.welcome-content
         %h2{style:'text-align:center'}= t(:welcome_title)
-        %p{style: 'margin-top:-10px; font-size: 1.5em; text-align: center'}= t(:welcome_stats_html, {authors: link_to(@totals[:authors].to_s, authors_index_path), works: link_to(@totals[:works].to_s, works_path), headwords: link_to(@totals[:headwords].to_s, 'http://benyehuda.org/~asaf/full_dict.html')})
-        %p{style: 'font-size: 1.5em; text-align: center'}= t(:welcome_paragraph_html)
+        %p{style: 'margin-top:-10px; font-size: 1.3em; text-align: center'}= t(:welcome_stats_html, {authors: link_to(@totals[:authors].to_s, authors_index_path), works: link_to(@totals[:works].to_s, works_path), headwords: link_to(@totals[:headwords].to_s, 'http://benyehuda.org/~asaf/full_dict.html')})
+        %br
+        %p{style: 'font-size: 1.3em; text-align: center'}= t(:welcome_paragraph_html)
         %p
         %br
       .col-sm-2
