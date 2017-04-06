@@ -108,7 +108,7 @@ class HtmlFileController < ApplicationController
     else
       unless @text.person.nil?
         @text.status = 'Accepted'
-        @text.genre = params['genre']
+        @text.genre = params['genre'] unless params['genre'].nil?
         @text.save!
         @text.create_WEM(@text.person.id)
         flash[:notice] = t(:created_frbr)
