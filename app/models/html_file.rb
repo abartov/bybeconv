@@ -219,7 +219,12 @@ class NokoDoc < Nokogiri::XML::SAX::Document
       add_markup(toadd)
     elsif name == 'a'
       link = @links.pop
-      add_markup("[#{link[:markdown]}](#{link[:href]})") unless link[:ignore] # emit non-footnote non-index links
+      toadd = "[#{link[:markdown]}](#{link[:href]})"
+      if @in_footnote # buffer footnote bodies separately
+        @footnote[:body] += toadd unless link[:ignore] # emit non-footnote non-index links
+      else
+        add_markup(toadd) unless link[:ignore] # emit non-footnote non-index links
+      end
     end
   end
 
