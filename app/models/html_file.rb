@@ -300,6 +300,7 @@ class HtmlFile < ActiveRecord::Base
   belongs_to :person # for simplicity, only a single author considered per HtmlFile -- additional authors can be added on the WEM entities later
   scope :with_nikkud, -> { where("nikkud IS NOT NULL and nikkud <> 'none'") }
   scope :not_stripped, -> { where('stripped_nikkud IS NULL or stripped_nikkud = 0') }
+  attr_accessible :title, :genre, :markdown
 
   def analyze
     # Word footnotes magic word 'mso-footnote-id'
