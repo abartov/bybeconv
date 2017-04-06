@@ -421,7 +421,11 @@ class HtmlFile < ActiveRecord::Base
   end
 
   def delete_pregen
-    File.delete path + '.html' if html_ready?
+    begin
+      File.delete path + '.html' if html_ready?
+    rescue
+      nil
+    end
   end
   # TODO: move those to be controller actions
   def make_html
@@ -611,9 +615,11 @@ class HtmlFile < ActiveRecord::Base
     File.open(path + '.unsplit.markdown', 'w:UTF-8').write(markdown)
     File.open(path + '.markdown', 'w:UTF-8').write(splitted)
   end
+
   def html_dir
     d = path.sub(AppConstants.base_dir, '')
     d = d[1..d.rindex('/')-1]
     HtmlDir.find_by_path(d)
   end
+
 end
