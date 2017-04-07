@@ -48,7 +48,6 @@ class AuthorsController < ApplicationController
 
   def list
     def_order = 'metadata_approved asc, name asc'
-    byebug
     if params[:q].nil? or params[:q].empty?
       @people = Person.page(params[:page]).order(params[:order].nil? ? def_order : params[:order]) # TODO: pagination
     else
