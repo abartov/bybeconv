@@ -203,7 +203,7 @@ class HtmlFileController < ApplicationController
       title = '# '+updated_title+' /'+$'
       newbuf = title+"\n"+lines.join("\n")
       File.open(@text.path + '.markdown', 'wb') {|f| f.write(newbuf)} # write back
-      flash[:notice] = t(:updated)
+      flash[:notice] = t(:updated_successfully)
     else
       flash[:error] = t(:malformed_line)
     end
