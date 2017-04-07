@@ -48,7 +48,13 @@ class AuthorsController < ApplicationController
 
   def list
     def_order = 'metadata_approved asc, name asc'
-    @people = Person.page(params[:page]).order(params[:order].nil? ? def_order : params[:order]) # TODO: pagination
+    byebug
+    if params[:q].nil? or params[:q].empty?
+      @people = Person.page(params[:page]).order(params[:order].nil? ? def_order : params[:order]) # TODO: pagination
+    else
+      @q = params[:q]
+      @people = Person.where('name like ?', "%#{params[:q]}%").page(params[:page]).order(params[:order].nil? ? def_order : params[:order])
+    end
   end
 
   def toc

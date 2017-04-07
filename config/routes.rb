@@ -7,7 +7,7 @@ Bybeconv::Application.routes.draw do
   get "authors/index"
   get "authors/show"
   get "authors/edit"
-  get "authors/list"
+  match "authors/list", via: [:get, :post]
   get "authors/print"
   post "authors/update"
   patch "authors/update"
