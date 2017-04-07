@@ -196,6 +196,7 @@ class HtmlFileController < ApplicationController
     title = lines.shift
     new_title = lines.shift while new_title !~ /\p{Word}/
     slashpos = new_title.index('/')
+    slashpos = 0 if slashpos.nil?
     updated_title = new_title[0..slashpos-1].strip
     unless slashpos.nil?
       title =~ /\//
