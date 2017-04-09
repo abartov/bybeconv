@@ -1,5 +1,11 @@
 .row
-  .col-sm-8{align:'left'}
+  .col-sm-4{style: 'font-size: 1.2em;'}
+    %p{style: 'float:right'}
+      = render partial: 'shared/fontsize'
+    %p{style:'float:left'}
+      %a{href: 'http://benyehuda.org/e_faq.html'}= 'English'
+    %div{style:'clear:both'}
+  .col-sm-5
     %ul.nav.nav-tabs{style:'display: inline-block;'}
       %li{role: 'presentation', :class => tabclass['contact']}
         = link_to t(:contact_us), 'mailto:editor@benyehuda.org'
@@ -7,7 +13,7 @@
         = link_to t(:how_to_help), 'http://benyehuda.org/blog/%D7%A8%D7%95%D7%A6%D7%99%D7%9D-%D7%9C%D7%A2%D7%96%D7%95%D7%A8'
       %li{role: 'presentation', :class => tabclass['faq']}
         = link_to t(:about), 'http://benyehuda.org/h_faq.html'
-  .col-sm-4
+  .col-sm-3
     %ul.nav.nav-tabs{style:'display: inline-block;'}
       %li{role: 'presentation', :class => tabclass['authors']}
         = link_to t(:authors), :controller => :authors
