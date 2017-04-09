@@ -130,7 +130,8 @@ class HtmlFileController < ApplicationController
     else
       flash[:error] = t(:must_accept_before_publishing)
     end
-    redirect_to action: :list
+    redirect_to url_for(action: :list, status: 'Parsed') # help user find the newly-parsed files
+
   end
 
   def unsplit
