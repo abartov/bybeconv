@@ -13,5 +13,6 @@ class WelcomeController < ApplicationController
     @whatsnew = whatsnew_anonymous # TODO: custom calculate for logged-in users
     @pagetype = :homepage
     @page_title = t(:default_page_title)+' - '+t(:homepage)
+    @tabclass = set_tab('home')
   end
 end
