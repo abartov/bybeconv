@@ -66,11 +66,11 @@ class HtmlFileController < ApplicationController
     unless params[:commit].blank?
       session[:html_q_params] = params # make prev. params accessible to view
     else
-      session[:html_q_params] = { footnotes: '', nikkud: '', status: '', path: '' }
+      session[:html_q_params] = { footnotes: '', nikkud: '', status: params['status'], path: '' }
     end
     f = session[:html_q_params][:footnotes]
     n = session[:html_q_params][:nikkud]
-    s = session[:html_q_params][:status]
+    s = params[:status] or session[:html_q_params][:status]
     p = session[:html_q_params][:path] # retrieve query params whether or not they were POSTed
     query.merge!(footnotes: f) unless f.blank?
     query.merge!(nikkud: n) unless n.blank?
@@ -87,9 +87,7 @@ class HtmlFileController < ApplicationController
   def parse
     @text = HtmlFile.find(params[:id])
     @text.parse
-    params['status'] = 'Parsed'
-    params['commit'] = 'Commit'
-    redirect-to action: :list, status: 'Parsed' # help user find the newly-parsed files
+    redirect_to url_for(action: :list, status: 'Parsed') # help user find the newly-parsed files
   end
 
   def mark_manual
@@ -199,8 +197,13 @@ class HtmlFileController < ApplicationController
     updated_title = new_title[0..slashpos-1].strip
     unless slashpos.nil?
       title =~ /\//
-      title = '# '+updated_title+' /'+$'
-      newbuf = title+"\n"+lines.join("\n")
+      newbuf = '# '+updated_title+' /'
+      if $'.nil?
+        newbuf += ' '+@text.html_dir.person.name
+      else
+        newbuf += $'
+      end
+      newbuf += "\n"+lines.join("\n")
       File.open(@text.path + '.markdown', 'wb') {|f| f.write(newbuf)} # write back
       flash[:notice] = t(:updated_successfully)
     else
