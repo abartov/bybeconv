@@ -253,6 +253,8 @@ he:
   proof_for: הגהה עבור הקובץ
   recommendation_for: המלצה עבור הקובץ
   unknown: לא ידוע
+  back_to_top: לראש הדף
+  confirmed_person_as_author: המחבר %{author} אושר כמחבר היצירה הזו.
   from: מאת
   content: תוכן
   birthdate: תאריך לידה

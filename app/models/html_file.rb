@@ -131,7 +131,7 @@ class NokoDoc < Nokogiri::XML::SAX::Document
         end
       elsif attributes.assoc('name') # maybe a named anchor?
         anchor = attributes.assoc('name')[1]
-        toadd = "<a name=\"#{anchor}\"></a>"
+        toadd = "<a name=\"#{anchor}\"></a>[#{I18n.t(:back_to_top)}](#)"
         if !@spans.empty?
           @spans.last[:markdown] += toadd
         else

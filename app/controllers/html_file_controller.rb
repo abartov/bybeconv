@@ -245,7 +245,7 @@ class HtmlFileController < ApplicationController
     @text = HtmlFile.find(params[:id])
     @text.person = @text.html_dir.person
     @text.save!
-    flash[:notice] = "Confirmed #{@text.person.name} as the author for this HTML file."
+    flash[:notice] = t(:confirmed_person_as_author, author: @text.person.name)
     render json: nil
   end
   protected
