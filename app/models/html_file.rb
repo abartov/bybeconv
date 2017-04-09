@@ -78,7 +78,7 @@ class NokoDoc < Nokogiri::XML::SAX::Document
       footnote = false
       if ['index.html', '/', 'http://benyehuda.org', 'http://www.benyehuda.org', 'http://benyehuda.org/', 'http://www.benyehuda.org/'].include?(href) or href =~ /^[.\/]+$/ # TODO: de-uglify
         ignore = true
-      else
+      elsif href != ''
         # probably a footnote, but could be anything
         # Word-generated footnote references look like this:
         # <a style='mso-footnote-id:ftn12' href="#_ftn12" name="_ftnref12" title="">
@@ -129,6 +129,15 @@ class NokoDoc < Nokogiri::XML::SAX::Document
           # TODO: handle (preserve) non-footnote links
           ignore = false # TODO: set this to false and actually handle this...
         end
+      elsif attributes.assoc('name') # maybe a named anchor?
+        anchor = attributes.assoc('name')[1]
+        toadd = "<a name=\"#{anchor}\"></a>"
+        if !@spans.empty?
+          @spans.last[:markdown] += toadd
+        else
+          @markdown += toadd
+        end
+        ignore = true # nothing further needs to be done at end_element
       end
       @links.push(href: href, ignore: ignore, markdown: '')
     end
@@ -219,11 +228,13 @@ class NokoDoc < Nokogiri::XML::SAX::Document
       add_markup(toadd)
     elsif name == 'a'
       link = @links.pop
-      toadd = "[#{link[:markdown]}](#{link[:href]})"
-      if @in_footnote # buffer footnote bodies separately
-        @footnote[:body] += toadd unless link[:ignore] # emit non-footnote non-index links
-      else
-        add_markup(toadd) unless link[:ignore] # emit non-footnote non-index links
+      unless link[:ignore]
+        toadd = "[#{link[:markdown]}](#{link[:href]})"
+        if @in_footnote # buffer footnote bodies separately
+          @footnote[:body] += toadd # emit non-footnote non-index links
+        else
+          add_markup(toadd) # emit non-footnote non-index links
+        end
       end
     end
   end
