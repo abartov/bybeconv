@@ -9,7 +9,7 @@
 */
 /*body{font-size:14px;} /* default */
 .nav-tabs {
-  font-size:1.8em;
+  font-size:1.4em;
   font-color: blue;
 }
 /* test note */
@@ -29,6 +29,15 @@
 .fontsize_container {
   font-size:1.2em;
 }
+.vcentered {
+  text-align: center;
+  position: relative;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
 .container {
   direction:rtl;
 }

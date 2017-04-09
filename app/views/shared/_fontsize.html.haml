@@ -1,11 +1,10 @@
-.fontsize_container
-  = t(:font_size)+": "
-  %a{href:"javascript:void(0)", class:"decrease_font",style:"font-size: 75%"}='א'
-  != '&nbsp;'
-  %a{href:"javascript:void(0)", class:"default_font"}='א'
-  != '&nbsp;'
-  %a{href:"javascript:void(0)", class:"increase_font", style:"font-size: 150%"}='א'
-
+= t(:font_size)+": "
+%a{href:"javascript:void(0)", class:"decrease_font",style:"font-size: 75%"}='א'
+!= '&nbsp;'
+%a{href:"javascript:void(0)", class:"default_font"}='א'
+!= '&nbsp;'
+%a{href:"javascript:void(0)", class:"increase_font", style:"font-size: 150%"}='א'
+/ TODO: also set a cookie, so it'll stick between screens
 :javascript
   $(".increase_font").click(function() {
     $("body").css("fontSize", "20px");
