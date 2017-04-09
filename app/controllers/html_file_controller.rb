@@ -89,8 +89,7 @@ class HtmlFileController < ApplicationController
     @text.parse
     params['status'] = 'Parsed'
     params['commit'] = 'Commit'
-    list
-    render action: :list, status: 'Parsed' # help user find the newly-parsed files
+    redirect-to action: :list, status: 'Parsed' # help user find the newly-parsed files
   end
 
   def mark_manual
