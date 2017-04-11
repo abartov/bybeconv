@@ -1,4 +1,6 @@
 %h1= t(:list_people)
+= link_to t(:new_person), new_person_path
+%br
 = form_tag do
   = label_tag(t(:name))
   = text_field_tag(:q, @q)
@@ -41,6 +43,4 @@
 
 %br
 
-= link_to t(:new_person), new_person_path
-%br
 = paginate @people
