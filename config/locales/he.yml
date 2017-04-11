@@ -4,7 +4,9 @@ he:
   converted_output: "תוצאת הסבה אוטומטית של הקובץ הישן %{fname}"
   treat_as_poetry: מצב שירה
   associated_persons: אישים מקושרים
+  confirm: אשר!
   confirmed: אושר
+  confirming: מאשר...
   frbr_ready: ישויות ביבליוגרפיות מוכנות!
   dir_not_associated: התיקיה הישנה אינה מקושרת לאיש
   raw_markdown_html: "הנה הטקסט המוסב.  אם דרושים תיקונים, עשו אותם כאן.  כמו כן, הנה <a href=\"%{orig_html}\"> קישורית לקובץ הישן, לשם השוואה</a>."

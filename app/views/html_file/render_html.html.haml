@@ -23,7 +23,7 @@
         %span{style: 'color:red'}= link_to t(:dir_not_associated), url_for(controller: :html_dirs, action: :edit, id: @text.html_dir.id)
       - else
         %span{style: 'color:green'}= link_to @text.html_dir.person.name, person_path(@text.html_dir.person.id)
-        = link_to 'Confirm!', html_file_confirm_html_dir_person_path(@text), {remote: true, :class => "ajax_link", "data-done-msg" => 'confirmed!', "data-doing-msg" => 'confirming...' }
+        = link_to t(:confirm), html_file_confirm_html_dir_person_path(@text), {remote: true, :class => "ajax_link", "data-done-msg" => t(:confirmed), "data-doing-msg" => t(:confirming)}
     - else
       %span{style: 'color:green'}= @text.person.name
       != "&nbsp;&nbsp;"+t(:confirmed)
