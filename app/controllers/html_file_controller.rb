@@ -99,7 +99,7 @@ class HtmlFileController < ApplicationController
 
   def frbrize
     @text = HtmlFile.find(params[:id])
-    if(@text.genre.nil? or @text.genre.empty?)
+    if @text.genre.blank?
       flash[:error] = t(:must_set_genre)
       redirect_to action: :render_html, id: @text.id
     else
@@ -165,14 +165,22 @@ class HtmlFileController < ApplicationController
   end
 
   def render_html
-    @text = HtmlFile.find(params[:id])
-    if params[:markdown].nil?
+    pp = params.permit(:id, :markdown, :genre, :add_person, :role)
+    @text = HtmlFile.find(pp[:id])
+    if pp[:markdown].nil?
       @markdown = File.open(@text.path + '.markdown', 'r:UTF-8').read
     else
-      @markdown = params[:markdown] # TODO: make secure
+      @markdown = pp[:markdown] # TODO: make secure
       @text.update_markdown(@markdown.gsub('__________', '__SPLIT__')) # TODO: add locking of some sort to avoid concurrent overwrites
       @text.delete_pregen
-      @text.genre = params[:genre] unless params[:genre].nil?
+      @text.genre = pp[:genre] unless pp[:genre].blank?
+      unless pp[:add_person].blank?
+        if pp[:role].to_i == HtmlFile::ROLE_AUTHOR
+          @text.set_orig_author(pp[:add_person].to_i)
+        else # translator
+          @text.set_translator(pp[:add_person].to_i)
+        end
+      end
       @text.save
     end
     @html = MultiMarkdown.new(@markdown.gsub('__SPLIT__', '__________')).to_html.force_encoding('UTF-8') # TODO: figure out why to_html defaults to ASCII 8-bit

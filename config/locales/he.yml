@@ -4,6 +4,7 @@ he:
   converted_output: "תוצאת הסבה אוטומטית של הקובץ הישן %{fname}"
   treat_as_poetry: מצב שירה
   associated_persons: אישים מקושרים
+  legacy_guessed_person: ניחוש מחבר לפי תיקיה
   confirm: אשר!
   confirmed: אושר
   confirming: מאשר...
@@ -189,9 +190,9 @@ he:
   period: תקופה
   periods: תקופות
   manage_people: ניהול אישים
+  to_manage_people: אם האיש/ה אינו/ה ברשימה, יש ליצור רשומה חדשה בניהול אישים (השינויים לא יישמרו אם לא בוצעה "שמירה ועדכון")
   how_to_help: 'רוצים לעזור?'
   contact_us: יצירת קשר
-  list_people: ניהול אישים
   show_toc: הצג תוכן עניינים
   are_you_sure: נא לאשר מחיקה
   public_domain: נחלת הכלל
@@ -253,6 +254,10 @@ he:
   editor_actions: פעולות עורך
   admin_actions: פעולות מנהל
   proof_for: הגהה עבור הקובץ
+  or: או
+  add: הוסף את
+  add_linked_person: הוסף איש/ה מקושר/ת
+  in_role: בתפקיד
   recommendation_for: המלצה עבור הקובץ
   unknown: לא ידוע
   back_to_top: לראש הדף
@@ -295,8 +300,10 @@ he:
   arabic: ערבית
   greek: יוונית
   latin: לטינית
+  italian: איטלקית
   ancient_greek: יוונית עתיקה
   polish: פולנית
+  role_translator: מתרגם
 
   notifications:
     proof_fixed:

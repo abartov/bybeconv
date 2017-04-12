@@ -56,6 +56,8 @@ module ApplicationHelper
       return t(:greek)
     when 'la'
       return t(:latin)
+    when 'it'
+      return t(:italian)
     when 'grc'
       return t(:ancient_greek)
     else
@@ -106,7 +108,7 @@ module ApplicationHelper
   end
 
   def sitenotice
-    return ''
+    return '' # TODO: implement
   end
 
 end

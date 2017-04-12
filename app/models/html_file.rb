@@ -314,9 +314,14 @@ class HtmlFile < ActiveRecord::Base
   has_paper_trail
   has_and_belongs_to_many :manifestations
   belongs_to :person # for simplicity, only a single author considered per HtmlFile -- additional authors can be added on the WEM entities later
+  belongs_to :translator, class_name: 'Person', foreign_key: 'translator_id'
   scope :with_nikkud, -> { where("nikkud IS NOT NULL and nikkud <> 'none'") }
   scope :not_stripped, -> { where('stripped_nikkud IS NULL or stripped_nikkud = 0') }
   attr_accessible :title, :genre, :markdown
+
+  # a trivial enum just for this entity.  Roles would be expressed with an ActiveRecord enum in the actual (FRBR) catalog entites (Expression etc.)
+  ROLE_AUTHOR = 1
+  ROLE_TRANSLATOR = 2
 
   def analyze
     # Word footnotes magic word 'mso-footnote-id'
@@ -503,6 +508,15 @@ class HtmlFile < ActiveRecord::Base
     manifestations.empty? ? false : true # ensure WEM created
   end
 
+  def set_orig_author(author_id)
+    self.translator_id = self.person_id unless self.person_id.nil? # assume current person should be the translator
+    self.person_id = author_id
+  end
+
+  def set_translator(author_id)
+    self.translator_id = author_id
+  end
+
   def publish
     if status == 'Accepted' && metadata_ready? && (not self.person.nil?)
       self.status = 'Published'
@@ -524,11 +538,12 @@ class HtmlFile < ActiveRecord::Base
         w.expressions << e
         w.save!
         w.people << p
-        e.people << p
+        em_author = (translator_id.nil? ? p : translator) # the author of the Expression and Manifestation is the translator, if one exists
+        e.people << em_author
         clean_utf8 = markdown.encode('utf-8') # for some reason, this string was not getting written properly to the DB
-        m = Manifestation.new(title: title, responsibility_statement: p.name, medium: 'e-text', publisher: AppConstants.our_publisher, publication_place: AppConstants.our_place_of_publication, publication_date: Date.today, markdown: clean_utf8)
+        m = Manifestation.new(title: title, responsibility_statement: em_author.name, medium: 'e-text', publisher: AppConstants.our_publisher, publication_place: AppConstants.our_place_of_publication, publication_date: Date.today, markdown: clean_utf8)
         m.save!
-        m.people << p
+        m.people << em_author
         e.manifestations << m
         e.save!
         manifestations << m # this HtmlFile itself should know the manifestation created out of it
