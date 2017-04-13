@@ -1,3 +1,4 @@
+- CONCURRENCY in conversion dashboard!
 - convert in-text anchors properly (e.g. levontin's prakim)
 + figure out a stable representation for poetry with line breaks
   + PRE blocks ignore *bold* markup, so are probably infeasible

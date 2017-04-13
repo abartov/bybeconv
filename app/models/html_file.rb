@@ -315,6 +315,7 @@ class HtmlFile < ActiveRecord::Base
   has_and_belongs_to_many :manifestations
   belongs_to :person # for simplicity, only a single author considered per HtmlFile -- additional authors can be added on the WEM entities later
   belongs_to :translator, class_name: 'Person', foreign_key: 'translator_id'
+  belongs_to :assignee, class_name: 'User', foreign_key: 'assignee_id'
   scope :with_nikkud, -> { where("nikkud IS NOT NULL and nikkud <> 'none'") }
   scope :not_stripped, -> { where('stripped_nikkud IS NULL or stripped_nikkud = 0') }
   attr_accessible :title, :genre, :markdown
@@ -403,6 +404,21 @@ class HtmlFile < ActiveRecord::Base
     else
       print 'fix_encoding called but status doesn''t indicate BadCP1255... Ignoring.' # debug
     end
+  end
+
+  def assign(id)
+    if self.assignee_id.blank?
+      self.assignee_id = id
+      save!
+    else
+      return false
+    end
+    return true
+  end
+
+  def unassign
+    self.assignee_id = nil
+    save!
   end
 
   def parse

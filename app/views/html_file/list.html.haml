@@ -1,5 +1,5 @@
 %h1= t(:conversion_dashboard)
-%p= t(:conversion_stats_html, {total_texts: @total_texts, total_known: @total_known, total_images: @total_images, total_footnotes: @total_footnotes, total_tables: @total_tables, total_nikkud_full: @total_nikkud_full, total_nikkud_some: @total_nikkud_some, total_badenc: @total_badenc, total_fileerr: @total_fileerr, total_parsed: @total_parsed, total_accepted: @total_accepted, total_published: @total_published, total_manual: @total_manual })
+%p= t(:conversion_stats_html, {total_texts: @total_texts, total_known: @total_known, total_images: @total_images, total_footnotes: @total_footnotes, total_tables: @total_tables, total_nikkud_full: @total_nikkud_full, total_nikkud_some: @total_nikkud_some, total_badenc: @total_badenc, total_fileerr: @total_fileerr, total_parsed: @total_parsed, total_accepted: @total_accepted, total_published: @total_published, total_manual: @total_manual, total_assigned: @total_assigned })
 %p
   %b= link_to t(:analyze_all_unknown), action: 'analyze_all'
 / query interface

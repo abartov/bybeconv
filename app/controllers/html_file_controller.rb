@@ -61,6 +61,7 @@ class HtmlFileController < ApplicationController
     @total_manual = HtmlFile.where(status: 'Manual').count
     @total_nikkud_full = HtmlFile.where(nikkud: 'full').count
     @total_nikkud_some = HtmlFile.where(nikkud: 'some').count
+    @total_assigned = HtmlFile.where('assignee_id is not null').count
     # build query condition
     query = {}
     unless params[:commit].blank?
@@ -75,19 +76,26 @@ class HtmlFileController < ApplicationController
     query.merge!(footnotes: f) unless f.blank?
     query.merge!(nikkud: n) unless n.blank?
     query.merge!(status: s) unless s.blank?
+    assignee_cond = "assignee_id is null or assignee_id = #{current_user.id}"
+
     # TODO: figure out how to include filter by path without making the query fugly
     if p.blank?
-      @texts = HtmlFile.where(query).page(params[:page]).order('status ASC')
+      @texts = HtmlFile.where(assignee_cond).where(query).page(params[:page]).order('status ASC')
     else
-      @texts = HtmlFile.where('path like ?', '%' + params[:path] + '%').page(params[:page]).order('status ASC')
+      @texts = HtmlFile.where(assignee_cond).where('path like ?', '%' + params[:path] + '%').page(params[:page]).order('status ASC')
     end
     # @texts = HtmlFile.page(params[:page]).order('status ASC')
   end
 
   def parse
     @text = HtmlFile.find(params[:id])
-    @text.parse
-    redirect_to url_for(action: :list, status: 'Parsed') # help user find the newly-parsed files
+    if @text.assignee.blank?
+      @text.assign(current_user.id)
+      @text.parse
+      redirect_to url_for(action: :list, status: 'Parsed') # help user find the newly-parsed files
+    else
+      redirect_to url_for(action: :list) # help user find the newly-parsed files
+    end
   end
 
   def mark_manual
