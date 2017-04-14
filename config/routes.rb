@@ -12,6 +12,7 @@ Bybeconv::Application.routes.draw do
   get "authors/print"
   post "authors/update"
   get "authors/destroy", as: 'authors_destroy'
+  post "authors/create"
   patch "authors/update"
   match 'author/:id/edit_toc' => 'authors#edit_toc', as: 'authors_edit_toc', via: [:get, :post]
 
