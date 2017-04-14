@@ -165,8 +165,7 @@ class HtmlFileController < ApplicationController
         #@html = File.open(h.path, 'r:windows-1255:UTF-8').read
         # @html = "<h1>יצירה זו אינה מוכנה עדיין.</h1>"
       else
-        h.make_html unless h.html_ready?
-        @html = File.open(h.path + '.html', 'r').read
+        redirect_to url_for(controller: :manifestation, action: :read, id: h.manifestations[0].id)
       end
     else
       @html = '<h1>bad path</h1>'
