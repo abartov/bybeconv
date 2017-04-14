@@ -1,10 +1,19 @@
 require 'diffy'
 
 class AuthorsController < ApplicationController
-  before_filter :require_editor, only: [:index, :show, :edit, :list, :edit_toc, :update]
+  before_filter :require_editor, only: [:index, :new, :show, :edit, :list, :edit_toc, :update]
 
   def index
     list
+  end
+
+  def new
+    @person = Person.new
+
+    respond_to do |format|
+      format.html # new.html.erb
+      format.json { render json: @person }
+    end
   end
 
   def show

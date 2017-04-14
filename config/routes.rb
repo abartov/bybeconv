@@ -6,13 +6,14 @@ Bybeconv::Application.routes.draw do
   get "search/advanced"
   get "authors/index"
   get "authors/show"
+  get "authors/new", as: 'authors_new'
   get "authors/edit"
   match "authors/list", via: [:get, :post]
   get "authors/print"
   post "authors/update"
+  get "authors/destroy", as: 'authors_destroy'
   patch "authors/update"
   match 'author/:id/edit_toc' => 'authors#edit_toc', as: 'authors_edit_toc', via: [:get, :post]
-  resources :people
 
   get "read/:id" => 'manifestation#read', as: 'manifestation_read'
   get "read/:id/read" => 'manifestation#readmode', as: 'manifestation_readmode'

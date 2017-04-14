@@ -1,5 +1,5 @@
 %h1= t(:manage_people)
-= link_to t(:new_person), new_person_path
+= link_to t(:new_person), authors_new_path
 %br
 = form_tag do
   = label_tag(t(:name))
@@ -38,7 +38,7 @@
       %td
         - unless person.toc.nil?
           = link_to t(:edit_toc), authors_edit_toc_path(person)
-      %td= link_to t(:destroy), person, :method => :delete, :data => { :confirm => t(:are_you_sure) }
+      %td= link_to t(:destroy), authors_destroy_path(person), :data => { :confirm => t(:are_you_sure) }
 
 
 %br
