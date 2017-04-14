@@ -40,7 +40,7 @@ he:
   some: חלקי
   full: מלא
   filter: סינון
-  parse: הסב
+  parse: הסבה
   analyze: אבחן
   file_error: שגיאת קובץ
   bad_encoding: שגיאת קידוד
@@ -239,7 +239,7 @@ he:
   show_open_recommendations: הצג המלצות חדשות
   purge_rejected_recommendations: מחק המלצות שנדחו וזבל
   back: חזרה
-  back_to_dashboard: חזרה למרכז הפעילות
+  back_to_dashboard: למרכז הפעילות
   back_to_homepage: לדף הבית
   make_corrections_below: "תיקונים יש לבצע בתיבת הטקסט להלן:"
   homepage: דף הבית

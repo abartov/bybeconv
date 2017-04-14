@@ -8,7 +8,10 @@
       %li= link_to t(:chop_and_update_title), action: :chop_title, id: @text.id
       - [1, 2, 3].each do |i|
         %li= link_to t(:chopN_html, {n: i}), action: "chop#{i}", id: @text.id
-
+    - unless @text.person.nil?
+      %h2= t(:author)+': '+@text.person.name
+      - unless @text.translator.nil?
+        %h3= t(:translator)+': '+@text.translator.name
     .markdown_container
       %div{ style:"vertical-align:top; width: 30%;display:flex;flex-direction:column;height:100%;box-sizing:border-box;float:left;padding-right:7px;"}
         #legacy_markdown_link

@@ -94,7 +94,7 @@ class HtmlFileController < ApplicationController
     if @text.assignee.blank?
       @text.assign(current_user.id)
       @text.parse
-      redirect_to url_for(action: :list, status: 'Parsed') # help user find the newly-parsed files
+      redirect_to url_for(action: :render_html, id: @text.id)
     else
       redirect_to url_for(action: :list) # help user find the newly-parsed files
     end
