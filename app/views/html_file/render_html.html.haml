@@ -1,8 +1,14 @@
 %div{style: 'margin: 5px'}
   %h2= t(:converted_output, {fname: @text.path.sub(AppConstants.base_dir,'')})
-  - unless @text.paras_condensed
-    %button#bPoetry= t(:treat_as_poetry)
+  / - unless @text.paras_condensed
+  /   %button#bPoetry= t(:treat_as_poetry)
+  %a{href: '#actions'}= t(:to_actions)
   = form_tag(action: 'render_html', id: @text.id) do
+    %ul
+      %li= link_to t(:chop_and_update_title), action: :chop_title, id: @text.id
+      - [1, 2, 3].each do |i|
+        %li= link_to t(:chopN_html, {n: i}), action: "chop#{i}", id: @text.id
+
     .markdown_container
       %div{ style:"vertical-align:top; width: 30%;display:flex;flex-direction:column;height:100%;box-sizing:border-box;float:left;padding-right:7px;"}
         #legacy_markdown_link
@@ -45,12 +51,14 @@
     %br
     = link_to t(:to_manage_people), authors_list_path #url_for(controller: :authors, action: :list)
     %br
-    = submit_tag t(:save_and_update_display)
+    %h3= t(:comments)
+    = text_area_tag(:comments, @text.comments)
+    %br
+    %b
+      = submit_tag t(:save_and_update_display)
+  %a{name: 'actions'}
   %h3= t(:actions)
   %ul
-    %li= link_to t(:chop_and_update_title), action: :chop_title, id: @text.id
-    - [1, 2, 3].each do |i|
-      %li= link_to t(:chopN_html, {n: i}), action: "chop#{i}", id: @text.id
     / - [1, 2].each do |i|
     /   %li= link_to t(:choplastN_html, {n: i}), action: "choplast#{i}", id: @text.id
     %li= link_to t(:mark_as_manual), action: :mark_manual, id: @text.id

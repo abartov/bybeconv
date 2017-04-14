@@ -318,7 +318,7 @@ class HtmlFile < ActiveRecord::Base
   belongs_to :assignee, class_name: 'User', foreign_key: 'assignee_id'
   scope :with_nikkud, -> { where("nikkud IS NOT NULL and nikkud <> 'none'") }
   scope :not_stripped, -> { where('stripped_nikkud IS NULL or stripped_nikkud = 0') }
-  attr_accessible :title, :genre, :markdown
+  attr_accessible :title, :genre, :markdown, :comments
 
   # a trivial enum just for this entity.  Roles would be expressed with an ActiveRecord enum in the actual (FRBR) catalog entites (Expression etc.)
   ROLE_AUTHOR = 1
@@ -548,16 +548,16 @@ class HtmlFile < ActiveRecord::Base
         p = Person.find(person_id)
         markdown = File.open(path + '.markdown', 'r:UTF-8').read
         title = HtmlFile.title_from_file(path)[0].gsub("\r",' ')
-        w = Work.new(title: title, orig_lang: 'he', genre: genre) # TODO: un-hardcode?
+        w = Work.new(title: title, orig_lang: 'he', genre: genre, comment: comments) # TODO: un-hardcode?
         copyrighted = (p.public_domain ? false : (p.public_domain.nil? ? nil : true)) # if author is PD, expression is PD # TODO: make this depend on both work and expression author, for translations
-        e = Expression.new(title: title, language: 'he', copyrighted: copyrighted, genre: genre) # ISO codes
+        e = Expression.new(title: title, language: 'he', copyrighted: copyrighted, genre: genre, comment: comments) # ISO codes
         w.expressions << e
         w.save!
         w.people << p
         em_author = (translator_id.nil? ? p : translator) # the author of the Expression and Manifestation is the translator, if one exists
         e.people << em_author
         clean_utf8 = markdown.encode('utf-8') # for some reason, this string was not getting written properly to the DB
-        m = Manifestation.new(title: title, responsibility_statement: em_author.name, medium: 'e-text', publisher: AppConstants.our_publisher, publication_place: AppConstants.our_place_of_publication, publication_date: Date.today, markdown: clean_utf8)
+        m = Manifestation.new(title: title, responsibility_statement: em_author.name, medium: 'e-text', publisher: AppConstants.our_publisher, publication_place: AppConstants.our_place_of_publication, publication_date: Date.today, markdown: clean_utf8, comment: comments)
         m.save!
         m.people << em_author
         e.manifestations << m

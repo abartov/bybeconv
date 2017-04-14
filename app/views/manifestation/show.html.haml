@@ -17,7 +17,10 @@
 %p
   %b= t(:date) + ': '
   = @w.date
-
+%p
+  %b= t(:comments)+':'
+  %br
+  = @w.comment
 %h2= t(:expression_details)
 %p
   %b= t(:title) + ': '
@@ -34,6 +37,10 @@
 %p
   %b= t(:language) + ': '
   = textify_lang(@e.language)
+%p
+  %b= t(:comments)+':'
+  %br
+  = @e.comment
 
 %h2= t(:manifestation_details)
 %p
@@ -45,6 +52,10 @@
 %p
   %b= t(:publisher_details) + ': '
   != "#{@m.publisher}, #{@m.publication_place}&rlm;: #{@m.publication_date}."
+%p
+  %b= t(:comments)+':'
+  %br
+  = @m.comment
 %hr
 %h2= t(:external_links)
 %ol

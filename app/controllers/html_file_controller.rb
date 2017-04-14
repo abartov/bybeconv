@@ -25,6 +25,8 @@ class HtmlFileController < ApplicationController
     @text.orig_author = params[:orig_author]
     @text.orig_author_url = params[:orig_author_url]
     @text.genre = params[:genre]
+    byebug
+    @text.comments = params[:comments]
     if @text.save
       flash[:notice] = 'הנתונים עודכנו!'
     else
@@ -173,7 +175,7 @@ class HtmlFileController < ApplicationController
   end
 
   def render_html
-    pp = params.permit(:id, :markdown, :genre, :add_person, :role)
+    pp = params.permit(:id, :markdown, :genre, :add_person, :role, :comments)
     @text = HtmlFile.find(pp[:id])
     if pp[:markdown].nil?
       @markdown = File.open(@text.path + '.markdown', 'r:UTF-8').read
@@ -182,6 +184,7 @@ class HtmlFileController < ApplicationController
       @text.update_markdown(@markdown.gsub('__________', '__SPLIT__')) # TODO: add locking of some sort to avoid concurrent overwrites
       @text.delete_pregen
       @text.genre = pp[:genre] unless pp[:genre].blank?
+      @text.comments = pp[:comments]
       unless pp[:add_person].blank?
         if pp[:role].to_i == HtmlFile::ROLE_AUTHOR
           @text.set_orig_author(pp[:add_person].to_i)
