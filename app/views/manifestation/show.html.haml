@@ -38,6 +38,9 @@
   %b= t(:language) + ': '
   = textify_lang(@e.language)
 %p
+  %b= t(:source_edition)+': '
+  = @e.source_edition
+%p
   %b= t(:comments)+':'
   %br
   = @e.comment

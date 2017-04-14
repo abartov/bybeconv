@@ -124,11 +124,12 @@ class ManifestationController < ApplicationController
     end
 
     # DB
-    p = params[:path]
-    if p.blank?
+    if params[:title].blank? && params[:author].blank?
       @manifestations = Manifestation.page(params[:page]).order('title ASC')
     else
-      @manifestations = Manifestation.where('path like ?', '%' + p + '%').page(params[:page]).order('title ASC')
+      if params[:author].blank?
+        @manifestations = Manifestation.where('title like ?', '%' + params[:title] + '%').page(params[:page]).order('title ASC')
+      end
     end
   end
 
@@ -165,6 +166,7 @@ class ManifestationController < ApplicationController
       @e.title = params[:etitle]
       @e.date = params[:edate]
       @m.title = params[:mtitle]
+      @e.source_edition = params[:source_edition]
       @w.save!
       @e.save!
     else # markdown edit

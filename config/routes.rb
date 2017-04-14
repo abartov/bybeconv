@@ -26,7 +26,7 @@ Bybeconv::Application.routes.draw do
   get "manifestation/render_html"
   get "manifestation/edit/:id" => 'manifestation#edit', as: 'manifestation_edit'
   get "manifestation/edit_metadata/:id" => 'manifestation#edit_metadata', as: 'manifestation_edit_metadata'
-  get "manifestation/list"
+  match "manifestation/list", via: [:get, :post]
   get "manifestation/genre" => 'manifestation#genre', as: 'manifestation_genre'
   get "manifestation/index", as: 'manifestation_index'
   post "manifestation/update"

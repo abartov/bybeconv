@@ -31,6 +31,9 @@
   %p
     %b= t(:language) + ': '
     = select_tag :elang, options_for_select(get_langs.map {|lang| [textify_lang(lang), lang]}, @e.language.nil? ? 'he' : @e.language)
+  %p
+    %b= t(:source_edition) + ': '
+    = text_field_tag :source_edition, @e.source_edition
 
   %h2= t(:manifestation_details)
   %p
