@@ -129,6 +129,10 @@ class ManifestationController < ApplicationController
     else
       if params[:author].blank?
         @manifestations = Manifestation.where('title like ?', '%' + params[:title] + '%').page(params[:page]).order('title ASC')
+      elsif params[:title].blank?
+        @manifestations = Manifestation.joins(expressions: :people).where("people.name like '%#{params[:author]}%'").page(params[:page]).order('title asc')
+      else # both author and title
+        # ...
       end
     end
   end

@@ -12,23 +12,32 @@
     = submit_tag(t(:filter))
 
 / end query interface
-%table{cellspacing: 3,cellpadding: 3}
-  %th= t(:author)
-  %th= t(:title)
-  %th= t(:translation)+'?'
-  %th= '...'
-  %th= t(:actions)
+- if @manifestations.nil?
+  %b= t(:no_results)
+- else
+  %table{cellspacing: 3,cellpadding: 3}
+    %th= t(:author)
+    %th= t(:title)
+    %th= t(:translation)+'?'
+    %th= t(:translator)
+    %th= '...'
+    %th= t(:actions)
 
-  - @manifestations.each do |m|
-    %tr
-      %td= m.expressions[0].works[0].people[0].name
-      %td= m.title
-      %td= m.expressions[0].translation ? t(:yes)+" (#{textify_lang(m.expressions[0].works[0].orig_lang)})" : t(:no)
-      %td= '...'
-      %td
-        = link_to t(:show), manifestation_show_path(m.id)
-        / = link_to t(:show), :action => 'show', :id => m
-        = link_to t(:render), url_for(action: :read, id: m.id)
-        / = link_to t(:render), :action => 'render_html', :id => m
+    - @manifestations.each do |m|
+      %tr
+        %td= m.expressions[0].works[0].people[0].name
+        %td= m.title
+        - if m.expressions[0].translation
+          %td= t(:yes)+" (#{textify_lang(m.expressions[0].works[0].orig_lang)})"
+          %td= m.expressions[0].people[0].name
+        - else
+          %td= t(:no)
+          %td= ''
+        %td= '...'
+        %td
+          = link_to t(:show), manifestation_show_path(m.id)
+          / = link_to t(:show), :action => 'show', :id => m
+          = link_to t(:render), url_for(action: :read, id: m.id)
+          / = link_to t(:render), :action => 'render_html', :id => m
 
-!= paginate @manifestations, :params => session[:mft_q_params]
+  != paginate @manifestations, :params => session[:mft_q_params]
