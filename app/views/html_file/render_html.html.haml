@@ -2,6 +2,7 @@
   %h2= t(:converted_output, {fname: @text.path.sub(AppConstants.base_dir,'')})
   / - unless @text.paras_condensed
   /   %button#bPoetry= t(:treat_as_poetry)
+  %button#bPoetry= t(:treat_as_poetry)
   %a{href: '#actions'}= t(:to_actions)
   = form_tag(action: 'render_html', id: @text.id) do
     %ul
@@ -56,6 +57,9 @@
     %br
     %h3= t(:comments)
     = text_area_tag(:comments, @text.comments)
+    %br
+    = label_tag t(:remove_line_nums)
+    = check_box_tag :remove_line_nums
     %br
     %b
       = submit_tag t(:save_and_update_display)

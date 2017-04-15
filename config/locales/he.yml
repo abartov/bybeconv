@@ -41,6 +41,7 @@ he:
   full: מלא
   filter: סינון
   parse: הסבה
+  remove_line_nums: הסר מספרי שורות
   analyze: אבחן
   file_error: שגיאת קובץ
   bad_encoding: שגיאת קידוד

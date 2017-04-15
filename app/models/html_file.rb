@@ -575,6 +575,24 @@ class HtmlFile < ActiveRecord::Base
     false
   end
 
+  def remove_line_nums!
+    lines = File.open(path + '.markdown', 'r:UTF-8').read.split("\n")
+    new_lines = []
+    lines.each {|l|
+      line = l.strip
+      if line =~ /\d+$/
+        new_lines << $`
+      elsif line =~ /^(>\s+)?\d+\s+/
+        new_lines << "#{$1}#{$'}"
+      else
+        new_lines << line
+      end
+    }
+    ret = new_lines.join("\n")
+    update_markdown(ret)
+    return ret
+  end
+
   # this one might be useful to handle poetry
   def paras_to_lines!
     old_markdown = File.open(path + '.markdown', 'r:UTF-8').read

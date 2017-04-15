@@ -25,7 +25,6 @@ class HtmlFileController < ApplicationController
     @text.orig_author = params[:orig_author]
     @text.orig_author_url = params[:orig_author_url]
     @text.genre = params[:genre]
-    byebug
     @text.comments = params[:comments]
     if @text.save
       flash[:notice] = 'הנתונים עודכנו!'
@@ -91,7 +90,7 @@ class HtmlFileController < ApplicationController
 
   def parse
     @text = HtmlFile.find(params[:id])
-    if @text.assignee.blank?
+    if @text.assignee.blank? or @text.assignee = current_user
       @text.assign(current_user.id)
       @text.parse
       redirect_to url_for(action: :render_html, id: @text.id)
@@ -160,21 +159,17 @@ class HtmlFileController < ApplicationController
       # TODO: handle errors, at least path not found
       if h.status != 'Published'
         @html = "<h1>not yet.</h1>"
-        #@html = "<h1>not yet.</h1>"
         @html = File.open(h.path, 'r:UTF-8').read
-        #@html = File.open(h.path, 'r:windows-1255:UTF-8').read
-        # @html = "<h1>יצירה זו אינה מוכנה עדיין.</h1>"
       else
         redirect_to url_for(controller: :manifestation, action: :read, id: h.manifestations[0].id)
       end
     else
       @html = '<h1>bad path</h1>'
-      # @html = "<h1>כתובת הדף אינה תקינה</h1>"
     end
   end
 
   def render_html
-    pp = params.permit(:id, :markdown, :genre, :add_person, :role, :comments)
+    pp = params.permit(:id, :markdown, :genre, :add_person, :role, :comments, :remove_line_nums)
     @text = HtmlFile.find(pp[:id])
     if pp[:markdown].nil?
       @markdown = File.open(@text.path + '.markdown', 'r:UTF-8').read
@@ -184,6 +179,7 @@ class HtmlFileController < ApplicationController
       @text.delete_pregen
       @text.genre = pp[:genre] unless pp[:genre].blank?
       @text.comments = pp[:comments]
+      @markdown = @text.remove_line_nums! unless pp[:remove_line_nums].blank?
       unless pp[:add_person].blank?
         if pp[:role].to_i == HtmlFile::ROLE_AUTHOR
           @text.set_orig_author(pp[:add_person].to_i)
