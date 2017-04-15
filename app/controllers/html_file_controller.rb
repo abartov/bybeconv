@@ -102,6 +102,7 @@ class HtmlFileController < ApplicationController
   def mark_manual
     @text = HtmlFile.find(params[:id])
     @text.status = 'Manual'
+    @text.assignee_id = nil
     @text.save!
     redirect_to action: :list
   end
