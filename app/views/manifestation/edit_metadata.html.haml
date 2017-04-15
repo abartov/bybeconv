@@ -14,6 +14,9 @@
   %p
     %b= t(:date) + ': '
     = text_field_tag :wdate, @w.date
+  %p
+    %b= t(:comments)+': '
+    = text_area_tag :wcomment, @w.comment
 
   %h2= t(:expression_details)
   %p
@@ -34,6 +37,9 @@
   %p
     %b= t(:source_edition) + ': '
     = text_field_tag :source_edition, @e.source_edition
+  %p
+    %b= t(:comments)+': '
+    = text_area_tag :ecomment, @e.comment
 
   %h2= t(:manifestation_details)
   %p
@@ -45,6 +51,9 @@
   %p
     %b= t(:publisher_details) + ': '
     != "#{@m.publisher}, #{@m.publication_place}&rlm;: #{@m.publication_date}."
+  %p
+    %b= t(:comments)+': '
+    = text_area_tag :mcomment, @m.comment
   %hr
   %h2= t(:external_links)
   %ol

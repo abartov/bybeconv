@@ -165,12 +165,15 @@ class ManifestationController < ApplicationController
       @w.genre = params[:genre]
       @w.orig_lang = params[:wlang]
       @w.date = params[:wdate]
+      @w.comment = params[:wcomment]
       @e.language = params[:elang]
       @e.genre = params[:genre] # expression's genre is same as work's
       @e.title = params[:etitle]
       @e.date = params[:edate]
+      @e.comment = params[:ecomment]
       @m.title = params[:mtitle]
       @e.source_edition = params[:source_edition]
+      @m.comment = params[:mcomment]
       @w.save!
       @e.save!
     else # markdown edit
