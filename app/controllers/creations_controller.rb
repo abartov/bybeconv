@@ -1,8 +1,5 @@
 class CreationsController < ApplicationController
-  def add
-    c = Creation.new(work_id: params[:work_id], person_id: params[:person_id], role: params[:role])
-    c.save!
-    redirect_to url_for(controller: :manifestation, action: :show, id: params[:manifestation_id])
+  def add # actually handled in Manifestation#update for now (AJAX some day?)
   end
 
   def remove
