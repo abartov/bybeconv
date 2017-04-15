@@ -62,7 +62,7 @@ class HtmlFileController < ApplicationController
     @total_manual = HtmlFile.where(status: 'Manual').count
     @total_nikkud_full = HtmlFile.where(nikkud: 'full').count
     @total_nikkud_some = HtmlFile.where(nikkud: 'some').count
-    @total_assigned = HtmlFile.where('assignee_id is not null').count
+    @total_assigned = HtmlFile.where("assignee_id is not null and status != 'Published'").count
     # build query condition
     query = {}
     unless params[:commit].blank?
