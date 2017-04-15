@@ -282,14 +282,14 @@ module BybeUtils
   end
 
   def get_genres
-    return ['poetry', 'prose', 'drama', 'article', 'memoir', 'letters', 'reference', 'lexicon'] # translations and icon-font refer to these keys!
+    return ['poetry', 'prose', 'drama', 'fables','article', 'memoir', 'letters', 'reference', 'lexicon'] # translations and icon-font refer to these keys!
   end
 
   def get_langs
     return ['he','en','fr','de','ru','yi','pl','ar','el','la','grc']
   end
 
-  def get_genres_by_row(row) # just first row
+  def get_genres_by_row(row) # just one row at a time
     return get_genres[row*3-3..row*3-1]
   end
 end

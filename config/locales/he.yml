@@ -42,6 +42,7 @@ he:
   filter: סינון
   parse: הסבה
   remove_line_nums: הסר מספרי שורות
+  fables: משלים
   analyze: אבחן
   file_error: שגיאת קובץ
   bad_encoding: שגיאת קידוד
@@ -76,7 +77,7 @@ he:
   poetry: שירה
   prose: פרוזה
   article: מאמרים, מסות, ומחקר
-  drama: דרמה
+  drama: מחזות
   memoir: זכרונות ויומנים
   letters: מכתבים
   reference: עיון
