@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170415175808) do
+ActiveRecord::Schema.define(version: 20170415214946) do
 
   create_table "api_keys", force: :cascade do |t|
     t.string   "email",       limit: 255
@@ -219,13 +219,6 @@ ActiveRecord::Schema.define(version: 20170415175808) do
     t.string   "birthdate",                  limit: 255
     t.string   "deathdate",                  limit: 255
     t.boolean  "metadata_approved",                           default: false
-  end
-
-  create_table "people_works", id: false, force: :cascade do |t|
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
-    t.integer  "work_id",    limit: 4
-    t.integer  "person_id",  limit: 4
   end
 
   create_table "periods", force: :cascade do |t|
