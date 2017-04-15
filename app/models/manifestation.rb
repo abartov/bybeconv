@@ -37,7 +37,8 @@ class Manifestation < ActiveRecord::Base
     return title + ' / '+author_string
   end
   def author_string
-    ret = expressions[0].works[0].people[0].name
+    return I18n.t(:nil) if expressions[0].nil? or expressions[0].works[0].nil? or expressions[0].works[0].persons[0].nil?
+    ret = expressions[0].works[0].persons[0].name
     if expressions[0].translation
       ret += ' / '+expressions[0].people[0].name
     end

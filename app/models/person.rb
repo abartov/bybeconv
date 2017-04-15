@@ -4,7 +4,8 @@ class Person < ActiveRecord::Base
   is_impressionable # for statistics
   belongs_to :toc
   belongs_to :period
-  has_and_belongs_to_many :work
+  has_many :creations
+  has_many :works, through: :creations, class_name: 'Work'
   has_and_belongs_to_many :expression
   has_and_belongs_to_many :manifestation
   scope :has_toc, -> { where.not(toc_id: nil) }

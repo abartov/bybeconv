@@ -211,19 +211,16 @@ class NokoDoc < Nokogiri::XML::SAX::Document
     elsif ['br','p','h2', 'h1'].include?(name)
       toadd = "\n\n"
       if @in_subhead and full_nikkud(@subhead) and @subhead_fontsize < 16 and name != 'h2' # h2 should override the font-size hack in poetry
-        #debugger
         @in_subhead = false
         toadd += "\n"+@subhead + toadd if @subhead =~ /\p{Word}/
         @subhead = ''
         @subhead_fontsize = 0
       end
       if @in_subhead
-        #debugger
         @in_subhead = false
         toadd += "\n## "+@subhead + toadd if @subhead =~ /\p{Word}/
         @subhead = ''
         @subhead_fontsize = 0
-
       end
       add_markup(toadd)
     elsif name == 'a'
@@ -553,7 +550,8 @@ class HtmlFile < ActiveRecord::Base
         e = Expression.new(title: title, language: 'he', copyrighted: copyrighted, genre: genre, comment: comments) # ISO codes
         w.expressions << e
         w.save!
-        w.people << p
+        c = Creation.new(work_id: w.id, person_id: p.id, role: :author)
+        c.save!
         em_author = (translator_id.nil? ? p : translator) # the author of the Expression and Manifestation is the translator, if one exists
         e.people << em_author
         clean_utf8 = markdown.encode('utf-8') # for some reason, this string was not getting written properly to the DB

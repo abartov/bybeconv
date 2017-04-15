@@ -7,6 +7,7 @@ he:
   legacy_guessed_person: ניחוש מחבר לפי תיקיה
   confirm: אשר!
   confirmed: אושר
+  nil: אין
   confirming: מאשר...
   frbr_ready: ישויות ביבליוגרפיות מוכנות!
   dir_not_associated: התיקיה הישנה אינה מקושרת לאיש
@@ -87,6 +88,7 @@ he:
   support_the_project: הצטרפו לתומכי הפרויקט!
   update: עדכן!
   updated_successfully: עודכן בהצלחה!
+  deleted_successfully: נמחק בהצלחה!
   no_results: אין תוצאות.
   life_years: שנות חיים
   accept_conversion_and: אישור הסבת הטקסט ו
@@ -257,6 +259,8 @@ he:
   please_log_in: אין מה לראות לפני התחברות למערכת.
   user_management: ניהול משתמשים
   editor_actions: פעולות עורך
+  editor: עורך
+  illustrator: מאייר
   admin_actions: פעולות מנהל
   proof_for: הגהה עבור הקובץ
   or: או

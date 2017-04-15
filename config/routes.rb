@@ -1,4 +1,8 @@
 Bybeconv::Application.routes.draw do
+  get 'creations/add'
+
+  get 'creations/remove'
+
   get 'admin/index'
 
   get "search/index"

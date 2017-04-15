@@ -1,0 +1,20 @@
+%h3= t(:associated_persons)
+%ul
+- case which
+  - when :work
+    - @w.creations.each do |c|
+      %li
+        = link_to c.person.name, authors_show_path(id: c.person.id)
+        = ' ('+t(c.role)+')'
+        - if edit
+          = link_to t(:destroy), url_for(controller: :creations, action: :remove, id: c.id, manifestation_id: @m.id)
+    - if edit
+      %br
+      = t(:add)
+      = select_tag :add_person_w, options_from_collection_for_select(Person.order(:name), 'id','name'), include_blank: true
+      = t(:in_role)
+      = select_tag :role_w, options_for_select([[t(:author), Creation.roles[:author]], [t(:editor), Creation.roles[:editor]], [t(:illustrator), Creation.roles[:illustrator]]])
+      %br
+
+  - when :expression
+  - when :manifestation

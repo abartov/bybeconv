@@ -23,7 +23,7 @@ class ManifestationController < ApplicationController
     @entity = @m
     @pagetype = :manifestation
     @page_title = "#{@m.title} - #{t(:default_page_title)}"
-    @author = @m.expressions[0].works[0].people[0] # TODO: handle multiple authors
+    @author = @m.expressions[0].works[0].persons[0] # TODO: handle multiple authors
     @translator = @m.expressions[0].people[0] # TODO: handle multiple translators
     impressionist(@author) # increment the author's popularity counter
   end
@@ -166,6 +166,10 @@ class ManifestationController < ApplicationController
       @w.orig_lang = params[:wlang]
       @w.date = params[:wdate]
       @w.comment = params[:wcomment]
+      unless params[:add_person_w].blank?
+        c = Creation.new(work_id: @w.id, person_id: params[:add_person_w], role: params[:role_w].to_i)
+        c.save!
+      end
       @e.language = params[:elang]
       @e.genre = params[:genre] # expression's genre is same as work's
       @e.title = params[:etitle]

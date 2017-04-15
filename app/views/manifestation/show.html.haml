@@ -1,7 +1,7 @@
 %b= link_to t(:edit_metadata), manifestation_edit_metadata_path(@m.id)
 %h1
-  != t(:work_details)+': '+@m.title+" / "+link_to(@w.people[0].name, authors_show_path(id: @w.people[0]))
-  - if @e.people[0] != @w.people[0]
+  != t(:work_details)+': '+@m.title+" / "+link_to(@w.persons[0].name, authors_show_path(id: @w.persons[0]))
+  - if @e.people[0] != @w.persons[0]
     != ' / '+link_to(@e.people[0].name, authors_show_path(id: @e.people[0]))
 
 %h2= t(:work_entity_details)
@@ -21,6 +21,8 @@
   %b= t(:comments)+':'
   %br
   = @w.comment
+  = render partial: 'shared/associated_people', locals: { which: :work, work: @w, edit: false}
+
 %h2= t(:expression_details)
 %p
   %b= t(:title) + ': '
@@ -44,6 +46,7 @@
   %b= t(:comments)+':'
   %br
   = @e.comment
+  = render partial: 'shared/associated_people', locals: { which: :expression, expression: @e, edit: false}
 
 %h2= t(:manifestation_details)
 %p
@@ -59,6 +62,7 @@
   %b= t(:comments)+':'
   %br
   = @m.comment
+  = render partial: 'shared/associated_people', locals: { which: :manifestation, manifestation: @m, edit: false}
 %hr
 %h2= t(:external_links)
 %ol
@@ -66,6 +70,7 @@
     %li
       = link_to link.url, link.url
       = "(#{textify_external_link_type(link.linktype)})"
+
 %hr
 != raw(@html)
 %hr

@@ -12,6 +12,6 @@
             - worksbuf = ''
             - works.each do |m|
               - title = m.expressions[0].title
-              - title += (m.expressions[0].translation ? ' / '+m.expressions[0].works[0].people[0].name : '')
+              - title += (m.expressions[0].translation ? ' / '+m.expressions[0].works[0].persons[0].name : '')
               - worksbuf += (link_to(title, url_for(controller: :manifestation, action: :read, id: m.id)) + '; ')
             != worksbuf[0..-3]

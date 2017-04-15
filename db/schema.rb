@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170414194411) do
+ActiveRecord::Schema.define(version: 20170415175808) do
 
   create_table "api_keys", force: :cascade do |t|
     t.string   "email",       limit: 255
@@ -23,6 +23,17 @@ ActiveRecord::Schema.define(version: 20170414194411) do
   end
 
   add_index "api_keys", ["email"], name: "index_api_keys_on_email", unique: true, using: :btree
+
+  create_table "creations", force: :cascade do |t|
+    t.integer  "work_id",    limit: 4
+    t.integer  "person_id",  limit: 4
+    t.integer  "role",       limit: 4
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
+  end
+
+  add_index "creations", ["person_id"], name: "index_creations_on_person_id", using: :btree
+  add_index "creations", ["work_id"], name: "index_creations_on_work_id", using: :btree
 
   create_table "delayed_jobs", force: :cascade do |t|
     t.integer  "priority",   limit: 4,     default: 0, null: false
