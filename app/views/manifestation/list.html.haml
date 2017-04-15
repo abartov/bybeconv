@@ -37,6 +37,7 @@
         %td
           = link_to t(:show), manifestation_show_path(m.id)
           / = link_to t(:show), :action => 'show', :id => m
+          = ' | '
           = link_to t(:render), url_for(action: :read, id: m.id)
           / = link_to t(:render), :action => 'render_html', :id => m
 
