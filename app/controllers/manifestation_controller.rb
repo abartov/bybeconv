@@ -175,6 +175,10 @@ class ManifestationController < ApplicationController
       @e.title = params[:etitle]
       @e.date = params[:edate]
       @e.comment = params[:ecomment]
+      unless params[:add_person_e].blank?
+        r = Realizer.new(expression_id: @e.id, person_id: params[:add_person_e], role: params[:role_e].to_i)
+        r.save!
+      end
       @m.title = params[:mtitle]
       @e.source_edition = params[:source_edition]
       @m.comment = params[:mcomment]

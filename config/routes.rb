@@ -1,4 +1,6 @@
 Bybeconv::Application.routes.draw do
+  get 'realizers/remove'
+
   get 'creations/add'
 
   get 'creations/remove'

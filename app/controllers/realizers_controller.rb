@@ -1,16 +1,15 @@
-class CreationsController < ApplicationController
+class RealizersController < ApplicationController
   before_filter :require_editor
-  def add # actually handled in Manifestation#update for now (AJAX some day?)
-  end
 
   def remove
-    c = Creation.find(params[:id])
-    if c.nil?
+    r = Realizer.find(params[:id])
+    if r.nil?
       flash[:error] = t(:no_such_item)
     else
-      c.destroy!
+      r.destroy!
       flash[:notice] = t(:deleted_successfully)
     end
     redirect_to url_for(controller: :manifestation, action: :show, id: params[:manifestation_id])
+
   end
 end

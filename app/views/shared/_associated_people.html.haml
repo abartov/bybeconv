@@ -15,6 +15,18 @@
       = t(:in_role)
       = select_tag :role_w, options_for_select([[t(:author), Creation.roles[:author]], [t(:editor), Creation.roles[:editor]], [t(:illustrator), Creation.roles[:illustrator]]])
       %br
-
   - when :expression
+    - @e.realizers.each do |r|
+      %li
+        = link_to r.person.name, authors_show_path(id: r.person.id)
+        = ' ('+t(r.role)+')'
+        - if edit
+          = link_to t(:destroy), url_for(controller: :realizers, action: :remove, id: r.id, manifestation_id: @m.id)
+    - if edit
+      %br
+      = t(:add)
+      = select_tag :add_person_e, options_from_collection_for_select(Person.order(:name), 'id', 'name'), include_blank: true
+      = t(:in_role)
+      = select_tag :role_e, options_for_select([[t(:author), Realizer.roles[:author]], [t(:editor), Realizer.roles[:editor]], [t(:illustrator), Realizer.roles[:illustrator]], [t(:translator), Realizer.roles[:translator]]])
+      %br
   - when :manifestation

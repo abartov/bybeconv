@@ -107,7 +107,7 @@ he:
   works_about: "יצירות על אודותיו/ה"
   translations_by: תרגומים
   translation: תרגום
-  translator: "שם המתרגם/ת"
+  translator_name: "שם המתרגם/ת"
   orig_lang: שפת מקור
   full_mode: תצוגה מלאה
   rest_in_wikipedia: להמשך הערך בויקיפדיה העברית
@@ -312,7 +312,7 @@ he:
   italian: איטלקית
   ancient_greek: יוונית עתיקה
   polish: פולנית
-  role_translator: מתרגם
+  translator: מתרגם
 
   notifications:
     proof_fixed:

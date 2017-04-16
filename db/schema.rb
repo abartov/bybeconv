@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170415214946) do
+ActiveRecord::Schema.define(version: 20170416135032) do
 
   create_table "api_keys", force: :cascade do |t|
     t.string   "email",       limit: 255
@@ -244,6 +244,17 @@ ActiveRecord::Schema.define(version: 20170415214946) do
     t.integer  "manifestation_id", limit: 4
   end
 
+  create_table "realizers", force: :cascade do |t|
+    t.integer  "expression_id", limit: 4
+    t.integer  "person_id",     limit: 4
+    t.integer  "role",          limit: 4
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
+  add_index "realizers", ["expression_id"], name: "index_realizers_on_expression_id", using: :btree
+  add_index "realizers", ["person_id"], name: "index_realizers_on_person_id", using: :btree
+
   create_table "recommendations", force: :cascade do |t|
     t.string   "from",             limit: 255
     t.string   "about",            limit: 255
@@ -328,4 +339,6 @@ ActiveRecord::Schema.define(version: 20170415214946) do
     t.string   "orig_lang",  limit: 255
   end
 
+  add_foreign_key "realizers", "expressions"
+  add_foreign_key "realizers", "people"
 end

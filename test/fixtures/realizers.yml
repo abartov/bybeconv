@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  expression_id:
+  person_id:
+  role: 1
+
+two:
+  expression_id:
+  person_id:
+  role: 1
