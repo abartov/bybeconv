@@ -1,7 +1,7 @@
 require 'pandoc-ruby'
 
 class ManifestationController < ApplicationController
-  before_filter :require_editor, only: [:list, :show, :edit, :update]
+  before_filter :require_editor, only: [:list, :show, :edit, :update, :remove_link, :edit_metadata]
 
   impressionist # log actions for pageview stats
 
@@ -113,6 +113,19 @@ class ManifestationController < ApplicationController
   end
   #############################################
   # editor actions
+
+  def remove_link
+    @m = Manifestation.find(params[:id])
+    l = @m.external_links.where(id: params[:link_id])
+    unless l.empty?
+      l[0].destroy
+      flash[:notice] = t(:deleted_successfully)
+    else
+      flash[:error] = t(:no_such_item)
+    end
+    redirect_to action: :show, id: params[:id]
+  end
+
   def list
     # calculations
     @total = Manifestation.count
@@ -183,6 +196,11 @@ class ManifestationController < ApplicationController
       @m.title = params[:mtitle]
       @m.responsibility_statement = params[:mresponsibility]
       @m.comment = params[:mcomment]
+      unless params[:add_url].blank?
+        l = ExternalLink.new(url: params[:add_url], linktype: params[:link_type], description: params[:link_description], status: Manifestation.statuses[:approved])
+        l.manifestation = @m
+        l.save!
+      end
       @w.save!
       @e.save!
     else # markdown edit

@@ -65,11 +65,7 @@
   = render partial: 'shared/associated_people', locals: { which: :manifestation, manifestation: @m, edit: false}
 %hr
 %h2= t(:external_links)
-%ol
-  - @m.external_links.each do |link|
-    %li
-      = link_to link.url, link.url
-      = "(#{textify_external_link_type(link.linktype)})"
+= render partial: 'external_links', locals: { links: @m.external_links, edit: false }
 
 %hr
 != raw(@html)

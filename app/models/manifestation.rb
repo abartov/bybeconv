@@ -10,6 +10,9 @@ class Manifestation < ActiveRecord::Base
   has_many :external_links
   scope :new_since, -> (since) { where('created_at > ?', since)}
 
+  enum link_type: [:wikipedia, :blog, :youtube, :other]
+  enum status: [:approved, :submitted, :rejected]
+
   # class variable
   @@popular_works = nil
 

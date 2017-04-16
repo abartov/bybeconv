@@ -1,0 +1,7 @@
+%ol
+  - links.each do |link|
+    %li
+      = link_to link.description, link.url
+      = ' ('+t(Manifestation.link_types.keys[link.linktype])+')'
+      - if edit
+        = link_to t(:destroy), url_for(action: :remove_link, link_id: link.id, id: @m.id)

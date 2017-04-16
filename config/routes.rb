@@ -35,6 +35,7 @@ Bybeconv::Application.routes.draw do
   match "manifestation/list", via: [:get, :post]
   get "manifestation/genre" => 'manifestation#genre', as: 'manifestation_genre'
   get "manifestation/index", as: 'manifestation_index'
+  get "manifestation/remove_link"
   post "manifestation/update"
   patch "manifestation/update"
 

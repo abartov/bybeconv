@@ -216,9 +216,15 @@ he:
   currently_reading: "קורא/ת עכשיו"
   have_read: קראתי
   external_links: קישוריוֹת חיצוניות
+  link_type: סוג קישורית
+  description: תיאור
   "BY blog": 'התייחסויות ביומן הרשת של פב"י'
   Wikipedia: ערך בויקיפדיה
+  wikipedia: ערך בויקיפדיה
   YouTube: צפייה בהקראת היצירה
+  youtube: קטע וידאו
+  blog: רשומה בבלוג
+  other: אחר
   work_entity_details: פרטי ישות יצירה
   work_details: פרטי יצירה
   expression_details: פרטי ביטוי
