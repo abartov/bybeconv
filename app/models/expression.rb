@@ -14,7 +14,7 @@ class Expression < ActiveRecord::Base
   end
 
   def translators
-    return persons.where(role: :translator)
+    return realizers.where(role: :translator).map {|x| x.person}
   end
   protected
   def set_translation
