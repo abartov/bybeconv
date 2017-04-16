@@ -19,7 +19,6 @@ class Expression < ActiveRecord::Base
     self.translation = determine_is_translation? unless b.nil?
     return true
   end
-
   def translators
     return persons.where(role: :translator)
   end

@@ -1,5 +1,3 @@
-- CONCURRENCY in conversion dashboard!
-- convert in-text anchors properly (e.g. levontin's prakim)
 + figure out a stable representation for poetry with line breaks
   + PRE blocks ignore *bold* markup, so are probably infeasible
   + blockquotes (lines beginning with '>' do honor bold and other markup, but the linebreak behavior seems inconsistent -- it appears the double-space-and-line-break method does not consistently produce line breaks *inside* a blockquote (but *does* before/after an explicit <br> tag!), so probably <br> tags are necessary to ensure space lines between stanzas.  Needs further experimentation to determine how to consistently generate just the right amount of space.

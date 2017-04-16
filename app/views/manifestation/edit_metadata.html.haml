@@ -48,7 +48,7 @@
     = text_field_tag :mtitle, @m.title
   %p
     %b= t(:responsibility_statement) + ': '
-    = @m.responsibility_statement # TODO: make editable?
+    = text_field_tag :mresponsibility, @m.responsibility_statement # TODO: make editable?
   %p
     %b= t(:publisher_details) + ': '
     != "#{@m.publisher}, #{@m.publication_place}&rlm;: #{@m.publication_date}."
