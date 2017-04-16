@@ -42,7 +42,7 @@
       = link_to @text.person.name+' ('+t(:author)+')', authors_show_path(id: @text.person.id)
       - unless @text.translator.nil?
         %br
-        = link_to @text.translator.name+' ('+t(:role_translator)+')', authors_show_path(id: @text.translator.id)
+        = link_to @text.translator.name+' ('+t(:translator)+')', authors_show_path(id: @text.translator.id)
       %br
       - if @text.metadata_ready?
         %b
