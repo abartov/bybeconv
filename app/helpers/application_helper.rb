@@ -111,4 +111,16 @@ module ApplicationHelper
     return '' # TODO: implement
   end
 
+  def linkify_people(people)
+    return '' if people.nil? or people.empty?
+    ret = ''
+    i = 0
+    people.each {|p|
+      ret += ', 'if i > 0
+      ret += link_to p.name, authors_show_path(id: p.id)
+      i += 1
+    }
+    return ret
+  end
+
 end

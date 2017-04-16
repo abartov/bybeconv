@@ -1,8 +1,8 @@
 %b= link_to t(:edit_metadata), manifestation_edit_metadata_path(@m.id)
 %h1
-  != t(:work_details)+': '+@m.title+" / "+link_to(@w.persons[0].name, authors_show_path(id: @w.persons[0]))
-  - if @e.people[0] != @w.persons[0]
-    != ' / '+link_to(@e.people[0].name, authors_show_path(id: @e.people[0]))
+  != t(:work_details)+': '+@m.title+" / "+linkify_people(@w.persons)
+  - if @e.translation
+    != ' / '+linkify_people(@e.translators)
 
 %h2= t(:work_entity_details)
 %p
