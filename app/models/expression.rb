@@ -13,13 +13,13 @@ class Expression < ActiveRecord::Base
     language != works[0].orig_lang # TODO: handle multiple works?
   end
 
+  def translators
+    return persons.where(role: :translator)
+  end
   protected
   def set_translation
     b = determine_is_translation?
     self.translation = determine_is_translation? unless b.nil?
     return true
-  end
-  def translators
-    return persons.where(role: :translator)
   end
 end
