@@ -69,6 +69,7 @@ class ManifestationController < ApplicationController
       end
     when 'txt'
       txt = html2txt(html)
+      txt.gsub!("\n","\r\n") if params[:os] == 'Windows' # windows linebreaks
       begin
         temp_file = Tempfile.new('tmp_txt_'+@m.id.to_s,'tmp/')
         temp_file.puts(txt)

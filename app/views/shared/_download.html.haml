@@ -27,6 +27,15 @@
     = radio_button_tag 'format', 'txt'
     %b= 'TXT'
     = t(:txt_format)
+    = hidden_field_tag :os, 'Windows', id: 'os'
     %p
     %br
     = submit_tag t(:download), {class: 'btn btn-lg btn-primary'}
+
+:javascript
+  var OSName="Unknown OS";
+  if (navigator.appVersion.indexOf("Win")!=-1) OSName="Windows";
+  if (navigator.appVersion.indexOf("Mac")!=-1) OSName="MacOS";
+  if (navigator.appVersion.indexOf("X11")!=-1) OSName="UNIX";
+  if (navigator.appVersion.indexOf("Linux")!=-1) OSName="Linux";
+  $('#os').val(OSName);
