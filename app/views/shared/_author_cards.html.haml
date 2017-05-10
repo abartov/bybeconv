@@ -3,10 +3,10 @@
   .card-content
     - authors[0..3].each do |author|
       - last if author.nil? # devmode protection against fewer than 5 most-popular authors
-      .author-card{style: 'float:right;'}
-        .pic-m
-          %a{href: author_toc_path(author)}
+      %a{href: author_toc_path(author)}
+        .author-card{style: 'float:right;'}
+          .pic-m
             = image_tag author.profile_image.url(:thumb)
-        .name
-          %a{href: author_toc_path(author), style:'color: white'}
-            = author.name
+          .name
+            %span{ style:'color: white'}
+              = author.name
