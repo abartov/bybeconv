@@ -1,4 +1,5 @@
 .container-fluid
+  - boxen = 0
   - @whatsnew.each do |author, works|
     .whatsnew-author-card
       .row
@@ -14,4 +15,11 @@
               - title = m.expressions[0].title
               - title += (m.expressions[0].translation ? ' / '+m.expressions[0].works[0].persons[0].name : '')
               - worksbuf += (link_to(title, url_for(controller: :manifestation, action: :read, id: m.id)) + '; ')
+              - if worksbuf.length > 200
+                - worksbuf += '...  ' # signify more is available
+                - break
             != worksbuf[0..-3]
+    - boxen += 1
+    - if boxen > 4
+      = link_to t(:to_full_list), url_for(:controller => :manifestation, :action => :whatsnew)
+      - break

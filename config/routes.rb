@@ -25,6 +25,7 @@ Bybeconv::Application.routes.draw do
   get "read/:id" => 'manifestation#read', as: 'manifestation_read'
   get "read/:id/read" => 'manifestation#readmode', as: 'manifestation_readmode'
   get 'works' => 'manifestation#works', as: 'works'
+  get 'whatsnew' => 'manifestation#whatsnew', as: 'whatsnew'
   match 'author/:id' => 'authors#toc', as: 'author_toc', via: [:get, :post]
   match "download/:id" => 'manifestation#download', as: 'manifestation_download', via: [:get, :post]
   match "print/:id" => 'manifestation#print', as: 'manifestation_print', via: [:get, :post]
