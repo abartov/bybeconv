@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170525165813) do
+ActiveRecord::Schema.define(version: 20170525170503) do
 
   create_table "api_keys", force: :cascade do |t|
     t.string   "email",       limit: 255
@@ -70,6 +70,9 @@ ActiveRecord::Schema.define(version: 20170525165813) do
     t.integer "expression_id",    limit: 4
     t.integer "manifestation_id", limit: 4
   end
+
+  add_index "expressions_manifestations", ["expression_id"], name: "index_expressions_manifestations_on_expression_id", using: :btree
+  add_index "expressions_manifestations", ["manifestation_id"], name: "index_expressions_manifestations_on_manifestation_id", using: :btree
 
   create_table "expressions_people", id: false, force: :cascade do |t|
     t.datetime "created_at",              null: false
