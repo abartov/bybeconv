@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170525170503) do
+ActiveRecord::Schema.define(version: 20170603192439) do
 
   create_table "api_keys", force: :cascade do |t|
     t.string   "email",       limit: 255
@@ -89,6 +89,9 @@ ActiveRecord::Schema.define(version: 20170525170503) do
     t.integer "work_id",       limit: 4
   end
 
+  add_index "expressions_works", ["expression_id"], name: "index_expressions_works_on_expression_id", using: :btree
+  add_index "expressions_works", ["work_id"], name: "index_expressions_works_on_work_id", using: :btree
+
   create_table "external_links", force: :cascade do |t|
     t.string   "url",              limit: 255
     t.integer  "linktype",         limit: 4
@@ -150,6 +153,9 @@ ActiveRecord::Schema.define(version: 20170525170503) do
     t.integer  "manifestation_id", limit: 4
   end
 
+  add_index "html_files_manifestations", ["html_file_id"], name: "index_html_files_manifestations_on_html_file_id", using: :btree
+  add_index "html_files_manifestations", ["manifestation_id"], name: "index_html_files_manifestations_on_manifestation_id", using: :btree
+
   create_table "impressions", force: :cascade do |t|
     t.string   "impressionable_type", limit: 255
     t.integer  "impressionable_id",   limit: 4
@@ -201,6 +207,9 @@ ActiveRecord::Schema.define(version: 20170525170503) do
     t.integer  "manifestation_id", limit: 4
     t.integer  "person_id",        limit: 4
   end
+
+  add_index "manifestations_people", ["manifestation_id"], name: "index_manifestations_people_on_manifestation_id", using: :btree
+  add_index "manifestations_people", ["person_id"], name: "index_manifestations_people_on_person_id", using: :btree
 
   create_table "people", force: :cascade do |t|
     t.string   "name",                       limit: 255
