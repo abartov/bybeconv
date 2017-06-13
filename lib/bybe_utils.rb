@@ -214,6 +214,8 @@ module BybeUtils
     parts.each {|p| initials += p[0]}
     if initials.length == 1
       initials += "'"
+    elsif initials.length == 0
+      return surname
     else
       initials = initials[0..-2] + '"' + initials[-1]
     end
