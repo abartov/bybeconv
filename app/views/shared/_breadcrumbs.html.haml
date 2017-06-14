@@ -3,7 +3,7 @@
 - if @pagetype == :manifestation
   = link_to t(:authors), :controller => :authors
   = ' > '
-  - if @entity.translators.count > 0
+  - if @entity.expressions[0].translators.count > 0
     - person = @entity.expressions[0].translators[0]
   - else
     - person = @entity.expressions[0].persons[0]
