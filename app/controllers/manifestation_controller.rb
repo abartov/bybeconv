@@ -183,6 +183,7 @@ class ManifestationController < ApplicationController
       @w.title = params[:wtitle]
       @w.genre = params[:genre]
       @w.orig_lang = params[:wlang]
+      @w.origlang_title = params[:origlang_title]
       @w.date = params[:wdate]
       @w.comment = params[:wcomment]
       unless params[:add_person_w].blank?

@@ -12,6 +12,9 @@
     %b= t(:language) + ': '
     = select_tag :wlang, options_for_select(get_langs.map {|lang| [textify_lang(lang), lang]}, @w.orig_lang.nil? ? 'he' : @w.orig_lang)
   %p
+    %b= t(:origlang_title)+': '
+    = text_field_tag :origlang_title, @w.origlang_title
+  %p
     %b= t(:date) + ': '
     = text_field_tag :wdate, @w.date
   %p

@@ -2,6 +2,7 @@
 
 he:
   converted_output: "תוצאת הסבה אוטומטית של הקובץ הישן %{fname}"
+  origlang_title: כותרת בשפת המקור
   treat_as_poetry: מצב שירה
   associated_persons: אישים מקושרים
   legacy_guessed_person: ניחוש מחבר לפי תיקיה

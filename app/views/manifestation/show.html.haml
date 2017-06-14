@@ -15,6 +15,9 @@
   %b= t(:language) + ': '
   = textify_lang(@w.orig_lang)
 %p
+  %b= t(:origlang_title)+': '
+  = @w.origlang_title
+%p
   %b= t(:date) + ': '
   = @w.date
 %p
