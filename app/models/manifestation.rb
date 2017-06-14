@@ -48,6 +48,19 @@ class Manifestation < ActiveRecord::Base
     end
     return ret # TODO: be less naive
   end
+
+  def recalc_cached_people!
+     pp = []
+     expressions.each {|e|
+       e.persons.each {|p| pp << p unless pp.include?(p) }
+       e.works.each {|w|
+         w.persons.each {|p| pp << p unless pp.include?(p) }
+       }
+     }
+     cached_people = pp.map{|p| p.name}.join('; ')
+     save!
+  end
+
   def self.recalc_popular
     # THIS WILL TAKE A WHILE!
     # it runs a JOIN on every single publishedManifestation!

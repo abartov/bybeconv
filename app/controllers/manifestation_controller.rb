@@ -214,6 +214,7 @@ class ManifestationController < ApplicationController
       @m.markdown = params[:markdown]
     end
     @m.save!
+    @m.recalc_cached_people!
     flash[:notice] = I18n.t(:updated_successfully)
     redirect_to action: :show, id: @m.id
   end

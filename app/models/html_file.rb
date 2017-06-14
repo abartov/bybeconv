@@ -563,6 +563,7 @@ class HtmlFile < ActiveRecord::Base
         e.save!
         manifestations << m # this HtmlFile itself should know the manifestation created out of it
         save!
+        m.recalc_cached_people!
 
         return true
       rescue
