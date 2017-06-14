@@ -6,6 +6,7 @@ class AddCachedPeopleToManifestation < ActiveRecord::Migration
     i = 0
     total = Manifestation.count
     Manifestation.all.each {|m|
+      begin
       pp = []
       m.expressions.each {|e|
         e.persons.each {|p| pp << p unless pp.include?(p) }
@@ -15,6 +16,9 @@ class AddCachedPeopleToManifestation < ActiveRecord::Migration
       }
       m.cached_people = pp.map{|p| p.name}.join('; ')
       m.save!
+      rescue
+        puts "error: #{$!}"
+      end
       i += 1
       puts "done #{i} out of #{total}  " if i % 10 == 0
     }

@@ -6,9 +6,9 @@ class MigrateExpressionsPeople < ActiveRecord::Migration
     Expression.all.each {|e|
       w = e.works[0]
       e.people.each {|p|
-        unless e.persons.include(p)
+        unless e.persons.include?(p)
           r = Realizer.new(expression_id: e.id, person_id: p.id)
-          if w.persons.include(p)
+          if w.persons.include?(p)
             r.role = Realizer.roles[:author]
           else
             r.role = Realizer.roles[:translator]
