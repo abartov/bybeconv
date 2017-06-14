@@ -15,6 +15,7 @@ class Manifestation < ActiveRecord::Base
 
   # class variable
   @@popular_works = nil
+  @@tmplock = false
 
   def long?
     return false # TODO: implement
@@ -33,7 +34,7 @@ class Manifestation < ActiveRecord::Base
     return expressions[0].works[0].genre == 'poetry' ? false : true
   end
   def safe_filename
-    fname = "#{title} #{I18n.t(:by)} #{expressions[0].people[0].name}"
+    fname = "#{title} #{I18n.t(:by)} #{expressions[0].persons[0].name}"
     return fname.gsub(/[^0-9א-תA-Za-z.\-]/, '_')
   end
   def title_and_authors
@@ -43,7 +44,7 @@ class Manifestation < ActiveRecord::Base
     return I18n.t(:nil) if expressions[0].nil? or expressions[0].works[0].nil? or expressions[0].works[0].persons[0].nil?
     ret = expressions[0].works[0].persons[0].name
     if expressions[0].translation
-      ret += ' / '+expressions[0].people[0].name
+      ret += ' / '+expressions[0].persons[0].name
     end
     return ret # TODO: be less naive
   end
@@ -60,7 +61,7 @@ class Manifestation < ActiveRecord::Base
   end
 
   def self.get_popular_works
-    if @@popular_works == nil
+    if @@popular_works == nil # TODO: implement race-condition protect with tmplock
       self.recalc_popular
     end
     return @@popular_works

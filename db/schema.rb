@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170614071612) do
+ActiveRecord::Schema.define(version: 20170614102521) do
 
   create_table "api_keys", force: :cascade do |t|
     t.string   "email",       limit: 255
@@ -73,16 +73,6 @@ ActiveRecord::Schema.define(version: 20170614071612) do
 
   add_index "expressions_manifestations", ["expression_id"], name: "index_expressions_manifestations_on_expression_id", using: :btree
   add_index "expressions_manifestations", ["manifestation_id"], name: "index_expressions_manifestations_on_manifestation_id", using: :btree
-
-  create_table "expressions_people", id: false, force: :cascade do |t|
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
-    t.integer  "expression_id", limit: 4
-    t.integer  "person_id",     limit: 4
-  end
-
-  add_index "expressions_people", ["expression_id"], name: "index_expressions_people_on_expression_id", using: :btree
-  add_index "expressions_people", ["person_id"], name: "index_expressions_people_on_person_id", using: :btree
 
   create_table "expressions_works", id: false, force: :cascade do |t|
     t.integer "expression_id", limit: 4
@@ -166,9 +156,9 @@ ActiveRecord::Schema.define(version: 20170614071612) do
     t.string   "request_hash",        limit: 255
     t.string   "ip_address",          limit: 255
     t.string   "session_hash",        limit: 255
-    t.text     "message",             limit: 65535
-    t.text     "referrer",            limit: 65535
-    t.text     "params",              limit: 65535
+    t.text     "message",             limit: 16777215
+    t.text     "referrer",            limit: 16777215
+    t.text     "params",              limit: 16777215
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -197,6 +187,7 @@ ActiveRecord::Schema.define(version: 20170614071612) do
     t.datetime "created_at",                                null: false
     t.datetime "updated_at",                                null: false
     t.text     "markdown",                 limit: 16777215
+    t.string   "cached_people",            limit: 255
   end
 
   add_index "manifestations", ["created_at"], name: "index_manifestations_on_created_at", using: :btree
@@ -226,7 +217,7 @@ ActiveRecord::Schema.define(version: 20170614071612) do
     t.integer  "toc_id",                     limit: 4
     t.boolean  "public_domain"
     t.integer  "period_id",                  limit: 4
-    t.text     "wikipedia_snippet",          limit: 65535
+    t.text     "wikipedia_snippet",          limit: 16777215
     t.string   "wikipedia_url",              limit: 1024
     t.string   "image_url",                  limit: 1024
     t.string   "profile_image_file_name",    limit: 255
@@ -241,10 +232,10 @@ ActiveRecord::Schema.define(version: 20170614071612) do
 
   create_table "periods", force: :cascade do |t|
     t.string   "name",          limit: 255
-    t.text     "comments",      limit: 65535
+    t.text     "comments",      limit: 16777215
     t.string   "wikipedia_url", limit: 255
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
   end
 
   create_table "proofs", force: :cascade do |t|
@@ -257,7 +248,7 @@ ActiveRecord::Schema.define(version: 20170614071612) do
     t.datetime "updated_at"
     t.integer  "html_file_id",     limit: 4
     t.integer  "resolved_by",      limit: 4
-    t.text     "highlight",        limit: 65535
+    t.text     "highlight",        limit: 16777215
     t.integer  "reported_by",      limit: 4
     t.integer  "manifestation_id", limit: 4
   end
@@ -316,10 +307,10 @@ ActiveRecord::Schema.define(version: 20170614071612) do
   end
 
   create_table "tocs", force: :cascade do |t|
-    t.text     "toc",        limit: 65535
+    t.text     "toc",        limit: 16777215
     t.string   "status",     limit: 255
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
   end
 
   create_table "users", force: :cascade do |t|

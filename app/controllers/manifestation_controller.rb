@@ -29,7 +29,7 @@ class ManifestationController < ApplicationController
     @pagetype = :manifestation
     @page_title = "#{@m.title} - #{t(:default_page_title)}"
     @author = @m.expressions[0].works[0].persons[0] # TODO: handle multiple authors
-    @translator = @m.expressions[0].people[0] # TODO: handle multiple translators
+    @translator = @m.expressions[0].persons[0] # TODO: handle multiple translators
     impressionist(@author) # increment the author's popularity counter
   end
 
@@ -149,9 +149,9 @@ class ManifestationController < ApplicationController
       if params[:author].blank?
         @manifestations = Manifestation.where('title like ?', '%' + params[:title] + '%').page(params[:page]).order('title ASC')
       elsif params[:title].blank?
-        @manifestations = Manifestation.joins(expressions: :people).where("people.name like '%#{params[:author]}%'").page(params[:page]).order('title asc')
+        @manifestations = Manifestation.joins(expressions: :persons).where("people.name like '%#{params[:author]}%'").page(params[:page]).order('title asc')
       else # both author and title
-        @manifestations = Manifestation.joins(expressions: :people).where('manifestations.title like ?', '%' + params[:title] + '%').where("people.name like '%#{params[:author]}%'").page(params[:page]).order('title asc')
+        @manifestations = Manifestation.joins(expressions: :persons).where('manifestations.title like ?', '%' + params[:title] + '%').where("people.name like '%#{params[:author]}%'").page(params[:page]).order('title asc')
       end
     end
   end

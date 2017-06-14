@@ -3,9 +3,9 @@
 - if @pagetype == :manifestation
   = link_to t(:authors), :controller => :authors
   = ' > '
-  = link_to @entity.people[0].name, author_toc_path(id: @entity.people[0].id)
+  = link_to @entity.persons[0].name, author_toc_path(id: @entity.persons[0].id)
   = ' > '
-  = link_to textify_genre(@entity.expressions[0].works[0].genre), :controller => :authors, :action => :show, :id => @entity.people[0].id, :genre => @entity.expressions[0].works[0].genre
+  = link_to textify_genre(@entity.expressions[0].works[0].genre), :controller => :authors, :action => :show, :id => @entity.persons[0].id, :genre => @entity.expressions[0].works[0].genre
   = ' > '
   %b= @entity.title
 - elsif @pagetype == :author

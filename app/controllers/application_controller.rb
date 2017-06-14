@@ -84,7 +84,7 @@ class ApplicationController < ActionController::Base
   def whatsnew_anonymous
     authors = {}
     Manifestation.new_since(1.month.ago).each {|m|
-      person = m.expressions[0].people[0] # TODO: more nuance
+      person = m.expressions[0].persons[0] # TODO: more nuance
       authors[person] = [] if authors[person].nil?
       authors[person] << m
     }
