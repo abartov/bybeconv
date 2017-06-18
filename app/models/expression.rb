@@ -5,7 +5,7 @@ class Expression < ActiveRecord::Base
   has_and_belongs_to_many :manifestations
   has_many :realizers
   has_many :persons, through: :realizers, class_name: 'Person'
-  has_and_belongs_to_many :people # superseded by realizers above
+  #has_and_belongs_to_many :people # superseded by realizers above
 
   def determine_is_translation?
     # determine whether this expression is a translation or not, i.e. is in a different language to the work it expresses

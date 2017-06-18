@@ -6,7 +6,7 @@ class Person < ActiveRecord::Base
   belongs_to :period
   has_many :creations
   has_many :works, through: :creations, class_name: 'Work'
-  has_and_belongs_to_many :expression
+  has_many :realizers
   has_and_belongs_to_many :manifestation
   scope :has_toc, -> { where.not(toc_id: nil) }
 
