@@ -85,6 +85,7 @@ class ApplicationController < ActionController::Base
     authors = {}
     Manifestation.new_since(1.month.ago).each {|m|
       person = m.expressions[0].persons[0] # TODO: more nuance
+      next if person.nil? # shouldn't happen, but might in a dev. env.
       authors[person] = [] if authors[person].nil?
       authors[person] << m
     }
