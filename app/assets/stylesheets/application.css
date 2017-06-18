@@ -426,7 +426,7 @@ background-color: #907989;
 .welcome {
   height: auto;
   background-color: #9d9299;
-  background-image: url(../images/Welcome_BG.png);
+  background-image: url(/assets/welcome_bg.png);
   background-repeat: no-repeat;
   background-position: center;
   box-shadow: inset 0px 3px 10px rgba(69, 42, 14, .35);
@@ -443,8 +443,10 @@ background-color: #907989;
 }
 .welcome-content h1{
   margin-bottom: 0.6rem;
+  text-align: center;
 }.welcome-content p{
   margin: 0.8rem;
+  text-align: center;
 }
 .welcome-content a {color: #660248;}
 .welcome-content a:hover{ color: #2b0d22;}
