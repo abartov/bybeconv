@@ -1,15 +1,12 @@
-.container-fluid
-  - boxen = 0
-  - @whatsnew.each do |author, works|
-    .whatsnew-author-card
-      .row
-        .col-sm-4
-          .author-pic{style:'text-align: left; padding-left:10px'}
-            = image_tag author.profile_image.url(:tiny)
-        .col-sm-8
-          .whatsnew-content
-            %h3{ style: 'margin-top: 0px;'}
-              = link_to author.name, author_toc_path(author)
+- boxen = 0
+- @whatsnew.each do |author, works|
+  .row
+    .col-xs-12
+      .card.whatsnew-author-card
+        .whatsnew-text
+          %h3
+            = link_to author.name, author_toc_path(author)
+          %p
             - worksbuf = ''
             - works.each do |m|
               - title = m.expressions[0].title
@@ -19,7 +16,10 @@
                 - worksbuf += '...  ' # signify more is available
                 - break
             != worksbuf[0..-3]
-    - boxen += 1
-    - if boxen > 4
+        .whatsnew-pic
+          %img{ alt: author.name, :class => 'img-responsive', src: author.profile_image.url(:tiny)}
+  - boxen += 1
+  - if boxen > 4
+    .float-left
       = link_to t(:to_full_list), url_for(:controller => :manifestation, :action => :whatsnew)
       - break
