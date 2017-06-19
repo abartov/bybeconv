@@ -1,12 +1,22 @@
 %h2= title
-.card
-  .card-content
-    - authors[0..3].each do |author|
-      - last if author.nil? # devmode protection against fewer than 5 most-popular authors
-      %a{href: author_toc_path(author)}
-        .author-card{style: 'float:right;'}
-          .pic-m
+.row
+  - if surprise
+    .col-xs-3
+      .card.author-card.surprise
+        %a{ href: '#', id: 'surprise_author_link'}
+          %div
+            %span.icon-bysurprise-author{style:'font-size:7.6rem;margin-bottom:1.4rem;'}
+          %h3{ style: 'text-align: center'}= t(:surprise_author)
+        .replace-icon.text-on-dark
+          %a{ href: '#', id: 'surprise_author_refresh'}
+            %i.fa.fa-refresh
+  - maxcard = surprise ? 2 : 3
+  - authors[0..maxcard].each do |author|
+    - last if author.nil? # devmode protection against fewer than 5 most-popular authors
+    .col-xs-3
+      .card.author-card
+        %a{href: author_toc_path(author)}
+          .author-homepage-pic
             = image_tag author.profile_image.url(:thumb)
-          .name
-            %span{ style:'color: white'}
-              = author.name
+          .author-homepage-text
+            %p= author.name

@@ -1,5 +1,3 @@
-.authors
-  = render partial: 'shared/author_cards', locals: {title: t(:most_popular_authors), authors: popular_authors}
-.authors
-  = render partial: 'shared/author_cards', locals: {title: t(:random_authors), authors: random_authors}
+= render partial: 'shared/author_cards', locals: {title: t(:most_popular_authors), authors: popular_authors, surprise: false}
+= render partial: 'shared/author_cards', locals: {title: t(:random_authors), authors: random_authors, surprise: true}
 
