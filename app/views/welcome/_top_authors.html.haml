@@ -1,3 +1,7 @@
-%ol
-  - @pop_authors_this_month.each do |author|
-    %li= link_to author.name, author_toc_path(author)
+.row
+  .col-xs-12
+    .card.full-size-card.footer-card
+      .card-content
+        %ol
+          - @pop_authors_this_month.each do |author|
+            %li= link_to author.name, author_toc_path(author)

@@ -1,3 +1,7 @@
-%ol
-  - @pop_works.each do |manifestation|
-    %li= link_to manifestation.title_and_authors, manifestation_read_path(manifestation.id)
+.row
+  .col-xs-12
+    .card.full-size-card.footer-card
+      .card-content
+        %ol
+          - @pop_works.each do |manifestation|
+            %li= link_to manifestation.title_and_authors, manifestation_read_path(manifestation.id)
