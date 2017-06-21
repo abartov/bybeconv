@@ -292,6 +292,10 @@ module BybeUtils
   end
 
   def get_genres_by_row(row) # just one row at a time
-    return get_genres[row*3-3..row*3-1]
+    return case row
+      when 1 then ['poetry', 'prose', 'drama', 'fables'].reverse # TODO: switch to Bootstrap-RTL?
+      when 2 then ['article', 'memoir', 'letters', 'reference'].reverse
+      when 3 then ['translations','lexicon','surprise'].reverse
+    end
   end
 end

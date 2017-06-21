@@ -6,7 +6,9 @@ he:
   treat_as_poetry: מצב שירה
   associated_persons: אישים מקושרים
   legacy_guessed_person: ניחוש מחבר לפי תיקיה
+  to_all_authors: לכל היוצרים...
   surprise_author: יוצר בהפתעה
+  surprise: יצירה בהפתעה
   confirm: אשר!
   confirmed: אושר
   nil: אין
@@ -79,7 +81,7 @@ he:
   # genre key names are currently hard-coded in ApplicationController
   poetry: שירה
   prose: פרוזה
-  article: מאמרים, מסות, ומחקר
+  article: מאמרים ומסות
   drama: מחזות
   memoir: זכרונות ויומנים
   letters: מכתבים
@@ -109,6 +111,7 @@ he:
   works_about: "יצירות על אודותיו/ה"
   translations_by: תרגומים
   translation: תרגום
+  translations: יצירות מתורגמות
   translator_name: "שם המתרגם/ת"
   orig_lang: שפת מקור
   full_mode: תצוגה מלאה

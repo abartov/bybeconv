@@ -43,11 +43,11 @@
       / author cards
       = render partial: 'shared/authors', locals: {popular_authors: @pop_authors, random_authors: @random_authors}
   .row
-    .col-sm-3
+    .col-sm-4.col-xs-12#flashlight
       / featured item
       %h2= t(:featured_item)
       = render partial: 'featured_item'
-    .col-sm-9
+    .col-sm-8.col-xs-12#genre
       / work cards
       %h2= t(:works_by_genre)
       = render partial: 'works'
