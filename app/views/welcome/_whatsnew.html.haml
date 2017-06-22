@@ -1,25 +1,27 @@
 - boxen = 0
+- break_workaround = false
 - @whatsnew.each do |author, works|
-  .row
-    .col-xs-12
-      .card.whatsnew-author-card
-        .whatsnew-text
-          %h3
-            = link_to author.name, author_toc_path(author)
-          %p
-            - worksbuf = ''
-            - works.each do |m|
-              - title = m.expressions[0].title
-              - title += (m.expressions[0].translation ? ' / '+m.expressions[0].works[0].persons[0].name : '')
-              - worksbuf += (link_to(title, url_for(controller: :manifestation, action: :read, id: m.id)) + '; ')
-              - if worksbuf.length > 200
-                - worksbuf += '...  ' # signify more is available
-                - break
-            != worksbuf[0..-3]
-        .whatsnew-pic
-          %img{ alt: author.name, :class => 'img-responsive', src: author.profile_image.url(:tiny)}
-  - boxen += 1
-  - if boxen > 4
-    .float-left
-      = link_to t(:to_full_list), url_for(:controller => :manifestation, :action => :whatsnew)
-      - break
+  - unless break_workaround
+    .row
+      .col-xs-12
+        .card.whatsnew-author-card
+          .whatsnew-text
+            %h3
+              = link_to author.name, author_toc_path(author)
+            %p
+              - worksbuf = ''
+              - works.each do |m|
+                - title = m.expressions[0].title
+                - title += (m.expressions[0].translation ? ' / '+m.expressions[0].works[0].persons[0].name : '')
+                - worksbuf += (link_to(title, url_for(controller: :manifestation, action: :read, id: m.id)) + '; ')
+                - if worksbuf.length > 200
+                  - worksbuf += '...  ' # signify more is available
+                  - break
+              != worksbuf[0..-3]
+          .whatsnew-pic
+            %img{ alt: author.name, :class => 'img-responsive', src: author.profile_image.url(:tiny)}
+    - boxen += 1
+    - if boxen > 4
+      .float-left
+        = link_to t(:to_full_list), url_for(:controller => :manifestation, :action => :whatsnew)
+        - break_workaround = true

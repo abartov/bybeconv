@@ -37,8 +37,6 @@
       / what's new
       %h2= t(:whats_new)
       = render partial: 'whatsnew'
-    / .col-sm-1
-    / space
     .col-md-8.col-xs-12#authors
       / author cards
       = render partial: 'shared/authors', locals: {popular_authors: @pop_authors, random_authors: @random_authors}

@@ -23,46 +23,47 @@
       %div{ style:"vertical-align:top; width: 70%; padding-left:10px;background:#d2cfcf;"}
         %h2= t(:display_text)
         != raw(@html)
-    = label_tag(:genre, t(:genre))
-    = select_tag(:genre, options_for_select(get_genres.map {|genre| [I18n.t(genre), genre]}, @text.genre), {include_blank: true})
-    %br
-    %br
-    - if @text.person.nil?
-      = label_tag t(:legacy_guessed_person)
-      - if @text.html_dir.person.nil?
-        %span{style: 'color:red'}= link_to t(:dir_not_associated), url_for(controller: :html_dirs, action: :edit, id: @text.html_dir.id)
+    %div{ style:'width:50%'}
+      = label_tag(:genre, t(:genre))
+      = select_tag(:genre, options_for_select(get_genres.map {|genre| [I18n.t(genre), genre]}, @text.genre), {include_blank: true})
+      %br
+      %br
+      - if @text.person.nil?
+        = label_tag t(:legacy_guessed_person)
+        - if @text.html_dir.person.nil?
+          %span{style: 'color:red'}= link_to t(:dir_not_associated), url_for(controller: :html_dirs, action: :edit, id: @text.html_dir.id)
+        - else
+          %span{style: 'color:green'}= link_to @text.html_dir.person.name, authors_show_path(id: @text.html_dir.person.id)
+          = link_to t(:confirm), html_file_confirm_html_dir_person_path(@text), {remote: true, :class => "ajax_link", "data-done-msg" => t(:confirmed), "data-doing-msg" => t(:confirming)}
+          %br
+          %b= t(:or)
       - else
-        %span{style: 'color:green'}= link_to @text.html_dir.person.name, authors_show_path(id: @text.html_dir.person.id)
-        = link_to t(:confirm), html_file_confirm_html_dir_person_path(@text), {remote: true, :class => "ajax_link", "data-done-msg" => t(:confirmed), "data-doing-msg" => t(:confirming)}
+        = label_tag t(:associated_persons)
         %br
-        %b= t(:or)
-    - else
-      = label_tag t(:associated_persons)
-      %br
-      = link_to @text.person.name+' ('+t(:author)+')', authors_show_path(id: @text.person.id)
-      - unless @text.translator.nil?
+        = link_to @text.person.name+' ('+t(:author)+')', authors_show_path(id: @text.person.id)
+        - unless @text.translator.nil?
+          %br
+          = link_to @text.translator.name+' ('+t(:translator)+')', authors_show_path(id: @text.translator.id)
         %br
-        = link_to @text.translator.name+' ('+t(:translator)+')', authors_show_path(id: @text.translator.id)
+        - if @text.metadata_ready?
+          %b
+            %span{style: 'color:green'}= t(:frbr_ready)
       %br
-      - if @text.metadata_ready?
-        %b
-          %span{style: 'color:green'}= t(:frbr_ready)
-    %br
-    = t(:add)
-    = select_tag :add_person, options_from_collection_for_select(Person.order(:name), 'id','name'), include_blank: true
-    = t(:in_role)
-    = select_tag :role, options_for_select([[t(:author), HtmlFile::ROLE_AUTHOR], [t(:translator), HtmlFile::ROLE_TRANSLATOR]])
-    %br
-    = link_to t(:to_manage_people), authors_list_path #url_for(controller: :authors, action: :list)
-    %br
-    %h3= t(:comments)
-    = text_area_tag(:comments, @text.comments)
-    %br
-    = label_tag t(:remove_line_nums)
-    = check_box_tag :remove_line_nums
-    %br
-    %b
-      = submit_tag t(:save_and_update_display)
+      = t(:add)
+      = select_tag :add_person, options_from_collection_for_select(Person.order(:name), 'id','name'), include_blank: true
+      = t(:in_role)
+      = select_tag :role, options_for_select([[t(:author), HtmlFile::ROLE_AUTHOR], [t(:translator), HtmlFile::ROLE_TRANSLATOR]])
+      %br
+      = link_to t(:to_manage_people), authors_list_path #url_for(controller: :authors, action: :list)
+      %br
+      %h3= t(:comments)
+      = text_area_tag(:comments, @text.comments)
+      %br
+      = label_tag t(:remove_line_nums)
+      = check_box_tag :remove_line_nums
+      %br
+      %b
+        = submit_tag t(:save_and_update_display)
   %a{name: 'actions'}
   %h3= t(:actions)
   %ul
