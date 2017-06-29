@@ -3,6 +3,9 @@ class ApplicationController < ActionController::Base
   before_filter :set_paper_trail_whodunnit
   after_filter :set_access_control_headers
 
+  # class variables
+  @@whatsnew_cache = nil
+
   def set_access_control_headers
 #    headers['Access-Control-Allow-Origin'] = 'http://benyehuda.org/'
     headers['Access-Control-Allow-Origin'] = '*'
@@ -82,14 +85,17 @@ class ApplicationController < ActionController::Base
   end
 
   def whatsnew_anonymous
-    authors = {}
-    Manifestation.new_since(1.month.ago).each {|m|
-      person = m.expressions[0].persons[0] # TODO: more nuance
-      next if person.nil? # shouldn't happen, but might in a dev. env.
-      authors[person] = [] if authors[person].nil?
-      authors[person] << m
-    }
-    return authors
+    if @@whatsnew_cache.nil?
+      authors = {}
+      Manifestation.new_since(1.month.ago).each {|m|
+        person = m.expressions[0].persons[0] # TODO: more nuance
+        next if person.nil? # shouldn't happen, but might in a dev. env.
+        authors[person] = [] if authors[person].nil?
+        authors[person] << m
+      }
+      @@whatsnew_cache = authors
+    end
+    return @@whatsnew_cache
   end
 
   def current_user
