@@ -35,7 +35,7 @@ def traverse(dir, t, no_nikkuds, need_resequence)
   print "traversing directory ##{t[:dir]} - #{dir}                     \r"
   Dir.foreach(dir) { |fname|
     thefile = dir+'/'+fname
-    if !(File.directory?(thefile)) and fname =~ /\.html$/ and not fname == 'index.html' and fname !~ /_no_nikkud/ and not dir == AppConstants.base_dir # ignore HTML files on root directory
+    if !(File.directory?(thefile)) and fname =~ /\.html$/ and not fname == 'index.html' and fname !~ /_no_nikkud/ and fname !~ /\.html\.html$/ and not dir == AppConstants.base_dir # ignore HTML files on root directory
       t[:files] += 1
       h = HtmlFile.find_by_path(thefile)
       if h.nil?
