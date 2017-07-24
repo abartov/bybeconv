@@ -8,13 +8,13 @@
 
   .backend-field
     = f.label t(:name)
-    = f.text_backend-field :name
+    = f.text_field :name
   .backend-field
     = f.label t(:birthdate)
-    = f.text_backend-field :birthdate
+    = f.text_field :birthdate
   .backend-field
     = f.label t(:deathdate)
-    = f.text_backend-field :deathdate
+    = f.text_field :deathdate
   .backend-field
     = f.label t(:copyright_status)
     %br
@@ -24,25 +24,25 @@
     = f.label t(:by_permission)
   .backend-field
     = f.label t(:other_designation)
-    = f.text_backend-field :other_designation
+    = f.text_field :other_designation
   .backend-field
     = f.label t(:affiliation)
-    = f.text_backend-field :affiliation
+    = f.text_field :affiliation
   .backend-field
     = f.label t(:country)
-    = f.text_backend-field :country
+    = f.text_field :country
   .backend-field
     = f.label t(:comment)
     = f.text_area :comment
   .backend-field
     = f.label t(:viaf_id)
-    = f.text_backend-field :viaf_id
+    = f.text_field :viaf_id
   .backend-field
     = f.label t(:nli_id)
-    = f.text_backend-field :nli_id
+    = f.text_field :nli_id
   .backend-field
     = f.label t(:wikidata_id)
-    = f.text_backend-field :wikidata_id, size: 10
+    = f.text_field :wikidata_id, size: 10
   .backend-field
     = t(:wikipedia_url)
     = f.text_area :wikipedia_url, rows: 3, cols: 50
@@ -55,7 +55,7 @@
     = image_tag person.profile_image.url(:thumb)
   .backend-field
     = f.label t(:upload_new_image)
-    = f.file_backend-field :profile_image
+    = f.file_field :profile_image
   .backend-field
     = f.label t(:metadata_approved)
     = t(:yes)
