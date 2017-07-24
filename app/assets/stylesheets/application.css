@@ -436,7 +436,7 @@ background-color: #907989;
 .welcome {
   height: auto;
   background-color: #9d9299;
-  background-image: url(/assets/welcome_bg.png);
+  background-image: url(../images/welcome_bg.png);
   background-repeat: no-repeat;
   background-position: center;
   box-shadow: inset 0px 3px 10px rgba(69, 42, 14, .35);
