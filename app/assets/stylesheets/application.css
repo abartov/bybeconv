@@ -455,7 +455,13 @@ background-color: #907989;
 .welcome-content a {color: #660248;}
 .welcome-content a:hover{ color: #2b0d22;}
 .welcome-actions {color:white;padding-top: 1.4rem;padding-bottom: 1.4rem}
-.welcome-icon{font-size: 2rem;padding-left:0.6rem;padding-right:0.6rem;display: inline;}
+.welcome-icon{
+  font-family: 'ben-yehuda';
+  font-size: 2rem;
+  padding-left:0.6rem;
+  padding-right:0.6rem;
+  display: inline;
+}
 .welcome-icon a{color:#fff;}
 .donate-icon{font-size: 2rem;padding-left:0.6rem;padding-right:0.6rem;display: inline;margin-top: 0.5rem; margin-right:-0.3rem;}
 #byfooter{
@@ -616,8 +622,9 @@ img.absolute {
 .more-actions a:hover{
   color: #2b0d22;
 }
+
 .genre-icon{
-  font-family: 'ben-yehuda-07';
+  font-family: 'ben-yehuda';
   font-size: 5.6rem;
   text-align: center;
   margin-top: -1rem;
@@ -844,7 +851,7 @@ rgba(0,0,0, .5);
 }
 
 .toolbox-cell .error-found {
-    font-family: "ben-yehuda-03";
+    font-family: "ben-yehuda";
     font-size: 3.6rem
 }
 
