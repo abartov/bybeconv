@@ -376,7 +376,7 @@ select{
   width:100%;
   padding: 0 0.4rem;
   background-color:#fff;
-  background-image: url(../images/dd-arrow2.png);
+  background-image: url(/assets/dd-arrow2.png);
   background-position: left;
   background-repeat: no-repeat;
   border-radius:0;
@@ -408,7 +408,7 @@ float: left;
 font-family: "FontAwesome";
 color: #660248;
 font-size: 1.8rem;
-margin-top: 1.8rem;
+margin-top: 1.2rem;
 display: inline;
 }
 .search {
@@ -461,7 +461,13 @@ background-color: #907989;
 .welcome-content a {color: #660248;}
 .welcome-content a:hover{ color: #2b0d22;}
 .welcome-actions {color:white;padding-top: 1.4rem;padding-bottom: 1.4rem}
-.welcome-icon{font-size: 2rem;padding-left:0.6rem;padding-right:0.6rem;display: inline;}
+.welcome-icon{
+  font-family: 'ben-yehuda';
+  font-size: 2rem;
+  padding-left:0.6rem;
+  padding-right:0.6rem;
+  display: inline;
+}
 .welcome-icon a{color:#fff;}
 .donate-icon{font-size: 2rem;padding-left:0.6rem;padding-right:0.6rem;display: inline;margin-top: 0.5rem; margin-right:-0.3rem;
 }
@@ -553,13 +559,13 @@ img.absolute {
   overflow: hidden;
 }
 .author-card {
-  width: 100%m;
-  /* height: 28rem; */
-  background-color: #660248;
-  color: #fff;
-  font-weight: bold;
-  text-align: center;
-  line-height: 4rem;
+	width: 100%m;
+	height: 28rem;
+	background-color: #660248;
+	color: #fff;
+	font-weight: bold;
+	text-align: center;
+	line-height: 4rem;
 }
 .author-homepage-pic{
   border-top-left-radius: 0.3rem;
@@ -570,12 +576,11 @@ img.absolute {
   color: #fff;
 }
 .surprise{
-  background-color: #eeeced;
-  background-image:url(/assets/corner.png);
-  background-position: left bottom;
-  background-repeat: no-repeat;
-  position: relative;
-  height:30rem;
+ background-color: #eeeced;
+ background-image: url(/assets/corner.png);
+ background-position: left bottom;
+ background-repeat: no-repeat;
+ position: relative;
 }
 .surprise-author {
   padding-top: 5rem;
@@ -628,8 +633,9 @@ img.absolute {
 .more-actions a:hover{
   color: #2b0d22;
 }
+
 .genre-icon{
-  font-family: 'ben-yehuda-07';
+  font-family: 'ben-yehuda';
   font-size: 5.6rem;
   text-align: center;
   margin-top: -1rem;
@@ -758,7 +764,7 @@ padding: 2.4rem;
   float: top;
   margin-left: 2.6rem;
   margin-top: -0.6rem;
-  background-image:url(../images/creator-bookmark-back2.png);
+  background-image:url(assets/creator-bookmark-back2.png);
   background-repeat: no-repeat;
   background-position: left;
 }
@@ -867,7 +873,7 @@ rgba(0,0,0, .5);
 }
 
 .toolbox-cell .error-found {
-    font-family: "ben-yehuda-03";
+    font-family: "ben-yehuda";
     font-size: 3.6rem
 }
 
