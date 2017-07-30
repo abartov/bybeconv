@@ -58,7 +58,7 @@
 }
 
 #user-widget{
-	padding-top: 3.2rem;
+	padding-top: 3rem;
 }
 /*
 @font-face { font-family: "Alef"; src: url('/assets/Alef-Regular.eot'); src: url('/assets/Alef-Regular.eot?#iefix') format('embedded-opentype'), url('/assets/Alef-Regular.woff') format('woff'), url('/assets/Alef-Regular.ttf') format('truetype'), url('/assets/Alef-Regular.svg#alefregular') format('svg'); font-weight: normal; font-style: normal; }
@@ -184,12 +184,16 @@ font-size: 1.4rem;
 h1 {
 font-size: 3.6rem;
 font-weight: bold;
-color: #660248;
 }
 h2 {
 font-size: 2.2rem;
 font-weight: bold;
-color: #660248;
+margin-top: 3rem;
+margin-bottom: 0.4rem;
+}
+.headline-2 {
+font-size: 2.2rem;
+font-weight: bold;
 margin-top: 3rem;
 margin-bottom: 0.4rem;
 }
@@ -198,29 +202,27 @@ margin-bottom: 0.4rem;
   font-weight: bold;
   color: #660248;
 }
-h3 {
-font-size: 1.8rem;
-font-weight: bold;
-color: #660248;
-margin-bottom: 0.4rem;
-margin-top: 0rem;
-padding-top: 0.8rem;
-}
+
 .h3 {
 font-size: 1.8rem;
 font-weight: bold;
-color: #660248;
 margin-bottom: 0.4rem;
 margin-top: 0rem;
 padding-top: 0.8rem;
 }
-h4 {
+.headline-3 {
+font-size: 1.8rem;
 font-weight: bold;
-color: #660248;
+margin-bottom: 0.4rem;
+margin-top: 0rem;
+padding-top: 0.8rem;
+}
+.headline-4 {
+font-weight: bold;
 margin-top: 1.2rem;
 margin-bottom: 0.4rem;
 }
-h5{
+.headline-5{
   font-weight: bold;
   padding-top: 1rem;
 }
@@ -414,6 +416,7 @@ display: inline;
 .search {
 }
 .fontsize-selector {
+  margin-top: 2rem;
   width: auto;
   height: auto;
   float: left;
@@ -496,19 +499,20 @@ background-color: #907989;
   margin:0.8rem auto;
 }
 .whatsnew-author-card{
+  background-color: white;
   width:100%;
   height: 11.4rem;
 }
 .whatsnew-text{
-  width: 78%;
-  padding: 1.2rem 1.2rem 0 0.6rem;
+  width: 75%;
+  padding: 0.4rem 1.2rem 0.4rem 0.6rem;
   max-height: 11.4rem;
   display: inline-block;
   overflow: hidden;
   vertical-align: top;
 }
 .whatsnew-pic{
-  width: 22%;
+  width: 25%;
   float: left;
   border-top-left-radius: 0.3rem;
   border-bottom-left-radius: 0.3rem;
@@ -538,6 +542,7 @@ background-color: #907989;
   float:left;
 }
 #authors{
+  margin-top: 2rem;
   direction:rtl;
 }
 .work-portrait{
@@ -576,8 +581,8 @@ img.absolute {
   color: #fff;
 }
 .surprise{
- background-color: #eeeced;
- background-image: url(/assets/corner.png);
+  background-color: #eeeced;
+  background-image: url(/assets/corner.png);
  background-position: left bottom;
  background-repeat: no-repeat;
  position: relative;
@@ -639,8 +644,8 @@ img.absolute {
   font-family: 'ben-yehuda';
   font-size: 5.6rem;
   text-align: center;
-  margin-top: -1rem;
-  margin-bottom: -0.8rem;
+  margin-top: 0rem;
+  margin-bottom: -2.4rem;
 }
 .genre-icon a{
   color:#660248;
@@ -1034,4 +1039,24 @@ rgba(0,0,0, .5);
   display: inline;
   float: left;
   padding:0.8rem 0 0 0.4rem;
+}
+.next-author{
+	float: left;
+	font-size: 2.4rem; 
+	padding-top: 11rem;
+	/* aligh verticaly */
+}
+.frevious-author{
+	float:right;
+	font-size: 2.4rem; 
+	padding-top: 11rem;
+	/* aligh verticaly */
+}
+#whatsnew{
+	margin-top: 2rem;
+}
+.headline-genre{
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: bold;
 }
