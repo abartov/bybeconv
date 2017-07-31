@@ -289,6 +289,7 @@ background-color: #2b0d22;
   background-color: #2b0d22;
   font-size: 1.4rem;
   color: #907989;
+	  /* vertical alignment */
 }
 #user-widget{
   text-align:left;
@@ -340,6 +341,7 @@ ul {
 .nav li {
   margin: 0 1.6rem;
   display: inline;
+	  /* vertical alignment */
  }
 li :active{
   font-weight: bold;
@@ -466,13 +468,21 @@ background-color: #907989;
 .welcome-actions {color:white;padding-top: 1.4rem;padding-bottom: 1.4rem}
 .welcome-icon{
   font-family: 'ben-yehuda';
-  font-size: 2rem;
+  font-size: 1.8rem;
   padding-left:0.6rem;
   padding-right:0.6rem;
   display: inline;
+	/* vertical alignment */
 }
-.welcome-icon a{color:#fff;}
 .donate-icon{font-size: 2rem;padding-left:0.6rem;padding-right:0.6rem;display: inline;margin-top: 0.5rem; margin-right:-0.3rem;
+}
+.welcome-small-link{
+  font-family: "Alef";
+  font-size: 1.6rem;
+  padding-left:0.6rem;
+  padding-right:0.6rem;
+  display: inline;
+  /* vertical alignment */
 }
 #breadcrumbs li{
   margin: 0 0.2rem;
@@ -560,7 +570,7 @@ img.absolute {
 .card-content {
   width: 100%;
   height: auto;
-  padding: 1.6rem;
+  padding: 1.5rem;
   overflow: hidden;
 }
 .author-card {
@@ -621,7 +631,7 @@ img.absolute {
   float: left;
 }
 .more-space {
-  height:14rem;
+  height:13rem;
 }
 .more-bottom {
   align-content: center;
@@ -629,7 +639,6 @@ img.absolute {
   margin-left: auto;
 }
 .more-actions {
-  padding-top: 1.4rem;
   width:auto;
   align-content:center;
 }
@@ -709,7 +718,7 @@ padding: 0.4rem;
   background-color: #660248;
   margin-right: 1.2rem;
   float:left;
-  margin-top: 3rem;
+  margin-top: 2.4rem;
   box-shadow: 0 0.1rem 0.2rem rgba(0,0,0, .4);
 }
 .btn:hover{
@@ -744,9 +753,6 @@ padding: 1.2rem 2.4rem 0 1.2rem;
 .author-top{
   margin: 3.4rem 0;
   z-index: 0;
-}
-.card-content {
-padding: 2.4rem;
 }
 .author-links{
   margin-top: 1rem;
@@ -872,7 +878,7 @@ rgba(0,0,0, .5);
 .btn-group-vertical {
     position: relative;
     display: inline-block;
-    vertical-align: middle;
+  /* vertical alignment */
 }
 .toolbox-cell .wide-cell {
     width: auto;
@@ -1044,13 +1050,13 @@ rgba(0,0,0, .5);
 	float: left;
 	font-size: 2.4rem; 
 	padding-top: 11rem;
-	/* aligh verticaly */
+  /* vertical alignment */
 }
 .frevious-author{
 	float:right;
 	font-size: 2.4rem; 
 	padding-top: 11rem;
-	/* aligh verticaly */
+  /* vertical alignment */
 }
 #whatsnew{
 	margin-top: 2rem;
