@@ -987,7 +987,7 @@ rgba(0,0,0, .5);
   color: white;
   text-align: center;
   background-color: #660248;
-  margin:3rem 0 2rem 0;
+  margin:3rem 0 0rem 0;
   box-shadow: 0 0.1rem 0.2rem rgba(0,0,0, .4);
 }
 .work-view-btn:hover{
