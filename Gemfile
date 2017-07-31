@@ -11,6 +11,9 @@ gem 'omniauth-twitter'
 #gem 'clockwork' # scheduler
 gem 'protected_attributes' # compatibility gem for 3.2.x-style attr_accessible
 gem 'rufus-scheduler' # scheduler
+gem 'chewy' # for ElasticSearch
+#gem 'jssorslider-rails', github: 'matthias-g/jssorslider-rails' # for carousel slider
+gem "jquery-slick-rails" # for carousel slider
 
 gem 'diffy'
 gem 'aws-sdk' # for the Amazon cloud

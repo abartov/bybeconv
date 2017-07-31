@@ -13,6 +13,8 @@ class Manifestation < ActiveRecord::Base
   enum link_type: [:wikipedia, :blog, :youtube, :other]
   enum status: [:approved, :submitted, :rejected]
 
+  update_index 'manifestation#manifestation', :self # update ManifestationIndex when entity is updated
+
   # class variable
   @@popular_works = nil
   @@tmplock = false

@@ -7,6 +7,9 @@
  *= require_tree .
  *  old   = require jquery.ui.all
 */
+/*
+*= require slick
+*/
 /*body{font-size:14px;} /* default */
 .nav-tabs {
   font-size:1.4em;
@@ -1046,15 +1049,22 @@ rgba(0,0,0, .5);
   float: left;
   padding:0.8rem 0 0 0.4rem;
 }
+
+.slick-arrow {
+  color:#660248;
+}
+.slick-disabled {
+  opacity: .3;
+}
 .next-author{
 	float: left;
-	font-size: 2.4rem; 
+	font-size: 2.4rem;
 	padding-top: 11rem;
   /* vertical alignment */
 }
 .frevious-author{
 	float:right;
-	font-size: 2.4rem; 
+	font-size: 2.4rem;
 	padding-top: 11rem;
   /* vertical alignment */
 }
