@@ -487,6 +487,15 @@ background-color: #907989;
   display: inline;
   /* vertical alignment */
 }
+.footer-small-link{
+  color: white;
+  padding: 0 0.8rem;
+  display: inline;
+  /* vertical alignment */
+}
+.footer-small-link a{
+  color: white;
+}
 #breadcrumbs li{
   margin: 0 0.2rem;
   display: inline;
@@ -499,6 +508,7 @@ background-color: #907989;
   margin-top: 8rem;
 }
 #bottom-nav{
+  align-content: center;
   padding-top: 1rem;
 }
 .byfooter a{
@@ -672,7 +682,7 @@ img.absolute {
   min-height: 42.2rem;
 }
 .footer-card{
-  height: 28rem;
+  height: 32rem;
 }
 #breadcrumbs li{
   margin: 0 0.2rem;
