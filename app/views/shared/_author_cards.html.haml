@@ -43,12 +43,14 @@
   $(document).ready(function() {
     $("#scroller#{id_frag}").slick({
       infinite: false,
-      slidesToShow: 4,
+      //slidesToShow: 3,
+      placeholders: false,
       slidesToScroll: 1,
       arrows: true,
       rtl: true,
       nextArrow: "#leftarrow#{id_frag}",
       prevArrow: "#rightarrow#{id_frag}",
+      variableWidth: true,
       // appendArrows: '#scroller_container',
     });
   });

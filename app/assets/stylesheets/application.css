@@ -577,7 +577,7 @@ img.absolute {
   overflow: hidden;
 }
 .author-card {
-	width: 100%m;
+	width: 100%;
 	/* height: 28rem; */ /* removed by Asaf */
 	background-color: #660248;
 	color: #fff;
