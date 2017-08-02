@@ -61,7 +61,8 @@
 }
 
 #user-widget{
-	padding-top: 3rem;
+	display: inline;
+	padding-top: 0.8rem;
 }
 /*
 @font-face { font-family: "Alef"; src: url('/assets/Alef-Regular.eot'); src: url('/assets/Alef-Regular.eot?#iefix') format('embedded-opentype'), url('/assets/Alef-Regular.woff') format('woff'), url('/assets/Alef-Regular.ttf') format('truetype'), url('/assets/Alef-Regular.svg#alefregular') format('svg'); font-weight: normal; font-style: normal; }
@@ -236,15 +237,15 @@ img {
 margin: auto;
 }
 a {
-  color: #660248;
+  color: #910065;
   text-decoration: none
 }
 a:hover{
-  color: #2b0d22;
+  color: #710150;
   text-decoration: none
 }
 a:active{
-  color: #2b0d22;
+  color: #710150;
   text-decoration: none
 }
 a:disabled {
@@ -252,10 +253,10 @@ a:disabled {
   text-decoration: none
 }
 .text-on-dark{
-  color: #d4c5d0;
+  color: #fff;
 }
 .text-on-dark a{
-  color: #d4c5d0;
+  color: #E4CEDE;
 }
 .text-on-dark a:hover{
   color: #fff;
@@ -295,7 +296,9 @@ background-color: #2b0d22;
 	  /* vertical alignment */
 }
 #user-widget{
+  padding-top: 0.8rem;
   text-align:left;
+	  float: left;
 }
 .search-bar{
   height: 7rem;
@@ -308,8 +311,8 @@ background-color: #2b0d22;
 }
 
 #site-logo{
-  margin-top: 2rem;
-  margin-bottom: 1.2rem;
+  margin-top: 0.8rem;
+  margin-bottom: 2.2rem;
 }
 #navbar-full-width{
   box-sizing: border-box;
@@ -421,10 +424,10 @@ display: inline;
 .search {
 }
 .fontsize-selector {
-  margin-top: 2rem;
-  width: auto;
-  height: auto;
-  float: left;
+ margin: 0 11rem 0 0;
+ /* aligh center horizonately*/
+ align-content: center;
+ display: inline;
 }
 .circle {
 width: 2.4rem;
@@ -455,7 +458,6 @@ background-color: #907989;
   font-size: 2rem;
   text-align: center;
   align-content: center;
-  color: white;
   margin-right: auto;
   margin-left: auto;
 }
@@ -466,8 +468,6 @@ background-color: #907989;
   margin: 0.8rem;
   text-align: center;
 }
-.welcome-content a {color: #660248;}
-.welcome-content a:hover{ color: #2b0d22;}
 .welcome-actions {color:white;padding-top: 1.4rem;padding-bottom: 1.4rem}
 .welcome-icon{
   font-family: 'ben-yehuda';
@@ -488,14 +488,11 @@ background-color: #907989;
   /* vertical alignment */
 }
 .footer-small-link{
-  color: white;
   padding: 0 0.8rem;
   display: inline;
   /* vertical alignment */
 }
-.footer-small-link a{
-  color: white;
-}
+
 #breadcrumbs li{
   margin: 0 0.2rem;
   display: inline;
@@ -590,7 +587,7 @@ img.absolute {
 .author-card {
 	width: 100%;
 	/* height: 28rem; */ /* removed by Asaf */
-	background-color: #660248;
+	background-color: #910065;
 	color: #fff;
 	font-weight: bold;
 	text-align: center;
@@ -670,12 +667,7 @@ img.absolute {
   margin-top: 0rem;
   margin-bottom: -2.4rem;
 }
-.genre-icon a{
-  color:#660248;
-}
-.genre-icon a:hover{
-  color: #2b0d22;
-}
+
 .genre-card-content{
   text-align: center;
 }
@@ -729,7 +721,7 @@ padding: 0.4rem;
   border-radius: 0.3rem;
   color: white;
   text-align: center;
-  background-color: #660248;
+  background-color: #910065;
   margin-right: 1.2rem;
   float:left;
   margin-top: 2.4rem;
@@ -737,7 +729,7 @@ padding: 0.4rem;
 }
 .btn:hover{
   color: white;
-background-color: #2b0d22;
+background-color: #710150;
 }
 .btn:disabled{
 background-color: #d9cdd5;
@@ -1086,4 +1078,9 @@ rgba(0,0,0, .5);
   text-align: center;
   font-size: 1.8rem;
   font-weight: bold;
+}
+.announcement{
+	background-color: #660248;
+	float: left;
+	padding: 0.8rem;
 }
