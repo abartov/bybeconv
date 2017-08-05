@@ -446,8 +446,8 @@ background-color: #907989;
 }
 .welcome {
   height: auto;
-  background-color: #9d9299;
-  background-image: url(/assets/welcome_bg.png);
+  background-color: #6a5d65;
+  background-image: url(../images/welcome_bg3.png);
   background-repeat: no-repeat;
   background-position: center;
   box-shadow: inset 0px 3px 10px rgba(69, 42, 14, .35);
@@ -481,15 +481,17 @@ background-color: #907989;
 }
 .welcome-small-link{
   font-family: "Alef";
-  font-size: 1.6rem;
-  padding-left:0.6rem;
-  padding-right:0.6rem;
+  font-size: 1.4rem;
+  padding:0 0.8rem;
   display: inline;
   /* vertical alignment */
 }
 .footer-small-link{
-  padding: 0 0.8rem;
+  font-family: "Alef";
+  font-size: 1.4rem;
+  padding:0 0.8rem;
   display: inline;
+  /* vertical alignment */
   /* vertical alignment */
 }
 
