@@ -248,6 +248,10 @@ a:active{
   color: #610145;
   text-decoration: none
 }
+a:visited {
+  color: #145C6B;
+  text-decoration: none
+}
 a:disabled {
   color: #907989;
   text-decoration: none
