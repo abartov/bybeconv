@@ -204,7 +204,7 @@ margin-bottom: 0.4rem;
 .name-on-card{
   font-size: 2.2rem;
   font-weight: bold;
-  color: #660248;
+
 }
 
 .h3 {
@@ -677,7 +677,7 @@ img.absolute {
   min-height: 42.2rem;
 }
 .footer-card{
-  height: 32rem;
+  height: auto;
 }
 #breadcrumbs li{
   margin: 0 0.2rem;
@@ -1083,4 +1083,35 @@ rgba(0,0,0, .5);
 	background-color: #660248;
 	float: left;
 	padding: 0.8rem;
+}
+.volunteer-bookmark-back {
+  z-index: 1;
+  width: 129px;
+  height: 6px;
+  float: left;
+  float: top;
+  margin-left: 1.5rem;
+  margin-top: -1.3rem;
+  background-position: left;
+}
+.volunteer-bookmark-front {
+  z-index:3;
+  width: 20%;
+  float: left;
+  float: top;
+  margin-left: 1.5rem;
+  margin-top: -0.6rem;
+
+}
+.volunteer-bookmark-front img{
+  float: left;
+  float: top;
+  border-top-left-radius: 0.6rem;
+  border-bottom-left-radius: 0.2rem;
+  border-bottom-right-radius: 0.2rem;
+  box-shadow: 0.2rem 0.2rem 0.5rem
+rgba(0,0,0, .5);
+}
+.near-volunteer-picture{
+  width: 60%;
 }
