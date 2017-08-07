@@ -171,6 +171,11 @@ he:
   purged: הפריטים הוסרו.
   rec_file: קובץ
   rec_when: מתי
+  gender: מגדר
+  male: זכר
+  female: נקבה
+  other: אחר
+  unknown: לא ידוע
   status: סטטוס
   email: דואל
   toolbox: תיבת כלים
@@ -196,6 +201,7 @@ he:
   published_in_book: פורסם בספר
   edition_details: פרטי מהדורה ומידע נוסף
   tags: תגיות
+  the_blog: יומן הרשת
   recommendations: המלצות
   more_recommendations_in_the_blog: המלצות נוספות ביומן הרשת
   works: יצירות
@@ -206,6 +212,7 @@ he:
   manage_people: ניהול אישים
   to_manage_people: אם האיש/ה אינו/ה ברשימה, יש ליצור רשומה חדשה בניהול אישים (השינויים לא יישמרו אם לא בוצעה "שמירה ועדכון")
   how_to_help: 'רוצים להתנדב?'
+  to_the_facebook_page: לדף הפייסבוק
   contact_us: יצירת קשר
   show_toc: הצג תוכן עניינים
   are_you_sure: נא לאשר מחיקה
@@ -307,6 +314,7 @@ he:
   no_url_specified: לא צוינה כתובת URL.
   no_such_item: אין פריט כזה.
   url: כתובת URL
+  to_the_youtube_channel: לערוץ היוטיוב
   hello_x: שלום %{name}
   hello_anon: שלום רב!
   email_footer_html: "בברכה, צוות פרויקט בן-יהודה.\n\nאולי תמצא/י ענין ביומן הרשת של פרויקט בן-יהודה: http://benyehuda.org/blog/ \n\n או בערוץ היו-טיוב של פרויקט בן-יהודה: http://www.youtube.com/user/ProjectBenYehuda/videos?flow=grid&view=0"
