@@ -15,6 +15,7 @@
 
   <!-- Font awesome -->
   <script src="https://use.fontawesome.com/3f861a49f5.js"></script>
+  <link href="../assets/stylesheets/font-awesome.css" rel="stlesheet">
 
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn"t work if you view the page via file:// -->
@@ -26,27 +27,15 @@
   <body>
   <!-- header start -->
   <!-- topbar -->
-  <div class="container-fluid topbar">
-  <div class="container top-nav">
-   	  	<div class="row">
-   	  	  <div id="notifications" class="col-sm-10 text-on-dark">
-   	  	    <p><a href="#">רוצה לעזור?</a>&nbsp;&nbsp;&nbsp;       <a href="#">(20.4.2016) כנס†"הרופא†הטוב†שבמשוררים" לכבוד העלאת יצירותיו של שאול טשרניחובסקי&nbsp;</a>&nbsp;&nbsp;<a href="#">(13.3.2016)  מפגש מס׳ 2 לעורכים וקוראים ברמת השרון</a> </p>
-   	  	  </div>
-   	  	  <div class="col-sm-2
-       text-on-dark">
-   	  	
-   	  	  </div>
-  	    </div>
-      </div>
-    </div>
+
   <!-- top logo area -->
   <div class="container-fluid">
     <div class="container">
   	  <div class="row">
-    	  <div class="col-sm-8 blank-space">
+    	  <div class="col-sm-12 blank-space">
     	    <div class="row">
-    	      <div id="site-logo" class="col-xs-6 col-md-5"><a href=""><img src="../assets/images/BY_Logo.svg" class="img-responsive" alt="לוגו"></a></div>
-    	      <div><div class="fontsize-selector"><div>גודל גופן: 
+    	      <div id="site-logo" class="col-sm-4"><a href=""><img src="../assets/images/BY_Logo.svg" class="img-responsive" alt="לוגו"></a></div>
+    	      <div class="col-sm-8"><div class="fontsize-selector">גודל גופן: 
 <a class="decrease_font" href="javascript:void(0)" style="font-size: 75%">א</a>
 &nbsp;
 <a class="default_font" href="javascript:void(0)">א</a>
@@ -67,12 +56,16 @@
   });
 </script>
 </div>
-      </div></div>
+     
+ <div id="user-widget">
+   <p>שלום, מיה קופרמן&nbsp&nbsp&nbsp <a id="sign_in" href="file:///Macintosh HD/Users/Ruth/Google Drive/Ben Yehuda Project/HTML tests/Bootstrap rtl structure test/session/login.html">כניסה לאזור האישי</a></p>
+ </div>
+     <div class="announcement card text-on-dark">(20.4.2016) ביום חמישי, 5.5.2016 יתקיים כנס ״הרופא הטוב במשוררים״ לכבוד העלאת יצירותיו של שאול טשרניחובסקי באולם שפיצר באוניברסיטת תל אביב. התכנסות בשעה 18:30. <a href="#">לפרטים</a></div>
+              </div>
+
             </div>
     	  </div>
-    	  	<div id="user-widget" class="col-sm-4">
- 				<div> <p>שלום, מיה קופרמן&nbsp&nbsp&nbsp <a id="sign_in" href="file:///Macintosh HD/Users/Ruth/Google Drive/Ben Yehuda Project/HTML tests/Bootstrap rtl structure test/session/login.html">כניסה לאזור האישי</a></p></div>
-            </div>
+
     	  </div>
   	  </div>
     </div>
@@ -86,7 +79,8 @@
    	  	  <li><a href="">יצירות</a></li>
    	  	  <li><a href="">תקופות</a></li>
    	  	  <li><a href="">אודות</a></li>
-   	  	  <li><a href="">תרומה</a></li>
+   	  	  <li><a href="#">רוצים להתנדב?</a></li>
+   	  	  <li><a href="">תרומה כספית</a></li>
    	  	  <li><a href="">יצירת קשר</a></li>
    	  	  <li><a href="">English</a></li></ul></div>
    	  	  <div id="nav-additional" class="col-sm-4">
@@ -104,19 +98,19 @@
     <div class="row">
       <div class="row">
         <div class="col-md-1"></div>
-        <div class="col-md-10"><div class="welcome-content">
-          <h1>ברוכים הבאים לפרויקט בן-יהודה</h1><p>הפרויקט הוא מיזם התנדבותי שעוסק ביצירת מהדורות אלקטרוניות של נכסי הספרות העברית וריכוזן באתר אינטרנט לטובת הציבור, בחינם ובאופן חופשי לשימוש. 
-            </p><p>מטרות הפרויקט הן שימור היצירות העבריות, הנגשת היצירות לציבור הרחב וחשיפת היצירות לציבור הרחב.
+        <div class="col-md-10"><div class="welcome-content text-on-dark">
+          <h1>ברוכים הבאים לפרויקט בן-יהודה</h1><p>הפרויקט הוא <span style="font-weight: bold">מיזם התנדבותי</span> שעוסק ביצירת מהדורות אלקטרוניות של נכסי הספרות העברית וריכוזן באתר אינטרנט לטובת הציבור, בחינם ובאופן חופשי לשימוש. </p><p>מטרות הפרויקט הן שימור היצירות העבריות, הנגשת היצירות לציבור הרחב וחשיפת היצירות לציבור הרחב. <a href="#">למידע נוסף</a>
               </p>
           <p>כיום כלולים בפרויקט <a href="">237 יוצרים</a>, <a href="">3,836 יצירות</a> ו-<a href="">673 ערכים במילון</a></p>
-            <div class="welcome-actions">
-				<div class="welcome-small-link"><a href="">רוצים לעזור?</a></div>
-     			<div class="welcome-small-link"><a href="#">שאלות נפוצות</a></div>
-     			<div class="welcome-small-link"><a href="#">יומן הרשת</a></div>
-     			<div class="welcome-small-link"><a href="#">ערוץ YouTube</a></div>
-      			<div class="welcome-icon"><a href=""><i class="fa fa-facebook-square"></i></a></div>
-   			   <div class="welcome-icon"><a href=""><i class="fa fa-share-alt"></i></a></div>
-      </div>
+              <div class="welcome-actions">
+    <div class="welcome-small-link"><a href=""><i class="fa fa-info-circle" style="padding-top:0.8rem;"></i>&nbsp&nbspאודות</a></div>
+    <div class="welcome-small-link"><a href=""><i class="fa fa-facebook-square" style="padding-top:0.8rem;"></i>&nbsp&nbspדף הפייסבוק שלנו</a></div>
+    <div class="welcome-small-link"><a href=""><i class="fa fa-youtube-play" style="padding-top:0.8rem;"></i>&nbsp&nbspערוץ ה- YouTube</a></div>
+    <div class="welcome-small-link"><a href=""><i class="fa fa-pencil-square-o" style="padding-top:0.8rem;"></i>&nbsp&nbspיומן הרשת</a></div>
+    <div class="welcome-small-link"><a href=""><i class="fa fa-share-alt" style="padding-top:0.8rem;"></i>&nbsp&nbspשיתוף</a></div>
+    <div class="welcome-small-link"><a href=""><span class="icon-bydonate" style="padding-top:0.8rem;"></span>&nbsp&nbspתרומה כספית</a></div>
+  </div>
+
           </div></div>
         <div class="col-md-1"></div>
         </div>
@@ -146,13 +140,13 @@
       <div class="row">
         <div class="col-xs-1"><a href="#"><i class="fa fa-chevron-right next-author" aria-hidden="true"></i></a></div>
         <div class="col-xs-10"><div class="row">
-          <div class="col-xs-4">
+          <div class="col-xs-3">
             <div class="card author-card">
               <div class="author-homepage-pic"><img src="Portraits/Shalom Aleichem_1040.jpg" class="img-responsive" alt=""></div>
               <div><p>שלום עליכם</p></div>
               </div>
             </div>
-          <div class="col-xs-4">
+          <div class="col-xs-3">
             <div class="card author-card">
               <div class="author-homepage-pic"><img src="Portraits/Aharon_Avraham_Kabak_1040.jpg" class="img-responsive" alt=""></div>
               <div>
@@ -160,11 +154,19 @@
                 </div>
               </div>
             </div>
-          <div class="col-xs-4">
+          <div class="col-xs-3">
             <div class="card author-card">
               <div class="author-homepage-pic"><img src="Portraits/Shoshana_Shrira_1040.jpg" class="img-responsive" alt=""></div>
               <div>
                 <p>שושנה שרירא</p>
+                </div>
+              </div>
+            </div>	
+                      <div class="col-xs-3">
+            <div class="card author-card">
+              <div class="author-homepage-pic"><img src="Portraits/Bialik_Hayim Nahman.jpg" class="img-responsive" alt=""></div>
+              <div>
+                <p>חיים נחמן ביאליק</p>
                 </div>
               </div>
             </div>	  	    
@@ -186,8 +188,17 @@
             <div class="row">
               <div class="col-xs-1"><a href="#"><i class="fa fa-chevron-right next-author" aria-hidden="true"></i></a></div>
               <div class="col-xs-10">
-                <div class="row">  	    
-                  <div class="col-xs-4">
+                <div class="row"> 
+                         	<div class="col-xs-3"><div class="card author-card surprise">
+<div style="padding-top: 5rem;">
+<a href="#">
+<div><span class="icon-bysurprise-author" style="font-size:6rem;margin-bottom:1.4rem;"></span></div>
+<p class="headline-genre">יוצר בהפתעה</p>
+</a>
+</div>  
+
+        	</div></div> 	    
+                  <div class="col-xs-3">
                     <div class="card author-card">
                       <div class="author-homepage-pic"><img src="Portraits/Smolenskin_1040.jpg" class="img-responsive" alt="Placeholder image"></div>
                       <div>
@@ -195,23 +206,23 @@
                       </div>
                     </div>
                   </div> 	  	    
-                  <div class="col-xs-4">
+                  <div class="col-xs-3">
                     <div class="card author-card">
                       <div class="author-homepage-pic"><img src="Portraits/Berl Katznelson_1040.jpg" class="img-responsive" alt=""></div>
                       <div>
                         <p>ברל כצנלסון</p>
                       </div>
                     </div>
+                  </div> 
+                                    <div class="col-xs-3">
+                    <div class="card author-card">
+                      <div class="author-homepage-pic"><img src="Portraits/Yosef_Eliyahu_Chelouche_1040.jpg" class="img-responsive" alt=""></div>
+                      <div>
+                        <p>יוסף אליהו שלוש</p>
+                      </div>
+                    </div>
                   </div> 	  	    
-        	<div class="col-xs-4"><div class="card author-card surprise">
-<div style="padding-top: 5rem;">
-<a href="#">
-<div><span class="icon-bysurprise-author" style="font-size:7.6rem;margin-bottom:1.4rem;"></span></div>
-<p class="headline-genre">יוצר בהפתעה</p>
-</a>
-</div>  
-<div><div class="replace-icon text-on-dark"><a href=""><i class="fa fa-refresh"></i></a></div></div>
-        	</div></div>
+
                 </div>
               </div>
               <div class="col-xs-1"><a href="#"><i class="fa fa-chevron-left next-author" aria-hidden="true"></i></a></div>
@@ -239,7 +250,8 @@
     <div class="col-xs-12">
       <div class="card whatsnew-author-card">
         <div class="whatsnew-text"><a href="#" class="headline-3">אחד העם (אשר צבי גרינברג)</a>
-			<p>(מאמרים ומסות) <a href="#">לא זה הדרך</a>, <a href="#">אמת מארץ ישראל א'</a>, <a href="#">אמת מארץ ישראל ב׳</a>, <a href="#">בין קודש וחול</a>, <a href="#">עבר ועתיד</a>, <a href="#">לאומיות חדשה</a>...  </p>
+        <p>נוסף לאתר: 10.2016</p>
+			<p>מאמרים ומסות: <a href="#">לא זה הדרך</a>, <a href="#">אמת מארץ ישראל א'</a>, <a href="#">אמת מארץ ישראל ב׳</a>, <a href="#">בין קודש וחול</a>, <a href="#">עבר ועתיד</a>, <a href="#">לאומיות חדשה</a>...  </p>
           </div>
         <div class="whatsnew-pic"><img src="Portraits/Achad HaAm_L.jpg" class="img-responsive" alt=""></div>
         </div></div>
@@ -249,7 +261,9 @@
   <div class="row">
     <div class="col-xs-12">
       <div class="card whatsnew-author-card">
-        <div class="whatsnew-text"><a href="#" class="headline-3">חנה סנש</a><p>מיצירותיה: (שירה) <a href="#">הליכה לקיסריה</a>, <a href="#">אשרי הגפרור</a>, <a href="#">ליקטנו פרחים</a>, <a href="#">אינך בדד</a>, <a href="#">לאמהות בגולה</a>, <a href="#">שיר לגליל</a>, <a href="#">גינוסר</a>, <a href="#">לו באת</a>...</p>
+        <div class="whatsnew-text"><a href="#" class="headline-3">חנה סנש</a>
+        <p>נוסף לאתר: 9.2016</p>
+        <p>שירה: <a href="#">הליכה לקיסריה</a>, <a href="#">אשרי הגפרור</a>, <a href="#">ליקטנו פרחים</a>, <a href="#">אינך בדד</a>, <a href="#">לאמהות בגולה</a>, <a href="#">שיר לגליל</a>, <a href="#">גינוסר</a>, <a href="#">לו באת</a>...</p>
           </div>
         <div class="whatsnew-pic"><img src="Portraits/Senesh_L.jpg" class="img-responsive" alt=""></div>
         </div></div>
@@ -259,7 +273,9 @@
   <div class="row">
     <div class="col-xs-12">
       <div class="card whatsnew-author-card">
-        <div class="whatsnew-text"><a href="#" class="headline-3">תיאודור בנימין זאב הרצל</a><p>מיצירותיו: (עיון) <a href="#">מדינת היהודים</a>, <a href="#">המסע לארץ הקדושה</a>, (מאמרים) <a href="#">היהודי הנצחי</a>, <a href="#">נאום החתימה בקונגרס הראשון</a></p>
+        <div class="whatsnew-text"><a href="#" class="headline-3">תיאודור בנימין זאב הרצל</a>
+                 <p>נוסף לאתר: 9.2016</p>
+<p>עיון: <a href="#">מדינת היהודים</a>, <a href="#">המסע לארץ הקדושה</a>, מאמרים: <a href="#">היהודי הנצחי</a>, <a href="#">נאום החתימה בקונגרס הראשון</a></p>
           </div>
         <div class="whatsnew-pic"><img src="Portraits/Herzle_1040.jpg" class="img-responsive" alt=""></div>
         </div></div>
@@ -269,23 +285,13 @@
   <div class="row">
     <div class="col-xs-12">
       <div class="card whatsnew-author-card">
-        <div class="whatsnew-text"><a href="#" class="headline-3">יהודה לייב גורדון (יל״ג)</a><p>מיצירותיו: (שירה) <a href="#">בצאתי מטלז</a>, <a href="#">רפואה בדוקה</a>, <a href="#">מחלת הזכרון</a>, <a href="#">קריאת הגבר</a>, <a href="#">ארץ חדשה</a></p>
+        <div class="whatsnew-text"><a href="#" class="headline-3">יהודה לייב גורדון (יל״ג)</a><p>שירה: <a href="#">בצאתי מטלז</a>, <a href="#">רפואה בדוקה</a>, <a href="#">מחלת הזכרון</a>, <a href="#">קריאת הגבר</a>, <a href="#">ארץ חדשה</a></p>
           </div>
         <div class="whatsnew-pic"><img src="Portraits/Gordon_L.jpg" class="img-responsive" alt=""></div>
         </div></div>
   </div>
   </div>
-  <div class="container-fluid">
-  <div class="row">
-    <div class="col-xs-12">
-      <div class="card whatsnew-author-card">
-        <div class="whatsnew-text"><a href="#" class="headline-3">יוסף אליהו טריווש</a>
-          <p>מיצירותיו: (תרגום פרוזה) <a href="#">אנה קרנינה</a> מאת לב טולסטוי</p>
-          </div>
-        <div class="whatsnew-pic"><img src="Portraits/Placeholder_pic.jpg" class="img-responsive" alt=""></div>
-        </div></div>
-  </div>
-  </div>
+
                <div class="container-fluid">
         <div class="row">
           <div class="col-xs-12">
@@ -419,7 +425,7 @@
 <a href="">
 <p class="headline-3">יצירה בהפתעה</p>
 </a>
-<div><div class="replace-icon text-on-dark" style="margin-bottom:0.6rem;"><a href=""><i class="fa fa-refresh"></i></a></div></div>
+<div><div class="replace-icon text-on-dark" style="margin-bottom:0.6rem;"></div></div>
 </div></div></div>
   	  </div>
     </div>
@@ -504,40 +510,67 @@
       		</div></div>
     </div></div>
 	<div id="additional content" class="col-xs-12 col-sm-4">
-	  <h2>תכנים נוספים, התנדבות ושיתוף</h2>
+	  <h2>המתנדבים שלנו</h2>
 	  <div class="row">
    		<div class="col-xs-12"><div class="card full-size-card footer-card">
-			<div class="card-content">
-      		 <p><a href="">יומן הרשת</a></p>
-      		 <p><a href="">ערוץ YouTube</a></p>
-      		 <p><a href="">התנדבות לפרויקט</a></p>
-      		 <p><a href="">תרומה כספית</a></p>
-      		 <div class="more-space"></div>
-             <div class="more-bottom">
-  <div class="more-actions">
-    <div class="welcome-icon"><a href=""><i class="fa fa-facebook-square"></i></a></div>
-    <div class="welcome-icon"><a href=""><i class="fa fa-share-alt"></i></a></div>
-    <div class="welcome-icon"><a href=""><span class="icon-bydonate"></span></a></div>
+    <div class="card-content">
+                      <a href="#" class="headline-3">מרים שטיין</a>
+                      <p class="headline-4" style="margin-top: 2rem;">קצת עלי</p>
+                      <p>גרה בגבעתיים, אמא לבן ובת וסבתא גאה לשבעה נכדים. מורה לספרות בגמלאות.</p>
+
+             <p class="headline-4" style="margin-top: 1.4rem;">עזרתי להנגיש יצירות של:</p>
+                      <p><a href="#">יוסף חיים ברנר</a>, <a href="#">שמואל הנגיד</a> ועוד 12 יוצרים נוספים.</p>
+                      
+             <p class="headline-4" style="margin-top: 1.4rem;">משפט שלי על הפרויקט:</p>
+                      <p>זו הדרך שלי להציג לנכדי יצירות שלימדתי ואהבתי.</p>
+
+
+            <input type="submit" value="רוצים להתנדב?" class="btn">
+          </div>
+                   
+                    </div></div></div>
+    </div></div>
   </div>
-             </div>
-            </div></div></div>
+<div id="donate" class="container">
+  <div class="row">
+
+	<div class="col-xs-12">
+	  <h2>תמיכה כספית בפרויקט</h2>
+	  <div class="row">
+   		<div class="col-xs-12"><div class="card">
+  <div class="card-content">
+    <div class="row">
+      <div class="col-lg-12"><p>כל עבודת ההקלדה, ההגהה והעריכה בפרויקט נעשית <span style="font-weight: bold">בהתנדבות וללא קבלת תמורה</span>. את מלאכת פיתוח התוכנה ושיפור התשתיות, עם זאת, אנו מזמינים מקבלן תוכנה, ולשם כך אנו מגייסים תרומות. כספי תרומתכם מועברים לחשבון העמותה למחשוב ספרות עברית (מס״ע), שהקמנו עבור תמיכה בפרויקט, וישמשו אך ורק לצרכים אלו.</p></div>
+    </div>
+    <div>
+      <input type="submit" value="לתרומה כספית" class="btn">
+      </div>
+  </div>
+            </div></div>
     </div></div>
   </div>
 </div>
+
 <!-- more contents row end -->
 
 <!-- main content end -->
 
 <!-- footer start -->
 <div id="byfooter" class="container-fluid">
-  <div id="bottom-nav" class="container">
-    <div class="row">
-      <div id="bottom-about" class="col-sm-8 text-on-dark"><p>פרויקט בן-יהודה הוא מיזם התנדבותי ובמסגרתו פועלים מאות מתנדבים ליצירת מהדורות אלקטרוניות של ספרות עברית והנגשתן לציבור.</p>
-            <p><a href="#">שאלות נפוצות</a></p>
-</div>
-      <div id="bottom-contribute" class="col-sm-4 text-on-dark"><p>מעוניינים להצטרף או לתרום? <a href="" class="byfooter">לחצו לקבלת מידע נוסף</a></p></div>
-    </div>
+  <div id="bottom-nav" class="container text-on-dark">
+    <p style="padding-top:1rem"><span style="font-weight: bold">פרויקט בן-יהודה</span> הוא מיזם התנדבותי ובמסגרתו פועלים מאות מתנדבים ליצירת מהדורות אלקטרוניות של ספרות עברית והנגשתן לציבור.</p>
+   <div style="padding-top:1rem">
+    <div class="welcome-small-link"><a href=""><i class="fa fa-info-circle" style="padding-top:0.3rem;"></i>&nbsp&nbspאודות</a></div>
+    <div class="welcome-small-link"><a href=""><i class="fa fa-facebook-square" style="padding-top:0.3rem;"></i>&nbsp&nbspדף הפייסבוק שלנו</a></div>
+    <div class="welcome-small-link"><a href=""><i class="fa fa-youtube-play" style="padding-top:0.3rem;"></i>&nbsp&nbspערוץ ה- YouTube</a></div>
+    <div class="welcome-small-link"><a href=""><i class="fa fa-pencil-square-o" style="padding-top:0.3rem;"></i>&nbsp&nbspיומן הרשת</a></div>
+    <div class="welcome-small-link"><a href=""><i class="fa fa-share-alt" style="padding-top:0.3rem;"></i>&nbsp&nbspשיתוף</a></div>
+        <div class="footer-small-link"><a href=""><i class="fa fa-handshake-o" style="padding-top:0.3rem;"></i>&nbsp&nbspרוצים להתנדב?</a></div>
+    <div class="welcome-small-link"><a href=""><span class="icon-bydonate" style="padding-top:0rem;"></span>&nbsp&nbspתרומה כספית</a></div>
   </div>
+
+  </div>
+  
 </div>
 <!-- footer end -->
 
