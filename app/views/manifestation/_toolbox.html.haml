@@ -10,7 +10,8 @@
     %button.btn= t(:like)
     %button.btn= t(:bookshelf)
     %button.btn#found_mistake= t(:found_mistake)
-    %button.btn.share= t(:share)
+    = render partial: 'shared/share', locals: {element: :button}
+    / %button.btn.share= t(:share)
     %button.btn.download= t(:download)
     %button.btn.printbutton= t(:print)
     %button.btn.citebutton= t(:cite)
@@ -58,17 +59,6 @@
     = render partial: 'shared/share_controls'
 
 :javascript
-  // share button
-  $('#shareDlg').dialog({
-    autoOpen: false,
-    height: 200,
-    width: 250,
-    modal: true,
-    buttons: { "#{t(:cancel)}": function() { $('#shareDlg').dialog("close");} }
-    });
-  $('.share').click(function() {
-    $('#shareDlg').dialog('open');
-  });
   // proof button
   $('#proofDlg').dialog({
     autoOpen: false,

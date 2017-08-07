@@ -1,0 +1,20 @@
+- if local_assigns.has_key?(:element) && local_assigns[:element] == :button
+  %button.btn.share= t(:share)
+- elsif local_assigns.has_key?(:element) && local_assigns[:element] == :link
+  %a.share{style:'cursor:pointer'}
+    = t(:share)
+#shareDlg
+  .container-fluid
+    = render partial: 'shared/share_controls'
+:javascript
+  // share button
+  $('#shareDlg').dialog({
+    autoOpen: false,
+    height: 200,
+    width: 250,
+    modal: true,
+    buttons: { "#{t(:cancel)}": function() { $('#shareDlg').dialog("close");} }
+    });
+  $('.share').click(function() {
+    $('#shareDlg').dialog('open');
+  });
