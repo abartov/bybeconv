@@ -25,4 +25,5 @@ Bybeconv::Application.configure do
   # Expands the lines which load the assets
   config.assets.debug = true
   config.eager_load = false
+  # config.public_file_server.enabled = true # Rails 5.x?
 end
