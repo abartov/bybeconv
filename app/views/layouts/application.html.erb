@@ -12,6 +12,11 @@
   <%= javascript_include_tag "application" %>
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script>
+  $(document).ready(function() {
+    $()
+  });
+</script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -85,8 +90,16 @@
   <div class="container-fluid" id="byfooter">
       <div class="row">
         <div class="col-sm-4 text-on-dark" id="bottom-contribute">
-          <p><B><A HREF="http://benyehuda.org/h_faq.html">שאלות נפוצות</A> · <A HREF="http://benyehuda.org/blog/%D7%A8%D7%95%D7%A6%D7%99%D7%9D-%D7%9C%D7%A2%D7%96%D7%95%D7%A8">מעוניינים להצטרף?</A></B>
+          <p><B><A HREF="http://benyehuda.org/h_faq.html"><%= t(:about) %></A> ·
+          <a href="https://www.facebook.com/%D7%A4%D7%A8%D7%95%D7%99%D7%A7%D7%98-%D7%91%D7%9F-%D7%99%D7%94%D7%95%D7%93%D7%94-119140448124648/"><%= t(:to_the_facebook_page) %></a> ·
+          <A HREF="http://www.youtube.com/user/ProjectBenYehuda/videos?flow=grid&view=0"><%= t(:to_the_youtube_channel) %></A> ·
+          <A HREF="http://benyehuda.org/blog/"><%= t(:the_blog) %></A> ·
+          <a class='share' style='cursor:pointer'><%= t(:share) %></a> ·
+          <A HREF="http://benyehuda.org/blog/%D7%A8%D7%95%D7%A6%D7%99%D7%9D-%D7%9C%D7%A2%D7%96%D7%95%D7%A8"><%= t(:how_to_help) %></A> ·
+          <A HREF="http://benyehuda.org/blog/%D7%AA%D7%9E%D7%99%D7%9B%D7%94-%D7%9B%D7%A1%D7%A4%D7%99%D7%AA-%D7%91%D7%A4%D7%A8%D7%95%D7%99%D7%A7%D7%98-%D7%91%D7%9F-%D7%99%D7%94%D7%95%D7%93%D7%94"><%= t(:donate_money) %></A>
+          </B>
           </p>
+          <%= render partial: 'shared/share' %>
         </div>
         <div class="col-sm-8 text-on-dark" id="bottom-about">
           <p><b>פרויקט בן-יהודה</b> הוא מיזם התנדבותי ליצירת מהדורות אלקטרוניות של ספרות עברית והנגשתן לציבור.</p>

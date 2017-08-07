@@ -1,16 +1,23 @@
 include BybeUtils
 class Person < ActiveRecord::Base
-  attr_accessible :affiliation, :comment, :country, :name, :nli_id, :other_designation, :viaf_id, :public_domain, :profile_image, :birthdate, :deathdate, :wikidata_id, :wikipedia_url, :wikipedia_snippet, :profile_image, :metadata_approved
-  is_impressionable # for statistics
+  attr_accessible :affiliation, :comment, :country, :name, :nli_id, :other_designation, :viaf_id, :public_domain, :profile_image, :birthdate, :deathdate, :wikidata_id, :wikipedia_url, :wikipedia_snippet, :profile_image, :metadata_approved, :gender
+
+  enum gender: [:male, :female, :other, :unknown]
+
+  # relationships
   belongs_to :toc
   belongs_to :period
   has_many :creations
   has_many :works, through: :creations, class_name: 'Work'
   has_many :realizers
   has_and_belongs_to_many :manifestation
+
+  # scopes
   scope :has_toc, -> { where.not(toc_id: nil) }
 
+  # features
   has_attached_file :profile_image, styles: { full: "720x1040", medium: "360x520", thumb: "180x260", tiny: "90x120"}, default_url: "/assets/:style/placeholder.png", storage: :s3, s3_credentials: 'config/s3.yml', s3_region: 'us-east-1'
+  is_impressionable :counter_cache => true # for statistics
   validates_attachment_content_type :profile_image, content_type: /\Aimage\/.*\z/
 
   # class variable
@@ -58,13 +65,16 @@ class Person < ActiveRecord::Base
   end
 
   def self.recalc_popular
-    # this is designed to only be called no more than once a day, by clockwork!
-    author_stats = {}
-    Person.has_toc.each {|p| # gather stats per author with ToC
-      author_stats[p] = p.impressions.count
-    }
-    bottom_authors = author_stats.sort_by {|k,v| v}
-    @@popular_authors = bottom_authors.reverse[0..9] # top 10
+    @@popular_authors = Person.has_toc.order(impressions_count: :desc).limit(10) # top 10
+
+    # old code before counter cache
+    ## this is designed to only be called no more than once a day, by clockwork!
+    #author_stats = {}
+    #Person.has_toc.each {|p| # gather stats per author with ToC
+    #  author_stats[p] = p.impressions.count
+    #}
+    #bottom_authors = author_stats.sort_by {|k,v| v}
+    #@@popular_authors = bottom_authors.reverse[0..9] # top 10
   end
 
   def self.get_popular_authors

@@ -6,4 +6,6 @@ The code is released into the public domain.
 
 External dependencies:
 * Pandoc 1.17.3 or higher for generating ebooks and other formats
+* ElasticSearch for search
+** https://github.com/synhershko/elasticsearch-analysis-hebrew for the Hebrew analyzer for ElasticSearch
 

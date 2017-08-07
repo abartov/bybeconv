@@ -1,5 +1,5 @@
 class Manifestation < ActiveRecord::Base
-  is_impressionable # for statistics
+  is_impressionable :counter_cache => true # for statistics
   has_and_belongs_to_many :expressions
   has_and_belongs_to_many :people
   has_many :taggings
@@ -64,15 +64,19 @@ class Manifestation < ActiveRecord::Base
   end
 
   def self.recalc_popular
-    # THIS WILL TAKE A WHILE!
-    # it runs a JOIN on every single publishedManifestation!
-    # It is designed to only be called no more than once a day, by clockwork!
-    work_stats = {}
-    Manifestation.all.each {|m|
-      work_stats[m] = m.impressions.count
-    }
-    bottom_works = work_stats.sort_by {|k,v| v}
-    @@popular_works = bottom_works.reverse[0..9] # top 10
+
+    @@popular_works = Manifestation.order(impressions_count: :desc).limit(10) # top 10
+
+    # old code without cache_counter
+    ## THIS WILL TAKE A WHILE!
+    ## it runs a JOIN on every single publishedManifestation!
+    ## It is designed to only be called no more than once a day, by clockwork!
+    #work_stats = {}
+    #Manifestation.all.each {|m|
+    #  work_stats[m] = m.impressions.count
+    #}
+    #bottom_works = work_stats.sort_by {|k,v| v}
+    #@@popular_works = bottom_works.reverse[0..9] # top 10
   end
 
   def self.get_popular_works

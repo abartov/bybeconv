@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170614102521) do
+ActiveRecord::Schema.define(version: 20170807162436) do
 
   create_table "api_keys", force: :cascade do |t|
     t.string   "email",       limit: 255
@@ -188,9 +188,11 @@ ActiveRecord::Schema.define(version: 20170614102521) do
     t.datetime "updated_at",                                null: false
     t.text     "markdown",                 limit: 16777215
     t.string   "cached_people",            limit: 255
+    t.integer  "impressions_count",        limit: 4
   end
 
   add_index "manifestations", ["created_at"], name: "index_manifestations_on_created_at", using: :btree
+  add_index "manifestations", ["impressions_count"], name: "index_manifestations_on_impressions_count", using: :btree
 
   create_table "manifestations_people", id: false, force: :cascade do |t|
     t.datetime "created_at",                 null: false
@@ -228,7 +230,11 @@ ActiveRecord::Schema.define(version: 20170614102521) do
     t.string   "birthdate",                  limit: 255
     t.string   "deathdate",                  limit: 255
     t.boolean  "metadata_approved",                           default: false
+    t.integer  "gender",                     limit: 4
+    t.integer  "impressions_count",          limit: 4
   end
+
+  add_index "people", ["impressions_count"], name: "index_people_on_impressions_count", using: :btree
 
   create_table "periods", force: :cascade do |t|
     t.string   "name",          limit: 255
