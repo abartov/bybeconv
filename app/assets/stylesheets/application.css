@@ -575,6 +575,7 @@ img.absolute {
   height: auto;
   padding: 1.5rem;
   overflow: hidden;
+  text-overflow: ellipsis;
 }
 .author-card {
 	width: 100%;
