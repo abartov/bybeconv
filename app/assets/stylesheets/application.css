@@ -249,7 +249,8 @@ a:active{
   text-decoration: none
 }
 a:visited {
-  color: #145C6B;
+  color: #910065;
+	/* Please change to #145C6B */
   text-decoration: none
 }
 a:disabled {
@@ -1170,4 +1171,12 @@ rgba(0,0,0, .5);
 }
 .author-link-on-carusale{
 	text-align: center;
+}
+.nav-icon{
+	font-size: 3.2rem;
+	text-align: center;
+}
+.genre-nav{
+	padding: 0 3rem;
+	float: right;
 }
