@@ -1138,7 +1138,7 @@ rgba(0,0,0, .5);
 	float: left;
 	padding: 0.8rem;
 }
-.volunteer-bookmark-back {
+.small-bookmark-back {
   z-index: 1;
   width: 129px;
   height: 6px;
@@ -1148,7 +1148,7 @@ rgba(0,0,0, .5);
   margin-top: -1.3rem;
   background-position: left;
 }
-.volunteer-bookmark-front {
+.small-bookmark-front {
   z-index:3;
   width: 20%;
   float: left;
@@ -1157,7 +1157,7 @@ rgba(0,0,0, .5);
   margin-top: -0.6rem;
 
 }
-.volunteer-bookmark-front img{
+.small-bookmark-front img{
   float: left;
   float: top;
   border-top-left-radius: 0.6rem;
@@ -1166,7 +1166,7 @@ rgba(0,0,0, .5);
   box-shadow: 0.2rem 0.2rem 0.5rem
 rgba(0,0,0, .5);
 }
-.near-volunteer-picture{
+.near-small-picture{
   width: 60%;
 }
 .author-link-on-carusale{
