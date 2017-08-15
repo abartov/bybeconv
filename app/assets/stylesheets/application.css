@@ -258,13 +258,13 @@ a:disabled {
   text-decoration: none
 }
 .text-on-dark{
-  color: #fff;
-}
-.text-on-dark a{
   color: #E4CEDE;
 }
-.text-on-dark a:hover{
+.text-on-dark a{
   color: #fff;
+}
+.text-on-dark a:hover{
+  color: #D6A9C9;
 }
 
 .small-text {
@@ -500,8 +500,8 @@ background-color: #907989;
 }
 .welcome-small-link{
   font-family: "Alef";
-  font-size: 1.4rem;
-  padding:0 0.8rem;
+  font-size: 1.6rem;
+  padding:0 0.4rem 0 1.2rem;
   display: inline;
   /* vertical alignment */
 }
@@ -519,7 +519,6 @@ background-color: #907989;
   padding:0 0.8rem;
   display: inline;
   /* vertical alignment */
-  /* vertical alignment */
 }
 
 #breadcrumbs li{
@@ -528,7 +527,6 @@ background-color: #907989;
 }
 #byfooter{
   height: Auto;
-  min-height: 12rem;
   background-color: #2b0d22;
   font-size: 1.4rem;
   color: #d9cdd5;
@@ -537,7 +535,7 @@ background-color: #907989;
 #bottom-nav{
   text-align: center;
   align-content: center;
-  padding-top: 1rem;
+  padding: 1rem 0;
 }
 .byfooter a{
   color: white;
@@ -557,29 +555,19 @@ background-color: #907989;
 .whatsnew-author-card-wide{
   background-color: white;
   width:100%;
-  height: auto;
+  height: 11.5rem;
 }
 .whatsnew-text{
-  width: 75%;
+  width: 80%;
   padding: 0.4rem 1.2rem 0.4rem 0.6rem;
   max-height: 11.4rem;
   display: inline-block;
   overflow: hidden;
   vertical-align: top;
 }
-.whatsnew-pic{
-  width: 25%;
-  float: left;
-  border-top-left-radius: 0.3rem;
-  border-bottom-left-radius: 0.3rem;
-  padding: 0;
-  max-height: 11.5rem;
-  display: inline-block;
-  vertical-align: top;
-  overflow: hidden;
-}
+
 .whatsnew-pic-wide{
-  width: 25%;
+  width: 20%;
   float: left;
   border-top-left-radius: 0.3rem;
   border-bottom-left-radius: 0.3rem;
@@ -1167,7 +1155,8 @@ rgba(0,0,0, .5);
 rgba(0,0,0, .5);
 }
 .near-small-picture{
-  width: 60%;
+  width: 66%;
+	text-align: justify;
 }
 .author-link-on-carusale{
 	text-align: center;
@@ -1179,4 +1168,12 @@ rgba(0,0,0, .5);
 .genre-nav{
 	padding: 0 3rem;
 	float: right;
+}
+.carusel-nav{
+	  text-align: center;
+  align-content: center;
+}
+.carusel-nav-circle{
+	  display: inline;
+	padding: 4rem 1rem;
 }
