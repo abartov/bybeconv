@@ -1165,11 +1165,15 @@ rgba(0,0,0, .5);
 	text-align: center;
 }
 .genre-nav{
+	width: 10rem;
+	height:6rem;
+	background-color: yellow;
 	display: inline;
-	padding: 0 3rem;
 	float: right;
 	text-align: center;
 	align-content: center;
+	margin: 0.2rem;
+	border-left: 0.1rem #BBA3B7;
 }
 .carusel-nav{
 	  text-align: center;
