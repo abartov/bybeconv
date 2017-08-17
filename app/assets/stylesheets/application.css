@@ -443,8 +443,6 @@ display: inline;
 .search {
 }
 .fontsize-selector {
- margin: 0 11rem 0 0;
- /* aligh center horizonately*/
  align-content: center;
  display: inline;
 }
@@ -1122,8 +1120,8 @@ rgba(0,0,0, .5);
 }
 .announcement{
 	background-color: #660248;
-	float: left;
-	padding: 0.8rem;
+	padding: 0.4rem 0.8rem;
+	max-width: 70%;
 }
 .small-bookmark-back {
   z-index: 1;
