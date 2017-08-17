@@ -644,8 +644,8 @@ img.absolute {
 }
 .surprise{
   background-color: #e2d8dd;
-  background-image: url(/assets/corner.png);
- background-position: left bottom;
+  background-image: url(/assets/corner4.png);
+background-position: left bottom;
  background-repeat: no-repeat;
  position: relative;
 }
