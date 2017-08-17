@@ -1167,11 +1167,8 @@ rgba(0,0,0, .5);
 .genre-nav{
 	width: 10rem;
 	height:6rem;
-	background-color: yellow;
 	display: inline;
 	float: right;
-	text-align: center;
-	align-content: center;
 	margin: 0.2rem;
 	border-left: 0.1rem #BBA3B7;
 }
@@ -1186,7 +1183,7 @@ rgba(0,0,0, .5);
 .surprise-bookmark-back {
   z-index: 1;
   width: 80px;
-  height: 4px;
+  height: 3px;
   float: left;
   float: top;
   margin-left: 1.9rem;
