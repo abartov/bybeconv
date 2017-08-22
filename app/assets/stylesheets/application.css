@@ -463,8 +463,8 @@ background-color: #907989;
 }
 .welcome {
   height: auto;
-  background-color: #6a5d65;
-  background-image: url(/assets/welcome_bg3.png);
+  background-color: #dbd5da;
+  background-image: url(/assets/welcome_bg6.png);
   background-repeat: no-repeat;
   background-position: center;
   box-shadow: inset 0px 3px 10px rgba(69, 42, 14, .35);
@@ -1177,7 +1177,7 @@ rgba(0,0,0, .5);
 }
 .carusel-nav-circle{
 	  display: inline;
-	padding: 4rem 1rem;
+	padding: 3rem 0.5rem;
 }
 .surprise-bookmark-back {
   z-index: 1;
@@ -1212,24 +1212,29 @@ rgba(0,0,0, .5);
 	text-align: justify;
 }
 .recommend-text{
-  width: 78%;
+  width: 65%;
   display: inline-block;
 	text-align: justify;
 }
 .recommend-pic{
-  width:22%;
-  height: 32rem;
+  width:16rem;
+  height: 27.6rem;
   border-bottom-left-radius: 0.3rem;
   border-top-left-radius: 0.3rem;
-  background-color:#d9cdd5;
   display: inline-block;
   float:left;
 }
+
 .recommend-portrait{
   overflow: hidden;
   border-top-left-radius: 0.3rem;
   direction:ltr;
   position: relative;
-  height:32rem;
+  height:23.6rem;
   -webkit-mask-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)))
+}
+
+img.recommend-absolute {
+  margin-left: 0rem;
+  position: absolute;
 }
