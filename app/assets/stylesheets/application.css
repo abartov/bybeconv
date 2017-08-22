@@ -1238,3 +1238,8 @@ img.recommend-absolute {
   margin-left: 0rem;
   position: absolute;
 }
+.h_separator{
+	width: 100%;
+	height: 0.2rem;
+	background-color: #d9cdd5;
+}
