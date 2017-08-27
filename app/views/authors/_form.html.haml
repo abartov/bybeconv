@@ -19,13 +19,13 @@
     = f.label t(:gender)
     %br
     = f.text_field :gender
-    = f.radio_button(:gender, Person.genders[:male], checked: person.gender == Person.genders[:male])
+    = f.radio_button(:gender, :male, checked: person.gender == Person.genders[:male])
     = f.label t(:male)
-    = f.radio_button(:gender, Person.genders[:female], checked: person.gender == Person.genders[:female])
+    = f.radio_button(:gender, :female, checked: person.gender == Person.genders[:female])
     = f.label t(:female)
-    = f.radio_button(:gender, Person.genders[:other], checked: person.gender == Person.genders[:other])
+    = f.radio_button(:gender, :other, checked: person.gender == Person.genders[:other])
     = f.label t(:other)
-    = f.radio_button(:gender, Person.genders[:unknown], checked: (person.gender.nil?) or (person.gender == Person.genders[:unknown]))
+    = f.radio_button(:gender, :unknown, checked: ((person.gender.nil?) or (person.gender == Person.genders[:unknown])))
     = f.label t(:unknown)
 
   .backend-field

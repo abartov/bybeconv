@@ -25,8 +25,16 @@
       = '('+t(:x_years_ago, years: @author.died_years_ago)+')'
       %br
       %b= t(:copyright_status)
-      - unless @author.public_domain.nil?
-        = @author.public_domain ? t(:public_domain) : t(:by_permission)
+      - if @author.public_domain.nil?
+        %span{style: 'color:red'}= t(:unknown)
+      - else
+        - if @author.public_domain
+          %span{style: 'color:green'}= t(:public_domain)
+        - else
+          %span{style: (@author.died_years_ago > 70 ? 'color:red' : 'color:green')}= t(:by_permission)
+      %br
+      %b= t(:gender)
+      = t(@author.gender)
       %br
       %b= t(:other_designation)
       = @author.other_designation
