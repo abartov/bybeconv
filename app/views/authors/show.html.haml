@@ -34,7 +34,7 @@
           %span{style: (@author.died_years_ago > 70 ? 'color:red' : 'color:green')}= t(:by_permission)
       %br
       %b= t(:gender)
-      = t(@author.gender)
+      = t(@author.gender.nil? ? :unknown : @author.gender)
       %br
       %b= t(:other_designation)
       = @author.other_designation
