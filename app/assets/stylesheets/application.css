@@ -258,13 +258,13 @@ a:disabled {
   text-decoration: none
 }
 .text-on-dark{
-  color: #fff;
-}
-.text-on-dark a{
   color: #E4CEDE;
 }
-.text-on-dark a:hover{
+.text-on-dark a{
   color: #fff;
+}
+.text-on-dark a:hover{
+  color: #D6A9C9;
 }
 
 .small-text {
@@ -443,8 +443,6 @@ display: inline;
 .search {
 }
 .fontsize-selector {
- margin: 0 11rem 0 0;
- /* aligh center horizonately*/
  align-content: center;
  display: inline;
 }
@@ -465,8 +463,8 @@ background-color: #907989;
 }
 .welcome {
   height: auto;
-  background-color: #6a5d65;
-  background-image: url(/assets/welcome_bg3.png);
+  background-color: #dbd5da;
+  background-image: url(/assets/welcome_bg6.png);
   background-repeat: no-repeat;
   background-position: center;
   box-shadow: inset 0px 3px 10px rgba(69, 42, 14, .35);
@@ -500,8 +498,8 @@ background-color: #907989;
 }
 .welcome-small-link{
   font-family: "Alef";
-  font-size: 1.4rem;
-  padding:0 0.8rem;
+  font-size: 1.6rem;
+  padding:0 0.4rem 0 1.2rem;
   display: inline;
   /* vertical alignment */
 }
@@ -519,7 +517,6 @@ background-color: #907989;
   padding:0 0.8rem;
   display: inline;
   /* vertical alignment */
-  /* vertical alignment */
 }
 
 #breadcrumbs li{
@@ -528,7 +525,6 @@ background-color: #907989;
 }
 #byfooter{
   height: Auto;
-  min-height: 12rem;
   background-color: #2b0d22;
   font-size: 1.4rem;
   color: #d9cdd5;
@@ -537,7 +533,7 @@ background-color: #907989;
 #bottom-nav{
   text-align: center;
   align-content: center;
-  padding-top: 1rem;
+  padding: 1rem 0;
 }
 .byfooter a{
   color: white;
@@ -552,39 +548,28 @@ background-color: #907989;
 .whatsnew-author-card{
   background-color: white;
   width:100%;
-  height: 11.4rem;
+  height: 12.2rem;
 }
 .whatsnew-author-card-wide{
   background-color: white;
-  width:100%;
-  height: auto;
+  height: 12.2rem;
 }
 .whatsnew-text{
-  width: 75%;
+  width: 76%;
   padding: 0.4rem 1.2rem 0.4rem 0.6rem;
-  max-height: 11.4rem;
+  max-height: 12.2rem;
   display: inline-block;
   overflow: hidden;
   vertical-align: top;
 }
-.whatsnew-pic{
-  width: 25%;
-  float: left;
-  border-top-left-radius: 0.3rem;
-  border-bottom-left-radius: 0.3rem;
-  padding: 0;
-  max-height: 11.5rem;
-  display: inline-block;
-  vertical-align: top;
-  overflow: hidden;
-}
+
 .whatsnew-pic-wide{
-  width: 25%;
+  width: 20%;
   float: left;
   border-top-left-radius: 0.3rem;
   border-bottom-left-radius: 0.3rem;
   padding: 0;
-  max-height: 11.5rem;
+  max-height: 12.2rem;
   display: inline-block;
   vertical-align: top;
   overflow: hidden;
@@ -626,7 +611,7 @@ background-color: #907989;
   -webkit-mask-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)))
 }
 img.absolute {
-  margin-left: -19rem;
+  margin-left: -12rem;
   position: absolute;
 }
 .card-content {
@@ -637,15 +622,18 @@ img.absolute {
   text-overflow: ellipsis;
 }
 .author-card {
-	width: 100%;
 	/* height: 28rem; */ /* removed by Asaf */
 	background-color: #910065;
-	 text-align: center;
+	text-align: center;
+	height: 27.6rem;
+	width: 16rem;
 }
 .author-homepage-pic{
   border-top-left-radius: 0.3rem;
   border-top-right-radius: 0.3rem;
   overflow:hidden;
+  height: 23rem;
+  width: 100%;
 }
 .author-homepage-name{
 	color: #fff;
@@ -653,16 +641,15 @@ img.absolute {
 	text-align: center;
 	line-height: 1.6rem;
 	padding: 0.5rem;
-	height: 4.2rem;
 		/* vertical alignment */
 }
 .surprise{
-  background-color: #eeeced;
-  background-image: url(/assets/corner.png);
- background-position: left bottom;
+  background-color: #fff;
+  background-image: url(/assets/corner5.png);
+background-position: left bottom;
  background-repeat: no-repeat;
  position: relative;
- min-height:22rem;
+  min-height: 27.6rem;
 }
 .surprise-author {
   padding-top: 5rem;
@@ -1135,29 +1122,28 @@ rgba(0,0,0, .5);
 }
 .announcement{
 	background-color: #660248;
-	float: left;
-	padding: 0.8rem;
+	padding: 0.4rem 0.8rem;
 }
-.volunteer-bookmark-back {
+.small-bookmark-back {
   z-index: 1;
-  width: 129px;
-  height: 6px;
+  width: 84px;
+  height: 4px;
   float: left;
   float: top;
   margin-left: 1.5rem;
-  margin-top: -1.3rem;
+  margin-top: -1.4rem;
   background-position: left;
 }
-.volunteer-bookmark-front {
+.small-bookmark-front {
   z-index:3;
-  width: 20%;
+  width: 8rem;
   float: left;
   float: top;
   margin-left: 1.5rem;
   margin-top: -0.6rem;
 
 }
-.volunteer-bookmark-front img{
+.small-bookmark-front img{
   float: left;
   float: top;
   border-top-left-radius: 0.6rem;
@@ -1166,8 +1152,9 @@ rgba(0,0,0, .5);
   box-shadow: 0.2rem 0.2rem 0.5rem
 rgba(0,0,0, .5);
 }
-.near-volunteer-picture{
-  width: 60%;
+.near-small-picture{
+  width: 75%;
+	text-align: justify;
 }
 .author-link-on-carusale{
 	text-align: center;
@@ -1177,6 +1164,82 @@ rgba(0,0,0, .5);
 	text-align: center;
 }
 .genre-nav{
-	padding: 0 3rem;
+	width: 10rem;
+	height:6rem;
+	display: inline;
 	float: right;
+	margin: 0.2rem;
+	border-left: 0.1rem #BBA3B7;
+}
+.carusel-nav{
+	  text-align: center;
+  align-content: center;
+}
+.carusel-nav-circle{
+	  display: inline;
+	padding: 3rem 0.5rem;
+}
+.surprise-bookmark-back {
+  z-index: 1;
+  width: 80px;
+  height: 3px;
+  float: left;
+  float: top;
+  margin-left: 1.9rem;
+  margin-top: -1.2rem;
+  background-position: left;
+}
+.surprise-bookmark-front {
+  z-index:3;
+  width: 12%;
+  float: left;
+  float: top;
+  margin-left: 1.5rem;
+  margin-top: -0.4rem;
+
+}
+.surprise-bookmark-front img{
+  float: left;
+  float: top;
+  border-top-left-radius: 0.6rem;
+  border-bottom-left-radius: 0.2rem;
+  border-bottom-right-radius: 0.2rem;
+  box-shadow: 0.2rem 0.2rem 0.5rem
+rgba(0,0,0, .5);
+}
+.near-surprise-picture{
+  width: 76%;
+	text-align: justify;
+}
+.recommend-text{
+  width: 65%;
+  display: inline-block;
+	text-align: justify;
+}
+.recommend-pic{
+  width:16rem;
+  height: 27.6rem;
+  border-bottom-left-radius: 0.3rem;
+  border-top-left-radius: 0.3rem;
+  display: inline-block;
+  float:left;
+}
+
+.recommend-portrait{
+  overflow: hidden;
+  border-top-left-radius: 0.3rem;
+  direction:ltr;
+  position: relative;
+  height:23.6rem;
+  -webkit-mask-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)))
+}
+
+img.recommend-absolute {
+  margin-left: 0rem;
+  position: absolute;
+}
+.h_separator{
+	width: 100%;
+	height: 0.2rem;
+	background-color: #d9cdd5;
 }
