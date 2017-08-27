@@ -60,8 +60,7 @@ class AuthorsController < ApplicationController
     else
       if @author.update_attributes(params[:person])
         flash[:notice] = I18n.t(:updated_successfully)
-        show
-        render action: :show, id: @author.id
+        redirect_to action: :show, id: @author.id
       else
         format.html { render action: 'edit' }
         format.json { render json: @author.errors, status: :unprocessable_entity }
