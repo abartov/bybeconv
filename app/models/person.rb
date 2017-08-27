@@ -43,7 +43,6 @@ class Person < ActiveRecord::Base
 
   def died_years_ago
     begin
-      byebug
       dy = death_year.to_i
       return Date.today.year - dy
     rescue
