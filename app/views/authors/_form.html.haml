@@ -18,7 +18,6 @@
   .backend-field
     = f.label t(:gender)
     %br
-    = f.text_field :gender
     = f.radio_button(:gender, :male, checked: person.gender == Person.genders[:male])
     = f.label t(:male)
     = f.radio_button(:gender, :female, checked: person.gender == Person.genders[:female])
