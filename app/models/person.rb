@@ -41,12 +41,44 @@ class Person < ActiveRecord::Base
     p
   end
 
-  def life_years
+  def died_years_ago
+    begin
+      byebug
+      dy = death_year.to_i
+      return Date.today.year - dy
+    rescue
+      return 0
+    end
+  end
+
+  def birth_year
     bpos = birthdate.index('-') # YYYYMMDD or YYYY is assumed
-    birthyear = bpos.nil? ? birthdate : birthdate[0..bpos-1]
+    if bpos.nil?
+      if birthdate =~ /\d\d\d+/
+        return $&
+      else
+        return birthdate
+      end
+    else
+      return birthdate[0..bpos-1]
+    end
+  end
+
+  def death_year
     dpos = deathdate.index('-')
-    deathyear = dpos.nil? ? deathdate : deathdate[0..dpos-1]
-    return "#{birthyear}&rlm;-#{deathyear}"
+    if dpos.nil?
+      if deathdate =~ /\d\d\d+/
+        return $&
+      else
+        return deathdate
+      end
+    else
+      return deathdate[0..dpos-1]
+    end
+  end
+
+  def life_years
+    return "#{birth_year}&rlm;-#{death_year}"
   end
 
   def period_string
@@ -60,7 +92,7 @@ class Person < ActiveRecord::Base
     return true
   end
 
-  def copyright_as_string
+  def  copyright_as_string
     return public_domain ? I18n.t(:public_domain) : I18n.t(:by_permission)
   end
 

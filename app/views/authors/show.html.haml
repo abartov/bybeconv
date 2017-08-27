@@ -22,6 +22,7 @@
       / ===== basic info =====
       %b= t(:life_years)
       != @author.life_years
+      = '('+t(:x_years_ago, years: @author.died_years_ago)+')'
       %br
       %b= t(:copyright_status)
       - unless @author.public_domain.nil?
