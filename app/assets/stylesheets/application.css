@@ -1242,3 +1242,31 @@ img.recommend-absolute {
 	height: 0.2rem;
 	background-color: #d9cdd5;
 }
+.small-author-card {
+	background-color: #910065;
+	text-align: center;
+	height: 16.6rem;
+	width: 8.3rem;
+}
+.small-author-homepage-pic{
+  border-top-left-radius: 0.3rem;
+  border-top-right-radius: 0.3rem;
+  overflow:hidden;
+  height: 12rem;
+}
+.small-author-homepage-name{
+	color: #fff;
+	font-weight: bold;
+	text-align: center;
+	line-height: 1.6rem;
+	padding: 0.5rem;
+		/* vertical alignment */
+}
+.small-surprise{
+  background-color: #fff;
+  background-image: url(/assets/corner5.png);
+background-position: left bottom;
+ background-repeat: no-repeat;
+ position: relative;
+  min-height: 16.6rem;
+}
