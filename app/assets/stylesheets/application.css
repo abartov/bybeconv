@@ -1270,3 +1270,29 @@ background-position: left bottom;
  position: relative;
   min-height: 16.6rem;
 }
+.bysurprise-text{
+  width: 80%;
+  display: inline-block;
+	text-align: justify;
+}
+.bysurprise-pic{
+  width:8.3rem;
+ height: 16.6rem;
+	background-color: #eeeced;
+  border-top-right-radius: 0.3rem;
+	  border-bottom-right-radius: 0.3rem;
+  display: inline-block;
+  float:right;
+}
+
+.bysurprise-portrait{
+  overflow: hidden;
+  border-top-right-radius: 0.3rem;
+  position: relative;
+  -webkit-mask-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0.2)))
+}
+
+img.bysurprise-absolute {
+  margin-left: 0rem;
+  position: absolute;
+}
