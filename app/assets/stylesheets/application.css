@@ -276,7 +276,6 @@ font-size: 1.4rem;
 .icon {
 font-family: "fontawesome";
 font-size: 2rem;
-color: #907989;
 vertical-align:text-bottom;
 }
 
@@ -588,7 +587,8 @@ background-color: #907989;
 }
 .work-pic{
   width:22%;
-  height: 272.4rem;
+  height: 150rem;
+	/* make height same as total card */
   border-bottom-left-radius: 0.3rem;
   border-top-left-radius: 0.3rem;
   background-color:#d9cdd5;
@@ -609,7 +609,7 @@ background-color: #907989;
   border-top-left-radius: 0.3rem;
   direction:ltr;
   position: relative;
-  height:69rem;
+  height:50rem;
   -webkit-mask-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)))
 }
 img.absolute {
@@ -834,7 +834,7 @@ padding: 1.2rem 2.4rem 0 1.2rem;
   width: 20%;
   float: left;
   float: top;
-  margin-left: 2.4rem;
+  margin-left: 2.6rem;
   margin-top: -0.6rem;
 
 }
