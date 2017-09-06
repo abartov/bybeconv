@@ -41,13 +41,13 @@
           <div class="col-sm-3">
             <div id="site-logo"><a href="#"><img src="../assets/images/BY_Logo.svg" class="img-responsive" alt="לוגו"></a></div>
           </div>
-          <div class="col-sm-6" style="align-content: center; text-align: center"><div class="fontsize-selector">גודל גופן: 
-            <a class="decrease_font" href="javascript:void(0)" style="font-size: 75%">א</a>
-            &nbsp;
-            <a class=".default_font current">א</a>
-            &nbsp;
-            <a class="increase_font" href="javascript:void(0)" style="font-size: 150%">א</a>
-            <!-- TODO: also set a cookie, so it"ll stick between screens -->
+          <div class="col-sm-6" style="align-content: center; text-align: center">
+<div class="fontsize-selector-unit">
+  <div style="float: right; display: inline">גודל גופן:</div>
+<div class="fontsize-selector"> <a class="decrease_font" href="javascript:void(0)" style="font-size: 75%">א</a></div>
+  <div class="fontsize-selector-current"><p class="default_font" href="javascript:void(0)">א</p></div>
+  <div  class="fontsize-selector"><a class="increase_font" href="javascript:void(0)" style="font-size: 150%">א</a></div>
+  <!-- TODO: also set a cookie, so it"ll stick between screens -->
             <script>
   $(".increase_font").click(function() {
     $("body").css("fontSize", "20px");
@@ -165,7 +165,9 @@
     </div>
     <div class="container-fluid">
       <div class="row">
-        <div class="col-xs-1"><a href="#"><i class="fa fa-chevron-right next-author" aria-hidden="true"></i></a></div>
+        <div class="col-xs-1">
+          <div style="height: 27.6rem; font-size: 3.2rem; float: right"><a href="#"><i class="fa fa-angle-right next-author vcentered" aria-hidden="true"></i></a></div>
+        </div>
         <div class="col-xs-10">
          <div class="row">
           <div class="col-xs-3">
@@ -200,29 +202,33 @@
             </div>	  	    
       </div>
        </div>
-        <div class="col-xs-1"><a href="#"><i class="fa fa-chevron-left next-author" aria-hidden="true"></i></a></div>
+          <div class="col-xs-1">
+          <div style="height: 27.6rem; font-size: 3.2rem"><a href="#"><i class="fa fa-angle-left next-author vcentered" aria-hidden="true"></i></a></div>
+        </div>
         </div>
       </div>
     
   </div>
         <div id="random-authors">
     <div class="container-fluid">
-      <div class="row" style="margin-top:1rem;">
+      <div class="row" style="margin-top:2.2rem;">
         <div class="col-xs-1"></div>
-        <div class="col-xs-10"> <p class="headline-3" style="display: inline;">מבחר יוצרים</p> <p style="display: inline;">(בסדר אקראי)</p></div>
+        <div class="col-xs-10"> <p class="headline-3" style="display: inline">מבחר יוצרים</p> <p style="display: inline;">(בסדר אקראי)</p></div>
         <div class="col-xs-1"></div>
       </div>
     </div>
           <div class="container-fluid">  		  
             <div class="row">
-              <div class="col-xs-1"><a href="#"><i class="fa fa-chevron-right next-author" aria-hidden="true"></i></a></div>
+               <div class="col-xs-1">
+          <div style="height: 27.6rem; font-size: 3.2rem; float: right"><a href="#"><i class="fa fa-angle-right next-author vcentered" aria-hidden="true"></i></a></div>
+        </div>
               <div class="col-xs-10">
                 <div class="row"> 
                          	<div class="col-xs-3"><div class="card author-card surprise">
 <div style="padding-top: 5rem;">
 <a href="#">
 <div><span class="icon-bysurprise-author" style="font-size:6rem;margin-bottom:1.4rem;"></span></div>
-<p class="headline-genre">יוצר בהפתעה</p>
+<p class="headline-3">יוצר בהפתעה</p>
 </a>
 <div><div class="replace-icon text-on-dark" style="margin-bottom:0.6rem;"><a href="">?</a></div></div>
 
@@ -256,7 +262,9 @@
 
                 </div>
               </div>
-              <div class="col-xs-1"><a href="#"><i class="fa fa-chevron-left next-author" aria-hidden="true"></i></a></div>
+                 <div class="col-xs-1">
+          <div style="height: 27.6rem; font-size: 3.2rem"><a href="#"><i class="fa fa-angle-left next-author vcentered" aria-hidden="true"></i></a></div>
+        </div>
             </div>
           </div>
           
@@ -375,9 +383,9 @@
 </a>
 </div>
 <a href="/manifestation/genre?genre=poetry">
-<p class="headline-genre">שירה</p>
+<p  class="genre-headline">שירה</p>
 </a>
-<span style="text-align: center">390 יצירות</span>
+<div class="genre-number">390 יצירות</div>
 	</div></div></div>
     	  <div class="col-md-3"><div class="card genre-card"><div class="genre-card-content">
 <div class="genre-icon">
@@ -386,9 +394,9 @@
 </a>
 </div>
 <a href="/manifestation/genre?genre=prose">
-<p class="headline-genre">פרוזה</p>
+<p class="genre-headline">פרוזה</p>
 </a>
-<span style="text-align: center">144 יצירות</span>
+<div class="genre-number">144 יצירות</div>
 </div></div></div>
     	  <div class="col-md-3"><div class="card genre-card"><div class="genre-card-content">
 <div class="genre-icon">
@@ -397,9 +405,9 @@
 </a>
 </div>
 <a href="/manifestation/genre?genre=drama">
-<p class="headline-3">מחזות</p>
+<p class="genre-headline">מחזות</p>
 </a>
-<span style="text-align: center">3 יצירות</span>
+<div  class="genre-number">3 יצירות</div>
 </div></div></div>
     	  <div class="col-md-3"><div class="card genre-card"><div class="genre-card-content">
 <div class="genre-icon" >
@@ -408,12 +416,12 @@
 </a>
 </div>
 <a href="/manifestation/genre?genre=translate">
-<p class="headline-3">משלים</p>
+<p class="genre-headline">משלים</p>
 </a>
-<span style="text-align: center">16 יצירות</span>
+<div class="genre-number">16 יצירות</div>
 </div></div></div>
   	  </div>
-  	     	  <div class="row">
+  	     	  <div class="row" style="padding-top: 1rem">
     	  <div class="col-md-3"><div class="card genre-card"><div class="genre-card-content">
 <div class="genre-icon">
 <a href="/manifestation/genre?genre=article">
@@ -421,9 +429,9 @@
 </a>
 </div>
 <a href="/manifestation/genre?genre=article">
-<p class="headline-3">מאמרים ומסות</p>
+<p class="genre-headline">מאמרים ומסות</p>
 </a>
-<span style="text-align: center">310 יצירות</span>
+<div class="genre-number">310 יצירות</div>
 </div></div></div>
     	  <div class="col-md-3"><div class="card genre-card"><div class="genre-card-content">
 <div class="genre-icon">
@@ -432,9 +440,9 @@
 </a>
 </div>
 <a href="/manifestation/genre?genre=memoir">
-<p class="headline-3">זכרונות ויומנים</p>
+<p class="genre-headline">זכרונות ויומנים</p>
 </a>
-<span style="text-align: center">13 יצירות</span>
+<div  class="genre-number">13 יצירות</div>
 </div></div></div>
     	  <div class="col-md-3"><div class="card genre-card"><div class="genre-card-content">
 <div class="genre-icon">
@@ -443,9 +451,9 @@
 </a>
 </div>
 <a href="/manifestation/genre?genre=letters">
-<p class="headline-3">מכתבים</p>
+<p class="genre-headline">מכתבים</p>
 </a>
-<span style="text-align: center">10 יצירות</span>
+<div class="genre-number">10 יצירות</div>
 </div></div></div>
     	  <div class="col-md-3"><div class="card genre-card"><div class="genre-card-content">
 <div class="genre-icon">
@@ -454,35 +462,13 @@
 </a>
 </div>
 <a href="/manifestation/genre?genre=reference">
-<p class="headline-3">עיון</p>
+<p class="genre-headline">עיון</p>
 </a>
-<span style="text-align: center">31 יצירות</span>
+<div class="genre-number">31 יצירות</div>
 </div></div></div>
   	  </div>
-  	     	  <div class="row">
-    	  <div class="col-md-4"><div class="card genre-card"><div class="genre-card-content">
-<div class="genre-icon">
-<a href="/manifestation/genre?genre=translate">
-<span class="icon-bytranslate"></span>
-</a>
-</div>
-<a href="/manifestation/genre?genre=translate">
-<p class="headline-3">יצירות מתורגמות</p>
-</a>
-<span style="text-align: center">3 יצירות</span>
-</div></div></div>
-   	      	  <div class="col-md-4"><div class="card genre-card dictionaries"><div class="genre-card-content">
-<div class="genre-icon">
-<a href="/manifestation/genre?genre=lexicon">
-<span class="icon-bylexicon"></span>
-</a>
-</div>
-<a href="/manifestation/genre?genre=lexicon">
-<p class="headline-3">מילונים ולקסיקונים</p>
-</a>
-<span style="text-align: center">2213 ערכים</span>
-</div></div></div>
-    	  <div class="col-md-4"><div class="card genre-card surprise"><div class="genre-card-content">
+  	     	  <div class="row" style="padding-top: 1rem">
+  	     	      	  <div class="col-md-4"><div class="card genre-card surprise"><div class="genre-card-content">
 <div class="genre-icon">
 <a href="/manifestation/genre?genre=lexicon">
 <span class="icon-bysurprise-work"></span>
@@ -494,16 +480,37 @@
 <div><div class="replace-icon text-on-dark" style="margin-bottom:0.6rem;"><a href="">?</a></div></div>
 
 </div></div></div>
+    	  <div class="col-md-4"><div class="card genre-card"><div class="genre-card-content">
+<div class="genre-icon">
+<a href="/manifestation/genre?genre=translate">
+<span class="icon-bytranslate"></span>
+</a>
+</div>
+<a href="/manifestation/genre?genre=translate">
+<p class="genre-headline">יצירות מתורגמות</p>
+</a>
+<div class="genre-number">3 יצירות</div>
+</div></div></div>
+   	      	  <div class="col-md-4"><div class="card genre-card dictionaries"><div class="genre-card-content">
+<div class="genre-icon">
+<a href="/manifestation/genre?genre=lexicon">
+<span class="icon-bylexicon"></span>
+</a>
+</div>
+<a href="/manifestation/genre?genre=lexicon">
+<p class="genre-headline">מילונים ולקסיקונים</p>
+</a>
+<div class="genre-number">2213 ערכים</div>
+</div></div></div>
+
   	  </div>
     </div>
  <div id="flashlight" class="col-xs-12 col-sm-4 main-group">
-	  <p class="headline-3" style="float:right; display: inline;padding-top: 2.3rem;">זרקור על יצירה</p><p style="float:right; display: inline;padding-top: 2.7rem; padding-right: 1.2rem">המלצות עורכים ומתנדבים</p>
+	  <p class="headline-3" style="float:right; display: inline;padding-top: 2.5rem;">זרקור על יצירה</p><p style="float:right; display: inline;padding-top: 2.7rem; padding-right: 1.2rem">המלצות עורכים ומתנדבים</p>
 	  <div class="row">
-   		<div class="col-xs-12"><div class="card full-size-card footer-card">
-
-
+   		<div class="col-xs-12"><div class="card">
     
-    <div class="card-content recommend-text" style="height: 34.6rem">
+    <div class="recommend-text" style="height: 34.6rem;">
          <p  style="padding-top: 1rem"> <a href="#" class="headline-3">האמנם זו לא הדרך?</a></p>
          <p >בעקבות מאמרו של <a href="#">אחד העם</a>: <a href="#">לא זה הדרך!</a></p>
          <p style="margin-bottom: 1.8rem">מאת: <a href="#">צחה וקנין</a>, עורכת בפרויקט</p>
@@ -532,16 +539,27 @@
             <div class="row">
               <div class="col-xs-12">
                 <div class="carusel-nav">
-  <div class="carusel-nav-circle"><a href="#"><i class="fa fa-circle"></i></a></div>
-                  <div class="carusel-nav-circle"><a href="#"><i class="fa fa-circle-o"></i></a></div>
-                  <div class="carusel-nav-circle"><a href="#"><i class="fa fa-circle-o"></i></a></div>
-                  <div class="carusel-nav-circle"><a href="#"><i class="fa fa-circle-o"></i></a></div>
-                  <div class="carusel-nav-circle"><a href="#"><i class="fa fa-circle-o"></i></a></div>
-                </div>
+                  <div style="float: right; display: inline">
+                    <div class="carusel-nav-circle"></div>
+                  </div>
+                  <div style="float: right; display: inline">
+                    <div class="carusel-nav-circle"></div>
+                  </div>
+                  <div style="float: right; display: inline">
+                    <div class="carusel-nav-circle"></div>
+                  </div>
+                  <div style="float: right; display: inline">
+                    <div class="carusel-nav-circle"></div>
+                  </div>
+                  <div style="float: right; display: inline">
+                    <div class="carusel-nav-circle-select"></div>
+                  </div>
+
+              </div>
               </div>
             </div>
           </div>
-<p style="float: left"><a href="#">המלצות נוספות מיומן הרשת</a></p>                  </div>
+<p style="float: left; margin-top: 2rem"><a href="#">המלצות נוספות מיומן הרשת</a></p>                  </div>
         </div></div></div>
     </div></div>
     </div>
@@ -624,7 +642,7 @@
                     </div></div></div>
     </div></div>
   </div>
-<div id="donate" class="container-fluid">
+<div id="donate" class="container-fluid" style="padding-top: 2rem;">
   <div class="row">
 
 	<div class="col-xs-12">
@@ -633,7 +651,7 @@
   <div class="card-content">
     <div class="row">
       <div class="col-lg-12">
-      	  <p class="headline-2" style="text-align: center; padding: 0 23%;margin-top: 0">תמיכה כספית בפרויקט</p>
+      	  <p class="headline-2" style="text-align: center; padding: 0 23%;margin-top:o">תמיכה כספית בפרויקט</p>
 
       	<p style="text-align: center; padding: 0 23%;">כל עבודת ההקלדה, ההגהה והעריכה בפרויקט נעשית <span style="font-weight: bold">בהתנדבות וללא קבלת תמורה</span>. את מלאכת פיתוח התוכנה ושיפור התשתיות, עם זאת, אנו מזמינים מקבלן תוכנה, ולשם כך אנו מגייסים תרומות.</p>
       	

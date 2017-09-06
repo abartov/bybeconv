@@ -461,17 +461,27 @@ option:first {
 }
 
 
-.fontsize-selector {
+.fontsize-selector-unit {
  align-content: center;
- display: inline;
+	margin-bottom: 4rem;
 }
-.fontsize-selector .current{
-color: #1A0012;
+.fontsize-selector{
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background-color: #fff;
+  float: right; 
+  display: inline
+}
+.fontsize-selector-current{
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background-color: #660248;
+  color: #fff;
   font-weight: bold;
-}
-
-.fontsize-text{
-  float:right;
+  float: right; 
+  display: inline
 }
 
 .english {
@@ -545,7 +555,7 @@ color: #1A0012;
   background-color: #2b0d22;
   font-size: 1.4rem;
   color: #d9cdd5;
-  margin-top: 8rem;
+  margin-top: 6rem;
 }
 #bottom-nav{
   text-align: center;
@@ -1134,10 +1144,15 @@ rgba(0,0,0, .5);
 #whatsnew{
 	margin-top: 2rem;
 }
-.headline-genre{
+.genre-headline{
+ margin-top: 0.8rem;
   text-align: center;
   font-size: 1.8rem;
   font-weight: bold;
+}
+.genre-number{
+ text-align: center;
+ margin-top: -0.6rem;
 }
 .announcement{
 	background-color: #660248;
@@ -1191,12 +1206,23 @@ rgba(0,0,0, .5);
 	border-left: 0.1rem #BBA3B7;
 }
 .carusel-nav{
-	  text-align: center;
-  align-content: center;
+	width: 13rem;
+	margin-top: 1.6rem;
+	margin: 1.2rem auto;
 }
 .carusel-nav-circle{
-	  display: inline;
-	padding: 3rem 0.5rem;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  margin-left: 1.6rem;
+  background-color:#907989;
+}
+.carusel-nav-circle-select{
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  margin-left: 1.6rem;
+  background-color: #660248;
 }
 .surprise-bookmark-back {
   z-index: 1;
@@ -1232,6 +1258,7 @@ rgba(0,0,0, .5);
 }
 .recommend-text{
   width: 62%;
+  padding: 1.5rem;
   display: inline-block;
 	text-align: justify;
 }
