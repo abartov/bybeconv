@@ -56,14 +56,10 @@
 .popover {
   min-width: 250px;
 }
-.main-search-field {
-  border-top: 0.1rem solid #d9cdd5;
-  border-bottom: 0.2rem solid #660248;
-  border-right: 0.1rem solid #d9cdd5;
-  border-left: 0.1rem solid #d9cdd5;
-}
+
 
 #user-widget{
+	float: left;
 	display: inline;
 	padding-top: 0.8rem;
 }
@@ -305,7 +301,7 @@ background-color: #2b0d22;
 #user-widget{
   padding-top: 0.8rem;
   text-align:left;
-	  float: left;
+  float: left;
 }
 .search-bar{
   height: 7rem;
@@ -315,16 +311,17 @@ background-color: #2b0d22;
 }
 .blank-space{
   height: auto;
+  padding: 0;
 }
 
 #site-logo{
   margin-top: 0.8rem;
   margin-bottom: 2.2rem;
+	max-width: 30rem;
 }
 #navbar-full-width{
   box-sizing: border-box;
-  height: auto;
-  min-height: 2.8rem;
+  height: 6rem;
   border-top: 0.2rem solid #d9cdd5;
   border-bottom: 0.2rem solid #d9cdd5;
   font-size: 1.4rem;
@@ -345,8 +342,7 @@ background-color: #2b0d22;
   border-bottom: 0.2rem solid #d9cdd5;
 }
 #navbar{
-  height: 2.8rem;
-  padding-top: 0.4rem;
+  padding-top: 1rem;
 }
 #author-navbar{
   height: 2.8rem;
@@ -366,7 +362,7 @@ ul {
   list-style-type:none;
 }
 .nav li {
-  margin: 0 1.6rem;
+  margin: 0 0 0 3rem;
   display: inline;
 	  /* vertical alignment */
  }
@@ -386,7 +382,6 @@ li :active{
   margin-bottom: 1rem;
   line-height: 3.6rem;
   width:100%;
-  padding: 0 0.4rem;
   background: none;
   -webkit-appearance: none;
 }
@@ -428,35 +423,55 @@ option:first {
     color: #907989;
 }
 .search-field {
-  width: 92%;
-  margin-top: 0.6rem;
-  float: right;
+  position: relative;
+  width: 100%;
+  margin-top: 0.2rem;
   display: inline;
+  padding: 0;
 }
-.search-icon {
-width: 2rem;
-float: left;
-font-family: "FontAwesome";
-color: #660248;
-font-size: 1.8rem;
-margin-top: 1.2rem;
-display: inline;
-}
+
+
 .search {
+  position: relative;
+  height: 3.2rem;
 }
+
+.search input {
+  width: 100%;
+  height: 3.2rem;
+  border-top: none;
+  border-right: none;
+  border-bottom: 0.2rem solid #d9cdd5;
+  border-left: none;
+  padding: 0;
+  font-size: 1.6rem;
+  text-indent: 6px;
+}
+
+.search .fa-search { 
+  position: absolute;
+  top: 0.6rem;
+  left: 0;
+  color: #660248;
+  font-size: 1.8rem;
+}
+
+.main-search-field input{
+  border-bottom: 0.2rem solid #660248;
+}
+
+
 .fontsize-selector {
  align-content: center;
  display: inline;
 }
-.circle {
-width: 2.4rem;
-height: 2.4rem;
-border-radius: 50%;
-background-color: #907989;
+.fontsize-selector .current{
+color: #1A0012;
+  font-weight: bold;
 }
+
 .fontsize-text{
   float:right;
-  margin-left: 1.2rem;
 }
 
 .english {
