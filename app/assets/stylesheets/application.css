@@ -463,22 +463,21 @@ option:first {
 
 .fontsize-selector-unit {
  align-content: center;
+	margin-top:0.6rem;
 	margin-bottom: 4rem;
+	line-height: 2.4rem;
 }
 .fontsize-selector{
-  width: 2rem;
-  height: 2rem;
-  border-radius: 50%;
-  background-color: #fff;
+  width: 2.4rem;
+  height: 2.4rem;
   float: right; 
   display: inline
 }
 .fontsize-selector-current{
-  width: 2rem;
-  height: 2rem;
+  width: 2.4rem;
+  height: 2.4rem;
   border-radius: 50%;
-  background-color: #660248;
-  color: #fff;
+  background-color: #d9cdd5;
   font-weight: bold;
   float: right; 
   display: inline
