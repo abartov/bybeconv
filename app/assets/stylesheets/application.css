@@ -1194,14 +1194,13 @@ rgba(0,0,0, .5);
 }
 .nav-icon{
 	font-size: 3.2rem;
-	text-align: center;
 }
 .genre-nav{
 	width: 10rem;
-	height:6rem;
+	height:6.6rem;
 	display: inline;
 	float: right;
-	margin: 0.2rem;
+	margin: 0rem;
 	border-left: 0.1rem #BBA3B7;
 }
 .carusel-nav{
@@ -1314,7 +1313,7 @@ background-position: left bottom;
   min-height: 16.6rem;
 }
 .bysurprise-text{
-  width: 80%;
+  width: 60%;
   display: inline-block;
 	text-align: justify;
 }
@@ -1336,6 +1335,10 @@ background-position: left bottom;
 }
 
 img.bysurprise-absolute {
-  margin-left: 0rem;
+  margin-right: 0rem;
   position: absolute;
+}
+.mostread-translated{
+	font-size: 1.4rem;
+	font-weight: bold;
 }
