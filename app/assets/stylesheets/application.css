@@ -1129,15 +1129,13 @@ rgba(0,0,0, .5);
   opacity: .3;
 }
 .next-author{
-	float: left;
+	float: right;
 	font-size: 2.4rem;
-	padding-top: 1rem;
   /* vertical alignment */
 }
-.frevious-author{
+.previous-author{
 	float:right;
 	font-size: 2.4rem;
-	padding-top: 1rem;
   /* vertical alignment */
 }
 #whatsnew{
@@ -1289,6 +1287,9 @@ img.recommend-absolute {
 	text-align: center;
 	height: 16.6rem;
 	width: 8.3rem;
+	float: right;
+	display: inline;
+	margin-left: 2rem;
 }
 .small-author-homepage-pic{
   border-top-left-radius: 0.3rem;
@@ -1302,7 +1303,7 @@ img.recommend-absolute {
 	text-align: center;
 	line-height: 1.6rem;
 	padding: 0.5rem;
-		/* vertical alignment */
+	height: 4.6rem;
 }
 .small-surprise{
   background-color: #fff;
@@ -1341,4 +1342,11 @@ img.bysurprise-absolute {
 .mostread-translated{
 	font-size: 1.4rem;
 	font-weight: bold;
+}
+.arrow-nav-small{
+	width: 3rem;
+	height: 17.8rem;
+	font-size: 3.2rem;
+	float: right;
+	display: inline;
 }
