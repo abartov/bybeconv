@@ -194,6 +194,12 @@ font-weight: bold;
 margin-top: 3rem;
 margin-bottom: 0.4rem;
 }
+.headline-1 {
+font-size: 3.6rem;
+font-weight: bold;
+margin-top: 1.8rem;
+margin-bottom: 0.4rem;
+}
 .headline-2 {
 font-size: 2.2rem;
 font-weight: bold;
@@ -374,7 +380,7 @@ li :active{
 }
 
 .field {
-  height: 3rem;
+  height: 3.2rem;
   border-top: none;
   border-bottom: 0.2rem solid #d9cdd5;
   border-right:none;
@@ -392,7 +398,7 @@ li :active{
 
 select{
   -webkit-appearance: none;
-  height: 3rem;
+  height: 3.2rem;
   border-top: none;
   border-bottom: 0.2rem solid #d9cdd5;
   border-right:none;
@@ -401,11 +407,8 @@ select{
   line-height: 3.6rem;
   width:100%;
   padding: 0 0.4rem;
-  background-color:#fff;
-  background-image: url(/assets/dd-arrow2.png);
-  background-position: left;
-  background-repeat: no-repeat;
   border-radius:0;
+	background-color: #fff;
 }
 ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
   color:#907989;
@@ -437,6 +440,7 @@ option:first {
 }
 
 .search input {
+	background-color: #fff;
   width: 100%;
   height: 3.2rem;
   border-top: none;
@@ -457,9 +461,26 @@ option:first {
 }
 
 .main-search-field input{
+  background-color: #fff;
   border-bottom: 0.2rem solid #660248;
 }
 
+.on-card-search-field {
+}
+.on-card-search-field input{
+  font-size: 1.4rem;
+  background-color: #eeeced;
+  border-bottom: 0.2rem solid #d9cdd5;
+}
+
+.dropdown fa-angle-down{
+  position: absolute;
+  top: 0.6rem;
+  left: 0;
+  color: #660248;
+  font-size: 0.8rem;
+  z-index: 2;
+}
 
 .fontsize-selector-unit {
  align-content: center;
@@ -600,18 +621,18 @@ width: calc(100% - 93px);
   overflow: hidden;
 }
 .work-card{
-  width: 100%;
+  margin-right: 15rem;
+  width: calc(100% - 15rem);
   height:auto;
-  margin-top: 3rem;
 }
 .work-text{
-  width: 78%;
+  width: 75%;
   padding: 3rem 10rem 2rem 10rem;
   display: inline-block;
 }
 .work-pic{
-  width:22%;
-  height: 150rem;
+  width:25%;
+  height: 229.5rem;
 	/* make height same as total card */
   border-bottom-left-radius: 0.3rem;
   border-top-left-radius: 0.3rem;
@@ -876,11 +897,8 @@ padding: 1.2rem 2.4rem 0 1.2rem;
 rgba(0,0,0, .5);
 }
 .bookmark{
-	position: absolute;
+	position: relative;
 	z-index: 2;
-	float: right;
-	top: 6.8rem;
-	right: 7rem;
 	font-size: 2rem;
 }
 .baseline{
@@ -920,10 +938,15 @@ rgba(0,0,0, .5);
 .fa {
   vertical-align:top;
 }
+#work-view {
+  width:9rem;
+  float: right;
+  position: absolute;
+  z-index: 1;
+  display: inline-block;
+}
 #toolbox {
   width:9rem;
-  border-radius: 0.3rem;
-    box-shadow: 0 0.1rem 0.6rem rgba(0, 0, 0, 0.4);
     float: right;
     position: absolute;
     z-index: 1;
@@ -956,6 +979,9 @@ rgba(0,0,0, .5);
 .btn-group-vertical {
     position: relative;
     display: inline-block;
+	  border-radius: 0.3rem;
+    box-shadow: 0 0.1rem 0.6rem rgba(0, 0, 0, 0.4);
+
   /* vertical alignment */
 }
 .toolbox-cell .wide-cell {
@@ -1062,7 +1088,7 @@ rgba(0,0,0, .5);
   color: white;
   text-align: center;
   background-color: #660248;
-  margin:3rem 0 0rem 0;
+  margin:0;
   box-shadow: 0 0.1rem 0.2rem rgba(0,0,0, .4);
   /* vertical alignment */
 }
