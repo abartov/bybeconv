@@ -498,7 +498,7 @@ option:first {
   width: 2.4rem;
   height: 2.4rem;
   border-radius: 50%;
-  background-color: #d9cdd5;
+	border: 2px solid #d9cdd5;
   font-weight: bold;
   float: right; 
   display: inline
@@ -1240,8 +1240,8 @@ rgba(0,0,0, .5);
   width: 1rem;
   height: 1rem;
   border-radius: 50%;
+	border: 1px solid #907989;
   margin-left: 1.6rem;
-  background-color:#907989;
 }
 .carusel-nav-circle-select{
   width: 1rem;
