@@ -213,14 +213,14 @@ margin-bottom: 0.4rem;
 }
 
 .h3 {
-font-size: 1.8rem;
+font-size: 1.6rem;
 font-weight: bold;
 margin-bottom: 0.4rem;
 margin-top: 0rem;
 padding-top: 0.8rem;
 }
 .headline-3 {
-font-size: 1.8rem;
+font-size: 1.6rem;
 font-weight: bold;
 margin-bottom: 0.4rem;
 margin-top: 0rem;
@@ -620,10 +620,13 @@ width: calc(100% - 93px);
   vertical-align: top;
   overflow: hidden;
 }
-.work-card{
+.work-area{
   margin-right: 15rem;
   width: calc(100% - 15rem);
+}
+.work-card{
   height:auto;
+  position: relative;
 }
 .work-text{
   width: 75%;
@@ -632,13 +635,13 @@ width: calc(100% - 93px);
 }
 .work-pic{
   width:25%;
-  height: 229.5rem;
+  height: 100%;
 	/* make height same as total card */
   border-bottom-left-radius: 0.3rem;
   border-top-left-radius: 0.3rem;
   background-color:#d9cdd5;
   display: inline-block;
-  float:left;
+  position: absolute;
 }
 #authors{
   margin-top: 2rem;
@@ -897,9 +900,11 @@ padding: 1.2rem 2.4rem 0 1.2rem;
 rgba(0,0,0, .5);
 }
 .bookmark{
-	position: relative;
+	position: absolute;
 	z-index: 2;
 	font-size: 2rem;
+	left:27.5%;
+	top: 4.2rem;
 }
 .baseline{
 	padding-top: 0.2rem;
@@ -944,53 +949,6 @@ rgba(0,0,0, .5);
   position: absolute;
   z-index: 1;
   display: inline-block;
-}
-#toolbox {
-  width:9rem;
-    float: right;
-    position: absolute;
-    z-index: 1;
-}
-.toolbox-header {
-    width: 9rem;
-    height: 2rem;
-    background-color: #907989;
-    padding: 0 0.6rem;
-  border-top-left-radius: 0.3rem;
-  border-top-right-radius: 0.3rem;
-}
-
-.toolbox-header-chevron {
-    color: #d9cdd5;
-  float:left;
-}
-
-.toolbox-cell {
-    width: 9rem;
-    height: 6rem;
-  background-color: #eeeced;
-    text-align: center;
-    font-size: 2.4rem;
-  display: table-cell;
-    vertical-align: middle;
-  border: none;
-	  /* vertical alignment */
-}
-.btn-group-vertical {
-    position: relative;
-    display: inline-block;
-	  border-radius: 0.3rem;
-    box-shadow: 0 0.1rem 0.6rem rgba(0, 0, 0, 0.4);
-
-  /* vertical alignment */
-}
-.toolbox-cell .wide-cell {
-    width: auto;
-}
-
-.toolbox-cell .error-found {
-    font-family: "ben-yehuda";
-    font-size: 3.6rem
 }
 
 .bypagination{
@@ -1043,6 +1001,14 @@ rgba(0,0,0, .5);
   height:13rem;
   z-index: 0;
 }
+.icons-raw{
+  font-family: "fontawesome";
+  vertical-align:text-bottom;
+  font-size: 1.6rem;
+  float: right;
+  margin-left: 1.2rem;
+  display: inline;	
+}
 .result-links{
   margin-top: 1.2rem;
   font-size: 1.6rem;
@@ -1079,9 +1045,9 @@ rgba(0,0,0, .5);
 }
 
 .work-view-btn {
-  width:9rem;
+  width:10rem;
   font-size:2.4rem;
-  padding: 0.4rem;
+  padding: 0.2rem;
   height: 3.2rem;
   border:none;
   border-radius: 0.3rem;
@@ -1378,4 +1344,91 @@ img.bysurprise-absolute {
 	font-size: 3.2rem;
 	float: right;
 	display: inline;
+}
+#toolbox {
+  width:9rem;
+    float: right;
+    position: absolute;
+    z-index: 1;
+}
+.toolbox-header {
+    width: 10rem;
+    height: 2.2rem;
+    background-color: #907989;
+	margin-top: 0.6rem;
+    padding: 0 0.6rem;
+  border-bottom-left-radius: 0.3rem;
+  border-bottom-right-radius: 0.3rem;
+}
+.toolbox-header:hover{
+	background-color: #660248;
+}
+
+.toolbox-header-chevron {
+    color: #d9cdd5;
+  float:left;
+}
+
+.toolbox-cell {
+    width: 10rem;
+    height: 6rem;
+  background-color: #eeeced;
+    text-align: center;
+    font-size: 2.4rem;
+  	display: table-cell;
+    vertical-align: middle;
+  	border: none;
+	position: relative;
+	  /* vertical alignment */
+}
+.btn-group-vertical {
+    position: relative;
+    display: inline-block;
+	  background-color: #eeeced;
+	padding-top: 0.6rem;
+	  border-radius: 0.3rem;
+    box-shadow: 0 0.1rem 0.6rem rgba(0, 0, 0, 0.4);
+
+  /* vertical alignment */
+}
+.toolbox-cell .wide-cell {
+    width: auto;
+}
+
+.toolbox-cell:hover{
+	color: #660248;
+}
+
+.toolbox-cell .tooltiptext {
+    visibility: hidden;
+    width: 10rem;
+    color: #660248;
+    text-align: center;
+	font-size: 1.2rem;
+    position: absolute;
+    z-index: 1;
+    bottom: 3%;
+    left: 50%;
+    margin-left: -5rem;
+    opacity: 1;
+	line-height: 1.4rem;
+}
+
+.toolbox-cell .foundmistake {
+    visibility: visible;
+    width: 10rem;
+    color: #660248;
+    text-align: center;
+	font-size: 1.2rem;
+    position: absolute;
+    z-index: 1;
+    bottom: 3%;
+    left: 50%;
+    margin-left: -5rem;
+    opacity: 1;
+}
+
+.toolbox-cell:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
 }
