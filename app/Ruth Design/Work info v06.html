@@ -135,7 +135,7 @@
     <div class="col-md-10">
     	<div id="work-name">
            		<p class="headline-1" style="margin-top:0; margin-bottom: 0">מֵאֲחוֹרי הַגָּדֵר</p>
-           		<p  class="headline-3" style="padding: 0;display: inline">תרגום: <a href="#">חיים נחמן ביאליק</a>, מאת: <a href="#">חיים נחמן ביאליק</a></p><p style="display: inline">, שפת המקור: רוסית</p>
+           		<p  class="headline-3" style="padding: 0;display: inline">מאת: <a href="#">חיים נחמן ביאליק</a></p>
 		 </div>
     
 
@@ -152,13 +152,16 @@
         <button class="toolbox-cell darkoldpink"><i class="icon-bybookmark-add"></i><span class="tooltiptext">הוספת סימניה</span></button>
         <button class="toolbox-cell darkoldpink"><i class="fa fa-heart-o"></i><span class="tooltiptext">אהבתי</span></button>
         <button class="toolbox-cell darkoldpink"><i class="icon-bybookshelf"></i><span class="tooltiptext">רשימות קריאה</span></button>
-        <button class="toolbox-cell" style="color: #660248;margin-bottom: 4rem"><i class="icon-byerror-found"></i><span class="foundmistake">מצאתי שגיאה!</span><span class="tooltiptext" style="bottom:-70%">חשוב לנו שהטקסט יהיה מדויק וחף משגיאות</span></button>
+        <button class="toolbox-cell mistake" style="height: 11rem">
+        <div style="height: 7rem;padding-top: 1rem;color: #660248;"><i class="icon-byerror-found"></i><span class="foundmistake">מצאתי שגיאה!</span></div>
+        <div style="height: 4rem"><span class="tooltiptext" style="bottom:5%">חשוב לנו שהטקסט יהיה מדויק וחף משגיאות</span></div>
+        </button>
         <button class="toolbox-cell share darkoldpink"><i class="fa fa-share-alt"></i><span class="tooltiptext">שיתוף</span></button>
         <button class="toolbox-cell download darkoldpink"><i class="fa fa-download"></i><span class="tooltiptext">הורדת ספר דיגיטלי</span></button>
         <button class="toolbox-cell printbutton darkoldpink"><i class="fa fa-print"></i><span class="tooltiptext">הדפסה</span></button>
         <button class="toolbox-cell printbutton darkoldpink"><i class="fa fa-quote-right"></i><span class="tooltiptext">ציטוט</span></button>
         <button class="toolbox-cell printbutton darkoldpink"><i class="fa fa-ellipsis-h"></i><span class="tooltiptext">אפשרויות נוספות</span></button>
-         <div class="toolbox-header" style="font-size: 2rem;"><i class="fa fa-angle-up toolbox-header-chevron"></i></div>
+         <div class="toolbox-header" style="font-size: 2rem;"><span class="tooltiptext">מזעור סרגל כלים</span><i class="fa fa-angle-up toolbox-header-chevron"></i></div>
 
       </div>
 		</div>
@@ -190,16 +193,16 @@
     </div>
         <div class="row">
       <div class="col-md-2"><p>פורסם בספר:</p></div>
-      <div class="col-md-10"><div class="card-header-element"  style="margin-left: 4rem"><p><a href="#">כל כתבי ח״נ ביאליק (1923)</a></p></div><div class="card-header-element"><a href="#">פרטי מהדורה ומידע נוסף<span class="fa fa-angle-left baseline" style="margin-right: 1rem"></span></a></div></div>
+      <div class="col-md-10"><div class="card-header-element"  style="margin-left: 4rem"><p><a href="#">כל כתבי ח״נ ביאליק (1923)</a></p></div><div class="card-header-element"><a href="#">פרטי מהדורה ומידע נוסף<span class="fa fa-angle-left baseline" style="margin-right: 0.6rem"></span></a></div></div>
     </div>
             <div class="row">
       <div class="col-md-2"><p>סוגה:</p></div>
       <div class="col-md-10"><div><p><a href="#">פרוזה</a></p></div></div>
     </div>
             <div class="row">
-      <div class="col-md-2"><div class="card-header-element"><a href="#">תגיות (5)<span class="fa fa-angle-left baseline" style="margin-right: 1rem"></span></a></div></div>
-      <div class="col-md-10"><div class="card-header-element" style="margin-left: 4rem"><a href="#">המלצות (2)<span class="fa fa-angle-left baseline" style="margin-right: 1rem"></span></a></div>
-      <div class="card-header-element"><a href="#"><div class="icon card-header-element"><i class="fa fa-wikipedia-w" style="font-size: 1.4rem"></i></div>
+      <div class="col-md-2"><div class="card-header-element"><a href="#">תגיות (5)<span class="fa fa-angle-left baseline" style="margin-right: 0.6rem"></span></a></div></div>
+      <div class="col-md-10"><div class="card-header-element" style="margin-left: 4rem"><a href="#">המלצות (2)<span class="fa fa-angle-left baseline" style="margin-right: 0.6rem"></span></a></div>
+      <div class="card-header-element"><a href="#"><div class="icon card-header-element" style="margin-left: 0.6rem"><i class="fa fa-wikipedia-w" style="font-size: 1.4rem"></i></div>
         <div class="card-header-element">
           <p>לערך ויקיפדיה על יצירה זו</p>
         </div>
@@ -233,11 +236,12 @@
     <div>
       <div class="icon result-links"><a href=""><i class="fa fa-heart-o"></i></a></div>
       <div class="icon result-links"><a href=""><span class="icon-bybookshelf"></span></a></div>
-      <select style="width:80%;">
+      <select style="width:80%;position: relative">
         <option value="want-to-read">רוצה לקרוא?</option>
         <option value="will-read-later">אקרא מאוחר יותר</option>
         <option value="maybe-will-read">אולי אקרא</option>
         </select>
+        <div><a class="dropdown-arrow"><i class="fa fa-angle-down"></i></a></div>
       </div>
 
                                           </div>
@@ -259,6 +263,7 @@
       			  	<option value="a">פרק א׳</option>
         			<option value="b">פרק ב׳</option>
         			<option value="c">פרק ג׳</option></select>
+        			<div><a class="dropdown-arrow" style="left:0;"><i class="fa fa-angle-down"></i></a></div>
      			    </div>
       			    <div class="col-sm-6">
       			          <div class="search field on-card-search-field">
@@ -300,45 +305,85 @@
     				<div class="container-fluid">
 						<div class="row">
       						<div id="more-right" class="col-md-9" style="padding-right: 0; padding-left: 10rem">
-
+								<div id="work-tags" style="width:100%">
+		  	  <div class="headline-3">תגיות ליצירה</div>
+       		  <div style="display: inline-block;">
+       		    <div class="card tag-card"><div class="tag-content">אהבה לא ממומשת</div></div>
+				<div class="card tag-card"><div class="tag-content">נעורים</div></div>
+				<div class="card tag-card"><div class="tag-content">העיירה היהודית</div></div>
+				<div class="card tag-card">
+     		  		<div class="tag-content">מעגליות בשירה</div>
+      		  		<div class="tag-close"><a href="#"><i class="fa fa-times-circle"></i></a></div>
+      		  		<div class="tag-wait"><a href="#"><i class="fa fa-clock-o"></i></a></div>
+      		  </div>
+       		  </div>
+				<div id="add-tag" style="display: inline;float: left">
+   	 			  <form>
+   	 			    <div style="display:inline;float:right;margin-top:0.6rem;">
+   	 			      <input type="text" class="field" placeholder="הצעת תגית חדשה">
+ 			        </div>
+       	 			  <div style="display: inline;">
+       	 			    <input type="submit" value="שליחה" class="btn" style="margin-top: 0.6rem">
+   	 			    </div>
+   	 			  </form>
+		       	</div>
+            </div>
             
-            						<div id="work-recommend" >
-		  	  <div class="headline-3" style="margin:0.6rem 0 1.6rem 0;">המלצות קוראים</div>
- 	<div class="card recommendation">
-       	 	 <div class="rec-user">
-       	 	   <div class="rec-user-pic"><span class="icon-byfigure-outline-cut rec-user-icon"></span></div>
-       	 	   <div class="rec-user-name"><a href="#">ציפי גבירץ</a></div>
-       	 	   <div class="rec-user-name">24.8.2015</div>
-             </div>
-          <div class="rec-txt">אהבתי! סיפור מקסים...</div>
-          <div class="rec-flag"><div class="icon result-links darkoldpink" style="float: left;"><a href=""><i class="fa fa-flag-o"></i></a></div></div>
-     </div>
-            	<div class="card recommendation">
-       	 	 <div class="rec-user">
-       	 	   <div class="rec-user-pic"><span class="icon-byfigure-outline-cut rec-user-icon"></span></div>
-       	 	   <div class="rec-user-name"><a href="#">איתן התותח!</a></div>
-       	 	   <div class="rec-user-name">16.5.2015</div>
-             </div>
-          <div class="rec-txt">סתם סיפור פח של סופר פח דפוק</div>
-          <div class="rec-flag"><div class="icon result-links darkoldpink" style="float: left;"><a href=""><i class="fa fa-flag-o"></i></a></div></div>
-     </div>
-            	<div class="card recommendation">
-       	 	 <div class="rec-user">
-       	 	   <div class="rec-user-pic"><img src="bootstrap-3.3.7-dist/images/Gabi.jpg" width="60" height="60" alt=""/></div>
-       	 	   <div class="rec-user-name"><a href="#">גבי בלייכר</a></div>
-       	 	   <div class="rec-user-name">4.11.2014</div>
-             </div>
-          <div class="rec-txt">"מאחורי הגדר" הוא סיפור "קצר-ארוך"/נובלה  והוא יצירה ריאליסטית.  משמעות הריאליזם היא בעיצוב מציאות באמצעות זהות, מלאות והסתברות (הזהות נבדקת בזמן במקום ובעלילה) ועיצוב יחסים בין הפרט לסביבה.  לסיפור שני נושאים מרכזיים דרך סיפור החניכות – האהבה מחד; והסוציאליזציה לחברה היהודית מאידך.</div>
-          <div class="rec-flag"><div class="icon result-links darkoldpink" style="float: left;"><a href=""><i class="fa fa-flag-o"></i></a></div></div>
-     </div>
+            						<div id="work-recommend" style="margin-top:3rem">
+		  	  <div class="headline-3" style="display: inline">המלצות קוראים</div>
+		  	  <div style="display: inline; padding-right: 1rem">8 קוראים אהבו את הסיפור, 3 המלצות כתובות</div>
+ 				<div class="card">
+ 	  <div class="row recommendation">
+  <div class="rec-user">
+    <div class="rec-user-pic"><span class="icon-byfigure-outline-cut rec-user-icon"></span></div>
+    <div class="rec-user-name"><a href="#">ציפי גבירץ</a></div>
+    <div class="rec-user-name">24.8.2015</div>
+  </div>
+        <div class="rec-txt">אהבתי! סיפור מקסים...</div>
+        <div><button class="rec-flag darkoldpink"><i class="fa fa-flag-o"></i><span class="tooltiptext">דיווח על תוכן בעייתי</span></button></div>
+      </div>
+   </div>
+            	<div class="card">
+                  <div class="row recommendation">
+  <div class="rec-user">
+    <div class="rec-user-pic"><span class="icon-byfigure-outline-cut rec-user-icon"></span></div>
+    <div class="rec-user-name"><a href="#">איתן התותחחח!</a></div>
+    <div class="rec-user-name">16.5.2015</div>
+  </div>
+                    <div class="rec-txt">סתם סיפור פח של סופר פח דפוק</div>
+        			<div><button class="rec-flag darkoldpink"><i class="fa fa-flag-o"></i><span class="tooltiptext">דיווח על תוכן בעייתי</span></button></div>
+
+                  </div>
+                </div>
+            	<div class="card">
+                  <div class="row recommendation">
+  <div class="rec-user">
+    <div class="rec-user-pic"><img src="assets/Gabi.jpg" width="60" height="60" alt=""/></div>
+    <div class="rec-user-name"><a href="#">גבי בלייכר</a></div>
+    <div class="rec-user-name">4.11.2014</div>
+  </div>
+                    <div class="rec-txt">"מאחורי הגדר" הוא סיפור "קצר-ארוך"/נובלה  והוא יצירה ריאליסטית.  משמעות הריאליזם היא בעיצוב מציאות באמצעות זהות, מלאות והסתברות (הזהות נבדקת בזמן במקום ובעלילה) ועיצוב יחסים בין הפרט לסביבה.  לסיפור שני נושאים מרכזיים דרך סיפור החניכות"מאחורי הגדר" הוא סיפור "קצר-ארוך"/נובלה  והוא יצירה ריאליסטית.  משמעות הריאליזם היא בעיצוב מציאות באמצעות זהות, מלאות והסתברות (הזהות נבדקת בזמן במקום ובעלילה) ועיצוב יחסים בין הפרט לסביבה.  לסיפור שני נושאים מרכזיים דרך סיפור החניכות"מאחורי הגדר" הוא סיפור "קצר-ארוך"/נובלה  והוא יצירה ריאליסטית.  משמעות הריאליזם היא בעיצוב מציאות באמצעות זהות, מלאות והסתברות (הזהות נבדקת בזמן במקום ובעלילה) ועיצוב יחסים בין הפרט לסביבה.  לסיפור שני נושאים מרכזיים דרך סיפור החניכות"מאחורי הגדר" הוא סיפור "קצר-ארוך"/נובלה  והוא יצירה ריאליסטית.  משמעות הריאליזם היא בעיצוב מציאות באמצעות זהות, מלאות והסתברות (הזהות נבדקת בזמן במקום ובעלילה) ועיצוב יחסים בין הפרט לסביבה.  לסיפור שני נושאים מרכזיים דרך סיפור החניכות – האהבה מחד; והסוציאליזציה לחברה היהודית מאידך.</div>
+        <div><button class="rec-flag darkoldpink"><i class="fa fa-flag-o"></i><span class="tooltiptext">דיווח על תוכן בעייתי</span></button></div>
+                  </div>
+                </div>
+                <div id="add-rec" style="height: auto; min-height: 4rem;width:100%; margin-top: 2rem">
+   	 			  <form>
+   	 			    <div style="display:inline;float: right; margin-top:0.6rem;width: calc(100% - 11rem)">
+   	 			      <input type="text" class="field" placeholder="כתיבת המלצה">
+ 			        </div>
+       	 			  <div style="display: inline;float: left; width:11rem">
+       	 			    <input type="submit" value="שליחה" class="btn" style="margin-top: 0.6rem">
+   	 			    </div>
+   	 			  </form>
+		       	</div>
             </div>
             
 									<div id="work-ref" >
 		  	  <div class="headline-3" style="margin:3rem 0 1.6rem 0;">אזכורים ליצירה</div>
        		  	<div class="card full-size-card">
       		  		<div class="card-content">
-      		 			<p>1.&nbsp;<a href="">״גדר צבעונית״</a>, עיבוד לילדים ליצירה מאת ביאליק</p>
-      		 			<p>2.&nbsp;<a href="">״ביאליק וכתיבתו״</a>, מאת ברדיצ׳בסקי</p>
+      		 			<p>1.&nbsp;<a href="#">״גדר צבעונית״</a>, עיבוד לילדים ליצירה מאת ביאליק</p>
+      		 			<p>2.&nbsp;<a href="#">״ביאליק וכתיבתו״</a>, מאת ברדיצ׳בסקי</p>
 			  		</div>
             	</div>            
             </div>
@@ -353,10 +398,10 @@
 <div class="creator-bookmark-front"><img src="Portraits/Bialik_Hayim Nahman.jpg" width="159" alt=""/></div>      
     <div class="card-content near-picture">
     		<p><h5>יצירותיו הנקראות ביותר של חיים נחמן ביאליק</h5></p>
-      		<p>1.&nbsp;<a href="">״על השחיטה״</a> (שירה)</p>
-			<p>2.&nbsp;<a href="">״מאחורי הגדר״</a> (פרוזה)</p>
-      		<p>3.&nbsp;<a href="">״הכניסיני תחת כנפך״</a> (שירה)</p>
-			<p style="margin:1.2rem 0 0 0;"><a href="#"><h5>ליצירות השירה של חיים נחמן ביאליק</h5></a></p>
+      		<p>1.&nbsp;<a href="#">״על השחיטה״</a> (שירה)</p>
+			<p>2.&nbsp;<a href="#">״מאחורי הגדר״</a> (פרוזה)</p>
+      		<p>3.&nbsp;<a href="#">״הכניסיני תחת כנפך״</a> (שירה)</p>
+			<p style="margin:3.2rem 0 0 0;"><a href="#"><h5>ליצירות השירה של חיים נחמן ביאליק</h5></a></p>
    			<p style="margin:1.2rem 0 0 0;"><a href="#"><h5>לכל יצירותיו של חיים נחמן ביאליק</h5></a></p>
     </div>
   </div>
@@ -368,26 +413,39 @@
 		  	  <div class="headline-3" style="margin:3rem 0 1.6rem 0;">מי שקראו יצירה זו קראו גם...</div>
        		  <div class="card full-size-card">
       		  <div class="card-content">
-      		 <p>1.&nbsp;<a href="">״יום שישי הקצר״</a>, מאת חיים נחמן ביאליק (פרוזה)</p>
-      		 <p>2.&nbsp;<a href="">״העורב״</a>, מאת אדגר פוא (שירה, תרגום)</p>
-      		 <p>3.&nbsp;<a href="">״הכניסיני תחת כנפך״</a>, מאת חיים נחמן ביאליק (שירה)</p>
+      		 <p>1.&nbsp;<a href="#">״יום שישי הקצר״</a>, מאת חיים נחמן ביאליק (פרוזה)</p>
+      		 <p>2.&nbsp;<a href="#">״העורב״</a>, מאת אדגר פוא (שירה, תרגום)</p>
+      		 <p>3.&nbsp;<a href="#">״הכניסיני תחת כנפך״</a>, מאת חיים נחמן ביאליק (שירה)</p>
 			  </div>
 				</div>
 				              </div>
 
-          <div>
+         
            <div>
-		  	  <div class="headline-3" style="margin:3rem 0 1.6rem 0;">יצירה בהפתעה</div>
-			<div class="card genre-card small-surprise">
+		  
+			<div class="card genre-card small-surprise" style="height: auto; margin-top:5rem; position: relative">
 					<div class="card-content">
-						<div class="genre-icon" style="display: inline;float:right;margin-top: 1.5rem; margin-right: 2rem;margin-left: 6rem;font-size:8rem"><a href="#"><span class="icon-bysurprise-work"></span></a></div>
-												<div style="display: inline;float:right;padding-top: 1rem"><p class="headline-3"><a href="#">״תל אביב: זכרונות 1919-1939״</a></p><p>מאת יבנאל מטלון (זכרונות ויומנים)</p></div>
-
-						<div><div class="replace-icon text-on-dark" style="margin-bottom:0.6rem;"><a href=""><i class="fa fa-refresh"></i></a></div></div>
+						<div class="genre-icon" style="width:15rem; display: inline;float:right;padding-top: 1.5rem;font-size:8rem"><a href="#"><span class="icon-bysurprise-work"></span></a></div>
+						<div style="width: calc(100% - 22rem); display:inline;float:right;">
+						  <div style="margin-bottom: 0.6rem">
+						    <p class="headline-3" style="display: inline"><a href="#">״תל אביב: זכרונות 1919-1939״</a></p><p class="headline-4" style="display: inline; margin-right: 1rem">מאת יבנאל מטלון (זכרונות ויומנים)</p>
+					      </div>
+                          <div style="height: 8rem; overflow: hidden; text-overflow: ellipsis; margin-bottom: 0.6rem">
+  <p>תחילה מן הראוי שאציג את עצמי.
+    נולדתי בעיר העברית תל אביב, שכונתה באותם ימים "העיר העברית הראשונה בעולם", בראשון לפברואר 1919, כ"ט שבט תרע"ט, למנייננו.
+    אבי יחזקאל מטלון, היה יליד יפו, מצאצאי אהרון מטלון, שעלה ארצה מבגדד בשנת 1815 בראש שיירה שיצאה מבגדד, דרך דמשק, לארץ הקודש והיה מראשי העדה היהודית ביפו.
+    בשנת 1916 נשא לאשה את אמי, פנינה לבית כאגאן, שעלתה ארצה מהעיר ביאליסטוק, בתחילת 1914 ...  </p>
+                          </div>
+                          <div><a href="#">ליצירה המלאה</a></div>
+				      </div>
+					
+						
 			  </div>
-       		</div>
+                                		        <div style="z-index: 1; position: absolute; left: 0;bottom: 0%; border-bottom-left-radius: 0.3rem; display: inline;overflow: hidden"><img src="assets/corner5.png" width="80" height="80" alt=""/></div>
+<div><div class="replace-icon text-on-dark" style="margin-bottom:0.6rem;"><a href=""><i class="fa fa-refresh"></i></a></div></div>
             </div>
-              </div>
+            </div>
+           
               
           <div style="margin:3rem 0 0 0;"><a href="#" target="#">לדף הבית</a></div>
           
@@ -396,7 +454,7 @@
       	
       						<div id="more-left" class="col-md-3" style="padding: 0;">
                 
-								<div id="work-share2" style="padding-left: 0;padding-right: 1.5rem;margin-top: 5rem">
+								<div id="work-share2" style="padding-left: 0;padding-right: 1.5rem;margin-top: 4.8rem">
       		  			<div class="row">
                 <div class="card-header-element" style="padding-left: 1rem">
  				  <div class="icons-raw"><a href=""><i class="fa fa-download"></i></a></div>
@@ -419,31 +477,15 @@
         <option value="will-read-later">אקרא מאוחר יותר</option>
         <option value="maybe-will-read">אולי אקרא</option>
         </select>
+                <div><a class="dropdown-arrow"><i class="fa fa-angle-down"></i></a></div>
+
       </div>
 
                                           </div>
       	</div>
                                                                                      								
                                                                                       								
-                                                                                       								<div id="work-tags" style="width:100%">
-		  	  <div class="headline-3" style="margin:0 0 1.6rem 0;">תגיות ליצירה</div>
-       		  <div style="display: inline-block;">
-       		    <div class="card tag-card"><div class="tag-content">אהבה לא ממומשת</div></div>
-				<div class="card tag-card"><div class="tag-content">נעורים</div></div>
-				<div class="card tag-card"><div class="tag-content">העיירה היהודית</div></div>
-				<div class="card tag-card"><div class="tag-content">מעגליות בשירה</div></div>
-       		  </div>
-				<div style="display: inline-block;">
-   	 			  <form>
-   	 			    <div style="display:inline;float:right;margin-top:3rem;">
-   	 			      <input type="text" class="field" placeholder="הצעת תגית חדשה">
- 			        </div>
-       	 			  <div style="display: inline;">
-       	 			    <input type="submit" value="שליחה" class="btn">
-   	 			    </div>
-   	 			  </form>
-		       	</div>
-            </div>
+
                                                                                   
                            
                                           
