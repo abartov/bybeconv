@@ -512,7 +512,7 @@ option:first {
 .welcome {
   height: auto;
   background-color: #dbd5da;
-  background-image: url(/assets/welcome_bg6.png);
+  background-image: url(../welcome_bg6.png);
   background-repeat: no-repeat;
   background-position: center;
   box-shadow: inset 0px 3px 10px rgba(69, 42, 14, .35);
