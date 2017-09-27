@@ -409,6 +409,7 @@ select{
   padding: 0 0.4rem;
   border-radius:0;
 	background-color: #fff;
+	position: relative;
 }
 ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
   color:#907989;
@@ -1552,13 +1553,12 @@ img.recommend-absolute {
 }
 
 .dropdown-arrow{
+	z-index: 2;
     text-align: left;
-  	display: table-cell;
-    vertical-align: middle;
   	border: none;
-	position: relative;
+	position: absolute;
 	float: left;
-	top: -5.2rem;
+	top: 1rem;
 	left: 1.5rem;
 	font-size: 1.8rem;
 }
