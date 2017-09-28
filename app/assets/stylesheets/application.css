@@ -915,8 +915,8 @@ rgba(0,0,0, .5);
 	position: absolute;
 	z-index: 2;
 	font-size: 2rem;
-	left:27.5%;
-	top: 4.2rem;
+	right:5rem;
+	top: 4.4rem;
 }
 .baseline{
 	padding-top: 0.2rem;
@@ -1056,24 +1056,14 @@ rgba(0,0,0, .5);
   padding:2rem 3.6rem 0 0;
 }
 
-.work-view-btn {
+.work-view {
   width:10rem;
   font-size:2.4rem;
   padding: 0.2rem;
-  height: 3.2rem;
-  border:none;
-  border-radius: 0.3rem;
-  color: white;
-  text-align: center;
-  background-color: #660248;
   margin:0;
-  box-shadow: 0 0.1rem 0.2rem rgba(0,0,0, .4);
   /* vertical alignment */
 }
-.work-view-btn:hover{
-  color: white;
-  background-color: #2b0d22;
-}
+
 .tag-card{
   margin-left: 0.8rem;
   height: 3.2rem;
@@ -1089,14 +1079,14 @@ rgba(0,0,0, .5);
 	position: absolute;
 	z-index: 2;
 	font-size: 1.8rem;
-	color:#907989;
+	color:#910065;
 	left:0.6rem;
 	top:0.8rem;
 }
 .tag-close a:hover{
-	color: #660248;
+	color: #56003D;
 }
-.tag-wait a{
+.tag-wait-confirm{
 	position: absolute;
 	z-index: 2;
 	font-size: 1.8rem;
@@ -1104,9 +1094,7 @@ rgba(0,0,0, .5);
 	right:0.6rem;
 	top:0.8rem;
 }
-.tag-wait a:hover{
-	color: #660248;
-}
+
 .recommendation {
   height: auto;
   min-height: 11rem;
@@ -1144,7 +1132,7 @@ rgba(0,0,0, .5);
   line-height: 1.6rem;
 }
 .rec-txt{
-  width: calc(100% - 22rem);
+  width: calc(100% - 24rem);
   height: auto;
   display: inline;
   float:right;
@@ -1365,7 +1353,7 @@ img.bysurprise-absolute {
 }
 .toolbox-header {
     width: 10rem;
-    height: 3.6rem;
+    height: 2.4rem;
     background-color: #907989;
 	margin-top: 0.6rem;
     padding: 0 0.6rem;
@@ -1395,6 +1383,7 @@ float:left;
 }
 .toolbox-cell .mistake{
 	 color: #660248;
+	border: solid 1px #d9cdd5;
 }
 .btn-group-vertical {
     position: relative;
@@ -1483,7 +1472,7 @@ float:left;
 .toolbox-cell .foundmistake {
     visibility: visible;
     width: 10rem;
-    color: #660248;
+    color: #2b0d22;
     text-align: center;
 	font-size: 1.2rem;
     position: absolute;
@@ -1492,6 +1481,27 @@ float:left;
     left: 50%;
     margin-left: -5rem;
     opacity: 1;
+}
+.toolbox-cell .foundmistake::after {
+	content: "";
+    position: absolute;
+    top: 0%;
+    left: -14%;
+    margin-left: -14px;
+    border-width: 14px;
+    border-style: solid;
+    border-color: transparent #d9cdd5 transparent transparent;
+}
+
+.toolbox-cell:hover .foundmistake::after {
+	content: "";
+    position: absolute;
+    top: 0%;
+    left: -14%;
+    margin-left: -14px;
+    border-width: 14px;
+    border-style: solid;
+    border-color: transparent #d9cdd5 transparent transparent;
 }
 
 .rec-flag{
@@ -1559,9 +1569,12 @@ img.recommend-absolute {
   	border: none;
 	position: absolute;
 	top: 1rem;
-	left: 0;
 	font-size: 1.8rem;
 }
 .dropdown-arrow:hover{
 	color: #660248;
+}
+
+.card .rec-write{
+	background-color: #fff;
 }
