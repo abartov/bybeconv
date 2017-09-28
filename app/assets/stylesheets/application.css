@@ -1241,14 +1241,15 @@ rgba(0,0,0, .5);
   height: 1rem;
   border-radius: 50%;
   margin-left: 1.6rem;
-	  background-color: #d9cdd5;
+	border: solid 1px #910065;
+  background-color: #eeeced;
 }
 .carusel-nav-circle-select{
   width: 1rem;
   height: 1rem;
   border-radius: 50%;
   margin-left: 1.6rem;
-  background-color: #660248;
+  background-color: #910065;
 }
 .surprise-bookmark-back {
   z-index: 1;
