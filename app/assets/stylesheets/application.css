@@ -854,12 +854,23 @@ background-color: #d9cdd5;
 .card-header {
 height: 4.2rem;
 border-bottom: 0.2rem solid #d9cdd5;
-padding: 1.2rem 2.4rem 0 1.2rem;
+padding: 1.2rem 1.5rem 0 1.5rem;
 }
 .card-header-element{
   float: right;
   margin-left: 1rem;
   display: inline;
+}
+.card-header-close{
+	margin-left: 1.2rem;
+	margin-top: 0.5rem;
+	font-size: 3rem;
+	opacity: 1;
+	color: #907989;
+}
+.card-header-close:hover{
+	opacity: 1;
+	color: #660248;
 }
 .work-rights{
   padding-top: 2rem;
@@ -874,6 +885,7 @@ padding: 1.2rem 2.4rem 0 1.2rem;
   margin: 1.2rem 0 2.4rem 0;
   z-index: 0;
   min-height: 26rem;
+  min-width: 80rem;
 }
 .author-links{
   margin-top: 1rem;
@@ -895,7 +907,7 @@ padding: 1.2rem 2.4rem 0 1.2rem;
   height: 6px;
   float: left;
   float: top;
-  margin-left: 2.6rem;
+  margin-left: 1.5rem;
   margin-top: -1.3rem;
   background-position: left;
 }
@@ -904,7 +916,7 @@ padding: 1.2rem 2.4rem 0 1.2rem;
   width: auto;
   float: left;
   float: top;
-  margin-left: 2.6rem;
+  margin-left: 1.2rem;
   margin-top: -0.6rem;
 
 }
