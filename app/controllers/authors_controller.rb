@@ -39,7 +39,6 @@ class AuthorsController < ApplicationController
       # TODO: add other types of content
       @count = {works: @author.work_ids.count}
     end
-
   end
 
   def edit
