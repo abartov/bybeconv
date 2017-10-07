@@ -32,22 +32,65 @@
   <% end -%>
 <% end -%>
 <% unless @print %>
-  <div class="container-fluid topbar">
-    <div class="container top-nav">
-      <div class="row">
-        <div class="col-sm-8 text-on-dark" id="notifications">
-          <p><%= sitenotice %></p>
+  <% unless @readmode %>
+  <!-- top logo area -->
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-1"></div>
+      <div class="col-lg-10" style="padding: 0">
+        <div class="container-fluid" style="padding: 0">
+          <div class="row" style="padding: 0">
+            <div class="col-sm-3">
+              <div id="user-widget">
+                <div style="display: inline;float: right; position: relative">
+                  <% if current_user %>
+                    <p style="padding-left: 1.6rem"><%= t(:welcome) %> <strong><%= current_user.name %></strong>!</p>
+                    <div><a class="dropdown-arrow" data-toggle="collapse" data-target="#user_collapsible" style="top: 0.1rem; left: 0"><i class="fa fa-angle-down"></i></a></div>
+                    <div id="user_collapsible" class="collapse" ><a id="sign_in" href="#">כניסה לאזור האישי</a><br/>
+                      <%= link_to t(:sign_out), signout_path, id: "sign_out" %>
+                    </div>
+                  <% else %>
+                    <%= link_to t(:sign_in_google_twitter), "/session/login", id: "sign_in" %>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6" style="align-content: center; text-align: center">
+              <div class="fontsize-selector-unit vcentered">
+                <div style="float: right; display: inline">גודל גופן:</div>
+                <div class="fontsize-selector"> <a class="decrease_font" href="javascript:void(0)" style="font-size: 75%">א</a></div>
+                <div class="fontsize-selector-current"><a class="default_font" href="javascript:void(0)">א</a></div>
+                <div  class="fontsize-selector"><a class="increase_font" href="javascript:void(0)" style="font-size: 150%">א</a></div>
+                <!-- TODO: also set a cookie, so it"ll stick between screens -->
+                <script>
+                  $(".increase_font").click(function() {
+                    $("body").css("fontSize", "20px");
+                  });
+                  $(".default_font").click(function() {
+                    $("body").css("fontSize", "16px");
+                  });
+                  $(".decrease_font").click(function() {
+                    $("body").css("fontSize", "12px");
+                  });
+                </script>
+              </div>
+              <div class="announcement card text-on-dark">
+                <p><%= sitenotice %></p>
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <div id="site-logo"><a href="#"><img src="/assets/BY_Logo.svg" class="img-responsive" alt="לוגו"></a></div>
+            </div>
+          </div>
         </div>
       </div>
+      <div class="col-lg-1"></div>
+    </div>
+  </div>
+  <% end -%>
+
+  <!-- navbar full width -->
       <div class="row">
-        <div class="col-sm-4 text-on-dark" id="user-widget">
-          <% if current_user %>
-            <%= t(:welcome) %> <strong><%= current_user.name %></strong>!
-            <%= link_to t(:sign_out), signout_path, id: "sign_out" %>
-          <% else %>
-            <%= link_to t(:sign_in_google_twitter), "/session/login", id: "sign_in" %>
-          <% end %>
-        </div>
         <div class="col-sm-8">
           <%= render partial: 'shared/breadcrumbs' %>
         </div>
