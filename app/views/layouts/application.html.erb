@@ -74,9 +74,11 @@
                   });
                 </script>
               </div>
-              <div class="announcement card text-on-dark">
-                <p><%= sitenotice %></p>
-              </div>
+              <% unless sitenotice.empty? %>
+                <div class="announcement card text-on-dark">
+                  <p><%= sitenotice %></p>
+                </div>
+              <% end %>
             </div>
             <div class="col-sm-3">
               <div id="site-logo"><a href="#"><img src="/assets/BY_Logo.svg" class="img-responsive" alt="לוגו"></a></div>
