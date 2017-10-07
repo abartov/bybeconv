@@ -453,7 +453,7 @@ option:first {
   text-indent: 6px;
 }
 
-.search .fa-search { 
+.search .fa-search {
   position: absolute;
   top: 0.6rem;
   left: 0;
@@ -492,7 +492,7 @@ option:first {
 .fontsize-selector{
   width: 2.4rem;
   height: 2.4rem;
-  float: right; 
+  float: right;
   display: inline
 }
 .fontsize-selector-current{
@@ -501,7 +501,7 @@ option:first {
   border-radius: 50%;
 	border: 2px solid #d9cdd5;
   font-weight: bold;
-  float: right; 
+  float: right;
   display: inline
 }
 
@@ -512,7 +512,7 @@ option:first {
 .welcome {
   height: auto;
   background-color: #dbd5da;
-  background-image: url(../welcome_bg6.png);
+  background-image: url(/assets/welcome_bg.png);
   background-repeat: no-repeat;
   background-position: center;
   box-shadow: inset 0px 3px 10px rgba(69, 42, 14, .35);
@@ -706,7 +706,7 @@ img.absolute {
 }
 .surprise{
   background-color: #fff;
-  background-image: url(/assets/corner5.png);
+  background-image: url(/assets/corner.png);
 background-position: left bottom;
  background-repeat: no-repeat;
  position: relative;
@@ -1037,7 +1037,7 @@ rgba(0,0,0, .5);
   font-size: 1.6rem;
   float: right;
   margin-left: 1.2rem;
-  display: inline;	
+  display: inline;
 }
 .result-links{
   margin-top: 1.2rem;
@@ -1320,7 +1320,7 @@ rgba(0,0,0, .5);
 }
 .small-surprise{
   background-color: #fff;
-  background-image: url(/assets/corner5.png);
+  background-image: url(/assets/corner.png);
 background-position: left bottom;
  background-repeat: no-repeat;
  position: relative;

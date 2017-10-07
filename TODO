@@ -1,3 +1,8 @@
+- add author TOC publishable boolean (and checkbox in editing TOC)
+- fix author TOC conversion to handle anchors!
+- add dropdown with expression details history *per author* to save work typing it for other expressions by that author.
+- blog post with screenshots of system
+
 - download as TXT - add CR+LF if user runs Windows
 - download as DOC - right-align (pandoc patch?)
 
