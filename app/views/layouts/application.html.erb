@@ -90,25 +90,30 @@
   <% end %>
   <p/>
   <!-- footer start -->
-  <div class="container-fluid" id="byfooter">
-      <div class="row">
-        <div class="col-sm-4 text-on-dark" id="bottom-contribute">
-          <p><B><A HREF="http://benyehuda.org/h_faq.html"><%= t(:about) %></A> ·
-          <a href="https://www.facebook.com/%D7%A4%D7%A8%D7%95%D7%99%D7%A7%D7%98-%D7%91%D7%9F-%D7%99%D7%94%D7%95%D7%93%D7%94-119140448124648/"><%= t(:to_the_facebook_page) %></a> ·
-          <A HREF="http://www.youtube.com/user/ProjectBenYehuda/videos?flow=grid&view=0"><%= t(:to_the_youtube_channel) %></A> ·
-          <A HREF="http://benyehuda.org/blog/"><%= t(:the_blog) %></A> ·
-          <a class='share' style='cursor:pointer'><%= t(:share) %></a> ·
-          <A HREF="http://benyehuda.org/blog/%D7%A8%D7%95%D7%A6%D7%99%D7%9D-%D7%9C%D7%A2%D7%96%D7%95%D7%A8"><%= t(:how_to_help) %></A> ·
-          <A HREF="http://benyehuda.org/blog/%D7%AA%D7%9E%D7%99%D7%9B%D7%94-%D7%9B%D7%A1%D7%A4%D7%99%D7%AA-%D7%91%D7%A4%D7%A8%D7%95%D7%99%D7%A7%D7%98-%D7%91%D7%9F-%D7%99%D7%94%D7%95%D7%93%D7%94"><%= t(:donate_money) %></A>
-          </B>
-          </p>
-          <%= render partial: 'shared/share' %>
-        </div>
-        <div class="col-sm-8 text-on-dark" id="bottom-about">
-          <p><b>פרויקט בן-יהודה</b> הוא מיזם התנדבותי ליצירת מהדורות אלקטרוניות של ספרות עברית והנגשתן לציבור.</p>
-        </div>
-      </div>
-  </div><!-- footer end -->
+
+
+<div id="byfooter" class="container-fluid">
+<div class="row">
+    <div class="col-lg-1"></div>
+    <div class="col-lg-10">
+        <div id="bottom-nav" class="container-fluid text-on-dark">
+    <p style="padding-top:1rem"><span style="font-weight: bold">פרויקט בן-יהודה</span> הוא מיזם התנדבותי ליצירת מהדורות אלקטרוניות של ספרות עברית והנגשתן לציבור.</p>
+   <div style="padding-top:1rem">
+    <div class="welcome-small-link"><a href="http://benyehuda.org/h_faq.html"><i class="fa fa-info-circle" style="padding-top:0.3rem;"></i> <%= t(:about) %></a></div>
+    <div class="welcome-small-link"><a href="https://www.facebook.com/%D7%A4%D7%A8%D7%95%D7%99%D7%A7%D7%98-%D7%91%D7%9F-%D7%99%D7%94%D7%95%D7%93%D7%94-119140448124648/"><i class="fa fa-facebook-square" style="padding-top:0.3rem;"></i> <%= t(:to_the_facebook_page) %></a></div>
+    <div class="welcome-small-link"><a href="http://www.youtube.com/user/ProjectBenYehuda/videos?flow=grid&view=0"><i class="fa fa-youtube-play" style="padding-top:0.3rem;"></i> <%= t(:to_the_youtube_channel) %></a></div>
+    <div class="welcome-small-link"><a href="http://benyehuda.org/blog/"><i class="fa fa-pencil-square-o" style="padding-top:0.3rem;"></i> <%= t(:the_blog) %></a></div>
+    <div class="welcome-small-link"><a class="share" style="cursor:pointer"><i class="fa fa-share-alt" style="padding-top:0.3rem;"></i> <%= t(:share) %></a></div>
+        <div class="footer-small-link"><a href="http://benyehuda.org/blog/%D7%A8%D7%95%D7%A6%D7%99%D7%9D-%D7%9C%D7%A2%D7%96%D7%95%D7%A8"><i class="fa fa-handshake-o" style="padding-top:0.3rem;"></i> <%= t(:how_to_help) %></a></div>
+    <div class="welcome-small-link"><a href="http://benyehuda.org/blog/%D7%AA%D7%9E%D7%99%D7%9B%D7%94-%D7%9B%D7%A1%D7%A4%D7%99%D7%AA-%D7%91%D7%A4%D7%A8%D7%95%D7%99%D7%A7%D7%98-%D7%91%D7%9F-%D7%99%D7%94%D7%95%D7%93%D7%94"><span class="icon-bydonate" style="padding-top:0rem;"></span> <%= t(:donate_money) %></a></div>
+  </div>
+
+  </div>
+    </div>
+    <div class="col-lg-1"></div>
+  </div>
+
+  <!-- footer end -->
 
 <% end %>
 </body>
