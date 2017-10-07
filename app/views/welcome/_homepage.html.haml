@@ -1,34 +1,34 @@
 .container-fluid.welcome
-  .row
-    .col-md-1
-    .col-md-10
-      .welcome-content
-        %h1= t(:welcome_title)
-        %p= t(:welcome_paragraph_html)
-        %p= t(:welcome_stats_html, {authors: link_to(@totals[:authors].to_s, authors_index_path), works: link_to(@totals[:works].to_s, works_path), headwords: link_to(@totals[:headwords].to_s, 'http://benyehuda.org/~asaf/full_dict.html')})
-        .welcome-actions
-          .welcome-icon
-            %a{ href: ''}
-              %i.fa.fa-info-circle
-          .welcome-icon
-            %a{ href: ''}
-              %i.fa.fa-question-circle
-          .welcome-icon
-            %a{ href: ''}
-              %i.fa.fa-edit
-          .welcome-icon
-            %a{ href: ''}
-              %i.fa.fa-youtube-square
-          .welcome-icon
-            %a{ href: ''}
-              %i.fa.fa-facebook-square
-          .welcome-icon
-            %a{ href: ''}
-              %i.fa.fa-share-alt
-          .welcome-icon
-            %a{ href: ''}
-              %i.icon-bydonate
-    .col-md-1
+  .container
+    .row
+      .col-md-1
+      .col-md-10
+        .welcome-content
+          %h1= t(:welcome_title)
+          %p= t(:welcome_paragraph_html)
+          %p= t(:welcome_stats_html, {authors: link_to(@totals[:authors].to_s, authors_index_path), works: link_to(@totals[:works].to_s, works_path), headwords: link_to(@totals[:headwords].to_s, 'http://benyehuda.org/~asaf/full_dict.html')})
+          .welcome-actions
+            .welcome-small-link
+              %a{ href: ''}
+                %i.fa.fa-facebook-square.fa08
+                = t(:to_the_facebook_page)
+            .welcome-small-link
+              %a{ href: ''}
+                %i.fa.fa-youtube-play.fa08
+                = t(:to_the_youtube_channel)
+            .welcome-small-link
+              %a{ href: ''}
+                %i.fa.fa-pencil-square.fa08
+                = t(:the_blog)
+            .welcome-small-link
+              %a{ href: ''}
+                %i.fa.fa-share-alt.fa08
+                = t(:share)
+            .welcome-small-link
+              %a{ href: ''}
+                %i.fa.icon-bydonate.fa08
+                = t(:donate_money)
+      .col-md-1
 
 .container-fluid
   .row
