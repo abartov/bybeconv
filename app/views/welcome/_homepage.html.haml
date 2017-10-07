@@ -32,13 +32,23 @@
 
 .container-fluid
   .row
-    .col-md-4.col-xs-12#whatsnew
-      / what's new
-      %h2= t(:whats_new)
-      = render partial: 'whatsnew'
-    .col-md-8.col-xs-12#authors
-      / author cards
-      = render partial: 'shared/authors', locals: {popular_authors: @pop_authors, random_authors: @random_authors}
+    .col-lg-1
+    .col-lg-10
+      .container-fluid
+        .row
+          .col-md-4.col-xs-12#whatsnew.main-group
+            / what's new
+            %p
+              %span.headline-2= link_to t(:whats_new), '#'
+            = render partial: 'whatsnew'
+          .col-md-8.col-xs-12#authors.main-group
+            %p
+              %span.headline-2
+                = link_to t(:authors_in_the_project), controller: 'authors'
+              %span{ style: 'padding-right: 1.2rem"'}= t(:x_authors, x: @totals[:authors])
+            / author cards
+            = render partial: 'shared/authors', locals: {popular_authors: @pop_authors, random_authors: @random_authors}
+    .col-lg-1
   .row
     .col-sm-4.col-xs-12#flashlight
       / featured item

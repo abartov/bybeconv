@@ -203,6 +203,9 @@ he:
   published_in_book: פורסם בספר
   edition_details: פרטי מהדורה ומידע נוסף
   tags: תגיות
+  x_authors: "(%{x} יוצרים)"
+  authors_in_the_project: יוצרים בפרויקט
+  to_all_whatsnew: לכל מה שחדש
   the_blog: יומן הרשת
   recommendations: המלצות
   more_recommendations_in_the_blog: המלצות נוספות ביומן הרשת
