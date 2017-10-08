@@ -1324,7 +1324,7 @@ rgba(0,0,0, .5);
 background-position: left bottom;
  background-repeat: no-repeat;
  position: relative;
-  min-height: 16.6rem;
+  height: 13rem;
 }
 .bysurprise-text{
   width: calc(100% - 158px);

@@ -3,13 +3,13 @@
     - col = 1
     - get_genres_by_row(row).each do |genre|
       %div{:class => row == 3 ? 'col-md-4' : 'col-md-3'}
-        %div{:class => 'card genre-card'+ (genre == 'lexicon' ? ' dictionaries' : genre == 'surprise' ? ' surprise' : '')}
+        %div{:class => 'card genre-card'+ (genre == 'lexicon' ? ' dictionaries' : genre == 'surprise' ? ' small-surprise' : '')}
           %a{ href: manifestation_genre_path(genre: genre)}
             .genre-card-content
               .genre-icon{style: col == 1 ? 'margin-right:-1rem' : ''}
-                - iconname = case genre when 'translations' then 'translate' when 'surprise' then 'surprise-work' else genre end
+                - iconname = case genre when 'translations' then 'translate' when 'surprise' then 'surprise-work' when 'fables' then 'fables-fox' else genre end
                 %span{:class => "icon-by#{iconname}"}
-              %h3{style: 'text-align: center'}= t(genre)
+              .genre-headline= t(genre)
               - case genre
               - when 'lexicon' then # special case re count
                 %span{style: 'text-align: center'}= @totals[:headwords].to_s+' '+t(:entries)

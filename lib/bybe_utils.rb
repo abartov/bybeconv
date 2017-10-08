@@ -295,7 +295,7 @@ module BybeUtils
     return case row
       when 1 then ['poetry', 'prose', 'drama', 'fables'].reverse # TODO: switch to Bootstrap-RTL?
       when 2 then ['article', 'memoir', 'letters', 'reference'].reverse
-      when 3 then ['translations','lexicon','surprise'].reverse
+      when 3 then ['surprise', 'lexicon','translations'].reverse
     end
   end
 end
