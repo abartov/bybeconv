@@ -566,7 +566,9 @@ option:first {
   display: inline;
   /* vertical alignment */
 }
-
+.center {
+  text-align: center;
+}
 #breadcrumbs li{
   margin: 0 0.2rem;
   display: inline;
