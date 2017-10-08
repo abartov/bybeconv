@@ -10,7 +10,7 @@ class AdminController < ApplicationController
   end
 
   def missing_languages
-    ex = Expression.joins([:realizers, :works]).where(realizers: {role: Realizer.roles[:translator]}, works: {orig_lang: 'he'})
+    ex = Expression.joins([:realizers, :works]).where(realizers: {role: Realizer.roles[:translator]}, works: {orig_lang: 'he'}).page(params[:page])
     @mans = ex.map{|e| e.manifestations[0]}
   end
 end
