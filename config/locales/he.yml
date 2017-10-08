@@ -91,8 +91,10 @@ he:
   # end genres
   most_popular_works_this_month: היצירות הנקראות ביותר החודש
   support_the_project: הצטרפו לתומכי הפרויקט!
+  until: עד
   update: עדכן!
   updated_successfully: עודכן בהצלחה!
+  created_successfully: נוצר בהצלחה!
   deleted_successfully: נמחק בהצלחה!
   no_results: אין תוצאות.
   life_years: שנות חיים
@@ -192,7 +194,7 @@ he:
   author: מחבר
   render: הצגת יצירה
   show: הצגת פרטים
-  date: תאריך
+  thedate: תאריך
   comments: הערות
   advanced_search: חיפוש מתקדם
   search_placeholder: חיפוש יצירות ויוצרים באתר
@@ -346,6 +348,16 @@ he:
   donate_p2_html: כספי תרומתכם מועברים לחשבון העמותה למחשוב ספרות עברית (מס״ע), שהקמנו עבור תמיכה בפרויקט, וישמשו אך ורק לצרכים אלו.
   reports: "דו\"חות"
   missing_language_report: "דו\"ח יצירות מתורגמות ללא ציון שפת מקור"
+  volunteer_profiles: פרופילי מתנדבים
+  feature_on: להציג בתאריכים
+  featured_content: ניהול תכני מערכת
+  volunteer_bio: על המתנדב/ת
+  volunteer_statement: דבר המתנדב/ת
+  new_volunteer_profile: יצירת פרופיל מתנדב/ת
+  volunteer_profile: פרופיל מתנדב/ת
+  fromdate: מתאריך
+  todate: עד תאריך
+  add_feature_date: הוספת טווח תאריכי הצגה
 
   notifications:
     proof_fixed:
@@ -363,3 +375,9 @@ he:
       first: ראשון
       previous: לדף הקודם
       truncate: "..."
+
+  date: #Throws an exception otherwise.
+    order:
+      - "year"
+      - "month"
+      - "day"

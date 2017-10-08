@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170807162436) do
+ActiveRecord::Schema.define(version: 20171008142223) do
 
   create_table "api_keys", force: :cascade do |t|
     t.string   "email",       limit: 255
@@ -343,6 +343,28 @@ ActiveRecord::Schema.define(version: 20170807162436) do
 
   add_index "versions", ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id", using: :btree
 
+  create_table "volunteer_profile_features", force: :cascade do |t|
+    t.integer  "volunteer_profile_id", limit: 4
+    t.datetime "fromdate"
+    t.datetime "todate"
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+  end
+
+  add_index "volunteer_profile_features", ["volunteer_profile_id"], name: "index_volunteer_profile_features_on_volunteer_profile_id", using: :btree
+
+  create_table "volunteer_profiles", force: :cascade do |t|
+    t.string   "name",                       limit: 255
+    t.text     "bio",                        limit: 65535
+    t.text     "about",                      limit: 65535
+    t.string   "profile_image_file_name",    limit: 255
+    t.string   "profile_image_content_type", limit: 255
+    t.integer  "profile_image_file_size",    limit: 4
+    t.datetime "profile_image_updated_at"
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
+  end
+
   create_table "works", force: :cascade do |t|
     t.string   "title",          limit: 255
     t.string   "form",           limit: 255
@@ -357,4 +379,5 @@ ActiveRecord::Schema.define(version: 20170807162436) do
 
   add_foreign_key "realizers", "expressions"
   add_foreign_key "realizers", "people"
+  add_foreign_key "volunteer_profile_features", "volunteer_profiles"
 end

@@ -117,9 +117,9 @@ class Person < ActiveRecord::Base
   protected
   def placeholder_image_url
     if gender == 'female'
-      return "/assets/:style/placeholder_woman.jpg"
+      return '/assets/:style/placeholder_woman.jpg'
     else
-      return "/assets/:style/placeholder_man.jpg"
+      return '/assets/:style/placeholder_man.jpg'
     end
   end
 end

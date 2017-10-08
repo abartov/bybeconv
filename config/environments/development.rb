@@ -26,4 +26,6 @@ Bybeconv::Application.configure do
   config.assets.debug = true
   config.eager_load = false
   # config.public_file_server.enabled = true # Rails 5.x?
+  config.i18n.available_locales = :he
+
 end

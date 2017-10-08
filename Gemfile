@@ -1,6 +1,7 @@
 source 'http://rubygems.org'
 
 gem 'rails', '~> 4.2.7' # what blocks upgrading?
+gem 'rails-i18n', github: 'svenfuchs/rails-i18n', branch: 'rails-4-x' # For 4.x
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'

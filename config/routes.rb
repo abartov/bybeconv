@@ -7,6 +7,14 @@ Bybeconv::Application.routes.draw do
 
   get 'admin/index'
   get 'admin/missing_languages'
+  get 'admin/volunteer_profiles_list'
+  get 'admin/volunteer_profile/new' => 'admin#volunteer_profile_new', as: 'volunteer_profile_new'
+  post 'admin/volunteer_profile/create' => 'admin#volunteer_profile_create', as: 'volunteer_profile_create'
+  get 'admin/volunteer_profile/edit/:id' => 'admin#volunteer_profile_edit', as: 'volunteer_profile_edit'
+  post 'admin/volunteer_profile/update' => 'admin#volunteer_profile_update', as: 'volunteer_profile_update'
+  post 'admin/volunteer_profile/add_feature' => 'admin#volunteer_profile_add_feature', as: 'volunteer_profile_add_feature'
+  get 'admin/volunteer_profile/delete_feature/:id' => 'admin#volunteer_profile_delete_feature', as: 'volunteer_profile_delete_feature'
+  get 'admin/volunteer_profile/:id' => 'admin#volunteer_profile_show', as: 'volunteer_profile_show'
 
   get "search/index"
   get "search/results"

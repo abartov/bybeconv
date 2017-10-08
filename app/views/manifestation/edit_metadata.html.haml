@@ -15,7 +15,7 @@
     %b= t(:origlang_title)+': '
     = text_field_tag :origlang_title, @w.origlang_title
   %p
-    %b= t(:date) + ': '
+    %b= t(:thedate) + ': '
     = text_field_tag :wdate, @w.date
   %p
     %b= t(:comments)+': '
@@ -29,7 +29,7 @@
     %b= t(:genre) + ': '
     = textify_genre(@e.genre) # should be identical to work's genre, so not editable
   %p
-    %b= t(:date) + ': '
+    %b= t(:thedate) + ': '
     = text_field_tag :edate, @e.date
   %p
     %b= t(:copyright_status)

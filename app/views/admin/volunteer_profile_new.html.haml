@@ -1,0 +1,3 @@
+%h1= t(:new_volunteer_profile)
+= render partial: 'volunteer_profile_form', locals: {action: 'volunteer_profile_create', vp: @vp}
+= link_to t(:back), url_for(action: :volunteer_profiles_list)

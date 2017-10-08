@@ -1,0 +1,19 @@
+= form_for vp, url: {action: action, id: vp.id} do |f|
+  .backend-field
+    = f.label t(:name)
+    = f.text_field :name
+  .backend-field
+    = f.label t(:volunteer_bio)
+    = f.text_area :bio, rows: 3, cols: 80
+  .backend-field
+    = f.label t(:volunteer_statement)
+    = f.text_area :about, rows: 3, cols: 80
+  .backend-field
+    = f.label t(:current_image)
+    = image_tag vp.profile_image.url(:thumb), height: '230px'
+  .backend-field
+    = f.label t(:upload_new_image)
+    = f.file_field :profile_image
+
+  .actions
+    = f.submit t(:save)
