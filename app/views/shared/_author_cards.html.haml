@@ -1,43 +1,41 @@
-%h2= title
-.row
+.container-fluid
+  .row{style: 'margin-top:0'}
+    .col-xs-1
+    .col-xs-10{style: 'padding-right:0'}
+      %p.headline-3= title
+    .col-xs-1{ style: 'width:3rem'}
   #scroller_container
     .row
-      .col-xs-1{ id: "leftarrow#{id_frag}", style: 'width:50px;height:50px;top:0px;'}
+      .col-xs-1.slick-arrow{ id: "leftarrow#{id_frag}", style: 'width:50px;height:50px;top:0px;'}
         %svg{ viewbox: '0 0 16000 16000', style: 'position:absolute;top:20px;left:0;width:100%;height:100%;'}
           %path{ 'class' => 'a', fill:'#660248', d: 'M4037.7,8357.3l5891.8,5891.8c100.6,100.6,219.7,150.9,357.3,150.9s256.7-50.3,357.3-150.9 l1318.1-1318.1c100.6-100.6,150.9-219.7,150.9-357.3c0-137.6-50.3-256.7-150.9-357.3L7745.9,8000l4216.4-4216.4 c100.6-100.6,150.9-219.7,150.9-357.3c0-137.6-50.3-256.7-150.9-357.3l-1318.1-1318.1c-100.6-100.6-219.7-150.9-357.3-150.9 s-256.7,50.3-357.3,150.9L4037.7,7642.7c-100.6,100.6-150.9,219.7-150.9,357.3C3886.8,8137.6,3937.1,8256.7,4037.7,8357.3 L4037.7,8357.3z'}
-      .col-xs-10
+      .col-xs-10{style:'padding-right:0'}
         .scroller{ id: "scroller#{id_frag}", style: 'width:100%'}
           /- maxcard = (surprise ? 2 : 3)
-          - maxcard = 8
+          - maxcard = (surprise ? 7 : 8)
+          - if surprise
+            .card.author-card.surprise
+              %a{ href: '#', id: 'surprise_author_link'}
+                .author-homepage-pic{style:'padding-top:3rem'}
+                  %span.icon-bysurprise-author{style:'font-size:7.6rem;margin-bottom:1.4rem;'}
+                  %p.headline-3= t(:surprise_author)
+              .author-homepage-name
+                .replace-icon.text-on-dark{style:'margin-bottom:0.6rem'}
+                  %a{ href: '#', id: 'surprise_author_refresh'}
+                    %i.fa.fa-refresh
+
           - authors[0..maxcard].each do |author|
             - break if author.nil? # devmode protection against fewer than 5 most-popular authors
             .slide{ style: 'margin-left: 5px; margin-right: 5px'}
               .card.author-card
                 %a{href: author_toc_path(author)}
                   .author-homepage-pic
-                    %img{ src: author.profile_image.url(:thumb)}
-                  .author-homepage-text
-                    %p= author.name
-              / .col-xs-3
-              /  .card.author-card
-              /    %a{href: author_toc_path(author)}
-              /      .author-homepage-pic
-              /        = image_tag author.profile_image.url(:thumb)
-              /      .author-homepage-text
-              /        %p= author.name
-      .col-xs-1{ id: "rightarrow#{id_frag}", style: 'width:50px;height:50px;top:0px;'}
+                    %img{ src: author.profile_image.url(:thumb), height:'230px'}
+                  .author-homepage-name
+                    %p.vcentered= author.name
+      .col-xs-1.slick-arrow{ id: "rightarrow#{id_frag}", style: 'width:50px;height:50px;top:0px;'}
         %svg{ viewbox: '0 0 16000 16000', style: 'position:absolute;top:20px;left:0;width:100%;height:100%'}
           %path{ 'class' => 'a', fill:'#660248', d: 'M11962.3,8357.3l-5891.8,5891.8c-100.6,100.6-219.7,150.9-357.3,150.9s-256.7-50.3-357.3-150.9 L4037.7,12931c-100.6-100.6-150.9-219.7-150.9-357.3c0-137.6,50.3-256.7,150.9-357.3L8254.1,8000L4037.7,3783.6 c-100.6-100.6-150.9-219.7-150.9-357.3c0-137.6,50.3-256.7,150.9-357.3l1318.1-1318.1c100.6-100.6,219.7-150.9,357.3-150.9 s256.7,50.3,357.3,150.9l5891.8,5891.8c100.6,100.6,150.9,219.7,150.9,357.3C12113.2,8137.6,12062.9,8256.7,11962.3,8357.3 L11962.3,8357.3z'}
-      - if surprise
-        .col-xs-3
-          .card.author-card.surprise.surprise-author
-            %a{ href: '#', id: 'surprise_author_link'}
-              %div
-                %span.icon-bysurprise-author{style:'font-size:7.6rem;margin-bottom:1.4rem;'}
-              %h3{ style: 'text-align: center'}= t(:surprise_author)
-            .replace-icon.text-on-dark
-              %a{ href: '#', id: 'surprise_author_refresh'}
-                %i.fa.fa-refresh
 
 :javascript
   $(document).ready(function() {
