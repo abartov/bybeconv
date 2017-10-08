@@ -16,7 +16,9 @@ class Expression < ActiveRecord::Base
   def translators
     return realizers.where(role: Realizer.roles[:translator]).map {|x| x.person}
   end
+
   protected
+
   def set_translation
     b = determine_is_translation?
     self.translation = determine_is_translation? unless b.nil?

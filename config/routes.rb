@@ -6,6 +6,7 @@ Bybeconv::Application.routes.draw do
   get 'creations/remove'
 
   get 'admin/index'
+  get 'admin/missing_languages'
 
   get "search/index"
   get "search/results"

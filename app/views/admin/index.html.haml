@@ -12,4 +12,6 @@
     %p= link_to t(:catalog_dashboard), manifestation_list_path
     %p= link_to t(:manage_people), authors_list_path
   %p= link_to t(:user_management), user_list_path
-
+  %hr
+  %h3= t(:reports)
+  %p= link_to t(:missing_language_report), admin_missing_languages_path
