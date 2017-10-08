@@ -10,7 +10,7 @@ class AdminController < ApplicationController
   end
 
   def missing_languages
-    ex = Expression.joins([:realizers, :works]).where(realizers: {role: Realizer.roles[:translator]}, works: {orig_lang: 'he'})
+    ex = Expression.joins([:realizers, :works]).where(realizers: {role: Realizer.roles[:translator]}, works: {orig_lang: 'he'}).page(params[:page]).per(25)
     mans = ex.map{|e| e.manifestations[0]}
     @mans = Kaminari.paginate_array(mans).page(params[:page]).per(25)
   end
