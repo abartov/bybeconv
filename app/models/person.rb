@@ -16,7 +16,7 @@ class Person < ActiveRecord::Base
   scope :has_toc, -> { where.not(toc_id: nil) }
 
   # features
-  has_attached_file :profile_image, styles: { full: "720x1040", medium: "360x520", thumb: "180x260", tiny: "90x120"}, default_url: "/assets/:style/placeholder.png", storage: :s3, s3_credentials: 'config/s3.yml', s3_region: 'us-east-1'
+  has_attached_file :profile_image, styles: { full: "720x1040", medium: "360x520", thumb: "180x260", tiny: "90x120"}, default_url: :placeholder_image_url, storage: :s3, s3_credentials: 'config/s3.yml', s3_region: 'us-east-1'
   is_impressionable :counter_cache => true # for statistics
   validates_attachment_content_type :profile_image, content_type: /\Aimage\/.*\z/
 
@@ -114,5 +114,12 @@ class Person < ActiveRecord::Base
     end
     return @@popular_authors
   end
-
+  protected
+  def placeholder_image_url
+    if gender == 'female'
+      return "/assets/:style/placeholder_woman.jpg"
+    else
+      return "/assets/:style/placeholder_man.jpg"
+    end
+  end
 end
