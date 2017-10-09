@@ -54,6 +54,15 @@ class ApplicationController < ActionController::Base
     @popular_works = Manifestation.get_popular_works
   end
 
+  def featured_volunteer
+    vpfs = VolunteerProfileFeature.where("fromdate <= :now AND todate >= :now", now: Date.today).order('RAND()').limit(1)
+    if vpfs.count == 1
+      return vpfs[0].volunteer_profile
+    else
+      return nil
+    end
+  end
+
   def popular_authors(update = false)
     Person.recalc_popular if update
     @popular_authors = Person.get_popular_authors

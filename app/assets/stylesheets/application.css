@@ -790,7 +790,8 @@ background-position: left bottom;
   min-height: 42.2rem;
 }
 .footer-card{
-  height: auto;
+  /*height: auto;*/
+  height: 100%;
 }
 #breadcrumbs li{
   margin: 0 0.2rem;
@@ -1625,4 +1626,11 @@ img.recommend-absolute {
 }
 .fa08 {
   padding-top:0.8rem;
+}
+
+.row-eq-height {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display:         flex;
 }
