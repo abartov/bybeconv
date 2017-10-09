@@ -640,7 +640,6 @@ width: calc(100% - 93px);
 .work-pic{
   width:25%;
   height: 100%;
-	/* make height same as total card */
   border-bottom-left-radius: 0.3rem;
   border-top-left-radius: 0.3rem;
   background-color:#d9cdd5;
@@ -1540,6 +1539,9 @@ float:left;
 .rec-flag:hover{
 	color: #660248;
 }
+.rec-flag:active{
+	color: #660248;
+}
 .rec-flag .tooltiptext {
     visibility: hidden;
     color: #660248;
@@ -1599,7 +1601,6 @@ img.recommend-absolute {
 	background-color: #fff;
 }
 
-/* popup */
 
 #cover{
     position:fixed;
@@ -1633,4 +1634,8 @@ img.recommend-absolute {
   display: -webkit-flex;
   display: -ms-flexbox;
   display:         flex;
+}
+.poet_div{
+	font-size: 1.8rem;
+	padding-bottom: 2rem;
 }
