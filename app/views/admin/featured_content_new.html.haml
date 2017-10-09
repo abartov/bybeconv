@@ -1,0 +1,3 @@
+%h1= t(:new_featured_content)
+= render partial: 'featured_content_form', locals: {action: 'featured_content_create', fc: @fc}
+= link_to t(:back), url_for(action: :featured_content_list)

@@ -11,10 +11,20 @@ Bybeconv::Application.routes.draw do
   get 'admin/volunteer_profile/new' => 'admin#volunteer_profile_new', as: 'volunteer_profile_new'
   post 'admin/volunteer_profile/create' => 'admin#volunteer_profile_create', as: 'volunteer_profile_create'
   get 'admin/volunteer_profile/edit/:id' => 'admin#volunteer_profile_edit', as: 'volunteer_profile_edit'
-  post 'admin/volunteer_profile/update' => 'admin#volunteer_profile_update', as: 'volunteer_profile_update'
+  patch 'admin/volunteer_profile/update' => 'admin#volunteer_profile_update', as: 'volunteer_profile_update'
   post 'admin/volunteer_profile/add_feature' => 'admin#volunteer_profile_add_feature', as: 'volunteer_profile_add_feature'
   get 'admin/volunteer_profile/delete_feature/:id' => 'admin#volunteer_profile_delete_feature', as: 'volunteer_profile_delete_feature'
   get 'admin/volunteer_profile/:id' => 'admin#volunteer_profile_show', as: 'volunteer_profile_show'
+  get 'admin/featured_content_list'
+  get 'admin/featured_content/new' => 'admin#featured_content_new', as: 'featured_content_new'
+  post 'admin/featured_content/create' => 'admin#featured_content_create', as: 'featured_content_create'
+  get 'admin/featured_content/edit/:id' => 'admin#featured_content_edit', as: 'featured_content_edit'
+  patch 'admin/featured_content/update' => 'admin#featured_content_update', as: 'featured_content_update'
+  post 'admin/featured_content/add_feature' => 'admin#featured_content_add_feature', as: 'featured_content_add_feature'
+  get 'admin/featured_content/delete_feature/:id' => 'admin#featured_content_delete_feature', as: 'featured_content_delete_feature'
+  get 'admin/featured_content/:id' => 'admin#featured_content_show', as: 'featured_content_show'
+  get 'autocomplete_manifestation_title' => 'admin#autocomplete_manifestation_title', as: 'autocomplete_manifestation_title'
+  get 'autocomplete_person_name' => 'admin#autocomplete_person_name', as: 'autocomplete_person_name'
 
   get "search/index"
   get "search/results"
@@ -151,5 +161,5 @@ Bybeconv::Application.routes.draw do
   # match ':controller(/:action(/:id(.:format)))'
   #
   # match legacy BY urls
-  match '*path' => "html_file#render_by_legacy_url", via: [:get]
+  # tmp # match '*path' => "html_file#render_by_legacy_url", via: [:get]
 end

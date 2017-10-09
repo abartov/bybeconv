@@ -1,0 +1,40 @@
+%h1= t(:featured_content)
+%a{ href: url_for(action: :featured_content_edit, id: @fc.id)}
+  .btn{style:'float:none'}
+    %b= t(:edit)
+%br
+%br
+%p
+  %b= t(:title)+': '
+  = @fc.title
+%p
+  %b= t(:featured_content_body)+': '
+  != @fc.body
+%p
+  %b= t(:linked_manifestation)+': '
+  = @fc.manifestation.nil? ? t(:none) : link_to("#{@fc.manifestation.title} - #{@fc.manifestation.author_string}", manifestation_read_path(id: @fc.manifestation.id))
+%p
+  %b= t(:linked_author)+': '
+  = @fc.person.nil? ? t(:none) : link_to("#{@fc.person.name}", author_toc_path(@fc.person))
+
+%h3= t(:feature_on)
+%table
+  %tr
+    %th= t(:fromdate)
+    %th= t(:todate)
+    %th
+  - @fc.featured_content_features.each do |fcf|
+    %tr
+      %td= fcf.fromdate.strftime('%d-%m-%Y')
+      %td= fcf.todate.strftime('%d-%m-%Y')
+      %td= link_to t(:destroy), url_for(action: :featured_content_delete_feature, id: fcf.id)
+= form_tag 'add_feature' do
+  = hidden_field_tag :fcid, @fc.id
+  = label_tag t(:fromdate)+': '
+  = select_date Date.today, prefix: :fromdate
+  %br
+  = label_tag t(:todate)+': '
+  = select_date Date.today, prefix: :todate
+  %br
+  = submit_tag(t(:add_feature_date))
+= link_to t(:back), url_for(action: :featured_content_list)

@@ -264,6 +264,7 @@ he:
   edit: עריכה
   destroy: מחיקה
   our_volunteers: המתנדבים שלנו
+  featured_content_management: ניהול תוכן מומלץ (זרקור)
   folder_list: רשימת תיקיות
   proof_file: קובץ
   proof_when: מתי
@@ -351,7 +352,7 @@ he:
   missing_language_report: "דו\"ח יצירות מתורגמות ללא ציון שפת מקור"
   volunteer_profiles: פרופילי מתנדבים
   feature_on: להציג בתאריכים
-  featured_content: ניהול תכני מערכת
+  featured_content_heading: ניהול תכני מערכת
   volunteer_bio: על המתנדב/ת
   volunteer_statement: דבר המתנדב/ת
   new_volunteer_profile: יצירת פרופיל מתנדב/ת
@@ -359,6 +360,11 @@ he:
   fromdate: מתאריך
   todate: עד תאריך
   add_feature_date: הוספת טווח תאריכי הצגה
+  featured_content_body: תוכן ההמלצה
+  linked_manifestation: יצירה מקושרת
+  linked_author: מחבר/ת מקושר/ת
+  featured_content: תוכן מערכת
+  new_featured_content: תוכן מערכת חדש
 
   notifications:
     proof_fixed:

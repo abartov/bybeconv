@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171008142223) do
+ActiveRecord::Schema.define(version: 20171009123129) do
 
   create_table "api_keys", force: :cascade do |t|
     t.string   "email",       limit: 255
@@ -91,6 +91,28 @@ ActiveRecord::Schema.define(version: 20171008142223) do
     t.integer  "manifestation_id", limit: 4
     t.string   "description",      limit: 255
   end
+
+  create_table "featured_content_features", force: :cascade do |t|
+    t.integer  "featured_content_id", limit: 4
+    t.datetime "fromdate"
+    t.datetime "todate"
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+  end
+
+  add_index "featured_content_features", ["featured_content_id"], name: "index_featured_content_features_on_featured_content_id", using: :btree
+
+  create_table "featured_contents", force: :cascade do |t|
+    t.string   "title",            limit: 255
+    t.integer  "manifestation_id", limit: 4
+    t.integer  "person_id",        limit: 4
+    t.text     "body",             limit: 65535
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+  end
+
+  add_index "featured_contents", ["manifestation_id"], name: "index_featured_contents_on_manifestation_id", using: :btree
+  add_index "featured_contents", ["person_id"], name: "index_featured_contents_on_person_id", using: :btree
 
   create_table "html_dirs", force: :cascade do |t|
     t.string   "path",            limit: 255
@@ -377,6 +399,9 @@ ActiveRecord::Schema.define(version: 20171008142223) do
     t.string   "origlang_title", limit: 255
   end
 
+  add_foreign_key "featured_content_features", "featured_contents"
+  add_foreign_key "featured_contents", "manifestations"
+  add_foreign_key "featured_contents", "people"
   add_foreign_key "realizers", "expressions"
   add_foreign_key "realizers", "people"
   add_foreign_key "volunteer_profile_features", "volunteer_profiles"

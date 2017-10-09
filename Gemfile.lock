@@ -277,6 +277,8 @@ GEM
       rails-deprecated_sanitizer (>= 1.0.1)
     rails-html-sanitizer (1.0.3)
       loofah (~> 2.0)
+    rails3-jquery-autocomplete (1.0.15)
+      rails (>= 3.2)
     railties (4.2.10)
       actionpack (= 4.2.10)
       activesupport (= 4.2.10)
@@ -466,6 +468,7 @@ DEPENDENCIES
   protected_attributes
   rails (~> 4.2.7)
   rails-i18n!
+  rails3-jquery-autocomplete
   rdf (~> 2.0.1)
   rdf-vocab
   responders
