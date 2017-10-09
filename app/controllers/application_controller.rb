@@ -54,6 +54,15 @@ class ApplicationController < ActionController::Base
     @popular_works = Manifestation.get_popular_works
   end
 
+  def featured_content
+    fcfs = FeaturedContentFeature.where("fromdate <= :now AND todate >= :now", now: Date.today).order('RAND()').limit(1)
+    if fcfs.count == 1
+      return fcfs[0].featured_content
+    else
+      return nil
+    end
+  end
+
   def featured_volunteer
     vpfs = VolunteerProfileFeature.where("fromdate <= :now AND todate >= :now", now: Date.today).order('RAND()').limit(1)
     if vpfs.count == 1

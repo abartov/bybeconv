@@ -8,6 +8,9 @@
         = f.label t(:featured_content_body)
         = f.text_area :body, rows: 10, cols: 100
       .backend-field
+        = f.label t(:external_link)
+        = f.text_field :external_link
+      .backend-field
         = f.label t(:linked_manifestation)
         = autocomplete_field_tag :linked_manifestation_f, fc.manifestation.nil? ? '' : fc.manifestation.title_and_authors, autocomplete_manifestation_title_path, id_element: '#linked_manifestation'
         = hidden_field_tag :linked_manifestation, fc.manifestation.nil? ? nil : fc.manifestation.id

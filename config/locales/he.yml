@@ -365,6 +365,8 @@ he:
   linked_author: מחבר/ת מקושר/ת
   featured_content: תוכן מערכת
   new_featured_content: תוכן מערכת חדש
+  external_link: קישורית חיצונית
+  to_external_content: לתוכן חיצוני
 
   notifications:
     proof_fixed:

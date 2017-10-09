@@ -1559,7 +1559,7 @@ float:left;
 }
 
 .recommend-text{
-width: calc(100% - 159px);
+  width: calc(100% - 159px);
 	padding: 1.5rem;
   display: inline-block;
 	text-align: justify;
