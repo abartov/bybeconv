@@ -17,7 +17,7 @@ gem 'chewy' # for ElasticSearch
 gem "jquery-slick-rails" # for carousel slider
 
 gem 'diffy'
-gem 'aws-sdk' # for the Amazon cloud
+gem 'aws-sdk', '~>2.9' # for the Amazon cloud
 gem 'paperclip' # for cloud files like author images
 gem 'impressionist' # for pageview stats
 
