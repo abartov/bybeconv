@@ -1,4 +1,4 @@
-.card
+.card.row1
   .card-content
     = render partial: 'shared/author_cards', locals: {title: t(:most_popular_authors), authors: popular_authors, surprise: false, id_frag: 'pop'}
     = render partial: 'shared/author_cards', locals: {title: t(:random_authors), authors: random_authors, surprise: true, id_frag: 'random'}
