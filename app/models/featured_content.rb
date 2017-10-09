@@ -2,7 +2,7 @@ class FeaturedContent < ActiveRecord::Base
   belongs_to :manifestation
   belongs_to :person
 
-  attr_accessible :title, :body
+  attr_accessible :title, :body, :external_link
   has_many :featured_content_features, class_name: 'FeaturedContentFeature'
 
   def featured_list

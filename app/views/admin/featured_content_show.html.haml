@@ -11,6 +11,12 @@
   %b= t(:featured_content_body)+': '
   != @fc.body
 %p
+  %b= t(:external_link)
+  - unless @fc.external_link.nil? or @fc.external_link.empty?
+    = link_to @fc.external_link, @fc.external_link
+  - else
+    = t(:none)
+%p
   %b= t(:linked_manifestation)+': '
   = @fc.manifestation.nil? ? t(:none) : link_to("#{@fc.manifestation.title} - #{@fc.manifestation.author_string}", manifestation_read_path(id: @fc.manifestation.id))
 %p

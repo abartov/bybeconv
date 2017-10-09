@@ -3,6 +3,9 @@
 - add dropdown with expression details history *per author* to save work typing it for other expressions by that author.
 - blog post with screenshots of system
 - add lock_version column to person, work, expression, and manifestation tables
+- featured content byline code
+- featured content full text view
+
 
 - download as TXT - add CR+LF if user runs Windows
 - download as DOC - right-align (pandoc patch?)

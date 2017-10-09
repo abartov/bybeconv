@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171009123129) do
+ActiveRecord::Schema.define(version: 20171009152138) do
 
   create_table "api_keys", force: :cascade do |t|
     t.string   "email",       limit: 255
@@ -109,6 +109,7 @@ ActiveRecord::Schema.define(version: 20171009123129) do
     t.text     "body",             limit: 65535
     t.datetime "created_at",                     null: false
     t.datetime "updated_at",                     null: false
+    t.string   "external_link",    limit: 255
   end
 
   add_index "featured_contents", ["manifestation_id"], name: "index_featured_contents_on_manifestation_id", using: :btree

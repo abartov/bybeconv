@@ -13,6 +13,7 @@ class WelcomeController < ApplicationController
     @random_works = randomize_works(4) # TODO: un-hardcode?
     @works_by_genre = count_works_by_genre
     @whatsnew = whatsnew_anonymous # TODO: custom calculate for logged-in users
+    @featured_content = featured_content
     @featured_volunteer = featured_volunteer
     @pagetype = :homepage
     @page_title = t(:default_page_title)+' - '+t(:homepage)
