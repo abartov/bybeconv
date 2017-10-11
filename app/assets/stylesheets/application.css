@@ -714,7 +714,8 @@ img.absolute {
 }
 .surprise{
   background-color: #fff;
-  height: 27.6rem;
+ position: relative;
+  min-height: 27.6rem;
 }
 .surprise-genre{
   background-color: #fff;
