@@ -702,16 +702,23 @@ img.absolute {
 	font-weight: bold;
 	text-align: center;
 	line-height: 1.6rem;
+	padding: 0.4rem;
+}
+.author-homepage-surprise-name{
+	height: 4.6rem;
+	width: calc(100% - 60px);
+	font-weight: bold;
+	text-align: center;
+	line-height: 1.6rem;
 	padding: 0.5rem;
-		/* vertical alignment */
 }
 .surprise{
   background-color: #fff;
-  background-image: url(/assets/corner.png);
-background-position: left bottom;
- background-repeat: no-repeat;
+  height: 27.6rem;
+}
+.surprise-genre{
+  background-color: #fff;
  position: relative;
-  min-height: 27.6rem;
 }
 .surprise-author {
   padding-top: 5rem;
@@ -1638,4 +1645,13 @@ img.recommend-absolute {
 .poet_div{
 	font-size: 1.8rem;
 	padding-bottom: 2rem;
+}
+.corner{
+  position: absolute;
+  left:0;
+  bottom:0;
+  z-index: 2;
+}
+.surprise-genre-text{
+	width: calc(100% - 60px);
 }
