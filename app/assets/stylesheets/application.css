@@ -473,7 +473,9 @@ option:first {
   background-color: #eeeced;
   border-bottom: 0.2rem solid #d9cdd5;
 }
-
+.dropdown{
+	width: 100%
+}
 .dropdown fa-angle-down{
   position: absolute;
   top: 0.6rem;
