@@ -1394,10 +1394,7 @@ img.bysurprise-absolute {
 	background-color: #660248;
 }
 
-.toolbox-header-chevron {
-    color: #d9cdd5;
-float:left;
-}
+
 
 .toolbox-cell {
     width: 10rem;
@@ -1498,10 +1495,39 @@ float:left;
     opacity: 1;
 }
 
+.toolbox-footer-chevron {
+  float:left;
+  font-size: 1rem;
+  margin-bottom: 0.2rem;
+}
+.toolbox-footer{
+	height: 2.4rem;
+  font-size: 1.8rem;
+	padding: 0 0.6rem;
+	border-top: 2px solid #d9cdd5;
+	  border-bottom-left-radius: 0.3rem;
+  border-bottom-right-radius: 0.3rem;
+}
+.toolbox-footer:hover{
+	background-color: #d9cdd5;
+    color: #56003D;
+}
+
+.toolbox-footer .tooltiptext{
+	visibility: hidden;
+	font-size: 1.2rem;
+	margin-bottom: 0.2rem;
+}
+.toolbox-footer:hover .tooltiptext{
+	visibility: visible;
+	opacity: 1;
+	color: #56003D;
+}
+
 .toolbox-cell .foundmistake {
     visibility: visible;
+	color: #660248;
     width: 10rem;
-    color: #2b0d22;
     text-align: center;
 	font-size: 1.2rem;
     position: absolute;
