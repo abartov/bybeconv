@@ -220,7 +220,7 @@ margin-top: 0rem;
 padding-top: 0.8rem;
 }
 .headline-3 {
-font-size: 1.6rem;
+font-size: 1.8rem;
 font-weight: bold;
 margin-bottom: 0.4rem;
 margin-top: 0rem;
@@ -877,6 +877,8 @@ padding: 1.2rem 1.5rem 0 1.5rem;
 	font-size: 3rem;
 	opacity: 1;
 	color: #907989;
+	position: relative;
+	z-index: 3;
 }
 .card-header-close:hover{
 	opacity: 1;
@@ -1655,4 +1657,10 @@ img.recommend-absolute {
 }
 .surprise-genre-text{
 	width: calc(100% - 60px);
+}
+.genre-icon-popup{
+  font-family: 'ben-yehuda';
+  font-size: 1.8rem;
+  text-align: right;
+  display: inline;
 }
