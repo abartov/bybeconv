@@ -626,8 +626,8 @@ width: calc(100% - 93px);
   overflow: hidden;
 }
 .work-area{
-  margin-right: 15rem;
-  width: calc(100% - 15rem);
+  margin-right: 20rem;
+  width: calc(100% - 20rem);
 }
 .work-card{
   height:auto;
