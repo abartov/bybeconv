@@ -1692,3 +1692,9 @@ img.recommend-absolute {
   text-align: right;
   display: inline;
 }
+.work-start{
+	background-color: #d9cdd5;
+	padding: 1.5rem;
+	width: 100%;
+	margin: 1rem 0;
+}
