@@ -10,6 +10,8 @@ class Person < ActiveRecord::Base
   has_many :creations
   has_many :works, through: :creations, class_name: 'Work'
   has_many :realizers
+  has_many :expressions, through: :realizers, class_name: 'Expression'
+
   has_and_belongs_to_many :manifestation
 
   # scopes
@@ -93,6 +95,10 @@ class Person < ActiveRecord::Base
 
   def  copyright_as_string
     return public_domain ? I18n.t(:public_domain) : I18n.t(:by_permission)
+  end
+
+  def self.get_popular_authors_by_genre(genre = nil)
+    Person.has_toc.joins(:expressions).where(expressions: { genre: genre}).order(impressions_count: :desc).limit(10) # top 10
   end
 
   def self.recalc_popular
