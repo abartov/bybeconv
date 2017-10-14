@@ -64,6 +64,14 @@ class Manifestation < ActiveRecord::Base
      save!
   end
 
+  def self.popular_works_by_genre(genre, xlat)
+    if xlat
+      return Manifestation.joins([expressions: :works]).where(expressions: {genre: genre}).where("works.orig_lang != expressions.language").order(impressions_count: :desc).limit(10)
+    else
+      return Manifestation.joins([expressions: :works]).where(expressions: {genre: genre}).where("works.orig_lang = expressions.language").order(impressions_count: :desc).limit(10)
+    end
+  end
+
   def self.recalc_popular
 
     @@popular_works = Manifestation.order(impressions_count: :desc).limit(10) # top 10
