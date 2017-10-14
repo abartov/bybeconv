@@ -45,9 +45,17 @@
                 %li
                   = link_to work.title, manifestation_read_path(work)
                   = ' '+t(:by)+' '+work.author_string
-            .heading-4= t(:to_the_full_list)
+            .headline-4= t(:to_the_full_list)
           %a{href: manifestation_genre_path(genre: genre)}
             .btn
               %b= t(:to_all_works_in_this_genre)
         .h_separator
         .card-content
+          .headline-3= t(genre)+': '+t(:most_read_authors_last_month)
+          - @popups_by_genre[genre][:authors][0..2].each do |author|
+            %a{ href: author_toc_path(author)}
+              .card.author-card
+                .author-homepage-pic
+                  %img{ src: author.profile_image.url(:thumb), height: '230px'}
+                .author-homepage-name
+                  %p.vcentered= author.name

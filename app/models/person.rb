@@ -97,8 +97,8 @@ class Person < ActiveRecord::Base
     return public_domain ? I18n.t(:public_domain) : I18n.t(:by_permission)
   end
 
-  def self.get_popular_authors_by_genre(genre = nil)
-    Person.has_toc.joins(:expressions).where(expressions: { genre: genre}).order(impressions_count: :desc).limit(10) # top 10
+  def self.get_popular_authors_by_genre(genre)
+    Person.has_toc.joins(:expressions).where(expressions: { genre: genre}).order(impressions_count: :desc).distinct.limit(10) # top 10
   end
 
   def self.recalc_popular
