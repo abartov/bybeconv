@@ -5,6 +5,8 @@ class ApplicationController < ActionController::Base
 
   # class variables
   @@whatsnew_cache = nil
+  @@countworks_cache = nil
+  @@genre_popups_cache = nil
 
   def set_access_control_headers
 #    headers['Access-Control-Allow-Origin'] = 'http://benyehuda.org/'
@@ -94,12 +96,30 @@ class ApplicationController < ActionController::Base
     return Manifestation.order('RAND()').limit(how_many)
   end
 
+  def popups_by_genre
+    if @@genre_popups_cache.nil?
+      ret = {}
+      get_genres.each {|g|
+        #ret[g] = Manifestation.joins(:expressions).where(expressions: {genre: g}).count
+        ret[g] = {}
+        ret[g][:authors] = Person.get_popular_authors_by_genre(g)
+        ret[g][:heb_works] = Manifestation.popular_works_by_genre(g, false)
+        ret[g][:xlat_works] = Manifestation.popular_works_by_genre(g, true)
+      }
+      @@genre_popups_cache = ret
+    end
+    return @@genre_popups_cache
+  end
+
   def count_works_by_genre
-    ret = {}
-    get_genres.each {|g|
-      ret[g] = Manifestation.joins(:expressions).where(expressions: {genre: g}).count
-    }
-    return ret
+    if @@countworks_cache.nil?
+      ret = {}
+      get_genres.each {|g|
+        ret[g] = Manifestation.joins(:expressions).where(expressions: {genre: g}).count
+      }
+      @@countworks_cache = ret
+    end
+    return @@countworks_cache
   end
 
   def whatsnew_anonymous

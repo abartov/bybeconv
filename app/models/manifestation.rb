@@ -64,6 +64,7 @@ class Manifestation < ActiveRecord::Base
      save!
   end
 
+  # TODO: calculate this by month
   def self.popular_works_by_genre(genre, xlat)
     if xlat
       return Manifestation.joins([expressions: :works]).where(expressions: {genre: genre}).where("works.orig_lang != expressions.language").order(impressions_count: :desc).limit(10)

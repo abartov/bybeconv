@@ -4,7 +4,7 @@
     - get_genres_by_row(row).each do |genre|
       %div{:class => row == 3 ? 'col-md-4' : 'col-md-3'}
         %div{:class => 'card genre-card'+ (genre == 'lexicon' ? ' dictionaries' : genre == 'surprise' ? ' small-surprise' : '')}
-          %a{ href: manifestation_genre_path(genre: genre)}
+          %a{ 'data-toggle' => :modal, 'data-target'=> "#genre_popup_#{genre}"}
             .genre-card-content
               .genre-icon{style: col == 1 ? 'margin-right:-1rem' : ''}
                 - iconname = case genre when 'translations' then 'translate' when 'surprise' then 'surprise-work' when 'fables' then 'fables-fox' else genre end
@@ -19,3 +19,35 @@
                     %i.fa.fa-refresh
               - else
                 %span{style: 'text-align: center'}= @works_by_genre[genre].to_s+' '+t(:works)
+
+- get_genres.each do |genre|
+  - iconname = case genre when 'translations' then 'translate' when 'surprise' then 'surprise-work' when 'fables' then 'fables-fox' else genre end
+  %div{class: "modal fade", role: 'dialog', id: "genre_popup_#{genre}"}
+    .modal-dialog
+      .card
+        %button.close.card-header-close{ type: 'button', 'data-dismiss' => 'modal'}
+          != '&times;'
+        .card-header
+          %p{style: 'margin-top: -12px'}
+            .genre-icon-popup
+              %span{:class => "icon-by#{iconname}"}
+            %div{style: 'display: inline; font-size: 2.4rem; font-weight: bold'}= t(genre)
+            = "(#{@works_by_genre[genre]} #{t(:works)})"
+        .card-content
+          - if genre == 'translations'
+            - todo = [{heading: :most_read_xlat_last_month, key: :xlat_works}]
+          - else
+            - todo = [{heading: :most_read_last_month, key: :heb_works}, {heading: :most_read_xlat_last_month, key: :xlat_works}]
+          - todo.each do |list|
+            .headline-3= t(genre)+': '+t(list[:heading])
+            %ol
+              - @popups_by_genre[genre][list[:key]][0..2].each do |work|
+                %li
+                  = link_to work.title, manifestation_read_path(work)
+                  = ' '+t(:by)+' '+work.author_string
+            .heading-4= t(:to_the_full_list)
+          %a{href: manifestation_genre_path(genre: genre)}
+            .btn
+              %b= t(:to_all_works_in_this_genre)
+        .h_separator
+        .card-content

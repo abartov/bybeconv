@@ -1,25 +1,27 @@
-- add author TOC publishable boolean (and checkbox in editing TOC)
-- fix author TOC conversion to handle anchors!
-- add dropdown with expression details history *per author* to save work typing it for other expressions by that author.
+- BACKEND
+  - add author TOC publishable boolean (and checkbox in editing TOC)
+  - fix author TOC conversion to handle anchors!
+  - add dropdown with expression details history *per author* to save work typing it for other expressions by that author.
+  - add lock_version column to person, work, expression, and manifestation tables
 - blog post with screenshots of system
-- add lock_version column to person, work, expression, and manifestation tables
-- featured content byline code
-- featured content full text view
-
+- HOMEPAGE
+  - featured content byline code
+  - featured content full text view
+  - surprise author functionality
+  - surprise work functionality
+  - fontsize sticky across pages
+  - carousel of featured content
+  - genre popup
+- INFRA
+  - figure out difference between the current most-viewed author (=his author page is most read) and the intended most-read author (=his expressions are most read)
 
 - download as TXT - add CR+LF if user runs Windows
 - download as DOC - right-align (pandoc patch?)
 
-+ figure out a stable representation for poetry with line breaks
-  + PRE blocks ignore *bold* markup, so are probably infeasible
-  + blockquotes (lines beginning with '>' do honor bold and other markup, but the linebreak behavior seems inconsistent -- it appears the double-space-and-line-break method does not consistently produce line breaks *inside* a blockquote (but *does* before/after an explicit <br> tag!), so probably <br> tags are necessary to ensure space lines between stanzas.  Needs further experimentation to determine how to consistently generate just the right amount of space.
 - homepage bottom -- popular authors *this month*
   - need to calculate in controller
 - process ToCs
   - process bad ToCs (bad_tocs.txt)
-- home page
-  - ?
-  - interactive features
 - read mode
   - interactive features
 - authors view
@@ -84,7 +86,6 @@ Conversion system
 - figure out if the NLI can give us anything useful via Z39.50 re author identities.  http://web.nli.org.il/sites/NLI/English/infochannels/librarians/Pages/Z39.50.aspx  (on the face of it, it doesn't look as though we can query the authority file itself!)
   - other useful URLs: http://www.loc.gov/z3950/agency/defns/bib1.html  http://ruby-zoom.rubyforge.org/ https://github.com/bricestacey/ruby-zoom/blob/master/sample/needle.rb
 
-+ add an exclusion list to rake populate
 + add way to bless markdown by human reviewer
 -- blessing should, whether automatically or as an extra human-chosen step, also post the blessed markdown (with path info etc.) to the CONTENT system, so it can be rendered from it INSTEAD of the old HTML file (preserving the *.html URL)
 - research and possibly integrate good editor -- or just spiff up ContentEditable?
@@ -106,3 +107,6 @@ Proof and Recommendation feature
 - add JS input for blog url when announcing blogged recommendation
 - add auto-expiration (or hiding?) of wontfix proofs and rejected recommendations
 
++ figure out a stable representation for poetry with line breaks
+  + PRE blocks ignore *bold* markup, so are probably infeasible
+  + blockquotes (lines beginning with '>' do honor bold and other markup, but the linebreak behavior seems inconsistent -- it appears the double-space-and-line-break method does not consistently produce line breaks *inside* a blockquote (but *does* before/after an explicit <br> tag!), so probably <br> tags are necessary to ensure space lines between stanzas.  Needs further experimentation to determine how to consistently generate just the right amount of space.

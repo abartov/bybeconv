@@ -15,6 +15,7 @@ class WelcomeController < ApplicationController
     @whatsnew = whatsnew_anonymous # TODO: custom calculate for logged-in users
     @featured_content = featured_content
     @featured_volunteer = featured_volunteer
+    @popups_by_genre = popups_by_genre # cached, if available
     @pagetype = :homepage
     @page_title = t(:default_page_title)+' - '+t(:homepage)
     @tabclass = set_tab('home')
