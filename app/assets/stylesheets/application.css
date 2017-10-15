@@ -1700,3 +1700,7 @@ img.recommend-absolute {
 	width: 100%;
 	margin: 1rem 0;
 }
+.mark {
+    background-color: #fbab9e;
+    color: #2b0d22;
+}
