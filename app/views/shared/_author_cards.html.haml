@@ -15,15 +15,28 @@
           - maxcard = (surprise ? 7 : 8)
           - if surprise
             .slide
-              .card.author-card.surprise
-                %a{ href: '#', id: 'surprise_author_link'}
-                  .author-homepage-pic{style:'padding-top:3rem'}
-                    %span.icon-bysurprise-author{style:'font-size:7.6rem;margin-bottom:1.4rem;'}
-                    %p.headline-3= t(:surprise_author)
-                .author-homepage-name
-                  .replace-icon.text-on-dark{style:'margin-bottom:0.6rem'}
-                    %a{ href: '#', id: 'surprise_author_refresh'}
-                      %i.fa.fa-refresh
+              .carousel.slide#surprise_author_carousel
+                .carousel-inner
+                  .card.author-card.surprise.item.active
+                    %a{ role: :button, id: 'surprise_author_link'}
+                      .author-homepage-pic{style:'padding-top:3rem'}
+                        %span.icon-bysurprise-author{style:'font-size:7.6rem;margin-bottom:1.4rem;'}
+                        %p.headline-3= t(:surprise_author)
+                    .author-homepage-name
+                      .replace-icon.text-on-dark{style:'margin-bottom:0.6rem'}
+                        %a{ href: '#', id: 'surprise_author_refresh'}
+                          %i.fa.fa-refresh
+                  .card.author-card.surprise.item
+                    %a{ role: :button, id: 'surprise_author_link'}
+                      .corner
+                        %img{ src: '/assets/corner.png', width: 80, height: 80}
+                      .author-homepage-pic
+                        %img{ src: @surprise_author.profile_image.url(:thumb), height: '230px'}
+                      .author-homepage-surprise-name
+                        %p.vcentered= @surprise_author.name
+                      .replace-icon.text-on-dark{style:'margin-bottom:0.6rem'}
+                        %a{ href: '#', id: 'surprise_author_refresh'}
+                          %i.fa.fa-refresh
 
           - authors[0..maxcard].each do |author|
             - break if author.nil? # devmode protection against fewer than 5 most-popular authors
@@ -52,5 +65,10 @@
       variableWidth: true,
       // appendArrows: '#scroller_container',
     });
+  });
+  //$('#surprise_author_carousel').carousel();
+  $('#surprise_author_carousel').carousel({interval: false});
+  $('#surprise_author_link').click(function(){
+    $('#surprise_author_carousel').carousel('next');
   });
   //$('#surprise_author_refresh).;

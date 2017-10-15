@@ -10,6 +10,7 @@ class WelcomeController < ApplicationController
     #@pop_works = popular_works.map{|a| a[0]} # ditto
     @pop_works = popular_works
     @random_authors = randomize_authors(@pop_authors)
+    @surprise_author = @random_authors.pop
     @random_works = randomize_works(4) # TODO: un-hardcode?
     @works_by_genre = count_works_by_genre
     @whatsnew = whatsnew_anonymous # TODO: custom calculate for logged-in users
