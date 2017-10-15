@@ -54,8 +54,8 @@
             - if @popups_by_genre[genre][list[:key]].size > 3
               .headline-4
                 %a{ href:"#collapsible_#{list[:key]}", 'data-toggle' => 'collapse'}
-                  %span.glyphicon.glyphicon-collapse-down{id: "full-list-#{list[:key]}"}
                   = t(:to_the_full_list)
+                  %span.glyphicon.glyphicon-collapse-down{id: "full-list-#{list[:key]}"}
                   :javascript
                     $("#collapsible_#{list[:key]}").on("hide.bs.collapse", function(){
                       $("#full-list-#{list[:key]}").removeClass("glyphicon-collapse-up").addClass("glyphicon-collapse-down");
