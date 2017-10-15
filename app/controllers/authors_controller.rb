@@ -3,6 +3,11 @@ require 'diffy'
 class AuthorsController < ApplicationController
   before_filter :require_editor, only: [:index, :new, :create, :show, :edit, :list, :edit_toc, :update]
 
+  def get_random_author
+    @author = Person.has_toc.order('RAND()').limit(1)[0]
+    render partial: 'shared/surprise_author', locals: {author: @author}
+  end
+
   def index
     list
   end

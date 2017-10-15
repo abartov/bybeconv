@@ -1,0 +1,17 @@
+%a{ href: author_toc_path(author)}
+  .corner
+    %img{ src: '/assets/corner.png', width: 80, height: 80}
+  .author-homepage-pic
+    %img{ src: author.profile_image.url(:thumb), height: '230px'}
+  .author-homepage-surprise-name
+    %p.vcentered= author.name
+.replace-icon.text-on-dark{style:'margin-bottom:0.6rem'}
+  %a.surprise_author_refresh{ role: :button}
+    %i.fa.fa-refresh
+:javascript
+  $('.surprise_author_refresh').click(function(){
+    var the_id = $('#side1').hasClass('active') ? '#side2' : '#side1'
+    $(the_id).load("#{url_for(controller: :authors, action: :get_random_author)}");
+
+    $('#surprise_author_carousel').carousel('next');
+  });
