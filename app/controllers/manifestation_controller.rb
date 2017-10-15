@@ -117,6 +117,11 @@ class ManifestationController < ApplicationController
     @tabclass = set_tab('works')
     @manifestations = Manifestation.joins(:expressions).where(expressions: {genre: params[:genre]}).page(params[:page]).order('title ASC')
   end
+
+  def get_random
+    work = Manifestation.order('RAND()').limit(1)[0]
+    render partial: 'shared/surprise_work', locals: {manifestation: work}
+  end
   #############################################
   # editor actions
 

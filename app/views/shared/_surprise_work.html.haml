@@ -1,0 +1,21 @@
+%a{ href: manifestation_read_path(manifestation)}
+  .corner
+    %img{ src: '/assets/corner.png', width: 80, height: 80}
+  .genre-card-content
+    .surprise-genre-text
+      %p.headline-3= manifestation.title
+      %p= "(#{t(manifestation.expressions[0].genre)})"
+      %div
+        = t(:by)+' '+manifestation.expressions[0].works[0].persons[0].name
+        - if manifestation.expressions[0].translation
+          = ' '+t(:translated_by)+' '+manifestation.expressions[0].persons[0].name
+.replace-icon.text-on-dark{style:'margin-bottom:0.6rem'}
+  %a.surprise-work-refresh{ role: :button}
+    %i.fa.fa-refresh
+:javascript
+  $('.surprise-work-refresh').click(function(){
+    var the_id = $('#wside1').hasClass('active') ? '#wside2' : '#wside1'
+    $(the_id).load("#{url_for(controller: :manifestation, action: :get_random)}");
+
+    $('#surprise-work-carousel').carousel('next');
+  });

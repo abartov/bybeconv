@@ -19,6 +19,8 @@
                 .carousel-inner
                   .card.author-card.surprise.item.active#side1
                     %a{ role: :button, id: 'surprise_author_link'}
+                      .corner
+                        %img{ src: '/assets/corner.png', width: 80, height: 80}
                       .author-homepage-pic{style:'padding-top:3rem'}
                         %span.icon-bysurprise-author{style:'font-size:7.6rem;margin-bottom:1.4rem;'}
                         %p.headline-3= t(:surprise_author)
@@ -57,11 +59,5 @@
 
   $('#surprise_author_carousel').carousel({interval: false, wrap: true});
   $('#surprise_author_link').click(function(){
-    $('#surprise_author_carousel').carousel('next');
-  });
-  $('#surprise_author_refresh').click(function(){
-    var the_id = $('#side1').hasClass('active') ? 'side2' : 'side1'
-    $(the_id).load("#{url_for(controller: :authors, action: :get_random_author)}");
-
     $('#surprise_author_carousel').carousel('next');
   });

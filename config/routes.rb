@@ -59,6 +59,7 @@ Bybeconv::Application.routes.draw do
   get "manifestation/remove_link"
   post "manifestation/update"
   patch "manifestation/update"
+  get 'manifestation/get_random'
 
   get "api/query"
   resources :api_keys
