@@ -59,5 +59,6 @@
 
   $('#surprise_author_carousel').carousel({interval: false, wrap: true});
   $('#surprise_author_link').click(function(){
-    $('#surprise_author_carousel').carousel('next');
+    $('#surprise_author_carousel').carousel('next'); // switch to ready surprise
+    $('#side1').load("#{url_for(controller: :authors, action: :get_random_author)}"); // and load next one
   });

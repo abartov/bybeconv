@@ -10,8 +10,7 @@
     %i.fa.fa-refresh
 :javascript
   $('.surprise_author_refresh').click(function(){
+    $('#surprise_author_carousel').carousel('next');
     var the_id = $('#side1').hasClass('active') ? '#side2' : '#side1'
     $(the_id).load("#{url_for(controller: :authors, action: :get_random_author)}");
-
-    $('#surprise_author_carousel').carousel('next');
   });
