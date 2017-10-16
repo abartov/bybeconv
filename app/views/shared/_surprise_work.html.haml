@@ -14,8 +14,7 @@
     %i.fa.fa-refresh
 :javascript
   $('.surprise-work-refresh').click(function(){
-    var the_id = $('#wside1').hasClass('active') ? '#wside2' : '#wside1'
-    $(the_id).load("#{url_for(controller: :manifestation, action: :get_random)}");
-
+    var the_id = $('#wside1').hasClass('active') ? '#wside1' : '#wside2'; // because we're about to flip
     $('#surprise-work-carousel').carousel('next');
+    $(the_id).load("#{url_for(controller: :manifestation, action: :get_random)}");
   });

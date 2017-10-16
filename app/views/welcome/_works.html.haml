@@ -88,4 +88,5 @@
   $('#surprise-work-carousel').carousel({interval: false, wrap: true});
   $('.surprise-work-button').click(function(){
     $('#surprise-work-carousel').carousel('next');
+    $('#wside1').load("#{url_for(controller: :manifestation, action: :get_random)}");
   });
