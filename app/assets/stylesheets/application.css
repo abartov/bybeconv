@@ -1112,10 +1112,9 @@ rgba(0,0,0, .5);
 .tag-close a{
 	position: absolute;
 	z-index: 2;
-	font-size: 1.8rem;
-	color:#910065;
+	font-size: 2.6rem;
 	left:0.6rem;
-	top:0.8rem;
+	top: -0.4rem;
 }
 .tag-close a:hover{
 	color: #56003D;
@@ -1207,6 +1206,7 @@ rgba(0,0,0, .5);
 .announcement{
 	background-color: #660248;
 	padding: 0.4rem 0.8rem;
+	line-height: 1.6rem;
 }
 .small-bookmark-back {
   z-index: 1;
@@ -1703,4 +1703,47 @@ img.recommend-absolute {
 .mark {
     background-color: #fbab9e;
     color: #2b0d22;
+}
+.mark-current{
+	background-color: #fbab9e;
+    color: #2b0d22;
+  border: solid 2px #660248;
+}
+.search-close a:hover{
+	color: #56003D;
+}
+
+.search-results-bar{
+	z-index: 6;
+	position: absolute;
+	width: 100%;
+	min-height: 8rem;
+	margin-top: 0;
+	display: inline-block
+}
+.search-right{
+  width: 75%;
+  height: 100%;
+  padding: 3rem 10rem 0rem 10rem;
+  display: inline-block;
+	float: right;
+}
+.search-left{
+  width:25%;
+  height: 100%;
+  display: inline;
+	float: right;
+}
+.search-header-close{
+	margin-left: 1.2rem;
+	margin-top: 0.5rem;
+	font-size: 3rem;
+	opacity: 1;
+	color: #907989;
+	position: relative;
+	z-index: 7;
+}
+.search-header-close:hover{
+	opacity: 1;
+	color: #660248;
 }
