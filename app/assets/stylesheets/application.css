@@ -195,9 +195,9 @@ margin-top: 3rem;
 margin-bottom: 0.4rem;
 }
 .headline-1 {
-font-size: 3.6rem;
+font-size: 2.8rem;
 font-weight: bold;
-margin-top: 1.8rem;
+margin-top: 1.2rem;
 margin-bottom: 0.4rem;
 }
 .headline-2 {
@@ -259,8 +259,9 @@ a:visited {
   text-decoration: none
 }
 a:disabled {
-  color: #907989;
-  text-decoration: none
+	color: #907989;
+	text-decoration: none;
+	font-weight: bold;
 }
 .text-on-dark{
   color: #E4CEDE;
@@ -998,11 +999,13 @@ rgba(0,0,0, .5);
 }
 
 .bypagination{
-  margin:auto;
+  text-align: center;
+	align-content: center;
+	padding-bottom: 1.2rem;
 }
 .bypagination ul{
   box-sizing: content-box;
-  margin: 0 16.5rem;
+  display: inline-block;
 }
 .bypagination ul li{
   display: inline;
@@ -1746,4 +1749,47 @@ img.recommend-absolute {
 .search-header-close:hover{
 	opacity: 1;
 	color: #660248;
+}
+.right-sort{
+	width:19rem;display: inline;float: right;
+}
+.results-area{
+  margin-right: 20rem;
+  width: calc(100% - 20rem);
+}
+.result-card{
+  height: 12rem;
+	margin-bottom: 1.4rem;
+}
+.result-pic{
+  width:8.3rem;
+  background-color: #907989;
+  color: #d9cdd5;
+  font-size: 5.6rem;
+  text-align: center;
+  float: right;
+  border-top-right-radius: 0.3rem;
+  border-bottom-right-radius: 0.3rem;
+  padding: 0;
+  height: 12rem;
+  display: inline-block;
+  vertical-align: top;
+  overflow: hidden;
+}
+.result-text{
+width: calc(100% - 93px);
+	padding: 0.4rem 1.2rem 0rem 0.6rem;
+  max-height: 12rem;
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+}
+.result-info{
+	height: 7.2rem;
+}
+.result-headline {
+font-size: 1.8rem;
+margin-bottom: 0.4rem;
+margin-top: 0rem;
+padding-top: 0.8rem;
 }
