@@ -724,6 +724,7 @@ img.absolute {
 }
 .surprise-genre{
   background-color: #fff;
+ border: 1px solid #d9cdd5;
  position: relative;
 }
 .surprise-author {
@@ -985,7 +986,7 @@ rgba(0,0,0, .5);
 .creation-list-icon {
   margin-right: -2.2rem;
   font-size: 1.4rem;
-  color: #660248;
+  color: #2b0d22;
 }
 .fa {
   vertical-align:top;
