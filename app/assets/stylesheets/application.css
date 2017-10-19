@@ -875,7 +875,7 @@ padding: 1.2rem 1.5rem 0 1.5rem;
 }
 .card-header-element{
   float: right;
-  margin-left: 1.6rem;
+  margin-left: 1.2rem;
   display: inline;
 }
 .card-header-close{
@@ -934,7 +934,7 @@ padding: 1.2rem 1.5rem 0 1.5rem;
   width: auto;
   float: left;
   float: top;
-  margin-left: 1.2rem;
+  margin-left: 1.5rem;
   margin-top: -0.6rem;
 
 }
@@ -1344,7 +1344,7 @@ rgba(0,0,0, .5);
 background-position: left bottom;
  background-repeat: no-repeat;
  position: relative;
-  height: 13rem;
+  height: 13rem; border: 1px solid #d9cdd5;
 }
 .bysurprise-text{
   width: calc(100% - 158px);
@@ -1383,38 +1383,29 @@ img.bysurprise-absolute {
 	float: right;
 	display: inline;
 }
+/*toolbox grey - start*/
 #toolbox {
   width:9rem;
     float: right;
     position: absolute;
     z-index: 1;
 }
-.toolbox-header {
-    width: 10rem;
-    height: 2.4rem;
-    background-color: #907989;
-	margin-top: 0.6rem;
-    padding: 0 0.6rem;
-  border-bottom-left-radius: 0.3rem;
-  border-bottom-right-radius: 0.3rem;
-}
-.toolbox-header:hover{
-	background-color: #660248;
-}
-
-
 
 .toolbox-cell {
     width: 10rem;
     height: 6rem;
-  background-color: #eeeced;
+   background-color: #eeeced;
     text-align: center;
     font-size: 2.4rem;
   	display: table-cell;
     vertical-align: middle;
   	border: none;
 	position: relative;
-	  /* vertical alignment */
+}
+.mistake{
+	height: 11rem;
+	border-top: solid 2px #d9cdd5;
+	border-bottom: solid 2px #d9cdd5;
 }
 .toolbox-cell .mistake{
 	 color: #660248;
@@ -1426,17 +1417,12 @@ img.bysurprise-absolute {
 	padding-top: 0.6rem;
 	  border-radius: 0.3rem;
     box-shadow: 0 0.1rem 0.6rem rgba(0, 0, 0, 0.4);
-
-  /* vertical alignment */
-}
-.toolbox-cell .wide-cell {
-    width: auto;
 }
 
 .toolbox-cell:hover{
 	color: #660248;
+	background-color: #d9cdd5;
 }
-
 .toolbox-cell .tooltiptext {
     visibility: hidden;
     width: 10rem;
@@ -1450,55 +1436,9 @@ img.bysurprise-absolute {
     margin-left: -5rem;
     opacity: 1;
 	line-height: 1.4rem;
-}
-.toolbox-cell:hover {
-	background-color: #d9cdd5;
 }
 
 .toolbox-cell:hover .tooltiptext {
-    visibility: visible;
-    opacity: 1;
-}
-
-.toolbox-cell .tooltiptext {
-    visibility: hidden;
-    width: 10rem;
-    color: #660248;
-    text-align: center;
-	font-size: 1.2rem;
-    position: absolute;
-    z-index: 1;
-    bottom: 8%;
-    left: 50%;
-    margin-left: -5rem;
-    opacity: 1;
-	line-height: 1.4rem;
-}
-.toolbox-cell:hover {
-	background-color: #d9cdd5;
-}
-
-.toolbox-cell:hover.tooltiptext {
-    visibility: visible;
-    opacity: 1;
-}
-
-
-.toolbox-header .tooltiptext {
-    visibility: hidden;
-    width: 10rem;
-    color: #d9cdd5;
-    text-align: center;
-	font-size: 1.2rem;
-    position: absolute;
-    z-index: 1;
-    bottom: 0.8%;
-    right: 0.8%;
-    opacity: 1;
-	line-height: 1.4rem;
-}
-
-.toolbox-header:hover .tooltiptext {
     visibility: visible;
     opacity: 1;
 }
@@ -1566,6 +1506,7 @@ img.bysurprise-absolute {
     border-style: solid;
     border-color: transparent #d9cdd5 transparent transparent;
 }
+/*toolbox grey - end*/
 
 .rec-flag{
   width: 7rem;
@@ -1705,11 +1646,11 @@ img.recommend-absolute {
 	margin: 1rem 0;
 }
 .mark {
-    background-color: #fbab9e;
+    background-color: #f6b6ad;
     color: #2b0d22;
 }
 .mark-current{
-	background-color: #fbab9e;
+	background-color: #f6b6ad;
     color: #2b0d22;
   border: solid 2px #660248;
 }
