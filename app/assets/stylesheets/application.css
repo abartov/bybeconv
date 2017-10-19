@@ -850,6 +850,7 @@ padding: 0.4rem;
   height: 3.2rem;
   border-radius: 0.3rem;
   color: white;
+	font-weight: bold;
   text-align: center;
   background-color: #910065;
   margin-right: 1.2rem;
@@ -878,8 +879,7 @@ padding: 1.2rem 1.5rem 0 1.5rem;
   display: inline;
 }
 .card-header-close{
-	margin-left: 1.2rem;
-	margin-top: 0.5rem;
+	margin-top: -0.8rem;
 	font-size: 3rem;
 	opacity: 1;
 	color: #907989;
@@ -1793,4 +1793,13 @@ font-size: 1.8rem;
 margin-bottom: 0.4rem;
 margin-top: 0rem;
 padding-top: 0.8rem;
+}
+.secondary-link a{
+	color: #907989;
+}
+.secondary-link a:hover{
+	color: #660248;
+}
+.btnLarge{
+  height: 4.8rem;
 }
