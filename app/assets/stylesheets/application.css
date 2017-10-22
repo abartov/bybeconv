@@ -925,7 +925,7 @@ padding: 1.2rem 1.5rem 0 1.5rem;
   height: 6px;
   float: left;
   float: top;
-  margin-left: 1.5rem;
+  margin-left: 1.8rem;
   margin-top: -1.3rem;
   background-position: left;
 }
@@ -984,7 +984,10 @@ rgba(0,0,0, .5);
   width: 20rem;
 }
 .creation-list-icon {
-  margin-right: -2.2rem;
+  	position:absolute;
+	top:0.2rem;
+	right:-2rem;
+	width: 2rem;
   font-size: 1.4rem;
   color: #2b0d22;
 }
@@ -1743,4 +1746,15 @@ padding-top: 0.8rem;
 }
 .btnLarge{
   height: 4.8rem;
+}
+.multiselect {
+  width:10rem;
+  font-size:2.4rem;
+  padding: 0.2rem;
+  margin:0;
+  background-color: #eeeced; 
+  color: #907989; 
+  height:6rem; 
+  padding-top: 1.2rem;
+  /* vertical alignment */
 }
