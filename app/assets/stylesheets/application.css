@@ -411,12 +411,18 @@ li :active{
   border-right:none;
   border-left:none;
   margin-bottom: 1rem;
+	padding:0 0.6rem;
   line-height: 3.6rem;
   width:100%;
   background: none;
   -webkit-appearance: none;
 }
-
+.field-error{
+	  border: 0.2rem solid #DB0225;
+}
+.field-error-message{
+	color: #DB0225;
+}
 .top-memu{
 	margin-top: 0.7rem;
 }
@@ -465,6 +471,7 @@ option:first {
 .search {
   position: relative;
   height: 3.2rem;
+  padding: 0;
 }
 
 .search input {
@@ -491,6 +498,7 @@ option:first {
 .main-search-field input{
   background-color: #fff;
   border-bottom: 0.2rem solid #660248;
+	padding: 0;
 }
 
 .on-card-search-field {
@@ -842,11 +850,7 @@ img.absolute {
   font-weight: bold;
   padding-top: 0.7rem;
 }
-.contact-field {
-  width: 92%;
-  float: right;
-  display: inline;
-}
+
 .years{
   width: 96%;
 }
@@ -857,17 +861,15 @@ img.absolute {
   color: #660248;
   padding-top: 0.6rem;
   float: left;
-  display: inline;
+  position: absolute;
+	top:0.4rem;
+  left:-3rem;
 }
 .textarea{
   border: 0.2rem solid #d9cdd5;
+	width: 100%;
 }
-.contact-textarea {
-  width: 92%;
-  float: right;
-  display: inline;
-padding: 0.4rem;
-}
+
 .btn {
   width: auto;
 	min-width:8rem;
@@ -890,9 +892,7 @@ background-color: #710150;
 .btn:disabled{
 background-color: #d9cdd5;
 }
-.form-buttons{
-  width: 92%;
-}
+
 .card-header {
 height: 4.2rem;
 border-bottom: 0.2rem solid #d9cdd5;
