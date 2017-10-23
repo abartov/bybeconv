@@ -1790,3 +1790,6 @@ padding-top: 0.8rem;
   padding-top: 1.2rem;
   /* vertical alignment */
 }
+.form-line{
+	margin-top: 2rem;
+}
