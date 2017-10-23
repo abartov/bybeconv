@@ -1419,6 +1419,13 @@ img.bysurprise-absolute {
 	top: 20rem;
     z-index: 6;
 }
+#toolbox-read {
+  width:9rem;
+    float: right;
+    position: fixed;
+	top: 8.4rem;
+    z-index: 6;
+}
 
 .toolbox-cell {
     width: 10rem;
