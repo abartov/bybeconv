@@ -1751,7 +1751,6 @@ img.recommend-absolute {
   padding: 0;
   height: 12rem;
   display: inline-block;
-  vertical-align: top;
   overflow: hidden;
 }
 .result-text{
