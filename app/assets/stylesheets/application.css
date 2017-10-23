@@ -852,7 +852,8 @@ img.absolute {
 }
 
 .years{
-  width: 96%;
+  width: 100%;
+	padding: 0;
 }
 .add-icon {
   width: 2rem;
