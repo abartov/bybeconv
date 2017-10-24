@@ -156,7 +156,7 @@
    	  <div id="work-view" style="width: 10rem; text-align: center; margin-bottom: 2rem; position: relative;"><a href="#"><div ><button class="work-view btn"><i class="icon-byread-present"></i></button></div><p>מצב קריאה</p></a></div>
    	  
       <div class="btn-group-vertical">
-        <button class="toolbox-cell darkoldpink"><i class="icon-bybookmark-add"></i><span class="tooltiptext">הוספת סימניה</span></button>
+        <button class="toolbox-cell darkoldpink"><i class="icon-bybookmark-empty"></i><span class="tooltiptext">הוספת סימניה</span></button>
         <button class="toolbox-cell darkoldpink"><i class="fa fa-heart-o"></i><span class="tooltiptext">אהבתי</span></button>
         <button class="toolbox-cell darkoldpink"><i class="icon-bybookshelf"></i><span class="tooltiptext">רשימות קריאה</span></button>
         <button class="toolbox-cell mistake" style="height: 11rem;border: solid 2px #d9cdd5;">
@@ -195,19 +195,19 @@
        </a>
       </div>
     </div>
-        <div class="row">
+        <div class="row" style="padding-top: 0.6rem">
       <div class="col-md-2"><p>זכויות יוצרים:</p></div>
       <div class="col-md-4"><div class="icon card-header-element"><span class="icon-bycreative-commons"></span></div><p>אושר לשימוש חופשי לציבור הרחב [<a href="#">?</a>]</p></div>
     </div>
-        <div class="row">
+        <div class="row" style="padding-top: 0.6rem">
       <div class="col-md-2"><p>פורסם בספר:</p></div>
       <div class="col-md-10"><div class="card-header-element"  style="margin-left: 2.4rem"><p><a href="#">כל כתבי ח״נ ביאליק (1923)</a></p></div><div class="card-header-element"><a href="#">פרטי מהדורה ומידע נוסף<span class="fa fa-angle-left baseline" style="margin-right: 0.6rem"></span></a></div></div>
     </div>
-            <div class="row">
+            <div class="row" style="padding-top: 0.6rem">
       <div class="col-md-2"><p>סוגה:</p></div>
       <div class="col-md-10"><div><p><a href="#">פרוזה</a></p></div></div>
     </div>
-            <div class="row">
+            <div class="row" style="padding-top: 0.6rem">
       <div class="col-md-2"><div class="card-header-element"><a href="#">תגיות (5)<span class="fa fa-angle-left baseline" style="margin-right: 0.6rem"></span></a></div></div>
       <div class="col-md-10"><div class="card-header-element" style="margin-left: 2.4rem"><a href="#">המלצות (2)<span class="fa fa-angle-left baseline" style="margin-right: 0.6rem"></span></a></div>
       <div class="card-header-element"><a href="#"><div class="icon card-header-element" style="margin-left: 0.6rem"><i class="fa fa-wikipedia-w" style="font-size: 1.4rem"></i></div>
@@ -242,10 +242,10 @@
                             </div>
                           </div>
 	           
-                                          <div style="display: inline-block;width: 100%">
-    <div style="position: relative">
-      <div class="icon result-links"><a href=""><i class="fa fa-heart-o"></i></a></div>
-      <div class="icon result-links" style="margin-right: 2.4rem"><a href=""><span class="icon-bybookshelf"></span></a></div>
+                                          <div style="display: inline-block;width: 100%;">
+    <div style="position: relative;">
+      <div class="icon result-links" style="margin-top: 0.4rem"><a href=""><i class="fa fa-heart-o"></i></a></div>
+      <div class="icon result-links" style="margin-top: 0.4rem; margin-right: 2.4rem"><a href=""><span class="icon-bybookshelf"></span></a></div>
       <div style="position: relative; float:right; display: inline;width: calc(100% - 8rem)">
   <select>
        <option>רוצה לקרוא?</option>
@@ -268,12 +268,17 @@
               <div class="search-right">
 				<div class="row">
 				  <div class="col-sm-6">
-					 	<div class="search field on-card-search-field" style="width: 3rem;display: inline; float: right">
+		                                      <div class="headline-2" style="display: inline; float: right; margin-top: 0.4rem; margin-left: 2rem">חיפוש</div>
+<div style="display: inline;">
+  <button type="button" class="close search-header-close" style="float: right">&times;</button>
+              </div>
+				                      <div style="display: inline; float: right; margin-top: 0.7rem; margin-right: 0.6rem; font-size: 2rem"><a href="#"><span class="fa fa-angle-up"></span></a></div>
+                    <div style="display: inline; float: right; margin-top: 0.7rem; margin-right: 1.8rem; font-size: 2rem"><a href="#"><span class="fa fa-angle-down"></span></a></div>
+
+					 	<div class="search field on-card-search-field" style="width: 3rem;display: inline; float: right; margin-right: 1.8rem">
   							<input value="3">
 						</div>
-                    <div style="display: inline; float: right; margin-top: 0.8rem; margin-right: 0.6rem">מתוך 149 תוצאות</div>
-                    <div style="display: inline; float: right; margin-top: 0.7rem; margin-right: 2.4rem; font-size: 2rem"><a href="#"><span class="fa fa-angle-up"></span></a></div>
-                    <div style="display: inline; float: right; margin-top: 0.7rem; margin-right: 1.2rem; font-size: 2rem"><a href="#"><span class="fa fa-angle-down"></span></a></div>
+                    <div style="display: inline; float: right; margin-top: 0.8rem; margin-right: 1.2rem">מתוך 149 תוצאות</div>
                   </div>
 				  <div class="col-sm-6">      			          
  							<div class="search field on-card-search-field">
@@ -282,14 +287,7 @@
 				  </div>
 				</div>
               </div>
-              <div class="search-left">
-                <div style="max-width:calc(100% - 4rem);display: inline;float: right; padding-top: 0.6rem">
-                  <div class="announcement card text-on-dark">לפניך תוצאות חיפוש ביצירה המלאה. בסיום מצב החיפוש ניתן יהיה לחזור לתצוגת פרק בודד.</div>
-                </div>
-                <div style="display: inline;">
-  <button type="button" class="close search-header-close">&times;</button>
-                </div>
-              </div>
+
             </div>
 
    			<div class="work-text">
@@ -313,6 +311,8 @@
   							<span class="fa fa-search search-icon"></span><input placeholder="חיפוש ביצירה">
 						</div>
       			   </div></div>
+      			                     <div class="announcement card text-on-dark" style="margin: 0 0 2rem 0;">לפניך תוצאות חיפוש ביצירה המלאה. בסיום מצב החיפוש ניתן יהיה לחזור לתצוגת פרק בודד.</div>
+
 <p>וה"ממזרת", זו <span class="mark mark-current">מארינקא</span>, עובדת בחצר וּבגן והולכת וּגבוהה מיום ליום, נחבטת מדי לילה – וּלחייה מאדימות כפרחי פרג.  מחֲלַפְתָהּ עבתה ושמנה ושָדיה כתפוחי סתיו.  זאטוטי הקצפים התחילו באים עם כלביהם מן השדה לריחה.  אורבים הם לה בליל אביב וקיץ מאחורי הגן מן הצד השני, ממקום שהוא כָּלֶה שם אל השדה.  אבל <span class="mark">מארינקא</span> כלא יודעת.  ישֵׁנה היא בלילות אלו יחידה בצריף קטן של קש הזקוף באמצע הגן- וּשקוריפין רבוץ על פתחו.  שומר הוא אותו כלב את הגן ואת <span class="mark">מארינקא</span> שמירה מעולה...</p><p>בשכונה היהודית מצד הרחוב לא היתה <span class="mark">מארינקא</span> מראה את פניה אלא לפרקים.  פותחת היא את הפשפש ושוהה רגע מבחוץ כשידיה מקופלות על לבה – וּמיד חוזרת ונסגרת מבפנים.  עינם ופיהם של העגלונים, המצויים עם קרונותיהם וסוסיהם הצרועים כנגד ירך ביתה, פוגעים בה תיכף ליציאה וּמבריחים אותה מיד.</p>
       			  <p> ואולם אחד מן הנערים, מאלו ההולכים  לבית-המדרש וּמצויים דרך אגב אצל הנקבים והסדקים שבגדר המבוי – יש שהוא מציץ בין פצים לחברו ומתכוֵן לשקוריפין ועינו פוגעת שלא במתכוֵן ב<span class="mark">מארינקא</span>.  עומדת היא ריבה זו, אדמונית ובעלת-איברים באמצע החצר, כפופה, למשל, על-גבי הכביסה, לִבּהּ מגולה טפח ועוד, וידיה החשׂוּפוֹת טבולות עד חֶצְיָן בִקְצָפָה לבנה של מי בורית צפה בערֵבה... אז תדבק פתאֹם עינו אל הסדק, תדבק ולא תמוש עוד.  בעוד רגע והנה נער שני וּשלישי וּרביעי – וכל הסדקים יִמָּלאו עינַיִם.  דומים הם באותה שעה כזבובים שחברוּ על חלת דבש.  משוקעים עד הברכַּיִם בנעצוצים, עומדים הם שם מוּטים מאחורי הגדר, מצחותיהם קבועות בנסר סדוק ועיניהם ב<span class="mark">מארינקא</span>.  אין אומר ואין דברים – רק שתיקה ועיון.  כל אחד זוכה בה בעיניו לעצמו, זוכה בכוּלהּ, בלי שיור כל-שהוא. </p><p>וּפעמים שהיתה <span class="mark">מארינקא</span> מתגלה במלוא קומתה ובכרעיה היחפות לעיני השמש מעל ראש הגג.  עולה היתה לשָׁם לשטוח פולין ושומשמין בחמה, כדי שיתנגבו.  ואז היו פרחי העגלונים, העומדים למטה ברחבה אצל עגלותיהם ושוטיהם תחת בית-שחים, מגביהים פתאם, כאיש אחד, את עיניהם למעלה – וּשׂחוק ש הנאה ותאוָה מרחיב את פרצופיהם וּמַבעה את שִניהם הלבנות, הסוסיות... הלץ שבהם זורק כלפי מעלה מין דבור, שמצית את לחיי <span class="mark">מארינקא</span> ואת אזניה כאש וּמכביש ראשה למטה, כלפי הדשאים והירקות שעל הגג.  העגלונים "פוקעים" מצחוק: חָא-חָא-חָא, חַא-חַא-חַא!... וּ<span class="mark">מארינקא</span> כובשת ראשה עוד יותר, קפיצת חתול – והיא נעלמת בחצר.</p>
       			  <div style="margin-top: 3rem;">
@@ -333,234 +333,7 @@
 
 <!-- more link start -->
  
-<div class="container-fluid">
-	  <div class="row">
-		<div class="col-md-1"></div>
-		<div class="col-md-10">
 
-			<div class="container-fluid" style="padding:3rem 0 0 0">
-
-    			<div class="work-area">
-    						<div id=" collapse-expand"  class="headline-3" style="margin:2rem 0;"><a href="#">שיתוף, תגיות, המלצות ורשימות קריאה&nbsp&nbsp<span class="fa fa-angle-left baseline"></span></a></div>
-   				
-    				<div class="container-fluid">
-						<div class="row">
-      						<div id="more-right" class="col-md-9" style="padding-right: 0; padding-left: 10rem">
-								<div id="work-tags" style="width:100%">
-		  	  <div class="headline-3">תגיות ליצירה</div>
-       		  <div style="display: inline-block;">
-       		    <div class="card tag-card"><div class="tag-content">אהבה לא ממומשת</div></div>
-				<div class="card tag-card"><div class="tag-content">נעורים</div></div>
-				<div class="card tag-card">
-					<div class="tag-content">העיירה היהודית</div>
-					<div class="tag-wait-confirm"><i class="fa fa-check-circle"></i></div>
-				</div>
-				<div class="card tag-card">
-     		  		<div class="tag-content">מעגליות בשירה</div>
-      		  		<div class="tag-close"><a href="#">&times;</a></div>
-      		  		<div class="tag-wait-confirm"><i class="fa fa-clock-o"></i></div>
-      		  </div>
-       		  </div>
-				<div id="add-tag" style="display: inline;float: left">
-   	 			  <form>
-   	 			    <div style="display:inline;float:right;margin-top:0.6rem;">
-   	 			      <input type="text" class="field" placeholder="הצעת תגית חדשה">
- 			        </div>
-       	 			  <div style="display: inline;">
-       	 			    <input type="submit" value="שליחה" class="btn" style="margin-top: 0.6rem; background-color: #d9cdd5">
-   	 			    </div>
-   	 			  </form>
-		       	</div>
-            </div>
-            
-            						<div id="work-recommend" style="margin-top:3rem">
-		  	  <div class="headline-3" style="display: inline">המלצות קוראים</div>
-		  	  <div style="display: inline; padding-right: 1rem">8 קוראים אהבו את הסיפור, 3 המלצות כתובות</div>
- 				<div class="card">
- 	  <div class="row recommendation">
-  <div class="rec-user">
-    <div class="rec-user-pic"><span class="icon-byfigure-outline-cut rec-user-icon"></span></div>
-    <div class="rec-user-name"><a href="#">ציפי גבירץ</a></div>
-    <div class="rec-user-name">24.8.2015</div>
-  </div>
-        <div class="rec-txt">אהבתי! סיפור מקסים...</div>
-        <div><button class="rec-flag darkoldpink"><i class="fa fa-flag-o"></i><span class="tooltiptext">דיווח על תוכן בעייתי</span></button></div>
-      </div>
-   </div>
-            	<div class="card">
-                  <div class="row recommendation">
-  <div class="rec-user">
-    <div class="rec-user-pic"><span class="icon-byfigure-outline-cut rec-user-icon"></span></div>
-    <div class="rec-user-name"><a href="#">איתן התותחחח!</a></div>
-    <div class="rec-user-name">16.5.2015</div>
-  </div>
-                    <div class="rec-txt">סתם סיפור פח של סופר פח דפוק</div>
-        			<div><button class="rec-flag darkoldpink"><i class="fa fa-flag-o"></i><span class="tooltiptext">דיווח על תוכן בעייתי</span></button></div>
-
-                  </div>
-                </div>
-            	<div class="card">
-                  <div class="row recommendation">
-  <div class="rec-user">
-    <div class="rec-user-pic"><img src="assets/Gabi.jpg" width="60" height="60" alt=""/></div>
-    <div class="rec-user-name"><a href="#">גבי בלייכר</a></div>
-    <div class="rec-user-name">4.11.2014</div>
-  </div>
-                    <div class="rec-txt">"מאחורי הגדר" הוא סיפור "קצר-ארוך"/נובלה  והוא יצירה ריאליסטית.  משמעות הריאליזם היא בעיצוב מציאות באמצעות זהות, מלאות והסתברות (הזהות נבדקת בזמן במקום ובעלילה) ועיצוב יחסים בין הפרט לסביבה.  לסיפור שני נושאים מרכזיים דרך סיפור החניכות"מאחורי הגדר" הוא סיפור "קצר-ארוך"/נובלה  והוא יצירה ריאליסטית.  משמעות הריאליזם היא בעיצוב מציאות באמצעות זהות, מלאות והסתברות (הזהות נבדקת בזמן במקום ובעלילה) ועיצוב יחסים בין הפרט לסביבה.  לסיפור שני נושאים מרכזיים דרך סיפור החניכות"מאחורי הגדר" הוא סיפור "קצר-ארוך"/נובלה  והוא יצירה ריאליסטית.  משמעות הריאליזם היא בעיצוב מציאות באמצעות זהות, מלאות והסתברות (הזהות נבדקת בזמן במקום ובעלילה) ועיצוב יחסים בין הפרט לסביבה.  לסיפור שני נושאים מרכזיים דרך סיפור החניכות"מאחורי הגדר" הוא סיפור "קצר-ארוך"/נובלה  והוא יצירה ריאליסטית.  משמעות הריאליזם היא בעיצוב מציאות באמצעות זהות, מלאות והסתברות (הזהות נבדקת בזמן במקום ובעלילה) ועיצוב יחסים בין הפרט לסביבה.  לסיפור שני נושאים מרכזיים דרך סיפור החניכות – האהבה מחד; והסוציאליזציה לחברה היהודית מאידך.</div>
-        <div><button class="rec-flag darkoldpink"><i class="fa fa-flag-o"></i><span class="tooltiptext">דיווח על תוכן בעייתי</span></button></div>
-                  </div>
-                </div>
-                
-                            	<div class="card" style="background-color: #fff;">
-                  <div class="row recommendation" style="min-height: inherit">
-  <div class="rec-user">
-    <div class="rec-user-pic"><img src="assets/maya.jpg" width="60" height="60" alt=""/></div>
-    <div class="rec-user-name"><a href="#">מיה קופרמן</a></div>
-  </div>
-                   <form>
-                    <div class="rec-txt">
-                       	<div style="display:inline;float: right; margin-top:1.3rem;width:100%">
-   	 			      		<input type="text" class="field" placeholder="מה תרצו לספר לקוראים אחרים על היצירה?">
- 			        	</div>
-                    </div>
-        			<div>
-						<input type="submit" value="שליחה" class="btn" style="margin-top: 2.7rem; margin-left: 1.5rem; background-color: #d9cdd5">
-					</div>
-                   </form>
-                  </div>
-                </div>
-                
-                
-
-            </div>
-            
-									<div id="work-ref" >
-		  	  <div class="headline-3" style="margin:3rem 0 1.6rem 0;">אזכורים ליצירה</div>
-       		  	<div class="card full-size-card">
-      		  		<div class="card-content">
-      		 			<p>1.&nbsp;<a href="#">״גדר צבעונית״</a>, עיבוד לילדים ליצירה מאת ביאליק</p>
-      		 			<p>2.&nbsp;<a href="#">״ביאליק וכתיבתו״</a>, מאת ברדיצ׳בסקי</p>
-			  		</div>
-            	</div>            
-            </div>
-            
-									<div id="work-more-from-author" >
-		  	  <div class="headline-3" style="margin:3rem 0 1.6rem 0;">עוד מיצירותיו של חיים נחמן ביאליק</div>
-<!-- author page top card start -->
-
- <div style="margin-top: 0;">
-  <div class="card full-size-card" style="min-height: 26rem;">
-       <div class="creator-bookmark-back"><img src="../assets/images/creator-bookmark-back2.png" width="168" height="6" alt=""/></div>
-<div class="creator-bookmark-front"><img src="Portraits/Bialik_Hayim Nahman.jpg" width="162" height alt=""/></div>      
-    <div class="card-content near-picture">
-    		<p><h5>יצירותיו הנקראות ביותר של חיים נחמן ביאליק</h5></p>
-      		<p>1.&nbsp;<a href="#">״על השחיטה״</a> (שירה)</p>
-			<p>2.&nbsp;<a href="#">״מאחורי הגדר״</a> (פרוזה)</p>
-      		<p>3.&nbsp;<a href="#">״הכניסיני תחת כנפך״</a> (שירה)</p>
-			<p style="margin:3.2rem 0 0 0;"><a href="#"><h5>ליצירות השירה של חיים נחמן ביאליק</h5></a></p>
-   			<p style="margin:1.2rem 0 0 0;"><a href="#"><h5>לכל יצירותיו של חיים נחמן ביאליק</h5></a></p>
-    </div>
-  </div>
-     
-      </div>
-<!-- author page top card end -->            </div>
-            	
-          	  						<div id="work-also-read" >
-		  	  <div class="headline-3" style="margin:3rem 0 1.6rem 0;">מי שקראו יצירה זו קראו גם...</div>
-       		  <div class="card full-size-card">
-      		  <div class="card-content">
-      		 <p>1.&nbsp;<a href="#">״יום שישי הקצר״</a>, מאת חיים נחמן ביאליק (פרוזה)</p>
-      		 <p>2.&nbsp;<a href="#">״העורב״</a>, מאת אדגר פוא (שירה, תרגום)</p>
-      		 <p>3.&nbsp;<a href="#">״הכניסיני תחת כנפך״</a>, מאת חיים נחמן ביאליק (שירה)</p>
-			  </div>
-				</div>
-				              </div>
-
-         
-           <div>
-		  
-			<div class="card genre-card small-surprise" style="height: auto; margin-top:5rem; position: relative">
-				                      <div class="corner"><img src="assets/corner.png" width="80" height="80" alt=""/></div>
-					<div class="card-content">
-						<div class="genre-icon" style="width:15rem; display: inline;float:right;padding-top: 1.5rem;font-size:8rem"><a href="#"><span class="icon-bysurprise-work"></span></a></div>
-						<div style="width: calc(100% - 22rem); display:inline;float:right;">
-						  <div style="margin-bottom: 0.6rem">
-						    <p class="headline-3" style="display: inline"><a href="#">״תל אביב: זכרונות 1919-1939״</a></p><p class="headline-4" style="display: inline; margin-right: 1rem">מאת יבנאל מטלון (זכרונות ויומנים)</p>
-					      </div>
-                          <div style="height: 8rem; overflow: hidden; text-overflow: ellipsis; margin-bottom: 0.6rem">
-  <p>תחילה מן הראוי שאציג את עצמי.
-    נולדתי בעיר העברית תל אביב, שכונתה באותם ימים "העיר העברית הראשונה בעולם", בראשון לפברואר 1919, כ"ט שבט תרע"ט, למנייננו.
-    אבי יחזקאל מטלון, היה יליד יפו, מצאצאי אהרון מטלון, שעלה ארצה מבגדד בשנת 1815 בראש שיירה שיצאה מבגדד, דרך דמשק, לארץ הקודש והיה מראשי העדה היהודית ביפו.
-    בשנת 1916 נשא לאשה את אמי, פנינה לבית כאגאן, שעלתה ארצה מהעיר ביאליסטוק, בתחילת 1914 ...  </p>
-                          </div>
-                          <div><a href="#">ליצירה המלאה</a></div>
-				      </div>
-					
-						
-			  </div>
-                                		        <div style="z-index: 1; position: absolute; left: 0;bottom: 0%; border-bottom-left-radius: 0.3rem; display: inline;overflow: hidden"><img src="assets/corner5.png" width="80" height="80" alt=""/></div>
-<div><div class="replace-icon text-on-dark" style="margin-bottom:0.6rem;"><a href=""><i class="fa fa-refresh"></i></a></div></div>
-            </div>
-            </div>
-           
-              
-          <div style="margin:3rem 0 0 0;"><a href="#" target="#">לדף הבית</a></div>
-          
-      
-      						</div>
-      	
-      						<div id="more-left" class="col-md-3" style="padding-left: 0;padding-right: 0;">
-                
-      	<div id="work-share2">
-      		  			
-                          <div style="display: inline-block">
-  <div class="card-header-element" style="padding-left: 1rem">
-    <div class="icons-raw"><a href=""><i class="fa fa-download"></i></a></div>
-    <div class="icons-raw"><a href=""><i class="fa fa-print"></i></a></div>
-    <div class="icons-raw"><a href=""><i class="fa fa-quote-right"></i></a></div>
-  </div>
-                            <div class="card-header-element">
-                              <div class="icon icons-raw"><a href=""><i class="fa fa-facebook-square"></i></a></div>
-                              <div class="icons-raw"><a href=""><i class="fa fa-whatsapp"></i></a></div>
-                              <div class="icons-raw"><a href=""><i class="fa fa-twitter"></i></a></div>
-                              <div class="icons-raw"><a href=""><i class="fa fa-envelope"></i></a></div>
-                            </div>
-                          </div>
-	           
-                                          <div style="display: inline-block;width: 100%">
-    <div style="position: relative">
-      <div class="icon result-links"><a href=""><i class="fa fa-heart-o"></i></a></div>
-      <div class="icon result-links" style="margin-right: 2.4rem"><a href=""><span class="icon-bybookshelf"></span></a></div>
-      <div style="position: relative; float:right; display: inline;width: calc(100% - 8rem)">
-  <select>
-       <option>רוצה לקרוא?</option>
-    <option value="want-to-read">רוצה לקרוא</option>
-    <option value="will-read-later">אקרא מאוחר יותר</option>
-    <option value="maybe-will-read">אולי אקרא</option>
-  </select>
-        <div><a class="dropdown-arrow" style="left: 0"><i class="fa fa-angle-down"></i></a></div>
-      </div>
-      </div>
-
-                                          </div>
-      	</div>
-                                                                                     								
-                                                                                      								
-
-                                                                                  
-                           
-                                          
-
- 
-							</div>
-						</div>
-    				</div>
-    			</div>
-			</div>
-		</div>
-     	<div class="col-md-1"></div>
-	</div>
-</div>
 
 
 <!-- more link end -->
