@@ -60,6 +60,18 @@ module ApplicationHelper
       return t(:italian)
     when 'grc'
       return t(:ancient_greek)
+    when 'hu'
+      return t(:hungarian)
+    when 'cs'
+      return t(:czech)
+    when 'da'
+      return t(:danish)
+    when 'no'
+      return t(:norwegian)
+    when 'nl'
+      return t(:dutch)
+    when 'sv'
+      return t(:swedish)
     else
       return t(:unknown)
     end

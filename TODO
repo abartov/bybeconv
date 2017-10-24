@@ -5,13 +5,11 @@
   - add lock_version column to person, work, expression, and manifestation tables
 - blog post with screenshots of system
 - HOMEPAGE
+  - author popup
   - featured content byline code
   - featured content full text view
-  - surprise author functionality
-  - surprise work functionality
   - fontsize sticky across pages
   - carousel of featured content
-  - genre popup list expansion
 - INFRA
   - figure out difference between the current most-viewed author (=his author page is most read) and the intended most-read author (=his expressions are most read)
 
