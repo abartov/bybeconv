@@ -1465,7 +1465,7 @@ img.bysurprise-absolute {
 
 .toolbox-cell:hover{
 	color: #660248;
-	background-color: #d9cdd5;
+   background-color: #eeeced;
 }
 .toolbox-cell .tooltiptext {
     visibility: hidden;
@@ -1501,7 +1501,7 @@ img.bysurprise-absolute {
   border-bottom-right-radius: 0.3rem;
 }
 .toolbox-footer:hover{
-	background-color: #d9cdd5;
+   background-color: #eeeced;
     color: #56003D;
 }
 
