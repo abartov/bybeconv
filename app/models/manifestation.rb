@@ -47,7 +47,11 @@ class Manifestation < ActiveRecord::Base
     return I18n.t(:nil) if expressions[0].nil? or expressions[0].works[0].nil? or expressions[0].works[0].persons[0].nil?
     ret = expressions[0].works[0].persons[0].name
     if expressions[0].translation
-      ret += ' / '+expressions[0].persons[0].name
+      if expressions[0].persons.count < 1
+        ret += ' / '+I18n.t(:unknown)
+      else
+        ret += ' / '+expressions[0].persons[0].name
+      end
     end
     return ret # TODO: be less naive
   end
