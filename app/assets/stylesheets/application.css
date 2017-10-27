@@ -1023,7 +1023,7 @@ rgba(0,0,0, .5);
 	right:-2rem;
 	width: 2rem;
   font-size: 1.4rem;
-  color: #2b0d22;
+  color: #907989;
 }
 .fa {
   vertical-align:top;
@@ -1438,17 +1438,17 @@ img.bysurprise-absolute {
 
 .toolbox-cell {
     width: 10rem;
-    height: 6rem;
+    height: 5rem;
    background-color: #eeeced;
     text-align: center;
-    font-size: 2.4rem;
+    font-size: 2rem;
   	display: table-cell;
     vertical-align: middle;
   	border: none;
 	position: relative;
 }
 .mistake{
-	height: 11rem;
+	height: 10.4rem;
 	border-top: solid 2px #d9cdd5;
 	border-bottom: solid 2px #d9cdd5;
 }
@@ -1459,14 +1459,13 @@ img.bysurprise-absolute {
     position: relative;
     display: inline-block;
 	  background-color: #eeeced;
-	padding-top: 0.6rem;
 	  border-radius: 0.3rem;
     box-shadow: 0 0.1rem 0.6rem rgba(0, 0, 0, 0.4);
 }
 
 .toolbox-cell:hover{
 	color: #660248;
-	background-color: #d9cdd5;
+   background-color: #eeeced;
 }
 .toolbox-cell .tooltiptext {
     visibility: hidden;
@@ -1476,7 +1475,7 @@ img.bysurprise-absolute {
 	font-size: 1.2rem;
     position: absolute;
     z-index: 6;
-    bottom: 8%;
+    bottom: 10%;
     left: 50%;
     margin-left: -5rem;
     opacity: 1;
@@ -1502,7 +1501,7 @@ img.bysurprise-absolute {
   border-bottom-right-radius: 0.3rem;
 }
 .toolbox-footer:hover{
-	background-color: #d9cdd5;
+   background-color: #eeeced;
     color: #56003D;
 }
 
@@ -1790,12 +1789,12 @@ padding-top: 0.8rem;
 }
 .multiselect {
   width:10rem;
-  font-size:2.4rem;
+  font-size:2rem;
   padding: 0.2rem;
   margin:0;
-  background-color: #eeeced;
-  color: #907989;
-  height:6rem;
+  background-color: #eeeced; 
+  color: #907989; 
+  height:5rem; 
   padding-top: 1.2rem;
   /* vertical alignment */
 }
