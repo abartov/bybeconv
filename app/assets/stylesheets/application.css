@@ -445,7 +445,7 @@ select{
   border-right:none;
   border-left:none;
   line-height: 3.6rem;
-  width:100%;
+  /* width:100%; */ /* commented out by Asaf */
   padding: 0 0.4rem;
   border-radius:0;
   background-color: #fff;
@@ -1793,9 +1793,9 @@ padding-top: 0.8rem;
   font-size:2.4rem;
   padding: 0.2rem;
   margin:0;
-  background-color: #eeeced; 
-  color: #907989; 
-  height:6rem; 
+  background-color: #eeeced;
+  color: #907989;
+  height:6rem;
   padding-top: 1.2rem;
   /* vertical alignment */
 }
