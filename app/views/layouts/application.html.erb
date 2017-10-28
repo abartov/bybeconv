@@ -35,46 +35,49 @@
 <% unless @print %>
   <% unless @readmode %>
   <!-- top logo area -->
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-lg-1"></div>
-      <div class="col-lg-10" style="padding: 0">
-        <div class="container-fluid" style="padding: 0">
-          <div class="row" style="padding: 0">
-            <div class="col-sm-3">
-              <div id="user-widget">
-                <div style="display: inline;float: right; position: relative">
-                  <% if current_user %>
-                    <p style="padding-left: 1.6rem"><%= t(:welcome) %> <strong><%= current_user.name %></strong>!</p>
-                    <div><a class="dropdown-arrow" data-toggle="collapse" data-target="#user_collapsible" style="top: 0.1rem; left: 0"><i class="fa fa-angle-down"></i></a></div>
-                    <div id="user_collapsible" class="collapse" ><a id="sign_in" href="#">כניסה לאזור האישי</a><br/>
-                      <%= link_to t(:sign_out), signout_path, id: "sign_out" %>
-                    </div>
-                  <% else %>
-                    <%= link_to t(:sign_in_google_twitter), "/session/login", id: "sign_in" %>
-                  <% end %>
+  <div class="topbar">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-10" style="padding: 0">
+          <div class="container-fluid" style="padding: 0">
+            <div class="row" style="padding: 0">
+              <div class="col-sm-3">
+                <div id="user-widget">
+                  <div style="display: inline;float: right; position: relative">
+                    <% if current_user %>
+                      <p style="padding-left: 1.6rem"><%= t(:welcome) %> <strong><%= current_user.name %></strong>!</p>
+                      <div><a class="dropdown-arrow" data-toggle="collapse" data-target="#user_collapsible" style="top: 0.1rem; left: 0"><i class="fa fa-angle-down"></i></a></div>
+                      <div id="user_collapsible" class="collapse" ><a id="sign_in" href="#">כניסה לאזור האישי</a><br/>
+                        <%= link_to t(:sign_out), signout_path, id: "sign_out" %>
+                      </div>
+                    <% else %>
+                      <%= link_to t(:sign_in_google_twitter), "/session/login", id: "sign_in" %>
+                    <% end %>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="col-sm-6" style="align-content: center; text-align: center">
-              <div class="fontsize-selector-unit vcentered">
-                <%= render partial: 'shared/fontsize' %>
-                <!-- TODO: also set a cookie, so it'll stick between screens -->
-              </div>
-              <% unless sitenotice.empty? %>
-                <div class="announcement card text-on-dark">
-                  <p><%= sitenotice %></p>
+              <div class="col-sm-6" style="align-content: center; text-align: center">
+                <div class="fontsize-selector-unit vcentered">
+                  <%= render partial: 'shared/fontsize' %>
+                  <!-- TODO: also set a cookie, so it'll stick between screens -->
                 </div>
-              <% end %>
-            </div>
-            <div class="col-sm-3">
-              <div id="site-logo"><a href="#"><img src="/assets/BY_Logo.svg" class="img-responsive" alt="לוגו"></a></div>
+                <% unless sitenotice.empty? %>
+                  <div class="announcement card text-on-dark">
+                    <p><%= sitenotice %></p>
+                  </div>
+                <% end %>
+              </div>
+              <div class="col-sm-3">
+                <div id="site-logo"><a href="#"><img src="/assets/BY_Logo.svg" class="img-responsive" alt="לוגו"></a></div>
+              </div>
             </div>
           </div>
         </div>
+        <div class="col-lg-1"></div>
       </div>
-      <div class="col-lg-1"></div>
     </div>
+    <%= render partial: 'shared/tabs' %>
   </div>
   <% end -%>
 <% end %>
