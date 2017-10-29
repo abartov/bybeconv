@@ -927,9 +927,7 @@ img.absolute {
   margin: 0 0.2rem;
   display: inline;
 }
-.form{
-  margin: 1.6rem 0;
-}
+
 .field-lable{
   font-weight: bold;
   padding-top: 0.7rem;
@@ -1892,3 +1890,12 @@ li{
 	margin-top: 0.5rem;
 }
 
+.advanced{
+	width: 66%;
+}
+.adv-field-lable{
+  width: 20rem;
+}
+.adv-field-area{
+  width: calc(100% - 20rem);
+}
