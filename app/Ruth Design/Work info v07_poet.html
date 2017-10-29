@@ -155,7 +155,7 @@
 
 	
       <div aria-label="תיבת כלים" id="toolbox" role="group">
-   	  <div id="work-view" style="width: 10rem; text-align: center; margin-bottom: 2rem; position: relative;"><a href="#"><div ><button class="work-view btn"><i class="icon-byread-present"></i></button></div><p>מצב קריאה</p></a></div>
+   	  <div id="work-view" style="width: 10rem; text-align: center; margin-bottom: 2rem; position: relative;"><a href="#"><div ><button class="work-view btn"><i class="icon-byread"></i></button></div><p>מצב קריאה</p></a></div>
    	  
       <div class="btn-group-vertical">
         <button class="toolbox-cell darkoldpink"><i class="icon-bybookmark-empty"></i><span class="tooltiptext">הוספת סימניה</span></button>
@@ -253,7 +253,7 @@
       <div class="icon result-links" style="margin-top: 0.4rem"><a href=""><i class="fa fa-heart-o"></i></a></div>
       <div class="icon result-links" style="margin-top: 0.4rem; margin-right: 2.4rem"><a href=""><span class="icon-bybookshelf"></span></a></div>
       <div style="position: relative; float:right; display: inline;width: calc(100% - 8rem)">
-  <select>
+  <select style="width: 100%">
        <option>רוצה לקרוא?</option>
     <option value="want-to-read">רוצה לקרוא</option>
     <option value="will-read-later">אקרא מאוחר יותר</option>
@@ -357,16 +357,20 @@
       		  		<div class="tag-wait-confirm"><i class="fa fa-clock-o"></i></div>
       		  </div>
        		  </div>
-				<div id="add-tag" style="display: inline;float: left">
-   	 			  <form>
-   	 			    <div style="display:inline;float:right;margin-top:0.6rem;">
-   	 			      <input type="text" class="field" placeholder="הצעת תגית חדשה">
- 			        </div>
-       	 			  <div style="display: inline;">
-       	 			    <input type="submit" value="שליחה" class="btn" style="margin-top: 0.6rem; background-color: #d9cdd5">
-   	 			    </div>
-   	 			  </form>
-		       	</div>
+ <div id="add-tag" class="card" style="background-color: #fff;height:6.2rem">
+                  <div class="row tag-suggest card-content">
+                   <form>
+                    <div class="tag-txt">
+                       	<div style="display:inline; margin-top:1.3rem;">
+   	 			      		<input type="text" class="field" placeholder="הצעת תגית חדשה">
+ 			        	</div>
+                    </div>
+        			<div>
+						<input type="submit" value="שליחה" class="btn" style="background-color: #d9cdd5; margin-top: 0">
+					</div>
+                   </form>
+                  </div>
+                </div>
             </div>
             
             						<div id="work-recommend" style="margin-top:3rem">
@@ -404,14 +408,14 @@
        <div class="creator-bookmark-back"><img src="../assets/images/creator-bookmark-back2.png" width="159" height="6" alt=""/></div>
 <div class="creator-bookmark-front"><img src="Portraits/Rachel_1040.jpg" width="159" alt=""/></div>      
     <div class="card-content near-picture">
-            <div class="headline-4">
+            <div class="headline-4" style="padding-top: 0; padding-bottom: 0.6rem">
               <p>יצירותיה הנקראות ביותר של רחל</p>
             </div>
       		<p>1.&nbsp;<a href="#">״רק על עצמי</a> (שירה)</p>
 			<p>2.&nbsp;<a href="#">״קינאה״</a> (שירה, תרגום)</p>
       		<p>3.&nbsp;<a href="#">״פגישה, חצי פגישה״</a> (שירה)</p>
             <div class="headline-4">
-              <p style="margin:2rem 0 0 0;"><a href="#">לשאר תרגומי רחל</a></p>
+              <p ><a href="#">לשאר תרגומי רחל</a></p>
          	</div>
             <div class="headline-4">
               <p><a href="#">לכל יצירות השירה של רחל</a></p>
@@ -435,7 +439,7 @@
        <div class="creator-bookmark-back"><img src="../assets/images/creator-bookmark-back2.png" width="159" height="6" alt=""/></div>
 <div class="creator-bookmark-front"><img src="Portraits/placeholder_man.jpg" width="159" alt=""/></div>      
     <div class="card-content near-picture">
-            <div class="headline-4">
+            <div class="headline-4" style="padding-top: 0; padding-bottom: 0.6rem">
               <p>יצירותיו המתורגמות הנקראות ביותר של א. פושקין</p>
             </div>
       		<p>1.&nbsp;<a href="#">״רק על עצמי</a> (שירה)</p>

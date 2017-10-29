@@ -222,14 +222,13 @@ padding-top: 0.8rem;
 .headline-3 {
 font-size: 1.8rem;
 font-weight: bold;
-margin-bottom: 0.4rem;
-margin-top: 0rem;
-padding-top: 0.8rem;
+padding-bottom:0.6rem;
+padding-top: 0.6rem;
 }
+
 .headline-4 {
 font-weight: bold;
-margin-top: 1.2rem;
-margin-bottom: 0.4rem;
+padding-top: 2rem;
 }
 .headline-5{
   font-weight: bold;
