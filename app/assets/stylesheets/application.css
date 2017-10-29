@@ -1798,7 +1798,7 @@ img.recommend-absolute {
 .search-right{
   width: 75%;
   height: 100%;
-  padding: 3rem 10rem 0rem 10rem;
+  padding: 3rem 1.5rem 0rem 10rem;
   display: inline-block;
 	float: right;
 }
