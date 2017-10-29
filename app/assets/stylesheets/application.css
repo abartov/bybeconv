@@ -1250,6 +1250,11 @@ rgba(0,0,0, .5);
   min-height: 11rem;
   margin: 1.2rem 0;
 }
+.tag-suggest {
+  height: auto;
+  min-height: 11rem;
+  margin: 1.2rem 0;
+}
 .rec-user{
   width: 11rem;
   height: auto;
@@ -1289,7 +1294,12 @@ rgba(0,0,0, .5);
   padding: 1.5rem 0rem;
 }
 
-
+.tag-txt{
+  width: calc(100% - 10rem);
+  height: auto;
+  display: inline;
+  float:right;
+}
 
 .slick-arrow {
   color:#660248;
@@ -1501,7 +1511,7 @@ img.bysurprise-absolute {
   width:9rem;
     float: right;
     position: fixed;
-	top: 20rem;
+	top:28.6rem;
     z-index: 6;
 }
 #toolbox-read {
