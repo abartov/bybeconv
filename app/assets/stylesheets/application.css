@@ -305,7 +305,7 @@ padding-bottom: 0.6rem;
   width: 100%;
   height: 3rem;
   z-index: 6;
-  top: 13.8rem;
+  top: 7.8rem;
 }
 .scroll-gradient-b{
   background-image: -moz-linear-gradient( -90deg, rgb(255,255,255) 0%, rgba(255,255,255,0) 100%);
@@ -360,9 +360,22 @@ padding-bottom: 0.6rem;
   margin-bottom: 2.2rem;
 	max-width: 30rem;
 }
+#site-logo-scroll{
+  margin-top: 0.8rem;
+  margin-bottom: 0.6rem;
+	max-width: 20rem;
+}
 #navbar-full-width{
   box-sizing: border-box;
   height: 6rem;
+  border-top: 0.2rem solid #d9cdd5;
+  border-bottom: 0.2rem solid #d9cdd5;
+  font-size: 1.4rem;
+  color: #907989;
+}
+#navbar-full-width-scroll{
+  box-sizing: border-box;
+  height: 3.2rem;
   border-top: 0.2rem solid #d9cdd5;
   border-bottom: 0.2rem solid #d9cdd5;
   font-size: 1.4rem;
@@ -385,6 +398,9 @@ padding-bottom: 0.6rem;
 #navbar{
   padding-top: 1rem;
 }
+#navbar-scroll{
+	padding-top: 0.4rem;
+}
 #author-navbar{
   height: 2.8rem;
   padding-top: 0.4rem;
@@ -396,6 +412,15 @@ padding-bottom: 0.6rem;
   float: right;
   color: #2b0d22;
 }
+.nav-scroll {
+  font-size: 1.4rem;
+  height: auto;
+  float: right;
+  color: #2b0d22;
+	padding-right: 0;
+}
+
+
 
 ul {
  padding-right:0;
@@ -407,6 +432,10 @@ ul {
   display: inline;
 	  /* vertical alignment */
  }
+.nav-scroll li{
+  margin: 0 0 0 3rem;
+  display: inline;	
+}
 li :active{
   font-weight: bold;
 }
@@ -496,8 +525,26 @@ option:first {
   font-size: 1.6rem;
   text-indent: 6px;
 }
-
 .search .fa-search {
+  position: absolute;
+  top: 0.6rem;
+  left: 0;
+  color: #660248;
+  font-size: 1.8rem;
+}
+.search-scroll {
+  position: relative;
+  padding: 0;
+}
+
+.search-scroll input {
+	background-color: #fff;
+  width: 100%;
+
+}
+
+
+.search-scroll .fa-search {
   position: absolute;
   top: 0.6rem;
   left: 0;
@@ -564,6 +611,15 @@ option:first {
   background-position: center;
   box-shadow: inset 0px 3px 10px rgba(69, 42, 14, .35);
   margin-top: 13.8rem;
+}
+.welcome-scroll {
+  height: auto;
+  background-color: #dbd5da;
+  background-image: url(/assets/welcome_bg.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  box-shadow: inset 0px 3px 10px rgba(69, 42, 14, .35);
+  margin-top: 7.8rem;
 }
 
 .welcome-content {
