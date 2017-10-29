@@ -1801,3 +1801,10 @@ padding-top: 0.8rem;
 .form-line{
 	margin-top: 2rem;
 }
+ol {
+	padding-right: 1.5rem;
+}
+li{
+	margin-top: 0.5rem;
+}
+
