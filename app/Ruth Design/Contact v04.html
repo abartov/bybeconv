@@ -145,26 +145,25 @@
 	<form class="form" style="width: 92%;">      
        <div class="row form-line">
         <div class="col-sm-3 col-xs-12"><p class="field-lable">שם פרטי ושם משפחה:</p></div>
-        <div class="col-sm-9 col-xs-12"><input type="text" name="fullname" class="field"></div>
+        <div class="col-sm-9 col-xs-12"><input type="text" name="fullname" class="field contact-field"></div>
          
         </div>
                <div class="row form-line">
         <div class="col-sm-3 col-xs-12"><p class="field-lable">כתובת דואר אלקטרוני:</p></div>
-        <div class="col-sm-9 col-xs-12"><input type="email" name="email" class="field field-error" value="ruthyoel@gmail">
-                   <div class="field-error-message">כתובת הדואר האלקטרוני אינה תקינה</div>
-           </div>
-            </div>
-               <div class="row form-line">
+        <div class="col-sm-9 col-xs-12"><input type="email" name="email" class="field contact-field"></div>
+       
+        </div>
+               <div class="row form-line" style="display: r">
         <div class="col-sm-3 col-xs-12"><p class="field-lable">נושא הפניה:</p></div>
         <div class="col-sm-9 col-xs-12">
           <div style="position: relative">
-            <select name="subject" class="field">
+            <select name="subject" class="field contact-field">
               <option value="" disabled selected>בחירה</option>
               <option value="question">שאלה</option>
               <option value="suggestion">הצעה</option>
               <option value="support">תמיכה</option>
             </select>
-            <div><a class="dropdown-arrow" style="left:0;"><i class="fa fa-angle-down"></i></a></div>
+            <div><a class="dropdown-arrow" style="left:0.2rem;"><i class="fa fa-angle-down"></i></a></div>
           </div>
 
          <span class="add-icon"><em class="fa fa-plus-circle"></em></span></div>
@@ -172,20 +171,19 @@
         </div>
                        <div class="row form-line">
         <div class="col-sm-3 col-xs-12"><p class="field-lable">תוכן הפניה:</p></div>
-        <div class="col-sm-9 col-xs-12"><textarea type="text" name="content" class="textarea" rows="8"></textarea></div>
+        <div class="col-sm-9 col-xs-12"><textarea type="text" name="content" class="textarea contact-textarea" rows="8"></textarea></div>
         
         </div>
                                <div class="row">
         <div class="col-sm-3 col-xs-12"></div>
         <div class="col-sm-9 col-xs-12">
-          <div>
+          <div class="form-buttons">
             <input type="submit" value="שליחה" class="btn">
           </div>
 		</div>
          
         </div>
       </form>
-      
                 <div style="margin:3rem 0 0 0;"><a href="#" target="#">לדף הבית</a></div>
 
     </div>
