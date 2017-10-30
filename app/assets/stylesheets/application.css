@@ -1248,8 +1248,6 @@ rgba(0,0,0, .5);
 }
 .tag-suggest {
   height: auto;
-  min-height: 11rem;
-  margin: 1.2rem 0;
 }
 .rec-user{
   width: 11rem;
@@ -1463,7 +1461,8 @@ rgba(0,0,0, .5);
 background-position: left bottom;
  background-repeat: no-repeat;
  position: relative;
-  height: 13rem; border: 1px solid #d9cdd5;
+  height: 13rem; 
+	border: 1px solid #d9cdd5;
 }
 .bysurprise-text{
   width: calc(100% - 158px);
@@ -1898,4 +1897,14 @@ li{
 }
 .adv-field-area{
   width: calc(100% - 20rem);
+}
+.search-filter{
+	font-size: 1.4rem;
+}
+.filter-options{
+	margin-left: 1.5rem;
+  border-top: solid 2px #eeeced;
+  border-bottom: solid 2px #eeeced;
+
+	padding: 0.2rem 0 1rem 0;
 }
