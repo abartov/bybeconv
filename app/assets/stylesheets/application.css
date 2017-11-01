@@ -489,7 +489,6 @@ select{
 	position: relative;
 }
 .select-popup{
-	background-color: #eeeced;
 	width: 100%;
 }
 ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
@@ -1908,4 +1907,13 @@ li{
   border-bottom: solid 2px #eeeced;
 
 	padding: 0.2rem 0 1rem 0;
+}
+.modal-dialog:after {
+	content: "";
+  position: absolute;
+	margin-top: 50%;
+    right: -28px;
+    border-width: 14px;
+    border-style: solid;
+    border-color: transparent transparent transparent #fff ;
 }
