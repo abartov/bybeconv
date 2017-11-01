@@ -934,7 +934,6 @@ img.absolute {
 }
 
 .years{
-  width: 100%;
 	padding: 0;
 }
 .add-icon {
@@ -1228,6 +1227,7 @@ rgba(0,0,0, .5);
 	font-size: 2.6rem;
 	left:0.6rem;
 	top: -0.4rem;
+	color: #907989;
 }
 .tag-close a:hover{
 	color: #56003D;
@@ -1818,15 +1818,16 @@ img.recommend-absolute {
 	color: #660248;
 }
 .right-sort{
-	width:19rem;display: inline;float: right;
+	width:24rem;display: inline;float: right;
 }
 .results-area{
-  margin-right: 20rem;
-  width: calc(100% - 20rem);
+  margin-right: 26rem;
+  width: calc(100% - 26rem);
 }
 .result-card{
   height: 12rem;
 	margin-bottom: 1.4rem;
+	margin-right:1.2rem;
 }
 .result-pic{
   width:8.3rem;
@@ -1893,10 +1894,10 @@ li{
 	width: 66%;
 }
 .adv-field-lable{
-  width: 20rem;
+  width: 26rem;
 }
 .adv-field-area{
-  width: calc(100% - 20rem);
+  width: calc(100% - 26rem);
 }
 .search-filter{
 	font-size: 1.4rem;

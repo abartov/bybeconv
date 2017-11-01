@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Search suggestion</title>
+    <title>Search results</title>
     <!-- Bootstrap -->
 	<link href="css/bootstrap.min.css" rel="stylesheet">
 	<link href="css/bootstrap-rtl.min.css" rel="stylesheet" type="text/css">
@@ -136,48 +136,47 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-1"></div>
+    
 	<div class="col-md-10">
 		<div class="headline-1">חיפוש</div>
 <div class="container-fluid" style="padding:0">
-  <div class="col-md-9" style="padding-right: 0;padding-left: 0;padding-bottom: 1.2rem">
-    <div class="right-sort" style="margin-top: 0.8rem"></div>
-    <div class="results-area">
-      <div style="width: 10rem; display: inline; float: right; padding-top: 0.8rem">טקסט חופשי:</div>      
-      <div class="search field main-search-field" style="width: calc(100% - 20rem);display: inline-block">
+  <div class="col-md-8" style="padding-right: 0;padding-left: 0;padding-bottom: 1.2rem">
+    <div class="right-sort" style="margin-top: 0.8rem">טקסט חופשי:</div>
+    <div class="results-area">      
+      <div class="search field main-search-field" style="width: calc(100% - 24rem);display: inline-block">
         <span class="fa fa-search search-icon"></span>
         <input value="שלום">
         </div>
-        <div style="display: inline; float: left; position: relative; top: 0.6rem"><a href="#">חיפוש מתקדם</a></div>
-
+        <div style="display: inline; float: left; position: relative; top: 0.6rem"><a href="#">מעבר לחיפוש מתקדם</a></div>
 
     </div>
   </div>
-</div>
-
 	</div>
+    </div>
+    
 	<div class="col-md-1"></div>
   </div>
 </div>
 
- <div class="container-fluid" style="padding-right: 0; padding-left: 0">
-		<div class="h_separator"></div>
-</div>
-
 <div class="container-fluid">
-  	<div class="row">
+  <div class="row">
     <div class="col-md-1"></div>
-    <div class="col-md-10">
-    	        <div>
-          <div style="display: inline-block;float:right;padding-top: 0.6rem; padding-bottom: 0.6rem">
-            <div style="display: inline; float: right;padding-top: 0.3rem"><span style="font-weight: bold; font-size: 1.8rem">1,235</span> תוצאות נמצאו עבור</div>
-            <div class="card tag-card" style="display: inline; float: right; margin: 0 0.8rem"><div class="tag-content">שירה</div></div>
-<div class="card tag-card" style="display: inline; float: right; margin: 0 0.8rem"><div class="tag-content">פרוזה</div></div>
-<div class="card tag-card" style="display: inline; float: right; margin: 0 0.8rem"><div class="tag-content">אהבה לא ממומשת</div></div>
-		<div class="card tag-card" style="display: inline; float: right; margin: 0 0.8rem"><div class="tag-content">1914-1936</div></div>
-			<div style="display: inline; float: right;padding-top: 0.6rem">: ״<span style="font-weight: bold">שלום</span>״</div>
-         </div>
-          <div style="float: left">
-            <div class="headline-3" style="display: inline;float:right; padding: 1rem 2rem">מיון לפי: </div>
+	<div class="col-md-10">
+<div class="container-fluid" style="padding:0">
+  <div class="col-md-8" style="padding-right: 0;padding-left: 0;padding-bottom: 1.2rem">
+    <div class="results-area">      
+   
+        <div>
+          <div style="display: inline;float:right;padding-top: 0.7rem"><span style="font-weight: bold; font-size: 1.8rem">1,235</span> תוצאות נמצאו עבור החיפוש ״<span style="font-weight: bold">שלום</span>״</div>
+
+        
+        </div>
+
+    </div>
+  </div>
+  <div class="col-md-4"  style="padding-left: 0">
+  	          <div id="sort-by" style="float: left">
+            <div style="display: inline;float:right; padding: 1rem 2rem">מיון ע״פ: </div>
         
           
           <div style="position: relative; inline; width: 16rem;float: right">
@@ -191,13 +190,13 @@
           </div>
 
               </div>
+  </div>
+</div>
+	
 
-        
-        </div>
     </div>
-    <div class="col-md-1"></div>
-
-	</div>
+	<div class="col-md-1"></div>
+  </div>
 </div>
 
  <div class="container-fluid" style="padding-right: 0; padding-left: 0">
@@ -211,9 +210,9 @@
 
 
 <div class="container-fluid" style="padding:3rem 0 0 0">
-  <div class="col-md-9" style="padding-right: 0;padding-left: 0;">
+  <div class="col-md-8" style="padding-right: 0;padding-left: 0;">
   <div class="right-sort">
-    <div class="headline-3" style="padding-top: 0">סינון לפי:</div>
+    <div class="headline-3" style="padding-top:5.2rem">סינון תוצאות חיפוש</div>
     
 <div class="search-filter">
       <div class="headline-4"><a href="#">יוצרים<span class="fa fa-angle-down" style="padding-top: 0.3rem;padding-right: 0.6rem"></span></a></div>
@@ -225,14 +224,9 @@
   <label class="checkbox-inline" style="margin-top:0.8rem;"><input type="checkbox" name="poetry" value="yes">שירה (501)</label> 
 </div>
 <div>
-  <label class="checkbox-inline" style="margin-top:0.8rem;"><input type="checkbox" name="prose" value="yes">פרוזה (692)</label> 
+  <label class="checkbox-inline" style="margin-top:0.8rem;"><input type="checkbox" name="prose" value="yes">פרוזה (24)</label> 
 </div>
-<div>
-  <label class="checkbox-inline" style="margin-top:0.8rem;"><input type="checkbox" name="articles" value="no">מאמרים, מסות, עיון (36)</label> 
-</div>
-<div>
-  <label class="checkbox-inline" style="margin-top:0.8rem;"><input type="checkbox" name="index" value="no">ערכי מילון (6)</label> 
-</div>
+
       </div>
           </div>
 <div class="search-filter">
@@ -242,48 +236,27 @@
       <div class="headline-4"><a href="#">סוגי התוצאות<span class="fa fa-angle-down" style="padding-top: 0.3rem;padding-right: 0.6rem"></span></a></div>
       </div>
 <div class="search-filter">
-      <div class="headline-4"><a href="#">מקור / תרגום<span class="fa fa-angle-down" style="padding-top: 0.3rem;padding-right: 0.6rem"></span></a></div>
-      </div>
-<div class="search-filter">
       <div class="headline-4"><a href="#">תגיות<span class="fa fa-angle-up" style="padding-top: 0.3rem;padding-right: 0.6rem"></span></a></div>
       <div class="filter-options">
 <div>
-  <label class="checkbox-inline" style="margin-top:0.8rem;"><input type="checkbox" name="poetry" value="yes">שירי אהבה (32)</label> 
+  <label class="checkbox-inline" style="margin-top:0.8rem;"><input type="checkbox" name="poetry" value="yes">שירי אהבה (5)</label> 
 </div>
-<div>
-  <label class="checkbox-inline" style="margin-top:0.8rem;"><input type="checkbox" name="prose" value="yes">תפילות (19)</label> 
-</div>
-<div>
-  <label class="checkbox-inline" style="margin-top:0.8rem;"><input type="checkbox" name="articles" value="no">נעורים (9)</label> 
-</div>
+
 <div>
   <label class="checkbox-inline" style="margin-top:0.8rem;"><input type="checkbox" name="index" value="no">אהבה לא ממומשת (6)</label> 
 </div>
      <div>
-  <label class="checkbox-inline" style="margin-top:0.8rem;"><input type="checkbox" name="index" value="no">מעגליות בשירה (3)</label> 
+  <label class="checkbox-inline" style="margin-top:0.8rem;"><input type="checkbox" name="index" value="no">מעגליות בשירה (1)</label> 
 </div>
      <div style="padding-top: 0.6rem">
 <a href="#">עוד<span class="fa fa-angle-left baseline" style="margin-right: 0.6rem"></span></a></div>
       </div>
           </div>
-<div class="search-filter">
-      <div class="headline-4"><a href="#">תקופה<span class="fa fa-angle-down" style="padding-top: 0.3rem;padding-right: 0.6rem"></span></a></div>
-      </div>
-<div class="search-filter">
-      <div class="headline-4"><a href="#">זכויות יוצרים<span class="fa fa-angle-down" style="padding-top: 0.3rem;padding-right: 0.6rem"></span></a></div>
-      </div>
-<div class="search-filter">
-      <div class="headline-4"><a href="#">מגדר<span class="fa fa-angle-down" style="padding-top: 0.3rem;padding-right: 0.6rem"></span></a></div>
-      </div>
-<div class="search-filter">
-      <div class="headline-4"><a href="#">חיפוש במילונים<span class="fa fa-angle-down" style="padding-top: 0.3rem;padding-right: 0.6rem"></span></a></div>
-      </div>
-    
-    
+
   </div>
     <div class="results-area" id="work-side">
      
-     		<div class="bypagination" style="padding-bottom: 3rem">
+     	<div class="bypagination" style="padding-bottom: 3rem">
 				  <ul>
             	<li><a href="#" style="color: #d9cdd5;"><span class="fa fa-angle-right baseline"></span>&nbspלדף התוצאות הקודם</a></li>
 				<li><a href="#">1</a></li>
@@ -293,61 +266,21 @@
 				<li><a href="#">5</a></li>
             	<li><a href="#">לדף התוצאות הבא&nbsp<span class="fa fa-angle-left baseline"></span></a></li>
              </ul>
-             </div>
-     
-      <div class="card result-card">
-        <div class="result-pic"><img src="Portraits/Shalom Aleichem_1040.jpg" height="120"></div>
-        <div class="result-text">
-          <div class="result-info">
-            <div class="result-headline"><span style="font-weight: bold"><a href="#">שלום</a></span><a href="#" class="result-headline"> עליכם</a>&nbsp (1859 - 1916)</div>
-            <p>הוא שם העט של שלום (בן נחום) רבינוביץ׳, מגדולי הסופרים ביידיש.</p>
             </div>
-          
-          
-          <div class="result-share">
-            <div style="display: inline-block">
-              <div class="card-content" style="width=100%; padding-bottom: 0rem;">
-                <div class="card-header-element darkoldpink" style="padding-left: 1rem">
-                  <div class="icon icons-raw"><a href=""><i class="fa fa-download"></i></a></div>
-                  <div class="icon icons-raw"><a href=""><i class="fa fa-print"></i></a></div>
-                  <div class="icon icons-raw"><a href=""><i class="fa fa-quote-right"></i></a></div>
-                  </div>
-                <div class="card-header-element darkoldpink">
-                  <div class="icon icons-raw"><a href=""><i class="fa fa-facebook-square"></i></a></div>
-                  <div class="icon icons-raw"><a href=""><i class="fa fa-whatsapp"></i></a></div>
-                  <div class="icon icons-raw"><a href=""><i class="fa fa-twitter"></i></a></div>
-                  <div class="icon icons-raw"><a href=""><i class="fa fa-envelope"></i></a></div>
-                  </div>
-                <div class="card-header-element darkoldpink">
-                  <div style="display: inline-block;width: 26rem;margin-top: -1.2rem; margin-right: 1.2rem">
-                    <div style="position: relative">
-                      <div class="icon result-links"><a href=""><i class="fa fa-heart-o"></i></a></div>
-                      <div class="icon result-links" style="margin-right: 0.8rem"><a href=""><span class="icon-bybookshelf"></span></a></div>
-                      <div style="position: relative; float:right; display: inline;width: calc(100% - 6.6rem)">
-                        <select class="select-popup">
-                          <option>רוצה לקרוא?</option>
-                          <option value="want-to-read">רוצה לקרוא</option>
-                          <option value="will-read-later">אקרא מאוחר יותר</option>
-                          <option value="maybe-will-read">אולי אקרא</option>
-                          </select>
-                        <div><a class="dropdown-arrow" style="left: 0"><i class="fa fa-angle-down"></i></a></div>
-                        </div>
-                      </div>
-                    
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      <div class="card result-card">
+<div id="filters" style="display: inline-block; height:32px; margin-bottom: 1.2rem; padding-right: 0.8rem">
+		            <div class="card tag-card" style="display: inline; float: right; margin: 0 0.8rem"><div class="tag-content">סוגה: שירה</div><div class="tag-close"><a href="#">&times;</a></div></div>
+					<div class="card tag-card" style="display: inline; float: right; margin: 0 0.8rem"><div class="tag-content">תגית: אהבה לא ממומשת</div><div class="tag-close"><a href="#">&times;</a></div></div>
+					<div class="card tag-card" style="display: inline; float: right; margin: 0 0.8rem"><div class="tag-content">שנת פרסום: 1914-1936</div><div class="tag-close"><a href="#">&times;</a></div></div>
+		</div>
+<ol>	
+ 
+ <li class="card result-card">
         <div class="result-pic">
           <div class="vcentered"><span class="icon-bywork"></span></div>
           </div>
         <div class="result-text">
           <div class="result-info">
-            <div class="result-headline"><a href="#">דברי <span style="font-weight: bold">שלום</span>&nbsp</a>מאת <a href="#">אחד העם</a>&nbsp (מאמרים, מסות, עיון)</div>
+            <div class="result-headline"><a href="#">שירי <span style="font-weight: bold">שלום</span>&nbsp</a>מאת <a href="#">אחד העם</a>&nbsp (שירה)</div>
             <p>״על כן מיהרתי להדפיס את המכתב היקר עם הוספת איזו דברים מצדי, אשר בהם לא כחדתי שמחתי הגדולה על כי רב וגאון מדבר דברי <span style="font-weight: bold">שלום</span> ולבו מלא אהבה לכל העם...״</p>
             </div>
           
@@ -388,14 +321,14 @@
               </div>
             </div>
           </div>
-        </div>
-      <div class="card result-card">
+        </li>
+ <li class="card result-card">
         <div class="result-pic">
           <div class="vcentered"><span class="icon-bywork"></span></div>
           </div>
         <div class="result-text">
           <div class="result-info">
-            <div class="result-headline"><a href="#">דברי <span style="font-weight: bold">שלום</span>&nbspואמת</a>&nbspמאת <a href="#">יוסף ריבלין</a>&nbsp (מאמרים, מסות, עיון)</div>
+            <div class="result-headline"><a href="#">צחוק <span style="font-weight: bold">שלום</span>&nbspואמת</a>&nbspמאת <a href="#">יוסף ריבלין</a>&nbsp (שירה)</div>
             <p>״פרוד הדעות בינינו ובין אחדים מהעוסקים ברעיון הישוב בא״י הביא לידי מלחמת דברים בכתב ובדפוס, אשר לו היתה מתונה כמשפט הביא לבירור הדברים וממילא גם...</p>
             </div>
           
@@ -436,14 +369,14 @@
               </div>
             </div>
           </div>
-        </div>
-      <div class="card result-card">
+        </li>
+ <li class="card result-card">
         <div class="result-pic">
           <div class="vcentered"><span class="icon-bywork"></span></div>
           </div>
         <div class="result-text">
           <div class="result-info">
-            <div class="result-headline"><a href="#">דמי חנוכה</a>&nbspמאת <span style="font-weight: bold"><a href="#">שלום</a></span><a href="#"> עליכם</a>&nbsp (פרוזה)</div>
+            <div class="result-headline"><a href="#">דמי פורים</a>&nbspמאת <span style="font-weight: bold"><a href="#">שלום</a></span><a href="#"> עליכם</a>&nbsp (שירה)</div>
             <p>״סיפור לילדי בני ישראל. [א]. ״הנרות הללו שאנו מדליקין״ כבר הוכנו מבעוד יום ואבינו מטייל בבית הנה והנה, כשידיו נתונות לאחוריו, ומתפלל תפילת ערבית; ומכיוון...״</p>
             </div>
           
@@ -484,8 +417,8 @@
               </div>
             </div>
           </div>
-        </div>
-      <div class="card result-card">
+        </li>
+ <li class="card result-card">
         <div class="result-pic">
           <div class="vcentered"><span class="icon-bywork"></span></div>
           </div>
@@ -532,56 +465,9 @@
               </div>
             </div>
           </div>
-        </div>
-      <div class="card result-card">
-        <div class="result-pic">
-          <div class="vcentered"><span class="icon-bylexicon"></span></div>
-          </div>
-        <div class="result-text">
-          <div class="result-info">
-            <div class="result-headline"><span style="font-weight: bold"><a href="#">שלום</a></span><a href="#"> בית</a>&nbsp (ערך מילוני)</div>
-            <p>המושג מתייחס ליחסים האידאליים שבין בני זוג נשואים, כאשר קיימת הרמוניה ביניהם, בלי חיכוכים ומריבות. אך מובן שכדי להגיע למצב כזה נדרשת הרבה עבודה עצמית...</p>
-            </div>
-          
-          
-          <div class="result-share">
-            <div style="display: inline-block">
-              <div class="card-content" style="width=100%; padding-bottom: 0rem;">
-                <div class="card-header-element darkoldpink" style="padding-left: 1rem">
-                  <div class="icon icons-raw"><a href=""><i class="fa fa-download"></i></a></div>
-                  <div class="icon icons-raw"><a href=""><i class="fa fa-print"></i></a></div>
-                  <div class="icon icons-raw"><a href=""><i class="fa fa-quote-right"></i></a></div>
-                  </div>
-                <div class="card-header-element darkoldpink">
-                  <div class="icon icons-raw"><a href=""><i class="fa fa-facebook-square"></i></a></div>
-                  <div class="icon icons-raw"><a href=""><i class="fa fa-whatsapp"></i></a></div>
-                  <div class="icon icons-raw"><a href=""><i class="fa fa-twitter"></i></a></div>
-                  <div class="icon icons-raw"><a href=""><i class="fa fa-envelope"></i></a></div>
-                  </div>
-                <div class="card-header-element darkoldpink">
-                  <div style="display: inline-block;width: 26rem;margin-top: -1.2rem; margin-right: 1.2rem">
-                    <div style="position: relative">
-                      <div class="icon result-links"><a href=""><i class="fa fa-heart-o"></i></a></div>
-                      <div class="icon result-links" style="margin-right: 0.8rem"><a href=""><span class="icon-bybookshelf"></span></a></div>
-                      <div style="position: relative; float:right; display: inline;width: calc(100% - 6.6rem)">
-                        <select class="select-popup">
-                          <option>רוצה לקרוא?</option>
-                          <option value="want-to-read">רוצה לקרוא</option>
-                          <option value="will-read-later">אקרא מאוחר יותר</option>
-                          <option value="maybe-will-read">אולי אקרא</option>
-                          </select>
-                        <div><a class="dropdown-arrow" style="left: 0"><i class="fa fa-angle-down"></i></a></div>
-                        </div>
-                      </div>
-                    
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-	  <div class="card result-card">
+        </li>
+
+ <li class="card result-card">
         <div class="result-pic">
           <div class="vcentered"><span class="icon-bybook"></span></div>
           </div>
@@ -628,35 +514,8 @@
               </div>
             </div>
           </div>
-        </div>
-      <div class="card result-card">
-        <div class="result-pic">
-          <div class="vcentered"><i class="fa fa-pencil-square-o" style="padding-top:0.8rem;"></i></div>
-          </div>
-        <div class="result-text">
-          <div class="result-info">
-            <div class="result-headline"><a href="#">גורקי אוהב את <span style="font-weight: bold">שלום</span> עליכם</a>&nbsp (יומן הרשת)</div>
-            <p>בשנת 1906, כתב הסופר הרוסי מקסים גורקי איגרת קצרה ל<span style="font-weight: bold">שלום</span> עליכם, לאמור: את ספרך קיבלתי, קראתי, צחקתי ובכיתי - ספר נפלא! התרגום, נדמה לי, עשוי...״</p>
-            </div>
-          
-          
-          <div class="result-share">
-            <div style="display: inline-block">
-              <div class="card-content" style="width=100%; padding-bottom: 0rem;">
-                
-                <div class="card-header-element darkoldpink">
-                  <div class="icon icons-raw"><a href=""><i class="fa fa-facebook-square"></i></a></div>
-                  <div class="icon icons-raw"><a href=""><i class="fa fa-whatsapp"></i></a></div>
-                  <div class="icon icons-raw"><a href=""><i class="fa fa-twitter"></i></a></div>
-                  <div class="icon icons-raw"><a href=""><i class="fa fa-envelope"></i></a></div>
-                  </div>
-                
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      <div class="card result-card">
+        </li>
+ <li class="card result-card">
         <div class="result-pic">
           <div class="vcentered"><i class="fa fa-youtube-play" style="padding-top:0.8rem;"></i></div>
           </div>
@@ -682,7 +541,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </li></ol>
         
             <div class="bypagination" style="padding-top: 1rem">
 				  <ul>
@@ -696,15 +555,11 @@
              </ul>
              </div>
       
-      <div class="container-fluid">
-        </div>
-      <div class="card search-card">    
-        
-        
-        </div>
     </div>
   </div>
-  <div class="col-md-3"><a href="#">פעולה על מספר תוצאות</a></div>
+  <div class="col-md-4" style="padding-left: 0">
+    <div style="float:left"><a href="#">פעולה על מספר תוצאות</a></div>
+  </div>
 </div>
  </div>
      <div class="col-md-1"></div>
