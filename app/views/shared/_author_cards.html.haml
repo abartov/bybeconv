@@ -89,9 +89,8 @@
           .btn
             %p.vcentered
               %a{ style:'color:white', href: author_toc_path(author.id)}
-                = t(:to_the_author_page)
-                - if author.gender == 'female'
-                  = 'ת'
+                - suffix = (author.gender == 'female' ? 'ת' : '' )
+                = t(:to_the_author_page)+suffix
 :javascript
   $(document).ready(function() {
     $('[data-toggle="tooltip"]').tooltip();
