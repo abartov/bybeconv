@@ -51,7 +51,7 @@
         .creator-bookmark-back
           %img{src: '/assets/creator-bookmark-back2.png', width: 168, height: 6}
         .creator-bookmark-front
-          %img{src: author.profile_image.url(:thumb), height: 162}
+          %img{src: author.profile_image.url(:thumb), width: 162}
         .card-content.near-picture
           %p.headline-2{style: 'padding-top:0.4rem'}
             = link_to author.name, author_toc_path(author.id)
@@ -82,7 +82,7 @@
             %ol
               - author.most_read(5).each do |m|
                 - genre = m.expressions[0].genre
-                - genrebit = genre.nil? ? '' : " (#{textify_genre(genre)})"
+                - genrebit = genre.nil? ? '' : " (#{textify_genre(ignoregenre)})"
                 %li= link_to m.title+genrebit, manifestation_read_path(m.id)
 
         %div{ style:'position:relative; bottom: 6.5rem;left:4.4rem;'}
