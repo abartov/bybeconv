@@ -1,46 +1,47 @@
-%h1= t(:manage_people)
-= link_to t(:new_person), authors_new_path
-%br
-= form_tag do
-  = label_tag(t(:name))
-  = text_field_tag(:q, @q)
-  = submit_tag(t(:filter))
+.top-element
+  %h1= t(:manage_people)
+  = link_to t(:new_person), authors_new_path
+  %br
+  = form_tag do
+    = label_tag(t(:name))
+    = text_field_tag(:q, @q)
+    = submit_tag(t(:filter))
 
-%table{style: 'cell-spacing: 10;'}
-  %tr
-    %th= t(:name)
-    %th= t(:metadata_approved)
-    %th= t(:dates)
-    %th= t(:other_designation)
-    %th= t(:comment)
-    %th= t(:viaf_id)
-    %th= t(:nli_id)
-    %th
-    %th
-    %th
-    %th
-
-  - @people.each do |person|
+  %table{style: 'cell-spacing: 10;'}
     %tr
-      %td= link_to person.name, authors_show_path(id: person.id)
-      %td= person.metadata_approved ? t(:yes) : t(:no)
-      %td= "#{person.birthdate}  - #{person.deathdate}"
-      %td= person.other_designation
-      %td= person.has_comment? ? '+' : ''
-      %td= person.viaf_id
-      %td= person.nli_id
-      %td
-        - if person.toc.nil?
-          %span{style: 'color: red'}= t(:no_toc_yet)
-        - else
-          = link_to t(:show_toc), author_toc_path(person)
-      %td= link_to t(:edit), authors_edit_path(id: person.id)
-      %td
-        - unless person.toc.nil?
-          = link_to t(:edit_toc), authors_edit_toc_path(person)
-      %td= link_to t(:destroy), authors_destroy_path(person), :data => { :confirm => t(:are_you_sure) }
+      %th= t(:name)
+      %th= t(:metadata_approved)
+      %th= t(:dates)
+      %th= t(:other_designation)
+      %th= t(:comment)
+      %th= t(:viaf_id)
+      %th= t(:nli_id)
+      %th
+      %th
+      %th
+      %th
+
+    - @people.each do |person|
+      %tr
+        %td= link_to person.name, authors_show_path(id: person.id)
+        %td= person.metadata_approved ? t(:yes) : t(:no)
+        %td= "#{person.birthdate}  - #{person.deathdate}"
+        %td= person.other_designation
+        %td= person.has_comment? ? '+' : ''
+        %td= person.viaf_id
+        %td= person.nli_id
+        %td
+          - if person.toc.nil?
+            %span{style: 'color: red'}= t(:no_toc_yet)
+          - else
+            = link_to t(:show_toc), author_toc_path(person)
+        %td= link_to t(:edit), authors_edit_path(id: person.id)
+        %td
+          - unless person.toc.nil?
+            = link_to t(:edit_toc), authors_edit_toc_path(person)
+        %td= link_to t(:destroy), authors_destroy_path(person), :data => { :confirm => t(:are_you_sure) }
 
 
-%br
+  %br
 
-!= paginate @people
+  != paginate @people

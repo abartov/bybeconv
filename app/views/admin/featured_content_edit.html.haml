@@ -1,4 +1,5 @@
-%h1= "#{@fc.title}: #{t(:edit)}"
-= render partial: 'featured_content_form', locals: {action: :featured_content_update, fc: @fc}
-%p
-= link_to t(:back), featured_content_show_path(id: @fc.id)
+.top-element
+  %h1= "#{@fc.title}: #{t(:edit)}"
+  = render partial: 'featured_content_form', locals: {action: :featured_content_update, fc: @fc}
+  %p
+  = link_to t(:back), featured_content_show_path(id: @fc.id)
