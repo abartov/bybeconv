@@ -491,6 +491,10 @@ select{
 .select-popup{
 	width: 100%;
 }
+.select-card{
+	background-color: #eeeced;
+	width: 100%;
+}
 ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
   color:#907989;
 }
