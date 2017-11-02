@@ -1,93 +1,94 @@
-%h1= @author.name
-%p
-  %b= t(:last_update)+': '
-  = @author.updated_at.to_s
-%p
-  %b= t(:metadata_approved)+': '
-  = @author.metadata_approved ? t(:yes) : t(:no)
-/ partials?
-%b{ style: 'font-size: 2rem'}
-  = link_to t(:edit_metadata), authors_edit_path(id: @author.id)
-%br
-%b{ style: 'font-size: 2rem'}
-  = link_to t(:edit_toc), authors_edit_toc_path(id: @author.id)
-%table
-  %tr
-    %td
-      %h2= t(:basic_details)
-    %td
-      %h2= t(:identifiers)
-  %tr
-    %td
-      / ===== basic info =====
-      %b= t(:life_years)
-      != @author.life_years
-      = '('+t(:x_years_ago, years: @author.died_years_ago)+')'
-      %br
-      %b= t(:copyright_status)
-      - if @author.public_domain.nil?
-        %span{style: 'color:red'}= t(:unknown)
-      - else
-        - if @author.public_domain
-          %span{style: 'color:green'}= t(:public_domain)
+.top-element
+  %h1= @author.name
+  %p
+    %b= t(:last_update)+': '
+    = @author.updated_at.to_s
+  %p
+    %b= t(:metadata_approved)+': '
+    = @author.metadata_approved ? t(:yes) : t(:no)
+  / partials?
+  %b{ style: 'font-size: 2rem'}
+    = link_to t(:edit_metadata), authors_edit_path(id: @author.id)
+  %br
+  %b{ style: 'font-size: 2rem'}
+    = link_to t(:edit_toc), authors_edit_toc_path(id: @author.id)
+  %table
+    %tr
+      %td
+        %h2= t(:basic_details)
+      %td
+        %h2= t(:identifiers)
+    %tr
+      %td
+        / ===== basic info =====
+        %b= t(:life_years)
+        != @author.life_years
+        = '('+t(:x_years_ago, years: @author.died_years_ago)+')'
+        %br
+        %b= t(:copyright_status)
+        - if @author.public_domain.nil?
+          %span{style: 'color:red'}= t(:unknown)
         - else
-          %span{style: (@author.died_years_ago > 70 ? 'color:red' : 'color:green')}= t(:by_permission)
-      %br
-      %b= t(:gender)
-      = t(@author.gender.nil? ? :unknown : @author.gender)
-      %br
-      %b= t(:other_designation)
-      = @author.other_designation
-      %br
-      %b= t(:country)
-      = @author.country
-      %br
-      %b= t(:toc_status)
-      = @author.toc.nil? ? t(:no_toc_yet) : t(@author.toc.status)
-      %br
-      %b= t(:comments)
-      = @author.comment
-    %td
-      / ===== Identifiers =====
-      %b= t(:nli_id)
-      = @author.nli_id
-      %br
-      %b= t(:viaf_id)
-      != "&rlm;"
-      = @author.viaf_id
-      %br
-      %b= t(:wikidata_id)
-      - unless @author.wikidata_id.nil?
-        %a{ href: "https://wikidata.org/wiki/Q#{@author.wikidata_id}"}= @author.wikidata_id.to_s
-      %br
-      %b= t(:wikipedia_url)
-      %a{ href: @author.wikipedia_url}= t(:to_the_wikipedia_article)
-  %tr
-    %td
-      %h2= t(:content)
-    %td
-      %h2= t(:photo)
-  %tr
-    %td
-      %b= t(:works)
-      = link_to "#{@count[:works]} #{t(:works)}", author_toc_path(id: @author.id)
-      %br
-      %b= t(:translations_by)
-      = t(:TBD)
-      %br
-      %b= t(:works_about)
-      = t(:TBD)
-    %td
-      %p
-        = image_tag @author.profile_image.url(:thumb)
-%p
-= link_to t(:back), authors_list_path
+          - if @author.public_domain
+            %span{style: 'color:green'}= t(:public_domain)
+          - else
+            %span{style: (@author.died_years_ago > 70 ? 'color:red' : 'color:green')}= t(:by_permission)
+        %br
+        %b= t(:gender)
+        = t(@author.gender.nil? ? :unknown : @author.gender)
+        %br
+        %b= t(:other_designation)
+        = @author.other_designation
+        %br
+        %b= t(:country)
+        = @author.country
+        %br
+        %b= t(:toc_status)
+        = @author.toc.nil? ? t(:no_toc_yet) : t(@author.toc.status)
+        %br
+        %b= t(:comments)
+        = @author.comment
+      %td
+        / ===== Identifiers =====
+        %b= t(:nli_id)
+        = @author.nli_id
+        %br
+        %b= t(:viaf_id)
+        != "&rlm;"
+        = @author.viaf_id
+        %br
+        %b= t(:wikidata_id)
+        - unless @author.wikidata_id.nil?
+          %a{ href: "https://wikidata.org/wiki/Q#{@author.wikidata_id}"}= @author.wikidata_id.to_s
+        %br
+        %b= t(:wikipedia_url)
+        %a{ href: @author.wikipedia_url}= t(:to_the_wikipedia_article)
+    %tr
+      %td
+        %h2= t(:content)
+      %td
+        %h2= t(:photo)
+    %tr
+      %td
+        %b= t(:works)
+        = link_to "#{@count[:works]} #{t(:works)}", author_toc_path(id: @author.id)
+        %br
+        %b= t(:translations_by)
+        = t(:TBD)
+        %br
+        %b= t(:works_about)
+        = t(:TBD)
+      %td
+        %p
+          = image_tag @author.profile_image.url(:thumb)
+  %p
+  = link_to t(:back), authors_list_path
 
-/    t.text     "comment",           limit: 65535
-/    t.datetime "created_at",                      null: false
-/    t.datetime "updated_at",                      null: false
-/    t.integer  "toc_id",            limit: 4
-/  has_and_belongs_to_many :work
-/  has_and_belongs_to_many :expression
-/  has_and_belongs_to_many :manifestation
+  /    t.text     "comment",           limit: 65535
+  /    t.datetime "created_at",                      null: false
+  /    t.datetime "updated_at",                      null: false
+  /    t.integer  "toc_id",            limit: 4
+  /  has_and_belongs_to_many :work
+  /  has_and_belongs_to_many :expression
+  /  has_and_belongs_to_many :manifestation
 

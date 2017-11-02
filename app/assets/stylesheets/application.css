@@ -551,7 +551,9 @@ option:first {
   float: right;
   display: inline
 }
-
+.margintop2 {
+  margin-top: 2rem;
+}
 .english {
   float: left;
   text-align: left;
@@ -564,6 +566,9 @@ option:first {
   background-position: center;
   box-shadow: inset 0px 3px 10px rgba(69, 42, 14, .35);
   margin-top: 13.8rem;
+}
+.top-element {
+  margin-top: 14.4rem;
 }
 
 .welcome-content {
@@ -910,12 +915,11 @@ border-bottom: 0.2rem solid #d9cdd5;
 padding: 1.2rem 1.5rem 0 1.5rem;
 }
 .card-header-element{
-  float: right;
   margin-left: 1.2rem;
   display: inline;
 }
 .card-header-close{
-	font-size: 3rem;
+  font-size: 3rem;
 	opacity: 1;
 	color: #907989;
 	position: relative;
@@ -927,7 +931,6 @@ padding: 1.2rem 1.5rem 0 1.5rem;
 }
 .work-rights{
   padding-top: 2rem;
-  float: right;
   margin-left: 1rem;
   display: inline;
 }
@@ -940,8 +943,6 @@ padding: 1.2rem 1.5rem 0 1.5rem;
   min-height: 26rem;
 }
 .author-links{
-  margin-top: 1rem;
-  float: right;
   margin-left: 1.2rem;
   display: inline;
 }
@@ -958,7 +959,6 @@ padding: 1.2rem 1.5rem 0 1.5rem;
   width: 168px;
   height: 6px;
   float: left;
-  float: top;
   margin-left: 1.8rem;
   margin-top: -1.3rem;
   background-position: left;
@@ -967,14 +967,11 @@ padding: 1.2rem 1.5rem 0 1.5rem;
   z-index:3;
   width: auto;
   float: left;
-  float: top;
   margin-left: 1.5rem;
   margin-top: -0.6rem;
-
 }
 .creator-bookmark-front img{
   float: left;
-  float: top;
   border-top-left-radius: 0.6rem;
   border-bottom-left-radius: 0.2rem;
   border-bottom-right-radius: 0.2rem;
@@ -1792,9 +1789,9 @@ padding-top: 0.8rem;
   font-size:2rem;
   padding: 0.2rem;
   margin:0;
-  background-color: #eeeced; 
-  color: #907989; 
-  height:5rem; 
+  background-color: #eeeced;
+  color: #907989;
+  height:5rem;
   padding-top: 1.2rem;
   /* vertical alignment */
 }

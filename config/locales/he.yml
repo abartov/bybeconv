@@ -66,6 +66,8 @@ he:
   new_person: "מחבר/ת חדש/ה"
   join_volunteer: התנדבות להפקת תכנים
   donate_money: תרומה כספית
+  works_in_the_database: יצירות במאגר
+  their_most_read_works: "יצירותי%{gender_letter} הנקראות ביותר"
   html_file_published: הקובץ מהמערכת הישנה פורסם עתה במערכת החדשה, ונוסף לקטלוג המערכת!
   most_popular_authors: היוצרים הנקראים ביותר
   most_read_last_month: היצירות הנקראות ביותר בחודש החולף
@@ -206,6 +208,7 @@ he:
   homepage: דף הבית
   authors: יוצרים
   author_name: "שם היוצר/ת"
+  to_the_author_page: לדף היוצר
   genre: סוגה
   published_in_book: פורסם בספר
   edition_details: פרטי מהדורה ומידע נוסף
@@ -355,6 +358,9 @@ he:
   swedish: שוודית
   dutch: הולנדית
   translator: מתרגם
+  pd_explain: TBD
+  permission_explain: TBD
+  about_the_author_on_the_blog: רשומות ביומן הרשת
   donate_title: תמיכה כספית בפרויקט
   donate_p1_html: כל עבודת ההקלדה, ההגהה והעריכה בפרויקט נעשית <b>בהתנדבות וללא קבלת תמורה</b>. עם זאת, אנו מזמינים שירותי פיתוח תוכנה, אפיון, ועיצוב מנשק משתמש מקבלנים, ולשם כך אנו מגייסים תרומות.
   donate_p2_html: כספי תרומתכם מועברים לחשבון העמותה למחשוב ספרות עברית (מס״ע), שהקמנו עבור תמיכה בפרויקט, וישמשו אך ורק לצרכים אלו.

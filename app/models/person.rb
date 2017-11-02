@@ -12,7 +12,7 @@ class Person < ActiveRecord::Base
   has_many :realizers
   has_many :expressions, through: :realizers, class_name: 'Expression'
 
-  has_and_belongs_to_many :manifestation
+  has_and_belongs_to_many :manifestations
 
   # scopes
   scope :has_toc, -> { where.not(toc_id: nil) }
@@ -53,6 +53,7 @@ class Person < ActiveRecord::Base
   end
 
   def birth_year
+    return '?' if birthdate.nil?
     bpos = birthdate.index('-') # YYYYMMDD or YYYY is assumed
     if bpos.nil?
       if birthdate =~ /\d\d\d+/
@@ -65,7 +66,20 @@ class Person < ActiveRecord::Base
     end
   end
 
+  def gender_letter
+    return gender == 'female' ? 'ה' : 'ו'
+  end
+
+  def blog_count
+    return 0 # TODO: implement
+  end
+
+  def blog_category_url
+    return '' # TODO: implement
+  end
+
   def death_year
+    return '?' if deathdate.nil?
     dpos = deathdate.index('-')
     if dpos.nil?
       if deathdate =~ /\d\d\d+/
@@ -87,10 +101,18 @@ class Person < ActiveRecord::Base
     return period.name
   end
 
+  def rights_icon
+    return public_domain ? 'bycc-pd' : 'bycopyright'
+  end
+
   def has_comment?
     return false if comment.nil?
     return false if comment.empty?
     return true
+  end
+
+  def most_read(limit)
+    self.manifestations.order(impressions_count: :desc).limit(limit)
   end
 
   def  copyright_as_string
@@ -102,7 +124,7 @@ class Person < ActiveRecord::Base
   end
 
   def self.recalc_popular
-    @@popular_authors = Person.has_toc.order(impressions_count: :desc).limit(10) # top 10
+    @@popular_authors = Person.has_toc.order(impressions_count: :desc).limit(10) # top 10 #TODO: make it actually about *most-read* authors, rather than authors whose *TOC* is most-read
 
     # old code before counter cache
     ## this is designed to only be called no more than once a day, by clockwork!
