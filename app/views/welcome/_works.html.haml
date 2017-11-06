@@ -30,7 +30,7 @@
 
 - get_genres.each do |genre|
   - iconname = case genre when 'translations' then 'translate' when 'surprise' then 'surprise-work' when 'fables' then 'fables-fox' else genre end
-  %div{class: "modal fade", role: 'dialog', id: "genre_popup_#{genre}"}
+  %div{class: "modal fade", role: 'dialog', id: "genre_popup_#{genre}", tabindex: '-1'}
     .modal-dialog
       .card
         %button.close.card-header-close{ type: 'button', 'data-dismiss' => 'modal'}
