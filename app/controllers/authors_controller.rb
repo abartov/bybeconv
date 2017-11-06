@@ -5,7 +5,7 @@ class AuthorsController < ApplicationController
 
   def get_random_author
     @author = Person.has_toc.order('RAND()').limit(1)[0]
-    render partial: 'shared/surprise_author', locals: {author: @author}
+    render partial: 'shared/surprise_author', locals: {author: @author, initial: false}
   end
 
   def index
