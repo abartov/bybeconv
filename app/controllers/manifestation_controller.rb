@@ -154,7 +154,7 @@ class ManifestationController < ApplicationController
       if params[:author].blank?
         @manifestations = Manifestation.where('title like ?', '%' + params[:title] + '%').page(params[:page]).order('title ASC')
       elsif params[:title].blank?
-        @manifestations = Manifestation.where("cached_people like '%#{params[:author]}%'").page(params[:page]).order('title asc')
+        @manifestations = Manifestation.where('cached_people like ?', "%#{params[:author]}%").page(params[:page]).order('title asc')
       else # both author and title
         @manifestations = Manifestation.where('manifestations.title like ? and manifestations.cached_people like ?', '%' + params[:title] + '%', '%'+params[:author]+'%').page(params[:page]).order('title asc')
       end
