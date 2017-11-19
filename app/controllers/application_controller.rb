@@ -103,7 +103,7 @@ class ApplicationController < ActionController::Base
   end
 
   def cached_popular_authors_by_genre
-    if @@genre_popups_cache.nil?
+    if @@pop_authors_by_genre.nil?
       ret = {}
       get_genres.each {|g|
         ret[g] = {}
