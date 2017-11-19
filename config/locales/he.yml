@@ -70,6 +70,7 @@ he:
   their_most_read_works: "יצירותי%{gender_letter} הנקראות ביותר"
   html_file_published: הקובץ מהמערכת הישנה פורסם עתה במערכת החדשה, ונוסף לקטלוג המערכת!
   most_popular_authors: היוצרים הנקראים ביותר
+  most_popular_translated_authors: היוצרים המתורגמים הנקראים ביותר
   most_read_last_month: היצירות הנקראות ביותר בחודש החולף
   most_read_xlat_last_month: היצירות המתורגמות הנקראות ביותר בחודש החולף
   to_all_works_in_this_genre: לכל היצירות בסוגה זו
@@ -358,6 +359,7 @@ he:
   swedish: שוודית
   dutch: הולנדית
   translator: מתרגם
+  translated_by: בתרגום
   pd_explain: TBD
   permission_explain: TBD
   about_the_author_on_the_blog: רשומות ביומן הרשת

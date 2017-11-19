@@ -1,7 +1,7 @@
 require 'diffy'
 
 class AuthorsController < ApplicationController
-  before_filter :require_editor, only: [:index, :new, :create, :show, :edit, :list, :edit_toc, :update]
+  before_filter :require_editor, only: [:new, :create, :show, :edit, :list, :edit_toc, :update]
 
   def get_random_author
     @author = Person.has_toc.order('RAND()').limit(1)[0]
@@ -9,7 +9,13 @@ class AuthorsController < ApplicationController
   end
 
   def index
-    list
+    @pop_by_genre = cached_popular_authors_by_genre # get popular authors by genre + most popular translated
+    @rand_by_genre = {}
+    get_genres.each do |g|
+      logger.info("genre: #{g}")
+      @rand_by_genre[g] = randomize_authors(@pop_by_genre[g][:orig], g) # get random authors by genre
+    end
+    @authors_abc = Person.order(:name).limit(25) # get page 1 of all authors
   end
 
   def new

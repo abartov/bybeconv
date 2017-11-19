@@ -1,2 +1,21 @@
-%h1 Authors#index
-%p Find me in app/views/authors/index.html.haml
+.top-element
+  %h1 Authors#index
+
+  - get_genres.each do |g|
+    %h2= textify_genre(g)
+    %h3= t(:most_popular_authors)
+    %ol
+      - @pop_by_genre[g][:orig].each do |au|
+        %li= au.name
+    %h3= t(:most_popular_translated_authors)
+    %ol
+      - @pop_by_genre[g][:xlat].each do |au|
+        %li= au.name
+    %h3= t(:random_authors)
+    %ol
+      - @rand_by_genre[g].each do |au|
+        %li= au.name
+  %h2= 'מבחר ראשוני'
+  %ol
+    - @authors_abc.each do |au|
+      %li= au.name

@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
   @@whatsnew_cache = nil
   @@countworks_cache = nil
   @@genre_popups_cache = nil
+  @@pop_authors_by_genre = nil
 
   def set_access_control_headers
 #    headers['Access-Control-Allow-Origin'] = 'http://benyehuda.org/'
@@ -79,13 +80,18 @@ class ApplicationController < ActionController::Base
     @popular_authors = Person.get_popular_authors
   end
 
-  def randomize_authors(exclude_list)
+  def randomize_authors(exclude_list, genre = nil)
     list = []
     ceiling = [Person.has_toc.count - exclude_list.count - 1, 10].min
     return list if ceiling <= 0
     i = 0
     begin
-      candidates = Person.has_toc.order('RAND()').limit(ceiling-list.size) # fetch as many as are still needed
+      if genre.nil?
+        candidates = Person.has_toc.order('RAND()').limit(ceiling-list.size) # fetch as many as are still needed
+      else
+        candidates = Person.has_toc.joins(:expressions).where(expressions: { genre: genre}).order('RAND()').limit(ceiling-list.size) # fetch as many as are still needed
+      end
+
       candidates.each { |author| list << author unless (exclude_list.include? author) or (list.include? author) }
       i += 1
     end until list.size >= ceiling or i > 10 # TODO: fix bug where only one author is retrieved by above block
@@ -94,6 +100,19 @@ class ApplicationController < ActionController::Base
 
   def randomize_works(how_many)
     return Manifestation.order('RAND()').limit(how_many)
+  end
+
+  def cached_popular_authors_by_genre
+    if @@genre_popups_cache.nil?
+      ret = {}
+      get_genres.each {|g|
+        ret[g] = {}
+        ret[g][:orig] = Person.get_popular_authors_by_genre(g)
+        ret[g][:xlat] = Person.get_popular_xlat_authors_by_genre(g)
+      }
+      @@pop_authors_by_genre = ret
+    end
+    return @@pop_authors_by_genre
   end
 
   def popups_by_genre
