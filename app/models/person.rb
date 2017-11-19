@@ -124,7 +124,7 @@ class Person < ActiveRecord::Base
   end
 
   def self.get_popular_xlat_authors_by_genre(genre)
-    Person.joins([realizers: :expression]).where(realizers: {role: 'author'}, expressions: { genre:'poetry', translation: true}).order(impressions_count: :desc).distinct.limit(10) # top 10
+    Person.joins([realizers: :expression]).where(realizers: {role: 'author'}, expressions: { genre:genre, translation: true}).order(impressions_count: :desc).distinct.limit(10) # top 10
     # Person.joins(:expressions).where(expressions: { genre: genre, translation: true}).order(impressions_count: :desc).distinct.limit(10) # top 10
   end
 
