@@ -1,26 +1,36 @@
+@charset "UTF-8";
+/* CSS Document */
 
 
 /*toolbox grey - start*/
 #toolbox {
   width:9rem;
     float: right;
-    position: absolute;
-    z-index: 1;
+    position: fixed;
+	top:28.6rem;
+    z-index: 6;
+}
+#toolbox-read {
+  width:9rem;
+    float: right;
+    position: fixed;
+	top: 8.4rem;
+    z-index: 6;
 }
 
 .toolbox-cell {
     width: 10rem;
-    height: 6rem;
+    height: 5rem;
    background-color: #eeeced;
     text-align: center;
-    font-size: 2.4rem;
+    font-size: 2rem;
   	display: table-cell;
     vertical-align: middle;
   	border: none;
 	position: relative;
 }
 .mistake{
-	height: 11rem;
+	height: 10.4rem;
 	border-top: solid 2px #d9cdd5;
 	border-bottom: solid 2px #d9cdd5;
 }
@@ -31,14 +41,13 @@
     position: relative;
     display: inline-block;
 	  background-color: #eeeced;
-	padding-top: 0.6rem;
 	  border-radius: 0.3rem;
     box-shadow: 0 0.1rem 0.6rem rgba(0, 0, 0, 0.4);
 }
 
 .toolbox-cell:hover{
 	color: #660248;
-	background-color: #d9cdd5;
+   background-color: #eeeced;
 }
 .toolbox-cell .tooltiptext {
     visibility: hidden;
@@ -47,8 +56,8 @@
     text-align: center;
 	font-size: 1.2rem;
     position: absolute;
-    z-index: 1;
-    bottom: 8%;
+    z-index: 6;
+    bottom: 10%;
     left: 50%;
     margin-left: -5rem;
     opacity: 1;
@@ -74,7 +83,7 @@
   border-bottom-right-radius: 0.3rem;
 }
 .toolbox-footer:hover{
-	background-color: #d9cdd5;
+   background-color: #eeeced;
     color: #56003D;
 }
 
@@ -96,7 +105,7 @@
     text-align: center;
 	font-size: 1.2rem;
     position: absolute;
-    z-index: 1;
+    z-index: 6;
     bottom: 50%;
     left: 50%;
     margin-left: -5rem;

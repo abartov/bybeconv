@@ -2,7 +2,8 @@
 #toolbox {
   width:9rem;
     float: right;
-    position: absolute;
+    position: fixed;
+	top:28.6rem;
     z-index: 1;
 }
 
