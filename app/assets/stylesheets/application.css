@@ -1526,19 +1526,18 @@ img.bysurprise-absolute {
 
 .toolbox-cell {
     width: 10rem;
-    height: 6rem;
+    height: 5rem;
    background-color: #fff;
     text-align: center;
-    font-size: 2.4rem;
+    font-size: 2rem;
   	display: table-cell;
     vertical-align: middle;
   	border: none;
 	position: relative;
 	border-radius: 0rem;
-	overflow: hidden;
 }
 .mistake{
-	height: 11rem;
+	height: 10rem;
 	border-top: solid 2px #eeeced;
 	border-bottom: solid 2px #eeeced;
 }
