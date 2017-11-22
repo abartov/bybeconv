@@ -5,7 +5,7 @@
     %h2= t(:work_entity_details)
     %p
       %b= t(:title) + ': '
-      = text_field_tag :wtitle, @w.title
+      = text_field_tag :wtitle, @w.title, size: 75
     %p
       %b= t(:genre) + ': '
       = select_tag :genre, options_for_select(get_genres.map {|genre| [I18n.t(genre), genre]}, @w.genre), {include_blank: true}
@@ -14,27 +14,24 @@
       = select_tag :wlang, options_for_select(get_langs.map {|lang| [textify_lang(lang), lang]}, @w.orig_lang.nil? ? 'he' : @w.orig_lang)
     %p
       %b= t(:origlang_title)+': '
-      = text_field_tag :origlang_title, @w.origlang_title
+      = text_field_tag :origlang_title, @w.origlang_title, size: 90
     %p
       %b= t(:thedate) + ': '
       = text_field_tag :wdate, @w.date
     %p
       %b= t(:comments)+': '
-      = text_area_tag :wcomment, @w.comment
+      = text_area_tag :wcomment, @w.comment, rows: 4, cols: 40
     = render partial: 'shared/associated_people', locals: { which: :work, work: @w, edit: true}
     %h2= t(:expression_details)
     %p
       %b= t(:title) + ': '
-      = text_field_tag :etitle, @e.title
+      = text_field_tag :etitle, @e.title, size: 75
     %p
       %b= t(:genre) + ': '
       = textify_genre(@e.genre) # should be identical to work's genre, so not editable
     %p
       %b= t(:thedate) + ': '
       = text_field_tag :edate, @e.date
-    %p
-      %b= t(:copyright_status)
-      = textify_copyright_status(@e.copyrighted) # TODO: make editable
     %p
       %b= t(:language) + ': '
       = select_tag :elang, options_for_select(get_langs.map {|lang| [textify_lang(lang), lang]}, @e.language.nil? ? 'he' : @e.language)
@@ -43,13 +40,20 @@
       = text_field_tag :source_edition, @e.source_edition
     %p
       %b= t(:comments)+': '
-      = text_area_tag :ecomment, @e.comment
+      = text_area_tag :ecomment, @e.comment, rows: 4, cols: 40
+    %p
+      %h3= t(:copyright_status)
+      = radio_button_tag :public_domain, true, (not @e.copyrighted)
+      = label_tag t(:public_domain)
+      = radio_button_tag(:public_domain, false, @e.copyrighted)
+      = label_tag t(:by_permission)
+      / = textify_copyright_status(@e.copyrighted) # TODO: make editable
     = render partial: 'shared/associated_people', locals: { which: :expression, expression: @e, edit: true}
 
     %h2= t(:manifestation_details)
     %p
       %b= t(:title) + ': '
-      = text_field_tag :mtitle, @m.title
+      = text_field_tag :mtitle, @m.title, size: 75
     %p
       %b= t(:responsibility_statement) + ': '
       = text_field_tag :mresponsibility, @m.responsibility_statement # TODO: make editable?
@@ -58,7 +62,7 @@
       != "#{@m.publisher}, #{@m.publication_place}&rlm;: #{@m.publication_date}."
     %p
       %b= t(:comments)+': '
-      = text_area_tag :mcomment, @m.comment
+      = text_area_tag :mcomment, @m.comment, rows: 4, cols: 40
     = render partial: 'shared/associated_people', locals: { which: :manifestation, manifestation: @m, edit: true}
     %hr
     %h2= t(:external_links)
