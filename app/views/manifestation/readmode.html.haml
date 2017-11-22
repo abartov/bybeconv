@@ -60,3 +60,8 @@
   		}
   	}
   });
+  $(document).on('keyup',function(evt) {
+    if (evt.keyCode == 27) {
+       window.location.href = '#{url_for(action: :read, id: @m.id)}';
+    }
+  });

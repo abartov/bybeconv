@@ -130,15 +130,6 @@ class Person < ActiveRecord::Base
 
   def self.recalc_popular
     @@popular_authors = Person.has_toc.order(impressions_count: :desc).limit(10) # top 10 #TODO: make it actually about *most-read* authors, rather than authors whose *TOC* is most-read
-
-    # old code before counter cache
-    ## this is designed to only be called no more than once a day, by clockwork!
-    #author_stats = {}
-    #Person.has_toc.each {|p| # gather stats per author with ToC
-    #  author_stats[p] = p.impressions.count
-    #}
-    #bottom_authors = author_stats.sort_by {|k,v| v}
-    #@@popular_authors = bottom_authors.reverse[0..9] # top 10
   end
 
   def self.get_popular_authors

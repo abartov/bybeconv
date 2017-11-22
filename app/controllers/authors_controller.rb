@@ -11,11 +11,18 @@ class AuthorsController < ApplicationController
   def index
     @pop_by_genre = cached_popular_authors_by_genre # get popular authors by genre + most popular translated
     @rand_by_genre = {}
+    @surprise_by_genre = {}
     get_genres.each do |g|
       logger.info("genre: #{g}")
       @rand_by_genre[g] = randomize_authors(@pop_by_genre[g][:orig], g) # get random authors by genre
+      @surprise_by_genre[g] = @rand_by_genre[g].pop # make one of the random authors the surprise author
     end
     @authors_abc = Person.order(:name).limit(25) # get page 1 of all authors
+    # still TODO:
+    # new authors
+    # featured author
+    # translated authors + surprise
+    # translators + surprise
   end
 
   def new
