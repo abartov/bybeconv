@@ -20,22 +20,15 @@ class ManifestationController < ApplicationController
   end
 
   def read
-    @m = Manifestation.find(params[:id])
-    @html = MultiMarkdown.new(@m.markdown.lines[1..-1].join("\n")).to_html.force_encoding('UTF-8')
-    @tabclass = set_tab('works')
+    prep_for_read
     @proof = Proof.new
     @print_url = url_for(action: :print, id: @m.id)
-    @entity = @m
-    @pagetype = :manifestation
-    @page_title = "#{@m.title} - #{t(:default_page_title)}"
-    @author = @m.expressions[0].works[0].persons[0] # TODO: handle multiple authors
-    @translator = @m.expressions[0].persons[0] # TODO: handle multiple translators
-    impressionist(@author) # increment the author's popularity counter
+    @links = @m.external_links.group_by {|l| l.linktype}
   end
 
   def readmode
     @readmode = true
-    read
+    prep_for_read
   end
 
   def print
@@ -223,5 +216,19 @@ class ManifestationController < ApplicationController
     @m.recalc_cached_people!
     flash[:notice] = I18n.t(:updated_successfully)
     redirect_to action: :show, id: @m.id
+  end
+
+  protected
+
+  def prep_for_read
+    @m = Manifestation.find(params[:id])
+    @html = MultiMarkdown.new(@m.markdown.lines[1..-1].join("\n")).to_html.force_encoding('UTF-8')
+    @tabclass = set_tab('works')
+    @entity = @m
+    @pagetype = :manifestation
+    @page_title = "#{@m.title} - #{t(:default_page_title)}"
+    @author = @m.expressions[0].works[0].persons[0] # TODO: handle multiple authors
+    @translator = @m.expressions[0].persons[0] # TODO: handle multiple translators
+    impressionist(@author) # increment the author's popularity counter
   end
 end

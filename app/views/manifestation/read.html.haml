@@ -1,13 +1,37 @@
-/ standard display mode. "reading mode" to be implemented separately?
+/ standard display mode. "reading mode" implemented in readmode.html.haml
 #maincontainer.container-fluid.top-element
   .row
+    .col-md-1
+    .col-md-10
+      .work-name
+        %p.headline-1= @m.title
+        %p.headline-3{ style: 'padding:0;display:inline'}
+          = t(:by)+':'
+          = link_to @author.name, author_toc_path(id: @author.id)
+      .work-area#work-side
+        .container-fluid
+          .row
+            .col-md-9#work-metadata{style: 'padding-right:0'}
+              .row
+                .col-md-10{style:'display:inline-block'}
+                  - unless @links.empty?
+                    - [:youtube, :wikipedia].each do |linktype|
+                      - ll = @links[Manifestation.link_types[linktype]]
+                      - unless ll.nil?
+                        = render partial: 'shared/work_links', locals: {linktype: linktype, links: ll}
+                .col-md-2
+                  %p= t(:our_own_content)
+              .row
+    .col-md-1
+
+
+
+
     .col-sm-11
-      %span{:class => 'work_title'}
-        = @m.title
       = ' | '
       = render partial: 'shared/copyright', locals: {copyright: @m.copyright?}
       = ' | '
-      = render partial: 'shared/work_links', locals: {manifestation: @m}
+      = '(old worklinks)'
   .row
     .col-sm-4
       = render partial: 'shared/read_controls'
