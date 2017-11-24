@@ -23,17 +23,17 @@
                         = render partial: 'shared/work_links', locals: {linktype: linktype, links: ll}
                 .col-md-2
                   %p= t(:our_own_content)
-              .row
+              .row{style:'padding-top:0.6rem'}
+                .col-md-10
+                  = render partial: 'shared/copyright', locals: {copyright: @m.copyright?}
+
+                .col-md-2
+                  %p= t(:copyright_status)+':'
     .col-md-1
 
 
 
 
-    .col-sm-11
-      = ' | '
-      = render partial: 'shared/copyright', locals: {copyright: @m.copyright?}
-      = ' | '
-      = '(old worklinks)'
   .row
     .col-sm-4
       = render partial: 'shared/read_controls'
