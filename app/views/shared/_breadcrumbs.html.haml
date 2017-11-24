@@ -1,18 +1,25 @@
-= link_to t(:homepage), '/'
-= ' > '
-- if @pagetype == :manifestation
-  = link_to t(:authors), :controller => :authors
-  = ' > '
-  - if @entity.expressions[0].translators.count > 0
-    - person = @entity.expressions[0].translators[0]
-  - else
-    - person = @entity.expressions[0].persons[0]
-  = link_to person.name, author_toc_path(id: person.id)
-  = ' > '
-  = link_to textify_genre(@entity.expressions[0].works[0].genre), :controller => :authors, :action => :show, :id => person.id, :genre => @entity.expressions[0].works[0].genre
-  = ' > '
-  %b= @entity.title
-- elsif @pagetype == :author
-  = link_to t(:authors), controller: :authors
-  = ' > '
-  %b= @entity.name
+.row
+  .col-md-1
+  .col-md-10{style:'padding:0'}
+    .breadcrumbs{style:'padding-bottom:1rem'}
+    %p
+      = link_to t(:homepage), '/'
+      = ' > '
+      /- byebug
+      - if @pagetype == :manifestation
+        = link_to t(:authors), :controller => :authors
+        = ' > '
+        - if @entity.expressions[0].translators.count > 0
+          - person = @entity.expressions[0].translators[0]
+        - else
+          - person = @entity.expressions[0].works[0].persons[0]
+        = link_to person.name, author_toc_path(id: person.id)
+        = ' > '
+        = link_to textify_genre(@entity.expressions[0].works[0].genre), :controller => :authors, :action => :show, :id => person.id, :genre => @entity.expressions[0].works[0].genre
+        = ' > '
+        %b= @entity.title
+      - elsif @pagetype == :author
+        = link_to t(:authors), controller: :authors
+        = ' > '
+        %b= @entity.name
+  .col-md-1

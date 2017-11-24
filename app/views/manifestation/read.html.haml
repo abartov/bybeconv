@@ -1,5 +1,6 @@
 / standard display mode. "reading mode" implemented in readmode.html.haml
 #maincontainer.container-fluid.top-element
+  = render partial: 'shared/breadcrumbs'
   .row
     .col-md-1
     .col-md-10
@@ -11,6 +12,7 @@
       .work-area#work-side
         .container-fluid
           .row
+            .col-md-3#work-share1{style:'padding-left: 0;padding-right: 0;'}
             .col-md-9#work-metadata{style: 'padding-right:0'}
               .row
                 .col-md-10{style:'display:inline-block'}
