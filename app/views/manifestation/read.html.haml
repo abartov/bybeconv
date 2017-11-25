@@ -13,11 +13,49 @@
         .container-fluid
           .row
             .col-md-3#work-share1{style:'padding-left: 0;padding-right: 0;'}
+              %div{style:'display: inline-block'}
+                .card-header-element{style:'padding-left: 1rem'}
+                  .icons-raw
+                    = link_to '#' do
+                      %i.fa.fa-download
+                  .icons-raw
+                    = link_to '#' do
+                      %i.fa.fa-print
+                  .icons-raw
+                    = link_to '#' do
+                      %i.fa.fa-quote-right
+                .card-header-element
+                  .icon.icons-raw
+                    = link_to '#' do
+                      %i.fa.fa-facebook-square
+                  .icons-raw
+                    = link_to '#' do
+                      %i.fa.fa-whatsapp
+                  .icons-raw
+                    = link_to '#' do
+                      %i.fa.fa-twitter
+                  .icons-raw
+                    = link_to '#' do
+                      %i.fa.fa-envelope
+              %div{style:'display: inline-block;width: 100%;'}
+                %div{style:'position: relative;padding-top: 1.6rem'}
+                  .icon.result-links{style:'margin-top: 0.6rem'}
+                    = link_to '#' do
+                      %i.fa.fa-heart-o
+                  .icon.result-links{style:'margin-top: 0.6rem; margin-right: 2.4rem'}
+                    = link_to '#' do
+                      %span.icon-bybookshelf
+                  %div{style:'position: relative; float:right; display: inline;width: calc(100% - 8rem)'}
+                    %select
+                    %div
+                      %a.dropdown-arrow{style:'left:0'}
+                        %i.fa.fa-angle-down
+                      = select_tag 'shelves', options_for_shelves.html_safe
             .col-md-9#work-metadata{style: 'padding-right:0'}
               .row
                 .col-md-10{style:'display:inline-block'}
                   - unless @links.empty?
-                    - [:youtube, :wikipedia].each do |linktype|
+                    - [:youtube, :blog].each do |linktype|
                       - ll = @links[Manifestation.link_types[linktype]]
                       - unless ll.nil?
                         = render partial: 'shared/work_links', locals: {linktype: linktype, links: ll}
@@ -29,16 +67,53 @@
 
                 .col-md-2
                   %p= t(:copyright_status)+':'
+              - unless @book.nil?
+                .row{style:'padding-top:0.6rem'}
+                  .col-md-10
+                    .card-header-element{style:'margin-left:2.4rem'}
+                      %p= @book
+                    .card-header-element
+                      = link_to '#' do
+                        = t(:edition_details)
+                        %span.fa.fa-angle-left.baseline{style: 'margin-right: 0.6rem'}
+                  .col-md-2
+                    %p= t(:published_in_book)+': '
+              .row{style:'padding-top:0.6rem'}
+                .col-md-10
+                  .card-header-element{style:'margin-left:2.4rem'}
+                    = link_to textify_genre(@m.expressions[0].works[0].genre), url_for(action: :index, genre: @m.expressions[0].works[0].genre)
+                  .card-header-element
+                    = t(:orig_lang)+': '
+                    = textify_lang(@m.expressions[0].works[0].orig_lang)
+                .col-md-2
+                  %p= t(:genre)+': '
+              .row{style:'padding-top:0.6rem'}
+                .col-md-10
+                  .card-header-element{style:'margin-left:2.4rem'}
+                    = link_to 'TODO: tags' do
+                      = t(:tags)
+                      = "(#{@m.approved_tags.count})"
+                      %span.fa.fa-angle-left.baseline{style: 'margin-right: 0.6rem'}
+                  .card-header-element{style:'margin-left:2.4rem'}
+                    = link_to 'TODO: recommendations' do
+                      = t(:recommendations)
+                      = "(#{@m.recommendations.approved.count})"
+                      %span.fa.fa-angle-left.baseline{style: 'margin-right: 0.6rem'}
+                  - unless @links.empty? || @links[Manifestation.link_types[:wikipedia]].nil?
+                    .card-header-element
+                      = link_to 'TODO: recommendations' do
+                        .icon.card-header-element
+                          %i.fa.fa-wikipedia-w{style:'font-size: 1.4rem'}
+                        .card-header-element
+                          %p= t(:to_the_wikipedia_article)
+                .col-md-2
+                  %p= t(:additional_content)
+              %br{style: 'clear: both;'}
     .col-md-1
 
 
 
 
-  .row
-    .col-sm-4
-      = render partial: 'shared/read_controls'
-    .col-sm-6
-      = render partial: 'metadata'
   %hr
   #maintext.maintext
     = render partial: 'search_and_chapters'
