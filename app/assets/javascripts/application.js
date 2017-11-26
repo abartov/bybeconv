@@ -10,6 +10,6 @@
 //= require jquery.slick
 //= require jquery-ui/widgets/autocomplete
 //= require autocomplete-rails
-
+//= require jquery.mark.min
 //= require_tree .
 

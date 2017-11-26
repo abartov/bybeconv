@@ -540,7 +540,7 @@ option:first {
   height: 3.2rem;
   border-top: none;
   border-right: none;
-  border-bottom: 0.2rem solid #d9cdd5;
+  border-bottom: 0.2rem solid #907989;
   border-left: none;
   padding: 0;
   font-size: 1.6rem;
@@ -585,6 +585,8 @@ option:first {
   font-size: 1.4rem;
   background-color: #eeeced;
   border-bottom: 0.2rem solid #d9cdd5;
+  line-height:inherit;
+  width:80%;
 }
 .dropdown{
 	width: 100%
@@ -637,6 +639,9 @@ option:first {
 }
 .top-element {
   margin-top: 14.4rem;
+}
+.search-margin{
+  margin-top:92px;
 }
 .welcome-scroll {
   height: auto;
@@ -774,7 +779,7 @@ width: calc(100% - 93px);
 }
 .work-text{
   width: 75%;
-  padding: 3rem 10rem 2rem 10rem;
+  padding: 0 10rem 2rem 10rem;
   display: inline-block;
 }
 .work-pic{
@@ -1938,15 +1943,22 @@ li{
 
 	padding: 0.2rem 0 1rem 0;
 }
-/* the following two styles are for the Find in Page feature, provided by find5.js */
-/*.highlight
-{
-	background-color: blue;
+
+
+.stickysearch {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 13.8rem;
+  padding: 5px;
 }
-.find_selected
-{
-	background-color: green;
-}*/
+/* the following two styles are for the Find in Page feature, provided by mark.min.js */
+mark {
+  background: yellow;
+}
+
+mark.current {
+  background: orange;
+}
 
 /*
 .modal-dialog:after {

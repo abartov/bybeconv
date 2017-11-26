@@ -109,11 +109,14 @@
                 / });
                 = link_to '#' do
                   %span.icon-bybookmark-go-to
-            .row{style:'padding-bottom:3rem'}
+            .row.stickysearch{style:'opacity:1;background-color:#eeeced'}
               .col-sm-6
-                .search.field.on-card-search-field
+                .search.on-card-search-field
                   %span.fa.fa-search.search-icon
-                  %input#searchinwork{ placeholder: t(:search_placeholder)}
+                  %span.linky{'data-search'=>'next'}!= "&darr;"
+                  %span.linky{'data-search'=>'prev'}!="&uarr;"
+                  %span.linky{'data-search'=>'clear'}='✖'
+                  %input#searchinwork{ type: :search, placeholder: t(:search_in_text)}
               .col-sm-6
                 - if @m.chapters? and @m.long?
                   %div{style:'position:relative'}
@@ -124,10 +127,10 @@
                         %i.fa.fa-angle.down
             / TODO: more nuanced rendering here
             - if @m.as_prose?
-              #actualtext.maintext-prose-body
+              #actualtext.maintext-prose-body.search-margin
                 != raw(@html)
             - else
-              #actualtext.maintext-poetry-body
+              #actualtext.maintext-poetry-body.search-margin
                 != raw(@html)
             - if @m.chapters? and @m.long?
               = render partial: 'chapter_links'
@@ -148,31 +151,84 @@
 
 :javascript
   $(document).ready(function(){
-  });
-  $(window).scroll(function () {
-    var $floatingbox = $('#toolbox');
-    var bodyY = parseInt($('#maintext').offset().top) - 20;
-    var originalX = $floatingbox.css('margin-right');
 
-  	var scrollY = $(window).scrollTop();
-  	var isfixed = $floatingbox.css('position') == 'fixed';
+    // the input field
+    var $input = $("#searchinwork"),
+      // clear button
+      $clearBtn = $("span[data-search='clear']"),
+      // prev button
+      $prevBtn = $("span[data-search='prev']"),
+      // next button
+      $nextBtn = $("span[data-search='next']"),
+      // the context where to search
+      $content = $("#actualtext"),
+      // jQuery object to save <mark> elements
+      $results,
+      // the class that will be appended to the current
+      // focused element
+      currentClass = "current",
+      // top offset for the jump (the search bar)
+      offsetTop = 250,
+      // the current index of the focused element
+      currentIndex = 0;
 
-    if($floatingbox.length > 0){
+    /**
+    * Jumps to the element matching the currentIndex
+    */
+    function jumpTo() {
+      if ($results.length) {
+        var position,
+          $current = $results.eq(currentIndex);
+        $results.removeClass(currentClass);
+        if ($current.length) {
+          $current.addClass(currentClass);
+          position = $current.offset().top - offsetTop;
+          window.scrollTo(0, position);
+        }
+      }
+    }
 
-  	if ( scrollY > bodyY && !isfixed ) {
-  		$floatingbox.stop().css({
-  			position: 'fixed',
-  			//right: '50%',
-  			top: 20,
-  			//marginRight: -500
-  			});
-  	} else if ( scrollY < bodyY && isfixed ) {
-  		$floatingbox.css({
-  			position: 'relative',
-        //right: 0,
-  			top: 0,
-  			//marginRight: originalX
-  			});
-  		}
-  	}
+    /**
+    * Searches for the entered keyword in the
+    * specified context on input
+    */
+    $input.on("input", function() {
+      var searchVal = this.value;
+      $content.unmark({
+        done: function() {
+          $content.mark(searchVal, {
+            separateWordSearch: true,
+            done: function() {
+              $results = $content.find("mark");
+              currentIndex = 0;
+              jumpTo();
+            }
+          });
+        }
+      });
+    });
+
+    /**
+    * Clears the search
+    */
+    $clearBtn.on("click", function() {
+      $content.unmark();
+      $input.val("").focus();
+    });
+
+    /**
+    * Next and previous search jump to
+    */
+    $nextBtn.add($prevBtn).on("click", function() {
+      if ($results.length) {
+        currentIndex += $(this).is($prevBtn) ? -1 : 1;
+        if (currentIndex < 0) {
+          currentIndex = $results.length - 1;
+        }
+        if (currentIndex > $results.length - 1) {
+          currentIndex = 0;
+        }
+        jumpTo();
+      }
+    });
   });

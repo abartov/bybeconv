@@ -4,14 +4,18 @@
   - add dropdown with expression details history *per author* to save work typing it for other expressions by that author.
   - add lock_version column to person, work, expression, and manifestation tables
 - blog post with screenshots of system
+- implement toolbox collapse
+- skip "our content" line if no content
+- implement tags etc. at bottom of work read
+- implement updated UI for read mode
+- implement bookmarks (see notes in code!)
+- implement chapters
+
 - HOMEPAGE
-  - author popup
   - featured content byline code
   - featured content full text view
   - fontsize sticky across pages
   - carousel of featured content
-- INFRA
-  - figure out difference between the current most-viewed author (=his author page is most read) and the intended most-read author (=his expressions are most read)
 
 - download as TXT - add CR+LF if user runs Windows
 - download as DOC - right-align (pandoc patch?)
