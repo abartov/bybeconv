@@ -13,6 +13,8 @@ class Manifestation < ActiveRecord::Base
   enum link_type: [:wikipedia, :blog, :youtube, :other]
   enum status: [:approved, :submitted, :rejected]
 
+  LONG_LENGTH = 15000 # kind of arbitrary...
+
 # re-enable when implementing Chewy
 #  update_index 'manifestation#manifestation', :self # update ManifestationIndex when entity is updated
 
@@ -21,28 +23,48 @@ class Manifestation < ActiveRecord::Base
   @@tmplock = false
 
   def long?
-    return false # TODO: implement
+    markdown.length > LONG_LENGTH
   end
+
   def copyright?
     return expressions[0].copyrighted # TODO: implement more generically
   end
-  def chapters?
-    return false # TODO: implement
+
+  def heading_lines
+    cached_heading_lines.split('|').map{|line| line.to_i}
   end
+
+  def chapters?
+    return false if (cached_heading_lines.empty? || cached_heading_lines[1..5].index('|').nil?)
+    return true
+  end
+
+  def recalc_heading_lines!
+    lines = markdown.lines
+    temp_heading_lines = []
+    lines.each_index {|i| temp_heading_lines << i if lines[i][0..1] == '##' && lines[2] != '#' }
+    cached_heading_lines = temp_heading_lines.join('|')
+    save!
+  end
+
   def approved_tags
     return Tag.find(self.taggings.approved.pluck(:tag_id))
   end
+
   def as_prose?
     # TODO: implement more generically
     return expressions[0].works[0].genre == 'poetry' ? false : true
   end
+
   def safe_filename
     fname = "#{title} #{I18n.t(:by)} #{expressions[0].persons[0].name}"
     return fname.gsub(/[^0-9א-תA-Za-z.\-]/, '_')
   end
+
   def title_and_authors
     return title + ' / '+author_string
   end
+
   def author_string
     return I18n.t(:nil) if expressions[0].nil? or expressions[0].works[0].nil? or expressions[0].works[0].persons[0].nil?
     ret = expressions[0].works[0].persons[0].name

@@ -1,6 +1,7 @@
 / standard display mode. "reading mode" implemented in readmode.html.haml
 #maincontainer.container-fluid.top-element
   = render partial: 'shared/breadcrumbs'
+  /.scroll-gradient-b
   = render partial: 'toolbox'
   .row
     .col-md-1
@@ -41,15 +42,15 @@
                       %a.dropdown-arrow{style:'left:0'}
                         %i.fa.fa-angle-down
             .col-md-9#work-metadata{style: 'padding-right:0'}
-              .row
-                .col-md-10{style:'display:inline-block'}
-                  - unless @links.empty?
+              - unless @links.empty?
+                .row
+                  .col-md-10{style:'display:inline-block'}
                     - [:youtube, :blog].each do |linktype|
                       - ll = @links[Manifestation.link_types[linktype]]
                       - unless ll.nil?
                         = render partial: 'shared/work_links', locals: {linktype: linktype, links: ll}
-                .col-md-2
-                  %p= t(:our_own_content)
+                  .col-md-2
+                    %p= t(:our_own_content)
               .row{style:'padding-top:0.6rem'}
                 .col-md-10
                   = render partial: 'shared/copyright', locals: {copyright: @m.copyright?}
@@ -146,7 +147,6 @@
   %hr
 /  #maintext.maintext
 /    = render partial: 'search_and_chapters'
-/    = render partial: 'toolbox'
 /    = render partial: 'sharing_etc'
 
 :javascript

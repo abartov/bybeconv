@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171009152138) do
+ActiveRecord::Schema.define(version: 20171126225005) do
 
   create_table "api_keys", force: :cascade do |t|
     t.string   "email",       limit: 255
@@ -212,6 +212,7 @@ ActiveRecord::Schema.define(version: 20171009152138) do
     t.text     "markdown",                 limit: 16777215
     t.string   "cached_people",            limit: 255
     t.integer  "impressions_count",        limit: 4
+    t.string   "cached_heading_lines",     limit: 255
   end
 
   add_index "manifestations", ["created_at"], name: "index_manifestations_on_created_at", using: :btree
