@@ -9,15 +9,15 @@
           %p= t(:welcome_stats_html, {authors: link_to(@totals[:authors].to_s, authors_index_path), works: link_to(@totals[:works].to_s, works_path), headwords: link_to(@totals[:headwords].to_s, 'http://benyehuda.org/~asaf/full_dict.html')})
           .welcome-actions
             .welcome-small-link
-              %a{ href: ''}
+              %a{ href: 'https://www.facebook.com/%D7%A4%D7%A8%D7%95%D7%99%D7%A7%D7%98-%D7%91%D7%9F-%D7%99%D7%94%D7%95%D7%93%D7%94-119140448124648/', target: '_new'}
                 %i.fa.fa-facebook-square.fa08
                 = t(:to_the_facebook_page)
             .welcome-small-link
-              %a{ href: ''}
+              %a{ href: 'http://www.youtube.com/user/ProjectBenYehuda/videos?flow=grid&view=0', target: '_new'}
                 %i.fa.fa-youtube-play.fa08
                 = t(:to_the_youtube_channel)
             .welcome-small-link
-              %a{ href: ''}
+              %a{ href: 'http://benyehuda.org/blog/', target: '_new'}
                 %i.fa.fa-pencil-square.fa08
                 = t(:the_blog)
             .welcome-small-link
@@ -25,7 +25,7 @@
                 %i.fa.fa-share-alt.fa08
                 = t(:share)
             .welcome-small-link
-              %a{ href: ''}
+              %a{ href: 'http://benyehuda.org/blog/%D7%AA%D7%9E%D7%99%D7%9B%D7%94-%D7%9B%D7%A1%D7%A4%D7%99%D7%AA-%D7%91%D7%A4%D7%A8%D7%95%D7%99%D7%A7%D7%98-%D7%91%D7%9F-%D7%99%D7%94%D7%95%D7%93%D7%94', target: '_new'}
                 %i.fa.icon-bydonate.fa08
                 = t(:donate_money)
       .col-md-1
