@@ -506,6 +506,7 @@ select.in_read{
 }
 ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
   color:#907989;
+	font-size: 1.4rem;
 }
 ::-moz-placeholder { /* Firefox 19+ */
   color:#907989;
@@ -1023,6 +1024,10 @@ padding: 1.2rem 1.5rem 0 1.5rem;
 .near-picture{
   width: calc(100% - 21rem);
 }
+.near-picture-right{
+	padding-right:3rem;
+	  width: calc(100% - 24rem);
+}
 .author-top{
   margin: 1.2rem 0 2.4rem 0;
   z-index: 0;
@@ -1064,6 +1069,32 @@ padding: 1.2rem 1.5rem 0 1.5rem;
   box-shadow: 0.2rem 0.2rem 0.5rem
 rgba(0,0,0, .5);
 }
+
+.creator-bookmark-back-right {
+  z-index: 1;
+  width: 168px;
+  height: 6px;
+  float: right;
+  margin-right: 2.5rem;
+  margin-top: -1.3rem;
+  background-position: left;
+}
+.creator-bookmark-front-right{
+  z-index:3;
+  width: auto;
+  float: right;
+  margin-right: 3.4rem;
+  margin-top: -0.6rem;
+}
+.creator-bookmark-front-right img{
+  float: right;
+  border-top-left-radius: 0.6rem;
+  border-bottom-left-radius: 0.2rem;
+  border-bottom-right-radius: 0.2rem;
+  box-shadow: 0.2rem 0.2rem 0.5rem
+rgba(0,0,0, .5);
+}
+
 .bookmark{
 	position: absolute;
 	z-index: 2;
