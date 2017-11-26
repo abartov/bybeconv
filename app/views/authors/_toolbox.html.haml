@@ -5,10 +5,10 @@
   %button.btn.download= t(:download)
   %button.btn.printbutton= t(:print)
 
-#fontsizeDlg
+#fontsizeDlg{title: t(:choose_font_size)}
   = render partial: 'shared/fontsize'
 
-#shareDlg
+#shareDlg{title: t(:choose_sharing_medium)}
   .container-fluid
     = render partial: 'shared/share_controls'
 

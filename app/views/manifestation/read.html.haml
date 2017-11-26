@@ -25,18 +25,7 @@
                     = link_to '#' do
                       %i.fa.fa-quote-right
                 .card-header-element
-                  .icon.icons-raw
-                    = link_to '#' do
-                      %i.fa.fa-facebook-square
-                  .icons-raw
-                    = link_to '#' do
-                      %i.fa.fa-whatsapp
-                  .icons-raw
-                    = link_to '#' do
-                      %i.fa.fa-twitter
-                  .icons-raw
-                    = link_to '#' do
-                      %i.fa.fa-envelope
+                  = render 'shared/share_controls'
               %div{style:'display: inline-block;width: 100%;'}
                 %div{style:'position: relative;padding-top: 1.6rem'}
                   .icon.result-links{style:'margin-top: 0.6rem'}
@@ -46,11 +35,10 @@
                     = link_to '#' do
                       %span.icon-bybookshelf
                   %div{style:'position: relative; float:right; display: inline;width: calc(100% - 8rem)'}
-                    %select
+                    = select_tag 'shelves', options_for_shelves.html_safe, {'class' => 'in_read'}
                     %div
                       %a.dropdown-arrow{style:'left:0'}
                         %i.fa.fa-angle-down
-                      = select_tag 'shelves', options_for_shelves.html_safe
             .col-md-9#work-metadata{style: 'padding-right:0'}
               .row
                 .col-md-10{style:'display:inline-block'}
@@ -101,7 +89,7 @@
                       %span.fa.fa-angle-left.baseline{style: 'margin-right: 0.6rem'}
                   - unless @links.empty? || @links[Manifestation.link_types[:wikipedia]].nil?
                     .card-header-element
-                      = link_to 'TODO: recommendations' do
+                      = link_to @links[Manifestation.link_types[:wikipedia]][0].url do
                         .icon.card-header-element
                           %i.fa.fa-wikipedia-w{style:'font-size: 1.4rem'}
                         .card-header-element
@@ -109,27 +97,57 @@
                 .col-md-2
                   %p= t(:additional_content)
               %br{style: 'clear: both;'}
+        .card.work-card
+          .work-text
+            - unless @bookmark.nil?
+              .bookmark
+                / $("#button").click(function() {
+                /  $('html, body').animate({
+                /    scrollTop: $("#elementtoScrollToID").offset().top
+                /  }, 2000);
+                / });
+                = link_to '#' do
+                  %span.icon-bybookmark-go-to
+            .row{style:'padding-bottom:3rem'}
+              .col-sm-6
+                .search.field.on-card-search-field
+                  %span.fa.fa-search.search-icon
+                  %input#searchinwork{ placeholder: t(:search_placeholder)}
+              .col-sm-6
+                - if @m.chapters? and @m.long?
+                  %div{style:'position:relative'}
+                    = select_tag 'chapters', @chapters
+                    %span.fa.fa-angle-down
+                    %div
+                      %a.dropdown-arrow{style:'left:0'}
+                        %i.fa.fa-angle.down
+            / TODO: more nuanced rendering here
+            - if @m.as_prose?
+              #actualtext.maintext-prose-body
+                != raw(@html)
+            - else
+              #actualtext.maintext-poetry-body
+                != raw(@html)
+            - if @m.chapters? and @m.long?
+              = render partial: 'chapter_links'
+          / place bookmark element if @bookmark
+          / .bookmark
+          /   = link_to '#'
+          /     %i.icon-bybookmark
+          .work-pic
+            .work-gradient-pic
+              %img{'class' => 'absolute', src: @author.profile_image.url(:full)}
     .col-md-1
 
-
-
-
   %hr
-  #maintext.maintext
-    = render partial: 'search_and_chapters'
-    = render partial: 'toolbox'
-    / TODO: more nuanced rendering here
-    - if @m.as_prose?
-      #actualtext.maintext-prose-body
-        != raw(@html)
-    - else
-      #actualtext.maintext-poetry-body
-        != raw(@html)
-    - if @m.chapters? and @m.long?
-      = '(next chapter link)'
-    = render partial: 'sharing_etc'
+/  #maintext.maintext
+/    = render partial: 'search_and_chapters'
+/    = render partial: 'toolbox'
+/    = render partial: 'sharing_etc'
 
 :javascript
+  $(document).ready(function(){
+  });
   $(window).scroll(function () {
     var $floatingbox = $('#toolbox');
     var bodyY = parseInt($('#maintext').offset().top) - 20;

@@ -47,14 +47,15 @@
           = hidden_field_tag(:manifestation, @m.id)
     #proof_status
 
-#fontsizeDlg
+#fontsizeDlg{title: t(:choose_font_size)}
   = render partial: 'shared/fontsize'
 
 #downloadDlg
   = render partial: 'shared/download', locals: {manifestation: @m}
 #citeDlg
   = render partial: 'shared/cite', locals: {manifestation: @m}
-#shareDlg
+
+#shareDlg{title: t(:choose_sharing_medium)}
   .container-fluid
     = render partial: 'shared/share_controls'
 
