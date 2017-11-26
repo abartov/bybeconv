@@ -1,10 +1,12 @@
-- manifestation.external_links.order('linktype').each do |link|
-  - case link.linktype
-  - when Manifestation.link_types[:youtube]
-    %span{:class => 'glyphicon glyphicon-film'}
-  - when Manifestation.link_types[:wikipedia]
-    %span{:class => 'icon-wikipedia-w'}
-  - when Manifestation.link_types[:blog]
-    %span{:class => 'icon-wordpress'}
-  = ' '
-  = link_to t(Manifestation.link_types.keys[link.linktype]), link.url
+- if links.count > 1
+  / collapsible
+- else
+  = link_to links[0].url do
+    .icon.card-header-element
+      - case linktype
+      - when Manifestation.link_types[:youtube]
+        %i.fa.fa-youtube-play
+      - when Manifestation.link_types[:blog]
+        %i.fa.fa-pencil-square-o
+    .card-header-element{style:'margin-left: 2.4rem'}
+      %p= links[0].description

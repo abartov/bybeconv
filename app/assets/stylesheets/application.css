@@ -260,6 +260,11 @@ a:disabled {
 	text-decoration: none;
 	font-weight: bold;
 }
+.linky {
+  color: #910065;
+  cursor: pointer;
+  display:inline;
+}
 .text-on-dark{
   color: #E4CEDE;
 }
@@ -475,7 +480,8 @@ li :active{
 }
 
 select{
-  -webkit-appearance: none;
+  -webkit-appearance:none;
+  -moz-appearance:none;
   height: 3.2rem;
   border-top: none;
   border-bottom: 0.2rem solid #d9cdd5;
@@ -487,6 +493,9 @@ select{
   border-radius:0;
   background-color: #fff;
 	position: relative;
+}
+select.in_read{
+  width:100%;
 }
 .select-popup{
 	width: 100%;
@@ -786,7 +795,8 @@ width: calc(100% - 93px);
   direction:rtl;
 }
 
-.work-portrait{
+/* note: for some obscure reason, naming the below style 'work-portrait' did not work. */
+.work-gradient-pic{
   overflow: hidden;
   border-top-left-radius: 0.3rem;
   direction:ltr;
@@ -1733,6 +1743,13 @@ img.recommend-absolute {
     height:100%;
     display:none;
 }
+.dark-text-button:hover{
+  color:#D6A9C9;
+}
+.dark-text-button{
+  color:white;
+}
+
 #bialikPopup
 {
     height:380px;
@@ -1923,6 +1940,15 @@ li{
 
 	padding: 0.2rem 0 1rem 0;
 }
+/* the following two styles are for the Find in Page feature, provided by find5.js */
+/*.highlight
+{
+	background-color: blue;
+}
+.find_selected
+{
+	background-color: green;
+}*/
 
 /*
 .modal-dialog:after {

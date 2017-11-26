@@ -66,6 +66,7 @@ he:
   new_person: "מחבר/ת חדש/ה"
   join_volunteer: התנדבות להפקת תכנים
   donate_money: תרומה כספית
+  bookshelves: רשימות קריאה
   works_in_the_database: יצירות במאגר
   their_most_read_works: "יצירותי%{gender_letter} הנקראות ביותר"
   html_file_published: הקובץ מהמערכת הישנה פורסם עתה במערכת החדשה, ונוסף לקטלוג המערכת!
@@ -129,6 +130,7 @@ he:
   rest_in_wikipedia: להמשך הערך בויקיפדיה העברית
   to_the_wikipedia_article: לערך בויקיפדיה
   wikidata_id: מזהה בויקינתונים
+  additional_options: אפשרויות נוספות
   Raw: טרם עוּבַּד
   photo: תמונה
   last_update: עדכון אחרון
@@ -172,14 +174,18 @@ he:
   download_footer_html: "את הטקסט לעיל הפיקו מתנדבי <a href=\"http://benyehuda.org/\">פרויקט בן-יהודה באינטרנט</a>.  הוא זמין תמיד בכתובת הבאה:<br /><a href=\"%{url}\">%{url}</a>"
   proof_please_select_something: "מצוין, אבל ראשית נא לסמן (להאיר, לבחור) את הפיסקה השגויה (או כמה שורות, אם מדובר בשורות קצרצרות), כדי שנדע איפה לתקן.  אחרי הסימון, יש ללחוץ שוב על לחצן זה."
   like: אהבתי
+  our_own_content: 'תוכן משלנו:'
   bookshelf: מדפים
   found_mistake: מצאתי שגיאה
+  mistake_important: חשוב לנו שהטקסט יהא מדויק וחף משגיאות
   share: שיתוף
   download: הורדה
+  download_ebook: הורדת ספר דיגיטלי
   print: הדפסה
   cite: ציטוט
   additional: נוספים
   rollup: קיפול
+  minimize: מזעור
   purged: הפריטים הוסרו.
   rec_file: קובץ
   rec_when: מתי
@@ -191,10 +197,14 @@ he:
   status: סטטוס
   email: דואל
   toolbox: תיבת כלים
+  choose_font_size: מה הגודל הרצוי?
+  choose_sharing_medium: באיזה שירות לשתף?
+  search_in_text: חיפוש ביצירה
   welcome_title: "ברוכים הבאים לפרויקט בן-יהודה!"
   welcome_paragraph_html: "הפרויקט הוא מיזם התנדבותי שעוסק ביצירת מהדורות אלקטרוניות של נכסי הספרות העברית וריכוזן באתר האינטרנט לטובת הציבור, בחינם וללא פרסומות.<br />מטרות הפרויקט הן <b>שימור</b> היצירות העבריות, <b>הנגשת</b> היצירות לציבור הרחב, <b>וחשיפת</b> היצירות לקוראים חדשים ועידוד העיסוק בהן."
   welcome_stats_html: "כיום כלולות בפרויקט %{works} יצירות, מאת כ-%{authors} יוצרים, ו-%{headwords} ערכים מילוניים."
   total_manifestations: "סה\"כ יצירות: %{total}"
+  additional_content: 'תוכן נוסף:'
   title: כותרת
   entries: ערכים
   filter: סינון
@@ -377,6 +387,8 @@ he:
   volunteer_profile: פרופיל מתנדב/ת
   fromdate: מתאריך
   todate: עד תאריך
+  work_heart_button: מוצא חן בעיני
+  add_bookmark: הוספת סימניה
   add_feature_date: הוספת טווח תאריכי הצגה
   featured_content_body: תוכן ההמלצה
   linked_manifestation: יצירה מקושרת
