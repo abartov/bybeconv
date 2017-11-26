@@ -1539,7 +1539,9 @@ img.bysurprise-absolute {
 .mistake{
 	height: 10rem;
 	border-top: solid 2px #eeeced;
+	border-right: none;
 	border-bottom: solid 2px #eeeced;
+	border-left: none;
 }
 .toolbox-cell .mistake{
 	 color: #660248;
