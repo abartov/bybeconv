@@ -20,10 +20,9 @@
               %a{ href: 'http://benyehuda.org/blog/', target: '_new'}
                 %i.fa.fa-pencil-square.fa08
                 = t(:the_blog)
-            .welcome-small-link
-              %a{ href: ''}
-                %i.fa.fa-share-alt.fa08
-                = t(:share)
+            .welcome-small-link.share.linky
+              %i.fa.fa-share-alt.fa08
+              = t(:share)
             .welcome-small-link
               %a{ href: 'http://benyehuda.org/blog/%D7%AA%D7%9E%D7%99%D7%9B%D7%94-%D7%9B%D7%A1%D7%A4%D7%99%D7%AA-%D7%91%D7%A4%D7%A8%D7%95%D7%99%D7%A7%D7%98-%D7%91%D7%9F-%D7%99%D7%94%D7%95%D7%93%D7%94', target: '_new'}
                 %i.fa.icon-bydonate.fa08
@@ -99,6 +98,24 @@
                   %a{style: 'color:white', href: 'http://benyehuda.org/blog/%D7%AA%D7%9E%D7%99%D7%9B%D7%94-%D7%9B%D7%A1%D7%A4%D7%99%D7%AA-%D7%91%D7%A4%D7%A8%D7%95%D7%99%D7%A7%D7%98-%D7%91%D7%9F-%D7%99%D7%94%D7%95%D7%93%D7%94'}
                     .btn{style:'padding-top:0.5rem; text-aligh:center; float:none;'}
                       %b= t(:donate_money)
+#shareDlg{title: t(:choose_sharing_medium)}
+  .container-fluid
+    = render partial: 'shared/share_controls'
 :javascript
-  $('.footer-card').matchHeight();
-  $('.row1').matchHeight();
+  $(document).ready(function() {
+    $('.footer-card').matchHeight();
+    $('.row1').matchHeight();
+    // share button
+    $('#shareDlg').dialog({
+      autoOpen: false,
+      /*height: 200,
+      width: 250,*/
+      height: 'auto',
+      width: 300,
+      modal: true,
+      buttons: { "#{t(:cancel)}": function() { $('#shareDlg').dialog("close");} }
+      });
+    $('.share').click(function() {
+      $('#shareDlg').dialog('open');
+    });
+  });
