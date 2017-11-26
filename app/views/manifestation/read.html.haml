@@ -69,7 +69,7 @@
               .row{style:'padding-top:0.6rem'}
                 .col-md-10
                   .card-header-element{style:'margin-left:2.4rem'}
-                    = link_to textify_genre(@m.expressions[0].works[0].genre), url_for(action: :index, genre: @m.expressions[0].works[0].genre)
+                    = link_to textify_genre(@m.expressions[0].works[0].genre), url_for(action: :genre, genre: @m.expressions[0].works[0].genre)
                   .card-header-element
                     = t(:orig_lang)+': '
                     = textify_lang(@m.expressions[0].works[0].orig_lang)
