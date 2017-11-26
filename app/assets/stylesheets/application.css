@@ -1629,6 +1629,15 @@ img.bysurprise-absolute {
   font-size: 1rem;
   margin-bottom: 0.2rem;
 }
+
+.toolbox-footer-chevron:after {
+  content:"\f106"
+}
+
+.collapsed .toolbox-footer-chevron:after {
+  content:"\f107"
+}
+
 .toolbox-footer{
 	height: 2.4rem;
   font-size: 1.8rem;
