@@ -35,7 +35,7 @@ class Manifestation < ActiveRecord::Base
   end
 
   def chapters?
-    return false if (cached_heading_lines.empty? || cached_heading_lines[1..5].index('|').nil?)
+    return false if (cached_heading_lines.nil? || cached_heading_lines.empty? || cached_heading_lines[1..5].index('|').nil?)
     return true
   end
 
@@ -43,7 +43,7 @@ class Manifestation < ActiveRecord::Base
     lines = markdown.lines
     temp_heading_lines = []
     lines.each_index {|i| temp_heading_lines << i if lines[i][0..1] == '##' && lines[2] != '#' }
-    cached_heading_lines = temp_heading_lines.join('|')
+    self.cached_heading_lines = temp_heading_lines.join('|')
     save!
   end
 
@@ -86,7 +86,7 @@ class Manifestation < ActiveRecord::Base
          w.persons.each {|p| pp << p unless pp.include?(p) }
        }
      }
-     cached_people = pp.map{|p| p.name}.join('; ')
+     self.cached_people = pp.map{|p| p.name}.join('; ')
      save!
   end
 
