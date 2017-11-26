@@ -1,22 +1,49 @@
-#toolbox.btn-group-vertical{role:'group', 'aria-label' => t(:toolbox)}
-  - if @readmode
-    %button.btn
-      != link_to t(:full_mode), url_for(action: :read, id: @m.id), style: 'color:yellow;'
-  - else
-    %button.btn.btn-default
-      != link_to t(:reading_mode), url_for(action: :readmode, id: @m.id), style: 'color:yellow;'
-    %button.btn#fontsize= t(:font_size)
-    %button.btn= t(:bookmark)
-    %button.btn= t(:like)
-    %button.btn= t(:bookshelf)
-    %button.btn#found_mistake= t(:found_mistake)
+#toolbox{role:'group', 'aria-label' => t(:toolbox)}
+  #work-view{style:'width:10rem; text-align:center;margin-bottom:2rem;position:relative'}
+    = link_to url_for(action: :readmode, id: @m.id) do
+      %div
+        %button.btn.work-view
+          %i.icon-byread
+      %p= t(:reading_mode)
+  .btn-group-vertical
+    /%button.btn#fontsize= t(:font_size)
+    %button.toolbox-cell.darkoldpink{style:'border-top-left-radius:0.3rem;border-top-right-radius:0.3rem'}
+      %i.icon-bybookmark-empty
+      %span.tooltiptext= t(:add_bookmark)
+    %button.toolbox-cell.darkoldpink
+      %i.fa.fa-heart-o
+      %span.tooltiptext= t(:work_heart_button)
+    %button.toolbox-cell.darkoldpink
+      %i.icon-bybookshelf
+      %span.tooltiptext= t(:bookshelves)
+    %button.toolbox-cell.mistake#found_mistake
+      %div{style:'height:7rem;padding-top:1rem'}
+        %i.icon-byerror-found{style:'color: #660248'}
+        %span.foundmistake= t(:found_mistake)+'!'
+      %div{style:'height:4rem'}
+        %span.tooltiptext= t(:mistake_important)
     = render partial: 'shared/share', locals: {element: :button}
-    / %button.btn.share= t(:share)
-    %button.btn.download= t(:download)
-    %button.btn.printbutton= t(:print)
-    %button.btn.citebutton= t(:cite)
-    / %button.btn= t(:additional)
-    / %button.btn= t(:rollup)
+    %button.toolbox-cell.darkoldpink.download
+      %i.fa.fa-download
+      %span.tooltiptext= t(:download_ebook)
+    %button.toolbox-cell.darkoldpink.printbutton
+      %i.fa.fa-print
+      %span.tooltiptext= t(:print)
+    %button.toolbox-cell.darkoldpink.citebutton
+      %i.fa.fa-quote-right
+      %span.tooltiptext= t(:cite)
+    /%button.toolbox-cell.darkoldpink.moreoptions
+    /  %i.fa.fa-ellipsis-h
+    /  %span.tooltiptext= t(:additional_options)
+    %button.toolbox-cell.toolbox-footer.darkoldpink
+      %i.fa.fa-angle-up.toolbox-footer-chevron
+      %span.tooltiptext= t(:minimize)
+
+/#toolbox.btn-group-vertical{role:'group', 'aria-label' => t(:toolbox)}
+/  - if @readmode
+/    %button.btn
+/      != link_to t(:full_mode), url_for(action: :read, id: @m.id), style: 'color:yellow;'
+/  - else
 
 #proofSent
   %span{style:'color:green'}= t(:proof_thanks_html)
@@ -54,10 +81,6 @@
   = render partial: 'shared/download', locals: {manifestation: @m}
 #citeDlg
   = render partial: 'shared/cite', locals: {manifestation: @m}
-
-#shareDlg{title: t(:choose_sharing_medium)}
-  .container-fluid
-    = render partial: 'shared/share_controls'
 
 :javascript
   // proof button

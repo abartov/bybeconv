@@ -15,7 +15,7 @@
           - person = @entity.expressions[0].works[0].persons[0]
         = link_to person.name, author_toc_path(id: person.id)
         = ' > '
-        = link_to textify_genre(@entity.expressions[0].works[0].genre), :controller => :authors, :action => :show, :id => person.id, :genre => @entity.expressions[0].works[0].genre
+        = link_to textify_genre(@entity.expressions[0].works[0].genre), :controller => :authors, :action => :toc, :id => person.id, :genre => @entity.expressions[0].works[0].genre
         = ' > '
         %b= @entity.title
       - elsif @pagetype == :author

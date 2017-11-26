@@ -66,6 +66,7 @@ he:
   new_person: "מחבר/ת חדש/ה"
   join_volunteer: התנדבות להפקת תכנים
   donate_money: תרומה כספית
+  bookshelves: רשימות קריאה
   works_in_the_database: יצירות במאגר
   their_most_read_works: "יצירותי%{gender_letter} הנקראות ביותר"
   html_file_published: הקובץ מהמערכת הישנה פורסם עתה במערכת החדשה, ונוסף לקטלוג המערכת!
@@ -129,6 +130,7 @@ he:
   rest_in_wikipedia: להמשך הערך בויקיפדיה העברית
   to_the_wikipedia_article: לערך בויקיפדיה
   wikidata_id: מזהה בויקינתונים
+  additional_options: אפשרויות נוספות
   Raw: טרם עוּבַּד
   photo: תמונה
   last_update: עדכון אחרון
@@ -175,12 +177,15 @@ he:
   our_own_content: 'תוכן משלנו:'
   bookshelf: מדפים
   found_mistake: מצאתי שגיאה
+  mistake_important: חשוב לנו שהטקסט יהא מדויק וחף משגיאות
   share: שיתוף
   download: הורדה
+  download_ebook: הורדת ספר דיגיטלי
   print: הדפסה
   cite: ציטוט
   additional: נוספים
   rollup: קיפול
+  minimize: מזעור
   purged: הפריטים הוסרו.
   rec_file: קובץ
   rec_when: מתי
@@ -382,6 +387,8 @@ he:
   volunteer_profile: פרופיל מתנדב/ת
   fromdate: מתאריך
   todate: עד תאריך
+  work_heart_button: מוצא חן בעיני
+  add_bookmark: הוספת סימניה
   add_feature_date: הוספת טווח תאריכי הצגה
   featured_content_body: תוכן ההמלצה
   linked_manifestation: יצירה מקושרת

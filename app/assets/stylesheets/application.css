@@ -1740,6 +1740,13 @@ img.recommend-absolute {
     height:100%;
     display:none;
 }
+.dark-text-button:hover{
+  color:#D6A9C9;
+}
+.dark-text-button{
+  color:white;
+}
+
 #bialikPopup
 {
     height:380px;
