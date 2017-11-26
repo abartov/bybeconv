@@ -83,60 +83,62 @@
   = render partial: 'shared/cite', locals: {manifestation: @m}
 
 :javascript
-  // proof button
-  $('#proofDlg').dialog({
-    autoOpen: false,
-    height:600,
-    width:700,
-    modal:true,
-    buttons: {
-      "#{t(:submit_proof)}": submitProof,
-      "#{t(:cancel)}": function() { $('#proofDlg').dialog("close");}
-    }
-  });
-  $('#proofSent').dialog({autoOpen:false, height:200, width:500, modal:true,buttons:{"#{t(:close)}": function(){$('#proofSent').dialog('close');}}});
+  $(document).ready(function(){
+    // proof button
+    $('#proofDlg').dialog({
+      autoOpen: false,
+      height:600,
+      width:700,
+      modal:true,
+      buttons: {
+        "#{t(:submit_proof)}": submitProof,
+        "#{t(:cancel)}": function() { $('#proofDlg').dialog("close");}
+      }
+    });
+    $('#proofSent').dialog({autoOpen:false, height:200, width:500, modal:true,buttons:{"#{t(:close)}": function(){$('#proofSent').dialog('close');}}});
 
-  $('#proof_form').on('ajax:success', function(e, data, status, xhr) {
-    $('#proofDlg').dialog("close");
-    $('#proofSent').dialog('open');
-  }).on('ajax:error', function(e, xhr, status, error) {
-    $('#proof_status').html("<span style='color:red'>#{t(:proof_failed)}</span>");
-  });
-  function submitProof() {
-   $('#proof_form').submit(); // TBD
-  };
-  $('#copy_proof').click(function() {
-    $('#prooftext').text($('#proof_selected_text').text());
-  });
-  $('#found_mistake').click(function() {
-    if(document.getSelection().toString() == '')
-      alert("#{t(:proof_please_select_something)}");
-    else
-    {
-      $('#proof_selected_text').text(document.getSelection().toString());
-      $('#proofDlg').dialog("open");
-    }
-  });
+    $('#proof_form').on('ajax:success', function(e, data, status, xhr) {
+      $('#proofDlg').dialog("close");
+      $('#proofSent').dialog('open');
+    }).on('ajax:error', function(e, xhr, status, error) {
+      $('#proof_status').html("<span style='color:red'>#{t(:proof_failed)}</span>");
+    });
+    function submitProof() {
+    $('#proof_form').submit(); // TBD
+    };
+    $('#copy_proof').click(function() {
+      $('#prooftext').text($('#proof_selected_text').text());
+    });
+    $('#found_mistake').click(function() {
+      if(document.getSelection().toString() == '')
+        alert("#{t(:proof_please_select_something)}");
+      else
+      {
+        $('#proof_selected_text').text(document.getSelection().toString());
+        $('#proofDlg').dialog("open");
+      }
+    });
 
-  // font size button
-  $('#fontsizeDlg').dialog({autoOpen:false, height:200, width:250, modal:false,buttons:{"#{t(:close)}": function(){$('#fontsizeDlg').dialog('close');}}});
-  $('#fontsize').click(function() {
-    $('#fontsizeDlg').dialog("open");
-  });
+    // font size button
+    $('#fontsizeDlg').dialog({autoOpen:false, height:200, width:250, modal:false,buttons:{"#{t(:close)}": function(){$('#fontsizeDlg').dialog('close');}}});
+    $('#fontsize').click(function() {
+      $('#fontsizeDlg').dialog("open");
+    });
 
-  // download button
-  $('#downloadDlg').dialog({autoOpen:false, height:400, width:600, modal:true, buttons:{"#{t(:close)}": function(){$('#downloadDlg').dialog('close');}}});
-  $('.download').click(function() {
-    $('#downloadDlg').dialog('open');
-  });
+    // download button
+    $('#downloadDlg').dialog({autoOpen:false, height:400, width:600, modal:true, buttons:{"#{t(:close)}": function(){$('#downloadDlg').dialog('close');}}});
+    $('.download').click(function() {
+      $('#downloadDlg').dialog('open');
+    });
 
-  // print button
-  $('.printbutton').click(function() {
-    window.open("#{@print_url}",'_new');
-  });
+    // print button
+    $('.printbutton').click(function() {
+      window.open("#{@print_url}",'_new');
+    });
 
-  // cite button
-  $('#citeDlg').dialog({autoOpen:false, height:550, width:790, modal:true, buttons:{"#{t(:close)}": function(){$('#citeDlg').dialog('close');}}});
-  $('.citebutton').click(function() {
-    $('#citeDlg').dialog('open');
+    // cite button
+    $('#citeDlg').dialog({autoOpen:false, height:550, width:790, modal:true, buttons:{"#{t(:close)}": function(){$('#citeDlg').dialog('close');}}});
+    $('.citebutton').click(function() {
+      $('#citeDlg').dialog('open');
+    });
   });

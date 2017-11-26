@@ -263,6 +263,7 @@ a:disabled {
 .linky {
   color: #910065;
   cursor: pointer;
+  display:inline;
 }
 .text-on-dark{
   color: #E4CEDE;
