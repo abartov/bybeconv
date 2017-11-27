@@ -121,11 +121,10 @@
               .col-sm-6
                 - if @m.chapters? and @m.long?
                   %div{style:'position:relative'}
-                    = select_tag 'chapters', @chapters
-                    %span.fa.fa-angle-down
-                    %div
+                    = select_tag 'chapters', options_for_select(@chapters, @selected_chapter), 'class' => 'chapter-name dropdown', style: 'background-color:#eeeced;margin-top: 0.3rem;width: 100%'
+                    %div{style:'line-height:1rem;display:inline'}
                       %a.dropdown-arrow{style:'left:0'}
-                        %i.fa.fa-angle.down
+                        %span.fa.fa-angle-down
             / TODO: more nuanced rendering here
             - if @m.as_prose?
               #actualtext.maintext-prose-body.search-margin
@@ -152,7 +151,7 @@
 :javascript
   $(document).ready(function(){
 
-    // the input field
+    // the input field for the find-in-page
     var $input = $("#searchinwork"),
       // clear button
       $clearBtn = $("span[data-search='clear']"),
@@ -171,6 +170,18 @@
       offsetTop = 250,
       // the current index of the focused element
       currentIndex = 0;
+
+    $('#chapters').change(function(){
+      anchorselector = 'a[name=ch'+this.value+']'
+      elem = $(anchorselector)
+      if(elem != null || elem.position() == null)
+      {
+        position = elem.offset().top - offsetTop;
+        window.scrollTo(0,position);
+      }// else alert('nope');
+    });
+    /******************************/
+    /* stuff for the find-in-page */
 
     /**
     * Jumps to the element matching the currentIndex
@@ -231,4 +242,6 @@
         jumpTo();
       }
     });
+    /* end stuff for find-in-page */
+    /******************************/
   });

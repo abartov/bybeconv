@@ -157,6 +157,10 @@ class ApplicationController < ActionController::Base
     return @@whatsnew_cache
   end
 
+  def sanitize_heading(h)
+    return h.gsub(/\[\^ftn\d+\]/,'').strip
+  end
+
   def current_user
     @current_user ||= User.find(session[:user_id]) if session[:user_id]
   end

@@ -222,7 +222,16 @@ class ManifestationController < ApplicationController
 
   def prep_for_read
     @m = Manifestation.find(params[:id])
-    @html = MultiMarkdown.new(@m.markdown.lines[1..-1].join("\n")).to_html.force_encoding('UTF-8')
+    lines = @m.markdown.lines
+    tmphash = {}
+    @chapters = {}
+    @m.heading_lines.reverse.each{ |linenum|
+      lines.insert(linenum, "<a name=\"ch#{linenum}\"></a>")
+      tmphash[sanitize_heading(lines[linenum+1][2..-1].strip)] = linenum.to_s
+    } # annotate headings in reverse order, to avoid offsetting the next heading
+    tmphash.keys.reverse.map{|k| @chapters[k] = tmphash[k]}
+    @selected_chapter = tmphash.keys.last
+    @html = MultiMarkdown.new(lines[1..-1].join("\n")).to_html.force_encoding('UTF-8')
     @tabclass = set_tab('works')
     @entity = @m
     @pagetype = :manifestation
