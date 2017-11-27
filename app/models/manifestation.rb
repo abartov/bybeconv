@@ -39,11 +39,15 @@ class Manifestation < ActiveRecord::Base
     return true
   end
 
-  def recalc_heading_lines!
+  def recalc_heading_lines
     lines = markdown.lines
     temp_heading_lines = []
     lines.each_index {|i| temp_heading_lines << i if lines[i][0..1] == '##' && lines[2] != '#' }
     self.cached_heading_lines = temp_heading_lines.join('|')
+  end
+
+  def recalc_heading_lines!
+    recalc_heading_lines
     save!
   end
 
@@ -78,7 +82,7 @@ class Manifestation < ActiveRecord::Base
     return ret # TODO: be less naive
   end
 
-  def recalc_cached_people!
+  def recalc_cached_people
      pp = []
      expressions.each {|e|
        e.persons.each {|p| pp << p unless pp.include?(p) }
@@ -87,6 +91,10 @@ class Manifestation < ActiveRecord::Base
        }
      }
      self.cached_people = pp.map{|p| p.name}.join('; ')
+  end
+
+  def recalc_cached_people!
+    recalc_cached_people
      save!
   end
 
