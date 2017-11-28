@@ -1,7 +1,7 @@
 .top-element
   %h2= t(:missing_copyright_report)
 
-  %h3= t(:authors)
+  %h3= t(:authors)+" (#{@authors.count})"
   %table{style: 'cell-spacing: 10;'}
     %tr
       %th= t(:name)
