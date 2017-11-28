@@ -2,6 +2,7 @@
   = link_to "https://www.facebook.com/sharer/sharer.php?u=#{request.original_url}", target: '_new' do
     %i.fa.fa-facebook-square
 .icons-raw
+  / TODO: detect whether Desktop or Mobile and use 'web' instead of 'api' for Desktop
   = link_to "https://api.whatsapp.com/send?text=#{URI.encode(request.original_url)}", target: '_new' do
     %i.fa.fa-whatsapp
 .icons-raw

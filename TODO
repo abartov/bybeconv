@@ -3,13 +3,16 @@
   - fix author TOC conversion to handle anchors!
   - add dropdown with expression details history *per author* to save work typing it for other expressions by that author.
   - add lock_version column to person, work, expression, and manifestation tables
-- blog post with screenshots of system
-- implement toolbox collapse
-- skip "our content" line if no content
+
+
 - implement tags etc. at bottom of work read
 - implement updated UI for read mode
 - implement bookmarks (see notes in code!)
-- implement chapters
+- implement chapter-only display
+- implement WhatsApp Web when detected Desktop
+- implement share-via-email
+- download as TXT - add CR+LF if user runs Windows
+- download as DOC - right-align (pandoc patch?)
 
 - HOMEPAGE
   - featured content byline code
@@ -17,8 +20,9 @@
   - fontsize sticky across pages
   - carousel of featured content
 
-- download as TXT - add CR+LF if user runs Windows
-- download as DOC - right-align (pandoc patch?)
+- COMMUNICATION
+  - blog post with screenshots of system
+
 
 - homepage bottom -- popular authors *this month*
   - need to calculate in controller
