@@ -5,7 +5,7 @@
     - @w.creations.each do |c|
       %li
         = link_to c.person.name, authors_show_path(id: c.person.id)
-        = ' ('+t(c.role)+')'
+        = ' ('+t(c.role.nil? ? :nil : c.role)+')'
         - if edit
           = link_to t(:destroy), url_for(controller: :creations, action: :remove, id: c.id, manifestation_id: @m.id)
     - if edit
