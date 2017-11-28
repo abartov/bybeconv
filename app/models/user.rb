@@ -4,6 +4,13 @@ class User < ActiveRecord::Base
   has_many :recommendations, foreign_key: :recommended_by
   # no apparent need to be able to retrieve all recommendations a particular (admin) user has *resolved*.  If one arises, use a separate association on the resolved_by foreign key
 
+  ### User Preferences
+  property_set :preferences do
+    property :fontsize, default: 2
+    property :volunteer, default: false # boolean  (another option - :protected => true)
+    property :activated, default: false # boolean
+  end
+
   def admin?
     admin
   end
@@ -11,6 +18,7 @@ class User < ActiveRecord::Base
   def editor?
     editor
   end
+
   def self.from_omniauth(auth)
     where(auth.slice(:provider, :uid)).first_or_initialize.tap do |user|
       user.provider = auth.provider

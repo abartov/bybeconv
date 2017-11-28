@@ -3,9 +3,17 @@
   - fix author TOC conversion to handle anchors!
   - add dropdown with expression details history *per author* to save work typing it for other expressions by that author.
   - add lock_version column to person, work, expression, and manifestation tables
+  - implement tags and taggings review
+  - edit WEM associations -- external links, authors
+  - edit Manifestation markdown with Stackedit
+  - have works automatically tagged as belonging to a book/collection (WEM!) according to (human-confirmed) heading from the ToC
+  - means to select additional/different authors
+  - show revisions of manifestations/ToCs
+  - show diffs between revs
+  - restore rev over current
 
-
-- implement tags etc. at bottom of work read
+- implement user settings
+- implement recommendations etc. at bottom of work read
 - implement updated UI for read mode
 - implement bookmarks (see notes in code!)
 - implement chapter-only display
@@ -35,13 +43,6 @@
 - search
 - search results
 - backend
-  - edit WEM associations -- external links, authors
-  - edit Manifestation markdown with Stackedit
-  - have works automatically tagged as belonging to a book/collection (WEM!) according to (human-confirmed) heading from the ToC
-  - means to select additional/different authors
-  - show revisions of manifestations/ToCs
-  - show diffs between revs
-  - restore rev over current
 - user prefs infrastructure (for anons too!)
   - store fontsize pref
 

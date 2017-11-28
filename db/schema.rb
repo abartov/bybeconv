@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171126225005) do
+ActiveRecord::Schema.define(version: 20171128175937) do
 
   create_table "api_keys", force: :cascade do |t|
     t.string   "email",       limit: 255
@@ -343,6 +343,14 @@ ActiveRecord::Schema.define(version: 20171126225005) do
     t.datetime "updated_at",                  null: false
   end
 
+  create_table "user_preferences", force: :cascade do |t|
+    t.string  "name",    limit: 255, null: false
+    t.string  "value",   limit: 255
+    t.integer "user_id", limit: 4,   null: false
+  end
+
+  add_index "user_preferences", ["user_id", "name"], name: "index_user_preferences_on_user_id_and_name", unique: true, using: :btree
+
   create_table "users", force: :cascade do |t|
     t.string   "name",             limit: 255
     t.string   "email",            limit: 255
@@ -406,5 +414,6 @@ ActiveRecord::Schema.define(version: 20171126225005) do
   add_foreign_key "featured_contents", "people"
   add_foreign_key "realizers", "expressions"
   add_foreign_key "realizers", "people"
+  add_foreign_key "user_preferences", "users"
   add_foreign_key "volunteer_profile_features", "volunteer_profiles"
 end
