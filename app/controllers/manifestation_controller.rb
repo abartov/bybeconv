@@ -48,7 +48,7 @@ class ManifestationController < ApplicationController
 
   def download
     @m = Manifestation.find(params[:id])
-    filename = @m.safe_filename+'.'+params[:format]
+    filename = "#{@m.safe_filename}.#{params[:format]}"
     html = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"><html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"he\" lang=\"he\" dir=\"rtl\"><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" /></head><body dir='rtl' align='right'><div dir=\"rtl\" align=\"right\">"+MultiMarkdown.new(@m.markdown).to_html.force_encoding('UTF-8')+"\n\n<hr />"+I18n.t(:download_footer_html, url: url_for(action: :read, id: @m.id))+"</div></body></html>"
     case params[:format]
     when 'pdf'
