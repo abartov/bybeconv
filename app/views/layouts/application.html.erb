@@ -46,8 +46,10 @@
                 <div id="user-widget">
                   <div style="display: inline;float: right; position: relative">
                     <% if current_user %>
+                    <div class="collapsed" data-toggle="collapse" data-target="#user_collapsible">
                       <p style="padding-left: 1.6rem"><%= t(:welcome) %> <strong><%= current_user.name %></strong>!</p>
-                      <div><a class="dropdown-arrow" data-toggle="collapse" data-target="#user_collapsible" style="top: 0.1rem; left: 0"><i class="fa fa-angle-down"></i></a></div>
+                      <div class="dropdown-arrow linky" style="top: 0.1rem; left: 0"><i class="fa chevron"></i></div>
+                    </div>
                       <div id="user_collapsible" class="collapse" ><a id="sign_in" href="#">כניסה לאזור האישי</a><br/>
                         <%= link_to t(:sign_out), signout_path, id: "sign_out" %>
                       </div>

@@ -1630,11 +1630,11 @@ img.bysurprise-absolute {
   margin-bottom: 0.2rem;
 }
 
-.toolbox-footer-chevron:after {
+.chevron:after {
   content:"\f106"
 }
 
-.collapsed .toolbox-footer-chevron:after {
+.collapsed .chevron:after {
   content:"\f107"
 }
 
