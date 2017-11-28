@@ -17,6 +17,10 @@ class AdminController < ApplicationController
     @mans = Kaminari.paginate_array(mans).page(params[:page]).per(25)
   end
 
+  def missing_genres
+    @mans = Manifestation.joins(:expressions).where(expressions: {genre: nil}).page(params[:page]).per(25)
+  end
+
   def volunteer_profiles_list
     @vps = VolunteerProfile.page(params[:page])
   end

@@ -1,0 +1,16 @@
+.top-element
+  %h2= t(:missing_genre_report)
+
+  %table{style: 'cell-spacing: 10;'}
+    %tr
+      %th= t(:title)
+      %th= t(:author)
+      %th
+
+    - @mans.each do |m|
+      %tr
+        %td= link_to m.title, manifestation_show_path(m.id)
+        %td= m.expressions[0].works[0].persons[0].name
+        %td= link_to t(:edit_metadata), manifestation_edit_metadata_path(m.id)
+
+  != paginate @mans

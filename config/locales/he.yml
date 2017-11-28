@@ -378,6 +378,7 @@ he:
   donate_p2_html: כספי תרומתכם מועברים לחשבון העמותה למחשוב ספרות עברית (מס״ע), שהקמנו עבור תמיכה בפרויקט, וישמשו אך ורק לצרכים אלו.
   reports: "דו\"חות"
   missing_language_report: "דו\"ח יצירות מתורגמות ללא ציון שפת מקור"
+  missing_genre_report: "דו\"ח יצירות ללא סוגה"
   volunteer_profiles: פרופילי מתנדבים
   feature_on: להציג בתאריכים
   featured_content_heading: ניהול תכני מערכת

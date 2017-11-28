@@ -7,6 +7,7 @@ Bybeconv::Application.routes.draw do
 
   get 'admin/index'
   get 'admin/missing_languages'
+  get 'admin/missing_genres'
   get 'admin/volunteer_profiles_list'
   get 'admin/volunteer_profile/new' => 'admin#volunteer_profile_new', as: 'volunteer_profile_new'
   post 'admin/volunteer_profile/create' => 'admin#volunteer_profile_create', as: 'volunteer_profile_create'
