@@ -1,17 +1,15 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  from: MyString
-  about: MyString
-  what: MyString
-  subscribe: false
-  status: MyString
-  resolved_by: 1
+  body: MyText
+  user_id:
+  approved_by_id:
+  status: 1
+  manifestation_id:
 
 two:
-  from: MyString
-  about: MyString
-  what: MyString
-  subscribe: false
-  status: MyString
-  resolved_by: 1
+  body: MyText
+  user_id:
+  approved_by_id:
+  status: 1
+  manifestation_id:

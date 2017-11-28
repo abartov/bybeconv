@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171128212650) do
+ActiveRecord::Schema.define(version: 20171128214626) do
 
   create_table "api_keys", force: :cascade do |t|
     t.string   "email",       limit: 255
@@ -308,6 +308,20 @@ ActiveRecord::Schema.define(version: 20171128212650) do
   add_index "realizers", ["expression_id"], name: "index_realizers_on_expression_id", using: :btree
   add_index "realizers", ["person_id"], name: "index_realizers_on_person_id", using: :btree
 
+  create_table "recommendations", force: :cascade do |t|
+    t.text     "body",             limit: 65535
+    t.integer  "user_id",          limit: 4
+    t.integer  "approved_by",      limit: 4
+    t.integer  "status",           limit: 4
+    t.integer  "manifestation_id", limit: 4
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+  end
+
+  add_index "recommendations", ["manifestation_id", "status"], name: "index_recommendations_on_manifestation_id_and_status", using: :btree
+  add_index "recommendations", ["manifestation_id"], name: "index_recommendations_on_manifestation_id", using: :btree
+  add_index "recommendations", ["user_id"], name: "index_recommendations_on_user_id", using: :btree
+
   create_table "sessions", force: :cascade do |t|
     t.string   "session_id", limit: 255,      null: false
     t.text     "data",       limit: 16777215
@@ -414,6 +428,8 @@ ActiveRecord::Schema.define(version: 20171128212650) do
   add_foreign_key "featured_contents", "people"
   add_foreign_key "realizers", "expressions"
   add_foreign_key "realizers", "people"
+  add_foreign_key "recommendations", "manifestations"
+  add_foreign_key "recommendations", "users"
   add_foreign_key "user_preferences", "users"
   add_foreign_key "volunteer_profile_features", "volunteer_profiles"
 end

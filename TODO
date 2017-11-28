@@ -11,7 +11,9 @@
   - show revisions of manifestations/ToCs
   - show diffs between revs
   - restore rev over current
+  - query work by tag
 
+- make tags links to works queries by tag
 - implement user settings
 - implement recommendations etc. at bottom of work read
 - implement updated UI for read mode
