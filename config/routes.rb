@@ -98,10 +98,10 @@ Bybeconv::Application.routes.draw do
   get "proof/:id/resolve" => 'proof#resolve', as: 'proof_resolve'
   resources :proof
 
-  get "recommendation/list"
-  get "recommendation/purge" => 'recommendation#purge', as: 'recommendation_purge'
-  match "recommendation/:id/resolve" => 'recommendation#resolve', as: 'recommendation_resolve', via: [:get, :post]
-  resources :recommendation
+  get "legacy_recommendation/list"
+  get "legacy_recommendation/purge" => 'legacy_recommendation#purge', as: 'legacy_recommendation_purge'
+  match "legacy_recommendation/:id/resolve" => 'legacy_recommendation#resolve', as: 'legacy_recommendation_resolve', via: [:get, :post]
+  resources :legacy_recommendation
 
   get "html_file/analyze"
   match "html_file/:id/edit" => 'html_file#edit', as: 'html_file_edit', via: [:get, :post]

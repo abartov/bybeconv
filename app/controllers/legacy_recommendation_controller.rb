@@ -1,4 +1,4 @@
-class RecommendationController < ApplicationController
+class LegacyRecommendationController < ApplicationController
 
   protect_from_forgery :except => :submit # allow submission from outside the app
   before_filter :require_editor, :only => [:index, :list, :show, :resolve, :purge]
@@ -22,21 +22,21 @@ class RecommendationController < ApplicationController
   end
   def list
     # calculate tallies
-    @count = { :all => Recommendation.count, :open => Recommendation.where(status: 'new').count, :accepted => Recommendation.where(status: 'accepted').count, :rejected => Recommendation.where(status: 'rejected').count }
+    @count = { :all => LegacyRecommendation.count, :open => LegacyRecommendation.where(status: 'new').count, :accepted => LegacyRecommendation.where(status: 'accepted').count, :rejected => LegacyRecommendation.where(status: 'rejected').count }
     if params[:status].nil?
-      @recs = Recommendation.page(params[:page]).order(:about)
+      @recs = LegacyRecommendation.page(params[:page]).order(:about)
     else
-      @recs = Recommendation.where(status: params[:status]).page(params[:page]).order(:about)
+      @recs = LegacyRecommendation.where(status: params[:status]).page(params[:page]).order(:about)
     end
   end
 
   def show
-    @p = Recommendation.find(params[:id])
+    @p = LegacyRecommendation.find(params[:id])
     @p.what = '' if @p.what.nil?
   end
 
   def resolve
-    @p = Recommendation.find(params[:id])
+    @p = LegacyRecommendation.find(params[:id])
     error = nil
     if @p.nil?
       error = t(:no_such_item)
@@ -75,7 +75,7 @@ class RecommendationController < ApplicationController
     redirect_to :action => :list
   end
   def purge
-    Recommendation.where(status: 'rejected').delete_all
+    LegacyRecommendation.where(status: 'rejected').delete_all
     flash[:notice] = t(:purged)
     redirect_to :action => :list
   end

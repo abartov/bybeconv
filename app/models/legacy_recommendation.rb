@@ -1,4 +1,4 @@
-class Recommendation < ActiveRecord::Base
+class LegacyRecommendation < ActiveRecord::Base
   attr_accessible :about, :from, :resolved_by, :status, :subscribe, :what, :recommended_by
 
   belongs_to :html_file # legacy system (will be migrated or eliminated at some point; for now will co-exist quietly)

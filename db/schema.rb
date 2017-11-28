@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171128175937) do
+ActiveRecord::Schema.define(version: 20171128212650) do
 
   create_table "api_keys", force: :cascade do |t|
     t.string   "email",       limit: 255
@@ -196,6 +196,20 @@ ActiveRecord::Schema.define(version: 20171128175937) do
   add_index "impressions", ["impressionable_type", "message", "impressionable_id"], name: "impressionable_type_message_index", length: {"impressionable_type"=>nil, "message"=>255, "impressionable_id"=>nil}, using: :btree
   add_index "impressions", ["user_id"], name: "index_impressions_on_user_id", using: :btree
 
+  create_table "legacy_recommendations", force: :cascade do |t|
+    t.string   "from",             limit: 255
+    t.string   "about",            limit: 255
+    t.string   "what",             limit: 255
+    t.boolean  "subscribe"
+    t.string   "status",           limit: 255
+    t.integer  "resolved_by",      limit: 4
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.integer  "html_file_id",     limit: 4
+    t.integer  "recommended_by",   limit: 4
+    t.integer  "manifestation_id", limit: 4
+  end
+
   create_table "manifestations", force: :cascade do |t|
     t.string   "title",                    limit: 255
     t.string   "responsibility_statement", limit: 255
@@ -293,20 +307,6 @@ ActiveRecord::Schema.define(version: 20171128175937) do
 
   add_index "realizers", ["expression_id"], name: "index_realizers_on_expression_id", using: :btree
   add_index "realizers", ["person_id"], name: "index_realizers_on_person_id", using: :btree
-
-  create_table "recommendations", force: :cascade do |t|
-    t.string   "from",             limit: 255
-    t.string   "about",            limit: 255
-    t.string   "what",             limit: 255
-    t.boolean  "subscribe"
-    t.string   "status",           limit: 255
-    t.integer  "resolved_by",      limit: 4
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
-    t.integer  "html_file_id",     limit: 4
-    t.integer  "recommended_by",   limit: 4
-    t.integer  "manifestation_id", limit: 4
-  end
 
   create_table "sessions", force: :cascade do |t|
     t.string   "session_id", limit: 255,      null: false
