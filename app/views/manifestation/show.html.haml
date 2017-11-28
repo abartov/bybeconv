@@ -1,5 +1,8 @@
 .top-element
-  %b= link_to t(:edit_metadata), manifestation_edit_metadata_path(@m.id)
+  %p
+    %b= link_to t(:edit_metadata), manifestation_edit_metadata_path(@m.id)
+  %p
+    %b= link_to t(:render), url_for(action: :read, id: @m.id)
   %h1
     != t(:work_details)+': '+@m.title+" / "+linkify_people(@w.persons)
     - if @e.translation
