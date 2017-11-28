@@ -379,6 +379,10 @@ he:
   reports: "דו\"חות"
   missing_language_report: "דו\"ח יצירות מתורגמות ללא ציון שפת מקור"
   missing_genre_report: "דו\"ח יצירות ללא סוגה"
+  incongruous_copyright_report: "דו\"ח יצירות במצב זכויות יוצרים שגוי (כנראה)"
+  takes_long_time: דורש זמן רב!
+  calculated_copyright: לכאורה קנין הציבור?
+  db_copyright: קנין הציבור במערכת?
   volunteer_profiles: פרופילי מתנדבים
   feature_on: להציג בתאריכים
   featured_content_heading: ניהול תכני מערכת

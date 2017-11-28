@@ -17,6 +17,10 @@
     %h3= t(:reports)
     %p= link_to t(:missing_language_report), admin_missing_languages_path
     %p= link_to t(:missing_genre_report), admin_missing_genres_path
+    %p
+      = link_to admin_incongruous_copyright_path do
+        = t(:incongruous_copyright_report)+' '
+        %b= t(:takes_long_time)
     %hr
     %h3= t(:featured_content_heading)
     %p= link_to t(:volunteer_profiles), url_for(action: :volunteer_profiles_list)

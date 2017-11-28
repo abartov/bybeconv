@@ -17,6 +17,18 @@ class Expression < ActiveRecord::Base
     return realizers.where(role: Realizer.roles[:translator]).map {|x| x.person}
   end
 
+  def should_be_copyrighted?
+    creators = works[0].persons
+    realizer_people = realizers.map{|r| r.person}
+    tocheck = creators + realizer_people
+    ret = false
+    tocheck.each{|p|
+      ret = true unless p.public_domain
+      break if ret
+    }
+    return ret
+  end
+
   protected
 
   def set_translation

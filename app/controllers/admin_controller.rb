@@ -1,6 +1,6 @@
 class AdminController < ApplicationController
   before_filter :require_editor
-  before_filter :require_admin, only: [:missing_languages]
+  before_filter :require_admin, only: [:missing_languages, :missing_genres, :incongruous_copyright]
   autocomplete :manifestation, :title, display_value: :title_and_authors
   autocomplete :person, :name
 
@@ -19,6 +19,18 @@ class AdminController < ApplicationController
 
   def missing_genres
     @mans = Manifestation.joins(:expressions).where(expressions: {genre: nil}).page(params[:page]).per(25)
+  end
+
+  def incongruous_copyright
+    # Manifestation.joins([expressions: [[realizers: :person],:works]]).where(expressions: {copyrighted:true},people: {public_domain:true})
+    @incong = []
+    Manifestation.all.each {|m|
+      calculated_copyright = m.expressions[0].should_be_copyrighted?
+      db_copyright = m.expressions[0].copyrighted
+      if calculated_copyright != db_copyright
+        @incong << [m, m.title, m.author_string, calculated_copyright, db_copyright]
+      end
+    }
   end
 
   def volunteer_profiles_list
