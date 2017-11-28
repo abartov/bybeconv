@@ -8,6 +8,7 @@ Bybeconv::Application.routes.draw do
   get 'admin/index'
   get 'admin/missing_languages'
   get 'admin/missing_genres'
+  get 'admin/missing_copyright'
   get 'admin/incongruous_copyright'
   get 'admin/volunteer_profiles_list'
   get 'admin/volunteer_profile/new' => 'admin#volunteer_profile_new', as: 'volunteer_profile_new'

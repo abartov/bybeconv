@@ -1,6 +1,6 @@
 .top-element
   = form_tag(action: :update, id: @m.id) do
-    %h1= t(:edit_metadata)+': '+@m.title_and_authors
+    %h1= @page_title
 
     %h2= t(:work_entity_details)
     %p

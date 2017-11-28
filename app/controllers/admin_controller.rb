@@ -21,6 +21,11 @@ class AdminController < ApplicationController
     @mans = Manifestation.joins(:expressions).where(expressions: {genre: nil}).page(params[:page]).per(25)
   end
 
+  def missing_copyright
+    @authors = Person.where(public_domain: nil)
+    @mans = Manifestation.joins(:expressions).where(expressions: {copyrighted: nil}).page(params[:page]).per(25)
+  end
+
   def incongruous_copyright
     # Manifestation.joins([expressions: [[realizers: :person],:works]]).where(expressions: {copyrighted:true},people: {public_domain:true})
     @incong = []

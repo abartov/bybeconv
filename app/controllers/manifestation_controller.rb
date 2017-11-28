@@ -156,6 +156,7 @@ class ManifestationController < ApplicationController
 
   def show
     @m = Manifestation.find(params[:id])
+    @page_title = t(:show)+': '+@m.title_and_authors
     @e = @m.expressions[0] # TODO: generalize?
     @w = @e.works[0] # TODO: generalize!
     @html = MultiMarkdown.new(@m.markdown).to_html.force_encoding('UTF-8')
@@ -168,6 +169,7 @@ class ManifestationController < ApplicationController
 
   def edit_metadata
     @m = Manifestation.find(params[:id])
+    @page_title = t(:edit_metadata)+': '+@m.title_and_authors
     @e = @m.expressions[0] # TODO: generalize?
     @w = @e.works[0] # TODO: generalize!
   end
