@@ -1,5 +1,6 @@
 :javascript
   var logged_in = #{current_user.nil? ? false : true};
+
   $(document).ready(function(){
     $(".increase_font").click(function() {
         set_fontsize_pref('3');
@@ -18,7 +19,7 @@
     enact_font_size(thepref); // first make it happen on-screen
     if(logged_in) // then, if made by a logged-in user, remember it
       $.ajax({
-        url: "#{url_for(controller: :user, action: :set_pref, id: current_user.id) }",
+        url: "#{url_for(controller: :user, action: :set_pref, id: (current_user.nil? ? '' : current_user.id)) }",
         data: {pref: 'fontsize', value: thepref},
         method: 'POST',
       });
