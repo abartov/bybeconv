@@ -79,6 +79,7 @@ he:
   to_the_full_list: לרשימה המלאה
   whatsnew: "מה חדש?"
   whats_new: מה חדש בפרויקט
+  project_ben_yehuda: פרויקט בן-יהודה
   random_authors: יוצרים אקראיים
   random_works: יצירות אקראיות
   featured_item: זרקור על יצירה
@@ -266,6 +267,7 @@ he:
   youtube: קטע וידאו
   blog: רשומה בבלוג
   other: אחר
+  author_details: פרטי מחבר
   work_entity_details: פרטי ישות יצירה
   work_details: פרטי יצירה
   expression_details: פרטי ביטוי

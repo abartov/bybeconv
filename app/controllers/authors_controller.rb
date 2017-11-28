@@ -9,6 +9,7 @@ class AuthorsController < ApplicationController
   end
 
   def index
+    @page_title = t(:authors)+' '+t(:project_ben_yehuda)
     @pop_by_genre = cached_popular_authors_by_genre # get popular authors by genre + most popular translated
     @rand_by_genre = {}
     @surprise_by_genre = {}
@@ -55,6 +56,7 @@ class AuthorsController < ApplicationController
       redirect_to '/'
     else
       # TODO: add other types of content
+      @page_title = t(:author_details)+': '+@author.name
       @count = {works: @author.work_ids.count}
     end
   end
@@ -65,6 +67,7 @@ class AuthorsController < ApplicationController
       flash[:error] = t(:no_such_item)
       redirect_to '/'
     else
+      @page_title = t(:edit)+': '+@author.name
       # do stuff
     end
   end
@@ -86,6 +89,7 @@ class AuthorsController < ApplicationController
   end
 
   def list
+    @page_title = t(:authors)+' - '+t(:project_ben_yehuda)
     def_order = 'metadata_approved asc, name asc'
     if params[:q].nil? or params[:q].empty?
       @people = Person.page(params[:page]).order(params[:order].nil? ? def_order : params[:order]) # TODO: pagination
@@ -106,7 +110,7 @@ class AuthorsController < ApplicationController
       @html = MultiMarkdown.new(markdown_toc).to_html.force_encoding('UTF-8')
       @pagetype = :author
       @entity = @author
-      @page_title = "#{@author.name} - #{t(:table_of_contents)}"
+      @page_title = "#{@author.name} - #{t(:table_of_contents)} - #{t(:project_ben_yehuda)}"
       impressionist(@author) # log actions for pageview stats
     else
       flash[:error] = I18n.t(:no_toc_yet)
