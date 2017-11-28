@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
   before_filter :set_paper_trail_whodunnit
+  before_filter :set_font_size
   after_filter :set_access_control_headers
 
   # class variables
@@ -8,6 +9,10 @@ class ApplicationController < ActionController::Base
   @@countworks_cache = nil
   @@genre_popups_cache = nil
   @@pop_authors_by_genre = nil
+
+  def set_font_size
+    @fontsize = current_user ? current_user.preferences.fontsize : '2'
+  end
 
   def set_access_control_headers
 #    headers['Access-Control-Allow-Origin'] = 'http://benyehuda.org/'

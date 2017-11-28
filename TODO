@@ -25,7 +25,6 @@
 - HOMEPAGE
   - featured content byline code
   - featured content full text view
-  - fontsize sticky across pages
   - carousel of featured content
 
 - COMMUNICATION
@@ -43,7 +42,7 @@
 - search
 - search results
 - backend
-- user prefs infrastructure (for anons too!)
+- user prefs infrastructure for anons!
   - store fontsize pref
 
 * always: rake notes

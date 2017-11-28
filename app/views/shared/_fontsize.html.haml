@@ -1,23 +1,11 @@
 %div{ style: "float: right; direction:rtl"}
   %span{style: "float:right"}= t(:font_size)+": "
-  .fontsize-selector
+  .fontsize-selector#smallfont
     %a{href:"javascript:void(0)", class:"decrease_font",style:"font-size: 75%"}='א'
   != '&nbsp;'
-  .fontsize-selector-current
+  .fontsize-selector#defaultfont
     %a{href:"javascript:void(0)", class:"default_font"}='א'
   != '&nbsp;'
-  .fontsize-selector
+  .fontsize-selector#bigfont
     %a{href:"javascript:void(0)", class:"increase_font", style:"font-size: 150%"}='א'
 / TODO: also set a cookie, so it'll stick between screens
-:javascript
-  $(".increase_font").click(function() {
-    $("html").css("fontSize", "80%");
-  });
-
-  $(".default_font").click(function() {
-    $("html").css("fontSize", "62.5%");
-  });
-
-  $(".decrease_font").click(function() {
-    $("html").css("fontSize", "50%");
-  });

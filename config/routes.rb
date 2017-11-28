@@ -77,7 +77,7 @@ Bybeconv::Application.routes.draw do
   get "user/:id/make_editor" => 'user#make_editor', as: 'user_make_editor'
   get "user/:id/make_admin" => 'user#make_admin', as: 'user_make_admin'
   get "user/:id/unmake_editor" => 'user#unmake_editor', as: 'user_unmake_editor'
-
+  post 'user/set_pref'
   get "welcome/index"
 
   get "session/create"

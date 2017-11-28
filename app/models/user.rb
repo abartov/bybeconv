@@ -6,9 +6,9 @@ class User < ActiveRecord::Base
 
   ### User Preferences
   property_set :preferences do
-    property :fontsize, default: 2
-    property :volunteer, default: false # boolean  (another option - :protected => true)
-    property :activated, default: false # boolean
+    property :fontsize, default: '2'
+    property :volunteer, default: 'false' # boolean  (another option - :protected => true)
+    property :activated, default: 'false' # boolean
   end
 
   def admin?
