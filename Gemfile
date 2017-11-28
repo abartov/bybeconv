@@ -15,7 +15,7 @@ gem 'rufus-scheduler' # scheduler
 gem 'chewy' # for ElasticSearch
 #gem 'jssorslider-rails', github: 'matthias-g/jssorslider-rails' # for carousel slider
 gem "jquery-slick-rails" # for carousel slider
-gem 'rails3-jquery-autocomplete' # for auto-completion
+gem 'rails-jquery-autocomplete' # for auto-completion
 
 gem 'diffy'
 gem 'aws-sdk', '~>2.9' # for the Amazon cloud.  3.x breaks somehow. TBD: figure it out
