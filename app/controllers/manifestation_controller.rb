@@ -3,6 +3,10 @@ require 'pandoc-ruby'
 class ManifestationController < ApplicationController
   before_filter :require_editor, only: [:list, :show, :edit, :update, :remove_link, :edit_metadata]
 
+  autocomplete :manifestation, :title, limit: 20, display_value: :title_and_authors
+  autocomplete :person, :name, :limit => 2
+  autocomplete :tag, :name
+
   impressionist # log actions for pageview stats
 
   #layout false, only: [:print]
@@ -22,8 +26,11 @@ class ManifestationController < ApplicationController
   def read
     prep_for_read
     @proof = Proof.new
+    @tag = Tag.new
+    @tags = @m.approved_tags
     @print_url = url_for(action: :print, id: @m.id)
     @links = @m.external_links.group_by {|l| l.linktype}
+    @random_work = Manifestation.order('RAND()').limit(1)[0]
   end
 
   def readmode
@@ -139,7 +146,7 @@ class ManifestationController < ApplicationController
     else
       session[:mft_q_params] = { title: '', author: '' }
     end
-
+    @urlbase = url_for(action: :show, id:1)[0..-2]
     # DB
     if params[:title].blank? && params[:author].blank?
       @manifestations = Manifestation.page(params[:page]).order('title ASC')

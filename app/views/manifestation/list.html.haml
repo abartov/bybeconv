@@ -1,45 +1,63 @@
 .top-element
-  %h1= t(:catalog_title)
+  .container-fluid
+    .row
+      .col-md-1
+      .col-md-10
+        %h1= t(:catalog_title)
 
-  %p= t(:total_manifestations, :total => @total)
+        %p= t(:total_manifestations, :total => @total)
 
-  / query interface
-  %p
-    = form_tag( :action => 'list') do
-      = label_tag(:title_l, t(:title))
-      = text_field_tag(:title, session[:mft_q_params][:title])
-      = label_tag(:author_l, t(:author))
-      = text_field_tag(:author, session[:mft_q_params][:author])
-      = submit_tag(t(:filter))
+        / query interface
+        %p
+          = form_tag( :action => 'list') do
+            = label_tag(:title_l, t(:title))
+            /= hidden_field_tag(:title, session[:mft_q_params][:title])
+            = autocomplete_field_tag :title, session[:mft_q_params][:title], autocomplete_manifestation_title_path
 
-  / end query interface
-  - if @manifestations.nil?
-    %b= t(:no_results)
-  - else
-    %table{cellspacing: 3,cellpadding: 3}
-      %th= t(:author)
-      %th= t(:title)
-      %th= t(:translation)+'?'
-      %th= t(:translator)
-      %th= '...'
-      %th= t(:actions)
+            = label_tag(:author_l, t(:author))
+            /= text_field_tag(:author, session[:mft_q_params][:author])
+            = autocomplete_field_tag :author, session[:mft_q_params][:author], autocomplete_person_name_path
+            = submit_tag(t(:filter))
 
-      - @manifestations.each do |m|
-        %tr
-          %td= m.expressions[0].works[0].persons[0].name
-          %td= m.title
-          - if m.expressions[0].translation
-            %td= t(:yes)+" (#{textify_lang(m.expressions[0].works[0].orig_lang)})"
-            %td= m.expressions[0].persons[0].name
-          - else
-            %td= t(:no)
-            %td= ''
-          %td= '...'
-          %td
-            = link_to t(:show), manifestation_show_path(m.id)
-            / = link_to t(:show), :action => 'show', :id => m
-            = ' | '
-            = link_to t(:render), url_for(action: :read, id: m.id)
-            / = link_to t(:render), :action => 'render_html', :id => m
+        / end query interface
+        - if @manifestations.nil?
+          %b= t(:no_results)
+        - else
+          %table{cellspacing: 3,cellpadding: 3}
+            %th= t(:author)
+            %th= t(:title)
+            %th= t(:translation)+'?'
+            %th= t(:translator)
+            %th= t(:genre)
+            %th= '...'
+            %th= t(:actions)
 
-    != paginate @manifestations, :params => session[:mft_q_params]
+            - @manifestations.each do |m|
+              %tr
+                %td= m.expressions[0].works[0].persons[0].name
+                %td= m.title
+                - if m.expressions[0].translation
+                  %td= t(:yes)+" (#{textify_lang(m.expressions[0].works[0].orig_lang)})"
+                  %td= m.expressions[0].persons[0].name
+                - else
+                  %td= t(:no)
+                  %td= ''
+                %td= textify_genre(m.expressions[0].genre)
+                %td= '...'
+                %td
+                  = link_to t(:show), manifestation_show_path(m.id)
+                  / = link_to t(:show), :action => 'show', :id => m
+                  = ' | '
+                  = link_to t(:render), url_for(action: :read, id: m.id)
+                  / = link_to t(:render), :action => 'render_html', :id => m
+
+          != paginate @manifestations, :params => session[:mft_q_params]
+      .col-md-1
+:javascript
+  $(document).ready(function(){
+    $('#title').bind('railsAutocomplete.select', function(event, data){
+      /* Do something here */
+      window.location.href = "#{@urlbase}"+data.item.id
+    });
+
+  });

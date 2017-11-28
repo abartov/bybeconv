@@ -1748,6 +1748,9 @@ img.bysurprise-absolute {
   display: inline-block;
   float:right;
 }
+.inline-block{
+  display:inline-block;
+}
 
 .recommend-portrait{
   overflow: hidden;
