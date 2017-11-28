@@ -7,7 +7,7 @@ class ManifestationController < ApplicationController
   autocomplete :person, :name, :limit => 2
   autocomplete :tag, :name
 
-  impressionist # log actions for pageview stats
+  impressionist :actions=>[:read,:readmode, :print, :download] # log actions for pageview stats
 
   #layout false, only: [:print]
 
@@ -26,8 +26,10 @@ class ManifestationController < ApplicationController
   def read
     prep_for_read
     @proof = Proof.new
-    @tag = Tag.new
-    @tags = @m.approved_tags
+    @tagging = Tagging.new
+    @tagging.manifestation_id = @m.id
+    @tagging.suggester = current_user
+    @taggings = @m.taggings
     @print_url = url_for(action: :print, id: @m.id)
     @links = @m.external_links.group_by {|l| l.linktype}
     @random_work = Manifestation.order('RAND()').limit(1)[0]

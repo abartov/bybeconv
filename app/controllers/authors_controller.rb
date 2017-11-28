@@ -119,6 +119,8 @@ class AuthorsController < ApplicationController
   end
 
   def print
+    @author = Person.find(params[:id])
+    # TODO: implement
   end
 
   def edit_toc

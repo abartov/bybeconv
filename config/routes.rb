@@ -1,4 +1,8 @@
 Bybeconv::Application.routes.draw do
+  #get 'taggings/create'
+
+  #get 'taggings/destroy'
+  get "taggings/render_tags"
   get 'realizers/remove'
 
   get 'creations/add'
@@ -28,6 +32,7 @@ Bybeconv::Application.routes.draw do
   get 'admin/featured_content/:id' => 'admin#featured_content_show', as: 'featured_content_show'
   get 'autocomplete_manifestation_title' => 'admin#autocomplete_manifestation_title', as: 'autocomplete_manifestation_title'
   get 'autocomplete_person_name' => 'admin#autocomplete_person_name', as: 'autocomplete_person_name'
+  get 'autocomplete_tag_name' => 'manifestation#autocomplete_tag_name', as: 'autocomplete_tag_name'
 
   get "search/index"
   get "search/results"
@@ -66,6 +71,7 @@ Bybeconv::Application.routes.draw do
 
   get "api/query"
   resources :api_keys
+  resources :taggings
 
   get "user/list"
   get "user/:id/make_editor" => 'user#make_editor', as: 'user_make_editor'

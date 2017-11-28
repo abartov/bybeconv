@@ -15,32 +15,7 @@
         .container-fluid
           .row
             .col-md-3#work-share1{style:'padding-left: 0;padding-right: 0;'}
-              %div{style:'display: inline-block'}
-                .card-header-element{style:'padding-left: 1rem'}
-                  .icons-raw
-                    .linky
-                      %i.fa.fa-download.download
-                  .icons-raw
-                    .linky
-                      %i.fa.fa-print.printbutton
-                  .icons-raw
-                    .linky
-                      %i.fa.fa-quote-right.citebutton
-                .card-header-element
-                  = render 'shared/share_controls'
-              %div{style:'display: inline-block;width: 100%;'}
-                %div{style:'position: relative;padding-top: 1.6rem'}
-                  .icon.result-links{style:'margin-top: 0.6rem'}
-                    = link_to '#' do
-                      %i.fa.fa-heart-o
-                  .icon.result-links{style:'margin-top: 0.6rem; margin-right: 2.4rem'}
-                    = link_to '#' do
-                      %span.icon-bybookshelf
-                  %div{style:'position: relative; float:right; display: inline;width: calc(100% - 8rem)'}
-                    = select_tag 'shelves', options_for_shelves.html_safe, {'class' => 'in_read'}
-                    %div
-                      %a.dropdown-arrow{style:'left:0'}
-                        %i.fa.fa-angle-down
+              = render partial: 'sharing_etc'
             .col-md-9#work-metadata{style: 'padding-right:0'}
               - unless @links.empty?
                 .row
@@ -143,10 +118,44 @@
               %img{'class' => 'absolute', src: @author.profile_image.url(:full)}
     .col-md-1
 
-  %hr
+.container-fluid#extra_container{style:'margin-top:3rem'}
+  .row
+    .col-md-1
+    .col-md-10
+      .work-area
+        .headline-3{style: 'margin:2rem 0', 'data-toggle'=>'collapse','data-target'=>'#extra_collapsible'}
+          %span.linky= t(:tags_etc_title)
+          != '&nbsp;&nbsp;'
+          %i.fa.chevron.baseline{style:'display:inline'}
+        .row.collapse.in#extra_collapsible
+          .col-md-3#more-left{style:'padding-left:0;padding-right:0'}
+            #work-share2{style:'padding-top:1.6rem'}
+              = render partial: 'sharing_etc'
+          .col-md-9#more-right{style: 'padding-right:0; padding-left: 10rem'}
+            / תגיות
+            #work-tags
+              .headline-3= t(:tags_for_work)
+              = render partial: 'shared/taggings', locals: {taggings: @taggings}
+              - unless current_user.nil?
+                #add-tag{style:'display:inline;float:left'}
+                  = form_for @tagging, remote: true do
+                    %div{style: 'display:inline;float:right;margin-top:0.6rem;'}
+                      = autocomplete_field_tag :tag, '', autocomplete_tag_name_path
+                      = hidden_field_tag :manifestation_id, @tagging.manifestation_id
+                      = hidden_field_tag :suggested_by, @tagging.suggested_by
+                    %div{style: 'display:inline'}
+                      %input.btn{type: :submit, value: t(:suggest_new_tag), style: 'margin-top:0.6rem; background-color: #d9cdd5'}
+            / המלצות
+            #work-recommend
+              /.headline-3= t(:recommendations_for_work)
+            / אזכורים
+            / עוד מאותו יוצר
+            / מי שקרא גם קרא
+            / הפתעה
+    .col-md-1
+
 /  #maintext.maintext
 /    = render partial: 'search_and_chapters'
-/    = render partial: 'sharing_etc'
 
 :javascript
   $(document).ready(function(){

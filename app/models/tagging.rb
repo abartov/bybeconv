@@ -1,11 +1,13 @@
 class Tagging < ActiveRecord::Base
   attr_accessible :approved_by, :manifestation_id, :status, :suggested_by, :tag_id
 
-  PENDING = 0
-  APPROVED = 1
+  belongs_to :tag, foreign_key: 'tag_id'
+  belongs_to :manifestation, foreign_key: 'manifestation_id'
+  belongs_to :suggester, foreign_key: 'suggested_by', class_name: 'User'
+  belongs_to :approver, foreign_key: 'approved_by', class_name: 'User'
+  enum status: [:pending, :approved]
 
-  belongs_to :tags, foreign_key: 'tag_id'
-  belongs_to :manifestations, foreign_key: 'manifestation_id'
+  scope :pending, -> { where(status: Tagging.statuses[:pending]) }
+  scope :approved, -> { where(status: Tagging.statuses[:approved]) }
 
-  scope :approved, -> { where status: APPROVED }
 end
