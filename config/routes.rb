@@ -98,7 +98,8 @@ Bybeconv::Application.routes.draw do
   get "legacy_recommendation/list"
   get "legacy_recommendation/purge" => 'legacy_recommendation#purge', as: 'legacy_recommendation_purge'
   match "legacy_recommendation/:id/resolve" => 'legacy_recommendation#resolve', as: 'legacy_recommendation_resolve', via: [:get, :post]
-  resources :legacy_recommendation
+  resources :legacy_recommendations
+  resources :recommendations
 
   get "html_file/analyze"
   match "html_file/:id/edit" => 'html_file#edit', as: 'html_file_edit', via: [:get, :post]
