@@ -1,0 +1,4 @@
+- unless user.avatar.present?
+  %span.icon-byfigure-outline-cut.rec-user-icon
+- else
+  %img{src: user.avatar.url(:thumb), width: 60, height: 60}

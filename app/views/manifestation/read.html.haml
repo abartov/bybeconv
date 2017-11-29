@@ -55,12 +55,12 @@
               .row{style:'padding-top:0.6rem'}
                 .col-md-10
                   .card-header-element{style:'margin-left:2.4rem'}
-                    = link_to 'TODO: tags' do
+                    = link_to '#tags' do
                       = t(:tags)
                       = "(#{@m.approved_tags.count})"
                       %span.fa.fa-angle-left.baseline{style: 'margin-right: 0.6rem'}
                   .card-header-element{style:'margin-left:2.4rem'}
-                    = link_to 'TODO: recommendations' do
+                    = link_to '#recommendations' do
                       = t(:recommendations)
                       = "(#{@m.recommendations.approved.count})"
                       %span.fa.fa-angle-left.baseline{style: 'margin-right: 0.6rem'}
@@ -133,7 +133,7 @@
               = render partial: 'sharing_etc'
           .col-md-9#more-right{style: 'padding-right:0; padding-left: 10rem'}
             / תגיות
-            #work-tags
+            #tags
               .headline-3= t(:tags_for_work)
               = render partial: 'shared/taggings', locals: {taggings: @taggings}
               - unless current_user.nil?
@@ -146,7 +146,7 @@
                     %div{style: 'display:inline'}
                       %input.btn{type: :submit, value: t(:suggest_new_tag), style: 'margin-top:0.6rem; background-color: #d9cdd5'}
             / המלצות
-            #work-recommend
+            #recommendations
               .headline-3{style:'display:inline'}= t(:recommendations_for_work)
               %div{style:'display:inline;padding-right:1rem'}= t(:x_liked_y_recommended, {x: @m.like_count, y: @recommendations.count})
               - @recommendations.each do |r|
@@ -154,10 +154,7 @@
                   .row.recommendation
                     .rec-user
                       .rec-user-pic
-                        - if r.user.avatar.nil?
-                          %span.icon-byfigure-outline-cut.rec-user-icon
-                        - else
-                          %img{src: r.user.avatar.url(:thumb), width: 60, height: 60}
+                        = render partial: 'shared/user_pic', locals:{user: r.user}
                       .rec-user-name= link_to r.user.name, user_show_path(id: r.user.id)
                       .rec-user-name= r.created_at.to_date
                     .rec-txt!= sanitize(r.body).gsub("\n",'<br>')
@@ -165,7 +162,20 @@
                       %button.rec-flag.darkoldpink
                         %i.fa.fa-flag-o
                         %span.tooltiptext= t(:report_inappropriate_content)
-              / new recommendation
+              / הוספת המלצה
+              - unless current_user.nil?
+                .card{style:'background-color:#fff'}
+                  .row.recommendation{style:'min-height:inherit'}
+                    .rec-user
+                      .rec-user-pic
+                        = render partial: 'shared/user_pic', locals:{user: current_user}
+                      .rec-user-name=link_to current_user.name, user_show_path(id: current_user.id)
+                    = form_for @new_recommendation do |f|
+                      .rec-txt
+                        %div{style:'display:inline;float:right;margin-top:1.3rem;width:100%'}
+                          = f.text_area(:body, size: '70x4',placeholder: t(:offer_a_recommendation))
+                      %div
+                        %input.btn{type: :submit, value: t(:submit), style:'margin-top:2.7rem;margin-left:1.5rem;background-color:#d9cdd5'}
             / אזכורים
             / עוד מאותו יוצר
             / מי שקרא גם קרא

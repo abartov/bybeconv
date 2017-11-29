@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171128214626) do
+ActiveRecord::Schema.define(version: 20171129170406) do
 
   create_table "api_keys", force: :cascade do |t|
     t.string   "email",       limit: 255
@@ -366,16 +366,20 @@ ActiveRecord::Schema.define(version: 20171128214626) do
   add_index "user_preferences", ["user_id", "name"], name: "index_user_preferences_on_user_id_and_name", unique: true, using: :btree
 
   create_table "users", force: :cascade do |t|
-    t.string   "name",             limit: 255
-    t.string   "email",            limit: 255
-    t.string   "provider",         limit: 255
-    t.string   "uid",              limit: 255
-    t.string   "oauth_token",      limit: 255
+    t.string   "name",                limit: 255
+    t.string   "email",               limit: 255
+    t.string   "provider",            limit: 255
+    t.string   "uid",                 limit: 255
+    t.string   "oauth_token",         limit: 255
     t.datetime "oauth_expires_at"
     t.boolean  "admin"
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
     t.boolean  "editor"
+    t.string   "avatar_file_name",    limit: 255
+    t.string   "avatar_content_type", limit: 255
+    t.integer  "avatar_file_size",    limit: 4
+    t.datetime "avatar_updated_at"
   end
 
   create_table "versions", force: :cascade do |t|
@@ -410,6 +414,14 @@ ActiveRecord::Schema.define(version: 20171128214626) do
     t.datetime "created_at",                               null: false
     t.datetime "updated_at",                               null: false
   end
+
+  create_table "work_likes", id: false, force: :cascade do |t|
+    t.integer "manifestation_id", limit: 4, null: false
+    t.integer "user_id",          limit: 4, null: false
+  end
+
+  add_index "work_likes", ["manifestation_id", "user_id"], name: "index_work_likes_on_manifestation_id_and_user_id", using: :btree
+  add_index "work_likes", ["user_id", "manifestation_id"], name: "index_work_likes_on_user_id_and_manifestation_id", using: :btree
 
   create_table "works", force: :cascade do |t|
     t.string   "title",          limit: 255

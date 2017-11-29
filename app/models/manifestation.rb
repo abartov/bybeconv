@@ -2,6 +2,8 @@ class Manifestation < ActiveRecord::Base
   is_impressionable :counter_cache => true # for statistics
   has_and_belongs_to_many :expressions
   has_and_belongs_to_many :people
+
+  has_and_belongs_to_many :likers, join_table: :work_likes, class_name: :User
   has_many :taggings
   has_many :tags, through: :taggings, class_name: 'Tag'
   has_many :recommendations

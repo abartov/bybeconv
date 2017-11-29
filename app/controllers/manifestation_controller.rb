@@ -26,6 +26,7 @@ class ManifestationController < ApplicationController
   def read
     prep_for_read
     @proof = Proof.new
+    @new_recommendation = Recommendation.new
     @tagging = Tagging.new
     @tagging.manifestation_id = @m.id
     @tagging.suggester = current_user

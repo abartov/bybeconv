@@ -3,6 +3,8 @@ class User < ActiveRecord::Base
   has_attached_file :avatar, styles: { full: "720x1040", medium: "360x520", thumb: "180x260", tiny: "90x120"}, storage: :s3, s3_credentials: 'config/s3.yml', s3_region: 'us-east-1'
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\z/
 
+  has_and_belongs_to_many :liked_works, join_table: :work_likes, class_name: :Manifestation
+
   has_many :recommendations
   # no apparent need to be able to retrieve all recommendations a particular (admin) user has *resolved*.  If one arises, use a separate association on the resolved_by foreign key
 
