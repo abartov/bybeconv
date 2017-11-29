@@ -1,12 +1,7 @@
 Bybeconv::Application.routes.draw do
-  #get 'taggings/create'
-
-  #get 'taggings/destroy'
-  get "taggings/render_tags"
   get 'realizers/remove'
 
   get 'creations/add'
-
   get 'creations/remove'
 
   get 'admin/index'
@@ -71,9 +66,11 @@ Bybeconv::Application.routes.draw do
 
   get "api/query"
   resources :api_keys
+  get "taggings/render_tags"
   resources :taggings
 
-  get "user/list"
+  get 'user/:id' => 'user#show', as: 'user_show'
+  get 'user/list'
   get "user/:id/make_editor" => 'user#make_editor', as: 'user_make_editor'
   get "user/:id/make_admin" => 'user#make_admin', as: 'user_make_admin'
   get "user/:id/unmake_editor" => 'user#unmake_editor', as: 'user_unmake_editor'

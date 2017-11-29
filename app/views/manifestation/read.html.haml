@@ -147,7 +147,25 @@
                       %input.btn{type: :submit, value: t(:suggest_new_tag), style: 'margin-top:0.6rem; background-color: #d9cdd5'}
             / המלצות
             #work-recommend
-              /.headline-3= t(:recommendations_for_work)
+              .headline-3{style:'display:inline'}= t(:recommendations_for_work)
+              %div{style:'display:inline;padding-right:1rem'}= t(:x_liked_y_recommended, {x: @m.like_count, y: @recommendations.count})
+              - @recommendations.each do |r|
+                .card
+                  .row.recommendation
+                    .rec-user
+                      .rec-user-pic
+                        - if r.user.avatar.nil?
+                          %span.icon-byfigure-outline-cut.rec-user-icon
+                        - else
+                          %img{src: r.user.avatar.url(:thumb), width: 60, height: 60}
+                      .rec-user-name= link_to r.user.name, user_show_path(id: r.user.id)
+                      .rec-user-name= r.created_at.to_date
+                    .rec-txt!= sanitize(r.body).gsub("\n",'<br>')
+                    %div
+                      %button.rec-flag.darkoldpink
+                        %i.fa.fa-flag-o
+                        %span.tooltiptext= t(:report_inappropriate_content)
+              / new recommendation
             / אזכורים
             / עוד מאותו יוצר
             / מי שקרא גם קרא

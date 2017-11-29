@@ -30,6 +30,7 @@ class ManifestationController < ApplicationController
     @tagging.manifestation_id = @m.id
     @tagging.suggester = current_user
     @taggings = @m.taggings
+    @recommendations = @m.recommendations
     @print_url = url_for(action: :print, id: @m.id)
     @links = @m.external_links.group_by {|l| l.linktype}
     @random_work = Manifestation.order('RAND()').limit(1)[0]

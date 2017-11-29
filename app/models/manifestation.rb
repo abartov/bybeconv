@@ -22,6 +22,10 @@ class Manifestation < ActiveRecord::Base
   @@popular_works = nil
   @@tmplock = false
 
+  def like_count
+    return 0 # TODO: implement
+  end
+
   def long?
     markdown.length > LONG_LENGTH
   end
