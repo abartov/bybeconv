@@ -143,6 +143,12 @@ class ManifestationController < ApplicationController
     work = Manifestation.order('RAND()').limit(1)[0]
     render partial: 'shared/surprise_work', locals: {manifestation: work}
   end
+
+  def surprise_work
+    work = Manifestation.order('RAND()').limit(1)[0]
+    render partial: 'surprise_work', locals: {work: work}
+  end
+
   #############################################
   # editor actions
 

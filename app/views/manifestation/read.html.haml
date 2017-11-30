@@ -197,17 +197,28 @@
                       %p{style:'margin:3.2rem 0 0 0'}= link_to t(:to_the_works_in_the_genre_of_this_author, {author: @author.name, genre: textify_genre(@m.expressions[0].genre)}), author_toc_path(@author.id, genre: @m.expressions[0].genre)
                       %p{style:'margin:1.2rem 0 0 0'}= link_to t(:to_all_the_works_of_this_author, {author: @author.name}), author_toc_path(@author.id)
 
-
-            / מי שקרא גם קרא
+            / מי שקרא גם קרא TODO: implement
             / הפתעה
-    .col-md-1
+            .headline-3{style:'margin-top:3rem'}= t(:surprise)
+            .card.genre-card.small-surprise{style:'height:auto; margin-top:1rem;position:relative'}
+              .corner
+                %img{src: '/assets/corner.png', width: 80, height: 80}
+              .card-content#random_work
+                = render partial: 'surprise_work', locals: {work: @random_work}
+              %div{style:'z-index: 1; position: absolute; left: 0;bottom: 0%; border-bottom-left-radius: 0.3rem; display: inline;overflow: hidden'}
+                %img{src:'/assets/corner.png', width: 80, height:80}
+              %div
+                .replace-icon.text-on-dark{style:'margin-bottom:0.6rem'}
+                  %a.surprise-work-refresh{ role: :button}
+                    %i.fa.fa-refresh
 
-/  #maintext.maintext
-/    = render partial: 'search_and_chapters'
+    .col-md-1
 
 :javascript
   $(document).ready(function(){
-
+    $('.surprise-work-refresh').click(function(){
+      $('#random_work').load("#{url_for(action: :surprise_work)}");
+    });
     // heart button
     $('.like').click(function(){ // toggle like/unlike
       if($('.like').find(".fa-heart").length > 0) { // already liked

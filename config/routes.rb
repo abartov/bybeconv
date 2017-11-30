@@ -65,6 +65,7 @@ Bybeconv::Application.routes.draw do
   get 'manifestation/get_random'
   get 'manifestation/like'
   get 'manifestation/unlike'
+  get 'manifestation/surprise_work'
 
   get "api/query"
   resources :api_keys

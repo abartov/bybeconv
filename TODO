@@ -15,7 +15,10 @@
   - admin review, approve/reject tags and recommendations
 
 - make tags links to works queries by tag
-- implement other extras at bottom of work read
+- implement those-who-read-this-also-read-that (i.e. https://measuringu.com/affinity-analysis/)
+- implement more-of-this-author separately for translatees
+- implement references-to-this-work
+- other extras at bottom of work read
 - implement updated UI for read mode
 - implement bookmarks (see notes in code!)
 - implement chapter-only display

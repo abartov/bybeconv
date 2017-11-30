@@ -194,5 +194,14 @@ class ApplicationController < ActionController::Base
     tabs.each {|t| ret[t] = tab == t ? 'active' : ''}
     return ret
   end
-  helper_method :current_user, :html_entities_coder
+
+  def get_intro(markdown)
+    lines = markdown[0..2000].lines[1..-2]
+    if lines.empty?
+      lines = markdown[0..[5000,markdown.length].min].lines[0..-2]
+    end
+    lines.join + '...'
+  end
+
+  helper_method :current_user, :html_entities_coder, :get_intro
 end
