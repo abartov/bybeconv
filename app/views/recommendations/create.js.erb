@@ -1,0 +1,2 @@
+$("#new_rec_text").text('');
+$("#recommendations").append("<%= escape_javascript(render(partial: 'manifestation/recommendation', locals: {rec: @r, pending: true})) %>");

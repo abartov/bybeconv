@@ -1,0 +1,18 @@
+.card{id: "rec#{rec.id}"}
+  .row.recommendation
+    - if pending
+      .recommend-wait-confirm
+        %i.fa.fa-clock-o
+    .rec-user
+      .rec-user-pic
+        = render partial: 'shared/user_pic', locals:{user: rec.user}
+      .rec-user-name= link_to rec.user.name, user_show_path(id: rec.user.id)
+      .rec-user-name= rec.created_at.to_date
+    .rec-txt!= sanitize(rec.body).gsub("\n",'<br>')
+    - if pending
+      .recommend-close
+        = link_to '×', rec, remote: true, method: :delete
+    %div
+      %button.rec-flag.darkoldpink
+        %i.fa.fa-flag-o
+        %span.tooltiptext= t(:report_inappropriate_content)

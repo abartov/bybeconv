@@ -12,6 +12,7 @@
   - show diffs between revs
   - restore rev over current
   - query work by tag
+  - admin review, approve/reject tags and recommendations
 
 - make tags links to works queries by tag
 - implement user settings

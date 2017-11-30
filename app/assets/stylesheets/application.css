@@ -1269,6 +1269,27 @@ rgba(0,0,0, .5);
 .tag-content{
   padding: 0 1.6rem;
 }
+.recommend-close a{ /* improvised by Asaf */
+	/* position: absolute; */ /* removed by Asaf */
+	z-index: 2;
+	font-size: 2.6rem;
+	left:0rem;
+  top: 0.5rem;
+  float: left;
+	color: #907989;
+}
+.recommend-close a:hover{
+	color: #56003D;
+}
+.recommend-wait-confirm{ /* improvised by Asaf */
+  margin-top:0.8rem;
+  float:right;
+	z-index: 2;
+	font-size: 1.8rem;
+	color:#907989;
+	margin-right:0.6rem;
+}
+
 .tag-close a{
 	position: absolute;
 	z-index: 2;
@@ -1331,7 +1352,7 @@ rgba(0,0,0, .5);
 .rec-txt{
   width: calc(100% - 24rem);
   height: auto;
-  display: inline;
+  /* display: inline;*/
   float:right;
   padding: 1.5rem 0rem;
 }

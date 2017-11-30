@@ -62,7 +62,7 @@
                   .card-header-element{style:'margin-left:2.4rem'}
                     = link_to '#recommendations' do
                       = t(:recommendations)
-                      = "(#{@m.recommendations.approved.count})"
+                      = "(#{@recommendations.approved.count})"
                       %span.fa.fa-angle-left.baseline{style: 'margin-right: 0.6rem'}
                   - unless @links.empty? || @links[Manifestation.link_types[:wikipedia]].nil?
                     .card-header-element
@@ -146,22 +146,16 @@
                     %div{style: 'display:inline'}
                       %input.btn{type: :submit, value: t(:suggest_new_tag), style: 'margin-top:0.6rem; background-color: #d9cdd5'}
             / המלצות
-            #recommendations
-              .headline-3{style:'display:inline'}= t(:recommendations_for_work)
-              %div{style:'display:inline;padding-right:1rem'}= t(:x_liked_y_recommended, {x: @m.like_count, y: @recommendations.count})
-              - @recommendations.each do |r|
-                .card
-                  .row.recommendation
-                    .rec-user
-                      .rec-user-pic
-                        = render partial: 'shared/user_pic', locals:{user: r.user}
-                      .rec-user-name= link_to r.user.name, user_show_path(id: r.user.id)
-                      .rec-user-name= r.created_at.to_date
-                    .rec-txt!= sanitize(r.body).gsub("\n",'<br>')
-                    %div
-                      %button.rec-flag.darkoldpink
-                        %i.fa.fa-flag-o
-                        %span.tooltiptext= t(:report_inappropriate_content)
+            #recommendations_panel
+              #recommendations
+                .headline-3{style:'display:inline'}= t(:recommendations_for_work)
+                %div{style:'display:inline;padding-right:1rem'}= t(:x_liked_y_recommended, {x: @m.like_count, y: @recommendations.approved.count})
+                - @recommendations.approved.each do |r|
+                  = render partial: 'recommendation', locals: {rec: r, pending: false}
+                - my_pendings = @recommendations.pending.where(user: current_user)
+                - unless my_pendings.nil?
+                  - my_pendings.each do |r|
+                    = render partial: 'recommendation', locals: {rec: r, pending: true}
               / הוספת המלצה
               - unless current_user.nil?
                 .card{style:'background-color:#fff'}
@@ -170,11 +164,13 @@
                       .rec-user-pic
                         = render partial: 'shared/user_pic', locals:{user: current_user}
                       .rec-user-name=link_to current_user.name, user_show_path(id: current_user.id)
-                    = form_for @new_recommendation do |f|
+                    = form_for(@new_recommendation, remote: true) do |f|
                       .rec-txt
                         %div{style:'display:inline;float:right;margin-top:1.3rem;width:100%'}
-                          = f.text_area(:body, size: '70x4',placeholder: t(:offer_a_recommendation))
+                          = f.text_area(:body, size: '70x4',placeholder: t(:offer_a_recommendation), id: 'new_rec_text')
                       %div
+                        = hidden_field_tag :manifestation_id, @m.id
+                        /= hidden_field @new_recommendation, :manifestation_id, @m.id
                         %input.btn{type: :submit, value: t(:submit), style:'margin-top:2.7rem;margin-left:1.5rem;background-color:#d9cdd5'}
             / אזכורים
             / עוד מאותו יוצר
