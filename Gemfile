@@ -71,6 +71,10 @@ gem 'rmagick' # for generating cover images for EPUBs
 gem 'pandoc-ruby' # for converting to DOCX
 gem 'uglifier'
 gem 'responders' # for respond_to at controller level (in api_controller)
+group :production do
+  gem 'dalli'
+end
+
 group :test do
   gem 'turn', '0.8.2', :require => false
 end
