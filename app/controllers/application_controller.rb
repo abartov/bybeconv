@@ -123,7 +123,6 @@ class ApplicationController < ActionController::Base
   end
 
   def cached_popular_authors_by_genre
-    byebug
     if @@pop_authors_by_genre.nil?
       ret = {}
       get_genres.each {|g|
@@ -137,11 +136,9 @@ class ApplicationController < ActionController::Base
   end
 
   def popups_by_genre
-    byebug
     if @@genre_popups_cache.nil?
       ret = {}
       get_genres.each {|g|
-        #ret[g] = Manifestation.joins(:expressions).where(expressions: {genre: g}).count
         ret[g] = {}
         ret[g][:authors] = Person.get_popular_authors_by_genre(g)
         ret[g][:heb_works] = Manifestation.popular_works_by_genre(g, false)
@@ -153,7 +150,6 @@ class ApplicationController < ActionController::Base
   end
 
   def count_works_by_genre
-    byebug
     if @@countworks_cache.nil?
       ret = {}
       get_genres.each {|g|
@@ -165,7 +161,6 @@ class ApplicationController < ActionController::Base
   end
 
   def whatsnew_anonymous
-    byebug
     if @@whatsnew_cache.nil?
       authors = {}
       Manifestation.new_since(1.month.ago).each {|m|

@@ -112,9 +112,13 @@ class Manifestation < ActiveRecord::Base
   # TODO: calculate this by month
   def self.popular_works_by_genre(genre, xlat)
     if xlat
-      return Manifestation.joins([expressions: :works]).where(expressions: {genre: genre}).where("works.orig_lang != expressions.language").order(impressions_count: :desc).limit(10)
+      Rails.cache.fetch("m_pop_xlat_in_#{genre}", expires_in: 24.hours) do # memoize
+        Manifestation.joins([expressions: :works]).where(expressions: {genre: genre}).where("works.orig_lang != expressions.language").order(impressions_count: :desc).limit(10).map{|m| {id: m.id, title: m.title, author: m.author_string}}
+      end
     else
-      return Manifestation.joins([expressions: :works]).where(expressions: {genre: genre}).where("works.orig_lang = expressions.language").order(impressions_count: :desc).limit(10)
+      Rails.cache.fetch("m_pop_in_#{genre}", expires_in: 24.hours) do # memoize
+        Manifestation.joins([expressions: :works]).where(expressions: {genre: genre}).where("works.orig_lang = expressions.language").order(impressions_count: :desc).limit(10).map{|m| {id: m.id, title: m.title, author: m.author_string}}
+      end
     end
   end
 
