@@ -37,6 +37,9 @@ class Manifestation < ActiveRecord::Base
   end
 
   def heading_lines
+    if cached_heading_lines.nil?
+      recalc_heading_lines!
+    end
     cached_heading_lines.split('|').map{|line| line.to_i}
   end
 
