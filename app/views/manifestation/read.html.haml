@@ -74,48 +74,49 @@
                 .col-md-2
                   %p= t(:additional_content)
               %br{style: 'clear: both;'}
-        .card.work-card
-          .work-text
-            - unless @bookmark.nil?
-              .bookmark
-                / $("#button").click(function() {
-                /  $('html, body').animate({
-                /    scrollTop: $("#elementtoScrollToID").offset().top
-                /  }, 2000);
-                / });
-                = link_to '#' do
-                  %span.icon-bybookmark-go-to
-            .row.stickysearch{style:'opacity:1;background-color:#eeeced'}
-              .col-sm-6
-                .search.on-card-search-field
-                  %span.fa.fa-search.search-icon
-                  %span.linky{'data-search'=>'next'}!= "&darr;"
-                  %span.linky{'data-search'=>'prev'}!="&uarr;"
-                  %span.linky{'data-search'=>'clear'}='✖'
-                  %input#searchinwork{ type: :search, placeholder: t(:search_in_text)}
-              .col-sm-6
-                - if @m.chapters? and @m.long?
-                  %div{style:'position:relative'}
-                    = select_tag 'chapters', options_for_select(@chapters, @selected_chapter), 'class' => 'chapter-name dropdown', style: 'background-color:#eeeced;margin-top: 0.3rem;width: 100%'
-                    %div{style:'line-height:1rem;display:inline'}
-                      %a.dropdown-arrow{style:'left:0'}
-                        %span.fa.fa-angle-down
-            / TODO: more nuanced rendering here
-            - if @m.as_prose?
-              #actualtext.maintext-prose-body.search-margin
-                != raw(@html)
-            - else
-              #actualtext.maintext-poetry-body.search-margin
-                != raw(@html)
-            - if @m.chapters? and @m.long?
-              = render partial: 'chapter_links'
-          / place bookmark element if @bookmark
-          / .bookmark
-          /   = link_to '#'
-          /     %i.icon-bybookmark
-          .work-pic
-            .work-gradient-pic
-              %img{'class' => 'absolute', src: @author.profile_image.url(:full)}
+        - cache do
+          .card.work-card
+            .work-text
+              - unless @bookmark.nil?
+                .bookmark
+                  / $("#button").click(function() {
+                  /  $('html, body').animate({
+                  /    scrollTop: $("#elementtoScrollToID").offset().top
+                  /  }, 2000);
+                  / });
+                  = link_to '#' do
+                    %span.icon-bybookmark-go-to
+              .row.stickysearch{style:'opacity:1;background-color:#eeeced'}
+                .col-sm-6
+                  .search.on-card-search-field
+                    %span.fa.fa-search.search-icon
+                    %span.linky{'data-search'=>'next'}!= "&darr;"
+                    %span.linky{'data-search'=>'prev'}!="&uarr;"
+                    %span.linky{'data-search'=>'clear'}='✖'
+                    %input#searchinwork{ type: :search, placeholder: t(:search_in_text)}
+                .col-sm-6
+                  - if @m.chapters? and @m.long?
+                    %div{style:'position:relative'}
+                      = select_tag 'chapters', options_for_select(@chapters, @selected_chapter), 'class' => 'chapter-name dropdown', style: 'background-color:#eeeced;margin-top: 0.3rem;width: 100%'
+                      %div{style:'line-height:1rem;display:inline'}
+                        %a.dropdown-arrow{style:'left:0'}
+                          %span.fa.fa-angle-down
+              / TODO: more nuanced rendering here
+              - if @m.as_prose?
+                #actualtext.maintext-prose-body.search-margin
+                  != raw(@html)
+              - else
+                #actualtext.maintext-poetry-body.search-margin
+                  != raw(@html)
+              - if @m.chapters? and @m.long?
+                = render partial: 'chapter_links'
+            / place bookmark element if @bookmark
+            / .bookmark
+            /   = link_to '#'
+            /     %i.icon-bybookmark
+            .work-pic
+              .work-gradient-pic
+                %img{'class' => 'absolute', src: @author.profile_image.url(:full)}
     .col-md-1
 
 .container-fluid#extra_container{style:'margin-top:3rem'}
