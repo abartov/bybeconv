@@ -125,7 +125,7 @@ class Person < ActiveRecord::Base
 
   def most_read(limit)
     Rails.cache.fetch("au_#{self.id}_#{limit}_most_read", expires_in: 24.hours) do
-      self.manifestations.order(impressions_count: :desc).limit(limit).all.to_a # to_a activates the actual query, so that it is cached
+      self.manifestations.order(impressions_count: :desc).limit(limit).map{|m| {id: m.id, title: m.title, author: m.author_string, translation: m.expressions[0].translation, genre: m.expressions[0].genre }}
     end
   end
 
@@ -143,7 +143,6 @@ class Person < ActiveRecord::Base
     Rails.cache.fetch("au_pop_xlat_in_#{genre}", expires_in: 24.hours) do # memoize
       Person.joins([realizers: :expression]).where(realizers: {role: 'author'}, expressions: { genre:genre, translation: true}).order(impressions_count: :desc).distinct.limit(10).all.to_a # top 10
     end
-    # Person.joins(:expressions).where(expressions: { genre: genre, translation: true}).order(impressions_count: :desc).distinct.limit(10) # top 10
   end
 
   def self.recalc_popular

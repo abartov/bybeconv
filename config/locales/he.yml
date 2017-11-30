@@ -72,6 +72,10 @@ he:
   donate_money: תרומה כספית
   bookshelves: רשימות קריאה
   works_in_the_database: יצירות במאגר
+  to_the_works_in_the_genre_of_this_author: "לכל יצירות %{author} בסוגה %{genre}"
+  to_all_the_works_of_this_author: "לכל יצירות %{author}"
+  most_read_works_of_author: "יצירותי%{gender_letter} הנקראות ביותר של %{author}"
+  more_of_author: "עוד מיצירותי%{gender_letter} של %{author}"
   their_most_read_works: "יצירותי%{gender_letter} הנקראות ביותר"
   html_file_published: הקובץ מהמערכת הישנה פורסם עתה במערכת החדשה, ונוסף לקטלוג המערכת!
   most_popular_authors: היוצרים הנקראים ביותר

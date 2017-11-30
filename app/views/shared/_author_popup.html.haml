@@ -37,10 +37,10 @@
           .margintop2
             .headline-4= t(:their_most_read_works, gender_letter: author.gender_letter)
             %ol
-              - author.most_read(5).each do |m|
-                - genre = m.expressions[0].genre
+              - author.most_read(5).each do |mhash|
+                - genre = mhash[:genre]
                 - genrebit = genre.nil? ? '' : " (#{textify_genre(genre)})"
-                %li= link_to m.title+genrebit, manifestation_read_path(m.id)
+                %li= link_to mhash[:title]+genrebit, manifestation_read_path(mhash[:id])
 
         %div{ style:'position:relative; bottom: 6.5rem;left:4.4rem;'}
           .btn
