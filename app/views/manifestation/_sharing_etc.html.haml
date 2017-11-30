@@ -14,7 +14,7 @@
 %div{style:'display: inline-block;width: 100%;'}
   %div{style:'position: relative;padding-top: 1.6rem'}
     .icon.result-links{style:'margin-top: 0.6rem'}
-      = link_to '#', class: 'like' do
+      %span.linky.like
         - if @liked
           %i.fa.fa-heart
         - else
