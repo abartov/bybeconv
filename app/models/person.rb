@@ -66,6 +66,18 @@ class Person < ActiveRecord::Base
     end
   end
 
+  def cached_works_count
+    Rails.cache.fetch("au_#{self.id}_work_count", expires_in: 24.hours) do
+      self.expressions.count
+    end
+  end
+
+  def self.cached_toc_count
+    Rails.cache.fetch("au_toc_count", expires_in: 24.hours) do
+      self.has_toc.count
+    end
+  end
+
   def gender_letter
     return gender == 'female' ? 'ה' : 'ו'
   end
@@ -112,24 +124,30 @@ class Person < ActiveRecord::Base
   end
 
   def most_read(limit)
-    self.manifestations.order(impressions_count: :desc).limit(limit)
+    Rails.cache.fetch("au_#{self.id}_#{limit}_most_read", expires_in: 24.hours) do
+      self.manifestations.order(impressions_count: :desc).limit(limit).all.to_a # to_a activates the actual query, so that it is cached
+    end
   end
 
   def  copyright_as_string
     return public_domain ? I18n.t(:public_domain) : I18n.t(:by_permission)
   end
 
-  def self.get_popular_authors_by_genre(genre) # TODO: memoize
-    Person.has_toc.joins(:expressions).where(expressions: { genre: genre}).order(impressions_count: :desc).distinct.limit(10) # top 10
+  def self.get_popular_authors_by_genre(genre)
+    Rails.cache.fetch("au_pop_in_#{genre}", expires_in: 24.hours) do # memoize
+      Person.has_toc.joins(:expressions).where(expressions: { genre: genre}).order(impressions_count: :desc).distinct.limit(10).all.to_a # top 10
+    end
   end
 
   def self.get_popular_xlat_authors_by_genre(genre)
-    Person.joins([realizers: :expression]).where(realizers: {role: 'author'}, expressions: { genre:genre, translation: true}).order(impressions_count: :desc).distinct.limit(10) # top 10
+    Rails.cache.fetch("au_pop_xlat_in_#{genre}", expires_in: 24.hours) do # memoize
+      Person.joins([realizers: :expression]).where(realizers: {role: 'author'}, expressions: { genre:genre, translation: true}).order(impressions_count: :desc).distinct.limit(10).all.to_a # top 10
+    end
     # Person.joins(:expressions).where(expressions: { genre: genre, translation: true}).order(impressions_count: :desc).distinct.limit(10) # top 10
   end
 
   def self.recalc_popular
-    @@popular_authors = Person.has_toc.order(impressions_count: :desc).limit(10) # top 10 #TODO: make it actually about *most-read* authors, rather than authors whose *TOC* is most-read
+    @@popular_authors = Person.has_toc.order(impressions_count: :desc).limit(10).all.to_a # top 10 #TODO: make it actually about *most-read* authors, rather than authors whose *TOC* is most-read
   end
 
   def self.get_popular_authors

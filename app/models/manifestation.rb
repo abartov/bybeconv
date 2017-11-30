@@ -79,16 +79,18 @@ class Manifestation < ActiveRecord::Base
   end
 
   def author_string
-    return I18n.t(:nil) if expressions[0].nil? or expressions[0].works[0].nil? or expressions[0].works[0].persons[0].nil?
-    ret = expressions[0].works[0].persons[0].name
-    if expressions[0].translation
-      if expressions[0].persons.count < 1
-        ret += ' / '+I18n.t(:unknown)
-      else
-        ret += ' / '+expressions[0].persons[0].name
+    Rails.cache.fetch("m_#{self.id}_author_string", expires_in: 24.hours) do
+      return I18n.t(:nil) if expressions[0].nil? or expressions[0].works[0].nil? or expressions[0].works[0].persons[0].nil?
+      ret = expressions[0].works[0].persons[0].name
+      if expressions[0].translation
+        if expressions[0].persons.count < 1
+          ret += ' / '+I18n.t(:unknown)
+        else
+          ret += ' / '+expressions[0].persons[0].name
+        end
       end
+      return ret # TODO: be less naive
     end
-    return ret # TODO: be less naive
   end
 
   def recalc_cached_people
@@ -117,7 +119,6 @@ class Manifestation < ActiveRecord::Base
   end
 
   def self.recalc_popular
-
     @@popular_works = Manifestation.order(impressions_count: :desc).limit(10) # top 10
 
     # old code without cache_counter
@@ -130,6 +131,12 @@ class Manifestation < ActiveRecord::Base
     #}
     #bottom_works = work_stats.sort_by {|k,v| v}
     #@@popular_works = bottom_works.reverse[0..9] # top 10
+  end
+
+  def self.cached_count
+    Rails.cache.fetch("m_count", expires_in: 24.hours) do
+      Manifestation.count
+    end
   end
 
   def self.get_popular_works

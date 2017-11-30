@@ -11,7 +11,18 @@ class ApplicationController < ActionController::Base
   @@pop_authors_by_genre = nil
 
   def set_font_size
-    @fontsize = current_user ? current_user.preferences.fontsize : '2'
+    if current_user
+      key = "u_#{current_user.id}_fontsize"
+      @fontsize = Rails.cache.fetch(key)
+      if @fontsize.nil?
+        Rails.cache.fetch(key) do
+          current_user.preferences.fontsize
+        end
+        @fontsize = current_user.preferences.fontsize
+      end
+    else
+      @fontsize = '2'
+    end
   end
 
   def set_access_control_headers
@@ -63,20 +74,24 @@ class ApplicationController < ActionController::Base
   end
 
   def featured_content
-    fcfs = FeaturedContentFeature.where("fromdate <= :now AND todate >= :now", now: Date.today).order('RAND()').limit(1)
-    if fcfs.count == 1
-      return fcfs[0].featured_content
-    else
-      return nil
+    Rails.cache.fetch("featured_content", expires_in: 1.hours) do # memoize
+      fcfs = FeaturedContentFeature.where("fromdate <= :now AND todate >= :now", now: Date.today).order('RAND()').limit(1)
+      if fcfs.count == 1
+        fcfs[0].featured_content
+      else
+        nil
+      end
     end
   end
 
   def featured_volunteer
-    vpfs = VolunteerProfileFeature.where("fromdate <= :now AND todate >= :now", now: Date.today).order('RAND()').limit(1)
-    if vpfs.count == 1
-      return vpfs[0].volunteer_profile
-    else
-      return nil
+    Rails.cache.fetch("featured_volunteer", expires_in: 10.hours) do # memoize
+      vpfs = VolunteerProfileFeature.where("fromdate <= :now AND todate >= :now", now: Date.today).order('RAND()').limit(1)
+      if vpfs.count == 1
+        vpfs[0].volunteer_profile
+      else
+        nil
+      end
     end
   end
 
@@ -87,7 +102,7 @@ class ApplicationController < ActionController::Base
 
   def randomize_authors(exclude_list, genre = nil)
     list = []
-    ceiling = [Person.has_toc.count - exclude_list.count - 1, 10].min
+    ceiling = [Person.cached_toc_count - exclude_list.count - 1, 10].min
     return list if ceiling <= 0
     i = 0
     begin
@@ -108,6 +123,7 @@ class ApplicationController < ActionController::Base
   end
 
   def cached_popular_authors_by_genre
+    byebug
     if @@pop_authors_by_genre.nil?
       ret = {}
       get_genres.each {|g|
@@ -121,6 +137,7 @@ class ApplicationController < ActionController::Base
   end
 
   def popups_by_genre
+    byebug
     if @@genre_popups_cache.nil?
       ret = {}
       get_genres.each {|g|
@@ -136,6 +153,7 @@ class ApplicationController < ActionController::Base
   end
 
   def count_works_by_genre
+    byebug
     if @@countworks_cache.nil?
       ret = {}
       get_genres.each {|g|
@@ -147,6 +165,7 @@ class ApplicationController < ActionController::Base
   end
 
   def whatsnew_anonymous
+    byebug
     if @@whatsnew_cache.nil?
       authors = {}
       Manifestation.new_since(1.month.ago).each {|m|

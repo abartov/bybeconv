@@ -12,6 +12,7 @@ class UserController < ApplicationController
       else
         u.preferences.set(params[:pref] => params[:value])
         u.preferences.save!
+        Rails.cache.write("u_#{current_user.id}_#{params[:pref]}", params[:value])
         render json: { message: "pref set" }, status: :ok
       end
     end

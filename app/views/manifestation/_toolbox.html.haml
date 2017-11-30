@@ -1,47 +1,48 @@
-#toolbox{role:'group', 'aria-label' => t(:toolbox)}
-  #work-view{style:'width:10rem; text-align:center;margin-bottom:2rem;position:relative'}
-    = link_to url_for(action: :readmode, id: @m.id) do
-      %div
-        %button.btn.work-view
-          %i.icon-byread
-      %p= t(:reading_mode)
-  .btn-group-vertical
-    /%button.btn#fontsize= t(:font_size)
-    .collapse.in#maintools
-      %button.toolbox-cell.darkoldpink{style:'border-top-left-radius:0.3rem;border-top-right-radius:0.3rem'}
-        %i.icon-bybookmark-empty
-        %span.tooltiptext= t(:add_bookmark)
-      %button.toolbox-cell.darkoldpink.like
-        - if @liked
-          %i.fa.fa-heart
-        - else
-          %i.fa.fa-heart-o
-        %span.tooltiptext= t(:work_heart_button)
-      %button.toolbox-cell.darkoldpink
-        %i.icon-bybookshelf
-        %span.tooltiptext= t(:bookshelves)
-      %button.toolbox-cell.mistake#found_mistake
-        %div{style:'height:7rem;padding-top:1rem'}
-          %i.icon-byerror-found{style:'color: #660248'}
-          %span.foundmistake= t(:found_mistake)+'!'
-        %div{style:'height:4rem'}
-          %span.tooltiptext= t(:mistake_important)
-      = render partial: 'shared/share', locals: {element: :button}
-      %button.toolbox-cell.darkoldpink.download
-        %i.fa.fa-download
-        %span.tooltiptext= t(:download_ebook)
-      %button.toolbox-cell.darkoldpink.printbutton
-        %i.fa.fa-print
-        %span.tooltiptext= t(:print)
-      %button.toolbox-cell.darkoldpink.citebutton
-        %i.fa.fa-quote-right
-        %span.tooltiptext= t(:cite)
-      /%button.toolbox-cell.darkoldpink.moreoptions
-      /  %i.fa.fa-ellipsis-h
-      /  %span.tooltiptext= t(:additional_options)
-    %button.toolbox-cell.toolbox-footer.darkoldpink.collapsetoolbox{'data-toggle'=>'collapse','data-target'=>'#maintools'}
-      %i.fa.toolbox-footer-chevron.chevron
-      %span.tooltiptext= t(:minimize)
+- cache do
+  #toolbox{role:'group', 'aria-label' => t(:toolbox)}
+    #work-view{style:'width:10rem; text-align:center;margin-bottom:2rem;position:relative'}
+      = link_to url_for(action: :readmode, id: @m.id) do
+        %div
+          %button.btn.work-view
+            %i.icon-byread
+        %p= t(:reading_mode)
+    .btn-group-vertical
+      /%button.btn#fontsize= t(:font_size)
+      .collapse.in#maintools
+        %button.toolbox-cell.darkoldpink{style:'border-top-left-radius:0.3rem;border-top-right-radius:0.3rem'}
+          %i.icon-bybookmark-empty
+          %span.tooltiptext= t(:add_bookmark)
+        %button.toolbox-cell.darkoldpink.like
+          - if @liked
+            %i.fa.fa-heart
+          - else
+            %i.fa.fa-heart-o
+          %span.tooltiptext= t(:work_heart_button)
+        %button.toolbox-cell.darkoldpink
+          %i.icon-bybookshelf
+          %span.tooltiptext= t(:bookshelves)
+        %button.toolbox-cell.mistake#found_mistake
+          %div{style:'height:7rem;padding-top:1rem'}
+            %i.icon-byerror-found{style:'color: #660248'}
+            %span.foundmistake= t(:found_mistake)+'!'
+          %div{style:'height:4rem'}
+            %span.tooltiptext= t(:mistake_important)
+        = render partial: 'shared/share', locals: {element: :button}
+        %button.toolbox-cell.darkoldpink.download
+          %i.fa.fa-download
+          %span.tooltiptext= t(:download_ebook)
+        %button.toolbox-cell.darkoldpink.printbutton
+          %i.fa.fa-print
+          %span.tooltiptext= t(:print)
+        %button.toolbox-cell.darkoldpink.citebutton
+          %i.fa.fa-quote-right
+          %span.tooltiptext= t(:cite)
+        /%button.toolbox-cell.darkoldpink.moreoptions
+        /  %i.fa.fa-ellipsis-h
+        /  %span.tooltiptext= t(:additional_options)
+      %button.toolbox-cell.toolbox-footer.darkoldpink.collapsetoolbox{'data-toggle'=>'collapse','data-target'=>'#maintools'}
+        %i.fa.toolbox-footer-chevron.chevron
+        %span.tooltiptext= t(:minimize)
 
 /#toolbox.btn-group-vertical{role:'group', 'aria-label' => t(:toolbox)}
 /  - if @readmode

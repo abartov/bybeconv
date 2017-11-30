@@ -272,11 +272,13 @@ module BybeUtils
     end
     return ret
   end
+
   def get_total_works
-    return HtmlFile.count + 200 # TODO: change this to Manifestation.count after the mass conversion is over
+    return Manifestation.cached_count
   end
+
   def get_total_authors
-    return HtmlDir.count + 20 # TODO: change this to People.count after the mass conversion is over. # TODO: *then* figure out how to meaningfully count only people for whom we have Hebrew works in the database (presumably authors of expressions with language: Hebrew?)
+    return Person.cached_toc_count
   end
 
   def get_total_headwords
