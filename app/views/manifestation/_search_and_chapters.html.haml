@@ -13,96 +13,98 @@
         %a.dropdown-arrow{style:'left:0'}
           %span.fa.fa-angle-down
 :javascript
-  // the input field for the find-in-page
-  var $input = $("#searchinwork"),
-    // clear button
-    $clearBtn = $("span[data-search='clear']"),
-    // prev button
-    $prevBtn = $("span[data-search='prev']"),
-    // next button
-    $nextBtn = $("span[data-search='next']"),
-    // the context where to search
-    $content = $("#actualtext"),
-    // jQuery object to save <mark> elements
-    $results,
-    // the class that will be appended to the current
-    // focused element
-    currentClass = "current",
-    // top offset for the jump (the search bar)
-    offsetTop = #{ @readmode ? 40 : 250 },
-    // the current index of the focused element
-    currentIndex = 0;
+  $(document).ready(function(){
+    // the input field for the find-in-page
+    var $input = $("#searchinwork"),
+      // clear button
+      $clearBtn = $("span[data-search='clear']"),
+      // prev button
+      $prevBtn = $("span[data-search='prev']"),
+      // next button
+      $nextBtn = $("span[data-search='next']"),
+      // the context where to search
+      $content = $("#actualtext"),
+      // jQuery object to save <mark> elements
+      $results,
+      // the class that will be appended to the current
+      // focused element
+      currentClass = "current",
+      // top offset for the jump (the search bar)
+      offsetTop = #{ @readmode ? 40 : 250 },
+      // the current index of the focused element
+      currentIndex = 0;
 
-  $('#chapters').change(function(){
-    anchorselector = 'a[name=ch'+this.value+']'
-    elem = $(anchorselector)
-    if(elem != null || elem.position() == null)
-    {
-      position = elem.offset().top - offsetTop;
-      window.scrollTo(0,position);
-    }// else alert('nope');
-  });
-  /******************************/
-  /* stuff for the find-in-page */
+    $('#chapters').change(function(){
+      anchorselector = 'a[name=ch'+this.value+']'
+      elem = $(anchorselector)
+      if(elem != null || elem.position() == null)
+      {
+        position = elem.offset().top - offsetTop;
+        window.scrollTo(0,position);
+      }// else alert('nope');
+    });
+    /******************************/
+    /* stuff for the find-in-page */
 
-  /**
-  * Jumps to the element matching the currentIndex
-  */
-  function jumpTo() {
-    if ($results.length) {
-      var position,
-        $current = $results.eq(currentIndex);
-      $results.removeClass(currentClass);
-      if ($current.length) {
-        $current.addClass(currentClass);
-        position = $current.offset().top - offsetTop;
-        window.scrollTo(0, position);
+    /**
+    * Jumps to the element matching the currentIndex
+    */
+    function jumpTo() {
+      if ($results.length) {
+        var position,
+          $current = $results.eq(currentIndex);
+        $results.removeClass(currentClass);
+        if ($current.length) {
+          $current.addClass(currentClass);
+          position = $current.offset().top - offsetTop;
+          window.scrollTo(0, position);
+        }
       }
     }
-  }
 
-  /**
-  * Searches for the entered keyword in the
-  * specified context on input
-  */
-  $input.on("input", function() {
-    var searchVal = this.value;
-    $content.unmark({
-      done: function() {
-        $content.mark(searchVal, {
-          separateWordSearch: true,
-          done: function() {
-            $results = $content.find("mark");
-            currentIndex = 0;
-            jumpTo();
-          }
-        });
+    /**
+    * Searches for the entered keyword in the
+    * specified context on input
+    */
+    $input.on("input", function() {
+      var searchVal = this.value;
+      $content.unmark({
+        done: function() {
+          $content.mark(searchVal, {
+            separateWordSearch: true,
+            done: function() {
+              $results = $content.find("mark");
+              currentIndex = 0;
+              jumpTo();
+            }
+          });
+        }
+      });
+    });
+
+    /**
+    * Clears the search
+    */
+    $clearBtn.on("click", function() {
+      $content.unmark();
+      $input.val("").focus();
+    });
+
+    /**
+    * Next and previous search jump to
+    */
+    $nextBtn.add($prevBtn).on("click", function() {
+      if ($results.length) {
+        currentIndex += $(this).is($prevBtn) ? -1 : 1;
+        if (currentIndex < 0) {
+          currentIndex = $results.length - 1;
+        }
+        if (currentIndex > $results.length - 1) {
+          currentIndex = 0;
+        }
+        jumpTo();
       }
     });
+    /* end stuff for find-in-page */
+    /******************************/
   });
-
-  /**
-  * Clears the search
-  */
-  $clearBtn.on("click", function() {
-    $content.unmark();
-    $input.val("").focus();
-  });
-
-  /**
-  * Next and previous search jump to
-  */
-  $nextBtn.add($prevBtn).on("click", function() {
-    if ($results.length) {
-      currentIndex += $(this).is($prevBtn) ? -1 : 1;
-      if (currentIndex < 0) {
-        currentIndex = $results.length - 1;
-      }
-      if (currentIndex > $results.length - 1) {
-        currentIndex = 0;
-      }
-      jumpTo();
-    }
-  });
-  /* end stuff for find-in-page */
-  /******************************/
