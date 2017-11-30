@@ -14,8 +14,11 @@
 %div{style:'display: inline-block;width: 100%;'}
   %div{style:'position: relative;padding-top: 1.6rem'}
     .icon.result-links{style:'margin-top: 0.6rem'}
-      = link_to '#' do
-        %i.fa.fa-heart-o
+      = link_to '#', class: 'like' do
+        - if @liked
+          %i.fa.fa-heart
+        - else
+          %i.fa.fa-heart-o
     .icon.result-links{style:'margin-top: 0.6rem; margin-right: 2.4rem'}
       = link_to '#' do
         %span.icon-bybookshelf

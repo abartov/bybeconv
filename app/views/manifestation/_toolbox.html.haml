@@ -11,8 +11,11 @@
       %button.toolbox-cell.darkoldpink{style:'border-top-left-radius:0.3rem;border-top-right-radius:0.3rem'}
         %i.icon-bybookmark-empty
         %span.tooltiptext= t(:add_bookmark)
-      %button.toolbox-cell.darkoldpink
-        %i.fa.fa-heart-o
+      %button.toolbox-cell.darkoldpink.like
+        - if @liked
+          %i.fa.fa-heart
+        - else
+          %i.fa.fa-heart-o
         %span.tooltiptext= t(:work_heart_button)
       %button.toolbox-cell.darkoldpink
         %i.icon-bybookshelf

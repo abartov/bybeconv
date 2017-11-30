@@ -15,8 +15,7 @@
   - admin review, approve/reject tags and recommendations
 
 - make tags links to works queries by tag
-- implement user settings
-- implement recommendations etc. at bottom of work read
+- implement other extras at bottom of work read
 - implement updated UI for read mode
 - implement bookmarks (see notes in code!)
 - implement chapter-only display
@@ -33,15 +32,14 @@
 - COMMUNICATION
   - blog post with screenshots of system
 
-
 - homepage bottom -- popular authors *this month*
   - need to calculate in controller
 - process ToCs
   - process bad ToCs (bad_tocs.txt)
 - read mode
   - interactive features
-- authors view
-- works view
+- authorS view
+- workS view
 - search
 - search results
 - backend
@@ -119,3 +117,7 @@ Proof and Recommendation feature
 + figure out a stable representation for poetry with line breaks
   + PRE blocks ignore *bold* markup, so are probably infeasible
   + blockquotes (lines beginning with '>' do honor bold and other markup, but the linebreak behavior seems inconsistent -- it appears the double-space-and-line-break method does not consistently produce line breaks *inside* a blockquote (but *does* before/after an explicit <br> tag!), so probably <br> tags are necessary to ensure space lines between stanzas.  Needs further experimentation to determine how to consistently generate just the right amount of space.
+
+== Epics ==
+* Add TESTS
+* Upgrade to Rails 5.x

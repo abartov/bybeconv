@@ -184,6 +184,25 @@
 :javascript
   $(document).ready(function(){
 
+    // heart button
+    $('.like').click(function(){ // toggle like/unlike
+      if($('.like').find(".fa-heart").length > 0) { // already liked
+        // unlike
+        $.ajax({
+          url: "#{url_for(action: :unlike, id: @m.id) }",
+          //data: {user: '#{current_user.nil? ? '' : current_user.id}',
+          //method: 'POST',
+        });
+        $('.fa-heart').removeClass('fa-heart').addClass('fa-heart-o');
+      } else { // like
+        $.ajax({
+          url: "#{url_for(action: :like, id: @m.id) }",
+          //data: {user: '#{current_user.nil? ? '' : current_user.id}',
+          //method: 'POST',
+        });
+        $('.fa-heart-o').removeClass('fa-heart-o').addClass('fa-heart');
+      }
+    });
     // the input field for the find-in-page
     var $input = $("#searchinwork"),
       // clear button

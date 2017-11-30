@@ -63,6 +63,8 @@ Bybeconv::Application.routes.draw do
   post "manifestation/update"
   patch "manifestation/update"
   get 'manifestation/get_random'
+  get 'manifestation/like'
+  get 'manifestation/unlike'
 
   get "api/query"
   resources :api_keys

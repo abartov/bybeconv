@@ -23,6 +23,22 @@ class ManifestationController < ApplicationController
     # TODO
   end
 
+  def like
+    unless current_user.nil?
+      @m = Manifestation.find(params[:id])
+      @m.likers << current_user
+    end
+    render nothing: true
+  end
+
+  def unlike
+    unless current_user.nil?
+      @m = Manifestation.find(params[:id])
+      @m.likers.delete(current_user) # safely fails if already deleted
+    end
+    render nothing: true
+  end
+
   def read
     prep_for_read
     @proof = Proof.new
@@ -35,6 +51,7 @@ class ManifestationController < ApplicationController
     @print_url = url_for(action: :print, id: @m.id)
     @links = @m.external_links.group_by {|l| l.linktype}
     @random_work = Manifestation.order('RAND()').limit(1)[0]
+    @liked = (current_user.nil? ? false : @m.likers.include?(current_user))
   end
 
   def readmode
