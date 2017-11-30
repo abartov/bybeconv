@@ -33,7 +33,7 @@ he:
   send_to_viaf: חיפוש מחבר במאגר VIAF
   person_entity: ישות מחבר
   report_inappropriate_content: דיווח על תוכן בעייתי
-  x_liked_y_recommended: "%{x} קוראים אהבו את הסיפור, %{y} המלצות כתובות"
+  x_liked_y_recommended: "%{x} קוראים אהבו את היצירה, %{y} המלצות כתובות"
   wait: נא להמתין
   associate_with_viaf: קשר את התיקיה לרשומת ה-VIAF הזו
   associated_with_viaf: קושר לרשומה מספר %{viaf} במאגר VIAF

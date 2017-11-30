@@ -25,7 +25,7 @@ class Manifestation < ActiveRecord::Base
   @@tmplock = false
 
   def like_count
-    return m.likers.count
+    return likers.count
   end
 
   def long?
