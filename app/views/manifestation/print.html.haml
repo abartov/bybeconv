@@ -1,20 +1,20 @@
-/ standard display mode. "reading mode" to be implemented separately?
-.container-fluid
-  .row
-    .col-sm-11
-      %span{:class => 'work_title'}
-        = @m.title + ' / ' + @m.author_string
-      = ' | '
-      = render partial: 'shared/copyright', locals: {copyright: @m.copyright?}
-  %hr
-  #maintext.maintext
-    / TODO: more nuanced rendering here
-    - if @m.as_prose?
-      #actualtext.maintext-prose-body
-        != raw(@html)
-    - else
-      #actualtext.maintext-poetry-body
-  %hr
+/ print mode.
+.container-fluid.readmode-top-element
+  = render partial: 'readmode_metadata'
+  / TODO: more nuanced rendering here
+  - if @m.as_prose?
+    #actualtext.maintext-prose-body.search-margin
+      != raw(@html)
+  - else
+    #actualtext.maintext-poetry-body.search-margin
+      != raw(@html)
 
 :javascript
-  window.print();
+  $(document).ready(function() {
+    $(document).on('keyup',function(evt) {
+      if (evt.keyCode == 27) {
+        window.location.href = '#{url_for(action: :read, id: @m.id)}';
+      }
+    });
+    window.print();
+  });

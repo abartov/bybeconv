@@ -58,9 +58,8 @@ class ManifestationController < ApplicationController
   end
 
   def print
-    @m = Manifestation.find(params[:id])
-    @html = MultiMarkdown.new(@m.markdown.lines[1..-1].join("\n")).to_html.force_encoding('UTF-8')
     @print = true
+    prep_for_print
   end
 
   def download
@@ -256,8 +255,20 @@ class ManifestationController < ApplicationController
 
   protected
 
-  def prep_for_read
+  def prep_for_print
     @m = Manifestation.find(params[:id])
+    @author = @m.expressions[0].works[0].persons[0] # TODO: handle multiple authors
+    @translator = @m.expressions[0].persons[0] # TODO: handle multiple translators
+    @page_title = "#{@m.title} - #{t(:default_page_title)}"
+    impressionist(@author) # increment the author's popularity counter
+    if @print
+      @html = MultiMarkdown.new(@m.markdown.lines[1..-1].join("\n")).to_html.force_encoding('UTF-8')
+    end
+  end
+
+  def prep_for_read
+    @print = false
+    prep_for_print
     lines = @m.markdown.lines
     tmphash = {}
     @chapters = {}
@@ -271,11 +282,7 @@ class ManifestationController < ApplicationController
     @tabclass = set_tab('works')
     @entity = @m
     @pagetype = :manifestation
-    @page_title = "#{@m.title} - #{t(:default_page_title)}"
-    @author = @m.expressions[0].works[0].persons[0] # TODO: handle multiple authors
-    @translator = @m.expressions[0].persons[0] # TODO: handle multiple translators
     @print_url = url_for(action: :print, id: @m.id)
     @liked = (current_user.nil? ? false : @m.likers.include?(current_user))
-    impressionist(@author) # increment the author's popularity counter
   end
 end

@@ -66,7 +66,7 @@ class Manifestation < ActiveRecord::Base
 
   def as_prose?
     # TODO: implement more generically
-    return ['poetry','drama'].include? expressions[0].works[0].genre ? false : true
+    return ['poetry','drama'].include?(expressions[0].works[0].genre) ? false : true
   end
 
   def safe_filename
