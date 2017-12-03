@@ -43,14 +43,25 @@
     $('#shareDlg').dialog('open');
   });
 
+  // multi-select button
+  $('.multiselect').click(function() {
+    alert('#{t(:not_implemented_yet)}');
+  });
+
+  // proof button
+  $('#found_mistake').click(function() {
+    alert('#{t(:not_implemented_yet)}');
+  });
+
   // download button
   $('#downloadDlg').dialog({autoOpen:false, height:400, width:600, modal:true, buttons:{"#{t(:close)}": function(){$('#downloadDlg').dialog('close');}}});
   $('.download').click(function() {
-    $('#downloadDlg').dialog('open');
+    alert('#{t(:not_implemented_yet)}');
+    //$('#downloadDlg').dialog('open');
   });
 
   // print button
   $('.printbutton').click(function() {
-    window.open("#{@print_url}",'_new');
+    window.print();
   });
 
