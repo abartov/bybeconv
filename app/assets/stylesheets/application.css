@@ -446,6 +446,14 @@ ul {
   list-style-type: disc;
   margin-right:2rem;
 }
+.credits .list-group-item { /* added by Asaf */
+  background-color: inherit;
+}
+.credits h2{ /* added by Asaf */
+  font-weight: bold;
+  padding-top: 2rem;
+  font-size: 1.6rem;
+}
 .nav li {
   margin: 0 0 0 3rem;
   display: inline;

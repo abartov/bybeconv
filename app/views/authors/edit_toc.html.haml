@@ -4,9 +4,12 @@
   %p
   .card{style:'margin-right:20rem'}
     .card-content
-      .credits
-        %p.headline-3= t(:volunteers_who_helped, {author: @author.name, gender_letter: @author.gender_letter})
-        != @credits
+      .row
+        .col-sm-3
+        .col-sm-9
+          .credits
+            %p.headline-3= t(:volunteers_who_helped, {author: @author.name, gender_letter: @author.gender_letter})
+            != @credits
 
 - unless @diff.nil? # we have a rejected update
   = t(:update_conflict)

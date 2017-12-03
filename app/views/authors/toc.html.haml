@@ -77,17 +77,7 @@
                 .credits
                   != @credits
     .col-md-1
-      #tools-side{style:'width:18rem'}
-
-
-
-
-
-/  #maintext.row
-/    .col-sm-10
-/      = render partial: 'toc', locals: {author: @author, html: @html}
-/    .col-sm-2
-/      = render partial: 'toolbox'
+      = render partial: 'toolbox'
 
 :javascript
   $(document).ready(function(){
@@ -96,32 +86,32 @@
       elem = $('a[name='+$(this).attr('data-anchor'));
       window.scrollTo(0, elem.offset().top - offsetTop);
     });
-  });
-  $(window).scroll(function () {
-    var $floatingbox = $('#toolbox');
-    var bodyY = parseInt($('#maintext').offset().top) - 20;
-    var originalX = $floatingbox.css('margin-right');
+    $(window).scroll(function () {
+      var $floatingbox = $('#toolbox');
+      var bodyY = parseInt($('#maintext').offset().top) - offsetTop;
+      var originalX = $floatingbox.css('margin-right');
 
-    var scrollY = $(window).scrollTop();
-    var isfixed = $floatingbox.css('position') == 'fixed';
+      var scrollY = $(window).scrollTop();
+      var isfixed = $floatingbox.css('position') == 'fixed';
 
-    if($floatingbox.length > 0){
+      if($floatingbox.length > 0){
 
-    if ( scrollY > bodyY && !isfixed ) {
-      $floatingbox.stop().css({
-        position: 'fixed',
-        //right: '50%',
-        top: 20,
-        //marginRight: -500
-        });
-    } else if ( scrollY < bodyY && isfixed ) {
-      $floatingbox.css({
-        position: 'relative',
-        //right: 0,
-        top: 0,
-        //marginRight: originalX
-        });
+      if ( scrollY > bodyY && !isfixed ) {
+        $floatingbox.stop().css({
+          position: 'fixed',
+          //right: '50%',
+          top: offsetTop,
+          //marginRight: -500
+          });
+      } else if ( scrollY < bodyY && isfixed ) {
+        $floatingbox.css({
+          position: 'relative',
+          //right: 0,
+          top: 0,
+          //marginRight: originalX
+          });
+        }
       }
-    }
+    });
   });
 
