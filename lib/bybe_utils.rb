@@ -283,7 +283,7 @@ module BybeUtils
             ret_a = []
           end
           part = genre
-          ret_a << "<a name='#{genre}_g'>\n"
+          ret_a << "<a name='#{genre}_g'></a>\n"
         end
         ret_a << l
       else

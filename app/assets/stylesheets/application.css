@@ -454,6 +454,9 @@ ul {
   padding-top: 2rem;
   font-size: 1.6rem;
 }
+.toc p {
+/*  color: black;*/
+}
 .nav li {
   margin: 0 0 0 3rem;
   display: inline;
