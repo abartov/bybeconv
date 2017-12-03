@@ -2,6 +2,7 @@ class Toc < ActiveRecord::Base
   is_impressionable
   attr_accessible :person_id, :status, :toc
   has_paper_trail
+  enum status: [:raw, :ready]
 
   def refresh_links
     buf = toc

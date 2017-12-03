@@ -140,6 +140,7 @@ class AuthorsController < ApplicationController
           t = @author.toc
           t.toc = params[:markdown]
           t.credit_section = params[:credits]
+          t.status = Toc.statuses[params[:toc_status]]
           t.save!
         end
       end
