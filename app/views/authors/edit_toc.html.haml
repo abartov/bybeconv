@@ -1,5 +1,12 @@
-#maintext
-  = render partial: 'toc', locals: {author: @author, html: @html}
+#maintext.top-element
+  %h1= t(:current_toc)
+  = render partial: 'toc'
+  %p
+  .card{style:'margin-right:20rem'}
+    .card-content
+      .credits
+        %p.headline-3= t(:volunteers_who_helped, {author: @author.name, gender_letter: @author.gender_letter})
+        != @credits
 
 - unless @diff.nil? # we have a rejected update
   = t(:update_conflict)
@@ -10,12 +17,16 @@
   = @rejected_update
   %hr
 
+%h1= t(:update_toc)
 .markdown
   = form_tag(action: :edit_toc, id: @author.id) do
     %p
       = text_area_tag(:markdown, raw(@toc), size: "100x40")
+      %br
+      = label_tag :credits, t(:credit_section)
+      = text_area_tag(:credits, raw(@credit_section), size:"50x20")
+      %br
       = hidden_field_tag(:old_timestamp, @toc_timestamp)
       = submit_tag t(:update)
 
 = link_to t(:back), :action => :list
-

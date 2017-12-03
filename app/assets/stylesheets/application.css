@@ -442,6 +442,10 @@ ul {
   margin: 0;
   list-style-type:none;
 }
+.credits ul{ /* added by Asaf */
+  list-style-type: disc;
+  margin-right:2rem;
+}
 .nav li {
   margin: 0 0 0 3rem;
   display: inline;
