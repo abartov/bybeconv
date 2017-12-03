@@ -136,6 +136,9 @@ he:
   translator_name: "שם המתרגם/ת"
   orig_lang: שפת מקור
   full_mode: תצוגה מלאה
+  nav_by_genre: ניווט לפי סוגות
+
+  find_work_by_author: "חיפוש יצירה מאת %{author}"
   rest_in_wikipedia: להמשך הערך בויקיפדיה העברית
   to_the_wikipedia_article: לערך בויקיפדיה
   wikidata_id: מזהה בויקינתונים
@@ -247,6 +250,9 @@ he:
   more_recommendations_in_the_blog: המלצות נוספות ביומן הרשת
   works: יצירות
   about: על אודות
+  about_author_in_blog: על אודות %{author} ביומן הרשת
+  blog_category_url: קישורית לקטגוריה על היוצר/ת ביומן הרשת
+  link: קישורית
   period: תקופה
   periods: תקופות
   to_full_list: לרשימה המלאה

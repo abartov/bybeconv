@@ -23,7 +23,7 @@
       = link_to '#' do
         %span.icon-bybookshelf
     %div{style:'position: relative; float:right; display: inline;width: calc(100% - 8rem)'}
-      = select_tag 'shelves', options_for_shelves.html_safe, {'class' => 'in_read'}
+      = select_tag 'shelves', options_for_shelves.html_safe, {'class' => 'in_read', style: "background-color:#{context == :toc ? '#eeeced' : 'white'}"}
       %div
         %a.dropdown-arrow{style:'left:0'}
           %i.fa.fa-angle-down

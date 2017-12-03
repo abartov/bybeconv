@@ -400,6 +400,8 @@ padding-bottom: 0.6rem;
   min-height: 5.2rem;
   border-top: 0.2rem solid #d9cdd5;
   border-bottom: 0.2rem solid #d9cdd5;
+  margin-bottom:2rem;
+  padding-bottom:2rem; /* added by Asaf, because dictionaries and lexicons wrapped to a new line */
   font-size: 1.4rem;
   color: #907989;
 }

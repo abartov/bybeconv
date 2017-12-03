@@ -57,12 +57,17 @@
         != "&rlm;"
         = @author.viaf_id
         %br
+        %b= t(:blog_category_url)
+        - unless(@author.blog_category_url.nil? or @author.blog_category_url.empty?)
+          %a{ href: @author.blog_category_url}= t(:link)
+        %br
         %b= t(:wikidata_id)
         - unless @author.wikidata_id.nil?
           %a{ href: "https://wikidata.org/wiki/Q#{@author.wikidata_id}"}= @author.wikidata_id.to_s
         %br
         %b= t(:wikipedia_url)
-        %a{ href: @author.wikipedia_url}= t(:to_the_wikipedia_article)
+        - unless @author.wikipedia_url.nil? or @author.wikipedia_url.empty?
+          %a{ href: @author.wikipedia_url}= t(:to_the_wikipedia_article)
     %tr
       %td
         %h2= t(:content)

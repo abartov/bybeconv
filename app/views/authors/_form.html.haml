@@ -53,6 +53,9 @@
     = f.label t(:nli_id)
     = f.text_field :nli_id
   .backend-field
+    = f.label t(:blog_category_url)
+    = f.text_area :blog_category_url, rows: 3, cols: 50
+  .backend-field
     = f.label t(:wikidata_id)
     = f.text_field :wikidata_id, size: 10
   .backend-field

@@ -107,7 +107,10 @@ class AuthorsController < ApplicationController
       @print_url = url_for(action: :print, id: @author.id)
       @toc = @author.toc.refresh_links
       markdown_toc = toc_links_to_markdown_links(@toc)
-      @html = MultiMarkdown.new(markdown_toc).to_html.force_encoding('UTF-8')
+      toc_parts = divide_by_genre(markdown_toc)
+      @genres_present = toc_parts.shift # first element is the genres array
+      @htmls = toc_parts.map{|genre, tocpart| [genre, MultiMarkdown.new(tocpart).to_html.force_encoding('UTF-8')]}
+      #@html = MultiMarkdown.new(markdown_toc).to_html.force_encoding('UTF-8')
       @pagetype = :author
       @entity = @author
       @page_title = "#{@author.name} - #{t(:table_of_contents)} - #{t(:project_ben_yehuda)}"

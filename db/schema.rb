@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171129170406) do
+ActiveRecord::Schema.define(version: 20171201222951) do
 
   create_table "api_keys", force: :cascade do |t|
     t.string   "email",       limit: 255
@@ -270,6 +270,7 @@ ActiveRecord::Schema.define(version: 20171129170406) do
     t.boolean  "metadata_approved",                           default: false
     t.integer  "gender",                     limit: 4
     t.integer  "impressions_count",          limit: 4
+    t.string   "blog_category_url",          limit: 255
   end
 
   add_index "people", ["impressions_count"], name: "index_people_on_impressions_count", using: :btree

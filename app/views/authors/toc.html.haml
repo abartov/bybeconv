@@ -1,33 +1,96 @@
 / Main author page
 #maincontainer.container-fluid.top-element
   .row
-    .col-sm-11
-      %span{:class => 'author_title'}
-        = @author.name
-        != '&nbsp;'
-      - unless (@author.dates.nil? or @author.dates.empty?)
-        = '('+@author.dates+')'
-      = ' | '
-      = render partial: 'shared/copyright', locals: {copyright: (not @author.public_domain)}
-      = ' | '
-      = render partial: 'shared/author_links', locals: {author: @author}
+    .col-md-1
+    .col-md-10
+      .card.author-top
+        .row
+          .card-content
+            .col-md-3{style:'padding-top:1.2rem;padding-left:1rem'}
+              = render partial: 'shared/sharing_etc', locals: {context: :toc}
+              .search-bar{style:'margin-top:3rem'}
+                .search.field
+                  %span.fa.fa-search.search-icon
+                  %input{placeholder: t(:find_work_by_author, author:@author.name), style:'background-color: #eeeced;'}
+            .col-md-9
+              .creator-bookmark-back-right
+                %img{src:'/assets/creator-bookmark-back2.png', width:168,height:6}
+              .creator-bookmark-front-right
+                %img{src: @author.profile_image.url(:thumb), width: 162}
+              .card-content.near-picture-right
+                %div
+                  %p
+                    %span.headline-1= @author.name
+                    != "(#{@author.life_years})"
+                %div{style:'display:inline-block'}
+                  .card-header-element{style:'padding-top:0.2rem;margin-left:0.6rem'}
+                    = render partial: 'shared/copyright', locals: {copyright: (not @author.public_domain)}
+                  - unless @author.blog_category_url.nil? or @author.blog_category_url.empty?
+                    .card-header-element{style:'padding-top:0.2rem;margin-left:0.6rem;margin-right:1rem'}
+                      %span
+                        %i.fa.fa-pencil-square-o
+                    .card-header-element
+                      %p= link_to t(:about_author_in_blog, author:@author.name), @author.blog_category_url
+                %div
+                  %p
+                    - unless @author.wikipedia_url.nil? or @author.wikipedia_snippet.nil? or @author.wikipedia_url.empty? or @author.wikipedia_snippet.empty?
+                      = @author.wikipedia_snippet
+                      != "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+                      = link_to t(:rest_in_wikipedia), @author.wikipedia_url
+                %div
+                  / TODO: period
+                %div{style:'display: inline-block; margin-top: 0.6rem'}
+                  .card-header-element{style:'margin-left:4rem'}
+                    / references
+                  .card-header-element{style:'margin-left:4rem'}
+                    / tags
+    .col-md-1
+  .internal-navbar
+    .row
+      .col-md-1
+      .col-md-10
+        #internal-genre-nav{style:'text-align:center; align-content:center;'}
+          %div{style:'display:inline-block; padding-top:1rem;'}
+            .genre-nav
+              %p= t(:nav_by_genre)
+            - genres = get_genres.push('translations')
+            - genres.each do |g|
+              - if @genres_present.include?(g)
+                .genre-nav
+                  .linky.genre_link{'data-anchor' => g+'_g'}
+                    - iconname = case g when 'translations' then 'translate' when 'fables' then 'fables-fox' else g end
+                    %span{class: "icon-by#{iconname} nav-icon"}
+                    %p= textify_genre(g)
+      .col-md-1
   .row
-    .col-sm-3
-      = render partial: 'shared/read_controls', locals: {author: @author}
-    .col-sm-7
-      = render partial: 'wikipedia', locals: {author: @author}
-      %br
-      %b= t(:period)+': '
-      = "  #{@author.period_string}"
-    .col-sm-2
-      = image_tag @author.profile_image.url(:thumb)
-  #maintext.row
-    .col-sm-10
-      = render partial: 'toc', locals: {author: @author, html: @html}
-    .col-sm-2
-      = render partial: 'toolbox'
+    .col-md-1
+    .col-md-10
+      #maintext
+        - @htmls.each do |genre, h|
+          .card{style:'margin-top:3rem;margin-right:20rem;'}
+            .card-content
+              != h
+    .col-md-1
+      #tools-side{style:'width:18rem'}
+
+
+
+
+
+/  #maintext.row
+/    .col-sm-10
+/      = render partial: 'toc', locals: {author: @author, html: @html}
+/    .col-sm-2
+/      = render partial: 'toolbox'
 
 :javascript
+  $(document).ready(function(){
+    var offsetTop = #{ @readmode ? 40 : 250 };
+    $('.genre_link').click(function(){
+      elem = $('a[name='+$(this).attr('data-anchor'));
+      window.scrollTo(0, elem.offset().top - offsetTop);
+    });
+  });
   $(window).scroll(function () {
     var $floatingbox = $('#toolbox');
     var bodyY = parseInt($('#maintext').offset().top) - 20;

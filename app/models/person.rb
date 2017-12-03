@@ -1,6 +1,6 @@
 include BybeUtils
 class Person < ActiveRecord::Base
-  attr_accessible :affiliation, :comment, :country, :name, :nli_id, :other_designation, :viaf_id, :public_domain, :profile_image, :birthdate, :deathdate, :wikidata_id, :wikipedia_url, :wikipedia_snippet, :profile_image, :metadata_approved, :gender
+  attr_accessible :affiliation, :comment, :country, :name, :nli_id, :other_designation, :viaf_id, :public_domain, :profile_image, :birthdate, :deathdate, :wikidata_id, :wikipedia_url, :wikipedia_snippet, :blog_category_url, :profile_image, :metadata_approved, :gender
 
   enum gender: [:male, :female, :other, :unknown]
 
@@ -84,10 +84,6 @@ class Person < ActiveRecord::Base
 
   def blog_count
     return 0 # TODO: implement
-  end
-
-  def blog_category_url
-    return '' # TODO: implement
   end
 
   def death_year

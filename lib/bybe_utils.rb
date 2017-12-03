@@ -243,6 +243,59 @@ module BybeUtils
   def asa_citation(manifestation)
     return author_surname_and_firstname(manifestation.author_string)+'. '+citation_date(manifestation.expressions[0].date)+". \"#{manifestation.title}\". <strong>פרויקט בן-יהודה</strong>. אוחזר בתאריך #{Date.today.to_s}. (#{request.original_url})"
   end
+
+  def identify_genre_by_heading(text)
+    case text
+    when /שירה/
+      return 'poetry'
+    when /פרוזה/
+      return 'prose'
+    when /מסות/
+      return 'article'
+    when /זכרונות/
+      return 'memoir'
+    when /תרגום/
+      return 'translations'
+    when /מחזות/, /דרמה/
+      return 'drama'
+    when /משלים/
+      return 'fables'
+    when /מכתבים/, /אגרות/
+      return 'letters'
+    else
+      return nil
+    end
+  end
+
+  def divide_by_genre(buf)
+    ret_parts = []
+    ret_a = []
+    genres = []
+    part = ''
+    lines = buf.lines
+    lines.each{|l|
+      if l =~ /^##[^#]/
+        genre = identify_genre_by_heading($')
+        unless genre.nil?
+          unless part.empty? # if not first genre
+            genres << part
+            ret_parts << [part, ret_a.join]
+            ret_a = []
+          end
+          part = genre
+          ret_a << "<a name='#{genre}_g'>\n"
+        end
+        ret_a << l
+      else
+        ret_a << l
+      end
+    }
+    ret_parts << [part, ret_a.join] # add last batch
+    genres << part
+    ret_parts.unshift(genres)
+    return ret_parts
+  end
+
   def toc_links_to_markdown_links(buf)
     ret = ''
     until buf.empty?

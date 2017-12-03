@@ -5,7 +5,6 @@
   - add lock_version column to person, work, expression, and manifestation tables
   - implement taggings review
   - edit WEM associations -- external links, authors
-  - edit Manifestation markdown with Stackedit
   - have works automatically tagged as belonging to a book/collection (WEM!) according to (human-confirmed) heading from the ToC
   - means to select additional/different authors
   - show revisions of manifestations/ToCs
@@ -14,6 +13,7 @@
   - query work by tag
   - admin review, approve/reject tags and recommendations
 
+- implement bookmarks (see notes in code!)
 - make tags links to works queries by tag
 - implement recommendation flagging (data model, review)
 - implement the scroll-gradients in work read and readmode
@@ -21,11 +21,8 @@
 - implement more-of-this-author separately for translatees
 - implement references-to-this-work
 - other extras at bottom of work read
-- implement updated UI for read mode
-- implement bookmarks (see notes in code!)
 - implement chapter-only display
 - implement WhatsApp Web when detected Desktop
-- implement share-via-email
 - download as TXT - add CR+LF if user runs Windows
 - download as DOC - right-align (pandoc patch?)
 
@@ -126,3 +123,4 @@ Proof and Recommendation feature
 == Epics ==
 * Add TESTS
 * Upgrade to Rails 5.x
+* edit Manifestation markdown with Stackedit
