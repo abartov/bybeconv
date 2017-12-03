@@ -162,6 +162,7 @@ class AuthorsController < ApplicationController
     toc_parts = divide_by_genre(markdown_toc)
     @genres_present = toc_parts.shift # first element is the genres array
     @htmls = toc_parts.map{|genre, tocpart| [genre, MultiMarkdown.new(tocpart).to_html.force_encoding('UTF-8')]}
-    @credits = MultiMarkdown.new(@author.toc.credit_section).to_html.force_encoding('UTF-8').gsub('<li', '<li class="col-sm-6"').gsub('<ul','<ul class="list-unstyled row"')
+    credits = @author.toc.credit_section || ''
+    @credits = MultiMarkdown.new(credits).to_html.force_encoding('UTF-8').gsub('<li', '<li class="col-sm-6"').gsub('<ul','<ul class="list-unstyled row"')
   end
 end
