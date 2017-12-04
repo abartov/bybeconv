@@ -47,6 +47,13 @@
       modal: true,
       buttons: { "#{t(:cancel)}": function() { $('#resultsDlg').dialog("close");} }
       });
+    $('#q').keypress(function (e) {
+      var key = e.which;
+      if(key == 13) { // the enter key code
+        $('.search-icon').click();
+        return false;
+      }
+    });
 
     $('.search-icon').click(function(){
       $('#resultsDlg').dialog('open');
