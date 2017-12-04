@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
   # class variables
   @@whatsnew_cache = nil
   @@countworks_cache = nil
+  @@countauthors_cache = nil
   @@genre_popups_cache = nil
   @@pop_authors_by_genre = nil
 
@@ -151,6 +152,17 @@ class ApplicationController < ActionController::Base
       @@genre_popups_cache = ret
     end
     return @@genre_popups_cache
+  end
+
+  def count_authors_by_genre
+    if @@countauthors_cache.nil?
+      ret = {}
+      get_genres.each {|g|
+        ret[g] = Person.has_toc.joins(:expressions).where(expressions: {genre: g}).distinct.count
+      }
+      @@countauthors_cache = ret
+    end
+    return @@countauthors_cache
   end
 
   def count_works_by_genre

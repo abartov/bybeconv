@@ -1,7 +1,7 @@
 .card.row1
   .card-content
-    = render partial: 'shared/author_cards', locals: {title: t(:most_popular_authors), authors: popular_authors, surprise: false, id_frag: 'pop'}
-    = render partial: 'shared/author_cards', locals: {title: t(:random_authors), authors: random_authors, surprise: true, id_frag: 'random'}
+    = render partial: 'shared/author_cards', locals: {title: t(:most_popular_authors), authors: popular_authors, surprise: false, id_frag: 'pop', skip_title: false, size: :large}
+    = render partial: 'shared/author_cards', locals: {title: t(:random_authors), authors: random_authors, surprise: true, id_frag: 'random', skip_title: false, size: :large}
     .float-left
       %a{style: 'color:white', href: url_for(controller: :authors)}
         .btn{style: 'padding-top:0.5rem'}

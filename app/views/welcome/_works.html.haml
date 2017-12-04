@@ -15,7 +15,7 @@
               .card.genre-card.small-surprise.item#wside2
                 = render partial: 'shared/surprise_work', locals: {manifestation: @random_work}
         - else
-          %div{:class => 'card genre-card'+ (genre == 'lexicon' ? ' dictionaries' : '')}
+          %div{:class => 'card genre-card'+ (genre == 'lexicon' ? ' dictionaries' : ''), style:'cursor:pointer'}
             %a{ 'data-toggle' => :modal, 'data-target'=> "#genre_popup_#{genre}"}
               .genre-card-content
                 .genre-icon{style: col == 1 ? 'margin-right:-1rem' : ''}

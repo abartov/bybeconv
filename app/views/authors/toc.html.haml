@@ -1,5 +1,6 @@
 / Main author page
 #maincontainer.container-fluid.top-element
+  = render partial: 'shared/breadcrumbs'
   .row
     .col-md-1
     .col-md-10
@@ -45,23 +46,7 @@
                   .card-header-element{style:'margin-left:4rem'}
                     / tags
     .col-md-1
-  .internal-navbar
-    .row
-      .col-md-1
-      .col-md-10
-        #internal-genre-nav{style:'text-align:center; align-content:center;'}
-          %div{style:'display:inline-block; padding-top:1rem;'}
-            .genre-nav
-              %p= t(:nav_by_genre)
-            - genres = get_genres.push('translations')
-            - genres.each do |g|
-              - if @genres_present.include?(g)
-                .genre-nav
-                  .linky.genre_link{'data-anchor' => g+'_g'}
-                    - iconname = case g when 'translations' then 'translate' when 'fables' then 'fables-fox' else g end
-                    %span{class: "icon-by#{iconname} nav-icon"}
-                    %p= textify_genre(g)
-      .col-md-1
+  = render partial: 'shared/genre_navbar', locals: {genres_present: @genres_present, page: :toc}
   .row
     .col-md-1
     .col-md-10
@@ -82,10 +67,6 @@
 :javascript
   $(document).ready(function(){
     var offsetTop = #{ @readmode ? 40 : 250 };
-    $('.genre_link').click(function(){
-      elem = $('a[name='+$(this).attr('data-anchor'));
-      window.scrollTo(0, elem.offset().top - offsetTop);
-    });
     $(window).scroll(function () {
       var $floatingbox = $('#toolbox');
       var bodyY = parseInt($('#maintext').offset().top) - offsetTop;

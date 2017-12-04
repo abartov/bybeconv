@@ -22,4 +22,6 @@
         = link_to t(:authors), controller: :authors
         = ' > '
         %b= @entity.name
+      - elsif @pagetype == :authors
+        %b= t(:authors)
   .col-md-1

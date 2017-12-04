@@ -227,6 +227,13 @@ he:
   welcome_stats_html: "כיום כלולות בפרויקט %{works} יצירות, מאת כ-%{authors} יוצרים, ו-%{headwords} ערכים מילוניים."
   total_manifestations: "סה\"כ יצירות: %{total}"
   additional_content: 'תוכן נוסף:'
+  authors_of: יוצרי
+  sample_authors_of: מבחר יוצרי
+  random_order: (בסדר אקראי)
+  most_read_authors_of_genre: יוצרי ה%{genre} הנקראים ביותר החודש
+  surprise_author_in_genre: יוצר/ת %{genre} בהפתעה
+  most_read_translated_authors_in_genre: יוצרי ה%{genre} המתורגמים הנקראים ביותר החודש
+  to_all_authors_in_genre: לכל יוצרי ה%{genre}
   title: כותרת
   entries: ערכים
   filter: סינון
@@ -239,6 +246,12 @@ he:
   advanced_search: חיפוש מתקדם
   search_placeholder: חיפוש יצירות ויוצרים באתר
   homepage: דף הבית
+  authors_page: דף יוצרים
+  authors_totals_p1: מאגרנו כולל %{total} יוצרים עבריים, מתוכם %{pd} נחלת הכלל
+  authors_totals_p2: ו-%{permission} מוגנים בזכויות יוצרים ומוגשים ברשות בעלי הזכויות.
+  allwriters: כל היוצרים
+  if_you_meant_works: "אם התכוונתם להגיע לדף היצירות, לחצו כאן: "
+  to_the_works_page: לדף היצירות
   authors: יוצרים
   author_name: "שם היוצר/ת"
   to_the_author_page: לדף היוצר

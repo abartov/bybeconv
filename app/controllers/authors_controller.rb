@@ -12,6 +12,7 @@ class AuthorsController < ApplicationController
     @page_title = t(:authors)+' '+t(:project_ben_yehuda)
     @pop_by_genre = cached_popular_authors_by_genre # get popular authors by genre + most popular translated
     @rand_by_genre = {}
+    @pagetype = :authors
     @surprise_by_genre = {}
     get_genres.each do |g|
       logger.info("genre: #{g}")
@@ -19,6 +20,9 @@ class AuthorsController < ApplicationController
       @surprise_by_genre[g] = @rand_by_genre[g].pop # make one of the random authors the surprise author
     end
     @authors_abc = Person.order(:name).limit(25) # get page 1 of all authors
+    @author_stats = {total: Person.has_toc.count, pd: Person.has_toc.where(public_domain: true).count}
+    @author_stats[:permission] = @author_stats[:total] - @author_stats[:pd]
+    @authors_by_genre = count_authors_by_genre
     # still TODO:
     # new authors
     # featured author

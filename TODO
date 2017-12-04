@@ -14,6 +14,7 @@
   - admin review, approve/reject tags and recommendations
 
 - implement bookmarks (see notes in code!)
+- take foreign authors into account in authors page - if not everywhere, at least for fables?
 - make tags links to works queries by tag
 - implement recommendation flagging (data model, review)
 - implement the scroll-gradients in work read and readmode
@@ -23,6 +24,7 @@
 - other extras at bottom of work read
 - implement chapter-only display
 - implement WhatsApp Web when detected Desktop
+- implement favoriting authors
 - download as TXT - add CR+LF if user runs Windows
 - download as DOC - right-align (pandoc patch?)
 
