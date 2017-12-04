@@ -2,12 +2,16 @@
   .icon.card-header-element
     %span{:class => 'icon-bycopyright'}
   = ' '+t(:by_permission)+' '
-  = link_to '[?]', '#', 'data-toggle' => 'popover', title: t(:about_permission), 'data-content' => t(:permission_popover)
+  = link_to '[?]', '#', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_permission), 'data-content' => t(:permission_popover)
 - else
   .icon.card-header-element
     %span{:class => 'icon-bycc-pd'}
   = ' '+t(:public_domain)+' '
-  = link_to '[?]', '#', 'data-toggle' => 'popover', title: t(:about_public_domain), 'data-content' => t(:public_domain_popover)
+  = link_to '[?]', '#', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_public_domain), 'data-content' => t(:public_domain_popover)
 
 :javascript
-  $('[data-toggle="popover"]').popover();
+  $(document).ready(function(){
+    $('[data-toggle="popover"]').popover({
+      trigger: 'focus'
+    });
+  });
