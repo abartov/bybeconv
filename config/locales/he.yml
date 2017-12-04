@@ -234,6 +234,8 @@ he:
   surprise_author_in_genre: יוצר/ת %{genre} בהפתעה
   most_read_translated_authors_in_genre: יוצרי ה%{genre} המתורגמים הנקראים ביותר החודש
   to_all_authors_in_genre: לכל יוצרי ה%{genre}
+  beginning_abc: מבחר ראשוני
+  by_abc: בתצוגה בסדר אלפביתי
   title: כותרת
   entries: ערכים
   filter: סינון
