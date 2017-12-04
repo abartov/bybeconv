@@ -8,5 +8,4 @@
     }
   %body
     %div#content
-      - byebug
       != "<script src='https://www.googleapis.com/customsearch/v1?key=#{AppConstants.google_api_key}&cx=#{AppConstants.google_cse_cx}&q=#{URI.escape(params[:q])}&callback=hndlr'></script>"
