@@ -64,14 +64,14 @@
       variableWidth: true,
       // appendArrows: '#scroller_container',
     });
-
-    $('#surprise_author_carousel').carousel({interval: false, wrap: true});
-    $('#surprise_author_link').click(function(){
-      $('#surprise_author_carousel').carousel('next'); // switch to ready surprise
-      $('#side1').load("#{url_for(controller: :authors, action: :get_random_author)}", function() {
-        var $thediv = $("#side2 > div").clone();
-        $('#surprise_popup').html($thediv.html());
-      }); // and load next one
-
-    });
+    if(true == #{surprise}) {
+      $('#surprise_author_carousel').carousel({interval: false, wrap: true});
+      $('#surprise_author_link').click(function(){
+        $('#surprise_author_carousel').carousel('next'); // switch to ready surprise
+        $('#side1').load("#{url_for(controller: :authors, action: :get_random_author)}", function() {
+          var $thediv = $("#side2 > div").clone();
+          $('#surprise_popup').html($thediv.html());
+        }); // and load next one
+      });
+    }
   });
