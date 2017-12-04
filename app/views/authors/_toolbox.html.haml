@@ -31,37 +31,38 @@
     = render partial: 'shared/share_controls'
 
 :javascript
-  // share button
-  $('#shareDlg').dialog({
-    autoOpen: false,
-    height: 200,
-    width: 250,
-    modal: true,
-    buttons: { "#{t(:cancel)}": function() { $('#shareDlg').dialog("close");} }
+  $(document).ready(function(){
+    // share button
+    $('#shareDlg').dialog({
+      autoOpen: false,
+      height: 200,
+      width: 250,
+      modal: true,
+      buttons: { "#{t(:cancel)}": function() { $('#shareDlg').dialog("close");} }
+      });
+    $('.share').click(function() {
+      $('#shareDlg').dialog('open');
     });
-  $('.share').click(function() {
-    $('#shareDlg').dialog('open');
-  });
 
-  // multi-select button
-  $('.multiselect').click(function() {
-    alert('#{t(:not_implemented_yet)}');
-  });
+    // multi-select button
+    $('.multiselect').click(function() {
+      alert('#{t(:not_implemented_yet)}');
+    });
 
-  // proof button
-  $('#found_mistake').click(function() {
-    alert('#{t(:not_implemented_yet)}');
-  });
+    // proof button
+    $('#found_mistake').click(function() {
+      alert('#{t(:not_implemented_yet)}');
+    });
 
-  // download button
-  $('#downloadDlg').dialog({autoOpen:false, height:400, width:600, modal:true, buttons:{"#{t(:close)}": function(){$('#downloadDlg').dialog('close');}}});
-  $('.download').click(function() {
-    alert('#{t(:not_implemented_yet)}');
-    //$('#downloadDlg').dialog('open');
-  });
+    // download button
+    $('#downloadDlg').dialog({autoOpen:false, height:400, width:600, modal:true, buttons:{"#{t(:close)}": function(){$('#downloadDlg').dialog('close');}}});
+    $('.download').click(function() {
+      alert('#{t(:not_implemented_yet)}');
+      //$('#downloadDlg').dialog('open');
+    });
 
-  // print button
-  $('.printbutton').click(function() {
-    window.print();
+    // print button
+    $('.printbutton').click(function() {
+      window.print();
+    });
   });
-

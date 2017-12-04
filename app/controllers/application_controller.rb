@@ -32,6 +32,10 @@ class ApplicationController < ActionController::Base
     headers['Access-Control-Request-Method'] = '*'
   end
 
+  def search_results
+    render 'shared/search_results', layout: false
+  end
+
 # backup code using Fog, commented out in favor of Paperclip
 #  def s3_storage
 #    @s3_storage ||= Fog::Storage.new(:provider => 'AWS', :aws_access_key_id => AppConstants.aws_access_key_id, :aws_secret_access_key => AppConstants.aws_secret_access_key)

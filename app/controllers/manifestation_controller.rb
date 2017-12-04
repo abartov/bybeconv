@@ -259,7 +259,7 @@ class ManifestationController < ApplicationController
     @m = Manifestation.find(params[:id])
     @author = @m.expressions[0].works[0].persons[0] # TODO: handle multiple authors
     @translator = @m.expressions[0].persons[0] # TODO: handle multiple translators
-    @page_title = "#{@m.title} - #{t(:default_page_title)}"
+    @page_title = "#{@m.title_and_authors} - #{t(:default_page_title)}"
     impressionist(@author) # increment the author's popularity counter
     if @print
       @html = MultiMarkdown.new(@m.markdown.lines[1..-1].join("\n")).to_html.force_encoding('UTF-8')

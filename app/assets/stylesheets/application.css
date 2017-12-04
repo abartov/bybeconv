@@ -486,6 +486,9 @@ li :active{
   background: none;
   -webkit-appearance: none;
 }
+.hidden {
+  display:hidden;
+}
 .field-error{
 	  border: 0.2rem solid #DB0225;
 }

@@ -6,9 +6,13 @@
       .container-fluid#navbar
         .row
           .col-sm-4#nav-additional
+            /!= "<script>  (function() {    var cx = '014539279190547971167:yncfswl0rwe';    var gcse = document.createElement('script');    gcse.type = 'text/javascript';    gcse.async = true; gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;    var s = document.getElementsByTagName('script')[0];    s.parentNode.insertBefore(gcse, s);  })();</script><gcse:search></gcse:search>"
             .search.field.main-search-field
               %span.fa.fa-search.search-icon
-              %input{ placeholder: t(:search_placeholder)}
+              %input#q{ placeholder: t(:search_placeholder)}
+            /   / .hidden
+            /   /!= "<script>  (function() { var cx = '014539279190547971167:yncfswl0rwe'; var gcse = document.createElement('script'); gcse.type = 'text/javascript'; gcse.async = true; gcse.src = 'https://cse.google.com/cse.js?cx=' + cx; var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(gcse, s); })(); </script> <gcse:search></gcse:search>"
+            /  /!= "<script>  (function() {    var cx = '014539279190547971167:yncfswl0rwe';    var gcse = document.createElement('script');    gcse.type = 'text/javascript';    gcse.async = true; gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;    var s = document.getElementsByTagName('script')[0];    s.parentNode.insertBefore(gcse, s);  })();</script><gcse:search></gcse:search>"
           .col-sm-8.nav
             %ul
               %li{role: 'presentation', :class => @tabclass['authors']}
@@ -29,3 +33,23 @@
                 = link_to 'EN', 'http://benyehuda.org/e_faq.html'
     .col-lg-1
 .scroll-gradient
+
+
+#resultsDlg{title: t(:search_results)}
+  .container-fluid
+    #results
+:javascript
+  $(document).ready(function(){
+    $('#resultsDlg').dialog({
+      autoOpen: false,
+      height: 600,
+      width: 800,
+      modal: true,
+      buttons: { "#{t(:cancel)}": function() { $('#resultsDlg').dialog("close");} }
+      });
+
+    $('.search-icon').click(function(){
+      $('#resultsDlg').dialog('open');
+      $('#results').load('#{url_for(controller: :application, action: :search_results)}/?q='+$('#q').val());
+    });
+  });

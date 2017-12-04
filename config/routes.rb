@@ -29,6 +29,7 @@ Bybeconv::Application.routes.draw do
   get 'autocomplete_person_name' => 'admin#autocomplete_person_name', as: 'autocomplete_person_name'
   get 'autocomplete_tag_name' => 'manifestation#autocomplete_tag_name', as: 'autocomplete_tag_name'
 
+  get '/search_results' => 'application#search_results'
   get "search/index"
   get "search/results"
   get "search/advanced"
