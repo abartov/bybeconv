@@ -50,6 +50,6 @@
 
     $('.search-icon').click(function(){
       $('#resultsDlg').dialog('open');
-      $('#results').load('#{url_for(controller: :application, action: :search_results)}/?q='+$('#q').val());
+      $('#results').load('#{url_for(controller: :application, action: :search_results)}/?q='+encodeURIComponent($('#q').val()));
     });
   });

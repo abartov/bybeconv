@@ -16,7 +16,7 @@
           .container-fluid
             .row
               .col-md-3#work-share1{style:'padding-left: 0;padding-right: 0;'}
-                = render partial: 'shared/sharing_etc'
+                = render partial: 'shared/sharing_etc', locals: {content: :work}
               .col-md-9#work-metadata{style: 'padding-right:0'}
                 - unless @links.empty?
                   .row
