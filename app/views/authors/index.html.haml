@@ -20,6 +20,24 @@
       .col-md-10
         .row
           .col-md-4#authors_left_side{style:'padding-left:0'}
+            .main-group#whatsnew-authors
+              %p.headline-2= t(:new_authors)
+              .card{style:'padding-top:1rem'}
+                - @new_authors.each do |au|
+                  .container-fluid
+                    .row
+                      .col-xs-12
+                        .card.whatsnew-author-card-wide
+                          .whatsnew-text
+                            %a.headline-3{href: author_toc_path(au)}= au.name
+                            - latest_works = au.works_since(3.months.ago, 3)
+                            - unless latest_works.empty?
+                              %p
+                                - latest_works.each do |m|
+                                  = link_to m.title, manifestation_read_path(m)
+                                  %br
+                            %p= t(:added_on)+': '+au.created_at.strftime('%m/%Y')
+
           .col-md-8#all_genres{style:'padding-right:0'}
             - cache 'authors_right_side' do
               - right_side_genres.each do |g|

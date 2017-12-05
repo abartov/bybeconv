@@ -16,6 +16,7 @@ class Person < ActiveRecord::Base
 
   # scopes
   scope :has_toc, -> { where.not(toc_id: nil) }
+  scope :new_since, -> (since) { where('created_at > ?', since)}
 
   # features
   has_attached_file :profile_image, styles: { full: "720x1040", medium: "360x520", thumb: "180x260", tiny: "90x120"}, default_url: :placeholder_image_url, storage: :s3, s3_credentials: 'config/s3.yml', s3_region: 'us-east-1'
@@ -28,6 +29,7 @@ class Person < ActiveRecord::Base
   def self.person_by_viaf(viaf_id)
     Person.find_by_viaf_id(viaf_id)
   end
+
   def self.create_or_get_person_by_viaf(viaf_id)
     p = Person.person_by_viaf(viaf_id)
     if p.nil?
@@ -64,6 +66,10 @@ class Person < ActiveRecord::Base
     else
       return birthdate[0..bpos-1]
     end
+  end
+
+  def works_since(since, maxitems)
+    self.manifestations.where('manifestations.created_at > :since_date', {since_date: 3.months.ago}).limit(maxitems)
   end
 
   def cached_works_count

@@ -245,8 +245,10 @@ he:
   show: הצגת פרטים
   thedate: תאריך
   comments: הערות
+  added_on: נוסף בתאריך
   advanced_search: חיפוש מתקדם
   search_placeholder: חיפוש יצירות ויוצרים באתר
+  new_authors: יוצרים חדשים בפרויקט
   homepage: דף הבית
   authors_page: דף יוצרים
   authors_totals_p1: מאגרנו כולל %{total} יוצרים עבריים, מתוכם %{pd} נחלת הכלל
