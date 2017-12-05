@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171203040440) do
+ActiveRecord::Schema.define(version: 20171205080240) do
 
   create_table "api_keys", force: :cascade do |t|
     t.string   "email",       limit: 255
@@ -91,6 +91,28 @@ ActiveRecord::Schema.define(version: 20171203040440) do
     t.integer  "manifestation_id", limit: 4
     t.string   "description",      limit: 255
   end
+
+  create_table "featured_author_features", force: :cascade do |t|
+    t.datetime "fromdate"
+    t.datetime "todate"
+    t.integer  "featured_author_id", limit: 4
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+  end
+
+  add_index "featured_author_features", ["featured_author_id"], name: "index_featured_author_features_on_featured_author_id", using: :btree
+
+  create_table "featured_authors", force: :cascade do |t|
+    t.string   "title",      limit: 255
+    t.integer  "user_id",    limit: 4
+    t.integer  "person_id",  limit: 4
+    t.text     "body",       limit: 65535
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
+
+  add_index "featured_authors", ["person_id"], name: "index_featured_authors_on_person_id", using: :btree
+  add_index "featured_authors", ["user_id"], name: "index_featured_authors_on_user_id", using: :btree
 
   create_table "featured_content_features", force: :cascade do |t|
     t.integer  "featured_content_id", limit: 4
@@ -437,6 +459,9 @@ ActiveRecord::Schema.define(version: 20171203040440) do
     t.string   "origlang_title", limit: 255
   end
 
+  add_foreign_key "featured_author_features", "featured_authors"
+  add_foreign_key "featured_authors", "people"
+  add_foreign_key "featured_authors", "users"
   add_foreign_key "featured_content_features", "featured_contents"
   add_foreign_key "featured_contents", "manifestations"
   add_foreign_key "featured_contents", "people"

@@ -17,6 +17,7 @@ class Person < ActiveRecord::Base
   # scopes
   scope :has_toc, -> { where.not(toc_id: nil) }
   scope :new_since, -> (since) { where('created_at > ?', since)}
+  scope :latest, -> (limit) {order('created_at desc').limit(limit)}
 
   # features
   has_attached_file :profile_image, styles: { full: "720x1040", medium: "360x520", thumb: "180x260", tiny: "90x120"}, default_url: :placeholder_image_url, storage: :s3, s3_credentials: 'config/s3.yml', s3_region: 'us-east-1'

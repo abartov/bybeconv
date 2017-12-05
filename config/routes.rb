@@ -28,6 +28,15 @@ Bybeconv::Application.routes.draw do
   get 'autocomplete_manifestation_title' => 'admin#autocomplete_manifestation_title', as: 'autocomplete_manifestation_title'
   get 'autocomplete_person_name' => 'admin#autocomplete_person_name', as: 'autocomplete_person_name'
   get 'autocomplete_tag_name' => 'manifestation#autocomplete_tag_name', as: 'autocomplete_tag_name'
+  get 'admin/featured_author_list'
+  get 'admin/featured_author/new' => 'admin#featured_author_new', as: 'featured_author_new'
+  post 'admin/featured_author/create' => 'admin#featured_author_create', as: 'featured_author_create'
+  get 'admin/featured_author/edit/:id' => 'admin#featured_author_edit', as: 'featured_author_edit'
+  patch 'admin/featured_author/update' => 'admin#featured_author_update', as: 'featured_author_update'
+  post 'admin/featured_author/add_feature' => 'admin#featured_author_add_feature', as: 'featured_author_add_feature'
+  get 'admin/featured_author/delete_feature/:id' => 'admin#featured_author_delete_feature', as: 'featured_author_delete_feature'
+  get 'admin/featured_author/:id' => 'admin#featured_author_show', as: 'featured_author_show'
+  get 'volunteer/:id' => 'user#show', as: 'volunteer_show'
 
   get '/search_results' => 'application#search_results'
   get "search/index"

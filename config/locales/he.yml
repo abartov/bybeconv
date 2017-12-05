@@ -245,6 +245,7 @@ he:
   show: הצגת פרטים
   thedate: תאריך
   comments: הערות
+  to_all_whatsnew: לכל מה שחדש
   added_on: נוסף בתאריך
   advanced_search: חיפוש מתקדם
   search_placeholder: חיפוש יצירות ויוצרים באתר
@@ -325,11 +326,14 @@ he:
   to_the_work_in_the_catalog: לכרטיס הקטלוג של היצירה
   to_the_work_in_the_site: ליצירה באתר
   to_the_full_work: ליצירה המלאה
+  to_the_full_feature: להמלצה המלאה
   public_domain: נחלת הכלל
   edit: עריכה
   destroy: מחיקה
   our_volunteers: המתנדבים שלנו
   featured_content_management: ניהול תוכן מומלץ (זרקור)
+  recommendations_by_volunteer: המלצות עורכים ומתנדבים
+  featured_author: זרקור על יוצר/ת
   folder_list: רשימת תיקיות
   proof_file: קובץ
   proof_when: מתי

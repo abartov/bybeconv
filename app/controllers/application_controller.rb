@@ -89,6 +89,17 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def featured_author
+    Rails.cache.fetch("featured_author", expires_in: 1.hours) do # memoize
+      fas = FeaturedAuthorFeature.where("fromdate <= :now AND todate >= :now", now: Date.today).order('RAND()').limit(1)
+      if fas.count == 1
+        fas[0].featured_author
+      else
+        nil
+      end
+    end
+  end
+
   def featured_volunteer
     Rails.cache.fetch("featured_volunteer", expires_in: 10.hours) do # memoize
       vpfs = VolunteerProfileFeature.where("fromdate <= :now AND todate >= :now", now: Date.today).order('RAND()').limit(1)

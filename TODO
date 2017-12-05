@@ -14,6 +14,7 @@
   - admin review, approve/reject tags and recommendations
 
 - implement bookmarks (see notes in code!)
+- implement the whatsnew screen
 - take foreign authors into account in authors page - if not everywhere, at least for fables?
 - make tags links to works queries by tag
 - implement recommendation flagging (data model, review)

@@ -24,7 +24,8 @@ class AuthorsController < ApplicationController
     @author_stats = {total: Person.has_toc.count, pd: Person.has_toc.where(public_domain: true).count}
     @author_stats[:permission] = @author_stats[:total] - @author_stats[:pd]
     @authors_by_genre = count_authors_by_genre
-    @new_authors = Person.new_since(3.months.ago).limit(5)
+    @new_authors = Person.has_toc.latest(5)
+    @featured_author = featured_author
     # still TODO:
     # featured author
     # translated authors + surprise
