@@ -50,22 +50,23 @@
                 .row
                   .col-xs-12
                     .card.full-size-card.flashlight-card
-                      .recommend-pic
-                        .recommend-portrait
-                          %img.recommend-absolute{src: @featured_author.person.profile_image.url(:thumb), width: 159}
-                      .recommend-text{style: 'height: 40.6rem;position: relative'}
-                        %div{style: 'height: 33.0rem; overflow: hidden; text-overflow: ellipsis;'}
-                          %p{style: 'padding-top: 1rem'}
-                            %a.headline-3{href: featured_author_show_path(@featured_author)}= @featured_author.title
-                          %p{:style => 'margin-bottom: 1.8rem'}
-                            = t(:by)+' '
-                            = link_to @featured_author.user.name, volunteer_show_path(@featured_author.user)
-                          %p= @featured_author.body
-                        %div{:style => "position:absolute; bottom: 1.5rem; left:1.5rem"}
-                          %a.btn{style:'color:white', href: featured_author_show_path(@featured_author)}= t(:to_the_full_feature)
-                          %a{ href: author_toc_path(@featured_author.person)}
-                            .btn{style: 'padding-top:0.5rem'}
-                              %b= t(:to_the_author_page)
+                      - unless @featured_author.nil?
+                        .recommend-pic
+                          .recommend-portrait
+                            %img.recommend-absolute{src: @featured_author.person.profile_image.url(:thumb), width: 159}
+                        .recommend-text{style: 'height: 40.6rem;position: relative'}
+                          %div{style: 'height: 33.0rem; overflow: hidden; text-overflow: ellipsis;'}
+                            %p{style: 'padding-top: 1rem'}
+                              %a.headline-3{href: featured_author_show_path(@featured_author)}= @featured_author.title
+                            %p{:style => 'margin-bottom: 1.8rem'}
+                              = t(:by)+' '
+                              = link_to @featured_author.user.name, volunteer_show_path(@featured_author.user)
+                            %p= @featured_author.body
+                          %div{:style => "position:absolute; bottom: 1.5rem; left:1.5rem"}
+                            %a.btn{style:'color:white', href: featured_author_show_path(@featured_author)}= t(:to_the_full_feature)
+                            %a{ href: author_toc_path(@featured_author.person)}
+                              .btn{style: 'padding-top:0.5rem'}
+                                %b= t(:to_the_author_page)
 
           .col-md-8#all_genres{style:'padding-right:0'}
             - cache 'authors_right_side' do
