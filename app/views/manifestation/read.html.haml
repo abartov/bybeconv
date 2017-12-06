@@ -16,7 +16,7 @@
           .container-fluid
             .row
               .col-md-3#work-share1{style:'padding-left: 0;padding-right: 0;'}
-                = render partial: 'shared/sharing_etc', locals: {content: :work}
+                = render partial: 'shared/sharing_etc', locals: {context: :work}
               .col-md-9#work-metadata{style: 'padding-right:0'}
                 - unless @links.empty?
                   .row
@@ -118,7 +118,7 @@
         .row.collapse.in#extra_collapsible
           .col-md-3#more-left{style:'padding-left:0;padding-right:0'}
             #work-share2{style:'padding-top:1.6rem'}
-              = render partial: 'shared/sharing_etc'
+              = render partial: 'shared/sharing_etc', locals: {context: :work}
           .col-md-9#more-right{style: 'padding-right:0; padding-left: 10rem'}
             - cache "#{@m.id}_extras" do
               / תגיות
