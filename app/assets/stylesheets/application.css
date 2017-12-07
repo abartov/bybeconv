@@ -569,8 +569,8 @@ option:first {
 }
 .search .fa-search {
   position: absolute;
-  top: 0.6rem;
   left: 0;
+	top:0.6rem;
   color: #660248;
   font-size: 1.8rem;
 }
@@ -606,8 +606,7 @@ option:first {
   font-size: 1.4rem;
   background-color: #eeeced;
   border-bottom: 0.2rem solid #d9cdd5;
-  line-height:inherit;
-  width:80%;
+  width:100%;
 }
 .dropdown{
 	width: 100%
