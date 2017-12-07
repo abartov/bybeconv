@@ -11,6 +11,8 @@ class AdminController < ApplicationController
     end
   end
 
+  ##############################################
+  ## Reports
   def missing_languages
     ex = Expression.joins([:realizers, :works]).where(realizers: {role: Realizer.roles[:translator]}, works: {orig_lang: 'he'})
     mans = ex.map{|e| e.manifestations[0]}
@@ -38,6 +40,8 @@ class AdminController < ApplicationController
     }
   end
 
+  #######################################
+  ## Volunteer profiles management
   def volunteer_profiles_list
     @vps = VolunteerProfile.page(params[:page])
   end
@@ -122,6 +126,8 @@ class AdminController < ApplicationController
     end
   end
 
+  ########################################################
+  ## featured content
   def featured_content_list
     @fcs = FeaturedContent.page(params[:page])
   end
@@ -214,6 +220,103 @@ class AdminController < ApplicationController
       fcf.destroy!
       flash[:notice] = I18n.t(:deleted_successfully)
       redirect_to url_for(action: :featured_content_show, id: fcid)
+    else
+      flash[:error] = I18n.t(:no_such_item)
+      redirect_to url_for(action: :index)
+    end
+  end
+
+  ########################################################
+  ## featured author
+  def featured_author_list
+    @fcs = FeaturedAuthor.page(params[:page])
+  end
+
+  def featured_author_new
+    @fc = FeaturedAuthor.new
+    respond_to do |format|
+      format.html
+      format.json { render json: @fc }
+    end
+  end
+
+  def featured_author_create
+    @fc = FeaturedAuthor.new(params[:featured_author])
+    @fc.person_id = params[:person_id]
+    @fc.user = current_user
+    respond_to do |format|
+      if @fc.save
+        format.html { redirect_to url_for(action: :featured_author_show, id: @fc.id), notice: t(:updated_successfully) }
+        format.json { render json: @fc, status: :created, location: @fc }
+      else
+        format.html { render action: 'featured_author_new'}
+        format.json { render json: @fc.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def featured_author_show
+    @fc = FeaturedAuthor.find(params[:id])
+    if @fc.nil?
+      flash[:error] = I18n.t(:no_such_item)
+      redirect_to url_for(action: :index)
+    end
+  end
+
+  def featured_author_edit
+    @fc = FeaturedAuthor.find(params[:id])
+  end
+
+  def featured_author_destroy
+    @fa = FeaturedAuthor.find(params[:id])
+    unless @fa.nil?
+      @fa.destroy
+    end
+    flash[:notice] = I18n.t(:deleted_successfully)
+    redirect_to action: :featured_author_list
+  end
+
+  def featured_author_update
+    @fc = FeaturedAuthor.find(params[:id])
+    if @fc.nil?
+      flash[:error] = I18n.t(:no_such_item)
+      redirect_to url_for(action: :index)
+    else
+      if @fc.update_attributes(params[:featured_author])
+        flash[:notice] = I18n.t(:updated_successfully)
+        redirect_to action: :featured_author_show, id: @fc.id
+      else
+        format.html { render action: 'featured_author_edit' }
+        format.json { render json: @fc.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def featured_author_add_feature
+    unless params[:fromdate].nil? or params[:todate].nil?
+      fc = FeaturedAuthor.find(params[:fcid])
+      unless fc.nil?
+        fcf = FeaturedAuthorFeature.new(fromdate: Date.new(params[:fromdate][:year].to_i, params[:fromdate][:month].to_i, params[:fromdate][:day].to_i),
+          todate: Date.new(params[:todate][:year].to_i, params[:todate][:month].to_i, params[:todate][:day].to_i))
+        fcf.featured_author = fc
+        fcf.save!
+
+        flash[:notice] = I18n.t(:created_successfully)
+        redirect_to url_for(action: :featured_author_show, id: fc.id)
+      else
+        flash[:error] = I18n.t(:no_such_item)
+        redirect_to url_for(action: :index)
+      end
+    end
+  end
+
+  def featured_author_delete_feature
+    fcf = FeaturedAuthorFeature.find(params[:id])
+    unless fcf.nil?
+      fcid = fcf.featured_author_id
+      fcf.destroy!
+      flash[:notice] = I18n.t(:deleted_successfully)
+      redirect_to url_for(action: :featured_author_show, id: fcid)
     else
       flash[:error] = I18n.t(:no_such_item)
       redirect_to url_for(action: :index)

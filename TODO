@@ -13,6 +13,7 @@
   - query work by tag
   - admin review, approve/reject tags and recommendations
 
+- remove reliance on fontastic for hosting the font
 - implement bookmarks (see notes in code!)
 - implement the whatsnew screen
 - take foreign authors into account in authors page - if not everywhere, at least for fables?

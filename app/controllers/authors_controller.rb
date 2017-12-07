@@ -26,6 +26,7 @@ class AuthorsController < ApplicationController
     @authors_by_genre = count_authors_by_genre
     @new_authors = Person.has_toc.latest(5)
     @featured_author = featured_author
+    (@fa_snippet, @fa_rest) = snippet(@featured_author.body)
     # still TODO:
     # featured author
     # translated authors + surprise

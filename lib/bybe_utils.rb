@@ -125,6 +125,15 @@ module BybeUtils
     # end
   end
 
+  # returns an up-to-500-character snippet and the rest of the buffer
+  def snippet(buf)
+    return [buf,''] if buf.length < 500
+    tmp = buf[0..500]
+    pos = tmp.rindex(' ')
+    ret = tmp[0..pos] # don't break up mid-word
+    return [ret, tmp[pos..-1]+' '+buf[500..-1]]
+  end
+
   def raw_viaf_xml_by_viaf_id(viaf_id)
     RDF::Graph.load("http://viaf.org/viaf/#{viaf_id}/rdf.xml")
   end

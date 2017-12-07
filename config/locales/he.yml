@@ -332,6 +332,7 @@ he:
   destroy: מחיקה
   our_volunteers: המתנדבים שלנו
   featured_content_management: ניהול תוכן מומלץ (זרקור)
+  featured_authors_management: ניהול זרקור על מחברים
   recommendations_by_volunteer: המלצות עורכים ומתנדבים
   featured_author: זרקור על יוצר/ת
   folder_list: רשימת תיקיות
@@ -452,6 +453,7 @@ he:
   linked_author: מחבר/ת מקושר/ת
   featured_content: תוכן מערכת
   new_featured_content: תוכן מערכת חדש
+  new_featured_author: יצירת זרקור חדש על יוצר
   external_link: קישורית חיצונית
   to_external_content: לתוכן חיצוני
 

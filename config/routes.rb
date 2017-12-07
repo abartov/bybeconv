@@ -33,6 +33,7 @@ Bybeconv::Application.routes.draw do
   post 'admin/featured_author/create' => 'admin#featured_author_create', as: 'featured_author_create'
   get 'admin/featured_author/edit/:id' => 'admin#featured_author_edit', as: 'featured_author_edit'
   patch 'admin/featured_author/update' => 'admin#featured_author_update', as: 'featured_author_update'
+  get 'admin/volunteer_profile/destroy/:id' => 'admin#featured_author_destroy', as: 'featured_author_destroy'
   post 'admin/featured_author/add_feature' => 'admin#featured_author_add_feature', as: 'featured_author_add_feature'
   get 'admin/featured_author/delete_feature/:id' => 'admin#featured_author_delete_feature', as: 'featured_author_delete_feature'
   get 'admin/featured_author/:id' => 'admin#featured_author_show', as: 'featured_author_show'

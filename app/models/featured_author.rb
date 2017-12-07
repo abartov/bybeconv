@@ -5,4 +5,12 @@ class FeaturedAuthor < ActiveRecord::Base
   attr_accessible :title, :body
   has_many :featurings, class_name: 'FeaturedAuthorFeature'
 
+  def featured_list
+    s = ''
+    featurings.each{ |fcf|
+      s += '<br/>'+fcf.fromdate.strftime("%d-%m-%Y")+' '+I18n.t(:until)+' '+fcf.todate.strftime('%d-%m-%Y')
+    }
+    return s[5..-1] || ''
+  end
+
 end
