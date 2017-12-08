@@ -1,6 +1,7 @@
 class FeaturedContent < ActiveRecord::Base
   belongs_to :manifestation
   belongs_to :person
+  belongs_to :user
 
   attr_accessible :title, :body, :external_link
   has_many :featured_content_features, class_name: 'FeaturedContentFeature'

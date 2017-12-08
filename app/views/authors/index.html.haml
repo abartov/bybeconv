@@ -64,7 +64,9 @@
                                 = t(:by)+' '
                                 = link_to @featured_author.user.name, volunteer_show_path(@featured_author.user)
                               %p#fa_body
-                                = @fa_snippet+' ...'
+                                = @fa_snippet
+                                - if @fa_rest != ''
+                                  = ' ...'
                               %div{:style => "position:static; bottom: 1.5rem; left:1.5rem"}
                                 - if @fa_rest != ''
                                   %span.linky.btn#toggle_featured_author{style:'color:white; padding-top:0.5rem'}= t(:to_the_full_feature)

@@ -1,7 +1,8 @@
 .row
   .col-xs-12
     / TODO: unhardcode this!
-    .card{style: 'height:427px'}
+    /.card{style: 'height:427px'}
+    .card
       - unless @featured_content.nil?
         .card-content
           .recommend-pic
@@ -10,12 +11,18 @@
                 %img.recommend-absolute{ src: @featured_content.person.profile_image.url(:thumb), width:'160px'}
               - else
                 = '' # TODO: what to put here?
-          .recommend-text{style: 'height: 26.4rem; overflow: hidden; text-overflow: ellipsis;position:relative'}
+          .recommend-text{style: 'height: 26.4rem;position:relative'}
             %p.headline-3= @featured_content.title
-            %p{style: 'margin-bottom: 1.8rem'}
-              = 'TBD'
-            %p
-              != @featured_content.body
+            - unless @featured_content.user.nil?
+              %p{style: 'margin-bottom: 1.8rem'}
+                = t(:by)+' '
+                = link_to @featured_content.user.name, volunteer_show_path(@featured_content.user)
+            %p#fc_body
+              != @fc_snippet
+              - if @fc_rest != ''
+                = ' ...'
+          - if @fc_rest != ''
+            %span.linky.btn#toggle_featured_item{style:'color:white; padding-top:0.5rem'}= t(:to_the_full_feature)
           - unless @featured_content.manifestation.nil?
             %a{ href: manifestation_read_path(id: @featured_content.manifestation.id)}
               .btn{style: 'padding-top:0.5rem'}
@@ -27,3 +34,12 @@
         .h_separator
 .float-left
   %a{href: 'http://benyehuda.org/blog/'}= t(:more_recommendations_in_the_blog)
+:javascript
+  $(document).ready(function(){
+    $('#toggle_featured_item').click(function(){
+      $('.recommend-text').css('height', 'auto');
+      $('#fc_body').html("#{escape_javascript(@featured_content.body)}");
+      $('#toggle_featured_item').hide();
+    });
+
+  });

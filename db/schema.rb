@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171205080240) do
+ActiveRecord::Schema.define(version: 20171207233739) do
 
   create_table "api_keys", force: :cascade do |t|
     t.string   "email",       limit: 255
@@ -132,10 +132,14 @@ ActiveRecord::Schema.define(version: 20171205080240) do
     t.datetime "created_at",                     null: false
     t.datetime "updated_at",                     null: false
     t.string   "external_link",    limit: 255
+    t.integer  "user_id_id",       limit: 4
+    t.integer  "user_id",          limit: 4
   end
 
   add_index "featured_contents", ["manifestation_id"], name: "index_featured_contents_on_manifestation_id", using: :btree
   add_index "featured_contents", ["person_id"], name: "index_featured_contents_on_person_id", using: :btree
+  add_index "featured_contents", ["user_id"], name: "index_featured_contents_on_user_id", using: :btree
+  add_index "featured_contents", ["user_id_id"], name: "index_featured_contents_on_user_id_id", using: :btree
 
   create_table "html_dirs", force: :cascade do |t|
     t.string   "path",            limit: 255
@@ -465,6 +469,7 @@ ActiveRecord::Schema.define(version: 20171205080240) do
   add_foreign_key "featured_content_features", "featured_contents"
   add_foreign_key "featured_contents", "manifestations"
   add_foreign_key "featured_contents", "people"
+  add_foreign_key "featured_contents", "users"
   add_foreign_key "realizers", "expressions"
   add_foreign_key "realizers", "people"
   add_foreign_key "recommendations", "manifestations"
