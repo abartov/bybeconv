@@ -88,6 +88,14 @@ class Person < ActiveRecord::Base
     end
   end
 
+  def self.cached_pd_count
+    self.has_toc.where(public_domain: true).count
+  end
+
+  def self.cached_no_toc_count
+    self.no_toc.count
+  end
+
   def gender_letter
     return gender == 'female' ? 'ה' : 'ו'
   end
