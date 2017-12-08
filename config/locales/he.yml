@@ -115,6 +115,7 @@ he:
   updated_successfully: עודכן בהצלחה!
   created_successfully: נוצר בהצלחה!
   deleted_successfully: נמחק בהצלחה!
+  translated_authors: יוצרים מתורגמים
   no_results: אין תוצאות.
   life_years: שנות חיים
   accept_conversion_and: אישור הסבת הטקסט ו
@@ -229,6 +230,9 @@ he:
   additional_content: 'תוכן נוסף:'
   authors_of: יוצרי
   sample_authors_of: מבחר יוצרי
+  sample_translated_authors: מבחר יוצרים מתורגמים
+  popular_translated_authors: היוצרים המתורגמים הנקראים ביותר
+  sample_translators: מבחר מתרגמים
   random_order: (בסדר אקראי)
   most_read_authors_of_genre: יוצרי ה%{genre} הנקראים ביותר החודש
   surprise_author_in_genre: יוצר/ת %{genre} בהפתעה

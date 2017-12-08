@@ -95,8 +95,34 @@
                       %a.btn{href: authors_genre_path(genre: :lexicon)}= t(:to_all_authors_in_genre, genre: textify_genre(:lexicon))
 
               .row#translated_authors
-                / TBD
-
+                .col-xs-12.main-group
+                  %div{style: 'padding-top: 1.8rem'}
+                    %p.headline-2{style: 'display: inline'}= link_to t(:translated_authors), authors_genre_path(genre: 'translation')
+                    %span{style: "padding-left: 1rem"}= @author_stats[:translated]
+                  .card
+                    .container-fluid
+                      .row
+                        .col-md-12
+                          %div{:id => "random_translated_writers"}
+                            .container-fluid
+                              .row{style:'margin-top:1.4rem'}
+                                .col-xs-1{style:'width:3rem'}
+                                .col-xs-10{style:'padding-right:0;padding-top:2rem'}
+                                  %p.headline-3{style:'display:inline'}= t(:sample_translated_authors)
+                                  %p{style:'display:inline'}= t(:random_order)
+                                .col-xs-1
+                              .row
+                                = render partial: 'shared/author_cards', locals: {authors: @rand_translated_authors, skip_title: true, id_frag: 'translation_rand', surprise: false, size: :small}
+                          %div{:id => "mostread_translated_writers"}
+                            .container-fluid
+                              .row{:style => "margin-top:4.1rem;"}
+                                .col-xs-1{:style => "width: 3rem;"}
+                                .col-xs-10{:style => "padding-right: 0;"}
+                                  %p.headline-3= t(:popular_translated_authors)
+                                .col-xs-1
+                              .row
+                                = render partial: 'shared/author_cards', locals: {authors: @pop_translated_authors, skip_title: true, id_frag: 'translation_pop', surprise: false, size: :small}
+                          / TODO: CONTINUE
           / right side
           .col-md-8#all_genres{style:'padding-right:0'}
             - cache 'authors_right_side' do

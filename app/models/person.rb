@@ -16,8 +16,11 @@ class Person < ActiveRecord::Base
 
   # scopes
   scope :has_toc, -> { where.not(toc_id: nil) }
+  scope :no_toc, -> { where(toc_id: nil) }
   scope :new_since, -> (since) { where('created_at > ?', since)}
   scope :latest, -> (limit) {order('created_at desc').limit(limit)}
+  scope :translators, -> {joins(:realizers).where(realizers: {role: Realizer.roles[:translator]}).distinct}
+  scope :translatees, -> {joins(creations: {work: :expressions}).where(creations: {role: Creation.roles[:author]}, expressions: {translation: true}).distinct}
 
   # features
   has_attached_file :profile_image, styles: { full: "720x1040", medium: "360x520", thumb: "180x260", tiny: "90x120"}, default_url: :placeholder_image_url, storage: :s3, s3_credentials: 'config/s3.yml', s3_region: 'us-east-1'
@@ -142,9 +145,15 @@ class Person < ActiveRecord::Base
     end
   end
 
+  def self.get_popular_xlat_authors
+    Rails.cache.fetch("au_pop_xlat", expires_in: 24.hours) do # memoize
+      Person.joins(creations: {work: :expressions}).where(creations: {role: Creation.roles[:author]}, expressions: {translation: true}).order(impressions_count: :desc).distinct
+    end
+  end
+
   def self.get_popular_xlat_authors_by_genre(genre)
     Rails.cache.fetch("au_pop_xlat_in_#{genre}", expires_in: 24.hours) do # memoize
-      Person.joins([realizers: :expression]).where(realizers: {role: 'author'}, expressions: { genre:genre, translation: true}).order(impressions_count: :desc).distinct.limit(10).all.to_a # top 10
+      Person.joins(creations: {work: :expressions}).where(creations: {role: Creation.roles[:author]}, expressions: { genre:genre, translation: true}).order(impressions_count: :desc).distinct.limit(10).all.to_a # top 10
     end
   end
 

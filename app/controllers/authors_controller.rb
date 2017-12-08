@@ -16,19 +16,21 @@ class AuthorsController < ApplicationController
     @pagetype = :authors
     @surprise_by_genre = {}
     get_genres.each do |g|
-      logger.info("genre: #{g}")
       @rand_by_genre[g] = randomize_authors(@pop_by_genre[g][:orig], g) # get random authors by genre
       @surprise_by_genre[g] = @rand_by_genre[g].pop # make one of the random authors the surprise author
     end
     @authors_abc = Person.order(:name).limit(25) # get page 1 of all authors
-    @author_stats = {total: Person.has_toc.count, pd: Person.has_toc.where(public_domain: true).count}
+    @author_stats = {total: Person.cached_toc_count, pd: Person.has_toc.where(public_domain: true).count, translated: Person.no_toc.count}
     @author_stats[:permission] = @author_stats[:total] - @author_stats[:pd]
     @authors_by_genre = count_authors_by_genre
     @new_authors = Person.has_toc.latest(5)
     @featured_author = featured_author
     (@fa_snippet, @fa_rest) = snippet(@featured_author.body, 500)
+    @rand_translated_authors = Person.translatees.order('RAND()').limit(5)
+    @rand_translators = Person.translators.order('RAND()').limit(5)
+    @pop_translated_authors = Person.get_popular_xlat_authors.limit(5)
+
     # still TODO:
-    # featured author
     # translated authors + surprise
     # translators + surprise
   end
