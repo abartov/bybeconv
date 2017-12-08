@@ -14,7 +14,6 @@ class WelcomeController < ApplicationController
     @random_works = random_works[1..-1]
     @works_by_genre = count_works_by_genre
     @whatsnew = whatsnew_anonymous # TODO: custom calculate for logged-in users
-    byebug
     @featured_content = featured_content
     (@fc_snippet, @fc_rest) = snippet(@featured_content.body, 500) # prepare snippet for collapsible
     @featured_volunteer = featured_volunteer

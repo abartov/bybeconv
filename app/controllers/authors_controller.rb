@@ -20,7 +20,7 @@ class AuthorsController < ApplicationController
       @surprise_by_genre[g] = @rand_by_genre[g].pop # make one of the random authors the surprise author
     end
     @authors_abc = Person.order(:name).limit(25) # get page 1 of all authors
-    @author_stats = {total: Person.cached_toc_count, pd: Person.cached_pd_count, translated: Person.cached_no_toc_count}
+    @author_stats = {total: Person.cached_toc_count, pd: Person.cached_pd_count, translators: Person.cached_translators_count, translated: Person.cached_no_toc_count}
     @author_stats[:permission] = @author_stats[:total] - @author_stats[:pd]
     @authors_by_genre = count_authors_by_genre
     @new_authors = Person.has_toc.latest(3)
@@ -29,9 +29,7 @@ class AuthorsController < ApplicationController
     @rand_translated_authors = Person.translatees.order('RAND()').limit(5)
     @rand_translators = Person.translators.order('RAND()').limit(5)
     @pop_translated_authors = Person.get_popular_xlat_authors.limit(5)
-
-    # still TODO:
-    # translators
+    @pop_translators = Person.get_popular_translators.limit(5)
   end
 
   def new

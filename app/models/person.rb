@@ -82,6 +82,12 @@ class Person < ActiveRecord::Base
     end
   end
 
+  def self.cached_translators_count
+    Rails.cache.fetch("au_translators_count", expires_in: 24.hours) do
+      self.translators.count
+    end
+  end
+
   def self.cached_toc_count
     Rails.cache.fetch("au_toc_count", expires_in: 24.hours) do
       self.has_toc.count
@@ -89,11 +95,15 @@ class Person < ActiveRecord::Base
   end
 
   def self.cached_pd_count
-    self.has_toc.where(public_domain: true).count
+    Rails.cache.fetch("au_pd_count", expires_in: 24.hours) do
+      self.has_toc.where(public_domain: true).count
+    end
   end
 
   def self.cached_no_toc_count
-    self.no_toc.count
+    Rails.cache.fetch("au_no_toc_count", expires_in: 24.hours) do
+      self.no_toc.count
+    end
   end
 
   def gender_letter
@@ -150,6 +160,12 @@ class Person < ActiveRecord::Base
   def self.get_popular_authors_by_genre(genre)
     Rails.cache.fetch("au_pop_in_#{genre}", expires_in: 24.hours) do # memoize
       Person.has_toc.joins(:expressions).where(expressions: { genre: genre}).order(impressions_count: :desc).distinct.limit(10).all.to_a # top 10
+    end
+  end
+
+  def self.get_popular_translators
+    Rails.cache.fetch("au_pop_translators", expires_in: 24.hours) do # memoize
+      Person.joins(:realizers).where(realizers: {role: Realizer.roles[:translator]}).order(impressions_count: :desc).distinct.limit(10)
     end
   end
 

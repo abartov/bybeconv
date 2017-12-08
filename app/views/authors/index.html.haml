@@ -98,7 +98,7 @@
                 .col-xs-12.main-group
                   %div{style: 'padding-top: 1.8rem'}
                     %p.headline-2{style: 'display: inline'}= link_to t(:translated_authors), authors_genre_path(genre: 'translation')
-                    %span{style: "padding-left: 1rem"}= @author_stats[:translated]
+                    %span{style: "padding-left: 1rem"}= "(#{@author_stats[:translated]})"
                   .card
                     .container-fluid
                       .row
@@ -122,7 +122,34 @@
                                 .col-xs-1
                               .row
                                 = render partial: 'shared/author_cards', locals: {authors: @pop_translated_authors, skip_title: true, id_frag: 'translation_pop', surprise: false, size: :small}
-                          / TODO: CONTINUE
+              .row#translators
+                .col-xs-12.main-group
+                  %div{style: 'padding-top: 1.8rem'}
+                    %p.headline-2{style: 'display: inline'}= link_to t(:translators), authors_genre_path(genre: 'translation')
+                    %span{style: "padding-left: 1rem"}= "(#{@author_stats[:translators]})"
+                  .card
+                    .container-fluid
+                      .row
+                        .col-md-12
+                          %div{:id => "random_translators"}
+                            .container-fluid
+                              .row{style:'margin-top:1.4rem'}
+                                .col-xs-1{style:'width:3rem'}
+                                .col-xs-10{style:'padding-right:0;padding-top:2rem'}
+                                  %p.headline-3{style:'display:inline'}= t(:sample_translators)
+                                  %p{style:'display:inline'}= t(:random_order)
+                                .col-xs-1
+                              .row
+                                = render partial: 'shared/author_cards', locals: {authors: @rand_translators, skip_title: true, id_frag: 'translators_rand', surprise: false, size: :small}
+                          %div{:id => "mostread_translators"}
+                            .container-fluid
+                              .row{:style => "margin-top:4.1rem;"}
+                                .col-xs-1{:style => "width: 3rem;"}
+                                .col-xs-10{:style => "padding-right: 0;"}
+                                  %p.headline-3= t(:popular_translators)
+                                .col-xs-1
+                              .row
+                                = render partial: 'shared/author_cards', locals: {authors: @pop_translators, skip_title: true, id_frag: 'translators_pop', surprise: false, size: :small}
           / right side
           .col-md-8#all_genres{style:'padding-right:0'}
             - cache 'authors_right_side' do

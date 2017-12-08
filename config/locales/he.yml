@@ -233,7 +233,9 @@ he:
   sample_translated_authors: מבחר יוצרים מתורגמים
   popular_translated_authors: היוצרים המתורגמים הנקראים ביותר
   sample_translators: מבחר מתרגמים
+  popular_translators: המתרגמים הנקראים ביותר
   random_order: (בסדר אקראי)
+  translators: מתרגמים
   most_read_authors_of_genre: יוצרי ה%{genre} הנקראים ביותר החודש
   surprise_author_in_genre: יוצר/ת %{genre} בהפתעה
   most_read_translated_authors_in_genre: יוצרי ה%{genre} המתורגמים הנקראים ביותר החודש
