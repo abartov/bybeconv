@@ -74,7 +74,8 @@
                                   .btn{style: 'padding-top:0.5rem'}
                                     %b= t(:to_the_author_page)
                         / carousel?
-              .main-group#dictionaries
+              %a{name: 'lexicon_g'}
+              .main-group
                 %p.headline-2= link_to "#{t(:authors_of)} #{textify_genre(:lexicon)}", authors_genre_path(genre: 'lexicon')
                 .card{style: 'padding-top: 1rem'}
                   %div{style: 'height:40.8rem'}
@@ -93,8 +94,8 @@
                   .card-content
                     %div
                       %a.btn{href: authors_genre_path(genre: :lexicon)}= t(:to_all_authors_in_genre, genre: textify_genre(:lexicon))
-
-              .row#translated_authors
+              %a{name: 'translations_g'}
+              .row
                 .col-xs-12.main-group
                   %div{style: 'padding-top: 1.8rem'}
                     %p.headline-2{style: 'display: inline'}= link_to t(:translated_authors), authors_genre_path(genre: 'translation')
@@ -207,6 +208,7 @@
                           .col-xs-1
                         .row
                           = render partial: 'shared/author_cards', locals: {authors: @pop_by_genre[g][:orig], skip_title: true, id_frag: g+'_pop', surprise: false, size: :small}
+            %a{name: 'allwriters_g'}
             %div{style:'padding-top:1.8rem'}
               %p.headline-2{style:'display:inline'}= t(:beginning_abc)
               %p{style:'display:inline;padding-left:1rem'}= t(:by_abc)
@@ -218,6 +220,10 @@
                       %ol
                         - @authors_abc.each do |au|
                           %li= link_to au.name, author_toc_path(au)
+                .row
+                  .col-xs-12
+                    %div
+                      %a.btn.linky{href: authors_all_path}= t(:to_all_authors)
       .col-md-1
 
 :javascript

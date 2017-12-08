@@ -44,6 +44,7 @@ Bybeconv::Application.routes.draw do
   get "search/results"
   get "search/advanced"
   get "authors/index"
+  get 'authors/all'
   get 'authors/genre'
   get "authors/show"
   get "authors/new", as: 'authors_new'

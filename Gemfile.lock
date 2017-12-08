@@ -111,6 +111,8 @@ GEM
     faraday (0.12.2)
       multipart-post (>= 1.2, < 3)
     ffi (1.9.18)
+    font-awesome-sass (4.7.0)
+      sass (>= 3.2)
     gepub (0.6.9.2)
       nokogiri (~> 1.6.1)
       rubyzip (>= 1.1.1)
@@ -452,6 +454,7 @@ DEPENDENCIES
   dalli
   diffy
   execjs
+  font-awesome-sass (~> 4.7.0)
   gepub
   haml
   haml-rails

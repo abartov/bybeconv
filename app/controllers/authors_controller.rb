@@ -9,6 +9,12 @@ class AuthorsController < ApplicationController
     render partial: 'shared/surprise_author', locals: {author: @author, initial: false}
   end
 
+  def all
+    @page_title = t(:all_authors)+' '+t(:project_ben_yehuda)
+    @pagetype = :authors
+    @authors_abc = Person.order(:name).page(params[:page]).limit(25) # get page X of all authors
+  end
+
   def index
     @page_title = t(:authors)+' '+t(:project_ben_yehuda)
     @pop_by_genre = cached_popular_authors_by_genre # get popular authors by genre + most popular translated
