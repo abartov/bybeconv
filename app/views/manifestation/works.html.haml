@@ -53,12 +53,35 @@
                               %span= t(:random_order)
                             %div
                               %ol
-                                - @rand_by_genre[g].each do |m|
+                                - @rand_by_genre[g][0..(@rand_by_genre[g].size < 5 ? -1 : 4)].each do |m|
                                   %li
                                     = link_to manifestation_read_path(m) do
                                       %b= m.title
                                     = t(:by)+' '+m.author_string
-
+                      .row
+                        .col-xs-6{style:'padding:0'}
+                          %div
+                            %p.headline-3{style:'padding-top:0'}= t(:most_read_translated_works_of_genre, {genre: genre_name})
+                          %div
+                            %ol
+                              - @pop_by_genre[g][:xlat][0..(@pop_by_genre[g][:xlat].size < 5 ? -1 : 4)].each do |m|
+                                %li
+                                  = link_to manifestation_read_path(m) do
+                                    %b= m.title
+                                  = t(:by)+' '+m.author_string
+                          %div{style:'position: relative; left:0; bottom:0;margin-top:1rem;'}
+                            .btn.linky
+                              %a{style:'color:white', href: genre_path(genre: g)}= t(:to_all_works_in_genre, {genre: genre_name})
+                        .col-xs-6{style:'padding-right:0'}
+                          %div
+                            %p.headline-3{style:'padding-top:0'}= t(:most_read_works_of_genre, {genre: genre_name})
+                          %div
+                            %ol
+                              - @pop_by_genre[g][:orig][0..(@pop_by_genre[g][:xlat].size < 5 ? -1 : 4)].each do |m|
+                                %li
+                                  = link_to manifestation_read_path(m) do
+                                    %b= m.title
+                                  = t(:by)+' '+m.author_string
       .col-md-1
 / =========================
 :javascript

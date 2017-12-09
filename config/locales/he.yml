@@ -240,9 +240,12 @@ he:
   random_order: (בסדר אקראי)
   translators: מתרגמים
   most_read_authors_of_genre: יוצרי ה%{genre} הנקראים ביותר החודש
+  most_read_works_of_genre: יצירות ה%{genre} הנקראות ביותר החודש
+  most_read_translated_works_of_genre: יצירות ה%{genre} המתורגמות הנקראות ביותר החודש
   surprise_author_in_genre: יוצר/ת %{genre} בהפתעה
   most_read_translated_authors_in_genre: יוצרי ה%{genre} המתורגמים הנקראים ביותר החודש
   to_all_authors_in_genre: לכל יוצרי ה%{genre}
+  to_all_works_in_genre: לכל יצירות ה%{genre}
   beginning_abc: מבחר ראשוני
   by_abc: בתצוגה בסדר אלפביתי
   title: כותרת
