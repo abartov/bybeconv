@@ -1,3 +1,4 @@
+include BybeUtils
 class Manifestation < ActiveRecord::Base
   is_impressionable :counter_cache => true # for statistics
   has_and_belongs_to_many :expressions
@@ -11,7 +12,10 @@ class Manifestation < ActiveRecord::Base
   has_paper_trail
   has_many :external_links
   scope :new_since, -> (since) { where('created_at > ?', since)}
-
+  scope :pd, -> { joins(:expressions).where(expressions: {copyrighted: false})}
+  scope :copyrighted, -> { joins(:expressions).where(expressions: {copyrighted: true})}
+  scope :translations, -> { joins(:expressions).where(expressions: {translation: true})}
+  scope :genre, -> (genre) { joins(:expressions).where(expressions: {genre: genre})}
   enum link_type: [:wikipedia, :blog, :youtube, :other]
   enum status: [:approved, :submitted, :rejected]
 
@@ -124,22 +128,33 @@ class Manifestation < ActiveRecord::Base
 
   def self.recalc_popular
     @@popular_works = Manifestation.order(impressions_count: :desc).limit(10) # top 10
-
-    # old code without cache_counter
-    ## THIS WILL TAKE A WHILE!
-    ## it runs a JOIN on every single publishedManifestation!
-    ## It is designed to only be called no more than once a day, by clockwork!
-    #work_stats = {}
-    #Manifestation.all.each {|m|
-    #  work_stats[m] = m.impressions.count
-    #}
-    #bottom_works = work_stats.sort_by {|k,v| v}
-    #@@popular_works = bottom_works.reverse[0..9] # top 10
   end
 
   def self.cached_count
     Rails.cache.fetch("m_count", expires_in: 24.hours) do
       Manifestation.count
+    end
+  end
+
+  def self.cached_work_counts_by_genre
+    Rails.cache.fetch("m_count_by_genre", expires_in: 24.hours) do
+      ret = {}
+      get_genres.each do |g|
+        ret[g] = Manifestation.genre(g).distinct.count
+      end
+      ret
+    end
+  end
+
+  def self.cached_translated_count
+    Rails.cache.fetch("m_xlat_count", expires_in: 24.hours) do
+      Manifestation.translations.count
+    end
+  end
+
+  def self.cached_pd_count
+    Rails.cache.fetch("m_pd_count", expires_in: 24.hours) do
+      Manifestation.pd.count
     end
   end
 

@@ -15,6 +15,12 @@ class ManifestationController < ApplicationController
   # public actions
   def works # /works dashboard
     @tabclass = set_tab('works')
+    @page_title = t(:authors)+' '+t(:project_ben_yehuda)
+    @pagetype = :works
+    @work_stats = {total: Manifestation.cached_count, pd: Manifestation.cached_pd_count, translated: Manifestation.cached_translated_count}
+    @work_stats[:permission] = @work_stats[:total] - @work_stats[:pd]
+    @work_counts_by_genre = Manifestation.cached_work_counts_by_genre
+
     # TODO
   end
 

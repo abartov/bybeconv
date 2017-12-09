@@ -200,6 +200,7 @@ he:
   found_mistake: מצאתי שגיאה
   mistake_important: חשוב לנו שהטקסט יהא מדויק וחף משגיאות
   not_implemented_yet: תכונה זו טרם מומשה. המערכת עדיין בפיתוח.
+  works_page: היצירות במאגרנו
   share: שיתוף
   download: הורדה
   download_ebook: הורדת ספר דיגיטלי
@@ -261,6 +262,8 @@ he:
   authors_page: דף יוצרים
   authors_totals_p1: מאגרנו כולל %{total} יוצרים עבריים, מתוכם %{pd} נחלת הכלל
   authors_totals_p2: ו-%{permission} מוגנים בזכויות יוצרים ומוגשים ברשות בעלי הזכויות.
+  works_totals_p1: מאגרנו כולל %{total} יצירות, מתוכן %{pd} נחלת הכלל
+  works_totals_p2: ו-%{permission} מוגנות בזכויות יוצרים ומוגשות ברשות בעלי הזכויות.
   allwriters: כל היוצרים
   if_you_meant_works: "אם התכוונתם להגיע לדף היצירות, לחצו כאן: "
   to_the_works_page: לדף היצירות

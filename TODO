@@ -13,7 +13,6 @@
   - query work by tag
   - admin review, approve/reject tags and recommendations
 
-- remove reliance on fontastic for hosting the font
 - implement bookmarks (see notes in code!)
 - implement the whatsnew screen
 - take foreign authors into account in authors page - if not everywhere, at least for fables?
@@ -23,7 +22,7 @@
 - implement those-who-read-this-also-read-that (i.e. https://measuringu.com/affinity-analysis/)
 - implement more-of-this-author separately for translatees
 - implement references-to-this-work
-- other extras at bottom of work read
+- (?) other extras at bottom of work read
 - implement chapter-only display
 - implement WhatsApp Web when detected Desktop
 - implement favoriting authors
@@ -31,7 +30,6 @@
 - download as DOC - right-align (pandoc patch?)
 
 - HOMEPAGE
-  - featured content byline code
   - featured content full text view
   - carousel of featured content
 
@@ -44,7 +42,6 @@
   - process bad ToCs (bad_tocs.txt)
 - read mode
   - interactive features
-- authorS view
 - workS view
 - search
 - search results

@@ -12,7 +12,7 @@ class WelcomeController < ApplicationController
     random_works = randomize_works(4) # TODO: un-hardcode?
     @random_work = random_works[0]
     @random_works = random_works[1..-1]
-    @works_by_genre = count_works_by_genre
+    @works_by_genre = Manifestation.cached_work_counts_by_genre
     @whatsnew = whatsnew_anonymous # TODO: custom calculate for logged-in users
     @featured_content = featured_content
     (@fc_snippet, @fc_rest) = snippet(@featured_content.body, 500) # prepare snippet for collapsible

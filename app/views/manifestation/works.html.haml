@@ -1,2 +1,42 @@
 / Works dashboard
-#maincontainer.container-fluid
+.top-element
+  = render partial: 'shared/breadcrumbs'
+  .container-fluid.welcome
+    .row
+      .col-md-12
+        .welcome-author-content
+          %h1= t(:works_page)
+          %p
+            = t(:works_totals_p1, {total: @work_stats[:total], pd: @work_stats[:pd]})
+            = link_to '[?]', '#', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_public_domain), 'data-content' => t(:public_domain_popover)
+            = t(:works_totals_p2, {permission: @work_stats[:permission]})
+            = link_to '[?]', '#', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_permission), 'data-content' => t(:permission_popover)
+  / Internal nav
+  = render partial: 'shared/genre_navbar', locals: {genres_present: get_genres.push('translations').push('allwriters'), page: :works}
+  / works
+  .container-fluid
+    .row
+      .col-md-1
+      .col-md-10
+        .row
+          / left side
+          .col-md-4{style:'padding-left:0'}
+          / right side
+          .col-md-8{style:'padding-right:0'}
+            - cache 'works_right_side' do
+              - right_side_genres.each do |g|
+                - genre_name = textify_genre(g)
+                %a{name: g+'_g'}
+                %div{style:'padding-top:1.8rem'}
+                  %p.headline-2{style:'display:inline'}= link_to genre_name, genre_path(genre: g)
+                  %p{style:'display: inline; padding-left: 1rem'}= "(#{@work_counts_by_genre[g]})"
+                .card
+
+      .col-md-1
+/ =========================
+:javascript
+  $(document).ready(function(){
+    $('[data-toggle="popover"]').popover({
+      trigger: 'focus'
+    });
+  });
