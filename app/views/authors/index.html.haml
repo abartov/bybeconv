@@ -223,7 +223,8 @@
                 .row
                   .col-xs-12
                     %div
-                      %a.btn.linky{href: authors_all_path}= t(:to_all_authors)
+                      /%a.btn.linky{href: authors_all_path}= t(:to_all_authors)
+                      %a.btn.linky{href: "javascript:alert('#{t(:not_implemented_yet)}');"}= t(:to_all_authors)
       .col-md-1
 
 :javascript

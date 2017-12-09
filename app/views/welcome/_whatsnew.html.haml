@@ -28,7 +28,8 @@
         - if boxen > 4
           .row
             .card-content.float-left{style: 'padding-top:0'}
-              %a{style: 'color:white', href: url_for(:controller => :manifestation, :action => :whatsnew)}
+              /%a{style: 'color:white', href: url_for(:controller => :manifestation, :action => :whatsnew)}
+              %a{style: 'color:white', href: "javascript:alert('#{t(:not_implemented_yet)}');"}
                 .btn{style: 'padding-top:0.5rem'}
                   %b= t(:to_all_whatsnew)
             - break_workaround = true
