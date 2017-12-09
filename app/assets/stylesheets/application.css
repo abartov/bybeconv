@@ -672,7 +672,7 @@ option:first {
   margin-top: 8rem;
 }
 .search-margin{
-  margin-top:92px;
+  margin-top:72px;
 }
 .welcome-scroll {
   height: auto;
@@ -842,7 +842,7 @@ width: calc(100% - 93px);
 }
 img.absolute {
   margin-left: -7rem;
-  position: absolute;
+  /*position: absolute;*/ /* causes the display problem in Chrome -- Asaf */
 }
 .card-content {
   width: 100%;
