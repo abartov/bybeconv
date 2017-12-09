@@ -17,7 +17,8 @@ gem 'chewy' # for ElasticSearch
 gem "jquery-slick-rails" # for carousel slider
 gem 'rails-jquery-autocomplete' # for auto-completion
 gem 'property_sets' # for key/value properties per model
-gem 'font-awesome-sass', '~> 4.7.0'
+gem "font-awesome-rails"
+#gem 'font-awesome-sass', '~> 4.7.0'
 
 gem 'diffy'
 gem 'aws-sdk', '~>2.9' # for the Amazon cloud.  3.x breaks somehow. TBD: figure it out

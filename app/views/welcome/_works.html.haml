@@ -51,13 +51,13 @@
             %ol
               - @popups_by_genre[genre][list[:key]][0..2].each do |work|
                 %li
-                  = link_to work[:title], manifestation_read_path(work)
+                  = link_to work[:title], manifestation_read_path(work[:id])
                   = ' '+t(:by)+' '+work[:author]
               - if @popups_by_genre[genre][list[:key]].size > 3
                 .collapse{id: "collapsible_#{list[:key]}"}
                   - @popups_by_genre[genre][list[:key]][3..-1].each do |work|
                     %li
-                      = link_to work[:title], manifestation_read_path(work)
+                      = link_to work[:title], manifestation_read_path(work[:id])
                       = ' '+t(:by)+' '+work[:author]
             - if @popups_by_genre[genre][list[:key]].size > 3
               .headline-4

@@ -4,13 +4,14 @@
  * the top of the compiled file, but it's generally better to create a new file per style scope.
  *= require_self
  *= require jquery-ui
+ *= require font-awesome
  *= require_tree .
 */
 /*
 *= require slick
 */
 /*body{font-size:14px;} /* default */
-
+/*
 @font-face {
   font-family: 'FontAwesome';
   src: url("../assets/font-awesome/fontawesome-webfont.eot");
@@ -19,7 +20,8 @@
   font-style: normal;
 }
 @import "font-awesome";
-
+@import "font-awesome-sprockets";
+*/
 .nav-tabs {
   font-size:1.4em;
   font-color: blue;

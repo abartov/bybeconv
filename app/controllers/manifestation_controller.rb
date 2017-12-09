@@ -20,6 +20,13 @@ class ManifestationController < ApplicationController
     @work_stats = {total: Manifestation.cached_count, pd: Manifestation.cached_pd_count, translated: Manifestation.cached_translated_count}
     @work_stats[:permission] = @work_stats[:total] - @work_stats[:pd]
     @work_counts_by_genre = Manifestation.cached_work_counts_by_genre
+    @pop_by_genre = Manifestation.cached_popular_works_by_genre # get popular works by genre + most popular translated
+    @rand_by_genre = {}
+    @surprise_by_genre = {}
+    get_genres.each do |g|
+      @rand_by_genre[g] = Manifestation.randomize_in_genre_except(@pop_by_genre[g][:orig], g) # get random works by genre
+      @surprise_by_genre[g] = @rand_by_genre[g].pop # make one of the random works the surprise work
+    end
 
     # TODO
   end

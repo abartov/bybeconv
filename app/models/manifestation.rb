@@ -14,6 +14,7 @@ class Manifestation < ActiveRecord::Base
   scope :new_since, -> (since) { where('created_at > ?', since)}
   scope :pd, -> { joins(:expressions).where(expressions: {copyrighted: false})}
   scope :copyrighted, -> { joins(:expressions).where(expressions: {copyrighted: true})}
+  scope :not_translations, -> { joins(:expressions).where(expressions: {translation: false})}
   scope :translations, -> { joins(:expressions).where(expressions: {translation: true})}
   scope :genre, -> (genre) { joins(:expressions).where(expressions: {genre: genre})}
   enum link_type: [:wikipedia, :blog, :youtube, :other]
@@ -126,8 +127,31 @@ class Manifestation < ActiveRecord::Base
     end
   end
 
+  def self.randomize_in_genre_except(except, genre)
+    list = []
+    i = 0
+    begin
+      candidates = Manifestation.genre(genre).order('RAND()').limit(15)
+      candidates.each {|au| list << au unless (except.include? au) or (list.include? au) or (list.length == 10)}
+      i += 1
+    end until list.size >= 10 or i > 10
+    return list
+  end
+
   def self.recalc_popular
     @@popular_works = Manifestation.order(impressions_count: :desc).limit(10) # top 10
+  end
+
+  def self.cached_popular_works_by_genre
+    Rails.cache.fetch("m_pop_by_genre", expires_in: 24.hours) do
+      ret = {}
+      get_genres.each do |g|
+        ret[g] = {}
+        ret[g][:orig] = Manifestation.genre(g).not_translations.distinct.order(impressions_count: :desc).limit(10)
+        ret[g][:xlat] = Manifestation.genre(g).translations.distinct.order(impressions_count: :desc).limit(10)
+      end
+      ret
+    end
   end
 
   def self.cached_count

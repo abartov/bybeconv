@@ -29,8 +29,35 @@
                 %a{name: g+'_g'}
                 %div{style:'padding-top:1.8rem'}
                   %p.headline-2{style:'display:inline'}= link_to genre_name, genre_path(genre: g)
-                  %p{style:'display: inline; padding-left: 1rem'}= "(#{@work_counts_by_genre[g]})"
+                  %p{style:'display: inline; padding-left: 1rem'}= "(#{@work_counts_by_genre[g]} #{t(:works)})"
                 .card
+                  .card-content
+                    .container-fluid
+                      .row{style:'margin-bottom:2rem'}
+                        .col-md-6{id: "surprise_#{g}", style:'padding-left:0;padding-right: 0'}
+                          .card.full-size-card.small-surprise.surprise_button{id: "surprise_button_#{g}", 'data-genre' => "#{g}", style:'margin-top:0;height:15rem;cursor:pointer;'}
+                            .card-content{style:'align-content: center; text-align: center; position: relative;'}
+                              .linky
+                                %div{style:'font-size:5rem;margin-bottom: -2rem'}
+                                  %span.icon-bysurprise-work
+                                %p.headline-3= t(:surprise)
+                            %div{style:'z-index: 1; position: absolute; left: 0;bottom: 0%; border-bottom-left-radius: 0.3rem; display: inline;overflow: hidden'}
+                              %img{src:'/assets/corner.png', width:80, height:80}
+                          %div
+                            .bring-surprise-icon.text-on-dark{style: 'margin-bottom:0.6rem;'}
+                              .linky{style:'color:white'}= '?'
+                        .col-md-6{id: "random_#{g}", style:'padding-right: 0'}
+                          %div{style:'margin-bottom:1rem;'}
+                            %p
+                              %span.headline-3{style:'padding-top:0'}= t(:sample_works_of)
+                              %span= t(:random_order)
+                            %div
+                              %ol
+                                - @rand_by_genre[g].each do |m|
+                                  %li
+                                    = link_to manifestation_read_path(m) do
+                                      %b= m.title
+                                    = t(:by)+' '+m.author_string
 
       .col-md-1
 / =========================
@@ -38,5 +65,8 @@
   $(document).ready(function(){
     $('[data-toggle="popover"]').popover({
       trigger: 'focus'
+    });
+    $('.surprise_button').click(function(){
+      alert("surprise button for "+$(this).attr('data-genre')+" pressed!");
     });
   });
