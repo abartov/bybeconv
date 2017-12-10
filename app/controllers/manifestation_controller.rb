@@ -34,6 +34,7 @@ class ManifestationController < ApplicationController
       @surprise_by_genre[g] = @rand_by_genre[g].pop # make one of the random works the surprise work
     end
     @works_abc = Manifestation.first_25 # get cached first 25 manifestations
+    @new_works_by_genre = Manifestation.cached_last_month_works
   end
 
   def whatsnew

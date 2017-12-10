@@ -21,6 +21,27 @@
         .row
           / left side
           .col-md-4{style:'padding-left:0'}
+            #whatsnew-works.main-group
+              %p.headline-2= t(:new_works_in_the_project)
+              .card
+                .card-content
+                  - @new_works_by_genre.each_pair do |g, marr|
+                    %div{style: 'padding-bottom: 2.4rem'}
+                      %div{:style => "margin-bottom: 1rem;"}
+                        %p
+                          %span.headline-3{:style => "padding-top: 0"}= textify_genre(g)
+                      %div
+                        %ul
+                          - marr.each do |details|
+                            %li
+                              %a{href: manifestation_read_path(details[0])}
+                                %strong= details[1]
+                              = t(:by)+' '+details[2]
+                  /%div{:style => "height:7.3rem"} ועוד 53 יצירות נוספו לאתר החודש.
+                  %div
+                    %a.btn{href: whatsnew_path}= t(:to_all_whatsnew)
+            .row{:id => "flashlight on work"}
+
           / right side
           .col-md-8{style:'padding-right:0'}
             - cache 'works_right_side' do

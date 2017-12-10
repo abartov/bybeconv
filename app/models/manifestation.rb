@@ -144,6 +144,21 @@ class Manifestation < ActiveRecord::Base
     end
   end
 
+  def self.cached_last_month_works
+    Rails.cache.fetch("m_new_last_month", expires_in: 24.hours) do
+      ret = {}
+      Manifestation.new_since(1.month.ago).each {|m|
+        e = m.expressions[0]
+        genre = e.genre
+        person = e.persons[0] # TODO: more nuance
+        next if person.nil? || genre.nil? # shouldn't happen, but might in a dev. env.
+        ret[genre] = [] if ret[genre].nil?
+        ret[genre] << [m.id, m.title, m.author_string]
+      }
+      ret
+    end
+  end
+
   def self.recalc_popular
     @@popular_works = Manifestation.order(impressions_count: :desc).limit(10) # top 10
   end
