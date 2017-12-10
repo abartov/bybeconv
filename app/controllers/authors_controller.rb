@@ -37,7 +37,7 @@ class AuthorsController < ApplicationController
     @authors_by_genre = count_authors_by_genre
     @new_authors = Person.has_toc.latest(3)
     @featured_author = featured_author
-    (@fa_snippet, @fa_rest) = snippet(@featured_author.body, 500)
+    (@fa_snippet, @fa_rest) = @featured_author.nil? ? ['',''] : snippet(@featured_author.body, 500)
     @rand_translated_authors = Person.translatees.order('RAND()').limit(5)
     @rand_translators = Person.translators.order('RAND()').limit(5)
     @pop_translated_authors = Person.get_popular_xlat_authors.limit(5)
