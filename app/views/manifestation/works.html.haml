@@ -86,6 +86,28 @@
                                   = link_to manifestation_read_path(m) do
                                     %b= m.title
                                   = t(:by)+' '+m.author_string
+              #abc_works
+                - cache 'abc_works' do
+                  %div{:style => 'padding-top: 1.8rem'}
+                    %p.headline-2{style:'display:inline'}= link_to t(:all_works), all_works_path
+                    %p{style:'display:inline;padding-left:1rem'}= " (#{@work_stats[:total]} #{t(:works)})"
+                  .card
+                    .card-content
+                      .container-fluid
+                        .row{:style => "margin-bottom: 2rem"}
+                          .col-md-12
+                            %div{:style => "margin-bottom: 1rem;"}
+                              %p
+                                %span.headline-3{:style => "padding-top: 0"}= t(:by_abc)
+                            %div
+                              %ol
+                                - @works_abc.each do |m|
+                                  %li
+                                    = link_to m.title, manifestation_read_path(m)
+                                    = t(:by)+' '+m.author_string
+                                    = "(#{textify_genre(m.expressions[0].genre)})"
+                            %div{style: 'position: absolute; left:0; bottom:0'}
+                              %a.btn{href: all_works_path}= t(:to_all_works)
       .col-md-1
 / =========================
 :javascript

@@ -138,6 +138,12 @@ class Manifestation < ActiveRecord::Base
     return list
   end
 
+  def self.first_25
+    Rails.cache.fetch("m_first_25", expires_in: 24.hours) do
+      Manifestation.order(:title).limit(25)
+    end
+  end
+
   def self.recalc_popular
     @@popular_works = Manifestation.order(impressions_count: :desc).limit(10) # top 10
   end

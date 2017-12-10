@@ -13,6 +13,12 @@ class ManifestationController < ApplicationController
 
   #############################################
   # public actions
+  def all
+    @page_title = t(:all_works)+' '+t(:project_ben_yehuda)
+    @pagetype = :works
+    @works_abc = Manifestation.order(:title).page(params[:page]).limit(25) # get page X of all manifestations
+  end
+
   def works # /works dashboard
     @tabclass = set_tab('works')
     @page_title = t(:works)+' - '+t(:project_ben_yehuda)
@@ -27,8 +33,7 @@ class ManifestationController < ApplicationController
       @rand_by_genre[g] = Manifestation.randomize_in_genre_except(@pop_by_genre[g][:orig], g) # get random works by genre
       @surprise_by_genre[g] = @rand_by_genre[g].pop # make one of the random works the surprise work
     end
-
-    # TODO
+    @works_abc = Manifestation.first_25 # get cached first 25 manifestations
   end
 
   def whatsnew
