@@ -4,16 +4,16 @@
     - get_genres_by_row(row).each do |genre|
       %div{:class => row == 3 ? 'col-md-4' : 'col-md-3'}
         - if genre == 'surprise'
-          .carousel.slide#surprise-work-carousel
+          .carousel.slide{id: "surprise-work-carousel-w"}
             .carousel-inner
-              .card.genre-card.small-surprise.item.active#wside1
+              .card.genre-card.small-surprise.item.active#w_side1
                 %a.surprise-work-button{role: :button}
                   .genre-card-content
                     .genre-icon{style: 'margin-right:-1rem'}
                       %span{:class => 'icon-bysurprise-work'}
                     .genre-headline= t(genre)
-              .card.genre-card.small-surprise.item#wside2
-                = render partial: 'shared/surprise_work', locals: {manifestation: @random_work}
+              .card.genre-card.small-surprise.item#w_side2
+                = render partial: 'shared/surprise_work', locals: {manifestation: @random_work, id_frag: 'w', passed_genre: '', side: '2'}
         - else
           %div{:class => 'card genre-card'+ (genre == 'lexicon' ? ' dictionaries' : ''), style:'cursor:pointer'}
             %a{ 'data-toggle' => :modal, 'data-target'=> "#genre_popup_#{genre}"}
@@ -85,8 +85,8 @@
                 .author-homepage-name
                   %p.vcentered= author.name
 :javascript
-  $('#surprise-work-carousel').carousel({interval: false, wrap: true});
+  $('#surprise-work-carousel-w').carousel({interval: false, wrap: true});
   $('.surprise-work-button').click(function(){
-    $('#surprise-work-carousel').carousel('next');
-    $('#wside1').load("#{url_for(controller: :manifestation, action: :get_random)}");
+    $('#surprise-work-carousel-w').carousel('next');
+    $('#w_side1').load("#{url_for(controller: :manifestation, action: :get_random, id_frag: 'w', side: 1)}");
   });

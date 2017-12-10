@@ -149,9 +149,16 @@ class ManifestationController < ApplicationController
     @manifestations = Manifestation.joins(:expressions).where(expressions: {genre: params[:genre]}).page(params[:page]).order('title ASC')
   end
 
+  # this one is called via AJAX
   def get_random
-    work = Manifestation.order('RAND()').limit(1)[0]
-    render partial: 'shared/surprise_work', locals: {manifestation: work}
+    work = nil
+    unless params[:genre].nil? || params[:genre].empty?
+      work = Manifestation.genre(params[:genre]).order('RAND()').limit(1)[0]
+    else
+      work = Manifestation.order('RAND()').limit(1)[0]
+    end
+    puts "DBG: get_random(#{params[:id_frag]}) called"
+    render partial: 'shared/surprise_work', locals: {manifestation: work, id_frag: params[:id_frag], passed_genre: params[:genre], side: params[:side]}
   end
 
   def surprise_work

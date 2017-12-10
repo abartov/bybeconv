@@ -12,7 +12,7 @@
             = t(:works_totals_p2, {permission: @work_stats[:permission]})
             = link_to '[?]', '#', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_permission), 'data-content' => t(:permission_popover)
   / Internal nav
-  = render partial: 'shared/genre_navbar', locals: {genres_present: get_genres.push('translations').push('allwriters'), page: :works}
+  = render partial: 'shared/genre_navbar', locals: {genres_present: get_genres.push('allwriters'), page: :works}
   / works
   .container-fluid
     .row
@@ -35,17 +35,21 @@
                     .container-fluid
                       .row{style:'margin-bottom:2rem'}
                         .col-md-6{id: "surprise_#{g}", style:'padding-left:0;padding-right: 0'}
-                          .card.full-size-card.small-surprise.surprise_button{id: "surprise_button_#{g}", 'data-genre' => "#{g}", style:'margin-top:0;height:15rem;cursor:pointer;'}
-                            .card-content{style:'align-content: center; text-align: center; position: relative;'}
-                              .linky
-                                %div{style:'font-size:5rem;margin-bottom: -2rem'}
-                                  %span.icon-bysurprise-work
-                                %p.headline-3= t(:surprise)
-                            %div{style:'z-index: 1; position: absolute; left: 0;bottom: 0%; border-bottom-left-radius: 0.3rem; display: inline;overflow: hidden'}
-                              %img{src:'/assets/corner.png', width:80, height:80}
-                          %div
-                            .bring-surprise-icon.text-on-dark{style: 'margin-bottom:0.6rem;'}
-                              .linky{style:'color:white'}= '?'
+                          .carousel.slide{id: "surprise-work-carousel-#{g}", 'data-interval' => 'false', 'data-wrap' => 'true'}
+                            .carousel-inner
+                              .card.full-size-card.small-surprise.item.active.surprise_button{id: "#{g}_side1", 'data-genre' => g, style:'margin-top:0;height:15rem;cursor:pointer;'}
+                                .card-content{style:'align-content: center; text-align: center; position: relative;'}
+                                  .linky
+                                    %div{style:'font-size:5rem;margin-bottom: -2rem'}
+                                      %span.icon-bysurprise-work
+                                    %p.headline-3= t(:surprise)
+                                %div{style:'z-index: 1; position: absolute; left: 0;bottom: 0%; border-bottom-left-radius: 0.3rem; display: inline;overflow: hidden'}
+                                  %img{src:'/assets/corner.png', width:80, height:80}
+                                %div
+                                  .bring-surprise-icon.text-on-dark{style: 'margin-bottom:0.6rem;'}
+                                    .linky{style:'color:white'}= '?'
+                              .card.genre-card.small-surprise.item{id: "#{g}_side2"}
+                                = render partial: 'shared/surprise_work', locals: {manifestation: @surprise_by_genre[g], id_frag: g, passed_genre: g, side: '2'}
                         .col-md-6{id: "random_#{g}", style:'padding-right: 0'}
                           %div{style:'margin-bottom:1rem;'}
                             %p
@@ -89,7 +93,10 @@
     $('[data-toggle="popover"]').popover({
       trigger: 'focus'
     });
+
     $('.surprise_button').click(function(){
-      alert("surprise button for "+$(this).attr('data-genre')+" pressed!");
+      g = $(this).attr('data-genre');
+      $('#surprise-work-carousel-'+g).carousel('next');
+      $('#'+g+'_side1').load('/manifestation/get_random?genre='+g+'&id_frag='+g+'&side=1');
     });
   });

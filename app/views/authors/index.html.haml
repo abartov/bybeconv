@@ -88,7 +88,7 @@
                                 %p.headline-3
                                   = link_to au.name, author_toc_path(au)
                                   %span{:style => "padding-right: 1rem;"}!= au.life_years
-                                %p= snippet(au.wikipedia_snippet, 200)[0]
+                                %p= snippet(au.wikipedia_snippet, 150)[0]
                               .whatsnew-pic-wide
                                 %img{height: 120, src: au.profile_image.url(:thumb)}
                   .card-content
