@@ -5,8 +5,13 @@ class AuthorsController < ApplicationController
   before_filter :require_editor, only: [:new, :create, :show, :edit, :list, :edit_toc, :update]
 
   def get_random_author
-    @author = Person.has_toc.order('RAND()').limit(1)[0]
-    render partial: 'shared/surprise_author', locals: {author: @author, initial: false}
+    @author = nil
+    unless params[:genre].nil? || params[:genre].empty?
+      @author = Person.in_genre(params[:genre]).order('RAND()').limit(1)[0]
+    else
+      @author = Person.has_toc.order('RAND()').limit(1)[0]
+    end
+    render partial: 'shared/surprise_author', locals: {author: @author, initial: false, id_frag: params[:id_frag], passed_genre: params[:genre], passed_mode: params[:mode], side: params[:side]}
   end
 
   def all
@@ -16,13 +21,14 @@ class AuthorsController < ApplicationController
   end
 
   def index
-    @page_title = t(:authors)+' '+t(:project_ben_yehuda)
+    @page_title = t(:authors)+' - '+t(:project_ben_yehuda)
     @pop_by_genre = cached_popular_authors_by_genre # get popular authors by genre + most popular translated
     @rand_by_genre = {}
     @pagetype = :authors
     @surprise_by_genre = {}
     get_genres.each do |g|
       @rand_by_genre[g] = randomize_authors(@pop_by_genre[g][:orig], g) # get random authors by genre
+      @rand_by_genre[g] = @pop_by_genre[g][:orig] if @rand_by_genre[g].empty? # workaround for genres with very few authors (like fables, in 2017)
       @surprise_by_genre[g] = @rand_by_genre[g].pop # make one of the random authors the surprise author
     end
     @authors_abc = Person.order(:name).limit(25) # get page 1 of all authors

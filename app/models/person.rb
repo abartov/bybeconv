@@ -17,6 +17,7 @@ class Person < ActiveRecord::Base
   # scopes
   scope :has_toc, -> { where.not(toc_id: nil) }
   scope :no_toc, -> { where(toc_id: nil) }
+  scope :in_genre, -> (genre) {has_toc.joins(:expressions).where(expressions: { genre: genre}).distinct}
   scope :new_since, -> (since) { where('created_at > ?', since)}
   scope :latest, -> (limit) {order('created_at desc').limit(limit)}
   scope :translators, -> {joins(:realizers).where(realizers: {role: Realizer.roles[:translator]}).distinct}
@@ -153,7 +154,7 @@ class Person < ActiveRecord::Base
     end
   end
 
-  def  copyright_as_string
+  def copyright_as_string
     return public_domain ? I18n.t(:public_domain) : I18n.t(:by_permission)
   end
 

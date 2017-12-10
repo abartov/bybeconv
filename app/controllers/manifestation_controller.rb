@@ -15,7 +15,7 @@ class ManifestationController < ApplicationController
   # public actions
   def works # /works dashboard
     @tabclass = set_tab('works')
-    @page_title = t(:authors)+' '+t(:project_ben_yehuda)
+    @page_title = t(:works)+' - '+t(:project_ben_yehuda)
     @pagetype = :works
     @work_stats = {total: Manifestation.cached_count, pd: Manifestation.cached_pd_count, translated: Manifestation.cached_translated_count}
     @work_stats[:permission] = @work_stats[:total] - @work_stats[:pd]
@@ -157,7 +157,6 @@ class ManifestationController < ApplicationController
     else
       work = Manifestation.order('RAND()').limit(1)[0]
     end
-    puts "DBG: get_random(#{params[:id_frag]}) called"
     render partial: 'shared/surprise_work', locals: {manifestation: work, id_frag: params[:id_frag], passed_genre: params[:genre], side: params[:side]}
   end
 

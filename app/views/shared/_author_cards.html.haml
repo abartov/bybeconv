@@ -16,9 +16,9 @@
           - maxcard = (surprise ? 7 : 8)
           - if surprise
             .slide
-              .carousel.slide#surprise_author_carousel
+              .carousel.slide#surprise_author_carousel-a
                 .carousel-inner
-                  .card.author-card.surprise.item.active#side1
+                  .card.author-card.surprise.item.active#a_side1
                     %a{ role: :button, id: 'surprise_author_link'}
                       .corner
                         %img{ src: '/assets/corner.png', width: 80, height: 80}
@@ -26,8 +26,8 @@
                         %span.icon-bysurprise-author{style:'font-size:7.6rem;margin-bottom:1.4rem;'}
                         %p.headline-3= t(:surprise_author)
                       .author-homepage-name
-                  .card.author-card.surprise.item#side2
-                    = render partial: 'shared/surprise_author', locals: {author: @surprise_author}
+                  .card.author-card.surprise.item#a_side2
+                    = render partial: 'shared/surprise_author', locals: {author: @surprise_author, passed_genre: '', passed_mode: 'gallery', side: '2', id_frag: 'a'}
 
           - authors[0..maxcard].each do |author|
             - break if author.nil? # devmode protection against fewer than 5 most-popular authors
@@ -46,7 +46,7 @@
   = render partial: 'shared/author_popup', locals: {author: author, surprise: false}
 
 - if surprise
-  .modal.fade#surprise_popup{ role: 'dialog', tabindex: '-1'}
+  .modal.fade#surprise_popup_a{ role: 'dialog', tabindex: '-1'}
 
 :javascript
   $(document).ready(function() {
@@ -66,12 +66,12 @@
       // appendArrows: '#scroller_container',
     });
     if(true == #{surprise}) {
-      $('#surprise_author_carousel').carousel({interval: false, wrap: true});
+      $('#surprise_author_carousel-a').carousel({interval: false, wrap: true});
       $('#surprise_author_link').click(function(){
-        $('#surprise_author_carousel').carousel('next'); // switch to ready surprise
-        $('#side1').load("#{url_for(controller: :authors, action: :get_random_author)}", function() {
-          var $thediv = $("#side2 > div").clone();
-          $('#surprise_popup').html($thediv.html());
+        $('#surprise_author_carousel-a').carousel('next'); // switch to ready surprise
+        $('#a_side1').load("#{url_for(controller: :authors, action: :get_random_author, id_frag:'a', side:'1',mode:'gallery')}", function() {
+          var $thediv = $("#a_side2 > div").clone();
+          $('#surprise_popup_a').html($thediv.html());
         }); // and load next one
       });
     }

@@ -168,20 +168,24 @@
                           %p.headline-3!= '&nbsp;'
                         .row
                           .col-xs-12
-                            .card.full-size-card.small-surprise
-                              .bysurprise-pic
-                                .bysurprise-portrait
-                                  %img{src: '/assets/tiny/placeholder_man.jpg', width:83}
-                              .card-content.bysurprise-text{style:'align-content:center; text-align:center;position:relative'}
-                                %a{ role: :button}
-                                  %div{style:'font-size:5rem;padding-top: 2rem;margin-bottom: -2rem'}
-                                    %span.icon-bysurprise-author
-                                  %p.headline-3= t(:surprise_author_in_genre, genre: genre_name)
-                              %div{style:'z-index: 1; position: absolute; left: 0;bottom: 0%; border-bottom-left-radius: 0.3rem; display: inline;overflow: hidden'}
-                                %img{src:'/assets/corner.png', width:80, height:80}
-                              .replace-icon.text-on-dark{style:'margin-bottom:0.6rem'}
-                                %a.surprise_author_refresh{ role: :button}
-                                  %i.fa.fa-refresh
+                            .carousel.slide{id: "surprise_author_carousel-#{g}", 'data-interval' => 'false', 'data-wrap' => 'true'}
+                              .carousel-inner
+                                .card.full-size-card.small-surprise.item.active.surprise_button{id: "#{g}_side1", 'data-genre' => g, style:'margin-top:0;cursor:pointer;'}
+                                  .bysurprise-pic
+                                    .bysurprise-portrait
+                                      %img{src: '/assets/tiny/placeholder_man.jpg', width:83}
+                                  .card-content.bysurprise-text{style:'align-content:center; text-align:center;position:relative'}
+                                    %a{ role: :button}
+                                      %div{style:'font-size:5rem;padding-top: 2rem;margin-bottom: -2rem'}
+                                        %span.icon-bysurprise-author
+                                      %p.headline-3= t(:surprise_author_in_genre, genre: genre_name)
+                                  %div{style:'z-index: 1; position: absolute; left: 0;bottom: 0%; border-bottom-left-radius: 0.3rem; display: inline;overflow: hidden'}
+                                    %img{src:'/assets/corner.png', width:80, height:80}
+                                  .replace-icon.text-on-dark{style:'margin-bottom:0.6rem'}
+                                    %div
+                                      .linky{style:'color:white'}= '?'
+                                .card.genre-card.small-surprise.item{id: "#{g}_side2"}
+                                  = render partial: 'shared/surprise_author', locals: {author: @surprise_by_genre[g], id_frag: g, passed_genre: g, side: '2', passed_mode: 'cards'}
                         .row{style:'margin-top:4.3rem'}
                           .col-xs-12{style:'padding-right:0'}
                             %p.headline-3= t(:most_read_translated_authors_in_genre, genre: genre_name)
@@ -226,6 +230,9 @@
                       /%a.btn.linky{href: authors_all_path}= t(:to_all_authors)
                       %a.btn.linky{href: "javascript:alert('#{t(:not_implemented_yet)}');"}= t(:to_all_authors)
       .col-md-1
+/ placeholder modals for surprise author popups
+- right_side_genres.each do |g|
+  .modal.fade{id: "surprise_popup_#{g}", role: 'dialog', tabindex: '-1'}
 
 :javascript
   $(document).ready(function(){
@@ -236,5 +243,14 @@
       $('.recommend-text').css('height', 'auto');
       $('#fa_body').html("#{escape_javascript(@featured_author.body)}");
       $('#toggle_featured_author').hide();
+    });
+
+    $('.surprise_button').click(function(){
+      $(this).off('click');
+      g = $(this).attr('data-genre');
+      $('#surprise_author_carousel-'+g).carousel('next');
+      $('#'+g+'_side1').load('/authors/get_random_author?genre='+g+'&id_frag='+g+'&side=1&mode=cards');
+      var $thediv = $("#"+g+"_side2 > div").clone();
+      $('#surprise_popup_'+g).html($thediv.html());
     });
   });
