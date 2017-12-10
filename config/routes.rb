@@ -64,6 +64,7 @@ Bybeconv::Application.routes.draw do
   get 'works/all' => 'manifetations#all', as: 'all_works'
   get 'works/:genre' => 'manifestation#genre', as: 'genre'
   get 'whatsnew' => 'manifestation#whatsnew', as: 'whatsnew'
+  get 'tag/:id' => 'manifestation#by_tag', as: 'tag'
   match 'author/:id' => 'authors#toc', as: 'author_toc', via: [:get, :post]
   match "download/:id" => 'manifestation#download', as: 'manifestation_download', via: [:get, :post]
   match "print/:id" => 'manifestation#print', as: 'manifestation_print', via: [:get, :post]

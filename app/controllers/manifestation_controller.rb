@@ -19,6 +19,10 @@ class ManifestationController < ApplicationController
     @works_abc = Manifestation.order(:title).page(params[:page]).limit(25) # get page X of all manifestations
   end
 
+  def by_tag
+    # TODO
+  end
+
   def works # /works dashboard
     @tabclass = set_tab('works')
     @page_title = t(:works)+' - '+t(:project_ben_yehuda)
@@ -35,6 +39,9 @@ class ManifestationController < ApplicationController
     end
     @works_abc = Manifestation.first_25 # get cached first 25 manifestations
     @new_works_by_genre = Manifestation.cached_last_month_works
+    @featured_content = featured_content
+    (@fc_snippet, @fc_rest) = snippet(@featured_content.body, 500) # prepare snippet for collapsible
+    @popular_tags = cached_popular_tags
   end
 
   def whatsnew

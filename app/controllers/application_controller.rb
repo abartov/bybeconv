@@ -77,6 +77,12 @@ class ApplicationController < ActionController::Base
     @popular_works = Manifestation.get_popular_works
   end
 
+  def cached_popular_tags
+    Rails.cache.fetch("popular_tags", expires_in: 24.hours) do # memoize
+      Tagging.group(:tag).order('count_tag_id DESC').count('tag_id')
+    end
+  end
+
   def featured_content
     Rails.cache.fetch("featured_content", expires_in: 1.hours) do # memoize
       fcfs = FeaturedContentFeature.where("fromdate <= :now AND todate >= :now", now: Date.today).order('RAND()').limit(1)

@@ -40,8 +40,22 @@
                   /%div{:style => "height:7.3rem"} ועוד 53 יצירות נוספו לאתר החודש.
                   %div
                     %a.btn{href: whatsnew_path}= t(:to_all_whatsnew)
-            .row{:id => "flashlight on work"}
-
+            .row#flashlight
+              / featured item
+              %p.headline-3= t(:featured_item)
+              = render partial: 'welcome/featured_item'
+            .row#favorites
+            .row#popular_tags
+              %p.headline-2{style:'margin-bottom:0'}= t(:popular_work_tags)
+              .row
+                .col-xs-12
+                  .card.full-size-card
+                    .card-content
+                      %ol
+                        - @popular_tags.each do |ptag|
+                          %li
+                            = link_to ptag[0].name, tag_path(ptag[0].id)
+                            = " (#{ptag[1]})"
           / right side
           .col-md-8{style:'padding-right:0'}
             - cache 'works_right_side' do
