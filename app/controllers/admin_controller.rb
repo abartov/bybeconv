@@ -45,7 +45,7 @@ class AdminController < ApplicationController
     @suspicious = []
     mm.each do |m|
       suspicious = false
-      prev = 0
+      prev = -10
       m.cached_heading_lines.split('|').each do |l|
         line_no = l.to_i
         suspicious = true if line_no - prev < 5 # probably too short for separate chapter/section
