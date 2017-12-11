@@ -1,6 +1,7 @@
 .top-element
   %h2= t(:suspicious_headings_report)
 
+  %h3= t(:total)+': '+@suspicious.length.to_s
   %table{style: 'cell-spacing: 10;'}
     %tr
       %th= t(:title)
