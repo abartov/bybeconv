@@ -40,6 +40,21 @@ class AdminController < ApplicationController
     }
   end
 
+  def suspicious_headings
+    mm = Manifestation.where('length(cached_heading_lines)>3')
+    @suspicious = []
+    mm.each do |m|
+      suspicious = false
+      prev = 0
+      m.cached_heading_lines.split('|').each do |l|
+        line_no = l.to_i
+        suspicious = true if line_no - prev < 5 # probably too short for separate chapter/section
+        prev = line_no
+      end
+      @suspicious << m if suspicious
+    end
+  end
+
   #######################################
   ## Volunteer profiles management
   def volunteer_profiles_list

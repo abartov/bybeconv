@@ -242,6 +242,7 @@ he:
   popular_translators: המתרגמים הנקראים ביותר
   random_order: (בסדר אקראי)
   translators: מתרגמים
+  suspicious_headings_report: "דו\"ח כותרות קרובות זו לזו (לעריכה)"
   most_read_authors_of_genre: יוצרי ה%{genre} הנקראים ביותר החודש
   most_read_works_of_genre: יצירות ה%{genre} הנקראות ביותר החודש
   most_read_translated_works_of_genre: יצירות ה%{genre} המתורגמות הנקראות ביותר החודש
