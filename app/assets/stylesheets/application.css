@@ -2100,8 +2100,8 @@ li{
 .stickysearch {
   position: -webkit-sticky;
   position: sticky;
-  top: 13.8rem;
-  padding: 5px;
+  top: 13.2rem;
+  /*padding: 5px;*/
   opacity: 1;
   background-color: #eeeced;
 }

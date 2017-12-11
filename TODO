@@ -19,6 +19,7 @@
 - implement the whatsnew screen
 - take foreign authors into account in authors page - if not everywhere, at least for fables?
 - make tags links to works queries by tag
+- make credits bullets RTL
 - implement recommendation flagging (data model, review)
 - implement the scroll-gradients in work read and readmode
 - implement those-who-read-this-also-read-that (i.e. https://measuringu.com/affinity-analysis/)

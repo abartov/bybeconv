@@ -12,6 +12,14 @@ module ApplicationHelper
     'אחר'
   end
 
+  def safe_options_for_select(container, selected = nil)
+    ret = ''
+    container.each_pair do |heading, lineno|
+      ret += "<option value='#{lineno}' #{selected == heading ? 'selected=\'selected\'' : ''}>#{heading}</option>"
+    end
+    return ret.html_safe
+  end
+
   def viaf_json_to_html(json)
     ret = '<ul>'
     json.each do |j|

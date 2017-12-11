@@ -75,8 +75,8 @@
                   .col-md-2
                     %p= t(:additional_content)
                 %br{style: 'clear: both;'}
-          .card.work-card
-            .work-text
+          .card.work-card{style:'margin-top:0;padding-top:0'}
+            .work-text{style:'margin-top:0;padding-top:0'}
               - unless @bookmark.nil?
                 .bookmark
                   / $("#button").click(function() {
@@ -86,7 +86,8 @@
                   / });
                   = link_to '#' do
                     %span.icon-bybookmark-go-to
-              .row.stickysearch{style:'opacity:1;background-color:#eeeced'}
+              %div{style:'position:absolute;background:#eeeced;width:100%;height:9rem;margin-top:0;padding-top:0'}
+              .row.stickysearch{style:'opacity:1;background-color:#eeeced;margin-top:0;padding-top:0'}
                 = render partial: 'search_and_chapters'
               / TODO: more nuanced rendering here
               - if @m.as_prose?
