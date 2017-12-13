@@ -8,13 +8,15 @@
       - if @pagetype == :manifestation
         = link_to t(:authors), :controller => :authors
         = ' > '
-        - if @entity.expressions[0].translators.count > 0
-          - person = @entity.expressions[0].translators[0]
+        - e = @entity.expressions[0]
+        - if e.translators.count > 0
+          - person = e.translators[0]
         - else
-          - person = @entity.expressions[0].works[0].persons[0]
+          - person = e.works[0].persons[0]
         = link_to person.name, author_toc_path(id: person.id)
         = ' > '
-        = link_to textify_genre(@entity.expressions[0].genre), :controller => :authors, :action => :toc, :id => person.id, :genre => @entity.expressions[0].works[0].genre
+        - genre = textify_genre(e.genre)
+        = link_to e.translation ? "#{t(:translation)} #{genre}" : genre, :controller => :authors, :action => :toc, :id => person.id, :genre => @entity.expressions[0].works[0].genre
         = ' > '
         %b= @entity.title
       - elsif @pagetype == :author
