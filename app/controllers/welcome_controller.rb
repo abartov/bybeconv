@@ -15,7 +15,7 @@ class WelcomeController < ApplicationController
     @works_by_genre = Manifestation.cached_work_counts_by_genre
     @whatsnew = whatsnew_anonymous # TODO: custom calculate for logged-in users
     @featured_content = featured_content
-    (@fc_snippet, @fc_rest) = snippet(@featured_content.body, 500) # prepare snippet for collapsible
+    (@fc_snippet, @fc_rest) = @featured_content.nil? ? ['',''] : snippet(@featured_content.body, 500) # prepare snippet for collapsible
     @featured_volunteer = featured_volunteer
     @popups_by_genre = popups_by_genre # cached, if available
     @pagetype = :homepage
