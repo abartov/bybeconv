@@ -36,11 +36,9 @@
   %a{href: 'http://benyehuda.org/blog/'}= t(:more_recommendations_in_the_blog)
 :javascript
   $(document).ready(function(){
-    if(#{@featured_content.nil?} == false) {
-      $('#toggle_featured_item').click(function(){
-        $('.recommend-text').css('height', 'auto');
-        $('#fc_body').html("#{escape_javascript(@featured_content.body)}");
-        $('#toggle_featured_item').hide();
-      });
-    }
+    $('#toggle_featured_item').click(function(){
+      $('.recommend-text').css('height', 'auto');
+      $('#fc_body').html("#{@featured_content.nil? ? '' : escape_javascript(@featured_content.body)}");
+      $('#toggle_featured_item').hide();
+    });
   });
