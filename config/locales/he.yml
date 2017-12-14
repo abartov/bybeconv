@@ -392,6 +392,7 @@ he:
   back_to_top: לראש הדף
   confirmed_person_as_author: המחבר %{author} אושר כמחבר היצירה הזו.
   from: מאת
+  from_lang: מ
   content: תוכן
   birthdate: תאריך לידה
   deathdate: תאריך פטירה
@@ -425,6 +426,7 @@ he:
   hebrew: עברית
   english: אנגלית
   german: גרמנית
+  portuguese: פורטוגלית
   french: צרפתית
   russian: רוסית
   yiddish: יידיש

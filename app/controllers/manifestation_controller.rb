@@ -289,7 +289,8 @@ class ManifestationController < ApplicationController
 
   def prep_for_print
     @m = Manifestation.find(params[:id])
-    @author = @m.expressions[0].works[0].persons[0] # TODO: handle multiple authors
+    @e = @m.expressions[0]
+    @author = @e.works[0].persons[0] # TODO: handle multiple authors
     @translator = @m.expressions[0].persons[0] # TODO: handle multiple translators
     @page_title = "#{@m.title_and_authors} - #{t(:default_page_title)}"
     impressionist(@author) # increment the author's popularity counter
