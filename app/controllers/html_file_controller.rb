@@ -153,19 +153,22 @@ class HtmlFileController < ApplicationController
   end
 
   def render_by_legacy_url
-    the_url = params[:path] + '.html'
-    the_url = '/' + the_url if the_url[0] != '/' # prepend slash if necessary
-    h = HtmlFile.find_by_url(the_url)
-    unless h.nil?
-      # TODO: handle errors, at least path not found
-      if h.status != 'Published'
-        @html = "<h1>not yet.</h1>"
-        @html = File.open(h.path, 'r:UTF-8').read
-      else
-        redirect_to url_for(controller: :manifestation, action: :read, id: h.manifestations[0].id)
-      end
+    if params[:format] && params[:format] == 'xml'
+      head :bad_request
     else
-      @html = '<h1>bad path</h1>'
+      the_url = params[:path] + '.html'
+      the_url = '/' + the_url if the_url[0] != '/' # prepend slash if necessary
+      h = HtmlFile.find_by_url(the_url)
+      unless h.nil?
+        # TODO: handle errors, at least path not found
+        if h.status != 'Published'
+          @html = File.open(h.path, 'r:UTF-8').read
+        else
+          redirect_to url_for(controller: :manifestation, action: :read, id: h.manifestations[0].id)
+        end
+      else
+        @html = '<h1>bad path</h1>'
+      end
     end
   end
 
