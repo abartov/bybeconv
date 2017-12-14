@@ -58,7 +58,7 @@ def process_index(dirname, blob)
   lines.each {|l| l.strip!}
   linked_body = lines.join ("\n")
   linked_body = section_titles(linked_body)
-  toc = Toc.new(toc: linked_body, status: 'Raw')
+  toc = Toc.new(toc: linked_body, status: 'raw')
   toc.save
   return toc
 end

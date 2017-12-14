@@ -44,7 +44,7 @@
         = @author.country
         %br
         %b= t(:toc_status)
-        = @author.toc.nil? ? t(:no_toc_yet) : t(@author.toc.status)
+        = (@author.toc.nil? || @author.toc.status.nil?) ? t(:no_toc_yet) : t(@author.toc.status)
         %br
         %b= t(:comments)
         = @author.comment
@@ -76,10 +76,10 @@
     %tr
       %td
         %b= t(:works)
-        = link_to "#{@count[:works]} #{t(:works)}", author_toc_path(id: @author.id)
+        = link_to "#{@author.original_works.count} #{t(:original_works)}", author_toc_path(id: @author.id)
         %br
         %b= t(:translations_by)
-        = t(:TBD)
+        = link_to "#{@author.translations.count} #{t(:translations)}", author_toc_path(id: @author.id)
         %br
         %b= t(:works_about)
         = t(:TBD)

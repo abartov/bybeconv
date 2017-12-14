@@ -148,25 +148,41 @@ class Person < ActiveRecord::Base
     return true
   end
 
+  def original_works
+    Manifestation.joins(expressions: [works: :creations]).includes(:expressions).where("creations.person_id = #{self.id}")
+  end
+
+  def translations
+    Manifestation.joins(expressions: :realizers).includes(expressions: [works: [creations: :person]]).where(realizers:{role: Realizer.roles[:translator], person_id: self.id})
+  end
+
+  def original_works_by_genre
+    ret = {}
+    get_genres.map{|g| ret[g] = []}
+    Manifestation.joins(expressions: [works: :creations]).includes(:expressions).where("creations.person_id = #{self.id}").each do |m|
+      ret[m.expressions[0].genre] << m
+    end
+    return ret
+  end
+
+  def translations_by_genre
+    ret = {}
+    get_genres.map{|g| ret[g] = []}
+    Manifestation.joins(expressions: :realizers).includes(expressions: [works: [creations: :person]]).where(realizers:{role: Realizer.roles[:translator], person_id: self.id}).each do |m|
+      ret[m.expressions[0].genre] << m
+    end
+    return ret
+  end
+
   def cached_original_works_by_genre
     Rails.cache.fetch("au_#{self.id}_original_works_by_genre", expires_in: 24.hours) do
-      ret = {}
-      get_genres.map{|g| ret[g] = []}
-      Manifestation.joins(expressions: [works: :creations]).includes(:expressions).where("creations.person_id = #{self.id}").each do |m|
-        ret[m.expressions[0].genre] << m
-      end
-      ret
+      original_works_by_genre
     end
   end
 
   def cached_translations_by_genre
     Rails.cache.fetch("au_#{self.id}_translations_by_genre", expires_in: 24.hours) do
-      ret = {}
-      get_genres.map{|g| ret[g] = []}
-      Manifestation.joins(expressions: :realizers).includes(expressions: [works: [creations: :person]]).where(realizers:{role: Realizer.roles[:translator], person_id: self.id}).each do |m|
-        ret[m.expressions[0].genre] << m
-      end
-      ret
+      translations_by_genre
     end
   end
 

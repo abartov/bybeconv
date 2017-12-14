@@ -32,7 +32,7 @@
       = label_tag t(:toc_status)
       %br
       = radio_button_tag(:toc_status, :raw, @author.toc.status.nil? || @author.toc.status == 'raw')
-      = label_tag t(:Raw)
+      = label_tag t(:raw)
       = radio_button_tag(:toc_status, :ready, @author.toc.status == 'ready')
       = label_tag t(:ready)
       = hidden_field_tag(:old_timestamp, @toc_timestamp)

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171207233739) do
+ActiveRecord::Schema.define(version: 20171214140655) do
 
   create_table "api_keys", force: :cascade do |t|
     t.string   "email",       limit: 255

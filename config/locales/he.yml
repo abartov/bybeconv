@@ -66,6 +66,7 @@ he:
   published: פורסם בקטלוג
   manual: ממתין להסבה ידנית
   WEM: ישויות ביבליוגרפיות
+  nil: אין
   toc_edit_title: "תצוגת תוכן עניינים ליוצר/ת %{author}"
   no_toc_yet: "טרם נקלט תוכן עניינים ליוצר/ת"
   top_ten_works: 10 היצירות הנקראות ביותר החודש
@@ -138,6 +139,7 @@ he:
   works_about: "יצירות על אודותיו/ה"
   translations_by: תרגומים
   original: מקור
+  original_works: יצירות מקור
   translation: תרגום
   translations: יצירות מתורגמות
   translator_name: "שם המתרגם/ת"
@@ -152,7 +154,7 @@ he:
   to_the_wikipedia_article: לערך בויקיפדיה
   wikidata_id: מזהה בויקינתונים
   additional_options: אפשרויות נוספות
-  Raw: טרם עוּבַּד
+  raw: טרם עוּבַּד
   ready: מוכן
   photo: תמונה
   last_update: עדכון אחרון
@@ -311,6 +313,7 @@ he:
   to_the_facebook_page: לדף הפייסבוק
   contact_us: יצירת קשר
   show_toc: הצג תוכן עניינים
+  toc: תוכן עניינים
   are_you_sure: נא לאשר מחיקה
   public_domain: נחלת הכלל
   about_public_domain: 'מה פירוש נחלת הכלל?'

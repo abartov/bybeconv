@@ -16,7 +16,7 @@
       %th= t(:comment)
       %th= t(:viaf_id)
       %th= t(:nli_id)
-      %th
+      %th= t(:toc)
       %th
       %th
       %th
@@ -28,19 +28,22 @@
         %td= "#{person.birthdate}  - #{person.deathdate}"
         %td= person.other_designation
         %td= person.has_comment? ? '+' : ''
-        %td= person.viaf_id
+        %td= link_to person.viaf_id, "http://viaf.org/viaf/#{person.viaf_id}"
         %td= person.nli_id
         %td
           - if person.toc.nil?
             %span{style: 'color: red'}= t(:no_toc_yet)
+          - elsif person.toc.status.nil? || person.toc.status == 'raw'
+            %span{style: 'color: black'}= t(:raw)
           - else
-            = link_to t(:show_toc), author_toc_path(person)
+            %span{style: 'color:green'}= t(:ready)
+          %br
+          = link_to t(:show_toc), author_toc_path(person)
         %td= link_to t(:edit), authors_edit_path(id: person.id)
         %td
           - unless person.toc.nil?
             = link_to t(:edit_toc), authors_edit_toc_path(person)
         %td= link_to t(:destroy), authors_destroy_path(person), :data => { :confirm => t(:are_you_sure) }
-
 
   %br
 

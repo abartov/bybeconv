@@ -18,3 +18,7 @@
 #maintext a {
   font-weight: bold;
 }
+
+#maintext ul {
+  direction:rtl;
+}

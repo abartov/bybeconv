@@ -13,7 +13,7 @@
   - query work by tag
   - admin review, approve/reject tags and recommendations
 
-- !! implement translated work read screen - translator name + more by original author!
+- !! fix footnote anchors' scrolling relative to margin-top
 - !! add translations box to works view right side
 - implement bookmarks (see notes in code!)
 - implement the whatsnew screen
