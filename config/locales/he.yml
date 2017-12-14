@@ -137,6 +137,7 @@ he:
   edit_toc: עריכת תוכן עניינים
   works_about: "יצירות על אודותיו/ה"
   translations_by: תרגומים
+  original: מקור
   translation: תרגום
   translations: יצירות מתורגמות
   translator_name: "שם המתרגם/ת"
@@ -243,6 +244,7 @@ he:
   random_order: (בסדר אקראי)
   translators: מתרגמים
   suspicious_headings_report: "דו\"ח כותרות קרובות זו לזו (לעריכה)"
+  suspicious_translations_report: "דו\"ח יצירות עם מחבר שווה למתרגם"
   most_read_authors_of_genre: יוצרי ה%{genre} הנקראים ביותר החודש
   most_read_works_of_genre: יצירות ה%{genre} הנקראות ביותר החודש
   most_read_translated_works_of_genre: יצירות ה%{genre} המתורגמות הנקראות ביותר החודש

@@ -10,6 +10,7 @@ Bybeconv::Application.routes.draw do
   get 'admin/missing_copyright'
   get 'admin/incongruous_copyright'
   get 'admin/suspicious_headings'
+  get 'admin/suspicious_translations'
   get 'admin/volunteer_profiles_list'
   get 'admin/volunteer_profile/new' => 'admin#volunteer_profile_new', as: 'volunteer_profile_new'
   post 'admin/volunteer_profile/create' => 'admin#volunteer_profile_create', as: 'volunteer_profile_create'
