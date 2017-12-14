@@ -67,6 +67,17 @@ class AuthorsController < ApplicationController
     end
   end
 
+  def destroy
+    @author = Person.find(params[:id])
+    if @author.nil?
+      flash[:error] = t(:no_such_item)
+      redirect_to '/'
+    else
+      @author.destroy!
+      redirect_to action: :list
+    end
+  end
+
   def show
     @author = Person.find(params[:id])
     if @author.nil?
@@ -75,7 +86,6 @@ class AuthorsController < ApplicationController
     else
       # TODO: add other types of content
       @page_title = t(:author_details)+': '+@author.name
-      @count = {works: @author.work_ids.count}
     end
   end
 
