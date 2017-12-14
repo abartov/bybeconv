@@ -43,7 +43,7 @@
         %td
           - unless person.toc.nil?
             = link_to t(:edit_toc), authors_edit_toc_path(person)
-        %td= link_to t(:destroy), authors_destroy_path(person), :data => { :confirm => t(:are_you_sure) }
+        %td= link_to t(:destroy), authors_destroy_path(id: person.id), :data => { :confirm => t(:are_you_sure) }
 
   %br
 
