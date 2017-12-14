@@ -100,6 +100,17 @@ module ApplicationHelper
     return I18n.t(nik)
   end
 
+  def textify_role(role, gender)
+    case role
+    when :author
+      return gender == 'female' ? t(:author_f) : t(:author)
+    when :translator
+      return gender == 'female' ? t(:translator_f) : t(:translator)
+    else
+      return t(:unknown)
+    end
+  end
+
   def textify_htmlfile_status(st)
     return I18n.t(:unknown) if st.nil? or st.empty?
     case st

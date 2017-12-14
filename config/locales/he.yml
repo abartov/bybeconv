@@ -250,6 +250,7 @@ he:
   most_read_translated_authors_in_genre: יוצרי ה%{genre} המתורגמים הנקראים ביותר החודש
   to_all_authors_in_genre: לכל יוצרי ה%{genre}
   to_all_works_in_genre: לכל יצירות ה%{genre}
+  to_other_translations_of_author: לשאר תרגומי %{author}
   beginning_abc: מבחר ראשוני
   by_abc: בתצוגה בסדר אלפביתי
   title: כותרת
@@ -257,6 +258,7 @@ he:
   filter: סינון
   actions: פעולות
   author: מחבר
+  author_f: מחברת
   render: הצגת יצירה
   show: הצגת פרטים
   thedate: תאריך
@@ -443,6 +445,7 @@ he:
   swedish: שוודית
   dutch: הולנדית
   translator: מתרגם
+  translator_f: מתרגמת
   translated_by: בתרגום
   pd_explain: TBD
   permission_explain: TBD
