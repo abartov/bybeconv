@@ -9,6 +9,10 @@
             - @works[genre].each do |m|
               %li
                 = link_to m.title, manifestation_read_path(m)
+                - if m.expressions[0].translation
+                  = " #{t(:translated_by)} "
+                  != m.expressions[0].translators.map{|p| link_to(p.name, author_toc_path(p))}.join('; ')
+
         - if @translations[genre].size > 0
           %h3= t(:translation)
           %ol
