@@ -51,16 +51,19 @@
     .col-md-1
     .col-md-10
       .toc#maintext
-        = render partial: 'toc'
-        .card#volunteers{style:'margin:3rem 20rem 0 0'}
-          .card-content
-            .row
-              .col-sm-3
-              .col-sm-9
-                %div
-                  %p.headline-3= t(:volunteers_who_helped, {author: @author.name, gender_letter: @author.gender_letter})
-                .credits
-                  != @credits
+        - unless @toc.nil?
+          = render partial: 'toc'
+          .card#volunteers{style:'margin:3rem 20rem 0 0'}
+            .card-content
+              .row
+                .col-sm-3
+                .col-sm-9
+                  %div
+                    %p.headline-3= t(:volunteers_who_helped, {author: @author.name, gender_letter: @author.gender_letter})
+                  .credits
+                    != @credits
+        - else
+          = render partial: 'generated_toc'
     .col-md-1
       = render partial: 'toolbox'
 

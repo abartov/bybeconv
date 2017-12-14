@@ -119,16 +119,19 @@ class AuthorsController < ApplicationController
 
   def toc
     @author = Person.find(params[:id])
-    # temporary protection against null ToCs while we're migrating
-    unless @author.toc.nil?
+    unless @author.nil?
       @tabclass = set_tab('authors')
       @print_url = url_for(action: :print, id: @author.id)
-      prep_toc
-      #@html = MultiMarkdown.new(markdown_toc).to_html.force_encoding('UTF-8')
       @pagetype = :author
       @entity = @author
       @page_title = "#{@author.name} - #{t(:table_of_contents)} - #{t(:project_ben_yehuda)}"
+      # temporary protection against null ToCs while we're migrating
       impressionist(@author) # log actions for pageview stats
+      unless @author.toc.nil?
+        prep_toc
+      else
+        generate_toc
+      end
     else
       flash[:error] = I18n.t(:no_toc_yet)
       redirect_to '/'
@@ -183,5 +186,13 @@ class AuthorsController < ApplicationController
     @htmls = toc_parts.map{|genre, tocpart| [genre, MultiMarkdown.new(tocpart).to_html.force_encoding('UTF-8')]}
     credits = @author.toc.credit_section || ''
     @credits = MultiMarkdown.new(credits).to_html.force_encoding('UTF-8').gsub('<li', '<li class="col-sm-6"').gsub('<ul','<ul class="list-unstyled row"')
+  end
+
+  def generate_toc
+    @works = @author.cached_original_works_by_genre
+    @translations = @author.cached_translations_by_genre
+    @genres_present = []
+    @works.each_key {|k| @genres_present << k unless @works[k].size == 0 || @genres_present.include?(k)}
+    @translations.each_key {|k| @genres_present << k unless @works[k].size == 0 || @genres_present.include?(k)}
   end
 end

@@ -12,11 +12,11 @@ class Manifestation < ActiveRecord::Base
   has_paper_trail
   has_many :external_links
   scope :new_since, -> (since) { where('created_at > ?', since)}
-  scope :pd, -> { joins(:expressions).where(expressions: {copyrighted: false})}
-  scope :copyrighted, -> { joins(:expressions).where(expressions: {copyrighted: true})}
-  scope :not_translations, -> { joins(:expressions).where(expressions: {translation: false})}
-  scope :translations, -> { joins(:expressions).where(expressions: {translation: true})}
-  scope :genre, -> (genre) { joins(:expressions).where(expressions: {genre: genre})}
+  scope :pd, -> { joins(:expressions).includes(:expressions).where(expressions: {copyrighted: false})}
+  scope :copyrighted, -> { joins(:expressions).includes(:expressions).where(expressions: {copyrighted: true})}
+  scope :not_translations, -> { joins(:expressions).includes(:expressions).where(expressions: {translation: false})}
+  scope :translations, -> { joins(:expressions).includes(:expressions).where(expressions: {translation: true})}
+  scope :genre, -> (genre) { joins(:expressions).includes(:expressions).where(expressions: {genre: genre})}
   enum link_type: [:wikipedia, :blog, :youtube, :other]
   enum status: [:approved, :submitted, :rejected]
 
@@ -118,11 +118,11 @@ class Manifestation < ActiveRecord::Base
   def self.popular_works_by_genre(genre, xlat)
     if xlat
       Rails.cache.fetch("m_pop_xlat_in_#{genre}", expires_in: 24.hours) do # memoize
-        Manifestation.joins([expressions: :works]).where(expressions: {genre: genre}).where("works.orig_lang != expressions.language").order(impressions_count: :desc).limit(10).map{|m| {id: m.id, title: m.title, author: m.author_string}}
+        Manifestation.joins([expressions: :works]).includes(:expressions).where(expressions: {genre: genre}).where("works.orig_lang != expressions.language").order(impressions_count: :desc).limit(10).map{|m| {id: m.id, title: m.title, author: m.author_string}}
       end
     else
       Rails.cache.fetch("m_pop_in_#{genre}", expires_in: 24.hours) do # memoize
-        Manifestation.joins([expressions: :works]).where(expressions: {genre: genre}).where("works.orig_lang = expressions.language").order(impressions_count: :desc).limit(10).map{|m| {id: m.id, title: m.title, author: m.author_string}}
+        Manifestation.joins([expressions: :works]).includes(:expressions).where(expressions: {genre: genre}).where("works.orig_lang = expressions.language").order(impressions_count: :desc).limit(10).map{|m| {id: m.id, title: m.title, author: m.author_string}}
       end
     end
   end

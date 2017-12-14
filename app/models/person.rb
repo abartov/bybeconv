@@ -148,9 +148,31 @@ class Person < ActiveRecord::Base
     return true
   end
 
+  def cached_original_works_by_genre
+    Rails.cache.fetch("au_#{self.id}_original_works_by_genre", expires_in: 24.hours) do
+      ret = {}
+      get_genres.map{|g| ret[g] = []}
+      Manifestation.joins(expressions: [works: :creations]).includes(:expressions).where("creations.person_id = #{self.id}").each do |m|
+        ret[m.expressions[0].genre] << m
+      end
+      ret
+    end
+  end
+
+  def cached_translations_by_genre
+    Rails.cache.fetch("au_#{self.id}_translations_by_genre", expires_in: 24.hours) do
+      ret = {}
+      get_genres.map{|g| ret[g] = []}
+      Manifestation.joins(expressions: :realizers).includes(expressions: [works: [creations: :person]]).where(realizers:{role: Realizer.roles[:translator], person_id: self.id}).each do |m|
+        ret[m.expressions[0].genre] << m
+      end
+      ret
+    end
+  end
+
   def most_read(limit)
     Rails.cache.fetch("au_#{self.id}_#{limit}_most_read", expires_in: 24.hours) do
-      self.manifestations.order(impressions_count: :desc).limit(limit).map{|m| {id: m.id, title: m.title, author: m.author_string, translation: m.expressions[0].translation, genre: m.expressions[0].genre }}
+      self.manifestations.includes(:expressions).order(impressions_count: :desc).limit(limit).map{|m| {id: m.id, title: m.title, author: m.author_string, translation: m.expressions[0].translation, genre: m.expressions[0].genre }}
     end
   end
 
