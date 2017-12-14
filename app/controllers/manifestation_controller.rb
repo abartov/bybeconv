@@ -40,7 +40,7 @@ class ManifestationController < ApplicationController
     @works_abc = Manifestation.first_25 # get cached first 25 manifestations
     @new_works_by_genre = Manifestation.cached_last_month_works
     @featured_content = featured_content
-    (@fc_snippet, @fc_rest) = snippet(@featured_content.body, 500) # prepare snippet for collapsible
+    (@fc_snippet, @fc_rest) = @featured_content.nil? ? ['',''] : snippet(@featured_content.body, 500) # prepare snippet for collapsible
     @popular_tags = cached_popular_tags
   end
 
@@ -312,6 +312,7 @@ class ManifestationController < ApplicationController
     tmphash.keys.reverse.map{|k| @chapters[k] = tmphash[k]}
     @selected_chapter = tmphash.keys.last
     @html = MultiMarkdown.new(lines[1..-1].join("\n")).to_html.force_encoding('UTF-8')
+    @html.gsub(/fn:\d+/,)
     @tabclass = set_tab('works')
     @entity = @m
     @pagetype = :manifestation
