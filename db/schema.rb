@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171214140655) do
+ActiveRecord::Schema.define(version: 20171215102331) do
 
   create_table "api_keys", force: :cascade do |t|
     t.string   "email",       limit: 255
@@ -176,10 +176,16 @@ ActiveRecord::Schema.define(version: 20171214140655) do
     t.string   "orig_author_url",     limit: 255
     t.integer  "person_id",           limit: 4
     t.string   "genre",               limit: 255
-    t.boolean  "paras_condensed",                   default: false
+    t.boolean  "paras_condensed",                        default: false
     t.integer  "translator_id",       limit: 4
     t.integer  "assignee_id",         limit: 4
     t.text     "comments",            limit: 65535
+    t.string   "title",               limit: 255
+    t.string   "doc_file_name",       limit: 255
+    t.string   "doc_content_type",    limit: 255
+    t.integer  "doc_file_size",       limit: 4
+    t.datetime "doc_updated_at"
+    t.text     "markdown",            limit: 4294967295
   end
 
   add_index "html_files", ["assignee_id"], name: "index_html_files_on_assignee_id", using: :btree

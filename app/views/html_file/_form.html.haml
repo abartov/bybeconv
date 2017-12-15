@@ -1,0 +1,31 @@
+= form_for text, url: {action: action, id: text.id} do |f|
+  - if text.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(text.errors.count, "error")} prohibited this text from being saved:"
+      %ul
+        - text.errors.full_messages.each do |msg|
+          %li= msg
+
+  .backend-field
+    = f.label t(:title)
+    = f.text_field :title
+  .backend-field
+    = f.label t(:genre)
+    = select_tag 'html_file[genre]', options_for_select(get_genres.map {|genre| [I18n.t(genre), genre]}, @text.genre), {include_blank: true}
+  .backend-field
+    = f.label t(:first_author)
+    %br
+    = select_tag 'html_file[person_id]', options_from_collection_for_select(Person.order(:name), 'id','name'), include_blank: true
+  %br
+  = link_to t(:to_manage_people), authors_list_path
+
+  .backend-field
+    = f.label t(:comments)
+    = f.text_area :comments
+  %br
+  .backend-field
+    %b= t(:upload_file)
+    = f.file_field :doc
+
+  .actions
+    = f.submit t(:save)

@@ -1,8 +1,10 @@
+require 'pandoc-ruby' # for generic DOCX-to-HTML conversions
+
 class HtmlFileController < ApplicationController
   before_filter :require_editor, only: [:edit, :update, :list_for_editor]
   # before_filter :require_user, :only => [:edit, :update]
 
-  before_filter :require_admin, only: [:analyze, :analyze_all, :list, :parse, :publish, :unsplit, :chop1, :chop2, :chop3, :choplast1, :choplast2, :poetry, :frbrize]
+  before_filter :require_admin, only: [:analyze, :analyze_all, :new, :create, :list, :parse, :publish, :unsplit, :chop1, :chop2, :chop3, :choplast1, :choplast2, :poetry, :frbrize]
 
   def analyze
     @text = HtmlFile.find(params[:id])
@@ -11,6 +13,57 @@ class HtmlFileController < ApplicationController
     params['commit'] = 'Commit'
     list
     render action: :list # help user find the newly-analyzed files
+  end
+
+  def new
+    @text = HtmlFile.new
+
+    respond_to do |format|
+      format.html # new.html.erb
+      format.json { render json: @text }
+    end
+  end
+
+  def create
+    @text = HtmlFile.new(params[:html_file])
+    respond_to do |format|
+      if @text.save
+        format.html { redirect_to url_for(action: :edit_markdown, id: @text.id), notice: t(:updated_successfully) }
+        format.json { render json: @text, status: :created, location: @text }
+      else
+        format.html { render action: "new" }
+        format.json { render json: @text.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def edit_markdown
+    @text = HtmlFile.find(params[:id])
+    unless params[:markdown].nil?
+      @text.markdown = params[:markdown].gsub('__________', '__SPLIT__') # TODO: make secure
+      @text.genre = params[:genre] unless params[:genre].blank?
+      @text.comments = params[:comments]
+      @text.save
+    end
+
+    if @text.markdown.nil? # convert on first show
+      bin = Faraday.get @text.doc.url # grab the doc/x binary
+      tmpfile = Tempfile.new(['docx2mmd__','.docx'], :encoding => 'ascii-8bit')
+      begin
+        tmpfile.write(bin.body)
+        tmpfilename = tmpfile.path
+        markdown = `pandoc -f docx -t markdown_mmd #{tmpfilename}`
+        @text.markdown = markdown
+        @text.save
+      rescue
+        flash[:error] = t(:conversion_error)
+        redirect_to controller: :admin, action: :index
+      ensure
+        tmpfile.close
+      end
+    end
+    @markdown = @text.markdown
+    @html = MultiMarkdown.new(@markdown.gsub('__SPLIT__', '__________')).to_html.force_encoding('UTF-8') # TODO: figure out why to_html defaults to ASCII 8-bit
   end
 
   def edit

@@ -146,6 +146,9 @@ Bybeconv::Application.routes.draw do
   get "html_file/chop_title"
   get "html_file/poetry"
   get 'html_file/mark_manual'
+  get 'html_file/new'
+  match 'html_file/edit_markdown', via: [:get, :post]
+  post 'html_file/create'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
