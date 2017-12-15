@@ -75,7 +75,7 @@ class Manifestation < ActiveRecord::Base
   end
 
   def safe_filename
-    fname = "#{title} #{I18n.t(:by)} #{expressions[0].persons[0].name}"
+    fname = "#{title} #{I18n.t(:by)} #{author_string}"
     return fname.gsub(/[^0-9א-תA-Za-z.\-]/, '_')
   end
 
