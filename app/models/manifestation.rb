@@ -56,7 +56,7 @@ class Manifestation < ActiveRecord::Base
   def recalc_heading_lines
     lines = markdown.lines
     temp_heading_lines = []
-    lines.each_index {|i| temp_heading_lines << i if lines[i][0..1] == '##' && lines[2] != '#' }
+    lines.each_index {|i| temp_heading_lines << i if lines[i][0..1] == '##' && lines[i][2] != '#' }
     self.cached_heading_lines = temp_heading_lines.join('|')
   end
 

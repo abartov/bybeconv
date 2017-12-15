@@ -52,7 +52,12 @@ class AdminController < ApplicationController
       prev = -10
       m.cached_heading_lines.split('|').each do |l|
         line_no = l.to_i
-        suspicious = true if line_no - prev < 5 # probably too short for separate chapter/section
+        if line_no - prev < 5
+          lines = m.markdown.split("\n")
+          if lines[prev..line_no].join.length < 500 # probably too short for separate chapter/section
+            suspicious = true
+          end
+        end
         prev = line_no
       end
       @suspicious << m if suspicious
