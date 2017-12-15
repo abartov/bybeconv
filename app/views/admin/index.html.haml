@@ -5,14 +5,16 @@
   %p= link_to 'עיון בהמלצות מן הציבור ('+@open_recommendations+')', legacy_recommendation_list_path(:status => 'new')
   - if current_user.admin?
     %h2= t(:admin_actions)
+    %h3= t(:conversion_actions)
+    %b= link_to t(:upload_file), html_file_new_path
     %p
-      %b= link_to t(:html_files_list), html_file_list_path
+      = link_to t(:html_files_list), html_file_list_path
     %p= link_to t(:html_dirs_list), html_dirs_path
     %hr
+    %h3= t(:main_catalog_management)
     %b
       %p= link_to t(:catalog_dashboard), manifestation_list_path
       %p= link_to t(:manage_people), authors_list_path
-    %p= link_to t(:user_management), user_list_path
     %hr
     %h3= t(:reports)
     %p= link_to t(:missing_language_report), admin_missing_languages_path
@@ -29,3 +31,6 @@
     %p= link_to t(:volunteer_profiles), url_for(action: :volunteer_profiles_list)
     %p= link_to t(:featured_content_management), url_for(action: :featured_content_list)
     %p= link_to t(:featured_authors_management), url_for(action: :featured_author_list)
+    %hr
+    %h3= t(:miscellaneous)
+    %p= link_to t(:user_management), user_list_path

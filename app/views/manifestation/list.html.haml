@@ -49,7 +49,8 @@
                   / = link_to t(:show), :action => 'show', :id => m
                   = ' | '
                   = link_to t(:render), url_for(action: :read, id: m.id)
-                  / = link_to t(:render), :action => 'render_html', :id => m
+                  = ' | '
+                  = link_to t(:edit_markdown), manifestation_edit_path(id: m.id)
 
           != paginate @manifestations, :params => session[:mft_q_params]
       .col-md-1
