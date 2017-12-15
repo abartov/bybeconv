@@ -16,8 +16,17 @@
     = f.label t(:first_author)
     %br
     = select_tag 'html_file[person_id]', options_from_collection_for_select(Person.order(:name), 'id','name'), include_blank: true
+  .backend-field
+    = f.label t(:translator)
+    %br
+    = select_tag 'html_file[translator_id]', options_from_collection_for_select(Person.order(:name), 'id','name'), include_blank: true
   %br
   = link_to t(:to_manage_people), authors_list_path
+  %br
+  .backend-field
+    = f.label t(:orig_lang)
+    %br
+    = select_tag 'html_file[orig_lang]', options_for_select(get_langs.map {|lang| [textify_lang(lang), lang]}, @text.orig_lang)
 
   .backend-field
     = f.label t(:comments)

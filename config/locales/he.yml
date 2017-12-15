@@ -246,10 +246,10 @@ he:
   random_order: (בסדר אקראי)
   translators: מתרגמים
   new_file: קובץ חדש
-  upload_file: העלאת קובץ וורד
+  upload_file: העלאת קובץ וורד (בפורמט DOCX בלבד!)
   conversion_actions: פעולות הסבה
   main_catalog_management: ניהול קטלוג ראשי
-  first_author: מחבר ראשון (לא מתרגם; אפשר להוסיף אישים אחר-כך, בקטלוג)
+  first_author: מחבר (לא מתרגם; אפשר להוסיף אישים אחר-כך, בקטלוג)
   suspicious_headings_report: "דו\"ח כותרות קרובות זו לזו (לעריכה)"
   suspicious_translations_report: "דו\"ח יצירות עם מחבר שווה למתרגם"
   most_read_authors_of_genre: יוצרי ה%{genre} הנקראים ביותר החודש

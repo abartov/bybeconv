@@ -26,6 +26,7 @@ class HtmlFileController < ApplicationController
 
   def create
     @text = HtmlFile.new(params[:html_file])
+    @text.status = 'Uploaded'
     respond_to do |format|
       if @text.save
         format.html { redirect_to url_for(action: :edit_markdown, id: @text.id), notice: t(:updated_successfully) }
@@ -42,6 +43,7 @@ class HtmlFileController < ApplicationController
     unless params[:markdown].nil?
       @text.markdown = params[:markdown].gsub('__________', '__SPLIT__') # TODO: make secure
       @text.genre = params[:genre] unless params[:genre].blank?
+      @text.orig_lang = params[:orig_lang] unless params[:orig_lang].blank?
       @text.comments = params[:comments]
       @text.save
     end
@@ -167,12 +169,18 @@ class HtmlFileController < ApplicationController
       redirect_to action: :render_html, id: @text.id
     else
       unless @text.person.nil?
+        oldstatus = @text.status
         @text.status = 'Accepted'
         @text.genre = params['genre'] unless params['genre'].nil?
         @text.save!
-        @text.create_WEM(@text.person.id)
-        flash[:notice] = t(:created_frbr)
-        redirect_to action: :list
+        if oldstatus == 'Uploaded' # new, direct way!
+          @text.create_WEM_new(@text.person.id)
+          flash[:notice] = t(:created_frbr)
+          redirect_to controller: :admin, action: :index
+        else
+          @text.create_WEM(@text.person.id)
+          redirect_to action: :list
+        end
       else
         flash[:error] = t(:cannot_create_frbr)
         redirect_to action: :render_html, id: @text.id

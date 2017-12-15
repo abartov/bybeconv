@@ -315,7 +315,7 @@ class HtmlFile < ActiveRecord::Base
   belongs_to :assignee, class_name: 'User', foreign_key: 'assignee_id'
   scope :with_nikkud, -> { where("nikkud IS NOT NULL and nikkud <> 'none'") }
   scope :not_stripped, -> { where('stripped_nikkud IS NULL or stripped_nikkud = 0') }
-  attr_accessible :title, :genre, :markdown, :comments, :path, :url, :status, :orig_mtime, :orig_ctime, :person_id, :doc
+  attr_accessible :title, :genre, :markdown, :comments, :path, :url, :status, :orig_mtime, :orig_ctime, :person_id, :doc, :translator_id, :orig_lang
 
   has_attached_file :doc, storage: :s3, s3_credentials: 'config/s3.yml', s3_region: 'us-east-1'
   validates_attachment_content_type :doc, content_type: /officedocument\.word/
@@ -540,6 +540,39 @@ class HtmlFile < ActiveRecord::Base
     else
       return false
     end
+  end
+
+  def create_WEM_new(person_id)
+    if status == 'Accepted'
+      begin
+        p = Person.find(person_id)
+        w = Work.new(title: title, orig_lang: orig_lang, genre: genre, comment: comments) # TODO: un-hardcode?
+        copyrighted = (p.public_domain ? false : (p.public_domain.nil? ? nil : true)) # if author is PD, expression is PD # TODO: make this depend on both work and expression author, for translations
+        e = Expression.new(title: title, language: 'he', copyrighted: copyrighted, genre: genre, comment: comments) # ISO codes
+        w.expressions << e
+        w.save!
+        c = Creation.new(work_id: w.id, person_id: p.id, role: :author)
+        c.save!
+        em_author = (translator_id.nil? ? p : translator) # the author of the Expression and Manifestation is the translator, if one exists
+        r = Realizer.new(expression_id: e.id, person_id: em_author.id, role: :translator)
+        r.save!
+        m = Manifestation.new(title: title, responsibility_statement: em_author.name, medium: 'e-text', publisher: AppConstants.our_publisher, publication_place: AppConstants.our_place_of_publication, publication_date: Date.today, markdown: markdown, comment: comments)
+        m.save!
+        m.people << em_author
+        e.manifestations << m
+        e.save!
+        manifestations << m # this HtmlFile itself should know the manifestation created out of it
+        status = 'Published'
+        save!
+        m.recalc_cached_people!
+        return true
+      rescue
+        flash[:error] = 'Error while create FRBR entities from HTML file!'
+      end
+    else
+      flash[:error] = t(:must_accept_before_publishing)
+    end
+    false
   end
 
   def create_WEM(person_id)

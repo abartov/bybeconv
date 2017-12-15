@@ -4,9 +4,16 @@
     %h3
       = t(:by)+' '
       = link_to @text.person.name+' ('+t(:author)+')', authors_show_path(id: @text.person.id)
-  %h3= label_tag(:genre, t(:genre))
-  = select_tag(:genre, options_for_select(get_genres.map {|genre| [I18n.t(genre), genre]}, @text.genre), {include_blank: true})
+      - unless @text.translator.nil?
+        = t(:translated_by)+' '
+        = link_to @text.translator.name+' ('+t(:translator)+')', authors_show_path(id: @text.translator.id)
   = form_tag(action: 'edit_markdown', id: @text.id) do
+    %h3= label_tag t(:orig_lang)
+    %br
+    = select_tag 'orig_lang', options_for_select(get_langs.map {|lang| [textify_lang(lang), lang]})
+
+    %h3= label_tag(:genre, t(:genre))
+    = select_tag(:genre, options_for_select(get_genres.map {|genre| [I18n.t(genre), genre]}, @text.genre), {include_blank: true})
     .markdown_container
       %div{ style:"vertical-align:top; width: 30%;display:flex;margin-right:10px;flex-direction:column;height:100%;box-sizing:border-box;float:left;padding-right:7px;"}
         #legacy_markdown_link
@@ -35,7 +42,6 @@
             != raw(t(:accept_conversion_and) + link_to(t(:frbrize), html_file_frbrize_path(@text)))
 
 :javascript
-  var font_size = 12
   jQuery(document).ready(function() {
     var newsize = $('.markdown_container').height() - $('#legacy_markdown_link').height(); // this is horrible, but I've given up on getting the textarea to auto-fill the container height. :((
     $('.markdown').css('height', newsize);
