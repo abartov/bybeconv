@@ -1,5 +1,5 @@
 .top-element
-  %h2= @text.title
+  %h2{style:"#{@text.has_splits ? 'color:grey':'' }"}= @text.title
   - unless @text.person.nil?
     %h3
       = t(:by)+' '

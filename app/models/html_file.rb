@@ -308,6 +308,7 @@ class NokoDoc < Nokogiri::XML::SAX::Document
 end
 
 class HtmlFile < ActiveRecord::Base
+  include Ensure_docx_content_type # fixing docx content-type detection problem, per https://github.com/thoughtbot/paperclip/issues/1713
   has_paper_trail
   has_and_belongs_to_many :manifestations
   belongs_to :person # for simplicity, only a single author considered per HtmlFile -- additional authors can be added on the WEM entities later
@@ -318,7 +319,8 @@ class HtmlFile < ActiveRecord::Base
   attr_accessible :title, :genre, :markdown, :comments, :path, :url, :status, :orig_mtime, :orig_ctime, :person_id, :doc, :translator_id, :orig_lang
 
   has_attached_file :doc, storage: :s3, s3_credentials: 'config/s3.yml', s3_region: 'us-east-1'
-  validates_attachment_content_type :doc, content_type: /officedocument\.word/
+#  validates_attachment_content_type :doc, content_type: ['application/vnd.openxmlformats-officedocument.wordprocessingml.document']
+  validates_attachment_content_type :doc, content_type: ['application/zip']
 
   # a trivial enum just for this entity.  Roles would be expressed with an ActiveRecord enum in the actual (FRBR) catalog entites (Expression etc.)
   ROLE_AUTHOR = 1
@@ -455,6 +457,10 @@ class HtmlFile < ActiveRecord::Base
 
   def filepart
     path[path.rindex('/') + 1..-1]
+  end
+
+  def has_splits
+    self.markdown =~ /^&&& /
   end
 
   def delete_pregen

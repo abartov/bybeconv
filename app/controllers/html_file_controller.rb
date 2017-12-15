@@ -41,7 +41,7 @@ class HtmlFileController < ApplicationController
   def edit_markdown
     @text = HtmlFile.find(params[:id])
     unless params[:markdown].nil?
-      @text.markdown = params[:markdown].gsub('__________', '__SPLIT__') # TODO: make secure
+      @text.markdown = params[:markdown]
       @text.genre = params[:genre] unless params[:genre].blank?
       @text.orig_lang = params[:orig_lang] unless params[:orig_lang].blank?
       @text.comments = params[:comments]
@@ -65,7 +65,7 @@ class HtmlFileController < ApplicationController
       end
     end
     @markdown = @text.markdown
-    @html = MultiMarkdown.new(@markdown.gsub('__SPLIT__', '__________')).to_html.force_encoding('UTF-8') # TODO: figure out why to_html defaults to ASCII 8-bit
+    @html = MultiMarkdown.new(@markdown.gsub(/^&&& (.*)/, '<h1>\1</h1>')).to_html.force_encoding('UTF-8') # TODO: figure out why to_html defaults to ASCII 8-bit
   end
 
   def edit
