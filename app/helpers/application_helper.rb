@@ -130,6 +130,8 @@ module ApplicationHelper
       return t(:published)
     when 'Manual'
       return t(:manual)
+    when 'Uploaded'
+      return t(:uploaded_directly)
     else
       return t(:unknown)
     end

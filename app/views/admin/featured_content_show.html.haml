@@ -34,7 +34,7 @@
       %tr
         %td= fcf.fromdate.strftime('%d-%m-%Y')
         %td= fcf.todate.strftime('%d-%m-%Y')
-        %td= link_to t(:destroy), url_for(action: :featured_content_delete_feature, id: fcf.id)
+        %td= link_to t(:destroy), url_for(action: :featured_content_delete_feature, id: fcf.id), :data => { :confirm => t(:are_you_sure) }
   = form_tag 'add_feature' do
     = hidden_field_tag :fcid, @fc.id
     = label_tag t(:fromdate)+': '

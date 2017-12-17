@@ -150,7 +150,7 @@ Bybeconv::Application.routes.draw do
   get 'html_file/new'
   match 'html_file/edit_markdown', via: [:get, :post]
   post 'html_file/create'
-
+  get 'html_file/destroy'
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

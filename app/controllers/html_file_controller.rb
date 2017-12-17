@@ -4,7 +4,7 @@ class HtmlFileController < ApplicationController
   before_filter :require_editor, only: [:edit, :update, :list_for_editor]
   # before_filter :require_user, :only => [:edit, :update]
 
-  before_filter :require_admin, only: [:analyze, :analyze_all, :new, :create, :list, :parse, :publish, :unsplit, :chop1, :chop2, :chop3, :choplast1, :choplast2, :poetry, :frbrize]
+  before_filter :require_admin, only: [:analyze, :analyze_all, :new, :create, :destroy, :list, :parse, :publish, :unsplit, :chop1, :chop2, :chop3, :choplast1, :choplast2, :poetry, :frbrize]
 
   def analyze
     @text = HtmlFile.find(params[:id])
@@ -119,6 +119,7 @@ class HtmlFileController < ApplicationController
     @total_badenc = HtmlFile.where(status: 'BadCP1255').count
     @total_fileerr = HtmlFile.where(status: 'FileError').count
     @total_parsed = HtmlFile.where(status: 'Parsed').count
+    @total_uploaded = HtmlFile.where(status: 'Uploaded').count
     @total_accepted = HtmlFile.where(status: 'Accepted').count
     @total_published = HtmlFile.where(status: 'Published').count
     @total_manual = HtmlFile.where(status: 'Manual').count
@@ -143,11 +144,10 @@ class HtmlFileController < ApplicationController
 
     # TODO: figure out how to include filter by path without making the query fugly
     if p.blank?
-      @texts = HtmlFile.where(assignee_cond).where(query).page(params[:page]).order('status ASC')
+      @texts = HtmlFile.where(assignee_cond).where(query).page(params[:page]).order('updated_at DESC')
     else
-      @texts = HtmlFile.where(assignee_cond).where('path like ?', '%' + params[:path] + '%').page(params[:page]).order('status ASC')
+      @texts = HtmlFile.where(assignee_cond).where('path like ?', '%' + params[:path] + '%').page(params[:page]).order('updated_at DESC')
     end
-    # @texts = HtmlFile.page(params[:page]).order('status ASC')
   end
 
   def parse
@@ -166,6 +166,14 @@ class HtmlFileController < ApplicationController
     @text.status = 'Manual'
     @text.assignee_id = nil
     @text.save!
+    redirect_to action: :list
+  end
+
+  def destroy
+    h = HtmlFile.find(params[:id])
+    unless h.nil?
+      h.destroy!
+    end
     redirect_to action: :list
   end
 

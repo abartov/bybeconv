@@ -594,7 +594,7 @@ class HtmlFile < ActiveRecord::Base
   end
 
   def create_WEM_new(person_id, the_title, the_markdown)
-    if status == 'Accepted'
+    if self.status == 'Accepted'
       begin
         p = Person.find(person_id)
         w = Work.new(title: the_title, orig_lang: orig_lang, genre: genre, comment: comments) # TODO: un-hardcode?
@@ -613,7 +613,7 @@ class HtmlFile < ActiveRecord::Base
         e.manifestations << m
         e.save!
         manifestations << m # this HtmlFile itself should know the manifestation created out of it
-        status = 'Published'
+        self.status = 'Published'
         save!
         m.recalc_cached_people!
         return true

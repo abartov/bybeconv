@@ -43,6 +43,15 @@
         window.scrollTo(0,position);
       }// else alert('nope');
     });
+
+    function to_footnote(id) {
+      anchorselector = 'a[name=ch'+this.value+']'
+      elem = $(anchorselector)
+      if(elem != null || elem.position() == null)
+      {
+        position = elem.offset().top - offsetTop;
+        window.scrollTo(0,position);
+    };
     /******************************/
     /* stuff for the find-in-page */
 

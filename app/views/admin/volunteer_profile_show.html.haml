@@ -26,7 +26,7 @@
       %tr
         %td= vpf.fromdate.strftime('%d-%m-%Y')
         %td= vpf.todate.strftime('%d-%m-%Y')
-        %td= link_to t(:destroy), url_for(action: :volunteer_profile_delete_feature, id: vpf.id)
+        %td= link_to t(:destroy), url_for(action: :volunteer_profile_delete_feature, id: vpf.id), :data => { :confirm => t(:are_you_sure) }
   = form_tag 'add_feature' do
     = hidden_field_tag :vpid, @vp.id
     = label_tag t(:fromdate)+': '
