@@ -197,7 +197,7 @@ class HtmlFileController < ApplicationController
             @text.create_WEM_new(@text.person.id, @text.title, @text.markdown)
           end
           flash[:notice] = t(:created_frbr)
-          redirect_to controller: :admin, action: :index
+          redirect_to controller: :manifestation, action: :list
         else
           @text.create_WEM(@text.person.id)
           redirect_to action: :list
