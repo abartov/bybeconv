@@ -62,8 +62,7 @@
     if(#{@text.has_splits})
       $('#frbrize_button').click(function(e){
         e.preventDefault();
-        if(/&&& /.test($('#markdown').text())) {
-          if(/\S+\n+&&& /m.test($('#markdown').text()))
+        if((/&&& /.test($('#markdown').val())) && (/^\s*\S+\s*&&& /m.test($('#markdown').val()))) {
             alert("#{t(:non_whitespace_before_first_part)}");
         } else {
           alert("#{t(:careful_with_splits)}");

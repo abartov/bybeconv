@@ -65,7 +65,14 @@ class HtmlFileController < ApplicationController
       end
     end
     @markdown = @text.markdown
-    @html = MultiMarkdown.new(@markdown.gsub(/^&&& (.*)/, '<hr style="border-color:#2b0d22;border-width:20px;margin-top:40px"/><h1>\1</h1>')).to_html.force_encoding('UTF-8') # TODO: figure out why to_html defaults to ASCII 8-bit
+    @html = ''
+    if @text.has_splits
+      @text.split_parts.each_pair do |title, markdown|
+        @html += "<hr style='border-color:#2b0d22;border-width:20px;margin-top:40px'/><h1>#{title}</h1>"+MultiMarkdown.new(markdown).to_html.force_encoding('UTF-8')
+      end
+    else
+      @html = MultiMarkdown.new(@markdown.gsub(/^&&& (.*)/, '<hr style="border-color:#2b0d22;border-width:20px;margin-top:40px"/><h1>\1</h1>')).to_html.force_encoding('UTF-8') # TODO: figure out why to_html defaults to ASCII 8-bit
+    end
   end
 
   def edit

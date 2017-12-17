@@ -464,7 +464,9 @@ class HtmlFile < ActiveRecord::Base
   end
 
   def split_parts
+    any_footnotes = self.markdown =~ /\[\^\d+\]/ ? true : false
     prev_key = nil
+    titles_order = []
     ret = {}
     footbuf = ''
     self.markdown.split(/^(&&& .*)/).each do |bit|
@@ -472,7 +474,6 @@ class HtmlFile < ActiveRecord::Base
         prev_key = bit[4..-1].strip # remember next section's title
         stop = false
         begin
-          byebug
           if prev_key =~ /\[\^\d+\]/ # if the title line has a footnote
             footbuf += $& # store the footnote
             prev_key.sub!($&,'').strip! # and remove it from the title
@@ -482,7 +483,25 @@ class HtmlFile < ActiveRecord::Base
         end until stop # handle multiple footnotes if they exist.
       else
         ret[prev_key] = footbuf+bit unless prev_key.nil? # buffer the text to be put in the prev_key next iteration
+        titles_order << prev_key unless prev_key.nil?
         footbuf = ''
+      end
+    end
+    # great! now we have the different pieces sorted, *but* any footnotes are *only* in the last piece, even if they belong in earlier pieces. So we need to fix that.
+    if any_footnotes # hey, easy case is easy
+      footnotes_by_key = {}
+      ret.keys.map{|k| footnotes_by_key[k] = ret[k].scan(/\[\^\d+\][^:]/).map{|line| line[0..-2]} }
+      # now that we know which ones belong where, we can move them over
+      titles_order.each do |key|
+        next if key == titles_order[-1] # last one needs no handling
+        next if footnotes_by_key[key].nil?
+        buf = ''
+        footnotes_by_key[key].each do |foot|
+          ret[titles_order[-1]] =~ /(#{Regexp.quote(foot.strip)}:.*?)\[\^\d+\]/m # grab the entire footnote, right up to the next one, into $1
+          buf += $1 # and buffer it
+          ret[titles_order[-1]].sub!($1,'') # and remove it from the final chunk's footnotes, where it does not belong
+        end
+        ret[key] += "\n"+buf
       end
     end
     return ret
