@@ -59,6 +59,7 @@ Bybeconv::Application.routes.draw do
   patch "authors/update"
   get 'authors/get_random_author'
   match 'author/:id/edit_toc' => 'authors#edit_toc', as: 'authors_edit_toc', via: [:get, :post]
+  match 'author/:id/create_toc' => 'authors#create_toc', as: 'authors_create_toc', via: [:get]
 
   get "read/:id" => 'manifestation#read', as: 'manifestation_read'
   get "read/:id/read" => 'manifestation#readmode', as: 'manifestation_readmode'

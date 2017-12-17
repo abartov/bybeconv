@@ -20,6 +20,26 @@ class AuthorsController < ApplicationController
     @authors_abc = Person.order(:name).page(params[:page]).limit(25) # get page X of all authors
   end
 
+  def create_toc
+    author = Person.find(params[:id])
+    unless author.nil?
+      if author.toc.nil?
+        toc = Toc.new(toc: AppConstants.toc_template, status: :raw, credits: '')
+        toc.save!
+        author.toc = toc
+        author.save!
+        flash[:notice] = t(:created_toc)
+        redirect_to controller: :authors, action: :show, id: params[:id]
+      else
+        flash[:error] = t(:already_has_toc)
+        redirect_to controller: :authors, action: :show, id: params[:id]
+      end
+    else
+      flash[:error] = t(:no_such_item)
+      redirect_to controller: :admin, action: :index
+    end
+  end
+
   def index
     @page_title = t(:authors)+' - '+t(:project_ben_yehuda)
     @pop_by_genre = cached_popular_authors_by_genre # get popular authors by genre + most popular translated
