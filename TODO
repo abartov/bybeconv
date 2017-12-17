@@ -13,6 +13,7 @@
   - query work by tag
   - admin review, approve/reject tags and recommendations
 
+- JS bit with autocomplete to add a link to a manifestation in TOC editing
 - !! fix footnote anchors' scrolling relative to margin-top
 - !! add translations box to works view right side
 - implement bookmarks (see notes in code!)
@@ -23,7 +24,6 @@
 - implement recommendation flagging (data model, review)
 - implement the scroll-gradients in work read and readmode
 - implement those-who-read-this-also-read-that (i.e. https://measuringu.com/affinity-analysis/)
-- implement more-of-this-author separately for translatees
 - implement references-to-this-work
 - (?) other extras at bottom of work read
 - implement chapter-only display
@@ -43,9 +43,6 @@
   - need to calculate in controller
 - process ToCs
   - process bad ToCs (bad_tocs.txt)
-- read mode
-  - interactive features
-- workS view
 - search
 - search results
 - backend
@@ -55,7 +52,6 @@
 * always: rake notes
 * fix RTL alignment in downloaded DOC files
 * set fonts in HTML, DOC, PDF(?), EPUB(?), MOBI(?)
-fix circular logic of HtmlFile.metadata_ready?
 check HtmlFile id 4291 in production (Sokolov) -- currently(??) crashing on charset
 - maybe switch to a print CSS rather than a print action/view?  crucial code is @media print {
   div.info, div#editStuff, div#navigation, div#debug {
