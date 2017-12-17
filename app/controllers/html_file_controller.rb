@@ -65,7 +65,7 @@ class HtmlFileController < ApplicationController
       end
     end
     @markdown = @text.markdown
-    @html = MultiMarkdown.new(@markdown.gsub(/^&&& (.*)/, '<h1>\1</h1>')).to_html.force_encoding('UTF-8') # TODO: figure out why to_html defaults to ASCII 8-bit
+    @html = MultiMarkdown.new(@markdown.gsub(/^&&& (.*)/, '<hr style="border-color:#2b0d22;border-width:20px;margin-top:40px"/><h1>\1</h1>')).to_html.force_encoding('UTF-8') # TODO: figure out why to_html defaults to ASCII 8-bit
   end
 
   def edit
@@ -174,7 +174,13 @@ class HtmlFileController < ApplicationController
         @text.genre = params['genre'] unless params['genre'].nil?
         @text.save!
         if oldstatus == 'Uploaded' # new, direct way!
-          @text.create_WEM_new(@text.person.id)
+          if @text.has_splits
+            @text.split_parts.each_pair do |title, markdown|
+              @text.create_WEM_new(@text.person.id, title, markdown)
+            end
+          else
+            @text.create_WEM_new(@text.person.id, @text.title, @text.markdown)
+          end
           flash[:notice] = t(:created_frbr)
           redirect_to controller: :admin, action: :index
         else

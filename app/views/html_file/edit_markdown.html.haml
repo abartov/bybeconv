@@ -1,49 +1,73 @@
 .top-element
-  %h2{style:"#{@text.has_splits ? 'color:grey':'' }"}= @text.title
-  - unless @text.person.nil?
-    %h3
-      = t(:by)+' '
-      = link_to @text.person.name+' ('+t(:author)+')', authors_show_path(id: @text.person.id)
-      - unless @text.translator.nil?
-        = t(:translated_by)+' '
-        = link_to @text.translator.name+' ('+t(:translator)+')', authors_show_path(id: @text.translator.id)
   = form_tag(action: 'edit_markdown', id: @text.id) do
-    %h3= label_tag t(:orig_lang)
-    %br
-    = select_tag 'orig_lang', options_for_select(get_langs.map {|lang| [textify_lang(lang), lang]})
+    .container-fluid
+      .row
+        .col-md-1
+        .col-md-10
+          .row
+            .col-md-6
+              %h3= label_tag t(:orig_lang)
+              %br
+              = select_tag 'orig_lang', options_for_select(get_langs.map {|lang| [textify_lang(lang), lang]})
 
-    %h3= label_tag(:genre, t(:genre))
-    = select_tag(:genre, options_for_select(get_genres.map {|genre| [I18n.t(genre), genre]}, @text.genre), {include_blank: true})
-    .markdown_container
-      %div{ style:"vertical-align:top; width: 30%;display:flex;margin-right:10px;flex-direction:column;height:100%;box-sizing:border-box;float:left;padding-right:7px;"}
-        #legacy_markdown_link
-          %h2= t(:markdown)
-        .markdown
-          = text_area_tag(:markdown, raw(@markdown), class: 'textarea100')
-      %h2= t(:display_text)
-      %div{ style:"vertical-align:top; width: 70%; padding-left:10px;padding-right:15px;background:#d2cfcf;"}
-        != raw(@html)
-        %br
-    %h3= t(:comments)
-    = text_area_tag(:comments, @text.comments)
-    %br
-    %b
-      = submit_tag t(:save_and_update_display)
+              %h3= label_tag(:genre, t(:genre))
+              = select_tag(:genre, options_for_select(get_genres.map {|genre| [I18n.t(genre), genre]}, @text.genre), {include_blank: true})
+            .col-md-6
+              - if @text.has_splits
+                %h1{style:'color:green'}= "** #{t(:split_work_mode)} **"
+                %p!= t(:split_work_mode_intro)
+              - else
+                %h2= @text.title
+              - unless @text.person.nil?
+                %h3
+                  = t(:by)+' '
+                  = link_to @text.person.name+' ('+t(:author)+')', authors_show_path(id: @text.person.id)
+                  - unless @text.translator.nil?
+                    = t(:translated_by)+' '
+                    = link_to @text.translator.name+' ('+t(:translator)+')', authors_show_path(id: @text.translator.id)
+          .markdown_container
+            %div{ style:"vertical-align:top; width: 30%;display:flex;margin-right:10px;flex-direction:column;height:100%;box-sizing:border-box;float:left;padding-right:7px;"}
+              #legacy_markdown_link
+                %h2= t(:markdown)
+              .markdown
+                = text_area_tag(:markdown, raw(@markdown), class: 'textarea100')
+            %h2= t(:display_text)
+            %div{ style:"vertical-align:top; width: 70%; padding-left:10px;padding-right:15px;background:#d2cfcf;"}
+              != raw(@html)
+              %br
+          %h3= t(:comments)
+          = text_area_tag(:comments, @text.comments)
+          %br
+          %b
+            = submit_tag t(:save_and_update_display)
 
-    %h3= t(:actions)
-    %ul
-      %li
-        %b
-          - if @text.genre.nil? or @text.genre.empty?
-            = t(:must_set_genre)
-          - elsif @text.status == 'Accepted'
-            != link_to t(:publish), action: :publish, id: @text.id
-          - elsif @text.status != 'Published'
-            != raw(t(:accept_conversion_and) + link_to(t(:frbrize), html_file_frbrize_path(@text)))
+          %h3= t(:actions)
+          %ul
+            %li
+              %b
+                - if @text.genre.nil? or @text.genre.empty?
+                  = t(:must_set_genre)
+                - elsif @text.status == 'Accepted'
+                  != link_to t(:publish), action: :publish, id: @text.id
+                - elsif @text.status != 'Published'
+                  != raw(t(:accept_conversion_and) + link_to(t(:frbrize), html_file_frbrize_path(@text), id: 'frbrize_button'))
+        .col-md-1
 
 :javascript
   jQuery(document).ready(function() {
     var newsize = $('.markdown_container').height() - $('#legacy_markdown_link').height(); // this is horrible, but I've given up on getting the textarea to auto-fill the container height. :((
     $('.markdown').css('height', newsize);
     $('.textarea100').css('height', newsize);
+    $('.textarea100').css('overflow-y', 'scroll');
+    if(#{@text.has_splits})
+      $('#frbrize_button').click(function(e){
+        e.preventDefault();
+        if(/&&& /.test($('#markdown').text())) {
+          if(/\S+\n+&&& /m.test($('#markdown').text()))
+            alert("#{t(:non_whitespace_before_first_part)}");
+        } else {
+          alert("#{t(:careful_with_splits)}");
+          $('#frbrize_button').off('click'); // show only once
+        }
+      });
   });

@@ -463,6 +463,31 @@ class HtmlFile < ActiveRecord::Base
     self.markdown =~ /^&&& /
   end
 
+  def split_parts
+    prev_key = nil
+    ret = {}
+    footbuf = ''
+    self.markdown.split(/^(&&& .*)/).each do |bit|
+      if bit[0..3] == '&&& '
+        prev_key = bit[4..-1].strip # remember next section's title
+        stop = false
+        begin
+          byebug
+          if prev_key =~ /\[\^\d+\]/ # if the title line has a footnote
+            footbuf += $& # store the footnote
+            prev_key.sub!($&,'').strip! # and remove it from the title
+          else
+            stop = true
+          end
+        end until stop # handle multiple footnotes if they exist.
+      else
+        ret[prev_key] = footbuf+bit unless prev_key.nil? # buffer the text to be put in the prev_key next iteration
+        footbuf = ''
+      end
+    end
+    return ret
+  end
+
   def delete_pregen
     begin
       File.delete path + '.html' if html_ready?
@@ -470,6 +495,7 @@ class HtmlFile < ActiveRecord::Base
       nil
     end
   end
+
   # TODO: move those to be controller actions
   def make_html
     make_html_with_params(path + '.html', false)
@@ -548,13 +574,13 @@ class HtmlFile < ActiveRecord::Base
     end
   end
 
-  def create_WEM_new(person_id)
+  def create_WEM_new(person_id, the_title, the_markdown)
     if status == 'Accepted'
       begin
         p = Person.find(person_id)
-        w = Work.new(title: title, orig_lang: orig_lang, genre: genre, comment: comments) # TODO: un-hardcode?
+        w = Work.new(title: the_title, orig_lang: orig_lang, genre: genre, comment: comments) # TODO: un-hardcode?
         copyrighted = (p.public_domain ? false : (p.public_domain.nil? ? nil : true)) # if author is PD, expression is PD # TODO: make this depend on both work and expression author, for translations
-        e = Expression.new(title: title, language: 'he', copyrighted: copyrighted, genre: genre, comment: comments) # ISO codes
+        e = Expression.new(title: the_title, language: 'he', copyrighted: copyrighted, genre: genre, comment: comments) # ISO codes
         w.expressions << e
         w.save!
         c = Creation.new(work_id: w.id, person_id: p.id, role: :author)
@@ -562,7 +588,7 @@ class HtmlFile < ActiveRecord::Base
         em_author = (translator_id.nil? ? p : translator) # the author of the Expression and Manifestation is the translator, if one exists
         r = Realizer.new(expression_id: e.id, person_id: em_author.id, role: :translator)
         r.save!
-        m = Manifestation.new(title: title, responsibility_statement: em_author.name, medium: 'e-text', publisher: AppConstants.our_publisher, publication_place: AppConstants.our_place_of_publication, publication_date: Date.today, markdown: markdown, comment: comments)
+        m = Manifestation.new(title: the_title, responsibility_statement: em_author.name, medium: I18n.t(:etext), publisher: AppConstants.our_publisher, publication_place: AppConstants.our_place_of_publication, publication_date: Date.today, markdown: the_markdown, comment: comments)
         m.save!
         m.people << em_author
         e.manifestations << m
