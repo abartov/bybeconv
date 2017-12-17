@@ -29,7 +29,7 @@
             %th= t(:translation)+'?'
             %th= t(:translator)
             %th= t(:genre)
-            %th= '...'
+            %th= t(:updated_at)
             %th= t(:actions)
 
             - @manifestations.each do |m|
@@ -43,7 +43,7 @@
                   %td= t(:no)
                   %td= ''
                 %td= textify_genre(m.expressions[0].genre)
-                %td= '...'
+                %td= m.updated_at.to_s
                 %td
                   = link_to t(:show), manifestation_show_path(m.id)
                   / = link_to t(:show), :action => 'show', :id => m

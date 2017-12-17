@@ -205,7 +205,7 @@ class ManifestationController < ApplicationController
     @urlbase = url_for(action: :show, id:1)[0..-2]
     # DB
     if params[:title].blank? && params[:author].blank?
-      @manifestations = Manifestation.page(params[:page]).order('title ASC')
+      @manifestations = Manifestation.page(params[:page]).order('updated_at DESC')
     else
       if params[:author].blank?
         @manifestations = Manifestation.where('title like ?', '%' + params[:title] + '%').page(params[:page]).order('title ASC')
