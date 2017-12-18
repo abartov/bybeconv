@@ -56,6 +56,8 @@
 :javascript
   jQuery(document).ready(function() {
     var newsize = $('.markdown_container').height() - $('#legacy_markdown_link').height(); // this is horrible, but I've given up on getting the textarea to auto-fill the container height. :((
+    if(newsize < 150)
+      newsize = 150;
     $('.markdown').css('height', newsize);
     $('.textarea100').css('height', newsize);
     $('.textarea100').css('overflow-y', 'scroll');

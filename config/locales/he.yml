@@ -247,6 +247,8 @@ he:
   random_order: (בסדר אקראי)
   translators: מתרגמים
   new_file: קובץ חדש
+  file_can_be_skipped: ניתן גם לדלג על העלאת קובץ וליצור רשומה עם טקסט ריק, למשל כדי להדביק טקסט.
+  empty_markdown_template: קובץ ריק נוצר.  הדבק כאן טקסט במקום המלים הללו.
   upload_file: העלאת קובץ וורד (בפורמט DOCX בלבד!)
   conversion_actions: פעולות הסבה
   create_toc: יצירת תוכן עניינים ריק

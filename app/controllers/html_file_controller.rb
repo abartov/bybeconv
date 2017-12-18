@@ -49,19 +49,24 @@ class HtmlFileController < ApplicationController
     end
 
     if @text.markdown.nil? # convert on first show
-      bin = Faraday.get @text.doc.url # grab the doc/x binary
-      tmpfile = Tempfile.new(['docx2mmd__','.docx'], :encoding => 'ascii-8bit')
-      begin
-        tmpfile.write(bin.body)
-        tmpfilename = tmpfile.path
-        markdown = `pandoc -f docx -t markdown_mmd #{tmpfilename}`
-        @text.markdown = markdown
+      unless @text.doc.file? # accept no-attachment HTML "files", and start an empty one
+        @text.markdown = t(:empty_markdown_template)
         @text.save
-      rescue
-        flash[:error] = t(:conversion_error)
-        redirect_to controller: :admin, action: :index
-      ensure
-        tmpfile.close
+      else
+        bin = Faraday.get @text.doc.url # grab the doc/x binary
+        tmpfile = Tempfile.new(['docx2mmd__','.docx'], :encoding => 'ascii-8bit')
+        begin
+          tmpfile.write(bin.body)
+          tmpfilename = tmpfile.path
+          markdown = `pandoc -f docx -t markdown_mmd #{tmpfilename}`
+          @text.markdown = markdown
+          @text.save
+        rescue
+          flash[:error] = t(:conversion_error)
+          redirect_to controller: :admin, action: :index
+        ensure
+          tmpfile.close
+        end
       end
     end
     @markdown = @text.markdown
