@@ -320,7 +320,7 @@ class HtmlFile < ActiveRecord::Base
 
   has_attached_file :doc, storage: :s3, s3_credentials: 'config/s3.yml', s3_region: 'us-east-1'
 #  validates_attachment_content_type :doc, content_type: ['application/vnd.openxmlformats-officedocument.wordprocessingml.document']
-  validates_attachment_content_type :doc, content_type: ['application/zip']
+  validates_attachment_content_type :doc, content_type: ['application/zip', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']
 
   # a trivial enum just for this entity.  Roles would be expressed with an ActiveRecord enum in the actual (FRBR) catalog entites (Expression etc.)
   ROLE_AUTHOR = 1

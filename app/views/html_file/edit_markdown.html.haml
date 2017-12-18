@@ -59,7 +59,7 @@
     $('.markdown').css('height', newsize);
     $('.textarea100').css('height', newsize);
     $('.textarea100').css('overflow-y', 'scroll');
-    if(#{@text.has_splits})
+    if(#{@text.has_splits ? true : false})
       $('#frbrize_button').click(function(e){
         e.preventDefault();
         if((/&&& /.test($('#markdown').val( ))) && (/^\s*\S+\s*&&& /m.test($('#markdown').val()))) {
