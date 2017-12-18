@@ -593,7 +593,7 @@ class HtmlFile < ActiveRecord::Base
     end
   end
 
-  def create_WEM_new(person_id, the_title, the_markdown)
+  def create_WEM_new(person_id, the_title, the_markdown, multiple)
     if self.status == 'Accepted'
       begin
         p = Person.find(person_id)
@@ -613,17 +613,16 @@ class HtmlFile < ActiveRecord::Base
         e.manifestations << m
         e.save!
         manifestations << m # this HtmlFile itself should know the manifestation created out of it
-        self.status = 'Published'
+        self.status = 'Published' unless multiple # if called for split parts, we need to keep the status 'Accepted' for the check above. Status will be updated be caller.
         save!
         m.recalc_cached_people!
         return true
       rescue
-        flash[:error] = 'Error while create FRBR entities from HTML file!'
+        return 'Error while create FRBR entities from HTML file!'
       end
     else
-      flash[:error] = t(:must_accept_before_publishing)
+      return I18n.t(:must_accept_before_publishing)
     end
-    false
   end
 
   def create_WEM(person_id)
@@ -654,12 +653,11 @@ class HtmlFile < ActiveRecord::Base
 
         return true
       rescue
-        flash[:error] = 'Error while create FRBR entities from HTML file!'
+        return 'Error while create FRBR entities from HTML file!'
       end
     else
-      flash[:error] = t(:must_accept_before_publishing)
+      return t(:must_accept_before_publishing)
     end
-    false
   end
 
   def remove_line_nums!

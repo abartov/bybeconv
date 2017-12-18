@@ -193,19 +193,31 @@ class HtmlFileController < ApplicationController
         @text.status = 'Accepted'
         @text.genre = params['genre'] unless params['genre'].nil?
         @text.save!
+        success = false
         if oldstatus == 'Uploaded' # new, direct way!
           if @text.has_splits
             @text.split_parts.each_pair do |title, markdown|
-              @text.create_WEM_new(@text.person.id, title, markdown)
+              success = @text.create_WEM_new(@text.person.id, title, markdown, true)
             end
+            @text.status = 'Published'
+            @text.save!
           else
-            @text.create_WEM_new(@text.person.id, @text.title, @text.markdown)
+            success = @text.create_WEM_new(@text.person.id, @text.title, @text.markdown, false)
           end
-          flash[:notice] = t(:created_frbr)
+          if success == true
+            flash[:notice] = t(:created_frbr)
+          else
+            flash[:error] = success
+          end
           redirect_to controller: :manifestation, action: :list
         else
-          @text.create_WEM(@text.person.id)
-          redirect_to action: :list
+          success = @text.create_WEM(@text.person.id)
+          if success == true
+            flash[:notice] = t(:created_frbr)
+          else
+            flash[:error] = success
+          end
+          redirect_to controller: :manifestation, action: :list
         end
       else
         flash[:error] = t(:cannot_create_frbr)
