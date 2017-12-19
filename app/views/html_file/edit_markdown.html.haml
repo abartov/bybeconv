@@ -6,9 +6,16 @@
         .col-md-10
           .row
             .col-md-6
+              - unless @text.person.nil?
+                %h3
+                  = t(:by)+' '
+                  = link_to @text.person.name+' ('+t(:author)+')', authors_show_path(id: @text.person.id)
+                  - unless @text.translator.nil?
+                    = t(:translated_by)+' '
+                    = link_to @text.translator.name+' ('+t(:translator)+')', authors_show_path(id: @text.translator.id)
               %h3= label_tag t(:orig_lang)
               %br
-              = select_tag 'orig_lang', options_for_select(get_langs.map {|lang| [textify_lang(lang), lang]})
+              = select_tag 'orig_lang', options_for_select(get_langs.map {|lang| [textify_lang(lang), lang]}, @text.orig_lang)
 
               %h3= label_tag(:genre, t(:genre))
               = select_tag(:genre, options_for_select(get_genres.map {|genre| [I18n.t(genre), genre]}, @text.genre), {include_blank: true})
@@ -18,13 +25,6 @@
                 %p!= t(:split_work_mode_intro)
               - else
                 %h2= @text.title
-              - unless @text.person.nil?
-                %h3
-                  = t(:by)+' '
-                  = link_to @text.person.name+' ('+t(:author)+')', authors_show_path(id: @text.person.id)
-                  - unless @text.translator.nil?
-                    = t(:translated_by)+' '
-                    = link_to @text.translator.name+' ('+t(:translator)+')', authors_show_path(id: @text.translator.id)
           .markdown_container
             %div{ style:"vertical-align:top; width: 30%;display:flex;margin-right:10px;flex-direction:column;height:100%;box-sizing:border-box;float:left;padding-right:7px;"}
               #legacy_markdown_link
