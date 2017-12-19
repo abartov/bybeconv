@@ -24,6 +24,14 @@
   = link_to t(:to_manage_people), authors_list_path
   %br
   .backend-field
+    = f.label t(:publisher)
+    = f.text_field :publisher
+  %br
+  .backend-field
+    = f.label t(:year_published)
+    = f.text_field :year_published
+  %br
+  .backend-field
     = f.label t(:orig_lang)
     %br
     = select_tag 'html_file[orig_lang]', options_for_select(get_langs.map {|lang| [textify_lang(lang), lang]}, @text.orig_lang)

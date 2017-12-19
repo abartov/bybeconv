@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171215102331) do
+ActiveRecord::Schema.define(version: 20171219190741) do
 
   create_table "api_keys", force: :cascade do |t|
     t.string   "email",       limit: 255
@@ -186,6 +186,7 @@ ActiveRecord::Schema.define(version: 20171215102331) do
     t.integer  "doc_file_size",       limit: 4
     t.datetime "doc_updated_at"
     t.text     "markdown",            limit: 4294967295
+    t.string   "publisher",           limit: 255
   end
 
   add_index "html_files", ["assignee_id"], name: "index_html_files_on_assignee_id", using: :btree

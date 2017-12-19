@@ -316,7 +316,7 @@ class HtmlFile < ActiveRecord::Base
   belongs_to :assignee, class_name: 'User', foreign_key: 'assignee_id'
   scope :with_nikkud, -> { where("nikkud IS NOT NULL and nikkud <> 'none'") }
   scope :not_stripped, -> { where('stripped_nikkud IS NULL or stripped_nikkud = 0') }
-  attr_accessible :title, :genre, :markdown, :comments, :path, :url, :status, :orig_mtime, :orig_ctime, :person_id, :doc, :translator_id, :orig_lang
+  attr_accessible :title, :genre, :markdown, :publisher, :comments, :path, :url, :status, :orig_mtime, :orig_ctime, :person_id, :doc, :translator_id, :orig_lang, :year_published
 
   has_attached_file :doc, storage: :s3, s3_credentials: 'config/s3.yml', s3_region: 'us-east-1'
 #  validates_attachment_content_type :doc, content_type: ['application/vnd.openxmlformats-officedocument.wordprocessingml.document']
@@ -598,8 +598,9 @@ class HtmlFile < ActiveRecord::Base
       begin
         p = Person.find(person_id)
         w = Work.new(title: the_title, orig_lang: orig_lang, genre: genre, comment: comments) # TODO: un-hardcode?
-        copyrighted = (p.public_domain ? false : (p.public_domain.nil? ? nil : true)) # if author is PD, expression is PD # TODO: make this depend on both work and expression author, for translations
-        e = Expression.new(title: the_title, language: 'he', copyrighted: copyrighted, genre: genre, comment: comments) # ISO codes
+        q = (translator_id.nil? ? p : translator)
+        copyrighted = ((p.public_domain && q.public_domain) ? false : ((p.public_domain.nil? || q.public_domain.nil?) ? nil : true)) # if author is PD, expression is PD # TODO: make this depend on both work and expression author, for translations
+        e = Expression.new(title: the_title, language: 'he', copyrighted: copyrighted, genre: genre, source_edition: publisher, date: year_published, comment: comments) # ISO codes
         w.expressions << e
         w.save!
         c = Creation.new(work_id: w.id, person_id: p.id, role: :author)

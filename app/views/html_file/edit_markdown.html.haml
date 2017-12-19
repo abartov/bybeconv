@@ -13,10 +13,10 @@
                   - unless @text.translator.nil?
                     = t(:translated_by)+' '
                     = link_to @text.translator.name+' ('+t(:translator)+')', authors_show_path(id: @text.translator.id)
+                = t(:publisher)+": #{@text.publisher}; #{t(:year_published)}: #{@text.year_published}"
               %h3= label_tag t(:orig_lang)
               %br
               = select_tag 'orig_lang', options_for_select(get_langs.map {|lang| [textify_lang(lang), lang]}, @text.orig_lang)
-
               %h3= label_tag(:genre, t(:genre))
               = select_tag(:genre, options_for_select(get_genres.map {|genre| [I18n.t(genre), genre]}, @text.genre), {include_blank: true})
             .col-md-6
