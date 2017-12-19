@@ -4,6 +4,8 @@
       .col-md-1
       .col-md-10
         %h1= t(:catalog_title)
+        %p
+          %b= link_to t(:upload_file), html_file_new_path
 
         %p= t(:total_manifestations, :total => @total)
 
