@@ -46,6 +46,7 @@ class ManifestationController < ApplicationController
 
   def whatsnew
     @tabclass = set_tab('works')
+    @page_title = t(:whatsnew)
     # TODO
   end
 
@@ -195,6 +196,7 @@ class ManifestationController < ApplicationController
 
   def list
     # calculations
+    @page_title = t(:catalog)
     @total = Manifestation.count
     # form input
     unless params[:commit].blank?
@@ -227,6 +229,7 @@ class ManifestationController < ApplicationController
 
   def edit
     @m = Manifestation.find(params[:id])
+    @page_title = t(:edit_markdown)+': '+@m.title_and_authors
     @html = MultiMarkdown.new(@m.markdown).to_html.force_encoding('UTF-8')
     @markdown = @m.markdown
   end
