@@ -36,7 +36,7 @@
 
             - @manifestations.each do |m|
               %tr
-                %td= m.expressions[0].works[0].persons[0].name
+                %td= link_to m.expressions[0].works[0].persons[0].name, authors_show_path(id: m.expressions[0].works[0].persons[0].id)
                 %td= m.title
                 - if m.expressions[0].translation
                   %td= t(:yes)+" (#{textify_lang(m.expressions[0].works[0].orig_lang)})"
