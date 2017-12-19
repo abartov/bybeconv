@@ -156,6 +156,16 @@ class Person < ActiveRecord::Base
     Manifestation.joins(expressions: :realizers).includes(expressions: [works: [creations: :person]]).where(realizers:{role: Realizer.roles[:translator], person_id: self.id})
   end
 
+  def all_works(order)
+    original_works.order(order) + translations.order(order)
+  end
+
+  def all_works_by_title(term)
+    w = original_works.where("expressions.title like '%#{term}%'")
+    t = translations.where("expressions.title like '%#{term}%'")
+    return w + t
+  end
+
   def original_works_by_genre
     ret = {}
     get_genres.map{|g| ret[g] = []}

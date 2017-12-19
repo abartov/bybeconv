@@ -52,7 +52,7 @@
     .col-md-10
       .toc#maintext
         - unless @toc.nil?
-          = render partial: 'toc'
+          = render partial: 'toc', locals: {margin: true}
           .card#volunteers{style:'margin:3rem 20rem 0 0'}
             .card-content
               .row

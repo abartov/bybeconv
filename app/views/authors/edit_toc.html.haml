@@ -1,15 +1,44 @@
 #maintext.top-element
-  %h1= t(:current_toc)
-  = render partial: 'toc'
-  %p
-  .card{style:'margin-right:20rem'}
-    .card-content
+  .row
+  .col-md-6
+    %h1= t(:update_toc)
+    .right
+      %b.static-btn#add_work_link= t(:add_work_link)
+      = select_tag :works, options_from_collection_for_select(@works, 'id', 'title')
+      %br
+      = t(:in_current_cursor)
+      %br
+      %br
+    .markdown
       .row
-        .col-sm-3
-        .col-sm-9
-          .credits
-            %p.headline-3= t(:volunteers_who_helped, {author: @author.name, gender_letter: @author.gender_letter})
-            != @credits
+        .col-md-12
+          = form_tag(action: :edit_toc, id: @author.id) do
+            %p
+              = text_area_tag(:markdown, raw(@toc), size: "50x20")
+              %br
+              %p= label_tag :credits, t(:credit_section)
+              = text_area_tag(:credits, raw(@credit_section), size:"50x10")
+              %br
+              = label_tag t(:toc_status)
+              %br
+              = radio_button_tag(:toc_status, :raw, @author.toc.status.nil? || @author.toc.status == 'raw')
+              = label_tag t(:raw)
+              = radio_button_tag(:toc_status, :ready, @author.toc.status == 'ready')
+              = label_tag t(:ready)
+              = hidden_field_tag(:old_timestamp, @toc_timestamp)
+              = submit_tag t(:update)
+  .col-md-6
+    %h1= t(:current_toc)
+    = render partial: 'toc', locals: {margin: false}
+    %p
+    .card{style:'margin-right:20rem'}
+      .card-content
+        .row
+          .col-sm-3
+          .col-sm-9
+            .credits
+              %p.headline-3= t(:volunteers_who_helped, {author: @author.name, gender_letter: @author.gender_letter})
+              != @credits
 
 - unless @diff.nil? # we have a rejected update
   = t(:update_conflict)
@@ -20,22 +49,15 @@
   = @rejected_update
   %hr
 
-%h1= t(:update_toc)
-.markdown
-  = form_tag(action: :edit_toc, id: @author.id) do
-    %p
-      = text_area_tag(:markdown, raw(@toc), size: "100x40")
-      %br
-      = label_tag :credits, t(:credit_section)
-      = text_area_tag(:credits, raw(@credit_section), size:"50x20")
-      %br
-      = label_tag t(:toc_status)
-      %br
-      = radio_button_tag(:toc_status, :raw, @author.toc.status.nil? || @author.toc.status == 'raw')
-      = label_tag t(:raw)
-      = radio_button_tag(:toc_status, :ready, @author.toc.status == 'ready')
-      = label_tag t(:ready)
-      = hidden_field_tag(:old_timestamp, @toc_timestamp)
-      = submit_tag t(:update)
-
 = link_to t(:back), :action => :list
+
+:javascript
+  $(document).ready(function(){
+    $('#add_work_link').click(function() {
+        var $txt = jQuery("#markdown");
+        var caretPos = $txt[0].selectionStart;
+        var textAreaTxt = $txt.val();
+        var txtToAdd = "\n&&& פריט: מ"+$('#works').val()+" &&& כותרת: "+$( "#works option:selected" ).text();+" &&&\n";
+        $txt.val(textAreaTxt.substring(0, caretPos) + txtToAdd + textAreaTxt.substring(caretPos) );
+    });
+  });

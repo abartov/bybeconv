@@ -85,6 +85,7 @@ Bybeconv::Application.routes.draw do
   get 'manifestation/like'
   get 'manifestation/unlike'
   get 'manifestation/surprise_work'
+  get 'manifestation/autocomplete_works_by_author'
 
   get "api/query"
   resources :api_keys

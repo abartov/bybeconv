@@ -101,6 +101,8 @@ he:
   featured_item: זרקור על יצירה
   works_by_genre: יצירות על-פי סוגה
   edit_markdown: עריכת הטקסט
+  add_work_link: הוספת יצירה
+  in_current_cursor: במקום הסמן הנוכחי
   markdown: טקסט גולמי
   display_text: טקסט תצוגה
   save_and_exit: שמירה ויציאה

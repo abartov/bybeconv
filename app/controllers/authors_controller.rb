@@ -198,6 +198,7 @@ class AuthorsController < ApplicationController
       prep_toc
       @credit_section = @author.toc.credit_section.nil? ? "": @author.toc.credit_section
       @toc_timestamp = @author.toc.updated_at
+      @works = @author.all_works(title: :asc)
     end
   end
 

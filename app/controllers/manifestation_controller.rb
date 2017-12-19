@@ -3,8 +3,8 @@ require 'pandoc-ruby'
 class ManifestationController < ApplicationController
   before_filter :require_editor, only: [:list, :show, :edit, :update, :remove_link, :edit_metadata]
 
-  autocomplete :manifestation, :title, limit: 20, display_value: :title_and_authors
-  autocomplete :person, :name, :limit => 2
+  autocomplete :manifestation, :title, limit: 20, display_value: :title_and_authors, full: true
+  autocomplete :person, :name, :limit => 2, full: true
   autocomplete :tag, :name
 
   impressionist :actions=>[:read,:readmode, :print, :download] # log actions for pageview stats
@@ -21,6 +21,19 @@ class ManifestationController < ApplicationController
 
   def by_tag
     # TODO
+  end
+
+  def autocomplete_works_by_author
+    term = params[:term]
+    author = params[:author]
+    byebug
+    if term && author && !term.blank? && !author.blank?
+      items = Person.find(author.to_i).all_works_by_title(term)
+    else
+      items = {}
+    end
+
+    render :json => json_for_autocomplete(items, :title_and_authors, {}), root: false
   end
 
   def works # /works dashboard
