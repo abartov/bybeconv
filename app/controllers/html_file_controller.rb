@@ -4,7 +4,7 @@ class HtmlFileController < ApplicationController
   before_filter :require_editor, only: [:edit, :update, :list_for_editor]
   # before_filter :require_user, :only => [:edit, :update]
 
-  before_filter :require_admin, only: [:analyze, :analyze_all, :new, :create, :destroy, :list, :parse, :publish, :unsplit, :chop1, :chop2, :chop3, :choplast1, :choplast2, :poetry, :frbrize]
+  before_filter :require_admin, only: [:analyze, :analyze_all, :new, :create, :destroy, :list, :parse, :publish, :unsplit, :chop1, :chop2, :chop3, :choplast1, :choplast2, :poetry, :frbrize, :mark_superseded]
 
   def analyze
     @text = HtmlFile.find(params[:id])
@@ -126,11 +126,12 @@ class HtmlFileController < ApplicationController
     @total_parsed = HtmlFile.where(status: 'Parsed').count
     @total_uploaded = HtmlFile.where(status: 'Uploaded').count
     @total_accepted = HtmlFile.where(status: 'Accepted').count
+    @total_superseded = HtmlFile.where(status: 'Superseded').count
     @total_published = HtmlFile.where(status: 'Published').count
     @total_manual = HtmlFile.where(status: 'Manual').count
     @total_nikkud_full = HtmlFile.where(nikkud: 'full').count
     @total_nikkud_some = HtmlFile.where(nikkud: 'some').count
-    @total_assigned = HtmlFile.where("assignee_id is not null and status != 'Published'").count
+    @total_assigned = HtmlFile.where("assignee_id is not null and status != 'Published' and status != 'Superseded'").count
     # build query condition
     query = {}
     unless params[:commit].blank?
@@ -169,6 +170,14 @@ class HtmlFileController < ApplicationController
   def mark_manual
     @text = HtmlFile.find(params[:id])
     @text.status = 'Manual'
+    @text.assignee_id = nil
+    @text.save!
+    redirect_to action: :list
+  end
+
+  def mark_superseded
+    @text = HtmlFile.find(params[:id])
+    @text.status = 'Superseded'
     @text.assignee_id = nil
     @text.save!
     redirect_to action: :list

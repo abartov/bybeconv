@@ -148,6 +148,7 @@ Bybeconv::Application.routes.draw do
   get "html_file/poetry"
   get 'html_file/mark_manual'
   get 'html_file/new'
+  get 'html_file/mark_superseded'
   match 'html_file/edit_markdown', via: [:get, :post]
   post 'html_file/create'
   get 'html_file/destroy'

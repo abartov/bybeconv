@@ -70,6 +70,7 @@
     / - [1, 2].each do |i|
     /   %li= link_to t(:choplastN_html, {n: i}), action: "choplast#{i}", id: @text.id
     %li= link_to t(:mark_as_manual), action: :mark_manual, id: @text.id
+    %li= link_to t(:mark_as_superseded), action: :mark_superseded, id: @text.id
     %li
       %b
         - if @text.genre.nil? or @text.genre.empty?
