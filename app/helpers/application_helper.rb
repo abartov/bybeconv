@@ -132,6 +132,8 @@ module ApplicationHelper
       return t(:manual)
     when 'Uploaded'
       return t(:uploaded_directly)
+    when 'Superseded'
+      return t(:superseded)
     else
       return t(:unknown)
     end
