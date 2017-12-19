@@ -50,6 +50,8 @@
                   = ' | '
                   = link_to t(:render), url_for(action: :read, id: m.id)
                   = ' | '
+                  = link_to t(:edit_metadata), manifestation_edit_metadata_path(m.id)
+                  = ' | '
                   = link_to t(:edit_markdown), manifestation_edit_path(id: m.id)
 
           != paginate @manifestations, :params => session[:mft_q_params]
