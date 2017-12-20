@@ -182,6 +182,7 @@ class AuthorsController < ApplicationController
       flash[:error] = I18n.t('no_toc_yet')
       redirect_to '/'
     else
+      @page_title = t(:edit_toc)+': '+@author.name
       unless params[:markdown].nil? # handle update payload
         if params[:old_timestamp].to_datetime != @author.toc.updated_at.to_datetime # check for update since form was issued
           # reject update, provide diff and fresh editbox
