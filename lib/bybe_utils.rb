@@ -263,7 +263,7 @@ module BybeUtils
       return 'article'
     when /זכרונות/
       return 'memoir'
-    when /תרגום/
+    when /תרגום/, /יצירות מתורגמות/
       return 'translations'
     when /מחזות/, /דרמה/
       return 'drama'
@@ -344,7 +344,7 @@ module BybeUtils
   end
 
   def get_total_headwords
-    return 2213 # TODO: un-hardcode
+    return 2341 # TODO: un-hardcode
   end
 
   def get_genres
