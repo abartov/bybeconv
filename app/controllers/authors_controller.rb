@@ -138,9 +138,9 @@ class AuthorsController < ApplicationController
 
   def list
     @page_title = t(:authors)+' - '+t(:project_ben_yehuda)
-    def_order = 'metadata_approved asc, name asc'
+    def_order = 'tocs.status asc, metadata_approved asc, name asc'
     if params[:q].nil? or params[:q].empty?
-      @people = Person.page(params[:page]).order(params[:order].nil? ? def_order : params[:order]) # TODO: pagination
+      @people = Person.joins(:toc).page(params[:page]).order(params[:order].nil? ? def_order : params[:order]) # TODO: pagination
     else
       @q = params[:q]
       @people = Person.where('name like ?', "%#{params[:q]}%").page(params[:page]).order(params[:order].nil? ? def_order : params[:order])
