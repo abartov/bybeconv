@@ -28,7 +28,7 @@
 <body dir="rtl" align="right">
 <% unless @print
     flash.each do |name, msg| -%>
-      <%= content_tag :div, msg, class: "top-element #{name} %>
+      <%= content_tag :div, msg, class: "top-element #{name}" %>
   <% end -%>
 <% end -%>
 <% unless @print %>
