@@ -59,7 +59,8 @@ class HtmlFileController < ApplicationController
           tmpfile.write(bin.body)
           tmpfilename = tmpfile.path
           markdown = `pandoc -f docx -t markdown_mmd #{tmpfilename}`
-          @text.markdown = markdown
+          byebug
+          @text.markdown = new_postprocess(markdown)
           @text.save
         rescue
           flash[:error] = t(:conversion_error)
@@ -376,6 +377,33 @@ class HtmlFileController < ApplicationController
     render json: nil
   end
   protected
+
+  def new_postprocess(buf)
+    byebug
+    lines = buf.split("\n")
+    (0..lines.length-1).each {|i|
+      lines[i].strip!
+      uniq_chars = lines[i].gsub(/[\s\u00a0]/,'').chars.uniq
+      if uniq_chars == ['*'] or uniq_chars == ["\u2013"] # if the line only contains asterisks, or Unicode En-Dash (U+2013)
+        lines[i] = '***' # make it a Markdown horizontal rule
+      else
+        nikkud = count_nikkud(lines[i])
+        if (nikkud[:total] > 2000 and nikkud[:ratio] > 0.6) or (nikkud[:total] <= 2000 and nikkud[:ratio] > 0.3)
+          # make full-nikkud lines PRE
+          lines[i] = '> '+lines[i] unless lines[i] =~ /\[\^fn/ # produce a blockquote (PRE would ignore bold and other markup)
+        end
+      end
+    }
+    new_buffer = lines.join "\n"
+    new_buffer.gsub!("\n\s*\n\s*\n", "\n\n")
+    ['.',',',':',';','?','!'].each {|c|
+      new_buffer.gsub!(" #{c}",c) # remove spaces before punctuation
+    }
+    new_buffer.gsub!('©כל הזכויות', '© כל הזכויות') # fix an artifact of the conversion
+    new_buffer.gsub!(/> (.*?)\n\s*\n\s*\n/, "> \\1\n\n<br>\n") # add <br> tags for poetry, as a workaround to preserve stanza breaks
+    new_buffer.gsub!("\n<br>","<br>  ") # sigh
+    return new_buffer
+  end
 
   def render_from_markdown(htmlfile)
     markdown = File.open(htmlfile.path + '.markdown', 'r:UTF-8').read

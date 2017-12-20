@@ -14,6 +14,11 @@ class AdminController < ApplicationController
 
   ##############################################
   ## Reports
+  def raw_tocs
+    @authors = Person.joins(:toc).where('tocs.status = 0').page(params[:page]).per(15)
+    @total = Person.joins(:toc).where('tocs.status = 0').count
+  end
+
   def missing_languages
     ex = Expression.joins([:realizers, :works]).where(realizers: {role: Realizer.roles[:translator]}, works: {orig_lang: 'he'})
     mans = ex.map{|e| e.manifestations[0]}
