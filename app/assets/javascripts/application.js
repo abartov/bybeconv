@@ -11,5 +11,6 @@
 //= require jquery-ui/widgets/autocomplete
 //= require autocomplete-rails
 //= require jquery.mark.min
+//= require jquery.caret
 //= require_tree .
 

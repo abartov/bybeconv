@@ -59,5 +59,7 @@
         var textAreaTxt = $txt.val();
         var txtToAdd = "\n&&& פריט: מ"+$('#works').val()+" &&& כותרת: "+$( "#works option:selected" ).text()+" &&&\n";
         $txt.val(textAreaTxt.substring(0, caretPos) + txtToAdd + textAreaTxt.substring(caretPos) );
+        $txt.focus();
+        $txt.caretTo(caretPos+txtToAdd.length);
     });
   });
