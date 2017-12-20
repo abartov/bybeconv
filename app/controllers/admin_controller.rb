@@ -8,6 +8,7 @@ class AdminController < ApplicationController
     if current_user && current_user.editor?
       @open_proofs = Proof.where(status: 'new').count.to_s
       @open_recommendations = LegacyRecommendation.where(status: 'new').count.to_s
+      @page_title = t(:dashboard)
     end
   end
 
