@@ -252,6 +252,7 @@ he:
   popular_translators: המתרגמים הנקראים ביותר
   random_order: (בסדר אקראי)
   translators: מתרגמים
+  translated_from_multiple_languages: מתורגמים מיותר משפה אחת
   new_file: קובץ חדש
   mark_as_superseded: סמן כמוחלף בקובץ אחר (אם הטקסט כאן הודבק לקובץ בשיטה החדשה)
   file_can_be_skipped: ניתן גם לדלג על העלאת קובץ וליצור רשומה עם טקסט ריק, למשל כדי להדביק טקסט.

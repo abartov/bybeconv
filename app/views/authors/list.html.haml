@@ -39,7 +39,7 @@
             %span{style: 'color:green'}= t(:ready)
           %br
           = link_to t(:show_toc), author_toc_path(person)
-        %td= link_to t(:edit), authors_edit_path(id: person.id)
+        %td= link_to t(:edit_metadata), authors_edit_path(id: person.id)
         %td
           - unless person.toc.nil?
             = link_to t(:edit_toc), authors_edit_toc_path(person)

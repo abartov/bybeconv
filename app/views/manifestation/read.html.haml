@@ -9,6 +9,11 @@
       .col-md-10
         .work-name
           %p.headline-1= @m.title
+          - if current_user && current_user.editor?
+            %span.static-btn= link_to t(:edit_metadata), manifestation_edit_metadata_path(@m.id)
+            != "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+            %span.static-btn= link_to t(:edit_markdown), manifestation_edit_path(id: @m.id)
+            %br
           %p.headline-3{ style: 'padding:0;display:inline'}
             = t(:by)+':'
             = link_to @author.name, author_toc_path(id: @author.id)

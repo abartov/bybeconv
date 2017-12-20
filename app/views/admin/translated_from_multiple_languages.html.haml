@@ -1,0 +1,12 @@
+.top-element
+  %h2= t(:translated_from_multiple_languages)
+  %h3= t(:total)+': '+@authors.length.to_s
+  %table{style: 'cell-spacing: 10;'}
+    %tr
+      %th= t(:author)
+      %th= t(:languages)
+
+    - @authors.each do |author, languages|
+      %tr
+        %td= link_to author.name, authors_show_path(id: author.id)
+        %td= languages.map{|m| textify_lang(m)}.join('; ')

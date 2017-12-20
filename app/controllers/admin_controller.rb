@@ -32,6 +32,16 @@ class AdminController < ApplicationController
     @mans = Manifestation.joins(expressions: [:realizers, works: [:creations]]).where('realizers.person_id = creations.person_id and realizers.role = 3').page(params[:page])
   end
 
+  def translated_from_multiple_languages
+    @authors = []
+    translatees = Person.joins(creations: :work).includes(:works).where('works.orig_lang <> "he"').distinct
+    translatees.each {|t|
+      if t.works.pluck(:orig_lang).uniq.count > 1
+        @authors << [t, t.works.pluck(:orig_lang).uniq]
+      end
+    }
+  end
+
   def incongruous_copyright
     # Manifestation.joins([expressions: [[realizers: :person],:works]]).where(expressions: {copyrighted:true},people: {public_domain:true})
     @incong = []

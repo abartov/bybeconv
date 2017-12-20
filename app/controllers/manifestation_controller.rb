@@ -209,7 +209,7 @@ class ManifestationController < ApplicationController
 
   def list
     # calculations
-    @page_title = t(:catalog)
+    @page_title = t(:catalog_title)
     @total = Manifestation.count
     # form input
     unless params[:commit].blank?

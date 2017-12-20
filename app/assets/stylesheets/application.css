@@ -1023,6 +1023,9 @@ img.absolute {
   box-shadow: 0 0.1rem 0.2rem rgba(0,0,0, .4);
   cursor: pointer;
 }
+.static-btn a{
+  color:white;
+}
 
 .btn {
   width: auto;
