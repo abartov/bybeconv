@@ -498,6 +498,7 @@ class HtmlFile < ActiveRecord::Base
         buf = ''
         footnotes_by_key[key].each do |foot|
           ret[titles_order[-1]] =~ /(#{Regexp.quote(foot.strip)}:.*?)\[\^\d+\]/m # grab the entire footnote, right up to the next one, into $1
+          next unless $1 # shouldn't happen in DOCX conversion, but with manual markdown, anything is possible
           buf += $1 # and buffer it
           ret[titles_order[-1]].sub!($1,'') # and remove it from the final chunk's footnotes, where it does not belong
         end
