@@ -138,11 +138,11 @@ class HtmlFileController < ApplicationController
     unless params[:commit].blank?
       session[:html_q_params] = params # make prev. params accessible to view
     else
-      session[:html_q_params] = { footnotes: '', nikkud: '', status: params['status'], path: '' }
+      session[:html_q_params] = { footnotes: '', nikkud: '', status: params['status'], path: '' } if session[:html_q_params].nil?
     end
     f = session[:html_q_params][:footnotes]
     n = session[:html_q_params][:nikkud]
-    s = params[:status] or session[:html_q_params][:status]
+    s = params[:commit].blank? ? session[:html_q_params][:status] : (params[:status] or session[:html_q_params][:status] )
     p = session[:html_q_params][:path] # retrieve query params whether or not they were POSTed
     query.merge!(footnotes: f) unless f.blank?
     query.merge!(nikkud: n) unless n.blank?
