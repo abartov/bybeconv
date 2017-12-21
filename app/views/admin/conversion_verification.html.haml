@@ -2,4 +2,5 @@
   %h2= t(:conversion_verification_report)
 
   %h3= t(:total)+': '+@total.to_s
+  %h3= "#{t(:already_done)}: #{Manifestation.count - @total}"
   = render partial: 'manifestation/list', locals: {manifestations: @manifestations}
