@@ -13,6 +13,7 @@ Bybeconv::Application.routes.draw do
   get 'admin/suspicious_translations'
   get 'admin/translated_from_multiple_languages'
   get 'admin/raw_tocs'
+  get 'admin/conversion_verification'
   get 'admin/volunteer_profiles_list'
   get 'admin/volunteer_profile/new' => 'admin#volunteer_profile_new', as: 'volunteer_profile_new'
   post 'admin/volunteer_profile/create' => 'admin#volunteer_profile_create', as: 'volunteer_profile_create'

@@ -284,6 +284,7 @@ class ManifestationController < ApplicationController
       @m.title = params[:mtitle]
       @m.responsibility_statement = params[:mresponsibility]
       @m.comment = params[:mcomment]
+      @m.conversion_verified = params[:conversion_verified]
       unless params[:add_url].blank?
         l = ExternalLink.new(url: params[:add_url], linktype: params[:link_type], description: params[:link_description], status: Manifestation.statuses[:approved])
         l.manifestation = @m

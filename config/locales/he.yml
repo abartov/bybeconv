@@ -248,6 +248,8 @@ he:
   sample_works_of: מבחר יצירות
   sample_translated_authors: מבחר יוצרים מתורגמים
   popular_translated_authors: היוצרים המתורגמים הנקראים ביותר
+  conversion_verified: טקסט עבר טיוב?
+  conversion_verification_report: יצירות עם טקסט שטרם טויב
   sample_translators: מבחר מתרגמים
   popular_translators: המתרגמים הנקראים ביותר
   random_order: (בסדר אקראי)

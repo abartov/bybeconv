@@ -66,6 +66,9 @@
     %b= t(:publisher_details) + ': '
     != "#{@m.publisher}, #{@m.publication_place}&rlm;: #{@m.publication_date}."
   %p
+    %b= t(:conversion_verified)+':'
+    = (@m.conversion_verified ? t(:yes) : t(:no))
+  %p
     %b= t(:comments)+':'
     %br
     = @m.comment

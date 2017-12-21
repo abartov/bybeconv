@@ -1,0 +1,5 @@
+.top-element
+  %h2= t(:conversion_verification_report)
+
+  %h3= t(:total)+': '+@total.to_s
+  = render partial: 'manifestation/list', locals: {manifestations: @manifestations}

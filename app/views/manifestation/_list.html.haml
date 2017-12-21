@@ -1,0 +1,37 @@
+- if manifestations.nil?
+  %b= t(:no_results)
+- else
+  %table{cellspacing: 3,cellpadding: 3}
+    %th= t(:author)
+    %th= t(:title)
+    %th= t(:translation)+'?'
+    %th= t(:translator)
+    %th= t(:genre)
+    %th= t(:updated_at)
+    %th= t(:conversion_verified)
+    %th= t(:actions)
+
+    - manifestations.each do |m|
+      %tr
+        %td= link_to m.expressions[0].works[0].persons[0].name, authors_show_path(id: m.expressions[0].works[0].persons[0].id)
+        %td= m.title
+        - if m.expressions[0].translation
+          %td= t(:yes)+" (#{textify_lang(m.expressions[0].works[0].orig_lang)})"
+          %td= m.expressions[0].persons[0].name
+        - else
+          %td= t(:no)
+          %td= ''
+        %td= textify_genre(m.expressions[0].genre)
+        %td= m.updated_at.to_s
+        %td= m.conversion_verified ? t(:yes) : t(:no)
+        %td
+          = link_to t(:show), manifestation_show_path(m.id)
+          / = link_to t(:show), :action => 'show', :id => m
+          = ' | '
+          = link_to t(:render), url_for(controller: :manifestation, action: :read, id: m.id)
+          = ' | '
+          = link_to t(:edit_metadata), manifestation_edit_metadata_path(m.id)
+          = ' | '
+          = link_to t(:edit_markdown), manifestation_edit_path(id: m.id)
+
+  != paginate manifestations, :params => session[:mft_q_params]

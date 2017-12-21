@@ -38,6 +38,11 @@ class AdminController < ApplicationController
     @mans = Manifestation.joins(expressions: [:realizers, works: [:creations]]).where('realizers.person_id = creations.person_id and realizers.role = 3').page(params[:page])
   end
 
+  def conversion_verification
+    @manifestations = Manifestation.where(conversion_verified: false).order(:title).page(params[:page])
+    @total = Manifestation.where(conversion_verified: false).count
+  end
+
   def translated_from_multiple_languages
     @authors = []
     translatees = Person.joins(creations: :work).includes(:works).where('works.orig_lang <> "he"').distinct
