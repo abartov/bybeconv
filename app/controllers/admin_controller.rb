@@ -43,7 +43,12 @@ class AdminController < ApplicationController
     translatees = Person.joins(creations: :work).includes(:works).where('works.orig_lang <> "he"').distinct
     translatees.each {|t|
       if t.works.pluck(:orig_lang).uniq.count > 1
-        @authors << [t, t.works.pluck(:orig_lang).uniq]
+        works_by_lang = {}
+        t.works.each { |w|
+          works_by_lang[w.orig_lang] = [] if works_by_lang[w.orig_lang].nil?
+          works_by_lang[w.orig_lang] << w
+        }
+        @authors << [t, t.works.pluck(:orig_lang).uniq, works_by_lang]
       end
     }
   end
