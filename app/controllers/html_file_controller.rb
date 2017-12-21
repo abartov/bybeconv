@@ -17,7 +17,7 @@ class HtmlFileController < ApplicationController
 
   def new
     @text = HtmlFile.new
-
+    @page_title = t(:new_file_to_convert)
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @text }
