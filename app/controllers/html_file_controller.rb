@@ -379,7 +379,6 @@ class HtmlFileController < ApplicationController
   protected
 
   def new_postprocess(buf)
-    byebug
     lines = buf.split("\n")
     (0..lines.length-1).each {|i|
       lines[i].strip!

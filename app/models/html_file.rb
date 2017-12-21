@@ -469,6 +469,7 @@ class HtmlFile < ActiveRecord::Base
     titles_order = []
     ret = {}
     footbuf = ''
+    byebug
     self.markdown.split(/^(&&& .*)/).each do |bit|
       if bit[0..3] == '&&& '
         prev_key = bit[4..-1].strip # remember next section's title
@@ -487,6 +488,7 @@ class HtmlFile < ActiveRecord::Base
         footbuf = ''
       end
     end
+    byebug
     # great! now we have the different pieces sorted, *but* any footnotes are *only* in the last piece, even if they belong in earlier pieces. So we need to fix that.
     if any_footnotes # hey, easy case is easy
       footnotes_by_key = {}
@@ -498,6 +500,10 @@ class HtmlFile < ActiveRecord::Base
         buf = ''
         footnotes_by_key[key].each do |foot|
           ret[titles_order[-1]] =~ /(#{Regexp.quote(foot.strip)}:.*?)\[\^\d+\]/m # grab the entire footnote, right up to the next one, into $1
+          unless $1
+            # okay, it may *be* the last/only one...
+            ret[titles_order[-1]] =~ /(#{Regexp.quote(foot.strip)}:.*)/m # grab the rest of the doc
+          end
           next unless $1 # shouldn't happen in DOCX conversion, but with manual markdown, anything is possible
           buf += $1 # and buffer it
           ret[titles_order[-1]].sub!($1,'') # and remove it from the final chunk's footnotes, where it does not belong

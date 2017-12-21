@@ -26,7 +26,6 @@ class ManifestationController < ApplicationController
   def autocomplete_works_by_author
     term = params[:term]
     author = params[:author]
-    byebug
     if term && author && !term.blank? && !author.blank?
       items = Person.find(author.to_i).all_works_by_title(term)
     else
