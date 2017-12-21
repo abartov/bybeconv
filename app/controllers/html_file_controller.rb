@@ -40,6 +40,7 @@ class HtmlFileController < ApplicationController
 
   def edit_markdown
     @text = HtmlFile.find(params[:id])
+    @page_title = t(:edit_markdown)
     unless params[:markdown].nil?
       @text.markdown = params[:markdown]
       @text.genre = params[:genre] unless params[:genre].blank?
@@ -59,7 +60,6 @@ class HtmlFileController < ApplicationController
           tmpfile.write(bin.body)
           tmpfilename = tmpfile.path
           markdown = `pandoc -f docx -t markdown_mmd #{tmpfilename}`
-          byebug
           @text.markdown = new_postprocess(markdown)
           @text.save
         rescue
