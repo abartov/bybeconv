@@ -143,7 +143,7 @@ class AuthorsController < ApplicationController
       @people = Person.joins("LEFT JOIN tocs on people.toc_id = tocs.id ").page(params[:page]).order(params[:order].nil? ? def_order : params[:order]) # TODO: pagination
     else
       @q = params[:q]
-      @people = Person.where('name like ?', "%#{params[:q]}%").page(params[:page]).order(params[:order].nil? ? def_order : params[:order])
+      @people = Person.joins("LEFT JOIN tocs on people.toc_id = tocs.id ").where('name like ?', "%#{params[:q]}%").page(params[:page]).order(params[:order].nil? ? def_order : params[:order])
     end
   end
 
