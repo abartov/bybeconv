@@ -613,7 +613,7 @@ class HtmlFile < ActiveRecord::Base
         em_author = (translator_id.nil? ? p : translator) # the author of the Expression and Manifestation is the translator, if one exists
         r = Realizer.new(expression_id: e.id, person_id: em_author.id, role: (translator_id.nil? ? :author : :translator))
         r.save!
-        m = Manifestation.new(title: the_title, responsibility_statement: em_author.name, medium: I18n.t(:etext), publisher: AppConstants.our_publisher, publication_place: AppConstants.our_place_of_publication, publication_date: Date.today, markdown: the_markdown, comment: comments)
+        m = Manifestation.new(title: the_title, responsibility_statement: em_author.name, conversion_verified: true, medium: I18n.t(:etext), publisher: AppConstants.our_publisher, publication_place: AppConstants.our_place_of_publication, publication_date: Date.today, markdown: the_markdown, comment: comments)
         m.save!
         m.people << em_author
         e.manifestations << m
