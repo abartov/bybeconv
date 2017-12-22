@@ -469,7 +469,6 @@ class HtmlFile < ActiveRecord::Base
     titles_order = []
     ret = {}
     footbuf = ''
-    byebug
     self.markdown.split(/^(&&& .*)/).each do |bit|
       if bit[0..3] == '&&& '
         prev_key = bit[4..-1].strip # remember next section's title
@@ -488,7 +487,6 @@ class HtmlFile < ActiveRecord::Base
         footbuf = ''
       end
     end
-    byebug
     # great! now we have the different pieces sorted, *but* any footnotes are *only* in the last piece, even if they belong in earlier pieces. So we need to fix that.
     if any_footnotes # hey, easy case is easy
       footnotes_by_key = {}
