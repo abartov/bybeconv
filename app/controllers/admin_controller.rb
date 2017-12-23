@@ -17,30 +17,36 @@ class AdminController < ApplicationController
   def raw_tocs
     @authors = Person.joins(:toc).where('tocs.status = 0').page(params[:page]).per(15)
     @total = Person.joins(:toc).where('tocs.status = 0').count
+    @page_title = t(:raw_tocs)
   end
 
   def missing_languages
     ex = Expression.joins([:realizers, :works]).where(realizers: {role: Realizer.roles[:translator]}, works: {orig_lang: 'he'})
     mans = ex.map{|e| e.manifestations[0]}
     @mans = Kaminari.paginate_array(mans).page(params[:page]).per(25)
+    @page_title = t(:missing_language_report)
   end
 
   def missing_genres
     @mans = Manifestation.joins(:expressions).where(expressions: {genre: nil}).page(params[:page]).per(25)
+    @page_title = t(:missing_genre_report)
   end
 
   def missing_copyright
     @authors = Person.where(public_domain: nil)
     @mans = Manifestation.joins(:expressions).where(expressions: {copyrighted: nil}).page(params[:page]).per(25)
+    @page_title = t(:missing_copyright_report)
   end
 
   def suspicious_translations # find works where the author is also a translator -- this *may* be okay, in the case of self-translation, but probably is a mistake
     @mans = Manifestation.joins(expressions: [:realizers, works: [:creations]]).where('realizers.person_id = creations.person_id and realizers.role = 3').page(params[:page])
+    @page_title = t(:suspicious_translations_report)
   end
 
   def conversion_verification
     @manifestations = Manifestation.where(conversion_verified: false).order(:title).page(params[:page])
     @total = Manifestation.where(conversion_verified: false).count
+    @page_title = t(:conversion_verification_report)
   end
 
   def translated_from_multiple_languages
