@@ -14,10 +14,10 @@
         .col-md-12
           = form_tag(action: :edit_toc, id: @author.id) do
             %p
-              = text_area_tag(:markdown, raw(@toc), size: "50x20")
+              = text_area_tag(:markdown, raw(@toc), rows: 20, style: 'width:100%')
               %br
               %p= label_tag :credits, t(:credit_section)
-              = text_area_tag(:credits, raw(@credit_section), size:"50x10")
+              = text_area_tag(:credits, raw(@credit_section), rows: 10, style: 'width:100%')
               %br
               = label_tag t(:toc_status)
               %br
