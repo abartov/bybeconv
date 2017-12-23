@@ -18,9 +18,9 @@
   .backend-field
     = label_tag t(:conversion_verified)
     = t(:yes)
-    = radio_button_tag(:conversion_verified, true, checked: @m.conversion_verified)
+    = radio_button_tag(:conversion_verified, true, @m.conversion_verified)
     = t(:no)
-    = radio_button_tag(:conversion_verified, false, checked: (not @m.conversion_verified))
+    = radio_button_tag(:conversion_verified, false, (not @m.conversion_verified))
   %p
     = submit_tag t(:save)
 

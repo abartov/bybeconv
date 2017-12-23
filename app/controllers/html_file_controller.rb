@@ -150,7 +150,7 @@ class HtmlFileController < ApplicationController
     assignee_cond = "assignee_id is null or assignee_id = #{current_user.id}"
 
     # TODO: figure out how to include filter by path without making the query fugly
-    if p.blank?
+    if p.nil? || p.blank?
       @texts = HtmlFile.where(assignee_cond).where(query).page(params[:page]).order('updated_at DESC')
     else
       @texts = HtmlFile.where(assignee_cond).where('path like ?', '%' + params[:path] + '%').page(params[:page]).order('updated_at DESC')

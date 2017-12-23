@@ -16,6 +16,7 @@
 - JS bit with autocomplete to add a link to a manifestation in TOC editing
 - !! fix footnote anchors' scrolling relative to margin-top
 - !! add translations box to works view right side
+- EPIC: UPLOAD IMAGES (TO S3) AND EMBED THEM IN MARKDOWN
 - implement bookmarks (see notes in code!)
 - implement the whatsnew screen
 - take foreign authors into account in authors page - if not everywhere, at least for fables?

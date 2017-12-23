@@ -163,7 +163,7 @@ class Person < ActiveRecord::Base
   def all_works_by_title(term)
     w = original_works.where("expressions.title like '%#{term}%'")
     t = translations.where("expressions.title like '%#{term}%'")
-    return w + t
+    return (w + t).uniq
   end
 
   def original_works_by_genre

@@ -176,6 +176,7 @@ he:
   proof_failed: אירעה שגיאה בשליחת ההגהה.  אפשר לנסות שוב.
   proof_contact_html: "בכל שאלה, תוכלו לכתוב אל צוות העורכים, בכתובת <a href=\"mailto:editor@benyehuda.org\">editor@benyehuda.org</a>."
 # TODO: add notification e-mail when resolving a proof
+  left_todo: נותרו לעשות
   proof_show_text: הצג את הטקסט בחלון נפרד
   proof_your_proofs: יש להקליד כאן למטה את ההגהות, או ללחוץ על הלחצן משמאל כדי להעתיק את הטקסט שנבחר ולתקן אותו ידנית למטה.
   proof_copy_text: העתק למטה
