@@ -156,14 +156,18 @@ class Person < ActiveRecord::Base
     Manifestation.joins(expressions: :realizers).includes(expressions: [works: [creations: :person]]).where(realizers:{role: Realizer.roles[:translator], person_id: self.id})
   end
 
-  def all_works(order)
-    original_works.order(order) + translations.order(order)
+  def all_works_title_sorted
+    (original_works + translations).uniq.sort_by{|m| m.title}
+  end
+
+  def all_works_by_order(order)
+    (original_works.order(order) + translations.order(order)).uniq
   end
 
   def all_works_by_title(term)
     w = original_works.where("expressions.title like '%#{term}%'")
     t = translations.where("expressions.title like '%#{term}%'")
-    return (w + t).uniq
+    return (w + t).uniq.sort_by{|m| m.title}
   end
 
   def original_works_by_genre
