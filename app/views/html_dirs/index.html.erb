@@ -1,28 +1,30 @@
-<h1><%= t(:folder_list) %></h1>
+<div class="top-element">
+  <h1><%= t(:folder_list) %></h1>
 
-<table>
-  <tr>
-    <th><%= t(:path) %></th>
-    <th><%= t(:author) %></th>
-    <th><%= t(:public_domain) %></th>
-    <th><%= t(:viaf_id) %></th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+  <table>
+    <tr>
+      <th><%= t(:path) %></th>
+      <th><%= t(:author) %></th>
+      <th><%= t(:public_domain) %></th>
+      <th><%= t(:viaf_id) %></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
 
-<% @html_dirs.each do |html_dir| %>
-  <tr>
-    <td><%= link_to html_dir.path, html_dir %></td>
-    <td><%= html_dir.author %></td>
-    <td><%= html_dir.public_domain ? t(:yes) : t(:no) %></td>
-    <td><%= html_dir.person ? html_dir.person.viaf_id : t(:none) %></td>
-    <td><%= link_to t(:edit), edit_html_dir_path(html_dir) %></td>
-    <td><%= link_to t(:destroy), html_dir, :data => { :confirm => 'Are you sure?' }, method: :delete %></td>
-  </tr>
-<% end %>
-</table>
+  <% @html_dirs.each do |html_dir| %>
+    <tr>
+      <td><%= link_to html_dir.path, html_dir %></td>
+      <td><%= html_dir.author %></td>
+      <td><%= html_dir.public_domain ? t(:yes) : t(:no) %></td>
+      <td><%= html_dir.person ? html_dir.person.viaf_id : t(:none) %></td>
+      <td><%= link_to t(:edit), edit_html_dir_path(html_dir) %></td>
+      <td><%= link_to t(:destroy), html_dir, :data => { :confirm => 'Are you sure?' }, method: :delete %></td>
+    </tr>
+  <% end %>
+  </table>
 
-<br />
+  <br />
 
-<%= link_to 'New Html dir', new_html_dir_path %>
+  <%= link_to 'New Html dir', new_html_dir_path %>
+</div>
