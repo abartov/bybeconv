@@ -284,7 +284,6 @@ module BybeUtils
     lines = buf.lines
     lines.each{|l|
       if l =~ /^##[^#]/
-        byebug
         genre = identify_genre_by_heading($')
         unless genre.nil?
           unless part.empty? # if not first genre
