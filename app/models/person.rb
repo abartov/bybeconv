@@ -74,8 +74,8 @@ class Person < ActiveRecord::Base
   end
 
   def works_since(since, maxitems)
-    o = original_works.where('created_at > ?', since)
-    t = translations.where('created_at > ?', since)
+    o = original_works.where('manifestations.created_at > ?', since)
+    t = translations.where('manifestations.created_at > ?', since)
     joint = (o+t).uniq
     if joint.count > maxitems
       return joint[0..maxitems - 1]
