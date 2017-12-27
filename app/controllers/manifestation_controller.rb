@@ -59,7 +59,8 @@ class ManifestationController < ApplicationController
   def whatsnew
     @tabclass = set_tab('works')
     @page_title = t(:whatsnew)
-    # TODO
+    @whatsnew = whatsnew_anonymous
+    @new_authors = Person.new_since(1.month.ago)
   end
 
   def like

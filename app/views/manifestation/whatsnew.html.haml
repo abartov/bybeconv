@@ -1,0 +1,45 @@
+.container-fluid.top-element
+  .row
+    .col-lg-1
+    .col-lg-10
+      .container-fluid
+        .row
+          .col-md-4.col-xs-12.main-group#authors
+            / new authors
+            %p
+              %span.headline-2= t(:new_authors)
+            - @new_authors.each do |au|
+              .card.whatsnew-author-card-wide
+                .whatsnew-text
+                  %p.headline-3
+                    = link_to au.name, author_toc_path(au)
+                  %p
+                    - worksbuf = ''
+                    - au.works_since(1.month.ago, 10).each do |m|
+                      - title = m.expressions[0].title
+                      - title += (m.expressions[0].translation ? ' / '+m.expressions[0].works[0].persons[0].name : '')
+                      - worksbuf += (link_to(title, url_for(controller: :manifestation, action: :read, id: m.id)) + '; ')
+                      - if worksbuf.length > 200
+                        - worksbuf += '...  ' # signify more is available
+                        - break
+                    != worksbuf[0..-3]
+                .whatsnew-pic-wide
+                  %img{ alt: au.name, :class => 'img-responsive', src: au.profile_image.url(:tiny)}
+          .col-md-8.col-xs-12.main-group#works
+            %p.headline-2= t(:new_works)
+            / new works
+            - @whatsnew.each do |author, works|
+              .card
+                .card-content
+                  - works.each do |genre|
+                    = t(genre[0])+': '
+                    - genre[1].each do |m|
+                      - title = m.expressions[0].title
+                      - title += (m.expressions[0].translation ? ' / '+m.expressions[0].works[0].persons[0].name : '')
+                      - worksbuf += (link_to(title, url_for(controller: :manifestation, action: :read, id: m.id)) + '; ')
+                      - if worksbuf.length > 200
+                        - worksbuf += '...  ' # signify more is available
+                        - break
+                    != worksbuf[0..-3]
+
+    .col-lg-1
