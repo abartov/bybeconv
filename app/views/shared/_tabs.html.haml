@@ -22,7 +22,7 @@
               /%li{role: 'presentation', :class => @tabclass['periods']} TODO: implement period pages
               / = link_to t(:periods), :controller => :periods
               %li{role: 'presentation', :class => @tabclass['whatsnew']}
-                = link_to t(:whatsnew), "javascript:alert('#{t(:not_implemented_yet)}');"
+                = link_to t(:whatsnew), whatsnew_path
               %li{role: 'presentation', :class => @tabclass['h_faq']}
                 = link_to t(:about), 'http://benyehuda.org/h_faq.html'
               %li{role: 'presentation', :class => @tabclass['help']}
