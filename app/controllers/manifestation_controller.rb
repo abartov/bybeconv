@@ -312,7 +312,7 @@ class ManifestationController < ApplicationController
     @page_title = "#{@m.title_and_authors} - #{t(:default_page_title)}"
     impressionist(@author) # increment the author's popularity counter
     if @print
-      @html = MultiMarkdown.new(@m.markdown.lines[1..-1].join("\n")).to_html.force_encoding('UTF-8')
+      @html = MultiMarkdown.new(@m.markdown.lines.join("\n")).to_html.force_encoding('UTF-8')
     end
   end
 
@@ -328,7 +328,7 @@ class ManifestationController < ApplicationController
     } # annotate headings in reverse order, to avoid offsetting the next heading
     tmphash.keys.reverse.map{|k| @chapters[k] = tmphash[k]}
     @selected_chapter = tmphash.keys.last
-    @html = MultiMarkdown.new(lines[1..-1].join("\n")).to_html.force_encoding('UTF-8')
+    @html = MultiMarkdown.new(lines.join("\n")).to_html.force_encoding('UTF-8')
     @html.gsub(/fn:\d+/,)
     @tabclass = set_tab('works')
     @entity = @m

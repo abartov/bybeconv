@@ -36,24 +36,6 @@ class ApplicationController < ActionController::Base
     render 'shared/search_results', layout: false
   end
 
-# backup code using Fog, commented out in favor of Paperclip
-#  def s3_storage
-#    @s3_storage ||= Fog::Storage.new(:provider => 'AWS', :aws_access_key_id => AppConstants.aws_access_key_id, :aws_secret_access_key => AppConstants.aws_secret_access_key)
-#  end
-#
-#  def s3_put(key, localfile)
-#    bucket = s3_storage.directories.get(AppConstants.aws_bucket_name)
-#    file = bucket.files.create(key: key, body: File.open(localfile), public: true)
-#    file.save
-#    return file
-#  end
-#
-#  def s3_get(key)
-#    bucket = s3_storage.directories.get(AppConstants.aws_bucket_name)
-#    file = bucket.files.get(key)
-#    return file
-#  end
-
   private
 
   def require_editor
