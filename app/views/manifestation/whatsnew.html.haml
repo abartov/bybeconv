@@ -31,6 +31,7 @@
             - @whatsnew.each do |author, works|
               .card
                 .card-content
+                  - worksbuf = ''
                   - works.each do |genre|
                     = t(genre[0])+': '
                     - genre[1].each do |m|
