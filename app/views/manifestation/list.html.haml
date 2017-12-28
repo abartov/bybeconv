@@ -23,6 +23,8 @@
 
         / end query interface
         = render partial: 'list', locals: {manifestations: @manifestations}
+        != paginate @manifestations, :params => session[:mft_q_params]
+
       .col-md-1
 :javascript
   $(document).ready(function(){
