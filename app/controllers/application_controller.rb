@@ -5,7 +5,6 @@ class ApplicationController < ActionController::Base
   after_filter :set_access_control_headers
 
   # class variables
-  @@whatsnew_cache = nil
   @@countauthors_cache = nil
   @@genre_popups_cache = nil
   @@pop_authors_by_genre = nil
@@ -164,7 +163,7 @@ class ApplicationController < ActionController::Base
   end
 
   def whatsnew_anonymous
-    if @@whatsnew_cache.nil?
+    Rails.cache.fetch("whatsnew_anonymous", expires_in: 2.hours) do # memoize
       authors = {}
       Manifestation.new_since(1.month.ago).each {|m|
         e = m.expressions[0]
@@ -174,9 +173,8 @@ class ApplicationController < ActionController::Base
         authors[person][e.genre] = [] if authors[person][e.genre].nil?
         authors[person][e.genre] << m
       }
-      @@whatsnew_cache = authors
+      authors
     end
-    return @@whatsnew_cache
   end
 
   def sanitize_heading(h)
