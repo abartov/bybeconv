@@ -195,6 +195,29 @@ font-family: "Alef";
 color: #2b0d22;
 font-size: 1.4rem;
 }
+
+#actualtoc h1 {
+  font-size: 5rem;
+  font-weight: bold;
+}
+#actualtoc h2 {
+  font-size: 4rem;
+  font-weight: bold;
+}
+#actualtoc h3 {
+  font-size: 3.5rem;
+  font-weight: bold;
+}
+#actualtoc h4 {
+  font-size: 3rem;
+  font-weight: bold;
+}
+#actualtoc h5 {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+
 h1 {
 font-size: 3.6rem;
 font-weight: bold;
@@ -445,8 +468,6 @@ padding-bottom: 0.6rem;
   color: #2b0d22;
 	padding-right: 0;
 }
-
-
 
 ul {
  padding-right:0;
