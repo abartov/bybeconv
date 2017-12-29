@@ -261,7 +261,7 @@ module BybeUtils
       return 'prose'
     when /מסות/
       return 'article'
-    when /זכרונות/
+    when /זכרונות/, /זכרונות ויומנים/
       return 'memoir'
     when /תרגום/, /יצירות מתורגמות/
       return 'translations'
@@ -271,6 +271,8 @@ module BybeUtils
       return 'fables'
     when /מכתבים/, /אגרות/
       return 'letters'
+    when /עיון/
+      return 'reference'
     else
       return nil
     end
