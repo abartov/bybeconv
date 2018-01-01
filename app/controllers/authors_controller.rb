@@ -66,7 +66,7 @@ class AuthorsController < ApplicationController
 
   def new
     @person = Person.new
-
+    @page_title = t(:new_author)
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @person }

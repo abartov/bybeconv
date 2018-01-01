@@ -380,6 +380,7 @@ class HtmlFileController < ApplicationController
 
   def new_postprocess(buf)
     lines = buf.split("\n")
+    in_footnotes = false
     (0..lines.length-1).each {|i|
       lines[i].strip!
       uniq_chars = lines[i].gsub(/[\s\u00a0]/,'').chars.uniq
@@ -387,9 +388,13 @@ class HtmlFileController < ApplicationController
         lines[i] = '***' # make it a Markdown horizontal rule
       else
         nikkud = count_nikkud(lines[i])
-        if (nikkud[:total] > 2000 and nikkud[:ratio] > 0.6) or (nikkud[:total] <= 2000 and nikkud[:ratio] > 0.3)
+        in_footnotes = true if lines[i] =~ /^\[\^\d+\]:/ # once reached the footnotes section, set the footnotes mode to properly handle multiline footnotes with tabs
+        if (nikkud[:total] > 2000 and nikkud[:ratio] > 0.6) or (nikkud[:total] <= 2000 and nikkud[:ratio] > 0.4)
           # make full-nikkud lines PRE
-          lines[i] = '> '+lines[i] unless lines[i] =~ /\[\^fn/ # produce a blockquote (PRE would ignore bold and other markup)
+          lines[i] = '> '+lines[i] unless lines[i] =~ /\[\^\d+/ # produce a blockquote (PRE would ignore bold and other markup)
+        end
+        if in_footnotes && lines[i] !~ /^\[\^\d+\]:/ # add a tab for multiline footnotes
+          lines[i] = "\t"+lines[i]
         end
       end
     }

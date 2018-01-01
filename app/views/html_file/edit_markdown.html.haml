@@ -2,29 +2,26 @@
   = form_tag(action: 'edit_markdown', id: @text.id) do
     .container-fluid
       .row
-        .col-md-1
-        .col-md-10
-          .row
-            .col-md-6
-              - unless @text.person.nil?
-                %h3
-                  = t(:by)+' '
-                  = link_to @text.person.name+' ('+t(:author)+')', authors_show_path(id: @text.person.id)
-                  - unless @text.translator.nil?
-                    = t(:translated_by)+' '
-                    = link_to @text.translator.name+' ('+t(:translator)+')', authors_show_path(id: @text.translator.id)
-                = t(:publisher)+": #{@text.publisher}; #{t(:year_published)}: #{@text.year_published}"
-              %h3= label_tag t(:orig_lang)
-              %br
-              = select_tag 'orig_lang', options_for_select(get_langs.map {|lang| [textify_lang(lang), lang]}, @text.orig_lang)
-              %h3= label_tag(:genre, t(:genre))
-              = select_tag(:genre, options_for_select(get_genres.map {|genre| [I18n.t(genre), genre]}, @text.genre), {include_blank: true})
-            .col-md-6
-              - if @text.has_splits
-                %h1{style:'color:green'}= "** #{t(:split_work_mode)} **"
-                %p!= t(:split_work_mode_intro)
-              - else
-                %h2= @text.title
+        .col-md-6
+          - unless @text.person.nil?
+            %h3
+              = t(:by)+' '
+              = link_to @text.person.name+' ('+t(:author)+')', authors_show_path(id: @text.person.id)
+              - unless @text.translator.nil?
+                = t(:translated_by)+' '
+                = link_to @text.translator.name+' ('+t(:translator)+')', authors_show_path(id: @text.translator.id)
+            = t(:publisher)+": #{@text.publisher}; #{t(:year_published)}: #{@text.year_published}"
+          %h3= label_tag t(:orig_lang)
+          %br
+          = select_tag 'orig_lang', options_for_select(get_langs.map {|lang| [textify_lang(lang), lang]}, @text.orig_lang)
+          %h3= label_tag(:genre, t(:genre))
+          = select_tag(:genre, options_for_select(get_genres.map {|genre| [I18n.t(genre), genre]}, @text.genre), {include_blank: true})
+        .col-md-6
+          - if @text.has_splits
+            %h1{style:'color:green'}= "** #{t(:split_work_mode)} **"
+            %p!= t(:split_work_mode_intro)
+          - else
+            %h2= @text.title
           .markdown_container
             %div{ style:"vertical-align:top; width: 30%;display:flex;margin-right:10px;flex-direction:column;height:100%;box-sizing:border-box;float:left;padding-right:7px;"}
               #legacy_markdown_link
@@ -50,7 +47,6 @@
                   != link_to t(:publish), action: :publish, id: @text.id
                 - elsif @text.status != 'Published'
                   != raw(t(:accept_conversion_and) + link_to(t(:frbrize), html_file_frbrize_path(@text), id: 'frbrize_button'))
-        .col-md-1
 
 :javascript
   jQuery(document).ready(function() {
