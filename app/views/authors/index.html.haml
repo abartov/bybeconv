@@ -241,7 +241,7 @@
     });
     $('#toggle_featured_author').click(function(){
       $('.recommend-text').css('height', 'auto');
-      $('#fa_body').html(@featured_content.nil? ? '' : "#{escape_javascript(@featured_author.body)}");
+      $('#fa_body').html("#{@featured_content.nil? ? '' : escape_javascript(@featured_author.body)}");
       $('#toggle_featured_author').hide();
     });
 
