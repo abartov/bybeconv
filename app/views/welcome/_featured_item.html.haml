@@ -8,7 +8,7 @@
           .recommend-pic
             .recommend-portrait
               - unless @featured_content.person.nil?
-                %img.recommend-absolute{ src: @featured_content.person.profile_image.url(:thumb), width:'160px'}
+                %img.recommend-absolute{ src: @featured_content.person.profile_image.url(:thumb), alt: @featured_content.person.name , width:'160px'}
               - else
                 = '' # TODO: what to put here?
           .recommend-text{style: 'height: 26.4rem;position:relative'}

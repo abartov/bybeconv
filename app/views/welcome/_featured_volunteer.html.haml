@@ -3,9 +3,9 @@
     .card.footer-card
       - unless @featured_volunteer.nil?
         .small-bookmark-back
-          %img{ src: '/assets/creator-bookmark-back2.png', width: 84, height: 4}
+          %img{ src: '/assets/creator-bookmark-back2.png', alt: t(:background), width: 84, height: 4}
         .small-bookmark-front
-          %img{ src: @featured_volunteer.profile_image.url(:thumb), width: 83}
+          %img{ src: @featured_volunteer.profile_image.url(:thumb), alt: @featured_volunteer.name, width: 83}
         .near-small-picture
           .card-content
             %p.headline-3= @featured_volunteer.name

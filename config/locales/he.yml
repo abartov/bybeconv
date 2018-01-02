@@ -301,6 +301,8 @@ he:
   search_placeholder: חיפוש יצירות ויוצרים באתר
   new_authors: יוצרים חדשים בפרויקט
   new_author: יוצר חדש
+  background: רקע
+  placeholder_image: "צללית יוצר/ת"
   new_works: יצירות חדשות בפרויקט
   homepage: דף הבית
   authors_page: דף יוצרים

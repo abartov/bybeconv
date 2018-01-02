@@ -5,9 +5,9 @@
   %div{style:'margin-top:0'}
     .card.full-size-card{style:'min-height:26rem'}
       .creator-bookmark-back
-        %img{src: '/assets/creator-bookmark-back2.png', width: 168, height: 6}
+        %img{src: '/assets/creator-bookmark-back2.png', alt: t(:background), width: 168, height: 6}
       .creator-bookmark-front
-        %img{src: author.profile_image.url(:thumb), width: 162}
+        %img{src: author.profile_image.url(:thumb), alt: author.name, width: 162}
       .card-content.near-picture
         %p
           %h5= t(:most_read_works_of_author, {author: author.name, gender_letter: author.gender_letter })

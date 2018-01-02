@@ -41,7 +41,7 @@
                                     %br
                               %p= t(:added_on)+': '+au.created_at.strftime('%m/%Y')
                             .whatsnew-pic-wide
-                              %img{src: au.profile_image.url(:thumb), height: 120}
+                              %img{src: au.profile_image.url(:thumb), alt: au.name, height: 120}
                   .card-content
                     %div
                       %a.btn{style:'color:white', href: '#'}= t(:to_all_whatsnew)
@@ -55,7 +55,7 @@
                         - unless @featured_author.nil?
                           .recommend-pic
                             .recommend-portrait
-                              %img.recommend-absolute{src: @featured_author.person.profile_image.url(:thumb), width: 159}
+                              %img.recommend-absolute{src: @featured_author.person.profile_image.url(:thumb), alt: @featured_author.person.name, width: 159}
                           .recommend-text{style: 'height: 40.6rem;position: relative'}
                             %div{style: 'height: auto'}
                               %p{style: 'padding-top: 1rem'}
@@ -90,7 +90,7 @@
                                   %span{:style => "padding-right: 1rem;"}!= au.life_years
                                 %p= snippet(au.wikipedia_snippet, 150)[0]
                               .whatsnew-pic-wide
-                                %img{height: 120, src: au.profile_image.url(:thumb)}
+                                %img{height: 120, src: au.profile_image.url(:thumb), alt: au.name}
                   .card-content
                     %div
                       %a.btn{href: authors_genre_path(genre: :lexicon)}= t(:to_all_authors_in_genre, genre: textify_genre(:lexicon))
@@ -173,14 +173,14 @@
                                 .card.full-size-card.small-surprise.item.active.surprise_button{id: "#{g}_side1", 'data-genre' => g, style:'margin-top:0;cursor:pointer;'}
                                   .bysurprise-pic
                                     .bysurprise-portrait
-                                      %img{src: '/assets/tiny/placeholder_man.jpg', width:83}
+                                      %img{src: '/assets/tiny/placeholder_man.jpg', alt: t(:placeholder_image), width:83}
                                   .card-content.bysurprise-text{style:'align-content:center; text-align:center;position:relative'}
                                     %a{ role: :button}
                                       %div{style:'font-size:5rem;padding-top: 2rem;margin-bottom: -2rem'}
                                         %span.icon-bysurprise-author
                                       %p.headline-3= t(:surprise_author_in_genre, genre: genre_name)
                                   %div{style:'z-index: 1; position: absolute; left: 0;bottom: 0%; border-bottom-left-radius: 0.3rem; display: inline;overflow: hidden'}
-                                    %img{src:'/assets/corner.png', width:80, height:80}
+                                    %img{src:'/assets/corner.png', alt: t(:background), width:80, height:80}
                                   .replace-icon.text-on-dark{style:'margin-bottom:0.6rem'}
                                     %div
                                       .linky{style:'color:white'}= '?'

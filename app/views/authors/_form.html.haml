@@ -67,7 +67,7 @@
     = f.text_area :wikipedia_snippet, rows: 8, cols: 50
   .backend-field
     = f.label t(:current_image)
-    = image_tag person.profile_image.url(:thumb)
+    = image_tag person.profile_image.url(:thumb), alt: person.name
   .backend-field
     = f.label t(:upload_new_image)
     = f.file_field :profile_image

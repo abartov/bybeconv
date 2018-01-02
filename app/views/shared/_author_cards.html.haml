@@ -21,7 +21,7 @@
                   .card.author-card.surprise.item.active#a_side1
                     %a{ role: :button, id: 'surprise_author_link'}
                       .corner
-                        %img{ src: '/assets/corner.png', width: 80, height: 80}
+                        %img{ src: '/assets/corner.png', alt: t(:background), width: 80, height: 80}
                       .author-homepage-pic{style:'padding-top:3rem'}
                         %span.icon-bysurprise-author{style:'font-size:7.6rem;margin-bottom:1.4rem;'}
                         %p.headline-3= t(:surprise_author)
@@ -36,7 +36,7 @@
                 / %a{href: author_toc_path(author)}
                 %a{ 'data-toggle' => :modal, 'data-target'=> "#author_popup_#{author.id}"}
                   %div{class: size == :large ? 'author-homepage-pic' : 'small-author-homepage-pic'}
-                    %img{ src: author.profile_image.url(:thumb), height: (size == :large ? '230px' : '120px')}
+                    %img{ src: author.profile_image.url(:thumb), alt: author.name, height: (size == :large ? '230px' : '120px')}
                   %div{class: size == :large ? 'author-homepage-name' : 'small-author-homepage-name'}
                     %p.vcentered{ style: size == :large ? '' : 'font-size:85%'}= author.name
       .col-xs-1.slick-arrow{ id: "rightarrow#{id_frag}", style: "height:#{size == :large ? '50px' : '20px'};top:0px;"}

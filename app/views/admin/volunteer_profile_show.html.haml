@@ -15,7 +15,7 @@
     %b= t(:volunteer_statement)+': '
     = @vp.about
   %p
-    = image_tag @vp.profile_image.url(:thumb), height: '230px'
+    = image_tag @vp.profile_image.url(:thumb), alt: @vp.name, height: '230px'
   %h3= t(:feature_on)
   %table
     %tr

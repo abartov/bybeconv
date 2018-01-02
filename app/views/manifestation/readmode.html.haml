@@ -19,7 +19,7 @@
           = render partial: 'chapter_links'
       .work-pic
         .work-gradient-pic
-          %img{'class' => 'absolute', src: @author.profile_image.url(:full)}
+          %img{'class' => 'absolute', src: @author.profile_image.url(:full), alt: @author.name}
 
 :javascript
   $(document).ready(

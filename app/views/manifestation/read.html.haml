@@ -113,7 +113,7 @@
             /     %i.icon-bybookmark
             .work-pic
               .work-gradient-pic
-                %img{'class' => 'absolute', src: @author.profile_image.url(:full)}
+                %img{'class' => 'absolute', src: @author.profile_image.url(:full), alt: @author.name }
       .col-md-1
 
 .container-fluid#extra_container{style:'margin-top:3rem'}
@@ -183,11 +183,11 @@
             .headline-3{style:'margin-top:3rem'}= t(:surprise)
             .card.genre-card.small-surprise{style:'height:auto; margin-top:1rem;position:relative'}
               .corner
-                %img{src: '/assets/corner.png', width: 80, height: 80}
+                %img{src: '/assets/corner.png', alt: t(:background), width: 80, height: 80}
               .card-content#random_work
                 = render partial: 'surprise_work', locals: {work: @random_work}
               %div{style:'z-index: 1; position: absolute; left: 0;bottom: 0%; border-bottom-left-radius: 0.3rem; display: inline;overflow: hidden'}
-                %img{src:'/assets/corner.png', width: 80, height:80}
+                %img{src:'/assets/corner.png', alt: t(:background), width: 80, height:80}
               %div
                 .replace-icon.text-on-dark{style:'margin-bottom:0.6rem'}
                   %a.surprise-work-refresh{ role: :button}

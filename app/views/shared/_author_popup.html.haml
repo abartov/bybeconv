@@ -6,9 +6,9 @@
           %button.close.card-header-close{ type: 'button', style: 'margin-left:1.5rem;margin-top:1.9rem;', 'data-dismiss' => 'modal'}
             != '&times;'
         .creator-bookmark-back
-          %img{src: '/assets/creator-bookmark-back2.png', width: 168, height: 6}
+          %img{src: '/assets/creator-bookmark-back2.png', alt: t(:background), width: 168, height: 6}
         .creator-bookmark-front
-          %img{src: author.profile_image.url(:thumb), width: 162}
+          %img{src: author.profile_image.url(:thumb), alt: author.name, width: 162}
         .card-content.near-picture
           %p.headline-2{style: 'padding-top:0.4rem'}
             = link_to author.name, author_toc_path(author.id)

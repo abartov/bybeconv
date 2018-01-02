@@ -81,7 +81,7 @@
             %a{ href: author_toc_path(author)}
               .card.author-card
                 .author-homepage-pic
-                  %img{ src: author.profile_image.url(:thumb), height: '230px'}
+                  %img{ src: author.profile_image.url(:thumb), alt: author.name, height: '230px'}
                 .author-homepage-name
                   %p.vcentered= author.name
 :javascript

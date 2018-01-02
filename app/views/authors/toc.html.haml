@@ -15,9 +15,9 @@
                   %input{placeholder: t(:find_work_by_author, author:@author.name), style:'background-color: #eeeced;'}
             .col-md-9
               .creator-bookmark-back-right
-                %img{src:'/assets/creator-bookmark-back2.png', width:168,height:6}
+                %img{src:'/assets/creator-bookmark-back2.png', alt: t(:background), width:168,height:6}
               .creator-bookmark-front-right
-                %img{src: @author.profile_image.url(:thumb), width: 162}
+                %img{src: @author.profile_image.url(:thumb), alt: @author.name, width: 162}
               .card-content.near-picture-right
                 %div
                   %p
