@@ -43,9 +43,9 @@
       = text_area_tag :ecomment, @e.comment, rows: 4, cols: 40
     %p
       %h3= t(:copyright_status)
-      = radio_button_tag :public_domain, true, (not @e.copyrighted)
+      = radio_button_tag :public_domain, true, @e.copyrighted.nil? ? false : (not @e.copyrighted)
       = label_tag t(:public_domain)
-      = radio_button_tag(:public_domain, false, @e.copyrighted)
+      = radio_button_tag(:public_domain, false, @e.copyrighted.nil? ? false : @e.copyrighted)
       = label_tag t(:by_permission)
       / = textify_copyright_status(@e.copyrighted) # TODO: make editable
     = render partial: 'shared/associated_people', locals: { which: :expression, expression: @e, edit: true}
@@ -76,4 +76,3 @@
     = text_field_tag :link_description
     %p
       = submit_tag t(:save)
-
