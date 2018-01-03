@@ -18,7 +18,7 @@
                       - title = m.expressions[0].title
                       - title += (m.expressions[0].translation ? ' / '+m.expressions[0].works[0].persons[0].name : '')
                       - worksbuf += (link_to(title, url_for(controller: :manifestation, action: :read, id: m.id)) + '; ')
-                      - if worksbuf.length > 200
+                      - if worksbuf.length > 160
                         - worksbuf += '...  ' # signify more is available
                         - break
                     != worksbuf[0..-3]

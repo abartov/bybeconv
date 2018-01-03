@@ -74,26 +74,26 @@
                                   .btn{style: 'padding-top:0.5rem'}
                                     %b= t(:to_the_author_page)
                         / carousel?
-              %a{name: 'lexicon_g'}
-              .main-group
-                %p.headline-2= link_to "#{t(:authors_of)} #{textify_genre(:lexicon)}", authors_genre_path(genre: 'lexicon')
-                .card{style: 'padding-top: 1rem'}
-                  %div{style: 'height:40.8rem'}
-                    .container-fluid
-                      - @pop_by_genre['lexicon'][:orig].each do |au|
-                        .row
-                          .col-xs-12
-                            .card.whatsnew-author-card-wide
-                              .whatsnew-text
-                                %p.headline-3
-                                  = link_to au.name, author_toc_path(au)
-                                  %span{:style => "padding-right: 1rem;"}!= au.life_years
-                                %p= snippet(au.wikipedia_snippet, 150)[0]
-                              .whatsnew-pic-wide
-                                %img{height: 120, src: au.profile_image.url(:thumb), alt: au.name}
-                  .card-content
-                    %div
-                      %a.btn{href: authors_genre_path(genre: :lexicon)}= t(:to_all_authors_in_genre, genre: textify_genre(:lexicon))
+              /%a{name: 'lexicon_g'}
+              /.main-group
+              /  %p.headline-2= link_to "#{t(:authors_of)} #{textify_genre(:lexicon)}", authors_genre_path(genre: 'lexicon')
+              /  .card{style: 'padding-top: 1rem'}
+              /    %div{style: 'height:40.8rem'}
+              /      .container-fluid
+              /        - @pop_by_genre['lexicon'][:orig].each do |au|
+              /          .row
+              /            .col-xs-12
+              /              .card.whatsnew-author-card-wide
+              /                .whatsnew-text
+              /                  %p.headline-3
+              /                    = link_to au.name, author_toc_path(au)
+              /                    %span{:style => "padding-right: 1rem;"}!= au.life_years
+              /                  %p= snippet(au.wikipedia_snippet, 150)[0]
+              /                .whatsnew-pic-wide
+              /                  %img{height: 120, src: au.profile_image.url(:thumb), alt: au.name}
+              /    .card-content
+              /      %div
+              /        %a.btn{href: authors_genre_path(genre: :lexicon)}= t(:to_all_authors_in_genre, genre: textify_genre(:lexicon))
               %a{name: 'translations_g'}
               .row
                 .col-xs-12.main-group

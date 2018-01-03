@@ -16,7 +16,7 @@
       .btn-group-vertical
         /%button.btn#fontsize= t(:font_size)
         #maintools{class: @readmode ? 'collapse collapsed' : 'collapse in'}
-          %button.toolbox-cell.darkoldpink{style:'border-top-left-radius:0.3rem;border-top-right-radius:0.3rem'}
+          %button.toolbox-cell.bookmarkbtn.darkoldpink{style:'border-top-left-radius:0.3rem;border-top-right-radius:0.3rem'}
             %i.icon-bybookmark-empty
             %span.tooltiptext= t(:add_bookmark)
           %button.toolbox-cell.darkoldpink.like
@@ -25,7 +25,7 @@
             - else
               %i.fa.fa-heart-o
             %span.tooltiptext= t(:work_heart_button)
-          %button.toolbox-cell.darkoldpink
+          %button.toolbox-cell.darkoldpink.bookshelf
             %i.icon-bybookshelf
             %span.tooltiptext= t(:bookshelves)
           %button.toolbox-cell.mistake#found_mistake
@@ -109,6 +109,14 @@
         $('.fa-heart-o').removeClass('fa-heart-o').addClass('fa-heart');
       }
     });
+    // unimplemented buttons
+    $('.bookmarkbtn').click(function(){
+      alert('#{t(:not_implemented_yet)}');
+    });
+    $('.bookshelf').click(function(){
+      alert('#{t(:not_implemented_yet)}');
+    });
+
     // proof button
     $('#proofDlg').dialog({
       autoOpen: false,
