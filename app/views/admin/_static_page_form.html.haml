@@ -1,0 +1,26 @@
+= form_for sp, url: {action: action, id: sp.id} do |f|
+  .backend-field
+    = f.label t(:name)
+    = f.text_field :tag
+  .backend-field
+    = f.label t(:title)
+    = f.text_field :title
+  .backend-field
+    = f.label t(:body)
+    = f.text_area :body, rows: 10, cols: 120
+  .backend-field
+    %b= f.label t(:status)+': '
+    = f.label t(:unpublished)
+    = f.radio_button(:status, :unpublished)
+    = f.label t(:published)
+    = f.radio_button(:status, :published)
+  .backend-field
+    %b= f.label t(:mode)+': '
+    = f.label t(:plain_markdown)
+    = f.radio_button(:mode, :plain_markdown)
+    = f.label t(:cards)
+    = f.radio_button(:mode, :cards)
+    = f.label t(:cards_with_shortcuts)
+    = f.radio_button(:mode, :cards_with_shortcuts)
+  .actions
+    = f.submit t(:save)

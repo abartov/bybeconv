@@ -97,6 +97,71 @@ class AdminController < ApplicationController
   end
 
   #######################################
+  ## Static pages management
+  def static_pages_list
+    @vps = StaticPage.page(params[:page])
+  end
+
+  def static_page_new
+    @vp = StaticPage.new
+    respond_to do |format|
+      format.html
+      format.json { render json: @vp }
+    end
+  end
+
+  def static_page_create
+    @vp = StaticPage.new(params[:static_page])
+    respond_to do |format|
+      if @vp.save
+        format.html { redirect_to url_for(action: :static_page_show, id: @vp.id), notice: t(:updated_successfully) }
+        format.json { render json: @vp, status: :created, location: @vp }
+      else
+        format.html { render action: 'static_page_new'}
+        format.json { render json: @vp.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def static_page_show
+    @vp = StaticPage.find(params[:id])
+    if @vp.nil?
+      flash[:error] = I18n.t(:no_such_item)
+      redirect_to url_for(action: :index)
+    end
+    @markdown = MultiMarkdown.new(@vp.body).to_html.force_encoding('UTF-8')
+    unless @vp.mode == :plain_markdown # then all paragraphs should be in cards
+      parts = @markdown.split("<h2")
+      newbuf = parts[0]
+      parts[1..-1].each {|p|
+        newbuf += '<div class="card"><h2' + p + '</div>'
+      }
+      @markdown = newbuf
+    end
+  end
+
+  def static_page_edit
+    @vp = StaticPage.find(params[:id])
+  end
+
+  def static_page_update
+    @vp = StaticPage.find(params[:id])
+    if @vp.nil?
+      flash[:error] = I18n.t(:no_such_item)
+      redirect_to url_for(action: :index)
+    else
+      if @vp.update_attributes(params[:static_page])
+        flash[:notice] = I18n.t(:updated_successfully)
+        redirect_to action: :static_page_show, id: @vp.id
+      else
+        format.html { render action: 'static_page_edit' }
+        format.json { render json: @vp.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+
+  #######################################
   ## Volunteer profiles management
   def volunteer_profiles_list
     @vps = VolunteerProfile.page(params[:page])

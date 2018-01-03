@@ -20,5 +20,5 @@
         %td!= v.featured_list
         %td= v.bio
         %td= v.about
-        %td= link_to t(:edit), url_for(action: :volunteer_profile_show, id: v.id)
+        %td= link_to t(:edit), url_for(action: :volunteer_profile_edit, id: v.id)
   != paginate @vps

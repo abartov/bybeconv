@@ -65,7 +65,11 @@ he:
   accepted: אושר
   analyzed: אובחן
   publish: פרסם באתר
-  published: פורסם בקטלוג
+  published: פורסם באתר
+  unpublished: טרם פורסם
+  plain_markdown: מארקדאון פשוט
+  cards: כל פסקה בתיבה
+  cards_with_shortcuts: כל פסקה בתיבה וגם תיבה נפתחת של קיצורי דרך
   manual: ממתין להסבה ידנית
   WEM: ישויות ביבליוגרפיות
   nil: אין
@@ -177,6 +181,9 @@ he:
   proof_contact_html: "בכל שאלה, תוכלו לכתוב אל צוות העורכים, בכתובת <a href=\"mailto:editor@benyehuda.org\">editor@benyehuda.org</a>."
 # TODO: add notification e-mail when resolving a proof
   left_todo: נותרו לעשות
+  new_static_page: דף סטטי חדש
+  static_page: דף סטטי
+  static_pages: דפים סטטיים
   proof_show_text: הצג את הטקסט בחלון נפרד
   proof_your_proofs: יש להקליד כאן למטה את ההגהות, או ללחוץ על הלחצן משמאל כדי להעתיק את הטקסט שנבחר ולתקן אותו ידנית למטה.
   proof_copy_text: העתק למטה
@@ -192,6 +199,8 @@ he:
   txt_format: טקסט בלבד, ללא הדגשות ועיצוב
   no_date: אין תאריך
   reading_mode: מצב קריאה
+  mode: סוג תצוגה
+  body: גוף הטקסט
   bookmark: סימניה
   cancel: ביטול
   close: סגירה
