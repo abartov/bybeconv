@@ -192,8 +192,10 @@
                         .row{style:'height:18.6rem; position:relative'}
                           .col-xs-12{style:'padding-right:0'}
                             %ol.mostread-translated
-                              - @pop_by_genre[g][:xlat].each do |au|
-                                %li= link_to au.name, author_toc_path(au)
+                              - max = @pop_by_genre[g][:xlat].count > 5 ? 5 : @pop_by_genre[g][:xlat].count
+                              - unless max == 0
+                                - @pop_by_genre[g][:xlat][0..max].each do |au|
+                                  %li= link_to au.name, author_toc_path(au)
                           %div{style:'position:absolute;bottom:0;left:0'}
                             %a.btn{href: authors_index_path(genre: g)}= t(:to_all_authors_in_genre, genre: genre_name)
                       .col-md-6

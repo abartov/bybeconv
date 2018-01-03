@@ -33,8 +33,9 @@
   %div{class: "modal fade", role: 'dialog', id: "genre_popup_#{genre}", tabindex: '-1'}
     .modal-dialog
       .card
-        %button.close.card-header-close{ type: 'button', 'data-dismiss' => 'modal'}
-          != '&times;'
+        %div
+          %button.close.card-header-close{ type: 'button', style: 'margin-left:1.5rem;margin-top:0.6rem;', 'data-dismiss' => 'modal'}
+            != '&times;'
         .card-header
           %p{style: 'margin-top: -12px'}
             .genre-icon-popup

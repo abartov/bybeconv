@@ -82,19 +82,27 @@
   </div>
   <% end -%>
 <% end %>
+  <% if current_user %>
+    <% if current_user.editor? %>
+      <div class="dashboard-link">
+      <br />
+      <h2><%= link_to t(:back_to_dashboard), url_for(controller: :admin, action: :index) %></h2>
+      </div>
+    <% end %>
+  <% end %>
 <%= yield %>
 <% if @print %>
   <%= t(:download_footer_html, url: url_for(action: :read, only_path:false, id: @m.id)) %>
 <% else %>
   <hr/>
-  <% unless @pagetype == :homepage %>
-    <%= link_to t(:back_to_homepage), "/" %>
-  <% end %>
   <% if current_user %>
     <% if current_user.editor? %>
       <br />
       <h2><%= link_to t(:back_to_dashboard), url_for(controller: :admin, action: :index) %></h2>
     <% end %>
+  <% end %>
+  <% unless @pagetype == :homepage %>
+    <%= link_to t(:back_to_homepage), "/" %>
   <% end %>
   <p/>
   <!-- footer start -->
