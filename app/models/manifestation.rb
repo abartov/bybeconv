@@ -83,6 +83,18 @@ class Manifestation < ActiveRecord::Base
     return title + ' / '+author_string
   end
 
+  def manual_delete
+    expressions.each{|e|
+      e.realizers.each{|r| r.destroy!}
+      e.works.each{|w|
+        w.creations.each{|c| c.destroy!}
+        w.destroy!
+      }
+      e.destroy!
+    }
+    self.destroy!
+  end
+
   def author_string
     Rails.cache.fetch("m_#{self.id}_author_string", expires_in: 24.hours) do
       return I18n.t(:nil) if expressions[0].nil? or expressions[0].works[0].nil? or expressions[0].works[0].persons[0].nil?
