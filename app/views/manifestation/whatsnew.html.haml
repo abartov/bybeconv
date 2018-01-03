@@ -5,7 +5,6 @@
       .container-fluid
         .row
           .col-md-12.main-group#works
-            - byebug
             - cache "whatsnew_page", expires_in: 2.hours do
               %p.headline-2= t(:new_works_by_new_authors)
               - @new_authors.each do |au|
