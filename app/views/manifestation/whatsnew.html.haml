@@ -12,7 +12,7 @@
                 - unless works_since.empty?
                   .card
                     .card-content
-                      .whatsnew-text
+                      .whatsnew-text{style:'max-height:none'}
                         %p.headline-3
                           = link_to au.name, author_toc_path(au)
                         %p
@@ -25,7 +25,7 @@
               - @whatsnew.each do |author, works|
                 .card
                   .card-content
-                    .whatsnew-text
+                    .whatsnew-text{style:'max-height:none'}
                       %p.headline-3
                         = link_to author.name, author_toc_path(author)
                       %p
