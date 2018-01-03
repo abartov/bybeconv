@@ -23,6 +23,7 @@
                         %img{ alt: au.name, :class => 'img-responsive', src: au.profile_image.url(:tiny)}
               %p.headline-2= t(:new_works_by_existing_authors)
               - @whatsnew.each do |author, works|
+                - next if @new_authors.include? author
                 .card
                   .card-content
                     .whatsnew-text{style:'max-height:none'}
