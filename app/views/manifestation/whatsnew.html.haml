@@ -8,7 +8,6 @@
             - cache "whatsnew_page", expires_in: 2.hours do
               %p.headline-2= t(:new_works_by_new_authors)
               - @new_authors.each do |au|
-                - byebug
                 - works_since = au.works_since(1.month.ago, 1000)
                 - unless works_since.empty?
                   .card
