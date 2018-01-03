@@ -73,6 +73,8 @@ gem 'rmagick' # for generating cover images for EPUBs
 gem 'pandoc-ruby' # for converting to DOCX
 gem 'uglifier'
 gem 'responders' # for respond_to at controller level (in api_controller)
+gem 'newrelic_rpm' # performance monitoring
+
 group :production do
   gem 'dalli'
 end

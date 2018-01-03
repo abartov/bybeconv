@@ -214,6 +214,7 @@ GEM
     net-dns2 (0.8.7)
       packetfu
     net-http-persistent (2.9.4)
+    newrelic_rpm (4.7.1.340)
     nokogiri (1.6.8.1)
       mini_portile2 (~> 2.1.0)
     oauth (0.5.3)
@@ -467,6 +468,7 @@ DEPENDENCIES
   kaminari
   linkeddata
   mysql2 (~> 0.3.11)
+  newrelic_rpm
   nokogiri
   omniauth-google-oauth2
   omniauth-twitter
