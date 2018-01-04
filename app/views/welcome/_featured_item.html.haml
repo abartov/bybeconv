@@ -11,8 +11,8 @@
                 %img.recommend-absolute{ src: @featured_content.person.profile_image.url(:thumb), alt: @featured_content.person.name , width:'160px'}
               - else
                 = '' # TODO: what to put here?
-          .recommend-text{style: 'height: 26.4rem;position:relative'}
-            %p.headline-3= @featured_content.title
+          .recommend-text{style: 'height: 34.4rem;position:relative'}
+            %p.headline-3{style:'margin-top:0;padding-top:0'}= @featured_content.title
             - unless @featured_content.user.nil?
               %p{style: 'margin-bottom: 1.8rem'}
                 = t(:by)+' '

@@ -54,11 +54,11 @@
         .row
           .col-sm-4.col-xs-12#flashlight
             / featured item
-            %p.headline-3= t(:featured_item)
+            %p.headline-2= t(:featured_item)
             = render partial: 'featured_item'
           .col-sm-8.col-xs-12.row2.main-group#genre
             / work cards
-            %p
+            %p{style:'margin-top:18px'}
               %span.headline-2
                 = link_to t(:works_by_genre), url_for(controller: :manifestation)
               %span{style: 'padding-right: 1.2rem"'}= t(:x_works, x: @totals[:works])

@@ -1902,7 +1902,8 @@ img.bysurprise-absolute {
 
 .recommend-text{
   width: calc(100% - 159px);
-	padding: 1.5rem;
+  padding-left: 1.5rem;
+  padding-right:1.5rem;
   display: inline-block;
 	text-align: justify;
 }
