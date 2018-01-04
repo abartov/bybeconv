@@ -106,7 +106,7 @@ class Manifestation < ActiveRecord::Base
           ret += ' / '+expressions[0].persons[0].name
         end
       end
-      return ret # TODO: be less naive
+      ret # TODO: be less naive
     end
   end
 
