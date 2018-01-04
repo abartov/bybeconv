@@ -164,6 +164,7 @@ class ApplicationController < ActionController::Base
 
   def whatsnew_anonymous
     Rails.cache.fetch("whatsnew_anonymous", expires_in: 2.hours) do # memoize
+      logger.info("cache failure: calculating whatsnew anonymous")
       authors = {}
       Manifestation.new_since(1.month.ago).each {|m|
         e = m.expressions[0]

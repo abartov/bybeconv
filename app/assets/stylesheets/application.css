@@ -661,7 +661,7 @@ option:first {
 .fontsize-selector{
   width: 2.4rem;
   height: 2.4rem;
-  float: right;
+  /* float: right; */ /* removed by Asaf, to center */
   display: inline
 }
 .fontsize-selector-current{
@@ -670,7 +670,7 @@ option:first {
   border-radius: 50%;
 	border: 2px solid #d9cdd5;
   font-weight: bold;
-  float: right;
+  /*float: right; */ /* removed by Asaf, to center */
   display: inline
 }
 .margintop2 {
