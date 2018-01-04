@@ -113,7 +113,7 @@
             /     %i.icon-bybookmark
             .work-pic
               .work-gradient-pic
-                %img{'class' => 'absolute', src: @author.profile_image.url(:full), alt: @author.name }
+                %img#authorpic{ src: @author.profile_image.url(:full), alt: @author.name }
       .col-md-1
 
 .container-fluid#extra_container{style:'margin-top:3rem'}
@@ -199,4 +199,5 @@
     $('.surprise-work-refresh').click(function(){
       $('#random_work').load("#{url_for(action: :surprise_work)}");
     });
+    $('#authorpic').width($('.work-gradient-pic').width());
   });
