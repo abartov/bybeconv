@@ -4,7 +4,7 @@
       .col-md-1
       .col-md-10
         .welcome-content
-          %h1= t(:welcome_title)
+          %h1{style:'margin-top:0'}= t(:welcome_title)
           %p= t(:welcome_paragraph_html)
           %p= t(:welcome_stats_html, {authors: link_to(@totals[:authors].to_s, authors_index_path), works: link_to(@totals[:works].to_s, works_path), headwords: link_to(@totals[:headwords].to_s, 'http://benyehuda.org/~asaf/full_dict.html')})
           .welcome-actions
