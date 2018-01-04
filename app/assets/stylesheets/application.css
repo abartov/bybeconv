@@ -1014,6 +1014,11 @@ img.absolute {
   padding-top: 0.7rem;
 }
 
+#static_page{
+  margin-left:2rem;
+  margin-right:2rem;
+}
+
 .years{
 	padding: 0;
 }
