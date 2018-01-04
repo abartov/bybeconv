@@ -19,13 +19,14 @@
           = render partial: 'chapter_links'
       .work-pic
         .work-gradient-pic
-          %img{'class' => 'absolute', src: @author.profile_image.url(:full), alt: @author.name}
+          %img#authorpic{src: @author.profile_image.url(:full), alt: @author.name}
 
 :javascript
-  $(document).ready(
+  $(document).ready(function(){
     $(document).on('keyup',function(evt) {
       if (evt.keyCode == 27) {
         window.location.href = '#{url_for(action: :read, id: @m.id)}';
       }
     });
-  );
+    $('#authorpic').width($('.work-gradient-pic').width());
+  });
