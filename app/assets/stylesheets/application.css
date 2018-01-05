@@ -835,12 +835,12 @@ width: calc(100% - 93px);
 	min-height: 69rem;
 }
 .work-text{
-  width: 75%;
+  width: 80%;
   padding: 0 10rem 2rem 10rem;
   display: inline-block;
 }
 .work-pic{
-  width:25%;
+  width:20%;
   height: 100%;
   border-bottom-left-radius: 0.3rem;
   border-top-left-radius: 0.3rem;

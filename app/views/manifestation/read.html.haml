@@ -5,8 +5,7 @@
   = render partial: 'toolbox'
   - cache @m do
     .row
-      .col-md-1
-      .col-md-10
+      .col-xs-12{style:'margin-left:2rem;margin-right:2rem;'}
         .work-name
           %p.headline-1= @m.title
           - if current_user && current_user.editor?
@@ -114,7 +113,6 @@
             .work-pic
               .work-gradient-pic
                 %img#authorpic{ src: @author.profile_image.url(:full), alt: @author.name }
-      .col-md-1
 
 .container-fluid#extra_container{style:'margin-top:3rem'}
   .row
