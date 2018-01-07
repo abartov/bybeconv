@@ -89,7 +89,7 @@ class ManifestationController < ApplicationController
     @taggings = @m.taggings
     @recommendations = @m.recommendations
     @links = @m.external_links.group_by {|l| l.linktype}
-    @random_work = Manifestation.order('RAND()').limit(1)[0]
+    @random_work = Manifestation.where(id: Manifestation.pluck(:id).sample(1))[0]
   end
 
   def readmode

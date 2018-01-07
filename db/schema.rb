@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180102235119) do
+ActiveRecord::Schema.define(version: 20180107230357) do
 
   create_table "api_keys", force: :cascade do |t|
     t.string   "email",       limit: 255
@@ -191,6 +191,7 @@ ActiveRecord::Schema.define(version: 20180102235119) do
 
   add_index "html_files", ["assignee_id"], name: "index_html_files_on_assignee_id", using: :btree
   add_index "html_files", ["path"], name: "index_html_files_on_path", using: :btree
+  add_index "html_files", ["url"], name: "index_html_files_on_url", using: :btree
 
   create_table "html_files_manifestations", id: false, force: :cascade do |t|
     t.datetime "created_at",                 null: false
