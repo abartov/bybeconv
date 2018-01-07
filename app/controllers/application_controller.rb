@@ -121,7 +121,8 @@ class ApplicationController < ActionController::Base
   end
 
   def randomize_works(how_many)
-    return Manifestation.order('RAND()').limit(how_many)
+    return Manifestation.where(id: Manifestation.pluck(:id).sample(how_many))
+    #return Manifestation.order('RAND()').limit(how_many)
   end
 
   def cached_popular_authors_by_genre
