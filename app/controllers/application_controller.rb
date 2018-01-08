@@ -66,12 +66,12 @@ class ApplicationController < ActionController::Base
 
   def featured_content
     Rails.cache.fetch("featured_content", expires_in: 1.hours) do # memoize
+      ret = nil
       fcfs = FeaturedContentFeature.where("fromdate <= :now AND todate >= :now", now: Date.today).order('RAND()').limit(1)
       if fcfs.count == 1
-        fcfs[0].featured_content
-      else
-        nil
+        ret = fcfs[0].featured_content
       end
+      ret
     end
   end
 
@@ -88,12 +88,12 @@ class ApplicationController < ActionController::Base
 
   def featured_volunteer
     Rails.cache.fetch("featured_volunteer", expires_in: 10.hours) do # memoize
+      ret = nil
       vpfs = VolunteerProfileFeature.where("fromdate <= :now AND todate >= :now", now: Date.today).order('RAND()').limit(1)
       if vpfs.count == 1
-        vpfs[0].volunteer_profile
-      else
-        nil
+        ret = vpfs[0].volunteer_profile
       end
+      ret
     end
   end
 
