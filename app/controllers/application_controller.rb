@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
   @@countauthors_cache = nil
   @@genre_popups_cache = nil
   @@pop_authors_by_genre = nil
+  SPIDERS = ['msnbot', 'yahoo! slurp','googlebot','bingbot','duckduckbot','baiduspider','yandexbot']
 
   def set_font_size
     if current_user
@@ -26,7 +27,7 @@ class ApplicationController < ActionController::Base
 
   def set_access_control_headers
 #    headers['Access-Control-Allow-Origin'] = 'http://benyehuda.org/'
-    headers['Access-Control-Allow-Origin'] = '*'
+    headers['Access-Control-Allow-Origin'] = '*' # TODO: restrict
     headers['Access-Control-Allow-Methods'] = '*'
     headers['Access-Control-Request-Method'] = '*'
   end
@@ -161,6 +162,11 @@ class ApplicationController < ActionController::Base
       @@countauthors_cache = ret
     end
     return @@countauthors_cache
+  end
+
+  def is_spider?
+    ua = request.user_agent.downcase
+    return (SPIDERS.detect{|s| ua.include?(s)} ? true : false)
   end
 
   def whatsnew_anonymous

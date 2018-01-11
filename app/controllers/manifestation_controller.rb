@@ -7,7 +7,7 @@ class ManifestationController < ApplicationController
   autocomplete :person, :name, :limit => 2, full: true
   autocomplete :tag, :name
 
-  impressionist :actions=>[:read,:readmode, :print, :download] # log actions for pageview stats
+  #impressionist :actions=>[:read,:readmode, :print, :download] # log actions for pageview stats
 
   #layout false, only: [:print]
 
@@ -104,6 +104,7 @@ class ManifestationController < ApplicationController
 
   def download
     @m = Manifestation.find(params[:id])
+    impressionist(@m) unless is_spider?
     filename = "#{@m.safe_filename}.#{params[:format]}"
     html = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"><html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"he\" lang=\"he\" dir=\"rtl\"><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" /></head><body dir='rtl' align='right'><div dir=\"rtl\" align=\"right\">"+MultiMarkdown.new(@m.markdown).to_html.force_encoding('UTF-8')+"\n\n<hr />"+I18n.t(:download_footer_html, url: url_for(action: :read, id: @m.id))+"</div></body></html>"
     case params[:format]
@@ -307,6 +308,7 @@ class ManifestationController < ApplicationController
 
   def prep_for_print
     @m = Manifestation.find(params[:id])
+    impressionist(@m) unless is_spider?
     @e = @m.expressions[0]
     @author = @e.works[0].persons[0] # TODO: handle multiple authors
     @translator = @m.expressions[0].persons[0] # TODO: handle multiple translators
