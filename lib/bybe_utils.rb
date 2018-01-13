@@ -15,7 +15,7 @@ SKOS_ALTLABEL = "http://www.w3.org/2004/02/skos/core#altLabel"
 module BybeUtils
   def make_epub_from_single_html(html, manifestation)
     book = GEPUB::Book.new
-    book.set_main_id('http://benyehuda.org/read/'+manifestation.id.to_s, 'BookID', 'URL')
+    book.primary_identifier('http://benyehuda.org/read/'+manifestation.id.to_s, 'BookID', 'URL')
     book.language = 'he'
     title = manifestation.title+' מאת '+manifestation.author_string
     book.add_title(title, nil, GEPUB::TITLE_TYPE::MAIN)
