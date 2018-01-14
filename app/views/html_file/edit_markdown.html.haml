@@ -22,6 +22,8 @@
             %p!= t(:split_work_mode_intro)
           - else
             %h2= @text.title
+      .row
+        .col-md-12
           .markdown_container
             %div{ style:"vertical-align:top; width: 30%;display:flex;margin-right:10px;flex-direction:column;height:100%;box-sizing:border-box;float:left;padding-right:7px;"}
               #legacy_markdown_link
@@ -31,6 +33,8 @@
             %div{ style:"vertical-align:top; width: 70%; padding-left:10px;padding-right:15px;background:#d2cfcf;"}
               != raw(@html)
               %br
+      .row
+        .col-md-12
           %h3= t(:comments)
           = text_area_tag(:comments, @text.comments)
           %br
