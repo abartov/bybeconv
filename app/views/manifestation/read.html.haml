@@ -6,26 +6,26 @@
   - cache @m do
     .row
       .col-xs-12{style:'margin-left:2rem;margin-right:2rem;'}
-        .work-name
-          %p.headline-1= @m.title
-          - if current_user && current_user.editor?
-            %span.static-btn= link_to t(:edit_metadata), manifestation_edit_metadata_path(@m.id)
-            != "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
-            %span.static-btn= link_to t(:edit_markdown), manifestation_edit_path(id: @m.id)
-            %br
-          %p.headline-3{ style: 'padding:0;display:inline'}
-            = t(:by)+':'
-            = link_to @author.name, author_toc_path(id: @author.id)
-            - if @e.translation && @e.translators.size > 0
-              = ", #{t(:translation)}: "
-              = link_to @e.translators[0].name, author_toc_path(id: @e.translators[0].id)
-              = " (#{t(:from_lang)}#{textify_lang(@e.works[0].orig_lang)})"
         .work-area#work-side
           .container-fluid
             .row
               .col-md-3#work-share1{style:'padding-left: 0;padding-right: 0;'}
                 = render partial: 'shared/sharing_etc', locals: {context: :work}
               .col-md-9#work-metadata{style: 'padding-right:0'}
+                .work-name
+                  %p.headline-1= @m.title
+                  - if current_user && current_user.editor?
+                    %span.static-btn= link_to t(:edit_metadata), manifestation_edit_metadata_path(@m.id)
+                    != "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+                    %span.static-btn= link_to t(:edit_markdown), manifestation_edit_path(id: @m.id)
+                    %br
+                  %p.headline-3{ style: 'padding:0;display:inline'}
+                    = t(:by)+':'
+                    = link_to @author.name, author_toc_path(id: @author.id)
+                    - if @e.translation && @e.translators.size > 0
+                      = ", #{t(:translation)}: "
+                      = link_to @e.translators[0].name, author_toc_path(id: @e.translators[0].id)
+                      = " (#{t(:from_lang)}#{textify_lang(@e.works[0].orig_lang)})"
                 - unless @links.empty?
                   .row
                     .col-md-10{style:'display:inline-block'}
