@@ -47,6 +47,7 @@ module BybeUtils
     cover_file.close
     return fname
   end
+
   # return a hash like {:total => total_number_of_non_tags_characters, :nikkud => total_number_of_nikkud_characters, :ratio => :nikkud/:total }
   def count_nikkud(text)
     info = { total: 0, nikkud: 0, ratio: nil }
@@ -69,6 +70,16 @@ module BybeUtils
     info[:ratio] = info[:nikkud].to_f / info[:total]
 #    puts "DBG: total #{info[:total]} - nikkud #{info[:nikkud]} - ratio #{info[:ratio]}"
     return info
+  end
+
+  # new definition of full nikkud: no more than two (or one, if under three words) of the words lack nikkud
+  def is_full_nikkud(text)
+    a = text.split /\b/ # split at word boundaries
+    b = a.select{|x| x =~ /[^\s,?!.;'`"\-–]/} # leave only actual words
+    count = 0
+    b.each{|word| count += 1 if word.any_nikkud?}
+    target = b.length < 3 ? 1 : b.length - 2
+    return (count < target ? false : true)
   end
 
   # just return a boolean if the buffer is "full" nikkud

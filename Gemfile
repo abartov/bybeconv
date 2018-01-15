@@ -60,7 +60,7 @@ gem 'rmultimarkdown' # new wrapper over Fletcher Penney's MultiMarkDown 4 (MMD 4
 #gem 'byebug'
 
 gem 'app_constants' # anything more Railsy?
-gem 'hebrew' # https://github.com/abartov/hebrew
+gem 'hebrew', '>= 0.2.0' # https://github.com/abartov/hebrew
 gem 'haml'
 #gem 'zoom', '~>0.4.1', :git => 'https://github.com/bricestacey/ruby-zoom.git' # for Z39.50 queries to libraries
 gem 'haml-rails'

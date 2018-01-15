@@ -387,9 +387,9 @@ class HtmlFileController < ApplicationController
       if uniq_chars == ['*'] or uniq_chars == ["\u2013"] # if the line only contains asterisks, or Unicode En-Dash (U+2013)
         lines[i] = '***' # make it a Markdown horizontal rule
       else
-        nikkud = count_nikkud(lines[i])
+        nikkud = is_full_nikkud(lines[i])
         in_footnotes = true if lines[i] =~ /^\[\^\d+\]:/ # once reached the footnotes section, set the footnotes mode to properly handle multiline footnotes with tabs
-        if (nikkud[:total] > 2000 and nikkud[:ratio] > 0.6) or (nikkud[:total] <= 2000 and nikkud[:ratio] > 0.4)
+        if nikkud
           # make full-nikkud lines PRE
           lines[i] = '> '+lines[i] unless lines[i] =~ /\[\^\d+/ # produce a blockquote (PRE would ignore bold and other markup)
         end
