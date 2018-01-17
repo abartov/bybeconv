@@ -693,7 +693,7 @@ option:first {
 }
 .dashboard-link {
 /*  position:absolute; display:inline; top:11rem; left: 10rem;*/
-  margin-top:-4rem;
+  margin-top:-rem;
 }
 .readmode-top-element {
   margin-top: 8rem;
@@ -1019,19 +1019,29 @@ img.absolute {
   margin-left:2rem;
   margin-right:2rem;
 }
+#static_page p{
+/*  padding-right:2rem;*/
+  padding-top:0.5rem;
+  padding-bottom:0.5rem;
+}
 #static_page li{
   display: list-item;
+  margin-right:2rem;
 }
 #static_page h1 {
+  padding-top:1.5rem;
   color:#660248;
 }
 #static_page h2 {
+  padding-top:1.5rem;
   color:#660248;
 }
 #static_page h3 {
+  padding-top:1rem;
   color:#660248;
 }
 #static_page h4 {
+  padding-top:1.5rem;
   color:#660248;
 }
 #static_page ul{
