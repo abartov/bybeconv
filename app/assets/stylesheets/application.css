@@ -692,7 +692,8 @@ option:first {
   margin-top: 14.4rem;
 }
 .dashboard-link {
-  position:absolute; display:inline; top:11rem; left: 10rem;
+/*  position:absolute; display:inline; top:11rem; left: 10rem;*/
+  margin-top:-4rem;
 }
 .readmode-top-element {
   margin-top: 8rem;
