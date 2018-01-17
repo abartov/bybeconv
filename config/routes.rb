@@ -1,4 +1,6 @@
 Bybeconv::Application.routes.draw do
+  get 'static_pages/render'
+
   get 'realizers/remove'
 
   get 'creations/add'
@@ -69,7 +71,7 @@ Bybeconv::Application.routes.draw do
   get 'authors/get_random_author'
   match 'author/:id/edit_toc' => 'authors#edit_toc', as: 'authors_edit_toc', via: [:get, :post]
   match 'author/:id/create_toc' => 'authors#create_toc', as: 'authors_create_toc', via: [:get]
-
+  get '/page/:tag' => 'static_pages#view', as: 'static_pages_by_tag', via: [:get]
   get "read/:id" => 'manifestation#read', as: 'manifestation_read'
   get "read/:id/read" => 'manifestation#readmode', as: 'manifestation_readmode'
   get 'works' => 'manifestation#works', as: 'works'
