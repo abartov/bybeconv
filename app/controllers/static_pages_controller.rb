@@ -5,7 +5,7 @@ class StaticPagesController < ApplicationController
       flash[:error] = t(:no_such_item)
       redirect_to '/'
     else
-      @markdown = MultiMarkdown.new(@p.body).to_html.force_encoding('UTF-8')
+      @markdown = @p.prepare_markdown
     end
   end
 end

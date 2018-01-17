@@ -129,15 +129,7 @@ class AdminController < ApplicationController
       flash[:error] = I18n.t(:no_such_item)
       redirect_to url_for(action: :index)
     end
-    @markdown = MultiMarkdown.new(@vp.body).to_html.force_encoding('UTF-8')
-    unless @vp.mode == 'plain_markdown' # then all paragraphs should be in cards
-      parts = @markdown.split("<h2")
-      newbuf = parts[0]
-      parts[1..-1].each {|p|
-        newbuf += '<div class="card"><h2' + p + '</div>'
-      }
-      @markdown = newbuf
-    end
+    @markdown = @vp.prepare_markdown
   end
 
   def static_page_edit
