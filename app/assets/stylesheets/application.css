@@ -772,10 +772,6 @@ option:first {
 .center {
   text-align: center;
 }
-#breadcrumbs li{
-  margin: 0 0.2rem;
-  display: inline;
-}
 #byfooter{
   height: Auto;
   background-color: #2b0d22;
