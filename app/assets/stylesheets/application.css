@@ -693,7 +693,7 @@ option:first {
 }
 .dashboard-link {
 /*  position:absolute; display:inline; top:11rem; left: 10rem;*/
-  margin-top:-rem;
+  margin-top:-4rem;
 }
 .readmode-top-element {
   margin-top: 8rem;
