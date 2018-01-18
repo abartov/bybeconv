@@ -18,13 +18,15 @@
     %b= t(:mode)+': '
     = t(@vp.mode)
   %p
+    %b= t(:ltr)+': '
+    = @vp.ltr ? t(:yes) : t(:no)
+  %p
     %b= t(:body)+': '
   %hr
   #static_page
-    - if @english
+    - if @vp.ltr
       %div{dir:'ltr',align:'left'}
         != @markdown.gsub('<h2 ','<h2 style="direction:ltr;text-align:left" ').gsub('<h4 ','<h4 style="direction:ltr;text-align:left" ').gsub('<h3 ','<h3 style="direction:ltr;text-align:left" ')
-
     - else
       != @markdown
   %hr

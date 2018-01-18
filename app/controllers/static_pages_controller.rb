@@ -6,7 +6,6 @@ class StaticPagesController < ApplicationController
       redirect_to '/'
     else
       @markdown = @p.prepare_markdown
-      @english = @p.english?
     end
   end
 end

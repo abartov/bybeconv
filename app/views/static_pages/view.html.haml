@@ -4,7 +4,7 @@
       .col-md-1
       .col-md-10#static_page
         %h1= @p.title
-        - if @english
+        - if @p.ltr
           %div{dir:'ltr',align:'left'}
             != @markdown.gsub('<h2 ','<h2 style="direction:ltr;text-align:left" ').gsub('<h4 ','<h4 style="direction:ltr;text-align:left" ').gsub('<h3 ','<h3 style="direction:ltr;text-align:left" ')
         - else

@@ -6,6 +6,9 @@
     = f.label t(:title)
     = f.text_field :title
   .backend-field
+    = f.label t(:ltr)
+    = f.check_box :ltr
+  .backend-field
     = f.label t(:body)
     = f.text_area :body, rows: 10, cols: 120
   .backend-field

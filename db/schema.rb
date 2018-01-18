@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180107230357) do
+ActiveRecord::Schema.define(version: 20180118013953) do
 
   create_table "api_keys", force: :cascade do |t|
     t.string   "email",       limit: 255
@@ -376,6 +376,7 @@ ActiveRecord::Schema.define(version: 20180107230357) do
     t.integer  "mode",       limit: 4
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
+    t.boolean  "ltr"
   end
 
   create_table "taggings", force: :cascade do |t|

@@ -55,6 +55,7 @@ he:
   some: חלקי
   full: מלא
   filter: סינון
+  ltr: משמאל לימין
   parse: הסבה
   remove_line_nums: הסר מספרי שורות
   fables: משלים

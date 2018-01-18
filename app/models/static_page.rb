@@ -1,5 +1,5 @@
 class StaticPage < ActiveRecord::Base
-  attr_accessible :tag, :title, :body, :status, :mode
+  attr_accessible :tag, :title, :body, :status, :mode, :ltr
 
   has_paper_trail
   enum status: [:unpublished, :published]
