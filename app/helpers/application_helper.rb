@@ -80,6 +80,10 @@ module ApplicationHelper
       return t(:dutch)
     when 'pt'
       return t(:portuguese)
+    when 'fi'
+      return t(:finnish)
+    when 'is'
+      return t(:icelandic)
     when 'sv'
       return t(:swedish)
     else
