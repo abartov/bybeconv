@@ -4,5 +4,9 @@
       .col-md-1
       .col-md-10#static_page
         %h1= @p.title
-        != @markdown
+        - if @english
+          %div{dir:'ltr',align:'left'}
+            != @markdown
+        - else
+          != @markdown
       .col-md-1

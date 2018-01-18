@@ -21,7 +21,11 @@
     %b= t(:body)+': '
   %hr
   #static_page
-    != @markdown
+    - if @english
+      %div{dir:'ltr',align:'left'}
+        != @markdown
+    - else
+      != @markdown
   %hr
   / add status and mode
   = link_to t(:back), url_for(action: :static_pages_list)

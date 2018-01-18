@@ -130,6 +130,7 @@ class AdminController < ApplicationController
       redirect_to url_for(action: :index)
     end
     @markdown = @vp.prepare_markdown
+    @english = @vp.english?
   end
 
   def static_page_edit
