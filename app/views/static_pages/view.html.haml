@@ -3,10 +3,11 @@
     .row
       .col-md-1
       .col-md-10#static_page
-        %h1= @p.title
         - if @p.ltr
+          %h1{dir:'ltr',align:'left'}= @p.title
           %div{dir:'ltr',align:'left'}
             != @markdown.gsub('<h2 ','<h2 style="direction:ltr;text-align:left" ').gsub('<h4 ','<h4 style="direction:ltr;text-align:left" ').gsub('<h3 ','<h3 style="direction:ltr;text-align:left" ')
         - else
+          %h1= @p.title
           != @markdown
       .col-md-1
