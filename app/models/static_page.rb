@@ -6,7 +6,7 @@ class StaticPage < ActiveRecord::Base
   enum mode: [:plain_markdown, :cards, :cards_with_shortcuts]
 
   def english?
-    buf = self.body[0..(self.body.length > 100 ? 100 : -1)]
+    buf = self.body[0..(self.body.length > 1000 ? 1000 : -1)]
     hebcount = 0
     buf.each_codepoint{|cp| hebcount += 1 if buf.is_hebrew_codepoint_utf8(cp)}
     if hebcount > buf.length / 2

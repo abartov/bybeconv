@@ -6,7 +6,7 @@
         %h1= @p.title
         - if @english
           %div{dir:'ltr',align:'left'}
-            != @markdown
+            != @markdown.gsub('<h2 ','<h2 style="direction:ltr;text-align:left" ').gsub('<h4 ','<h4 style="direction:ltr;text-align:left" ').gsub('<h3 ','<h3 style="direction:ltr;text-align:left" ')
         - else
           != @markdown
       .col-md-1
