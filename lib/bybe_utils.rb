@@ -330,7 +330,7 @@ module BybeUtils
         addition = $& # by default
         buf = $'
         item = $1
-        anchor_name = $2.gsub('[','\[').gsub(']','\]').gsub('"','\"')
+        anchor_name = $2.gsub('[','\[').gsub(']','\]').gsub('"','\"').gsub("'", "\\\\'")
         if item[0] == 'ה' # linking to a legacy HtmlFile
           h = HtmlFile.find_by(id: item[1..-1].to_i)
           unless h.nil?

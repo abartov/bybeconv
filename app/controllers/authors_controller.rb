@@ -156,7 +156,7 @@ class AuthorsController < ApplicationController
       @entity = @author
       @page_title = "#{@author.name} - #{t(:table_of_contents)} - #{t(:project_ben_yehuda)}"
       # temporary protection against null ToCs while we're migrating
-      impressionist(@author) # log actions for pageview stats
+      impressionist(@author) unless is_spider? # log actions for pageview stats
       unless @author.toc.nil?
         prep_toc
       else
