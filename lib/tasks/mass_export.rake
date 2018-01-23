@@ -41,7 +41,10 @@ task :mass_export, [:to_path] => :environment do |taskname, args|
         puts "\nerror: #{e.message} work: #{m.id} - #{m.title} - #{m.author_string}"
       end
     }
-    File.open(args.to_path+'/pseudocatalogue.csv','w:utf-8'){|f| f.puts pseudocatalogue.map{|line| line.to_csv}.join}
+    File.open(args.to_path+'/pseudocatalogue.csv','w:utf-8'){|f| 
+      f.puts "ID,path,title,authors,translators,original_language,genre,source_edition"
+      f.puts pseudocatalogue.map{|line| line.to_csv}.join
+    }
     print "\n#{tot[:works]} files processed; #{tot[:errors]} errors encountered.\n"
   else
     puts "please specify the path to output to (no trailing slash; existing works may be overwritten).\ne.g. rake mass_export[/home/xyzzy/corpus]"
