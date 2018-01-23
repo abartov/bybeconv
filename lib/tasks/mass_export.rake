@@ -19,7 +19,7 @@ task :mass_export, [:to_path] => :environment do |taskname, args|
     pseudocatalogue = []
     works.each {|m|
       begin
-        ppath = "/p#{m.expressions[0].persons[0].id}"
+        ppath = "/p#{m.expressions[0].translation ? m.expressions[0].translators[0].id : m.expressions[0].works[0].authors[0].id}"
         fname = "/m#{m.id}"
         print "\r#{tot[:works]} files processed. #{(tot[:works].to_f/tot[:todo]).round(5)*100}% done.     " if tot[:works] % 10 == 0
         html = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"><html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"he\" lang=\"he\" dir=\"rtl\"><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" /></head><body dir='rtl' align='right'><div dir=\"rtl\" align=\"right\">"+MultiMarkdown.new(m.markdown_with_metadata).to_html.force_encoding('UTF-8')+"\n\n<hr />"+I18n.t(:download_footer_html, url: "https://bybe.benyehuda.org/read/#{m.id}")+"</div></body></html>"
