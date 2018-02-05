@@ -110,6 +110,11 @@ class Manifestation < ActiveRecord::Base
     end
   end
 
+  def markdown_with_metadata
+    metadata = "Title: #{self.title}  \nAuthor: #{self.author_string}  \n\n"
+    return metadata + self.markdown
+  end
+
   def recalc_cached_people
      pp = []
      expressions.each {|e|
