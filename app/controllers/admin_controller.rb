@@ -43,7 +43,7 @@ class AdminController < ApplicationController
     @similarities = {}
     Manifestation.all.each {|m|
       next unless m.list_items.where(listkey: 'similar_title_whitelist') == [] # skip whitelisted works
-      prefix = [m.cached_people[0..(m.cached_people.length > 5 ? 5 : -1)], m.title[0..(m.title.length > 5 ? 5 : -1)]]
+      prefix = [m.cached_people, m.title[0..(m.title.length > 5 ? 5 : -1)]]
       if prefixes[prefix].nil?
         prefixes[prefix] = [m]
       else
@@ -52,7 +52,7 @@ class AdminController < ApplicationController
     }
     prefixes.each_pair{|k, v|
       next if v.length < 2
-      @similarities[k] = v
+      @similarities[k] = v.sort_by{|m| m.title}
     }
   end
 
