@@ -38,6 +38,23 @@ class AdminController < ApplicationController
     @page_title = t(:missing_copyright_report)
   end
 
+  def similar_titles
+    prefixes = {}
+    @similarities = {}
+    Manifestation.all.each {|m|
+      prefix = [m.cached_people[0..(m.cached_people.length > 5 ? 5 : -1)], m.title[0..(m.title.length > 5 ? 5 : -1)]]
+      if prefixes[prefix].nil?
+        prefixes[prefix] = [m]
+      else
+        prefixes[prefix] << m
+      end
+    }
+    prefixes.each_pair{|k, v|
+      next if v.length < 2
+      @similarities[k] = v
+    }
+  end
+
   def suspicious_translations # find works where the author is also a translator -- this *may* be okay, in the case of self-translation, but probably is a mistake
     @mans = Manifestation.joins(expressions: [:realizers, works: [:creations]]).where('realizers.person_id = creations.person_id and realizers.role = 3').page(params[:page])
     @page_title = t(:suspicious_translations_report)
@@ -57,7 +74,7 @@ class AdminController < ApplicationController
         works_by_lang = {}
         t.works.each { |w|
           works_by_lang[w.orig_lang] = [] if works_by_lang[w.orig_lang].nil?
-          works_by_lang[w.orig_lang] << w
+          works_by_lang[w.orig_lang] << w.expressions[0].manifestations[0] # TODO: generalize
         }
         @authors << [t, t.works.pluck(:orig_lang).uniq, works_by_lang]
       end

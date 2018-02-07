@@ -12,6 +12,7 @@ Bybeconv::Application.routes.draw do
   get 'admin/missing_copyright'
   get 'admin/incongruous_copyright'
   get 'admin/suspicious_headings'
+  get 'admin/similar_titles'
   get 'admin/suspicious_translations'
   get 'admin/translated_from_multiple_languages'
   get 'admin/raw_tocs'
