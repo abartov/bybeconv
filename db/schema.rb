@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180118013953) do
+ActiveRecord::Schema.define(version: 20180207050828) do
 
   create_table "api_keys", force: :cascade do |t|
     t.string   "email",       limit: 255
@@ -243,6 +243,21 @@ ActiveRecord::Schema.define(version: 20180118013953) do
     t.integer  "recommended_by",   limit: 4
     t.integer  "manifestation_id", limit: 4
   end
+
+  create_table "list_items", force: :cascade do |t|
+    t.integer  "user_id",    limit: 4
+    t.string   "listkey",    limit: 255
+    t.integer  "item_id",    limit: 4
+    t.string   "item_type",  limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  add_index "list_items", ["item_type", "item_id"], name: "index_list_items_on_item_type_and_item_id", using: :btree
+  add_index "list_items", ["listkey", "item_id"], name: "index_list_items_on_listkey_and_item_id", using: :btree
+  add_index "list_items", ["listkey", "user_id", "item_id"], name: "index_list_items_on_listkey_and_user_id_and_item_id", using: :btree
+  add_index "list_items", ["listkey"], name: "index_list_items_on_listkey", using: :btree
+  add_index "list_items", ["user_id"], name: "index_list_items_on_user_id", using: :btree
 
   create_table "manifestations", force: :cascade do |t|
     t.string   "title",                    limit: 255
@@ -490,6 +505,7 @@ ActiveRecord::Schema.define(version: 20180118013953) do
   add_foreign_key "featured_contents", "manifestations"
   add_foreign_key "featured_contents", "people"
   add_foreign_key "featured_contents", "users"
+  add_foreign_key "list_items", "users"
   add_foreign_key "realizers", "expressions"
   add_foreign_key "realizers", "people"
   add_foreign_key "recommendations", "manifestations"

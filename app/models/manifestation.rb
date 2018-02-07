@@ -8,6 +8,7 @@ class Manifestation < ActiveRecord::Base
   has_many :taggings
   has_many :tags, through: :taggings, class_name: 'Tag'
   has_many :recommendations
+  has_many :list_items, as: :item
 
   has_paper_trail
   has_many :external_links
