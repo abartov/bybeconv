@@ -1,3 +1,6 @@
+EPIC: switch to Bootstrap RTL
+- resolve narrow width issue in work read view - newlines become <p> tags for some reason!  Doesn't happen in edit mode, without the markdown.lines manipulation!
+
 - BACKEND
   - add author TOC publishable boolean (and checkbox in editing TOC)
   - fix author TOC conversion to handle anchors!
@@ -13,7 +16,6 @@
   - query work by tag
   - admin review, approve/reject tags and recommendations
 
-- JS bit with autocomplete to add a link to a manifestation in TOC editing
 - !! fix footnote anchors' scrolling relative to margin-top
 - !! add translations box to works view right side
 - EPIC: UPLOAD IMAGES (TO S3) AND EMBED THEM IN MARKDOWN

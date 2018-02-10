@@ -326,13 +326,13 @@ class ManifestationController < ApplicationController
     tmphash = {}
     @chapters = {}
     @m.heading_lines.reverse.each{ |linenum|
-      lines.insert(linenum, "<a name=\"ch#{linenum}\"></a>")
+      lines.insert(linenum, "<a name=\"ch#{linenum}\"></a>\r\n")
       tmphash[sanitize_heading(lines[linenum+1][2..-1].strip)] = linenum.to_s
     } # annotate headings in reverse order, to avoid offsetting the next heading
     tmphash.keys.reverse.map{|k| @chapters[k] = tmphash[k]}
     @selected_chapter = tmphash.keys.last
-    @html = MultiMarkdown.new(lines.join("\n")).to_html.force_encoding('UTF-8')
-    @html.gsub(/fn:\d+/,)
+    @html = MultiMarkdown.new(lines.join("")).to_html.force_encoding('UTF-8')
+    ## @html = @html.gsub(/fn:(\d+)/,"fn\\1").gsub(/fnref:(\d+)/,"fnref\\1") # false lead re why Firefox doesn't handle the anchors properly. Works in Chrome! # TODO: fix.
     @tabclass = set_tab('works')
     @entity = @m
     @pagetype = :manifestation
