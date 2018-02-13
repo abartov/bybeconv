@@ -3,116 +3,115 @@
   = render partial: 'shared/breadcrumbs'
   /.scroll-gradient-b
   = render partial: 'toolbox'
-  - cache @m do
-    .row
-      .col-xs-12{style:'margin-left:2rem;margin-right:2rem;'}
-        .work-area#work-side
-          .container-fluid
-            .row
-              .col-md-3#work-share1{style:'padding-left: 0;padding-right: 0;'}
-                = render partial: 'shared/sharing_etc', locals: {context: :work}
-              .col-md-9#work-metadata{style: 'padding-right:0'}
-                .work-name
-                  %p.headline-1= @m.title
-                  - if current_user && current_user.editor?
-                    %span.static-btn= link_to t(:edit_metadata), manifestation_edit_metadata_path(@m.id)
-                    != "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
-                    %span.static-btn= link_to t(:edit_markdown), manifestation_edit_path(id: @m.id)
-                    %br
-                  %p.headline-3{ style: 'padding:0;display:inline'}
-                    = t(:by)+':'
-                    = link_to @author.name, author_toc_path(id: @author.id)
-                    - if @e.translation && @e.translators.size > 0
-                      = ", #{t(:translation)}: "
-                      = link_to @e.translators[0].name, author_toc_path(id: @e.translators[0].id)
-                      = " (#{t(:from_lang)}#{textify_lang(@e.works[0].orig_lang)})"
-                - unless @links.empty?
-                  .row
-                    .col-md-10{style:'display:inline-block'}
-                      - [:youtube, :blog].each do |linktype|
-                        - ll = @links[Manifestation.link_types[linktype]]
-                        - unless ll.nil?
-                          = render partial: 'shared/work_links', locals: {linktype: linktype, links: ll}
-                    .col-md-2
-                      %p= t(:our_own_content)
-                .row{style:'padding-top:0.6rem'}
-                  .col-md-10
-                    = render partial: 'shared/copyright', locals: {copyright: @m.copyright?}
+  .row
+    .col-xs-12{style:'margin-left:2rem;margin-right:2rem;'}
+      .work-area#work-side
+        .container-fluid
+          .row
+            .col-md-3#work-share1{style:'padding-left: 0;padding-right: 0;'}
+              = render partial: 'shared/sharing_etc', locals: {context: :work}
+            .col-md-9#work-metadata{style: 'padding-right:0'}
+              .work-name
+                %p.headline-1= @m.title
+                - if current_user && current_user.editor?
+                  %span.static-btn= link_to t(:edit_metadata), manifestation_edit_metadata_path(@m.id)
+                  != "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+                  %span.static-btn= link_to t(:edit_markdown), manifestation_edit_path(id: @m.id)
+                  %br
+                %p.headline-3{ style: 'padding:0;display:inline'}
+                  = t(:by)+':'
+                  = link_to @author.name, author_toc_path(id: @author.id)
+                  - if @e.translation && @e.translators.size > 0
+                    = ", #{t(:translation)}: "
+                    = link_to @e.translators[0].name, author_toc_path(id: @e.translators[0].id)
+                    = " (#{t(:from_lang)}#{textify_lang(@e.works[0].orig_lang)})"
+              - unless @links.empty?
+                .row
+                  .col-md-10{style:'display:inline-block'}
+                    - [:youtube, :blog].each do |linktype|
+                      - ll = @links[Manifestation.link_types[linktype]]
+                      - unless ll.nil?
+                        = render partial: 'shared/work_links', locals: {linktype: linktype, links: ll}
+                  .col-md-2
+                    %p= t(:our_own_content)
+              .row{style:'padding-top:0.6rem'}
+                .col-md-10
+                  = render partial: 'shared/copyright', locals: {copyright: @m.copyright?}
 
-                  .col-md-2
-                    %p= t(:copyright_status)+':'
-                - unless @book.nil?
-                  .row{style:'padding-top:0.6rem'}
-                    .col-md-10
-                      .card-header-element{style:'margin-left:2.4rem'}
-                        %p= @book
-                      .card-header-element
-                        = link_to '#' do
-                          = t(:edition_details)
-                          %span.fa.fa-angle-left.baseline{style: 'margin-right: 0.6rem'}
-                    .col-md-2
-                      %p= t(:published_in_book)+': '
+                .col-md-2
+                  %p= t(:copyright_status)+':'
+              - unless @book.nil?
                 .row{style:'padding-top:0.6rem'}
                   .col-md-10
                     .card-header-element{style:'margin-left:2.4rem'}
-                      = link_to textify_genre(@e.works[0].genre), url_for(action: :genre, genre: @e.works[0].genre)
+                      %p= @book
                     .card-header-element
-                      = t(:orig_lang)+': '
-                      = textify_lang(@e.works[0].orig_lang)
-                  .col-md-2
-                    %p= t(:genre)+': '
-                .row{style:'padding-top:0.6rem'}
-                  .col-md-10
-                    .card-header-element{style:'margin-left:2.4rem'}
-                      = link_to '#tags' do
-                        = t(:tags)
-                        = "(#{@m.approved_tags.count})"
+                      = link_to '#' do
+                        = t(:edition_details)
                         %span.fa.fa-angle-left.baseline{style: 'margin-right: 0.6rem'}
-                    .card-header-element{style:'margin-left:2.4rem'}
-                      = link_to '#recommendations' do
-                        = t(:recommendations)
-                        = "(#{@recommendations.approved.count})"
-                        %span.fa.fa-angle-left.baseline{style: 'margin-right: 0.6rem'}
-                    - unless @links.empty? || @links[Manifestation.link_types[:wikipedia]].nil?
-                      .card-header-element
-                        = link_to @links[Manifestation.link_types[:wikipedia]][0].url do
-                          .icon.card-header-element
-                            %i.fa.fa-wikipedia-w{style:'font-size: 1.4rem'}
-                          .card-header-element
-                            %p= t(:to_the_wikipedia_article)
                   .col-md-2
-                    %p= t(:additional_content)
-                %br{style: 'clear: both;'}
-          .card.work-card{style:'margin-top:0;padding-top:0'}
-            .work-text{style:'margin-top:0;padding-top:0'}
-              - unless @bookmark.nil?
-                .bookmark
-                  / $("#button").click(function() {
-                  /  $('html, body').animate({
-                  /    scrollTop: $("#elementtoScrollToID").offset().top
-                  /  }, 2000);
-                  / });
-                  = link_to '#' do
-                    %span.icon-bybookmark-go-to
-              %div{style:'position:absolute;background:#eeeced;width:100%;height:9rem;margin-top:0;padding-top:0;left:0.3rem'}
-              .row.stickysearch{style:'opacity:1;background-color:#eeeced;margin-top:0;padding-top:0'}
-                = render partial: 'search_and_chapters'
-              / TODO: more nuanced rendering here
-              - if @m.as_prose?
-                #actualtext.maintext-prose-body.search-margin
-                  != raw(@html)
-              - else
-                #actualtext.maintext-poetry-body.search-margin
-                  != raw(@html)
-              - if @m.chapters? and @m.long?
-                = render partial: 'chapter_links'
-            / place bookmark element if @bookmark
-            / .bookmark
-            /   = link_to '#'
-            /     %i.icon-bybookmark
-            .work-pic
-              .work-gradient-pic
-                %img#authorpic{ src: @author.profile_image.url(:full), alt: @author.name }
+                    %p= t(:published_in_book)+': '
+              .row{style:'padding-top:0.6rem'}
+                .col-md-10
+                  .card-header-element{style:'margin-left:2.4rem'}
+                    = link_to textify_genre(@e.works[0].genre), url_for(action: :genre, genre: @e.works[0].genre)
+                  .card-header-element
+                    = t(:orig_lang)+': '
+                    = textify_lang(@e.works[0].orig_lang)
+                .col-md-2
+                  %p= t(:genre)+': '
+              .row{style:'padding-top:0.6rem'}
+                .col-md-10
+                  .card-header-element{style:'margin-left:2.4rem'}
+                    = link_to '#tags' do
+                      = t(:tags)
+                      = "(#{@m.approved_tags.count})"
+                      %span.fa.fa-angle-left.baseline{style: 'margin-right: 0.6rem'}
+                  .card-header-element{style:'margin-left:2.4rem'}
+                    = link_to '#recommendations' do
+                      = t(:recommendations)
+                      = "(#{@recommendations.approved.count})"
+                      %span.fa.fa-angle-left.baseline{style: 'margin-right: 0.6rem'}
+                  - unless @links.empty? || @links[Manifestation.link_types[:wikipedia]].nil?
+                    .card-header-element
+                      = link_to @links[Manifestation.link_types[:wikipedia]][0].url do
+                        .icon.card-header-element
+                          %i.fa.fa-wikipedia-w{style:'font-size: 1.4rem'}
+                        .card-header-element
+                          %p= t(:to_the_wikipedia_article)
+                .col-md-2
+                  %p= t(:additional_content)
+              %br{style: 'clear: both;'}
+        .card.work-card{style:'margin-top:0;padding-top:0'}
+          .work-text{style:'margin-top:0;padding-top:0'}
+            - unless @bookmark.nil?
+              .bookmark
+                / $("#button").click(function() {
+                /  $('html, body').animate({
+                /    scrollTop: $("#elementtoScrollToID").offset().top
+                /  }, 2000);
+                / });
+                = link_to '#' do
+                  %span.icon-bybookmark-go-to
+            %div{style:'position:absolute;background:#eeeced;width:100%;height:9rem;margin-top:0;padding-top:0;left:0.3rem'}
+            .row.stickysearch{style:'opacity:1;background-color:#eeeced;margin-top:0;padding-top:0'}
+              = render partial: 'search_and_chapters'
+            / TODO: more nuanced rendering here
+            - if @m.as_prose?
+              #actualtext.maintext-prose-body.search-margin
+                != raw(@html)
+            - else
+              #actualtext.maintext-poetry-body.search-margin
+                != raw(@html)
+            - if @m.chapters? and @m.long?
+              = render partial: 'chapter_links'
+          / place bookmark element if @bookmark
+          / .bookmark
+          /   = link_to '#'
+          /     %i.icon-bybookmark
+          .work-pic
+            .work-gradient-pic
+              %img#authorpic{ src: @author.profile_image.url(:full), alt: @author.name }
 
 .container-fluid#extra_container{style:'margin-top:3rem'}
   .row
