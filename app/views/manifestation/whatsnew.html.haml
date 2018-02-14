@@ -32,10 +32,11 @@
                       %p
                         - worksbuf = ''
                         - works.each do |genre|
-                          %b= t(genre[0])+': '
-                          - worksbuf = genre[1].map{ |m| link_to(m.expressions[0].title + (m.expressions[0].translation ? ' / '+m.expressions[0].works[0].persons[0].name : ''), url_for(controller: :manifestation, action: :read, id: m.id))}
-                          - worksbuf = worksbuf.join('; ')
-                          != worksbuf
+                          %p
+                            %b= t(genre[0])+': '
+                            - worksbuf = genre[1].map{ |m| link_to(m.expressions[0].title + (m.expressions[0].translation ? ' / '+m.expressions[0].works[0].persons[0].name : ''), url_for(controller: :manifestation, action: :read, id: m.id))}
+                            - worksbuf = worksbuf.join('; ')
+                            != worksbuf
                     .whatsnew-pic-wide
                       %img{ alt: author.name, :class => 'img-responsive', src: author.profile_image.url(:tiny)}
     .col-lg-2
