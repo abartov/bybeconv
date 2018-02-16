@@ -13,8 +13,12 @@
 </script>
 
   <!-- Latest compiled and minified CSS -->
+  <!-- Bootstrap RTL from CDN (Bootstrap 4.0 *still* has no RTL...) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-rtl/3.3.7/css/bootstrap-rtl.min.css" crossorigin="anonymous">
   <!-- <link rel="stylesheet" href="//cdn.rawgit.com/morteza/bootstrap-rtl/v3.3.4/dist/css/bootstrap-rtl.min.css"> -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <!-- LTR Bootstrap the site was initially implemented with -->
+  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
+
   <link href="https://fonts.googleapis.com/css?family=Alef" rel="stylesheet">
 
   <link href="/assets/font.css" rel="stylesheet">
@@ -77,6 +81,9 @@
                   </div>
                 </div>
               </div>
+              <div class="col-sm-3">
+                <div id="site-logo"><a href="/"><img src="/assets/BY_Logo.svg" class="img-responsive" alt="<% t(:logo) %>"></a></div>
+              </div>
               <div class="col-sm-6" style="align-content: center; text-align: center">
                 <div class="fontsize-selector-unit vcentered">
                   <%= render partial: 'shared/fontsize' %>
@@ -87,9 +94,6 @@
                     <p><%= sitenotice %></p>
                   </div>
                 <% end %>
-              </div>
-              <div class="col-sm-3">
-                <div id="site-logo"><a href="/"><img src="/assets/BY_Logo.svg" class="img-responsive" alt="<% t(:logo) %>"></a></div>
               </div>
             </div>
           </div>
