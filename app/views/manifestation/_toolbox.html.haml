@@ -65,10 +65,10 @@
       .row
         %p
       .row
-        .col-sm-3
-          %button.btn#copy_proof{:type => 'button'}= t(:proof_copy_text)
         .col-sm-9
           = label_tag t(:proof_your_proofs)
+        .col-sm-3
+          %button.btn#copy_proof{:type => 'button'}= t(:proof_copy_text)
       .row
         .col-sm-12
           = text_area_tag(:what, '', id: 'prooftext', rows: 7, cols: 40)

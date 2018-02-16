@@ -34,11 +34,6 @@
     .col-lg-10
       .container-fluid
         .row
-          .col-md-4.col-xs-12.main-group#whatsnew
-            / what's new
-            %p
-              %span.headline-2= link_to t(:whats_new), '#'
-            = render partial: 'whatsnew'
           .col-md-8.col-xs-12.main-group#authors
             %p
               %span.headline-2
@@ -46,16 +41,17 @@
               %span{ style: 'padding-right: 1.2rem"'}= t(:x_authors, x: @totals[:authors])
             / author cards
             = render partial: 'shared/authors', locals: {popular_authors: @pop_authors, random_authors: @random_authors}
+          .col-md-4.col-xs-12.main-group#whatsnew
+            / what's new
+            %p
+              %span.headline-2= link_to t(:whats_new), '#'
+            = render partial: 'whatsnew'
     .col-lg-1
   .row
     .col-lg-1
     .col-lg-10
       .container-fluid
         .row
-          .col-sm-4.col-xs-12#flashlight
-            / featured item
-            %p.headline-2= t(:featured_item)
-            = render partial: 'featured_item'
           .col-sm-8.col-xs-12.row2.main-group#genre
             / work cards
             %p{style:'margin-top:18px'}
@@ -63,6 +59,10 @@
                 = link_to t(:works_by_genre), url_for(controller: :manifestation)
               %span{style: 'padding-right: 1.2rem"'}= t(:x_works, x: @totals[:works])
             = render partial: 'works'
+          .col-sm-4.col-xs-12#flashlight
+            / featured item
+            %p.headline-2= t(:featured_item)
+            = render partial: 'featured_item'
     .col-lg-1
   .row
     .col-lg-1
@@ -70,17 +70,17 @@
       .container-fluid
         .row
           .col-sm-4.col-xs-12
-            / extras
-            %p.headline-2= t(:our_volunteers)
-            = render partial: 'featured_volunteer'
+            / 10 most read authors
+            %p.headline-2= t(:top_ten_authors)
+            = render partial: 'top_authors'
           .col-sm-4.col-xs-12
             / 10 most read works
             %p.headline-2= t(:top_ten_works)
             = render partial: 'top_works'
           .col-sm-4.col-xs-12
-            / 10 most read authors
-            %p.headline-2= t(:top_ten_authors)
-            = render partial: 'top_authors'
+            / extras
+            %p.headline-2= t(:our_volunteers)
+            = render partial: 'featured_volunteer'
     .col-lg-1
     .row{style:'margin-top:18px'}
     .col-lg-1

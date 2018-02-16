@@ -19,6 +19,86 @@
       .col-md-1
       .col-md-10
         .row
+          / right side
+          .col-md-8#all_genres{style:'padding-right:0'}
+            - cache 'authors_right_side' do
+              - right_side_genres.each do |g|
+                - genre_name = textify_genre(g)
+                %a{name: g+'_g'}
+                %div{style:'padding-top:1.8rem'}
+                  %p.headline-2{style:'display:inline'}= link_to "#{t(:authors_of)} #{genre_name}", authors_genre_path(genre: g)
+                  %p{style:'display: inline; padding-left: 1rem'}= "(#{@authors_by_genre[g]})"
+                .card
+                  .container-fluid
+                    .row
+                      .col-md-6
+                        .row{style:'margin-top:1.4rem'}
+                          .col-xs-1{style:'width:3rem'}
+                          .col-xs-10{style:'padding-right:0;padding-top:2rem'}
+                            %p.headline-3{style:'display:inline'}= "#{t(:sample_authors_of)} #{genre_name}"
+                            %p{style:'display:inline'}= t(:random_order)
+                          .col-xs-1
+                        .row
+                          = render partial: 'shared/author_cards', locals: {authors: @rand_by_genre[g], skip_title: true, id_frag: g+'_rand', surprise: false, size: :small}
+                        .row{style:'margin-top:4.1rem'}
+                          .col-xs-1{style:'width:3rem'}
+                          .col-xs-10{style:'padding-right:0'}
+                            %p.headline-3{style:'display:inline'}= t(:most_read_authors_of_genre, genre: genre_name)
+                          .col-xs-1
+                        .row
+                          = render partial: 'shared/author_cards', locals: {authors: @pop_by_genre[g][:orig], skip_title: true, id_frag: g+'_pop', surprise: false, size: :small}
+                      .col-md-6{style:'padding-top:2rem'}
+                        %div{style:'padding-top:0.4rem;margin-bottom:-0.2rem'}
+                          %p.headline-3!= '&nbsp;'
+                        .row
+                          .col-xs-12
+                            .carousel.slide{id: "surprise_author_carousel-#{g}", 'data-interval' => 'false', 'data-wrap' => 'true'}
+                              .carousel-inner
+                                .card.full-size-card.small-surprise.item.active.surprise_button{id: "#{g}_side1", 'data-genre' => g, style:'margin-top:0;cursor:pointer;'}
+                                  .bysurprise-pic
+                                    .bysurprise-portrait
+                                      %img{src: '/assets/tiny/placeholder_man.jpg', alt: t(:placeholder_image), width:83}
+                                  .card-content.bysurprise-text{style:'align-content:center; text-align:center;position:relative'}
+                                    %a{ role: :button}
+                                      %div{style:'font-size:5rem;padding-top: 2rem;margin-bottom: -2rem'}
+                                        %span.icon-bysurprise-author
+                                      %p.headline-3= t(:surprise_author_in_genre, genre: genre_name)
+                                  %div{style:'z-index: 1; position: absolute; left: 0;bottom: 0%; border-bottom-left-radius: 0.3rem; display: inline;overflow: hidden'}
+                                    %img{src:'/assets/corner.png', alt: t(:background), width:80, height:80}
+                                  .replace-icon.text-on-dark{style:'margin-bottom:0.6rem'}
+                                    %div
+                                      .linky{style:'color:white'}= '?'
+                                .card.genre-card.small-surprise.item{id: "#{g}_side2"}
+                                  = render partial: 'shared/surprise_author', locals: {author: @surprise_by_genre[g], id_frag: g, passed_genre: g, side: '2', passed_mode: 'cards'}
+                        .row{style:'margin-top:4.3rem'}
+                          .col-xs-12{style:'padding-right:0'}
+                            %p.headline-3= t(:most_read_translated_authors_in_genre, genre: genre_name)
+                        .row{style:'height:18.6rem; position:relative'}
+                          .col-xs-12{style:'padding-right:0'}
+                            %ol.mostread-translated
+                              - max = @pop_by_genre[g][:xlat].count > 5 ? 5 : @pop_by_genre[g][:xlat].count
+                              - unless max == 0
+                                - @pop_by_genre[g][:xlat][0..max].each do |au|
+                                  %li= link_to au.name, author_toc_path(au)
+                          %div{style:'position:absolute;bottom:0;left:0'}
+                            %a.btn{href: authors_index_path(genre: g)}= t(:to_all_authors_in_genre, genre: genre_name)
+            %a{name: 'allwriters_g'}
+            %div{style:'padding-top:1.8rem'}
+              %p.headline-2{style:'display:inline'}= t(:beginning_abc)
+              %p{style:'display:inline;padding-left:1rem'}= t(:by_abc)
+            .card
+              .container-fluid
+                .row
+                  .col-md-12
+                    %div{style:'padding:3rem'}
+                      %ol
+                        - @authors_abc.each do |au|
+                          %li= link_to au.name, author_toc_path(au)
+                .row
+                  .col-xs-12
+                    %div
+                      /%a.btn.linky{href: authors_all_path}= t(:to_all_authors)
+                      %a.btn.linky{href: "javascript:alert('#{t(:not_implemented_yet)}');"}= t(:to_all_authors)
           / left side
           - cache 'authors_left_side' do
             .col-md-4#authors_left_side{style:'padding-left:0'}
@@ -107,20 +187,20 @@
                           %div{:id => "random_translated_writers"}
                             .container-fluid
                               .row{style:'margin-top:1.4rem'}
-                                .col-xs-1{style:'width:3rem'}
+                                .col-xs-1
                                 .col-xs-10{style:'padding-right:0;padding-top:2rem'}
                                   %p.headline-3{style:'display:inline'}= t(:sample_translated_authors)
                                   %p{style:'display:inline'}= t(:random_order)
-                                .col-xs-1
+                                .col-xs-1{style:'width:3rem'}
                               .row
                                 = render partial: 'shared/author_cards', locals: {authors: @rand_translated_authors, skip_title: true, id_frag: 'translation_rand', surprise: false, size: :small}
                           %div{:id => "mostread_translated_writers"}
                             .container-fluid
                               .row{:style => "margin-top:4.1rem;"}
-                                .col-xs-1{:style => "width: 3rem;"}
+                                .col-xs-1
                                 .col-xs-10{:style => "padding-right: 0;"}
                                   %p.headline-3= t(:popular_translated_authors)
-                                .col-xs-1
+                                .col-xs-1{:style => "width: 3rem;"}
                               .row
                                 = render partial: 'shared/author_cards', locals: {authors: @pop_translated_authors, skip_title: true, id_frag: 'translation_pop', surprise: false, size: :small}
               .row#translators
@@ -135,102 +215,22 @@
                           %div{:id => "random_translators"}
                             .container-fluid
                               .row{style:'margin-top:1.4rem'}
-                                .col-xs-1{style:'width:3rem'}
+                                .col-xs-1
                                 .col-xs-10{style:'padding-right:0;padding-top:2rem'}
                                   %p.headline-3{style:'display:inline'}= t(:sample_translators)
                                   %p{style:'display:inline'}= t(:random_order)
-                                .col-xs-1
+                                .col-xs-1{style:'width:3rem'}
                               .row
                                 = render partial: 'shared/author_cards', locals: {authors: @rand_translators, skip_title: true, id_frag: 'translators_rand', surprise: false, size: :small}
                           %div{:id => "mostread_translators"}
                             .container-fluid
                               .row{:style => "margin-top:4.1rem;"}
-                                .col-xs-1{:style => "width: 3rem;"}
+                                .col-xs-1
                                 .col-xs-10{:style => "padding-right: 0;"}
                                   %p.headline-3= t(:popular_translators)
-                                .col-xs-1
+                                .col-xs-1{:style => "width: 3rem;"}
                               .row
                                 = render partial: 'shared/author_cards', locals: {authors: @pop_translators, skip_title: true, id_frag: 'translators_pop', surprise: false, size: :small}
-          / right side
-          .col-md-8#all_genres{style:'padding-right:0'}
-            - cache 'authors_right_side' do
-              - right_side_genres.each do |g|
-                - genre_name = textify_genre(g)
-                %a{name: g+'_g'}
-                %div{style:'padding-top:1.8rem'}
-                  %p.headline-2{style:'display:inline'}= link_to "#{t(:authors_of)} #{genre_name}", authors_genre_path(genre: g)
-                  %p{style:'display: inline; padding-left: 1rem'}= "(#{@authors_by_genre[g]})"
-                .card
-                  .container-fluid
-                    .row
-                      .col-md-6{style:'padding-top:2rem'}
-                        %div{style:'padding-top:0.4rem;margin-bottom:-0.2rem'}
-                          %p.headline-3!= '&nbsp;'
-                        .row
-                          .col-xs-12
-                            .carousel.slide{id: "surprise_author_carousel-#{g}", 'data-interval' => 'false', 'data-wrap' => 'true'}
-                              .carousel-inner
-                                .card.full-size-card.small-surprise.item.active.surprise_button{id: "#{g}_side1", 'data-genre' => g, style:'margin-top:0;cursor:pointer;'}
-                                  .bysurprise-pic
-                                    .bysurprise-portrait
-                                      %img{src: '/assets/tiny/placeholder_man.jpg', alt: t(:placeholder_image), width:83}
-                                  .card-content.bysurprise-text{style:'align-content:center; text-align:center;position:relative'}
-                                    %a{ role: :button}
-                                      %div{style:'font-size:5rem;padding-top: 2rem;margin-bottom: -2rem'}
-                                        %span.icon-bysurprise-author
-                                      %p.headline-3= t(:surprise_author_in_genre, genre: genre_name)
-                                  %div{style:'z-index: 1; position: absolute; left: 0;bottom: 0%; border-bottom-left-radius: 0.3rem; display: inline;overflow: hidden'}
-                                    %img{src:'/assets/corner.png', alt: t(:background), width:80, height:80}
-                                  .replace-icon.text-on-dark{style:'margin-bottom:0.6rem'}
-                                    %div
-                                      .linky{style:'color:white'}= '?'
-                                .card.genre-card.small-surprise.item{id: "#{g}_side2"}
-                                  = render partial: 'shared/surprise_author', locals: {author: @surprise_by_genre[g], id_frag: g, passed_genre: g, side: '2', passed_mode: 'cards'}
-                        .row{style:'margin-top:4.3rem'}
-                          .col-xs-12{style:'padding-right:0'}
-                            %p.headline-3= t(:most_read_translated_authors_in_genre, genre: genre_name)
-                        .row{style:'height:18.6rem; position:relative'}
-                          .col-xs-12{style:'padding-right:0'}
-                            %ol.mostread-translated
-                              - max = @pop_by_genre[g][:xlat].count > 5 ? 5 : @pop_by_genre[g][:xlat].count
-                              - unless max == 0
-                                - @pop_by_genre[g][:xlat][0..max].each do |au|
-                                  %li= link_to au.name, author_toc_path(au)
-                          %div{style:'position:absolute;bottom:0;left:0'}
-                            %a.btn{href: authors_index_path(genre: g)}= t(:to_all_authors_in_genre, genre: genre_name)
-                      .col-md-6
-                        .row{style:'margin-top:1.4rem'}
-                          .col-xs-1{style:'width:3rem'}
-                          .col-xs-10{style:'padding-right:0;padding-top:2rem'}
-                            %p.headline-3{style:'display:inline'}= "#{t(:sample_authors_of)} #{genre_name}"
-                            %p{style:'display:inline'}= t(:random_order)
-                          .col-xs-1
-                        .row
-                          = render partial: 'shared/author_cards', locals: {authors: @rand_by_genre[g], skip_title: true, id_frag: g+'_rand', surprise: false, size: :small}
-                        .row{style:'margin-top:4.1rem'}
-                          .col-xs-1{style:'width:3rem'}
-                          .col-xs-10{style:'padding-right:0'}
-                            %p.headline-3{style:'display:inline'}= t(:most_read_authors_of_genre, genre: genre_name)
-                          .col-xs-1
-                        .row
-                          = render partial: 'shared/author_cards', locals: {authors: @pop_by_genre[g][:orig], skip_title: true, id_frag: g+'_pop', surprise: false, size: :small}
-            %a{name: 'allwriters_g'}
-            %div{style:'padding-top:1.8rem'}
-              %p.headline-2{style:'display:inline'}= t(:beginning_abc)
-              %p{style:'display:inline;padding-left:1rem'}= t(:by_abc)
-            .card
-              .container-fluid
-                .row
-                  .col-md-12
-                    %div{style:'padding:3rem'}
-                      %ol
-                        - @authors_abc.each do |au|
-                          %li= link_to au.name, author_toc_path(au)
-                .row
-                  .col-xs-12
-                    %div
-                      /%a.btn.linky{href: authors_all_path}= t(:to_all_authors)
-                      %a.btn.linky{href: "javascript:alert('#{t(:not_implemented_yet)}');"}= t(:to_all_authors)
       .col-md-1
 / placeholder modals for surprise author popups
 - right_side_genres.each do |g|

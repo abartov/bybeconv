@@ -1,44 +1,44 @@
 #maintext.top-element
   .row
-  .col-md-6
-    %h1= t(:update_toc)
-    .right
-      %b.static-btn#add_work_link= t(:add_work_link)
-      = select_tag :works, options_from_collection_for_select(@works, 'id', 'title')
-      %br
-      = t(:in_current_cursor)
-      %br
-      %br
-    .markdown
-      .row
-        .col-md-12
-          = form_tag(action: :edit_toc, id: @author.id) do
-            %p
-              = text_area_tag(:markdown, raw(@toc), rows: 20, style: 'width:100%')
-              %br
-              %p= label_tag :credits, t(:credit_section)
-              = text_area_tag(:credits, raw(@credit_section), rows: 10, style: 'width:100%')
-              %br
-              = label_tag t(:toc_status)
-              %br
-              = radio_button_tag(:toc_status, :raw, @author.toc.status.nil? || @author.toc.status == 'raw')
-              = label_tag t(:raw)
-              = radio_button_tag(:toc_status, :ready, @author.toc.status == 'ready')
-              = label_tag t(:ready)
-              = hidden_field_tag(:old_timestamp, @toc_timestamp)
-              = submit_tag t(:update)
-  .col-md-6
-    %h1= @author.name+' '+t(:current_toc)
-    = render partial: 'toc', locals: {margin: false}
-    %p
-    .card{style:'margin-right:20rem'}
-      .card-content
+    .col-md-6
+      %h1= @author.name+' '+t(:current_toc)
+      = render partial: 'toc', locals: {margin: false}
+      %p
+      .card{style:'margin-right:20rem'}
+        .card-content
+          .row
+            .col-sm-9
+              .credits
+                %p.headline-3= t(:volunteers_who_helped, {author: @author.name, gender_letter: @author.gender_letter})
+                != @credits
+            .col-sm-3
+    .col-md-6
+      %h1= t(:update_toc)
+      .right
+        %b.static-btn#add_work_link= t(:add_work_link)
+        = select_tag :works, options_from_collection_for_select(@works, 'id', 'title')
+        %br
+        = t(:in_current_cursor)
+        %br
+        %br
+      .markdown
         .row
-          .col-sm-3
-          .col-sm-9
-            .credits
-              %p.headline-3= t(:volunteers_who_helped, {author: @author.name, gender_letter: @author.gender_letter})
-              != @credits
+          .col-md-12
+            = form_tag(action: :edit_toc, id: @author.id) do
+              %p
+                = text_area_tag(:markdown, raw(@toc), rows: 20, style: 'width:100%')
+                %br
+                %p= label_tag :credits, t(:credit_section)
+                = text_area_tag(:credits, raw(@credit_section), rows: 10, style: 'width:100%')
+                %br
+                = label_tag t(:toc_status)
+                %br
+                = radio_button_tag(:toc_status, :raw, @author.toc.status.nil? || @author.toc.status == 'raw')
+                = label_tag t(:raw)
+                = radio_button_tag(:toc_status, :ready, @author.toc.status == 'ready')
+                = label_tag t(:ready)
+                = hidden_field_tag(:old_timestamp, @toc_timestamp)
+                = submit_tag t(:update)
 
 - unless @diff.nil? # we have a rejected update
   = t(:update_conflict)

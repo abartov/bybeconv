@@ -3,6 +3,12 @@
     .container-fluid
       .row
         .col-md-6
+          - if @text.has_splits
+            %h1{style:'color:green'}= "** #{t(:split_work_mode)} **"
+            %p!= t(:split_work_mode_intro)
+          - else
+            %h2= @text.title
+        .col-md-6
           - unless @text.person.nil?
             %h3
               = t(:by)+' '
@@ -16,12 +22,6 @@
           = select_tag 'orig_lang', options_for_select(get_langs.map {|lang| [textify_lang(lang), lang]}, @text.orig_lang)
           %h3= label_tag(:genre, t(:genre))
           = select_tag(:genre, options_for_select(get_genres.map {|genre| [I18n.t(genre), genre]}, @text.genre), {include_blank: true})
-        .col-md-6
-          - if @text.has_splits
-            %h1{style:'color:green'}= "** #{t(:split_work_mode)} **"
-            %p!= t(:split_work_mode_intro)
-          - else
-            %h2= @text.title
       .row
         .col-md-12
           .markdown_container

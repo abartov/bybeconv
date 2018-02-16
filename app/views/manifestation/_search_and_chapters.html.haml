@@ -1,17 +1,17 @@
 .col-sm-6
-  .search.on-card-search-field
-    %span.fa.fa-search.search-icon
-    %span.fa.linky{'data-search'=>'next'}!= "&darr;"
-    %span.fa.linky{'data-search'=>'prev'}!="&uarr;"
-    %span.fa.linky{'data-search'=>'clear'}='✖'
-    %input#searchinwork{ style:'display:inline', type: :search, placeholder: t(:search_in_text)}
-.col-sm-6
   - if @m.chapters? and @m.long?
     %div{style:'position:relative'}
       = select_tag 'chapters', safe_options_for_select(@chapters, @selected_chapter), 'class' => 'chapter-name dropdown', style: 'background-color:#eeeced;margin-top: 0;width: 100%'
       %div{style:'line-height:1rem;display:inline'}
         %a.dropdown-arrow{style:'left:0'}
           %span.fa.fa-angle-down
+.col-sm-6
+  .search.on-card-search-field
+    %span.fa.fa-search.search-icon
+    %span.fa.linky{'data-search'=>'next'}!= "&darr;"
+    %span.fa.linky{'data-search'=>'prev'}!="&uarr;"
+    %span.fa.linky{'data-search'=>'clear'}='✖'
+    %input#searchinwork{ style:'display:inline', type: :search, placeholder: t(:search_in_text)}
 :javascript
   $(document).ready(function(){
     // the input field for the find-in-page

@@ -1,4 +1,7 @@
 .row{style:'margin-left:10rem;margin-bottom:2rem;'}
+  .col-md-2
+    .genre-icon{style:'width:auto; display:inline;float:right;padding-top:1.5rem;font-size:7.5rem'}
+      %span{:class => 'icon-bysurprise-work', style:'color: #910065;'}
   .col-md-10
     %div{style:'width:calc(100%-22rem);display:inline;float:right;'}
       %div{style:'margin-bottom:0.6rem'}
@@ -10,6 +13,3 @@
         %p!= opening
     %div{style:'float:right'}
       = link_to t(:to_the_full_work), manifestation_read_path(work.id)
-  .col-md-2
-    .genre-icon{style:'width:auto; display:inline;float:right;padding-top:1.5rem;font-size:7.5rem'}
-      %span{:class => 'icon-bysurprise-work', style:'color: #910065;'}
