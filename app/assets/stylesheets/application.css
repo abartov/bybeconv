@@ -327,7 +327,7 @@ color: #660248;
 padding-bottom: 0.6rem;
 }
 .topbar{
-  position: fixed;
+  /* position: fixed; */ /* horrible on mobile */
   top: 0;
   width: 100%;
   background-color: #fff;
@@ -689,7 +689,7 @@ option:first {
   box-shadow: inset 0px 3px 10px rgba(69, 42, 14, .35);
 }
 .top-element {
-  margin-top: 14.4rem;
+  /* margin-top: 14.4rem; */ /* necessary only if/when .topbar is position:fixed */
 }
 .dashboard-link {
 /*  position:absolute; display:inline; top:11rem; left: 10rem;*/

@@ -12,7 +12,7 @@ Bybeconv::Application.configure do
   config.action_controller.perform_caching = false # generally desirable
 
   ## uncomment to test caching
-  config.action_controller.perform_caching = true # uncomment to test caching
+  #config.action_controller.perform_caching = true # uncomment to test caching
   config.cache_store = :mem_cache_store
 
 

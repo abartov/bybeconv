@@ -7,12 +7,6 @@
       .card.author-top
         .row
           .card-content
-            .col-md-3{style:'padding-top:1.2rem;padding-left:1rem'}
-              = render partial: 'shared/sharing_etc', locals: {context: :toc}
-              .search-bar{style:'margin-top:3rem'}
-                .search.field
-                  %span.fa.fa-search.search-icon
-                  %input{placeholder: t(:find_work_by_author, author:@author.name), style:'background-color: #eeeced;'}
             .col-md-9
               .creator-bookmark-back-right
                 %img{src:'/assets/creator-bookmark-back2.png', alt: t(:background), width:168,height:6}
@@ -45,10 +39,17 @@
                     / references
                   .card-header-element{style:'margin-left:4rem'}
                     / tags
+            .col-md-3{style:'padding-top:1.2rem;padding-left:1rem'}
+              = render partial: 'shared/sharing_etc', locals: {context: :toc}
+              .search-bar{style:'margin-top:3rem'}
+                .search.field
+                  %span.fa.fa-search.search-icon
+                  %input{placeholder: t(:find_work_by_author, author:@author.name), style:'background-color: #eeeced;'}
     .col-md-1
   = render partial: 'shared/genre_navbar', locals: {genres_present: @genres_present, page: :toc}
   .row
     .col-md-1
+      = render partial: 'toolbox'
     .col-md-10
       .toc#maintext
         - unless @toc.nil?
@@ -56,16 +57,15 @@
           .card#volunteers{style:'margin:3rem 20rem 0 0'}
             .card-content
               .row
-                .col-sm-3
                 .col-sm-9
                   %div
                     %p.headline-3= t(:volunteers_who_helped, {author: @author.name, gender_letter: @author.gender_letter})
                   .credits
                     != @credits
+                .col-sm-3
         - else
           = render partial: 'generated_toc'
     .col-md-1
-      = render partial: 'toolbox'
 
 :javascript
   $(document).ready(function(){

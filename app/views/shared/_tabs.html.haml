@@ -5,10 +5,6 @@
     .col-lg-10
       .container-fluid#navbar
         .row
-          .col-sm-4#nav-additional
-            .search.field.main-search-field
-              %span.fa.fa-search.search-icon
-              %input#q{ placeholder: t(:search_placeholder)}
           .col-sm-8.nav
             %ul
               %li{role: 'presentation', :class => @tabclass['authors']}
@@ -27,6 +23,10 @@
                 = link_to t(:donate_money), '/page/donate'
               %li{role: 'presentation', :class => @tabclass['en']}
                 = link_to 'EN', '/page/english'
+          .col-sm-4#nav-additional
+            .search.field.main-search-field
+              %span.fa.fa-search.search-icon
+              %input#q{ placeholder: t(:search_placeholder)}
     .col-lg-1
 /.scroll-gradient
 
