@@ -37,18 +37,21 @@
                   %p= t(:copyright_status)+':'
                 .col-md-10
                   = render partial: 'shared/copyright', locals: {copyright: @m.copyright?}
-
-              - unless @book.nil?
+              - unless @e.source_edition.nil? || @e.source_edition.empty?
                 .row{style:'padding-top:0.6rem'}
                   .col-md-2
-                    %p= t(:published_in_book)+': '
+                    %p= t(:source_edition)+': '
                   .col-md-10
                     .card-header-element{style:'margin-left:2.4rem'}
-                      %p= @book
-                    .card-header-element
-                      = link_to '#' do
-                        = t(:edition_details)
-                        %span.fa.fa-angle-left.baseline{style: 'margin-right: 0.6rem'}
+                      %p
+                        - edition = @e.source_edition.strip
+                        - unless @e.date.nil? || @e.date.empty?
+                          - edition += '; '+@e.date
+                        = edition
+                    /.card-header-element
+                    /  = link_to '#' do
+                    /    = t(:edition_details)
+                    /    %span.fa.fa-angle-left.baseline{style: 'margin-right: 0.6rem'}
               .row{style:'padding-top:0.6rem'}
                 .col-md-2
                   %p= t(:genre)+': '
