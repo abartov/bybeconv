@@ -18,24 +18,31 @@ class AdminController < ApplicationController
     @authors = Person.joins(:toc).where('tocs.status = 0').page(params[:page]).per(15)
     @total = Person.joins(:toc).where('tocs.status = 0').count
     @page_title = t(:raw_tocs)
+    Rails.cache.write('report_raw_tocs', @total)
   end
 
   def missing_languages
     ex = Expression.joins([:realizers, :works]).where(realizers: {role: Realizer.roles[:translator]}, works: {orig_lang: 'he'})
     mans = ex.map{|e| e.manifestations[0]}
+    @total = mans.length
     @mans = Kaminari.paginate_array(mans).page(params[:page]).per(25)
     @page_title = t(:missing_language_report)
+    Rails.cache.write('report_missing_languages', mans.length)
   end
 
   def missing_genres
     @mans = Manifestation.joins(:expressions).where(expressions: {genre: nil}).page(params[:page]).per(25)
+    @total = Manifestation.joins(:expressions).where(expressions: {genre: nil}).count
     @page_title = t(:missing_genre_report)
+    Rails.cache.write('report_missing_genres', @total)
   end
 
   def missing_copyright
     @authors = Person.where(public_domain: nil)
+    @total = Manifestation.joins(:expressions).where(expressions: {copyrighted: nil}).count
     @mans = Manifestation.joins(:expressions).where(expressions: {copyrighted: nil}).page(params[:page]).per(25)
     @page_title = t(:missing_copyright_report)
+    Rails.cache.write('report_missing_copyright', @total)
   end
 
   def similar_titles
@@ -54,6 +61,7 @@ class AdminController < ApplicationController
       next if v.length < 2
       @similarities[k] = v.sort_by{|m| m.title}
     }
+    Rails.cache.write('report_similar_titles', @similarities.keys.length)
   end
 
   def mark_similar_as_valid
@@ -66,14 +74,17 @@ class AdminController < ApplicationController
   end
 
   def suspicious_translations # find works where the author is also a translator -- this *may* be okay, in the case of self-translation, but probably is a mistake
+    @total = Manifestation.joins(expressions: [:realizers, works: [:creations]]).where('realizers.person_id = creations.person_id and realizers.role = 3').count
     @mans = Manifestation.joins(expressions: [:realizers, works: [:creations]]).where('realizers.person_id = creations.person_id and realizers.role = 3').page(params[:page])
     @page_title = t(:suspicious_translations_report)
+    Rails.cache.write('report_suspicious_translations', @total)
   end
 
   def conversion_verification
     @manifestations = Manifestation.where(conversion_verified: false).order(:title).page(params[:page])
     @total = Manifestation.where(conversion_verified: false).count
     @page_title = t(:conversion_verification_report)
+    Rails.cache.write('report_conversion_verification', @total)
   end
 
   def translated_from_multiple_languages
@@ -89,6 +100,7 @@ class AdminController < ApplicationController
         @authors << [t, t.works.pluck(:orig_lang).uniq, works_by_lang]
       end
     }
+    Rails.cache.write('report_translated_from_multiple_languages', @authors.length)
   end
 
   def incongruous_copyright
@@ -101,6 +113,7 @@ class AdminController < ApplicationController
         @incong << [m, m.title, m.author_string, calculated_copyright, db_copyright]
       end
     }
+    Rails.cache.write('report_incongruous_copyright', @incong.length)
   end
 
   def suspicious_headings
@@ -121,6 +134,7 @@ class AdminController < ApplicationController
       end
       @suspicious << m if suspicious
     end
+    Rails.cache.write('report_suspicious_headings', @suspicious.length)
   end
 
   #######################################
