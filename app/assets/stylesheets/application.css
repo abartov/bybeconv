@@ -2179,7 +2179,8 @@ li{
 .stickysearchread{
   position: -webkit-sticky;
   position: sticky;
-  top: 7.2rem;
+  /* top: 7.2rem; */
+  top: 0rem;
   padding: 5px;
   opacity: 1;
   background-color: #eeeced;
@@ -2188,7 +2189,8 @@ li{
 .stickysearch {
   position: -webkit-sticky;
   position: sticky;
-  top: 13.2rem;
+  /* top: 13.2rem;*/
+  top: 0rem;
   /*padding: 5px;*/
   opacity: 1;
   background-color: #eeeced;
