@@ -25,12 +25,12 @@
       .row
         .col-md-12
           .markdown_container
-            %div{ style:"vertical-align:top; width: 30%;display:flex;margin-right:10px;flex-direction:column;height:100%;box-sizing:border-box;float:left;padding-right:7px;"}
+            %div{ style:"vertical-align:top; width: 40%;display:flex;margin-right:10px;flex-direction:column;height:100%;box-sizing:border-box;float:left;padding-right:7px;"}
               #legacy_markdown_link
                 %h2= t(:markdown)
               .markdown= text_area_tag(:markdown, raw(@markdown), class: 'textarea100')
             %h2= t(:display_text)
-            %div{ style:"vertical-align:top; width: 70%; padding-left:10px;padding-right:15px;background:#d2cfcf;"}
+            %div{ style:"vertical-align:top; width: 60%; padding-left:10px;padding-right:15px;background:#d2cfcf;"}
               != raw(@html)
               %br
       .row
