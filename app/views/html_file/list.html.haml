@@ -38,7 +38,7 @@
         %td= textify_boolean(txt.footnotes)
         %td= textify_boolean(txt.images)
         %td
-          - if txt.status == 'Published' && id: txt.manifestations[0] != nil
+          - if txt.status == 'Published' && txt.manifestations[0] != nil
             = link_to t(:to_the_work_in_the_catalog), controller: 'manifestation', action: 'show', id: txt.manifestations[0]
             = ' | '
             = link_to t(:to_the_work_in_the_site), manifestation_read_path(txt.manifestations[0].id)
