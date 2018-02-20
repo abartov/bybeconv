@@ -6,6 +6,8 @@
     .col-md-10
       .card.author-top
         .row
+          - if current_user && current_user.editor?
+            %span.static-btn= link_to t(:edit_toc), authors_edit_toc_path(@author)
           .card-content
             .col-md-9
               .creator-bookmark-back-right
