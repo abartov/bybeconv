@@ -60,10 +60,12 @@ class ManifestationController < ApplicationController
     @tabclass = set_tab('works')
     @page_title = t(:whatsnew)
     @whatsnew = []
+    @anonymous = true
     if params['months'].nil? or params['months'].empty?
       @whatsnew = whatsnew_anonymous
     else
       @whatsnew = whatsnew_since(params[:months].to_i.months.ago)
+      @anonymous = false
     end
     @new_authors = Person.new_since(1.month.ago)
   end
