@@ -172,17 +172,21 @@ class ApplicationController < ActionController::Base
   def whatsnew_anonymous
     Rails.cache.fetch("whatsnew_anonymous", expires_in: 2.hours) do # memoize
       logger.info("cache failure: calculating whatsnew anonymous")
-      authors = {}
-      Manifestation.new_since(1.month.ago).each {|m|
-        e = m.expressions[0]
-        person = e.persons[0] # TODO: more nuance
-        next if person.nil? # shouldn't happen, but might in a dev. env.
-        authors[person] = {} if authors[person].nil?
-        authors[person][e.genre] = [] if authors[person][e.genre].nil?
-        authors[person][e.genre] << m
-      }
-      authors
+      return whatsnew_since(1.month.ago)
     end
+  end
+
+  def whatsnew_since(timestamp)
+    authors = {}
+    Manifestation.new_since(timestamp).each {|m|
+      e = m.expressions[0]
+      person = e.persons[0] # TODO: more nuance
+      next if person.nil? # shouldn't happen, but might in a dev. env.
+      authors[person] = {} if authors[person].nil?
+      authors[person][e.genre] = [] if authors[person][e.genre].nil?
+      authors[person][e.genre] << m
+    }
+    authors
   end
 
   def sanitize_heading(h)
