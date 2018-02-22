@@ -16,7 +16,7 @@
                         %p.headline-3
                           = link_to au.name, author_toc_path(au)
                         %p
-                          - worksbuf = works_since.map{ |m| link_to(m.expressions[0].title + (m.expressions[0].translation ? " / #{m.expressions[0].works[0].persons[0].name}" : ''), url_for(controller: :manifestation, action: :read, id: m.id))}
+                          - worksbuf = works_since.map{ |m| link_to(m.expressions[0].title + (m.expressions[0].translation ? ' / '+m.authors_string : ''), url_for(controller: :manifestation, action: :read, id: m.id))}
                           - worksbuf = worksbuf.join('; ')
                           != worksbuf
                       .whatsnew-pic-wide
@@ -34,7 +34,7 @@
                         - works.each do |genre|
                           %p
                             %b= t(genre[0])+': '
-                            - worksbuf = genre[1].map{ |m| link_to(m.expressions[0].title + (m.expressions[0].translation ? " / #{m.expressions[0].works[0].persons[0].name}" : ''), url_for(controller: :manifestation, action: :read, id: m.id))}
+                            - worksbuf = genre[1].map{ |m| link_to(m.expressions[0].title + (m.expressions[0].translation ? ' / '+m.authors_string : ''), url_for(controller: :manifestation, action: :read, id: m.id))}
                             - worksbuf = worksbuf.join('; ')
                             != worksbuf
                     .whatsnew-pic-wide
