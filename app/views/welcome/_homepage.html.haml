@@ -56,7 +56,7 @@
             / work cards
             %p{style:'margin-top:18px'}
               %span.headline-2
-                = link_to t(:works_by_genre), url_for(controller: :manifestation)
+                = link_to t(:works_by_genre), works_path
               %span{style: 'padding-right: 1.2rem"'}= t(:x_works, x: @totals[:works])
             = render partial: 'works'
           .col-sm-4.col-xs-12#flashlight
