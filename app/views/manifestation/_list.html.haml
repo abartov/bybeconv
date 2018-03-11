@@ -17,7 +17,11 @@
         %td= m.title
         - if m.expressions[0].translation
           %td= t(:yes)+" (#{textify_lang(m.expressions[0].works[0].orig_lang)})"
-          %td= link_to m.expressions[0].translators[0].name, authors_show_path(id: m.expressions[0].translators[0].id)
+          - p = m.expressions[0].translators[0]
+          - if p.nil?
+            %td= link_to m.expressions[0].translators[0].name, authors_show_path(id: m.expressions[0].translators[0].id)
+          - else
+            %td= t(:error)
         - else
           %td= t(:no)
           %td= ''
