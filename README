@@ -9,3 +9,7 @@ External dependencies:
 * ElasticSearch for search
 ** https://github.com/synhershko/elasticsearch-analysis-hebrew for the Hebrew analyzer for ElasticSearch
 
+License
+-------
+
+The code is available for re-use under the GNU Affero General Public License http://www.gnu.org/licenses/agpl-3.0.html
