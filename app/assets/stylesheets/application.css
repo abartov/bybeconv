@@ -823,27 +823,14 @@ width: calc(100% - 93px);
   overflow: hidden;
 }
 .work-area{
+/* removed by Asaf to solve mobile mess
   margin-right: 20rem;
-  width: calc(100% - 20rem);
+  width: calc(100% - 20rem); */
 }
 .work-card{
   height:auto;
   position: relative;
 	min-height: 69rem;
-}
-.work-text{
-  width: 80%;
-  padding: 0 10rem 2rem 10rem;
-  display: inline-block;
-}
-.work-pic{
-  width:20%;
-  height: 100%;
-  border-bottom-left-radius: 0.3rem;
-  border-top-left-radius: 0.3rem;
-  background-color:#d9cdd5;
-  display: inline-block;
-  position: absolute;
 }
 #authors{
   margin-top: 2rem;
@@ -1739,24 +1726,34 @@ img.bysurprise-absolute {
 }
 
 /*toolbox white - start*/
-#toolbox {
-  width:9rem;
-    float: right;
-    position: fixed;
-	top:18.6rem;
-    z-index: 7;
+@media (max-width: 40em) {
+  #toolbox {
+    width:0;
+    display: none;
+  }
+  .toolbox-cell {
+    width:0;
+    display: none;
+  }
+  .work-text{
+    width: 100%;
+    padding: 1rem;
+    display: inline-block;
+  }
+  .work-pic{
+    display: none;
+  }
 }
+@media (min-width: 40em) {
 
-#toolbox-read {
-  width:9rem;
-    float: right;
-    position: fixed;
-	top:8.3rem;
-    z-index: 7;
-}
-
-
-.toolbox-cell {
+  #toolbox {
+    width:9rem;
+      float: right;
+      position: fixed;
+    top:18.6rem;
+      z-index: 7;
+  }
+  .toolbox-cell {
     width: 10rem;
     height: 5rem;
    background-color: #fff;
@@ -1765,19 +1762,44 @@ img.bysurprise-absolute {
   	display: table-cell;
     vertical-align: middle;
   	border: none;
-	position: relative;
-	border-radius: 0rem;
+    position: relative;
+    border-radius: 0rem;
+  }
+  .mistake{
+    height: 10rem;
+    border-top: solid 2px #eeeced;
+    border-right: none;
+    border-bottom: solid 2px #eeeced;
+    border-left: none;
+  }
+  .toolbox-cell .mistake{
+    color: #660248;
+  }
+  #toolbox-read {
+    width:9rem;
+      float: right;
+      position: fixed;
+    top:8.3rem;
+      z-index: 7;
+  }
+  .work-text{
+    width: 80%;
+    padding: 0 10rem 2rem 10rem;
+    display: inline-block;
+  }
+  .work-pic{
+    width:20%;
+    height: 100%;
+    border-bottom-left-radius: 0.3rem;
+    border-top-left-radius: 0.3rem;
+    background-color:#d9cdd5;
+    display: inline-block;
+    position: absolute;
+  }
+
 }
-.mistake{
-	height: 10rem;
-	border-top: solid 2px #eeeced;
-	border-right: none;
-	border-bottom: solid 2px #eeeced;
-	border-left: none;
-}
-.toolbox-cell .mistake{
-	 color: #660248;
-}
+
+
 .btn-group-vertical {
     position: relative;
     display: inline-block;
