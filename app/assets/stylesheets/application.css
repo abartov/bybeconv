@@ -822,11 +822,6 @@ width: calc(100% - 93px);
   vertical-align: top;
   overflow: hidden;
 }
-.work-area{
-/* removed by Asaf to solve mobile mess
-  margin-right: 20rem;
-  width: calc(100% - 20rem); */
-}
 .work-card{
   height:auto;
   position: relative;
@@ -1726,7 +1721,7 @@ img.bysurprise-absolute {
 }
 
 /*toolbox white - start*/
-@media (max-width: 40em) {
+@media (max-width: 50em) {
   #toolbox {
     width:0;
     display: none;
@@ -1743,8 +1738,18 @@ img.bysurprise-absolute {
   .work-pic{
     display: none;
   }
+  .work-area {
+    /* removed by Asaf to solve mobile mess
+      margin-right: 20rem;
+      width: calc(100% - 20rem); */
+  }
+
 }
-@media (min-width: 40em) {
+@media (min-width: 50em) {
+  .work-area{
+      margin-right: 20rem;
+      width: calc(100% - 20rem);
+    }
 
   #toolbox {
     width:9rem;
