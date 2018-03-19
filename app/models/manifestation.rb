@@ -101,6 +101,11 @@ class Manifestation < ActiveRecord::Base
     return expressions[0].works[0].authors.map{|x| x.name}.join(', ')
   end
 
+  def translators
+    return nil if expressions[0].nil? or expressions[0].works[0].nil? or expressions[0].works[0].persons[0].nil?
+    return expressions[0].translators
+  end
+
   def translators_string
     return I18n.t(:nil) if expressions[0].nil? or expressions[0].works[0].nil? or expressions[0].works[0].persons[0].nil?
     return expressions[0].translators.map{|x| x.name}.join(', ')

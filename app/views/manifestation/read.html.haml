@@ -21,7 +21,7 @@
                   = link_to @author.name, author_toc_path(id: @author.id)
                   - if @e.translation && @e.translators.size > 0
                     = ", #{t(:translation)}: "
-                    = link_to @e.translators[0].name, author_toc_path(id: @e.translators[0].id)
+                    != @translators.map{|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
                     = " (#{t(:from_lang)}#{textify_lang(@e.works[0].orig_lang)})"
               - unless @links.empty?
                 .row
