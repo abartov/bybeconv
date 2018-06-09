@@ -413,7 +413,7 @@ padding-bottom: 0.6rem;
 }
 #navbar-full-width{
   box-sizing: border-box;
-  height: 6rem;
+  height: auto;
   border-top: 0.2rem solid #d9cdd5;
   border-bottom: 0.2rem solid #d9cdd5;
   font-size: 1.4rem;

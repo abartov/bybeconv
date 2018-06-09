@@ -37,6 +37,9 @@
 - download as TXT - add CR+LF if user runs Windows
 - download as DOC - right-align (pandoc patch?)
 
+- INTEROP
+  - Be FAIR - https://www.go-fair.org/fair-principles/
+
 - HOMEPAGE
   - featured content full text view
   - carousel of featured content
