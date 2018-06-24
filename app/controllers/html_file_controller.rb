@@ -56,13 +56,20 @@ class HtmlFileController < ApplicationController
       else
         bin = Faraday.get @text.doc.url # grab the doc/x binary
         tmpfile = Tempfile.new(['docx2mmd__','.docx'], :encoding => 'ascii-8bit')
+        tmpfile_pp = Tempfile.new(['docx2mmd__pp_','.docx'], :encoding => 'ascii-8bit')
         begin
           tmpfile.write(bin.body)
           tmpfilename = tmpfile.path
-          markdown = `pandoc -f docx -t markdown_mmd #{tmpfilename}`
+          # preserve linebreaks to post-process after Pandoc!
+          docx = Docx::Document.open(tmpfilename)
+          docx.paragraphs.each do |p|
+            p.text = '&&STANZA&&' if p.text.empty? # replaced with <br> tags in new_postprocess
+          end
+          docx.save(tmpfile_pp.path) # save modified version
+          markdown = `pandoc -f docx -t markdown_mmd #{tmpfile_pp.path}`
           @text.markdown = new_postprocess(markdown)
           @text.save
-        rescue
+        rescue => e
           flash[:error] = t(:conversion_error)
           redirect_to controller: :admin, action: :index
         ensure
@@ -405,7 +412,7 @@ class HtmlFileController < ApplicationController
     }
     new_buffer.gsub!('©כל הזכויות', '© כל הזכויות') # fix an artifact of the conversion
     new_buffer.gsub!(/> (.*?)\n\s*\n\s*\n/, "> \\1\n\n<br>\n") # add <br> tags for poetry, as a workaround to preserve stanza breaks
-    new_buffer.gsub!("\n<br>","<br>  ") # sigh
+    new_buffer.gsub!("&&STANZA&&","\n<br />\n") # sigh
     return new_buffer
   end
 

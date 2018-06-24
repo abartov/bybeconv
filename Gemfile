@@ -72,6 +72,7 @@ gem 'paper_trail', '~> 4.0.0' # for versioning entities
 gem 'gepub', '~> 0.7.0beta4' # for generating EPUBs
 gem 'rmagick' # for generating cover images for EPUBs
 gem 'pandoc-ruby' # for converting to DOCX
+gem 'docx' # for pre-processing DOCX files to preserve stanzas
 gem 'uglifier'
 gem 'responders' # for respond_to at controller level (in api_controller)
 gem 'newrelic_rpm' # performance monitoring
