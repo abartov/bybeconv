@@ -5,10 +5,6 @@ module AboutnessesHelper
     when 'Person'
       html += link_to(ab.aboutable.name, author_toc_path(id: ab.aboutable_id))
       html += ' ('+I18n.t(:person)+')'
-      if edit
-        html += ' || '
-        html += link_to(t(:destroy), url_for(controller: :aboutnesses, action: :remove, id: ab.id, manifestation_id: @m.id), :data => { :confirm => t(:are_you_sure) })
-      end
     when 'Work'
       html += link_to(ab.aboutable.title, work_show_path(id: ab.aboutable_id))
       html += ' / '
@@ -18,18 +14,18 @@ module AboutnessesHelper
       end
       html += austr[0..-3]
       html += ' ('+I18n.t(:work)+')'
-      if edit
-        html += ' || '
-        html += link_to(t(:destroy), url_for(controller: :aboutnesses, action: :remove, id: ab.id, manifestation_id: @m.id), :data => { :confirm => t(:are_you_sure) })
-      end
     when nil
       unless ab.wikidata_qid.nil?
-        html += '...'
+        html += link_to("#{ab.wikidata_label} (#{I18n.t(:wikidata_item)})", 'https://wikidata.org/wiki/Q'+ab.wikidata_qid.to_s+'?uselang=he')
       else
         html = t(:unknown)
       end
     end
-    return html
+    if edit
+      html += ' || '
+      html += link_to(t(:destroy), url_for(controller: :aboutnesses, action: :remove, id: ab.id, manifestation_id: @m.id), :data => { :confirm => t(:are_you_sure) })
+    end
+  return html
   end
 
 end

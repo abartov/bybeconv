@@ -16,7 +16,8 @@ class AboutnessesController < ApplicationController
         @ab.aboutable_id = w.id
       end
     when 'Wikidata'
-      @ab.wikidata_qid = params['qid']
+      @ab.wikidata_qid = params['add_external_topic'][1..-1].to_i
+      @ab.wikidata_label = params['wikidata_label']
     end
     @ab.save!
   end

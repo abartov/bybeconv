@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180625110924) do
+ActiveRecord::Schema.define(version: 20180625210351) do
 
   create_table "aboutnesses", force: :cascade do |t|
     t.integer  "work_id",        limit: 4
@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 20180625110924) do
     t.string   "aboutable_type", limit: 255
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
+    t.string   "wikidata_label", limit: 255
   end
 
   add_index "aboutnesses", ["aboutable_type", "aboutable_id"], name: "index_aboutnesses_on_aboutable_type_and_aboutable_id", using: :btree

@@ -117,6 +117,9 @@ he:
   aboutnesses: נושאי היצירה
   person: אדם
   work: יצירה
+  search_term: מונח לחיפוש
+  search_wikidata: חיפוש בויקינתונים
+  wikidata_item: פריט ויקינתונים
   add_person: הוספת אדם מהמאגר כנושא
   add_work: הוספת יצירה מהמאגר כנושא
   add_external: הוספת נושא חיצוני למאגר

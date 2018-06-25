@@ -12,5 +12,6 @@
 //= require autocomplete-rails
 //= require jquery.mark.min
 //= require jquery.caret
+//= require wikidata-sdk.min
 //= require_tree .
 
