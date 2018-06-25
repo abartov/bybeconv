@@ -11,7 +11,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180207050828) do
+ActiveRecord::Schema.define(version: 20180625110924) do
+
+  create_table "aboutnesses", force: :cascade do |t|
+    t.integer  "work_id",        limit: 4
+    t.integer  "user_id",        limit: 4
+    t.integer  "status",         limit: 4
+    t.integer  "wikidata_qid",   limit: 4
+    t.integer  "aboutable_id",   limit: 4
+    t.string   "aboutable_type", limit: 255
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
+
+  add_index "aboutnesses", ["aboutable_type", "aboutable_id"], name: "index_aboutnesses_on_aboutable_type_and_aboutable_id", using: :btree
+  add_index "aboutnesses", ["user_id"], name: "index_aboutnesses_on_user_id", using: :btree
+  add_index "aboutnesses", ["wikidata_qid"], name: "index_aboutnesses_on_wikidata_qid", using: :btree
+  add_index "aboutnesses", ["work_id"], name: "index_aboutnesses_on_work_id", using: :btree
 
   create_table "api_keys", force: :cascade do |t|
     t.string   "email",       limit: 255
@@ -498,6 +514,8 @@ ActiveRecord::Schema.define(version: 20180207050828) do
     t.string   "origlang_title", limit: 255
   end
 
+  add_foreign_key "aboutnesses", "users"
+  add_foreign_key "aboutnesses", "works"
   add_foreign_key "featured_author_features", "featured_authors"
   add_foreign_key "featured_authors", "people"
   add_foreign_key "featured_authors", "users"

@@ -5,6 +5,7 @@ class Expression < ActiveRecord::Base
   has_and_belongs_to_many :manifestations
   has_many :realizers
   has_many :persons, through: :realizers, class_name: 'Person'
+  has_many :aboutnesses, as: :aboutable
   #has_and_belongs_to_many :people # superseded by realizers above
 
   def determine_is_translation?

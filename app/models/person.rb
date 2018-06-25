@@ -11,6 +11,7 @@ class Person < ActiveRecord::Base
   has_many :works, through: :creations, class_name: 'Work'
   has_many :realizers
   has_many :expressions, through: :realizers, class_name: 'Expression'
+  has_many :aboutnesses, as: :aboutable
 
   has_and_belongs_to_many :manifestations
 
