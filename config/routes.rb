@@ -99,6 +99,7 @@ Bybeconv::Application.routes.draw do
   get 'manifestation/unlike'
   get 'manifestation/surprise_work'
   get 'manifestation/autocomplete_works_by_author'
+  get 'work/show/:id' => 'manifestation#workshow', as: 'work_show' # temporary, until we have a works controller
 
   get "api/query"
   resources :api_keys

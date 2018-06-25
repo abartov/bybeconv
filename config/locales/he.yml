@@ -113,6 +113,7 @@ he:
   display_text: טקסט תצוגה
   save_and_exit: שמירה ויציאה
   save_and_update_display: שמירה ועדכון תצוגה
+  works_about_this_author: "יצירות על אודות המחבר%{gender_suffix}"
   # genre key names are currently hard-coded in ApplicationController
   poetry: שירה
   prose: פרוזה

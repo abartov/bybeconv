@@ -52,7 +52,7 @@
   .row
     .col-md-1
       = render partial: 'toolbox'
-    .col-md-10
+    .col-md-7
       .toc#maintext
         - unless @toc.nil?
           = render partial: 'toc', locals: {margin: true}
@@ -67,6 +67,8 @@
                 .col-sm-3
         - else
           = render partial: 'generated_toc'
+    .col-md-3
+      = render partial: 'aboutnesses'
     .col-md-1
 
 :javascript
