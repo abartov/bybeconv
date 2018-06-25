@@ -16,7 +16,8 @@ module AboutnessesHelper
       html += ' ('+I18n.t(:work)+')'
     when nil
       unless ab.wikidata_qid.nil?
-        html += link_to("#{ab.wikidata_label} (#{I18n.t(:wikidata_item)})", 'https://wikidata.org/wiki/Q'+ab.wikidata_qid.to_s+'?uselang=he')
+        html += link_to("#{ab.wikidata_label}", 'https://wikidata.org/wiki/Q'+ab.wikidata_qid.to_s+'?uselang=he')
+        html += ' ('+I18n.t(:wikidata_item)+')'
       else
         html = t(:unknown)
       end
