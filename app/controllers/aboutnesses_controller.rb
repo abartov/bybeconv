@@ -10,7 +10,11 @@ class AboutnessesController < ApplicationController
       @ab.aboutable_id = params['add_person_topic']
     when 'Work'
       @ab.aboutable_type = 'Work'
-      @ab.aboutable_id = params['add_work_topic']
+      m = Manifestation.find(params['add_work_topic'])
+      unless m.nil?
+        w = m.expressions[0].works[0] # TODO: generalize?
+        @ab.aboutable_id = w.id
+      end
     when 'Wikidata'
       @ab.wikidata_qid = params['qid']
     end
