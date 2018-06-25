@@ -190,7 +190,7 @@ class ApplicationController < ActionController::Base
   end
 
   def sanitize_heading(h)
-    return h.gsub(/\[\^ftn\d+\]/,'').gsub(/^#+/,'&nbsp;&nbsp;&nbsp;').gsub(/\[\^\d+\]/,'').strip
+    return h.gsub(/\[\^ftn\d+\]/,'').gsub(/^#+/,'&nbsp;&nbsp;&nbsp;').gsub(/\[\^\d+\]/,'').gsub('\"','"').strip
   end
 
   def current_user
