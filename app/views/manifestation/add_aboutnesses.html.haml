@@ -1,0 +1,25 @@
+%h2= t(:add_aboutnesses)+': '+@m.title_and_authors
+= render partial: 'aboutnesses', locals: {edit: true, add: false}
+%h3= t(:add_person)
+
+#add-person
+  = form_for @aboutness, remote: true do |f|
+    = select_tag :add_person_topic, options_from_collection_for_select(Person.order(:name), 'id','name'), include_blank: true
+    = hidden_field_tag :aboutness_type, 'Person'
+    = hidden_field_tag :work_id, @w.id
+    = hidden_field_tag :manifestation_id, @m.id
+    = hidden_field_tag :suggested_by, current_user.id
+    %input.static-btn{type: :submit, value: t(:perform_add)}
+
+%h3= t(:add_work)
+#add-work
+  = form_for @aboutness, remote: true do |f|
+    = autocomplete_field_tag :work_autocomplete, '', autocomplete_manifestation_title_path, id_element: '#add_work_topic'
+    = hidden_field_tag :add_work_topic, nil
+    = hidden_field_tag :aboutness_type, 'Work'
+    = hidden_field_tag :work_id, @w.id
+    = hidden_field_tag :manifestation_id, @m.id
+    = hidden_field_tag :suggested_by, current_user.id
+    %input.static-btn{type: :submit, value: t(:perform_add)}
+%h3= t(:add_external)
+%span.static-btn= t(:perform_add)

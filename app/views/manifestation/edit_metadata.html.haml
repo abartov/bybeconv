@@ -22,6 +22,7 @@
       %b= t(:comments)+': '
       = text_area_tag :wcomment, @w.comment, rows: 4, cols: 40
     = render partial: 'shared/associated_people', locals: { which: :work, work: @w, edit: true}
+    = render partial: 'aboutnesses', locals: {edit: true, add: true}
     %h2= t(:expression_details)
     %p
       %b= t(:title) + ': '
@@ -63,7 +64,7 @@
     %p
       %b= t(:comments)+': '
       = text_area_tag :mcomment, @m.comment, rows: 4, cols: 40
-    = render partial: 'shared/associated_people', locals: { which: :manifestation, manifestation: @m, edit: true}
+    / = render partial: 'shared/associated_people', locals: { which: :manifestation, manifestation: @m, edit: true}
     %hr
     %h2= t(:external_links)
     = render partial: 'external_links', locals: { links: @m.external_links, edit: true }

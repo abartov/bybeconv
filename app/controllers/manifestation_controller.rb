@@ -273,6 +273,14 @@ class ManifestationController < ApplicationController
     @w = @e.works[0] # TODO: generalize!
   end
 
+  def add_aboutnesses
+    @m = Manifestation.find(params[:id])
+    @e = @m.expressions[0] # TODO: generalize?
+    @w = @e.works[0] # TODO: generalize!
+    @page_title = t(:add_aboutnesses)+': '+@m.title_and_authors
+    @aboutness = Aboutness.new
+  end
+
   def update
     @m = Manifestation.find(params[:id])
     @e = @m.expressions[0] # TODO: generalize?

@@ -1,4 +1,6 @@
 Bybeconv::Application.routes.draw do
+  get 'aboutnesses/remove'
+
   get 'static_pages/render'
 
   get 'realizers/remove'
@@ -100,11 +102,13 @@ Bybeconv::Application.routes.draw do
   get 'manifestation/surprise_work'
   get 'manifestation/autocomplete_works_by_author'
   get 'work/show/:id' => 'manifestation#workshow', as: 'work_show' # temporary, until we have a works controller
+  get 'manifestation/add_aboutnesses/:id' => 'manifestation#add_aboutnesses'
 
   get "api/query"
   resources :api_keys
   get "taggings/render_tags"
   resources :taggings
+  resources :aboutnesses
 
   get 'user/:id' => 'user#show', as: 'user_show'
   get 'user/list'

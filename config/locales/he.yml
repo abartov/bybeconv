@@ -114,6 +114,14 @@ he:
   save_and_exit: שמירה ויציאה
   save_and_update_display: שמירה ועדכון תצוגה
   works_about_this_author: "יצירות על אודות המחבר%{gender_suffix}"
+  aboutnesses: נושאי היצירה
+  person: אדם
+  add_person: הוספת אדם מהמאגר כנושא
+  add_work: הוספת יצירה מהמאגר כנושא
+  add_external: הוספת נושא חיצוני למאגר
+  perform_add: הוספה
+  add_aboutnesses: הוספת נושאים ליצירה
+  existing_aboutnesses: נושאים קיימים
   # genre key names are currently hard-coded in ApplicationController
   poetry: שירה
   prose: פרוזה
