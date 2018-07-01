@@ -193,8 +193,8 @@ html {
 body {
 font-family: "Alef";
 color: #2b0d22;
-/*font-size: 1.8rem; */
-font-size: 18px; /* this controls all the texts on the site */
+font-size: 1.7rem;
+/* font-size: 18px; /* this controls all the texts on the site */
 /* font-size: 1.4rem; */
 }
 
@@ -458,7 +458,7 @@ padding-bottom: 0.6rem;
 }
 
 .nav {
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   height: auto;
   float: right;
   color: #2b0d22;
