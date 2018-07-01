@@ -280,6 +280,15 @@ class AdminController < ApplicationController
     end
   end
 
+  def volunteer_profile_destroy
+    @vp = VolunteerProfile.find(params[:id])
+    unless @vp.nil?
+      @vp.destroy
+    end
+    flash[:notice] = I18n.t(:deleted_successfully)
+    redirect_to action: :volunteer_profile_list
+  end
+
   ########################################################
   ## featured content
   def featured_content_list
@@ -348,6 +357,15 @@ class AdminController < ApplicationController
         format.json { render json: @fc.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def featured_content_destroy
+    @fc = FeaturedContent.find(params[:id])
+    unless @fc.nil?
+      @fc.destroy
+    end
+    flash[:notice] = I18n.t(:deleted_successfully)
+    redirect_to action: :featured_content_list
   end
 
   def featured_content_add_feature

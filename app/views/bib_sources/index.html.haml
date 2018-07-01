@@ -1,0 +1,27 @@
+%h1= t(:bib_sources)
+
+%table
+  %thead
+    %tr
+      %th= t(:title)
+      %th= t(:source_type)
+      %th= t(:status)
+      %th= t(:comments)
+      %th
+      %th
+      %th
+
+  %tbody
+    - @bib_sources.each do |bib_source|
+      %tr
+        %td= bib_source.title
+        %td= t(bib_source.source_type)
+        %td= t(bib_source.status)
+        %td= bib_source.comments
+        %td= link_to t(:show), bib_source
+        %td= link_to t(:edit), edit_bib_source_path(bib_source)
+        %td= link_to t(:destroy), bib_source, method: :delete, data: { confirm: t(:are_you_sure)}
+
+%br
+
+= link_to t(:new_bib_source), new_bib_source_path

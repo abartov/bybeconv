@@ -22,7 +22,7 @@ gem "font-awesome-rails"
 
 gem 'diffy'
 gem 'aws-sdk', '~>2.9' # for the Amazon cloud.  3.x breaks somehow. TBD: figure it out
-gem 'paperclip' # for cloud files like author images
+gem 'paperclip', '~>5.2' # for cloud files like author images 6.x requires aws >3.x
 gem 'impressionist' # for pageview stats
 
 gem 'jquery-rails'
@@ -61,6 +61,8 @@ gem 'rmultimarkdown' # new wrapper over Fletcher Penney's MultiMarkDown 4 (MMD 4
 
 gem 'app_constants' # anything more Railsy?
 gem 'hebrew', '>= 0.2.0' # https://github.com/abartov/hebrew
+gem 'gared', '>= 0.0.2' # https://gitlab.com/abartov/gared # for scraping bibliographic data from Hebrew sources
+
 gem 'haml'
 #gem 'zoom', '~>0.4.1', :git => 'https://github.com/bricestacey/ruby-zoom.git' # for Z39.50 queries to libraries
 gem 'haml-rails'

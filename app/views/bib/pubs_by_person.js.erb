@@ -1,0 +1,2 @@
+var markup = "<%= @pubs.nil? ? '' : pubs_to_markup(@pubs).html_safe %>";
+$("#bibs tbody").append(markup);

@@ -20,5 +20,7 @@
         %td!= v.featured_list
         %td= v.manifestation.nil? ? t(:none) : link_to(v.manifestation.title_and_authors, manifestation_read_path(id: v.manifestation.id))
         %td= v.person.nil? ? t(:none) : link_to(v.person.name, author_toc_path(v.person))
-        %td= link_to t(:edit), url_for(action: :featured_content_show, id: v.id)
+        %td
+          = link_to t(:edit), url_for(action: :featured_content_show, id: v.id)
+          = link_to t(:destroy), url_for(action: :featured_content_destroy, id: v.id), data: { confirm: t(:are_you_sure)}
   != paginate @fcs

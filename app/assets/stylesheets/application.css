@@ -191,11 +191,11 @@ html {
 }
 
 body {
-font-family: "Alef";
-color: #2b0d22;
-font-size: 1.7rem;
-/* font-size: 18px; /* this controls all the texts on the site */
-/* font-size: 1.4rem; */
+  font-family: "Alef";
+  color: #2b0d22;
+  font-size: 1.7rem;
+  /* font-size: 18px; /* this controls all the texts on the site */
+  /* font-size: 1.4rem; */
 }
 
 #actualtoc h1 {

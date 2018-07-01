@@ -1,0 +1,6 @@
+%h1= t(:bib_workshop)
+%h2= t(:statistics)
+%p= t(:bib_stats, {pubs: @counts[:pubs], holdings: @counts[:holdings], obtained: @counts[:obtained], scanned: @counts[:scanned], irrelevant: @counts[:irrelevant], missing: @counts[:missing]})
+= render partial: 'find_bibs', locals: {remote: false}
+%h2= t(:administration)
+%p= link_to t(:manage_bib_sources), bib_sources_path

@@ -126,6 +126,7 @@ he:
   perform_add: הוספה
   add_aboutnesses: הוספת נושאים ליצירה
   existing_aboutnesses: נושאים קיימים
+  bib_workshop: הסדנה הביבליוגרפית
   # genre key names are currently hard-coded in ApplicationController
   poetry: שירה
   prose: פרוזה
@@ -187,7 +188,12 @@ he:
   basic_details: פרטים בסיסיים
   submit: שליחה
   logo: לוגו
+  statistics: סטטיסטיקה
+  bib_stats: ידועים %{pubs} חיבורים ו-%{holdings} רשומות מצאי. מתוך החיבורים, %{obtained} הושגו, %{scanned} נסרקו, %{irrelevant} סומנו כלא רלבנטיים, ומתוך רשומות המצאי, %{missing} חסרים בפועל.
   mark_as_valid: סמן כתקין ואל תציג שוב
+  get_bibs: חיפוש רשומות ביבליוגרפיות לפי מחבר
+  get_bibs_instructions: הזינו שם מחבר (אפשר חלקי; אם מלא, שם משפחה, שם פרטי), והקישו על חיפוש.
+  search: חיפוש
   proof_thanks_title: קיבלנו, תודה!
   from_project_ben_yehuda: מפרויקט בן-יהודה
   proof_thanks_html: תודה רבה על שטרחת לשלוח אלינו הגהה או הערה!  נעיין בה בקפידה ונתקן את הטקסט במידת הצורך, ונעדכן אותך כשנעשה זאת.
@@ -382,7 +388,28 @@ he:
   publisher_details: פרטי הוצאה לאור
   publisher: הוצאה
   language: שפה
+  record_id: קוד רשומה
+  manage_bib_sources: ניהול מקורות ביבליוגרפיים
+  administration: ניהול
+  aleph: מערכת אלף
+  primo: מערכת פרימו
+  new_bib_source: מקור ביבליוגרפי חדש
+  googlebooks: גוגל בוקס
+  hebrewbooks: היברובוקס
+  idea: אידאה
   save: שמירה
+  port: פּוֹרְט
+  api_key: מפתח API
+  source_type: סוג מערכת
+  institution: קוד אוסף
+  edit_bib_source: עריכת מקור ביבליוגרפי
+  bib_sources: מקורות ביבליוגרפיים
+  all_sources: כל המקורות
+  please_wait: נא להמתין...
+  pubs_by_author: חיבורים מקושרים ליוצר/ת
+  item_pattern: תבנית קישור לפריט בקטלוג (המזהה יישתל במקום שבו תכתבו __ID__)
+  enabled: מופעל
+  disabled: מושבת
   must_accept_before_publishing: יש לאשר את הסבת הקובץ לפני פרסום
   want_to_read: רוצה לקרוא
   currently_reading: "קורא/ת עכשיו"

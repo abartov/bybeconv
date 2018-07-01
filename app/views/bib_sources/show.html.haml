@@ -1,0 +1,28 @@
+%p#notice= notice
+
+%h2= @bib_source.title
+%p
+  %b= t(:source_type)
+  = @bib_source.source_type
+%p
+  %b= t(:url)
+  = @bib_source.url
+%p
+  %b= t(:port)
+  = @bib_source.port
+%p
+  %b= t(:institution)
+  = @bib_source.institution
+%p
+  %b= t(:api_key)
+  = @bib_source.api_key
+%p
+  %b= t(:status)
+  = t(@bib_source.status)
+%p
+  %b= t(:comments)
+  = @bib_source.comments
+
+= link_to t(:edit), edit_bib_source_path(@bib_source)
+\|
+= link_to t(:back), bib_sources_path

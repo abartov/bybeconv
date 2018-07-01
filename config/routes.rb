@@ -1,4 +1,15 @@
 Bybeconv::Application.routes.draw do
+  resources :bib_sources
+  resources :holdings
+  resources :publications
+  get 'bib/index'
+
+  match 'bib/pubs_by_person', via: [:get, :post]
+
+  get 'bib/todo_by_location'
+
+  get 'bib/mark_pub_as'
+
   get 'aboutnesses/remove'
 
   get 'static_pages/render'
@@ -34,6 +45,7 @@ Bybeconv::Application.routes.draw do
   post 'admin/volunteer_profile/add_feature' => 'admin#volunteer_profile_add_feature', as: 'volunteer_profile_add_feature'
   get 'admin/volunteer_profile/delete_feature/:id' => 'admin#volunteer_profile_delete_feature', as: 'volunteer_profile_delete_feature'
   get 'admin/volunteer_profile/:id' => 'admin#volunteer_profile_show', as: 'volunteer_profile_show'
+  get 'admin/volunteer_profile/destroy/:id' => 'admin#volunteer_profile_destroy', as: 'volunteer_profile_destroy'
   get 'admin/featured_content_list'
   get 'admin/featured_content/new' => 'admin#featured_content_new', as: 'featured_content_new'
   post 'admin/featured_content/create' => 'admin#featured_content_create', as: 'featured_content_create'
@@ -42,6 +54,7 @@ Bybeconv::Application.routes.draw do
   post 'admin/featured_content/add_feature' => 'admin#featured_content_add_feature', as: 'featured_content_add_feature'
   get 'admin/featured_content/delete_feature/:id' => 'admin#featured_content_delete_feature', as: 'featured_content_delete_feature'
   get 'admin/featured_content/:id' => 'admin#featured_content_show', as: 'featured_content_show'
+  get 'admin/featured_content/destroy/:id' => 'admin#featured_content_destroy', as: 'featured_content_destroy'
   get 'autocomplete_manifestation_title' => 'admin#autocomplete_manifestation_title', as: 'autocomplete_manifestation_title'
   get 'autocomplete_person_name' => 'admin#autocomplete_person_name', as: 'autocomplete_person_name'
   get 'autocomplete_tag_name' => 'manifestation#autocomplete_tag_name', as: 'autocomplete_tag_name'
@@ -50,7 +63,7 @@ Bybeconv::Application.routes.draw do
   post 'admin/featured_author/create' => 'admin#featured_author_create', as: 'featured_author_create'
   get 'admin/featured_author/edit/:id' => 'admin#featured_author_edit', as: 'featured_author_edit'
   patch 'admin/featured_author/update' => 'admin#featured_author_update', as: 'featured_author_update'
-  get 'admin/volunteer_profile/destroy/:id' => 'admin#featured_author_destroy', as: 'featured_author_destroy'
+  get 'admin/featured_author/destroy/:id' => 'admin#featured_author_destroy', as: 'featured_author_destroy'
   post 'admin/featured_author/add_feature' => 'admin#featured_author_add_feature', as: 'featured_author_add_feature'
   get 'admin/featured_author/delete_feature/:id' => 'admin#featured_author_delete_feature', as: 'featured_author_delete_feature'
   get 'admin/featured_author/:id' => 'admin#featured_author_show', as: 'featured_author_show'

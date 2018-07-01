@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180625210351) do
+ActiveRecord::Schema.define(version: 20180630182354) do
 
   create_table "aboutnesses", force: :cascade do |t|
     t.integer  "work_id",        limit: 4
@@ -40,6 +40,20 @@ ActiveRecord::Schema.define(version: 20180625210351) do
   end
 
   add_index "api_keys", ["email"], name: "index_api_keys_on_email", unique: true, using: :btree
+
+  create_table "bib_sources", force: :cascade do |t|
+    t.string   "title",        limit: 255
+    t.integer  "source_type",  limit: 4
+    t.string   "url",          limit: 255
+    t.integer  "port",         limit: 4
+    t.string   "api_key",      limit: 255
+    t.text     "comments",     limit: 65535
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.integer  "status",       limit: 4
+    t.string   "institution",  limit: 255
+    t.string   "item_pattern", limit: 2048
+  end
 
   create_table "creations", force: :cascade do |t|
     t.integer  "work_id",    limit: 4
@@ -157,6 +171,17 @@ ActiveRecord::Schema.define(version: 20180625210351) do
   add_index "featured_contents", ["person_id"], name: "index_featured_contents_on_person_id", using: :btree
   add_index "featured_contents", ["user_id"], name: "index_featured_contents_on_user_id", using: :btree
   add_index "featured_contents", ["user_id_id"], name: "index_featured_contents_on_user_id_id", using: :btree
+
+  create_table "holdings", force: :cascade do |t|
+    t.integer  "publication_id", limit: 4
+    t.string   "source_id",      limit: 255
+    t.string   "source_name",    limit: 255
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.integer  "status",         limit: 4
+  end
+
+  add_index "holdings", ["publication_id"], name: "index_holdings_on_publication_id", using: :btree
 
   create_table "html_dirs", force: :cascade do |t|
     t.string   "path",            limit: 255
@@ -365,6 +390,20 @@ ActiveRecord::Schema.define(version: 20180625210351) do
     t.integer  "manifestation_id", limit: 4
   end
 
+  create_table "publications", force: :cascade do |t|
+    t.string   "title",          limit: 255
+    t.string   "publisher_line", limit: 255
+    t.string   "author_line",    limit: 255
+    t.text     "notes",          limit: 65535
+    t.string   "source_id",      limit: 255
+    t.integer  "person_id",      limit: 4
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.integer  "status",         limit: 4
+  end
+
+  add_index "publications", ["person_id"], name: "index_publications_on_person_id", using: :btree
+
   create_table "realizers", force: :cascade do |t|
     t.integer  "expression_id", limit: 4
     t.integer  "person_id",     limit: 4
@@ -524,7 +563,9 @@ ActiveRecord::Schema.define(version: 20180625210351) do
   add_foreign_key "featured_contents", "manifestations"
   add_foreign_key "featured_contents", "people"
   add_foreign_key "featured_contents", "users"
+  add_foreign_key "holdings", "publications"
   add_foreign_key "list_items", "users"
+  add_foreign_key "publications", "people"
   add_foreign_key "realizers", "expressions"
   add_foreign_key "realizers", "people"
   add_foreign_key "recommendations", "manifestations"
