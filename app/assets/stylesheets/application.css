@@ -174,13 +174,13 @@
 .diff li.diff-comment { display: none; }
 .diff li.diff-block-info { background: none repeat scroll 0 0 gray; }
 
-
 /* from actual BYBE design by RY */
 
 @charset "UTF-8";
 /* CSS Document */
 html {
-font-size: 62.5%;
+/*  font-size: 16pt; */
+  font-size: 62.5%;
 }
 .container {
   direction:rtl;
@@ -193,7 +193,9 @@ font-size: 62.5%;
 body {
 font-family: "Alef";
 color: #2b0d22;
-font-size: 1.4rem;
+/*font-size: 1.8rem; */
+font-size: 18px; /* this controls all the texts on the site */
+/* font-size: 1.4rem; */
 }
 
 #actualtoc h1 {
@@ -505,6 +507,9 @@ li :active{
   margin-bottom: 10px;
 }
 
+.scfield {
+  margin-bottom: 10px;
+}
 .field {
   height: 3.2rem;
   border-top: none;
