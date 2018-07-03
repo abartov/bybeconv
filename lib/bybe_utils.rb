@@ -383,4 +383,15 @@ module BybeUtils
       when 3 then ['surprise', 'lexicon','translations']
     end
   end
+  def url_for_record(source, source_id)
+    case source.source_type
+    when 'aleph', 'primo', 'idea'
+      url = source.item_pattern.sub('__ID__', source_id.strip)
+    when 'hebrewbooks'
+      url = source_id.strip
+    when 'googlebooks'
+      url =  "https://books.google.co.il/books?id=#{source_id.strip}"
+    end
+    return url
+  end
 end

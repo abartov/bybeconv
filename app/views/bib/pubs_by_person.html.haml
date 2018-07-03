@@ -14,27 +14,16 @@
           %th= t(:year_published)
           %th= t(:language)
           %th= t(:comments)
+          %th= t(:record_source)
           %th= t(:record_id)
+          %th= t(:is_scanned)
           %th= t(:actions)
-        - unless @pubs.nil?
-          - @pubs.each do |pub|
-            %tr
-              %td= pub.title
-              %td= pub.author_line
-              %td= pub.publisher_line
-              %td= pub.pub_year
-              %td= pub.language
-              %td= pub.notes.nil? ? '' : pub.notes.sub("\n", "<br />".html_safe)
-              %td= pub.holdings.map{|h| linkify_record(pub.context, h)}.join(';')
-              %td
-                %button.moveit= '--->'
-              / %td= pub.person.nil? ? '--' : pub.person.name
-              / %td= pub.status
+        = render partial: 'pubs', locals: {pubs: @pubs}
     .col-md-4
       .backend-field
         = label_tag t(:linked_author)
-        = autocomplete_field_tag :person, '', autocomplete_person_name_path, id_element: '#person_id'
         = hidden_field_tag :person_id
+        = autocomplete_field_tag :person, '', autocomplete_person_name_path, id_element: '#person_id'
       .card
         .card-content
           %h2= t(:pubs_by_author)
@@ -42,9 +31,20 @@
 
 
 :javascript
-  $(document).ready(function(){
-    $('.moveit').click(function(){
-      var row = this.parent.parent;
+  function moveit(elem){
+    var row = elem.parentElement.parentElement;
+    var status = (row.children[8].textContent == "#{t(:yes)}" ? "scanned" : "todo");
+    var person_id = $('#person_id').val();
+    elem.disabled = true;
+    $.ajax({
+        type: "POST",
+        url: "#{publications_path}",
+        data: { publication: {title: row.children[0].textContent , author_line: row.children[1].textContent, publisher_line: row.children[2].textContent,
+          pub_year: row.children[3].textContent, language: row.children[4].textContent,
+          notes: row.children[5].textContent, bib_source: row.children[6].textContent, source_id: row.children[7].children[0].href,
+          person_id: person_id, status: status } }
+      }).done(function() {
+        alert("success");
+      });
 
-    });
-  });
+  };

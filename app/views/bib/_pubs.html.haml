@@ -1,0 +1,17 @@
+- byebug
+- unless pubs.nil?
+  - pubs.each do |pub|
+    %tr
+      %td= pub.title
+      %td= pub.author_line
+      %td= pub.publisher_line
+      %td= pub.pub_year
+      %td= pub.language
+      %td= pub.notes.nil? ? '' : pub.notes.sub("\n", "<br />".html_safe)
+      %td= pub.context.title
+      %td= pub.holdings.map{|h| linkify_record(pub.context, h.source_id)}.join(';').html_safe
+      %td= pub.scanned ? t(:yes) : t(:no)
+      %td
+        %button.moveit{onclick: 'moveit(this)'}= '--->'
+      / %td= pub.person.nil? ? '--' : pub.person.name
+      / %td= pub.status

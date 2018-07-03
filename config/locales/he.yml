@@ -407,6 +407,8 @@ he:
   all_sources: כל המקורות
   please_wait: נא להמתין...
   pubs_by_author: חיבורים מקושרים ליוצר/ת
+  is_scanned: סרוק?
+  record_source: מקור הרשומה
   item_pattern: תבנית קישור לפריט בקטלוג (המזהה יישתל במקום שבו תכתבו __ID__)
   enabled: מופעל
   disabled: מושבת

@@ -1,3 +1,5 @@
+include BybeUtils
+
 class BibController < ApplicationController
   def index
     @counts = {pubs: Publication.count, holdings: Holding.count , obtained: Publication.where(status: Publication.statuses[:obtained]).count , scanned: Publication.where(status: Publication.statuses[:scanned]).count, irrelevant: Publication.where(status: Publication.statuses[:irrelevant]).count, missing: Holding.where(status: Holding.statuses[:missing]).count}
@@ -18,7 +20,7 @@ class BibController < ApplicationController
         sources << BibSource.find(params['bib_source'])
       end
       sources.each do |bib_source|
-        @pubs += query_source_by_type(q, bib_source)
+        @pubs += query_source_by_type(q, bib_source).select  {|pub| Publication.where(source_id: url_for_record(bib_source, pub.source_id)).count == 0}
       end
     end
   end
