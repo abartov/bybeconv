@@ -406,9 +406,18 @@ he:
   bib_sources: מקורות ביבליוגרפיים
   all_sources: כל המקורות
   please_wait: נא להמתין...
-  pubs_by_author: חיבורים מקושרים ליוצר/ת
+  todo: לטיפול
+  scanned: סרוק
+  obtained: בידינו
+  missing: חסר בספרייה
+  irrelevant: לא רלבנטי
+  no_matches_found: לא נמצאו תוצאות
+  pubs_by_person_instructions: כאן תבואנה הוראות...
+  pubs_by_author: חיבורים מקושרים למחבר/ת
   is_scanned: סרוק?
+  bib_done: ביבליוגרפיה הושלמה בסדנה?
   record_source: מקור הרשומה
+  select_person_first: יש לשייך מחבר/ת לפני שיוך כותרים
   item_pattern: תבנית קישור לפריט בקטלוג (המזהה יישתל במקום שבו תכתבו __ID__)
   enabled: מופעל
   disabled: מושבת

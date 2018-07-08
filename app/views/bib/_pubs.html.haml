@@ -1,4 +1,3 @@
-- byebug
 - unless pubs.nil?
   - pubs.each do |pub|
     %tr
@@ -13,5 +12,3 @@
       %td= pub.scanned ? t(:yes) : t(:no)
       %td
         %button.moveit{onclick: 'moveit(this)'}= '--->'
-      / %td= pub.person.nil? ? '--' : pub.person.name
-      / %td= pub.status

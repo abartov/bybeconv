@@ -1,6 +1,6 @@
 include BybeUtils
 class Person < ActiveRecord::Base
-  attr_accessible :affiliation, :comment, :country, :name, :nli_id, :other_designation, :viaf_id, :public_domain, :profile_image, :birthdate, :deathdate, :wikidata_id, :wikipedia_url, :wikipedia_snippet, :blog_category_url, :profile_image, :metadata_approved, :gender
+  attr_accessible :affiliation, :comment, :country, :name, :nli_id, :other_designation, :viaf_id, :public_domain, :profile_image, :birthdate, :deathdate, :wikidata_id, :wikipedia_url, :wikipedia_snippet, :blog_category_url, :profile_image, :metadata_approved, :gender, :bib_done
 
   enum gender: [:male, :female, :other, :unknown]
 
@@ -12,12 +12,15 @@ class Person < ActiveRecord::Base
   has_many :realizers
   has_many :expressions, through: :realizers, class_name: 'Expression'
   has_many :aboutnesses, as: :aboutable
+  has_many :publications
 
   has_and_belongs_to_many :manifestations
 
   # scopes
   scope :has_toc, -> { where.not(toc_id: nil) }
   scope :no_toc, -> { where(toc_id: nil) }
+  scope :bib_done, -> {where(bib_done: true)}
+  scope :bib_not_done, -> {where("bib_done is null OR bib_done = 0")}
   scope :in_genre, -> (genre) {has_toc.joins(:expressions).where(expressions: { genre: genre}).distinct}
   scope :new_since, -> (since) { where('created_at > ?', since)}
   scope :latest, -> (limit) {order('created_at desc').limit(limit)}

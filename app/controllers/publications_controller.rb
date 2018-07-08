@@ -26,7 +26,7 @@ class PublicationsController < ApplicationController
   # POST /publications.json
   def create
     @pub = Publication.new(publication_params)
-    bs = BibSource.where(title: params[bib_source].strip)
+    bs = BibSource.where(title: params[:publication][:bib_source].strip)
     unless bs.empty?
       @pub.bib_source = bs[0]
     end

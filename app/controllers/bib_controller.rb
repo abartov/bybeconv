@@ -1,10 +1,28 @@
 include BybeUtils
 
 class BibController < ApplicationController
+  before_filter :require_editor
+
   def index
     @counts = {pubs: Publication.count, holdings: Holding.count , obtained: Publication.where(status: Publication.statuses[:obtained]).count , scanned: Publication.where(status: Publication.statuses[:scanned]).count, irrelevant: Publication.where(status: Publication.statuses[:irrelevant]).count, missing: Holding.where(status: Holding.statuses[:missing]).count}
     @digiholdings = Holding.where("(source_name = 'Google Books' or source_name = 'Hebrewbooks') and status <> #{Holding.statuses[:done]}").order('rand()').limit(25)
     prepare_pubs
+  end
+
+  def person
+    @p = Person.find(params[:person_id])
+    if @p.nil?
+      respond_to do |format|
+        format.html { redirect_to action: :index }
+        format.js { render :nothing }
+      end
+    else
+      @pubs = @p.publications
+      respond_to do |format|
+        format.html
+        format.js
+      end
+    end
   end
 
   def pubs_by_person

@@ -1,0 +1,21 @@
+%h1= t(:bib_workshop)
+%p= @p.name
+
+.container-fluid
+  .row
+    .col-md-12
+
+      %table#bibs
+        %tr
+          %th= t(:title)
+          %th= t(:author)
+          %th= t(:publisher)
+          %th= t(:year_published)
+          %th= t(:language)
+          %th= t(:comments)
+          %th= t(:record_source)
+          %th= t(:record_id)
+          %th= t(:status)
+          %th= t(:actions)
+        - @pubs.each do |pub|
+          = render partial: 'publications/pub', locals: {pub: pub, with_person: false}

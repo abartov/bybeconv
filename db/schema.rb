@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180703060703) do
+ActiveRecord::Schema.define(version: 20180708052507) do
 
   create_table "aboutnesses", force: :cascade do |t|
     t.integer  "work_id",        limit: 4
@@ -363,6 +363,7 @@ ActiveRecord::Schema.define(version: 20180703060703) do
     t.integer  "gender",                     limit: 4
     t.integer  "impressions_count",          limit: 4
     t.string   "blog_category_url",          limit: 255
+    t.boolean  "bib_done"
   end
 
   add_index "people", ["impressions_count"], name: "index_people_on_impressions_count", using: :btree

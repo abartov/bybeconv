@@ -35,6 +35,13 @@
     = f.radio_button(:public_domain, false, checked: (not person.public_domain) && (not person.public_domain.nil?))
     = f.label t(:by_permission)
   .backend-field
+    = f.label t(:bib_done)
+    %br
+    = f.radio_button(:bib_done, true, checked: person.bib_done && (not person.bib_done.nil?))
+    = f.label t(:yes)
+    = f.radio_button(:bib_done, false, checked: (not person.bib_done) && (not person.bib_done.nil?))
+    = f.label t(:no)
+  .backend-field
     = f.label t(:other_designation)
     = f.text_field :other_designation
   .backend-field
