@@ -6,7 +6,6 @@
     %td= pub.pub_year
     %td= pub.language
     %td= pub.notes.nil? ? '' : pub.notes.sub("\n", "<br />").html_safe
-    %td= pub.bib_source.title
     %td= linkify_record(pub.bib_source, pub.source_id).html_safe
     - if with_person
       %td= pub.person.nil? ? '--' : pub.person.name

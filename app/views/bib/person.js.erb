@@ -1,4 +1,7 @@
 var markup = "";
+<% if @pubs.size > 0 %>
+  markup += "<%= escape_javascript(render partial: 'publications/pub_th') %>";
+<% end %>
 <% @pubs.each do |pub| %>
   markup += "<%= escape_javascript(render partial: 'publications/pub', locals: { pub: pub, with_person: false } ) %>";
 <% end %>

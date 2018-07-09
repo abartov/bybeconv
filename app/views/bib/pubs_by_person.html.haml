@@ -15,7 +15,6 @@
           %th= t(:language)
           %th= t(:comments)
           %th= t(:record_source)
-          %th= t(:record_id)
           %th= t(:is_scanned)
           %th= t(:actions)
         = render partial: 'pubs', locals: {pubs: @pubs}
@@ -27,7 +26,9 @@
       = link_to t(:new_author), authors_new_path
       .card
         .card-content
-          %h2= t(:pubs_by_author)
+          %h2
+            %a#author_link
+              = t(:pubs_by_author)
           %table#pubs
             %tbody
 
@@ -45,7 +46,7 @@
           url: "#{publications_path}",
           data: { publication: {title: row.children[0].textContent , author_line: row.children[1].textContent, publisher_line: row.children[2].textContent,
             pub_year: row.children[3].textContent, language: row.children[4].textContent,
-            notes: row.children[5].textContent, bib_source: row.children[6].textContent, source_id: row.children[7].children[0].href,
+            notes: row.children[5].textContent, bib_source: row.children[6].textContent, source_id: row.children[6].children[0].href,
             person_id: person_id, status: status } },
           dataType: "script"
         }).done(function(xhr, status) {
@@ -58,12 +59,23 @@
         });
     }
   };
-  $(document).ready(function() {
-    $('#person').bind('railsAutocomplete.select', function(event, data){
-      //alert(data.item.id);
+  function load_pubs(pid) {
+      var url = "#{bib_person_path({person_id: 999})}".replace("999", pid);
+      $('#author_link').attr('href', url);
       $.ajax({
-        url: "#{bib_person_path({person_id: 999})}".replace("999", data.item.id),
+        url: url,
         dataType: "script"
       });
+  };
+
+  $(document).ready(function() {
+    var pid = "#{@person_id}";
+    if(pid != "") {
+      load_pubs(pid);
+      $('#person').val("#{@person.name}");
+    }
+    $('#person').bind('railsAutocomplete.select', function(event, data){
+      //alert(data.item.id);
+      load_pubs(data.item.id)
     });
   });

@@ -189,7 +189,7 @@ he:
   submit: שליחה
   logo: לוגו
   statistics: סטטיסטיקה
-  bib_stats: ידועים %{pubs} חיבורים ו-%{holdings} רשומות מצאי. מתוך החיבורים, %{obtained} הושגו, %{scanned} נסרקו, %{irrelevant} סומנו כלא רלבנטיים, ומתוך רשומות המצאי, %{missing} חסרים בפועל.
+  bib_stats: ידועים %{pubs} חיבורים ו-%{holdings} רשומות מצאי. מתוך החיבורים, %{obtained} הושגו וטרם נסרקו, %{scanned} נסרקו, %{irrelevant} סומנו כלא רלבנטיים, ומתוך רשומות המצאי, %{missing} חסרים בפועל.
   mark_as_valid: סמן כתקין ואל תציג שוב
   get_bibs: חיפוש רשומות ביבליוגרפיות לפי מחבר
   get_bibs_instructions: הזינו שם מחבר (אפשר חלקי; אם מלא, שם משפחה, שם פרטי), והקישו על חיפוש.
@@ -412,6 +412,7 @@ he:
   missing: חסר בספרייה
   irrelevant: לא רלבנטי
   no_matches_found: לא נמצאו תוצאות
+  bibliography: ביבליוגרפיה
   pubs_by_person_instructions: כאן תבואנה הוראות...
   pubs_by_author: חיבורים מקושרים למחבר/ת
   is_scanned: סרוק?

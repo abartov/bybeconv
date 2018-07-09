@@ -94,6 +94,10 @@ class Person < ActiveRecord::Base
     end
   end
 
+  def has_any_bibs?
+    return self.publications.count > 0
+  end
+
   def self.cached_translators_count
     Rails.cache.fetch("au_translators_count", expires_in: 24.hours) do
       self.translators.count

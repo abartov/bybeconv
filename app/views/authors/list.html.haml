@@ -20,6 +20,7 @@
       %th
       %th
       %th
+      %th
 
     - @people.each do |person|
       %tr
@@ -43,6 +44,7 @@
         %td
           - unless person.toc.nil?
             = link_to t(:edit_toc), authors_edit_toc_path(person)
+        %td= link_to t(:bibliography), person.has_any_bibs? ? bib_person_path(person_id: person.id) : bib_index_path(person_id: person.id)
         %td= link_to t(:destroy), authors_destroy_path(id: person.id), :data => { :confirm => t(:are_you_sure) }
 
   %br

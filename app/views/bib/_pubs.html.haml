@@ -7,7 +7,6 @@
       %td= pub.pub_year
       %td= pub.language
       %td= pub.notes.nil? ? '' : pub.notes.sub("\n", "<br />".html_safe)
-      %td= pub.context.title
       %td= pub.holdings.map{|h| linkify_record(pub.context, h.source_id)}.join(';').html_safe
       %td= pub.scanned ? t(:yes) : t(:no)
       %td

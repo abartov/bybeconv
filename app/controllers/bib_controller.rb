@@ -6,6 +6,11 @@ class BibController < ApplicationController
   def index
     @counts = {pubs: Publication.count, holdings: Holding.count , obtained: Publication.where(status: Publication.statuses[:obtained]).count , scanned: Publication.where(status: Publication.statuses[:scanned]).count, irrelevant: Publication.where(status: Publication.statuses[:irrelevant]).count, missing: Holding.where(status: Holding.statuses[:missing]).count}
     @digiholdings = Holding.where("(source_name = 'Google Books' or source_name = 'Hebrewbooks') and status <> #{Holding.statuses[:done]}").order('rand()').limit(25)
+    pid = params[:person_id]
+    unless pid.nil?
+      @person_id = pid.to_i
+      @person_name = Person.find(@person_id).name.split(' ')[-1]
+    end
     prepare_pubs
   end
 
@@ -28,6 +33,10 @@ class BibController < ApplicationController
   def pubs_by_person
     prepare_pubs
     q = params['q']
+    @person_id = params[:person_id]
+    unless @person_id.nil?
+      @person = Person.find(@person_id)
+    end
     unless q.nil? or q.empty?
       @pubs = []
 
