@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180709165602) do
+ActiveRecord::Schema.define(version: 20180710154429) do
 
   create_table "aboutnesses", force: :cascade do |t|
     t.integer  "work_id",        limit: 4
@@ -175,13 +175,14 @@ ActiveRecord::Schema.define(version: 20180709165602) do
   create_table "holdings", force: :cascade do |t|
     t.integer  "publication_id", limit: 4
     t.string   "source_id",      limit: 255
-    t.string   "source_name",    limit: 255
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
     t.integer  "status",         limit: 4
     t.string   "scan_url",       limit: 2048
+    t.integer  "bib_source_id",  limit: 4
   end
 
+  add_index "holdings", ["bib_source_id"], name: "index_holdings_on_bib_source_id", using: :btree
   add_index "holdings", ["publication_id"], name: "index_holdings_on_publication_id", using: :btree
 
   create_table "html_dirs", force: :cascade do |t|
@@ -569,6 +570,7 @@ ActiveRecord::Schema.define(version: 20180709165602) do
   add_foreign_key "featured_contents", "manifestations"
   add_foreign_key "featured_contents", "people"
   add_foreign_key "featured_contents", "users"
+  add_foreign_key "holdings", "bib_sources"
   add_foreign_key "holdings", "publications"
   add_foreign_key "list_items", "users"
   add_foreign_key "publications", "bib_sources"

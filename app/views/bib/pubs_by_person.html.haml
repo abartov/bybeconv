@@ -60,10 +60,30 @@
     }
   };
   function addholding(elem){
-    var person_id = $('#person_id').val();
-    if (person_id == null || person_id == "") {
+    var sels = $('.publine.pub_selected');
+    if (sels.size() == 0) {
       alert("#{t(:select_publication_first)}");
     } else {
+      // gather data
+      var pub_row = $(sels[0]); // target
+      var holding_row = elem.parentElement.parentElement; // source
+      elem.disabled = true;
+      var status = (holding_row.children[8].textContent == "#{t(:yes)}" ? "scanned" : "todo");
+      var scan_url = (holding_row.children[XXX])
+      // submit holding entity
+      $.ajax({
+        type: "POST",
+        url: "#{holdings_path}",
+        data: { holding: { publication_id: pub_row.id.replace('pub',''), source_id: holding_row.children[6].children[0].href, source_name: holding_row.children[6].textContent, status: status, scan_url: "XXX" } },
+        dataType: "script"
+      }).done(function(xhr, status) {
+        if(status == "success") {
+          holding_row.remove();
+        } else {
+          alert('error');
+          elem.disabled = false;
+        }
+      });
     }
   };
   function load_pubs(pid) {
@@ -82,7 +102,13 @@
       $('#person').val("#{@person_id.nil? || @person_id.empty? ? '' : @person.name}");
     }
     $('#person').bind('railsAutocomplete.select', function(event, data){
-      //alert(data.item.id);
       load_pubs(data.item.id)
+    });
+    $(document).on('click', '.publine', function(){
+      var sels = $('.publine.pub_selected');
+      if(sels.size() > 0) {
+        $(sels[0]).removeClass('pub_selected');
+      }
+      $(this).addClass('pub_selected');
     });
   });

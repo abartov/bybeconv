@@ -26,12 +26,19 @@ class PublicationsController < ApplicationController
   # POST /publications.json
   def create
     @pub = Publication.new(publication_params)
+    @holding = Holding.new(source_id: @pub.source_id,)
     bs = BibSource.where(title: params[:publication][:bib_source].strip)
     unless bs.empty?
       @pub.bib_source = bs[0]
+      @holding.bib_source = bs[0]
     end
+    @holding.status = status_by_source_type(@pub.bib_source.source_type)
+    if @holding.status == Holding.statuses[:scanned]
+      @holding.scan_url = @pub.source_id # TODO: improve
+    end
+    @pub.holdings << @holding
     respond_to do |format|
-      if @pub.save
+      if @pub.save && @holding.save
         format.html { redirect_to @pub, notice: 'Publication was successfully created.' }
         format.js
         format.json { render :show, status: :created, location: @pub }
@@ -71,6 +78,15 @@ class PublicationsController < ApplicationController
   private
   def set_publication
     @pub = Publication.find(params[:id])
+  end
+  def status_by_source_type(stype)
+    # TODO: add handling of Primo e-resources once those become available at NLI
+    case stype
+    when BibSource.source_types[:hebrewbooks], BibSource.source_types[:googlebooks]
+      return 'scanned'
+    else
+      return 'todo'
+    end
   end
   def publication_params
     params.require(:publication).permit(:title, :publisher_line, :author_line, :notes, :source_id, :person_id, :status, :pub_year, :language)

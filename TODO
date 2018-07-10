@@ -9,7 +9,6 @@
   - add dropdown with expression details history *per author* to save work typing it for other expressions by that author.
   - add lock_version column to person, work, expression, and manifestation tables
   - implement taggings review
-  - edit WEM associations -- external links, authors
   - have works automatically tagged as belonging to a book/collection (WEM!) according to (human-confirmed) heading from the ToC
   - means to select additional/different authors
   - show revisions of manifestations/ToCs
@@ -22,10 +21,8 @@
 - !! add translations box to works view right side
 - EPIC: UPLOAD IMAGES (TO S3) AND EMBED THEM IN MARKDOWN
 - implement bookmarks (see notes in code!)
-- implement the whatsnew screen
 - take foreign authors into account in authors page - if not everywhere, at least for fables?
 - make tags links to works queries by tag
-- make credits bullets RTL
 - implement recommendation flagging (data model, review)
 - implement the scroll-gradients in work read and readmode
 - implement those-who-read-this-also-read-that (i.e. https://measuringu.com/affinity-analysis/)
@@ -36,6 +33,7 @@
 - implement favoriting authors
 - download as TXT - add CR+LF if user runs Windows
 - download as DOC - right-align (pandoc patch?)
+- download as any format -- ensure title and authorship metadata properly emitted (apparently not currently the case in PDF?)
 
 - INTEROP
   - Be FAIR - https://www.go-fair.org/fair-principles/

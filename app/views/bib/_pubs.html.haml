@@ -7,8 +7,9 @@
       %td= pub.pub_year
       %td= pub.language
       %td= pub.notes.nil? ? '' : pub.notes.sub("\n", "<br />".html_safe)
-      %td= pub.holdings.map{|h| linkify_record(pub.context, h.source_id)}.join(';').html_safe
-      %td= pub.scanned ? t(:yes) : t(:no)
+      /%td= pub.holdings.map{|h| linkify_record(pub.context, h.source_id)}.join(';').html_safe
+      %td= linkify_record(pub.context, pub.holdings[0].source_id).html_safe
+      %td= pub.scanned ? link_to(t(:yes), pub.holdings[0].scan_url) : t(:no)
       %td
         %button.moveit{onclick: 'moveit(this)'}= t(:add_publication)
         %br

@@ -1,3 +1,12 @@
 // Place all the styles related to the Bib controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+.publine{
+
+}
+
+.pub_selected td {
+  font-weight: bold;
+  background-color: green !important;
+}
