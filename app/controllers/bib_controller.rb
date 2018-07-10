@@ -34,7 +34,7 @@ class BibController < ApplicationController
     prepare_pubs
     q = params['q']
     @person_id = params[:person_id]
-    unless @person_id.nil?
+    unless @person_id.nil? || @person_id.empty?
       @person = Person.find(@person_id)
     end
     unless q.nil? or q.empty?

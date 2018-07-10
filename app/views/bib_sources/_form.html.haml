@@ -13,10 +13,10 @@
     = f.label t(:source_type)
     = f.select :source_type, @select_options
   .scfield
-    = f.label t(:url)
+    = f.label :url, t(:url)
     = f.text_field :url
   .scfield
-    = f.label t(:item_pattern)
+    = f.label :item_pattern, t(:item_pattern)
     = f.text_field :item_pattern
   .scfield
     = f.label t(:port)
@@ -25,7 +25,7 @@
     = f.label t(:institution)
     = f.text_field :institution
   .scfield
-    = f.label t(:api_key)
+    = f.label :api_key, t(:api_key)
     = f.text_field :api_key
   .scfield
     = f.label t(:comments)

@@ -59,6 +59,13 @@
         });
     }
   };
+  function addholding(elem){
+    var person_id = $('#person_id').val();
+    if (person_id == null || person_id == "") {
+      alert("#{t(:select_publication_first)}");
+    } else {
+    }
+  };
   function load_pubs(pid) {
       var url = "#{bib_person_path({person_id: 999})}".replace("999", pid);
       $('#author_link').attr('href', url);
@@ -72,7 +79,7 @@
     var pid = "#{@person_id}";
     if(pid != "") {
       load_pubs(pid);
-      $('#person').val("#{@person.name}");
+      $('#person').val("#{@person_id.nil? || @person_id.empty? ? '' : @person.name}");
     }
     $('#person').bind('railsAutocomplete.select', function(event, data){
       //alert(data.item.id);

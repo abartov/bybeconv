@@ -10,4 +10,6 @@
       %td= pub.holdings.map{|h| linkify_record(pub.context, h.source_id)}.join(';').html_safe
       %td= pub.scanned ? t(:yes) : t(:no)
       %td
-        %button.moveit{onclick: 'moveit(this)'}= '--->'
+        %button.moveit{onclick: 'moveit(this)'}= t(:add_publication)
+        %br
+        %button.addholding{onclick: 'addholding(this)'}= t(:add_holding)

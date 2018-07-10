@@ -418,8 +418,11 @@ he:
   is_scanned: סרוק?
   bib_done: ביבליוגרפיה הושלמה בסדנה?
   record_source: מקור הרשומה
-  select_person_first: יש לשייך מחבר/ת לפני שיוך כותרים
-  item_pattern: תבנית קישור לפריט בקטלוג (המזהה יישתל במקום שבו תכתבו __ID__)
+  select_person_first: יש לשייך מחבר/ת לפני שיוך פריטים
+  select_publication_first: יש ללחוץ על שורת פריט משמאל לפני שיוך עותק
+  item_pattern: "תבנית קישור לפריט בקטלוג (המזהה יישתל במקום שבו תכתבו __ID__)"
+  add_publication: '+פריט --->'
+  add_holding: '+עותק --->'
   enabled: מופעל
   disabled: מושבת
   must_accept_before_publishing: יש לאשר את הסבת הקובץ לפני פרסום
