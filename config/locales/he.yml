@@ -189,6 +189,7 @@ he:
   submit: שליחה
   logo: לוגו
   statistics: סטטיסטיקה
+  holdings: מצאי
   bib_stats: ידועים %{pubs} חיבורים ו-%{holdings} רשומות מצאי. מתוך החיבורים, %{obtained} הושגו וטרם נסרקו, %{scanned} נסרקו, %{irrelevant} סומנו כלא רלבנטיים, ומתוך רשומות המצאי, %{missing} חסרים בפועל.
   mark_as_valid: סמן כתקין ואל תציג שוב
   get_bibs: חיפוש רשומות ביבליוגרפיות לפי מחבר

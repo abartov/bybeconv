@@ -5,7 +5,7 @@ class HoldingsController < ApplicationController
   # GET /holdings
   # GET /holdings.json
   def index
-    @holdings = holding.all
+    @holdings = Holding.all
   end
 
   # GET /holdings/1
@@ -15,7 +15,7 @@ class HoldingsController < ApplicationController
 
   # GET /holdings/new
   def new
-    @holding = holding.new
+    @holding = Holding.new
   end
 
   # GET /holdings/1/edit
@@ -25,7 +25,11 @@ class HoldingsController < ApplicationController
   # POST /holdings
   # POST /holdings.json
   def create
-    @holding = holding.new(holding_params)
+    @holding = Holding.new(holding_params)
+    bs = BibSource.where(title: params[:source_name].strip)
+    unless bs.empty?
+      @holding.bib_source = bs[0]
+    end
     respond_to do |format|
       if @holding.save
         format.html { redirect_to @holding, notice: 'holding was successfully created.' }
@@ -66,9 +70,9 @@ class HoldingsController < ApplicationController
 
   private
   def set_holding
-    @holding = holding.find(params[:id])
+    @holding = Holding.find(params[:id])
   end
   def holding_params
-    params.require(:holding).permit(:publication_id, :source_name, :source_id, :scan_url, :status)
+    params.require(:holding).permit(:publication_id, :source_id, :scan_url, :status)
   end
 end

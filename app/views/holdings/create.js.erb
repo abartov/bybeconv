@@ -1,2 +1,1 @@
-var markup = "<%= escape_javascript(render partial: 'holding', locals: { holding: @holding} ) %>";
-$("#pubs<%= @holding.publication_id %>").append(markup);
+var new_holding = "<%= escape_javascript(render partial: 'holding', locals: { h: @holding} ) %>";

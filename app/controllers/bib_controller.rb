@@ -47,7 +47,15 @@ class BibController < ApplicationController
         sources << BibSource.find(params['bib_source'])
       end
       sources.each do |bib_source|
-        @pubs += query_source_by_type(q, bib_source).select  {|pub| Publication.where(source_id: url_for_record(bib_source, pub.source_id)).count == 0}
+#        recs = query_source_by_type(q, bib_source)
+#        to_add = []
+#        recs.each do |pub|
+#          sid = (pub.source_id.class == Array ? pub.source_id[0] : pub.source_id)
+#          yesno = Holding.where(source_id: url_for_record(bib_source, sid)).empty?
+#          to_add << pub if yesno
+#        end
+#        @pubs += to_add
+        @pubs += query_source_by_type(q, bib_source).select  {|pub| Holding.where(source_id: url_for_record(bib_source, (pub.source_id.class == Array ? pub.source_id[0] : pub.source_id))).empty? }
       end
     end
   end

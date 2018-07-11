@@ -26,7 +26,9 @@ class PublicationsController < ApplicationController
   # POST /publications.json
   def create
     @pub = Publication.new(publication_params)
-    @holding = Holding.new(source_id: @pub.source_id,)
+    sid = (@pub.source_id.class == Array ? @pub.source_id[0] : @pub.source_id)
+    @pub.source_id = sid
+    @holding = Holding.new(source_id: sid)
     bs = BibSource.where(title: params[:publication][:bib_source].strip)
     unless bs.empty?
       @pub.bib_source = bs[0]

@@ -65,20 +65,26 @@
       alert("#{t(:select_publication_first)}");
     } else {
       // gather data
-      var pub_row = $(sels[0]); // target
+      var pub_row = $(sels)[0]; // target
       var holding_row = elem.parentElement.parentElement; // source
       elem.disabled = true;
-      var status = (holding_row.children[8].textContent == "#{t(:yes)}" ? "scanned" : "todo");
-      var scan_url = (holding_row.children[XXX])
+      var status = "todo";
+      var scan_url = null;
+      if(holding_row.children[7].textContent == "#{t(:yes)}") {
+        status = "scanned";
+        scan_url = holding_row.children[6].children[0].href;
+      }
+
       // submit holding entity
       $.ajax({
         type: "POST",
         url: "#{holdings_path}",
-        data: { holding: { publication_id: pub_row.id.replace('pub',''), source_id: holding_row.children[6].children[0].href, source_name: holding_row.children[6].textContent, status: status, scan_url: "XXX" } },
+        data: { source_name: holding_row.children[6].textContent, holding: { publication_id: pub_row.id.replace('pub',''), source_id: holding_row.children[6].children[0].href, status: status, scan_url: scan_url } },
         dataType: "script"
       }).done(function(xhr, status) {
         if(status == "success") {
           holding_row.remove();
+          $(sels[0]+" ol").append(new_holding);
         } else {
           alert('error');
           elem.disabled = false;

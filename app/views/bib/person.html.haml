@@ -13,8 +13,8 @@
           %th= t(:year_published)
           %th= t(:language)
           %th= t(:comments)
-          %th= t(:record_source)
+          %th= t(:holdings)
           %th= t(:status)
           %th= t(:actions)
         - @pubs.each do |pub|
-          = render partial: 'publications/pub', locals: {pub: pub, with_person: false}
+          = render partial: 'publications/pub', locals: {pub: pub, with_person: false, with_actions: true}

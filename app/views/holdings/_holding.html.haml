@@ -1,0 +1,6 @@
+%li
+  = link_to(h.bib_source.title, h.source_id)
+  = " (#{t(h.status)})"
+  - if with_actions
+    = ' '
+    = select_tag "h_#{h.id}_actions", [[t(:mark_irrelevant), :mark_irrelevant], [t(:mark_obtained), :mark_obtained], [t(:mark_scanned), :mark_scanned]]
