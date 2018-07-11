@@ -1,5 +1,5 @@
 %h1= t(:bib_workshop)
-%p= @p.name
+%h2= link_to @p.name, author_toc_path(@p.id)
 
 .container-fluid
   .row

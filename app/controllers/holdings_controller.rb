@@ -49,6 +49,7 @@ class HoldingsController < ApplicationController
     respond_to do |format|
       if @holding.update(holding_params)
         format.html { redirect_to @holding, notice: 'holding was successfully updated.' }
+        format.js
         format.json { render :show, status: :ok, location: @holding }
       else
         format.html { render :edit }
