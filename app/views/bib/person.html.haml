@@ -1,10 +1,14 @@
-%h1= t(:bib_workshop)
-%h2= link_to @p.name, author_toc_path(@p.id)
+%h1
+  = t(:bib_workshop)+': '
+  = link_to @p.name, author_toc_path(@p.id)
 
 .container-fluid
   .row
     .col-md-12
-
+      %button= t(:make_author_page)
+      %button= t(:mark_as_done)
+  .row
+    .col-md-12
       %table#bibs
         %tr
           %th= t(:title)

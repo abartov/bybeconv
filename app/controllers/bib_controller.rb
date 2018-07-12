@@ -22,7 +22,7 @@ class BibController < ApplicationController
         format.js { render :nothing }
       end
     else
-      @pubs = @p.publications
+      @pubs = @p.publications.order(:status)
       respond_to do |format|
         format.html
         format.js

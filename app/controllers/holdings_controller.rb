@@ -46,8 +46,16 @@ class HoldingsController < ApplicationController
   # PATCH/PUT /holdings/1
   # PATCH/PUT /holdings/1.json
   def update
+    success = @holding.update(holding_params)
+    # also update parent publication status, if it was still 'todo'.
+    @pub = @holding.publication
+    if @pub.todo?
+      @pub.scanned! if @holding.scanned?
+      @pub.obtained! if @holding.obtained?
+      # if the holding is marked as missing, that does not change the publication's status
+    end
     respond_to do |format|
-      if @holding.update(holding_params)
+      if success
         format.html { redirect_to @holding, notice: 'holding was successfully updated.' }
         format.js
         format.json { render :show, status: :ok, location: @holding }

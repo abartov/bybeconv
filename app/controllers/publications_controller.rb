@@ -58,6 +58,7 @@ class PublicationsController < ApplicationController
     respond_to do |format|
       if @publication.update(publication_params)
         format.html { redirect_to @publication, notice: 'publication was successfully updated.' }
+        format.js
         format.json { render :show, status: :ok, location: @publication }
       else
         format.html { render :edit }
@@ -72,14 +73,14 @@ class PublicationsController < ApplicationController
     @publication.destroy
     respond_to do |format|
       format.html { redirect_to publications_url, notice: 'publication was successfully destroyed.' }
+      format.js
       format.json { head :no_content }
     end
   end
 
-
   private
   def set_publication
-    @pub = Publication.find(params[:id])
+    @publication = Publication.find(params[:id])
   end
   def status_by_source_type(stype)
     # TODO: add handling of Primo e-resources once those become available at NLI
