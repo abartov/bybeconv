@@ -7,7 +7,7 @@ Bybeconv::Application.routes.draw do
   match 'bib/pubs_by_person', via: [:get, :post]
 
   get 'bib/todo_by_location'
-
+  post 'bib/make_author_page'
   get 'bib/mark_pub_as'
 
   get 'aboutnesses/remove'

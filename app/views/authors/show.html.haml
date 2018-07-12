@@ -79,6 +79,12 @@
         %h2= t(:photo)
     %tr
       %td
+        %b= t(:bib_done)
+        - if @author.bib_done
+          %span{style: 'color:green'}= t(:yes)
+        - else
+          %span{style: 'color:red'}= t(:no)
+        %br
         %b= t(:works)
         = link_to "#{@author.original_works.count} #{t(:original_works)}", author_toc_path(id: @author.id)
         %br
