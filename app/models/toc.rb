@@ -1,6 +1,6 @@
 class Toc < ActiveRecord::Base
   is_impressionable
-  attr_accessible :person_id, :status, :toc
+  attr_accessible :person_id, :status, :toc, :credits
   has_paper_trail
   enum status: [:raw, :ready]
 

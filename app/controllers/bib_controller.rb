@@ -14,6 +14,37 @@ class BibController < ApplicationController
     prepare_pubs
   end
 
+  def make_author_page
+    @p = Person.find(params[:person_id])
+    if @p.nil?
+      respond_to do |format|
+        format.html { redirect_to action: :index }
+        format.js { render :nothing }
+      end
+    else
+      @pubs = @p.publications
+      gen_toc = ''
+      # make TOC
+      @pubs.each do |pub|
+        gen_toc += "### #{pub.title}\n#{pub.publisher_line}\n\n"
+      end
+      # save TOC to person if no TOC yet
+      if @p.toc.nil?
+        t = Toc.new(toc: gen_toc, status: :raw, credits: '')
+        t.save!
+        @p.toc = t
+        @p.save!
+      else
+        @gen_toc = gen_toc # set @gen_toc for edit_toc to show
+      end
+      # present TOC if person already has manual TOC
+      flash[:notice] = t(:created_toc)
+      @author = @p
+      prep_toc
+      render 'authors/edit_toc'
+    end
+  end
+
   def person
     @p = Person.find(params[:person_id])
     if @p.nil?
