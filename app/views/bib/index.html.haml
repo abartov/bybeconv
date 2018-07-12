@@ -1,6 +1,18 @@
 %h1= t(:bib_workshop)
-%h2= t(:statistics)
-%p= t(:bib_stats, {pubs: @counts[:pubs], holdings: @counts[:holdings], obtained: @counts[:obtained], scanned: @counts[:scanned], irrelevant: @counts[:irrelevant], missing: @counts[:missing]})
-= render partial: 'find_bibs', locals: {remote: false}
-%h2= t(:administration)
-%p= link_to t(:manage_bib_sources), bib_sources_path
+.container-fluid
+  .row
+    .col-md-6
+      %h2= t(:statistics)
+      %p= t(:bib_stats, {pubs: @counts[:pubs], holdings: @counts[:holdings], obtained: @counts[:obtained], scanned: @counts[:scanned], uploaded: @counts[:uploaded], irrelevant: @counts[:irrelevant], missing: @counts[:missing]})
+    .col-md-6
+      = render partial: 'find_bibs', locals: {remote: false}
+  .row
+    .col-md-6
+      %h2= t(:available_scans)
+      /- @digiholdings.each
+    .col-md-6
+
+  .row
+    .col-md-6
+      %h2= t(:administration)
+      %p= link_to t(:manage_bib_sources), bib_sources_path

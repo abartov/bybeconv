@@ -4,7 +4,7 @@ class BibController < ApplicationController
   before_filter :require_editor
 
   def index
-    @counts = {pubs: Publication.count, holdings: Holding.count , obtained: Publication.where(status: Publication.statuses[:obtained]).count , scanned: Publication.where(status: Publication.statuses[:scanned]).count, irrelevant: Publication.where(status: Publication.statuses[:irrelevant]).count, missing: Holding.where(status: Holding.statuses[:missing]).count}
+    @counts = {pubs: Publication.count, holdings: Holding.count , obtained: Publication.where(status: Publication.statuses[:obtained]).count , scanned: Publication.where(status: Publication.statuses[:scanned]).count, uploaded: Publication.where(status: Publication.statuses[:uploaded]).count, irrelevant: Publication.where(status: Publication.statuses[:irrelevant]).count, missing: Holding.where(status: Holding.statuses[:missing]).count}
     @digiholdings = Holding.where("(source_name = 'Google Books' or source_name = 'Hebrewbooks') and status <> #{Holding.statuses[:done]}").order('rand()').limit(25)
     pid = params[:person_id]
     unless pid.nil?
@@ -12,6 +12,7 @@ class BibController < ApplicationController
       @person_name = Person.find(@person_id).name.split(' ')[-1]
     end
     prepare_pubs
+
   end
 
   def make_author_page

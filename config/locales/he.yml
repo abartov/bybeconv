@@ -190,7 +190,7 @@ he:
   logo: לוגו
   statistics: סטטיסטיקה
   holdings: מצאי
-  bib_stats: ידועים %{pubs} חיבורים ו-%{holdings} רשומות מצאי. מתוך החיבורים, %{obtained} הושגו וטרם נסרקו, %{scanned} נסרקו, %{irrelevant} סומנו כלא רלבנטיים, ומתוך רשומות המצאי, %{missing} חסרים בפועל.
+  bib_stats: ידועים %{pubs} חיבורים ו-%{holdings} רשומות מצאי. מתוך החיבורים, %{obtained} הושגו וטרם נסרקו, %{scanned} נסרקו, %{uploaded} עלו למערכת, %{irrelevant} סומנו כלא רלבנטיים, ומתוך רשומות המצאי, %{missing} חסרים בפועל.
   mark_as_valid: סמן כתקין ואל תציג שוב
   get_bibs: חיפוש רשומות ביבליוגרפיות לפי מחבר
   get_bibs_instructions: הזינו שם מחבר (אפשר חלקי; אם מלא, שם משפחה, שם פרטי), והקישו על חיפוש.
@@ -407,9 +407,11 @@ he:
   bib_sources: מקורות ביבליוגרפיים
   all_sources: כל המקורות
   please_wait: נא להמתין...
+  available_scans: סריקות זמינות להעלאה
   mark_as_done: סמן סיום טיפול ביבליוגרפי
   generated_toc: תוכן עניינים גולמי מהסדנה הביבליוגרפית
   generated_toc_explanation: "שימו לב: מה שבתיבה זו לא נשמר בשום מקום, אלא אם תעתיקו אותו לתיבת העריכה הרגילה, למטה."
+  uploaded: עלה למערכת
   make_author_page: הפק דף יוצר גולמי
   todo: לטיפול
   scanned: סרוק
