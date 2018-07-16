@@ -5,7 +5,7 @@ class BibController < ApplicationController
 
   def index
     @counts = {pubs: Publication.count, holdings: Holding.count , obtained: Publication.where(status: Publication.statuses[:obtained]).count , scanned: Publication.where(status: Publication.statuses[:scanned]).count, uploaded: Publication.where(status: Publication.statuses[:uploaded]).count, irrelevant: Publication.where(status: Publication.statuses[:irrelevant]).count, missing: Holding.where(status: Holding.statuses[:missing]).count}
-    @digiholdings = Holding.where("(source_name = 'Google Books' or source_name = 'Hebrewbooks') and status <> #{Holding.statuses[:done]}").order('rand()').limit(25)
+    @digipubs = Publication.where(status: Publication.statuses[:scanned]).order('rand()').limit(25)
     pid = params[:person_id]
     unless pid.nil?
       @person_id = pid.to_i

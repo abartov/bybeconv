@@ -10,9 +10,11 @@
       %ol
         - pub.holdings.each do |h|
           = render partial: 'holdings/holding', locals: {h: h, with_actions: with_actions}
-    %td
-      = select_tag "p_#{pub.id}_actions", options_for_select(Publication.statuses.map{|k, v| [t(k), k]}, pub.status), onchange: "$.post('#{publication_path(pub.id)}', {'_method':'put', 'publication[status]':this.value}, null, 'script' );"
+    - if with_actions
+      %td
+        = select_tag "p_#{pub.id}_actions", options_for_select(Publication.statuses.map{|k, v| [t(k), k]}, pub.status), onchange: "$.post('#{publication_path(pub.id)}', {'_method':'put', 'publication[status]':this.value}, null, 'script' );"
+      %td= link_to t(:destroy), publication_path(id: pub.id), method: :delete, remote: true, :data => { :confirm => t(:are_you_sure) }
+    - else
+      %td= t(pub.status)
     - if with_person
       %td= pub.person.nil? ? '--' : pub.person.name
-    - if with_actions
-      %td= link_to t(:destroy), publication_path(id: pub.id), method: :delete, remote: true, :data => { :confirm => t(:are_you_sure) }

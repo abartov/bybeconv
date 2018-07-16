@@ -9,9 +9,20 @@
   .row
     .col-md-6
       %h2= t(:available_scans)
-      /- @digiholdings.each
+      %table
+        - @digipubs.each do |pub|
+          = render partial: 'publications/pub', locals: {pub: pub, with_person: false, with_actions: false}
     .col-md-6
-
+      %h2= t(:some_authors_to_work_on)
+      %p= Person.bib_not_done.order('RAND()').limit(20).map{|p| p.name}.join('; ')
+  .row
+    .col-md-6
+      %h2= t(:shopping_lists)
+      %ul
+        - BibSource.physical_sources.each do |bs|
+          %li
+            = bs.title
+    .col-md-6
   .row
     .col-md-6
       %h2= t(:administration)
