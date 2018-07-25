@@ -6,6 +6,8 @@ External dependencies:
 * Pandoc 1.17.3 or higher for generating ebooks and other formats
 * ElasticSearch for search
 ** https://github.com/synhershko/elasticsearch-analysis-hebrew for the Hebrew analyzer for ElasticSearch
+* YAZ and libyaz-dev for the 'zoom' gem for the bibliographic workshop
+* watir and selenium for scraping other catalogue systems
 
 License
 -------
