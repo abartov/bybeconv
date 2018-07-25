@@ -13,6 +13,7 @@
                 %p
                   - worksbuf = ''
                   - works.each do |genre|
+                    / TODO: there seems to be a bug here, where works 'bleed' into the following genre
                     = t(genre[0])+': '
                     - genre[1].each do |m|
                       - title = m.expressions[0].title
