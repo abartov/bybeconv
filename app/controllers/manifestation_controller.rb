@@ -170,7 +170,7 @@ class ManifestationController < ApplicationController
       end
     else
       flash[:error] = t(:unrecognized_format)
-      redirect_back fallback_location: {action: read, id: @m.id}
+      redirect_to fallback_location: {action: read, id: @m.id}
     end
   end
 
