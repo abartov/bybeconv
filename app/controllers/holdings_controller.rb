@@ -30,6 +30,7 @@ class HoldingsController < ApplicationController
     unless bs.empty?
       @holding.bib_source = bs[0]
     end
+    @pub_id = @holding.publication_id
     respond_to do |format|
       if @holding.save
         format.html { redirect_to @holding, notice: 'holding was successfully created.' }
