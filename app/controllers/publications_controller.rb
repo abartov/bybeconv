@@ -25,10 +25,13 @@ class PublicationsController < ApplicationController
   # POST /publications
   # POST /publications.json
   def create
-    @pub = Publication.new(publication_params)
+    pub_params = publication_params
+    location = pub_params.delete(:callnum)
+    @pub = Publication.new(pub_params)
     sid = (@pub.source_id.class == Array ? @pub.source_id[0] : @pub.source_id)
     @pub.source_id = sid
     @holding = Holding.new(source_id: sid)
+    @holding.location = location
     bs = BibSource.where(title: params[:publication][:bib_source].strip)
     unless bs.empty?
       @pub.bib_source = bs[0]
@@ -92,6 +95,6 @@ class PublicationsController < ApplicationController
     end
   end
   def publication_params
-    params.require(:publication).permit(:title, :publisher_line, :author_line, :notes, :source_id, :person_id, :status, :pub_year, :language)
+    params.require(:publication).permit(:title, :publisher_line, :author_line, :notes, :source_id, :person_id, :status, :pub_year, :language, :callnum)
   end
 end

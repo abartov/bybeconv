@@ -97,7 +97,9 @@ class BibController < ApplicationController
     Holding.where(status: Holding.statuses[:todo])
   end
 
-  def mark_pub_as
+  def shopping
+    @pubs = Publication.pubs_to_obtain(params[:source_id])
+    @source = BibSource.find(params[:source_id])
   end
 
   private

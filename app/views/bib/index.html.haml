@@ -21,7 +21,8 @@
       %ul
         - BibSource.physical_sources.each do |bs|
           %li
-            = bs.title
+            = link_to bs.title, url_for(action: :shopping, source_id: bs.id)
+            = " (#{Publication.pubs_to_obtain(bs.id).count.to_s})"
     .col-md-6
   .row
     .col-md-6

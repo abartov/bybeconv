@@ -1,0 +1,14 @@
+%h1= t(:shopping_list_for, {source: @source.title})
+.container-fluid
+  .row
+    %table
+      %tr
+        %th= t(:title)
+        %th= t(:author)
+        %th= t(:location)
+      - @pubs.each do |pub|
+        %tr
+          %td= pub.title
+          %td= pub.author_line
+          %td= pub.holdings[0].location
+    = link_to t(:back), action: :index

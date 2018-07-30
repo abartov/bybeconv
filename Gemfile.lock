@@ -114,7 +114,7 @@ GEM
     fugit (1.1.3)
       et-orbi (~> 1.1, >= 1.1.1)
       raabro (~> 1.1)
-    gared (0.0.18)
+    gared (0.0.19)
       nokogiri (~> 1.8)
       rest-client (~> 2)
       watir (~> 6)
@@ -365,7 +365,7 @@ GEM
       sprockets (>= 2.8, < 4.0)
       sprockets-rails (>= 2.0, < 4.0)
       tilt (>= 1.1, < 3)
-    selenium-webdriver (3.13.0)
+    selenium-webdriver (3.13.1)
       childprocess (~> 0.5)
       rubyzip (~> 1.2)
     sexp_processor (4.11.0)
@@ -411,7 +411,7 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.5)
-    watir (6.11.0)
+    watir (6.12.0)
       selenium-webdriver (~> 3.4, >= 3.4.1)
     web-console (2.3.0)
       activemodel (>= 4.0)
@@ -435,7 +435,7 @@ DEPENDENCIES
   docx
   execjs
   font-awesome-rails
-  gared (>= 0.0.2)
+  gared (>= 0.0.19)
   gepub (~> 0.7.0beta4)
   haml
   haml-rails

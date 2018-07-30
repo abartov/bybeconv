@@ -1,3 +1,6 @@
+==Bib Workshop==
+grab DDC ids for Raanana through gared (async?)
+
 - resolve narrow width issue in work read view - newlines become <p> tags for some reason!  Doesn't happen in edit mode, without the markdown.lines manipulation!
 
 - add link type "original text URL" for translations (e.g. in Gutenberg or a foreign-language Wikisource)
@@ -113,9 +116,6 @@ Content system
 -- create Manifestation
 -- prompt for creating Expression and Work
 -- optionally link to external IDs for e.g. translated work, Wikipedia/Wikidata/VIAF for author if not already known
-- model Person entity
-- model Person<->WEM relationships
-- model aboutness
 
 Proof and Recommendation feature
 --------------------------------

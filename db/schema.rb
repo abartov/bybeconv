@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180710154429) do
+ActiveRecord::Schema.define(version: 20180730162955) do
 
   create_table "aboutnesses", force: :cascade do |t|
     t.integer  "work_id",        limit: 4
@@ -180,6 +180,7 @@ ActiveRecord::Schema.define(version: 20180710154429) do
     t.integer  "status",         limit: 4
     t.string   "scan_url",       limit: 2048
     t.integer  "bib_source_id",  limit: 4
+    t.string   "location",       limit: 255
   end
 
   add_index "holdings", ["bib_source_id"], name: "index_holdings_on_bib_source_id", using: :btree

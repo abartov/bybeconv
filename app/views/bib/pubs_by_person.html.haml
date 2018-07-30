@@ -15,6 +15,7 @@
           %th= t(:language)
           %th= t(:comments)
           %th= t(:record_source)
+          %th= t(:location)
           %th= t(:is_scanned)
           %th= t(:actions)
         = render partial: 'pubs', locals: {pubs: @pubs}
@@ -31,7 +32,9 @@
               = t(:pubs_by_author)
           %table#pubs
             %tbody
-
+  .row
+    .col-md-12
+      = link_to t(:back), action: :index
 :javascript
   function moveit(elem){
     var person_id = $('#person_id').val();
@@ -46,7 +49,7 @@
           url: "#{publications_path}",
           data: { publication: {title: row.children[0].textContent , author_line: row.children[1].textContent, publisher_line: row.children[2].textContent,
             pub_year: row.children[3].textContent, language: row.children[4].textContent,
-            notes: row.children[5].textContent, bib_source: row.children[6].textContent, source_id: row.children[6].children[0].href,
+            notes: row.children[5].textContent, bib_source: row.children[6].textContent, source_id: row.children[6].children[0].href, callnum: row.children[7].textContent,
             person_id: person_id, status: status } },
           dataType: "script"
         }).done(function(xhr, status) {
@@ -70,7 +73,7 @@
       elem.disabled = true;
       var status = "todo";
       var scan_url = null;
-      if(holding_row.children[7].textContent == "#{t(:yes)}") {
+      if(holding_row.children[8].textContent == "#{t(:yes)}") {
         status = "scanned";
         scan_url = holding_row.children[6].children[0].href;
       }

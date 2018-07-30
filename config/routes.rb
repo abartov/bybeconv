@@ -8,7 +8,7 @@ Bybeconv::Application.routes.draw do
 
   get 'bib/todo_by_location'
   post 'bib/make_author_page'
-  get 'bib/mark_pub_as'
+  get 'bib/shopping/:source_id' => 'bib#shopping', as: 'bib_shopping'
 
   get 'aboutnesses/remove'
 
