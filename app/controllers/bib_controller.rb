@@ -31,7 +31,7 @@ class BibController < ApplicationController
       end
       # save TOC to person if no TOC yet
       if @p.toc.nil?
-        t = Toc.new(toc: gen_toc, status: :raw, credits: '')
+        t = Toc.new(toc: gen_toc, status: :raw)
         t.save!
         @p.toc = t
         @p.save!
