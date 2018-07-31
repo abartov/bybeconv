@@ -4,17 +4,12 @@
     .col-md-6
       %h2= t(:statistics)
       %p= t(:bib_stats, {pubs: @counts[:pubs], holdings: @counts[:holdings], obtained: @counts[:obtained], scanned: @counts[:scanned], uploaded: @counts[:uploaded], irrelevant: @counts[:irrelevant], missing: @counts[:missing]})
-    .col-md-6
-      = render partial: 'find_bibs', locals: {remote: false}
-  .row
+      %h2= link_to t(:get_bibs), action: :pubs_by_person
     .col-md-6
       %h2= t(:available_scans)
       %table
         - @digipubs.each do |pub|
           = render partial: 'publications/pub', locals: {pub: pub, with_person: false, with_actions: false}
-    .col-md-6
-      %h2= t(:some_authors_to_work_on)
-      %p= Person.bib_not_done.order('RAND()').limit(20).map{|p| p.name}.join('; ')
   .row
     .col-md-6
       %h2= t(:shopping_lists)
@@ -23,8 +18,6 @@
           %li
             = link_to bs.title, url_for(action: :shopping, source_id: bs.id)
             = " (#{Publication.pubs_to_obtain(bs.id).count.to_s})"
-    .col-md-6
-  .row
     .col-md-6
       %h2= t(:administration)
       %p= link_to t(:manage_bib_sources), bib_sources_path

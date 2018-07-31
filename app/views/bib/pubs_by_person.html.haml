@@ -1,7 +1,13 @@
-%h1= t(:bib_workshop)
-%p= t(:pubs_by_person_instructions)
 
 .container-fluid
+  .row
+    .col-md-6
+      %h1= t(:bib_workshop)
+      %p= t(:pubs_by_person_instructions_html)
+    .col-md-6
+      %h2= t(:some_authors_to_work_on)
+      %p= Person.has_toc.bib_not_done.order('RAND()').limit(20).map{|p| p.name}.join('; ')
+
   .row
     .col-md-6
       = render partial: 'find_bibs', locals: {remote: true}
