@@ -81,9 +81,9 @@
       %td
         %b= t(:bib_done)
         - if @author.bib_done
-          %span{style: 'color:green'}= t(:yes)
+          %span{style: 'color:green'}= link_to t(:yes), bib_person_path({person_id: @author.id})
         - else
-          %span{style: 'color:red'}= t(:no)
+          %span{style: 'color:red'}= link_to t(:no), bib_person_path({person_id: @author.id})
         %br
         %b= t(:works)
         = link_to "#{@author.original_works.count} #{t(:original_works)}", author_toc_path(id: @author.id)
