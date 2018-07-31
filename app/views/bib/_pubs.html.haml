@@ -13,6 +13,8 @@
       %td= pub.holdings[0].location
       %td= pub.scanned ? link_to(t(:yes), pub.holdings[0].scan_url) : t(:no)
       %td
+        %button.nuke{onclick: 'this.parentElement.parentElement.remove()'}= t(:remove)
+        %br
         %button.moveit{onclick: 'moveit(this)'}= t(:add_publication)
         %br
         %button.addholding{onclick: 'addholding(this)'}= t(:add_holding)
