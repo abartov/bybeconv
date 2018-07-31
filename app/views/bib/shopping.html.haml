@@ -6,9 +6,12 @@
         %th= t(:title)
         %th= t(:author)
         %th= t(:location)
-      - @pubs.each do |pub|
+      - @holdings.each do |h|
+        - pub = h.publication
         %tr
           %td= pub.title
           %td= pub.author_line
-          %td= pub.holdings[0].location
+          %td= h.location
+          %td
+            = link_to t(:mark_as_obtained), holding_obtained_path(id: h.id), remote: true, id: "obt#{h.id}"
     = link_to t(:back), action: :index

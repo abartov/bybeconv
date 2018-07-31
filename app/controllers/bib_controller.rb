@@ -98,8 +98,19 @@ class BibController < ApplicationController
   end
 
   def shopping
-    @pubs = Publication.pubs_to_obtain(params[:source_id])
+    @holdings = Holding.to_obtain(params[:source_id])
     @source = BibSource.find(params[:source_id])
+  end
+
+  def holding_obtained
+    @holding = Holding.find(params[:id])
+    pub = @holding.publication
+    @holding.status = 'obtained'
+    @holding.save!
+    if pub.status == 'todo'
+      pub.status = 'obtained'
+      pub.save!
+    end
   end
 
   private
