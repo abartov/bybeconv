@@ -50,11 +50,9 @@ class HoldingsController < ApplicationController
     success = @holding.update(holding_params)
     # also update parent publication status, if it was still 'todo'.
     @pub = @holding.publication
-    if @pub.todo?
-      @pub.scanned! if @holding.scanned?
-      @pub.obtained! if @holding.obtained?
+    @pub.obtained! if @holding.obtained? and @pub.todo?
+    @pub.scanned! if @holding.scanned? and (@pub.todo? or @pub.obtained?)
       # if the holding is marked as missing, that does not change the publication's status
-    end
     respond_to do |format|
       if success
         format.html { redirect_to @holding, notice: 'holding was successfully updated.' }
