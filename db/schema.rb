@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180801010231) do
+ActiveRecord::Schema.define(version: 20180801013121) do
 
   create_table "aboutnesses", force: :cascade do |t|
     t.integer  "work_id",        limit: 4
@@ -174,7 +174,7 @@ ActiveRecord::Schema.define(version: 20180801010231) do
 
   create_table "holdings", force: :cascade do |t|
     t.integer  "publication_id", limit: 4
-    t.string   "source_id",      limit: 255
+    t.string   "source_id",      limit: 1024
     t.datetime "created_at",                  null: false
     t.datetime "updated_at",                  null: false
     t.integer  "status",         limit: 4
@@ -397,9 +397,9 @@ ActiveRecord::Schema.define(version: 20180801010231) do
   create_table "publications", force: :cascade do |t|
     t.string   "title",          limit: 1024
     t.string   "publisher_line", limit: 255
-    t.string   "author_line",    limit: 255
+    t.string   "author_line",    limit: 1024
     t.text     "notes",          limit: 65535
-    t.string   "source_id",      limit: 255
+    t.string   "source_id",      limit: 1024
     t.integer  "person_id",      limit: 4
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
