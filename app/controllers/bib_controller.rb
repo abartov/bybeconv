@@ -4,7 +4,7 @@ class BibController < ApplicationController
   before_filter :require_editor
 
   def index
-    @counts = {pubs: Publication.count, holdings: Holding.count , obtained: Publication.where(status: Publication.statuses[:obtained]).count , scanned: Publication.where(status: Publication.statuses[:scanned]).count, uploaded: Publication.where(status: Publication.statuses[:uploaded]).count, irrelevant: Publication.where(status: Publication.statuses[:irrelevant]).count, missing: Holding.where(status: Holding.statuses[:missing]).count}
+    @counts = {pubs: Publication.count, holdings: Holding.count , obtained: Publication.where(status: Publication.statuses[:obtained]).count , scanned: Publication.where(status: Publication.statuses[:scanned]).count, uploaded: Publication.where(status: Publication.statuses[:uploaded]).count, irrelevant: Publication.where(status: Publication.statuses[:irrelevant]).count, missing: Holding.where(status: Holding.statuses[:missing]).count, authors_done: Person.has_toc.bib_done.count, authors_todo: Person.has_toc.count - Person.has_toc.bib_done.count}
     @digipubs = Publication.where(status: Publication.statuses[:scanned]).order('rand()').limit(25)
     pid = params[:person_id]
     unless pid.nil?
@@ -102,15 +102,23 @@ class BibController < ApplicationController
     @source = BibSource.find(params[:source_id])
   end
 
-  def holding_obtained
+  def holding_status
     @holding = Holding.find(params[:id])
     pub = @holding.publication
-    @holding.status = 'obtained'
+    @holding.status = params[:status]
     @holding.save!
-    if pub.status == 'todo'
-      pub.status = 'obtained'
+    if pub.status == 'todo' and ['scanned', 'obtained'].include?(params[:status])
+      pub.status = params[:status]
       pub.save!
     end
+    @the_id = case params[:status]
+      when 'obtained'
+        "obt#{@holding.id}"
+      when 'scanned'
+        "scn#{@holding.id}"
+      when 'missing'
+        "msng#{@holding.id}"
+      end
   end
 
   private

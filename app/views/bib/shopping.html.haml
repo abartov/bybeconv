@@ -13,5 +13,7 @@
           %td= pub.author_line
           %td= h.location
           %td
-            = link_to t(:mark_as_obtained), holding_obtained_path(id: h.id), remote: true, id: "obt#{h.id}"
+            = link_to t(:mark_as_obtained)+' | ', holding_status_path(id: h.id, status: 'obtained'), remote: true, id: "obt#{h.id}"
+            = link_to t(:mark_as_scanned)+' | ', holding_status_path(id: h.id, status: 'scanned'), remote: true, id: "scn#{h.id}"
+            = link_to t(:mark_as_missing), holding_status_path(id: h.id, status: 'missing'), remote: true, id: "msng#{h.id}"
     = link_to t(:back), action: :index

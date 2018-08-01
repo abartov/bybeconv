@@ -7,7 +7,7 @@ Bybeconv::Application.routes.draw do
   match 'bib/pubs_by_person', via: [:get, :post]
 
   get 'bib/todo_by_location'
-  get 'bib/holding_obtained/:id' => 'bib#holding_obtained', as: 'holding_obtained'
+  get 'bib/holding_status/:id' => 'bib#holding_status', as: 'holding_status'
   post 'bib/make_author_page'
   get 'bib/shopping/:source_id' => 'bib#shopping', as: 'bib_shopping'
 
