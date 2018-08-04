@@ -8,6 +8,9 @@ class User < ActiveRecord::Base
   has_many :recommendations
   # no apparent need to be able to retrieve all recommendations a particular (admin) user has *resolved*.  If one arises, use a separate association on the resolved_by foreign key
 
+  # editor bits
+  EDITOR_BITS = ['handle_proofs', 'handle_recommendations', 'curate_featured_content', 'bib_workshop', 'edit_catalog', 'legacy_metadata']
+
   ### User Preferences
   property_set :preferences do
     property :fontsize, default: '2'

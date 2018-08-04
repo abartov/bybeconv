@@ -124,11 +124,12 @@ Bybeconv::Application.routes.draw do
   resources :taggings
   resources :aboutnesses
 
-  get 'user/:id' => 'user#show', as: 'user_show'
   get 'user/list'
+  post 'user/set_editor_bit'
   get "user/:id/make_editor" => 'user#make_editor', as: 'user_make_editor'
   get "user/:id/make_admin" => 'user#make_admin', as: 'user_make_admin'
   get "user/:id/unmake_editor" => 'user#unmake_editor', as: 'user_unmake_editor'
+  get 'user/:id' => 'user#show', as: 'user_show'
   post 'user/set_pref'
   get "welcome/index"
 

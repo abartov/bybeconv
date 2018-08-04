@@ -191,10 +191,26 @@ he:
   statistics: סטטיסטיקה
   holdings: מצאי
   bib_stats: ידועים %{pubs} חיבורים ו-%{holdings} רשומות מצאי. מתוך החיבורים, %{obtained} הושגו וטרם נסרקו, %{scanned} נסרקו וטרם עלו למערכת המשימות, %{uploaded} עלו למערכת, %{irrelevant} סומנו כלא רלבנטיים, ומתוך רשומות המצאי, %{missing} חסרים בפועל.  הביבליוגרפיה של %{authors_done} מחברים הושלמה, ו-%{authors_todo} מחברים נותרו.
+  added_to_group: נוסף/ה לקבוצה
+  removed_from_group: נגרע/ה מהקבוצה
+  handle_proofs: טיפול בהגהות
+  handle_recommendations: טיפול בהמלצות
+  curate_featured_content: אוצרוּת תוכן מערכת
+  bib_workshop: הסדנה הביבליוגרפית
+  edit_catalog: עריכת הקטלוג
+  legacy_metadata: עריכת מטא-דאטה אתר ישן
   mark_as_valid: סמן כתקין ואל תציג שוב
   get_bibs: חיפוש רשומות ביבליוגרפיות לפי מחבר
   get_bibs_instructions: הזינו שם מחבר (אפשר חלקי; אם מלא, שם משפחה, שם פרטי), והקישו על חיפוש.
   search: חיפוש
+  true: כן
+  false: לא
+  user_list: רשימת משתמשים
+  make_editor: הפוך לעורך/ת!
+  make_admin: הפוך למנהל/ת מערכת!
+  activate_bit: הוסף תפקיד
+  deactivate_bit: בטל תפקיד
+  editor_bits: תפקידי עורך
   proof_thanks_title: קיבלנו, תודה!
   from_project_ben_yehuda: מפרויקט בן-יהודה
   proof_thanks_html: תודה רבה על שטרחת לשלוח אלינו הגהה או הערה!  נעיין בה בקפידה ונתקן את הטקסט במידת הצורך, ונעדכן אותך כשנעשה זאת.

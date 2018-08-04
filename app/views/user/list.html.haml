@@ -1,19 +1,34 @@
-%h1 User list
+%h1= t(:user_list)
 %table
   %tr
-    %th Name
-    %th e-mail
-    %th Editor?
-    %th Actions
+    %th= t(:name)
+    %th= t(:email)
+    %th= t(:editor)
+    %th= t(:editor_bits)
+    %th= t(:actions)
   - @user_list.each do |u|
     %tr
       %td= u.name
       %td= u.email
-      %td= u.editor
       %td
-        = link_to 'Make editor!', user_make_editor_path(u)
-        = ' | '
-        = link_to 'Make admin!', user_make_admin_path(u)
+        - if u.editor
+          - lis = ListItem.where(item: u, listkey: User::EDITOR_BITS).map{|li| t(li.listkey)}.join(';')
+          = "#{t(:yes)} (#{lis})"
+        - else
+          = t(:no)
+      %td
+        - if u.editor?
+          = form_tag 'set_editor_bit' do
+            = hidden_field_tag :id, u.id
+            = select_tag :bit, options_for_select(User::EDITOR_BITS.map{|bit| [t(bit), bit]})
+            = select_tag :set_to, options_for_select([[t(:activate_bit), 1],[t(:deactivate_bit), 0]])
+            = submit_tag t(:submit)
+      %td
+        - unless u.editor?
+          = link_to t(:make_editor), user_make_editor_path(u)
+          = ' | '
+        - unless u.admin?
+          = link_to t(:make_admin), user_make_admin_path(u)
 
 != paginate @user_list
 
