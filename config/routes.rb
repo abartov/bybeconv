@@ -32,6 +32,7 @@ Bybeconv::Application.routes.draw do
   get 'admin/translated_from_multiple_languages'
   get 'admin/raw_tocs'
   get 'admin/conversion_verification'
+  post 'admin/conversion_verification' => 'admin#assign_conversion_verification', as: 'assign_conversion_verification'
   get 'admin/static_pages_list'
   get 'admin/static_page/new' => 'admin#static_page_new', as: 'static_page_new'
   post 'admin/static_page/create' => 'admin#static_page_create', as: 'static_page_create'

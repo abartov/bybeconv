@@ -36,10 +36,16 @@ class ApplicationController < ActionController::Base
     render 'shared/search_results', layout: false
   end
 
-  private
+  protected
 
-  def require_editor
-    return true if current_user && current_user.editor?
+  def require_editor(bits = nil)
+    editor = current_user && current_user.editor?
+    if editor
+      return true if bits.nil?
+      # else check for specific bits
+      li = ListItem.where(listkey: bits, item: current_user).first
+      return true unless li.nil?
+    end
     redirect_to '/', flash: { error: 'Not an editor' }
   end
 

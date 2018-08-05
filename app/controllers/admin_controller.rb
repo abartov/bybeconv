@@ -1,6 +1,6 @@
 class AdminController < ApplicationController
   before_filter :require_editor
-  before_filter :require_admin, only: [:missing_languages, :missing_genres, :incongruous_copyright]
+  before_filter :require_admin, only: [:missing_languages, :missing_genres, :incongruous_copyright, :missing_copyright, :similar_titles]
   autocomplete :manifestation, :title, display_value: :title_and_authors
   autocomplete :person, :name
 
@@ -78,6 +78,20 @@ class AdminController < ApplicationController
     @mans = Manifestation.joins(expressions: [:realizers, works: [:creations]]).where('realizers.person_id = creations.person_id and realizers.role = 3').page(params[:page])
     @page_title = t(:suspicious_translations_report)
     Rails.cache.write('report_suspicious_translations', @total)
+  end
+
+  def assign_conversion_verification
+    @m = Manifestation.where(conversion_verified: false, conv_counter: 0).order('RAND()').first
+    if @m.conv_counter.nil?
+      @m.conv_counter = 1
+    else
+      @m.conv_counter += 1
+    end
+    @m.save!
+    li = ListItem.new(listkey: 'convs_by_user', user: current_user, item: @m)
+    li.save!
+
+    redirect_to url_for(controller: :manifestation, action: :edit, id: @m.id)
   end
 
   def conversion_verification

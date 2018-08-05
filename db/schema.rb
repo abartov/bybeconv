@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180801013121) do
+ActiveRecord::Schema.define(version: 20180805051703) do
 
   create_table "aboutnesses", force: :cascade do |t|
     t.integer  "work_id",        limit: 4
@@ -322,8 +322,10 @@ ActiveRecord::Schema.define(version: 20180801013121) do
     t.integer  "impressions_count",        limit: 4
     t.text     "cached_heading_lines",     limit: 65535
     t.boolean  "conversion_verified"
+    t.integer  "conv_counter",             limit: 4
   end
 
+  add_index "manifestations", ["conv_counter"], name: "index_manifestations_on_conv_counter", using: :btree
   add_index "manifestations", ["created_at"], name: "index_manifestations_on_created_at", using: :btree
   add_index "manifestations", ["impressions_count"], name: "index_manifestations_on_impressions_count", using: :btree
 

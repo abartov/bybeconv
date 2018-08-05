@@ -1,7 +1,8 @@
 require 'pandoc-ruby'
 
 class ManifestationController < ApplicationController
-  before_filter :require_editor, only: [:list, :show, :edit, :update, :remove_link, :edit_metadata]
+  before_filter only: [:list, :show, :remove_link, :edit_metadata] do |c| c.require_editor('edit_catalog') end
+  before_filter only: [:edit, :update] do |c| c.require_editor(['edit_catalog', 'conversion_verification']) end
 
   autocomplete :manifestation, :title, limit: 20, display_value: :title_and_authors, full: true
   autocomplete :person, :name, :limit => 2, full: true
@@ -327,7 +328,11 @@ class ManifestationController < ApplicationController
     @m.save!
 
     flash[:notice] = I18n.t(:updated_successfully)
-    redirect_to action: :show, id: @m.id
+    if current_user.has_bit?('edit_catalog')
+      redirect_to action: :show, id: @m.id
+    else
+      redirect_to controller: :admin, action: :index
+    end
   end
 
   protected

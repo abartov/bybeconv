@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
   # no apparent need to be able to retrieve all recommendations a particular (admin) user has *resolved*.  If one arises, use a separate association on the resolved_by foreign key
 
   # editor bits
-  EDITOR_BITS = ['handle_proofs', 'handle_recommendations', 'curate_featured_content', 'bib_workshop', 'edit_catalog', 'legacy_metadata']
+  EDITOR_BITS = ['handle_proofs', 'handle_recommendations', 'curate_featured_content', 'bib_workshop', 'edit_catalog', 'legacy_metadata', 'edit_people', 'conversion_verification']
 
   ### User Preferences
   property_set :preferences do
@@ -24,6 +24,11 @@ class User < ActiveRecord::Base
 
   def editor?
     editor
+  end
+
+  def has_bit?(bit)
+    li = ListItem.where(listkey: bit, item: self).first
+    return (not li.nil?)
   end
 
   def self.from_omniauth(auth)

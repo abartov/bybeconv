@@ -1,7 +1,7 @@
 include BybeUtils
 
 class BibController < ApplicationController
-  before_filter :require_editor
+  before_filter {|c| c.require_editor('bib_workshop')}
 
   def index
     @counts = {pubs: Publication.count, holdings: Holding.count , obtained: Publication.where(status: Publication.statuses[:obtained]).count , scanned: Publication.where(status: Publication.statuses[:scanned]).count, uploaded: Publication.where(status: Publication.statuses[:uploaded]).count, irrelevant: Publication.where(status: Publication.statuses[:irrelevant]).count, missing: Holding.where(status: Holding.statuses[:missing]).count, authors_done: Person.has_toc.bib_done.count, authors_todo: Person.has_toc.count - Person.has_toc.bib_done.count}

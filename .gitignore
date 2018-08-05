@@ -24,6 +24,7 @@
 
 # ignore symlink
 /by
+/ignore/*
 # ignore site-specific config
 /config/database.yml
 /config/constants.yml

@@ -198,6 +198,9 @@ he:
   curate_featured_content: אוצרוּת תוכן מערכת
   bib_workshop: הסדנה הביבליוגרפית
   edit_catalog: עריכת הקטלוג
+  edit_people: עריכת אישים
+  conversion_verification: טיוב יצירות לאחר הסבה
+  unmake_editor: ביטול הרשאת עורך/ת
   legacy_metadata: עריכת מטא-דאטה אתר ישן
   mark_as_valid: סמן כתקין ואל תציג שוב
   get_bibs: חיפוש רשומות ביבליוגרפיות לפי מחבר
@@ -207,6 +210,7 @@ he:
   false: לא
   user_list: רשימת משתמשים
   make_editor: הפוך לעורך/ת!
+  convs_processed_so_far: טיפלת ב-%{done} יצירות עד כה.
   make_admin: הפוך למנהל/ת מערכת!
   activate_bit: הוסף תפקיד
   deactivate_bit: בטל תפקיד

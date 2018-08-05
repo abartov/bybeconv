@@ -12,7 +12,7 @@
       %td= u.email
       %td
         - if u.editor
-          - lis = ListItem.where(item: u, listkey: User::EDITOR_BITS).map{|li| t(li.listkey)}.join(';')
+          - lis = ListItem.where(item: u, listkey: User::EDITOR_BITS).map{|li| t(li.listkey)}.join('; ')
           = "#{t(:yes)} (#{lis})"
         - else
           = t(:no)
@@ -26,7 +26,9 @@
       %td
         - unless u.editor?
           = link_to t(:make_editor), user_make_editor_path(u)
-          = ' | '
+        - else
+          = link_to t(:unmake_editor), user_unmake_editor_path(u)
+        = ' | '
         - unless u.admin?
           = link_to t(:make_admin), user_make_admin_path(u)
 

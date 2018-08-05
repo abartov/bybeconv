@@ -26,21 +26,21 @@ class UserController < ApplicationController
     set_user
     @u.editor = true
     @u.save!
-    redirect_to '/', flash: { notice: "#{@u.name} is now an editor." }
+    redirect_to url_for(action: :list), notice: "#{@u.name} is now an editor."
   end
 
   def make_admin
     set_user
     @u.admin = true
     @u.save!
-    redirect_to '/', flash: {notice: "#{@u.name} is now an admin."}
+    redirect_to url_for(action: :list), notice: "#{@u.name} is now an admin."
   end
 
   def unmake_editor
     set_user
     @u.editor = false
     @u.save!
-    redirect_to '/', flash: {notice: "#{@u.name} is no longer an editor."}
+    redirect_to url_for(action: :list), notice: "#{@u.name} is no longer an editor."
   end
 
   def show
