@@ -631,6 +631,8 @@ he:
   external_link: קישורית חיצונית
   to_external_content: לתוכן חיצוני
   preview: תצוגה מקדימה ללא שמירה
+  new_title_only: כותרת (בלבד) חדשה, אם צריך
+  existing_title: כותרת קיימת
 
   notifications:
     proof_fixed:

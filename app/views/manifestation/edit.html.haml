@@ -1,7 +1,16 @@
 / TODO: a whole bunch of editable WEM fields
 .top-element
-%h3= @m.title_and_authors
 = form_tag(action: :update, id: @m.id) do
+  %h3
+    = t(:existing_title)+': '
+    = @m.title
+  %h3
+    = t(:by)+': '+@m.author_string
+  %hr
+  %h3
+    = t(:new_title_only)
+    = text_field_tag :newtitle, @newtitle
+  %hr
   .markdown_container
     %div{ style:"vertical-align:top; width: 30%;display:flex;margin-right:10px;flex-direction:column;height:100%;box-sizing:border-box;float:left;padding-right:7px;"}
       #legacy_markdown_link

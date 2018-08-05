@@ -284,11 +284,11 @@ class ManifestationController < ApplicationController
 
   def update
     @m = Manifestation.find(params[:id])
-    @e = @m.expressions[0] # TODO: generalize?
-    @w = @e.works[0] # TODO: generalize!
     # update attributes
     if params[:commit] == t(:save)
       if params[:markdown].nil? # metadata edit
+        @e = @m.expressions[0] # TODO: generalize?
+        @w = @e.works[0] # TODO: generalize!
         @w.title = params[:wtitle]
         @w.genre = params[:genre]
         @w.orig_lang = params[:wlang]
@@ -321,6 +321,15 @@ class ManifestationController < ApplicationController
         @w.save!
         @e.save!
       else # markdown edit and save
+        unless params[:newtitle].nil? or params[:newtitle].empty?
+          @e = @m.expressions[0] # TODO: generalize?
+          @w = @e.works[0] # TODO: generalize!
+          @m.title = params[:newtitle]
+          @e.title = params[:newtitle]
+          @w.title = params[:newtitle] if @w.orig_lang == @e.language # update work title if work in Hebrew
+          @e.save!
+          @w.save!
+        end
         @m.markdown = params[:markdown]
         @m.conversion_verified = params[:conversion_verified]
       end
@@ -338,6 +347,7 @@ class ManifestationController < ApplicationController
       @page_title = t(:edit_markdown)+': '+@m.title_and_authors
       @html = MultiMarkdown.new(params[:markdown]).to_html.force_encoding('UTF-8')
       @markdown = params[:markdown]
+      @newtitle = params[:newtitle]
       render action: :edit
     end
   end
