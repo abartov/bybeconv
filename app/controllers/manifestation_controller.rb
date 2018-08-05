@@ -287,51 +287,58 @@ class ManifestationController < ApplicationController
     @e = @m.expressions[0] # TODO: generalize?
     @w = @e.works[0] # TODO: generalize!
     # update attributes
-    if params[:markdown].nil? # metadata edit
-      @w.title = params[:wtitle]
-      @w.genre = params[:genre]
-      @w.orig_lang = params[:wlang]
-      @w.origlang_title = params[:origlang_title]
-      @w.date = params[:wdate]
-      @w.comment = params[:wcomment]
-      unless params[:add_person_w].blank?
-        c = Creation.new(work_id: @w.id, person_id: params[:add_person_w], role: params[:role_w].to_i)
-        c.save!
+    if params[:commit] == t(:save)
+      if params[:markdown].nil? # metadata edit
+        @w.title = params[:wtitle]
+        @w.genre = params[:genre]
+        @w.orig_lang = params[:wlang]
+        @w.origlang_title = params[:origlang_title]
+        @w.date = params[:wdate]
+        @w.comment = params[:wcomment]
+        unless params[:add_person_w].blank?
+          c = Creation.new(work_id: @w.id, person_id: params[:add_person_w], role: params[:role_w].to_i)
+          c.save!
+        end
+        @e.language = params[:elang]
+        @e.genre = params[:genre] # expression's genre is same as work's
+        @e.title = params[:etitle]
+        @e.date = params[:edate]
+        @e.comment = params[:ecomment]
+        @e.copyrighted = (params[:public_domain] == 'false' ? true : false) # field name semantics are flipped from param name, yeah
+        unless params[:add_person_e].blank?
+          r = Realizer.new(expression_id: @e.id, person_id: params[:add_person_e], role: params[:role_e].to_i)
+          r.save!
+        end
+        @e.source_edition = params[:source_edition]
+        @m.title = params[:mtitle]
+        @m.responsibility_statement = params[:mresponsibility]
+        @m.comment = params[:mcomment]
+        unless params[:add_url].blank?
+          l = ExternalLink.new(url: params[:add_url], linktype: params[:link_type], description: params[:link_description], status: Manifestation.statuses[:approved])
+          l.manifestation = @m
+          l.save!
+        end
+        @w.save!
+        @e.save!
+      else # markdown edit and save
+        @m.markdown = params[:markdown]
+        @m.conversion_verified = params[:conversion_verified]
       end
-      @e.language = params[:elang]
-      @e.genre = params[:genre] # expression's genre is same as work's
-      @e.title = params[:etitle]
-      @e.date = params[:edate]
-      @e.comment = params[:ecomment]
-      @e.copyrighted = (params[:public_domain] == 'false' ? true : false) # field name semantics are flipped from param name, yeah
-      unless params[:add_person_e].blank?
-        r = Realizer.new(expression_id: @e.id, person_id: params[:add_person_e], role: params[:role_e].to_i)
-        r.save!
+      @m.recalc_cached_people
+      @m.recalc_heading_lines
+      @m.save!
+      if current_user.has_bit?('edit_catalog')
+        redirect_to action: :show, id: @m.id
+      else
+        redirect_to controller: :admin, action: :index
       end
-      @e.source_edition = params[:source_edition]
-      @m.title = params[:mtitle]
-      @m.responsibility_statement = params[:mresponsibility]
-      @m.comment = params[:mcomment]
-      unless params[:add_url].blank?
-        l = ExternalLink.new(url: params[:add_url], linktype: params[:link_type], description: params[:link_description], status: Manifestation.statuses[:approved])
-        l.manifestation = @m
-        l.save!
-      end
-      @w.save!
-      @e.save!
-    else # markdown edit
-      @m.markdown = params[:markdown]
-      @m.conversion_verified = params[:conversion_verified]
-    end
-    @m.recalc_cached_people
-    @m.recalc_heading_lines
-    @m.save!
-
-    flash[:notice] = I18n.t(:updated_successfully)
-    if current_user.has_bit?('edit_catalog')
-      redirect_to action: :show, id: @m.id
-    else
-      redirect_to controller: :admin, action: :index
+      flash[:notice] = I18n.t(:updated_successfully)
+    elsif params[:commit] == t(:preview)
+      @m = Manifestation.find(params[:id])
+      @page_title = t(:edit_markdown)+': '+@m.title_and_authors
+      @html = MultiMarkdown.new(params[:markdown]).to_html.force_encoding('UTF-8')
+      @markdown = params[:markdown]
+      render action: :edit
     end
   end
 

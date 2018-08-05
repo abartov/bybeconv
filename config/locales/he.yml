@@ -630,6 +630,7 @@ he:
   new_featured_author: יצירת זרקור חדש על יוצר
   external_link: קישורית חיצונית
   to_external_content: לתוכן חיצוני
+  preview: תצוגה מקדימה ללא שמירה
 
   notifications:
     proof_fixed:

@@ -4,7 +4,7 @@
   - if current_user.has_bit?('conversion_verification')
     %h3
       = t(:conversion_verification)
-      = ' ('+Rails.cache.read('report_conversion_verification').to_s+')'
+      = ' ('+Manifestation.where(conversion_verified: false).count.to_s+')'
     = button_to t(:conversion_verification), url_for(action: :conversion_verification)
     %p
     %p= t(:convs_processed_so_far, {done: ListItem.where(listkey: 'convs_by_user', user: current_user).count})

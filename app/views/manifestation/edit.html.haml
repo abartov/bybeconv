@@ -22,6 +22,8 @@
     = t(:no)
     = radio_button_tag(:conversion_verified, false, (not @m.conversion_verified))
   %p
+    = submit_tag t(:preview)
+    = ' | '
     = submit_tag t(:save)
 
 :javascript
