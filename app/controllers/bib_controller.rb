@@ -98,7 +98,13 @@ class BibController < ApplicationController
   end
 
   def shopping
-    @holdings = Holding.to_obtain(params[:source_id])
+    hh = Holding.to_obtain(params[:source_id]).to_a
+    @holdings = hh.sort_by!{|h|
+      loc = h.location || ''
+      s = loc.sub(/\(.*\)/,'').tr('[א-ת]','')
+      pos = s.index('.') || -1
+      s[0..pos]
+    }
     @source = BibSource.find(params[:source_id])
   end
 
