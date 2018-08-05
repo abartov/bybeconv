@@ -62,7 +62,7 @@ class UserController < ApplicationController
         li.destroy if li
       end
     end
-    redirect_to action: :list, flash: {notice: "#{@u.name} #{action} #{t(params[:bit])}"}
+    redirect_to action: :list, notice: "#{@u.name} #{action} #{t(params[:bit])}"
   end
 
   protected
