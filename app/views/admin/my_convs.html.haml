@@ -1,0 +1,13 @@
+%table
+  %tr
+    %th= t(:title)
+    %th= t(:author)
+    %th= t(:actions)
+  - @items.map{|li| li.item}.each do |m|
+    %tr
+      %td= m.title
+      %td= m.author_string
+      %td
+        = link_to t(:render), url_for(controller: :manifestation, action: :read, id: m.id)
+        = ' | '
+        = link_to t(:edit_markdown), manifestation_edit_path(m.id)

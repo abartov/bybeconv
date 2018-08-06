@@ -101,6 +101,17 @@ class AdminController < ApplicationController
     Rails.cache.write('report_conversion_verification', @total)
   end
 
+  def my_convs
+    @u = User.find(params[:id])
+    if @u.nil?
+      flash[:error] = t(:no_such_user)
+      redirect_to action: :index
+    else
+      @items = ListItem.where(listkey: 'convs_by_user', user: @u)
+    end
+    render layout: false
+  end
+
   def translated_from_multiple_languages
     @authors = []
     translatees = Person.joins(creations: :work).includes(:works).where('works.orig_lang <> "he"').distinct

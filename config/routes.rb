@@ -31,6 +31,7 @@ Bybeconv::Application.routes.draw do
   get 'admin/mark_similar_as_valid/:id' => 'admin#mark_similar_as_valid', as: 'mark_similar_as_valid'
   get 'admin/translated_from_multiple_languages'
   get 'admin/raw_tocs'
+  get 'admin/my_convs/:id' => 'admin#my_convs', as: 'my_convs'
   get 'admin/conversion_verification'
   post 'admin/conversion_verification' => 'admin#assign_conversion_verification', as: 'assign_conversion_verification'
   get 'admin/static_pages_list'

@@ -8,6 +8,8 @@
     = button_to t(:conversion_verification), url_for(action: :conversion_verification)
     %p
     %p= t(:convs_processed_so_far, {done: ListItem.where(listkey: 'convs_by_user', user: current_user).count})
+    %button#show_my_convs= t(:show_my_convs)
+    #my_convs
   - if current_user.has_bit?('handle_proofs')
     %p= link_to 'עיון בהגהות מן הציבור ('+@open_proofs+')', proof_list_path(:status => 'new')
   - if current_user.has_bit?('handle_recommendations')
@@ -75,3 +77,11 @@
     %hr
     %h3= t(:miscellaneous)
     %p= link_to t(:user_management), user_list_path
+
+:javascript
+  $(document).ready(function() {
+    $('#show_my_convs').click(function(){
+      $('#my_convs').load("#{url_for(action: :my_convs, id: current_user.id)}");
+      $('#show_my_convs').remove();
+    })
+  });
