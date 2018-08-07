@@ -126,6 +126,7 @@ class AuthorsController < ApplicationController
       flash[:error] = t(:no_such_item)
       redirect_to '/'
     else
+      params[:person][:wikidata_id] = params[:person][:wikidata_id][1..-1] if params[:person] and params[:person][:wikidata_id] and params[:person][:wikidata_id][0] and params[:person][:wikidata_id][0] == 'Q' # tolerate pasting the Wikidata number with the Q
       if @author.update_attributes(params[:person])
         flash[:notice] = I18n.t(:updated_successfully)
         redirect_to action: :show, id: @author.id
