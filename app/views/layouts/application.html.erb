@@ -36,7 +36,9 @@
   </script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
+  <% unless @og_image.nil? %>
+    <meta property="og:image" content="<%= @og_image %>">
+  <% end %>
   <%= csrf_meta_tags %>
 </head>
 <body dir="rtl" align="right">

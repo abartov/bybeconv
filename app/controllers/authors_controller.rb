@@ -158,6 +158,7 @@ class AuthorsController < ApplicationController
       @page_title = "#{@author.name} - #{t(:table_of_contents)} - #{t(:project_ben_yehuda)}"
       # temporary protection against null ToCs while we're migrating
       impressionist(@author) unless is_spider? # log actions for pageview stats
+      @og_image = @author.profile_image.url(:thumb)
       unless @author.toc.nil?
         prep_toc
       else
