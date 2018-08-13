@@ -7,7 +7,8 @@
     != t(:work_details)+': '+@m.title+" / "+linkify_people(@w.persons)
     - if @e.translation
       != ' / '+linkify_people(@e.translators)
-
+  - unless @legacy_url.nil?
+    %h2= link_to t(:legacy_url), @legacy_url
   %h2= t(:work_entity_details)
   %p
     %b= t(:title) + ': '

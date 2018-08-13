@@ -4,6 +4,9 @@
   %h3
     = t(:existing_title)+': '
     = @m.title
+    - unless @legacy_url.nil?
+      != "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+      = link_to t(:legacy_url), @legacy_url
   %h3
     = t(:by)+': '+@m.author_string
   %hr

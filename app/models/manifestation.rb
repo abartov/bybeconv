@@ -126,6 +126,15 @@ class Manifestation < ActiveRecord::Base
     end
   end
 
+  def legacy_htmlfile
+    hh = HtmlFile.joins(:manifestations).where(manifestations: {id: self.id})
+    if hh.empty?
+      return nil
+    else
+      return hh[0]
+    end
+  end
+
   def markdown_with_metadata
     metadata = "Title: #{self.title}  \nAuthor: #{self.author_string}  \n\n"
     return metadata + self.markdown

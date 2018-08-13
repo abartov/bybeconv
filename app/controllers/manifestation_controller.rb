@@ -258,6 +258,10 @@ class ManifestationController < ApplicationController
     @e = @m.expressions[0] # TODO: generalize?
     @w = @e.works[0] # TODO: generalize!
     @html = MultiMarkdown.new(@m.markdown).to_html.force_encoding('UTF-8')
+    h = @m.legacy_htmlfile
+    unless h.nil?
+      @legacy_url = 'http://benyehuda.org'+h.url
+    end
   end
 
   def edit
@@ -265,6 +269,10 @@ class ManifestationController < ApplicationController
     @page_title = t(:edit_markdown)+': '+@m.title_and_authors
     @html = MultiMarkdown.new(@m.markdown).to_html.force_encoding('UTF-8')
     @markdown = @m.markdown
+    h = @m.legacy_htmlfile
+    unless h.nil?
+      @legacy_url = 'http://benyehuda.org'+h.url
+    end
   end
 
   def edit_metadata
