@@ -259,7 +259,7 @@ class ManifestationController < ApplicationController
     @w = @e.works[0] # TODO: generalize!
     @html = MultiMarkdown.new(@m.markdown).to_html.force_encoding('UTF-8')
     h = @m.legacy_htmlfile
-    unless h.nil?
+    unless h.nil? or h.url.nil? or h.url.empty?
       @legacy_url = 'http://benyehuda.org'+h.url
     end
   end
@@ -270,7 +270,7 @@ class ManifestationController < ApplicationController
     @html = MultiMarkdown.new(@m.markdown).to_html.force_encoding('UTF-8')
     @markdown = @m.markdown
     h = @m.legacy_htmlfile
-    unless h.nil?
+    unless h.nil? or h.url.nil? or h.url.empty?
       @legacy_url = 'http://benyehuda.org'+h.url
     end
   end
