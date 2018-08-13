@@ -52,6 +52,8 @@ module ApplicationHelper
       return t(:german)
     when 'ru'
       return t(:russian)
+    when 'es'
+      return t(:spanish)
     when 'yi'
       return t(:yiddish)
     when 'pl'
