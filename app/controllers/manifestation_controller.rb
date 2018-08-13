@@ -356,6 +356,10 @@ class ManifestationController < ApplicationController
       @html = MultiMarkdown.new(params[:markdown]).to_html.force_encoding('UTF-8')
       @markdown = params[:markdown]
       @newtitle = params[:newtitle]
+      h = @m.legacy_htmlfile
+      unless h.nil?
+        @legacy_url = 'http://benyehuda.org'+h.url
+      end
       render action: :edit
     end
   end
