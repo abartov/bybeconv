@@ -3,6 +3,6 @@ var markup = "";
   markup += "<%= escape_javascript(render partial: 'publications/pub_th') %>";
 <% end %>
 <% @pubs.each do |pub| %>
-  markup += "<%= escape_javascript(render partial: 'publications/pub', locals: { pub: pub, with_person: false, with_actions: false} ) %>";
+  markup += "<%= escape_javascript(render partial: 'publications/pub', locals: { pub: pub, with_person: false, with_actions: :none} ) %>";
 <% end %>
 $("#pubs tbody").html(markup);

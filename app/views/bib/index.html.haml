@@ -6,10 +6,10 @@
       %p= t(:bib_stats, {pubs: @counts[:pubs], holdings: @counts[:holdings], obtained: @counts[:obtained], scanned: @counts[:scanned], uploaded: @counts[:uploaded], irrelevant: @counts[:irrelevant], missing: @counts[:missing], authors_todo: @counts[:authors_todo], authors_done: @counts[:authors_done]})
       %h2= link_to t(:get_bibs), action: :pubs_by_person
     .col-md-6
-      %h2= t(:available_scans)
+      %h2= link_to t(:available_scans), bib_scans_path
       %table
         - @digipubs.each do |pub|
-          = render partial: 'publications/pub', locals: {pub: pub, with_person: false, with_actions: false}
+          = render partial: 'publications/pub', locals: {pub: pub, with_person: false, with_actions: :scans}
   .row
     .col-md-6
       %h2= t(:shopping_lists)

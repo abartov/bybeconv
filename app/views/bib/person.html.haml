@@ -22,6 +22,6 @@
           %th= t(:status)
           %th= t(:actions)
         - @pubs.each do |pub|
-          = render partial: 'publications/pub', locals: {pub: pub, with_person: false, with_actions: true}
+          = render partial: 'publications/pub', locals: {pub: pub, with_person: false, with_actions: :pubs}
 %hr
 %p= link_to t(:back), action: :index

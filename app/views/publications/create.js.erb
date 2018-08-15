@@ -1,2 +1,2 @@
-var markup = "<%= escape_javascript(render partial: 'pub', locals: { pub: @pub, with_person: false, with_actions: false } ) %>";
+var markup = "<%= escape_javascript(render partial: 'pub', locals: { pub: @pub, with_person: false, with_actions: :none } ) %>";
 $("#pubs tbody").append(markup);

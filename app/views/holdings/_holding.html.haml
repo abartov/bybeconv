@@ -1,6 +1,6 @@
 %li
   = link_to(h.bib_source.title, h.source_id)
   = " #{h.location}"
-  - if with_actions
+  - if with_actions == :pubs
     = ' '
     = select_tag "h_#{h.id}_actions", options_for_select(Holding.statuses.map{|k, v| [t(k), k]}, h.status), onchange: "$.post('#{holding_path(h.id)}', {'_method':'put', 'holding[status]':this.value}, null, 'script' );"

@@ -1,0 +1,3 @@
+<% if @publication.status == 'uploaded' %>
+$("#pub<%= @publication.id %>").remove();
+<% end %>

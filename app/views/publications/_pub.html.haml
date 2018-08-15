@@ -10,11 +10,34 @@
       %ol
         - pub.holdings.each do |h|
           = render partial: 'holdings/holding', locals: {h: h, with_actions: with_actions}
-    - if with_actions
+    - case with_actions
+    - when :pubs
       %td
         = select_tag "p_#{pub.id}_actions", options_for_select(Publication.statuses.map{|k, v| [t(k), k]}, pub.status), onchange: "$.post('#{publication_path(pub.id)}', {'_method':'put', 'publication[status]':this.value}, null, 'script' );"
       %td= link_to t(:destroy), publication_path(id: pub.id), method: :delete, remote: true, :data => { :confirm => t(:are_you_sure) }
-    - else
+    - when :scans
+      %td= link_to t(:mark_as_uploaded), publication_path(pub.id), 'class' => 'scanned', method: :put, remote: true, 'data-params' => 'publication[status]=uploaded'
+    - when :none
       %td= t(pub.status)
     - if with_person
       %td= pub.person.nil? ? '--' : pub.person.name
+
+:javascript
+      // submit holding entity
+    $(document).ready(function() {
+      $()
+    });
+    $.ajax({
+      type: "POST",
+      url: "#{holdings_path}",
+      data: { source_name: holding_row.children[6].textContent, holding: { publication_id: pub_row.id.replace('pub',''), source_id: holding_row.children[6].children[0].href, status: status, scan_url: scan_url } },
+      dataType: "script"
+    }).done(function(xhr, status) {
+      if(status == "success") {
+        holding_row.remove();
+        $(sels[0]+" ol").append(new_holding);
+      } else {
+        alert('error');
+        elem.disabled = false;
+      }
+    });

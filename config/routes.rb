@@ -3,6 +3,7 @@ Bybeconv::Application.routes.draw do
   resources :holdings
   resources :publications
   get 'bib/index'
+  get 'bib/scans' => 'bib#scans', as: 'bib_scans'
   get 'bib/person/:person_id' => 'bib#person', as: 'bib_person'
   match 'bib/pubs_by_person', via: [:get, :post]
 

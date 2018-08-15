@@ -15,6 +15,10 @@ class BibController < ApplicationController
 
   end
 
+  def scans
+    @digipubs = Publication.where(status: Publication.statuses[:scanned]).order('updated_at asc')
+  end
+
   def make_author_page
     @p = Person.find(params[:person_id])
     if @p.nil?
