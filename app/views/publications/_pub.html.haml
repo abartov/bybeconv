@@ -20,7 +20,7 @@
     - when :none
       %td= t(pub.status)
     - if with_person
-      %td= pub.person.nil? ? '--' : pub.person.name
+      %td= pub.person.nil? ? '--' : link_to pub.person.name, author_toc_path(id: pub.person.id)
 
 :javascript
       // submit holding entity
