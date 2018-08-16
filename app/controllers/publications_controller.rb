@@ -5,7 +5,7 @@ class PublicationsController < ApplicationController
   # GET /publications
   # GET /publications.json
   def index
-    @publications = Publication.order(status: :asc).page(params[:page])
+    @publications = Publication.order(status: :asc, person_id: :asc).page(params[:page])
   end
 
   # GET /publications/1
