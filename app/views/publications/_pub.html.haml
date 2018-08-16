@@ -20,24 +20,5 @@
     - when :none
       %td= t(pub.status)
     - if with_person
-      %td= pub.person.nil? ? '--' : link_to pub.person.name, author_toc_path(id: pub.person.id)
+      %td= pub.person.nil? ? '--' : link_to(pub.person.name, author_toc_path(id: pub.person.id))
 
-:javascript
-      // submit holding entity
-    $(document).ready(function() {
-      $()
-    });
-    $.ajax({
-      type: "POST",
-      url: "#{holdings_path}",
-      data: { source_name: holding_row.children[6].textContent, holding: { publication_id: pub_row.id.replace('pub',''), source_id: holding_row.children[6].children[0].href, status: status, scan_url: scan_url } },
-      dataType: "script"
-    }).done(function(xhr, status) {
-      if(status == "success") {
-        holding_row.remove();
-        $(sels[0]+" ol").append(new_holding);
-      } else {
-        alert('error');
-        elem.disabled = false;
-      }
-    });
