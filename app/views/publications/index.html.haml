@@ -1,0 +1,8 @@
+.container-fluid
+  .row
+    .col-md-12
+      %h2= t(:bib_records)
+      %table
+        - @publications.each do |pub|
+          = render partial: 'pub', locals: {pub: pub, with_person: false, with_actions: :pubs}
+    != paginate @publications

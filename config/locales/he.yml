@@ -447,6 +447,8 @@ he:
   mark_as_scanned: סימון כנסרק
   mark_as_missing: סימון כחסר בספרייה
   mark_as_uploaded: סימון כהועלה למשימות
+  review_bibs: עיון ברשומות
+  bib_records: רשומות ביבליוגרפיות
   missing: חסר בספרייה
   irrelevant: לא רלבנטי
   no_matches_found: לא נמצאו תוצאות

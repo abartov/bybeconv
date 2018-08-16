@@ -5,7 +5,7 @@ class PublicationsController < ApplicationController
   # GET /publications
   # GET /publications.json
   def index
-    @publications = publication.all
+    @publications = Publication.order(status: :asc).page(params[:page])
   end
 
   # GET /publications/1
@@ -15,7 +15,7 @@ class PublicationsController < ApplicationController
 
   # GET /publications/new
   def new
-    @publication = publication.new
+    @publication = Publication.new
   end
 
   # GET /publications/1/edit
