@@ -310,6 +310,7 @@ he:
   random_order: (בסדר אקראי)
   translators: מתרגמים
   translated_from_multiple_languages: מתורגמים מיותר משפה אחת
+  translated_from: תורגם מ
   new_file: קובץ חדש
   new_works_by_new_authors: יצירות חדשות של יוצרים חדשים בפרויקט
   new_works_by_existing_authors: יצירות חדשות של יוצרים קיימים בפרויקט
@@ -408,6 +409,7 @@ he:
   permission_popover: "על אף שהיצירה עדיין מוגנת בזכויות יוצרים, פרויקט בן-יהודה קיבל *רשות מפורשת לפרסם* את היצירה במאגר היצירה של פרויקט בן-יהודה, לשימוש הקהל הרחב לקריאה ומחקר.  שימושים אחרים (כגון המחזה, הלחנה, או ביצוע מסחרי) עדיין *טעונים אישור מפורש* מאת בעלי הזכויות."
   by_permission: מוגש ברשות פרסום
   publisher_details: פרטי הוצאה לאור
+  launch_visual_editor: לעורך החזותי
   publisher: הוצאה
   language: שפה
   record_id: קוד רשומה

@@ -11,6 +11,7 @@ task :mass_export, [:to_path] => :environment do |taskname, args|
   unless args.to_path.nil?
     dumps = { :pd => Manifestation.pd, :nonpd => Manifestation.copyrighted}
     dumps.each_key do |dump|
+      puts "Dumping #{dump}:"
       to_path = args.to_path+'/'+dump.to_s
       txt_path = to_path+'/txt'
       html_path = to_path+'/html'

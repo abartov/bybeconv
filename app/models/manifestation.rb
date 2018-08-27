@@ -84,6 +84,14 @@ class Manifestation < ActiveRecord::Base
     return title + ' / '+author_string
   end
 
+  def title_and_authors_html
+    ret = "<h1>#{title}</h1><h2>#{I18n.t(:by)} #{authors_string}</h2>"
+    if self.expressions[0].translation?
+      ret += "<h2>#{I18n.t(:translated_from)}#{textify_lang(self.expressions[0].works[0].orig_lang)} #{I18n.t(:by)} #{translators_string}</h2>"
+    end
+    return ret
+  end
+
   def manual_delete
     expressions.each{|e|
       e.realizers.each{|r| r.destroy!}
