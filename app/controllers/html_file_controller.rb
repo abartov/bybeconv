@@ -388,9 +388,14 @@ class HtmlFileController < ApplicationController
   def new_postprocess(buf)
     lines = buf.split("\n")
     in_footnotes = false
+    prev_nikkud = false
     (0..lines.length-1).each {|i|
       lines[i].strip!
       uniq_chars = lines[i].gsub(/[\s\u00a0]/,'').chars.uniq
+      if lines[i].empty? and prev_nikkud
+        lines[i] = '> '
+        next
+      end
       if uniq_chars == ['*'] or uniq_chars == ["\u2013"] # if the line only contains asterisks, or Unicode En-Dash (U+2013)
         lines[i] = '***' # make it a Markdown horizontal rule
       else
@@ -399,6 +404,9 @@ class HtmlFileController < ApplicationController
         if nikkud
           # make full-nikkud lines PRE
           lines[i] = '> '+lines[i] unless lines[i] =~ /\[\^\d+/ # produce a blockquote (PRE would ignore bold and other markup)
+          prev_nikkud = true
+        else
+          prev_nikkud = false
         end
         if in_footnotes && lines[i] !~ /^\[\^\d+\]:/ # add a tab for multiline footnotes
           lines[i] = "\t"+lines[i]
