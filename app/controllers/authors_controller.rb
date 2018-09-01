@@ -24,7 +24,7 @@ class AuthorsController < ApplicationController
     author = Person.find(params[:id])
     unless author.nil?
       if author.toc.nil?
-        toc = Toc.new(toc: AppConstants.toc_template, status: :raw, credits: '')
+        toc = Toc.new(toc: AppConstants.toc_template, status: :raw, credit_section: '')
         toc.save!
         author.toc = toc
         author.save!
