@@ -1,20 +1,25 @@
 / TODO: a whole bunch of editable WEM fields
-- if params[:beta] == 'true'
-  != "<script src=\"https://unpkg.com/stackedit-js@1.0.5/docs/lib/stackedit.min.js\"></script>"
-.top-element
+!= "<script src=\"https://unpkg.com/stackedit-js@1.0.5/docs/lib/stackedit.min.js\"></script>"
 = form_tag(action: :update, id: @m.id) do
-  %h3
-    = t(:existing_title)+': '
-    = @m.title
-    - unless @legacy_url.nil?
-      != "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
-      = link_to t(:legacy_url), @legacy_url, target: '_new'
-  %h3
-    = t(:by)+': '+@m.author_string
-  %hr
-  %h3
-    = t(:new_title_only)
-    = text_field_tag :newtitle, @newtitle
+  .container-fluid
+    .row
+      .col-md-9
+        %h3
+          = t(:existing_title)+': '
+          = @m.title
+          - unless @legacy_url.nil?
+            != "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+            = link_to t(:legacy_url), @legacy_url, target: '_new'
+          != "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+          %span.btn#vised{style: 'float:none;font-size:150%;height:auto'}= t(:launch_visual_editor)
+          != "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+          = link_to t(:to_the_work_in_the_site), manifestation_read_path(@m), target: '_new'
+        %h3
+          = t(:by)+': '+@m.author_string
+      .col-md-3
+        %h3
+          = t(:new_title_only)
+          = text_field_tag :newtitle, @newtitle
   %hr
   .markdown_container
     %div{ style:"vertical-align:top; width: 30%;display:flex;margin-right:10px;flex-direction:column;height:100%;box-sizing:border-box;float:left;padding-right:7px;"}
@@ -24,7 +29,7 @@
       .markdown
         = text_area_tag(:markdown, raw(@markdown), class: 'textarea100')
     %h2= t(:display_text)
-    %div{ style:"vertical-align:top; width: 70%; padding-left:10px;padding-right:15px;background:#d2cfcf;"}
+    %div#preview{ style:"vertical-align:top; width: 70%; padding-left:10px;padding-right:15px;background:#d2cfcf;"}
       != raw(@html)
       %br
 
@@ -47,11 +52,12 @@
     $('.markdown').css('height', newsize);
     $('.textarea100').css('height', newsize);
 
-    var beta = #{params[:beta] == 'true' ? true : false};
-    if(beta) {
+    $('#vised').click(function() {
       const el = document.querySelector('#markdown');
-      const stackedit = new Stackedit();
-
+      const pv = document.querySelector('#preview');
+      const stackedit = new Stackedit({
+          url: 'https://stackedit.benyehuda.org/app'
+      });
       // Open the iframe
       stackedit.openFile({
         name: 'מארקדאון', // with an optional filename
@@ -59,10 +65,17 @@
           text: el.value // and the Markdown content.
         }
       });
-
       // Listen to StackEdit events and apply the changes to the textarea.
       stackedit.on('fileChange', (file) => {
+        var once = false;
+        if(!once) {
+          iFrameDOM = $("iframe.stackedit-iframe").contents();
+          iFrameDOM.find(".layout").css("direction", "rtl");
+          iFrameDOM.find(".layout").css("text-align", "right");
+          once = true;
+        }
         el.value = file.content.text;
+        pv.innerHTML = file.content.html;
       });
-    }
+   });
   });
