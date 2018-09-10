@@ -68,13 +68,6 @@
       });
       // Listen to StackEdit events and apply the changes to the textarea.
       stackedit.on('fileChange', (file) => {
-        var once = false;
-        if(!once) {
-          iFrameDOM = $("iframe.stackedit-iframe").contents();
-          iFrameDOM.find(".layout").css("direction", "rtl");
-          iFrameDOM.find(".layout").css("text-align", "right");
-          once = true;
-        }
         el.value = file.content.text;
         pv.innerHTML = file.content.html;
       });
