@@ -136,6 +136,58 @@ module BybeUtils
     # end
   end
 
+  def textify_lang(iso)
+    return I18n.t(:unknown) if iso.nil? or iso.empty?
+    case iso
+    when 'he'
+      return t(:hebrew)
+    when 'en'
+      return t(:english)
+    when 'de'
+      return t(:german)
+    when 'ru'
+      return t(:russian)
+    when 'es'
+      return t(:spanish)
+    when 'yi'
+      return t(:yiddish)
+    when 'pl'
+      return t(:polish)
+    when 'fr'
+      return t(:french)
+    when 'ar'
+      return t(:arabic)
+    when 'el'
+      return t(:greek)
+    when 'la'
+      return t(:latin)
+    when 'it'
+      return t(:italian)
+    when 'grc'
+      return t(:ancient_greek)
+    when 'hu'
+      return t(:hungarian)
+    when 'cs'
+      return t(:czech)
+    when 'da'
+      return t(:danish)
+    when 'no'
+      return t(:norwegian)
+    when 'nl'
+      return t(:dutch)
+    when 'pt'
+      return t(:portuguese)
+    when 'fi'
+      return t(:finnish)
+    when 'is'
+      return t(:icelandic)
+    when 'sv'
+      return t(:swedish)
+    else
+      return t(:unknown)
+    end
+  end
+
   # returns an up-to-maxchars-character snippet and the rest of the buffer
   def snippet(buf, maxchars)
     return [buf,''] if buf.length < maxchars
