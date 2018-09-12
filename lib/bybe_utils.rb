@@ -140,51 +140,51 @@ module BybeUtils
     return I18n.t(:unknown) if iso.nil? or iso.empty?
     case iso
     when 'he'
-      return t(:hebrew)
+      return I18n.t(:hebrew)
     when 'en'
-      return t(:english)
+      return I18n.t(:english)
     when 'de'
-      return t(:german)
+      return I18n.t(:german)
     when 'ru'
-      return t(:russian)
+      return I18n.t(:russian)
     when 'es'
-      return t(:spanish)
+      return I18n.t(:spanish)
     when 'yi'
-      return t(:yiddish)
+      return I18n.t(:yiddish)
     when 'pl'
-      return t(:polish)
+      return I18n.t(:polish)
     when 'fr'
-      return t(:french)
+      return I18n.t(:french)
     when 'ar'
-      return t(:arabic)
+      return I18n.t(:arabic)
     when 'el'
-      return t(:greek)
+      return I18n.t(:greek)
     when 'la'
-      return t(:latin)
+      return I18n.t(:latin)
     when 'it'
-      return t(:italian)
+      return I18n.t(:italian)
     when 'grc'
-      return t(:ancient_greek)
+      return I18n.t(:ancient_greek)
     when 'hu'
-      return t(:hungarian)
+      return I18n.t(:hungarian)
     when 'cs'
-      return t(:czech)
+      return I18n.t(:czech)
     when 'da'
-      return t(:danish)
+      return I18n.t(:danish)
     when 'no'
-      return t(:norwegian)
+      return I18n.t(:norwegian)
     when 'nl'
-      return t(:dutch)
+      return I18n.t(:dutch)
     when 'pt'
-      return t(:portuguese)
+      return I18n.t(:portuguese)
     when 'fi'
-      return t(:finnish)
+      return I18n.t(:finnish)
     when 'is'
-      return t(:icelandic)
+      return I18n.t(:icelandic)
     when 'sv'
-      return t(:swedish)
+      return I18n.t(:swedish)
     else
-      return t(:unknown)
+      return I18n.t(:unknown)
     end
   end
 
