@@ -202,7 +202,7 @@ class ManifestationController < ApplicationController
     render partial: 'surprise_work', locals: {work: work}
   end
 
-  def workshow # temporary action to map to the first manifestation of the work; # TODO: in the future, show something intelligence about multiple expressions per work
+  def workshow # temporary action to map to the first manifestation of the work; # TODO: in the future, show something intelligent about multiple expressions per work
     work = Work.find(params[:id])
     unless work.nil?
       m = work.expressions[0].manifestations[0]

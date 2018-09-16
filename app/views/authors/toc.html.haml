@@ -8,6 +8,8 @@
         .row
           - if current_user && current_user.editor?
             %span.static-btn= link_to t(:edit_toc), authors_edit_toc_path(@author)
+            != "&nbsp;&nbsp;&nbsp;"
+            %span.static-btn= link_to t(:edit_metadata), authors_edit_path(id: @author.id)
           .card-content
             .col-md-9
               .creator-bookmark-back-right
