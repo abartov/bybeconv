@@ -32,19 +32,19 @@ class ApiController < ApplicationController
           fmt.json { render json: { markdown: m.markdown }}
         end
       end
-    when 'put_markdown'
-      m = Manifestation.find(params[:mft])
-      # TODO: add API key validation with WRITE access
-      unless m.nil?
-        m.markdown = params[:markdown]
-        m.save!
-        respond_to do |fmt|
-          fmt.html { render text: 'OK' }
-          fmt.json { render json: 'OK' }
-        end
-      else
-        render :nothing => true, :status => 200
-      end
+#    when 'put_markdown'
+#      m = Manifestation.find(params[:mft])
+#      # TODO: add API key validation with WRITE access
+#      unless m.nil?
+#        m.markdown = params[:markdown]
+#        m.save!
+#        respond_to do |fmt|
+#          fmt.html { render text: 'OK' }
+#          fmt.json { render json: 'OK' }
+#        end
+#      else
+#        render :nothing => true, :status => 200
+#      end
     else
       render json: "ERROR: Unsupported API action #{params[:action]}"
     end
