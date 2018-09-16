@@ -69,6 +69,8 @@ he:
   publish: פרסם באתר
   published: פורסם באתר
   unpublished: טרם פורסם
+  nonpd: טרם פקעו הזכויות
+  deprecated: מחוּק
   plain_markdown: מארקדאון פשוט
   cards: כל פסקה בתיבה
   cards_with_shortcuts: כל פסקה בתיבה וגם תיבה נפתחת של קיצורי דרך

@@ -17,7 +17,7 @@ class ManifestationController < ApplicationController
   def all
     @page_title = t(:all_works)+' '+t(:project_ben_yehuda)
     @pagetype = :works
-    @works_abc = Manifestation.order(:title).page(params[:page]).limit(25) # get page X of all manifestations
+    @works_abc = Manifestation.published.order(:title).page(params[:page]).limit(25) # get page X of all manifestations
   end
 
   def by_tag
@@ -97,7 +97,7 @@ class ManifestationController < ApplicationController
     @taggings = @m.taggings
     @recommendations = @m.recommendations
     @links = @m.external_links.group_by {|l| l.linktype}
-    @random_work = Manifestation.where(id: Manifestation.pluck(:id).sample(1))[0]
+    @random_work = Manifestation.where(id: Manifestation.pluck(:id).sample(5), status: Manifestation.statuses[:published])[0]
   end
 
   def readmode
@@ -182,22 +182,23 @@ class ManifestationController < ApplicationController
 
   def genre
     @tabclass = set_tab('works')
-    @manifestations = Manifestation.joins(:expressions).where(expressions: {genre: params[:genre]}).page(params[:page]).order('title ASC')
+    @manifestations = Manifestation.published.joins(:expressions).where(expressions: {genre: params[:genre]}).page(params[:page]).order('title ASC')
   end
 
   # this one is called via AJAX
   def get_random
+    # TODO: speed up?
     work = nil
     unless params[:genre].nil? || params[:genre].empty?
-      work = Manifestation.genre(params[:genre]).order('RAND()').limit(1)[0]
+      work = Manifestation.published.genre(params[:genre]).order('RAND()').limit(1)[0]
     else
-      work = Manifestation.order('RAND()').limit(1)[0]
+      work = Manifestation.published.order('RAND()').limit(1)[0]
     end
     render partial: 'shared/surprise_work', locals: {manifestation: work, id_frag: params[:id_frag], passed_genre: params[:genre], side: params[:side]}
   end
 
   def surprise_work
-    work = Manifestation.order('RAND()').limit(1)[0]
+    work = Manifestation.published.order('RAND()').limit(1)[0]
     render partial: 'surprise_work', locals: {work: work}
   end
 
@@ -321,8 +322,9 @@ class ManifestationController < ApplicationController
         @m.title = params[:mtitle]
         @m.responsibility_statement = params[:mresponsibility]
         @m.comment = params[:mcomment]
+        @m.status = params[:mstatus].to_i
         unless params[:add_url].blank?
-          l = ExternalLink.new(url: params[:add_url], linktype: params[:link_type], description: params[:link_description], status: Manifestation.statuses[:approved])
+          l = ExternalLink.new(url: params[:add_url], linktype: params[:link_type], description: params[:link_description], status: Manifestation.linkstatuses[:approved])
           l.manifestation = @m
           l.save!
         end

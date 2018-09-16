@@ -9,6 +9,7 @@
     %th= t(:genre)
     %th= t(:updated_at)
     %th= t(:conversion_verified)
+    %th= t(:status)
     %th= t(:actions)
 
     - manifestations.each do |m|
@@ -32,6 +33,7 @@
         %td= textify_genre(m.expressions[0].genre)
         %td= m.updated_at.to_s
         %td= m.conversion_verified ? t(:yes) : t(:no)
+        %td= t(m.status)
         %td
           = link_to t(:show), manifestation_show_path(m.id)
           / = link_to t(:show), :action => 'show', :id => m

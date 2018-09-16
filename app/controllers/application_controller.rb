@@ -128,7 +128,8 @@ class ApplicationController < ActionController::Base
   end
 
   def randomize_works(how_many)
-    return Manifestation.where(id: Manifestation.pluck(:id).sample(how_many))
+    return Manifestation.where(id: Manifestation.pluck(:id).sample(how_many), status: Manifestation.statuses[:published]) # NOTE: because of the status check, less than how_many may be returned. This is a necessary sacrifice for now because ORDER RAND() is way too slow!
+    # TODO: maybe fix by sampling twice the requested amount and then returning only up to how_many?  On the assumption very few manifestations are not 'published', this would work.
     #return Manifestation.order('RAND()').limit(how_many)
   end
 
@@ -201,7 +202,7 @@ end
 
   def whatsnew_since(timestamp)
     authors = {}
-    Manifestation.new_since(timestamp).each {|m|
+    Manifestation.published.new_since(timestamp).each {|m|
       e = m.expressions[0]
       person = e.persons[0] # TODO: more nuance
       next if person.nil? # shouldn't happen, but might in a dev. env.

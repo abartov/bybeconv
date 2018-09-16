@@ -613,7 +613,7 @@ class HtmlFile < ActiveRecord::Base
         em_author = (translator_id.nil? ? p : translator) # the author of the Expression and Manifestation is the translator, if one exists
         r = Realizer.new(expression_id: e.id, person_id: em_author.id, role: (translator_id.nil? ? :author : :translator))
         r.save!
-        m = Manifestation.new(title: the_title, responsibility_statement: em_author.name, conversion_verified: true, medium: I18n.t(:etext), publisher: AppConstants.our_publisher, publication_place: AppConstants.our_place_of_publication, publication_date: Date.today, markdown: the_markdown, comment: comments)
+        m = Manifestation.new(title: the_title, responsibility_statement: em_author.name, conversion_verified: true, medium: I18n.t(:etext), publisher: AppConstants.our_publisher, publication_place: AppConstants.our_place_of_publication, publication_date: Date.today, markdown: the_markdown, comment: comments, status: Manifestation.statuses[:published])
         m.save!
         m.people << em_author
         e.manifestations << m
@@ -648,7 +648,7 @@ class HtmlFile < ActiveRecord::Base
         r = Realizer.new(expression_id: e.id, person_id: em_author.id, role: (translator_id.nil? ? :author : :translator))
         r.save!
         clean_utf8 = markdown.encode('utf-8') # for some reason, this string was not getting written properly to the DB
-        m = Manifestation.new(title: title, responsibility_statement: em_author.name, medium: 'e-text', publisher: AppConstants.our_publisher, publication_place: AppConstants.our_place_of_publication, publication_date: Date.today, markdown: clean_utf8, comment: comments)
+        m = Manifestation.new(title: title, responsibility_statement: em_author.name, medium: 'e-text', publisher: AppConstants.our_publisher, publication_place: AppConstants.our_place_of_publication, publication_date: Date.today, markdown: clean_utf8, comment: comments, status: Manifestation.statuses[:published])
         m.save!
         m.people << em_author
         e.manifestations << m

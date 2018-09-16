@@ -53,6 +53,9 @@
 
     %h2= t(:manifestation_details)
     %p
+      %b= t(:status)+': '
+      = select_tag :mstatus, options_for_select(Manifestation.statuses.map {|st| [t(st[0]), st[1]]})
+    %p
       %b= t(:title) + ': '
       = text_field_tag :mtitle, @m.title, size: 75
     %p
