@@ -3,7 +3,7 @@
     %h1= t(:works_about_this_author, {gender_suffix: @author.gender == 'female' ? '/ת' : ''})
     %ol
       - @author.aboutnesses.each do |ab|
-        - if work.expressions[0].manifestations[0].published? # Only show published works # TODO: handle multiple expressions/manifestations intelligently
+        - if ab.work.expressions[0].manifestations[0].published? # Only show published works # TODO: handle multiple expressions/manifestations intelligently
           %li
             = link_to ab.work.title, work_show_path(id: ab.work_id)
             = ' / '
