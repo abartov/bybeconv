@@ -213,7 +213,7 @@ he:
   false: לא
   user_list: רשימת משתמשים
   make_editor: הפוך לעורך/ת!
-  convs_processed_so_far: טיפלת ב-%{done} יצירות עד כה.
+  convs_processed_so_far: טיפלת ב-%{done} יצירות עד כה.  בסך הכל, כ-%{percent_done} מהמאגר מטויב.
   make_admin: הפוך למנהל/ת מערכת!
   activate_bit: הוסף תפקיד
   deactivate_bit: בטל תפקיד

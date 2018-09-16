@@ -8,6 +8,9 @@ class AdminController < ApplicationController
     if current_user && current_user.editor?
       @open_proofs = Proof.where(status: 'new').count.to_s
       @open_recommendations = LegacyRecommendation.where(status: 'new').count.to_s
+      @conv_todo = Manifestation.where(conversion_verified: false).count
+      @manifestation_count = Manifestation.count
+      @conv_percent_done = (@manifestation_count - @conv_todo) / @manifestation_count.to_f * 100
       @page_title = t(:dashboard)
     end
   end

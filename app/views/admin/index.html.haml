@@ -7,7 +7,7 @@
       = ' ('+Manifestation.where(conversion_verified: false).count.to_s+')'
     = button_to t(:conversion_verification), url_for(action: :conversion_verification)
     %p
-    %p= t(:convs_processed_so_far, {done: ListItem.where(listkey: 'convs_by_user', user: current_user).count})
+    %p= t(:convs_processed_so_far, {done: ListItem.where(listkey: 'convs_by_user', user: current_user).count, percent_done: number_to_percentage(@conv_percent_done, precision: 2)})
     %button#show_my_convs= t(:show_my_convs)
     #my_convs
   - if current_user.has_bit?('handle_proofs')
