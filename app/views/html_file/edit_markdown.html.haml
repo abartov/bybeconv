@@ -1,6 +1,10 @@
+!= "<script src=\"https://unpkg.com/stackedit-js@1.0.5/docs/lib/stackedit.min.js\"></script>"
 .top-element
   = form_tag(action: 'edit_markdown', id: @text.id) do
     .container-fluid
+      .row
+        .col-md-12
+          %span.btn#vised{style: 'float:none;font-size:150%;height:auto'}= t(:launch_visual_editor)
       .row
         .col-md-6
           - if @text.has_splits
@@ -30,7 +34,7 @@
                 %h2= t(:markdown)
               .markdown= text_area_tag(:markdown, raw(@markdown), class: 'textarea100')
             %h2= t(:display_text)
-            %div{ style:"vertical-align:top; width: 60%; padding-left:10px;padding-right:15px;background:#d2cfcf;"}
+            #preview{ style:"vertical-align:top; width: 60%; padding-left:10px;padding-right:15px;background:#d2cfcf;"}
               != raw(@html)
               %br
       .row
@@ -70,4 +74,31 @@
           $('#frbrize_button').off('click'); // show only once
         }
       });
+    $('#vised').click(function() {
+      const el = document.querySelector('#markdown');
+      const pv = document.querySelector('#preview');
+      const stackedit = new Stackedit({
+          url: 'https://stackedit.benyehuda.org/app'
+      });
+      // Open the iframe
+      stackedit.openFile({
+        name: 'מארקדאון', // with an optional filename
+        content: {
+          text: el.value // and the Markdown content.
+        }
+      });
+      // Listen to StackEdit events and apply the changes to the textarea.
+      stackedit.on('fileChange', (file) => {
+        el.value = file.content.text;
+        pv.innerHTML = file.content.html;
+      });
+    });
+  });
+
+
+:javascript
+
+  jQuery(document).ready(function() {
+
+
   });

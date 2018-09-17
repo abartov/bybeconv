@@ -26,6 +26,8 @@ gem 'paperclip', '~>5.2' # for cloud files like author images 6.x requires aws >
 gem 'impressionist' # for pageview stats
 gem 'jbuilder', '~> 2.0' # for JSON APIs
 
+gem 'rollbar' # error reporting. Airbrake replacement.
+
 gem 'jquery-rails'
 gem "jquery-ui-rails"
 gem 'rdf', '~> 2.0.1'
