@@ -89,15 +89,17 @@ class ManifestationController < ApplicationController
 
   def read
     prep_for_read
-    @proof = Proof.new
-    @new_recommendation = Recommendation.new
-    @tagging = Tagging.new
-    @tagging.manifestation_id = @m.id
-    @tagging.suggester = current_user
-    @taggings = @m.taggings
-    @recommendations = @m.recommendations
-    @links = @m.external_links.group_by {|l| l.linktype}
-    @random_work = Manifestation.where(id: Manifestation.pluck(:id).sample(5), status: Manifestation.statuses[:published])[0]
+    unless @m.nil?
+      @proof = Proof.new
+      @new_recommendation = Recommendation.new
+      @tagging = Tagging.new
+      @tagging.manifestation_id = @m.id
+      @tagging.suggester = current_user
+      @taggings = @m.taggings
+      @recommendations = @m.recommendations
+      @links = @m.external_links.group_by {|l| l.linktype}
+      @random_work = Manifestation.where(id: Manifestation.pluck(:id).sample(5), status: Manifestation.statuses[:published])[0]
+    end
   end
 
   def readmode
@@ -370,35 +372,41 @@ class ManifestationController < ApplicationController
 
   def prep_for_print
     @m = Manifestation.find(params[:id])
-    impressionist(@m) unless is_spider?
-    @e = @m.expressions[0]
-    @author = @e.works[0].persons[0] # TODO: handle multiple authors
-    @translators = @m.translators
-    @page_title = "#{@m.title_and_authors} - #{t(:default_page_title)}"
-    impressionist(@author) # increment the author's popularity counter
-    if @print
-      @html = MultiMarkdown.new(@m.markdown.lines.join("\n")).to_html.force_encoding('UTF-8')
+    if @m.nil?
+      render nothing: true
+    else
+      impressionist(@m) unless is_spider?
+      @e = @m.expressions[0]
+      @author = @e.works[0].persons[0] # TODO: handle multiple authors
+      @translators = @m.translators
+      @page_title = "#{@m.title_and_authors} - #{t(:default_page_title)}"
+      impressionist(@author) # increment the author's popularity counter
+      if @print
+        @html = MultiMarkdown.new(@m.markdown.lines.join("\n")).to_html.force_encoding('UTF-8')
+      end
     end
   end
 
   def prep_for_read
     @print = false
     prep_for_print
-    lines = @m.markdown.lines
-    tmphash = {}
-    @chapters = {}
-    @m.heading_lines.reverse.each{ |linenum|
-      lines.insert(linenum, "<a name=\"ch#{linenum}\"></a>\r\n")
-      tmphash[sanitize_heading(lines[linenum+1][2..-1].strip)] = linenum.to_s
-    } # annotate headings in reverse order, to avoid offsetting the next heading
-    tmphash.keys.reverse.map{|k| @chapters[k] = tmphash[k]}
-    @selected_chapter = tmphash.keys.last
-    @html = MultiMarkdown.new(lines.join("")).to_html.force_encoding('UTF-8')
-    ## @html = @html.gsub(/fn:(\d+)/,"fn\\1").gsub(/fnref:(\d+)/,"fnref\\1") # false lead re why Firefox doesn't handle the anchors properly. Works in Chrome! # TODO: fix.
-    @tabclass = set_tab('works')
-    @entity = @m
-    @pagetype = :manifestation
-    @print_url = url_for(action: :print, id: @m.id)
-    @liked = (current_user.nil? ? false : @m.likers.include?(current_user))
+    unless @m.nil?
+      lines = @m.markdown.lines
+      tmphash = {}
+      @chapters = {}
+      @m.heading_lines.reverse.each{ |linenum|
+        lines.insert(linenum, "<a name=\"ch#{linenum}\"></a>\r\n")
+        tmphash[sanitize_heading(lines[linenum+1][2..-1].strip)] = linenum.to_s
+      } # annotate headings in reverse order, to avoid offsetting the next heading
+      tmphash.keys.reverse.map{|k| @chapters[k] = tmphash[k]}
+      @selected_chapter = tmphash.keys.last
+      @html = MultiMarkdown.new(lines.join("")).to_html.force_encoding('UTF-8')
+      ## @html = @html.gsub(/fn:(\d+)/,"fn\\1").gsub(/fnref:(\d+)/,"fnref\\1") # false lead re why Firefox doesn't handle the anchors properly. Works in Chrome! # TODO: fix.
+      @tabclass = set_tab('works')
+      @entity = @m
+      @pagetype = :manifestation
+      @print_url = url_for(action: :print, id: @m.id)
+      @liked = (current_user.nil? ? false : @m.likers.include?(current_user))
+    end
   end
 end
