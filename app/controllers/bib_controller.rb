@@ -31,7 +31,7 @@ class BibController < ApplicationController
       gen_toc = ''
       # make TOC
       @pubs.each do |pub|
-        gen_toc += "### #{pub.title}\n#{pub.publisher_line}\n\n"
+        gen_toc += "### #{pub.title}\n#{pub.publisher_line}, #{pub.pub_year} \n\n"
       end
       # save TOC to person if no TOC yet
       if @p.toc.nil?
