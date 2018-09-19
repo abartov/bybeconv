@@ -10,7 +10,7 @@ one:
   publication_place: MyString
   publication_date: MyString
   series_statement: MyString
-  comment: 
+  comment:
 
 two:
   title: MyString
@@ -22,4 +22,4 @@ two:
   publication_place: MyString
   publication_date: MyString
   series_statement: MyString
-  comment: 
+  comment:

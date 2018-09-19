@@ -4,12 +4,10 @@ one:
   title: MyString
   form: MyString
   date: MyString
-  language: MyString
-  comment: 
+  comment:
 
 two:
   title: MyString
   form: MyString
   date: MyString
-  language: MyString
-  comment: 
+  comment:
