@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   before_action :set_paper_trail_whodunnit
   before_action :set_font_size
-  after_filter :set_access_control_headers
+  after_action :set_access_control_headers
 
   # class variables
   @@countauthors_cache = nil
