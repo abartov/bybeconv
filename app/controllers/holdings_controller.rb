@@ -81,6 +81,6 @@ class HoldingsController < ApplicationController
     @holding = Holding.find(params[:id])
   end
   def holding_params
-    params.require(:holding).permit(:publication_id, :source_id, :scan_url, :status)
+    params.require(:holding).permit(:publication_id, :location, :source_id, :scan_url, :status)
   end
 end

@@ -1,5 +1,4 @@
-class Tagging < ActiveRecord::Base
-  attr_accessible :approved_by, :manifestation_id, :status, :suggested_by, :tag_id
+class Tagging < ApplicationRecord
 
   belongs_to :tag, foreign_key: 'tag_id'
   belongs_to :manifestation, foreign_key: 'manifestation_id'

@@ -16,11 +16,13 @@ class SessionController < ApplicationController
 
   def create
     @user = User.from_omniauth(auth_hash)
+    reset_session
     session[:user_id] = @user.id
     redirect_to '/'
   end
 
   def destroy
+    reset_session
     session[:user_id] = nil
     redirect_to '/'
   end

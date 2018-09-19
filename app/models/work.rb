@@ -1,4 +1,4 @@
-class Work < ActiveRecord::Base
+class Work < ApplicationRecord
   has_and_belongs_to_many :expressions
   has_many :creations
   has_many :persons, through: :creations, class_name: 'Person'

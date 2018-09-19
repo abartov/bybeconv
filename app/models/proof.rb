@@ -1,5 +1,4 @@
-class Proof < ActiveRecord::Base
-  attr_accessible :about, :from, :what, :resolved_by, :status, :subscribe, :highlight, :recommended_by, :manifestation_id
+class Proof < ApplicationRecord
 
   belongs_to :html_file
   belongs_to :user, foreign_key: 'reported_by'

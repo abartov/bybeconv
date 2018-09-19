@@ -1,2 +1,2 @@
-class Period < ActiveRecord::Base
+class Period < ApplicationRecord
 end

@@ -1,4 +1,4 @@
-class Expression < ActiveRecord::Base
+class Expression < ApplicationRecord
   before_save :set_translation
 
   has_and_belongs_to_many :works

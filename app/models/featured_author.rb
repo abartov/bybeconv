@@ -1,8 +1,8 @@
-class FeaturedAuthor < ActiveRecord::Base
+class FeaturedAuthor < ApplicationRecord
   belongs_to :user
   belongs_to :person
 
-  attr_accessible :title, :body
+#  attr_accessible :title, :body
   has_many :featurings, class_name: 'FeaturedAuthorFeature'
 
   def featured_list

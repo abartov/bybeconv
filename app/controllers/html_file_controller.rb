@@ -25,7 +25,7 @@ class HtmlFileController < ApplicationController
   end
 
   def create
-    @text = HtmlFile.new(params[:html_file])
+    @text = HtmlFile.new(hf_params)
     @text.status = 'Uploaded'
     respond_to do |format|
       if @text.save
@@ -456,5 +456,11 @@ class HtmlFileController < ApplicationController
     new_lines += lines # just append the remaining lines
     @markdown = new_lines.join "\n"
     File.open(@text.path + '.markdown', 'wb') { |f| f.write(@markdown) } # write back
+  end
+
+  private
+
+  def hf_params
+    params[:html_file].permit(:title, :genre, :markdown, :publisher, :comments, :path, :url, :status, :orig_mtime, :orig_ctime, :person_id, :doc, :translator_id, :orig_lang, :year_published)
   end
 end

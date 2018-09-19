@@ -307,7 +307,7 @@ class NokoDoc < Nokogiri::XML::SAX::Document
   end
 end
 
-class HtmlFile < ActiveRecord::Base
+class HtmlFile < ApplicationRecord
   include Ensure_docx_content_type # fixing docx content-type detection problem, per https://github.com/thoughtbot/paperclip/issues/1713
   has_paper_trail
   has_and_belongs_to_many :manifestations
@@ -316,7 +316,7 @@ class HtmlFile < ActiveRecord::Base
   belongs_to :assignee, class_name: 'User', foreign_key: 'assignee_id'
   scope :with_nikkud, -> { where("nikkud IS NOT NULL and nikkud <> 'none'") }
   scope :not_stripped, -> { where('stripped_nikkud IS NULL or stripped_nikkud = 0') }
-  attr_accessible :title, :genre, :markdown, :publisher, :comments, :path, :url, :status, :orig_mtime, :orig_ctime, :person_id, :doc, :translator_id, :orig_lang, :year_published
+  # attr_accessible :title, :genre, :markdown, :publisher, :comments, :path, :url, :status, :orig_mtime, :orig_ctime, :person_id, :doc, :translator_id, :orig_lang, :year_published
 
   has_attached_file :doc, storage: :s3, s3_credentials: 'config/s3.yml', s3_region: 'us-east-1'
 #  validates_attachment_content_type :doc, content_type: ['application/vnd.openxmlformats-officedocument.wordprocessingml.document']

@@ -1,5 +1,4 @@
-class Tag < ActiveRecord::Base
-  attr_accessible :created_by, :name, :status
+class Tag < ApplicationRecord
   has_many :taggings
   has_many :manifestations, through: :taggings, class_name: 'Manifestation'
   belongs_to :creator, foreign_key: :created_by, class_name: 'User'

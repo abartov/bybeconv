@@ -74,7 +74,7 @@ class AuthorsController < ApplicationController
   end
 
   def create
-    @person = Person.new(params[:person])
+    @person = Person.new(person_params)
 
     respond_to do |format|
       if @person.save
@@ -126,8 +126,8 @@ class AuthorsController < ApplicationController
       flash[:error] = t(:no_such_item)
       redirect_to '/'
     else
-      params[:person][:wikidata_id] = params[:person][:wikidata_id][1..-1] if params[:person] and params[:person][:wikidata_id] and params[:person][:wikidata_id][0] and params[:person][:wikidata_id][0] == 'Q' # tolerate pasting the Wikidata number with the Q
-      if @author.update_attributes(params[:person])
+      params[:person][:wikidata_id] = params[:person][:wikidata_id].strip[1..-1] if params[:person] and params[:person][:wikidata_id] and params[:person][:wikidata_id][0] and params[:person][:wikidata_id].strip[0] == 'Q' # tolerate pasting the Wikidata number with the Q
+      if @author.update_attributes(person_params)
         flash[:notice] = I18n.t(:updated_successfully)
         redirect_to action: :show, id: @author.id
       else
@@ -210,5 +210,8 @@ class AuthorsController < ApplicationController
     @genres_present = []
     @works.each_key {|k| @genres_present << k unless @works[k].size == 0 || @genres_present.include?(k)}
     @translations.each_key {|k| @genres_present << k unless @works[k].size == 0 || @genres_present.include?(k)}
+  end
+  def person_params
+    params[:person].permit(:affiliation, :comment, :country, :name, :nli_id, :other_designation, :viaf_id, :public_domain, :profile_image, :birthdate, :deathdate, :wikidata_id, :wikipedia_url, :wikipedia_snippet, :blog_category_url, :profile_image, :metadata_approved, :gender, :bib_done)
   end
 end

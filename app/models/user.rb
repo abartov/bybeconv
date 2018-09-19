@@ -1,5 +1,5 @@
-class User < ActiveRecord::Base
-  attr_accessible :email, :name, :oauth_expires_at, :oauth_token, :provider, :uid
+class User < ApplicationRecord
+  # attr_accessible :email, :name, :oauth_expires_at, :oauth_token, :provider, :uid
   has_attached_file :avatar, styles: { full: "720x1040", medium: "360x520", thumb: "180x260", tiny: "90x120"}, storage: :s3, s3_credentials: 'config/s3.yml', s3_region: 'us-east-1'
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\z/
 
@@ -32,7 +32,7 @@ class User < ActiveRecord::Base
   end
 
   def self.from_omniauth(auth)
-    where(auth.slice(:provider, :uid)).first_or_initialize.tap do |user|
+    where(provider: auth.provider, uid: auth.uid).first_or_initialize.tap do |user|
       user.provider = auth.provider
       user.uid = auth.uid
       user.name = auth.info.name

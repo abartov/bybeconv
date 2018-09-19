@@ -202,7 +202,7 @@ end
 
   def whatsnew_since(timestamp)
     authors = {}
-    Manifestation.published.new_since(timestamp).each {|m|
+    Manifestation.all_published.new_since(timestamp).each {|m|
       e = m.expressions[0]
       person = e.persons[0] # TODO: more nuance
       next if person.nil? # shouldn't happen, but might in a dev. env.

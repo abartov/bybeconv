@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
 
-gem 'rails', '~> 4.2' # what blocks upgrading?
-gem 'rails-i18n', github: 'svenfuchs/rails-i18n', branch: 'rails-4-x' # For 4.x
+gem 'rails', '~> 5.0.0'
+gem 'rails-i18n', git: 'https://github.com/svenfuchs/rails-i18n.git' # , branch: 'rails-4-x' # For 4.x
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
@@ -10,7 +10,7 @@ gem 'mysql2', '~> 0.3.11'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-twitter'
 #gem 'clockwork' # scheduler
-gem 'protected_attributes' # compatibility gem for 3.2.x-style attr_accessible
+#gem 'protected_attributes' # compatibility gem for 3.2.x-style attr_accessible
 gem 'rufus-scheduler' # scheduler
 gem 'chewy' # for ElasticSearch
 #gem 'jssorslider-rails', github: 'matthias-g/jssorslider-rails' # for carousel slider
