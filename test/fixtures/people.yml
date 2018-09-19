@@ -1,0 +1,21 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+author1:
+  name: מחבר פלוני
+  birthdate: 18 ינואר 1834
+  deathdate: 26 יולי 1921
+  comment: קצת הערות לעיצוב האישיות
+  public_domain: true
+  viaf_id:
+  wikidata_id: 42
+  gender: 0
+
+author2:
+  name: מחברת אלמונית
+  birthdate: 18 ינואר 1949
+  deathdate: 26 יולי 2011
+  public_domain: false
+  comment:
+  gender: 1
+  viaf_id: 8376104
+  wikidata_id: 215779

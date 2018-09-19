@@ -82,6 +82,7 @@ GEM
     dalli (2.7.8)
     debug_inspector (0.0.3)
     diffy (3.2.1)
+    docile (1.3.1)
     docx (0.3.0)
       nokogiri (~> 1.8, >= 1.8.1)
       rubyzip (~> 1.2, >= 1.2.1)
@@ -371,6 +372,11 @@ GEM
       childprocess (~> 0.5)
       rubyzip (~> 1.2)
     sexp_processor (4.11.0)
+    simplecov (0.16.1)
+      docile (~> 1.1)
+      json (>= 1.8, < 3)
+      simplecov-html (~> 0.10.0)
+    simplecov-html (0.10.2)
     sparql (2.0.0)
       builder (~> 3.2)
       ebnf (~> 1.0, >= 1.0.1)
@@ -472,6 +478,7 @@ DEPENDENCIES
   rollbar
   rufus-scheduler
   sass-rails
+  simplecov
   sparql-client (~> 2.0.1)
   therubyracer
   thin
@@ -480,4 +487,4 @@ DEPENDENCIES
   web-console (~> 2.0)
 
 BUNDLED WITH
-   1.16.1
+   1.16.2

@@ -32,6 +32,7 @@ class Person < ActiveRecord::Base
   is_impressionable :counter_cache => true # for statistics
 
   # validations
+  validates :name, presence: true
   validates_attachment_content_type :profile_image, content_type: /\Aimage\/.*\z/
 
   # class variable
