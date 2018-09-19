@@ -72,7 +72,7 @@ gem 'haml-rails'
 gem 'linkeddata' # for RDF etc.
 gem 'rdf-vocab' # for SKOS predefined vocab
 gem 'project-honeypot', '>= 0.1.3' # for HTTP:BL service by Project Honeypot
-gem 'paper_trail', '~> 4.0.0' # for versioning entities
+gem 'paper_trail', '~> 5.0.0' # for versioning entities
 #gem 'gepub' # for generating EPUBs
 gem 'gepub', '~> 0.7.0beta4' # for generating EPUBs
 gem 'rmagick' # for generating cover images for EPUBs
