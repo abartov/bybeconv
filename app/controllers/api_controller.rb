@@ -1,6 +1,6 @@
 class ApiController < ApplicationController
   respond_to :json, :html
-#  before_filter :ensure_json_request
+#  before_action :ensure_json_request
   impressionist # log actions for pageview stats
 
 

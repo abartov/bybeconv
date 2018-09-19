@@ -2,7 +2,7 @@ require 'diffy'
 include BybeUtils
 
 class AuthorsController < ApplicationController
-  before_filter only: [:new, :create, :show, :edit, :list, :edit_toc, :update] do |c| c.require_editor('edit_people') end
+  before_action only: [:new, :create, :show, :edit, :list, :edit_toc, :update] do |c| c.require_editor('edit_people') end
 
   def get_random_author
     @author = nil

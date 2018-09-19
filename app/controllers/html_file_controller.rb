@@ -1,10 +1,10 @@
 require 'pandoc-ruby' # for generic DOCX-to-HTML conversions
 
 class HtmlFileController < ApplicationController
-  before_filter :require_editor, only: [:edit, :update, :list_for_editor]
-  # before_filter :require_user, :only => [:edit, :update]
+  before_action :require_editor, only: [:edit, :update, :list_for_editor]
+  # before_action :require_user, :only => [:edit, :update]
 
-  before_filter :require_admin, only: [:analyze, :analyze_all, :new, :create, :destroy, :list, :parse, :publish, :unsplit, :chop1, :chop2, :chop3, :choplast1, :choplast2, :poetry, :frbrize, :edit_markdown, :mark_superseded]
+  before_action :require_admin, only: [:analyze, :analyze_all, :new, :create, :destroy, :list, :parse, :publish, :unsplit, :chop1, :chop2, :chop3, :choplast1, :choplast2, :poetry, :frbrize, :edit_markdown, :mark_superseded]
 
   def analyze
     @text = HtmlFile.find(params[:id])

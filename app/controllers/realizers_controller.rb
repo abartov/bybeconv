@@ -1,5 +1,5 @@
 class RealizersController < ApplicationController
-  before_filter :require_editor
+  before_action :require_editor
 
   def remove
     r = Realizer.find(params[:id])

@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
-  before_filter :set_paper_trail_whodunnit
-  before_filter :set_font_size
+  before_action :set_paper_trail_whodunnit
+  before_action :set_font_size
   after_filter :set_access_control_headers
 
   # class variables

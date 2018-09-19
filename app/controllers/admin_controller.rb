@@ -1,6 +1,6 @@
 class AdminController < ApplicationController
-  before_filter :require_editor
-  before_filter :require_admin, only: [:missing_languages, :missing_genres, :incongruous_copyright, :missing_copyright, :similar_titles]
+  before_action :require_editor
+  before_action :require_admin, only: [:missing_languages, :missing_genres, :incongruous_copyright, :missing_copyright, :similar_titles]
   autocomplete :manifestation, :title, display_value: :title_and_authors
   autocomplete :person, :name
 

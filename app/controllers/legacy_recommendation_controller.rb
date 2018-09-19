@@ -1,7 +1,7 @@
 class LegacyRecommendationController < ApplicationController
 
   protect_from_forgery :except => :submit # allow submission from outside the app
-  before_filter :require_editor, :only => [:index, :list, :show, :resolve, :purge]
+  before_action :require_editor, :only => [:index, :list, :show, :resolve, :purge]
 
   impressionist # log actions for pageview stats
 

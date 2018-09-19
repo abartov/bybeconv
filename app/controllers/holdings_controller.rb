@@ -1,5 +1,5 @@
 class HoldingsController < ApplicationController
-  before_filter :require_editor
+  before_action :require_editor
   before_action :set_holding, only: [:show, :edit, :update, :destroy]
 
   # GET /holdings
