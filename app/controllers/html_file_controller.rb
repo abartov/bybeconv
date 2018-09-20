@@ -1,10 +1,10 @@
 require 'pandoc-ruby' # for generic DOCX-to-HTML conversions
 
 class HtmlFileController < ApplicationController
-  before_filter :require_editor, only: [:edit, :update, :list_for_editor]
-  # before_filter :require_user, :only => [:edit, :update]
+  before_action :require_editor, only: [:edit, :update, :list_for_editor]
+  # before_action :require_user, :only => [:edit, :update]
 
-  before_filter :require_admin, only: [:analyze, :analyze_all, :new, :create, :destroy, :list, :parse, :publish, :unsplit, :chop1, :chop2, :chop3, :choplast1, :choplast2, :poetry, :frbrize, :edit_markdown, :mark_superseded]
+  before_action :require_admin, only: [:analyze, :analyze_all, :new, :create, :destroy, :list, :parse, :publish, :unsplit, :chop1, :chop2, :chop3, :choplast1, :choplast2, :poetry, :frbrize, :edit_markdown, :mark_superseded]
 
   def analyze
     @text = HtmlFile.find(params[:id])
@@ -25,7 +25,7 @@ class HtmlFileController < ApplicationController
   end
 
   def create
-    @text = HtmlFile.new(params[:html_file])
+    @text = HtmlFile.new(hf_params)
     @text.status = 'Uploaded'
     respond_to do |format|
       if @text.save
@@ -456,5 +456,11 @@ class HtmlFileController < ApplicationController
     new_lines += lines # just append the remaining lines
     @markdown = new_lines.join "\n"
     File.open(@text.path + '.markdown', 'wb') { |f| f.write(@markdown) } # write back
+  end
+
+  private
+
+  def hf_params
+    params[:html_file].permit(:title, :genre, :markdown, :publisher, :comments, :path, :url, :status, :orig_mtime, :orig_ctime, :person_id, :doc, :translator_id, :orig_lang, :year_published)
   end
 end

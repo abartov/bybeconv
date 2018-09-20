@@ -1,8 +1,8 @@
 require 'pandoc-ruby'
 
 class ManifestationController < ApplicationController
-  before_filter only: [:list, :show, :remove_link, :edit_metadata] do |c| c.require_editor('edit_catalog') end
-  before_filter only: [:edit, :update] do |c| c.require_editor(['edit_catalog', 'conversion_verification']) end
+  before_action only: [:list, :show, :remove_link, :edit_metadata] do |c| c.require_editor('edit_catalog') end
+  before_action only: [:edit, :update] do |c| c.require_editor(['edit_catalog', 'conversion_verification']) end
 
   autocomplete :manifestation, :title, limit: 20, display_value: :title_and_authors, full: true
   autocomplete :person, :name, :limit => 2, full: true
@@ -17,7 +17,7 @@ class ManifestationController < ApplicationController
   def all
     @page_title = t(:all_works)+' '+t(:project_ben_yehuda)
     @pagetype = :works
-    @works_abc = Manifestation.published.order(:title).page(params[:page]).limit(25) # get page X of all manifestations
+    @works_abc = Manifestation.all_published.order(:title).page(params[:page]).limit(25) # get page X of all manifestations
   end
 
   def by_tag
@@ -184,7 +184,7 @@ class ManifestationController < ApplicationController
 
   def genre
     @tabclass = set_tab('works')
-    @manifestations = Manifestation.published.joins(:expressions).where(expressions: {genre: params[:genre]}).page(params[:page]).order('title ASC')
+    @manifestations = Manifestation.all_published.joins(:expressions).where(expressions: {genre: params[:genre]}).page(params[:page]).order('title ASC')
   end
 
   # this one is called via AJAX
@@ -192,15 +192,15 @@ class ManifestationController < ApplicationController
     # TODO: speed up?
     work = nil
     unless params[:genre].nil? || params[:genre].empty?
-      work = Manifestation.published.genre(params[:genre]).order('RAND()').limit(1)[0]
+      work = Manifestation.all_published.genre(params[:genre]).order('RAND()').limit(1)[0]
     else
-      work = Manifestation.published.order('RAND()').limit(1)[0]
+      work = Manifestation.all_published.order('RAND()').limit(1)[0]
     end
     render partial: 'shared/surprise_work', locals: {manifestation: work, id_frag: params[:id_frag], passed_genre: params[:genre], side: params[:side]}
   end
 
   def surprise_work
-    work = Manifestation.published.order('RAND()').limit(1)[0]
+    work = Manifestation.all_published.order('RAND()').limit(1)[0]
     render partial: 'surprise_work', locals: {work: work}
   end
 

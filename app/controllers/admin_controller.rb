@@ -1,6 +1,6 @@
 class AdminController < ApplicationController
-  before_filter :require_editor
-  before_filter :require_admin, only: [:missing_languages, :missing_genres, :incongruous_copyright, :missing_copyright, :similar_titles]
+  before_action :require_editor
+  before_action :require_admin, only: [:missing_languages, :missing_genres, :incongruous_copyright, :missing_copyright, :similar_titles]
   autocomplete :manifestation, :title, display_value: :title_and_authors
   autocomplete :person, :name
 
@@ -180,7 +180,7 @@ class AdminController < ApplicationController
   end
 
   def static_page_create
-    @vp = StaticPage.new(params[:static_page])
+    @vp = StaticPage.new(sp_params)
     respond_to do |format|
       if @vp.save
         format.html { redirect_to url_for(action: :static_page_show, id: @vp.id), notice: t(:updated_successfully) }
@@ -211,7 +211,7 @@ class AdminController < ApplicationController
       flash[:error] = I18n.t(:no_such_item)
       redirect_to url_for(action: :index)
     else
-      if @vp.update_attributes(params[:static_page])
+      if @vp.update_attributes(sp_params)
         flash[:notice] = I18n.t(:updated_successfully)
         redirect_to action: :static_page_show, id: @vp.id
       else
@@ -237,7 +237,7 @@ class AdminController < ApplicationController
   end
 
   def volunteer_profile_create
-    @vp = VolunteerProfile.new(params[:volunteer_profile])
+    @vp = VolunteerProfile.new(vp_params)
     respond_to do |format|
       if @vp.save
         format.html { redirect_to url_for(action: :volunteer_profile_show, id: @vp.id), notice: t(:updated_successfully) }
@@ -267,7 +267,7 @@ class AdminController < ApplicationController
       flash[:error] = I18n.t(:no_such_item)
       redirect_to url_for(action: :index)
     else
-      if @vp.update_attributes(params[:volunteer_profile])
+      if @vp.update_attributes(vp_params)
         flash[:notice] = I18n.t(:updated_successfully)
         redirect_to action: :volunteer_profile_show, id: @vp.id
       else
@@ -377,7 +377,7 @@ class AdminController < ApplicationController
         @fc.person = Person.find(params[:linked_author])
       end
       @fc.save
-      if @fc.update_attributes(params[:featured_content])
+      if @fc.update_attributes(fc_params)
         flash[:notice] = I18n.t(:updated_successfully)
         redirect_to action: :featured_content_show, id: @fc.id
       else
@@ -442,7 +442,7 @@ class AdminController < ApplicationController
   end
 
   def featured_author_create
-    @fc = FeaturedAuthor.new(params[:featured_author])
+    @fc = FeaturedAuthor.new(fa_params)
     @fc.person_id = params[:person_id]
     @fc.user = current_user
     respond_to do |format|
@@ -483,7 +483,7 @@ class AdminController < ApplicationController
       flash[:error] = I18n.t(:no_such_item)
       redirect_to url_for(action: :index)
     else
-      if @fc.update_attributes(params[:featured_author])
+      if @fc.update_attributes(fa_params)
         flash[:notice] = I18n.t(:updated_successfully)
         redirect_to action: :featured_author_show, id: @fc.id
       else
@@ -524,4 +524,18 @@ class AdminController < ApplicationController
     end
   end
 
+  private
+
+  def vp_params
+    params[:volunteer_profile].permit(:name, :bio, :about, :profile_image)
+  end
+  def fa_params
+    params[:featured_author].permit(:title, :body)
+  end
+  def fc_params
+    params[:featured_content].permit(:title, :body, :external_link)
+  end
+  def sp_params
+    params[:static_page].permit(:tag, :title, :body, :status, :mode, :ltr)
+  end
 end

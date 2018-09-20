@@ -3,6 +3,8 @@ require File.expand_path('../boot', __FILE__)
 require 'rails/all'
 require 'active_job'
 
+    # temp
+    ActiveSupport::Deprecation.debug = true
 if defined?(Bundler)
   # If you precompile assets before deploying to production, use this line
   Bundler.require(*Rails.groups)
@@ -45,7 +47,7 @@ module Bybeconv
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
 
-    config.active_record.raise_in_transactional_callbacks = true # opting in to new behavior
+    # config.active_record.raise_in_transactional_callbacks = true # opting in to new behavior
     #config.active_job.queue_adapter = :inline # scheduler
     #config.active_job.queue_adapter = :delayed_job # scheduler
 

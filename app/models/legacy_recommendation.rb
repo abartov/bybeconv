@@ -1,5 +1,4 @@
-class LegacyRecommendation < ActiveRecord::Base
-  attr_accessible :about, :from, :resolved_by, :status, :subscribe, :what, :recommended_by
+class LegacyRecommendation < ApplicationRecord
 
   belongs_to :html_file # legacy system (will be migrated or eliminated at some point; for now will co-exist quietly)
   belongs_to :manifestation # new system

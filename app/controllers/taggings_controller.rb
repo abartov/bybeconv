@@ -1,5 +1,5 @@
 class TaggingsController < ApplicationController
-  before_filter :require_user # for now, we don't allow anonymous taggings
+  before_action :require_user # for now, we don't allow anonymous taggings
   layout false
 
   def create

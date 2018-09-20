@@ -1,8 +1,8 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
-  before_filter :set_paper_trail_whodunnit
-  before_filter :set_font_size
-  after_filter :set_access_control_headers
+  before_action :set_paper_trail_whodunnit
+  before_action :set_font_size
+  after_action :set_access_control_headers
 
   # class variables
   @@countauthors_cache = nil
@@ -202,7 +202,7 @@ end
 
   def whatsnew_since(timestamp)
     authors = {}
-    Manifestation.published.new_since(timestamp).each {|m|
+    Manifestation.all_published.new_since(timestamp).each {|m|
       e = m.expressions[0]
       person = e.persons[0] # TODO: more nuance
       next if person.nil? # shouldn't happen, but might in a dev. env.

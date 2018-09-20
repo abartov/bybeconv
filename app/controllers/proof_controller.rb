@@ -1,7 +1,7 @@
 class ProofController < ApplicationController
 
   protect_from_forgery :except => :submit # allow submission from outside the app
-  before_filter :only => [:index, :list, :show, :resolve, :purge] do |c| c.require_editor('handle_proofs') end
+  before_action :only => [:index, :list, :show, :resolve, :purge] do |c| c.require_editor('handle_proofs') end
 
   impressionist # log actions for pageview stats
 

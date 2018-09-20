@@ -1,5 +1,5 @@
 class PublicationsController < ApplicationController
-  before_filter :require_editor
+  before_action :require_editor
   before_action :set_publication, only: [:show, :edit, :update, :destroy]
 
   # GET /publications

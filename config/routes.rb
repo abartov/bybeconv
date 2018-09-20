@@ -1,4 +1,5 @@
 Bybeconv::Application.routes.draw do
+  resources :mooses
   resources :bib_sources
   resources :holdings
   resources :publications

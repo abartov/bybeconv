@@ -1,6 +1,6 @@
 class UserController < ApplicationController
-  before_filter :require_admin, only: [:list, :make_editor, :make_admin, :unmake_editor, :set_editor_bit]
-  before_filter :require_user
+  before_action :require_admin, only: [:list, :make_editor, :make_admin, :unmake_editor, :set_editor_bit]
+  before_action :require_user
 
   def set_pref
     unless current_user.id == params[:id].to_i

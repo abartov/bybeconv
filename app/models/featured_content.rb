@@ -1,9 +1,9 @@
-class FeaturedContent < ActiveRecord::Base
+class FeaturedContent < ApplicationRecord
   belongs_to :manifestation
   belongs_to :person
   belongs_to :user
 
-  attr_accessible :title, :body, :external_link
+  # attr_accessible :title, :body, :external_link
   has_many :featured_content_features, class_name: 'FeaturedContentFeature', :dependent => :destroy
 
   def featured_list

@@ -1,4 +1,4 @@
-class Publication < ActiveRecord::Base
+class Publication < ApplicationRecord
   belongs_to :person
   belongs_to :bib_source
   has_many :holdings, :dependent => :destroy

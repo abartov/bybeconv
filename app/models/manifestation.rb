@@ -1,5 +1,5 @@
 include BybeUtils
-class Manifestation < ActiveRecord::Base
+class Manifestation < ApplicationRecord
   is_impressionable :counter_cache => true # for statistics
   has_and_belongs_to_many :expressions
   has_and_belongs_to_many :people
@@ -17,7 +17,7 @@ class Manifestation < ActiveRecord::Base
   enum linkstatus: [:approved, :submitted, :rejected]
   enum status: [:published, :nonpd, :unpublished, :deprecated]
 
-  scope :published, -> { where(status: Manifestation.statuses[:published])}
+  scope :all_published, -> { where(status: Manifestation.statuses[:published])}
   scope :new_since, -> (since) { where('created_at > ?', since)}
   scope :pd, -> { joins(:expressions).includes(:expressions).where(expressions: {copyrighted: false})}
   scope :copyrighted, -> { joins(:expressions).includes(:expressions).where(expressions: {copyrighted: true})}
@@ -172,11 +172,11 @@ class Manifestation < ActiveRecord::Base
   def self.popular_works_by_genre(genre, xlat)
     if xlat
       Rails.cache.fetch("m_pop_xlat_in_#{genre}", expires_in: 24.hours) do # memoize
-        Manifestation.published.joins([expressions: :works]).includes(:expressions).where(expressions: {genre: genre}).where("works.orig_lang != expressions.language").order(impressions_count: :desc).limit(10).map{|m| {id: m.id, title: m.title, author: m.author_string}}
+        Manifestation.all_published.joins([expressions: :works]).includes(:expressions).where(expressions: {genre: genre}).where("works.orig_lang != expressions.language").order(impressions_count: :desc).limit(10).map{|m| {id: m.id, title: m.title, author: m.author_string}}
       end
     else
       Rails.cache.fetch("m_pop_in_#{genre}", expires_in: 24.hours) do # memoize
-        Manifestation.published.joins([expressions: :works]).includes(:expressions).where(expressions: {genre: genre}).where("works.orig_lang = expressions.language").order(impressions_count: :desc).limit(10).map{|m| {id: m.id, title: m.title, author: m.author_string}}
+        Manifestation.all_published.joins([expressions: :works]).includes(:expressions).where(expressions: {genre: genre}).where("works.orig_lang = expressions.language").order(impressions_count: :desc).limit(10).map{|m| {id: m.id, title: m.title, author: m.author_string}}
       end
     end
   end
@@ -185,7 +185,7 @@ class Manifestation < ActiveRecord::Base
     list = []
     i = 0
     begin
-      candidates = Manifestation.published.genre(genre).order('RAND()').limit(15)
+      candidates = Manifestation.all_published.genre(genre).order('RAND()').limit(15)
       candidates.each {|au| list << au unless (except.include? au) or (list.include? au) or (list.length == 10)}
       i += 1
     end until list.size >= 10 or i > 10
@@ -194,14 +194,14 @@ class Manifestation < ActiveRecord::Base
 
   def self.first_25
     Rails.cache.fetch("m_first_25", expires_in: 24.hours) do
-      Manifestation.published.order(:title).limit(25)
+      Manifestation.all_published.order(:title).limit(25)
     end
   end
 
   def self.cached_last_month_works
     Rails.cache.fetch("m_new_last_month", expires_in: 24.hours) do
       ret = {}
-      Manifestation.published.new_since(1.month.ago).each {|m|
+      Manifestation.all_published.new_since(1.month.ago).each {|m|
         e = m.expressions[0]
         genre = e.genre
         person = e.persons[0] # TODO: more nuance
@@ -214,7 +214,7 @@ class Manifestation < ActiveRecord::Base
   end
 
   def self.recalc_popular
-    @@popular_works = Manifestation.published.order(impressions_count: :desc).limit(10) # top 10
+    @@popular_works = Manifestation.all_published.order(impressions_count: :desc).limit(10) # top 10
   end
 
   def self.cached_popular_works_by_genre
@@ -222,8 +222,8 @@ class Manifestation < ActiveRecord::Base
       ret = {}
       get_genres.each do |g|
         ret[g] = {}
-        ret[g][:orig] = Manifestation.published.genre(g).not_translations.distinct.order(impressions_count: :desc).limit(10)
-        ret[g][:xlat] = Manifestation.published.genre(g).translations.distinct.order(impressions_count: :desc).limit(10)
+        ret[g][:orig] = Manifestation.all_published.genre(g).not_translations.distinct.order(impressions_count: :desc).limit(10)
+        ret[g][:xlat] = Manifestation.all_published.genre(g).translations.distinct.order(impressions_count: :desc).limit(10)
       end
       ret
     end
@@ -231,7 +231,7 @@ class Manifestation < ActiveRecord::Base
 
   def self.cached_count
     Rails.cache.fetch("m_count", expires_in: 24.hours) do
-      Manifestation.published.count
+      Manifestation.all_published.count
     end
   end
 
@@ -239,7 +239,7 @@ class Manifestation < ActiveRecord::Base
     Rails.cache.fetch("m_count_by_genre", expires_in: 24.hours) do
       ret = {}
       get_genres.each do |g|
-        ret[g] = Manifestation.published.genre(g).distinct.count
+        ret[g] = Manifestation.all_published.genre(g).distinct.count
       end
       ret
     end
@@ -247,13 +247,13 @@ class Manifestation < ActiveRecord::Base
 
   def self.cached_translated_count
     Rails.cache.fetch("m_xlat_count", expires_in: 24.hours) do
-      Manifestation.published.translations.count
+      Manifestation.all_published.translations.count
     end
   end
 
   def self.cached_pd_count
     Rails.cache.fetch("m_pd_count", expires_in: 24.hours) do
-      Manifestation.published.pd.count
+      Manifestation.all_published.pd.count
     end
   end
 

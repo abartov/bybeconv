@@ -1,5 +1,5 @@
 class AboutnessesController < ApplicationController
-  before_filter :require_editor
+  before_action :require_editor
 
   def create
     @ab = Aboutness.new(work_id: params['work_id'], user_id: params['suggested_by'])

@@ -1,16 +1,16 @@
 source 'http://rubygems.org'
 
-gem 'rails', '~> 4.2' # what blocks upgrading?
-gem 'rails-i18n', github: 'svenfuchs/rails-i18n', branch: 'rails-4-x' # For 4.x
+gem 'rails', '~> 5.2.0'
+gem 'rails-i18n', git: 'https://github.com/svenfuchs/rails-i18n.git' # , branch: 'rails-4-x' # For 4.x
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
-gem 'mysql2', '~> 0.3.11'
+gem 'mysql2' # Rails 5.2 needs a newer one # , '~> 0.3.11'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-twitter'
 #gem 'clockwork' # scheduler
-gem 'protected_attributes' # compatibility gem for 3.2.x-style attr_accessible
+#gem 'protected_attributes' # compatibility gem for 3.2.x-style attr_accessible
 gem 'rufus-scheduler' # scheduler
 gem 'chewy' # for ElasticSearch
 #gem 'jssorslider-rails', github: 'matthias-g/jssorslider-rails' # for carousel slider
@@ -72,7 +72,7 @@ gem 'haml-rails'
 gem 'linkeddata' # for RDF etc.
 gem 'rdf-vocab' # for SKOS predefined vocab
 gem 'project-honeypot', '>= 0.1.3' # for HTTP:BL service by Project Honeypot
-gem 'paper_trail', '~> 4.0.0' # for versioning entities
+gem 'paper_trail', '~> 5.0.0' # for versioning entities
 #gem 'gepub' # for generating EPUBs
 gem 'gepub', '~> 0.7.0beta4' # for generating EPUBs
 gem 'rmagick' # for generating cover images for EPUBs

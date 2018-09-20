@@ -1,4 +1,4 @@
-class BibSource < ActiveRecord::Base
+class BibSource < ApplicationRecord
   has_many :holdings
   has_many :publications
   enum source_type: [:aleph, :primo, :idea, :hebrewbooks, :googlebooks] # according to the types supported by the Gared gem

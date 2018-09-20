@@ -1,6 +1,6 @@
 class HtmlDirsController < ApplicationController
   include BybeUtils
-  before_filter :require_admin
+  before_action :require_admin
 
   # GET /html_dirs
   # GET /html_dirs.json
@@ -64,7 +64,7 @@ class HtmlDirsController < ApplicationController
   # POST /html_dirs
   # POST /html_dirs.json
   def create
-    @html_dir = HtmlDir.new(params[:html_dir])
+    @html_dir = HtmlDir.new(hd_params)
 
     respond_to do |format|
       if @html_dir.save
@@ -83,7 +83,7 @@ class HtmlDirsController < ApplicationController
     @html_dir = HtmlDir.find(params[:id])
 
     respond_to do |format|
-      if @html_dir.update_attributes(params[:html_dir])
+      if @html_dir.update_attributes(hd_params)
         format.html { redirect_to @html_dir, notice: t(:updated_successfully) }
         format.json { head :ok }
       else
@@ -103,5 +103,11 @@ class HtmlDirsController < ApplicationController
       format.html { redirect_to html_dirs_url }
       format.json { head :ok }
     end
+  end
+
+  private
+
+  def hd_params
+    params[:html_dir].permit(:public_domain, :author, :path)
   end
 end
