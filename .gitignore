@@ -36,3 +36,4 @@
 do_chown.sh
 go.sh
 UX/*
+coverage
