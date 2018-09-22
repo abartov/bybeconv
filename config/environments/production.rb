@@ -63,4 +63,7 @@ Bybeconv::Application.configure do
   config.action_mailer.delivery_method = :sendmail # let's start sending mail :)
   config.eager_load = true
   config.i18n.available_locales = :he
+
+  # Store Active Storage files on the S3 service
+  config.active_storage.service = :amazon
 end

@@ -114,6 +114,7 @@ Bybeconv::Application.routes.draw do
   get "manifestation/remove_link"
   post "manifestation/update"
   patch "manifestation/update"
+  post "manifestation/add_images"
   get 'manifestation/get_random'
   get 'manifestation/like'
   get 'manifestation/unlike'

@@ -1,0 +1,10 @@
+- total = m.images.count
+- i = 0
+- while i < total do
+  .row
+    - colcount = 0
+    - while i < total and colcount < 3
+      .col-md-4
+        .thumbnail
+          = image_tag m.images[i].variant(resize: "150x150")
+      - i += 1

@@ -37,4 +37,7 @@ Bybeconv::Application.configure do
   # config.public_file_server.enabled = true # Rails 5.x?
   config.i18n.available_locales = :he
 
+  # Store Active Storage files locally.
+  config.active_storage.service = :local
+
 end

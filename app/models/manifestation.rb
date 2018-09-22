@@ -12,6 +12,7 @@ class Manifestation < ApplicationRecord
 
   has_paper_trail
   has_many :external_links
+  has_many_attached :images
 
   enum link_type: [:wikipedia, :blog, :youtube, :other]
   enum linkstatus: [:approved, :submitted, :rejected]

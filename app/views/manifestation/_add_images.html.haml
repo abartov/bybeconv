@@ -1,0 +1,5 @@
+= form_tag(action: :add_images, id: @m.id) do
+  .backend-field
+    = label_tag t(:upload_new_image)
+    = file_field_tag 'images[]', multiple: true, direct_upload: true
+    = submit_tag t(:submit)

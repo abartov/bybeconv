@@ -293,6 +293,16 @@ class ManifestationController < ApplicationController
     @aboutness = Aboutness.new
   end
 
+  def add_images
+    @m = Manifestation.find(params[:id])
+    prev_count = @m.images.count
+    byebug
+    @m.images.attach(params.permit(images: [])[:images])
+    new_count = @m.images.count
+    flash[:notice] = I18n.t(:uploaded_images, {images_added: new_count - prev_count, total: new_count})
+    redirect_to action: :show, id: @m.id
+  end
+
   def update
     @m = Manifestation.find(params[:id])
     # update attributes

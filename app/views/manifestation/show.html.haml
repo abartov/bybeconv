@@ -81,7 +81,10 @@
   %hr
   %h2= t(:external_links)
   = render partial: 'external_links', locals: { links: @m.external_links, edit: false }
-
+  %hr
+  %h2= t(:images)
+  = render partial: 'images', locals: { m: @m}
+  = render partial: 'add_images'
   %hr
   != raw(@html)
   %hr
