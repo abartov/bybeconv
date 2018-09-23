@@ -1,3 +1,4 @@
+include BybeUtils
 Bybeconv::Application.routes.draw do
   resources :mooses
   resources :bib_sources
@@ -235,6 +236,8 @@ Bybeconv::Application.routes.draw do
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id(.:format)))'
   #
-  # match legacy BY urls
-# tmp  match '*path' => "html_file#render_by_legacy_url", via: [:get]
+  # match legacy BY urls, but *only* those
+  match '*path' => "html_file#render_by_legacy_url", via: [:get], constraints: lambda {|req|
+    is_legacy_url(req.path)
+  }
 end

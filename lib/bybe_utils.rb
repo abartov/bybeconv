@@ -446,4 +446,9 @@ module BybeUtils
     end
     return url
   end
+  def is_legacy_url(url)
+    url = '/' + url if url[0] != '/' # prepend slash if necessary
+    h = HtmlFile.find_by_url(url)
+    return h != nil
+  end
 end
