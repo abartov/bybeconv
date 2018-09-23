@@ -22,9 +22,10 @@ gem "font-awesome-rails"
 gem 'mini_magick'
 
 gem 'diffy'
-gem 'aws-sdk', '~>2.9' # for the Amazon cloud.  3.x breaks somehow. TBD: figure it out
+# gem 'aws-sdk', '~>2.9' # for the Amazon cloud.  3.x breaks somehow. TBD: figure it out -- remove when migrating away from paperclip
+gem 'aws-sdk-s3' # for Active Storage
 
-gem 'paperclip', '~>5.2' # for cloud files like author images 6.x requires aws >3.x
+gem 'paperclip' # , '~>5.2' # for cloud files like author images 6.x requires aws >3.x
 gem 'impressionist' # for pageview stats
 gem 'jbuilder', '~> 2.0' # for JSON APIs
 
