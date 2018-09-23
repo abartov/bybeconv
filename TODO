@@ -1,4 +1,6 @@
 IDEA: now that we have picture support - maybe allow VARIANTS of existing manifestations, with (trusted) user-curated illustrated editions (taking from Commons etc.)
+- emit pics in print/export
+- Implement Capistrano deployment: https://github.com/capistrano/capistrano/blob/master/README.md
 
 ==Bib Workshop==
 grab DDC ids for Raanana through gared (async?)
@@ -9,13 +11,10 @@ grab DDC ids for Raanana through gared (async?)
 - add additional translated_from field to expression, for cases where the original language of the work is not the language this expression was translated from. (e.g. Shlonsky's Hamlet translation from Russian.)
 
 - BACKEND
-  - add author TOC publishable boolean (and checkbox in editing TOC)
-  - fix author TOC conversion to handle anchors!
   - add dropdown with expression details history *per author* to save work typing it for other expressions by that author.
   - add lock_version column to person, work, expression, and manifestation tables
   - implement taggings review
-  - have works automatically tagged as belonging to a book/collection (WEM!) according to (human-confirmed) heading from the ToC
-  - means to select additional/different authors
+  - EPIC: have works automatically tagged as belonging to a book/collection (WEM!) according to (human-confirmed) heading from the ToC
   - show revisions of manifestations/ToCs
   - show diffs between revs
   - restore rev over current
@@ -24,7 +23,6 @@ grab DDC ids for Raanana through gared (async?)
 
 - !! fix footnote anchors' scrolling relative to margin-top
 - !! add translations box to works view right side
-- EPIC: UPLOAD IMAGES (TO S3) AND EMBED THEM IN MARKDOWN
 - implement bookmarks (see notes in code!)
 - take foreign authors into account in authors page - if not everywhere, at least for fables?
 - make tags links to works queries by tag
@@ -37,7 +35,7 @@ grab DDC ids for Raanana through gared (async?)
 - implement WhatsApp Web when detected Desktop
 - implement favoriting authors
 - download as TXT - add CR+LF if user runs Windows
-- download as DOC - right-align (pandoc patch?)
++ download as DOC - right-align (pandoc patch?)
 - download as any format -- ensure title and authorship metadata properly emitted (apparently not currently the case in PDF?)
 
 - INTEROP
