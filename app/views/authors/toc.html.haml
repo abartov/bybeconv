@@ -1,59 +1,107 @@
 / Main author page
-#maincontainer.container-fluid
-  = render partial: 'shared/tabs', locals: {tabclass: @tabclass}
+#maincontainer.container-fluid.top-element
+  = render partial: 'shared/breadcrumbs'
   .row
-    .col-sm-11
-      %span{:class => 'author_title'}
-        = @author.name
-        != '&nbsp;'
-      - unless (@author.dates.nil? or @author.dates.empty?)
-        = '('+@author.dates+')'
-      = ' | '
-      = render partial: 'shared/copyright', locals: {copyright: (not @author.public_domain)}
-      = ' | '
-      = render partial: 'shared/author_links', locals: {author: @author}
+    .col-md-1
+    .col-md-10
+      .card.author-top
+        .row
+          - if current_user && current_user.editor?
+            %span.static-btn= link_to t(:edit_toc), authors_edit_toc_path(@author)
+            != "&nbsp;&nbsp;&nbsp;"
+            %span.static-btn= link_to t(:edit_metadata), authors_edit_path(id: @author.id)
+          .card-content
+            .col-md-9
+              .creator-bookmark-back-right
+                %img{src:'/assets/creator-bookmark-back2.png', alt: t(:background), width:168,height:6}
+              .creator-bookmark-front-right
+                %img{src: @author.profile_image.url(:thumb), alt: @author.name, width: 162}
+              .card-content.near-picture-right
+                %div
+                  %p
+                    %span.headline-1= @author.name
+                    != "(#{@author.life_years})"
+                %div{style:'display:inline-block'}
+                  .card-header-element{style:'padding-top:0.2rem;margin-left:0.6rem'}
+                    = render partial: 'shared/copyright', locals: {copyright: (not @author.public_domain)}
+                  - unless @author.blog_category_url.nil? or @author.blog_category_url.empty?
+                    .card-header-element{style:'padding-top:0.2rem;margin-left:0.6rem;margin-right:1rem'}
+                      %span
+                        %i.fa.fa-pencil-square-o
+                    .card-header-element
+                      %p= link_to t(:about_author_in_blog, author:@author.name), @author.blog_category_url
+                %div
+                  %p
+                    - unless @author.wikipedia_url.nil? or @author.wikipedia_snippet.nil? or @author.wikipedia_url.empty? or @author.wikipedia_snippet.empty?
+                      = @author.wikipedia_snippet
+                      != "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+                      = link_to t(:rest_in_wikipedia), @author.wikipedia_url
+                %div
+                  / TODO: period
+                %div{style:'display: inline-block; margin-top: 0.6rem'}
+                  .card-header-element{style:'margin-left:4rem'}
+                    / references
+                  .card-header-element{style:'margin-left:4rem'}
+                    / tags
+            .col-md-3{style:'padding-top:1.2rem;padding-left:1rem'}
+              = render partial: 'shared/sharing_etc', locals: {context: :toc}
+              .search-bar{style:'margin-top:3rem'}
+                .search.field
+                  %span.fa.fa-search.search-icon
+                  %input{placeholder: t(:find_work_by_author, author:@author.name), style:'background-color: #eeeced;'}
+    .col-md-1
+  = render partial: 'shared/genre_navbar', locals: {genres_present: @genres_present, page: :toc}
   .row
-    .col-sm-3
-      = render partial: 'shared/read_controls', locals: {author: @author}
-    .col-sm-7
-      = render partial: 'wikipedia', locals: {author: @author}
-      %br
-      %b= t(:period)+': '
-      = "  #{@author.period_string}"
-    .col-sm-2
-      = image_tag @author.profile_image.url(:thumb)
-  #maintext.row
-    .col-sm-10
-      = render partial: 'toc', locals: {author: @author, html: @html}
-    .col-sm-2
+    .col-md-1
       = render partial: 'toolbox'
+    .col-md-7
+      .toc#maintext
+        - unless @toc.nil?
+          = render partial: 'toc', locals: {margin: true}
+          .card#volunteers{style:'margin:3rem 20rem 0 0'}
+            .card-content
+              .row
+                .col-sm-9
+                  %div
+                    %p.headline-3= t(:volunteers_who_helped, {author: @author.name, gender_letter: @author.gender_letter})
+                  .credits
+                    != @credits
+                .col-sm-3
+        - else
+          = render partial: 'generated_toc'
+    .col-md-3
+      = render partial: 'aboutnesses'
+    .col-md-1
 
 :javascript
-  $(window).scroll(function () {
-    var $floatingbox = $('#toolbox');
-    var bodyY = parseInt($('#maintext').offset().top) - 20;
-    var originalX = $floatingbox.css('margin-right');
+  $(document).ready(function(){
+    var offsetTop = #{ @readmode ? 40 : 250 };
+    $(window).scroll(function () {
+      var $floatingbox = $('#toolbox');
+      var bodyY = parseInt($('#maintext').offset().top) - offsetTop;
+      var originalX = $floatingbox.css('margin-right');
 
-    var scrollY = $(window).scrollTop();
-    var isfixed = $floatingbox.css('position') == 'fixed';
+      var scrollY = $(window).scrollTop();
+      var isfixed = $floatingbox.css('position') == 'fixed';
 
-    if($floatingbox.length > 0){
+      if($floatingbox.length > 0){
 
-    if ( scrollY > bodyY && !isfixed ) {
-      $floatingbox.stop().css({
-        position: 'fixed',
-        //right: '50%',
-        top: 20,
-        //marginRight: -500
-        });
-    } else if ( scrollY < bodyY && isfixed ) {
-      $floatingbox.css({
-        position: 'relative',
-        //right: 0,
-        top: 0,
-        //marginRight: originalX
-        });
+      if ( scrollY > bodyY && !isfixed ) {
+        $floatingbox.stop().css({
+          position: 'fixed',
+          //right: '50%',
+          top: offsetTop,
+          //marginRight: -500
+          });
+      } else if ( scrollY < bodyY && isfixed ) {
+        $floatingbox.css({
+          position: 'relative',
+          //right: 0,
+          top: 0,
+          //marginRight: originalX
+          });
+        }
       }
-    }
+    });
   });
 

@@ -1,0 +1,20 @@
+.row.topbar
+  .col-lg-1
+  .col-lg-10{style:'padding:0'}
+    .row{style:'padding:0'}
+      .col-sm-3
+        / logo
+        #site-logo
+          = link_to '/' do
+            %img{ src:'/assets/BY_Logo.svg', class:'img-responsive', alt:t(:logo)}
+      .col-sm-6
+        #work-name{style: 'text-align:center'}
+          %p.headline-1{style:'margin-top:0;margin-bottom:0;font-size:2.2rem'}= @m.title
+          %p.headline-3{style:'padding:0;display:inline;font-size:1.6rem'}
+            = t(:by)+' '
+            = link_to @author.name, author_toc_path(@author.id)
+      .col-sm-3
+        .fontsize-selector-unit.vcentered
+          = render partial: 'shared/fontsize'
+        /= render partial: 'shared/copyright', locals: {copyright: @m.copyright?}
+  .col-lg-1

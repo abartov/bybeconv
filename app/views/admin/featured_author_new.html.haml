@@ -1,0 +1,4 @@
+.top-element
+  %h1= t(:new_featured_content)
+  = render partial: 'featured_author_form', locals: {action: 'featured_author_create', fc: @fc}
+  = link_to t(:back), url_for(action: :featured_author_list)

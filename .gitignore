@@ -12,6 +12,7 @@
 .byebug*
 # Mac crap
 .DS_Store
+
 # Ignore the default SQLite database.
 /db/*.sqlite3
 
@@ -22,9 +23,11 @@
 
 # ignore symlink
 /by
+/ignore/*
 # ignore site-specific config
 /config/database.yml
 /config/constants.yml
+/config/storage.yml
 /config/s3.yml
 /config/behead.payload
 
@@ -32,3 +35,7 @@
 
 do_chown.sh
 go.sh
+UX/*
+coverage
+export
+storage

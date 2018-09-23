@@ -1,5 +1,3 @@
-class ExternalLink < ActiveRecord::Base
-  attr_accessible :linktype, :status, :description, :url
-
+class ExternalLink < ApplicationRecord
   belongs_to :manifestation
 end

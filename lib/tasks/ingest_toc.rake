@@ -58,7 +58,7 @@ def process_index(dirname, blob)
   lines.each {|l| l.strip!}
   linked_body = lines.join ("\n")
   linked_body = section_titles(linked_body)
-  toc = Toc.new(toc: linked_body, status: 'Raw')
+  toc = Toc.new(toc: linked_body, status: 'raw')
   toc.save
   return toc
 end
@@ -78,7 +78,14 @@ def match_link(dirname, target, text)
   url = $1
   return '' if ['index.html','/','mailto:editor@benyehuda.org'].include?(url)
   return "[#{text}](#{url})" if url[0..3].upcase == 'HTTP' # preserve absolute links
-  h = HtmlFile.where(url: "/#{dirname}/#{url}")
+  pos = url.index('#')
+  if pos
+    filename = url[0..pos]
+    anchor = url[pos+1..-1]
+  else
+    filename = url
+  end
+  h = HtmlFile.where(url: "/#{dirname}/#{filename}")
   if h.empty?
     puts "ERROR: can't find HtmlFile for url #{dirname}/#{url}"
     return "ERROR: #{text} ----> #{target}\n"

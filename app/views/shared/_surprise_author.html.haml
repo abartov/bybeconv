@@ -1,0 +1,48 @@
+= render partial: 'shared/author_popup', locals: {author: author, surprise: true}
+%a{ 'data-toggle' => :modal, 'data-target'=> "#surprise_popup_#{id_frag}"}
+  - if passed_mode == 'gallery'
+    .corner
+      %img{ src: '/assets/corner.png', alt: t(:background), width: 80, height: 80}
+    .author-homepage-pic
+      %img{ src: author.profile_image.url(:thumb), alt: author.name, height: '230px'}
+    .author-homepage-surprise-name
+      %p.vcentered= author.name
+  - else
+    .bysurprise-pic
+      .bysurprise-portrait
+        %img{src: author.profile_image.url(:thumb), alt: author.name, width:83}
+    .card-content.bysurprise-text{style:'align-content:center; text-align:center;position:relative;height:12rem;'}
+      %p{style:'font-size:3rem;font-weight:bold;padding-top: 3rem;margin-bottom: -3rem;'}= author.name
+.replace-icon.text-on-dark{style:'margin-bottom:0.6rem'}
+  %a{ id: "surprise_author_refresh_#{id_frag}#{side}", role: :button}
+    %i.fa.fa-refresh
+
+:javascript
+  $(document).ready(function() {
+    $("#surprise_author_refresh_#{id_frag}#{side}").click(function(){
+      $("#surprise_author_refresh_#{id_frag}#{side}").off('click') // remove any existing hook
+
+      var the_id;
+      if($("##{id_frag}_side1").hasClass('active')) { // because we're about to flip
+        the_id = "##{id_frag}_side2";
+      } else {
+        the_id = "##{id_frag}_side1";
+      }
+      $("#surprise_author_carousel-#{id_frag}").carousel('next'); // begin transition
+      var $thediv = $(the_id + ' > div').clone(); // and immediately change the popup to be the correct one
+      $("#surprise_popup_#{id_frag}").html($thediv.html());
+    });
+
+    $("#surprise_author_carousel-#{id_frag}").on('slid.bs.carousel', function () {
+      var the_id, side;
+      if($("##{id_frag}_side2").hasClass('active')) { // because we've just flipped
+        the_id = "##{id_frag}_side1";
+        side = '1';
+      } else {
+        the_id = "##{id_frag}_side2";
+        side = '2';
+      }
+      $(the_id).load("#{url_for(controller: :authors, action: :get_random_author, id_frag: id_frag, genre: passed_genre, mode: passed_mode)}"+'&side='+side);
+    });
+
+  });

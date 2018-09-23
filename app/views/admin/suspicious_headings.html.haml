@@ -1,0 +1,22 @@
+.top-element
+  %h2= t(:suspicious_headings_report)
+
+  %h3= t(:total)+': '+@suspicious.length.to_s
+  %table{style: 'cell-spacing: 10;'}
+    %tr
+      %th= t(:title)
+      %th= t(:author)
+      %th= t(:genre)
+      %th
+
+    - @suspicious.each do |m|
+      %tr
+        %td= link_to m.title, manifestation_show_path(m.id)
+        %td= m.author_string
+        %td= textify_genre(m.expressions[0].genre)
+        %td
+          %b= link_to t(:edit_markdown), manifestation_edit_path(m.id)
+          = ' | '
+          = link_to t(:edit_metadata), manifestation_edit_metadata_path(m.id)
+          = ' | '
+          = link_to t(:render), url_for(controller: :manifestation, action: :read, id: m.id)

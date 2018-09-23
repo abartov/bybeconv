@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  volunter_profile_id_id:
+  fromdate: 2017-10-08 17:22:23
+  todate: 2017-10-08 17:22:23
+
+two:
+  volunter_profile_id_id:
+  fromdate: 2017-10-08 17:22:23
+  todate: 2017-10-08 17:22:23

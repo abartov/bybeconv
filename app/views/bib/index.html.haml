@@ -1,0 +1,24 @@
+%h1= t(:bib_workshop)
+.container-fluid
+  .row
+    .col-md-6
+      %h2= t(:statistics)
+      %p= t(:bib_stats, {pubs: @counts[:pubs], holdings: @counts[:holdings], obtained: @counts[:obtained], scanned: @counts[:scanned], uploaded: @counts[:uploaded], irrelevant: @counts[:irrelevant], missing: @counts[:missing], authors_todo: @counts[:authors_todo], authors_done: @counts[:authors_done]})
+      %h2= link_to t(:get_bibs), action: :pubs_by_person
+      %h2= link_to t(:review_bibs), publications_path
+    .col-md-6
+      %h2= link_to t(:available_scans), bib_scans_path
+      %table
+        - @digipubs.each do |pub|
+          = render partial: 'publications/pub', locals: {pub: pub, with_person: false, with_actions: :scans}
+  .row
+    .col-md-6
+      %h2= t(:shopping_lists)
+      %ul
+        - BibSource.physical_sources.each do |bs|
+          %li
+            = link_to bs.title, url_for(action: :shopping, source_id: bs.id)
+            = " (#{Holding.to_obtain(bs.id).count.to_s})"
+    .col-md-6
+      %h2= t(:administration)
+      %p= link_to t(:manage_bib_sources), bib_sources_path

@@ -1,0 +1,20 @@
+- unless pubs.nil?
+  - pubs.each do |pub|
+    %tr
+      %td= pub.title
+      %td= pub.author_line
+      %td= pub.publisher_line
+      %td= pub.pub_year
+      %td= pub.language
+      %td!= pub.notes.nil? ? '' : pub.notes.sub("\n", "<br />".html_safe)
+      /%td= pub.holdings.map{|h| linkify_record(pub.context, h.source_id)}.join(';').html_safe
+      - sid = (pub.source_id.class == Array ? pub.source_id[0] : pub.holdings[0].source_id)
+      %td= linkify_record(pub.context, sid).html_safe
+      %td= pub.holdings[0].location
+      %td= pub.scanned ? link_to(t(:yes), pub.holdings[0].scan_url) : t(:no)
+      %td
+        %button.nuke{onclick: 'this.parentElement.parentElement.remove()'}= t(:remove)
+        %br
+        %button.moveit{onclick: 'moveit(this)'}= t(:add_publication)
+        %br
+        %button.addholding{onclick: 'addholding(this)'}= t(:add_holding)

@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  source_type: 1
+  url: MyString
+  port: 1
+  api_key: MyString
+  comments: MyText
+
+two:
+  title: MyString
+  source_type: 1
+  url: MyString
+  port: 1
+  api_key: MyString
+  comments: MyText

@@ -1,0 +1,5 @@
+.top-element
+  %h1= "#{@vp.title}: #{t(:edit)}"
+  = render partial: 'static_page_form', locals: {action: :static_page_update, sp: @vp}
+  %p
+  = link_to t(:back), static_page_show_path(id: @vp.id)

@@ -1,5 +1,5 @@
 class CreationsController < ApplicationController
-  before_filter :require_editor
+  before_action :require_editor
   def add # actually handled in Manifestation#update for now (AJAX some day?)
   end
 

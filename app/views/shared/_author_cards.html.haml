@@ -1,22 +1,78 @@
-%h2= title
-.row
-  - if surprise
-    .col-xs-3
-      .card.author-card.surprise.surprise-author
-        %a{ href: '#', id: 'surprise_author_link'}
-          %div
-            %span.icon-bysurprise-author{style:'font-size:7.6rem;margin-bottom:1.4rem;'}
-          %h3{ style: 'text-align: center'}= t(:surprise_author)
-        .replace-icon.text-on-dark
-          %a{ href: '#', id: 'surprise_author_refresh'}
-            %i.fa.fa-refresh
-  - maxcard = surprise ? 2 : 3
-  - authors[0..maxcard].each do |author|
-    - last if author.nil? # devmode protection against fewer than 5 most-popular authors
-    .col-xs-3
-      .card.author-card
-        %a{href: author_toc_path(author)}
-          .author-homepage-pic
-            = image_tag author.profile_image.url(:thumb)
-          .author-homepage-text
-            %p= author.name
+.container-fluid
+  - unless skip_title
+    .row{style: 'margin-top:0'}
+      .col-xs-1
+      .col-xs-10{style: 'padding-right:0'}
+        %p.headline-3= title
+      .col-xs-1
+  #scroller_container
+    .row
+      .col-xs-1.slick-arrow{ id: "rightarrow#{id_frag}", style: "height:#{size == :large ? '50px' : '20px'};top:0px;"}
+        %svg{ viewbox: '0 0 16000 16000', style: 'position:absolute;top:35px;left:0;width:100%;height:100%'}
+          %path{ 'class' => 'a', fill:'#660248', d: 'M11962.3,8357.3l-5891.8,5891.8c-100.6,100.6-219.7,150.9-357.3,150.9s-256.7-50.3-357.3-150.9 L4037.7,12931c-100.6-100.6-150.9-219.7-150.9-357.3c0-137.6,50.3-256.7,150.9-357.3L8254.1,8000L4037.7,3783.6 c-100.6-100.6-150.9-219.7-150.9-357.3c0-137.6,50.3-256.7,150.9-357.3l1318.1-1318.1c100.6-100.6,219.7-150.9,357.3-150.9 s256.7,50.3,357.3,150.9l5891.8,5891.8c100.6,100.6,150.9,219.7,150.9,357.3C12113.2,8137.6,12062.9,8256.7,11962.3,8357.3 L11962.3,8357.3z'}
+      .col-xs-10
+        .scroller{ id: "scroller#{id_frag}", style: 'width:100%'}
+          /- maxcard = (surprise ? 2 : 3)
+          - maxcard = (surprise ? 7 : 8)
+          - if surprise
+            .slide
+              .carousel.slide#surprise_author_carousel-a
+                .carousel-inner
+                  .card.author-card.surprise.item.active#a_side1
+                    %a{ role: :button, id: 'surprise_author_link'}
+                      .corner
+                        %img{ src: '/assets/corner.png', alt: t(:background), width: 80, height: 80}
+                      .author-homepage-pic{style:'padding-top:3rem'}
+                        %span.icon-bysurprise-author{style:'font-size:7.6rem;margin-bottom:1.4rem;'}
+                        %p.headline-3= t(:surprise_author)
+                      .author-homepage-name
+                  .card.author-card.surprise.item#a_side2
+                    = render partial: 'shared/surprise_author', locals: {author: @surprise_author, passed_genre: '', passed_mode: 'gallery', side: '2', id_frag: 'a'}
+
+          - authors[0..maxcard].each do |author|
+            - break if author.nil? # devmode protection against fewer than 5 most-popular authors
+            .slide{ style: 'margin-left: 5px; margin-right: 5px;cursor:pointer'}
+              %div{class: "card #{size == :large ? 'author-card' : 'small-author-card'}"}
+                / %a{href: author_toc_path(author)}
+                %a{ 'data-toggle' => :modal, 'data-target'=> "#author_popup_#{author.id}"}
+                  %div{class: size == :large ? 'author-homepage-pic' : 'small-author-homepage-pic'}
+                    %img{ src: author.profile_image.url(:thumb), alt: author.name, height: (size == :large ? '230px' : '120px')}
+                  %div{class: size == :large ? 'author-homepage-name' : 'small-author-homepage-name'}
+                    %p.vcentered{ style: size == :large ? '' : 'font-size:85%'}= author.name
+      .col-xs-1.slick-arrow{ id: "leftarrow#{id_frag}", style: "height:#{size == :large ? '50px' : '20px'};top:0px;"}
+        %svg{ viewbox: '0 0 16000 16000', style: 'position:absolute;top:35px;left:0;width:100%;height:100%;'}
+          %path{ 'class' => 'a', fill:'#660248', d: 'M4037.7,8357.3l5891.8,5891.8c100.6,100.6,219.7,150.9,357.3,150.9s256.7-50.3,357.3-150.9 l1318.1-1318.1c100.6-100.6,150.9-219.7,150.9-357.3c0-137.6-50.3-256.7-150.9-357.3L7745.9,8000l4216.4-4216.4 c100.6-100.6,150.9-219.7,150.9-357.3c0-137.6-50.3-256.7-150.9-357.3l-1318.1-1318.1c-100.6-100.6-219.7-150.9-357.3-150.9 s-256.7,50.3-357.3,150.9L4037.7,7642.7c-100.6,100.6-150.9,219.7-150.9,357.3C3886.8,8137.6,3937.1,8256.7,4037.7,8357.3 L4037.7,8357.3z'}
+- authors[0..maxcard].each do |author|
+  = render partial: 'shared/author_popup', locals: {author: author, surprise: false}
+
+- if surprise
+  .modal.fade#surprise_popup_a{ role: 'dialog', tabindex: '-1'}
+
+:javascript
+  $(document).ready(function() {
+    var first = true;
+    $('[data-toggle="tooltip"]').tooltip();
+    $("#scroller#{id_frag}").slick({
+      infinite: false,
+      //slidesToShow: 3,
+      placeholders: false,
+      slidesToScroll: 1,
+      arrows: true,
+      rtl: true,
+      outerEdgeLimit: true,
+      nextArrow: "#leftarrow#{id_frag}",
+      prevArrow: "#rightarrow#{id_frag}",
+      variableWidth: true,
+      // appendArrows: '#scroller_container',
+    });
+    if(true == #{surprise}) {
+      $('#surprise_author_carousel-a').carousel({interval: false, wrap: true});
+      $('#surprise_author_link').click(function(){
+        $('#surprise_author_carousel-a').carousel('next'); // switch to ready surprise
+        $('#a_side1').load("#{url_for(controller: :authors, action: :get_random_author, id_frag:'a', side:'1',mode:'gallery')}", function() {
+          var $thediv = $("#a_side2 > div").clone();
+          $('#surprise_popup_a').html($thediv.html());
+        }); // and load next one
+      });
+    }
+  });

@@ -1,0 +1,39 @@
+.top-element
+  %h1= t(:volunteer_profile)
+  %a{ href: url_for(action: :volunteer_profile_edit, id: @vp.id)}
+    .btn{style:'float:none'}
+      %b= t(:edit)
+  %br
+  %br
+  %p
+    %b= t(:name)+': '
+    = @vp.name
+  %p
+    %b= t(:volunteer_bio)+': '
+    = @vp.bio
+  %p
+    %b= t(:volunteer_statement)+': '
+    = @vp.about
+  %p
+    = image_tag @vp.profile_image.url(:thumb), alt: @vp.name, height: '230px'
+  %h3= t(:feature_on)
+  %table
+    %tr
+      %th= t(:fromdate)
+      %th= t(:todate)
+      %th
+    - @vp.volunteer_profile_features.each do |vpf|
+      %tr
+        %td= vpf.fromdate.strftime('%d-%m-%Y')
+        %td= vpf.todate.strftime('%d-%m-%Y')
+        %td= link_to t(:destroy), url_for(action: :volunteer_profile_delete_feature, id: vpf.id), :data => { :confirm => t(:are_you_sure) }
+  = form_tag 'add_feature' do
+    = hidden_field_tag :vpid, @vp.id
+    = label_tag t(:fromdate)+': '
+    = select_date Date.today, prefix: :fromdate
+    %br
+    = label_tag t(:todate)+': '
+    = select_date Date.today, prefix: :todate
+    %br
+    = submit_tag(t(:add_feature_date))
+  = link_to t(:back), url_for(action: :volunteer_profiles_list)

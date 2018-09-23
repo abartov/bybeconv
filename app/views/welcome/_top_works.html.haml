@@ -1,7 +1,8 @@
-.row
-  .col-xs-12
-    .card.full-size-card.footer-card
-      .card-content
-        %ol
-          - @pop_works.each do |manifestation|
-            %li= link_to manifestation.title_and_authors, manifestation_read_path(manifestation.id)
+- cache 'top_works', expires_in: 24.hours do
+  .row
+    .col-xs-12
+      .card.full-size-card.footer-card
+        .card-content
+          %ol
+            - @pop_works.each do |manifestation|
+              %li= link_to manifestation.title_and_authors, manifestation_read_path(manifestation.id)

@@ -1,15 +1,87 @@
-%h2= t(:editor_actions)
-/ %p= link_to 'עריכת מטא-דאטה', html_file_list_for_editor_path
-%p= link_to 'עיון בהגהות מן הציבור ('+@open_proofs+')', proof_list_path(:status => 'new')
-%p= link_to 'עיון בהמלצות מן הציבור ('+@open_recommendations+')', recommendation_list_path(:status => 'new')
-- if current_user.admin?
-  %h2= t(:admin_actions)
-  %p
-    %b= link_to t(:html_files_list), html_file_list_path
-  %p= link_to t(:html_dirs_list), html_dirs_path
-  %hr
-  %b
-    %p= link_to t(:catalog_dashboard), manifestation_list_path
-    %p= link_to t(:manage_people), authors_list_path
-  %p= link_to t(:user_management), user_list_path
+.top-element
+  %h2= t(:editor_actions)
+  / %p= link_to 'עריכת מטא-דאטה', html_file_list_for_editor_path
+  - if current_user.has_bit?('conversion_verification')
+    %h3
+      = t(:conversion_verification)
+      = ' ('+Manifestation.where(conversion_verified: false).count.to_s+')'
+    = button_to t(:conversion_verification), url_for(action: :conversion_verification)
+    %p
+    %p= t(:convs_processed_so_far, {done: ListItem.where(listkey: 'convs_by_user', user: current_user).count, percent_done: number_to_percentage(@conv_percent_done, precision: 2)})
+    %button#show_my_convs= t(:show_my_convs)
+    #my_convs
+  - if current_user.has_bit?('handle_proofs')
+    %p= link_to 'עיון בהגהות מן הציבור ('+@open_proofs+')', proof_list_path(:status => 'new')
+  - if current_user.has_bit?('handle_recommendations')
+    %p= link_to 'עיון בהמלצות מן הציבור ('+@open_recommendations+')', legacy_recommendation_list_path(:status => 'new')
+  - if current_user.has_bit?('bib_workshop')
+    %p
+      %b= link_to t(:bib_workshop), bib_index_path
+    %hr
+    %h3= t(:main_catalog_management)
+    %b
+      - if current_user.has_bit?('edit_catalog')
+        %p= link_to t(:catalog_dashboard), manifestation_list_path
+      - if current_user.has_bit?('edit_people')
+        %p= link_to t(:manage_people), authors_list_path
+    %hr
+    %h3= t(:featured_content_heading)
+    - if current_user.has_bit?('curate_featured_content')
+      %p= link_to t(:featured_content_management), url_for(action: :featured_content_list)
+      %p= link_to t(:featured_authors_management), url_for(action: :featured_author_list)
+  - if current_user.admin?
+    %h2= t(:admin_actions)
+    %h3= t(:conversion_actions)
+    %b= link_to t(:upload_file), html_file_new_path
+    %p
+      = link_to t(:html_files_list), html_file_list_path
+    %p= link_to t(:html_dirs_list), html_dirs_path
+    %hr
+    %h3= t(:reports)
+    %p
+      %b= link_to t(:conversion_verification_report), admin_conversion_verification_path
+      = ' ('+Rails.cache.read('report_conversion_verification').to_s+')'
+    %p
+      = link_to t(:missing_language_report), admin_missing_languages_path
+      = ' ('+Rails.cache.read('report_missing_languages').to_s+')'
+    %p
+      = link_to t(:suspicious_translations_report), admin_suspicious_translations_path
+      = ' ('+Rails.cache.read('report_suspicious_translations').to_s+')'
+    %p
+      = link_to t(:missing_genre_report), admin_missing_genres_path
+      = ' ('+Rails.cache.read('report_missing_genres').to_s+')'
+    %p
+      = link_to t(:translated_from_multiple_languages), admin_translated_from_multiple_languages_path
+      = ' ('+Rails.cache.read('report_translated_from_multiple_languages').to_s+')'
+    %p
+      = link_to t(:raw_tocs), admin_raw_tocs_path
+      = ' ('+Rails.cache.read('report_raw_tocs').to_s+')'
+    %p
+      = link_to t(:missing_copyright_report), admin_missing_copyright_path
+      = ' ('+Rails.cache.read('report_missing_copyright').to_s+')'
+    %p
+      = link_to t(:suspicious_headings_report), admin_suspicious_headings_path
+      = ' ('+Rails.cache.read('report_suspicious_headings').to_s+')'
+    %p
+      = link_to t(:similar_titles_report), admin_similar_titles_path
+      = ' ('+Rails.cache.read('report_similar_titles').to_s+')'
+    %p
+      = link_to admin_incongruous_copyright_path do
+        = t(:incongruous_copyright_report)+' '
+        %b= t(:takes_long_time)
+      = ' ('+Rails.cache.read('report_incongruous_copyright').to_s+')'
+    %hr
+    %h3= t(:featured_content_heading)
+    %p= link_to t(:volunteer_profiles), url_for(action: :volunteer_profiles_list)
+    %p= link_to t(:static_pages), url_for(action: :static_pages_list)
+    %hr
+    %h3= t(:miscellaneous)
+    %p= link_to t(:user_management), user_list_path
 
+:javascript
+  $(document).ready(function() {
+    $('#show_my_convs').click(function(){
+      $('#my_convs').load("#{url_for(action: :my_convs, id: current_user.id)}");
+      $('#show_my_convs').remove();
+    })
+  });

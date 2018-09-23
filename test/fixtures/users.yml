@@ -1,17 +1,19 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
-one:
-  name: MyString
-  email: MyString
-  provider: MyString
-  uid: MyString
-  oauth_token: MyString
-  oauth_expires_at: 2014-03-30 17:11:20
+a_user:
+  name: מר משתמש
+  email: asaf.bartov+user@gmail.com
+  provider: developer
+  uid: asaf.bartov+user@gmail.com
+  oauth_token:
+  oauth_expires_at:
 
-two:
-  name: MyString
-  email: MyString
-  provider: MyString
-  uid: MyString
-  oauth_token: MyString
-  oauth_expires_at: 2014-03-30 17:11:20
+an_editor:
+  name: מר עורך
+  email: asaf.bartov+editor@gmail.com
+  provider: developer
+  uid: asaf.bartov+editor@gmail.com
+  oauth_token:
+  oauth_expires_at:
+  editor: true
+  admin: false

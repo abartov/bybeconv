@@ -1,0 +1,13 @@
+.card{style:'margin-top:3rem;'}
+  .card-content
+    %h1= t(:works_about_this_author, {gender_suffix: @author.gender == 'female' ? '/ת' : ''})
+    %ol
+      - @author.aboutnesses.each do |ab|
+        - if ab.work.expressions[0].manifestations[0].published? # Only show published works # TODO: handle multiple expressions/manifestations intelligently
+          %li
+            = link_to ab.work.title, work_show_path(id: ab.work_id)
+            = ' / '
+            - austr = ''
+            - ab.work.authors.each do |au|
+              - austr += link_to(au.name, author_toc_path(id: au.id))+'; '
+            != austr[0..-3]

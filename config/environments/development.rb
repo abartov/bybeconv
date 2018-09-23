@@ -8,7 +8,16 @@ Bybeconv::Application.configure do
 
   # Show full error reports and disable caching
   config.consider_all_requests_local       = true
-  config.action_controller.perform_caching = false
+
+  config.action_controller.perform_caching = false # generally desirable
+
+  ## uncomment to test caching
+  #config.action_controller.perform_caching = true # uncomment to test caching
+  config.cache_store = :mem_cache_store
+
+
+  # temp
+  config.i18n.enforce_available_locales = false
 
   # Don't care if the mailer can't send
   config.action_mailer.raise_delivery_errors = false
@@ -25,4 +34,11 @@ Bybeconv::Application.configure do
   # Expands the lines which load the assets
   config.assets.debug = true
   config.eager_load = false
+  # config.public_file_server.enabled = true # Rails 5.x?
+  config.i18n.available_locales = :he
+
+  # Store Active Storage files locally.
+  config.active_storage.service = :local
+  #config.active_storage.service = :amazon
+  #config.force_ssl = true # to debug SSL issues
 end

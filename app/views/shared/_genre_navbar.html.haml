@@ -1,0 +1,26 @@
+.internal-navbar
+  .row
+    .col-md-1
+    .col-md-10
+      #internal-genre-nav{style:'text-align:center; align-content:center;'}
+        %div{style:'display:inline-block; padding-top:1rem;'}
+          .genre-nav
+            %p= t(:nav_by_genre)
+          - genres = get_genres.push('translations')
+          - genres.push('allwriters') if [:authors, :works].include?(page)
+          - genres.each do |g|
+            - if genres_present.include?(g)
+              .genre-nav
+                .linky.genre_link{'data-anchor' => g+'_g'}
+                  - iconname = case g when 'translations' then 'translate' when 'fables' then 'fables-fox' else g end
+                  %span{class: "icon-by#{iconname} nav-icon"}
+                  %p= textify_genre(g)
+    .col-md-1
+:javascript
+  $(document).ready(function(){
+    var offsetTop = #{ @readmode ? 40 : 250 };
+    $('.genre_link').click(function(){
+      elem = $('a[name='+$(this).attr('data-anchor'));
+      window.scrollTo(0, elem.offset().top - offsetTop);
+    });
+  });

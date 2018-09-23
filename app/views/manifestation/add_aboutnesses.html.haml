@@ -1,0 +1,66 @@
+%h2= t(:add_aboutnesses)+': '+@m.title_and_authors
+= render partial: 'aboutnesses', locals: {edit: true, add: false}
+%h3= t(:add_person)
+
+#add-person
+  = form_for @aboutness, remote: true do |f|
+    = select_tag :add_person_topic, options_from_collection_for_select(Person.order(:name), 'id','name'), include_blank: true
+    = hidden_field_tag :aboutness_type, 'Person'
+    = hidden_field_tag :work_id, @w.id
+    = hidden_field_tag :manifestation_id, @m.id
+    = hidden_field_tag :suggested_by, current_user.id
+    %input.static-btn{type: :submit, value: t(:perform_add)}
+
+%h3= t(:add_work)
+#add-work
+  = form_for @aboutness, remote: true do |f|
+    = autocomplete_field_tag :work_autocomplete, '', autocomplete_manifestation_title_path, id_element: '#add_work_topic', 'data-noMatchesLabel' => t(:no_matches_found)
+    = hidden_field_tag :add_work_topic, nil
+    = hidden_field_tag :aboutness_type, 'Work'
+    = hidden_field_tag :work_id, @w.id
+    = hidden_field_tag :manifestation_id, @m.id
+    = hidden_field_tag :suggested_by, current_user.id
+    %input.static-btn{type: :submit, value: t(:perform_add)}
+%h3= t(:add_external)
+#add-external
+  = form_for @aboutness, remote: true do |f|
+    = t(:search_term)
+    = text_field_tag :wikidata_search
+    %span.static-btn#search= t(:search_wikidata)
+    = select_tag :add_external_topic, options_from_collection_for_select([], 'qid','label'), include_blank: true, id: 'select_topic'
+    = hidden_field_tag :aboutness_type, 'Wikidata'
+    = hidden_field_tag :wikidata_label, ''
+    = hidden_field_tag :work_id, @w.id
+    = hidden_field_tag :manifestation_id, @m.id
+    = hidden_field_tag :suggested_by, current_user.id
+    %input.static-btn#post_external{type: :submit, value: t(:perform_add)}
+
+
+:javascript
+  $(document).ready(function(){
+    var labels = {};
+    $('#post_external').prop('disabled', true);
+    $('#select_topic').change(function() {
+      $('#post_external').prop('disabled', false);
+      $('#wikidata_label').val(labels[$('#select_topic option:selected')[0].value]);
+    });
+    $('#search').click(function(){
+      const url = wdk.searchEntities({
+        search: $('#wikidata_search').val(),
+        language: 'he'
+      });
+      $.ajax({url: url, success: function(result) {
+        if(result.success) {
+          for (var i = 0, len = result.search.length; i < len; i++) {
+            var c = document.createElement("option");
+            c.text = result.search[i]['label'] +' ('+result.search[i]['description']+')';
+            c.value = result.search[i]['id'];
+            labels[c.value] = result.search[i]['label']; // remember the label for later
+            $('#select_topic')[0].options.add(c);
+          }
+        }
+        else
+          alert('failure!');
+      }});
+    });
+  });

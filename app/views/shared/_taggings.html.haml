@@ -1,0 +1,9 @@
+.inline-block#taggings
+  - taggings.each do |tagging|
+    .card.tag-card
+      .tag-content= tagging.tag.name
+      - if current_user && tagging.status == 'pending' && tagging.suggested_by == current_user.id # only show pending tags to the users who suggested them
+        .tag-close
+          = link_to '×', tagging, remote: true, method: :delete
+        .tag-wait-confirm
+          %i.fa.fa-clock-o

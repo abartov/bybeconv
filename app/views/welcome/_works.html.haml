@@ -3,19 +3,91 @@
     - col = 1
     - get_genres_by_row(row).each do |genre|
       %div{:class => row == 3 ? 'col-md-4' : 'col-md-3'}
-        %div{:class => 'card genre-card'+ (genre == 'lexicon' ? ' dictionaries' : genre == 'surprise' ? ' surprise' : '')}
-          %a{ href: manifestation_genre_path(genre: genre)}
-            .genre-card-content
-              .genre-icon{style: col == 1 ? 'margin-right:-1rem' : ''}
-                - iconname = case genre when 'translations' then 'translate' when 'surprise' then 'surprise-work' else genre end
-                %span{:class => "icon-by#{iconname}"}
-              %h3{style: 'text-align: center'}= t(genre)
-              - case genre
-              - when 'lexicon' then # special case re count
-                %span{style: 'text-align: center'}= @totals[:headwords].to_s+' '+t(:entries)
-              - when 'surprise' then
-                .replace-icon.text-on-dark{ style: 'margin-bottom:0.6rem;' }
-                  %a{ href: '#'}
-                    %i.fa.fa-refresh
-              - else
-                %span{style: 'text-align: center'}= @works_by_genre[genre].to_s+' '+t(:works)
+        - if genre == 'surprise'
+          .carousel.slide{id: "surprise-work-carousel-w"}
+            .carousel-inner
+              .card.genre-card.small-surprise.item.active#w_side1
+                %a.surprise-work-button{role: :button}
+                  .genre-card-content
+                    .genre-icon{style: 'margin-right:-1rem'}
+                      %span{:class => 'icon-bysurprise-work'}
+                    .genre-headline= t(genre)
+              .card.genre-card.small-surprise.item#w_side2
+                = render partial: 'shared/surprise_work', locals: {manifestation: @random_work, id_frag: 'w', passed_genre: '', side: '2'}
+        - else
+          %div{:class => 'card genre-card'+ (genre == 'lexicon' ? ' dictionaries' : ''), style:'cursor:pointer'}
+            %a{ 'data-toggle' => :modal, 'data-target'=> "#genre_popup_#{genre}"}
+              .genre-card-content
+                .genre-icon{style: col == 1 ? 'margin-right:-1rem' : ''}
+                  - iconname = case genre when 'translations' then 'translate' when 'fables' then 'fables-fox' else genre end
+                  %span{:class => "icon-by#{iconname}"}
+                .genre-headline= t(genre)
+                - case genre
+                - when 'lexicon' then # special case re count
+                  %span{style: 'text-align: center'}= @totals[:headwords].to_s+' '+t(:entries)
+                - else
+                  %span{style: 'text-align: center'}= @works_by_genre[genre].to_s+' '+t(:works)
+
+- get_genres.each do |genre|
+  - iconname = case genre when 'translations' then 'translate' when 'surprise' then 'surprise-work' when 'fables' then 'fables-fox' else genre end
+  %div{class: "modal fade", role: 'dialog', id: "genre_popup_#{genre}", tabindex: '-1'}
+    .modal-dialog
+      .card
+        %div
+          %button.close.card-header-close{ type: 'button', style: 'margin-left:1.5rem;margin-top:0.6rem;', 'data-dismiss' => 'modal'}
+            != '&times;'
+        .card-header
+          %p{style: 'margin-top: -12px'}
+            .genre-icon-popup
+              %span{:class => "icon-by#{iconname}"}
+            %div{style: 'display: inline; font-size: 2.4rem; font-weight: bold'}= t(genre)
+            = "(#{@works_by_genre[genre]} #{t(:works)})"
+        .card-content
+          - if genre == 'translations'
+            - todo = [{heading: :most_read_xlat_last_month, key: :xlat_works}]
+          - else
+            - todo = [{heading: :most_read_last_month, key: :heb_works}, {heading: :most_read_xlat_last_month, key: :xlat_works}]
+          - todo.each do |list|
+            .headline-3= t(genre)+': '+t(list[:heading])
+            %ol
+              - @popups_by_genre[genre][list[:key]][0..2].each do |work|
+                %li
+                  = link_to work[:title], manifestation_read_path(work[:id])
+                  = ' '+t(:by)+' '+work[:author]
+              - if @popups_by_genre[genre][list[:key]].size > 3
+                .collapse{id: "collapsible_#{genre}_#{list[:key]}"}
+                  - @popups_by_genre[genre][list[:key]][3..-1].each do |work|
+                    %li
+                      = link_to work[:title], manifestation_read_path(work[:id])
+                      = ' '+t(:by)+' '+work[:author]
+            - if @popups_by_genre[genre][list[:key]].size > 3
+              .headline-4
+                %a{ href:"#collapsible_#{genre}_#{list[:key]}", 'data-toggle' => 'collapse'}
+                  = t(:to_the_full_list)
+                  %span.glyphicon.glyphicon-collapse-down{id: "full-list-#{genre}_#{list[:key]}"}
+                  :javascript
+                    $("#collapsible_#{genre}_#{list[:key]}").on("hide.bs.collapse", function(){
+                      $("#full-list-#{genre}_#{list[:key]}").removeClass("glyphicon-collapse-up").addClass("glyphicon-collapse-down");
+                    });
+                    $("#collapsible_#{genre}_#{list[:key]}").on("show.bs.collapse", function(){
+                      $("#full-list-#{genre}_#{list[:key]}").removeClass("glyphicon-collapse-down").addClass("glyphicon-collapse-up");
+                    });
+          %a{href: manifestation_genre_path(genre: genre)}
+            .btn
+              %b= t(:to_all_works_in_this_genre)
+        .h_separator
+        .card-content
+          .headline-3= t(genre)+': '+t(:most_read_authors_last_month)
+          - @popups_by_genre[genre][:authors][0..2].each do |author|
+            %a{ href: author_toc_path(author)}
+              .card.author-card
+                .author-homepage-pic
+                  %img{ src: author.profile_image.url(:thumb), alt: author.name, height: '230px'}
+                .author-homepage-name
+                  %p.vcentered= author.name
+:javascript
+  $('#surprise-work-carousel-w').carousel({interval: false, wrap: true});
+  $('.surprise-work-button').click(function(){
+    $('#surprise-work-carousel-w').carousel('next');
+    $('#w_side1').load("#{url_for(controller: :manifestation, action: :get_random, id_frag: 'w', side: 1)}");
+  });

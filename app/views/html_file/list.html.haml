@@ -1,52 +1,59 @@
-%h1= t(:conversion_dashboard)
-%p= t(:conversion_stats_html, {total_texts: @total_texts, total_known: @total_known, total_images: @total_images, total_footnotes: @total_footnotes, total_tables: @total_tables, total_nikkud_full: @total_nikkud_full, total_nikkud_some: @total_nikkud_some, total_badenc: @total_badenc, total_fileerr: @total_fileerr, total_parsed: @total_parsed, total_accepted: @total_accepted, total_published: @total_published, total_manual: @total_manual, total_assigned: @total_assigned })
-%p
-  %b= link_to t(:analyze_all_unknown), action: 'analyze_all'
-/ query interface
-%p
-  = form_tag(action: :list) do
-    = label_tag(:nikkud_l, t(:nikkud)+': ')
-    = select_tag(:nikkud, options_for_select([['','',], [t(:none), :none], [t(:some), :some], [t(:full), :full]], session[:html_q_params][:nikkud]))
-    = label_tag(:footnotes_l, t(:footnotes)+': ')
-    = select_tag(:footnotes, options_for_select([['',''], [t(:no), :f], [t(:yes), :t]], session[:html_q_params][:footnotes]))
-    = label_tag(:status_l, t(:status)+': ')
-    = select_tag(:status, options_for_select([['',''], [t(:unknown), :Unknown], [t(:file_error), :FileError], [t(:bad_encoding), :BadCP1255], [t(:parsed), :Parsed], [t(:manual), :Manual], [t(:accepted), :Accepted], [t(:analyzed), :Analyzed], [t(:published),:Published]], session[:html_q_params][:status]))
-    = label_tag(:path_l, t(:path)+': ')
-    = text_field_tag(:path, session[:html_q_params][:path])
-    = submit_tag(t(:filter))
-/ end query interface
-%table
-  %tr
-    %th= t(:path)
-    %th= t(:status)
-    %th= t(:WEM)
-    %th= t(:nikkud)
-    %th= t(:tables)
-    %th= t(:footnotes)
-    %th= t(:images)
-    %th= t(:actions)
-  - @texts.each do |txt|
+.top-element
+  %h1= t(:conversion_dashboard)
+  %p= t(:conversion_stats_html, {total_texts: @total_texts, total_known: @total_known, total_images: @total_images, total_footnotes: @total_footnotes, total_tables: @total_tables, total_nikkud_full: @total_nikkud_full, total_nikkud_some: @total_nikkud_some, total_badenc: @total_badenc, total_fileerr: @total_fileerr, total_uploaded: @total_uploaded, total_parsed: @total_parsed, total_accepted: @total_accepted, total_uploaded: @total_uploaded, total_superseded: @total_superseded, total_published: @total_published, total_manual: @total_manual, total_assigned: @total_assigned })
+  %p
+    %b= link_to t(:upload_file), html_file_new_path
+  %p
+    = link_to t(:analyze_all_unknown), action: 'analyze_all'
+  / query interface
+  %p
+    = form_tag(action: :list) do
+      = label_tag(:nikkud_l, t(:nikkud)+': ')
+      = select_tag(:nikkud, options_for_select([['','',], [t(:none), :none], [t(:some), :some], [t(:full), :full]], session[:html_q_params][:nikkud]))
+      = label_tag(:footnotes_l, t(:footnotes)+': ')
+      = select_tag(:footnotes, options_for_select([['',''], [t(:no), :f], [t(:yes), :t]], session[:html_q_params][:footnotes]))
+      = label_tag(:status_l, t(:status)+': ')
+      = select_tag(:status, options_for_select([['',''], [t(:unknown), :Unknown], [t(:file_error), :FileError], [t(:bad_encoding), :BadCP1255], [t(:parsed), :Parsed], [t(:manual), :Manual], [t(:superseded), :Superseded], [t(:uploaded), :Uploaded], [t(:accepted), :Accepted], [t(:analyzed), :Analyzed], [t(:published),:Published]], session[:html_q_params][:status]))
+      = label_tag(:path_l, t(:path)+': ')
+      = text_field_tag(:path, session[:html_q_params][:path])
+      = submit_tag(t(:filter))
+  / end query interface
+  %table
     %tr
-      %td= txt.path.sub(AppConstants.base_dir,'')
-      %td= textify_htmlfile_status(txt.status)
-      %td= txt.manifestations.empty? ? t(:no) : t(:yes)
-      %td= textify_nikkud(txt.nikkud)
-      %td= textify_boolean(txt.tables)
-      %td= textify_boolean(txt.footnotes)
-      %td= textify_boolean(txt.images)
-      %td
-        - if txt.status == 'Published'
-          = link_to t(:to_the_work_in_the_catalog), controller: 'manifestation', action: 'show', id: txt.manifestations[0]
+      %th= t(:path)+' / '+t(:title)
+      %th= t(:status)
+      %th= t(:WEM)
+      %th= t(:nikkud)
+      %th= t(:tables)
+      %th= t(:footnotes)
+      %th= t(:images)
+      %th= t(:actions)
+    - @texts.each do |txt|
+      %tr
+        %td= txt.path.nil? ? txt.title : txt.path.sub(AppConstants.base_dir,'')
+        %td= textify_htmlfile_status(txt.status)
+        %td= txt.manifestations.empty? ? t(:no) : t(:yes)
+        %td= textify_nikkud(txt.nikkud)
+        %td= textify_boolean(txt.tables)
+        %td= textify_boolean(txt.footnotes)
+        %td= textify_boolean(txt.images)
+        %td
+          - if txt.status == 'Published' && txt.manifestations[0] != nil
+            = link_to t(:to_the_work_in_the_catalog), controller: 'manifestation', action: 'show', id: txt.manifestations[0]
+            = ' | '
+            = link_to t(:to_the_work_in_the_site), manifestation_read_path(txt.manifestations[0].id)
+          - elsif txt.status == 'Uploaded'
+            = link_to t(:edit_markdown), action: 'edit_markdown', id: txt
+          - elsif txt.status != 'Accepted' # don't allow re-parsing of possibly-improved markdown
+            = link_to t(:analyze), action: 'analyze', id: txt
+            = ' | '
+            = link_to t(:parse), action: 'parse', id: txt
+          - if ['Parsed', 'Accepted', 'Manual'].include? txt.status
+            = ' | '
+            = link_to(t(:render), action: 'render_html', id: txt)
+          - if txt.status == 'Accepted'
+            = ' | '
+            = link_to(t(:publish), action: 'publish', id: txt)
           = ' | '
-          = link_to t(:to_the_work_in_the_site), manifestation_read_path(txt.manifestations[0].id)
-        - elsif txt.status != 'Accepted' # don't allow re-parsing of possibly-improved markdown
-          = link_to t(:analyze), action: 'analyze', id: txt
-          = ' | '
-          = link_to t(:parse), action: 'parse', id: txt
-        - if ['Parsed', 'Accepted', 'Manual'].include? txt.status
-          = ' | '
-          = link_to(t(:render), action: 'render_html', id: txt)
-        - if txt.status == 'Accepted'
-          = ' | '
-          = link_to(t(:publish), action: 'publish', id: txt)
-= paginate @texts, :params => session[:html_q_params]
+          = link_to t(:destroy), action: :destroy, id: txt, :data => { :confirm => t(:are_you_sure) }
+  = paginate @texts, :params => session[:html_q_params]

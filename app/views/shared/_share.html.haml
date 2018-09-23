@@ -1,0 +1,30 @@
+- if local_assigns.has_key?(:element) && local_assigns[:element] == :button
+  %button.toolbox-cell.darkoldpink.share
+    %i.fa.fa-share-alt
+    %span.tooltiptext= t(:share)
+- elsif local_assigns.has_key?(:element) && local_assigns[:element] == :link
+  .linky.share{style:'display:inline'}
+    %i.fa.fa-share-alt.fa08
+    = t(:share)
+- elsif local_assigns.has_key?(:element) && local_assigns[:element] == :footer
+  .linky.dark-text-button.share{style:'display:inline'}
+    %i.fa.fa-share-alt.fa08
+    = t(:share)
+
+#shareDlg{title: t(:choose_sharing_medium)}
+  .container-fluid
+    = render partial: 'shared/share_controls'
+:javascript
+  $(document).ready(function() {
+    // share button
+    $('#shareDlg').dialog({
+      autoOpen: false,
+      height: 'auto',
+      width: 300,
+      modal: true,
+      buttons: { "#{t(:cancel)}": function() { $('#shareDlg').dialog("close");} }
+      });
+    $('.share').click(function() {
+      $('#shareDlg').dialog('open');
+    });
+  });

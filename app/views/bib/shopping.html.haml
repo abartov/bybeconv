@@ -1,0 +1,19 @@
+%h1= t(:shopping_list_for, {source: @source.title})
+.container-fluid
+  .row
+    %table
+      %tr
+        %th= t(:title)
+        %th= t(:author)
+        %th= t(:location)
+      - @holdings.each do |h|
+        - pub = h.publication
+        %tr
+          %td= pub.title
+          %td= pub.author_line
+          %td= h.location
+          %td
+            = link_to t(:mark_as_obtained)+' | ', holding_status_path(id: h.id, status: 'obtained'), remote: true, id: "obt#{h.id}"
+            = link_to t(:mark_as_scanned)+' | ', holding_status_path(id: h.id, status: 'scanned'), remote: true, id: "scn#{h.id}"
+            = link_to t(:mark_as_missing), holding_status_path(id: h.id, status: 'missing'), remote: true, id: "msng#{h.id}"
+    = link_to t(:back), action: :index

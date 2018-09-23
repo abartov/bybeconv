@@ -1,64 +1,104 @@
-.container-fluid.welcome
+.container-fluid.welcome.top-element
   .container
     .row
       .col-md-1
       .col-md-10
         .welcome-content
-          %h1= t(:welcome_title)
+          %h1{style:'margin-top:0'}= t(:welcome_title)
           %p= t(:welcome_paragraph_html)
           %p= t(:welcome_stats_html, {authors: link_to(@totals[:authors].to_s, authors_index_path), works: link_to(@totals[:works].to_s, works_path), headwords: link_to(@totals[:headwords].to_s, 'http://benyehuda.org/~asaf/full_dict.html')})
           .welcome-actions
-            .welcome-icon
-              %a{ href: ''}
-                %i.fa.fa-info-circle
-            .welcome-icon
-              %a{ href: ''}
-                %i.fa.fa-question-circle
-            .welcome-icon
-              %a{ href: ''}
-                %i.fa.fa-edit
-            .welcome-icon
-              %a{ href: ''}
-                %i.fa.fa-youtube-square
-            .welcome-icon
-              %a{ href: ''}
-                %i.fa.fa-facebook-square
-            .welcome-icon
-              %a{ href: ''}
-                %i.fa.fa-share-alt
-            .welcome-icon
-              %a{ href: ''}
-                %i.icon-bydonate
+            .welcome-small-link
+              %a{ href: 'https://www.facebook.com/%D7%A4%D7%A8%D7%95%D7%99%D7%A7%D7%98-%D7%91%D7%9F-%D7%99%D7%94%D7%95%D7%93%D7%94-119140448124648/', target: '_new'}
+                %i.fa.fa-facebook-square.fa08
+                = t(:to_the_facebook_page)
+            .welcome-small-link
+              %a{ href: 'http://www.youtube.com/user/ProjectBenYehuda/videos?flow=grid&view=0', target: '_new'}
+                %i.fa.fa-youtube-play.fa08
+                = t(:to_the_youtube_channel)
+            .welcome-small-link
+              %a{ href: 'http://benyehuda.org/blog/', target: '_new'}
+                %i.fa.fa-pencil-square.fa08
+                = t(:the_blog)
+            .welcome-small-link
+              = render partial: 'shared/share', locals: {element: :link}
+            .welcome-small-link
+              %a{ href: '/page/donate', target: '_new'}
+                %i.fa.icon-bydonate.fa08
+                = t(:donate_money)
       .col-md-1
 
-.container
+.container-fluid
   .row
-    .col-md-4.col-xs-12#whatsnew
-      / what's new
-      %h2= t(:whats_new)
-      = render partial: 'whatsnew'
-    .col-md-8.col-xs-12#authors
-      / author cards
-      = render partial: 'shared/authors', locals: {popular_authors: @pop_authors, random_authors: @random_authors}
+    .col-lg-1
+    .col-lg-10
+      .container-fluid
+        .row
+          .col-md-8.col-xs-12.main-group#authors
+            %p
+              %span.headline-2
+                = link_to t(:authors_in_the_project), controller: 'authors'
+              %span{ style: 'padding-right: 1.2rem"'}= t(:x_authors, x: @totals[:authors])
+            / author cards
+            = render partial: 'shared/authors', locals: {popular_authors: @pop_authors, random_authors: @random_authors}
+          .col-md-4.col-xs-12.main-group#whatsnew
+            / what's new
+            %p
+              %span.headline-2= link_to t(:whats_new), whatsnew_path
+            = render partial: 'whatsnew'
+    .col-lg-1
   .row
-    .col-sm-4.col-xs-12#flashlight
-      / featured item
-      %h2= t(:featured_item)
-      = render partial: 'featured_item'
-    .col-sm-8.col-xs-12#genre
-      / work cards
-      %h2= t(:works_by_genre)
-      = render partial: 'works'
+    .col-lg-1
+    .col-lg-10
+      .container-fluid
+        .row
+          .col-sm-8.col-xs-12.row2.main-group#genre
+            / work cards
+            %p{style:'margin-top:18px'}
+              %span.headline-2
+                = link_to t(:works_by_genre), works_path
+              %span{style: 'padding-right: 1.2rem"'}= t(:x_works, x: @totals[:works])
+            = render partial: 'works'
+          .col-sm-4.col-xs-12#flashlight
+            / featured item
+            %p.headline-2= t(:featured_item)
+            = render partial: 'featured_item'
+    .col-lg-1
   .row
-    .col-sm-4.col-xs-12
-      / extras
-      %h2= t(:support_the_project)
-      = render partial: 'support'
-    .col-sm-4.col-xs-12
-      / 10 most read works
-      %h2= t(:top_ten_works)
-      = render partial: 'top_works'
-    .col-sm-4.col-xs-12
-      / 10 most read authors
-      %h2= t(:top_ten_authors)
-      = render partial: 'top_authors'
+    .col-lg-1
+    .col-lg-10
+      .container-fluid
+        .row
+          .col-sm-4.col-xs-12
+            / 10 most read authors
+            %p.headline-2= t(:top_ten_authors)
+            = render partial: 'top_authors'
+          .col-sm-4.col-xs-12
+            / 10 most read works
+            %p.headline-2= t(:top_ten_works)
+            = render partial: 'top_works'
+          .col-sm-4.col-xs-12
+            / extras
+            %p.headline-2= t(:our_volunteers)
+            = render partial: 'featured_volunteer'
+    .col-lg-1
+    .row{style:'margin-top:18px'}
+    .col-lg-1
+    .col-lg-10
+      .container-fluid
+        .row
+          .col-xs-12
+            .card
+              .card-content
+                %p.headline-2{style:'text-align:center;padding: 0 23%; margin-top:0'}= t(:donate_title)
+                %p{style:'text-align:center;padding: 0 23%'}!= t(:donate_p1_html)
+                %p{style:'text-align:center;padding: 0 23%'}!= t(:donate_p2_html)
+                %center
+                  %a{style: 'color:white', href: '/page/donate'}
+                    .btn{style:'padding-top:0.5rem; text-aligh:center; float:none;'}
+                      %b= t(:donate_money)
+:javascript
+  $(document).ready(function() {
+    $('.footer-card').matchHeight();
+    $('.row1').matchHeight();
+  });

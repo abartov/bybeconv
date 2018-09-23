@@ -1,71 +1,68 @@
-#toolbox.btn-group-vertical{role:'group', 'aria-label' => t(:toolbox)}
-  %button.btn.share= t(:share)
-  %button.btn#fontsize= t(:font_size)
-  %button.btn#found_mistake= t(:found_mistake)
-  %button.btn.download= t(:download)
-  %button.btn.printbutton= t(:print)
+#tools-side{style:'width:18rem'}
+  #toolbox{"aria-label" => t(:toolbox), :role => "group", :style => "padding-top:2.4rem"}
+    #work-view{:style => "width: 10rem; text-align: center; margin-bottom: 2rem; position: relative;"}
+      %div
+        %button.btn.toolbox-cell.multiselect
+          %i.fa.fa-check-square-o
+      %div{:style => "font-size: 1.2rem;color: #56003D;"}
+        %p= t(:multiselect)
+    .btn-group-vertical
+      %button.toolbox-cell.share.darkoldpink
+        %i.fa.fa-share-alt
+        %span.tooltiptext= t(:share)
+      %button.toolbox-cell.mistake#found_mistake
+        %div{:style => "height: 7rem;padding-top: 1rem;"}
+          %i.icon-byerror-found{:style => "color: #660248;"}
+          %span.foundmistake= t(:found_mistake)+'!'
+        %div{:style => "height: 4rem"}
+          %span.tooltiptext{:style => "bottom:5%; color: #2b0d22"}= t(:mistake_important)
+      %button.toolbox-cell.download.darkoldpink
+        %i.fa.fa-download
+        %span.tooltiptext= t(:download)
+      %button.toolbox-cell.printbutton.darkoldpink
+        %i.fa.fa-print
+        %span.tooltiptext= t(:print)
+      %button.toolbox-cell.toolbox-footer.printbutton.darkoldpink
+        %i.fa.fa-angle-up.toolbox-footer-chevron
+        %span.tooltiptext= t(:minimize)
 
-#fontsizeDlg
-  = render partial: 'shared/fontsize'
-
-#shareDlg
+#shareDlg{title: t(:choose_sharing_medium)}
   .container-fluid
     = render partial: 'shared/share_controls'
 
 :javascript
-  // share button
-  $('#shareDlg').dialog({
-    autoOpen: false,
-    height: 200,
-    width: 250,
-    modal: true,
-    buttons: { "#{t(:cancel)}": function() { $('#shareDlg').dialog("close");} }
+  $(document).ready(function(){
+    // share button
+    $('#shareDlg').dialog({
+      autoOpen: false,
+      height: 200,
+      width: 250,
+      modal: true,
+      buttons: { "#{t(:cancel)}": function() { $('#shareDlg').dialog("close");} }
+      });
+    $('.share').click(function() {
+      $('#shareDlg').dialog('open');
     });
-  $('.share').click(function() {
-    $('#shareDlg').dialog('open');
+
+    // multi-select button
+    $('.multiselect').click(function() {
+      alert('#{t(:not_implemented_yet)}');
+    });
+
+    // proof button
+    $('#found_mistake').click(function() {
+      alert('#{t(:not_implemented_yet)}');
+    });
+
+    // download button
+    $('#downloadDlg').dialog({autoOpen:false, height:400, width:600, modal:true, buttons:{"#{t(:close)}": function(){$('#downloadDlg').dialog('close');}}});
+    $('.download').click(function() {
+      alert('#{t(:not_implemented_yet)}');
+      //$('#downloadDlg').dialog('open');
+    });
+
+    // print button
+    $('.printbutton').click(function() {
+      window.print();
+    });
   });
-
-  // font size button
-  $('#fontsizeDlg').dialog({autoOpen:false, height:200, width:250, modal:false,buttons:{"#{t(:close)}": function(){$('#fontsizeDlg').dialog('close');}}});
-  $('#fontsize').click(function() {
-    $('#fontsizeDlg').dialog("open");
-  });
-
-  // download button
-  $('#downloadDlg').dialog({autoOpen:false, height:400, width:600, modal:true, buttons:{"#{t(:close)}": function(){$('#downloadDlg').dialog('close');}}});
-  $('.download').click(function() {
-    $('#downloadDlg').dialog('open');
-  });
-
-  // print button
-  $('.printbutton').click(function() {
-    window.open("#{@print_url}",'_new');
-  });
-  $(window).scroll(function () {
-    var $floatingbox = $('#toolbox');
-    var bodyY = parseInt($('#maintext').offset().top) - 20;
-    var originalX = $floatingbox.css('margin-right');
-
-    var scrollY = $(window).scrollTop();
-    var isfixed = $floatingbox.css('position') == 'fixed';
-
-    if($floatingbox.length > 0){
-
-    if ( scrollY > bodyY && !isfixed ) {
-      $floatingbox.stop().css({
-        position: 'fixed',
-        //right: '50%',
-        top: 20,
-        //marginRight: -500
-        });
-    } else if ( scrollY < bodyY && isfixed ) {
-      $floatingbox.css({
-        position: 'relative',
-        //right: 0,
-        top: 0,
-        //marginRight: originalX
-        });
-      }
-    }
-  });
-

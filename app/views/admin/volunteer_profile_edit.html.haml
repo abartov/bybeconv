@@ -1,0 +1,5 @@
+.top-element
+  %h1= "#{@vp.name}: #{t(:edit)}"
+  = render partial: 'volunteer_profile_form', locals: {action: :volunteer_profile_update, vp: @vp}
+  %p
+  = link_to t(:back), volunteer_profile_show_path(id: @vp.id)

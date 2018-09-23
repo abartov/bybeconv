@@ -1,0 +1,34 @@
+.top-element
+  %h1= t(:static_page)
+  %a{ href: url_for(action: :static_page_edit, id: @vp.id)}
+    .btn{style:'float:none'}
+      %b= t(:edit)
+  %br
+  %br
+  %p
+    %b= t(:name)+': '
+    = @vp.tag
+  %p
+    %b= t(:title)+': '
+    = @vp.title
+  %p
+    %b= t(:status)+': '
+    = t(@vp.status)
+  %p
+    %b= t(:mode)+': '
+    = t(@vp.mode)
+  %p
+    %b= t(:ltr)+': '
+    = @vp.ltr ? t(:yes) : t(:no)
+  %p
+    %b= t(:body)+': '
+  %hr
+  #static_page
+    - if @vp.ltr
+      %div{dir:'ltr',align:'left'}
+        != @markdown.gsub('<h2 ','<h2 style="direction:ltr;text-align:left" ').gsub('<h4 ','<h4 style="direction:ltr;text-align:left" ').gsub('<h3 ','<h3 style="direction:ltr;text-align:left" ')
+    - else
+      != @markdown
+  %hr
+  / add status and mode
+  = link_to t(:back), url_for(action: :static_pages_list)

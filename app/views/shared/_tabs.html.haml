@@ -1,27 +1,58 @@
+- @tabclass = {} if @tabclass.nil?
 .container-fluid#navbar-full-width
-  .container#navbar
-    .row
-      .col-sm-4#nav-additional
+  .row
+    .col-lg-1
+    .col-lg-10.col-sm-12.col-xs-12
+      .container-fluid#navbar
         .row
-          .col-sm-4
-            .english
-              %p
-                %a{href: 'http://benyehuda.org/e_faq.html'}= 'English'
-          .col-sm-8
-            .fontsize-selector
-              %p{style: 'float:right'}
-                = render partial: 'shared/fontsize'
-      .col-sm-8.nav
-        %ul
-          %li{role: 'presentation', :class => tabclass['authors']}
-            = link_to t(:authors), :controller => :authors
-          %li{role: 'presentation', :class => tabclass['works']}
-            = link_to t(:works), :controller => :manifestation
-          /%li{role: 'presentation', :class => tabclass['periods']} TODO: implement period pages
-          / = link_to t(:periods), :controller => :periods
-          %li{role: 'presentation', :class => tabclass['h_faq']}
-            = link_to t(:about), 'http://benyehuda.org/h_faq.html'
-          %li{role: 'presentation', :class => tabclass['help']}
-            = link_to t(:how_to_help), 'http://benyehuda.org/blog/%D7%A8%D7%95%D7%A6%D7%99%D7%9D-%D7%9C%D7%A2%D7%96%D7%95%D7%A8'
-          %li{role: 'presentation', :class => tabclass['contact']}
-            = link_to t(:contact_us), 'mailto:editor@benyehuda.org'
+          .col-sm-12.col-lg-8.nav
+            %ul
+              %li{role: 'presentation', :class => @tabclass['authors']}
+                = link_to t(:authors), :controller => :authors
+              %li{role: 'presentation', :class => @tabclass['works']}
+                = link_to t(:works), works_path
+              /%li{role: 'presentation', :class => @tabclass['periods']} TODO: implement period pages
+              / = link_to t(:periods), :controller => :periods
+              %li{role: 'presentation', :class => @tabclass['whatsnew']}
+                = link_to t(:whatsnew), whatsnew_path
+              %li{role: 'presentation', :class => @tabclass['h_faq']}
+                = link_to t(:about), '/page/about'
+              %li{role: 'presentation', :class => @tabclass['help']}
+                = link_to t(:how_to_help), '/page/volunteer'
+              %li{role: 'presentation', :class => @tabclass['donate']}
+                = link_to t(:donate_money), '/page/donate'
+              %li{role: 'presentation', :class => @tabclass['en']}
+                = link_to 'EN', '/page/english'
+          .col-sm-12.col-lg-4#nav-additional
+            .search.field.main-search-field
+              %span.fa.fa-search.search-icon
+              %input#q{ placeholder: t(:search_placeholder)}
+    .col-lg-1
+/.scroll-gradient
+
+
+#resultsDlg{title: t(:search_results)}
+  .container-fluid
+    #results
+:javascript
+  $(document).ready(function(){
+    $('#resultsDlg').dialog({
+      autoOpen: false,
+      height: 600,
+      width: 800,
+      modal: true,
+      buttons: { "#{t(:cancel)}": function() { $('#resultsDlg').dialog("close");} }
+      });
+    $('#q').keypress(function (e) {
+      var key = e.which;
+      if(key == 13) { // the enter key code
+        $('.search-icon').click();
+        return false;
+      }
+    });
+
+    $('.search-icon').click(function(){
+      $('#resultsDlg').dialog('open');
+      $('#results').load('#{url_for(controller: :application, action: :search_results)}/?q='+encodeURIComponent($('#q').val()));
+    });
+  });

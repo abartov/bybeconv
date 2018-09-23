@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  body: MyText
+  user_id:
+  approved_by_id:
+  status: 1
+  manifestation_id:
+
+two:
+  body: MyText
+  user_id:
+  approved_by_id:
+  status: 1
+  manifestation_id:

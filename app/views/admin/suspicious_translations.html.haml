@@ -1,0 +1,19 @@
+.top-element
+  %h2= t(:suspicious_translations_report)
+  %h3= t(:total)+': '+@total.to_s
+
+  %table{style: 'cell-spacing: 10;'}
+    %tr
+      %th= t(:title)
+      %th= t(:author)
+      %th= t(:translator)
+      %th
+
+    - @mans.each do |m|
+      %tr
+        %td= link_to m.title, manifestation_show_path(m.id)
+        %td!= m.expressions[0].works[0].persons.map{|p| link_to(p.name, authors_show_path(id: p.id))}.join(';')
+        %td!= m.expressions[0].translators.map{|p| link_to(p.name, authors_show_path(id: p.id))}.join('; ')
+        %td= link_to t(:edit_metadata), manifestation_edit_metadata_path(m.id)
+
+  != paginate @mans

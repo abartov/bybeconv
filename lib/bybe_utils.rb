@@ -15,7 +15,7 @@ SKOS_ALTLABEL = "http://www.w3.org/2004/02/skos/core#altLabel"
 module BybeUtils
   def make_epub_from_single_html(html, manifestation)
     book = GEPUB::Book.new
-    book.set_main_id('http://benyehuda.org/read/'+manifestation.id.to_s, 'BookID', 'URL')
+    book.primary_identifier('http://benyehuda.org/read/'+manifestation.id.to_s, 'BookID', 'URL')
     book.language = 'he'
     title = manifestation.title+' מאת '+manifestation.author_string
     book.add_title(title, nil, GEPUB::TITLE_TYPE::MAIN)
@@ -47,6 +47,7 @@ module BybeUtils
     cover_file.close
     return fname
   end
+
   # return a hash like {:total => total_number_of_non_tags_characters, :nikkud => total_number_of_nikkud_characters, :ratio => :nikkud/:total }
   def count_nikkud(text)
     info = { total: 0, nikkud: 0, ratio: nil }
@@ -69,6 +70,16 @@ module BybeUtils
     info[:ratio] = info[:nikkud].to_f / info[:total]
 #    puts "DBG: total #{info[:total]} - nikkud #{info[:nikkud]} - ratio #{info[:ratio]}"
     return info
+  end
+
+  # new definition of full nikkud: no more than two (or one, if under three words) of the words lack nikkud
+  def is_full_nikkud(text)
+    a = text.split /\b/ # split at word boundaries
+    b = a.select{|x| x =~ /[^\s,?!.;'`"\-–]/} # leave only actual words
+    count = 0
+    b.each{|word| count += 1 if word.any_nikkud?}
+    target = b.length < 3 ? 1 : b.length - 2
+    return (count < target ? false : true)
   end
 
   # just return a boolean if the buffer is "full" nikkud
@@ -123,6 +134,67 @@ module BybeUtils
     #  rset = conn.search("@attr 1=1003 @attr 2=3 @attr 4=1 @attr 5=100 \"#{author_string}\"")
     #  p rset[0]
     # end
+  end
+
+  def textify_lang(iso)
+    return I18n.t(:unknown) if iso.nil? or iso.empty?
+    case iso
+    when 'he'
+      return I18n.t(:hebrew)
+    when 'en'
+      return I18n.t(:english)
+    when 'de'
+      return I18n.t(:german)
+    when 'ru'
+      return I18n.t(:russian)
+    when 'es'
+      return I18n.t(:spanish)
+    when 'yi'
+      return I18n.t(:yiddish)
+    when 'pl'
+      return I18n.t(:polish)
+    when 'fr'
+      return I18n.t(:french)
+    when 'ar'
+      return I18n.t(:arabic)
+    when 'el'
+      return I18n.t(:greek)
+    when 'la'
+      return I18n.t(:latin)
+    when 'it'
+      return I18n.t(:italian)
+    when 'grc'
+      return I18n.t(:ancient_greek)
+    when 'hu'
+      return I18n.t(:hungarian)
+    when 'cs'
+      return I18n.t(:czech)
+    when 'da'
+      return I18n.t(:danish)
+    when 'no'
+      return I18n.t(:norwegian)
+    when 'nl'
+      return I18n.t(:dutch)
+    when 'pt'
+      return I18n.t(:portuguese)
+    when 'fi'
+      return I18n.t(:finnish)
+    when 'is'
+      return I18n.t(:icelandic)
+    when 'sv'
+      return I18n.t(:swedish)
+    else
+      return I18n.t(:unknown)
+    end
+  end
+
+  # returns an up-to-maxchars-character snippet and the rest of the buffer
+  def snippet(buf, maxchars)
+    return [buf,''] if buf.length < maxchars
+    tmp = buf[0..maxchars]
+    pos = tmp.rindex(' ')
+    ret = tmp[0..pos] # don't break up mid-word
+    return [ret, tmp[pos..-1]+' '+buf[maxchars..-1]]
   end
 
   def raw_viaf_xml_by_viaf_id(viaf_id)
@@ -243,6 +315,61 @@ module BybeUtils
   def asa_citation(manifestation)
     return author_surname_and_firstname(manifestation.author_string)+'. '+citation_date(manifestation.expressions[0].date)+". \"#{manifestation.title}\". <strong>פרויקט בן-יהודה</strong>. אוחזר בתאריך #{Date.today.to_s}. (#{request.original_url})"
   end
+
+  def identify_genre_by_heading(text)
+    case text
+    when /שירה/
+      return 'poetry'
+    when /פרוזה/
+      return 'prose'
+    when /מסות/
+      return 'article'
+    when /זכרונות/, /זכרונות ויומנים/
+      return 'memoir'
+    when /תרגום/, /יצירות מתורגמות/
+      return 'translations'
+    when /מחזות/, /דרמה/
+      return 'drama'
+    when /משלים/
+      return 'fables'
+    when /מכתבים/, /אגרות/
+      return 'letters'
+    when /עיון/
+      return 'reference'
+    else
+      return nil
+    end
+  end
+
+  def divide_by_genre(buf)
+    ret_parts = []
+    ret_a = []
+    genres = []
+    part = ''
+    lines = buf.lines
+    lines.each{|l|
+      if l =~ /^##[^#]/
+        genre = identify_genre_by_heading($')
+        unless genre.nil?
+          unless part.empty? # if not first genre
+            genres << part
+            ret_parts << [part, ret_a.join]
+            ret_a = []
+          end
+          part = genre
+          ret_a << "<a name='#{genre}_g'></a>\n"
+        end
+        ret_a << l
+      else
+        ret_a << l
+      end
+    }
+    ret_parts << [part, ret_a.join] # add last batch
+    genres << part
+    ret_parts.unshift(genres)
+    return ret_parts
+  end
+
   def toc_links_to_markdown_links(buf)
     ret = ''
     until buf.empty?
@@ -255,16 +382,20 @@ module BybeUtils
         addition = $& # by default
         buf = $'
         item = $1
-        anchor_name = $2.gsub('[','\[').gsub(']','\]')
+        anchor_name = $2.gsub('[','\[').gsub(']','\]').gsub('"','\"').gsub("'", "\\\\'")
         if item[0] == 'ה' # linking to a legacy HtmlFile
-          h = HtmlFile.find(item[1..-1].to_i)
+          h = HtmlFile.find_by(id: item[1..-1].to_i)
           unless h.nil?
             addition = "[#{anchor_name}](#{h.url})"
           end
         else # manifestation
-          mft = Manifestation.find(item[1..-1].to_i)
-          unless mft.nil?
-            addition = "[#{anchor_name}](#{url_for(controller: :manifestation, action: :read, id: mft.id)})"
+          begin
+            mft = Manifestation.find(item[1..-1].to_i)
+            unless mft.nil?
+              addition = "[#{anchor_name}](#{url_for(controller: :manifestation, action: :read, id: mft.id)})"
+            end
+          rescue
+            logger.info("Manifestation not found: #{item[1..-1].to_i}!")
           end
         end
         ret += addition
@@ -272,30 +403,52 @@ module BybeUtils
     end
     return ret
   end
+
   def get_total_works
-    return HtmlFile.count + 200 # TODO: change this to Manifestation.count after the mass conversion is over
+    return Manifestation.cached_count
   end
+
   def get_total_authors
-    return HtmlDir.count + 20 # TODO: change this to People.count after the mass conversion is over. # TODO: *then* figure out how to meaningfully count only people for whom we have Hebrew works in the database (presumably authors of expressions with language: Hebrew?)
+    return Person.cached_toc_count
   end
 
   def get_total_headwords
-    return 2213 # TODO: un-hardcode
+    return 2341 # TODO: un-hardcode
   end
 
   def get_genres
     return ['poetry', 'prose', 'drama', 'fables','article', 'memoir', 'letters', 'reference', 'lexicon'] # translations and icon-font refer to these keys!
   end
 
+  def right_side_genres
+    return ['poetry', 'prose', 'drama', 'fables','article', 'memoir', 'letters', 'reference'] # translations and icon-font refer to these keys!
+  end
+
   def get_langs
-    return ['he','en','fr','de','ru','yi','pl','ar','el','la','grc']
+    return ['he','en','fr','de','ru','yi','pl','ar','el','la','grc','hu','cs','da','no','sv','nl','it','pt','fi','is','es']
   end
 
   def get_genres_by_row(row) # just one row at a time
     return case row
-      when 1 then ['poetry', 'prose', 'drama', 'fables'].reverse # TODO: switch to Bootstrap-RTL?
-      when 2 then ['article', 'memoir', 'letters', 'reference'].reverse
-      when 3 then ['translations','lexicon','surprise'].reverse
+      when 1 then ['poetry', 'prose', 'drama', 'fables']
+      when 2 then ['article', 'memoir', 'letters', 'reference']
+      when 3 then ['surprise', 'lexicon','translations']
     end
+  end
+  def url_for_record(source, source_id)
+    case source.source_type
+    when 'aleph', 'primo', 'idea'
+      url = source.item_pattern.sub('__ID__', source_id.strip)
+    when 'hebrewbooks'
+      url = source_id.strip
+    when 'googlebooks'
+      url =  "https://books.google.co.il/books?id=#{source_id.strip}"
+    end
+    return url
+  end
+  def is_legacy_url(url)
+    url = '/' + url if url[0] != '/' # prepend slash if necessary
+    h = HtmlFile.find_by_url(url)
+    return h != nil
   end
 end

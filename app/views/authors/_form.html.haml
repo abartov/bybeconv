@@ -6,57 +6,79 @@
         - person.errors.full_messages.each do |msg|
           %li= msg
 
-  .field
+  .backend-field
     = f.label t(:name)
     = f.text_field :name
-  .field
+  .backend-field
     = f.label t(:birthdate)
     = f.text_field :birthdate
-  .field
+  .backend-field
     = f.label t(:deathdate)
     = f.text_field :deathdate
-  .field
+  .backend-field
+    = f.label t(:gender)
+    %br
+    = f.radio_button(:gender, :male, checked: person.gender == 'male') # symbols won't do!
+    = f.label t(:male)
+    = f.radio_button(:gender, :female, checked: person.gender == 'female')
+    = f.label t(:female)
+    = f.radio_button(:gender, :other, checked: person.gender == 'other')
+    = f.label t(:other)
+    = f.radio_button(:gender, :unknown, checked: ((person.gender.nil?) or (person.gender == 'unknown')))
+    = f.label t(:unknown)
+
+  .backend-field
     = f.label t(:copyright_status)
     %br
     = f.radio_button(:public_domain, true, checked: person.public_domain && (not person.public_domain.nil?))
     = f.label t(:public_domain)
     = f.radio_button(:public_domain, false, checked: (not person.public_domain) && (not person.public_domain.nil?))
     = f.label t(:by_permission)
-  .field
+  .backend-field
+    = f.label t(:bib_done)
+    %br
+    = f.radio_button(:bib_done, true, checked: person.bib_done && (not person.bib_done.nil?))
+    = f.label t(:yes)
+    = f.radio_button(:bib_done, false, checked: (not person.bib_done) && (not person.bib_done.nil?))
+    = f.label t(:no)
+  .backend-field
     = f.label t(:other_designation)
     = f.text_field :other_designation
-  .field
+  .backend-field
     = f.label t(:affiliation)
     = f.text_field :affiliation
-  .field
+  .backend-field
     = f.label t(:country)
     = f.text_field :country
-  .field
+  .backend-field
     = f.label t(:comment)
     = f.text_area :comment
-  .field
+  .backend-field
     = f.label t(:viaf_id)
     = f.text_field :viaf_id
-  .field
+  .backend-field
     = f.label t(:nli_id)
     = f.text_field :nli_id
-  .field
+  .backend-field
+    = f.label t(:blog_category_url)
+    = f.text_area :blog_category_url, rows: 3, cols: 50
+  .backend-field
     = f.label t(:wikidata_id)
     = f.text_field :wikidata_id, size: 10
-  .field
+  .backend-field
     = t(:wikipedia_url)
     = f.text_area :wikipedia_url, rows: 3, cols: 50
   %br
-  .field
+  .backend-field
     = t(:wikipedia_snippet)
     = f.text_area :wikipedia_snippet, rows: 8, cols: 50
-  .field
+  .backend-field
     = f.label t(:current_image)
-    = image_tag person.profile_image.url(:thumb)
-  .field
+    = image_tag person.profile_image.url(:thumb), alt: person.name
+  .backend-field
     = f.label t(:upload_new_image)
     = f.file_field :profile_image
-  .field
+  .backend-field
     = f.label t(:metadata_approved)
     = t(:yes)
     = f.radio_button(:metadata_approved, true, checked: person.metadata_approved)

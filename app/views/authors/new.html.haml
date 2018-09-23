@@ -1,5 +1,6 @@
-%h1= t(:new_person)
+.top-element
+  %h1= t(:new_person)
 
-= render partial: 'form', locals: {action: 'create', person: @person}
+  = render partial: 'form', locals: {action: 'create', person: @person}
 
-= link_to 'Back', authors_list_path
+  = link_to t(:back), authors_list_path

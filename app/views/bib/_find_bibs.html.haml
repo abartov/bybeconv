@@ -1,0 +1,8 @@
+%h2= t(:get_bibs)
+%p= t(:get_bibs_instructions)
+= form_tag( {:action => 'pubs_by_person'}, remote: remote) do
+  = text_field_tag :q, @person_name || ''
+  = select_tag :bib_source, options_for_select(@select_options)
+  = hidden_field_tag :person_id, @person_id || ''
+  = submit_tag(t(:search), data: {disable_with: t(:please_wait) })
+%button#clearbibs{onclick: '$("#bibs").find("tr:gt(0)").remove();'}= t(:clear_bibs)

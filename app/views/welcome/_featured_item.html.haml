@@ -1,8 +1,44 @@
 .row
   .col-xs-12
-    .card.full-size-card.flashlight-card
-      .card-content
-        %h3= 'אלף לילה ולילה' # TODO: unhardcode
-        %p= 'מעשיות אלף לילה ולילה זכו לאינספור עיבודים והדהודים מאז החלו לספרן.  יוסף יואל ריבלין תרגם את המעשיות מן הערבית, והעשיר את התרבות העברית באגדות הקאלסיות הללו.  קראו על אלאדין, על שחרזאדה, על הרון אל רשיד, ועוד.' # hardcoded
+    / TODO: unhardcode this!
+    /.card{style: 'height:427px'}
+    .card
+      - unless @featured_content.nil?
+        .card-content
+          .recommend-pic
+            .recommend-portrait
+              - unless @featured_content.person.nil?
+                %img.recommend-absolute{ src: @featured_content.person.profile_image.url(:thumb), alt: @featured_content.person.name , width:'160px'}
+              - else
+                = '' # TODO: what to put here?
+          .recommend-text{style: 'height: 34.4rem;position:relative'}
+            %p.headline-3{style:'margin-top:0;padding-top:0'}= @featured_content.title
+            - unless @featured_content.user.nil?
+              %p{style: 'margin-bottom: 1.8rem'}
+                = t(:by)+' '
+                = link_to @featured_content.user.name, volunteer_show_path(@featured_content.user)
+            %p#fc_body
+              != @fc_snippet
+              - if @fc_rest != ''
+                = ' ...'
+          - if @fc_rest != ''
+            %span.linky.btn#toggle_featured_item{style:'color:white; padding-top:0.5rem'}= t(:to_the_full_feature)
+          - unless @featured_content.manifestation.nil?
+            %a{ href: manifestation_read_path(id: @featured_content.manifestation.id)}
+              .btn{style: 'padding-top:0.5rem'}
+                %b= t(:to_the_work_in_the_site)
+          - unless @featured_content.external_link.nil? or @featured_content.external_link.empty?
+            %a{ href: @featured_content.external_link}
+              .btn{style: 'padding-top:0.5rem'}
+                %b= t(:to_external_content)
+        .h_separator
 .float-left
   %a{href: 'http://benyehuda.org/blog/'}= t(:more_recommendations_in_the_blog)
+:javascript
+  $(document).ready(function(){
+    $('#toggle_featured_item').click(function(){
+      $('.recommend-text').css('height', 'auto');
+      $('#fc_body').html("#{@featured_content.nil? ? '' : escape_javascript(@featured_content.body)}");
+      $('#toggle_featured_item').hide();
+    });
+  });

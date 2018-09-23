@@ -39,7 +39,7 @@ Bybeconv::Application.configure do
   # config.logger = SyslogLogger.new
 
   # Use a different cache store in production
-  # config.cache_store = :mem_cache_store
+  config.cache_store = :mem_cache_store, '127.0.0.1', {value_max_bytes: 40*1024*1024}
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server
   # config.action_controller.asset_host = "http://assets.example.com"
@@ -62,4 +62,8 @@ Bybeconv::Application.configure do
 
   config.action_mailer.delivery_method = :sendmail # let's start sending mail :)
   config.eager_load = true
+  config.i18n.available_locales = :he
+
+  # Store Active Storage files on the S3 service
+  config.active_storage.service = :amazon
 end

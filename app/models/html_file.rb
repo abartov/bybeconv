@@ -307,7 +307,8 @@ class NokoDoc < Nokogiri::XML::SAX::Document
   end
 end
 
-class HtmlFile < ActiveRecord::Base
+class HtmlFile < ApplicationRecord
+  include Ensure_docx_content_type # fixing docx content-type detection problem, per https://github.com/thoughtbot/paperclip/issues/1713
   has_paper_trail
   has_and_belongs_to_many :manifestations
   belongs_to :person # for simplicity, only a single author considered per HtmlFile -- additional authors can be added on the WEM entities later
@@ -315,7 +316,11 @@ class HtmlFile < ActiveRecord::Base
   belongs_to :assignee, class_name: 'User', foreign_key: 'assignee_id'
   scope :with_nikkud, -> { where("nikkud IS NOT NULL and nikkud <> 'none'") }
   scope :not_stripped, -> { where('stripped_nikkud IS NULL or stripped_nikkud = 0') }
-  attr_accessible :title, :genre, :markdown, :comments, :path, :url, :status, :orig_mtime, :orig_ctime
+  # attr_accessible :title, :genre, :markdown, :publisher, :comments, :path, :url, :status, :orig_mtime, :orig_ctime, :person_id, :doc, :translator_id, :orig_lang, :year_published
+
+  has_attached_file :doc, storage: :s3, s3_credentials: 'config/s3.yml', s3_region: 'us-east-1'
+#  validates_attachment_content_type :doc, content_type: ['application/vnd.openxmlformats-officedocument.wordprocessingml.document']
+  validates_attachment_content_type :doc, content_type: ['application/zip', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']
 
   # a trivial enum just for this entity.  Roles would be expressed with an ActiveRecord enum in the actual (FRBR) catalog entites (Expression etc.)
   ROLE_AUTHOR = 1
@@ -454,6 +459,59 @@ class HtmlFile < ActiveRecord::Base
     path[path.rindex('/') + 1..-1]
   end
 
+  def has_splits
+    self.markdown =~ /^&&& /
+  end
+
+  def split_parts
+    any_footnotes = self.markdown =~ /\[\^\d+\]/ ? true : false
+    prev_key = nil
+    titles_order = []
+    ret = {}
+    footbuf = ''
+    self.markdown.split(/^(&&& .*)/).each do |bit|
+      if bit[0..3] == '&&& '
+        prev_key = bit[4..-1].strip # remember next section's title
+        stop = false
+        begin
+          if prev_key =~ /\[\^\d+\]/ # if the title line has a footnote
+            footbuf += $& # store the footnote
+            prev_key.sub!($&,'').strip! # and remove it from the title
+          else
+            stop = true
+          end
+        end until stop # handle multiple footnotes if they exist.
+      else
+        ret[prev_key] = footbuf+bit unless prev_key.nil? # buffer the text to be put in the prev_key next iteration
+        titles_order << prev_key unless prev_key.nil?
+        footbuf = ''
+      end
+    end
+    # great! now we have the different pieces sorted, *but* any footnotes are *only* in the last piece, even if they belong in earlier pieces. So we need to fix that.
+    if any_footnotes # hey, easy case is easy
+      footnotes_by_key = {}
+      ret.keys.map{|k| footnotes_by_key[k] = ret[k].scan(/\[\^\d+\][^:]/).map{|line| line[0..-2]} }
+      # now that we know which ones belong where, we can move them over
+      titles_order.each do |key|
+        next if key == titles_order[-1] # last one needs no handling
+        next if footnotes_by_key[key].nil?
+        buf = ''
+        footnotes_by_key[key].each do |foot|
+          ret[titles_order[-1]] =~ /(#{Regexp.quote(foot.strip)}:.*?)\[\^\d+\]/m # grab the entire footnote, right up to the next one, into $1
+          unless $1
+            # okay, it may *be* the last/only one...
+            ret[titles_order[-1]] =~ /(#{Regexp.quote(foot.strip)}:.*)/m # grab the rest of the doc
+          end
+          next unless $1 # shouldn't happen in DOCX conversion, but with manual markdown, anything is possible
+          buf += $1 # and buffer it
+          ret[titles_order[-1]].sub!($1,'') # and remove it from the final chunk's footnotes, where it does not belong
+        end
+        ret[key] += "\n"+buf
+      end
+    end
+    return ret
+  end
+
   def delete_pregen
     begin
       File.delete path + '.html' if html_ready?
@@ -461,6 +519,7 @@ class HtmlFile < ActiveRecord::Base
       nil
     end
   end
+
   # TODO: move those to be controller actions
   def make_html
     make_html_with_params(path + '.html', false)
@@ -539,6 +598,39 @@ class HtmlFile < ActiveRecord::Base
     end
   end
 
+  def create_WEM_new(person_id, the_title, the_markdown, multiple)
+    if self.status == 'Accepted'
+      begin
+        p = Person.find(person_id)
+        w = Work.new(title: the_title, orig_lang: orig_lang, genre: genre, comment: comments) # TODO: un-hardcode?
+        q = (translator_id.nil? ? p : translator)
+        copyrighted = ((p.public_domain && q.public_domain) ? false : ((p.public_domain.nil? || q.public_domain.nil?) ? nil : true)) # if author is PD, expression is PD # TODO: make this depend on both work and expression author, for translations
+        e = Expression.new(title: the_title, language: 'he', copyrighted: copyrighted, genre: genre, source_edition: publisher, date: year_published, comment: comments) # ISO codes
+        w.expressions << e
+        w.save!
+        c = Creation.new(work_id: w.id, person_id: p.id, role: :author)
+        c.save!
+        em_author = (translator_id.nil? ? p : translator) # the author of the Expression and Manifestation is the translator, if one exists
+        r = Realizer.new(expression_id: e.id, person_id: em_author.id, role: (translator_id.nil? ? :author : :translator))
+        r.save!
+        m = Manifestation.new(title: the_title, responsibility_statement: em_author.name, conversion_verified: true, medium: I18n.t(:etext), publisher: AppConstants.our_publisher, publication_place: AppConstants.our_place_of_publication, publication_date: Date.today, markdown: the_markdown, comment: comments, status: Manifestation.statuses[:published])
+        m.save!
+        m.people << em_author
+        e.manifestations << m
+        e.save!
+        manifestations << m # this HtmlFile itself should know the manifestation created out of it
+        self.status = 'Published' unless multiple # if called for split parts, we need to keep the status 'Accepted' for the check above. Status will be updated be caller.
+        save!
+        m.recalc_cached_people!
+        return true
+      rescue
+        return 'Error while create FRBR entities from HTML file!'
+      end
+    else
+      return I18n.t(:must_accept_before_publishing)
+    end
+  end
+
   def create_WEM(person_id)
     if status == 'Accepted'
       begin
@@ -553,10 +645,10 @@ class HtmlFile < ActiveRecord::Base
         c = Creation.new(work_id: w.id, person_id: p.id, role: :author)
         c.save!
         em_author = (translator_id.nil? ? p : translator) # the author of the Expression and Manifestation is the translator, if one exists
-        r = Realizer.new(expression_id: e.id, person_id: em_author.id, role: :translator)
+        r = Realizer.new(expression_id: e.id, person_id: em_author.id, role: (translator_id.nil? ? :author : :translator))
         r.save!
         clean_utf8 = markdown.encode('utf-8') # for some reason, this string was not getting written properly to the DB
-        m = Manifestation.new(title: title, responsibility_statement: em_author.name, medium: 'e-text', publisher: AppConstants.our_publisher, publication_place: AppConstants.our_place_of_publication, publication_date: Date.today, markdown: clean_utf8, comment: comments)
+        m = Manifestation.new(title: title, responsibility_statement: em_author.name, medium: 'e-text', publisher: AppConstants.our_publisher, publication_place: AppConstants.our_place_of_publication, publication_date: Date.today, markdown: clean_utf8, comment: comments, status: Manifestation.statuses[:published])
         m.save!
         m.people << em_author
         e.manifestations << m
@@ -567,12 +659,11 @@ class HtmlFile < ActiveRecord::Base
 
         return true
       rescue
-        flash[:error] = 'Error while create FRBR entities from HTML file!'
+        return 'Error while create FRBR entities from HTML file!'
       end
     else
-      flash[:error] = t(:must_accept_before_publishing)
+      return t(:must_accept_before_publishing)
     end
-    false
   end
 
   def remove_line_nums!

@@ -12,6 +12,14 @@ module ApplicationHelper
     'אחר'
   end
 
+  def safe_options_for_select(container, selected = nil)
+    ret = ''
+    container.each_pair do |heading, lineno|
+      ret += "<option value='#{lineno}' #{selected == heading ? 'selected=\'selected\'' : ''}>#{heading}</option>"
+    end
+    return ret.html_safe
+  end
+
   def viaf_json_to_html(json)
     ret = '<ul>'
     json.each do |j|
@@ -33,37 +41,6 @@ module ApplicationHelper
     return I18n.t(:unknown) if genre.nil? or genre.empty?
     return I18n.t(genre)
   end
-  def textify_lang(iso)
-    return I18n.t(:unknown) if iso.nil? or iso.empty?
-    case iso
-    when 'he'
-      return t(:hebrew)
-    when 'en'
-      return t(:english)
-    when 'de'
-      return t(:german)
-    when 'ru'
-      return t(:russian)
-    when 'yi'
-      return t(:yiddish)
-    when 'pl'
-      return t(:polish)
-    when 'fr'
-      return t(:french)
-    when 'ar'
-      return t(:arabic)
-    when 'el'
-      return t(:greek)
-    when 'la'
-      return t(:latin)
-    when 'it'
-      return t(:italian)
-    when 'grc'
-      return t(:ancient_greek)
-    else
-      return t(:unknown)
-    end
-  end
 
   def textify_copyright_status(copyrighted)
     copyrighted ? t(:by_permission) : t(:public_domain)
@@ -76,6 +53,17 @@ module ApplicationHelper
   def textify_nikkud(nik)
     return I18n.t(:unknown) if nik.nil? or nik.empty?
     return I18n.t(nik)
+  end
+
+  def textify_role(role, gender)
+    case role
+    when :author
+      return gender == 'female' ? t(:author_f) : t(:author)
+    when :translator
+      return gender == 'female' ? t(:translator_f) : t(:translator)
+    else
+      return t(:unknown)
+    end
   end
 
   def textify_htmlfile_status(st)
@@ -97,6 +85,10 @@ module ApplicationHelper
       return t(:published)
     when 'Manual'
       return t(:manual)
+    when 'Uploaded'
+      return t(:uploaded_directly)
+    when 'Superseded'
+      return t(:superseded)
     else
       return t(:unknown)
     end

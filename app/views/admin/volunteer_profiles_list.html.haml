@@ -1,0 +1,24 @@
+.top-element
+  %h2= t(:volunteer_profiles)
+
+  %a{ href: url_for(action: :volunteer_profile_new), style: 'color:white'}
+    .btn{style: 'float:none'}
+      %b= t(:new_volunteer_profile)
+  %p
+  %br
+  %table{style: 'cell-spacing: 10;'}
+    %tr
+      %th= t(:name)
+      %th= t(:feature_on)
+      %th= t(:volunteer_bio)
+      %th= t(:volunteer_statement)
+      %th
+
+    - @vps.each do |v|
+      %tr
+        %td= link_to v.name, url_for(action: :volunteer_profile_show, id: v.id)
+        %td!= v.featured_list
+        %td= v.bio
+        %td= v.about
+        %td= link_to t(:edit), url_for(action: :volunteer_profile_edit, id: v.id)
+  != paginate @vps

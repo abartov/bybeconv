@@ -1,0 +1,2 @@
+var new_holding = "<%= escape_javascript(render partial: 'holding', locals: { h: @holding, with_actions: false} ) %>";
+$("#pub<%= @pub_id %> ol").append(new_holding);

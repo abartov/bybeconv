@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  work_id_id:
+  user_id_id:
+  status: 1
+  aboutable_id:
+  aboutable_type: Aboutable
+
+two:
+  work_id_id:
+  user_id_id:
+  status: 1
+  aboutable_id:
+  aboutable_type: Aboutable

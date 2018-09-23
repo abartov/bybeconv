@@ -1,3 +1,162 @@
 / Works dashboard
-#maincontainer.container-fluid
-  = render partial: 'shared/tabs', locals: {tabclass: @tabclass}
+.top-element
+  = render partial: 'shared/breadcrumbs'
+  .container-fluid.welcome
+    .row
+      .col-md-12
+        .welcome-author-content
+          %h1= t(:works_page)
+          %p
+            = t(:works_totals_p1, {total: @work_stats[:total], pd: @work_stats[:pd]})
+            = link_to '[?]', '#', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_public_domain), 'data-content' => t(:public_domain_popover)
+            = t(:works_totals_p2, {permission: @work_stats[:permission]})
+            = link_to '[?]', '#', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_permission), 'data-content' => t(:permission_popover)
+  / Internal nav
+  = render partial: 'shared/genre_navbar', locals: {genres_present: get_genres.push('allwriters'), page: :works}
+  / works
+  .container-fluid
+    .row
+      .col-md-1
+      .col-md-10
+        .row
+          / right side
+          .col-md-8{style:'padding-right:0'}
+            - cache 'works_right_side' do
+              - right_side_genres.each do |g|
+                - genre_name = textify_genre(g)
+                %a{name: g+'_g'}
+                %div{style:'padding-top:1.8rem'}
+                  %p.headline-2{style:'display:inline'}= link_to genre_name, genre_path(genre: g)
+                  %p{style:'display: inline; padding-left: 1rem'}= "(#{@work_counts_by_genre[g]} #{t(:works)})"
+                .card
+                  .card-content
+                    .container-fluid
+                      .row{style:'margin-bottom:2rem'}
+                        .col-md-6{id: "random_#{g}", style:'padding-right: 0'}
+                          %div{style:'margin-bottom:1rem;'}
+                            %p
+                              %span.headline-3{style:'padding-top:0'}= t(:sample_works_of)
+                              %span= t(:random_order)
+                            %div
+                              %ol
+                                - @rand_by_genre[g][0..(@rand_by_genre[g].size < 5 ? -1 : 4)].each do |m|
+                                  %li
+                                    = link_to manifestation_read_path(m) do
+                                      %b= m.title
+                                    = t(:by)+' '+m.author_string
+                        .col-md-6{id: "surprise_#{g}", style:'padding-left:0;padding-right: 0'}
+                          .carousel.slide{id: "surprise-work-carousel-#{g}", 'data-interval' => 'false', 'data-wrap' => 'true'}
+                            .carousel-inner
+                              .card.full-size-card.small-surprise.item.active.surprise_button{id: "#{g}_side1", 'data-genre' => g, style:'margin-top:0;height:15rem;cursor:pointer;'}
+                                .card-content{style:'align-content: center; text-align: center; position: relative;'}
+                                  .linky
+                                    %div{style:'font-size:5rem;margin-bottom: -2rem'}
+                                      %span.icon-bysurprise-work
+                                    %p.headline-3= t(:surprise)
+                                %div{style:'z-index: 1; position: absolute; left: 0;bottom: 0%; border-bottom-left-radius: 0.3rem; display: inline;overflow: hidden'}
+                                  %img{src:'/assets/corner.png', alt: t(:background), width:80, height:80}
+                                %div
+                                  .bring-surprise-icon.text-on-dark{style: 'margin-bottom:0.6rem;'}
+                                    .linky{style:'color:white'}= '?'
+                              .card.genre-card.small-surprise.item{id: "#{g}_side2"}
+                                = render partial: 'shared/surprise_work', locals: {manifestation: @surprise_by_genre[g], id_frag: g, passed_genre: g, side: '2'}
+                      .row
+                        .col-xs-6{style:'padding-right:0'}
+                          %div
+                            %p.headline-3{style:'padding-top:0'}= t(:most_read_works_of_genre, {genre: genre_name})
+                          %div
+                            %ol
+                              - @pop_by_genre[g][:orig][0..(@pop_by_genre[g][:xlat].size < 5 ? -1 : 4)].each do |m|
+                                %li
+                                  = link_to manifestation_read_path(m) do
+                                    %b= m.title
+                                  = t(:by)+' '+m.author_string
+                        .col-xs-6{style:'padding:0'}
+                          %div
+                            %p.headline-3{style:'padding-top:0'}= t(:most_read_translated_works_of_genre, {genre: genre_name})
+                          %div
+                            %ol
+                              - @pop_by_genre[g][:xlat][0..(@pop_by_genre[g][:xlat].size < 5 ? -1 : 4)].each do |m|
+                                %li
+                                  = link_to manifestation_read_path(m) do
+                                    %b= m.title
+                                  = t(:by)+' '+m.author_string
+                          %div{style:'position: relative; left:0; bottom:0;margin-top:1rem;'}
+                            .btn.linky
+                              %a{style:'color:white', href: genre_path(genre: g)}= t(:to_all_works_in_genre, {genre: genre_name})
+              #abc_works
+                - cache 'abc_works' do
+                  %div{:style => 'padding-top: 1.8rem'}
+                    %p.headline-2{style:'display:inline'}= link_to t(:all_works), all_works_path
+                    %p{style:'display:inline;padding-left:1rem'}= " (#{@work_stats[:total]} #{t(:works)})"
+                  .card
+                    .card-content
+                      .container-fluid
+                        .row{:style => "margin-bottom: 2rem"}
+                          .col-md-12
+                            %div{:style => "margin-bottom: 1rem;"}
+                              %p
+                                %span.headline-3{:style => "padding-top: 0"}= t(:by_abc)
+                            %div
+                              %ol
+                                - @works_abc.each do |m|
+                                  %li
+                                    = link_to m.title, manifestation_read_path(m)
+                                    = t(:by)+' '+m.author_string
+                                    = "(#{textify_genre(m.expressions[0].genre)})"
+                            %div{style: 'position: absolute; left:0; bottom:0'}
+                              %a.btn{href: all_works_path}= t(:to_all_works)
+          / left side
+          .col-md-4{style:'padding-left:0'}
+            #whatsnew-works.main-group
+              %p.headline-2= t(:new_works_in_the_project)
+              .card
+                .card-content
+                  - @new_works_by_genre.each_pair do |g, marr|
+                    %div{style: 'padding-bottom: 2.4rem'}
+                      %div{:style => "margin-bottom: 1rem;"}
+                        %p
+                          %span.headline-3{:style => "padding-top: 0"}= textify_genre(g)
+                      %div
+                        %ul
+                          - mcount = 0
+                          - marr.each do |details|
+                            %li
+                              %a{href: manifestation_read_path(details[0])}
+                                %strong= details[1]
+                              = t(:by)+' '+details[2]
+                              - mcount += 1
+                              - break if mcount > 4
+                  /%div{:style => "height:7.3rem"} ועוד 53 יצירות נוספו לאתר החודש.
+                  %div
+                    %a.btn{href: whatsnew_path}= t(:to_all_whatsnew)
+            .row#flashlight
+              / featured item
+              %p.headline-3= t(:featured_item)
+              = render partial: 'welcome/featured_item'
+            .row#favorites
+            .row#popular_tags
+              %p.headline-2{style:'margin-bottom:0'}= t(:popular_work_tags)
+              .row
+                .col-xs-12
+                  .card.full-size-card
+                    .card-content
+                      %ol
+                        - @popular_tags.each do |ptag|
+                          %li
+                            = link_to ptag[0].name, tag_path(ptag[0].id)
+                            = " (#{ptag[1]})"
+      .col-md-1
+/ =========================
+:javascript
+  $(document).ready(function(){
+    $('[data-toggle="popover"]').popover({
+      trigger: 'focus'
+    });
+
+    $('.surprise_button').click(function(){
+      g = $(this).attr('data-genre');
+      $('#surprise-work-carousel-'+g).carousel('next');
+      $('#'+g+'_side1').load('/manifestation/get_random?genre='+g+'&id_frag='+g+'&side=1');
+    });
+  });

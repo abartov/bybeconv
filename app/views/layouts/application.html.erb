@@ -2,100 +2,152 @@
 <html>
 <head>
   <title><%= @page_title ? @page_title : t(:default_page_title)%></title>
-<!-- Latest compiled and minified CSS -->
-<!-- <link rel="stylesheet" href="//cdn.rawgit.com/morteza/bootstrap-rtl/v3.3.4/dist/css/bootstrap-rtl.min.css"> -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-<link href="https://fonts.googleapis.com/css?family=Alef" rel="stylesheet">
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-4865013-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-4865013-2');
+</script>
+
+  <!-- Latest compiled and minified CSS -->
+  <!-- LTR Bootstrap the site was initially implemented with -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <!-- Bootstrap RTL from CDN (Bootstrap 4.0 *still* has no RTL...) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-rtl/3.4.0/css/bootstrap-rtl.min.css">
+  <!-- <link rel="stylesheet" href="//cdn.rawgit.com/morteza/bootstrap-rtl/v3.3.4/dist/css/bootstrap-rtl.min.css"> -->
+
+  <link href="https://fonts.googleapis.com/css?family=Alef" rel="stylesheet">
+
+  <link href="/assets/font.css" rel="stylesheet">
+
   <%= stylesheet_link_tag    "application" %>
   <%= javascript_include_tag "application" %>
-<!-- Latest compiled and minified JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery.matchHeight/0.7.0/jquery.matchHeight-min.js"><script>
+
+  <script>
+    $(document).ready(function() {
+      $()
+    });
+  </script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
+  <% unless @og_image.nil? %>
+    <meta property="og:image" content="<%= @og_image %>">
+  <% end %>
   <%= csrf_meta_tags %>
 </head>
 <body dir="rtl" align="right">
-    <% unless @print
-       flash.each do |name, msg| -%>
-          <%= content_tag :div, msg, class: name %>
-      <% end -%>
-    <% end -%>
+<% unless @print
+    flash.each do |name, msg| -%>
+      <%= content_tag :div, msg, class: "top-element #{name}" %>
+  <% end -%>
+<% end -%>
 <% unless @print %>
-  <div class="container-fluid topbar">
-    <div class="container top-nav">
-      <div class="row">
-        <div class="col-sm-8 text-on-dark" id="notifications">
-          <p><%= sitenotice %></p>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-4 text-on-dark" id="user-widget">
-          <% if current_user %>
-            <%= t(:welcome) %> <strong><%= current_user.name %></strong>!
-            <%= link_to t(:sign_out), signout_path, id: "sign_out" %>
-          <% else %>
-            <%= link_to t(:sign_in_google_twitter), "/session/login", id: "sign_in" %>
-          <% end %>
-        </div>
-        <div class="col-sm-8">
-          <%= render partial: 'shared/breadcrumbs' %>
-        </div>
-      </div>
-    </div>
-  </div>
   <% unless @readmode %>
   <!-- top logo area -->
-  <div class="container-fluid">
-    <div class="container">
+  <div class="topbar">
+    <div class="container-fluid">
       <div class="row">
-        <div class="col-sm-4" id="search-bar">
-          <input class="field search-field" placeholder="<%= t(:search_placeholder) %>" type="search"> <span class="search-icon"><i class="fa fa-search"></i></span>
-          <span class="glyphicon glyphicon-search"></span>
-          <!-- < %= link_to t(:advanced_search), :controller => :search %> -->
-        </div>
-        <div class="col-sm-8 blank-space">
-          <div class="row">
-            <div class="col-xs-6 col-md-7 blank-space"></div>
-            <div class="col-xs-6 col-md-5" id="site-logo">
-              <a href="/"><img alt="לוגו" class="img-responsive" src="assets/BY_Logo.svg"></a>
+        <div class="col-lg-1"></div>
+        <div class="col-lg-10 col-xs-12" style="padding: 0">
+          <div class="container-fluid" style="padding: 0">
+            <div class="row" style="padding: 0">
+              <div class="col-sm-3">
+                <div id="site-logo"><a href="/"><img src="/assets/BY_Logo.svg" class="img-responsive" alt="<% t(:logo) %>"></a></div>
+              </div>
+              <div class="col-sm-6" style="align-content: center; text-align: center">
+                <div class="fontsize-selector-unit vcentered">
+                  <%= render partial: 'shared/fontsize' %>
+                  <!-- TODO: also set a cookie, so it'll stick between screens -->
+                </div>
+                <% unless sitenotice.empty? %>
+                  <div class="announcement card text-on-dark">
+                    <p><%= sitenotice %></p>
+                  </div>
+                <% end %>
+              </div>
+              <div class="col-sm-3">
+                <div id="user-widget">
+                  <div style="display: inline;float: right; position: relative">
+                    <% if current_user %>
+                    <div class="collapsed" data-toggle="collapse" data-target="#user_collapsible">
+                      <p style="padding-left: 1.6rem"><%= t(:welcome) %> <strong><%= current_user.name %></strong>!</p>
+                      <div class="dropdown-arrow linky" style="top: 0.1rem; left: 0"><i class="fa chevron"></i></div>
+                    </div>
+                      <div id="user_collapsible" class="collapse" ><a id="sign_in" href="#">כניסה לאזור האישי</a><br/>
+                        <%= link_to t(:sign_out), signout_path, id: "sign_out" %>
+                      </div>
+                      <% if current_user %>
+                        <% if current_user.editor? %>
+                          <div class="dashboard-link">
+                          <br />
+                          <h2><%= link_to t(:back_to_dashboard), url_for(controller: :admin, action: :index) %></h2>
+                          </div>
+                        <% end %>
+                      <% end %>
+
+                    <% else %>
+                      <%= link_to t(:sign_in_google_twitter), "/session/login", id: "sign_in" %>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
+        <div class="col-lg-1"></div>
       </div>
     </div>
+    <%= render partial: 'shared/tabs' %>
   </div>
-  <% end %>
+  <% end -%>
 <% end %>
 <%= yield %>
 <% if @print %>
   <%= t(:download_footer_html, url: url_for(action: :read, only_path:false, id: @m.id)) %>
 <% else %>
   <hr/>
-  <% unless @pagetype == :homepage %>
-    <%= link_to t(:back_to_homepage), "/" %>
-  <% end %>
   <% if current_user %>
     <% if current_user.editor? %>
       <br />
-      <%= link_to t(:back_to_dashboard), url_for(controller: :admin, action: :index) %>
+      <h2><%= link_to t(:back_to_dashboard), url_for(controller: :admin, action: :index) %></h2>
     <% end %>
+  <% end %>
+  <% unless @pagetype == :homepage %>
+    <%= link_to t(:back_to_homepage), "/" %>
   <% end %>
   <p/>
   <!-- footer start -->
-  <div class="container-fluid" id="byfooter">
-    <div class="container" id="bottom-nav">
-      <div class="row">
-        <div class="col-sm-4 text-on-dark" id="bottom-contribute">
-          <p><B><A HREF="http://benyehuda.org/h_faq.html">שאלות נפוצות</A> · <A HREF="http://benyehuda.org/blog/%D7%A8%D7%95%D7%A6%D7%99%D7%9D-%D7%9C%D7%A2%D7%96%D7%95%D7%A8">מעוניינים להצטרף?</A></B>
-          </p>
-        </div>
-        <div class="col-sm-8 text-on-dark" id="bottom-about">
-          <p><b>פרויקט בן-יהודה</b> הוא מיזם התנדבותי ליצירת מהדורות אלקטרוניות של ספרות עברית והנגשתן לציבור.</p>
-        </div>
-      </div>
+<%= render partial: 'shared/fontsize_js' %>
+<div id="byfooter" class="container-fluid">
+<div class="row">
+    <div class="col-lg-1"></div>
+    <div class="col-lg-10 col-xs-12 col-sm-12">
+        <div id="bottom-nav" class="container-fluid text-on-dark">
+    <p style="padding-top:1rem"><span style="font-weight: bold">פרויקט בן-יהודה</span> הוא מיזם התנדבותי ליצירת מהדורות אלקטרוניות של ספרות עברית והנגשתן לציבור.</p>
+   <div style="padding-top:1rem">
+    <div class="welcome-small-link"><a href="/page/about"><i class="fa fa-info-circle" style="padding-top:0.3rem;"></i> <%= t(:about) %></a></div>
+    <div class="welcome-small-link"><a href="https://www.facebook.com/%D7%A4%D7%A8%D7%95%D7%99%D7%A7%D7%98-%D7%91%D7%9F-%D7%99%D7%94%D7%95%D7%93%D7%94-119140448124648/" target="_new"><i class="fa fa-facebook-square" style="padding-top:0.3rem;"></i> <%= t(:to_the_facebook_page) %></a></div>
+    <div class="welcome-small-link"><a href="http://www.youtube.com/user/ProjectBenYehuda/videos?flow=grid&view=0"><i class="fa fa-youtube-play" target="_new" style="padding-top:0.3rem;"></i> <%= t(:to_the_youtube_channel) %></a></div>
+    <div class="welcome-small-link"><a href="http://benyehuda.org/blog/"><i class="fa fa-pencil-square-o" style="padding-top:0.3rem;" target="_new"></i> <%= t(:the_blog) %></a></div>
+    <div class="welcome-small-link">
+      <%= render partial: 'shared/share', locals: {element: :footer} %>
     </div>
-  </div><!-- footer end -->
+        <div class="footer-small-link"><a href="/page/volunteer"><i class="fa fa-handshake-o" style="padding-top:0.3rem;"></i> <%= t(:how_to_help) %></a></div>
+    <div class="welcome-small-link"><a href="/page/donate"><span class="icon-bydonate" style="padding-top:0rem;"></span> <%= t(:donate_money) %></a></div>
+  </div>
+
+  </div>
+    </div>
+    <div class="col-lg-1"></div>
+  </div>
+
+  <!-- footer end -->
 
 <% end %>
 </body>

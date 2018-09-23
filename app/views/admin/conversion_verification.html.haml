@@ -1,0 +1,7 @@
+.top-element
+  %h2= t(:conversion_verification_report)
+
+  %h3= t(:left_todo)+': '+@total.to_s
+  %h3= "#{t(:already_done)}: #{Manifestation.count - @total}"
+  = render partial: 'manifestation/list', locals: {manifestations: @manifestations}
+  != paginate @manifestations

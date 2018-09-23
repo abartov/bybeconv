@@ -40,7 +40,7 @@ class ApiKeysController < ApplicationController
   # POST /api_keys
   # POST /api_keys.json
   def create
-    @api_key = ApiKey.new(params[:api_key])
+    @api_key = ApiKey.new(key_params)
 
     respond_to do |format|
       if @api_key.save
@@ -59,7 +59,7 @@ class ApiKeysController < ApplicationController
     @api_key = ApiKey.find(params[:id])
 
     respond_to do |format|
-      if @api_key.update_attributes(params[:api_key])
+      if @api_key.update_attributes(key_params)
         format.html { redirect_to @api_key, notice: 'Api key was successfully updated.' }
         format.json { head :no_content }
       else
@@ -79,5 +79,10 @@ class ApiKeysController < ApplicationController
       format.html { redirect_to api_keys_url }
       format.json { head :no_content }
     end
+  end
+
+  private
+  def key_params
+    params[:api_key].permit(:id, :description, :email, :key, :status)
   end
 end

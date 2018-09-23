@@ -1,0 +1,6 @@
+.top-element
+  %h1= t(:new_file)
+
+  = render partial: 'form', locals: {action: 'create', text: @text}
+
+  = link_to t(:back), html_file_list_path

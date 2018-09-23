@@ -1,0 +1,62 @@
+= form_for @bib_source do |f|
+  - if @bib_source.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@bib_source.errors.count, "error")} prohibited this bib_source from being saved:"
+      %ul
+        - @bib_source.errors.full_messages.each do |message|
+          %li= message
+
+  .scfield
+    = f.label t(:title)
+    = f.text_field :title
+  .scfield
+    = f.label t(:source_type)
+    = f.select :source_type, @select_options
+  .scfield
+    = f.label :url, t(:url)
+    = f.text_field :url
+  .scfield
+    = f.label :item_pattern, t(:item_pattern)
+    = f.text_field :item_pattern
+  .scfield
+    = f.label t(:port)
+    = f.number_field :port
+  .scfield
+    = f.label t(:institution)
+    = f.text_field :institution
+  .scfield
+    = f.label :api_key, t(:api_key)
+    = f.text_field :api_key
+  .scfield
+    = f.label t(:comments)
+    = f.text_area :comments
+  .scfield
+    %b= f.label t(:status)+': '
+    = f.radio_button(:status, :enabled, checked: (@bib_source.status.nil? or @bib_source.enabled?))
+    = f.label t(:enabled)
+    = f.radio_button(:status, :disabled, checked: (not @bib_source.status.nil? and @bib_source.disabled?))
+    = f.label t(:disabled)
+  .actions
+    = f.submit t(:save)
+
+:javascript
+  function update_fields(options){
+    v = $('#bib_source_source_type option:selected').val();
+    if(v != null) {
+      $('#bib_source_url').prop('disabled', options[v].enable.includes('url') ? false : true);
+      $('#bib_source_port').prop('disabled', options[v].enable.includes('port') ? false : true);
+      $('#bib_source_item_pattern').prop('disabled', options[v].enable.includes('item_pattern') ? false : true);
+      $('#bib_source_institution').prop('disabled', options[v].enable.includes('institution') ? false : true);
+      $('#bib_source_api_key').prop('disabled', options[v].enable.includes('api_key') ? false : true);
+    }
+  }
+
+  $(document).ready(function(){
+    var options = JSON.parse('#{@options.html_safe}');
+    $('#bib_source_source_type').on('change',function(e) {
+      // var optionSelected = $("option:selected", this);
+      update_fields(options);
+    });
+    update_fields(options, $('#bib_source_source_type option:selected').val());
+
+  });

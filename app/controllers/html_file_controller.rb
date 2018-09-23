@@ -1,8 +1,10 @@
-class HtmlFileController < ApplicationController
-  before_filter :require_editor, only: [:edit, :update, :list_for_editor]
-  # before_filter :require_user, :only => [:edit, :update]
+require 'pandoc-ruby' # for generic DOCX-to-HTML conversions
 
-  before_filter :require_admin, only: [:analyze, :analyze_all, :list, :parse, :publish, :unsplit, :chop1, :chop2, :chop3, :choplast1, :choplast2, :poetry, :frbrize]
+class HtmlFileController < ApplicationController
+  before_action :require_editor, only: [:edit, :update, :list_for_editor]
+  # before_action :require_user, :only => [:edit, :update]
+
+  before_action :require_admin, only: [:analyze, :analyze_all, :new, :create, :destroy, :list, :parse, :publish, :unsplit, :chop1, :chop2, :chop3, :choplast1, :choplast2, :poetry, :frbrize, :edit_markdown, :mark_superseded]
 
   def analyze
     @text = HtmlFile.find(params[:id])
@@ -11,6 +13,79 @@ class HtmlFileController < ApplicationController
     params['commit'] = 'Commit'
     list
     render action: :list # help user find the newly-analyzed files
+  end
+
+  def new
+    @text = HtmlFile.new
+    @page_title = t(:new_file_to_convert)
+    respond_to do |format|
+      format.html # new.html.erb
+      format.json { render json: @text }
+    end
+  end
+
+  def create
+    @text = HtmlFile.new(hf_params)
+    @text.status = 'Uploaded'
+    respond_to do |format|
+      if @text.save
+        format.html { redirect_to url_for(action: :edit_markdown, id: @text.id), notice: t(:updated_successfully) }
+        format.json { render json: @text, status: :created, location: @text }
+      else
+        format.html { render action: "new" }
+        format.json { render json: @text.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def edit_markdown
+    @text = HtmlFile.find(params[:id])
+    @page_title = t(:edit_markdown)
+    unless params[:markdown].nil?
+      @text.markdown = params[:markdown]
+      @text.genre = params[:genre] unless params[:genre].blank?
+      @text.orig_lang = params[:orig_lang] unless params[:orig_lang].blank?
+      @text.comments = params[:comments]
+      @text.save
+    end
+
+    if @text.markdown.nil? # convert on first show
+      unless @text.doc.file? # accept no-attachment HTML "files", and start an empty one
+        @text.markdown = t(:empty_markdown_template)
+        @text.save
+      else
+        bin = Faraday.get @text.doc.url # grab the doc/x binary
+        tmpfile = Tempfile.new(['docx2mmd__','.docx'], :encoding => 'ascii-8bit')
+        tmpfile_pp = Tempfile.new(['docx2mmd__pp_','.docx'], :encoding => 'ascii-8bit')
+        begin
+          tmpfile.write(bin.body)
+          tmpfilename = tmpfile.path
+          # preserve linebreaks to post-process after Pandoc!
+          docx = Docx::Document.open(tmpfilename)
+          docx.paragraphs.each do |p|
+            p.text = '&&STANZA&&' if p.text.empty? # replaced with <br> tags in new_postprocess
+          end
+          docx.save(tmpfile_pp.path) # save modified version
+          markdown = `pandoc -f docx -t markdown_mmd #{tmpfile_pp.path}`
+          @text.markdown = new_postprocess(markdown)
+          @text.save
+        rescue => e
+          flash[:error] = t(:conversion_error)
+          redirect_to controller: :admin, action: :index
+        ensure
+          tmpfile.close
+        end
+      end
+    end
+    @markdown = @text.markdown
+    @html = ''
+    if @text.has_splits
+      @text.split_parts.each_pair do |title, markdown|
+        @html += "<hr style='border-color:#2b0d22;border-width:20px;margin-top:40px'/><h1>#{title}</h1>"+MultiMarkdown.new(markdown).to_html.force_encoding('UTF-8')
+      end
+    else
+      @html = MultiMarkdown.new(@markdown.gsub(/^&&& (.*)/, '<hr style="border-color:#2b0d22;border-width:20px;margin-top:40px"/><h1>\1</h1>')).to_html.force_encoding('UTF-8') # TODO: figure out why to_html defaults to ASCII 8-bit
+    end
   end
 
   def edit
@@ -57,22 +132,24 @@ class HtmlFileController < ApplicationController
     @total_badenc = HtmlFile.where(status: 'BadCP1255').count
     @total_fileerr = HtmlFile.where(status: 'FileError').count
     @total_parsed = HtmlFile.where(status: 'Parsed').count
+    @total_uploaded = HtmlFile.where(status: 'Uploaded').count
     @total_accepted = HtmlFile.where(status: 'Accepted').count
+    @total_superseded = HtmlFile.where(status: 'Superseded').count
     @total_published = HtmlFile.where(status: 'Published').count
     @total_manual = HtmlFile.where(status: 'Manual').count
     @total_nikkud_full = HtmlFile.where(nikkud: 'full').count
     @total_nikkud_some = HtmlFile.where(nikkud: 'some').count
-    @total_assigned = HtmlFile.where("assignee_id is not null and status != 'Published'").count
+    @total_assigned = HtmlFile.where("assignee_id is not null and status != 'Published' and status != 'Superseded'").count
     # build query condition
     query = {}
     unless params[:commit].blank?
       session[:html_q_params] = params # make prev. params accessible to view
     else
-      session[:html_q_params] = { footnotes: '', nikkud: '', status: params['status'], path: '' }
+      session[:html_q_params] = { footnotes: '', nikkud: '', status: params['status'], path: '' } if session[:html_q_params].nil?
     end
     f = session[:html_q_params][:footnotes]
     n = session[:html_q_params][:nikkud]
-    s = params[:status] or session[:html_q_params][:status]
+    s = params[:commit].blank? ? session[:html_q_params][:status] : (params[:status] or session[:html_q_params][:status] )
     p = session[:html_q_params][:path] # retrieve query params whether or not they were POSTed
     query.merge!(footnotes: f) unless f.blank?
     query.merge!(nikkud: n) unless n.blank?
@@ -80,12 +157,11 @@ class HtmlFileController < ApplicationController
     assignee_cond = "assignee_id is null or assignee_id = #{current_user.id}"
 
     # TODO: figure out how to include filter by path without making the query fugly
-    if p.blank?
-      @texts = HtmlFile.where(assignee_cond).where(query).page(params[:page]).order('status ASC')
+    if p.nil? || p.blank?
+      @texts = HtmlFile.where(assignee_cond).where(query).page(params[:page]).order('updated_at DESC')
     else
-      @texts = HtmlFile.where(assignee_cond).where('path like ?', '%' + params[:path] + '%').page(params[:page]).order('status ASC')
+      @texts = HtmlFile.where(assignee_cond).where('path like ?', '%' + params[:path] + '%').page(params[:page]).order('updated_at DESC')
     end
-    # @texts = HtmlFile.page(params[:page]).order('status ASC')
   end
 
   def parse
@@ -107,6 +183,22 @@ class HtmlFileController < ApplicationController
     redirect_to action: :list
   end
 
+  def mark_superseded
+    @text = HtmlFile.find(params[:id])
+    @text.status = 'Superseded'
+    @text.assignee_id = nil
+    @text.save!
+    redirect_to action: :list
+  end
+
+  def destroy
+    h = HtmlFile.find(params[:id])
+    unless h.nil?
+      h.destroy!
+    end
+    redirect_to action: :list
+  end
+
   def frbrize
     @text = HtmlFile.find(params[:id])
     if @text.genre.blank?
@@ -114,12 +206,36 @@ class HtmlFileController < ApplicationController
       redirect_to action: :render_html, id: @text.id
     else
       unless @text.person.nil?
+        oldstatus = @text.status
         @text.status = 'Accepted'
         @text.genre = params['genre'] unless params['genre'].nil?
         @text.save!
-        @text.create_WEM(@text.person.id)
-        flash[:notice] = t(:created_frbr)
-        redirect_to action: :list
+        success = false
+        if oldstatus == 'Uploaded' # new, direct way!
+          if @text.has_splits
+            @text.split_parts.each_pair do |title, markdown|
+              success = @text.create_WEM_new(@text.person.id, title, markdown, true)
+            end
+            @text.status = 'Published'
+            @text.save!
+          else
+            success = @text.create_WEM_new(@text.person.id, @text.title, @text.markdown, false)
+          end
+          if success == true
+            flash[:notice] = t(:created_frbr)
+          else
+            flash[:error] = success
+          end
+          redirect_to controller: :manifestation, action: :list
+        else
+          success = @text.create_WEM(@text.person.id)
+          if success == true
+            flash[:notice] = t(:created_frbr)
+          else
+            flash[:error] = success
+          end
+          redirect_to controller: :manifestation, action: :list
+        end
       else
         flash[:error] = t(:cannot_create_frbr)
         redirect_to action: :render_html, id: @text.id
@@ -153,19 +269,22 @@ class HtmlFileController < ApplicationController
   end
 
   def render_by_legacy_url
-    the_url = params[:path] + '.html'
-    the_url = '/' + the_url if the_url[0] != '/' # prepend slash if necessary
-    h = HtmlFile.find_by_url(the_url)
-    unless h.nil?
-      # TODO: handle errors, at least path not found
-      if h.status != 'Published'
-        @html = "<h1>not yet.</h1>"
-        @html = File.open(h.path, 'r:UTF-8').read
-      else
-        redirect_to url_for(controller: :manifestation, action: :read, id: h.manifestations[0].id)
-      end
+    if params[:format] && params[:format] == 'xml'
+      head :bad_request
     else
-      @html = '<h1>bad path</h1>'
+      the_url = params[:path] + '.html'
+      the_url = '/' + the_url if the_url[0] != '/' # prepend slash if necessary
+      h = HtmlFile.find_by_url(the_url)
+      unless h.nil?
+        # TODO: handle errors, at least path not found
+        if h.status != 'Published'
+          @html = File.open(h.path, 'r:UTF-8').read
+        else
+          redirect_to url_for(controller: :manifestation, action: :read, id: h.manifestations[0].id)
+        end
+      else
+        @html = '<h1>bad path</h1>'
+      end
     end
   end
 
@@ -266,6 +385,46 @@ class HtmlFileController < ApplicationController
   end
   protected
 
+  def new_postprocess(buf)
+    lines = buf.split("\n")
+    in_footnotes = false
+    prev_nikkud = false
+    (0..lines.length-1).each {|i|
+      lines[i].strip!
+      uniq_chars = lines[i].gsub(/[\s\u00a0]/,'').chars.uniq
+      if lines[i].empty? and prev_nikkud
+        lines[i] = '> '
+        next
+      end
+      if uniq_chars == ['*'] or uniq_chars == ["\u2013"] # if the line only contains asterisks, or Unicode En-Dash (U+2013)
+        lines[i] = '***' # make it a Markdown horizontal rule
+      else
+        nikkud = is_full_nikkud(lines[i])
+        in_footnotes = true if lines[i] =~ /^\[\^\d+\]:/ # once reached the footnotes section, set the footnotes mode to properly handle multiline footnotes with tabs
+        if nikkud
+          # make full-nikkud lines PRE
+          lines[i] = '> '+lines[i] unless lines[i] =~ /\[\^\d+/ # produce a blockquote (PRE would ignore bold and other markup)
+          prev_nikkud = true
+        else
+          prev_nikkud = false
+        end
+        if in_footnotes && lines[i] !~ /^\[\^\d+\]:/ # add a tab for multiline footnotes
+          lines[i] = "\t"+lines[i]
+        end
+      end
+    }
+    new_buffer = lines.join "\n"
+    new_buffer.gsub!("\n\s*\n\s*\n", "\n\n")
+    ['.',',',':',';','?','!'].each {|c|
+      new_buffer.gsub!(" #{c}",c) # remove spaces before punctuation
+    }
+    new_buffer.gsub!('©כל הזכויות', '© כל הזכויות') # fix an artifact of the conversion
+    new_buffer.gsub!(/> (.*?)\n\s*\n\s*\n/, "> \\1\n\n<br>\n") # add <br> tags for poetry, as a workaround to preserve stanza breaks
+    new_buffer.gsub!("&&STANZA&&","\n> \n<br />\n> \n") # sigh
+    new_buffer.gsub!(/(\n\s*)*\n> \n<br \/>\n> (\n\s*)*/,"\n> \n<br />\n> \n") # sigh
+    return new_buffer
+  end
+
   def render_from_markdown(htmlfile)
     markdown = File.open(htmlfile.path + '.markdown', 'r:UTF-8').read
     html = MultiMarkdown.new(markdown.gsub('__SPLIT__', '__________')).to_html.force_encoding('UTF-8') # TODO: figure out why to_html defaults to ASCII 8-bit
@@ -297,5 +456,11 @@ class HtmlFileController < ApplicationController
     new_lines += lines # just append the remaining lines
     @markdown = new_lines.join "\n"
     File.open(@text.path + '.markdown', 'wb') { |f| f.write(@markdown) } # write back
+  end
+
+  private
+
+  def hf_params
+    params[:html_file].permit(:title, :genre, :markdown, :publisher, :comments, :path, :url, :status, :orig_mtime, :orig_ctime, :person_id, :doc, :translator_id, :orig_lang, :year_published)
   end
 end

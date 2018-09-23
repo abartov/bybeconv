@@ -1,7 +1,8 @@
-%h1= 'נא לבחור שיטת אימות'
+.top-element
+  %h1= 'נא לבחור שיטת אימות'
 
-= form_tag session_do_login_path do
-  %p
-    = submit_tag 'Google'
-  %p
-    = submit_tag 'Twitter'
+  = form_tag session_do_login_path do
+    %p
+      = submit_tag 'Google'
+    %p
+      = submit_tag 'Twitter'

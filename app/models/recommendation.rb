@@ -1,10 +1,10 @@
-class Recommendation < ActiveRecord::Base
-  attr_accessible :about, :from, :resolved_by, :status, :subscribe, :what, :recommended_by
+class Recommendation < ApplicationRecord
+  belongs_to :user
+  belongs_to :approver, foreign_key: 'approved_by', class_name: 'User'
+  belongs_to :manifestation
 
-  belongs_to :html_file # legacy system (will be migrated or eliminated at some point; for now will co-exist quietly)
-  belongs_to :manifestation # new system
-  belongs_to :recommender, class_name: 'User', foreign_key: :recommended_by
+  enum status: [:pending, :approved]
 
-  scope :approved, -> { where status: 'approved' }
-
+  scope :pending, -> { where(status: Recommendation.statuses[:pending]) }
+  scope :approved, -> { where(status: Recommendation.statuses[:approved]) }
 end

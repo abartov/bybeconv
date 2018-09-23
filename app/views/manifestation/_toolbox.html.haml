@@ -1,25 +1,59 @@
-#toolbox.btn-group-vertical{role:'group', 'aria-label' => t(:toolbox)}
-  - if @readmode
-    %button.btn
-      != link_to t(:full_mode), url_for(action: :read, id: @m.id), style: 'color:yellow;'
-  - else
-    %button.btn.btn-default
-      != link_to t(:reading_mode), url_for(action: :readmode, id: @m.id), style: 'color:yellow;'
-    %button.btn#fontsize= t(:font_size)
-    %button.btn= t(:bookmark)
-    %button.btn= t(:like)
-    %button.btn= t(:bookshelf)
-    %button.btn#found_mistake= t(:found_mistake)
-    %button.btn.share= t(:share)
-    %button.btn.download= t(:download)
-    %button.btn.printbutton= t(:print)
-    %button.btn.citebutton= t(:cite)
-    / %button.btn= t(:additional)
-    / %button.btn= t(:rollup)
+- cache do
+  %div{ id: "toolbox#{@readmode ? '-read' : ''}", role:'group', 'aria-label' => t(:toolbox)}
+    #work-view{style:'width:10rem; text-align:center;margin-bottom:2rem;position:relative'}
+      - if @readmode
+        = link_to url_for(action: :read, id: @m.id) do
+          %div
+            %button.btn.work-view
+              %i.fa.fa-arrow-circle-right{'aria-hidden' => :true}
+          %p= t(:full_mode)
+      - else
+        = link_to url_for(action: :readmode, id: @m.id) do
+          %div
+            %button.btn.work-view
+              %i.icon-byread
+          %p= t(:reading_mode)
+      .btn-group-vertical
+        /%button.btn#fontsize= t(:font_size)
+        #maintools{class: @readmode ? 'collapse collapsed' : 'collapse in'}
+          %button.toolbox-cell.bookmarkbtn.darkoldpink{style:'border-top-left-radius:0.3rem;border-top-right-radius:0.3rem'}
+            %i.icon-bybookmark-empty
+            %span.tooltiptext= t(:add_bookmark)
+          %button.toolbox-cell.darkoldpink.like
+            - if @liked
+              %i.fa.fa-heart
+            - else
+              %i.fa.fa-heart-o
+            %span.tooltiptext= t(:work_heart_button)
+          %button.toolbox-cell.darkoldpink.bookshelf
+            %i.icon-bybookshelf
+            %span.tooltiptext= t(:bookshelves)
+          %button.toolbox-cell.mistake#found_mistake
+            %div{style:'height:7rem;padding-top:1rem'}
+              %i.icon-byerror-found{style:'color: #660248'}
+              %span.foundmistake= t(:found_mistake)+'!'
+            %div{style:'height:4rem'}
+              %span.tooltiptext= t(:mistake_important)
+          = render partial: 'shared/share', locals: {element: :button}
+          %button.toolbox-cell.darkoldpink.download
+            %i.fa.fa-download
+            %span.tooltiptext= t(:download_ebook)
+          %button.toolbox-cell.darkoldpink.printbutton
+            %i.fa.fa-print
+            %span.tooltiptext= t(:print)
+          %button.toolbox-cell.darkoldpink.citebutton
+            %i.fa.fa-quote-right
+            %span.tooltiptext= t(:cite)
+          /%button.toolbox-cell.darkoldpink.moreoptions
+          /  %i.fa.fa-ellipsis-h
+          /  %span.tooltiptext= t(:additional_options)
+        %button{ class: "toolbox-cell toolbox-footer darkoldpink collapsetoolbox #{@readmode ? 'collapsed' : ''}", 'data-toggle'=>'collapse','data-target'=>'#maintools'}
+          %i.fa.toolbox-footer-chevron.chevron
+          %span.tooltiptext= t(:minimize)
 
-#proofSent
+#proofSent{style:'display:none'}
   %span{style:'color:green'}= t(:proof_thanks_html)
-#proofDlg
+#proofDlg{style:'display:none'}
   .container-fluid
     = form_tag('/proof', remote: true, id: 'proof_form') do
       .row
@@ -31,10 +65,10 @@
       .row
         %p
       .row
-        .col-sm-3
-          %button.btn#copy_proof{:type => 'button'}= t(:proof_copy_text)
         .col-sm-9
           = label_tag t(:proof_your_proofs)
+        .col-sm-3
+          %button.btn#copy_proof{:type => 'button'}= t(:proof_copy_text)
       .row
         .col-sm-12
           = text_area_tag(:what, '', id: 'prooftext', rows: 7, cols: 40)
@@ -46,83 +80,98 @@
           = hidden_field_tag(:manifestation, @m.id)
     #proof_status
 
-#fontsizeDlg
+#fontsizeDlg{title: t(:choose_font_size)}
   = render partial: 'shared/fontsize'
 
-#downloadDlg
+#downloadDlg{style:'display:none'}
   = render partial: 'shared/download', locals: {manifestation: @m}
-#citeDlg
+#citeDlg{style:'display:none'}
   = render partial: 'shared/cite', locals: {manifestation: @m}
-#shareDlg
-  .container-fluid
-    = render partial: 'shared/share_controls'
 
 :javascript
-  // share button
-  $('#shareDlg').dialog({
-    autoOpen: false,
-    height: 200,
-    width: 250,
-    modal: true,
-    buttons: { "#{t(:cancel)}": function() { $('#shareDlg').dialog("close");} }
+  $(document).ready(function(){
+    // heart button
+    $('.like').click(function(){ // toggle like/unlike
+      if($('.like').find(".fa-heart").length > 0) { // already liked
+        // unlike
+        $.ajax({
+          url: "#{url_for(action: :unlike, id: @m.id) }",
+          //data: {user: '#{current_user.nil? ? '' : current_user.id}',
+          //method: 'POST',
+        });
+        $('.fa-heart').removeClass('fa-heart').addClass('fa-heart-o');
+      } else { // like
+        $.ajax({
+          url: "#{url_for(action: :like, id: @m.id) }",
+          //data: {user: '#{current_user.nil? ? '' : current_user.id}',
+          //method: 'POST',
+        });
+        $('.fa-heart-o').removeClass('fa-heart-o').addClass('fa-heart');
+      }
     });
-  $('.share').click(function() {
-    $('#shareDlg').dialog('open');
-  });
-  // proof button
-  $('#proofDlg').dialog({
-    autoOpen: false,
-    height:600,
-    width:700,
-    modal:true,
-    buttons: {
-      "#{t(:submit_proof)}": submitProof,
-      "#{t(:cancel)}": function() { $('#proofDlg').dialog("close");}
-    }
-  });
-  $('#proofSent').dialog({autoOpen:false, height:200, width:500, modal:true,buttons:{"#{t(:close)}": function(){$('#proofSent').dialog('close');}}});
+    // unimplemented buttons
+    $('.bookmarkbtn').click(function(){
+      alert('#{t(:not_implemented_yet)}');
+    });
+    $('.bookshelf').click(function(){
+      alert('#{t(:not_implemented_yet)}');
+    });
 
-  $('#proof_form').on('ajax:success', function(e, data, status, xhr) {
-    $('#proofDlg').dialog("close");
-    $('#proofSent').dialog('open');
-  }).on('ajax:error', function(e, xhr, status, error) {
-    $('#proof_status').html("<span style='color:red'>#{t(:proof_failed)}</span>");
-  });
-  function submitProof() {
-   $('#proof_form').submit(); // TBD
-  };
-  $('#copy_proof').click(function() {
-    $('#prooftext').text($('#proof_selected_text').text());
-  });
-  $('#found_mistake').click(function() {
-    if(document.getSelection().toString() == '')
-      alert("#{t(:proof_please_select_something)}");
-    else
-    {
-      $('#proof_selected_text').text(document.getSelection().toString());
-      $('#proofDlg').dialog("open");
-    }
-  });
+    // proof button
+    $('#proofDlg').dialog({
+      autoOpen: false,
+      height:600,
+      width:700,
+      modal:true,
+      buttons: {
+        "#{t(:submit_proof)}": submitProof,
+        "#{t(:cancel)}": function() { $('#proofDlg').dialog("close");}
+      }
+    });
+    $('#proofSent').dialog({autoOpen:false, height:200, width:500, modal:true,buttons:{"#{t(:close)}": function(){$('#proofSent').dialog('close');}}});
 
-  // font size button
-  $('#fontsizeDlg').dialog({autoOpen:false, height:200, width:250, modal:false,buttons:{"#{t(:close)}": function(){$('#fontsizeDlg').dialog('close');}}});
-  $('#fontsize').click(function() {
-    $('#fontsizeDlg').dialog("open");
-  });
+    $('#proof_form').on('ajax:success', function(e, data, status, xhr) {
+      $('#proofDlg').dialog("close");
+      $('#proofSent').dialog('open');
+    }).on('ajax:error', function(e, xhr, status, error) {
+      $('#proof_status').html("<span style='color:red'>#{t(:proof_failed)}</span>");
+    });
+    function submitProof() {
+      $('#proof_form').submit(); // TBD
+    };
+    $('#copy_proof').click(function() {
+      $('#prooftext').text($('#proof_selected_text').text());
+    });
+    $('#found_mistake').click(function() {
+      if(document.getSelection().toString() == '')
+        alert("#{t(:proof_please_select_something)}");
+      else
+      {
+        $('#proof_selected_text').text(document.getSelection().toString());
+        $('#proofDlg').dialog("open");
+      }
+    });
 
-  // download button
-  $('#downloadDlg').dialog({autoOpen:false, height:400, width:600, modal:true, buttons:{"#{t(:close)}": function(){$('#downloadDlg').dialog('close');}}});
-  $('.download').click(function() {
-    $('#downloadDlg').dialog('open');
-  });
+    // font size button
+    $('#fontsizeDlg').dialog({autoOpen:false, height:200, width:250, modal:false,buttons:{"#{t(:close)}": function(){$('#fontsizeDlg').dialog('close');}}});
+    $('#fontsize').click(function() {
+      $('#fontsizeDlg').dialog("open");
+    });
 
-  // print button
-  $('.printbutton').click(function() {
-    window.open("#{@print_url}",'_new');
-  });
+    // download button
+    $('#downloadDlg').dialog({autoOpen:false, height:500, width:600, modal:true, buttons:{"#{t(:close)}": function(){$('#downloadDlg').dialog('close');}}});
+    $('.download').click(function() {
+      $('#downloadDlg').dialog('open');
+    });
 
-  // cite button
-  $('#citeDlg').dialog({autoOpen:false, height:550, width:790, modal:true, buttons:{"#{t(:close)}": function(){$('#citeDlg').dialog('close');}}});
-  $('.citebutton').click(function() {
-    $('#citeDlg').dialog('open');
+    // print button
+    $('.printbutton').click(function() {
+      window.open("#{@print_url}",'_new');
+    });
+
+    // cite button
+    $('#citeDlg').dialog({autoOpen:false, height:550, width:790, modal:true, buttons:{"#{t(:close)}": function(){$('#citeDlg').dialog('close');}}});
+    $('.citebutton').click(function() {
+      $('#citeDlg').dialog('open');
+    });
   });

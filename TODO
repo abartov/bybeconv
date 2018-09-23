@@ -1,37 +1,68 @@
-- download as TXT - add CR+LF if user runs Windows
-- download as DOC - right-align (pandoc patch?)
+IDEA: now that we have picture support - maybe allow VARIANTS of existing manifestations, with (trusted) user-curated illustrated editions (taking from Commons etc.)
 
-+ figure out a stable representation for poetry with line breaks
-  + PRE blocks ignore *bold* markup, so are probably infeasible
-  + blockquotes (lines beginning with '>' do honor bold and other markup, but the linebreak behavior seems inconsistent -- it appears the double-space-and-line-break method does not consistently produce line breaks *inside* a blockquote (but *does* before/after an explicit <br> tag!), so probably <br> tags are necessary to ensure space lines between stanzas.  Needs further experimentation to determine how to consistently generate just the right amount of space.
-- homepage bottom -- popular authors *this month*
-  - need to calculate in controller
-- process ToCs
-  - process bad ToCs (bad_tocs.txt)
-- home page
-  - ?
-  - interactive features
-- read mode
-  - interactive features
-- authors view
-- works view
-- search
-- search results
-- backend
-  - edit WEM associations -- external links, authors
-  - edit Manifestation markdown with Stackedit
+==Bib Workshop==
+grab DDC ids for Raanana through gared (async?)
+
+- resolve narrow width issue in work read view - newlines become <p> tags for some reason!  Doesn't happen in edit mode, without the markdown.lines manipulation!
+
+- add link type "original text URL" for translations (e.g. in Gutenberg or a foreign-language Wikisource)
+- add additional translated_from field to expression, for cases where the original language of the work is not the language this expression was translated from. (e.g. Shlonsky's Hamlet translation from Russian.)
+
+- BACKEND
+  - add author TOC publishable boolean (and checkbox in editing TOC)
+  - fix author TOC conversion to handle anchors!
+  - add dropdown with expression details history *per author* to save work typing it for other expressions by that author.
+  - add lock_version column to person, work, expression, and manifestation tables
+  - implement taggings review
   - have works automatically tagged as belonging to a book/collection (WEM!) according to (human-confirmed) heading from the ToC
   - means to select additional/different authors
   - show revisions of manifestations/ToCs
   - show diffs between revs
   - restore rev over current
-- user prefs infrastructure (for anons too!)
+  - query work by tag
+  - admin review, approve/reject tags and recommendations
+
+- !! fix footnote anchors' scrolling relative to margin-top
+- !! add translations box to works view right side
+- EPIC: UPLOAD IMAGES (TO S3) AND EMBED THEM IN MARKDOWN
+- implement bookmarks (see notes in code!)
+- take foreign authors into account in authors page - if not everywhere, at least for fables?
+- make tags links to works queries by tag
+- implement recommendation flagging (data model, review)
+- implement the scroll-gradients in work read and readmode
+- implement those-who-read-this-also-read-that (i.e. https://measuringu.com/affinity-analysis/)
+- implement references-to-this-work
+- (?) other extras at bottom of work read
+- implement chapter-only display
+- implement WhatsApp Web when detected Desktop
+- implement favoriting authors
+- download as TXT - add CR+LF if user runs Windows
+- download as DOC - right-align (pandoc patch?)
+- download as any format -- ensure title and authorship metadata properly emitted (apparently not currently the case in PDF?)
+
+- INTEROP
+  - Be FAIR - https://www.go-fair.org/fair-principles/
+
+- HOMEPAGE
+  - featured content full text view
+  - carousel of featured content
+
+- COMMUNICATION
+  - blog post with screenshots of system
+
+- homepage bottom -- popular authors *this month*
+  - need to calculate in controller
+- process ToCs
+  - process bad ToCs (bad_tocs.txt)
+- search
+- search results
+- backend
+- user prefs infrastructure for anons!
   - store fontsize pref
 
 * always: rake notes
 * fix RTL alignment in downloaded DOC files
 * set fonts in HTML, DOC, PDF(?), EPUB(?), MOBI(?)
-fix circular logic of HtmlFile.metadata_ready?
 check HtmlFile id 4291 in production (Sokolov) -- currently(??) crashing on charset
 - maybe switch to a print CSS rather than a print action/view?  crucial code is @media print {
   div.info, div#editStuff, div#navigation, div#debug {
@@ -75,7 +106,6 @@ Conversion system
 - figure out if the NLI can give us anything useful via Z39.50 re author identities.  http://web.nli.org.il/sites/NLI/English/infochannels/librarians/Pages/Z39.50.aspx  (on the face of it, it doesn't look as though we can query the authority file itself!)
   - other useful URLs: http://www.loc.gov/z3950/agency/defns/bib1.html  http://ruby-zoom.rubyforge.org/ https://github.com/bricestacey/ruby-zoom/blob/master/sample/needle.rb
 
-+ add an exclusion list to rake populate
 + add way to bless markdown by human reviewer
 -- blessing should, whether automatically or as an extra human-chosen step, also post the blessed markdown (with path info etc.) to the CONTENT system, so it can be rendered from it INSTEAD of the old HTML file (preserving the *.html URL)
 - research and possibly integrate good editor -- or just spiff up ContentEditable?
@@ -88,12 +118,17 @@ Content system
 -- create Manifestation
 -- prompt for creating Expression and Work
 -- optionally link to external IDs for e.g. translated work, Wikipedia/Wikidata/VIAF for author if not already known
-- model Person entity
-- model Person<->WEM relationships
-- model aboutness
 
 Proof and Recommendation feature
 --------------------------------
 - add JS input for blog url when announcing blogged recommendation
 - add auto-expiration (or hiding?) of wontfix proofs and rejected recommendations
 
++ figure out a stable representation for poetry with line breaks
+  + PRE blocks ignore *bold* markup, so are probably infeasible
+  + blockquotes (lines beginning with '>' do honor bold and other markup, but the linebreak behavior seems inconsistent -- it appears the double-space-and-line-break method does not consistently produce line breaks *inside* a blockquote (but *does* before/after an explicit <br> tag!), so probably <br> tags are necessary to ensure space lines between stanzas.  Needs further experimentation to determine how to consistently generate just the right amount of space.
+
+== Epics ==
+* Add TESTS
+* Upgrade to Rails 5.x
+* edit Manifestation markdown with Stackedit

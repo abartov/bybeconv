@@ -7,5 +7,12 @@
 //= require jquery
 //= require jquery_ujs
 //= require jquery-ui
+//= require jquery.slick
+//= require jquery-ui/widgets/autocomplete
+//= require autocomplete-rails
+//= require jquery.mark.min
+//= require jquery.caret
+//= require wikidata-sdk.min
+//= require activestorage
 //= require_tree .
 
