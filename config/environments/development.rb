@@ -39,5 +39,6 @@ Bybeconv::Application.configure do
 
   # Store Active Storage files locally.
   config.active_storage.service = :local
-
+  #config.active_storage.service = :amazon
+  #config.force_ssl = true # to debug SSL issues
 end

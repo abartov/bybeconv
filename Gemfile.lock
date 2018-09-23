@@ -284,6 +284,7 @@ GEM
       json
     raabro (1.1.6)
     rack (2.0.5)
+    rack-cors (1.0.2)
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
     rails (5.2.1)
@@ -487,6 +488,7 @@ DEPENDENCIES
   paperclip
   project-honeypot (>= 0.1.3)
   property_sets
+  rack-cors
   rails (~> 5.2.1)
   rails-i18n!
   rails-jquery-autocomplete

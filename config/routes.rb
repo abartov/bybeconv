@@ -98,7 +98,7 @@ Bybeconv::Application.routes.draw do
   get "read/:id" => 'manifestation#read', as: 'manifestation_read'
   get "read/:id/read" => 'manifestation#readmode', as: 'manifestation_readmode'
   get 'works' => 'manifestation#works', as: 'works'
-  get 'works/all' => 'manifetations#all', as: 'all_works'
+  get 'works/all' => 'manifestations#all', as: 'all_works'
   get 'works/:genre' => 'manifestation#genre', as: 'genre'
   get 'whatsnew' => 'manifestation#whatsnew', as: 'whatsnew'
   get 'tag/:id' => 'manifestation#by_tag', as: 'tag'

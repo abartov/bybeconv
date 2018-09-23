@@ -4,7 +4,7 @@ require 'rails/all'
 require 'active_job'
 
     # temp
-    ActiveSupport::Deprecation.debug = true
+    #ActiveSupport::Deprecation.debug = true
 if defined?(Bundler)
   # If you precompile assets before deploying to production, use this line
   Bundler.require(*Rails.groups)
@@ -56,5 +56,11 @@ module Bybeconv
     config.i18n.default_locale = :he
     config.i18n.enforce_available_locales = true
 
+    config.middleware.insert_before 0, Rack::Cors do
+      allow do
+        origins '*'
+        resource '*', headers: :any, methods: [:get, :post, :options]
+      end
+    end
   end
 end
