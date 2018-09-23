@@ -86,6 +86,7 @@
   = render partial: 'images', locals: { m: @m}
   = render partial: 'add_images'
   %hr
-  != raw(@html)
+  .read_html
+    != raw(@html)
   %hr
   %b= link_to t(:edit_markdown), manifestation_edit_path(@m.id)

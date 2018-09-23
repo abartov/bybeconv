@@ -1,5 +1,7 @@
 / TODO: a whole bunch of editable WEM fields
 != "<script src=\"https://unpkg.com/stackedit-js@1.0.5/docs/lib/stackedit.min.js\"></script>"
+/ from http://designwithpc.com/Plugins/ddSlick
+!= '<script src="https://cdn.rawgit.com/prashantchaudhary/ddslick/master/jquery.ddslick.min.js"></script>'
 
 = form_tag(action: :update, id: @m.id) do
   .container-fluid
@@ -26,11 +28,16 @@
     %div{ style:"vertical-align:top; width: 30%;display:flex;margin-right:10px;flex-direction:column;height:100%;box-sizing:border-box;float:left;padding-right:7px;"}
       #legacy_markdown_link
         %h2= t(:markdown)
+        - if @m.images.attached?
+          %b.static-btn#add_image= t(:add_image)
+          = select_tag :images, raw(options_from_images(@m.images))
+          %br
+          = t(:in_current_cursor)
         %b= t(:make_corrections_below)
       .markdown
         = text_area_tag(:markdown, raw(@markdown), class: 'textarea100')
     %h2= t(:display_text)
-    %div#preview{ style:"vertical-align:top; width: 70%; padding-left:10px;padding-right:15px;background:#d2cfcf;"}
+    .read_html#preview{ style:"vertical-align:top; width: 70%; padding-left:10px;padding-right:15px;background:#d2cfcf;"}
       != raw(@html)
       %br
 
@@ -47,12 +54,40 @@
     = submit_tag t(:save)
 
 :javascript
+  var selected_image_url = '';
+  var selected_filename = '';
 
+  $.widget( "custom.iconselectmenu", $.ui.selectmenu, {
+    _renderItem: function( ul, item ) {
+      var li = $( "<li>" ),
+        wrapper = $( "<div>", { text: item.label } );
+
+      if ( item.disabled ) {
+        li.addClass( "ui-state-disabled" );
+      }
+
+      $( "<span>", {
+        style: item.element.attr( "data-style" ),
+        "class": "ui-icon " + item.element.attr( "data-class" )
+      })
+        .appendTo( wrapper );
+
+      return li.append( wrapper ).appendTo( ul );
+    }
+  });
   jQuery(document).ready(function() {
     var newsize = $('.markdown_container').height() - $('#legacy_markdown_link').height(); // this is horrible, but I've given up on getting the textarea to auto-fill the container height. :((
     $('.markdown').css('height', newsize);
     $('.textarea100').css('height', newsize);
-
+    //$('#images').iconselectmenu();
+    $('#images').ddslick({
+      width: 550,
+      onSelected: function(selectedData){
+        //callback function: do something with selectedData;
+        selected_filename = selectedData.selectedData.text;
+        selected_image_url = selectedData.selectedData.value;
+      }
+    });
     $('#vised').click(function() {
       const el = document.querySelector('#markdown');
       const pv = document.querySelector('#preview');
@@ -71,5 +106,14 @@
         el.value = file.content.text;
         pv.innerHTML = file.content.html;
       });
-   });
+    });
+    $('#add_image').click(function() {
+      var $txt = jQuery("#markdown");
+      var caretPos = $txt[0].selectionStart;
+      var textAreaTxt = $txt.val();
+      var txtToAdd = "\n!["+selected_filename+"]("+selected_image_url+")\n";
+      $txt.val(textAreaTxt.substring(0, caretPos) + txtToAdd + textAreaTxt.substring(caretPos) );
+      $txt.focus();
+      $txt.caretTo(caretPos+txtToAdd.length);
+    });
   });

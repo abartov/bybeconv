@@ -116,7 +116,7 @@ class ManifestationController < ApplicationController
     @m = Manifestation.find(params[:id])
     impressionist(@m) unless is_spider?
     filename = "#{@m.safe_filename}.#{params[:format]}"
-    html = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"><html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"he\" lang=\"he\" dir=\"rtl\"><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" /></head><body dir='rtl' align='right'><div dir=\"rtl\" align=\"right\">#{@m.title_and_authors_html}"+MultiMarkdown.new(@m.markdown).to_html.force_encoding('UTF-8')+"\n\n<hr />"+I18n.t(:download_footer_html, url: url_for(action: :read, id: @m.id))+"</div></body></html>"
+    html = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"><html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"he\" lang=\"he\" dir=\"rtl\"><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" /></head><body dir='rtl' align='right'><div dir=\"rtl\" align=\"right\">#{@m.title_and_authors_html}"+MultiMarkdown.new(@m.markdown).to_html.force_encoding('UTF-8').gsub(/<figcaption>.*?<\/figcaption>/,'')+"\n\n<hr />"+I18n.t(:download_footer_html, url: url_for(action: :read, id: @m.id))+"</div></body></html>"
     case params[:format]
     when 'pdf'
       pdfname = HtmlFile.pdf_from_any_html(html)
@@ -179,7 +179,7 @@ class ManifestationController < ApplicationController
 
   def render_html
     @m = Manifestation.find(params[:id])
-    @html = MultiMarkdown.new(@m.markdown).to_html.force_encoding('UTF-8')
+    @html = MultiMarkdown.new(@m.markdown).to_html.force_encoding('UTF-8').gsub(/<figcaption>.*?<\/figcaption>/,'') # remove MMD's automatic figcaptions
   end
 
   def genre
@@ -217,6 +217,26 @@ class ManifestationController < ApplicationController
 
   #############################################
   # editor actions
+
+  def remove_image
+    @m = Manifestation.find(params[:id])
+    did_something = false
+    if @m.images.attached?
+      rec = @m.images.where(id: params[:image_id])
+      unless rec.empty?
+        rec[0].purge
+        did_something = true
+      end
+    end
+    if did_something
+      @img_id = params[:image_id]
+      respond_to do |format|
+        format.js
+      end
+    else
+      render nothing: true
+    end
+  end
 
   def remove_link
     @m = Manifestation.find(params[:id])
@@ -260,7 +280,7 @@ class ManifestationController < ApplicationController
     @page_title = t(:show)+': '+@m.title_and_authors
     @e = @m.expressions[0] # TODO: generalize?
     @w = @e.works[0] # TODO: generalize!
-    @html = MultiMarkdown.new(@m.markdown).to_html.force_encoding('UTF-8')
+    @html = MultiMarkdown.new(@m.markdown).to_html.force_encoding('UTF-8').gsub(/<figcaption>.*?<\/figcaption>/,'') # remove MMD's automatic figcaptions
     h = @m.legacy_htmlfile
     unless h.nil? or h.url.nil? or h.url.empty?
       @legacy_url = 'http://benyehuda.org'+h.url
@@ -270,7 +290,7 @@ class ManifestationController < ApplicationController
   def edit
     @m = Manifestation.find(params[:id])
     @page_title = t(:edit_markdown)+': '+@m.title_and_authors
-    @html = MultiMarkdown.new(@m.markdown).to_html.force_encoding('UTF-8')
+    @html = MultiMarkdown.new(@m.markdown).to_html.force_encoding('UTF-8').gsub(/<figcaption>.*?<\/figcaption>/,'') # remove MMD's automatic figcaptions
     @markdown = @m.markdown
     h = @m.legacy_htmlfile
     unless h.nil? or h.url.nil? or h.url.empty?
@@ -296,7 +316,6 @@ class ManifestationController < ApplicationController
   def add_images
     @m = Manifestation.find(params[:id])
     prev_count = @m.images.count
-    byebug
     @m.images.attach(params.permit(images: [])[:images])
     new_count = @m.images.count
     flash[:notice] = I18n.t(:uploaded_images, {images_added: new_count - prev_count, total: new_count})
@@ -367,7 +386,7 @@ class ManifestationController < ApplicationController
     elsif params[:commit] == t(:preview)
       @m = Manifestation.find(params[:id])
       @page_title = t(:edit_markdown)+': '+@m.title_and_authors
-      @html = MultiMarkdown.new(params[:markdown]).to_html.force_encoding('UTF-8')
+      @html = MultiMarkdown.new(params[:markdown]).to_html.force_encoding('UTF-8').gsub(/<figcaption>.*?<\/figcaption>/,'') # remove MMD's automatic figcaptions
       @markdown = params[:markdown]
       @newtitle = params[:newtitle]
       h = @m.legacy_htmlfile
@@ -392,7 +411,7 @@ class ManifestationController < ApplicationController
       @page_title = "#{@m.title_and_authors} - #{t(:default_page_title)}"
       impressionist(@author) # increment the author's popularity counter
       if @print
-        @html = MultiMarkdown.new(@m.markdown.lines.join("\n")).to_html.force_encoding('UTF-8')
+        @html = MultiMarkdown.new(@m.markdown.lines.join("\n")).to_html.force_encoding('UTF-8').gsub(/<figcaption>.*?<\/figcaption>/,'') # remove MMD's automatic figcaptions
       end
     end
   end
@@ -410,7 +429,7 @@ class ManifestationController < ApplicationController
       } # annotate headings in reverse order, to avoid offsetting the next heading
       tmphash.keys.reverse.map{|k| @chapters[k] = tmphash[k]}
       @selected_chapter = tmphash.keys.last
-      @html = MultiMarkdown.new(lines.join("")).to_html.force_encoding('UTF-8')
+      @html = MultiMarkdown.new(lines.join("")).to_html.force_encoding('UTF-8').gsub(/<figcaption>.*?<\/figcaption>/,'') # remove MMD's automatic figcaptions
       ## @html = @html.gsub(/fn:(\d+)/,"fn\\1").gsub(/fnref:(\d+)/,"fnref\\1") # false lead re why Firefox doesn't handle the anchors properly. Works in Chrome! # TODO: fix.
       @tabclass = set_tab('works')
       @entity = @m

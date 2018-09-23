@@ -13,21 +13,23 @@ h2 {
   font-size:1.3em;
   padding-bottom:0.2em;
 }
-.maintext {
+.maintext-prose-body img {
+  max-width: 100%;
+  display:block;
+  margin:auto;
 }
-.maintext-prose-body {
-/*  width:70%;
-  margin:auto;*/
+.maintext-poetry-body img {
+  max-width: 100%;
+  display:block;
+  margin:auto;
 }
 .maintext-prose-body p {
-font-family:"Alef"; font-size:1.2em;
+  font-family:"Alef"; font-size:1.2em;
   margin-right: 100px;
 }
 
-.maintext-poetry-body {
-}
-
-.maintext-poetry-body p { font-family:"Alef"; font-size:1.5em;
+.maintext-poetry-body p {
+  font-family:"Alef"; font-size:1.5em;
   margin-right: 150px;
 }
 /*
@@ -48,4 +50,55 @@ font-family:"Alef"; font-size:1.2em;
 
 .markdown_editbox {
   font-size: 1.9rem;
+}
+
+.dd-option-image {
+  max-width: 150px !important;
+}
+
+.read_html img {
+  max-width: 100%;
+  display:block;
+  margin:auto;
+}
+
+// for direct upload stuff
+/* direct_uploads.css */
+
+.direct-upload {
+  display: inline-block;
+  position: relative;
+  padding: 2px 4px;
+  margin: 0 3px 3px 0;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-radius: 3px;
+  font-size: 11px;
+  line-height: 13px;
+}
+
+.direct-upload--pending {
+  opacity: 0.6;
+}
+
+.direct-upload__progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  opacity: 0.2;
+  background: #0076ff;
+  transition: width 120ms ease-out, opacity 60ms 60ms ease-in;
+  transform: translate3d(0, 0, 0);
+}
+
+.direct-upload--complete .direct-upload__progress {
+  opacity: 0.4;
+}
+
+.direct-upload--error {
+  border-color: red;
+}
+
+input[type=file][data-direct-upload-url][disabled] {
+  display: none;
 }

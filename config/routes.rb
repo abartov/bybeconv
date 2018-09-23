@@ -107,6 +107,7 @@ Bybeconv::Application.routes.draw do
   get "manifestation/show/:id" => 'manifestation#show', as: 'manifestation_show'
   get "manifestation/render_html"
   get "manifestation/edit/:id" => 'manifestation#edit', as: 'manifestation_edit'
+  get "manifestation/remove_image/:id" => 'manifestation#remove_image'
   get "manifestation/edit_metadata/:id" => 'manifestation#edit_metadata', as: 'manifestation_edit_metadata'
   match "manifestation/list", via: [:get, :post]
   get "manifestation/genre" => 'manifestation#genre', as: 'manifestation_genre'
@@ -235,5 +236,5 @@ Bybeconv::Application.routes.draw do
   # match ':controller(/:action(/:id(.:format)))'
   #
   # match legacy BY urls
-  match '*path' => "html_file#render_by_legacy_url", via: [:get]
+# tmp  match '*path' => "html_file#render_by_legacy_url", via: [:get]
 end
