@@ -1,6 +1,6 @@
-This project will be an evolving set of tools intended to convert the large (~10000 files) collection of icky Word-generated Windows-1255 encoded HTML files of Hebrew works published at http://benyehuda.org, into clean, UTF-8 markdown of some sort -- currently MultiMarkDown -- but just maybe, Docbook or *shudder* TEI.
+This codebase runs https://bybe.benyehuda.org -- the Project Ben-Yehuda digital library of works in Hebrew.
 
-I make no effort to make the tools general, but if you're looking to do something similar, maybe you can adapt some of my code.
+I make little effort to make the code general, but if you're looking to do something similar (e.g. a digital library in Yiddish), maybe you can adapt some of my code.
 
 External dependencies:
 * Pandoc 1.17.3 or higher for generating ebooks and other formats
