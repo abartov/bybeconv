@@ -77,7 +77,7 @@ Bybeconv::Application.routes.draw do
 
   get '/search_results' => 'application#search_results'
   get "search/index"
-  get "search/results"
+  match "search/results", via: [:get, :post], as: 'search_results_internal'
   get "search/advanced"
   get "authors/index"
   get 'authors/all'

@@ -28,8 +28,7 @@ class Manifestation < ApplicationRecord
 
   LONG_LENGTH = 15000 # kind of arbitrary...
 
-# re-enable when implementing Chewy
-#  update_index 'manifestation#manifestation', :self # update ManifestationIndex when entity is updated
+  update_index('manifestations#manifestation'){self} # update ManifestationIndex when entity is updated
 
   # class variable
   @@popular_works = nil
@@ -37,6 +36,10 @@ class Manifestation < ApplicationRecord
 
   def like_count
     return likers.count
+  end
+
+  def video_count
+    return external_links.all_approved.videos.count
   end
 
   def long?
@@ -83,6 +86,10 @@ class Manifestation < ApplicationRecord
   def safe_filename
     fname = "#{title} #{I18n.t(:by)} #{author_string}"
     return fname.gsub(/[^0-9א-תA-Za-z.\-]/, '_')
+  end
+
+  def to_plaintext
+    return html2txt(MultiMarkdown.new(markdown).to_html.force_encoding('UTF-8').gsub(/<figcaption>.*?<\/figcaption>/,'')).gsub("\n\n\n","\n\n").gsub("\n\n\n","\n\n")
   end
 
   def title_and_authors

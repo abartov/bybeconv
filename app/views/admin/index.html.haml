@@ -31,6 +31,14 @@
       %p= link_to t(:featured_authors_management), url_for(action: :featured_author_list)
   - if current_user.admin?
     %h2= t(:admin_actions)
+    %h3= t(:internal_search)
+    = form_for @search, as: :search, url: search_results_internal_path, method: :get do |f|
+      = f.text_field 'query'
+      %br
+      = f.label t(:tags)
+      = f.text_field 'tags'
+      %br
+      = f.submit t(:search)
     %h3= t(:conversion_actions)
     %b= link_to t(:upload_file), html_file_new_path
     %p

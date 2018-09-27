@@ -73,7 +73,7 @@
                   .card-header-element{style:'margin-left:2.4rem'}
                     = link_to '#recommendations' do
                       = t(:recommendations)
-                      = "(#{@recommendations.approved.count})"
+                      = "(#{@recommendations.all_approved.count})"
                       %span.fa.fa-angle-left.baseline{style: 'margin-right: 0.6rem'}
                   - unless @links.empty? || @links[Manifestation.link_types[:wikipedia]].nil?
                     .card-header-element
@@ -145,10 +145,10 @@
               #recommendations_panel
                 #recommendations
                   .headline-3{style:'display:inline'}= t(:recommendations_for_work)
-                  %div{style:'display:inline;padding-right:1rem'}= t(:x_liked_y_recommended, {x: @m.like_count, y: @recommendations.approved.count})
-                  - @recommendations.approved.each do |r|
+                  %div{style:'display:inline;padding-right:1rem'}= t(:x_liked_y_recommended, {x: @m.like_count, y: @recommendations.all_approved.count})
+                  - @recommendations.all_approved.each do |r|
                     = render partial: 'recommendation', locals: {rec: r, pending: false}
-                  - my_pendings = @recommendations.pending.where(user: current_user)
+                  - my_pendings = @recommendations.all_pending.where(user: current_user)
                   - unless my_pendings.nil?
                     - my_pendings.each do |r|
                       = render partial: 'recommendation', locals: {rec: r, pending: true}

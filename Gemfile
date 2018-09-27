@@ -12,7 +12,10 @@ gem 'omniauth-twitter'
 #gem 'clockwork' # scheduler
 #gem 'protected_attributes' # compatibility gem for 3.2.x-style attr_accessible
 gem 'rufus-scheduler' # scheduler
+
 gem 'chewy' # for ElasticSearch
+gem 'active_data' # for *Search classes in Chewy
+
 #gem 'jssorslider-rails', github: 'matthias-g/jssorslider-rails' # for carousel slider
 gem "jquery-slick-rails" # for carousel slider
 gem 'rails-jquery-autocomplete' # for auto-completion
@@ -54,11 +57,10 @@ gem 'execjs'
 gem 'therubyracer'
 gem 'thin'
 gem 'htmlentities'
-#gem 'will_paginate'
 gem 'kaminari' # pagination
 gem 'nokogiri'
 #gem 'epubbery' # for epubs
-gem 'rmultimarkdown' # new wrapper over Fletcher Penney's MultiMarkDown 4 (MMD 4)
+gem 'rmultimarkdown' # new wrapper over Fletcher Penney's MultiMarkDown 6 (MMD 6)
 
 #gem 'rpeg-multimarkdown', :github => 'djungelvral/rpeg-multimarkdown' # note: gem unmaintained, native part doesn't build under Ruby 2.1 -- may need updating the native part from the actual peg-multimarkdown implementation.
 

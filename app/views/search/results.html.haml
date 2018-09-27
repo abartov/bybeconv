@@ -1,2 +1,15 @@
-%h1 Search#results
-%p Find me in app/views/search/results.html.haml
+.container-fluid
+  %h1= t(:search_results)
+  %p= "#{t(:search_terms)}: #{@search.query}"
+  %p= "#{t(:search_total)}: #{@total}"
+  %p
+  %ol
+    - @results.each do |result|
+      %li
+        %b= link_to result.title, manifestation_read_path(result.id)
+        = " / #{result.author_string}"
+        = " (#{textify_genre(result.genre)})"
+        - unless result._data.nil? or result._data['highlight'].nil?
+          %br
+          != result._data['highlight']['fulltext'].join("<br />").gsub('<em>','<b>').gsub('</em>','</b>')
+  != paginate @results

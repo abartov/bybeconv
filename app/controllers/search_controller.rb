@@ -5,6 +5,9 @@ class SearchController < ApplicationController
   end
 
   def results
+    @search = ManifestationsSearch.new(params[:search])
+    @results = @search.search.page(params[:page])
+    @total = @results.count
   end
 
   def advanced
