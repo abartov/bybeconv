@@ -33,6 +33,7 @@ class BibController < ApplicationController
       @pubs.each do |pub|
         gen_toc += "### #{pub.title}\n#{pub.publisher_line}, #{pub.pub_year} \n\n"
       end
+      gen_toc.gsub!(' :',':').gsub!(' ;',';')
       # save TOC to person if no TOC yet
       if @p.toc.nil?
         t = Toc.new(toc: gen_toc, status: :raw)
