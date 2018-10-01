@@ -8,7 +8,6 @@
 /.bundle
 
 # other misc
-*.gem
 .byebug*
 # Mac crap
 .DS_Store
