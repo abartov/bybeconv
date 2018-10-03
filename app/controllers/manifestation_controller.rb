@@ -21,7 +21,15 @@ class ManifestationController < ApplicationController
   end
 
   def by_tag
-    # TODO
+    @page_title = t(:works_by_tag)+' '+t(:project_ben_yehuda)
+    @pagetype = :works
+    @tag = Tag.find(params[:id])
+    if @tag
+      @works_by_tag = Manifestation.by_tag(params[:id]).order(:title).page(params[:page]).limit(25)
+    else
+      flash[:error] = t(:no_such_item)
+      redirect_to '/'
+    end
   end
 
   def autocomplete_works_by_author

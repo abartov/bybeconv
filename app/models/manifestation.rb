@@ -25,6 +25,7 @@ class Manifestation < ApplicationRecord
   scope :not_translations, -> { joins(:expressions).includes(:expressions).where(expressions: {translation: false})}
   scope :translations, -> { joins(:expressions).includes(:expressions).where(expressions: {translation: true})}
   scope :genre, -> (genre) { joins(:expressions).includes(:expressions).where(expressions: {genre: genre})}
+  scope :by_tag, ->(tag_id) {joins(:taggings).where(taggings: {tag_id: tag_id})}
 
   LONG_LENGTH = 15000 # kind of arbitrary...
 
