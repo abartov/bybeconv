@@ -5,7 +5,7 @@
     %h3
       = t(:conversion_verification)
       = ' ('+Manifestation.where(conversion_verified: false).count.to_s+')'
-    = button_to t(:conversion_verification), url_for(action: :conversion_verification)
+    = button_to t(:conversion_verification), url_for(action: :assign_conversion_verification), {method: :get}
     %p
     %p= t(:convs_processed_so_far, {done: ListItem.where(listkey: 'convs_by_user', user: current_user).count, percent_done: number_to_percentage(@conv_percent_done, precision: 2)})
     %button#show_my_convs= t(:show_my_convs)
