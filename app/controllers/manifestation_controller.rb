@@ -264,7 +264,7 @@ class ManifestationController < ApplicationController
     @total = Manifestation.count
     # form input
     unless params[:commit].blank?
-      session[:mft_q_params] = params # make prev. params accessible to view
+      session[:mft_q_params] = params.permit([:title, :author, :page]) # make prev. params accessible to view
     else
       session[:mft_q_params] = { title: '', author: '' }
     end
