@@ -416,6 +416,7 @@ he:
   by_permission: מוגש ברשות פרסום
   uploaded_images: נקלטו %{images_added} קבצים נוספים, ועכשיו יש ליצירה %{total} בסך הכל.
   add_image: הוספת תמונה
+  add_all_images: הדבקת כל התמונות
   publisher_details: פרטי הוצאה לאור
   launch_visual_editor: לעורך החזותי
   publisher: הוצאה

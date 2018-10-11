@@ -30,6 +30,8 @@
         %h2= t(:markdown)
         - if @m.images.attached?
           %b.static-btn#add_image= t(:add_image)
+          != "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+          %b.static-btn#add_all_images= t(:add_all_images)
           = select_tag :images, raw(options_from_images(@m.images))
           %br
           = t(:in_current_cursor)
@@ -112,6 +114,15 @@
       var caretPos = $txt[0].selectionStart;
       var textAreaTxt = $txt.val();
       var txtToAdd = "\n!["+selected_filename+"]("+selected_image_url+")\n";
+      $txt.val(textAreaTxt.substring(0, caretPos) + txtToAdd + textAreaTxt.substring(caretPos) );
+      $txt.focus();
+      $txt.caretTo(caretPos+txtToAdd.length);
+    });
+    $('#add_all_images').click(function() {
+      var $txt = jQuery("#markdown");
+      var caretPos = $txt[0].selectionStart;
+      var textAreaTxt = $txt.val();
+      var txtToAdd = "#{all_images_markdown(@m.images)}";
       $txt.val(textAreaTxt.substring(0, caretPos) + txtToAdd + textAreaTxt.substring(caretPos) );
       $txt.focus();
       $txt.caretTo(caretPos+txtToAdd.length);
