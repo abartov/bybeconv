@@ -4,6 +4,6 @@ module ManifestationHelper
     images.map{|img| "<option value=\"#{url_for(img)}\" data-imagesrc=\"#{request.base_url+url_for(img.variant(resize: '150x150'))}\">#{img.blob.filename}</option>"}.join('')
   end
   def all_images_markdown(images)
-    images.map{|img| "\n!["+img.blob.filename+"]("+url_for(img)+")\n"}.join
+    images.map{|img| "\n![#{img.blob.filename}](#{url_for(img)})\n"}.join
   end
 end
