@@ -397,7 +397,6 @@ class ManifestationController < ApplicationController
       @html = MultiMarkdown.new(params[:markdown]).to_html.force_encoding('UTF-8').gsub(/<figcaption>.*?<\/figcaption>/,'') # remove MMD's automatic figcaptions
       @markdown = params[:markdown]
       @newtitle = params[:newtitle]
-      @all_images_markdown = @m.all_images_markdown
 
       h = @m.legacy_htmlfile
       unless h.nil? or h.url.nil?
