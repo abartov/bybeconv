@@ -398,8 +398,8 @@ class ManifestationController < ApplicationController
       @markdown = params[:markdown]
       @newtitle = params[:newtitle]
       h = @m.legacy_htmlfile
-      unless h.nil?
-        @legacy_url = 'http://benyehuda.org'+h.url
+      unless h.nil? or h.url.nil?
+        @legacy_url = 'https://benyehuda.org'+h.url
       end
       render action: :edit
     end
