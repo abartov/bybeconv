@@ -74,6 +74,7 @@ class AuthorsController < ApplicationController
   end
 
   def create
+    params[:person][:wikidata_id] = params[:person][:wikidata_id].strip[1..-1] if params[:person] and params[:person][:wikidata_id] and params[:person][:wikidata_id][0] and params[:person][:wikidata_id].strip[0] == 'Q' # tolerate pasting the Wikidata number with the Q
     @person = Person.new(person_params)
 
     respond_to do |format|
