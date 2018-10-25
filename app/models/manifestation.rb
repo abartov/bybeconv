@@ -122,6 +122,11 @@ class Manifestation < ApplicationRecord
     return expressions[0].works[0].authors.map{|x| x.name}.join(', ')
   end
 
+  def authors
+    return nil if expressions[0].nil? or expressions[0].works[0].nil? or expressions[0].works[0].persons[0].nil?
+    return expressions[0].works[0].authors
+  end
+
   def translators
     return nil if expressions[0].nil? or expressions[0].works[0].nil? or expressions[0].works[0].persons[0].nil?
     return expressions[0].translators
@@ -135,12 +140,12 @@ class Manifestation < ApplicationRecord
   def author_string
     Rails.cache.fetch("m_#{self.id}_author_string", expires_in: 24.hours) do
       return I18n.t(:nil) if expressions[0].nil? or expressions[0].works[0].nil? or expressions[0].works[0].persons[0].nil?
-      ret = expressions[0].works[0].persons[0].name
+      ret = expressions[0].works[0].authors.map{|x| x.name}.join(', ')
       if expressions[0].translation
-        if expressions[0].persons.count < 1
+        if m.translators.count < 1
           ret += ' / '+I18n.t(:unknown)
         else
-          ret += ' / '+expressions[0].persons[0].name
+          ret += ' / '+m.translators.map{|x| x.name}.join(', ')
         end
       end
       ret # TODO: be less naive

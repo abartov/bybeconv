@@ -8,11 +8,7 @@ class Work < ApplicationRecord
   # has_and_belongs_to_many :people # superseded by creations and persons above
 
   def authors
-    ret = []
-    creations.each do |c|
-      ret << c.person if c.role == 'author'
-    end
-    return ret
+    return creations.where(role: Creation.roles[:author]).map {|x| x.person}
   end
 
   def first_author
@@ -23,5 +19,6 @@ class Work < ApplicationRecord
   end
 
   def title_and_authors_string
+    # TBD
   end
 end

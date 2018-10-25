@@ -4,12 +4,12 @@
   .metadata_row
     %b
       = t(:author_name)+': '
-    = link_to @author.name, author_toc_path(id: @author.id)
+    != @m.authors.map {|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
     - if @m.expressions[0].translation && !@translators.nil?
       %br
       %b
-        = t(:translator_name)+':Z '
-      != @translators.map{|t| link_to(t.name, author_toc_path(id: t.id)).join(', ')
+        = t(:translator_name)+': '
+      != @translators.map{|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
   /  .metadata_row
   /    %b
   /      = t(:published_in_book)+': '
