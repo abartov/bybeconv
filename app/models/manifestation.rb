@@ -142,10 +142,10 @@ class Manifestation < ApplicationRecord
       return I18n.t(:nil) if expressions[0].nil? or expressions[0].works[0].nil? or expressions[0].works[0].persons[0].nil?
       ret = expressions[0].works[0].authors.map{|x| x.name}.join(', ')
       if expressions[0].translation
-        if m.translators.count < 1
+        if translators.count < 1
           ret += ' / '+I18n.t(:unknown)
         else
-          ret += ' / '+m.translators.map{|x| x.name}.join(', ')
+          ret += ' / '+translators.map{|x| x.name}.join(', ')
         end
       end
       ret # TODO: be less naive
