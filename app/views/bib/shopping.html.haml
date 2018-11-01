@@ -9,7 +9,13 @@
       - @holdings.each do |h|
         - pub = h.publication
         %tr
-          %td= pub.title
+          %td
+            = link_to pub.title, h.source_id
+            - if pub.holdings.count > 1
+              - pub.holdings.each do |hh|
+                = "(+"
+                = link_to hh.bib_source.title, hh.source_id
+                = ") "
           %td= pub.author_line
           %td= h.location
           %td
