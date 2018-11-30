@@ -9,7 +9,7 @@
   %p
     = form_tag(action: :list) do
       = label_tag(:nikkud_l, t(:nikkud)+': ')
-      = select_tag(:nikkud, options_for_select([['','',], [t(:none), :none], [t(:some), :some], [t(:full), :full]], session[:html_q_params][:nikkud]))
+      = select_tag(:nikkud, options_for_select([['',''], [t(:none), :none], [t(:some), :some], [t(:full), :full]], session[:html_q_params][:nikkud]))
       = label_tag(:footnotes_l, t(:footnotes)+': ')
       = select_tag(:footnotes, options_for_select([['',''], [t(:no), :f], [t(:yes), :t]], session[:html_q_params][:footnotes]))
       = label_tag(:status_l, t(:status)+': ')

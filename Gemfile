@@ -85,9 +85,9 @@ gem 'pandoc-ruby' # for converting to DOCX
 gem 'docx' # for pre-processing DOCX files to preserve stanzas
 gem 'uglifier'
 gem 'responders' # for respond_to at controller level (in api_controller)
-gem 'newrelic_rpm' # performance monitoring
 
 group :production do
+  gem 'newrelic_rpm' # performance monitoring
   gem 'dalli'
 end
 

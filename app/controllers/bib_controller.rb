@@ -103,7 +103,20 @@ class BibController < ApplicationController
   end
 
   def shopping
-    hh = Holding.to_obtain(params[:source_id]).to_a
+    hh = []
+    case
+    when params[:pd] == '1' && params[:unique] == '1'
+      pp = Publication.joins(:holdings, :person).group('publications.id').having('COUNT(distinct holdings.bib_source_id) = 1').where('publications.status = "todo" and people.public_domain = 1') # get all publications available in only one source
+      pp.each{|p| p.holdings.each {|h| hh << h if h.bib_source_id == params[:source_id].to_i}}
+    when params[:pd] == '1' && (params[:unique].nil? || params[:unique] == '0')
+      hh = Holding.to_obtain(params[:source_id]).joins(publication: [:person]).includes(publication: [:person]).where('people.public_domain' => true).to_a
+    when (params[:pd] == '0' || params[:pd].nil?) && params[:unique] == '1'
+      pp = Publication.joins(:holdings).group('publications.id').having('COUNT(distinct holdings.bib_source_id) = 1').where('publications.status = "todo"') # get all publications available in only one source
+      pp.each{|p| p.holdings.each {|h| hh << h if h.bib_source_id == params[:source_id].to_i}}
+    else
+        hh = Holding.to_obtain(params[:source_id]).to_a
+    end
+
     @holdings = hh.sort_by!{|h|
       loc = h.location || ''
       s = loc.sub(/\(.*\)/,'').tr('[א-ת]','')

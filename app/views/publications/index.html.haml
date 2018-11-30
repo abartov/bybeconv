@@ -2,6 +2,15 @@
   .row
     .col-md-12
       %h2= t(:bib_records)
+      = form_tag '', method: :get do
+        = label_tag(t(:title))
+        = text_field_tag(:title, params[:title])
+        = label_tag(t(:author))
+        = text_field_tag(:author, params[:author])
+        = label_tag(t(:status))
+        = select_tag(:status, options_for_select(['']+Publication.statuses.keys.map{|st| [t(st), st]}, params[:status]))
+        = submit_tag(t(:filter))
+
       %table
         - @publications.each do |pub|
           = render partial: 'pub', locals: {pub: pub, with_person: true, with_actions: :pubs}

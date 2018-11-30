@@ -12,7 +12,7 @@ Bybeconv::Application.routes.draw do
   get 'bib/todo_by_location'
   get 'bib/holding_status/:id' => 'bib#holding_status', as: 'holding_status'
   post 'bib/make_author_page'
-  get 'bib/shopping/:source_id' => 'bib#shopping', as: 'bib_shopping'
+  match 'bib/shopping/:source_id' => 'bib#shopping', as: 'bib_shopping', via: [:get, :post]
 
   get 'aboutnesses/remove'
 

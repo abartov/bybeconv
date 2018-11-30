@@ -5,7 +5,21 @@ class PublicationsController < ApplicationController
   # GET /publications
   # GET /publications.json
   def index
-    @publications = Publication.order(status: :asc, person_id: :asc).page(params[:page])
+    query = []
+    if params['title'] && (not params['title'].empty?)
+      query << "publications.title like '%#{params['title']}%'"
+    end
+    if params['author'] && (not params['author'].empty?)
+      query << "people.name like '%#{params['author']}%'"
+    end
+    if params['status'] && (not params['status'].empty?)
+      query << "publications.status = '#{params['status']}'"
+    end
+    unless query.empty?
+      @publications = Publication.joins(:person).where(query.join(' and ')).order(status: :asc, person_id: :asc).page(params[:page])
+    else
+      @publications = Publication.order(status: :asc, person_id: :asc).page(params[:page])
+    end
   end
 
   # GET /publications/1
