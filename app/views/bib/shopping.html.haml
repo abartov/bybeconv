@@ -29,4 +29,22 @@
             = link_to t(:mark_as_obtained)+' | ', holding_status_path(id: h.id, status: 'obtained'), remote: true, id: "obt#{h.id}"
             = link_to t(:mark_as_scanned)+' | ', holding_status_path(id: h.id, status: 'scanned'), remote: true, id: "scn#{h.id}"
             = link_to t(:mark_as_missing), holding_status_path(id: h.id, status: 'missing'), remote: true, id: "msng#{h.id}"
+            = button_tag t(:copy_to_clipboard), id: "copy_#{h.id}", 'class' => 'holding_copybutton'
     = link_to t(:back), action: :index
+
+:javascript
+  $(document).ready(function(){
+    $('.holding_copybutton').click(function(e){
+      // gather data
+      var row = e.target.parentElement.parentElement;
+      var line = row.children[1].textContent+"\t"+row.children[0].textContent.replace(/\n/g,"").replace(/\(\+.*\)/g,'')+"\t \t"+row.children[2].textContent;
+      // paste into textarea
+      var textArea = document.createElement("textarea");
+      textArea.value = line.replace("\n",'');
+      document.body.appendChild(textArea);
+      // copy to clipboard
+      textArea.select();
+      document.execCommand("Copy");
+      textArea.remove();
+    });
+  });
