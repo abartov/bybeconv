@@ -12,6 +12,7 @@
       %tr
         %th= t(:title)
         %th= t(:author)
+        %th= t(:recno)
         %th= t(:location)
       - @holdings.each do |h|
         - pub = h.publication
@@ -24,6 +25,7 @@
                 = link_to hh.bib_source.title, hh.source_id
                 = ") "
           %td= pub.author_line
+          %td= h.recno
           %td= h.location
           %td
             = link_to t(:mark_as_obtained)+' | ', holding_status_path(id: h.id, status: 'obtained'), remote: true, id: "obt#{h.id}"

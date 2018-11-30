@@ -6,4 +6,11 @@ class Holding < ApplicationRecord
 
   scope :to_obtain, -> (source_id) { where(status: 'todo', bib_source_id: source_id)}
 
+  def recno
+    ret = ''
+    if source_id =~ /doc_number=(\d+)/
+      ret = $1
+    end
+    return ret
+  end
 end
