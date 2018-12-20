@@ -29,7 +29,8 @@ class Manifestation < ApplicationRecord
 
   LONG_LENGTH = 15000 # kind of arbitrary...
 
-  update_index('manifestations#manifestation'){self} # update ManifestationIndex when entity is updated
+  # TODO: re-enable when enabling ElasticSearch, after resolving diskspace issue, and figuring out how to rescue this.
+  #  update_index('manifestations#manifestation'){self} # update ManifestationIndex when entity is updated
 
   # class variable
   @@popular_works = nil
