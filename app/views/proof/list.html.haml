@@ -5,13 +5,17 @@
 
 %table
   %tr
-    %th= t(:proof_file)
+    %th= t(:work)
     %th= t(:email)
     %th= t(:proof_when)
     %th= t(:status)
   - @proofs.each do |p|
     %tr
-      %td= link_to p.about, proof_path(p)
+      %td
+        - if p.manifestation_id
+          = link_to Manifestation.find(p.manifestation_id).title, proof_path(p)
+        - else
+          = link_to p.about, proof_path(p)
       %td= p.from
       %td= p.created_at
       %td= p.status

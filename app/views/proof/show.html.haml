@@ -1,8 +1,11 @@
 %h1
   = t(:proof_for)
-  = @p.about
-%p
-  = link_to t(:proof_show_text), @p.about, :target => "_blank"
+  - if @p.manifestation
+    = link_to Manifestation.find(@p.manifestation_id).title, manifestation_read_path(@p.manifestation_id)
+  - else
+    = @p.about
+    %p
+      = link_to t(:proof_show_text), @p.about, :target => "_blank"
 %p= "#{t(:from)} #{@p.from}"
 %p
   = t(:content)
