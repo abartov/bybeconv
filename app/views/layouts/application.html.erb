@@ -75,15 +75,15 @@
             <div class="row">
               <div class="col-5 statistics">
                 <div class="stat-big"><%= link_to(Manifestation.cached_count.to_s, works_path) %></div>
-                <div class="stat-small">יצירות</div>
+                <div class="stat-small"><%= t(:works) %></div>
                 </div>
               <div class="col-2 statistics">
                 <div class="stat-big"><%= link_to(Person.cached_toc_count.to_s, authors_index_path) %></div>
-                <div class="stat-small">יוצרים</div>
+                <div class="stat-small"><%= t(:authors) %></div>
                 </div>
               <div class="col-5 statistics">
                 <div class="stat-big"><%= link_to(get_total_headwords.to_s, 'https://benyehuda.org/~asaf/full_dict.html')%></div>
-                <div class="stat-small">ערכים מילוניים</div>
+                <div class="stat-small"><%= t(:dictionary_entries) %></div>
                 </div>
               </div>
             </div>

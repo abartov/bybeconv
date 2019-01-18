@@ -17,7 +17,7 @@ class AuthorsController < ApplicationController
   def all
     @page_title = t(:all_authors)+' '+t(:project_ben_yehuda)
     @pagetype = :authors
-    @authors_abc = Person.order(:name).page(params[:page]).limit(25) # get page X of all authors
+    @authors_abc = Person.order(:name).page(params[:page]).limit(30) # get page X of all authors
   end
 
   def create_toc

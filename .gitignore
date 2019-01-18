@@ -27,10 +27,15 @@
 /config/database.yml
 /config/constants.yml
 /config/storage.yml
+/config/newrelic.yml
 /config/s3.yml
 /config/behead.payload
 
+/vendor/analysis*
 /public/assets/*
+
+localhost.crt
+localhost.key
 
 do_chown.sh
 go.sh

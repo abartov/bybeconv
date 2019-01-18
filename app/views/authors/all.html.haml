@@ -1,0 +1,9 @@
+/ All authors list
+#maincontainer.container-fluid.top-element
+  .row
+    .col-sm-12
+      / actual authors
+      %ol
+        - @authors_abc.each do |au|
+          %li= link_to au.name, author_toc_path(au.id)
+!= paginate @authors_abc

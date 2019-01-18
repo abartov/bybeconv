@@ -8,9 +8,11 @@ he:
   legacy_guessed_person: ניחוש מחבר לפי תיקיה
   legacy_url: היצירה באתר הישן
   to_all_authors: לכל היוצרים...
+  list_all_authors: רשימת כל היוצרים
   to_all_works: לכל היצירות...
   all_authors: כל היוצרים
   all_works: כל היצירות
+  list_all_works: רשימת כל היצירות
   surprise_author: יוצר בהפתעה
   new_works_in_the_project: יצירות חדשות בפרויקט
   surprise: יצירה בהפתעה
@@ -388,12 +390,14 @@ he:
   x_authors: "(%{x} יוצרים)"
   x_works: "(%{x} יצירות)"
   authors_in_the_project: יוצרים בפרויקט
+  works_in_the_project: יצירות בפרויקט
   to_all_whatsnew: לכל מה שחדש
   the_blog: יומן הרשת
   recommendations: המלצות
   more_recommendations_in_the_blog: המלצות נוספות ביומן הרשת
   works: יצירות
-  about: על אודות
+  dictionary_entries: ערכים מילוניים
+  about: על הפרויקט | About
   about_author_in_blog: על אודות %{author} ביומן הרשת
   blog_category_url: קישורית לקטגוריה על היוצר/ת ביומן הרשת
   link: קישורית
@@ -402,7 +406,7 @@ he:
   to_full_list: לרשימה המלאה
   manage_people: ניהול אישים
   to_manage_people: אם האיש/ה אינו/ה ברשימה, יש ליצור רשומה חדשה בניהול אישים (השינויים לא יישמרו אם לא בוצעה "שמירה ועדכון")
-  how_to_help: 'רוצים להתנדב?'
+  how_to_help: 'התנדבות בפרויקט'
   to_the_facebook_page: לדף הפייסבוק
   contact_us: יצירת קשר
   show_toc: הצג תוכן עניינים
