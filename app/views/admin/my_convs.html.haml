@@ -4,7 +4,8 @@
     %th= t(:author)
     %th= t(:conversion_verified)
     %th= t(:actions)
-  - @items.map{|li| li.item}.each do |m|
+  - sorted_items = @items.map{|li| li.item}.sort_by{ |i| i.updated_at}
+  - sorted_items.each do |m|
     %tr
       %td= m.title
       %td= m.author_string
