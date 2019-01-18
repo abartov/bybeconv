@@ -2,32 +2,38 @@
 <html>
 <head>
   <title><%= @page_title ? @page_title : t(:default_page_title)%></title>
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-4865013-2"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-4865013-2"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
 
-  gtag('config', 'UA-4865013-2');
-</script>
+    gtag('config', 'UA-4865013-2');
+  </script>
 
   <!-- Latest compiled and minified CSS -->
-  <!-- LTR Bootstrap the site was initially implemented with -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-  <!-- Bootstrap RTL from CDN (Bootstrap 4.0 *still* has no RTL...) -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-rtl/3.4.0/css/bootstrap-rtl.min.css">
-  <!-- <link rel="stylesheet" href="//cdn.rawgit.com/morteza/bootstrap-rtl/v3.3.4/dist/css/bootstrap-rtl.min.css"> -->
+  <link
+  rel="stylesheet"
+  href="https://cdn.rtlcss.com/bootstrap/v4.0.0/css/bootstrap.min.css"
+  integrity="sha384-P4uhUIGk/q1gaD/NdgkBIl3a6QywJjlsFJFk7SPRdruoGddvRVSwv5qFnvZ73cpz"
+  crossorigin="anonymous">
 
-  <link href="https://fonts.googleapis.com/css?family=Alef" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link href="https://file.myfontastic.com/pyuH2YMFDo2irocAMn4JZT/icons.css" rel="stylesheet">
 
-  <link href="/assets/font.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Alef" rel="stylesheet">
 
-  <%= stylesheet_link_tag    "application" %>
-  <%= javascript_include_tag "application" %>
+    <link href="/assets/font.css" rel="stylesheet">
+
+    <%= stylesheet_link_tag    "application" %>
+    <%= javascript_include_tag "application" %>
   <!-- Latest compiled and minified JavaScript -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery.matchHeight/0.7.0/jquery.matchHeight-min.js"><script>
+  <script
+    src="https://cdn.rtlcss.com/bootstrap/v4.0.0/js/bootstrap.min.js"
+    integrity="sha384-54+cucJ4QbVb99v8dcttx/0JRx4FHMmhOWi4W+xrXpKcsKQodCBwAvu3xxkZAwsH"
+    crossorigin="anonymous"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.matchHeight/0.7.0/jquery.matchHeight-min.js"><script>
 
   <script>
     $(document).ready(function() {
@@ -50,59 +56,76 @@
 <% unless @print %>
   <% unless @readmode %>
   <!-- top logo area -->
-  <div class="topbar">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-lg-1"></div>
-        <div class="col-lg-10 col-xs-12" style="padding: 0">
-          <div class="container-fluid" style="padding: 0">
-            <div class="row" style="padding: 0">
-              <div class="col-sm-3">
-                <div id="site-logo"><a href="/"><img src="/assets/BY_Logo.svg" class="img-responsive" alt="<% t(:logo) %>"></a></div>
-              </div>
-              <div class="col-sm-6" style="align-content: center; text-align: center">
-                <div class="fontsize-selector-unit vcentered">
-                  <%= render partial: 'shared/fontsize' %>
-                  <!-- TODO: also set a cookie, so it'll stick between screens -->
-                </div>
-                <% unless sitenotice.empty? %>
-                  <div class="announcement card text-on-dark">
-                    <p><%= sitenotice %></p>
-                  </div>
-                <% end %>
-              </div>
-              <div class="col-sm-3">
-                <div id="user-widget">
-                  <div style="display: inline;float: right; position: relative">
-                    <% if current_user %>
-                    <div class="collapsed" data-toggle="collapse" data-target="#user_collapsible">
-                      <p style="padding-left: 1.6rem"><%= t(:welcome) %> <strong><%= current_user.name %></strong>!</p>
-                      <div class="dropdown-arrow linky" style="top: 0.1rem; left: 0"><i class="fa chevron"></i></div>
-                    </div>
-                      <div id="user_collapsible" class="collapse" ><a id="sign_in" href="#">כניסה לאזור האישי</a><br/>
-                        <%= link_to t(:sign_out), signout_path, id: "sign_out" %>
-                      </div>
-                      <% if current_user %>
-                        <% if current_user.editor? %>
-                          <div class="dashboard-link">
-                          <br />
-                          <h2><%= link_to t(:back_to_dashboard), url_for(controller: :admin, action: :index) %></h2>
-                          </div>
-                        <% end %>
-                      <% end %>
+  <div class="container-fluid" id="topbar">
+    <div class="container-fluid" id="header">
+      <div class="row" style="margin-bottom: 4px;">
+        <div class="col-xs-6 col-md-4">
+          <div class="logo"><img src="/assets/logo-byp.svg" alt="<% t(:logo) %>"/> </div>
+          <div class="logoMobile"><img src="/assets/logo-byp.svg" alt="<% t(:logo) %>"/> </div>
+          <div class="slogan"><%= raw t(:slogan) %></div>
+          </div>
+        <div class="col-xs-6 col-md-4">
+          <% unless sitenotice.empty? %>
+            <div class="announcement card text-on-dark">
+              <p><%= sitenotice %></p>
+            </div>
+          <% end %>
 
-                    <% else %>
-                      <%= link_to t(:sign_in_google_twitter), "/session/login", id: "sign_in" %>
-                    <% end %>
-                  </div>
+          <div class="statistics-box">
+            <div class="row">
+              <div class="col-5 statistics">
+                <div class="stat-big"><%= link_to(Manifestation.cached_count.to_s, works_path) %></div>
+                <div class="stat-small">יצירות</div>
+                </div>
+              <div class="col-2 statistics">
+                <div class="stat-big"><%= link_to(Person.cached_toc_count.to_s, authors_index_path) %></div>
+                <div class="stat-small">יוצרים</div>
+                </div>
+              <div class="col-5 statistics">
+                <div class="stat-big"><%= link_to(get_total_headwords.to_s, 'https://benyehuda.org/~asaf/full_dict.html')%></div>
+                <div class="stat-small">ערכים מילוניים</div>
                 </div>
               </div>
             </div>
           </div>
+        <div class="col-md-4">
+          <div class="top-btn-group">
+            <button href="#" class="btn-small-ouline fab-icons purple" style="padding-top: 0.2rem"><i class="fab fa-facebook-square"></i></button>
+            <button href="#" class="btn-small-ouline fab-icons purple" style="padding-top: 0.2rem"><i class="fab fa-youtube"></i></button>
+            <button href="#" class="btn-small-ouline fas-icon purple" style="margin-top: 0.1rem"><i class="fas fa-pencil-alt"></i></button>
+            <button href="#" class="btn-small-ouline fas-icon purple" style="margin-top: 0.1rem"><i class="fas fa-share-alt"></i></button>
+            <button href="#" class="btn-small-ouline fas-icon purple" style="margin-top: 0.1rem"><i class="fas fa-envelope-open-text"></i></button>
+            <button href="#" class="btn-small-ouline fas-icon purple" style="margin-top: 0.1rem"><i class="fas fa-wheelchair"></i></button>
+            <span class="icons-separator"></span>
+            <div id="user-widget">
+              <div style="display: inline;float: right; position: relative">
+                <% if current_user %>
+                <div class="collapsed" data-toggle="collapse" data-target="#user_collapsible">
+                  <p style="padding-left: 1.6rem"><%= t(:welcome) %> <strong><%= current_user.name %></strong>!</p>
+                  <div class="dropdown-arrow linky" style="top: 0.1rem; left: 0"><i class="fa chevron"></i></div>
+                </div>
+                  <div id="user_collapsible" class="collapse" ><a id="sign_in" href="#">כניסה לאזור האישי</a><br/>
+                    <%= link_to t(:sign_out), signout_path, id: "sign_out" %>
+                  </div>
+                  <% if current_user %>
+                    <% if current_user.editor? %>
+                      <div class="dashboard-link">
+                      <br />
+                      <h2><%= link_to t(:back_to_dashboard), url_for(controller: :admin, action: :index) %></h2>
+                      </div>
+                    <% end %>
+                  <% end %>
+
+                <% else %>
+                  <span class="btn-small-ouline btn-text">
+                    <%= link_to t(:sign_in_google_twitter), "/session/login", id: "sign_in" %>
+                  </span>
+                <% end %>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="col-lg-1"></div>
       </div>
-    </div>
     <%= render partial: 'shared/tabs' %>
   </div>
   <% end -%>
