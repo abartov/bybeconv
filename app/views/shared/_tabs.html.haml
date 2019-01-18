@@ -6,7 +6,7 @@
           .by-dropdown
             %a.by-nav-item{href: url_for(controller: :authors)}= t(:authors)
             .by-dropdown-content
-              .by-dropdown-header= "#{Person.cached_toc_count} #{t(:authors_in_the_project)}"
+              %a.by-dropdown-header{href: url_for(controller: :authors)}= "#{Person.cached_toc_count} #{t(:authors_in_the_project)}"
               %a{:href => "/#top_authors"}
                 %span.fas-icon.iconNearText>
                   %i.fas.fa-arrow-circle-up
@@ -23,7 +23,7 @@
           .by-dropdown
             %a.by-nav-item{href: works_path}= t(:works)
             .by-dropdown-content
-              .by-dropdown-header= "#{Manifestation.cached_count} #{t(:works_in_the_project)}"
+              %a.by-dropdown-header{href: works_path}= "#{Manifestation.cached_count} #{t(:works_in_the_project)}"
               %a{:href => "/#top_works"}
                 %span.fas-icon.iconNearText>
                   %i.fas.fa-arrow-circle-up
@@ -100,25 +100,25 @@
           .by-dropdown
             %a.by-nav-item{href: whatsnew_path}= t(:whatsnew)
             .by-dropdown-content
-              .by-dropdown-header כל מה שחדש בפרויקט
-              %a{:href => "#"}
+              %a.by-dropdown-header{href: whatsnew_path} כל מה שחדש בפרויקט
+              %a{:href => "#{whatsnew_path}#new_authors"}
                 %span.by-icon.iconNearText> H
-                יוצרים חדשים שנוספו
-              %a{:href => "#"}
+                = t(:new_authors)
+              %a{:href => "#{whatsnew_path}#new_works"}
                 %span.by-icon.iconNearText> G
-                יצירות חדשות שהועלו
-              %a{:href => "#"}
+                = t(:new_works)
+              %a{:href => t(:facebook_url)}
                 %span.fab.iconNearText>
                   %i.fab.fa-facebook-square
-                עדכונים אחרונים בעמוד הפייסבוק
-              %a{:href => "#"}
+                = t(:latest_facebook)
+              %a{:href => t(:youtube_url)}
                 %span.fab.iconNearText>
                   %i.fab.fa-youtube
-                קטעי וידאו אחרונים בערוץ היו-טיוב
-              %a{:href => "#"}
+                = t(:latest_youtube)
+              %a{:href => t(:blog_url)}
                 %span.fas-icon.iconNearText>
                   %i.fas.fa-pencil-alt
-                פרסומים אחרונים ביומן הרשת
+                = t(:latest_blog)
         %li.topMenuItem{:style => "padding-left: 0"}
           .by-dropdown
             %a.by-nav-item{href: '/page/about'}= t(:about)

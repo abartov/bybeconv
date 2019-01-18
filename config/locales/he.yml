@@ -365,6 +365,7 @@ he:
   search_placeholder: חיפוש יצירות ויוצרים באתר
   new_authors: יוצרים חדשים בפרויקט
   new_author: יוצר חדש
+  latest_facebook: עדכונים אחרונים בעמוד הפייסבוק
   background: רקע
   placeholder_image: "צללית יוצר/ת"
   new_works: יצירות חדשות בפרויקט
@@ -393,6 +394,8 @@ he:
   works_in_the_project: יצירות בפרויקט
   to_all_whatsnew: לכל מה שחדש
   the_blog: יומן הרשת
+  blog_url: https://benyehuda.org/blog/
+  latest_blog: פרסומים אחרונים ביומן הרשת
   recommendations: המלצות
   more_recommendations_in_the_blog: המלצות נוספות ביומן הרשת
   works: יצירות
@@ -408,6 +411,9 @@ he:
   to_manage_people: אם האיש/ה אינו/ה ברשימה, יש ליצור רשומה חדשה בניהול אישים (השינויים לא יישמרו אם לא בוצעה "שמירה ועדכון")
   how_to_help: 'התנדבות בפרויקט'
   to_the_facebook_page: לדף הפייסבוק
+  facebook_url: https://www.facebook.com/projectbenyehuda/
+  latest_youtube: קטעי וידאו אחרונים בערוץ היו-טיוב
+  youtube_url: https://www.youtube.com/user/ProjectBenYehuda/
   contact_us: יצירת קשר
   show_toc: הצג תוכן עניינים
   toc: תוכן עניינים

@@ -6,7 +6,7 @@
         .row
           .col-md-12.main-group#works
             - cache (@anonymous ? "whatsnew_page" : 'whatsnew_nonanon'), expires_in: 2.hours do
-              %p.headline-2= t(:new_works_by_new_authors)
+              %p.headline-2#new_authors= t(:new_works_by_new_authors)
               - @new_authors.each do |au|
                 - works_since = au.works_since(1.month.ago, 1000)
                 - unless works_since.empty?
@@ -21,7 +21,7 @@
                           != worksbuf
                       .whatsnew-pic-wide
                         %img{ alt: au.name, :class => 'img-responsive', src: au.profile_image.url(:tiny)}
-              %p.headline-2= t(:new_works_by_existing_authors)
+              %p.headline-2#new_works= t(:new_works_by_existing_authors)
               - @whatsnew.each do |author, works|
                 - next if @new_authors.include? author
                 .card
