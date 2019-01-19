@@ -16,6 +16,9 @@
     = f.label t(:deathdate)
     = f.text_field :deathdate
   .backend-field
+    = f.label t(:period)
+    = f.select :period, options_for_select(Person.periods.map{|p| [t(p[0]), p[0]]}, person.period)
+  .backend-field
     = f.label t(:gender)
     %br
     = f.radio_button(:gender, :male, checked: person.gender == 'male') # symbols won't do!

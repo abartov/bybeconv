@@ -1,5 +1,8 @@
 .top-element
   %h1= @author.name
+  %h2= t(:period)+': '+t(@author.period)
+  %p
+    %br
   %p
     %b= t(:last_update)+': '
     = @author.updated_at.to_s

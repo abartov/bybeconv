@@ -404,6 +404,10 @@ module BybeUtils
     return ret
   end
 
+  def work_count_by_period(p)
+    return Expression.cached_work_count_by_period(p)
+  end
+
   def get_total_works
     return Manifestation.cached_count
   end

@@ -20,6 +20,7 @@ Bybeconv::Application.routes.draw do
 
   get 'realizers/remove'
 
+  get 'period/:period' => 'period#index', as: 'period'
   get 'creations/add'
   get 'creations/remove'
 

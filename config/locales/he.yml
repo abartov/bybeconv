@@ -392,7 +392,7 @@ he:
   x_works: "(%{x} יצירות)"
   authors_in_the_project: יוצרים בפרויקט
   works_in_the_project: יצירות בפרויקט
-  to_all_whatsnew: לכל מה שחדש
+  to_all_whatsnew:  כל מה שחדש בפרויקט
   the_blog: יומן הרשת
   blog_url: https://benyehuda.org/blog/
   latest_blog: פרסומים אחרונים ביומן הרשת
@@ -406,6 +406,17 @@ he:
   link: קישורית
   period: תקופה
   periods: תקופות
+  ancient: עת עתיקה ופיוט
+  medieval: ימי הביניים והרנסאנס
+  enlightenment: ההשכלה
+  revival: התחיה
+  modern: ספרות עברית חדשה
+  ancient_long: עת עתיקה ופיוט (עד 900 לספירה)
+  medieval_long: ימי הביניים והרנסאנס (900 עד 1700)
+  enlightenment_long: ההשכלה (1700 עד 1880)
+  revival_long: התחיה (1880 עד 1948)
+  modern_long: ספרות עברית חדשה (1948 ואילך)
+
   to_full_list: לרשימה המלאה
   manage_people: ניהול אישים
   to_manage_people: אם האיש/ה אינו/ה ברשימה, יש ליצור רשומה חדשה בניהול אישים (השינויים לא יישמרו אם לא בוצעה "שמירה ועדכון")

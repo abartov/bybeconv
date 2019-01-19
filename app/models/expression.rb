@@ -30,6 +30,12 @@ class Expression < ApplicationRecord
     return ret
   end
 
+  def self.cached_work_count_by_period(p)
+    Rails.cache.fetch("e_works_by_period_#{p}", expires_in: 24.hours) do
+      Expression.where(period: Person.periods[p]).count
+    end
+  end
+
   protected
 
   def set_translation

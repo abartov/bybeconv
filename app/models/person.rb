@@ -2,11 +2,12 @@ include BybeUtils
 class Person < ApplicationRecord
   # attr_accessible :affiliation, :comment, :country, :name, :nli_id, :other_designation, :viaf_id, :public_domain, :profile_image, :birthdate, :deathdate, :wikidata_id, :wikipedia_url, :wikipedia_snippet, :blog_category_url, :profile_image, :metadata_approved, :gender, :bib_done
 
-  enum gender: [:male, :female, :other, :unknown]
+  enum gender: %i(male female other unknown)
+  enum period: %i(ancient medieval enlightenment revival modern)
 
   # relationships
   belongs_to :toc
-  belongs_to :period
+  # belongs_to :period
   has_many :creations
   has_many :works, through: :creations, class_name: 'Work'
   has_many :realizers
@@ -154,7 +155,7 @@ class Person < ApplicationRecord
 
   def period_string
     return '' if period.nil?
-    return period.name
+    return t(period)
   end
 
   def rights_icon
