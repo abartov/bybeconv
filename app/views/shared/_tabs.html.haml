@@ -11,11 +11,11 @@
               %a{:href => "/#top_authors"}
                 %span.fas-icon.iconNearText>
                   %i.fas.fa-arrow-circle-up
-                רשימת היוצרים הנקראים ביותר
-              %a{:href => "#"}
+                = t(:most_read_authors)
+              %a{href: "#{whatsnew_path}#new_authors"}
                 %span.fas-icon.iconNearText>
                   %i.fas.fa-bullhorn
-                רשימת היוצרים החדשים ביותר
+                = t(:newest_authors)
               %a{href: all_authors_path}
                 %span.far-icon.iconNearText>
                   %i.far.fa-list-alt
@@ -29,11 +29,11 @@
               %a{:href => "/#top_works"}
                 %span.fas-icon.iconNearText>
                   %i.fas.fa-arrow-circle-up
-                רשימת היצירות הנקראות ביותר
-              %a{:href => "#"}
+                = t(:most_read_works)
+              %a{href: "#{whatsnew_path}#new_works"}
                 %span.fas-icon.iconNearText>
                   %i.fas.fa-bullhorn
-                רשימת היצירות החדשות ביותר
+                = t(:newest_works)
               %a{href: all_works_path}
                 %span.far-icon.iconNearText>
                   %i.far.fa-list-alt
@@ -41,42 +41,19 @@
         - combined_totals = authors_total+", "+works_total
         %li.topMenuItem
           .by-dropdown
-            %a.by-nav-item{:href => "#"} סוגות
+            %a.by-nav-item{:href => "#"}= t(:genres)
             .by-dropdown-content
               .by-dropdown-header= combined_totals
+              - get_genres.each do |g|
+                %a{href: manifestation_genre_path(genre: g)}
+                  %span.by-icon.iconNearText= glyph_for_genre(g)
+                  = "#{t(g)} - #{Manifestation.cached_work_counts_by_genre[g]} #{t(:works)}"
               %a{:href => "#"}
-                %span.by-icon.iconNearText> t
-                שירה - 5,261 יצירות
-              %a{:href => "#"}
-                %span.by-icon.iconNearText> l
-                פרוזה - 3,121 יצירות
-              %a{:href => "#"}
-                %span.by-icon.iconNearText> k
-                מחזות - 67 יצירות
-              %a{:href => "#"}
-                %span.by-icon.iconNearText> E
-                משלים - 228 יצירות
-              %a{:href => "#"}
-                %span.by-icon.iconNearText> a
-                מאמרים ומסות - 3,031 יצירות
-              %a{:href => "#"}
-                %span.by-icon.iconNearText> j
-                זכרונות ויומנים - 236 יצירות
-              %a{:href => "#"}
-                %span.by-icon.iconNearText> w
-                מכתבים - 151 יצירות
-              %a{:href => "#"}
-                %span.by-icon.iconNearText> v
-                עיון - 281 יצירות
-              %a{:href => "#"}
-                %span.by-icon.iconNearText> f
-                מילונים ולכסיקונים - 18 יצירות
-              %a{:href => "#"}
-                %span.by-icon.iconNearText> s
-                יצירות מתורגמות - 2,876 יצירות
+                %span.by-icon.iconNearText= glyph_for_genre('translations')
+                = "#{t(:translations)} - #{Expression.cached_translations_count} #{t(:works)}"
         %li.topMenuItem
           .by-dropdown
-            %a.by-nav-item{href: "#"} תקופות
+            %a.by-nav-item{href: "#"}= t(:periods)
             .by-dropdown-content
               .by-dropdown-header= combined_totals
               - Person.periods.each do |p|
@@ -89,10 +66,10 @@
             %a.by-nav-item{href: whatsnew_path}= t(:whatsnew)
             .by-dropdown-content
               %a.by-dropdown-header{href: whatsnew_path}= t(:to_all_whatsnew)
-              %a{:href => "#{whatsnew_path}#new_authors"}
+              %a{href: "#{whatsnew_path}#new_authors"}
                 %span.by-icon.iconNearText> H
                 = t(:new_authors)
-              %a{:href => "#{whatsnew_path}#new_works"}
+              %a{href: "#{whatsnew_path}#new_works"}
                 %span.by-icon.iconNearText> G
                 = t(:new_works)
               %a{:href => t(:facebook_url)}
@@ -112,10 +89,10 @@
             %a.by-nav-item{href: '/page/about'}= t(:about)
             .by-dropdown-content
               .by-dropdown-header מידע נוסף
-              %a{:href => "#"}
+              %a{href: '/page/about'}
                 %span.fas-icon.iconNearText>
                   %i.fas.fa-info-circle
-                על פרויקט בן-יהודה
+                = t(:about_the_project)
               %a{href: '/page/english'}
                 %span.fas-icon.iconNearText>
                   %i.fas.fa-info-circle
@@ -286,7 +263,7 @@
           %span.caret על הפרויקט - About
           %ul.nested
             %li
-              %a{:href => "#"}
+              %a{href: '/page/about'}
                 %span.fas-icon.iconNearText>
                   %i.fas.fa-info-circle
                 על פרויקט בן-יהודה
@@ -300,34 +277,34 @@
                 %span.by-icon.iconNearText> G
                 על העמותה למחשוב ספרות עברית
             %li
-              %a{:href => "#"}
+              %a{href: '/page/volunteer'}
                 %span.far-icon.iconNearText>
                   %i.far.fa-handshake
-                התנדבות בפרויקט
+                = t(:how_to_help)
             %li
               %a{href: '/page/donate'}
                 %span.by-icon.iconNearText> z
                 = t(:donate_money)
             %li
-              %a{:href => "#"}
+              %a{href: t(:facebook_url)}
                 %span.fab-icons.iconNearText>
                   %i.fab.fa-facebook-square
-                לדף הפייסבוק שלנו
+                = t(:to_the_facebook_page)
             %li
-              %a{:href => "#"}
+              %a{href: t(:youtube_url)}
                 %span.fab-icons.iconNearText>
                   %i.fab.fa-youtube
-                לערוץ היו-טיוב
+                = t(:to_the_youtube)
             %li
-              %a{:href => "#"}
+              %a{href: t(:blog_url)}
                 %span.fas-icon.iconNearText>
                   %i.fas.fa-pencil-alt
-                ליומן הרשת
+                = t(:to_the_blog)
             %li
-              %a{:href => "#"}
+              %a{href: t(:contact_url)}
                 %span.fas-icon.iconNearText>
                   %i.fas.fa-phone
-                יצירת קשר
+                = t(:contact_us)
     .menuButton{:onclick => "openNav()", :style => "font-size:24px; cursor:pointer"}
       %i.fas.fa-bars.purple
   .col-md-2.top-donation-desk-area

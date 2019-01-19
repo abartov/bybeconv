@@ -31,6 +31,7 @@ Bybeconv::Application.routes.draw do
   get 'admin/incongruous_copyright'
   get 'admin/suspicious_headings'
   get 'admin/similar_titles'
+  get 'admin/periodless'
   get 'admin/suspicious_translations'
   get 'admin/mark_similar_as_valid/:id' => 'admin#mark_similar_as_valid', as: 'mark_similar_as_valid'
   get 'admin/translated_from_multiple_languages'

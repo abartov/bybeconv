@@ -1,0 +1,12 @@
+.top-element
+  %h2= t(:periodless)
+  %h3= t(:total)+': '+@authors.length.to_s
+  %table{style: 'cell-spacing: 10;'}
+    %tr
+      %th= t(:author)
+      %th= t(:life_years)
+
+    - @authors.each do |author|
+      %tr
+        %td= link_to author.name, authors_show_path(id: author.id)
+        %td= author.dates

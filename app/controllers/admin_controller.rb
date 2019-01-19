@@ -116,6 +116,11 @@ class AdminController < ApplicationController
     render layout: false
   end
 
+  def periodless
+    @authors = Person.has_toc.where(period: nil)
+    Rails.cache.write('report_periodless', @authors.length)
+  end
+
   def translated_from_multiple_languages
     @authors = []
     translatees = Person.joins(creations: :work).includes(:works).where('works.orig_lang <> "he"').distinct

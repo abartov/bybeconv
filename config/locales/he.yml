@@ -83,6 +83,10 @@ he:
   no_toc_yet: "טרם נקלט תוכן עניינים ליוצר/ת"
   top_ten_works: 10 היצירות הנקראות ביותר החודש
   top_ten_authors: 10 היוצרים הנקראים ביותר החודש
+  most_read_authors: רשימת היוצרים הנקראים ביותר
+  newest_authors: רשימת היוצרים החדשים ביותר
+  most_read_works: רשימת היצירות הנקראות ביותר
+  newest_works: רשימת היצירות החדשות ביותר
   table_of_contents: תוכן עניינים
   new_person: "מחבר/ת חדש/ה"
   join_volunteer: התנדבות להפקת תכנים
@@ -105,7 +109,7 @@ he:
   to_the_full_list: לרשימה המלאה
   whatsnew: "מה חדש?"
   whats_new: מה חדש בפרויקט
-  project_ben_yehuda: פרויקט בן-יהודה
+  project_ben_yehuda: פרויקט בן־יהודה
   random_authors: יוצרים אקראיים
   random_works: יצירות אקראיות
   featured_item: זרקור על יצירה
@@ -133,6 +137,7 @@ he:
   existing_aboutnesses: נושאים קיימים
   bib_workshop: הסדנה הביבליוגרפית
   # genre key names are currently hard-coded in ApplicationController
+  genres: סוגות
   poetry: שירה
   prose: פרוזה
   article: מאמרים ומסות
@@ -221,9 +226,9 @@ he:
   deactivate_bit: בטל תפקיד
   editor_bits: תפקידי עורך
   proof_thanks_title: קיבלנו, תודה!
-  from_project_ben_yehuda: מפרויקט בן-יהודה
+  from_project_ben_yehuda: מפרויקט בן־יהודה
   proof_thanks_html: תודה רבה על שטרחת לשלוח אלינו הגהה או הערה!  נעיין בה בקפידה ונתקן את הטקסט במידת הצורך, ונעדכן אותך כשנעשה זאת.
-  proof_subscribed: אנו שמחים שברצונך לקבל עדכונים מפרויקט בן-יהודה בעתיד.  נוסיף אותך לרשימת הדיוור שלנו בהקדם, בכתובת %{email}
+  proof_subscribed: אנו שמחים שברצונך לקבל עדכונים מפרויקט בן־יהודה בעתיד.  נוסיף אותך לרשימת הדיוור שלנו בהקדם, בכתובת %{email}
   proof_failed: אירעה שגיאה בשליחת ההגהה.  אפשר לנסות שוב.
   proof_contact_html: "בכל שאלה, תוכלו לכתוב אל צוות העורכים, בכתובת <a href=\"mailto:editor@benyehuda.org\">editor@benyehuda.org</a>."
 # TODO: add notification e-mail when resolving a proof
@@ -262,7 +267,7 @@ he:
   profile_image: תמונת פרופיל
   upload_new_image: העלאת תמונה חדשה
   current_image: תמונה נוכחית
-  download_footer_html: "את הטקסט לעיל הפיקו מתנדבי <a href=\"http://benyehuda.org/\">פרויקט בן-יהודה באינטרנט</a>.  הוא זמין תמיד בכתובת הבאה:<br /><a href=\"%{url}\">%{url}</a>"
+  download_footer_html: "את הטקסט לעיל הפיקו מתנדבי <a href=\"http://benyehuda.org/\">פרויקט בן־יהודה באינטרנט</a>.  הוא זמין תמיד בכתובת הבאה:<br /><a href=\"%{url}\">%{url}</a>"
   proof_please_select_something: "מצוין, אבל ראשית נא לסמן (להאיר, לבחור) את הפיסקה השגויה (או כמה שורות, אם מדובר בשורות קצרצרות), כדי שנדע איפה לתקן.  אחרי הסימון, יש ללחוץ שוב על לחצן זה."
   like: אהבתי
   our_own_content: 'תוכן משלנו:'
@@ -300,7 +305,7 @@ he:
   search_terms: מה חיפשת
   works_by_tag: יצירות לפי תגית
   internal_search: חיפוש במנוע שלנו
-  welcome_title: "ברוכים הבאים לפרויקט בן-יהודה!"
+  welcome_title: "ברוכים הבאים לפרויקט בן־יהודה!"
   welcome_paragraph_html: "הפרויקט הוא מיזם התנדבותי שעוסק ביצירת מהדורות אלקטרוניות של נכסי הספרות העברית וריכוזן באתר האינטרנט לטובת הציבור, בחינם וללא פרסומות.<br />מטרות הפרויקט הן <b>שימור</b> היצירות העבריות, <b>הנגשת</b> היצירות לציבור הרחב, <b>וחשיפת</b> היצירות לקוראים חדשים ועידוד העיסוק בהן."
   welcome_stats_html: "כיום כלולות בפרויקט <b>%{works}</b> יצירות, מאת כ-<b>%{authors}</b> יוצרים, ו-<b>%{headwords}</b> ערכים מילוניים."
   total_manifestations: "סה\"כ יצירות: %{total}"
@@ -394,6 +399,9 @@ he:
   works_in_the_project: יצירות בפרויקט
   to_all_whatsnew:  כל מה שחדש בפרויקט
   the_blog: יומן הרשת
+  to_the_blog: ליומן הרשת
+  to_the_youtube: לערוץ היו-טיוב
+  contact_url: "/page/about/יצירתקשר"
   blog_url: https://benyehuda.org/blog/
   latest_blog: פרסומים אחרונים ביומן הרשת
   recommendations: המלצות
@@ -401,11 +409,13 @@ he:
   works: יצירות
   dictionary_entries: ערכים מילוניים
   about: על הפרויקט | About
+  about_the_project: על פרויקט בן־יהודה
   about_author_in_blog: על אודות %{author} ביומן הרשת
   blog_category_url: קישורית לקטגוריה על היוצר/ת ביומן הרשת
   link: קישורית
   period: תקופה
   periods: תקופות
+  periodless: מחברים חסרי תקופה
   ancient: עת עתיקה ופיוט
   medieval: ימי הביניים והרנסאנס
   enlightenment: ההשכלה
@@ -438,7 +448,7 @@ he:
   about_public_domain: 'מה פירוש נחלת הכלל?'
   public_domain_popover: "חוק זכויות יוצרים מגן מפני שימוש בלתי-מורשה ביצירות למשך תקופת תוקפו (בישראל, שבעים שנה מסוף שנת מות היוצר).  עם פקוע הזכויות, הופכת היצירה 'נחלת הכלל', כלומר רכוש הציבור.  פירוש הדבר שהיצירה שייכת לכולנו, וכולנו רשאים לעשות בה כל שימוש, לרבות שימוש מסחרי, מבלי צורך לבקש רשות מאיש."
   about_permission: 'מה פירוש ברשות פרסום?'
-  permission_popover: "על אף שהיצירה עדיין מוגנת בזכויות יוצרים, פרויקט בן-יהודה קיבל *רשות מפורשת לפרסם* את היצירה במאגר היצירה של פרויקט בן-יהודה, לשימוש הקהל הרחב לקריאה ומחקר.  שימושים אחרים (כגון המחזה, הלחנה, או ביצוע מסחרי) עדיין *טעונים אישור מפורש* מאת בעלי הזכויות."
+  permission_popover: "על אף שהיצירה עדיין מוגנת בזכויות יוצרים, פרויקט בן־יהודה קיבל *רשות מפורשת לפרסם* את היצירה במאגר היצירה של פרויקט בן־יהודה, לשימוש הקהל הרחב לקריאה ומחקר.  שימושים אחרים (כגון המחזה, הלחנה, או ביצוע מסחרי) עדיין *טעונים אישור מפורש* מאת בעלי הזכויות."
   by_permission: מוגש ברשות פרסום
   uploaded_images: נקלטו %{images_added} קבצים נוספים, ועכשיו יש ליצירה %{total} בסך הכל.
   add_image: הוספת תמונה
@@ -522,7 +532,7 @@ he:
   expression_details: פרטי ביטוי
   manifestation_details: פרטי מימוש
   responsibility_statement: שורת אחריות
-  default_page_title: פרויקט בן-יהודה
+  default_page_title: פרויקט בן־יהודה
   font_size: גודל גופן
   path: נתיב
   'yes': כן
@@ -588,7 +598,7 @@ he:
   html_dirs_list: רשימת תיקיות ישנות
   html_files_list: רשימת קבצים להסבה
   catalog_dashboard: קטלוג המערכת
-  catalog_title: קטלוג פרויקט בן-יהודה
+  catalog_title: קטלוג פרויקט בן־יהודה
   resolve_as_fixed: השגיאה תוקנה (שולח דואל!)
   resolve_as_fixed_no_email: השגיאה תוקנה (ללא דואל, למקרה של ריבוי דיווחים תקינים, לאחר שליחת דואל עבור הראשון)
   resolve_as_wontfix: לא שגיאה, או לא יתוקן (שולח דואל!)
@@ -608,7 +618,7 @@ he:
   hello_x: שלום %{name}
   hello_anon: שלום רב!
   suggest_new_tag: הצעת תגית חדשה
-  email_footer_html: "בברכה, צוות פרויקט בן-יהודה.\n\nאולי תמצא/י ענין ביומן הרשת של פרויקט בן-יהודה: http://benyehuda.org/blog/ \n\n או בערוץ היו-טיוב של פרויקט בן-יהודה: http://www.youtube.com/user/ProjectBenYehuda/videos?flow=grid&view=0"
+  email_footer_html: "בברכה, צוות פרויקט בן־יהודה.\n\nאולי תמצא/י ענין ביומן הרשת של פרויקט בן־יהודה: http://benyehuda.org/blog/ \n\n או בערוץ היו-טיוב של פרויקט בן־יהודה: http://www.youtube.com/user/ProjectBenYehuda/videos?flow=grid&view=0"
   proof_fixed: "תודה רבה על ההגהה ששלחת עבור היצירה בכתובת:\n\n%{url}\n\nלאחר בדיקה, תיקנו את הטקסט באתר.  נשמח לקבל הצעות הגהה גם בעתיד!"
   proof_wontfix: "תודה רבה על ההגהה ששלחת עבור היצירה בכתובת:\n\n%{url}\n\nלאחר בדיקה, הגענו למסקנה שאין מדובר בשגיאה, אלא בשימוש לשון בלתי-שכיח, ובכל אופן כך מופיע במקור.  לכן לא נתקן את הטקסט באתר.  נשמח לקבל הצעות הגהה גם בעתיד!"
   rec_accepted: "קיבלנו בתודה את המלצתך על היצירה:\n\n%{url}\n\nכשנתפנה לעיין בה, נשקול לשלב אותה בפרסום בפייסבוק או ברשומה ביומן הרשת שלנו, כדי שגם אחרים ייהנו."

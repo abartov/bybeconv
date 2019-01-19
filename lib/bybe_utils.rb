@@ -420,12 +420,40 @@ module BybeUtils
     return 2341 # TODO: un-hardcode
   end
 
+  ## hardcoded
   def get_genres
     return ['poetry', 'prose', 'drama', 'fables','article', 'memoir', 'letters', 'reference', 'lexicon'] # translations and icon-font refer to these keys!
   end
 
   def right_side_genres
     return ['poetry', 'prose', 'drama', 'fables','article', 'memoir', 'letters', 'reference'] # translations and icon-font refer to these keys!
+  end
+
+  ## hardcoded according to graphic design
+  def glyph_for_genre(genre)
+    case genre
+      when 'poetry'
+        return 't'
+      when 'prose'
+        return 'l'
+      when 'drama'
+        return 'k'
+      when 'fables'
+        return 'E'
+      when 'article'
+        return 'a'
+      when 'memoir'
+        return 'j'
+      when 'letters'
+        return 'w'
+      when 'reference'
+        return 'v'
+      when 'lexicon'
+        return 'f'
+      when 'translations'
+        return 's'
+    end
+    return '' # fallback
   end
 
   def get_langs
