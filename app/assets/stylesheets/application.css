@@ -2485,6 +2485,9 @@ a:hover {
   color: #ffffff;
   margin-left: 20px; }
 
+.by-footer-nav-item:visited {
+  color: #ffffff;
+}
 .by-footer-nav-item:hover {
   color: #d9cdd5;
   text-decoration: none; }

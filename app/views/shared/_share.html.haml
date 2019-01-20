@@ -6,8 +6,9 @@
     %i.fa.fa-share-alt.fa08
     = t(:share)
 - elsif local_assigns.has_key?(:element) && local_assigns[:element] == :footer
-  .linky.dark-text-button.share{style:'display:inline'}
-    %i.fa.fa-share-alt.fa08
+  .linky.by-footer-nav-item.share{style:'display:inline'}
+    %span.fa-icon.footer-nav-icon>
+      %i.fas.fa-share-alt-square
     = t(:share)
 
 #shareDlg{title: t(:choose_sharing_medium)}

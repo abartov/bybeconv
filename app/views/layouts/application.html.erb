@@ -130,7 +130,10 @@
   </div>
   <% end -%>
 <% end %>
+<main>
 <%= yield %>
+</main>
+<footer>
 <% if @print %>
   <%= t(:download_footer_html, url: url_for(action: :read, only_path:false, id: @m.id)) %>
 <% else %>
@@ -147,30 +150,35 @@
   <p/>
   <!-- footer start -->
 <%= render partial: 'shared/fontsize_js' %>
-<div id="byfooter" class="container-fluid">
-<div class="row">
-    <div class="col-lg-1"></div>
-    <div class="col-lg-10 col-xs-12 col-sm-12">
-        <div id="bottom-nav" class="container-fluid text-on-dark">
-    <p style="padding-top:1rem"><span style="font-weight: bold">פרויקט בן-יהודה</span> הוא מיזם התנדבותי ליצירת מהדורות אלקטרוניות של ספרות עברית והנגשתן לציבור.</p>
-   <div style="padding-top:1rem">
-    <div class="welcome-small-link"><a href="/page/about"><i class="fa fa-info-circle" style="padding-top:0.3rem;"></i> <%= t(:about) %></a></div>
-    <div class="welcome-small-link"><a href="<%= t(:facebook_url) %>" target="_new"><i class="fa fa-facebook-square" style="padding-top:0.3rem;"></i> <%= t(:to_the_facebook_page) %></a></div>
-    <div class="welcome-small-link"><a href="<%= t(:youtube_url) %>"><i class="fa fa-youtube-play" target="_new" style="padding-top:0.3rem;"></i> <%= t(:to_the_youtube_channel) %></a></div>
-    <div class="welcome-small-link"><a href="<%= t(:blog_url) %>"><i class="fa fa-pencil-square-o" style="padding-top:0.3rem;" target="_new"></i> <%= t(:the_blog) %></a></div>
-    <div class="welcome-small-link">
-      <%= render partial: 'shared/share', locals: {element: :footer} %>
-    </div>
-        <div class="footer-small-link"><a href="/page/volunteer"><i class="fa fa-handshake-o" style="padding-top:0.3rem;"></i> <%= t(:how_to_help) %></a></div>
-    <div class="welcome-small-link"><a href="/page/donate"><span class="icon-bydonate" style="padding-top:0rem;"></span> <%= t(:donate_money) %></a></div>
-  </div>
+
 
   </div>
-    </div>
-    <div class="col-lg-1"></div>
-  </div>
+</div></footer>
 
-  <!-- footer end -->
+
+<div id="bottom-bar" class="container-fluid">
+  <div class="container-fluid" id="footer">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="footer-text"><span style="font-weight: bold">פרויקט בן-יהודה</span> הוא מיזם התנדבותי ליצירת מהדורות אלקטרוניות של ספרות עברית והנגשתן לציבור.</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="footer-nav">
+          <a href="/page/about" class="by-footer-nav-item"><span class="fa-icon footer-nav-icon"><i class="fas fa-info-circle"></i></span><%= t(:about) %></a>
+          <a href="<%= t(:facebook_url) %>" class="by-footer-nav-item"><span class="fa-icon footer-nav-icon"><i class="fab fa-facebook-square"></i></span><%= t(:to_the_facebook_page) %></a>
+          <a href="<%= t(:youtube_url) %>" class="by-footer-nav-item"><span class="fa-icon footer-nav-icon"><i class="fab fa-youtube"></i></span><%= t(:to_the_youtube_channel) %></a>
+          <a href="<%= t(:blog_url) %>" class="by-footer-nav-item"><span class="fa-icon footer-nav-icon"><i class="fas fa-edit"></i></span><%= t(:the_blog) %></a>
+          <%= render partial: 'shared/share', locals: {element: :footer} %>
+          <a href="/page/volunteer" class="by-footer-nav-item"><span class="fa-icon footer-nav-icon"><i class="far fa-handshake"></i></span><%= t(:how_to_help) %></a>
+          <a href="/page/donate" class="by-footer-nav-item"><span class="by-icon footer-nav-icon" style="vertical-align: -0.30px;">z</span><%= t(:donate_money) %></a>
+        </div>
+      </div>
+  	</div>
+  </div>
+</div>
+</footer>
 
 <% end %>
 	<script>
