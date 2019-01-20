@@ -1,0 +1,7 @@
+.top-element
+  %h2= t(:missing_images)
+
+  %h3= t(:authors)+" (#{@authors.count})"
+
+  - @authors.each do |au|
+    %p= au.name
