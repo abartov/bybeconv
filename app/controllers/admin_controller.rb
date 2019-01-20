@@ -41,6 +41,12 @@ class AdminController < ApplicationController
     Rails.cache.write('report_missing_genres', @total)
   end
 
+  def missing_images
+    @authors = Person.where(profile_image_file_name: nil).order('name asc')
+    @page_title = t(:missing_images)
+    Rails.cache.write('report_missing_images', @authors.count)
+  end
+
   def missing_copyright
     @authors = Person.where(public_domain: nil)
     @total = Manifestation.joins(:expressions).where(expressions: {copyrighted: nil}).count

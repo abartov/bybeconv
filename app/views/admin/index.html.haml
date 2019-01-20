@@ -81,6 +81,9 @@
         = t(:incongruous_copyright_report)+' '
         %b= t(:takes_long_time)
       = ' ('+Rails.cache.read('report_incongruous_copyright').to_s+')'
+    %p
+      = link_to t(:missing_images), admin_missing_images_path
+      = ' ('+Rails.cache.read('report_missing_images').to_s+')'
     %hr
     %h3= t(:featured_content_heading)
     %p= link_to t(:volunteer_profiles), url_for(action: :volunteer_profiles_list)

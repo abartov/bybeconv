@@ -686,6 +686,7 @@ he:
   new_title_only: כותרת (בלבד) חדשה, אם צריך
   existing_title: כותרת קיימת
   show_my_convs: הצגת הסבות שהוקצו לי
+  missing_images: תמונות חסרות
 
   notifications:
     proof_fixed:
