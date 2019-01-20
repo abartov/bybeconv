@@ -90,12 +90,12 @@
           </div>
         <div class="col-md-4">
           <div class="top-btn-group">
-            <button href="#" class="btn-small-ouline fab-icons purple" style="padding-top: 0.2rem"><i class="fab fa-facebook-square"></i></button>
-            <button href="#" class="btn-small-ouline fab-icons purple" style="padding-top: 0.2rem"><i class="fab fa-youtube"></i></button>
-            <button href="#" class="btn-small-ouline fas-icon purple" style="margin-top: 0.1rem"><i class="fas fa-pencil-alt"></i></button>
-            <button href="#" class="btn-small-ouline fas-icon purple" style="margin-top: 0.1rem"><i class="fas fa-share-alt"></i></button>
-            <button href="#" class="btn-small-ouline fas-icon purple" style="margin-top: 0.1rem"><i class="fas fa-envelope-open-text"></i></button>
-            <button href="#" class="btn-small-ouline fas-icon purple" style="margin-top: 0.1rem"><i class="fas fa-wheelchair"></i></button>
+            <a href="<%= t(:facebook_url) %>"><button class="btn-small-ouline fab-icons purple" style="padding-top: 0.2rem"><i class="fab fa-facebook-square"></i></button></a>
+            <a href="<%= t(:youtube_url) %>"><button class="btn-small-ouline fab-icons purple" style="padding-top: 0.2rem"><i class="fab fa-youtube"></i></button></a>
+            <a href="<%= t(:blog_url) %>"><button class="btn-small-ouline fas-icon purple" style="margin-top: 0.1rem"><i class="fas fa-pencil-alt"></i></button></a>
+            <%= render partial: 'shared/share', locals: {element: :button} %>
+            <a href="mailto:editor@benyehuda.org"><button class="btn-small-ouline fas-icon purple" style="margin-top: 0.1rem"><i class="fas fa-envelope-open-text"></i></button></a>
+            <a href="#"><button class="btn-small-ouline fas-icon purple" style="margin-top: 0.1rem"><i class="fas fa-wheelchair"></i></button></a>
             <span class="icons-separator"></span>
             <div id="user-widget">
               <div style="display: inline;float: right; position: relative">
@@ -155,9 +155,9 @@
     <p style="padding-top:1rem"><span style="font-weight: bold">פרויקט בן-יהודה</span> הוא מיזם התנדבותי ליצירת מהדורות אלקטרוניות של ספרות עברית והנגשתן לציבור.</p>
    <div style="padding-top:1rem">
     <div class="welcome-small-link"><a href="/page/about"><i class="fa fa-info-circle" style="padding-top:0.3rem;"></i> <%= t(:about) %></a></div>
-    <div class="welcome-small-link"><a href="https://www.facebook.com/%D7%A4%D7%A8%D7%95%D7%99%D7%A7%D7%98-%D7%91%D7%9F-%D7%99%D7%94%D7%95%D7%93%D7%94-119140448124648/" target="_new"><i class="fa fa-facebook-square" style="padding-top:0.3rem;"></i> <%= t(:to_the_facebook_page) %></a></div>
-    <div class="welcome-small-link"><a href="http://www.youtube.com/user/ProjectBenYehuda/videos?flow=grid&view=0"><i class="fa fa-youtube-play" target="_new" style="padding-top:0.3rem;"></i> <%= t(:to_the_youtube_channel) %></a></div>
-    <div class="welcome-small-link"><a href="http://benyehuda.org/blog/"><i class="fa fa-pencil-square-o" style="padding-top:0.3rem;" target="_new"></i> <%= t(:the_blog) %></a></div>
+    <div class="welcome-small-link"><a href="<%= t(:facebook_url) %>" target="_new"><i class="fa fa-facebook-square" style="padding-top:0.3rem;"></i> <%= t(:to_the_facebook_page) %></a></div>
+    <div class="welcome-small-link"><a href="<%= t(:youtube_url) %>"><i class="fa fa-youtube-play" target="_new" style="padding-top:0.3rem;"></i> <%= t(:to_the_youtube_channel) %></a></div>
+    <div class="welcome-small-link"><a href="<%= t(:blog_url) %>"><i class="fa fa-pencil-square-o" style="padding-top:0.3rem;" target="_new"></i> <%= t(:the_blog) %></a></div>
     <div class="welcome-small-link">
       <%= render partial: 'shared/share', locals: {element: :footer} %>
     </div>
@@ -173,5 +173,26 @@
   <!-- footer end -->
 
 <% end %>
+	<script>
+var toggler = document.getElementsByClassName("caret");
+var i;
+
+for (i = 0; i < toggler.length; i++) {
+  toggler[i].addEventListener("click", function() {
+    this.parentElement.querySelector(".nested").classList.toggle("active");
+    this.classList.toggle("caret-down");
+  });
+}
+</script>
+<script>
+function openNav() {
+  document.getElementById("mySidenav").style.width = "80%";
+}
+
+function closeNav() {
+  document.getElementById("mySidenav").style.width = "0";
+}
+</script>
+
 </body>
 </html>

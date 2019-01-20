@@ -1,7 +1,6 @@
 - if local_assigns.has_key?(:element) && local_assigns[:element] == :button
-  %button.toolbox-cell.darkoldpink.share
-    %i.fa.fa-share-alt
-    %span.tooltiptext= t(:share)
+  %button.share.btn-small-ouline.fas-icon.purple{style: 'margin-top: 0.1rem'}
+    %i.fas.fa-share-alt
 - elsif local_assigns.has_key?(:element) && local_assigns[:element] == :link
   .linky.share{style:'display:inline'}
     %i.fa.fa-share-alt.fa08
