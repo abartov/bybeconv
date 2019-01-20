@@ -25,6 +25,7 @@
     <link href="https://fonts.googleapis.com/css?family=Alef" rel="stylesheet">
 
     <link href="/assets/font.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 
     <%= stylesheet_link_tag    "application" %>
     <%= javascript_include_tag "application" %>
@@ -34,7 +35,6 @@
     integrity="sha384-54+cucJ4QbVb99v8dcttx/0JRx4FHMmhOWi4W+xrXpKcsKQodCBwAvu3xxkZAwsH"
     crossorigin="anonymous"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.matchHeight/0.7.0/jquery.matchHeight-min.js"><script>
-
   <script>
     $(document).ready(function() {
       $()
@@ -60,8 +60,8 @@
     <div class="container-fluid" id="header">
       <div class="row" style="margin-bottom: 4px;">
         <div class="col-xs-6 col-md-4">
-          <div class="logo"><img src="/assets/logo-byp.svg" alt="<% t(:logo) %>"/> </div>
-          <div class="logoMobile"><img src="/assets/logo-byp.svg" alt="<% t(:logo) %>"/> </div>
+          <a href="/"><div class="logo"><img src="/assets/logo-byp.svg" alt="<% t(:logo) %>"/> </div></a>
+          <a href="/"><div class="logoMobile"><img src="/assets/logo-byp.svg" alt="<% t(:logo) %>"/> </div></a>
           <div class="slogan"><%= raw t(:slogan) %></div>
           </div>
         <div class="col-xs-6 col-md-4">
