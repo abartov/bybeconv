@@ -94,8 +94,13 @@
         %b= t(:works_about)
         = t(:TBD)
       %td
-        %p
-          = image_tag @author.profile_image.url(:thumb), alt: @author.name
+        .row
+          .col-6
+            %p
+              = image_tag @author.profile_image.url(:thumb), alt: @author.name
+          .col-6
+            %p
+              = image_tag @author.sidepic.url(:thumb), alt: @author.name
   %p
   = link_to t(:back), authors_list_path
 

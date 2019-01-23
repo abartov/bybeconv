@@ -79,6 +79,9 @@
     = f.label t(:upload_new_image)
     = f.file_field :profile_image
   .backend-field
+    = f.label t(:upload_new_side_image)
+    = f.file_field :sidepic
+  .backend-field
     = f.label t(:metadata_approved)
     = t(:yes)
     = f.radio_button(:metadata_approved, true, checked: person.metadata_approved)
