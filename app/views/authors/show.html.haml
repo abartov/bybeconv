@@ -1,6 +1,7 @@
 .top-element
   %h1= @author.name
-  %h2= t(:period)+': '+t(@author.period)
+  - unless @author.period.nil? || @author.period.empty?
+    %h2= t(:period)+': '+t(@author.period)
   %p
     %br
   %p
