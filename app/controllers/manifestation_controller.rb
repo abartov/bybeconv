@@ -190,6 +190,11 @@ class ManifestationController < ApplicationController
     @html = MultiMarkdown.new(@m.markdown).to_html.force_encoding('UTF-8').gsub(/<figcaption>.*?<\/figcaption>/,'') # remove MMD's automatic figcaptions
   end
 
+  def period
+    @tabclass = set_tab('works')
+    @manifestations = Manifestation.all_published.joins(:expressions).where(expressions: {period: Person.periods[params[:period]]}).page(params[:page]).order('title ASC')
+  end
+
   def genre
     @tabclass = set_tab('works')
     @manifestations = Manifestation.all_published.joins(:expressions).where(expressions: {genre: params[:genre]}).page(params[:page]).order('title ASC')

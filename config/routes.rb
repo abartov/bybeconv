@@ -20,7 +20,6 @@ Bybeconv::Application.routes.draw do
 
   get 'realizers/remove'
 
-  get 'period/:period' => 'period#index', as: 'period'
   get 'creations/add'
   get 'creations/remove'
 
@@ -103,6 +102,7 @@ Bybeconv::Application.routes.draw do
   get 'works' => 'manifestation#works', as: 'works'
   get 'works/all' => 'manifestation#all', as: 'all_works'
   get 'works/:genre' => 'manifestation#genre', as: 'genre'
+  get 'period/:period' => 'manifestation#period', as: 'period'
   get 'whatsnew' => 'manifestation#whatsnew', as: 'whatsnew'
   get 'tag/:id' => 'manifestation#by_tag', as: 'tag'
   match 'author/:id' => 'authors#toc', as: 'author_toc', via: [:get, :post]
