@@ -15,4 +15,3 @@
 //= require wikidata-sdk.min
 //= require activestorage
 //= require_tree .
-

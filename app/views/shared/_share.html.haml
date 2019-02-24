@@ -1,6 +1,12 @@
 - if local_assigns.has_key?(:element) && local_assigns[:element] == :button
-  %button.share.btn-small-ouline.fas-icon.purple{style: 'margin-top: 0.1rem'}
-    %i.fas.fa-share-alt
+  %button.share.btn-small-outline-v02
+    .by-icon-v02.purple-v02
+      = 'U'
+- elsif local_assigns.has_key?(:element) && local_assigns[:element] == :mobile_button
+  %a{style: 'color: #660248;'}
+    .share{style:'cursor:pointer'}
+      %span.by-icon-v02.iconNearText-v02 U
+      = t(:share)
 - elsif local_assigns.has_key?(:element) && local_assigns[:element] == :link
   .linky.share{style:'display:inline'}
     %i.fa.fa-share-alt.fa08
