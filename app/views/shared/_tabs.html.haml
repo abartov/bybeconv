@@ -36,7 +36,7 @@
         %li.topMenuItem-v02
           .by-dropdown-v02
             %a.by-nav-item-v02#nav-genres{:href => "#"}= t(:genres)
-            .by-dropdown-content-v02
+            .by-dropdown-content-v02#menu-genres
               .by-dropdown-header-v02= combined_totals
               - get_genres.each do |g|
                 %a{href: manifestation_genre_path(genre: g)}
@@ -222,7 +222,7 @@
               %a{href: t(:contact_url)}
                 %span.by-icon-v02.iconNearText-v02.iconInMenu R
                 = t(:contact_us)
-    .menuButton-v02#mobileMenu{style: "font-size:24px; cursor:pointer; padding-right:4px"}
+    .menuButton-v02{style: "font-size:24px; cursor:pointer"}
       %i.fas.fa-bars.purple-v02
   .col-lg-2.top-donation-desk-area-v02
     %div
@@ -245,7 +245,7 @@
       %a{href: '/page/donate'}
         %button.btn-small-outline-v02.by-icon-v02.purple-v02 z
       %a{href: "#"}
-        .by-icon-v02{style: 'display:inline; vertical-align:top; padding-top: 6px; margin-right: 6px'} X
+        .by-icon-v02.top-search-mobile-v02.top-search-icon-mobile-v02 X
       #moreMobile.by-overflow-v02{style: "vertical-align:top;padding-top: 4px;"}
         %span#nav-more
           %div#open-overflow{style:'cursor:pointer'}
