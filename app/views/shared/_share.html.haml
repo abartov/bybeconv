@@ -1,6 +1,10 @@
 - if local_assigns.has_key?(:element) && local_assigns[:element] == :button
+  %button.toolbox-cell.darkoldpink.share
+    %i.fa.fa-share-alt
+    %span.tooltiptext= t(:share)
+- elsif local_assigns.has_key?(:element) && local_assigns[:element] == :header_button
   .icon-in-group-v02.share
-    %span.by-icon-v02 U
+    %span.by-icon-v02{style:'color: #660248'} U
 - elsif local_assigns.has_key?(:element) && local_assigns[:element] == :mobile_button
   %a{style: 'color: #660248;'}
     .share{style:'cursor:pointer'}
