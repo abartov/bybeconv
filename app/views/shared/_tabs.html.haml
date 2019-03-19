@@ -222,7 +222,7 @@
               %a{href: t(:contact_url)}
                 %span.by-icon-v02.iconNearText-v02.iconInMenu R
                 = t(:contact_us)
-    .menuButton-v02{style: "font-size:24px; cursor:pointer"}
+    .menuButton-v02#mobileMenu{style: "font-size:24px; cursor:pointer"}
       %i.fas.fa-bars.purple-v02
   .col-lg-2.top-donation-desk-area-v02
     %div
@@ -242,11 +242,11 @@
         %span.search-icon-v02.by-icon-v02 X
         %input#q{:placeholder => t(:search_placeholder)}
     .topMobileBtns-v02
-      %a{href: '/page/donate'}
-        %button.btn-small-outline-v02.by-icon-v02.purple-v02 z
-      %a{href: "#"}
-        .by-icon-v02.top-search-mobile-v02.top-search-icon-mobile-v02 X
-      #moreMobile.by-overflow-v02{style: "vertical-align:top;padding-top: 4px;"}
+      %button.btn-small-outline-v02.by-icon-v02.purple-v02{href: '/page/donate'} z
+      .top-search-mobile-v02
+        .by-icon-v02.top-search-icon-mobile-v02
+          %a{href: "#"} X
+      #moreMobile.by-dropdown-v02{style: "vertical-align:top;padding-top: 4px;"}
         %span#nav-more
           %div#open-overflow{style:'cursor:pointer'}
             %span.by-icon-v02 Y
