@@ -136,7 +136,6 @@
 <% if @print %>
   <%= t(:download_footer_html, url: url_for(action: :read, only_path:false, id: @m.id)) %>
 <% else %>
-  <hr/>
   <% if current_user %>
     <% if current_user.editor? %>
       <br />
@@ -146,32 +145,27 @@
   <% unless @pagetype == :homepage %>
     <%= link_to t(:back_to_homepage), "/" %>
   <% end %>
-  <p/>
+  <p></p>
   <!-- footer start -->
-<%= render partial: 'shared/fontsize_js' %>
-
-
-  </div>
-</div></footer>
-
+  <%= render partial: 'shared/fontsize_js' %>
 
 <div id="bottom-bar" class="container-fluid">
   <div class="container-fluid" id="footer">
     <div class="row">
-      <div class="col-sm-12">
-        <div class="footer-text"><span style="font-weight: bold">פרויקט בן-יהודה</span> הוא מיזם התנדבותי ליצירת מהדורות אלקטרוניות של ספרות עברית והנגשתן לציבור.</div>
+      <div class="col-12">
+        <div class="footer-text-v02"><span style="font-weight: bold">פרויקט בן-יהודה</span> הוא מיזם התנדבותי ליצירת מהדורות אלקטרוניות של ספרות עברית והנגשתן לציבור.</div>
       </div>
     </div>
     <div class="row">
-      <div class="col-sm-12">
-        <div class="footer-nav">
-          <a href="/page/about" class="by-footer-nav-item"><span class="fa-icon footer-nav-icon"><i class="fas fa-info-circle"></i></span><%= t(:about) %></a>
-          <a href="<%= t(:facebook_url) %>" class="by-footer-nav-item"><span class="fa-icon footer-nav-icon"><i class="fab fa-facebook-square"></i></span><%= t(:to_the_facebook_page) %></a>
-          <a href="<%= t(:youtube_url) %>" class="by-footer-nav-item"><span class="fa-icon footer-nav-icon"><i class="fab fa-youtube"></i></span><%= t(:to_the_youtube_channel) %></a>
-          <a href="<%= t(:blog_url) %>" class="by-footer-nav-item"><span class="fa-icon footer-nav-icon"><i class="fas fa-edit"></i></span><%= t(:the_blog) %></a>
+      <div class="col-12">
+        <div class="footer-nav-v02">
+          <div class="by-footer-nav-item-v02"><a href="/page/about"><span class="by-icon-v02 footer-nav-icon-v02">M</span><%= t(:about) %></a>&rlm;</div>
+          <div class="by-footer-nav-item-v02"><a href="<%= t(:facebook_url) %>"><span class="by-icon-v02 footer-nav-icon-v02">S</span><%= t(:to_the_facebook_page) %></a></div>
+          <div class="by-footer-nav-item-v02"><a href="<%= t(:youtube_url) %>"><span class="by-icon-v02 footer-nav-icon-v02">W</span><%= t(:to_the_youtube_channel) %></a></div>
+          <div class="by-footer-nav-item-v02"><a href="<%= t(:blog_url) %>"><span class="by-icon-v02 footer-nav-icon-v02">Q</span><%= t(:the_blog) %></a></div>
           <%= render partial: 'shared/share', locals: {element: :footer} %>
-          <a href="/page/volunteer" class="by-footer-nav-item"><span class="fa-icon footer-nav-icon"><i class="far fa-handshake"></i></span><%= t(:how_to_help) %></a>
-          <a href="/page/donate" class="by-footer-nav-item"><span class="by-icon footer-nav-icon" style="vertical-align: -0.30px;">z</span><%= t(:donate_money) %></a>
+          <div class="by-footer-nav-item-v02"><a href="/page/volunteer"><span class="by-icon-v02 footer-nav-icon-v02">V</span><%= t(:how_to_help) %></a></div>
+          <div class="by-footer-nav-item-v02"><a href="/page/donate"><span class="by-icon-v02 footer-nav-icon-v02">z</span><%= t(:donate_money) %></a></div>
         </div>
       </div>
   	</div>
