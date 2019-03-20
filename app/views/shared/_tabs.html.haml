@@ -1,5 +1,5 @@
 .row
-  .col-6.col-lg-5{:style => "padding-left: 0"}
+  .col-4.col-lg-5{:style => "padding-left: 0"}
     %nav#nav
       %ul#menu
         - authors_total = "#{Person.cached_toc_count} #{t(:authors_in_the_project)}"
@@ -224,14 +224,13 @@
                 = t(:contact_us)
     .menuButton-v02#mobileMenu{style: "font-size:24px; cursor:pointer"}
       %i.fas.fa-bars.purple-v02
-  .col-lg-2.top-donation-desk-area-v02
-    %div
+  .col-4.col-lg-3.top-donation-desk-area-v02
+    .donation-area-v02
       %a{href: '/page/donate'}
         %button.btn-small-outline-v02.btn-text-v02.donation-btn-v02
           %span.by-icon-v02.iconNearText-v02> z
           = t(:donate)
-  .col-lg-1.empty
-  .col-6.col-lg-4
+  .col-4
     .top-search-box-v02
       .top-search-select-v02
         %select{:style => "width:124px; height:34px; border: none; background-color: transparent;"}
@@ -239,17 +238,17 @@
           / %option{:value => "חיפוש בדף"} חיפוש בדף
           / %option{:value => "חיפוש מתקדם"} חיפוש מתקדם
       .top-search-v02
-        %span.search-icon-v02.by-icon-v02 X
+        %span.search-icon-v02.by-icon-top-v02 X
         %input#q{:placeholder => t(:search_placeholder)}
     .topMobileBtns-v02
-      %button.btn-small-outline-v02.by-icon-v02.purple-v02{href: '/page/donate'} z
+      %button.btn-small-outline-v02.by-icon-top-v02.purple-v02{href: '/page/donate'} z
       .top-search-mobile-v02
-        .by-icon-v02.top-search-icon-mobile-v02
+        .by-icon-top-v02.top-search-icon-mobile-v02
           %a{href: "#"} X
       #moreMobile.by-dropdown-v02{style: "vertical-align:top;padding-top: 4px;"}
         %span#nav-more
           %div#open-overflow{style:'cursor:pointer'}
-            %span.by-icon-v02 Y
+            %span.by-icon-top-v02 Y
         .by-dropdown-content-v02#menu-more{style: 'left:0; margin-top: 4px'}
           %a{href: t(:facebook_url)}
             %span.by-icon-v02.iconNearText-v02 S
