@@ -3562,6 +3562,7 @@ ul #menuMobile {
 
   .top-works {
     max-height: none; }
+}
 @media only screen and (max-width: 768px){
 .works-most-read{
 	padding-right: 0;
@@ -3792,4 +3793,6 @@ ul #menuMobile {
   .stat-small-v02 {
     font-size: 7px;
     line-height: 7px;
-    margin-top: 2px; } }
+    margin-top: 2px; }
+}
+

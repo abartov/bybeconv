@@ -1,4 +1,6 @@
 set :stage, :staging
+set :rails_env, :production # we want to test production behavior on the staging server
+
 # server-based syntax
 # ======================
 # Defines a single server with a list of roles and multiple properties.
