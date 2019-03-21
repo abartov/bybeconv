@@ -94,6 +94,9 @@ GEM
     capistrano-rails (1.4.0)
       capistrano (~> 3.1)
       capistrano-bundler (~> 1.1)
+    capistrano-rvm (0.1.2)
+      capistrano (~> 3.0)
+      sshkit (~> 1.2)
     capistrano-thin (2.0.1)
       capistrano (~> 3.0)
       thin (~> 1.6)
@@ -488,6 +491,7 @@ DEPENDENCIES
   byebug
   capistrano (~> 3.11)
   capistrano-rails (~> 1.4)
+  capistrano-rvm
   capistrano-thin (~> 2.0.0)
   chewy
   coffee-script

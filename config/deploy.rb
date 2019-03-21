@@ -21,7 +21,7 @@ set :deploy_to, "/home/bybe/bybeconv_staging"
 # set :pty, true
 
 # Default value for :linked_files is []
-append :linked_files, "config/database.yml", "config/s3.yml", "config/constants.yml"
+append :linked_files, "config/database.yml", "config/s3.yml", "config/constants.yml", "config/storage.yml"
 
 append :linked_dirs, '.bundle', 'log', 'tmp/cache', 'public/system'
 
@@ -40,7 +40,7 @@ append :linked_dirs, '.bundle', 'log', 'tmp/cache', 'public/system'
 # Uncomment the following to require manually verifying the host key before first deploy.
 # set :ssh_options, verify_host_key: :secure
 
-before 'deploy', 'rvm1:alias:create'
 set :rvm1_ruby_version, "2.5.1"
+before 'deploy', 'rvm1:alias:create'
 after 'deploy:publishing', 'thin:restart'
 

@@ -24,7 +24,7 @@ install_plugin Capistrano::SCM::Git
 #   https://github.com/capistrano/chruby
 #   https://github.com/capistrano/rails
 #
-require "capistrano/rvm"
+# require "capistrano/rvm"
 # require "capistrano/rbenv"
 # require "capistrano/chruby"
 require 'rvm1/capistrano3'
