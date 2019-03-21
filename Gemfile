@@ -76,7 +76,7 @@ gem 'haml'
 gem 'haml-rails'
 gem 'linkeddata' # for RDF etc.
 gem 'rdf-vocab' # for SKOS predefined vocab
-gem 'project-honeypot', '>= 0.1.3' # for HTTP:BL service by Project Honeypot
+gem 'project-honeypot2', '>= 0.1.3' # for HTTP:BL service by Project Honeypot
 gem 'paper_trail', '~> 5.0.0' # for versioning entities
 #gem 'gepub' # for generating EPUBs
 gem 'gepub', '~> 0.7.0beta4' # for generating EPUBs
@@ -99,4 +99,7 @@ end
 group :development do
   gem 'byebug'
   gem 'web-console', '~> 2.0'
+  gem "capistrano", "~> 3.11", require: false
+  gem "capistrano-rails", "~> 1.4", require: false
+  gem 'rvm1-capistrano3', require: false
 end
