@@ -23,7 +23,7 @@ set :deploy_to, "/home/bybe/bybeconv_staging"
 # Default value for :linked_files is []
 append :linked_files, "config/database.yml", "config/s3.yml", "config/constants.yml", "config/storage.yml", "config/thin.yml"
 
-append :linked_dirs, '.bundle', 'log', 'tmp/cache', 'public/system'
+append :linked_dirs, '.bundle', 'log', 'tmp/cache', 'public/system', 'tmp/pids', 'tmp/sockets'
 
 # Default value for linked_dirs is []
 # append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system"
