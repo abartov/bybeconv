@@ -94,6 +94,9 @@ GEM
     capistrano-rails (1.4.0)
       capistrano (~> 3.1)
       capistrano-bundler (~> 1.1)
+    capistrano-thin (2.0.1)
+      capistrano (~> 3.0)
+      thin (~> 1.6)
     chewy (5.0.0)
       activesupport (>= 4.0)
       elasticsearch (>= 2.0.0)
@@ -485,6 +488,7 @@ DEPENDENCIES
   byebug
   capistrano (~> 3.11)
   capistrano-rails (~> 1.4)
+  capistrano-thin (~> 2.0.0)
   chewy
   coffee-script
   dalli

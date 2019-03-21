@@ -42,3 +42,5 @@ append :linked_dirs, '.bundle', 'log', 'tmp/cache', 'public/system'
 
 before 'deploy', 'rvm1:alias:create'
 set :rvm1_ruby_version, "2.5.1"
+after 'deploy:publishing', 'thin:restart'
+
