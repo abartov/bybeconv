@@ -55,6 +55,10 @@ module ApplicationHelper
     return I18n.t(nik)
   end
 
+  def favorite_glyph(value)
+    return value ? '6' : '5' # per /BY icons font/ben-yehuda/icons-reference.html
+  end
+
   def textify_role(role, gender)
     case role
     when :author

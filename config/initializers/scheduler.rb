@@ -9,4 +9,6 @@ scheduler.every '24h' do
   Manifestation.recalc_popular
   puts "calculating popular authors..."
   Person.recalc_popular
+  puts "calculating recommendation counts..."
+  Person.recalc_recommendation_counts
 end

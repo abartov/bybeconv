@@ -131,6 +131,14 @@ class Person < ApplicationRecord
     return gender == 'female' ? 'ה' : 'ו'
   end
 
+  def favorite_of_user
+    return false # TODO: implement when user prefs implemented
+  end
+
+  def copyright_glyph
+    return public_domain ? 'm' : 'x' # per /BY icons font/ben-yehuda/icons-reference.html
+  end
+
   def blog_count
     return 0 # TODO: implement
   end
@@ -256,6 +264,12 @@ class Person < ApplicationRecord
 
   def self.recalc_popular
     @@popular_authors = Person.has_toc.order(impressions_count: :desc).limit(10).all.to_a # top 10 #TODO: make it actually about *most-read* authors, rather than authors whose *TOC* is most-read
+  end
+
+  def self.recalc_recommendation_counts
+    Person.has_toc.each do |p|
+      # TODO: implement
+    end
   end
 
   def self.get_popular_authors

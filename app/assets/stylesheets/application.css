@@ -2748,7 +2748,7 @@ input::placeholder {
   height: 400px; }
 
 #authors-surprise-initial {
-  background-image: url("assets/surprise-author-b9.jpg");
+  background-image: url("/assets/surprise-author-b9.jpg");
   background-size: 841px 312px;
   background-repeat: repeat-x;
   height: 346px;
@@ -2764,7 +2764,7 @@ input::placeholder {
   height: 400px; }
 
 #works-surprise-initial {
-  background-image: url("assets/surprise-work-b9.jpg");
+  background-image: url("/assets/surprise-work-b9.jpg");
   background-size: 841px 312px;
   background-repeat: repeat-x;
   height: 346px;
@@ -2943,14 +2943,14 @@ input::placeholder {
   background-color: #d9cdd5; }
 
 .flash-bg-v02 {
-  background-image: url("assets/Stage-light.svg");
+  background-image: url("/assets/Stage-light.svg");
   background-repeat: no-repeat;
   background-size: cover;
   height: 816px;
   width: 100%; }
 
 .flash-popup-bg-v02 {
-  background-image: url("assets/Stage-light.svg");
+  background-image: url("/assets/Stage-light.svg");
   background-repeat: no-repeat;
   background-size: cover;
   height: auto;
@@ -2976,7 +2976,7 @@ input::placeholder {
   background-color: #d9cdd5; }
 
 #volunteer-bg {
-  background-image: url("assets/giving hand.svg");
+  background-image: url("/assets/giving hand.svg");
   background-repeat: no-repeat;
   background-size: cover;
   min-height: 400px;
@@ -3007,7 +3007,7 @@ input::placeholder {
   background-color: #d9cdd5; }
 
 #whats-new-bg {
-  background-image: url("assets/bullhorn.svg");
+  background-image: url("/assets/bullhorn.svg");
   background-repeat: no-repeat;
   background-size: cover;
   height: 200px;
@@ -3048,12 +3048,12 @@ input::placeholder {
   color: #ffffff;
   text-align: center;
   padding-top: 60px;
-  background-image: url("assets/new_bg1.png");
+  background-image: url("/assets/new_bg1.png");
   background-size: cover; }
 
 .new-card-type-v02.double-height-v02 {
   padding-top: 120px;
-  background-image: url("assets/new_bg2.png");
+  background-image: url("/assets/new_bg2.png");
   background-size: cover; }
 
 .new-image-frame-v02 {
@@ -3426,7 +3426,7 @@ ul #menuMobile {
     padding-left: 4px; } }
 @media only screen and (max-width: 991px) {
 	#whats-new-bg {
-  background-image: url("assets/bullhorn.svg");
+  background-image: url("/assets/bullhorn.svg");
   background-repeat: no-repeat;
   background-size: contain;
   height: 270px;
@@ -3443,7 +3443,7 @@ ul #menuMobile {
     height: auto;}
 
 	#volunteer-bg {
-  background-image: url("assets/giving hand.svg");
+  background-image: url("/assets/giving hand.svg");
   background-repeat: no-repeat;
   background-size: contain;
   min-height: 400px;
@@ -3814,3 +3814,6 @@ ul #menuMobile {
     margin-top: 2px; }
 }
 
+.padbot12 {
+  padding-bottom: 12px;
+}

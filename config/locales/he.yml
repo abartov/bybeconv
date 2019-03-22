@@ -13,7 +13,9 @@ he:
   all_authors: כל היוצרים
   all_works: כל היצירות
   list_all_works: רשימת כל היצירות
-  surprise_author: יוצר בהפתעה
+  surprise_author: יוצר/ת בהפתעה
+  surprise_me: הפתיעו אותי...
+  surprise_me_again: הפתיעו אותי שוב
   new_works_in_the_project: יצירות חדשות בפרויקט
   surprise: יצירה בהפתעה
   confirm: אשר!
@@ -187,7 +189,7 @@ he:
   current_toc: תוכן עניינים נוכחי
   update_toc: עדכון תוכן עניינים
   find_work_by_author: "חיפוש יצירה מאת %{author}"
-  rest_in_wikipedia: להמשך הערך בויקיפדיה העברית
+  rest_in_wikipedia: להמשך הערך בויקיפדיה
   to_the_wikipedia_article: לערך בויקיפדיה
   wikidata_id: מזהה בויקינתונים
   additional_options: אפשרויות נוספות
