@@ -132,6 +132,7 @@
 <main>
 <%= yield %>
 </main>
+<!-- footer start -->
 <footer>
 <% if @print %>
   <%= t(:download_footer_html, url: url_for(action: :read, only_path:false, id: @m.id)) %>
@@ -146,7 +147,6 @@
     <%= link_to t(:back_to_homepage), "/" %>
   <% end %>
   <p></p>
-  <!-- footer start -->
   <%= render partial: 'shared/fontsize_js' %>
 
 <div id="bottom-bar" class="container-fluid">

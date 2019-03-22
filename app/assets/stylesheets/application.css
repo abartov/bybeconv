@@ -2804,6 +2804,7 @@ input::placeholder {
   font-size: 21px;
   display: inline-block;
   vertical-align: top;
+  cursor: pointer;
   padding-top: 125px; }
 
 .carousel-arrow-left-v02 {
@@ -2814,6 +2815,7 @@ input::placeholder {
   display: inline-block;
   vertical-align: top;
   padding-top: 125px;
+  cursor: pointer;
   text-align: left; }
 
 .carousel-demo {
@@ -2843,7 +2845,12 @@ input::placeholder {
   object-fit: fill; }
 
 .author-name-v02 {
-  padding-top: 14px; }
+  padding-top: 14px;
+  color: white;
+}
+.author-name-v02:visited{
+  color: white;
+}
 
 .surprise-author-name-v02 {
   padding-top: 14px; }
@@ -2861,6 +2868,7 @@ input::placeholder {
   position: absolute;
   top: 8px;
   left: 8px;
+  cursor: pointer;
   z-index: 2; }
 
 .surprise-author-card-v02 {
