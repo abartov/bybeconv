@@ -7,8 +7,10 @@ class WelcomeController < ApplicationController
     @pop_authors = popular_authors
     @pop_authors_this_month = @pop_authors # Temporary hack! TODO: stop cheating and actually count by month
     @pop_works = popular_works
-    @random_authors = randomize_authors(@pop_authors)
-    @surprise_author = @random_authors.pop
+    # @random_authors = randomize_authors(@pop_authors)
+    # @surprise_author = @random_authors.pop
+    @newest_authors = Person.has_toc.order(created_at: :desc).limit(10)
+    @surprise_author = Person.has_toc.order('RAND()').limit(1)
     random_works = randomize_works(4) # TODO: un-hardcode?
     @random_work = random_works[0]
     @random_works = random_works[1..-1]

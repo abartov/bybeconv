@@ -8,7 +8,7 @@
             = link_to t(:authors_in_the_project), controller: 'authors'
           = t(:x_authors, x: @totals[:authors])
         / author carousels
-        = render partial: 'shared/authors', locals: {popular_authors: @pop_authors, random_authors: @random_authors}
+        = render partial: 'shared/authors', locals: {popular_authors: @pop_authors, random_authors: [], newest_authors: @newest_authors}
       / surprise author
       / works
       / surprise work
