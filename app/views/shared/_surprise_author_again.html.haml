@@ -1,0 +1,16 @@
+.surprise-again-footer-v02
+  .surprise-again-btn-area-v02
+    %button.surprise-again-btn-v02#surprise-me-again
+      %span.fa-icon.again-icon-v02
+        %i.fas.fa-sync-alt
+      = t(:surprise_me_again)
+:javascript
+  $(document).ready(function() {
+    $('#surprise-me-again').click(function(){
+      $('#surprise-scroller').slick('slickNext');
+      $('#surprise-scroller').slick('slickRemove'); // and discard old slide
+      $.get('/authors/get_random_author?mode=home', function(data) {
+        $('#surprise-scroller').slick('slickAdd', data);
+      });
+    });
+  });

@@ -40,13 +40,6 @@
               / %b= t(:recommendations)
               / a href
               / = author.recommendations_count
-    .surprise-again-footer-v02
-      .surprise-again-btn-area-v02
-        %button.surprise-again-btn-v02#surprise-me-again
-          %span.fa-icon.again-icon-v02
-            %i.fas.fa-sync-alt
-          = t(:surprise_me_again)
-
 - else # site v1 logic - probably to be completely rewritten
   = render partial: 'shared/author_popup', locals: {author: author, surprise: true}
   %a{ 'data-toggle' => :modal, 'data-target'=> "#surprise_popup_#{id_frag}"}

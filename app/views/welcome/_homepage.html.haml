@@ -108,16 +108,12 @@
       // appendArrows: '#scroller_container',
     });
     $('#authors-surprise').click(function(){
-      var i = 0;
       $('#surprise-scroller').slick('slickNext'); // flip
       $('#surprise-scroller').slick('slickRemove'); // and discard old slide
       $.get('/authors/get_random_author?mode=home', function(data) {
-        i += 1;
-        data.sub('surprise-me-again','surprise-me-again'+i.toString());
         $('#surprise-scroller').slick('slickAdd', data);
-        $('#surprise-me-again'+i.toString()).click(function(){
-          $('surprise-scroller').slick('slickNext');
-        });
       });
+
+      $('#surprise-scroller').append("#{escape_javascript(render(partial: 'shared/surprise_author_again'))}");
     });
   });
