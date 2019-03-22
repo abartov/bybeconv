@@ -2470,6 +2470,9 @@ ol > li:before {
 .by-icon-v02 {
   font-family: ben-yehuda;
   font-size: 18px; }
+.by-icon-top-v02 {
+    font-family: ben-yehuda;
+    font-size: 18px; }
 
 .icon-in-group-v02 {
   margin-left: 8px;
@@ -3530,8 +3533,15 @@ ul #menuMobile {
     display: block; }
 
   .top-donation-desk-area-v02 {
-    display: none; }
-
+    text-align: center;
+    padding-top: auto;
+    padding-bottom: auto;
+    padding-left: 0;
+    padding-right: 0;
+  }
+	.donation-area-v02{
+		display: none;
+	}
   .empty {
     display: none; }
 
