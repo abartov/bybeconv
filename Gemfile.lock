@@ -393,8 +393,6 @@ GEM
     rmagick (2.16.0)
     rmultimarkdown (6.2.2.1)
       bundler
-    rollbar (2.17.0)
-      multi_json
     ruby_parser (3.11.0)
       sexp_processor (~> 4.9)
     rubyzip (1.2.2)
@@ -533,7 +531,6 @@ DEPENDENCIES
   responders
   rmagick
   rmultimarkdown
-  rollbar
   rufus-scheduler
   rvm1-capistrano3
   sass-rails
