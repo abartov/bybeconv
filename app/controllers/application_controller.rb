@@ -139,10 +139,12 @@ class ApplicationController < ActionController::Base
     return list
   end
 
+  def randomize_works_by_genre(genre, how_many)
+    return Manifestation.where(id: Manifestation.published.joins(expressions: [:works]).where({works: {genre: 'poetry'}}).pluck(:id).sample(how_many))
+  end
+
   def randomize_works(how_many)
-    return Manifestation.where(id: Manifestation.pluck(:id).sample(how_many), status: Manifestation.statuses[:published]) # NOTE: because of the status check, less than how_many may be returned. This is a necessary sacrifice for now because ORDER RAND() is way too slow!
-    # TODO: maybe fix by sampling twice the requested amount and then returning only up to how_many?  On the assumption very few manifestations are not 'published', this would work.
-    #return Manifestation.order('RAND()').limit(how_many)
+    return Manifestation.where(id: Manifestation.published.pluck(:id).sample(how_many)) # ORDER RAND() is way too slow!
   end
 
   def cached_popular_authors_by_genre

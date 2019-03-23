@@ -202,10 +202,9 @@ class ManifestationController < ApplicationController
 
   # this one is called via AJAX
   def get_random
-    # TODO: speed up?
     work = nil
     unless params[:genre].nil? || params[:genre].empty?
-      work = Manifestation.all_published.genre(params[:genre]).order(Arel.sql('RAND()')).limit(1)[0]
+      work = randomize_works_by_genre(params[:genre], 1)[0]
     else
       work = randomize_works(1)[0]
     end
