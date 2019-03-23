@@ -46,8 +46,8 @@
                 %button.by-button-v02.surprise-btn-v02.headline-2-v02= t(:surprise_me)
         .slide
           = render partial: 'shared/surprise_work', locals: {passed_mode: 'home', manifestation: @surprise_work}
-
       / genres
+      = render 'works'
       / periods
     .col-12.col-lg-4
       / whatsnew feed

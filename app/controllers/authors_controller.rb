@@ -7,7 +7,7 @@ class AuthorsController < ApplicationController
   def get_random_author
     @author = nil
     unless params[:genre].nil? || params[:genre].empty?
-      @author = Person.where(id: Person.in_genre(params[:genre]).pluck(:id).sample(1)[0]
+      @author = Person.where(id: Person.in_genre(params[:genre]).pluck(:id).sample(1))[0]
     else
       @author = Person.where(id: Person.has_toc.pluck(:id).sample(1))[0]
     end
