@@ -207,7 +207,7 @@ class ManifestationController < ApplicationController
     unless params[:genre].nil? || params[:genre].empty?
       work = Manifestation.all_published.genre(params[:genre]).order(Arel.sql('RAND()')).limit(1)[0]
     else
-      work = Manifestation.all_published.order(Arel.sql('RAND()')).limit(1)[0]
+      work = randomize_works(1)[0]
     end
     render partial: 'shared/surprise_work', locals: {passed_mode: params[:mode], manifestation: work, id_frag: params[:id_frag], passed_genre: params[:genre], side: params[:side]}
   end
