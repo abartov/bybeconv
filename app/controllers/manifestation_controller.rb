@@ -44,6 +44,12 @@ class ManifestationController < ApplicationController
     render :json => json_for_autocomplete(items, :title_and_authors, {}), root: false
   end
 
+  def periods # /periods dashboard
+    @tabclass = set_tab('periods')
+    @page_title = t(:periods)+' - '+t(:project_ben_yehuda)
+    @pagetype = :periods
+  end
+
   def works # /works dashboard
     @tabclass = set_tab('works')
     @page_title = t(:works)+' - '+t(:project_ben_yehuda)

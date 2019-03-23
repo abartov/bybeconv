@@ -22,19 +22,20 @@
           = render partial: 'shared/surprise_author', locals: {passed_mode: 'home', author: @surprise_author}
 
       / most read and new works
-      .by-card-v02#works-in-project
-        .by-card-header-v02
-          %span.headline-1-v02
-            %a{href: works_path}= t(:works_in_the_database)
-          = t(:x_works, {x: @totals[:works]})
-        .by-card-content-v02{style:'padding-top:12px;padding-bottom:40px'}
-          .row.top-works{style:'min-height:280px;margin:0'}
-            = render partial: 'works_list', locals: {cache_key: 'top_works', label: t(:most_popular_works_this_month), collection: @pop_works, extra_class: 'works-most-read'}
-            = render partial: 'works_list', locals: {cache_key: 'new_works', label: t(:newest_works), collection: @newest_works, extra_class: 'works-most-new'}
-        .link-to-all-v02
-          %a{style: 'font-weight:bold', href: works_path}
-            %span= t(:to_all_works)
-            %span.left-arrow 1
+      - cache "homepage_mostread", expires_in: 6.hours do
+        .by-card-v02#works-in-project
+          .by-card-header-v02
+            %span.headline-1-v02
+              %a{href: works_path}= t(:works_in_the_database)
+            = t(:x_works, {x: @totals[:works]})
+          .by-card-content-v02{style:'padding-top:12px;padding-bottom:40px'}
+            .row.top-works{style:'min-height:280px;margin:0'}
+              = render partial: 'works_list', locals: {cache_key: 'top_works', label: t(:most_popular_works_this_month), collection: @pop_works, extra_class: 'works-most-read'}
+              = render partial: 'works_list', locals: {cache_key: 'new_works', label: t(:newest_works), collection: @newest_works, extra_class: 'works-most-new'}
+          .link-to-all-v02
+            %a{style: 'font-weight:bold', href: works_path}
+              %span= t(:to_all_works)
+              %span.left-arrow 1
       / surprise work
       .scroller#work-surprise-scroller
         .slide
@@ -49,7 +50,7 @@
       / genres
       = render 'works'
       / periods
-
+      = render 'periods'
     .col-12.col-lg-4
       / whatsnew feed
       / work spotlight

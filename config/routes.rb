@@ -99,6 +99,7 @@ Bybeconv::Application.routes.draw do
   get '/page/:tag' => 'static_pages#view', as: 'static_pages_by_tag', via: [:get]
   get "read/:id" => 'manifestation#read', as: 'manifestation_read'
   get "read/:id/read" => 'manifestation#readmode', as: 'manifestation_readmode'
+  get 'periods' => 'manifestation#periods', as: 'periods'
   get 'works' => 'manifestation#works', as: 'works'
   get 'works/all' => 'manifestation#all', as: 'all_works'
   get 'works/:genre' => 'manifestation#genre', as: 'genre'

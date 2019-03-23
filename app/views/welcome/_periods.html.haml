@@ -1,0 +1,22 @@
+- cache "homepage_periods", expires_in: 24.hours do
+  .by-card-v02#periods
+    .by-card-header-v02
+      %span.headline-1-v02
+        %a{ href: periods_path}= t(:periods)
+    .by-card-content-v02
+      %div{style:'min-height:100px'}
+        - ['ancient','enlightenment'].each do |period|
+          = render partial: 'period', locals: {period: period, top: true}
+          .byPeriod
+        = render partial: 'period', locals: {period: 'modern', top: true}
+
+      #period-timeline
+        %div{dir:'ltr'}= '-1000'
+        %div= '900'
+        %div= '1700'
+        %div= '1880'
+        %div= '1948'
+      .byPeriod
+      - ['medieval', 'revival'].each do |period|
+        = render partial: 'period', locals: {period: period, top: false}
+        .byPeriod

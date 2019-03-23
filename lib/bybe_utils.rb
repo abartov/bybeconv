@@ -421,6 +421,10 @@ module BybeUtils
   end
 
   ## hardcoded
+  def get_periods
+    return ['ancient','medieval','enlightenment','revival', 'modern']
+  end
+
   def get_genres
     return ['poetry', 'prose', 'drama', 'fables','article', 'memoir', 'letters', 'reference', 'lexicon'] # translations and icon-font refer to these keys!
   end

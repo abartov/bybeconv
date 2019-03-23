@@ -1,9 +1,10 @@
-.by-card-content-v02
-  = render partial: 'shared/author_cards', locals: {title: t(:most_popular_authors), authors: popular_authors, surprise: false, id_frag: 'pop', skip_title: false, size: :large}
-  %div{style:'margin-top:20px'}
-  = render partial: 'shared/author_cards', locals: {title: t(:newest_authors), authors: newest_authors, surprise: true, id_frag: 'new', skip_title: false, size: :large}
-  %div{style:'margin-top:30px'}
-.link-to-all-v02
-  %a{style: 'font-weight:bold', href: url_for(controller: :authors)}
-    %span= t(:to_all_authors)
-    %span.left-arrow 1
+- cache "homepage_authors", expires_in: 6.hours do
+  .by-card-content-v02
+    = render partial: 'shared/author_cards', locals: {title: t(:most_popular_authors), authors: popular_authors, surprise: false, id_frag: 'pop', skip_title: false, size: :large}
+    %div{style:'margin-top:20px'}
+    = render partial: 'shared/author_cards', locals: {title: t(:newest_authors), authors: newest_authors, surprise: true, id_frag: 'new', skip_title: false, size: :large}
+    %div{style:'margin-top:30px'}
+  .link-to-all-v02
+    %a{style: 'font-weight:bold', href: url_for(controller: :authors)}
+      %span= t(:to_all_authors)
+      %span.left-arrow 1
