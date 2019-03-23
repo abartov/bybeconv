@@ -147,6 +147,14 @@ class ApplicationController < ActionController::Base
     return Manifestation.where(id: Manifestation.published.pluck(:id).sample(how_many)) # ORDER RAND() is way too slow!
   end
 
+  def cached_authors_in_genre
+    Rails.cache.fetch("au_by_genre", expires_in: 24.hours) do # memoize
+      ret = {}
+      get_genres.each{ |g| ret[g] = Person.has_toc.joins(:expressions).where(expressions: { genre: g}).uniq.count}
+      ret
+    end
+  end
+
   def cached_popular_authors_by_genre
     if @@pop_authors_by_genre.nil?
       ret = {}

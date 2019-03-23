@@ -1,0 +1,6 @@
+.col-sm-3
+  %a{href: manifestation_genre_path(genre: genre)}
+    %p.by-genre-icon-v02= glyph_for_genre(genre)
+    %p.by-genre-name-v02.headline-2-v02= textify_genre(genre)
+  %p.by-genre-details-v02= @authors_in_genre[genre].to_s+' '+t(:authors)
+  %p.by-genre-details-v02= @works_by_genre[genre].to_s+' '+t(:works)

@@ -16,6 +16,7 @@ class WelcomeController < ApplicationController
     # random_works = randomize_works(4) # TODO: un-hardcode?
     # @random_work = random_works[0]
     # @random_works = random_works[1..-1]
+    @authors_in_genre = cached_authors_in_genre
     @works_by_genre = Manifestation.cached_work_counts_by_genre
     @whatsnew = whatsnew_anonymous # TODO: custom calculate for logged-in users
     @featured_content = featured_content
