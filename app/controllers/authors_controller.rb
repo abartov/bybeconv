@@ -7,9 +7,9 @@ class AuthorsController < ApplicationController
   def get_random_author
     @author = nil
     unless params[:genre].nil? || params[:genre].empty?
-      @author = Person.in_genre(params[:genre]).order('RAND()').limit(1)[0]
+      @author = Person.where(id: Person.in_genre(params[:genre]).pluck(:id).sample(1)[0]
     else
-      @author = Person.has_toc.order('RAND()').limit(1)[0]
+      @author = Person.where(id: Person.has_toc.pluck(:id).sample(1))[0]
     end
     render partial: 'shared/surprise_author', locals: {author: @author, initial: false, id_frag: params[:id_frag], passed_genre: params[:genre], passed_mode: params[:mode], side: params[:side]}
   end

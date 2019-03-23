@@ -11,8 +11,8 @@ class WelcomeController < ApplicationController
     # @surprise_author = @random_authors.pop
     @newest_authors = cached_newest_authors
     @newest_works = cached_newest_works
-    @surprise_author = Person.has_toc.order(Arel.sql('RAND()')).limit(1)[0]
-    @surprise_work = Manifestation.published.order(Arel.sql('RAND()')).limit(1)[0]
+    @surprise_author = Person.where(id: Person.has_toc.pluck(:id).sample(1))[0]
+    @surprise_work = randomize_works(1)[0]
     # random_works = randomize_works(4) # TODO: un-hardcode?
     # @random_work = random_works[0]
     # @random_works = random_works[1..-1]
