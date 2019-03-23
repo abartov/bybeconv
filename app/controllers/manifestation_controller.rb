@@ -205,15 +205,15 @@ class ManifestationController < ApplicationController
     # TODO: speed up?
     work = nil
     unless params[:genre].nil? || params[:genre].empty?
-      work = Manifestation.all_published.genre(params[:genre]).order('RAND()').limit(1)[0]
+      work = Manifestation.all_published.genre(params[:genre]).order(Arel.sql('RAND()')).limit(1)[0]
     else
-      work = Manifestation.all_published.order('RAND()').limit(1)[0]
+      work = Manifestation.all_published.order(Arel.sql('RAND()')).limit(1)[0]
     end
-    render partial: 'shared/surprise_work', locals: {manifestation: work, id_frag: params[:id_frag], passed_genre: params[:genre], side: params[:side]}
+    render partial: 'shared/surprise_work', locals: {passed_mode: params[:mode], manifestation: work, id_frag: params[:id_frag], passed_genre: params[:genre], side: params[:side]}
   end
 
   def surprise_work
-    work = Manifestation.all_published.order('RAND()').limit(1)[0]
+    work = Manifestation.all_published.order(Arel.sql('RAND()')).limit(1)[0]
     render partial: 'surprise_work', locals: {work: work}
   end
 

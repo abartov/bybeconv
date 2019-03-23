@@ -11,10 +11,11 @@ class WelcomeController < ApplicationController
     # @surprise_author = @random_authors.pop
     @newest_authors = cached_newest_authors
     @newest_works = cached_newest_works
-    @surprise_author = Person.has_toc.order('RAND()').limit(1)[0]
-    random_works = randomize_works(4) # TODO: un-hardcode?
-    @random_work = random_works[0]
-    @random_works = random_works[1..-1]
+    @surprise_author = Person.has_toc.order(Arel.sql('RAND()')).limit(1)[0]
+    @surprise_work = Manifestation.published.order(Arel.sql('RAND()')).limit(1)[0]
+    # random_works = randomize_works(4) # TODO: un-hardcode?
+    # @random_work = random_works[0]
+    # @random_works = random_works[1..-1]
     @works_by_genre = Manifestation.cached_work_counts_by_genre
     @whatsnew = whatsnew_anonymous # TODO: custom calculate for logged-in users
     @featured_content = featured_content

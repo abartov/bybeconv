@@ -13,7 +13,7 @@
                       %span{:class => 'icon-bysurprise-work'}
                     .genre-headline= t(genre)
               .card.genre-card.small-surprise.item#w_side2
-                = render partial: 'shared/surprise_work', locals: {manifestation: @random_work, id_frag: 'w', passed_genre: '', side: '2'}
+                = render partial: 'shared/surprise_work', locals: {passed_mode: '', manifestation: @random_work, id_frag: 'w', passed_genre: '', side: '2'}
         - else
           %div{:class => 'card genre-card'+ (genre == 'lexicon' ? ' dictionaries' : ''), style:'cursor:pointer'}
             %a{ 'data-toggle' => :modal, 'data-target'=> "#genre_popup_#{genre}"}

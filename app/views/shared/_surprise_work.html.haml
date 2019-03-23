@@ -1,28 +1,74 @@
-.corner
-  %img{ src: '/assets/corner.png', alt: t(:background), width: 80, height: 80}
-%a{ href: manifestation_read_path(manifestation)}
-  .genre-card-content
-    .surprise-genre-text
-      %p.headline-3= manifestation.title
-      %p= "(#{t(manifestation.expressions[0].genre)})"
-      %div
-        = t(:by)+' '+manifestation.expressions[0].works[0].persons[0].name
-        - if manifestation.expressions[0].translation
-          = ' '+t(:translated_by)+' '+manifestation.expressions[0].persons[0].name
-.replace-icon.text-on-dark{style:'margin-bottom:0.6rem'}
-  %a{ id: "surprise-work-refresh-#{id_frag}#{side}", role: :button}
-    %i.fa.fa-refresh
-:javascript
-  $("#surprise-work-refresh-#{id_frag}#{side}").click(function(){
-    $("#surprise-work-refresh-#{id_frag}#{side}").off('click'); // remove any existing hook
-    var the_id, side;
-    if($("##{id_frag}_side1").hasClass('active')) { // because we're about to flip
-      the_id = "##{id_frag}_side1";
-      side = '1';
-    } else {
-      the_id = "##{id_frag}_side2";
-      side = '2';
-    }
-    $("#surprise-work-carousel-#{id_frag}").carousel('next');
-    $(the_id).load("#{url_for(controller: :manifestation, action: :get_random, id_frag: id_frag, genre: passed_genre)}"+'&side='+side);
-  });
+- if passed_mode == 'home'
+  .by-card-v02#works-surprise-replaced
+    - e = manifestation.expressions[0]
+    %img.surprise-author-card-bookmark-fold-v02{src: '/assets/creator-bookmark-back2.png', width: 168, height: 6}
+    .surprise-work-card-v02
+      %a{href: manifestation_read_path(manifestation.id)}
+        .surprise-work-genre-v02
+          - genre = e.genre
+          %p.by-genre-icon-surprise-v02= glyph_for_genre(genre)
+          %p.by-genre-name-v02.headline-1-v02= textify_genre(genre)
+      %a{href: manifestation_read_path(manifestation.id), style: 'color:white'}
+        .surprise-author-name-v02= t(:to_the_work_page)
+    .by-card-header-v02
+      %span.headline-1-v02
+        %a{href: manifestation_read_path(manifestation.id)}= manifestation.title
+      != t(:by)+': '+authors_linked_string(manifestation)
+      - if e.translation
+        != t(:translation)+': '+translators_linked_string(manifestation)
+    .by-card-content-v02.surprise-work-height-v02
+      .surprise-work-card-content-v02
+        .row
+          .col-md-6.col-sm-12
+            .padbot12
+              %b= t(:copyright_status)+': '
+              %span.by-icon-v02.iconNearText-v02= copyright_glyph(manifestation.copyright?)
+              = textify_copyright_status(manifestation.copyright?)
+              %span{ 'data-toggle' => 'tooltip', title: manifestation.copyright? ? t(:permission_explain) : t(:pd_explain)}= '[?]'
+            - if e.translation
+              .padbot12
+                %b= t(:orig_lang)+': '
+                / TODO: add link to query-by-language
+                = textify_lang(e.works[0].orig_lang)
+                / TODO: add display of intermediary language, once we create a field and track it.
+          .col-md-6.col-sm-12
+            .padbot12
+              %b= t(:recommendations)+': '
+              / TODO: link to reading recommendations
+              = manifestation.recommendations.count.to_s
+            / TODO: mention additional translations to same work -- this require an EPIC reworking of the many hard-coded assumptions of one expression <-> one work
+            / .padbot12
+        .text-height-work!= manifestation.snippet_paragraphs(15)
+      .read-more-v02
+        %a{ href: manifestation_read_path(manifestation.id) }
+          %span{style: 'font-weight: bold'}= t(:rest_of_work)
+          %span.left-arrow 1
+- else # site v1 logic - probably to be completely rewritten
+  .corner
+    %img{ src: '/assets/corner.png', alt: t(:background), width: 80, height: 80}
+  %a{ href: manifestation_read_path(manifestation)}
+    .genre-card-content
+      .surprise-genre-text
+        %p.headline-3= manifestation.title
+        %p= "(#{t(manifestation.expressions[0].genre)})"
+        %div
+          = t(:by)+' '+manifestation.expressions[0].works[0].persons[0].name
+          - if manifestation.expressions[0].translation
+            = ' '+t(:translated_by)+' '+manifestation.expressions[0].persons[0].name
+  .replace-icon.text-on-dark{style:'margin-bottom:0.6rem'}
+    %a{ id: "surprise-work-refresh-#{id_frag}#{side}", role: :button}
+      %i.fa.fa-refresh
+  :javascript
+    $("#surprise-work-refresh-#{id_frag}#{side}").click(function(){
+      $("#surprise-work-refresh-#{id_frag}#{side}").off('click'); // remove any existing hook
+      var the_id, side;
+      if($("##{id_frag}_side1").hasClass('active')) { // because we're about to flip
+        the_id = "##{id_frag}_side1";
+        side = '1';
+      } else {
+        the_id = "##{id_frag}_side2";
+        side = '2';
+      }
+      $("#surprise-work-carousel-#{id_frag}").carousel('next');
+      $(the_id).load("#{url_for(controller: :manifestation, action: :get_random, id_frag: id_frag, genre: passed_genre)}"+'&side='+side);
+    });

@@ -118,6 +118,10 @@ class Manifestation < ApplicationRecord
     self.destroy!
   end
 
+  def snippet_paragraphs(p_count)
+    return MultiMarkdown.new(markdown.lines[0..p_count].join("\n")).to_html.force_encoding('UTF-8').gsub(/<h1.*?<\/h1>/,'').gsub(/<figcaption>.*?<\/figcaption>/,'') # remove MMD's automatic figcaptions, and the initial title
+  end
+
   def authors_string
     return I18n.t(:nil) if expressions[0].nil? or expressions[0].works[0].nil? or expressions[0].works[0].persons[0].nil?
     return expressions[0].works[0].authors.map{|x| x.name}.join(', ')

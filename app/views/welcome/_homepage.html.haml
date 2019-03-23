@@ -36,6 +36,17 @@
             %span= t(:to_all_works)
             %span.left-arrow 1
       / surprise work
+      .scroller#work-surprise-scroller
+        .slide
+          .by-card-v02#works-surprise{style:'cursor:pointer'}
+            .by-card-header-v02
+              %span.headline-1-v02= t(:surprise)
+            .by-card-content-v02#works-surprise-initial
+              .surprise-btn-area-v02
+                %button.by-button-v02.surprise-btn-v02.headline-2-v02= t(:surprise_me)
+        .slide
+          = render partial: 'shared/surprise_work', locals: {passed_mode: 'home', manifestation: @surprise_work}
+
       / genres
       / periods
     .col-12.col-lg-4
@@ -44,60 +55,6 @@
       / author spotlight
       / volunteer spotlight
 
-.container-fluid
-  .row
-    .col-lg-1
-    .col-lg-10
-      .container-fluid
-        .row
-          .col-md-4.col-xs-12.main-group#whatsnew
-            / what's new
-            %p
-              %span.headline-2= link_to t(:whats_new), whatsnew_path
-            = render partial: 'whatsnew'
-    .col-lg-1
-  .row
-    .col-lg-1
-    .col-lg-10
-      .container-fluid
-        .row
-          .col-sm-8.col-xs-12.row2.main-group#genre
-            / work cards
-            %p{style:'margin-top:18px'}
-              %span.headline-2
-                = link_to t(:works_by_genre), works_path
-              %span{style: 'padding-right: 1.2rem"'}= t(:x_works, x: @totals[:works])
-            = render partial: 'works'
-          .col-sm-4.col-xs-12#flashlight
-            / featured item
-            %p.headline-2= t(:featured_item)
-            = render partial: 'featured_item'
-    .col-lg-1
-  .row
-    .col-lg-1
-    .col-lg-10
-      .container-fluid
-        .row
-          .col-sm-4.col-xs-12
-            / extras
-            %p.headline-2= t(:our_volunteers)
-            = render partial: 'featured_volunteer'
-    .col-lg-1
-    .row{style:'margin-top:18px'}
-    .col-lg-1
-    .col-lg-10
-      .container-fluid
-        .row
-          .col-xs-12
-            .card
-              .card-content
-                %p.headline-2{style:'text-align:center;padding: 0 23%; margin-top:0'}= t(:donate_title)
-                %p{style:'text-align:center;padding: 0 23%'}!= t(:donate_p1_html)
-                %p{style:'text-align:center;padding: 0 23%'}!= t(:donate_p2_html)
-                %center
-                  %a{style: 'color:white', href: '/page/donate'}
-                    .btn{style:'padding-top:0.5rem; text-aligh:center; float:none;'}
-                      %b= t(:donate_money)
 :javascript
   $(document).ready(function() {
     $('.footer-card').matchHeight();
@@ -120,5 +77,23 @@
       });
 
       $('#surprise-scroller').append("#{escape_javascript(render(partial: 'shared/surprise_author_again'))}");
+    });
+    $('#work-surprise-scroller').slick({
+      infinite: false,
+      slidesToShow: 1,
+      placeholders: false,
+      slidesToScroll: 1,
+      arrows: false,
+      rtl: true,
+      outerEdgeLimit: true,
+      // appendArrows: '#scroller_container',
+    });
+    $('#works-surprise').click(function(){
+      $('#work-surprise-scroller').slick('slickNext');
+      $('#work-surprise-scroller').slick('slickRemove');
+      $.get("#{url_for(controller: :manifestation, action: :get_random, mode: :home)}", function(data) {
+        $('#work-surprise-scroller').slick('slickAdd', data);
+      });
+      $('#work-surprise-scroller').append("#{escape_javascript(render(partial: 'shared/surprise_work_again'))}");
     });
   });

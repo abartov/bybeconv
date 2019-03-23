@@ -190,6 +190,7 @@ he:
   update_toc: עדכון תוכן עניינים
   find_work_by_author: "חיפוש יצירה מאת %{author}"
   rest_in_wikipedia: להמשך הערך בויקיפדיה
+  rest_of_work: להמשך קריאה
   to_the_wikipedia_article: לערך בויקיפדיה
   wikidata_id: מזהה בויקינתונים
   additional_options: אפשרויות נוספות
@@ -327,6 +328,7 @@ he:
   translators: מתרגמים
   translated_from_multiple_languages: מתורגמים מיותר משפה אחת
   translated_from: תורגם מ
+  translation_from: תרגום מ
   new_file: קובץ חדש
   new_works_by_new_authors: יצירות חדשות של יוצרים חדשים בפרויקט
   new_works_by_existing_authors: יצירות חדשות של יוצרים קיימים בפרויקט
@@ -544,6 +546,7 @@ he:
   none: אין
   to_the_work_in_the_catalog: לכרטיס הקטלוג של היצירה
   to_the_work_in_the_site: ליצירה באתר
+  to_the_work_page: לדף היצירה
   to_the_full_work: ליצירה המלאה
   to_the_full_feature: להמלצה המלאה
   public_domain: נחלת הכלל
