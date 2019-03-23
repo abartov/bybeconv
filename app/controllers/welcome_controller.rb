@@ -9,7 +9,8 @@ class WelcomeController < ApplicationController
     @pop_works = popular_works
     # @random_authors = randomize_authors(@pop_authors)
     # @surprise_author = @random_authors.pop
-    @newest_authors = Person.has_toc.order(created_at: :desc).limit(10)
+    @newest_authors = cached_newest_authors
+    @newest_works = cached_newest_works
     @surprise_author = Person.has_toc.order('RAND()').limit(1)[0]
     random_works = randomize_works(4) # TODO: un-hardcode?
     @random_work = random_works[0]

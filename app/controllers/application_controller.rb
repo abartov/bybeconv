@@ -71,6 +71,18 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def cached_newest_authors
+    Rails.cache.fetch("newest_authors", expires_in: 30.minutes) do # memoize
+      Person.has_toc.order(created_at: :desc).limit(10)
+    end
+  end
+
+  def cached_newest_works
+    Rails.cache.fetch("newest_works", expires_in: 30.minutes) do # memoize
+      Manifestation.published.order(created_at: :desc).limit(10)
+    end
+  end
+
   def featured_content
     Rails.cache.fetch("featured_content", expires_in: 1.hours) do # memoize
       ret = nil
