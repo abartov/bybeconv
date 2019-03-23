@@ -7,10 +7,12 @@
 :javascript
   $(document).ready(function() {
     $('#work-surprise-me-again').click(function(){
+      $('#work-surprise-me-again').attr('disabled','true');
       $('#work-surprise-scroller').slick('slickNext');
       $('#work-surprise-scroller').slick('slickRemove'); // and discard old slide
       $.get("#{url_for(controller: :manifestation, action: :get_random, mode: :home)}", function(data) {
         $('#work-surprise-scroller').slick('slickAdd', data);
+        $('#work-surprise-me-again').removeAttr('disabled');
       });
     });
   });
