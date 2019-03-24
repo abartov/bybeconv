@@ -1,5 +1,6 @@
 class Expression < ApplicationRecord
   before_save :set_translation
+  enum period: %i(ancient medieval enlightenment revival modern)
 
   has_and_belongs_to_many :works
   has_and_belongs_to_many :manifestations
