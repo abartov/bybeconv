@@ -61,6 +61,7 @@ gem 'kaminari' # pagination
 gem 'nokogiri'
 #gem 'epubbery' # for epubs
 gem 'rmultimarkdown' # new wrapper over Fletcher Penney's MultiMarkDown 6 (MMD 6)
+gem 'yt' # for polling YouTube for new videos
 
 #gem 'rpeg-multimarkdown', :github => 'djungelvral/rpeg-multimarkdown' # note: gem unmaintained, native part doesn't build under Ruby 2.1 -- may need updating the native part from the actual peg-multimarkdown implementation.
 

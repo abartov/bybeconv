@@ -8,3 +8,13 @@ Implementation notes for later:
 
 * when rendering an aggregate work as one output document (especially HTML), render each part, and post-process each output to rename the footnote anchors (if any) to avoid collisions (i.e. namespace each fragment or something).
 
+heterogeneous feed design thoughts:
+1. new table for manual elements and their status (e.g. 'pinned') and target/relevance dates
+2. on-the-fly (but cached!) polling of YouTube and Wordpress for latest posts
+3. Facebook posts will need to be fed manually, or reproduced entirely, due to FB's new restrictions on even public data, and its resistance to scraping.
+4. sources 1+2+3 are combined (interwoven, by date) with latest BYBE content (latest works published, latest [approved!] recommendations)
+5. resultant "feed" calculated every two hours and saved in cache and served from there to all site visitors.
+6. certain actions (publishing new works, approving a recommendation) can trigger recalculation of newsfeed. External content (e.g. YouTube) will only be picked up once every two hours.
+
+rendering the newsfeed should be uniform -- given a desc-sorted list of NewsItems, render each according to type.
+

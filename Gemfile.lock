@@ -476,6 +476,10 @@ GEM
     websocket-driver (0.7.0)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.3)
+    yt (0.32.3)
+      activesupport
+      yt-support (>= 0.1)
+    yt-support (0.1.3)
     zoom (0.5.0)
 
 PLATFORMS
@@ -541,6 +545,7 @@ DEPENDENCIES
   turn (= 0.8.2)
   uglifier
   web-console (~> 2.0)
+  yt
 
 BUNDLED WITH
    1.16.2
