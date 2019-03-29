@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_18_233743) do
+ActiveRecord::Schema.define(version: 2019_03_29_045647) do
 
   create_table "aboutnesses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -343,6 +343,18 @@ ActiveRecord::Schema.define(version: 2019_01_18_233743) do
     t.integer "person_id"
     t.index ["manifestation_id"], name: "index_manifestations_people_on_manifestation_id"
     t.index ["person_id"], name: "index_manifestations_people_on_person_id"
+  end
+
+  create_table "news_items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|
+    t.integer "itemtype"
+    t.string "title"
+    t.boolean "pinned"
+    t.datetime "relevance"
+    t.string "body"
+    t.string "url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["relevance"], name: "index_news_items_on_relevance"
   end
 
   create_table "people", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|

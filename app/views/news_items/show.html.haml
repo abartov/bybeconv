@@ -1,0 +1,24 @@
+%p#notice= notice
+
+%p
+  %b Itemtype:
+  = @news_item.itemtype
+%p
+  %b Title:
+  = @news_item.title
+%p
+  %b Pinned:
+  = @news_item.pinned
+%p
+  %b Relevance:
+  = @news_item.relevance
+%p
+  %b Body:
+  = @news_item.body
+%p
+  %b Url:
+  = @news_item.url
+
+= link_to 'Edit', edit_news_item_path(@news_item)
+\|
+= link_to 'Back', news_items_path

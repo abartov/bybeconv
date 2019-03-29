@@ -1,0 +1,31 @@
+%h1 Listing news_items
+
+%table
+  %thead
+    %tr
+      %th Itemtype
+      %th Title
+      %th Pinned
+      %th Relevance
+      %th Body
+      %th Url
+      %th
+      %th
+      %th
+
+  %tbody
+    - @news_items.each do |news_item|
+      %tr
+        %td= news_item.itemtype
+        %td= news_item.title
+        %td= news_item.pinned
+        %td= news_item.relevance
+        %td= news_item.body
+        %td= news_item.url
+        %td= link_to 'Show', news_item
+        %td= link_to 'Edit', edit_news_item_path(news_item)
+        %td= link_to 'Destroy', news_item, method: :delete, data: { confirm: 'Are you sure?' }
+
+%br
+
+= link_to 'New News item', new_news_item_path
