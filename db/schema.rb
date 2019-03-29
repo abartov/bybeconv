@@ -352,6 +352,7 @@ ActiveRecord::Schema.define(version: 2019_03_29_045647) do
     t.datetime "relevance"
     t.string "body"
     t.string "url"
+    t.boolean "double"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["relevance"], name: "index_news_items_on_relevance"

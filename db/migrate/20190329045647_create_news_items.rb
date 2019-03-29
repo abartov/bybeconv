@@ -7,6 +7,7 @@ class CreateNewsItems < ActiveRecord::Migration[5.2]
       t.datetime :relevance
       t.string :body
       t.string :url
+      t.boolean :double
 
       t.timestamps
     end

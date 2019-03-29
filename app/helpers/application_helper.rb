@@ -112,7 +112,7 @@ module ApplicationHelper
     ret = ''
     i = 0
     people.each {|p|
-      ret += ', 'if i > 0
+      ret += ', ' if i > 0
       ret += link_to p.name, authors_show_path(id: p.id)
       i += 1
     }
@@ -130,7 +130,19 @@ module ApplicationHelper
   end
 
   def copyright_glyph(is_copyright)
-      return is_copyright ? 'x' : 'm' # per /BY icons font/ben-yehuda/icons-reference.html
+    return is_copyright ? 'x' : 'm' # per /BY icons font/ben-yehuda/icons-reference.html
   end
 
+  def newsitem_glyph(item) # per icons-reference.html
+    case
+    when item.publication?
+      return nil
+    when item.youtube?
+      return 'w'
+    when item.facebook?
+      return 's'
+    when item.announcement?
+      return 'O'
+    end
+  end
 end
