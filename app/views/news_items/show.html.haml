@@ -21,6 +21,9 @@
 %p
   %b Url:
   = @news_item.url
+%p
+  %b Thumbnail Url:
+  = @news_item.thumbnail_url
 
 = link_to 'Edit', edit_news_item_path(@news_item)
 \|

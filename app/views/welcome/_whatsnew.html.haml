@@ -11,17 +11,8 @@
                 %p.headline-3
                   = link_to author.name, author_toc_path(author)
                 %p
-                  - works.each do |genre|
-                    - worksbuf = ''
-                    = t(genre[0])+': '
-                    - genre[1].each do |m|
-                      - title = m.expressions[0].title
-                      - title += (m.expressions[0].translation ? ' / '+m.expressions[0].works[0].persons[0].name : '')
-                      - worksbuf += (link_to(title, url_for(controller: :manifestation, action: :read, id: m.id)) + '; ')
-                      - if worksbuf.length > 160
-                        - worksbuf += '...  ' # signify more is available
-                        - break
-                    != worksbuf[0..-3]
+                  - worksbuf = textify_new_pubs(works)
+                  != worksbuf
               .whatsnew-pic-wide
                 %img{ alt: author.name, :class => 'img-responsive', src: author.profile_image.url(:tiny)}
         - boxen += 1

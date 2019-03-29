@@ -26,7 +26,7 @@ class NewsItemsController < ApplicationController
   # POST /news_items.json
   def create
     @news_item = NewsItem.new(news_item_params)
-
+    @news_item.relevance = DateTime.now if @news_item.relevance.nil? # default to now for items without explicit relevance set
     respond_to do |format|
       if @news_item.save
         format.html { redirect_to @news_item, notice: 'News item was successfully created.' }
@@ -70,6 +70,6 @@ class NewsItemsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def news_item_params
-      params.require(:news_item).permit(:itemtype, :title, :pinned, :relevance, :double, :body, :url)
+      params.require(:news_item).permit(:itemtype, :title, :pinned, :relevance, :double, :body, :url, :thumbnail_url)
     end
 end

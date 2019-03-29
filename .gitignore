@@ -19,7 +19,7 @@
 /log/*.log
 /tmp
 *.swp
-
+*.code-workspace
 # ignore symlink
 /by
 /ignore/*
@@ -43,3 +43,4 @@ UX/*
 coverage
 export
 storage
+bin/delayed_job

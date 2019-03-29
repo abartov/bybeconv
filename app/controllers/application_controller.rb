@@ -233,9 +233,47 @@ end
 
   def whatsnew_anonymous
     Rails.cache.fetch("whatsnew_anonymous", expires_in: 2.hours) do # memoize
-      logger.info("cache failure: calculating whatsnew anonymous")
+      logger.info("cache miss: calculating whatsnew anonymous")
       return whatsnew_since(1.month.ago)
     end
+  end
+
+  def cached_newsfeed
+    Rails.cache.fetch("cached_newsfeed", expires_in: 1.hours) do # memoize
+      return newsfeed
+    end
+  end
+
+  def latest_youtube_videos
+    channel = Yt::Channel.new id: AppConstants.youtube_channel_id
+    vids = channel.videos
+    max = vids.count > 5 ? 5 : vids.count
+    ret = []
+    i = 0
+    vids.each{ |v|
+      break if i >= max
+      ret << [v.title, v.description, v.id, v.thumbnail_url, v.published_at]
+      i += 1
+    }
+    return ret
+  end
+
+  def youtube_url_from_id(id)
+    return 'https://www.youtube.com/watch?v='+id
+  end
+
+  public # temp
+  def newsfeed
+    unsorted_news_items = NewsItem.last(5) # read at most the last 5 persistent news items (Facebook posts, announcements)
+
+    whatsnew_since(1.month.ago).each {|person, pubs| # add newly-published works
+      unsorted_news_items << NewsItem.from_publications(person, textify_new_pubs(pubs), pubs)
+    }
+    latest_youtube_videos.each {|title, desc, id, thumbnail_url, relevance| # add latest videos
+      unsorted_news_items << NewsItem.from_youtube(title, desc, youtube_url_from_id(id), thumbnail_url, relevance)
+    }
+    # TODO: add latest blog posts
+    return unsorted_news_items.sort_by{|item| item.relevance}.reverse # sort by descending relevance
   end
 
   def whatsnew_since(timestamp)
@@ -244,11 +282,35 @@ end
       e = m.expressions[0]
       person = e.persons[0] # TODO: more nuance
       next if person.nil? # shouldn't happen, but might in a dev. env.
-      authors[person] = {} if authors[person].nil?
+      if authors[person].nil?
+        authors[person] = {}
+        authors[person][:latest] = 0
+      end
       authors[person][e.genre] = [] if authors[person][e.genre].nil?
       authors[person][e.genre] << m
+      authors[person][:latest] = m.updated_at if m.updated_at > authors[person][:latest]
     }
     authors
+  end
+
+  def textify_new_pubs(author)
+    ret = ''
+    author.each do |genre|
+      next unless genre[1].class == Array # skip the :latest key
+      worksbuf = I18n.t(genre[0])+': '
+      genre[1].each do |m|
+        title = m.expressions[0].title
+        title += (m.expressions[0].translation ? ' / '+m.expressions[0].works[0].persons[0].name : '')
+        worksbuf += "<a href=\"/read/#{m.id}\">#{title}</a>; "
+        # worksbuf += (helpers.link_to(title, manifestation_read_path(id: m.id)) + '; ')
+        if worksbuf.length > 160
+          worksbuf += '...  ' # signify more is available
+          break
+        end
+      end
+      ret += worksbuf[0..-3] # chomp off either the blanks after the ellipsis or the '; ' after the last item
+    end
+    return ret
   end
 
   def sanitize_heading(h)

@@ -8,7 +8,7 @@
 
   .field
     = f.label :itemtype
-    = f.select :itemtype, NewsItem.itemtypes.collect{|it| [t(it[0]), it[1]]}
+    = f.select :itemtype, NewsItem.itemtypes.collect{|it| [t(it[0]), it[0]]}
   .field
     = f.label :title
     = f.text_field :title
@@ -27,5 +27,8 @@
   .field
     = f.label :url
     = f.text_field :url
+  .field
+    = f.label :thumbnail_url
+    = f.text_field :thumbnail_url
   .actions
     = f.submit 'Save'
