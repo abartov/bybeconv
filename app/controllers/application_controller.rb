@@ -267,7 +267,7 @@ end
     unsorted_news_items = NewsItem.last(5) # read at most the last 5 persistent news items (Facebook posts, announcements)
 
     whatsnew_since(1.month.ago).each {|person, pubs| # add newly-published works
-      unsorted_news_items << NewsItem.from_publications(person, textify_new_pubs(pubs), pubs)
+      unsorted_news_items << NewsItem.from_publications(person, textify_new_pubs(pubs), pubs, author_toc_path(person.id), person.profile_image.url(:thumb))
     }
     latest_youtube_videos.each {|title, desc, id, thumbnail_url, relevance| # add latest videos
       unsorted_news_items << NewsItem.from_youtube(title, desc, youtube_url_from_id(id), thumbnail_url, relevance)

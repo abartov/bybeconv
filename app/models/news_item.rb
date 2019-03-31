@@ -6,8 +6,8 @@ class NewsItem < ApplicationRecord
 
   # itemtype, title, pinned, relevance, body, url, double,
 
-  def self.from_publications(person, textified_pubs, pubs)
-    return NewsItem.new(itemtype: :publication, title: person.name, body: textified_pubs, relevance: pubs[:latest])
+  def self.from_publications(person, textified_pubs, pubs, url, thumbnail_url)
+    return NewsItem.new(itemtype: :publication, title: person.name, body: textified_pubs, relevance: pubs[:latest], url: url, thumbnail_url: thumbnail_url)
   end
 
   def self.from_blog(title, text, url, relevance)

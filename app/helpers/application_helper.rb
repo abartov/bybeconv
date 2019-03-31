@@ -138,7 +138,7 @@ module ApplicationHelper
     when item.publication?
       return nil
     when item.youtube?
-      return 'w'
+      return 'W'
     when item.facebook?
       return 's'
     when item.announcement?
