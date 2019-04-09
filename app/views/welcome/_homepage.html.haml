@@ -78,10 +78,31 @@
                   - if item.itemtype == 'youtube'
                     .new-image-frame-v02
                       %iframe{frameborder: '0', scrolling: 'no', marginheight: '0', marginwidth: '0', width: '267', height: '150', type: 'text/html', allow: 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture', allowfullscreen:'', src: item.url.sub('watch?v=','embed/')}
-
+        .link-to-all-v02
+          %a{ href: whatsnew_path}
+            %b= t(:to_all_whatsnew)
+            %span.left-arrow= '1'
       / work spotlight
+      = render partial: 'featured_item'
       / author spotlight
+      = render partial: 'featured_author'
       / volunteer spotlight
+      .by-card-v02.volunteer-v02
+        #volunteer-bg
+          - unless @featured_volunteer.nil?
+            .by-side-card-header-v02
+              %p.headline-1-v02{style: 'margin-bottom: 0'}= t(:our_volunteers)
+            .by-card-content-v02
+              %p.headline-2-v02= @featured_volunteer.name
+              .volunteer-about-v02
+                %div
+                  .volunteer-text-v02
+                    %p.text-height-volunteer
+                      = @featured_volunteer.bio
+                      %br
+                      = @featured_volunteer.about
+                    .volunteer-side-pic-v02
+                      %img.volunteer-pic-v02{src: @featured_volunteer.profile_image.url(:thumb)}
 
 :javascript
   $(document).ready(function() {

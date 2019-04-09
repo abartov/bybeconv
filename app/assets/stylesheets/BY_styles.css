@@ -43,7 +43,6 @@ a:hover {
 
 #top-bar {
   height: 120px; /* or whatever -- Asaf */
-  border-bottom: 2px solid #d9cdd5;
   margin-bottom: 24px;
   position: fixed;
   top:0;
@@ -60,6 +59,7 @@ a:hover {
   height: auto;
   background-color: white;
   position: fixed;
+  border-bottom: 2px solid #d9cdd5;
   padding-bottom: 4px; }
 
 #content {
@@ -1853,5 +1853,5 @@ ul #menuMobile {
 }
 
 .top-element{
-  margin-top: 156px;
+  margin-top: 179px;
 }

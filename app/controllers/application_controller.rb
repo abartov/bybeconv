@@ -245,16 +245,20 @@ end
   end
 
   def latest_youtube_videos
-    channel = Yt::Channel.new id: AppConstants.youtube_channel_id
-    vids = channel.videos
-    max = vids.count > 5 ? 5 : vids.count
     ret = []
-    i = 0
-    vids.each{ |v|
-      break if i >= max
-      ret << [v.title, v.description, v.id, v.thumbnail_url, v.published_at]
-      i += 1
-    }
+    begin
+      channel = Yt::Channel.new id: AppConstants.youtube_channel_id
+      vids = channel.videos
+      max = vids.count > 5 ? 5 : vids.count
+      i = 0
+      vids.each{ |v|
+        break if i >= max
+        ret << [v.title, v.description, v.id, v.thumbnail_url, v.published_at]
+        i += 1
+      }
+    rescue
+      puts "No network?"
+    end
     return ret
   end
 

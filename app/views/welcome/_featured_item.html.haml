@@ -1,26 +1,20 @@
-.row
-  .col-xs-12
-    / TODO: unhardcode this!
-    /.card{style: 'height:427px'}
-    .card
+.by-card-v02.flash-work-v02
+  .flash-bg-v02
+    .by-side-card-header-v02
+      %p.headline-1-v02= t(:featured_item)
+    .by-card-content-v02{style: 'padding-top:0; padding-bottom:70px'}
       - unless @featured_content.nil?
-        .card-content
-          .recommend-pic
-            .recommend-portrait
-              - unless @featured_content.person.nil?
-                %img.recommend-absolute{ src: @featured_content.person.profile_image.url(:thumb), alt: @featured_content.person.name , width:'160px'}
-              - else
-                = '' # TODO: what to put here?
-          .recommend-text{style: 'height: 34.4rem;position:relative'}
-            %p.headline-3{style:'margin-top:0;padding-top:0'}= @featured_content.title
-            - unless @featured_content.user.nil?
-              %p{style: 'margin-bottom: 1.8rem'}
-                = t(:by)+' '
-                = link_to @featured_content.user.name, volunteer_show_path(@featured_content.user)
-            %p#fc_body
-              != @fc_snippet
-              - if @fc_rest != ''
-                = ' ...'
+        .flash-text-v02
+          %p.headline-3-v02
+            %a{ href: ''}= @featured_content.title
+          - unless @featured_content.user.nil?
+            %p
+              = t(:by)+' '
+              = link_to @featured_content.user.name, volunteer_show_path(@featured_content.user)
+          .text-height-flash-work
+            != @fc_snippet
+            - if @fc_rest != ''
+              = ' ...'
           - if @fc_rest != ''
             %span.linky.btn#toggle_featured_item{style:'color:white; padding-top:0.5rem'}= t(:to_the_full_feature)
           - unless @featured_content.manifestation.nil?
@@ -31,9 +25,7 @@
             %a{ href: @featured_content.external_link}
               .btn{style: 'padding-top:0.5rem'}
                 %b= t(:to_external_content)
-        .h_separator
-.float-left
-  %a{href: 'http://benyehuda.org/blog/'}= t(:more_recommendations_in_the_blog)
+
 :javascript
   $(document).ready(function(){
     $('#toggle_featured_item').click(function(){

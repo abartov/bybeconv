@@ -1,0 +1,30 @@
+.by-card-v02.flash-author-v02
+  .flash-bg-v02
+    .by-side-card-header-v02
+      %p.headline-1-v02= t(:featured_author)
+    .by-card-content-v02{style: 'padding-top:0; padding-bottom:70px'}
+      - unless @featured_author.nil?
+        %p.headline-3-v02
+          %a{ href: ''}= @featured_author.title
+        - unless @featured_author.user.nil?
+          %p
+            = t(:by)+' '
+            = link_to @featured_author.user.name, volunteer_show_path(@featured_author.user)
+        .text-height-flash-work
+          != @fa_snippet
+          - if @fa_rest != ''
+            = ' ...'
+        - if @fa_rest != ''
+          %span.linky.btn#toggle_featured_author{style:'color:white; padding-top:0.5rem'}= t(:to_the_full_feature)
+        %a{ href: author_toc_path(id: @featured_author.id)}
+          .btn{style: 'padding-top:0.5rem'}
+            %b= t(:to_the_author_page)
+
+:javascript
+  $(document).ready(function(){
+    $('#toggle_featured_item').click(function(){
+      $('.recommend-text').css('height', 'auto');
+      $('#fc_body').html("#{@featured_author.nil? ? '' : escape_javascript(@featured_author.body)}");
+      $('#toggle_featured_item').hide();
+    });
+  });
