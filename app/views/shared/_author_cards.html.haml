@@ -4,7 +4,7 @@
 #scroller_container
   .carousel-arrow-right-v02{id: "rightarrow#{id_frag}"}
     = 2
-  .carousel-demo{style:'width: calc(100% - 60px);'}
+  .carousel-demo
     .scroller{id: "scroller#{id_frag}"}
       - authors[0..9].each do |author|
         - break if author.nil? # devmode protection against fewer than 5 most-popular authors
