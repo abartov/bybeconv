@@ -24,3 +24,10 @@
 .author-name-v02 {
   color:white;
 }
+.topMenuItem-v02 {
+  color: #660248;
+}
+.topMenuItem-v02:hover {
+  background-color: #C6B8C2;
+  cursor: pointer;
+}
