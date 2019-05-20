@@ -20,8 +20,6 @@ gem 'active_data' # for *Search classes in Chewy
 gem "jquery-slick-rails" # for carousel slider
 gem 'rails-jquery-autocomplete' # for auto-completion
 gem 'property_sets' # for key/value properties per model
-gem "font-awesome-rails"
-#gem 'font-awesome-sass', '~> 4.7.0'
 gem 'mini_magick'
 gem 'rack-cors', require: 'rack/cors'
 
