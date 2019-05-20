@@ -19,7 +19,7 @@
     .by-card-content-v02.surprise-work-height-v02
       .surprise-work-card-content-v02
         .row
-          .col-md-6.col-sm-12
+          .col-md-9.col-sm-12
             .padbot12
               %b= t(:copyright_status)+': '
               %span.by-icon-v02.iconNearText-v02= copyright_glyph(manifestation.copyright?)
@@ -32,7 +32,7 @@
                 / TODO: add link to query-by-language
                 = textify_lang(e.works[0].orig_lang)
                 / TODO: add display of intermediary language, once we create a field and track it.
-          .col-md-6.col-sm-12
+          .col-md-3.col-sm-12
             .padbot12
               %b= t(:recommendations)+': '
               / TODO: link to reading recommendations
