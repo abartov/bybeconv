@@ -26,6 +26,7 @@
               = textify_copyright_status(manifestation.copyright?)
               %span{ 'data-toggle' => 'tooltip', title: manifestation.copyright? ? t(:permission_explain) : t(:pd_explain)}= '[?]'
             - if e.translation
+              %br
               .padbot12
                 %b= t(:orig_lang)+': '
                 / TODO: add link to query-by-language
