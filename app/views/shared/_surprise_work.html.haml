@@ -25,13 +25,13 @@
               %span.by-icon-v02.iconNearText-v02= copyright_glyph(manifestation.copyright?)
               = textify_copyright_status(manifestation.copyright?)
               %span{ 'data-toggle' => 'tooltip', title: manifestation.copyright? ? t(:permission_explain) : t(:pd_explain)}= '[?]'
-            - if e.translation
-              %br
-              .padbot12
-                %b= t(:orig_lang)+': '
-                / TODO: add link to query-by-language
-                = textify_lang(e.works[0].orig_lang)
-                / TODO: add display of intermediary language, once we create a field and track it.
+              - if e.translation
+                %br
+                .padbot12
+                  %b= t(:orig_lang)+': '
+                  / TODO: add link to query-by-language
+                  = textify_lang(e.works[0].orig_lang)
+                  / TODO: add display of intermediary language, once we create a field and track it.
           .col-md-3.col-sm-12
             .padbot12
               %b= t(:recommendations)+': '
