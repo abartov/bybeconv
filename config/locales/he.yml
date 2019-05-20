@@ -392,11 +392,12 @@ he:
   to_the_works_page: לדף היצירות
   authors: יוצרים
   author_name: "שם היוצר/ת"
-  to_the_author_page: לדף היוצר
+  to_the_author_page: לדף היוצר/ת
   genre: סוגה
   published_in_book: פורסם בספר
   edition_details: פרטי מהדורה ומידע נוסף
   tags: תגיות
+  another_feature: הצגת זרקור נוסף
   tags_for_work: תגיות ליצירה
   recommendations_for_work: המלצות קוראים
   x_authors: "(%{x} יוצרים)"

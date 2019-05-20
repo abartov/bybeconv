@@ -16,9 +16,12 @@
             = ' ...'
         - if @fa_rest != ''
           %span.linky.btn#toggle_featured_author{style:'color:white; padding-top:0.5rem'}= t(:to_the_full_feature)
+        .another-flash{style: 'padding-top: 6px'}
+          = link_to '#' do
+            %span.right-side-icon= "'"
+            %span{style: 'font-weight: bold'}= t(:another_feature)
         %a{ href: author_toc_path(id: @featured_author.id)}
-          .btn{style: 'padding-top:0.5rem'}
-            %b= t(:to_the_author_page)
+          %button.by-button-v02.link-to-all-v02= t(:to_the_author_page)
 
 :javascript
   $(document).ready(function(){

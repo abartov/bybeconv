@@ -15,16 +15,19 @@
             != @fc_snippet
             - if @fc_rest != ''
               = ' ...'
+          .another-flash{style: 'padding-top: 6px'}
+            = link_to '#' do
+              %span.right-side-icon= "'"
+              %span{style: 'font-weight: bold'}= t(:another_feature)
+
           - if @fc_rest != ''
-            %span.linky.btn#toggle_featured_item{style:'color:white; padding-top:0.5rem'}= t(:to_the_full_feature)
+            %button.by-button-v02.link-to-all-v02#toggle_featured_item= t(:to_the_full_feature)
           - unless @featured_content.manifestation.nil?
             %a{ href: manifestation_read_path(id: @featured_content.manifestation.id)}
-              .btn{style: 'padding-top:0.5rem'}
-                %b= t(:to_the_work_in_the_site)
+              %button.by-button-v02.link-to-all-v02= t(:to_the_work_in_the_site)
           - unless @featured_content.external_link.nil? or @featured_content.external_link.empty?
             %a{ href: @featured_content.external_link}
-              .btn{style: 'padding-top:0.5rem'}
-                %b= t(:to_external_content)
+              %button.by-button-v02.link-to-all-v02= t(:to_external_content)
 
 :javascript
   $(document).ready(function(){
