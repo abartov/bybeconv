@@ -1030,8 +1030,12 @@ nav ul {
   float: left; }
 
 .menuButton-v02 {
+  font-family: ben-yehuda;
+  font-size: 18px;
   display: none;
-  padding-top: 4px; }
+  padding-top: 8px; 
+  cursor:pointer;
+}
 
 nav ul {
   list-style-type: none;
@@ -1058,7 +1062,8 @@ nav a {
   background-color: #d9cdd5;
   overflow-x: hidden;
   transition: 0.3s;
-  padding-top: 40px; }
+  padding-top: 40px; 
+  font-size: 14px;}
 
 .sidenav-v02 a {
   padding: 8px 0px;
@@ -1071,15 +1076,14 @@ nav a {
 
 .sidenav-v02 .closebtn-v02 {
   position: absolute;
-  top: 0px;
+  top: 12px;
   left: 16px;
   font-size: 30px;
   margin-left: 0; }
 
 .sidenav-v02 .mobile-menu-top {
   position: absolute;
-  top: 0;
-  padding-top: 8px;
+  top: 12px;
   right: 40px;
   font-weight: bold;
   color: #907989; }
@@ -1136,28 +1140,28 @@ ul #menuMobile {
   display: block; }
 
 .byPeriod {
-  width: 19%;
+  width: 8%;
   display: inline-block; }
 
 .byPeriodTop-v02 {
-  width: 19%;
-  height: auto;
+  width: 27%;
+  height: 120px;
   margin-top: 30px;
-  padding-top: 6px;
-  padding-bottom: 12px;
+  padding: 6px;
   background-color: #d9cdd5;
   border-radius: 3px;
   border-bottom: solid 8px #907989;
   margin-bottom: 6px;
-  display: inline-block; }
+  display: inline-block; 
+  vertical-align: bottom; }
 
 .byPeriodTop-v02:hover {
   background-color: #C6B8C2; }
 
 .byPeriodbottom-v02 {
-  width: 19%;
-  padding-top: 12px;
-  padding-bottom: 12px;
+  width: 26%;
+  height: 120px;
+  padding: 6px;
   margin-bottom: 30px;
   background-color: #d9cdd5;
   border-radius: 3px;
@@ -1238,7 +1242,7 @@ ul #menuMobile {
   display: -webkit-box;
   -webkit-line-clamp: 6;
   -webkit-box-orient: vertical;
-  max-height: 172px;
+  max-height: 190px;
 }
 .text-height-works-in-project {
   overflow: hidden;
@@ -1529,14 +1533,6 @@ display: none;}
 
   .by-popup-v02 {
   width: 60%;
-}
-.byPeriodbottom-v02{
-  height: 110px;
-  padding-left: 3px;
-  padding-right: 3px;
-}
-.byPeriodTop-v02{
-  height: 110px;
 }
 
 
@@ -1847,6 +1843,9 @@ display: none;}
 .popup-top{
   display: block;
 }
+	.byPeriod {
+  width: 7%;
+  display: inline-block; }
 
 }
 @media only screen and (max-width: 639px) {
@@ -1979,6 +1978,10 @@ display: none;}
   .by-genre-icon-surprise-v02 {
     font-size: 48px;
     padding-bottom: 12px; }
+.byPeriodName-v02{
+	font-size: 14px;
+	font-weight: bold;
+	}
 
 }
 
@@ -2074,16 +2077,6 @@ display: none;}
 		font-size: 36px;
 		padding-bottom: 8px; }
 
-	.byPeriod {
-		width: 13%; }
-
-	.byPeriodTop-v02 {
-		width: 24%;
-	}
-	.byPeriodbottom-v02 {
-		width: 24%;
-		margin-right: 3%}
-
 	.headline-2-v02 {
 		font-size: 16px;
 		line-height: 18px; }
@@ -2146,9 +2139,19 @@ display: none;}
 	.author-page-top-sort-mobile{
 		display: none;
 	}
+	
 }
 
 @media only screen and (max-width: 399px) {
+		.byPeriod {
+  width: 6%;
+}
+	.byPeriodName-v02{
+		line-height: 12px;
+	}
+	.byPeriodDetails-v02{
+		line-height: 12px;
+	}
 	#header{
 		padding: 0px;
 	}
@@ -2187,6 +2190,7 @@ display: none;}
   left: 3px;
 }
 
+	
 .author-card-v02{
 	width: 60px;
     height: 105px;
@@ -2214,16 +2218,19 @@ display: none;}
     margin-left: 12px;
     margin-top: -3px; }
 
+	
 .about-author-card-bookmark-fold-v02 {
     width: 63px;
 	height: 3px;
 	margin-right: 12px;
     margin-top: -3px; }
 
+	
   .author-pic-v02 {
     width: 60px;
     height: 86px; }
 
+	
   .surprise-author-pic-v02 {
     width: 60px;
     height: 86px; }
@@ -2253,7 +2260,8 @@ display: none;}
 			line-height: 21px;
 	}
 	.byPeriodName-v02{
-		font-size: 14px;
+		font-weight: bold;
+		font-size: 12px;
 	}
 
   .statistics-box-v02 {
@@ -2276,9 +2284,10 @@ display: none;}
 		font-size: 14px;
 	}
 	.btn-small-outline-v02 {
-  min-width: 22px;
-  height: 22px;
-  margin-top: 3px;
+  min-width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  margin-bottom: 2px;
   border-radius: 2px;
    }
 	.top-search-mobile-v02 {

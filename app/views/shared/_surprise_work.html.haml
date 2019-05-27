@@ -15,7 +15,8 @@
         %a{href: manifestation_read_path(manifestation.id)}= manifestation.title
       != t(:by)+': '+authors_linked_string(manifestation)
       - if e.translation
-        != t(:translation)+': '+translators_linked_string(manifestation)
+        %div
+          != t(:translation)+': '+translators_linked_string(manifestation)
     .by-card-content-v02.surprise-work-height-v02
       .surprise-work-card-content-v02
         .row

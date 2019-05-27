@@ -257,3 +257,6 @@
 .icon-bystar-full:before {
   content: "\22";
 }
+.icon-byhamburger:before {
+  content: "\2c";
+}
