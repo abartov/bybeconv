@@ -7,7 +7,7 @@
           .by-dropdown-v02.dropdown
             %a.by-nav-item-v02#nav-authors{'data-toggle' =>'dropdown'}= t(:authors)
             .by-dropdown-content-v02.dropdown-menu#menu-authors
-              %a.by-dropdown-header-v02{href: url_for(controller: :authors)}= authors_total
+              .by-dropdown-header-v02= authors_total
               %a{href: '/#top_authors'}
                 %span.by-icon-v02.iconNearText-v02 N
                 = t(:most_read_authors)
@@ -22,7 +22,7 @@
           .by-dropdown-v02.dropdown
             %a.by-nav-item-v02#nav-works{'data-toggle' =>'dropdown'}= t(:works)
             .by-dropdown-content-v02.dropdown-menu#menu-works
-              %a.by-dropdown-header-v02{href: works_path}= works_total
+              .by-dropdown-header-v02= works_total
               %a{href: '/#top_works'}
                 %span.by-icon-v02.iconNearText-v02 N
                 = t(:most_read_works)

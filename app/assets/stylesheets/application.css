@@ -36,3 +36,12 @@
     float:left;
     margin-top:-4rem;
   }
+
+/* pagination links */
+.page {
+  padding: 3px;
+}
+.next { padding: 3px;}
+.last { padding: 3px;}
+.prev { padding: 3px;}
+.first { padding: 3px;}

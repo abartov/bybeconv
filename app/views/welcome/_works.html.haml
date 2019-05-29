@@ -1,8 +1,7 @@
 - cache "homepage_genres", expires_in: 12.hours do
   .by-card-v02#genre
     .by-card-header-v02
-      %span.headline-1-v02
-        %a{ href: works_path}= t(:genres)
+      %span.headline-1-v02= t(:genres)
     .by-card-content-v02
       .row
         %div{style: 'width:80%'}
