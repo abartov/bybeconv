@@ -1,4 +1,6 @@
-%a{ href: period_path(period), 'class' => top ? 'byPeriodTop-v02' : 'byPeriodbottom-v02'}
+- klass = top ? 'byPeriodTop-v02' : 'byPeriodbottom-v02'
+- klass += ' firstPeriodBottom' if period == 'medieval'
+%a{ href: period_path(period), 'class' => klass}
   .byPeriodName-v02.headline-2-v02= t(period)
   .byPeriodDetails-v02= @authors_in_period[period].to_s+' '+t(:authors)
   .byPeriodDetails-v02= @works_by_period[period].to_s+' '+t(:works)

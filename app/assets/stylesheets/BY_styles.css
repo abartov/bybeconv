@@ -2,8 +2,6 @@
 .test-content{
   padding: 20px;
 }
-.scrolled{
-}
 .scrolled .statistics-box-v02{ /* the order matters! This means statistics happening somewhere inside a .scrolled container --Asaf */
 	display: none;
 }
@@ -311,8 +309,6 @@ ol > li:before {
   line-height: 18px;
   margin-bottom: 0; }
 
-.byPeriod-v02 {
-  display: inline-block; }
 
 .byPeriodName-v02 {
   text-align: center;
@@ -1140,11 +1136,11 @@ ul #menuMobile {
   display: block; }
 
 .byPeriod {
-  width: 8%;
+  width: 18%;
   display: inline-block; }
 
 .byPeriodTop-v02 {
-  width: 27%;
+  width: 20%;
   height: 120px;
   margin-top: 30px;
   padding: 6px;
@@ -1159,7 +1155,7 @@ ul #menuMobile {
   background-color: #C6B8C2; }
 
 .byPeriodbottom-v02 {
-  width: 26%;
+  width: 20%;
   height: 120px;
   padding: 6px;
   margin-bottom: 30px;
@@ -1172,6 +1168,9 @@ ul #menuMobile {
 
 .byPeriodbottom-v02:hover {
   background-color: #C6B8C2; }
+.firstPeriodBottom{
+  margin-right: 1%;
+}
 
 .periodLength-v02 {
   height: 32px;
@@ -1351,7 +1350,7 @@ ul #menuMobile {
   padding-right: 0px;
   padding-left: 0px;
   font-size: 12px;
-  vertical-align:middle;
+  vertical-align:middle; 
   display: inline;
 }
 .author-page-top {
@@ -1363,7 +1362,7 @@ ul #menuMobile {
 .author-page-top-info-card{
   width: 100%;
   padding: 10px 15px;
-  border-radius: 3px;
+  border-radius: 3px;  
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
   background-color: #d9cdd5;
   position: relative;
@@ -1456,7 +1455,7 @@ ul #menuMobile {
 display: none;}
 .side-menu{
     -ms-flex: 0 0 130px;
-    flex: 0 0 130px;
+    flex: 0 0 130px;	
 }
 .side-menu-item{
 	background-color: #eeeced;
@@ -1536,6 +1535,8 @@ display: none;}
 }
 
 
+
+
 }
 @media only screen and (max-width: 991px) {
 .scrolled .logoBY-scroll-mobile-v02{
@@ -1558,7 +1559,7 @@ display: none;}
 	display: inline-block;
 	float: left;
 }
-
+	
 .author-page-top-sort-desktop{
 	display: none;
 }
@@ -1609,7 +1610,7 @@ display: none;}
   background-size: contain;
   min-height: 400px;
   width: 100%; }
-
+	
 	.carousel-demo {
   width: calc(100% - 50px);
   height: 231px;
@@ -1629,8 +1630,8 @@ display: none;}
 	margin-right: 8px;
 	margin-left: -4px;
 	}
-
-
+	
+	
 .author-card-v02{
 	width: 132px;
     height: 231px;
@@ -1668,7 +1669,7 @@ display: none;}
 .author-pic-v02 {
     width: 132px;
     height: 190px; }
-
+	
   .surprise-author-pic-v02 {
     width: 132px;
     height: 190px; }
@@ -1815,7 +1816,23 @@ display: none;}
 	
 }
 @media only screen and (max-width: 768px){
+.byPeriod {
+  width: 17%;
+ }
 
+.byPeriodTop-v02 {
+  width: 21%;
+}
+
+.byPeriodbottom-v02 {
+  width: 21%;
+}
+
+.firstPeriodBottom{
+  margin-right: 2%;
+}
+	
+	
 	.by-popup-v02{
 		margin-left: 0;
 		margin-right: 0;
@@ -1843,12 +1860,26 @@ display: none;}
 .popup-top{
   display: block;
 }
-	.byPeriod {
-  width: 7%;
-  display: inline-block; }
+
 
 }
 @media only screen and (max-width: 639px) {
+.byPeriod {
+  width: 13%;
+ }
+
+.byPeriodTop-v02 {
+  width: 23%;
+}
+
+.byPeriodbottom-v02 {
+  width: 23%;
+}
+
+.firstPeriodBottom{
+  margin-right: 5%;
+}
+	
 		.scrolled .logoBY-scroll-mobile-v02{
 		position: fixed;
 		left: calc(50% - 60px);
@@ -1882,8 +1913,8 @@ display: none;}
   margin-right: 7px;
 	margin-left: -4px;
 	}
-
-
+	
+	
 
 .author-card-v02{
     width: 96px;
@@ -1912,18 +1943,18 @@ display: none;}
   width: 101px;
 	  height: 5px;
   margin-left: 24px;}
-
+	
 .about-author-card-bookmark-fold-v02 {
   margin-right: 10px;
   margin-top: -5px;
   width: 101px;
 	  height: 5px;
 	}
-
+	
   .author-pic-v02 {
     width: 96px;
     height: 138px; }
-
+	
   .surprise-author-pic-v02 {
     width: 96px;
     height: 138px; }
@@ -1987,6 +2018,7 @@ display: none;}
 
 
 @media only screen and (max-width: 479px) {
+
 	.scrolled .logoBY-scroll-mobile-v02{
 		position: fixed;
 		left: calc(50% - 60px);
@@ -2139,13 +2171,28 @@ display: none;}
 	.author-page-top-sort-mobile{
 		display: none;
 	}
+
 	
 }
 
 @media only screen and (max-width: 399px) {
-		.byPeriod {
-  width: 6%;
+.byPeriod {
+  width: 8%;
+ }
+
+.byPeriodTop-v02 {
+  width: 26%;
 }
+
+.byPeriodbottom-v02 {
+  width: 26%;
+}
+
+.firstPeriodBottom{
+  margin-right: 8%;
+}
+	
+	
 	.byPeriodName-v02{
 		line-height: 12px;
 	}
@@ -2189,7 +2236,6 @@ display: none;}
   top: 3px;
   left: 3px;
 }
-
 	
 .author-card-v02{
 	width: 60px;
@@ -2217,19 +2263,16 @@ display: none;}
 	height: 3px;
     margin-left: 12px;
     margin-top: -3px; }
-
 	
 .about-author-card-bookmark-fold-v02 {
     width: 63px;
 	height: 3px;
 	margin-right: 12px;
     margin-top: -3px; }
-
 	
   .author-pic-v02 {
     width: 60px;
     height: 86px; }
-
 	
   .surprise-author-pic-v02 {
     width: 60px;
@@ -2242,7 +2285,7 @@ display: none;}
 	  .author-name-v02 {
     padding-top: 3px;
 	font-size: 11px;}
-
+	
 	  .surprise-author-name-v02 {
     padding-top: 3px;
 	font-size: 11px;}
