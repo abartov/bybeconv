@@ -48,3 +48,4 @@
 #top-bar { background-color: white;}
 
 body {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's carousel track having a virtual width of 50000) */
+header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's carousel track having a virtual width of 50000) */

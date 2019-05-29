@@ -61,69 +61,71 @@
 <% unless @print %>
   <% unless @readmode %>
   <!-- top logo area -->
-  <div class="container-fluid" id="top-bar">
-    <div class="container-fluid" id="header">
-      <div class="row">
-        <div class="col-6 col-lg-4" style="padding-left: 6px;">
-          <a href="/"><div class="logoBY-v02"><img src="/assets/logo-byp-mobile.svg" alt="<% t(:logo) %>"/> </div></a>
-        </div>
-        <div class="col-6 col-lg-4" style="padding-right: 4px;">
-          <% unless sitenotice.empty? %>
-            <div class="announcement card text-on-dark">
-              <p><%= sitenotice %></p>
-            </div>
-          <% end %>
+  <header>
+    <div class="container-fluid" id="top-bar">
+      <div class="container-fluid" id="header">
+        <div class="row">
+          <div class="col-6 col-lg-4" style="padding-left: 6px;">
+            <a href="/"><div class="logoBY-v02"><img src="/assets/logo-byp-mobile.svg" alt="<% t(:logo) %>"/> </div></a>
+          </div>
+          <div class="col-6 col-lg-4" style="padding-right: 4px;">
+            <% unless sitenotice.empty? %>
+              <div class="announcement card text-on-dark">
+                <p><%= sitenotice %></p>
+              </div>
+            <% end %>
 
-          <div class="statistics-box-v02">
-            <div class="row">
-              <div class="col-5 statistics-v02">
-                <div class="stat-big-v02"><%= link_to(Manifestation.cached_count.to_s, works_path) %></div>
-                <div class="stat-small-v02"><%= t(:works) %></div>
-              </div>
-              <div class="col-2 statistics-v02">
-                <div class="stat-big-v02"><%= link_to(Person.cached_toc_count.to_s, authors_index_path) %></div>
-                <div class="stat-small-v02"><%= t(:authors) %></div>
-              </div>
-              <div class="col-5 statistics-v02">
-                <div class="stat-big-v02"><%= link_to(get_total_headwords.to_s, 'https://benyehuda.org/~asaf/full_dict.html')%></div>
-                <div class="stat-small-v02"><%= t(:dictionary_entries) %></div>
+            <div class="statistics-box-v02">
+              <div class="row">
+                <div class="col-5 statistics-v02">
+                  <div class="stat-big-v02"><%= link_to(Manifestation.cached_count.to_s, works_path) %></div>
+                  <div class="stat-small-v02"><%= t(:works) %></div>
+                </div>
+                <div class="col-2 statistics-v02">
+                  <div class="stat-big-v02"><%= link_to(Person.cached_toc_count.to_s, authors_index_path) %></div>
+                  <div class="stat-small-v02"><%= t(:authors) %></div>
+                </div>
+                <div class="col-5 statistics-v02">
+                  <div class="stat-big-v02"><%= link_to(get_total_headwords.to_s, 'https://benyehuda.org/~asaf/full_dict.html')%></div>
+                  <div class="stat-small-v02"><%= t(:dictionary_entries) %></div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="col-lg-4">
-          <div class="top-btn-group-v02">
-            <div class="icons-group-v02">
-              <a href="<%= t(:facebook_url) %>"><div class="icon-in-group-v02"><span class="by-icon-v02">S</span></div></a>
-              <a href="<%= t(:youtube_url) %>"><div class="icon-in-group-v02"><span class="by-icon-v02">W</span></div></a>
-              <a href="<%= t(:blog_url) %>"><div class="icon-in-group-v02"><span class="by-icon-v02">Q</span></div></a>
-              <%= render partial: 'shared/share', locals: {element: :header_button} %>
-              <a href="mailto:editor@benyehuda.org"><div class="icon-in-group-v02"><span class="by-icon-v02">R</span></div></a>
-              <div class="icons-seperator"></div>
-              <% if current_user %>
-                <div class="collapsed" data-toggle="collapse" data-target="#user_collapsible">
-                  <p style="padding-left: 1.6rem"><%= t(:welcome) %> <strong><%= current_user.name %></strong>!</p>
-                  <div class="dropdown-arrow linky" style="top: 0.1rem; left: 0"><i class="fa chevron"></i></div>
-                </div>
-                <div id="user_collapsible" class="collapse" ><a id="sign_in" href="#">כניסה לאזור האישי</a><br/>
-                  <%= link_to t(:sign_out), signout_path, id: "sign_out" %>
-                </div>
-                <% if current_user.editor? %>
-                  <div class="dashboard-link">
-                  <br />
-                  <h2><%= link_to t(:back_to_dashboard), url_for(controller: :admin, action: :index) %></h2>
+          <div class="col-lg-4">
+            <div class="top-btn-group-v02">
+              <div class="icons-group-v02">
+                <a href="<%= t(:facebook_url) %>"><div class="icon-in-group-v02"><span class="by-icon-v02">S</span></div></a>
+                <a href="<%= t(:youtube_url) %>"><div class="icon-in-group-v02"><span class="by-icon-v02">W</span></div></a>
+                <a href="<%= t(:blog_url) %>"><div class="icon-in-group-v02"><span class="by-icon-v02">Q</span></div></a>
+                <%= render partial: 'shared/share', locals: {element: :header_button} %>
+                <a href="mailto:editor@benyehuda.org"><div class="icon-in-group-v02"><span class="by-icon-v02">R</span></div></a>
+                <div class="icons-seperator"></div>
+                <% if current_user %>
+                  <div class="collapsed" data-toggle="collapse" data-target="#user_collapsible">
+                    <p style="padding-left: 1.6rem"><%= t(:welcome) %> <strong><%= current_user.name %></strong>!</p>
+                    <div class="dropdown-arrow linky" style="top: 0.1rem; left: 0"><i class="fa chevron"></i></div>
                   </div>
+                  <div id="user_collapsible" class="collapse" ><a id="sign_in" href="#">כניסה לאזור האישי</a><br/>
+                    <%= link_to t(:sign_out), signout_path, id: "sign_out" %>
+                  </div>
+                  <% if current_user.editor? %>
+                    <div class="dashboard-link">
+                    <br />
+                    <h2><%= link_to t(:back_to_dashboard), url_for(controller: :admin, action: :index) %></h2>
+                    </div>
+                  <% end %>
+                <% else %>
+                  <a href="/session/login" id="sign_in"><button class="btn-small-outline-v02"><div class="btn-text-v02"><%= t(:sign_in) %></div></button></a>
                 <% end %>
-              <% else %>
-                <a href="/session/login" id="sign_in"><button class="btn-small-outline-v02"><div class="btn-text-v02"><%= t(:sign_in) %></div></button></a>
-              <% end %>
+              </div>
             </div>
           </div>
         </div>
+        <%= render partial: 'shared/tabs' %>
       </div>
-      <%= render partial: 'shared/tabs' %>
     </div>
-  </div>
+  </header>
   <% end -%>
 <% end %>
 <main>
