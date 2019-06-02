@@ -78,11 +78,11 @@ a:hover {
 }
 #content {
   width: 90%;
-	height: auto; 
+	height: auto;
  }
 
 @media screen and (min-width: 768px) {
-	
+
 	.body-test {
 	  padding-top: 120px;
 	}
@@ -399,7 +399,7 @@ ol > li:before {
 
 .by-dropdown-header-v02 {
   background-color: #d9cdd5;
-  padding: 6px 16px; 
+  padding: 6px 16px;
   font-weight: bold;}
 
 .by-dropdown-content-v02 a {
@@ -621,7 +621,7 @@ padding-bottom: auto;}
   display: inline-block;
   vertical-align: top;
   padding-top: 125px;
-  text-align: left; 
+  text-align: left;
   margin-right: 12px;}
 
 .carousel-demo {
@@ -1041,7 +1041,7 @@ nav ul {
   font-family: ben-yehuda;
   font-size: 18px;
   display: none;
-  padding-top: 8px; 
+  padding-top: 8px;
   cursor:pointer;
 }
 
@@ -1070,7 +1070,7 @@ nav a {
   background-color: #d9cdd5;
   overflow-x: hidden;
   transition: 0.3s;
-  padding-top: 40px; 
+  padding-top: 40px;
   font-size: 14px;}
 
 .sidenav-v02 a {
@@ -1160,7 +1160,7 @@ ul #menuMobile {
   border-radius: 3px;
   border-bottom: solid 8px #907989;
   margin-bottom: 6px;
-  display: inline-block; 
+  display: inline-block;
   vertical-align: bottom; }
 
 .byPeriodTop-v02:hover {
@@ -1363,7 +1363,7 @@ ul #menuMobile {
   padding-right: 0px;
   padding-left: 0px;
   font-size: 12px;
-  vertical-align:middle; 
+  vertical-align:middle;
   display: inline;
 }
 .author-page-top {
@@ -1375,7 +1375,7 @@ ul #menuMobile {
 .author-page-top-info-card{
   width: 100%;
   padding: 10px 15px;
-  border-radius: 3px;  
+  border-radius: 3px;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
   background-color: #d9cdd5;
   position: relative;
@@ -1468,7 +1468,7 @@ ul #menuMobile {
 display: none;}
 .side-menu{
     -ms-flex: 0 0 130px;
-    flex: 0 0 130px;	
+    flex: 0 0 130px;
 }
 .side-menu-item{
 	background-color: #eeeced;
@@ -1555,7 +1555,7 @@ display: none;}
   color: #2b0d22;
   overflow: hidden;
 }
-	
+
 
 
 @media only screen and (max-width: 1279px) {
@@ -1612,7 +1612,7 @@ display: none;}
 	display: inline-block;
 	float: left;
 }
-	
+
 .author-page-top-sort-desktop{
 	display: none;
 }
@@ -1663,7 +1663,7 @@ display: none;}
   background-size: contain;
   min-height: 400px;
   width: 100%; }
-	
+
 	.carousel-demo {
   width: calc(100% - 50px);
   height: 231px;
@@ -1672,7 +1672,7 @@ display: none;}
   width: 21px;
   height: 231px;
   font-size: 21px;
-  padding-top: 105px; 
+  padding-top: 105px;
   margin-right: -4px;
 	}
 .carousel-arrow-left-v02 {
@@ -1683,8 +1683,8 @@ display: none;}
 	margin-right: 8px;
 	margin-left: -4px;
 	}
-	
-	
+
+
 .author-card-v02{
 	width: 132px;
     height: 231px;
@@ -1722,7 +1722,7 @@ display: none;}
 .author-pic-v02 {
     width: 132px;
     height: 190px; }
-	
+
   .surprise-author-pic-v02 {
     width: 132px;
     height: 190px; }
@@ -1865,11 +1865,11 @@ display: none;}
 }
 .body-test {
   padding-top: 100px;
-}	
-	
+}
+
 }
 @media only screen and (max-width: 768px){
-	
+
 .text-height-author {
   -webkit-line-clamp: 8;
   max-height: 160px;
@@ -1899,8 +1899,8 @@ display: none;}
 .firstPeriodBottom{
   margin-right: 2%;
 }
-	
-	
+
+
 	.by-popup-v02{
 		margin-left: 0;
 		margin-right: 0;
@@ -1930,7 +1930,6 @@ display: none;}
 }
 
 
-}
 @media only screen and (max-width: 639px) {
 .byPeriod {
   width: 13%;
@@ -1947,7 +1946,7 @@ display: none;}
 .firstPeriodBottom{
   margin-right: 5%;
 }
-	
+
 		.scrolled .logoBY-scroll-mobile-v02{
 		position: fixed;
 		left: calc(50% - 60px);
@@ -1970,19 +1969,19 @@ display: none;}
   width: 19px;
   height: 168px;
   font-size: 18px;
-  padding-top: 75px; 
+  padding-top: 75px;
 		margin-right: -4px
 	}
 .carousel-arrow-left-v02 {
   width: 19px;
   height: 168px;
   font-size: 18px;
-  padding-top: 75px; 
+  padding-top: 75px;
   margin-right: 7px;
 	margin-left: -4px;
 	}
-	
-	
+
+
 
 .author-card-v02{
     width: 96px;
@@ -2011,18 +2010,18 @@ display: none;}
   width: 101px;
 	  height: 5px;
   margin-left: 24px;}
-	
+
 .about-author-card-bookmark-fold-v02 {
   margin-right: 10px;
   margin-top: -5px;
   width: 101px;
 	  height: 5px;
 	}
-	
+
   .author-pic-v02 {
     width: 96px;
     height: 138px; }
-	
+
   .surprise-author-pic-v02 {
     width: 96px;
     height: 138px; }
@@ -2110,14 +2109,14 @@ display: none;}
 		width: 20px;
 		height: 140px;
 		font-size: 18px;
-		padding-top: 60px; 
+		padding-top: 60px;
 		margin-right: -6px;
 	}
 	.carousel-arrow-left-v02 {
 		width: 20px;
 		height: 140px;
 		font-size: 18px;
-		padding-top: 60px; 
+		padding-top: 60px;
 		margin-right: 6px;
 		margin-left: -6px;
 	}
@@ -2185,12 +2184,12 @@ display: none;}
 		padding: 0 3px; }
 
 	#period-timeline div {
-		width: 18%; 
+		width: 18%;
 	}
 
 	body {
 		font-size: 12px;
-		line-height: 14px; 
+		line-height: 14px;
 	}
 	.body-test{
 		padding-top: 90px;
@@ -2223,19 +2222,19 @@ display: none;}
 	}
 	.statistics-box-v02 {
 		height: 40px;
-		border-radius: 12px; 
+		border-radius: 12px;
 	}
 
 	.stat-big-v02 {
 		font-size: 14px;
 		font-weight: bold;
-		line-height: 12px; 
+		line-height: 12px;
 	}
 	.stat-small-v02 {
 		font-size: 8.4px;
 		line-height: 8px;
-		margin-top: 4px; 
-	} 
+		margin-top: 4px;
+	}
 	.author-page-top-sort-mobile{
 		display: none;
 	}
@@ -2244,7 +2243,7 @@ display: none;}
   max-height:580px;
 }
 
-	
+
 }
 
 @media only screen and (max-width: 399px) {
@@ -2263,8 +2262,8 @@ display: none;}
 .firstPeriodBottom{
   margin-right: 8%;
 }
-	
-	
+
+
 	.byPeriodName-v02{
 		line-height: 12px;
 	}
@@ -2289,7 +2288,7 @@ display: none;}
   width: 20px;
   height: 105px;
   font-size: 18px;
-  padding-top: 45px; 
+  padding-top: 45px;
 		padding-right: -4px;
 	}
 .carousel-arrow-left-v02 {
@@ -2308,7 +2307,7 @@ display: none;}
   top: 3px;
   left: 3px;
 }
-	
+
 .author-card-v02{
 	width: 60px;
     height: 105px;
@@ -2335,17 +2334,17 @@ display: none;}
 	height: 3px;
     margin-left: 12px;
     margin-top: -3px; }
-	
+
 .about-author-card-bookmark-fold-v02 {
     width: 63px;
 	height: 3px;
 	margin-right: 12px;
     margin-top: -3px; }
-	
+
   .author-pic-v02 {
     width: 60px;
     height: 86px; }
-	
+
   .surprise-author-pic-v02 {
     width: 60px;
     height: 86px; }
@@ -2357,7 +2356,7 @@ display: none;}
 	  .author-name-v02 {
     padding-top: 3px;
 	font-size: 11px;}
-	
+
 	  .surprise-author-name-v02 {
     padding-top: 3px;
 	font-size: 11px;}
