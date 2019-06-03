@@ -95,9 +95,10 @@ class Person < ApplicationRecord
 
   def cached_works_count
     Rails.cache.fetch("au_#{self.id}_work_count", expires_in: 24.hours) do
-      ww = self.works
-      self.expressions.joins(:works).includes(:works).each{|e| ww << e.works[0] unless ww.include?(e.works[0]) }
-      return ww.count
+      count = self.works.count
+      work_ids = self.works.ids
+      self.expressions.includes(:works).each{|e| count += 1 unless work_ids.include?(e.work_ids[0]) }
+      return count
     end
   end
 
