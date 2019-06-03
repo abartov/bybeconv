@@ -19,7 +19,7 @@ class WelcomeController < ApplicationController
     @works_by_genre = Manifestation.cached_work_counts_by_genre
     @authors_in_period = cached_authors_in_period
     @works_by_period = cached_works_by_period
-    @whatsnew = whatsnew_anonymous # TODO: custom calculate for logged-in users
+    # @whatsnew = whatsnew_anonymous # TODO: custom calculate for logged-in users
     @cached_newsfeed = cached_newsfeed # new, heterogeneous newsfeed
     @featured_content = featured_content
     (@fc_snippet, @fc_rest) = @featured_content.nil? ? ['',''] : snippet(@featured_content.body, 500) # prepare snippet for collapsible
