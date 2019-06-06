@@ -327,7 +327,7 @@ ol > li:before {
 .topMenuItem-v02 {
   display: inline-block;
   padding-right: 0;
-  padding-left: 14px; }
+  /*padding-left: 14px;*/ }
 
 .topMenuItemMobile-v02 {
   display: block;
@@ -343,7 +343,8 @@ ol > li:before {
   color: #660248;
   font-weight: bold;
   margin-top: 4px;
-  padding: 0 4px; }
+  padding: 0 4px;
+  padding-left: 14px; }
 
 .by-nav-item-v02:hover {
   color: #2b0d22;
@@ -636,7 +637,7 @@ padding-bottom: auto;}
 }
 .slick-arrow:hover{
   color: #2b0d22;
-  cursor: grab;
+  cursor: pointer;
 }
 .slick-disabled{
   color: #d9cdd5;

@@ -4,8 +4,8 @@
       %ul#menu
         - authors_total = "#{Person.cached_toc_count} #{t(:authors_in_the_project)}"
         %li.topMenuItem-v02
-          .by-dropdown-v02.dropdown
-            %a.by-nav-item-v02#nav-authors{'data-toggle' =>'dropdown'}= t(:authors)
+          .by-dropdown-v02.dropdown#ddauthors
+            %a.by-nav-item-v02#nav-authors{'data-toggle' =>'dropdown', 'data-boundary' => 'ddauthors'}= t(:authors)
             .by-dropdown-content-v02.dropdown-menu#menu-authors
               .by-dropdown-header-v02= authors_total
               %a{href: '/#top_authors'}
@@ -19,23 +19,23 @@
                 = t(:list_all_authors)
         - works_total = "#{Manifestation.cached_count} #{t(:works_in_the_project)}"
         %li.topMenuItem-v02
-          .by-dropdown-v02.dropdown
-            %a.by-nav-item-v02#nav-works{'data-toggle' =>'dropdown'}= t(:works)
+          .by-dropdown-v02.dropdown#ddworks
+            %a.by-nav-item-v02#nav-works{'data-toggle' =>'dropdown', 'data-boundary' => 'ddworks'}= t(:works)
             .by-dropdown-content-v02.dropdown-menu#menu-works
-              .by-dropdown-header-v02= works_total
-              %a{href: '/#top_works'}
+              .by-dropdown-header-v02.dropdown-item-text= works_total
+              %a.dropdown-item{href: '/#top_works'}
                 %span.by-icon-v02.iconNearText-v02 N
                 = t(:most_read_works)
-              %a{href: "#{whatsnew_path}#new_works"}
+              %a.dropdown-item{href: "#{whatsnew_path}#new_works"}
                 %span.by-icon-v02.iconNearText-v02 O
                 = t(:newest_works)
-              %a{href: all_works_path}
+              %a.dropdown-item{href: all_works_path}
                 %span.by-icon-v02.iconNearText-v02 T
                 = t(:list_all_works)
         - combined_totals = authors_total+", "+works_total
         %li.topMenuItem-v02
-          .by-dropdown-v02.dropdown
-            %a.by-nav-item-v02#nav-genres{'data-toggle' =>'dropdown'}= t(:genres)
+          .by-dropdown-v02.dropdown#ddgenres
+            %a.by-nav-item-v02#nav-genres{'data-toggle' =>'dropdown', 'data-boundary' => 'ddgenres'}= t(:genres)
             .by-dropdown-content-v02.dropdown-menu#menu-genres
               .by-dropdown-header-v02= combined_totals
               - get_genres.each do |g|
@@ -46,8 +46,8 @@
                 %span.by-icon-v02.iconNearText-v02= glyph_for_genre('translations')
                 = "#{t(:translations)} - #{Expression.cached_translations_count} #{t(:works)}"
         %li.topMenuItem-v02
-          .by-dropdown-v02.dropdown
-            %a.by-nav-item-v02{'data-toggle' =>'dropdown'}= t(:periods)
+          .by-dropdown-v02.dropdown#ddperiods
+            %a.by-nav-item-v02{'data-toggle' =>'dropdown', 'data-boundary' => 'ddperiods'}= t(:periods)
             .by-dropdown-content-v02.dropdown-menu#menu-periods
               .by-dropdown-header-v02= combined_totals
               - Person.periods.each do |p|
@@ -55,8 +55,8 @@
                   %span.by-icon-v02.iconNearText-v02 P
                   = "#{t(p[0]+'_long')} - #{work_count_by_period(p[0])} יצירות"
         %li.topMenuItem-v02
-          .by-dropdown-v02.dropdown
-            %a.by-nav-item-v02#nav-news{'data-toggle' =>'dropdown'}= t(:whatsnew)
+          .by-dropdown-v02.dropdown#ddnews
+            %a.by-nav-item-v02#nav-news{'data-toggle' =>'dropdown', 'data-boundary' => 'ddnews'}= t(:whatsnew)
             .by-dropdown-content-v02.dropdown-menu#menu-news
               %a.by-dropdown-header-v02{href: whatsnew_path}= t(:to_all_whatsnew)
               %a{href: "#{whatsnew_path}#new_authors"}
@@ -75,8 +75,8 @@
                 %span.by-icon-v02.iconNearText-v02 Q
                 = t(:latest_blog)
         %li.topMenuItem-v02{:style => "padding-left: 0"}
-          .by-dropdown-v02
-            %a.by-nav-item-v02#nav-info{'data-toggle' =>'dropdown'}= t(:about)
+          .by-dropdown-v02.dropdown#ddabout
+            %a.by-nav-item-v02#nav-info{'data-toggle' =>'dropdown', 'data-boundary' => 'ddabout'}= t(:about)
             .by-dropdown-content-v02.dropdown-menu#menu-info
               .by-dropdown-header-v02 מידע נוסף
               %a{href: '/page/about'}
