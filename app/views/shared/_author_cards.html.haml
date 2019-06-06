@@ -11,7 +11,8 @@
         .slide
           %a{ href: author_toc_path(author.id)}
             .author-card-v02
-              %img.author-pic-v02{ src: author.profile_image.url(:thumb), alt: author.name, height: (size == :large ? '686px' : '120px')}
+              %img.author-pic-v02{ src: author.profile_image.url(:thumb), alt: author.name}
+              /, height: (size == :large ? '686px' : '120px')}
               .author-name-v02= author.name
               .author-info-v02
                 %a{'data-toggle' => :modal, 'data-target'=> "#author_popup_#{author.id}"} M
@@ -30,7 +31,7 @@
     $('[data-toggle="tooltip"]').tooltip();
     $("#scroller#{id_frag}").slick({
       infinite: false,
-      //slidesToShow: 3,
+      slidesToShow: 5,
       placeholders: false,
       slidesToScroll: 1,
       arrows: true,
@@ -38,8 +39,24 @@
       outerEdgeLimit: true,
       nextArrow: "#leftarrow#{id_frag}",
       prevArrow: "#rightarrow#{id_frag}",
-      variableWidth: true,
+      //variableWidth: true,
       // appendArrows: '#scroller_container',
+      responsive: [{
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 5,
+          //infinite: true
+        }
+      }, {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 3,
+          //dots: true
+        }
+      }, {
+        breakpoint: 300,
+        settings: "unslick" // destroys slick
+      }]
     });
     if(true == #{surprise}) {
       $('#surprise_author_carousel-a').carousel({interval: false, wrap: true});
