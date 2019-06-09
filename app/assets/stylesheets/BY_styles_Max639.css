@@ -1,0 +1,158 @@
+/* CSS Document */
+
+@media only screen and (max-width: 639px) {
+.byPeriod {
+  width: 13%;
+ }
+
+.byPeriodTop-v02 {
+  width: 23%;
+}
+
+.byPeriodbottom-v02 {
+  width: 23%;
+}
+
+.firstPeriodBottom{
+  margin-right: 5%;
+}
+	
+.scrolled .logoBY-scroll-mobile-v02{
+		position: fixed;
+		left: calc(50% - 60px);
+		width: 160px;
+		top: 3px;
+	}
+.author-info-v02 {
+  width: 24px;
+  height: 24px;
+  font-size: 14px;
+  line-height: 20px;
+  top: 5px;
+  left: 5px;
+}
+.carousel-demo {
+  width: calc(100% - 45px);
+  height: 168px;
+}
+.carousel-arrow-right-v02 {
+  width: 19px;
+  height: 168px;
+  font-size: 18px;
+  padding-top: 75px; 
+		margin-right: -4px
+	}
+.carousel-arrow-left-v02 {
+  width: 19px;
+  height: 168px;
+  font-size: 18px;
+  padding-top: 75px; 
+  margin-right: 7px;
+  margin-left: -4px;
+	}
+	
+	
+
+.author-card-v02{
+    width: 96px;
+    height: 168px;
+	margin: 0 7px;
+
+	}
+.surprise-author-card-v02 {
+    width: 96px;
+    height: 168px;
+    margin-left: 24px;
+    margin-top: -5px; }
+.about-author-card-v02 {
+    width: 96px;
+    height: 138px;
+    margin-top: -5px; }
+
+.surprise-work-card-v02 {
+    width: 96px;
+    height: 168px;
+    margin-left: 24px;
+    margin-top: -5px; }
+
+.surprise-author-card-bookmark-fold-v02 {
+  margin-top: -5px;
+  width: 101px;
+	  height: 5px;
+  margin-left: 24px;}
+	
+.about-author-card-bookmark-fold-v02 {
+  margin-right: 10px;
+  margin-top: -5px;
+  width: 101px;
+  height: 5px;
+	}
+	
+.author-pic-v02 {
+    width: 96px;
+    height: 138px; }
+	
+.surprise-author-pic-v02 {
+    width: 96px;
+    height: 138px; }
+
+.surprise-work-genre-v02 {
+    width: 96px;
+    height: 138px;
+    padding-top: 48px; }
+.surprise-author-name-v02 {
+    padding-top: 6px;  }
+.author-name-v02 {
+    padding-top: 6px;  }
+
+.statistics-box-v02 {
+    height: 46px;
+    border-radius: 10px; }
+
+.stat-big-v02 {
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 19px; }
+
+.stat-small-v02 {
+    font-size: 10px;
+    line-height: 10px;
+    margin-top: 6px; }
+
+
+.surprise-btn-area-v02 {
+  width: 132px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 260px; }
+
+.surprise-btn-v02 {
+  min-width: 132px;
+  padding: 6px 12px;
+  height: 50px; }
+
+.surprise-again-btn-v02{
+  min-width: 132px;
+  padding: 6px 12px;
+	}
+.surprise-again-btn-area-v02{
+		width: 132px;
+	}
+.surprise-again-footer-v02 {
+  padding: 16px 16px 16px 20px;
+ }
+
+
+.by-genre-icon-surprise-v02 {
+    font-size: 48px;
+    padding-bottom: 12px; }
+.byPeriodName-v02{
+	font-size: 14px;
+	font-weight: bold;
+	}
+.work-info-card{
+	min-height: 148px;
+}
+
+}
+

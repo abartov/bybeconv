@@ -1,0 +1,13 @@
+/* CSS Document */
+
+@media screen and (min-width: 768px) {
+	
+	.body-test {
+	  padding-top: 120px;
+	}
+	#header {
+		width: 90%;
+		padding-left: 15px;
+		padding-right: 15px;
+	}
+}

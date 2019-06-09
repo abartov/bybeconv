@@ -1,0 +1,25 @@
+/* CSS Document */
+
+
+@media only screen and (max-width: 1279px) {
+
+  #header {
+    width: 100%; }
+
+  #content {
+    width: 100%;
+	}
+
+  .topMenuItem-v02 {
+    padding-left: 4px; }
+
+  .by-popup-v02 {
+  width: 60%;
+}
+
+}
+
+
+
+
+
