@@ -114,7 +114,7 @@
           %span.caret= t(:authors)
           %ul.nested
             %li
-              %a{href: '/#top_authors'}
+              %a{href: 'javascript:jump("top_authors")'}
                 %span.by-icon-v02.iconNearText-v02.iconInMenu N
                 = t(:most_read_authors)
             %li
@@ -129,11 +129,11 @@
           %span.caret= t(:works)
           %ul.nested
             %li
-              %a{href: '/#top_works'}
+              %a{href: 'javascript:jump("top_works")'}
                 %span.by-icon-v02.iconNearText-v02.iconInMenu N
                 = t(:most_read_works)
             %li
-              %a{href: "#{whatsnew_path}#new_works"}
+              %a{href: 'javascript:jump("new_works")'}
                 %span.by-icon-v02.iconNearText-v02.iconInMenu O
                 = t(:newest_works)
             %li
@@ -278,6 +278,12 @@
 
   var toggler = document.getElementsByClassName("caret");
   var i;
+  function jump(h){
+    $('#mySidenav').css('width','0');
+    var url = location.href;               //Save down the URL without hash.
+    location.href = "#"+h;                 //Go to the target element.
+    history.replaceState(null,null,url);   //Don't like hashes. Changing it back.
+  }
 
   for (i = 0; i < toggler.length; i++) {
     toggler[i].addEventListener("click", function() {
