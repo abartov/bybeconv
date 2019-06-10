@@ -7,9 +7,5 @@
   $(document).ready(function() {
     $('#surprise-me-again').click(function(){
       $('#surprise-scroller').slick('slickNext');
-      $('#surprise-scroller').slick('slickRemove'); // and discard old slide
-      $.get('/authors/get_random_author?mode=home', function(data) {
-        $('#surprise-scroller').slick('slickAdd', data);
-      });
     });
   });
