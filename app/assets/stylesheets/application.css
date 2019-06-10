@@ -52,5 +52,8 @@
 .first { padding: 3px;}
 #top-bar { background-color: white;}
 
+.dropdown-menu {
+  font-size: initial; /* override Bootstrap's default */
+}
 body {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's carousel track having a virtual width of 50000) */
 header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's carousel track having a virtual width of 50000) */
