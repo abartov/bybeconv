@@ -4,14 +4,19 @@
  * the top of the compiled file, but it's generally better to create a new file per style scope.
  *= require_self
  *= require jquery-ui
+ *= require BY_styles_General.css
+ *= require BY_styles_Max1279.css
+ *= require BY_styles_Max991.css
+ *= require BY_styles_Max767.css
+ *= require BY_styles_Max639.css
+ *= require BY_styles_Max479.css
+ *= require BY_styles_Max399.css
  *= require_tree .
 */
 /*
 *= require slick
 */
 /*body{font-size:14px;} /* default */
-
-/* @import 'BY_styles.css'; */
 
 .padbot12 {
   padding-bottom: 12px;
