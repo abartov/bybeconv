@@ -202,18 +202,6 @@ ol > li:before {
   padding: 0 12px;
   color: #660248; }
 
-.fas-icon-v02 {
-  font-family: FontAwesome5FreeSolid;
-  font-size: 18px; }
-
-.far-icon-v02 {
-  font-family: FontAwesome5FreeRegular;
-  font-size: 18px; }
-
-.fab-icons-v02 {
-  font-family: FontAwesome5Brands;
-  font-size: 18px; }
-
 .iconNearText-v02 {
   margin-left: 6px;
   vertical-align: text-bottom; }
@@ -997,8 +985,12 @@ padding-bottom: auto;}
 
 .popup-x-v02 {
   position: absolute;
-  left: 10px;
+  left: 0px;
   top: 8px;
+  font-size: 21px;
+  text-align: center;
+  width: 40px;
+  height: 21px;
 }
 
 .flash-author-popup-v02 {
