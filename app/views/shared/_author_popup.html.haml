@@ -1,50 +1,60 @@
 - cache "au_#{author.id}_popup", expires_in: 24.hours do
-  %div{class: 'modal fade', role: 'dialog', id: "author_popup_#{author.id}", tabindex: '-1'}
-    .modal-dialog
-      .card.author-top{direction: 'rtl'}
-        %div
+  .modal.fade{role: 'dialog', id: "author_popup_#{author.id}", tabindex: '-1'}
+    .modal-dialog.modal-lg
+      .popup-top
+        .row{style: 'padding:15px;margin:0'}
+          .col-3{style:'padding:0'}
+            %button.btn-small-outline-v02{'data-dismiss' => 'modal'}
+              .btn-text-v02
+                %span.right-arrow 2
+                %span= t(:back)
+          .col-6{style:'padding:0'}
+            .headline-2-v02{style:'text-align: center;margin:0;padding-top:3px;'}= about_the_author(author)
+          .col-3
+      .by-popup-v02
+        .popup-x-v02
           %button.close.card-header-close{ type: 'button', style: 'margin-left:1.5rem;margin-top:1.9rem;', 'data-dismiss' => 'modal'}
             != '&times;'
-        .creator-bookmark-back
-          %img{src: '/assets/creator-bookmark-back2.png', alt: t(:background), width: 168, height: 6}
-        .creator-bookmark-front
-          %img{src: author.profile_image.url(:thumb), alt: author.name, width: 162}
-        .card-content.near-picture
-          %p.headline-2{style: 'padding-top:0.4rem'}
+        %img.surprise-author-card-bookmark-fold-v02{src: '/assets/creator-bookmark-back2.png', alt: t(:background), width: 168, height: 6}
+        = link_to author_toc_path(author.id) do
+          .surprise-author-card-v02
+            %img.surprise-author-pic-v02{ src: author.profile_image.url(:thumb), width: 475, height: 686, alt: author.name}
+            .author-name-v02= about_the_author(author)
+        .by-card-header-v02
+          %span.headline-1-v02
             = link_to author.name, author_toc_path(author.id)
-            != " (#{author.life_years})"
-          %div{style: 'display: inline-block; margin-top:0.4rem'}
-            .card-header-element
-              %a{id: "heart_#{author.id}"}
-                %i.fa.fa-heart-o{style: 'padding-top: 0.2rem'}
-            .card-header-element
-              %span{ class: "icon-#{author.rights_icon}", style:'margin-left:0.6rem;position:relative;top:2px;', 'data-toggle' => 'tooltip', title: author.public_domain ? t(:pd_explain) : t(:permission_explain)}
+          %span.date-range!= " (#{author.life_years})"
+        .by-card-content-v02
+          .surprise-author-card-content-v02
+            .padbot12
+              %span
+                %a.by-icon-v02.iconNearText-v02{id: "heart_#{author.id}", style:'float:right'}= 5
+              %span.by-icon-v02.iconNearText-v02= author.rights_icon
               = author.copyright_as_string
-            - if author.blog_count > 0
-              .card-header-element
-                %a{ href: author.blog_category_url}
-                  %span{ style: 'margin-left: 0.6rem;position:relative;top:3px;'}
-                    %i.fa.fa-pencil-square-o
-                  = t(:about_the_author_on_the_blog)
-          - unless author.wikipedia_snippet.nil? or author.wikipedia_snippet.length < 10
-            %div{style: 'margin-top: 0.6rem'}
-              %p= author.wikipedia_snippet
             %div
-              %p= link_to t(:rest_in_wikipedia), author.wikipedia_url
-          .margintop2
-            .headline-4{style: 'display: inline'}= t(:works_in_the_database)+': '
-            = link_to "#{author.cached_works_count} #{t(:works)}", author_toc_path(author.id)
-          .margintop2
-            .headline-4= t(:their_most_read_works, gender_letter: author.gender_letter)
-            %ol
-              - author.most_read(5).each do |mhash|
-                - genre = mhash[:genre]
-                - genrebit = genre.nil? ? '' : " (#{textify_genre(genre)})"
-                %li= link_to mhash[:title]+genrebit, manifestation_read_path(mhash[:id])
-
-        %div{ style:'position:relative; bottom: 6.5rem;left:4.4rem;'}
-          .btn
-            %p.vcentered
-              %a{ style:'color:white', href: author_toc_path(author.id)}
-                - suffix = (author.gender == 'female' ? 'ת' : '' )
-                = t(:to_the_author_page)+suffix
+              - unless author.wikipedia_snippet.nil? or author.wikipedia_snippet.length < 10
+                = author.wikipedia_snippet
+                %div{style: 'font-weight: bold; margin-top: 12px; margin-bottom: 24px'}
+                  = link_to t(:rest_in_wikipedia), author.wikipedia_url
+            / future feature: recommendations
+            /.padbot12
+            /  %span{style:'font-weight: bold'}= t(:recommendations)+': '
+            /  = link_to number_of_recommendations, ...
+            /    - if author.blog_count > 0
+            /      .card-header-element
+            /        %a{ href: author.blog_category_url}
+            /          %span{ style: 'margin-left: 0.6rem;position:relative;top:3px;'}
+            /            %i.fa.fa-pencil-square-o
+            /          = t(:about_the_author_on_the_blog)
+            .padbot12
+              %span
+                %b= t(:works_in_the_database)+': '
+              = link_to "#{author.cached_works_count} #{t(:works)}", author_toc_path(author.id)
+            %div
+              %p
+                %b= t(:their_most_read_works, gender_letter: author.gender_letter)
+              %ol
+                - author.most_read(5).each do |mhash|
+                  - genre = mhash[:genre]
+                  - genrebit = genre.nil? ? '' : " (#{textify_genre(genre)})"
+                  %li= link_to mhash[:title]+genrebit, manifestation_read_path(mhash[:id])

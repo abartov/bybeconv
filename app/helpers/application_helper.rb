@@ -4,6 +4,11 @@ module ApplicationHelper
     s.force_encoding('UTF-8')
   end
 
+  def about_the_author(au)
+    ret = I18n.t(:about_the_author)
+    return au.gender == 'female' ? ret + 'ת' : ret
+  end
+
   def url_tag(u)
     return '' if u.blank?
     return 'ויקיפדיה' if u =~ /https?:\/\/he.wikipedia.org/

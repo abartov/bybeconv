@@ -100,6 +100,7 @@ he:
   to_all_the_works_of_this_author: "לכל יצירות %{author}"
   most_read_works_of_author: "יצירותי%{gender_letter} הנקראות ביותר של %{author}"
   more_of_author: "עוד מיצירותי%{gender_letter} של %{author}"
+  about_the_author: על היוצר
   their_most_read_works: "יצירותי%{gender_letter} הנקראות ביותר"
   volunteers_who_helped: "מתנדבים שנטלו חלק בהנגשת יצירותי%{gender_letter} של %{author}"
   html_file_published: הקובץ מהמערכת הישנה פורסם עתה במערכת החדשה, ונוסף לקטלוג המערכת!

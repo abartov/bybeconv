@@ -170,7 +170,8 @@ class Person < ApplicationRecord
   end
 
   def rights_icon
-    return public_domain ? 'bycc-pd' : 'bycopyright'
+    # return public_domain ? 'bycc-pd' : 'bycopyright'
+    return public_domain ? 'm' : 'x'
   end
 
   def has_comment?
