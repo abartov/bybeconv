@@ -10,7 +10,7 @@ module ApplicationHelper
   end
 
   def to_the_author_page(au)
-    au.gender == 'female' ? return I18n.t(:to_the_authoress_page) : return I18n.t(:to_the_author_page)
+    return au.gender == 'female' ? I18n.t(:to_the_authoress_page) : I18n.t(:to_the_author_page)
   end
 
   def url_tag(u)
