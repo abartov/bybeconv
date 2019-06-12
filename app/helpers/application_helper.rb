@@ -9,6 +9,10 @@ module ApplicationHelper
     return au.gender == 'female' ? ret + 'ת' : ret
   end
 
+  def to_the_author_page(au)
+    au.gender == 'female' ? return I18n.t(:to_the_authoress_page) : return I18n.t(:to_the_author_page)
+  end
+
   def url_tag(u)
     return '' if u.blank?
     return 'ויקיפדיה' if u =~ /https?:\/\/he.wikipedia.org/

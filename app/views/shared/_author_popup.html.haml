@@ -19,7 +19,7 @@
         = link_to author_toc_path(author.id) do
           .surprise-author-card-v02
             %img.surprise-author-pic-v02{ src: author.profile_image.url(:thumb), width: 475, height: 686, alt: author.name}
-            .author-name-v02= about_the_author(author)
+            .author-name-v02= to_the_author_page(author)
         .by-card-header-v02
           %span.headline-1-v02
             = link_to author.name, author_toc_path(author.id)
