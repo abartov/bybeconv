@@ -313,6 +313,7 @@
     });
 
     $('#mobileMenu').click(function() {
+      $('#menu-more').css('display','none');
       $("#mySidenav").css('width','80%');
     });
     $('#closeMobileMenu').click(function(){
@@ -320,6 +321,7 @@
     });
 
     $('#open-overflow').click(function(){
+      $('#mySidenav').css('width','0');
       if($('#menu-more').css('display') == 'block')
         $('#menu-more').css('display','none');
       else
