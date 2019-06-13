@@ -19,6 +19,9 @@ body {
   line-height: 18px;
   color: #242424;
 }
+p {
+	margin-bottom: 12px;
+}
 .headline-1-v02 {
   font-size: 22px;
   line-height: 24px;
@@ -203,8 +206,12 @@ ol > li:before {
   color: #660248; }
 
 .iconNearText-v02 {
-  margin-left: 6px;
+  margin-left: 12px;
   vertical-align: text-bottom; }
+.copyright-icon{
+  margin-left: 4px;
+  vertical-align: text-bottom;
+}
 
 .icons-group-v02 {
   display: inline;
@@ -270,8 +277,8 @@ ol > li:before {
   font-family: ben-yehuda;
   text-align: center;
   font-size: 80px;
+  line-height: 80px;
   font-weight: normal;
-  padding-bottom: 24px;
 }
 
 .by-genre-icon-v02:hover {
@@ -280,7 +287,8 @@ ol > li:before {
 .by-genre-name-v02 {
   text-align: center;
   line-height: 20px;
-  margin-bottom: 0; }
+  margin: 0 6px;
+}
 
 .by-genre-details-v02 {
   text-align: center;
@@ -320,9 +328,8 @@ ol > li:before {
   width: 100%;
   color: #660248;
   font-weight: bold;
-  margin-top: 4px;
   padding: 0 4px;
-  padding-left: 14px; }
+  padding-left: 10px; }
 
 .by-nav-item-v02:hover {
   color: #2b0d22;
@@ -365,7 +372,11 @@ ol > li:before {
   border-radius: 3px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
   z-index: 1000;
-  margin-top: 3px; }
+  margin-top: 3px;
+  padding-top: 0;
+  padding-bottom: 0;
+  font-size: 14px;
+}
 
 .by-dropdown-v02 #moreMobile {
   position: relative;
@@ -379,6 +390,7 @@ ol > li:before {
 .by-dropdown-header-v02 {
   background-color: #d9cdd5;
   padding: 6px 16px;
+  font-size: 16px;
   font-weight: bold;}
 
 .by-dropdown-content-v02 a {
@@ -471,7 +483,6 @@ padding-bottom: auto;}
   width: 100%;
   height: auto;
   background-color: #eeeced;
-  box-shadow: 0 3px 9px rgba(0, 0, 0, 0.4);
   position: fixed;
   top:0;
 	left: 0;
@@ -624,7 +635,11 @@ padding-bottom: auto;}
 }
 .slick-disabled{
   color: #d9cdd5;
-  cursor: none;
+  cursor: default;
+}
+.slick-disabled:hover{
+  color: #d9cdd5;
+  cursor: default;
 }
 
 .author-card-v02 {
@@ -977,7 +992,7 @@ padding-bottom: auto;}
   height: 230px;
   border-radius: 3px 0 0 0;
   background-image: linear-gradient(180deg, #cdcbcb, #f0f0f0 3%, #ffffff 8%, #ffffff);
-  padding-top: 90px; }
+  padding-top: 48px; }
 
 .surprise-work-card-content-v02 {
   width: 100%;
@@ -1020,7 +1035,7 @@ nav ul {
 #menu {
   margin-right: 0;
   margin-bottom: 0;
-  margin-top: 6px;
+  margin-top: 10px;
   display: block; }
 
 .menuItem-v02 {

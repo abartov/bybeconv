@@ -1,6 +1,9 @@
 /* CSS Document */
 
 @media only screen and (max-width: 639px) {
+p {
+		margin-bottom: 8px;
+	}
 .byPeriod {
   width: 13%;
  }
@@ -99,7 +102,7 @@
 .surprise-work-genre-v02 {
     width: 96px;
     height: 138px;
-    padding-top: 48px; }
+    padding-top: 32px; }
 .surprise-author-name-v02 {
     padding-top: 6px;  }
 .author-name-v02 {
@@ -127,31 +130,37 @@
   margin-top: 260px; }
 
 .surprise-btn-v02 {
-  min-width: 132px;
+  width: 132px;
   padding: 6px 12px;
-  height: 50px; }
+  height: 36px; }
 
 .surprise-again-btn-v02{
-  min-width: 132px;
+  width: 132px;
   padding: 6px 12px;
-	}
+  height: 36px; 
+}
 .surprise-again-btn-area-v02{
-		width: 132px;
-	}
+  width: 132px;
+}
 .surprise-again-footer-v02 {
   padding: 16px 16px 16px 20px;
- }
+}
 
 
 .by-genre-icon-surprise-v02 {
     font-size: 48px;
-    padding-bottom: 12px; }
+	line-height: 48px;
+}
 .byPeriodName-v02{
 	font-size: 14px;
 	font-weight: bold;
 	}
 .work-info-card{
 	min-height: 148px;
+}
+.headline-1-v02{
+  font-size: 18px;
+  line-height: 20px;
 }
 
 }

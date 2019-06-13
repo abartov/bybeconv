@@ -89,7 +89,7 @@
 .surprise-author-card-bookmark-fold-v02 {
     width: 63px;
 	height: 3px;
-    margin-left: 12px;
+    margin-left: 16px;
     margin-top: -3px; 
 	}
 	
@@ -112,10 +112,10 @@
 .surprise-work-genre-v02 {
     width: 60px;
     height: 86px;
-    padding-top: 36px; }
+    padding-top: 20px; }
 .author-name-v02 {
     padding-top: 3px;
-	font-size: 11px;}
+	font-size: 10px;}
 	
 .surprise-author-name-v02 {
     padding-top: 3px;
@@ -123,16 +123,22 @@
 
 .by-genre-icon-surprise-v02 {
     font-size: 24px;
-    margin-bottom: 2px; }
+	line-height: 24px;
+ }
 
 .by-genre-name-v02{
 		font-size: 16px;
 		margin: 0;
 	}
 .headline-1-v02{
-		font-size: 16px;
-		line-height: 18px;
-	}
+  font-size: 13px;
+  line-height: 14px;
+}
+.headline-2-v02{
+  font-size: 13px;
+  line-height: 14px;
+}
+	
 .byPeriodName-v02{
 		font-weight: bold;
 		font-size: 12px;
@@ -178,6 +184,9 @@
 }
 	.work-info-card{
 	min-height: 96px;
+}
+.by-popup-v02 {
+  margin-top: 54px;
 }
 
 }

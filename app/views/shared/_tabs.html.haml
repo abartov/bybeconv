@@ -41,10 +41,12 @@
               - get_genres.each do |g|
                 %a{href: manifestation_genre_path(genre: g)}
                   %span.by-icon-v02.iconNearText-v02= glyph_for_genre(g)
-                  = "#{t(g)} - #{Manifestation.cached_work_counts_by_genre[g]} #{t(:works)}"
+                  = t(g)
+                  %span{style:'color:black'}= " - #{Manifestation.cached_work_counts_by_genre[g]} #{t(:works)}"
               %a{:href => "#"}
                 %span.by-icon-v02.iconNearText-v02= glyph_for_genre('translations')
-                = "#{t(:translations)} - #{Expression.cached_translations_count} #{t(:works)}"
+                = t(:translations)
+                %span{style:'color:black'}= " - #{Expression.cached_translations_count} #{t(:works)}"
         %li.topMenuItem-v02
           .by-dropdown-v02.dropdown#ddperiods
             %a.by-nav-item-v02{'data-toggle' =>'dropdown', 'data-boundary' => 'ddperiods'}= t(:periods)
@@ -53,7 +55,8 @@
               - Person.periods.each do |p|
                 %a{href: period_path(p[0])}
                   %span.by-icon-v02.iconNearText-v02 P
-                  = "#{t(p[0]+'_long')} - #{work_count_by_period(p[0])} יצירות"
+                  = t(p[0]+'_long')
+                  %span{style:'color:black'}= " - #{work_count_by_period(p[0])} יצירות"
         %li.topMenuItem-v02
           .by-dropdown-v02.dropdown#ddnews
             %a.by-nav-item-v02#nav-news{'data-toggle' =>'dropdown', 'data-boundary' => 'ddnews'}= t(:whatsnew)
@@ -147,7 +150,8 @@
               %li
                 %a{href: manifestation_genre_path(genre: g)}
                   %span.by-icon-v02.iconNearText-v02.iconInMenu= glyph_for_genre(g)
-                  = "#{t(g)} - #{Manifestation.cached_work_counts_by_genre[g]} #{t(:works)}"
+                  = t(g)
+                  %span{style:'color:black'}= " - #{Manifestation.cached_work_counts_by_genre[g]} #{t(:works)}"
             %li
               %a{:href => "#"}
                 %span.by-icon-v02.iconNearText-v02.iconInMenu= glyph_for_genre('translations')
@@ -159,7 +163,8 @@
               %li
                 %a{href: period_path(p[0])}
                   %span.by-icon-v02.iconNearText-v02.iconInMenu P
-                  = "#{t(p[0]+'_long')} - #{work_count_by_period(p[0])} יצירות"
+                  = "#{t(p[0]+'_long')}"
+                  %span{style:'color:black'}= " - #{work_count_by_period(p[0])} יצירות"
         %li.topMenuItemMobile-v02
           %span.caret= t(:whatsnew)
           %ul.nested
