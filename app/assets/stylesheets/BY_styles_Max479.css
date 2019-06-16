@@ -25,14 +25,14 @@
 		width: 20px;
 		height: 140px;
 		font-size: 18px;
-		padding-top: 60px; 
+		padding-top: 60px;
 		margin-right: -6px;
 	}
 .carousel-arrow-left-v02 {
 		width: 20px;
 		height: 140px;
 		font-size: 18px;
-		padding-top: 60px; 
+		padding-top: 60px;
 		margin-right: 6px;
 		margin-left: -6px;
 	}
@@ -99,12 +99,12 @@
 		padding: 0 3px; }
 
 #period-timeline div {
-		width: 18%; 
+		width: 18%;
 	}
 
 body {
 		font-size: 12px;
-		line-height: 14px; 
+		line-height: 14px;
 	}
 .top-element{
 		margin-top: 96px;
@@ -134,19 +134,19 @@ body {
 	}
 .statistics-box-v02 {
 		height: 40px;
-		border-radius: 12px; 
+		border-radius: 12px;
 	}
 
 .stat-big-v02 {
 		font-size: 14px;
 		font-weight: bold;
-		line-height: 12px; 
+		line-height: 12px;
 	}
 .stat-small-v02 {
 		font-size: 8.4px;
 		line-height: 8px;
-		margin-top: 4px; 
-	} 
+		margin-top: 4px;
+	}
 .name-under-btn{
   width: 100%;
   margin-top: 6px;
@@ -162,11 +162,11 @@ body {
   font-size: 16px;
   line-height: 28px;
   font-weight: bold;
-  margin-bottom: 4px; 
+  margin-bottom: 4px;
 }
 .toc h2 {
   font-weight: bold;
-  margin-bottom: 0; 
+  margin-bottom: 0;
 }
 .toc h3 {
   font-weight: bold;
@@ -190,10 +190,7 @@ body {
 	.work-info-card{
 	min-height: 125px;
 }
-.sidenav-v02 {
-  width: 80%;
-  min-width: 280px;
-}
+
 .headline-1-v02{
   font-size: 16px;
   line-height: 18px;
@@ -201,5 +198,10 @@ body {
 .headline-2-v02 {
   font-size: 14px;
  line-height: 16px; }
+
+.sidebar-opened{
+  width: 80%;
+  min-width: 280px;
+}
 	
 }

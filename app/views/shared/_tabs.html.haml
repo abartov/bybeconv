@@ -227,7 +227,7 @@
               %a{href: t(:contact_url)}
                 %span.by-icon-v02.iconNearText-v02.iconInMenu R
                 = t(:contact_us)
-    .menuButton-v02#mobileMenu{onclick: 'openNav()'}= ','
+    .menuButton-v02#mobileMenu= ','
   .col-4.col-lg-3.top-donation-desk-area-v02
     .donation-area-v02
       %a{href: '/page/donate'}
@@ -319,14 +319,17 @@
 
     $('#mobileMenu').click(function() {
       $('#menu-more').css('display','none');
-      $("#mySidenav").css('width','80%');
+      $("#mySidenav").addClass('sidebar-opened');
+      //$("#mySidenav").css('width','80%');
     });
     $('#closeMobileMenu').click(function(){
-      $('#mySidenav').css('width','0');
+      $("#mySidenav").removeClass('sidebar-opened');
+      //$('#mySidenav').css('width','0');
     });
 
     $('#open-overflow').click(function(){
-      $('#mySidenav').css('width','0');
+      $("#mySidenav").removeClass('sidebar-opened')
+      //$('#mySidenav').css('width','0');
       if($('#menu-more').css('display') == 'block')
         $('#menu-more').css('display','none');
       else

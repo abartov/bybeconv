@@ -1757,3 +1757,14 @@ display: none;}
   background-image: url("/assets/work side icons_prose.svg");
   background-repeat: no-repeat;
   background-size:auto;}
+.by-side-menu-seperator{
+  display: none;
+  width: 100%;
+  border-bottom: solid 2px #d9cdd5; }
+
+.by-horizontal-seperator-light {
+  width: 100%;
+  margin-top: 14px;
+  border-bottom: solid 2px #d9cdd5;
+  opacity: 0.5;
+}

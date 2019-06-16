@@ -388,7 +388,7 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
-    rmagick (2.16.0)
+    rmagick (3.1.0)
     rmultimarkdown (6.2.2.1)
       bundler
     ruby_parser (3.11.0)

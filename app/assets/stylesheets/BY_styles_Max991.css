@@ -11,7 +11,7 @@
 .author-page-top-name{
 		display: block;
 }
-	
+
 
 .author-page-top-icons-desktop{
 	display: none;
@@ -299,8 +299,6 @@ display: none;	}
   vertical-align: 5px;
 }
 .sidenav-v02 {
-  width: 360px;
-  padding-left: 16px;
 }
 	.by-side-menu-seperator{
 		display: block;
@@ -309,6 +307,10 @@ display: none;	}
 		font-size: 66px;
 		line-height: 66px;
 	}
+.sidebar-opened{
+  width: 360px;
+  padding-left: 16px;
+}
 }
 
 
