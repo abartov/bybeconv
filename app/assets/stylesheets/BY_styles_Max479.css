@@ -203,5 +203,24 @@ body {
   width: 80%;
   min-width: 280px;
 }
+	.surprise-btn-area-v02 {
+  width: 132px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 260px; }
+
+.surprise-btn-v02 {
+  width: 132px;
+  padding: 6px 12px;
+  height: 36px; }
+
+.surprise-again-btn-v02{
+  width: 132px;
+  padding: 6px 12px;
+  height: 36px; 
+}
+.surprise-again-btn-area-v02{
+  width: 132px;
+}
 	
 }
