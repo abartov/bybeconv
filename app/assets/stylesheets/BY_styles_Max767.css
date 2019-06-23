@@ -71,5 +71,8 @@
 .popup-x-v02 {
   display: none;
 }
+.popup-with-bottom-links{
+		height: calc(100% - 62px);
+	}
 
 }

@@ -8,12 +8,14 @@
 		width: 160px;
 		top: 3px;
 	}
-.author-page-top-name{
+	.author-name-years{
 		display: block;
-}
+		margin-bottom: 12px;
+	}
 
 	.author-page-top-years{
-}
+		vertical-align: text-bottom;
+	}
 
 .author-page-top-icons-desktop{
 	display: none;
@@ -21,15 +23,21 @@
 .author-page-top-icons-mobile{
 	display: inline-block;
 	float: left;
-	padding-top: 6px;
+	position: absolute;
+	left: 15px;
+	bottom: 10px;
 }
 
+	
 .author-page-top-sort-desktop{
 	display: none;
 }
 .author-page-top-sort-mobile{
-	display: inline-block;
-	margin-right: 20px
+	display: inline;
+	margin-left: 8px;
+	position: absolute;
+	left: 56px;
+	bottom: 10px;
 }
 	.top-row-v02{
 	display: none;
@@ -56,7 +64,8 @@
   background-image: url("/assets/bullhorn.svg");
   background-repeat: no-repeat;
   background-size: contain;
-  width: 100%; }
+  width: 100%; 
+  height:auto;}
 
 
 	.flash-work-v02 {
@@ -72,9 +81,10 @@
   background-image: url("/assets/giving hand.svg");
   background-repeat: no-repeat;
   background-size: contain;
-  min-height: 400px;
+  min-height: auto;
   width: 100%; }
 
+	
 	.carousel-demo {
   width: calc(100% - 50px);
   height: 231px;
@@ -83,7 +93,7 @@
   width: 21px;
   height: 231px;
   font-size: 21px;
-  padding-top: 105px;
+  padding-top: 105px; 
   margin-right: -4px;
 	}
 .carousel-arrow-left-v02 {
@@ -96,6 +106,8 @@
 	}
 
 
+	
+	
 .author-card-v02{
 	width: 132px;
     height: 231px;
@@ -134,6 +146,7 @@
     width: 132px;
     height: 190px; }
 
+	
   .surprise-author-pic-v02 {
     width: 132px;
     height: 190px; }
@@ -210,17 +223,11 @@
     display: block;
     float: left; }
 
-  #authors-surprise {
-    height: auto;
-    min-height: 400px; }
+
 
   #works-in-project {
     height: auto;
-    min-height: 400px; }
-
-  #works-surprise {
-    height: auto;
-    min-height: 400px; }
+  }
 
 
   #genre {
@@ -294,25 +301,90 @@ display: none;	}
 .popup-x-v02 {
   width: 30px;
 }
-.author-page-top-years{
-  vertical-align: 5px;
-}
+
 .author-page-top-rights{
-  vertical-align: 5px;
+	margin-right: 0;
+ }
+
+.by-side-menu-seperator{
+  display: block;
 }
-.sidenav-v02 {
+.by-genre-icon-surprise-v02{
+  font-size: 66px;
+  line-height: 66px;
 }
-	.by-side-menu-seperator{
-		display: block;
-	}
-	.by-genre-icon-surprise-v02{
-		font-size: 66px;
-		line-height: 66px;
-	}
+
 .sidebar-opened{
+  display: block;
   width: 360px;
-  padding-left: 16px;
+  padding-left: 15px;
 }
+.about-work-card-bookmark-fold-v02 {
+  width: 101px;
+  height: 5px;
+}
+.about-work-author-card-v02 {
+  width: 96px;
+  height: 138px;
+}
+.about-work-author-pic-v02 {
+  width: 96px;
+  height: 138px;
+}
+	.whats-new-content{
+	  height: auto;
+}
+	.works-in-project-content{
+	height: auto;
+}
+.volunteer-content{
+	height: auto;
+}
+.flash-content{
+	height: auto;
+}
+#works-surprise-replaced {
+  height: auto;}
+.work-page-top-name-and-author{
+  width: 48%;
+}
+.work-chapters-dropdown-field-desktop{
+	display: none;
+}
+.work-chapters-dropdown-field-mobile{
+	display: inline-block;
+}
+.work-name-top-desktop{
+	display: none;
+}
+.work-name-top-mobile{
+	display: block;
+}
+.mobile-work-details{
+  display: block;
+}
+.volunteer-v02 {
+  min-height: auto;
+}
+.card-with-bottom-links{
+	padding-bottom: 58px;
+}
+.link-to-all-v02 {
+  line-height: 28px;
+  }
+	.bottom-right-link{
+  line-height: 28px;
+	}
+.right-side-icon{
+	line-height: 24px;
+	}
+.left-arrow{
+	line-height: 24px;
+	}
+	.by-button-v02{
+		height: 28px;
+		line-height: 28px;
+	}
 }
 
 

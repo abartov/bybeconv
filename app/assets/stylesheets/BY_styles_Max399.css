@@ -73,7 +73,7 @@
 .surprise-author-card-v02 {
     width: 60px;
     height: 105px;
-    margin-left: 12px;
+    margin-left: 16px;
     margin-top: -3px; }
 .about-author-card-v02 {
     width: 60px;
@@ -102,7 +102,7 @@
 	
 .author-pic-v02 {
     width: 60px;
-    height: 86px; 
+    height: 80px; 
 	}
 	
 .surprise-author-pic-v02 {
@@ -114,12 +114,14 @@
     height: 86px;
     padding-top: 20px; }
 .author-name-v02 {
-    padding-top: 3px;
-	font-size: 10px;}
+    padding-top: 2px;
+	font-size: 10px;
+	line-height: 10px;}
 	
 .surprise-author-name-v02 {
-    padding-top: 3px;
-	font-size: 11px;}
+    padding-top: 2px;
+	font-size: 10px;
+	line-height: 10px;}
 
 .by-genre-icon-surprise-v02 {
     font-size: 24px;
@@ -131,7 +133,7 @@
 		margin: 0;
 	}
 .headline-1-v02{
-  font-size: 13px;
+  font-size: 14px;
   line-height: 14px;
 }
 .headline-2-v02{
@@ -182,11 +184,87 @@
 .btn-text-v02{
 	padding: 0 6px;	
 }
-	.work-info-card{
+.work-info-card{
 	min-height: 96px;
 }
 .by-popup-v02 {
   margin-top: 54px;
 }
+.work-page-top-info-card{
+  padding-left: 8px;
+  padding-right: 12px;
+}
+.icon-in-group-v02{
+		margin-left: 4px;
+}
 
+	.work-chapters-dropdown-field{
+	width: 48%;	
+	}
+	.field-v02 {
+  padding: 0 4px;
+}
+body {
+	font-size: 11px;
+	line-height: 12px; 
+}
+.left-arrow {
+  padding-right:3px;
+  font-size: 9px;
+}
+	.right-arrow {
+  padding-left:3px;
+  padding-top: 1px;
+  font-size: 9px;
+}
+	.right-side-icon{
+		font-size: 9px;
+	}
+
+.author-page-top-icons-mobile{
+	left: 6px;
+	bottom: 7px;
+}
+
+.author-page-top-sort-mobile{
+	left: 40px;
+	bottom: 5px;
+}
+.author-name-years{
+	margin-bottom: 10px;
+	}
+.breadcrumbs-arrow {
+  font-size: 9px;
+}
+.dropdown-arrow{
+	font-size: 9px;
+	line-height: 28px;
+}	
+.by-icon-v02 {
+  font-size: 12px; 
+	vertical-align: middle;
+}
+.recommend-card-v02 {
+  height: 110px;
+}
+
+.recommend-card-right-v02 {
+  width: 88px;
+ }
+.recommend-card-pic-frame-v02{
+  width: 48px;
+  height: 48px;
+  margin-right: 20px;
+}
+.recommend-card-pic-placeholder{
+  font-family: ben-yehuda;
+  font-size: 36px;
+	line-height: 48px;
+  height: 48px;
+}
+.iconNearText-v02{
+  margin-left: 6px;
+  vertical-align:middle; 
+}
+	
 }

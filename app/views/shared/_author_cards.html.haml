@@ -31,7 +31,7 @@
     $('[data-toggle="tooltip"]').tooltip();
     $("#scroller#{id_frag}").slick({
       infinite: false,
-      slidesToShow: 5,
+      slidesToShow: 4,
       placeholders: false,
       slidesToScroll: 1,
       arrows: true,
@@ -42,32 +42,35 @@
       //variableWidth: true,
       // appendArrows: '#scroller_container',
       responsive: [{
-        breakpoint: 1650,
-        settings: {
-          slidesToShow: 4,
-          //infinite: true
-        }
-      },{
-        breakpoint: 1350,
+        breakpoint: 1150,
         settings: {
           slidesToShow: 3,
           //infinite: true
         }
       },{
-        breakpoint: 1024,
+        breakpoint: 960,
+        settings: {
+          slidesToShow: 5,
+          //infinite: true
+        }
+      },{
+        breakpoint: 800,
         settings: {
           slidesToShow: 4,
           //infinite: true
         }
-      }, {
-        breakpoint: 600,
+      },{
+        breakpoint: 640,
         settings: {
-          slidesToShow: 2,
-          //dots: true
+          slidesToShow: 3,
+          //infinite: true
         }
       }, {
-        breakpoint: 300,
-        settings: "unslick" // destroys slick
+        breakpoint: 400,
+        settings: {
+          slidesToShow: 3,
+          //dots: true
+        }
       }]
     });
     if(true == #{surprise}) {
