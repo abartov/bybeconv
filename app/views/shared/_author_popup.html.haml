@@ -29,8 +29,9 @@
             .padbot12
               %span
                 %a.by-icon-v02.iconNearText-v02{id: "heart_#{author.id}", style:'float:right'}= 5
-              %span.by-icon-v02.iconNearText-v02= author.rights_icon
+              %span.by-icon-v02.copyright-icon= author.rights_icon
               = author.copyright_as_string
+              %span{ 'data-toggle' => 'tooltip', title: author.public_domain? ? t(:pd_explain): t(:permission_explain)}= '[?]'
             %div
               - unless author.wikipedia_snippet.nil? or author.wikipedia_snippet.length < 10
                 = author.wikipedia_snippet

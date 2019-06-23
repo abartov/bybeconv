@@ -28,14 +28,14 @@
             .by-card-header-v02
               %span.headline-1-v02= t(:works_in_the_database)
               = t(:x_works, {x: @totals[:works]})
-            .by-card-content-v02{style:'padding-top:12px;padding-bottom:40px'}
+            .by-card-content-v02.card-with-bottom-links.works-in-project-content
               .row.top-works{style:'min-height:280px;margin:0'}
                 = render partial: 'works_list', locals: {cache_key: 'top_works', label: t(:most_popular_works_this_month), collection: @pop_works, extra_class: 'works-most-read'}
                 = render partial: 'works_list', locals: {cache_key: 'new_works', label: t(:newest_works), collection: @newest_works, extra_class: 'works-most-new'}
-            .link-to-all-v02
-              %a{style: 'font-weight:bold', href: works_path}
-                %span= t(:to_all_works)
-                %span.left-arrow 1
+              .button-to-full-v02
+                %a{style: 'font-weight:bold', href: works_path}
+                  %span= t(:to_all_works)
+                  %span.left-arrow 1
         / surprise work
         .scroller#work-surprise-scroller
           .slide
@@ -60,9 +60,13 @@
                 %p.headline-1-v02{style:'margin-bottom:0px'}
                   %a{ href: whatsnew_path}= t(:whatsnew)
                 %p{style:'width: 60%;margin-bottom:0px'}= t(:whatsnew_subtitle)
-              .by-card-content-v02{style: 'padding-bottom: 40px; height:1102px'}
+              .by-card-content-v02.card-with-bottom-links.whats-new-content
+                - items = @cached_newsfeed.count
+                - i = 1
                 - @cached_newsfeed.each do |item|
-                  %div{ 'class' => "new-card-v02 #{(item.double || item.itemtype == 'youtube') ? ' double-height-v02' : ''}"}
+                  - theclass = "new-card-v02 #{(item.double || item.itemtype == 'youtube') ? ' double-height-v02' : ''}"
+                  - theclass += ' last-item' if i == items
+                  %div{ 'class' => theclass}
                     .new-info-v02= item.pinned ? '7' : ''
                     .new-card-right-v02
                       - if item.itemtype == 'publication'
@@ -79,10 +83,11 @@
                       - if item.itemtype == 'youtube'
                         .new-image-frame-v02
                           %iframe{frameborder: '0', scrolling: 'no', marginheight: '0', marginwidth: '0', width: '267', height: '150', type: 'text/html', allow: 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture', allowfullscreen:'', src: item.url.sub('watch?v=','embed/')}
-          .link-to-all-v02
-            %a{ href: whatsnew_path}
-              %b= t(:to_all_whatsnew)
-              %span.left-arrow= '1'
+                  - i += 1
+                .button-to-full-v02
+                  %a{ href: whatsnew_path}
+                    %b= t(:to_all_whatsnew)
+                    %span.left-arrow= '1'
         / work spotlight
         = render partial: 'featured_item'
         / author spotlight
@@ -93,7 +98,7 @@
             - unless @featured_volunteer.nil?
               .by-side-card-header-v02
                 %p.headline-1-v02{style: 'margin-bottom: 0'}= t(:our_volunteers)
-              .by-card-content-v02
+              .by-card-content-v02.volunteer-content.card-with-bottom-links
                 %p.headline-2-v02= @featured_volunteer.name
                 .volunteer-about-v02
                   %div

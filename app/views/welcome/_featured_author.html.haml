@@ -2,7 +2,7 @@
   .flash-bg-v02
     .by-side-card-header-v02
       %p.headline-1-v02= t(:featured_author)
-    .by-card-content-v02{style: 'padding-top:0; padding-bottom:70px'}
+    .by-card-content-v02.card-with-bottom-links.card-with-button.flash-content
       - unless @featured_author.nil?
         %p.headline-3-v02
           %a{ href: ''}= @featured_author.title
@@ -16,12 +16,12 @@
             = ' ...'
         - if @fa_rest != ''
           %span.linky.btn#toggle_featured_author{style:'color:white; padding-top:0.5rem'}= t(:to_the_full_feature)
-        .another-flash{style: 'padding-top: 6px'}
+        .another-flash
           = link_to '#' do
             %span.right-side-icon= "'"
             %span{style: 'font-weight: bold'}= t(:another_feature)
         %a{ href: author_toc_path(id: @featured_author.id)}
-          %button.by-button-v02.link-to-all-v02= t(:to_the_author_page)
+          %button.by-button-v02.button-to-full-v02= t(:to_the_author_page)
 
 :javascript
   $(document).ready(function(){

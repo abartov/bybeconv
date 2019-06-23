@@ -22,8 +22,7 @@
         .row
           .col-md-9.col-sm-12
             .padbot12
-              %b= t(:copyright_status)+': '
-              %span.by-icon-v02.iconNearText-v02= copyright_glyph(manifestation.copyright?)
+              %span.by-icon-v02.copyright-icon= copyright_glyph(manifestation.copyright?)
               = textify_copyright_status(manifestation.copyright?)
               %span{ 'data-toggle' => 'tooltip', title: manifestation.copyright? ? t(:permission_explain) : t(:pd_explain)}= '[?]'
               - if e.translation
