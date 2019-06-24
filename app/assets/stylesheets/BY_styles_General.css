@@ -1242,7 +1242,8 @@ ul #menuMobile {
 .right-side-icon {
   font-family: ben-yehuda;
   padding-left: 4px;
-  font-size: 12px;
+  font-size: 14px;
+	line-height: 32px;
   vertical-align:middle; }
 
 .ellipsis:after {
@@ -1558,9 +1559,8 @@ display: none;}
   position: absolute;
   z-index: 4;
 }
-.error-found {
+.error-found-btn {
   height: auto;
-  padding: 6px 6px 3px 6px;
   border-radius: 3px;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
   border: solid 2px #d9cdd5;
@@ -1568,6 +1568,10 @@ display: none;}
   float:left;
   margin-top: -4px;
   color: #660248;
+  padding: 0;
+}
+.error-found{
+  padding: 6px;
 }
 .error-found:hover{
   background-color: #d9cdd5;
@@ -1585,6 +1589,10 @@ display: none;}
 }
 .work-info-card{
 	min-height: 210px;
+}
+.error-found-guide{
+	padding: 6px;
+	background-color: #eeeced;
 }
 .work-title{
 	margin-bottom: 24px;
@@ -1713,6 +1721,11 @@ display: none;}
   border-radius: 6px;
   padding: 0 12px;
   background-color: #eeeced;
+}
+.field-label{
+	font-weight: bold;
+	margin-top: 12px;
+	margin-bottom: 6px;
 }
 .work-chapters-dropdown-field-desktop{
 	width: 35%;

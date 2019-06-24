@@ -33,12 +33,13 @@
 	display: none;
 }
 .author-page-top-sort-mobile{
-	display: inline;
-	margin-left: 8px;
+	display: inline-block;
+	width: 100%;
 	position: absolute;
-	left: 56px;
+	right: 0;
 	bottom: 10px;
-}
+	text-align: center;
+	}
 	.top-row-v02{
 	display: none;
 }
@@ -304,6 +305,7 @@ display: none;	}
 
 .author-page-top-rights{
 	margin-right: 0;
+	display: inline-block;
  }
 
 .by-side-menu-seperator{
@@ -376,7 +378,7 @@ display: none;	}
   line-height: 28px;
 	}
 .right-side-icon{
-	line-height: 24px;
+	line-height: 28px;
 	}
 .left-arrow{
 	line-height: 24px;
