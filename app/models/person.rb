@@ -138,10 +138,6 @@ class Person < ApplicationRecord
     return false # TODO: implement when user prefs implemented
   end
 
-  def copyright_glyph
-    return public_domain ? 'm' : 'x' # per /BY icons font/ben-yehuda/icons-reference.html
-  end
-
   def blog_count
     return 0 # TODO: implement
   end

@@ -1,6 +1,46 @@
-/ Main author page
-#maincontainer.container-fluid.top-element
+/ Main author page (rewritten for v2 based on Ruth's Author_11.html)
+#content.container-fluid.top-element
   = render partial: 'shared/breadcrumbs'
+  .author-page-top
+    .author-page-top-info-card
+      .author-name-years
+        .author-page-top-name.headline-1-v02= @author.name
+        .author-page-top-years!= "(#{@author.life_years})"
+      .author-page-top-rights
+        - if @author.public_domain
+          %span.by-icon-v02.copyright-icon> m
+          = link_to '[?]', '#', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_public_domain), 'data-content' => t(:public_domain_popover)
+        - else
+          %span.by-icon-v02.copyright-icon> x
+          = link_to '[?]', '#', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_permission), 'data-content' => t(:permission_popover)
+      .author-page-top-sort-desktop
+        = t(:sort_and_filter)
+        = link_to '[?]', '#', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_sort_and_filter), 'data-content' => t(:sort_and_filter_popover)
+        .toggle-background-no
+          .toggle-button-no
+      .author-page-top-sort-mobile
+        %button.btn-small-outline-v02.btn-text-v02.notyet= t(:sort_and_filter)
+      .author-page-top-icons-desktop
+        .top-left-icons-group
+          .icon-in-group-v02.notyet
+            %span.linkcolor.pointer.by-icon-v02 3
+          .icon-in-group-v02.notyet
+            %span.linkcolor.pointer.by-icon-v02 9
+          .icon-in-group-v02.notyet{:style => "margin-left:0;"}
+            %span.linkcolor.pointer.by-icon-v02 5
+      .author-page-top-icons-mobile
+        .top-left-icons-group
+          .icon-in-group-v02.notyet{:style => "margin-left:4px;padding-top: 0;"}
+            %span.linkcolor.pointer.by-icon-v02 5
+          #moreMobile-author.by-dropdown-v02
+            %span.linkcolor.pointer#nav-more
+              %span.linkcolor.pointer.by-icon-top-v02 Y
+            #menu-more.by-dropdown-content-v02{:style => "left: 0; margin-top: 4px"}
+              %span.linkcolor.pointer.notyet.by-icon-v02.iconNearText-v02> 3
+              = t(:download)
+              %span.linkcolor.pointer.printbutton.by-icon-v02.iconNearText-v02> 9
+              = t(:print)
+
   .row
     .col-md-1
     .col-md-10

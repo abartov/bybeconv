@@ -59,3 +59,5 @@ body {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's ca
 header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's carousel track having a virtual width of 50000) */
 .by-popup-v02 {width: 100% !important;}
 .share {cursor: pointer;}
+.pointer {cursor: pointer;}
+.linkcolor{color: #660248;}

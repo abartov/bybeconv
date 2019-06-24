@@ -16,7 +16,7 @@
               %span.by-icon-v02.iconNearText-v02{style: 'float: right'}
                 / %a{ href: }
                 = favorite_glyph(author.favorite_of_user)
-              %span.by-icon-v02.copyright-icon= author.copyright_glyph
+              %span.by-icon-v02.copyright-icon= author.rights_icon
               = textify_copyright_status(! author.public_domain)
               %span{ 'data-toggle' => 'tooltip', title: author.public_domain? ? t(:pd_explain): t(:permission_explain)}= '[?]'
 
