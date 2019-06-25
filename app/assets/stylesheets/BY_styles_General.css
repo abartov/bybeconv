@@ -334,7 +334,7 @@ ol > li:before {
   color: #660248;
   font-weight: bold;
   padding: 0 4px;
-  padding-left: 10px; }
+  }
 
 .by-nav-item-v02:hover {
   color: #2b0d22;
@@ -845,7 +845,7 @@ padding-bottom: auto;}
   max-height: 210px; }
 
 .whats-new-v02 {
-  background-color: #d9cdd5; 
+  background-color: #d9cdd5;
   }
 .left-side-card-v02 {
   background-color: #d9cdd5; }
