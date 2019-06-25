@@ -358,8 +358,9 @@ module BybeUtils
           end
           part = genre
           ret_a << "<a name='#{genre}_g'></a>\n"
+        else
+          ret_a << l # deliberately don't add the genre name - provided by UI
         end
-        ret_a << l
       else
         ret_a << l
       end

@@ -1,5 +1,7 @@
 - @htmls.each do |genre, h|
-  .card{style:"margin-top:3rem;#{ margin ? 'margin-right:20rem;' : ''}"}
-    .card-content#actualtoc
+  .by-card-v02{id: 'works-'+genre}
+    .by-card-header-v02
+      %span.by-icon-header-v02= glyph_for_genre(genre)
+      %span.headline-1-v02= textify_genre(genre)
+    .by-card-content-v02{:style => "padding-top: 12px;"}
       != h
-

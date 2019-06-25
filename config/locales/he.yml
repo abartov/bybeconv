@@ -279,6 +279,7 @@ he:
   our_own_content: 'תוכן משלנו:'
   bookshelf: מדפים
   found_mistake: מצאתי שגיאה
+  found_br_mistake_html: מצאתי<BR /> שגיאה
   mistake_important: חשוב לנו שהטקסט יהא מדויק וחף משגיאות
   not_implemented_yet: תכונה זו טרם מומשה. המערכת עדיין בפיתוח.
   works_page: היצירות במאגרנו

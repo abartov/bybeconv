@@ -209,8 +209,9 @@ class ApplicationController < ActionController::Base
     return @@countauthors_cache
   end
   def prep_toc
+    # TODO: cache this!
     old_toc = @author.toc.toc
-    @toc = @author.toc.refresh_links
+    @toc = @author.toc.refresh_links # TODO: remove this when we're sure we're done with the legacy files
     if @toc != old_toc # update the TOC if there have been HtmlFiles published since last time, regardless of whether or not further editing would be saved.
       @author.toc.toc = @toc
       @author.toc.save!
@@ -220,7 +221,8 @@ class ApplicationController < ActionController::Base
     @genres_present = toc_parts.shift # first element is the genres array
     @htmls = toc_parts.map{|genre, tocpart| [genre, MultiMarkdown.new(tocpart).to_html.force_encoding('UTF-8')]}
     credits = @author.toc.credit_section || ''
-    @credits = MultiMarkdown.new(credits).to_html.force_encoding('UTF-8').gsub('<li', '<li class="col-sm-6"').gsub('<ul','<ul class="list-unstyled row"')
+    credits.sub!('## הגיהו', "<div class=\"by-horizontal-seperator-light\"></div>\n\n## הגיהו")
+    @credits = MultiMarkdown.new(credits).to_html.force_encoding('UTF-8').gsub('<li', '<li class="col-sm-4"').gsub('<ul','<ul class="list-unstyled row"')
     @credit_section = @author.toc.credit_section.nil? ? "": @author.toc.credit_section
     @toc_timestamp = @author.toc.updated_at
     @works = @author.all_works_title_sorted
