@@ -128,7 +128,10 @@
     let work_slide;
     $('#authors-surprise').click(function(){
       $('#surprise-scroller').slick('slickNext'); // flip
-      $('#surprise-scroller').append("#{escape_javascript(render(partial: 'shared/surprise_author_again'))}");
+      currentSlide = $('#surprise-scroller').slick('slickCurrentSlide');
+      if(currentSlide != author_slide) {
+        $('#surprise-scroller').append("#{escape_javascript(render(partial: 'shared/surprise_author_again'))}");
+      }
     });
     $('#surprise-scroller').on('afterChange', function(event, slick, currentSlide) {
       if(currentSlide != author_slide) {
@@ -153,7 +156,10 @@
     });
     $('#works-surprise').click(function(){
       $('#work-surprise-scroller').slick('slickNext');
-      $('#work-surprise-scroller').append("#{escape_javascript(render(partial: 'shared/surprise_work_again'))}");
+      currentSlide = $('#work-surprise-scroller').slick('slickCurrentSlide');
+      if(currentSlide != work_slide) {
+        $('#work-surprise-scroller').append("#{escape_javascript(render(partial: 'shared/surprise_work_again'))}");
+      }
     });
     $('#work-surprise-scroller').on('beforeChange', function(event, slick, currentSlide, nextSlide) {
       work_slide = currentSlide;
