@@ -15,7 +15,7 @@
               /, height: (size == :large ? '686px' : '120px')}
               .author-name-v02= author.name
               .author-info-v02
-                %a{'data-toggle' => :modal, 'data-target'=> "#author_popup_#{author.id}"} M
+                %a{'data-toggle' => :modal, 'data-target'=> "#author_popup_#{author.id}", 'data-backdrop' => 'static'} M
   .carousel-arrow-left-v02{id: "leftarrow#{id_frag}"}
     = 1
 

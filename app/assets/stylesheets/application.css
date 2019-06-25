@@ -76,3 +76,6 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
 .mobileLogo{
   display:none;
 }
+.modal-content{
+  background-color: transparent;
+}
