@@ -28,7 +28,7 @@
 	bottom: 10px;
 }
 
-	
+
 .author-page-top-sort-desktop{
 	display: none;
 }
@@ -45,8 +45,12 @@
 }
 	.header-bottom-row-v02{
 		padding-top: 4px;
-	}
+  }
+  .mobileLogo{
+    display:block;
+  }
 	.top-donation-desk-area-v02 {
+  display: none;
   text-align: center;
   padding-top: auto;
   padding-bottom: auto;
@@ -65,7 +69,7 @@
   background-image: url("/assets/bullhorn.svg");
   background-repeat: no-repeat;
   background-size: contain;
-  width: 100%; 
+  width: 100%;
   height:auto;}
 
 
@@ -85,7 +89,7 @@
   min-height: auto;
   width: 100%; }
 
-	
+
 	.carousel-demo {
   width: calc(100% - 50px);
   height: 231px;
@@ -94,7 +98,7 @@
   width: 21px;
   height: 231px;
   font-size: 21px;
-  padding-top: 105px; 
+  padding-top: 105px;
   margin-right: -4px;
 	}
 .carousel-arrow-left-v02 {
@@ -107,8 +111,8 @@
 	}
 
 
-	
-	
+
+
 .author-card-v02{
 	width: 132px;
     height: 231px;
@@ -147,7 +151,7 @@
     width: 132px;
     height: 190px; }
 
-	
+
   .surprise-author-pic-v02 {
     width: 132px;
     height: 190px; }

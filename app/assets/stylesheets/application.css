@@ -73,3 +73,6 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
 .error-found-col{
   height: min-content;
 }
+.mobileLogo{
+  display:none;
+}
