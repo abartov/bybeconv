@@ -13,9 +13,8 @@ Bybeconv::Application.configure do
 
   ## uncomment to test caching
   #config.action_controller.perform_caching = true # uncomment to test caching
-  config.cache_store = :mem_cache_store
-
-
+  # config.cache_store = :mem_cache_store, { 'localhost', AppConstants.cache_nonce
+  config.cache_store = :dalli_store, '127.0.0.1', {namespace: ENV['CACHE_NONCE'], value_max_bytes: 40*1024*1024}
   # temp
   config.i18n.enforce_available_locales = false
 

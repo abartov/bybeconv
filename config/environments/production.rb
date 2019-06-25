@@ -39,7 +39,8 @@ Bybeconv::Application.configure do
   # config.logger = SyslogLogger.new
 
   # Use a different cache store in production
-  config.cache_store = :mem_cache_store, '127.0.0.1', {value_max_bytes: 40*1024*1024}
+  # config.cache_store = :mem_cache_store, '127.0.0.1', {value_max_bytes: 40*1024*1024}
+  config.cache_store = :dalli_store, '127.0.0.1', {namespace: ENV['CACHE_NONCE'], value_max_bytes: 40*1024*1024}
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server
   # config.action_controller.asset_host = "http://assets.example.com"
