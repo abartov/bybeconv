@@ -40,6 +40,18 @@
               = t(:download)
               %span.linkcolor.pointer.printbutton.by-icon-v02.iconNearText-v02> 9
               = t(:print)
+  .row.error-found-row
+    .col.side-menu
+      = render partial: 'shared/genre_navbar', locals: {genres_present: @genres_present, page: :toc, curated_content: false} # TODO: implement emitting curated content in TOC pages, and then un-hardcode this
+    .col.error-found-col
+      %button.error-found-btn{:href => "#"}
+        .error-found
+          .error-found-text
+            מצאתי
+            %br>/
+            שגיאה
+          .error-found-icon g
+    .col-lg-4
 
   .row
     .col-md-1
@@ -90,7 +102,6 @@
                   %span.fa.fa-search.search-icon
                   %input{placeholder: t(:find_work_by_author, author:@author.name), style:'background-color: #eeeced;'}
     .col-md-1
-  = render partial: 'shared/genre_navbar', locals: {genres_present: @genres_present, page: :toc}
   .row
     .col-md-1
       = render partial: 'toolbox'

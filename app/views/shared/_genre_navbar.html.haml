@@ -1,26 +1,25 @@
-.internal-navbar
-  .row
-    .col-md-1
-    .col-md-10
-      #internal-genre-nav{style:'text-align:center; align-content:center;'}
-        %div{style:'display:inline-block; padding-top:1rem;'}
-          .genre-nav
-            %p= t(:nav_by_genre)
-          - genres = get_genres.push('translations')
-          - genres.push('allwriters') if [:authors, :works].include?(page)
-          - genres.each do |g|
-            - if genres_present.include?(g)
-              .genre-nav
-                .linky.genre_link{'data-anchor' => g+'_g'}
-                  - iconname = case g when 'translations' then 'translate' when 'fables' then 'fables-fox' else g end
-                  %span{class: "icon-by#{iconname} nav-icon"}
-                  %p= textify_genre(g)
-    .col-md-1
+- genres = get_genres.push('translations')
+- first = true
+.by-card-v02
+  - genres.each do |g|
+    - if genres_present.include?(g)
+      %button{:class => 'side-menu-item' + (first ? ' current-menu-item' : ''), id: g+'_button'}
+        .side-menu-icon= glyph_for_genre(g)
+        .side-menu-name= textify_genre(g)
+      - first = false
+  - if curated_content
+    .by-side-menu-seperator
+    %button.side-menu-item.side-menu-edit.notyet{:href => "#"}
+      .side-menu-icon Q
 :javascript
-  $(document).ready(function(){
-    var offsetTop = #{ @readmode ? 40 : 250 };
-    $('.genre_link').click(function(){
-      elem = $('a[name='+$(this).attr('data-anchor'));
-      window.scrollTo(0, elem.offset().top - offsetTop);
+  $(document).ready(function() {
+    $('.side-menu-item').click(function() {
+      $('.side-menu-item').removeClass('current-menu-item');
+      $(this).addClass('current-menu-item');
+      anchor = $(this).attr('id').replace('_button','_g');
+      $('html, body').animate({
+        scrollTop: $('a[name='+anchor+']').offset().top - 100
+      }, 100);
+
     });
   });

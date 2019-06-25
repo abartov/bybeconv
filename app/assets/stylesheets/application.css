@@ -61,3 +61,8 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
 .share {cursor: pointer;}
 .pointer {cursor: pointer;}
 .linkcolor{color: #660248;}
+.white {color:white;}
+.current-menu-item a{
+	color: #ffffff;
+	background-color: #660248;
+}
