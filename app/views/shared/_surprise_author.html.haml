@@ -37,7 +37,9 @@
                 - author.most_read(5).each do |mhash|
                   - genre = mhash[:genre]
                   - genrebit = genre.nil? ? '' : " (#{textify_genre(genre)})"
-                  %li= link_to mhash[:title]+genrebit, manifestation_read_path(mhash[:id])
+                  %li
+                    = link_to mhash[:title], manifestation_read_path(mhash[:id])
+                    = ' '+genrebit
 
             .padbot12
               / %b= t(:recommendations)
