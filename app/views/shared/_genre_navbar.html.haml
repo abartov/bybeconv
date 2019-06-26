@@ -1,16 +1,19 @@
 - genres = get_genres.push('translations')
 - first = true
-.by-card-v02
-  - genres.each do |g|
-    - if genres_present.include?(g)
-      %button{:class => 'side-menu-item' + (first ? ' current-menu-item' : ''), id: g+'_button'}
-        .side-menu-icon= glyph_for_genre(g)
-        .side-menu-name= textify_genre(g)
-      - first = false
-  - if curated_content
-    .by-side-menu-seperator
-    %button.side-menu-item.side-menu-edit.notyet{:href => "#"}
-      .side-menu-icon Q
+%nav#genrenav{'class' => 'navbar'}
+  %ul.navbar-nav.flex-column.by-card-v02#genre-nav{'aria-orientation' => 'vertical'}
+    - genres.each do |g|
+      - if genres_present.include?(g)
+        %li.nav-item
+          %a{'class' => 'nav-link '+(first ? 'active' : ''), id: g+'_button', href: "#works-#{g}", 'aria-controls' => "##{g}_g", 'aria-selected' => (first ? 'true' : 'false')}
+            .side-menu-icon= glyph_for_genre(g)
+            .side-menu-name= textify_genre(g)
+        - first = false
+    - if curated_content
+      %li.by-side-menu-seperator
+      %li.nav-item
+        %button.nav-link.nav-link-edit.notyet{:href => "#"}
+          .side-menu-icon Q
 :javascript
   $(document).ready(function() {
     $('.side-menu-item').click(function() {

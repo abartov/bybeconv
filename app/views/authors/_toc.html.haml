@@ -1,5 +1,5 @@
 - @htmls.each do |genre, h|
-  .by-card-v02{id: 'works-'+genre}
+  .by-card-v02{id: 'works-'+genre, role: 'tabpanel'}
     .by-card-header-v02
       %span.by-icon-header-v02= glyph_for_genre(genre)
       %span.headline-1-v02= textify_genre(genre)

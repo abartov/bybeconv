@@ -222,7 +222,7 @@ class ApplicationController < ActionController::Base
     @htmls = toc_parts.map{|genre, tocpart| [genre, MultiMarkdown.new(tocpart).to_html.force_encoding('UTF-8')]}
     credits = @author.toc.credit_section || ''
     credits.sub!('## הגיהו', "<div class=\"by-horizontal-seperator-light\"></div>\n\n## הגיהו")
-    @credits = MultiMarkdown.new(credits).to_html.force_encoding('UTF-8').gsub('<li', '<li class="col-sm-4"').gsub('<ul','<ul class="list-unstyled row"')
+    @credits = MultiMarkdown.new(credits).to_html.force_encoding('UTF-8')
     @credit_section = @author.toc.credit_section.nil? ? "": @author.toc.credit_section
     @toc_timestamp = @author.toc.updated_at
     @works = @author.all_works_title_sorted

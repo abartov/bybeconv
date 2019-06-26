@@ -43,7 +43,7 @@
               %span.linkcolor.pointer.printbutton.by-icon-v02.iconNearText-v02> 9
               = t(:print)
     .row.error-found-row
-      .col.side-menu
+      .col
         = render partial: 'shared/genre_navbar', locals: {genres_present: @genres_present, page: :toc, curated_content: false} # TODO: implement emitting curated content in TOC pages, and then un-hardcode this
       .col.error-found-col
         %button.error-found-btn.notyet
@@ -99,8 +99,9 @@
             - unless @toc.nil?
               = render partial: 'toc', locals: {margin: true}
               .by-card-v02#volunteers
-                .by-card-header-v02.headline-1-v02= t(:volunteers_who_helped, {author: @author.name, gender_letter: @author.gender_letter})
-                .by-card-content-v02{:style => "padding-top: 12px;"}
+                .by-card-header-v02
+                  %span.headline-1-v02= t(:volunteers_who_helped, {author: @author.name, gender_letter: @author.gender_letter})
+                .by-card-content-v02
                   .credits
                     != @credits
             - else

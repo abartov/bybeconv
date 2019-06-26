@@ -52,7 +52,7 @@
   <% end %>
   <%= csrf_meta_tags %>
 </head>
-<body dir="rtl" align="right">
+<body dir="rtl" align="right" style="position:relative;" data-spy="scroll" data-target="#genrenav">
 <% unless @print
     flash.each do |name, msg| -%>
       <%= content_tag :div, msg, class: "top-element #{name}" %>
