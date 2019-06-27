@@ -151,7 +151,7 @@
                 %a{href: manifestation_genre_path(genre: g)}
                   %span.by-icon-v02.iconNearText-v02.iconInMenu= glyph_for_genre(g)
                   = t(g)
-                  %span{style:'color:black'}= " - #{Manifestation.cached_work_counts_by_genre[g]} #{t(:works)}"
+                  %span{style:'color:black; font-weight: normal;'}= " - #{Manifestation.cached_work_counts_by_genre[g]} #{t(:works)}"
             %li
               %a{:href => "#"}
                 %span.by-icon-v02.iconNearText-v02.iconInMenu= glyph_for_genre('translations')
@@ -163,8 +163,8 @@
               %li
                 %a{href: period_path(p[0])}
                   %span.by-icon-v02.iconNearText-v02.iconInMenu P
-                  = "#{t(p[0]+'_long')}"
-                  %span{style:'color:black'}= " - #{work_count_by_period(p[0])} יצירות"
+                  = t(p[0])
+                  %span{style:'color:black; font-weight: normal;'}= " - #{work_count_by_period(p[0])} יצירות"
         %li.topMenuItemMobile-v02
           %span.caret= t(:whatsnew)
           %ul.nested
@@ -288,6 +288,7 @@
 
   var toggler = document.getElementsByClassName("caret");
   var i;
+  var last_opened = null;
   function jump(h){
     $('#mySidenav').css('width','0');
     var url = location.href;               //Save down the URL without hash.
@@ -297,8 +298,11 @@
 
   for (i = 0; i < toggler.length; i++) {
     toggler[i].addEventListener("click", function() {
+      if(last_opened != null && last_opened != this.parentElement)
+        last_opened.querySelector(".nested").classList.toggle("active");
       this.parentElement.querySelector(".nested").classList.toggle("active");
       this.classList.toggle("caret-down");
+      last_opened = this.parentElement;
     });
   }
   $(document).ready(function(){
