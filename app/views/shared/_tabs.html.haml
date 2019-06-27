@@ -155,7 +155,8 @@
             %li
               %a{:href => "#"}
                 %span.by-icon-v02.iconNearText-v02.iconInMenu= glyph_for_genre('translations')
-                = "#{t(:translations)} - #{Expression.cached_translations_count} #{t(:works)}"
+                = t(:translations)
+                %span{style:'color:black; font-weight: normal;'}= " - #{Expression.cached_translations_count} #{t(:works)}"
         %li.topMenuItemMobile-v02
           %span.caret= t(:periods)
           %ul.nested
