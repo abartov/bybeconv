@@ -299,11 +299,14 @@
 
   for (i = 0; i < toggler.length; i++) {
     toggler[i].addEventListener("click", function() {
-      if(last_opened != null && last_opened != this.parentElement)
-        last_opened.querySelector(".nested").classList.toggle("active");
+      if(last_opened != null && last_opened != this)
+      {
+        last_opened.parentElement.querySelector(".nested").classList.remove("active");
+        last_opened.classList.remove("caret-down");
+      }
       this.parentElement.querySelector(".nested").classList.toggle("active");
       this.classList.toggle("caret-down");
-      last_opened = this.parentElement;
+      last_opened = this;
     });
   }
   $(document).ready(function(){
