@@ -2,7 +2,6 @@
  * This is a manifest file that'll automatically include all the stylesheets available in this directory
  * and any sub-directories. You're free to add application-wide styles to this file and they'll appear at
  * the top of the compiled file, but it's generally better to create a new file per style scope.
- *= require_self
  *= require jquery-ui
  *= require BY_styles_General.css
  *= require BY_styles_Max1279.css
@@ -12,6 +11,7 @@
  *= require BY_styles_Max479.css
  *= require BY_styles_Max399.css
  *= require_tree .
+ *= require_self
 */
 /*
 *= require slick
@@ -55,7 +55,18 @@
 .dropdown-menu {
   font-size: initial; /* override Bootstrap's default */
 }
-body {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's carousel track having a virtual width of 50000) */
+body {
+  overflow-x: hidden; /* prevent horizontal scrollbar (caused by Slick's carousel track having a virtual width of 50000) */
+}
+.top-element{
+  margin-top: 124px;
+}
+.scrolled .top-element {
+  margin-top: 93px;
+}
+.author-page-top{
+  top:44px;
+}
 header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's carousel track having a virtual width of 50000) */
 .by-popup-v02 {width: 100% !important;}
 .share {cursor: pointer;}
@@ -66,16 +77,21 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
 	color: #ffffff;
 	background-color: #660248;
 }
-.error-found-row{
-  overflow-y: visible;
-  height: 50px;
-}
 .error-found-col{
   height: min-content;
+}
+.modal-content{
+  background-color: transparent;
 }
 .mobileLogo{
   display:none;
 }
-.modal-content{
-  background-color: transparent;
+
+@media screen and (max-width: 767px) {
+  .mobileLogo{
+    display:block;
+  }
+  .author-page-top{
+    top:34px;
+  }
 }

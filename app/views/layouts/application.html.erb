@@ -178,13 +178,16 @@
 <script>
   $(document).ready(function() {
     var header = $("#top-bar");
+    var body = $('body');
 
     $(window).scroll(function() {
         var scroll = $(window).scrollTop();
         if (scroll >= 100) {
             header.addClass("scrolled");
+            body.addClass("scrolled");
         } else {
             header.removeClass("scrolled");
+            body.removeClass("scrolled");
         }
     });
     $('.notyet').click(function(){
