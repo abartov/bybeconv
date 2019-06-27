@@ -13,6 +13,8 @@
     .by-card-header-v02
       %span.headline-1-v02
         %a{href: manifestation_read_path(manifestation.id)}= manifestation.title
+      - if manifestation.author_string.length > 20
+        %br
       != t(:by)+': '+authors_linked_string(manifestation)
       - if e.translation
         %div
