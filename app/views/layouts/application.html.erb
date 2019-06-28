@@ -185,7 +185,7 @@
         if (scroll >= 100) {
             header.addClass("scrolled");
             body.addClass("scrolled");
-        } else {
+        } else if(scroll <= 70) {
             header.removeClass("scrolled");
             body.removeClass("scrolled");
         }
