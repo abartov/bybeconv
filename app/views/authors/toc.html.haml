@@ -131,6 +131,7 @@
                 /     %span{:style => "font-weight: bold"} לכל מה שחדש
                 /     %span.left-arrow 1
           - unless @featured.empty?
+            - featured = @featured[0]
             .by-card-v02.flash-work-v02
               .flash-bg-v02
                 .by-side-card-header-v02
@@ -138,27 +139,26 @@
                 .by-card-content-v02.card-with-button.flash-content
                   .flash-text-v02
                     %p.headline-2-v02
-                      = @featured.title
-                    - unless @featured.user.nil?
+                      = featured.title
+                    - unless featured.user.nil?
                       %p
                         = t(:by)+' '
-                        = link_to @featured.user.name, volunteer_show_path(@featured.user)
-                    %p
-                      המלצה על ספרו של
-                      %a{:href => "#"} אפרים קישון
-                      מאת
-                      %a{:href => "#"} צחה ועקנין
+                        = link_to featured.user.name, volunteer_show_path(featured.user)
                     .text-height-flash-work
                       = @fc_snippet
                       - if @fc_rest != ''
                         = ' ...'
                         / TODO: add a popup
-
-                  .bottom-right-link
-                    %a{:href => "#"}
-                      %span.right-side-icon '
-                      %span{:style => "font-weight: bold"} הצגת זרקור נוסף
-                  %button.by-button-v02.button-to-full-v02{:href => "#"} ליצירה באתר
+                  /.bottom-right-link
+                  /  %a{:href => "#"}
+                  /    %span.right-side-icon '
+                  /    %span{:style => "font-weight: bold"} הצגת זרקור נוסף
+                  - unless featured.manifestation.nil?
+                    %a{ href: manifestation_read_path(id: featured.manifestation.id)}
+                      %button.by-button-v02.button-to-full-v02= t(:to_the_work_in_the_site)
+                  - unless featured.external_link.nil? or featured.external_link.empty?
+                    %a{ href: featured.external_link}
+                      %button.by-button-v02.button-to-full-v02= t(:to_external_content)
 
 
 

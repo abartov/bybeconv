@@ -163,7 +163,7 @@ class AuthorsController < ApplicationController
       @latest = textify_titles(@author.cached_latest_stuff)
       @featured = @author.featured_work
       unless @featured.empty?
-        (@fc_snippet, @fc_rest) = snippet(@featured.body, 500) # prepare snippet for collapsible
+        (@fc_snippet, @fc_rest) = snippet(@featured[0].body, 500) # prepare snippet for collapsible
       end
       unless @author.toc.nil?
         prep_toc
