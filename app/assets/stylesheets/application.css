@@ -82,6 +82,7 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
 }
 .error-found-col{
   height: min-content;
+  width:min-content;
 }
 .modal-content{
   background-color: transparent;
