@@ -50,7 +50,7 @@
           .error-found
             .error-found-text= t(:found_br_mistake_html)
             .error-found-icon g
-      .col-lg-4
+      .col-lg-4{style:'height:1px'}
   .row
     .col-12.col-lg-8
       .row
@@ -107,6 +107,58 @@
             - else
               = render partial: 'generated_toc'
     .col-12.col-lg-4
+      .row
+        .col.side-menu-area-left
+        .col
+          .by-card-v02.whats-new-v02
+            #author-whats-new-bg
+              .by-side-card-header-v02
+                %p.headline-1-v02{:style => "margin-bottom: 0"}
+                  = t(:latest_updates)
+                  /= link_to t(:latest_updates), whatsnew_path # TODO: re-enable when main whatsnew can be filtered by author
+              .by-card-content-v02.card-with-bottom-links.author-whats-new-content
+                .new-card-v02.last-item
+                  .new-info-v02 !
+                  .new-card-right-v02
+                    .new-card-type-v02 q
+                  .new-card-left-v02
+                    %a{:href => "#"}
+                      %p.headline-2-v02.new-headline-v02= t(:latest_added_works, {gender_letter: @author.gender_letter})
+                    %p.text-height-new
+                      != @latest
+                / .link-to-all-v02 # TODO: re-enable when main whatsnew can be filtered by author
+                /   %a{:href => "#"}
+                /     %span{:style => "font-weight: bold"} לכל מה שחדש
+                /     %span.left-arrow 1
+          - unless @featured.empty?
+            .by-card-v02.flash-work-v02
+              .flash-bg-v02
+                .by-side-card-header-v02
+                  %p.headline-1-v02= t(:featured_item)
+                .by-card-content-v02.card-with-button.flash-content
+                  .flash-text-v02
+                    %p.headline-2-v02
+                      = @featured.title
+                    - unless @featured.user.nil?
+                      %p
+                        = t(:by)+' '
+                        = link_to @featured.user.name, volunteer_show_path(@featured.user)
+                    %p
+                      המלצה על ספרו של
+                      %a{:href => "#"} אפרים קישון
+                      מאת
+                      %a{:href => "#"} צחה ועקנין
+                    .text-height-flash-work
+                      = @fc_snippet
+                      - if @fc_rest != ''
+                        = ' ...'
+                        / TODO: add a popup
+
+                  .bottom-right-link
+                    %a{:href => "#"}
+                      %span.right-side-icon '
+                      %span{:style => "font-weight: bold"} הצגת זרקור נוסף
+                  %button.by-button-v02.button-to-full-v02{:href => "#"} ליצירה באתר
 
 
 

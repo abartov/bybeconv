@@ -67,7 +67,7 @@
                                     %img{src:'/assets/corner.png', alt: t(:background), width:80, height:80}
                                   .replace-icon.text-on-dark{style:'margin-bottom:0.6rem'}
                                     %div
-                                      .linky{style:'color:white'}= '?'
+                                      .pointer.white= '?'
                                 .card.genre-card.small-surprise.item{id: "#{g}_side2"}
                                   = render partial: 'shared/surprise_author', locals: {author: @surprise_by_genre[g], id_frag: g, passed_genre: g, side: '2', passed_mode: 'cards'}
                         .row{style:'margin-top:4.3rem'}
@@ -97,8 +97,7 @@
                 .row
                   .col-xs-12
                     %div
-                      /%a.btn.linky{href: authors_all_path}= t(:to_all_authors)
-                      %a.btn.linky{href: "javascript:alert('#{t(:not_implemented_yet)}');"}= t(:to_all_authors)
+                      %a.btn.pointer{href: all_authors_path}= t(:to_all_authors)
           / left side
           - cache 'authors_left_side' do
             .col-md-4#authors_left_side{style:'padding-left:0'}
@@ -149,7 +148,7 @@
                                   = ' ...'
                               %div{:style => "position:static; bottom: 1.5rem; left:1.5rem"}
                                 - if @fa_rest != ''
-                                  %span.linky.btn#toggle_featured_author{style:'color:white; padding-top:0.5rem'}= t(:to_the_full_feature)
+                                  %span.pointer.btn#toggle_featured_author{style:'color:white; padding-top:0.5rem'}= t(:to_the_full_feature)
                                 %a{ href: author_toc_path(@featured_author.person)}
                                   .btn{style: 'padding-top:0.5rem'}
                                     %b= t(:to_the_author_page)

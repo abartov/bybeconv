@@ -1368,7 +1368,7 @@ ul #menuMobile {
 
 
 #breadcrumbs{
-	position: absolute;
+	position: fixed;
 	top:120px;
 	padding-top: 15px;
 	padding-bottom: 15px;
@@ -1387,8 +1387,9 @@ ul #menuMobile {
 }
 .author-page-top {
   position: -webkit-sticky;
-  position: sticky;
+  position: absolute;
   top:164px;
+  width: 90%;
   z-index:5;
 }
 .author-page-top-info-card{
@@ -1988,4 +1989,15 @@ display: none;}
 .author-page-content{
 	position: relative;
 	top: 164px;
+}
+.scrolled #breadcrumbs{
+	position: absolute;
+	top:110px;
+	padding-top: 15px;
+	padding-bottom: 15px;
+}
+.stick-to-top{
+	width: 90%;
+	margin-left: auto;
+	margin-right: auto;
 }

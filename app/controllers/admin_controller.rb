@@ -344,7 +344,7 @@ class AdminController < ApplicationController
   end
 
   def featured_content_create
-    @fc = FeaturedContent.new(params[:featured_content])
+    @fc = FeaturedContent.new(fc_params)
     @fc.user = current_user
     unless params[:linked_manifestation].empty?
       @fc.manifestation = Manifestation.find(params[:linked_manifestation])

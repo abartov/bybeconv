@@ -7,7 +7,7 @@ class Person < ApplicationRecord
 
   # relationships
   belongs_to :toc
-  # belongs_to :period
+  has_many :featured_contents
   has_many :creations
   has_many :works, through: :creations, class_name: 'Work'
   has_many :realizers
@@ -214,6 +214,22 @@ class Person < ApplicationRecord
       ret[m.expressions[0].genre] << m
     end
     return ret
+  end
+
+  def featured_work
+    Rails.cache.fetch("au_#{self.id}_featured", expires_in: 24.hours) do # memoize
+      self.featured_contents.order('RAND()').limit(1)
+    end
+  end
+
+  def latest_stuff
+    Manifestation.all_published.joins(expressions: [:realizers, works: :creations]).includes(:expressions).where("(creations.person_id = #{self.id}) or ((realizers.person_id = #{self.id}) and (realizers.role = #{Realizer.roles[:translator]}))").order(created_at: :desc).limit(20)
+  end
+
+  def cached_latest_stuff
+    Rails.cache.fetch("au_#{self.id}_latest_stuff", expires_in: 24.hours) do
+      latest_stuff
+    end
   end
 
   def cached_original_works_by_genre

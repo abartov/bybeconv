@@ -299,6 +299,17 @@ end
     authors
   end
 
+  def textify_titles(manifestations) # translations will also include *original* author names
+    ret = []
+    manifestations.each do |m|
+      ret << "<a href=\"#{url_for(controller: :manifestation, action: :read, id: m.id)}\">#{m.title}</a>"
+      if m.expressions[0].translation
+        ret[-1] += ' / '+m.authors_string
+      end
+    end
+    return ret.join('; ')
+  end
+
   def textify_new_pubs(author)
     ret = ''
     author.each do |genre|

@@ -8,9 +8,9 @@
 .col-sm-6
   .search.on-card-search-field
     %span.fa.fa-search.search-icon
-    %span.fa.linky{'data-search'=>'next'}!= "&darr;"
-    %span.fa.linky{'data-search'=>'prev'}!="&uarr;"
-    %span.fa.linky{'data-search'=>'clear'}='✖'
+    %span.fa.pointer{'data-search'=>'next'}!= "&darr;"
+    %span.fa.pointer{'data-search'=>'prev'}!="&uarr;"
+    %span.fa.pointer{'data-search'=>'clear'}='✖'
     %input#searchinwork{ style:'display:inline', type: :search, placeholder: t(:search_in_text)}
 :javascript
   $(document).ready(function(){

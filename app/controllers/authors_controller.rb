@@ -160,6 +160,11 @@ class AuthorsController < ApplicationController
       # temporary protection against null ToCs while we're migrating
       impressionist(@author) unless is_spider? # log actions for pageview stats
       @og_image = @author.profile_image.url(:thumb)
+      @latest = textify_titles(@author.cached_latest_stuff)
+      @featured = @author.featured_work
+      unless @featured.empty?
+        (@fc_snippet, @fc_rest) = snippet(@featured.body, 500) # prepare snippet for collapsible
+      end
       unless @author.toc.nil?
         prep_toc
       else

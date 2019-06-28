@@ -77,6 +77,9 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
 	color: #ffffff;
 	background-color: #660248;
 }
+.error-found-row{
+  height: 1px;
+}
 .error-found-col{
   height: min-content;
 }

@@ -379,6 +379,8 @@ he:
   new_authors: יוצרים חדשים במאגר
   new_author: יוצר חדש
   latest_facebook: עדכונים אחרונים בעמוד הפייסבוק
+  latest_updates: עדכונים אחרונים
+  latest_added_works: יצירותי%{gender_letter} האחרונות שראו אור בפרויקט
   background: רקע
   placeholder_image: "צללית יוצר/ת"
   new_works: יצירות חדשות במאגר

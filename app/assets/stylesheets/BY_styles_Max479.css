@@ -19,7 +19,7 @@
 
 .carousel-demo {
 		width: calc(100% - 42px);
-		height: 140px;
+		height: 148px;
 	}
 .carousel-arrow-right-v02 {
 		width: 20px;
@@ -39,12 +39,12 @@
 
 .author-card-v02{
 		width: 80px;
-		height: 140px;
+		height: 148px;
 		margin: 0 6px;
 	}
 .surprise-author-card-v02 {
 		width: 80px;
-		height: 140px;
+		height: 148px;
 		margin-left: 15px;
 		margin-top: -4px; }
 .about-author-card-v02 {
@@ -54,7 +54,7 @@
 
 .surprise-work-card-v02 {
 		width: 80px;
-		height: 140px;
+		height: 148px;
 		margin-left: 15px;
 		margin-top: -4px; }
 
@@ -83,10 +83,13 @@
 		padding-top: 24px; }
 
 .surprise-author-name-v02 {
-		padding-top: 5px;  }
+	padding-top: 0;
+  }
 
 .author-name-v02 {
-		padding-top: 5px;  }
+	font-size: 11px;
+	line-height: 11px;
+		 }
 
 .by-genre-icon-surprise-v02 {
 		font-size: 36px;
@@ -158,36 +161,97 @@ body {
 .error-found-col{
 	padding: 0;
 }
+	
 .toc h1 {
-  font-size: 15px;
-  line-height: 28px;
+  font-size: 16px;
   font-weight: bold;
-  margin-bottom: 4px; 
+  margin-bottom: 4px;
 }
 .toc h2 {
+  font-size: 15px;
   font-weight: bold;
-  margin-bottom: 0; 
+  margin-bottom: 4px;
 }
 .toc h3 {
+  font-size: 14px;
   font-weight: bold;
-  margin-bottom: 0;
-  text-indent: 12px;
+  margin-bottom: 4px;
 }
 .toc h4 {
-  font-size: 12px;
-  line-height: 14px;
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 4px;
 }
 .toc h5 {
   font-size: 12px;
-  line-height: 14px;
-  text-indent: 12px;
+  font-weight: bold;
+  margin-bottom: 4px;
 }
 .toc h6 {
-  font-size: 12px;
-  line-height: 14px;
-  text-indent: 24px;
+  font-size: 10px;
+  margin-right:0;
+  margin-bottom: 4px;
 }
-	.work-info-card{
+#actualtext h1{
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+#actualtext h2 {
+  font-size: 15px;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+#actualtext h3 {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+#actualtext h4 {
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+#actualtext h5 {
+  font-size: 12px;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+#actualtext h6 {
+  font-size: 10px;
+  margin-right:0;
+  margin-bottom: 4px;
+}
+.credits h1 {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+.credits h2 {
+  font-size: 15px;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+.credits h3 {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+.credits h4 {
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+.credits h5 {
+  font-size: 12px;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+.credits h6 {
+  font-size: 10px;
+  margin-bottom: 4px;
+}
+.work-info-card{
 	min-height: 125px;
 }
 
@@ -261,4 +325,7 @@ body {
   -moz-column-count: 2; /* Firefox */
   column-count: 2;
 }
+	.author-name-area{
+		height: 33px;
+	}
 }

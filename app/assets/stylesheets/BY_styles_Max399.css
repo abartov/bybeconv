@@ -39,7 +39,7 @@
 
 .carousel-demo {
   width: calc(100% - 39px);
-  height: 105px;
+  height: 113px;
 }
 .carousel-arrow-right-v02 {
   width: 20px;
@@ -67,12 +67,12 @@
 	
 .author-card-v02{
 	width: 60px;
-    height: 105px;
+    height: 113px;
 	margin: 0 3px;
 	}
 .surprise-author-card-v02 {
     width: 60px;
-    height: 105px;
+    height: 113px;
     margin-left: 16px;
     margin-top: -3px; }
 .about-author-card-v02 {
@@ -82,7 +82,7 @@
 	}
 .surprise-work-card-v02 {
     width: 60px;
-    height: 105px;
+    height: 113px;
     margin-top: -3px; 
 	}
 
@@ -107,21 +107,20 @@
 	
 .surprise-author-pic-v02 {
     width: 60px;
-    height: 86px; }
+    height: 80px; }
 
 .surprise-work-genre-v02 {
     width: 60px;
-    height: 86px;
+    height: 80px;
     padding-top: 20px; }
 .author-name-v02 {
-    padding-top: 2px;
 	font-size: 10px;
 	line-height: 10px;}
 	
 .surprise-author-name-v02 {
-    padding-top: 2px;
 	font-size: 10px;
-	line-height: 10px;}
+	line-height: 10px;
+	padding-top: 0;}
 
 .by-genre-icon-surprise-v02 {
     font-size: 24px;
@@ -266,5 +265,8 @@ body {
   margin-left: 6px;
   vertical-align:middle; 
 }
+	.author-name-area{
+		height: 33px;
+	}
 
 }

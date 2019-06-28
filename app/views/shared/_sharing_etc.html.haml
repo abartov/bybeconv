@@ -1,20 +1,20 @@
 %div{style:'display: inline-block'}
   .card-header-element{style:'padding-left: 1rem'}
     .icons-raw
-      .linky
+      .pointer
         %i.fa.fa-download.download
     .icons-raw
-      .linky
+      .pointer
         %i.fa.fa-print.printbutton
     .icons-raw
-      .linky
+      .pointer
         %i.fa.fa-quote-right.citebutton
   .card-header-element
     = render 'shared/share_controls'
 %div{style:'display: inline-block;width: 100%;'}
   %div{style:'position: relative;padding-top: 1.6rem'}
     .icon.result-links{style:'margin-top: 0.6rem'}
-      %span.linky.like
+      %span.pointer.like
         - if @liked
           %i.fa.fa-heart
         - else

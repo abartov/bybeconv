@@ -49,7 +49,7 @@
                             .carousel-inner
                               .card.full-size-card.small-surprise.item.active.surprise_button{id: "#{g}_side1", 'data-genre' => g, style:'margin-top:0;height:15rem;cursor:pointer;'}
                                 .card-content{style:'align-content: center; text-align: center; position: relative;'}
-                                  .linky
+                                  .pointer
                                     %div{style:'font-size:5rem;margin-bottom: -2rem'}
                                       %span.icon-bysurprise-work
                                     %p.headline-3= t(:surprise)
@@ -57,7 +57,7 @@
                                   %img{src:'/assets/corner.png', alt: t(:background), width:80, height:80}
                                 %div
                                   .bring-surprise-icon.text-on-dark{style: 'margin-bottom:0.6rem;'}
-                                    .linky{style:'color:white'}= '?'
+                                    .pointer{style:'color:white'}= '?'
                               .card.genre-card.small-surprise.item{id: "#{g}_side2"}
                                 = render partial: 'shared/surprise_work', locals: {manifestation: @surprise_by_genre[g], id_frag: g, passed_genre: g, side: '2'}
                       .row
@@ -82,7 +82,7 @@
                                     %b= m.title
                                   = t(:by)+' '+m.author_string
                           %div{style:'position: relative; left:0; bottom:0;margin-top:1rem;'}
-                            .btn.linky
+                            .btn.pointer
                               %a{style:'color:white', href: genre_path(genre: g)}= t(:to_all_works_in_genre, {genre: genre_name})
               #abc_works
                 - cache 'abc_works' do
