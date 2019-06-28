@@ -237,9 +237,6 @@
 
 :javascript
   $(document).ready(function(){
-    $('[data-toggle="popover"]').popover({
-      trigger: 'focus'
-    });
     $('#toggle_featured_author').click(function(){
       $('.recommend-text').css('height', 'auto');
       $('#fa_body').html("#{@featured_content.nil? ? '' : escape_javascript(@featured_author.body)}");
