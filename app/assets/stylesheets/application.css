@@ -50,7 +50,6 @@
 .last { padding: 3px;}
 .prev { padding: 3px;}
 .first { padding: 3px;}
-#top-bar { background-color: white;}
 
 .dropdown-menu {
   font-size: initial; /* override Bootstrap's default */
@@ -65,7 +64,8 @@ body {
   margin-top: 93px;
 }
 .author-page-top{
-  top:44px;
+  /* position:fixed;
+  top:44px;*/
 }
 header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's carousel track having a virtual width of 50000) */
 .by-popup-v02 {width: 100% !important;}

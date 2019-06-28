@@ -3,7 +3,9 @@
 
 @media only screen and (max-width: 1279px) {
 
-  #header {
+  #header-general {
+    width: 100%; }
+	#header-author {
     width: 100%; }
 
   #content {

@@ -1,165 +1,115 @@
 / Main author page (rewritten for v2 based on Ruth's Author_11.html)
 #content.container-fluid.top-element
-  = render partial: 'shared/breadcrumbs'
-  .author-page-top
-    .author-page-top-info-card
-      .author-name-years
-        .author-page-top-name.headline-1-v02= @author.name
-        .author-page-top-years!= "(#{@author.life_years})"
-      .author-page-top-rights
-        - if @author.public_domain
-          %span.by-icon-v02.copyright-icon> m
-          = textify_copyright_status(false)
-          = link_to '[?]', '#', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_public_domain), 'data-content' => t(:public_domain_popover)
-        - else
-          %span.by-icon-v02.copyright-icon> x
-          = textify_copyright_status(true)
-          = link_to '[?]', '#', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_permission), 'data-content' => t(:permission_popover)
-      .author-page-top-sort-desktop
-        = t(:sort_and_filter)
-        = link_to '[?]', '#', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_sort_and_filter), 'data-content' => t(:sort_and_filter_popover)
-        .toggle-background-no
-          .toggle-button-no
-      .author-page-top-sort-mobile
-        %button.btn-small-outline-v02.btn-text-v02.notyet= t(:sort_and_filter)
-      .author-page-top-icons-desktop
-        .top-left-icons-group
-          .icon-in-group-v02.notyet
-            %span.linkcolor.pointer.by-icon-v02 3
-          .icon-in-group-v02.notyet
-            %span.linkcolor.pointer.by-icon-v02 9
-          .icon-in-group-v02.notyet{:style => "margin-left:0;"}
-            %span.linkcolor.pointer.by-icon-v02 5
-      .author-page-top-icons-mobile
-        .top-left-icons-group
-          .icon-in-group-v02.notyet{:style => "margin-left:4px;padding-top: 0;"}
-            %span.linkcolor.pointer.by-icon-v02 5
-          #moreMobile-author.by-dropdown-v02
-            %span.linkcolor.pointer#nav-more
-              %span.linkcolor.pointer.by-icon-top-v02 Y
-            #menu-more.by-dropdown-content-v02{:style => "left: 0; margin-top: 4px"}
-              %span.linkcolor.pointer.notyet.by-icon-v02.iconNearText-v02> 3
-              = t(:download)
-              %span.linkcolor.pointer.printbutton.by-icon-v02.iconNearText-v02> 9
-              = t(:print)
-    .row.error-found-row
-      .col
-        = render partial: 'shared/genre_navbar', locals: {genres_present: @genres_present, page: :toc, curated_content: false} # TODO: implement emitting curated content in TOC pages, and then un-hardcode this
-      .col.error-found-col
-        %button.error-found-btn.notyet
-          .error-found
-            .error-found-text= t(:found_br_mistake_html)
-            .error-found-icon g
-      .col-lg-4{style:'height:1px'}
-  .row
-    .col-12.col-lg-8
-      .row
-        .col.side-menu-area
-        .col
-          .by-card-v02.author-main-info-card-v02
-            %img.about-author-card-bookmark-fold-v02{:alt => t(:background), :height => "6", :src => "/assets/creator-bookmark-back2.png", :width => "168"}/
-            .about-author-card-v02
-              %img.surprise-author-pic-v02{:alt => @author.name, src: @author.profile_image.url(:thumb)}/
-            .by-card-content-v02
-              .about-author-card-content-v02
-                .name-under-btn
-                  %span.headline-1-v02
-                    = @author.name
-                  %span.date-range!= "(#{@author.life_years})"
-                .author-about
-                  .text-height-author= @author.wikipedia_snippet
-                  .read-more-v02
-                    %a{:href => @author.wikipedia_url}
-                      %span{:style => "font-weight: bold"}= t(:rest_in_wikipedia)
-                      %span.left-arrow 1
-                  /%div{:style => "margin-top: 12px;"}
-                  /  %a{:href => "#"}
-                  /    %span.by-icon-v02.iconNearText-v02> W
-                  /    לינק
-                  /    לוידאו רלוונטי
-                  /%div{:style => "margin-top: 12px;"}
-                  /  %a{:href => "#"}
-                  /    %span.by-icon-v02.iconNearText-v02> +
-                  /    לינק
-                  /    לאתר רלוונטי
-                  - unless @author.blog_category_url.nil? or @author.blog_category_url.empty?
-                    %div{:style => "margin-top: 12px;"}
-                      %a{:href => @author.blog_category_url}
-                        %span.by-icon-v02.iconNearText-v02> Q
-                        = t(:about_author_in_blog, author:@author.name)
-                  - if current_user && current_user.editor?
-                    %p{style:'text-align:left'}
-                      %span.static-btn
-                        %b= link_to t(:edit_toc), authors_edit_toc_path(@author)
-                      != "&nbsp;&nbsp;&nbsp;"
-                      %span.static-btn
-                        %b= link_to t(:edit_metadata), authors_edit_path(id: @author.id)
-          / table of contents
-          .toc#maintext
-            - unless @toc.nil?
-              = render partial: 'toc', locals: {margin: true}
-              .by-card-v02#volunteers
-                .by-card-header-v02
-                  %span.headline-1-v02= t(:volunteers_who_helped, {author: @author.name, gender_letter: @author.gender_letter})
-                .by-card-content-v02
-                  .credits
-                    != @credits
-            - else
-              = render partial: 'generated_toc'
-    .col-12.col-lg-4
-      .row
-        .col.side-menu-area-left
-        .col
-          .by-card-v02.whats-new-v02
-            #author-whats-new-bg
-              .by-side-card-header-v02
-                %p.headline-1-v02{:style => "margin-bottom: 0"}
-                  = t(:latest_updates)
-                  /= link_to t(:latest_updates), whatsnew_path # TODO: re-enable when main whatsnew can be filtered by author
-              .by-card-content-v02.card-with-bottom-links.author-whats-new-content
-                .new-card-v02.last-item
-                  .new-info-v02 !
-                  .new-card-right-v02
-                    .new-card-type-v02 q
-                  .new-card-left-v02
-                    %a{:href => "#"}
-                      %p.headline-2-v02.new-headline-v02= t(:latest_added_works, {gender_letter: @author.gender_letter})
-                    %p.text-height-new
-                      != @latest
-                / .link-to-all-v02 # TODO: re-enable when main whatsnew can be filtered by author
-                /   %a{:href => "#"}
-                /     %span{:style => "font-weight: bold"} לכל מה שחדש
-                /     %span.left-arrow 1
-          - unless @featured.empty?
-            - featured = @featured[0]
-            .by-card-v02.flash-work-v02
-              .flash-bg-v02
+  .author-page-content
+    .row
+      .col-12.col-lg-8
+        .row
+          .col.side-menu-area
+          .col
+            .by-card-v02.author-main-info-card-v02
+              %img.about-author-card-bookmark-fold-v02{:alt => t(:background), :height => "6", :src => "/assets/creator-bookmark-back2.png", :width => "168"}/
+              .about-author-card-v02
+                %img.surprise-author-pic-v02{:alt => @author.name, src: @author.profile_image.url(:thumb)}/
+              .by-card-content-v02
+                .about-author-card-content-v02
+                  .name-under-btn
+                    %span.headline-1-v02
+                      = @author.name
+                    %span.date-range!= "(#{@author.life_years})"
+                  .author-about
+                    .text-height-author= @author.wikipedia_snippet
+                    .read-more-v02
+                      %a{:href => @author.wikipedia_url}
+                        %span{:style => "font-weight: bold"}= t(:rest_in_wikipedia)
+                        %span.left-arrow 1
+                    /%div{:style => "margin-top: 12px;"}
+                    /  %a{:href => "#"}
+                    /    %span.by-icon-v02.iconNearText-v02> W
+                    /    לינק
+                    /    לוידאו רלוונטי
+                    /%div{:style => "margin-top: 12px;"}
+                    /  %a{:href => "#"}
+                    /    %span.by-icon-v02.iconNearText-v02> +
+                    /    לינק
+                    /    לאתר רלוונטי
+                    - unless @author.blog_category_url.nil? or @author.blog_category_url.empty?
+                      %div{:style => "margin-top: 12px;"}
+                        %a{:href => @author.blog_category_url}
+                          %span.by-icon-v02.iconNearText-v02> Q
+                          = t(:about_author_in_blog, author:@author.name)
+                    - if current_user && current_user.editor?
+                      %p{style:'text-align:left'}
+                        %span.static-btn
+                          %b= link_to t(:edit_toc), authors_edit_toc_path(@author)
+                        != "&nbsp;&nbsp;&nbsp;"
+                        %span.static-btn
+                          %b= link_to t(:edit_metadata), authors_edit_path(id: @author.id)
+            / table of contents
+            .toc#maintext
+              - unless @toc.nil?
+                = render partial: 'toc', locals: {margin: true}
+                .by-card-v02#volunteers
+                  .by-card-header-v02
+                    %span.headline-1-v02= t(:volunteers_who_helped, {author: @author.name, gender_letter: @author.gender_letter})
+                  .by-card-content-v02
+                    .credits
+                      != @credits
+              - else
+                = render partial: 'generated_toc'
+      .col-12.col-lg-4
+        .row
+          .col.side-menu-area-left
+          .col
+            .by-card-v02.whats-new-v02
+              #author-whats-new-bg
                 .by-side-card-header-v02
-                  %p.headline-1-v02= t(:featured_item)
-                .by-card-content-v02.card-with-button.flash-content
-                  .flash-text-v02
-                    %p.headline-2-v02
-                      = featured.title
-                    - unless featured.user.nil?
-                      %p
-                        = t(:by)+' '
-                        = link_to featured.user.name, volunteer_show_path(featured.user)
-                    .text-height-flash-work
-                      = @fc_snippet
-                      - if @fc_rest != ''
-                        = ' ...'
-                        / TODO: add a popup
-                  /.bottom-right-link
-                  /  %a{:href => "#"}
-                  /    %span.right-side-icon '
-                  /    %span{:style => "font-weight: bold"} הצגת זרקור נוסף
-                  - unless featured.manifestation.nil?
-                    %a{ href: manifestation_read_path(id: featured.manifestation.id)}
-                      %button.by-button-v02.button-to-full-v02= t(:to_the_work_in_the_site)
-                  - unless featured.external_link.nil? or featured.external_link.empty?
-                    %a{ href: featured.external_link}
-                      %button.by-button-v02.button-to-full-v02= t(:to_external_content)
-            = render partial: 'aboutnesses'
+                  %p.headline-1-v02{:style => "margin-bottom: 0"}
+                    = t(:latest_updates)
+                    /= link_to t(:latest_updates), whatsnew_path # TODO: re-enable when main whatsnew can be filtered by author
+                .by-card-content-v02.card-with-bottom-links.author-whats-new-content
+                  .new-card-v02.last-item
+                    .new-info-v02 !
+                    .new-card-right-v02
+                      .new-card-type-v02 q
+                    .new-card-left-v02
+                      %a{:href => "#"}
+                        %p.headline-2-v02.new-headline-v02= t(:latest_added_works, {gender_letter: @author.gender_letter})
+                      %p.text-height-new
+                        != @latest
+                  / .link-to-all-v02 # TODO: re-enable when main whatsnew can be filtered by author
+                  /   %a{:href => "#"}
+                  /     %span{:style => "font-weight: bold"} לכל מה שחדש
+                  /     %span.left-arrow 1
+            - unless @featured.empty?
+              - featured = @featured[0]
+              .by-card-v02.flash-work-v02
+                .flash-bg-v02
+                  .by-side-card-header-v02
+                    %p.headline-1-v02= t(:featured_item)
+                  .by-card-content-v02.card-with-button.flash-content
+                    .flash-text-v02
+                      %p.headline-2-v02
+                        = featured.title
+                      - unless featured.user.nil?
+                        %p
+                          = t(:by)+' '
+                          = link_to featured.user.name, volunteer_show_path(featured.user)
+                      .text-height-flash-work
+                        = @fc_snippet
+                        - if @fc_rest != ''
+                          = ' ...'
+                          / TODO: add a popup
+                    /.bottom-right-link
+                    /  %a{:href => "#"}
+                    /    %span.right-side-icon '
+                    /    %span{:style => "font-weight: bold"} הצגת זרקור נוסף
+                    - unless featured.manifestation.nil?
+                      %a{ href: manifestation_read_path(id: featured.manifestation.id)}
+                        %button.by-button-v02.button-to-full-v02= t(:to_the_work_in_the_site)
+                    - unless featured.external_link.nil? or featured.external_link.empty?
+                      %a{ href: featured.external_link}
+                        %button.by-button-v02.button-to-full-v02= t(:to_external_content)
+              = render partial: 'aboutnesses'
 
 :javascript
   $(document).ready(function(){

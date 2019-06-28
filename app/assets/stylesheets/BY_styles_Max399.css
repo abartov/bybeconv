@@ -27,8 +27,7 @@
 .byPeriodDetails-v02{
 		line-height: 12px;
 	}
-#header{
-	}
+
 #header > .row {
 		margin-left: 0px;
 		margin-right: 0px;
@@ -268,5 +267,8 @@ body {
 	.author-name-area{
 		height: 33px;
 	}
+.author-page-content{
+	margin-top: 178px;
+}
 
 }

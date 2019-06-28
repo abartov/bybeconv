@@ -50,7 +50,6 @@ a:hover {
   text-decoration: none; }
 
 #top-bar {
-	border-bottom: 2px solid #d9cdd5;
     padding: 0;
 	position: fixed;
 	top:0;
@@ -62,11 +61,25 @@ a:hover {
   padding: 0; }
 
 #header {
-  width: 90%;
-  height: auto;
-  background-color: white;
-  padding-bottom: 4px;
+  position: fixed;
+  top:0;
+  padding: 0;
+  z-index: 10;
 }
+#header-general{
+  width: 90%;
+  background-color: white;
+}
+#header-author{
+  width: 90%;
+  background-color: white;
+}
+.header-separator{
+	width: 100%;
+	height: 2px;
+	background-color: white;
+	padding: 4px 0 0 0;
+  border-bottom: solid 2px #d9cdd5;}
 #content-area{
 	padding: 0;
 }
@@ -1368,8 +1381,7 @@ ul #menuMobile {
 
 
 #breadcrumbs{
-	position: fixed;
-	top:120px;
+	padding-right: 4px;
 	padding-top: 15px;
 	padding-bottom: 15px;
 }
@@ -1386,10 +1398,7 @@ ul #menuMobile {
   display: inline;
 }
 .author-page-top {
-  position: -webkit-sticky;
-  position: absolute;
-  top:164px;
-  width: 90%;
+  position: relative;
   z-index:5;
 }
 .author-page-top-info-card{
@@ -1987,15 +1996,14 @@ display: none;}
 	align-items: center;
 }
 .author-page-content{
-	position: relative;
-	top: 164px;
+	margin-top: 216px;
 }
-.scrolled #breadcrumbs{
+/*.scrolled #breadcrumbs{
 	position: absolute;
 	top:110px;
 	padding-top: 15px;
 	padding-bottom: 15px;
-}
+}*/
 .stick-to-top{
 	width: 90%;
 	margin-left: auto;

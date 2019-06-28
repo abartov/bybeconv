@@ -13,7 +13,8 @@
             .author-card-v02
               %img.author-pic-v02{ src: author.profile_image.url(:thumb), alt: author.name}
               /, height: (size == :large ? '686px' : '120px')}
-              .author-name-v02= author.name
+              .author-name-area
+                .author-name-v02= author.name
               .author-info-v02
                 %a{'data-toggle' => :modal, 'data-target'=> "#author_popup_#{author.id}", 'data-backdrop' => 'static'} M
   .carousel-arrow-left-v02{id: "leftarrow#{id_frag}"}

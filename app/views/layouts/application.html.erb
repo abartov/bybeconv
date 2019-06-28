@@ -62,8 +62,8 @@
   <% unless @readmode %>
   <!-- top logo area -->
   <header>
-    <div class="container-fluid" id="top-bar">
-      <div class="container-fluid" id="header">
+    <div class="container-fluid" id="header">
+      <div class="container-fluid" id="header-general">
         <div class="row">
           <div class="col-6 col-lg-4" style="padding-left: 6px;">
             <a href="/">
@@ -127,6 +127,9 @@
         </div>
         <%= render partial: 'shared/tabs' %>
       </div>
+      <% unless @header_partial.nil? %>
+        <%= render partial: @header_partial %>
+      <% end %>
     </div>
   </header>
   <% end -%>
@@ -177,7 +180,7 @@
 <% end %>
 <script>
   $(document).ready(function() {
-    var header = $("#top-bar");
+    var header = $("header");
     var body = $('body');
 
     $(window).scroll(function() {

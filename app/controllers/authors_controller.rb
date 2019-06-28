@@ -155,6 +155,7 @@ class AuthorsController < ApplicationController
       @tabclass = set_tab('authors')
       @print_url = url_for(action: :print, id: @author.id)
       @pagetype = :author
+      @header_partial = 'authors/author_top'
       @entity = @author
       @page_title = "#{@author.name} - #{t(:table_of_contents)} - #{t(:project_ben_yehuda)}"
       # temporary protection against null ToCs while we're migrating
