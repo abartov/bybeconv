@@ -42,7 +42,7 @@
               %span.linkcolor.pointer.printbutton.by-icon-v02.iconNearText-v02> 9
               = t(:print)
     .row.error-found-row
-      .col
+      .col-1
         = render partial: 'shared/genre_navbar', locals: {genres_present: @genres_present, page: :toc, curated_content: false} # TODO: implement emitting curated content in TOC pages, and then un-hardcode this
       .col.error-found-col
         %button.error-found-btn.notyet
