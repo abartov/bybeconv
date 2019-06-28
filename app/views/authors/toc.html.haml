@@ -159,20 +159,7 @@
                   - unless featured.external_link.nil? or featured.external_link.empty?
                     %a{ href: featured.external_link}
                       %button.by-button-v02.button-to-full-v02= t(:to_external_content)
-
-
-
-
-
-
-
-
-
-  / V1 below
-  /.row
-  /  .col-md-3
-  /    = render partial: 'aboutnesses'
-  /  .col-md-1
+            = render partial: 'aboutnesses'
 
 :javascript
   $(document).ready(function(){
