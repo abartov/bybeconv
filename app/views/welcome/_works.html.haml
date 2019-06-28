@@ -14,18 +14,18 @@
         %div{style: 'width:20%; border-right: solid 2px #d9cdd5; min-height:320px'}
           .row{style:'margin-top: 10px'}
             .col-sm-12
-              %a{ href: '#'}
-                %p.by-genre-icon-v02 s
-                %p.by-genre-name-v02.headline-2-v02= t(:translations)
-              %p.by-genre-details-v02= Person.no_toc.count.to_s+' '+t(:authors)
-              %p.by-genre-details-v02= Manifestation.cached_translated_count.to_s+' '+t(:works)
+              %a.notyet
+                %p.linkcolor.by-genre-icon-v02 s
+                %p.linkcolor.by-genre-name-v02.headline-2-v02= t(:translations)
+              %p.linkcolor.by-genre-details-v02= Person.no_toc.count.to_s+' '+t(:authors)
+              %p.linkcolor.by-genre-details-v02= Manifestation.cached_translated_count.to_s+' '+t(:works)
           .row{style:'margin-top: 50px'}
             .col-sm-12
-              %a{ href: '#'}
-                %p.by-genre-icon-v02 f
-                %p.by-genre-name-v02.headline-2-v02= t(:lexicon)
-              %p.by-genre-details-v02= '...'
-              %p.by-genre-details-v02= '...'
+              %a.notyet
+                %p.linkcolor.by-genre-icon-v02 f
+                %p.linkcolor.by-genre-name-v02.headline-2-v02= t(:lexicon)
+              %p.linkcolor.by-genre-details-v02= '...'
+              %p.linkcolor.by-genre-details-v02= '...'
   .by-card-v02#genre-mobile
     .by-card-header-v02
       %span.headline-1-v02
@@ -44,16 +44,16 @@
       %div{style: 'border-top: solid 2px #d9cdd5;'}
         .row{style:'margin-top: 30px; margin-bottom:20px;'}
           .col
-            %a{ href: '#'}
-              %p.by-genre-icon-v02 s
-              %p.by-genre-name-v02.headline-2-v02= t(:translations)
-            %p.by-genre-details-v02= Person.no_toc.count.to_s+' '+t(:authors)
-            %p.by-genre-details-v02= Manifestation.cached_translated_count
+            %a.notyet.linkcolor
+              %p.linkcolor.by-genre-icon-v02 s
+              %p.linkcolor.by-genre-name-v02.headline-2-v02= t(:translations)
+            %p.linkcolor.by-genre-details-v02= Person.no_toc.count.to_s+' '+t(:authors)
+            %p.linkcolor.by-genre-details-v02= Manifestation.cached_translated_count
       %div{style: 'border-top: solid 2px #d9cdd5;'}
         .row{style:'margin-top: 30px; margin-bottom:20px;'}
           .col-sm-12
-            %a{ href: '#'}
-              %p.by-genre-icon-v02 f
-              %p.by-genre-name-v02.headline-2-v02= t(:lexicon)
-            %p.by-genre-details-v02= '...'
-            %p.by-genre-details-v02= '...'
+            %a.notyet
+              %p.linkcolor.by-genre-icon-v02 f
+              %p.linkcolor.by-genre-name-v02.headline-2-v02= t(:lexicon)
+            %p.linkcolor.by-genre-details-v02= '...'
+            %p.linkcolor.by-genre-details-v02= '...'
