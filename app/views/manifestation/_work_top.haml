@@ -88,37 +88,25 @@
                     = t(:bookshelves)
     .row.error-found-row
       .col
-        .side-menu-headline רשימת פרקים:
-        %ul.nav.flex-column.by-card-v02
-          %li.nav-item
-            %a.nav-link.nav-link-arrows{:href => "#"}
-              %div
-                .side-menu-arrow (
-          %li.nav-item
-            %a.nav-link.nav-link-chapter{:href => "#"}
-              .nav-chapter-name 1. טבת
-          %li.nav-item
-            %a.nav-link.nav-link-chapter{:href => "#"}
-              .nav-chapter-name 2. שבט
-          %li.nav-item
-            %a.nav-link.nav-link-chapter{:href => "#"}
-              .nav-chapter-name 3. אדר
-          %li.nav-item
-            %a.nav-link.nav-link-chapter{:href => "#"}
-              .nav-chapter-name 4. ניסן
-          %li.nav-item
-            %a.nav-link.nav-link-chapter{:href => "#"}
-              .nav-chapter-name 5. שם פרק ארוך מאוד שלא נכנס ברוחב
-          %li.nav-item
-            %a.nav-link.nav-link-arrows{:href => "#"}
-              .side-menu-arrow )
+        - if @m.chapters? and @m.long?
+          .side-menu-headline= t(:chapters_list)
+          %ul.nav.flex-column.by-card-v02
+            / %li.nav-item
+            /  %a.nav-link.nav-link-arrows{:href => "#"}
+            /    %div
+            /      .side-menu-arrow (
+            - @chapters.each do |ch|
+              %li.nav-item
+                .nav-link.nav-link-chapter.pointer.jumpch.linkcolor{'data-target' => "ch#{ch[1]}"}
+                  .nav-chapter-name= ch[0]
+            /%li.nav-item
+            /  %a.nav-link.nav-link-arrows{:href => "#"}
+            /    .side-menu-arrow )
       .col.error-found-col
-        %button.error-found-btn{:href => "#"}
+        %button.error-found-btn#found_mistake{:href => "#"}
           .error-found
             .error-found-text
-              מצאתי
-              %br>/
-              שגיאה
+              = t(:found_br_mistake_html)
             .error-found-icon g
       .col-lg-4
 #downloadDlg{style:'display:none'}
