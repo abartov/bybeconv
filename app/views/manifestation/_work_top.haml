@@ -42,29 +42,28 @@
                       = t(:curated_content)
         .col-4
           .work-page-top-icons-desktop
-            %button.btn-small-outline-v02.btn-text-v02.reading-mode-btn-v02{:href => "#"}
+            .btn-small-outline-v02.btn-text-v02.reading-mode-btn-v02
+              %a{:href => url_for(action: :readmode, id: @m.id)}
               %span.by-icon-v02.iconNearText-v02> B
-              מצב קריאה
+              = t(:reading_mode)
             .top-left-icons-group
-              .icon-in-group-v02
-                %a{:href => "#"}
-                  %span.by-icon-v02 *
-              .icon-in-group-v02
-                %a{:href => "#"}
-                  %span.by-icon-v02 9
-              .icon-in-group-v02
-                %a{:href => "#"}
-                  %span.by-icon-v02 3
+              .icon-in-group-v02.citebutton
+                %span.linkcolor.pointer.by-icon-v02 *
+              .icon-in-group-v02.printbutton
+                %span.linkcolor.pointer.by-icon-v02 9
+              .icon-in-group-v02.download
+                %span.linkcolor.pointer.by-icon-v02 3
               .icons-separator-white
-              .icon-in-group-v02
-                %a{:href => "#"}
-                  %span.by-icon-v02 5
-              .icon-in-group-v02
-                %a{:href => "#"}
-                  %span.by-icon-v02 b
-              .icon-in-group-v02{:style => "margin-left:0;"}
-                %a{:href => "#"}
-                  %span.by-icon-v02 D
+              .icon-in-group-v02.like
+                %span.linkcolor.pointer.by-icon-v02
+                  - if @liked
+                    = '6'
+                  - else
+                    = '5'
+              .icon-in-group-v02.notyet
+                %span.linkcolor.pointer.by-icon-v02 b
+              .icon-in-group-v02.notyet{:style => "margin-left:0;"}
+                %span.linkcolor.pointer.by-icon-v02 D
           .work-page-top-icons-mobile
             %button.btn-small-outline-v02.btn-text-v02.reading-mode-icon-btn-v02{:href => "#"}
               %span.by-icon-v02 B
@@ -82,13 +81,13 @@
                 #menu-more.by-dropdown-content-v02{:style => "left: 0; margin-top: 4px"}
                   %a{:href => "#"}
                     %span.by-icon-v02.iconNearText-v02> *
-                    ציטוט
+                    = t(:cite)
                   %a{:href => "#"}
                     %span.by-icon-v02.iconNearText-v02> 9
-                    הדפסה
+                    = t(:print)
                   %a{:href => "#"}
                     %span.by-icon-v02.iconNearText-v02> 3
-                    הורדה
+                    = t(:download)
                   %a{:href => "#"}
                     %span.by-icon-v02.iconNearText-v02> D
                     רשימות קריאה
@@ -127,6 +126,11 @@
               שגיאה
             .error-found-icon g
       .col-lg-4
+#downloadDlg{style:'display:none'}
+  = render partial: 'shared/download', locals: {manifestation: @m}
+#citeDlg{style:'display:none'}
+  = render partial: 'shared/cite', locals: {manifestation: @m}
+
 :javascript
 
   $(document).ready(function(){
@@ -151,5 +155,74 @@
         window.scrollTo(0,position);
       }// else alert('nope');
 
+    });
+    // heart button
+    $('.like').click(function(){ // toggle like/unlike
+      if($('.like').find(".fa-heart").length > 0) { // already liked
+        // unlike
+        $.ajax({
+          url: "#{url_for(action: :unlike, id: @m.id) }",
+          //data: {user: '#{current_user.nil? ? '' : current_user.id}',
+          //method: 'POST',
+        });
+        $('.fa-heart').removeClass('fa-heart').addClass('fa-heart-o');
+      } else { // like
+        $.ajax({
+          url: "#{url_for(action: :like, id: @m.id) }",
+          //data: {user: '#{current_user.nil? ? '' : current_user.id}',
+          //method: 'POST',
+        });
+        $('.fa-heart-o').removeClass('fa-heart-o').addClass('fa-heart');
+      }
+    });
+    // proof button
+    $('#proofDlg').dialog({
+      autoOpen: false,
+      height:600,
+      width:700,
+      modal:true,
+      buttons: {
+        "#{t(:submit_proof)}": submitProof,
+        "#{t(:cancel)}": function() { $('#proofDlg').dialog("close");}
+      }
+    });
+    $('#proofSent').dialog({autoOpen:false, height:200, width:500, modal:true,buttons:{"#{t(:close)}": function(){$('#proofSent').dialog('close');}}});
+
+    $('#proof_form').on('ajax:success', function(e, data, status, xhr) {
+      $('#proofDlg').dialog("close");
+      $('#proofSent').dialog('open');
+    }).on('ajax:error', function(e, xhr, status, error) {
+      $('#proof_status').html("<span style='color:red'>#{t(:proof_failed)}</span>");
+    });
+    function submitProof() {
+      $('#proof_form').submit(); // TBD
+    };
+    $('#copy_proof').click(function() {
+      $('#prooftext').text($('#proof_selected_text').text());
+    });
+    $('#found_mistake').click(function() {
+      if(document.getSelection().toString() == '')
+        alert("#{t(:proof_please_select_something)}");
+      else
+      {
+        $('#proof_selected_text').text(document.getSelection().toString());
+        $('#proofDlg').dialog("open");
+      }
+    });
+    // download button
+    $('#downloadDlg').dialog({autoOpen:false, height:500, width:600, modal:true, buttons:{"#{t(:close)}": function(){$('#downloadDlg').dialog('close');}}});
+    $('.download').click(function() {
+      $('#downloadDlg').dialog('open');
+    });
+
+    // print button
+    $('.printbutton').click(function() {
+      window.open("#{@print_url}",'_new');
+    });
+
+    // cite button
+    $('#citeDlg').dialog({autoOpen:false, height:550, width:790, modal:true, buttons:{"#{t(:close)}": function(){$('#citeDlg').dialog('close');}}});
+    $('.citebutton').click(function() {
+      $('#citeDlg').dialog('open');
     });
   });

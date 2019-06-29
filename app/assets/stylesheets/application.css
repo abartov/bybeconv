@@ -72,6 +72,7 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
 .share {cursor: pointer;}
 .pointer {cursor: pointer;}
 .linkcolor{color: #660248;}
+.linkcolor:hover{  color: #2b0d22;}
 .white {color:white;}
 .current-menu-item a{
 	color: #ffffff;
@@ -100,6 +101,10 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
   background-color: #eeeced;
   color: #2b0d22; }
 
+.reading-mode-btn-v02 {
+  padding-top: 3px;
+  display: inline-block;
+}
 @media screen and (max-width: 767px) {
   .mobileLogo{
     display:block;
