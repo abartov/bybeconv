@@ -856,7 +856,7 @@ padding-bottom: auto;}
   max-height: 210px; }
 
 .whats-new-v02 {
-  background-color: #d9cdd5; 
+  background-color: #d9cdd5;
   }
 .left-side-card-v02 {
   background-color: #d9cdd5; }
@@ -1541,7 +1541,7 @@ display: flex;
 }
 .nav-chapter-name{
 	width: 84px;
-	white-space: nowrap; 
+	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	justify-content:flex-start;
@@ -1819,7 +1819,7 @@ display: none;}
 	padding-top: 4px;
 }
 .prose-side-icon{
-  background-image: url("/assets/work side icons_prose.svg");
+  background-image: url("/assets/work_side_icons_prose.svg");
   background-repeat: no-repeat;
   background-size:auto;}
 .by-side-menu-seperator{

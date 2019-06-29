@@ -81,6 +81,7 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
 .error-found-row{
   height: 1px;
 }
+
 .error-found-col{
   height: min-content;
   width:min-content;

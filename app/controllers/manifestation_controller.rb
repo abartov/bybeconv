@@ -442,7 +442,7 @@ class ManifestationController < ApplicationController
     unless @m.nil?
       lines = @m.markdown.lines
       tmphash = {}
-      @chapters = {}
+      @chapters = {} # TODO: add sub-chapters, indenting two nbsps in dropdown
       @m.heading_lines.reverse.each{ |linenum|
         lines.insert(linenum, "<a name=\"ch#{linenum}\"></a>\r\n")
         tmphash[sanitize_heading(lines[linenum+1][2..-1].strip)] = linenum.to_s
