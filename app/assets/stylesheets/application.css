@@ -90,6 +90,15 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
 .mobileLogo{
   display:none;
 }
+.by-dropdown-content-v02 p {
+  padding: 6px 15px;
+  margin: 0;
+  display: block;
+  color: #660248; }
+
+.by-dropdown-content-v02 p:hover {
+  background-color: #eeeced;
+  color: #2b0d22; }
 
 @media screen and (max-width: 767px) {
   .mobileLogo{

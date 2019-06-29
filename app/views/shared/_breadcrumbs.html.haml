@@ -25,9 +25,9 @@
       .breadcrumbs-arrow= 1
       .breadcrumbs-text
         %b= @entity.name
-    - elsif @pagetype == :authors
-      %b= t(:authors)
-    - elsif @pagetype == :works
-      %b= t(:works)
-    - elsif @pagetype == :periods
-      %b= t(:periods)
+    - elsif @pagetype == :period
+      .breadcrumbs-text
+        %b= t(:periods)
+      .breadcrumbs-arrow= 1
+      .breadcrumbs-text
+        %b= @entity.name

@@ -113,6 +113,7 @@ class ManifestationController < ApplicationController
       @recommendations = @m.recommendations
       @links = @m.external_links.group_by {|l| l.linktype}
       @random_work = Manifestation.where(id: Manifestation.pluck(:id).sample(5), status: Manifestation.statuses[:published])[0]
+      @header_partial = 'manifestation/work_top'
     end
   end
 

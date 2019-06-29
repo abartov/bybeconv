@@ -1,0 +1,155 @@
+.container-fluid#header-general
+  = render partial: 'shared/breadcrumbs'
+  .work-page-top
+    .work-page-top-info-card
+      .headline-1-v02.work-name-top-mobile= @m.title
+      .row
+        .col-8
+          .work-page-top-name-and-author
+            .headline-1-v02.work-name-top-desktop= @m.title
+            .headline-3-v02
+              = t(:by)+':'
+              != @m.authors.map {|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
+              - if @e.translation && @e.translators.size > 0
+                .headline-3-v02
+                  = "#{t(:translation)}: "
+                  != @translators.map{|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
+                  = " (#{t(:from_lang)}#{textify_lang(@e.works[0].orig_lang)})"
+          - if @m.chapters? and @m.long?
+            .work-chapters-dropdown-field-desktop#chapter_dropdown
+              .field-v02
+                =t(:jump_to_chapter)
+                %span.dropdown-arrow )
+              .by-dropdown-content-v02.dropdown_full-width#chapter_dropdown_content
+                - @chapters.each do |ch|
+                  %p.pointer.jumpch.linkcolor{'data-target' => "ch#{ch[1]}"}= ch[0]
+                - unless @curated_content.nil?
+                  .dropdown-menu-seperator
+                    %a{href:'#curated'}
+                      %span.by-icon-v02.iconNearText-v02 Q
+                      = t(:curated_content)
+            .work-chapters-dropdown-field-mobile#chapter_mobile_dropdown
+              .field-v02
+                = t(:jump_to)
+                %span.dropdown-arrow )
+              .by-dropdown-content-v02.dropdown_full-width#chapter_mobile_dropdown_content
+                - @chapters.each do |ch|
+                  %a{href:"#ch#{ch[1]}"}= ch[0]
+                - unless @curated_content.nil?
+                  .dropdown-menu-seperator
+                    %a{href:'#curated'}
+                      %span.by-icon-v02.iconNearText-v02 Q
+                      = t(:curated_content)
+        .col-4
+          .work-page-top-icons-desktop
+            %button.btn-small-outline-v02.btn-text-v02.reading-mode-btn-v02{:href => "#"}
+              %span.by-icon-v02.iconNearText-v02> B
+              מצב קריאה
+            .top-left-icons-group
+              .icon-in-group-v02
+                %a{:href => "#"}
+                  %span.by-icon-v02 *
+              .icon-in-group-v02
+                %a{:href => "#"}
+                  %span.by-icon-v02 9
+              .icon-in-group-v02
+                %a{:href => "#"}
+                  %span.by-icon-v02 3
+              .icons-separator-white
+              .icon-in-group-v02
+                %a{:href => "#"}
+                  %span.by-icon-v02 5
+              .icon-in-group-v02
+                %a{:href => "#"}
+                  %span.by-icon-v02 b
+              .icon-in-group-v02{:style => "margin-left:0;"}
+                %a{:href => "#"}
+                  %span.by-icon-v02 D
+          .work-page-top-icons-mobile
+            %button.btn-small-outline-v02.btn-text-v02.reading-mode-icon-btn-v02{:href => "#"}
+              %span.by-icon-v02 B
+            .top-left-icons-group
+              .icon-in-group-v02
+                %a{:href => "#"}
+                  %span.by-icon-v02 5
+              .icon-in-group-v02
+                %a{:href => "#"}
+                  %span.by-icon-v02 b
+              #moreMobile.by-dropdown-v02
+                %span#nav-more
+                  %a{:href => "#"}
+                    %span.by-icon-top-v02 Y
+                #menu-more.by-dropdown-content-v02{:style => "left: 0; margin-top: 4px"}
+                  %a{:href => "#"}
+                    %span.by-icon-v02.iconNearText-v02> *
+                    ציטוט
+                  %a{:href => "#"}
+                    %span.by-icon-v02.iconNearText-v02> 9
+                    הדפסה
+                  %a{:href => "#"}
+                    %span.by-icon-v02.iconNearText-v02> 3
+                    הורדה
+                  %a{:href => "#"}
+                    %span.by-icon-v02.iconNearText-v02> D
+                    רשימות קריאה
+    .row.error-found-row
+      .col
+        .side-menu-headline רשימת פרקים:
+        %ul.nav.flex-column.by-card-v02
+          %li.nav-item
+            %a.nav-link.nav-link-arrows{:href => "#"}
+              %div
+                .side-menu-arrow (
+          %li.nav-item
+            %a.nav-link.nav-link-chapter{:href => "#"}
+              .nav-chapter-name 1. טבת
+          %li.nav-item
+            %a.nav-link.nav-link-chapter{:href => "#"}
+              .nav-chapter-name 2. שבט
+          %li.nav-item
+            %a.nav-link.nav-link-chapter{:href => "#"}
+              .nav-chapter-name 3. אדר
+          %li.nav-item
+            %a.nav-link.nav-link-chapter{:href => "#"}
+              .nav-chapter-name 4. ניסן
+          %li.nav-item
+            %a.nav-link.nav-link-chapter{:href => "#"}
+              .nav-chapter-name 5. שם פרק ארוך מאוד שלא נכנס ברוחב
+          %li.nav-item
+            %a.nav-link.nav-link-arrows{:href => "#"}
+              .side-menu-arrow )
+      .col.error-found-col
+        %button.error-found-btn{:href => "#"}
+          .error-found
+            .error-found-text
+              מצאתי
+              %br>/
+              שגיאה
+            .error-found-icon g
+      .col-lg-4
+:javascript
+
+  $(document).ready(function(){
+    $('#chapter_dropdown').click(function(){
+      if($('#chapter_dropdown_content').css('display') == 'block')
+        $('#chapter_dropdown_content').css('display', 'none');
+      else
+        $('#chapter_dropdown_content').css('display', 'block');
+    });
+    $('#chapter_mobile_dropdown').click(function(){
+      if($('#chapter_mobile_dropdown_content').css('display') == 'block')
+        $('#chapter_mobile_dropdown_content').css('display', 'none');
+      else
+        $('#chapter_mobile_dropdown_content').css('display', 'block');
+    });
+    offsetTop = #{ @readmode ? 40 : 250 },
+    $('.jumpch').click(function() {
+      elem = $('a[name='+$(this).attr('data-target'))
+      if(elem != null && elem.position() != null)
+      {
+        position = elem.offset().top - offsetTop;
+        window.scrollTo(0,position);
+      }// else alert('nope');
+
+    });
+  });
