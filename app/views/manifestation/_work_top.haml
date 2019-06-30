@@ -137,7 +137,7 @@
 
     offsetTop = #{ @readmode ? 40 : 250 },
     $('.jumpch').click(function() {
-      elem = $('a[name='+$(this).attr('data-target'))
+      elem = $('a[name='+$(this).attr('data-target'));
       if(elem != null && elem.position() != null)
       {
         position = elem.offset().top - offsetTop;

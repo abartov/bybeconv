@@ -114,6 +114,7 @@ class ManifestationController < ApplicationController
       @links = @m.external_links.group_by {|l| l.linktype}
       @random_work = Manifestation.where(id: Manifestation.pluck(:id).sample(5), status: Manifestation.statuses[:published])[0]
       @header_partial = 'manifestation/work_top'
+      @works_about = Work.joins(:topics).where('aboutnesses.aboutable_id': @w.id)
     end
   end
 
@@ -426,7 +427,8 @@ class ManifestationController < ApplicationController
     else
       impressionist(@m) unless is_spider?
       @e = @m.expressions[0]
-      @author = @e.works[0].persons[0] # TODO: handle multiple authors
+      @w = @e.works[0]
+      @author = @w.persons[0] # TODO: handle multiple authors
       @translators = @m.translators
       @page_title = "#{@m.title_and_authors} - #{t(:default_page_title)}"
       impressionist(@author) # increment the author's popularity counter

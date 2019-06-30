@@ -50,13 +50,13 @@
                     = edition
 
                 .work-details.mobile-work-details
-                  %span{:style => "font-weight:bold"} תוויות:
-                  %button.tag ספרות עכשווית
-                  %button.tag ישראליות
-                  %button.tag תל אביב
+                  - if @taggings.approved.count > 0
+                    %span{:style => "font-weight:bold"}= t(:tags)+': '
+                    = render partial: 'shared/taggings', locals: {taggings: @taggings}
                 .work-details.mobile-work-details
-                  %span{:style => "font-weight:bold"} המלצות:
-                  %a{:href => "#"} 3 המלצות קוראים
+                  - if @recommendations.all_approved.count > 0
+                    %span{:style => "font-weight:bold"}= t(:recommendations)+': '
+                    %span.pointer.linkcolor#jump-to-recs= t(:this_work_has_x_recommendations, {x: @recommendations.all_approved.count})
           .by-card-v02
             .row.work-area
               .col-md-9.work-content
@@ -72,75 +72,56 @@
     .col-12.col-lg-4
       .row
         .col
+          / Works about this work
+          - if @w.topics.count > 0
+            = render partial: 'public_aboutnesses', locals: {edit: false, add: false}
           / Recommendations
-          .by-card-v02.left-side-card-v02
+          .by-card-v02.left-side-card-v02#recs
             .by-card-header-left-v02
-              %span.headline-1-v02 המלצות קוראים
+              %span.headline-1-v02= t(:recommendations_for_work)
             .by-card-content-v02.card-with-bottom-links
-              ליצירה זו טרם הוספו המלצות קוראים
-              .bottom-right-link{:style => "padding-top: 6px"}
-                %a{:href => "#"}
-                  %span.right-side-icon &amp;
-                  %span{:style => "font-weight: bold"} הוספת המלצה
-          .by-card-v02.left-side-card-v02
-            .by-card-header-left-v02
-              %span.headline-1-v02 המלצות קוראים
-            .by-card-content-v02.card-with-bottom-links
-              %a{:href => "#"} ליצירה זו יש 3 המלצות קוראים
-              .bottom-right-link{:style => "padding-top: 6px"}
-                %a{:href => "#"}
-                  %span.right-side-icon &amp;
-                  %span{:style => "font-weight: bold"} הוספת המלצה
-          .by-card-v02.left-side-card-v02
-            .by-card-header-left-v02
-              %span.headline-1-v02 המלצות קוראים
-            .by-card-content-v02.card-with-bottom-links
-              .recommend-card-v02
-                .new-info-v02 4
-                .recommend-card-right-v02
-                  .recommend-card-pic-frame-v02
-                    .recommend-card-pic-placeholder i
-                  .recommend-card-name
-                    %a{:href => "#"} שם הממליץ
-                  .recommend-date 08.10.2018
-                .recommend-card-left-v02
-                  %p.headline-2-v02.new-headline-v02
-                    אודות:
-                    %a{:href => "#"} הרוכל האיטלקי
-                  %p.text-height-recommend
-                    לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית קולהע צופעט למרקוח איבן איף, ברומץ כלרשט מיחוצים. קלאצי סחטיר בלובק. תצטנפל בלינדו למרקל אס לכימפו, דול, צוט ומעיוט - לפתיעם ברשג - ולתיעם גדדיש. קוויז דומור ליאמום בלינך רוגצה. לפמעט
-                    הועניב היושבב שערש שמחויט - שלושע ותלברו חשלו שעותלשך וחאית נובש ערששף. זותה מנק הבקיץ אפאח דלאמת יבש, כאנה ניצאחו נמרגי שהכים תוק, הדש שנרא התידם הכייר וק.
-                  .read-more-v02
-                    %a{:href => "#"}
-                      %span{:style => "font-weight: bold"} להמשך ההמלצה
-                      %span.left-arrow 1
-              .recommend-card-v02.last-item
-                .new-info-v02 4
-                .recommend-card-right-v02
-                  .recommend-card-pic-frame-v02
-                    %img.recommend-card-pic-v02{:alt => "", :src => "/assets/adult-beard-boy-duotone.jpg"}/
-                  .recommend-card-name
-                    %a{:href => "#"} שם הממליץ
-                  .recommend-date 08.10.2018
-                .recommend-card-left-v02
-                  %p.headline-2-v02.new-headline-v02
-                    אודות:
-                    %a{:href => "#"} הרוכל האיטלקי
-                  %p.text-height-recommend
-                    לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית קולהע צופעט למרקוח איבן איף, ברומץ כלרשט מיחוצים. קלאצי סחטיר בלובק. תצטנפל בלינדו למרקל אס לכימפו, דול, צוט ומעיוט - לפתיעם ברשג - ולתיעם גדדיש. קוויז דומור ליאמום בלינך רוגצה. לפמעט
-                    הועניב היושבב שערש שמחויט - שלושע ותלברו חשלו שעותלשך וחאית נובש ערששף. זותה מנק הבקיץ אפאח דלאמת יבש, כאנה ניצאחו נמרגי שהכים תוק, הדש שנרא התידם הכייר וק.
-                  .read-more-v02
-                    %a{:href => "#"}
-                      %span{:style => "font-weight: bold"} להמשך ההמלצה
-                      %span.left-arrow 1
-              .bottom-right-link{:style => "padding-top: 6px"}
-                %a{:href => "#"}
-                  %span.right-side-icon &amp;
-                  %span{:style => "font-weight: bold"} הוספת המלצה
-              .link-to-all-v02
-                %a{:href => "#"}
-                  %span{:style => "font-weight: bold"} לכל ההמלצות
-                  %span.left-arrow 1
+              - unless @m.like_count.nil? || @m.like_count == 0
+                = t(:x_liked, {x: @m.like_count})
+                %br
+              - my_pendings = @recommendations.all_pending.where(user: current_user)
+              - app_recs = @recommendations.all_approved
+              - any_recs = app_recs.count > 0 || my_pendings.count > 0
+              - total_recs = app_recs.count + my_pendings.count
+              - unless any_recs
+                = t(:no_recommendations_yet)
+              - else
+                = t(:this_work_has_x_recommendations, {x: total_recs})
+                %br
+                - apcounter = 1
+                - app_recs.each do |r|
+                  = render partial: 'recommendation', locals: {rec: r, pending: false, last_item: apcounter == total_recs ? true : false}
+                  - apcounter += 1
+                - my_pendings.each do |r|
+                  = render partial: 'recommendation', locals: {rec: r, pending: true, last_item: apcounter == total_recs ? true : false}
+                  - apcounter += 1
+              / add recommendation
+              - unless current_user.nil?
+                .bottom-right-link{:style => "padding-top: 6px"}
+                  .linkcolor.pointer#expand-add-rec
+                    %span.right-side-icon &amp;
+                    %span{:style => "font-weight: bold"}= t(:add_recommendation)
+                #add-rec-form
+                  %br
+                  .card{style:'background-color:#fff'}
+                    .row.recommendation{style:'min-height:inherit'}
+                      .rec-user
+                        .rec-user-pic
+                          = render partial: 'shared/user_pic', locals:{user: current_user}
+                        .rec-user-name=link_to current_user.name, user_show_path(id: current_user.id)
+                      = form_for(@new_recommendation, remote: true) do |f|
+                        .rec-txt
+                          %div{style:'display:inline;float:right;margin-top:1.3rem;width:100%'}
+                            = f.text_area(:body, size: '70x4',placeholder: t(:offer_a_recommendation), id: 'new_rec_text')
+                        %div
+                          = hidden_field_tag :manifestation_id, @m.id
+                          %input.btn{type: :submit, value: t(:submit), style:'margin-top:2.7rem;margin-left:1.5rem;background-color:#d9cdd5'}
+
+
           / Tags
           .by-card-v02.left-side-card-v02{style:'min-height:250px'}
             .by-card-header-left-v02
@@ -180,8 +161,21 @@
 :javascript
   $(document).ready(function() {
     $('#content').css('margin-top', $(header).position().top + $(header).outerHeight(true) + 10);
+    $('#jump-to-recs').click(function(){
+      elem = $('#recs');
+      if(elem != null && elem.position() != null)
+      {
+        offsetTop = $(header).position().top + $(header).outerHeight(true) + 10;
+        position = elem.offset().top - offsetTop;
+        window.scrollTo(0,position);
+      }
+    });
     $('#expand-add-tag').click(function() {
       $('#expand-add-tag').css('display','none');
       $('#add-tag-form').css('display','block');
+    });
+    $('#expand-add-rec').click(function() {
+      $('#expand-add-rec').css('display','none');
+      $('#add-rec-form').css('display','block');
     });
   });

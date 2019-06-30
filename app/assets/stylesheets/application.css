@@ -84,6 +84,9 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
 #add-tag-form{
   display:none;
 }
+#add-rec-form{
+  display:none;
+}
 .error-found-col{
   height: min-content;
   width:min-content;

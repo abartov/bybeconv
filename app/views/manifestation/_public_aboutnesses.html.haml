@@ -1,0 +1,15 @@
+.by-card-v02.left-side-card-v02
+  .by-card-header-left-v02
+    %span.headline-1-v02= t(:works_about_this_work)
+  .by-card-content-v02.card-with-bottom-links
+    %div
+      %div
+        %ul.ul-inside
+          - @w.topics.each do |ab|
+            - if ab.work.expressions[0].manifestations[0].published? # Only show published works # TODO: handle multiple expressions/manifestations intelligently
+              - m = ab.work.expressions[0].manifestations[0]
+              %li
+                = link_to ab.work.expressions[0].title, work_show_path(id: ab.work_id)
+                = ' / '+m.authors_string
+                - if ab.work.expressions[0].translation
+                  = ' / '+m.translators_string

@@ -42,7 +42,9 @@ he:
   send_to_viaf: חיפוש מחבר במאגר VIAF
   person_entity: ישות מחבר
   report_inappropriate_content: דיווח על תוכן בעייתי
-  x_liked_y_recommended: "%{x} קוראים אהבו את היצירה, %{y} המלצות כתובות"
+  this_work_has_x_recommendations: "ליצירה זו יש %{x} המלצות קוראים"
+  x_liked_y_recommended: "%{x} קוראות וקוראים אהבו את היצירה, %{y} המלצות כתובות"
+  x_liked: "%{x} קוראות וקוראים אהבו את היצירה"
   wait: נא להמתין
   associate_with_viaf: קשר את התיקיה לרשומת ה-VIAF הזו
   associated_with_viaf: קושר לרשומה מספר %{viaf} במאגר VIAF
@@ -128,6 +130,7 @@ he:
   save_and_exit: שמירה ויציאה
   save_and_update_display: שמירה ועדכון תצוגה
   works_about_this_author: "יצירות על אודות המחבר%{gender_suffix}"
+  works_about_this_work: יצירות על אודות יצירה זו
   aboutnesses: נושאי היצירה
   person: אדם
   work: יצירה
@@ -375,6 +378,7 @@ he:
   comments: הערות
   popular_work_tags: תגיות נפוצות ליצירות
   no_tags_yet: ליצירה זו טרם הוצעו תגיות
+  no_recommendations_yet: על יצירה זו טרם נכתבו המלצות
   to_all_whatsnew: לכל מה שחדש
   added_on: נוסף בתאריך
   advanced_search: חיפוש מתקדם
@@ -640,6 +644,7 @@ he:
   hello_x: שלום %{name}
   hello_anon: שלום רב!
   suggest_new_tag: הצעת תגית חדשה
+  add_recommendation: הוספת המלצה
   email_footer_html: "בברכה, צוות פרויקט בן־יהודה.\n\nאולי תמצא/י ענין ביומן הרשת של פרויקט בן־יהודה: http://benyehuda.org/blog/ \n\n או בערוץ היו-טיוב של פרויקט בן־יהודה: http://www.youtube.com/user/ProjectBenYehuda/videos?flow=grid&view=0"
   proof_fixed: "תודה רבה על ההגהה ששלחת עבור היצירה בכתובת:\n\n%{url}\n\nלאחר בדיקה, תיקנו את הטקסט באתר.  נשמח לקבל הצעות הגהה גם בעתיד!"
   proof_wontfix: "תודה רבה על ההגהה ששלחת עבור היצירה בכתובת:\n\n%{url}\n\nלאחר בדיקה, הגענו למסקנה שאין מדובר בשגיאה, אלא בשימוש לשון בלתי-שכיח, ובכל אופן כך מופיע במקור.  לכן לא נתקן את הטקסט באתר.  נשמח לקבל הצעות הגהה גם בעתיד!"
@@ -733,7 +738,9 @@ he:
       truncate: "..."
 
   date: #Throws an exception otherwise.
+    formats:
+      default: "%d.%m.%Y"
     order:
-      - "year"
-      - "month"
       - "day"
+      - "month"
+      - "year"
