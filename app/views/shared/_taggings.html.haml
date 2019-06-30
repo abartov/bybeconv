@@ -1,9 +1,16 @@
-.inline-block#taggings
-  - taggings.each do |tagging|
-    .card.tag-card
-      .tag-content= tagging.tag.name
-      - if current_user && tagging.status == 'pending' && tagging.suggested_by == current_user.id # only show pending tags to the users who suggested them
-        .tag-close
-          = link_to '×', tagging, remote: true, method: :delete
-        .tag-wait-confirm
-          %i.fa.fa-clock-o
+- any = false
+- @m.taggings.each do |tagging|
+  - if tagging.status == 'approved'
+    - any = true
+    %button.tag
+      = tagging.tag.name
+  - if current_user && tagging.status == 'pending' && (tagging.suggested_by == current_user.id || current_user.admin?) # only show pending tags to the users who suggested them, or to admins
+    - any = true
+    %button.tag
+      = tagging.tag.name
+    .tag-close
+      = link_to '×', tagging, remote: true, method: :delete
+    .tag-wait-confirm
+      %i.fa.fa-clock-o
+- unless any
+  = t(:no_tags_yet)

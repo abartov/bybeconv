@@ -12,7 +12,18 @@
             .by-card-content-v02
               .work-title.name-under-btn
                 .headline-1-v02= @m.title
-                .headline-2-v02= link_to @author.name, author_toc_path(@author.id)
+                - if current_user && current_user.editor?
+                  %span.static-btn= link_to t(:edit_metadata), manifestation_edit_metadata_path(@m.id)
+                  != "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+                  %span.static-btn= link_to t(:edit_markdown), manifestation_edit_path(id: @m.id)
+                  %br
+                .headline-2-v02
+                  != @m.authors.map {|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
+                  - if @e.translation && @e.translators.size > 0
+                    %br
+                    = "#{t(:translation)}: "
+                    != @translators.map{|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
+                    = " (#{t(:from_lang)}#{textify_lang(@e.works[0].orig_lang)})"
               %div
                 .work-details
                   - if @m.copyright?
@@ -58,8 +69,119 @@
                     != raw(@html)
               .col-md-3.work-side-color
                 %div{'class' => "work-genre #{@e.genre}-side-icon"}
+    .col-12.col-lg-4
+      .row
+        .col
+          / Recommendations
+          .by-card-v02.left-side-card-v02
+            .by-card-header-left-v02
+              %span.headline-1-v02 המלצות קוראים
+            .by-card-content-v02.card-with-bottom-links
+              ליצירה זו טרם הוספו המלצות קוראים
+              .bottom-right-link{:style => "padding-top: 6px"}
+                %a{:href => "#"}
+                  %span.right-side-icon &amp;
+                  %span{:style => "font-weight: bold"} הוספת המלצה
+          .by-card-v02.left-side-card-v02
+            .by-card-header-left-v02
+              %span.headline-1-v02 המלצות קוראים
+            .by-card-content-v02.card-with-bottom-links
+              %a{:href => "#"} ליצירה זו יש 3 המלצות קוראים
+              .bottom-right-link{:style => "padding-top: 6px"}
+                %a{:href => "#"}
+                  %span.right-side-icon &amp;
+                  %span{:style => "font-weight: bold"} הוספת המלצה
+          .by-card-v02.left-side-card-v02
+            .by-card-header-left-v02
+              %span.headline-1-v02 המלצות קוראים
+            .by-card-content-v02.card-with-bottom-links
+              .recommend-card-v02
+                .new-info-v02 4
+                .recommend-card-right-v02
+                  .recommend-card-pic-frame-v02
+                    .recommend-card-pic-placeholder i
+                  .recommend-card-name
+                    %a{:href => "#"} שם הממליץ
+                  .recommend-date 08.10.2018
+                .recommend-card-left-v02
+                  %p.headline-2-v02.new-headline-v02
+                    אודות:
+                    %a{:href => "#"} הרוכל האיטלקי
+                  %p.text-height-recommend
+                    לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית קולהע צופעט למרקוח איבן איף, ברומץ כלרשט מיחוצים. קלאצי סחטיר בלובק. תצטנפל בלינדו למרקל אס לכימפו, דול, צוט ומעיוט - לפתיעם ברשג - ולתיעם גדדיש. קוויז דומור ליאמום בלינך רוגצה. לפמעט
+                    הועניב היושבב שערש שמחויט - שלושע ותלברו חשלו שעותלשך וחאית נובש ערששף. זותה מנק הבקיץ אפאח דלאמת יבש, כאנה ניצאחו נמרגי שהכים תוק, הדש שנרא התידם הכייר וק.
+                  .read-more-v02
+                    %a{:href => "#"}
+                      %span{:style => "font-weight: bold"} להמשך ההמלצה
+                      %span.left-arrow 1
+              .recommend-card-v02.last-item
+                .new-info-v02 4
+                .recommend-card-right-v02
+                  .recommend-card-pic-frame-v02
+                    %img.recommend-card-pic-v02{:alt => "", :src => "/assets/adult-beard-boy-duotone.jpg"}/
+                  .recommend-card-name
+                    %a{:href => "#"} שם הממליץ
+                  .recommend-date 08.10.2018
+                .recommend-card-left-v02
+                  %p.headline-2-v02.new-headline-v02
+                    אודות:
+                    %a{:href => "#"} הרוכל האיטלקי
+                  %p.text-height-recommend
+                    לורם איפסום דולור סיט אמט, קונסקטורר אדיפיסינג אלית קולהע צופעט למרקוח איבן איף, ברומץ כלרשט מיחוצים. קלאצי סחטיר בלובק. תצטנפל בלינדו למרקל אס לכימפו, דול, צוט ומעיוט - לפתיעם ברשג - ולתיעם גדדיש. קוויז דומור ליאמום בלינך רוגצה. לפמעט
+                    הועניב היושבב שערש שמחויט - שלושע ותלברו חשלו שעותלשך וחאית נובש ערששף. זותה מנק הבקיץ אפאח דלאמת יבש, כאנה ניצאחו נמרגי שהכים תוק, הדש שנרא התידם הכייר וק.
+                  .read-more-v02
+                    %a{:href => "#"}
+                      %span{:style => "font-weight: bold"} להמשך ההמלצה
+                      %span.left-arrow 1
+              .bottom-right-link{:style => "padding-top: 6px"}
+                %a{:href => "#"}
+                  %span.right-side-icon &amp;
+                  %span{:style => "font-weight: bold"} הוספת המלצה
+              .link-to-all-v02
+                %a{:href => "#"}
+                  %span{:style => "font-weight: bold"} לכל ההמלצות
+                  %span.left-arrow 1
+          / Tags
+          .by-card-v02.left-side-card-v02{style:'min-height:250px'}
+            .by-card-header-left-v02
+              %span.headline-1-v02= t(:tags)
+            .by-card-content-v02.card-with-bottom-links
+              .inline-block#taggings
+                = render partial: 'shared/taggings', locals: {taggings: @taggings}
+              - unless current_user.nil?
+                #add-tag.bottom-right-link{:style => "padding-top: 6px"}
+                  .linkcolor.pointer#expand-add-tag
+                    %span.right-side-icon &amp;
+                    %span{:style => "font-weight: bold"}= t(:suggest_new_tag)
+
+                #add-tag-form
+                  = form_for @tagging, remote: true do
+                    %div{style: 'display:inline;margin-top:0.6rem;'}
+                      = autocomplete_field_tag :tag, '', autocomplete_tag_name_path, 'data-noMatchesLabel' => t(:no_matches_found)
+                      = hidden_field_tag :manifestation_id, @tagging.manifestation_id
+                      = hidden_field_tag :suggested_by, @tagging.suggested_by
+                    %div{style: 'display:inline'}
+                      %input.btn-small-outline-v02.btn-text-v02{type: :submit, value: t(:suggest_new_tag), style: 'margin-top:0.6rem;width:auto; background-color: #d9cdd5'}
+
+          / Additional translations of same work
+          - if @e.translation? && (@additional_translations != nil && @additional_translations != [])
+            .by-card-v02.left-side-card-v02
+              .by-card-header-left-v02
+                %span.headline-1-v02= t(:additional_translations)
+              .by-card-content-v02
+                -  @additional_translations.each do |tr|
+                  %div
+                    %span
+                      = link_to tr.title, manifestation_read(id: tr.manifestations[0].id)
+                    %span= ' '+t(:translation)+': '
+                    %span
+                      != tr.translators.map{|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
 
 :javascript
   $(document).ready(function() {
     $('#content').css('margin-top', $(header).position().top + $(header).outerHeight(true) + 10);
+    $('#expand-add-tag').click(function() {
+      $('#expand-add-tag').css('display','none');
+      $('#add-tag-form').css('display','block');
+    });
   });

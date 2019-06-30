@@ -281,6 +281,7 @@ he:
   found_mistake: מצאתי שגיאה
   found_br_mistake_html: מצאתי<BR /> שגיאה
   chapters_list: רשימת פרקים
+  additional_translations: תרגומים נוספים ליצירה
   mistake_important: חשוב לנו שהטקסט יהא מדויק וחף משגיאות
   not_implemented_yet: תכונה זו טרם מומשה. המערכת עדיין בפיתוח.
   works_page: היצירות במאגרנו
@@ -373,6 +374,7 @@ he:
   thedate: תאריך
   comments: הערות
   popular_work_tags: תגיות נפוצות ליצירות
+  no_tags_yet: ליצירה זו טרם הוצעו תגיות
   to_all_whatsnew: לכל מה שחדש
   added_on: נוסף בתאריך
   advanced_search: חיפוש מתקדם

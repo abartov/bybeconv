@@ -456,6 +456,14 @@ class ManifestationController < ApplicationController
       @pagetype = :manifestation
       @print_url = url_for(action: :print, id: @m.id)
       @liked = (current_user.nil? ? false : @m.likers.include?(current_user))
+      if @e.translation?
+        if @e.works[0].expressions.count > 1 # one is the one we're looking at...
+          @additional_translations = []
+          @e.works[0].expressions.joins(:manifestations).includes(:manifestations).each do |ex|
+            @additional_translations << ex unless ex == @e
+          end
+        end
+      end
     end
   end
 end
