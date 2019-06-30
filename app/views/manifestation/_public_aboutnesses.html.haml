@@ -5,11 +5,11 @@
     %div
       %div
         %ul.ul-inside
-          - @w.topics.each do |ab|
-            - if ab.work.expressions[0].manifestations[0].published? # Only show published works # TODO: handle multiple expressions/manifestations intelligently
-              - m = ab.work.expressions[0].manifestations[0]
+          - @works_about.each do |ab|
+            - if ab.expressions[0].manifestations[0].published? # Only show published works # TODO: handle multiple expressions/manifestations intelligently
+              - m = ab.expressions[0].manifestations[0]
               %li
-                = link_to ab.work.expressions[0].title, work_show_path(id: ab.work_id)
+                = link_to ab.expressions[0].title, work_show_path(id: ab.id)
                 = ' / '+m.authors_string
-                - if ab.work.expressions[0].translation
+                - if ab.expressions[0].translation
                   = ' / '+m.translators_string

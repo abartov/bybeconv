@@ -73,7 +73,7 @@
       .row
         .col
           / Works about this work
-          - if @w.topics.count > 0
+          - if @works_about.count > 0
             = render partial: 'public_aboutnesses', locals: {edit: false, add: false}
           / Recommendations
           .by-card-v02.left-side-card-v02#recs

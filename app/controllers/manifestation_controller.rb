@@ -114,7 +114,7 @@ class ManifestationController < ApplicationController
       @links = @m.external_links.group_by {|l| l.linktype}
       @random_work = Manifestation.where(id: Manifestation.pluck(:id).sample(5), status: Manifestation.statuses[:published])[0]
       @header_partial = 'manifestation/work_top'
-      @works_about = Work.joins(:topics).where('aboutnesses.aboutable_id': @w.id)
+      @works_about = Work.joins(:topics).where('aboutnesses.aboutable_id': @w.id) # TODO: accommodate works about *expressions* (e.g. an article about a *translation* of Homer's Iliad, not the Iliad)
     end
   end
 
