@@ -74,6 +74,10 @@ a:hover {
   width: 90%;
   background-color: white;
 }
+#header-text{
+  width: 90%;
+  background-color: white;
+}
 .header-separator{
 	width: 100%;
 	height: 2px;
@@ -220,7 +224,7 @@ ol > li:before {
   vertical-align: text-bottom; }
 .copyright-icon{
   margin-left: 4px;
-  margin-right: 4px;
+  margin-right: 0;
   vertical-align: text-bottom;
 }
 .internal-genre-icon{
@@ -230,14 +234,15 @@ ol > li:before {
 
 .icons-group-v02 {
   display: inline;
-  margin-left: 6px; }
+ }
 
 .icons-seperator {
   height: 28px;
   width: 1px;
   background-color: #d9cdd5;
   display: inline;
-  float: right; }
+  float: right; 
+  margin-left: 6px;}
 .icons-separator-white{
   height: 28px;
   width: 1px;
@@ -856,7 +861,7 @@ padding-bottom: auto;}
   max-height: 210px; }
 
 .whats-new-v02 {
-  background-color: #d9cdd5;
+  background-color: #d9cdd5; 
   }
 .left-side-card-v02 {
   background-color: #d9cdd5; }
@@ -1487,10 +1492,10 @@ ul #menuMobile {
 }
 .author-page-top-sort-desktop{
 	display: inline-block;
-	margin-right: 20px;
 }
 .author-page-top-sort-mobile{
 	display: none;
+	padding-top: 2px;
 }
 
 .side-menu-area{
@@ -1507,19 +1512,22 @@ display: flex;
 	width: 100px;
 }
 #genre-nav{
-  width: 131px;
+  width: auto;
 }
 .nav-link{
 	background-color: #eeeced;
 	height:68px;
-	width: 100%;
+	width: 100px;
 	border: none;
-	padding:12px, 6px, 6px, 6px;
 	color:#660248;
 	cursor:pointer;
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	flex-direction: column;
+}
+.navbar-nav .nav-link{
+	padding: 6px;
 }
 .nav-link:hover{
 	background-color: #d9cdd5;
@@ -1541,7 +1549,7 @@ display: flex;
 }
 .nav-chapter-name{
 	width: 84px;
-	white-space: nowrap;
+	white-space: nowrap; 
 	overflow: hidden;
 	text-overflow: ellipsis;
 	justify-content:flex-start;
@@ -1570,11 +1578,13 @@ display: flex;
   text-align: center;
 }
 .side-menu-headline{
+	width: auto;
 	padding-top: 12px;
 }
 .error-found-row{
   width: 100%;
   position: absolute;
+  margin: 0;
   z-index: 4;
 }
 .error-found-btn {
@@ -1648,7 +1658,8 @@ display: flex;
   margin-bottom: 12px;
 }
 .error-found-col{
-	padding: 0 10px;
+	padding-left: 25px;
+	padding-right: 0;
 }
 .toc h1 {
   font-size: 22px;
@@ -1996,16 +2007,37 @@ display: none;}
 	align-items: center;
 }
 .author-page-content{
-	margin-top: 216px;
+	margin-top: 224px;
 }
-/*.scrolled #breadcrumbs{
-	position: absolute;
-	top:110px;
-	padding-top: 15px;
-	padding-bottom: 15px;
-}*/
+.text-page-content{
+	margin-top: 262px;
+}
 .stick-to-top{
 	width: 90%;
 	margin-left: auto;
 	margin-right: auto;
+}
+#genrenav{
+	padding-right: 0;
+}
+.side-nav-col{
+	padding-right: 0;
+}
+.search-drop-down{
+	width: 100%;
+	padding: 0 4px;
+}
+
+.author-sort-area{
+	padding: 0;
+}
+.author-page-top-icons{
+	float:left;
+}
+#chapternav{
+	padding-right: 0;
+}
+#chapter-nav{
+	margin-top: 10px;
+	width: auto;
 }

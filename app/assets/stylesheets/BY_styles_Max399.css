@@ -177,7 +177,7 @@
   padding: 6px;
 }
 .author-page-top-sort-mobile{
-	margin-right: 6px;
+	margin-right: 0;
 }
 .btn-text-v02{
 	padding: 0 6px;	
@@ -271,4 +271,8 @@ body {
 	margin-top: 178px;
 }
 
+	.text-page-content{
+	margin-top: 196px;
+}
+	
 }
