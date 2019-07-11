@@ -996,6 +996,8 @@ padding-bottom: auto;}
 .surprise-again-btn-v02:hover {
   background-color: #d9cdd5; }
 
+.surprise-again-btn-v02:focus {
+  outline: none; }
 .surprise-author-card-content-v02 {
   width: 100%; }
 

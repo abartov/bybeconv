@@ -29,12 +29,15 @@
 	}
 
 #header > .row {
-		margin-left: 0px;
-		margin-right: 0px;
-	}
+	margin-left: 0px;
+	margin-right: 0px;
+}
 #footer{
-		padding: 4px;
-	}
+	padding: 4px;
+}
+#footer .row {
+	margin: 0;
+}
 
 .carousel-demo {
   width: calc(100% - 39px);
