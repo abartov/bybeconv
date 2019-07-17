@@ -6,7 +6,10 @@ class AdminController < ApplicationController
 
   def index
     if current_user && current_user.editor?
-      @open_proofs = Proof.where(status: 'new').count.to_s
+      if current_user.has_bit?('handle_proofs')
+        @open_proofs = Proof.where(status: 'new').count.to_s
+        @escalated_proofs = Proof.where(status: 'escalated').count.to_s
+      end
       @open_recommendations = LegacyRecommendation.where(status: 'new').count.to_s
       @conv_todo = Manifestation.where(conversion_verified: false).count
       @manifestation_count = Manifestation.count
@@ -88,6 +91,31 @@ class AdminController < ApplicationController
     @mans = Manifestation.joins(expressions: [:realizers, works: [:creations]]).where('realizers.person_id = creations.person_id and realizers.role = 3').page(params[:page]) # TODO: unhardcode
     @page_title = t(:suspicious_translations_report)
     Rails.cache.write('report_suspicious_translations', @total)
+  end
+
+  def assign_proofs
+    @p = Proof.where(status: 'new').order('RAND()').limit(1).first
+    @p.status = 'assigned'
+    @p.save!
+    li = ListItem.new(listkey: 'proofs_by_user', user: current_user, item: @p)
+    li.save!
+    # check if there are any other proofs on this manifestation, and if so, assign them too, for efficiency
+    other_proofs = []
+    unless @p.manifestation_id.nil?
+      other_proofs = Proof.where(status: 'new', manifestation_id: @p.manifestation_id)
+    else
+      other_proofs = Proof.where(status: 'new', about: @p.about)
+    end
+    other_proofs.each do |other|
+      other.status = 'assigned'
+      other.save
+      li = ListItem.new(listkey: 'proofs_by_user', user: current_user, item: other)
+      li.save!
+    end
+    li = ListItem.new(listkey: 'proofs_by_user', user: current_user, item: @p)
+    li.save!
+
+    redirect_to url_for(action: :index)
   end
 
   def assign_conversion_verification

@@ -46,18 +46,18 @@ class ApplicationController < ActionController::Base
       li = ListItem.where(listkey: bits, item: current_user).first
       return true unless li.nil?
     end
-    redirect_to '/', flash: { error: 'Not an editor' }
+    redirect_to '/', flash: { error: I18n.t(:not_an_editor) }
   end
 
   def require_admin
     return true if current_user && current_user.admin?
-    redirect_to '/', flash: { error: 'Not an admin' }
+    redirect_to '/', flash: { error: I18n.t(:not_an_admin) }
   end
 
   def require_user
     return true if current_user
     redirect_to session_login_path, flash: {
-      error: 'You must be logged in to access this page' }
+      error: I18n.t(:must_be_logged_in) }
   end
 
   def popular_works(update = false)

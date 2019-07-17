@@ -50,6 +50,8 @@ he:
   associated_with_viaf: קושר לרשומה מספר %{viaf} במאגר VIAF
   nothing_found_try_surname: אין תוצאות.  נסו לעדכן (זמנית!) את שם המחבר לשם המשפחה בלבד וחפשו שוב.
   conversion_stats_html: "סטטיסטיקה -- %{total_texts} סך הכל קבצים ישנים, %{total_known} קבצים אובחנו, %{total_images} עם תמונות, %{total_footnotes} עם הערות שוליים, %{total_tables} עם טבלאות, %{total_nikkud_full} עם ניקוד מלא, %{total_nikkud_some} עם ניקוד חלקי. <p /> מצבים אחרים -- %{total_badenc} עם תקלת קידוד, %{total_fileerr} עם שגיאת קובץ אחרת, %{total_assigned} קבצים מוקצים למסבים,%{total_parsed} קבצים פוענחו, %{total_uploaded} קבצים הועלו ישירות, %{total_superseded} קבצים הוחלפו בהעלאה ישירה, %{total_accepted} קבצים אושרו, %{total_published} ראו אור בקטלוג, %{total_manual} קבצים ממתינים להסבה ידנית."
+  assignee: מוקצה ל-
+  legacy_text_from_url: מהאתר הישן בכתובת
   uploaded: הועלה ישירות
   superseded: הוחלף בהעלאה ישירה
   analyze_all_unknown: "אבחון כל הקבצים הלא מאובחנים (עלול להימשך זמן רב)"
@@ -122,6 +124,7 @@ he:
   featured_item: זרקור על יצירה
   works_by_genre: יצירות על-פי סוגה
   edit_markdown: עריכת הטקסט
+  edit_markdown_in_new_window: עריכת הטקסט בלשונית חדשה
   add_work_link: הוספת יצירה
   year_published: שנת הוצאה
   in_current_cursor: במקום הסמן הנוכחי
@@ -240,18 +243,32 @@ he:
   proof_subscribed: אנו שמחים שברצונך לקבל עדכונים מפרויקט בן־יהודה בעתיד.  נוסיף אותך לרשימת הדיוור שלנו בהקדם, בכתובת %{email}
   proof_failed: אירעה שגיאה בשליחת ההגהה.  אפשר לנסות שוב.
   proof_contact_html: "בכל שאלה, תוכלו לכתוב אל צוות העורכים, בכתובת <a href=\"mailto:editor@benyehuda.org\">editor@benyehuda.org</a>."
+  proofstatus_new: לטיפול
+  proofstatus_fixed: תוקן
+  proofstatus_wontfix: לא שגוי
+  proofstatus_escalated: טעון בדיקה נוספת
+  proofstatus_assigned: מוקצה לטיפול
+  proofs: הגהות
 # TODO: add notification e-mail when resolving a proof
   left_todo: נותרו לעשות
   new_static_page: דף סטטי חדש
   static_page: דף סטטי
   static_pages: דפים סטטיים
-  proof_show_text: הצג את הטקסט בחלון נפרד
+  proof_show_text: הצג את הטקסט באתר הישן בחלון נפרד
+  show_text: הצג את גוף היצירה
   proof_your_proofs: יש להקליד כאן למטה את ההגהות, או ללחוץ על הלחצן משמאל כדי להעתיק את הטקסט שנבחר ולתקן אותו ידנית למטה.
   proof_copy_text: העתק למטה
   your_selected_text: הטקסט שסימנת
   submit_proof: שמור הגהה
+  proof: הגהה
+  assign_proofs: הקצה עוד הגהות לטיפולי
+  highlighted_passage: הקטע שסומן בדיווח
+  find_in_text: איתור בטקסט
   download_instructions: נא לבחור את תבנית הקובץ הרצויה (פורמט).  הקובץ ירד מיד עם הלחיצה על לחצן ההורדה, ויישמר בתיקיית ההורדות המוגדרת בדפדפן.
   cite_instructions_html: "ניתן לבצע העתקה והדבקה של הציטוט על פי התבנית הנדרשת.<br /><br /><b>שימו לב: </b>לפניכם משאב אינטרנט, ויש לצטט בהתאם, ולא לפי המהדורה המודפסת שעליה התבססנו.<br />"
+  not_an_editor: רק בעלי הרשאת עריכה לגשת לדף זה
+  not_an_admin: רק בעלי הרשאת ניהול לגשת לדף זה
+  must_be_logged_in: עליך להיות מחובר/ת כדי לצפות בדף זה
   pdf_format: לצפייה באקרובט או להדפסה
   doc_format: מסמך וורד
   html_format: דף אינטרנט
@@ -422,6 +439,7 @@ he:
   mobile_totals: "%{authors} יוצרים, %{works} יצירות"
   authors_in_the_project: יוצרים במאגר
   works_in_the_project: יצירות שהועלו למאגר
+  escalated: הועבר לבדיקה נוספת
   the_blog: יומן הרשת
   to_the_blog: ליומן הרשת
   to_the_youtube: לערוץ היו-טיוב
@@ -595,6 +613,7 @@ he:
   sign_out: התנתקות
   show_all_proofs: הצג את כל ההגהות
   show_open_proofs: הצג הגהות חדשות
+  show_escalated_proofs: הצג הגהות טעונות עיון נוסף
   purge_spam_proofs: מחק הגהות זבל
   all_proofs: כל ההגהות
   proofs_by_status: הגהות לפי סטטוס %{status}
@@ -606,7 +625,7 @@ he:
   adapter: מעבד
   illustrator: מאייר
   admin_actions: פעולות מנהל
-  proof_for: הגהה עבור הקובץ
+  proof_for: הגהה עבור
   or: או
   add: הוסף את
   add_linked_person: הוסף איש/ה מקושר/ת
@@ -625,10 +644,14 @@ he:
   html_files_list: רשימת קבצים להסבה
   catalog_dashboard: קטלוג המערכת
   catalog_title: קטלוג פרויקט בן־יהודה
+  resolve_no_email_explanation: אפשרויות הבלי דואל נועדו למקרה של ריבוי דיווחים תקינים, לאחר שליחת דואל עבור הראשון
   resolve_as_fixed: השגיאה תוקנה (שולח דואל!)
-  resolve_as_fixed_no_email: השגיאה תוקנה (ללא דואל, למקרה של ריבוי דיווחים תקינים, לאחר שליחת דואל עבור הראשון)
+  resolve_as_fixed_no_email: השגיאה תוקנה (ללא דואל)
   resolve_as_wontfix: לא שגיאה, או לא יתוקן (שולח דואל!)
+  resolve_as_wontfix_no_email: לא שגיאה, או לא יתוקן (בלי דואל)
+  resolve_as_escalate: טעוּן בדיקה נוספת
   resolve_as_spam: דיווח זבל -> למחיקה
+  spam: זבל
   resolve_as_accepted: קבל המלצה לעיון מאוחר יותר (שולח דואל!)
   resolve_as_rejected: דחה המלצה -> למחיקה
   resolve_as_blogged: קבל המלצה בציון פרסום ב-URL
