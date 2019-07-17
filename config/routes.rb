@@ -40,6 +40,7 @@ Bybeconv::Application.routes.draw do
   get 'admin/my_convs/:id' => 'admin#my_convs', as: 'my_convs'
   get 'admin/conversion_verification'
   get 'admin/assign_conversion_verification' => 'admin#assign_conversion_verification', as: 'assign_conversion_verification'
+  get 'admin/assign_proofs' => 'admin#assign_proofs', as: 'assign_proofs'
   get 'admin/static_pages_list'
   get 'admin/static_page/new' => 'admin#static_page_new', as: 'static_page_new'
   post 'admin/static_page/create' => 'admin#static_page_create', as: 'static_page_create'
@@ -136,7 +137,7 @@ Bybeconv::Application.routes.draw do
   resources :taggings
   resources :aboutnesses
 
-  get 'user/list'
+  match 'user/list', via: [:get, :post]
   post 'user/set_editor_bit'
   get "user/:id/make_editor" => 'user#make_editor', as: 'user_make_editor'
   get "user/:id/make_admin" => 'user#make_admin', as: 'user_make_admin'

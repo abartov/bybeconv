@@ -19,7 +19,12 @@ class UserController < ApplicationController
   end
 
   def list
-    @user_list = User.page params[:page]
+    unless params[:q].nil? || params[:q].empty?
+      @user_list = User.where("name like '%#{sanitize(params[:q])}%' OR email like '%#{sanitize(params[:q])}%'").page params[:page]
+      @q = params[:q]
+    else
+      @user_list = User.page params[:page]
+    end
   end
 
   def make_editor
