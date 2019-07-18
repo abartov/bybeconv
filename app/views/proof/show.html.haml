@@ -51,7 +51,7 @@
           .btn.btn-small-outline-v02.btn-text-v02.reading-mode-btn-v02{style:'float:right; font-size:16pt; height:auto; width:auto;'}= link_to t(:edit_markdown_in_new_window), manifestation_edit_path(@m.id), {target: '_blank', style:'color:white'}
         - unless @p.highlight.nil?
           .col-3
-            .btn.btn-small-outline-v02.btn-text-v02.reading-mode-btn-v02.pointer#find_in_text{style:'float:right font-size:16pt; height:auto; width:auto;'}= t(:find_in_text)
+            .btn.btn-small-outline-v02.btn-text-v02.reading-mode-btn-v02.pointer#find_in_text{style:'float:right; font-size:16pt; height:auto; width:auto;'}= t(:find_in_text)
       %hr
       != raw(@html)
 

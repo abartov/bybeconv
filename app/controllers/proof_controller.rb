@@ -1,5 +1,4 @@
 class ProofController < ApplicationController
-  include ApplicationHelper
   protect_from_forgery :except => :submit # allow submission from outside the app
   before_action :only => [:index, :list, :show, :resolve, :purge] do |c| c.require_editor('handle_proofs') end
 
@@ -86,7 +85,7 @@ class ProofController < ApplicationController
       @p.status = 'spam'
       fix_text = 'זבל'
     end
-    @p.resolved_by = session[:user]
+    @p.resolved_by = current_user
     @p.save!
     flash[:notice] = t(:resolved_as, :fixed => fix_text)
     if current_user.admin?

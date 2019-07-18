@@ -29,6 +29,7 @@ class UserController < ApplicationController
 
   def make_editor
     set_user
+    @q = params[:q]
     @u.editor = true
     @u.save!
     redirect_to url_for(action: :list), notice: "#{@u.name} is now an editor."
@@ -36,6 +37,7 @@ class UserController < ApplicationController
 
   def make_admin
     set_user
+    @q = params[:q]
     @u.admin = true
     @u.save!
     redirect_to url_for(action: :list), notice: "#{@u.name} is now an admin."
@@ -43,6 +45,7 @@ class UserController < ApplicationController
 
   def unmake_editor
     set_user
+    @q = params[:q]
     @u.editor = false
     @u.save!
     redirect_to url_for(action: :list), notice: "#{@u.name} is no longer an editor."
@@ -53,6 +56,7 @@ class UserController < ApplicationController
 
   def set_editor_bit
     set_user
+    @q = params[:q]
     if @u.editor? and params[:bit] and (params[:bit].empty? == false) and params[:set_to] and (params[:set_to].empty? == false)
       if params[:set_to].to_i == 1
         action = t(:added_to_group)

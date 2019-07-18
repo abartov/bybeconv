@@ -16,10 +16,9 @@
     %ol{style:'margin-right:20px'}
       - @proofs.each do |listitem|
         - p = listitem.item
-        - unless p.nil?
+        - unless p.nil? || p.status != 'assigned'
           %p
             - if p.manifestation_id
-              - # Proof.where(status: 'assigned', manifestation_id: p.manifestation_id).each do |proof|
               - m = Manifestation.find(p.manifestation_id)
               %li{style:'padding-right:10px'}= link_to "#{m.title} / #{m.authors_string}", proof_path(p)
             - else
