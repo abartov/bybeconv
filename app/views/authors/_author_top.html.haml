@@ -50,7 +50,7 @@
       .col-1.side-nav-col
         = render partial: 'shared/genre_navbar', locals: {genres_present: @genres_present, page: :toc, curated_content: false} # TODO: implement emitting curated content in TOC pages, and then un-hardcode this
       .col{style:'z-order:-1;height:0;'}
-      .col-3.error-found-col
+      .col-4.error-found-col
         %button.error-found-btn.notyet
           .error-found
             .error-found-text= t(:found_br_mistake_html)
