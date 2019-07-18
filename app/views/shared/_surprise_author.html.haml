@@ -40,6 +40,8 @@
                   - genrebit = genre.nil? ? '' : " (#{textify_genre(genre)})"
                   %li
                     = link_to mhash[:title], manifestation_read_path(mhash[:id])
+                    - if mhash[:translation]
+                      = ' / '+mhash[:author]
                     = ' '+genrebit
 
             .padbot12

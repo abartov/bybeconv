@@ -246,7 +246,7 @@ class Person < ApplicationRecord
 
   def most_read(limit)
     Rails.cache.fetch("au_#{self.id}_#{limit}_most_read", expires_in: 24.hours) do
-      self.manifestations.all_published.includes(:expressions).order(impressions_count: :desc).limit(limit).map{|m| {id: m.id, title: m.title, author: m.author_string, translation: m.expressions[0].translation, genre: m.expressions[0].genre }}
+      self.manifestations.all_published.includes(:expressions).order(impressions_count: :desc).limit(limit).map{|m| {id: m.id, title: m.title, author: m.authors_string, translation: m.expressions[0].translation, genre: m.expressions[0].genre }}
     end
   end
 
