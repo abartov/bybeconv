@@ -4,10 +4,13 @@
 
 .scrolled .logoBY-scroll-mobile-v02{
 		position: fixed;
-		left: calc(50% - 60px);
-		width: 140px;
-		top: 3px;
+		left: calc(50% - 10px);
+		width: 100px;
+		top: 6px;
 	}
+		.scrolled .logoBY-scroll-mobile-v02 img{
+    height: 28px;
+}
 .author-info-v02 {
 		width: 21px;
 		height: 21px;
@@ -327,9 +330,14 @@ body {
 		height: 33px;
 	}
 		.author-page-content{
-	margin-top: 216px;
+	margin-top: 189px;
 }
 	.text-page-content{
-	margin-top: 218px;
+	margin-top: 198px;
 }
+.logoBY-v02 {
+    max-width: 188px;
+    max-height:60px;
+    padding-right: 0px;
+	padding-top: 4px;}
 }

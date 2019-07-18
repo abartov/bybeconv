@@ -91,6 +91,9 @@ a:hover {
   width: 90%;
 	height: auto;
  }
+.top-element {
+    margin-top: 124px;
+}
 
 
 #footer {
@@ -158,10 +161,13 @@ ol > li:before {
   margin-bottom: 24px; }
 
 .logoBY-v02 {
-  margin-top: 12px;
-  max-width: 300px;
+  width: 300px;
+	height: 69px;
   object-fit: fill;
-  padding-right: 4px; }
+  padding-right: 0;
+padding-left: 6px;
+	padding-top: 2px;
+}
 
 
 .slogan-v02 {
@@ -191,13 +197,15 @@ ol > li:before {
   margin-top: 2px; }
 
 .stat-small-v02 {
-  font-size: 15px;
-  line-height: 15px;
+  font-size: 14px;
+  line-height: 14px;
   margin-top: 4px; }
 
 .top-btn-group-v02 {
   float: left;
   margin: 12px 0 6px 0; }
+.scrolled .top-btn-group-v02 {
+  margin: 4px 0 6px 0; }
 
 .btn-small-outline-v02 {
   min-width: 28px;
@@ -1093,7 +1101,7 @@ nav a {
   height: 100%;
   width: 0;
   position: fixed;
-  z-index: 1;
+  z-index: 1000;
   top: 0;
   right: 0;
   background-color: #d9cdd5;
@@ -1379,7 +1387,7 @@ ul #menuMobile {
 .scrolled .logoBY-scroll-mobile-v02{
 	display: block;
     max-height: 46px;
-    text-align: right;
+    text-align: center;
     width: 240px;
 }
 .scrolled .logoBY-scroll-mobile-v02 img{
@@ -1389,18 +1397,21 @@ ul #menuMobile {
 
 #breadcrumbs{
 	padding-right: 4px;
-	padding-top: 15px;
-	padding-bottom: 15px;
+	padding-top: 10px;
+}
+
+.scrolled #breadcrumbs{
+	display: none;
 }
 .breadcrumbs-text{
 	display: inline;
-	font-weight: bold;
+	font-size: 13px;
 }
 .breadcrumbs-arrow {
   font-family: ben-yehuda;
   padding-right: 0px;
   padding-left: 0px;
-  font-size: 12px;
+  font-size: 10px;
   vertical-align:middle;
   display: inline;
 }
@@ -1501,8 +1512,8 @@ ul #menuMobile {
 }
 
 .side-menu-area{
-    -ms-flex: 0 0 130px;
-    flex: 0 0 130px;
+    -ms-flex: 0 0 230px;
+    flex: 0 0 230px;
 }
 .side-menu-area-left{
 display: none;}
@@ -2009,10 +2020,10 @@ display: none;}
 	align-items: center;
 }
 .author-page-content{
-	margin-top: 224px;
+	margin-top: 204px;
 }
 .text-page-content{
-	margin-top: 262px;
+	margin-top: 252px;
 }
 .stick-to-top{
 	width: 90%;
@@ -2020,6 +2031,7 @@ display: none;}
 	margin-right: auto;
 }
 #genrenav{
+	padding-top: 2px;;
 	padding-right: 0;
 }
 .side-nav-col{
@@ -2042,4 +2054,12 @@ display: none;}
 #chapter-nav{
 	margin-top: 10px;
 	width: auto;
+}
+.top-space{
+	width: 100%;
+	height: 10px;
+	background-color: white;
+}
+.scrolled #header-general{
+	padding-top: 4px;
 }

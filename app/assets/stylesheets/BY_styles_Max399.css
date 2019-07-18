@@ -79,7 +79,7 @@
     margin-top: -3px; }
 .about-author-card-v02 {
     width: 60px;
-    height: 86px;
+    height: 80px;
     margin-top: -3px; 
 	}
 .surprise-work-card-v02 {
@@ -271,11 +271,26 @@ body {
 		height: 33px;
 	}
 .author-page-content{
-	margin-top: 178px;
+	margin-top: 160px;
 }
 
 	.text-page-content{
-	margin-top: 196px;
+	margin-top: 176px;
+}
+	.logoBY-v02 {
+    max-width: 150px;
+    max-height:54px;
+    padding-right: 0px;
+	padding-top: 2px;}
+	
+	.scrolled .logoBY-scroll-mobile-v02{
+		position: fixed;
+		left: calc(50% - 30px);
+		width: 100px;
+		top: 8px;
+	}
+		.scrolled .logoBY-scroll-mobile-v02 img{
+    height: 24px;
 }
 	
 }

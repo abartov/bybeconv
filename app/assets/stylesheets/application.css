@@ -57,9 +57,7 @@
 body {
   overflow-x: hidden; /* prevent horizontal scrollbar (caused by Slick's carousel track having a virtual width of 50000) */
 }
-.top-element{
-  margin-top: 124px;
-}
+
 .scrolled .top-element {
   margin-top: 93px;
 }

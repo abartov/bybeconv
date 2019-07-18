@@ -148,8 +148,16 @@ p {
 		padding: 2px 3px 3px 3px;
 	}
 .author-page-content{
-	margin-top: 231px;
+	margin-top: 204px;
 }
+	.text-page-content{
+	margin-top: 216px;
+}
+ .logoBY-v02 {
+    max-width: 230px;
+	  max-height:62px;
+    padding-right: 0px;
+	padding-top: 6px;}
 
 }
 
