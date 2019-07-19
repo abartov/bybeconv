@@ -32,7 +32,7 @@
     $('[data-toggle="tooltip"]').tooltip();
     $("#scroller#{id_frag}").slick({
       infinite: false,
-      slidesToShow: 4,
+      slidesToShow: 5,
       placeholders: false,
       slidesToScroll: 1,
       arrows: true,
@@ -43,7 +43,13 @@
       //variableWidth: true,
       // appendArrows: '#scroller_container',
       responsive: [{
-        breakpoint: 1190,
+        breakpoint: 1700,
+        settings: {
+          slidesToShow: 4,
+          //infinite: true
+        }
+      },{
+        breakpoint: 1340,
         settings: {
           slidesToShow: 3,
           //infinite: true
