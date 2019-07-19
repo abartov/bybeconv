@@ -210,12 +210,13 @@ class ApplicationController < ActionController::Base
   end
   def prep_toc
     # TODO: cache this!
-    old_toc = @author.toc.toc
-    @toc = @author.toc.refresh_links # TODO: remove this when we're sure we're done with the legacy files
-    if @toc != old_toc # update the TOC if there have been HtmlFiles published since last time, regardless of whether or not further editing would be saved.
-      @author.toc.toc = @toc
-      @author.toc.save!
-    end
+    #old_toc = @author.toc.toc
+    #@toc = @author.toc.refresh_links # TODO: remove this when we're sure we're done with the legacy files
+    #if @toc != old_toc # update the TOC if there have been HtmlFiles published since last time, regardless of whether or not further editing would be saved.
+    #  @author.toc.toc = @toc
+    #  @author.toc.save!
+    #end
+    @toc = @author.toc.toc
     markdown_toc = toc_links_to_markdown_links(@toc)
     toc_parts = divide_by_genre(markdown_toc)
     @genres_present = toc_parts.shift # first element is the genres array

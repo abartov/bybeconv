@@ -16,12 +16,20 @@
           .side-menu-icon Q
 :javascript
   $(document).ready(function() {
-    $('.side-menu-item').click(function() {
-      $('.side-menu-item').removeClass('current-menu-item');
-      $(this).addClass('current-menu-item');
+    $(window).scroll(function() {
+      var scroll = $(window).scrollTop();
+      if(scroll <= 200) {
+        $('.nav-link').first().addClass('active');
+      }
+    });
+    //$('.nav-item').first().addClass('current-menu-item');
+    $('.nav-link').click(function(e) {
+      e.preventDefault();
+      //$('.nav-item').removeClass('current-menu-item');
+      //$(this).parent().addClass('current-menu-item');
       anchor = $(this).attr('id').replace('_button','_g');
       $('html, body').animate({
-        scrollTop: $('a[name='+anchor+']').offset().top - 150
-      }, 100);
+        scrollTop: $('a[name='+anchor+']').offset().top - $(header).height() - 65
+      }, 800);
     });
   });
