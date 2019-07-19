@@ -113,7 +113,4 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
   .mobileLogo{
     display:block;
   }
-  .author-page-top{
-    top:34px;
-  }
 }

@@ -1,33 +1,31 @@
-.header-separator
-#header-general
-  #breadcrumbs
-    .breadcrumbs-text= link_to t(:homepage), '/'
+#breadcrumbs
+  .breadcrumbs-text= link_to t(:homepage), '/'
+  .breadcrumbs-arrow= 1
+  - if @pagetype == :manifestation
+    .breadcrumbs-text= link_to t(:authors), all_authors_path
     .breadcrumbs-arrow= 1
-    - if @pagetype == :manifestation
-      .breadcrumbs-text= link_to t(:authors), all_authors_path
-      .breadcrumbs-arrow= 1
-      - e = @entity.expressions[0]
-      - if e.translators.count > 0
-        - person = e.translators[0]
-      - else
-        - person = e.works[0].persons[0]
-      .breadcrumbs-text
-        = link_to person.name, author_toc_path(id: person.id)
-      .breadcrumbs-arrow= 1
-      - genre = textify_genre(e.genre)
-      .breadcrumbs-text
-        = link_to e.translation ? "#{t(:translation)} #{genre}" : genre, :controller => :authors, :action => :toc, :id => person.id, :genre => e.genre
-      /.breadcrumbs-arrow= 1
-      /.breadcrumbs-text
-      /  %b= @entity.title
-    - elsif @pagetype == :author
-      .breadcrumbs-text= link_to t(:authors), all_authors_path
-      .breadcrumbs-arrow= 1
-      .breadcrumbs-text
-        %b= @entity.name
-    - elsif @pagetype == :period
-      .breadcrumbs-text
-        %b= t(:periods)
-      .breadcrumbs-arrow= 1
-      .breadcrumbs-text
-        %b= @entity.name
+    - e = @entity.expressions[0]
+    - if e.translators.count > 0
+      - person = e.translators[0]
+    - else
+      - person = e.works[0].persons[0]
+    .breadcrumbs-text
+      = link_to person.name, author_toc_path(id: person.id)
+    .breadcrumbs-arrow= 1
+    - genre = textify_genre(e.genre)
+    .breadcrumbs-text
+      = link_to e.translation ? "#{t(:translation)} #{genre}" : genre, :controller => :authors, :action => :toc, :id => person.id, :genre => e.genre
+    /.breadcrumbs-arrow= 1
+    /.breadcrumbs-text
+    /  %b= @entity.title
+  - elsif @pagetype == :author
+    .breadcrumbs-text= link_to t(:authors), all_authors_path
+    .breadcrumbs-arrow= 1
+    .breadcrumbs-text
+      %b= @entity.name
+  - elsif @pagetype == :period
+    .breadcrumbs-text
+      %b= t(:periods)
+    .breadcrumbs-arrow= 1
+    .breadcrumbs-text
+      %b= @entity.name
