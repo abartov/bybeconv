@@ -9,7 +9,13 @@ class AuthorsController < ApplicationController
     unless params[:genre].nil? || params[:genre].empty?
       @author = Person.where(id: Person.in_genre(params[:genre]).pluck(:id).sample(1))[0]
     else
-      @author = Person.where(id: Person.has_toc.pluck(:id).sample(1))[0]
+      has_something = false
+      i = 0
+      while i < 5 && has_something == false
+        @author = Person.where(id: Person.has_toc.pluck(:id).sample(1))[0]
+        i += 1
+        has_something = true if @author.manifestations.published.count > 0
+      end
     end
     render partial: 'shared/surprise_author', locals: {author: @author, initial: false, id_frag: params[:id_frag], passed_genre: params[:genre], passed_mode: params[:mode], side: params[:side]}
   end
