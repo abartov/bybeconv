@@ -12,6 +12,9 @@
     - else
       = t(:legacy_text_from_url)+': '+@p.about
   %p
+    %b= t(:status)+':'
+    = " #{textify_proof_status(@p.status)}"
+  %p
     %b= link_to t(:proof_show_text), @p.about, :target => "_blank"
   %p
     %b= "#{t(:from)} #{@p.from}"
