@@ -1,5 +1,6 @@
 .container-fluid#header-general
   = render partial: 'shared/breadcrumbs'
+  .top-space
   .work-page-top
     .work-page-top-info-card
       .headline-1-v02.work-name-top-mobile= @m.title
@@ -87,10 +88,10 @@
                     %span.by-icon-v02.linkcolor.iconNearText-v02> D
                     = t(:bookshelves)
     .row.error-found-row
-      .col-1
+      .col-2.side-nav-col
         - if @m.chapters? and @m.long?
           .side-menu-headline= t(:chapters_list)
-          %nav{'class' => 'navbar'}
+          %nav#chapternav{'class' => 'navbar'}
             %ul.nav.flex-column.by-card-v02{'aria-orientation' => 'vertical'}
               - first = true
               - @chapters.each do |ch|
