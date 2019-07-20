@@ -4,10 +4,13 @@
 
 .scrolled .logoBY-scroll-mobile-v02{
 		position: fixed;
-		left: calc(50% - 80px);
+		left: calc(50% - 60px);
 		width: 160px;
 		top: 3px;
 	}
+	.scrolled .logoBY-scroll-mobile-v02 img{
+    height: 33px;
+}
 	.author-name-years{
 		display: block;
 		margin-bottom: 12px;
@@ -25,7 +28,7 @@
 	float: left;
 	position: absolute;
 	left: 15px;
-	bottom: 10px;
+	bottom: 0px;
 }
 
 
@@ -38,8 +41,10 @@
 	width: 100%;
 	position: absolute;
 	right: 0;
-	bottom: 10px;
+	bottom: 0px;
+	margin-right:0; 
 	text-align: center;
+	padding: 2 4px;
 	}
 	.top-row-v02{
 	display: none;
@@ -48,12 +53,10 @@
 		padding-top: 4px;
 	}
 	.top-donation-desk-area-v02 {
-  text-align: center;
   padding-top: auto;
   padding-bottom: auto;
   padding-left: 0;
   padding-right: 0;
-  display: none;
 }
 	.donation-area-v02{
 		display: none;
@@ -162,15 +165,21 @@
     width: 132px;
     height: 190px;
     padding-top: 48px; }
-	.author-name-v02{
-		padding-top: 10px;
+	.author-name-area{
+		height:41px;
 	}
 		.surprise-author-name-v02{
-		padding-top: 10px;
+	padding-top: 0;
 	}
-  #header {
+ #header-general {
     width: 100%;
-    height: auto; }
+ }
+#header-author {
+    width: 100%;
+ }
+#header-text {
+    width: 100%;
+ }
 
   #content {
     width: 100%;
@@ -182,8 +191,10 @@
 	display: none;
 }
   .logoBY-v02 {
-    max-width: 240px;
-    padding-right: 0px; }
+    max-width: 250px;
+	  max-height:62px;
+    padding-right: 0px;
+	padding-top: 6px;}
 	.logoBY-scroll-v02 {
 		margin-top: 0;
   max-width: 160px;
@@ -282,7 +293,8 @@
   display: block;
 }
 .error-found-col{
-	padding: 0 4px;
+	padding-left: 15px;
+	padding-right: 0;
 }
 .top-element {
   margin-top: 100px;
@@ -400,6 +412,27 @@ display: none;	}
     display:block;
   }
 
+	.surprise-btn-v02 {
+  width: 160px;
+  height: 50px; }
+	
+	.author-page-content{
+	margin-top: 213px;
+}
+.text-page-content{
+	margin-top: 226px;
+}
+	.side-nav-col{
+		display: none;
+}
+	.nav-chapter-name{
+	width: 84px;
+	white-space: nowrap; 
+	overflow: hidden;
+	text-overflow: ellipsis;
+	justify-content:flex-start;
+}
+	
 }
 
 
