@@ -90,18 +90,14 @@
       .col-1
         - if @m.chapters? and @m.long?
           .side-menu-headline= t(:chapters_list)
-          %ul.nav.flex-column.by-card-v02
-            / %li.nav-item
-            /  %a.nav-link.nav-link-arrows{:href => "#"}
-            /    %div
-            /      .side-menu-arrow (
-            - @chapters.each do |ch|
-              %li.nav-item
-                .nav-link.nav-link-chapter.pointer.jumpch.linkcolor{'data-target' => "ch#{ch[1]}"}
-                  .nav-chapter-name= ch[0]
-            /%li.nav-item
-            /  %a.nav-link.nav-link-arrows{:href => "#"}
-            /    .side-menu-arrow )
+          %nav{'class' => 'navbar'}
+            %ul.nav.flex-column.by-card-v02{'aria-orientation' => 'vertical'}
+              - first = true
+              - @chapters.each do |ch|
+                %li.nav-item
+                  %div{'class' => 'nav-link nav-link-chapter pointer linkcolor'+(first ? ' active' : '') ,'data-target' => "ch#{ch[1]}"}
+                    .nav-chapter-name= ch[0]
+                - first = false
       .col-4.error-found-col
         %button.error-found-btn#found_mistake{:href => "#"}
           .error-found
@@ -113,9 +109,50 @@
   = render partial: 'shared/download', locals: {manifestation: @m}
 #citeDlg{style:'display:none'}
   = render partial: 'shared/cite', locals: {manifestation: @m}
+#proofSent{style:'display:none'}
+  %span{style:'color:green'}= t(:proof_thanks_html)
+#proofDlg{style:'display:none'}
+  .container-fluid
+    = form_tag('/proof', remote: true, id: 'proof_form') do
+      .row
+        .col-sm-12
+          = label_tag t(:your_selected_text)+':'
+      .row
+        .col-sm-12
+          = text_area_tag(:highlight, '', id: 'proof_selected_text', rows: 7, cols:40, readonly:true, style:'background:#e4e4e4; width:70%;')
+      .row
+        %p
+      .row
+        .col-sm-9
+          = label_tag t(:proof_your_proofs)
+        .col-sm-3
+          %button.btn#copy_proof{:type => 'button'}= t(:proof_copy_text)
+      .row
+        .col-sm-12
+          = text_area_tag(:what, '', id: 'prooftext', rows: 7, cols: 40)
+      .row
+        .col-sm-12
+          = label_tag t(:email)+':'
+          %br
+          = email_field_tag 'from', '', placeholder: t(:email)
+          = hidden_field_tag(:manifestation, @m.id)
+    #proof_status
 
 :javascript
   $(document).ready(function(){
+    $(window).scroll(function() {
+      var scroll = $(window).scrollTop();
+      if(scroll <= 200) {
+        $('.nav-link').first().addClass('active');
+      }
+    });
+    $('.nav-link').click(function(e) {
+      e.preventDefault();
+      anchor = $(this).attr('data-target');
+      $('html, body').animate({
+        scrollTop: $('a[name='+anchor+']').offset().top - $(header).height() - 65
+      }, 800);
+    });
     $('#chapter_dropdown').click(function(){
       if($('#chapter_dropdown_content').css('display') == 'block')
         $('#chapter_dropdown_content').css('display', 'none');
@@ -136,15 +173,6 @@
     });
 
     offsetTop = #{ @readmode ? 40 : 250 },
-    $('.jumpch').click(function() {
-      elem = $('a[name='+$(this).attr('data-target'));
-      if(elem != null && elem.position() != null)
-      {
-        position = elem.offset().top - offsetTop;
-        window.scrollTo(0,position);
-      }// else alert('nope');
-
-    });
     // heart button
     $('.like').click(function(){ // toggle like/unlike
       if($('.like').find(".fa-heart").length > 0) { // already liked

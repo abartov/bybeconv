@@ -25,6 +25,7 @@
                     != @translators.map{|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
                     = " (#{t(:from_lang)}#{textify_lang(@e.works[0].orig_lang)})"
               %div
+                / metadata
                 .work-details
                   - if @m.copyright?
                     %span.by-icon-v02.copyright-icon> m
@@ -48,7 +49,7 @@
                     - unless @e.date.nil? || @e.date.empty?
                       - edition += '; '+@e.date
                     = edition
-
+                / tags and recommendations
                 .work-details.mobile-work-details
                   - if @taggings.approved.count > 0
                     %span{:style => "font-weight:bold"}= t(:tags)+': '
