@@ -584,6 +584,7 @@ padding-bottom: auto;}
   height: 400px; }
 
 #works-surprise-replaced {
+  margin-bottom: 3px;
   height: 400px }
 
 #works-surprise-initial {
@@ -1530,7 +1531,7 @@ display: flex;
 .nav-link{
 	background-color: #eeeced;
 	height:68px;
-	width: 100px;
+	width: 202px;
 	border: none;
 	color:#660248;
 	cursor:pointer;
@@ -2020,10 +2021,10 @@ display: none;}
 	align-items: center;
 }
 .author-page-content{
-	margin-top: 204px;
+	margin-top: 198px;
 }
 .text-page-content{
-	margin-top: 252px;
+	margin-top: 240px;
 }
 .stick-to-top{
 	width: 90%;

@@ -114,3 +114,8 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
     display:block;
   }
 }
+@media only screen and (max-width: 991px) {
+  .nav-chapter-name{
+    width: unset;
+  }
+}
