@@ -20,12 +20,12 @@
     /  %b= @entity.title
   - elsif @pagetype == :author
     .breadcrumbs-text= link_to t(:authors), all_authors_path
-    .breadcrumbs-arrow= 1
-    .breadcrumbs-text
-      %b= @entity.name
+    /.breadcrumbs-arrow= 1
+    /.breadcrumbs-text
+    /  %b= @entity.name
   - elsif @pagetype == :period
     .breadcrumbs-text
       %b= t(:periods)
-    .breadcrumbs-arrow= 1
-    .breadcrumbs-text
-      %b= @entity.name
+    /.breadcrumbs-arrow= 1
+    /.breadcrumbs-text
+    /  %b= @entity.name
