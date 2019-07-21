@@ -4,7 +4,8 @@
     %a{href: author_toc_path(author.id)}
       .surprise-author-card-v02
         %img.surprise-author-pic-v02{src: author.profile_image.url(:thumb), alt: author.name}
-        .surprise-author-name-v02= t(:to_the_author_page)+(author.gender == 'female' ? 'ת' : '') # TODO: unhardcode
+        .author-name-area
+          .surprise-author-name-v02= t(:to_the_author_page)+(author.gender == 'female' ? 'ת' : '') # TODO: unhardcode
     .by-card-header-type2-v02
       %span.headline-1-v02
         %a{href: author_toc_path(author.id)}= author.name
@@ -29,7 +30,7 @@
                   %span.left-arrow 1
           .col-md-6.col-sm-12.surprise-author-left-side
             .padbot12
-              %b= t(:works_in_the_database)+': '
+              %b= t(:works_in_the_project)+': '
               = link_to "#{author.cached_works_count} #{t(:works)}", author_toc_path(author.id)
             .text-height-author-2
               %p{style:'font-weight:bold; margin-bottom: 3px'}= t(:their_most_read_works, gender_letter: author.gender_letter)
