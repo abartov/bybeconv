@@ -99,7 +99,6 @@ he:
   donate_money: תרומה כספית
   donate: תרומה
   bookshelves: רשימות קריאה
-  works_in_the_database: יצירות במאגר
   to_the_works_in_the_genre_of_this_author: "לכל יצירות %{author} בסוגה %{genre}"
   to_all_the_works_of_this_author: "לכל יצירות %{author}"
   most_read_works_of_author: "יצירותי%{gender_letter} הנקראות ביותר של %{author}"
@@ -438,7 +437,7 @@ he:
   x_works: "(%{x} יצירות)"
   mobile_totals: "%{authors} יוצרים, %{works} יצירות"
   authors_in_the_project: יוצרים במאגר
-  works_in_the_project: יצירות במאגר
+  works_in_the_project: יצירות שהועלו למאגר
   escalated: הועבר לבדיקה נוספת
   the_blog: יומן הרשת
   to_the_blog: ליומן הרשת

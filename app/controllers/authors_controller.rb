@@ -177,6 +177,7 @@ class AuthorsController < ApplicationController
       else
         generate_toc
       end
+      @scrollspy_target = 'genrenav'
     else
       flash[:error] = I18n.t(:no_toc_yet)
       redirect_to '/'
