@@ -249,7 +249,7 @@ padding-left: 6px;
   width: 1px;
   background-color: #d9cdd5;
   display: inline;
-  float: right; 
+  float: right;
   margin-left: 6px;}
 .icons-separator-white{
   height: 28px;
@@ -870,7 +870,7 @@ padding-bottom: auto;}
   max-height: 210px; }
 
 .whats-new-v02 {
-  background-color: #d9cdd5; 
+  background-color: #d9cdd5;
   }
 .left-side-card-v02 {
   background-color: #d9cdd5; }
@@ -1565,7 +1565,7 @@ display: flex;
 }
 .nav-chapter-name{
 	width: 84px;
-	white-space: nowrap; 
+	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	justify-content:flex-start;
@@ -2064,7 +2064,7 @@ display: none;}
 	background-color: white;
 }
 .scrolled #header-general{
-	padding-to.side-nav-colp: 4px;
+	padding-top: 4px;
 }
 #nav-more-icon a{
 	cursor: pointer;
