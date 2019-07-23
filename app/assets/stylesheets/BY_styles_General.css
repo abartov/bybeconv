@@ -697,7 +697,7 @@ padding-bottom: auto;}
     padding: 3px 4px 4px 4px; }
 
 .surprise-author-name-v02 {
-  padding-top: 14px; }
+  padding-top: 0px; }
 
 .author-info-v02 {
   width: 30px;
@@ -1398,7 +1398,8 @@ ul #menuMobile {
 
 #breadcrumbs{
 	padding-right: 4px;
-	padding-top: 10px;
+	padding-top: 8px;
+	padding-bottom: 4px;
 }
 
 .scrolled #breadcrumbs{
@@ -1422,7 +1423,7 @@ ul #menuMobile {
 }
 .author-page-top-info-card{
   width: 100%;
-  padding: 10px 15px;
+  padding: 6px 15px;
   border-radius: 3px;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
   background-color: #d9cdd5;
@@ -1441,6 +1442,7 @@ ul #menuMobile {
 }
 .author-page-top-rights{
 	margin-right: 12px;
+	padding-bottom: 5px;
   display: inline;
 }
 .author-page-top-sort{
@@ -1744,7 +1746,7 @@ display: flex;
 }
 .work-page-top-info-card{
   width: 100%;
-  padding: 10px 15px;
+  padding: 6px 15px;
   border-radius: 3px;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
   background-color: #d9cdd5;
@@ -1928,7 +1930,7 @@ display: none;}
 	  height: auto;
 }
 #author-whats-new-bg {
-  background-image: url("assets/bullhorn.svg");
+  background-image: url("/assets/bullhorn.svg");
   background-repeat: no-repeat;
   background-size: contain;
   min-height: 200px;
@@ -2021,10 +2023,10 @@ display: none;}
 	align-items: center;
 }
 .author-page-content{
-	margin-top: 198px;
+	margin-top: 186px;
 }
 .text-page-content{
-	margin-top: 240px;
+	margin-top: 228px;
 }
 .stick-to-top{
 	width: 90%;
@@ -2058,9 +2060,12 @@ display: none;}
 }
 .top-space{
 	width: 100%;
-	height: 10px;
+	height: 4px;
 	background-color: white;
 }
 .scrolled #header-general{
-	padding-top: 4px;
+	padding-to.side-nav-colp: 4px;
+}
+#nav-more-icon a{
+	cursor: pointer;
 }

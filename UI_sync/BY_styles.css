@@ -726,7 +726,7 @@ padding-bottom: auto;}
   background-color: #d9cdd5; }
 
 #whats-new-bg {
-  background-image: url("assets/bullhorn.svg");
+  background-image: url("/assets/bullhorn.svg");
   background-repeat: no-repeat;
   background-size: cover;
   height: 200px;
@@ -1176,7 +1176,7 @@ ul #menuMobile {
 		margin-right: auto;
 	}
 	#whats-new-bg {
-  background-image: url("assets/bullhorn.svg");
+  background-image: url("/assets/bullhorn.svg");
   background-repeat: no-repeat;
   background-size: contain;
   height: 270px;

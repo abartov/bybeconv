@@ -177,7 +177,7 @@
   margin-right: 0px;
 }
 .author-page-top-info-card{
-  padding: 6px;
+  padding: 3px 6px;
 }
 .author-page-top-sort-mobile{
 	margin-right: 0;
@@ -223,13 +223,13 @@ body {
 	}
 
 .author-page-top-icons-mobile{
-	left: 6px;
-	bottom: 7px;
+	left: 12px;
+	bottom: 0px;
 }
 
 .author-page-top-sort-mobile{
 	left: 40px;
-	bottom: 5px;
+	bottom: 0px;
 }
 .author-name-years{
 	margin-bottom: 10px;
@@ -271,11 +271,11 @@ body {
 		height: 33px;
 	}
 .author-page-content{
-	margin-top: 160px;
+	margin-top: 164px;
 }
 
 	.text-page-content{
-	margin-top: 184px;
+	margin-top: 172px;
 }
 	.logoBY-v02 {
     max-width: 150px;

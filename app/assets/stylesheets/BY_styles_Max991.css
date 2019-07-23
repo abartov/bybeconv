@@ -366,8 +366,7 @@ display: none;	}
 .flash-content{
 	height: auto;
 }
-#works-surprise-replaced {
-  height: auto;}
+
 .work-page-top-name-and-author{
   width: 48%;
 }
@@ -417,14 +416,12 @@ display: none;	}
   height: 50px; }
 	
 	.author-page-content{
-	margin-top: 213px;
+	margin-top: 205px;
 }
 .text-page-content{
-	margin-top: 226px;
+	margin-top: 214px;
 }
-	.side-nav-col{
-		display: none;
-}
+
 	.nav-chapter-name{
 	width: 84px;
 	white-space: nowrap; 
@@ -432,6 +429,16 @@ display: none;	}
 	text-overflow: ellipsis;
 	justify-content:flex-start;
 }
+	.side-menu-headline{
+		display: none;
+	}
+	#chapternav{
+		display: none;
+	}
+	#text-nav-more{
+		position: relative;
+		top:4px;
+	}
 	
 }
 
