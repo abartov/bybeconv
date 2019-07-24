@@ -50,7 +50,7 @@
               /          = t(:about_the_author_on_the_blog)
               .padbot12
                 %span
-                  %b= t(:works_in_the_database)+': '
+                  %b= t(:works_in_the_project)+': '
                 = link_to "#{author.cached_works_count} #{t(:works)}", author_toc_path(author.id)
               %div
                 %p
