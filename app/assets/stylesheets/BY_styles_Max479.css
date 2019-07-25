@@ -330,7 +330,7 @@ body {
 		height: 33px;
 	}
 		.author-page-content{
-	margin-top: 191px;
+	margin-top: 198px;
 }
 	.text-page-content{
 	margin-top: 192px;
@@ -340,4 +340,11 @@ body {
     max-height:60px;
     padding-right: 0px;
 	padding-top: 4px;}
+	
+.author-page-top-name{
+		line-height: 28px;
+	}
+	.author-page-top-rights{
+	width: calc(100% - 128px);
+ }
 }

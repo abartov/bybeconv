@@ -13,7 +13,6 @@
 }
 	.author-name-years{
 		display: block;
-		margin-bottom: 12px;
 	}
 
 	.author-page-top-years{
@@ -26,9 +25,6 @@
 .author-page-top-icons-mobile{
 	display: inline-block;
 	float: left;
-	position: absolute;
-	left: 15px;
-	bottom: 0px;
 }
 
 
@@ -38,13 +34,7 @@
 }
 .author-page-top-sort-mobile{
 	display: inline-block;
-	width: 100%;
-	position: absolute;
-	right: 0;
-	bottom: 0px;
-	margin-right:0; 
-	text-align: center;
-	padding: 2 4px;
+	float: left;
 	}
 	.top-row-v02{
 	display: none;
@@ -325,6 +315,8 @@ display: none;	}
 }
 
 .author-page-top-rights{
+	width: calc(100% - 140px);
+  white-space: nowrap;
 	margin-right: 0;
 	display: inline-block;
  }
@@ -367,21 +359,14 @@ display: none;	}
 	height: auto;
 }
 
-.work-page-top-name-and-author{
-  width: 48%;
-}
+
 .work-chapters-dropdown-field-desktop{
 	display: none;
 }
-.work-chapters-dropdown-field-mobile{
+.work-chapters-popup-mobile{
 	display: inline-block;
 }
-.work-name-top-desktop{
-	display: none;
-}
-.work-name-top-mobile{
-	display: block;
-}
+
 .mobile-work-details{
   display: block;
 }
@@ -439,7 +424,13 @@ display: none;	}
 		position: relative;
 		top:4px;
 	}
-	
+	.author-sort-area{
+		width: auto;
+	}
+	.work-page-top-author{
+		width: calc(83% - 44px);
+		display: inline-block;
+	}
 }
 
 

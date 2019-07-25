@@ -74,5 +74,11 @@
 .popup-with-bottom-links{
 		height: calc(100% - 62px);
 	}
+	.author-page-top-name{
+		line-height: 36px;
+	}
+	.author-page-content{
+		margin-top: 210px;
+	}
 
 }

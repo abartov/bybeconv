@@ -249,7 +249,7 @@ padding-left: 6px;
   width: 1px;
   background-color: #d9cdd5;
   display: inline;
-  float: right;
+  float: right; 
   margin-left: 6px;}
 .icons-separator-white{
   height: 28px;
@@ -262,7 +262,11 @@ padding-left: 6px;
 
 .by-icon-v02 {
   font-family: ben-yehuda;
-  font-size: 18px; }
+  font-size: 18px; 
+}
+.icon-in-group-v02 .by-icon-v02{
+	  line-height: 28px;
+}
 
 
 .by-icon-header-v02{
@@ -272,13 +276,15 @@ padding-left: 6px;
 }
 .by-icon-top-v02 {
   font-family: ben-yehuda;
-  font-size: 18px; }
+  font-size: 18px; 
+  line-height: 28px;
+}
 
 .icon-in-group-v02 {
   margin-left: 8px;
   display: inline;
   float: right;
-  padding-top: 4px; }
+}
 
 .by-icon-in-button-v02 {
   font-family: ben-yehuda;
@@ -870,7 +876,7 @@ padding-bottom: auto;}
   max-height: 210px; }
 
 .whats-new-v02 {
-  background-color: #d9cdd5;
+  background-color: #d9cdd5; 
   }
 .left-side-card-v02 {
   background-color: #d9cdd5; }
@@ -1423,7 +1429,7 @@ ul #menuMobile {
 }
 .author-page-top-info-card{
   width: 100%;
-  padding: 6px 15px;
+  padding: 3px 15px 3px 15px;
   border-radius: 3px;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
   background-color: #d9cdd5;
@@ -1435,15 +1441,16 @@ ul #menuMobile {
 }
 .author-page-top-name{
   display: inline;
-	margin-left: 0;
+  margin-left: 0;
+	line-height: 30px;
 }
 .author-page-top-years{
 	display: inline;
+  white-space: nowrap;
 }
 .author-page-top-rights{
-	margin-right: 12px;
-	padding-bottom: 5px;
-  display: inline;
+	  width: calc(50% - 82px);
+  white-space: nowrap;
 }
 .author-page-top-sort{
 	margin-right: 12px;
@@ -1497,11 +1504,10 @@ ul #menuMobile {
 .top-left-icons-group{
 	display: inline;
 	float: left;
-	padding-top: 0;
 }
 .author-page-top-icons-desktop{
-	display: inline-block;
-	float: left;
+  width: calc(50% - 82px);
+  float: left;
 }
 .author-page-top-icons-mobile{
 	display: none;
@@ -1511,7 +1517,6 @@ ul #menuMobile {
 }
 .author-page-top-sort-mobile{
 	display: none;
-	padding-top: 2px;
 }
 
 .side-menu-area{
@@ -1565,7 +1570,7 @@ display: flex;
 }
 .nav-chapter-name{
 	width: 84px;
-	white-space: nowrap;
+	white-space: nowrap; 
 	overflow: hidden;
 	text-overflow: ellipsis;
 	justify-content:flex-start;
@@ -1746,14 +1751,14 @@ display: flex;
 }
 .work-page-top-info-card{
   width: 100%;
-  padding: 6px 15px;
+  padding: 6px 15px 3px 15px;
   border-radius: 3px;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
   background-color: #d9cdd5;
   position: relative;
   z-index: 5;
 }
-.work-page-top-name-and-author{
+.work-page-top-author{
   width: 63%;
   display: inline-block;
 }
@@ -1786,11 +1791,11 @@ display: flex;
 	bottom: 0;
 	left:10px;
 }
-.work-chapters-dropdown-field-mobile{
+.work-chapters-popup-mobile{
 	width: 48%;
 	float: left;
 	position: absolute;
-	bottom: 0;
+	bottom: 4px;
 	left:0px;
 	display: none;
 }
@@ -1820,7 +1825,7 @@ display: flex;
 .work-page-top-icons-desktop{
 	display: inline-block;
 	position: absolute;
-	bottom: 0;
+	bottom: 4px;
 	left: 15px;
 	float: left;
 }
@@ -1935,12 +1940,10 @@ display: none;}
   background-size: contain;
   min-height: 200px;
   width: 100%; }
-.work-name-top-desktop{
-	display: block;
+.work-name-top{
+  margin-left: 0;
 }
-.work-name-top-mobile{
-	display: none;
-}
+
 .work-details{
 	padding-bottom: 12px;
 }
@@ -2023,7 +2026,7 @@ display: none;}
 	align-items: center;
 }
 .author-page-content{
-	margin-top: 186px;
+	margin-top: 210px;
 }
 .text-page-content{
 	margin-top: 228px;
@@ -2046,7 +2049,8 @@ display: none;}
 }
 
 .author-sort-area{
-	padding: 0;
+	width: 164px;
+	padding: 0 8px;
 }
 .author-page-top-icons{
 	float:left;
@@ -2068,4 +2072,11 @@ display: none;}
 }
 #nav-more-icon a{
 	cursor: pointer;
+}
+.flex-container{
+  display: flex;
+  align-items: center;
+}
+.work-chapters-dropdown-field-desktop{
+	margin-bottom: 4px;
 }

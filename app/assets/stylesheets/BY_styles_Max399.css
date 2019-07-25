@@ -232,7 +232,7 @@ body {
 	bottom: 0px;
 }
 .author-name-years{
-	margin-bottom: 10px;
+	margin-bottom: 2px;
 	}
 .breadcrumbs-arrow {
   font-size: 9px;
@@ -271,7 +271,7 @@ body {
 		height: 33px;
 	}
 .author-page-content{
-	margin-top: 164px;
+	margin-top: 178px;
 }
 
 	.text-page-content{
@@ -292,5 +292,8 @@ body {
 		.scrolled .logoBY-scroll-mobile-v02 img{
     height: 24px;
 }
+	.author-page-top-rights{
+	width: calc(100% - 108px);
+ }
 	
 }

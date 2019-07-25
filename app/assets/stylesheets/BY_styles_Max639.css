@@ -147,9 +147,12 @@ p {
 		line-height: 12px;
 		padding: 2px 3px 3px 3px;
 	}
-.author-page-content{
-	margin-top: 200px;
-}
+	.author-page-top-name{
+		line-height: 36px;
+	}
+	.author-page-content{
+		margin-top: 203px;
+	}
 	.text-page-content{
 	margin-top: 204px;
 }
@@ -158,6 +161,9 @@ p {
 	  max-height:62px;
     padding-right: 0px;
 	padding-top: 6px;}
+.author-page-top-name{
+		line-height: 30px;
+	}
 
 }
 

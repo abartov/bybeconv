@@ -3,50 +3,47 @@
   .top-space
   .author-page-top
     .author-page-top-info-card
-      .row
-        .col-sm-5.col-7
-          .author-name-years
-            .author-page-top-name.headline-1-v02= @author.name
-            .author-page-top-years!= "(#{@author.life_years})"
-          .author-page-top-rights
-            - if @author.public_domain
-              %span.by-icon-v02.copyright-icon> m
-              = textify_copyright_status(false)
-              = link_to '[?]', '#', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_public_domain), 'data-content' => t(:public_domain_popover)
-            - else
-              %span.by-icon-v02.copyright-icon> x
-              = textify_copyright_status(true)
-              = link_to '[?]', '#', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_permission), 'data-content' => t(:permission_popover)
-        .col-sm-2.col-3
-          .author-sort-area
-            .author-page-top-sort-desktop
-              = t(:sort_and_filter)
-              = link_to '[?]', '#', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_sort_and_filter), 'data-content' => t(:sort_and_filter_popover)
-              .toggle-background-no
-                .toggle-button-no
-            .author-page-top-sort-mobile
-              %button.btn-small-outline-v02.btn-text-v02.notyet= t(:sort_and_filter)
-        .col-sm-5.col-2
-          .author-page-top-icons-desktop
-            .top-left-icons-group
-              .icon-in-group-v02.notyet
-                %span.linkcolor.pointer.by-icon-v02 5
-              .icon-in-group-v02.notyet
-                %span.linkcolor.pointer.by-icon-v02 9
-              .icon-in-group-v02.notyet{:style => "margin-left:0;"}
-                %span.linkcolor.pointer.by-icon-v02 3
-          .author-page-top-icons-mobile
-            .top-left-icons-group
-              .icon-in-group-v02.notyet{:style => "margin-left:4px;padding-top: 0;"}
-                %span.linkcolor.pointer.by-icon-v02 5
-              #moreMobile-author.by-dropdown-v02
-                %span.linkcolor.pointer#nav-more
-                  %span.linkcolor.pointer.by-icon-top-v02 Y
-                #menu-more.by-dropdown-content-v02{:style => "left: 0; margin-top: 4px"}
-                  %span.linkcolor.pointer.notyet.by-icon-v02.iconNearText-v02> 3
-                  = t(:download)
-                  %span.linkcolor.pointer.printbutton.by-icon-v02.iconNearText-v02> 9
-                  = t(:print)
+      .author-name-years
+        .author-page-top-name.headline-1-v02= @author.name
+        .author-page-top-years!= "(#{@author.life_years})"
+      .flex-container
+        .author-page-top-rights
+          - if @author.public_domain
+            %span.by-icon-v02.copyright-icon> m
+            = textify_copyright_status(false)
+            = link_to '[?]', '#', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_public_domain), 'data-content' => t(:public_domain_popover)
+          - else
+            %span.by-icon-v02.copyright-icon> x
+            = textify_copyright_status(true)
+            = link_to '[?]', '#', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_permission), 'data-content' => t(:permission_popover)
+        .author-sort-area
+          .author-page-top-sort-desktop
+            = t(:sort_and_filter)
+            = link_to '[?]', '#', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_sort_and_filter), 'data-content' => t(:sort_and_filter_popover)
+            .toggle-background-no
+              .toggle-button-no
+          .author-page-top-sort-mobile
+            %button.btn-small-outline-v02.btn-text-v02.notyet= t(:sort_and_filter)
+        .author-page-top-icons-desktop
+          .top-left-icons-group
+            .icon-in-group-v02.notyet
+              %span.linkcolor.pointer.by-icon-v02 5
+            .icon-in-group-v02.notyet
+              %span.linkcolor.pointer.by-icon-v02 9
+            .icon-in-group-v02.notyet{:style => "margin-left:0;"}
+              %span.linkcolor.pointer.by-icon-v02 3
+        .author-page-top-icons-mobile
+          .top-left-icons-group
+            .icon-in-group-v02.notyet{:style => "margin-left:4px;padding-top: 0;"}
+              %span.linkcolor.pointer.by-icon-v02 5
+            #moreMobile-author.by-dropdown-v02
+              %span.linkcolor.pointer#nav-more
+                %span.linkcolor.pointer.by-icon-top-v02 Y
+              #menu-more.by-dropdown-content-v02{:style => "left: 0; margin-top: 4px"}
+                %span.linkcolor.pointer.notyet.by-icon-v02.iconNearText-v02> 3
+                = t(:download)
+                %span.linkcolor.pointer.printbutton.by-icon-v02.iconNearText-v02> 9
+                = t(:print)
     .row.error-found-row
       .col-1.side-nav-col
         = render partial: 'shared/genre_navbar', locals: {genres_present: @genres_present, page: :toc, curated_content: false} # TODO: implement emitting curated content in TOC pages, and then un-hardcode this
