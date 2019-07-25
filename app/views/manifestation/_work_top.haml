@@ -6,8 +6,7 @@
       .headline-1-v02.work-name-top-mobile= @m.title
       .row
         .col-8
-          .work-page-top-name-and-author
-            .headline-1-v02.work-name-top-desktop= @m.title
+          .work-page-top-author
             .headline-3-v02
               = t(:by)+':'
               != @m.authors.map {|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
@@ -29,13 +28,13 @@
                     %a{href:'#curated'}
                       %span.by-icon-v02.iconNearText-v02 Q
                       = t(:curated_content)
-            .work-chapters-dropdown-field-mobile#chapter_mobile_dropdown
-              .field-v02
+            .work-chapters-popup-mobile#chapter_mobile_dropdown
+              %button.btn-small-outline-v02.btn-text-v02{href: "#"}
                 = t(:jump_to)
-                %span.dropdown-arrow )
+              %span.dropdown-arrow )
               .by-dropdown-content-v02.dropdown_full-width#chapter_mobile_dropdown_content
                 - @chapters.each do |ch|
-                  %a{style:'text-overflow: ellipsis;overflow-x: hidden;', href:"#ch#{ch[1]}"}= ch[0]
+                  %a.jumpch{style:'text-overflow: ellipsis;overflow-x: hidden;', 'data-target' => "ch#{ch[1]}", href:"#ch#{ch[1]}"}= ch[0]
                 - unless @curated_content.nil?
                   .dropdown-menu-seperator
                     %a{href:'#curated'}
@@ -96,8 +95,8 @@
               - first = true
               - @chapters.each do |ch|
                 %li.nav-item
-                  %div{'class' => 'nav-link nav-link-chapter pointer linkcolor'+(first ? ' active' : '') ,'data-target' => "ch#{ch[1]}"}
-                    .nav-chapter-name= ch[0]
+                  %a.nav-chapter-name{'class' => 'nav-link nav-link-chapter pointer linkcolor'+(first ? ' active' : ''), href: "#ch#{ch[1]}", 'data-target' => "ch#{ch[1]}"}
+                    = ch[0]
                 - first = false
       .col-4.error-found-col
         %button.error-found-btn#found_mistake{:href => "#"}
@@ -146,6 +145,13 @@
       if(scroll <= 200) {
         $('.nav-link').first().addClass('active');
       }
+    });
+    $('.jumpch').click(function(e) {
+      e.preventDefault();
+      anchor = $(this).attr('data-target');
+      $('html, body').animate({
+        scrollTop: $('a[name='+anchor+']').offset().top - $(header).height() - 65
+      }, 800);
     });
     $('.nav-link').click(function(e) {
       e.preventDefault();

@@ -447,7 +447,8 @@ class ManifestationController < ApplicationController
       tmphash = {}
       @chapters = {} # TODO: add sub-chapters, indenting two nbsps in dropdown
       @m.heading_lines.reverse.each{ |linenum|
-        lines.insert(linenum, "<a name=\"ch#{linenum}\"></a>\r\n")
+        lines.insert(linenum, "<a name=\"ch#{linenum}\" id=\"ch#{linenum}\"></a>\r\n")
+        # lines.insert(linenum, "\n<p id=\"ch#{linenum}\"></p>\r\n")
         tmphash[sanitize_heading(lines[linenum+1][2..-1].strip)] = linenum.to_s
       } # annotate headings in reverse order, to avoid offsetting the next heading
       tmphash.keys.reverse.map{|k| @chapters[k] = tmphash[k]}
