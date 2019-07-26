@@ -98,6 +98,7 @@
                   %a.nav-chapter-name{'class' => 'nav-link nav-link-chapter pointer linkcolor'+(first ? ' active' : ''), href: "#ch#{ch[1]}", 'data-target' => "ch#{ch[1]}"}
                     = ch[0]
                 - first = false
+      .col{style:'z-order:-1;height:0;'}
       .col-4.error-found-col
         %button.error-found-btn#found_mistake{:href => "#"}
           .error-found
