@@ -113,3 +113,6 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
 #moreMobile {
   cursor: pointer;
 }
+.work-chapters-dropdown-field-desktop {
+  cursor: pointer;
+}
