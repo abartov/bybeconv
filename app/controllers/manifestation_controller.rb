@@ -426,13 +426,15 @@ class ManifestationController < ApplicationController
     if @m.nil?
       render nothing: true
     else
-      impressionist(@m) unless is_spider?
+      unless is_spider?
+        impressionist(@m)
+        impressionist(@author) # also increment the author's popularity counter
+      end
       @e = @m.expressions[0]
       @w = @e.works[0]
       @author = @w.persons[0] # TODO: handle multiple authors
       @translators = @m.translators
       @page_title = "#{@m.title_and_authors} - #{t(:default_page_title)}"
-      impressionist(@author) # increment the author's popularity counter
       if @print
         @html = MultiMarkdown.new(@m.markdown.lines.join("\n")).to_html.force_encoding('UTF-8').gsub(/<figcaption>.*?<\/figcaption>/,'') # remove MMD's automatic figcaptions
       end
