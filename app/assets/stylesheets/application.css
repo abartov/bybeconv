@@ -110,3 +110,6 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
   display: inline-block;
 }
 
+#moreMobile {
+  cursor: pointer;
+}
