@@ -242,14 +242,16 @@
           = t(:donate)
   .col-4
     .top-search-box-v02
-      /.top-search-select-v02
+      .top-search-select-v02
+        .search-drop-down= t(:search_the_site)
+        %a.dropdown-arrow{href: '#'}
       /  /%select{:style => "width:124px; height:34px; border: none; background-color: transparent;"}
       /  /  %option{:value => "חיפוש באתר"} חיפוש באתר
       /  /  / %option{:value => "חיפוש בדף"} חיפוש בדף
       /  /  / %option{:value => "חיפוש מתקדם"} חיפוש מתקדם
       .top-search-v02
+        %input#q{:placeholder => t(:search_term)}
         %span.search-icon-v02.by-icon-top-v02 X
-        %input#q{:placeholder => t(:search_placeholder)}
     .topMobileBtns-v02
       %button.btn-small-outline-v02.by-icon-top-v02.purple-v02{href: '/page/donate'} z
       .top-search-mobile-v02
