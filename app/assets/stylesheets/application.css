@@ -92,9 +92,9 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
 .modal-content{
   background-color: transparent;
 }
-.mobileLogo{
+/* .mobileLogo{
   display:none;
-}
+} */
 .by-dropdown-content-v02 p {
   padding: 6px 15px;
   margin: 0;
@@ -109,3 +109,4 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
   padding-top: 3px;
   display: inline-block;
 }
+
