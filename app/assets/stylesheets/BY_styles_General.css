@@ -27,7 +27,8 @@ p {
   line-height: 24px;
   font-weight: bold;
   margin-left: 6px;
-  margin-bottom: 8px;}
+  margin-bottom: 8px;
+}
 
 .headline-2-v02 {
   font-size: 18px;
@@ -277,7 +278,7 @@ padding-left: 6px;
 .by-icon-top-v02 {
   font-family: ben-yehuda;
   font-size: 18px; 
-  line-height: 28px;
+  line-height: 26px;
 }
 
 .icon-in-group-v02 {
@@ -475,7 +476,7 @@ input::placeholder {
 .search-icon-v02 {
   position: absolute;
   left: 8px;
-  top: 8px; }
+  top: 4px; }
 
 .top-search-mobile-v02 {
   position: relative;
@@ -483,13 +484,11 @@ input::placeholder {
   width: 18px;
   height: 18px;
   margin-right: 6px;
-  padding-top: auto;
-padding-bottom: auto;}
+  top: 0;
+}
 
 .top-search-icon-mobile-v02 {
-  position: absolute;
-  left: 0;
-  top: 0;
+
 }
 
 .content-v02 {
@@ -1112,6 +1111,7 @@ nav a {
   top: 0;
   right: 0;
   background-color: #d9cdd5;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
   overflow-x: hidden;
   transition: 0.3s;
   padding-top: 40px;
@@ -1659,14 +1659,41 @@ display: flex;
 	padding: 15px;
 }
 .work-genre {
-  height: 400px;
-  font-family: ben-yehuda;
-  font-size: 260px;
-  line-height: normal;
+  max-width: 260px;
+  height: 460px;
   color: #2b0d22;
-  overflow: hidden;
-  text-align: left;
-  padding-right: 0;
+  background-repeat: no-repeat;
+  background-size:contain;
+}
+.prose-side-icon{
+  background-image: url("/assets/work side icons_prose.svg");
+}
+.poetry-side-icon{
+  background-image: url("/assets/work side icons_poetry.svg");
+}
+.drama-side-icon{
+  background-image: url("/assets/work side icons_drama.svg");
+}
+.fables-side-icon{
+  background-image: url("/assets/work side icons_fables.svg");
+}
+.translations-side-icon{
+  background-image: url("/assets/work side icons_translations.svg");
+}
+.letters-side-icon{
+  background-image: url("/assets/work side icons_letters.svg");
+}
+.memories-side-icon{
+  background-image: url("/assets/work side icons_memories.svg");
+}
+.articles-side-icon{
+  background-image: url("/assets/work side icons_articles.svg");
+}
+.dictionaries-side-icon{
+  background-image: url("/assets/work side icons_dictionaries.svg");
+}
+.references-side-icon{
+  background-image: url("/assets/work side icons_references.svg");
 }
 .author-main-info-card-v02{
 	min-height: 240px;
@@ -1759,7 +1786,7 @@ display: flex;
   z-index: 5;
 }
 .work-page-top-author{
-  width: 63%;
+  width: calc(75% - 44px);
   display: inline-block;
 }
 .field-v02 {
@@ -1792,11 +1819,8 @@ display: flex;
 	left:10px;
 }
 .work-chapters-popup-mobile{
-	width: 48%;
-	float: left;
 	position: absolute;
 	bottom: 4px;
-	left:0px;
 	display: none;
 }
 .dropdown-arrow{
@@ -1817,6 +1841,7 @@ display: flex;
 	background-color: #660248;
 	color: white;
 	margin-left: 8px;
+	line-height: 26px;
 	padding: 0;
 }
 .reading-mode-icon-btn-v02:hover{
@@ -1832,7 +1857,7 @@ display: flex;
 .work-page-top-icons-mobile{
 	display: none;
 	position: absolute;
-	bottom: 2px;
+	bottom: 4px;
 	left: 15px;
 }
 .work-side-menu-area{
@@ -1850,10 +1875,7 @@ display: none;}
 #moreMobile{
 	padding-top: 4px;
 }
-.prose-side-icon{
-  background-image: url("/assets/work_side_icons_prose.svg");
-  background-repeat: no-repeat;
-  background-size:auto;}
+
 .by-side-menu-seperator{
   display: none;
   width: 100%;

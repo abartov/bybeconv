@@ -337,7 +337,9 @@ display: none;	}
 .about-work-card-bookmark-fold-v02 {
   width: 101px;
   height: 5px;
+  margin-right: 10px;
 }
+		
 .about-work-author-card-v02 {
   width: 96px;
   height: 138px;
@@ -364,7 +366,7 @@ display: none;	}
 	display: none;
 }
 .work-chapters-popup-mobile{
-	display: inline-block;
+	display: inline;
 }
 
 .mobile-work-details{
@@ -422,13 +424,13 @@ display: none;	}
 	}
 	#text-nav-more{
 		position: relative;
-		top:4px;
+		top:0px;
 	}
 	.author-sort-area{
 		width: auto;
 	}
 	.work-page-top-author{
-		width: calc(83% - 44px);
+		width: calc(75% - 44px);
 		display: inline-block;
 	}
 }

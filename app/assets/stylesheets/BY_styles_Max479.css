@@ -289,7 +289,7 @@ body {
   width: 132px;
 }
 .about-work-card-bookmark-fold-v02 {
-  width: 85px;
+  width: 84px;
   height: 3px;
   margin-right: 11px;
   margin-top: -3px;
@@ -313,13 +313,14 @@ body {
 }
 	.reading-mode-icon-btn-v02{
   margin-left: 8px;
-	padding: 2px;
+	padding: 0;
+	
 	}
 	.work-page-top-icons-mobile{
 	bottom: 0;
 }
 	.top-left-icons-group{
-		padding-top: 3px;
+		padding-top: 0px;
 	}
 	.credits{
   -webkit-column-count: 2; /* Chrome, Safari, Opera */
@@ -347,4 +348,16 @@ body {
 	.author-page-top-rights{
 	width: calc(100% - 128px);
  }
+	.work-name-top{
+		margin-bottom: 4px;
+	}
+	.work-chapters-popup-mobile{
+		bottom: 0;
+	}
+.work-page-top-author{
+		width: calc(75% - 30px)
+	}
+	.work-side-color{
+  display: none;
+}
 }

@@ -53,9 +53,7 @@
 .popup-top{
   display: block;
 }
-.work-side-color{
-  display: none;
-}
+
 .by-popup-v02 {
   width: 100%;
   height: 100%;
@@ -80,5 +78,9 @@
 	.author-page-content{
 		margin-top: 210px;
 	}
+	.work-page-top-author{
+		width: calc(75% - 39px)
+	}
 
+	
 }

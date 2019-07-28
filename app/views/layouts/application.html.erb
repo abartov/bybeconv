@@ -142,7 +142,11 @@
 <!-- footer start -->
 <footer>
 <% if @print %>
-  <%= t(:download_footer_html, url: url_for(action: :read, only_path:false, id: @m.id)) %>
+  <% if @m.nil? && (not @author.nil?) %>
+    <%= t(:download_footer_html, url: url_for(action: :toc, only_path: false, id: @author.id)) %>
+  <% else %>
+    <%= t(:download_footer_html, url: url_for(action: :read, only_path: false, id: @m.id)) %>
+  <% end %>
 <% else %>
   <% if current_user %>
     <% if current_user.editor? %>

@@ -91,7 +91,7 @@
         - if @m.chapters? and @m.long?
           .side-menu-headline= t(:chapters_list)
           %nav#chapternav{'class' => 'navbar'}
-            %ul.nav.flex-column.by-card-v02{'aria-orientation' => 'vertical'}
+            %ul.navbar-nav.flex-column.by-card-v02{'aria-orientation' => 'vertical'}
               - first = true
               - @chapters.each do |ch|
                 %li.nav-item

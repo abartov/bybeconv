@@ -28,8 +28,8 @@
           .top-left-icons-group
             .icon-in-group-v02.notyet
               %span.linkcolor.pointer.by-icon-v02 5
-            .icon-in-group-v02.notyet
-              %span.linkcolor.pointer.by-icon-v02 9
+            .icon-in-group-v02
+              %span.linkcolor.pointer.printbutton.by-icon-v02 9
             .icon-in-group-v02.notyet{:style => "margin-left:0;"}
               %span.linkcolor.pointer.by-icon-v02 3
         .author-page-top-icons-mobile
@@ -54,3 +54,11 @@
             .error-found-text= t(:found_br_mistake_html)
             .error-found-icon g
       .col-lg-4{style:'height:1px'}
+
+:javascript
+  $(document).ready(function() {
+    // print button
+    $('.printbutton').click(function() {
+      window.open("#{@print_url}",'_new');
+    });
+  });

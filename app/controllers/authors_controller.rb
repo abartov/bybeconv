@@ -186,7 +186,8 @@ class AuthorsController < ApplicationController
 
   def print
     @author = Person.find(params[:id])
-    # TODO: implement
+    @print = true
+    prep_for_print
   end
 
   def edit_toc
@@ -228,4 +229,19 @@ class AuthorsController < ApplicationController
   def person_params
     params[:person].permit(:affiliation, :comment, :country, :name, :nli_id, :other_designation, :viaf_id, :public_domain, :profile_image, :birthdate, :deathdate, :wikidata_id, :wikipedia_url, :wikipedia_snippet, :blog_category_url, :profile_image, :metadata_approved, :gender, :bib_done, :period)
   end
+  def prep_for_print
+    @author = Person.find(params[:id])
+    if @author.nil?
+      render nothing: true
+    else
+      impressionist(@author) unless is_spider?
+      @page_title = "#{@author.name} - #{t(:table_of_contents)} - #{t(:project_ben_yehuda)}"
+      unless @author.toc.nil?
+        prep_toc
+      else
+        generate_toc
+      end
+    end
+  end
+
 end

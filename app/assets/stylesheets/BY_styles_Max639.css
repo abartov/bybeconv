@@ -154,7 +154,7 @@ p {
 		margin-top: 203px;
 	}
 	.text-page-content{
-	margin-top: 204px;
+	margin-top: 208px;
 }
  .logoBY-v02 {
     max-width: 230px;
@@ -163,6 +163,9 @@ p {
 	padding-top: 6px;}
 .author-page-top-name{
 		line-height: 30px;
+	}
+.work-page-top-author{
+		width: calc(75% - 39px)
 	}
 
 }
