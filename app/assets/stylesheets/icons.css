@@ -1,12 +1,15 @@
 @charset "UTF-8";
 
-/* ben-yehuda */
 @font-face {
   font-family: "ben-yehuda";
   src:url("/assets/ben-yehuda.eot");
-  src:url("/assets/ben-yehuda.woff") format("woff");
+  src:url("/assets/ben-yehuda.eot?#iefix") format("embedded-opentype"),
+    url("/assets/ben-yehuda.woff") format("woff"),
+    url("/assets/ben-yehuda.ttf") format("truetype"),
+    url("/assets/ben-yehuda.svg#ben-yehuda") format("svg");
   font-weight: normal;
   font-style: normal;
+
 }
 
 [data-icon]:before {
@@ -256,4 +259,7 @@
 }
 .icon-byhamburger:before {
   content: "\2c";
+}
+.icon-byclose:before {
+  content: "\2d";
 }
