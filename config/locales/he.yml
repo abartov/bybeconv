@@ -270,8 +270,8 @@ he:
   not_an_admin: רק בעלי הרשאת ניהול לגשת לדף זה
   must_be_logged_in: עליך להיות מחובר/ת כדי לצפות בדף זה
   pdf_format: לצפייה באקרובט או להדפסה
-  doc_format: מסמך וורד
-  html_format: דף אינטרנט
+  doc_format: מסמך לתוכנת וורד או ליברה-אופיס
+  html_format: דף אינטרנט לצפייה בדפדפן
   epub_format: לקוראים אלקטרוניים שאינם קינדל
   mobi_format: לקורא האלקטרוני קינדל
   txt_format: טקסט בלבד, ללא הדגשות ועיצוב
@@ -307,6 +307,7 @@ he:
   works_page: היצירות במאגרנו
   share: שיתוף
   download: הורדה
+  download_to_file: שמירת הטקסט לקובץ
   download_ebook: הורדת ספר דיגיטלי
   print: הדפסה
   cite: ציטוט

@@ -50,7 +50,7 @@
                 %span.linkcolor.pointer.by-icon-v02 *
               .icon-in-group-v02.printbutton
                 %span.linkcolor.pointer.by-icon-v02 9
-              .icon-in-group-v02.download
+              .icon-in-group-v02.download{'data-toggle' => 'modal', 'data-target' => '#downloadDlg'}
                 %span.linkcolor.pointer.by-icon-v02 3
               .icons-separator-white
               .icon-in-group-v02.like
@@ -79,7 +79,7 @@
                   %p.printbutton
                     %span.by-icon-v02.linkcolor.iconNearText-v02> 9
                     = t(:print)
-                  %p.download
+                  %p.download{'data-toggle' => 'modal', 'data-target' => '#downloadDlg'}
                     %span.by-icon-v02.linkcolor.iconNearText-v02> 3
                     = t(:download)
                   %p.notyet
@@ -105,8 +105,6 @@
               = t(:found_br_mistake_html)
             .error-found-icon g
       .col-lg-4{style:'height:min-content'}
-#downloadDlg{style:'display:none'}
-  = render partial: 'shared/download', locals: {manifestation: @m}
 #citeDlg{style:'display:none'}
   = render partial: 'shared/cite', locals: {manifestation: @m}
 #proofSent{style:'display:none'}
@@ -234,11 +232,11 @@
       }
     });
     // download button
-    $('#downloadDlg').dialog({autoOpen:false, height:500, width:600, modal:true, buttons:{"#{t(:close)}": function(){$('#downloadDlg').dialog('close');}}});
-    $('.download').click(function() {
-      $('#downloadDlg').dialog('open');
+    //$('#downloadDlg').modal({autoOpen:false, height:500, width:600, modal:true, buttons:{"#{t(:close)}": function(){$('#downloadDlg').dialog('close');}}});
+    /* $('.download').click(function() {
+      $('#downloadDlg').modal('show');
     });
-
+    */
     // print button
     $('.printbutton').click(function() {
       window.open("#{@print_url}",'_new');
