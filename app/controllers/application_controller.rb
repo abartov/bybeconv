@@ -305,7 +305,7 @@ end
     manifestations.each do |m|
       ret << "<a href=\"#{url_for(controller: :manifestation, action: :read, id: m.id)}\">#{m.title}</a>"
       if m.expressions[0].translation
-        ret[-1] += ' / '+m.authors_string unless m.expressions[0].translators.include?(au)
+        ret[-1] += ' / '+m.authors_string unless m.expressions[0].works[0].authors.include?(au)
       end
     end
     return ret.join('; ')
