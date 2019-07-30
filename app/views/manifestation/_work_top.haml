@@ -31,7 +31,6 @@
             .work-chapters-popup-mobile#chapter_mobile_dropdown
               %button.btn-small-outline-v02.btn-text-v02{href: "#"}
                 = t(:jump_to)
-              %span.dropdown-arrow )
               .by-dropdown-content-v02.dropdown_full-width#chapter_mobile_dropdown_content
                 - @chapters.each do |ch|
                   %a.jumpch{style:'text-overflow: ellipsis;overflow-x: hidden;', 'data-target' => "ch#{ch[1]}", href:"#ch#{ch[1]}"}= ch[0]

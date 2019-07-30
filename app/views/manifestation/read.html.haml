@@ -60,7 +60,7 @@
                     %span.pointer.linkcolor#jump-to-recs= t(:this_work_has_x_recommendations, {x: @recommendations.all_approved.count})
           .by-card-v02
             .row.work-area
-              .col-md-9.work-content
+              .col-sm-9.work-content
                 / TODO: more nuanced rendering here
                 - if @m.as_prose?
                   #actualtext.maintext-prose-body.search-margin
@@ -68,7 +68,7 @@
                 - else
                   #actualtext.maintext-poetry-body.search-margin
                     != raw(@html)
-              .col-md-3.work-side-color
+              .col-sm-3.work-side-color
                 %div{'class' => "work-genre", style: "background-image: url(\"/assets/work_side_icons_#{@e.genre}.svg\"); background-repeat: no-repeat; background-size:auto;"}
     .col-12.col-lg-4
       .row

@@ -82,5 +82,8 @@
 		width: calc(75% - 39px)
 	}
 
+	.desktop-only{
+		display: none;
+	}
 	
 }

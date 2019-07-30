@@ -468,7 +468,9 @@ padding-left: 6px;
 /*	width: calc(100%-140px); */
 input {
   border: none;
-  width: 120px; }
+  width: auto; 
+   min-width: 40px;
+}
 
 input::placeholder {
   color: #907989; }
@@ -1038,13 +1040,12 @@ input::placeholder {
    }
 
 .popup-x-v02 {
+  font-family: ben-yehuda;
   position: absolute;
-  left: 0px;
-  top: 8px;
-  font-size: 21px;
+  left: 15px;
+  top: 9px;
+  font-size: 16px;
   text-align: center;
-  width: 40px;
-  height: 21px;
 }
 
 .flash-author-popup-v02 {
@@ -1797,18 +1798,17 @@ display: flex;
   padding: 0 12px;
   background-color: #eeeced;
 }
-.field-label{
-	font-weight: bold;
-	margin-top: 12px;
-	margin-bottom: 6px;
-}
-.field-v02 {
-  height: 28px;
-  line-height: 26px;
+.text-area-field{
+  height: 56px;
   border: solid 1px #660248;
   border-radius: 6px;
   padding: 0 12px;
   background-color: #eeeced;
+}
+.field-label{
+	font-weight: bold;
+	margin-top: 18px;
+	margin-bottom: 6px;
 }
 .work-chapters-dropdown-field-desktop{
 	width: 35%;
@@ -2101,4 +2101,25 @@ display: none;}
 }
 .work-chapters-dropdown-field-desktop{
 	margin-bottom: 4px;
+}
+.desktop-only{
+	display: block;
+}
+.no-header{
+	height: 36px;
+}
+input[type=checkbox], input[type=radio]{
+  height: 18px;
+  margin-top: -1px;
+  vertical-align: middle;
+}
+label{
+	margin-bottom: 12px;
+}
+.space-under{
+	margin-bottom: 28px;
+}
+.citation-area{
+	background-color: white;
+	padding: 15px 15px 3px 15px;
 }
