@@ -300,12 +300,12 @@ end
     authors
   end
 
-  def textify_titles(manifestations) # translations will also include *original* author names
+  def textify_titles(manifestations, au) # translations will also include *original* author names, unless the original author is au
     ret = []
     manifestations.each do |m|
       ret << "<a href=\"#{url_for(controller: :manifestation, action: :read, id: m.id)}\">#{m.title}</a>"
       if m.expressions[0].translation
-        ret[-1] += ' / '+m.authors_string
+        ret[-1] += ' / '+m.authors_string unless m.expressions[0].translators.include?(au)
       end
     end
     return ret.join('; ')
