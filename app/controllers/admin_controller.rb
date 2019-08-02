@@ -11,8 +11,8 @@ class AdminController < ApplicationController
         @escalated_proofs = Proof.where(status: 'escalated').count.to_s
       end
       @open_recommendations = LegacyRecommendation.where(status: 'new').count.to_s
-      @conv_todo = Manifestation.where(conversion_verified: false).count
-      @manifestation_count = Manifestation.count
+      @conv_todo = Manifestation.where(conversion_verified: false, status: Manifestation.statuses[:published]).count
+      @manifestation_count = Manifestation.published.count
       @conv_percent_done = (@manifestation_count - @conv_todo) / @manifestation_count.to_f * 100
       @page_title = t(:dashboard)
       @search = ManifestationsSearch.new(search: [])
@@ -119,7 +119,7 @@ class AdminController < ApplicationController
   end
 
   def assign_conversion_verification
-    @m = Manifestation.where(conversion_verified: false, conv_counter: 0).order('RAND()').first
+    @m = Manifestation.where(conversion_verified: false, status: Manifestation.statuses[:published], conv_counter: 0).order('RAND()').first
     if @m.conv_counter.nil?
       @m.conv_counter = 1
     else
