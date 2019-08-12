@@ -94,7 +94,7 @@
               - first = true
               - @chapters.each do |ch|
                 %li.nav-item
-                  %a.nav-chapter-name{'class' => 'nav-link nav-link-chapter pointer linkcolor'+(first ? ' active' : ''), href: "#ch#{ch[1]}", 'data-target' => "ch#{ch[1]}"}
+                  %a.nav-chapter-name{'class' => 'nav-link nav-link-chapter pointer linkcolor '+(first ? ' active' : ''), href: "#ch#{ch[1]}", 'data-target' => "ch#{ch[1]}"}
                     = ch[0]
                 - first = false
       .col{style:'z-order:-1;height:0;'}

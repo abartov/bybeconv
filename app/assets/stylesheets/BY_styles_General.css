@@ -2079,6 +2079,7 @@ display: none;}
 }
 #chapternav{
 	padding-right: 0;
+    max-width: 50px;
 }
 #chapter-nav{
 	margin-top: 10px;
