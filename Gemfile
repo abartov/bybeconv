@@ -22,7 +22,9 @@ gem 'rails-jquery-autocomplete' # for auto-completion
 gem 'property_sets' # for key/value properties per model
 gem "font-awesome-rails"
 #gem 'font-awesome-sass', '~> 4.7.0'
-gem 'mini_magick'
+gem "mini_magick", ">= 4.9.4"
+gem "omniauth-rails_csrf_protection"
+
 gem 'rack-cors', require: 'rack/cors'
 
 gem 'diffy'

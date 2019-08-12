@@ -6,10 +6,11 @@ class Notifications < ActionMailer::Base
   #
   #   en.notifications.proof_fixed.subject
   #
-  def proof_fixed(proof, url)
+  def proof_fixed(proof, url, m)
     @greeting = t(:hello_anon)
     @proof = proof
     @url = url
+    @m = m
     mail to: proof.from
   end
 
@@ -18,10 +19,11 @@ class Notifications < ActionMailer::Base
   #
   #   en.notifications.proof_wontfix.subject
   #
-  def proof_wontfix(proof, url)
+  def proof_wontfix(proof, url, m)
     @greeting = t(:hello_anon)
     @proof = proof
     @url = url
+    @m = m
     mail to: proof.from
   end
 
