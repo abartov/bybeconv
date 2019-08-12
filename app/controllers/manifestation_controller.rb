@@ -2,7 +2,7 @@ require 'pandoc-ruby'
 
 class ManifestationController < ApplicationController
   before_action only: [:list, :show, :remove_link, :edit_metadata] do |c| c.require_editor('edit_catalog') end
-  before_action only: [:edit, :update] do |c| c.require_editor(['edit_catalog', 'conversion_verification']) end
+  before_action only: [:edit, :update] do |c| c.require_editor(['edit_catalog', 'conversion_verification', 'handle_proofs']) end
 
   autocomplete :manifestation, :title, limit: 20, display_value: :title_and_authors, full: true
   autocomplete :person, :name, :limit => 2, full: true

@@ -4,6 +4,15 @@ module ApplicationHelper
     s.force_encoding('UTF-8')
   end
 
+  def about_the_author(au)
+    ret = I18n.t(:about_the_author)
+    return au.gender == 'female' ? ret + 'ת' : ret
+  end
+
+  def to_the_author_page(au)
+    return au.gender == 'female' ? I18n.t(:to_the_authoress_page) : I18n.t(:to_the_author_page)
+  end
+
   def url_tag(u)
     return '' if u.blank?
     return 'ויקיפדיה' if u =~ /https?:\/\/he.wikipedia.org/
@@ -53,6 +62,10 @@ module ApplicationHelper
   def textify_nikkud(nik)
     return I18n.t(:unknown) if nik.nil? or nik.empty?
     return I18n.t(nik)
+  end
+
+  def favorite_glyph(value)
+    return value ? '6' : '5' # per /BY icons font/ben-yehuda/icons-reference.html
   end
 
   def textify_role(role, gender)
@@ -108,11 +121,37 @@ module ApplicationHelper
     ret = ''
     i = 0
     people.each {|p|
-      ret += ', 'if i > 0
+      ret += ', ' if i > 0
       ret += link_to p.name, authors_show_path(id: p.id)
       i += 1
     }
     return ret
   end
 
+  def authors_linked_string(m)
+    return I18n.t(:nil) if m.expressions[0].nil? or m.expressions[0].works[0].nil? or m.expressions[0].works[0].persons[0].nil?
+    return m.expressions[0].works[0].authors.map{|x| "<a href=\"#{url_for(controller: :authors, action: :toc, id: x.id)}\">#{x.name}</a>"}.join(', ')
+  end
+
+  def translators_linked_string(m)
+    return I18n.t(:nil) if m.expressions[0].nil? or m.expressions[0].works[0].nil? or m.expressions[0].works[0].persons[0].nil?
+    return m.expressions[0].translators.map{|x| "<a href=\"#{url_for(controller: :authors, action: :toc, id: x.id)}\">#{x.name}</a>"}.join(', ')
+  end
+
+  def copyright_glyph(is_copyright)
+    return is_copyright ? 'x' : 'm' # per /BY icons font/ben-yehuda/icons-reference.html
+  end
+
+  def newsitem_glyph(item) # per icons-reference.html
+    case
+    when item.publication?
+      return nil
+    when item.youtube?
+      return 'W'
+    when item.facebook?
+      return 's'
+    when item.announcement?
+      return 'O'
+    end
+  end
 end

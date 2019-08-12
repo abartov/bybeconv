@@ -6,7 +6,10 @@ class AdminController < ApplicationController
 
   def index
     if current_user && current_user.editor?
-      @open_proofs = Proof.where(status: 'new').count.to_s
+      if current_user.has_bit?('handle_proofs')
+        @open_proofs = Proof.where(status: 'new').count.to_s
+        @escalated_proofs = Proof.where(status: 'escalated').count.to_s
+      end
       @open_recommendations = LegacyRecommendation.where(status: 'new').count.to_s
       @conv_todo = Manifestation.where(conversion_verified: false).count
       @manifestation_count = Manifestation.count
@@ -39,6 +42,12 @@ class AdminController < ApplicationController
     @total = Manifestation.joins(:expressions).where(expressions: {genre: nil}).count
     @page_title = t(:missing_genre_report)
     Rails.cache.write('report_missing_genres', @total)
+  end
+
+  def missing_images
+    @authors = Person.where(profile_image_file_name: nil).order('name asc')
+    @page_title = t(:missing_images)
+    Rails.cache.write('report_missing_images', @authors.count)
   end
 
   def missing_copyright
@@ -84,6 +93,31 @@ class AdminController < ApplicationController
     Rails.cache.write('report_suspicious_translations', @total)
   end
 
+  def assign_proofs
+    @p = Proof.where(status: 'new').order('RAND()').limit(1).first
+    @p.status = 'assigned'
+    @p.save!
+    li = ListItem.new(listkey: 'proofs_by_user', user: current_user, item: @p)
+    li.save!
+    # check if there are any other proofs on this manifestation, and if so, assign them too, for efficiency
+    other_proofs = []
+    unless @p.manifestation_id.nil?
+      other_proofs = Proof.where(status: 'new', manifestation_id: @p.manifestation_id)
+    else
+      other_proofs = Proof.where(status: 'new', about: @p.about)
+    end
+    other_proofs.each do |other|
+      other.status = 'assigned'
+      other.save
+      li = ListItem.new(listkey: 'proofs_by_user', user: current_user, item: other)
+      li.save!
+    end
+    li = ListItem.new(listkey: 'proofs_by_user', user: current_user, item: @p)
+    li.save!
+
+    redirect_to url_for(action: :index)
+  end
+
   def assign_conversion_verification
     @m = Manifestation.where(conversion_verified: false, conv_counter: 0).order('RAND()').first
     if @m.conv_counter.nil?
@@ -114,6 +148,11 @@ class AdminController < ApplicationController
       @items = ListItem.where(listkey: 'convs_by_user', user: @u)
     end
     render layout: false
+  end
+
+  def periodless
+    @authors = Person.has_toc.where(period: nil)
+    Rails.cache.write('report_periodless', @authors.length)
   end
 
   def translated_from_multiple_languages
@@ -333,7 +372,7 @@ class AdminController < ApplicationController
   end
 
   def featured_content_create
-    @fc = FeaturedContent.new(params[:featured_content])
+    @fc = FeaturedContent.new(fc_params)
     @fc.user = current_user
     unless params[:linked_manifestation].empty?
       @fc.manifestation = Manifestation.find(params[:linked_manifestation])

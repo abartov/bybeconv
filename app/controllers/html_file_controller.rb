@@ -59,6 +59,7 @@ class HtmlFileController < ApplicationController
         tmpfile_pp = Tempfile.new(['docx2mmd__pp_','.docx'], :encoding => 'ascii-8bit')
         begin
           tmpfile.write(bin.body)
+	  tmpfile.flush
           tmpfilename = tmpfile.path
           # preserve linebreaks to post-process after Pandoc!
           docx = Docx::Document.open(tmpfilename)

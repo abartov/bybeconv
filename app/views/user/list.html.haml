@@ -1,36 +1,42 @@
-%h1= t(:user_list)
-%table
-  %tr
-    %th= t(:name)
-    %th= t(:email)
-    %th= t(:editor)
-    %th= t(:editor_bits)
-    %th= t(:actions)
-  - @user_list.each do |u|
-    %tr
-      %td= u.name
-      %td= u.email
-      %td
-        - if u.editor
-          - lis = ListItem.where(item: u, listkey: User::EDITOR_BITS).map{|li| t(li.listkey)}.join('; ')
-          = "#{t(:yes)} (#{lis})"
-        - else
-          = t(:no)
-      %td
-        - if u.editor?
-          = form_tag 'set_editor_bit' do
-            = hidden_field_tag :id, u.id
-            = select_tag :bit, options_for_select(User::EDITOR_BITS.map{|bit| [t(bit), bit]})
-            = select_tag :set_to, options_for_select([[t(:activate_bit), 1],[t(:deactivate_bit), 0]])
-            = submit_tag t(:submit)
-      %td
-        - unless u.editor?
-          = link_to t(:make_editor), user_make_editor_path(u)
-        - else
-          = link_to t(:unmake_editor), user_unmake_editor_path(u)
-        = ' | '
-        - unless u.admin?
-          = link_to t(:make_admin), user_make_admin_path(u)
+.top-element
+  %h1= t(:user_list)
+  = form_tag do
+    = label_tag(t(:name))
+    = text_field_tag(:q, @q)
+    = submit_tag(t(:filter))
 
-!= paginate @user_list
+  %table
+    %tr
+      %th= t(:name)
+      %th= t(:email)
+      %th= t(:editor)
+      %th= t(:editor_bits)
+      %th= t(:actions)
+    - @user_list.each do |u|
+      %tr
+        %td= u.name
+        %td= u.email
+        %td
+          - if u.editor
+            - lis = ListItem.where(item: u, listkey: User::EDITOR_BITS).map{|li| t(li.listkey)}.join('; ')
+            = "#{t(:yes)} (#{lis})"
+          - else
+            = t(:no)
+        %td
+          - if u.editor?
+            = form_tag 'set_editor_bit' do
+              = hidden_field_tag :id, u.id
+              = select_tag :bit, options_for_select(User::EDITOR_BITS.map{|bit| [t(bit), bit]})
+              = select_tag :set_to, options_for_select([[t(:activate_bit), 1],[t(:deactivate_bit), 0]])
+              = submit_tag t(:submit)
+        %td
+          - unless u.editor?
+            = link_to t(:make_editor), user_make_editor_path(u)
+          - else
+            = link_to t(:unmake_editor), user_unmake_editor_path(u)
+          = ' | '
+          - unless u.admin?
+            = link_to t(:make_admin), user_make_admin_path(u)
+
+  != paginate @user_list
 

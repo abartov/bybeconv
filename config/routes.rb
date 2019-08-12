@@ -1,5 +1,6 @@
 include BybeUtils
 Bybeconv::Application.routes.draw do
+  resources :news_items
   resources :mooses
   resources :bib_sources
   resources :holdings
@@ -27,9 +28,11 @@ Bybeconv::Application.routes.draw do
   get 'admin/missing_languages'
   get 'admin/missing_genres'
   get 'admin/missing_copyright'
+  get 'admin/missing_images'
   get 'admin/incongruous_copyright'
   get 'admin/suspicious_headings'
   get 'admin/similar_titles'
+  get 'admin/periodless'
   get 'admin/suspicious_translations'
   get 'admin/mark_similar_as_valid/:id' => 'admin#mark_similar_as_valid', as: 'mark_similar_as_valid'
   get 'admin/translated_from_multiple_languages'
@@ -37,6 +40,7 @@ Bybeconv::Application.routes.draw do
   get 'admin/my_convs/:id' => 'admin#my_convs', as: 'my_convs'
   get 'admin/conversion_verification'
   get 'admin/assign_conversion_verification' => 'admin#assign_conversion_verification', as: 'assign_conversion_verification'
+  get 'admin/assign_proofs' => 'admin#assign_proofs', as: 'assign_proofs'
   get 'admin/static_pages_list'
   get 'admin/static_page/new' => 'admin#static_page_new', as: 'static_page_new'
   post 'admin/static_page/create' => 'admin#static_page_create', as: 'static_page_create'
@@ -80,7 +84,7 @@ Bybeconv::Application.routes.draw do
   match "search/results", via: [:get, :post], as: 'search_results_internal'
   get "search/advanced"
   get "authors/index"
-  get 'authors/all'
+  get 'authors/all', as: 'all_authors'
   get 'authors/genre'
   get "authors/show"
   get "authors/new", as: 'authors_new'
@@ -97,9 +101,11 @@ Bybeconv::Application.routes.draw do
   get '/page/:tag' => 'static_pages#view', as: 'static_pages_by_tag', via: [:get]
   get "read/:id" => 'manifestation#read', as: 'manifestation_read'
   get "read/:id/read" => 'manifestation#readmode', as: 'manifestation_readmode'
+  get 'periods' => 'manifestation#periods', as: 'periods'
   get 'works' => 'manifestation#works', as: 'works'
   get 'works/all' => 'manifestation#all', as: 'all_works'
   get 'works/:genre' => 'manifestation#genre', as: 'genre'
+  get 'period/:period' => 'manifestation#period', as: 'period'
   get 'whatsnew' => 'manifestation#whatsnew', as: 'whatsnew'
   get 'tag/:id' => 'manifestation#by_tag', as: 'tag'
   match 'author/:id' => 'authors#toc', as: 'author_toc', via: [:get, :post]
@@ -131,7 +137,7 @@ Bybeconv::Application.routes.draw do
   resources :taggings
   resources :aboutnesses
 
-  get 'user/list'
+  match 'user/list', via: [:get, :post]
   post 'user/set_editor_bit'
   get "user/:id/make_editor" => 'user#make_editor', as: 'user_make_editor'
   get "user/:id/make_admin" => 'user#make_admin', as: 'user_make_admin'

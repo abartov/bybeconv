@@ -1,21 +1,74 @@
-%h1
-  = t(:proof_for)
-  = @p.about
-%p
-  = link_to t(:proof_show_text), @p.about, :target => "_blank"
-%p= "#{t(:from)} #{@p.from}"
-%p
-  = t(:content)
+%script{src: 'https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js'}
+.top-element
+  %h2
+    = t(:proof_for)
+    - unless @m.nil?
+      - @austr = authors_linked_string(@m)
+      - @austr += " / #{translators_linked_string(@m)}" if @translation
+      = link_to @m.title, manifestation_read_path(@m.id), target: '_blank'
+      = " / "
+      != @austr
+      %br
+    - else
+      = t(:legacy_text_from_url)+': '+@p.about
+  %p
+    %b= link_to t(:proof_show_text), @p.about, :target => "_blank"
+  %p
+    %b= "#{t(:from)} #{@p.from}"
+  %p= "#{t(:submitted_at)} #{@p.created_at.to_s}"
+  - unless @p.highlight.nil?
+    %h3= t(:highlighted_passage)
+    %br
+    .graybox#highlight{style:'font-size: 14pt; border:1px;background-color:#dedede'}
+      != sanitize(@p.highlight.gsub("\n","<br/>"))
   %br
-  != @p.what.gsub("\n","<br/>")
-%p= "#{t(:submitted_at)} #{@p.created_at.to_s}"
-%hr
-%p
-  = link_to t(:resolve_as_fixed), proof_resolve_path(@p, :fixed => 'yes', :email => 'yes')
-%p
-  = link_to t(:resolve_as_fixed_no_email), proof_resolve_path(@p, :fixed => 'yes', :email => 'no')
-%p
-  = link_to t(:resolve_as_wontfix), proof_resolve_path(@p, :fixed => 'no')
-%p
-  = link_to t(:resolve_as_spam), proof_resolve_path(@p, :fixed => 'spam')
+  %h3= t(:proof)+':'
+  %br
+  .graybox{style:'font-size: 14pt; border:1px;background-color:#dedede'}
+    != sanitize(@p.what.gsub("\n","<br/>"))
+  %hr
+  %p= t(:resolve_no_email_explanation)
+  %br
+  %p{style:'margin-bottom:16px;font-size:16pt'}
+    %b= link_to t(:resolve_as_fixed), proof_resolve_path(@p, :fixed => 'yes', :email => 'yes')
+  %p{style:'margin-bottom:16px;font-size:16pt'}
+    %b= link_to t(:resolve_as_fixed_no_email), proof_resolve_path(@p, :fixed => 'yes', :email => 'no')
+  %p{style:'margin-bottom:16px;font-size:16pt'}
+    %b= link_to t(:resolve_as_wontfix), proof_resolve_path(@p, :fixed => 'no', email: 'yes', escalate: 'no')
+  %p{style:'margin-bottom:16px;font-size:16pt'}
+    %b= link_to t(:resolve_as_wontfix_no_email), proof_resolve_path(@p, :fixed => 'no', email: 'no', escalate: 'no')
+  %p{style:'margin-bottom:16px;font-size:16pt'}
+    %b= link_to t(:resolve_as_escalate), proof_resolve_path(@p, :fixed => 'no', escalate: 'yes')
+  %p{style:'margin-bottom:16px;font-size:16pt'}
+    %b= link_to t(:resolve_as_spam), proof_resolve_path(@p, :fixed => 'spam')
+  %hr
+  - unless @m.nil?
+    .read_html
+      .row
+        .col-3
+          .btn.btn-small-outline-v02.btn-text-v02.reading-mode-btn-v02{style:'float:right; font-size:16pt; height:auto; width:auto;'}= link_to t(:edit_markdown), manifestation_edit_path(@m.id), {style:'color:white'}
+        .col-3
+          .btn.btn-small-outline-v02.btn-text-v02.reading-mode-btn-v02{style:'float:right; font-size:16pt; height:auto; width:auto;'}= link_to t(:edit_markdown_in_new_window), manifestation_edit_path(@m.id), {target: '_blank', style:'color:white'}
+        - unless @p.highlight.nil?
+          .col-3
+            .btn.btn-small-outline-v02.btn-text-v02.reading-mode-btn-v02.pointer#find_in_text{style:'float:right; font-size:16pt; height:auto; width:auto;'}= t(:find_in_text)
+      %hr
+      != raw(@html)
 
+:javascript
+  $(document).ready(function() {
+    $('#find_in_text').click(function(){
+      $("div.read_html").mark($('#highlight').text().trim(), {
+          "element": "span",
+          "separateWordSearch": false,
+          "className": "highlight",
+          "done": function() {
+            position = $('.highlight');
+            if(position != null && position.first() != null) {
+              sp = position.first().offset().top;
+              window.scrollTo(0, sp - 150);
+            }
+          }
+      });
+    });
+  });
