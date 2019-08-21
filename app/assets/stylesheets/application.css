@@ -66,7 +66,6 @@ body {
   top:44px;*/
 }
 header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's carousel track having a virtual width of 50000) */
-.by-popup-v02 {width: 100% !important;}
 .share {cursor: pointer;}
 .pointer {cursor: pointer;}
 .linkcolor{color: #660248;}
@@ -128,3 +127,11 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
   display:none;
 }
 .dropdown-menu{ transform: translate3d(5px, 28px, 0px)!important;}
+
+.by-popup-v02 {width: 100% !important;}
+@media screen and (max-width: 767px) {
+  .popup-top { position:static; }
+  .by-popup-v02 { position: static; }
+  .modal-dialog {height: 100%;}
+  .modal-content {height: 100%;}
+}
