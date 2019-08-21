@@ -156,6 +156,9 @@ p {
 	.text-page-content{
 	margin-top: 208px;
 }
+	.about-page-content{
+		margin-top: 131px;
+	}
  .logoBY-v02 {
     max-width: 230px;
 	  max-height:62px;
@@ -167,6 +170,40 @@ p {
 .work-page-top-author{
 		width: calc(75% - 39px)
 	}
+.print .author-page-content{
+	margin-top: 30px;
+}
+.print .text-page-content{
+	margin-top: 30px;
+}
+.print .col-12{
+	padding-right: 30px;
+	padding-left: 30px;
+}
+.work-side-color{
+  display: none;
+}
+.work-content{
+	width: 100%;
+}
+.reading-mode .text-page-content{
+	margin-top: 0px;
+}
+	.progress-outside{
+	width: calc(100% - 26px);
+	}
+	.rm-control-panel-mobile .progress-area{
+	padding-top: 0px;
+	margin-left: 12px;
+	margin-right: 12px;
+	}
+.bookmark-location{
+  font-size:10px;
+}
+	.rm-control-panel-mobile .rm-logo .logoBY-v02{
+	width: 140px;
+	margin-right: 10px;
+}
 
 }
 

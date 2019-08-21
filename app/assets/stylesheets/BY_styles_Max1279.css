@@ -9,6 +9,9 @@
     width: 100%; }
 	#header-text {
     width: 100%; }
+	#header-about{
+	width: 100%;
+	}
 
   #content {
     width: 100%;
@@ -19,6 +22,9 @@
 
   .by-popup-v02 {
   width: 60%;
+}
+	.rm-control-panel{
+	left: 30px;
 }
 
 }

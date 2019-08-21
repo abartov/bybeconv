@@ -60,7 +60,19 @@
   box-shadow: none;
   position: fixed;
   left: 0;
-  margin-top:58px;
+  margin-top:54px;
+  margin-left: 0;
+  margin-right: 0;
+  border-top: solid 2px #d9cdd5;
+  border-radius: 0;
+}
+.by-popup-v02-share{
+  width: 100%;
+  height: 100%;
+  box-shadow: none;
+  position: fixed;
+  left: 0;
+  margin-top:54px;
   margin-left: 0;
   margin-right: 0;
   border-top: solid 2px #d9cdd5;
@@ -85,5 +97,24 @@
 	.desktop-only{
 		display: none;
 	}
+	.work-chapters-dropdown-field-desktop{
+	display: none;
+}
+	.work-chapters-popup-mobile{
+	display: inline;
+}
+	.dropdown-menu-seperator{
+		display:block;
+	}
+	.curatorial-content{
+	display: block;
+}
+	.print .col-12{
+	padding-right: 60px;
+	padding-left: 60px;
+}
+		.share-option{
+	padding-top: 30px;
+}
 	
 }

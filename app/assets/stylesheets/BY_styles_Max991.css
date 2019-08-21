@@ -263,6 +263,17 @@
     flex: 0 0 50px;
 	padding-left:0;
 	}
+	.about-page-content .side-menu-area{
+		display: none;
+	}
+	.about-page-content .side-menu-area-left{
+		display: none;
+	}
+	#header-about #aboutnav{
+		display: none;
+	}
+
+	
 .side-menu{
     -ms-flex: 0 0 34px;
     flex: 0 0 34px;
@@ -362,12 +373,7 @@ display: none;	}
 }
 
 
-.work-chapters-dropdown-field-desktop{
-	display: none;
-}
-.work-chapters-popup-mobile{
-	display: inline;
-}
+
 
 .mobile-work-details{
   display: block;
@@ -408,6 +414,9 @@ display: none;	}
 .text-page-content{
 	margin-top: 214px;
 }
+	.about-page-content{
+		margin-top: 133px;
+	}
 
 	.nav-chapter-name{
 	width: 84px;
@@ -423,8 +432,7 @@ display: none;	}
 		display: none;
 	}
 	#text-nav-more{
-		position: relative;
-		top:0px;
+
 	}
 	.author-sort-area{
 		width: auto;
@@ -433,6 +441,80 @@ display: none;	}
 		width: calc(75% - 44px);
 		display: inline-block;
 	}
+	.rm-control-panel{
+		display: none;
+	}
+	.rm-control-panel-mobile{
+	display: flex;
+	align-items: center;
+	width: calc(100% - 60px);
+	position:fixed;
+	top: 30px;
+	margin: 0 15px;
+	z-index: 10;
+	}
+.rm-control-left{
+	padding: 10px;
+  border-right: solid 2px #d9cdd5; 
+}
+.rm-control-panel-mobile .rm-logo .logoBY-v02{
+	width: 160px;
+	margin-right: 10px;
+}
+	.rm-control-right .by-dropdown-v02{
+	left: 40px;
+	}
+.rm-control-panel-mobile .progress-area{
+	width: 75%;
+	margin-left: 20px;
+	margin-right: 20px;
+	}
+	.reading-mode #actualtext{
+	margin-top: 60px;
+}
+	.caret {
+  cursor: pointer;
+  -webkit-user-select: none;
+  /* Safari 3.1+ */
+  -moz-user-select: none;
+  /* Firefox 2+ */
+  -ms-user-select: none;
+  /* IE 10+ */
+  user-select: none; }
+
+.caret::before {
+  content: "\25C0";
+  font-size: 12px;
+  color: #660248;
+  display: inline-block;
+  margin-left: 6px; }
+
+.caret-down::before {
+  content: "\25BC";
+  font-size: 12px; }
+
+.nested {
+  padding-right: 0;
+  display: none; }
+
+.nested a {
+  background-color: #ffffff;
+  padding-right: 20px;
+  padding-top: 4px;
+  padding-bottom: 4px; }
+
+.nested a:hover {
+  background-color: #eeeced; }
+.active {
+  display: block;
+  padding-right: 0; }
+	
+.about-page-content .nested a {
+  background-color: none;
+  padding-right: 0px;
+  padding-top: 0px;
+  padding-bottom: 0px; }
+	
 }
 
 

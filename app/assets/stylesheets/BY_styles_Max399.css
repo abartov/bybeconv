@@ -281,6 +281,9 @@ body {
 	.text-page-content{
 	margin-top: 166px;
 }
+	.about-page-content{
+		margin-top: 112px;
+	}
 	.logoBY-v02 {
     max-width: 150px;
     max-height:54px;
@@ -322,6 +325,41 @@ body {
 	}
 		.work-page-top-icons-mobile{
 	bottom: 2px;
+}
+	.print .col-12{
+	padding-right: 15px;
+	padding-left: 15px;
+}
+.print .author-page-content{
+	margin-top: 0px;
+}
+.print .text-page-content{
+	margin-top: 0px;
+}
+.collapse-expand-icon{
+	padding-top: 0px;
+	}
+.rm-control-panel-mobile .rm-logo .logoBY-v02{
+	width: 106px;
+	margin-right: 6px;
+}
+.rm-control-panel-mobile .progress-area{
+	padding-top: 0;
+	margin-left: 0px;
+	margin-right: 0px;
+	}
+	.minimized .rm-control-panel-mobile{
+	width: 164px;
+}
+	.share-option{
+	padding-top: 14px 12px 0 12px;
+}
+.share-icon{
+	font-size: 18px;
+	line-height: 18px;
+}
+.share-name{
+	padding-top: 8px;
 }
 	
 }
