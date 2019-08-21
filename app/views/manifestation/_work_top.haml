@@ -43,7 +43,7 @@
           .work-page-top-icons-desktop
             .btn-small-outline-v02.btn-text-v02.reading-mode-btn-v02
               %a{:href => url_for(action: :readmode, id: @m.id)}
-              %span.by-icon-v02.iconNearText-v02> B
+              %span.by-icon-v02.iconNearText-v02> /
               = t(:reading_mode)
             .top-left-icons-group
               .icon-in-group-v02.citebutton
@@ -61,11 +61,10 @@
                 %span.linkcolor.pointer.by-icon-v02 D
           .work-page-top-icons-mobile
             %button.btn-small-outline-v02.btn-text-v02.reading-mode-icon-btn-v02{:href => "#"}
-              %span.by-icon-v02 B
+              %span.by-icon-v02 /
             .top-left-icons-group
-              .icon-in-group-v02
-                %a{:href => "#"}
-                  %span.linkcolor.by-icon-v02
+              .icon-in-group-v02.like
+                  %span.linkcolor.pointer.by-icon-v02
                     = @liked ? '6' : '5'
               .icon-in-group-v02
                 %span.by-icon-v02.linkcolor.notyet b

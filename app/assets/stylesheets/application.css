@@ -120,3 +120,11 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
 .modal-header{border:0;}
 .modal-footer{border:0;}
 .by-popup-v02{margin-top:0;}
+
+.dropdown-toggle{
+  -webkit-appearance: none;
+}
+.dropdown .dropdown-toggle::after{
+  display:none;
+}
+.dropdown-menu{ transform: translate3d(5px, 55px, 0px)!important;}
