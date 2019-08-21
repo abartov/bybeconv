@@ -263,3 +263,18 @@
 .icon-byclose:before {
   content: "\2d";
 }
+.icon-bycollapse:before {
+  content: "\2e";
+}
+.icon-byexpand:before {
+  content: "\2f";
+}
+.icon-bysettings:before {
+  content: "\3a";
+}
+.icon-bytwitter:before {
+  content: "\3b";
+}
+.icon-bywhatsapp:before {
+  content: "\3c";
+}
