@@ -46,26 +46,26 @@
               %span.by-icon-v02.iconNearText-v02> /
               = t(:reading_mode)
             .top-left-icons-group
-              .icon-in-group-v02.citebutton
-                %span.linkcolor.pointer.by-icon-v02 *
-              .icon-in-group-v02.printbutton
-                %span.linkcolor.pointer.by-icon-v02 9
-              .icon-in-group-v02.download{'data-toggle' => 'modal', 'data-target' => '#downloadDlg'}
-                %span.linkcolor.pointer.by-icon-v02 3
-              .icons-separator-white
               .icon-in-group-v02.like
                 %span.linkcolor.pointer.by-icon-v02= @liked ? '6' : '5'
               .icon-in-group-v02.notyet
                 %span.linkcolor.pointer.by-icon-v02 b
-              .icon-in-group-v02.notyet{:style => "margin-left:0;"}
+              .icon-in-group-v02.notyet
                 %span.linkcolor.pointer.by-icon-v02 D
+              .icons-separator-white
+              .icon-in-group-v02.citebutton
+                %span.linkcolor.pointer.by-icon-v02 *
+              .icon-in-group-v02.printbutton
+                %span.linkcolor.pointer.by-icon-v02 9
+              .icon-in-group-v02.download{'data-toggle' => 'modal', 'data-target' => '#downloadDlg', style: "margin-left:0;"}
+                %span.linkcolor.pointer.by-icon-v02 3
           .work-page-top-icons-mobile
             %button.btn-small-outline-v02.btn-text-v02.reading-mode-icon-btn-v02{:href => "#"}
               %span.by-icon-v02 /
             .top-left-icons-group
               .icon-in-group-v02.like
-                  %span.linkcolor.pointer.by-icon-v02
-                    = @liked ? '6' : '5'
+                %span.linkcolor.pointer.by-icon-v02
+                  = @liked ? '6' : '5'
               .icon-in-group-v02
                 %span.by-icon-v02.linkcolor.notyet b
               #moreMobile.by-dropdown-v02
