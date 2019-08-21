@@ -253,30 +253,28 @@
       .top-search-mobile-v02
         .by-icon-top-v02.top-search-icon-mobile-v02
           %a{href: "#"} X
-      #moreMobile.by-dropdown-v02{style: "vertical-align:top;padding-top: 4px;"}
-        %span#nav-more
-          %div#open-overflow{style:'cursor:pointer'}
-            %span.by-icon-top-v02 Y
-        .by-dropdown-content-v02#menu-more{style: 'left:0; margin-top: 4px'}
-          %a{href: t(:facebook_url)}
+      .dropdown.d-inline#moreMobile{style: "vertical-align:top;padding-top: 4px;"}
+        %span.linkcolor.pointer.by-icon-top-v02.dropdown-toggle#nav-more{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :type => "button"} Y
+        .dropdown-menu.dropdown-menu-right#menu-more
+          %a.dropdown-item.linkcolor{href: t(:facebook_url)}
             %span.by-icon-v02.iconNearText-v02 S
             = t(:to_the_facebook_page)
-          %a{href: t(:youtube_url)}
+          %a.dropdown-item.linkcolor{href: t(:youtube_url)}
             %span.by-icon-v02.iconNearText-v02 W
             = t(:to_the_youtube)
-          %a{href: t(:blog_url)}
+          %a.dropdown-item.linkcolor{href: t(:blog_url)}
             %span.by-icon-v02.iconNearText-v02 Q
             = t(:to_the_blog)
           = render partial: 'shared/share', locals: {element: :mobile_button}
-          %a{:href => "mailto:editor@benyehuda.org"}
+          %a.dropdown-item.linkcolor{:href => "mailto:editor@benyehuda.org"}
             %span.by-icon-v02.iconNearText-v02 R
             = t(:contact_us)
           - if current_user
-            %a{:href => "/signout"}
+            %a.dropdown-item.linkcolor{:href => "/signout"}
               %span.by-icon-v02.iconNearText-v02 0
               = t(:sign_out)
           - else
-            %a{:href => "/session/login"}
+            %a.dropdown-item.linkcolor{:href => "/session/login"}
               %span.by-icon-v02.iconNearText-v02 Z
               = t(:sign_in)
 
@@ -329,7 +327,6 @@
     });
 
     $('#mobileMenu').click(function() {
-      $('#menu-more').css('display','none');
       $("#mySidenav").addClass('sidebar-opened');
       //$("#mySidenav").css('width','80%');
     });
@@ -337,13 +334,7 @@
       $("#mySidenav").removeClass('sidebar-opened');
       //$('#mySidenav').css('width','0');
     });
-
-    $('#open-overflow').click(function(){
+    $('#moreMobile').on('show.bs.dropdown', function(){
       $("#mySidenav").removeClass('sidebar-opened')
-      //$('#mySidenav').css('width','0');
-      if($('#menu-more').css('display') == 'block')
-        $('#menu-more').css('display','none');
-      else
-        $('#menu-more').css('display','block');
     });
   });
