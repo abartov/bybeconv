@@ -16,10 +16,11 @@
             = ' ...'
         - if @fa_rest != ''
           %span.pointer.btn#toggle_featured_author{style:'color:white; padding-top:0.5rem'}= t(:to_the_full_feature)
-        .another-flash
-          = link_to '#' do
-            %span.right-side-icon= "'"
-            %span{style: 'font-weight: bold'}= t(:another_feature)
+        / TODO: implement
+        /.another-flash
+        /  = link_to '#' do
+        /    %span.right-side-icon= "'"
+        /    %span{style: 'font-weight: bold'}= t(:another_feature)
         %a{ href: author_toc_path(id: @featured_author.id)}
           %button.by-button-v02.button-to-full-v02= t(:to_the_author_page)
 
