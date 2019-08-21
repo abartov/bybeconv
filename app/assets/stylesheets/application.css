@@ -127,4 +127,4 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
 .dropdown .dropdown-toggle::after{
   display:none;
 }
-.dropdown-menu{ transform: translate3d(5px, 55px, 0px)!important;}
+.dropdown-menu{ transform: translate3d(5px, 25px, 0px)!important;}
