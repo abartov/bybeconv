@@ -129,9 +129,19 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
 .dropdown-menu{ transform: translate3d(5px, 28px, 0px)!important;}
 
 .by-popup-v02 {width: 100% !important;}
+
+#chapter-nav{
+  max-height: 400px;
+  overflow-y: scroll;
+}
+
 @media screen and (max-width: 767px) {
   .popup-top { position:static; }
   .by-popup-v02 { position: static; }
   .modal-dialog {height: 100%;}
   .modal-content {height: 100%;}
+  #chapter-nav{
+    max-height: 300px;
+  }
+
 }
