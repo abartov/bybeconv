@@ -130,6 +130,7 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
 
 .by-popup-v02 {width: 100% !important;}
 
+#chapternav{ width: min-content;}
 #chapter-nav{
   max-height: 400px;
   overflow-y: auto;

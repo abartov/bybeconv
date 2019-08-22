@@ -447,7 +447,7 @@ class ManifestationController < ApplicationController
     unless @m.nil?
       lines = @m.markdown.lines
       tmphash = {}
-      @chapters = {} # TODO: add sub-chapters, indenting two nbsps in dropdown
+      @chapters = [] # TODO: add sub-chapters, indenting two nbsps in dropdown
 
       ## div-wrapping chapters, trying to debug the scrollspy...
       #first = true
@@ -463,13 +463,14 @@ class ManifestationController < ApplicationController
       #  tmphash[sanitize_heading(lines[linenum+1][2..-1].strip)] = linenum.to_s
       #} # annotate headings in reverse order, to avoid offsetting the next heading
       #lines << "</div>\n" unless first # close final section if any headings existed in the text
-
+      ch_count = 0
       @m.heading_lines.reverse.each{ |linenum|
+        ch_count += 1
         insert_text = "<a name=\"ch#{linenum}\" id=\"ch#{linenum}\"></a>\r\n"
         lines.insert(linenum, insert_text)
-        tmphash[sanitize_heading(lines[linenum+1][2..-1].strip)] = linenum.to_s
+        tmphash[ch_count.to_s.rjust(4, "0")+sanitize_heading(lines[linenum+1][2..-1].strip)] = linenum.to_s
       } # annotate headings in reverse order, to avoid offsetting the next heading
-      tmphash.keys.reverse.map{|k| @chapters[k] = tmphash[k]}
+      tmphash.keys.reverse.map{|k| @chapters << [k[4..-1], tmphash[k]]}
       @selected_chapter = tmphash.keys.last
       @html = MultiMarkdown.new(lines.join("\n")).to_html.force_encoding('UTF-8').gsub(/<figcaption>.*?<\/figcaption>/,'') # remove MMD's automatic figcaptions
       @tabclass = set_tab('works')
