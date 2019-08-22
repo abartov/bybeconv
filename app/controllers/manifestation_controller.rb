@@ -448,15 +448,30 @@ class ManifestationController < ApplicationController
       lines = @m.markdown.lines
       tmphash = {}
       @chapters = {} # TODO: add sub-chapters, indenting two nbsps in dropdown
+
+      ## div-wrapping chapters, trying to debug the scrollspy...
+      #first = true
+      #@m.heading_lines.reverse.each{ |linenum|
+      #  insert_text = "<div id=\"ch#{linenum}\" role=\"tabpanel\"> <a name=\"ch#{linenum}\"></a>\r\n"
+      #  unless first
+      #    insert_text = "</div>" + insert_text
+      #  else
+      #    first = false
+      #  end
+      #  lines.insert(linenum, insert_text)
+      #  # lines.insert(linenum, "\n<p id=\"ch#{linenum}\"></p>\r\n")
+      #  tmphash[sanitize_heading(lines[linenum+1][2..-1].strip)] = linenum.to_s
+      #} # annotate headings in reverse order, to avoid offsetting the next heading
+      #lines << "</div>\n" unless first # close final section if any headings existed in the text
+
       @m.heading_lines.reverse.each{ |linenum|
-        lines.insert(linenum, "<a name=\"ch#{linenum}\" id=\"ch#{linenum}\"></a>\r\n")
-        # lines.insert(linenum, "\n<p id=\"ch#{linenum}\"></p>\r\n")
+        insert_text = "<a name=\"ch#{linenum}\" id=\"ch#{linenum}\"></a>\r\n"
+        lines.insert(linenum, insert_text)
         tmphash[sanitize_heading(lines[linenum+1][2..-1].strip)] = linenum.to_s
       } # annotate headings in reverse order, to avoid offsetting the next heading
       tmphash.keys.reverse.map{|k| @chapters[k] = tmphash[k]}
       @selected_chapter = tmphash.keys.last
-      @html = MultiMarkdown.new(lines.join("")).to_html.force_encoding('UTF-8').gsub(/<figcaption>.*?<\/figcaption>/,'') # remove MMD's automatic figcaptions
-      ## @html = @html.gsub(/fn:(\d+)/,"fn\\1").gsub(/fnref:(\d+)/,"fnref\\1") # false lead re why Firefox doesn't handle the anchors properly. Works in Chrome! # TODO: fix.
+      @html = MultiMarkdown.new(lines.join("\n")).to_html.force_encoding('UTF-8').gsub(/<figcaption>.*?<\/figcaption>/,'') # remove MMD's automatic figcaptions
       @tabclass = set_tab('works')
       @entity = @m
       @pagetype = :manifestation

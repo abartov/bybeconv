@@ -62,7 +62,7 @@
                     %span.pointer.linkcolor#jump-to-recs= t(:this_work_has_x_recommendations, {x: @recommendations.all_approved.count})
           .by-card-v02
             .work-area
-              .work-content
+              .work-content{"data-spy" => 'scroll', "data-target" => '#chapternav'}
                 / TODO: more nuanced rendering here
                 - if @m.as_prose?
                   #actualtext.maintext-prose-body.search-margin

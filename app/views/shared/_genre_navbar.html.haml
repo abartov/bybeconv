@@ -1,6 +1,6 @@
 - genres = get_genres.push('translations')
 - first = true
-%nav#genrenav{'class' => 'navbar'}
+%nav.navbar#genrenav
   %ul.navbar-nav.flex-column.by-card-v02#genre-nav{'aria-orientation' => 'vertical'}
     - genres.each do |g|
       - if genres_present.include?(g)

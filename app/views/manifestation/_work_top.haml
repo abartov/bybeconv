@@ -88,12 +88,12 @@
       .col-2.side-nav-col
         - if @m.chapters? and @m.long?
           .side-menu-headline= t(:chapters_list)
-          %nav#chapternav{'class' => 'navbar'}
-            %ul.navbar-nav.flex-column.by-card-v02#chapter-nav{style:'width: unset', 'aria-orientation' => 'vertical'}
+          %nav.navbar#chapternav
+            %ul.nav.navbar-nav.navbar-expand.flex-column.by-card-v02#chapter-nav{style:'width: unset', 'aria-orientation' => 'vertical'}
               - first = true
               - @chapters.each do |ch|
                 %li.nav-item
-                  %a.nav-chapter-name{'class' => 'nav-link nav-link-chapter pointer linkcolor '+(first ? ' active' : ''), href: "#ch#{ch[1]}", 'data-target' => "ch#{ch[1]}"}
+                  %a{'class' => 'nav-link nav-chapter-name nav-link-chapter pointer linkcolor '+(first ? ' active' : ''), href: "#ch#{ch[1]}", id: "nl#{ch[1]}", 'data-asaf' => "ch#{ch[1]}"}
                     = ch[0]
                 - first = false
       .col{style:'z-order:-1;height:0;'}
@@ -152,7 +152,7 @@
     });
     $('.nav-link').click(function(e) {
       e.preventDefault();
-      anchor = $(this).attr('data-target');
+      anchor = $(this).attr('data-asaf');
       $('html, body').animate({
         scrollTop: $('a[name='+anchor+']').offset().top - $(header).height() - 65
       }, 800);
@@ -245,5 +245,9 @@
     $('#citeDlg').dialog({autoOpen:false, height:550, width:790, modal:true, buttons:{"#{t(:close)}": function(){$('#citeDlg').dialog('close');}}});
     $('.citebutton').click(function() {
       $('#citeDlg').dialog('open');
+    });
+    // debug
+    $('[data-spy="scroll"]').on('activate.bs.scrollspy', function () {
+      alert('spy!');
     });
   });
