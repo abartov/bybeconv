@@ -91,9 +91,9 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
 .modal-content{
   background-color: transparent;
 }
-/* .mobileLogo{
-  display:none;
-} */
+#header-general{
+  z-index: 2000;
+}
 .by-dropdown-content-v02 p {
   padding: 6px 15px;
   margin: 0;
@@ -130,6 +130,10 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
 
 .by-popup-v02 {width: 100% !important;}
 
+#chapter_dropdown_content {
+  overflow-y: auto;
+  max-height: 600px;
+}
 #chapternav{ width: min-content;}
 #chapter-nav{
   max-height: 400px;

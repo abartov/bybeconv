@@ -162,6 +162,32 @@
                       != tr.translators.map{|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
 #downloadDlg.modal{'aria-hidden' => 'true', role: 'dialog'}
   = render partial: 'shared/download', locals: {manifestation: @m}
+- if @m.chapters? and @m.long?
+  .modal#chapterDlg{role: 'dialog', tabindex: '-1'}
+    .modal-dialog.modal-dialog-centered{role: 'document'}
+      .modal-content
+        .popup-top
+          .row{:style => "padding:15px;margin: 0"}
+            .col-3{:style => "padding: 0;"}
+              %button.btn-small-outline-v02{'data-dismiss' => 'modal'}
+                .btn-text-v02
+                  %span.right-arrow 2
+                  %span= t(:back)
+            .col-6{:style => "padding: 0;"}
+              .headline-2-v02{:style => "text-align: center;margin: 0; padding-top: 3px;"}= t(:jump_to)
+            .col-3
+        .by-popup-v02
+          %div
+            .by-card-content-v02.dropdown-content-mobile{:style => "padding-top: 0"}
+              - @chapters.each do |ch|
+                %a.jumpch{style:'text-overflow: ellipsis;overflow-x: hidden;', 'data-target' => "ch#{ch[1]}", href:"#ch#{ch[1]}"}= ch[0]
+              - unless @curated_content.nil?
+                .dropdown-menu-seperator
+                .curatorial-content
+                  %a{href:'#curated'}
+                    %span.by-icon-v02.iconNearText-v02 Q
+                    = t(:curated_content)
+          .popup-bottom-filler
 
 :javascript
   $(document).ready(function() {
@@ -182,5 +208,13 @@
     $('#expand-add-rec').click(function() {
       $('#expand-add-rec').css('display','none');
       $('#add-rec-form').css('display','block');
+    });
+    $('.jumpch').click(function(e) {
+      e.preventDefault();
+      anchor = $(this).attr('data-target');
+      $('html, body').animate({
+        scrollTop: $('a[name='+anchor+']').offset().top - $(header).height() - 65
+      }, 800);
+      $('#chapterDlg').modal('hide');
     });
   });
