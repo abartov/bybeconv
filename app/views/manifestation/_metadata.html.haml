@@ -1,33 +1,49 @@
-/ OLD AND UNUSED CODE!  To be deleted!
-.metadata
-  / TODO: generalize for multiple authors
-  .metadata_row
-    %b
-      = t(:author_name)+': '
-    != @m.authors.map {|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
-    - if @m.expressions[0].translation && !@translators.nil?
-      %br
-      %b
-        = t(:translator_name)+': '
-      != @translators.map{|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
-  /  .metadata_row
-  /    %b
-  /      = t(:published_in_book)+': '
-  /    = 'TODO: book details'
-  .metadata_row
-    %b
-      = t(:genre)+': '
-    = textify_genre(@m.expressions[0].works[0].genre)
+.work-title.name-under-btn
+  .headline-1-v02= @m.title
+  - if current_user && current_user.editor?
+    %span.static-btn= link_to t(:edit_metadata), manifestation_edit_metadata_path(@m.id)
     != "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
-    %b
-      = t(:orig_lang)+': '
-    = textify_lang(@m.expressions[0].works[0].orig_lang)
-  .metadata_row
-    .col-sm-6
-      %b
-        = link_to t(:tags), 'TODO: tags'
-        = "(#{@m.approved_tags.count})"
-    .col-sm-6
-      %b
-        = link_to t(:recommendations), 'TODO: recommendations'
-        = "(#{@m.recommendations.approved.count})"
+    %span.static-btn= link_to t(:edit_markdown), manifestation_edit_path(id: @m.id)
+    %br
+  .headline-2-v02
+    != @m.authors.map {|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
+    - if @e.translation && @e.translators.size > 0
+      %br
+      = "#{t(:translation)}: "
+      != @translators.map{|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
+      = " (#{t(:from_lang)}#{textify_lang(@e.works[0].orig_lang)})"
+%div
+  / metadata
+  .work-details
+    - if @m.copyright?
+      %span.by-icon-v02.copyright-icon> m
+      = textify_copyright_status(false)
+      = link_to '[?]', '#', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_public_domain), 'data-content' => t(:public_domain_popover)
+    - else
+      %span.by-icon-v02.copyright-icon> x
+      = textify_copyright_status(true)
+      = link_to '[?]', '#', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_permission), 'data-content' => t(:permission_popover)
+  .work-details
+    %span.by-icon-v02.internal-genre-icon>= glyph_for_genre(@e.genre)
+    = textify_genre(@e.genre)
+  - if @e.translation?
+    .work-details
+      %span{:style => "font-weight:bold"}= t(:orig_lang)+': '
+      = textify_lang(@e.works[0].orig_lang)
+  - unless @e.source_edition.nil? || @e.source_edition.empty?
+    .work-details
+      %span{:style => "font-weight:bold"}= t(:source_edition)+': '
+      - edition = @e.source_edition.strip
+      - unless @e.date.nil? || @e.date.empty?
+        - edition += '; '+@e.date
+      = edition
+  / tags and recommendations
+  - if tags_etc
+    .work-details.mobile-work-details
+      - if @taggings.approved.count > 0
+        %span{:style => "font-weight:bold"}= t(:tags)+': '
+        = render partial: 'shared/taggings', locals: {taggings: @taggings}
+    .work-details.mobile-work-details
+      - if @recommendations.all_approved.count > 0
+        %span{:style => "font-weight:bold"}= t(:recommendations)+': '
+        %span.pointer.linkcolor#jump-to-recs= t(:this_work_has_x_recommendations, {x: @recommendations.all_approved.count})

@@ -4,17 +4,19 @@
     .row{style:'padding:0'}
       .col-sm-3
         / logo
-        #site-logo
+        .logo-for-print
           = link_to '/' do
-            %img{ src:'/assets/BY_Logo.svg', class:'img-responsive', alt:t(:logo)}
+            %img.logoBY-v02{alt:t(:logo), src: '/assets/logo-byp-mobile.svg'}/
       .col-sm-6
         #work-name{style: 'text-align:center'}
           %p.headline-1{style:'margin-top:0;margin-bottom:0;font-size:2.2rem'}= @m.title
           %p.headline-3{style:'padding:0;display:inline;font-size:1.6rem'}
             = t(:by)+' '
-            = link_to @author.name, author_toc_path(@author.id)
+            != @m.authors.map {|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
+            - if @e.translation && @e.translators.size > 0
+              %br
+              = "#{t(:translation)}: "
+              != @translators.map{|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
+              = " (#{t(:from_lang)}#{textify_lang(@e.works[0].orig_lang)})"
       .col-sm-3
-        .fontsize-selector-unit.vcentered
-          = render partial: 'shared/fontsize'
-        /= render partial: 'shared/copyright', locals: {copyright: @m.copyright?}
   .col-lg-1
