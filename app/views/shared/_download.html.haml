@@ -6,7 +6,7 @@
           .popup-top
             .row{:style => "padding:15px;margin: 0"}
               .col-4{:style => "padding: 0;"}
-                %button.btn-small-outline-v02{:href => "#"}
+                %button.btn-small-outline-v02{'data-dismiss'=>'modal'}
                   .btn-text-v02
                     %span.right-arrow 2
                     %span= t(:back)
@@ -17,6 +17,8 @@
           .by-popup-v02
             %div
               .by-card-content-v02.card-with-button{:style => "padding-top: 0"}
+                .by-card-header-v02.desktop-only
+                  %span.headline-1-v02= t(:save_to_file)
                 %a.popup-x-v02.linkcolor.pointer{'data-dismiss'=>'modal'} -
                 .no-header
                 %p= t(:download_instructions)

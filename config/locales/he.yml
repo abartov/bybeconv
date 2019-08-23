@@ -130,6 +130,7 @@ he:
   markdown: טקסט גולמי
   display_text: טקסט תצוגה
   save_and_exit: שמירה ויציאה
+  save_to_file: שמירת היצירה לקובץ
   save_and_update_display: שמירה ועדכון תצוגה
   works_about_this_author: "יצירות על אודות המחבר%{gender_suffix}"
   works_about_this_work: יצירות על אודות יצירה זו
