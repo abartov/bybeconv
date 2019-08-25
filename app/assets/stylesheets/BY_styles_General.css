@@ -264,7 +264,7 @@ padding-left: 6px;
   width: 1px;
   background-color: #d9cdd5;
   display: inline;
-  float: right;
+  float: right; 
   margin-left: 6px;}
 .icons-separator-white{
   height: 28px;
@@ -277,7 +277,7 @@ padding-left: 6px;
 
 .by-icon-v02 {
   font-family: ben-yehuda;
-  font-size: 18px;
+  font-size: 18px; 
 }
 .icon-in-group-v02 .by-icon-v02{
 	  line-height: 28px;
@@ -291,7 +291,7 @@ padding-left: 6px;
 }
 .by-icon-top-v02 {
   font-family: ben-yehuda;
-  font-size: 18px;
+  font-size: 18px; 
   line-height: 26px;
 }
 
@@ -483,8 +483,6 @@ padding-left: 6px;
 /*	width: calc(100%-140px); */
 input {
   border: none;
-  width: auto;
-  width: 18px;
   margin-left: 4px;
 }
 
@@ -591,7 +589,7 @@ input::placeholder {
   font-weight: bold;
   line-height: 32px;
   text-align: center;
-  color: #ffffff;
+  color: #ffffff; 
   display: flex;
   align-items: center;}
 
@@ -654,7 +652,8 @@ input::placeholder {
 
 .surprise-btn-v02 {
   width: 160px;
-  height: 50px; }
+  height: 50px; 
+}
 
 .link-to-all-v02 {
   position: absolute;
@@ -905,7 +904,7 @@ input::placeholder {
   max-height: 210px; }
 
 .whats-new-v02 {
-  background-color: #d9cdd5;
+  background-color: #d9cdd5; 
   }
 .left-side-card-v02 {
   background-color: #d9cdd5; }
@@ -1599,7 +1598,7 @@ display: flex;
 }
 .nav-chapter-name{
 	width: 84px;
-	white-space: nowrap;
+	white-space: nowrap; 
 	overflow: hidden;
 	text-overflow: ellipsis;
 	justify-content:flex-start;
@@ -2149,6 +2148,7 @@ display: none;}
 }
 input[type=checkbox], input[type=radio]{
   height: 18px;
+  width: 18px;
   margin-top: -1px;
   vertical-align: middle;
   }
@@ -2253,7 +2253,7 @@ label{
 }
 .rm-control-top{
 	padding: 10px 10px 6px 10px;
-  border-bottom: solid 2px #d9cdd5;
+  border-bottom: solid 2px #d9cdd5; 
 }
 .rm-logo{
 	display: inline;
@@ -2269,7 +2269,7 @@ label{
 }
 .rm-control-info{
   padding: 10px;
-  border-bottom: solid 2px #d9cdd5;
+  border-bottom: solid 2px #d9cdd5; 
 }
 .rm-field-label{
 	margin-top: 10px;
@@ -2418,7 +2418,7 @@ padding-left: 0;
   background-color: #eeeced;
   padding-right: 0px;
   padding-top: 0px;
-  padding-bottom: 0px;
+  padding-bottom: 0px; 
 }
 .share-options-area{
   display: flex;
