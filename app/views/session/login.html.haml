@@ -7,3 +7,6 @@
         .static-btn= 'Google'
       = link_to '/auth/twitter', method: :post do
         .static-btn= 'Twitter'
+      - if Rails.env.development?
+        = link_to '/auth/developer', method: :post do
+          .static-btn= 'Developer'
