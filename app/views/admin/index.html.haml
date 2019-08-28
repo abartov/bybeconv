@@ -18,17 +18,17 @@
     %p
       %b= link_to t(:bib_workshop), bib_index_path
     %hr
-    %h3= t(:main_catalog_management)
-    %b
-      - if current_user.has_bit?('edit_catalog')
-        %p= link_to t(:catalog_dashboard), manifestation_list_path
-      - if current_user.has_bit?('edit_people')
-        %p= link_to t(:manage_people), authors_list_path
-    %hr
-    %h3= t(:featured_content_heading)
-    - if current_user.has_bit?('curate_featured_content')
-      %p= link_to t(:featured_content_management), url_for(action: :featured_content_list)
-      %p= link_to t(:featured_authors_management), url_for(action: :featured_author_list)
+  %h3= t(:main_catalog_management)
+  %b
+    - if current_user.has_bit?('edit_catalog')
+      %p= link_to t(:catalog_dashboard), manifestation_list_path
+    - if current_user.has_bit?('edit_people')
+      %p= link_to t(:manage_people), authors_list_path
+  %hr
+  %h3= t(:featured_content_heading)
+  - if current_user.has_bit?('curate_featured_content')
+    %p= link_to t(:featured_content_management), url_for(action: :featured_content_list)
+    %p= link_to t(:featured_authors_management), url_for(action: :featured_author_list)
   - if current_user.admin?
     %h2= t(:admin_actions)
     %h3= t(:internal_search)
