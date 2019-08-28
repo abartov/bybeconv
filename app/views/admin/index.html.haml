@@ -37,6 +37,7 @@
   %b
     - if current_user.has_bit?('edit_catalog')
       %p= link_to t(:catalog_dashboard), manifestation_list_path
+      %p= link_to t(:upload_file), html_file_new_path
     - if current_user.has_bit?('edit_people')
       %p= link_to t(:manage_people), authors_list_path
   %hr
@@ -55,7 +56,6 @@
       %br
       = f.submit t(:search)
     %h3= t(:conversion_actions)
-    %b= link_to t(:upload_file), html_file_new_path
     %p
       = link_to t(:html_files_list), html_file_list_path
     %p= link_to t(:html_dirs_list), html_dirs_path
