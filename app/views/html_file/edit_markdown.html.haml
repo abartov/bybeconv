@@ -28,15 +28,17 @@
           = select_tag(:genre, options_for_select(get_genres.map {|genre| [I18n.t(genre), genre]}, @text.genre), {include_blank: true})
       .row
         .col-md-12
-          .markdown_container
-            %div{ style:"vertical-align:top; width: 40%;display:flex;margin-right:10px;flex-direction:column;height:100%;box-sizing:border-box;float:left;padding-right:7px;"}
+          .markdown_container.row
+            .col-sm-3
               #legacy_markdown_link
-                %h2= t(:markdown)
+              %h2= t(:markdown)
+              %b.static-btn#add_stanza_break= t(:add_stanza_break)
               .markdown= text_area_tag(:markdown, raw(@markdown), class: 'textarea100')
-            %h2= t(:display_text)
-            #preview{ style:"vertical-align:top; width: 60%; padding-left:10px;padding-right:15px;background:#d2cfcf;"}
-              != raw(@html)
-              %br
+            .col-sm-9
+              %h2= t(:display_text)
+              #preview{ style:"padding-left:10px;padding-right:15px;background:#d2cfcf; overflow-y:auto"}
+                != raw(@html)
+                %br
       .row
         .col-md-12
           %h3= t(:comments)
@@ -58,12 +60,16 @@
 
 :javascript
   jQuery(document).ready(function() {
-    var newsize = $('.markdown_container').height() - $('#legacy_markdown_link').height(); // this is horrible, but I've given up on getting the textarea to auto-fill the container height. :((
-    if(newsize < 150)
-      newsize = 150;
-    $('.markdown').css('height', newsize);
-    $('.textarea100').css('height', newsize);
-    $('.textarea100').css('overflow-y', 'scroll');
+    $('#add_stanza_break').click(function() {
+      var $txt = jQuery("#markdown");
+      var caretPos = $txt[0].selectionStart;
+      var textAreaTxt = $txt.val();
+      var txtToAdd = "\n>\n<br />\n>\n";
+      $txt.val(textAreaTxt.substring(0, caretPos) + txtToAdd + textAreaTxt.substring(caretPos) );
+      $txt.focus();
+      $txt.caretTo(caretPos+txtToAdd.length);
+    });
+
     if(#{@text.has_splits ? true : false})
       $('#frbrize_button').click(function(e){
         e.preventDefault();
@@ -93,12 +99,4 @@
         pv.innerHTML = file.content.html;
       });
     });
-  });
-
-
-:javascript
-
-  jQuery(document).ready(function() {
-
-
   });

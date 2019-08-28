@@ -37,12 +37,13 @@
     = select_tag 'html_file[orig_lang]', options_for_select(get_langs.map {|lang| [textify_lang(lang), lang]}, @text.orig_lang)
 
   .backend-field
-    = f.label t(:comments)
-    = f.text_area :comments
-  %br
-  .backend-field
     %b= t(:upload_file)
     = f.file_field :doc
   = t(:file_can_be_skipped)
   .actions
-    = f.submit t(:save)
+    %b= f.submit t(:save)
+  %br
+  .backend-field
+    = f.label t(:comments)
+    = f.text_area :comments
+  %br

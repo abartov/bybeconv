@@ -1,6 +1,8 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 he:
+  add_stanza_break: מעבר בית
+  add_fresh_works: כל היצירות מאז אתמול
   converted_output: "תוצאת הסבה אוטומטית של הקובץ הישן %{fname}"
   origlang_title: כותרת בשפת המקור
   treat_as_poetry: מצב שירה
@@ -109,7 +111,7 @@ he:
   featured_item: זרקור על יצירה
   works_by_genre: יצירות על-פי סוגה
   edit_markdown: עריכת הטקסט
-  add_work_link: הוספת יצירה
+  add_work_link: הוספת היצירה
   year_published: שנת הוצאה
   in_current_cursor: במקום הסמן הנוכחי
   markdown: טקסט גולמי

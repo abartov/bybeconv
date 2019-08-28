@@ -23,11 +23,14 @@
         %h3
           = t(:new_title_only)
           = text_field_tag :newtitle, @newtitle
-  %hr
-  .markdown_container
-    %div{ style:"vertical-align:top; width: 30%;display:flex;margin-right:10px;flex-direction:column;height:100%;box-sizing:border-box;float:left;padding-right:7px;"}
-      #legacy_markdown_link
+    %hr
+    .markdown_container.row
+      .col-sm-3
+        #legacy_markdown_link
         %h2= t(:markdown)
+        %b= t(:make_corrections_below)
+        %br
+        %b.static-btn#add_stanza_break= t(:add_stanza_break)
         - if @m.images.attached?
           %b.static-btn#add_image= t(:add_image)
           != "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
@@ -35,25 +38,25 @@
           = select_tag :images, raw(options_from_images(@m.images))
           %br
           = t(:in_current_cursor)
-        %b= t(:make_corrections_below)
-      .markdown
-        = text_area_tag(:markdown, raw(@markdown), class: 'textarea100')
-    %h2= t(:display_text)
-    .read_html#preview{ style:"vertical-align:top; width: 70%; padding-left:10px;padding-right:15px;background:#d2cfcf;"}
-      != raw(@html)
-      %br
+        .markdown
+          = text_area_tag(:markdown, raw(@markdown), class: 'textarea100')
+      .col-sm-9
+        %h2= t(:display_text)
+        .read_html#preview{ style:"padding-left:10px;padding-right:15px;background:#d2cfcf;"}
+          != raw(@html)
+          %br
 
-  %hr
-  .backend-field
-    = label_tag t(:conversion_verified)
-    = t(:yes)
-    = radio_button_tag(:conversion_verified, true, @m.conversion_verified)
-    = t(:no)
-    = radio_button_tag(:conversion_verified, false, (not @m.conversion_verified))
-  %p
-    = submit_tag t(:preview)
-    = ' | '
-    = submit_tag t(:save)
+    %hr
+    .backend-field
+      = label_tag t(:conversion_verified)
+      = t(:yes)
+      = radio_button_tag(:conversion_verified, true, @m.conversion_verified)
+      = t(:no)
+      = radio_button_tag(:conversion_verified, false, (not @m.conversion_verified))
+    %p
+      = submit_tag t(:preview)
+      = ' | '
+      = submit_tag t(:save)
 
 :javascript
   var selected_image_url = '';
@@ -78,9 +81,9 @@
     }
   });
   jQuery(document).ready(function() {
-    var newsize = $('.markdown_container').height() - $('#legacy_markdown_link').height(); // this is horrible, but I've given up on getting the textarea to auto-fill the container height. :((
-    $('.markdown').css('height', newsize);
-    $('.textarea100').css('height', newsize);
+    //var newsize = $('.markdown_container').height() - $('#legacy_markdown_link').height(); // this is horrible, but I've given up on getting the textarea to auto-fill the container height. :((
+    //$('.markdown').css('height', newsize);
+    //$('.textarea100').css('height', newsize);
     //$('#images').iconselectmenu();
     $('#images').ddslick({
       width: 550,
@@ -127,4 +130,14 @@
       $txt.focus();
       $txt.caretTo(caretPos+txtToAdd.length);
     });
+    $('#add_stanza_break').click(function() {
+      var $txt = jQuery("#markdown");
+      var caretPos = $txt[0].selectionStart;
+      var textAreaTxt = $txt.val();
+      var txtToAdd = "\n>\n<br />\n>\n";
+      $txt.val(textAreaTxt.substring(0, caretPos) + txtToAdd + textAreaTxt.substring(caretPos) );
+      $txt.focus();
+      $txt.caretTo(caretPos+txtToAdd.length);
+    });
+
   });
