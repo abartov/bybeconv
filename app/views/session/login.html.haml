@@ -2,7 +2,8 @@
   %h1= 'נא לבחור שיטת אימות'
 
   = form_tag session_do_login_path do
-    %p
-      = submit_tag 'Google'
-    %p
-      = submit_tag 'Twitter'
+    %div{style:'width: 200px'}
+      = link_to '/auth/google_oauth2', method: :post do
+        .static-btn= 'Google'
+      = link_to '/auth/twitter', method: :post do
+        .static-btn= 'Twitter'
