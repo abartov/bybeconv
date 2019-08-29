@@ -16,13 +16,13 @@
   / metadata
   .work-details
     - if @m.copyright?
-      %span.by-icon-v02.copyright-icon> m
-      = textify_copyright_status(false)
-      = link_to '[?]', '#', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_public_domain), 'data-content' => t(:public_domain_popover)
-    - else
       %span.by-icon-v02.copyright-icon> x
       = textify_copyright_status(true)
       = link_to '[?]', '#', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_permission), 'data-content' => t(:permission_popover)
+    - else
+      %span.by-icon-v02.copyright-icon> m
+      = textify_copyright_status(false)
+      = link_to '[?]', '#', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_public_domain), 'data-content' => t(:public_domain_popover)
   .work-details
     %span.by-icon-v02.internal-genre-icon>= glyph_for_genre(@e.genre)
     = textify_genre(@e.genre)
