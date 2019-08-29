@@ -74,7 +74,7 @@
         var $txt = jQuery("#markdown");
         var caretPos = $txt[0].selectionStart;
         var textAreaTxt = $txt.val();
-        var txtToAdd = "#{@fresh_works_markdown}";
+        var txtToAdd = "#{escape_javascript(@fresh_works_markdown)}";
         $txt.val(textAreaTxt.substring(0, caretPos) + txtToAdd + textAreaTxt.substring(caretPos) );
         $txt.focus();
         $txt.caretTo(caretPos+txtToAdd.length);
