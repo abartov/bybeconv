@@ -316,12 +316,12 @@
     $('#q').keypress(function (e) {
       var key = e.which;
       if(key == 13) { // the enter key code
-        $('.search-icon').click();
+        $('.search-icon-v02').click();
         return false;
       }
     });
 
-    $('.search-icon').click(function(){
+    $('.search-icon-v02').click(function(){
       $('#resultsDlg').dialog('open');
       $('#results').load('#{url_for(controller: :application, action: :search_results)}/?q='+encodeURIComponent($('#q').val()));
     });
