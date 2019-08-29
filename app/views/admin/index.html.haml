@@ -38,11 +38,13 @@
     - if current_user.has_bit?('edit_catalog')
       %p= link_to t(:catalog_dashboard), manifestation_list_path
       %p= link_to t(:upload_file), html_file_new_path
+      %p
+        = link_to t(:html_files_list), html_file_list_path
     - if current_user.has_bit?('edit_people')
       %p= link_to t(:manage_people), authors_list_path
   %hr
-  %h3= t(:featured_content_heading)
   - if current_user.has_bit?('curate_featured_content')
+    %h3= t(:featured_content_heading)
     %p= link_to t(:featured_content_management), url_for(action: :featured_content_list)
     %p= link_to t(:featured_authors_management), url_for(action: :featured_author_list)
   - if current_user.admin?
