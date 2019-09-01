@@ -139,7 +139,8 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
   max-height: 400px;
   overflow-y: auto;
 }
-
+.side-nav-col { pointer-events: none;}
+.side-nav-col nav { pointer-events: auto;}
 @media screen and (max-width: 767px) {
   .popup-top { position:static; }
   .by-popup-v02 { position: static; }

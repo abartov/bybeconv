@@ -140,8 +140,12 @@
       e.preventDefault();
       anchor = $(this).attr('data-asaf');
       $('html, body').animate({
-        scrollTop: $('a[name='+anchor+']').offset().top - $(header).height() - 65
+        scrollTop: $('a[name='+anchor+']').offset().top - $(header).height() - 45
       }, 800);
+      $('header').addClass("scrolled");
+      $('html, body').animate({ // re-adjust, after the header height changed
+        scrollTop: $('a[name='+anchor+']').offset().top - $(header).height() - 45
+      }, 0, function(){ $('.work-content').focus(); });
     });
     $('#chapter_dropdown').click(function(){
       if($('#chapter_dropdown_content').css('display') == 'block')

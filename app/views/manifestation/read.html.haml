@@ -166,8 +166,13 @@
       e.preventDefault();
       anchor = $(this).attr('data-target');
       $('html, body').animate({
-        scrollTop: $('a[name='+anchor+']').offset().top - $(header).height() - 65
+        scrollTop: $('a[name='+anchor+']').offset().top - $(header).height() - 45
       }, 800);
       $('#chapterDlg').modal('hide');
+      $('header').addClass("scrolled");
+      $('html, body').animate({ // re-adjust, after the header height changed
+        scrollTop: $('a[name='+anchor+']').offset().top - $(header).height() - 45
+      }, 0);
+      $('#actualtext').focus();
     });
   });
