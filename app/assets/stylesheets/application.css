@@ -118,7 +118,11 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
 .modal-content { border: 0;}
 .modal-header{border:0;}
 .modal-footer{border:0;}
-.by-popup-v02{margin-top:0;}
+.by-popup-v02{
+  margin-top:0;
+  overflow-y: scroll;
+  width: 100% !important;
+}
 
 .dropdown-toggle{
   -webkit-appearance: none;
@@ -126,9 +130,6 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
 .dropdown .dropdown-toggle::after{
   display:none;
 }
-
-
-.by-popup-v02 {width: 100% !important;}
 
 #chapter_dropdown_content {
   overflow-y: auto;
