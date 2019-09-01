@@ -126,7 +126,7 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
 .dropdown .dropdown-toggle::after{
   display:none;
 }
-.dropdown-menu{ transform: translate3d(5px, 28px, 0px)!important;}
+
 
 .by-popup-v02 {width: 100% !important;}
 
@@ -148,5 +148,10 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
   #chapter-nav{
     max-height: 300px;
   }
-
+}
+@media screen and (max-width: 991px) {
+  #moreMobile-author .dropdown-menu{ transform: translate3d(5px, 72px, 0px) !important;}
+}
+@media screen and (max-width: 399px) {
+  #moreMobile-author .dropdown-menu{ transform: translate3d(5px, 28px, 0px) !important;}
 }
