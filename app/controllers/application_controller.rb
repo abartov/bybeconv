@@ -189,6 +189,8 @@ class ApplicationController < ActionController::Base
     @fresh_works = @author.works_since(2.days.ago, 1000)
     unless @fresh_works.empty?
       @fresh_works_markdown = @fresh_works.map{|m| "\\n&&& פריט: מ#{m.id} &&& כותרת: #{m.title}#{m.expressions[0].translation ? ' / '+m.authors_string : ''} &&&\\n"}.join('').html_safe
+    else
+      @fresh_works_markdown = ''
     end
 end
 
