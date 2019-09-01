@@ -133,7 +133,8 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
 
 #chapter_dropdown_content {
   overflow-y: auto;
-  max-height: 600px;
+  /* max-height: 600px; */
+  max-height: calc(100vh - 100px);
 }
 #chapternav{ width: min-content;}
 #chapter-nav{
