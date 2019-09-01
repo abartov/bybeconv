@@ -466,7 +466,7 @@ class ManifestationController < ApplicationController
       ch_count = 0
       @m.heading_lines.reverse.each{ |linenum|
         ch_count += 1
-        insert_text = "<a name=\"ch#{linenum}\" id=\"ch#{linenum}\"></a>\r\n"
+        insert_text = "<a name=\"ch#{linenum}\" class=\"ch_anch\" id=\"ch#{linenum}\">&nbsp;</a>\r\n"
         lines.insert(linenum, insert_text)
         tmphash[ch_count.to_s.rjust(4, "0")+sanitize_heading(lines[linenum+1][2..-1].strip)] = linenum.to_s
       } # annotate headings in reverse order, to avoid offsetting the next heading
