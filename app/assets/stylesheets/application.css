@@ -161,3 +161,4 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
 .top-search-v02 input { width: 70%}
 
 .ch_anch { height: 2px;}
+.tooltip{ pointer-events:none; }
