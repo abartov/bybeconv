@@ -162,3 +162,4 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
 
 .ch_anch { height: 2px;}
 .tooltip{ pointer-events:none; }
+.by-dropdown-header-v02 { cursor: default;}
