@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_23_161447) do
+ActiveRecord::Schema.define(version: 2019_03_29_140202) do
 
   create_table "aboutnesses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -111,6 +111,8 @@ ActiveRecord::Schema.define(version: 2019_01_23_161447) do
     t.string "genre"
     t.boolean "translation"
     t.string "source_edition"
+    t.integer "period"
+    t.index ["period"], name: "index_expressions_on_period"
   end
 
   create_table "expressions_manifestations", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
@@ -341,6 +343,20 @@ ActiveRecord::Schema.define(version: 2019_01_23_161447) do
     t.index ["person_id"], name: "index_manifestations_people_on_person_id"
   end
 
+  create_table "news_items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+    t.integer "itemtype"
+    t.string "title"
+    t.boolean "pinned"
+    t.datetime "relevance"
+    t.string "body"
+    t.string "url"
+    t.boolean "double"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "thumbnail_url"
+    t.index ["relevance"], name: "index_news_items_on_relevance"
+  end
+
   create_table "people", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.string "name"
     t.string "dates"
@@ -355,7 +371,6 @@ ActiveRecord::Schema.define(version: 2019_01_23_161447) do
     t.string "nli_id"
     t.integer "toc_id"
     t.boolean "public_domain"
-    t.integer "period_id"
     t.text "wikipedia_snippet", limit: 16777215
     t.string "wikipedia_url", limit: 1024
     t.string "image_url", limit: 1024
@@ -375,7 +390,9 @@ ActiveRecord::Schema.define(version: 2019_01_23_161447) do
     t.string "sidepic_content_type"
     t.bigint "sidepic_file_size"
     t.datetime "sidepic_updated_at"
+    t.integer "period"
     t.index ["impressions_count"], name: "index_people_on_impressions_count"
+    t.index ["period"], name: "index_people_on_period"
   end
 
   create_table "periods", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
