@@ -291,7 +291,7 @@ class HtmlFileController < ApplicationController
   def render_html
     pp = params.permit(:id, :markdown, :genre, :add_person, :role, :comments, :remove_line_nums)
     @text = HtmlFile.find(pp[:id])
-    if pp[:markdown].nil?
+    if pp[:markdown].nil? && @text.markdown.nil?
       @markdown = File.open(@text.path + '.markdown', 'r:UTF-8').read
     else
       @markdown = pp[:markdown] # TODO: make secure
