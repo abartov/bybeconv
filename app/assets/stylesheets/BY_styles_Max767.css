@@ -51,32 +51,42 @@
   margin-top: 0;
 	}
 .popup-top{
+  position: static;
+  width: calc(100% + 30px);
   display: block;
+  margin-left: -15px;
+  margin-right: -15px;
+  padding-left: 15px;
+  padding-right: 15px;
 }
 
 .by-popup-v02 {
-  width: 100%;
+  width: calc(100% + 30px);
   height: 100%;
   box-shadow: none;
-  position: fixed;
+  position: static;
   left: 0;
-  margin-top:54px;
-  margin-left: 0;
-  margin-right: 0;
+  margin-top:0px;
+  margin-left: -15px;
+  margin-right: -15px;
   border-top: solid 2px #d9cdd5;
   border-radius: 0;
+  padding-left: 15px;
+  padding-right: 15px;
 }
 .by-popup-v02-share{
   width: 100%;
   height: 100%;
   box-shadow: none;
-  position: fixed;
+  position: static;
   left: 0;
-  margin-top:54px;
+  margin-top:0px;
   margin-left: 0;
   margin-right: 0;
   border-top: solid 2px #d9cdd5;
   border-radius: 0;
+  padding-left: 15px;
+  padding-right: 15px;
 }
 .popup-x-v02 {
   display: none;
@@ -103,9 +113,12 @@
 	.work-chapters-popup-mobile{
 	display: inline;
 }
-	.dropdown-menu-seperator{
-		display:block;
-	}
+.dropdown-menu-seperator{
+  display:block;
+  width: calc(100% + 30px);
+  padding: 0px;
+  margin: 0;
+}
 	.curatorial-content{
 	display: block;
 }
@@ -116,5 +129,21 @@
 		.share-option{
 	padding-top: 30px;
 }
+	.by-card-header-v02 {
+  width: calc(100% + 30px);
+  padding: 8px 30px 4px 30px;
+		margin-right: -15px;
+}
+.flash-popup-bg-v02 {
+  width: calc(100% + 30px); 
+	margin-left: -15px;
+	margin-right: -15px;
+}
+
+
+
+.modal-dialog {height: 100%;}
+
+.modal-content {height: 100%;}
 	
 }

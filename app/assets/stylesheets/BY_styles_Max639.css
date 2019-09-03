@@ -204,6 +204,10 @@ p {
 	width: 140px;
 	margin-right: 10px;
 }
+.minimized .rm-control-panel-mobile{
+	width: 160px;
+	height: 40px;
+}
 
 }
 

@@ -201,7 +201,7 @@
 }
 
 .icon-in-group-v02 .by-icon-v02{
-	  line-height: 20px;
+	  line-height: 12px;
 }
 	.work-chapters-dropdown-field{
 	width: 48%;	
@@ -300,7 +300,7 @@ body {
     height: 24px;
 }
 	.author-page-top-rights{
-	width: calc(100% - 108px);
+	width: calc(50% - 29px);
  }
 	.reading-mode-icon-btn-v02{
 		padding: 0;
@@ -310,7 +310,7 @@ body {
 		margin-left: 6px;
 	}
 	.by-icon-top-v02{
-		line-height: 18px;
+		line-height: 12px;
 	}
 	.top-search-icon-mobile-v02{
 		padding-top: 0;
@@ -348,8 +348,9 @@ body {
 	margin-left: 0px;
 	margin-right: 0px;
 	}
-	.minimized .rm-control-panel-mobile{
-	width: 164px;
+.minimized .rm-control-panel-mobile{
+	width: 120px;
+	height: 28px;
 }
 	.share-option{
 	padding-top: 14px 12px 0 12px;
@@ -361,5 +362,8 @@ body {
 .share-name{
 	padding-top: 8px;
 }
+	.by-dropdown-v02{
+		height: 12px;
+	}
 	
 }

@@ -23,8 +23,8 @@
 	display: none;
 }
 .author-page-top-icons-mobile{
-	display: inline-block;
-	float: left;
+	display: block;
+	margin-right: auto;
 }
 
 
@@ -228,7 +228,8 @@
     display: none; }
 
   .topMobileBtns-v02 {
-    display: block;
+    display: flex;
+	align-items: center;
     float: left; }
 
 
@@ -317,7 +318,8 @@ display: none;	}
 	float: left;
 }
 .work-page-top-icons-mobile{
-	display: inline-block;
+	display: flex;
+	align-items: center;
 	float: left;
 }
 
@@ -326,7 +328,7 @@ display: none;	}
 }
 
 .author-page-top-rights{
-	width: calc(100% - 140px);
+	width: calc(50% - 49px);
   white-space: nowrap;
 	margin-right: 0;
 	display: inline-block;
@@ -461,11 +463,12 @@ display: none;	}
 	width: 160px;
 	margin-right: 10px;
 }
-	.rm-control-right .by-dropdown-v02{
-	left: 40px;
-	}
+.rm-control-right .by-dropdown-v02{
+  left: 40px;
+}
 .rm-control-panel-mobile .progress-area{
 	width: 75%;
+	height: 18px;
 	margin-left: 20px;
 	margin-right: 20px;
 	}
@@ -514,6 +517,21 @@ display: none;	}
   padding-right: 0px;
   padding-top: 0px;
   padding-bottom: 0px; }
+.by-dropdown-v02#moreMobile{
+		height: 18px;
+	}
+	.by-dropdown-v02#text-moreMobile{
+		height: 18px;
+	}
+.bookmark-location{
+  position: relative;
+  margin-top: 0;
+  top: -6px;
+  left: 0;
+}
+.progress-outside{
+	margin-top: 0;
+}
 	
 }
 

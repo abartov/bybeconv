@@ -121,7 +121,7 @@ body {
 	}
 
 .top-search-icon-mobile-v02 {
-		padding-top: 2px;
+		padding-top: 0px;
 	}
 
 .by-icon-v02 {
@@ -348,9 +348,7 @@ body {
 .author-page-top-name{
 		line-height: 28px;
 	}
-	.author-page-top-rights{
-	width: calc(100% - 128px);
- }
+
 	.work-name-top{
 		margin-bottom: 4px;
 	}
@@ -394,6 +392,22 @@ body {
 }
 .share-name{
 	padding-top: 8px;
+}
+.by-icon-top-v02{
+	font-size: 14px;
+}
+.top-left-icons-group{
+	height: 14px;
+}
+.top-search-mobile-v02{
+	height: 14px;
+}
+.by-dropdown-v02#moreMobile{
+	height: 14px;
+}
+.minimized .rm-control-panel-mobile{
+	width: 140px;
+	height: 36px;
 }
 	
 }
