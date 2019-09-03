@@ -1792,28 +1792,37 @@ display: flex;
   color: #242424;
   margin-bottom: 4px;
 }
+#actualtext blockquote{
+	margin-bottom: 0;
+}
+#actualtext blockquote p{
+  font-size: 18px;
+  line-height: 24px;
+  color: #242424;
+  margin-bottom: 0px;
+}
 #actualtext h1{
-  font-size: 22px;
+  font-size: 28px;
   font-weight: bold;
   margin-bottom: 12px;
 }
 #actualtext h2{
-  font-size: 18px;
+  font-size: 24px;
   font-weight: bold;
   margin-bottom: 4px;
 }
 #actualtext h3{
-  font-size: 16px;
+  font-size: 21px;
   font-weight: bold;
   margin-bottom: 4px;
 }
 #actualtext h4{
-  font-size: 16px;
+  font-size: 18px;
   font-weight: bold;
   margin-bottom: 4px;
 }
 #actualtext h5{
-  font-size: 14px;
+  font-size: 16px;
   font-weight: bold;
 }
 #actualtext h6{
