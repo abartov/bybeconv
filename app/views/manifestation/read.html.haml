@@ -175,4 +175,11 @@
       }, 0);
       $('#actualtext').focus();
     });
+    $('.reversefootnote').click(function(e) {
+      e.preventDefault();
+      anchor = $(this).attr('href');
+      $('html, body').animate({
+        scrollTop: $('a[id="'+anchor.slice(1)+'"]').offset().top - $(header).height() - 45
+      }, 800);
+    });
   });
