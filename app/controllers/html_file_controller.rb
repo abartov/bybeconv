@@ -294,7 +294,7 @@ class HtmlFileController < ApplicationController
     if pp[:markdown].nil? && @text.markdown.nil?
       @markdown = File.open(@text.path + '.markdown', 'r:UTF-8').read
     else
-      @markdown = pp[:markdown] # TODO: make secure
+      @markdown = pp[:markdown] || @text.markdown # TODO: make secure
       @text.update_markdown(@markdown.gsub('__________', '__SPLIT__')) # TODO: add locking of some sort to avoid concurrent overwrites
       @text.delete_pregen
       @text.genre = pp[:genre] unless pp[:genre].blank?
