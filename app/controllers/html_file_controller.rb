@@ -238,7 +238,7 @@ class HtmlFileController < ApplicationController
         end
       else
         flash[:error] = t(:cannot_create_frbr)
-        redirect_to action: :render_html, id: @text.id
+        redirect_to action: :edit_markdown, id: @text.id
       end
     end
   end
