@@ -20,7 +20,8 @@ gem 'active_data' # for *Search classes in Chewy
 gem "jquery-slick-rails" # for carousel slider
 gem 'rails-jquery-autocomplete' # for auto-completion
 gem 'property_sets' # for key/value properties per model
-gem 'mini_magick'
+gem "mini_magick", ">= 4.9.4"
+
 gem 'rack-cors', require: 'rack/cors'
 
 gem 'diffy'
@@ -56,7 +57,8 @@ gem 'therubyracer'
 gem 'thin'
 gem 'htmlentities'
 gem 'kaminari' # pagination
-gem 'nokogiri'
+gem "nokogiri", ">= 1.10.4"
+
 #gem 'epubbery' # for epubs
 gem 'rmultimarkdown' # new wrapper over Fletcher Penney's MultiMarkDown 6 (MMD 6)
 gem 'yt' # for polling YouTube for new videos
@@ -77,8 +79,8 @@ gem 'linkeddata' # for RDF etc.
 gem 'rdf-vocab' # for SKOS predefined vocab
 gem 'project-honeypot2', '>= 0.1.3' # for HTTP:BL service by Project Honeypot
 gem 'paper_trail', '~> 5.0.0' # for versioning entities
-#gem 'gepub' # for generating EPUBs
-gem 'gepub', '~> 0.7.0beta4' # for generating EPUBs
+gem 'gepub' # for generating EPUBs
+#gem 'gepub', '~> 0.7.0beta4' # for generating EPUBs
 gem 'rmagick' # for generating cover images for EPUBs
 gem 'pandoc-ruby' # for converting to DOCX
 gem 'docx' # for pre-processing DOCX files to preserve stanzas
