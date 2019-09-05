@@ -289,6 +289,7 @@ class ManifestationController < ApplicationController
     @e = @m.expressions[0] # TODO: generalize?
     @w = @e.works[0] # TODO: generalize!
     @html = MultiMarkdown.new(@m.markdown).to_html.force_encoding('UTF-8').gsub(/<figcaption>.*?<\/figcaption>/,'') # remove MMD's automatic figcaptions
+    @html = highlight_suspicious_markdown(@html) # highlight suspicious markdown in backend
     h = @m.legacy_htmlfile
     unless h.nil? or h.url.nil? or h.url.empty?
       @legacy_url = 'http://benyehuda.org'+h.url
@@ -299,6 +300,7 @@ class ManifestationController < ApplicationController
     @m = Manifestation.find(params[:id])
     @page_title = t(:edit_markdown)+': '+@m.title_and_authors
     @html = MultiMarkdown.new(@m.markdown).to_html.force_encoding('UTF-8').gsub(/<figcaption>.*?<\/figcaption>/,'') # remove MMD's automatic figcaptions
+    @html = highlight_suspicious_markdown(@html) # highlight suspicious markdown in backend
     @markdown = @m.markdown
     h = @m.legacy_htmlfile
     unless h.nil? or h.url.nil? or h.url.empty?
@@ -395,6 +397,7 @@ class ManifestationController < ApplicationController
       @m = Manifestation.find(params[:id])
       @page_title = t(:edit_markdown)+': '+@m.title_and_authors
       @html = MultiMarkdown.new(params[:markdown]).to_html.force_encoding('UTF-8').gsub(/<figcaption>.*?<\/figcaption>/,'') # remove MMD's automatic figcaptions
+      @html = highlight_suspicious_markdown(@html) # highlight suspicious markdown in backend
       @markdown = params[:markdown]
       @newtitle = params[:newtitle]
 

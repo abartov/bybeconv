@@ -58,7 +58,7 @@ class HtmlFileController < ApplicationController
         tmpfile_pp = Tempfile.new(['docx2mmd__pp_','.docx'], :encoding => 'ascii-8bit')
         begin
           tmpfile.write(bin.body)
-	  tmpfile.flush
+      	  tmpfile.flush
           tmpfilename = tmpfile.path
           # preserve linebreaks to post-process after Pandoc!
           docx = Docx::Document.open(tmpfilename)
@@ -86,6 +86,7 @@ class HtmlFileController < ApplicationController
     else
       @html = MultiMarkdown.new(@markdown.gsub(/^&&& (.*)/, '<hr style="border-color:#2b0d22;border-width:20px;margin-top:40px"/><h1>\1</h1>')).to_html.force_encoding('UTF-8') # TODO: figure out why to_html defaults to ASCII 8-bit
     end
+    @html = highlight_suspicious_markdown(@html)
   end
 
   def edit
