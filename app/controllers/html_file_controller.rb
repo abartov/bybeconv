@@ -143,7 +143,7 @@ class HtmlFileController < ApplicationController
     # build query condition
     query = {}
     unless params[:commit].blank?
-      session[:html_q_params] = params # make prev. params accessible to view
+      session[:html_q_params] = hf_params # make prev. params accessible to view
     else
       session[:html_q_params] = { footnotes: '', nikkud: '', status: params['status'], path: '' } if session[:html_q_params].nil?
     end
