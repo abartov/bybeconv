@@ -1,3 +1,4 @@
+require 'multi_index_search_request'
 class ManifestationsSearch
   include ActiveData::Model
 
