@@ -6,7 +6,7 @@ class SearchController < ApplicationController
 
   def results
     begin
-      @search = ManifestationsSearch.new(params[:search])
+      @search = ManifestationsSearch.new(query: params[:q])
       @results = @search.search.page(params[:page])
       @total = @results.count
     rescue # Faraday::Error::ConnectionFailed => e

@@ -248,6 +248,11 @@
       .top-search-v02
         %input#q{:placeholder => t(:search_term)}
         %span.search-icon-v02.by-icon-top-v02 X
+        /= f.label t(:tags)
+        /= f.text_field 'tags'
+        /%br
+        /= f.submit t(:search)
+
     .topMobileBtns-v02
       %button.btn-small-outline-v02.by-icon-top-v02.purple-v02{href: '/page/donate'} z
       .top-search-mobile-v02
@@ -322,8 +327,10 @@
     });
 
     $('.search-icon-v02').click(function(){
-      $('#resultsDlg').dialog('open');
-      $('#results').load('#{url_for(controller: :application, action: :search_results)}/?q='+encodeURIComponent($('#q').val()));
+      window.location.href = '#{search_results_internal_path}/?q='+encodeURIComponent($('#q').val());
+      // pop-up
+      //$('#resultsDlg').dialog('open');
+      //$('#results').load('#{search_results_internal_path}/?q='+encodeURIComponent($('#q').val()));
     });
 
     $('#mobileMenu').click(function() {
