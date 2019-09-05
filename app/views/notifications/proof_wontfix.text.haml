@@ -1,5 +1,8 @@
 = @greeting
 
-= t(:proof_wontfix, {:url => @url})
+- if @m.nil?
+  = t(:proof_wontfix, {:url => @url})
+- else
+  = t(:proof_wontfix_m, {:url => @url, :title => @m.title_and_authors})
 
 != raw t(:email_footer_html)

@@ -1,10 +1,9 @@
 require 'pandoc-ruby' # for generic DOCX-to-HTML conversions
 
 class HtmlFileController < ApplicationController
-  before_action :require_editor, only: [:edit, :update, :list_for_editor]
+  before_action only: [:edit, :update, :new, :create, :destroy, :list, :list_for_editor, :publish, :frbrize, :edit_markdown, :mark_superseded] do |c| c.require_editor('edit_catalog') end
   # before_action :require_user, :only => [:edit, :update]
-
-  before_action :require_admin, only: [:analyze, :analyze_all, :new, :create, :destroy, :list, :parse, :publish, :unsplit, :chop1, :chop2, :chop3, :choplast1, :choplast2, :poetry, :frbrize, :edit_markdown, :mark_superseded]
+  before_action :require_admin, only: [:analyze, :analyze_all,  :parse, :unsplit, :chop1, :chop2, :chop3, :choplast1, :choplast2, :poetry]
 
   def analyze
     @text = HtmlFile.find(params[:id])
@@ -87,6 +86,7 @@ class HtmlFileController < ApplicationController
     else
       @html = MultiMarkdown.new(@markdown.gsub(/^&&& (.*)/, '<hr style="border-color:#2b0d22;border-width:20px;margin-top:40px"/><h1>\1</h1>')).to_html.force_encoding('UTF-8') # TODO: figure out why to_html defaults to ASCII 8-bit
     end
+    @html = highlight_suspicious_markdown(@html)
   end
 
   def edit
@@ -144,7 +144,7 @@ class HtmlFileController < ApplicationController
     # build query condition
     query = {}
     unless params[:commit].blank?
-      session[:html_q_params] = params # make prev. params accessible to view
+      session[:html_q_params] = params.permit(:nikkud, :footnotes, :status, :path) # make prev. params accessible to view
     else
       session[:html_q_params] = { footnotes: '', nikkud: '', status: params['status'], path: '' } if session[:html_q_params].nil?
     end
@@ -239,7 +239,7 @@ class HtmlFileController < ApplicationController
         end
       else
         flash[:error] = t(:cannot_create_frbr)
-        redirect_to action: :render_html, id: @text.id
+        redirect_to action: :edit_markdown, id: @text.id
       end
     end
   end
@@ -292,10 +292,10 @@ class HtmlFileController < ApplicationController
   def render_html
     pp = params.permit(:id, :markdown, :genre, :add_person, :role, :comments, :remove_line_nums)
     @text = HtmlFile.find(pp[:id])
-    if pp[:markdown].nil?
+    if pp[:markdown].nil? && @text.markdown.nil?
       @markdown = File.open(@text.path + '.markdown', 'r:UTF-8').read
     else
-      @markdown = pp[:markdown] # TODO: make secure
+      @markdown = pp[:markdown] || @text.markdown # TODO: make secure
       @text.update_markdown(@markdown.gsub('__________', '__SPLIT__')) # TODO: add locking of some sort to avoid concurrent overwrites
       @text.delete_pregen
       @text.genre = pp[:genre] unless pp[:genre].blank?

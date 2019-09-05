@@ -30,7 +30,11 @@
         %td= p.from
         %td= p.created_at
         %td= textify_proof_status(p.status)
-        %td= p.manifestation_id && p.status == 'assigned' ? ListItem.find(listkey: 'proofs_by_user', item: p.manifestation)[0].user.name : ''
+        - u = ''
+        - if p.manifestation_id && p.status == 'assigned'
+          - lis = ListItem.where(listkey: 'proofs_by_user', item: p.manifestation)
+          - u = lis[0].user.name unless lis.empty?
+        %td= u
 
   %p
     = link_to t(:purge_spam_proofs), proof_purge_path

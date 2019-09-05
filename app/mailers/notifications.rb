@@ -6,10 +6,14 @@ class Notifications < ActionMailer::Base
   #
   #   en.notifications.proof_fixed.subject
   #
-  def proof_fixed(proof, url)
+  def proof_fixed(proof, url, m)
     @greeting = t(:hello_anon)
     @proof = proof
     @url = url
+    unless m.nil?
+      @url = 'https://bybe.benyehuda.org'+@url
+    end
+    @m = m
     mail to: proof.from
   end
 
@@ -18,10 +22,14 @@ class Notifications < ActionMailer::Base
   #
   #   en.notifications.proof_wontfix.subject
   #
-  def proof_wontfix(proof, url)
+  def proof_wontfix(proof, url, m)
     @greeting = t(:hello_anon)
     @proof = proof
     @url = url
+    unless m.nil?
+      @url = 'https://bybe.benyehuda.org'+@url
+    end
+    @m = m
     mail to: proof.from
   end
 
@@ -29,7 +37,7 @@ class Notifications < ActionMailer::Base
   # with the following lookup:
   #
   #   en.notifications.recommendation_accepted.subject
-  #
+p  #
   def recommendation_accepted(rec, url)
     @greeting = t(:hello_anon)
     @rec = rec

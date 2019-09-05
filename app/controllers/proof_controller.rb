@@ -63,8 +63,12 @@ class ProofController < ApplicationController
     if params[:fixed] == 'yes'
       @p.status = 'fixed'
       unless params[:email] == 'no' or @p.from.nil? or @p.from !~ /\w+@\w+\.\w+/
-        Notifications.proof_fixed(@p, @p.about).deliver
-    		fix_text = 'תוקן (ונשלח דואל)'
+        if @p.manifestation_id.nil?
+          Notifications.proof_fixed(@p, @p.about, nil).deliver
+        else
+          Notifications.proof_fixed(@p, manifestation_read_path(@p.manifestation_id), @p.manifestation).deliver
+        end
+		fix_text = 'תוקן (ונשלח דואל)'
       else
 	      fix_text = 'תוקן, בלי לשלוח דואל'
       end
@@ -73,13 +77,15 @@ class ProofController < ApplicationController
         @p.status = 'escalated'
         fix_text = t(:escalated)
       else
-        @p.status = 'wontfix'
-        unless @p.from.nil? or @p.from !~ /\w+@\w+\.\w+/ or params[:email] == 'no'
-          Notifications.proof_wontfix(@p, @p.about).deliver
-          fix_text = 'כבר תקין )ונשלח דואל('
+      @p.status = 'wontfix'
+      unless @p.from.nil? or @p.from !~ /\w+@\w+\.\w+/
+        if @p.manifestation_id.nil?
+          Notifications.proof_wontfix(@p, @p.about, nil).deliver
         else
-          fix_text = 'כבר תקין )בלי דואל('
+          Notifications.proof_wontfix(@p, manifestation_read_path(@p.manifestation_id), @p.manifestation).deliver
         end
+      end
+      fix_text = 'כבר תקין (ונשלח דואל)'
       end
     else # spam, just ignore
       @p.status = 'spam'

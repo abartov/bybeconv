@@ -32,7 +32,7 @@ Bybeconv::Application.configure do
 
   # See everything in the log (default is :debug)
   # config.log_level = :debug
-   config.log_level = :info
+  config.log_level = :info
 
 
   # Use a different logger for distributed setups
@@ -67,4 +67,5 @@ Bybeconv::Application.configure do
 
   # Store Active Storage files on the S3 service
   config.active_storage.service = :amazon
+  # config.active_storage.service = :local # temporary
 end

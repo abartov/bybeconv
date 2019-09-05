@@ -1,18 +1,6 @@
 #maintext.top-element
   .row
     .col-md-6
-      %h1= @author.name+' '+t(:current_toc)
-      = render partial: 'authors/toc', locals: {margin: false}
-      %p
-      .card{style:'margin-right:20rem'}
-        .card-content
-          .row
-            .col-sm-9
-              .credits
-                %p.headline-3= t(:volunteers_who_helped, {author: @author.name, gender_letter: @author.gender_letter})
-                != @credits
-            .col-sm-3
-    .col-md-6
       - unless @gen_toc.nil?
         %h1= t(:generated_toc)
         %p= t(:generated_toc_explanation)
@@ -22,6 +10,10 @@
         %b.static-btn#add_work_link= t(:add_work_link)
         = select_tag :works, options_from_collection_for_select(@works, 'id', 'title')
         %br
+        - unless @fresh_works.empty?
+          = t(:or)
+          %b.static-btn#add_fresh_works= t(:add_fresh_works)
+          %br
         = t(:in_current_cursor)
         %br
         %br
@@ -43,6 +35,18 @@
                 = label_tag t(:ready)
                 = hidden_field_tag(:old_timestamp, @toc_timestamp)
                 = submit_tag t(:update)
+    .col-md-6
+      %h1= @author.name+' '+t(:current_toc)
+      = render partial: 'authors/toc', locals: {margin: false}
+      %p
+      .card{style:'margin-right:20rem'}
+        .card-content
+          .row
+            .col-sm-9
+              .credits
+                %p.headline-3= t(:volunteers_who_helped, {author: @author.name, gender_letter: @author.gender_letter})
+                != @credits
+            .col-sm-3
 
 - unless @diff.nil? # we have a rejected update
   = t(:update_conflict)
@@ -66,4 +70,14 @@
         $txt.focus();
         $txt.caretTo(caretPos+txtToAdd.length);
     });
+    $('#add_fresh_works').click(function() {
+        var $txt = jQuery("#markdown");
+        var caretPos = $txt[0].selectionStart;
+        var textAreaTxt = $txt.val();
+        var txtToAdd = "#{@fresh_works_markdown.gsub('"',"\\\"").html_safe}";
+        $txt.val(textAreaTxt.substring(0, caretPos) + txtToAdd + textAreaTxt.substring(caretPos) );
+        $txt.focus();
+        $txt.caretTo(caretPos+txtToAdd.length);
+    });
+
   });
