@@ -69,6 +69,7 @@ he:
   remove_line_nums: הסר מספרי שורות
   fables: משלים
   analyze: אבחן
+  error: שגיאה
   file_error: שגיאת קובץ
   bad_encoding: שגיאת קידוד
   parsed: הוסב

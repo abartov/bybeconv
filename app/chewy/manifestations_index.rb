@@ -1,6 +1,6 @@
 class ManifestationsIndex < Chewy::Index
-  #settings analysis: { analyzer: 'hebrew' }
 
+  # works
   define_type Manifestation.all_published.joins([expressions: :works]).includes([expressions: :works]) do
     field :title, analyzer: 'hebrew' # from https://github.com/synhershko/elasticsearch-analysis-hebrew
     field :genre, value: ->(manifestation) { manifestation.expressions[0].works[0].genre}
@@ -14,4 +14,6 @@ class ManifestationsIndex < Chewy::Index
     field :fulltext, value: ->(manifestation) {manifestation.to_plaintext}, analyzer: 'hebrew'
     field :tags, type: 'keyword', value: ->{ tags.map(&:name) }
   end
+
+  # in future: collections/readers; users; recommendations; curated/featured content
 end

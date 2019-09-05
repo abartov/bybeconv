@@ -69,7 +69,7 @@ gem 'yt' # for polling YouTube for new videos
 #gem 'byebug'
 
 gem 'app_constants' # anything more Railsy?
-gem 'hebrew', '>= 0.2.0' # https://github.com/abartov/hebrew
+gem 'hebrew', '>= 0.2.1' # https://github.com/abartov/hebrew
 gem 'gared', '>= 0.0.19' # https://gitlab.com/abartov/gared # for scraping bibliographic data from Hebrew sources
 
 gem 'haml'

@@ -18,17 +18,17 @@ class ManifestationsSearch
   end
 
   def index
-    ManifestationsIndex # just shorthand for our Chewy index class
+    MultiIndexSearchRequest.new(ManifestationsIndex, PeopleIndex) # , ThirdIndex, ...) # just shorthand for our Chewy index class
   end
 
   def search
     # We can merge multiple scopes
-    [query_string, genre_filter, orig_pub_year_filter, tags_filter, highlight].compact.reduce(:merge)
+    [query_string, genre_filter, orig_pub_year_filter, tags_filter, highlight, index_order].compact.reduce(:merge)
   end
 
   # Using query_string advanced query for the main query input
   def query_string
-    index.query(query_string: {fields: [:title, :author_string, :fulltext], query: query, default_operator: 'and'}) if query?
+    index.query(query_string: {fields: [:title, :name, :author_string, :fulltext], query: query, default_operator: 'and'}) if query?
   end
 
   # Simple term filter for genre. ignored if empty.
@@ -54,5 +54,8 @@ class ManifestationsSearch
 
   def highlight
     index.highlight(fields: {fulltext: {}})
+  end
+  def index_order
+    index.order('_index' => {order: :desc})
   end
 end

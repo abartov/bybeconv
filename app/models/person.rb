@@ -37,6 +37,8 @@ class Person < ApplicationRecord
   validates :name, presence: true
   validates_attachment_content_type :profile_image, content_type: /\Aimage\/.*\z/
 
+  update_index('people#people'){self} # update PeopleIndex when entity is updated
+
   # class variable
   @@popular_authors = nil
 
@@ -70,7 +72,7 @@ class Person < ApplicationRecord
 
   def birth_year
     return '?' if birthdate.nil?
-    bpos = birthdate.index('-') # YYYYMMDD or YYYY is assumed
+    bpos = birthdate.strip_hebrew.index('-') # YYYYMMDD or YYYY is assumed
     if bpos.nil?
       if birthdate =~ /\d\d\d+/
         return $&
@@ -78,7 +80,7 @@ class Person < ApplicationRecord
         return birthdate
       end
     else
-      return birthdate[0..bpos-1]
+      return birthdate[0..bpos-1].strip
     end
   end
 
@@ -144,7 +146,7 @@ class Person < ApplicationRecord
 
   def death_year
     return '?' if deathdate.nil?
-    dpos = deathdate.index('-')
+    dpos = deathdate.strip_hebrew.index('-')
     if dpos.nil?
       if deathdate =~ /\d\d\d+/
         return $&
@@ -152,7 +154,7 @@ class Person < ApplicationRecord
         return deathdate
       end
     else
-      return deathdate[0..dpos-1]
+      return deathdate[0..dpos-1].strip
     end
   end
 

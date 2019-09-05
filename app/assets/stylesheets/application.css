@@ -163,3 +163,5 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
 .ch_anch { height: 2px;}
 .tooltip{ pointer-events:none; }
 .by-dropdown-header-v02 { cursor: default;}
+.search_results { font-size: 13pt; line-height: 1.2rem; }
+.search_results li { margin-top: 0.8rem;}

@@ -1,15 +1,29 @@
-.container-fluid
-  %h1= t(:search_results)
-  %p= "#{t(:search_terms)}: #{@search.query}"
-  %p= "#{t(:search_total)}: #{@total}"
-  %p
-  %ol
-    - @results.each do |result|
-      %li
-        %b= link_to result.title, manifestation_read_path(result.id)
-        = " / #{result.author_string}"
-        = " (#{textify_genre(result.genre)})"
-        - unless result._data.nil? or result._data['highlight'].nil?
-          %br
-          != result._data['highlight']['fulltext'].join("<br />").gsub('<em>','<b>').gsub('</em>','</b>')
-  != paginate @results
+#content.container-fluid.top-element.search_results
+  - if @total == -1
+    %h1= t(:error)
+    %p= @errmsg
+  - else
+    %h1= t(:search_results)
+    %p= "#{t(:search_terms)}: #{@search.query}"
+    %p= "#{t(:search_total)}: #{@total}"
+    %p
+    %ol
+      - @results.each do |result|
+        %li
+          - if result.class == ManifestationsIndex::Manifestation
+            %b= t(:work)
+            %br
+            %b= link_to result.title, manifestation_read_path(result.id)
+            = " / #{result.author_string}"
+            = " (#{textify_genre(result.genre)})"
+            - unless result._data.nil? or result._data['highlight'].nil?
+              %br
+              != result._data['highlight']['fulltext'].join("<br />").gsub('<em>','<b>').gsub('</em>','</b>')
+          - elsif result.class == PeopleIndex::Person
+            %b= t(:author)
+            %br
+            %b= link_to result.name, author_toc_path(result.id)
+            %br
+            %p= result.wikipedia_snippet
+
+    != paginate @results
