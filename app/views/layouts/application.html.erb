@@ -45,7 +45,11 @@
   <% end %>
   <%= csrf_meta_tags %>
 </head>
-<body dir="rtl" align="right" style="position:relative;" data-spy="scroll" data-offset="200" data-target="#<%= @scrollspy_target %>">
+<% if @scrollspy_target.nil? %>
+  <body dir="rtl" style="position:relative;">
+<% else %>
+  <body dir="rtl" style="position:relative;" data-spy="scroll" data-offset="200" data-target="#<%= @scrollspy_target %>">
+<% end %>
 <% unless @print
     flash.each do |name, msg| -%>
       <%= content_tag :div, msg, class: "top-element #{name}" %>
