@@ -310,6 +310,7 @@ he:
   not_implemented_yet: תכונה זו טרם מומשה. המערכת עדיין בפיתוח.
   works_page: היצירות במאגרנו
   share: שיתוף
+  share_options: אפשרויות שיתוף
   download: הורדה
   download_to_file: שמירת הטקסט לקובץ
   download_ebook: הורדת ספר דיגיטלי
@@ -747,6 +748,8 @@ he:
   show_my_convs: הצגת הסבות שהוקצו לי
   missing_images: תמונות חסרות
   facebook: פייסבוק
+  twitter: טוויטר
+  whatsapp: ווטסאפ
   publication: יצירות חדשות
   announcement: הודעה
   recommendation: המלצה

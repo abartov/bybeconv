@@ -151,6 +151,9 @@
     <%= link_to t(:back_to_homepage), "/" %>
   <% end %>
   <p></p>
+<div class="modal" id="shareDlg", aria-hidden = "true", role="dialog", title="<%= t(:choose_sharing_medium) %>">
+  <%= render partial: 'shared/share_controls' %>
+</div>
 
 <div id="bottom-bar" class="container-fluid">
   <div class="container-fluid" id="footer">
