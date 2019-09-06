@@ -439,7 +439,7 @@ class ManifestationController < ApplicationController
       @translators = @m.translators
       @page_title = "#{@m.title_and_authors} - #{t(:default_page_title)}"
       if @print
-        @html = MultiMarkdown.new(@m.markdown.lines.join("\n")).to_html.force_encoding('UTF-8').gsub(/<figcaption>.*?<\/figcaption>/,'') # remove MMD's automatic figcaptions
+        @html = MultiMarkdown.new(@m.markdown).to_html.force_encoding('UTF-8').gsub(/<figcaption>.*?<\/figcaption>/,'') # remove MMD's automatic figcaptions
       end
     end
   end
@@ -475,7 +475,7 @@ class ManifestationController < ApplicationController
       } # annotate headings in reverse order, to avoid offsetting the next heading
       tmphash.keys.reverse.map{|k| @chapters << [k[4..-1], tmphash[k]]}
       @selected_chapter = tmphash.keys.last
-      @html = MultiMarkdown.new(lines.join("\n")).to_html.force_encoding('UTF-8').gsub(/<figcaption>.*?<\/figcaption>/,'') # remove MMD's automatic figcaptions
+      @html = MultiMarkdown.new(lines.join('')).to_html.force_encoding('UTF-8').gsub(/<figcaption>.*?<\/figcaption>/,'') # remove MMD's automatic figcaptions
       @tabclass = set_tab('works')
       @entity = @m
       @pagetype = :manifestation
