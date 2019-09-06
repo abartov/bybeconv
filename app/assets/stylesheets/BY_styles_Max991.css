@@ -471,6 +471,7 @@ display: none;	}
 	height: 18px;
 	margin-left: 20px;
 	margin-right: 20px;
+	margin-bottom: 2px;
 	}
 	.reading-mode #actualtext{
 	margin-top: 60px;
@@ -532,7 +533,36 @@ display: none;	}
 .progress-outside{
 	margin-top: 0;
 }
-	
+.rm-control-left{
+	padding: 12px 10px;
+}
+.rm-control-left .by-icon-v02{
+	font-size: 24px;
+	line-height: 24px;
+}
+.rm-control-panel-mobile #text-nav-more{
+	padding-left: 6px;
+}
+.bookmark-icon{
+  height: 18px;
+  font-size:18px;
+  line-height: 18px;
+  margin-right: -5px;
+  font-family: ben-yehuda;
+}
+.bookmark-triangle{
+	width:0;
+	height: 0;
+    border-top: solid 4px transparent;
+	border-right: solid 3px transparent;
+	border-bottom: solid 4px #242424;
+    border-left: solid 3px transparent;
+	margin-top: -3px;
+	margin-right:1.5px;
+}	
+.rm-control-panel-mobile .progress-number{
+	padding-top: 1px;
+}
 }
 
 

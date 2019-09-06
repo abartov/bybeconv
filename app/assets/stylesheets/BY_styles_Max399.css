@@ -189,9 +189,7 @@
 .work-info-card{
 	min-height: 96px;
 }
-.by-popup-v02 {
-  margin-top: 54px;
-}
+
 .work-page-top-info-card{
   padding-left: 8px;
   padding-right: 12px;
@@ -339,14 +337,16 @@ body {
 .collapse-expand-icon{
 	padding-top: 0px;
 	}
+.rm-control-left .collapse-expand-icon{
+	padding-top: 0px;
+}
 .rm-control-panel-mobile .rm-logo .logoBY-v02{
 	width: 106px;
 	margin-right: 6px;
 }
 .rm-control-panel-mobile .progress-area{
-	padding-top: 0;
-	margin-left: 0px;
-	margin-right: 0px;
+	width: 60%;
+	padding-top: 2px;
 	}
 .minimized .rm-control-panel-mobile{
 	width: 120px;
@@ -362,8 +362,31 @@ body {
 .share-name{
 	padding-top: 8px;
 }
-	.by-dropdown-v02{
-		height: 12px;
-	}
-	
+.by-dropdown-v02{
+	height: 12px;
+}
+.rm-control-panel-mobile #text-moreMobile{
+  padding-top: 1px;
+}
+.rm-control-left{
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+.bookmark-icon{
+  height: 15px;
+  font-size:15px;
+  line-height: 15px;
+  margin-right: -7px;
+  font-family: ben-yehuda;
+}
+.bookmark-triangle{
+	width:0;
+	height: 0;
+    border-top: solid 3px transparent;
+	border-right: solid 2px transparent;
+	border-bottom: solid 3px #242424;
+    border-left: solid 2px transparent;
+	margin-top: -2px;
+	margin-right: -2px;
+}
 }

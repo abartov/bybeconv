@@ -1595,7 +1595,11 @@ display: flex;
 	background-color: #d9cdd5;
 	color:#660248;
 }
-.nav-link.active{
+.nav-link:active{
+	color: #ffffff;
+	background-color: #660248;
+}
+.active{
 	color: #ffffff;
 	background-color: #660248;
 }
@@ -1868,6 +1872,7 @@ display: flex;
 }
 .field-v02:active {
   border: solid 1px #660248;
+  background-color: #fff;
 }
 .text-area-field{
   height: 56px;
@@ -2325,7 +2330,6 @@ label{
 .progress-outside .progress-inside{
 	width: 36%;
 	height: 100%;
-	float: left;
 	background-color: #660248;
 }
 .progress-number{
@@ -2344,12 +2348,26 @@ label{
 	margin-left: 0;
 }
 .bookmark-location{
-  font-size:12px;
-  font-family: ben-yehuda;
-  margin-top: 6px;
-  margin-left: 20%;
-  text-align: left;
+  position: relative;
+  right:35.5%;
   z-index: 10;
+}
+.bookmark-icon{
+  height: 12px;
+  font-size:12px;
+  line-height: 12px;
+  margin-right: -5px;
+  font-family: ben-yehuda;
+}
+.bookmark-triangle{
+	width:0;
+	height: 0;
+    border-top: solid 3px transparent;
+	border-right: solid 2px transparent;
+	border-bottom: solid 3px #242424;
+    border-left: solid 2px transparent;
+	margin-top: -2px;
+	margin-right: -1px;
 }
 .rm-control-panel-mobile{
 	display: none;
@@ -2494,7 +2512,7 @@ padding-left: 0;
 	padding-top: 6px;
 }
 .rm-control-left .collapse-expand-icon{
-	padding-top: 6px;
+	padding-top: 5px;
 }
 .sort-mode .whats-new-v02{
 	display: none;
@@ -2511,4 +2529,11 @@ padding-left: 0;
 .top-search-v02 input { 
 	width: calc(100% - 168px);
 	margin-left: 0;
+}
+.bottom-button-area{
+  display: flex;
+  justify-content: center;
+}
+.bottom-button-area .close-btn{
+	width: 120px;
 }

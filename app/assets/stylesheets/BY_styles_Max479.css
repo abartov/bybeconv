@@ -378,13 +378,14 @@ body {
 	padding-top: 0;
 	margin-left: 8px;
 	margin-right: 8px;
+	margin-bottom: 0;
 	}
 .rm-control-panel-mobile .rm-logo .logoBY-v02{
 	width: 120px;
 	margin-right: 10px;
 }
 .share-option{
-	padding-top: 20px;
+	padding-top: 10px;
 }
 .share-icon{
 	font-size: 21px;
@@ -408,6 +409,15 @@ body {
 .minimized .rm-control-panel-mobile{
 	width: 140px;
 	height: 36px;
+}
+.rm-control-left .collapse-expand-icon{
+	padding-top: 3px;
+}
+.rm-control-panel-mobile #text-moreMobile{
+  height: 14px;
+	}
+.bookmark-location{
+	top: -4px;
 }
 	
 }

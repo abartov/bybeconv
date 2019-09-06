@@ -76,14 +76,14 @@
 }
 .by-popup-v02-share{
   width: 100%;
-  height: 100%;
+  height: 140px;
   box-shadow: none;
-  position: static;
+  position: fixed;
   left: 0;
+  bottom: 0;
   margin-top:0px;
   margin-left: 0;
   margin-right: 0;
-  border-top: solid 2px #d9cdd5;
   border-radius: 0;
   padding-left: 15px;
   padding-right: 15px;
@@ -127,7 +127,7 @@
 	padding-left: 60px;
 }
 		.share-option{
-	padding-top: 30px;
+	padding-top: 15px;
 }
 	.by-card-header-v02 {
   width: calc(100% + 30px);
@@ -146,4 +146,12 @@
 
 .modal-content {height: 100%;}
 	
+.by-popup-v02-share .popup-top{
+	padding-top: 10px;
+	padding-bottom: 10px;
+	border-bottom: solid 2px #d9cdd5;
+}
+.bottom-button-area .close-btn{
+	display: none;
+}
 }
