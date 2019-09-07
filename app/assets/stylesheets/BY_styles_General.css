@@ -15,31 +15,31 @@
 
 body {
   font-family: Alef;
-  font-size: 14px;
-  line-height: 18px;
+  font-size: 11pt;
+  line-height: 13pt;
   color: #242424;
 }
 p {
 	margin-bottom: 12px;
 }
 .headline-1-v02 {
-  font-size: 22px;
-  line-height: 24px;
+  font-size: 18pt;
+  line-height: 20pt;
   font-weight: bold;
   margin-left: 6px;
   margin-bottom: 8px;
 }
 .headline-1-v02-en {
-  font-size: 22px;
-  line-height: 24px;
+  font-size: 18pt;
+  line-height: 20pt;
   font-weight: bold;
   margin-right: 6px;
   margin-bottom: 8px;
 }
 
 .headline-2-v02 {
-  font-size: 18px;
-  line-height: 24px;
+  font-size: 14pt;
+  line-height: 18pt;
   font-weight: bold;
   margin-bottom: 4px; }
 
@@ -1758,32 +1758,32 @@ display: flex;
 	padding-right: 0;
 }
 .toc h1 {
-  font-size: 22px;
+  font-size: 18pt;
   font-weight: bold;
   margin-bottom: 8px;
 }
 .toc h2 {
-  font-size: 20px;
+  font-size: 16pt;
   font-weight: bold;
   margin-bottom: 4px;
 }
 .toc h3 {
-  font-size: 18px;
+  font-size: 14pt;
   font-weight: bold;
   margin-bottom: 4px;
 }
 .toc h4 {
-  font-size: 16px;
+  font-size: 12pt;
   font-weight: bold;
   margin-bottom: 4px;
 }
 .toc h5 {
-  font-size: 14px;
+  font-size: 11pt;
   font-weight: bold;
   margin-bottom: 4px;
 }
 .toc h6 {
-  font-size: 12px;
+  font-size: 9pt;
   margin-right:0;
   margin-bottom: 4px;
 }
@@ -1791,8 +1791,8 @@ display: flex;
 	  padding-right: 0;
 }
 #actualtext p{
-  font-size: 14px;
-  line-height: 16px;
+  font-size: 11pt;
+  line-height: 13pt;
   color: #242424;
   margin-bottom: 4px;
 }
@@ -1800,41 +1800,41 @@ display: flex;
 	margin-bottom: 0;
 }
 #actualtext blockquote p{
-  font-size: 18px;
-  line-height: 24px;
+  font-size: 14pt;
+  line-height: 18pt;
   color: #242424;
   margin-bottom: 0px;
 }
 #actualtext h1{
-  font-size: 28px;
+  font-size: 21pt;
   font-weight: bold;
   margin-bottom: 12px;
 }
 #actualtext h2{
-  font-size: 24px;
+  font-size: 18pt;
   font-weight: bold;
   margin-bottom: 4px;
 }
 #actualtext h3{
-  font-size: 21px;
+  font-size: 16pt;
   font-weight: bold;
   margin-bottom: 4px;
 }
 #actualtext h4{
-  font-size: 18px;
+  font-size: 14pt;
   font-weight: bold;
   margin-bottom: 4px;
 }
 #actualtext h5{
-  font-size: 16px;
+  font-size: 12pt;
   font-weight: bold;
 }
 #actualtext h6{
-  font-size: 14px;
+  font-size: 11pt;
   font-weight: bold;
 }
 #actualtext .footnote{
-	font-size: 10px;
+	font-size: 8pt;
 	margin-right: 2px;
 }
 #actualtext img{
