@@ -168,3 +168,9 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
 .by-dropdown-header-v02 { cursor: default;}
 .search_results { font-size: 13pt; line-height: 1.2rem; }
 .search_results li { margin-top: 0.8rem;}
+.progress-outside .progress-inside{
+  width:0%;
+}
+.progress-outside{
+	width: calc(100% - 35px);
+}

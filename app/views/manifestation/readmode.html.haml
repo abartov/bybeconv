@@ -1,32 +1,148 @@
-/ standard display mode. "reading mode" to be implemented separately?
-#maincontainer.container-fluid.readmode-top-element
-  = render partial: 'readmode_metadata'
-  /.scroll-gradient-c
-  = render partial: 'toolbox'
-  .work-area#work-side
-    .card.work-card{style:'margin-top:0'}
-      .work-text
-        .row.stickysearchread{style:'padding-bottom:3rem;padding-top:0'}
-          = render partial: 'search_and_chapters'
-        / TODO: more nuanced rendering here
-        - if @m.as_prose?
-          #actualtext.maintext-prose-body.search-margin
-            != raw(@html)
-        - else
-          #actualtext.maintext-poetry-body.search-margin
-            != raw(@html)
-        - if @m.chapters? and @m.long?
-          = render partial: 'chapter_links'
-      .work-pic
-        .work-gradient-pic
-          %img#authorpic{src: @author.profile_image.url(:full), alt: @author.name}
+/ "reading mode"
+.reading-mode
+  #content.container-fluid
+    .row.text-page-content
+      .col-12.col-lg-8
+        .logo-for-print
+          %img.logoBY-v02{:alt => t(:logo), :src => "/assets/logo-byp-mobile.svg"}/
+        .by-card-v02.rm-control-panel
+          .rm-control-top
+            .rm-logo
+              %img.logoBY-v02{:alt => t(:logo), :src => "/assets/logo-byp.svg"}/
+            %a.collapse-expand-icon{href: manifestation_read_path(@m.id)}
+              %span.by-icon-v02 .
+          .rm-control-info
+            .headline-2-v02.work-name-top= @m.title
+            .headline-3-v02
+              != @m.authors.map {|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
+            - if @e.translation && @e.translators.size > 0
+              .headline-3-v02
+                = "#{t(:translation)}: "
+                != @translators.map{|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
+            /.rm-field-label &#x5E4;&#x5E8;&#x5E7;:
+            /%a{:href => "#"}
+            /  .side-menu-arrow (
+            /.field-v02
+            /  \&#x5E9;&#x5DD; &#x5D4;&#x5E4;&#x5E8;&#x5E7; &#x5D4;&#x5E0;&#x5D5;&#x5DB;&#x5D7;&#x5D9;
+            /  %a.dropdown-arrow{:href => "#"} )
+            /%a{:href => "#"}
+            /  .side-menu-arrow )
+            .rm-field-label= t(:location_in_work)
+            .progress-outside
+              .progress-inside.progress-bar
+            .progress-number= '0%'
+          .rm-control-icons
+            .icons-group-v02
+              .icon-in-group-v02.notyet
+                %a{:href => "#"}
+                  %span.by-icon-v02 X
+              .icon-in-group-v02.notyet
+                %a{:href => "#"}
+                  %span.by-icon-v02 F
+              .icon-in-group-v02.linkcolor.pointer#found_mistake
+                %button.error-found-btn.by-icon-v02{style:'background-color:unset; border-color: transparent; box-shadow:unset;padding-top:2px;'} g
+              .icon-in-group-v02.linkcolor.pointer{'data-toggle' => 'modal', 'data-target' => '#shareDlg'}
+                %span.by-icon-v02 U
+              .icon-in-group-v02.notyet
+                %a{:href => "#"}
+                  %span.by-icon-v02 :
+        .by-card-v02.rm-control-panel-mobile
+          .rm-logo
+            %img.logoBY-v02{:alt => "", :src => "/assets/logo-byp.svg"}/
+          .progress-area
+            .progress-outside
+              .progress-inside.progress-bar
+                .progress-handle
+            .progress-number= '0%'
+          #text-moreMobile.by-dropdown-v02
+            %span#text-nav-more.notyet
+              %a{:href => "#"}
+                %span.by-icon-top-v02 Y
+            #text-menu-more.by-dropdown-content-v02
+              %a{:href => "#"} &#x5DE;&#x5E2;&#x5D1;&#x5E8; &#x5DC;&#x5E4;&#x5E8;&#x5E7;...
+              %a{:href => "#"}
+                %span.by-icon-v02.iconNearText-v02> X
+                \&#x5D7;&#x5D9;&#x5E4;&#x5D5;&#x5E9; &#x5D1;&#x5D9;&#x5E6;&#x5D9;&#x5E8;&#x5D4;
+              %a{:href => "#"}
+                %span.by-icon-v02.iconNearText-v02> b
+                \&#x5D4;&#x5D5;&#x5E1;&#x5E4;&#x5EA; &#x5E1;&#x5D9;&#x5DE;&#x5E0;&#x5D9;&#x5D4;
+              %a{:href => "#"}
+                %span.by-icon-v02.iconNearText-v02> g
+                \&#x5DE;&#x5E6;&#x5D0;&#x5EA;&#x5D9; &#x5E9;&#x5D2;&#x5D9;&#x5D0;&#x5D4;
+              %a{:href => "#"}
+                %span.by-icon-v02.iconNearText-v02> U
+                \&#x5E9;&#x5D9;&#x5EA;&#x5D5;&#x5E3;
+              %a{:href => "#"}
+                %span.by-icon-v02.iconNearText-v02> :
+                \&#x5D4;&#x5D2;&#x5D3;&#x5E8;&#x5D5;&#x5EA;
+          .rm-control-left
+            %a.collapse-expand-icon{href: manifestation_read_path(@m.id)}
+              %span.by-icon-v02 .
+        .row
+          .col.work-side-menu-area
+          .col
+            .by-card-v02.work-info-card
+              %img.about-work-card-bookmark-fold-v02{:alt => "", :src => "/assets/creator-bookmark-back2.png"}/
+              .about-work-author-card-v02
+                %img.about-work-author-pic-v02{src: @author.profile_image.url(:full), alt: @author.name}/
+              .by-card-content-v02
+                .work-title.name-under-btn
+                  .headline-1-v02 &#x5E9;&#x5DD; &#x5D4;&#x5D9;&#x5E6;&#x5D9;&#x5E8;&#x5D4;...
+                  .headline-2-v02
+                    %a{:href => "#"} &#x5E9;&#x5D5;&#x5E9;&#x5E0;&#x5D4; &#x5E9;&#x5E8;&#x5D9;&#x5E8;&#x5D0;
+                %div
+                  .work-details
+                    %span.by-icon-v02.copyright-icon> m
+                    \&#x5E0;&#x5D7;&#x5DC;&#x5EA; &#x5D4;&#x5DB;&#x5DC;&#x5DC;
+                    %a{:href => "#"} [?]
+                  .work-details
+                    %a{:href => "#"}
+                      %span.by-icon-v02.internal-genre-icon> l
+                      \&#x5E4;&#x5E8;&#x5D5;&#x5D6;&#x5D4;
+                  .work-details
+                    %span{:style => "font-weight:bold"} &#x5E9;&#x5E4;&#x5EA; &#x5DE;&#x5E7;&#x5D5;&#x5E8;:
+                    %a{:href => "#"} &#x5E8;&#x5D5;&#x5E1;&#x5D9;&#x5EA;
+                  .work-details
+                    %span{:style => "font-weight:bold"} &#x5E4;&#x5E8;&#x5D8;&#x5D9; &#x5DE;&#x5D4;&#x5D3;&#x5D5;&#x5E8;&#x5EA; &#x5DE;&#x5E7;&#x5D5;&#x5E8;:
+                    %a{:href => "#"} &#x5E2;&#x5DD; &#x5E2;&#x5D5;&#x5D1;&#x5D3;; &#x5EA;&#x5E9;&#x5E1;&#x5F4;&#x5D3; 2004
+                  .work-details.mobile-work-details
+                    %span{:style => "font-weight:bold"} &#x5EA;&#x5D5;&#x5D5;&#x5D9;&#x5D5;&#x5EA;:
+                    %button.tag &#x5E1;&#x5E4;&#x5E8;&#x5D5;&#x5EA; &#x5E2;&#x5DB;&#x5E9;&#x5D5;&#x5D5;&#x5D9;&#x5EA;
+                    %button.tag &#x5D9;&#x5E9;&#x5E8;&#x5D0;&#x5DC;&#x5D9;&#x5D5;&#x5EA;
+                    %button.tag &#x5EA;&#x5DC; &#x5D0;&#x5D1;&#x5D9;&#x5D1;
+                  .work-details.mobile-work-details
+                    %span{:style => "font-weight:bold"} &#x5D4;&#x5DE;&#x5DC;&#x5E6;&#x5D5;&#x5EA;:
+                    %a{:href => "#"} 3 &#x5D4;&#x5DE;&#x5DC;&#x5E6;&#x5D5;&#x5EA; &#x5E7;&#x5D5;&#x5E8;&#x5D0;&#x5D9;&#x5DD;
+            .by-card-v02
+              .work-area
+                .work-content
+                  - if @m.as_prose?
+                    #actualtext.maintext-prose-body.search-margin
+                      != raw(@html)
+                  - else
+                    #actualtext.maintext-poetry-body.search-margin
+                      != raw(@html)
+                .work-side-color
+                  %div{'class' => "work-genre", style: "background-image: url(\"/assets/work_side_icons_#{@e.genre}.svg\"); background-repeat: no-repeat; background-size:auto;"}
+/ found mistake popup
+#proofDlg.modal{'aria-hidden' => 'true', role: 'dialog'}
+  = render partial: 'shared/proof', locals: {manifestation: @m}
+#proofSent{style:'display:none'}
+  %span{style:'color:green'}= t(:proof_thanks_html)
 
 :javascript
   $(document).ready(function(){
+    window.onscroll = function() {
+      var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      var scrolled = (winScroll / height) * 100;
+      $('.progress-bar').css('width', scrolled + "%");
+      $('.progress-number').html(Math.floor(scrolled) + '%');
+      $('.progress-handle').css('right', Math.floor(scrolled) + '%');
+    };
     $(document).on('keyup',function(evt) {
       if (evt.keyCode == 27) {
         window.location.href = '#{url_for(action: :read, id: @m.id)}';
       }
     });
-    $('#authorpic').width($('.work-gradient-pic').width());
   });

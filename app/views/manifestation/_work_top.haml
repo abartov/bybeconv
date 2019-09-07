@@ -33,10 +33,10 @@
                 = t(:jump_to)
         .col-4
           .work-page-top-icons-desktop
-            .btn-small-outline-v02.btn-text-v02.reading-mode-btn-v02.notyet
-              / %a{:href => url_for(action: :readmode, id: @m.id)}
-              %span.by-icon-v02.iconNearText-v02> /
-              = t(:reading_mode)
+            %a.white{:href => url_for(action: :readmode, id: @m.id)}
+              .btn-small-outline-v02.btn-text-v02.reading-mode-btn-v02
+                %span.by-icon-v02.iconNearText-v02> /
+                = t(:reading_mode)
             .top-left-icons-group
               .icon-in-group-v02.like
                 %span.linkcolor.pointer.by-icon-v02= @liked ? '6' : '5'
@@ -149,40 +149,6 @@
           //method: 'POST',
         });
         $('.fa-heart-o').removeClass('fa-heart-o').addClass('fa-heart');
-      }
-    });
-    // proof button
-    $('#proofDlg').dialog({
-      autoOpen: false,
-      height:600,
-      width:700,
-      modal:true,
-      buttons: {
-        "#{t(:submit_proof)}": submitProof,
-        "#{t(:cancel)}": function() { $('#proofDlg').dialog("close");}
-      }
-    });
-    $('#proofSent').dialog({autoOpen:false, height:200, width:500, modal:true,buttons:{"#{t(:close)}": function(){$('#proofSent').dialog('close');}}});
-
-    $('#proof_form').on('ajax:success', function(e, data, status, xhr) {
-      $('#proofDlg').dialog("close");
-      $('#proofSent').dialog('open');
-    }).on('ajax:error', function(e, xhr, status, error) {
-      $('#proof_status').html("<span style='color:red'>#{t(:proof_failed)}</span>");
-    });
-    function submitProof() {
-      $('#proof_form').submit(); // TBD
-    };
-    $('#copy_proof').click(function() {
-      $('#prooftext').text($('#proof_selected_text').text());
-    });
-    $('#found_mistake').click(function() {
-      if(document.getSelection().toString() == '')
-        alert("#{t(:proof_please_select_something)}");
-      else
-      {
-        $('#proof_selected_text').text(document.getSelection().toString());
-        $('#proofDlg').dialog("open");
       }
     });
     // print button

@@ -136,69 +136,72 @@
 <main>
 <%= yield %>
 </main>
-<!-- footer start -->
-<footer>
-<% if @print %>
-  <% if @m.nil? && (not @author.nil?) %>
-    <%= t(:download_footer_html, url: url_for(action: :toc, only_path: false, id: @author.id)) %>
-  <% else %>
-    <%= t(:download_footer_html, url: url_for(action: :read, only_path: false, id: @m.id)) %>
-  <% end %>
-<% else %>
-  <% if current_user %>
-    <% if current_user.editor? %>
-      <br />
-      <h2><%= link_to t(:back_to_dashboard), url_for(controller: :admin, action: :index) %></h2>
-    <% end %>
-  <% end %>
-  <% unless @pagetype == :homepage %>
-    <%= link_to t(:back_to_homepage), "/" %>
-  <% end %>
-  <p></p>
-<div class="modal" id="shareDlg", aria-hidden = "true", role="dialog", title="<%= t(:choose_sharing_medium) %>">
-  <%= render partial: 'shared/share_controls' %>
-</div>
-
-<div id="bottom-bar" class="container-fluid">
-  <div class="container-fluid" id="footer">
-    <div class="row">
-      <div class="col-12">
-        <div class="footer-text-v02"><span style="font-weight: bold">פרויקט בן-יהודה</span> הוא מיזם התנדבותי ליצירת מהדורות אלקטרוניות של ספרות עברית והנגשתן לציבור.</div>
+<% unless @readmode %>
+  <!-- footer start -->
+  <footer>
+    <% if @print %>
+      <% if @m.nil? && (not @author.nil?) %>
+        <%= t(:download_footer_html, url: url_for(action: :toc, only_path: false, id: @author.id)) %>
+      <% else %>
+        <%= t(:download_footer_html, url: url_for(action: :read, only_path: false, id: @m.id)) %>
+      <% end %>
+    <% else %>
+      <% if current_user %>
+        <% if current_user.editor? %>
+          <br />
+          <h2><%= link_to t(:back_to_dashboard), url_for(controller: :admin, action: :index) %></h2>
+        <% end %>
+      <% end %>
+      <% unless @pagetype == :homepage %>
+        <%= link_to t(:back_to_homepage), "/" %>
+      <% end %>
+      <p></p>
+      <div class="modal" id="shareDlg", aria-hidden = "true", role="dialog", title="<%= t(:choose_sharing_medium) %>">
+        <%= render partial: 'shared/share_controls' %>
       </div>
-    </div>
-    <div class="row">
-      <div class="col-12">
-        <div class="footer-nav-v02">
-          <div class="by-footer-nav-item-v02"><a href="/page/about"><span class="by-icon-v02 footer-nav-icon-v02">M</span><%= t(:about) %></a>&rlm;</div>
-          <div class="by-footer-nav-item-v02"><a href="<%= t(:facebook_url) %>"><span class="by-icon-v02 footer-nav-icon-v02">S</span><%= t(:to_the_facebook_page) %></a></div>
-          <div class="by-footer-nav-item-v02"><a href="<%= t(:youtube_url) %>"><span class="by-icon-v02 footer-nav-icon-v02">W</span><%= t(:to_the_youtube_channel) %></a></div>
-          <div class="by-footer-nav-item-v02"><a href="<%= t(:blog_url) %>"><span class="by-icon-v02 footer-nav-icon-v02">Q</span><%= t(:the_blog) %></a></div>
-          <%= render partial: 'shared/share', locals: {element: :footer} %>
-          <div class="by-footer-nav-item-v02"><a href="/page/volunteer"><span class="by-icon-v02 footer-nav-icon-v02">V</span><%= t(:how_to_help) %></a></div>
-          <div class="by-footer-nav-item-v02"><a href="/page/donate"><span class="by-icon-v02 footer-nav-icon-v02">z</span><%= t(:donate_money) %></a></div>
+
+      <div id="bottom-bar" class="container-fluid">
+        <div class="container-fluid" id="footer">
+          <div class="row">
+            <div class="col-12">
+              <div class="footer-text-v02"><span style="font-weight: bold">פרויקט בן-יהודה</span> הוא מיזם התנדבותי ליצירת מהדורות אלקטרוניות של ספרות עברית והנגשתן לציבור.</div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <div class="footer-nav-v02">
+                <div class="by-footer-nav-item-v02"><a href="/page/about"><span class="by-icon-v02 footer-nav-icon-v02">M</span><%= t(:about) %></a>&rlm;</div>
+                <div class="by-footer-nav-item-v02"><a href="<%= t(:facebook_url) %>"><span class="by-icon-v02 footer-nav-icon-v02">S</span><%= t(:to_the_facebook_page) %></a></div>
+                <div class="by-footer-nav-item-v02"><a href="<%= t(:youtube_url) %>"><span class="by-icon-v02 footer-nav-icon-v02">W</span><%= t(:to_the_youtube_channel) %></a></div>
+                <div class="by-footer-nav-item-v02"><a href="<%= t(:blog_url) %>"><span class="by-icon-v02 footer-nav-icon-v02">Q</span><%= t(:the_blog) %></a></div>
+                <%= render partial: 'shared/share', locals: {element: :footer} %>
+                <div class="by-footer-nav-item-v02"><a href="/page/volunteer"><span class="by-icon-v02 footer-nav-icon-v02">V</span><%= t(:how_to_help) %></a></div>
+                <div class="by-footer-nav-item-v02"><a href="/page/donate"><span class="by-icon-v02 footer-nav-icon-v02">z</span><%= t(:donate_money) %></a></div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-  	</div>
-  </div>
-</div>
-</footer>
-
+    <% end %>
+  </footer>
 <% end %>
 <script>
   $(document).ready(function() {
-    var header = $("header");
-    var body = $('body');
+    <% unless @readmode %>
+      var header = $("header");
+      var body = $('body');
 
-    $(window).scroll(function() {
-        var scroll = $(window).scrollTop();
-        if (scroll >= 100) {
-            header.addClass("scrolled");
-            body.addClass("scrolled");
-        } else if(scroll <= 70) {
-            header.removeClass("scrolled");
-            body.removeClass("scrolled");
-        }
-    });
+      $(window).scroll(function() {
+          var scroll = $(window).scrollTop();
+          if (scroll >= 100) {
+              header.addClass("scrolled");
+              body.addClass("scrolled");
+          } else if(scroll <= 70) {
+              header.removeClass("scrolled");
+              body.removeClass("scrolled");
+          }
+      });
+    <% end %>
     $('.notyet').click(function(){
       alert('<%= t(:not_implemented_yet) %>');
     });

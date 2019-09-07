@@ -117,35 +117,11 @@
   = render partial: 'shared/download', locals: {manifestation: @m}
 #citeDlg.modal{'aria-hidden' => 'true', role: 'dialog'}
   = render partial: 'shared/cite', locals: {manifestation: @m}
+/ found mistake popup
+#proofDlg.modal{'aria-hidden' => 'true', role: 'dialog'}
+  = render partial: 'shared/proof', locals: {manifestation: @m}
 #proofSent{style:'display:none'}
   %span{style:'color:green'}= t(:proof_thanks_html)
-/ found mistake popup
-#proofDlg{style:'display:none'}
-  .container-fluid
-    = form_tag('/proof', remote: true, id: 'proof_form') do
-      .row
-        .col-sm-12
-          = label_tag t(:your_selected_text)+':'
-      .row
-        .col-sm-12
-          = text_area_tag(:highlight, '', id: 'proof_selected_text', rows: 7, cols:40, readonly:true, style:'background:#e4e4e4; width:70%;')
-      .row
-        %p
-      .row
-        .col-sm-9
-          = label_tag t(:proof_your_proofs)
-        .col-sm-3
-          %button.btn#copy_proof{:type => 'button'}= t(:proof_copy_text)
-      .row
-        .col-sm-12
-          = text_area_tag(:what, '', id: 'prooftext', rows: 7, cols: 40)
-      .row
-        .col-sm-12
-          = label_tag t(:email)+':'
-          %br
-          = email_field_tag 'from', '', placeholder: t(:email)
-          = hidden_field_tag(:manifestation, @m.id)
-    #proof_status
 
 / chapter popup
 - if @m.chapters? and @m.long?
