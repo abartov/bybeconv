@@ -45,7 +45,7 @@
               .icon-in-group-v02.notyet
                 %span.linkcolor.pointer.by-icon-v02 D
               .icons-separator-white
-              .icon-in-group-v02.citebutton
+              .icon-in-group-v02.citebutton{'data-toggle' => 'modal', 'data-target' => '#citeDlg'}
                 %span.linkcolor.pointer.by-icon-v02 *
               .icon-in-group-v02.printbutton
                 %span.linkcolor.pointer.by-icon-v02 9
@@ -64,7 +64,7 @@
                 %span#work-more
                   %span.linkcolor.by-icon-top-v02 Y
                 #workmenu-more.by-dropdown-content-v02{:style => "left: 0; margin-top: 4px"}
-                  %p.citebutton
+                  %p.citebutton{'data-toggle' => 'modal', 'data-target' => '#citeDlg'}
                     %span.by-icon-v02.linkcolor.iconNearText-v02> *
                     = t(:cite)
                   %p.printbutton
@@ -97,36 +97,6 @@
             .error-found-icon g
       .col-lg-4{style:'height:min-content'}
 
-#citeDlg{style:'display:none'}
-  = render partial: 'shared/cite', locals: {manifestation: @m}
-#proofSent{style:'display:none'}
-  %span{style:'color:green'}= t(:proof_thanks_html)
-#proofDlg{style:'display:none'}
-  .container-fluid
-    = form_tag('/proof', remote: true, id: 'proof_form') do
-      .row
-        .col-sm-12
-          = label_tag t(:your_selected_text)+':'
-      .row
-        .col-sm-12
-          = text_area_tag(:highlight, '', id: 'proof_selected_text', rows: 7, cols:40, readonly:true, style:'background:#e4e4e4; width:70%;')
-      .row
-        %p
-      .row
-        .col-sm-9
-          = label_tag t(:proof_your_proofs)
-        .col-sm-3
-          %button.btn#copy_proof{:type => 'button'}= t(:proof_copy_text)
-      .row
-        .col-sm-12
-          = text_area_tag(:what, '', id: 'prooftext', rows: 7, cols: 40)
-      .row
-        .col-sm-12
-          = label_tag t(:email)+':'
-          %br
-          = email_field_tag 'from', '', placeholder: t(:email)
-          = hidden_field_tag(:manifestation, @m.id)
-    #proof_status
 
 :javascript
   $(document).ready(function(){
@@ -218,11 +188,5 @@
     // print button
     $('.printbutton').click(function() {
       window.open("#{@print_url}",'_new');
-    });
-
-    // cite button
-    $('#citeDlg').dialog({autoOpen:false, height:550, width:790, modal:true, buttons:{"#{t(:close)}": function(){$('#citeDlg').dialog('close');}}});
-    $('.citebutton').click(function() {
-      $('#citeDlg').dialog('open');
     });
   });
