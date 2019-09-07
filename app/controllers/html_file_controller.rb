@@ -38,7 +38,10 @@ class HtmlFileController < ApplicationController
       end
     else
       flash[:error] = t(:must_set_author)
-      format.html { render action: 'new'}
+      respond_to do |format|
+        format.html { render action: 'new'}
+        format.json { render json: @text.errors, status: :unprocessable_entity }
+      end
     end
   end
 
