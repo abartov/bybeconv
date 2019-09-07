@@ -1,6 +1,7 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 he:
+  must_set_author: חובה לשייך יוצר!
   add_stanza_break: מעבר בית
   add_fresh_works: כל היצירות מאז אתמול
   converted_output: "תוצאת הסבה אוטומטית של הקובץ הישן %{fname}"

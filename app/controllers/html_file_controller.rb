@@ -25,15 +25,20 @@ class HtmlFileController < ApplicationController
 
   def create
     @text = HtmlFile.new(hf_params)
-    @text.status = 'Uploaded'
-    respond_to do |format|
-      if @text.save
-        format.html { redirect_to url_for(action: :edit_markdown, id: @text.id), notice: t(:updated_successfully) }
-        format.json { render json: @text, status: :created, location: @text }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @text.errors, status: :unprocessable_entity }
+    if @text.person
+      @text.status = 'Uploaded'
+      respond_to do |format|
+        if @text.save
+          format.html { redirect_to url_for(action: :edit_markdown, id: @text.id), notice: t(:updated_successfully) }
+          format.json { render json: @text, status: :created, location: @text }
+        else
+          format.html { render action: "new" }
+          format.json { render json: @text.errors, status: :unprocessable_entity }
+        end
       end
+    else
+      flash[:error] = t(:must_set_author)
+      format.html { render action: 'new'}
     end
   end
 
