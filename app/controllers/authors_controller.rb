@@ -81,28 +81,32 @@ class AuthorsController < ApplicationController
 
   def create
     params[:person][:wikidata_id] = params[:person][:wikidata_id].strip[1..-1] if params[:person] and params[:person][:wikidata_id] and params[:person][:wikidata_id][0] and params[:person][:wikidata_id].strip[0] == 'Q' # tolerate pasting the Wikidata number with the Q
-    @person = Person.new(person_params)
+    Chewy.strategy(:atomic) {
+      @person = Person.new(person_params)
 
-    respond_to do |format|
-      if @person.save
-        format.html { redirect_to url_for(action: :show, id: @person.id), notice: t(:updated_successfully) }
-        format.json { render json: @person, status: :created, location: @person }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @person.errors, status: :unprocessable_entity }
+      respond_to do |format|
+        if @person.save
+          format.html { redirect_to url_for(action: :show, id: @person.id), notice: t(:updated_successfully) }
+          format.json { render json: @person, status: :created, location: @person }
+        else
+          format.html { render action: "new" }
+          format.json { render json: @person.errors, status: :unprocessable_entity }
+        end
       end
-    end
+    }
   end
 
   def destroy
     @author = Person.find(params[:id])
-    if @author.nil?
-      flash[:error] = t(:no_such_item)
-      redirect_to '/'
-    else
-      @author.destroy!
-      redirect_to action: :list
-    end
+    Chewy.strategy(:atomic) {
+      if @author.nil?
+        flash[:error] = t(:no_such_item)
+        redirect_to '/'
+      else
+        @author.destroy!
+        redirect_to action: :list
+      end
+    }
   end
 
   def show
@@ -134,13 +138,15 @@ class AuthorsController < ApplicationController
       redirect_to '/'
     else
       params[:person][:wikidata_id] = params[:person][:wikidata_id].strip[1..-1] if params[:person] and params[:person][:wikidata_id] and params[:person][:wikidata_id][0] and params[:person][:wikidata_id].strip[0] == 'Q' # tolerate pasting the Wikidata number with the Q
-      if @author.update_attributes(person_params)
-        flash[:notice] = I18n.t(:updated_successfully)
-        redirect_to action: :show, id: @author.id
-      else
-        format.html { render action: 'edit' }
-        format.json { render json: @author.errors, status: :unprocessable_entity }
-      end
+      Chewy.strategy(:atomic) {
+        if @author.update_attributes(person_params)
+          flash[:notice] = I18n.t(:updated_successfully)
+          redirect_to action: :show, id: @author.id
+        else
+          format.html { render action: 'edit' }
+          format.json { render json: @author.errors, status: :unprocessable_entity }
+        end
+      }
     end
   end
 
