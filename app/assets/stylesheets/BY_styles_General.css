@@ -467,7 +467,7 @@ padding-left: 6px;
 .top-search-box-v02 {
   height: 36px;
   border: solid 1px #660248;
-  border-radius: 6px;
+  border-radius: 3px;
   position: relative; }
 
 .top-search-select-v02 {
@@ -495,6 +495,7 @@ padding-left: 6px;
 input {
   border: none;
   margin-left: 4px;
+  background-color: transparent;
 }
 
 input::placeholder {
@@ -675,7 +676,7 @@ input::placeholder {
   }
 
 .carousel-arrow-right-v02 {
-  width: 24px;
+  width: 22px;
   height: 280px;
   font-family: ben-yehuda;
   font-size: 21px;
@@ -684,7 +685,7 @@ input::placeholder {
   padding-top: 125px; }
 
 .carousel-arrow-left-v02 {
-  width: 24px;
+  width: 22px;
   height: 280px;
   font-family: ben-yehuda;
   font-size: 21px;
@@ -727,7 +728,7 @@ input::placeholder {
   font-weight: bold;
   border-radius: 3px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
-  margin: 0 12px;
+  margin: 0 11px;
   display: inline-block;
   vertical-align: top;
   position:relative;
@@ -1599,10 +1600,7 @@ display: flex;
 	color: #ffffff;
 	background-color: #660248;
 }
-.active{
-	color: #ffffff;
-	background-color: #660248;
-}
+
 .nav-link-arrows{
 	height:30px;
 	width: 100%;
@@ -2536,4 +2534,58 @@ padding-left: 0;
 }
 .bottom-button-area .close-btn{
 	width: 120px;
+}
+.search-mobile-switch{
+	width: 100%;
+	height: 28px;
+	border-radius: 3px;
+	border: solid 1px #660248;
+	display: flex;
+}
+.search-mobile-option{
+	width: 100%;
+	text-align: center;
+	line-height: 28px;
+ 	border-left: solid 1px #660248;
+}
+.search-mobile-option.active{
+	color: #fff;
+	background-color: #660248;
+}
+.search-mobile-option.disabled{
+	color: #907989;
+}
+.mobile-search-box {
+	width: 100%;
+	height: 28px;
+	line-height: 28px;
+	border: solid 1px #660248;
+	border-radius: 3px;
+	position: relative; 
+	margin-top: 12px;
+}
+.mobile-search{
+	width: calc(100% - 40px);
+	padding-right: 8px;
+}
+.mobile-top-area{
+  width: calc(100% + 30px);
+  background-color: #eeeced;
+  position: static;
+  left: 0;
+  margin-top:0px;
+  margin-left: -15px;
+  margin-right: -15px;
+  border-radius: 0;
+  padding-left: 0px;
+  padding-right: 0px;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.4);
+  z-index: 3;
+}
+.mobile-search-results{
+  width: calc(100% + 30px);
+  height: 100%;
+  background-color: #eeeced;
+  margin-left: -15px;
+  margin-right: -15px;
 }
