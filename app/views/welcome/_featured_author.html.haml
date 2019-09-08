@@ -21,7 +21,7 @@
         /  = link_to '#' do
         /    %span.right-side-icon= "'"
         /    %span{style: 'font-weight: bold'}= t(:another_feature)
-        %a{ href: author_toc_path(id: @featured_author.id)}
+        %a{ href: author_toc_path(id: @featured_author.person.id)}
           %button.by-button-v02.button-to-full-v02= t(:to_the_author_page)
 
 :javascript
