@@ -421,7 +421,7 @@ he:
   total: סך הכל
   sort_and_filter: מיון וסינון
   about_sort_and_filter: מה זה מיון וסינון?
-  sort_and_filter_popover: תכונה זה טרם מומשה.
+  sort_and_filter_popover: תכונה זו טרם מומשה.
   authors_totals_p1: מאגרנו כולל %{total} יוצרים עבריים, מתוכם %{pd} נחלת הכלל
   authors_totals_p2: ו-%{permission} מוגנים בזכויות יוצרים ומוגשים ברשות בעלי הזכויות.
   works_totals_p1: מאגרנו כולל %{total} יצירות, מתוכן %{pd} נחלת הכלל
