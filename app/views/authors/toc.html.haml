@@ -23,7 +23,7 @@
                   .author-about
                     .text-height-author= @author.wikipedia_snippet
                     .read-more-v02
-                      %a{:href => @author.wikipedia_url}
+                      %a{:href => @author.wikipedia_url, target: '_blank'}
                         %span{:style => "font-weight: bold"}= t(:rest_in_wikipedia)
                         %span.left-arrow 1
                     %div{style:'margin-top:12px;'}
@@ -41,7 +41,7 @@
                     /    לאתר רלוונטי
                     - unless @author.blog_category_url.nil? or @author.blog_category_url.empty?
                       %div{:style => "margin-top: 12px;"}
-                        %a{:href => @author.blog_category_url}
+                        %a{:href => @author.blog_category_url, target: '_blank'}
                           %span.by-icon-v02.iconNearText-v02> Q
                           = t(:about_author_in_blog, author:@author.name)
                     - if current_user && current_user.editor?
@@ -114,7 +114,7 @@
                       %a{ href: manifestation_read_path(id: featured.manifestation.id)}
                         %button.by-button-v02.button-to-full-v02= t(:to_the_work_in_the_site)
                     - unless featured.external_link.nil? or featured.external_link.empty?
-                      %a{ href: featured.external_link}
+                      %a{ href: featured.external_link, target: '_blank'}
                         %button.by-button-v02.button-to-full-v02= t(:to_external_content)
               = render partial: 'aboutnesses'
 
