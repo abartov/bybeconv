@@ -182,3 +182,51 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
 .carousel-arrow-left-v02{
   width: unset; /* temporary fix for dropping below the carousel in Chrome */
 }
+
+#static_page{
+  margin-left:2rem;
+  margin-right:2rem;
+}
+#static_page p{
+  padding-right:0.5rem;
+  padding-top:0.5rem;
+  padding-bottom:0.5rem;
+}
+#static_page pre {
+  font-size: 125%;
+  padding-right:0.5rem;
+  padding-top:0.5rem;
+  padding-bottom:0.5rem;
+}
+
+#static_page li{
+  display: list-item;
+  margin-right:2rem;
+}
+#static_page h1 {
+  padding-right:0.5rem;
+  padding-left:0.5rem;
+  padding-top:1.5rem;
+  color:#660248;
+}
+#static_page h2 {
+  padding-right:0.5rem;
+  padding-left:0.5rem;
+  padding-top:1.5rem;
+  color:#660248;
+}
+#static_page h3 {
+  padding-right:0.5rem;
+  padding-left:0.5rem;
+  padding-top:1rem;
+  color:#660248;
+}
+#static_page h4 {
+  padding-right:0.5rem;
+  padding-left:0.5rem;
+  padding-top:1.5rem;
+  color:#660248;
+}
+#static_page ul{
+  list-style-type: disc;
+}
