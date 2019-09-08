@@ -2,6 +2,8 @@
 #maincontainer.container-fluid.top-element
   .row
     .col-sm-12
+      %h1= t(:temporary_worklist)
+      %h2= t(:improvements_soon)
       / actual works
       %ol
         - @manifestations.each do |m|

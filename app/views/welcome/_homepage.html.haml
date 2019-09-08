@@ -33,7 +33,7 @@
                 = render partial: 'works_list', locals: {cache_key: 'top_works', label: t(:most_popular_works_this_month), collection: @pop_works, extra_class: 'works-most-read'}
                 = render partial: 'works_list', locals: {cache_key: 'new_works', label: t(:newest_works), collection: @newest_works, extra_class: 'works-most-new'}
               .button-to-full-v02
-                %a{style: 'font-weight:bold', href: works_path}
+                %a{style: 'font-weight:bold', href: all_works_path}
                   %span= t(:to_all_works)
                   %span.left-arrow 1
         / surprise work
