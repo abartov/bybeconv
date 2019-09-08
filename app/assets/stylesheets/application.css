@@ -178,3 +178,7 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
 .backend input {
   border: solid 1px;
 }
+
+.carousel-arrow-left-v02{
+  width: unset; /* temporary fix for dropping below the carousel in Chrome */
+}
