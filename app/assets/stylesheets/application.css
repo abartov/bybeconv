@@ -174,3 +174,7 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
 .progress-outside{
 	width: calc(100% - 35px);
 }
+
+.backend input {
+  border: solid 1px;
+}
