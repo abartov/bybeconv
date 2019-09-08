@@ -161,7 +161,7 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
   #moreMobile .dropdown-menu{ transform: translate3d(5px, 28px, 0px) !important;}
   #moreMobile-author .dropdown-menu{ transform: translate3d(5px, 28px, 0px) !important;}
 }
-.top-search-v02 input { width: 70%}
+.top-search-v02 input { width: auto;}
 
 .ch_anch { height: 2px;}
 .tooltip{ pointer-events:none; }
