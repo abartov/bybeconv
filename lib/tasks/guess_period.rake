@@ -9,14 +9,16 @@ task :guess_period => :environment do
   todo.each do |p|
     processed += 1
     puts "processed #{processed}/#{todocount}, guessed #{guessed} periods" if processed % 10 == 0
-    if p.period.nil? || p.period.empty?
-      guess = guess_the_period(p)
-      unless guess.nil?
-        p.period = guess
-        p.save!
-        guessed += 1
+    Chewy.strategy(:atomic) {
+      if p.period.nil? || p.period.empty?
+        guess = guess_the_period(p)
+        unless guess.nil?
+          p.period = guess
+          p.save!
+          guessed += 1
+        end
       end
-    end
+    }
   end
   puts "finished guessing author periods. Will now proceed to populate expression entities with the period of their translator if translation, or their author if not. To NOT proceed with this, hit CTRL+C."
   proceed = $stdin.gets
