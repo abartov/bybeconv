@@ -8,10 +8,11 @@
             %a.by-nav-item-v02#nav-authors{'data-toggle' =>'dropdown', 'data-boundary' => 'ddauthors'}= t(:authors)
             .by-dropdown-content-v02.dropdown-menu#menu-authors
               .by-dropdown-header-v02= authors_total
-              %a{href: '/#top_authors'}
+              /%a{href: '/#top_authors'}
+              %a.notyet{href: '#'}
                 %span.by-icon-v02.iconNearText-v02 N
                 = t(:most_read_authors)
-              %a{href: "#{whatsnew_path}#new_authors"}
+              %a{href: whatsnew_path}
                 %span.by-icon-v02.iconNearText-v02 O
                 = t(:newest_authors)
               %a{href: all_authors_path}
@@ -26,7 +27,7 @@
               %a.dropdown-item{href: '/#top_works'}
                 %span.by-icon-v02.iconNearText-v02 N
                 = t(:most_read_works)
-              %a.dropdown-item{href: "#{whatsnew_path}#new_works"}
+              %a.dropdown-item{href: whatsnew_path}
                 %span.by-icon-v02.iconNearText-v02 O
                 = t(:newest_works)
               %a.dropdown-item{href: all_works_path}
@@ -257,7 +258,7 @@
       %button.btn-small-outline-v02.by-icon-top-v02.purple-v02{href: '/page/donate'} z
       .top-search-mobile-v02
         .by-icon-top-v02.top-search-icon-mobile-v02
-          %a{href: "#"} X
+          %a{href: "/mobile_search"} X
       .dropdown.d-inline#moreMobile{style: "vertical-align:top;padding-top: 4px;"}
         %span.linkcolor.pointer.by-icon-top-v02.dropdown-toggle#nav-more{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :type => "button"} Y
         .dropdown-menu.dropdown-menu-right#menu-more

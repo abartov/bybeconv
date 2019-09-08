@@ -35,6 +35,9 @@ class ApplicationController < ActionController::Base
   def search_results
     render 'shared/search_results', layout: false
   end
+  def mobile_search
+    render 'shared/mobile_search'
+  end
 
   protected
 

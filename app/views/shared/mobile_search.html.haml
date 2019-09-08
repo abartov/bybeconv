@@ -1,0 +1,32 @@
+#content-area.container-fluid.top-element
+  #content.container-fluid
+    .mobile-top-area
+      .row{:style => "padding:15px;margin: 0"}
+        .col-4{:style => "padding: 0;"}
+          %button.btn-small-outline-v02{:href => "javascript:history.go(-1)"}
+            .btn-text-v02
+              %span.right-arrow 2
+              %span= t(:back)
+        .col-4{:style => "padding: 0;"}
+          .headline-2-v02{:style => "text-align: center;margin: 0; padding-top: 3px;"}= t(:search)
+        .col-4
+      .by-card-content-v02
+        /.search-mobile-switch
+        /  .search-mobile-option.active חיפוש באתר
+        /  .search-mobile-option חיפוש בעמוד
+        /  .search-mobile-option.disabled{:style => "border-left:0"} חיפוש מתקדם
+        .mobile-search-box
+          .mobile-search
+            %input#q2{:placeholder => "יצירות, יוצרים, מילות מפתח"}/
+            %span.search-icon-v02.pointer.by-icon-top-v02 X
+
+:javascript
+  $(document).ready(function() {
+    $('#q2').keypress(function (e) {
+      var key = e.which;
+      if(key == 13) { // the enter key code
+        $('.search-icon-v02').click();
+        return false;
+      }
+    });
+  });
