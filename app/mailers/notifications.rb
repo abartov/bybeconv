@@ -1,5 +1,5 @@
 class Notifications < ActionMailer::Base
-  default from: "editor@benyehuda.org"
+  default from: "editor@benyehuda.org" # TODO: un-hardcode
 
   # Subject can be set in your I18n file at config/locales/en.yml
   # with the following lookup:
@@ -11,7 +11,7 @@ class Notifications < ActionMailer::Base
     @proof = proof
     @url = url
     unless m.nil?
-      @url = 'https://bybe.benyehuda.org'+@url
+      @url = 'https://benyehuda.org'+@url # TODO: un-hardcode
     end
     @m = m
     mail to: proof.from
@@ -27,7 +27,7 @@ class Notifications < ActionMailer::Base
     @proof = proof
     @url = url
     unless m.nil?
-      @url = 'https://bybe.benyehuda.org'+@url
+      @url = 'https://benyehuda.org'+@url # TODO: un-hardcode
     end
     @m = m
     mail to: proof.from
