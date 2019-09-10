@@ -181,6 +181,8 @@ module BybeUtils
       return I18n.t(:finnish)
     when 'is'
       return I18n.t(:icelandic)
+    when 'fa'
+      return I18n.t(:persian)
     when 'sv'
       return I18n.t(:swedish)
     else
@@ -462,7 +464,7 @@ module BybeUtils
   end
 
   def get_langs
-    return ['he','en','fr','de','ru','yi','pl','ar','el','la','grc','hu','cs','da','no','sv','nl','it','pt','fi','is','es']
+    return ['he','en','fr','de','ru','yi','pl','ar','el','la','grc','hu','cs','da','no','sv','nl','it','pt','fa','fi','is','es']
   end
 
   def get_genres_by_row(row) # just one row at a time

@@ -334,6 +334,7 @@ end
           worksbuf += '...  ' # signify more is available
           break
         end
+        worksbuf += "&nbsp; "
       end
       ret += worksbuf[0..-3] # chomp off either the blanks after the ellipsis or the '; ' after the last item
     end

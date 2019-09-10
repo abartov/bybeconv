@@ -63,10 +63,10 @@
             %a.by-nav-item-v02#nav-news{'data-toggle' =>'dropdown', 'data-boundary' => 'ddnews'}= t(:whatsnew)
             .by-dropdown-content-v02.dropdown-menu#menu-news
               %a.by-dropdown-header-v02{href: whatsnew_path}= t(:to_all_whatsnew)
-              %a{href: "#{whatsnew_path}#new_authors"}
+              %a{href: whatsnew_path}
                 %span.by-icon-v02.iconNearText-v02 H
                 = t(:new_authors)
-              %a{href: "#{whatsnew_path}#new_works"}
+              %a{href: whatsnew_path}
                 %span.by-icon-v02.iconNearText-v02 G
                 = t(:new_works)
               %a{href: t(:facebook_url)}
@@ -122,7 +122,7 @@
                 %span.by-icon-v02.iconNearText-v02.iconInMenu N
                 = t(:most_read_authors)
             %li
-              %a{href: "#{whatsnew_path}#new_authors"}
+              %a{href: whatsnew_path}
                 %span.by-icon-v02.iconNearText-v02.iconInMenu O
                 = t(:newest_authors)
             %li
@@ -171,11 +171,11 @@
           %span.caret= t(:whatsnew)
           %ul.nested
             %li
-              %a{href: "#{whatsnew_path}#new_authors"}
+              %a{href: whatsnew_path}
                 %span.by-icon-v02.iconNearText-v02.iconInMenu H
                 = t(:new_authors)
             %li
-              %a{href: "#{whatsnew_path}#new_works"}
+              %a{href: whatsnew_path}
                 %span.by-icon-v02.iconNearText-v02.iconInMenu G
                 = t(:new_works)
             %li
@@ -293,7 +293,7 @@
   var i;
   var last_opened = null;
   function jump(h){
-    $('#mySidenav').css('width','0');
+    $("#mySidenav").removeClass('sidebar-opened');
     var url = location.href;               //Save down the URL without hash.
     location.href = "#"+h;                 //Go to the target element.
     history.replaceState(null,null,url);   //Don't like hashes. Changing it back.
