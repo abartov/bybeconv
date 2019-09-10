@@ -292,7 +292,20 @@ class HtmlFileController < ApplicationController
           redirect_to url_for(controller: :manifestation, action: :read, id: h.manifestations[0].id)
         end
       else
-        @html = '<h1>bad path</h1>'
+        path = params[:path]
+        path = '/' + path if path[0] != '/' # prepend slash if necessary
+        if path =~ /\/([^\/]*)\/?(index)?/
+          d = HtmlDir.find_by_path($1)
+          unless d.nil?
+            unless d.person.nil?
+              redirect_to url_for(controller: :authors, action: :toc, id: d.person.id)
+            else
+              @html = "<h1>#{t(:error)}</h1>"
+            end
+          end
+        else
+          @html = "<h1>#{t(:error)}</h1>"
+        end
       end
     end
   end

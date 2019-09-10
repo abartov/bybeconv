@@ -486,6 +486,12 @@ module BybeUtils
   def is_legacy_url(url)
     url = '/' + url if url[0] != '/' # prepend slash if necessary
     h = HtmlFile.find_by_url(url)
+    # also treat /{author} or /{author}/ or /{author}/index.html as legacy urls
+    if h.nil?
+      if url =~ /\/([^\/]*)\/?(index\.html)?/
+        h = HtmlDir.find_by_path($1)
+      end
+    end
     return h != nil
   end
 
