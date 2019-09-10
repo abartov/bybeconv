@@ -5,7 +5,7 @@
       %h1= t(:temporary_worklist)
       %h2= t(:improvements_soon)
       / actual works
-      %ol
+      %ol.mainlist
         - @works_abc.each do |m|
           %li= link_to m.title_and_authors, manifestation_read_path(m.id)
 != paginate @works_abc

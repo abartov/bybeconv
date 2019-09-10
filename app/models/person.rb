@@ -4,6 +4,8 @@ class Person < ApplicationRecord
   enum gender: %i(male female other unknown)
   enum period: %i(ancient medieval enlightenment revival modern)
 
+  paginates_per 100
+
   # relationships
   belongs_to :toc
   has_many :featured_contents

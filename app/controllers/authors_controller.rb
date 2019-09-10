@@ -23,7 +23,7 @@ class AuthorsController < ApplicationController
   def all
     @page_title = t(:all_authors)+' '+t(:project_ben_yehuda)
     @pagetype = :authors
-    @authors_abc = Person.order(:name).page(params[:page]).limit(30) # get page X of all authors
+    @authors_abc = Person.order(:name).page(params[:page]) # get page X of all authors
   end
 
   def create_toc
@@ -57,7 +57,7 @@ class AuthorsController < ApplicationController
       @rand_by_genre[g] = @pop_by_genre[g][:orig] if @rand_by_genre[g].empty? # workaround for genres with very few authors (like fables, in 2017)
       @surprise_by_genre[g] = @rand_by_genre[g].pop # make one of the random authors the surprise author
     end
-    @authors_abc = Person.order(:name).limit(25) # get page 1 of all authors
+    @authors_abc = Person.order(:name).limit(100) # get page 1 of all authors
     @author_stats = {total: Person.cached_toc_count, pd: Person.cached_pd_count, translators: Person.cached_translators_count, translated: Person.cached_no_toc_count}
     @author_stats[:permission] = @author_stats[:total] - @author_stats[:pd]
     @authors_by_genre = count_authors_by_genre
