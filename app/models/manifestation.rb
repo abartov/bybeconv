@@ -1,6 +1,7 @@
 include BybeUtils
 class Manifestation < ApplicationRecord
   is_impressionable :counter_cache => true # for statistics
+  paginates_per 100
   has_and_belongs_to_many :expressions
   has_and_belongs_to_many :people
 
