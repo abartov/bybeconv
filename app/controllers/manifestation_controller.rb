@@ -436,7 +436,9 @@ class ManifestationController < ApplicationController
       @author = @w.persons[0] # TODO: handle multiple authors
       unless is_spider?
         impressionist(@m)
-        impressionist(@author) # also increment the author's popularity counter
+        unless @author.nil?
+          impressionist(@author) # also increment the author's popularity counter
+        end
       end
       @translators = @m.translators
       @page_title = "#{@m.title_and_authors} - #{t(:default_page_title)}"
