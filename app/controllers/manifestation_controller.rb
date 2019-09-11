@@ -440,6 +440,9 @@ class ManifestationController < ApplicationController
           impressionist(@author) # also increment the author's popularity counter
         end
       end
+      if @author.nil?
+        @author = Person.new(name: '?')
+      end
       @translators = @m.translators
       @page_title = "#{@m.title_and_authors} - #{t(:default_page_title)}"
       if @print
