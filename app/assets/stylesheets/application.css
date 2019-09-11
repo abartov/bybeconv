@@ -39,7 +39,6 @@
 .dashboard-link {
   /*  position:absolute; display:inline; top:11rem; left: 10rem;*/
     float:left;
-    margin-top:-4rem;
   }
 
 /* pagination links */
