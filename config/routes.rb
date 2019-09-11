@@ -84,7 +84,6 @@ Bybeconv::Application.routes.draw do
   get '/mobile_search' => 'application#mobile_search'
   match "search/results", via: [:get, :post], as: 'search_results_internal'
   get "search/advanced"
-  get "authors/index"
   get 'authors/all', as: 'all_authors'
   get 'authors/genre'
   get "authors/show"
@@ -103,7 +102,6 @@ Bybeconv::Application.routes.draw do
   get "read/:id" => 'manifestation#read', as: 'manifestation_read'
   get "read/:id/read" => 'manifestation#readmode', as: 'manifestation_readmode'
   get 'periods' => 'manifestation#periods', as: 'periods'
-  get 'works' => 'manifestation#works', as: 'works'
   get 'works/all' => 'manifestation#all', as: 'all_works'
   get 'works/:genre' => 'manifestation#genre', as: 'genre'
   get 'period/:period' => 'manifestation#period', as: 'period'
