@@ -6,38 +6,41 @@
         .row
           .col-md-12.main-group#works
             - cache (@anonymous ? "whatsnew_page" : 'whatsnew_nonanon'), expires_in: 2.hours do
-              %p.headline-2#new_authors= t(:new_works_by_new_authors)
-              - @new_authors.each do |au|
-                - works_since = au.works_since(1.month.ago, 1000)
-                - unless works_since.empty?
-                  .card
-                    .card-content
-                      .whatsnew-text{style:'max-height:none'}
-                        %p.headline-3
-                          = link_to au.name, author_toc_path(au)
+              - unless @new_authors.nil? or @new_authors.empty?
+                %p.headline-2-v02#new_authors= t(:new_works_by_new_authors)
+                - @new_authors.each do |au|
+                  - works_since = au.works_since(1.month.ago, 1000)
+                  - unless works_since.empty?
+                    .by-card-v02
+                      .by-card-header-v02
+                        .whatsnew-text{style:'max-height:none'}
+                          %p.headline-3-v02
+                            = link_to au.name, author_toc_path(au)
+                      .by-card-content-v02
                         %p
                           - worksbuf = works_since.map{ |m| link_to(m.expressions[0].title + (m.expressions[0].translation ? ' / '+m.authors_string : ''), url_for(controller: :manifestation, action: :read, id: m.id))}
                           - worksbuf = worksbuf.join('; ')
                           != worksbuf
                       .whatsnew-pic-wide
                         %img{ alt: au.name, :class => 'img-responsive', src: au.profile_image.url(:tiny)}
-              %p.headline-2#new_works= t(:new_works_by_existing_authors)
+              %p.headline-2-v02#new_works= t(:new_works_by_existing_authors)
               - @whatsnew.each do |author, works|
                 - next if @new_authors.include? author
-                .card
-                  .card-content
+                .by-card-v02
+                  .by-card-header-v02
                     .whatsnew-text{style:'max-height:none'}
-                      %p.headline-3
+                      %p.headline-3-v02
                         = link_to author.name, author_toc_path(author)
-                      %p
-                        - worksbuf = ''
-                        - works.each do |genre|
-                          - next if genre[0] == :latest
-                          %p
-                            %b= t(genre[0])+': '
-                            - worksbuf = genre[1].map{ |m| link_to(m.expressions[0].title + (m.expressions[0].translation ? ' / '+m.authors_string : ''), url_for(controller: :manifestation, action: :read, id: m.id))}
-                            - worksbuf = worksbuf.join('; ')
-                            != worksbuf
-                    .whatsnew-pic-wide
-                      %img{ alt: author.name, :class => 'img-responsive', src: author.profile_image.url(:tiny)}
+                  .by-card-content-v02
+                    %p
+                      - worksbuf = ''
+                      - works.each do |genre|
+                        - next if genre[0] == :latest
+                        %p
+                          %b= t(genre[0])+': '
+                          - worksbuf = genre[1].map{ |m| link_to(m.expressions[0].title + (m.expressions[0].translation ? ' / '+m.authors_string : ''), url_for(controller: :manifestation, action: :read, id: m.id))}
+                          - worksbuf = worksbuf.join('; ')
+                          != worksbuf
+                  .whatsnew-pic-wide
+                    %img{ alt: author.name, :class => 'img-responsive', src: author.profile_image.url(:tiny)}
     .col-lg-2
