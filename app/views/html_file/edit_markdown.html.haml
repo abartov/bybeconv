@@ -8,7 +8,7 @@
       .row
         .col-md-6
           - if @text.has_splits
-            %h1{style:'color:green'}= "** #{t(:split_work_mode)} **"
+            %h2{style:'color:green'}= "** #{t(:split_work_mode)} **"
             %p!= t(:split_work_mode_intro)
           - else
             %h2= @text.title
@@ -22,7 +22,6 @@
                 = link_to @text.translator.name+' ('+t(:translator)+')', authors_show_path(id: @text.translator.id)
             = t(:publisher)+": #{@text.publisher}; #{t(:year_published)}: #{@text.year_published}"
           %h3= label_tag t(:orig_lang)
-          %br
           = select_tag 'orig_lang', options_for_select(get_langs.map {|lang| [textify_lang(lang), lang]}, @text.orig_lang)
           %h3= label_tag(:genre, t(:genre))
           = select_tag(:genre, options_for_select(get_genres.map {|genre| [I18n.t(genre), genre]}, @text.genre), {include_blank: true})
@@ -32,7 +31,10 @@
             .col-sm-3
               #legacy_markdown_link
               %h2= t(:markdown)
-              %b.static-btn#add_stanza_break= t(:add_stanza_break)
+              %button.btn-small-outline-v02#add_stanza_break
+                %b.btn-text-v02= t(:add_stanza_break)
+              %button.btn-small-outline-v02#remove_angled_brackets
+                %b.btn-text-v02= t(:remove_angled_brackets)
               .markdown= text_area_tag(:markdown, raw(@markdown), class: 'textarea100')
             .col-sm-9
               %h2= t(:display_text)
@@ -68,6 +70,19 @@
       $txt.val(textAreaTxt.substring(0, caretPos) + txtToAdd + textAreaTxt.substring(caretPos) );
       $txt.focus();
       $txt.caretTo(caretPos+txtToAdd.length);
+    });
+
+    $('#remove_angled_brackets').click(function(e) {
+      if($('#markdown').selection() == '') {
+        e.preventDefault();
+        alert("#{t(:select_text_to_remove_from)}");
+      }
+      else
+      {
+        var buf = $('#markdown').selection();
+        buf = buf.split(/\n> */).join("\n"); // no replaceAll in JS?
+        $('#markdown').selection('replace', {text: buf});
+      }
     });
 
     if(#{@text.has_splits ? true : false})

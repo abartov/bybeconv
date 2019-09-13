@@ -2,7 +2,9 @@
 
 he:
   must_set_author: חובה לשייך יוצר!
-  add_stanza_break: מעבר בית
+  add_stanza_break: הוספת מעבר בית
+  remove_angled_brackets: הסרת סימון שירה בקטע
+  select_text_to_remove_from: ראשית יש לסמן (להאיר) קטע בטקסט שממנו רוצים להסיר את סימני השירה.
   add_fresh_works: כל היצירות מאז אתמול
   converted_output: "תוצאת הסבה אוטומטית של הקובץ הישן %{fname}"
   origlang_title: כותרת בשפת המקור

@@ -22,7 +22,7 @@ class StaticPage < ApplicationRecord
       parts = markdown.split("<h2")
       newbuf = parts[0]
       parts[1..-1].each {|p|
-        newbuf += '<div class="card"><h2' + p + '</div>'
+        newbuf += '<div class="by-card-v02"><h2' + p + '</div>'
       }
       markdown = newbuf
     end
