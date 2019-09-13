@@ -328,7 +328,13 @@
     });
 
     $('.search-icon-v02').click(function(){
-      window.location.href = '#{search_results_internal_path}/?q='+encodeURIComponent($('#q').val());
+      var text = '';
+      if($('#q2').length){
+        text = $('#q2').val();
+      } else {
+        text = $('#q').val();
+      }
+      window.location.href = '#{search_results_internal_path}/?q='+encodeURIComponent(text);
       // pop-up
       //$('#resultsDlg').dialog('open');
       //$('#results').load('#{search_results_internal_path}/?q='+encodeURIComponent($('#q').val()));
