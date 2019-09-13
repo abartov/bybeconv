@@ -47,6 +47,8 @@
           = text_area_tag(:comments, @text.comments)
           %br
           %b
+            = submit_tag t(:preview)
+            = ' | '
             = submit_tag t(:save_and_update_display)
 
           %h3= t(:actions)

@@ -32,9 +32,10 @@
         %br
         %b.static-btn#add_stanza_break= t(:add_stanza_break)
         - if @m.images.attached?
-          %b.static-btn#add_image= t(:add_image)
-          != "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
-          %b.static-btn#add_all_images= t(:add_all_images)
+          %button.btn-small-outline-v02#add_image
+            %b.static-btn= t(:add_image)
+          %button.btn-small-outline-v02#add_all_images
+            %b.static-btn= t(:add_all_images)
           = select_tag :images, raw(options_from_images(@m.images))
           %br
           = t(:in_current_cursor)

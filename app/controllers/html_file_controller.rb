@@ -53,7 +53,9 @@ class HtmlFileController < ApplicationController
       @text.genre = params[:genre] unless params[:genre].blank?
       @text.orig_lang = params[:orig_lang] unless params[:orig_lang].blank?
       @text.comments = params[:comments]
-      @text.save
+      unless params[:commit] == t(:preview)
+        @text.save
+      end
     end
 
     if @text.markdown.nil? # convert on first show
