@@ -1,27 +1,28 @@
-%h1
-  = t(:bib_workshop)+': '
-  = link_to @p.name, author_toc_path(@p.id)
+.top-element.backend
+  %h1
+    = t(:bib_workshop)+': '
+    = link_to @p.name, author_toc_path(@p.id)
 
-.container-fluid
-  .row
-    .col-md-12
-      - unless @p.bib_done
-        = button_to(t(:mark_as_done), authors_update_path(id:@p.id), method: :post, params: {'person[bib_done]':1})
-      = button_to(t(:make_author_page), action: :make_author_page, method: :post, params: {'person_id':@p.id})
-  .row
-    .col-md-12
-      %table#bibs
-        %tr
-          %th= t(:title)
-          %th= t(:author)
-          %th= t(:publisher)
-          %th= t(:year_published)
-          %th= t(:language)
-          %th= t(:comments)
-          %th= t(:holdings)
-          %th= t(:status)
-          %th= t(:actions)
-        - @pubs.each do |pub|
-          = render partial: 'publications/pub', locals: {pub: pub, with_person: false, with_actions: :pubs}
-%hr
-%p= link_to t(:back), action: :index
+  .container-fluid
+    .row
+      .col-md-12
+        - unless @p.bib_done
+          = button_to(t(:mark_as_done), authors_update_path(id:@p.id), method: :post, params: {'person[bib_done]':1})
+        = button_to(t(:make_author_page), action: :make_author_page, method: :post, params: {'person_id':@p.id})
+    .row
+      .col-md-12
+        %table#bibs
+          %tr
+            %th= t(:title)
+            %th= t(:author)
+            %th= t(:publisher)
+            %th= t(:year_published)
+            %th= t(:language)
+            %th= t(:comments)
+            %th= t(:holdings)
+            %th= t(:status)
+            %th= t(:actions)
+          - @pubs.each do |pub|
+            = render partial: 'publications/pub', locals: {pub: pub, with_person: false, with_actions: :pubs}
+  %hr
+  %p= link_to t(:back), action: :index

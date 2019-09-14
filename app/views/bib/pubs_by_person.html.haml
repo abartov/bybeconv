@@ -1,46 +1,47 @@
+.top-element.backend
 
-.container-fluid
-  .row
-    .col-md-6
-      %h1= t(:bib_workshop)
-      %p= t(:pubs_by_person_instructions_html)
-    .col-md-6
-      %h2= t(:some_authors_to_work_on)
-      %p= Person.has_toc.bib_not_done.order('RAND()').limit(20).map{|p| p.name}.join('; ')
+  .container-fluid
+    .row
+      .col-md-6
+        %h1= t(:bib_workshop)
+        %p= t(:pubs_by_person_instructions_html)
+      .col-md-6
+        %h2= t(:some_authors_to_work_on)
+        %p= Person.has_toc.bib_not_done.order('RAND()').limit(20).map{|p| p.name}.join('; ')
 
-  .row
-    .col-md-6
-      = render partial: 'find_bibs', locals: {remote: true}
+    .row
+      .col-md-6
+        = render partial: 'find_bibs', locals: {remote: true}
 
-      %table#bibs
-        %tr
-          %th= t(:title)
-          %th= t(:author)
-          %th= t(:publisher)
-          %th= t(:year_published)
-          %th= t(:language)
-          %th= t(:comments)
-          %th= t(:record_source)
-          %th= t(:location)
-          %th= t(:is_scanned)
-          %th= t(:actions)
-        = render partial: 'pubs', locals: {pubs: @pubs}
-    .col-md-6
-      .backend-field
-        = label_tag t(:linked_author)
-        = hidden_field_tag :person_id
-        = autocomplete_field_tag :person, '', autocomplete_person_name_path, id_element: '#person_id', scopes: [:bib_not_done], 'data-noMatchesLabel' => t(:no_matches_found)
-      = link_to t(:new_author), authors_new_path
-      .card
-        .card-content
-          %h2
-            %a#author_link
-              = t(:pubs_by_author)
-          %table#pubs
-            %tbody
-  .row
-    .col-md-12
-      = link_to t(:back), action: :index
+        %table#bibs
+          %tr
+            %th= t(:title)
+            %th= t(:author)
+            %th= t(:publisher)
+            %th= t(:year_published)
+            %th= t(:language)
+            %th= t(:comments)
+            %th= t(:record_source)
+            %th= t(:location)
+            %th= t(:is_scanned)
+            %th= t(:actions)
+          = render partial: 'pubs', locals: {pubs: @pubs}
+      .col-md-6
+        .backend-field
+          = label_tag t(:linked_author)
+          = hidden_field_tag :person_id
+          = autocomplete_field_tag :person, '', autocomplete_person_name_path, id_element: '#person_id', scopes: [:bib_not_done], 'data-noMatchesLabel' => t(:no_matches_found)
+        = link_to t(:new_author), authors_new_path
+        .card
+          .card-content
+            %h2
+              %a#author_link
+                = t(:pubs_by_author)
+            %table#pubs
+              %tbody
+    .row
+      .col-md-12
+        = link_to t(:back), action: :index
 :javascript
   function moveit(elem){
     var person_id = $('#person_id').val();

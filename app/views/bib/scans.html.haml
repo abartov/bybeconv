@@ -1,11 +1,12 @@
-%h1= t(:bib_workshop)
-.container-fluid
-  .row
-    .col-md-12
-      %h2= t(:available_scans)
-      %table
-        - @digipubs.each do |pub|
-          = render partial: 'publications/pub', locals: {pub: pub, with_person: false, with_actions: :scans}
-  .row
-    .col-md-12
-      = link_to t(:back), action: :index
+.top-element.backend
+  %h1= t(:bib_workshop)
+  .container-fluid
+    .row
+      .col-md-12
+        %h2= t(:available_scans)
+        %table
+          - @digipubs.each do |pub|
+            = render partial: 'publications/pub', locals: {pub: pub, with_person: false, with_actions: :scans}
+    .row
+      .col-md-12
+        = link_to t(:back), action: :index

@@ -1,38 +1,39 @@
-%h1= t(:shopping_list_for, {source: @source.title})
-.container-fluid
-  .row
-    = form_tag '' do
-      = check_box_tag 'unique', 1, params[:unique] == '1'
-      = label_tag t(:unique_only)
-      = check_box_tag 'pd', 1, params[:pd] == '1'
-      = label_tag t(:pd_only)
-      = submit_tag t(:filter)
-  .row
-    %table
-      %tr
-        %th= t(:title)
-        %th= t(:author)
-        %th= t(:recno)
-        %th= t(:location)
-      - @holdings.each do |h|
-        - pub = h.publication
+.top-element.backend
+  %h1= t(:shopping_list_for, {source: @source.title})
+  .container-fluid
+    .row
+      = form_tag '' do
+        = check_box_tag 'unique', 1, params[:unique] == '1'
+        = label_tag t(:unique_only)
+        = check_box_tag 'pd', 1, params[:pd] == '1'
+        = label_tag t(:pd_only)
+        = submit_tag t(:filter)
+    .row
+      %table
         %tr
-          %td
-            = link_to pub.title, h.source_id
-            - if pub.holdings.count > 1
-              - pub.holdings.each do |hh|
-                = "(+"
-                = link_to hh.bib_source.title, hh.source_id
-                = ") "
-          %td= pub.author_line
-          %td= h.recno
-          %td= h.location
-          %td
-            = link_to t(:mark_as_obtained)+' | ', holding_status_path(id: h.id, status: 'obtained'), remote: true, id: "obt#{h.id}"
-            = link_to t(:mark_as_scanned)+' | ', holding_status_path(id: h.id, status: 'scanned'), remote: true, id: "scn#{h.id}"
-            = link_to t(:mark_as_missing), holding_status_path(id: h.id, status: 'missing'), remote: true, id: "msng#{h.id}"
-            = button_tag t(:copy_to_clipboard), id: "copy_#{h.id}", 'class' => 'holding_copybutton'
-    = link_to t(:back), action: :index
+          %th= t(:title)
+          %th= t(:author)
+          %th= t(:recno)
+          %th= t(:location)
+        - @holdings.each do |h|
+          - pub = h.publication
+          %tr
+            %td
+              = link_to pub.title, h.source_id
+              - if pub.holdings.count > 1
+                - pub.holdings.each do |hh|
+                  = "(+"
+                  = link_to hh.bib_source.title, hh.source_id
+                  = ") "
+            %td= pub.author_line
+            %td= h.recno
+            %td= h.location
+            %td
+              = link_to t(:mark_as_obtained)+' | ', holding_status_path(id: h.id, status: 'obtained'), remote: true, id: "obt#{h.id}"
+              = link_to t(:mark_as_scanned)+' | ', holding_status_path(id: h.id, status: 'scanned'), remote: true, id: "scn#{h.id}"
+              = link_to t(:mark_as_missing), holding_status_path(id: h.id, status: 'missing'), remote: true, id: "msng#{h.id}"
+              = button_tag t(:copy_to_clipboard), id: "copy_#{h.id}", 'class' => 'holding_copybutton'
+      = link_to t(:back), action: :index
 
 :javascript
   $(document).ready(function(){

@@ -563,6 +563,13 @@ display: none;	}
 .rm-control-panel-mobile .progress-number{
 	padding-top: 1px;
 }
+.search-icon-v02 {
+  line-height: 26px;
+ }
+	#volunteer-general{
+		display: none;
+	}
+	
 }
 
 
