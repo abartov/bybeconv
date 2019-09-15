@@ -173,6 +173,11 @@ class Manifestation < ApplicationRecord
     return metadata + self.markdown
   end
 
+  def word_count
+    # roughly okay, despite the markdown artifacts
+    return self.markdown.split.length
+  end
+
   def recalc_cached_people
      pp = []
      expressions.each {|e|
