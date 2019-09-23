@@ -187,4 +187,5 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
 
 .backend #genre{
   min-height: unset;
+  height: unset;
 }

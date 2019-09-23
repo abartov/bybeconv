@@ -26,7 +26,16 @@
 	.rm-control-panel{
 	left: 30px;
 }
+.topMenuItem-v02 {
+  margin-left: 8px;
+}
 
+}
+
+@media only screen and (max-width: 1050px) {
+	.topMenuItem-v02 {
+  margin-left: 3px;
+}
 }
 
 
