@@ -1,6 +1,6 @@
 / Main author page (rewritten for v2 based on Ruth's Author_11.html)
 / hack to get scrollspy to highlight first genre up top
-- unless @genres_present.nil?
+- unless @genres_present.nil? or @genres_present.empty?
   %div{id: 'works-'+@genres_present.first}
 #content.container-fluid.top-element
   .author-page-content
