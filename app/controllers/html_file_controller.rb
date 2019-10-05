@@ -76,9 +76,14 @@ class HtmlFileController < ApplicationController
             p.text = '&&STANZA&&' if p.text.empty? # replaced with <br> tags in new_postprocess
           end
           docx.save(tmpfile_pp.path) # save modified version
-          markdown = `pandoc -f docx -t markdown_mmd #{tmpfile_pp.path}`
-          @text.markdown = new_postprocess(markdown)
-          @text.save
+          markdown = `pandoc +RTS -M700m -RTS -f docx -t markdown_mmd #{tmpfile_pp.path}`
+          unless markdown =~ /pandoc: Heap exhausted/
+            @text.markdown = new_postprocess(markdown)
+            @text.save
+          else
+            flash[:error] = t(:conversion_error)
+            redirect_to controller: :admin, action: :index
+          end
         rescue => e
           flash[:error] = t(:conversion_error)
           redirect_to controller: :admin, action: :index
