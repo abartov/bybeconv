@@ -389,4 +389,18 @@ body {
 	margin-top: -2px;
 	margin-right: -2px;
 }
+.top-contact-center{
+		width: calc(100% - 120px); padding-top: 4px;
+	}
+.top-contact-side{
+		width: 60px;
+}
+#contact-select-issue{
+	width: 90px;
+	margin-left: 15px;
+}
+#contact-text{
+	width: calc(100% - 105px);
+}
+	
 }

@@ -23,32 +23,39 @@ p {
 	margin-bottom: 12px;
 }
 .headline-1-v02 {
-  font-size: 18pt;
-  line-height: 20pt;
+  font-size: 16pt;
+  line-height: 18pt;
   font-weight: bold;
   margin-left: 6px;
   margin-bottom: 8px;
 }
 .headline-1-v02-en {
-  font-size: 18pt;
-  line-height: 20pt;
+  font-size: 16pt;
+  line-height: 18pt;
   font-weight: bold;
   margin-right: 6px;
   margin-bottom: 8px;
 }
 
 .headline-2-v02 {
-  font-size: 16pt;
-  line-height: 18pt;
+  font-size: 14pt;
+  line-height: 15pt;
   font-weight: bold;
   margin-bottom: 4px; 
 }
 
 .headline-3-v02 {
-  font-size: 14pt;
-  line-height: 16pt;
+  font-size: 13pt;
+  line-height: 14pt;
   font-weight: bold;
   margin-bottom: 4px; }
+.headline-4-v02 {
+  font-size: 12pt;
+  line-height: 14pt;
+  font-weight: bold;
+  margin-bottom: 4px;
+  margin-top: 6px;
+}
 
 a {
   color: #660248; }
@@ -539,6 +546,10 @@ input {
 input::placeholder {
   color: #907989; }
 
+.explain-text{
+  color: #907989;
+  font-weight: normal;
+}
 .search-icon-v02 {
   font-family: ben-yehuda;
   font-size: 18px;
@@ -1267,22 +1278,6 @@ ul, #myUL {
   content: "\25BC";
   font-size: 12px; }
 
-.nested {
-  padding-right: 0;
-  display: block; }
-
-.nested a {
-  background-color: #ffffff;
-  padding-right: 20px;
-  padding-top: 4px;
-  padding-bottom: 4px; }
-
-.nested a:hover {
-  background-color: #eeeced; }
-
-.active {
-  display: block;
-  padding-right: 0; }
 
 ul #menuMobile {
   padding-right: 0; }
@@ -1942,7 +1937,7 @@ display: flex;
   background-color: #fff;
 }
 .text-area-field{
-  height: 56px;
+  height: 112px;
 }
 .field-label{
 	font-weight: bold;
@@ -1957,6 +1952,9 @@ display: flex;
 	bottom: 0;
 	left:10px;
 	margin-bottom: 4px;
+}
+.work-chapters-dropdown-field-desktop:hover #moveToChapter_content_desktop{
+	display:block;
 }
 .work-chapters-popup-mobile{
 	position: absolute;
@@ -2174,9 +2172,7 @@ display: none;}
 .dropdown_full-width{
 	width: 100%;
 }
-.work-chapters-dropdown-field-desktop:hover #moveToChapter_content_desktop{
-	display:block;
-}
+
 .dropdown-menu-seperator{
   display: none;
   width: calc(100% - 30px);
@@ -2260,6 +2256,9 @@ display: none;}
 
 .desktop-only{
 	display: block;
+}
+.mobile-only{
+	display: none;
 }
 .no-header{
 	height: 36px;
@@ -2553,8 +2552,16 @@ padding-left: 0;
 	margin-right: -15px;
 	margin-left: -15px;
 }
+.nested {
+  display: none; }
+
+
+.active {
+  display: block;
+  padding-right: 0; }
+	
 .about-page-content .nested a {
-  background-color: #eeeced;
+  background-color: none;
   padding-right: 0px;
   padding-top: 0px;
   padding-bottom: 0px; 

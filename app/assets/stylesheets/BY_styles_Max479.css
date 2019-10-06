@@ -109,8 +109,8 @@
 	}
 
 body {
-		font-size: 12px;
-		line-height: 14px; 
+		font-size: 9.5pt;
+		line-height: 10.5pt; 
 	}
 .top-element{
 		margin-top: 96px;
@@ -257,14 +257,22 @@ body {
 }
 
 	.headline-1-v02{
-  font-size: 15px;
-  line-height: 18px;
+  font-size: 14pt;
+  line-height: 15pt;
 }
 .headline-2-v02 {
-  font-size: 14px;
- line-height: 15px; 
+  font-size: 12pt;
+ line-height: 13pt; 
 	}
 
+.headline-3-v02 {
+  font-size: 11pt;
+ line-height: 12pt; 
+	}
+.headline-4-v02 {
+  font-size: 10pt;
+ line-height: 11pt; 
+	}
 .sidebar-opened{
   width: 80%;
   min-width: 280px;
@@ -419,5 +427,8 @@ body {
 .bookmark-location{
 	top: -4px;
 }
+.top-contact-center{
+padding-top: 6px;
+	}
 	
 }
