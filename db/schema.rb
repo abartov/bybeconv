@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_06_223419) do
+ActiveRecord::Schema.define(version: 2019_10_07_192947) do
 
   create_table "aboutnesses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -67,6 +67,7 @@ ActiveRecord::Schema.define(version: 2019_10_06_223419) do
     t.integer "manifestation_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "cached_page_count"
     t.index ["anthology_id"], name: "index_anthology_texts_on_anthology_id"
     t.index ["manifestation_id"], name: "index_anthology_texts_on_manifestation_id"
   end

@@ -435,8 +435,8 @@ class ManifestationController < ApplicationController
           @current_anthology = Anthology.new
           @current_anthology.title = t(:new_anthology)
         else
-          @current_anthology = @anthologies.first
-          session[:current_anthology] = @anthologies.first
+          @current_anthology = @anthologies.first.includes(:anthology_texts)
+          session[:current_anthology] = @current_anthology
         end
       else
         @current_anthology = session[:current_anthology]
