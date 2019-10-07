@@ -176,7 +176,7 @@ class HtmlFileController < ApplicationController
     if p.nil? || p.blank?
       @texts = HtmlFile.where(assignee_cond).where(query).page(params[:page]).order('updated_at DESC')
     else
-      @texts = HtmlFile.where(assignee_cond).where('path like ?', '%' + params[:path] + '%').page(params[:page]).order('updated_at DESC')
+      @texts = HtmlFile.where(assignee_cond).where('path like ?', '%' + p + '%').page(params[:page]).order('updated_at DESC')
     end
   end
 

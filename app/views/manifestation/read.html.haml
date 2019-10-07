@@ -122,6 +122,9 @@
   = render partial: 'shared/proof', locals: {manifestation: @m}
 #proofSent{style:'display:none'}
   %span{style:'color:green'}= t(:proof_thanks_html)
+- if current_user
+  #anthologiesDlg.modal{'aria-hidden' => 'true', role: 'dialog'}
+    = render partial: 'shared/anthology', locals: {manifestation: @m}
 
 / chapter popup
 - if @m.chapters? and @m.long?

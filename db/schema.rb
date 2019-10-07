@@ -64,9 +64,11 @@ ActiveRecord::Schema.define(version: 2019_10_06_223419) do
     t.string "title"
     t.text "body"
     t.bigint "anthology_id"
+    t.integer "manifestation_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["anthology_id"], name: "index_anthology_texts_on_anthology_id"
+    t.index ["manifestation_id"], name: "index_anthology_texts_on_manifestation_id"
   end
 
   create_table "api_keys", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|
@@ -611,6 +613,7 @@ ActiveRecord::Schema.define(version: 2019_10_06_223419) do
 
   add_foreign_key "anthologies", "users"
   add_foreign_key "anthology_texts", "anthologies"
+  add_foreign_key "anthology_texts", "manifestations"
   add_foreign_key "featured_author_features", "featured_authors"
   add_foreign_key "featured_authors", "people"
   add_foreign_key "featured_authors", "users"

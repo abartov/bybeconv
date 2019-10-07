@@ -45,7 +45,7 @@
                 %span.linkcolor.pointer.by-icon-v02= @liked ? '6' : '5'
               .icon-in-group-v02.notyet
                 %span.linkcolor.pointer.by-icon-v02 b
-              .icon-in-group-v02.notyet
+              .icon-in-group-v02.anthologies_button{'data-toggle' => 'modal', 'data-target' => '#anthologiesDlg'}
                 %span.linkcolor.pointer.by-icon-v02 D
               .icons-separator-white
               .icon-in-group-v02.citebutton{'data-toggle' => 'modal', 'data-target' => '#citeDlg'}
@@ -76,7 +76,7 @@
                   %p.download{'data-toggle' => 'modal', 'data-target' => '#downloadDlg'}
                     %span.by-icon-v02.linkcolor.iconNearText-v02> 3
                     = t(:download)
-                  %p.notyet
+                  %p.anthologies_button{'data-toggle' => 'modal', 'data-target' => '#anthologiesDlg'}
                     %span.by-icon-v02.linkcolor.iconNearText-v02> D
                     = t(:bookshelves)
     .row.error-found-row

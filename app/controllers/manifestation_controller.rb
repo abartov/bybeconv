@@ -116,6 +116,7 @@ class ManifestationController < ApplicationController
       @header_partial = 'manifestation/work_top'
       @works_about = Work.joins(:topics).where('aboutnesses.aboutable_id': @w.id) # TODO: accommodate works about *expressions* (e.g. an article about a *translation* of Homer's Iliad, not the Iliad)
       @scrollspy_target = 'chapternav'
+      prep_user_content
     end
   end
 
@@ -426,6 +427,22 @@ class ManifestationController < ApplicationController
 
   protected
 
+  def prep_user_content
+    if current_user
+      @anthologies = current_user.anthologies
+      if session[:current_anthology].nil?
+        if @anthologies.empty?
+          @current_anthology = Anthology.new
+          @current_anthology.title = t(:new_anthology)
+        else
+          @current_anthology = @anthologies.first
+          session[:current_anthology] = @anthologies.first
+        end
+      else
+        @current_anthology = session[:current_anthology]
+      end
+    end
+  end
   def prep_for_print
     @m = Manifestation.find(params[:id])
     if @m.nil?
