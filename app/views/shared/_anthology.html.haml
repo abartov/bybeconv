@@ -96,11 +96,13 @@
                               %div
                                 %a{:href => "#"}
                                   %span.by-icon-v02 Q
+                            %div{id: "collat#{text.id}", 'data-toggle' => 'collapse', 'data-target' => "#at#{text.id}"}
+                              %span.pointer.linkcolor
+                                %span.by-icon-v02{style:'font-size: 14px'}= '<'
                             %div
-                              %a{:href => "#"}
+                              %span.pointer.linkcolor
                                 %span.by-icon-v02 ^
-                          .vertical-expand
-                          .nested
+                          .atcoll.collapse.in{id: "at#{text.id}"}
                             .about-content-horizontal-separator
                             .row.anthology-nested-content
                               - if text.manifestation_id.nil?
@@ -130,3 +132,20 @@
                                   %div{:style => "padding-bottom: 12px"}
                                     %span{:style => "font-weight:bold"}= t(:page_count)+': '
                                     %span= text.page_count
+
+
+        .headline-3{style: 'margin:2rem 0', 'data-toggle'=>'collapse','data-target'=>'#extra_collapsible'}
+          %span.pointer= t(:tags_etc_title)
+          != '&nbsp;&nbsp;'
+          %i.fa.chevron.baseline{style:'display:inline'}
+        .row.collapse.in#extra_collapsible
+
+:javascript
+  $(document).ready(function() {
+    $('.atcoll').on('shown.bs.collapse', function() {
+      $("#coll"+this.id).find('.by-icon-v02').text(']');
+    });
+    $('.atcoll').on('hidden.bs.collapse', function() {
+      $("#coll"+this.id).find('.by-icon-v02').text('<');
+    });
+  });
