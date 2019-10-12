@@ -15,15 +15,10 @@
         .anthology
           .by-card-header-v02.desktop-only
             %a.horizontal-collapse{:href => "#"} ?
-            .anthology-select-desktop
-              .dropdown.field-v02#anthology-select
-                .dropdown-toggle#anth_toggle{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown"}
-                  = @current_anthology.title
-                  %span.by-icon-v02.linkcolor.pointer{style: 'float: left'} )
-                .dropdown-menu
-                  - @anthologies.each do |anth|
-                    .dropdown-item.pointer.linkcolor
-                      = anth.title
+            #anthology-select
+              /.anthology-select-desktop
+              /  .field-v02
+              = select_tag :anthologies, options_for_select(@anthology_select_options), {style:'width:300px'}
             .anthology-select-mobile
             %a.popup-x-v02.pointer{'data-dismiss'=>'modal'} -
             .anthologies-actions-area
@@ -52,86 +47,80 @@
                   %a{:href => "#"}
                     %span.by-icon-v02 U
                 #share-description
-                  %span#actions-icons-separator>
                   = t(:share_description)
               #anthology-status
                 %span.anthology-status-label= t(:access_control)
-                .anthology-status-desktop
-                  .dropdown.field-v02
-                    .dropdown-toggle#access_toggle{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", style:'height:28px;'}
-                      = t(@current_anthology.access)
-                      %span.by-icon-v02.linkcolor.pointer{style: 'float: left'} )
-                    .dropdown-menu
-                      - Anthology.accesses.each do |k, v|
-                        .dropdown-item.pointer.linkcolor
-                          = t(k)
+                /.anthology-status-desktop
+                = select_tag :access, options_for_select(Anthology.accesses.map{|a| [t(a[0]), a[1]]}, (@current_anthology.access.nil? ? nil : Anthology.accesses[@current_anthology.access])), {style:'width:140px', onchange: "alert('hello'); $.post('#{anthology_path(@current_anthology.id)}', {'_method':'put', 'anthology[access]':this.value} );'}
                 .anthology-select-mobile
           %div
             .by-card-content-v02
-              .anthology-numbers
-                %div
-                  %span 3
-                  יצירות
-                %div
-                  %span 2
-                  קטעי טקסט
-                %div
-                  %span 20
-                  עמודים
-              .mainlist
-                %ol
-                  - @current_anthology.texts.each do |text|
-                    %li
-                      .by-card-v02.self-created-text
-                        .anthology-card-header
-                          .drag-handle
-                          .anthology-headline
-                            - if text.manifestation_id.nil?
-                              = t(:curated_text_bit)+': '+text.title
-                              %span.by-icon-v02.markdown-icon _
-                            - else
-                              = text.manifestation.title + ' / ' + text.manifestation.author_string
-                          .left-side-icons
-                            - if text.manifestation_id.nil?
-                              %div
-                                %a{:href => "#"}
-                                  %span.by-icon-v02 Q
-                            %div{id: "collat#{text.id}", 'data-toggle' => 'collapse', 'data-target' => "#at#{text.id}"}
-                              %span.pointer.linkcolor
-                                %span.by-icon-v02{style:'font-size: 14px'}= '<'
-                            %div
-                              %span.pointer.linkcolor
-                                %span.by-icon-v02 ^
-                          .atcoll.collapse.in{id: "at#{text.id}"}
-                            .about-content-horizontal-separator
-                            .row.anthology-nested-content
+              .anthology-cards-area
+                .anthology-numbers
+                  %div
+                    %span= @current_anthology.texts.is_text.count
+                    = t(:works)
+                  %div
+                    %span= @current_anthology.texts.is_curated.count
+                    = t(:curated_text_bits)
+                  %div
+                    %span= @current_anthology.page_count
+                    = t(:pages)
+                .mainlist
+                  %ol
+                    - @current_anthology.texts.each do |text|
+                      %li
+                        %div{'class' => "by-card-v02" + (text.manifestation_id.nil? ? ' self-created-text' : '')}
+                          .anthology-card-header
+                            .drag-handle
+                              .handle
+                            .anthology-headline
                               - if text.manifestation_id.nil?
-                                .col-md-4.col-sm-12
-                                  %div
-                                    %span{:style => "font-weight:bold"}= t(:a_date)+': '
-                                    %span= text.updated_at.to_s
-                                .col-md-4.col-sm-12
-                                  %div{:style => "padding-bottom: 12px"}
-                                    %span{:style => "font-weight:bold"}= t(:word_count)+': '
-                                    %span= text.body.split.count
+                                = t(:curated_text_bit)+': '+text.title
+                                %span.by-icon-v02.markdown-icon _
                               - else
-                                .col-md-4.col-sm-12
-                                  %div{:style => "padding-bottom: 12px"}
-                                    %span{:style => "font-weight:bold"}= t(:genre)+': '
-                                    %span= textify_genre(text.manifestation.expressions[0].genre)
-                                  %div
-                                    - if text.manifestation.copyright?
-                                      %span.by-icon-v02.copyright-icon> x
-                                      = textify_copyright_status(true)
-                                      = link_to '[?]', '#', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_permission), 'data-content' => t(:permission_popover)
-                                    - else
-                                      %span.by-icon-v02.copyright-icon> m
-                                      = textify_copyright_status(false)
-                                      = link_to '[?]', '#', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_public_domain), 'data-content' => t(:public_domain_popover)
-                                .col-md-4.col-sm-12
-                                  %div{:style => "padding-bottom: 12px"}
-                                    %span{:style => "font-weight:bold"}= t(:page_count)+': '
-                                    %span= text.page_count
+                                = link_to text.manifestation.title + ' / ' + text.manifestation.author_string, manifestation_read_path(text.manifestation_id)
+                            .left-side-icons
+                              - if text.manifestation_id.nil?
+                                %div
+                                  %a{:href => "#"}
+                                    %span.by-icon-v02 Q
+                              %div{id: "collat#{text.id}", 'data-toggle' => 'collapse', 'data-target' => "#at#{text.id}"}
+                                %span.pointer.linkcolor
+                                  %span.by-icon-v02{style:'font-size: 14px'}= '<'
+                              %div
+                                %span.pointer.linkcolor
+                                  %span.by-icon-v02 ^
+                            .atcoll.collapse.in{id: "at#{text.id}"}
+                              .about-content-horizontal-separator
+                              .row.anthology-nested-content
+                                - if text.manifestation_id.nil?
+                                  .col-md-4.col-sm-12
+                                    %div
+                                      %span{:style => "font-weight:bold"}= t(:a_date)+': '
+                                      %span= text.updated_at.strftime('%d.%m.%Y')
+                                  .col-md-4.col-sm-12
+                                    %div{:style => "padding-bottom: 12px"}
+                                      %span{:style => "font-weight:bold"}= t(:word_count)+': '
+                                      %span= text.body.split.count
+                                - else
+                                  .col-md-4.col-sm-12
+                                    %div{:style => "padding-bottom: 12px"}
+                                      %span{:style => "font-weight:bold"}= t(:genre)+': '
+                                      %span= textify_genre(text.manifestation.expressions[0].genre)
+                                    %div
+                                      - if text.manifestation.copyright?
+                                        %span.by-icon-v02.copyright-icon> x
+                                        = textify_copyright_status(true)
+                                        = link_to '[?]', '#', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_permission), 'data-content' => t(:permission_popover)
+                                      - else
+                                        %span.by-icon-v02.copyright-icon> m
+                                        = textify_copyright_status(false)
+                                        = link_to '[?]', '#', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_public_domain), 'data-content' => t(:public_domain_popover)
+                                  .col-md-4.col-sm-12
+                                    %div{:style => "padding-bottom: 12px"}
+                                      %span{:style => "font-weight:bold"}= t(:page_count)+': '
+                                      %span= text.page_count
 
 
         .headline-3{style: 'margin:2rem 0', 'data-toggle'=>'collapse','data-target'=>'#extra_collapsible'}

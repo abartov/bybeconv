@@ -7,9 +7,11 @@ class AnthologyText < ApplicationRecord
   def page_count
     if self.cached_page_count.nil? or self.updated_at > 30.days.ago
       if self.manifestation_id.nil?
-        self.cached_page_count = self.body.split.count/500.ceil
+        n = self.body.split.count/500.to_f
+        self.cached_page_count = n.ceil
       else
-        self.cached_page_count = self.manifestation.word_count/500.ceil
+        n = self.manifestation.word_count/500.to_f
+        self.cached_page_count = n.ceil
       end
       self.save!
     end

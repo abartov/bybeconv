@@ -430,17 +430,19 @@ class ManifestationController < ApplicationController
   def prep_user_content
     if current_user
       @anthologies = current_user.anthologies
-      if session[:current_anthology].nil?
+
+      if session[:current_anthology_id].nil?
         if @anthologies.empty?
           @current_anthology = Anthology.new
           @current_anthology.title = t(:new_anthology)
         else
-          @current_anthology = @anthologies.first.includes(:anthology_texts)
-          session[:current_anthology] = @current_anthology
+          @current_anthology = @anthologies.includes(:texts).first
+          session[:current_anthology_id] = @current_anthology.id
         end
       else
-        @current_anthology = session[:current_anthology]
+        @current_anthology = Anthology.find(session[:current_anthology_id])
       end
+      @anthology_select_options = @anthologies.map{|a| [a.title, a.id, @current_anthology == a ? 'selected' : ''] }
     end
   end
   def prep_for_print
