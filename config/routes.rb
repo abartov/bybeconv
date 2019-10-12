@@ -1,6 +1,8 @@
 include BybeUtils
 Bybeconv::Application.routes.draw do
   resources :anthologies
+  match "anthologies/print/:id" => 'anthologies#print', as: 'anthology_print', via: [:get, :post]
+
   resources :news_items
   resources :mooses
   resources :bib_sources

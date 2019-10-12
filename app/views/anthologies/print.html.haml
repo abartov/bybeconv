@@ -1,0 +1,29 @@
+/ print mode.
+.print
+  #content.container-fluid
+    .row.text-page-content
+      .col-12.col-lg-8
+        .logo-for-print
+          %img.logoBY-v02{:alt => t(:logo), :src => "/assets/logo-byp-mobile.svg"}/
+        .row
+          .col.work-side-menu-area
+          .col
+            .by-card-v02.work-info-card
+              %h1= @anthology.title
+            .by-card-v02
+              .work-area
+                .work-content
+                  / TODO: more nuanced rendering here
+                  - @htmls.each do |title, html|
+                    %h1= title
+                    != html
+
+:javascript
+  $(document).ready(function() {
+    $(document).on('keyup',function(evt) {
+      if (evt.keyCode == 27) {
+        window.location.href = '#{url_for(action: :show, id: @anthology.id)}';
+      }
+    });
+    window.print();
+  });

@@ -1,5 +1,5 @@
 class AnthologiesController < ApplicationController
-  before_action :set_anthology, only: [:show, :edit, :update, :destroy]
+  before_action :set_anthology, only: [:show, :print, :edit, :update, :destroy]
 
   # GET /anthologies
   def index
@@ -9,10 +9,15 @@ class AnthologiesController < ApplicationController
   # GET /anthologies/1
   def show
     if @anthology.accessible?
-      @htmls = []
-      @anthology.ordered_texts.each {|text|
-        @htmls << [text.title, text.render_html]
-      }
+      prep_for_show
+    else
+      redirect_to '/', error: t(:no_permission)
+    end
+  end
+
+  def print
+    if @anthology.accessible?
+      prep_for_show
     else
       redirect_to '/', error: t(:no_permission)
     end
@@ -61,5 +66,12 @@ class AnthologiesController < ApplicationController
 
     def anthology_params
       params.require(:anthology).permit(:title, :access, :sequence)
+    end
+
+    def prep_for_show
+      @htmls = []
+      @anthology.ordered_texts.each {|text|
+        @htmls << [text.title, text.render_html]
+      }
     end
 end
