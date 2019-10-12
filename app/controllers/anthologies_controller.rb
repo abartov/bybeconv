@@ -8,6 +8,14 @@ class AnthologiesController < ApplicationController
 
   # GET /anthologies/1
   def show
+    if @anthology.accessible?
+      @htmls = []
+      @anthology.ordered_texts.each {|text|
+        @htmls << [text.title, text.render_html]
+      }
+    else
+      redirect_to '/', error: t(:no_permission)
+    end
   end
 
   # GET /anthologies/new

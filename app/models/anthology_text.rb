@@ -17,4 +17,9 @@ class AnthologyText < ApplicationRecord
     end
     return self.cached_page_count
   end
+
+  def render_html
+    markdown = self.manifestation_id.nil? ? self.body : self.manifestation.markdown
+    return MultiMarkdown.new(markdown).to_html.force_encoding('UTF-8').gsub(/<figcaption>.*?<\/figcaption>/,'') # remove MMD's automatic figcaptions
+  end
 end

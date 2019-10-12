@@ -1,0 +1,6 @@
+#content.container-fluid.top-element
+  %h1= @anthology.title
+
+  - @htmls.each do |title, html|
+    %h1= title
+    != html

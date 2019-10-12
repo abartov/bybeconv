@@ -106,6 +106,8 @@ he:
   donate: תרומה
   bookshelves: רשימות קריאה
   anthologies: מקראות
+  add_curated_text: הוספת קטע טקסט
+  add_works_to_anthology: הוספת יצירות מהמאגר
   new_anthology: מקראה חדשה
   access_control: רמת גישה
   priv: טיוטא פרטית
@@ -496,7 +498,7 @@ he:
   enlightenment_long: ההשכלה (1700 עד 1880)
   revival_long: התחיה (1880 עד 1948)
   modern_long: ספרות עברית חדשה (1948 ואילך)
-
+  no_permission: אין הרשאה לך לגשת לדף זה
   to_full_list: לרשימה המלאה
   manage_people: ניהול אישים
   to_manage_people: אם האיש/ה אינו/ה ברשימה, יש ליצור רשומה חדשה בניהול אישים (השינויים לא יישמרו אם לא בוצעה "שמירה ועדכון")

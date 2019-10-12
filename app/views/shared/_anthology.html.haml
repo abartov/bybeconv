@@ -24,7 +24,7 @@
             .anthologies-actions-area
               .icons-group-v02
                 #display-anthology.icon-in-group-v02
-                  %a{:href => "#"}
+                  %a{href: anthology_path(@current_anthology.id)}
                     %span.by-icon-v02 J
                 #display-anthology-description= t(:display_anthology_description)
                 #download.icon-in-group-v02
@@ -121,8 +121,14 @@
                                     %div{:style => "padding-bottom: 12px"}
                                       %span{:style => "font-weight:bold"}= t(:page_count)+': '
                                       %span= text.page_count
-
-
+              .anthology-bottom-link
+                %a{ href: '#'}
+                  %span.right-side-icon= '&'
+                  %span{style: 'font-weight:bold'}= t(:add_works_to_anthology)
+              .anthology-bottom-link
+                %a{ href: '#'}
+                  %span.right-side-icon= '&'
+                  %span{style: 'font-weight:bold'}= t(:add_curated_text)
         .headline-3{style: 'margin:2rem 0', 'data-toggle'=>'collapse','data-target'=>'#extra_collapsible'}
           %span.pointer= t(:tags_etc_title)
           != '&nbsp;&nbsp;'

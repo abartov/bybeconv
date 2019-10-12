@@ -14,4 +14,19 @@ class Anthology < ApplicationRecord
     end
     return self.cached_page_count
   end
+
+  def accessible?
+    return true if self.pub? or self.unlisted?
+    return true if current_user == self.user
+    return false
+  end
+
+  def ordered_texts
+    ret = []
+    seq = self.sequence.split(';')
+    seq.each do |id|
+      ret << self.texts.find(id)
+    end
+    return ret
+  end
 end
