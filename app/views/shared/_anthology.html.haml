@@ -51,7 +51,7 @@
               #anthology-status
                 %span.anthology-status-label= t(:access_control)
                 /.anthology-status-desktop
-                = select_tag :access, options_for_select(Anthology.accesses.map{|a| [t(a[0]), a[1]]}, (@current_anthology.access.nil? ? nil : Anthology.accesses[@current_anthology.access])), {style:'width:140px', onchange: "alert('hello'); $.post('#{anthology_path(@current_anthology.id)}', {'_method':'put', 'anthology[access]':this.value} );'}
+                = select_tag :access, options_for_select(Anthology.accesses.map{|a| [t(a[0]), a[0]]}, (@current_anthology.access.nil? ? nil : Anthology.accesses[@current_anthology.access])), {style:'width:140px'}
                 .anthology-select-mobile
           %div
             .by-card-content-v02
@@ -136,5 +136,9 @@
     });
     $('.atcoll').on('hidden.bs.collapse', function() {
       $("#coll"+this.id).find('.by-icon-v02').text('<');
+    });
+    $('#access').on('change', function() {
+      var new_access = $('#access option:selected').val();
+      $.post('#{anthology_path(@current_anthology.id)}', {'_method':'put', 'anthology[access]': new_access} );
     });
   });

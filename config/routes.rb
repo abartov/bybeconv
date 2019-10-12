@@ -1,5 +1,6 @@
 include BybeUtils
 Bybeconv::Application.routes.draw do
+  resources :anthologies
   resources :news_items
   resources :mooses
   resources :bib_sources
