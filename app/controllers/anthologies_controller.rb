@@ -1,5 +1,5 @@
 class AnthologiesController < ApplicationController
-  before_action :set_anthology, only: [:show, :print, :edit, :update, :destroy]
+  before_action :set_anthology, only: [:show, :print, :seq, :edit, :update, :destroy]
 
   # GET /anthologies
   def index
@@ -21,6 +21,11 @@ class AnthologiesController < ApplicationController
     else
       redirect_to '/', error: t(:no_permission)
     end
+  end
+
+  def seq
+    p = params.permit(:id,:old_pos, :new_pos, :anth_text_id)
+    @anthology.update_sequence(p[:anth_text_id].to_i, p[:old_pos].to_i, p[:new_pos].to_i)
   end
 
   # GET /anthologies/new

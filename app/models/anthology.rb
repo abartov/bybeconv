@@ -29,4 +29,17 @@ class Anthology < ApplicationRecord
     end
     return ret
   end
+
+  def update_sequence(text_id, old, new)
+    seq = self.sequence.split(';')
+    if old < new
+      seq.insert(new+1, text_id)
+      seq.delete_at(old)
+    else
+      seq.delete_at(old)
+      seq.insert(new, text_id)
+    end
+    self.sequence = seq.join(';')
+    self.save!
+  end
 end

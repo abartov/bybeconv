@@ -67,9 +67,9 @@
                     %span= @current_anthology.page_count
                     = t(:pages)
                 .mainlist
-                  %ol
-                    - @current_anthology.texts.each do |text|
-                      %li
+                  %ol#anth_texts
+                    - @current_anthology.ordered_texts.each do |text|
+                      %li{id: 'anth_text_'+text.id.to_s}
                         %div{'class' => "by-card-v02" + (text.manifestation_id.nil? ? ' self-created-text' : '')}
                           .anthology-card-header
                             .drag-handle
@@ -137,6 +137,7 @@
 
 :javascript
   $(document).ready(function() {
+    var cur_anth = #{@current_anthology.id};
     $('.atcoll').on('shown.bs.collapse', function() {
       $("#coll"+this.id).find('.by-icon-v02').text(']');
     });
@@ -146,5 +147,28 @@
     $('#access').on('change', function() {
       var new_access = $('#access option:selected').val();
       $.post('#{anthology_path(@current_anthology.id)}', {'_method':'put', 'anthology[access]': new_access} );
+    });
+
+    $('#anth_texts').sortable({
+      handle: '.drag-handle',
+      start: function(e, ui) {
+        // creates a temporary attribute on the element with the old index
+        $(this).attr('data-previndex', ui.item.index());
+      },
+      update: function(e, ui) {
+        // gets the new and old index then removes the temporary attribute
+        var newIndex = ui.item.index();
+        var oldIndex = $(this).attr('data-previndex');
+        var element_id = ui.item.attr('id').replace('anth_text_','');
+        //alert('id of Item moved = '+element_id+' old position = '+oldIndex+' new position = '+newIndex);
+        $(this).removeAttr('data-previndex');
+
+        ///code to pass the data using AJAX
+        if (newIndex != oldIndex) {
+          $.post('#{anthology_seq_path('999')}'.replace('999',cur_anth.toString()),
+              { id: cur_anth, anth_text_id: element_id, old_pos: oldIndex, new_pos: newIndex }
+          );
+        }
+      }
     });
   });
