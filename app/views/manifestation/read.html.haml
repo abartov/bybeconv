@@ -115,7 +115,7 @@
                       != tr.translators.map{|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
 #downloadDlg.modal{'aria-hidden' => 'true', role: 'dialog'}
   = render partial: 'shared/download', locals: {manifestation: @m}
-- if current_user
+- if current_user && current_user.anthologies.count > 0
   #downloadAnthologyDlg.modal{'aria-hidden' => 'true', role: 'dialog', style:'z-index:1900'}
     = render partial: 'shared/download', locals: {anthology: @current_anthology}
 #citeDlg.modal{'aria-hidden' => 'true', role: 'dialog'}
