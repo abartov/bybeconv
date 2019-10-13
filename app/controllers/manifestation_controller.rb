@@ -135,64 +135,7 @@ class ManifestationController < ApplicationController
     impressionist(@m) unless is_spider?
     filename = "#{@m.safe_filename}.#{params[:format]}"
     html = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"><html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"he\" lang=\"he\" dir=\"rtl\"><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" /></head><body dir='rtl' align='right'><div dir=\"rtl\" align=\"right\">#{@m.title_and_authors_html}"+MultiMarkdown.new(@m.markdown).to_html.force_encoding('UTF-8').gsub(/<figcaption>.*?<\/figcaption>/,'')+"\n\n<hr />"+I18n.t(:download_footer_html, url: url_for(action: :read, id: @m.id))+"</div></body></html>"
-    case params[:format]
-    when 'pdf'
-      pdfname = HtmlFile.pdf_from_any_html(html)
-      pdf = File.read(pdfname)
-      send_data pdf, type: 'application/pdf', filename: filename
-      File.delete(pdfname) # delete temporary generated PDF
-    when 'doc'
-      begin
-        temp_file = Tempfile.new('tmp_doc_'+@m.id.to_s, 'tmp/')
-        temp_file.puts(PandocRuby.convert(html, M: 'dir=rtl', from: :html, to: :docx).force_encoding('UTF-8')) # requires pandoc 1.17.3 or higher, for correct directionality
-        temp_file.chmod(0644)
-        send_file temp_file, type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', filename: filename
-      ensure
-        temp_file.close
-      end
-    when 'html'
-      begin
-        temp_file = Tempfile.new('tmp_html_'+@m.id.to_s, 'tmp/')
-        temp_file.puts(html)
-        temp_file.chmod(0644)
-        send_file temp_file, type: 'text/html', filename: filename
-      ensure
-        temp_file.close
-      end
-    when 'txt'
-      txt = html2txt(html)
-      txt.gsub!("\n","\r\n") if params[:os] == 'Windows' # windows linebreaks
-      begin
-        temp_file = Tempfile.new('tmp_txt_'+@m.id.to_s,'tmp/')
-        temp_file.puts(txt)
-        temp_file.chmod(0644)
-        send_file temp_file, type: 'text/plain', filename: filename
-      ensure
-        temp_file.close
-      end
-    when 'epub'
-      begin
-        epubname = make_epub_from_single_html(html, @m)
-        epub_data = File.read(epubname)
-        send_data epub_data, type: 'application/epub+zip', filename: filename
-        File.delete(epubname) # delete temporary generated EPUB
-      end
-    when 'mobi'
-      begin
-        # TODO: figure out how not to go through epub
-        epubname = make_epub_from_single_html(html, @m)
-        mobiname = epubname[epubname.rindex('/')+1..-6]+'.mobi'
-        out = `kindlegen #{epubname} -c1 -o #{mobiname}`
-        mobiname = epubname[0..-6]+'.mobi'
-        mobi_data = File.read(mobiname)
-        send_data mobi_data, type: 'application/x-mobipocket-ebook', filename: filename
-        File.delete(epubname) # delete temporary generated EPUB
-        File.delete(mobiname) # delete temporary generated MOBI
-      end
-    else
-      flash[:error] = t(:unrecognized_format)
-      redirect_to fallback_location: {action: read, id: @m.id}
-    end
+    do_download(params[:format], filename, html, @m)
   end
 
   def render_html

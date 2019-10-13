@@ -284,6 +284,70 @@ end
     return 'https://www.youtube.com/watch?v='+id
   end
 
+  def do_download(format, filename, html, download_entity)
+    case format
+    when 'pdf'
+      pdfname = HtmlFile.pdf_from_any_html(html)
+      pdf = File.read(pdfname)
+      send_data pdf, type: 'application/pdf', filename: filename
+      File.delete(pdfname) # delete temporary generated PDF
+    when 'doc'
+      begin
+        temp_file = Tempfile.new('tmp_doc_'+download_entity.id.to_s, 'tmp/')
+        temp_file.puts(PandocRuby.convert(html, M: 'dir=rtl', from: :html, to: :docx).force_encoding('UTF-8')) # requires pandoc 1.17.3 or higher, for correct directionality
+        temp_file.chmod(0644)
+        send_file temp_file, type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', filename: filename
+      ensure
+        temp_file.close
+      end
+    when 'html'
+      begin
+        temp_file = Tempfile.new('tmp_html_'+download_entity.id.to_s, 'tmp/')
+        temp_file.puts(html)
+        temp_file.chmod(0644)
+        send_file temp_file, type: 'text/html', filename: filename
+      ensure
+        temp_file.close
+      end
+    when 'txt'
+      txt = html2txt(html)
+      txt.gsub!("\n","\r\n") if params[:os] == 'Windows' # windows linebreaks
+      begin
+        temp_file = Tempfile.new('tmp_txt_'+download_entity.id.to_s,'tmp/')
+        temp_file.puts(txt)
+        temp_file.chmod(0644)
+        send_file temp_file, type: 'text/plain', filename: filename
+      ensure
+        temp_file.close
+      end
+    when 'epub'
+      begin
+        epubname = make_epub_from_single_html(html, download_entity)
+        epub_data = File.read(epubname)
+        send_data epub_data, type: 'application/epub+zip', filename: filename
+        File.delete(epubname) # delete temporary generated EPUB
+      end
+    when 'mobi'
+      begin
+        # TODO: figure out how not to go through epub
+        epubname = make_epub_from_single_html(html, download_entity)
+        mobiname = epubname[epubname.rindex('/')+1..-6]+'.mobi'
+        out = `kindlegen #{epubname} -c1 -o #{mobiname}`
+        mobiname = epubname[0..-6]+'.mobi'
+        mobi_data = File.read(mobiname)
+        send_data mobi_data, type: 'application/x-mobipocket-ebook', filename: filename
+        File.delete(epubname) # delete temporary generated EPUB
+        File.delete(mobiname) # delete temporary generated MOBI
+      end
+    else
+      flash[:error] = t(:unrecognized_format)
+      if download_entity.class == Anthology
+        redirect_to anthology_path(download_entity.id) # TODO: handle anthology case
+      else
+        redirect_to manifestation_read_path(download_entity.id) # TODO: handle anthology case
+      end
+    end
+  end
   public # temp
   def newsfeed
     unsorted_news_items = NewsItem.last(5) # read at most the last 5 persistent news items (Facebook posts, announcements)

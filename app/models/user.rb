@@ -19,6 +19,7 @@ class User < ApplicationRecord
     property :fontsize, default: '2'
     property :volunteer, default: 'false' # boolean  (another option - :protected => true)
     property :activated, default: 'false' # boolean
+    property :suppress_anthology_intro, default: 'false'
   end
 
   def admin?

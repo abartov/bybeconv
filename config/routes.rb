@@ -2,6 +2,7 @@ include BybeUtils
 Bybeconv::Application.routes.draw do
   resources :anthologies
   match "anthologies/print/:id" => 'anthologies#print', as: 'anthology_print', via: [:get, :post]
+  match "anthologies/download/:id" => 'anthologies#download', as: 'anthology_download', via: [:get, :post]
   match "anthologies/seq/:id" => 'anthologies#seq', as: 'anthology_seq', via: [:get, :post]
 
   resources :news_items

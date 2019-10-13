@@ -27,9 +27,8 @@
                   %a{href: anthology_path(@current_anthology.id)}
                     %span.by-icon-v02 J
                 #display-anthology-description= t(:display_anthology_description)
-                #download.icon-in-group-v02
-                  %a{:href => "#"}
-                    %span.by-icon-v02 3
+                #download.icon-in-group-v02.linkcolor.pointer{'data-toggle' => 'modal', 'data-target' => '#downloadAnthologyDlg', style: "margin-left:0;"}
+                  %span.by-icon-v02 3
                 #download-description= t(:download_description)
                 #print.icon-in-group-v02
                   %a{href: anthology_print_path(@current_anthology.id)}
@@ -134,7 +133,6 @@
           != '&nbsp;&nbsp;'
           %i.fa.chevron.baseline{style:'display:inline'}
         .row.collapse.in#extra_collapsible
-
 :javascript
   $(document).ready(function() {
     var cur_anth = #{@current_anthology.id};
