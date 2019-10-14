@@ -45,6 +45,22 @@
                 %span= t(:create_new_list_or_anthology)
         - else
           - panel_state = 'block'
+        .by-popup-v02.narrow-popup#new_anth{style:'display:none'}
+          .by-card-header-v02.desktop-only
+            %span.headline-1-v02= t(:create_new_list_or_anthology)
+            %a.popup-x-v02.pointer{'data-dismiss'=>'modal'} -
+          %div
+            .by-card-content-v02.card-with-button
+              .search-mobile-switch
+                %button.search-mobile-option{:href => "#"}= t(:reading_list)
+                %button.search-mobile-option.active{:href => "#"}= t(:anthology)
+              .field-label= t(:anthology_name)
+              %input.field-v02{:type => "text"}/
+              .no-header
+              .bottom-left-buttons
+                %button.by-button-v02.by-button-secondary-v02{'data-dismiss'=>'modal'}
+                  %div= t(:cancel)
+                %button.by-button-v02{:href => "#"}= t(:create_new_anthology)
         .anthology#anth_panel{style: 'display: '+panel_state}
           .by-card-header-v02.desktop-only
             %a.horizontal-collapse{:href => "#"} ?
