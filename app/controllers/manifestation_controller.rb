@@ -375,10 +375,7 @@ class ManifestationController < ApplicationController
       @anthologies = current_user.anthologies
 
       if session[:current_anthology_id].nil?
-        if @anthologies.empty?
-          @current_anthology = Anthology.new
-          @current_anthology.title = t(:new_anthology)
-        else
+        unless @anthologies.empty?
           @current_anthology = @anthologies.includes(:texts).first
           session[:current_anthology_id] = @current_anthology.id
         end
@@ -386,6 +383,7 @@ class ManifestationController < ApplicationController
         @current_anthology = Anthology.find(session[:current_anthology_id])
       end
       @anthology_select_options = @anthologies.map{|a| [a.title, a.id, @current_anthology == a ? 'selected' : ''] }
+      @cur_anth_id = @current_anthology.nil? ? 0 : @current_anthology.id
     end
   end
   def prep_for_print
