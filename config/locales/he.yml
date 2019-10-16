@@ -106,7 +106,13 @@ he:
   donate: תרומה
   bookshelves: רשימות קריאה
   anthologies: מקראות
-  add_curated_text: הוספת קטע טקסט
+  add_curated_text: הוספת טקסט מלווה
+  curated_text_title: שם קטע הטקסט
+  curated_text: טקסט מלווה
+  paste_or_copy_text_here: העתיקו לכאן או הקלידו את הטקסט
+  markdown_display: תצוגת Markdown
+  preview_here:  תצוגה מקדימה תופיע כאן
+  markdown_instructions: דוגמא והוראות לשימוש ב-Markdown
   add_works_to_anthology: הוספת יצירות מהמאגר
   new_anthology: מקראה חדשה
   access_control: רמת גישה

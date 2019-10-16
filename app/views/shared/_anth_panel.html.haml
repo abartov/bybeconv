@@ -109,11 +109,11 @@
                                 %span{:style => "font-weight:bold"}= t(:page_count)+': '
                                 %span= text.page_count
         .anthology-bottom-link
-          %a{ href: '#'}
+          %button.btn-text-v02#add_work
             %span.right-side-icon= '&'
             %span{style: 'font-weight:bold'}= t(:add_works_to_anthology)
         .anthology-bottom-link
-          %a{ href: '#'}
+          %button.btn-text-v02#add_curated_btn
             %span.right-side-icon= '&'
             %span{style: 'font-weight:bold'}= t(:add_curated_text)
 :javascript
@@ -125,4 +125,9 @@
         $.post('#{anthology_path(@anthology.nil? ? 0 : @anthology.id)}', {'_method':'put', 'anthology[access]': new_access} );
       });
     }
+    $('#add_curated_btn').click(function(e){
+      e.preventDefault();
+      $('#anth_panel').hide();
+      $('#add_curated').show();
+    });
   });

@@ -116,6 +116,7 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
 .work-chapters-dropdown-field-desktop {
   cursor: pointer;
 }
+.modal-dialog{max-width: unset;}
 .modal-content { border: 0;}
 .modal-header{border:0;}
 .modal-footer{border:0;}

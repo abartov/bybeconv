@@ -45,6 +45,35 @@
                 %span= t(:create_new_list_or_anthology)
         - else
           - show_panel = true
+        .panel-v02#add_curated{style:'display:none'}
+          .by-card-header-v02.desktop-only
+            %span.headline-1-v02= t(:add_curated_text)
+          %div
+            .by-card-content-v02.card-with-button
+              .row
+                .col-6
+                  #self-text-name.field-label= t(:curated_text_title)
+                  %input.field-v02{:type => "text"}/
+                .col-6
+              #added-self-text.row
+                .col-6
+                  %div
+                    .field-label= t(:curated_text)
+                    %textarea.field-v02.text-area-v02{:placeholder => t(:paste_or_copy_text_here)}
+                .col-6
+                  %div
+                    .field-label
+                      = t(:markdown_display)
+                      .field-top-link
+                        %a{:href => "#"}= t(:markdown_instructions)
+                    .text-demonstration
+                      .empty
+                        .hint= t(:preview_here)
+              .bottom-left-buttons
+                %button.by-button-v02.by-button-secondary-v02
+                  %div= t(:cancel)
+                %button.by-button-v02{:href => "#"}= t(:add_curated_text)
+
         .by-popup-v02.narrow-popup#new_anth{style:'display:none'}
           .by-card-header-v02.desktop-only
             %span.headline-1-v02= t(:create_new_list_or_anthology)
@@ -103,7 +132,8 @@
         }
       }
     });
-    $('#create_anth').click(function() {
+    $('#create_anth').click(function(e) {
+      e.preventDefault();
       $('#new_anth').show();
       $('#no_anths').hide();
     });
