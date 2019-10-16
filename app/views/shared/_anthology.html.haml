@@ -2,7 +2,7 @@
   .modal-content
     .container-fluid
       .modal-header
-        - if @current_anthology.nil?
+        - if @anthology.nil?
           .anthology-top
             .row{:style => "padding:15px;margin: 0"}
               .col-4{:style => "padding: 0;"}
@@ -23,8 +23,8 @@
               .col-4{:style => "padding: 0;"}
               .col-4
       .modal-body
-        - if @current_anthology.nil?
-          - panel_state = 'none'
+        - if @anthology.nil?
+          - show_panel = false
           .anthology#no_anths
             .by-card-header-v02.desktop-only
               %a.horizontal-collapse{:href => "#"} ?
@@ -44,141 +44,29 @@
                 %span.right-side-icon= '&'
                 %span= t(:create_new_list_or_anthology)
         - else
-          - panel_state = 'block'
+          - show_panel = true
         .by-popup-v02.narrow-popup#new_anth{style:'display:none'}
           .by-card-header-v02.desktop-only
             %span.headline-1-v02= t(:create_new_list_or_anthology)
             %a.popup-x-v02.pointer{'data-dismiss'=>'modal'} -
           %div
             .by-card-content-v02.card-with-button
-              .search-mobile-switch
-                %button.search-mobile-option{:href => "#"}= t(:reading_list)
-                %button.search-mobile-option.active{:href => "#"}= t(:anthology)
-              .field-label= t(:anthology_name)
-              %input.field-v02{:type => "text"}/
-              .no-header
-              .bottom-left-buttons
-                %button.by-button-v02.by-button-secondary-v02{'data-dismiss'=>'modal'}
-                  %div= t(:cancel)
-                %button.by-button-v02{:href => "#"}= t(:create_new_anthology)
-        .anthology#anth_panel{style: 'display: '+panel_state}
-          .by-card-header-v02.desktop-only
-            %a.horizontal-collapse{:href => "#"} ?
-            #anthology-select
-              /.anthology-select-desktop
-              /  .field-v02
-              = select_tag :anthologies, options_for_select(@anthology_select_options), {style:'width:300px'}
-            .anthology-select-mobile
-            %a.popup-x-v02.pointer{'data-dismiss'=>'modal'} -
-            .anthologies-actions-area
-              .icons-group-v02
-                #display-anthology.icon-in-group-v02
-                  %a{href: @current_anthology.nil? ? '' : anthology_path(@current_anthology.id)}
-                    %span.by-icon-v02 J
-                #display-anthology-description= t(:display_anthology_description)
-                #download.icon-in-group-v02.linkcolor.pointer{'data-toggle' => 'modal', 'data-target' => '#downloadAnthologyDlg', style: "margin-left:0;"}
-                  %span.by-icon-v02 3
-                #download-description= t(:download_description)
-                #print.icon-in-group-v02
-                  %a{href: @current_anthology.nil? ? '' : anthology_print_path(@current_anthology.id)}
-                    %span.by-icon-v02 9
-                #print-description= t(:print_description)
-                #copy.icon-in-group-v02
-                  %a{:href => "#"}
-                    %span.by-icon-v02 [
-                #copy-description= t(:copy_description)
-                #delete.icon-in-group-v02
-                  %a{:href => "#"}
-                    %span.by-icon-v02 ^
-                #delete-description= t(:delete_description)
-                #share.icon-in-group-v02
-                  %a{:href => "#"}
-                    %span.by-icon-v02 U
-                #share-description
-                  = t(:share_description)
-              #anthology-status
-                %span.anthology-status-label= t(:access_control)
-                /.anthology-status-desktop
-                = select_tag :access, options_for_select(Anthology.accesses.map{|a| [t(a[0]), a[0]]}, ((@current_anthology.nil? || @current_anthology.access.nil?) ? nil : Anthology.accesses[@current_anthology.access])), {style:'width:140px'}
-                .anthology-select-mobile
-          %div
-            .by-card-content-v02
-              .anthology-cards-area
-                - unless @current_anthology.nil?
-                  .anthology-numbers
-                    %div
-                      %span= @current_anthology.texts.is_text.count
-                      = t(:works)
-                    %div
-                      %span= @current_anthology.texts.is_curated.count
-                      = t(:curated_text_bits)
-                    %div
-                      %span= @current_anthology.page_count
-                      = t(:pages)
-                .mainlist
-                  %ol#anth_texts
-                    - unless @current_anthology.nil?
-                      - @current_anthology.ordered_texts.each do |text|
-                        %li{id: 'anth_text_'+text.id.to_s}
-                          %div{'class' => "by-card-v02" + (text.manifestation_id.nil? ? ' self-created-text' : '')}
-                            .anthology-card-header
-                              .drag-handle
-                                .handle
-                              .anthology-headline
-                                - if text.manifestation_id.nil?
-                                  = t(:curated_text_bit)+': '+text.title
-                                  %span.by-icon-v02.markdown-icon _
-                                - else
-                                  = link_to text.manifestation.title + ' / ' + text.manifestation.author_string, manifestation_read_path(text.manifestation_id)
-                              .left-side-icons
-                                - if text.manifestation_id.nil?
-                                  %div
-                                    %a{:href => "#"}
-                                      %span.by-icon-v02 Q
-                                %div{id: "collat#{text.id}", 'data-toggle' => 'collapse', 'data-target' => "#at#{text.id}"}
-                                  %span.pointer.linkcolor
-                                    %span.by-icon-v02{style:'font-size: 14px'}= '<'
-                                %div
-                                  %span.pointer.linkcolor
-                                    %span.by-icon-v02 ^
-                              .atcoll.collapse.in{id: "at#{text.id}"}
-                                .about-content-horizontal-separator
-                                .row.anthology-nested-content
-                                  - if text.manifestation_id.nil?
-                                    .col-md-4.col-sm-12
-                                      %div
-                                        %span{:style => "font-weight:bold"}= t(:a_date)+': '
-                                        %span= text.updated_at.strftime('%d.%m.%Y')
-                                    .col-md-4.col-sm-12
-                                      %div{:style => "padding-bottom: 12px"}
-                                        %span{:style => "font-weight:bold"}= t(:word_count)+': '
-                                        %span= text.body.split.count
-                                  - else
-                                    .col-md-4.col-sm-12
-                                      %div{:style => "padding-bottom: 12px"}
-                                        %span{:style => "font-weight:bold"}= t(:genre)+': '
-                                        %span= textify_genre(text.manifestation.expressions[0].genre)
-                                      %div
-                                        - if text.manifestation.copyright?
-                                          %span.by-icon-v02.copyright-icon> x
-                                          = textify_copyright_status(true)
-                                          = link_to '[?]', '#', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_permission), 'data-content' => t(:permission_popover)
-                                        - else
-                                          %span.by-icon-v02.copyright-icon> m
-                                          = textify_copyright_status(false)
-                                          = link_to '[?]', '#', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_public_domain), 'data-content' => t(:public_domain_popover)
-                                    .col-md-4.col-sm-12
-                                      %div{:style => "padding-bottom: 12px"}
-                                        %span{:style => "font-weight:bold"}= t(:page_count)+': '
-                                        %span= text.page_count
-                .anthology-bottom-link
-                  %a{ href: '#'}
-                    %span.right-side-icon= '&'
-                    %span{style: 'font-weight:bold'}= t(:add_works_to_anthology)
-                .anthology-bottom-link
-                  %a{ href: '#'}
-                    %span.right-side-icon= '&'
-                    %span{style: 'font-weight:bold'}= t(:add_curated_text)
+              - @new_anthology = Anthology.new
+              = form_with(model: @new_anthology, url: anthologies_path(@new_anthology), data: {remote: true}, id: 'new_anthology') do |anth|
+                .search-mobile-switch
+                  %button.search-mobile-option#opt_rlist= t(:reading_list)
+                  %button.search-mobile-option.active#opt_anth= t(:anthology)
+                = anth.hidden_field :listtype, id: 'listtype', value: 'anth'
+                = anth.hidden_field :access, value: 'priv'
+                = anth.hidden_field :user_id, value: current_user.id
+                = anth.label t(:anthology_name), {'class' => 'field-label'}
+                = anth.text_field :title, autofocus: true, required: true, class: 'field-v02', value: "#{t(:anthology)}-#{@anthologies.count + 1}"
+                .no-header
+                .bottom-left-buttons
+                  %button.by-button-v02.by-button-secondary-v02.pointer{'data-dismiss'=>'modal'}
+                    %div= t(:cancel)
+                  = anth.submit t(:create_new_anthology), {'class' => 'by-button-v02 pointer'}
+        = render partial: 'shared/anth_panel', locals: {show_panel: show_panel}
         .headline-3{style: 'margin:2rem 0', 'data-toggle'=>'collapse','data-target'=>'#extra_collapsible'}
           %span.pointer= t(:tags_etc_title)
           != '&nbsp;&nbsp;'
@@ -193,12 +81,6 @@
     $('.atcoll').on('hidden.bs.collapse', function() {
       $("#coll"+this.id).find('.by-icon-v02').text('<');
     });
-    if(cur_anth != 0) {
-      $('#access').on('change', function() {
-        var new_access = $('#access option:selected').val();
-        $.post('#{anthology_path(@cur_anth_id)}', {'_method':'put', 'anthology[access]': new_access} );
-      });
-    }
     $('#anth_texts').sortable({
       handle: '.drag-handle',
       start: function(e, ui) {
@@ -224,5 +106,21 @@
     $('#create_anth').click(function() {
       $('#new_anth').show();
       $('#no_anths').hide();
+    });
+    $('#opt_rlist').click(function(e){
+      e.preventDefault();
+      $('#opt_anth').removeClass('active');
+      $('#opt_rlist').addClass('active');
+      $('#listtype').val('rlist');
+    });
+    $('#opt_anth').click(function(e){
+      e.preventDefault();
+      $('#opt_anth').addClass('active');
+      $('#opt_rlist').removeClass('active');
+      $('#listtype').val('anth');
+    });
+    $('#new_anthology').on('ajax:success', function(event) {
+      $('#new_anth').hide();
+      $('#anth_panel').show();
     });
   });

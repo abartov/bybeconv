@@ -5,7 +5,7 @@ gem 'rails-i18n', git: 'https://github.com/svenfuchs/rails-i18n.git' # , branch:
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
-
+gem 'rails-ujs'
 gem 'mysql2' # Rails 5.2 needs a newer one # , '~> 0.3.11'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-twitter'

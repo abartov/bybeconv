@@ -8,7 +8,7 @@ class AnthologiesController < ApplicationController
 
   # GET /anthologies/1
   def show
-    if @anthology.accessible?
+    if @anthology.accessible?(current_user)
       prep_for_show
     else
       redirect_to '/', error: t(:no_permission)
@@ -16,7 +16,7 @@ class AnthologiesController < ApplicationController
   end
 
   def download
-    if @anthology.accessible?
+    if @anthology.accessible?(current_user)
       prep_for_show
       # impressionist(@m) unless is_spider? # TODO: enable impressionist for anthologies
       filename = "#{@anthology.title.gsub(/[^0-9א-תA-Za-z.\-]/, '_')}.#{params[:format]}"
@@ -28,7 +28,7 @@ class AnthologiesController < ApplicationController
   end
 
   def print
-    if @anthology.accessible?
+    if @anthology.accessible?(current_user)
       prep_for_show
     else
       redirect_to '/', error: t(:no_permission)
@@ -53,10 +53,13 @@ class AnthologiesController < ApplicationController
   def create
     @anthology = Anthology.new(anthology_params)
 
-    if @anthology.save
-      redirect_to @anthology, notice: 'Anthology was successfully created.'
-    else
-      render :new
+    respond_to do |format|
+      if @anthology.save
+        format.js
+        format.html {redirect_to @anthology, notice: 'Anthology was successfully created.'}
+      else
+        render :new
+      end
     end
   end
 
@@ -82,7 +85,7 @@ class AnthologiesController < ApplicationController
     end
 
     def anthology_params
-      params.require(:anthology).permit(:title, :access, :sequence)
+      params.require(:anthology).permit(:title, :access, :sequence, :user_id)
     end
 
     def prep_for_show

@@ -117,7 +117,7 @@
   = render partial: 'shared/download', locals: {manifestation: @m}
 - if current_user && current_user.anthologies.count > 0
   #downloadAnthologyDlg.modal{'aria-hidden' => 'true', role: 'dialog', style:'z-index:1900'}
-    = render partial: 'shared/download', locals: {anthology: @current_anthology}
+    = render partial: 'shared/download', locals: {anthology: @anthology}
 #citeDlg.modal{'aria-hidden' => 'true', role: 'dialog'}
   = render partial: 'shared/cite', locals: {manifestation: @m}
 / found mistake popup

@@ -154,4 +154,7 @@ module ApplicationHelper
       return 'O'
     end
   end
+  def anthology_select_options
+    current_user.anthologies.map{|a| [a.title, a.id, @anthology == a ? 'selected' : ''] }
+  end
 end

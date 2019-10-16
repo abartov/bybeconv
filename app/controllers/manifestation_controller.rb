@@ -376,14 +376,18 @@ class ManifestationController < ApplicationController
 
       if session[:current_anthology_id].nil?
         unless @anthologies.empty?
-          @current_anthology = @anthologies.includes(:texts).first
-          session[:current_anthology_id] = @current_anthology.id
+          @anthology = @anthologies.includes(:texts).first
+          session[:current_anthology_id] = @anthology.id
         end
       else
-        @current_anthology = Anthology.find(session[:current_anthology_id])
+        begin
+          @anthology = Anthology.find(session[:current_anthology_id])
+        rescue
+          session[:current_anthology_id] = nil # if somehow deleted without resetting the session variable (e.g. during development)
+        end
       end
-      @anthology_select_options = @anthologies.map{|a| [a.title, a.id, @current_anthology == a ? 'selected' : ''] }
-      @cur_anth_id = @current_anthology.nil? ? 0 : @current_anthology.id
+      @anthology_select_options = @anthologies.map{|a| [a.title, a.id, @anthology == a ? 'selected' : ''] }
+      @cur_anth_id = @anthology.nil? ? 0 : @anthology.id
     end
   end
   def prep_for_print
