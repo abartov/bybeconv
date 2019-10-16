@@ -1,3 +1,32 @@
+!= "<script src=\"https://cdnjs.cloudflare.com/ajax/libs/markdown-it/10.0.0/markdown-it.min.js\"></script>"
+.panel-v02#add_curated{style:'display:none'}
+  .by-card-header-v02.desktop-only
+    %span.headline-1-v02= t(:add_curated_text)
+  %div
+    .by-card-content-v02.card-with-button
+      .row
+        .col-6
+          #self-text-name.field-label= t(:curated_text_title)
+          %input.field-v02{:type => "text"}/
+        .col-6
+      #added-self-text.row
+        .col-6
+          %div
+            .field-label= t(:curated_text)
+            %textarea.field-v02.text-area-v02#curated_markdown{:placeholder => t(:paste_or_copy_text_here)}
+        .col-6
+          %div
+            .field-label
+              = t(:markdown_display)
+              .field-top-link
+                %a{:href => "#"}= t(:markdown_instructions)
+            .text-demonstration#curated_preview
+              .empty
+                .hint= t(:preview_here)
+      .bottom-left-buttons
+        %button.by-button-v02.by-button-secondary-v02
+          %div= t(:cancel)
+        %button.by-button-v02{:href => "#"}= t(:add_curated_text)
 .anthology#anth_panel{style: 'display: '+(show_panel ? 'block' : 'none')}
   .by-card-header-v02.desktop-only
     %a.horizontal-collapse{:href => "#"} ?
@@ -118,6 +147,7 @@
             %span{style: 'font-weight:bold'}= t(:add_curated_text)
 :javascript
   $(document).ready(function() {
+    var md = window.markdownit({linkify: true}); // markdown parser
     var cur_anth = #{@anthology.nil? ? 0 : @anthology.id};
      if(cur_anth != 0) {
       $('#access').on('change', function() {
@@ -129,5 +159,13 @@
       e.preventDefault();
       $('#anth_panel').hide();
       $('#add_curated').show();
+    });
+    $('#curated_markdown').on('paste', function(){
+       var rendered = md.render($(this).val());
+       $('#curated_preview').html(rendered);
+    });
+    $('#curated_markdown').keyup(function(){
+       var rendered = md.render($(this).val());
+       $('#curated_preview').html(rendered);
     });
   });
