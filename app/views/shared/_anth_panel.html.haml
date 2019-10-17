@@ -157,7 +157,35 @@
   $(document).ready(function() {
     var md = window.markdownit({linkify: true}); // markdown parser
     var cur_anth = #{@anthology.nil? ? 0 : @anthology.id};
-     if(cur_anth != 0) {
+    $('.atcoll').on('shown.bs.collapse', function() {
+      $("#coll"+this.id).find('.by-icon-v02').text(']');
+    });
+    $('.atcoll').on('hidden.bs.collapse', function() {
+      $("#coll"+this.id).find('.by-icon-v02').text('<');
+    });
+    $('#anth_texts').sortable({
+      handle: '.drag-handle',
+      start: function(e, ui) {
+        // creates a temporary attribute on the element with the old index
+        $(this).attr('data-previndex', ui.item.index());
+      },
+      update: function(e, ui) {
+        // gets the new and old index then removes the temporary attribute
+        var newIndex = ui.item.index();
+        var oldIndex = $(this).attr('data-previndex');
+        var element_id = ui.item.attr('id').replace('anth_text_','');
+        //alert('id of Item moved = '+element_id+' old position = '+oldIndex+' new position = '+newIndex);
+        $(this).removeAttr('data-previndex');
+
+        ///code to pass the data using AJAX
+        if (newIndex != oldIndex) {
+          $.post('#{anthology_seq_path('999')}'.replace('999',cur_anth.toString()),
+              { id: cur_anth, anth_text_id: element_id, old_pos: oldIndex, new_pos: newIndex }
+          );
+        }
+      }
+    });
+    if(cur_anth != 0) {
       $('#access').on('change', function() {
         var new_access = $('#access option:selected').val();
         $.post('#{anthology_path(@anthology.nil? ? 0 : @anthology.id)}', {'_method':'put', 'anthology[access]': new_access} );
