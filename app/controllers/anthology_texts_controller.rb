@@ -4,6 +4,7 @@ class AnthologyTextsController < ApplicationController
   # POST /anthology_texts
   def create
     @anthology_text = AnthologyText.new(anthology_text_params)
+    @anthology_text.title = @anthology_text.manifestation.title_and_authors unless @anthology_text.manifestation_id.nil?
     @anthology = @anthology_text.anthology
     respond_to do |format|
       if @anthology_text.save
@@ -20,6 +21,15 @@ class AnthologyTextsController < ApplicationController
   end
 
   def destroy
+    unless @anthology_text.nil?
+      @anthology = @anthology_text.anthology
+      @anthology.remove_from_sequence(@anthology_text.id)
+      @deleted_id = @anthology_text.id.to_s
+      @anthology_text.destroy!
+      respond_to do |format|
+        format.js # destroy.js.erb
+      end
+    end
   end
 
   def show

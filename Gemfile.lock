@@ -80,6 +80,7 @@ GEM
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.0)
     aws-sigv4 (1.0.3)
+    better_sjr (1.0.0)
     binding_of_caller (0.8.0)
       debug_inspector (>= 0.0.1)
     builder (3.2.3)
@@ -497,6 +498,7 @@ DEPENDENCIES
   activerecord-session_store
   app_constants
   aws-sdk-s3
+  better_sjr
   byebug
   capistrano (~> 3.11)
   capistrano-rails (~> 1.4)

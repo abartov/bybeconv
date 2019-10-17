@@ -106,5 +106,5 @@ group :development do
   gem 'rvm1-capistrano3', require: false
   gem 'capistrano-thin', '~> 2.0.0'
   gem 'capistrano-rvm'
-
+  gem 'better_sjr' # ease debugging of server-side JS responses
 end

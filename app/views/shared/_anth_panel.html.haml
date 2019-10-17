@@ -78,17 +78,8 @@
       %div
         .by-card-content-v02
           .anthology-cards-area
-            - unless @anthology.nil?
-              .anthology-numbers
-                %div
-                  %span= @anthology.texts.is_text.count
-                  = t(:works)
-                %div
-                  %span= @anthology.texts.is_curated.count
-                  = t(:curated_text_bits)
-                %div
-                  %span= @anthology.page_count
-                  = t(:pages)
+            #anth_stats
+              = render partial: 'shared/anth_stats'
             .mainlist
               %ol#anth_texts
                 - unless @anthology.nil?
@@ -112,8 +103,8 @@
                             %div{id: "collat#{text.id}", 'data-toggle' => 'collapse', 'data-target' => "#at#{text.id}"}
                               %span.pointer.linkcolor
                                 %span.by-icon-v02{style:'font-size: 14px'}= '<'
-                            %div
-                              %span.pointer.linkcolor
+                            %div.pointer.delbutton{id: "del#{text.id}"}
+                              %span.linkcolor
                                 %span.by-icon-v02 ^
                           .atcoll.collapse.in{id: "at#{text.id}"}
                             .about-content-horizontal-separator
@@ -145,8 +136,12 @@
                                   %div{:style => "padding-bottom: 12px"}
                                     %span{:style => "font-weight:bold"}= t(:page_count)+': '
                                     %span= text.page_count
+            .anthology-bottom-link#add_work_block{style: 'display: none'}
+              %button.btn-text-v02.pointer#add_work_btn
+                %span.right-side-icon= '&'
+                %span{style: 'font-weight:bold'}= t(:add_this_work_to_anthology)
             .anthology-bottom-link
-              %button.btn-text-v02#add_work
+              %button.btn-text-v02#add_works
                 %span.right-side-icon= '&'
                 %span{style: 'font-weight:bold'}= t(:add_works_to_anthology)
             .anthology-bottom-link
@@ -157,12 +152,17 @@
   $(document).ready(function() {
     var md = window.markdownit({linkify: true}); // markdown parser
     var cur_anth = #{@anthology.nil? ? 0 : @anthology.id};
+    var m = null;
     $('.atcoll').on('shown.bs.collapse', function() {
       $("#coll"+this.id).find('.by-icon-v02').text(']');
     });
     $('.atcoll').on('hidden.bs.collapse', function() {
       $("#coll"+this.id).find('.by-icon-v02').text('<');
     });
+    if(/\/read\//.test(window.location)) {
+      $('#add_work_block').css('display', 'inline');
+      m = $(location).attr("href").split('/').pop();
+    }
     $('#anth_texts').sortable({
       handle: '.drag-handle',
       start: function(e, ui) {
@@ -191,6 +191,20 @@
         $.post('#{anthology_path(@anthology.nil? ? 0 : @anthology.id)}', {'_method':'put', 'anthology[access]': new_access} );
       });
     }
+    $('#add_work_btn').click(function(e){
+      e.preventDefault();
+      $.ajax({
+        type: "POST",
+        url: '#{anthology_texts_path}',
+        dataType: 'script',
+        data: {
+          anthology_text: {
+            manifestation_id: m,
+            anthology_id: #{@anthology.id}
+          }
+        }
+      });
+    });
     $('#add_curated_btn').click(function(e){
       e.preventDefault();
       $('#anth_panel').hide();
@@ -213,5 +227,17 @@
       // submit item
       $('#add_curated').hide();
       // ~~~ anth panel refreshed and shown by server response ~~~
+    });
+    $('.delbutton').click(function(e){
+      if (!confirm("#{t(:are_you_sure)}")){
+        return false;
+      }
+      text_id = this.id.replace('del','');
+      $.ajax({
+        type: 'DELETE',
+        url: '#{anthology_texts_path}/'+text_id,
+        dataType: 'script'
+      });
+      // ~~~ anth panel updated by server response ~~~
     });
   });

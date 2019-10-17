@@ -26,7 +26,10 @@ class Anthology < ApplicationRecord
     unless self.texts.empty?
       seq = self.sequence.split(';')
       seq.each do |id|
-        ret << self.texts.find(id)
+        begin
+          ret << self.texts.find(id)
+        rescue
+        end
       end
     end
     return ret
@@ -54,5 +57,13 @@ class Anthology < ApplicationRecord
     self.sequence += text_id.to_s
     self.save!
     page_count(true) # force update
+  end
+
+  def remove_from_sequence(text_id)
+    return if self.sequence.nil? or self.sequence.empty?
+    seq = self.sequence.split(';')
+    seq.delete(text_id)
+    self.sequence = seq.join(';')
+    self.save!
   end
 end

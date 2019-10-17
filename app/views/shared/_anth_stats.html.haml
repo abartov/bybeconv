@@ -1,0 +1,11 @@
+- unless @anthology.nil?
+  .anthology-numbers
+    %div
+      %span= @anthology.texts.is_text.count
+      = t(:works)
+    %div
+      %span= @anthology.texts.is_curated.count
+      = t(:curated_text_bits)
+    %div
+      %span= @anthology.page_count
+      = t(:pages)
