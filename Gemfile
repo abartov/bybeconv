@@ -87,6 +87,7 @@ gem 'pandoc-ruby' # for converting to DOCX
 gem 'docx' # for pre-processing DOCX files to preserve stanzas
 gem 'uglifier'
 gem 'responders' # for respond_to at controller level (in api_controller)
+gem 'better_sjr' # ease debugging of server-side JS responses
 
 group :production do
   gem 'newrelic_rpm' # performance monitoring
@@ -106,5 +107,4 @@ group :development do
   gem 'rvm1-capistrano3', require: false
   gem 'capistrano-thin', '~> 2.0.0'
   gem 'capistrano-rvm'
-  gem 'better_sjr' # ease debugging of server-side JS responses
 end

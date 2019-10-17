@@ -6,6 +6,7 @@ class AnthologyTextsController < ApplicationController
     @anthology_text = AnthologyText.new(anthology_text_params)
     @anthology_text.title = @anthology_text.manifestation.title_and_authors unless @anthology_text.manifestation_id.nil?
     @anthology = @anthology_text.anthology
+    @cur_anth_id = @anthology.nil? ? 0 : @anthology.id
     respond_to do |format|
       if @anthology_text.save
         @anthology.append_to_sequence(@anthology_text.id)
@@ -26,6 +27,7 @@ class AnthologyTextsController < ApplicationController
       @anthology.remove_from_sequence(@anthology_text.id)
       @deleted_id = @anthology_text.id.to_s
       @anthology_text.destroy!
+      @cur_anth_id = @anthology.nil? ? 0 : @anthology.id
       respond_to do |format|
         format.js # destroy.js.erb
       end
