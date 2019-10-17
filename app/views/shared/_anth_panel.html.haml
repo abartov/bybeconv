@@ -1,150 +1,158 @@
-!= "<script src=\"https://cdnjs.cloudflare.com/ajax/libs/markdown-it/10.0.0/markdown-it.min.js\"></script>"
-.panel-v02#add_curated{style:'display:none'}
-  .by-card-header-v02.desktop-only
-    %span.headline-1-v02= t(:add_curated_text)
-  %div
-    .by-card-content-v02.card-with-button
-      .row
-        .col-6
-          #self-text-name.field-label= t(:curated_text_title)
-          %input.field-v02{:type => "text"}/
-        .col-6
-      #added-self-text.row
-        .col-6
-          %div
-            .field-label= t(:curated_text)
-            %textarea.field-v02.text-area-v02#curated_markdown{:placeholder => t(:paste_or_copy_text_here)}
-        .col-6
-          %div
-            .field-label
-              = t(:markdown_display)
-              .field-top-link
-                %a{:href => "#"}= t(:markdown_instructions)
-            .text-demonstration#curated_preview
-              .empty
-                .hint= t(:preview_here)
-      .bottom-left-buttons
-        %button.by-button-v02.by-button-secondary-v02
-          %div= t(:cancel)
-        %button.by-button-v02{:href => "#"}= t(:add_curated_text)
-.anthology#anth_panel{style: 'display: '+(show_panel ? 'block' : 'none')}
-  .by-card-header-v02.desktop-only
-    %a.horizontal-collapse{:href => "#"} ?
-    #anthology-select
-      /.anthology-select-desktop
-      /  .field-v02
-      = select_tag :anthologies, options_for_select(anthology_select_options), {style:'width:300px'}
-    .anthology-select-mobile
-    %a.popup-x-v02.pointer{'data-dismiss'=>'modal'} -
-    .anthologies-actions-area
-      .icons-group-v02
-        #display-anthology.icon-in-group-v02
-          %a{href: @anthology.nil? ? '' : anthology_path(@anthology.id)}
-            %span.by-icon-v02 J
-        #display-anthology-description= t(:display_anthology_description)
-        #download.icon-in-group-v02.linkcolor.pointer{'data-toggle' => 'modal', 'data-target' => '#downloadAnthologyDlg'}
-          %span.by-icon-v02 3
-        #download-description= t(:download_description)
-        #print.icon-in-group-v02
-          %a{href: @anthology.nil? ? '' : anthology_print_path(@anthology.id)}
-            %span.by-icon-v02 9
-        #print-description= t(:print_description)
-        #copy.icon-in-group-v02
-          %a{:href => "#"}
-            %span.by-icon-v02 [
-        #copy-description= t(:copy_description)
-        #delete.icon-in-group-v02
-          %a{:href => "#"}
-            %span.by-icon-v02 ^
-        #delete-description= t(:delete_description)
-        #share.icon-in-group-v02
-          %a{:href => "#"}
-            %span.by-icon-v02 U
-        #share-description
-          = t(:share_description)
-      #anthology-status
-        %span.anthology-status-label= t(:access_control)
-        /.anthology-status-desktop
-        = select_tag :access, options_for_select(Anthology.accesses.map{|a| [t(a[0]), a[0]]}, ((@anthology.nil? || @anthology.access.nil?) ? nil : Anthology.accesses[@anthology.access])), {style:'width:140px'}
+#anth_container
+  != "<script src=\"https://cdnjs.cloudflare.com/ajax/libs/markdown-it/10.0.0/markdown-it.min.js\"></script>"
+  .panel-v02#add_curated{style:'display:none'}
+    - @new_curated = AnthologyText.new
+    = form_with(model: @new_curated, url: anthology_texts_path(@new_curated), data: {remote: true}, id: 'new_curated') do |at|
+      = at.hidden_field :anthology_id, value: @anthology.id
+      .by-card-header-v02.desktop-only
+        %span.headline-1-v02= t(:add_curated_text)
+      %div
+        .by-card-content-v02.card-with-button
+          .row
+            .col-6
+              #self-text-name.field-label= t(:curated_text_title)
+              = at.text_field :title, class: 'field-v02'
+            .col-6
+          #added-self-text.row
+            .col-6
+              %div
+                .field-label= t(:curated_text)
+                = at.text_area :body, class: 'field-v02 text-area-v02', id: 'curated_markdown', placeholder: t(:paste_or_copy_text_here)
+            .col-6
+              %div
+                .field-label
+                  = t(:markdown_display)
+                  .field-top-link
+                    %a{:href => "#"}= t(:markdown_instructions)
+                .text-demonstration#curated_preview
+                  .empty
+                    .hint= t(:preview_here)
+          .bottom-left-buttons
+            %button.by-button-v02.by-button-secondary-v02.pointer#hide_curated
+              %div= t(:cancel)
+            = at.submit t(:add_curated_text), class: 'by-button-v02 pointer', id: 'curated_add_item'
+
+  - if @anthology.nil?
+    .anthology#anth_panel{style: 'display: none'}
+  - else
+    .anthology#anth_panel{style: 'display: block'}
+      .by-card-header-v02.desktop-only
+        %a.horizontal-collapse{:href => "#"} ?
+        #anthology-select
+          /.anthology-select-desktop
+          /  .field-v02
+          = select_tag :anthologies, options_for_select(anthology_select_options), {style:'width:300px'}
         .anthology-select-mobile
-  %div
-    .by-card-content-v02
-      .anthology-cards-area
-        - unless @anthology.nil?
-          .anthology-numbers
-            %div
-              %span= @anthology.texts.is_text.count
-              = t(:works)
-            %div
-              %span= @anthology.texts.is_curated.count
-              = t(:curated_text_bits)
-            %div
-              %span= @anthology.page_count
-              = t(:pages)
-        .mainlist
-          %ol#anth_texts
+        %a.popup-x-v02.pointer{'data-dismiss'=>'modal'} -
+        .anthologies-actions-area
+          .icons-group-v02
+            #display-anthology.icon-in-group-v02
+              %a{href: @anthology.nil? ? '' : anthology_path(@anthology.id)}
+                %span.by-icon-v02 J
+            #display-anthology-description= t(:display_anthology_description)
+            #download.icon-in-group-v02.linkcolor.pointer{'data-toggle' => 'modal', 'data-target' => '#downloadAnthologyDlg'}
+              %span.by-icon-v02 3
+            #download-description= t(:download_description)
+            #print.icon-in-group-v02
+              %a{href: @anthology.nil? ? '' : anthology_print_path(@anthology.id)}
+                %span.by-icon-v02 9
+            #print-description= t(:print_description)
+            #copy.icon-in-group-v02
+              %a{:href => "#"}
+                %span.by-icon-v02 [
+            #copy-description= t(:copy_description)
+            #delete.icon-in-group-v02
+              %a{:href => "#"}
+                %span.by-icon-v02 ^
+            #delete-description= t(:delete_description)
+            #share.icon-in-group-v02
+              %a{:href => "#"}
+                %span.by-icon-v02 U
+            #share-description
+              = t(:share_description)
+          #anthology-status
+            %span.anthology-status-label= t(:access_control)
+            /.anthology-status-desktop
+            = select_tag :access, options_for_select(Anthology.accesses.map{|a| [t(a[0]), a[0]]}, ((@anthology.nil? || @anthology.access.nil?) ? nil : Anthology.accesses[@anthology.access])), {style:'width:140px'}
+            .anthology-select-mobile
+      %div
+        .by-card-content-v02
+          .anthology-cards-area
             - unless @anthology.nil?
-              - @anthology.ordered_texts.each do |text|
-                %li{id: 'anth_text_'+text.id.to_s}
-                  %div{'class' => "by-card-v02" + (text.manifestation_id.nil? ? ' self-created-text' : '')}
-                    .anthology-card-header
-                      .drag-handle
-                        .handle
-                      .anthology-headline
-                        - if text.manifestation_id.nil?
-                          = t(:curated_text_bit)+': '+text.title
-                          %span.by-icon-v02.markdown-icon _
-                        - else
-                          = link_to text.manifestation.title + ' / ' + text.manifestation.author_string, manifestation_read_path(text.manifestation_id)
-                      .left-side-icons
-                        - if text.manifestation_id.nil?
-                          %div
-                            %a{:href => "#"}
-                              %span.by-icon-v02 Q
-                        %div{id: "collat#{text.id}", 'data-toggle' => 'collapse', 'data-target' => "#at#{text.id}"}
-                          %span.pointer.linkcolor
-                            %span.by-icon-v02{style:'font-size: 14px'}= '<'
-                        %div
-                          %span.pointer.linkcolor
-                            %span.by-icon-v02 ^
-                      .atcoll.collapse.in{id: "at#{text.id}"}
-                        .about-content-horizontal-separator
-                        .row.anthology-nested-content
-                          - if text.manifestation_id.nil?
-                            .col-md-4.col-sm-12
+              .anthology-numbers
+                %div
+                  %span= @anthology.texts.is_text.count
+                  = t(:works)
+                %div
+                  %span= @anthology.texts.is_curated.count
+                  = t(:curated_text_bits)
+                %div
+                  %span= @anthology.page_count
+                  = t(:pages)
+            .mainlist
+              %ol#anth_texts
+                - unless @anthology.nil?
+                  - @anthology.ordered_texts.each do |text|
+                    %li{id: 'anth_text_'+text.id.to_s}
+                      %div{'class' => "by-card-v02" + (text.manifestation_id.nil? ? ' self-created-text' : '')}
+                        .anthology-card-header
+                          .drag-handle
+                            .handle
+                          .anthology-headline
+                            - if text.manifestation_id.nil?
+                              = t(:curated_text_bit)+': '+text.title
+                              %span.by-icon-v02.markdown-icon _
+                            - else
+                              = link_to text.manifestation.title + ' / ' + text.manifestation.author_string, manifestation_read_path(text.manifestation_id)
+                          .left-side-icons
+                            - if text.manifestation_id.nil?
                               %div
-                                %span{:style => "font-weight:bold"}= t(:a_date)+': '
-                                %span= text.updated_at.strftime('%d.%m.%Y')
-                            .col-md-4.col-sm-12
-                              %div{:style => "padding-bottom: 12px"}
-                                %span{:style => "font-weight:bold"}= t(:word_count)+': '
-                                %span= text.body.split.count
-                          - else
-                            .col-md-4.col-sm-12
-                              %div{:style => "padding-bottom: 12px"}
-                                %span{:style => "font-weight:bold"}= t(:genre)+': '
-                                %span= textify_genre(text.manifestation.expressions[0].genre)
-                              %div
-                                - if text.manifestation.copyright?
-                                  %span.by-icon-v02.copyright-icon> x
-                                  = textify_copyright_status(true)
-                                  = link_to '[?]', '#', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_permission), 'data-content' => t(:permission_popover)
-                                - else
-                                  %span.by-icon-v02.copyright-icon> m
-                                  = textify_copyright_status(false)
-                                  = link_to '[?]', '#', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_public_domain), 'data-content' => t(:public_domain_popover)
-                            .col-md-4.col-sm-12
-                              %div{:style => "padding-bottom: 12px"}
-                                %span{:style => "font-weight:bold"}= t(:page_count)+': '
-                                %span= text.page_count
-        .anthology-bottom-link
-          %button.btn-text-v02#add_work
-            %span.right-side-icon= '&'
-            %span{style: 'font-weight:bold'}= t(:add_works_to_anthology)
-        .anthology-bottom-link
-          %button.btn-text-v02#add_curated_btn
-            %span.right-side-icon= '&'
-            %span{style: 'font-weight:bold'}= t(:add_curated_text)
+                                %a{:href => "#"}
+                                  %span.by-icon-v02 Q
+                            %div{id: "collat#{text.id}", 'data-toggle' => 'collapse', 'data-target' => "#at#{text.id}"}
+                              %span.pointer.linkcolor
+                                %span.by-icon-v02{style:'font-size: 14px'}= '<'
+                            %div
+                              %span.pointer.linkcolor
+                                %span.by-icon-v02 ^
+                          .atcoll.collapse.in{id: "at#{text.id}"}
+                            .about-content-horizontal-separator
+                            .row.anthology-nested-content
+                              - if text.manifestation_id.nil?
+                                .col-md-4.col-sm-12
+                                  %div
+                                    %span{:style => "font-weight:bold"}= t(:a_date)+': '
+                                    %span= text.updated_at.strftime('%d.%m.%Y')
+                                .col-md-4.col-sm-12
+                                  %div{:style => "padding-bottom: 12px"}
+                                    %span{:style => "font-weight:bold"}= t(:word_count)+': '
+                                    %span= text.body.split.count
+                              - else
+                                .col-md-4.col-sm-12
+                                  %div{:style => "padding-bottom: 12px"}
+                                    %span{:style => "font-weight:bold"}= t(:genre)+': '
+                                    %span= textify_genre(text.manifestation.expressions[0].genre)
+                                  %div
+                                    - if text.manifestation.copyright?
+                                      %span.by-icon-v02.copyright-icon> x
+                                      = textify_copyright_status(true)
+                                      = link_to '[?]', '#', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_permission), 'data-content' => t(:permission_popover)
+                                    - else
+                                      %span.by-icon-v02.copyright-icon> m
+                                      = textify_copyright_status(false)
+                                      = link_to '[?]', '#', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_public_domain), 'data-content' => t(:public_domain_popover)
+                                .col-md-4.col-sm-12
+                                  %div{:style => "padding-bottom: 12px"}
+                                    %span{:style => "font-weight:bold"}= t(:page_count)+': '
+                                    %span= text.page_count
+            .anthology-bottom-link
+              %button.btn-text-v02#add_work
+                %span.right-side-icon= '&'
+                %span{style: 'font-weight:bold'}= t(:add_works_to_anthology)
+            .anthology-bottom-link
+              %button.btn-text-v02#add_curated_btn
+                %span.right-side-icon= '&'
+                %span{style: 'font-weight:bold'}= t(:add_curated_text)
 :javascript
   $(document).ready(function() {
     var md = window.markdownit({linkify: true}); // markdown parser
@@ -160,6 +168,11 @@
       $('#anth_panel').hide();
       $('#add_curated').show();
     });
+    $('#hide_curated').click(function(e){
+      e.preventDefault();
+      $('#add_curated').hide();
+      $('#anth_panel').show();
+    });
     $('#curated_markdown').on('paste', function(){
        var rendered = md.render($(this).val());
        $('#curated_preview').html(rendered);
@@ -167,5 +180,10 @@
     $('#curated_markdown').keyup(function(){
        var rendered = md.render($(this).val());
        $('#curated_preview').html(rendered);
+    });
+    $('#curated_add_item').click(function(e){
+      // submit item
+      $('#add_curated').hide();
+      // ~~~ anth panel refreshed and shown by server response ~~~
     });
   });

@@ -3,8 +3,8 @@ class Anthology < ApplicationRecord
   has_many :texts, class_name: 'AnthologyText'
   enum access: %i(priv unlisted pub)
 
-  def page_count
-    if self.cached_page_count.nil? or self.updated_at > 30.days.ago
+  def page_count(force_update = false)
+    if self.cached_page_count.nil? or self.updated_at > 30.days.ago or force_update
       count = 0
       texts.each do |at|
         count += at.page_count
@@ -43,5 +43,16 @@ class Anthology < ApplicationRecord
     end
     self.sequence = seq.join(';')
     self.save!
+  end
+
+  def append_to_sequence(text_id)
+    if self.sequence.nil? or self.sequence.empty?
+      self.sequence = ''
+    else
+      self.sequence += ';'
+    end
+    self.sequence += text_id.to_s
+    self.save!
+    page_count(true) # force update
   end
 end
