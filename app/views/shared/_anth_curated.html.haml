@@ -1,0 +1,57 @@
+.panel-v02#add_curated{style: 'display:none'}
+  - @curated = AnthologyText.new if @curated.nil?
+  = form_with(model: @curated, url: @curated.id.nil? ? anthology_texts_path : anthology_text_path(@curated), data: {remote: true}, id: 'new_curated') do |at|
+    = at.hidden_field :anthology_id, value: @anthology.id
+    .by-card-header-v02.desktop-only
+      %span.headline-1-v02= t(:add_curated_text)
+    %div
+      .by-card-content-v02.card-with-button
+        .row
+          .col-6
+            #self-text-name.field-label= t(:curated_text_title)
+            = at.text_field :title, class: 'field-v02', value: @curated.title
+          .col-6
+        #added-self-text.row
+          .col-6
+            %div
+              .field-label= t(:curated_text)
+              = at.text_area :body, class: 'field-v02 text-area-v02', id: 'curated_markdown', placeholder: t(:paste_or_copy_text_here), value: @curated.body
+          .col-6
+            %div
+              .field-label
+                = t(:markdown_display)
+                .field-top-link
+                  %a{:href => "#"}= t(:markdown_instructions)
+              .text-demonstration#curated_preview
+                .empty
+                  .hint= t(:preview_here)
+        .bottom-left-buttons
+          %button.by-button-v02.by-button-secondary-v02.pointer#hide_curated
+            %div= t(:cancel)
+          = at.submit t(:save), class: 'by-button-v02 pointer', id: 'curated_add_item'
+:javascript
+  $(document).ready(function() {
+    var md = window.markdownit({linkify: true}); // markdown parser
+    $('#hide_curated').click(function(e){
+      e.preventDefault();
+      $('#add_curated').hide();
+      $('#anth_panel').show();
+    });
+    $('#curated_markdown').on('paste', function(){
+       var rendered = md.render($(this).val());
+       $('#curated_preview').html(rendered);
+    });
+    $('#curated_markdown').keyup(function(){
+       var rendered = md.render($(this).val());
+       $('#curated_preview').html(rendered);
+    });
+    $('#curated_add_item').click(function(e){
+      // submit item
+      $('#add_curated').hide();
+      // ~~~ anth panel refreshed and shown by server response ~~~
+    });
+    // update preview upon load (for editing)
+    var rendered = md.render($('#curated_markdown').val());
+    $('#curated_preview').html(rendered);
+
+  });

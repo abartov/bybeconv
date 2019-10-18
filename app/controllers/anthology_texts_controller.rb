@@ -1,5 +1,5 @@
 class AnthologyTextsController < ApplicationController
-  before_action :set_anthology_text, only: [:show, :update, :destroy]
+  before_action :set_anthology_text, only: [:show, :edit, :update, :destroy]
 
   # POST /anthology_texts
   def create
@@ -18,16 +18,23 @@ class AnthologyTextsController < ApplicationController
     end
   end
 
+  def edit
+    @curated = @anthology_text
+  end
+
   def update
+    if @anthology_text.update(anthology_text_params)
+      respond_to do |format|
+        format.js
+      end
+    end
   end
 
   def destroy
     unless @anthology_text.nil?
-      @anthology = @anthology_text.anthology
       @anthology.remove_from_sequence(@anthology_text.id)
       @deleted_id = @anthology_text.id.to_s
       @anthology_text.destroy!
-      @cur_anth_id = @anthology.nil? ? 0 : @anthology.id
       respond_to do |format|
         format.js # destroy.js.erb
       end
@@ -42,6 +49,10 @@ class AnthologyTextsController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_anthology_text
     @anthology_text = AnthologyText.find(params[:id])
+    unless @anthology_text.nil?
+      @anthology = @anthology_text.anthology
+      @cur_anth_id = @anthology.nil? ? 0 : @anthology.id
+    end
   end
 
   def anthology_text_params

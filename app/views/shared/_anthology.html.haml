@@ -67,11 +67,6 @@
                     %div= t(:cancel)
                   = anth.submit t(:create_new_anthology), {'class' => 'by-button-v02 pointer'}
         = render partial: 'shared/anth_panel', locals: {show_panel: show_panel}
-        .headline-3{style: 'margin:2rem 0', 'data-toggle'=>'collapse','data-target'=>'#extra_collapsible'}
-          %span.pointer= t(:tags_etc_title)
-          != '&nbsp;&nbsp;'
-          %i.fa.chevron.baseline{style:'display:inline'}
-        .row.collapse.in#extra_collapsible
 :javascript
   $(document).ready(function() {
     $('#create_anth').click(function(e) {
