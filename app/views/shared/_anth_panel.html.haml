@@ -31,9 +31,8 @@
               %a{:href => "#"}
                 %span.by-icon-v02 [
             #copy-description= t(:copy_description)
-            #delete.icon-in-group-v02
-              %a{:href => "#"}
-                %span.by-icon-v02 ^
+            #del_anth_btn.pointer.linkcolor.icon-in-group-v02
+              %span.by-icon-v02 ^
             #delete-description= t(:delete_description)
             #share.icon-in-group-v02
               %a{:href => "#"}
@@ -184,6 +183,18 @@
       // ~~~ curated text pop-up updated by server response ~~~
       $('#anth_panel').hide();
     });
+    $('#del_anth_btn').click(function(e){
+      if (!confirm("#{t(:are_you_sure)}")){
+        return false;
+      }
+      $.ajax({
+        type: 'DELETE',
+        url: '#{anthology_path(@anthology || 0)}',
+        dataType: 'script'
+      });
+      // ~~~ anth panel updated by server response ~~~
+    });
+
     $('.delbutton').click(function(e){
       if (!confirm("#{t(:are_you_sure)}")){
         return false;

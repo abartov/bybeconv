@@ -55,6 +55,7 @@ class AnthologiesController < ApplicationController
 
     respond_to do |format|
       if @anthology.save
+        @cur_anth_id = @anthology.nil? ? 0 : @anthology.id
         format.js
         format.html {redirect_to @anthology, notice: 'Anthology was successfully created.'}
       else
@@ -75,7 +76,19 @@ class AnthologiesController < ApplicationController
   # DELETE /anthologies/1
   def destroy
     @anthology.destroy
-    redirect_to anthologies_url, notice: 'Anthology was successfully destroyed.'
+    @anthologies = current_user.anthologies
+    unless @anthologies.empty?
+      @anthology = @anthologies.includes(:texts).first
+      session[:current_anthology_id] = @anthology.id
+    else
+      @anthology = nil
+      session[:current_anthology_id] = nil
+    end
+    @cur_anth_id = @anthology.nil? ? 0 : @anthology.id
+    respond_to do |format|
+      format.js
+      format.html {redirect_to anthologies_url, notice: 'Anthology was successfully destroyed.'}
+    end
   end
 
   private

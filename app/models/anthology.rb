@@ -1,6 +1,6 @@
 class Anthology < ApplicationRecord
   belongs_to :user
-  has_many :texts, class_name: 'AnthologyText'
+  has_many :texts, class_name: 'AnthologyText', :dependent => :delete_all
   enum access: %i(priv unlisted pub)
 
   def page_count(force_update = false)

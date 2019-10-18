@@ -1,0 +1,7 @@
+$('#anth_container').replaceWith("<%= j(render partial: 'shared/anth_panel') %>");
+if(<%= @cur_anth_id %> == 0) {
+  $('#no_anths').show();
+}
+else {
+  $('#anth_panel').show();
+}

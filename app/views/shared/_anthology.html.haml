@@ -2,49 +2,34 @@
   .modal-content
     .container-fluid
       .modal-header
-        - if @anthology.nil?
-          .anthology-top
-            .row{:style => "padding:15px;margin: 0"}
-              .col-4{:style => "padding: 0;"}
-                %button.btn-small-outline-v02{'data-dismiss'=>'modal'}
-                  .btn-text-v02
-                    %span.right-arrow 2
-                    %span= t(:back)
-              .col-4{:style => "padding: 0;"}
-              .col-4
-        - else
-          .anthology-top
-            .row{:style => "padding:15px;margin: 0"}
-              .col-4{:style => "padding: 0;"}
-                %button.btn-small-outline-v02{'data-dismiss'=>'modal'}
-                  .btn-text-v02
-                    %span.right-arrow 2
-                    %span= t(:back)
-              .col-4{:style => "padding: 0;"}
-              .col-4
+        .anthology-top
+          .row{:style => "padding:15px;margin: 0"}
+            .col-4{:style => "padding: 0;"}
+              %button.btn-small-outline-v02{'data-dismiss'=>'modal'}
+                .btn-text-v02
+                  %span.right-arrow 2
+                  %span= t(:back)
+            .col-4{:style => "padding: 0;"}
+            .col-4
       .modal-body
-        - if @anthology.nil?
-          - show_panel = false
-          .anthology#no_anths
-            .by-card-header-v02.desktop-only
-              %a.horizontal-collapse{:href => "#"} ?
-              #anthology-select
-                .headline-1-v02= t(:reading_list_or_anthology)
-              %a.popup-x-v02.pointer{'data-dismiss'=>'modal'} -
-            .by-card-content-v02
-              .headline-2-v02= t(:no_lists_yet)
-              %p= t(:you_can_create_lists)
-              %p
-                %b= t(:reading_list)
-                = t(:reading_list_explanation)
-              %p
-                %b= t(:anthology)
-                = t(:anthology_explanation)
-              %button.by-button-v02.new-anthology-btn#create_anth
-                %span.right-side-icon= '&'
-                %span= t(:create_new_list_or_anthology)
-        - else
-          - show_panel = true
+        .anthology#no_anths{style:'display:none'}
+          .by-card-header-v02.desktop-only
+            %a.horizontal-collapse{:href => "#"} ?
+            #anthology-select
+              .headline-1-v02= t(:reading_list_or_anthology)
+            %a.popup-x-v02.pointer{'data-dismiss'=>'modal'} -
+          .by-card-content-v02
+            .headline-2-v02= t(:no_lists_yet)
+            %p= t(:you_can_create_lists)
+            %p
+              %b= t(:reading_list)
+              = t(:reading_list_explanation)
+            %p
+              %b= t(:anthology)
+              = t(:anthology_explanation)
+            %button.by-button-v02.new-anthology-btn#create_anth
+              %span.right-side-icon= '&'
+              %span= t(:create_new_list_or_anthology)
         .by-popup-v02.narrow-popup#new_anth{style:'display:none'}
           .by-card-header-v02.desktop-only
             %span.headline-1-v02= t(:create_new_list_or_anthology)
@@ -66,7 +51,7 @@
                   %button.by-button-v02.by-button-secondary-v02.pointer{'data-dismiss'=>'modal'}
                     %div= t(:cancel)
                   = anth.submit t(:create_new_anthology), {'class' => 'by-button-v02 pointer'}
-        = render partial: 'shared/anth_panel', locals: {show_panel: show_panel}
+        = render partial: 'shared/anth_panel'
 :javascript
   $(document).ready(function() {
     $('#create_anth').click(function(e) {
@@ -90,4 +75,8 @@
       $('#new_anth').hide();
       $('#anth_panel').show();
     });
+    var cur_anth = #{@anthology.nil? ? 0 : @anthology.id};
+    if(cur_anth == 0) {
+      $('#no_anths').show();
+    }
   });
