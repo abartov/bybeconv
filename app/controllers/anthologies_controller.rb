@@ -8,8 +8,13 @@ class AnthologiesController < ApplicationController
 
   # GET /anthologies/1
   def show
+    @cur_anth_id = @anthology.nil? ? 0 : @anthology.id
     if @anthology.accessible?(current_user)
-      prep_for_show
+      session[:current_anthology_id] = @anthology.id
+      respond_to do |format|
+        format.js
+        format.html { prep_for_show }
+      end
     else
       redirect_to '/', error: t(:no_permission)
     end
@@ -67,6 +72,7 @@ class AnthologiesController < ApplicationController
   # PATCH/PUT /anthologies/1
   def update
     if @anthology.update(anthology_params)
+      @cur_anth_id = @anthology.nil? ? 0 : @anthology.id
       redirect_to @anthology, notice: 'Anthology was successfully updated.'
     else
       render :edit

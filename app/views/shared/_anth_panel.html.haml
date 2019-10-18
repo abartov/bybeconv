@@ -11,7 +11,7 @@
         #anthology-select
           /.anthology-select-desktop
           /  .field-v02
-          = select_tag :anthologies, options_for_select(anthology_select_options), {style:'width:300px'}
+          = select_tag :anthologies, options_for_select(anthology_select_options, @selected_anthology), {style:'width:300px'}
         .anthology-select-mobile
         %a.popup-x-v02.pointer{'data-dismiss'=>'modal'} -
         .anthologies-actions-area
@@ -156,6 +156,15 @@
         $.post('#{anthology_path(@anthology.nil? ? 0 : @anthology.id)}', {'_method':'put', 'anthology[access]': new_access} );
       });
     }
+    $('#anthologies').on('change', function(){
+      var sel_anth = $('#anthologies option:selected').val();
+      if(sel_anth == '0') { // create new anthology
+        $('#anth_panel').hide();
+        $('#new_anth').show();
+      } else {
+        $.get('#{anthology_path(0)}'.replace('0',sel_anth));
+      }
+    });
     $('#add_work_btn').click(function(e){
       e.preventDefault();
       $.ajax({
@@ -207,4 +216,29 @@
       });
       // ~~~ anth panel updated by server response ~~~
     });
+    $('#create_anth').click(function(e) {
+      e.preventDefault();
+      $('#new_anth').show();
+      $('#no_anths').hide();
+    });
+    $('#opt_rlist').click(function(e){
+      e.preventDefault();
+      $('#opt_anth').removeClass('active');
+      $('#opt_rlist').addClass('active');
+      $('#listtype').val('rlist');
+    });
+    $('#opt_anth').click(function(e){
+      e.preventDefault();
+      $('#opt_anth').addClass('active');
+      $('#opt_rlist').removeClass('active');
+      $('#listtype').val('anth');
+    });
+    $('#new_anthology').on('ajax:success', function(event) {
+      $('#new_anth').hide();
+      $('#anth_panel').show();
+    });
+    var cur_anth = #{@anthology.nil? ? 0 : @anthology.id};
+    if(cur_anth == 0) {
+      $('#no_anths').show();
+    }
   });

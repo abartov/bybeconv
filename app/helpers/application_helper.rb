@@ -155,6 +155,11 @@ module ApplicationHelper
     end
   end
   def anthology_select_options
-    current_user.anthologies.map{|a| [a.title, a.id, @anthology == a ? 'selected' : ''] }
+    ret = [[t(:create_new_anthology), 0]]
+    current_user.anthologies.each{|a|
+      ret << [a.title, a.id]
+      @selected_anthology = a.id if @anthology == a
+    }
+    return ret
   end
 end

@@ -52,31 +52,3 @@
                     %div= t(:cancel)
                   = anth.submit t(:create_new_anthology), {'class' => 'by-button-v02 pointer'}
         = render partial: 'shared/anth_panel'
-:javascript
-  $(document).ready(function() {
-    $('#create_anth').click(function(e) {
-      e.preventDefault();
-      $('#new_anth').show();
-      $('#no_anths').hide();
-    });
-    $('#opt_rlist').click(function(e){
-      e.preventDefault();
-      $('#opt_anth').removeClass('active');
-      $('#opt_rlist').addClass('active');
-      $('#listtype').val('rlist');
-    });
-    $('#opt_anth').click(function(e){
-      e.preventDefault();
-      $('#opt_anth').addClass('active');
-      $('#opt_rlist').removeClass('active');
-      $('#listtype').val('anth');
-    });
-    $('#new_anthology').on('ajax:success', function(event) {
-      $('#new_anth').hide();
-      $('#anth_panel').show();
-    });
-    var cur_anth = #{@anthology.nil? ? 0 : @anthology.id};
-    if(cur_anth == 0) {
-      $('#no_anths').show();
-    }
-  });
