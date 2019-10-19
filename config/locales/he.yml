@@ -1,6 +1,8 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 he:
+  rename_this_anthology: שינוי שם מקראה זו
+  type_new_name_below: עדכנו את השם ולחצו על שמירה.
   must_set_author: חובה לשייך יוצר!
   add_stanza_break: הוספת מעבר בית
   remove_angled_brackets: הסרת סימון שירה בקטע

@@ -73,7 +73,10 @@ class AnthologiesController < ApplicationController
   def update
     if @anthology.update(anthology_params)
       @cur_anth_id = @anthology.nil? ? 0 : @anthology.id
-      redirect_to @anthology, notice: 'Anthology was successfully updated.'
+      respond_to do |format|
+        format.js
+        format.html {redirect_to @anthology, notice: 'Anthology was successfully updated.'}
+      end
     else
       render :edit
     end

@@ -5,6 +5,20 @@
     .anthology#anth_panel{style: 'display: none'}
   - else
     = render partial: 'shared/anth_curated'
+    .by-popup-v02.narrow-popup#rename_dlg{style: 'display: none'}
+      .by-card-header-v02.desktop-only
+        %span.headline-1-v02.desktop-only= t(:rename_this_anthology)
+        %a.popup-x-v02.hide_rename -
+      %div
+        .by-card-content-v02.card-with-button
+          %p= t(:type_new_name_below)
+          %input.field-v02#new_title{:type => "text", value: @anthology.title}/
+          .no-header
+          .bottom-left-buttons
+            %button.by-button-v02.by-button-secondary-v02.hide_rename
+              %div= t(:cancel)
+            %button.by-button-v02#rename_btn= t(:save)
+
     .anthology#anth_panel{style: 'display: block'}
       .by-card-header-v02.desktop-only
         %a.horizontal-collapse{:href => "#"} ?
@@ -42,7 +56,7 @@
           #anthology-status
             %span.anthology-status-label= t(:access_control)
             /.anthology-status-desktop
-            = select_tag :access, options_for_select(Anthology.accesses.map{|a| [t(a[0]), a[0]]}, ((@anthology.nil? || @anthology.access.nil?) ? nil : Anthology.accesses[@anthology.access])), {style:'width:140px'}
+            = select_tag :access, options_for_select(Anthology.accesses.map{|a| [t(a[0]), a[0]]}, ((@anthology.nil? || @anthology.access.nil?) ? nil : @anthology.access)), {style:'width:140px'}
             .anthology-select-mobile
       %div
         .by-card-content-v02
@@ -156,11 +170,17 @@
         $.post('#{anthology_path(@anthology.nil? ? 0 : @anthology.id)}', {'_method':'put', 'anthology[access]': new_access} );
       });
     }
+    $('#rename_btn').click(function(){
+      $.post('#{anthology_path(@anthology.nil? ? 0 : @anthology.id)}', {'_method':'put', 'anthology[title]': $('#new_title').val()});
+    });
     $('#anthologies').on('change', function(){
       var sel_anth = $('#anthologies option:selected').val();
       if(sel_anth == '0') { // create new anthology
         $('#anth_panel').hide();
         $('#new_anth').show();
+      } else if(sel_anth == '-1') {
+        $('#anth_panel').hide();
+        $('#rename_dlg').show();
       } else {
         $.get('#{anthology_path(0)}'.replace('0',sel_anth));
       }
@@ -237,6 +257,12 @@
       $('#new_anth').hide();
       $('#anth_panel').show();
     });
+    $('.hide_rename').click(function(e){
+      e.preventDefault();
+      $('#rename_dlg').hide();
+      $('#anth_panel').show();
+    });
+
     var cur_anth = #{@anthology.nil? ? 0 : @anthology.id};
     if(cur_anth == 0) {
       $('#no_anths').show();

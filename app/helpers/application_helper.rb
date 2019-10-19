@@ -155,7 +155,7 @@ module ApplicationHelper
     end
   end
   def anthology_select_options
-    ret = [[t(:create_new_anthology), 0]]
+    ret = [[t(:rename_this_anthology), -1], [t(:create_new_anthology), 0]]
     current_user.anthologies.each{|a|
       ret << [a.title, a.id]
       @selected_anthology = a.id if @anthology == a
