@@ -258,7 +258,8 @@ end
 
   def cached_youtube_videos
     Rails.cache.fetch("cached_youtube", expires_in: 24.hours) do # memoize
-      return latest_youtube_videos
+      # return latest_youtube_videos # commented out due to quote problem, and caching failure yet TBD
+      return []
     end
   end
 
