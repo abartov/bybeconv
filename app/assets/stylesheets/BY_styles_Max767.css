@@ -209,4 +209,19 @@
 .anthology-select-mobile{
 	display: block;
 }
+#volunteer-popup{
+	max-width:calc(100% + 30px);
+}
+#texts-about-author-popup{
+	    background-color: #eeeced;
+	}
+#author-whats-new-popup{
+	    background-color: #eeeced;
+	}
+.sort-by-desktop{
+	display: none;
+}
+.sort-by-mobile{
+	display: block;
+}
 }

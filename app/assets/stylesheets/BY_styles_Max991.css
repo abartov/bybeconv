@@ -543,6 +543,9 @@ display: none;	}
 .progress-outside{
 	margin-top: 0;
 }
+.advanced-pagination .progress-outside{
+	margin-top: 6px;
+}
 .rm-control-left{
 	padding: 12px 10px;
 }
@@ -579,13 +582,17 @@ display: none;	}
 	#volunteer-general{
 		display: none;
 	}
+	
 .vertical-expand-mo::before {
   display: inline-block;
  }
 .vertical-collapse-mo::before {
   display: inline-block;
 }
-	
+.about-card-header .headline-1-v02{
+		margin-right: 24px;
+		margin-bottom: 0px;
+	}
 }
 
 
