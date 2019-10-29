@@ -4,6 +4,8 @@ class Manifestation < ApplicationRecord
   paginates_per 100
   has_and_belongs_to_many :expressions
   has_and_belongs_to_many :people
+  has_and_belongs_to_many :html_files
+
 
   has_and_belongs_to_many :likers, join_table: :work_likes, class_name: :User
   has_many :taggings
