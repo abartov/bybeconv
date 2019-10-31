@@ -13,7 +13,11 @@ class AnthologiesController < ApplicationController
       session[:current_anthology_id] = @anthology.id
       respond_to do |format|
         format.js
-        format.html { prep_for_show }
+        format.html {
+          @header_partial = 'anthology_top'
+          @scrollspy_target = 'chapternav'
+          prep_for_show
+        }
       end
     else
       redirect_to '/', error: t(:no_permission)
@@ -112,8 +116,10 @@ class AnthologiesController < ApplicationController
 
     def prep_for_show
       @htmls = []
+      i = 1
       @anthology.ordered_texts.each {|text|
-        @htmls << [text.title, text.render_html]
+        @htmls << [text.title, text.render_html, text.manifestation_id.nil? ? true : false, text.manifestation_id.nil? ? nil : text.manifestation.expressions[0].genre ,i]
+        i += 1
       }
     end
 end

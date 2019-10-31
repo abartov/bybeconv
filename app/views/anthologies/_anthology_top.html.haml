@@ -1,0 +1,45 @@
+%a{name: 'top'}
+.container-fluid#header-general
+  = render partial: 'shared/breadcrumbs'
+  .top-space
+  .work-page-top
+    .work-page-top-info-card
+      .row
+        .col-4.anthology-name
+          .headline-1-v02.work-name-top= @anthology.title
+          .headline-3-v02= t(:edited_by)+': '+@anthology.user.name
+        .col-4.flex-container
+          #anthology-display-select
+            .anthology-display-select-desktop
+              .custom-select.field-v02
+                - options = [[t(:jump_to_text), 'top']]
+                - @htmls.each do |title, html, is_curated, genre, i|
+                  - options << [title+(is_curated ? " (#{t(:curated_text)})" : ''), 'title'+i.to_s]
+                = select_tag :jumptitle, options
+            .anthology-select-mobile
+        .col-4.flex-container
+          .anthology-display-top-icons-desktop
+            %button.btn-small-outline-v02.btn-text-v02.reading-mode-btn-v02.notyet{:href => "#"}
+              %span.by-icon-v02.iconNearText-v02> /
+              = t(:reading_mode)
+            .top-left-icons-group
+              .icon-in-group-v02.notyet
+                %span.pointer.linkcolor.by-icon-v02 b
+              .icon-in-group-v02.pointer.linkcolor.printbutton
+                %span.by-icon-v02 9
+              .icon-in-group-v02.pointer.linkcolor.download{style: "margin-left:0;", 'data-toggle' => 'modal', 'data-target' => '#downloadDlg', style: "margin-left:0;"}
+                %span.by-icon-v02 3
+    .row.error-found-row
+      .col-2.side-nav-col
+        %nav#chapternav.navbar
+          %ul#chapter-nav.navbar-nav.flex-column.by-card-v02{"aria-orientation" => "vertical"}
+            /%li.nav-item
+            /  %a.nav-link.nav-link-arrows{"aria-controls" => "#", "aria-selected" => "false", :disabled => "disabled", :href => "#"}
+            /    .side-menu-arrow (
+            - @htmls.each do |title, html, is_curated, genre, i|
+              %li.nav-item{'data-toggle': 'tooltip', 'data-placement': 'right', title: title}
+                %a.nav-link.nav-link-chapter{"aria-controls" => "#", href: "#title#{i.to_s}"}
+                  .nav-chapter-name= title+(is_curated ? " (#{t(:curated_text)})" : '')
+            /%li.nav-item
+            /  %a.nav-link.nav-link-arrows{"aria-controls" => "#", "aria-selected" => "false", :href => "#"}
+            /    .side-menu-arrow )

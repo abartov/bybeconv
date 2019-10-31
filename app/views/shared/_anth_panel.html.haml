@@ -21,7 +21,7 @@
 
     .anthology#anth_panel{style: 'display: block'}
       .by-card-header-v02.desktop-only
-        %a.horizontal-collapse{:href => "#"} ?
+        %a.horizontal-collapse-expand{:href => "#"}
         #anthology-select
           /.anthology-select-desktop
           /  .field-v02
@@ -60,6 +60,8 @@
             .anthology-select-mobile
       %div
         .by-card-content-v02
+          - unless @anthology.nil?
+            .rotate= @anthology.title
           .anthology-cards-area
             #anth_stats
               = render partial: 'shared/anth_stats'
@@ -116,18 +118,17 @@
                                   %div{:style => "padding-bottom: 12px"}
                                     %span{:style => "font-weight:bold"}= t(:page_count)+': '
                                     %span= text.page_count
-            .anthology-bottom-link#add_work_block{style: 'display: none'}
-              %button.btn-text-v02.pointer#add_work_btn
-                %span.right-side-icon= '&'
-                %span{style: 'font-weight:bold'}= t(:add_this_work_to_anthology)
-            .anthology-bottom-link.notyet
-              %button.btn-text-v02#add_works
-                %span.right-side-icon= '&'
-                %span{style: 'font-weight:bold'}= t(:add_works_to_anthology)
-            .anthology-bottom-link
-              %button.btn-text-v02#add_curated_btn
-                %span.right-side-icon= '&'
-                %span{style: 'font-weight:bold'}= t(:add_curated_text)
+            .bottom-right-buttons
+              #add_work_block{style: 'display: none'}
+                .by-button-v02.by-button-secondary-v02#add_work_btn
+                  .right-side-icon.icon-byadd
+                  %div= t(:add_this_work_to_anthology)
+              .by-button-v02.by-button-secondary-v02.notyet
+                .right-side-icon.icon-byadd
+                %div= t(:add_works_to_anthology)
+              .by-button-v02.by-button-secondary-v02#add_curated_btn
+                .right-side-icon.icon-byadd
+                %div= t(:add_curated_text)
 :javascript
   $(document).ready(function() {
     var cur_anth = #{@anthology.nil? ? 0 : @anthology.id};

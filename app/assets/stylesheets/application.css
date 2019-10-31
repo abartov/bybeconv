@@ -221,3 +221,7 @@ ol#anth_texts li.placeholder:before {
   border-right-color: red;
   border-left: none;
 }
+.nav-link.active{
+	color: #ffffff;
+	background-color: #660248;
+}

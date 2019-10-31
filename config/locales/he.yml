@@ -3,6 +3,7 @@
 he:
   rename_this_anthology: שינוי שם מקראה זו
   type_new_name_below: עדכנו את השם ולחצו על שמירה.
+  from_pby_and_available_at: מתוך פרויקט בן־יהודה.  המקראה זמינה בכתובת
   must_set_author: חובה לשייך יוצר!
   add_stanza_break: הוספת מעבר בית
   remove_angled_brackets: הסרת סימון שירה בקטע
@@ -109,6 +110,7 @@ he:
   bookshelves: רשימות קריאה
   anthologies: מקראות
   add_curated_text: הוספת טקסט מלווה
+  edited_by: בעריכת
   curated_text_title: שם קטע הטקסט
   curated_text: טקסט מלווה
   paste_or_copy_text_here: העתיקו לכאן או הקלידו את הטקסט
