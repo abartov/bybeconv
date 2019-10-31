@@ -17,6 +17,7 @@ class AnthologiesController < ApplicationController
           @header_partial = 'anthology_top'
           @scrollspy_target = 'chapternav'
           prep_for_show
+          @print_url = url_for(action: :print, id: @anthology.id)
         }
       end
     else
@@ -37,6 +38,8 @@ class AnthologiesController < ApplicationController
   end
 
   def print
+    @print = true
+    @footer_url = url_for(action: :show, id: @anthology.id)
     if @anthology.accessible?(current_user)
       prep_for_show
     else

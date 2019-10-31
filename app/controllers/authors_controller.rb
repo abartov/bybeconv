@@ -194,6 +194,7 @@ class AuthorsController < ApplicationController
     @author = Person.find(params[:id])
     @print = true
     prep_for_print
+    @footer_url = url_for(action: :toc, id: @author.id)
   end
 
   def edit_toc

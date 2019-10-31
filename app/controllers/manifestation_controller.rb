@@ -128,6 +128,7 @@ class ManifestationController < ApplicationController
   def print
     @print = true
     prep_for_print
+    @footer_url = url_for(action: :read, id: @m.id)
   end
 
   def download
