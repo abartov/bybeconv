@@ -1,7 +1,7 @@
 .modal-dialog
   .modal-content
     .container-fluid
-      - formurl = local_assigns.has_key?(:manifestation) ? '/download/'+manifestation.id.to_s : anthology_download_path(anthology.id)
+      - formurl = local_assigns.has_key?(:manifestation) ? "/download/#{manifestation.id}" : anthology_download_path(anthology.id)
       - dlgid = local_assigns.has_key?(:manifestation) ? 'downloadDlg' : 'downloadAnthologyDlg'
       = form_tag(formurl, id: 'download_form') do
         .modal-header
