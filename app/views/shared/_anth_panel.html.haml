@@ -82,12 +82,10 @@
                               = link_to text.manifestation.title + ' / ' + text.manifestation.author_string, manifestation_read_path(text.manifestation_id)
                           .left-side-icons
                             - if text.manifestation_id.nil?
-                              %div.pointer.linkcolor.editmdbutton{id: "edit#{text.id}"}
-                                %span.by-icon-v02 Q
+                              %button.icon-btn.icon-byedit.editmdbutton{id: "edit#{text.id}"}
                             %div.pointer.linkcolor{id: "collat#{text.id}", 'data-toggle' => 'collapse', 'data-target' => "#at#{text.id}"}
                               %span.by-icon-v02{style:'font-size: 14px'}= '<'
-                            %div.pointer.linkcolor.delbutton{id: "del#{text.id}"}
-                              %span.by-icon-v02 ^
+                            %button.icon-btn.icon-bydelete.delbutton{id: "del#{text.id}"}
                           .atcoll.collapse.in{id: "at#{text.id}"}
                             .about-content-horizontal-separator
                             .row.anthology-nested-content
@@ -118,17 +116,17 @@
                                   %div{:style => "padding-bottom: 12px"}
                                     %span{:style => "font-weight:bold"}= t(:page_count)+': '
                                     %span= text.page_count
-            .bottom-right-buttons
-              #add_work_block{style: 'display: none'}
-                .by-button-v02.by-button-secondary-v02#add_work_btn
-                  .right-side-icon.icon-byadd
-                  %div= t(:add_this_work_to_anthology)
-              .by-button-v02.by-button-secondary-v02.notyet
+          .bottom-right-buttons
+            #add_work_block{style: 'display: none'}
+              .by-button-v02.by-button-secondary-v02#add_work_btn
                 .right-side-icon.icon-byadd
-                %div= t(:add_works_to_anthology)
-              .by-button-v02.by-button-secondary-v02#add_curated_btn
-                .right-side-icon.icon-byadd
-                %div= t(:add_curated_text)
+                %div= t(:add_this_work_to_anthology)
+            .by-button-v02.by-button-secondary-v02.notyet
+              .right-side-icon.icon-byadd
+              %div= t(:add_works_to_anthology)
+            .by-button-v02.by-button-secondary-v02#add_curated_btn
+              .right-side-icon.icon-byadd
+              %div= t(:add_curated_text)
 :javascript
   $(document).ready(function() {
     var cur_anth = #{@anthology.nil? ? 0 : @anthology.id};

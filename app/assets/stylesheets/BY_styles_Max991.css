@@ -273,6 +273,9 @@
 	#header-about #aboutnav{
 		display: none;
 	}
+#header-about .error-found-row{
+		display: none;
+	}
 
 	
 .side-menu{
@@ -593,6 +596,14 @@ display: none;	}
 		margin-right: 24px;
 		margin-bottom: 0px;
 	}
+	
+.about-card-header .vertical-expand-mo{
+	display: block;
+	position: relative;
+	top: -18px;
+	bottom: 0;
+	right: 0;
+}
 }
 
 
