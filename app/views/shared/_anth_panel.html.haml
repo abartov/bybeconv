@@ -30,11 +30,13 @@
         %a.popup-x-v02.pointer{'data-dismiss'=>'modal'} -
         .anthologies-actions-area
           .icons-group-v02
-            %button.icon-btn.icon-bybook#display-anthology{href: @anthology.nil? ? '' : anthology_path(@anthology.id)}
+            %a{href: @anthology.nil? ? '' : anthology_path(@anthology.id)}
+              %button.icon-btn.icon-bybook#display-anthology
             .actions-description#display-anthology-description= t(:display_anthology_description)
             %button.icon-btn.icon-bydownload#download-anthology{'data-toggle' => 'modal', 'data-target' => '#downloadAnthologyDlg'}
             .actions-description#download-anthology-description= t(:download_description)
-            %button.icon-btn.icon-byprint#print-anthology{href: @anthology.nil? ? '' : anthology_print_path(@anthology.id)}
+            %a{href: @anthology.nil? ? '' : anthology_print_path(@anthology.id)}
+              %button.icon-btn.icon-byprint#print-anthology
             .actions-description#print-anthology-description= t(:print_description)
             %button.icon-btn#copy-anthology{'data-toggle' => 'modal', 'data-target' => '#copyAnthologyDlg'}= '['
             .actions-description#copy-anthology-description= t(:copy_description)

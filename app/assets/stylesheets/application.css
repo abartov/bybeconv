@@ -202,7 +202,7 @@ body.dragging, body.dragging * {
   opacity: 0.5;
   z-index: 2000;
 }
-
+/*
 ol#anth_texts li.placeholder {
   position: relative;
   margin: 0;
@@ -220,7 +220,7 @@ ol#anth_texts li.placeholder:before {
   border: 5px solid transparent;
   border-right-color: red;
   border-left: none;
-}
+}*/
 .nav-link.active{
 	color: #ffffff;
 	background-color: #660248;

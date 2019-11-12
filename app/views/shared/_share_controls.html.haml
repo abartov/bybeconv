@@ -21,19 +21,19 @@
             .share-options-area
               .share-options-group
                 .share-option
-                  %a{href: "https://www.facebook.com/sharer/sharer.php?u=#{request.original_url}", target: '_new'}
+                  %a{href: "https://www.facebook.com/sharer/sharer.php?u=#{request.original_url}", target: '_blank'}
                     .share-icon.by-icon-v02 S
                     .share-name= t(:facebook)
                 .share-option
-                  %a{href: "https://twitter.com/home?status=#{request.original_url}", target: '_new'}
+                  %a{href: "https://twitter.com/home?status=#{request.original_url}", target: '_blank'}
                     .share-icon.by-icon-v02 ;
                     .share-name= t(:twitter)
                 .share-option
-                  %a{href: "https://api.whatsapp.com/send?text=#{URI.encode(request.original_url)}", target: '_new'}
+                  %a{href: "https://api.whatsapp.com/send?text=#{URI.encode(request.original_url)}", target: '_blank'}
                     .share-icon.by-icon-v02= '<'
                     .share-name= t(:whatsapp)
                 .share-option
-                  %a{href: "mailto:?to=&subject=#{t(:from_project_ben_yehuda)}&body=#{request.original_url}", target: '_new'}
+                  %a{href: "mailto:?to=&subject=#{t(:from_project_ben_yehuda)}&body=#{request.original_url}", target: '_blank'}
                     .share-icon.by-icon-v02 R
                     .share-name= t(:email)
           %br

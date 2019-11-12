@@ -48,7 +48,7 @@
     .row.error-found-row
       .col-1.side-nav-col
         = render partial: 'shared/genre_navbar', locals: {genres_present: @genres_present, page: :toc, curated_content: false} # TODO: implement emitting curated content in TOC pages, and then un-hardcode this
-      .col{style:'z-order:-1;height:0;'}
+      .col{style:'z-index:-1;height:0;'}
       .col-4.error-found-col
         %button.error-found-btn.notyet
           .error-found
@@ -60,6 +60,6 @@
   $(document).ready(function() {
     // print button
     $('.printbutton').click(function() {
-      window.open("#{@print_url}",'_new');
+      window.open("#{@print_url}",'_blank');
     });
   });

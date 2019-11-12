@@ -12,11 +12,11 @@
           = @m.title
           - unless @legacy_url.nil?
             != "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
-            = link_to t(:legacy_url), @legacy_url, target: '_new'
+            = link_to t(:legacy_url), @legacy_url, target: '_blank'
           != "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
           %span.btn#vised{style: 'float:none;font-size:150%;height:auto'}= t(:launch_visual_editor)
           != "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
-          = link_to t(:to_the_work_in_the_site), manifestation_read_path(@m), target: '_new'
+          = link_to t(:to_the_work_in_the_site), manifestation_read_path(@m), target: '_blank'
         %h3
           = t(:by)+': '+@m.author_string
       .col-md-3
