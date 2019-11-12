@@ -30,13 +30,11 @@
         %a.popup-x-v02.pointer{'data-dismiss'=>'modal'} -
         .anthologies-actions-area
           .icons-group-v02
-            %a{href: @anthology.nil? ? '' : anthology_path(@anthology.id)}
-              %button.icon-btn.icon-bybook#display-anthology
+            %button.icon-btn.icon-bybook#display-anthology
             .actions-description#display-anthology-description= t(:display_anthology_description)
             %button.icon-btn.icon-bydownload#download-anthology{'data-toggle' => 'modal', 'data-target' => '#downloadAnthologyDlg'}
             .actions-description#download-anthology-description= t(:download_description)
-            %a{href: @anthology.nil? ? '' : anthology_print_path(@anthology.id)}
-              %button.icon-btn.icon-byprint#print-anthology
+            %button.icon-btn.icon-byprint#print-anthology
             .actions-description#print-anthology-description= t(:print_description)
             %button.icon-btn#copy-anthology{'data-toggle' => 'modal', 'data-target' => '#copyAnthologyDlg'}= '['
             .actions-description#copy-anthology-description= t(:copy_description)
@@ -251,7 +249,12 @@
       $('#rename_dlg').hide();
       $('#anth_panel').show();
     });
-
+    $('#display-anthology').click(function(){
+      window.location = "#{@anthology.nil? ? '' : anthology_path(@anthology.id)}";
+    });
+    $('#print-anthology').click(function(){
+      window.location = "#{@anthology.nil? ? '' : anthology_print_path(@anthology.id)}";
+    });
     var cur_anth = #{@anthology.nil? ? 0 : @anthology.id};
     if(cur_anth == 0) {
       $('#no_anths').show();
