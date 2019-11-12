@@ -30,29 +30,18 @@
         %a.popup-x-v02.pointer{'data-dismiss'=>'modal'} -
         .anthologies-actions-area
           .icons-group-v02
-            #display-anthology.icon-in-group-v02
-              %a{href: @anthology.nil? ? '' : anthology_path(@anthology.id)}
-                %span.by-icon-v02 J
-            #display-anthology-description= t(:display_anthology_description)
-            #download.icon-in-group-v02.linkcolor.pointer{'data-toggle' => 'modal', 'data-target' => '#downloadAnthologyDlg'}
-              %span.by-icon-v02 3
-            #download-description= t(:download_description)
-            #print.icon-in-group-v02
-              %a{href: @anthology.nil? ? '' : anthology_print_path(@anthology.id)}
-                %span.by-icon-v02 9
-            #print-description= t(:print_description)
-            #copy.icon-in-group-v02
-              %a{:href => "#"}
-                %span.by-icon-v02 [
-            #copy-description= t(:copy_description)
-            #del_anth_btn.pointer.linkcolor.icon-in-group-v02
-              %span.by-icon-v02 ^
-            #delete-description= t(:delete_description)
-            #share.icon-in-group-v02
-              %a{:href => "#"}
-                %span.by-icon-v02 U
-            #share-description
-              = t(:share_description)
+            %button.icon-btn.icon-bybook#display-anthology{href: @anthology.nil? ? '' : anthology_path(@anthology.id)}
+            .actions-description#display-anthology-description= t(:display_anthology_description)
+            %button.icon-btn.icon-bydownload#download-anthology{'data-toggle' => 'modal', 'data-target' => '#downloadAnthologyDlg'}
+            .actions-description#download-anthology-description= t(:download_description)
+            %button.icon-btn.icon-byprint#print-anthology{href: @anthology.nil? ? '' : anthology_print_path(@anthology.id)}
+            .actions-description#print-anthology-description= t(:print_description)
+            %button.icon-btn#copy-anthology{'data-toggle' => 'modal', 'data-target' => '#copyAnthologyDlg'}= '['
+            .actions-description#copy-anthology-description= t(:copy_description)
+            %button.icon-btn.icon-bydelete#delete-anthology
+            .actions-description#delete-anthology-description= t(:delete_description)
+            %button.icon-btn.icon-byshare#share-anthology{'data-toggle' => 'modal', 'data-target' => '#shareAnthologyDlg'}
+            .actions-description#share-anthology-description= t(:share_description)
           #anthology-status
             %span.anthology-status-label= t(:access_control)
             /.anthology-status-desktop
@@ -210,7 +199,7 @@
       // ~~~ curated text pop-up updated by server response ~~~
       $('#anth_panel').hide();
     });
-    $('#del_anth_btn').click(function(e){
+    $('#delete-anthology').click(function(e){
       if (!confirm("#{t(:are_you_sure)}")){
         return false;
       }
