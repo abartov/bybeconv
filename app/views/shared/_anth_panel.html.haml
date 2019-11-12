@@ -83,9 +83,8 @@
                           .left-side-icons
                             - if text.manifestation_id.nil?
                               %button.icon-btn.icon-byedit.editmdbutton{id: "edit#{text.id}"}
-                            %div.pointer.linkcolor{id: "collat#{text.id}", 'data-toggle' => 'collapse', 'data-target' => "#at#{text.id}"}
-                              %span.by-icon-v02{style:'font-size: 14px'}= '<'
                             %button.icon-btn.icon-bydelete.delbutton{id: "del#{text.id}"}
+                          %button.vertical-expand{id: "collat#{text.id}", 'data-toggle' => 'collapse', 'data-target' => "#at#{text.id}"}
                           .atcoll.collapse.in{id: "at#{text.id}"}
                             .about-content-horizontal-separator
                             .row.anthology-nested-content
