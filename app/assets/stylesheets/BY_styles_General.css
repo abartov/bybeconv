@@ -2918,13 +2918,17 @@ padding-left: 0;
 .anthology {
   z-index: 10;
   width: 640px;
-  height:621px;
+  height: calc(100% - 211px);
   background-color: #eeeced;
   border-radius: 3px;
   box-shadow: 0 3px 9px rgba(0, 0, 0, 0.4);
   position: fixed;
 	left: 0;
 	top: 196px;
+}
+.scrolled .anthology{
+	height: calc(100% - 155px);
+	top: 140px;
 }
 #anthology-select{
 	width: 300px;
@@ -2952,8 +2956,16 @@ padding-left: 0;
 	line-height: 30px;
 }
 .actions-description{
+	display:none;
+	z-index: 1000;
+	width: calc(100% - 225px);
+	position: absolute;
+	left: 30px;
+	top: 56px;
 	color: #000;
-	display: inline;
+	background-color: #D9CDD5;
+	border: solid 4px #D9CDD5;
+	height: 32px;
 }
 
 .anthologies-actions-area .by-icon-v02{
@@ -2963,94 +2975,34 @@ padding-left: 0;
   color: #2b0d22;
 }
 #display-anthology-description{
-	display: none;
 }
 #display-anthology:hover + #display-anthology-description{
 	display:inline;
-	z-index: 1000;
-	width: calc(100% - 225px);
-	position: absolute;
-	left: 30px;
-	top: 56px;
-	color: #000;
-	background-color: #D9CDD5;
-	border: solid 4px #D9CDD5;
-	height: 32px;
 }
 #download-description{
-	display: none;
 }
 #download:hover + #download-description{
 	display:inline;
-	z-index: 1000;
-	width: calc(100% - 225px);
-	position: absolute;
-	left: 30px;
-	top: 56px;
-	color: #000;
-	background-color: #D9CDD5;
-	border: solid 4px #D9CDD5;
-	height: 32px;
 }
 #print-description{
-	display: none;
 }
 #print:hover + #print-description{
 	display:inline;
-	z-index: 1000;
-	width: calc(100% - 225px);
-	position: absolute;
-	left: 30px;
-	top: 56px;
-	color: #000;
-	background-color: #D9CDD5;
-	border: solid 4px #D9CDD5;
-	height: 32px;
 }
 #copy-description{
-	display: none;
 }
 #copy:hover + #copy-description{
 	display:inline;
-	z-index: 1000;
-	width: calc(100% - 225px);
-	position: absolute;
-	left: 30px;
-	top: 56px;
-	color: #000;
-	background-color: #D9CDD5;
-	border: solid 4px #D9CDD5;
-	height: 32px;
 }
 #delete-description{
-	display: none;
 }
 #delete:hover + #delete-description{
 	display:inline;
-	z-index: 1000;
-	width: calc(100% - 225px);
-	position: absolute;
-	left: 30px;
-	top: 56px;
-	color: #000;
-	background-color: #D9CDD5;
-	border: solid 4px #D9CDD5;
-	height: 32px;
 }
 #share-description{
-	display: none;
 }
 #share:hover + #share-description{
 	display:inline;
-	z-index: 1000;
-	width: calc(100% - 225px);
-	position: absolute;
-	left: 30px;
-	top: 56px;
-	color: #000;
-	background-color: #D9CDD5;
-	border: solid 4px #D9CDD5;
-	height: 32px;
 }
 #actions-icons-separator{
 	display: none;
@@ -3334,7 +3286,7 @@ padding-left: 0;
 	padding-left: 15px;
 	margin-right: -15px;
 	padding-right: 15px;
-	max-height: 430px;
+	height: calc(100% - 47px);
 	overflow: auto;
 }
 
@@ -3379,6 +3331,9 @@ padding-left: 0;
 }
 .texts-lists-content{
 	margin-top: 181px;
+}
+.scrolled .texts-lists-content{
+	margin-top: 125px;
 }
 .texts-list-top-info-card{
   width: 100%;
@@ -3755,6 +3710,10 @@ break{
 	color: #fff;
 	background-color: #660248;
 }
+.btn-small-outline-v02-active{
+	color: #fff;
+	background-color: #660248;
+}
 .btn-small-outline-v02:active .by-icon-top-v02{
 	color: #fff;
 }
@@ -3775,11 +3734,21 @@ break{
 	margin-left: 15px;
 }
 
+.left-pointing-arrow-static{
+	width: 63px;
+	height: 32px;
+	background-image:url("/assets/Arrow-left.svg");
+	background-repeat: no-repeat;
+	background-size:contain;
+	margin-right: auto;
+	padding-top: 7px;
+	padding-right: 9px;
+}
 .left-pointing-arrow{
 	width: 63px;
 	height: 32px;
 	opacity: 0;
-	background-image:url("assets/Arrow-left.svg");
+	background-image:url("/assets/Arrow-left.svg");
 	background-repeat: no-repeat;
 	background-size:contain;
 	margin-right: auto;
@@ -3876,10 +3845,10 @@ break{
 	margin-left: 6px;
 }
 .anthology-badge{
-	width: 12px;
-	height: 12px;
+	width: 14px;
+	height: 14px;
 	background-color: #660248;
-	border-radius: 6px;
+	border-radius: 7px;
 	border: 1px solid #fff;
 	z-index: 6;
 	position:relative;
@@ -4024,4 +3993,7 @@ break{
 .self-created-text .anthology-text-name{
 	margin-right: 24px;
 	display: inline;
+}
+.anthology .by-card-content-v02{
+	height: calc(100% - 114px);
 }
