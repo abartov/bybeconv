@@ -118,6 +118,9 @@
 - if current_user && current_user.anthologies.count > 0
   #downloadAnthologyDlg.modal{'aria-hidden' => 'true', role: 'dialog', style:'z-index:1900'}
     = render partial: 'shared/download', locals: {anthology: @anthology}
+  #shareAnthologyDlg.modal{'aria-hidden' => 'true', role: 'dialog', style:'z-index:1900'}
+    = render partial: 'shared/share_controls', locals: {anthology: @anthology, url: request.base_url+anthology_path(@anthology.id)}
+
 #citeDlg.modal{'aria-hidden' => 'true', role: 'dialog'}
   = render partial: 'shared/cite', locals: {manifestation: @m}
 / found mistake popup

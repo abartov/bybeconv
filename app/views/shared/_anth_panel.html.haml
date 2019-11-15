@@ -170,7 +170,7 @@
         $('#anth_panel').hide();
         $('#rename_dlg').show();
       } else {
-        $.get('#{anthology_path(0)}'.replace('0',sel_anth));
+        $.get('#{anthology_path(0)}'.replace('0',sel_anth)); // TODO: also change anthology ID of download and share popups, defined in read.html.haml
       }
     });
     $('#add_work_btn').click(function(e){
@@ -256,10 +256,10 @@
       $('#anth_panel').show();
     });
     $('#display-anthology').click(function(){
-      window.location = "#{@anthology.nil? ? '' : anthology_path(@anthology.id)}";
+      window.open("#{@anthology.nil? ? '' : anthology_path(@anthology.id)}", '_blank');
     });
     $('#print-anthology').click(function(){
-      window.location = "#{@anthology.nil? ? '' : anthology_print_path(@anthology.id)}";
+      window.open("#{@anthology.nil? ? '' : anthology_print_path(@anthology.id)}", '_blank');
     });
     var cur_anth = #{@anthology.nil? ? 0 : @anthology.id};
     if(cur_anth == 0) {
