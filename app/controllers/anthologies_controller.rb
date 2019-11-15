@@ -3,7 +3,7 @@ class AnthologiesController < ApplicationController
 
   # GET /anthologies
   def index
-    @anthologies = Anthology.all
+    @anthologies = Anthology.pub.page(params[:page])
   end
 
   # GET /anthologies/1

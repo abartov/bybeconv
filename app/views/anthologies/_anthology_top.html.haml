@@ -12,7 +12,7 @@
           #anthology-display-select
             .anthology-display-select-desktop
               .custom-select.field-v02
-                - options = [[t(:jump_to_text), 'top']]
+                - options = [[t(:jump_to), 'top']]
                 - @htmls.each do |title, html, is_curated, genre, i|
                   - options << [title+(is_curated ? " (#{t(:curated_text)})" : ''), 'title'+i.to_s]
                 = select_tag :jumptitle, options

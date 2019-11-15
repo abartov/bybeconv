@@ -252,3 +252,7 @@ ol#anth_texts li.placeholder:before {
 #share-anthology:hover + #share-anthology-description{
 	display:inline;
 }
+
+.custom-select{
+  display:none;
+}

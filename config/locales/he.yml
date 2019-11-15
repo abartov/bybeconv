@@ -115,6 +115,8 @@ he:
   copy_of: "עותק של "
   curated_text_title: שם קטע הטקסט
   confirm_clone: נא לאשר שיבוט המקראה
+  public_anthologies: מקראות פומביות
+  clone_this_anthology: שיבוט מקראה זו
   curated_text: טקסט מלווה
   paste_or_copy_text_here: העתיקו לכאן או הקלידו את הטקסט
   markdown_display: תצוגת Markdown
