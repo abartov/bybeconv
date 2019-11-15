@@ -22,33 +22,33 @@
                 .by-card-header-v02.desktop-only
                   %span.headline-1-v02= t(:save_to_file)
                 %a.popup-x-v02.linkcolor.pointer{'data-dismiss'=>'modal'} -
-                .no-header
                 %p= t(:download_instructions)
-                %label
-                  = radio_button_tag 'format', 'pdf', true
-                  %b= 'PDF'
-                  = t(:pdf_format)
-                %label
-                  = radio_button_tag 'format', 'html'
-                  %b= 'HTML'
-                  = t(:html_format)
-                %label
-                  = radio_button_tag 'format', 'doc'
-                  %b= 'DOC'
-                  = t(:doc_format)
-                %label
-                  = radio_button_tag 'format', 'epub'
-                  %b= 'EPUB'
-                  = t(:epub_format)
-                %label
-                  = radio_button_tag 'format', 'mobi'
-                  %b= 'MOBI'
-                  = t(:mobi_format)
-                %label
-                  = radio_button_tag 'format', 'txt'
-                  %b= 'TXT'
-                  = t(:txt_format)
-                = hidden_field_tag :os, 'Windows', id: 'os'
+                %p
+                  %label
+                    = radio_button_tag 'format', 'pdf', true
+                    %b= 'PDF'
+                    = t(:pdf_format)
+                  %label
+                    = radio_button_tag 'format', 'html'
+                    %b= 'HTML'
+                    = t(:html_format)
+                  %label
+                    = radio_button_tag 'format', 'doc'
+                    %b= 'DOC'
+                    = t(:doc_format)
+                  %label
+                    = radio_button_tag 'format', 'epub'
+                    %b= 'EPUB'
+                    = t(:epub_format)
+                  %label
+                    = radio_button_tag 'format', 'mobi'
+                    %b= 'MOBI'
+                    = t(:mobi_format)
+                  %label
+                    = radio_button_tag 'format', 'txt'
+                    %b= 'TXT'
+                    = t(:txt_format)
+                  = hidden_field_tag :os, 'Windows', id: 'os'
                 %p
                 .desktop-only.bottom-right-link
                   .linkcolor.pointer{'data-dismiss'=>'modal'}
