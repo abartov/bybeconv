@@ -1,5 +1,5 @@
 class AnthologiesController < ApplicationController
-  before_action :set_anthology, only: [:show, :print, :seq, :download, :edit, :update, :destroy]
+  before_action :set_anthology, only: [:show, :clone, :print, :seq, :download, :edit, :update, :destroy]
 
   # GET /anthologies
   def index
@@ -19,6 +19,31 @@ class AnthologiesController < ApplicationController
           prep_for_show
           @print_url = url_for(action: :print, id: @anthology.id)
         }
+      end
+    else
+      redirect_to '/', error: t(:no_permission)
+    end
+  end
+
+  def clone
+    if @anthology.accessible?(current_user)
+      @na = @anthology.dup
+      @na.user = current_user # whoever owned it before (could clone a public anth owned by someone else)
+      @na.access = :priv # default to private after cloning
+      @na.title = t(:copy_of)+@na.title
+      @na.save!
+      # now clone anth items
+      @anthology.texts.each do |item|
+        nitem = item.dup
+        nitem.anthology = @na
+        nitem.save!
+        @na.append_to_sequence(nitem.id)
+      end
+      @anthology = @na # make the cloned anthology the current one
+      @cur_anth_id = @anthology.nil? ? 0 : @anthology.id
+      respond_to do |format|
+        format.js
+        format.html {redirect_to @anthology, notice: t(:anthology_cloned)}
       end
     else
       redirect_to '/', error: t(:no_permission)

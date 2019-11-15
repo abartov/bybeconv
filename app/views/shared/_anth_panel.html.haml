@@ -36,7 +36,8 @@
             .actions-description#download-anthology-description= t(:download_description)
             %button.icon-btn.icon-byprint#print-anthology
             .actions-description#print-anthology-description= t(:print_description)
-            %button.icon-btn#copy-anthology{'data-toggle' => 'modal', 'data-target' => '#copyAnthologyDlg'}= '['
+            / %button.icon-btn#copy-anthology{'data-toggle' => 'modal', 'data-target' => '#copyAnthologyDlg'}= '['
+            %button.icon-btn#copy-anthology= '['
             .actions-description#copy-anthology-description= t(:copy_description)
             %button.icon-btn.icon-bydelete#delete-anthology
             .actions-description#delete-anthology-description= t(:delete_description)
@@ -157,6 +158,7 @@
       });
     }
     $('#rename_btn').click(function(){
+      $('#rename_btn').prop('disabled',true);
       $.post('#{anthology_path(@anthology.nil? ? 0 : @anthology.id)}', {'_method':'put', 'anthology[title]': $('#new_title').val()});
     });
     $('#anthologies').on('change', function(){
@@ -209,7 +211,12 @@
       });
       // ~~~ anth panel updated by server response ~~~
     });
-
+    $('#copy-anthology').click(function() {
+      if (!confirm("#{t(:confirm_clone)}")){
+        return false;
+      }
+      $.get('#{anthology_clone_path(@anthology.nil? ? 0 : @anthology.id)}');
+    });
     $('.delbutton').click(function(e){
       if (!confirm("#{t(:are_you_sure)}")){
         return false;

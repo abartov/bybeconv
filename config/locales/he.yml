@@ -111,7 +111,10 @@ he:
   anthologies: מקראות
   add_curated_text: הוספת טקסט מלווה
   edited_by: בעריכת
+  anthology_cloned: המקראה שובטה ונוצר עותק משלך ברמת גישה פרטית
+  copy_of: "עותק של "
   curated_text_title: שם קטע הטקסט
+  confirm_clone: נא לאשר שיבוט המקראה
   curated_text: טקסט מלווה
   paste_or_copy_text_here: העתיקו לכאן או הקלידו את הטקסט
   markdown_display: תצוגת Markdown
