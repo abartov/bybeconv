@@ -151,6 +151,8 @@ module BybeUtils
       return I18n.t(:spanish)
     when 'yi'
       return I18n.t(:yiddish)
+    when 'arc'
+      return I18n.t(:aramaic)
     when 'pl'
       return I18n.t(:polish)
     when 'fr'
@@ -464,7 +466,7 @@ module BybeUtils
   end
 
   def get_langs
-    return ['he','en','fr','de','ru','yi','pl','ar','el','la','grc','hu','cs','da','no','sv','nl','it','pt','fa','fi','is','es']
+    return ['he','en','fr','de','ru','yi','pl','ar','el','la','grc','hu','cs','da','no','sv','nl','it','pt','fa','fi','is','es', 'arc']
   end
 
   def get_genres_by_row(row) # just one row at a time
