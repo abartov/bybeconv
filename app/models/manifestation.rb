@@ -188,7 +188,7 @@ class Manifestation < ApplicationRecord
          w.persons.each {|p| pp << p unless pp.include?(p) }
        }
      }
-     self.cached_people = pp.map{|p| p.name}.join('; ')
+     self.cached_people = pp.map{|p| "#{p.name} #{p.other_designation}"}.join('; ') # ZZZ
   end
 
   def recalc_cached_people!
