@@ -239,7 +239,7 @@ class AuthorsController < ApplicationController
   def prep_for_print
     @author = Person.find(params[:id])
     if @author.nil?
-      render nothing: true
+      head :ok
     else
       impressionist(@author) unless is_spider?
       @page_title = "#{@author.name} - #{t(:table_of_contents)} - #{t(:project_ben_yehuda)}"

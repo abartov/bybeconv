@@ -83,7 +83,7 @@ class AdminController < ApplicationController
       li = ListItem.new(listkey: 'similar_title_whitelist', item: m)
       li.save!
     end
-    render nothing: true
+    head :ok
   end
 
   def suspicious_translations # find works where the author is also a translator -- this *may* be okay, in the case of self-translation, but probably is a mistake

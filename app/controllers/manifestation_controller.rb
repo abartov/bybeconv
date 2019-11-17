@@ -90,7 +90,7 @@ class ManifestationController < ApplicationController
       @m = Manifestation.find(params[:id])
       @m.likers << current_user
     end
-    render nothing: true
+    head :ok
   end
 
   def unlike
@@ -98,7 +98,7 @@ class ManifestationController < ApplicationController
       @m = Manifestation.find(params[:id])
       @m.likers.delete(current_user) # safely fails if already deleted
     end
-    render nothing: true
+    head :ok
   end
 
   def read
@@ -200,7 +200,7 @@ class ManifestationController < ApplicationController
         format.js
       end
     else
-      render nothing: true
+      head :ok
     end
   end
 
@@ -394,7 +394,7 @@ class ManifestationController < ApplicationController
   def prep_for_print
     @m = Manifestation.find(params[:id])
     if @m.nil?
-      render nothing: true
+      head :ok
     else
       @e = @m.expressions[0]
       @w = @e.works[0]
