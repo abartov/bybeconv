@@ -2979,29 +2979,29 @@ padding-left: 0;
 #display-anthology:hover + #display-anthology-description{
 	display:inline;
 }
-#download-description{
+#download-anthology-description{
 }
-#download:hover + #download-description{
+#download-anthology:hover + #download-anthology-description{
 	display:inline;
 }
-#print-description{
+#print-anthology-description{
 }
-#print:hover + #print-description{
+#print-anthology:hover + #print-anthology-description{
 	display:inline;
 }
-#copy-description{
+#copy-anthology-description{
 }
-#copy:hover + #copy-description{
+#copy-anthology:hover + #copy-anthology-description{
 	display:inline;
 }
-#delete-description{
+#delete-anthology-description{
 }
-#delete:hover + #delete-description{
+#delete-anthology:hover + #delete-anthology-description{
 	display:inline;
 }
-#share-description{
+#share-anthology-description{
 }
-#share:hover + #share-description{
+#share-anthology:hover + #share-anthology-description{
 	display:inline;
 }
 #actions-icons-separator{

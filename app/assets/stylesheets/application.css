@@ -226,33 +226,6 @@ ol#anth_texts li.placeholder:before {
 	background-color: #660248;
 }
 
-
-#download-anthology-description{
-}
-#download-anthology:hover + #download-anthology-description{
-	display:inline;
-}
-#print-anthology-description{
-}
-#print-anthology:hover + #print-anthology-description{
-	display:inline;
-}
-#copy-anthology-description{
-}
-#copy-anthology:hover + #copy-anthology-description{
-	display:inline;
-}
-#delete-anthology-description{
-}
-#delete-anthology:hover + #delete-anthology-description{
-	display:inline;
-}
-#share-anthology-description{
-}
-#share-anthology:hover + #share-anthology-description{
-	display:inline;
-}
-
 .custom-select{
   display:none;
 }
