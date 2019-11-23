@@ -62,7 +62,6 @@
     });
     var url = '#{all_works_path}'; // temp; TODO: replace with url-builder function based on sort/filter controls + pagination
     $("input.slider").on('slideStop', function(slideEvt){
-      alert(slideEvt.value);
       $.get(url+'?page='+slideEvt.value.toString(),'',null, 'script');
     });
 
