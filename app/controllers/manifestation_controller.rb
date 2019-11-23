@@ -17,7 +17,18 @@ class ManifestationController < ApplicationController
   def all
     @page_title = t(:all_works)+' '+t(:project_ben_yehuda)
     @pagetype = :works
-    @works_abc = Manifestation.all_published.order(:title).page(params[:page]).limit(25) # get page X of all manifestations
+    # test @collection = Manifestation.all_published.order(:sort_title).limit(100)
+    @collection = Manifestation.all_published
+    browse
+  end
+
+  def browse
+    prep_for_browse
+    render :browse
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   def by_tag
@@ -25,7 +36,7 @@ class ManifestationController < ApplicationController
     @pagetype = :works
     @tag = Tag.find(params[:id])
     if @tag
-      @works_by_tag = Manifestation.by_tag(params[:id]).order(:title).page(params[:page]).limit(25)
+      @works_by_tag = Manifestation.by_tag(params[:id]).order(:sort_title).page(params[:page]).limit(25)
     else
       flash[:error] = t(:no_such_item)
       redirect_to '/'
@@ -146,12 +157,12 @@ class ManifestationController < ApplicationController
 
   def period
     @tabclass = set_tab('works')
-    @manifestations = Manifestation.all_published.joins(:expressions).where(expressions: {period: Person.periods[params[:period]]}).page(params[:page]).order('title ASC')
+    @manifestations = Manifestation.all_published.joins(:expressions).where(expressions: {period: Person.periods[params[:period]]}).page(params[:page]).order('sort_title ASC')
   end
 
   def genre
     @tabclass = set_tab('works')
-    @manifestations = Manifestation.all_published.joins(:expressions).where(expressions: {genre: params[:genre]}).page(params[:page]).order('title ASC')
+    @manifestations = Manifestation.all_published.joins(:expressions).where(expressions: {genre: params[:genre]}).page(params[:page]).order('sort_title ASC')
   end
 
   # this one is called via AJAX
@@ -232,11 +243,11 @@ class ManifestationController < ApplicationController
       @manifestations = Manifestation.page(params[:page]).order('updated_at DESC')
     else
       if params[:author].blank?
-        @manifestations = Manifestation.where('title like ?', '%' + params[:title] + '%').page(params[:page]).order('title ASC')
+        @manifestations = Manifestation.where('title like ?', '%' + params[:title] + '%').page(params[:page]).order('sort_title ASC')
       elsif params[:title].blank?
-        @manifestations = Manifestation.where('cached_people like ?', "%#{params[:author]}%").page(params[:page]).order('title asc')
+        @manifestations = Manifestation.where('cached_people like ?', "%#{params[:author]}%").page(params[:page]).order('sort_title asc')
       else # both author and title
-        @manifestations = Manifestation.where('manifestations.title like ? and manifestations.cached_people like ?', '%' + params[:title] + '%', '%'+params[:author]+'%').page(params[:page]).order('title asc')
+        @manifestations = Manifestation.where('manifestations.title like ? and manifestations.cached_people like ?', '%' + params[:title] + '%', '%'+params[:author]+'%').page(params[:page]).order('sort_title asc')
       end
     end
   end
@@ -371,6 +382,25 @@ class ManifestationController < ApplicationController
 
   protected
 
+  def prep_for_browse
+    @total = @collection.count
+    @page = params[:page] || 1
+    @total_pages = @collection.page(params[:page]).total_pages
+    @works_abc = @collection.order(:sort_title).page(params[:page]).limit(100) # get page X of all manifestations
+    @header_partial = 'manifestation/browse_top'
+    @ab = prep_ab
+  end
+
+  def prep_ab
+    ret = []
+    abc_present = @collection.pluck(:sort_title).map{|t| t[0] || ''}.uniq.sort
+    ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ז', 'ח', 'ט', 'י', 'כ', 'ל', 'מ', 'נ', 'ס', 'ע', 'פ', 'צ', 'ק', 'ר', 'ש', 'ת'].each{|l|
+      status = abc_present.include?(l) ? '' : :disabled
+      ret << [l, status]
+    }
+    return ret
+  end
+
   def prep_user_content
     if current_user
       @anthologies = current_user.anthologies
@@ -391,6 +421,7 @@ class ManifestationController < ApplicationController
       @cur_anth_id = @anthology.nil? ? 0 : @anthology.id
     end
   end
+
   def prep_for_print
     @m = Manifestation.find(params[:id])
     if @m.nil?

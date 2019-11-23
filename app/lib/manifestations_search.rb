@@ -29,7 +29,7 @@ class ManifestationsSearch
 
   # Using query_string advanced query for the main query input
   def query_string
-    index.query(query_string: {fields: [:title, :name, :author_string, :fulltext], query: query, default_operator: 'and'}) if query?
+    index.query(query_string: {fields: [:title, :name, :other_designation, :author_string, :fulltext], query: query, default_operator: 'and'}) if query?
   end
 
   # Simple term filter for genre. ignored if empty.

@@ -1,0 +1,3 @@
+.a-b-pagination-frame
+  - @ab.each do |letter, status|
+    %a{ 'class': (status == :active ? 'active' : ''), disabled: (status == :disabled ? 'disabled' : ''), href: '#'}= letter

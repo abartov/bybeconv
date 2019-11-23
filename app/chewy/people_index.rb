@@ -3,6 +3,7 @@ class PeopleIndex < Chewy::Index
   # people
   define_type Person.all do #.joins([expressions: :works]).includes([expressions: :works]) do
     field :name
+    field :other_designation
     field :period
     field :gender
     field :public_domain

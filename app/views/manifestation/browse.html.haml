@@ -1,0 +1,14 @@
+/ Browse works
+#content.container-fluid
+  .row.texts-lists-content
+    .col-12.col-lg-4
+      .by-card-v02
+        .work-area
+          .work-content
+            .headline-1-v02= t(:welcome_to_works_browsing)
+            %p!= t(:works_browsing_intro_html)
+          .work-side-color
+            .work-genre.prose-side-icon
+    .col-12.col-lg-8
+      .by-card-v02#thelist
+        = render partial: 'browse_list'

@@ -230,6 +230,10 @@ ol#anth_texts li.placeholder:before {
   display:none;
 }
 
+.slider-selection {
+	background: #BABABA;
+}
+
 @media print {
   .print #header{
     display: none;

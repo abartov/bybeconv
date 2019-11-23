@@ -6,7 +6,6 @@ class Manifestation < ApplicationRecord
   has_and_belongs_to_many :people
   has_and_belongs_to_many :html_files
 
-
   has_and_belongs_to_many :likers, join_table: :work_likes, class_name: :User
   has_many :taggings
   has_many :tags, through: :taggings, class_name: 'Tag'
@@ -16,6 +15,8 @@ class Manifestation < ApplicationRecord
   has_paper_trail
   has_many :external_links
   has_many_attached :images
+
+  before_save :update_sort_title
 
   enum link_type: [:wikipedia, :blog, :youtube, :other]
   enum linkstatus: [:approved, :submitted, :rejected]
@@ -38,6 +39,10 @@ class Manifestation < ApplicationRecord
   # class variable
   @@popular_works = nil
   @@tmplock = false
+
+  def update_sort_title
+    self.sort_title = self.title.tr('[]()*"\'', '')
+  end
 
   def like_count
     return likers.count
@@ -222,7 +227,7 @@ class Manifestation < ApplicationRecord
 
   def self.first_25
     Rails.cache.fetch("m_first_25", expires_in: 24.hours) do
-      Manifestation.all_published.order(:title).limit(25)
+      Manifestation.all_published.order(:sort_title).limit(25)
     end
   end
 
