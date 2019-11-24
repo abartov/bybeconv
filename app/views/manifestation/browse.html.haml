@@ -1,14 +1,285 @@
 / Browse works
 #content.container-fluid
   .row.texts-lists-content
-    .col-12.col-lg-4
-      .by-card-v02
+    .col-12.col-lg-5.col-xxxl-4
+      .by-card-v02#browse_intro
         .work-area
           .work-content
             .headline-1-v02= t(:welcome_to_works_browsing)
             %p!= t(:works_browsing_intro_html, {total: get_total_works})
           .work-side-color
             .work-genre.prose-side-icon
-    .col-12.col-lg-8
+      .by-card-v02.text-sorting#sort_filter_panel{style: 'display:none'}
+        .by-card-header-v02
+          .headline-2-v02= t(:sort_by)
+          #sort-by
+            .sort-by-desktop
+              #anthology-select
+                %select#sort_by
+                  %option{value: 'alphabetical'}= t(:alphabetical)
+                  %optgroup{label: t(:dates)}
+                    %option{value: 'publication_date'}= t(:publication_date)
+                    %option{value: 'creation_date'}= t(:creation_date)
+                    %option{value: 'upload_date'}= t(:upload_date)
+                  %option{value: 'popularity'}= t(:popularity)
+            .sort-by-mobile
+              %p
+                %input#RadioGroupSort_1{:name => "RadioGroupSort", :type => "radio", value: "alphabet"}/
+                %label אלפבית
+                %br/
+                %input#RadioGroupSort_2{:name => "RadioGroupSort", :type => "radio", value: "publish_date"}/
+                %label תאריך הוצאה
+                %br/
+                %input#RadioGroupSort_3{:name => "RadioGroupSort", :type => "radio", value: "creation_date"}/
+                %label תאריך יצירה
+                %br/
+                %input#RadioGroupSort_4{:name => "RadioGroupSort", :type => "radio", value: "online_date"}/
+                %label תאריך עליה לאתר
+                %br/
+                %input#RadioGroupSort_5{:name => "RadioGroupSort", :type => "radio", value: "popularity"}/
+                %label פופולריות
+                %br/
+        .by-card-content-v02
+          .headline-2-v02= t(:filter_by)
+          %a.reset{:href => "#"}= t(:reset_filter)
+          .sort-type
+            .vertical-expand
+              .sort-type-headline שם
+            .nested
+              .row.nested-content
+                .search-mobile-switch
+                  %button.search-mobile-option.active{:href => "#"} שם יצירה
+                  %button.search-mobile-option{:href => "#"} שם מחבר
+                %break
+                %input.field-v02.field-without-label{:placeholder => "טקסט חופשי", :type => "text"}/
+          .sort-type
+            .vertical-expand
+              .sort-type-headline שם
+            .nested
+              .row.nested-content
+                .search-mobile-switch
+                  %button.search-mobile-option{:href => "#"} שם יצירה
+                  %button.search-mobile-option.active{:href => "#"} שם מחבר
+                %break
+                %input.field-v02.field-without-label.author-name-field{:placeholder => "שם פרטי / משפחה", :type => "text"}/
+                .multi-name-sort
+                  %a{:href => "#"} בחירה מרובה
+          .sort-type
+            .vertical-expand
+              .sort-type-headline סוגות
+            .nested
+              .row.nested-content
+                .col-md-6.col-sm-12
+                  %input#CheckboxGroup1_1{:name => "CheckboxGroup1", :type => "checkbox", value: "sort_by_poetry"}/
+                  %label
+                    %span.by-icon-v02> t
+                    שירה
+                    %span (5261)
+                  %br/
+                  %input#CheckboxGroup1_2{:name => "CheckboxGroup1", :type => "checkbox", value: "sort_by_prose"}/
+                  %label
+                    %span.by-icon-v02> l
+                    פרוזה
+                    %span (1579)
+                  %br/
+                  %input#CheckboxGroup1_3{:name => "CheckboxGroup1", :type => "checkbox", value: "sort_by_drama"}/
+                  %label
+                    %span.by-icon-v02> k
+                    מחזות
+                    %span (69)
+                  %br/
+                  %input#CheckboxGroup1_4{:name => "CheckboxGroup1", :type => "checkbox", value: "sort_by_fables"}/
+                  %label
+                    %span.by-icon-v02> E
+                    משלים
+                    %span (228)
+                  %br/
+                  %input#CheckboxGroup1_5{:name => "CheckboxGroup1", :type => "checkbox", value: "sort_by_article"}/
+                  %label
+                    %span.by-icon-v02> a
+                    מאמרים ומסות
+                    %span (3031)
+                .col-md-6.col-sm-12
+                  %input#CheckboxGroup1_6{:name => "CheckboxGroup1", :type => "checkbox", value: "sort_by_memoir"}/
+                  %label
+                    %span.by-icon-v02> j
+                    זכרונות ויומנים
+                    %span (236)
+                  %br/
+                  %input#CheckboxGroup1_7{:name => "CheckboxGroup1", :type => "checkbox", value: "sort_by_letters"}/
+                  %label
+                    %span.by-icon-v02> w
+                    מכתבים
+                    %span (151)
+                  %br/
+                  %input#CheckboxGroup1_8{:name => "CheckboxGroup1", :type => "checkbox", value: "sort_by_reference"}/
+                  %label
+                    %span.by-icon-v02> v
+                    עיון
+                    %span (330)
+                  %br/
+                  %input#CheckboxGroup1_9{:name => "CheckboxGroup1", :type => "checkbox", value: "sort_by_dictionary"}/
+                  %label
+                    %span.by-icon-v02> f
+                    מילונים ולקסיקונים
+                    %span (2)
+                  %br/
+                  %input#CheckboxGroup1_10{:name => "CheckboxGroup1", :type => "checkbox", value: "sort_by_translation"}/
+                  %label
+                    %span.by-icon-v02> s
+                    יצירות מתורגמות
+                    %span (963)
+          .sort-type
+            .vertical-expand
+              .sort-type-headline תקופות
+            .nested
+              .row.nested-content
+                .col-md-6.col-sm-12
+                  %input#CheckboxGroup2_1{:disabled => "disabled", :name => "CheckboxGroup2", :type => "checkbox", value: "sort_by_ancient"}/
+                  %label
+                    עת עתיקה ופיוט
+                    %span (0)
+                  %br/
+                  %input#CheckboxGroup2_2{:disabled => "disabled", :name => "CheckboxGroup2", :type => "checkbox", value: "sort_by_medieval"}/
+                  %label
+                    ימי הביניים והרנסאנס
+                    %span (0)
+                  %br/
+                  %input#CheckboxGroup2_3{:name => "CheckboxGroup2", :type => "checkbox", value: "sort_by_enlightenment"}/
+                  %label
+                    ההשכלה
+                    %span (33)
+                .col-md-6.col-sm-12
+                  %input#CheckboxGroup2_4{:name => "CheckboxGroup2", :type => "checkbox", value: "sort_by_revival"}/
+                  %label
+                    תחיה
+                    %span (88)
+                  %br/
+                  %input#CheckboxGroup2_5{:name => "CheckboxGroup2", :type => "checkbox", value: "sort_by_modern"}/
+                  %label
+                    ספרות עברית חדשה
+                    %span (209)
+          .sort-type
+            .vertical-expand
+              .sort-type-headline מצב זכויות יוצרים
+            .nested
+              .row.nested-content
+                .col-md-6.col-sm-12
+                  %input#CheckboxGroup3_1{:name => "CheckboxGroup3", :type => "checkbox", value: "sort_by_cc-pd"}/
+                  %label
+                    %span.by-icon-v02> m
+                    נחלת הכלל
+                    %span (203)
+                  %br/
+                  %input#CheckboxGroup3_2{:disabled => "disabled", :name => "CheckboxGroup3", :type => "checkbox", value: "sort_by_cc-unknown"}/
+                  %label
+                    לא ידוע
+                    %span (0)
+                  %br/
+                .col-md-6.col-sm-12
+                  %input#CheckboxGroup3_3{:name => "CheckboxGroup3", :type => "checkbox", value: "sort_by_copyright"}/
+                  %label
+                    %span.by-icon-v02> x
+                    רשות פרסום
+                    %span (127)
+                  %br/
+          .sort-type
+            .vertical-expand
+              .sort-type-headline מאפיינים
+            .nested
+              .row.nested-content
+                .col-md-6.col-sm-12
+                  %input#CheckboxGroup4_1{:name => "CheckboxGroup4", :type => "checkbox", value: "sort_by_curatorial_content"}/
+                  %label
+                    תוכן אוצרותי
+                    %span (4)
+                  %br/
+                  %input#CheckboxGroup4_2{:name => "CheckboxGroup4", :type => "checkbox", value: "sort_by_recommendations"}/
+                  %label
+                    המלצות קוראים
+                    %span (12)
+                  %br/
+                  %input#CheckboxGroup4_3{:name => "CheckboxGroup4", :type => "checkbox", value: "sort_by_liked"}/
+                  %label
+                    יצירות שאהבתי
+                    %span (2)
+                .col-md-6.col-sm-12
+                  %input#CheckboxGroup4_4{:disabled => "disabled", :name => "CheckboxGroup4", :type => "checkbox", value: "sort_by_active_bookmark"}/
+                  %label
+                    סימניה מופעלת
+                    %span (0)
+                  %br/
+                  %input#CheckboxGroup4_5{:name => "CheckboxGroup4", :type => "checkbox", value: "sort_by_no_properties"}/
+                  %label
+                    ללא מאפיינים
+                    %span (312)
+          .sort-type
+            .vertical-expand
+              .sort-type-headline תאריך
+            .nested
+              .row.nested-content
+                .search-mobile-switch
+                  %button.search-mobile-option{:href => "#"} הוצאה
+                  %button.search-mobile-option.active{:href => "#"} יצירה
+                  %button.search-mobile-option{:href => "#"} העלאה
+                %break
+                .dates-range
+                  .dates-graph-area
+                  .range-outside
+                    .range-inside
+                      .range-handle-right
+                      .range-handle-left
+                  %input.field-v02.field-without-label.range-date-field{:placeholder => "dd-mm-yyyy", :type => "text"}/
+                  .date-range-to עד
+                  %input.field-v02.field-without-label.range-date-field{:placeholder => "dd-mm-yyyy", :style => "float: left", :type => "text"}/
+          .sort-type
+            .vertical-expand
+              .sort-type-headline שפת מקור
+            .nested
+              .row.nested-content{:style => "background-color: #d9cdd5"}
+                %input#CheckboxGroup5_1{:name => "CheckboxGroup5", :type => "checkbox", value: "sort_by_translated"}/
+                %label
+                  יצירות מתורגמות בלבד
+                  %span (963)
+                %br/
+              .row.nested-content
+                .col-md-6.col-sm-12
+                  %input#CheckboxGroup5_2{:name => "CheckboxGroup5", :type => "checkbox", value: "sort_by_hebrew"}/
+                  %label
+                    עברית
+                    %span (8876)
+                  %br/
+                  %input#CheckboxGroup5_3{:name => "CheckboxGroup5", :type => "checkbox", value: "sort_by_russian"}/
+                  %label
+                    רוסית
+                    %span (503)
+                .col-md-6.col-sm-12
+                  %input#CheckboxGroup5_4{:name => "CheckboxGroup5", :type => "checkbox", value: "sort_by_english"}/
+                  %label
+                    אנגלית
+                    %span (876)
+                  %br/
+                  %input#CheckboxGroup5_5{:name => "CheckboxGroup5", :type => "checkbox", value: "sort_by_german"}/
+                  %label
+                    גרמנית
+                    %span (442)
+              .row.nested-content
+                %a{:href => "#"} הצג עוד 18 שפות מקור
+
+    .col-12.col-lg-7.col-xxxl-8
       .by-card-v02#thelist
         = render partial: 'browse_list'
+
+:javascript
+  $(document).ready(function(){
+    $('#sort_by').on('change', function() {
+      var url = $('#hurl').val().replace(/sort=[^&]*/,'').replace(/page=\d+/,'');
+      if(url.indexOf('?') == -1) {
+        url = url + '?sort='+$('#sort_by option:selected').val();
+      }
+      else {
+        url = url + '&sort='+$('#sort_by option:selected').val();
+      }
+      $.get(url,'',null, 'script');
+    });
+  });

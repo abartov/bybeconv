@@ -388,6 +388,7 @@ class ManifestationController < ApplicationController
     return true if c == l || c > l # already too high a page
     return false
   end
+
   def adjust_page_by_letter(l)
     # binary search to find page where letter begins
     ret = (1..@total_pages).bsearch{|page|
@@ -403,12 +404,33 @@ class ManifestationController < ApplicationController
     @total = @collection.count
     @page = params[:page] || 1
     @total_pages = @collection.page(@page).total_pages
-    unless params[:to_letter].nil? || params[:to_letter].empty?
-      adjust_page_by_letter(params[:to_letter])
+    unless params[:sort].nil? || params[:sort].empty?
+      case params[:sort]
+      when 'alphabetical'
+        @sort = 'alphabetical'
+      when 'popularity'
+        ord = {impressions_count: :desc}
+      when 'publication_date'
+        ord = '' # TODO: implement
+      when 'creation_date'
+        ord = '' # TODO: implement
+      when 'upload_date'
+        ord = {created_at: :desc}
+      end
+    else
+      @sort = 'alphabetical'
     end
-    @works_abc = @collection.order(:sort_title).page(@page) # get page X of all manifestations
+    if @sort == 'alphabetical'
+      unless params[:to_letter].nil? || params[:to_letter].empty?
+        adjust_page_by_letter(params[:to_letter])
+      end
+      ord = :sort_title
+      @works = @collection.order(ord).page(@page) # get page X of manifestations
+      @ab = prep_ab(@collection, @works)
+    else
+      @works = @collection.order(ord).page(@page) # get page X of manifestations
+    end
     @header_partial = 'manifestation/browse_top'
-    @ab = prep_ab(@collection, @works_abc)
   end
 
   def prep_ab(whole, subset)

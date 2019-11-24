@@ -2,18 +2,18 @@
   - unless @page == 1
     %div
       %span.by-icon-v02
-        = link_to '{', request.original_url.sub(/page=\d+/,'page=1'), remote: true
+        = link_to '{', update_param(request.original_url, 'page', '1'), remote: true
   %div
     %span.by-icon-v02
-      = link_to_previous_page @works_abc, '2', remote: true
+      = link_to_previous_page @works, '2', remote: true
   .advanced-pagination
     .page עמוד:
     %input.slider{'type': 'text', 'data-slider-min': 0, 'data-slider-max': @total_pages, 'data-slider-step':1, 'data-slider-value': @page, style: 'width:100%'}
     /%span.progress-handle= "#{@total_pages}/#{@page}"
   %div
     %span.by-icon-v02
-      = link_to_next_page @works_abc, '1', remote: true
+      = link_to_next_page @works, '1', remote: true
   - unless @page == @total_pages
     %div
       %span.by-icon-v02
-        = link_to '0', request.original_url.sub(/page=\d+/,"page=#{@total_pages}"), remote: true
+        = link_to '0', update_param(request.original_url, 'page', @total_pages.to_s), remote: true

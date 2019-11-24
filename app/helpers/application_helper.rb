@@ -162,4 +162,11 @@ module ApplicationHelper
     }
     return ret
   end
+  def update_param(uri, key, value)
+    u = URI(uri)
+    pp = URI.decode_www_form(u.query || "").to_h
+    pp[key] = value
+    u.query = URI.encode_www_form(pp.to_a)
+    u.to_s
+  end
 end

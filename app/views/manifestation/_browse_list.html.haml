@@ -2,7 +2,8 @@
   .headline-2-v02= t(:x_works_plain, {x: @total})
 .by-card-content-v02
   = render partial: 'slide_pagination'
-  = render partial: 'ab_pagination'
+  - if @sort == 'alphabetical'
+    = render partial: 'ab_pagination'
   .sort-buttons-area
     %button.btn-small-outline-v02{:href => "#"}
       .by-icon-top-v02.purple-v02 \
@@ -10,20 +11,24 @@
       .by-icon-top-v02.purple-v02.icon-bysort-down
   .mainlist
     %ol
-      - @works_abc.each do |m|
+      - @works.each do |m|
         %li= link_to m.title_and_authors, manifestation_read_path(m.id)
   = render partial: 'slide_pagination'
-  = render partial: 'ab_pagination'
-
+  - if @sort == 'alphabetical'
+    = render partial: 'ab_pagination'
+  = hidden_field_tag(:hurl, request.original_url)
 :javascript
   $(document).ready(function() {
     // Instantiate a slider
     var mySlider = $("input.slider").bootstrapSlider({
       tooltip: 'always',
     });
-    var url = '#{all_works_path}'; // temp; TODO: replace with url-builder function based on sort/filter controls + pagination
+    var url = $('#hurl').val().replace(/page=\d+/, '');
+    if(url.indexOf('?') == -1) {
+      url = url + '?'
+    }
     $("input.slider").on('slideStop', function(slideEvt){
-      $.get(url+'?page='+slideEvt.value.toString(),'',null, 'script');
+      $.get(url+'&page='+slideEvt.value.toString(),'',null, 'script');
     });
 
     // Call a method on the slider

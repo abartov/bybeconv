@@ -466,6 +466,9 @@ he:
   authors_page: דף יוצרים
   total: סך הכל
   sort_and_filter: מיון וסינון
+  sort_by: "מיון לפי: "
+  filter_by: "סינון לפי: "
+  reset_filter: איפוס סינון
   about_sort_and_filter: מה זה מיון וסינון?
   sort_and_filter_popover: תכונה זו טרם מומשה.
   authors_totals_p1: מאגרנו כולל %{total} יוצרים עבריים, מתוכם %{pd} נחלת הכלל
@@ -705,6 +708,11 @@ he:
   content: תוכן
   birthdate: תאריך לידה
   deathdate: תאריך פטירה
+  creation_date: תאריך יצירה
+  publication_date: תאריך פרסום בדפוס
+  alphabetical: 'סדר א"ב'
+  popularity: נקראות ביותר באתר
+  upload_date: תאריך עליה לאתר
   metadata_approved: עבר טיוב מטא-דאטה
   submitted_at: התקבל בתאריך
   html_dirs_list: רשימת תיקיות ישנות

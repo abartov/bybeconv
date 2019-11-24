@@ -6,12 +6,12 @@
     .texts-list-top-info-card
       .flex-container
         .headline-1-v02= t(:works_list)
-        .author-sort-area
+        .author-sort-area#sort_filter_toggle
           .author-page-top-sort-desktop
-            = t(:sort_and_filter)
-            %a{:href => "#"} [?]
+            = t(:sort_and_filter)+' [?]'
             .toggle-background-no
               .toggle-button-no
+              .toggle-button-yes{style:'display:none'}
           .author-page-top-sort-mobile
             %button.btn-small-outline-v02.btn-text-v02{:href => "#"}= t(:sort_and_filter)
         .author-page-top-icons-desktop
@@ -45,3 +45,12 @@
                 %a{:href => "#"}
                   %span.by-icon-v02.iconNearText-v02> 9
                   = t(:print)
+:javascript
+  $(document).ready(function(){
+    $('#sort_filter_toggle').click(function() {
+      $('#browse_intro').toggle();
+      $('#sort_filter_panel').toggle();
+      $('.toggle-button-no').toggle();
+      $('.toggle-button-yes').toggle();
+    });
+  });
