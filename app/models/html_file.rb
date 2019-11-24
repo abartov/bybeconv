@@ -469,9 +469,10 @@ class HtmlFile < ApplicationRecord
     titles_order = []
     ret = {}
     footbuf = ''
+    i = 1
     self.markdown.split(/^(&&& .*)/).each do |bit|
       if bit[0..3] == '&&& '
-        prev_key = bit[4..-1].strip # remember next section's title
+        prev_key = "#{bit[4..-1].strip}_ZZ#{i}" # remember next section's title
         stop = false
         begin
           if prev_key =~ /\[\^\d+\]/ # if the title line has a footnote
@@ -486,6 +487,7 @@ class HtmlFile < ApplicationRecord
         titles_order << prev_key unless prev_key.nil?
         footbuf = ''
       end
+      i += 1
     end
     # great! now we have the different pieces sorted, *but* any footnotes are *only* in the last piece, even if they belong in earlier pieces. So we need to fix that.
     if any_footnotes # hey, easy case is easy
