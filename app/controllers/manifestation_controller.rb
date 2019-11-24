@@ -17,7 +17,7 @@ class ManifestationController < ApplicationController
   def all
     @page_title = t(:all_works)+' '+t(:project_ben_yehuda)
     @pagetype = :works
-    # test @collection = Manifestation.all_published.order(:sort_title).limit(100)
+    # @collection = Manifestation.all_published.limit(100)
     @collection = Manifestation.all_published
     browse
   end
@@ -382,11 +382,31 @@ class ManifestationController < ApplicationController
 
   protected
 
+  def bfunc(page, l)
+    rec = @collection.order(:sort_title).page(page).first
+    c = rec.sort_title[0] || ''
+    return true if c == l || c > l # already too high a page
+    return false
+  end
+  def adjust_page_by_letter(l)
+    # binary search to find page where letter begins
+    ret = (1..@total_pages).bsearch{|page|
+      bfunc(page, l)
+    }
+    unless ret.nil?
+      ret = ret - 1 unless ret == 1
+      @page = ret
+    end
+  end
+
   def prep_for_browse
     @total = @collection.count
     @page = params[:page] || 1
-    @total_pages = @collection.page(params[:page]).total_pages
-    @works_abc = @collection.order(:sort_title).page(params[:page]).limit(100) # get page X of all manifestations
+    @total_pages = @collection.page(@page).total_pages
+    unless params[:to_letter].nil? || params[:to_letter].empty?
+      adjust_page_by_letter(params[:to_letter])
+    end
+    @works_abc = @collection.order(:sort_title).page(@page) # get page X of all manifestations
     @header_partial = 'manifestation/browse_top'
     @ab = prep_ab(@collection, @works_abc)
   end

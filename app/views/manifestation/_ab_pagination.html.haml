@@ -1,3 +1,7 @@
 .a-b-pagination-frame
   - @ab.each do |letter, status|
-    %a{ 'class': (status == :active ? 'active' : ''), disabled: (status == :disabled ? 'disabled' : ''), href: '#'}= letter
+    - url = request.original_url.match(/to_letter/) ? request.original_url.sub(/to_letter=.+/, 'to_letter='+letter) : (request.original_url.index('?') ? request.original_url + '&to_letter='+letter : request.original_url + '?to_letter='+letter)
+    - if status == :disabled
+      = link_to letter, url, { 'class': (status == :active ? 'active' : ''), disabled: 'disabled', remote: true}
+    - else
+      = link_to letter, url, { 'class': (status == :active ? 'active' : ''), remote: true}
