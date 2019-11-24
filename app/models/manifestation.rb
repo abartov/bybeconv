@@ -41,7 +41,7 @@ class Manifestation < ApplicationRecord
   @@tmplock = false
 
   def update_sort_title
-    self.sort_title = self.title.tr('[]()*"\'', '')
+    self.sort_title = self.title.strip_nikkud.tr('[]()*"\'', '')
   end
 
   def like_count
