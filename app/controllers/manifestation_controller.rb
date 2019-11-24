@@ -388,14 +388,17 @@ class ManifestationController < ApplicationController
     @total_pages = @collection.page(params[:page]).total_pages
     @works_abc = @collection.order(:sort_title).page(params[:page]).limit(100) # get page X of all manifestations
     @header_partial = 'manifestation/browse_top'
-    @ab = prep_ab
+    @ab = prep_ab(@collection, @works_abc)
   end
 
-  def prep_ab
+  def prep_ab(whole, subset)
     ret = []
-    abc_present = @collection.pluck(:sort_title).map{|t| t[0] || ''}.uniq.sort
+    abc_present = whole.pluck(:sort_title).map{|t| t[0] || ''}.uniq.sort
+    abc_active = subset.pluck(:sort_title).map{|t| t[0] || ''}.uniq.sort
     ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ז', 'ח', 'ט', 'י', 'כ', 'ל', 'מ', 'נ', 'ס', 'ע', 'פ', 'צ', 'ק', 'ר', 'ש', 'ת'].each{|l|
-      status = abc_present.include?(l) ? '' : :disabled
+      status = ''
+      status = :disabled unless abc_present.include?(l)
+      status = :active if abc_active.include?(l)
       ret << [l, status]
     }
     return ret
