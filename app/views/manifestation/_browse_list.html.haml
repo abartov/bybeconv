@@ -1,26 +1,7 @@
 .by-card-header-v02
   .headline-2-v02= t(:x_works_plain, {x: @total})
 .by-card-content-v02
-  .advanced-pagination-area
-    %div
-      %a{:disabled => "disabled", :href => "#"}
-        %span.by-icon-v02 {
-    %div
-      %a{:disabled => "disabled", :href => "#"}
-        %span.by-icon-v02 2
-    .advanced-pagination
-      .page עמוד:
-      %input.slider{'type': 'text', 'data-slider-min': 0, 'data-slider-max': @total_pages, 'data-slider-step':1, 'data-slider-value': @page}
-      .progress-outside
-        .progress-inside
-          %a{:href => "#"}
-            /%span.progress-handle= "#{@total_pages}/#{@page}"
-    %div
-      %a{:href => "#"}
-        %span.by-icon-v02 1
-    %div
-      %a{:href => "#"}
-        %span.by-icon-v02 0
+  = render partial: 'slide_pagination'
   = render partial: 'ab_pagination'
   .sort-buttons-area
     %button.btn-small-outline-v02{:href => "#"}
@@ -31,25 +12,7 @@
     %ol
       - @works_abc.each do |m|
         %li= link_to m.title_and_authors, manifestation_read_path(m.id)
-  .advanced-pagination-area
-    %div
-      %a{:disabled => "disabled", :href => "#"}
-        %span.by-icon-v02 {
-    %div
-      %a{:disabled => "disabled", :href => "#"}
-        %span.by-icon-v02 2
-    .advanced-pagination
-      .page עמוד:
-      .progress-outside
-        .progress-inside
-          %a{:href => "#"}
-            %span.progress-handle= "#{@total_pages}/#{@page}"
-    %div
-      %a{:href => "#"}
-        %span.by-icon-v02 1
-    %div
-      %a{:href => "#"}
-        %span.by-icon-v02 0
+  = render partial: 'slide_pagination'
   = render partial: 'ab_pagination'
 
   != paginate @works_abc
@@ -58,7 +21,7 @@
   $(document).ready(function() {
     // Instantiate a slider
     var mySlider = $("input.slider").bootstrapSlider({
-      handle: 'square',
+      tooltip: 'always',
     });
     var url = '#{all_works_path}'; // temp; TODO: replace with url-builder function based on sort/filter controls + pagination
     $("input.slider").on('slideStop', function(slideEvt){

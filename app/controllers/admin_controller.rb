@@ -32,13 +32,13 @@ class AdminController < ApplicationController
     ex = Expression.joins([:realizers, :works]).where(realizers: {role: Realizer.roles[:translator]}, works: {orig_lang: 'he'})
     mans = ex.map{|e| e.manifestations[0]}
     @total = mans.length
-    @mans = Kaminari.paginate_array(mans).page(params[:page]).per(25)
+    @mans = Kaminari.paginate_array(mans).page(params[:page]).per(50)
     @page_title = t(:missing_language_report)
     Rails.cache.write('report_missing_languages', mans.length)
   end
 
   def missing_genres
-    @mans = Manifestation.joins(:expressions).where(expressions: {genre: nil}).page(params[:page]).per(25)
+    @mans = Manifestation.joins(:expressions).where(expressions: {genre: nil}).page(params[:page]).per(50)
     @total = Manifestation.joins(:expressions).where(expressions: {genre: nil}).count
     @page_title = t(:missing_genre_report)
     Rails.cache.write('report_missing_genres', @total)
@@ -53,7 +53,7 @@ class AdminController < ApplicationController
   def missing_copyright
     @authors = Person.where(public_domain: nil)
     @total = Manifestation.joins(:expressions).where(expressions: {copyrighted: nil}).count
-    @mans = Manifestation.joins(:expressions).where(expressions: {copyrighted: nil}).page(params[:page]).per(25)
+    @mans = Manifestation.joins(:expressions).where(expressions: {copyrighted: nil}).page(params[:page]).per(50)
     @page_title = t(:missing_copyright_report)
     Rails.cache.write('report_missing_copyright', @total)
   end

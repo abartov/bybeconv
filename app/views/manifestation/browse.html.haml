@@ -6,7 +6,7 @@
         .work-area
           .work-content
             .headline-1-v02= t(:welcome_to_works_browsing)
-            %p!= t(:works_browsing_intro_html)
+            %p!= t(:works_browsing_intro_html, {total: get_total_works})
           .work-side-color
             .work-genre.prose-side-icon
     .col-12.col-lg-8
