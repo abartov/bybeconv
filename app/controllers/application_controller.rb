@@ -301,6 +301,15 @@ end
       ensure
         temp_file.close
       end
+    when 'odt'
+      begin
+        temp_file = Tempfile.new('tmp_doc_'+download_entity.id.to_s, 'tmp/')
+        temp_file.puts(PandocRuby.convert(html, M: 'dir=rtl', from: :html, to: :odt).force_encoding('UTF-8')) # requires pandoc 1.17.3 or higher, for correct directionality
+        temp_file.chmod(0644)
+        send_file temp_file, type: 'application/application/vnd.oasis.opendocument.text', filename: filename
+      ensure
+        temp_file.close
+      end
     when 'html'
       begin
         temp_file = Tempfile.new('tmp_html_'+download_entity.id.to_s, 'tmp/')
