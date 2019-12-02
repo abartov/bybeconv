@@ -17,8 +17,10 @@ class ProofController < ApplicationController
         end
       end
     else # new BYBE
-      @p = Proof.new(from: params['from'], manifestation_id: params['manifestation'].to_i, what: params['what'], highlight: params['highlight'], status: 'new')
-      @p.save!
+      if params['ziburit'] =~ /ביאליק/
+        @p = Proof.new(from: params['from'], manifestation_id: params['manifestation'].to_i, what: params['what'], highlight: params['highlight'], status: 'new')
+        @p.save!
+      end
     end
     respond_to do |fmt|
       fmt.html { }
