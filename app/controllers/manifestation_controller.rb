@@ -261,7 +261,7 @@ class ManifestationController < ApplicationController
     @html = highlight_suspicious_markdown(@html) # highlight suspicious markdown in backend
     h = @m.legacy_htmlfile
     unless h.nil? or h.url.nil? or h.url.empty?
-      @legacy_url = 'http://benyehuda.org'+h.url
+      @legacy_url = 'https://old.benyehuda.org'+h.url
     end
   end
 
@@ -273,7 +273,7 @@ class ManifestationController < ApplicationController
     @markdown = @m.markdown
     h = @m.legacy_htmlfile
     unless h.nil? or h.url.nil? or h.url.empty?
-      @legacy_url = 'http://benyehuda.org'+h.url
+      @legacy_url = 'https://old.benyehuda.org'+h.url
     end
   end
 
@@ -374,7 +374,7 @@ class ManifestationController < ApplicationController
 
       h = @m.legacy_htmlfile
       unless h.nil? or h.url.nil?
-        @legacy_url = 'https://benyehuda.org'+h.url
+        @legacy_url = 'https://old.benyehuda.org'+h.url
       end
       render action: :edit
     end
