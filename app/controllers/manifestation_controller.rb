@@ -19,6 +19,7 @@ class ManifestationController < ApplicationController
     @pagetype = :works
     # @collection = Manifestation.all_published.limit(100)
     @collection = Manifestation.all_published
+    @works_list_title = t(:works_list)
     browse
   end
 
@@ -36,7 +37,9 @@ class ManifestationController < ApplicationController
     @pagetype = :works
     @tag = Tag.find(params[:id])
     if @tag
-      @works_by_tag = Manifestation.by_tag(params[:id]).order(:sort_title).page(params[:page]).limit(25)
+      @collection = Manifestation.by_tag(params[:id])
+      @works_list_title = t(:works_by_tag)+': '+@tag.name
+      browse
     else
       flash[:error] = t(:no_such_item)
       redirect_to '/'
@@ -158,13 +161,14 @@ class ManifestationController < ApplicationController
   def period
     @pagetype = :works
     @collection = Manifestation.all_published.joins(:expressions).where(expressions: {period: Person.periods[params[:period]]})
+    @works_list_title = t(:works_by_period)+': '+t(params[:period])
     browse
   end
 
   def genre
     @pagetype = :works
-    # TODO: configurable sorting
     @collection = Manifestation.all_published.joins(:expressions).where(expressions: {genre: params[:genre]})
+    @works_list_title = t(:works_by_genre)+': '+textify_genre(params[:genre])
     browse
   end
 

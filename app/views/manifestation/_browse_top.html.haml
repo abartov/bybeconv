@@ -5,7 +5,7 @@
   .texts-list-top
     .texts-list-top-info-card
       .flex-container
-        .headline-1-v02= t(:works_list)
+        .headline-1-v02= @works_list_title
         .author-sort-area#sort_filter_toggle
           .author-page-top-sort-desktop
             = t(:sort_and_filter)+' [?]'
@@ -16,26 +16,26 @@
             %button.btn-small-outline-v02.btn-text-v02{:href => "#"}= t(:sort_and_filter)
         .author-page-top-icons-desktop
           .top-left-icons-group
-            .icon-in-group-v02
+            .icon-in-group-v02.notyet
               %a{:href => "#"}
                 %span.by-icon-v02.icon-bybookshelf
                 .anthology-badge
                   .badge-number 2
-            .icon-in-group-v02
+            .icon-in-group-v02.notyet
               %a{:href => "#"}
                 %span.by-icon-v02 9
-            .icon-in-group-v02{:style => "margin-left:0;"}
+            .icon-in-group-v02.notyet{:style => "margin-left:0;"}
               %a{:href => "#"}
                 %span.by-icon-v02 3
         .author-page-top-icons-mobile
           .top-left-icons-group
-            .icon-in-group-v02
+            .icon-in-group-v02.notyet
               %a{:href => "#"}
                 %span.by-icon-v02.icon-bybookshelf
                 .anthology-badge
                   .badge-number 2
             #moreMobile-author.by-dropdown-v02
-              %span#nav-more-icon
+              %span#nav-more-icon.notyet
                 %a{:href => "#"}
                   %span.by-icon-top-v02 Y
               #menu-more-mobile.by-dropdown-content-v02{:style => "left: 0; margin-top: 4px"}

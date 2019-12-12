@@ -1,21 +1,23 @@
 .by-card-header-v02
   .headline-2-v02= t(:x_works_plain, {x: @total})
 .by-card-content-v02
-  = render partial: 'slide_pagination'
-  - if @sort == 'alphabetical'
-    = render partial: 'ab_pagination'
+  - unless @total_pages == 1
+    = render partial: 'slide_pagination'
+    - if @sort == 'alphabetical'
+      = render partial: 'ab_pagination'
   .sort-buttons-area
-    %button.btn-small-outline-v02{:href => "#"}
+    %button.btn-small-outline-v02.notyet{:href => "#"}
       .by-icon-top-v02.purple-v02 \
-    %button.btn-small-outline-v02{:href => "#"}
+    %button.btn-small-outline-v02.notyet{:href => "#"}
       .by-icon-top-v02.purple-v02.icon-bysort-down
   .mainlist
     %ol
       - @works.each do |m|
         %li= link_to m.title_and_authors, manifestation_read_path(m.id)
-  = render partial: 'slide_pagination'
-  - if @sort == 'alphabetical'
-    = render partial: 'ab_pagination'
+  - unless @total_pages == 1
+    = render partial: 'slide_pagination'
+    - if @sort == 'alphabetical'
+      = render partial: 'ab_pagination'
   = hidden_field_tag(:hurl, request.original_url)
 :javascript
   $(document).ready(function() {
