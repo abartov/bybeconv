@@ -156,13 +156,16 @@ class ManifestationController < ApplicationController
   end
 
   def period
-    @tabclass = set_tab('works')
-    @manifestations = Manifestation.all_published.joins(:expressions).where(expressions: {period: Person.periods[params[:period]]}).page(params[:page]).order('sort_title ASC')
+    @pagetype = :works
+    @collection = Manifestation.all_published.joins(:expressions).where(expressions: {period: Person.periods[params[:period]]})
+    browse
   end
 
   def genre
-    @tabclass = set_tab('works')
-    @manifestations = Manifestation.all_published.joins(:expressions).where(expressions: {genre: params[:genre]}).page(params[:page]).order('sort_title ASC')
+    @pagetype = :works
+    # TODO: configurable sorting
+    @collection = Manifestation.all_published.joins(:expressions).where(expressions: {genre: params[:genre]})
+    browse
   end
 
   # this one is called via AJAX
@@ -421,6 +424,9 @@ class ManifestationController < ApplicationController
       @sort = 'alphabetical'
     end
     if @sort == 'alphabetical'
+      unless params[:page].nil? || params[:page].empty?
+        params[:to_letter] = nil # if page was specified, forget the to_letter directive
+      end
       unless params[:to_letter].nil? || params[:to_letter].empty?
         adjust_page_by_letter(params[:to_letter])
       end
