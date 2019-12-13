@@ -761,7 +761,6 @@ input::placeholder {
   position: absolute;
   left: 15px;
   bottom: 15px;
-  line-height: 32px;
   }
 
 .carousel-arrow-right-v02 {
@@ -1023,6 +1022,7 @@ input::placeholder {
   width: 100%; }
 
 .new-card-v02 {
+  position: relative;
   height: 140px;
   background-color: #eeeced;
   border-radius: 3px;
@@ -1040,7 +1040,7 @@ input::placeholder {
   margin-left: 15px; }
 
 .new-card-left-v02 {
-  padding: 6px 15px 15px 15px;
+  padding: 6px 15px 0 15px;
   height: 100%; }
 
 .new-card-pic-v02 {
@@ -1475,7 +1475,7 @@ ul #menuMobile {
   display: -webkit-box;
   -webkit-line-clamp: 5;
   -webkit-box-orient: vertical;
-	max-height: 90px;
+	max-height: 66px;
 }
 .text-height-new-double {
   overflow: hidden;
@@ -1656,8 +1656,8 @@ ul #menuMobile {
 }
 
 .side-menu-area{
-    -ms-flex: 0 0 230px;
-    flex: 0 0 230px;
+    -ms-flex: 0 0 250px;
+    flex: 0 0 250px;
 }
 .side-menu-area-left{
 display: none;}
@@ -1674,7 +1674,7 @@ display: flex;
 .nav-link{
 	background-color: #eeeced;
 	height:68px;
-	width: 202px;
+	width: 222px;
 	border: none;
 	color:#660248;
 	cursor:pointer;
@@ -2119,7 +2119,7 @@ display: none;}
 	padding-bottom: 62px;
 }
 .whats-new-content{
-	  height: 1096px;
+	max-height: 1096px;
 }
 .works-in-project-content{
 	height: 360px;
@@ -2266,6 +2266,9 @@ display: none;}
 	padding-right: 0;
 }
 .side-nav-col{
+	padding-right: 0;
+}
+.side-sort-col{
 	padding-right: 0;
 }
 .search-drop-down{
@@ -3075,15 +3078,16 @@ padding-left: 0;
   font-family: ben-yehuda;
   font-size: 14px;
   color: #660248;
-  position: absolute;
 }
 .about-card-header .vertical-expand::before{
   top: 15px;
   right: 15px;
 }
+.anthology-card-header button{
+  float: left;
+  padding: 4px 0 0 0;
+}
 .anthology-card-header .vertical-expand::before{
-  top: 11px;
-  left: 41px;
 }
 
 .vertical-collapse::before {
@@ -3091,11 +3095,8 @@ padding-left: 0;
   font-family: ben-yehuda;
   font-size: 14px;
   color: #660248;
-  position: absolute;
 }
 .anthology-card-header .vertical-collapse::before{
-  top: 11px;
-  left: 41px;
 }
 .about-card-header .vertical-collapse::before{
   top: 15px;
@@ -3191,6 +3192,9 @@ padding-left: 0;
 	margin-left: 0;
 	margin-right: -9px;
 	padding-right: 0;
+}
+.anthology-nested-content-rights{
+    padding-right: 6px;
 }
 .panel-v02 {
   width: 100%;
@@ -3690,14 +3694,14 @@ break{
 	background-color: #660248;
 }
 .sort-type .range-date-field{
-	width: 120px;
+	width: 106px;
 	display: inline;
 	margin-top: 8px;
 	margin-bottom: 12px;
 }
 .date-range-to{
 	display: inline;
-	margin-right: 4px;
+	margin-right: 16px;
 	padding: 0;
 }
 .text-sorting .by-card-content-v02 .headline-2-v02{
@@ -3908,7 +3912,7 @@ break{
 	position: fixed;
 	z-index: 11;
 	left: 59px;
-	top: 210px;
+	top: 202px;
 	display: flex;
 }
 .multi-name-sort{
@@ -3986,9 +3990,7 @@ break{
 .icon-btn:last-child{
 	margin-left: 0;
 }
-.anthology-card-header .icon-byedit{
-	margin-left: 32px;
-}
+
 
 .self-created-text .anthology-text-name{
 	margin-right: 24px;
@@ -3996,4 +3998,29 @@ break{
 }
 .anthology .by-card-content-v02{
 	height: calc(100% - 114px);
+}
+
+.anthology-card-header .icon-bydelete{
+	display: none;
+}
+.anthology-card-header:hover .icon-bydelete{
+	display: inline-block;
+}
+.anthology-card-header .icon-byedit{
+	display: none;
+}
+.anthology-card-header:hover .icon-byedit{
+	display: inline-block;
+}
+.side-sort-col .text-sorting{
+	width: 222px;
+}
+.side-sort {
+	width: 222px;
+}
+.side-sort .field-v02{
+	width: 192px;
+}
+.side-sort .by-card-content-v02 .headline-2-v02 {
+    display: inline;
 }
