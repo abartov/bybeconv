@@ -168,7 +168,7 @@ class ManifestationController < ApplicationController
   def genre
     @pagetype = :works
     @collection = Manifestation.all_published.joins(:expressions).where(expressions: {genre: params[:genre]})
-    @works_list_title = t(:works_by_genre)+': '+textify_genre(params[:genre])
+    @works_list_title = t(:works_by_genre)+': '+helpers.textify_genre(params[:genre])
     browse
   end
 
