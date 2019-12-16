@@ -418,7 +418,7 @@ class ManifestationController < ApplicationController
       when 'popularity'
         ord = {impressions_count: :desc}
       when 'publication_date'
-        ord = '' # TODO: implement
+        ord = 'expressions.date asc' # TODO: implement
       when 'creation_date'
         ord = '' # TODO: implement
       when 'upload_date'

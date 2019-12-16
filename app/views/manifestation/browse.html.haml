@@ -27,19 +27,19 @@
             .sort-by-mobile
               %p
                 %input#RadioGroupSort_1{:name => "RadioGroupSort", :type => "radio", value: "alphabet"}/
-                %label אלפבית
+                %label= t(:alphabetical)
                 %br/
                 %input#RadioGroupSort_2{:name => "RadioGroupSort", :type => "radio", value: "publish_date"}/
-                %label תאריך הוצאה
+                %label= t(:publication_date)
                 %br/
                 %input#RadioGroupSort_3{:name => "RadioGroupSort", :type => "radio", value: "creation_date"}/
-                %label תאריך יצירה
+                %label= t(:creation_date)
                 %br/
                 %input#RadioGroupSort_4{:name => "RadioGroupSort", :type => "radio", value: "online_date"}/
-                %label תאריך עליה לאתר
+                %label= t(:upload_date)
                 %br/
                 %input#RadioGroupSort_5{:name => "RadioGroupSort", :type => "radio", value: "popularity"}/
-                %label פופולריות
+                %label= t(:popularity)
                 %br/
         .by-card-content-v02
           .headline-2-v02= t(:filter_by)
@@ -47,7 +47,7 @@
           .sort-type
             .vertical-expand
               .sort-type-headline שם
-            .nested
+            .nested.active
               .row.nested-content
                 .search-mobile-switch
                   %button.search-mobile-option.active{:href => "#"} שם יצירה
@@ -57,7 +57,7 @@
           .sort-type
             .vertical-expand
               .sort-type-headline שם
-            .nested
+            .nested.active
               .row.nested-content
                 .search-mobile-switch
                   %button.search-mobile-option{:href => "#"} שם יצירה
@@ -69,7 +69,7 @@
           .sort-type
             .vertical-expand
               .sort-type-headline סוגות
-            .nested
+            .nested.active
               .row.nested-content
                 .col-md-6.col-sm-12
                   %input#CheckboxGroup1_1{:name => "CheckboxGroup1", :type => "checkbox", value: "sort_by_poetry"}/
@@ -134,7 +134,7 @@
           .sort-type
             .vertical-expand
               .sort-type-headline תקופות
-            .nested
+            .nested.active
               .row.nested-content
                 .col-md-6.col-sm-12
                   %input#CheckboxGroup2_1{:disabled => "disabled", :name => "CheckboxGroup2", :type => "checkbox", value: "sort_by_ancient"}/
@@ -164,7 +164,7 @@
           .sort-type
             .vertical-expand
               .sort-type-headline מצב זכויות יוצרים
-            .nested
+            .nested.active
               .row.nested-content
                 .col-md-6.col-sm-12
                   %input#CheckboxGroup3_1{:name => "CheckboxGroup3", :type => "checkbox", value: "sort_by_cc-pd"}/
@@ -188,7 +188,7 @@
           .sort-type
             .vertical-expand
               .sort-type-headline מאפיינים
-            .nested
+            .nested.active
               .row.nested-content
                 .col-md-6.col-sm-12
                   %input#CheckboxGroup4_1{:name => "CheckboxGroup4", :type => "checkbox", value: "sort_by_curatorial_content"}/
@@ -218,7 +218,7 @@
           .sort-type
             .vertical-expand
               .sort-type-headline תאריך
-            .nested
+            .nested.active
               .row.nested-content
                 .search-mobile-switch
                   %button.search-mobile-option{:href => "#"} הוצאה
@@ -237,7 +237,7 @@
           .sort-type
             .vertical-expand
               .sort-type-headline שפת מקור
-            .nested
+            .nested.active
               .row.nested-content{:style => "background-color: #d9cdd5"}
                 %input#CheckboxGroup5_1{:name => "CheckboxGroup5", :type => "checkbox", value: "sort_by_translated"}/
                 %label
@@ -284,4 +284,14 @@
       }
       $.get(url,'',null, 'script');
     });
+
+    var toggler = document.getElementsByClassName("vertical-expand");
+    var i;
+
+    for (i = 0; i < toggler.length; i++) {
+      toggler[i].addEventListener("click", function () {
+        this.parentElement.querySelector(".nested").classList.toggle("active");
+        this.classList.toggle("vertical-collapse");
+      });
+    }
   });
