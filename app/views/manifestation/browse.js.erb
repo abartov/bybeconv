@@ -1,1 +1,4 @@
 $('#thelist').html("<%= j(render partial: 'browse_list') %>");
+<% if @emit_filters %>
+$('#filters_panel').html("<%= j(render partial: 'browse_filters') %>");
+<% end %>

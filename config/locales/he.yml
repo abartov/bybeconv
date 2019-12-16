@@ -2,6 +2,7 @@
 
 he:
   rename_this_anthology: שינוי שם מקראה זו
+  filters_loading: טוען את המסננים...
   works_list: רשימת יצירות
   works_by_period: יצירות לפי תקופה
   works_by_genre: יצירות לפי סוגה

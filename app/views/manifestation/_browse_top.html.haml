@@ -50,6 +50,17 @@
     $('#sort_filter_toggle').click(function() {
       $('#browse_intro').toggle();
       $('#sort_filter_panel').toggle();
+      if($('#filters_panel .temporary').length) { // if filter panel yet to be loaded
+        var url = $('#hurl').val().replace(/page=\d+/,'');
+        if(url.indexOf('?') == -1) {
+          url = url + '?';
+        }
+        else {
+          url = url + '&';
+        }
+        url = url + 'load_filters=true';
+        $.get(url,'',null, 'script');
+      }
       $('.toggle-button-no').toggle();
       $('.toggle-button-yes').toggle();
     });

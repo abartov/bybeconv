@@ -1,0 +1,176 @@
+.headline-2-v02= t(:filter_by)
+%a.reset{:href => "#"}= t(:reset_filter)
+.sort-type
+  .vertical-expand
+    .sort-type-headline שם
+  .nested.active
+    .row.nested-content
+      .search-mobile-switch
+        %button.search-mobile-option.active{:href => "#"} שם יצירה
+        %button.search-mobile-option{:href => "#"} שם מחבר
+      %break
+      %input.field-v02.field-without-label{:placeholder => "טקסט חופשי", :type => "text"}/
+.sort-type
+  .vertical-expand
+    .sort-type-headline שם
+  .nested.active
+    .row.nested-content
+      .search-mobile-switch
+        %button.search-mobile-option{:href => "#"} שם יצירה
+        %button.search-mobile-option.active{:href => "#"} שם מחבר
+      %break
+      %input.field-v02.field-without-label.author-name-field{:placeholder => "שם פרטי / משפחה", :type => "text"}/
+      .multi-name-sort
+        %a{:href => "#"} בחירה מרובה
+.sort-type
+  .vertical-expand
+    .sort-type-headline= t(:genres)
+  .nested.active
+    .row.nested-content
+      - get_genres.each_slice((get_genres.size/2.0).round).to_a.each do |genres|
+        .col-md-6.col-sm-12
+          - genres.each do |g|
+            - attrs = @genre_facet[g].nil? ? {disabled: 'disabled'} : {}
+            - attrs.merge!({:name => "ckb_genres", :type => "checkbox", value: g})
+            %input#CheckboxGroup1_1{ attrs}/
+            %label
+              %span.by-icon-v02> t
+              = textify_genre(g)
+              %span= "(#{@genre_facet[g] || '0'})"
+            %br/
+.sort-type
+  .vertical-expand
+    .sort-type-headline תקופות
+  .nested.active
+    .row.nested-content
+      .col-md-6.col-sm-12
+        %input#CheckboxGroup2_1{:disabled => "disabled", :name => "CheckboxGroup2", :type => "checkbox", value: "sort_by_ancient"}/
+        %label
+          עת עתיקה ופיוט
+          %span (0)
+        %br/
+        %input#CheckboxGroup2_2{:disabled => "disabled", :name => "CheckboxGroup2", :type => "checkbox", value: "sort_by_medieval"}/
+        %label
+          ימי הביניים והרנסאנס
+          %span (0)
+        %br/
+        %input#CheckboxGroup2_3{:name => "CheckboxGroup2", :type => "checkbox", value: "sort_by_enlightenment"}/
+        %label
+          ההשכלה
+          %span (33)
+      .col-md-6.col-sm-12
+        %input#CheckboxGroup2_4{:name => "CheckboxGroup2", :type => "checkbox", value: "sort_by_revival"}/
+        %label
+          תחיה
+          %span (88)
+        %br/
+        %input#CheckboxGroup2_5{:name => "CheckboxGroup2", :type => "checkbox", value: "sort_by_modern"}/
+        %label
+          ספרות עברית חדשה
+          %span (209)
+.sort-type
+  .vertical-expand
+    .sort-type-headline מצב זכויות יוצרים
+  .nested.active
+    .row.nested-content
+      .col-md-6.col-sm-12
+        %input#CheckboxGroup3_1{:name => "CheckboxGroup3", :type => "checkbox", value: "sort_by_cc-pd"}/
+        %label
+          %span.by-icon-v02> m
+          נחלת הכלל
+          %span (203)
+        %br/
+        %input#CheckboxGroup3_2{:disabled => "disabled", :name => "CheckboxGroup3", :type => "checkbox", value: "sort_by_cc-unknown"}/
+        %label
+          לא ידוע
+          %span (0)
+        %br/
+      .col-md-6.col-sm-12
+        %input#CheckboxGroup3_3{:name => "CheckboxGroup3", :type => "checkbox", value: "sort_by_copyright"}/
+        %label
+          %span.by-icon-v02> x
+          רשות פרסום
+          %span (127)
+        %br/
+.sort-type
+  .vertical-expand
+    .sort-type-headline מאפיינים
+  .nested.active
+    .row.nested-content
+      .col-md-6.col-sm-12
+        %input#CheckboxGroup4_1{:name => "CheckboxGroup4", :type => "checkbox", value: "sort_by_curatorial_content"}/
+        %label
+          תוכן אוצרותי
+          %span (4)
+        %br/
+        %input#CheckboxGroup4_2{:name => "CheckboxGroup4", :type => "checkbox", value: "sort_by_recommendations"}/
+        %label
+          המלצות קוראים
+          %span (12)
+        %br/
+        %input#CheckboxGroup4_3{:name => "CheckboxGroup4", :type => "checkbox", value: "sort_by_liked"}/
+        %label
+          יצירות שאהבתי
+          %span (2)
+      .col-md-6.col-sm-12
+        %input#CheckboxGroup4_4{:disabled => "disabled", :name => "CheckboxGroup4", :type => "checkbox", value: "sort_by_active_bookmark"}/
+        %label
+          סימניה מופעלת
+          %span (0)
+        %br/
+        %input#CheckboxGroup4_5{:name => "CheckboxGroup4", :type => "checkbox", value: "sort_by_no_properties"}/
+        %label
+          ללא מאפיינים
+          %span (312)
+.sort-type
+  .vertical-expand
+    .sort-type-headline תאריך
+  .nested.active
+    .row.nested-content
+      .search-mobile-switch
+        %button.search-mobile-option{:href => "#"} הוצאה
+        %button.search-mobile-option.active{:href => "#"} יצירה
+        %button.search-mobile-option{:href => "#"} העלאה
+      %break
+      .dates-range
+        .dates-graph-area
+        .range-outside
+          .range-inside
+            .range-handle-right
+            .range-handle-left
+        %input.field-v02.field-without-label.range-date-field{:placeholder => "dd-mm-yyyy", :type => "text"}/
+        .date-range-to עד
+        %input.field-v02.field-without-label.range-date-field{:placeholder => "dd-mm-yyyy", :style => "float: left", :type => "text"}/
+.sort-type
+  .vertical-expand
+    .sort-type-headline שפת מקור
+  .nested.active
+    .row.nested-content{:style => "background-color: #d9cdd5"}
+      %input#CheckboxGroup5_1{:name => "CheckboxGroup5", :type => "checkbox", value: "sort_by_translated"}/
+      %label
+        יצירות מתורגמות בלבד
+        %span (963)
+      %br/
+    .row.nested-content
+      .col-md-6.col-sm-12
+        %input#CheckboxGroup5_2{:name => "CheckboxGroup5", :type => "checkbox", value: "sort_by_hebrew"}/
+        %label
+          עברית
+          %span (8876)
+        %br/
+        %input#CheckboxGroup5_3{:name => "CheckboxGroup5", :type => "checkbox", value: "sort_by_russian"}/
+        %label
+          רוסית
+          %span (503)
+      .col-md-6.col-sm-12
+        %input#CheckboxGroup5_4{:name => "CheckboxGroup5", :type => "checkbox", value: "sort_by_english"}/
+        %label
+          אנגלית
+          %span (876)
+        %br/
+        %input#CheckboxGroup5_5{:name => "CheckboxGroup5", :type => "checkbox", value: "sort_by_german"}/
+        %label
+          גרמנית
+          %span (442)
+    .row.nested-content
+      %a{:href => "#"} הצג עוד 18 שפות מקור

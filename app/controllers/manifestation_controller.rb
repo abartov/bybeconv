@@ -418,10 +418,10 @@ class ManifestationController < ApplicationController
       when 'popularity'
         ord = {impressions_count: :desc}
       when 'publication_date'
-        @collection = @collection.includes(:expressions) # make sure we have joins for the ORDER BY (e.g. for "all works", it wouldn't be joined before this sort)
+        @collection = @collection.joins(:expressions).includes(:expressions) # make sure we have joins for the ORDER BY (e.g. for "all works", it wouldn't be joined before this sort)
         ord = 'expressions.date asc'
       when 'creation_date'
-        @collection = @collection.includes(expressions: :works) # make sure we have joins for the ORDER BY (e.g. for "all works", it wouldn't be joined before this sort)
+        @collection = @collection.joins(expressions: :works).includes(expressions: :works) # make sure we have joins for the ORDER BY (e.g. for "all works", it wouldn't be joined before this sort)
         ord = 'works.date asc'
       when 'upload_date'
         ord = {created_at: :desc}
@@ -443,6 +443,13 @@ class ManifestationController < ApplicationController
       @works = @collection.order(ord).page(@page) # get page X of manifestations
     end
     @header_partial = 'manifestation/browse_top'
+    @emit_filters = false
+    if params[:load_filters] == 'true'
+      @collection = @collection.joins(expressions: :works).includes(expressions: :works) # make sure we have the joins we need
+      @emit_filters = true
+      @genre_facet = @collection.group('expressions.genre').count
+      # TODO: other facets
+    end
   end
 
   def prep_ab(whole, subset)
