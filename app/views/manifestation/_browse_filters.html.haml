@@ -27,47 +27,32 @@
     .sort-type-headline= t(:genres)
   .nested.active
     .row.nested-content
-      - get_genres.each_slice((get_genres.size/2.0).round).to_a.each do |genres|
+      - get_genres.each_slice((get_genres.size/2.0).round) do |genres|
         .col-md-6.col-sm-12
           - genres.each do |g|
             - attrs = @genre_facet[g].nil? ? {disabled: 'disabled'} : {}
             - attrs.merge!({:name => "ckb_genres", :type => "checkbox", value: g})
-            %input#CheckboxGroup1_1{ attrs}/
+            %input#CheckboxGroup1{ attrs}/
             %label
-              %span.by-icon-v02> t
+              %span.by-icon-v02>= glyph_for_genre(g)
               = textify_genre(g)
               %span= "(#{@genre_facet[g] || '0'})"
             %br/
 .sort-type
   .vertical-expand
-    .sort-type-headline תקופות
+    .sort-type-headline= t(:periods)
   .nested.active
     .row.nested-content
-      .col-md-6.col-sm-12
-        %input#CheckboxGroup2_1{:disabled => "disabled", :name => "CheckboxGroup2", :type => "checkbox", value: "sort_by_ancient"}/
-        %label
-          עת עתיקה ופיוט
-          %span (0)
-        %br/
-        %input#CheckboxGroup2_2{:disabled => "disabled", :name => "CheckboxGroup2", :type => "checkbox", value: "sort_by_medieval"}/
-        %label
-          ימי הביניים והרנסאנס
-          %span (0)
-        %br/
-        %input#CheckboxGroup2_3{:name => "CheckboxGroup2", :type => "checkbox", value: "sort_by_enlightenment"}/
-        %label
-          ההשכלה
-          %span (33)
-      .col-md-6.col-sm-12
-        %input#CheckboxGroup2_4{:name => "CheckboxGroup2", :type => "checkbox", value: "sort_by_revival"}/
-        %label
-          תחיה
-          %span (88)
-        %br/
-        %input#CheckboxGroup2_5{:name => "CheckboxGroup2", :type => "checkbox", value: "sort_by_modern"}/
-        %label
-          ספרות עברית חדשה
-          %span (209)
+      - Expression.periods.invert.each_slice((Expression.periods.invert.size/2.0).round) do |periods|
+        .col-md-6.col-sm-12
+          - periods.each do |p|
+            - attrs = @period_facet[p[0]].nil? ? {disabled: 'disabled'} : {}
+            - attrs.merge!({:name => "ckb_periods", :type => "checkbox", value: p[1]})
+            %input#CheckboxGroup2{ attrs}/
+            %label
+              = t(p[1])
+              %span= "(#{@period_facet[p[0]] || '0'})"
+            %br/
 .sort-type
   .vertical-expand
     .sort-type-headline מצב זכויות יוצרים
