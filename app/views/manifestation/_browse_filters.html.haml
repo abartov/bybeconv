@@ -2,26 +2,18 @@
 %a.reset{:href => "#"}= t(:reset_filter)
 .sort-type
   .vertical-expand
-    .sort-type-headline שם
+    .sort-type-headline= t(:name)
   .nested.active
     .row.nested-content
-      .search-mobile-switch
-        %button.search-mobile-option.active{:href => "#"} שם יצירה
-        %button.search-mobile-option{:href => "#"} שם מחבר
-      %break
-      %input.field-v02.field-without-label{:placeholder => "טקסט חופשי", :type => "text"}/
-.sort-type
-  .vertical-expand
-    .sort-type-headline שם
-  .nested.active
-    .row.nested-content
-      .search-mobile-switch
-        %button.search-mobile-option{:href => "#"} שם יצירה
-        %button.search-mobile-option.active{:href => "#"} שם מחבר
-      %break
-      %input.field-v02.field-without-label.author-name-field{:placeholder => "שם פרטי / משפחה", :type => "text"}/
-      .multi-name-sort
-        %a{:href => "#"} בחירה מרובה
+      = form_tag(request.original_url.sub(/page=\d+/,''), remote: true, method: :get) do
+        .search-mobile-switch
+          %button.search-mobile-option.active#opt_workname{:href => "#"}= t(:work_title)
+          %button.search-mobile-option#opt_authorname{:href => "#"}= t(:author_name)
+        %break
+        %input.field-v02.field-without-label#search_input{:placeholder => t(:what_to_search_for), :type => "text"}/
+        .multi-name-sort.pointer.notyet{style:'display:inline-block;'}
+          %a{:href => "#"}= t(:multiselect)
+        = hidden_field_tag :search_type, id: 'search_type', value: 'workname'
 .sort-type
   .vertical-expand
     .sort-type-headline= t(:genres)
@@ -55,27 +47,22 @@
             %br/
 .sort-type
   .vertical-expand
-    .sort-type-headline מצב זכויות יוצרים
+    .sort-type-headline= t(:copyright_status)
   .nested.active
     .row.nested-content
       .col-md-6.col-sm-12
-        %input#CheckboxGroup3_1{:name => "CheckboxGroup3", :type => "checkbox", value: "sort_by_cc-pd"}/
+        %input#CheckboxGroup3{:name => "ckb_copyright", :type => "checkbox", value: "0"}/
         %label
           %span.by-icon-v02> m
-          נחלת הכלל
-          %span (203)
-        %br/
-        %input#CheckboxGroup3_2{:disabled => "disabled", :name => "CheckboxGroup3", :type => "checkbox", value: "sort_by_cc-unknown"}/
-        %label
-          לא ידוע
-          %span (0)
+          = t(:public_domain)
+          %span= "(#{@copyright_facet[0]})"
         %br/
       .col-md-6.col-sm-12
-        %input#CheckboxGroup3_3{:name => "CheckboxGroup3", :type => "checkbox", value: "sort_by_copyright"}/
+        %input#CheckboxGroup3_3{:name => "CheckboxGroup3", :type => "checkbox", value: "1"}/
         %label
           %span.by-icon-v02> x
-          רשות פרסום
-          %span (127)
+          = t(:by_permission)
+          %span= "(#{@copyright_facet[1]})"
         %br/
 .sort-type
   .vertical-expand
@@ -159,3 +146,23 @@
           %span (442)
     .row.nested-content
       %a{:href => "#"} הצג עוד 18 שפות מקור
+:javascript
+  $(document).ready(function() {
+    $('.multi-name-sort').hide();
+    $('#opt_authorname').click(function(e){
+      e.preventDefault();
+      $('#opt_workname').removeClass('active');
+      $('#opt_authorname').addClass('active');
+      $('#search_type').val('authorname');
+      $('.multi-name-sort').show();
+      $('#search_input').addClass('author-name-field');
+    });
+    $('#opt_workname').click(function(e){
+      e.preventDefault();
+      $('#opt_workname').addClass('active');
+      $('#opt_authorname').removeClass('active');
+      $('#search_type').val('workname');
+      $('.multi-name-sort').hide();
+      $('#search_input').removeClass('author-name-field');
+    });
+  });

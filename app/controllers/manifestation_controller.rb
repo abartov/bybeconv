@@ -448,7 +448,8 @@ class ManifestationController < ApplicationController
       @collection = @collection.joins(expressions: :works).includes(expressions: :works) # make sure we have the joins we need
       @emit_filters = true
       @genre_facet = @collection.group('expressions.genre').count
-      @period_facet = @collection.group('period').count
+      @period_facet = @collection.group(:period).count
+      @copyright_facet = @collection.group(:copyrighted).count
       # TODO: other facets
     end
   end
