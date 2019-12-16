@@ -418,9 +418,11 @@ class ManifestationController < ApplicationController
       when 'popularity'
         ord = {impressions_count: :desc}
       when 'publication_date'
-        ord = 'expressions.date asc' # TODO: implement
+        @collection = @collection.includes(:expressions) # make sure we have joins for the ORDER BY (e.g. for "all works", it wouldn't be joined before this sort)
+        ord = 'expressions.date asc'
       when 'creation_date'
-        ord = '' # TODO: implement
+        @collection = @collection.includes(expressions: :works) # make sure we have joins for the ORDER BY (e.g. for "all works", it wouldn't be joined before this sort)
+        ord = 'works.date asc'
       when 'upload_date'
         ord = {created_at: :desc}
       end

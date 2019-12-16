@@ -1,6 +1,9 @@
+- add sortdate fields to Work and Expression, to provide a uniform numeric/date field to sort by.  Manually confirm guesses, or type in, dates for ranges and approximations (figure out a number for "mid 5th century" or "either late 1871 or early 1872")
+
 IDEA: now that we have picture support - maybe allow VARIANTS of existing manifestations, with (trusted) user-curated illustrated editions (taking from Commons etc.)
 - emit pics in print/export
-- Implement Capistrano deployment: https://github.com/capistrano/capistrano/blob/master/README.md
+- Implement Capistrano deployment in production: https://github.com/capistrano/capistrano/blob/master/README.md
+  - staging works
 
 ==Bib Workshop==
 grab DDC ids for Raanana through gared (async?)
@@ -21,13 +24,10 @@ grab DDC ids for Raanana through gared (async?)
   - query work by tag
   - admin review, approve/reject tags and recommendations
 
-- !! fix footnote anchors' scrolling relative to margin-top
 - !! add translations box to works view right side
 - implement bookmarks (see notes in code!)
-- take foreign authors into account in authors page - if not everywhere, at least for fables?
-- make tags links to works queries by tag
+- make tags links to works queries by tag (query already works, at /tag/:id)
 - implement recommendation flagging (data model, review)
-- implement the scroll-gradients in work read and readmode
 - implement those-who-read-this-also-read-that (i.e. https://measuringu.com/affinity-analysis/)
 - implement references-to-this-work
 - (?) other extras at bottom of work read
@@ -45,18 +45,25 @@ grab DDC ids for Raanana through gared (async?)
   - featured content full text view
   - carousel of featured content
 
-- COMMUNICATION
-  - blog post with screenshots of system
-
 - homepage bottom -- popular authors *this month*
   - need to calculate in controller
 - process ToCs
   - process bad ToCs (bad_tocs.txt)
-- search
-- search results
-- backend
+
+- SEARCH
+  - literal search, including quoted phrases
+  - remove ' and " during indexing, and from query strings (" only from *middle* of words, e.g. מפא"י, to still allow quoted phrases search)
+  - weight work titles highest after authors
+- SEARCH RESULTS
+  - implemented sort/filter (like the browse views in manifestations)
+    - how to deal with heterogeneous results, though?
+
+- BACKEND
+  - UX throughout
+  - missing maintenance reports
+
 - user prefs infrastructure for anons!
-  - store fontsize pref
+  + store fontsize pref
 
 * always: rake notes
 * fix RTL alignment in downloaded DOC files
@@ -71,8 +78,6 @@ check HtmlFile id 4291 in production (Sokolov) -- currently(??) crashing on char
 - chop_head didn't work on negev
 - kabak's ToC didn't update
 - parallel with original in render_html
-+ split birth date and death date
-+ genre didn't update in kabak
 
 - make public_domain non-boolean, to allow "published after failing to identify owners"
 
@@ -128,5 +133,4 @@ Proof and Recommendation feature
 
 == Epics ==
 * Add TESTS
-* Upgrade to Rails 5.x
-* edit Manifestation markdown with Stackedit
+* Upgrade to Rails 6.x
