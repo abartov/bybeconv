@@ -7,7 +7,10 @@
         %p= t(:pubs_by_person_instructions_html)
       .col-md-6
         %h2= t(:some_authors_to_work_on)
-        %p= Person.has_toc.bib_not_done.order('RAND()').limit(20).map{|p| p.name}.join('; ')
+        %p
+          - Person.has_toc.bib_not_done.order('RAND()').limit(20).map{|p| p.name}.each do |p|
+            %span.copyme.pointer= p
+            = '; '
 
     .row
       .col-md-6
@@ -119,6 +122,18 @@
     }
     $('#person').bind('railsAutocomplete.select', function(event, data){
       load_pubs(data.item.id)
+    });
+    $('.copyme').click(function(e){
+      // gather data
+      var text = e.target.textContent;
+      // paste into textarea
+      var textArea = document.createElement("textarea");
+      textArea.value = text;
+      document.body.appendChild(textArea);
+      // copy to clipboard
+      textArea.select();
+      document.execCommand("Copy");
+      textArea.remove();
     });
     $(document).on('click', '.publine', function(){
       var sels = $('.publine.pub_selected');

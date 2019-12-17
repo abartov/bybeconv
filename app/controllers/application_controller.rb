@@ -225,7 +225,7 @@ class ApplicationController < ActionController::Base
     @genres_present = toc_parts.shift # first element is the genres array
     @htmls = toc_parts.map{|genre, tocpart| [genre, MultiMarkdown.new(tocpart).to_html.force_encoding('UTF-8')]}
     credits = @author.toc.credit_section || ''
-    credits.sub!('## הגיהו', "<div class=\"by-horizontal-seperator-light\"></div>\n\n## הגיהו")
+    credits.sub!('## הגיהו', "<div class=\"by-horizontal-seperator-light\"></div>\n\n## הגיהו") unless credits =~ /by-horizontal/
     @credits = MultiMarkdown.new(credits).to_html.force_encoding('UTF-8')
     @credit_section = @author.toc.credit_section.nil? ? "": @author.toc.credit_section
     @toc_timestamp = @author.toc.updated_at
