@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
 
 gem 'rails', '~> 5.2.2'
-gem 'rails-i18n', git: 'https://github.com/svenfuchs/rails-i18n.git' # , branch: 'rails-4-x' # For 4.x
+gem 'rails-i18n' # , git: 'https://github.com/svenfuchs/rails-i18n.git' # , branch: 'rails-4-x' # For 4.x
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
@@ -90,7 +90,7 @@ gem 'responders' # for respond_to at controller level (in api_controller)
 gem 'better_sjr' # ease debugging of server-side JS responses
 
 group :production do
-  gem 'newrelic_rpm' # performance monitoring
+#  gem 'newrelic_rpm' # performance monitoring
   gem 'dalli'
 end
 
