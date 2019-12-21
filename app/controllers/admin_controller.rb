@@ -119,7 +119,7 @@ class AdminController < ApplicationController
   end
 
   def assign_conversion_verification
-    @m = Manifestation.where(conversion_verified: false, status: Manifestation.statuses[:published], conv_counter: 0).order('RAND()').first
+    @m = Manifestation.where(conversion_verified: false, status: Manifestation.statuses[:published]).order('RAND()').first
     if @m.conv_counter.nil?
       @m.conv_counter = 1
     else
