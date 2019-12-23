@@ -2,6 +2,9 @@ IDEA: now that we have picture support - maybe allow VARIANTS of existing manife
 - emit pics in print/export
 - Implement Capistrano deployment: https://github.com/capistrano/capistrano/blob/master/README.md
 
+- cron or timed job to expire sessions
+- cron or timed job to tally and delete impressions records
+
 ==Bib Workshop==
 grab DDC ids for Raanana through gared (async?)
 
