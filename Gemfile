@@ -60,11 +60,8 @@ gem 'htmlentities'
 gem 'kaminari' # pagination
 gem "nokogiri", ">= 1.10.4"
 
-#gem 'epubbery' # for epubs
 gem 'rmultimarkdown' # new wrapper over Fletcher Penney's MultiMarkDown 6 (MMD 6)
 gem 'yt' # for polling YouTube for new videos
-
-#gem 'rpeg-multimarkdown', :github => 'djungelvral/rpeg-multimarkdown' # note: gem unmaintained, native part doesn't build under Ruby 2.1 -- may need updating the native part from the actual peg-multimarkdown implementation.
 
 # To use debugger
 #gem 'byebug'
@@ -81,13 +78,12 @@ gem 'rdf-vocab' # for SKOS predefined vocab
 gem 'project-honeypot2', '>= 0.1.3' # for HTTP:BL service by Project Honeypot
 gem 'paper_trail', '~> 5.0.0' # for versioning entities
 gem 'gepub' # for generating EPUBs
-#gem 'gepub', '~> 0.7.0beta4' # for generating EPUBs
 gem 'rmagick' # for generating cover images for EPUBs
 gem 'pandoc-ruby' # for converting to DOCX
 gem 'docx' # for pre-processing DOCX files to preserve stanzas
 gem 'uglifier'
 gem 'responders' # for respond_to at controller level (in api_controller)
-gem 'better_sjr' # ease debugging of server-side JS responses
+# gem 'forty_facets' # for faceted search
 
 group :production do
 #  gem 'newrelic_rpm' # performance monitoring
@@ -107,4 +103,5 @@ group :development do
   gem 'rvm1-capistrano3', require: false
   gem 'capistrano-thin', '~> 2.0.0'
   gem 'capistrano-rvm'
+  gem 'better_sjr' # ease debugging of server-side JS responses
 end
