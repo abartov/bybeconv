@@ -722,7 +722,12 @@ he:
   donate_p2_html: כספי תרומתכם מועברים לחשבון העמותה למחשוב ספרות עברית (מס״ע), שהקמנו עבור תמיכה בפרויקט, וישמשו אך ורק לצרכים אלו.
   about_amuta: על העמותה למחשוב ספרות עברית
   reports: "דו\"חות"
+  tocs_missing_links_report: "דו\"ח יצירות לא מקושרות לדפי יוצר"
+  tocs_linking_to_missing_items: "דפי יוצר שמקשרים ליצירות לא קיימות"
   missing_copyright_report: "דו\"ח אישים ויצירות ללא מצב זכויות יוצרים"
+  missing_item_ids: מספרי זיהוי של יצירות לא קיימות
+  missing_orig: יצירות מקור שאינן מוזכרות
+  missing_xlat: תרגומים שאינם מוזכרים
   missing_language_report: "דו\"ח יצירות מתורגמות ללא ציון שפת מקור"
   missing_genre_report: "דו\"ח יצירות ללא סוגה"
   incongruous_copyright_report: "דו\"ח יצירות במצב זכויות יוצרים שגוי (כנראה)"

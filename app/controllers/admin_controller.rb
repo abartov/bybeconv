@@ -155,6 +155,50 @@ class AdminController < ApplicationController
     Rails.cache.write('report_periodless', @authors.length)
   end
 
+  # this is a massive report that takes a long time to run!
+  def tocs_missing_links
+    @author_keys = []
+    @tocs_missing_links = {}
+    @tocs_linking_to_missing_items = {}
+    Person.has_toc.each do |p|
+      @tocs_missing_links[p.id] = {orig: [], xlat: []} if @tocs_missing_links[p.id].nil? # it may already exist because of being translated by an author we've already processed
+      toc_items = []
+      begin
+        toc_items = p.toc.linked_items
+      rescue ActiveRecord::RecordNotFound
+        @tocs_linking_to_missing_items[p.id] = []
+        found_item_ids = []
+        p.toc.linked_item_ids.each do |mid|
+          if Manifestation.exists?(mid)
+            found_item_ids << mid
+          else
+            @tocs_linking_to_missing_items[p.id] << mid
+          end
+        end
+        toc_items = Manifestation.find(found_item_ids)
+      end
+      p.original_works.each do |m|
+        @tocs_missing_links[p.id][:orig] << m unless toc_items.include?(m)
+      end
+      p.translations.joins(expressions: :works).includes(expressions: :works).each do |m|
+        @tocs_missing_links[p.id][:xlat] << m unless toc_items.include?(m)
+        # additionally, make sure they appear in the original author's ToC, if it's a manual one (relevant for translated authors who *also* wrote in Hebrew, e.g. Y. L. Perets)
+        m.expressions[0].works[0].authors.each do |au|
+          unless au.toc.nil?
+            unless au.toc.linked_item_ids.include?(m.id)
+              @tocs_missing_links[au.id] = {orig: [], xlat: []} if @tocs_missing_links[au.id].nil?
+              @tocs_missing_links[au.id][:orig] << m
+            end
+          end
+        end
+      end
+      unless @tocs_missing_links[p.id][:orig] == [] && @tocs_missing_links[p.id][:xlat] == []
+        @author_keys << p.id
+      end
+    end
+    Rails.cache.write('report_tocs_missing_links', @author_keys.length)
+  end
+
   def translated_from_multiple_languages
     @authors = []
     translatees = Person.joins(creations: :work).includes(:works).where('works.orig_lang <> "he"').distinct
