@@ -5,6 +5,9 @@ IDEA: now that we have picture support - maybe allow VARIANTS of existing manife
 - Implement Capistrano deployment in production: https://github.com/capistrano/capistrano/blob/master/README.md
   - staging works
 
+- cron or timed job to expire sessions
+- cron or timed job to tally and delete impressions records
+
 ==Bib Workshop==
 grab DDC ids for Raanana through gared (async?)
 
