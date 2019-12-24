@@ -23,8 +23,10 @@ task :ingest_toc, [:dirname] => :environment do |taskname, args|
   dir = HtmlDir.find_by_path(args.dirname)
   p = dir.person
   unless p.nil?
-    p.toc = new_toc
-    p.save!
+    Chewy.strategy(:atomic) {
+      p.toc = new_toc
+      p.save!
+    }
   end
 end
 
