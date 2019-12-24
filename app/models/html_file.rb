@@ -606,7 +606,7 @@ class HtmlFile < ApplicationRecord
           w = Work.new(title: the_title, orig_lang: orig_lang, genre: genre, comment: comments) # TODO: un-hardcode?
           q = (translator_id.nil? ? p : translator)
           copyrighted = ((p.public_domain && q.public_domain) ? false : ((p.public_domain.nil? || q.public_domain.nil?) ? nil : true)) # if author is PD, expression is PD # TODO: make this depend on both work and expression author, for translations
-          e = Expression.new(title: the_title, language: 'he', copyrighted: copyrighted, genre: genre, source_edition: publisher, date: year_published, comment: comments) # ISO codes
+          e = Expression.new(title: the_title, language: 'he', period: q.period, copyrighted: copyrighted, genre: genre, source_edition: publisher, date: year_published, comment: comments) # ISO codes
           w.expressions << e
           w.save!
           c = Creation.new(work_id: w.id, person_id: p.id, role: :author)
