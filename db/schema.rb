@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_24_110553) do
+ActiveRecord::Schema.define(version: 2019_12_25_140303) do
 
   create_table "aboutnesses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -359,6 +359,7 @@ ActiveRecord::Schema.define(version: 2019_11_24_110553) do
     t.index ["created_at"], name: "index_manifestations_on_created_at"
     t.index ["impressions_count"], name: "index_manifestations_on_impressions_count"
     t.index ["sort_title"], name: "index_manifestations_on_sort_title"
+    t.index ["status"], name: "index_manifestations_on_status"
   end
 
   create_table "manifestations_people", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
