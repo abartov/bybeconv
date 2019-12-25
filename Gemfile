@@ -71,7 +71,7 @@ gem 'yt' # for polling YouTube for new videos
 
 gem 'app_constants' # anything more Railsy?
 gem 'hebrew', '>= 0.2.1' # https://github.com/abartov/hebrew
-gem 'gared', '>= 0.0.19' # https://gitlab.com/abartov/gared # for scraping bibliographic data from Hebrew sources
+gem 'gared', '>= 0.0.22' # https://gitlab.com/abartov/gared # for scraping bibliographic data from Hebrew sources
 
 gem 'haml'
 #gem 'zoom', '~>0.4.1', :git => 'https://github.com/bricestacey/ruby-zoom.git' # for Z39.50 queries to libraries
@@ -90,7 +90,7 @@ gem 'responders' # for respond_to at controller level (in api_controller)
 gem 'better_sjr' # ease debugging of server-side JS responses
 
 group :production do
-  gem 'newrelic_rpm' # performance monitoring
+#  gem 'newrelic_rpm' # performance monitoring
   gem 'dalli'
 end
 
