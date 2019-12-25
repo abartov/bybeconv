@@ -63,6 +63,18 @@ class Person < ApplicationRecord
     p
   end
 
+  # set Expressions' period by author
+  def update_expressions_period
+    o = original_works.joins(:expressions).includes(:expressions)
+    t = translations.joins(:expressions).includes(:expressions)
+    joint = (o+t).uniq
+    joint.each{|m|
+      e = m.expressions[0]
+      e.period = self.period
+      e.save!
+    }
+  end
+
   def died_years_ago
     begin
       dy = death_year.to_i

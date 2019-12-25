@@ -138,8 +138,10 @@ class AuthorsController < ApplicationController
       redirect_to '/'
     else
       params[:person][:wikidata_id] = params[:person][:wikidata_id].strip[1..-1] if params[:person] and params[:person][:wikidata_id] and params[:person][:wikidata_id][0] and params[:person][:wikidata_id].strip[0] == 'Q' # tolerate pasting the Wikidata number with the Q
+      old_period = @author.period
       Chewy.strategy(:atomic) {
         if @author.update_attributes(person_params)
+          @author.update_expressions_period if @author.period != old_period # if period was updated, update the period of this person's Expressions
           flash[:notice] = I18n.t(:updated_successfully)
           redirect_to action: :show, id: @author.id
         else

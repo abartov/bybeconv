@@ -67,7 +67,10 @@
       %b= link_to t(:conversion_verification_report), admin_conversion_verification_path
       = ' ('+Rails.cache.read('report_conversion_verification').to_s+')'
     %p
-      %b= link_to t(:periodless), admin_periodless_path
+      %b= link_to t(:tocs_missing_links_report), admin_tocs_missing_links_path
+      = ' ('+Rails.cache.read('report_tocs_missing_links').to_s+')'
+    %p
+      = link_to t(:periodless), admin_periodless_path
       = ' ('+Rails.cache.read('report_periodless').to_s+')'
     %p
       = link_to t(:missing_language_report), admin_missing_languages_path
