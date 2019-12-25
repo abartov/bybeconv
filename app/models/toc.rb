@@ -32,4 +32,11 @@ class Toc < ApplicationRecord
     end
     return ret
   end
+
+  def linked_item_ids
+    return toc.scan(/&&&\s*פריט: מ(\d+)\s*&&&\s*כותרת: .*?&&&/).map{|x| x[0].to_i}.uniq
+  end
+  def linked_items
+    return Manifestation.find(linked_item_ids)
+  end
 end

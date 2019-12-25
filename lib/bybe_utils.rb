@@ -468,7 +468,7 @@ module BybeUtils
   end
 
   def get_langs
-    return ['he','en','fr','de','ru','yi','pl','ar','el','la','grc','hu','cs','da','no','sv','nl','it','pt','fa','fi','is','es', 'arc', 'zh']
+    return ['he','en','fr','de','ru','yi','pl','ar','el','la','grc','hu','cs','da','no','sv','nl','it','pt','fa','fi','is','es', 'arc', 'zh' ,'unk']
   end
 
   def get_genres_by_row(row) # just one row at a time
