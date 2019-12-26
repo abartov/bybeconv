@@ -111,10 +111,10 @@ Bybeconv::Application.routes.draw do
   get "read/:id/read" => 'manifestation#readmode', as: 'manifestation_readmode'
   get 'periods' => 'manifestation#periods', as: 'periods'
   match 'works/all', to: 'manifestation#all', as: 'all_works', via: [:get, :post]
-  get 'works/genre/:genre' => 'manifestation#genre', as: 'genre'
-  get 'period/:period' => 'manifestation#period', as: 'period'
+  match 'manifestation/genre' => 'manifestation#genre', as: 'genre', via: [:get, :post]
+  match 'period/:period' => 'manifestation#period', as: 'period', via: [:get, :post]
   get 'whatsnew' => 'manifestation#whatsnew', as: 'whatsnew'
-  get 'tag/:id' => 'manifestation#by_tag', as: 'tag'
+  match 'tag/:id' => 'manifestation#by_tag', as: 'tag', via: [:get, :post]
   match 'author/:id' => 'authors#toc', as: 'author_toc', via: [:get, :post]
   match "download/:id" => 'manifestation#download', as: 'manifestation_download', via: [:get, :post]
   match "print/:id" => 'manifestation#print', as: 'manifestation_print', via: [:get, :post]

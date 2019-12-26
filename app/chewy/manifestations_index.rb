@@ -15,5 +15,5 @@ class ManifestationsIndex < Chewy::Index
     field :tags, type: 'keyword', value: ->{ tags.map(&:name) }
   end
 
-  # in future: collections/readers; users; recommendations; curated/featured content
+  # TODO: in future: collections/readers; users; recommendations; curated/featured content
 end

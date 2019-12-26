@@ -1,6 +1,20 @@
 require 'pandoc-ruby'
 
 class ManifestationController < ApplicationController
+  # class WorkSearch < FortyFacets::FacetSearch
+  #   model 'Manifestation' # which model to search for
+  #   text :title   # filter by a generic string entered by the user
+  #   # scope :classics   # only return movies which are in the scope 'classics'
+  #   # range :price, name: 'Price' # filter by ranges for decimal fields
+  #   facet :created_at, name: 'pub_date' # , order: :year # additionally order values in the year field
+  #   facet [:expressions], :language
+  #   facet [:expressions], :genre #, name: 'Genre' # generate a filter with all values of 'genre' occuring in the result
+  #   #facet [:studio, :country], name: 'Country' # generate a filter several belongs_to 'hops' away
+
+  #   # orders 'Title' => :title, 'price, cheap first' => "price asc", 'price, expensive first' => {price: :desc, title: :desc}
+  #   #custom :for_manual_handling
+  # end
+
   before_action only: [:list, :show, :remove_link, :edit_metadata] do |c| c.require_editor('edit_catalog') end
   before_action only: [:edit, :update] do |c| c.require_editor(['edit_catalog', 'conversion_verification', 'handle_proofs']) end
 
@@ -407,10 +421,36 @@ class ManifestationController < ApplicationController
     end
   end
 
+  def prep_collection
+    @emit_filters = false
+    if params['search_input'].present?
+      if params['search_type'].present? && params['search_type'] == 'authorname'
+        @collection = @collection.where("cached_people LIKE ?", '%'+params['search_input']+'%')
+        @search_type = 'authorname'
+      else
+        @collection = @collection.where("manifestations.title LIKE ?", '%'+params['search_input']+'%')
+        @search_type = 'workname'
+      end
+      @search_input = params['search_input']
+    end
+    if params[:load_filters] == 'true'
+      @collection = @collection.joins(expressions: :works).includes(expressions: :works) # make sure we have the joins we need
+      @emit_filters = true
+      @genre_facet = @collection.group('expressions.genre').count
+      @period_facet = @collection.group(:period).count
+      @copyright_facet = @collection.group(:copyrighted).count
+      # TODO: other facets
+    end
+    #byebug
+    # {"utf8"=>"✓", "search_input"=>"ביאליק", "search_type"=>"authorname", "ckb_genres"=>["drama"], "ckb_periods"=>["medieval", "enlightenment"], "ckb_copyright"=>["0"], "CheckboxGroup5"=>"sort_by_german", "genre"=>"drama", "load_filters"=>"true", "_"=>"1577388296523", "controller"=>"manifestation", "action"=>"genre"} permitted: false
+  end
+
   def prep_for_browse
+    prep_collection # filtering is done here
     @total = @collection.count
     @page = params[:page] || 1
     @total_pages = @collection.page(@page).total_pages
+    # sorting is done here
     unless params[:sort].nil? || params[:sort].empty?
       case params[:sort]
       when 'alphabetical'
@@ -443,15 +483,6 @@ class ManifestationController < ApplicationController
       @works = @collection.order(ord).page(@page) # get page X of manifestations
     end
     @header_partial = 'manifestation/browse_top'
-    @emit_filters = false
-    if params[:load_filters] == 'true'
-      @collection = @collection.joins(expressions: :works).includes(expressions: :works) # make sure we have the joins we need
-      @emit_filters = true
-      @genre_facet = @collection.group('expressions.genre').count
-      @period_facet = @collection.group(:period).count
-      @copyright_facet = @collection.group(:copyrighted).count
-      # TODO: other facets
-    end
   end
 
   def prep_ab(whole, subset)

@@ -2,6 +2,7 @@
 
 he:
   rename_this_anthology: שינוי שם מקראה זו
+  apply_filters: הפעל סינון זה!
   filters_loading: טוען את המסננים...
   work_title: שם יצירה
   what_to_search_for: מה לחפש...
