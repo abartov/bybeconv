@@ -1,6 +1,7 @@
 .headline-2-v02= t(:filter_by)
 %a.reset{:href => "#"}= t(:reset_filter)
-= form_tag(request.original_url.sub(/page=\d+/,''), remote: true, method: :post) do
+= form_tag(works_path, remote: true, method: :post) do
+  = hidden_field_tag(:sort_by, @sort)
   .sort-type
     .vertical-expand
       .sort-type-headline= t(:name)
@@ -24,6 +25,7 @@
             - genres.each do |g|
               - attrs = @genre_facet[g].nil? ? {disabled: 'disabled'} : {}
               - attrs.merge!({:name => "ckb_genres[]", :type => "checkbox", value: g})
+              - attrs.merge!({checked: 'checked'}) if @genres.present? && @genres.include?(g)
               %input#CheckboxGroup1{ attrs}/
               %label
                 %span.by-icon-v02>= glyph_for_genre(g)
@@ -40,6 +42,7 @@
             - periods.each do |p|
               - attrs = @period_facet[p[0]].nil? ? {disabled: 'disabled'} : {}
               - attrs.merge!({:name => "ckb_periods[]", :type => "checkbox", value: p[1]})
+              - attrs.merge!({checked: 'checked'}) if @periods.include?(p[1])
               %input{ attrs}/
               %label
                 = t(p[1])

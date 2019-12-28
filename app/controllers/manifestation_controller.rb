@@ -32,12 +32,14 @@ class ManifestationController < ApplicationController
     @page_title = t(:all_works)+' '+t(:project_ben_yehuda)
     @pagetype = :works
     # @collection = Manifestation.all_published.limit(100)
-    @collection = Manifestation.all_published
+    # @collection = Manifestation.all_published
     @works_list_title = t(:works_list)
     browse
   end
 
   def browse
+    @pagetype = :works
+    @works_list_title = t(:works_list) # TODO: adjust by query
     prep_for_browse
     render :browse
     respond_to do |format|
@@ -51,7 +53,7 @@ class ManifestationController < ApplicationController
     @pagetype = :works
     @tag = Tag.find(params[:id])
     if @tag
-      @collection = Manifestation.by_tag(params[:id])
+      @collection = Manifestation.by_tag(params[:id]) # TODO: re-implement within prep_collection
       @works_list_title = t(:works_by_tag)+': '+@tag.name
       browse
     else
@@ -174,15 +176,17 @@ class ManifestationController < ApplicationController
 
   def period
     @pagetype = :works
-    @collection = Manifestation.all_published.joins(:expressions).where(expressions: {period: Person.periods[params[:period]]})
+    # @collection = Manifestation.all_published.joins(:expressions).where(expressions: {period: Person.periods[params[:period]]})
     @works_list_title = t(:works_by_period)+': '+t(params[:period])
+    @periods = [params[:period]]
     browse
   end
 
   def genre
     @pagetype = :works
-    @collection = Manifestation.all_published.joins(:expressions).where(expressions: {genre: params[:genre]})
+    # @collection = Manifestation.all_published.joins(:expressions).where(expressions: {genre: params[:genre]})
     @works_list_title = t(:works_by_genre)+': '+helpers.textify_genre(params[:genre])
+    @genres = [params[:genre]]
     browse
   end
 
@@ -423,18 +427,73 @@ class ManifestationController < ApplicationController
 
   def prep_collection
     @emit_filters = false
+    conditions = []
+    joins_needed = @periods.present? || @genres.present? || params[:load_filters].present? || (params[:sort].present? && ['publication_date', 'creation_date'].include?(params[:sort])) # TODO: add other conditions
+    query_params = {}
+    query_parts = []
+
+    # figure out sort order
+    if params[:sort].present?
+      @sort = params[:sort]
+      case params[:sort]
+      when 'alphabetical'
+        ord = :sort_title
+      when 'popularity'
+        ord = {impressions_count: :desc}
+      when 'publication_date'
+        ord = 'expressions.date asc'
+      when 'creation_date'
+        ord = 'works.date asc'
+      when 'upload_date'
+        ord = {created_at: :desc}
+      end
+    else
+      @sort = 'alphabetical'
+      ord = :sort_title
+    end
+
+    # collect conditions
     if params['search_input'].present?
+      query_params[:searchstring] = '%'+params['search_input']+'%'
       if params['search_type'].present? && params['search_type'] == 'authorname'
-        @collection = @collection.where("cached_people LIKE ?", '%'+params['search_input']+'%')
+        query_parts << 'cached_people LIKE :searchstring'
         @search_type = 'authorname'
       else
-        @collection = @collection.where("manifestations.title LIKE ?", '%'+params['search_input']+'%')
+        query_parts << 'manifestations.title LIKE :searchstring'
         @search_type = 'workname'
       end
       @search_input = params['search_input']
     end
+
+    # build the collection (with/without joins, with/without conditions)
+    if query_parts.empty?
+      if joins_needed
+        @collection = Manifestation.all_published.joins(expressions: :works).includes(expressions: :works).order(ord)
+      else
+        @collection = Manifestation.all_published.order(ord)
+      end
+    else
+      conditions = query_parts.join(' AND ')
+      if joins_needed
+        @collection = Manifestation.all_published.joins(expressions: :works).includes(expressions: :works).where(conditions, query_params).order(ord)
+      else
+        @collection = Manifestation.all_published.where(conditions, query_params).order(ord)
+      end
+    end
+    if @sort == 'alphabetical'
+      unless params[:page].nil? || params[:page].empty?
+        params[:to_letter] = nil # if page was specified, forget the to_letter directive
+      end
+      unless params[:to_letter].nil? || params[:to_letter].empty?
+        adjust_page_by_letter(params[:to_letter])
+      end
+      @works = @collection.page(@page) # get page X of manifestations
+      @ab = prep_ab(@collection, @works)
+    else
+      @works = @collection.page(@page) # get page X of manifestations
+    end
+
     if params[:load_filters] == 'true'
-      @collection = @collection.joins(expressions: :works).includes(expressions: :works) # make sure we have the joins we need
       @emit_filters = true
       @genre_facet = @collection.group('expressions.genre').count
       @period_facet = @collection.group(:period).count
@@ -446,42 +505,10 @@ class ManifestationController < ApplicationController
   end
 
   def prep_for_browse
-    prep_collection # filtering is done here
-    @total = @collection.count
     @page = params[:page] || 1
-    @total_pages = @collection.page(@page).total_pages
-    # sorting is done here
-    unless params[:sort].nil? || params[:sort].empty?
-      case params[:sort]
-      when 'alphabetical'
-        @sort = 'alphabetical'
-      when 'popularity'
-        ord = {impressions_count: :desc}
-      when 'publication_date'
-        @collection = @collection.joins(:expressions).includes(:expressions) # make sure we have joins for the ORDER BY (e.g. for "all works", it wouldn't be joined before this sort)
-        ord = 'expressions.date asc'
-      when 'creation_date'
-        @collection = @collection.joins(expressions: :works).includes(expressions: :works) # make sure we have joins for the ORDER BY (e.g. for "all works", it wouldn't be joined before this sort)
-        ord = 'works.date asc'
-      when 'upload_date'
-        ord = {created_at: :desc}
-      end
-    else
-      @sort = 'alphabetical'
-    end
-    if @sort == 'alphabetical'
-      unless params[:page].nil? || params[:page].empty?
-        params[:to_letter] = nil # if page was specified, forget the to_letter directive
-      end
-      unless params[:to_letter].nil? || params[:to_letter].empty?
-        adjust_page_by_letter(params[:to_letter])
-      end
-      ord = :sort_title
-      @works = @collection.order(ord).page(@page) # get page X of manifestations
-      @ab = prep_ab(@collection, @works)
-    else
-      @works = @collection.order(ord).page(@page) # get page X of manifestations
-    end
+    prep_collection # filtering and sorting is done here
+    @total = @collection.count
+    @total_pages = @works.total_pages
     @header_partial = 'manifestation/browse_top'
   end
 

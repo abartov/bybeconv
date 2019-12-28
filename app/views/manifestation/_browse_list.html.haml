@@ -30,7 +30,7 @@
       url = url + '?'
     }
     $("input.slider").on('slideStop', function(slideEvt){
-      $.get(url+'&page='+slideEvt.value.toString(),'',null, 'script');
+      $.get(url+'&page='+slideEvt.value.toString(),'',null, 'script'); // TODO: fix to use post with /works
     });
 
     // Call a method on the slider
