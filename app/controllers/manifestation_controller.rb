@@ -428,7 +428,7 @@ class ManifestationController < ApplicationController
   def prep_collection
     @emit_filters = false
     conditions = []
-    joins_needed = @periods.present? || @genres.present? || params[:load_filters].present? || (params[:sort].present? && ['publication_date', 'creation_date'].include?(params[:sort])) # TODO: add other conditions
+    joins_needed = @periods.present? || @genres.present? || params[:load_filters].present? || params['ckb_periods'].present? || (params[:sort].present? && ['publication_date', 'creation_date'].include?(params[:sort])) # TODO: add other conditions
     query_params = {}
     query_parts = []
 
@@ -464,7 +464,14 @@ class ManifestationController < ApplicationController
       end
       @search_input = params['search_input']
     end
-
+    if params['ckb_periods'].present?
+      @periods = params['ckb_periods']
+    end
+    byebug
+    if @periods.present?
+      query_parts << 'period IN (:periods)'
+      query_params[:periods] = @periods.map{|x| Expression.periods[x]}
+    end
     # build the collection (with/without joins, with/without conditions)
     if query_parts.empty?
       if joins_needed
