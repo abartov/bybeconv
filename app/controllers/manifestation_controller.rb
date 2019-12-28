@@ -464,14 +464,23 @@ class ManifestationController < ApplicationController
       end
       @search_input = params['search_input']
     end
+    # periods
     if params['ckb_periods'].present?
       @periods = params['ckb_periods']
     end
-    byebug
     if @periods.present?
       query_parts << 'period IN (:periods)'
       query_params[:periods] = @periods.map{|x| Expression.periods[x]}
     end
+    # genres
+    if params['ckb_genres'].present?
+      @genres = params['ckb_genres']
+    end
+    if @genres.present?
+      query_parts << 'expressions.genre IN (:genres)'
+      query_params[:genres] = @genres
+    end
+
     # build the collection (with/without joins, with/without conditions)
     if query_parts.empty?
       if joins_needed
@@ -480,6 +489,7 @@ class ManifestationController < ApplicationController
         @collection = Manifestation.all_published.order(ord)
       end
     else
+      @emit_filters = true
       conditions = query_parts.join(' AND ')
       if joins_needed
         @collection = Manifestation.all_published.joins(expressions: :works).includes(expressions: :works).where(conditions, query_params).order(ord)
@@ -500,8 +510,9 @@ class ManifestationController < ApplicationController
       @works = @collection.page(@page) # get page X of manifestations
     end
 
-    if params[:load_filters] == 'true'
-      @emit_filters = true
+    @emit_filters = true if params[:load_filters] == 'true'
+    if @emit_filters == true
+      byebug
       @genre_facet = @collection.group('expressions.genre').count
       @period_facet = @collection.group(:period).count
       @copyright_facet = @collection.group(:copyrighted).count
