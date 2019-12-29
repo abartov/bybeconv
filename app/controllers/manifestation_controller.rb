@@ -428,7 +428,7 @@ class ManifestationController < ApplicationController
   def prep_collection
     @emit_filters = false
     conditions = []
-    joins_needed = @periods.present? || @genres.present? || params[:load_filters].present? || params['ckb_periods'].present? || (params[:sort].present? && ['publication_date', 'creation_date'].include?(params[:sort])) # TODO: add other conditions
+    joins_needed = @periods.present? || @genres.present? || params[:load_filters].present? || params['ckb_periods'].present? || params['ckb_copyright'].present? || (params[:sort].present? && ['publication_date', 'creation_date'].include?(params[:sort])) # TODO: add other conditions
     query_params = {}
     query_parts = []
 
@@ -453,34 +453,43 @@ class ManifestationController < ApplicationController
     end
 
     # collect conditions
+    @filters = []
     if params['search_input'].present?
       query_params[:searchstring] = '%'+params['search_input']+'%'
       if params['search_type'].present? && params['search_type'] == 'authorname'
         query_parts << 'cached_people LIKE :searchstring'
         @search_type = 'authorname'
+        @filters << [I18n.t(:author_x, {x: params['search_input']}), :search_input, :text]
       else
         query_parts << 'manifestations.title LIKE :searchstring'
         @search_type = 'workname'
+        @filters << [I18n.t(:title_x, {x: params['search_input']}), :search_input, :text]
       end
       @search_input = params['search_input']
     end
     # periods
-    if params['ckb_periods'].present?
-      @periods = params['ckb_periods']
-    end
+    @periods = params['ckb_periods'] if params['ckb_periods'].present?
     if @periods.present?
       query_parts << 'period IN (:periods)'
       query_params[:periods] = @periods.map{|x| Expression.periods[x]}
+      @filters += @periods.map{|x| [I18n.t(x), "period_#{x}", :checkbox]}
     end
     # genres
-    if params['ckb_genres'].present?
-      @genres = params['ckb_genres']
-    end
+    @genres = params['ckb_genres'] if params['ckb_genres'].present?
     if @genres.present?
       query_parts << 'expressions.genre IN (:genres)'
       query_params[:genres] = @genres
+      @filters += @genres.map{|x| [helpers.textify_genre(x), "genre_#{x}", :checkbox]}
     end
-
+    # copyright
+    @copyright = params['ckb_copyright'].map{|x| x.to_i} if params['ckb_copyright'].present?
+    if @copyright.present?
+      query_parts << 'copyrighted IN (:copyright)'
+      query_params[:copyright] = @copyright
+      @filters += @copyright.map{|x| [helpers.textify_copyright_status(!x), "copyright_#{x}", :checkbox]}
+    end
+    # languages
+    # TODO: implement
     # build the collection (with/without joins, with/without conditions)
     if query_parts.empty?
       if joins_needed
@@ -512,11 +521,10 @@ class ManifestationController < ApplicationController
 
     @emit_filters = true if params[:load_filters] == 'true'
     if @emit_filters == true
-      byebug
       @genre_facet = @collection.group('expressions.genre').count
       @period_facet = @collection.group(:period).count
       @copyright_facet = @collection.group(:copyrighted).count
-      @language_facet = @collection.group('works.language').count
+      @language_facet = @collection.group('works.orig_lang').count
       # TODO: other facets
     end
     #byebug

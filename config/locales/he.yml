@@ -448,6 +448,8 @@ he:
   beginning_abc: מבחר ראשוני
   by_abc: בתצוגה בסדר אלפביתי
   title: כותרת
+  title_x: "כותרת: %{x}"
+  author_x: "מחבר: %{x}"
   entries: ערכים
   filter: סינון
   actions: פעולות

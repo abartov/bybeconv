@@ -24,9 +24,9 @@
           .col-md-6.col-sm-12
             - genres.each do |g|
               - attrs = @genre_facet[g].nil? ? {disabled: 'disabled'} : {}
-              - attrs.merge!({:name => "ckb_genres[]", :type => "checkbox", value: g})
+              - attrs.merge!({:name => "ckb_genres[]", :type => "checkbox", id: "genre_#{g}", value: g})
               - attrs.merge!({checked: 'checked'}) if @genres.present? && @genres.include?(g)
-              %input#CheckboxGroup1{ attrs}/
+              %input{ attrs}/
               %label
                 %span.by-icon-v02>= glyph_for_genre(g)
                 = textify_genre(g)
@@ -41,8 +41,8 @@
           .col-md-6.col-sm-12
             - periods.each do |p|
               - attrs = @period_facet[p[0]].nil? ? {disabled: 'disabled'} : {}
-              - attrs.merge!({:name => "ckb_periods[]", :type => "checkbox", value: p[1]})
-              - attrs.merge!({checked: 'checked'}) if @periods.include?(p[1])
+              - attrs.merge!({:name => "ckb_periods[]", :type => "checkbox", id: "period_#{p[1]}", value: p[1]})
+              - attrs.merge!({checked: 'checked'}) if @periods.present? && @periods.include?(p[1])
               %input{ attrs}/
               %label
                 = t(p[1])
@@ -54,14 +54,19 @@
     .nested.active
       .row.nested-content
         .col-md-6.col-sm-12
-          %input#CheckboxGroup3{:name => "ckb_copyright[]", :type => "checkbox", value: "0"}/
+          - attrs = {name: "ckb_copyright[]", :type => "checkbox", value: 0}
+          - attrs.merge!({checked: 'checked'}) if @copyright.present? && @copyright.include?(0)
+
+          %input#CheckboxGroup3{attrs}/
           %label
             %span.by-icon-v02> m
             = t(:public_domain)
             %span= "(#{@copyright_facet[0] || '0'})"
           %br/
         .col-md-6.col-sm-12
-          %input#CheckboxGroup3_3{:name => "ckb_copyright[]", :type => "checkbox", value: "1"}/
+          - attrs = {name: "ckb_copyright[]", :type => "checkbox", value: 1}
+          - attrs.merge!({checked: 'checked'}) if @copyright.present? && @copyright.include?(1)
+          %input#CheckboxGroup3_3{attrs}/
           %label
             %span.by-icon-v02> x
             = t(:by_permission)
@@ -118,7 +123,7 @@
           %input.field-v02.field-without-label.range-date-field{:placeholder => "dd-mm-yyyy", :style => "float: left", name: "todate", :type => "text"}/
   .sort-type
     .vertical-expand
-      .sort-type-headline שפת מקור
+      .sort-type-headline= t(:orig_lang)
     .nested.active
       .row.nested-content{:style => "background-color: #d9cdd5"}
         %input#CheckboxGroup5_1{:name => "CheckboxGroup5", :type => "checkbox", value: "sort_by_translated"}/

@@ -1,5 +1,11 @@
 .by-card-header-v02
   .headline-2-v02= t(:x_works_plain, {x: @total})
+  .filters
+    - @filters.each do |f, id, which|
+      %button.tag
+        = f
+        %span.pointer.tag-x{'data-ele': id, 'data-which' => which}= '-'
+  / TODO: filter pills go here
 .by-card-content-v02
   - unless @total_pages == 1
     = render partial: 'slide_pagination'
@@ -32,7 +38,16 @@
     $("input.slider").on('slideStop', function(slideEvt){
       $.get(url+'&page='+slideEvt.value.toString(),'',null, 'script'); // TODO: fix to use post with /works
     });
-
+    $('.tag-x').click(function(){
+      // uncheck/clear the appropriate field
+      if($(this).attr('data-which') == 'text') {
+        $('#'+$(this).attr('data-ele')).val('');
+      } else {
+        $('#'+$(this).attr('data-ele')).prop("checked", false);
+      }
+      // and submit the form
+      $('form').submit();
+    });
     // Call a method on the slider
     //var value = mySlider.slider('getValue');
 
