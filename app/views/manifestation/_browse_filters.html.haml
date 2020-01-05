@@ -54,7 +54,7 @@
     .nested.active
       .row.nested-content
         .col-md-6.col-sm-12
-          - attrs = {name: "ckb_copyright[]", :type => "checkbox", value: 0}
+          - attrs = {name: "ckb_copyright[]", :type => "checkbox", id: 'copyright_0', value: 0}
           - attrs.merge!({checked: 'checked'}) if @copyright.present? && @copyright.include?(0)
 
           %input#CheckboxGroup3{attrs}/
@@ -64,7 +64,7 @@
             %span= "(#{@copyright_facet[0] || '0'})"
           %br/
         .col-md-6.col-sm-12
-          - attrs = {name: "ckb_copyright[]", :type => "checkbox", value: 1}
+          - attrs = {name: "ckb_copyright[]", :type => "checkbox", id: 'copyright_1', value: 1}
           - attrs.merge!({checked: 'checked'}) if @copyright.present? && @copyright.include?(1)
           %input#CheckboxGroup3_3{attrs}/
           %label
