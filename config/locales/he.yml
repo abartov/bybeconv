@@ -2,6 +2,7 @@
 
 he:
   must_set_author: חובה לשייך יוצר!
+  docx_too_large: אין די זכרון להסב את הקובץ. יש לפצלו או להסב ידנית.
   add_stanza_break: הוספת מעבר בית
   remove_angled_brackets: הסרת סימון שירה בקטע
   select_text_to_remove_from: ראשית יש לסמן (להאיר) קטע בטקסט שממנו רוצים להסיר את סימני השירה.
