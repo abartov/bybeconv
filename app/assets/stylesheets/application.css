@@ -190,3 +190,7 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
   min-height: unset;
   height: unset;
 }
+
+.backend {
+  min-height: 800px;
+}
