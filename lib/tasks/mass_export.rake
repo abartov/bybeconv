@@ -45,7 +45,7 @@ task :mass_export, [:to_path] => :environment do |taskname, args|
           puts "\nerror: #{e.message} work: #{m.id} - #{m.title} - #{m.author_string}"
         end
       }
-      File.open(to_path+'/pseudocatalogue.csv','w:utf-8'){|f|
+      File.open(to_path+"/pseudocatalogue#{dump}.csv",'w:utf-8'){|f|
         f.puts "ID,path,title,authors,translators,original_language,genre,source_edition"
         f.puts pseudocatalogue.map{|line| line.to_csv}.join
       }
