@@ -7,6 +7,7 @@ IDEA: now that we have picture support - maybe allow VARIANTS of existing manife
 
 - cron or timed job to expire sessions
 - cron or timed job to tally and delete impressions records
+- report/task to find reversed paragraphs using hspell and a count of unrecognized words
 
 ==Bib Workshop==
 grab DDC ids for Raanana through gared (async?)

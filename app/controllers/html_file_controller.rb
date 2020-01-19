@@ -80,11 +80,12 @@ class HtmlFileController < ApplicationController
           markdown = `pandoc +RTS #{mem_limit} -RTS -f docx -t markdown_mmd #{tmpfile_pp.path}`
           unless markdown =~ /pandoc: Heap exhausted/
             @text.markdown = new_postprocess(markdown)
-            @text.save
           else
+            @text.markdown = t(:docx_too_large)
             flash[:error] = t(:conversion_error)
             redirect_to controller: :admin, action: :index
           end
+          @text.save
         rescue => e
           flash[:error] = t(:conversion_error)
           redirect_to controller: :admin, action: :index
