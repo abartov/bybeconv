@@ -433,9 +433,9 @@ class ManifestationController < ApplicationController
     query_parts = []
 
     # figure out sort order
-    if params[:sort].present?
-      @sort = params[:sort]
-      case params[:sort]
+    if params[:sort_by].present?
+      @sort = params[:sort_by]
+      case params[:sort_by]
       when 'alphabetical'
         ord = :sort_title
       when 'popularity'

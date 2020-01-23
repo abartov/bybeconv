@@ -14,33 +14,6 @@
       .by-card-v02.text-sorting#sort_filter_panel{style: 'display:none'}
         .by-card-header-v02
           .headline-2-v02= t(:sort_by)
-          #sort-by
-            .sort-by-desktop
-              #anthology-select
-                %select#sort_by
-                  %option{value: 'alphabetical'}= t(:alphabetical)
-                  %optgroup{label: t(:dates)}
-                    %option{value: 'publication_date'}= t(:publication_date)
-                    %option{value: 'creation_date'}= t(:creation_date)
-                    %option{value: 'upload_date'}= t(:upload_date)
-                  %option{value: 'popularity'}= t(:popularity)
-            .sort-by-mobile
-              %p
-                %input#RadioGroupSort_1{:name => "RadioGroupSort", :type => "radio", value: "alphabet"}/
-                %label= t(:alphabetical)
-                %br/
-                %input#RadioGroupSort_2{:name => "RadioGroupSort", :type => "radio", value: "publish_date"}/
-                %label= t(:publication_date)
-                %br/
-                %input#RadioGroupSort_3{:name => "RadioGroupSort", :type => "radio", value: "creation_date"}/
-                %label= t(:creation_date)
-                %br/
-                %input#RadioGroupSort_4{:name => "RadioGroupSort", :type => "radio", value: "online_date"}/
-                %label= t(:upload_date)
-                %br/
-                %input#RadioGroupSort_5{:name => "RadioGroupSort", :type => "radio", value: "popularity"}/
-                %label= t(:popularity)
-                %br/
         .by-card-content-v02#filters_panel
           / show temporary loading message
           .temporary
@@ -48,27 +21,3 @@
     .col-12.col-lg-7.col-xxxl-8
       .by-card-v02#thelist
         = render partial: 'browse_list'
-
-:javascript
-  $(document).ready(function(){
-    $('#sort_by').on('change', function() {
-      var url = $('#hurl').val().replace(/sort=[^&]*/,'').replace(/page=\d+/,'');
-      if(url.indexOf('?') == -1) {
-        url = url + '?sort='+$('#sort_by option:selected').val();
-      }
-      else {
-        url = url + '&sort='+$('#sort_by option:selected').val();
-      }
-      $.get(url,'',null, 'script');
-    });
-
-    var toggler = document.getElementsByClassName("vertical-expand");
-    var i;
-
-    for (i = 0; i < toggler.length; i++) {
-      toggler[i].addEventListener("click", function () {
-        this.parentElement.querySelector(".nested").classList.toggle("active");
-        this.classList.toggle("vertical-collapse");
-      });
-    }
-  });
