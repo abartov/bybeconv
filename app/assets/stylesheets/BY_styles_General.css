@@ -1481,7 +1481,7 @@ ul #menuMobile {
   overflow: hidden;
   position: relative;
   display: -webkit-box;
-  -webkit-line-clamp: 10;
+  -webkit-line-clamp: 12;
   -webkit-box-orient: vertical;}
 .text-height-recommend{
   overflow: hidden;
@@ -2068,7 +2068,8 @@ display: none;}
 
 .by-horizontal-seperator-light {
   width: 100%;
-  margin-top: 14px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   border-bottom: solid 2px #d9cdd5;
   opacity: 0.5;
 }
@@ -2322,7 +2323,7 @@ input[type=checkbox], input[type=radio]{
   height: 18px;
   width: 18px;
   margin-top: -1px;
-	margin-left: 6px;
+	margin-left: 4px;
   vertical-align: middle;
   }
 input:disabled+label{
@@ -2699,6 +2700,7 @@ padding-left: 0;
 	border-radius: 3px;
 	border: solid 1px #660248;
 	display: flex;
+ 	margin-bottom: 18px;
 }
 .search-mobile-switch :last-child{
  	border-left: none;
@@ -3547,7 +3549,7 @@ a .by-icon-v02:disabled{
   font-size: 14pt;
   font-weight: bold;
   display: inline;
-  margin-right: 8px;
+  margin-right: 10px;
   vertical-align: 2px;
 }
 
@@ -3596,7 +3598,7 @@ a .by-icon-v02:disabled{
   margin-top: 2px;
 }
 .sort-type .nested-content{
-	padding: 12px 15px 0 15px;
+	padding-top: 12px;
 }
 .sort-type .nested-content .col-md-6{
 	padding-right: 0;
@@ -3614,7 +3616,7 @@ a .by-icon-v02:disabled{
 }
 .sort-type .field-v02{
 	max-width: 270px;
-	margin-top: 18px;
+	margin-top: 0;
 	margin-bottom: 18px;
 }
 .texts-list-top{
@@ -3640,7 +3642,6 @@ break{
   overflow: hidden;
 }
 .sort-type .dates-range{
-	width: 100%;
 	width: 270px;
 }
 .dates-graph-area{
@@ -3916,8 +3917,9 @@ break{
 	display: flex;
 }
 .multi-name-sort{
-	padding-top: 24px;
-	padding-right: 6px;
+	padding-top: 0;
+	padding-right: 0;
+	display: inline;
 }
 
 .authors-names-area{
@@ -3942,7 +3944,8 @@ break{
 	min-width: 200px;
 }
 .sort-type .author-name-field{
-	width: 185px;
+	width: 188px;
+	display: inline;
 }
 #adding-authors-btn{
 	padding: 0 15px;
@@ -4024,3 +4027,124 @@ break{
 .side-sort .by-card-content-v02 .headline-2-v02 {
     display: inline;
 }
+.nested-content{
+  padding-right: 0px;
+}
+.nested-content ul{
+	padding-right: 0px;
+	margin-bottom: 0;
+}
+.nested-list{
+  padding-right: 0;
+	  -webkit-column-count: 2; /* Chrome, Safari, Opera */
+  -moz-column-count: 2; /* Firefox */
+  column-count: 2;
+	  -webkit-column-gap: 6px; /* Chrome, Safari, Opera */
+  -moz-column-gap: 6px; /* Firefox */
+  column-gap: 6px;
+}
+.languanges-filters{
+	padding-right: 24px;
+}
+.author-side-sort .nested-list{
+  padding-right: 0;
+	  -webkit-column-count: 1; /* Chrome, Safari, Opera */
+  -moz-column-count: 1; /* Firefox */
+  column-count: 1;
+	  -webkit-column-gap: 6px; /* Chrome, Safari, Opera */
+  -moz-column-gap: 6px; /* Firefox */
+  column-gap: 6px;
+}
+.author-side-sort .field-without-label{
+	margin-top: 0;
+}
+.author-side-sort .dates-graph-area{
+	width: 192px;
+}
+.author-side-sort .dates-range{
+  width: 192px;
+}
+.author-side-sort .search-mobile-switch{
+  width: 192px;
+}
+.author-side-sort .search-mobile-option{
+  width: 63px;
+}
+.author-side-sort .range-date-field{
+  margin-top: 8px;
+  margin-bottom: 8px;
+} 
+
+.author-side-sort .date-range-to{
+  margin-right: 3px;
+}
+.genre-list ul{
+  list-style: none;
+  padding-right: 0;
+  margin-bottom: 24px;
+}
+.genre-list li:before{
+  font-family: ben-yehuda;
+  font-size: 14px; 	
+  margin-left: 4px;
+}
+.poetry-list li:before{
+  content: "\74";
+}
+.prose-list li:before{
+  content: "\6c";
+}
+.drama-list li:before{
+  content: "\6b";
+}
+.fables-list li:before{
+  content: "\45";
+}
+.articles-list li:before{
+  content: "\61";
+}
+.memories-list li:before{
+  content: "\6a";
+}
+.letters-list li:before{
+  content: "\77";
+}
+.reference-list li:before{
+  content: "\76";
+}
+.lexicon-list li:before{
+  content: "\66";
+}
+.translations-list li:before{
+  content: "\73";
+}
+.headline-area-with-large-icon{
+	align-items: center;
+	margin-bottom: 16px;
+}
+.large-icon-near-headline {
+	font-size: 36px;
+	margin-left: 8px;
+}
+#name-of-text{
+  padding-left: 30px;
+  display: inline-block;
+}
+.search-icon-in-field{
+  font-family: ben-yehuda;
+  font-size: 18px; 
+  display: inline-block;
+  z-index: 10;
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  cursor: pointer;
+}
+.clear-field-icon-v02 {
+  font-family: ben-yehuda;
+  font-size: 18px;
+  line-height: 32px;
+  position: absolute;
+  top:10px;
+  left: 36px;
+ }

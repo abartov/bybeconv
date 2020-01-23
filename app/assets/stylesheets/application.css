@@ -181,6 +181,10 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
   width: unset;
 }
 
+.striped {
+  background-image: linear-gradient(135deg, #dbb59b 25%, #5F5370 25%, #5F5370 50%, #dbb59b 50%, #dbb59b 75%, #5F5370 75%, #5F5370 100%);
+  background-size: 56.57px 56.57px;
+}
 /* temporary fix for dropping below the carousel in Chrome
 .carousel-arrow-left-v02{
   width: unset;

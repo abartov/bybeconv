@@ -98,7 +98,7 @@
 		line-height: 36px;
 	}
 	.author-page-content{
-		margin-top: 210px;
+		margin-top: 222px;
 	}
 	.work-page-top-author{
 		width: calc(75% - 39px)
@@ -223,5 +223,30 @@
 }
 .sort-by-mobile{
 	display: block;
+	margin-top: 16px;
 }
+.author-side-sort{
+  display:none;
+}
+.author-mobile-filters-area .headline-2-v02{
+		display: inline;
+	}
+.author-mobile-sort-and-filter{
+  width: 100%;
+  height: 100%;
+	margin-bottom: 200px;
+	}
+.sticky-top{
+  position: sticky;
+  top:0;
+  z-index: 30;
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.4);
+	}
+.sticky-bottom{
+  position: sticky;
+  bottom:0;
+  z-index: 30;
+  box-shadow: 0 -2px 3px rgba(0, 0, 0, 0.4);
+  background-color: #d9cdd5;
+	}
 }

@@ -402,5 +402,8 @@ body {
 #contact-text{
 	width: calc(100% - 105px);
 }
-	
+.sort-type-headline{
+  font-size: 13px;
+  line-height: 14px;
+}
 }

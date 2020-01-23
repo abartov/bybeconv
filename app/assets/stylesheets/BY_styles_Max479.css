@@ -430,5 +430,9 @@ body {
 .top-contact-center{
 padding-top: 6px;
 	}
+.sort-type-headline {
+  font-size: 12pt;
+ line-height: 13pt; 
+	}
 	
 }

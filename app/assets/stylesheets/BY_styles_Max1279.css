@@ -30,6 +30,18 @@
   margin-left: 8px;
 }
 
+.nested-content{
+  padding-right: 0px;
+}
+.nested-content ul{
+	padding-right: 0px;
+}
+.languanges-filters{
+	padding-right: 24px;
+}
+.sort-type .by-icon-v02{
+	margin-left: 2px;
+}
 }
 
 @media only screen and (max-width: 1050px) {
