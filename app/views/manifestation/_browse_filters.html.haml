@@ -214,6 +214,8 @@
       $('#search_input').removeClass('author-name-field');
     });
     $('#works_filters').change(function(){
+      $('#thelist').addClass('striped');
       $('#works_filters').submit();
     });
+    $('#thelist').removeClass('striped');
   });
