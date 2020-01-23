@@ -428,7 +428,7 @@ class ManifestationController < ApplicationController
   def prep_collection
     @emit_filters = false
     conditions = []
-    joins_needed = @periods.present? || @genres.present? || params[:load_filters].present? || params['ckb_periods'].present? || params['ckb_copyright'].present? || (params[:sort].present? && ['publication_date', 'creation_date'].include?(params[:sort])) # TODO: add other conditions
+    joins_needed = @periods.present? || @genres.present? || params[:load_filters].present? || params['ckb_genres'].present? || params['ckb_periods'].present? || params['ckb_copyright'].present? || (params[:sort].present? && ['publication_date', 'creation_date'].include?(params[:sort])) # TODO: add other conditions
     query_params = {}
     query_parts = []
 
@@ -527,7 +527,6 @@ class ManifestationController < ApplicationController
       @language_facet = @collection.group('works.orig_lang').count
       # TODO: other facets
     end
-    #byebug
     # {"utf8"=>"✓", "search_input"=>"ביאליק", "search_type"=>"authorname", "ckb_genres"=>["drama"], "ckb_periods"=>["medieval", "enlightenment"], "ckb_copyright"=>["0"], "CheckboxGroup5"=>"sort_by_german", "genre"=>"drama", "load_filters"=>"true", "_"=>"1577388296523", "controller"=>"manifestation", "action"=>"genre"} permitted: false
   end
 

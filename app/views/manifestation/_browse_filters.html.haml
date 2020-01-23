@@ -1,6 +1,6 @@
 .headline-2-v02= t(:filter_by)
 %a.reset{:href => "#"}= t(:reset_filter)
-= form_tag(works_path, remote: true, method: :post) do
+= form_tag(works_path, remote: true, method: :post, id: 'works_filters') do
   = hidden_field_tag(:sort_by, @sort)
   .sort-type
     .vertical-expand
@@ -156,31 +156,6 @@
         %a{:href => "#"} הצג עוד 18 שפות מקור
     %input.by-button-v02#apply_filters{type: 'submit', value: t(:apply_filters)}
 :javascript
-  var filters = { // TODO: populate with existing filters on panel load
-    workname: null,
-    authorname: null,
-    genres: {},
-    periods: {},
-    languages: {},
-    copyright: {},
-    dates: {}
-  }
-  function apply_filters() {
-    search_text = $("#search_input").text().trim();
-    if(search_text != '') {
-      if($("#opt_workname").hasClass('active')) {
-        filters["workname"] = search_text;
-        filters["authorname"] = null;
-      } else {
-        filters["authorname"] = search_text;
-        filters["workname"] = null;
-      }
-    }
-    // TODO: other filters
-    // TODO: maybe need to preserve sortby= as POST param?
-    var url = $('#hurl').val().replace(/page=\d+/,''); // any change in filtering reset pagination
-    $.post(url,filters,null, 'script');
-  }
   $(document).ready(function() {
     if("#{@search_type}" == 'authorname') {
       $('#opt_authorname').addClass('active');
@@ -207,5 +182,9 @@
       $('#search_type').val('workname');
       $('.multi-name-sort').hide();
       $('#search_input').removeClass('author-name-field');
+    });
+    $('#works_filters').change(function(){
+      // TODO: maybe need to preserve sortby= as POST param?
+      $('#works_filters').submit();
     });
   });
