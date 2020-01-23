@@ -454,6 +454,7 @@ class ManifestationController < ApplicationController
 
     # collect conditions
     @filters = []
+    @emit_filters = true if params[:load_filters] == 'true' || params[:emit_filters] == 'true'
     if params['search_input'].present?
       query_params[:searchstring] = '%'+params['search_input']+'%'
       if params['search_type'].present? && params['search_type'] == 'authorname'
@@ -491,6 +492,7 @@ class ManifestationController < ApplicationController
     # languages
     # TODO: implement
     # build the collection (with/without joins, with/without conditions)
+    joins_needed = true if @emit_filters
     if query_parts.empty?
       if joins_needed
         @collection = Manifestation.all_published.joins(expressions: :works).includes(expressions: :works).order(ord)
@@ -519,7 +521,6 @@ class ManifestationController < ApplicationController
       @works = @collection.page(@page) # get page X of manifestations
     end
 
-    @emit_filters = true if params[:load_filters] == 'true'
     if @emit_filters == true
       @genre_facet = @collection.group('expressions.genre').count
       @period_facet = @collection.group(:period).count

@@ -1,4 +1,5 @@
 $('#thelist').html("<%= j(render partial: 'browse_list') %>");
+$('#thelist').removeClass('striped');
 <% if @emit_filters %>
 $('#sort_filter_panel').html("<%= j(render partial: 'browse_filters') %>");
 <% end %>

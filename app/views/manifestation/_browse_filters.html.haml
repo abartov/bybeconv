@@ -30,7 +30,7 @@
           %br/
   .by-card-content-v02#filters_panel
     .headline-2-v02= t(:filter_by)
-    %a.reset{:href => "#"}= t(:reset_filter)
+    %span.reset.linkcolor.pointer= t(:reset_filter)
     .sort-type
       .vertical-expand
         .sort-type-headline= t(:name)
@@ -183,7 +183,7 @@
               %span (442)
         .row.nested-content
           %a{:href => "#"} הצג עוד 18 שפות מקור
-      %input.by-button-v02#apply_filters{type: 'submit', value: t(:apply_filters)}
+    = hidden_field_tag(:emit_filters, id: 'emit_filters')
 :javascript
   $(document).ready(function() {
     $('#sort_by').val("#{@sort}");
@@ -217,5 +217,24 @@
       $('#thelist').addClass('striped');
       $('#works_filters').submit();
     });
-    $('#thelist').removeClass('striped');
+    $('.reset').click(function(){
+      //$('#works_filters').not(':button, :submit, :reset, :hidden').val('').prop('checked', false).prop('selected', false);
+      $('#works_filters').find(':input').each(function() {
+        switch(this.type) {
+            case 'password':
+            case 'select-multiple':
+            case 'select-one':
+            case 'text':
+            case 'textarea':
+                $(this).val('');
+                break;
+            case 'checkbox':
+            case 'radio':
+                this.checked = false;
+        }
+      });
+      $('#thelist').addClass('striped');
+      $('#emit_filters').val('true');
+      $('#works_filters').submit();
+    });
   });
