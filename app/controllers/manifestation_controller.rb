@@ -428,7 +428,7 @@ class ManifestationController < ApplicationController
   def prep_collection
     @emit_filters = false
     conditions = []
-    joins_needed = @periods.present? || @genres.present? || params[:load_filters].present? || params['ckb_genres'].present? || params['ckb_periods'].present? || params['ckb_copyright'].present? || (params[:sort].present? && ['publication_date', 'creation_date'].include?(params[:sort])) # TODO: add other conditions
+    joins_needed = @periods.present? || @genres.present? || params['search_input'].present? || params[:load_filters].present? || params['ckb_genres'].present? || params['ckb_periods'].present? || params['ckb_copyright'].present? || (params[:sort_by].present? && ['publication_date', 'creation_date'].include?(params[:sort])) # TODO: add other conditions
     query_params = {}
     query_parts = []
 
@@ -486,7 +486,7 @@ class ManifestationController < ApplicationController
     if @copyright.present?
       query_parts << 'copyrighted IN (:copyright)'
       query_params[:copyright] = @copyright
-      @filters += @copyright.map{|x| [helpers.textify_copyright_status(!x), "copyright_#{x}", :checkbox]}
+      @filters += @copyright.map{|x| [helpers.textify_copyright_status(x), "copyright_#{x}", :checkbox]}
     end
     # languages
     # TODO: implement

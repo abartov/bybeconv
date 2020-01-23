@@ -193,10 +193,10 @@
       $('#search_input').addClass('author-name-field');
       $('#search_type').val('authorname');
     } else {
+      $('.multi-name-sort').hide();
       $('#opt_workname').addClass('active');
       $('#search_type').val('workname');
     }
-    $('.multi-name-sort').hide();
     $('#opt_authorname').click(function(e){
       e.preventDefault();
       $('#opt_workname').removeClass('active');
