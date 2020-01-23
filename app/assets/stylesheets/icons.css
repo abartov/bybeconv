@@ -2,11 +2,11 @@
 
 @font-face {
   font-family: "ben-yehuda";
-  src:url("ben-yehuda.eot");
-  src:url("ben-yehuda.eot?#iefix") format("embedded-opentype"),
-    url("ben-yehuda.woff") format("woff"),
-    url("ben-yehuda.ttf") format("truetype"),
-    url("ben-yehuda.svg#ben-yehuda") format("svg");
+  src:url("fonts/ben-yehuda.eot");
+  src:url("fonts/ben-yehuda.eot?#iefix") format("embedded-opentype"),
+    url("fonts/ben-yehuda.woff") format("woff"),
+    url("fonts/ben-yehuda.ttf") format("truetype"),
+    url("fonts/ben-yehuda.svg#ben-yehuda") format("svg");
   font-weight: normal;
   font-style: normal;
 
@@ -264,7 +264,7 @@
   content: "\3b";
 }
 .icon-bywhatsapp:before {
-  content: "\3e";
+  content: "\3c";
 }
 .icon-bycollapse:before {
   content: "\2e";
@@ -279,7 +279,7 @@
   content: "\7e";
 }
 .icon-byarrow-down-double:before {
-  content: "\3c";
+  content: "\3e";
 }
 .icon-byarrow-left-double:before {
   content: "\3f";
@@ -310,22 +310,4 @@
 }
 .icon-bylogout-2:before {
   content: "\5a";
-}
-.icon-byarrow-left-end:before {
-  content: "\30";
-}
-.icon-byarrow-right-end:before {
-  content: "\7d";
-}
-.icon-bymulti-select:before {
-  content: "\5c";
-}
-.icon-bysort-down:before {
-  content: "\e000";
-}
-.icon-bysort-up:before {
-  content: "\e001";
-}
-.icon-bywarning:before {
-  content: "\e002";
 }
