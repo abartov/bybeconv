@@ -241,6 +241,10 @@ ol#anth_texts li.placeholder:before {
 	background: #907989;
 }*/
 
+.languages-filters{
+	padding-right: 24px;
+}
+
 @media print {
   .print #header{
     display: none;

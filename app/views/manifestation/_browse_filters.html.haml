@@ -154,35 +154,33 @@
       .vertical-expand
         .sort-type-headline= t(:orig_lang)
       .nested.active
-        .row.nested-content{:style => "background-color: #d9cdd5"}
-          %input#CheckboxGroup5_1{:name => "CheckboxGroup5", :type => "checkbox", value: "sort_by_translated"}/
-          %label
-            יצירות מתורגמות בלבד
-            %span (963)
-          %br/
-        .row.nested-content
-          .col-md-6.col-sm-12
-            %input#CheckboxGroup5_2{:name => "CheckboxGroup5", :type => "checkbox", value: "sort_by_hebrew"}/
-            %label
-              עברית
-              %span (8876)
-            %br/
-            %input#CheckboxGroup5_3{:name => "CheckboxGroup5", :type => "checkbox", value: "sort_by_russian"}/
-            %label
-              רוסית
-              %span (503)
-          .col-md-6.col-sm-12
-            %input#CheckboxGroup5_4{:name => "CheckboxGroup5", :type => "checkbox", value: "sort_by_english"}/
-            %label
-              אנגלית
-              %span (876)
-            %br/
-            %input#CheckboxGroup5_5{:name => "CheckboxGroup5", :type => "checkbox", value: "sort_by_german"}/
-            %label
-              גרמנית
-              %span (442)
-        .row.nested-content
-          %a{:href => "#"} הצג עוד 18 שפות מקור
+        .row.nested-content{:style => "padding-right: 0"}
+          %ul
+            %li
+              - attrs = {name: "ckb_languages[]", :type => "checkbox", id: 'lang_he', value: 'he'}
+              - attrs.merge!({checked: 'checked'}) if @languages.present? && @languages.include?('he')
+              %input{attrs}/
+              %label
+                = t(:hebrew)
+                %span= "(#{@language_facet['he'] || '0'})"
+            %li
+              - attrs = {name: "ckb_languages[]", :type => "checkbox", id: 'lang_xlat', value: 'xlat'}
+              - attrs.merge!({checked: 'checked'}) if @languages.present? && @languages.include?('xlat')
+              %input{attrs}/
+              %label
+                = t(:translations)
+                %span= "(#{@language_facet[:xlat] || '0'})"
+              .languages-filters
+                %ul.nested-list#xlat_langs
+                  - @language_facet.each_key do |lang|
+                    - next if lang == :xlat || lang == 'he'
+                    %li
+                      - attrs = {name: "ckb_languages[]", :type => "checkbox", id: "lang_#{lang}", value: lang}
+                      - attrs.merge!({checked: 'checked'}) if @languages.present? && @languages.include?(lang)
+                      %input{attrs}/
+                      %label
+                        = textify_lang(lang)
+                        %span= "(#{@language_facet[lang] || '0'})"
     = hidden_field_tag(:emit_filters, id: 'emit_filters')
 :javascript
   $(document).ready(function() {
@@ -214,9 +212,14 @@
       $('#search_input').removeClass('author-name-field');
     });
     $('#works_filters').change(function(){
+      window.setTimeout(submit_filters, 300);
+      //$('#thelist').addClass('striped');
+      //$('#works_filters').submit();
+    });
+    function submit_filters() {
       $('#thelist').addClass('striped');
       $('#works_filters').submit();
-    });
+    }
     $('.reset').click(function(){
       //$('#works_filters').not(':button, :submit, :reset, :hidden').val('').prop('checked', false).prop('selected', false);
       $('#works_filters').find(':input').each(function() {
@@ -237,4 +240,20 @@
       $('#emit_filters').val('true');
       $('#works_filters').submit();
     });
+    $('#lang_xlat').change(function(){
+      // set all translated languages on/off accordingly
+      var checked = $(this).is(":checked");
+      $('#xlat_langs input').each(function(li){
+        $(this).prop('checked', checked);
+      });
+    });
+    var should_check_xlat = true;
+    $('#xlat_langs input').each(function(li){
+      if($(this).prop('checked') == false) {
+        should_check_xlat = false;
+      }
+    });
+    if(should_check_xlat) {
+      $('#lang_xlat').prop('checked', true);
+    }
   });

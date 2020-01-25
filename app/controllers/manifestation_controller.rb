@@ -490,7 +490,12 @@ class ManifestationController < ApplicationController
       @filters += @copyright.map{|x| [helpers.textify_copyright_status(x), "copyright_#{x}", :checkbox]}
     end
     # languages
-    # TODO: implement
+    @languages = params['ckb_languages'] if params['ckb_languages'].present?
+    if @languages.present?
+      query_parts << 'works.orig_lang IN (:languages)'
+      query_params[:languages] = @languages
+      @filters += @languages.map{|x| ["#{I18n.t(:orig_lang)}: #{helpers.textify_lang(x)}", "lang_#{x}", :checkbox]}
+    end
     # build the collection (with/without joins, with/without conditions)
     joins_needed = true if @emit_filters
     if query_parts.empty?
@@ -526,6 +531,7 @@ class ManifestationController < ApplicationController
       @period_facet = @collection.group(:period).count
       @copyright_facet = @collection.group(:copyrighted).count
       @language_facet = @collection.group('works.orig_lang').count
+      @language_facet[:xlat] = @collection.count - (@language_facet['he'] || 0)
       # TODO: other facets
     end
     # {"utf8"=>"✓", "search_input"=>"ביאליק", "search_type"=>"authorname", "ckb_genres"=>["drama"], "ckb_periods"=>["medieval", "enlightenment"], "ckb_copyright"=>["0"], "CheckboxGroup5"=>"sort_by_german", "genre"=>"drama", "load_filters"=>"true", "_"=>"1577388296523", "controller"=>"manifestation", "action"=>"genre"} permitted: false
