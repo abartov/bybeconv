@@ -425,12 +425,29 @@ class ManifestationController < ApplicationController
     end
   end
 
+  def make_collection(query_parts, query_params, joins_needed, ord)
+    if query_parts.empty?
+      if joins_needed
+        return Manifestation.all_published.joins(expressions: :works).includes(expressions: :works).order(ord)
+      else
+        return Manifestation.all_published.order(ord)
+      end
+    else
+      @emit_filters = true
+      conditions = query_parts.values.join(' AND ')
+      if joins_needed
+        return Manifestation.all_published.joins(expressions: :works).includes(expressions: :works).where(conditions, query_params).order(ord)
+      else
+        return Manifestation.all_published.where(conditions, query_params).order(ord)
+      end
+    end
+  end
+
   def prep_collection
     @emit_filters = false
-    conditions = []
     joins_needed = @periods.present? || @genres.present? || params['search_input'].present? || params[:load_filters].present? || params['ckb_genres'].present? || params['ckb_periods'].present? || params['ckb_copyright'].present? || (params[:sort_by].present? && ['publication_date', 'creation_date'].include?(params[:sort])) # TODO: add other conditions
     query_params = {}
-    query_parts = []
+    query_parts = {}
 
     # figure out sort order
     if params[:sort_by].present?
@@ -458,11 +475,11 @@ class ManifestationController < ApplicationController
     if params['search_input'].present?
       query_params[:searchstring] = '%'+params['search_input']+'%'
       if params['search_type'].present? && params['search_type'] == 'authorname'
-        query_parts << 'cached_people LIKE :searchstring'
+        query_parts[:people] = 'cached_people LIKE :searchstring'
         @search_type = 'authorname'
         @filters << [I18n.t(:author_x, {x: params['search_input']}), :search_input, :text]
       else
-        query_parts << 'manifestations.title LIKE :searchstring'
+        query_parts[:titles] = 'manifestations.title LIKE :searchstring'
         @search_type = 'workname'
         @filters << [I18n.t(:title_x, {x: params['search_input']}), :search_input, :text]
       end
@@ -471,48 +488,34 @@ class ManifestationController < ApplicationController
     # periods
     @periods = params['ckb_periods'] if params['ckb_periods'].present?
     if @periods.present?
-      query_parts << 'period IN (:periods)'
+      query_parts[:periods] = 'period IN (:periods)'
       query_params[:periods] = @periods.map{|x| Expression.periods[x]}
       @filters += @periods.map{|x| [I18n.t(x), "period_#{x}", :checkbox]}
     end
     # genres
     @genres = params['ckb_genres'] if params['ckb_genres'].present?
     if @genres.present?
-      query_parts << 'expressions.genre IN (:genres)'
+      query_parts[:genres] = 'expressions.genre IN (:genres)'
       query_params[:genres] = @genres
       @filters += @genres.map{|x| [helpers.textify_genre(x), "genre_#{x}", :checkbox]}
     end
     # copyright
     @copyright = params['ckb_copyright'].map{|x| x.to_i} if params['ckb_copyright'].present?
     if @copyright.present?
-      query_parts << 'copyrighted IN (:copyright)'
+      query_parts[:copyright] = 'copyrighted IN (:copyright)'
       query_params[:copyright] = @copyright
       @filters += @copyright.map{|x| [helpers.textify_copyright_status(x), "copyright_#{x}", :checkbox]}
     end
     # languages
     @languages = params['ckb_languages'].reject{|x| x == 'xlat'} if params['ckb_languages'].present?
     if @languages.present?
-      query_parts << 'works.orig_lang IN (:languages)'
+      query_parts[:languages] = 'works.orig_lang IN (:languages)'
       query_params[:languages] = @languages
       @filters += @languages.map{|x| ["#{I18n.t(:orig_lang)}: #{helpers.textify_lang(x)}", "lang_#{x}", :checkbox]}
     end
     # build the collection (with/without joins, with/without conditions)
     joins_needed = true if @emit_filters
-    if query_parts.empty?
-      if joins_needed
-        @collection = Manifestation.all_published.joins(expressions: :works).includes(expressions: :works).order(ord)
-      else
-        @collection = Manifestation.all_published.order(ord)
-      end
-    else
-      @emit_filters = true
-      conditions = query_parts.join(' AND ')
-      if joins_needed
-        @collection = Manifestation.all_published.joins(expressions: :works).includes(expressions: :works).where(conditions, query_params).order(ord)
-      else
-        @collection = Manifestation.all_published.where(conditions, query_params).order(ord)
-      end
-    end
+    @collection = make_collection(query_parts, query_params, joins_needed, ord)
     if @sort == 'alphabetical'
       unless params[:page].nil? || params[:page].empty?
         params[:to_letter] = nil # if page was specified, forget the to_letter directive
@@ -527,13 +530,13 @@ class ManifestationController < ApplicationController
     end
 
     if @emit_filters == true
-      @genre_facet = @collection.group('expressions.genre').count
-      @period_facet = @collection.group(:period).count
-      @copyright_facet = @collection.group(:copyrighted).count
-      @language_facet = @collection.group('works.orig_lang').count
-      @language_facet[:xlat] = @collection.count - (@language_facet['he'] || 0)
+      @genre_facet = make_collection(query_parts.reject{|k,v| k == :genres }, query_params, joins_needed, ord).group('expressions.genre').count
+      @period_facet = make_collection(query_parts.reject{|k,v| k == :periods }, query_params, joins_needed, ord).group(:period).count
+      @copyright_facet = make_collection(query_parts.reject{|k,v| k == :copyright }, query_params, joins_needed, ord).group(:copyrighted).count
+      @language_facet = make_collection(query_parts.reject{|k,v| k == :languages }, query_params, joins_needed, ord).group('works.orig_lang').count
+      @language_facet[:xlat] = @language_facet.values.sum - (@language_facet['he'] || 0)
       # TODO: other facets
-    end
+      end
     # {"utf8"=>"✓", "search_input"=>"ביאליק", "search_type"=>"authorname", "ckb_genres"=>["drama"], "ckb_periods"=>["medieval", "enlightenment"], "ckb_copyright"=>["0"], "CheckboxGroup5"=>"sort_by_german", "genre"=>"drama", "load_filters"=>"true", "_"=>"1577388296523", "controller"=>"manifestation", "action"=>"genre"} permitted: false
   end
 
