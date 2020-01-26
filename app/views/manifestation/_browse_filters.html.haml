@@ -142,14 +142,15 @@
             %button.search-mobile-option{:href => "#"} העלאה
           %break
           .dates-range
-            .dates-graph-area
-            .range-outside
-              .range-inside
-                .range-handle-right
-                .range-handle-left
-            %input.field-v02.field-without-label.range-date-field{:placeholder => "dd-mm-yyyy", name: "fromdate", :type => "text"}/
-            .date-range-to עד
-            %input.field-v02.field-without-label.range-date-field{:placeholder => "dd-mm-yyyy", :style => "float: left", name: "todate", :type => "text"}/
+            / #histogramSlider
+            /.dates-graph-area
+            /.range-outside
+            /  .range-inside
+            /    .range-handle-right
+            /    .range-handle-left
+            %input.datepicker.datetimepicker-input.field-v02.field-without-label.range-date-field#fromdate{:placeholder => "dd-mm-yyyy", name: "fromdate", 'data-toggle' => 'datetimepicker', 'data-target' => '#fromdate' }/
+            .date-range-to= t(:until)
+            %input.datepicker.datetimepicker-input.field-v02.field-without-label.range-date-field#todate{:placeholder => "dd-mm-yyyy", :style => "float: left", 'data-toggle' => 'datetimepicker', name: "todate", 'data-target' => '#todate'}/
     .sort-type
       .vertical-expand
         .sort-type-headline= t(:orig_lang)
@@ -256,4 +257,9 @@
     if(should_check_xlat) {
       $('#lang_xlat').prop('checked', true);
     }
+    $('.datepicker').datetimepicker({
+      rtl: true,
+      format: 'L',
+      locale: 'he'
+    });
   });

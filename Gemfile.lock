@@ -75,6 +75,10 @@ GEM
     better_sjr (1.0.0)
     binding_of_caller (0.8.0)
       debug_inspector (>= 0.0.1)
+    bootstrap4-datetime-picker-rails (0.3.1)
+      jquery-rails (~> 4.2, >= 4.2.0)
+      moment-timezone-rails (~> 1.0)
+      momentjs-rails (>= 2.10.5, <= 3.0.0)
     builder (3.2.3)
     byebug (10.0.2)
     capistrano (3.11.0)
@@ -241,6 +245,10 @@ GEM
     mini_mime (1.0.1)
     mini_portile2 (2.4.0)
     minitest (5.11.3)
+    moment-timezone-rails (1.0.0)
+      momentjs-rails (>= 2.10.5, <= 3.0.0)
+    momentjs-rails (2.20.1)
+      railties (>= 3.1)
     multi_json (1.13.1)
     multi_xml (0.6.0)
     multipart-post (2.0.0)
@@ -493,6 +501,7 @@ DEPENDENCIES
   app_constants
   aws-sdk-s3
   better_sjr
+  bootstrap4-datetime-picker-rails
   byebug
   capistrano (~> 3.11)
   capistrano-rails (~> 1.4)
@@ -518,6 +527,7 @@ DEPENDENCIES
   kaminari
   linkeddata
   mini_magick (>= 4.9.4)
+  momentjs-rails
   mysql2
   nokogiri (>= 1.10.4)
   omniauth-google-oauth2

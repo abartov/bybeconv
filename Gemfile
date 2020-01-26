@@ -85,6 +85,9 @@ gem 'uglifier'
 gem 'responders' # for respond_to at controller level (in api_controller)
 # gem 'forty_facets' # for faceted search
 gem 'better_sjr' # ease debugging of server-side JS responses
+# gem 'histogram' # for histograms in date filter
+gem 'momentjs-rails' # for date picker in filters
+gem 'bootstrap4-datetime-picker-rails' # for date picker in filters
 
 group :production do
 #  gem 'newrelic_rpm' # performance monitoring

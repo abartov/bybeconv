@@ -14,4 +14,7 @@
 //= require jquery.caret
 //= require wikidata-sdk.min
 //= require activestorage
+//= require moment
+//= require moment/he.js
+//= require tempusdominus-bootstrap-4
 //= require_tree .

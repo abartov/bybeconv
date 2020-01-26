@@ -18,6 +18,8 @@
 */
 /*body{font-size:14px;} /* default */
 
+@import "tempusdominus-bootstrap-4.css"
+
 .padbot12 {
   padding-bottom: 12px;
 }
