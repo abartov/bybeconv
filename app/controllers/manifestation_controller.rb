@@ -445,7 +445,7 @@ class ManifestationController < ApplicationController
 
   def prep_collection
     @emit_filters = false
-    joins_needed = @periods.present? || @genres.present? || params['search_input'].present? || params[:load_filters].present? || params['ckb_genres'].present? || params['ckb_periods'].present? || params['ckb_copyright'].present? || (params[:sort_by].present? && ['publication_date', 'creation_date'].include?(params[:sort])) # TODO: add other conditions
+    joins_needed = @periods.present? || @genres.present? || params['search_input'].present? || params[:load_filters].present? || params['ckb_genres'].present? || params['ckb_periods'].present? || params['ckb_languages'].present? || params['ckb_copyright'].present? || (params[:sort_by].present? && ['publication_date', 'creation_date'].include?(params[:sort]))
     query_params = {}
     query_parts = {}
 
