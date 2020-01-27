@@ -26,6 +26,7 @@ class ManifestationController < ApplicationController
 
   #layout false, only: [:print]
 
+  DATE_FIELD = {'uploaded' => 'manifestations.created_at', 'created' => 'works.normalized_date', 'published' => 'expressions.normalized_date'}
   #############################################
   # public actions
   def all
@@ -443,9 +444,19 @@ class ManifestationController < ApplicationController
     end
   end
 
+  def date_query(datetype, which)
+    return "#{DATE_FIELD[@datetype]} #{which == :fromdate ? '>=' : '<='} :#{which}" unless datetype == 'uploaded'
+    return "#{DATE_FIELD[@datetype]} #{which == :fromdate ? '>=' : '<='} CONVERT(:#{which}, DATETIME)"
+  end
+
+  def normalized_date_formatter(datetype, d)
+    return d unless datetype == 'uploaded'
+    return d.sub('/','-')+'-01'
+  end
+
   def prep_collection
     @emit_filters = false
-    joins_needed = @periods.present? || @genres.present? || params['search_input'].present? || params[:load_filters].present? || params['ckb_genres'].present? || params['ckb_periods'].present? || params['ckb_languages'].present? || params['ckb_copyright'].present? || (params[:sort_by].present? && ['publication_date', 'creation_date'].include?(params[:sort]))
+    joins_needed = @periods.present? || @genres.present? || params['search_input'].present? || params[:load_filters].present? || params['fromdate'].present? || params['todate'].present? || params['ckb_genres'].present? || params['ckb_periods'].present? || params['ckb_languages'].present? || params['ckb_copyright'].present? || (params[:sort_by].present? && ['publication_date', 'creation_date'].include?(params[:sort]))
     query_params = {}
     query_parts = {}
 
@@ -513,6 +524,20 @@ class ManifestationController < ApplicationController
       query_params[:languages] = @languages
       @filters += @languages.map{|x| ["#{I18n.t(:orig_lang)}: #{helpers.textify_lang(x)}", "lang_#{x}", :checkbox]}
     end
+    # dates
+    @fromdate = params['fromdate'] if params['fromdate'].present?
+    @todate = params['todate'] if params['todate'].present?
+    @datetype = params['date_type']
+    if @fromdate.present?
+      query_parts[:fromdate] = date_query(@datetype, :fromdate)
+      query_params[:fromdate] = normalized_date_formatter(@datetype, @fromdate)
+      @filters << [I18n.t(:fromdate)+": #{@fromdate}", :fromdate, :text]
+    end
+    if @todate.present?
+      query_parts[:todate] = date_query(@datetype, :todate)
+      query_params[:todate] = normalized_date_formatter(@datetype, @todate)
+      @filters << [I18n.t(:todate)+": #{@todate}", :todate, :text]
+    end
     # build the collection (with/without joins, with/without conditions)
     joins_needed = true if @emit_filters
     @collection = make_collection(query_parts, query_params, joins_needed, ord)
@@ -528,7 +553,6 @@ class ManifestationController < ApplicationController
     else
       @works = @collection.page(@page) # get page X of manifestations
     end
-
     if @emit_filters == true
       @genre_facet = make_collection(query_parts.reject{|k,v| k == :genres }, query_params, joins_needed, ord).group('expressions.genre').count
       @period_facet = make_collection(query_parts.reject{|k,v| k == :periods }, query_params, joins_needed, ord).group(:period).count

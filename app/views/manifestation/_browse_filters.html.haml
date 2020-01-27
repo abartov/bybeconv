@@ -140,9 +140,9 @@
       .nested.active
         .row.nested-content
           .search-mobile-switch
-            %button.search-mobile-option.datetype= t(:publication)
-            %button.search-mobile-option.datetype#creation_date= t(:creation)
-            %button.search-mobile-option.datetype= t(:upload)
+            %button.search-mobile-option.datetype#published= t(:publication)
+            %button.search-mobile-option.datetype#created= t(:creation)
+            %button.search-mobile-option.datetype#uploaded= t(:upload)
             = hidden_field_tag(:date_type, id: 'date_type')
           %break
           .dates-range
@@ -204,7 +204,7 @@
       e.preventDefault();
       $('.datetype').removeClass('active');
       $(this).addClass('active');
-      $('#date_type').val($(this).attr('name'));
+      $('#date_type').val($(this).attr('id'));
     });
     $('#opt_authorname').click(function(e){
       e.preventDefault();
@@ -258,7 +258,7 @@
         $(this).prop('checked', checked);
       });
     });
-    var should_check_xlat = true;
+    var should_check_xlat = $('#xlat_langs input').length > 0;
     $('#xlat_langs input').each(function(li){
       if($(this).prop('checked') == false) {
         should_check_xlat = false;
@@ -267,8 +267,13 @@
     if(should_check_xlat) {
       $('#lang_xlat').prop('checked', true);
     }
-    $('#date_type').val('created');
-    $('#creation_date').addClass('active');
+    if("#{@datetype}" == "") {
+      $('#created').addClass('active');
+      $('#date_type').val('created');
+    } else {
+      $("##{@datetype}").addClass('active');
+      $('#date_type').val("#{@datetype}");
+    }
     $('.datepicker').datetimepicker({
       viewMode: 'years',
       rtl: true,
@@ -279,5 +284,13 @@
         previous: 'fa fa-chevron-right',
         next: 'fa fa-chevron-left',
       }
+    }).on('hide.datetimepicker', function(e){
+      window.setTimeout(submit_filters, 2000);
     });
+    if("#{@fromdate}" != "") {
+      $('#fromdate').val("#{@fromdate}");
+    }
+    if("#{@todate}" != "") {
+      $('#todate').val("#{@todate}");
+    }
   });
