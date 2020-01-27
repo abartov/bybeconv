@@ -457,6 +457,9 @@ he:
   render: הצגת יצירה
   show: הצגת פרטים
   thedate: תאריך
+  upload: העלאה
+  creation: יצירה
+  publication: הוצאה
   comments: הערות
   popular_work_tags: תגיות נפוצות ליצירות
   no_tags_yet: ליצירה זו טרם הוצעו תגיות
@@ -838,7 +841,6 @@ he:
   facebook: פייסבוק
   twitter: טוויטר
   whatsapp: ווטסאפ
-  publication: יצירות חדשות
   announcement: הודעה
   recommendation: המלצה
   temporary_worklist: רשימת יצירות (זמנית)

@@ -1,3 +1,4 @@
+%link{ rel:'stylesheet', href:'https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/css/tempusdominus-bootstrap-4.min.css'}
 = form_tag(works_path, remote: true, method: :post, id: 'works_filters') do
   .by-card-header-v02
     .headline-2-v02= t(:sort_by)
@@ -133,13 +134,13 @@
     /           %span (312)
     .sort-type
       .vertical-expand
-        .sort-type-headline תאריך
+        .sort-type-headline= t(:thedate)
       .nested.active
         .row.nested-content
           .search-mobile-switch
-            %button.search-mobile-option{:href => "#"} הוצאה
-            %button.search-mobile-option.active{:href => "#"} יצירה
-            %button.search-mobile-option{:href => "#"} העלאה
+            %button.search-mobile-option{:href => "#"}= t(:publication)
+            %button.search-mobile-option.active{:href => "#"}= t(:creation)
+            %button.search-mobile-option{:href => "#"}= t(:upload)
           %break
           .dates-range
             / #histogramSlider
@@ -258,7 +259,9 @@
       $('#lang_xlat').prop('checked', true);
     }
     $('.datepicker').datetimepicker({
+      viewMode: 'years',
       rtl: true,
+      widgetPositioning: {horizontal: 'left'},
       format: 'L',
       locale: 'he'
     });
