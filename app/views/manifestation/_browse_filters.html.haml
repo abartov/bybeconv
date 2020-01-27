@@ -1,4 +1,6 @@
 %link{ rel:'stylesheet', href:'https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/css/tempusdominus-bootstrap-4.min.css'}
+%script{ src: 'https://use.fontawesome.com/3f861a49f5.js'}
+
 = form_tag(works_path, remote: true, method: :post, id: 'works_filters') do
   .by-card-header-v02
     .headline-2-v02= t(:sort_by)
@@ -138,9 +140,10 @@
       .nested.active
         .row.nested-content
           .search-mobile-switch
-            %button.search-mobile-option{:href => "#"}= t(:publication)
-            %button.search-mobile-option.active{:href => "#"}= t(:creation)
-            %button.search-mobile-option{:href => "#"}= t(:upload)
+            %button.search-mobile-option.datetype= t(:publication)
+            %button.search-mobile-option.datetype#creation_date= t(:creation)
+            %button.search-mobile-option.datetype= t(:upload)
+            = hidden_field_tag(:date_type, id: 'date_type')
           %break
           .dates-range
             / #histogramSlider
@@ -197,6 +200,12 @@
       $('#opt_workname').addClass('active');
       $('#search_type').val('workname');
     }
+    $('.datetype').click(function(e) {
+      e.preventDefault();
+      $('.datetype').removeClass('active');
+      $(this).addClass('active');
+      $('#date_type').val($(this).attr('name'));
+    });
     $('#opt_authorname').click(function(e){
       e.preventDefault();
       $('#opt_workname').removeClass('active');
@@ -258,11 +267,17 @@
     if(should_check_xlat) {
       $('#lang_xlat').prop('checked', true);
     }
+    $('#date_type').val('created');
+    $('#creation_date').addClass('active');
     $('.datepicker').datetimepicker({
       viewMode: 'years',
       rtl: true,
-      widgetPositioning: {horizontal: 'left'},
       format: 'L',
-      locale: 'he'
+      locale: 'he',
+      format: 'YYYY/MM',
+      icons: {
+        previous: 'fa fa-chevron-right',
+        next: 'fa fa-chevron-left',
+      }
     });
   });
