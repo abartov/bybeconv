@@ -61,26 +61,33 @@
         = @rejected_update
         %hr
 
-
 :javascript
   $(document).ready(function(){
     $('#add_work_link').click(function() {
         var $txt = jQuery("#markdown");
         var caretPos = $txt[0].selectionStart;
         var textAreaTxt = $txt.val();
+        var scrollLeft = $txt[0].scrollLeft;
+        var scrollTop  = $txt[0].scrollTop;
         var txtToAdd = "\n&&& פריט: מ"+$('#works').val()+" &&& כותרת: "+$( "#works option:selected" ).text()+" &&&\n";
         $txt.val(textAreaTxt.substring(0, caretPos) + txtToAdd + textAreaTxt.substring(caretPos) );
+        $txt.selectionEnd = $txt.selectionStart = caretPos + txtToAdd.length;
         $txt.focus();
         $txt.caretTo(caretPos+txtToAdd.length);
+        $txt[0].scrollTo(scrollLeft, scrollTop); // restore scroll position
     });
     $('#add_fresh_works').click(function() {
         var $txt = jQuery("#markdown");
         var caretPos = $txt[0].selectionStart;
         var textAreaTxt = $txt.val();
+        var scrollLeft = $txt[0].scrollLeft;
+        var scrollTop  = $txt[0].scrollTop;
         var txtToAdd = "#{@fresh_works_markdown.gsub('"',"\\\"").html_safe}";
         $txt.val(textAreaTxt.substring(0, caretPos) + txtToAdd + textAreaTxt.substring(caretPos) );
+        $txt.selectionEnd = $txt.selectionStart = caretPos + txtToAdd.length;
         $txt.focus();
         $txt.caretTo(caretPos+txtToAdd.length);
+        $txt[0].scrollTo(scrollLeft, scrollTop); // restore scroll position
+        //$txt.caretTo(caretPos+txtToAdd.length);
     });
-
   });
