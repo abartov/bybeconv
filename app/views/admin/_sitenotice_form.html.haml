@@ -1,0 +1,17 @@
+.card{style:'width:70%;alignment:center;'}
+  .card-content
+    = form_for sn, url: {action: action, id: sn.id} do |f|
+      .backend-field
+        = f.label t(:sitenotice_body)
+        = f.text_area :body, rows: 10, cols: 100
+        %br
+        = f.label t(:fromdate)+': '
+        = select_date sn.fromdate || Date.today, prefix: :fromdate
+        %br
+        = f.label t(:todate)+': '
+        = select_date sn.todate || Date.today, prefix: :todate
+        %br
+        = f.check_box :status, checked: sn.enabled? ? true : false
+        = f.label t(:enabled)
+      .actions
+        = f.submit t(:save)

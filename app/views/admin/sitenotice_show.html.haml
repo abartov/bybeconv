@@ -1,0 +1,18 @@
+.top-element.backend
+  %h1= t(:sitenotice)
+  %a{ href: url_for(action: :sitenotice_edit, id: @sn.id)}
+    .btn{style:'float:none'}
+      %b= t(:edit)
+  %br
+  %br
+  %p
+    %b= t(:sitenotice_body)+': '
+    != @sn.body
+  %h3= t(:fromdate)
+  %p= @sn.fromdate.strftime('%d-%m-%Y')
+  %p= @sn.todate.strftime('%d-%m-%Y')
+  - if @sn.enabled?
+    %span{style:'color:green'}= t(:enabled)
+  - else
+    %span{style:'color:red'}= t(:disabled)
+  = link_to t(:back), url_for(action: :sitenotice_list)
