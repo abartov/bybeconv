@@ -11,6 +11,7 @@ include ActionView::Helpers::SanitizeHelper
 # temporary constants until I figure out what changed in RDF.rb's RDF::Vocab::SKOS
 SKOS_PREFLABEL = "http://www.w3.org/2004/02/skos/core#prefLabel"
 SKOS_ALTLABEL = "http://www.w3.org/2004/02/skos/core#altLabel"
+HEBMONTHS = {'ינואר' => 1,'פברואר' => 2,'מרץ' => 3,'מרס' => 3,'מארס' => 3,'אפריל' => 4,'מאי' => 5,'יוני' => 6,'יולי' => 7,'אוגוסט' => 8,'אבגוסט' => 8,'ספטמבר' => 9,'אוקטובר' => 10,'נובמבר' => 11, 'דצמבר' => 12}
 
 module BybeUtils
   def make_epub_from_single_html(html, manifestation)
@@ -80,6 +81,39 @@ module BybeUtils
     b.each{|word| count += 1 if word.any_nikkud?}
     target = b.length < 3 ? 1 : b.length - 2
     return (count < target ? false : true)
+  end
+
+  def parse_gregorian(str)
+    return Date.new($3.to_i, $2.to_i, $1.to_i) if(str =~ /(\d\d?)[-\/\.](\d\d?)[-\/\.](\d+)/) # try to match numeric date
+    # perhaps there's a date with spaces and a Gregorian month name in Hebrew
+    HEBMONTHS.keys.each do |m|
+      unless str.match(/ב?#{m}\s+/).nil?
+        month = HEBMONTHS[m]
+        pre = $`
+        year = $'.match(/\d+/).to_s.to_i
+        day = (pre.match(/\d+/)) ? $&.to_i : 15 # mid-month by default
+        return Date.new(year, month, day)
+      end
+    end
+    # we couldn't identify a month; try to use just the year
+    str.match(/\d+/)
+    return Date.new($&.to_i, 7, 1) # mid-year by default
+  end
+
+  def parse_hebrew_date(str)
+
+  end
+
+  def normalize_date(str)
+    return nil if str.nil? or str.empty?
+    # first look for digits
+    return parse_gregorian(str) if str.match(/\d+/)
+    # parse hebrew date
+    if str.any_hebrew?
+      return parse_hebrew_date(str)
+    else
+      return nil
+    end
   end
 
   # just return a boolean if the buffer is "full" nikkud
