@@ -71,7 +71,7 @@
           <div class="col-6 col-lg-4" style="padding-right: 4px;">
             <% unless sitenotice.empty? %>
               <div class="announcement card text-on-dark">
-                <p><%= sitenotice %></p>
+                <p><%= raw sitenotice %></p>
               </div>
             <% end %>
 

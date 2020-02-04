@@ -78,6 +78,13 @@ Bybeconv::Application.routes.draw do
   post 'admin/featured_author/add_feature' => 'admin#featured_author_add_feature', as: 'featured_author_add_feature'
   get 'admin/featured_author/delete_feature/:id' => 'admin#featured_author_delete_feature', as: 'featured_author_delete_feature'
   get 'admin/featured_author/:id' => 'admin#featured_author_show', as: 'featured_author_show'
+  get 'admin/sitenotice_list'
+  get 'admin/sitenotice/new' => 'admin#sitenotice_new', as: 'sitenotice_new'
+  post 'admin/sitenotice/create' => 'admin#sitenotice_create', as: 'sitenotice_create'
+  get 'admin/sitenotice/edit/:id' => 'admin#sitenotice_edit', as: 'sitenotice_edit'
+  patch 'admin/sitenotice/update' => 'admin#sitenotice_update', as: 'sitenotice_update'
+  get 'admin/sitenotice/destroy/:id' => 'admin#sitenotice_destroy', as: 'sitenotice_destroy'
+  get 'admin/sitenotice/:id' => 'admin#sitenotice_show', as: 'sitenotice_show'
   get 'volunteer/:id' => 'user#show', as: 'volunteer_show'
 
   get '/search_results' => 'application#search_results'

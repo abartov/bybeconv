@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_25_140303) do
+ActiveRecord::Schema.define(version: 2020_02_04_145755) do
 
   create_table "aboutnesses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -502,6 +502,18 @@ ActiveRecord::Schema.define(version: 2019_12_25_140303) do
     t.datetime "updated_at"
     t.index ["session_id"], name: "index_sessions_on_session_id"
     t.index ["updated_at"], name: "index_sessions_on_updated_at"
+  end
+
+  create_table "sitenotices", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|
+    t.string "body"
+    t.datetime "fromdate"
+    t.datetime "todate"
+    t.integer "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["fromdate"], name: "index_sitenotices_on_fromdate"
+    t.index ["status"], name: "index_sitenotices_on_status"
+    t.index ["todate"], name: "index_sitenotices_on_todate"
   end
 
   create_table "static_pages", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|

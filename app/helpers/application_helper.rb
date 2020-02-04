@@ -112,8 +112,16 @@ module ApplicationHelper
     return I18n.t(st)
   end
 
+  def uncached_sitenotice
+    @sns = Sitenotice.enabled.where('fromdate <= ? and todate >= ?', Date.today, Date.today)
+    return '' if @sns.empty?
+    return @sns.pluck(:body).join("<br />")
+  end
+
   def sitenotice
-    return '' # TODO: implement
+    #Rails.cache.fetch("sitenotices", expires_in: 2.hours) do # memoize
+      return uncached_sitenotice
+    #end
   end
 
   def linkify_people(people)
