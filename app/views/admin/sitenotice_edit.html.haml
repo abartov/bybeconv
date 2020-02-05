@@ -1,0 +1,5 @@
+.top-element.backend
+  %h1= t(:sitenotice_edit)
+  = render partial: 'sitenotice_form', locals: {action: :sitenotice_update, sn: @sn}
+  %p
+  = link_to t(:back), sitenotice_show_path(id: @sn.id)

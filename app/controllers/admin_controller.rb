@@ -511,6 +511,78 @@ class AdminController < ApplicationController
     end
   end
 
+  ## sitenotices
+  def sitenotice_list
+    @sns = Sitenotice.page(params[:page])
+  end
+
+  def sitenotice_new
+    @sn = Sitenotice.new
+    respond_to do |format|
+      format.html
+      format.json { render json: @sn }
+    end
+  end
+
+  def sitenotice_create
+    @sn = Sitenotice.new(sn_params)
+    @sn.status = (sn_params[:status] == '1' ? :enabled : :disabled)
+    @sn.fromdate = Date.new(params[:fromdate][:year].to_i, params[:fromdate][:month].to_i, params[:fromdate][:day].to_i)
+    @sn.todate = Date.new(params[:todate][:year].to_i, params[:todate][:month].to_i, params[:todate][:day].to_i)
+    respond_to do |format|
+      if @sn.save
+        Rails.cache.delete("sitenotices") # clear cached sitenotices
+        format.html { redirect_to url_for(action: :sitenotice_show, id: @sn.id), notice: t(:updated_successfully) }
+        format.json { render json: @sn, status: :created, location: @sn }
+      else
+        format.html { render action: 'sitenotice_new'}
+        format.json { render json: @sn.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def sitenotice_show
+    @sn = Sitenotice.find(params[:id])
+    if @sn.nil?
+      flash[:error] = I18n.t(:no_such_item)
+      redirect_to url_for(action: :index)
+    end
+  end
+
+  def sitenotice_edit
+    @sn = Sitenotice.find(params[:id])
+  end
+
+  def sitenotice_update
+    @sn = Sitenotice.find(params[:id])
+    @sn.body = sn_params[:body]
+    @sn.status = (sn_params[:status] == '1' ? :enabled : :disabled)
+    @sn.fromdate = Date.new(params[:fromdate][:year].to_i, params[:fromdate][:month].to_i, params[:fromdate][:day].to_i)
+    @sn.todate = Date.new(params[:todate][:year].to_i, params[:todate][:month].to_i, params[:todate][:day].to_i)
+    if @sn.nil?
+      flash[:error] = I18n.t(:no_such_item)
+      redirect_to url_for(action: :index)
+    else
+      if @sn.save
+        Rails.cache.delete("sitenotices") # clear cached sitenotices
+        flash[:notice] = I18n.t(:updated_successfully)
+        redirect_to action: :sitenotice_show, id: @sn.id
+      else
+        format.html { render action: 'sitenotice_edit' }
+        format.json { render json: @sn.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def sitenotice_destroy
+    @sn = Sitenotice.find(params[:id])
+    unless @sn.nil?
+      @sn.destroy
+      Rails.cache.delete("sitenotices") # clear cached sitenotices
+    end
+    flash[:notice] = I18n.t(:deleted_successfully)
+    redirect_to action: :sitenotice_list
+  end
   ########################################################
   ## featured author
   def featured_author_list
@@ -621,5 +693,8 @@ class AdminController < ApplicationController
   end
   def sp_params
     params[:static_page].permit(:tag, :title, :body, :status, :mode, :ltr)
+  end
+  def sn_params
+    params[:sitenotice].permit(:body, :status)
   end
 end

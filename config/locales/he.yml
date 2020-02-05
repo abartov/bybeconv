@@ -10,6 +10,13 @@ he:
   works_by_period: יצירות לפי תקופה
   works_by_genre: יצירות לפי סוגה
   works_by_tag: יצירות לפי תגית
+  sitenotice: הודעת מערכת
+  new_sitenotice: הודעת מערכת חדשה
+  sitenotices: הודעות מערכת
+  sitenotice_body: גוף ההודעה
+  sitenotice_edit: עריכת הודעת מערכת
+  sitenotice_management: ניהול הודעות מערכת
+  edit_sitenotice: ניהול הודעות מערכת
   type_new_name_below: עדכנו את השם ולחצו על שמירה.
   ziburit: מהו שם המשפחה של המשורר הנחשב המשורר הלאומי?
   from_pby_and_available_at: מתוך פרויקט בן־יהודה.  המקראה זמינה בכתובת
