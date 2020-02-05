@@ -525,8 +525,7 @@ class AdminController < ApplicationController
   end
 
   def sitenotice_create
-    @sn = Sitenotice.new(sn_params)
-    @sn.status = (sn_params[:status] == '1' ? :enabled : :disabled)
+    @sn = Sitenotice.new(body: sn_params[:body], status: (sn_params[:status] == '1' ? :enabled : :disabled))
     @sn.fromdate = Date.new(params[:fromdate][:year].to_i, params[:fromdate][:month].to_i, params[:fromdate][:day].to_i)
     @sn.todate = Date.new(params[:todate][:year].to_i, params[:todate][:month].to_i, params[:todate][:day].to_i)
     respond_to do |format|
