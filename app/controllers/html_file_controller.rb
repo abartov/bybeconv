@@ -76,7 +76,7 @@ class HtmlFileController < ApplicationController
             p.text = '&&STANZA&&' if p.text.empty? # replaced with <br> tags in new_postprocess
           end
           docx.save(tmpfile_pp.path) # save modified version
-          mem_limit = Rails.env.development? ? '' : ' -M700m ' # limit memory use in production; otherwise severe server hangs possible
+          mem_limit = Rails.env.development? ? '' : ' -M1200m ' # limit memory use in production; otherwise severe server hangs possible
           markdown = `pandoc +RTS #{mem_limit} -RTS -f docx -t markdown_mmd #{tmpfile_pp.path}`
           unless markdown =~ /pandoc: Heap exhausted/
             @text.markdown = new_postprocess(markdown)
