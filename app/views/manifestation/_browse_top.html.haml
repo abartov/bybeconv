@@ -19,8 +19,9 @@
             .icon-in-group-v02.notyet
               %a{:href => "#"}
                 %span.by-icon-v02.icon-bybookshelf
-                .anthology-badge
-                  .badge-number 2
+                - unless @anthology.nil?
+                  .anthology-badge
+                    .badge-number= @anthology.texts.length
             .icon-in-group-v02.notyet
               %a{:href => "#"}
                 %span.by-icon-v02 9

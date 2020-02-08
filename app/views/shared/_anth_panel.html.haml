@@ -36,7 +36,6 @@
             .actions-description#download-anthology-description= t(:download_description)
             %button.icon-btn.icon-byprint#print-anthology
             .actions-description#print-anthology-description= t(:print_description)
-            / %button.icon-btn#copy-anthology{'data-toggle' => 'modal', 'data-target' => '#copyAnthologyDlg'}= '['
             %button.icon-btn#copy-anthology= '['
             .actions-description#copy-anthology-description= t(:copy_description)
             %button.icon-btn.icon-bydelete#delete-anthology
@@ -69,15 +68,13 @@
                             /%span.by-icon-v02.markdown-icon _
                           - else
                             = link_to text.manifestation.title + ' / ' + text.manifestation.author_string, manifestation_read_path(text.manifestation_id)
-                        .left-side-icons
-                          - if text.manifestation_id.nil?
-                            %button.icon-btn.icon-byedit.editmdbutton{id: "edit#{text.id}"}
-                          %button.icon-btn.icon-bydelete.delbutton{id: "del#{text.id}"}
                         %button.vertical-expand{id: "collat#{text.id}", 'data-toggle' => 'collapse', 'data-target' => "#at#{text.id}"}
+                        %button.icon-btn.icon-bydelete.delbutton{id: "del#{text.id}"}
+                        - if text.manifestation_id.nil?
+                          %button.icon-btn.icon-byedit.editmdbutton{id: "edit#{text.id}"}
                         .atcoll.collapse.in{id: "at#{text.id}"}
-                          .about-content-horizontal-separator
-                          .row.anthology-nested-content
-                            - if text.manifestation_id.nil?
+                          - if text.manifestation_id.nil?
+                            .row.anthology-nested-content
                               .col-md-4.col-sm-12
                                 %div
                                   %span{:style => "font-weight:bold"}= t(:a_date)+': '
@@ -86,24 +83,25 @@
                                 %div{:style => "padding-bottom: 12px"}
                                   %span{:style => "font-weight:bold"}= t(:word_count)+': '
                                   %span= text.body.split.count
-                            - else
+                          - else
+                            .row.anthology-nested-content
                               .col-md-4.col-sm-12
                                 %div{:style => "padding-bottom: 12px"}
                                   %span{:style => "font-weight:bold"}= t(:genre)+': '
                                   %span= textify_genre(text.manifestation.expressions[0].genre)
-                                %div
-                                  - if text.manifestation.copyright?
-                                    %span.by-icon-v02.copyright-icon> x
-                                    = textify_copyright_status(true)
-                                    = link_to '[?]', '#', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_permission), 'data-content' => t(:permission_popover)
-                                  - else
-                                    %span.by-icon-v02.copyright-icon> m
-                                    = textify_copyright_status(false)
-                                    = link_to '[?]', '#', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_public_domain), 'data-content' => t(:public_domain_popover)
                               .col-md-4.col-sm-12
                                 %div{:style => "padding-bottom: 12px"}
                                   %span{:style => "font-weight:bold"}= t(:page_count)+': '
                                   %span= text.page_count
+                            %div
+                              - if text.manifestation.copyright?
+                                %span.by-icon-v02.copyright-icon> x
+                                = textify_copyright_status(true)
+                                = link_to '[?]', '#', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_permission), 'data-content' => t(:permission_popover)
+                              - else
+                                %span.by-icon-v02.copyright-icon> m
+                                = textify_copyright_status(false)
+                                = link_to '[?]', '#', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_public_domain), 'data-content' => t(:public_domain_popover)
         .bottom-right-buttons
           #add_work_block{style: 'display: none'}
             .by-button-v02.by-button-secondary-v02#add_work_btn
