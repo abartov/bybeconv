@@ -119,9 +119,9 @@ module ApplicationHelper
   end
 
   def sitenotice
-    #Rails.cache.fetch("sitenotices", expires_in: 2.hours) do # memoize
+    Rails.cache.fetch("sitenotices", expires_in: 2.hours) do # memoize
       return uncached_sitenotice
-    #end
+    end
   end
 
   def linkify_people(people)

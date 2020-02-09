@@ -20,15 +20,15 @@
           /  = link_to '#' do
           /    %span.right-side-icon= "'"
           /    %span{style: 'font-weight: bold'}= t(:another_feature)
-
-          - if @fc_rest != ''
-            %button.by-button-v02.button-to-full-v02#toggle_featured_item= t(:to_the_full_feature)
-          - unless @featured_content.manifestation.nil?
-            %a{ href: manifestation_read_path(id: @featured_content.manifestation.id)}
-              %button.by-button-v02.button-to-full-v02= t(:to_the_work_in_the_site)
-          - unless @featured_content.external_link.nil? or @featured_content.external_link.empty?
-            %a{ href: @featured_content.external_link, target: '_blank'}
-              %button.by-button-v02.button-to-full-v02= t(:to_external_content)
+          .bottom-left-buttons
+            - if @fc_rest != ''
+              %button.by-button-v02#toggle_featured_item= t(:to_the_full_feature)
+            - unless @featured_content.manifestation.nil?
+              %a{ href: manifestation_read_path(id: @featured_content.manifestation.id)}
+                %button.by-button-v02= t(:to_the_work_in_the_site)
+            - unless @featured_content.external_link.nil? or @featured_content.external_link.empty?
+              %a{ href: @featured_content.external_link, target: '_blank'}
+                %button.by-button-v02= t(:to_external_content)
 
 :javascript
   $(document).ready(function(){

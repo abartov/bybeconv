@@ -34,23 +34,22 @@
           .by-card-header-v02.desktop-only
             %span.headline-1-v02= t(:create_new_list_or_anthology)
             %a.popup-x-v02.pointer.hide_new_anth -
-          %div
-            .by-card-content-v02.card-with-button
-              - @new_anthology = Anthology.new
-              = form_with(model: @new_anthology, url: anthologies_path(@new_anthology), data: {remote: true}, id: 'new_anthology') do |anth|
-                .search-mobile-switch
-                  %button.search-mobile-option#opt_rlist= t(:reading_list)
-                  %button.search-mobile-option.active#opt_anth= t(:anthology)
-                = anth.hidden_field :listtype, id: 'listtype', value: 'anth'
-                = anth.hidden_field :access, value: 'priv'
-                = anth.hidden_field :user_id, value: current_user.id
-                = anth.label t(:anthology_name), {'class' => 'field-label'}
-                = anth.text_field :title, autofocus: true, required: true, class: 'field-v02', value: "#{t(:anthology)}-#{@anthologies.count + 1}"
-                .no-header
-                .bottom-left-buttons
-                  %button.by-button-v02.by-button-secondary-v02.pointer.hide_new_anth
-                    %div= t(:cancel)
-                  = anth.submit t(:create_new_anthology), {'class' => 'by-button-v02 pointer'}
+          .by-card-content-v02.card-with-button
+            - @new_anthology = Anthology.new
+            = form_with(model: @new_anthology, url: anthologies_path(@new_anthology), data: {remote: true}, id: 'new_anthology') do |anth|
+              .search-mobile-switch
+                %button.search-mobile-option#opt_rlist= t(:reading_list)
+                %button.search-mobile-option.active#opt_anth= t(:anthology)
+              = anth.hidden_field :listtype, id: 'listtype', value: 'anth'
+              = anth.hidden_field :access, value: 'priv'
+              = anth.hidden_field :user_id, value: current_user.id
+              = anth.label t(:anthology_name), {'class' => 'field-label'}
+              = anth.text_field :title, autofocus: true, required: true, class: 'field-v02', value: "#{t(:anthology)}-#{@anthologies.count + 1}"
+              .no-header
+              .bottom-left-buttons
+                %button.by-button-v02.by-button-secondary-v02.pointer.hide_new_anth
+                  %div= t(:cancel)
+                = anth.submit t(:create_new_anthology), {'class' => 'by-button-v02 pointer'}
         = render partial: 'shared/anth_panel'
 :javascript
   $(document).ready(function() {
