@@ -2,11 +2,11 @@
 
 @font-face {
   font-family: "ben-yehuda";
-  src:url("ben-yehuda.eot");
-  src:url("ben-yehuda.eot?#iefix") format("embedded-opentype"),
-    url("ben-yehuda.woff") format("woff"),
-    url("ben-yehuda.ttf") format("truetype"),
-    url("ben-yehuda.svg#ben-yehuda") format("svg");
+  src:url("ben-yehuda2.eot");
+  src:url("ben-yehuda2.eot?#iefix") format("embedded-opentype"),
+    url("ben-yehuda2.woff") format("woff"),
+    url("ben-yehuda2.ttf") format("truetype"),
+    url("ben-yehuda2.svg#ben-yehuda") format("svg");
   font-weight: normal;
   font-style: normal;
 
