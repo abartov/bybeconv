@@ -119,7 +119,7 @@ class ManifestationController < ApplicationController
   def like
     unless current_user.nil?
       @m = Manifestation.find(params[:id])
-      @m.likers << current_user
+      @m.likers << current_user unless @m.likers.include?(current_user)
     end
     head :ok
   end

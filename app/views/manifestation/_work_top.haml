@@ -42,7 +42,10 @@
                 = t(:reading_mode)
             .top-left-icons-group
               .icon-in-group-v02.like
-                %span.linkcolor.pointer.by-icon-v02= @liked ? '6' : '5'
+                - if @liked
+                  %span.linkcolor.pointer.by-icon-v02.icon-byheart-full
+                - else
+                  %span.linkcolor.pointer.by-icon-v02.icon-byheart-empty
               .icon-in-group-v02.notyet
                 %span.linkcolor.pointer.by-icon-v02 b
               .icon-in-group-v02.anthologies_button{'data-toggle' => 'modal', 'data-target' => '#anthologiesDlg'}
@@ -63,8 +66,10 @@
               %span.by-icon-v02 /
             .top-left-icons-group
               .icon-in-group-v02.like
-                %span.linkcolor.pointer.by-icon-v02
-                  = @liked ? '6' : '5'
+                - if @liked
+                  %span.linkcolor.pointer.by-icon-v02.icon-byheart-full
+                - else
+                  %span.linkcolor.pointer.by-icon-v02.icon-byheart-empty
               .icon-in-group-v02
                 %span.by-icon-v02.linkcolor.notyet b
               #moreMobile.by-dropdown-v02
@@ -141,21 +146,17 @@
     offsetTop = #{ @readmode ? 40 : 250 },
     // heart button
     $('.like').click(function(){ // toggle like/unlike
-      if($('.like').find(".fa-heart").length > 0) { // already liked
+      if($('.like').find(".icon-byheart-full").length > 0) { // already liked
         // unlike
         $.ajax({
           url: "#{url_for(action: :unlike, id: @m.id) }",
-          //data: {user: '#{current_user.nil? ? '' : current_user.id}',
-          //method: 'POST',
         });
-        $('.fa-heart').removeClass('fa-heart').addClass('fa-heart-o');
+        $('.icon-byheart-full').removeClass('icon-byheart-full').addClass('icon-byheart-empty');
       } else { // like
         $.ajax({
           url: "#{url_for(action: :like, id: @m.id) }",
-          //data: {user: '#{current_user.nil? ? '' : current_user.id}',
-          //method: 'POST',
         });
-        $('.fa-heart-o').removeClass('fa-heart-o').addClass('fa-heart');
+        $('.icon-byheart-empty').removeClass('icon-byheart-empty').addClass('icon-byheart-full');
       }
     });
     // print button
