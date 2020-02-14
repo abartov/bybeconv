@@ -168,6 +168,7 @@ GEM
       concurrent-ruby (~> 1.0)
     hashie (3.5.7)
     hebrew (0.2.1)
+    hebruby (2.1.1)
     html2haml (2.2.0)
       erubis (~> 2.7.0)
       haml (>= 4.0, < 6)
@@ -518,6 +519,7 @@ DEPENDENCIES
   haml
   haml-rails
   hebrew (>= 0.2.1)
+  hebruby
   htmlentities
   impressionist
   jbuilder (~> 2.0)

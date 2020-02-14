@@ -88,6 +88,7 @@ gem 'better_sjr' # ease debugging of server-side JS responses
 # gem 'histogram' # for histograms in date filter
 gem 'momentjs-rails' # for date picker in filters
 gem 'bootstrap4-datetime-picker-rails' # for date picker in filters
+gem 'hebruby' # for Hebrew date handling
 
 group :production do
 #  gem 'newrelic_rpm' # performance monitoring
