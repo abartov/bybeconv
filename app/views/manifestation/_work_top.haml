@@ -41,7 +41,7 @@
                 %span.by-icon-v02.iconNearText-v02> /
                 = t(:reading_mode)
             .top-left-icons-group
-              .icon-in-group-v02.like
+              .icon-in-group-v02.like.must_login
                 - if @liked
                   %span.linkcolor.pointer.by-icon-v02.icon-byheart-full
                 - else
@@ -65,7 +65,7 @@
             %button.btn-small-outline-v02.btn-text-v02.reading-mode-icon-btn-v02{:href => "#"}
               %span.by-icon-v02 /
             .top-left-icons-group
-              .icon-in-group-v02.like
+              .icon-in-group-v02.like.must_login
                 - if @liked
                   %span.linkcolor.pointer.by-icon-v02.icon-byheart-full
                 - else
@@ -146,17 +146,19 @@
     offsetTop = #{ @readmode ? 40 : 250 },
     // heart button
     $('.like').click(function(){ // toggle like/unlike
-      if($('.like').find(".icon-byheart-full").length > 0) { // already liked
-        // unlike
-        $.ajax({
-          url: "#{url_for(action: :unlike, id: @m.id) }",
-        });
-        $('.icon-byheart-full').removeClass('icon-byheart-full').addClass('icon-byheart-empty');
-      } else { // like
-        $.ajax({
-          url: "#{url_for(action: :like, id: @m.id) }",
-        });
-        $('.icon-byheart-empty').removeClass('icon-byheart-empty').addClass('icon-byheart-full');
+      if("#{current_user}" != '') {
+        if($('.like').find(".icon-byheart-full").length > 0) { // already liked
+          // unlike
+          $.ajax({
+            url: "#{url_for(action: :unlike, id: @m.id) }",
+          });
+          $('.icon-byheart-full').removeClass('icon-byheart-full').addClass('icon-byheart-empty');
+        } else { // like
+          $.ajax({
+            url: "#{url_for(action: :like, id: @m.id) }",
+          });
+          $('.icon-byheart-empty').removeClass('icon-byheart-empty').addClass('icon-byheart-full');
+        }
       }
     });
     // print button

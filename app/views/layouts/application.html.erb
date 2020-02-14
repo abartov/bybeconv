@@ -201,6 +201,11 @@
     $('.notyet').click(function(){
       alert('<%= t(:not_implemented_yet) %>');
     });
+    $('.must_login').click(function(){
+      <% unless current_user %>
+        alert('<%= t(:must_login_for_this) %>');
+      <% end %>
+    });
     $('[data-toggle="popover"]').popover();
     $('[data-toggle="tooltip"]').tooltip();
   });
