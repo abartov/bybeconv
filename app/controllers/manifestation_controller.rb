@@ -26,7 +26,7 @@ class ManifestationController < ApplicationController
 
   #layout false, only: [:print]
 
-  DATE_FIELD = {'uploaded' => 'manifestations.created_at', 'created' => 'works.normalized_date', 'published' => 'expressions.normalized_date'}
+  DATE_FIELD = {'uploaded' => 'manifestations.created_at', 'created' => 'works.normalized_creation_date', 'published' => 'expressions.normalized_pub_date'}
   #############################################
   # public actions
   def all
@@ -531,12 +531,12 @@ class ManifestationController < ApplicationController
     if @fromdate.present?
       query_parts[:fromdate] = date_query(@datetype, :fromdate)
       query_params[:fromdate] = normalized_date_formatter(@datetype, @fromdate)
-      @filters << [I18n.t(:fromdate)+": #{@fromdate}", :fromdate, :text]
+      @filters << ["#{I18n.t('d'+@datetype)} #{I18n.t(:fromdate)}: #{@fromdate}", :fromdate, :text]
     end
     if @todate.present?
       query_parts[:todate] = date_query(@datetype, :todate)
       query_params[:todate] = normalized_date_formatter(@datetype, @todate)
-      @filters << [I18n.t(:todate)+": #{@todate}", :todate, :text]
+      @filters << ["#{I18n.t('d'+@datetype)} #{I18n.t(:todate)}: #{@todate}", :todate, :text]
     end
     # build the collection (with/without joins, with/without conditions)
     joins_needed = true if @emit_filters
