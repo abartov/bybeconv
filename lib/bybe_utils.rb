@@ -136,7 +136,11 @@ module BybeUtils
         rpos = pre.rindex(' ')
         pre = pre[rpos + 1..-1] unless pre.empty? or rpos.nil?
         year = $'.match(/\S+\"\S/).to_s.strip.tr('\"\'','')
-        day = parse_hebrew_day(pre) || 15 # mid-month by default
+        if pre.empty?
+          day = 15
+        else
+          day = parse_hebrew_day(pre) || 15 # mid-month by default
+        end
         hyear = parse_hebrew_year(year)
         unless hyear.nil? || hyear == 0
           hd = Hebruby::HebrewDate.new(day, month, hyear)
