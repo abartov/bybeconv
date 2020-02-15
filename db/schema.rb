@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_04_145755) do
+ActiveRecord::Schema.define(version: 2020_02_15_000140) do
 
   create_table "aboutnesses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -135,6 +135,10 @@ ActiveRecord::Schema.define(version: 2020_02_04_145755) do
     t.boolean "translation"
     t.string "source_edition"
     t.integer "period"
+    t.string "normalized_pub_date"
+    t.string "normalized_creation_date"
+    t.index ["normalized_creation_date"], name: "index_expressions_on_normalized_creation_date"
+    t.index ["normalized_pub_date"], name: "index_expressions_on_normalized_pub_date"
     t.index ["period"], name: "index_expressions_on_period"
   end
 
@@ -505,7 +509,7 @@ ActiveRecord::Schema.define(version: 2020_02_04_145755) do
   end
 
   create_table "sitenotices", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|
-    t.string "body"
+    t.text "body"
     t.datetime "fromdate"
     t.datetime "todate"
     t.integer "status"
@@ -625,6 +629,10 @@ ActiveRecord::Schema.define(version: 2020_02_04_145755) do
     t.string "genre"
     t.string "orig_lang"
     t.string "origlang_title"
+    t.string "normalized_pub_date"
+    t.string "normalized_creation_date"
+    t.index ["normalized_creation_date"], name: "index_works_on_normalized_creation_date"
+    t.index ["normalized_pub_date"], name: "index_works_on_normalized_pub_date"
   end
 
   add_foreign_key "anthologies", "users"

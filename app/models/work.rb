@@ -1,3 +1,4 @@
+include BybeUtils
 class Work < ApplicationRecord
   has_and_belongs_to_many :expressions
   has_many :creations
@@ -5,6 +6,7 @@ class Work < ApplicationRecord
   has_many :aboutnesses, as: :aboutable
   has_many :topics, class_name: 'Aboutness', source: :work
 
+  before_save :norm_dates
   # has_and_belongs_to_many :people # superseded by creations and persons above
 
   def authors
@@ -18,7 +20,9 @@ class Work < ApplicationRecord
     return nil
   end
 
-  def title_and_authors_string
-    # TBD
+  protected
+  def norm_dates
+    nd = normalize_date(self.date)
+    self.normalized_creation_date = nd unless nd.nil?
   end
 end

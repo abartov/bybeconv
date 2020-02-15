@@ -1,5 +1,6 @@
 class Expression < ApplicationRecord
   before_save :set_translation
+  before_save :norm_dates
   enum period: %i(ancient medieval enlightenment revival modern)
 
   has_and_belongs_to_many :works
@@ -49,5 +50,10 @@ class Expression < ApplicationRecord
     b = determine_is_translation?
     self.translation = determine_is_translation? unless b.nil?
     return true
+  end
+
+  def norm_dates
+    nd = normalize_date(self.date)
+    self.normalized_pub_date = nd unless nd.nil?
   end
 end
