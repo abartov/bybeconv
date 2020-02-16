@@ -222,17 +222,19 @@
       $('.multi-name-sort').hide();
       $('#search_input').removeClass('author-name-field');
     });
+    var submit_timeout = null;
     $('#works_filters').change(function(){
-      window.setTimeout(submit_filters, 300);
-      //$('#thelist').addClass('striped');
-      //$('#works_filters').submit();
+      if(submit_timeout != null){
+        window.clearTimeout(submit_timeout);
+      }
+      submit_timeout = window.setTimeout(submit_filters, 300);
     });
     function submit_filters() {
-      $('#thelist').addClass('striped');
+      startModal('spinnerdiv');
+      //$('#thelist').addClass('striped');
       $('#works_filters').submit();
     }
     $('.reset').click(function(){
-      //$('#works_filters').not(':button, :submit, :reset, :hidden').val('').prop('checked', false).prop('selected', false);
       $('#works_filters').find(':input').each(function() {
         switch(this.type) {
             case 'password':
@@ -247,7 +249,8 @@
                 this.checked = false;
         }
       });
-      $('#thelist').addClass('striped');
+      startModal('spinnerdiv');
+      //$('#thelist').addClass('striped');
       $('#emit_filters').val('true');
       $('#works_filters').submit();
     });
