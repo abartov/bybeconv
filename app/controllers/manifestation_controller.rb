@@ -560,9 +560,7 @@ class ManifestationController < ApplicationController
       @language_facet = make_collection(query_parts.reject{|k,v| k == :languages }, query_params, joins_needed, ord).group('works.orig_lang').count
       @language_facet[:xlat] = @language_facet.values.sum - (@language_facet['he'] || 0)
       @uploaded_dates = make_collection(query_parts.reject{|k,v| k == :uploaded }, query_params, joins_needed, ord).pluck(:created_at).map{|x| "{value: #{x.strftime("%Y%m%d")}}"}.join(", ")
-      # (bins, freqs) = uploaded_dates.histogram
-      # @dates_facet = { }
-      # TODO: date facet
+      # TODO: date histogram      # (bins, freqs) = uploaded_dates.histogram
       # TODO: curated facet
       end
     # {"utf8"=>"✓", "search_input"=>"ביאליק", "search_type"=>"authorname", "ckb_genres"=>["drama"], "ckb_periods"=>["medieval", "enlightenment"], "ckb_copyright"=>["0"], "CheckboxGroup5"=>"sort_by_german", "genre"=>"drama", "load_filters"=>"true", "_"=>"1577388296523", "controller"=>"manifestation", "action"=>"genre"} permitted: false
