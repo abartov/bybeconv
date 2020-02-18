@@ -2,7 +2,7 @@ class AdminController < ApplicationController
   before_action :require_editor
   before_action :require_admin, only: [:missing_languages, :missing_genres, :incongruous_copyright, :missing_copyright, :similar_titles]
   autocomplete :manifestation, :title, display_value: :title_and_authors
-  autocomplete :person, :name
+  autocomplete :person, :name, full: true
 
   def index
     if current_user && current_user.editor?
