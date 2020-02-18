@@ -259,6 +259,7 @@ GEM
       net-ssh (>= 2.6.5)
     net-ssh (5.2.0)
     netrc (0.11.0)
+    newrelic_rpm (6.8.0.360)
     nio4r (2.3.1)
     nokogiri (1.10.4)
       mini_portile2 (~> 2.4.0)
@@ -330,7 +331,7 @@ GEM
       nokogiri (>= 1.6)
     rails-html-sanitizer (1.0.4)
       loofah (~> 2.2, >= 2.2.2)
-    rails-jquery-autocomplete (1.0.3)
+    rails-jquery-autocomplete (1.0.5)
       rails (>= 3.2)
     railties (5.2.2.1)
       actionpack (= 5.2.2.1)
@@ -518,7 +519,8 @@ DEPENDENCIES
   kaminari
   linkeddata
   mini_magick (>= 4.9.4)
-  mysql2
+  mysql2 (= 0.5.3)
+  newrelic_rpm
   nokogiri (>= 1.10.4)
   omniauth-google-oauth2
   omniauth-rails_csrf_protection
@@ -531,7 +533,7 @@ DEPENDENCIES
   rack-cors
   rails (~> 5.2.2)
   rails-i18n!
-  rails-jquery-autocomplete
+  rails-jquery-autocomplete (>= 1.0.5)
   rdf (~> 2.0.1)
   rdf-vocab
   responders
