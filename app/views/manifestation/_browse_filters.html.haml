@@ -84,7 +84,7 @@
           - attrs = {name: "ckb_copyright[]", :type => "checkbox", id: 'copyright_0', value: 0}
           - attrs.merge!({checked: 'checked'}) if @copyright.present? && @copyright.include?(0)
 
-          %input#CheckboxGroup3{attrs}/
+          %input{attrs}/
           %label
             %span.by-icon-v02> m
             = t(:public_domain)
@@ -92,7 +92,7 @@
           %br/
           - attrs = {name: "ckb_copyright[]", :type => "checkbox", id: 'copyright_1', value: 1}
           - attrs.merge!({checked: 'checked'}) if @copyright.present? && @copyright.include?(1)
-          %input#CheckboxGroup3_3{attrs}/
+          %input{attrs}/
           %label
             %span.by-icon-v02> x
             = t(:by_permission)
