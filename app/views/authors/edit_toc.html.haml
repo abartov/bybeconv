@@ -7,12 +7,12 @@
         = text_area_tag(:gen_toc, raw(@gen_toc), rows: 20, style: 'width:100%')
       %h1= t(:update_toc)
       .right
-        %b.static-btn#add_work_link= t(:add_work_link)
+        %b.by-button-v02#add_work_link{style:'display:inline;width:200px'}= t(:add_work_link)
         = select_tag :works, options_from_collection_for_select(@works, 'id', 'title')
         %br
         - unless @fresh_works.empty?
           = t(:or)
-          %b.static-btn#add_fresh_works= t(:add_fresh_works)
+          %b.by-button-v02#add_fresh_works{style:'display:inline;width:200px'}= t(:add_fresh_works)
           %br
         = t(:in_current_cursor)
         %br

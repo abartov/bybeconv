@@ -55,9 +55,9 @@
       = t(:no)
       = radio_button_tag(:conversion_verified, false, (not @m.conversion_verified))
     %p
-      = submit_tag t(:preview)
+      = submit_tag t(:preview), 'class' => 'by-button-v02'
       = ' | '
-      = submit_tag t(:save)
+      = submit_tag t(:save), 'class' => 'by-button-v02'
 
 :javascript
   var selected_image_url = '';
@@ -113,32 +113,43 @@
         pv.innerHTML = file.content.html;
       });
     });
-    $('#add_image').click(function() {
+    $('#add_image').click(function(e) {
+      e.preventDefault();
       var $txt = jQuery("#markdown");
       var caretPos = $txt[0].selectionStart;
+      var scrollLeft = $txt[0].scrollLeft;
+      var scrollTop  = $txt[0].scrollTop;
       var textAreaTxt = $txt.val();
       var txtToAdd = "\n!["+selected_filename+"]("+selected_image_url+")\n";
       $txt.val(textAreaTxt.substring(0, caretPos) + txtToAdd + textAreaTxt.substring(caretPos) );
       $txt.focus();
       $txt.caretTo(caretPos+txtToAdd.length);
+      $txt[0].scrollTo(scrollLeft, scrollTop); // restore scroll position
     });
-    $('#add_all_images').click(function() {
+    $('#add_all_images').click(function(e) {
+      e.preventDefault();
       var $txt = jQuery("#markdown");
+      var scrollLeft = $txt[0].scrollLeft;
+      var scrollTop  = $txt[0].scrollTop;
       var caretPos = $txt[0].selectionStart;
       var textAreaTxt = $txt.val();
       var txtToAdd = "#{all_images_markdown(@m.images)}";
       $txt.val(textAreaTxt.substring(0, caretPos) + txtToAdd + textAreaTxt.substring(caretPos) );
       $txt.focus();
       $txt.caretTo(caretPos+txtToAdd.length);
+      $txt[0].scrollTo(scrollLeft, scrollTop); // restore scroll position
     });
-    $('#add_stanza_break').click(function() {
+    $('#add_stanza_break').click(function(e) {
+      e.preventDefault();
       var $txt = jQuery("#markdown");
+      var scrollLeft = $txt[0].scrollLeft;
+      var scrollTop  = $txt[0].scrollTop;
       var caretPos = $txt[0].selectionStart;
       var textAreaTxt = $txt.val();
       var txtToAdd = "\n>\n<br />\n>\n";
       $txt.val(textAreaTxt.substring(0, caretPos) + txtToAdd + textAreaTxt.substring(caretPos) );
       $txt.focus();
       $txt.caretTo(caretPos+txtToAdd.length);
+      $txt[0].scrollTo(scrollLeft, scrollTop); // restore scroll position
     });
-
   });
