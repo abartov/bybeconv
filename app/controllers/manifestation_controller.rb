@@ -515,7 +515,7 @@ class ManifestationController < ApplicationController
     if @copyright.present?
       query_parts[:copyright] = 'copyrighted IN (:copyright)'
       query_params[:copyright] = @copyright
-      @filters += @copyright.map{|x| [helpers.textify_copyright_status(x), "copyright_#{x}", :checkbox]}
+      @filters += @copyright.map{|x| [helpers.textify_copyright_status(x == 1), "copyright_#{x}", :checkbox]}
     end
     # languages
     @languages = params['ckb_languages'].reject{|x| x == 'xlat'} if params['ckb_languages'].present?
