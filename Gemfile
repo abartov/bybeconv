@@ -3,20 +3,16 @@ source 'http://rubygems.org'
 gem 'rails', '~> 5.2'
 gem 'rails-i18n' # , git: 'https://github.com/svenfuchs/rails-i18n.git' # , branch: 'rails-4-x' # For 4.x
 
-# Bundle edge Rails instead:
-# gem 'rails',     :git => 'git://github.com/rails/rails.git'
 gem 'rails-ujs'
 gem 'mysql2' # Rails 5.2 needs a newer one # , '~> 0.3.11'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-twitter'
 #gem 'clockwork' # scheduler
-#gem 'protected_attributes' # compatibility gem for 3.2.x-style attr_accessible
 gem 'rufus-scheduler' # scheduler
 
 gem 'chewy' # for ElasticSearch
 gem 'active_data' # for *Search classes in Chewy
 
-#gem 'jssorslider-rails', github: 'matthias-g/jssorslider-rails' # for carousel slider
 gem "jquery-slick-rails" # for carousel slider
 gem 'rails-jquery-autocomplete', '>= 1.0.5' # for auto-completion
 gem 'property_sets' # for key/value properties per model
@@ -26,7 +22,6 @@ gem "omniauth-rails_csrf_protection"
 gem 'rack-cors', require: 'rack/cors'
 
 gem 'diffy'
-# gem 'aws-sdk', '~>2.9' # for the Amazon cloud.  3.x breaks somehow. TBD: figure it out -- remove when migrating away from paperclip
 gem 'aws-sdk-s3' # for Active Storage
 
 gem 'paperclip' # , '~>5.2' # for cloud files like author images 6.x requires aws >3.x
@@ -47,11 +42,6 @@ gem 'coffee-script'
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
-# Use unicorn as the web server
-# gem 'unicorn'
-
-# Deploy with Capistrano
-# gem 'capistrano'
 
 gem 'execjs'
 gem 'therubyracer'
@@ -62,9 +52,6 @@ gem "nokogiri", ">= 1.10.4"
 
 gem 'rmultimarkdown' # new wrapper over Fletcher Penney's MultiMarkDown 6 (MMD 6)
 gem 'yt' # for polling YouTube for new videos
-
-# To use debugger
-#gem 'byebug'
 
 gem 'app_constants' # anything more Railsy?
 gem 'hebrew', '>= 0.2.1' # https://github.com/abartov/hebrew
