@@ -38,7 +38,7 @@
       .vertical-expand{'data-target' =>'#collname', 'data-toggle' =>'collapse'}
         .sort-type-headline= t(:name)
       .nested.active.collapse.show#collname
-        .row.nested-content
+        .nested-content
           .search-mobile-switch
             %button.search-mobile-option#opt_workname{:href => "#"}= t(:work_title)
             %button.search-mobile-option#opt_authorname{:href => "#"}= t(:author_name)
@@ -132,7 +132,7 @@
       .vertical-expand{'data-target' =>'#colldate', 'data-toggle' =>'collapse'}
         .sort-type-headline= t(:thedate)
       .nested.active.collapse.show#colldate
-        .row.nested-content
+        .nested-content
           .search-mobile-switch
             %button.search-mobile-option.datetype#published= t(:publication)
             %button.search-mobile-option.datetype#created= t(:creation)
@@ -153,7 +153,7 @@
       .vertical-expand{'data-target' =>'#colllang', 'data-toggle' =>'collapse'}
         .sort-type-headline= t(:orig_lang)
       .nested.active.collapse.show#colllang
-        .row.nested-content{:style => "padding-right: 0"}
+        .nested-content{:style => "padding-right: 0"}
           %ul
             %li
               - attrs = {name: "ckb_languages[]", :type => "checkbox", id: 'lang_he', value: 'he'}
