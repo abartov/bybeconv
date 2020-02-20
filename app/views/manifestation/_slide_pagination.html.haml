@@ -7,7 +7,7 @@
     %span.by-icon-v02
       = link_to_previous_page @works, '2', remote: true, id: 'prevnav'
   .advanced-pagination
-    .page= t(:page_x_of_y, {x: @page, y: @total_pages})
+    .page= t(:total_result_pages, {x: @total_pages})
     %input.slider.progress-handle{'type': 'text', 'data-slider-min': 1, 'data-slider-max': @total_pages, 'data-slider-step':1, 'data-slider-value': @page, 'data-slider-handle': 'custom', 'data-slider-tooltip': 'hide', style: 'width:100%'}
     /%span.progress-handle= "#{@total_pages}/#{@page}"
   %div
