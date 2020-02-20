@@ -207,6 +207,7 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
   color: #fff;
   text-align: center;
   opacity: 1;
+  z-index: auto;
 }
 .slider-handle::after{
     content: attr(aria-valuenow);
