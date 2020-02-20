@@ -178,6 +178,22 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
   #moreMobile-author .dropdown-menu{ transform: translate3d(5px, 28px, 0px) !important;}
 }
 /* .top-search-v02 input { width: auto;}*/
+.mainlist ol > li {
+	position:relative;
+	margin:4px 0;
+	list-style: decimal;
+}
+.mainlist ol > li:before {
+  content: unset;
+  counter-increment: li;
+  position: absolute;
+  top: 0px;
+  right: -44px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 44px;
+}
 
 .ch_anch { height: 2px;}
 .tooltip{ pointer-events:none; }
