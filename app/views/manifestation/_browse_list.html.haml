@@ -28,7 +28,8 @@
     %button.btn-small-outline-v02.notyet{:href => "#"}
       .by-icon-top-v02.purple-v02.icon-bysort-down
   .mainlist
-    %ol
+    - pg = @page.to_i
+    %ol{start: "#{pg > 1 ? pg*100 + 1 : 1}"}
       - @works.each do |m|
         %li= link_to m.title_and_authors, manifestation_read_path(m.id)
   - unless @total_pages == 1
@@ -47,6 +48,7 @@
       url = url + '?'
     }
     $("input.slider").on('slideStop', function(slideEvt){
+      slideEvt.stopImmediatePropagation();
       filters = #{@emit_filters == true};
       if(filters) {
         $('#page_tag').val(slideEvt.value.toString());
