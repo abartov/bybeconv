@@ -2,7 +2,7 @@
 #content.container-fluid
   .row.texts-lists-content
     .col-12.col-lg-5.col-xxxl-4
-      .by-card-v02#browse_intro
+      .by-card-v02#browse_intro{style:"display:#{ @filters.empty? ? 'show' : 'none'}"}
         .work-area
           .work-content
             .headline-1-v02= t(:welcome_to_works_browsing)
@@ -11,13 +11,16 @@
             %p!= t(:works_browsing_intro_html)
           .work-side-color
             .work-genre.prose-side-icon
-      .by-card-v02.text-sorting#sort_filter_panel{style: 'display:none'}
+      .by-card-v02.text-sorting#sort_filter_panel{style:"display:#{ @filters.empty? ? 'none' : 'show'}"}
         .by-card-header-v02
           .headline-2-v02= t(:sort_by)
         .by-card-content-v02#filters_panel
-          / show temporary loading message
-          .temporary
-            /%h1= t(:filters_loading)
+          - if @filters.empty?
+            / show temporary loading message
+            .temporary
+              /%h1= t(:filters_loading)
+          - else
+            = render partial: 'browse_filters'
     .col-12.col-lg-7.col-xxxl-8
       .by-card-v02#thelist
         = render partial: 'browse_list'

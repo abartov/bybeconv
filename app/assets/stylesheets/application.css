@@ -36,6 +36,21 @@
   cursor: pointer;
 }
 
+.a-b-pagination-frame span{
+	flex-grow: 1;
+	font-size: 12pt;
+	text-align: center;
+	line-height: 20px;
+  padding: 0 3px;
+  color: grey;
+  cursor:default;
+}
+.a-b-pagination-frame span.active{
+	color: #fff;
+	background-color: #660248;
+}
+
+
 .dashboard-link {
   /*  position:absolute; display:inline; top:11rem; left: 10rem;*/
     float:left;

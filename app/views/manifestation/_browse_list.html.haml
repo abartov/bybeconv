@@ -47,7 +47,13 @@
       url = url + '?'
     }
     $("input.slider").on('slideStop', function(slideEvt){
-      $.get(url+'&page='+slideEvt.value.toString(),'',null, 'script'); // TODO: fix to use post with /works
+      filters = #{@emit_filters == true};
+      if(filters) {
+        $('#page_tag').val(slideEvt.value.toString());
+        $('#works_filters').submit();
+      } else {
+        $.get(url+'&page='+slideEvt.value.toString(),'',null, 'script');
+      }
     });
     $('.tag-x').click(function(){
       // uncheck/clear the appropriate field

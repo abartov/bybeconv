@@ -1,7 +1,26 @@
 .a-b-pagination-frame
-  - @ab.each do |letter, status|
-    - url = request.original_url.match(/to_letter/) ? request.original_url.sub(/to_letter=.+/, 'to_letter='+letter) : (request.original_url.index('?') ? request.original_url + '&to_letter='+letter : request.original_url + '?to_letter='+letter)
-    - if status == :disabled
-      = link_to letter, url, { 'class': (status == :active ? 'active' : ''), disabled: 'disabled', remote: true}
-    - else
-      = link_to letter, url, { 'class': (status == :active ? 'active' : ''), remote: true}
+  - if @emit_filters
+    - @ab.each do |letter, status|
+      - if status == :disabled
+        %span= letter
+      - else
+        %span{class: (status == :active ? 'letterbutton active' : 'letterbutton'), id: letter, style: 'cursor:pointer'}= letter
+  - else
+    - @ab.each do |letter, status|
+      - url = request.original_url.match(/to_letter/) ? request.original_url.sub(/to_letter=.+/, 'to_letter='+letter) : (request.original_url.index('?') ? request.original_url + '&to_letter='+letter : request.original_url + '?to_letter='+letter)
+      - if status == :disabled
+        %span= letter
+      - else
+        = link_to letter, url, { 'class': (status == :active ? 'letterbutton active' : 'letterbutton'), remote: true, id: letter}
+:javascript
+  $(document).ready(function() {
+    filters = #{@emit_filters == true};
+    if(filters) {
+      $('.letterbutton').click(function(e){
+        e.preventDefault();
+        e.stopImmediatePropagation(); // prevent second pagination bar at bottom from also firing
+        $('#toletter_tag').val($(this).attr('id'));
+        $('#works_filters').submit();
+      });
+    }
+  });

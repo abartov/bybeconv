@@ -410,6 +410,7 @@ class ManifestationController < ApplicationController
 
   def bfunc(page, l)
     rec = @collection.order(:sort_title).page(page).first
+    return true if rec.nil?
     c = rec.sort_title[0] || ''
     return true if c == l || c > l # already too high a page
     return false
@@ -459,7 +460,6 @@ class ManifestationController < ApplicationController
     joins_needed = @periods.present? || @genres.present? || params['search_input'].present? || params[:load_filters].present? || params['fromdate'].present? || params['todate'].present? || params['ckb_genres'].present? || params['ckb_periods'].present? || params['ckb_languages'].present? || params['ckb_copyright'].present? || (params[:sort_by].present? && ['publication_date', 'creation_date'].include?(params[:sort]))
     query_params = {}
     query_parts = {}
-
     # figure out sort order
     if params[:sort_by].present?
       @sort = params[:sort_by]
@@ -568,6 +568,7 @@ class ManifestationController < ApplicationController
 
   def prep_for_browse
     @page = params[:page] || 1
+    @page = 1 if @page == '0' # slider sets page to zero, awkwardly
     prep_collection # filtering and sorting is done here
     @total = @collection.count
     @total_pages = @works.total_pages

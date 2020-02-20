@@ -10,8 +10,8 @@
           .author-page-top-sort-desktop
             = t(:sort_and_filter)+' [?]'
             .toggle-background-no
-              .toggle-button-no
-              .toggle-button-yes{style:'display:none'}
+              .toggle-button-no{style:"display:#{ @filters.empty? ? 'show' : 'none'}"}
+              .toggle-button-yes{style:"display:#{ @filters.empty? ? 'none' : 'show'}"}
           .author-page-top-sort-mobile
             %button.btn-small-outline-v02.btn-text-v02{:href => "#"}= t(:sort_and_filter)
         .author-page-top-icons-desktop

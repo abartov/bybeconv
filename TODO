@@ -1,3 +1,12 @@
+- add complementary query when date filter selected, counting excluded no-date results
+- implement showing of excluded no-date results
+- implement pagination with and without filters enabled
+- autocomplete for author names in filters
+- multi-select for author names in filters
+- multi-select in results list
+- mark items already in anthology in results list ?
+- add selected items to anthology
+
 - add sortdate fields to Work and Expression, to provide a uniform numeric/date field to sort by.  Manually confirm guesses, or type in, dates for ranges and approximations (figure out a number for "mid 5th century" or "either late 1871 or early 1872")
 
 IDEA: now that we have picture support - maybe allow VARIANTS of existing manifestations, with (trusted) user-curated illustrated editions (taking from Commons etc.)

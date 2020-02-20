@@ -181,6 +181,9 @@
                         = textify_lang(lang)
                         %span= "(#{amount || '0'})"
     = hidden_field_tag(:emit_filters, id: 'emit_filters')
+    = hidden_field_tag(:cur_page, @page, id: 'cur_page_tag')
+    = hidden_field_tag(:page, '', id: 'page_tag')
+    = hidden_field_tag(:to_letter, '', id: 'toletter_tag')
 :javascript
   $(document).ready(function() {
     $('#sort_by').val("#{@sort}");
@@ -221,11 +224,11 @@
       if(submit_timeout != null){
         window.clearTimeout(submit_timeout);
       }
+      $('#page_tag').val('1'); // reset pagination
       submit_timeout = window.setTimeout(submit_filters, 300);
     });
     function submit_filters() {
       startModal('spinnerdiv');
-      //$('#thelist').addClass('striped');
       $('#works_filters').submit();
     }
     $('.reset').click(function(){
@@ -244,8 +247,9 @@
         }
       });
       startModal('spinnerdiv');
-      //$('#thelist').addClass('striped');
       $('#emit_filters').val('true');
+      $('#page_tag').val('1'); // reset pagination
+      $('#toletter_tag').val(''); // reset pagination
       $('#works_filters').submit();
     });
     $('#lang_xlat').change(function(){
