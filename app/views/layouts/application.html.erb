@@ -60,6 +60,16 @@
   <header>
     <div class="container-fluid" id="header">
       <div class="container-fluid" id="header-general">
+        <% unless sitenotice.empty? %>
+          <div class="system-notification">
+            <div class="notification-content">
+              <!-- <div class="notification-pic"><img src="images/system-notification-sample-pic.png" width="200" height="40" alt=""/></div> -->
+              <div class="notification-text"><p><%= raw sitenotice %></p>
+              </div>
+            </div>
+            <span class="popup-x-v02" style="display:none">-</a>
+          </div>
+        <% end %>
         <div class="row">
           <div class="col-6 col-lg-4" style="padding-left: 6px;z-index: 99;">
             <a href="/">
@@ -68,12 +78,6 @@
             </a>
           </div>
           <div class="col-6 col-lg-4" style="padding-right: 4px;">
-            <% unless sitenotice.empty? %>
-              <div class="announcement card text-on-dark">
-                <p><%= raw sitenotice %></p>
-              </div>
-            <% end %>
-
             <div class="statistics-box-v02">
               <div class="row">
                 <div class="col-5 statistics-v02">
@@ -208,6 +212,11 @@
     });
     $('[data-toggle="popover"]').popover();
     $('[data-toggle="tooltip"]').tooltip();
+    if("#{sitenotice}" != "") {
+      // adjust page to accommodate extra header height
+      var h = $('#header').height();
+      $('.top-element').css('margin-top',h+20);
+    }
   });
 </script>
 

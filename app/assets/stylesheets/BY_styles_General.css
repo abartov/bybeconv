@@ -4375,3 +4375,43 @@ break{
 		background-color:rgb(255,255,255);
 	}
 }
+.system-notification{
+	position: relative;
+	width: 100%;
+	height: 52px;
+	background-color: #660248;
+	margin-bottom: 8px;
+	color: white;
+}
+.system-notification .popup-x-v02{
+  color: white;
+  left: 8px;
+  top: 8px;
+}
+.system-notification .popup-x-v02:hover{
+  color: #D9CDD5;
+}
+.notification-content{
+	max-width: 680px;
+	height: 52px;
+	margin-left: auto;
+	margin-right: auto;
+	padding-top: 6px;
+	display: flex;
+ }
+.notification-pic{
+	margin-left: 20px;
+}
+.notification-text{
+	max-width: 460px;
+}
+.notification-text p{
+  margin-bottom: 2px;
+}
+.notification-text a{
+  color: white;
+  text-decoration: underline;
+}
+.notification-text a:hover{
+  color: #D9CDD5;
+}
