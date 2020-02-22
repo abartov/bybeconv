@@ -11,16 +11,15 @@
             %p!= t(:works_browsing_intro_html)
           .work-side-color
             .work-genre.prose-side-icon
-      .by-card-v02.text-sorting#sort_filter_panel{style:"display:#{ @filters.empty? ? 'none' : 'show'}"}
-        .by-card-header-v02
-          .headline-2-v02= t(:sort_by)
-        .by-card-content-v02#filters_panel
-          - if @filters.empty?
-            / show temporary loading message
+      - if @filters.empty?
+        .by-card-v02.text-sorting#sort_filter_panel{style: 'display:none'}
+          .by-card-header-v02
+            .headline-2-v02= t(:sort_by)
+          .by-card-content-v02#filters_panel
             .temporary
-              /%h1= t(:filters_loading)
-          - else
-            = render partial: 'browse_filters'
+      - else
+        .by-card-v02.text-sorting#sort_filter_panel{style: 'display:show'}
+          = render partial: 'browse_filters'
     .col-12.col-lg-7.col-xxxl-8
       .by-card-v02#thelist
         = render partial: 'browse_list'
