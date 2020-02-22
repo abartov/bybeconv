@@ -180,7 +180,7 @@
                       %label
                         = textify_lang(lang)
                         %span= "(#{amount || '0'})"
-    = hidden_field_tag(:emit_filters, id: 'emit_filters')
+    = hidden_field_tag(:emit_filters, 'true', id: 'emit_filters')
     = hidden_field_tag(:cur_page, @page, id: 'cur_page_tag')
     = hidden_field_tag(:page, '', id: 'page_tag')
     = hidden_field_tag(:to_letter, '', id: 'toletter_tag')
