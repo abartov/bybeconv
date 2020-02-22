@@ -50,6 +50,13 @@
 	background-color: #660248;
 }
 
+.sort-type .vertical-expand::before {
+  content: "]";
+}
+.collapsed.vertical-expand::before {
+  content: "<";
+}
+
 
 .dashboard-link {
   /*  position:absolute; display:inline; top:11rem; left: 10rem;*/
