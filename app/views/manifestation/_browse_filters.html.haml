@@ -146,9 +146,9 @@
             /  .range-inside
             /    .range-handle-right
             /    .range-handle-left
-            %input.datepicker.datetimepicker-input.field-v02.field-without-label.range-date-field#fromdate{:placeholder => "dd-mm-yyyy", name: "fromdate", 'data-toggle' => 'datetimepicker', 'data-target' => '#fromdate' }/
+            %input.datepicker.datetimepicker-input.field-v02.field-without-label.range-date-field#fromdate{:placeholder => t(:month_year), name: "fromdate", 'data-toggle' => 'datetimepicker', 'data-target' => '#fromdate' }/
             .date-range-to= t(:until)
-            %input.datepicker.datetimepicker-input.field-v02.field-without-label.range-date-field#todate{:placeholder => "dd-mm-yyyy", :style => "float: left", 'data-toggle' => 'datetimepicker', name: "todate", 'data-target' => '#todate'}/
+            %input.datepicker.datetimepicker-input.field-v02.field-without-label.range-date-field#todate{:placeholder => t(:month_year), :style => "float: left", 'data-toggle' => 'datetimepicker', name: "todate", 'data-target' => '#todate'}/
     .sort-type
       .vertical-expand{'data-target' =>'#colllang', 'data-toggle' =>'collapse'}
         .sort-type-headline= t(:orig_lang)
