@@ -50,13 +50,19 @@
 	background-color: #660248;
 }
 
+.navdisabled {
+  color: #d9cdd5;
+  cursor: default;
+}
 .sort-type .vertical-expand::before {
   content: "]";
 }
 .collapsed.vertical-expand::before {
   content: "<";
 }
-
+.advanced-pagination {
+  width: calc(100% - 150px);
+}
 
 .dashboard-link {
   /*  position:absolute; display:inline; top:11rem; left: 10rem;*/

@@ -1,46 +1,57 @@
 .advanced-pagination-area
-  - unless @page == 1 || @page == '1'
-    %div
-      %span.by-icon-v02
-        = link_to '{', update_param(request.original_url, 'page', '1'), remote: true, id: 'firstnav'
   %div
     %span.by-icon-v02
-      = link_to_previous_page @works, '2', remote: true, id: 'prevnav'
+      - unless @page == 1 || @page == '1'
+        = link_to '{', update_param(request.original_url, 'page', '1'), remote: true, id: 'firstnav'
+      - else
+        %span.navdisabled= '{'
+  %div
+    %span.by-icon-v02
+      = link_to_previous_page @works, '2', remote: true, id: 'prevnav' do
+        %span.navdisabled= '2'
   .advanced-pagination
     .page= t(:total_result_pages, {x: @total_pages})
     %input.slider.progress-handle{'type': 'text', 'data-slider-min': 1, 'data-slider-max': @total_pages, 'data-slider-step':1, 'data-slider-value': @page, 'data-slider-handle': 'custom', 'data-slider-tooltip': 'hide', style: 'width:100%'}
     /%span.progress-handle= "#{@total_pages}/#{@page}"
   %div
     %span.by-icon-v02
-      = link_to_next_page @works, '1', remote: true, id: 'nextnav'
-  - unless @page == @total_pages || @page.to_i == @total_pages
-    %div
-      %span.by-icon-v02
+      = link_to_next_page @works, '1', remote: true, id: 'nextnav' do
+        %span.navdisabled= '1'
+
+  %div
+    %span.by-icon-v02
+      - unless @page == @total_pages || @page.to_i == @total_pages
         = link_to '0', update_param(request.original_url, 'page', @total_pages.to_s), remote: true, id: 'lastnav'
+      - else
+        %span.navdisabled= '0'
 
 :javascript
   var filters = #{@emit_filters == true};
   $(document).ready(function(){
     if(filters) {
       $('#firstnav').click(function(e){
+        e.stopImmediatePropagation(); // prevent second pagination bar at bottom from also firing
         e.preventDefault();
         $('#page_tag').val('1');
         startModal('spinnerdiv');
         $('#works_filters').submit();
       });
       $('#lastnav').click(function(e){
+        e.stopImmediatePropagation(); // prevent second pagination bar at bottom from also firing
         e.preventDefault();
         $('#page_tag').val('#{@total_pages}');
         startModal('spinnerdiv');
         $('#works_filters').submit();
       });
       $('#nextnav').click(function(e){
+        e.stopImmediatePropagation(); // prevent second pagination bar at bottom from also firing
         e.preventDefault();
         $('#page_tag').val('#{@page.to_i + 1}');
         startModal('spinnerdiv');
         $('#works_filters').submit();
       });
       $('#prevnav').click(function(e){
+        e.stopImmediatePropagation(); // prevent second pagination bar at bottom from also firing
         e.preventDefault();
         $('#page_tag').val('#{@page.to_i - 1}');
         startModal('spinnerdiv');
