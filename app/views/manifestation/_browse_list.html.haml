@@ -52,6 +52,7 @@
       filters = #{@emit_filters == true};
       if(filters) {
         $('#page_tag').val(slideEvt.value.toString());
+        startModal('spinnerdiv');
         $('#works_filters').submit();
       } else {
         $.get(url+'&page='+slideEvt.value.toString(),'',null, 'script');
@@ -65,6 +66,7 @@
         $('#'+$(this).attr('data-ele')).prop("checked", false);
       }
       // and submit the form
+      startModal('spinnerdiv');
       $('form').submit();
     });
     // Call a method on the slider

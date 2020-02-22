@@ -25,21 +25,25 @@
       $('#firstnav').click(function(e){
         e.preventDefault();
         $('#page_tag').val('1');
+        startModal('spinnerdiv');
         $('#works_filters').submit();
       });
       $('#lastnav').click(function(e){
         e.preventDefault();
         $('#page_tag').val('#{@total_pages}');
+        startModal('spinnerdiv');
         $('#works_filters').submit();
       });
       $('#nextnav').click(function(e){
         e.preventDefault();
         $('#page_tag').val('#{@page.to_i + 1}');
+        startModal('spinnerdiv');
         $('#works_filters').submit();
       });
       $('#prevnav').click(function(e){
         e.preventDefault();
         $('#page_tag').val('#{@page.to_i - 1}');
+        startModal('spinnerdiv');
         $('#works_filters').submit();
       });
     }
