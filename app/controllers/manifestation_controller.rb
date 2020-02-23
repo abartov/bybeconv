@@ -584,7 +584,13 @@ class ManifestationController < ApplicationController
     abc_active = subset.pluck(:sort_title).map{|t| t.nil? || t.empty? ? '' : t[0] }.uniq.sort
     ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ז', 'ח', 'ט', 'י', 'כ', 'ל', 'מ', 'נ', 'ס', 'ע', 'פ', 'צ', 'ק', 'ר', 'ש', 'ת'].each{|l|
       status = ''
-      status = :disabled unless abc_present.include?(l)
+      unless abc_present.include?(l)
+        if(abc_active.empty? || l >= abc_active.last)
+          status = :disabled
+        else
+          status = :in_range_disabled
+        end
+      end
       status = :active if abc_active.include?(l)
       ret << [l, status]
     }
