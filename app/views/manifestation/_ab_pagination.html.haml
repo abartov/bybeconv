@@ -3,6 +3,8 @@
     - @ab.each do |letter, status|
       - if status == :disabled
         %span= letter
+      - elsif status == :in_range_disabled
+        %span.in-range-disabled= letter
       - else
         %span{class: (status == :active ? 'letterbutton active' : 'letterbutton'), id: letter, style: 'cursor:pointer'}= letter
   - else
