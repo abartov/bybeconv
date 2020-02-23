@@ -222,6 +222,9 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
   opacity: 1;
   z-index: auto;
 }
+.slider-handle.custom::before{
+	content: none;
+}
 .slider-handle::after{
     content: attr(aria-valuenow);
     width: 16px;
@@ -237,7 +240,7 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
     margin-right: -8px;
     */
     position: absolute;
-    bottom: calc(100% - 1.4em);
+    bottom: calc(100% - 1.2em);
     left: 50%;
     transform: translateX(-50%);
     display: flex;

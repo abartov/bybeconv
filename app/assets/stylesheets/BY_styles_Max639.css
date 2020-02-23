@@ -21,10 +21,7 @@ p {
 }
 	
 .scrolled .logoBY-scroll-mobile-v02{
-		position: fixed;
-		left: calc(50% - 60px);
-		width: 160px;
-		top: 3px;
+		right: calc(100% - 130px);
 	}
 .author-info-v02 {
   width: 24px;

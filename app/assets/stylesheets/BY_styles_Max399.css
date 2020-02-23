@@ -289,10 +289,6 @@ body {
 	padding-top: 2px;}
 	
 	.scrolled .logoBY-scroll-mobile-v02{
-		position: fixed;
-		left: calc(50% - 30px);
-		width: 100px;
-		top: 8px;
 	}
 		.scrolled .logoBY-scroll-mobile-v02 img{
     height: 24px;

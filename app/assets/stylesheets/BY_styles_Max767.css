@@ -249,4 +249,25 @@
   box-shadow: 0 -2px 3px rgba(0, 0, 0, 0.4);
   background-color: #d9cdd5;
 	}
+.system-notification .popup-x-v02{
+  display: block;
+}
+.system-notification{
+  height: 94px;		
+}
+.notification-content{
+  height: 94px;
+  display: block;
+  padding-bottom: 6px;
+}
+.notification-pic{
+  display: flex;
+	justify-content: center;
+	margin-bottom: 4px;
+}
+.notification-text{
+  margin-right: auto;
+  margin-left: auto;
+	text-align: center;
+}
 }

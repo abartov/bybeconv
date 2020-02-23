@@ -3,10 +3,8 @@
 @media only screen and (max-width: 991px) {
 
 .scrolled .logoBY-scroll-mobile-v02{
-		position: fixed;
-		left: calc(50% - 60px);
-		width: 160px;
-		top: 3px;
+		position: absolute;
+		right: calc(100% - 130px);
 	}
 	.scrolled .logoBY-scroll-mobile-v02 img{
     height: 33px;
