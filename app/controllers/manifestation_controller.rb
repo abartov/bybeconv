@@ -546,7 +546,7 @@ class ManifestationController < ApplicationController
         params[:to_letter] = nil # if page was specified, forget the to_letter directive
       end
       unless params[:to_letter].nil? || params[:to_letter].empty?
-        @total_pages = @works.total_pages
+        @total_pages = @collection.total_pages
         adjust_page_by_letter(params[:to_letter])
       end
       @works = @collection.page(@page) # get page X of manifestations
