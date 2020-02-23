@@ -545,11 +545,15 @@ class ManifestationController < ApplicationController
       unless params[:page].nil? || params[:page].empty?
         params[:to_letter] = nil # if page was specified, forget the to_letter directive
       end
+      oldpage = @page
+      @works = @collection.page(@page) # get page X of manifestations
+      @total_pages = @works.total_pages
+
       unless params[:to_letter].nil? || params[:to_letter].empty?
         @total_pages = @works.total_pages
         adjust_page_by_letter(params[:to_letter])
+        @works = @collection.page(@page) if oldpage != @page # re-get page X of manifestations if adjustment was made
       end
-      @works = @collection.page(@page) # get page X of manifestations
       @ab = prep_ab(@collection, @works)
     else
       @works = @collection.page(@page) # get page X of manifestations
