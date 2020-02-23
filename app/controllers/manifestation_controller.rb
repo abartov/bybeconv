@@ -573,15 +573,15 @@ class ManifestationController < ApplicationController
     @total = @collection.count
     @total_pages = @works.total_pages
     d = Date.today
-    #@maxdate = "#{d.day}/#{d.year}"
-    @maxdate = Date.today
+    @maxdate = "#{d.year}-#{'%02d' % d.month}"
+    #@maxdate = Date.today
     @header_partial = 'manifestation/browse_top'
   end
 
   def prep_ab(whole, subset)
     ret = []
-    abc_present = whole.pluck(:sort_title).map{|t| t.nil? ? '' : t[0] }.uniq.sort
-    abc_active = subset.pluck(:sort_title).map{|t| t.nil? ? '' : t[0] }.uniq.sort
+    abc_present = whole.pluck(:sort_title).map{|t| t.nil? || t.empty? ? '' : t[0] }.uniq.sort
+    abc_active = subset.pluck(:sort_title).map{|t| t.nil? || t.empty? ? '' : t[0] }.uniq.sort
     ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ז', 'ח', 'ט', 'י', 'כ', 'ל', 'מ', 'נ', 'ס', 'ע', 'פ', 'צ', 'ק', 'ר', 'ש', 'ת'].each{|l|
       status = ''
       status = :disabled unless abc_present.include?(l)
