@@ -193,47 +193,6 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
 /* .top-search-v02 input { width: auto;}*/
 .ch_anch { height: 2px;}
 .tooltip{ pointer-events:none; }
-.slider-handle.custom{border-color:#907989;
-  padding: 2px 6px;
-  border-radius: 3px;
-  background-color: #907989;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
-  top: -6px;
-  margin-right: 0;
-  color: #fff;
-  text-align: center;
-  opacity: 1;
-  z-index: auto;
-}
-.slider-handle.custom::before{
-	content: none;
-}
-.slider-handle::after{
-    content: attr(aria-valuenow);
-    width: 16px;
-    height: 18px;
-    border-radius: 50%;
-    background-color: #907989;
-    color: white;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
-
-    /*z-index: 4;
-    position: relative;
-    top: -5px;
-    margin-right: -8px;
-    */
-    position: absolute;
-    bottom: calc(100% - 1.2em);
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.slider-handle:hover{
-  background-color: #660248;
-  cursor:pointer;
-}
 .by-dropdown-header-v02 { cursor: default;}
 .search_results { font-size: 13pt; line-height: 1.2rem; }
 .search_results li { margin-top: 0.8rem;}
