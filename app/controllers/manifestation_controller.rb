@@ -577,8 +577,8 @@ class ManifestationController < ApplicationController
 
   def prep_ab(whole, subset)
     ret = []
-    abc_present = whole.pluck(:sort_title).map{|t| t[0] || ''}.uniq.sort
-    abc_active = subset.pluck(:sort_title).map{|t| t[0] || ''}.uniq.sort
+    abc_present = whole.pluck(:sort_title).map{|t| t.nil? ? '' : t[0] }.uniq.sort
+    abc_active = subset.pluck(:sort_title).map{|t| t.nil? ? '' : t[0] }.uniq.sort
     ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ז', 'ח', 'ט', 'י', 'כ', 'ל', 'מ', 'נ', 'ס', 'ע', 'פ', 'צ', 'ק', 'ר', 'ש', 'ת'].each{|l|
       status = ''
       status = :disabled unless abc_present.include?(l)
