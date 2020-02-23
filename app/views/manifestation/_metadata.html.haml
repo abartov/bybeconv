@@ -12,7 +12,8 @@
         %br
         = "#{t(:translation)}: "
         != @translators.map{|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
-        = " (#{t(:from_lang)}#{textify_lang(@e.works[0].orig_lang)})"
+        - linktext = t(:from_lang)+textify_lang(@e.works[0].orig_lang)
+        != " (#{linktext})"
 %div
   / metadata
   .work-details
@@ -30,7 +31,7 @@
   - if @e.translation?
     .work-details
       %span{:style => "font-weight:bold"}= t(:orig_lang)+': '
-      = textify_lang(@e.works[0].orig_lang)
+      = link_to textify_lang(@e.works[0].orig_lang), works_path+'?ckb_languages[]='+@e.works[0].orig_lang
   - unless @e.source_edition.nil? || @e.source_edition.empty?
     .work-details
       %span{:style => "font-weight:bold"}= t(:source_edition)+': '
