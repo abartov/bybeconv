@@ -547,6 +547,8 @@ class ManifestationController < ApplicationController
       end
       oldpage = @page
       @works = @collection.page(@page) # get page X of manifestations
+      @total_pages = @works.total_pages
+
       unless params[:to_letter].nil? || params[:to_letter].empty?
         adjust_page_by_letter(params[:to_letter])
         @works = @collection.page(@page) if oldpage != @page # re-get page X of manifestations if adjustment was made
