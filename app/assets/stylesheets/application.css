@@ -154,6 +154,11 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
   width: 100% !important;
 }
 
+.a-b-pagination-frame .in-range-disabled{
+  background-color: #d9cdd5;
+	color: white;
+}
+
 .dropdown-toggle{
   -webkit-appearance: none;
 }
