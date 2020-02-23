@@ -1,13 +1,12 @@
 - add complementary query when date filter selected, counting excluded no-date results
 - implement showing of excluded no-date results
-- implement pagination with and without filters enabled
 - autocomplete for author names in filters
-- multi-select for author names in filters
-- multi-select in results list
+- multi-select for author names in filters (screen 0843)
+- multi-select in results list (screen 0850, 0980)
 - mark items already in anthology in results list ?
 - add selected items to anthology
-
-- add sortdate fields to Work and Expression, to provide a uniform numeric/date field to sort by.  Manually confirm guesses, or type in, dates for ranges and approximations (figure out a number for "mid 5th century" or "either late 1871 or early 1872")
+- implement bookmarks (see notes in code!) (place bookmark on a select P, or the very previous one if H?, or just the first P if no prev P.  Figure out the P's ordinal under #maintext and store that as the bookmark.)
+- generalize user persistency over actual User records versus cookie-based semi-ephemeral saved settings
 
 IDEA: now that we have picture support - maybe allow VARIANTS of existing manifestations, with (trusted) user-curated illustrated editions (taking from Commons etc.)
 - emit pics in print/export
@@ -38,7 +37,6 @@ grab DDC ids for Raanana through gared (async?)
   - admin review, approve/reject tags and recommendations
 
 - !! add translations box to works view right side
-- implement bookmarks (see notes in code!)
 - make tags links to works queries by tag (query already works, at /tag/:id)
 - implement recommendation flagging (data model, review)
 - implement those-who-read-this-also-read-that (i.e. https://measuringu.com/affinity-analysis/)

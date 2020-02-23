@@ -35,7 +35,7 @@
     .headline-2-v02= t(:filter_by)
     %span.reset.linkcolor.pointer= t(:reset_filter)
     .sort-type
-      .vertical-expand.fcoll#fauthor{'data-target' =>'#collfname', 'data-toggle' =>'collapse'}
+      .vertical-expand.fcoll#fauthor{'data-target' =>'#collfauthor', 'data-toggle' =>'collapse'}
         .sort-type-headline= t(:name)
       .nested.active.collapse.show#collfauthor
         .nested-content
@@ -44,6 +44,7 @@
             %button.search-mobile-option#opt_authorname{:href => "#"}= t(:author_name)
           %break
           %input.field-v02.field-without-label#search_input{:placeholder => t(:what_to_search_for), name: 'search_input', :type => "text", value: @search_input}/
+          %input.field-v02.field-without-label.author-name-field#authors{:placeholder => t(:author_names), name: 'authors', :type => "text", value: @authors, style:'display:none'}/
           .multi-name-sort.pointer.notyet{style:'display:inline-block;'}
             %a.notyet{:href => "#"}= t(:multiselect)
           = hidden_field_tag(:search_type, id: 'search_type')
@@ -82,6 +83,7 @@
       .nested.active.collapse.show#collfcopyright
         .nested-content.nested-list
           - attrs = {name: "ckb_copyright[]", :type => "checkbox", id: 'copyright_0', value: 0}
+          - attrs = @copyright_facet[0].nil? ? {disabled: 'disabled'} : {}
           - attrs.merge!({checked: 'checked'}) if @copyright.present? && @copyright.include?(0)
 
           %input{attrs}/
@@ -91,6 +93,7 @@
             %span= "(#{@copyright_facet[0] || '0'})"
           %br/
           - attrs = {name: "ckb_copyright[]", :type => "checkbox", id: 'copyright_1', value: 1}
+          - attrs = @copyright_facet[1].nil? ? {disabled: 'disabled'} : {}
           - attrs.merge!({checked: 'checked'}) if @copyright.present? && @copyright.include?(1)
           %input{attrs}/
           %label
@@ -190,7 +193,8 @@
     if("#{@search_type}" == 'authorname') {
       $('#opt_authorname').addClass('active');
       $('.multi-name-sort').show();
-      $('#search_input').addClass('author-name-field');
+      $('#authors').show();
+      $('#search_input').hide();
       $('#search_type').val('authorname');
     } else {
       $('.multi-name-sort').hide();
@@ -207,17 +211,19 @@
       e.preventDefault();
       $('#opt_workname').removeClass('active');
       $('#opt_authorname').addClass('active');
+      $('#authors').show();
+      $('#search_input').hide();
       $('#search_type').val('authorname');
       $('.multi-name-sort').show();
-      $('#search_input').addClass('author-name-field');
     });
     $('#opt_workname').click(function(e){
       e.preventDefault();
       $('#opt_workname').addClass('active');
       $('#opt_authorname').removeClass('active');
+      $('#authors').hide();
+      $('#search_input').show();
       $('#search_type').val('workname');
       $('.multi-name-sort').hide();
-      $('#search_input').removeClass('author-name-field');
     });
     var submit_timeout = null;
     $('#works_filters').change(function(){
@@ -281,6 +287,7 @@
       format: 'L',
       locale: 'he',
       format: 'YYYY/MM',
+      maxDate: '#{@maxdate}',
       widgetPositioning: {horizontal: 'right', vertical: 'auto'},
       icons: {
         previous: 'fa fa-chevron-right',

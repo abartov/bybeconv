@@ -572,6 +572,8 @@ class ManifestationController < ApplicationController
     prep_collection # filtering and sorting is done here
     @total = @collection.count
     @total_pages = @works.total_pages
+    d = Date.today
+    @maxdate = "#{d.day}/#{d.year}"
     @header_partial = 'manifestation/browse_top'
   end
 
