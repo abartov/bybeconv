@@ -573,7 +573,8 @@ class ManifestationController < ApplicationController
     @total = @collection.count
     @total_pages = @works.total_pages
     d = Date.today
-    @maxdate = "#{d.day}/#{d.year}"
+    #@maxdate = "#{d.day}/#{d.year}"
+    @maxdate = Date.today
     @header_partial = 'manifestation/browse_top'
   end
 
