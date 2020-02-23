@@ -29,7 +29,7 @@
       .by-icon-top-v02.purple-v02.icon-bysort-down
   .mainlist
     - pg = @page.to_i
-    %ol{start: "#{pg > 1 ? pg*100 + 1 : 1}"}
+    %ol{style:"counter-reset:li #{pg > 1 ? (pg-1)*100 : 0}"}
       - @works.each do |m|
         %li= link_to m.title_and_authors, manifestation_read_path(m.id)
   - unless @total_pages == 1
