@@ -4422,12 +4422,12 @@ break{
 	width: 100%; 
 	border-top: 2px solid #d9cdd5
 }
-.slider-handle:after{
+.slider-handle::after{
   bottom: 2px;
 	background-color: none;
 	box-shadow: none;
 }
-.slider-handle.custom:before{
+.slider-handle.custom::before{
 	content: none;
 }
 .slider-handle.custom{

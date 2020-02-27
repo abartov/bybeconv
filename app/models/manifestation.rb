@@ -42,6 +42,7 @@ class Manifestation < ApplicationRecord
 
   def update_sort_title
     self.sort_title = self.title.strip_nikkud.tr('[]()*"\'', '').strip
+    self.sort_title = $' if self.sort_title =~ /^\d+\. /
   end
 
   def like_count

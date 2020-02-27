@@ -18,7 +18,7 @@
         %span.pointer.tag-x{'data-ele': id, 'data-which' => which}= '-'
   / TODO: filter pills go here
 .by-card-content-v02
-  - unless @total_pages == 1
+  - unless @total_pages <= 1
     = render partial: 'slide_pagination'
     - if @sort == 'alphabetical'
       = render partial: 'ab_pagination'
@@ -32,7 +32,7 @@
     %ol{style:"counter-reset:li #{pg > 1 ? (pg-1)*100 : 0}"}
       - @works.each do |m|
         %li= link_to m.title_and_authors, manifestation_read_path(m.id)
-  - unless @total_pages == 1
+  - unless @total_pages <= 1
     = render partial: 'slide_pagination'
     - if @sort == 'alphabetical'
       = render partial: 'ab_pagination'

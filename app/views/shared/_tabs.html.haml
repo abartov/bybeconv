@@ -154,6 +154,7 @@
                   %span.by-icon-v02.iconNearText-v02.iconInMenu= glyph_for_genre(g)
                   = t(g)
                   %span{style:'color:black; font-weight: normal;'}= " - #{Manifestation.cached_work_counts_by_genre[g]} #{t(:works)}"
+            .by-dropdown-divider
             %li
               %a{:href => "#"}
                 %span.by-icon-v02.iconNearText-v02.iconInMenu= glyph_for_genre('translations')
