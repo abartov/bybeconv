@@ -83,7 +83,7 @@
       .nested.active.collapse.show#collfcopyright
         .nested-content.nested-list
           - attrs = {name: "ckb_copyright[]", :type => "checkbox", id: 'copyright_0', value: 0}
-          - attrs = @copyright_facet[0].nil? ? {disabled: 'disabled'} : {}
+          - attrs.merge!({disabled: 'disabled'}) if @copyright_facet[0].nil?
           - attrs.merge!({checked: 'checked'}) if @copyright.present? && @copyright.include?(0)
 
           %input{attrs}/
@@ -93,7 +93,7 @@
             %span= "(#{@copyright_facet[0] || '0'})"
           %br/
           - attrs = {name: "ckb_copyright[]", :type => "checkbox", id: 'copyright_1', value: 1}
-          - attrs = @copyright_facet[1].nil? ? {disabled: 'disabled'} : {}
+          - attrs.merge!({disabled: 'disabled'}) if @copyright_facet[1].nil?
           - attrs.merge!({checked: 'checked'}) if @copyright.present? && @copyright.include?(1)
           %input{attrs}/
           %label
