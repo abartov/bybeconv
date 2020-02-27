@@ -167,6 +167,7 @@
                 %span= "(#{@language_facet['he'] || '0'})"
             %li
               - attrs = {name: "ckb_languages[]", :type => "checkbox", id: 'lang_xlat', value: 'xlat'}
+              - attrs.merge!({disabled: 'disabled'}) if @language_facet[:xlat].nil? || @language_facet[:xlat] == 0
               - attrs.merge!({checked: 'checked'}) if @languages.present? && @languages.include?('xlat')
               %input{attrs}/
               %label

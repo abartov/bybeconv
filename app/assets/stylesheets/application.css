@@ -261,7 +261,9 @@ ol#anth_texts li.placeholder:before {
 	color: #ffffff;
 	background-color: #660248;
 }
-
+.nav-link{
+  align-items: normal;
+}
 /*.custom-select{
   display:none;
 }*/
