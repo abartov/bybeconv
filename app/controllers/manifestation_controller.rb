@@ -35,6 +35,11 @@ class ManifestationController < ApplicationController
     # @collection = Manifestation.all_published.limit(100)
     # @collection = Manifestation.all_published
     @works_list_title = t(:works_list)
+    # update the total works count cache if stale, because specifically in "all works" view, the discrepancy is painful
+    fresh_count = Manifestation.all_published.count
+    if fresh_count != Manifestation.cached_count
+      Rails.cache.write("m_count", Manifestation.all_published.count, expires_in: 24.hours)
+    end
     browse
   end
 
