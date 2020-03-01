@@ -132,7 +132,6 @@ a[disabled=disabled] {
   width: 90%;
  }
 .top-element {
-    margin-top: 124px;
 }
 
 
@@ -2292,16 +2291,12 @@ display: none;}
 	align-items: center;
 }
 .author-page-content{
-	margin-top: 215px;
 }
 .text-page-content{
-	margin-top: 228px;
 }
 .anthology-page-content{
-	margin-top: 215px;
 }
 .about-page-content{
-	margin-top: 143px;
 }
 .stick-to-top{
 	width: 90%;
@@ -2521,16 +2516,40 @@ label{
 	margin-top: 10px;
 }
 .progress-outside{
-	margin-top: 6px;
+	margin-top: 10px;
 	width: calc(100% - 30px);
 	height: 6px;
 	background-color: #d9cdd5;
 	display: inline-block;
 }
+.slider.slider-horizontal {
+	width: 100%;
+	height: 26px;
+}
+.slider.slider-horizontal .slider-track{
+	height: 6px;
+	margin-top: -3px;
+}
+.slider-track{
+	background-image: none;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+	background-color: #d9cdd5;
+}
 .progress-outside .progress-inside{
 	width: 36%;
 	height: 100%;
 	background-color: #660248;
+}
+.slider-selection {
+    position: absolute;
+    background-image: none;    
+	filter: none;
+    -webkit-box-sizing: none;
+    -moz-box-sizing: none;
+    box-sizing: none;
+    border-radius: 4px;
+    background-color: #660248;
 }
 .progress-number{
 	display: inline;
@@ -3421,7 +3440,7 @@ padding-left: 0;
 	background-color: white;
 	display: flex;
 	justify-content: space-between;
-	border: solid 1px #d9cdd5;
+	border: solid 1px #907989;
 	padding: 0 4px;
 }
 .a-b-pagination-frame a{
@@ -3457,6 +3476,7 @@ padding-left: 0;
 .advanced-pagination-area{
 	display: flex;
    justify-content: space-between;
+	align-items: center;
 	height: 60px;
 	width: calc(100% - 110px);
 	margin-left: 110px;
@@ -3464,13 +3484,16 @@ padding-left: 0;
 }
 .advanced-pagination{
 	width: calc(100% - 100px);
+	height: 60px;
 }
 .advanced-pagination .progress-outside{
 	width: 100%;
 }
 .advanced-pagination-area .by-icon-v02{
+	width: 24px;
+	height:24px;
+	padding: 5px;
 	font-size: 14px;
-	line-height: 60px;
 }
 a .by-icon-v02:disabled{
 	color: #907989;
@@ -3485,18 +3508,23 @@ a .by-icon-v02:disabled{
 	background-color: #660248;
 }
 .advanced-pagination .progress-handle{
-	padding: 2px 6px;
+	width: 32px;
+	height: 18px;
+	padding: 0px 2px;
 	border-radius: 3px;
 	background-color: #907989;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
-	top: -6px;
-	margin-right: 0;
+	top: -22px;
+	margin-right: -16px;
 	color: #fff;
 	text-align: center;
 }
 .advanced-pagination .progress-handle:hover{
 	background-color: #660248;
 	cursor:pointer;
+}
+.slider-handle.custom{
+	display: none;
 }
 .by-card-header-v02 .headline-1-v02{
 	margin-bottom: 0;
@@ -3564,7 +3592,7 @@ a .by-icon-v02:disabled{
 .filters{
 	display: flex;
 	flex-wrap: wrap;
-	max-width: calc(100% - 160px);
+	max-width: calc(100% - 20px);
 }
 .tag .by-icon-v02{
 	font-size: 14px;
@@ -3968,7 +3996,7 @@ break{
 	position: fixed;
 	z-index: 11;
 	left: 59px;
-	top: 202px;
+	top: 345px;
 	display: flex;
 }
 .multi-name-sort{
