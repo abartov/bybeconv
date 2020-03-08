@@ -62,7 +62,7 @@
               .icon-in-group-v02.download{'data-toggle' => 'modal', 'data-target' => '#downloadDlg', style: "margin-left:0;"}
                 %span.linkcolor.pointer.by-icon-v02 3
           .work-page-top-icons-mobile
-            %button.btn-small-outline-v02.btn-text-v02.reading-mode-icon-btn-v02{:href => "#"}
+            %button.btn-small-outline-v02.btn-text-v02.reading-mode-icon-btn-v02{href: url_for(action: :readmode, id: @m.id)}
               %span.by-icon-v02 /
             .top-left-icons-group
               .icon-in-group-v02.like.must_login
