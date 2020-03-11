@@ -488,13 +488,18 @@ class ManifestationController < ApplicationController
     # collect conditions
     @filters = []
     @emit_filters = true if params[:load_filters] == 'true' || params[:emit_filters] == 'true'
-    if params['search_input'].present?
-      query_params[:searchstring] = '%'+params['search_input']+'%'
-      if params['search_type'].present? && params['search_type'] == 'authorname'
+    if params['search_input'].present? || params['authorstr'].present?
+      if (params['search_type'].present? && params['search_type'] == 'authorname') || (params['authorstr'].present? && params['search_input'].empty?)
+        query_params[:searchstring] = '%'+params['authorstr']+'%'
         query_parts[:people] = 'cached_people LIKE :searchstring'
+        @authorstr = params['authorstr']
         @search_type = 'authorname'
-        @filters << [I18n.t(:author_x, {x: params['search_input']}), :search_input, :text]
+        @filters << [I18n.t(:author_x, {x: params['authorstr']}), :search_input, :text]
+      elsif params['search_type'].present? && params['search_type'] == 'authors'
+        # TODO: implement
+        @search_type = 'authors'
       else
+        query_params[:searchstring] = '%'+params['search_input']+'%'
         query_parts[:titles] = 'manifestations.title LIKE :searchstring'
         @search_type = 'workname'
         @filters << [I18n.t(:title_x, {x: params['search_input']}), :search_input, :text]

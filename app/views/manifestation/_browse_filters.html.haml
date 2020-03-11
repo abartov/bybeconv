@@ -44,10 +44,11 @@
             %button.search-mobile-option#opt_authorname{:href => "#"}= t(:author_name)
           %break
           %input.field-v02.field-without-label#search_input{:placeholder => t(:what_to_search_for), name: 'search_input', :type => "text", value: @search_input}/
-          %input.field-v02.field-without-label.author-name-field#authors{:placeholder => t(:author_names), name: 'authors', :type => "text", value: @authors, style:'display:none'}/
+          %input.field-v02.field-without-label.author-name-field#authors{:placeholder => t(:author_names), name: 'authorstr', :type => "text", value: @authorstr, style:'display:none'}/
           .multi-name-sort.pointer{style:'display:inline-block;'}
             %span.linkcolor.pointer{'data-toggle' => 'modal', 'data-target' => '#authorsDlg'}= t(:multiselect)
           = hidden_field_tag(:search_type, id: 'search_type')
+          = hidden_field_tag(:authors, @authors, id: 'authors[]')
     .sort-type
       .vertical-expand.fcoll#fgenre{'data-target' =>'#collfgenre', 'data-toggle' =>'collapse'}
         .sort-type-headline= t(:genres)
@@ -211,6 +212,7 @@
     });
     $('#opt_authorname').click(function(e){
       e.preventDefault();
+      alert('authorname pressed');
       $('#opt_workname').removeClass('active');
       $('#opt_authorname').addClass('active');
       $('#authors').show();
