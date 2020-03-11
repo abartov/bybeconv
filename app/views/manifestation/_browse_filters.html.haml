@@ -45,8 +45,8 @@
           %break
           %input.field-v02.field-without-label#search_input{:placeholder => t(:what_to_search_for), name: 'search_input', :type => "text", value: @search_input}/
           %input.field-v02.field-without-label.author-name-field#authors{:placeholder => t(:author_names), name: 'authors', :type => "text", value: @authors, style:'display:none'}/
-          .multi-name-sort.pointer.notyet{style:'display:inline-block;'}
-            %a.notyet{:href => "#"}= t(:multiselect)
+          .multi-name-sort.pointer{style:'display:inline-block;'}
+            %span.linkcolor.pointer{'data-toggle' => 'modal', 'data-target' => '#authorsDlg'}= t(:multiselect)
           = hidden_field_tag(:search_type, id: 'search_type')
     .sort-type
       .vertical-expand.fcoll#fgenre{'data-target' =>'#collfgenre', 'data-toggle' =>'collapse'}
@@ -160,6 +160,7 @@
           %ul
             %li
               - attrs = {name: "ckb_languages[]", :type => "checkbox", id: 'lang_he', value: 'he'}
+              - attrs.merge!({disabled: 'disabled'}) if @language_facet[:he].nil? || @language_facet[:he] == 0
               - attrs.merge!({checked: 'checked'}) if @languages.present? && @languages.include?('he')
               %input{attrs}/
               %label
