@@ -44,7 +44,9 @@
             %button.search-mobile-option#opt_authorname{:href => "#"}= t(:author_name)
           %break
           %input.field-v02.field-without-label#search_input{:placeholder => t(:what_to_search_for), name: 'search_input', :type => "text", value: @search_input}/
-          %input.field-v02.field-without-label.author-name-field#authors{:placeholder => t(:author_names), name: 'authorstr', :type => "text", value: @authorstr, style:'display:none'}/
+          = autocomplete_field_tag :authorstr, @authorstr.present? ? @authorstr : '', autocomplete_person_name_path, id_element: '#author_id', 'data-noMatchesLabel' => t(:no_matches_found), style:'display:none', 'class' => 'field-v02 field-without-label author-name-field', id: 'authors', placeholder: t(:author_names)
+          = hidden_field_tag :author_id, @author_id.present? ? @author_id : nil
+
           .multi-name-sort.pointer{style:'display:inline-block;'}
             %span.linkcolor.pointer{'data-toggle' => 'modal', 'data-target' => '#authorsDlg'}= t(:multiselect)
           = hidden_field_tag(:search_type, id: 'search_type')
