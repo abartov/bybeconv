@@ -7,6 +7,8 @@
         = label_tag t(:unique_only)
         = check_box_tag 'pd', 1, params[:pd] == '1'
         = label_tag t(:pd_only)
+        = check_box_tag 'nonpd', 1, params[:nonpd] == '1'
+        = label_tag t(:nonpd_only)
         = submit_tag t(:filter)
     .row
       %table

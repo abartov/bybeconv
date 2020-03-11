@@ -110,9 +110,14 @@ class BibController < ApplicationController
       pp.each{|p| p.holdings.each {|h| hh << h if h.bib_source_id == params[:source_id].to_i}}
     when params[:pd] == '1' && (params[:unique].nil? || params[:unique] == '0')
       hh = Holding.to_obtain(params[:source_id]).joins(publication: [:person]).includes(publication: [:person]).where('people.public_domain' => true).to_a
-    when (params[:pd] == '0' || params[:pd].nil?) && params[:unique] == '1'
+    when params[:pd] == '0' && params[:unique] == '1'
       pp = Publication.joins(:holdings).group('publications.id').having('COUNT(distinct holdings.bib_source_id) = 1').where('publications.status = "todo"') # get all publications available in only one source
       pp.each{|p| p.holdings.each {|h| hh << h if h.bib_source_id == params[:source_id].to_i}}
+    when params[:nonpd] == '1' && params[:unique] == '1'
+      pp = Publication.joins(:holdings, :person).group('publications.id').having('COUNT(distinct holdings.bib_source_id) = 1').where('publications.status = "todo" and people.public_domain = 0') # get all publications available in only one source
+      pp.each{|p| p.holdings.each {|h| hh << h if h.bib_source_id == params[:source_id].to_i}}
+    when params[:nonpd] == '1' && (params[:unique].nil? || params[:unique] == '0')
+      hh = Holding.to_obtain(params[:source_id]).joins(publication: [:person]).includes(publication: [:person]).where('people.public_domain' => false).to_a
     else
         hh = Holding.to_obtain(params[:source_id]).to_a
     end
