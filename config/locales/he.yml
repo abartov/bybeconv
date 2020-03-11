@@ -582,6 +582,7 @@ he:
   copied_to_clipboard: הועתק ללוח!
   recno: מספר מערכת
   pd_only: רק נחלת הכלל
+  nonpd_only: רק רשות פרסום
   are_you_sure: נא לאשר מחיקה
   public_domain: נחלת הכלל
   about_public_domain: 'מה פירוש נחלת הכלל?'
