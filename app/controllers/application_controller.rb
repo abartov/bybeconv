@@ -410,7 +410,7 @@ end
         if m.expressions[0].translation
           per = m.expressions[0].works[0].persons[0]
           unless per.nil?
-            title += per.name
+            title += ' / ' + per.name
           end
         end
         worksbuf += "<a href=\"/read/#{m.id}\">#{title}</a>; "
