@@ -444,7 +444,7 @@ display: none;	}
 		width: calc(75% - 44px);
 		display: inline-block;
 	}
-	.rm-control-panel{
+	.reading-mode .rm-control-panel{
 		display: none;
 	}
 	.rm-control-panel-mobile{
