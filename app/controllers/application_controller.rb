@@ -407,7 +407,12 @@ end
       worksbuf = I18n.t(genre[0])+': '
       genre[1].each do |m|
         title = m.expressions[0].title
-        title += (m.expressions[0].translation ? ' / '+m.expressions[0].works[0].persons[0].name : '')
+        if m.expressions[0].translation
+          per = m.expressions[0].works[0].persons[0]
+          unless per.nil?
+            title += per.name
+          end
+        end
         worksbuf += "<a href=\"/read/#{m.id}\">#{title}</a>; "
         # worksbuf += (helpers.link_to(title, manifestation_read_path(id: m.id)) + '; ')
         if worksbuf.length > 160
