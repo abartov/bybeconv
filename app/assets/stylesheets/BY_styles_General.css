@@ -4594,12 +4594,12 @@ break{
   line-height: 1;
   font-family: Alef;
 }
-.slider .tooltip.top {
+#pagination-slider .slider .tooltip.top {
     margin-top: 2px;
     width: 30px;
     text-align: center
 }
-#pagination-slider.slider.slider-horizontal.slider-rtl .slider-handle {
+#pagination-slider .slider.slider-horizontal.slider-rtl .slider-handle {
     margin-left: initial;
     margin-right: -15px;
     text-align: center;
