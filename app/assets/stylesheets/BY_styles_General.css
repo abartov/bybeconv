@@ -4541,7 +4541,7 @@ break{
 	right: 0px;
 	width: 224px;
     height: 305px;
-	background-image: url("assets/date-picker.svg");
+	background-image: url("/assets/date-picker.svg");
 	z-index: 10;
 }
 .help-shadow {

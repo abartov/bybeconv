@@ -54,12 +54,18 @@ class ManifestationController < ApplicationController
     end
   end
 
+  def translations
+    @page_title = t(:translations)+' '+t(:project_ben_yehuda)
+    params['ckb_languages'] = Work.pluck(:orig_lang).uniq.reject{|x| x == 'he'}
+    browse
+  end
+
   def by_tag
     @page_title = t(:works_by_tag)+' '+t(:project_ben_yehuda)
     @pagetype = :works
     @tag = Tag.find(params[:id])
     if @tag
-      @collection = Manifestation.by_tag(params[:id]) # TODO: re-implement within prep_collection
+      @collection = Manifestation.all_published.by_tag(params[:id]) # TODO: re-implement within prep_collection
       @works_list_title = t(:works_by_tag)+': '+@tag.name
       browse
     else
@@ -528,11 +534,18 @@ class ManifestationController < ApplicationController
       @filters += @copyright.map{|x| [helpers.textify_copyright_status(x == 1), "copyright_#{x}", :checkbox]}
     end
     # languages
-    @languages = params['ckb_languages'].reject{|x| x == 'xlat'} if params['ckb_languages'].present?
-    if @languages.present?
-      query_parts[:languages] = 'works.orig_lang IN (:languages)'
-      query_params[:languages] = @languages
-      @filters += @languages.map{|x| ["#{I18n.t(:orig_lang)}: #{helpers.textify_lang(x)}", "lang_#{x}", :checkbox]}
+    if params['ckb_languages'].present?
+      if params['ckb_languages'] == ['xlat']
+        query_parts[:languages] = 'works.orig_lang <> "he"'
+        @filters << [I18n.t(:translations), 'lang_xlat', :checkbox]
+      else
+        @languages = params['ckb_languages'].reject{|x| x == 'xlat'}
+        if @languages.present?
+          query_parts[:languages] = 'works.orig_lang IN (:languages)'
+          query_params[:languages] = @languages
+          @filters += @languages.map{|x| ["#{I18n.t(:orig_lang)}: #{helpers.textify_lang(x)}", "lang_#{x}", :checkbox]}
+        end
+      end
     end
     # dates
     @fromdate = params['fromdate'] if params['fromdate'].present?

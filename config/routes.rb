@@ -121,6 +121,7 @@ Bybeconv::Application.routes.draw do
   match 'works/all', to: 'manifestation#all', as: 'all_works', via: [:get, :post]
   match 'manifestation/genre' => 'manifestation#genre', as: 'genre', via: [:get, :post]
   match 'period/:period' => 'manifestation#period', as: 'period', via: [:get, :post]
+  match 'translations' => 'manifestation#translations', as: 'translations', via: [:get, :post]
   get 'whatsnew' => 'manifestation#whatsnew', as: 'whatsnew'
   match 'tag/:id' => 'manifestation#by_tag', as: 'tag', via: [:get, :post]
   match 'author/:id' => 'authors#toc', as: 'author_toc', via: [:get, :post]
