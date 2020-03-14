@@ -3519,8 +3519,10 @@ padding-left: 0;
 	max-width: 560px;
 }
 .advanced-pagination{
-	width: calc(100% - 100px);
+	width: calc(100% - 120px);
 	height: 60px;
+    margin-right: 10px;
+    margin-left: 10px;
 }
 .advanced-pagination .progress-outside{
 	width: 100%;
@@ -4546,8 +4548,6 @@ break{
 	position: relative;
 	top: 0px;
 	right: 0px;
-	width: 224px;
-    height: 305px;
 }
 .help-shadow {
   position: relative;
@@ -4594,13 +4594,17 @@ break{
   line-height: 1;
   font-family: Alef;
 }
-.slider.tooltip.top {
-    margin-top: 1px;
+.slider .tooltip.top {
+    margin-top: 2px;
+    width: 30px;
+    text-align: center
 }
-.slider.slider-horizontal.slider-rtl .slider-handle {
+#pagination-slider.slider.slider-horizontal.slider-rtl .slider-handle {
     margin-left: initial;
     margin-right: -15px;
     text-align: center;
+	-webkit-box-shadow: none;
+	box-shadow: none;
 }
 .tooltip-inner {
     padding: 4px 2px;
