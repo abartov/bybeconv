@@ -28,6 +28,16 @@ class AdminController < ApplicationController
     Rails.cache.write('report_raw_tocs', @total)
   end
 
+  def messy_tocs
+    @authors = []
+    Person.has_toc.joins(:toc).includes(:toc).each do |p|
+      unless p.toc.structure_okay?
+        @authors << p
+      end
+    end
+    Rails.cache.write('report_messy_tocs', @total)
+  end
+
   def missing_languages
     ex = Expression.joins([:realizers, :works]).where(realizers: {role: Realizer.roles[:translator]}, works: {orig_lang: 'he'})
     mans = ex.map{|e| e.manifestations[0]}

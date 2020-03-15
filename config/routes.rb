@@ -36,6 +36,7 @@ Bybeconv::Application.routes.draw do
   get 'admin/missing_genres'
   get 'admin/missing_copyright'
   get 'admin/missing_images'
+  get 'admin/messy_tocs'
   get 'admin/tocs_missing_links'
   get 'admin/incongruous_copyright'
   get 'admin/suspicious_headings'

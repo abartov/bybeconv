@@ -1,0 +1,12 @@
+.top-element.backend
+  %h2= t(:messy_tocs_report)
+  %h3= t(:total)+': '+@authors.count.to_s
+  %table{style: 'cell-spacing: 10;'}
+    %tr
+      %th= t(:author)
+      %th= t(:actions)
+
+    - @authors.each do |author|
+      %tr
+        %td= link_to author.name, authors_show_path(id: author.id)
+        %td= link_to t(:edit_toc), authors_edit_toc_path(author)
