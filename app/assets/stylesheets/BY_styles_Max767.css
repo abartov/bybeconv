@@ -253,10 +253,8 @@
   display: block;
 }
 .system-notification{
-  height: 94px;		
 }
 .notification-content{
-  height: 94px;
   display: block;
   padding-bottom: 6px;
 }
@@ -266,8 +264,6 @@
 	margin-bottom: 4px;
 }
 .notification-text{
-  margin-right: auto;
-  margin-left: auto;
 	text-align: center;
 }
 }

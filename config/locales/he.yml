@@ -258,6 +258,7 @@ he:
   already_done: כבר טופל
   original_works: יצירות מקור
   translation: תרגום
+  toc_order_reminder: 'תזכורת לגבי סדר הסוגות: '
   translations: יצירות מתורגמות
   translator_name: "שם המתרגם/ת"
   orig_lang: שפת מקור
@@ -424,6 +425,7 @@ he:
   conversion_verified: טקסט עבר טיוב?
   new_file_to_convert: קובץ חדש למערכת
   conversion_verification_report: יצירות עם טקסט שטרם טויב
+  messy_tocs_report: תוכן עניינים עם סוגות בסדר לא נכון
   sample_translators: מבחר מתרגמים
   popular_translators: המתרגמים הנקראים ביותר
   random_order: (בסדר אקראי)

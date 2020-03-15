@@ -36,7 +36,32 @@ class Toc < ApplicationRecord
   def linked_item_ids
     return toc.scan(/&&&\s*פריט: מ(\d+)\s*&&&\s*כותרת: .*?&&&/).map{|x| x[0].to_i}.uniq
   end
+
   def linked_items
     return Manifestation.find(linked_item_ids)
+  end
+
+  def structure_okay?
+    sections = toc.scan /^## (.*)\s*$/
+    return false if sections.empty?
+    # get_genres returns ['poetry', 'prose', 'drama', 'fables','article', 'memoir', 'letters', 'reference', 'lexicon']
+    last_encountered = 0
+    translations_encountered = false
+    sections.each do |sect|
+      genre = identify_genre_by_heading(sect[0].strip)
+      return false if genre.nil?
+      i = get_genres.find_index(genre)
+      if i.nil?
+        if genre = 'translations'
+          translations_encountered = true
+        else
+          return false
+        end
+      else
+        return false if i < last_encountered || translations_encountered
+        last_encountered = i
+      end
+    end
+    return true
   end
 end

@@ -11,7 +11,7 @@
         %span.navdisabled= '2'
   .advanced-pagination
     .page= t(:total_result_pages, {x: @total_pages})
-    %input.slider.progress-handle{'type': 'text', 'data-slider-min': 1, 'data-slider-max': @total_pages, 'data-slider-step':1, 'data-slider-value': @page, 'data-slider-handle': 'custom', 'data-slider-tooltip': 'hide'}
+    %input.slider.progress-handle{'type': 'text', 'data-slider-min': 1, 'data-slider-max': @total_pages, 'data-slider-step':1, 'data-slider-value': @page, 'data-slider-handle': 'custom', 'data-slider-tooltip': 'always'}
     /%span.progress-handle= "#{@total_pages}/#{@page}"
   %div
     %span.by-icon-v02

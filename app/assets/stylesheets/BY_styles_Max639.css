@@ -208,6 +208,9 @@ p {
 	width: 160px;
 	height: 40px;
 }
+	.notification-text{
+		font-size: 12px;
+	}
 
 }
 
