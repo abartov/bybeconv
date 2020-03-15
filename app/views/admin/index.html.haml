@@ -73,6 +73,9 @@
       %b= link_to t(:tocs_missing_links_report), admin_tocs_missing_links_path
       = ' ('+Rails.cache.read('report_tocs_missing_links').to_s+')'
     %p
+      = link_to t(:messy_tocs_report), admin_messy_tocs_path
+      = ' ('+Rails.cache.read('report_messy_tocs').to_s+')'
+    %p
       = link_to t(:periodless), admin_periodless_path
       = ' ('+Rails.cache.read('report_periodless').to_s+')'
     %p

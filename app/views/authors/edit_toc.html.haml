@@ -7,6 +7,11 @@
         = text_area_tag(:gen_toc, raw(@gen_toc), rows: 20, style: 'width:100%')
       %h1= t(:update_toc)
       .right
+        = t(:toc_order_reminder)
+        - get_genres.each do |g|
+          = textify_genre(g)+'; '
+        = t(:translation)
+        %br
         %b.by-button-v02#add_work_link{style:'display:inline;width:200px'}= t(:add_work_link)
         = select_tag :works, options_from_collection_for_select(@works, 'id', 'title')
         %br
