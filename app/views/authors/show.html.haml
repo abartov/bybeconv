@@ -16,10 +16,7 @@
       = link_to t(:edit_metadata), authors_edit_path(id: @author.id)
   %br
   %p
-    - if @author.toc.nil?
-      %b{ style:'font-size:2rem'}
-        = link_to t(:create_toc), authors_create_toc_path(id: @author.id)
-    - else
+    - unless @author.toc.nil?
       %b{ style: 'font-size: 2rem'}
         = link_to t(:edit_toc), authors_edit_toc_path(id: @author.id)
   %table
