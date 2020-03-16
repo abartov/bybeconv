@@ -48,6 +48,12 @@
 	.topMenuItem-v02 {
   margin-left: 3px;
 }
+.by-nav-item-v02 {
+  width: 100%;
+  color: #660248;
+  font-weight: bold;
+  padding: 0 0 0 5px;
+}
 }
 
 

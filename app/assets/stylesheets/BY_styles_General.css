@@ -439,7 +439,7 @@ padding-left: 6px;
   width: 100%;
   color: #660248;
   font-weight: bold;
-  padding: 0 4px;
+  padding: 0 0 0 8px;
 }
 
 .by-nav-item-v02:hover {
@@ -1711,7 +1711,7 @@ display: flex;
 	padding: 6px;
 }
 .nav-chapter-name{
-	width: 84px;
+	width: 100px;
 	white-space: nowrap; 
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -4590,9 +4590,15 @@ break{
 }
 .tooltip{
   opacity: 1;
-  background-color: transparent;
   line-height: 1;
   font-family: Alef;
+}
+#pagination-slider .tooltip-inner {
+    padding: 4px 2px;
+    color: #fff;
+    text-align: center;
+	background-color: transparent;
+    border-radius: 3px;
 }
 #pagination-slider .slider .tooltip.top {
     margin-top: 2px;
@@ -4605,11 +4611,4 @@ break{
     text-align: center;
 	-webkit-box-shadow: none;
 	box-shadow: none;
-}
-.tooltip-inner {
-    padding: 4px 2px;
-    color: #fff;
-    text-align: center;
-	background-color: transparent;
-    border-radius: 3px;
 }
