@@ -435,6 +435,8 @@ class ManifestationController < ApplicationController
     unless ret.nil?
       ret = ret - 1 unless ret == 1
       @page = ret
+    else # bsearch returns nil if last page's bfunc returns false
+      @page = @total_pages
     end
   end
 
