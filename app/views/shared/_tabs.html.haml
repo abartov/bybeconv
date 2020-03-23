@@ -45,7 +45,7 @@
                   = t(g)
                   %span{style:'color:black'}= " - #{Manifestation.cached_work_counts_by_genre[g]} #{t(:works)}"
               .by-dropdown-divider
-              %a{:href => "#"}
+              %a{href: translations_path}
                 %span.by-icon-v02.iconNearText-v02= glyph_for_genre('translations')
                 = t(:translations)
                 %span{style:'color:black'}= " - #{Expression.cached_translations_count} #{t(:works)}"
@@ -156,7 +156,7 @@
                   %span{style:'color:black; font-weight: normal;'}= " - #{Manifestation.cached_work_counts_by_genre[g]} #{t(:works)}"
             .by-dropdown-divider
             %li
-              %a{:href => "#"}
+              %a{href: translations_path}
                 %span.by-icon-v02.iconNearText-v02.iconInMenu= glyph_for_genre('translations')
                 = t(:translations)
                 %span{style:'color:black; font-weight: normal;'}= " - #{Expression.cached_translations_count} #{t(:works)}"

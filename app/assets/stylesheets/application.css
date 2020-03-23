@@ -276,10 +276,10 @@ ol#anth_texts li.placeholder:before {
 /*.custom-select{
   display:none;
 }*/
-.slider-handle {
+/** .slider-handle {
   background-color: #907989;
   background-image: unset;
-}
+} */
 /* .slider-selection {
 	background: #907989;
 }*/

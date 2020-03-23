@@ -23,3 +23,5 @@
     .col-12.col-lg-7.col-xxxl-8
       .by-card-v02#thelist
         = render partial: 'browse_list'
+#authorsDlg.modal{'aria-hidden' => 'true', role: 'dialog'}
+  = render partial: 'authors_select', locals: {authors: @authors}

@@ -54,12 +54,18 @@ class ManifestationController < ApplicationController
     end
   end
 
+  def translations
+    @page_title = t(:translations)+' '+t(:project_ben_yehuda)
+    params['ckb_languages'] = Work.pluck(:orig_lang).uniq.reject{|x| x == 'he'}
+    browse
+  end
+
   def by_tag
     @page_title = t(:works_by_tag)+' '+t(:project_ben_yehuda)
     @pagetype = :works
     @tag = Tag.find(params[:id])
     if @tag
-      @collection = Manifestation.by_tag(params[:id]) # TODO: re-implement within prep_collection
+      @collection = Manifestation.all_published.by_tag(params[:id]) # TODO: re-implement within prep_collection
       @works_list_title = t(:works_by_tag)+': '+@tag.name
       browse
     else
@@ -429,6 +435,8 @@ class ManifestationController < ApplicationController
     unless ret.nil?
       ret = ret - 1 unless ret == 1
       @page = ret
+    else # bsearch returns nil if last page's bfunc returns false
+      @page = @total_pages
     end
   end
 
@@ -488,13 +496,18 @@ class ManifestationController < ApplicationController
     # collect conditions
     @filters = []
     @emit_filters = true if params[:load_filters] == 'true' || params[:emit_filters] == 'true'
-    if params['search_input'].present?
-      query_params[:searchstring] = '%'+params['search_input']+'%'
-      if params['search_type'].present? && params['search_type'] == 'authorname'
+    if params['search_input'].present? || params['authorstr'].present?
+      if (params['search_type'].present? && params['search_type'] == 'authorname') || (params['authorstr'].present? && params['search_input'].empty?)
+        query_params[:searchstring] = '%'+params['authorstr']+'%'
         query_parts[:people] = 'cached_people LIKE :searchstring'
+        @authorstr = params['authorstr']
         @search_type = 'authorname'
-        @filters << [I18n.t(:author_x, {x: params['search_input']}), :search_input, :text]
+        @filters << [I18n.t(:author_x, {x: params['authorstr']}), :search_input, :text]
+      elsif params['search_type'].present? && params['search_type'] == 'authors'
+        # TODO: implement
+        @search_type = 'authors'
       else
+        query_params[:searchstring] = '%'+params['search_input']+'%'
         query_parts[:titles] = 'manifestations.title LIKE :searchstring'
         @search_type = 'workname'
         @filters << [I18n.t(:title_x, {x: params['search_input']}), :search_input, :text]
@@ -523,11 +536,18 @@ class ManifestationController < ApplicationController
       @filters += @copyright.map{|x| [helpers.textify_copyright_status(x == 1), "copyright_#{x}", :checkbox]}
     end
     # languages
-    @languages = params['ckb_languages'].reject{|x| x == 'xlat'} if params['ckb_languages'].present?
-    if @languages.present?
-      query_parts[:languages] = 'works.orig_lang IN (:languages)'
-      query_params[:languages] = @languages
-      @filters += @languages.map{|x| ["#{I18n.t(:orig_lang)}: #{helpers.textify_lang(x)}", "lang_#{x}", :checkbox]}
+    if params['ckb_languages'].present?
+      if params['ckb_languages'] == ['xlat']
+        query_parts[:languages] = 'works.orig_lang <> "he"'
+        @filters << [I18n.t(:translations), 'lang_xlat', :checkbox]
+      else
+        @languages = params['ckb_languages'].reject{|x| x == 'xlat'}
+        if @languages.present?
+          query_parts[:languages] = 'works.orig_lang IN (:languages)'
+          query_params[:languages] = @languages
+          @filters += @languages.map{|x| ["#{I18n.t(:orig_lang)}: #{helpers.textify_lang(x)}", "lang_#{x}", :checkbox]}
+        end
+      end
     end
     # dates
     @fromdate = params['fromdate'] if params['fromdate'].present?

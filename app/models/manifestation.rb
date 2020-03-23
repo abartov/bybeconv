@@ -17,6 +17,7 @@ class Manifestation < ApplicationRecord
   has_many_attached :images
 
   before_save :update_sort_title
+  # before_save :updated_cached_people_ids
 
   enum link_type: [:wikipedia, :blog, :youtube, :other]
   enum linkstatus: [:approved, :submitted, :rejected]
@@ -43,6 +44,22 @@ class Manifestation < ApplicationRecord
   def update_sort_title
     self.sort_title = self.title.strip_nikkud.tr('[]()*"\'', '').strip
     self.sort_title = $' if self.sort_title =~ /^\d+\. /
+  end
+
+  def updated_cached_people_ids
+    aus = []
+    self.expressions.each do |e|
+      e.works.each do |w|
+        w.authors.each do |au|
+          aus << au unless aus.include?(au)
+        end
+        e.translators.each do |au|
+          aus << au unless aus.include?(au)
+        end
+      end
+    end
+    self.cached_people_ids = aus.map{|x| x.id}.join()
+    return true
   end
 
   def like_count
