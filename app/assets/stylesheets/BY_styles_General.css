@@ -423,7 +423,10 @@ padding-left: 6px;
 .topMenuItem-v02 {
   display: inline-block;
   padding-right: 0;
-  margin-left: 12px;
+  margin-left: 8px;
+}
+.topMenuItem-v02:last-child{
+	margin-left: 0;
 }
 
 .topMenuItemMobile-v02 {
@@ -439,12 +442,14 @@ padding-left: 6px;
   width: 100%;
   color: #660248;
   font-weight: bold;
-  padding: 0 0 0 8px;
+  padding: 0 4px;
 }
 
 .by-nav-item-v02:hover {
-  color: #2b0d22;
-  text-decoration: none; }
+ color: #2b0d22;
+  text-decoration: none;
+  background-color: #d9cdd5;
+  border-radius: 3px; }
 
 .by-nav-item-v02:active {
   color: #2b0d22;
@@ -489,7 +494,6 @@ padding-left: 6px;
   padding-top: 4;
   padding-bottom: 0;
   font-size: 14px;
-  max-height: 480px;
 }
 
 .by-dropdown-v02 #moreMobile {
@@ -2054,7 +2058,7 @@ display: flex;
 	left:10px;
 	margin-bottom: 4px;
 }
-.work-chapters-dropdown-field-desktop:hover #moveToChapter_content_desktop{
+.work-chapters-dropdown-field-desktop:hover #chapter_dropdown_content{
 	display:block;
 }
 .work-chapters-popup-mobile{
@@ -3527,11 +3531,16 @@ padding-left: 0;
 .advanced-pagination .progress-outside{
 	width: 100%;
 }
-.advanced-pagination-area .by-icon-v02{
+.advanced-pagination-area a.by-icon-v02{
 	width: 24px;
 	height:24px;
-	padding: 5px;
+	padding: 3px 5px;
 	font-size: 14px;
+  border-radius: 3px;
+	margin-top: 2px;
+}
+.advanced-pagination-area a.by-icon-v02:hover{
+	background-color: #d9cdd5;
 }
 a .by-icon-v02:disabled{
 	color: #907989;
@@ -4611,4 +4620,7 @@ break{
     text-align: center;
 	-webkit-box-shadow: none;
 	box-shadow: none;
+}
+.bysort-type{
+	margin-top: 2px;
 }
