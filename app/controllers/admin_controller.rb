@@ -35,7 +35,7 @@ class AdminController < ApplicationController
         @authors << p
       end
     end
-    Rails.cache.write('report_messy_tocs', @total)
+    Rails.cache.write('report_messy_tocs', @authors.count)
   end
 
   def missing_languages

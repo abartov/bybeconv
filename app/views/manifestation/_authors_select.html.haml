@@ -1,0 +1,35 @@
+.modal-dialog
+  .modal-content
+    .container-fluid
+      = form_tag('', id: 'authors_filter_form') do
+        .modal-header
+          .popup-top
+            .row{:style => "padding:15px;margin: 0"}
+              .col-4{:style => "padding: 0;"}
+                %button.btn-small-outline-v02{'data-dismiss'=>'modal'}
+                  .btn-text-v02
+                    %span.right-arrow 2
+                    %span= t(:back)
+              .col-4{:style => "padding: 0;"}
+                .modal-title.headline-2-v02{:style => "text-align: center;margin: 0; padding-top: 3px;"}= t(:authors_select_filter)
+              .col-4
+        .modal-body
+          .by-popup-v02#authors-multi-select-popup
+            .by-card-header-v02.desktop-only
+              %span.headline-1-v02= t(:authors_select_filter)
+            %a.popup-x-v02.linkcolor.pointer{'data-dismiss'=>'modal'} -
+            .by-card-content-v02.card-with-button
+              .authors-names-area
+                .row
+                  - Person.all.order(:name).each_slice((Person.count/3.0).round) do |slice|
+                    .col
+                      - slice.each do |au|
+                        - attrs = {name: "ckb_authors[]", type: "checkbox", id: "au_#{au.id}", value: au.id}
+                        - attrs.merge!({checked: 'checked'}) if authors.present? && authors.include?(au.id)
+                        %input{ attrs}/
+                        %label= au.name
+                        %br/
+              .bottom-left-buttons
+                %button.by-button-v02.by-button-secondary-v02
+                  .linkcolor.pointer{'data-dismiss'=>'modal'}= t(:back)
+                %button#adding-authors-btn.by-button-v02{:href => "#"}= t(:add_authors_to_filter)

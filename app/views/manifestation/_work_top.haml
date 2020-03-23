@@ -62,7 +62,7 @@
               .icon-in-group-v02.download{'data-toggle' => 'modal', 'data-target' => '#downloadDlg', style: "margin-left:0;"}
                 %span.linkcolor.pointer.by-icon-v02 3
           .work-page-top-icons-mobile
-            %button.btn-small-outline-v02.btn-text-v02.reading-mode-icon-btn-v02{:href => "#"}
+            %a.btn-small-outline-v02.btn-text-v02.reading-mode-icon-btn-v02{href: url_for(action: :readmode, id: @m.id)}
               %span.by-icon-v02 /
             .top-left-icons-group
               .icon-in-group-v02.like.must_login
@@ -97,7 +97,7 @@
               - first = true
               - @chapters.each do |ch|
                 %li.nav-item
-                  %a{'class' => 'nav-link nav-chapter-name nav-link-chapter pointer linkcolor '+(first ? ' active' : ''), href: "#ch#{ch[1]}", id: "nl#{ch[1]}", 'data-asaf' => "ch#{ch[1]}",'data-toggle' => 'tooltip', 'title' => ch[0], 'data-placement' => 'top', 'data-delay' => '100'}
+                  %a{'class' => 'nav-link nav-chapter-name nav-link-chapter pointer linkcolor '+(first ? ' active' : ''), href: "#ch#{ch[1]}", id: "nl#{ch[1]}", 'data-asaf' => "ch#{ch[1]}",'data-toggle' => 'tooltip', 'title' => ch[0], 'data-placement' => 'top', 'data-delay' => { "show": 500, "hide": 100 }}
                     = ch[0]
                 - first = false
       .col{style:'z-index:-1;height:0;'}
