@@ -88,6 +88,7 @@
                   /   %a{:href => "#"}
                   /     %span{:style => "font-weight: bold"} לכל מה שחדש
                   /     %span.left-arrow 1
+            %a{name: 'curated_g'}
             - unless @featured.empty?
               - featured = @featured[0]
               .by-card-v02.flash-work-v02
@@ -117,7 +118,7 @@
                     - unless featured.external_link.nil? or featured.external_link.empty?
                       %a{ href: featured.external_link, target: '_blank'}
                         %button.by-button-v02.button-to-full-v02= t(:to_external_content)
-              = render partial: 'aboutnesses'
+            = render partial: 'aboutnesses'
 
 :javascript
   $(document).ready(function(){

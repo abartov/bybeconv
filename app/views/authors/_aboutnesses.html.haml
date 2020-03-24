@@ -1,21 +1,20 @@
-.by-card-v02.left-side-card-v02
-  .by-card-header-left-v02
-    %span.headline-1-v02
-      %a{:href => "#"}= t(:works_about_this_author, {gender_suffix: @author.gender == 'female' ? '/ת' : ''})
-  .by-card-content-v02.card-with-bottom-links
-    %div
+- if @aboutnesses.count > 0
+  .by-card-v02.left-side-card-v02
+    .by-card-header-left-v02
+      %span.headline-1-v02= t(:works_about_this_author, {gender_suffix: @author.gender == 'female' ? '/ת' : ''})
+    .by-card-content-v02.card-with-bottom-links
       %div
-        %ul.ul-inside
-          - @author.aboutnesses.each do |ab|
-            - if ab.work.expressions[0].manifestations[0].published? # Only show published works # TODO: handle multiple expressions/manifestations intelligently
-              - m = ab.work.expressions[0].manifestations[0]
-              - if m.published? # Only show published works # TODO: handle multiple expressions/manifestations intelligently
+        %div
+          %ul.ul-inside
+            - @aboutnesses.each do |ab|
+              - m = ab.work.expressions[0].manifestations[0] # TODO: handle multiple expressions/manifestations intelligently
+              - if m.published? # Only show published works
                 %li
                   = link_to ab.work.expressions[0].title, work_show_path(id: ab.work_id)
                   = ' / '+m.authors_string
                   - if ab.work.expressions[0].translation
                     = ' / '+m.translators_string
-    .link-to-all-v02
-      %a.notyet
-        %span.linkcolor{:style => "font-weight: bold"} לרשימה המלאה
-        %span.linkcolor.left-arrow 1
+      .link-to-all-v02
+        %a.notyet
+          %span.linkcolor{:style => "font-weight: bold"}= t(:to_full_list)
+          %span.linkcolor.left-arrow 1
