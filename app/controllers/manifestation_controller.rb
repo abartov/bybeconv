@@ -502,7 +502,7 @@ class ManifestationController < ApplicationController
         query_parts[:people] = 'cached_people LIKE :searchstring'
         @authorstr = params['authorstr']
         @search_type = 'authorname'
-        @filters << [I18n.t(:author_x, {x: params['authorstr']}), :search_input, :text]
+        @filters << [I18n.t(:author_x, {x: params['authorstr']}), :authors, :text]
       elsif params['search_type'].present? && params['search_type'] == 'authors'
         # TODO: implement
         @search_type = 'authors'
