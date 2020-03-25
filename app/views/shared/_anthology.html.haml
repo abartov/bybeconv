@@ -14,7 +14,6 @@
       .modal-body
         .anthology#no_anths{style:'display:none'}
           .by-card-header-v02.desktop-only
-            %a.horizontal-collapse-expand{:href => "#"}
             #anthology-select
               .headline-1-v02= t(:reading_list_or_anthology)
             %a.popup-x-v02.pointer{'data-dismiss'=>'modal'} -
@@ -58,5 +57,7 @@
       $('#new_anth').hide();
       $('#anth_panel').show();
     });
-
+    $('#anth_collapser').click(function(){
+      $('#anth_container').toggleClass("folded");
+    });
   });
