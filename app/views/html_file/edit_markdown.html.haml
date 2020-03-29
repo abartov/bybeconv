@@ -64,6 +64,9 @@
 
 :javascript
   jQuery(document).ready(function() {
+    // highlight suspicious angled brackets in rendered HTML
+    $("#preview p:contains('> ')").html("<span style=\"color:red; font-size: 250%\">&gt;</span>")
+    $("#preview blockquote:contains('> ')").html("<span style=\"color:red; font-size: 250%\">&gt;</span>")
     $('#add_stanza_break').click(function() {
       var $txt = jQuery("#markdown");
       var caretPos = $txt[0].selectionStart;
