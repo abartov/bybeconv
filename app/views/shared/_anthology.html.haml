@@ -50,6 +50,7 @@
                   %div= t(:cancel)
                 = anth.submit t(:create_new_anthology), {'class' => 'by-button-v02 pointer'}
         = render partial: 'shared/anth_panel'
+
 :javascript
   $(document).ready(function() {
     $('.hide_new_anth').click(function(e){
@@ -58,6 +59,6 @@
       $('#anth_panel').show();
     });
     $('#anth_collapser').click(function(){
-      $('#anth_container').toggleClass("folded");
+      $('.folded-anthology').show();
     });
   });

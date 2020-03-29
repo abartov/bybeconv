@@ -3523,10 +3523,10 @@ padding-left: 0;
 	max-width: 560px;
 }
 .advanced-pagination{
-	width: calc(100% - 120px);
+	width: calc(100% - 140px);
 	height: 60px;
-    margin-right: 10px;
-    margin-left: 10px;
+    margin-right: 20px;
+    margin-left: 20px;
 }
 .advanced-pagination .progress-outside{
 	width: 100%;
@@ -3541,6 +3541,9 @@ padding-left: 0;
 }
 .advanced-pagination-area a.by-icon-v02:hover{
 	background-color: #d9cdd5;
+}
+.advanced-pagination-area a.by-icon-v02:disabled{
+	background-color: none;
 }
 a .by-icon-v02:disabled{
 	color: #907989;
@@ -4004,31 +4007,39 @@ break{
 	margin-bottom: 10px;
 }
 
-.folded .anthology {
+.folded-anthology {
+  z-index: 10;
   width: 44px;
+  height: calc(100% - 211px);
+  background-color: #eeeced;
+  border-radius: 3px;
+  box-shadow: 0 3px 9px rgba(0, 0, 0, 0.4);
+  position: fixed;
+  left: 0;
+  top: 196px;
 }
-.folded .anthology .horizontal-collapse-expand::after{
+.folded-anthology .horizontal-collapse-expand::after{
 	content: "@";
 }
-.folded .anthology-select-desktop{
+.folded-anthology .anthology-select-desktop{
 	display: none;
 }
-.folded .anthologies-actions-area{
+.folded-anthology .anthologies-actions-area{
 	display: none;
 }
-.folded .by-card-content-v02{
+.folded-anthology .by-card-content-v02{
 	height: 580px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 }
-.folded .anthology-cards-area{
+.folded-anthology .anthology-cards-area{
 	display: none;
 }
-.folded .bottom-right-buttons{
+.folded-anthology .bottom-right-buttons{
 	display: none;
 }
-.folded .popup-x-v02{
+.folded-anthology .popup-x-v02{
 	top: 55px;
 }
 .rotate{
@@ -4036,7 +4047,7 @@ break{
 	font-size: 14pt;
 	display: none;
 }
-.folded .rotate{
+.folded-anthology .rotate{
 	display: block;
 }
 .add-to-anthology{
@@ -4129,6 +4140,9 @@ break{
 	display: inline;
 }
 .anthology .by-card-content-v02{
+	height: calc(100% - 114px);
+}
+.folded-anthology .by-card-content-v02{
 	height: calc(100% - 114px);
 }
 
@@ -4623,4 +4637,10 @@ break{
 }
 .bysort-type{
 	margin-top: 2px;
+}
+#nextnav{
+	padding: 3px 6px 3px 4px;
+}
+#prevnav{
+	padding: 3px 4px 3px 6px;
 }
