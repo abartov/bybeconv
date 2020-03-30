@@ -63,10 +63,17 @@
                   != raw(t(:accept_conversion_and) + link_to(t(:frbrize), html_file_frbrize_path(@text), id: 'frbrize_button'))
 
 :javascript
+  function highlight_in_red(buf) {
+    return "<span style=\"color:red; font-size: 250%\">"+buf+"</span>";
+  }
   jQuery(document).ready(function() {
     // highlight suspicious angled brackets in rendered HTML
-    $("#preview p:contains('> ')").html("<span style=\"color:red; font-size: 250%\">&gt;</span>")
-    $("#preview blockquote:contains('> ')").html("<span style=\"color:red; font-size: 250%\">&gt;</span>")
+    $("#preview p:contains('> ')").each(function(){
+      $(this).html(highlight_in_red($(this).html()));
+    });
+    $("#preview blockquote:contains('> ')").each(function(){
+      $(this).html(highlight_in_red($(this).html()));
+    });
     $('#add_stanza_break').click(function() {
       var $txt = jQuery("#markdown");
       var caretPos = $txt[0].selectionStart;
