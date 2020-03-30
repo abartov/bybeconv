@@ -263,4 +263,7 @@
       $('#no_anths').show();
     }
     $('#folded_anth_title').text('#{@anthology.title}');
+    $('#anth_collapser').click(function(){
+      $('.folded-anthology').show();
+    });
   });
