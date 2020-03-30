@@ -618,7 +618,7 @@ class HtmlFile < ApplicationRecord
           r.save!
           m = Manifestation.new(title: the_title, responsibility_statement: em_author.name, conversion_verified: true, medium: I18n.t(:etext), publisher: AppConstants.our_publisher, publication_place: AppConstants.our_place_of_publication, publication_date: Date.today, markdown: the_markdown, comment: comments, status: Manifestation.statuses[:published])
           m.save!
-          m.people << em_author
+          #m.people << em_author
           e.manifestations << m
           e.save!
           manifestations << m # this HtmlFile itself should know the manifestation created out of it

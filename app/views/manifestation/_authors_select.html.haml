@@ -33,3 +33,27 @@
                 %button.by-button-v02.by-button-secondary-v02
                   .linkcolor.pointer{'data-dismiss'=>'modal'}= t(:back)
                 %button#adding-authors-btn.by-button-v02{:href => "#"}= t(:add_authors_to_filter)
+:javascript
+  $(document).ready(function() {
+    $('#adding-authors-btn').click(function(e) {
+      e.preventDefault();
+      names = ''
+      $('input[name="ckb_authors[]"]').each(function(li){
+        if($(this).prop('checked')) {
+          names += $(this).next().text()+'; ';
+        }
+      });
+      $('#authors_names').val(names);
+      arr = $('input[name="ckb_authors[]"]').serializeArray();
+      ids = ''
+      $.each(arr, function(i, field){
+        ids += field['value'].toString()+',';
+      });
+      //alert('ids = '+ids);
+      $('#author_ids').val(ids);
+      $("#authorsDlg").modal("hide");
+      startModal('spinnerdiv');
+      $('#works_filters').submit();
+      return false;
+    });
+  });

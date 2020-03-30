@@ -440,7 +440,7 @@ class ManifestationController < ApplicationController
     end
   end
 
-  def make_collection(query_parts, query_params, joins_needed, ord)
+  def make_collection(query_parts, query_params, joins_needed, people_needed, ord)
     if query_parts.empty?
       if joins_needed
         return Manifestation.all_published.joins(expressions: :works).includes(expressions: :works).order(ord)
@@ -451,7 +451,22 @@ class ManifestationController < ApplicationController
       @emit_filters = true
       conditions = query_parts.values.join(' AND ')
       if joins_needed
-        return Manifestation.all_published.joins(expressions: :works).includes(expressions: :works).where(conditions, query_params).order(ord)
+        if people_needed
+          return Manifestation.all_published.joins(<<-SQL).
+            INNER JOIN expressions_manifestations ON expressions_manifestations.manifestation_id = manifestations.id
+            INNER JOIN expressions ON expressions.id = expressions_manifestations.expression_id
+            INNER JOIN realizers ON realizers.expression_id = expressions.id
+            INNER JOIN expressions_works ON expressions_works.expression_id = expressions.id
+            INNER JOIN works ON works.id = expressions_works.work_id
+            INNER JOIN creations ON creations.work_id = works.id
+            INNER JOIN people ON (people.id = realizers.person_id OR people.id = creations.person_id)
+          SQL
+          where(conditions, query_params).order(ord)
+
+          # return Manifestation.all_published.joins(expressions: [:persons, works: [:persons]]).includes(expressions: :works).where(conditions, query_params).order(ord)
+        else
+          return Manifestation.all_published.joins(expressions: :works).includes(expressions: :works).where(conditions, query_params).order(ord)
+        end
       else
         return Manifestation.all_published.where(conditions, query_params).order(ord)
       end
@@ -470,7 +485,8 @@ class ManifestationController < ApplicationController
 
   def prep_collection
     @emit_filters = false
-    joins_needed = @periods.present? || @genres.present? || params['search_input'].present? || params[:load_filters].present? || params['fromdate'].present? || params['todate'].present? || params['ckb_genres'].present? || params['ckb_periods'].present? || params['ckb_languages'].present? || params['ckb_copyright'].present? || (params[:sort_by].present? && ['publication_date', 'creation_date'].include?(params[:sort]))
+    joins_needed = @periods.present? || @genres.present? || params['search_input'].present? || params[:load_filters].present? || params['fromdate'].present? || params['todate'].present? || params['ckb_genres'].present? || params['ckb_periods'].present? || params['ckb_languages'].present? || params['ckb_authors'].present? || params['ckb_copyright'].present? || (params[:sort_by].present? && ['publication_date', 'creation_date'].include?(params[:sort]))
+    people_needed = params['authors'].present?
     query_params = {}
     query_parts = {}
     # figure out sort order
@@ -496,16 +512,22 @@ class ManifestationController < ApplicationController
     # collect conditions
     @filters = []
     @emit_filters = true if params[:load_filters] == 'true' || params[:emit_filters] == 'true'
-    if params['search_input'].present? || params['authorstr'].present?
-      if (params['search_type'].present? && params['search_type'] == 'authorname') || (params['authorstr'].present? && params['search_input'].empty?)
+    if params['search_input'].present? || params['authorstr'].present? || params['authors'].present?
+      if params['authors'].present?
+        # TODO: implement
+        @search_type = 'authorname'
+        author_ids = params['authors'].split(',').map{|x| x.to_i}
+        query_params[:people_ids] = author_ids
+        @authors = author_ids.join(',')
+        query_parts[:authors] = 'people.id IN (:people_ids)'
+        @authors_names = params['authors_names']
+        @filters << [I18n.t(:authors_xx, {xx: params['authors_names']}), 'authors', :text]
+      elsif (params['search_type'].present? && params['search_type'] == 'authorname') || (params['authorstr'].present? && params['search_input'].empty?)
         query_params[:searchstring] = '%'+params['authorstr']+'%'
         query_parts[:people] = 'cached_people LIKE :searchstring'
         @authorstr = params['authorstr']
         @search_type = 'authorname'
         @filters << [I18n.t(:author_x, {x: params['authorstr']}), :authors, :text]
-      elsif params['search_type'].present? && params['search_type'] == 'authors'
-        # TODO: implement
-        @search_type = 'authors'
       else
         query_params[:searchstring] = '%'+params['search_input']+'%'
         query_parts[:titles] = 'manifestations.title LIKE :searchstring'
@@ -517,7 +539,7 @@ class ManifestationController < ApplicationController
     # periods
     @periods = params['ckb_periods'] if params['ckb_periods'].present?
     if @periods.present?
-      query_parts[:periods] = 'period IN (:periods)'
+      query_parts[:periods] = 'expressions.period IN (:periods)'
       query_params[:periods] = @periods.map{|x| Expression.periods[x]}
       @filters += @periods.map{|x| [I18n.t(x), "period_#{x}", :checkbox]}
     end
@@ -565,7 +587,7 @@ class ManifestationController < ApplicationController
     end
     # build the collection (with/without joins, with/without conditions)
     joins_needed = true if @emit_filters
-    @collection = make_collection(query_parts, query_params, joins_needed, ord)
+    @collection = make_collection(query_parts, query_params, joins_needed, people_needed, ord)
     if @sort == 'alphabetical'
       unless params[:page].nil? || params[:page].empty?
         params[:to_letter] = nil # if page was specified, forget the to_letter directive
@@ -584,15 +606,15 @@ class ManifestationController < ApplicationController
       @works = @collection.page(@page) # get page X of manifestations
     end
     if @emit_filters == true
-      @genre_facet = make_collection(query_parts.reject{|k,v| k == :genres }, query_params, joins_needed, ord).group('expressions.genre').count
-      @period_facet = make_collection(query_parts.reject{|k,v| k == :periods }, query_params, joins_needed, ord).group(:period).count
-      @copyright_facet = make_collection(query_parts.reject{|k,v| k == :copyright }, query_params, joins_needed, ord).group(:copyrighted).count
-      @language_facet = make_collection(query_parts.reject{|k,v| k == :languages }, query_params, joins_needed, ord).group('works.orig_lang').count
+      @genre_facet = make_collection(query_parts.reject{|k,v| k == :genres }, query_params, joins_needed, people_needed, '').group('expressions.genre').count
+      @period_facet = make_collection(query_parts.reject{|k,v| k == :periods }, query_params, joins_needed, people_needed, '').group('expressions.period').count
+      @copyright_facet = make_collection(query_parts.reject{|k,v| k == :copyright }, query_params, joins_needed, people_needed, '').group(:copyrighted).count
+      @language_facet = make_collection(query_parts.reject{|k,v| k == :languages }, query_params, joins_needed, people_needed, '').group('works.orig_lang').count
       @language_facet[:xlat] = @language_facet.values.sum - (@language_facet['he'] || 0)
       get_langs.each do |l|
         @language_facet[l] = 0 unless @language_facet[l].present?
       end
-      @uploaded_dates = make_collection(query_parts.reject{|k,v| k == :uploaded }, query_params, joins_needed, ord).pluck(:created_at).map{|x| "{value: #{x.strftime("%Y%m%d")}}"}.join(", ")
+      @uploaded_dates = make_collection(query_parts.reject{|k,v| k == :uploaded }, query_params, joins_needed, people_needed, '').pluck(:created_at).map{|x| "{value: #{x.strftime("%Y%m%d")}}"}.join(", ")
       # TODO: date histogram      # (bins, freqs) = uploaded_dates.histogram
       # TODO: curated facet
       end

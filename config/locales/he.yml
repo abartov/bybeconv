@@ -467,6 +467,7 @@ he:
   title: כותרת
   title_x: "כותרת: %{x}"
   author_x: "מחבר: %{x}"
+  authors_xx: "מחברים: %{xx}"
   entries: ערכים
   filter: סינון
   actions: פעולות
