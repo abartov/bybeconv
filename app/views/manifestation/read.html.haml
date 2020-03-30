@@ -131,6 +131,12 @@
 - if current_user
   #anthologiesDlg.modal{'aria-hidden' => 'true', role: 'dialog'}
     = render partial: 'shared/anthology', locals: {manifestation: @m}
+  .folded-anthology{style:'display:none'}
+    .by-card-header-v02.desktop-only
+      %a.horizontal-collapse-expand#unfold_anth{href: '#', 'data-toggle' => 'modal', 'data-target' => '#anthologiesDlg'}
+      %a.popup-x-v02#remove_folded_anth{href: '#', style:'z-index:100'}= '-'
+    .by-card-content-v02
+      .rotate#folded_anth_title= @anthology.title || ''
 
 / chapter popup
 - if @m.chapters? and @m.long?
@@ -199,5 +205,13 @@
       $('html, body').animate({
         scrollTop: $('a[id="'+anchor.slice(1)+'"]').offset().top - $(header).height() - 45
       }, 800);
+    });
+    $('#remove_folded_anth').click(function(e){
+      e.preventDefault();
+      $('.folded-anthology').hide();
+    });
+    $('#unfold_anth').click(function(e){
+      e.preventDefault();
+      $('.folded-anthology').hide();
     });
   });

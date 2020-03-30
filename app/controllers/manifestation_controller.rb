@@ -502,7 +502,7 @@ class ManifestationController < ApplicationController
         query_parts[:people] = 'cached_people LIKE :searchstring'
         @authorstr = params['authorstr']
         @search_type = 'authorname'
-        @filters << [I18n.t(:author_x, {x: params['authorstr']}), :search_input, :text]
+        @filters << [I18n.t(:author_x, {x: params['authorstr']}), :authors, :text]
       elsif params['search_type'].present? && params['search_type'] == 'authors'
         # TODO: implement
         @search_type = 'authors'
@@ -589,6 +589,9 @@ class ManifestationController < ApplicationController
       @copyright_facet = make_collection(query_parts.reject{|k,v| k == :copyright }, query_params, joins_needed, ord).group(:copyrighted).count
       @language_facet = make_collection(query_parts.reject{|k,v| k == :languages }, query_params, joins_needed, ord).group('works.orig_lang').count
       @language_facet[:xlat] = @language_facet.values.sum - (@language_facet['he'] || 0)
+      get_langs.each do |l|
+        @language_facet[l] = 0 unless @language_facet[l].present?
+      end
       @uploaded_dates = make_collection(query_parts.reject{|k,v| k == :uploaded }, query_params, joins_needed, ord).pluck(:created_at).map{|x| "{value: #{x.strftime("%Y%m%d")}}"}.join(", ")
       # TODO: date histogram      # (bins, freqs) = uploaded_dates.histogram
       # TODO: curated facet

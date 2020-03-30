@@ -172,11 +172,12 @@ class AuthorsController < ApplicationController
       @header_partial = 'authors/author_top'
       @entity = @author
       @page_title = "#{@author.name} - #{t(:table_of_contents)} - #{t(:project_ben_yehuda)}"
-      # temporary protection against null ToCs while we're migrating
       impressionist(@author) unless is_spider? # log actions for pageview stats
       @og_image = @author.profile_image.url(:thumb)
       @latest = textify_titles(@author.cached_latest_stuff, @author)
       @featured = @author.featured_work
+      @aboutnesses = @author.aboutnesses
+      @any_curated = @featured.present? || @aboutnesses.count > 0
       unless @featured.empty?
         (@fc_snippet, @fc_rest) = snippet(@featured[0].body, 500) # prepare snippet for collapsible
       end

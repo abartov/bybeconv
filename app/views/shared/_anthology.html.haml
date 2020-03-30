@@ -14,7 +14,6 @@
       .modal-body
         .anthology#no_anths{style:'display:none'}
           .by-card-header-v02.desktop-only
-            %a.horizontal-collapse-expand{:href => "#"}
             #anthology-select
               .headline-1-v02= t(:reading_list_or_anthology)
             %a.popup-x-v02.pointer{'data-dismiss'=>'modal'} -
@@ -51,6 +50,7 @@
                   %div= t(:cancel)
                 = anth.submit t(:create_new_anthology), {'class' => 'by-button-v02 pointer'}
         = render partial: 'shared/anth_panel'
+
 :javascript
   $(document).ready(function() {
     $('.hide_new_anth').click(function(e){
@@ -58,5 +58,4 @@
       $('#new_anth').hide();
       $('#anth_panel').show();
     });
-
   });
