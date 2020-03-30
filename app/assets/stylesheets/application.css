@@ -21,7 +21,9 @@
 .padbot12 {
   padding-bottom: 12px;
 }
-
+.anthology-badge{
+  cursor: pointer;
+}
 /* .scrolled .top-element{
   margin-top: 80px; /* just an example -- Asaf */
 /* } */

@@ -266,4 +266,5 @@
     $('#anth_collapser').click(function(){
       $('.folded-anthology').show();
     });
+    $('#anth_download_form').attr('action', "#{anthology_download_path(@anthology.id)}"); // update anthology ID to download
   });
