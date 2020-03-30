@@ -136,7 +136,7 @@
       %a.horizontal-collapse-expand#unfold_anth{href: '#', 'data-toggle' => 'modal', 'data-target' => '#anthologiesDlg'}
       %a.popup-x-v02#remove_folded_anth{href: '#', style:'z-index:100'}= '-'
     .by-card-content-v02
-      .rotate#folded_anth_title= @anthology.title || ''
+      .rotate#folded_anth_title= @anthology.nil? ? '' : @anthology.title
 
 / chapter popup
 - if @m.chapters? and @m.long?

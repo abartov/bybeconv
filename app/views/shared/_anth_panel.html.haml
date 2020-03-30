@@ -262,7 +262,7 @@
     if(cur_anth == 0) {
       $('#no_anths').show();
     }
-    $('#folded_anth_title').text('#{@anthology.title}');
+    $('#folded_anth_title').text('#{@anthology.nil? ? '' : @anthology.title}');
     $('#anth_collapser').click(function(){
       $('.folded-anthology').show();
     });
