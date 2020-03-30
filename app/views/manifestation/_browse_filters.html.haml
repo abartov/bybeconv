@@ -163,7 +163,7 @@
           %ul
             %li
               - attrs = {name: "ckb_languages[]", :type => "checkbox", id: 'lang_he', value: 'he'}
-              - attrs.merge!({disabled: 'disabled'}) if @language_facet[:he].nil? || @language_facet[:he] == 0
+              - attrs.merge!({disabled: 'disabled'}) if @language_facet['he'].nil? || @language_facet['he'] == 0
               - attrs.merge!({checked: 'checked'}) if @languages.present? && @languages.include?('he')
               %input{attrs}/
               %label

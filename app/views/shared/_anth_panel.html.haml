@@ -20,7 +20,7 @@
 
     .anthology#anth_panel{style: 'display: block'}
       .by-card-header-v02.desktop-only
-        %a.horizontal-collapse-expand{:href => "#"}
+        %button.by-button-secondary-v02.horizontal-collapse-expand#anth_collapser{style:'border:none', 'data-dismiss'=>'modal'}
         #anthology-select
           /.anthology-select-desktop
           /  .field-v02
@@ -262,4 +262,8 @@
     if(cur_anth == 0) {
       $('#no_anths').show();
     }
+    $('#folded_anth_title').text('#{@anthology.title}');
+    $('#anth_collapser').click(function(){
+      $('.folded-anthology').show();
+    });
   });
