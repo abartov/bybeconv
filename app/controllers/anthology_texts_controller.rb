@@ -18,6 +18,24 @@ class AnthologyTextsController < ApplicationController
     end
   end
 
+  def mass_create
+    @anthology = nil
+    params[:anthology_texts].each do |atext|
+      at = AnthologyText.new(select_permitted(atext[1]))
+      unless at.anthology.nil?
+        at.title = at.manifestation.title_and_authors unless at.manifestation_id.nil?
+        at.save
+        at.anthology.append_to_sequence(at.id)
+        @anthology = at.anthology
+      end
+    end if params[:anthology_texts]
+    @cur_anth_id = @anthology.nil? ? 0 : @anthology.id
+  end
+
+  def select_permitted(atext)
+    atext.permit(:manifestation_id, :anthology_id)
+  end
+
   def edit
     @curated = @anthology_text
   end
