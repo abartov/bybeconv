@@ -31,7 +31,7 @@
         .by-icon-top-v02.purple-v02.icon-bysort-down
   .add-to-anthology{style:'display:none'}
     .left-pointing-arrow= t(:perform_add)
-    %button.by-button-v02
+    %button.by-button-v02#add-to-anth-btn
       .by-icon-v02 &amp; D
   .mainlist
     - pg = @page.to_i
@@ -108,7 +108,7 @@
         $('.multiselect_checkbox').change(function() {
           if($(this).prop('checked') && $('.add-to-anthology').css('display') == 'none') {
             $('.add-to-anthology').show();
-           	startAnimation('blink 2s ease-in','.add-to-anthology')
+           	startAnimation('blink 2s ease-in','.add-to-anthology');
           }
         });
       }
@@ -116,8 +116,16 @@
     $('#select-all').change(function(){
       $('.mainlist li input[type=checkbox]').prop('checked', $(this).prop('checked'));
       if($('.add-to-anthology').css('display') == 'none' && $(this).prop('checked')) {
-            $('.add-to-anthology').show();
-           	startAnimation('blink 2s ease-in','.add-to-anthology')
+        $('.add-to-anthology').show();
+        startAnimation('blink 2s ease-in','.add-to-anthology');
       }
+    });
+    $('#add-to-anth-btn').click(function() {
+      if(#{@anthology.nil? ? 'true' : 'false'} == true) {
+        alert('create or select an anthology first.');
+      } else {
+        // add to current anth
+      }
+      // notify user
     });
   });
