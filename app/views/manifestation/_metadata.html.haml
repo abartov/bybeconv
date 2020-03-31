@@ -14,6 +14,10 @@
         != @translators.map{|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
         - linktext = t(:from_lang)+textify_lang(@e.works[0].orig_lang)
         != " (#{linktext})"
+      - if @e.editors.size > 0
+        %br
+        = "#{t(:editing_or_compilation)}: "
+        != @e.editors.map{|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
 %div
   / metadata
   .work-details
