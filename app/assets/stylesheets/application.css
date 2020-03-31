@@ -24,6 +24,21 @@
 .anthology-badge{
   cursor: pointer;
 }
+input[type=checkbox].multiselect_checkbox {
+  margin-left: 20px;
+}
+
+.multiselect ol > li:before {
+	content:'';
+	position:absolute;
+	top:0px;
+	right:-44px;
+	-moz-box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+	box-sizing:border-box;
+	width:44px;
+}
+
 /* .scrolled .top-element{
   margin-top: 80px; /* just an example -- Asaf */
 /* } */

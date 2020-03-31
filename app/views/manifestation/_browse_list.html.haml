@@ -23,9 +23,9 @@
     - if @sort == 'alphabetical'
       = render partial: 'ab_pagination'
   .sort-buttons-area
-    %button.btn-small-outline-v02.notyet{:href => "#"}
+    %button.btn-small-outline-v02#multiselect_btn
       .by-icon-top-v02.purple-v02 \
-    %button.btn-small-outline-v02.notyet{:href => "#"}
+    %button.btn-small-outline-v02.notyet
       .by-icon-top-v02.purple-v02.icon-bysort-down
   .mainlist
     - pg = @page.to_i
@@ -69,5 +69,14 @@
       startModal('spinnerdiv');
       $('input').attr('disabled', false); // re-enable checkboxes to preserve other filters
       $('#works_filters').submit();
+    });
+    $('#multiselect_btn').click(function(){
+      // determine whether to toggle on or off
+
+      // turn on multi-select mode
+      $('.mainlist').addClass('multiselect');
+      $('.mainlist li').each(function() {
+        $(this).prepend("<input class=\"multiselect_checkbox\" type=\"checkbox\" />");
+      });
     });
   });
