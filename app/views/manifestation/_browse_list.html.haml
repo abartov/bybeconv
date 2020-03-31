@@ -72,11 +72,20 @@
     });
     $('#multiselect_btn').click(function(){
       // determine whether to toggle on or off
+      if($('.mainlist').hasClass('multiselect')) {
+        $('.mainlist').removeClass('multiselect');
+        $('.mainlist ol input').remove();
+      } else {
+        // turn on multi-select mode
+        $('.mainlist').addClass('multiselect');
+        $('.mainlist li').each(function() {
+          $(this).prepend("<input class=\"multiselect_checkbox\" type=\"checkbox\" />");
+        });
 
-      // turn on multi-select mode
-      $('.mainlist').addClass('multiselect');
-      $('.mainlist li').each(function() {
-        $(this).prepend("<input class=\"multiselect_checkbox\" type=\"checkbox\" />");
-      });
+        $('.multiselect_checkbox').change(function() {
+          alert('my state is:'+$(this).prop('checked').toString());
+
+        });
+      }
     });
   });
