@@ -16,17 +16,23 @@
       %button.tag
         = f
         %span.pointer.tag-x{'data-ele': id, 'data-which' => which}= '-'
-  / TODO: filter pills go here
 .by-card-content-v02
   - unless @total_pages <= 1
     = render partial: 'slide_pagination'
     - if @sort == 'alphabetical'
       = render partial: 'ab_pagination'
-  .sort-buttons-area
-    %button.btn-small-outline-v02.notyet{:href => "#"}
-      .by-icon-top-v02.purple-v02 \
-    %button.btn-small-outline-v02.notyet{:href => "#"}
-      .by-icon-top-v02.purple-v02.icon-bysort-down
+  .select-all-with-buttons
+    .select-all-checkbox
+      %input#select-all{type: 'checkbox', style:'display:none'}
+    .sort-buttons-area
+      %button.btn-small-outline-v02#multiselect_btn
+        .by-icon-top-v02.purple-v02 \
+      %button.btn-small-outline-v02.notyet
+        .by-icon-top-v02.purple-v02.icon-bysort-down
+  .add-to-anthology{style:'display:none'}
+    .left-pointing-arrow= t(:perform_add)
+    %button.by-button-v02
+      .by-icon-v02 &amp; D
   .mainlist
     - pg = @page.to_i
     %ol{style:"counter-reset:li #{pg > 1 ? (pg-1)*100 : 0}"}
@@ -38,6 +44,19 @@
       = render partial: 'ab_pagination'
   = hidden_field_tag(:hurl, request.original_url)
 :javascript
+  /**
+   * Handle Animation (Start, Reset, Restart)
+   * animationProprierties | Animation name, Animation time, Animation tween (Sample: animation 1s ease-in )
+   * targetElementClass    | Target element class or id (Sample: .box)
+   * 	 */
+  function startAnimation (animationProprierties , targetElementClass) {
+    var targetElement = $(targetElementClass)
+    targetElement.css('animation', animationProprierties);
+    targetElement.on('animationend webkitAnimationEnd oanimationend MSAnimationEnd', function () {
+    targetElement.css('animation','');
+    targetElement.off();
+    });
+  }
   $(document).ready(function() {
     // Instantiate a slider
     var mySlider = $("input.slider").bootstrapSlider({
@@ -69,5 +88,36 @@
       startModal('spinnerdiv');
       $('input').attr('disabled', false); // re-enable checkboxes to preserve other filters
       $('#works_filters').submit();
+    });
+
+    $('#multiselect_btn').click(function(){
+      // determine whether to toggle on or off
+      if($('.mainlist').hasClass('multiselect')) {
+        $('.mainlist').removeClass('multiselect');
+        $('#select-all').hide();
+        $('.add-to-anthology').hide();
+        $('.mainlist ol input').remove();
+      } else {
+        // turn on multi-select mode
+        $('.mainlist').addClass('multiselect');
+        $('#select-all').show();
+        $('.mainlist li').each(function() {
+          $(this).prepend("<input class=\"multiselect_checkbox\" type=\"checkbox\" />");
+        });
+
+        $('.multiselect_checkbox').change(function() {
+          if($(this).prop('checked') && $('.add-to-anthology').css('display') == 'none') {
+            $('.add-to-anthology').show();
+           	startAnimation('blink 2s ease-in','.add-to-anthology')
+          }
+        });
+      }
+    });
+    $('#select-all').change(function(){
+      $('.mainlist li input[type=checkbox]').prop('checked', $(this).prop('checked'));
+      if($('.add-to-anthology').css('display') == 'none' && $(this).prop('checked')) {
+            $('.add-to-anthology').show();
+           	startAnimation('blink 2s ease-in','.add-to-anthology')
+      }
     });
   });

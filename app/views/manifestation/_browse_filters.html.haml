@@ -50,7 +50,8 @@
           .multi-name-sort.pointer{style:'display:inline-block;'}
             %span.linkcolor.pointer{'data-toggle' => 'modal', 'data-target' => '#authorsDlg'}= t(:multiselect)
           = hidden_field_tag(:search_type, id: 'search_type')
-          = hidden_field_tag(:authors, @authors, id: 'authors[]')
+          = hidden_field_tag(:authors, @authors, id: 'author_ids')
+          = hidden_field_tag(:authors_names, @authors_names, id: 'authors_names')
     .sort-type
       .vertical-expand.fcoll#fgenre{'data-target' =>'#collfgenre', 'data-toggle' =>'collapse'}
         .sort-type-headline= t(:genres)

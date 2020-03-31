@@ -214,4 +214,10 @@
       e.preventDefault();
       $('.folded-anthology').hide();
     });
+    $('#downloadAnthologyDlg').on('shown.bs.modal', function () {
+      $('.download_submitter').removeAttr('disabled'); // re-enable submitter button after file download
+    });
+    $('#downloadDlg').on('shown.bs.modal', function () {
+      $('.download_submitter').removeAttr('disabled');
+    });
   });

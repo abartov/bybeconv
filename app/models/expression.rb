@@ -16,6 +16,10 @@ class Expression < ApplicationRecord
     language != works[0].orig_lang # TODO: handle multiple works?
   end
 
+  def editors
+    return realizers.where(role: Realizer.roles[:editor]).map{|x| x.person}
+  end
+
   def translators
     return realizers.where(role: Realizer.roles[:translator]).map {|x| x.person}
   end
