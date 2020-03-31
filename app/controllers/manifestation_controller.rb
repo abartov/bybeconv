@@ -47,6 +47,7 @@ class ManifestationController < ApplicationController
     @pagetype = :works
     @works_list_title = t(:works_list) # TODO: adjust by query
     prep_for_browse
+    prep_user_content
     render :browse
     respond_to do |format|
       format.html
