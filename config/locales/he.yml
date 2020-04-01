@@ -469,6 +469,7 @@ he:
   author_x: "מחבר: %{x}"
   authors_xx: "מחברים: %{xx}"
   editing_or_compilation: עריכה/ההדרה
+  add_from_browse_view: ראשית בחרו רשימת יצירות דרך התפריט הראשי ואז תוכלו להוסיף יצירות רבות בבת אחת.
   entries: ערכים
   filter: סינון
   actions: פעולות

@@ -16,9 +16,12 @@
             %button.btn-small-outline-v02.btn-text-v02{:href => "#"}= t(:sort_and_filter)
         .author-page-top-icons-desktop
           .top-left-icons-group
-            .icon-in-group-v02.notyet
-              %a{:href => "#"}
-                %span.by-icon-v02.icon-bybookshelf
+            - unless current_user
+              .icon-in-group-v02.anthologies_button.must_login
+                %span.linkcolor.pointer.by-icon-v02 D
+            - else
+              .icon-in-group-v02.anthologies_button{'data-toggle' => 'modal', 'data-target' => '#anthologiesDlg'}
+                %span.linkcolor.pointer.by-icon-v02 D
                 - unless @anthology.nil?
                   .anthology-badge
                     .badge-number= @anthology.texts.length
@@ -30,11 +33,15 @@
                 %span.by-icon-v02 3
         .author-page-top-icons-mobile
           .top-left-icons-group
-            .icon-in-group-v02.notyet
-              %a{:href => "#"}
-                %span.by-icon-v02.icon-bybookshelf
-                .anthology-badge
-                  .badge-number 2
+            - unless current_user
+              .icon-in-group-v02.anthologies_button.must_login
+                %span.linkcolor.pointer.by-icon-v02 D
+            - else
+              .icon-in-group-v02.anthologies_button{'data-toggle' => 'modal', 'data-target' => '#anthologiesDlg'}
+                %span.linkcolor.pointer.by-icon-v02 D
+                - unless @anthology.nil?
+                  .anthology-badge
+                    .badge-number= @anthology.texts.length
             #moreMobile-author.by-dropdown-v02
               %span#nav-more-icon.notyet
                 %a{:href => "#"}

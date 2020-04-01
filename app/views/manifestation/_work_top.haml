@@ -48,11 +48,15 @@
                   %span.linkcolor.pointer.by-icon-v02.icon-byheart-empty
               .icon-in-group-v02.notyet
                 %span.linkcolor.pointer.by-icon-v02 b
-              .icon-in-group-v02.anthologies_button{'data-toggle' => 'modal', 'data-target' => '#anthologiesDlg'}
-                %span.linkcolor.pointer.by-icon-v02 D
-                - unless @anthology.nil?
-                  .anthology-badge
-                    .badge-number= @anthology.texts.length
+              - unless current_user
+                .icon-in-group-v02.anthologies_button.must_login
+                  %span.linkcolor.pointer.by-icon-v02 D
+              - else
+                .icon-in-group-v02.anthologies_button{'data-toggle' => 'modal', 'data-target' => '#anthologiesDlg'}
+                  %span.linkcolor.pointer.by-icon-v02 D
+                  - unless @anthology.nil?
+                    .anthology-badge
+                      .badge-number= @anthology.texts.length
 
               .icons-separator-white
               .icon-in-group-v02.citebutton{'data-toggle' => 'modal', 'data-target' => '#citeDlg'}

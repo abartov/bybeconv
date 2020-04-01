@@ -1,0 +1,27 @@
+#anthologiesDlg.modal{'aria-hidden' => 'true', role: 'dialog'}
+  = render partial: 'shared/anthology'
+.folded-anthology{style:'display:none'}
+  .by-card-header-v02.desktop-only
+    %a.horizontal-collapse-expand#unfold_anth{href: '#', 'data-toggle' => 'modal', 'data-target' => '#anthologiesDlg'}
+    %a.popup-x-v02#remove_folded_anth{href: '#', style:'z-index:100'}= '-'
+  .by-card-content-v02
+    .rotate#folded_anth_title= @anthology.nil? ? '' : @anthology.title
+- if current_user.anthologies.count > 0
+  #downloadAnthologyDlg.modal{'aria-hidden' => 'true', role: 'dialog', style:'z-index:1900'}
+    = render partial: 'shared/download', locals: {anthology: @anthology}
+  #shareAnthologyDlg.modal{'aria-hidden' => 'true', role: 'dialog', style:'z-index:1900'}
+    = render partial: 'shared/share_controls', locals: {anthology: @anthology, url: request.base_url+anthology_path(@anthology.id)}
+:javascript
+  $(document).ready(function() {
+    $('#remove_folded_anth').click(function(e){
+      e.preventDefault();
+      $('.folded-anthology').hide();
+    });
+    $('#unfold_anth').click(function(e){
+      e.preventDefault();
+      $('.folded-anthology').hide();
+    });
+    $('#downloadAnthologyDlg').on('shown.bs.modal', function () {
+      $('.download_submitter').removeAttr('disabled'); // re-enable submitter button after file download
+    });
+  });

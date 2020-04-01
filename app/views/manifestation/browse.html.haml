@@ -25,3 +25,5 @@
         = render partial: 'browse_list'
 #authorsDlg.modal{'aria-hidden' => 'true', role: 'dialog'}
   = render partial: 'authors_select', locals: {authors: @authors}
+- if current_user
+  = render partial: 'shared/anth_stuff'

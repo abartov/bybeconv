@@ -106,7 +106,7 @@
             .by-button-v02.by-button-secondary-v02#add_work_btn
               .right-side-icon.icon-byadd
               %div= t(:add_this_work_to_anthology)
-          .by-button-v02.by-button-secondary-v02.notyet
+          .by-button-v02.by-button-secondary-v02#add_works_btn
             .right-side-icon.icon-byadd
             %div= t(:add_works_to_anthology)
           .by-button-v02.by-button-secondary-v02#add_curated_btn
@@ -167,7 +167,7 @@
         $('#anth_panel').hide();
         $('#rename_dlg').show();
       } else {
-        $.get('#{anthology_path(0)}'.replace('0',sel_anth)); // TODO: also change anthology ID of download and share popups, defined in read.html.haml
+        $.get('#{anthology_path(0)}'.replace('0',sel_anth));
       }
     });
     $('#add_work_btn').click(function(e){
@@ -267,4 +267,14 @@
       $('.folded-anthology').show();
     });
     $('#anth_download_form').attr('action', "#{anthology_download_path(@cur_anth_id)}"); // update anthology ID to download
+    $('#add_works_btn').click(function(){
+      if(/\/read\//.test(window.location)) {
+        alert("#{t(:add_from_browse_view)}");
+      } else {
+        $('#anthologiesDlg').modal('hide');
+        $('.folded-anthology').show();
+        $.fn.browse_multi_select_toggle();
+        // enable multi-select mode
+      }
+    });
   });
