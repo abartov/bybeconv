@@ -33,7 +33,7 @@
     .left-pointing-arrow= t(:perform_add)
     %button.by-button-v02#add-to-anth-btn
       .by-icon-v02 &amp; D
-  .mainlist
+  .mainlist#browse_mainlist
     - pg = @page.to_i
     %ol{style:"counter-reset:li #{pg > 1 ? (pg-1)*100 : 0}"}
       - @works.each do |m|
@@ -90,18 +90,18 @@
       $('#works_filters').submit();
     });
 
-    $('#multiselect_btn').click(function(){
+    $.fn.browse_multi_select_toggle = function() {
       // determine whether to toggle on or off
-      if($('.mainlist').hasClass('multiselect')) {
-        $('.mainlist').removeClass('multiselect');
+      if($('#browse_mainlist').hasClass('multiselect')) {
+        $('#browse_mainlist').removeClass('multiselect');
         $('#select-all').hide();
         $('.add-to-anthology').hide();
-        $('.mainlist ol input').remove();
+        $('#browse_mainlist ol input').remove();
       } else {
         // turn on multi-select mode
-        $('.mainlist').addClass('multiselect');
+        $('#browse_mainlist').addClass('multiselect');
         $('#select-all').show();
-        $('.mainlist li').each(function() {
+        $('#browse_mainlist li').each(function() {
           $(this).prepend("<input class=\"multiselect_checkbox\" type=\"checkbox\" />");
         });
 
@@ -112,6 +112,9 @@
           }
         });
       }
+    }
+    $('#multiselect_btn').click(function(){
+      $.fn.browse_multi_select_toggle();
     });
     $('#select-all').change(function(){
       $('.mainlist li input[type=checkbox]').prop('checked', $(this).prop('checked'));
@@ -125,6 +128,20 @@
         alert('create or select an anthology first.');
       } else {
         // add to current anth
+        anthology_texts = []
+        $('.multiselect_checkbox:checked').each(function(){
+          hr = $(this).next().attr('href');
+          mid = hr.substring(hr.lastIndexOf('/')+1);
+          anthology_texts.push({manifestation_id:  mid, anthology_id: #{@cur_anth_id}});
+        });
+
+        $.ajax({
+          type: "POST",
+          url: '#{mass_create_anthology_texts_path}',
+          dataType: 'script',
+          data: { anthology_texts }
+        });
+
       }
       // notify user
     });
