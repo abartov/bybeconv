@@ -267,6 +267,11 @@
       $('.folded-anthology').show();
     });
     $('#anth_download_form').attr('action', "#{anthology_download_path(@cur_anth_id)}"); // update anthology ID to download
+    $('#shareAnthologyDlg a').each(function() {
+      if($(this).attr('href') != null) {
+        $(this).attr('href', $(this).attr('href').replace(/=http.*/, "=#{request.base_url+anthology_path(@anthology.id)}"));
+      }
+    });
     $('#add_works_btn').click(function(){
       if(/\/read\//.test(window.location)) {
         alert("#{t(:add_from_browse_view)}");
