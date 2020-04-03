@@ -35,6 +35,12 @@
                 %button#adding-authors-btn.by-button-v02{:href => "#"}= t(:add_authors_to_filter)
 :javascript
   $(document).ready(function() {
+    $('input[name="ckb_authors[]"]').change(function() {
+      if($('input[name="ckb_authors[]"]:checked').length > 10) {
+        $(this).prop('checked', false);
+        alert("#{t(:up_to_10_authors)}");
+      }
+    });
     $('#adding-authors-btn').click(function(e) {
       e.preventDefault();
       names = ''
