@@ -1,10 +1,11 @@
 <% if @error %>
-  $('.errorDlgTitle').html('<%= @anthology.errors[:base][0] %>');
+  $('.errorDlgTitle').html('<%= t(:error) %>');
   $('.errorDlgText').html('<%= @anthology.errors[:base][0] %>');
   $('#rename_dlg').hide();
   $('#anth_panel').show();
   $('#anthErrorDlg').modal('show');
 <% else %>
+  $('.badge-number').text("<%= @anthology.texts.length.to_s %>");
   var markup = "<%= j(render partial: 'shared/anth_panel', locals: {show_panel: true}) %>";
   $('#anth_container').replaceWith(markup);
 <% end %>
