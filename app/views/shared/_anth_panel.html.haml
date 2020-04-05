@@ -1,6 +1,6 @@
 #anth_container
   != "<script src=\"https://cdnjs.cloudflare.com/ajax/libs/markdown-it/10.0.0/markdown-it.min.js\"></script>"
-
+  = hidden_field_tag :anth_id, "#{@anthology.nil? ? 0 : @anthology.id}"
   - if @anthology.nil?
     .anthology#anth_panel{style: 'display: none'}
   - else
@@ -180,7 +180,7 @@
         data: {
           anthology_text: {
             manifestation_id: m,
-            anthology_id: #{@cur_anth_id}
+            anthology_id: $('#anth_id').val()
           }
         }
       });
