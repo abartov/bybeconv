@@ -158,12 +158,13 @@
       $('#rename_btn').prop('disabled',true);
       $.post('#{anthology_path(@anthology.nil? ? 0 : @cur_anth_id)}', {'_method':'put', 'anthology[title]': $('#new_title').val()});
     });
-    $('#anthologies').on('change', function(){
+    $('#anthologies').on('change', function(e){
       var sel_anth = $('#anthologies option:selected').val();
       if(sel_anth == '0') { // create new anthology
         $('#anth_panel').hide();
         $('#new_anth').show();
       } else if(sel_anth == '-1') {
+        e.preventDefault();
         $('#anth_panel').hide();
         $('#rename_dlg').show();
       } else {

@@ -93,7 +93,7 @@
                 .work-side-color
                   %div{'class' => "work-genre", style: "background-image: url(\"/assets/work_side_icons_#{@e.genre}.svg\"); background-repeat: no-repeat; background-size:auto;"}
 / found mistake popup
-#proofDlg.modal{'aria-hidden' => 'true', role: 'dialog'}
+#proofDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
   = render partial: 'shared/proof', locals: {manifestation: @m}
 #proofSent{style:'display:none'}
   %span{style:'color:green'}= t(:proof_thanks_html)

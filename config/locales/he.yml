@@ -468,6 +468,7 @@ he:
   title_x: "כותרת: %{x}"
   author_x: "מחבר: %{x}"
   authors_xx: "מחברים: %{xx}"
+  title_already_exists: השם כבר קיים. נא לתת שם אחר.
   editing_or_compilation: עריכה/ההדרה
   add_from_browse_view: ראשית בחרו רשימת יצירות דרך התפריט הראשי ואז תוכלו להוסיף יצירות רבות בבת אחת.
   filter_langs: סנן שפות זרות

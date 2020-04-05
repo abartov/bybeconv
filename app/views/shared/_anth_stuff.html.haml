@@ -1,4 +1,4 @@
-#anthologiesDlg.modal{'aria-hidden' => 'true', role: 'dialog'}
+#anthologiesDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
   = render partial: 'shared/anthology'
 .folded-anthology{style:'display:none'}
   .by-card-header-v02.desktop-only
@@ -7,10 +7,12 @@
   .by-card-content-v02
     .rotate#folded_anth_title= @anthology.nil? ? '' : @anthology.title
 - if current_user.anthologies.count > 0
-  #downloadAnthologyDlg.modal{'aria-hidden' => 'true', role: 'dialog', style:'z-index:1900'}
+  #downloadAnthologyDlg.modal{'aria-hidden' => 'true', role: 'dialog', style:'z-index:1900', tabindex: '-1'}
     = render partial: 'shared/download', locals: {anthology: @anthology}
-  #shareAnthologyDlg.modal{'aria-hidden' => 'true', role: 'dialog', style:'z-index:1900'}
+  #shareAnthologyDlg.modal{'aria-hidden' => 'true', role: 'dialog', style:'z-index:1900', tabindex: '-1'}
     = render partial: 'shared/share_controls', locals: {anthology: @anthology, url: request.base_url+anthology_path(@anthology.id)}
+  #anthErrorDlg.modal{'aria-hidden' => 'true', role: 'dialog', style:'z-index:1900', tabindex: '-1'}
+    = render partial: 'shared/error'
 :javascript
   $(document).ready(function() {
     $('#remove_folded_anth').click(function(e){
