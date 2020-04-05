@@ -1,7 +1,8 @@
 
 class UserAnthTitleValidator < ActiveModel::Validator
   def validate(record)
-    unless record.user.anthologies.where("title = '#{record.title}' and id <> #{record.id}").empty?
+    extra_cond = record.id.nil? ? '' : "and id <> #{record.id}"
+    unless record.user.anthologies.where("title = '#{record.title}' #{extra_cond}").empty?
       record.errors[:base] << I18n.t(:title_already_exists)
     end
   end
