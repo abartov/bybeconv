@@ -132,7 +132,7 @@
         $('.multiselect_checkbox:checked').each(function(){
           hr = $(this).next().attr('href');
           mid = hr.substring(hr.lastIndexOf('/')+1);
-          anthology_texts.push({manifestation_id:  mid, anthology_id: #{@cur_anth_id}});
+          anthology_texts.push({manifestation_id: mid, anthology_id: $('#anth_id').val()});
         });
 
         $.ajax({

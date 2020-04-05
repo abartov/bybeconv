@@ -1,7 +1,19 @@
+
+class UserAnthTitleValidator < ActiveModel::Validator
+  def validate(record)
+    extra_cond = record.id.nil? ? '' : "and id <> #{record.id}"
+    unless record.user.anthologies.where("title = '#{record.title}' #{extra_cond}").empty?
+      record.errors[:base] << I18n.t(:title_already_exists)
+    end
+  end
+end
+
 class Anthology < ApplicationRecord
   belongs_to :user
   has_many :texts, class_name: 'AnthologyText', :dependent => :delete_all
   enum access: %i(priv unlisted pub)
+  validates :title, presence: true
+  validates_with UserAnthTitleValidator
 
   def page_count(force_update = false)
     if self.cached_page_count.nil? or self.updated_at > 30.days.ago or force_update
@@ -10,7 +22,7 @@ class Anthology < ApplicationRecord
         count += at.page_count
       end
       self.cached_page_count = count
-      self.save!
+      self.save
     end
     return self.cached_page_count
   end

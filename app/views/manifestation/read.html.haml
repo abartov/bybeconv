@@ -113,13 +113,13 @@
                     %span= ' '+t(:translation)+': '
                     %span
                       != tr.translators.map{|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
-#downloadDlg.modal{'aria-hidden' => 'true', role: 'dialog'}
+#downloadDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
   = render partial: 'shared/download', locals: {manifestation: @m}
 
-#citeDlg.modal{'aria-hidden' => 'true', role: 'dialog'}
+#citeDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
   = render partial: 'shared/cite', locals: {manifestation: @m}
 / found mistake popup
-#proofDlg.modal{'aria-hidden' => 'true', role: 'dialog'}
+#proofDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
   = render partial: 'shared/proof', locals: {manifestation: @m}
 #proofSent{style:'display:none'}
   %span{style:'color:green'}= t(:proof_thanks_html)

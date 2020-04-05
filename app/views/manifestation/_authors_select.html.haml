@@ -17,6 +17,7 @@
           .by-popup-v02#authors-multi-select-popup
             .by-card-header-v02.desktop-only
               %span.headline-1-v02= t(:authors_select_filter)
+              %p= t(:explain_up_to_10)
             %a.popup-x-v02.linkcolor.pointer{'data-dismiss'=>'modal'} -
             .by-card-content-v02.card-with-button
               .authors-names-area
@@ -35,6 +36,12 @@
                 %button#adding-authors-btn.by-button-v02{:href => "#"}= t(:add_authors_to_filter)
 :javascript
   $(document).ready(function() {
+    $('input[name="ckb_authors[]"]').change(function() {
+      if($('input[name="ckb_authors[]"]:checked').length > 10) {
+        $(this).prop('checked', false);
+        alert("#{t(:up_to_10_authors)}");
+      }
+    });
     $('#adding-authors-btn').click(function(e) {
       e.preventDefault();
       names = ''

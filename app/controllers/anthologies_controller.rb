@@ -103,14 +103,23 @@ class AnthologiesController < ApplicationController
 
   # PATCH/PUT /anthologies/1
   def update
-    if @anthology.update(anthology_params)
+    begin
+      @anthology.update!(anthology_params)
       @cur_anth_id = @anthology.nil? ? 0 : @anthology.id
+      @error = false
       respond_to do |format|
         format.js
         format.html {redirect_to @anthology, notice: 'Anthology was successfully updated.'}
       end
-    else
-      render :edit
+    rescue ActiveRecord::RecordInvalid
+      # show anthErrorDlg if necessary
+      @cur_anth_id = @anthology.nil? ? 0 : @anthology.id
+      @error = true
+      response.status = 200
+      respond_to do |format|
+        format.js
+        format.html {redirect_to @anthology, notice: @anthology.errors[:base][0]}
+      end
     end
   end
 
