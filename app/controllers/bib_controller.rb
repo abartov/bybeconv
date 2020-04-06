@@ -94,7 +94,7 @@ class BibController < ApplicationController
 #        @pubs += to_add
         @pubs += query_source_by_type(q, bib_source).select  {|pub| Holding.where(source_id: url_for_record(bib_source, (pub.source_id.class == Array ? pub.source_id[0] : pub.source_id))).empty? }
       end
-      @total_pubs = pubs.count.to_s
+      @total_pubs = @pubs.count.to_s
     end
   end
 
