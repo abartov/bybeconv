@@ -1,5 +1,4 @@
 - unless pubs.nil?
-  %h3= t(:total)+': '+pubs.count.to_s
   - pubs.each do |pub|
     %tr
       %td= pub.title
@@ -19,3 +18,8 @@
         %button.moveit{onclick: 'moveit(this)'}= t(:add_publication)
         %br
         %button.addholding{onclick: 'addholding(this)'}= t(:add_holding)
+
+:javascript
+  $(document).ready(function() {
+    $('#total_pubs').text("<%= t(:total)+': '+pubs.count.to_s %>");
+  });
