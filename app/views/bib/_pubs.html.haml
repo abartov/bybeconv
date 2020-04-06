@@ -21,5 +21,5 @@
 
 :javascript
   $(document).ready(function() {
-    $('#total_pubs').text("<%= t(:total)+': '+pubs.count.to_s %>");
+    $('#total_pubs').text("#{t(:total)+': '+pubs.count.to_s}");
   });
