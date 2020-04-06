@@ -15,7 +15,7 @@
     .row
       .col-md-6
         = render partial: 'find_bibs', locals: {remote: true}
-        %h3= t(:total)
+        %h3#total_pubs= t(:total)
 
         %table#bibs
           %tr
