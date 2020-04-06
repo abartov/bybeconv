@@ -12,7 +12,6 @@ class BibController < ApplicationController
       @person_name = Person.find(@person_id).name.split(' ')[-1]
     end
     prepare_pubs
-
   end
 
   def scans
@@ -36,7 +35,7 @@ class BibController < ApplicationController
       gen_toc.gsub!(' :',':').gsub!(' ;',';')
       # save TOC to person if no TOC yet
       if @p.toc.nil?
-        t = Toc.new(toc: gen_toc, status: :raw)
+        t = Toc.new(toc: gen_toc,  credit_section: "## #{I18n.t(:typed)}\n* ...\n\n## #{I18n.t(:proofed)}\n* ...", status: :raw)
         t.save!
         @p.toc = t
         @p.save!
@@ -110,7 +109,7 @@ class BibController < ApplicationController
       pp.each{|p| p.holdings.each {|h| hh << h if h.bib_source_id == params[:source_id].to_i}}
     when params[:pd] == '1' && (params[:unique].nil? || params[:unique] == '0')
       hh = Holding.to_obtain(params[:source_id]).joins(publication: [:person]).includes(publication: [:person]).where('people.public_domain' => true).to_a
-    when params[:pd] == '0' && params[:unique] == '1'
+    when (params[:pd].nil? || params[:pd] == '0') && params[:unique] == '1'
       pp = Publication.joins(:holdings).group('publications.id').having('COUNT(distinct holdings.bib_source_id) = 1').where('publications.status = "todo"') # get all publications available in only one source
       pp.each{|p| p.holdings.each {|h| hh << h if h.bib_source_id == params[:source_id].to_i}}
     when params[:nonpd] == '1' && params[:unique] == '1'

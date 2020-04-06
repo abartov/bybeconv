@@ -1,4 +1,5 @@
 - unless pubs.nil?
+  %h3= t(:total)+': '+pubs.count.to_s
   - pubs.each do |pub|
     %tr
       %td= pub.title
