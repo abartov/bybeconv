@@ -298,7 +298,11 @@ class HtmlFileController < ApplicationController
         if h.status != 'Published'
           @html = File.open(h.path, 'r:UTF-8').read
         else
-          redirect_to url_for(controller: :manifestation, action: :read, id: h.manifestations[0].id)
+          if h.manifestations.empty?
+            head :bad_request
+          else
+            redirect_to url_for(controller: :manifestation, action: :read, id: h.manifestations[0].id)
+          end
         end
       else
         path = params[:path]
