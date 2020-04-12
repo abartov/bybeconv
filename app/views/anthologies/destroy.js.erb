@@ -1,4 +1,5 @@
 $('#anth_container').replaceWith("<%= j(render partial: 'shared/anth_panel') %>");
+$('.badge-number').text("<%= @anthology.texts.length.to_s %>");
 if(<%= @cur_anth_id %> == 0) {
   $('#no_anths').show();
 }

@@ -1,3 +1,4 @@
 $('#new_curated')[0].reset();
 var markup = "<%= j(render partial: 'shared/anth_panel', locals: {show_panel: true}) %>";
 $('#anth_container').replaceWith(markup);
+$('.badge-number').text("<%= @anthology.texts.length.to_s %>");

@@ -1,1 +1,2 @@
 $('#anth_container').replaceWith("<%= j(render partial: 'shared/anth_panel', locals: {show_panel: true}) %>");
+$('.badge-number').text("<%= @anthology.texts.length.to_s %>");

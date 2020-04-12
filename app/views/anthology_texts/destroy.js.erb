@@ -1,2 +1,3 @@
 $('#anth_text_'+"<%= @deleted_id %>").remove();
 $('#anth_stats').html("<%= j(render partial: 'shared/anth_stats') %>");
+$('.badge-number').text("<%= @anthology.texts.length.to_s %>");
