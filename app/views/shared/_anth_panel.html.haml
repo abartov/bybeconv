@@ -270,8 +270,8 @@
     $('#anth_download_form').attr('action', "#{anthology_download_path(@cur_anth_id)}"); // update anthology ID to download
     $('#shareAnthologyDlg a').each(function() {
       if($(this).attr('href') != null) {
-        alink = '#{anthology_path(0)}'.replace('0', $('#anth_id').text()));
-        $(this).attr('href', $(this).attr('href', alink);
+        alink = '#{anthology_path(0)}'.replace('0', $('#anth_id').text());
+        $(this).attr('href', $(this).attr('href', alink));
       }
     });
     $('#add_works_btn').click(function(){

@@ -37,33 +37,33 @@
         .col-4
           .work-page-top-icons-desktop
             %a.white{:href => url_for(action: :readmode, id: @m.id)}
-              .btn-small-outline-v02.btn-text-v02.reading-mode-btn-v02
+              .btn-small-outline-v02.btn-text-v02.reading-mode-btn-v02{'title' => "#{t(:reading_mode)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-delay' => { "show": 200, "hide": 100 }}
                 %span.by-icon-v02.iconNearText-v02> /
                 = t(:reading_mode)
             .top-left-icons-group
-              .icon-in-group-v02.like.must_login
+              .icon-in-group-v02.like.must_login{'title' => "#{t(:like)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-delay' => { "show": 200, "hide": 100 }}
                 - if @liked
                   %span.linkcolor.pointer.by-icon-v02.icon-byheart-full
                 - else
                   %span.linkcolor.pointer.by-icon-v02.icon-byheart-empty
-              .icon-in-group-v02.notyet
+              .icon-in-group-v02.notyet{'title' => "#{t(:bookmark)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-delay' => { "show": 200, "hide": 100 }}
                 %span.linkcolor.pointer.by-icon-v02 b
               - unless current_user
                 .icon-in-group-v02.anthologies_button.must_login
                   %span.linkcolor.pointer.by-icon-v02 D
               - else
-                .icon-in-group-v02.anthologies_button{'data-toggle' => 'modal', 'data-target' => '#anthologiesDlg'}
+                .icon-in-group-v02.anthologies_button{'data-toggle' => 'modal', 'title' => "#{t(:anthologies)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-delay' => { "show": 200, "hide": 100 }, 'data-target' => '#anthologiesDlg'}
                   %span.linkcolor.pointer.by-icon-v02 D
                   - unless @anthology.nil?
                     .anthology-badge
                       .badge-number= @anthology.texts.length
 
               .icons-separator-white
-              .icon-in-group-v02.citebutton{'data-toggle' => 'modal', 'data-target' => '#citeDlg'}
+              .icon-in-group-v02.citebutton{'data-toggle' => 'modal', 'title' => "#{t(:cite)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-delay' => { "show": 200, "hide": 100 }, 'data-target' => '#citeDlg'}
                 %span.linkcolor.pointer.by-icon-v02 *
-              .icon-in-group-v02.printbutton
+              .icon-in-group-v02.printbutton{'data-toggle' => 'tooltip', 'title' => "#{t(:print)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-delay' => { "show": 200, "hide": 100 }}
                 %span.linkcolor.pointer.by-icon-v02 9
-              .icon-in-group-v02.download{'data-toggle' => 'modal', 'data-target' => '#downloadDlg', style: "margin-left:0;"}
+              .icon-in-group-v02.download{'data-toggle' => 'modal', 'title' => "#{t(:download)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-delay' => { "show": 200, "hide": 100 }, 'data-target' => '#downloadDlg', style: "margin-left:0;"}
                 %span.linkcolor.pointer.by-icon-v02 3
           .work-page-top-icons-mobile
             %a.btn-small-outline-v02.btn-text-v02.reading-mode-icon-btn-v02{href: url_for(action: :readmode, id: @m.id)}

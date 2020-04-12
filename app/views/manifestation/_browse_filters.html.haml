@@ -2,35 +2,7 @@
 %script{ src: 'https://use.fontawesome.com/3f861a49f5.js'}
 
 = form_tag(works_path, remote: true, method: :post, id: 'works_filters') do
-  .by-card-header-v02
-    .headline-2-v02= t(:sort_by)
-    #sort-by
-      .sort-by-desktop
-        #custom-select
-          %select#sort_by{name: 'sort_by'}
-            %option{value: 'alphabetical'}= t(:alphabetical)
-            %optgroup{label: t(:dates)}
-              %option{value: 'publication_date'}= t(:publication_date)
-              %option{value: 'creation_date'}= t(:creation_date)
-              %option{value: 'upload_date'}= t(:upload_date)
-            %option{value: 'popularity'}= t(:popularity)
-      .sort-by-mobile
-        %p
-          %input#RadioGroupSort_1{:name => "RadioGroupSort", :type => "radio", value: "alphabet"}/
-          %label= t(:alphabetical)
-          %br/
-          %input#RadioGroupSort_2{:name => "RadioGroupSort", :type => "radio", value: "publish_date"}/
-          %label= t(:publication_date)
-          %br/
-          %input#RadioGroupSort_3{:name => "RadioGroupSort", :type => "radio", value: "creation_date"}/
-          %label= t(:creation_date)
-          %br/
-          %input#RadioGroupSort_4{:name => "RadioGroupSort", :type => "radio", value: "online_date"}/
-          %label= t(:upload_date)
-          %br/
-          %input#RadioGroupSort_5{:name => "RadioGroupSort", :type => "radio", value: "popularity"}/
-          %label= t(:popularity)
-          %br/
+  = hidden_field_tag(:sort_by, @sort)
   .by-card-content-v02#filters_panel
     .headline-2-v02= t(:filter_by)
     %span.reset.linkcolor.pointer= t(:reset_filter)
@@ -196,7 +168,7 @@
     = hidden_field_tag(:to_letter, '', id: 'toletter_tag')
 :javascript
   $(document).ready(function() {
-    $('#sort_by').val("#{@sort}");
+    $('#sort_by_dd').val("#{@sort}");
     if("#{@search_type}" == 'authorname') {
       $('#opt_authorname').addClass('active');
       $('.multi-name-sort').show();
