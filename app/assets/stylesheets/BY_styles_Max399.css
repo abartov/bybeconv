@@ -175,7 +175,7 @@
   border-radius: 2px;
    }
 .top-search-mobile-v02 {
-  margin-right: 2px;
+  margin-right: 8px;
 }
 .author-page-top-info-card{
   padding: 3px 6px;
@@ -402,4 +402,25 @@ body {
   font-size: 13px;
   line-height: 14px;
 }
+.second-header-row{
+	min-height: 32px;
+	margin-top: 2px;
+}
+	#moreMobile{
+		margin-right: 4px;
+	}
+	.menuButton-v02{
+		font-size: 16px;
+		margin-top: 4px;
+	}
+	
+	.scrolled .logoBY-scroll-mobile-v02{
+		position: absolute;
+		right: calc(100% - 130px);
+	}
+.scrolled .logoBY-scroll-mobile-v02 img{
+    max-height: 26px;
+	margin-top: 2px;
+}
+	
 }

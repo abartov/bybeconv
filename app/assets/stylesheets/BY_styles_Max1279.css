@@ -18,16 +18,13 @@
 	}
 
   .topMenuItem-v02 {
-    padding-left: 0px; }
+	}
 
   .by-popup-v02 {
   width: 60%;
 }
 	.rm-control-panel{
 	left: 30px;
-}
-.topMenuItem-v02 {
-  margin-left: 8px;
 }
 
 .nested-content{
@@ -44,10 +41,12 @@
 }
 }
 
-@media only screen and (max-width: 1050px) {
-	.topMenuItem-v02 {
-  margin-left: 3px;
-}
+@media only screen and (max-width: 1160px) {
+  #menu {
+    display: none; }
+
+  .menuButton-v02 {
+    display: block; }
 }
 
 
