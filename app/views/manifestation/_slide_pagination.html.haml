@@ -1,24 +1,24 @@
 .advanced-pagination-area
   %span.by-icon-v02
     - unless @page == 1 || @page == '1'
-      = link_to '{', update_param(request.original_url, 'page', '1'), remote: true, id: 'firstnav'
+      = link_to '{', update_param(request.original_url, 'page', '1'), {remote: true, id: 'firstnav'}
     - else
-      %span.navdisabled= '{'
+      %span.by-icon-v02.navdisabled= '{'
   %span.by-icon-v02
     = link_to_previous_page @works, '2', remote: true, id: 'prevnav' do
-      %span.navdisabled= '2'
+      %span.by-icon-v02.navdisabled= '2'
   .advanced-pagination#pagination-slider
     .page= t(:total_result_pages, {x: @total_pages})
     %input.slider.progress-handle{'type': 'text', 'data-slider-min': 1, 'data-slider-max': @total_pages, 'data-slider-step':1, 'data-slider-value': @page, 'data-slider-handle': 'custom', 'data-slider-tooltip': 'always'}
     /%span.progress-handle= "#{@total_pages}/#{@page}"
   %span.by-icon-v02
     = link_to_next_page @works, '1', remote: true, id: 'nextnav' do
-      %span.navdisabled= '1'
-  %span.by-icon-v02
-    - unless @page == @total_pages || @page.to_i == @total_pages
-      = link_to '0', update_param(request.original_url, 'page', @total_pages.to_s), remote: true, id: 'lastnav'
-    - else
-      %span.navdisabled= '0'
+      %span.by-icon-v02.navdisabled= '1'
+  - unless @page == @total_pages || @page.to_i == @total_pages
+    %span.by-icon-v02
+      = link_to '0', update_param(request.original_url, 'page', @total_pages.to_s), {remote: true, id: 'lastnav'}
+  - else
+    %span.by-icon-v02.navdisabled= '0'
 
 :javascript
   var filters = #{@emit_filters == true};
