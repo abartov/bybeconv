@@ -17,7 +17,7 @@ class ManifestationController < ApplicationController
 
   before_action only: [:list, :show, :remove_link, :edit_metadata] do |c| c.require_editor('edit_catalog') end
   before_action only: [:edit, :update] do |c| c.require_editor(['edit_catalog', 'conversion_verification', 'handle_proofs']) end
-
+  before_action only: [:all, :genre, :period, :by_tag] do |c| c.refuse_unreasonable_page end
   autocomplete :manifestation, :title, limit: 20, display_value: :title_and_authors, full: true
   autocomplete :person, :name, :limit => 2, full: true
   autocomplete :tag, :name
@@ -674,6 +674,16 @@ class ManifestationController < ApplicationController
     end
   end
 
+  def refuse_unreasonable_page
+    return true if params[:page].nil? || params[:page].empty?
+    p = params[:page].to_i
+    if p.nil? || p > 2000
+      head(403)
+    else
+      return true
+    end
+  end
+ 
   def prep_for_print
     @m = Manifestation.find(params[:id])
     if @m.nil?

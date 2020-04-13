@@ -1,5 +1,7 @@
 User-Agent: *
-Disallow:
+Disallow: /*print
+Disallow: /*read$
+Crawl-delay: 10
 
 User-Agent: Semrushbot
 Disallow: /
