@@ -33,7 +33,7 @@ class AnthologiesController < ApplicationController
       @na.title = t(:copy_of)+@na.title
       @na.save!
       # now clone anth items
-      @anthology.texts.each do |item|
+      @anthology.ordered_texts.each do |item|
         nitem = item.dup
         nitem.anthology = @na
         nitem.save!
