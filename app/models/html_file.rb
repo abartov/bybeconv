@@ -292,6 +292,7 @@ class NokoDoc < Nokogiri::XML::SAX::Document
       new_buffer.gsub!(" #{c}",c) # remove spaces before punctuation
     }
     new_buffer.gsub!('©כל הזכויות', '© כל הזכויות') # fix an artifact of the conversion
+    new_buffer = new_buffer.gsub('<strong>','<b>').gsub('</strong>','</b>') # apparently the <strong> tag sometimes (when?) causes character-order reversion in the browser
     new_buffer.gsub!(/> (.*?)\n\s*\n\s*\n/, "> \\1\n\n<br>\n") # add <br> tags for poetry, as a workaround to preserve stanza breaks
     new_buffer.gsub!("\n<br>","<br>  ") # sigh
     /#|\p{Word}/.match new_buffer # first non-whitespace char
