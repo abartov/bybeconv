@@ -90,14 +90,29 @@ class AnthologiesController < ApplicationController
   def create
     @anthology = Anthology.new(anthology_params)
 
-    respond_to do |format|
+    begin
       if @anthology.save
         @cur_anth_id = @anthology.nil? ? 0 : @anthology.id
-        format.js
-        format.html {redirect_to @anthology, notice: 'Anthology was successfully created.'}
+        respond_to do |format|
+          format.js
+          format.html {redirect_to @anthology, notice: 'Anthology was successfully created.'}
+        end
       else
-        render :new
+        respond_with_error
       end
+    rescue ActiveRecord::RecordInvalid
+      respond_with_error
+    end
+  end
+
+  def respond_with_error
+    # show anthErrorDlg if necessary
+    @cur_anth_id = (@anthology.nil? || @anthology.id.nil?) ? 0 : @anthology.id
+    @error = true
+    response.status = 200
+    respond_to do |format|
+      format.js
+      format.html {redirect_to @anthology, notice: @anthology.errors[:base][0]}
     end
   end
 
@@ -113,13 +128,7 @@ class AnthologiesController < ApplicationController
       end
     rescue ActiveRecord::RecordInvalid
       # show anthErrorDlg if necessary
-      @cur_anth_id = @anthology.nil? ? 0 : @anthology.id
-      @error = true
-      response.status = 200
-      respond_to do |format|
-        format.js
-        format.html {redirect_to @anthology, notice: @anthology.errors[:base][0]}
-      end
+      respond_with_error
     end
   end
 
