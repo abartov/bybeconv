@@ -15,8 +15,16 @@ class Anthology < ApplicationRecord
   validates :title, presence: true
   validates_with UserAnthTitleValidator
 
+  def has_text?(text_id, anth_text_id = nil)
+    if anth_text_id.nil?
+      return self.texts.where(manifestation_id: text_id).present?
+    else
+      return self.texts.where("manifestation_id = #{text_id} and id <> #{anth_text_id}").present?
+    end
+  end
+
   def page_count(force_update = false)
-    if self.cached_page_count.nil? or self.updated_at > 30.days.ago or force_update
+    if self.cached_page_count.nil? or self.updated_at < 30.days.ago or force_update
       count = 0
       texts.each do |at|
         count += at.page_count

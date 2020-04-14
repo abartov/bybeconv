@@ -14,6 +14,7 @@ he:
   works_by_period: יצירות לפי תקופה
   works_by_genre: יצירות לפי סוגה
   works_by_tag: יצירות לפי תגית
+  notice: הודעה
   sitenotice: הודעת מערכת
   new_sitenotice: הודעת מערכת חדשה
   sitenotices: הודעות מערכת
@@ -469,6 +470,8 @@ he:
   author_x: "מחבר: %{x}"
   authors_xx: "מחברים: %{xx}"
   title_already_exists: השם כבר קיים. נא לתת שם אחר.
+  text_already_in_anthology: היצירה הנוכחית כבר מופיעה במקראה הזאת.
+  anth_x_works_skipped: "%{x} מהיצירות שסימנת לא נוספו למקראה כי הן כבר מופיעות בה."
   editing_or_compilation: עריכה/ההדרה
   add_from_browse_view: ראשית בחרו רשימת יצירות דרך התפריט הראשי ואז תוכלו להוסיף יצירות רבות בבת אחת.
   filter_langs: סנן שפות זרות

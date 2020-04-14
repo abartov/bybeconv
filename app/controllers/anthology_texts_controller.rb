@@ -7,28 +7,50 @@ class AnthologyTextsController < ApplicationController
     @anthology_text.title = @anthology_text.manifestation.title_and_authors unless @anthology_text.manifestation_id.nil?
     @anthology = @anthology_text.anthology
     @cur_anth_id = @anthology.nil? ? 0 : @anthology.id
-    respond_to do |format|
+    begin
       if @anthology_text.save
-        @anthology.append_to_sequence(@anthology_text.id)
-        format.js
-        format.html {redirect_to @anthology_text, notice: 'Anthology text was successfully created.'}
+        respond_to do |format|
+          @anthology.append_to_sequence(@anthology_text.id)
+          format.js
+          format.html {redirect_to @anthology_text, notice: 'Anthology text was successfully created.'}
+        end
       else
-        render :new
+        respond_with_error
       end
+    rescue ActiveRecord::RecordInvalid
+      respond_with_error
+    end
+  end
+
+  def respond_with_error
+    # show anthErrorDlg if necessary
+    @cur_anth_id = (@anthology.nil? || @anthology.id.nil?) ? 0 : @anthology.id
+    @error = true
+    response.status = 200
+    respond_to do |format|
+      format.js
+      format.html {redirect_to @anthology_text, notice: @anthology_text.errors[:base][0]}
     end
   end
 
   def mass_create
     @anthology = nil
-    params[:anthology_texts].each do |atext|
-      at = AnthologyText.new(select_permitted(atext[1]))
-      unless at.anthology.nil?
-        at.title = at.manifestation.title_and_authors unless at.manifestation_id.nil?
-        at.save
-        at.anthology.append_to_sequence(at.id)
-        @anthology = at.anthology
+    @skipped_records = 0
+    if params[:anthology_texts]
+      params[:anthology_texts].each do |atext|
+        at = AnthologyText.new(select_permitted(atext[1]))
+        unless at.anthology.nil?
+          @anthology = at.anthology
+          at.title = at.manifestation.title_and_authors unless at.manifestation_id.nil?
+          begin
+            at.save!
+            at.anthology.append_to_sequence(at.id)
+          rescue ActiveRecord::RecordInvalid
+            @skipped_records += 1
+          end
+        end
       end
-    end if params[:anthology_texts]
+    end
     @cur_anth_id = @anthology.nil? ? 0 : @anthology.id
   end
 
