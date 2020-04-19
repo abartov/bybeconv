@@ -518,7 +518,7 @@ class ManifestationController < ApplicationController
         @search_type = 'authorname'
         author_ids = params['authors'].split(',').map{|x| x.to_i}
         query_params[:people_ids] = author_ids
-        @authors = author_ids.join(',')
+        @authors = author_ids # .join(',')
         query_parts[:authors] = 'people.id IN (:people_ids)'
         @authors_names = params['authors_names']
         @filters << [I18n.t(:authors_xx, {xx: params['authors_names']}), 'authors', :text]
