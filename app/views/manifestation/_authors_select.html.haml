@@ -22,7 +22,7 @@
             .by-card-content-v02.card-with-button
               .authors-names-area
                 .row
-                  - Person.all.order(:name).each_slice((Person.count/3.0).round) do |slice|
+                  - list.order(:name).each_slice((list.count/3.0).round) do |slice|
                     .col
                       - slice.each do |au|
                         - attrs = {name: "ckb_authors[]", type: "checkbox", id: "au_#{au.id}", value: au.id}
@@ -31,8 +31,8 @@
                         %label= au.name
                         %br/
               .bottom-left-buttons
-                %button.by-button-v02.by-button-secondary-v02
-                  .linkcolor.pointer{'data-dismiss'=>'modal'}= t(:back)
+                %button.by-button-v02.by-button-secondary-v02{'data-dismiss'=>'modal'}
+                  .linkcolor.pointer= t(:back)
                 %button#adding-authors-btn.by-button-v02{:href => "#"}= t(:add_authors_to_filter)
 :javascript
   $(document).ready(function() {

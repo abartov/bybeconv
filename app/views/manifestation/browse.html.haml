@@ -24,6 +24,6 @@
       .by-card-v02#thelist
         = render partial: 'browse_list'
 #authorsDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
-  = render partial: 'authors_select', locals: {authors: @authors}
+  = render partial: 'authors_select', locals: {authors: @authors, list: @authors_list}
 - if current_user
   = render partial: 'shared/anth_stuff'

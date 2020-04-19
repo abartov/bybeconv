@@ -515,7 +515,6 @@ class ManifestationController < ApplicationController
     @emit_filters = true if params[:load_filters] == 'true' || params[:emit_filters] == 'true'
     if params['search_input'].present? || params['authorstr'].present? || params['authors'].present?
       if params['authors'].present?
-        # TODO: implement
         @search_type = 'authorname'
         author_ids = params['authors'].split(',').map{|x| x.to_i}
         query_params[:people_ids] = author_ids
@@ -616,6 +615,16 @@ class ManifestationController < ApplicationController
         @language_facet[l] = 0 unless @language_facet[l].present?
       end
       @uploaded_dates = make_collection(query_parts.reject{|k,v| k == :uploaded }, query_params, joins_needed, people_needed, '').pluck(:created_at).map{|x| "{value: #{x.strftime("%Y%m%d")}}"}.join(", ")
+      if query_parts.empty?
+        @authors_list = Person.all
+      else
+        c = make_collection(query_parts.reject{|k,v| [:people, :authors].include?(k)}, query_params, joins_needed, true,'').pluck('people.id').uniq
+        if c.empty?
+          @authors_list = []
+        else
+          @authors_list = Person.where(id: c)
+        end
+      end
       # TODO: date histogram      # (bins, freqs) = uploaded_dates.histogram
       # TODO: curated facet
       end
@@ -683,7 +692,7 @@ class ManifestationController < ApplicationController
       return true
     end
   end
- 
+
   def prep_for_print
     @m = Manifestation.find(params[:id])
     if @m.nil?

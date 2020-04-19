@@ -2,4 +2,5 @@ $('#thelist').html("<%= j(render partial: 'browse_list') %>");
 stopModal('spinnerdiv');
 <% if @emit_filters %>
 $('#sort_filter_panel').html("<%= j(render partial: 'browse_filters') %>");
+$('#authorsDlg').html("<%= j(render partial: 'authors_select', locals: {authors: @authors, list: @authors_list}) %>");
 <% end %>
