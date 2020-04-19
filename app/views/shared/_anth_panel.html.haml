@@ -1,6 +1,6 @@
 #anth_container
   != "<script src=\"https://cdnjs.cloudflare.com/ajax/libs/markdown-it/10.0.0/markdown-it.min.js\"></script>"
-  = hidden_field_tag :anth_id, "#{@anthology.nil? ? 0 : @anthology.id}"
+  = hidden_field_tag :anth_id, "#{@anthology.nil? ? 0 : @anthology.id}", id: 'anth_id'
   - if @anthology.nil?
     .anthology#anth_panel{style: 'display: none'}
   - else
@@ -270,8 +270,10 @@
     $('#anth_download_form').attr('action', "#{anthology_download_path(@cur_anth_id)}"); // update anthology ID to download
     $('#shareAnthologyDlg a').each(function() {
       if($(this).attr('href') != null) {
-        alink = '#{anthology_path(0)}'.replace('0', $('#anth_id').text());
-        $(this).attr('href', $(this).attr('href', alink));
+        alink = '#{request.base_url}#{anthology_path(0)}'.replace('0', $('input[name=anth_id]').val());
+        s = $(this).attr('href');
+        pos = s.lastIndexOf('http');
+        $(this).attr('href', $(this).attr('href').substr(0, pos)+alink);
       }
     });
     $('#add_works_btn').click(function(){
