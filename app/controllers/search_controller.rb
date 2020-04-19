@@ -7,9 +7,9 @@ class SearchController < ApplicationController
   def results
     begin
       unless params[:search].nil?
-        @search = ManifestationsSearch.new(params[:search])
+        @search = ManifestationsSearch.new(sanitize_term(params[:search]))
       else
-        @search = ManifestationsSearch.new(query: params[:q])
+        @search = ManifestationsSearch.new(query: sanitize_term(params[:q]))
       end
       @results = @search.search.page(params[:page])
       @total = @results.count
@@ -20,5 +20,11 @@ class SearchController < ApplicationController
   end
 
   def advanced
+  end
+
+  protected
+
+  def sanitize_term(term)
+    return term.gsub('"', ' ')
   end
 end
