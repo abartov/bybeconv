@@ -605,6 +605,7 @@ class ManifestationController < ApplicationController
     else
       @works = @collection.page(@page) # get page X of manifestations
     end
+    @authors_list = Person.all
     if @emit_filters == true
       @genre_facet = make_collection(query_parts.reject{|k,v| k == :genres }, query_params, joins_needed, people_needed, '').group('expressions.genre').count
       @period_facet = make_collection(query_parts.reject{|k,v| k == :periods }, query_params, joins_needed, people_needed, '').group('expressions.period').count
@@ -615,13 +616,9 @@ class ManifestationController < ApplicationController
         @language_facet[l] = 0 unless @language_facet[l].present?
       end
       @uploaded_dates = make_collection(query_parts.reject{|k,v| k == :uploaded }, query_params, joins_needed, people_needed, '').pluck(:created_at).map{|x| "{value: #{x.strftime("%Y%m%d")}}"}.join(", ")
-      if query_parts.empty?
-        @authors_list = Person.all
-      else
+      unless query_parts.empty?
         c = make_collection(query_parts.reject{|k,v| [:people, :authors].include?(k)}, query_params, joins_needed, true,'').pluck('people.id').uniq
-        if c.empty?
-          @authors_list = []
-        else
+        unless c.empty?
           @authors_list = Person.where(id: c)
         end
       end
