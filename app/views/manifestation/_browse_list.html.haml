@@ -109,7 +109,12 @@
       // uncheck/clear the appropriate field
       if($(this).attr('data-which') == 'text') {
         $('#'+$(this).attr('data-ele')).val('');
-      } else {
+      } else if($(this).attr('data-which') == 'authorlist') {
+        $('#author_ids').val('');
+        $('#authors_names').val('');
+        $('input[name="ckb_authors[]"]').prop('checked', false);
+      }
+      else {
         $('#'+$(this).attr('data-ele')).prop("checked", false);
       }
       // and submit the form

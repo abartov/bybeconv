@@ -521,7 +521,7 @@ class ManifestationController < ApplicationController
         @authors = author_ids # .join(',')
         query_parts[:authors] = 'people.id IN (:people_ids)'
         @authors_names = params['authors_names']
-        @filters << [I18n.t(:authors_xx, {xx: params['authors_names']}), 'authors', :text]
+        @filters << [I18n.t(:authors_xx, {xx: params['authors_names']}), 'authors', :authorlist]
       elsif (params['search_type'].present? && params['search_type'] == 'authorname') || (params['authorstr'].present? && params['search_input'].empty?)
         query_params[:searchstring] = '%'+params['authorstr']+'%'
         query_parts[:people] = 'cached_people LIKE :searchstring'
