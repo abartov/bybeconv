@@ -16,7 +16,7 @@
                 %span.by-icon-v02 _
           %br
           .headline-3-v02= t(:from_pby_and_available_at)+": #{request.base_url+anthology_path(@anthology.id)}"
-      #actualtext{"data-spy" => 'scroll', "data-target" => '#chapternav'}
+      #actualtext
         - first = true
         - @htmls.each do |title, html, is_curated, genre, i|
           %div{id: 'title'+i.to_s}

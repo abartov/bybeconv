@@ -4,6 +4,7 @@
     = render partial: 'anth_body'
 :javascript
   $(document).ready(function() {
+    //$('body').scrollspy('refresh');
     // print button
     $('.printbutton').click(function() {
       window.open("#{@print_url}",'_blank');

@@ -44,11 +44,7 @@
   <% end %>
   <%= csrf_meta_tags %>
 </head>
-<% if @scrollspy_target.nil? %>
-  <body dir="rtl" style="position:relative;">
-<% else %>
-  <body dir="rtl" style="position:relative;" data-spy="scroll" data-offset="200" data-target="#<%= @scrollspy_target %>">
-<% end %>
+<body dir="rtl" style="position:relative;">
 <% unless @print
     flash.each do |name, msg| -%>
       <%= content_tag :div, msg, class: "top-element #{name}" %>
@@ -217,6 +213,9 @@
       var h = $('#header').height();
       $('.top-element').css('margin-top',h+5);
     }
+    <% unless @scrollspy_target.nil? %>
+    $('body').scrollspy({ target: "#<%= @scrollspy_target %>", offset: $('#header').height() });
+    <% end %>
   });
 </script>
 
