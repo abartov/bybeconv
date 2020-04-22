@@ -37,7 +37,7 @@
             /  %a.nav-link.nav-link-arrows{"aria-controls" => "#", "aria-selected" => "false", :disabled => "disabled", :href => "#"}
             /    .side-menu-arrow (
             - @htmls.each do |title, html, is_curated, genre, i|
-              %li.nav-item{'data-toggle': 'tooltip', 'data-placement': 'top', title: title}
+              %li.nav-item{'data-toggle': 'tooltip', 'data-placement': 'top', 'data-delay' => { "show": 500, "hide": 100 }, title: title}
                 %a.nav-link.nav-link-chapter{"aria-controls" => "#", href: "#title#{i.to_s}"}
                   .nav-chapter-name= title+(is_curated ? " (#{t(:curated_text)})" : '')
             /%li.nav-item
