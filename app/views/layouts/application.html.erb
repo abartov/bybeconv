@@ -56,14 +56,14 @@
   <header>
     <div class="container-fluid" id="header">
       <div class="container-fluid" id="header-general">
-        <% unless sitenotice.empty? %>
+        <% unless sitenotice.empty? or session[:dismissed_sitenotice] %>
           <div class="internal-notification">
             <div class="internal-notification-content">
               <!-- <div class="notification-pic"><img src="images/system-notification-sample-pic.png" width="200" height="40" alt=""/></div> -->
               <div><p><%= raw sitenotice %></p>
               </div>
             </div>
-            <span class="popup-x-v02" style="display:none">-</a>
+            <span class="popup-x-v02 pointer" id="dismiss_sitenotice">-</a>
           </div>
         <% end %>
         <div class="row">
@@ -208,7 +208,7 @@
     });
     $('[data-toggle="popover"]').popover();
     $('[data-toggle="tooltip"]').tooltip();
-    if("#{sitenotice}" != "") {
+    if("<%= sitenotice %>" != "") {
       // adjust page to accommodate extra header height
       var h = $('#header').height();
       $('.top-element').css('margin-top',h+5);
@@ -216,6 +216,12 @@
     <% unless @scrollspy_target.nil? %>
     $('body').scrollspy({ target: "#<%= @scrollspy_target %>", offset: $('#header').height() });
     <% end %>
+    if($('#dismiss_sitenotice').length > 0) {
+      $('#dismiss_sitenotice').click(function(){
+        $('.internal-notification').hide();
+        $.get('<%= session_dismiss_sitenotice_path %>');
+      });
+    }
   });
 </script>
 

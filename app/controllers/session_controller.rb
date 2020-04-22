@@ -27,6 +27,10 @@ class SessionController < ApplicationController
     redirect_to '/'
   end
 
+  def dismiss_sitenotice
+    session[:dismissed_sitenotice] = true
+  end
+
   protected
 
   def auth_hash
