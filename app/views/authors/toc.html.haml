@@ -56,7 +56,7 @@
             .toc#maintext
               - unless @toc.nil?
                 = render partial: 'toc', locals: {margin: true}
-                .by-card-v02#volunteers
+                .by-card-v02#text-volunteers-desktop
                   .by-card-header-v02
                     %span.headline-1-v02= t(:volunteers_who_helped, {author: @author.name, gender_letter: @author.gender_letter})
                   .by-card-content-v02
@@ -119,6 +119,12 @@
                       %a{ href: featured.external_link, target: '_blank'}
                         %button.by-button-v02.button-to-full-v02= t(:to_external_content)
             = render partial: 'aboutnesses'
+            .by-card-v02#text-volunteers-mobile
+              .by-card-header-v02
+                %span.headline-1-v02= t(:volunteers_who_helped, {author: @author.name, gender_letter: @author.gender_letter})
+              .by-card-content-v02
+                .credits
+                  != @credits
 
 :javascript
   $(document).ready(function(){
