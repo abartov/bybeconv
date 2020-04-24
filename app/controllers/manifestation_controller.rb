@@ -481,7 +481,7 @@ class ManifestationController < ApplicationController
 
   def normalized_date_formatter(datetype, d)
     return d unless datetype == 'uploaded'
-    return d.sub('/','-')+'-01'
+    return d+'-01-01'
   end
 
   def prep_collection
@@ -636,6 +636,7 @@ class ManifestationController < ApplicationController
     @total_pages = @works.total_pages
     d = Date.today
     @maxdate = "#{d.year}-#{'%02d' % d.month}"
+    #@maxdate = d.year.to_s
     #@maxdate = Date.today
     @header_partial = 'manifestation/browse_top'
   end
