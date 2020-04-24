@@ -620,6 +620,14 @@ display: none;	}
 .scrolled-logoBY-v02{
 	content: url("/assets/logo-byp-white.svg");
 }
+#text-volunteers-desktop{
+  display:none;
+}
+#text-volunteers-mobile{
+  display: block;
+}
+
+	
 	
 }
 

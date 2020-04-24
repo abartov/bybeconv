@@ -420,8 +420,8 @@ padding-left: 6px;
 .topMenuItem-v02 {
   display: inline-block;
   padding-right: 0;
-  margin-left: 5px;
-  margin-right: 5px;
+  margin-left: 4px;
+  margin-right: 3px;
 }
 .topMenuItem-v02:last-child{
 	margin-left: 0;
@@ -3471,6 +3471,18 @@ padding-left: 0;
 	border-bottom: none;
 	margin-bottom: 10px;
 }
+.note{
+	width: auto;
+	z-index: 100;
+	position: absolute;
+	top:30px;
+	left:30px;
+	background-color: #d9cdd5;
+}
+.note .by-card-header-v02{
+	border-bottom: none;
+	margin-bottom: 10px;
+}
 .texts-list-top-info-card{
   width: 100%;
   padding: 3px 15px 3px 15px;
@@ -4099,7 +4111,7 @@ break{
 	padding-left: 15px;
 	margin-right: -15px;
 	padding-right: 15px;
-	max-height: 530px;
+	height: 400px;
 	overflow: auto;
 }
 .self-content-side-color{
@@ -4560,8 +4572,9 @@ break{
   padding: 0px 2px;
 }
 #chapter_dropdown_content {
-    overflow-y: scroll;
-    max-height: calc(100vh - 220px);
+    overflow-y: auto;
+	height:auto;
+    max-height: calc(100vh - 260px);
 }
 .internal-notification{
 	position: relative;
@@ -4691,3 +4704,61 @@ break{
 .scrolled-logoBY-v02{
 	content: url("/assets/logo-byp.svg");
 }
+#authors-multi-select-popup{
+	width: 80%;
+}
+#authors-multi-select-popup .by-card-content-v02{
+	max-height: calc(100% - 320px);
+}
+#text-volunteers-desktop{
+	display: block;
+}
+#text-volunteers-mobile{
+  display: none;
+}
+
+/* datetimepicker style */
+
+.bootstrap-datetimepicker-widget table {
+  background-color: #FFFFFF;
+}
+.bootstrap-datetimepicker-widget table th.disabled, .bootstrap-datetimepicker-widget table th.disabled:hover {
+  color: #919191;
+}
+.bootstrap-datetimepicker-widget table td.cw {
+  color: #919191;
+}
+.bootstrap-datetimepicker-widget table td.old, .bootstrap-datetimepicker-widget table td.new {
+  color: #919191;
+}
+.bootstrap-datetimepicker-widget table td.today:before {
+  border-bottom-color: #660248;
+}
+.bootstrap-datetimepicker-widget table td.active, .bootstrap-datetimepicker-widget table td.active:hover {
+  background-color: #660248;
+  text-shadow: none;
+}
+.bootstrap-datetimepicker-widget table td.disabled, .bootstrap-datetimepicker-widget table td.disabled:hover {
+  color: #919191;
+}
+.bootstrap-datetimepicker-widget table td span.active {
+  background-color: #660248;
+  text-shadow: none;
+}
+.bootstrap-datetimepicker-widget table td span.old {
+  color: #919191; 
+}
+.bootstrap-datetimepicker-widget table td span.disabled, .bootstrap-datetimepicker-widget table td span.disabled:hover {
+  color: #919191;
+}
+.bootstrap-datetimepicker-widget table thead tr:first-child th:hover {
+  background: #eeeced;
+}
+.bootstrap-datetimepicker-widget table td.day:hover, .bootstrap-datetimepicker-widget table td.hour:hover, .bootstrap-datetimepicker-widget table td.minute:hover, .bootstrap-datetimepicker-widget table td.second:hover {
+  background: #eeeced;
+}
+.bootstrap-datetimepicker-widget table td span:hover {
+  background: #eeeced; 
+}
+
+/* datetimepicker style - end */
