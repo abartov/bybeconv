@@ -4752,13 +4752,13 @@ break{
   color: #919191;
 }
 .bootstrap-datetimepicker-widget table thead tr:first-child th:hover {
-  background: #eeeced;
+  background-color: #eeeced;
 }
 .bootstrap-datetimepicker-widget table td.day:hover, .bootstrap-datetimepicker-widget table td.hour:hover, .bootstrap-datetimepicker-widget table td.minute:hover, .bootstrap-datetimepicker-widget table td.second:hover {
-  background: #eeeced;
+  background-color: #eeeced;
 }
 .bootstrap-datetimepicker-widget table td span:hover {
-  background: #eeeced; 
+  background-color: #eeeced; 
 }
 
 /* datetimepicker style - end */
