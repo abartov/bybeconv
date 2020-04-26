@@ -1,5 +1,10 @@
   $('#new_curated')[0].reset();
-  $('.badge-number').text("<%= @anthology.texts.length.to_s %>");
+  <% if @anthology.texts.length > 0 %>
+    $('.badge-number').text("<%= @anthology.texts.length.to_s %>");
+    $('.anthology-badge').show();
+  <% else %>
+    $('.anthology-badge').hide();
+  <% end %>
   var markup = "<%= j(render partial: 'shared/anth_panel', locals: {show_panel: true}) %>";
   $('#anth_container').replaceWith(markup);
 <% if @skipped_records > 0 %>
@@ -7,4 +12,5 @@
   $('.errorDlgText').html('<%= t(:anth_x_works_skipped, {x: @skipped_records}) %>');
   $('#anth_panel').show();
   $('#anthErrorDlg').modal('show');
+  $('#anthologies').val($.cur_anth.toString());
 <% end %>

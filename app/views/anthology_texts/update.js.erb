@@ -1,7 +1,6 @@
 <% if @error %>
   $('.errorDlgTitle').html('<%= t(:please_note) %>');
   $('.errorDlgText').html('<%= @anthology_text.errors[:base][0] %>');
-  $('#rename_dlg').hide();
   $('#anth_panel').show();
   $('#anthErrorDlg').modal('show');
 <% else %>

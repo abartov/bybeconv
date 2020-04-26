@@ -149,6 +149,7 @@
       }
     });
     if(cur_anth != 0) {
+      $.cur_anth = cur_anth;
       $('#access').on('change', function() {
         var new_access = $('#access option:selected').val();
         $.post('#{anthology_path(@anthology.nil? ? 0 : @cur_anth_id)}', {'_method':'put', 'anthology[access]': new_access} );

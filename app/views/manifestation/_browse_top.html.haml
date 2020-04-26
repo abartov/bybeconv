@@ -23,8 +23,8 @@
               .icon-in-group-v02.anthologies_button{'data-toggle' => 'modal', 'data-target' => '#anthologiesDlg'}
                 %span.linkcolor.pointer.by-icon-v02 D
                 - unless @anthology.nil?
-                  .anthology-badge
-                    .badge-number= @anthology.texts.length
+                  .anthology-badge{style: "display: #{@anthology.texts.length > 0 ? 'block' : 'none'}"}
+                    .badge-number= @anthology.texts.length.to_s
             .icon-in-group-v02.notyet
               %a{:href => "#"}
                 %span.by-icon-v02 9
@@ -40,8 +40,8 @@
               .icon-in-group-v02.anthologies_button{'data-toggle' => 'modal', 'data-target' => '#anthologiesDlg'}
                 %span.linkcolor.pointer.by-icon-v02 D
                 - unless @anthology.nil?
-                  .anthology-badge
-                    .badge-number= @anthology.texts.length
+                  .anthology-badge{style: "display: #{@anthology.texts.length > 0 ? 'block' : 'none'}"}
+                    .badge-number= @anthology.texts.length.to_s
             #moreMobile-author.by-dropdown-v02
               %span#nav-more-icon.notyet
                 %a{:href => "#"}

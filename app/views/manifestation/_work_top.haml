@@ -55,8 +55,8 @@
                 .icon-in-group-v02.anthologies_button{'data-toggle' => 'modal', 'title' => "#{t(:anthologies)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }, 'data-target' => '#anthologiesDlg'}
                   %span.linkcolor.pointer.by-icon-v02 D
                   - unless @anthology.nil?
-                    .anthology-badge
-                      .badge-number= @anthology.texts.length
+                    .anthology-badge{style: "display: #{@anthology.texts.length > 0 ? 'block' : 'none'}"}
+                      .badge-number= @anthology.texts.length.to_s
 
               .icons-separator-white
               .icon-in-group-v02.citebutton{'data-toggle' => 'modal', 'title' => "#{t(:cite)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }, 'data-target' => '#citeDlg'}

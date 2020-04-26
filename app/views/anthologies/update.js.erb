@@ -1,11 +1,17 @@
 <% if @error %>
   $('.errorDlgTitle').html('<%= t(:please_note) %>');
   $('.errorDlgText').html('<%= @anthology.errors[:base][0] %>');
+  $('#anthologies').val($.cur_anth.toString());
   $('#rename_dlg').hide();
   $('#anth_panel').show();
   $('#anthErrorDlg').modal('show');
 <% else %>
-  $('.badge-number').text("<%= @anthology.texts.length.to_s %>");
+  <% if @anthology.texts.length > 0 %>
+    $('.badge-number').text("<%= @anthology.texts.length.to_s %>");
+    $('.anthology-badge').show();
+  <% else %>
+    $('.anthology-badge').hide();
+  <% end %>
   var markup = "<%= j(render partial: 'shared/anth_panel', locals: {show_panel: true}) %>";
   $('#anth_container').replaceWith(markup);
 <% end %>

@@ -1,2 +1,7 @@
 $('#anth_container').replaceWith("<%= j(render partial: 'shared/anth_panel') %>");
-$('.badge-number').text("<%= @anthology.texts.length.to_s %>");
+<% if @anthology.texts.length > 0 %>
+  $('.badge-number').text("<%= @anthology.texts.length.to_s %>");
+  $('.anthology-badge').show();
+<% else %>
+  $('.anthology-badge').hide();
+<% end %>

@@ -1,8 +1,13 @@
 $('#anth_container').replaceWith("<%= j(render partial: 'shared/anth_panel') %>");
-$('.badge-number').text("<%= @anthology.texts.length.to_s %>");
 if(<%= @cur_anth_id %> == 0) {
   $('#no_anths').show();
 }
 else {
   $('#anth_panel').show();
+  <% if @anthology.texts.length > 0 %>
+    $('.badge-number').text("<%= @anthology.texts.length.to_s %>");
+    $('.anthology-badge').show();
+  <% else %>
+    $('.anthology-badge').hide();
+  <% end %>
 }

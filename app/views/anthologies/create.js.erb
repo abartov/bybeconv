@@ -4,7 +4,7 @@
   $('#new_anth').hide();
   $('#anth_panel').show();
   $('#anthErrorDlg').modal('show');
+  $('#anthologies').val($.cur_anth.toString());
 <% else %>
   $('#anth_container').replaceWith("<%= j(render partial: 'shared/anth_panel', locals: {show_panel: true}) %>");
-  $('.badge-number').text("<%= @anthology.texts.length.to_s %>");
 <% end %>
