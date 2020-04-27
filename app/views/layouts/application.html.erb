@@ -208,11 +208,9 @@
     });
     $('[data-toggle="popover"]').popover();
     $('[data-toggle="tooltip"]').tooltip();
-    if("<%= sitenotice %>" != "") {
-      // adjust page to accommodate extra header height
-      var h = $('#header').height();
-      $('.top-element').css('margin-top',h+5);
-    }
+    // adjust page to accommodate extra header height
+    var h = $('#header').height();
+    $('.top-element').css('margin-top',h+5);
     <% unless @scrollspy_target.nil? %>
     $('body').scrollspy({ target: "#<%= @scrollspy_target %>", offset: $('#header').height() });
     <% end %>
