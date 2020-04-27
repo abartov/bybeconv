@@ -43,7 +43,7 @@
               = anth.hidden_field :access, value: 'priv'
               = anth.hidden_field :user_id, value: current_user.id
               = anth.label t(:anthology_name), {'class' => 'field-label'}
-              = anth.text_field :title, autofocus: true, required: true, class: 'field-v02', value: "#{t(:anthology)}-#{@anthologies.count + 1}"
+              = anth.text_field :title, autofocus: true, required: true, class: 'field-v02', value: "#{@new_anth_name}"
               .no-header
               .bottom-left-buttons
                 %button.by-button-v02.by-button-secondary-v02.pointer.hide_new_anth

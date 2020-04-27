@@ -89,7 +89,6 @@ class AnthologiesController < ApplicationController
   # POST /anthologies
   def create
     @anthology = Anthology.new(anthology_params)
-
     begin
       if @anthology.save
         @cur_anth_id = @anthology.nil? ? 0 : @anthology.id

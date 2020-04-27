@@ -663,7 +663,14 @@ class ManifestationController < ApplicationController
   def prep_user_content
     if current_user
       @anthologies = current_user.anthologies
-
+      i = 1
+      prefix = I18n.t(:anthology)
+      anth_titles = @anthologies.pluck(:title)
+      loop do
+        @new_anth_name = prefix+"-#{i}"
+        i += 1
+        break unless anth_titles.include?(@new_anth_name)
+      end
       if session[:current_anthology_id].nil?
         unless @anthologies.empty?
           @anthology = @anthologies.includes(:texts).first
