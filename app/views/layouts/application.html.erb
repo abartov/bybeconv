@@ -111,7 +111,7 @@
                   <% if current_user.editor? %>
                     <div class="dashboard-link">
                     <br />
-                    <h2><%= link_to t(:back_to_dashboard), url_for(controller: :admin, action: :index) %></h2>
+                    <h3><%= link_to t(:back_to_dashboard), url_for(controller: :admin, action: :index) %></h3>
                     </div>
                   <% end %>
                 <% else %>
