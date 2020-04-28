@@ -410,7 +410,7 @@ end
         if m.expressions[0].translation
           per = m.expressions[0].works[0].persons[0]
           unless per.nil?
-            title += per.name
+            title += " #{I18n.t(:by)} #{per.name}"
           end
         end
         worksbuf += "<a href=\"/read/#{m.id}\">#{title}</a>; "
@@ -419,7 +419,7 @@ end
           worksbuf += '...  ' # signify more is available
           break
         end
-        worksbuf += "&nbsp; "
+        worksbuf += "   "
       end
       ret += worksbuf[0..-3] # chomp off either the blanks after the ellipsis or the '; ' after the last item
     end
