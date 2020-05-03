@@ -164,9 +164,11 @@
       if(sel_anth == '0') { // create new anthology
         $('#anth_panel').hide();
         $('#new_anth').show();
+        $('#anthologies').val($.cur_anth.toString());
       } else if(sel_anth == '-1') {
         e.preventDefault();
         $('#anth_panel').hide();
+        $('#anthologies').val($.cur_anth.toString());
         $('#rename_dlg').show();
       } else {
         $.get('#{anthology_path(0)}'.replace('0',sel_anth));
