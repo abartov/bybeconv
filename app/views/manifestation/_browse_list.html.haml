@@ -152,6 +152,7 @@
     }
     $('#reset_multiselect').click(function() {
       $('.mainlist li input[type=checkbox]').prop('checked', false);
+      $('#select-all').prop('checked', false);
       $('#selected_counter').text($('.multiselect_checkbox:checked').length);
     });
     $('#multiselect_btn').click(function(){
