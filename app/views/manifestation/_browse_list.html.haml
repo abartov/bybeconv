@@ -128,12 +128,15 @@
       if($('#browse_mainlist').hasClass('multiselect')) {
         $('#browse_mainlist').removeClass('multiselect');
         $('#select-all').hide();
+        $('.number-of-selected-texts').hide();
         $('.add-to-anthology').hide();
         $('#browse_mainlist ol input').remove();
+        $('#selected_counter').text('0');
       } else {
         // turn on multi-select mode
         $('#browse_mainlist').addClass('multiselect');
         $('#select-all').show();
+        $('.number-of-selected-texts').show();
         $('#browse_mainlist li').each(function() {
           $(this).prepend("<input class=\"multiselect_checkbox\" type=\"checkbox\" />");
         });
@@ -143,9 +146,14 @@
             $('.add-to-anthology').show();
            	startAnimation('blink 2s ease-in','.add-to-anthology');
           }
+          $('#selected_counter').text($('.multiselect_checkbox:checked').length);
         });
       }
     }
+    $('#reset_multiselect').click(function() {
+      $('.mainlist li input[type=checkbox]').prop('checked', false);
+      $('#selected_counter').text($('.multiselect_checkbox:checked').length);
+    });
     $('#multiselect_btn').click(function(){
       $.fn.browse_multi_select_toggle();
     });
@@ -155,6 +163,7 @@
         $('.add-to-anthology').show();
         startAnimation('blink 2s ease-in','.add-to-anthology');
       }
+      $('#selected_counter').text($('.multiselect_checkbox:checked').length);
     });
     $('#sort_by_dd').change(function(){
       $('input[name=sort_by]').val($('#sort_by_dd option:selected').val());

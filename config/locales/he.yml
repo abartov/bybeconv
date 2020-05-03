@@ -12,6 +12,8 @@ he:
   works_list: רשימת יצירות
   month_year: חודש/שנה
   year: שנה
+  reset_multiselect: איפוס בחירה
+  number_of_selected_texts: 'יצירות שנבחרו: '
   works_by_period: יצירות לפי תקופה
   works_by_genre: יצירות לפי סוגה
   works_by_tag: יצירות לפי תגית

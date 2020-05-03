@@ -14,6 +14,10 @@
               .toggle-button-yes{style:"display:#{ @filters.empty? ? 'none' : 'show'}"}
           .author-page-top-sort-mobile
             %button.btn-small-outline-v02.btn-text-v02{:href => "#"}= t(:sort_and_filter)
+        .number-of-selected-texts{style: 'display:none'}
+          = t(:number_of_selected_texts)
+          %span#selected_counter{style: 'font-weight: bold'}= '0'
+          %span.pointer.linkcolor#reset_multiselect= t(:reset_multiselect)
         .author-page-top-icons-desktop
           .top-left-icons-group
             - unless current_user
