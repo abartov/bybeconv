@@ -124,6 +124,7 @@
     });
     $('.nav-link').click(function(e) {
       e.preventDefault();
+      $(this).tooltip('hide');
       anchor = $(this).attr('data-asaf');
       $('html, body').animate({
         scrollTop: $('a[name='+anchor+']').offset().top - $(header).height() - 45
