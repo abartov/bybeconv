@@ -52,7 +52,7 @@ class Toc < ApplicationRecord
       return false if genre.nil?
       i = get_genres.find_index(genre)
       if i.nil?
-        if genre = 'translations'
+        if genre == 'translations'
           translations_encountered = true
         else
           return false

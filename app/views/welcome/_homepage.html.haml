@@ -83,10 +83,10 @@
                       .new-image-frame-v02
                         %iframe{frameborder: '0', scrolling: 'no', marginheight: '0', marginwidth: '0', width: '267', height: '150', type: 'text/html', allow: 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture', allowfullscreen:'', src: item.url.sub('watch?v=','embed/')}
                 - i += 1
-              .button-to-full-v02
-                %a{ href: whatsnew_path}
-                  %b= t(:to_all_whatsnew)
-                  %span.left-arrow= '1'
+            .link-to-all-v02
+              %a{ href: whatsnew_path}
+                %b= t(:to_all_whatsnew)
+                %span.left-arrow= '1'
         / work spotlight
         = render partial: 'featured_item'
         / author spotlight
