@@ -207,5 +207,12 @@
     $('.download').click(function() {
       $('#downloadDlg').modal('show');
     });
+    $(document).on('keyup',function(evt) {
+      if (evt.keyCode == 27) {
+        $('#anthologiesDlg').modal('hide');
+        $('#citeDlg').modal('hide');
+        $('#downloadDlg').modal('hide');
+      }
+    });
 
   });

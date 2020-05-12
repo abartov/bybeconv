@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  object: one
+  object_type: Object
+  doctype: 1
+  status: 1
+
+two:
+  object: two
+  object_type: Object
+  doctype: 1
+  status: 1

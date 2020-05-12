@@ -285,12 +285,25 @@ end
     return 'https://www.youtube.com/watch?v='+id
   end
 
+  def get_or_create_downloadable_by_type(dl_entity, doctype)
+    dls = dl_entity.downloadables.where(doctype: Downloadable.doctypes[doctype])
+    if dls.empty?
+      dl = Downloadable.new(doctype: doctype)
+      dl_entity.downloadables << dl
+      return dl
+    else
+      return dls[0]
+    end
+  end
+
   def do_download(format, filename, html, download_entity)
     case format
     when 'pdf'
       pdfname = HtmlFile.pdf_from_any_html(html)
       pdf = File.read(pdfname)
       send_data pdf, type: 'application/pdf', filename: filename
+      dl = get_or_create_downloadable_by_type(download_entity, 'pdf')
+      dl.stored_file.attach(io: File.open(pdfname), filename: filename)
       File.delete(pdfname) # delete temporary generated PDF
     when 'doc'
       begin
@@ -298,6 +311,9 @@ end
         temp_file.puts(PandocRuby.convert(html, M: 'dir=rtl', from: :html, to: :docx).force_encoding('UTF-8')) # requires pandoc 1.17.3 or higher, for correct directionality
         temp_file.chmod(0644)
         send_file temp_file, type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', filename: filename
+        temp_file.rewind
+        dl = get_or_create_downloadable_by_type(download_entity, 'docx')
+        dl.stored_file.attach(io: temp_file, filename: filename)
       ensure
         temp_file.close
       end
@@ -307,6 +323,9 @@ end
         temp_file.puts(PandocRuby.convert(html, M: 'dir=rtl', from: :html, to: :odt).force_encoding('UTF-8')) # requires pandoc 1.17.3 or higher, for correct directionality
         temp_file.chmod(0644)
         send_file temp_file, type: 'application/application/vnd.oasis.opendocument.text', filename: filename
+        temp_file.rewind
+        dl = get_or_create_downloadable_by_type(download_entity, 'odt')
+        dl.stored_file.attach(io: temp_file, filename: filename)
       ensure
         temp_file.close
       end
@@ -316,6 +335,9 @@ end
         temp_file.puts(html)
         temp_file.chmod(0644)
         send_file temp_file, type: 'text/html', filename: filename
+        temp_file.rewind
+        dl = get_or_create_downloadable_by_type(download_entity, 'html')
+        dl.stored_file.attach(io: temp_file, filename: filename)
       ensure
         temp_file.close
       end
@@ -327,6 +349,9 @@ end
         temp_file.puts(txt)
         temp_file.chmod(0644)
         send_file temp_file, type: 'text/plain', filename: filename
+        temp_file.rewind
+        dl = get_or_create_downloadable_by_type(download_entity, 'txt')
+        dl.stored_file.attach(io: temp_file, filename: filename)
       ensure
         temp_file.close
       end
@@ -335,6 +360,8 @@ end
         epubname = make_epub_from_single_html(html, download_entity)
         epub_data = File.read(epubname)
         send_data epub_data, type: 'application/epub+zip', filename: filename
+        dl = get_or_create_downloadable_by_type(download_entity, 'epub')
+        dl.stored_file.attach(io: File.open(epubname), filename: filename)
         File.delete(epubname) # delete temporary generated EPUB
       end
     when 'mobi'
@@ -346,6 +373,8 @@ end
         mobiname = epubname[0..-6]+'.mobi'
         mobi_data = File.read(mobiname)
         send_data mobi_data, type: 'application/x-mobipocket-ebook', filename: filename
+        dl = get_or_create_downloadable_by_type(download_entity, 'mobi')
+        dl.stored_file.attach(io: File.open(mobiname), filename: filename)
         File.delete(epubname) # delete temporary generated EPUB
         File.delete(mobiname) # delete temporary generated MOBI
       end

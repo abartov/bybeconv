@@ -11,9 +11,18 @@ end
 class Anthology < ApplicationRecord
   belongs_to :user
   has_many :texts, class_name: 'AnthologyText', :dependent => :delete_all
+  has_many :downloadables, as: :object
   enum access: %i(priv unlisted pub)
   validates :title, presence: true
   validates_with UserAnthTitleValidator
+
+  # this will return the downloadable entity for the Anthology *if* it is fresh
+  def fresh_downloadable_for(doctype)
+    dls = downloadables.where(doctype: Downloadable.doctypes[doctype])
+    return nil if dls.empty?
+    return nil if dls[0].updated_at < self.updated_at # needs to be re-generated
+    return dls[0]
+  end
 
   def has_text?(text_id, anth_text_id = nil)
     if anth_text_id.nil?

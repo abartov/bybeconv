@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_15_000140) do
+ActiveRecord::Schema.define(version: 2020_05_12_022738) do
 
   create_table "aboutnesses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -119,6 +119,16 @@ ActiveRecord::Schema.define(version: 2020_02_15_000140) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
+  end
+
+  create_table "downloadables", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|
+    t.string "object_type"
+    t.bigint "object_id"
+    t.integer "doctype"
+    t.integer "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["object_type", "object_id"], name: "index_downloadables_on_object_type_and_object_id"
   end
 
   create_table "expressions", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
@@ -518,6 +528,14 @@ ActiveRecord::Schema.define(version: 2020_02_15_000140) do
     t.index ["fromdate"], name: "index_sitenotices_on_fromdate"
     t.index ["status"], name: "index_sitenotices_on_status"
     t.index ["todate"], name: "index_sitenotices_on_todate"
+  end
+
+  create_table "sitenotices_users", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|
+    t.bigint "sitenotice_id", null: false
+    t.bigint "user_id", null: false
+    t.string "session_id"
+    t.boolean "suppress"
+    t.index ["session_id"], name: "index_sitenotices_users_on_session_id"
   end
 
   create_table "static_pages", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|

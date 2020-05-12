@@ -11,6 +11,7 @@ class Manifestation < ApplicationRecord
   has_many :tags, through: :taggings, class_name: 'Tag'
   has_many :recommendations
   has_many :list_items, as: :item
+  has_many :downloadables, as: :object
 
   has_paper_trail
   has_many :external_links
@@ -51,6 +52,14 @@ class Manifestation < ApplicationRecord
 
   def video_count
     return external_links.all_approved.videos.count
+  end
+
+  # this will return the downloadable entity for the Manifestation *if* it is fresh
+  def fresh_downloadable_for(doctype)
+    dls = downloadables.where(doctype: Downloadable.doctypes[doctype])
+    return nil if dls.empty?
+    return nil if dls[0].updated_at < self.updated_at # needs to be re-generated
+    return dls[0]
   end
 
   def long?
