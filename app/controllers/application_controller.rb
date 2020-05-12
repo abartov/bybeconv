@@ -322,7 +322,7 @@ end
         temp_file = Tempfile.new('tmp_doc_'+download_entity.id.to_s, 'tmp/')
         temp_file.puts(PandocRuby.convert(html, M: 'dir=rtl', from: :html, to: :odt).force_encoding('UTF-8')) # requires pandoc 1.17.3 or higher, for correct directionality
         temp_file.chmod(0644)
-        send_file temp_file, type: 'application/application/vnd.oasis.opendocument.text', filename: filename
+        send_file temp_file, type: 'application/vnd.oasis.opendocument.text', filename: filename
         temp_file.rewind
         dl = get_or_create_downloadable_by_type(download_entity, 'odt')
         dl.stored_file.attach(io: temp_file, filename: filename)
