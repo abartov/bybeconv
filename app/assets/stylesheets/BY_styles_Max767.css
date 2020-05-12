@@ -278,4 +278,13 @@
 #text-volunteers-mobile .credits{
   column-count: 2;
 }
+.modal-dialog{
+	margin: 0 auto 0 auto;
+}
+.modal-body{
+	width: calc(100% + 30px);
+	margin: 0;
+}
+
+	
 }

@@ -4706,6 +4706,7 @@ break{
 }
 #authors-multi-select-popup{
 	width: 80%;
+	margin-top: 80px;
 }
 #authors-multi-select-popup .by-card-content-v02{
 	max-height: calc(100% - 320px);
@@ -4762,3 +4763,14 @@ break{
 }
 
 /* datetimepicker style - end */
+.modal-dialog{
+	margin: 100px auto 0 auto;
+}
+.modal-header{
+	padding: 0;
+}
+.modal-body{
+	width: 80%;
+	padding: 0;
+	margin: auto;
+}
