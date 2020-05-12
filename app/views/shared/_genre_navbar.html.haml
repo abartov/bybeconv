@@ -5,7 +5,7 @@
     - genres.each do |g|
       - if genres_present.include?(g)
         %li.nav-item
-          %a{'class' => 'nav-link '+(first ? 'active' : ''), id: g+'_button', href: "#works-#{g}", 'aria-controls' => "##{g}_g", 'aria-selected' => (first ? 'true' : 'false')}
+          %a{'class' => 'nav-link '+(first ? 'active' : ''), id: g+'_button', href: "##{g}_g", 'aria-controls' => "##{g}_g", 'aria-selected' => (first ? 'true' : 'false')}
             .side-menu-icon= glyph_for_genre(g)
             .side-menu-name= textify_genre(g)
         - first = false
@@ -23,6 +23,11 @@
       }
     });
     //$('.nav-item').first().addClass('current-menu-item');
+    // ensure smooth scrollTo behavior
+    $('.g_anch').css('top', -($(header).height()+15));
+    // $('.g_anch').css('padding-top', $(header).height());
+    // $('.g_anch').css('margin-top', -$(header).height());
+    /*
     $('.nav-link').click(function(e) {
       e.preventDefault();
       //$('.nav-item').removeClass('current-menu-item');
@@ -31,5 +36,5 @@
       $('html, body').animate({
         scrollTop: $('a[name='+anchor+']').offset().top - $(header).height() - 65
       }, 800);
-    });
+    }); */
   });
