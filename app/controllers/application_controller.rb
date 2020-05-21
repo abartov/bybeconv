@@ -296,7 +296,7 @@ end
     end
   end
 
-  def do_download(format, filename, html, download_entity)
+  def do_download(format, filename, html, download_entity, author_string)
     case format
     when 'pdf'
       pdfname = HtmlFile.pdf_from_any_html(html)
@@ -357,7 +357,7 @@ end
       end
     when 'epub'
       begin
-        epubname = make_epub_from_single_html(html, download_entity)
+        epubname = make_epub_from_single_html(html, download_entity, author_string)
         epub_data = File.read(epubname)
         send_data epub_data, type: 'application/epub+zip', filename: filename
         dl = get_or_create_downloadable_by_type(download_entity, 'epub')
@@ -367,7 +367,7 @@ end
     when 'mobi'
       begin
         # TODO: figure out how not to go through epub
-        epubname = make_epub_from_single_html(html, download_entity)
+        epubname = make_epub_from_single_html(html, download_entity, author_string)
         mobiname = epubname[epubname.rindex('/')+1..-6]+'.mobi'
         out = `kindlegen #{epubname} -c1 -o #{mobiname}`
         mobiname = epubname[0..-6]+'.mobi'

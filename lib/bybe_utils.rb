@@ -16,11 +16,11 @@ GREGMONTHS = {'ינואר' => 1,'פברואר' => 2,'מרץ' => 3,'מרס' => 3,
 HEB_LETTER_VALUE = {'א' => 1, 'ב' => 2, 'ג' => 3, 'ד' => 4, 'ה' => 5, 'ו' => 6, 'ז' => 7, 'ח' => 8, 'ט' => 9, 'י' => 10, 'כ' => 20, 'ך' => 20, 'ל' => 30, 'מ' => 40, 'ם' => 40, 'נ' => 50, 'ן' => 50, 'ס' => 60, 'ע' => 70, 'פ' => 80, 'ף' => 80, 'צ' => 90, 'ץ' => 90, 'ק' => 100, 'ר' => 200, 'ש' => 300, 'ת' => 400}
 
 module BybeUtils
-  def make_epub_from_single_html(html, manifestation)
+  def make_epub_from_single_html(html, manifestation, author_string)
     book = GEPUB::Book.new
     book.primary_identifier('http://benyehuda.org/read/'+manifestation.id.to_s, 'BookID', 'URL')
     book.language = 'he'
-    title = manifestation.title+' מאת '+manifestation.author_string
+    title = manifestation.title+' מאת '+author_string
     book.add_title(title, nil, GEPUB::TITLE_TYPE::MAIN)
     book.add_creator(manifestation.author_string)
     book.page_progression_direction = 'rtl' # Hebrew! :)
