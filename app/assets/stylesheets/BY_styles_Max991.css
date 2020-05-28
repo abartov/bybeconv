@@ -627,6 +627,9 @@ display: none;	}
   display: block;
 }
 
+.work-col{
+	width: 100%;
+}
 	
 	
 }

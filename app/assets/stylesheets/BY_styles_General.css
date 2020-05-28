@@ -454,8 +454,7 @@ padding-left: 6px;
 
 .by-nav-item-v02:active {
   color: #2b0d22;
-  text-decoration: none;
-  background-color: #d9cdd5;
+  text-decoration: none;;
   border-radius: 3px; }
 
 .by-footer-nav-item-v02{
@@ -565,7 +564,8 @@ padding-left: 6px;
   background-color: transparent; }
 
 .top-search-select-v02 select option {
-  padding: 6px 15px; }
+  padding: 6px 15px;
+}
 
 .top-search-v02 {
   display: inline;
@@ -3056,13 +3056,13 @@ padding-left: 0;
 .anthology {
   z-index: 10;
   width: 640px;
-  height: calc(100% - 211px);
+  height: calc(100% - 30px);
   background-color: #eeeced;
   border-radius: 3px;
   box-shadow: 0 3px 9px rgba(0, 0, 0, 0.4);
   position: fixed;
-	left: 0;
-	top: 196px;
+  left: 0;
+  top: 15px;
 }
 .scrolled .anthology{
 	height: calc(100% - 155px);
@@ -3539,12 +3539,9 @@ padding-left: 0;
 }
 .sort-buttons-area {
 	display: flex;
-	padding-right: 40px;
 	margin-bottom: 12px;
 }
-.sort-buttons-area div{
-	padding: 0 8px;
-}
+
 .advanced-pagination-area{
 	display: flex;
    justify-content: space-between;
@@ -3575,6 +3572,20 @@ padding-left: 0;
 	background-color: #d9cdd5;
 }
 .advanced-pagination-area a.by-icon-v02:disabled{
+	background-color: none;
+}
+.advanced-pagination-area .by-icon-v02 a{
+	width: 24px;
+	height:24px;
+	padding: 3px 5px;
+	font-size: 14px;
+  border-radius: 3px;
+	margin-top: 2px;
+}
+.advanced-pagination-area .by-icon-v02 a:hover{
+	background-color: #d9cdd5;
+}
+.advanced-pagination-area .by-icon-v02 a:disabled{
 	background-color: none;
 }
 a .by-icon-v02:disabled{
@@ -3697,6 +3708,7 @@ a .by-icon-v02:disabled{
 }
 .sort-by-desktop{
 	display: block;
+	margin-right: 8px;
 }
 .sort-by-mobile{
 	display: none;
@@ -4042,13 +4054,13 @@ break{
 .folded-anthology {
   z-index: 10;
   width: 50px;
-  height: calc(100% - 211px);
+  height: calc(100% - 30px);
   background-color: #eeeced;
   border-radius: 3px;
   box-shadow: 0 3px 9px rgba(0, 0, 0, 0.4);
   position: fixed;
   left: 0;
-  top: 196px;
+  top: 15px;
 }
 .folded-anthology .horizontal-collapse-expand{
 	padding-right: 2px;
@@ -4773,4 +4785,15 @@ break{
 	width: 80%;
 	padding: 0;
 	margin: auto;
+}
+.work-col{
+	width: calc(100% - 130px);
+}
+#multiselect_btn{
+	margin-left: 20px;
+}
+.options-group-top{
+	width: 100%;
+	height: 2px;
+	background-color: #d9cdd5;
 }
