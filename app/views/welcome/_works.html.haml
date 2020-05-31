@@ -44,7 +44,7 @@
       %div{style: 'border-top: solid 2px #d9cdd5;'}
         .row{style:'margin-top: 30px; margin-bottom:20px;'}
           .col
-            %a.notyet.linkcolor
+            %a{href: translations_path}
               %p.linkcolor.by-genre-icon-v02 s
               %p.linkcolor.by-genre-name-v02.headline-2-v02= t(:translations)
             %p.linkcolor.by-genre-details-v02= Person.no_toc.count.to_s+' '+t(:authors)
