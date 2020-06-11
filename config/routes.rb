@@ -191,6 +191,7 @@ Bybeconv::Application.routes.draw do
   resources :legacy_recommendations
   resources :recommendations
 
+  get 'recommendation/display/:id' => 'recommendations#display', as: 'recommendation_display'
   get "html_file/analyze"
   match "html_file/:id/edit" => 'html_file#edit', as: 'html_file_edit', via: [:get, :post]
   post "html_file/:id/update" => 'html_file#update'

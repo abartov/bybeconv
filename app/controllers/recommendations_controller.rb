@@ -2,6 +2,11 @@ class RecommendationsController < ApplicationController
   def show
   end
 
+  def display
+    @r = Recommendation.find(params[:id])
+    render partial: 'display'
+  end
+
   def edit
   end
 

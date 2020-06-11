@@ -12,7 +12,7 @@
   .recommend-card-left-v02
     %p.text-height-recommend!= sanitize(rec.body).gsub("\n",'<br>')
     .read-more-v02
-      %a{:href => "#"}
+      %span.linkcolor.pointer.rec_popup_button{'data-recpath' => recommendation_display_path(rec.id)}
         %span{:style => "font-weight: bold"}= t(:rest_of_work)
         %span.left-arrow 1
     - if pending
