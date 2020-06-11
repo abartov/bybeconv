@@ -1,3 +1,4 @@
+- title = "#{t(:by)} #{@r.user.name}"
 .modal-dialog
   .modal-content
     .container-fluid
@@ -10,14 +11,14 @@
                 %span.right-arrow 2
                 %span= t(:back)
           .col-4{:style => "padding: 0;"}
-            .modal-title.headline-2-v02{:style => "text-align: center;margin: 0; padding-top: 3px;"}= t(:recommendation)
+            .modal-title.headline-2-v02{:style => "text-align: center;margin: 0; padding-top: 3px;"}= title
           .col-4
       .modal-body
         .by-popup-v02{style: 'max-height:calc(100vh - 260px);'}
           %div
             .by-card-content-v02{:style => "padding-top: 0"}
               .by-card-header-v02.desktop-only
-                %span.headline-1-v02= t(:recommendation)
+                %span.headline-1-v02= title
               %a.popup-x-v02.linkcolor.pointer{'data-dismiss'=>'modal'} -
           .by-card-content-v02
             .new-info-v02.pointer.notyet 4
