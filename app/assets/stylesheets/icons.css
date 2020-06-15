@@ -329,3 +329,6 @@
 .icon-bywarning:before {
   content: "\e002";
 }
+.icon-byadditionals:before {
+  content: "\e003";
+}
