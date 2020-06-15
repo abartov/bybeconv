@@ -117,6 +117,9 @@ Bybeconv::Application.routes.draw do
   get 'authors/get_random_author'
   match 'author/:id/edit_toc' => 'authors#edit_toc', as: 'authors_edit_toc', via: [:get, :post]
   match 'author/:id/create_toc' => 'authors#create_toc', as: 'authors_create_toc', via: [:get]
+  match 'author/:id' => 'authors#toc', as: 'author_toc', via: [:get, :post]
+  get 'author/:id/whatsnew' => 'authors#whatsnew_popup', as: 'author_whatsnew_popup'
+
   get '/page/:tag' => 'static_pages#view', as: 'static_pages_by_tag', via: [:get]
   get "read/:id" => 'manifestation#read', as: 'manifestation_read'
   get "read/:id/read" => 'manifestation#readmode', as: 'manifestation_readmode'
@@ -128,7 +131,6 @@ Bybeconv::Application.routes.draw do
   match 'translations' => 'manifestation#translations', as: 'translations', via: [:get, :post]
   get 'whatsnew' => 'manifestation#whatsnew', as: 'whatsnew'
   match 'tag/:id' => 'manifestation#by_tag', as: 'tag', via: [:get, :post]
-  match 'author/:id' => 'authors#toc', as: 'author_toc', via: [:get, :post]
   match "download/:id" => 'manifestation#download', as: 'manifestation_download', via: [:get, :post]
   match "print/:id" => 'manifestation#print', as: 'manifestation_print', via: [:get, :post]
   get "manifestation/show/:id" => 'manifestation#show', as: 'manifestation_show'
@@ -192,6 +194,7 @@ Bybeconv::Application.routes.draw do
   resources :recommendations
 
   get 'recommendation/display/:id' => 'recommendations#display', as: 'recommendation_display'
+
   get "html_file/analyze"
   match "html_file/:id/edit" => 'html_file#edit', as: 'html_file_edit', via: [:get, :post]
   post "html_file/:id/update" => 'html_file#update'

@@ -6,6 +6,7 @@ he:
   add_authors_to_filter: הוספת היוצרים שנבחרו לסינון
   apply_filters: הפעל סינון זה!
   filters_loading: טוען את המסננים...
+  loading: התוכן נטען...
   work_title: שם יצירה
   what_to_search_for: מה לחפש...
   author_names: שם(ות) מחבר(ים)
@@ -511,6 +512,7 @@ he:
   homepage: דף הבית
   authors_page: דף יוצרים
   total: סך הכל
+  total_x_works: סך הכל %{count} יצירות
   sort_and_filter: סינון
   sort_by: "מיון לפי: "
   filter_by: "סינון לפי: "
@@ -879,6 +881,7 @@ he:
   whatsapp: ווטסאפ
   announcement: הודעה
   recommendation: המלצה
+  latest_uploads_for: יצירות שנוספו באחרונה מאת %{author}
   temporary_worklist: רשימת יצירות (זמנית)
   improvements_soon: דף זה טרם עוצב. בקרוב נכניס בו שיפורים, אבל רצינו שבינתיים תוכלו לגשת ליצירות עצמן.
 

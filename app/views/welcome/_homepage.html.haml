@@ -83,8 +83,8 @@
                       .new-image-frame-v02
                         %iframe{frameborder: '0', scrolling: 'no', marginheight: '0', marginwidth: '0', width: '267', height: '150', type: 'text/html', allow: 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture', allowfullscreen:'', src: item.url.sub('watch?v=','embed/')}
                   - if item.itemtype == 'publication' && item.body.length > 350
-                    .link-to-all-v02{style:'font-weight: bold'}
-                      = link_to '...' # TODO: finish this
+                    .link-to-all-v02.author_whatsnew_popup_btn.pointer.linkcolor{style:'font-weight: bold', 'data-popuppath' => author_whatsnew_popup_path(id: item.person_id)}
+                      = t(:total_x_works, count: item.pub_count)
 
                 - i += 1
             .link-to-all-v02
@@ -112,6 +112,7 @@
                         = @featured_volunteer.about
                     .volunteer-side-pic-v02
                       %img.volunteer-pic-v02{src: @featured_volunteer.profile_image.url(:thumb)}
+#authorWhatsNewDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
 
 :javascript
   $(document).ready(function() {
@@ -173,6 +174,17 @@
         $.get("#{url_for(controller: :manifestation, action: :get_random, mode: :home)}", function(data) {
           $('#work-surprise-scroller').slick('slickAdd', data);
         });
+      }
+    });
+    $('.author_whatsnew_popup_btn').click(function(){
+      $('#authorWhatsNewDlg').html("<h2><%= t(:loading) %></h2>");
+      $('#authorWhatsNewDlg').load($(this).attr('data-popuppath'));
+      $('#authorWhatsNewDlg').modal('show');
+    });
+    $(document).on('keyup',function(evt) {
+      if (evt.keyCode == 27) {
+        $('#anthologiesDlg').modal('hide');
+        $('#authorWhatsNewDlg').modal('hide');
       }
     });
   });

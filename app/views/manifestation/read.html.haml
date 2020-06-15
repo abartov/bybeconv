@@ -117,7 +117,7 @@
 #downloadDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
   = render partial: 'shared/download', locals: {manifestation: @m}
 #recommendationDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
-
+  %h2= t(:loading)
 #citeDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
   = render partial: 'shared/cite', locals: {manifestation: @m}
 / found mistake popup

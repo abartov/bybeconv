@@ -116,6 +116,10 @@ class Manifestation < ApplicationRecord
     return title + ' / '+author_string
   end
 
+  def title_and_author_if_translation
+    self.expressions[0].translation ? "#{title} / #{self.expressions[0].works[0].authors.map{|x| x.name}.join(', ')}": title
+  end
+
   def title_and_authors_html
     ret = "<h1>#{title}</h1><h2>#{I18n.t(:by)} #{authors_string}</h2>"
     if self.expressions[0].translation?

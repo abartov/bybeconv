@@ -99,8 +99,8 @@ class Person < ApplicationRecord
   end
 
   def works_since(since, maxitems)
-    o = original_works.where('manifestations.created_at > ?', since)
-    t = translations.where('manifestations.created_at > ?', since)
+    o = original_works.where('manifestations.created_at > ?', since).limit(maxitems)
+    t = translations.where('manifestations.created_at > ?', since).limit(maxitems)
     joint = (o+t).uniq # NOTE: both of these are manifestations, not works!
     if joint.count > maxitems
       return joint[0..maxitems - 1]

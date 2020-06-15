@@ -20,6 +20,12 @@ class AuthorsController < ApplicationController
     render partial: 'shared/surprise_author', locals: {author: @author, initial: false, id_frag: params[:id_frag], passed_genre: params[:genre], passed_mode: params[:mode], side: params[:side]}
   end
 
+  def whatsnew_popup
+    @author = Person.find(params[:id])
+    @pubs = @author.works_since(1.month.ago, 1000)
+    render partial: 'whatsnew_popup'
+  end
+
   def all
     @page_title = t(:all_authors)+' '+t(:project_ben_yehuda)
     @pagetype = :authors
