@@ -6,7 +6,6 @@
         %span.headline-1-v02= textify_genre(genre)
         - if @works[genre].size > 0
           .by-card-content-v02.mainlist{:style => "padding-top: 12px;"}
-            %h3= t(:original)
             %ol
               - @works[genre].each do |m|
                 %li

@@ -22,7 +22,7 @@ module BybeUtils
     book.language = 'he'
     title = manifestation.title+' מאת '+author_string
     book.add_title(title, nil, GEPUB::TITLE_TYPE::MAIN)
-    book.add_creator(manifestation.author_string)
+    book.add_creator(author_string)
     book.page_progression_direction = 'rtl' # Hebrew! :)
     # make cover image
     canvas = Magick::Image.new(1200, 800){self.background_color = 'white'}
