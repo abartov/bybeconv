@@ -447,7 +447,7 @@ class ManifestationController < ApplicationController
   end
 
   def make_collection(query_parts, query_params, joins_needed, people_needed, ord)
-    if query_parts.empty?
+    if query_parts.empty? && !people_needed
       if joins_needed
         return Manifestation.all_published.joins(expressions: :works).includes(expressions: :works).order(ord)
       else
