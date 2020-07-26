@@ -16,8 +16,8 @@
   #content {
     width: 100%;
 	}
-
   .topMenuItem-v02 {
+
 	}
 
   .by-popup-v02 {
@@ -38,6 +38,9 @@
 }
 .sort-type .by-icon-v02{
 	margin-left: 2px;
+}
+.select-all-with-buttons .headline-4-v02{
+	line-height: 22px;
 }
 }
 

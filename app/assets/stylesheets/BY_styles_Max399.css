@@ -134,8 +134,8 @@
 		margin: 0;
 	}
 .headline-1-v02{
-  font-size: 14px;
-  line-height: 14px;
+  font-size: 15pt;
+  line-height: 15pt;
 }
 .headline-2-v02{
   font-size: 13px;
@@ -349,7 +349,7 @@ body {
 	height: 28px;
 }
 	.share-option{
-	padding-top: 14px 12px 0 12px;
+	padding: 0px 8px;
 }
 .share-icon{
 	font-size: 18px;
@@ -421,6 +421,15 @@ body {
 .scrolled .logoBY-scroll-mobile-v02 img{
     max-height: 26px;
 	margin-top: 2px;
+}
+.share-popup{
+	width: 260px;
+}
+.share-popup{
+		width: 180px;
+	}
+.by-card-header-v02{
+			min-height: 28px;
 }
 	
 }

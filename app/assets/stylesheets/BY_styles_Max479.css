@@ -254,8 +254,6 @@ body {
 }
 
 	.headline-1-v02{
-  font-size: 14pt;
-  line-height: 15pt;
 }
 .headline-2-v02 {
   font-size: 12pt;
@@ -389,7 +387,7 @@ body {
 	margin-right: 10px;
 }
 .share-option{
-	padding-top: 10px;
+	padding-top: 0px;
 }
 .share-icon{
 	font-size: 21px;
@@ -442,5 +440,11 @@ padding-top: 6px;
     max-height: 28px;
 	margin-top: 2px;
 }
+.share-popup{
+	width: 180px;
+}
+	.select-all input[type=checkbox]{
+		margin-top: 1px;
+	}
 	
 }
