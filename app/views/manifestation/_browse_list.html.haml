@@ -22,8 +22,9 @@
     - if @sort == 'alphabetical'
       = render partial: 'ab_pagination'
   .select-all-with-buttons
-    .select-all-checkbox
-      %input#select-all{type: 'checkbox', style:'display:none'}
+    .select-text-checkbox-area
+      .select-all-checkbox
+        %input#select-all{type: 'checkbox', style:'display:none'}
     .sort-buttons-area
       %button.btn-small-outline-v02#multiselect_btn
         .by-icon-top-v02.purple-v02 \
@@ -55,8 +56,7 @@
             %input#RadioGroupSort_5{:name => "RadioGroupSort", :type => "radio", value: "popularity"}/
             %label= t(:popularity)
             %br/
-      %button.btn-small-outline-v02.notyet
-        .by-icon-top-v02.purple-v02.icon-bysort-down
+      .by-icon-top-v02.purple-v02.icon-bysort-down
   .add-to-anthology{style:'display:none'}
     .left-pointing-arrow= t(:perform_add)
     %button.by-button-v02#add-to-anth-btn
