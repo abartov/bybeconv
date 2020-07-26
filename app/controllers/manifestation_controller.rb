@@ -622,6 +622,7 @@ class ManifestationController < ApplicationController
       end
       @uploaded_dates = make_collection(query_parts.reject{|k,v| k == :uploaded }, query_params, joins_needed, people_needed, '').pluck(:created_at).map{|x| "{value: #{x.strftime("%Y%m%d")}}"}.join(", ")
       unless query_parts.empty?
+        byebug
         c = make_collection(query_parts.reject{|k,v| [:people, :authors].include?(k)}, query_params, joins_needed, true,'').pluck('people.id').uniq
         unless c.empty?
           @authors_list = Person.where(id: c)
