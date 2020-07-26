@@ -9,7 +9,7 @@
             .by-dropdown-content-v02.dropdown-menu#menu-authors
               .by-dropdown-header-v02= authors_total
               /%a{href: '/#top_authors'}
-              %a.notyet{href: '#'}
+              %a{href: '/'}
                 %span.by-icon-v02.iconNearText-v02 N
                 = t(:most_read_authors)
               %a{href: whatsnew_path}
@@ -119,7 +119,7 @@
           %span.caret= t(:authors)
           %ul.nested
             %li
-              %a{href: 'javascript:jump("top_authors")'}
+              %a{href: '/'}
                 %span.by-icon-v02.iconNearText-v02.iconInMenu N
                 = t(:most_read_authors)
             %li
@@ -134,11 +134,11 @@
           %span.caret= t(:works)
           %ul.nested
             %li
-              %a{href: 'javascript:jump("top_works")'}
+              %a{href: '/#top_works'}
                 %span.by-icon-v02.iconNearText-v02.iconInMenu N
                 = t(:most_read_works)
             %li
-              %a{href: 'javascript:jump("new_works")'}
+              %a{href: '/#new_works'}
                 %span.by-icon-v02.iconNearText-v02.iconInMenu O
                 = t(:newest_works)
             %li
