@@ -5,7 +5,7 @@
     .work-page-top-info-card
       .headline-1-v02.work-name-top-mobile= @m.title
       .row
-        .col-8
+        .col-7
           .work-page-top-author
             .headline-3-v02
               = t(:by)+':'
@@ -34,7 +34,7 @@
             .work-chapters-popup-mobile#chapter_mobile_dropdown
               %button.btn-small-outline-v02.btn-text-v02{ 'data-toggle' => 'modal', 'data-target'=> '#chapterDlg'}
                 = t(:jump_to)
-        .col-4
+        .col-5
           .work-page-top-icons-desktop
             %a.white{:href => url_for(action: :readmode, id: @m.id)}
               .btn-small-outline-v02.btn-text-v02.reading-mode-btn-v02{'title' => "#{t(:reading_mode)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }}
