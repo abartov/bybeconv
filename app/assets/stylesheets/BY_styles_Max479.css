@@ -355,10 +355,8 @@ body {
 		margin-bottom: 4px;
 	}
 	.work-chapters-popup-mobile{
-		bottom: 0;
 	}
 .work-page-top-author{
-		width: calc(75% - 30px)
 	}
 	.work-side-color{
   display: none;

@@ -115,9 +115,6 @@
 	.author-page-content{
 		margin-top: 222px;
 	}
-	.work-page-top-author{
-		width: calc(75% - 39px)
-	}
 
 	.desktop-only{
 		display: none;

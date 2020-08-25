@@ -162,9 +162,6 @@ p {
 .author-page-top-name{
 		line-height: 30px;
 	}
-.work-page-top-author{
-		width: calc(75% - 39px)
-	}
 .print .author-page-content{
 	margin-top: 30px;
 }

@@ -297,7 +297,7 @@ padding-left: 6px;
 	cursor: auto;}
 .btn-text-v02 {
   font-weight: bold;
-  padding: 0 10px;
+  padding: 0 10px 2px 10px;
   color: #660248;   
   cursor: pointer;
 }
@@ -2048,8 +2048,7 @@ display: flex;
 }
 .work-page-top-author{
 	padding-right: 15px;
-  width: calc(65% - 160px);
-  display: inline-block;
+	margin-bottom: 6px;
 }
 .field-v02 {
   height: 28px;
@@ -2077,11 +2076,11 @@ display: flex;
 	color: #907989;
 }
 .work-chapters-dropdown-field-desktop{
-	width: 35%;
+	width: 24%;
 	display: inline-block;
 	position: absolute;
 	bottom: 0;
-	left:145px;
+	right: 38%;
 	margin-bottom: 4px;
 	border: none;
 }
@@ -2090,6 +2089,7 @@ display: flex;
 }
 .work-chapters-popup-mobile{
 	position: absolute;
+	right: calc(50% - 43px);
 	bottom: 4px;
 	display: none;
 }
@@ -2104,11 +2104,8 @@ display: flex;
 	background-color: #660248;
 	color: white;
 	display: inline;
-	position: absolute;
-	bottom: 0;
-	left:15px;
-	margin-right: 8px;
-	margin-bottom: 4px;
+	margin-bottom: 2px;
+	margin-left: 8px;
 	  cursor: pointer;
 }
 .reading-mode-btn-v02:hover{
@@ -2127,9 +2124,9 @@ display: flex;
 }
 .work-page-top-icons-mobile{
 	display: none;
-	position: absolute;
-	bottom: 4px;
-	left: 15px;
+	float: left;
+	margin-bottom: 4px;
+	margin-left: 15px;
 }
 .work-side-menu-area{
     -ms-flex: 0 0 130px;
@@ -3022,9 +3019,6 @@ padding-left: 0;
   border-color: transparent transparent #fff transparent;
   top: 1px;
   content: "(";
-}
-.anthology-select-desktop .select-selected{
-	font-size: 16pt;
 }
 
 /*style the items (options), including the selected item:*/
@@ -4247,6 +4241,11 @@ break{
 .side-sort .by-card-content-v02 .headline-2-v02 {
     display: inline;
 }
+.select-all-with-buttons .headline-4-v02{
+	margin-left: 4px;
+	margin-top: 0px;
+	line-height: 22px;
+}
 .nested-content{
   padding-right: 0px;
 }
@@ -4845,8 +4844,9 @@ break{
 .work-page-top-icons-desktop{
 	display: flex;
 	align-items: center;
-	margin-bottom: 9px;
+	float: left;
 	margin-left: 15px;
+	margin-bottom: 2px;
 }
 .thanks-popup{
 	max-width: 400px;

@@ -427,8 +427,7 @@ display: none;	}
 	}
 	
 	.work-page-top-author{
-		width: calc(75% - 44px);
-		display: inline-block;
+		display: block;
 	}
 	.reading-mode .rm-control-panel{
 		display: none;

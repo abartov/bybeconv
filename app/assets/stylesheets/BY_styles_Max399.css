@@ -190,10 +190,6 @@
 	min-height: 96px;
 }
 
-.work-page-top-info-card{
-  padding-left: 8px;
-  padding-right: 12px;
-}
 .icon-in-group-v02{
 		margin-left: 4px;
 }
@@ -314,7 +310,6 @@ body {
 		padding-top: 0;
 	}
 	.work-page-top-author{
-		width: calc(75% - 26px);
 		min-height: 24px;
 	}
 		.work-page-top-icons-mobile{
@@ -430,6 +425,9 @@ body {
 	}
 .by-card-header-v02{
 			min-height: 28px;
+}
+.work-chapters-popup-mobile{
+	right: calc(50% - 31px);
 }
 	
 }
