@@ -8,7 +8,8 @@
     = link_to_previous_page @works, '2', remote: true, id: 'prevnav' do
       %span.by-icon-v02.navdisabled= '2'
   .advanced-pagination#pagination-slider
-    .page= t(:total_result_pages, {x: @total_pages})
+    /.page= t(:total_result_pages, {x: @total_pages})
+    .page= t(:page_x_of_y, {x: @page, y: @total_pages})
     %input.slider.progress-handle{'type': 'text', 'data-slider-min': 1, 'data-slider-max': @total_pages, 'data-slider-step':1, 'data-slider-value': @page, 'data-slider-handle': 'custom', 'data-slider-tooltip': 'always'}
     /%span.progress-handle= "#{@total_pages}/#{@page}"
   %span.by-icon-v02

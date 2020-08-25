@@ -18,23 +18,8 @@
 		vertical-align: text-bottom;
 	}
 
-.author-page-top-icons-desktop{
-	display: none;
-}
-.author-page-top-icons-mobile{
-	display: block;
-	margin-right: auto;
-}
 
 
-	
-.author-page-top-sort-desktop{
-	display: none;
-}
-.author-page-top-sort-mobile{
-	display: inline-block;
-	float: left;
-	}
 	.top-row-v02{
 	display: none;
 }
@@ -440,12 +425,9 @@ display: none;	}
 	#text-nav-more{
 
 	}
-	.author-sort-area{
-		width: auto;
-	}
+	
 	.work-page-top-author{
-		width: calc(75% - 44px);
-		display: inline-block;
+		display: block;
 	}
 	.reading-mode .rm-control-panel{
 		display: none;
@@ -630,8 +612,15 @@ display: none;	}
 .work-col{
 	width: 100%;
 }
-	
-	
+.reading-mode-btn-v02{
+	display: none;
+}
+	.work-chapters-dropdown-field-desktop{
+	display: none;
+}
+	.work-chapters-popup-mobile{
+	display: inline;
+}
 }
 
 

@@ -74,6 +74,21 @@
   padding-left: 0px;
   padding-right: 0px;
 }
+.by-dual-popup{
+  width: 92%;
+  background-color: #eeeced;
+  border-radius: 3px;
+  box-shadow: 0 3px 9px rgba(0, 0, 0, 0.4);
+  margin-top: 45px;
+  margin-right: auto;
+  margin-left: auto;
+}
+.share-popup{
+	width: 240px;
+}
+.share-name{
+	display: none;
+}
 .by-popup-v02-share{
   width: 100%;
   height: 140px;
@@ -100,21 +115,12 @@
 	.author-page-content{
 		margin-top: 222px;
 	}
-	.work-page-top-author{
-		width: calc(75% - 39px)
-	}
 
 	.desktop-only{
 		display: none;
 	}
 	.mobile-only{
 	display: block;
-}
-	.work-chapters-dropdown-field-desktop{
-	display: none;
-}
-	.work-chapters-popup-mobile{
-	display: inline;
 }
 .dropdown-menu-seperator{
   display:block;
@@ -130,7 +136,7 @@
 	padding-left: 60px;
 }
 		.share-option{
-	padding-top: 15px;
+	padding-top: 0px;
 }
 .by-card-header-v02 {
   width: 100%;
@@ -249,21 +255,21 @@
   box-shadow: 0 -2px 3px rgba(0, 0, 0, 0.4);
   background-color: #d9cdd5;
 	}
-.system-notification .popup-x-v02{
+.internal-notification .popup-x-v02{
   display: block;
 }
 .system-notification{
 }
-.notification-content{
+.internal-notification-content{
   display: block;
   padding-bottom: 6px;
 }
-.notification-pic{
+.internal-notification-pic{
   display: flex;
 	justify-content: center;
 	margin-bottom: 4px;
 }
-.notification-text{
+.internal-notification-text{
 	text-align: center;
 }
 	.scrolled .logoBY-scroll-mobile-v02{
@@ -285,6 +291,58 @@
 	width: calc(100% + 30px);
 	margin: 0;
 }
+.author-page-top-icons-desktop{
+	display: none;
+}
+.author-page-top-icons-mobile{
+	display: block;
+	margin-right: auto;
+}
+	
+.author-page-top-sort-desktop{
+	display: none;
+}
 
+.author-page-top-sort-mobile{
+	display: inline-block;
+	float: left;
+	}
+#sort_by_dd{
+	display: none;
+}
+#current_sort_by{
+	display: block;
+	padding: 0 4px;
+}
+	.side-sort{
+		display:none;
+	}
+	.author-side-sort{
+		display: none;
+	}
+.author-sort-area{
+		width: auto;
+}
+	#hide_next_times{
+		display: none;
+}
+.sort-type .nested-list{
+	  -webkit-column-count: 1; /* Chrome, Safari, Opera */
+  -moz-column-count: 1; /* Firefox */
+  column-count: 1;
+}
+.select-all-with-buttons .headline-4-v02{
+	display: none;
+}
+.list-filters{
+		display: none;
+}
+.select-text ul li{
+    line-height: 32px;
+	height: 32px;
+}
+.mainlist ol > li {
+	line-height: 32px;
+}
 	
 }

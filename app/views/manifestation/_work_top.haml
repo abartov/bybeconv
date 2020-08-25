@@ -3,21 +3,21 @@
   .top-space
   .work-page-top
     .work-page-top-info-card
-      .headline-1-v02.work-name-top-mobile= @m.title
+      .headline-1-v02.work-name-top= @m.title
+      .work-page-top-author
+        .headline-3-v02
+          = t(:by)+':'
+          - unless @m.authors.nil?
+            != @m.authors.map {|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
+            - if @e.translation && @e.translators.size > 0
+              .headline-3-v02
+                = "#{t(:translation)}: "
+                != @translators.map{|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
+                = " (#{t(:from_lang)}#{textify_lang(@e.works[0].orig_lang)})"
+          - else
+            = '?'
       .row
-        .col-8
-          .work-page-top-author
-            .headline-3-v02
-              = t(:by)+':'
-              - unless @m.authors.nil?
-                != @m.authors.map {|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
-                - if @e.translation && @e.translators.size > 0
-                  .headline-3-v02
-                    = "#{t(:translation)}: "
-                    != @translators.map{|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
-                    = " (#{t(:from_lang)}#{textify_lang(@e.works[0].orig_lang)})"
-              - else
-                = '?'
+        .col-12
           - if @m.chapters? and @m.long?
             .work-chapters-dropdown-field-desktop#chapter_dropdown
               .field-v02
@@ -34,11 +34,9 @@
             .work-chapters-popup-mobile#chapter_mobile_dropdown
               %button.btn-small-outline-v02.btn-text-v02{ 'data-toggle' => 'modal', 'data-target'=> '#chapterDlg'}
                 = t(:jump_to)
-        .col-4
           .work-page-top-icons-desktop
             %a.white{:href => url_for(action: :readmode, id: @m.id)}
               .btn-small-outline-v02.btn-text-v02.reading-mode-btn-v02{'title' => "#{t(:reading_mode)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }}
-                %span.by-icon-v02.iconNearText-v02> /
                 = t(:reading_mode)
             .top-left-icons-group
               .icon-in-group-v02.like.must_login{'title' => "#{t(:like)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }}

@@ -133,8 +133,6 @@ p {
 	min-height: 148px;
 }
 .headline-1-v02{
-  font-size: 18px;
-  line-height: 20px;
 }
 .author-name-area{
 		height: 38px;
@@ -163,9 +161,6 @@ p {
 	padding-top: 6px;}
 .author-page-top-name{
 		line-height: 30px;
-	}
-.work-page-top-author{
-		width: calc(75% - 39px)
 	}
 .print .author-page-content{
 	margin-top: 30px;
@@ -208,7 +203,7 @@ p {
 	width: 160px;
 	height: 40px;
 }
-	.notification-text{
+	.internal-notification-text{
 		font-size: 12px;
 	}
 

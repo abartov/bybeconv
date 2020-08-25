@@ -29,9 +29,13 @@
             .icon-in-group-v02.notyet
               %span.linkcolor.pointer.by-icon-v02 5
             .icon-in-group-v02
+              %span.linkcolor.pointer.by-icon-v02 D
+            .icon-in-group-v02
               %span.linkcolor.pointer.printbutton.by-icon-v02 9
-            .icon-in-group-v02.notyet{:style => "margin-left:0;"}
+            .icon-in-group-v02.notyet
               %span.linkcolor.pointer.by-icon-v02 3
+            .icon-in-group-v02{style: 'margin-left:0;', 'data-target' => '#shareDlg', 'data-toggle' => 'modal'}
+              %span.linkcolor.pointer.by-icon-v02 U
         .author-page-top-icons-mobile
           .top-left-icons-group
             .icon-in-group-v02.notyet{:style => "margin-left:4px;padding-top: 0;"}
@@ -39,12 +43,18 @@
             .dropdown.d-inline#moreMobile-author
               %span.pointer.by-icon-top-v02.dropdown-toggle#nav-more{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :type => "button"} Y
               .dropdown-menu.dropdown-menu-right#menu-more
-                .dropdown-item.pointer.linkcolor.notyet
-                  %span.by-icon-v02.iconNearText-v02> 3
-                  = t(:download)
+                .dropdown-item.linkcolor.pointer.notyet
+                  %span.by-icon-v02.iconNearText-v02> D
+                  = t(:bookshelf)
                 .dropdown-item.linkcolor.pointer.printbutton
                   %span.by-icon-v02.iconNearText-v02> 9
                   = t(:print)
+                .dropdown-item.pointer.linkcolor.notyet
+                  %span.by-icon-v02.iconNearText-v02> 3
+                  = t(:download)
+                .dropdown-item.pointer.linkcolor{'data-target' => '#shareDlg', 'data-toggle' => 'modal'}
+                  %span.by-icon-v02.iconNearText-v02> U
+                  = t(:share)
     .row.error-found-row
       .col-1.side-nav-col
         = render partial: 'shared/genre_navbar', locals: {genres_present: @genres_present, page: :toc, curated_content: @any_curated}
