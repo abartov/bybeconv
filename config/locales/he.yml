@@ -1,6 +1,20 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 he:
+  contact_name: שם
+  contact_email: דואל
+  contact_phone: טלפון (לא חובה)
+  contact_topic: נושא הפּנייה
+  contact_topic_content: תוכן האתר
+  contact_topic_copyright: זכויות יוצרים
+  contact_topic_donation: תרומה כספית
+  contact_topic_volunteer: רצון להתנדב
+  contact_topic_other: נושא אחר
+  contact_body: פירוט הפּנייה
+  contact_body_limit: עד 300 מילים
+  contact_send: שיגור הפּנייה
+  contact_form_email_greeting: "התקבל טופס צור קשר. להלן הפרטים:"
+  notifications.contact_form_submitted.subject: יצירת קשר מהאתר
   rename_this_anthology: שינוי שם מקראה זו
   authors_select_filter: סינון לפי יוצר - בחירה מרובה
   add_authors_to_filter: הוספת היוצרים שנבחרו לסינון
@@ -168,6 +182,7 @@ he:
   word_count: מספר מילים
   page_count: מספר עמודים
   total_result_pages: "סך עמודי תוצאות: %{x}"
+  contact_form_title: יצירת קשר עם פרויקט בן־יהודה
   page_x_of_y: עמוד %{x} מתוך %{y}
   display_anthology_description: המקראה, הכוללת את כל הטקסטים של היצירות שנבחרו וגם טקסטים עצמיים (אם יוצרו). תוצג בשלמותה בדף נפרד שיפתח בלשונית חדשה
   download_description: המקראה, הכוללת את כל הטקסטים של היצירות שנבחרו וגם טקסטים עצמיים (אם יוצרו), תישמר כקובץ עצמאי נפרד בפורמט לבחירה
@@ -559,6 +574,7 @@ he:
   dictionary_entries: ערכים מילוניים
   about: על הפרויקט | About
   about_the_project: על פרויקט בן־יהודה
+  contact_instructions: " לפני פניה, אנא קראו את הדף <a href=\"/page/about\">על אודות הפרויקט</a> הכולל מידע רב, שאלות ותשובות, אולי גם לשאלתכם. אם אתם מעוניינים להתנדב, אנא מלאו <a href=\"%{volunteer_form}\">טופס התנדבות</a>."
   about_author_in_blog: על אודות %{author} ביומן הרשת
   blog_category_url: קישורית לקטגוריה על היוצר/ת ביומן הרשת
   link: קישורית

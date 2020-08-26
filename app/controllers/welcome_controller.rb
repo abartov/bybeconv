@@ -28,4 +28,16 @@ class WelcomeController < ApplicationController
     @featured_volunteer = featured_volunteer
     @popups_by_genre = popups_by_genre # cached, if available
   end
+  def contact
+    render partial: 'contact'
+  end
+  def submit_contact
+    Notifications.contact_form_submitted(params.permit(:name, :phone, :email, :topic, :body, :rtopic)).deliver
+    respond_to do |format|
+      format.js
+    end
+  end
+  def volunteer
+    render partial: 'volunteer'
+  end
 end

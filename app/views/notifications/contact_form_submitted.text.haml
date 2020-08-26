@@ -1,0 +1,11 @@
+= t(:contact_form_email_greeting)
+
+= "#{t(:contact_name)} #{@contact_form[:name]}"
+= "#{t(:contact_email)} #{@contact_form[:email]}"
+= "#{t(:contact_phone)} #{@contact_form[:phone]}"
+
+= "#{t(:contact_topic)} #{@contact_form[:topic]}"
+
+= "#{t(:contact_body)} #{@contact_form[:body]}"
+
+!= raw t(:email_footer_html)

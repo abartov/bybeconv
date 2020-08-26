@@ -212,13 +212,4 @@
       $('#recommendationDlg').load($(this).attr('data-recpath'));
       $('#recommendationDlg').modal('show');
     });
-    $(document).on('keyup',function(evt) {
-      if (evt.keyCode == 27) {
-        $('#anthologiesDlg').modal('hide');
-        $('#citeDlg').modal('hide');
-        $('#downloadDlg').modal('hide');
-        $('#recommendationDlg').modal('hide');
-      }
-    });
-
   });

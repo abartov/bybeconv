@@ -1,0 +1,67 @@
+.modal-dialog
+  .modal-content
+    .container-fluid
+      .modal-header
+        .popup-top
+          %div{:style => "display:flex;padding:15px;margin: 0"}
+            .top-contact-side
+              %button.btn-small-outline-v02{'data-dismiss'=>'modal'}
+                .btn-text-v02
+                  %span.right-arrow 2
+                  %span= t(:back)
+            .top-contact-center
+              .headline-2-v02= t(:contact_form_title)
+            .top-contact-side
+      .modal-body
+        .by-popup-v02{style: 'max-height:calc(100vh - 100px);'}
+          .by-card-header-v02.desktop-only
+            %span.headline-1-v02= t(:contact_form_title)
+            %a.popup-x-v02{'data-dismiss'=>'modal'} -
+          %div
+            .by-card-content-v02.card-with-button#contact_content
+              = form_tag(welcome_submit_contact_path, remote: true, method: :post, id: 'contact_form') do
+                %p!= t(:contact_instructions, {volunteer_form: welcome_volunteer_path})
+                #volunteer-name.field-label= t(:contact_name)
+                %input.field-v02{name: :name, :type => "text"}/
+                #volunteer-email.field-label= t(:contact_email)
+                %input.field-v02{name: :email, :type => "text"}/
+                #volunteer-phone.field-label= t(:contact_phone)
+                %input.field-v02{name: :phone, :type => "text"}/
+                .contact-message
+                  #contact-select-issue
+                    .field-label= t(:contact_topic)
+                    .contact-select-issue-desktop
+                      %select{name: :topic}
+                        %option{:value => "site-content"}= t(:contact_topic_content)
+                        %option{:value => "copyright"}= t(:contact_topic_copyright)
+                        %option{:value => "donation"}= t(:contact_topic_donation)
+                        %option{:value => "volunteering"}= t(:contact_topic_volunteer)
+                        %option{:value => "other"}= t(:contact_topic_other)
+                    .contact-select-issue-mobile
+                      %p
+                        %label
+                          %input#RadioGroup2_1{:name => "rtopic", :type => "radio", :value => "site-content"}>/
+                          = t(:contact_topic_content)
+                        %br/
+                        %label
+                          %input#RadioGroup2_4{:name => "rtopic", :type => "radio", :value => "copyright"}>/
+                          = t(:contact_topic_copyright)
+                        %br/
+                        %label
+                          %input#RadioGroup2_3{:name => "rtopic", :type => "radio", :value => "donation"}>/
+                          = t(:contact_topic_donation)
+                        %br/
+                        %label
+                          %input#RadioGroup2_5{:name => "rtopic", :type => "radio", :value => "volunteering"}>/
+                          = t(:contact_topic_volunteer)
+                        %br/
+                        %label
+                          %input#RadioGroup2_6{:name => "rtopic", :type => "radio", :value => "other"}>/
+                          = t(:contact_topic_other)
+                        %br/
+                  #contact-text
+                    .field-label
+                      = t(:contact_body)
+                      %span.explain-text= t(:contact_body_limit)
+                    %textarea.field-v02.text-area-v02{name: :body}
+                %button.by-button-v02.button-to-full-v02.pointer#send_contact_form= t(:contact_send)

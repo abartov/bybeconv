@@ -167,7 +167,9 @@ Bybeconv::Application.routes.draw do
   get 'user/:id' => 'user#show', as: 'user_show'
   post 'user/set_pref'
   get "welcome/index"
-
+  get "welcome/contact"
+  get "welcome/volunteer"
+  post 'welcome/submit_contact'
   get "session/create"
   get "session/destroy"
   get "session/login"

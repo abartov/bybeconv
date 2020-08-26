@@ -58,4 +58,9 @@ p  #
     @url = html_url
     mail to: rec.from
   end
+
+  def contact_form_submitted(pp)
+    @contact_form = {name: pp[:name], email: pp[:email], phone: pp[:phone], topic: pp[:topic] || pp[:rtopic], body: pp[:body]}
+    mail to: 'editor@benyehuda.org', subject: t('notifications.contact_form_submitted.subject')
+  end
 end

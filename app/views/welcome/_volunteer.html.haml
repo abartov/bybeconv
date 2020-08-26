@@ -1,0 +1,79 @@
+.modal-dialog
+  .modal-content
+    .container-fluid
+      .modal-header
+        .popup-top
+          %div{:style => "display:flex;padding:15px;margin: 0"}
+            .top-contact-side
+              %button.btn-small-outline-v02{'data-dismiss'=>'modal'}
+                .btn-text-v02
+                  %span.right-arrow 2
+                  %span= t(:back)
+            .top-contact-center
+              .headline-2-v02= t(:contact_form_title)
+            .top-contact-side
+      .modal-body
+        .by-popup-v02{style: 'max-height:calc(100vh - 260px);'}
+          .by-card-header-v02.desktop-only
+            %span.headline-1-v02= t(:contact_form_title)
+            %a.popup-x-v02{'data-dismiss'=>'modal'} -
+          %div
+            .by-card-content-v02.card-with-button
+              %p= t(:contact_instructions)
+                לפני פניה, אנא קראו את דף
+                %a{:href => "#"} על אודות הפרויקט
+                הכולל מידע רב, שאלות ותשובות.
+              %p
+                אם אתם מעוניינים להתנדב, אנא מלאו
+                = succeed "." do
+                  %a{:href => "#"} טופס התנדבות
+              #volunteer-name.field-label שם
+              %input.field-v02{:type => "text"}/
+              #volunteer-email.field-label כתובת דואר אלקטרוני
+              %input.field-v02{:type => "text"}/
+              #volunteer-phone.field-label טלפון - אופציונלי
+              %input.field-v02{:type => "text"}/
+              .contact-message
+                #contact-select-issue
+                  .field-label נושא הפניה
+                  .contact-select-issue-desktop
+                    .custom-select.field-v02
+                      %select
+                        %option{:value => "site-content"} תוכן האתר
+                        %option{:value => "add-works"} הוספת יצירות
+                        %option{:value => "donation"} תרומה כספית
+                        %option{:value => "addvertising"} רשות פרסום
+                        %option{:value => "volunteering"} רצון להתנדב
+                        %option{:value => "other"} נושא אחר
+                  .contact-select-issue-mobile
+                    %p
+                      %label
+                        %input#RadioGroup2_1{:name => "RadioGroup2", :type => "radio", :value => "site-content"}>/
+                        תוכן האתר
+                      %br/
+                      %label
+                        %input#RadioGroup2_2{:name => "RadioGroup2", :type => "radio", :value => "add-works"}>/
+                        הוספת יצירות
+                      %br/
+                      %label
+                        %input#RadioGroup2_3{:name => "RadioGroup2", :type => "radio", :value => "donation"}>/
+                        תרומה כספית
+                      %br/
+                      %label
+                        %input#RadioGroup2_4{:name => "RadioGroup2", :type => "radio", :value => "addvertising"}>/
+                        רשות פרסום
+                      %br/
+                      %label
+                        %input#RadioGroup2_5{:name => "RadioGroup2", :type => "radio", :value => "volunteering"}>/
+                        רצון להתנדב
+                      %br/
+                      %label
+                        %input#RadioGroup2_6{:name => "RadioGroup2", :type => "radio", :value => "other"}>/
+                        נושא אחר
+                      %br/
+                #contact-text
+                  .field-label
+                    פירוט הפניה
+                    %span.explain-text עד 100 מילים
+                  %textarea.field-v02.text-area-v02
+              %button.by-button-v02.button-to-full-v02{:href => "#"} שלחו פניה

@@ -96,7 +96,7 @@
                 <a href="<%= t(:youtube_url) %>"><div class="icon-in-group-v02"><span class="by-icon-v02">W</span></div></a>
                 <a href="<%= t(:blog_url) %>"><div class="icon-in-group-v02"><span class="by-icon-v02">Q</span></div></a>
                 <%= render partial: 'shared/share', locals: {element: :header_button} %>
-                <a href="mailto:editor@benyehuda.org"><div class="icon-in-group-v02"><span class="by-icon-v02">R</span></div></a>
+                <a class="linkcolor pointer contact_btn" href="mailto:editor@benyehuda.org"><div class="icon-in-group-v02"><span class="by-icon-v02">R</span></div></a>
                 <div class="icons-seperator"></div>
                 <% if current_user %>
                   <div class="collapsed" data-toggle="collapse" data-target="#user_collapsible" style="display:inline-block;">
@@ -178,7 +178,8 @@
 <div class="modal" id="shareDlg", aria-hidden = "true", role="dialog", title="<%= t(:choose_sharing_medium) %>">
   <%= render partial: 'shared/share_controls' %>
 </div>
-
+<div class="modal" id="contactDlg", aria-hidden = "true", role="dialog", title="<%= t(:contact_us) %>">
+</div>
 <script>
   $(document).ready(function() {
     <% unless @readmode %>
@@ -218,6 +219,11 @@
         $.get('<%= session_dismiss_sitenotice_path %>');
       });
     }
+    $(document).on('keyup',function(evt) {
+      if (evt.keyCode == 27) {
+        $('.modal').modal('hide'); // hide all modals on ESC
+      }
+    });
   });
 </script>
 
