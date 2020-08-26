@@ -63,4 +63,9 @@ p  #
     @contact_form = {name: pp[:name], email: pp[:email], phone: pp[:phone], topic: pp[:topic] || pp[:rtopic], body: pp[:body]}
     mail to: 'editor@benyehuda.org', subject: t('notifications.contact_form_submitted.subject')
   end
+
+  def volunteer_form_submitted(pp)
+    @form = pp
+    mail to: 'editor@benyehuda.org', subject: t('notifications.volunteer_form_submitted.subject')
+  end
 end

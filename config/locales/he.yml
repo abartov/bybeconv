@@ -17,6 +17,7 @@ he:
   contact_thanks_p2: נעיין בה ונהיה בקשר בקרוב.
   close_and_return_to_page: סגירה וחזרה לדף
   contact_form_email_greeting: "התקבל טופס צור קשר. להלן הפרטים:"
+  volunteer_form_email_greeting: "התקבל טופס התנדבות. להלן הפרטים:"
   rename_this_anthology: שינוי שם מקראה זו
   authors_select_filter: סינון לפי יוצר - בחירה מרובה
   add_authors_to_filter: הוספת היוצרים שנבחרו לסינון
@@ -178,6 +179,10 @@ he:
   access_control: רמת גישה
   priv: טיוטא פרטית
   pub: גלויה - ציבורית
+  typing: הקלדה מִסריקות
+  proofing: הגהת הקלדות מול סריקות
+  scanning: סריקת ספרים
+  donation: תרומה כספית
   unlisted: בהזמנה בלבד
   curated_text_bit: טקסט מלווה
   curated_text_bits: טקסטים מלווים
@@ -185,6 +190,9 @@ he:
   page_count: מספר עמודים
   total_result_pages: "סך עמודי תוצאות: %{x}"
   contact_form_title: יצירת קשר עם פרויקט בן־יהודה
+  volunteer_form_title: איך תרצו לעזור?
+  volunteer_areas: תחומי התנדבות
+  volunteer_pick_all_that_applies: 'סמנו כל תחום שמעניין אתכם:'
   page_x_of_y: עמוד %{x} מתוך %{y}
   display_anthology_description: המקראה, הכוללת את כל הטקסטים של היצירות שנבחרו וגם טקסטים עצמיים (אם יוצרו). תוצג בשלמותה בדף נפרד שיפתח בלשונית חדשה
   download_description: המקראה, הכוללת את כל הטקסטים של היצירות שנבחרו וגם טקסטים עצמיים (אם יוצרו), תישמר כקובץ עצמאי נפרד בפורמט לבחירה
@@ -576,7 +584,9 @@ he:
   dictionary_entries: ערכים מילוניים
   about: על הפרויקט | About
   about_the_project: על פרויקט בן־יהודה
-  contact_instructions: " לפני פניה, אנא קראו את הדף <a href=\"/page/about\">על אודות הפרויקט</a> הכולל מידע רב, שאלות ותשובות, אולי גם לשאלתכם. אם אתם מעוניינים להתנדב, אנא מלאו <a href=\"%{volunteer_form}\">טופס התנדבות</a>."
+  contact_instructions: " לפני פניה, אנא קראו את הדף <a href=\"/page/about\">על אודות הפרויקט</a> הכולל מידע רב, שאלות ותשובות, אולי גם לשאלתכם."
+  contact_for_volunteering_prefix: "אם אתם מעוניינים להתנדב, אנא מלאו "
+  contact_volunteer_form: טופס התנדבות
   about_author_in_blog: על אודות %{author} ביומן הרשת
   blog_category_url: קישורית לקטגוריה על היוצר/ת ביומן הרשת
   link: קישורית
@@ -914,6 +924,8 @@ he:
       subject: המלצתך שולבה בטקסט שפרסמנו!
     contact_form_submitted:
       subject: יצירת קשר מהאתר
+    volunteer_form_submitted:
+      subject: טופס התנדבות מהאתר
   views:
     pagination:
       next: לדף הבא

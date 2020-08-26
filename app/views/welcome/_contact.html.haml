@@ -20,7 +20,10 @@
           %div
             .by-card-content-v02.card-with-button
               = form_tag(welcome_submit_contact_path, remote: true, method: :post, id: 'contact_form') do
-                %p!= t(:contact_instructions, {volunteer_form: welcome_volunteer_path})
+                %p
+                  != t(:contact_instructions)
+                  = t(:contact_for_volunteering_prefix)
+                  = link_to t(:contact_volunteer_form)+'.', welcome_volunteer_path, remote: true
                 #volunteer-name.field-label= t(:contact_name)
                 %input.field-v02{name: :name, :type => "text"}/
                 #volunteer-email.field-label= t(:contact_email)

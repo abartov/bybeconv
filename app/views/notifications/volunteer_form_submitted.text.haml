@@ -1,0 +1,20 @@
+= t(:volunteer_form_email_greeting)
+
+= t(:contact_name)+':'
+= "    #{@form[:name]}"
+= t(:contact_email)+':'
+= "    #{@form[:email]}"
+= t(:contact_phone)+':'
+= "    #{@form[:phone]}"
+= "\n"
+= t(:volunteer_areas)+':'
+- areas = ''
+- ['typing','proofing','scanning', 'donation','other'].each do |area|
+  - areas += t(area)+'; ' if @form[area].present?
+= "    #{areas}"
+= "\n"
+- if @form['other'].present?
+  = t(:other)+': '
+  = "#{@form['other']}"
+= "\n"
+!= raw t(:email_footer_html)

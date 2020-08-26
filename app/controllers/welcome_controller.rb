@@ -38,6 +38,14 @@ class WelcomeController < ApplicationController
     end
   end
   def volunteer
-    render partial: 'volunteer'
+    respond_to do |format|
+      format.js
+    end
+  end
+  def submit_volunteer
+    Notifications.volunteer_form_submitted(params.permit(:name, :phone, :email, :typing, :proofing, :scanning, :donation, :other)).deliver
+    respond_to do |format|
+      format.js
+    end
   end
 end

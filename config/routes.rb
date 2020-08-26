@@ -170,6 +170,7 @@ Bybeconv::Application.routes.draw do
   get "welcome/contact"
   get "welcome/volunteer"
   post 'welcome/submit_contact'
+  post 'welcome/submit_volunteer'
   get "session/create"
   get "session/destroy"
   get "session/login"
