@@ -17,7 +17,6 @@ he:
   contact_thanks_p2: נעיין בה ונהיה בקשר בקרוב.
   close_and_return_to_page: סגירה וחזרה לדף
   contact_form_email_greeting: "התקבל טופס צור קשר. להלן הפרטים:"
-  notifications.contact_form_submitted.subject: יצירת קשר מהאתר
   rename_this_anthology: שינוי שם מקראה זו
   authors_select_filter: סינון לפי יוצר - בחירה מרובה
   add_authors_to_filter: הוספת היוצרים שנבחרו לסינון
@@ -913,6 +912,8 @@ he:
       subject: תודה על ההמלצה!
     recommendation_published:
       subject: המלצתך שולבה בטקסט שפרסמנו!
+    contact_form_submitted:
+      subject: יצירת קשר מהאתר
   views:
     pagination:
       next: לדף הבא
