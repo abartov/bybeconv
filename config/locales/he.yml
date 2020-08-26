@@ -13,6 +13,9 @@ he:
   contact_body: פירוט הפּנייה
   contact_body_limit: עד 300 מילים
   contact_send: שיגור הפּנייה
+  contact_thanks_p1: תודה רבה על פנייתכם!
+  contact_thanks_p2: נעיין בה ונהיה בקשר בקרוב.
+  close_and_return_to_page: סגירה וחזרה לדף
   contact_form_email_greeting: "התקבל טופס צור קשר. להלן הפרטים:"
   notifications.contact_form_submitted.subject: יצירת קשר מהאתר
   rename_this_anthology: שינוי שם מקראה זו

@@ -12,13 +12,13 @@
             .top-contact-center
               .headline-2-v02= t(:contact_form_title)
             .top-contact-side
-      .modal-body
+      .modal-body#contact_content
         .by-popup-v02{style: 'max-height:calc(100vh - 100px);'}
           .by-card-header-v02.desktop-only
             %span.headline-1-v02= t(:contact_form_title)
             %a.popup-x-v02{'data-dismiss'=>'modal'} -
           %div
-            .by-card-content-v02.card-with-button#contact_content
+            .by-card-content-v02.card-with-button
               = form_tag(welcome_submit_contact_path, remote: true, method: :post, id: 'contact_form') do
                 %p!= t(:contact_instructions, {volunteer_form: welcome_volunteer_path})
                 #volunteer-name.field-label= t(:contact_name)
