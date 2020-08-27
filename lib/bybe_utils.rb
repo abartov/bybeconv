@@ -446,7 +446,7 @@ module BybeUtils
             ret_a = []
           end
           part = genre
-          ret_a << "<a name='#{genre}_g' class='g_anch' style='position:absolute; top:-200px;'>&nbsp;</a>\n"
+          ret_a << "<a name='#{genre}_g' class='g_anch'>&nbsp;</a>\n"
         else
           ret_a << l # deliberately don't add the genre name - provided by UI
         end

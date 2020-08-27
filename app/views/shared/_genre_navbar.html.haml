@@ -9,11 +9,11 @@
             .side-menu-icon= glyph_for_genre(g)
             .side-menu-name= textify_genre(g)
         - first = false
-    - if curated_content
-      %li.by-side-menu-seperator
-      %li.nav-item
-        %a.nav-link.nav-link-edit{id: 'curated_button', href: "#curated_g"}
-          .side-menu-icon.icon-byadditionals
+    /- if curated_content
+    %li.by-side-menu-seperator
+    %li.nav-item
+      %a.nav-link.nav-link-edit{id: 'curated_button', href: "#curated_g"}
+        .side-menu-icon.icon-byadditionals
 :javascript
   $(document).ready(function() {
     $(window).scroll(function() {

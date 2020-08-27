@@ -181,7 +181,10 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
 .dropdown .dropdown-toggle::after{
   display:none;
 }
-
+.g_anch { /* for anchors that can be jumped to despite the fixed top bar */
+  position:absolute;
+  top:-200px;
+}
 #chapternav{ width: min-content;}
 #chapter-nav{
   max-height: 400px;

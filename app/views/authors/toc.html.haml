@@ -66,6 +66,7 @@
                 = render partial: 'generated_toc'
       .col-12.col-lg-4
         .row
+          %a{name: 'curated_g', 'class' => 'g_anch'}
           .col.side-menu-area-left
           .col
             .by-card-v02.whats-new-v02
@@ -87,7 +88,6 @@
                       .author_latest_popup_button.linkcolor.pointer
                         %span{:style => "font-weight: bold"}= t(:to_latest_x_works, {x: @author.cached_latest_stuff.count})
                         %span.left-arrow 1
-            %a{name: 'curated_g'}
             - unless @featured.empty?
               - featured = @featured[0]
               .by-card-v02.flash-work-v02
