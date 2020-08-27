@@ -296,7 +296,7 @@
 }
 .author-page-top-icons-mobile{
 	display: block;
-	margin-right: auto;
+	width: 135px;
 }
 	
 .author-page-top-sort-desktop{
@@ -304,9 +304,8 @@
 }
 
 .author-page-top-sort-mobile{
-	display: inline-block;
-	float: left;
-	}
+	display: block;
+}
 #sort_by_dd{
 	display: none;
 }
@@ -321,7 +320,8 @@
 		display: none;
 	}
 .author-sort-area{
-		width: auto;
+	width: auto;
+	padding: 0;
 }
 	#hide_next_times{
 		display: none;
@@ -344,5 +344,31 @@
 .mainlist ol > li {
 	line-height: 32px;
 }
+.texts-list-top-info-card{
+	display: flex;
+	align-items: center;
+	justify-content:space-between;
+	padding-left: 10px;
+	padding-top: 4px;
+}
+.BYD-rights{
+	display: none;
+}
+.author-page-top-rights{
+	width: calc(50% - 40px);
+  white-space: nowrap;
+	margin-right: 0;
+	display: inline-block;
+ }
+.author-page-top-info-card{
+  padding: 3px 15px 3px 10px;
+}
+#header-BYD .author-page-top-icons-mobile{
+	width: 200px;
+}
+.value-summary-card-v02 {
+  margin-left: 0px;
+}
+	
 	
 }

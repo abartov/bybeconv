@@ -12,6 +12,11 @@
     .page= t(:page_x_of_y, {x: @page, y: @total_pages})
     %input.slider.progress-handle{'type': 'text', 'data-slider-min': 1, 'data-slider-max': @total_pages, 'data-slider-step':1, 'data-slider-value': @page, 'data-slider-handle': 'custom', 'data-slider-tooltip': 'always'}
     /%span.progress-handle= "#{@total_pages}/#{@page}"
+  .pageSelectorArea
+    .pageSelector
+      %div= t(:page_colon)
+      %input.field-v02{:placeholder => @page, :type => "text"}/
+      %div= t(:out_of_x, {x: @total_pages})
   %span.by-icon-v02
     = link_to_next_page @works, '1', remote: true, id: 'nextnav' do
       %span.by-icon-v02.navdisabled= '1'

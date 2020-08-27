@@ -25,38 +25,36 @@
     .select-text-checkbox-area
       .select-all-checkbox
         %input#select-all{type: 'checkbox', style:'display:none'}
-    .sort-buttons-area
-      %button.btn-small-outline-v02#multiselect_btn
-        .by-icon-top-v02.purple-v02 \
-      .headline-2-v02= t(:sort_by)
-      #sort-by
-        .sort-by-desktop
-          #custom-select
-            %select#sort_by_dd{name: 'sort_by'}
-              %option{value: 'alphabetical'}= t(:alphabetical)
-              %optgroup{label: t(:dates)}
-                %option{value: 'publication_date'}= t(:publication_date)
-                %option{value: 'creation_date'}= t(:creation_date)
-                %option{value: 'upload_date'}= t(:upload_date)
-              %option{value: 'popularity'}= t(:popularity)
-        .sort-by-mobile
-          %p
-            %input#RadioGroupSort_1{:name => "RadioGroupSort", :type => "radio", value: "alphabet"}/
-            %label= t(:alphabetical)
-            %br/
-            %input#RadioGroupSort_2{:name => "RadioGroupSort", :type => "radio", value: "publish_date"}/
-            %label= t(:publication_date)
-            %br/
-            %input#RadioGroupSort_3{:name => "RadioGroupSort", :type => "radio", value: "creation_date"}/
-            %label= t(:creation_date)
-            %br/
-            %input#RadioGroupSort_4{:name => "RadioGroupSort", :type => "radio", value: "online_date"}/
-            %label= t(:upload_date)
-            %br/
-            %input#RadioGroupSort_5{:name => "RadioGroupSort", :type => "radio", value: "popularity"}/
-            %label= t(:popularity)
-            %br/
-      .by-icon-top-v02.purple-v02.icon-bysort-down
+    %button.btn-small-outline-v02#multiselect_btn
+      .by-icon-top-v02.purple-v02 \
+    .headline-4-v02= t(:sort_by)
+    #sort-by
+      .sort-by-desktop
+        #custom-select
+          %select#sort_by_dd{name: 'sort_by'}
+            %option{value: 'alphabetical'}= t(:alphabetical)
+            %optgroup{label: t(:dates)}
+              %option{value: 'publication_date'}= t(:publication_date)
+              %option{value: 'creation_date'}= t(:creation_date)
+              %option{value: 'upload_date'}= t(:upload_date)
+            %option{value: 'popularity'}= t(:popularity)
+      .sort-by-mobile
+        %p
+          %input#RadioGroupSort_1{:name => "RadioGroupSort", :type => "radio", value: "alphabet"}/
+          %label= t(:alphabetical)
+          %br/
+          %input#RadioGroupSort_2{:name => "RadioGroupSort", :type => "radio", value: "publish_date"}/
+          %label= t(:publication_date)
+          %br/
+          %input#RadioGroupSort_3{:name => "RadioGroupSort", :type => "radio", value: "creation_date"}/
+          %label= t(:creation_date)
+          %br/
+          %input#RadioGroupSort_4{:name => "RadioGroupSort", :type => "radio", value: "online_date"}/
+          %label= t(:upload_date)
+          %br/
+          %input#RadioGroupSort_5{:name => "RadioGroupSort", :type => "radio", value: "popularity"}/
+          %label= t(:popularity)
+          %br/
   .add-to-anthology{style:'display:none'}
     .left-pointing-arrow= t(:perform_add)
     %button.by-button-v02#add-to-anth-btn

@@ -441,8 +441,20 @@ padding-top: 6px;
 .share-popup{
 	width: 180px;
 }
-	.select-all input[type=checkbox]{
-		margin-top: 1px;
+.select-all input[type=checkbox]{
+  margin-top: 1px;
+}
+.summary-text{
+		width: 100%;
+	}
+.summary-text-more-lines{
+		width: 100%;
+	}
+	.summary-read-more{
+		margin-top: 6px;
+	}
+	.value-summary-card-v02{
+		padding-bottom: 30px;
 	}
 	
 }

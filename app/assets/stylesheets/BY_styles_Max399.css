@@ -180,9 +180,7 @@
 .author-page-top-info-card{
   padding: 3px 6px;
 }
-.author-page-top-sort-mobile{
-	margin-right: 0;
-}
+
 .btn-text-v02{
 	padding: 0 6px;	
 }
@@ -225,10 +223,7 @@ body {
 	bottom: 0px;
 }
 
-.author-page-top-sort-mobile{
-	left: 40px;
-	bottom: 0px;
-}
+
 .author-name-years{
 	margin-bottom: 2px;
 	}
@@ -428,6 +423,35 @@ body {
 }
 .work-chapters-popup-mobile{
 	right: calc(50% - 31px);
+}
+.a-b-pagination-frame{
+	margin-bottom: 12px;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	border: solid 1px #907989;
+	padding: 0 2px;
+}
+.a-b-pagination-frame a{
+	flex: 1 0 9%;
+	font-size: 12pt;
+	text-align: center;
+	line-height: 20px;
+	padding: 0px 6px 2px 5px;
+}
+.BYD-switch{
+	width: 160px;
+	height: 28px;
+	border-radius: 3px;
+	border: solid 1px #660248;
+	display: inline-flex;
+ 	margin-bottom: 18px;
+	margin-top: 6px;
+}
+.author-page-top-rights{
+ 
+}
+.author-sort-area{
 }
 	
 }
