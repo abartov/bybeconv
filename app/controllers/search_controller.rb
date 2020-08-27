@@ -25,7 +25,6 @@ class SearchController < ApplicationController
   protected
 
   def sanitize_term(term)
-    # TODO: do this more intelligently, to still allow searching for phrases.  We only want to replace quotation marks inside words, so we need a regexp here.
-    return term.gsub('"', ' ')
+    return term.gsub(/(\S)\"(\S)/,'\1\2')
   end
 end
