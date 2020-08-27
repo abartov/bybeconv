@@ -1,6 +1,7 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 he:
+  to_latest_x_works: הצג %{x} יצירות אחרונות
   contact_name: שם
   contact_email: דואל
   contact_phone: טלפון (לא חובה)
@@ -101,6 +102,7 @@ he:
   x_liked_y_recommended: "%{x} קוראות וקוראים אהבו את היצירה, %{y} המלצות כתובות"
   x_liked: "%{x} קוראות וקוראים אהבו את היצירה"
   wait: נא להמתין
+  with: "עם "
   associate_with_viaf: קשר את התיקיה לרשומת ה-VIAF הזו
   associated_with_viaf: קושר לרשומה מספר %{viaf} במאגר VIAF
   nothing_found_try_surname: אין תוצאות.  נסו לעדכן (זמנית!) את שם המחבר לשם המשפחה בלבד וחפשו שוב.

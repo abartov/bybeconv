@@ -119,7 +119,7 @@ Bybeconv::Application.routes.draw do
   match 'author/:id/create_toc' => 'authors#create_toc', as: 'authors_create_toc', via: [:get]
   match 'author/:id' => 'authors#toc', as: 'author_toc', via: [:get, :post]
   get 'author/:id/whatsnew' => 'authors#whatsnew_popup', as: 'author_whatsnew_popup'
-
+  get 'author/:id/latest' => 'authors#latest_popup', as: 'author_latest_popup'
   get '/page/:tag' => 'static_pages#view', as: 'static_pages_by_tag', via: [:get]
   get "read/:id" => 'manifestation#read', as: 'manifestation_read'
   get "read/:id/read" => 'manifestation#readmode', as: 'manifestation_readmode'
