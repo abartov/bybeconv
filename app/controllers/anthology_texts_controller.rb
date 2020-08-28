@@ -33,6 +33,10 @@ class AnthologyTextsController < ApplicationController
     end
   end
 
+  def confirm_destroy
+    @at = AnthologyText.find(params[:anthology_text_id])
+    render partial: 'confirm_destroy'
+  end
   def mass_create
     @anthology = nil
     @skipped_records = 0

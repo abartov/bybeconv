@@ -219,16 +219,9 @@
       $.get('#{anthology_clone_path(@anthology.nil? ? 0 : @cur_anth_id)}');
     });
     $('.delbutton').click(function(e){
-      if (!confirm("#{t(:are_you_sure)}")){
-        return false;
-      }
       text_id = this.id.replace('del','');
-      $.ajax({
-        type: 'DELETE',
-        url: '#{anthology_texts_path}/'+text_id,
-        dataType: 'script'
-      });
-      // ~~~ anth panel updated by server response ~~~
+      $('#generalDlg').load("#{anthology_text_confirm_destroy_path(anthology_text_id: 0)}".replace('0', text_id));
+      $('#generalDlg').modal('show');
     });
     $('#create_anth').click(function(e) {
       e.preventDefault();

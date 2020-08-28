@@ -2,6 +2,7 @@ include BybeUtils
 Bybeconv::Application.routes.draw do
   resources :anthology_texts do
     post 'mass_create', on: :collection
+    get 'confirm_destroy'
   end
 
   resources :anthologies
