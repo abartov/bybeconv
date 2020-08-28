@@ -19,7 +19,7 @@
 .by-card-content-v02
   - unless @total_pages <= 1
     = render partial: 'slide_pagination'
-    - if @sort == 'alphabetical'
+    - if @sort[0..11] == 'alphabetical'
       = render partial: 'ab_pagination'
   .select-all-with-buttons
     .select-text-checkbox-area
@@ -32,12 +32,19 @@
       .sort-by-desktop
         #custom-select
           %select#sort_by_dd{name: 'sort_by'}
-            %option{value: 'alphabetical'}= t(:alphabetical)
+            %optgroup{label: t(:alefbet)}
+              %option{value: 'alphabetical_asc'}= t(:alefbet_asc)
+              %option{value: 'alphabetical_desc'}= t(:alefbet_desc)
+            %optgroup{label: t(:popularity_group)}
+              %option{value: 'popularity_desc'}= t(:popularity_desc)
+              %option{value: 'popularity_asc'}= t(:popularity_asc)
             %optgroup{label: t(:dates)}
-              %option{value: 'publication_date'}= t(:publication_date)
-              %option{value: 'creation_date'}= t(:creation_date)
-              %option{value: 'upload_date'}= t(:upload_date)
-            %option{value: 'popularity'}= t(:popularity)
+              %option{value: 'publication_date_asc'}= t(:pubdate_asc)
+              %option{value: 'publication_date_desc'}= t(:pubdate_desc)
+              %option{value: 'creation_date_asc'}= t(:workdate_asc)
+              %option{value: 'creation_date_desc'}= t(:workdate_desc)
+              %option{value: 'upload_date_asc'}= t(:uploaddate_asc)
+              %option{value: 'upload_date_desc'}= t(:uploaddate_desc)
       .sort-by-mobile
         %p
           %input#RadioGroupSort_1{:name => "RadioGroupSort", :type => "radio", value: "alphabet"}/
@@ -66,7 +73,7 @@
         %li= link_to m.title_and_authors, manifestation_read_path(m.id)
   - unless @total_pages <= 1
     = render partial: 'slide_pagination'
-    - if @sort == 'alphabetical'
+    - if @sort[0..11] == 'alphabetical'
       = render partial: 'ab_pagination'
   = hidden_field_tag(:hurl, request.original_url)
 :javascript
@@ -117,6 +124,7 @@
       }
       // and submit the form
       startModal('spinnerdiv');
+      $('#page_tag').val('1'); // reset pagination
       $('input').attr('disabled', false); // re-enable checkboxes to preserve other filters
       $('#works_filters').submit();
     });
@@ -166,6 +174,7 @@
     });
     $('#sort_by_dd').change(function(){
       $('input[name=sort_by]').val($('#sort_by_dd option:selected').val());
+      $('#page_tag').val('1'); // reset pagination
       startModal('spinnerdiv');
       $('#works_filters').submit();
     });

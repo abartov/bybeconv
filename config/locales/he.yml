@@ -499,6 +499,18 @@ he:
   to_other_translations_of_author: לשאר תרגומי %{author}
   beginning_abc: מבחר ראשוני
   by_abc: בתצוגה בסדר אלפביתי
+  alefbet: אלפבית
+  alefbet_asc: 'אלפבית: א–ת'
+  alefbet_desc: 'אלפבית: ת–א'
+  popularity_group: 'כמות צפיות'
+  popularity_desc: 'כמות צפיות באתר: יורדת'
+  popularity_asc: 'כמות צפיות באתר: עולה'
+  pubdate_asc: 'ת. הוצאה: מהישן לחדש'
+  pubdate_desc: 'ת. הוצאה: מהחדש לישן'
+  workdate_asc: 'ת. חיבור: מהישן לחדש'
+  workdate_desc: 'ת. חיבור: מהחדש לישן'
+  uploaddate_asc: 'ת. עלייה לאתר: מהישן לחדש'
+  uploaddate_desc: 'ת. עלייה לאתר: מהחדש לישן'
   title: כותרת
   title_x: "כותרת: %{x}"
   author_x: "מחבר: %{x}"

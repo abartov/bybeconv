@@ -39,9 +39,10 @@ input[type=checkbox].multiselect_checkbox {
 	width:44px;
 }
 
-/* .scrolled .top-element{
-  margin-top: 80px; /* just an example -- Asaf */
-/* } */
+#browse_mainlist ol{
+	padding-right: 44px; /* temporary override, until Ruth removes the 0 padding from General */
+}
+
 .author-name-v02 {
   color:white;
 }
