@@ -5,7 +5,7 @@
   .texts-list-top
     .texts-list-top-info-card
       .headline-1-v02= @works_list_title
-      .author-sort-area#sort_filter_toggle
+      .author-sort-area#sort_filter_toggle{title: t(:toggle_filters_tt)}
         .author-page-top-sort-desktop
           = t(:sort_and_filter)+' [?]'
           .toggle-background-no
@@ -23,15 +23,15 @@
             .icon-in-group-v02.anthologies_button.must_login
               %span.linkcolor.pointer.by-icon-v02 D
           - else
-            .icon-in-group-v02.anthologies_button{'data-toggle' => 'modal', 'data-target' => '#anthologiesDlg'}
+            .icon-in-group-v02.anthologies_button{'data-toggle' => 'modal', 'data-target' => '#anthologiesDlg', title: t(:open_shelves_tt)}
               %span.linkcolor.pointer.by-icon-v02 D
               - unless @anthology.nil?
                 .anthology-badge{style: "display: #{@anthology.texts.length > 0 ? 'block' : 'none'}"}
                   .badge-number= @anthology.texts.length.to_s
-          .icon-in-group-v02.notyet
+          .icon-in-group-v02.notyet{title: t(:worklist_print_tt)}
             %a{:href => "#"}
               %span.by-icon-v02 9
-          .icon-in-group-v02.notyet{:style => "margin-left:0;"}
+          .icon-in-group-v02.notyet{style: "margin-left:0;", title: t(:worklist_download_tt)}
             %a{:href => "#"}
               %span.by-icon-v02 3
       .author-page-top-icons-mobile

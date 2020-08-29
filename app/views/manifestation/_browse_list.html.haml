@@ -25,12 +25,12 @@
     .select-text-checkbox-area
       .select-all-checkbox
         %input#select-all{type: 'checkbox', style:'display:none'}
-    %button.btn-small-outline-v02#multiselect_btn
+    %button.btn-small-outline-v02#multiselect_btn{title: t(:worklist_multi_tt)}
       .by-icon-top-v02.purple-v02 \
     .headline-4-v02= t(:sort_by)
     #sort-by
       .sort-by-desktop
-        #custom-select
+        #custom-select{title: t(:worklist_sort_tt)}
           %select#sort_by_dd{name: 'sort_by'}
             %optgroup{label: t(:alefbet)}
               %option{value: 'alphabetical_asc'}= t(:alefbet_asc)

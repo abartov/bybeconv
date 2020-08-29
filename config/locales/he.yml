@@ -660,7 +660,15 @@ he:
   leave_readmode_tt: יציאה ממצב טקסט בלבד
   readmode_search_tt: חיפוש ביצירה זו
   readmode_settings_tt: הגדרות מצב טקסט בלבד
-
+  worklist_print_tt: הדפסת רשימת היצירות
+  worklist_download_tt: הורדת רשימת היצירות כקובץ
+  worklist_first_page_tt: מעבר לעמוד הראשון
+  worklist_prev_page_tt: מעבר לעמוד הקודם
+  worklist_next_page_tt: מעבר לעמוד הבא
+  worklist_last_page_tt: מעבר לעמוד האחרון
+  worklist_pagination_handle_tt: ידית גרירה לבחירת עמוד
+  worklist_multi_tt: הפעלת / כיבוי בחירה מרובה
+  worklist_sort_tt: אפשרויות מיון - שינוי יאפס את הדפדוף ברשימה הקיימת
   facebook_url: https://www.facebook.com/projectbenyehuda/
   latest_youtube: קטעי וידאו אחרונים בערוץ היו-טיוב
   youtube_url: https://www.youtube.com/user/ProjectBenYehuda/
