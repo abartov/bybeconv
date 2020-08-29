@@ -669,6 +669,19 @@ he:
   worklist_pagination_handle_tt: ידית גרירה לבחירת עמוד
   worklist_multi_tt: הפעלת / כיבוי בחירה מרובה
   worklist_sort_tt: אפשרויות מיון - שינוי יאפס את הדפדוף ברשימה הקיימת
+  anth_fold_tt: מזעור חלון המקראה
+  anth_show_tt: הצגת המקראה במלואה
+  anth_download_tt: הורדת המקראה כספר אלקטרוני או קובץ אחר
+  anth_print_tt: הדפסת המקראה
+  anth_clone_tt: יצירת עותק מהמקראה
+  anth_delete_tt: מחיקת המקראה
+  anth_share_tt: שיתוף המקראה
+  anth_access_tt: 'בחירת רמת גישה: מי יכול לגשת למקראה'
+  anth_drag_tt: איזור גרירה לשינוי סדר הפריטים במקראה
+  anth_add_work_tt: הוספת היצירה שממנה נפתח חלון המקראות
+  anth_add_works_tt: הוספת יצירות מעמוד רשימת היצירות
+  anth_add_curated_tt: "הוספת טקסט מלווה מטעמך כגון שער, הערות, שיעורי בית, וכו'"
+
   facebook_url: https://www.facebook.com/projectbenyehuda/
   latest_youtube: קטעי וידאו אחרונים בערוץ היו-טיוב
   youtube_url: https://www.youtube.com/user/ProjectBenYehuda/
