@@ -133,6 +133,7 @@
       // determine whether to toggle on or off
       if($('#browse_mainlist').hasClass('multiselect')) {
         $('#browse_mainlist').removeClass('multiselect');
+        $('#multiselect_btn').removeClass('btn-active');
         $('#select-all').hide();
         $('.number-of-selected-texts').hide();
         $('.add-to-anthology').hide();
@@ -141,6 +142,7 @@
       } else {
         // turn on multi-select mode
         $('#browse_mainlist').addClass('multiselect');
+        $('#multiselect_btn').addClass('btn-active');
         $('#select-all').show();
         $('.number-of-selected-texts').show();
         $('#browse_mainlist li').each(function() {
