@@ -48,7 +48,7 @@ gem 'execjs'
 gem 'therubyracer'
 gem 'thin'
 gem 'htmlentities'
-gem 'kaminari' # pagination
+gem 'kaminari', '1.1.1' # pagination. Kaminari 1.2.1 seems to have a bug
 gem "nokogiri", ">= 1.10.4"
 
 gem 'rmultimarkdown' # new wrapper over Fletcher Penney's MultiMarkDown 6 (MMD 6)
