@@ -19,44 +19,49 @@
 .by-card-content-v02
   - unless @total_pages <= 1
     = render partial: 'slide_pagination'
-    - if @sort == 'alphabetical'
+    - if @sort[0..11] == 'alphabetical'
       = render partial: 'ab_pagination'
   .select-all-with-buttons
     .select-text-checkbox-area
       .select-all-checkbox
         %input#select-all{type: 'checkbox', style:'display:none'}
-    .sort-buttons-area
-      %button.btn-small-outline-v02#multiselect_btn
-        .by-icon-top-v02.purple-v02 \
-      .headline-2-v02= t(:sort_by)
-      #sort-by
-        .sort-by-desktop
-          #custom-select
-            %select#sort_by_dd{name: 'sort_by'}
-              %option{value: 'alphabetical'}= t(:alphabetical)
-              %optgroup{label: t(:dates)}
-                %option{value: 'publication_date'}= t(:publication_date)
-                %option{value: 'creation_date'}= t(:creation_date)
-                %option{value: 'upload_date'}= t(:upload_date)
-              %option{value: 'popularity'}= t(:popularity)
-        .sort-by-mobile
-          %p
-            %input#RadioGroupSort_1{:name => "RadioGroupSort", :type => "radio", value: "alphabet"}/
-            %label= t(:alphabetical)
-            %br/
-            %input#RadioGroupSort_2{:name => "RadioGroupSort", :type => "radio", value: "publish_date"}/
-            %label= t(:publication_date)
-            %br/
-            %input#RadioGroupSort_3{:name => "RadioGroupSort", :type => "radio", value: "creation_date"}/
-            %label= t(:creation_date)
-            %br/
-            %input#RadioGroupSort_4{:name => "RadioGroupSort", :type => "radio", value: "online_date"}/
-            %label= t(:upload_date)
-            %br/
-            %input#RadioGroupSort_5{:name => "RadioGroupSort", :type => "radio", value: "popularity"}/
-            %label= t(:popularity)
-            %br/
-      .by-icon-top-v02.purple-v02.icon-bysort-down
+    %button.btn-small-outline-v02#multiselect_btn{title: t(:worklist_multi_tt)}
+      .by-icon-top-v02.purple-v02 \
+    .headline-4-v02= t(:sort_by)
+    #sort-by
+      .sort-by-desktop
+        #custom-select{title: t(:worklist_sort_tt)}
+          %select#sort_by_dd{name: 'sort_by'}
+            %optgroup{label: t(:alefbet)}
+              %option{value: 'alphabetical_asc'}= t(:alefbet_asc)
+              %option{value: 'alphabetical_desc'}= t(:alefbet_desc)
+            %optgroup{label: t(:popularity_group)}
+              %option{value: 'popularity_desc'}= t(:popularity_desc)
+              %option{value: 'popularity_asc'}= t(:popularity_asc)
+            %optgroup{label: t(:dates)}
+              %option{value: 'publication_date_asc'}= t(:pubdate_asc)
+              %option{value: 'publication_date_desc'}= t(:pubdate_desc)
+              %option{value: 'creation_date_asc'}= t(:workdate_asc)
+              %option{value: 'creation_date_desc'}= t(:workdate_desc)
+              %option{value: 'upload_date_asc'}= t(:uploaddate_asc)
+              %option{value: 'upload_date_desc'}= t(:uploaddate_desc)
+      .sort-by-mobile
+        %p
+          %input#RadioGroupSort_1{:name => "RadioGroupSort", :type => "radio", value: "alphabet"}/
+          %label= t(:alphabetical)
+          %br/
+          %input#RadioGroupSort_2{:name => "RadioGroupSort", :type => "radio", value: "publish_date"}/
+          %label= t(:publication_date)
+          %br/
+          %input#RadioGroupSort_3{:name => "RadioGroupSort", :type => "radio", value: "creation_date"}/
+          %label= t(:creation_date)
+          %br/
+          %input#RadioGroupSort_4{:name => "RadioGroupSort", :type => "radio", value: "online_date"}/
+          %label= t(:upload_date)
+          %br/
+          %input#RadioGroupSort_5{:name => "RadioGroupSort", :type => "radio", value: "popularity"}/
+          %label= t(:popularity)
+          %br/
   .add-to-anthology{style:'display:none'}
     .left-pointing-arrow= t(:perform_add)
     %button.by-button-v02#add-to-anth-btn
@@ -68,7 +73,7 @@
         %li= link_to m.title_and_authors, manifestation_read_path(m.id)
   - unless @total_pages <= 1
     = render partial: 'slide_pagination'
-    - if @sort == 'alphabetical'
+    - if @sort[0..11] == 'alphabetical'
       = render partial: 'ab_pagination'
   = hidden_field_tag(:hurl, request.original_url)
 :javascript
@@ -119,6 +124,7 @@
       }
       // and submit the form
       startModal('spinnerdiv');
+      $('#page_tag').val('1'); // reset pagination
       $('input').attr('disabled', false); // re-enable checkboxes to preserve other filters
       $('#works_filters').submit();
     });
@@ -127,6 +133,7 @@
       // determine whether to toggle on or off
       if($('#browse_mainlist').hasClass('multiselect')) {
         $('#browse_mainlist').removeClass('multiselect');
+        $('#multiselect_btn').removeClass('btn-active');
         $('#select-all').hide();
         $('.number-of-selected-texts').hide();
         $('.add-to-anthology').hide();
@@ -135,6 +142,7 @@
       } else {
         // turn on multi-select mode
         $('#browse_mainlist').addClass('multiselect');
+        $('#multiselect_btn').addClass('btn-active');
         $('#select-all').show();
         $('.number-of-selected-texts').show();
         $('#browse_mainlist li').each(function() {
@@ -168,6 +176,7 @@
     });
     $('#sort_by_dd').change(function(){
       $('input[name=sort_by]').val($('#sort_by_dd option:selected').val());
+      $('#page_tag').val('1'); // reset pagination
       startModal('spinnerdiv');
       $('#works_filters').submit();
     });

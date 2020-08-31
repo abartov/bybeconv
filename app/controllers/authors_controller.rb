@@ -25,6 +25,11 @@ class AuthorsController < ApplicationController
     @pubs = @author.works_since(1.month.ago, 1000)
     render partial: 'whatsnew_popup'
   end
+  def latest_popup
+    @author = Person.find(params[:id])
+    @pubs = @author.cached_latest_stuff
+    render partial: 'whatsnew_popup'
+  end
 
   def all
     @page_title = t(:all_authors)+' '+t(:project_ben_yehuda)

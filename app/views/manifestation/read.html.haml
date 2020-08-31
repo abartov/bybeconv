@@ -158,12 +158,12 @@
 
 :javascript
   $(document).ready(function() {
-    $('#content').css('margin-top', $(header).position().top + $(header).outerHeight(true) + 10);
+    $('#content').css('margin-top', $('header').position().top + $('header').outerHeight(true) + 10);
     $('#jump-to-recs').click(function(){
       elem = $('#recs');
       if(elem != null && elem.position() != null)
       {
-        offsetTop = $(header).position().top + $(header).outerHeight(true) + 10;
+        offsetTop = $('header').position().top + $('header').outerHeight(true) + 10;
         position = elem.offset().top - offsetTop;
         window.scrollTo(0,position);
       }
@@ -180,12 +180,12 @@
       e.preventDefault();
       anchor = $(this).attr('data-target');
       $('html, body').animate({
-        scrollTop: $('a[name='+anchor+']').offset().top - $(header).height() - 45
+        scrollTop: $('a[name='+anchor+']').offset().top - $('header').height() - 45
       }, 800);
       $('#chapterDlg').modal('hide');
       $('header').addClass("scrolled");
       $('html, body').animate({ // re-adjust, after the header height changed
-        scrollTop: $('a[name='+anchor+']').offset().top - $(header).height() - 45
+        scrollTop: $('a[name='+anchor+']').offset().top - $('header').height() - 45
       }, 0);
       $('#actualtext').focus();
     });
@@ -193,7 +193,7 @@
       e.preventDefault();
       anchor = $(this).attr('href');
       $('html, body').animate({
-        scrollTop: $('a[id="'+anchor.slice(1)+'"]').offset().top - $(header).height() - 45
+        scrollTop: $('a[id="'+anchor.slice(1)+'"]').offset().top - $('header').height() - 45
       }, 800);
     });
     $('#downloadDlg').on('shown.bs.modal', function () {
@@ -212,13 +212,4 @@
       $('#recommendationDlg').load($(this).attr('data-recpath'));
       $('#recommendationDlg').modal('show');
     });
-    $(document).on('keyup',function(evt) {
-      if (evt.keyCode == 27) {
-        $('#anthologiesDlg').modal('hide');
-        $('#citeDlg').modal('hide');
-        $('#downloadDlg').modal('hide');
-        $('#recommendationDlg').modal('hide');
-      }
-    });
-
   });

@@ -21,6 +21,10 @@
 .padbot12 {
   padding-bottom: 12px;
 }
+#chapters {
+  width: -webkit-fill-available;
+  width: -moz-available;
+}
 .anthology-badge{
   cursor: pointer;
 }
@@ -39,9 +43,10 @@ input[type=checkbox].multiselect_checkbox {
 	width:44px;
 }
 
-/* .scrolled .top-element{
-  margin-top: 80px; /* just an example -- Asaf */
-/* } */
+#browse_mainlist ol{
+	padding-right: 44px; /* temporary override, until Ruth removes the 0 padding from General */
+}
+
 .author-name-v02 {
   color:white;
 }
@@ -181,7 +186,10 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
 .dropdown .dropdown-toggle::after{
   display:none;
 }
-
+.g_anch { /* for anchors that can be jumped to despite the fixed top bar */
+  position:absolute;
+  top:-200px;
+}
 #chapternav{ width: min-content;}
 #chapter-nav{
   max-height: 400px;
@@ -357,4 +365,21 @@ ol#anth_texts li.placeholder:before {
   .print .work-side-menu-area{
     display: none;
   }
+}
+
+/* remove all default styling of buttons */
+button.plainbutton {
+  display: inline-block;
+  border: none;
+  text-decoration: none;
+  cursor: pointer;
+  text-align: center;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+button.chapterbutton {
+  font-family: 'ben-yehuda';
+  width: 100%;
+  background-color: inherit;
 }

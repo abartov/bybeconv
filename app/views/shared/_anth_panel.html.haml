@@ -20,7 +20,7 @@
 
     .anthology#anth_panel{style: 'display: block'}
       .by-card-header-v02.desktop-only
-        %button.by-button-secondary-v02.horizontal-collapse-expand#anth_collapser{style:'border:none', 'data-dismiss'=>'modal'}
+        %button.by-button-secondary-v02.horizontal-collapse-expand#anth_collapser{style:'border:none', 'data-dismiss'=>'modal', title: t(:anth_fold_tt)}
         #anthology-select
           /.anthology-select-desktop
           /  .field-v02
@@ -29,19 +29,19 @@
         %a.popup-x-v02.pointer{'data-dismiss'=>'modal'} -
         .anthologies-actions-area
           .icons-group-v02
-            %button.icon-btn.icon-bybook#display-anthology
+            %button.icon-btn.icon-bybook#display-anthology{title: t(:anth_show_tt)}
             .actions-description#display-anthology-description= t(:display_anthology_description)
-            %button.icon-btn.icon-bydownload#download-anthology{'data-toggle' => 'modal', 'data-target' => '#downloadAnthologyDlg'}
+            %button.icon-btn.icon-bydownload#download-anthology{'data-toggle' => 'modal', 'data-target' => '#downloadAnthologyDlg', title: t(:anth_download_tt)}
             .actions-description#download-anthology-description= t(:download_description)
-            %button.icon-btn.icon-byprint#print-anthology
+            %button.icon-btn.icon-byprint#print-anthology{title: t(:anth_print_tt)}
             .actions-description#print-anthology-description= t(:print_description)
-            %button.icon-btn#copy-anthology= '['
+            %button.icon-btn#copy-anthology{title: t(:anth_clone_tt)}= '['
             .actions-description#copy-anthology-description= t(:copy_description)
-            %button.icon-btn.icon-bydelete#delete-anthology
+            %button.icon-btn.icon-bydelete#delete-anthology{title: t(:anth_delete_tt)}
             .actions-description#delete-anthology-description= t(:delete_description)
-            %button.icon-btn.icon-byshare#share-anthology{'data-toggle' => 'modal', 'data-target' => '#shareAnthologyDlg'}
+            %button.icon-btn.icon-byshare#share-anthology{'data-toggle' => 'modal', 'data-target' => '#shareAnthologyDlg', title: t(:anth_show_tt)}
             .actions-description#share-anthology-description= t(:share_description)
-          #anthology-status
+          #anthology-status{title: t(:anth_access_tt)}
             %span.anthology-status-label= t(:access_control)
             /.anthology-status-desktop
             = select_tag :access, options_for_select(Anthology.accesses.map{|a| [t(a[0]), a[0]]}, ((@anthology.nil? || @anthology.access.nil?) ? nil : @anthology.access)), {style:'width:140px'}
@@ -59,7 +59,7 @@
                   %li{id: 'anth_text_'+text.id.to_s}
                     %div{'class' => "by-card-v02" + (text.manifestation_id.nil? ? ' self-created-text' : '')}
                       .anthology-card-header
-                        .drag-handle
+                        .drag-handle{title: t(:anth_drag_tt)}
                           .handle
                         .anthology-headline
                           - if text.manifestation_id.nil?
@@ -103,13 +103,13 @@
                                 = link_to '[?]', '#', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_public_domain), 'data-content' => t(:public_domain_popover)
         .bottom-right-buttons
           #add_work_block{style: 'display: none'}
-            .by-button-v02.by-button-secondary-v02#add_work_btn
+            .by-button-v02.by-button-secondary-v02#add_work_btn{title: t(:anth_add_work_tt)}
               .right-side-icon.icon-byadd
               %div= t(:add_this_work_to_anthology)
-          .by-button-v02.by-button-secondary-v02#add_works_btn
+          .by-button-v02.by-button-secondary-v02#add_works_btn{title: t(:anth_add_works_tt)}
             .right-side-icon.icon-byadd
             %div= t(:add_works_to_anthology)
-          .by-button-v02.by-button-secondary-v02#add_curated_btn
+          .by-button-v02.by-button-secondary-v02#add_curated_btn{title: t(:anth_add_curated_tt)}
             .right-side-icon.icon-byadd
             %div= t(:add_curated_text)
 :javascript
@@ -219,16 +219,9 @@
       $.get('#{anthology_clone_path(@anthology.nil? ? 0 : @cur_anth_id)}');
     });
     $('.delbutton').click(function(e){
-      if (!confirm("#{t(:are_you_sure)}")){
-        return false;
-      }
       text_id = this.id.replace('del','');
-      $.ajax({
-        type: 'DELETE',
-        url: '#{anthology_texts_path}/'+text_id,
-        dataType: 'script'
-      });
-      // ~~~ anth panel updated by server response ~~~
+      $('#generalDlg').load("#{anthology_text_confirm_destroy_path(anthology_text_id: 0)}".replace('0', text_id));
+      $('#generalDlg').modal('show');
     });
     $('#create_anth').click(function(e) {
       e.preventDefault();

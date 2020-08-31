@@ -9,11 +9,11 @@
             .side-menu-icon= glyph_for_genre(g)
             .side-menu-name= textify_genre(g)
         - first = false
-    - if curated_content
-      %li.by-side-menu-seperator
-      %li.nav-item
-        %a.nav-link.nav-link-edit{id: 'curated_button', href: "#curated_g"}
-          .side-menu-icon.icon-byadditionals
+    /- if curated_content
+    %li.by-side-menu-seperator
+    %li.nav-item
+      %a.nav-link.nav-link-edit{id: 'curated_button', href: "#curated_g"}
+        .side-menu-icon.icon-byadditionals
 :javascript
   $(document).ready(function() {
     $(window).scroll(function() {
@@ -24,9 +24,9 @@
     });
     //$('.nav-item').first().addClass('current-menu-item');
     // ensure smooth scrollTo behavior
-    $('.g_anch').css('top', -($(header).height()+15));
-    // $('.g_anch').css('padding-top', $(header).height());
-    // $('.g_anch').css('margin-top', -$(header).height());
+    $('.g_anch').css('top', -($('header').height()+15));
+    // $('.g_anch').css('padding-top', $('header').height());
+    // $('.g_anch').css('margin-top', -$('header').height());
     /*
     $('.nav-link').click(function(e) {
       e.preventDefault();
@@ -34,7 +34,7 @@
       //$(this).parent().addClass('current-menu-item');
       anchor = $(this).attr('id').replace('_button','_g');
       $('html, body').animate({
-        scrollTop: $('a[name='+anchor+']').offset().top - $(header).height() - 65
+        scrollTop: $('a[name='+anchor+']').offset().top - $('header').height() - 65
       }, 800);
     }); */
   });

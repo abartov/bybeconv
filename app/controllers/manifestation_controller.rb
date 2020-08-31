@@ -491,28 +491,34 @@ class ManifestationController < ApplicationController
 
   def prep_collection
     @emit_filters = false
+    @sort_dir = :default
+    if params[:sort_by].present?
+      @sort = params[:sort_by].dup
+      params[:sort_by].sub!(/_(a|de)sc$/,'')
+      @sort_dir = $&[1..-1] unless $&.nil?
+    end
     joins_needed = @periods.present? || @genres.present? || params['search_input'].present? || params[:load_filters].present? || params['fromdate'].present? || params['todate'].present? || params['ckb_genres'].present? || params['ckb_periods'].present? || params['ckb_languages'].present? || params['ckb_authors'].present? || params['ckb_copyright'].present? || (params[:sort_by].present? && ['publication_date', 'creation_date'].include?(params[:sort]))
     people_needed = params['authors'].present?
     query_params = {}
     query_parts = {}
     # figure out sort order
     if params[:sort_by].present?
-      @sort = params[:sort_by]
       case params[:sort_by]
       when 'alphabetical'
-        ord = :sort_title
+        ord = {sort_title: (@sort_dir == :default ? :asc : @sort_dir)}
       when 'popularity'
-        ord = {impressions_count: :desc}
+        ord = {impressions_count: (@sort_dir == :default ? :desc : @sort_dir)}
       when 'publication_date'
-        ord = 'expressions.date asc'
+        ord = "expressions.date #{@sort_dir == :default ? 'asc' : @sort_dir}"
       when 'creation_date'
-        ord = 'works.date asc'
+        ord = "works.date #{@sort_dir == :default ? 'asc' : @sort_dir}"
       when 'upload_date'
-        ord = {created_at: :desc}
+        ord = {created_at: (@sort_dir == :default ? :desc : @sort_dir)}
       end
     else
-      @sort = 'alphabetical'
-      ord = :sort_title
+      sdir = (@sort_dir == :default ? :asc : @sort_dir)
+      @sort = "alphabetical_#{sdir}"
+      ord = {sort_title: sdir}
     end
 
     # collect conditions
@@ -593,7 +599,7 @@ class ManifestationController < ApplicationController
     # build the collection (with/without joins, with/without conditions)
     joins_needed = true if @emit_filters
     @collection = make_collection(query_parts, query_params, joins_needed, people_needed, ord)
-    if @sort == 'alphabetical'
+    if @sort[0..11] == 'alphabetical' # ignore direction
       unless params[:page].nil? || params[:page].empty?
         params[:to_letter] = nil # if page was specified, forget the to_letter directive
       end
@@ -631,6 +637,7 @@ class ManifestationController < ApplicationController
       # TODO: curated facet
       end
     # {"utf8"=>"✓", "search_input"=>"ביאליק", "search_type"=>"authorname", "ckb_genres"=>["drama"], "ckb_periods"=>["medieval", "enlightenment"], "ckb_copyright"=>["0"], "CheckboxGroup5"=>"sort_by_german", "genre"=>"drama", "load_filters"=>"true", "_"=>"1577388296523", "controller"=>"manifestation", "action"=>"genre"} permitted: false
+    params[:sort_by] = @sort
   end
 
   def prep_for_browse

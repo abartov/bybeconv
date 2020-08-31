@@ -67,7 +67,7 @@
         <div class="row">
           <div class="col-6 col-lg-4" style="padding-left: 6px;z-index: 99;">
             <a href="/">
-              <div class="logoBY-v02"><img src="/assets/logo-byp-mobile.svg" alt="<% t(:logo) %>"/> </div>
+              <div class="logoBY-v02" title="<%= t(:back_to_homepage) %>"><img src="/assets/logo-byp-mobile.svg" alt="<%= t(:logo) %>"/> </div>
               <div class="logoBY-scroll-mobile-v02"><img class="scrolled-logoBY-v02" alt="פרויקט בן יהודה"/></div>
             </a>
           </div>
@@ -92,14 +92,14 @@
           <div class="col-lg-4">
             <div class="top-btn-group-v02">
               <div class="icons-group-v02">
-                <a href="<%= t(:facebook_url) %>"><div class="icon-in-group-v02"><span class="by-icon-v02">S</span></div></a>
-                <a href="<%= t(:youtube_url) %>"><div class="icon-in-group-v02"><span class="by-icon-v02">W</span></div></a>
-                <a href="<%= t(:blog_url) %>"><div class="icon-in-group-v02"><span class="by-icon-v02">Q</span></div></a>
+                <a href="<%= t(:facebook_url) %>" title="<%= t(:to_facebook_tt) %>"><div class="icon-in-group-v02"><span class="by-icon-v02">S</span></div></a>
+                <a href="<%= t(:youtube_url) %>" title="<%= t(:to_youtube_tt) %>"><div class="icon-in-group-v02"><span class="by-icon-v02">W</span></div></a>
+                <a href="<%= t(:blog_url) %>" title="<%= t(:to_blog_tt) %>"><div class="icon-in-group-v02"><span class="by-icon-v02">~</span></div></a>
                 <%= render partial: 'shared/share', locals: {element: :header_button} %>
-                <a href="mailto:editor@benyehuda.org"><div class="icon-in-group-v02"><span class="by-icon-v02">R</span></div></a>
+                <a class="linkcolor pointer contact_btn" href="mailto:editor@benyehuda.org" title="<%= t(:contact_tt) %>"><div class="icon-in-group-v02"><span class="by-icon-v02">R</span></div></a>
                 <div class="icons-seperator"></div>
                 <% if current_user %>
-                  <div class="collapsed" data-toggle="collapse" data-target="#user_collapsible" style="display:inline-block;">
+                  <div class="collapsed" data-toggle="collapse" data-target="#user_collapsible" style="display:inline-block;" title="<%= t(:usermenu_tt) %>">
                     <p style="padding-left: 1.6rem"><%= t(:welcome) %> <strong><%= current_user.name %></strong>!</p>
                     <div class="dropdown-arrow pointer" style="top: 0.1rem; left: 0"><i class="fa chevron"></i></div>
                   </div>
@@ -178,7 +178,10 @@
 <div class="modal" id="shareDlg", aria-hidden = "true", role="dialog", title="<%= t(:choose_sharing_medium) %>">
   <%= render partial: 'shared/share_controls' %>
 </div>
-
+<div class="modal" id="contactDlg", aria-hidden = "true", role="dialog", title="<%= t(:contact_us) %>">
+</div>
+<div class="modal" id="generalDlg", aria-hidden = "true", role="dialog" %>">
+</div>
 <script>
   $(document).ready(function() {
     <% unless @readmode %>
@@ -205,7 +208,8 @@
       <% end %>
     });
     $('[data-toggle="popover"]').popover();
-    $('[data-toggle="tooltip"]').tooltip();
+    //$('[data-toggle="tooltip"]').tooltip();
+    $('body').tooltip();
     // adjust page to accommodate extra header height
     var h = $('#header').height();
     $('.top-element').css('margin-top',h+5);
@@ -218,6 +222,11 @@
         $.get('<%= session_dismiss_sitenotice_path %>');
       });
     }
+    $(document).on('keyup',function(evt) {
+      if (evt.keyCode == 27) {
+        $('.modal').modal('hide'); // hide all modals on ESC
+      }
+    });
   });
 </script>
 

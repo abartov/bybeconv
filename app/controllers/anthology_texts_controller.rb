@@ -33,9 +33,14 @@ class AnthologyTextsController < ApplicationController
     end
   end
 
+  def confirm_destroy
+    @at = AnthologyText.find(params[:anthology_text_id])
+    render partial: 'confirm_destroy'
+  end
   def mass_create
     @anthology = nil
     @skipped_records = 0
+    @added_records = 0
     if params[:anthology_texts]
       params[:anthology_texts].each do |atext|
         at = AnthologyText.new(select_permitted(atext[1]))
@@ -45,6 +50,7 @@ class AnthologyTextsController < ApplicationController
           begin
             at.save!
             at.anthology.append_to_sequence(at.id)
+            @added_records += 1
           rescue ActiveRecord::RecordInvalid
             @skipped_records += 1
           end

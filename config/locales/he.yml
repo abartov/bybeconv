@@ -1,6 +1,24 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 he:
+  to_latest_x_works: הצג %{x} יצירות אחרונות
+  contact_name: שם
+  contact_email: דואל
+  contact_phone: טלפון (לא חובה)
+  contact_topic: נושא הפּנייה
+  contact_topic_content: תוכן האתר
+  contact_topic_copyright: זכויות יוצרים
+  contact_topic_donation: תרומה כספית
+  contact_topic_volunteer: רצון להתנדב
+  contact_topic_other: נושא אחר
+  contact_body: פירוט הפּנייה
+  contact_body_limit: עד 300 מילים
+  contact_send: שיגור הפּנייה
+  contact_thanks_p1: תודה רבה על פנייתכם!
+  contact_thanks_p2: נעיין בה ונהיה בקשר בקרוב.
+  close_and_return_to_page: סגירה וחזרה לדף
+  contact_form_email_greeting: "התקבל טופס צור קשר. להלן הפרטים:"
+  volunteer_form_email_greeting: "התקבל טופס התנדבות. להלן הפרטים:"
   rename_this_anthology: שינוי שם מקראה זו
   authors_select_filter: סינון לפי יוצר - בחירה מרובה
   add_authors_to_filter: הוספת היוצרים שנבחרו לסינון
@@ -84,6 +102,7 @@ he:
   x_liked_y_recommended: "%{x} קוראות וקוראים אהבו את היצירה, %{y} המלצות כתובות"
   x_liked: "%{x} קוראות וקוראים אהבו את היצירה"
   wait: נא להמתין
+  with: "עם "
   associate_with_viaf: קשר את התיקיה לרשומת ה-VIAF הזו
   associated_with_viaf: קושר לרשומה מספר %{viaf} במאגר VIAF
   nothing_found_try_surname: אין תוצאות.  נסו לעדכן (זמנית!) את שם המחבר לשם המשפחה בלבד וחפשו שוב.
@@ -162,13 +181,23 @@ he:
   access_control: רמת גישה
   priv: טיוטא פרטית
   pub: גלויה - ציבורית
+  typing: הקלדה מִסריקות
+  proofing: הגהת הקלדות מול סריקות
+  scanning: סריקת ספרים
+  donation: תרומה כספית
   unlisted: בהזמנה בלבד
   curated_text_bit: טקסט מלווה
   curated_text_bits: טקסטים מלווים
   word_count: מספר מילים
   page_count: מספר עמודים
   total_result_pages: "סך עמודי תוצאות: %{x}"
+  contact_form_title: יצירת קשר עם פרויקט בן־יהודה
+  volunteer_form_title: איך תרצו לעזור?
+  volunteer_areas: תחומי התנדבות
+  volunteer_pick_all_that_applies: 'סמנו כל תחום שמעניין אתכם:'
   page_x_of_y: עמוד %{x} מתוך %{y}
+  out_of_x: מתוך %{x}
+  page_colon: 'עמוד: '
   display_anthology_description: המקראה, הכוללת את כל הטקסטים של היצירות שנבחרו וגם טקסטים עצמיים (אם יוצרו). תוצג בשלמותה בדף נפרד שיפתח בלשונית חדשה
   download_description: המקראה, הכוללת את כל הטקסטים של היצירות שנבחרו וגם טקסטים עצמיים (אם יוצרו), תישמר כקובץ עצמאי נפרד בפורמט לבחירה
   print_description: המקראה, הכוללת את כל הטקסטים של היצירות שנבחרו וגם טקסטים עצמיים (אם יוצרו), תוצג מוכנה להדפסה בלשונית חדשה
@@ -235,6 +264,7 @@ he:
   reference: עיון
   lexicon: מילונים ולקסיקונים
   # end genres
+  anth_grows: המקראה צומחת!
   most_popular_works_this_month: היצירות הנקראות ביותר החודש
   support_the_project: הצטרפו לתומכי הפרויקט!
   until: עד
@@ -469,12 +499,25 @@ he:
   to_other_translations_of_author: לשאר תרגומי %{author}
   beginning_abc: מבחר ראשוני
   by_abc: בתצוגה בסדר אלפביתי
+  alefbet: אלפבית
+  alefbet_asc: 'אלפבית: א–ת'
+  alefbet_desc: 'אלפבית: ת–א'
+  popularity_group: 'כמות צפיות'
+  popularity_desc: 'כמות צפיות באתר: יורדת'
+  popularity_asc: 'כמות צפיות באתר: עולה'
+  pubdate_asc: 'ת. הוצאה: מהישן לחדש'
+  pubdate_desc: 'ת. הוצאה: מהחדש לישן'
+  workdate_asc: 'ת. חיבור: מהישן לחדש'
+  workdate_desc: 'ת. חיבור: מהחדש לישן'
+  uploaddate_asc: 'ת. עלייה לאתר: מהישן לחדש'
+  uploaddate_desc: 'ת. עלייה לאתר: מהחדש לישן'
   title: כותרת
   title_x: "כותרת: %{x}"
   author_x: "מחבר: %{x}"
   authors_xx: "מחברים: %{xx}"
   title_already_exists: השם כבר קיים. נא לתת שם אחר.
   text_already_in_anthology: היצירה הנוכחית כבר מופיעה במקראה הזאת.
+  anth_x_works_added: "%{x} יצירות נוספו לסוף המקראה. אפשר לשנות את מיקומן בגרירה."
   anth_x_works_skipped: "%{x} מהיצירות שסימנת לא נוספו למקראה כי הן כבר מופיעות בה."
   editing_or_compilation: עריכה/ההדרה
   add_from_browse_view: ראשית בחרו רשימת יצירות דרך התפריט הראשי ואז תוכלו להוסיף יצירות רבות בבת אחת.
@@ -559,6 +602,9 @@ he:
   dictionary_entries: ערכים מילוניים
   about: על הפרויקט | About
   about_the_project: על פרויקט בן־יהודה
+  contact_instructions: " לפני פניה, אנא קראו את הדף <a href=\"/page/about\">על אודות הפרויקט</a> הכולל מידע רב, שאלות ותשובות, אולי גם לשאלתכם."
+  contact_for_volunteering_prefix: "אם אתם מעוניינים להתנדב, אנא מלאו "
+  contact_volunteer_form: טופס התנדבות
   about_author_in_blog: על אודות %{author} ביומן הרשת
   blog_category_url: קישורית לקטגוריה על היוצר/ת ביומן הרשת
   link: קישורית
@@ -591,6 +637,52 @@ he:
   to_manage_people: אם האיש/ה אינו/ה ברשימה, יש ליצור רשומה חדשה בניהול אישים (השינויים לא יישמרו אם לא בוצעה "שמירה ועדכון")
   how_to_help: 'התנדבות בפרויקט'
   to_the_facebook_page: לדף הפייסבוק
+  to_facebook_tt: מעבר לדף הפייסבוק של הפרויקט
+  to_youtube_tt: מעבר לערוץ היוטיוב של הפרויקט
+  to_blog_tt: מעבר ליומן הרשת של הפרויקט
+  share_tt: שיתוף עמוד נוכחי
+  contact_tt: יצירת קשר עם צוות הפרויקט
+  usermenu_tt: תפריט המשתמש
+  donate_tt: לדף תרומה כספית לפרויקט
+  search_tt: חיפוש יצירות ויוצרים באתר
+  toggle_filters_tt: הפעלת / כיבוי אפשרויות סינון
+  report_error_tt: סמנו משהו בדף ואז לחצו לדיווח על שגיאה
+  author_liked_tt: אהבתי את היוצר/ת
+  author_print_tt: הדפסת רשימת היצירות של היוצר/ת
+  author_download_tt: הורדת רשימת היצירות של היוצר/ת כקובץ
+  readmode_tt: מעבר למצב קריאה המציג את גוף היצירה בלבד
+  work_liked_tt: אהבתי יצירה זו
+  bookmark_tt: הוספת סימניה לטקסט זה
+  open_shelves_tt: פתיחת חלונית המקראות
+  cite_tt: יצירת ציטוט אקדמי של מהדורה זו
+  work_print_tt: הדפסת היצירה
+  work_download_tt: הורדת היצירה כספר אלקטרוני או קובץ אחר
+  leave_readmode_tt: יציאה ממצב טקסט בלבד
+  readmode_search_tt: חיפוש ביצירה זו
+  readmode_settings_tt: הגדרות מצב טקסט בלבד
+  worklist_print_tt: הדפסת רשימת היצירות
+  worklist_download_tt: הורדת רשימת היצירות כקובץ
+  worklist_first_page_tt: מעבר לעמוד הראשון
+  worklist_prev_page_tt: מעבר לעמוד הקודם
+  worklist_next_page_tt: מעבר לעמוד הבא
+  worklist_last_page_tt: מעבר לעמוד האחרון
+  worklist_pagination_handle_tt: ידית גרירה לבחירת עמוד
+  worklist_multi_tt: הפעלת / כיבוי בחירה מרובה
+  worklist_sort_tt: אפשרויות מיון - שינוי יאפס את הדפדוף ברשימה הקיימת
+  anth_fold_tt: מזעור חלון המקראה
+  anth_show_tt: הצגת המקראה במלואה
+  anth_download_tt: הורדת המקראה כספר אלקטרוני או קובץ אחר
+  anth_print_tt: הדפסת המקראה
+  anth_clone_tt: יצירת עותק מהמקראה
+  anth_delete_tt: מחיקת המקראה
+  anth_share_tt: שיתוף המקראה
+  anth_access_tt: 'בחירת רמת גישה: מי יכול לגשת למקראה'
+  anth_drag_tt: איזור גרירה לשינוי סדר הפריטים במקראה
+  anth_add_work_tt: הוספת היצירה שממנה נפתח חלון המקראות
+  anth_add_works_tt: הוספת יצירות מעמוד רשימת היצירות
+  anth_add_curated_tt: "הוספת טקסט מלווה מטעמך כגון שער, הערות, שיעורי בית, וכו'"
+  no_next_chapter: אין פרק נוסף
+  no_prev_chapter: אין פרק קודם
   facebook_url: https://www.facebook.com/projectbenyehuda/
   latest_youtube: קטעי וידאו אחרונים בערוץ היו-טיוב
   youtube_url: https://www.youtube.com/user/ProjectBenYehuda/
@@ -605,6 +697,10 @@ he:
   pd_only: רק נחלת הכלל
   nonpd_only: רק רשות פרסום
   are_you_sure: נא לאשר מחיקה
+  anth_text_deletion: מחיקת פריט מהמקראה
+  anth_text_deletion_p1: 'פעולה זו תמחק ללא אפשרות חזרה את הפריט:'
+  anth_text_deletion_p3: מתוך המקראה הנוכחית
+  confirm_anth_text_deletion: אישור מחיקת הפריט מהמקראה
   public_domain: נחלת הכלל
   about_public_domain: 'מה פירוש נחלת הכלל?'
   public_domain_popover: "חוק זכויות יוצרים מגן מפני שימוש בלתי-מורשה ביצירות למשך תקופת תוקפו (בישראל, שבעים שנה מסוף שנת מות היוצר).  עם פקוע הזכויות, הופכת היצירה 'נחלת הכלל', כלומר רכוש הציבור.  פירוש הדבר שהיצירה שייכת לכולנו, וכולנו רשאים לעשות בה כל שימוש, לרבות שימוש מסחרי, מבלי צורך לבקש רשות מאיש."
@@ -894,6 +990,10 @@ he:
       subject: תודה על ההמלצה!
     recommendation_published:
       subject: המלצתך שולבה בטקסט שפרסמנו!
+    contact_form_submitted:
+      subject: יצירת קשר מהאתר
+    volunteer_form_submitted:
+      subject: טופס התנדבות מהאתר
   views:
     pagination:
       next: לדף הבא

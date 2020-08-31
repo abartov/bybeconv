@@ -120,7 +120,7 @@
     if(location.href.indexOf('#') != -1) {
       anchor = location.href.substr(location.href.indexOf('#'));
       window.setTimeout(function() {
-        $(document).scrollTop($(anchor).offset().top - $(header).height() - 55);
+        $(document).scrollTop($(anchor).offset().top - $('header').height() - 55);
       }, 300);
     }
     $('.footer-card').matchHeight();

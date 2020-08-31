@@ -2,6 +2,7 @@ include BybeUtils
 Bybeconv::Application.routes.draw do
   resources :anthology_texts do
     post 'mass_create', on: :collection
+    get 'confirm_destroy'
   end
 
   resources :anthologies
@@ -119,7 +120,7 @@ Bybeconv::Application.routes.draw do
   match 'author/:id/create_toc' => 'authors#create_toc', as: 'authors_create_toc', via: [:get]
   match 'author/:id' => 'authors#toc', as: 'author_toc', via: [:get, :post]
   get 'author/:id/whatsnew' => 'authors#whatsnew_popup', as: 'author_whatsnew_popup'
-
+  get 'author/:id/latest' => 'authors#latest_popup', as: 'author_latest_popup'
   get '/page/:tag' => 'static_pages#view', as: 'static_pages_by_tag', via: [:get]
   get "read/:id" => 'manifestation#read', as: 'manifestation_read'
   get "read/:id/read" => 'manifestation#readmode', as: 'manifestation_readmode'
@@ -167,7 +168,10 @@ Bybeconv::Application.routes.draw do
   get 'user/:id' => 'user#show', as: 'user_show'
   post 'user/set_pref'
   get "welcome/index"
-
+  get "welcome/contact"
+  get "welcome/volunteer"
+  post 'welcome/submit_contact'
+  post 'welcome/submit_volunteer'
   get "session/create"
   get "session/destroy"
   get "session/login"

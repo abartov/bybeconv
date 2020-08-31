@@ -20,21 +20,21 @@
           .author-page-top-sort-desktop
             = t(:sort_and_filter)
             = link_to '[?]', '#', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_sort_and_filter), 'data-content' => t(:sort_and_filter_popover)
-            .toggle-background-no
+            .toggle-background-no{title: t(:toggle_filters_tt)}
               .toggle-button-no
           .author-page-top-sort-mobile
             %button.btn-small-outline-v02.btn-text-v02.notyet= t(:sort_and_filter)
         .author-page-top-icons-desktop
           .top-left-icons-group
-            .icon-in-group-v02.notyet
+            .icon-in-group-v02.notyet{title: t(:author_liked_tt)}
               %span.linkcolor.pointer.by-icon-v02 5
             .icon-in-group-v02
               %span.linkcolor.pointer.by-icon-v02 D
-            .icon-in-group-v02
+            .icon-in-group-v02{title: t(:author_print_tt)}
               %span.linkcolor.pointer.printbutton.by-icon-v02 9
-            .icon-in-group-v02.notyet
+            .icon-in-group-v02.notyet{title: t(:author_download_tt)}
               %span.linkcolor.pointer.by-icon-v02 3
-            .icon-in-group-v02{style: 'margin-left:0;', 'data-target' => '#shareDlg', 'data-toggle' => 'modal'}
+            .icon-in-group-v02{style: 'margin-left:0;', 'data-target' => '#shareDlg', 'data-toggle' => 'modal', title: t(:share_tt)}
               %span.linkcolor.pointer.by-icon-v02 U
         .author-page-top-icons-mobile
           .top-left-icons-group
@@ -60,7 +60,7 @@
         = render partial: 'shared/genre_navbar', locals: {genres_present: @genres_present, page: :toc, curated_content: @any_curated}
       .col{style:'z-index:-1;height:0;'}
       .col-4.error-found-col
-        %button.error-found-btn.notyet
+        %button.error-found-btn.notyet{title: t(:report_error_tt)}
           .error-found
             .error-found-text= t(:found_br_mistake_html)
             .error-found-icon g

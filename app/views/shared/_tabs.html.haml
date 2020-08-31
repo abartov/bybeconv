@@ -108,7 +108,7 @@
               %a{href: t(:blog_url)}
                 %span.by-icon-v02.iconNearText-v02 Q
                 = t(:to_the_blog)
-              %a{:href => "mailto:editor@benyehuda.org"}
+              %a.linkcolor.pointer.contact_btn{href: '/contact'}
                 %span.by-icon-v02.iconNearText-v02 R
                 = t(:contact_us)
     #mySidenav.sidenav-v02
@@ -228,13 +228,13 @@
                 %span.by-icon-v02.iconNearText-v02.iconInMenu Q
                 = t(:to_the_blog)
             %li
-              %a{:href => "mailto:editor@benyehuda.org"}
+              %a.linkcolor.pointer.contact_btn{href: '/contact'}
                 %span.by-icon-v02.iconNearText-v02.iconInMenu R
                 = t(:contact_us)
     .menuButton-v02#mobileMenu= ','
 
   .col-4.col-lg-3.top-donation-desk-area-v02
-    .donation-area-v02
+    .donation-area-v02{title: t(:donate_tt)}
       %a{href: '/page/donate'}
         %button.btn-small-outline-v02.btn-text-v02.donation-btn-v02
           %span.by-icon-v02.iconNearText-v02> z
@@ -248,7 +248,7 @@
       /  /  %option{:value => "חיפוש באתר"} חיפוש באתר
       /  /  / %option{:value => "חיפוש בדף"} חיפוש בדף
       /  /  / %option{:value => "חיפוש מתקדם"} חיפוש מתקדם
-      .top-search-v02
+      .top-search-v02{ title: t(:search_tt)}
         %input#q{:placeholder => t(:search_term)}
         %span.search-icon-v02.by-icon-top-v02 X
         /= f.label t(:tags)
@@ -274,7 +274,7 @@
             %span.by-icon-v02.iconNearText-v02 Q
             = t(:to_the_blog)
           = render partial: 'shared/share', locals: {element: :mobile_button}
-          %a.dropdown-item.linkcolor{:href => "mailto:editor@benyehuda.org"}
+          %a.dropdown-item.linkcolor.contact_btn{href: '/contact'}
             %span.by-icon-v02.iconNearText-v02 R
             = t(:contact_us)
           - if current_user
@@ -341,7 +341,13 @@
       //$('#resultsDlg').dialog('open');
       //$('#results').load('#{search_results_internal_path}/?q='+encodeURIComponent($('#q').val()));
     });
-
+    $('.contact_btn').click(function(e) {
+      e.stopPropagation();
+      e.preventDefault();
+      $('#contactDlg').html("<h2>#{t(:loading) }</h2>");
+      $('#contactDlg').load("#{ welcome_contact_path }");
+      $('#contactDlg').modal('show');
+    });
     $('#mobileMenu').click(function() {
       $("#mySidenav").addClass('sidebar-opened');
       //$("#mySidenav").css('width','80%');

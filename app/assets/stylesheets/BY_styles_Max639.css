@@ -218,6 +218,22 @@ p {
     max-height: 28px;
 	margin-top: 4px;
 }
+.a-b-pagination-frame{
+	height: auto;
+	margin-bottom: 12px;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	border: solid 1px #907989;
+	padding: 0 2px;
+}
+.a-b-pagination-frame a{
+	flex: 1 0 9%;
+	font-size: 14pt;
+	text-align: center;
+	line-height: 24px;
+	padding: 0px 8px 2px 7px;
+}
 	
 }
 
