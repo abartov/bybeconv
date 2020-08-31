@@ -1,14 +1,13 @@
-/ "reading mode"
 .reading-mode
   #content.container-fluid
     .row.text-page-content
       .col-12.col-lg-8
         .logo-for-print
-          %img.logoBY-v02{:alt => t(:logo), :src => "/assets/logo-byp-mobile.svg"}/
+          %img.logoBY-v02{:alt => t(:logo), :src => "/assets/logo-byp-mobile.svg"}
         .by-card-v02.rm-control-panel
           .rm-control-top
             .rm-logo
-              %img.logoBY-v02{:alt => t(:logo), :src => "/assets/logo-byp.svg"}/
+              %img.logoBY-v02{:alt => t(:logo), :src => "/assets/logo-byp.svg"}
             %a.collapse-expand-icon{href: manifestation_read_path(@m.id), title: t(:leave_readmode_tt)}
               %span.by-icon-v02 .
           .rm-control-info
@@ -19,14 +18,12 @@
               .headline-3-v02
                 = "#{t(:translation)}: "
                 != @translators.map{|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
-            /.rm-field-label &#x5E4;&#x5E8;&#x5E7;:
-            /%a{:href => "#"}
-            /  .side-menu-arrow (
-            /.field-v02
-            /  \&#x5E9;&#x5DD; &#x5D4;&#x5E4;&#x5E8;&#x5E7; &#x5D4;&#x5E0;&#x5D5;&#x5DB;&#x5D7;&#x5D9;
-            /  %a.dropdown-arrow{:href => "#"} )
-            /%a{:href => "#"}
-            /  .side-menu-arrow )
+            .rm-field-label &#x5E4;&#x5E8;&#x5E7;:
+            %button.plainbutton.chapterbutton#prev_chapter= '('
+            %select#chapters{name: 'chapters'}
+              - @chapters.each do |ch|
+                %option{value: ch[1]}= ch[0]
+            %button.plainbutton.chapterbutton#next_chapter= ')'
             .rm-field-label= t(:location_in_work)
             .progress-outside
               .progress-inside.progress-bar
@@ -48,7 +45,7 @@
                   %span.by-icon-v02 :
         .by-card-v02.rm-control-panel-mobile
           .rm-logo
-            %img.logoBY-v02{:alt => "", :src => "/assets/logo-byp.svg"}/
+            %img.logoBY-v02{:alt => "", :src => "/assets/logo-byp.svg"}
           .progress-area
             .progress-outside
               .progress-inside.progress-bar
@@ -85,10 +82,10 @@
               .work-area
                 .work-content
                   - if @m.as_prose?
-                    #actualtext.maintext-prose-body.search-margin
+                    #actualtext.maintext-prose-body.search-margin{tabindex: 1}
                       != raw(@html)
                   - else
-                    #actualtext.maintext-poetry-body.search-margin
+                    #actualtext.maintext-poetry-body.search-margin{tabindex: 1}
                       != raw(@html)
                 .work-side-color
                   %div{'class' => "work-genre", style: "background-image: url(\"/assets/work_side_icons_#{@e.genre}.svg\"); background-repeat: no-repeat; background-size:auto;"}
@@ -116,4 +113,65 @@
         window.location.href = '#{url_for(action: :read, id: @m.id)}';
       }
     });
+    if(#{@chapters.length} > 1) {
+      $('#chapters').change(function(e) {
+        anchor = $('a[name=ch'+$(this).val()+']');
+        $('html, body').animate({
+          scrollTop: $(anchor).offset().top - 20
+        }, 0);
+        $('#actualtext').focus({preventScroll: true});
+      });
+      function get_first_visible_chapter() {
+        chs = $('a[name*=ch');
+        first = null;
+        chs.each(function(){
+          if($(this).offset().top > $(window).scrollTop() && $(this).offset().top < ($(window).scrollTop() +$(window).innerHeight())) { 
+            first = this; 
+            return false;
+          }
+        });
+        if(first == null) {
+          first = chs[0];
+        }
+        return first;
+      };
+      $('#next_chapter').click(function(){
+        first = get_first_visible_chapter();
+        cur = $('#chapters').find('option[value='+$(first).attr('name').replace('ch','')+']');
+        if(cur.length == 0) {
+          alert('no current chapter?!');
+        } else {
+          nextch = cur.next();
+          if(nextch.length == 0) {
+            alert("#{t(:no_next_chapter)}");
+          } else {
+            $('#chapters').val($(nextch[0]).val());
+            anch = $('a[name=ch'+$(nextch[0]).val()+']');
+            $('html, body').animate({
+              scrollTop: $(anch).offset().top - 20
+            }, 0);
+            $('#actualtext').focus({preventScroll: true});
+          }
+        }
+      });
+      $('#prev_chapter').click(function(){
+        first = get_first_visible_chapter();
+        cur = $('#chapters').find('option[value='+$(first).attr('name').replace('ch','')+']');
+        if(cur.length == 0) {
+          alert('no current chapter?!');
+        } else {
+          prevch = cur.prev();
+          if(prevch.length == 0) {
+            alert("#{t(:no_prev_chapter)}");
+          } else {
+            $('#chapters').val($(prevch[0]).val());
+            anch = $('a[name=ch'+$(prevch[0]).val()+']');
+            $('html, body').animate({
+              scrollTop: $(anch).offset().top - 20
+            }, 0);
+            $('#actualtext').focus({preventScroll: true});
+          }
+        }
+      });  
+    }
   });

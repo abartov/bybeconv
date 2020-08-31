@@ -125,11 +125,11 @@
       $(this).tooltip('hide');
       anchor = $(this).attr('data-asaf');
       $('html, body').animate({
-        scrollTop: $('a[name='+anchor+']').offset().top - $(header).height() - 45
+        scrollTop: $('a[name='+anchor+']').offset().top - $('header').height() - 45
       }, 800);
       $('header').addClass("scrolled");
       $('html, body').animate({ // re-adjust, after the header height changed
-        scrollTop: $('a[name='+anchor+']').offset().top - $(header).height() - 45
+        scrollTop: $('a[name='+anchor+']').offset().top - $('header').height() - 45
       }, 0, function(){ $('.work-content').focus(); });
       */
     });
@@ -168,6 +168,6 @@
       window.open("#{@print_url}",'_blank');
     });
     // ensure smooth scrollTo behavior
-    $('.ch_anch').css('padding-top', $(header).height());
-    $('.ch_anch').css('margin-top', -$(header).height());
+    $('.ch_anch').css('padding-top', $('header').height());
+    $('.ch_anch').css('margin-top', -$('header').height());
   });

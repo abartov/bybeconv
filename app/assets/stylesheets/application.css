@@ -21,6 +21,10 @@
 .padbot12 {
   padding-bottom: 12px;
 }
+#chapters {
+  width: -webkit-fill-available;
+  width: -moz-available;
+}
 .anthology-badge{
   cursor: pointer;
 }
@@ -361,4 +365,21 @@ ol#anth_texts li.placeholder:before {
   .print .work-side-menu-area{
     display: none;
   }
+}
+
+/* remove all default styling of buttons */
+button.plainbutton {
+  display: inline-block;
+  border: none;
+  text-decoration: none;
+  cursor: pointer;
+  text-align: center;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+button.chapterbutton {
+  font-family: 'ben-yehuda';
+  width: 100%;
+  background-color: inherit;
 }
