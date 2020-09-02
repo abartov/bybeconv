@@ -4,6 +4,8 @@
     %span.static-btn= link_to t(:edit_metadata), manifestation_edit_metadata_path(@m.id)
     != "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
     %span.static-btn= link_to t(:edit_markdown), manifestation_edit_path(id: @m.id)
+    != "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+    %span.static-btn= link_to t(:show), manifestation_show_path(@m.id)
     %br
   .headline-2-v02
     - unless @m.authors.nil? # shouldn't happen, but eh
