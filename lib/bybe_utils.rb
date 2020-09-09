@@ -411,7 +411,7 @@ module BybeUtils
       return 'poetry'
     when /פרוזה/
       return 'prose'
-    when /מסות/
+    when /מסות/, /מאמרים/
       return 'article'
     when /זכרונות/, /זכרונות ויומנים/
       return 'memoir'
@@ -425,6 +425,8 @@ module BybeUtils
       return 'letters'
     when /עיון/
       return 'reference'
+    when /מילונים/, /לקסיקונים/
+      return 'lexicon'
     else
       return nil
     end
