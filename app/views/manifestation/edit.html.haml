@@ -30,7 +30,11 @@
         %h2= t(:markdown)
         %b= t(:make_corrections_below)
         %br
-        %b.static-btn#add_stanza_break= t(:add_stanza_break)
+        %button.btn-small-outline-v02#add_stanza_break
+          %b.static-btn= t(:add_stanza_break)
+        %button.btn-small-outline-v02#minuses_to_makafim
+          %b.static-btn= t(:minuses_to_makafim)
+
         - if @m.images.attached?
           %button.btn-small-outline-v02#add_image
             %b.static-btn= t(:add_image)
@@ -113,6 +117,22 @@
         pv.innerHTML = file.content.html;
       });
     });
+    $('#minuses_to_makafim').click(function(e) {
+      e.preventDefault();
+      var buf = $('#markdown').val();
+      replaced = 0;
+      buf = buf.replace(/\S-\S/g, function(occurrence){
+        if((occurrence[0].match(/[a-z]/i)) && (occurrence[2].match(/[a-z]/i))) {
+          return occurrence;
+        } else {
+          replaced += 1;
+          return occurrence.replace('-','־');
+        }
+      });
+      $('#markdown').val(buf);
+      alert('בוצעו '+replaced.toString()+' החלפות.');
+    });
+
     $('#add_image').click(function(e) {
       e.preventDefault();
       var $txt = jQuery("#markdown");
