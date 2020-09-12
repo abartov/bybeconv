@@ -10,7 +10,6 @@ Bybeconv::Application.routes.draw do
   match "anthologies/download/:id" => 'anthologies#download', as: 'anthology_download', via: [:get, :post]
   match "anthologies/seq/:id" => 'anthologies#seq', as: 'anthology_seq', via: [:get, :post]
   match "anthologies/clone/:id" => 'anthologies#clone', as: 'anthology_clone', via: [:get]
-
   resources :news_items
   resources :mooses
   resources :bib_sources

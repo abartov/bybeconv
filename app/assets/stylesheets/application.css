@@ -56,7 +56,9 @@ input[type=checkbox].multiselect_checkbox {
 .topMenuItem-v02:hover {
   cursor: pointer;
 }
-
+#curated_preview ul {
+  list-style-type: unset;
+}
 .a-b-pagination-frame span{
 	flex-grow: 1;
 	font-size: 12pt;
