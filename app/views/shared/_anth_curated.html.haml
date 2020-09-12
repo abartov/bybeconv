@@ -20,7 +20,7 @@
             .field-label
               = t(:markdown_display)
               .field-top-link
-                %a{:href => "#"}= t(:markdown_instructions)
+                %a#markdown_instructions{href: '#'}= t(:markdown_instructions)
             .text-demonstration#curated_preview
               .empty
                 .hint= t(:preview_here)
@@ -52,5 +52,11 @@
     // update preview upon load (for editing)
     var rendered = md.render($('#curated_markdown').val());
     $('#curated_preview').html(rendered);
+    $('#markdown_instructions').click(function(e) {
+      e.preventDefault();
+      $('#curated_markdown').val($('#curated_markdown').val()+"\n#{j(t(:markdown_instructions_markdown))}");
+      var rendered = md.render($('#curated_markdown').val());
+      $('#curated_preview').html(rendered);
+   });
 
   });
