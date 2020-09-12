@@ -4,9 +4,10 @@
   = form_tag session_do_login_path do
     %div{style:'width: 200px'}
       = link_to '/auth/google_oauth2', method: :post do
-        .static-btn= 'Google'
+        .btn-small-outline-v02.static-btn= 'Google'
+      %p
       = link_to '/auth/twitter', method: :post do
-        .static-btn= 'Twitter'
+        .btn-small-outline-v02.static-btn= 'Twitter'
       - if Rails.env.development?
         = link_to '/auth/developer', method: :post do
-          .static-btn= 'Developer'
+          .btn-small-outline-v02.static-btn= 'Developer'
