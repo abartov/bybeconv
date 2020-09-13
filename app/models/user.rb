@@ -9,6 +9,7 @@ class User < ApplicationRecord
 
   has_many :recommendations
   has_many :anthologies
+  has_many :bookmarks
   # no apparent need to be able to retrieve all recommendations a particular (admin) user has *resolved*.  If one arises, use a separate association on the resolved_by foreign key
 
   # editor bits

@@ -61,6 +61,29 @@ class ManifestationController < ApplicationController
     browse
   end
 
+  def set_bookmark
+    if current_user
+      @m = Manifestation.find(params[:id])
+      unless @m.nil?
+        @b = Bookmark.where(manifestation: @m, user: current_user)
+        if @b.empty?
+          @b = Bookmark.new(manifestation: @m, user: current_user)
+        else
+          @b = @b.first
+        end
+        @b.bookmark_p = params[:bookmark_p]
+        @b.save
+        respond_to do |format|
+          format.js
+        end
+        render partial: 'set_bookmark'
+      else
+        render :nothing
+      end
+    else
+      render :nothing
+    end
+  end
   def by_tag
     @page_title = t(:works_by_tag)+' '+t(:project_ben_yehuda)
     @pagetype = :works
@@ -697,6 +720,13 @@ class ManifestationController < ApplicationController
       end
       @anthology_select_options = @anthologies.map{|a| [a.title, a.id, @anthology == a ? 'selected' : ''] }
       @cur_anth_id = @anthology.nil? ? 0 : @anthology.id
+      @bookmark = 0
+      b = Bookmark.where(user: current_user, manifestation: @m)
+      unless b.empty?
+        @bookmark = b.first.bookmark_p
+      end
+    else
+      @bookmark = 0
     end
   end
 

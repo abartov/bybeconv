@@ -44,7 +44,7 @@
                   %span.linkcolor.pointer.by-icon-v02.icon-byheart-full
                 - else
                   %span.linkcolor.pointer.by-icon-v02.icon-byheart-empty
-              .icon-in-group-v02.notyet{'title' => "#{t(:bookmark_tt)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }}
+              .icon-in-group-v02.bookmark_button.must_login{'title' => "#{t(:bookmark_tt)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }}
                 %span.linkcolor.pointer.by-icon-v02 b
               - unless current_user
                 .icon-in-group-v02.anthologies_button.must_login
@@ -110,7 +110,7 @@
               = t(:found_br_mistake_html)
             .error-found-icon g
       .col-lg-4{style:'height:min-content'}
-
+.bookmark_notification
 
 :javascript
   $(document).ready(function(){
@@ -146,6 +146,31 @@
       else
         $('#workmenu-more').css('display', 'block');
     });
+    $('.bookmark_button').click(function(e){
+      if(!#{current_user.nil?}) {
+        if( $('p.bookmark').length > 0 ) {
+          $('html, body').animate({
+            scrollTop: $('.bookmark').offset().top - $('#header').height() - 30
+          }, 800);
+        } else {
+          alert("#{t(:bookmark_mode_begin)}");
+          $('body').css('cursor', 'crosshair');
+          $('#actualtext').click(function(e){
+            $('body').css('cursor', 'default');
+            // set bookmark
+            y = e.pageY - $(window).scrollTop();
+            elem = document.elementFromPoint(e.pageX, y);
+            if(elem != null) {
+              bookmark_p = $(elem).index();
+              $(elem).addClass('bookmark');
+              url = "#{raw url_for(action: :set_bookmark, id: @m.id, bookmark_p: 99999)}";
+              $.ajax({url: url.replace('99999',bookmark_p.toString()) });
+            }
+            $('#actualtext').off('click'); // disable handler
+          });
+        }
+      }
+    });
 
     offsetTop = #{ @readmode ? 40 : 250 },
     $('.like').click(function(){ // toggle like/unlike
@@ -170,4 +195,7 @@
     // ensure smooth scrollTo behavior
     $('.ch_anch').css('padding-top', $('header').height());
     $('.ch_anch').css('margin-top', -$('header').height());
+    if(#{@bookmark}) {
+      $($('#actualtext').children()[#{@bookmark}]).addClass('bookmark');
+    }
   });
