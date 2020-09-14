@@ -260,7 +260,7 @@
       %button.btn-small-outline-v02.by-icon-top-v02.purple-v02{href: '/page/donate'} z
       .top-search-mobile-v02
         .by-icon-top-v02.top-search-icon-mobile-v02
-          %a{href: "/mobile_search"} X
+          %a#mobile_search{href: "#"} X
       .dropdown.d-inline#moreMobile{style: "vertical-align:top;padding-top: 4px;"}
         %span.pointer.by-icon-top-v02.dropdown-toggle#nav-more{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :type => "button"} Y
         .dropdown-menu.dropdown-menu-right#menu-more
@@ -358,5 +358,10 @@
     });
     $('#moreMobile').on('show.bs.dropdown', function(){
       $("#mySidenav").removeClass('sidebar-opened')
+    });
+    $('#mobile_search').click(function(e){
+      e.preventDefault();
+      $('#generalDlg').load("#{mobile_search_path}");
+      $('#generalDlg').modal('show');
     });
   });
