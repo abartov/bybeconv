@@ -18,7 +18,7 @@
             = '?'
       .row
         .col-12
-          - if @m.chapters? and @m.long?
+          - if @m.chapters?
             .work-chapters-dropdown-field-desktop#chapter_dropdown
               .field-v02
                 =t(:jump_to_chapter)
@@ -92,7 +92,7 @@
                     = t(:bookshelves)
     .row.error-found-row
       .col-2.side-nav-col
-        - if @m.chapters? and @m.long?
+        - if @m.chapters?
           .side-menu-headline= t(:chapters_list)
           %nav.navbar#chapternav
             %ul.nav.navbar-nav.navbar-expand.flex-column.by-card-v02#chapter-nav{style:'width: unset', 'aria-orientation' => 'vertical'}
