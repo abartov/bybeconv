@@ -459,6 +459,9 @@ class HtmlFileController < ApplicationController
     new_buffer.gsub!("&amp;&amp;STANZA&amp;&amp;","\n> \n<br />\n> \n") # sigh
     new_buffer.gsub!(/(\n\s*)*\n> \n<br \/>\n> (\n\s*)*/,"\n> \n<br />\n> \n\n") # sigh
     new_buffer.gsub!(/\n>\s*>\s+/,"\n> ") # we basically never want this super-large indented poetry
+    # remove all <span> tags because pandoc generates them excessively
+    new_buffer.gsub!(/<span.*?>/m,'')
+    new_buffer.gsub!(/<\/span>/,'')
     return new_buffer
   end
 
