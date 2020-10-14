@@ -4,7 +4,7 @@
     .row
       .col-md-6
         %h2= t(:statistics)
-        %p= t(:bib_stats, {pubs: @counts[:pubs], holdings: @counts[:holdings], obtained: @counts[:obtained], scanned: @counts[:scanned], uploaded: @counts[:uploaded], irrelevant: @counts[:irrelevant], missing: @counts[:missing], authors_todo: @counts[:authors_todo], authors_done: @counts[:authors_done]})
+        %p= t(:bib_stats, {pubs: @counts[:pubs], holdings: @counts[:holdings], obtained: @counts[:obtained], scanned: @counts[:scanned], uploaded: @counts[:uploaded], irrelevant: @counts[:irrelevant], missing: @counts[:missing], authors_todo: @counts[:authors_todo], authors_done: @counts[:authors_done], copyrighted: @counts[:copyrighted]})
         %h2= link_to t(:get_bibs), action: :pubs_by_person
         %h2= link_to t(:review_bibs), publications_path
         %h2= t(:shopping_lists)
