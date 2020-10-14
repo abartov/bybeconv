@@ -11,7 +11,7 @@
             %a.collapse-expand-icon{href: manifestation_read_path(@m.id), title: t(:leave_readmode_tt)}
               %span.by-icon-v02 .
           .rm-control-info
-            .headline-2-v02.work-name-top= @m.title
+            .headline-2-v02.work-name-top{style:'margin-right:0px'}= @m.title
             .headline-3-v02
               != @m.authors.map {|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
             - if @e.translation && @e.translators.size > 0
