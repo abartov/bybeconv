@@ -61,8 +61,10 @@
                 %span.linkcolor.pointer.by-icon-v02 *
               .icon-in-group-v02.printbutton{'data-toggle' => 'tooltip', 'title' => "#{t(:work_print_tt)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }}
                 %span.linkcolor.pointer.by-icon-v02 9
-              .icon-in-group-v02.download{'data-toggle' => 'modal', 'title' => "#{t(:work_download_tt)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }, 'data-target' => '#downloadDlg', style: "margin-left:0;"}
+              .icon-in-group-v02.download{'data-toggle' => 'modal', 'title' => "#{t(:work_download_tt)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }, 'data-target' => '#downloadDlg'}
                 %span.linkcolor.pointer.by-icon-v02 3
+              .icon-in-group-v02.pointer.sharebutton{title: "#{ t(:share_tt) }", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }, style: 'margin-left:0;'}
+                %span.linkcolor.pointer.by-icon-v02 U
           .work-page-top-icons-mobile
             %a.btn-small-outline-v02.btn-text-v02.reading-mode-icon-btn-v02{href: url_for(action: :readmode, id: @m.id)}
               %span.by-icon-v02 /
@@ -166,6 +168,9 @@
     });
     $('.printbutton').click(function() {
       window.open("#{@print_url}",'_blank');
+    });
+    $('.sharebutton').click(function(){
+      $('#shareDlg').modal('show');
     });
     // ensure smooth scrollTo behavior
     $('.ch_anch').css('padding-top', $('header').height());
