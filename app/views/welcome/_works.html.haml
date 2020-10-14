@@ -14,14 +14,14 @@
         %div{style: 'width:20%; border-right: solid 2px #d9cdd5; min-height:320px'}
           .row{style:'margin-top: 10px'}
             .col-sm-12
-              %a.notyet
+              %a{href: translations_path}
                 %p.linkcolor.by-genre-icon-v02 s
                 %p.linkcolor.by-genre-name-v02.headline-2-v02= t(:translations)
               %p.linkcolor.by-genre-details-v02= Person.no_toc.count.to_s+' '+t(:authors)
               %p.linkcolor.by-genre-details-v02= Manifestation.cached_translated_count.to_s+' '+t(:works)
           .row{style:'margin-top: 50px'}
             .col-sm-12
-              %a.notyet
+              %a{href: manifestation_genre_path(genre: 'lexicon')}
                 %p.linkcolor.by-genre-icon-v02 f
                 %p.linkcolor.by-genre-name-v02.headline-2-v02= t(:lexicon)
               %p.linkcolor.by-genre-details-v02= '...'
