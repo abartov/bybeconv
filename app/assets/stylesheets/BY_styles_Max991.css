@@ -388,9 +388,6 @@ display: none;	}
 .right-side-icon{
 	line-height: 28px;
 	}
-.left-arrow{
-	line-height: 24px;
-	}
 	.by-button-v02{
 		height: 28px;
 		line-height: 28px;
@@ -654,6 +651,7 @@ display: none;	}
 	margin-left: auto;
 		display: flex;
 		align-items: center;
+	font-size: 11pt;
 }
 .pageSelector .field-v02{
 	width: 40px;
@@ -681,6 +679,19 @@ display: none;	}
 	padding: 0px 8px 2px 7px;
 }
 
+#entryNav{
+		display: none;
+	}
+.BYD-entry-top{
+	padding-left: 10px;
+}
+	.missingValues_desktop{
+		display:none;
+	}
+		.missingValues_mobile{
+		display:inline-block;
+			margin-right: 2px;
+	}
 	
 }
 

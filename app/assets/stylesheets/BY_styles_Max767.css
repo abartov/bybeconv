@@ -296,7 +296,7 @@
 }
 .author-page-top-icons-mobile{
 	display: block;
-	width: 135px;
+	margin-right: auto;
 }
 	
 .author-page-top-sort-desktop{
@@ -305,6 +305,7 @@
 
 .author-page-top-sort-mobile{
 	display: block;
+	margin-right: 15px;
 }
 #sort_by_dd{
 	display: none;
@@ -369,6 +370,18 @@
 .value-summary-card-v02 {
   margin-left: 0px;
 }
+.by-dual-popup input[type=checkbox]{
+	display: none;
+}	
 	
+.by-dual-popup label{
+	display: none;
+}	
+.topNavEntry{
+	margin: 0 12px;
+}
+.BYD-entry-top .headline-1-v02{
+	margin-left: 4px;
+}
 	
 }

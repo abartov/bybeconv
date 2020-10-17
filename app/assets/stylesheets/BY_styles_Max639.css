@@ -234,6 +234,12 @@ p {
 	line-height: 24px;
 	padding: 0px 8px 2px 7px;
 }
+	.BYD-entry-top .headline-1-v02{
+		max-width: 110px;
+	}
+	.name-under-btn{
+		width: 100%;
+	}
 	
 }
 

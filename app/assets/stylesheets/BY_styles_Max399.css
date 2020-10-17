@@ -211,7 +211,6 @@ body {
 }
 	.right-arrow {
   padding-left:3px;
-  padding-top: 1px;
   font-size: 9px;
 }
 	.right-side-icon{
@@ -452,6 +451,9 @@ body {
  
 }
 .author-sort-area{
+}
+.topNavEntry{
+	margin: 0 6px;
 }
 	
 }
