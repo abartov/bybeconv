@@ -97,13 +97,12 @@
         %b= t(:works_about)
         = t(:TBD)
       %td
-        .row
-          .col-6
-            %p
-              = image_tag @author.profile_image.url(:thumb), alt: @author.name
-          .col-6
-            %p
-              = image_tag @author.sidepic.url(:thumb), alt: @author.name
+        %p
+          = image_tag @author.profile_image.url(:thumb), alt: @author.name
+        - if @author.profile_image.file?
+          %br
+          = link_to t(:delete_photo), delete_author_photo_path(id: @author.id), data: {confirm: t(:are_you_sure)}
+
   %p
   = link_to t(:back), authors_list_path
 

@@ -2,7 +2,7 @@ require 'diffy'
 include BybeUtils
 
 class AuthorsController < ApplicationController
-  before_action only: [:new, :create, :show, :edit, :list, :edit_toc, :update] do |c| c.require_editor('edit_people') end
+  before_action only: [:new, :create, :show, :edit, :list, :delete_photo, :edit_toc, :update] do |c| c.require_editor('edit_people') end
 
   def get_random_author
     @author = nil
@@ -20,6 +20,16 @@ class AuthorsController < ApplicationController
     render partial: 'shared/surprise_author', locals: {author: @author, initial: false, id_frag: params[:id_frag], passed_genre: params[:genre], passed_mode: params[:mode], side: params[:side]}
   end
 
+  def delete_photo
+    @author = Person.find(params[:id])
+    if @author.profile_image.file?
+      @author.profile_image.destroy
+      @author.save!
+      flash[:notice] = t(:deleted_successfully)
+    end
+    show
+    render action: :show
+  end
   def whatsnew_popup
     @author = Person.find(params[:id])
     @pubs = @author.works_since(1.month.ago, 1000)
