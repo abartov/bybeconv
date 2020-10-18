@@ -421,24 +421,28 @@ class HtmlFileController < ApplicationController
   protected
 
   def new_postprocess(buf)
+    # remove all <span> tags because pandoc generates them excessively
+    buf.gsub!(/<span.*?>/m,'')
+    buf.gsub!(/<\/span>/,'')
     lines = buf.split("\n")
     in_footnotes = false
     prev_nikkud = false
     (0..lines.length-1).each {|i|
       lines[i].strip!
-      uniq_chars = lines[i].gsub(/[\s\u00a0]/,'').chars.uniq
       if lines[i].empty? and prev_nikkud
         lines[i] = '> '
         next
       end
+      uniq_chars = lines[i].gsub(/[\s\u00a0]/,'').chars.uniq
       if uniq_chars == ['*'] or uniq_chars == ["\u2013"] # if the line only contains asterisks, or Unicode En-Dash (U+2013)
         lines[i] = '***' # make it a Markdown horizontal rule
+        prev_nikkud = false
       else
         nikkud = is_full_nikkud(lines[i])
         in_footnotes = true if lines[i] =~ /^\[\^\d+\]:/ # once reached the footnotes section, set the footnotes mode to properly handle multiline footnotes with tabs
         if nikkud
           # make full-nikkud lines PRE
-          lines[i] = '> '+lines[i] unless lines[i] =~ /\[\^\d+/ # produce a blockquote (PRE would ignore bold and other markup)
+          lines[i] = '> '+lines[i]+"\n" unless lines[i] =~ /\[\^\d+/ # produce a blockquote (PRE would ignore bold and other markup)
           prev_nikkud = true
         else
           prev_nikkud = false
@@ -458,10 +462,8 @@ class HtmlFileController < ApplicationController
     new_buffer.gsub!("&&STANZA&&","\n> \n<br />\n> \n") # sigh
     new_buffer.gsub!("&amp;&amp;STANZA&amp;&amp;","\n> \n<br />\n> \n") # sigh
     new_buffer.gsub!(/(\n\s*)*\n> \n<br \/>\n> (\n\s*)*/,"\n> \n<br />\n> \n\n") # sigh
-    new_buffer.gsub!(/\n>\s*>\s+/,"\n> ") # we basically never want this super-large indented poetry
-    # remove all <span> tags because pandoc generates them excessively
-    new_buffer.gsub!(/<span.*?>/m,'')
-    new_buffer.gsub!(/<\/span>/,'')
+    new_buffer.gsub!(/\n> *> +/,"\n> ") # we basically never want this super-large indented poetry
+    new_buffer.gsub!(/\n\n> *\n> /,"\n> \n> ") # remove extra newlines before verse lines
     return new_buffer
   end
 
