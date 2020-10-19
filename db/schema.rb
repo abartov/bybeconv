@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_18_232227) do
+ActiveRecord::Schema.define(version: 2020_10_19_223700) do
 
   create_table "aboutnesses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -132,6 +132,14 @@ ActiveRecord::Schema.define(version: 2020_10_18_232227) do
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
   end
 
+  create_table "dictionary_aliases", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+    t.bigint "dictionary_entry_id"
+    t.string "alias"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["dictionary_entry_id"], name: "index_dictionary_aliases_on_dictionary_entry_id"
+  end
+
   create_table "dictionary_entries", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.integer "manifestation_id"
     t.integer "sequential_number"
@@ -140,7 +148,10 @@ ActiveRecord::Schema.define(version: 2020_10_18_232227) do
     t.integer "source_def_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["defhead"], name: "index_dictionary_entries_on_defhead"
     t.index ["manifestation_id"], name: "index_dictionary_entries_on_manifestation_id"
+    t.index ["sequential_number"], name: "index_dictionary_entries_on_sequential_number"
+    t.index ["source_def_id"], name: "index_dictionary_entries_on_source_def_id"
   end
 
   create_table "dictionary_links", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
@@ -690,6 +701,7 @@ ActiveRecord::Schema.define(version: 2020_10_18_232227) do
   add_foreign_key "anthology_texts", "manifestations"
   add_foreign_key "bookmarks", "manifestations"
   add_foreign_key "bookmarks", "users"
+  add_foreign_key "dictionary_aliases", "dictionary_entries"
   add_foreign_key "dictionary_entries", "manifestations"
   add_foreign_key "dictionary_links", "dictionary_entries", column: "from_entry_id"
   add_foreign_key "dictionary_links", "dictionary_entries", column: "to_entry_id"

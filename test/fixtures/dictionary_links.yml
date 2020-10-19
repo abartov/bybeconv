@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  from_entry: one
+  to_entry: one
+  linktype: 1
+
+two:
+  from_entry: two
+  to_entry: two
+  linktype: 1
