@@ -421,6 +421,8 @@ class HtmlFileController < ApplicationController
   protected
 
   def new_postprocess(buf)
+    # join lines in <span> elements that, er, span more than one line
+    buf.gsub!(/<span.*?>.*?\n.*?<\/span>/) {|thematch| thematch.sub("\n",' ')}
     # remove all <span> tags because pandoc generates them excessively
     buf.gsub!(/<span.*?>/m,'')
     buf.gsub!(/<\/span>/,'')
