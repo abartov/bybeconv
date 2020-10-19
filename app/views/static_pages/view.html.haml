@@ -11,3 +11,15 @@
           %h1= @p.title
           != @markdown
       .col-md-1
+:javascript
+  $(document).ready(function(){
+    if($('.contact_btn').length > 0 ) {
+      $('.contact_btn').click(function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        $('#contactDlg').html("<h2>#{t(:loading) }</h2>");
+        $('#contactDlg').load("#{ welcome_contact_path }");
+        $('#contactDlg').modal('show');
+      });
+    }
+  });
