@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_12_022738) do
+ActiveRecord::Schema.define(version: 2020_10_18_232227) do
 
   create_table "aboutnesses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -96,6 +96,17 @@ ActiveRecord::Schema.define(version: 2020_05_12_022738) do
     t.string "item_pattern", limit: 2048
   end
 
+  create_table "bookmarks", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.integer "manifestation_id"
+    t.integer "user_id"
+    t.integer "bookmark_p"
+    t.string "context", limit: 250
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["manifestation_id"], name: "index_bookmarks_on_manifestation_id"
+    t.index ["user_id"], name: "index_bookmarks_on_user_id"
+  end
+
   create_table "creations", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|
     t.integer "work_id"
     t.integer "person_id"
@@ -121,7 +132,28 @@ ActiveRecord::Schema.define(version: 2020_05_12_022738) do
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
   end
 
-  create_table "downloadables", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|
+  create_table "dictionary_entries", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+    t.integer "manifestation_id"
+    t.integer "sequential_number"
+    t.string "defhead"
+    t.text "deftext"
+    t.integer "source_def_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["manifestation_id"], name: "index_dictionary_entries_on_manifestation_id"
+  end
+
+  create_table "dictionary_links", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+    t.bigint "from_entry_id"
+    t.bigint "to_entry_id"
+    t.integer "linktype"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["from_entry_id"], name: "index_dictionary_links_on_from_entry_id"
+    t.index ["to_entry_id"], name: "index_dictionary_links_on_to_entry_id"
+  end
+
+  create_table "downloadables", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "object_type"
     t.bigint "object_id"
     t.integer "doctype"
@@ -656,6 +688,11 @@ ActiveRecord::Schema.define(version: 2020_05_12_022738) do
   add_foreign_key "anthologies", "users"
   add_foreign_key "anthology_texts", "anthologies"
   add_foreign_key "anthology_texts", "manifestations"
+  add_foreign_key "bookmarks", "manifestations"
+  add_foreign_key "bookmarks", "users"
+  add_foreign_key "dictionary_entries", "manifestations"
+  add_foreign_key "dictionary_links", "dictionary_entries", column: "from_entry_id"
+  add_foreign_key "dictionary_links", "dictionary_entries", column: "to_entry_id"
   add_foreign_key "featured_author_features", "featured_authors"
   add_foreign_key "featured_authors", "people"
   add_foreign_key "featured_authors", "users"
