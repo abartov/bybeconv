@@ -171,11 +171,6 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
 .modal-content { border: 0;}
 .modal-header{border:0;}
 .modal-footer{border:0;}
-.by-popup-v02{
-  margin-top:0;
-  overflow-y: scroll;
-  width: 100% !important;
-}
 
 .a-b-pagination-frame .in-range-disabled{
   background-color: #d9cdd5;
