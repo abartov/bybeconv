@@ -28,7 +28,7 @@ gem 'aws-sdk-s3' # for Active Storage
 gem 'paperclip' # , '~>5.2' # for cloud files like author images 6.x requires aws >3.x
 gem 'impressionist' # for pageview stats
 gem 'jbuilder', '~> 2.0' # for JSON APIs
-
+gem 'sqlite3' # for dictionary imports
 # gem 'rollbar' # error reporting. Airbrake replacement.
 
 gem 'jquery-rails'

@@ -450,6 +450,7 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
+    sqlite3 (1.4.2)
     sshkit (1.18.2)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
@@ -557,6 +558,7 @@ DEPENDENCIES
   sass-rails
   simplecov
   sparql-client (~> 2.0.1)
+  sqlite3
   therubyracer
   thin
   turn (= 0.8.2)
