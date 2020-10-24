@@ -73,6 +73,14 @@
                 %button.search-mobile-option{:href => "#"} תקצירי ערכים
             .mainlist
               %ol
+                - skipped = 0
                 - @headwords.each do |hw|
-                  %li
-                    %a{href: '#'}= hw.defhead
+                  - if hw.defhead.nil?
+                    - skipped += 1
+                  - else
+                    - if skipped > 0
+                      %p= t(:skipped_x_entries, x: skipped)
+                      - skipped = 0
+                    %li
+                      %a{href: '#'}= hw.defhead
+                    

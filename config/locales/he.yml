@@ -627,6 +627,7 @@ he:
   more_recommendations_in_the_blog: המלצות נוספות ביומן הרשת
   works: יצירות
   dictionary_entries: ערכים מילוניים
+  skipped_x_entries: "[%{x} ערכים עוד לא מוכנים]"
   about: על הפרויקט | About
   about_the_project: על פרויקט בן־יהודה
   contact_instructions: " לפני פניה, אנא קראו את הדף <a href=\"/page/about\">על אודות הפרויקט</a> הכולל מידע רב, שאלות ותשובות, אולי גם לשאלתכם."

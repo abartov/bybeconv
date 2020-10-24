@@ -157,7 +157,7 @@ class ManifestationController < ApplicationController
         @pagetype = :manifestation
         @entity = @m
         @total_headwords = DictionaryEntry.where(manifestation_id: @m.id).count
-        @headwords = DictionaryEntry.where(manifestation_id: @m.id) # TODO: add paging
+        @headwords = DictionaryEntry.where(manifestation_id: @m.id).order(sequential_number: :asc) # TODO: add paging
       end
     end
   end

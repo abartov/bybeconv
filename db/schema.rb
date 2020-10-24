@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_19_223700) do
+ActiveRecord::Schema.define(version: 2020_10_24_221136) do
 
   create_table "aboutnesses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -144,11 +144,12 @@ ActiveRecord::Schema.define(version: 2020_10_19_223700) do
     t.integer "manifestation_id"
     t.integer "sequential_number"
     t.string "defhead"
-    t.text "deftext"
+    t.text "deftext", limit: 16777215
     t.integer "source_def_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["defhead"], name: "index_dictionary_entries_on_defhead"
+    t.index ["manifestation_id", "sequential_number"], name: "manif_and_seqno_index"
     t.index ["manifestation_id"], name: "index_dictionary_entries_on_manifestation_id"
     t.index ["sequential_number"], name: "index_dictionary_entries_on_sequential_number"
     t.index ["source_def_id"], name: "index_dictionary_entries_on_source_def_id"
