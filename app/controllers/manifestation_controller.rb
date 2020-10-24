@@ -144,22 +144,47 @@ class ManifestationController < ApplicationController
     head :ok
   end
 
+  def dict
+    @m = Manifestation.joins(:expressions).includes(:expressions).find(params[:id])
+    if @m.nil?
+      head :not_found
+    else
+      if @m.expressions[0].genre != 'lexicon'
+        redirect_to action: 'read', id: @m.id
+      else
+        @e = @m.expressions[0]
+        @header_partial = 'manifestation/dict_top'
+        @pagetype = :manifestation
+        @entity = @m
+        @total_headwords = DictionaryEntry.where(manifestation_id: @m.id).count
+        @headwords = DictionaryEntry.where(manifestation_id: @m.id) # TODO: add paging
+      end
+    end
+  end
+
   def read
-    prep_for_read
-    unless @m.nil?
-      @proof = Proof.new
-      @new_recommendation = Recommendation.new
-      @tagging = Tagging.new
-      @tagging.manifestation_id = @m.id
-      @tagging.suggester = current_user
-      @taggings = @m.taggings
-      @recommendations = @m.recommendations
-      @links = @m.external_links.group_by {|l| l.linktype}
-      @random_work = Manifestation.where(id: Manifestation.pluck(:id).sample(5), status: Manifestation.statuses[:published])[0]
-      @header_partial = 'manifestation/work_top'
-      @works_about = Work.joins(:topics).where('aboutnesses.aboutable_id': @w.id) # TODO: accommodate works about *expressions* (e.g. an article about a *translation* of Homer's Iliad, not the Iliad)
-      @scrollspy_target = 'chapternav'
-      prep_user_content
+    @m = Manifestation.joins(:expressions).includes(:expressions).find(params[:id])
+    if @m.nil?
+      head :not_found
+    else
+      if @m.expressions[0].genre == 'lexicon'
+        redirect_to action: 'dict', id: @m.id
+      else
+        prep_for_read
+        @proof = Proof.new
+        @new_recommendation = Recommendation.new
+        @tagging = Tagging.new
+        @tagging.manifestation_id = @m.id
+        @tagging.suggester = current_user
+        @taggings = @m.taggings
+        @recommendations = @m.recommendations
+        @links = @m.external_links.group_by {|l| l.linktype}
+        @random_work = Manifestation.where(id: Manifestation.pluck(:id).sample(5), status: Manifestation.statuses[:published])[0]
+        @header_partial = 'manifestation/work_top'
+        @works_about = Work.joins(:topics).where('aboutnesses.aboutable_id': @w.id) # TODO: accommodate works about *expressions* (e.g. an article about a *translation* of Homer's Iliad, not the Iliad)
+        @scrollspy_target = 'chapternav'
+        prep_user_content
+      end
     end
   end
 
@@ -425,7 +450,7 @@ class ManifestationController < ApplicationController
 
   protected
 
-  def bfunc(page, l)
+  def bfunc(page, l) # binary-search function for ab_pagination
     rec = @collection.order(:sort_title).page(page).first
     return true if rec.nil?
     c = rec.sort_title[0] || ''

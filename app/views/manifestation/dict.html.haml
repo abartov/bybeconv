@@ -1,0 +1,78 @@
+%main
+  .top-element
+  #content.container-fluid.BYD
+    .row
+      .col-12.col-lg-5.col-xxxl-4.BYD-welcome
+        .by-card-v02
+          .work-area
+            .work-content
+              .headline-1-v02 ברוכים הבאים למילון אליעזר בן-יהודה
+              %p העלאת מילון אליעזר בן-יהודה לרשת היא תהליך ארוך שעדיין נמצא בעיצומו. לאתר פרויקט בן-יהודה הועלו עד עתה 10,878 ערכים מתוך כעשרים וחמישה אלף ערכים שנמצאים במילון המקורי.
+              %p הערכים מוצגים בצורתם המקורית ככל הניתן, תוך שימור הפורמט ההיסטורי הייחודי של המילון.
+              %p בעמוד זה מוצגת רשימת הערכים, כאשר ניתן לבחור להציג את שמות הערכים בלבד או רשימת ערכים הכוללת תקצירים של פירושי הערכים.
+              %p בגלל אורכה, הרשימה מחולקת לעמודי משנה המכילים עד מאה ערכים כל אחד.
+              %p ניתן לדפדף ברשימה באמצעות הבקרים הנמצאים מעל ומתחת לרשימה, המאפשרים מעבר עמודים ואיתור האות הראשונה של כל ערך.
+              %p בנוסף, ניתן להפעיל פעולות סינון המאפשרות צמצום הרשימה על ידי בחירה של מאפיינים שונים.
+              %p למען הפשטות, העמוד נטען תחילה ללא פקדי סינון, ורק לאחר שהמשתמש בוחר בכך יופיע לוח בקרת הסינון במקום טקסט הסבר זה.
+              %p
+                להפעלת אפשרויות הסינון ניתן להפעיל את המתג בבר העליון או
+                = succeed "." do
+                  %a{:href => "#"} ללחוץ כאן
+            .work-side-color
+              .work-genre.prose-side-icon
+      .col-12.col-lg-7.col-xxxl-8
+        .by-card-v02
+          .by-card-header-v02
+            .headline-2-v02{:style => "display: inline"}
+              = @total_headwords 
+              = 'ערכים'
+          .by-card-content-v02
+            .advanced-pagination-area
+              %a#firstnav.by-icon-v02{:href => "#"} {
+              %a#prevnav.by-icon-v02{:href => "#"} 2
+              #pagination-slider.advanced-pagination
+                .page עמוד
+                .progress-outside
+                  .progress-inside
+                    %a{:href => "#"}
+                      %span.progress-handle 1/109
+              .pageSelectorArea
+                .pageSelector
+                  %div עמוד:
+                  %input.field-v02{:placeholder => "1", :type => "text"}/
+                  %div מתוך 109
+              %a#nextnav.by-icon-v02{:href => "#"} 1
+              %a#lastnav.by-icon-v02{:href => "#"} 0
+            .a-b-pagination-frame
+              %a.active{:href => "#"} א
+              %a.active{:href => "#"} ב
+              %a.active{:href => "#"} ג
+              %a{:disabled => "disabled", :href => "#"} ד
+              %a{:href => "#"} ה
+              %a{:href => "#"} ו
+              %a{:href => "#"} ז
+              %a{:href => "#"} ח
+              %a{:disabled => "disabled", :href => "#"} ט
+              %a{:disabled => "disabled", :href => "#"} י
+              %a{:disabled => "disabled", :href => "#"} כ
+              %a{:href => "#"} ל
+              %a{:href => "#"} מ
+              %a{:href => "#"} נ
+              %a{:href => "#"} ס
+              %a{:href => "#"} ע
+              %a{:href => "#"} פ
+              %a{:href => "#"} צ
+              %a{:disabled => "disabled", :href => "#"} ק
+              %a{:href => "#"} ר
+              %a{:href => "#"} ש
+              %a{:href => "#"} ת
+            %div
+              .switch-label תצוגה:
+              .BYD-switch
+                %button.search-mobile-option.active{:href => "#"} רשימת ערכים
+                %button.search-mobile-option{:href => "#"} תקצירי ערכים
+            .mainlist
+              %ol
+                - @headwords.each do |hw|
+                  %li
+                    %a{href: '#'}= hw.defhead

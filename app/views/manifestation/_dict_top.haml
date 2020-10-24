@@ -1,0 +1,72 @@
+.container-fluid#header-general
+  = render partial: 'shared/breadcrumbs'
+  .top-space
+  .work-page-top
+    .work-page-top-info-card
+      .headline-1-v02.work-name-top= @m.title
+      .work-page-top-author
+        .headline-3-v02
+          = t(:by)+':'
+          - unless @m.authors.nil?
+            != @m.authors.map {|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
+            - if @e.translation && @e.translators.size > 0
+              .headline-3-v02
+                = "#{t(:translation)}: "
+                != @translators.map{|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
+                = " (#{t(:from_lang)}#{textify_lang(@e.works[0].orig_lang)})"
+          - else
+            = '?'
+      .row
+        .col-12
+          .work-page-top-icons-desktop
+            .top-left-icons-group
+              .icon-in-group-v02.printbutton{'data-toggle' => 'tooltip', 'title' => "#{t(:work_print_tt)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }}
+                %span.linkcolor.pointer.by-icon-v02 9
+              .icon-in-group-v02.download{'data-toggle' => 'modal', 'title' => "#{t(:work_download_tt)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }, 'data-target' => '#downloadDlg'}
+                %span.linkcolor.pointer.by-icon-v02 3
+          .work-page-top-icons-mobile
+            .top-left-icons-group
+              #moreMobile.by-dropdown-v02
+                %span.linkcolor#work-more
+                  %span.by-icon-top-v02 Y
+                #workmenu-more.by-dropdown-content-v02{:style => "left: 0; margin-top: 4px"}
+                  %p.printbutton
+                    %span.by-icon-v02.linkcolor.iconNearText-v02> 9
+                    = t(:print)
+                  %p.download
+                    %span.by-icon-v02.linkcolor.iconNearText-v02> 3
+                    = t(:download)
+    .row.error-found-row
+      .col-2.side-nav-col
+      .col{style:'z-index:-1;height:0;'}
+      .col-4.error-found-col
+        %button.error-found-btn#found_mistake{title: t(:report_error_tt)}
+          .error-found
+            .error-found-text
+              = t(:found_br_mistake_html)
+            .error-found-icon g
+      .col-lg-4{style:'height:min-content'}
+
+
+:javascript
+  $(document).ready(function(){
+    $(window).scroll(function() {
+      var scroll = $(window).scrollTop();
+      if(scroll <= 200) {
+        $('.nav-link').first().addClass('active');
+      }
+    });
+    $('#work-more').click(function(){
+      if($('#workmenu-more').css('display') == 'block')
+        $('#workmenu-more').css('display', 'none');
+      else
+        $('#workmenu-more').css('display', 'block');
+    });
+
+    $('.printbutton').click(function() {
+      window.open("#{@print_url}",'_blank');
+    });
+    $('.sharebutton').click(function(){
+      $('#shareDlg').modal('show');
+    });
+  });
