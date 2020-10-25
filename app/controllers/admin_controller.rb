@@ -277,6 +277,7 @@ class AdminController < ApplicationController
     @vp = StaticPage.new(sp_params)
     respond_to do |format|
       if @vp.save
+        @vp.images.attach(params[:static_page][:images])
         format.html { redirect_to url_for(action: :static_page_show, id: @vp.id), notice: t(:updated_successfully) }
         format.json { render json: @vp, status: :created, location: @vp }
       else
@@ -306,6 +307,7 @@ class AdminController < ApplicationController
       redirect_to url_for(action: :index)
     else
       if @vp.update_attributes(sp_params)
+        @vp.images.attach(params[:static_page][:images]) if params[:static_page][:images].present?
         flash[:notice] = I18n.t(:updated_successfully)
         redirect_to action: :static_page_show, id: @vp.id
       else
