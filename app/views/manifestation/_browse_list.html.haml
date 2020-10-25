@@ -20,7 +20,7 @@
   - unless @total_pages <= 1
     = render partial: 'slide_pagination'
     - if @sort[0..11] == 'alphabetical'
-      = render partial: 'ab_pagination'
+      = render partial: 'ab_pagination', locals: {filter_element: 'works_filters'}
   .select-all-with-buttons
     .select-text-checkbox-area
       .select-all-checkbox
@@ -74,7 +74,7 @@
   - unless @total_pages <= 1
     = render partial: 'slide_pagination'
     - if @sort[0..11] == 'alphabetical'
-      = render partial: 'ab_pagination'
+      = render partial: 'ab_pagination', locals: {filter_element: 'works_filters'}
   = hidden_field_tag(:hurl, request.original_url)
 :javascript
   /**

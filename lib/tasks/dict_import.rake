@@ -10,18 +10,20 @@ namespace :dict do
       i = 1
       updated = 0
       created = 0
+      @last_sort_defhead = ''
       dict_count = db.execute("SELECT COUNT(*) FROM entries")[0]['COUNT(*)']
       puts "Processing #{dict_count} dictionary entries"
       db.execute("SELECT foreign_id, ordinal, defhead, deftext FROM entries") do |row|
         source_id = row['foreign_id'].to_i
         ordinal = row['ordinal'].to_i
+        sort_defhead = get_sort_defhead(row['defhead'])
         des = DictionaryEntry.where(manifestation_id: mani_id, source_def_id: source_id, sequential_number: ordinal)
         if des.empty?
-          @de = DictionaryEntry.new(manifestation_id: mani_id, source_def_id: source_id, sequential_number: ordinal, defhead: row['defhead'], deftext: row['deftext'])
+          @de = DictionaryEntry.new(manifestation_id: mani_id, source_def_id: source_id, sequential_number: ordinal, defhead: row['defhead'], deftext: row['deftext'], sort_defhead: sort_defhead)
           created += 1
         else # merge into existing entry
           @de = des.first
-          @de.update(defhead: row['defhead'], deftext: row['deftext'])
+          @de.update(defhead: row['defhead'], deftext: row['deftext'], sort_defhead: sort_defhead)
           updated += 1
         end
         @de.save!
@@ -39,4 +41,13 @@ namespace :dict do
       puts "please specify the path and filename of the SQLite database with the dictionary entries, and the manifestation ID of the dictionary to import to.\ne.g. rake dict:import[/home/xyzzy/dict.db, 1234]"
     end
   end
+end
+private
+def get_sort_defhead(dh)
+  return @last_sort_defhead if dh.nil?
+  ret = dh
+  ret = $' if dh =~ /^.\. /
+  ret = ret.strip_nikkud
+  @last_sort_defhead = ret
+  return ret
 end

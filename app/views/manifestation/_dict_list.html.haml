@@ -16,29 +16,7 @@
 .by-card-content-v02
   - unless @total_pages <= 1
     = render partial: 'dict_slide_pagination'
-  .a-b-pagination-frame
-    %a.active{:href => "#"} א
-    %a.active{:href => "#"} ב
-    %a.active{:href => "#"} ג
-    %a{:disabled => "disabled", :href => "#"} ד
-    %a{:href => "#"} ה
-    %a{:href => "#"} ו
-    %a{:href => "#"} ז
-    %a{:href => "#"} ח
-    %a{:disabled => "disabled", :href => "#"} ט
-    %a{:disabled => "disabled", :href => "#"} י
-    %a{:disabled => "disabled", :href => "#"} כ
-    %a{:href => "#"} ל
-    %a{:href => "#"} מ
-    %a{:href => "#"} נ
-    %a{:href => "#"} ס
-    %a{:href => "#"} ע
-    %a{:href => "#"} פ
-    %a{:href => "#"} צ
-    %a{:disabled => "disabled", :href => "#"} ק
-    %a{:href => "#"} ר
-    %a{:href => "#"} ש
-    %a{:href => "#"} ת
+    = render partial: 'ab_pagination', locals: {filter_element: 'dict_filters'}
   %div
     .switch-label תצוגה:
     .BYD-switch
@@ -59,6 +37,7 @@
             %a{href: '#'}= hw.defhead
   - unless @total_pages <= 1
     = render partial: 'dict_slide_pagination'
+    = render partial: 'ab_pagination', locals: {filter_element: 'dict_filters'}
 :javascript
   $(document).ready(function() {
     // Instantiate a slider

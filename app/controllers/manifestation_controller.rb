@@ -159,14 +159,27 @@ class ManifestationController < ApplicationController
         @header_partial = 'manifestation/dict_top'
         @pagetype = :manifestation
         @entity = @m
-        @total_headwords = DictionaryEntry.where(manifestation_id: @m.id).count
-        @headwords_page = DictionaryEntry.select(:sequential_number).where("manifestation_id = #{@m.id} and defhead is not null").order(sequential_number: :asc).page(@page) # use paging to calculate first/last in sequence, to allow pleasing lists of 100 items each, no matter how many skipped headwords there are
-        @total = @total_headwords # needed?
+        @all_headwords = DictionaryEntry.where(manifestation_id: @m.id)
+        @total_headwords = @all_headwords.count
+        unless params[:page].nil? || params[:page].empty?
+          params[:to_letter] = nil # if page was specified, forget the to_letter directive
+        end
+        oldpage = @page
+        nonnil_headwords = DictionaryEntry.select(:sequential_number, :sort_defhead).where("manifestation_id = #{@m.id} and defhead is not null").order(sequential_number: :asc) # use paging to calculate first/last in sequence, to allow pleasing lists of 100 items each, no matter how many skipped headwords there are
+        @headwords_page = nonnil_headwords.page(@page)
         @total_pages = @headwords_page.total_pages
+        byebug
+        unless params[:to_letter].nil? || params[:to_letter].empty? # for A-Z navigation, we need to adjust the page
+          adjust_page_by_letter(nonnil_headwords, params[:to_letter], :sort_defhead)
+          @headwords_page = nonnil_headwords.page(@page) if oldpage != @page # re-get page X of manifestations if adjustment was made
+        end
+    
+        @total = @total_headwords # needed?
         @filters = []
         first_seqno = @headwords_page.first.sequential_number
         last_seqno = @headwords_page.last.sequential_number
         @headwords = DictionaryEntry.where("manifestation_id = #{@m.id} and sequential_number >= #{first_seqno} and sequential_number <= #{last_seqno}").order(sequential_number: :asc)
+        @ab = prep_ab(@all_headwords, @headwords_page, :sort_defhead)
       end
     end
   end
@@ -459,18 +472,27 @@ class ManifestationController < ApplicationController
 
   protected
 
-  def bfunc(page, l) # binary-search function for ab_pagination
-    rec = @collection.order(:sort_title).page(page).first
+  def bfunc(coll, page, l, field) # binary-search function for ab_pagination
+    recs = coll.order(field).page(page) 
+    rec = recs.first
     return true if rec.nil?
-    c = rec.sort_title[0] || ''
+    c = nil
+    i = 0
+    reccount = recs.count
+    while c.nil? && i < reccount do
+      c = rec[field][0] unless rec[field].nil? # unready dictionary definitions will have their sort_defhead (and defhead) nil, so move on
+      i += 1
+      rec = recs[i]
+    end
+    c = '' if c.nil?
     return true if c == l || c > l # already too high a page
     return false
   end
 
-  def adjust_page_by_letter(l)
+  def adjust_page_by_letter(coll, l, field)
     # binary search to find page where letter begins
     ret = (1..@total_pages).bsearch{|page|
-      bfunc(page, l)
+      bfunc(coll, page, l, field)
     }
     unless ret.nil?
       ret = ret - 1 unless ret == 1
@@ -643,10 +665,10 @@ class ManifestationController < ApplicationController
 
       unless params[:to_letter].nil? || params[:to_letter].empty?
         @total_pages = @works.total_pages
-        adjust_page_by_letter(params[:to_letter])
+        adjust_page_by_letter(@collection, params[:to_letter], :sort_title)
         @works = @collection.page(@page) if oldpage != @page # re-get page X of manifestations if adjustment was made
       end
-      @ab = prep_ab(@collection, @works)
+      @ab = prep_ab(@collection, @works, :sort_title)
     else
       @works = @collection.page(@page) # get page X of manifestations
     end
@@ -687,10 +709,10 @@ class ManifestationController < ApplicationController
     @header_partial = 'manifestation/browse_top'
   end
 
-  def prep_ab(whole, subset)
+  def prep_ab(whole, subset, fieldname)
     ret = []
-    abc_present = whole.pluck(:sort_title).map{|t| t.nil? || t.empty? ? '' : t[0] }.uniq.sort
-    abc_active = subset.pluck(:sort_title).map{|t| t.nil? || t.empty? ? '' : t[0] }.uniq.sort
+    abc_present = whole.pluck(fieldname).map{|t| t.nil? || t.empty? ? '' : t[0] }.uniq.sort
+    abc_active = subset.pluck(fieldname).map{|t| t.nil? || t.empty? ? '' : t[0] }.uniq.sort
     ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ז', 'ח', 'ט', 'י', 'כ', 'ל', 'מ', 'נ', 'ס', 'ע', 'פ', 'צ', 'ק', 'ר', 'ש', 'ת'].each{|l|
       status = ''
       unless abc_present.include?(l)

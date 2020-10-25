@@ -23,7 +23,8 @@
         e.stopImmediatePropagation(); // prevent second pagination bar at bottom from also firing
         $('#toletter_tag').val($(this).attr('id'));
         startModal('spinnerdiv');
-        $('#works_filters').submit();
+        form_elem = "##{filter_element}"
+        $(form_elem).submit();
       });
     }
   });

@@ -24,21 +24,21 @@
         %li
           %input#CheckboxGroup1_5{:name => "CheckboxGroup1", :type => "checkbox", :value => "filter_by_other"}/
           %label כל טקסט אחר
-    .sort-type.open-sort
-      .sort-type-headline מאפיינים
-      %ul
-        %li
-          %input#CheckboxGroup2_1{:name => "CheckboxGroup2", :type => "checkbox", :value => "sort_by_favorites"}/
-          %label ערכים מועדפים
-        %li
-          %input#CheckboxGroup2_2{:name => "CheckboxGroup2", :type => "checkbox", :value => "sort_by_corrected"}/
-          %label ערכים שנכתבו להם תיקונים
-        %li
-          %input#CheckboxGroup2_3{:name => "CheckboxGroup2", :type => "checkbox", :value => "sort_by_missing_links"}/
-          %label ערכים עם קישורים חסרים
-        %li
-          %input#CheckboxGroup2_4{:name => "CheckboxGroup2", :type => "checkbox", :value => "sort_by_footnotes"}/
-          %label ערכים עם הערות שוליים
+    /.sort-type.open-sort
+    /  .sort-type-headline מאפיינים
+    /  %ul
+    /    %li
+    /      %input#CheckboxGroup2_1{:name => "CheckboxGroup2", :type => "checkbox", :value => "sort_by_favorites"}/
+    /      %label ערכים מועדפים
+    /    %li
+    /      %input#CheckboxGroup2_2{:name => "CheckboxGroup2", :type => "checkbox", :value => "sort_by_corrected"}/
+    /      %label ערכים שנכתבו להם תיקונים
+    /    %li
+    /      %input#CheckboxGroup2_3{:name => "CheckboxGroup2", :type => "checkbox", :value => "sort_by_missing_links"}/
+    /      %label ערכים עם קישורים חסרים
+    /    %li
+    /      %input#CheckboxGroup2_4{:name => "CheckboxGroup2", :type => "checkbox", :value => "sort_by_footnotes"}/
+    /      %label ערכים עם הערות שוליים
     = hidden_field_tag(:emit_filters, 'true', id: 'emit_filters')
     = hidden_field_tag(:id, @m.id)
     = hidden_field_tag(:cur_page, @page, id: 'cur_page_tag')
