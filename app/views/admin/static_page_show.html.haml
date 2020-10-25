@@ -30,5 +30,8 @@
     - else
       != @markdown
   %hr
+  %h2= t(:images)
+  - @vp.images.each do |img|
+    %img{src: url_for(img)}
   / add status and mode
   = link_to t(:back), url_for(action: :static_pages_list)
