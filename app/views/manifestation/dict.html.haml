@@ -29,22 +29,6 @@
           .by-card-content-v02
             - unless @total_pages <= 1
               = render partial: 'dict_slide_pagination'
-            .advanced-pagination-area
-              %a#firstnav.by-icon-v02{:href => "#"} {
-              %a#prevnav.by-icon-v02{:href => "#"} 2
-              #pagination-slider.advanced-pagination
-                .page עמוד
-                .progress-outside
-                  .progress-inside
-                    %a{:href => "#"}
-                      %span.progress-handle 1/109
-              .pageSelectorArea
-                .pageSelector
-                  %div עמוד:
-                  %input.field-v02{:placeholder => "1", :type => "text"}/
-                  %div מתוך 109
-              %a#nextnav.by-icon-v02{:href => "#"} 1
-              %a#lastnav.by-icon-v02{:href => "#"} 0
             .a-b-pagination-frame
               %a.active{:href => "#"} א
               %a.active{:href => "#"} ב

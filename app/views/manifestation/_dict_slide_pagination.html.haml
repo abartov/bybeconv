@@ -5,8 +5,7 @@
     - else
       %span.by-icon-v02.navdisabled= '{'
   = link_to_previous_page @headwords_page, '2', {class: 'by-icon-v02', remote: true, id: 'prevnav', title: t(:worklist_prev_page_tt)} do
-    %span.by-icon-v02.navdisabled
-      = '2'
+    %span.by-icon-v02.navdisabled= '2'
   .advanced-pagination#pagination-slider{ title: t(:worklist_pagination_handle_tt)}
     .page= t(:page_x_of_y, {x: @page, y: @total_pages})
     %input.slider.progress-handle{'type': 'text', 'data-slider-min': 1, 'data-slider-max': @total_pages, 'data-slider-step':1, 'data-slider-value': @page, 'data-slider-handle': 'custom', title: t(:worklist_pagination_handle_tt)}
