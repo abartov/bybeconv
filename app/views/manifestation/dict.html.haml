@@ -27,6 +27,8 @@
               = @total_headwords 
               = 'ערכים'
           .by-card-content-v02
+            - unless @total_pages <= 1
+              = render partial: 'dict_slide_pagination'
             .advanced-pagination-area
               %a#firstnav.by-icon-v02{:href => "#"} {
               %a#prevnav.by-icon-v02{:href => "#"} 2
@@ -83,4 +85,10 @@
                       - skipped = 0
                     %li
                       %a{href: '#'}= hw.defhead
-                    
+:javascript
+  $(document).ready(function() {
+    // Instantiate a slider
+    var mySlider = $("input.slider").bootstrapSlider({
+      tooltip: 'always',
+    });
+  });

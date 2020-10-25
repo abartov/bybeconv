@@ -153,14 +153,19 @@ class ManifestationController < ApplicationController
         redirect_to action: 'read', id: @m.id
       else
         @page = params[:page] || 1
+        @page = 1 if @page == '0' # slider sets page to zero, awkwardly
+
         @e = @m.expressions[0]
         @header_partial = 'manifestation/dict_top'
         @pagetype = :manifestation
         @entity = @m
         @total_headwords = DictionaryEntry.where(manifestation_id: @m.id).count
-        a_hundred_headwords = DictionaryEntry.select(:sequential_number).where("manifestation_id = #{@m.id} and defhead is not null").order(sequential_number: :asc).page(@page) # use paging to calculate first/last in sequence, to allow pleasing lists of 100 items each, no matter how many skipped headwords there are
-        first_seqno = a_hundred_headwords.first.sequential_number
-        last_seqno = a_hundred_headwords.last.sequential_number
+        @headwords_page = DictionaryEntry.select(:sequential_number).where("manifestation_id = #{@m.id} and defhead is not null").order(sequential_number: :asc).page(@page) # use paging to calculate first/last in sequence, to allow pleasing lists of 100 items each, no matter how many skipped headwords there are
+        @total = @total_headwords # needed?
+        @total_pages = @headwords_page.total_pages
+    
+        first_seqno = @headwords_page.first.sequential_number
+        last_seqno = @headwords_page.last.sequential_number
         @headwords = DictionaryEntry.where("manifestation_id = #{@m.id} and sequential_number >= #{first_seqno} and sequential_number <= #{last_seqno}").order(sequential_number: :asc)
       end
     end
