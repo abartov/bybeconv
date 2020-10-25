@@ -1,0 +1,82 @@
+%script{ src: 'https://use.fontawesome.com/3f861a49f5.js'}
+
+= form_tag(dict_browse_path, remote: true, method: :post, id: 'dict_filters') do
+  .by-card-content-v02#filters_panel
+    .headline-2-v02= t(:filter_by)
+    %span.reset.linkcolor.pointer= t(:reset_filter)
+    #sortByText.sort-type.open-sort
+      .sort-type-headline טקסט
+      %input.field-v02.field-without-label.author-name-field{:placeholder => "טקסט חופשי", :type => "text"}/
+      %p הגבלת סינון הטקסט ל:
+      %ul
+        %li
+          %input#CheckboxGroup1_1{:name => "CheckboxGroup1", :type => "checkbox", :value => "filter_by_name"}/
+          %label שמות הערכים
+        %li
+          %input#CheckboxGroup1_2{:name => "CheckboxGroup1", :type => "checkbox", :value => "filter_by_properties"}/
+          %label הגדרות
+        %li
+          %input#CheckboxGroup1_3{:name => "CheckboxGroup1", :type => "checkbox", :value => "filter_by_location"}/
+          %label מראי מקום
+        %li
+          %input#CheckboxGroup1_4{:name => "CheckboxGroup1", :type => "checkbox", :value => "filter_by_footnotes"}/
+          %label הערות שוליים
+        %li
+          %input#CheckboxGroup1_5{:name => "CheckboxGroup1", :type => "checkbox", :value => "filter_by_other"}/
+          %label כל טקסט אחר
+    .sort-type.open-sort
+      .sort-type-headline מאפיינים
+      %ul
+        %li
+          %input#CheckboxGroup2_1{:name => "CheckboxGroup2", :type => "checkbox", :value => "sort_by_favorites"}/
+          %label ערכים מועדפים
+        %li
+          %input#CheckboxGroup2_2{:name => "CheckboxGroup2", :type => "checkbox", :value => "sort_by_corrected"}/
+          %label ערכים שנכתבו להם תיקונים
+        %li
+          %input#CheckboxGroup2_3{:name => "CheckboxGroup2", :type => "checkbox", :value => "sort_by_missing_links"}/
+          %label ערכים עם קישורים חסרים
+        %li
+          %input#CheckboxGroup2_4{:name => "CheckboxGroup2", :type => "checkbox", :value => "sort_by_footnotes"}/
+          %label ערכים עם הערות שוליים
+    = hidden_field_tag(:emit_filters, 'true', id: 'emit_filters')
+    = hidden_field_tag(:id, @m.id)
+    = hidden_field_tag(:cur_page, @page, id: 'cur_page_tag')
+    = hidden_field_tag(:page, '', id: 'page_tag')
+    = hidden_field_tag(:to_letter, '', id: 'toletter_tag')
+:javascript
+  $(document).ready(function() {
+    var submit_timeout = null;
+    $('#dict_filters').change(function(){
+      if(submit_timeout != null){
+        window.clearTimeout(submit_timeout);
+      }
+      $('#page_tag').val('1'); // reset pagination
+      submit_timeout = window.setTimeout(submit_filters, 300);
+    });
+    function submit_filters() {
+      startModal('spinnerdiv');
+      $('#dict_filters').submit();
+    }
+    $('.reset').click(function(){
+      $('#dict_filters').find(':input').each(function() {
+        switch(this.type) {
+            case 'password':
+            case 'select-multiple':
+            case 'select-one':
+            case 'text':
+            case 'textarea':
+                $(this).val('');
+                break;
+            case 'checkbox':
+            case 'radio':
+                this.checked = false;
+        }
+      });
+      startModal('spinnerdiv');
+      $('#emit_filters').val('true');
+      $('#page_tag').val('1'); // reset pagination
+      $('#toletter_tag').val(''); // reset pagination
+      $('#dict_filters').submit();
+    });
+  });

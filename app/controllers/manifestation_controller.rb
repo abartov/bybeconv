@@ -154,7 +154,7 @@ class ManifestationController < ApplicationController
       else
         @page = params[:page] || 1
         @page = 1 if @page == '0' # slider sets page to zero, awkwardly
-
+        @emit_filters = true if params[:load_filters] == 'true' || params[:emit_filters] == 'true'
         @e = @m.expressions[0]
         @header_partial = 'manifestation/dict_top'
         @pagetype = :manifestation

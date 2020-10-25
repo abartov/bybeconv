@@ -3,7 +3,7 @@
   #content.container-fluid.BYD
     .row
       .col-12.col-lg-5.col-xxxl-4.BYD-welcome
-        .by-card-v02
+        .by-card-v02#dict_intro{style:"display:#{ @filters.empty? ? 'show' : 'none'}"}
           .work-area
             .work-content
               .headline-1-v02 ברוכים הבאים למילון אליעזר בן-יהודה
@@ -20,55 +20,19 @@
                   %a{:href => "#"} ללחוץ כאן
             .work-side-color
               .work-genre.prose-side-icon
+        - if @filters.empty?
+          .by-card-v02.text-sorting#dict_filter_panel{style: 'display:none'}
+            .by-card-header-v02
+              .headline-2-v02= t(:filter)
+            .by-card-content-v02#filters_panel
+              .temporary
+        - else
+          .by-card-v02.text-sorting#dict_filter_panel{style: 'display:show'}
+            = render partial: 'dict_filters'
+        
       .col-12.col-lg-7.col-xxxl-8
-        .by-card-v02
-          .by-card-header-v02
-            .headline-2-v02{:style => "display: inline"}
-              = @total_headwords 
-              = 'ערכים'
-          .by-card-content-v02
-            - unless @total_pages <= 1
-              = render partial: 'dict_slide_pagination'
-            .a-b-pagination-frame
-              %a.active{:href => "#"} א
-              %a.active{:href => "#"} ב
-              %a.active{:href => "#"} ג
-              %a{:disabled => "disabled", :href => "#"} ד
-              %a{:href => "#"} ה
-              %a{:href => "#"} ו
-              %a{:href => "#"} ז
-              %a{:href => "#"} ח
-              %a{:disabled => "disabled", :href => "#"} ט
-              %a{:disabled => "disabled", :href => "#"} י
-              %a{:disabled => "disabled", :href => "#"} כ
-              %a{:href => "#"} ל
-              %a{:href => "#"} מ
-              %a{:href => "#"} נ
-              %a{:href => "#"} ס
-              %a{:href => "#"} ע
-              %a{:href => "#"} פ
-              %a{:href => "#"} צ
-              %a{:disabled => "disabled", :href => "#"} ק
-              %a{:href => "#"} ר
-              %a{:href => "#"} ש
-              %a{:href => "#"} ת
-            %div
-              .switch-label תצוגה:
-              .BYD-switch
-                %button.search-mobile-option.active{:href => "#"} רשימת ערכים
-                %button.search-mobile-option{:href => "#"} תקצירי ערכים
-            .mainlist
-              %ol
-                - skipped = 0
-                - @headwords.each do |hw|
-                  - if hw.defhead.nil?
-                    - skipped += 1
-                  - else
-                    - if skipped > 0
-                      %p= t(:skipped_x_entries, x: skipped)
-                      - skipped = 0
-                    %li
-                      %a{href: '#'}= hw.defhead
+        .by-card-v02#thelist
+          = render partial: 'dict_list'
 :javascript
   $(document).ready(function() {
     // Instantiate a slider

@@ -1,0 +1,5 @@
+$('#thelist').html("<%= j(render partial: 'dict_list') %>");
+stopModal('spinnerdiv');
+<% if @emit_filters %>
+$('#dict_filter_panel').html("<%= j(render partial: 'dict_filters') %>");
+<% end %>

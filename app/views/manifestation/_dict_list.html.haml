@@ -1,0 +1,68 @@
+%div#spinnerdiv{style: 'display: none; top: 50%; left: 50%;'}
+  #floatingCirclesG
+    #frotateG_01.f_circleG
+    #frotateG_02.f_circleG
+    #frotateG_03.f_circleG
+    #frotateG_04.f_circleG
+    #frotateG_05.f_circleG
+    #frotateG_06.f_circleG
+    #frotateG_07.f_circleG
+    #frotateG_08.f_circleG
+
+.by-card-header-v02
+  .headline-2-v02{:style => "display: inline"}
+    = @total_headwords 
+    = 'ערכים'
+.by-card-content-v02
+  - unless @total_pages <= 1
+    = render partial: 'dict_slide_pagination'
+  .a-b-pagination-frame
+    %a.active{:href => "#"} א
+    %a.active{:href => "#"} ב
+    %a.active{:href => "#"} ג
+    %a{:disabled => "disabled", :href => "#"} ד
+    %a{:href => "#"} ה
+    %a{:href => "#"} ו
+    %a{:href => "#"} ז
+    %a{:href => "#"} ח
+    %a{:disabled => "disabled", :href => "#"} ט
+    %a{:disabled => "disabled", :href => "#"} י
+    %a{:disabled => "disabled", :href => "#"} כ
+    %a{:href => "#"} ל
+    %a{:href => "#"} מ
+    %a{:href => "#"} נ
+    %a{:href => "#"} ס
+    %a{:href => "#"} ע
+    %a{:href => "#"} פ
+    %a{:href => "#"} צ
+    %a{:disabled => "disabled", :href => "#"} ק
+    %a{:href => "#"} ר
+    %a{:href => "#"} ש
+    %a{:href => "#"} ת
+  %div
+    .switch-label תצוגה:
+    .BYD-switch
+      %button.search-mobile-option.active{:href => "#"} רשימת ערכים
+      %button.search-mobile-option{:href => "#"} תקצירי ערכים
+  .mainlist
+    = hidden_field_tag(:hurl, request.original_url)
+    %ol
+      - skipped = 0
+      - @headwords.each do |hw|
+        - if hw.defhead.nil?
+          - skipped += 1
+        - else
+          - if skipped > 0
+            %p= t(:skipped_x_entries, x: skipped)
+            - skipped = 0
+          %li
+            %a{href: '#'}= hw.defhead
+  - unless @total_pages <= 1
+    = render partial: 'dict_slide_pagination'
+:javascript
+  $(document).ready(function() {
+    var url = $('#hurl').val().replace(/page=\d+/, '');
+    if(url.indexOf('?') == -1) {
+      url = url + '?'
+    }
+  });
