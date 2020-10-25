@@ -163,7 +163,7 @@ class ManifestationController < ApplicationController
         @headwords_page = DictionaryEntry.select(:sequential_number).where("manifestation_id = #{@m.id} and defhead is not null").order(sequential_number: :asc).page(@page) # use paging to calculate first/last in sequence, to allow pleasing lists of 100 items each, no matter how many skipped headwords there are
         @total = @total_headwords # needed?
         @total_pages = @headwords_page.total_pages
-    
+        @filters = []
         first_seqno = @headwords_page.first.sequential_number
         last_seqno = @headwords_page.last.sequential_number
         @headwords = DictionaryEntry.where("manifestation_id = #{@m.id} and sequential_number >= #{first_seqno} and sequential_number <= #{last_seqno}").order(sequential_number: :asc)

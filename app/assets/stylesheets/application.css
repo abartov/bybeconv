@@ -72,7 +72,15 @@ input[type=checkbox].multiselect_checkbox {
 	color: #fff;
 	background-color: #660248;
 }
-
+/* temporary workaround by Asaf for dict_top metadata */
+.texts-list-top-info-card {
+  flex-wrap: wrap;
+}
+.flexbreak {
+  flex-basis: 100%;
+  height: 0;
+}
+/* end dict_top workarounds */
 .navdisabled {
   color: #d9cdd5;
   cursor: default;
