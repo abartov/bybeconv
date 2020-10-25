@@ -61,6 +61,10 @@
     = render partial: 'dict_slide_pagination'
 :javascript
   $(document).ready(function() {
+    // Instantiate a slider
+    var mySlider = $("input.slider").bootstrapSlider({
+      tooltip: 'always',
+    });
     var url = $('#hurl').val().replace(/page=\d+/, '');
     if(url.indexOf('?') == -1) {
       url = url + '?'
