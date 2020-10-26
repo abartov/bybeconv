@@ -80,6 +80,15 @@ input[type=checkbox].multiselect_checkbox {
   flex-basis: 100%;
   height: 0;
 }
+.footnote_ref {
+  vertical-align: super;
+  font-size: 75%;
+}
+.footnote_num {
+  vertical-align: super;
+  font-size: 75%;
+}
+
 /* end dict_top workarounds */
 .navdisabled {
   color: #d9cdd5;

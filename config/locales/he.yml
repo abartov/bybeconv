@@ -629,6 +629,8 @@ he:
   dictionary_entries: ערכים מילוניים
   dict_snippets: תקצירי ערכים
   dict_list: רשימת ערכים
+  to_the_full_entry: לערך המלא
+  read_more: קראו עוד
   skipped_x_entries: "[%{x} ערכים עוד לא מוכנים]"
   about: על הפרויקט | About
   about_the_project: על פרויקט בן־יהודה
