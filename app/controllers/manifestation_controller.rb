@@ -168,7 +168,6 @@ class ManifestationController < ApplicationController
         nonnil_headwords = DictionaryEntry.select(:sequential_number, :sort_defhead).where("manifestation_id = #{@m.id} and defhead is not null").order(sequential_number: :asc) # use paging to calculate first/last in sequence, to allow pleasing lists of 100 items each, no matter how many skipped headwords there are
         @headwords_page = nonnil_headwords.page(@page)
         @total_pages = @headwords_page.total_pages
-        byebug
         unless params[:to_letter].nil? || params[:to_letter].empty? # for A-Z navigation, we need to adjust the page
           adjust_page_by_letter(nonnil_headwords, params[:to_letter], :sort_defhead)
           @headwords_page = nonnil_headwords.page(@page) if oldpage != @page # re-get page X of manifestations if adjustment was made
