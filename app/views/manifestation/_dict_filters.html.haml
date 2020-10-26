@@ -44,6 +44,8 @@
     = hidden_field_tag(:cur_page, @page, id: 'cur_page_tag')
     = hidden_field_tag(:page, '', id: 'page_tag')
     = hidden_field_tag(:to_letter, '', id: 'toletter_tag')
+    = hidden_field_tag(:dict_list_mode, @dict_list_mode)
+    = hidden_field_tag(:preserve_page, '0')
 :javascript
   $(document).ready(function() {
     var submit_timeout = null;
@@ -51,7 +53,9 @@
       if(submit_timeout != null){
         window.clearTimeout(submit_timeout);
       }
-      $('#page_tag').val('1'); // reset pagination
+      if(!$('#preserve_page').val() == '1') {
+        $('#page_tag').val('1'); // reset pagination unless asked to preserve it (when switching between list and snippet view)
+      }
       submit_timeout = window.setTimeout(submit_filters, 300);
     });
     function submit_filters() {

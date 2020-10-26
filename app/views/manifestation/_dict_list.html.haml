@@ -20,8 +20,8 @@
   %div
     .switch-label תצוגה:
     .BYD-switch
-      %button.search-mobile-option.active{:href => "#"} רשימת ערכים
-      %button.search-mobile-option{:href => "#"} תקצירי ערכים
+      %button.search-mobile-option#dictmode_list= t(:dict_list)
+      %button.search-mobile-option#dictmode_snippets= t(:dict_snippets)
   .mainlist
     = hidden_field_tag(:hurl, request.original_url)
     %ol
@@ -34,7 +34,7 @@
             %p= t(:skipped_x_entries, x: skipped)
             - skipped = 0
           %li
-            %a{href: '#'}= hw.defhead
+            %a{href: dict_entry_path(id: @m.id, entry: hw.id)}= hw.defhead
   - unless @total_pages <= 1
     = render partial: 'dict_slide_pagination'
     = render partial: 'ab_pagination', locals: {filter_element: 'dict_filters'}
@@ -48,4 +48,35 @@
     if(url.indexOf('?') == -1) {
       url = url + '?'
     }
+    $("input.slider").on('slideStop', function(slideEvt){
+      slideEvt.stopImmediatePropagation();
+      $('#page_tag').val(slideEvt.value.toString());
+      startModal('spinnerdiv');
+      $('#dict_filters').submit();
+    });
+    if("#{@dict_list_mode}" == 'list') {
+      $('#dictmode_list').addClass('active');
+    } else {
+      $('#dictmode_snippets').addClass('active');
+    }
+    $('#dictmode_list').click(function(e){
+      e.preventDefault();
+      $('#dictmode_snippets').removeClass('active');
+      $('#dictmode_list').addClass('active');
+      $('#preserve_page').val('1');
+      $('#page_tag').val($('#cur_page_tag').val());
+      $('#dict_list_mode').val('list');
+      startModal('spinnerdiv');
+      $('#dict_filters').submit();
+    });
+    $('#dictmode_snippets').click(function(e){
+      e.preventDefault();
+      $('#dictmode_list').removeClass('active');
+      $('#dictmode_snippets').addClass('active');
+      $('#dict_list_mode').val('snippets');
+      $('#preserve_page').val('1')
+      $('#page_tag').val($('#cur_page_tag').val());
+      startModal('spinnerdiv');
+      $('#dict_filters').submit();
+    });
   });

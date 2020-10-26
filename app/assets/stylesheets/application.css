@@ -97,6 +97,7 @@ input[type=checkbox].multiselect_checkbox {
 
 .dashboard-link {
   /*  position:absolute; display:inline; top:11rem; left: 10rem;*/
+    line-height: unset;
     float:left;
     margin-top: -1rem;
   }

@@ -153,7 +153,8 @@ class ManifestationController < ApplicationController
         redirect_to action: 'read', id: @m.id
       else
         @page = params[:page] || 1
-        @page = 1 if @page == '0' # slider sets page to zero, awkwardly
+        @page = 1 if ['0',''].include?(@page) # slider sets page to zero or '', awkwardly
+        @dict_list_mode = params[:dict_list_mode] || 'list'
         @emit_filters = true if params[:load_filters] == 'true' || params[:emit_filters] == 'true'
         @e = @m.expressions[0]
         @header_partial = 'manifestation/dict_top'
@@ -183,6 +184,13 @@ class ManifestationController < ApplicationController
     end
   end
 
+  def dict_entry
+    @entry = DictionaryEntry.find(params[:entry])
+    @m = Manifestation.find(params[:id])
+    if @entry.nil? || @m.nil?
+      head :not_found
+    end
+  end
   def read
     @m = Manifestation.joins(:expressions).includes(:expressions).find(params[:id])
     if @m.nil?
@@ -697,7 +705,7 @@ class ManifestationController < ApplicationController
 
   def prep_for_browse
     @page = params[:page] || 1
-    @page = 1 if @page == '0' # slider sets page to zero, awkwardly
+    @page = 1 if ['0',''].include?(@page) # slider sets page to zero, awkwardly
     prep_collection # filtering and sorting is done here
     @total = @collection.count
     @total_pages = @works.total_pages

@@ -20,15 +20,8 @@
                   %a{:href => "#"} ללחוץ כאן
             .work-side-color
               .work-genre.prose-side-icon
-        - if @filters.empty?
-          .by-card-v02.text-sorting#dict_filter_panel{style: 'display:none'}
-            .by-card-header-v02
-              .headline-2-v02= t(:filter)
-            .by-card-content-v02#filters_panel
-              .temporary
-        - else
-          .by-card-v02.text-sorting#dict_filter_panel{style: 'display:show'}
-            = render partial: 'dict_filters'
+        .by-card-v02.text-sorting#dict_filter_panel{style: "display: #{@filters.empty? ? 'none' : 'show'}"}
+          = render partial: 'dict_filters'
         
       .col-12.col-lg-7.col-xxxl-8
         .by-card-v02#thelist

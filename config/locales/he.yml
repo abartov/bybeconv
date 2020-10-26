@@ -627,6 +627,8 @@ he:
   more_recommendations_in_the_blog: המלצות נוספות ביומן הרשת
   works: יצירות
   dictionary_entries: ערכים מילוניים
+  dict_snippets: תקצירי ערכים
+  dict_list: רשימת ערכים
   skipped_x_entries: "[%{x} ערכים עוד לא מוכנים]"
   about: על הפרויקט | About
   about_the_project: על פרויקט בן־יהודה
