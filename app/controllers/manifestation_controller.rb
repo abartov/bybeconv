@@ -161,12 +161,12 @@ class ManifestationController < ApplicationController
         @pagetype = :manifestation
         @entity = @m
         @all_headwords = DictionaryEntry.where(manifestation_id: @m.id)
-        @total_headwords = @all_headwords.count
         unless params[:page].nil? || params[:page].empty?
           params[:to_letter] = nil # if page was specified, forget the to_letter directive
         end
         oldpage = @page
         nonnil_headwords = DictionaryEntry.select(:sequential_number, :sort_defhead).where("manifestation_id = #{@m.id} and defhead is not null").order(sequential_number: :asc) # use paging to calculate first/last in sequence, to allow pleasing lists of 100 items each, no matter how many skipped headwords there are
+        @total_headwords = nonnil_headwords.length
         @headwords_page = nonnil_headwords.page(@page)
         @total_pages = @headwords_page.total_pages
         unless params[:to_letter].nil? || params[:to_letter].empty? # for A-Z navigation, we need to adjust the page
@@ -176,8 +176,13 @@ class ManifestationController < ApplicationController
     
         @total = @total_headwords # needed?
         @filters = []
-        first_seqno = @headwords_page.first.sequential_number
-        last_seqno = @headwords_page.last.sequential_number
+        if @headwords_page.count == 0
+            first_seqno = 9
+            last_seqno = 1 # safely generate zero results in following query
+        else
+          first_seqno = @headwords_page.first.sequential_number
+          last_seqno = @headwords_page.last.sequential_number
+        end
         @headwords = DictionaryEntry.where("manifestation_id = #{@m.id} and sequential_number >= #{first_seqno} and sequential_number <= #{last_seqno}").order(sequential_number: :asc)
         @ab = prep_ab(@all_headwords, @headwords_page, :sort_defhead)
       end
@@ -189,8 +194,19 @@ class ManifestationController < ApplicationController
     @m = Manifestation.find(params[:id])
     if @entry.nil? || @m.nil?
       head :not_found
+    else
+      @header_partial = 'manifestation/dict_entry_top'
+      @pagetype = :manifestation
+      @entity = @m
+      @e = @m.expressions[0]
+      @prev_entries = @entry.get_prev_defs(5)
+      @next_entries = @entry.get_next_defs(5)
+      @prev_entry = @prev_entries[0] # may be nil if at beginning of dictionary
+      @next_entry = @next_entries[0] # may be nil if at [temporary] end of dictionary
+      @skipped_to_prev = @prev_entry.nil? ? 0 : @entry.sequential_number - @prev_entry.sequential_number - 1
+      @skipped_to_next = @next_entry.nil? ? 0 : @next_entry.sequential_number - @entry.sequential_number - 1
     end
-  end
+end
   def read
     @m = Manifestation.joins(:expressions).includes(:expressions).find(params[:id])
     if @m.nil?

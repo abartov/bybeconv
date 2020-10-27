@@ -509,7 +509,7 @@ module BybeUtils
   end
 
   def get_total_headwords
-    return 2341 # TODO: un-hardcode
+    return DictionaryEntry.where("defhead is not null").count
   end
 
   ## hardcoded

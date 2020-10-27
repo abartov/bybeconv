@@ -38,7 +38,7 @@ namespace :dict do
       end
       puts "done!\nCreated #{created} entries and updated #{updated}."
     else
-      puts "please specify the path and filename of the SQLite database with the dictionary entries, and the manifestation ID of the dictionary to import to.\ne.g. rake dict:import[/home/xyzzy/dict.db, 1234]"
+      puts "please specify the path and filename of the SQLite database with the dictionary entries, and the manifestation ID of the dictionary to import to.\ne.g. rake dict:import[/home/xyzzy/dict.db,1234]"
     end
   end
 end

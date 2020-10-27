@@ -88,7 +88,9 @@ input[type=checkbox].multiselect_checkbox {
   vertical-align: super;
   font-size: 75%;
 }
-
+.BYD-entry-top {
+  flex-wrap: wrap;
+}
 /* end dict_top workarounds */
 .navdisabled {
   color: #d9cdd5;
