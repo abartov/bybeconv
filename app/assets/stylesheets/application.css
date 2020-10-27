@@ -91,6 +91,11 @@ input[type=checkbox].multiselect_checkbox {
 .BYD-entry-top {
   flex-wrap: wrap;
 }
+.source {
+  font-weight: bolder;
+  vertical-align: sub;
+  font-size: 85%;
+}
 /* end dict_top workarounds */
 .navdisabled {
   color: #d9cdd5;

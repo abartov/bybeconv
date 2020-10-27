@@ -1,5 +1,70 @@
 %main
   .top-element
-  #content.container-fluid.BYD
-    %h1= @entry.defhead
-    != @entry.deftext
+  #content.container-fluid
+    .row.text-page-content
+      .col-12.col-lg-8
+        .logo-for-print
+          %img.logoBY-v02{alt: '', src: 'assets/logo-byp-mobile.svg'}
+        .row
+          .col.work-side-menu-area
+          .col.work-col
+            .by-card-v02
+              .by-card-content-v02
+                .entryHeadline= @entry.defhead
+            .by-card-v02
+              .work-area
+                .work-content
+                  /%div
+                  /  .entry-switch-label= t(:display)
+                  /  .BYD-switch
+                  /    %button.search-mobile-option.active{:href => "#"} ערך מקורי
+                  /    %button.search-mobile-option{:href => "#"} ספרות תיקונים
+                  .BYD-entry-text
+                    != @entry.deftext
+                .work-side-color
+                  .work-genre.dictionaries-side-icon
+      .col-12.col-lg-4
+        .row
+          .col
+            .by-card-v02.left-side-card-v02
+              /.by-card-header-left-v02
+              /  %span.headline-1-v02 מקורות
+              /.by-card-content-v02
+              /  %div
+              /    %a{:href => "#"} פרטי מקור א׳
+              /  %div
+              /    %a{:href => "#"} פרטי מקור ב׳
+              /  %div
+              /    %a{:href => "#"} פרטי מקור ג׳
+            .by-card-v02.left-side-card-v02
+              /.by-card-header-left-v02
+              /  %span.headline-1-v02 יצירות על אודות ערך זה
+              /.by-card-content-v02
+              /  %div
+              /    %span>
+              /      %a{:href => "#"} שם היצירה
+              /    \/
+              /    %span
+              /      %a{:href => "#"} שם היוצר
+              /  %div
+              /    %span>
+              /      %a{:href => "#"} שם היצירה
+              /    \/
+              /    %span
+              /      %a{:href => "#"} שם היוצר
+              /  %div
+              /    %span>
+              /      %a{:href => "#"} שם היצירה
+              /    \/
+              /    %span
+              /      %a{:href => "#"} שם היוצר
+            .by-card-v02.left-side-card-v02
+              /.by-card-header-left-v02
+              /  %span.headline-1-v02 ערכים קשורים
+              /.by-card-content-v02
+              /  %div
+              /    %a{:href => "#"} ערך א׳
+              /  %div
+              /    %a{:href => "#"} ערך ב׳
+              /  %div
+              /    %a{:href => "#"} ערך ג׳

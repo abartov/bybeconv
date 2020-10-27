@@ -637,6 +637,7 @@ he:
   prev_entry: 'הקודם:'
   next_entry: 'הבא:'
   neighboring_entries: 'ערכים שכנים:'
+  display: 'תצוגה:'
   skipped_x_entries: "[%{x} ערכים עוד לא מוכנים]"
   about: על הפרויקט | About
   about_the_project: על פרויקט בן־יהודה
