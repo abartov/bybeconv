@@ -685,13 +685,19 @@ display: none;	}
 .BYD-entry-top{
 	padding-left: 10px;
 }
-	.missingValues_desktop{
+.missingValues_desktop{
 		display:none;
 	}
-		.missingValues_mobile{
+.missingValues_mobile{
 		display:inline-block;
 			margin-right: 2px;
 	}
+.topNavEntryArea{
+	padding-right: 18px;
+}
+.entry-page-top-info-card .BYD-rights{
+	display: none;
+}
 	
 }
 
