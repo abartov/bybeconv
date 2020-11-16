@@ -466,6 +466,7 @@ class HtmlFileController < ApplicationController
     new_buffer.gsub!(/(\n\s*)*\n> \n<br \/>\n> (\n\s*)*/,"\n> \n<br />\n> \n\n") # sigh
     new_buffer.gsub!(/\n> *> +/,"\n> ") # we basically never want this super-large indented poetry
     new_buffer.gsub!(/\n\n> *\n> /,"\n> \n> ") # remove extra newlines before verse lines
+    new_buffer.gsub!(/> <br \/>/,'<br />') # remove PRE from line-break, which confuses the markdown processor
     return new_buffer
   end
 
