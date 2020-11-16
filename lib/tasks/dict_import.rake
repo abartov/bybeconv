@@ -6,7 +6,7 @@ namespace :dict do
     unless args.db_file.nil? or args.mani_id.nil?
       db = SQLite3::Database.new args.db_file
       db.results_as_hash = true
-      mani_id = args.mani_id.to_i
+      $mani_id = args.mani_id.to_i
       i = 1
       updated = 0
       created = 0
@@ -17,13 +17,14 @@ namespace :dict do
         source_id = row['foreign_id'].to_i
         ordinal = row['ordinal'].to_i
         sort_defhead = get_sort_defhead(row['defhead'])
-        des = DictionaryEntry.where(manifestation_id: mani_id, source_def_id: source_id, sequential_number: ordinal)
+        deftext = correct_internal_links(row['deftext'])
+        des = DictionaryEntry.where(manifestation_id: $mani_id, source_def_id: source_id, sequential_number: ordinal)
         if des.empty?
-          @de = DictionaryEntry.new(manifestation_id: mani_id, source_def_id: source_id, sequential_number: ordinal, defhead: row['defhead'], deftext: row['deftext'], sort_defhead: sort_defhead)
+          @de = DictionaryEntry.new(manifestation_id: $mani_id, source_def_id: source_id, sequential_number: ordinal, defhead: row['defhead'], deftext: deftext, sort_defhead: sort_defhead)
           created += 1
         else # merge into existing entry
           @de = des.first
-          @de.update(defhead: row['defhead'], deftext: row['deftext'], sort_defhead: sort_defhead)
+          @de.update(defhead: row['defhead'], deftext: deftext, sort_defhead: sort_defhead)
           updated += 1
         end
         @de.save!
@@ -50,4 +51,11 @@ def get_sort_defhead(dh)
   ret = ret.strip_nikkud
   @last_sort_defhead = ret
   return ret
+end
+
+def correct_internal_links(buf)
+  buf.gsub(/https:\/\/ebydict\.benyehuda\.org\/definition\/view\/(\d+)/) {|match|
+    recs = DictionaryEntry.where(manifestation_id: $mani_id, source_def_id: $1)
+    recs.empty? ? match : "/dict/#{$mani_id}/#{recs[0].id}"
+  }
 end
