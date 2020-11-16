@@ -205,6 +205,8 @@ class ManifestationController < ApplicationController
       @next_entry = @next_entries[0] # may be nil if at [temporary] end of dictionary
       @skipped_to_prev = @prev_entry.nil? ? 0 : @entry.sequential_number - @prev_entry.sequential_number - 1
       @skipped_to_next = @next_entry.nil? ? 0 : @next_entry.sequential_number - @entry.sequential_number - 1
+      @incoming_links = @entry.incoming_links.includes(:incoming_links)
+      @outgoing_links = @entry.outgoing_links.includes(:outgoing_links)
     end
 end
   def read

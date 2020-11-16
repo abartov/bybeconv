@@ -93,8 +93,8 @@ input[type=checkbox].multiselect_checkbox {
 }
 .source {
   font-weight: bolder;
-  vertical-align: sub;
-  font-size: 85%;
+  /* vertical-align: sub; */
+  font-size: 70%;
 }
 /* end dict_top workarounds */
 .navdisabled {

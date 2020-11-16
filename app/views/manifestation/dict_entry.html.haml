@@ -58,13 +58,15 @@
               /    \/
               /    %span
               /      %a{:href => "#"} שם היוצר
-            .by-card-v02.left-side-card-v02
-              /.by-card-header-left-v02
-              /  %span.headline-1-v02 ערכים קשורים
-              /.by-card-content-v02
-              /  %div
-              /    %a{:href => "#"} ערך א׳
-              /  %div
-              /    %a{:href => "#"} ערך ב׳
-              /  %div
-              /    %a{:href => "#"} ערך ג׳
+            - if @incoming_links.count > 0 || @outgoing_links.count > 0
+              .by-card-v02.left-side-card-v02
+                .by-card-header-left-v02
+                  %span.headline-1-v02= t(:linking_entries)
+                .by-card-content-v02
+                  - @incoming_links.each do |link|
+                    %div
+                      %a{href: dict_entry_path(id: @m.id, entry: link.id)}= link.defhead
+                  - @outgoing_links.each do |link|
+                    %div
+                      %a{href: dict_entry_path(id: @m.id, entry: link.id)}= link.defhead
+    

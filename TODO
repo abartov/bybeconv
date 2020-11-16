@@ -1,8 +1,6 @@
 EbyDict-Integration TODO
 
 - implement definition view
-- EXPORT: rewrite deftext links to point to refer to seqno
-- IMPORT: rewrite deftext links to translate seqno references to dict_entry_path()
 - cronjob for exports
 - cronjob for imports (staging for now, eventually production)
 - link stats header to EbyDict entity (staging, prod) [eventually, link instead to genre query for lexicon, but only after figuring out what to do with non-ebydict lexica]
