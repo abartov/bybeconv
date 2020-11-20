@@ -555,6 +555,7 @@ he:
   entries: ערכים
   linking_entries: ערכים קשורים
   filter: סינון
+  sort_name: שם לצורך מיון
   actions: פעולות
   author: מחבר
   author_f: מחברת

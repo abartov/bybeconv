@@ -48,7 +48,7 @@ gem 'execjs'
 gem 'therubyracer'
 gem 'thin'
 gem 'htmlentities'
-gem 'kaminari', '1.1.1' # pagination. Kaminari 1.2.1 seems to have a bug https://github.com/kaminari/kaminari/issues/1033
+gem 'kaminari', '1.1.1' # pagination. Kaminari 1.2.1 seems to have a bug - https://github.com/kaminari/kaminari/issues/1033
 gem "nokogiri", ">= 1.10.4"
 
 gem 'rmultimarkdown' # new wrapper over Fletcher Penney's MultiMarkDown 6 (MMD 6)

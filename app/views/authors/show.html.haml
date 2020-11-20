@@ -1,5 +1,7 @@
 .top-element.backend
   %h1= @author.name
+  %b= t(:sort_name)
+  = @author.sort_name
   - unless @author.period.nil? || @author.period.empty?
     %h2= t(:period)+': '+t(@author.period)
   %p
