@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_24_221136) do
+ActiveRecord::Schema.define(version: 2020_11_20_163210) do
 
   create_table "aboutnesses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -148,10 +148,12 @@ ActiveRecord::Schema.define(version: 2020_10_24_221136) do
     t.integer "source_def_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "sort_defhead"
     t.index ["defhead"], name: "index_dictionary_entries_on_defhead"
     t.index ["manifestation_id", "sequential_number"], name: "manif_and_seqno_index"
     t.index ["manifestation_id"], name: "index_dictionary_entries_on_manifestation_id"
     t.index ["sequential_number"], name: "index_dictionary_entries_on_sequential_number"
+    t.index ["sort_defhead"], name: "index_dictionary_entries_on_sort_defhead"
     t.index ["source_def_id"], name: "index_dictionary_entries_on_source_def_id"
   end
 
@@ -477,8 +479,11 @@ ActiveRecord::Schema.define(version: 2020_10_24_221136) do
     t.string "sidepic_content_type"
     t.bigint "sidepic_file_size"
     t.datetime "sidepic_updated_at"
+    t.string "sort_name"
     t.index ["impressions_count"], name: "index_people_on_impressions_count"
+    t.index ["name"], name: "index_people_on_name"
     t.index ["period"], name: "index_people_on_period"
+    t.index ["sort_name"], name: "index_people_on_sort_name"
   end
 
   create_table "periods", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
