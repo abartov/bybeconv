@@ -1777,7 +1777,7 @@ display: flex;
 }
 .nav-chapter-name{
 	white-space: nowrap; 
-  	width: 100px; 
+  	width: 120px; 
   overflow: hidden;
   text-overflow: ellipsis; 
 }
@@ -1971,7 +1971,7 @@ display: flex;
 }
 #actualtext p{
   font-size: 12.4pt;
-  line-height: 18pt;
+  line-height: 15pt;
   color: #242424;
   margin-bottom: 6px;
 }
@@ -4911,7 +4911,6 @@ break{
 }
 .BYD-rights{
 	padding-top: 4px;
-	margin-right: 8px;
 	margin-left: 8px;
 }
 .switch-label{
@@ -5020,6 +5019,7 @@ break{
 	align-items: center;
 	padding: 10px 15px;
 	flex-wrap: wrap;
+	justify-content: space-between;
 }
 .BYD-entry-top .headline-1-v02{
 	margin-bottom: 0;
@@ -5127,14 +5127,11 @@ break{
 .entry-page-top-info-card .headline-3-v02{
 	margin-bottom: 0;
 	padding-top: 2px;
-	margin-left: 20px;
+	margin-left: 12px;
 }
-.topNavEntryArea{
+.topNavEntryAreaDesktop{
 	display: flex;
     align-items: center;
-	padding-right: 130px;
-	margin-right: auto;
-	margin-left: auto;
 }
 .topNavEntryArea .headline-1-v02{
 	margin-left: 0;
@@ -5153,4 +5150,18 @@ break{
 	display: flex;
     align-items: center;
 	margin-bottom: 12px;
+}
+
+.topNavEntryAreaMobile{
+	display: none;
+    align-items: center;
+	padding-right: 130px;
+	margin-right: auto;
+	margin-left: auto;
+}
+.BDY-name .headline-3-v02{
+	display: inline;
+}
+.BDY-name .BYD-rights{
+	display: inline;
 }

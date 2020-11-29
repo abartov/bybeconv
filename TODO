@@ -10,6 +10,7 @@ EbyDict-Integration TODO
   - intro text template
 
 Older TODO
+- editing TOCs, add button "add all works not already linked".
 - add complementary query when date filter selected, counting excluded no-date results
 - implement showing of excluded no-date results
 - autocomplete for author names in filters

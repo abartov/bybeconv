@@ -698,6 +698,12 @@ display: none;	}
 .entry-page-top-info-card .BYD-rights{
 	display: none;
 }
+	.topNavEntryAreaDesktop{
+	display: none;
+}
+	.topNavEntryAreaMobile{
+	display: flex;
+}
 	
 }
 
