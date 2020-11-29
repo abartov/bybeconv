@@ -104,7 +104,7 @@
   padding-right: 15px;
 }
 .popup-x-v02 {
-  display: none;
+  display: block;
 }
 .popup-with-bottom-links{
 		height: calc(100% - 62px);
@@ -364,9 +364,6 @@
 .author-page-top-info-card{
   padding: 3px 15px 3px 10px;
 }
-#header-BYD .author-page-top-icons-mobile{
-	width: 200px;
-}
 .value-summary-card-v02 {
   margin-left: 0px;
 }
@@ -380,8 +377,9 @@
 .topNavEntry{
 	margin: 0 12px;
 }
-.BYD-entry-top .headline-1-v02{
-	margin-left: 4px;
+.texts-list-top-info-card .headline-3-v02{
+	min-width: calc(50% - 38px);
+	margin-left: 0;
 }
 	
 }

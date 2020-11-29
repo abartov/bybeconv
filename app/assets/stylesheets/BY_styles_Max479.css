@@ -459,13 +459,9 @@ padding-top: 6px;
 .BYD-entry-top .headline-1-v02{
 	font-size: 12pt;
 	line-height: 15pt;
-	max-width: 86px;
 }
 	.BYD-entry-top{
 		padding-top: 6px;
 		padding-bottom: 6px;
-	}
-	.topNavEntry{
-		margin: 0 6px;
 	}
 }

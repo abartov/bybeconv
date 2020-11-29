@@ -234,12 +234,16 @@ p {
 	line-height: 24px;
 	padding: 0px 8px 2px 7px;
 }
-	.BYD-entry-top .headline-1-v02{
-		max-width: 110px;
-	}
 	.name-under-btn{
 		width: 100%;
 	}
+.author-page-top-sort-mobile{
+	margin-right: 10px;
+}
+	.texts-list-top-info-card .headline-3-v02{
+	min-width: calc(50% - 28px);
+}
+	
 	
 }
 
