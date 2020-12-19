@@ -343,6 +343,9 @@ padding-left: 6px;
 	display: flex;
 	align-items: center;
  }
+.icons-group-v02 a{
+	margin-left: 8px;
+}
 
 .icons-seperator {
   height: 18px;
@@ -350,7 +353,8 @@ padding-left: 6px;
   background-color: #d9cdd5;
   display: inline;
   float: right; 
-  margin-left: 8px;}
+  margin-left: 8px;
+}
 .icons-separator-white{
   height: 18px;
   width: 1px;
@@ -363,9 +367,7 @@ padding-left: 6px;
 .by-icon-v02 {
   font-family: ben-yehuda;
   font-size: 18px; 
-	line-height: 18px;
-}
-.icon-in-group-v02 .by-icon-v02{
+  line-height: 18px;
 }
 
 
@@ -379,8 +381,7 @@ padding-left: 6px;
   font-size: 18px;
 }
 
-.icon-in-group-v02 {
-  margin-left: 8px;
+.icon-in-group-v02{
 	height: 18px;
   display: inline;
   float: right;
