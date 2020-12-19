@@ -32,7 +32,7 @@ task :make_ebooks => :environment do
       gc.text(0,0,"כתבי #{dir.author}".reverse.center(50))
       gc.draw(canvas)
       gc.pointsize(30)
-      gc.text(0,150,"פרי עמלם של מתנדבי פרויקט בן-יהודה".reverse.center(50))
+      gc.text(0,150,"פרי עמלם של מתנדבי פרויקט בן־יהודה".reverse.center(50))
       gc.pointsize(20)
       gc.text(0,250,Date.today.to_s+"מעודכן לתאריך: ".reverse.center(50))
       gc.draw(canvas)
@@ -43,7 +43,7 @@ task :make_ebooks => :environment do
       `rm -rf #{tmphtmldir}/*` # clean up any remains
       book.add_item('cover.jpg',covername).cover_image
       book.ordered {
-        buf = '<head><meta charset="UTF-8"><meta http-equiv="content-type" content="text/html; charset=UTF-8"></head><body dir="rtl" align="center"><h1>כתבי '+dir.author+'</h1><p/><p/><h3>פרי עמלם של מתנדבי</h3><p/><h2>פרויקט בן-יהודה</h2><p/><h3><a href="http://benyehuda.org/blog/%D7%A8%D7%95%D7%A6%D7%99%D7%9D-%D7%9C%D7%A2%D7%96%D7%95%D7%A8">(רוצים לעזור?)</a></h3><p/>מעודכן לתאריך: '+Date.today.to_s+'</body>'
+        buf = '<head><meta charset="UTF-8"><meta http-equiv="content-type" content="text/html; charset=UTF-8"></head><body dir="rtl" align="center"><h1>כתבי '+dir.author+'</h1><p/><p/><h3>פרי עמלם של מתנדבי</h3><p/><h2>פרויקט בן־יהודה</h2><p/><h3><a href="http://benyehuda.org/blog/%D7%A8%D7%95%D7%A6%D7%99%D7%9D-%D7%9C%D7%A2%D7%96%D7%95%D7%A8">(רוצים לעזור?)</a></h3><p/>מעודכן לתאריך: '+Date.today.to_s+'</body>'
         book.add_item('0_title.html').add_content(StringIO.new(buf))
         File.open(tmphtmldir + '/000_title.html','w') {|f| f.write(buf)} # write title page for PDF
         fileno = 1
@@ -78,7 +78,7 @@ task :make_ebooks => :environment do
     i += 1
   }
   dl_toc.sort!
-  File.open(AppConstants.base_dir+"/ebooks.html","w") {|f| f.write("<html><head><meta charset=\"UTF-8\"></head><body dir=\"rtl\" align=\"right\"><h1>פרויקט בן-יהודה</h1><h2>ספרים אלקטרוניים להורדה</h2><p/><p>בחרו יוצר להלן, ולחצו על תבנית הקובץ הרצויה. (עבור קינדל, בחרו MOBI)</p><p/><ol>"+dl_toc.join("\n")+"</ol><p/><p>בשאלות, כתבו אלינו: <a href=\"mailto:editor@benyehuda.org\">editor@benyehuda.org</a></p><hr><a href=\"/\">חזרה לדף הבית</a></body></html>")}
+  File.open(AppConstants.base_dir+"/ebooks.html","w") {|f| f.write("<html><head><meta charset=\"UTF-8\"></head><body dir=\"rtl\" align=\"right\"><h1>פרויקט בן־יהודה</h1><h2>ספרים אלקטרוניים להורדה</h2><p/><p>בחרו יוצר להלן, ולחצו על תבנית הקובץ הרצויה. (עבור קינדל, בחרו MOBI)</p><p/><ol>"+dl_toc.join("\n")+"</ol><p/><p>בשאלות, כתבו אלינו: <a href=\"mailto:editor@benyehuda.org\">editor@benyehuda.org</a></p><hr><a href=\"/\">חזרה לדף הבית</a></body></html>")}
 end
 
 private
