@@ -188,7 +188,7 @@ Bybeconv::Application.routes.draw do
 
   get "proof/list"
   get "proof/purge" => 'proof#purge', as: 'proof_purge'
-  get "proof/:id/resolve" => 'proof#resolve', as: 'proof_resolve'
+  match "proof/:id/resolve" => 'proof#resolve', as: 'proof_resolve', via: [:get, :post]
   resources :proof
 
   get "legacy_recommendation/list"

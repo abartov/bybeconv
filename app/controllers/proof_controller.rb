@@ -80,11 +80,12 @@ class ProofController < ApplicationController
         fix_text = t(:escalated)
       else
       @p.status = 'wontfix'
+      @explanation = params[:wontfix_explanation]
       unless @p.from.nil? or @p.from !~ /\w+@\w+\.\w+/
         if @p.manifestation_id.nil?
-          Notifications.proof_wontfix(@p, @p.about, nil).deliver
+          Notifications.proof_wontfix(@p, @p.about, nil, @explanation).deliver
         else
-          Notifications.proof_wontfix(@p, manifestation_read_path(@p.manifestation_id), @p.manifestation).deliver
+          Notifications.proof_wontfix(@p, manifestation_read_path(@p.manifestation_id), @p.manifestation, @explanation).deliver
         end
       end
       fix_text = 'כבר תקין (ונשלח דואל)'
