@@ -386,10 +386,6 @@ padding-left: 6px;
   display: inline;
   float: right;
 }
-.icon-in-group-v02:last-child{
-	margin-left: 0;
-}
-
 .by-icon-in-button-v02 {
   font-family: ben-yehuda;
   font-size: 18px; }
