@@ -33,7 +33,7 @@
           .by-card-header-v02.desktop-only
             %span.headline-1-v02= t(:create_new_list_or_anthology)
             %a.popup-x-v02.pointer.hide_new_anth -
-          .by-card-content-v02.card-with-button
+          .card-with-button
             - @new_anthology = Anthology.new
             = form_with(model: @new_anthology, url: anthologies_path(@new_anthology), data: {remote: true}, id: 'new_anthology') do |anth|
               .search-mobile-switch
