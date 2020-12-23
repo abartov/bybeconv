@@ -243,13 +243,13 @@
     .top-search-box-v02
       .top-search-select-v02
         .search-drop-down= t(:search_the_site)
-        %a.dropdown-arrow{href: '#'}
+      /  %a.dropdown-arrow{href: '#'}
       /  /%select{:style => "width:124px; height:34px; border: none; background-color: transparent;"}
       /  /  %option{:value => "חיפוש באתר"} חיפוש באתר
       /  /  / %option{:value => "חיפוש בדף"} חיפוש בדף
       /  /  / %option{:value => "חיפוש מתקדם"} חיפוש מתקדם
       .top-search-v02{ title: t(:search_tt)}
-        %input#q{:placeholder => t(:search_term)}
+        %input#q{:placeholder => t(:search_term), value: @searchterm} 
         %span.search-icon-v02.by-icon-top-v02 X
         /= f.label t(:tags)
         /= f.text_field 'tags'
@@ -338,9 +338,6 @@
         text = $('#q').val();
       }
       window.location.href = '#{search_results_internal_path}/?q='+encodeURIComponent(text);
-      // pop-up
-      //$('#resultsDlg').dialog('open');
-      //$('#results').load('#{search_results_internal_path}/?q='+encodeURIComponent($('#q').val()));
     });
     $('.contact_btn').click(function(e) {
       e.stopPropagation();
