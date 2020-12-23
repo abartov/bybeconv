@@ -33,7 +33,7 @@ module BybeUtils
     gc.text(0,0,title.reverse.center(50))
     gc.draw(canvas)
     gc.pointsize(30)
-    gc.text(0,150,"פרי עמלם של מתנדבי פרויקט בן-יהודה".reverse.center(50))
+    gc.text(0,150,"פרי עמלם של מתנדבי פרויקט בן־יהודה".reverse.center(50))
     gc.pointsize(20)
     gc.text(0,250,Date.today.to_s+"מעודכן לתאריך: ".reverse.center(50))
     gc.draw(canvas)
@@ -41,7 +41,7 @@ module BybeUtils
     canvas.write(cover_file.path)
     book.add_item('cover.jpg',cover_file.path).cover_image
     book.ordered {
-      buf = '<head><meta charset="UTF-8"><meta http-equiv="content-type" content="text/html; charset=UTF-8"></head><body dir="rtl" align="center"><h1>'+title+'</h1><p/><p/><h3>פרי עמלם של מתנדבי</h3><p/><h2>פרויקט בן-יהודה</h2><p/><h3><a href="https://benyehuda.org/page/volunteer">(רוצים לעזור?)</a></h3><p/>מעודכן לתאריך: '+Date.today.to_s+'</body>'
+      buf = '<head><meta charset="UTF-8"><meta http-equiv="content-type" content="text/html; charset=UTF-8"></head><body dir="rtl" align="center"><h1>'+title+'</h1><p/><p/><h3>פרי עמלם של מתנדבי</h3><p/><h2>פרויקט בן־יהודה</h2><p/><h3><a href="https://benyehuda.org/page/volunteer">(רוצים לעזור?)</a></h3><p/>מעודכן לתאריך: '+Date.today.to_s+'</body>'
       book.add_item('0_title.html').add_content(StringIO.new(buf))
       book.add_item('1_text.html').add_content(StringIO.new(html)).toc_text(title)
     }
@@ -396,13 +396,13 @@ module BybeUtils
     end
   end
   def apa_citation(manifestation)
-    return author_surname_and_initials(manifestation.author_string)+'. ('+citation_date(manifestation.expressions[0].date)+'). <strong>'+manifestation.title+'</strong>'+'. [גרסה אלקטרונית]. פרויקט בן-יהודה. נדלה בתאריך '+Date.today.to_s+". #{request.original_url}"
+    return author_surname_and_initials(manifestation.author_string)+'. ('+citation_date(manifestation.expressions[0].date)+'). <strong>'+manifestation.title+'</strong>'+'. [גרסה אלקטרונית]. פרויקט בן־יהודה. נדלה בתאריך '+Date.today.to_s+". #{request.original_url}"
   end
   def mla_citation(manifestation)
-    return author_surname_and_firstname(manifestation.author_string)+". \"#{manifestation.title}\". <u>פרויקט בן-יהודה</u>. #{citation_date(manifestation.expressions[0].date)}. #{Date.today.to_s}. &lt;#{request.original_url}&gt;"
+    return author_surname_and_firstname(manifestation.author_string)+". \"#{manifestation.title}\". <u>פרויקט בן־יהודה</u>. #{citation_date(manifestation.expressions[0].date)}. #{Date.today.to_s}. &lt;#{request.original_url}&gt;"
   end
   def asa_citation(manifestation)
-    return author_surname_and_firstname(manifestation.author_string)+'. '+citation_date(manifestation.expressions[0].date)+". \"#{manifestation.title}\". <strong>פרויקט בן-יהודה</strong>. אוחזר בתאריך #{Date.today.to_s}. (#{request.original_url})"
+    return author_surname_and_firstname(manifestation.author_string)+'. '+citation_date(manifestation.expressions[0].date)+". \"#{manifestation.title}\". <strong>פרויקט בן־יהודה</strong>. אוחזר בתאריך #{Date.today.to_s}. (#{request.original_url})"
   end
 
   def identify_genre_by_heading(text)

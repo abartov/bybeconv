@@ -39,10 +39,19 @@
     %b= link_to t(:resolve_as_fixed), proof_resolve_path(@p, :fixed => 'yes', :email => 'yes')
   %p{style:'margin-bottom:16px;font-size:16pt'}
     %b= link_to t(:resolve_as_fixed_no_email), proof_resolve_path(@p, :fixed => 'yes', :email => 'no')
+  %hr
   %p{style:'margin-bottom:16px;font-size:16pt'}
     %b= link_to t(:resolve_as_wontfix), proof_resolve_path(@p, :fixed => 'no', email: 'yes', escalate: 'no')
   %p{style:'margin-bottom:16px;font-size:16pt'}
     %b= link_to t(:resolve_as_wontfix_no_email), proof_resolve_path(@p, :fixed => 'no', email: 'no', escalate: 'no')
+  = form_tag proof_resolve_path(@p.id), id: 'wontfix_explain_form' do
+    %p#wontfix_but_explain{style:'margin-bottom:16px;font-size:16pt'}
+      %b.pointer.linkcolor= t(:resolve_as_wontfix_with_explanation)
+    = hidden_field_tag :email, 'yes'
+    = hidden_field_tag :fixed, 'no'
+    = hidden_field_tag :escalate, 'no'
+    = text_area_tag 'wontfix_explanation', '',{rows: 4, columns: 50}
+  %hr
   %p{style:'margin-bottom:16px;font-size:16pt'}
     %b= link_to t(:resolve_as_escalate), proof_resolve_path(@p, :fixed => 'no', escalate: 'yes')
   %p{style:'margin-bottom:16px;font-size:16pt'}
@@ -63,6 +72,9 @@
 
 :javascript
   $(document).ready(function() {
+    $('#wontfix_but_explain').click(function(){
+      $('#wontfix_explain_form').submit();
+    });
     $('#find_in_text').click(function(){
       $("div.read_html").mark($('#highlight').text().trim(), {
           "element": "span",

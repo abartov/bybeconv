@@ -18,6 +18,6 @@
             %span.headline-1-v02= t(:latest_uploads_for, author: @author.name)
             %a.popup-x-v02.linkcolor.pointer{'data-dismiss'=>'modal'} -
           %div
-            .by-card-content-v02.card-with-button
+            .card-with-button
               %p!= @pubs.map{|m| link_to(m.title_and_author_if_translation, manifestation_read_path(m.id))}.join('; ')
 

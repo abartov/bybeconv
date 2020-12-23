@@ -155,6 +155,17 @@
 
 .modal-content {height: 100%;}
 	
+	.modal-dialog .modal-content .container-fluid{
+		height: 100%;
+	}
+		.modal-dialog .modal-content .container-fluid form{
+		height: 100%;
+	}
+	
+	.modal-dialog .popup-x-v02{
+		display: none;
+	}
+	
 .by-popup-v02-share .popup-top{
 	padding-top: 10px;
 	padding-bottom: 10px;
@@ -288,9 +299,13 @@
 	margin: 0 auto 0 auto;
 }
 .modal-body{
-	width: calc(100% + 30px);
+	width: 100%;
+	height: 100%;
 	margin: 0;
 }
+	.modal-body .popup-x-v02{
+		display: none;
+	}	
 .author-page-top-icons-desktop{
 	display: none;
 }

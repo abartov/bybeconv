@@ -385,7 +385,9 @@ padding-left: 6px;
 	height: 18px;
   display: inline;
   float: right;
+	margin-right: 8px;
 }
+
 .by-icon-in-button-v02 {
   font-family: ben-yehuda;
   font-size: 18px; }

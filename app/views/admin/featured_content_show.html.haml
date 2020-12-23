@@ -10,7 +10,7 @@
     = @fc.title
   %p
     %b= t(:featured_content_body)+': '
-    != @fc.body
+    != MultiMarkdown.new(@fc.body).to_html.force_encoding('UTF-8')
   %p
     %b= t(:external_link)
     - unless @fc.external_link.nil? or @fc.external_link.empty?
