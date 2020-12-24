@@ -5,8 +5,7 @@
     .by-card-content-v02.card-with-bottom-links.card-with-button.flash-content
       - unless @featured_content.nil?
         .flash-text-v02
-          %p.headline-3-v02
-            %a{ href: ''}= @featured_content.title
+          %p.headline-3-v02= @featured_content.title
           - unless @featured_content.user.nil?
             %p
               = t(:by)+' '
