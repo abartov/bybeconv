@@ -161,6 +161,9 @@
 		.modal-dialog .modal-content .container-fluid form{
 		height: 100%;
 	}
+			.modal-dialog .modal-body{
+		height: 100%;
+	}
 	
 	.modal-dialog .popup-x-v02{
 		display: none;

@@ -343,9 +343,6 @@ padding-left: 6px;
 	display: flex;
 	align-items: center;
  }
-.icons-group-v02 a{
-	margin-left: 8px;
-}
 
 .icons-seperator {
   height: 18px;
@@ -354,6 +351,7 @@ padding-left: 6px;
   display: inline;
   float: right; 
   margin-left: 8px;
+  margin-right: 8px;
 }
 .icons-separator-white{
   height: 18px;
@@ -362,6 +360,7 @@ padding-left: 6px;
   display: inline;
   float: right;
   margin-left: 8px;
+  margin-right: 8px;
 }
 
 .by-icon-v02 {
