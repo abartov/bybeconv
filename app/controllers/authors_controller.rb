@@ -2,7 +2,7 @@ require 'diffy'
 include BybeUtils
 
 class AuthorsController < ApplicationController
-  before_action only: [:new, :create, :show, :edit, :list, :edit_toc, :update] do |c| c.require_editor('edit_people') end
+  before_action only: [:new, :create, :show, :edit, :list, :delete_photo, :edit_toc, :update] do |c| c.require_editor('edit_people') end
 
   def get_random_author
     @author = nil
@@ -20,6 +20,16 @@ class AuthorsController < ApplicationController
     render partial: 'shared/surprise_author', locals: {author: @author, initial: false, id_frag: params[:id_frag], passed_genre: params[:genre], passed_mode: params[:mode], side: params[:side]}
   end
 
+  def delete_photo
+    @author = Person.find(params[:id])
+    if @author.profile_image.file?
+      @author.profile_image.destroy
+      @author.save!
+      flash[:notice] = t(:deleted_successfully)
+    end
+    show
+    render action: :show
+  end
   def whatsnew_popup
     @author = Person.find(params[:id])
     @pubs = @author.works_since(1.month.ago, 1000)
@@ -34,7 +44,7 @@ class AuthorsController < ApplicationController
   def all
     @page_title = t(:all_authors)+' '+t(:project_ben_yehuda)
     @pagetype = :authors
-    @authors_abc = Person.order(:name).page(params[:page]) # get page X of all authors
+    @authors_abc = Person.order(:sort_name).page(params[:page]) # get page X of all authors
   end
 
   def create_toc
@@ -68,7 +78,7 @@ class AuthorsController < ApplicationController
       @rand_by_genre[g] = @pop_by_genre[g][:orig] if @rand_by_genre[g].empty? # workaround for genres with very few authors (like fables, in 2017)
       @surprise_by_genre[g] = @rand_by_genre[g].pop # make one of the random authors the surprise author
     end
-    @authors_abc = Person.order(:name).limit(100) # get page 1 of all authors
+    @authors_abc = Person.order(:sort_name).limit(100) # get page 1 of all authors
     @author_stats = {total: Person.cached_toc_count, pd: Person.cached_pd_count, translators: Person.cached_translators_count, translated: Person.cached_no_toc_count}
     @author_stats[:permission] = @author_stats[:total] - @author_stats[:pd]
     @authors_by_genre = count_authors_by_genre
@@ -165,7 +175,7 @@ class AuthorsController < ApplicationController
 
   def list
     @page_title = t(:authors)+' - '+t(:project_ben_yehuda)
-    def_order = 'tocs.status asc, metadata_approved asc, name asc'
+    def_order = 'tocs.status asc, metadata_approved asc, sort_name asc'
     if params[:q].nil? or params[:q].empty?
       @people = Person.joins("LEFT JOIN tocs on people.toc_id = tocs.id ").page(params[:page]).order(params[:order].nil? ? def_order : params[:order]) # TODO: pagination
     else
@@ -248,7 +258,7 @@ class AuthorsController < ApplicationController
     @translations.each_key {|k| @genres_present << k unless @works[k].size == 0 || @genres_present.include?(k)}
   end
   def person_params
-    params[:person].permit(:affiliation, :comment, :country, :name, :nli_id, :other_designation, :viaf_id, :public_domain, :profile_image, :birthdate, :deathdate, :wikidata_id, :wikipedia_url, :wikipedia_snippet, :blog_category_url, :profile_image, :metadata_approved, :gender, :bib_done, :period)
+    params[:person].permit(:affiliation, :comment, :country, :name, :nli_id, :other_designation, :viaf_id, :public_domain, :profile_image, :birthdate, :deathdate, :wikidata_id, :wikipedia_url, :wikipedia_snippet, :blog_category_url, :profile_image, :metadata_approved, :gender, :bib_done, :period, :sort_name)
   end
   def prep_for_print
     @author = Person.find(params[:id])

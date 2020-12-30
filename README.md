@@ -2,8 +2,9 @@ This codebase runs https://benyehuda.org -- the Project Ben-Yehuda digital libra
 
 I make little effort to make the code general, but if you're looking to do something similar (e.g. a digital library in Yiddish), maybe you can adapt some of my code.
 
-External dependencies:
-* Pandoc 1.17.3 or higher for generating ebooks and other formats
+External (i.e. hosting system) dependencies:
+* Pandoc 2.10 or higher for generating ebooks and other formats. (previous versions skip SmartTag tags in DOCX files, causing random letters to disappear in certain DOCXes with extraneous mark-up.
+* wkhtmltopdf for PDF generation
 * ElasticSearch for search
 ** https://github.com/synhershko/elasticsearch-analysis-hebrew for the Hebrew analyzer for ElasticSearch
 * YAZ and libyaz-dev for the 'zoom' gem for the bibliographic workshop

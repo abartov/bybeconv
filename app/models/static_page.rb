@@ -4,7 +4,8 @@ class StaticPage < ApplicationRecord
   has_paper_trail
   enum status: [:unpublished, :published]
   enum mode: [:plain_markdown, :cards, :cards_with_shortcuts]
-
+  has_many_attached :images
+  
   def english?
     buf = self.body[0..(self.body.length > 1000 ? 1000 : -1)]
     hebcount = 0

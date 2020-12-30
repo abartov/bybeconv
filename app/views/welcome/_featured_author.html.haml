@@ -4,8 +4,7 @@
       %p.headline-1-v02= t(:featured_author)
     .by-card-content-v02.card-with-bottom-links.card-with-button.flash-content
       - unless @featured_author.nil?
-        %p.headline-3-v02
-          %a{ href: ''}= @featured_author.title
+        %p.headline-3-v02= @featured_author.title
         - unless @featured_author.user.nil?
           %p
             = t(:by)+' '

@@ -10,6 +10,9 @@
     = f.label t(:name)
     = f.text_field :name
   .backend-field
+    = f.label t(:sort_name)
+    = f.text_field :sort_name
+  .backend-field
     = f.label t(:birthdate)
     = f.text_field :birthdate
   .backend-field
@@ -81,9 +84,6 @@
   .backend-field
     = f.label t(:upload_new_image)
     = f.file_field :profile_image
-  .backend-field
-    = f.label t(:upload_new_side_image)
-    = f.file_field :sidepic
   .backend-field
     = f.label t(:metadata_approved)
     = t(:yes)

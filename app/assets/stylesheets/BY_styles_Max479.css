@@ -456,5 +456,12 @@ padding-top: 6px;
 	.value-summary-card-v02{
 		padding-bottom: 30px;
 	}
-	
+.BYD-entry-top .headline-1-v02{
+	font-size: 12pt;
+	line-height: 15pt;
+}
+	.BYD-entry-top{
+		padding-top: 6px;
+		padding-bottom: 6px;
+	}
 }

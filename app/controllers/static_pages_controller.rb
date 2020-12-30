@@ -5,7 +5,7 @@ class StaticPagesController < ApplicationController
       flash[:error] = t(:no_such_item)
       redirect_to '/'
     else
-      @markdown = @p.prepare_markdown
+      @markdown = @p.prepare_markdown.gsub(/<figcaption>.*?<\/figcaption>/,'')
     end
   end
 end

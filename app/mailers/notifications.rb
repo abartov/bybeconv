@@ -22,10 +22,11 @@ class Notifications < ActionMailer::Base
   #
   #   en.notifications.proof_wontfix.subject
   #
-  def proof_wontfix(proof, url, m)
+  def proof_wontfix(proof, url, m, explanation)
     @greeting = t(:hello_anon)
     @proof = proof
     @url = url
+    @explanation = explanation
     unless m.nil?
       @url = 'https://benyehuda.org'+@url # TODO: un-hardcode
     end

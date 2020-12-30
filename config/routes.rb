@@ -118,10 +118,13 @@ Bybeconv::Application.routes.draw do
   match 'author/:id/edit_toc' => 'authors#edit_toc', as: 'authors_edit_toc', via: [:get, :post]
   match 'author/:id/create_toc' => 'authors#create_toc', as: 'authors_create_toc', via: [:get]
   match 'author/:id' => 'authors#toc', as: 'author_toc', via: [:get, :post]
+  get 'author/:id/delete_photo' => 'authors#delete_photo', as: 'delete_author_photo'
   get 'author/:id/whatsnew' => 'authors#whatsnew_popup', as: 'author_whatsnew_popup'
   get 'author/:id/latest' => 'authors#latest_popup', as: 'author_latest_popup'
   get '/page/:tag' => 'static_pages#view', as: 'static_pages_by_tag', via: [:get]
   get "read/:id" => 'manifestation#read', as: 'manifestation_read'
+  match 'dict/:id' => 'manifestation#dict', as: 'dict_browse', via: [:get, :post]
+  get 'dict/:id/:entry' => 'manifestation#dict_entry', as: 'dict_entry'
   get "read/:id/read" => 'manifestation#readmode', as: 'manifestation_readmode'
   get 'periods' => 'manifestation#periods', as: 'periods'
   match 'works', to: 'manifestation#browse', as: 'works', via: [:get, :post]
@@ -188,7 +191,7 @@ Bybeconv::Application.routes.draw do
 
   get "proof/list"
   get "proof/purge" => 'proof#purge', as: 'proof_purge'
-  get "proof/:id/resolve" => 'proof#resolve', as: 'proof_resolve'
+  match "proof/:id/resolve" => 'proof#resolve', as: 'proof_resolve', via: [:get, :post]
   resources :proof
 
   get "legacy_recommendation/list"

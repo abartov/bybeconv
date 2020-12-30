@@ -167,22 +167,94 @@ class ManifestationController < ApplicationController
     head :ok
   end
 
+  def dict
+    @m = Manifestation.joins(:expressions).includes(:expressions).find(params[:id])
+    if @m.nil?
+      head :not_found
+    else
+      if @m.expressions[0].genre != 'lexicon'
+        redirect_to action: 'read', id: @m.id
+      else
+        @page = params[:page] || 1
+        @page = 1 if ['0',''].include?(@page) # slider sets page to zero or '', awkwardly
+        @dict_list_mode = params[:dict_list_mode] || 'list'
+        @emit_filters = true if params[:load_filters] == 'true' || params[:emit_filters] == 'true'
+        @e = @m.expressions[0]
+        @header_partial = 'manifestation/dict_top'
+        @pagetype = :manifestation
+        @entity = @m
+        @all_headwords = DictionaryEntry.where(manifestation_id: @m.id)
+        unless params[:page].nil? || params[:page].empty?
+          params[:to_letter] = nil # if page was specified, forget the to_letter directive
+        end
+        oldpage = @page
+        nonnil_headwords = DictionaryEntry.select(:sequential_number, :sort_defhead).where("manifestation_id = #{@m.id} and defhead is not null").order(sequential_number: :asc) # use paging to calculate first/last in sequence, to allow pleasing lists of 100 items each, no matter how many skipped headwords there are
+        @total_headwords = nonnil_headwords.length
+        @headwords_page = nonnil_headwords.page(@page)
+        @total_pages = @headwords_page.total_pages
+        unless params[:to_letter].nil? || params[:to_letter].empty? # for A-Z navigation, we need to adjust the page
+          adjust_page_by_letter(nonnil_headwords, params[:to_letter], :sort_defhead)
+          @headwords_page = nonnil_headwords.page(@page) if oldpage != @page # re-get page X of manifestations if adjustment was made
+        end
+    
+        @total = @total_headwords # needed?
+        @filters = []
+        if @headwords_page.count == 0
+            first_seqno = 9
+            last_seqno = 1 # safely generate zero results in following query
+        else
+          first_seqno = @headwords_page.first.sequential_number
+          last_seqno = @headwords_page.last.sequential_number
+        end
+        @headwords = DictionaryEntry.where("manifestation_id = #{@m.id} and sequential_number >= #{first_seqno} and sequential_number <= #{last_seqno}").order(sequential_number: :asc)
+        @ab = prep_ab(@all_headwords, @headwords_page, :sort_defhead)
+      end
+    end
+  end
+
+  def dict_entry
+    @entry = DictionaryEntry.find(params[:entry])
+    @m = Manifestation.find(params[:id])
+    if @entry.nil? || @m.nil?
+      head :not_found
+    else
+      @header_partial = 'manifestation/dict_entry_top'
+      @pagetype = :manifestation
+      @entity = @m
+      @e = @m.expressions[0]
+      @prev_entries = @entry.get_prev_defs(5)
+      @next_entries = @entry.get_next_defs(5)
+      @prev_entry = @prev_entries[0] # may be nil if at beginning of dictionary
+      @next_entry = @next_entries[0] # may be nil if at [temporary] end of dictionary
+      @skipped_to_prev = @prev_entry.nil? ? 0 : @entry.sequential_number - @prev_entry.sequential_number - 1
+      @skipped_to_next = @next_entry.nil? ? 0 : @next_entry.sequential_number - @entry.sequential_number - 1
+      @incoming_links = @entry.incoming_links.includes(:incoming_links)
+      @outgoing_links = @entry.outgoing_links.includes(:outgoing_links)
+    end
+end
   def read
-    prep_for_read
-    unless @m.nil?
-      @proof = Proof.new
-      @new_recommendation = Recommendation.new
-      @tagging = Tagging.new
-      @tagging.manifestation_id = @m.id
-      @tagging.suggester = current_user
-      @taggings = @m.taggings
-      @recommendations = @m.recommendations
-      @links = @m.external_links.group_by {|l| l.linktype}
-      @random_work = Manifestation.where(id: Manifestation.pluck(:id).sample(5), status: Manifestation.statuses[:published])[0]
-      @header_partial = 'manifestation/work_top'
-      @works_about = Work.joins(:topics).where('aboutnesses.aboutable_id': @w.id) # TODO: accommodate works about *expressions* (e.g. an article about a *translation* of Homer's Iliad, not the Iliad)
-      @scrollspy_target = 'chapternav'
-      prep_user_content
+    @m = Manifestation.joins(:expressions).includes(:expressions).find(params[:id])
+    if @m.nil?
+      head :not_found
+    else
+      if @m.expressions[0].genre == 'lexicon'
+        redirect_to action: 'dict', id: @m.id
+      else
+        prep_for_read
+        @proof = Proof.new
+        @new_recommendation = Recommendation.new
+        @tagging = Tagging.new
+        @tagging.manifestation_id = @m.id
+        @tagging.suggester = current_user
+        @taggings = @m.taggings
+        @recommendations = @m.recommendations
+        @links = @m.external_links.group_by {|l| l.linktype}
+        @random_work = Manifestation.where(id: Manifestation.pluck(:id).sample(5), status: Manifestation.statuses[:published])[0]
+        @header_partial = 'manifestation/work_top'
+        @works_about = Work.joins(:topics).where('aboutnesses.aboutable_id': @w.id) # TODO: accommodate works about *expressions* (e.g. an article about a *translation* of Homer's Iliad, not the Iliad)
+        @scrollspy_target = 'chapternav'
+        prep_user_content
+      end
     end
   end
 
@@ -448,18 +520,27 @@ class ManifestationController < ApplicationController
 
   protected
 
-  def bfunc(page, l)
-    rec = @collection.order(:sort_title).page(page).first
+  def bfunc(coll, page, l, field) # binary-search function for ab_pagination
+    recs = coll.order(field).page(page) 
+    rec = recs.first
     return true if rec.nil?
-    c = rec.sort_title[0] || ''
+    c = nil
+    i = 0
+    reccount = recs.count
+    while c.nil? && i < reccount do
+      c = rec[field][0] unless rec[field].nil? # unready dictionary definitions will have their sort_defhead (and defhead) nil, so move on
+      i += 1
+      rec = recs[i]
+    end
+    c = '' if c.nil?
     return true if c == l || c > l # already too high a page
     return false
   end
 
-  def adjust_page_by_letter(l)
+  def adjust_page_by_letter(coll, l, field)
     # binary search to find page where letter begins
     ret = (1..@total_pages).bsearch{|page|
-      bfunc(page, l)
+      bfunc(coll, page, l, field)
     }
     unless ret.nil?
       ret = ret - 1 unless ret == 1
@@ -632,10 +713,10 @@ class ManifestationController < ApplicationController
 
       unless params[:to_letter].nil? || params[:to_letter].empty?
         @total_pages = @works.total_pages
-        adjust_page_by_letter(params[:to_letter])
+        adjust_page_by_letter(@collection, params[:to_letter], :sort_title)
         @works = @collection.page(@page) if oldpage != @page # re-get page X of manifestations if adjustment was made
       end
-      @ab = prep_ab(@collection, @works)
+      @ab = prep_ab(@collection, @works, :sort_title)
     else
       @works = @collection.page(@page) # get page X of manifestations
     end
@@ -665,7 +746,7 @@ class ManifestationController < ApplicationController
 
   def prep_for_browse
     @page = params[:page] || 1
-    @page = 1 if @page == '0' # slider sets page to zero, awkwardly
+    @page = 1 if ['0',''].include?(@page) # slider sets page to zero, awkwardly
     prep_collection # filtering and sorting is done here
     @total = @collection.count
     @total_pages = @works.total_pages
@@ -676,10 +757,10 @@ class ManifestationController < ApplicationController
     @header_partial = 'manifestation/browse_top'
   end
 
-  def prep_ab(whole, subset)
+  def prep_ab(whole, subset, fieldname)
     ret = []
-    abc_present = whole.pluck(:sort_title).map{|t| t.nil? || t.empty? ? '' : t[0] }.uniq.sort
-    abc_active = subset.pluck(:sort_title).map{|t| t.nil? || t.empty? ? '' : t[0] }.uniq.sort
+    abc_present = whole.pluck(fieldname).map{|t| t.nil? || t.empty? ? '' : t[0] }.uniq.sort
+    abc_active = subset.pluck(fieldname).map{|t| t.nil? || t.empty? ? '' : t[0] }.uniq.sort
     ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ז', 'ח', 'ט', 'י', 'כ', 'ל', 'מ', 'נ', 'ס', 'ע', 'פ', 'צ', 'ק', 'ר', 'ש', 'ת'].each{|l|
       status = ''
       unless abc_present.include?(l)

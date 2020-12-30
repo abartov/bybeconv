@@ -28,7 +28,7 @@ gem 'aws-sdk-s3' # for Active Storage
 gem 'paperclip' # , '~>5.2' # for cloud files like author images 6.x requires aws >3.x
 gem 'impressionist' # for pageview stats
 gem 'jbuilder', '~> 2.0' # for JSON APIs
-
+gem 'sqlite3' # for dictionary imports
 # gem 'rollbar' # error reporting. Airbrake replacement.
 
 gem 'jquery-rails'
@@ -48,7 +48,7 @@ gem 'execjs'
 gem 'therubyracer'
 gem 'thin'
 gem 'htmlentities'
-gem 'kaminari', '1.1.1' # pagination. Kaminari 1.2.1 seems to have a bug
+gem 'kaminari', '1.1.1' # pagination. Kaminari 1.2.1 seems to have a bug - https://github.com/kaminari/kaminari/issues/1033
 gem "nokogiri", ">= 1.10.4"
 
 gem 'rmultimarkdown' # new wrapper over Fletcher Penney's MultiMarkDown 6 (MMD 6)

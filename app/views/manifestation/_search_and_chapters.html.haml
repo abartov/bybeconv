@@ -1,5 +1,5 @@
 .col-sm-6
-  - if @m.chapters? and @m.long?
+  - if @m.chapters?
     %div{style:'position:relative'}
       = select_tag 'chapters', safe_options_for_select(@chapters, @selected_chapter), 'class' => 'chapter-name dropdown', style: 'background-color:#eeeced;margin-top: 0;width: 100%'
       %div{style:'line-height:1rem;display:inline'}

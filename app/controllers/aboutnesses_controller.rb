@@ -3,7 +3,6 @@ class AboutnessesController < ApplicationController
 
   def create
     @ab = Aboutness.new(work_id: params['work_id'], user_id: params['suggested_by'])
-    #byebug
     case params['aboutness_type']
     when 'Person'
       @ab.aboutable_type = 'Person'

@@ -1,23 +1,31 @@
-#content-area.container-fluid.top-element
+#content-area.container-fluid.mobileSearch
   #content.container-fluid
     .mobile-top-area
       .row{:style => "padding:15px;margin: 0"}
         .col-4{:style => "padding: 0;"}
-          %button.btn-small-outline-v02{:href => "javascript:history.go(-1)"}
+          %button.btn-small-outline-v02{'data-dismiss'=>'modal'}
             .btn-text-v02
               %span.right-arrow 2
               %span= t(:back)
         .col-4{:style => "padding: 0;"}
           .headline-2-v02{:style => "text-align: center;margin: 0; padding-top: 3px;"}= t(:search)
         .col-4
+      .header-separator
       .by-card-content-v02
         /.search-mobile-switch
-        /  .search-mobile-option.active חיפוש באתר
-        /  .search-mobile-option חיפוש בעמוד
-        /  .search-mobile-option.disabled{:style => "border-left:0"} חיפוש מתקדם
+        /  %button.search-mobile-option.active{:href => "#"} חיפוש באתר
+        /  %button.search-mobile-option{:href => "#"} חיפוש בעמוד
+        /  %button.search-mobile-option.disabled{:href => "#", :style => "border-left:0"} חיפוש מתקדם
         .mobile-search-area
           %input.mobile-search-box#q2{type: 'search', :placeholder => "יצירות, יוצרים, מילות מפתח"}/
-          %span.search-icon-v02.pointer.by-icon-top-v02 X
+          %span.search-icon-v02.pointer.linkcolor X
+        /.last-searches-area
+        /  .headline-3-v02 חיפושים אחרונים:
+        /  %ul
+        /    %li רוח חדש לוין
+        /    %li אהרן מגד
+        /    %li אביגדור המאירי
+        /    %li בלבנת הספיר
 
 :javascript
   $(document).ready(function() {
