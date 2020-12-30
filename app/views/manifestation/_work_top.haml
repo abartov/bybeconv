@@ -45,7 +45,8 @@
                 - else
                   %span.linkcolor.pointer.by-icon-v02.icon-byheart-empty
               .icon-in-group-v02.notyet{'title' => "#{t(:bookmark_tt)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }}
-                %span.linkcolor.pointer.by-icon-v02.bookmark-status b
+                %span.linkcolor.pointer.by-icon-v02.bookmark-status
+                  / b
               - unless current_user
                 .icon-in-group-v02.anthologies_button.must_login
                   %span.linkcolor.pointer.by-icon-v02 D
