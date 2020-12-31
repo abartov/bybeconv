@@ -214,6 +214,8 @@
         $('html, body').animate({
           scrollTop: $('.bookmark').offset().top - $('#header').height() - 30
         }, 800);
+      } else if(jumpto == "") {
+        $('#bookmarkBehaviorDlg').modal('show');
       }
     }
   });

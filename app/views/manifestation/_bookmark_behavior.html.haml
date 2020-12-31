@@ -1,0 +1,37 @@
+.by-dual-popup.narrow-popup
+  .by-card-header-v02
+    %span.headline-1-v02= t(:bookmark)
+    %a.popup-x-v02.linkcolor.pointer{'data-dismiss'=>'modal'} -
+  .by-card-content-v02
+    %p= t(:bookmark_found)
+    .edit-bookmark-buttons
+      %button.by-button-v02.by-button-secondary-v02.goto_bookmark
+        %div
+          %span.by-icon-v02.iconNearText-v02> d
+          = t(:go_to_bookmark)
+      %button.by-button-v02.by-button-secondary-v02.stay_at_top
+        %div= t(:stay_at_top)
+    %p
+      %label#hide_next_times
+        %input{:name => "bookmark_remember_this", :type => "checkbox"}/
+        != t(:remember_this_choice)
+        /%div{:style => "margin-right: 24px;margin-top: -20px;"} (ניתנת לשינוי מהגדרות המשתמש)
+      %br/
+:javascript
+  $(document).ready(function(){
+    $('.stay_at_top').click(function(){
+      if($("input[name=bookmark_remember_this]").prop('checked')) {
+        $.ajax({url: "#{url_for(controller: :user, action: :set_pref)}", method: 'POST', data: {id: #{current_user.id}, pref: 'jump_to_bookmarks', value: 'false'}});
+      }
+      $('#bookmarkBehaviorDlg').modal('hide');
+    });
+    $('.goto_bookmark').click(function(){
+      if($("input[name=bookmark_remember_this]").prop('checked')) {
+        $.ajax({url: "#{url_for(controller: :user, action: :set_pref)}", method: 'POST', data: {id: #{current_user.id}, pref: 'jump_to_bookmarks', value: 'true'}});
+      }
+      $('#bookmarkBehaviorDlg').modal('hide');
+      $('html, body').animate({
+        scrollTop: $('.bookmark').offset().top - $('#header').height() - 30
+      }, 800);
+    });
+  });
