@@ -806,6 +806,7 @@ end
       unless b.empty?
         @bookmark = b.first.bookmark_p
       end
+      @jump_to_bookmarks = current_user.get_pref('jump_to_bookmarks')
     else
       @bookmark = 0
     end

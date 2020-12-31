@@ -168,6 +168,7 @@
               csspath = $(elem).getPath();
               shortcsspath = '#actualtext '+csspath.substring(csspath.lastIndexOf('div')+3, csspath.length);
               $(elem).addClass('bookmark');
+              $('.top-left-icons-group').addClass('bookmark-added');
               url = "#{raw url_for(action: :set_bookmark)}";
               $.ajax({url: url, method: 'POST', data: {id: #{@m.id}, bookmark_path: shortcsspath}});
             }
@@ -203,11 +204,16 @@
     // ensure smooth scrollTo behavior
     $('.ch_anch').css('padding-top', $('header').height());
     $('.ch_anch').css('margin-top', -$('header').height());
-
+    jumpto = "#{@jump_to_bookmarks}";
     if(bookmark != "") {
       elem = $(bookmark);
       if(elem != null) {
         elem.addClass('bookmark');
+      }
+      if(jumpto == "true") {
+        $('html, body').animate({
+          scrollTop: $('.bookmark').offset().top - $('#header').height() - 30
+        }, 800);
       }
     }
   });
