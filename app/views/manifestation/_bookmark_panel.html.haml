@@ -1,17 +1,42 @@
-%main
-  #content-area.container-fluid
-    #content.container-fluid
-      .by-dual-popup.narrow-popup
-        .by-card-header-v02
-          %span.headline-1-v02= t(:bookmark)
-          %a.popup-x-v02.linkcolor.pointer{'data-dismiss'=>'modal'} -
-        .by-card-content-v02
-          .edit-bookmark-buttons
-            %button.by-button-v02.by-button-secondary-v02.remove_bookmark
-              %div
-                %span.by-icon-v02.iconNearText-v02> c
-                = t(:remove_bookmark)
+.by-dual-popup.narrow-popup
+  .by-card-header-v02
+    %span.headline-1-v02= t(:bookmark)
+    %a.popup-x-v02.linkcolor.pointer{'data-dismiss'=>'modal'} -
+  .by-card-content-v02
+    .edit-bookmark-buttons
+      %button.by-button-v02.by-button-secondary-v02.goto_bookmark
+        %div
+          %span.by-icon-v02.iconNearText-v02> d
+          = t(:go_to_bookmark)
+      %button.by-button-v02.by-button-secondary-v02.update_bookmark
+        %div
+          %span.by-icon-v02.iconNearText-v02> e
+          = t(:update_bookmark)
+      %button.by-button-v02.by-button-secondary-v02.remove_bookmark
+        %div
+          %span.by-icon-v02.iconNearText-v02> c
+          = t(:remove_bookmark)
 
 :javascript
   $(document).ready(function(){
+    $('.update_bookmark').click(function(e){
+      if(saved_elem != null) {
+        csspath = $(saved_elem).getPath();
+        shortcsspath = '#actualtext '+csspath.substring(csspath.lastIndexOf('div')+3, csspath.length);
+        set_bookmark($(saved_elem));
+        url = "#{raw url_for(action: :set_bookmark)}";
+        $('#bookmarkPanelDlg').modal('hide');
+        $.ajax({url: url, method: 'POST', data: {id: #{@m.id}, bookmark_path: shortcsspath}});
+      }
+    });
+    $('.goto_bookmark').click(function(){
+      if($("input[name=bookmark_remember_this]").prop('checked')) {
+        $.ajax({url: "#{url_for(controller: :user, action: :set_pref)}", method: 'POST', data: {id: #{current_user.id}, pref: 'jump_to_bookmarks', value: 'true'}});
+      }
+      $('#bookmarkBehaviorDlg').modal('hide');
+      $('#bookmarkPanelDlg').modal('hide');
+      $('html, body').animate({
+        scrollTop: $('.bookmark').offset().top - $('#header').height() - 30
+      }, 800);
+    });
   });

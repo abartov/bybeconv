@@ -23,15 +23,7 @@
       if($("input[name=bookmark_remember_this]").prop('checked')) {
         $.ajax({url: "#{url_for(controller: :user, action: :set_pref)}", method: 'POST', data: {id: #{current_user.id}, pref: 'jump_to_bookmarks', value: 'false'}});
       }
+      $('#bookmarkPanelDlg').modal('hide');
       $('#bookmarkBehaviorDlg').modal('hide');
-    });
-    $('.goto_bookmark').click(function(){
-      if($("input[name=bookmark_remember_this]").prop('checked')) {
-        $.ajax({url: "#{url_for(controller: :user, action: :set_pref)}", method: 'POST', data: {id: #{current_user.id}, pref: 'jump_to_bookmarks', value: 'true'}});
-      }
-      $('#bookmarkBehaviorDlg').modal('hide');
-      $('html, body').animate({
-        scrollTop: $('.bookmark').offset().top - $('#header').height() - 30
-      }, 800);
     });
   });

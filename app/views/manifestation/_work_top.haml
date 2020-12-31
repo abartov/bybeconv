@@ -116,7 +116,10 @@
 .bookmark_notification
 
 :javascript
+  var saved_elem;
   function set_bookmark(elem) {
+    $('p.bookmark').removeClass('bookmark');
+    $('.bookmark_marker').remove();
     elem.addClass('bookmark');
     elem.prepend("<span class=\"bookmark_marker\">&#x43</span>");
     $('.top-left-icons-group').addClass('bookmark-added');
@@ -162,9 +165,17 @@
     $('.bookmark_button').click(function(e){
       if(!#{current_user.nil?}) {
         if( $('p.bookmark').length > 0 ) {
-          $('html, body').animate({
-            scrollTop: $('.bookmark').offset().top - $('#header').height() - 30
-          }, 800);
+          y = $(window).scrollTop()+$('#header').height()+5;
+          var elements = $("#actualtext > p");
+          var el;
+          for (var i=0; i<elements.length; i++) {
+            el = $(elements[i]);
+            if (el.offset().top >= y && el.is(':visible')){
+              saved_elem = el;
+              break;
+            }
+          }
+          $('#bookmarkPanelDlg').modal('show');
         } else {
           alert("#{t(:bookmark_mode_begin)}");
           $('body').css('cursor', 'crosshair');
