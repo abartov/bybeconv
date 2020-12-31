@@ -421,6 +421,8 @@ he:
   bookmark_found: "הותרת סימניה ביצירה הזו. מה לעשות בה?"
   go_to_bookmark: לדלג לסימניה
   stay_at_top: להישאר בראש היצירה
+  remove_bookmark: הסרת הסימניה
+  bookmark_removed: הסימניה הוסרה
   remember_this_choice: בחירת התנהגות זו באופן קבוע <BR>(ניתן לשנות בהגדרות באזור האישי)
   cancel: ביטול
   close: סגירה

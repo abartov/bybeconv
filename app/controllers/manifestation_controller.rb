@@ -61,6 +61,15 @@ class ManifestationController < ApplicationController
     browse
   end
 
+  def remove_bookmark
+    if current_user
+      @m = Manifestation.find(params[:id])
+      unless @m.nil?
+        Bookmark.where(manifestation: @m, user: current_user).first.destroy
+      end
+    end
+    head :ok
+  end
   def set_bookmark
     if current_user
       @m = Manifestation.find(params[:id])

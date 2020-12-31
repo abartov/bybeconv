@@ -116,6 +116,14 @@
 .bookmark_notification
 
 :javascript
+  function set_bookmark(elem) {
+    elem.addClass('bookmark');
+    elem.prepend("<span class=\"bookmark_marker\">&#x43</span>");
+    $('.top-left-icons-group').addClass('bookmark-added');
+    $('.bookmark_marker').click(function(){
+      $('#bookmarkDeleteDlg').modal('show');
+    });
+  };
   $(document).ready(function(){
     var bookmark = "#{raw @bookmark}";
     $(window).scroll(function() {
@@ -150,6 +158,7 @@
       else
         $('#workmenu-more').css('display', 'block');
     });
+
     $('.bookmark_button').click(function(e){
       if(!#{current_user.nil?}) {
         if( $('p.bookmark').length > 0 ) {
@@ -167,8 +176,7 @@
             if(elem != null) {
               csspath = $(elem).getPath();
               shortcsspath = '#actualtext '+csspath.substring(csspath.lastIndexOf('div')+3, csspath.length);
-              $(elem).addClass('bookmark');
-              $('.top-left-icons-group').addClass('bookmark-added');
+              set_bookmark($(elem));
               url = "#{raw url_for(action: :set_bookmark)}";
               $.ajax({url: url, method: 'POST', data: {id: #{@m.id}, bookmark_path: shortcsspath}});
             }
@@ -205,10 +213,10 @@
     $('.ch_anch').css('padding-top', $('header').height());
     $('.ch_anch').css('margin-top', -$('header').height());
     jumpto = "#{@jump_to_bookmarks}";
-    if(bookmark != "") {
+    if(bookmark != "" && bookmark != "0") {
       elem = $(bookmark);
       if(elem != null) {
-        elem.addClass('bookmark');
+        set_bookmark(elem);
       }
       if(jumpto == "true") {
         $('html, body').animate({

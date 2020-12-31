@@ -1,0 +1,17 @@
+%main
+  #content-area.container-fluid
+    #content.container-fluid
+      .by-dual-popup.narrow-popup
+        .by-card-header-v02
+          %span.headline-1-v02= t(:bookmark)
+          %a.popup-x-v02.linkcolor.pointer{'data-dismiss'=>'modal'} -
+        .by-card-content-v02
+          .edit-bookmark-buttons
+            %button.by-button-v02.by-button-secondary-v02.remove_bookmark
+              %div
+                %span.by-icon-v02.iconNearText-v02> c
+                = t(:remove_bookmark)
+
+:javascript
+  $(document).ready(function(){
+  });

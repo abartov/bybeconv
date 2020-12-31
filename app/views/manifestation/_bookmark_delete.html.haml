@@ -1,0 +1,30 @@
+%main
+  #content-area.container-fluid
+    #content.container-fluid
+      .by-dual-popup.narrow-popup
+        .by-card-header-v02
+          %span.headline-1-v02= t(:bookmark)
+          %a.popup-x-v02.linkcolor.pointer{'data-dismiss'=>'modal'} -
+        .by-card-content-v02
+          .edit-bookmark-buttons
+            %button.by-button-v02.by-button-secondary-v02.remove_bookmark
+              %div
+                %span.by-icon-v02.iconNearText-v02> c
+                = t(:remove_bookmark)
+
+:javascript
+  $(document).ready(function(){
+    $('.remove_bookmark').click(function(){
+      $.ajax({url: "#{url_for(action: :remove_bookmark)}", method: 'POST', data: {id: #{@m.id}}});
+      $('.bookmark_marker').remove();
+      $('#bookmarkDeleteDlg').modal('hide');
+      $('.top-left-icons-group').removeClass('bookmark-added');
+      $('p.bookmark').removeClass('bookmark');
+      $('.bookmark_notification').show();
+      $('.bookmark_notification').css('position','fixed');
+      $('.bookmark_notification').css('top', '50%');
+      $('.bookmark_notification').css('left', '50%');
+      $('.bookmark_notification').css('background-color', '#430230' );
+      $('.bookmark_notification').html('<h2 style="color:white;">#{t(:bookmark_removed)}</h2>').fadeOut(3000);
+    });
+  });
