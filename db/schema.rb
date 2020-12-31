@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_20_163210) do
+ActiveRecord::Schema.define(version: 2020_12_31_015107) do
 
   create_table "aboutnesses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -99,7 +99,7 @@ ActiveRecord::Schema.define(version: 2020_11_20_163210) do
   create_table "bookmarks", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "manifestation_id"
     t.integer "user_id"
-    t.integer "bookmark_p"
+    t.string "bookmark_p"
     t.string "context", limit: 250
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

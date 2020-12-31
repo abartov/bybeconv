@@ -71,7 +71,7 @@ class ManifestationController < ApplicationController
         else
           @b = @b.first
         end
-        @b.bookmark_p = params[:bookmark_p]
+        @b.bookmark_p = params[:bookmark_path]
         @b.save
         respond_to do |format|
           format.js

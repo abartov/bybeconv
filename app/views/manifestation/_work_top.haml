@@ -38,7 +38,7 @@
             %a.white{:href => url_for(action: :readmode, id: @m.id)}
               .btn-small-outline-v02.btn-text-v02.reading-mode-btn-v02{'title' => "#{t(:readmode_tt)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }}
                 = t(:reading_mode)
-            .top-left-icons-group
+            %div{class: @bookmark != 0 ? 'top-left-icons-group bookmark-added' : 'top-left-icons-group'}
               .icon-in-group-v02.like.must_login{'title' => "#{t(:work_liked_tt)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }}
                 - if @liked
                   %span.linkcolor.pointer.by-icon-v02.icon-byheart-full
@@ -117,6 +117,7 @@
 
 :javascript
   $(document).ready(function(){
+    var bookmark = "#{raw @bookmark}";
     $(window).scroll(function() {
       var scroll = $(window).scrollTop();
       if(scroll <= 200) {
@@ -164,10 +165,11 @@
             y = e.pageY - $(window).scrollTop();
             elem = document.elementFromPoint(e.pageX, y);
             if(elem != null) {
-              bookmark_p = $(elem).index();
+              csspath = $(elem).getPath();
+              shortcsspath = '#actualtext '+csspath.substring(csspath.lastIndexOf('div')+3, csspath.length);
               $(elem).addClass('bookmark');
-              url = "#{raw url_for(action: :set_bookmark, id: @m.id, bookmark_p: 99999)}";
-              $.ajax({url: url.replace('99999',bookmark_p.toString()) });
+              url = "#{raw url_for(action: :set_bookmark)}";
+              $.ajax({url: url, method: 'POST', data: {id: #{@m.id}, bookmark_path: shortcsspath}});
             }
             $('#actualtext').off('click'); // disable handler
           });
@@ -201,7 +203,11 @@
     // ensure smooth scrollTo behavior
     $('.ch_anch').css('padding-top', $('header').height());
     $('.ch_anch').css('margin-top', -$('header').height());
-    if(#{@bookmark}) {
-      $($('#actualtext').children()[#{@bookmark}]).addClass('bookmark');
+
+    if(bookmark != "") {
+      elem = $(bookmark);
+      if(elem != null) {
+        elem.addClass('bookmark');
+      }
     }
   });
