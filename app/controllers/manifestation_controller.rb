@@ -887,7 +887,7 @@ end
       } # annotate headings in reverse order, to avoid offsetting the next heading
       tmphash.keys.reverse.map{|k| @chapters << [k[4..-1], tmphash[k]]}
       @selected_chapter = tmphash.keys.last
-      @html = MultiMarkdown.new(lines.join('')).to_html.force_encoding('UTF-8').gsub(/<figcaption>.*?<\/figcaption>/,'') # remove MMD's automatic figcaptions
+      @html = MultiMarkdown.new(lines.join('')).to_html.force_encoding('UTF-8').gsub(/<figcaption>.*?<\/figcaption>/,'').gsub('<table>','<div style="overflow-x:auto;"><table>').gsub('</table>','</table></div>') # remove MMD's automatic figcaptions and make tables scroll to avoid breaking narrow mobile devices
       @tabclass = set_tab('works')
       @entity = @m
       @pagetype = :manifestation
