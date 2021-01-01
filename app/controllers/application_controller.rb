@@ -435,6 +435,7 @@ end
       next unless genre[1].class == Array # skip the :latest key
       worksbuf = I18n.t(genre[0])+': '
       genre[1].each do |m|
+        first = true
         title = m.expressions[0].title
         if m.expressions[0].translation
           per = m.expressions[0].works[0].persons[0]
@@ -442,15 +443,20 @@ end
             title += " #{I18n.t(:by)} #{per.name}"
           end
         end
-        worksbuf += "<a href=\"/read/#{m.id}\">#{title}</a>; "
-        # worksbuf += (helpers.link_to(title, manifestation_read_path(id: m.id)) + '; ')
-        if worksbuf.length > 160
-          worksbuf += '...  ' # signify more is available
-          break
+        if first
+          first = false
+        else
+          worksbuf += '; '
         end
+        worksbuf += "<a href=\"/read/#{m.id}\">#{title}</a>"
+        # worksbuf += (helpers.link_to(title, manifestation_read_path(id: m.id)) + '; ')
+        #if worksbuf.length > 160
+        #  worksbuf += '...  ' # signify more is available
+        #  break
+        #end
         worksbuf += "   "
       end
-      ret += worksbuf[0..-3] # chomp off either the blanks after the ellipsis or the '; ' after the last item
+      ret += worksbuf # chomp off either the blanks after the ellipsis or the '; ' after the last item
     end
     return ret
   end
