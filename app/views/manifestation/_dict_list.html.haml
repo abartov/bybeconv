@@ -1,0 +1,116 @@
+%div#spinnerdiv{style: 'display: none; top: 50%; left: 50%;'}
+  #floatingCirclesG
+    #frotateG_01.f_circleG
+    #frotateG_02.f_circleG
+    #frotateG_03.f_circleG
+    #frotateG_04.f_circleG
+    #frotateG_05.f_circleG
+    #frotateG_06.f_circleG
+    #frotateG_07.f_circleG
+    #frotateG_08.f_circleG
+
+.by-card-header-v02
+  .headline-2-v02{:style => "display: inline"}
+    = @total_headwords 
+    = 'ערכים'
+.by-card-content-v02
+  - unless @total_pages <= 1
+    = render partial: 'dict_slide_pagination'
+    = render partial: 'ab_pagination', locals: {filter_element: 'dict_filters'}
+  %div
+    .switch-label תצוגה:
+    .BYD-switch
+      %button.search-mobile-option#dictmode_list= t(:dict_list)
+      %button.search-mobile-option#dictmode_snippets= t(:dict_snippets)
+  .mainlist
+    = hidden_field_tag(:hurl, request.original_url)
+    %ol
+      - skipped = 0
+      - @headwords.each do |hw|
+        - if hw.defhead.nil?
+          - skipped += 1
+        - else
+          - if skipped > 0
+            %p= t(:skipped_x_entries, x: skipped)
+            - skipped = 0
+          %li
+            - if @dict_list_mode == 'list'
+              %a{href: dict_entry_path(id: @m.id, entry: hw.id)}= hw.defhead
+            - else
+              - cardid = 'headword_'+hw.id.to_s
+              - card_collapsible = cardid+'_coll'
+              .value-summary-card-v02{id: cardid}
+                %a.deflink{href: dict_entry_path(id: @m.id, entry: hw.id)}= hw.defhead
+                %a.value-summary-top-icon.last-icon.notyet{:href => "#"} U
+                %a.value-summary-top-icon.notyet{:href => "#"} !
+                .summary-text{id: card_collapsible}
+                  != hw.deftext
+                .summary-read-more{style: 'display: none'}
+                  %span.linkcolor.pointer= t(:read_more)
+              
+  - unless @total_pages <= 1
+    = render partial: 'dict_slide_pagination'
+    = render partial: 'ab_pagination', locals: {filter_element: 'dict_filters'}
+:javascript
+  $(document).ready(function() {
+    // Instantiate a slider
+    var mySlider = $("input.slider").bootstrapSlider({
+      tooltip: 'always',
+    });
+    var url = $('#hurl').val().replace(/page=\d+/, '');
+    if(url.indexOf('?') == -1) {
+      url = url + '?'
+    }
+    $("input.slider").on('slideStop', function(slideEvt){
+      slideEvt.stopImmediatePropagation();
+      $('#page_tag').val(slideEvt.value.toString());
+      startModal('spinnerdiv');
+      $('#dict_filters').submit();
+    });
+    if("#{@dict_list_mode}" == 'list') {
+      $('#dictmode_list').addClass('active');
+    } else {
+      $('#dictmode_snippets').addClass('active');
+    }
+    $('#dictmode_list').click(function(e){
+      e.preventDefault();
+      $('#dictmode_snippets').removeClass('active');
+      $('#dictmode_list').addClass('active');
+      $('#preserve_page').val('1');
+      $('#page_tag').val($('#cur_page_tag').val());
+      $('#dict_list_mode').val('list');
+      startModal('spinnerdiv');
+      $('#dict_filters').submit();
+    });
+    $('#dictmode_snippets').click(function(e){
+      e.preventDefault();
+      $('#dictmode_list').removeClass('active');
+      $('#dictmode_snippets').addClass('active');
+      $('#dict_list_mode').val('snippets');
+      $('#preserve_page').val('1')
+      $('#page_tag').val($('#cur_page_tag').val());
+      startModal('spinnerdiv');
+      $('#dict_filters').submit();
+    });
+    $('.summary-text').each(function(){
+      try {
+        if(is_clamped($(this).attr('id'))) {
+          $(this).parent().find('.summary-read-more').first().css('display','unset');
+        }
+      } catch (e) {}
+    });
+    $('.summary-read-more').click(function(){
+      st = $(this).parent().find('.summary-text');
+      if(st.length == 0) { // already expanded!
+        $(this).parent().find('.deflink')[0].click();
+      }
+      else {
+        st.first().removeClass('summary-text').addClass('summary-text-more-lines');
+        if(!is_clamped(st.first().attr('id'))) {
+          $(this).toggle();
+        } else {
+          $(this).find('span').first().text('#{t(:to_the_full_entry)}');
+        }
+      }
+    });
+  });

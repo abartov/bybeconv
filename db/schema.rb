@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_20_163210) do
+ActiveRecord::Schema.define(version: 2020_12_31_015107) do
 
   create_table "aboutnesses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -94,6 +94,17 @@ ActiveRecord::Schema.define(version: 2020_11_20_163210) do
     t.integer "status"
     t.string "institution"
     t.string "item_pattern", limit: 2048
+  end
+
+  create_table "bookmarks", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.integer "manifestation_id"
+    t.integer "user_id"
+    t.string "bookmark_p"
+    t.string "context", limit: 250
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["manifestation_id"], name: "index_bookmarks_on_manifestation_id"
+    t.index ["user_id"], name: "index_bookmarks_on_user_id"
   end
 
   create_table "creations", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|
@@ -694,6 +705,12 @@ ActiveRecord::Schema.define(version: 2020_11_20_163210) do
   add_foreign_key "anthologies", "users"
   add_foreign_key "anthology_texts", "anthologies"
   add_foreign_key "anthology_texts", "manifestations"
+  add_foreign_key "bookmarks", "manifestations"
+  add_foreign_key "bookmarks", "users"
+  add_foreign_key "dictionary_aliases", "dictionary_entries"
+  add_foreign_key "dictionary_entries", "manifestations"
+  add_foreign_key "dictionary_links", "dictionary_entries", column: "from_entry_id"
+  add_foreign_key "dictionary_links", "dictionary_entries", column: "to_entry_id"
   add_foreign_key "featured_author_features", "featured_authors"
   add_foreign_key "featured_authors", "people"
   add_foreign_key "featured_authors", "users"

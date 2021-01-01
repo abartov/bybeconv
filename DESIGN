@@ -18,3 +18,8 @@ heterogeneous feed design thoughts:
 
 rendering the newsfeed should be uniform -- given a desc-sorted list of NewsItems, render each according to type.
 
+Dictionary entries design thoughts:
+* it is assumed the digitized dictionary comes sorted alphabetically.  Entries record a sequence number and will always be shown and navigated across in that order.
+** if a dictionary is not alphabetically sorted, a sequencing of it can still be retained, but the alphabetical navigation bar won't make sense for that dictionary, and would have to be suppressed.
+
+

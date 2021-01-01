@@ -1,10 +1,22 @@
+EbyDict-Integration TODO
+
+- implement definition view
+- cronjob for exports
+- cronjob for imports (staging for now, eventually production)
+- link stats header to EbyDict entity (staging, prod) [eventually, link instead to genre query for lexicon, but only after figuring out what to do with non-ebydict lexica]
+- add lexicon_metadata table
+  - total_headwords
+  - display mode (html-markdown; dictionary-entries)
+  - intro text template
+
+Older TODO
+- editing TOCs, add button "add all works not already linked".
 - add complementary query when date filter selected, counting excluded no-date results
 - implement showing of excluded no-date results
 - autocomplete for author names in filters
 - multi-select for author names in filters (screen 0843)
 - multi-select in results list (screen 0850, 0980)
 - mark items already in anthology in results list ?
-- add selected items to anthology
 - implement bookmarks (see notes in code!) (place bookmark on a select P, or the very previous one if H?, or just the first P if no prev P.  Figure out the P's ordinal under #maintext and store that as the bookmark.)
 - generalize user persistency over actual User records versus cookie-based semi-ephemeral saved settings
 
@@ -123,15 +135,6 @@ Conversion system
 + add way to bless markdown by human reviewer
 -- blessing should, whether automatically or as an extra human-chosen step, also post the blessed markdown (with path info etc.) to the CONTENT system, so it can be rendered from it INSTEAD of the old HTML file (preserving the *.html URL)
 - research and possibly integrate good editor -- or just spiff up ContentEditable?
-
-Content system
---------------
-- model relationships between the entities (at least sequence and containment)
-- given blessed text:
--- extract metadata
--- create Manifestation
--- prompt for creating Expression and Work
--- optionally link to external IDs for e.g. translated work, Wikipedia/Wikidata/VIAF for author if not already known
 
 Proof and Recommendation feature
 --------------------------------

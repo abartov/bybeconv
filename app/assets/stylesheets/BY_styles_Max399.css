@@ -211,7 +211,6 @@ body {
 }
 	.right-arrow {
   padding-left:3px;
-  padding-top: 1px;
   font-size: 9px;
 }
 	.right-side-icon{
@@ -453,5 +452,21 @@ body {
 }
 .author-sort-area{
 }
+.topNavEntry{
+	margin: 0 6px;
+}
+.reading-mode .col{
+	padding-right: 0;
+	padding-left: 0;
+}
+
+.reading-mode .by-card-v02{
+	margin-top: 0;
+}
+	.reading-mode .rm-control-panel-mobile{
+		margin: 0;
+		width: calc(100% - 30px);
+		top: 15px;
+	}
 	
 }

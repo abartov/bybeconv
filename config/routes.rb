@@ -123,6 +123,8 @@ Bybeconv::Application.routes.draw do
   get 'author/:id/latest' => 'authors#latest_popup', as: 'author_latest_popup'
   get '/page/:tag' => 'static_pages#view', as: 'static_pages_by_tag', via: [:get]
   get "read/:id" => 'manifestation#read', as: 'manifestation_read'
+  match 'dict/:id' => 'manifestation#dict', as: 'dict_browse', via: [:get, :post]
+  get 'dict/:id/:entry' => 'manifestation#dict_entry', as: 'dict_entry'
   get "read/:id/read" => 'manifestation#readmode', as: 'manifestation_readmode'
   get 'periods' => 'manifestation#periods', as: 'periods'
   match 'works', to: 'manifestation#browse', as: 'works', via: [:get, :post]
@@ -136,6 +138,8 @@ Bybeconv::Application.routes.draw do
   match "print/:id" => 'manifestation#print', as: 'manifestation_print', via: [:get, :post]
   get "manifestation/show/:id" => 'manifestation#show', as: 'manifestation_show'
   get "manifestation/render_html"
+  post 'manifestation/set_bookmark'
+  post 'manifestation/remove_bookmark'
   get "manifestation/edit/:id" => 'manifestation#edit', as: 'manifestation_edit'
   get "manifestation/remove_image/:id" => 'manifestation#remove_image'
   get "manifestation/edit_metadata/:id" => 'manifestation#edit_metadata', as: 'manifestation_edit_metadata'

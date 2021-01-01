@@ -9,6 +9,7 @@ class User < ApplicationRecord
 
   has_many :recommendations
   has_many :anthologies
+  has_many :bookmarks
   # no apparent need to be able to retrieve all recommendations a particular (admin) user has *resolved*.  If one arises, use a separate association on the resolved_by foreign key
 
   # editor bits
@@ -20,6 +21,16 @@ class User < ApplicationRecord
     property :volunteer, default: 'false' # boolean  (another option - :protected => true)
     property :activated, default: 'false' # boolean
     property :suppress_anthology_intro, default: 'false'
+    property :jump_to_bookmarks
+  end
+
+  def get_pref(name)
+    return self.preferences.try(name)
+  end
+
+  def set_pref(name, value)
+    self.preferences.set(name => value)
+    self.preferences.save!
   end
 
   def admin?

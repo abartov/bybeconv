@@ -72,7 +72,27 @@ input[type=checkbox].multiselect_checkbox {
 	color: #fff;
 	background-color: #660248;
 }
-
+/* temporary workaround by Asaf for dict_top metadata */
+.texts-list-top-info-card {
+  flex-wrap: wrap;
+}
+.footnote_ref {
+  vertical-align: super;
+  font-size: 75%;
+}
+.footnote_num {
+  vertical-align: super;
+  font-size: 75%;
+}
+.BYD-entry-top {
+  flex-wrap: wrap;
+}
+.source {
+  font-weight: bolder;
+  /* vertical-align: sub; */
+  font-size: 70%;
+}
+/* end dict_top workarounds */
 .navdisabled {
   color: #d9cdd5;
   cursor: default;
@@ -89,6 +109,7 @@ input[type=checkbox].multiselect_checkbox {
 
 .dashboard-link {
   /*  position:absolute; display:inline; top:11rem; left: 10rem;*/
+    line-height: unset;
     float:left;
     margin-top: -1rem;
   }
@@ -171,11 +192,6 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
 .modal-content { border: 0;}
 .modal-header{border:0;}
 .modal-footer{border:0;}
-.by-popup-v02{
-  margin-top:0;
-  overflow-y: scroll;
-  width: 100% !important;
-}
 
 .a-b-pagination-frame .in-range-disabled{
   background-color: #d9cdd5;
@@ -387,4 +403,17 @@ button.chapterbutton {
 }
 input[type="search"]::-webkit-search-cancel-button {
   margin-left: 30px;
+}
+
+.bookmark::before{
+content: unset;
+}
+.bookmark_marker{
+	font-family: ben-yehuda;
+	font-size: 18px; 
+	line-height: 18px;
+	float: left;
+	position: relative;
+  left: -26px;
+  cursor: pointer;
 }

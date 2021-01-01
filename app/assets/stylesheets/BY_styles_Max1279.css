@@ -43,6 +43,9 @@
 .select-all-with-buttons .headline-4-v02{
 	line-height: 22px;
 }
+.author-whats-new-content .new-card-right-v02{
+		display: none;
+	}
 }
 
 @media only screen and (max-width: 1160px) {

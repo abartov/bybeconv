@@ -38,14 +38,15 @@
             %a.white{:href => url_for(action: :readmode, id: @m.id)}
               .btn-small-outline-v02.btn-text-v02.reading-mode-btn-v02{'title' => "#{t(:readmode_tt)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }}
                 = t(:reading_mode)
-            .top-left-icons-group
+            %div{class: @bookmark != 0 ? 'top-left-icons-group bookmark-added' : 'top-left-icons-group'}
               .icon-in-group-v02.like.must_login{'title' => "#{t(:work_liked_tt)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }}
                 - if @liked
                   %span.linkcolor.pointer.by-icon-v02.icon-byheart-full
                 - else
                   %span.linkcolor.pointer.by-icon-v02.icon-byheart-empty
-              .icon-in-group-v02.notyet{'title' => "#{t(:bookmark_tt)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }}
-                %span.linkcolor.pointer.by-icon-v02 b
+              .icon-in-group-v02.bookmark_button.must_login{'title' => "#{t(:bookmark_tt)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }}
+                %span.linkcolor.pointer.by-icon-v02.bookmark-status
+                  / b
               - unless current_user
                 .icon-in-group-v02.anthologies_button.must_login
                   %span.linkcolor.pointer.by-icon-v02 D
@@ -74,8 +75,8 @@
                   %span.linkcolor.pointer.by-icon-v02.icon-byheart-full
                 - else
                   %span.linkcolor.pointer.by-icon-v02.icon-byheart-empty
-              .icon-in-group-v02
-                %span.by-icon-v02.linkcolor.notyet b
+              .icon-in-group-v02.bookmark_button.pointer.must_login
+                %span.by-icon-v02.linkcolor.bookmark-status
               #moreMobile.by-dropdown-v02
                 %span.linkcolor#work-more
                   %span.by-icon-top-v02 Y
@@ -112,10 +113,22 @@
               = t(:found_br_mistake_html)
             .error-found-icon g
       .col-lg-4{style:'height:min-content'}
-
+.bookmark_notification
 
 :javascript
+  var saved_elem;
+  function set_bookmark(elem) {
+    $('p.bookmark').removeClass('bookmark');
+    $('.bookmark_marker').remove();
+    elem.addClass('bookmark');
+    elem.prepend("<span class=\"bookmark_marker\">&#x43</span>");
+    $('.top-left-icons-group').addClass('bookmark-added');
+    $('.bookmark_marker').click(function(){
+      $('#bookmarkDeleteDlg').modal('show');
+    });
+  };
   $(document).ready(function(){
+    var bookmark = "#{raw @bookmark}";
     $(window).scroll(function() {
       var scroll = $(window).scrollTop();
       if(scroll <= 200) {
@@ -149,6 +162,41 @@
         $('#workmenu-more').css('display', 'block');
     });
 
+    $('.bookmark_button').click(function(e){
+      if(!#{current_user.nil?}) {
+        if( $('p.bookmark').length > 0 ) {
+          y = $(window).scrollTop()+$('#header').height()+5;
+          var elements = $("#actualtext > p");
+          var el;
+          for (var i=0; i<elements.length; i++) {
+            el = $(elements[i]);
+            if (el.offset().top >= y && el.is(':visible')){
+              saved_elem = el;
+              break;
+            }
+          }
+          $('#bookmarkPanelDlg').modal('show');
+        } else {
+          alert("#{t(:bookmark_mode_begin)}");
+          $('body').css('cursor', 'crosshair');
+          $('#actualtext').click(function(e){
+            $('body').css('cursor', 'default');
+            // set bookmark
+            y = e.pageY - $(window).scrollTop();
+            elem = document.elementFromPoint(e.pageX, y);
+            if(elem != null) {
+              csspath = $(elem).getPath();
+              shortcsspath = '#actualtext '+csspath.substring(csspath.lastIndexOf('div')+3, csspath.length);
+              set_bookmark($(elem));
+              url = "#{raw url_for(action: :set_bookmark)}";
+              $.ajax({url: url, method: 'POST', data: {id: #{@m.id}, bookmark_path: shortcsspath}});
+            }
+            $('#actualtext').off('click'); // disable handler
+          });
+        }
+      }
+    });
+
     offsetTop = #{ @readmode ? 40 : 250 },
     $('.like').click(function(){ // toggle like/unlike
       if("#{current_user}" != '') {
@@ -175,4 +223,18 @@
     // ensure smooth scrollTo behavior
     $('.ch_anch').css('padding-top', $('header').height());
     $('.ch_anch').css('margin-top', -$('header').height());
+    jumpto = "#{@jump_to_bookmarks}";
+    if(bookmark != "" && bookmark != "0") {
+      elem = $(bookmark);
+      if(elem != null) {
+        set_bookmark(elem);
+      }
+      if(jumpto == "true") {
+        $('html, body').animate({
+          scrollTop: $('.bookmark').offset().top - $('#header').height() - 30
+        }, 800);
+      } else if(jumpto == "") {
+        $('#bookmarkBehaviorDlg').modal('show');
+      }
+    }
   });

@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  manifestation: one
+  sequential_number: 1
+  defhead: MyString
+  deftext: MyText
+
+two:
+  manifestation: two
+  sequential_number: 1
+  defhead: MyString
+  deftext: MyText

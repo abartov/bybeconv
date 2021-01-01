@@ -27,3 +27,19 @@
   = render partial: 'authors_select', locals: {authors: @authors, list: @authors_list}
 - if current_user
   = render partial: 'shared/anth_stuff'
+
+:javascript
+  $(document).ready(function(){
+    $(window).on('popstate', function(event) {
+      if($('#works_filters').length > 0) {
+        state = event.originalEvent.state;
+        if(state != null) {
+          $('#works_filters').deserialize(state);
+          startModal('spinnerdiv');
+          $('#works_filters').submit();
+        }
+      } else {
+        
+      }
+    });
+  });

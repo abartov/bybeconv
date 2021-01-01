@@ -168,6 +168,7 @@
     = hidden_field_tag(:to_letter, '', id: 'toletter_tag')
 :javascript
   $(document).ready(function() {
+    window.history.pushState($('#works_filters').serialize(), null, '/works');
     $('#sort_by_dd').val("#{@sort}");
     if("#{@search_type}" == 'authorname') {
       $('#opt_authorname').addClass('active');
@@ -214,6 +215,7 @@
     });
     function submit_filters() {
       startModal('spinnerdiv');
+      window.history.replaceState($('#works_filters').serialize(), null, '/works');
       $('#works_filters').submit();
     }
     $('.reset').click(function(){
@@ -237,6 +239,7 @@
       $('#emit_filters').val('true');
       $('#page_tag').val('1'); // reset pagination
       $('#toletter_tag').val(''); // reset pagination
+      window.history.replaceState($('#works_filters').serialize(), null, '/works');
       $('#works_filters').submit();
     });
     $('#lang_xlat').change(function(){

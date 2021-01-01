@@ -61,7 +61,7 @@
               <div><p><%= raw sitenotice %></p>
               </div>
             </div>
-            <span class="popup-x-v02 pointer" id="dismiss_sitenotice">-</a>
+            <span class="popup-x-v02 pointer" id="dismiss_sitenotice">-</span>
           </div>
         <% end %>
         <div class="row">
@@ -83,7 +83,7 @@
                   <div class="stat-small-v02"><%= t(:authors) %></div>
                 </div>
                 <div class="col-5 statistics-v02">
-                  <div class="stat-big-v02"><%= link_to(get_total_headwords.to_s, 'https://benyehuda.org/~asaf/full_dict.html')%></div>
+                  <div class="stat-big-v02"><%= link_to(get_total_headwords.to_s, '/read/24412')%></div>
                   <div class="stat-small-v02"><%= t(:dictionary_entries) %></div>
                 </div>
               </div>
@@ -103,7 +103,7 @@
                     <p style="padding-left: 1.6rem"><%= t(:welcome) %> <strong><%= current_user.name %></strong>!</p>
                     <div class="dropdown-arrow pointer" style="top: 0.1rem; left: 0"><i class="fa chevron"></i></div>
                   </div>
-                  <div id="user_collapsible" class="collapse"><a id="sign_in" href="#">כניסה לאזור האישי</a><br/>
+                  <div id="user_collapsible" class="collapse"><span id="sign_in" class="linkcolor pointer notyet">כניסה לאזור האישי</a><br/>
                     <%= link_to t(:sign_out), signout_path, id: "sign_out" %>
                   </div>
                   <% if current_user.editor? %>
@@ -199,11 +199,13 @@
           }
       });
     <% end %>
-    $('.notyet').click(function(){
+    $('.notyet').click(function(e){
+      e.stopPropagation();
       alert('<%= t(:not_implemented_yet) %>');
     });
-    $('.must_login').click(function(){
+    $('.must_login').click(function(e){
       <% unless current_user %>
+        e.stopPropagation();
         alert('<%= t(:must_login_for_this) %>');
       <% end %>
     });

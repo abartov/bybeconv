@@ -6,6 +6,6 @@
   = t(:proof_wontfix_m, {:url => @url, :title => @m.title_and_authors})
 
 - unless @explanation.nil?
-  = t(:additional_wontfix_explanation, explanation: @explanation)
+  != t(:additional_wontfix_explanation, explanation: @explanation)
 
 != raw t(:email_footer_html)
