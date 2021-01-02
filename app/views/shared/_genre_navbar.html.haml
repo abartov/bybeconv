@@ -1,7 +1,7 @@
 - genres = get_genres.push('translations')
 - first = true
 %nav.navbar#genrenav
-  %ul.navbar-nav.flex-column.by-card-v02#genre-nav{'aria-orientation' => 'vertical'}
+  %ul.nav.navbar-nav.flex-column.by-card-v02#genre-nav{'aria-orientation' => 'vertical'}
     - genres.each do |g|
       - if genres_present.include?(g)
         %li.nav-item
@@ -24,17 +24,17 @@
     });
     //$('.nav-item').first().addClass('current-menu-item');
     // ensure smooth scrollTo behavior
-    $('.g_anch').css('top', -($('header').height()+15));
-    // $('.g_anch').css('padding-top', $('header').height());
-    // $('.g_anch').css('margin-top', -$('header').height());
-    /*
+    //$('.g_anch').css('top', -($('#header').height()+15));
+   //$('.g_anch').css('padding-top', $('#header').height());
+    //$('.g_anch').css('margin-top', -$('#header').height());
+    
     $('.nav-link').click(function(e) {
       e.preventDefault();
       //$('.nav-item').removeClass('current-menu-item');
       //$(this).parent().addClass('current-menu-item');
       anchor = $(this).attr('id').replace('_button','_g');
       $('html, body').animate({
-        scrollTop: $('a[name='+anchor+']').offset().top - $('header').height() - 65
+        scrollTop: $('a[name='+anchor+']').offset().top - $('#header').height() -65
       }, 800);
-    }); */
+    }); 
   });
