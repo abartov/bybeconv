@@ -246,7 +246,7 @@ end
     if @m.nil?
       head :not_found
     else
-      if @m.expressions[0].genre == 'lexicon'
+      if @m.expressions[0].genre == 'lexicon' && DictionaryEntry.where(manifestation_id: @m.id).count > 0
         redirect_to action: 'dict', id: @m.id
       else
         prep_for_read
