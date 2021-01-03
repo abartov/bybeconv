@@ -43,10 +43,6 @@ input[type=checkbox].multiselect_checkbox {
 	width:44px;
 }
 
-#browse_mainlist ol{
-	padding-right: 44px; /* temporary override, until Ruth removes the 0 padding from General */
-}
-
 .author-name-v02 {
   color:white;
 }
@@ -205,8 +201,11 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
   display:none;
 }
 .g_anch { /* for anchors that can be jumped to despite the fixed top bar */
+  /*
   position:absolute;
   top:-200px;
+  */
+  height: 2px;
 }
 #chapternav{ width: min-content;}
 #chapter-nav{

@@ -59,7 +59,7 @@
               / add recommendation
               - unless current_user.nil?
                 .bottom-right-link{:style => "padding-top: 6px"}
-                  .linkcolor.pointer#expand-add-rec
+                  .linkcolor.pointer.notyet#expand-add-rec
                     %span.right-side-icon &amp;
                     %span{:style => "font-weight: bold"}= t(:add_recommendation)
                 #add-rec-form
@@ -88,7 +88,7 @@
                 = render partial: 'shared/taggings', locals: {taggings: @taggings}
               - unless current_user.nil?
                 #add-tag.bottom-right-link{:style => "padding-top: 6px"}
-                  .linkcolor.pointer#expand-add-tag
+                  .linkcolor.pointer.notyet#expand-add-tag
                     %span.right-side-icon &amp;
                     %span{:style => "font-weight: bold"}= t(:suggest_new_tag)
 
@@ -175,12 +175,16 @@
       }
     });
     $('#expand-add-tag').click(function() {
+      /*
       $('#expand-add-tag').css('display','none');
       $('#add-tag-form').css('display','block');
+      */
     });
     $('#expand-add-rec').click(function() {
+      /*
       $('#expand-add-rec').css('display','none');
       $('#add-rec-form').css('display','block');
+      */
     });
     $('.jumpch').click(function(e) {
       e.preventDefault();

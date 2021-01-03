@@ -251,7 +251,7 @@
     });
     var should_check_xlat = $('#xlat_langs input').length > 0;
     $('#xlat_langs input').each(function(li){
-      if($(this).prop('checked') == false) {
+      if($(this).prop('checked') == false && !$(this).parent().text().match(/\(0\)/)) {
         should_check_xlat = false;
       }
     });

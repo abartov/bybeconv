@@ -19,5 +19,5 @@
             %a.popup-x-v02.linkcolor.pointer{'data-dismiss'=>'modal'} -
           %div
             .card-with-button
-              %p!= @pubs.map{|m| link_to(m.title_and_author_if_translation, manifestation_read_path(m.id))}.join('; ')
-
+              .by-card-content-v02
+                %p!= @pubs

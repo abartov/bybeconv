@@ -135,7 +135,7 @@
         $('.nav-link').first().addClass('active');
       }
     });
-    $('.nav-link').click(function(e) { /*
+    /*$('.nav-link').click(function(e) { 
       e.preventDefault();
       $(this).tooltip('hide');
       anchor = $(this).attr('data-asaf');
@@ -146,8 +146,8 @@
       $('html, body').animate({ // re-adjust, after the header height changed
         scrollTop: $('a[name='+anchor+']').offset().top - $('header').height() - 45
       }, 0, function(){ $('.work-content').focus(); });
-      */
-    });
+      
+    });*/
     $('#chapter_dropdown').click(function(){
       if($('#chapter_dropdown_content').css('display') == 'block')
         $('#chapter_dropdown_content').css('display', 'none');
@@ -221,8 +221,8 @@
       $('#shareDlg').modal('show');
     });
     // ensure smooth scrollTo behavior
-    $('.ch_anch').css('padding-top', $('header').height());
-    $('.ch_anch').css('margin-top', -$('header').height());
+    $('.ch_anch').css('padding-top', $('#header').height());
+    $('.ch_anch').css('margin-top', -$('#header').height());
     jumpto = "#{@jump_to_bookmarks}";
     if(bookmark != "" && bookmark != "0") {
       elem = $(bookmark);

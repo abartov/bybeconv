@@ -32,7 +32,14 @@ class AuthorsController < ApplicationController
   end
   def whatsnew_popup
     @author = Person.find(params[:id])
-    @pubs = @author.works_since(1.month.ago, 1000)
+    pubs = @author.works_since(1.month.ago, 1000)
+    @pubs = {}
+    pubs.each {|m|
+      e = m.expressions[0]
+      @pubs[e.genre] = [] if @pubs[e.genre].nil?
+      @pubs[e.genre] << m
+    }
+    @pubs = textify_new_pubs(@pubs)
     render partial: 'whatsnew_popup'
   end
   def latest_popup
