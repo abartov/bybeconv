@@ -433,7 +433,7 @@ end
     ret = ''
     author.each do |genre|
       next unless genre[1].class == Array # skip the :latest key
-      worksbuf = I18n.t(genre[0])+': '
+      worksbuf = "<strong>#{I18n.t(genre[0])}:</strong> "
       first = true
       genre[1].each do |m|
         title = m.expressions[0].title
@@ -450,7 +450,7 @@ end
         end
         worksbuf += "<a href=\"/read/#{m.id}\">#{title}</a>"
       end
-      ret += worksbuf
+      ret += worksbuf+'<br>'
     end
     return ret
   end
