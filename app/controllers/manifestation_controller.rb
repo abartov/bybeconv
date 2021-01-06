@@ -184,39 +184,44 @@ class ManifestationController < ApplicationController
       if @m.expressions[0].genre != 'lexicon'
         redirect_to action: 'read', id: @m.id
       else
-        @page = params[:page] || 1
-        @page = 1 if ['0',''].include?(@page) # slider sets page to zero or '', awkwardly
-        @dict_list_mode = params[:dict_list_mode] || 'list'
-        @emit_filters = true if params[:load_filters] == 'true' || params[:emit_filters] == 'true'
-        @e = @m.expressions[0]
-        @header_partial = 'manifestation/dict_top'
-        @pagetype = :manifestation
-        @entity = @m
-        @all_headwords = DictionaryEntry.where(manifestation_id: @m.id)
-        unless params[:page].nil? || params[:page].empty?
-          params[:to_letter] = nil # if page was specified, forget the to_letter directive
-        end
-        oldpage = @page
-        nonnil_headwords = DictionaryEntry.select(:sequential_number, :sort_defhead).where("manifestation_id = #{@m.id} and defhead is not null").order(sequential_number: :asc) # use paging to calculate first/last in sequence, to allow pleasing lists of 100 items each, no matter how many skipped headwords there are
-        @total_headwords = nonnil_headwords.length
-        @headwords_page = nonnil_headwords.page(@page)
-        @total_pages = @headwords_page.total_pages
-        unless params[:to_letter].nil? || params[:to_letter].empty? # for A-Z navigation, we need to adjust the page
-          adjust_page_by_letter(nonnil_headwords, params[:to_letter], :sort_defhead)
-          @headwords_page = nonnil_headwords.page(@page) if oldpage != @page # re-get page X of manifestations if adjustment was made
-        end
-    
-        @total = @total_headwords # needed?
-        @filters = []
-        if @headwords_page.count == 0
-            first_seqno = 9
-            last_seqno = 1 # safely generate zero results in following query
+        unless @m.published?
+          flash[:notice] = t(:work_not_available)
+          redirect_to '/'
         else
-          first_seqno = @headwords_page.first.sequential_number
-          last_seqno = @headwords_page.last.sequential_number
+          @page = params[:page] || 1
+          @page = 1 if ['0',''].include?(@page) # slider sets page to zero or '', awkwardly
+          @dict_list_mode = params[:dict_list_mode] || 'list'
+          @emit_filters = true if params[:load_filters] == 'true' || params[:emit_filters] == 'true'
+          @e = @m.expressions[0]
+          @header_partial = 'manifestation/dict_top'
+          @pagetype = :manifestation
+          @entity = @m
+          @all_headwords = DictionaryEntry.where(manifestation_id: @m.id)
+          unless params[:page].nil? || params[:page].empty?
+            params[:to_letter] = nil # if page was specified, forget the to_letter directive
+          end
+          oldpage = @page
+          nonnil_headwords = DictionaryEntry.select(:sequential_number, :sort_defhead).where("manifestation_id = #{@m.id} and defhead is not null").order(sequential_number: :asc) # use paging to calculate first/last in sequence, to allow pleasing lists of 100 items each, no matter how many skipped headwords there are
+          @total_headwords = nonnil_headwords.length
+          @headwords_page = nonnil_headwords.page(@page)
+          @total_pages = @headwords_page.total_pages
+          unless params[:to_letter].nil? || params[:to_letter].empty? # for A-Z navigation, we need to adjust the page
+            adjust_page_by_letter(nonnil_headwords, params[:to_letter], :sort_defhead)
+            @headwords_page = nonnil_headwords.page(@page) if oldpage != @page # re-get page X of manifestations if adjustment was made
+          end
+      
+          @total = @total_headwords # needed?
+          @filters = []
+          if @headwords_page.count == 0
+              first_seqno = 9
+              last_seqno = 1 # safely generate zero results in following query
+          else
+            first_seqno = @headwords_page.first.sequential_number
+            last_seqno = @headwords_page.last.sequential_number
+          end
+          @headwords = DictionaryEntry.where("manifestation_id = #{@m.id} and sequential_number >= #{first_seqno} and sequential_number <= #{last_seqno}").order(sequential_number: :asc)
+          @ab = prep_ab(@all_headwords, @headwords_page, :sort_defhead)
         end
-        @headwords = DictionaryEntry.where("manifestation_id = #{@m.id} and sequential_number >= #{first_seqno} and sequential_number <= #{last_seqno}").order(sequential_number: :asc)
-        @ab = prep_ab(@all_headwords, @headwords_page, :sort_defhead)
       end
     end
   end
@@ -836,22 +841,27 @@ end
     if @m.nil?
       head :ok
     else
-      @e = @m.expressions[0]
-      @w = @e.works[0]
-      @author = @w.persons[0] # TODO: handle multiple authors
-      unless is_spider?
-        impressionist(@m)
-        unless @author.nil?
-          impressionist(@author) # also increment the author's popularity counter
+      unless @m.published?
+        flash[:notice] = t(:work_not_available)
+        redirect_to '/'
+      else
+        @e = @m.expressions[0]
+        @w = @e.works[0]
+        @author = @w.persons[0] # TODO: handle multiple authors
+        unless is_spider?
+          impressionist(@m)
+          unless @author.nil?
+            impressionist(@author) # also increment the author's popularity counter
+          end
         end
-      end
-      if @author.nil?
-        @author = Person.new(name: '?')
-      end
-      @translators = @m.translators
-      @page_title = "#{@m.title_and_authors} - #{t(:default_page_title)}"
-      if @print
-        @html = MultiMarkdown.new(@m.markdown).to_html.force_encoding('UTF-8').gsub(/<figcaption>.*?<\/figcaption>/,'') # remove MMD's automatic figcaptions
+        if @author.nil?
+          @author = Person.new(name: '?')
+        end
+        @translators = @m.translators
+        @page_title = "#{@m.title_and_authors} - #{t(:default_page_title)}"
+        if @print
+          @html = MultiMarkdown.new(@m.markdown).to_html.force_encoding('UTF-8').gsub(/<figcaption>.*?<\/figcaption>/,'') # remove MMD's automatic figcaptions
+        end
       end
     end
   end
