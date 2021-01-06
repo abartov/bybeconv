@@ -240,7 +240,7 @@ class ManifestationController < ApplicationController
       @incoming_links = @entry.incoming_links.includes(:incoming_links)
       @outgoing_links = @entry.outgoing_links.includes(:outgoing_links)
     end
-end
+  end
   def read
     @m = Manifestation.joins(:expressions).includes(:expressions).find(params[:id])
     if @m.nil?
@@ -249,20 +249,25 @@ end
       if @m.expressions[0].genre == 'lexicon' && DictionaryEntry.where(manifestation_id: @m.id).count > 0
         redirect_to action: 'dict', id: @m.id
       else
-        prep_for_read
-        @proof = Proof.new
-        @new_recommendation = Recommendation.new
-        @tagging = Tagging.new
-        @tagging.manifestation_id = @m.id
-        @tagging.suggester = current_user
-        @taggings = @m.taggings
-        @recommendations = @m.recommendations
-        @links = @m.external_links.group_by {|l| l.linktype}
-        @random_work = Manifestation.where(id: Manifestation.pluck(:id).sample(5), status: Manifestation.statuses[:published])[0]
-        @header_partial = 'manifestation/work_top'
-        @works_about = Work.joins(:topics).where('aboutnesses.aboutable_id': @w.id) # TODO: accommodate works about *expressions* (e.g. an article about a *translation* of Homer's Iliad, not the Iliad)
-        @scrollspy_target = 'chapternav'
-        prep_user_content
+        unless @m.published?
+          flash[:notice] = t(:work_not_available)
+          redirect_to '/'
+        else
+          prep_for_read
+          @proof = Proof.new
+          @new_recommendation = Recommendation.new
+          @tagging = Tagging.new
+          @tagging.manifestation_id = @m.id
+          @tagging.suggester = current_user
+          @taggings = @m.taggings
+          @recommendations = @m.recommendations
+          @links = @m.external_links.group_by {|l| l.linktype}
+          @random_work = Manifestation.where(id: Manifestation.pluck(:id).sample(5), status: Manifestation.statuses[:published])[0]
+          @header_partial = 'manifestation/work_top'
+          @works_about = Work.joins(:topics).where('aboutnesses.aboutable_id': @w.id) # TODO: accommodate works about *expressions* (e.g. an article about a *translation* of Homer's Iliad, not the Iliad)
+          @scrollspy_target = 'chapternav'
+          prep_user_content
+        end
       end
     end
   end
@@ -836,22 +841,27 @@ end
     if @m.nil?
       head :ok
     else
-      @e = @m.expressions[0]
-      @w = @e.works[0]
-      @author = @w.persons[0] # TODO: handle multiple authors
-      unless is_spider?
-        impressionist(@m)
-        unless @author.nil?
-          impressionist(@author) # also increment the author's popularity counter
+      unless @m.published?
+        flash[:notice] = t(:work_not_available)
+        redirect_to '/'
+      else
+        @e = @m.expressions[0]
+        @w = @e.works[0]
+        @author = @w.persons[0] # TODO: handle multiple authors
+        unless is_spider?
+          impressionist(@m)
+          unless @author.nil?
+            impressionist(@author) # also increment the author's popularity counter
+          end
         end
-      end
-      if @author.nil?
-        @author = Person.new(name: '?')
-      end
-      @translators = @m.translators
-      @page_title = "#{@m.title_and_authors} - #{t(:default_page_title)}"
-      if @print
-        @html = MultiMarkdown.new(@m.markdown).to_html.force_encoding('UTF-8').gsub(/<figcaption>.*?<\/figcaption>/,'') # remove MMD's automatic figcaptions
+        if @author.nil?
+          @author = Person.new(name: '?')
+        end
+        @translators = @m.translators
+        @page_title = "#{@m.title_and_authors} - #{t(:default_page_title)}"
+        if @print
+          @html = MultiMarkdown.new(@m.markdown).to_html.force_encoding('UTF-8').gsub(/<figcaption>.*?<\/figcaption>/,'') # remove MMD's automatic figcaptions
+        end
       end
     end
   end
