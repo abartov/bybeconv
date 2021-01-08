@@ -20,6 +20,10 @@
         %br
         = "#{t(:editing_or_compilation)}: "
         != @e.editors.map{|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
+  - if @illustrators.size > 0
+    .headline-3-v02
+      = "#{t(:illustrations_by)}: "
+      != @illustrators.map{|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
 %div
   / metadata
   .work-details
