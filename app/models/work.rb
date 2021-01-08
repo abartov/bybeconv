@@ -12,6 +12,9 @@ class Work < ApplicationRecord
   def authors
     return creations.where(role: Creation.roles[:author]).map {|x| x.person}
   end
+  def illustrators
+    return creations.where(role: Creation.roles[:illustrator]).map {|x| x.person}
+  end
 
   def first_author
     creations.each do |c|

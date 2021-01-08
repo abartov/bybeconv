@@ -24,6 +24,10 @@ class Expression < ApplicationRecord
     return realizers.where(role: Realizer.roles[:translator]).map {|x| x.person}
   end
 
+  def illustrators
+    return realizers.where(role: Realizer.roles[:illustrator]).map {|x| x.person}
+  end
+
   def should_be_copyrighted?
     creators = works[0].persons
     realizer_people = realizers.map{|r| r.person}
