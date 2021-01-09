@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_31_015107) do
+ActiveRecord::Schema.define(version: 2021_01_09_193743) do
 
   create_table "aboutnesses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -408,7 +408,7 @@ ActiveRecord::Schema.define(version: 2020_12_31_015107) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "markdown", limit: 16777215
-    t.string "cached_people"
+    t.text "cached_people"
     t.integer "impressions_count"
     t.text "cached_heading_lines"
     t.boolean "conversion_verified"
