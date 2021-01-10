@@ -296,9 +296,17 @@ end
     end
   end
 
+  def images_to_absolute_url(buf)
+    return buf.gsub(/<img src="\/rails\/active_storage/,"<img src=\"#{root_url}/rails/active_storage")
+  end
   def do_download(format, filename, html, download_entity, author_string)
+    html = images_to_absolute_url(html)
     case format
     when 'pdf'
+      html.gsub!(/<img src=.*?active_storage.*?>/) {|match| "<div style=\"width:209mm\">#{match}</div>"}
+      html.sub!('</head>','<style>body {width: 20cm;} p{max-width: 20cm;} div {max-width:20cm;} img {max-width: 100%;}</style></head>')
+      #html.sub!(/<body.*?>/, "#{$&}<div class=\"html-wrapper\" style=\"position:absolute\">")
+      #html.sub!('</body>','</div></body>')
       pdfname = HtmlFile.pdf_from_any_html(html)
       pdf = File.read(pdfname)
       send_data pdf, type: 'application/pdf', filename: filename
