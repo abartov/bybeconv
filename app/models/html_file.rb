@@ -557,8 +557,9 @@ class HtmlFile < ApplicationRecord
     tmpfile = Tempfile.new(['pdf2html__','.html'])
     begin
       tmpfile.write(html_buffer)
+      tmpfile.flush
       tmpfilename = tmpfile.path
-      result = `wkhtmltopdf --encoding 'UTF-8' page #{tmpfilename} #{tmpfilename}.pdf`
+      result = `wkhtmltopdf --encoding 'UTF-8' --page-width 20cm page #{tmpfilename} #{tmpfilename}.pdf`
     rescue
       return nil
     ensure
