@@ -1,3 +1,6 @@
+There is a re-entrancy problem in creating a PDF from works with images (wkhtmltopdf requests the images, and the GVL causes a deadlock).  Need to rewrite to *first* download the images to /tmp, rewrite the IMG src attributes, and then generates the PDF, taking care to enable local file access in wkhtmltopdf.)
+  - for PDFs, also *scale* the local copy of images to no more than 20.9cm width, to solve PDF page width issue.
+
 היות שהמקרה הנפוץ הוא של "מסע רכש" שמסתיים בהשגת כמה עשרות ספרים בבת אחת (וכן של קבלת קבוצת סריקות בבת אחת), אפשר ליצור מסך עדכון שבו בוחרים סטטוס פעם אחת (למשל "בידינו"), ואז בשורת חיפוש עם השלמה-אוטומטית מזינים התחלות של כותרים ופשוט לוחצים על האופציה הרצויה והסטטוס מתעדכן, ומיד אפשר לעבור להקלדת שם הכותר הבא.
 
 א. הוספת שדה הערות לכותר בסדנה.
