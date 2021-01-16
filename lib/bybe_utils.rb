@@ -272,6 +272,8 @@ module BybeUtils
       return I18n.t(:persian)
     when 'sv'
       return I18n.t(:swedish)
+    when 'lad'
+      return I18n.t(:ladino)
     else
       return I18n.t(:unknown)
     end
@@ -553,7 +555,7 @@ module BybeUtils
   end
 
   def get_langs
-    return ['he','en','fr','de','ru','yi','pl','ar','el','la','grc','hu','cs','da','no','sv','nl','it','pt','fa','fi','is','es', 'arc', 'zh' ,'unk']
+    return ['he','en','fr','de','ru','yi','pl','ar','el','la','grc','hu','cs','da','no','sv','nl','it','pt','fa','fi','is','es', 'arc', 'lad', 'zh' ,'unk']
   end
 
   def get_genres_by_row(row) # just one row at a time
