@@ -8,4 +8,9 @@
 - unless @explanation.nil?
   != t(:additional_wontfix_explanation, explanation: @explanation)
 
+= t(:below_is_your_original_email)
+%hr
+= @orig_email
+%hr
+
 != raw t(:email_footer_html)

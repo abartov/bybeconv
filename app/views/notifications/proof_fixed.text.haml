@@ -4,4 +4,10 @@
   = t(:proof_fixed, {:url => @url})
 - else
   = t(:proof_fixed_m, {:url => @url, :title => @m.title_and_authors})
+
+= t(:below_is_your_original_email)
+%hr
+= @orig_email
+%hr
+
 != raw t(:email_footer_html)
