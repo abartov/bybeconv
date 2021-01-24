@@ -95,12 +95,13 @@
           %ul#chapter-nav.nav.navbar-nav.navbar-expand.flex-column.by-card-v02{"aria-orientation" => "vertical", :style => "width: unset"}
             - (0..4).to_a.reverse.each do |i|
               - prev = @prev_entries[i]
-              %li.nav-item
-                %a.nav-link.nav-chapter-name.nav-link-chapter.pointer.linkcolor{href: dict_entry_path(id: @m.id, entry: prev.id)}
-                  = prev.defhead
-                  - gap = prev.delta_to(i == 0 ? @entry : @prev_entries[i-1])
-                  - if gap > 1
-                    = " +#{gap-1}"
+              - unless prev.nil?
+                %li.nav-item
+                  %a.nav-link.nav-chapter-name.nav-link-chapter.pointer.linkcolor{href: dict_entry_path(id: @m.id, entry: prev.id)}
+                    = prev.defhead
+                    - gap = prev.delta_to(i == 0 ? @entry : @prev_entries[i-1])
+                    - if gap > 1
+                      = " +#{gap-1}"
             %li.nav-item
               %a.nav-link.nav-chapter-name.nav-link-chapter.active{style:'color:white; font-weight:bold; cursor: default'}
                 = @entry.defhead
@@ -109,12 +110,13 @@
                   = " +#{gap-1}"
             - (0..4).to_a.each do |i|
               - nextdef = @next_entries[i]
-              %li.nav-item
-                %a.nav-link.nav-chapter-name.nav-link-chapter.pointer.linkcolor{href: dict_entry_path(id: @m.id, entry: nextdef.id)}
-                  = nextdef.defhead
-                  - gap = nextdef.delta_to(i == 4 ? nextdef : @next_entries[i+1])
-                  - if gap > 1
-                    = " +#{gap-1}"
+              - unless nextdef.nil?
+                %li.nav-item
+                  %a.nav-link.nav-chapter-name.nav-link-chapter.pointer.linkcolor{href: dict_entry_path(id: @m.id, entry: nextdef.id)}
+                    = nextdef.defhead
+                    - gap = nextdef.delta_to(i == 4 ? nextdef : @next_entries[i+1])
+                    - if gap > 1
+                      = " +#{gap-1}"
       .col{style:'z-index:-1;height:0;'}
       .col-4.error-found-col
         %button.error-found-btn.notyet#found_mistake{title: t(:report_error_tt)}
