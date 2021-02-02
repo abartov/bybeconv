@@ -87,7 +87,7 @@ class ApplicationController < ActionController::Base
   end
 
   def featured_content
-    Rails.cache.fetch("featured_content", expires_in: 1.hours) do # memoize
+    Rails.cache.fetch("featured_content", expires_in: 10.minutes) do # memoize
       ret = nil
       fcfs = FeaturedContentFeature.where("fromdate <= :now AND todate >= :now", now: Date.today).order('RAND()').limit(1)
       if fcfs.count == 1
@@ -304,7 +304,7 @@ end
     case format
     when 'pdf'
       html.gsub!(/<img src=.*?active_storage.*?>/) {|match| "<div style=\"width:209mm\">#{match}</div>"}
-      html.sub!('</head>','<style>body {width: 20cm;} p{max-width: 20cm;} div {max-width:20cm;} img {max-width: 100%;}</style></head>')
+      html.sub!('</head>','<style>html, body {width: 20cm !important;} p{max-width: 20cm;} div {max-width:20cm;} img {max-width: 100%;}</style></head>')
       #html.sub!(/<body.*?>/, "#{$&}<div class=\"html-wrapper\" style=\"position:absolute\">")
       #html.sub!('</body>','</div></body>')
       pdfname = HtmlFile.pdf_from_any_html(html)
