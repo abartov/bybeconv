@@ -770,7 +770,6 @@ input::placeholder {
 
 #works-in-project {
   height: 400px; 
-  margin-top: 12px;
 }
 
 #works-surprise {
@@ -1006,18 +1005,20 @@ input::placeholder {
   z-index: 2; }
 
 .flash-work-v02 {
-  min-height: 815px;
+  height: 400px;
   background-color: #d9cdd5; }
 
 .flash-author-v02 {
-  min-height: 815px;
+  height: 400px;
   background-color: #d9cdd5; }
 
 .flash-bg-v02 {
   background-image: url("/assets/Stage-light.svg");
   background-repeat: no-repeat;
   background-size: cover;
-  height: 810px;
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 3px;
+  height: 400px;
   width: 100%; }
 
 .flash-popup-bg-v02 {
@@ -1049,8 +1050,8 @@ input::placeholder {
 #volunteer-bg {
   background-image: url("/assets/giving hand.svg");
   background-repeat: no-repeat;
-  background-size: cover;
-  min-height: 400px;
+  background-size: 400px;
+  border-radius: 3px;
   width: 100%; }
 
 .volunteer-about-v02 {
@@ -1084,9 +1085,9 @@ input::placeholder {
   background-image: url("/assets/bullhorn.svg");
   background-repeat: no-repeat;
   background-size: contain;
-  height: calc(100% - 62px);
+
   overflow:hidden;
-  min-height: 200px;
+  height: 200px;
   width: 100%; }
 
 .new-card-v02 {
@@ -1100,6 +1101,9 @@ input::placeholder {
 
 .new-card-v02.double-height-v02 {
   height: 270px; }
+.new-card-v02:last-of-type {
+  margin-bottom: 0px;
+}
 
 .new-card-right-v02 {
   width: 100px;
@@ -1465,8 +1469,7 @@ ul #menuMobile {
 .bottom-right-link {
   position: absolute;
   right: 15px;
-  bottom: 15px;
-  line-height: 32px;
+  bottom: 10px;
 }
 .anthology-bottom-link {
   line-height: 32px;
@@ -1488,7 +1491,6 @@ ul #menuMobile {
   font-family: ben-yehuda;
   padding-left: 4px;
   font-size: 14px;
-	line-height: 32px;
   vertical-align:middle; }
 
 .ellipsis:after {
@@ -1568,8 +1570,7 @@ ul #menuMobile {
   display: -webkit-box;
   -webkit-line-clamp: 36;
   -webkit-box-orient: vertical;
-	min-height: 272px;
-	max-height: 630px;
+	max-height: 215px;
 }
 .text-height-volunteer{
   overflow: hidden;
@@ -1903,7 +1904,7 @@ display: flex;
   background-image: url("/assets/work side icons_references.svg");
 }
 .author-main-info-card-v02{
-	min-height: 240px;
+	height: 410px;
 }
 .date-range{
 	white-space: nowrap;
@@ -2233,7 +2234,7 @@ display: none;}
   color: #660248;
 }
 .card-with-bottom-links{
-	padding-bottom: 62px;
+	padding-bottom: 42px;
 }
 .whats-new-content{
 	max-height: 1096px;
@@ -2258,17 +2259,17 @@ display: none;}
   bottom: 15px;
   }
 .flash-content{
-	height: 766px;
+	height: 351px;
 }
 .author-whats-new-content{
-	  height: auto;
-	padding-bottom: 30px;
+	min-height: 374px;
 }
 #author-whats-new-bg {
   background-image: url("/assets/bullhorn.svg");
   background-repeat: no-repeat;
   background-size: contain;
-  min-height: 200px;
+  border-radius: 3px;
+  height: auto;
   width: 100%; }
 .work-name-top{
   margin-left: 15px;
@@ -3636,11 +3637,11 @@ padding-left: 0;
 .advanced-pagination-area a.by-icon-v02:disabled{
 	background-color: none;
 }
-.advanced-pagination-area .by-icon-v02 a{
+.advanced-pagination-area .by-icon-v02{
 	width: 24px;
 	height:24px;
 	padding: 3px 5px;
-	font-size: 14px;
+	font-size: 18px;
   border-radius: 3px;
 	margin-top: 2px;
 }
@@ -4895,9 +4896,6 @@ break{
 .thanks-popup{
 	max-width: 400px;
 }
-#browse_mainlist ol{
-	padding-right: 0;
-}
 #browse_author ol{
 	padding-right: 0;
 }
@@ -5063,6 +5061,7 @@ break{
 	height: 150px;
 }
 .author-page-content .whats-new-v02{
+	min-height: 410px;
 	height: auto;
 }
 .mobileSearch{

@@ -49,11 +49,16 @@
 }
 
 @media only screen and (max-width: 1160px) {
-  #menu {
+#menu {
     display: none; }
 
-  .menuButton-v02 {
+.menuButton-v02 {
     display: block; }
+	.sidebar-opened{
+  display: block;
+  width: 360px;
+  padding-left: 15px;
+}
 }
 
 

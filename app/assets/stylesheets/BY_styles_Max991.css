@@ -335,11 +335,6 @@ display: none;	}
   line-height: 66px;
 }
 
-.sidebar-opened{
-  display: block;
-  width: 360px;
-  padding-left: 15px;
-}
 .about-work-card-bookmark-fold-v02 {
   width: 101px;
   height: 5px;
