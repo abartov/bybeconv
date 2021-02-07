@@ -4,9 +4,9 @@
   - else
     %h1= t(:proofs_by_status, :status => textify_proof_status(params[:status]))
     %p
-      = link_to t(:show_all_proofs), proof_list_path(:show_status => nil)
+      = link_to t(:show_all_proofs), proof_list_path(:status => nil)
   %p
-    = link_to t(:show_open_proofs), proof_list_path(:show_status => 'new')
+    = link_to t(:show_open_proofs), proof_list_path(:status => 'new')
   %p
     = link_to t(:show_escalated_proofs), proof_list_path(:status => 'escalated')
   %h2= t(:statistics)
