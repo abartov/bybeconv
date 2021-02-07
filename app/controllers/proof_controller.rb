@@ -62,7 +62,6 @@ class ProofController < ApplicationController
   def resolve
     fix_text = ''
     @p = Proof.find(params[:id])
-    @orig_email = @p.what
     if params[:fixed] == 'yes'
       @p.status = 'fixed'
       unless params[:email] == 'no' or @p.from.nil? or @p.from !~ /\w+@\w+\.\w+/
