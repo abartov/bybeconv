@@ -103,7 +103,7 @@
                           = t(:by)+' '
                           = link_to featured.user.name, volunteer_show_path(featured.user)
                       .text-height-flash-work
-                        = @fc_snippet
+                        != @fc_snippet
                         - if @fc_rest != ''
                           = ' ...'
                           / TODO: add a popup
