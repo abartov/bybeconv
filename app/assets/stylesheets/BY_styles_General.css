@@ -1904,7 +1904,7 @@ display: flex;
   background-image: url("/assets/work side icons_references.svg");
 }
 .author-main-info-card-v02{
-	height: 410px;
+	min-height: 260px;
 }
 .date-range{
 	white-space: nowrap;
