@@ -1219,7 +1219,10 @@ input::placeholder {
 .surprise-again-btn-v02:focus {
   outline: none; }
 .surprise-author-card-content-v02 {
-  width: 100%; }
+  width: 100%;
+  max-height: 600px;
+  overflow-y: auto;
+}
 
 .surprise-again-footer-v02 {
   position: absolute;
@@ -2684,8 +2687,10 @@ label{
 	height: 30px;
 }
 .rm-control-icons .icon-in-group-v02{
-	padding: 2px 12px;
+	padding: 2px 7px;
 	margin-left: 0;
+	height: 30px;
+	padding-top: 6px;
 }
 .bookmark-location{
   position: relative;
@@ -2855,10 +2860,6 @@ padding-left: 0;
 .bottom-donate-btn-area{
   display: flex;
   justify-content: center;
-}
-.rm-control-icons .icon-in-group-v02{
-	height: 30px;
-	padding-top: 6px;
 }
 .rm-control-left .collapse-expand-icon{
 	padding-top: 5px;
