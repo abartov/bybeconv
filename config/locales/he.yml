@@ -523,6 +523,7 @@ he:
   uploaded_directly: הועלה ישירות
   first_author: מחבר (לא מתרגם; אפשר להוסיף אישים אחר-כך, בקטלוג)
   suspicious_headings_report: "דו\"ח כותרות קרובות זו לזו (לעריכה)"
+  suspicious_titles_report: "דו\"ח שמות חשודים ליצירות"
   similar_titles_report: "דו\"ח כותרות דומות (שאולי הן פרקים של יצירה אחת שיש לאחד)"
   suspicious_translations_report: "דו\"ח יצירות עם מחבר שווה למתרגם"
   most_read_authors_of_genre: יוצרי ה%{genre} הנקראים ביותר החודש

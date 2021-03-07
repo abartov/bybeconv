@@ -238,6 +238,11 @@ class AdminController < ApplicationController
     Rails.cache.write('report_incongruous_copyright', @incong.length)
   end
 
+  def suspicious_titles
+    @suspicious = Manifestation.where('(title like "%קבוצה %") OR (title like "%.")').select{|x| x.title !~ /\.\.\./}
+    Rails.cache.write('report_suspicious_titles', @suspicious.length)
+  end
+
   def suspicious_headings
     mm = Manifestation.where('length(cached_heading_lines)>3')
     @suspicious = []
