@@ -57,6 +57,6 @@ class ManifestationsSearch
     index.highlight(fields: {fulltext: {}})
   end
   def index_order
-    index.order(['_index' => {order: :desc}, '_score' => {order: :desc}])
+    index.order(['_index' => {order: :desc}, '_score' => {order: :desc}]) # people before works, then by score
   end
 end
