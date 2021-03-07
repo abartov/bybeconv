@@ -57,7 +57,7 @@ he:
   minuses_to_makafim: תיקון למקפים עבריים גאים
   remove_angled_brackets: הסרת סימון שירה בקטע
   select_text_to_remove_from: ראשית יש לסמן (להאיר) קטע בטקסט שממנו רוצים להסיר את סימני השירה.
-  add_fresh_works: כל היצירות מאז אתמול
+  add_fresh_works: כל היצירות מ-12 השעות האחרונות
   converted_output: "תוצאת הסבה אוטומטית של הקובץ הישן %{fname}"
   origlang_title: כותרת בשפת המקור
   treat_as_poetry: מצב שירה
