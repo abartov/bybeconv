@@ -13,6 +13,7 @@ class DictionaryEntry < ApplicationRecord
     get_neighboring_defs(quantity, false)
   end
   def delta_to(another_def)
+    return 0 if another_def.nil?
     return another_def.sequential_number - sequential_number # earlier defs will return a negative delta, and later defs a positive one, intuitively
   end
   protected
