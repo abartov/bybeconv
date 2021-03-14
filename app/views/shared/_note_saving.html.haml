@@ -1,0 +1,13 @@
+:javascript
+  $(document).ready(function() {
+    $('.save_notes').click(function(e){
+      e.stopPropagation();
+      thebtn = $(this);
+      ta = $($(this).parent().find('textarea')[0]);
+      url = "#{publication_path('999')}".replace('999',ta.attr('id').replace('pubnotes_',''));
+      tosave = ta.val();
+      $.ajax({type: 'patch', url: url, data: {'publication': {'notes': tosave}}, dataType: 'JSON', success: function(){
+        thebtn.text('נשמר!');
+      }});
+    });
+  });
