@@ -5,4 +5,5 @@ var markup = "";
 <% @pubs.each do |pub| %>
   markup += "<%= escape_javascript(render partial: 'publications/pub', locals: { pub: pub, with_person: false, with_actions: :none} ) %>";
 <% end %>
+markup += "<%= escape_javascript(render partial: 'shared/note_saving') %>";
 $("#pubs tbody").html(markup);

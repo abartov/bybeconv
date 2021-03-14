@@ -22,6 +22,7 @@ he:
   rename_this_anthology: שינוי שם מקראה זו
   authors_select_filter: סינון לפי יוצר - בחירה מרובה
   add_authors_to_filter: הוספת היוצרים שנבחרו לסינון
+  back_to_bib_workshop: חזרה לסדנה הביבליוגרפית
   apply_filters: הפעל סינון זה!
   filters_loading: טוען את המסננים...
   loading: התוכן נטען...

@@ -18,4 +18,6 @@
       %table
         - @publications.each do |pub|
           = render partial: 'pub', locals: {pub: pub, with_person: true, with_actions: :pubs}
-    != paginate @publications
+      != paginate @publications
+      = link_to t(:back_to_bib_workshop), bib_index_path
+= render 'shared/note_saving'
