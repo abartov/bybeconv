@@ -26,4 +26,6 @@
           - @pubs.each do |pub|
             = render partial: 'publications/pub', locals: {pub: pub, with_person: false, with_actions: :pubs}
   %hr
+  = render 'shared/note_saving'
+
   %p= link_to t(:back), action: :index
