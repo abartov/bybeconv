@@ -5,7 +5,9 @@
     %td= pub.publisher_line
     %td= pub.pub_year
     %td= pub.language
-    %td= pub.notes.nil? ? '' : pub.notes.sub("\n", "<br />").html_safe
+    %td
+      %textarea{id: "pubnotes_#{pub.id}", rows: 4}!= pub.notes
+      %button.save_notes= t(:save)
     %td
       %ol
         - pub.holdings.each do |h|
@@ -21,4 +23,3 @@
       %td= t(pub.status)
     - if with_person
       %td= pub.person.nil? ? '--' : link_to(pub.person.name, author_toc_path(id: pub.person.id))
-

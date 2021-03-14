@@ -74,6 +74,7 @@ class PublicationsController < ApplicationController
   def update
     respond_to do |format|
       if @publication.update(publication_params)
+        @pub = @publication
         format.html { redirect_to @publication, notice: 'publication was successfully updated.' }
         format.js
         format.json { render :show, status: :ok, location: @publication }
