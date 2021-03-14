@@ -11,6 +11,6 @@
 = "    #{@contact_form[:topic]}"
 = "\n"
 = t(:contact_body)+':'
-= "#{@contact_form[:body]}"
+!= "#{@contact_form[:body]}"
 = "\n"
 != raw t(:email_footer_html)
