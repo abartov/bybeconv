@@ -38,7 +38,7 @@ class Notifications < ActionMailer::Base
   # with the following lookup:
   #
   #   en.notifications.recommendation_accepted.subject
-p  #
+  #
   def recommendation_accepted(rec, url)
     @greeting = t(:hello_anon)
     @rec = rec
@@ -62,11 +62,11 @@ p  #
 
   def contact_form_submitted(pp)
     @contact_form = {name: pp[:name], email: pp[:email], phone: pp[:phone], topic: pp[:topic] || pp[:rtopic], body: pp[:body]}
-    mail to: 'editor@benyehuda.org', subject: t('notifications.contact_form_submitted.subject')
+    mail to: 'editor@benyehuda.org', subject: t('notifications.contact_form_submitted.subject'), reply_to: pp[:email]
   end
 
   def volunteer_form_submitted(pp)
     @form = pp
-    mail to: 'editor@benyehuda.org', subject: t('notifications.volunteer_form_submitted.subject')
+    mail to: 'editor@benyehuda.org', subject: t('notifications.volunteer_form_submitted.subject'), reply_to: pp[:email]
   end
 end
