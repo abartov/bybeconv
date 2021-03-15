@@ -8,7 +8,7 @@
 
   .backend-field
     = f.label t(:title)
-    = f.text_field :title
+    = f.text_field :title, required: true
   .backend-field
     = f.label t(:genre)
     = select_tag 'html_file[genre]', options_for_select(get_genres.map {|genre| [I18n.t(genre), genre]}, @text.genre), {include_blank: true}
@@ -25,7 +25,7 @@
   %br
   .backend-field
     = f.label t(:publisher)
-    = f.text_field :publisher
+    = f.text_field :publisher, required: true
   %br
   .backend-field
     = f.label t(:year_published)
@@ -47,3 +47,9 @@
     = f.label t(:comments)
     = f.text_area :comments
   %br
+:javascript
+  $(document).ready(function() {
+    
+    // form validations
+    // ensure edition details typed
+  });

@@ -47,7 +47,8 @@
     $('#proofSent').dialog({autoOpen:false, height:200, width:500, modal:true,buttons:{"#{t(:close)}": function(){$('#proofSent').dialog('close');}}});
 
     $('#proof_form').on('ajax:success', function(e, data, status, xhr) {
-      $('#proofDlg').dialog("close");
+      $('#prooftext').val('');
+      $('#proofDlg').modal("hide");
       $('#proofSent').dialog('open');
     }).on('ajax:error', function(e, xhr, status, error) {
       $('#proof_status').html("<span style='color:red'>#{t(:proof_failed)}</span>");
