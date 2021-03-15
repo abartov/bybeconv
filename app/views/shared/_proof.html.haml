@@ -1,47 +1,49 @@
-.container-fluid
+#content.container-fluid
   = form_tag('/proof', remote: true, id: 'proof_form') do
-    .row
-      .col-sm-12
-        = label_tag t(:your_selected_text)+':'
-    .row
-      .col-sm-12
-        = text_area_tag(:highlight, '', id: 'proof_selected_text', rows: 7, cols:40, readonly:true, style:'background:#e4e4e4; width:70%;')
-    .row
-      %p
-    .row
-      .col-sm-9
-        = label_tag t(:proof_your_proofs)
-      .col-sm-3
-        %button.btn.btn-small-outline-v02.btn-text-v02.reading-mode-btn-v02#copy_proof{:type => 'button'}= t(:proof_copy_text)
-    .row
-      .col-sm-12
-        = text_area_tag(:what, '', id: 'prooftext', rows: 7, cols: 40)
-    .row
-      .col-sm-12
-        = label_tag t(:email)+':'
-        %br
-        = email_field_tag 'from', '', {placeholder: t(:email), style: 'border-width: 1px; border-color: black; border-style:solid;'}
-        = hidden_field_tag(:manifestation, @m.id)
-    .row
-      .col-sm-12
-        = label_tag t(:ziburit)+': '
-        = text_field_tag(:ziburit, nil, {style: 'border-width: 1px; border-color: black; border-style:solid;'})
+    .popup-top
+      .row{:style => "padding:15px;margin: 0"}
+        .col-4{:style => "padding: 0;"}
+          %button.btn-small-outline-v02{'data-dismiss'=>'modal'}
+            .btn-text-v02
+              %span.right-arrow 2
+              %span= t(:cancel_and_back)
+        .col-4{:style => "padding: 0;"}
+          .headline-2-v02{:style => "text-align: center;margin: 0; padding-top: 3px;"}= t(:found_mistake)
+        .col-4
+    .by-popup-v02
+      .by-card-header-v02.desktop-only
+        %span.headline-1-v02= t(:report_found_mistake)
+        %a.popup-x-v02{'data-dismiss'=>'modal'} -
+      %div
+        .by-card-content-v02.card-with-button
+          #marked-error-text.field-label= t(:your_selected_text)
+          = text_area_tag(:highlight, '', id: 'proof_selected_text', rows: 7, cols:40, readonly:true, class: 'field-v02')
+          /%input.field-v02{:type => "text"}/
+          %div.pointer#copy_proof
+            %span.right-side-icon )
+            %span{:style => "font-weight: bold"}= t(:proof_copy_text)
+          %div.pointer#clear_proof
+            %span.right-side-icon -
+            %span{:style => "font-weight: bold"}= t(:clear_text_and_reset_proof)
+          #error-correction-suggestion.field-label= t(:proof_your_proofs)
+          = text_area_tag(:what, '', id: 'prooftext', required: true, rows: 7, cols: 40, class: 'field-v02')
+          /#error-notes.field-label הערות
+          /%input.field-v02{:type => "text"}/
+          #error-e-mail.field-label= t(:email_just_for_proof)
+          = email_field_tag 'from', '', {placeholder: t(:email), class: 'field-v02'}
+          = hidden_field_tag(:manifestation, @m.id)
+          .desktop-only.pointer.bottom-right-link{'data-dismiss'=>'modal'}
+            %span.right-side-icon -
+            %span{:style => "font-weight: bold"}= t(:cancel)
+          #error-notes.field-label= t(:ziburit)
+          = text_field_tag(:ziburit, nil, {required: true, class: 'field-v02'})
+          = submit_tag(t(:submit_proof), {class: 'by-button-v02 button-to-full-v02'})
+          .no-header
 
   #proof_status
 
 :javascript
   $(document).ready(function(){
-    // proof button
-    $('#proofDlg').dialog({
-      autoOpen: false,
-      height:600,
-      width:700,
-      modal:true,
-      buttons: {
-        "#{t(:submit_proof)}": submitProof,
-        "#{t(:cancel)}": function() { $('#proofDlg').dialog("close");}
-      }
-    });
     $('#proofSent').dialog({autoOpen:false, height:200, width:500, modal:true,buttons:{"#{t(:close)}": function(){$('#proofSent').dialog('close');}}});
 
     $('#proof_form').on('ajax:success', function(e, data, status, xhr) {
@@ -54,7 +56,10 @@
       $('#proof_form').submit(); // TBD
     };
     $('#copy_proof').click(function() {
-      $('#prooftext').text($('#proof_selected_text').text());
+      $('#prooftext').val($('#proof_selected_text').text());
+    });
+    $('#clear_proof').click(function() {
+      $('#prooftext').val('');
     });
     $('#found_mistake').click(function(e) {
       if(document.getSelection().toString() == '') {
@@ -64,7 +69,7 @@
       else
       {
         $('#proof_selected_text').text(document.getSelection().toString());
-        $('#proofDlg').dialog("open");
+        $('#proofDlg').modal("show");
       }
     });
   });
