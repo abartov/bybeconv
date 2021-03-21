@@ -99,7 +99,7 @@
 .surprise-author-card-v02 {
     width: 132px;
     height: 231px;
-    margin-left: 30px;
+    margin-right: 20px;
     margin-top: -5px; }
 .about-author-card-v02 {
     width: 132px;
@@ -115,7 +115,7 @@
 .surprise-author-card-bookmark-fold-v02 {
   width: 139px;
   height: 5px;
-  margin-left: 30px;
+  margin-right: 14px;
   margin-top: -5px;
   z-index: 1; }
 .about-author-card-bookmark-fold-v02 {
@@ -372,7 +372,8 @@ display: none;	}
   min-height: auto;
 }
 .card-with-bottom-links{
-	padding-bottom: 58px;
+	padding-bottom: 50px;
+	height: calc(100vh - 60px);
 }
 .link-to-all-v02 {
   line-height: 28px;

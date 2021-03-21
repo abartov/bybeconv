@@ -288,7 +288,7 @@ padding-left: 6px;
 
 .btn-small-outline-v02 {
   min-width: 28px;
-  height: 28px;
+  height: 32px;
   border-radius: 3px;
   border: solid 1px #660248;
   vertical-align: text-bottom;
@@ -318,7 +318,7 @@ padding-left: 6px;
 	cursor: auto;}
 .btn-text-v02 {
   font-weight: bold;
-  padding: 0 10px 2px 10px;
+  padding: 2px 10px 4px 10px;
   color: #660248;   
   cursor: pointer;
 }
@@ -343,6 +343,13 @@ padding-left: 6px;
 	display: flex;
 	align-items: center;
  }
+.icons-group-v02 a{
+	margin-right: 8px;
+}
+
+.icons-group-v02 .btn-small-outline-v02{
+	height: 28px;
+}
 
 .icons-seperator {
   height: 18px;
@@ -658,11 +665,11 @@ input::placeholder {
 
 .by-popup-v02 {
   width: 50%;
-  max-width: 750px;
+  max-width: 767px;
   background-color: #eeeced;
   border-radius: 3px;
   box-shadow: 0 3px 9px rgba(0, 0, 0, 0.4);
-  margin-top: 120px;
+  margin-top: 60px;
   margin-right: auto;
   margin-left: auto;
   position: relative;
@@ -686,7 +693,7 @@ input::placeholder {
   background-color: #eeeced;
   border-radius: 3px;
   box-shadow: 0 3px 9px rgba(0, 0, 0, 0.4);
-  margin-top: 120px;
+  margin-top: 60px;
   margin-right: auto;
   margin-left: auto;
   position: relative;
@@ -724,6 +731,7 @@ input::placeholder {
 .by-card-content-v02 {
   position: relative;
   padding: 15px;
+	max-height: calc(100vh - 120px);
   overflow: hidden; }
 
 #project-finance-support {
@@ -925,9 +933,9 @@ input::placeholder {
   font-weight: bold;
   border-radius: 6px 0 3px 3px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
-  margin-left: 40px;
+  margin-right: 23px;
   margin-top: -6px;
-  float: left;
+  float: right;
   z-index: 2;
   position: relative;}
 .about-author-card-v02 {
@@ -969,8 +977,8 @@ input::placeholder {
   width: 168px;
   height: 6px;
   object-fit: fill;
-  float: left;
-  margin-left: 40px;
+	float: right;
+  margin-right: 15px;
   margin-top: -6px;
   z-index: 1; }
 .about-author-card-bookmark-fold-v02 {
@@ -1220,7 +1228,7 @@ input::placeholder {
   outline: none; }
 .surprise-author-card-content-v02 {
   width: 100%;
-  max-height: 600px;
+  max-height: calc(100vh - 304px);
   overflow-y: auto;
 }
 
@@ -1472,7 +1480,7 @@ ul #menuMobile {
 .bottom-right-link {
   position: absolute;
   right: 15px;
-  bottom: 10px;
+  bottom: 15px;
 }
 .anthology-bottom-link {
   line-height: 32px;
@@ -3685,6 +3693,7 @@ a .by-icon-v02:disabled{
 }
 .by-card-header-v02 .headline-1-v02{
 	margin-bottom: 0;
+	margin-right: 15px;
 }
 #anthology-select .headline-1-v02{
 	margin-bottom: 4px;
@@ -3860,6 +3869,9 @@ a .by-icon-v02:disabled{
 	max-width: 270px;
 	margin-top: 0;
 	margin-bottom: 18px;
+}
+.by-card-content-v02 .sort-type ul{
+	list-style: none;
 }
 .texts-list-top{
 	position: relative;
@@ -5196,4 +5208,21 @@ break{
 .by-card-content-v02 ul > li {
 	line-height: 18px;
 	margin:3px 3px;
+}
+.bottomButtonsArea{
+	margin-top: 30px;
+	display: flex;
+	justify-content: flex-end;
+}
+.by-button-v02.btn-secondary-v02 {
+	color: #660248;
+	background-color: #eeeced;
+	border: solid 1px #660248;
+}
+.by-button-v02.btn-secondary-v02:hover {
+  background-color: #d9cdd5; 
+}
+.btnUnderElement{
+	margin-right: 0;
+	margin-top: 8px;
 }
