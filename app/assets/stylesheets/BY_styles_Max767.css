@@ -62,8 +62,9 @@
 
 .by-popup-v02 {
   width: calc(100% + 30px);
-  height: 100vh;
+  height: 100%;
   box-shadow: none;
+  position: static;
   left: 0;
   margin-top:0px;
   margin-left: -15px;
@@ -106,7 +107,7 @@
   display: block;
 }
 .popup-with-bottom-links{
-		height: calc(100% - 58px);
+		height: calc(100% - 62px);
 	}
 	.author-page-top-name{
 		line-height: 36px;
@@ -398,12 +399,5 @@
 	min-width: calc(50% - 38px);
 	margin-left: 0;
 }
-  #content {
-    height: 100vh; }
-	.by-card-content-v02{
-		max-height: calc(100vh - 100px);
-	}
-	.surprise-author-card-content-v02{
-		    max-height: calc(100vh - 165px);
-	}
+	
 }
