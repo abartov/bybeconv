@@ -24,7 +24,8 @@
       %button.search-mobile-option#dictmode_snippets= t(:dict_snippets)
   .mainlist
     = hidden_field_tag(:hurl, request.original_url)
-    %ol
+    - pg = @page.to_i
+    %ol{style:"counter-reset:li #{pg > 1 ? (pg-1)*100 : 0}"}
       - skipped = 0
       - @headwords.each do |hw|
         - if hw.defhead.nil?
