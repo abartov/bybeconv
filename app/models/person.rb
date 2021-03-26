@@ -21,6 +21,8 @@ class Person < ApplicationRecord
   # scopes
   scope :has_toc, -> { where.not(toc_id: nil) }
   scope :no_toc, -> { where(toc_id: nil) }
+  scope :has_image, -> { where.not(profile_image_file_name: nil) }
+  scope :no_image, -> { where(profile_image_file_name: nil) }
   scope :bib_done, -> {where(bib_done: true)}
   scope :bib_not_done, -> {where("bib_done is null OR bib_done = 0")}
   scope :in_genre, -> (genre) {has_toc.joins(:expressions).where(expressions: { genre: genre}).distinct}
