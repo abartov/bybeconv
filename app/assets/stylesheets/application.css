@@ -323,67 +323,6 @@ ol#anth_texts li.placeholder:before {
 .languages-filters{
 	padding-right: 24px;
 }
-
-@media print {
-  .print #header{
-    display: none;
-  }
-  .print #bottom-bar{
-    display:none;
-  }
-  .print .author-page-content{
-    margin-top: 40px;
-  }
-  .print .text-page-content{
-    margin-top: 40px;
-  }
-  .print .anthology-page-content{
-    margin-top: 28px;
-  }
-  .print .side-menu-area{
-    flex: 0 0 0px;
-    padding: 0;
-  }
-  .print .by-card-v02{
-    background-color: white;
-    border: solid 2px #eeeced;
-    box-shadow: none;
-  }
-  .print .col-12{
-    padding-right: 120px;
-    padding-left: 120px;
-  }
-  .print .col-lg-8{
-    flex: 0 0 100%;
-    max-width: 100%;
-  }
-  .print .col-lg-4{
-    display: none;
-  }
-  .print #volunteers{
-    display: none;
-  }
-  .logo-for-print{
-    display: none;
-  }
-  .print .logo-for-print{
-    display: block;
-  }
-  .print .logo-for-print .logoBY-v02{
-    width: 240px;
-  }
-  .print .work-side-color{
-    display: none;
-  }
-  .print .work-content{
-    flex: 0 0 100%;
-    max-width: 100%;
-  }
-  .print .work-side-menu-area{
-    display: none;
-  }
-}
-
 /* remove all default styling of buttons */
 button.plainbutton {
   display: inline-block;
