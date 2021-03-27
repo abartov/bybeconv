@@ -3,7 +3,7 @@ source 'http://rubygems.org'
 gem 'rails', '~> 5.2'
 gem 'rails-i18n' # , git: 'https://github.com/svenfuchs/rails-i18n.git' # , branch: 'rails-4-x' # For 4.x
 gem 'actionview', '>= 5.2.4.2'
-
+gem 'sprockets', '~> 3' # 4.x requires switching to a manifest.js for assets
 gem 'rails-ujs'
 gem 'mysql2' # Rails 5.2 needs a newer one # , '~> 0.3.11'
 gem 'omniauth-google-oauth2'
@@ -26,7 +26,7 @@ gem 'diffy'
 gem 'aws-sdk-s3' # for Active Storage
 
 gem 'paperclip' # , '~>5.2' # for cloud files like author images 6.x requires aws >3.x
-gem 'impressionist' # for pageview stats
+gem 'impressionist', '~>1' # for pageview stats.  2.x requires Rails 6.x
 gem 'jbuilder', '~> 2.0' # for JSON APIs
 gem 'sqlite3' # for dictionary imports
 # gem 'rollbar' # error reporting. Airbrake replacement.
