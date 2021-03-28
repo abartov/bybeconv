@@ -2,17 +2,17 @@
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# Note that this schema.rb definition is the authoritative source for your
-# database schema. If you need to create the application database on another
-# system, you should be using db:schema:load, not running all the migrations
-# from scratch. The latter is a flawed and unsustainable approach (the more migrations
-# you'll amass, the slower it'll run and the greater likelihood for issues).
+# This file is the source Rails uses to define your schema when running `bin/rails
+# db:schema:load`. When creating a new database, `bin/rails db:schema:load` tends to
+# be faster and is potentially less error prone than running all of your
+# migrations from scratch. Old migrations may fail to apply correctly if those
+# migrations use external dependencies or application code.
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_09_193743) do
+ActiveRecord::Schema.define(version: 2021_03_28_234923) do
 
-  create_table "aboutnesses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|
+  create_table "aboutnesses", id: :integer, charset: "utf8", collation: "utf8_bin", force: :cascade do |t|
     t.integer "work_id"
     t.integer "user_id"
     t.integer "status"
@@ -28,7 +28,7 @@ ActiveRecord::Schema.define(version: 2021_01_09_193743) do
     t.index ["work_id"], name: "index_aboutnesses_on_work_id"
   end
 
-  create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|
+  create_table "active_storage_attachments", charset: "utf8", collation: "utf8_bin", force: :cascade do |t|
     t.string "name", limit: 191, null: false
     t.string "record_type", limit: 191, null: false
     t.bigint "record_id", null: false
@@ -38,7 +38,7 @@ ActiveRecord::Schema.define(version: 2021_01_09_193743) do
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
 
-  create_table "active_storage_blobs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|
+  create_table "active_storage_blobs", charset: "utf8", collation: "utf8_bin", force: :cascade do |t|
     t.string "key", limit: 191, null: false
     t.string "filename", limit: 191, null: false
     t.string "content_type", limit: 191
@@ -46,10 +46,17 @@ ActiveRecord::Schema.define(version: 2021_01_09_193743) do
     t.bigint "byte_size", null: false
     t.string "checksum", limit: 191, null: false
     t.datetime "created_at", null: false
+    t.string "service_name", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
-  create_table "anthologies", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|
+  create_table "active_storage_variant_records", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.bigint "blob_id", null: false
+    t.string "variation_digest", null: false
+    t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "anthologies", charset: "utf8", collation: "utf8_bin", force: :cascade do |t|
     t.string "title"
     t.integer "user_id"
     t.integer "access"
@@ -60,7 +67,7 @@ ActiveRecord::Schema.define(version: 2021_01_09_193743) do
     t.index ["user_id"], name: "index_anthologies_on_user_id"
   end
 
-  create_table "anthology_texts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|
+  create_table "anthology_texts", charset: "utf8", collation: "utf8_bin", force: :cascade do |t|
     t.string "title"
     t.text "body"
     t.bigint "anthology_id"
@@ -72,7 +79,7 @@ ActiveRecord::Schema.define(version: 2021_01_09_193743) do
     t.index ["manifestation_id"], name: "index_anthology_texts_on_manifestation_id"
   end
 
-  create_table "api_keys", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|
+  create_table "api_keys", id: :integer, charset: "utf8", collation: "utf8_bin", force: :cascade do |t|
     t.string "email"
     t.string "description"
     t.string "key"
@@ -82,7 +89,7 @@ ActiveRecord::Schema.define(version: 2021_01_09_193743) do
     t.index ["email"], name: "index_api_keys_on_email", unique: true
   end
 
-  create_table "bib_sources", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|
+  create_table "bib_sources", id: :integer, charset: "utf8", collation: "utf8_bin", force: :cascade do |t|
     t.string "title"
     t.integer "source_type"
     t.string "url"
@@ -96,7 +103,7 @@ ActiveRecord::Schema.define(version: 2021_01_09_193743) do
     t.string "item_pattern", limit: 2048
   end
 
-  create_table "bookmarks", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "bookmarks", id: :integer, charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "manifestation_id"
     t.integer "user_id"
     t.string "bookmark_p"
@@ -107,7 +114,7 @@ ActiveRecord::Schema.define(version: 2021_01_09_193743) do
     t.index ["user_id"], name: "index_bookmarks_on_user_id"
   end
 
-  create_table "creations", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|
+  create_table "creations", id: :integer, charset: "utf8", collation: "utf8_bin", force: :cascade do |t|
     t.integer "work_id"
     t.integer "person_id"
     t.integer "role"
@@ -117,7 +124,7 @@ ActiveRecord::Schema.define(version: 2021_01_09_193743) do
     t.index ["work_id"], name: "index_creations_on_work_id"
   end
 
-  create_table "delayed_jobs", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|
+  create_table "delayed_jobs", id: :integer, charset: "utf8", collation: "utf8_bin", force: :cascade do |t|
     t.integer "priority", default: 0, null: false
     t.integer "attempts", default: 0, null: false
     t.text "handler", null: false
@@ -132,7 +139,7 @@ ActiveRecord::Schema.define(version: 2021_01_09_193743) do
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
   end
 
-  create_table "dictionary_aliases", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "dictionary_aliases", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "dictionary_entry_id"
     t.string "alias"
     t.datetime "created_at", null: false
@@ -140,11 +147,11 @@ ActiveRecord::Schema.define(version: 2021_01_09_193743) do
     t.index ["dictionary_entry_id"], name: "index_dictionary_aliases_on_dictionary_entry_id"
   end
 
-  create_table "dictionary_entries", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "dictionary_entries", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "manifestation_id"
     t.integer "sequential_number"
     t.string "defhead"
-    t.text "deftext", limit: 16777215
+    t.text "deftext", size: :medium
     t.integer "source_def_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -157,7 +164,7 @@ ActiveRecord::Schema.define(version: 2021_01_09_193743) do
     t.index ["source_def_id"], name: "index_dictionary_entries_on_source_def_id"
   end
 
-  create_table "dictionary_links", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "dictionary_links", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.bigint "from_entry_id"
     t.bigint "to_entry_id"
     t.integer "linktype"
@@ -167,7 +174,7 @@ ActiveRecord::Schema.define(version: 2021_01_09_193743) do
     t.index ["to_entry_id"], name: "index_dictionary_links_on_to_entry_id"
   end
 
-  create_table "downloadables", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+  create_table "downloadables", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "object_type"
     t.bigint "object_id"
     t.integer "doctype"
@@ -177,12 +184,12 @@ ActiveRecord::Schema.define(version: 2021_01_09_193743) do
     t.index ["object_type", "object_id"], name: "index_downloadables_on_object_type_and_object_id"
   end
 
-  create_table "expressions", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "expressions", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "title"
     t.string "form"
     t.string "date"
     t.string "language"
-    t.text "comment", limit: 16777215
+    t.text "comment", size: :medium
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "copyrighted"
@@ -198,21 +205,21 @@ ActiveRecord::Schema.define(version: 2021_01_09_193743) do
     t.index ["period"], name: "index_expressions_on_period"
   end
 
-  create_table "expressions_manifestations", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "expressions_manifestations", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "expression_id"
     t.integer "manifestation_id"
     t.index ["expression_id"], name: "index_expressions_manifestations_on_expression_id"
     t.index ["manifestation_id"], name: "index_expressions_manifestations_on_manifestation_id"
   end
 
-  create_table "expressions_works", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "expressions_works", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "expression_id"
     t.integer "work_id"
     t.index ["expression_id"], name: "index_expressions_works_on_expression_id"
     t.index ["work_id"], name: "index_expressions_works_on_work_id"
   end
 
-  create_table "external_links", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "external_links", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "url"
     t.integer "linktype"
     t.integer "status"
@@ -222,7 +229,7 @@ ActiveRecord::Schema.define(version: 2021_01_09_193743) do
     t.string "description"
   end
 
-  create_table "featured_author_features", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|
+  create_table "featured_author_features", id: :integer, charset: "utf8", collation: "utf8_bin", force: :cascade do |t|
     t.datetime "fromdate"
     t.datetime "todate"
     t.integer "featured_author_id"
@@ -231,7 +238,7 @@ ActiveRecord::Schema.define(version: 2021_01_09_193743) do
     t.index ["featured_author_id"], name: "index_featured_author_features_on_featured_author_id"
   end
 
-  create_table "featured_authors", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|
+  create_table "featured_authors", id: :integer, charset: "utf8", collation: "utf8_bin", force: :cascade do |t|
     t.string "title"
     t.integer "user_id"
     t.integer "person_id"
@@ -242,7 +249,7 @@ ActiveRecord::Schema.define(version: 2021_01_09_193743) do
     t.index ["user_id"], name: "index_featured_authors_on_user_id"
   end
 
-  create_table "featured_content_features", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|
+  create_table "featured_content_features", id: :integer, charset: "utf8", collation: "utf8_bin", force: :cascade do |t|
     t.integer "featured_content_id"
     t.datetime "fromdate"
     t.datetime "todate"
@@ -251,7 +258,7 @@ ActiveRecord::Schema.define(version: 2021_01_09_193743) do
     t.index ["featured_content_id"], name: "index_featured_content_features_on_featured_content_id"
   end
 
-  create_table "featured_contents", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|
+  create_table "featured_contents", id: :integer, charset: "utf8", collation: "utf8_bin", force: :cascade do |t|
     t.string "title"
     t.integer "manifestation_id"
     t.integer "person_id"
@@ -267,7 +274,7 @@ ActiveRecord::Schema.define(version: 2021_01_09_193743) do
     t.index ["user_id_id"], name: "index_featured_contents_on_user_id_id"
   end
 
-  create_table "holdings", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|
+  create_table "holdings", id: :integer, charset: "utf8", collation: "utf8_bin", force: :cascade do |t|
     t.integer "publication_id"
     t.string "source_id", limit: 1024
     t.datetime "created_at", null: false
@@ -280,7 +287,7 @@ ActiveRecord::Schema.define(version: 2021_01_09_193743) do
     t.index ["publication_id"], name: "index_holdings_on_publication_id"
   end
 
-  create_table "html_dirs", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "html_dirs", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "path"
     t.string "author"
     t.datetime "created_at"
@@ -290,7 +297,7 @@ ActiveRecord::Schema.define(version: 2021_01_09_193743) do
     t.integer "person_id"
   end
 
-  create_table "html_files", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "html_files", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "path"
     t.string "url"
     t.string "status"
@@ -324,14 +331,14 @@ ActiveRecord::Schema.define(version: 2021_01_09_193743) do
     t.string "doc_content_type"
     t.integer "doc_file_size"
     t.datetime "doc_updated_at"
-    t.text "markdown", limit: 4294967295
+    t.text "markdown", size: :long
     t.string "publisher"
     t.index ["assignee_id"], name: "index_html_files_on_assignee_id"
     t.index ["path"], name: "index_html_files_on_path"
     t.index ["url"], name: "index_html_files_on_url"
   end
 
-  create_table "html_files_manifestations", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "html_files_manifestations", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "html_file_id"
@@ -340,7 +347,7 @@ ActiveRecord::Schema.define(version: 2021_01_09_193743) do
     t.index ["manifestation_id"], name: "index_html_files_manifestations_on_manifestation_id"
   end
 
-  create_table "impressions", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "impressions", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "impressionable_type"
     t.integer "impressionable_id"
     t.integer "user_id"
@@ -350,9 +357,9 @@ ActiveRecord::Schema.define(version: 2021_01_09_193743) do
     t.string "request_hash"
     t.string "ip_address"
     t.string "session_hash"
-    t.text "message", limit: 16777215
-    t.text "referrer", limit: 16777215
-    t.text "params", limit: 16777215
+    t.text "message", size: :medium
+    t.text "referrer", size: :medium
+    t.text "params", size: :medium
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["controller_name", "action_name", "ip_address"], name: "controlleraction_ip_index"
@@ -366,7 +373,7 @@ ActiveRecord::Schema.define(version: 2021_01_09_193743) do
     t.index ["user_id"], name: "index_impressions_on_user_id"
   end
 
-  create_table "legacy_recommendations", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "legacy_recommendations", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "from"
     t.string "about"
     t.string "what"
@@ -380,7 +387,7 @@ ActiveRecord::Schema.define(version: 2021_01_09_193743) do
     t.integer "manifestation_id"
   end
 
-  create_table "list_items", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|
+  create_table "list_items", id: :integer, charset: "utf8", collation: "utf8_bin", force: :cascade do |t|
     t.integer "user_id"
     t.string "listkey"
     t.integer "item_id"
@@ -394,7 +401,7 @@ ActiveRecord::Schema.define(version: 2021_01_09_193743) do
     t.index ["user_id"], name: "index_list_items_on_user_id"
   end
 
-  create_table "manifestations", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "manifestations", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "title"
     t.string "responsibility_statement"
     t.string "edition"
@@ -404,10 +411,10 @@ ActiveRecord::Schema.define(version: 2021_01_09_193743) do
     t.string "publication_place"
     t.string "publication_date"
     t.string "series_statement"
-    t.text "comment", limit: 16777215
+    t.text "comment", size: :medium
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "markdown", limit: 16777215
+    t.text "markdown", size: :medium
     t.text "cached_people"
     t.integer "impressions_count"
     t.text "cached_heading_lines"
@@ -422,7 +429,7 @@ ActiveRecord::Schema.define(version: 2021_01_09_193743) do
     t.index ["status"], name: "index_manifestations_on_status"
   end
 
-  create_table "manifestations_people", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "manifestations_people", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "manifestation_id"
@@ -431,7 +438,7 @@ ActiveRecord::Schema.define(version: 2021_01_09_193743) do
     t.index ["person_id"], name: "index_manifestations_people_on_person_id"
   end
 
-  create_table "news_items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|
+  create_table "news_items", charset: "utf8", collation: "utf8_bin", force: :cascade do |t|
     t.integer "itemtype"
     t.string "title"
     t.boolean "pinned"
@@ -445,21 +452,21 @@ ActiveRecord::Schema.define(version: 2021_01_09_193743) do
     t.index ["relevance"], name: "index_news_items_on_relevance"
   end
 
-  create_table "people", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "people", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "name"
     t.string "dates"
     t.string "title"
     t.string "other_designation", limit: 1024
     t.string "affiliation"
     t.string "country"
-    t.text "comment", limit: 16777215
+    t.text "comment", size: :medium
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "viaf_id"
     t.string "nli_id"
     t.integer "toc_id"
     t.boolean "public_domain"
-    t.text "wikipedia_snippet", limit: 16777215
+    t.text "wikipedia_snippet", size: :medium
     t.string "wikipedia_url", limit: 1024
     t.string "image_url", limit: 1024
     t.string "profile_image_file_name"
@@ -486,30 +493,30 @@ ActiveRecord::Schema.define(version: 2021_01_09_193743) do
     t.index ["sort_name"], name: "index_people_on_sort_name"
   end
 
-  create_table "periods", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "periods", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "name"
-    t.text "comments", limit: 16777215
+    t.text "comments", size: :medium
     t.string "wikipedia_url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "proofs", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "proofs", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "from"
     t.string "about"
-    t.text "what", limit: 16777215
+    t.text "what", size: :medium
     t.boolean "subscribe"
     t.string "status"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer "html_file_id"
     t.integer "resolved_by"
-    t.text "highlight", limit: 16777215
+    t.text "highlight", size: :medium
     t.integer "reported_by"
     t.integer "manifestation_id"
   end
 
-  create_table "publications", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|
+  create_table "publications", id: :integer, charset: "utf8", collation: "utf8_bin", force: :cascade do |t|
     t.string "title", limit: 1024
     t.string "publisher_line"
     t.string "author_line", limit: 1024
@@ -526,7 +533,7 @@ ActiveRecord::Schema.define(version: 2021_01_09_193743) do
     t.index ["person_id"], name: "index_publications_on_person_id"
   end
 
-  create_table "reading_lists", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|
+  create_table "reading_lists", charset: "utf8", collation: "utf8_bin", force: :cascade do |t|
     t.string "title"
     t.integer "user_id"
     t.integer "access"
@@ -535,7 +542,7 @@ ActiveRecord::Schema.define(version: 2021_01_09_193743) do
     t.index ["user_id"], name: "index_reading_lists_on_user_id"
   end
 
-  create_table "realizers", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|
+  create_table "realizers", id: :integer, charset: "utf8", collation: "utf8_bin", force: :cascade do |t|
     t.integer "expression_id"
     t.integer "person_id"
     t.integer "role"
@@ -545,7 +552,7 @@ ActiveRecord::Schema.define(version: 2021_01_09_193743) do
     t.index ["person_id"], name: "index_realizers_on_person_id"
   end
 
-  create_table "recommendations", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|
+  create_table "recommendations", id: :integer, charset: "utf8", collation: "utf8_bin", force: :cascade do |t|
     t.text "body"
     t.integer "user_id"
     t.integer "approved_by"
@@ -558,16 +565,16 @@ ActiveRecord::Schema.define(version: 2021_01_09_193743) do
     t.index ["user_id"], name: "index_recommendations_on_user_id"
   end
 
-  create_table "sessions", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "sessions", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "session_id", null: false
-    t.text "data", limit: 16777215
+    t.text "data", size: :medium
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["session_id"], name: "index_sessions_on_session_id"
     t.index ["updated_at"], name: "index_sessions_on_updated_at"
   end
 
-  create_table "sitenotices", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|
+  create_table "sitenotices", charset: "utf8", collation: "utf8_bin", force: :cascade do |t|
     t.text "body"
     t.datetime "fromdate"
     t.datetime "todate"
@@ -579,7 +586,7 @@ ActiveRecord::Schema.define(version: 2021_01_09_193743) do
     t.index ["todate"], name: "index_sitenotices_on_todate"
   end
 
-  create_table "sitenotices_users", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|
+  create_table "sitenotices_users", id: false, charset: "utf8", collation: "utf8_bin", force: :cascade do |t|
     t.bigint "sitenotice_id", null: false
     t.bigint "user_id", null: false
     t.string "session_id"
@@ -587,10 +594,10 @@ ActiveRecord::Schema.define(version: 2021_01_09_193743) do
     t.index ["session_id"], name: "index_sitenotices_users_on_session_id"
   end
 
-  create_table "static_pages", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|
+  create_table "static_pages", id: :integer, charset: "utf8", collation: "utf8_bin", force: :cascade do |t|
     t.string "tag"
     t.string "title"
-    t.text "body", limit: 16777215
+    t.text "body", size: :medium
     t.integer "status"
     t.integer "mode"
     t.datetime "created_at", null: false
@@ -598,7 +605,7 @@ ActiveRecord::Schema.define(version: 2021_01_09_193743) do
     t.boolean "ltr"
   end
 
-  create_table "taggings", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "taggings", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "tag_id"
     t.integer "manifestation_id"
     t.integer "status"
@@ -608,7 +615,7 @@ ActiveRecord::Schema.define(version: 2021_01_09_193743) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "tags", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "tags", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "name"
     t.integer "status"
     t.integer "created_by"
@@ -616,22 +623,22 @@ ActiveRecord::Schema.define(version: 2021_01_09_193743) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "tocs", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
-    t.text "toc", limit: 16777215
+  create_table "tocs", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.text "toc", size: :medium
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "credit_section"
     t.integer "status"
   end
 
-  create_table "user_preferences", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|
+  create_table "user_preferences", id: :integer, charset: "utf8", collation: "utf8_bin", force: :cascade do |t|
     t.string "name", null: false
     t.string "value"
     t.integer "user_id", null: false
     t.index ["user_id", "name"], name: "index_user_preferences_on_user_id_and_name", unique: true
   end
 
-  create_table "users", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "users", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "name"
     t.string "email"
     t.string "provider"
@@ -648,17 +655,17 @@ ActiveRecord::Schema.define(version: 2021_01_09_193743) do
     t.datetime "avatar_updated_at"
   end
 
-  create_table "versions", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "versions", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "item_type", null: false
     t.integer "item_id", null: false
     t.string "event", null: false
     t.string "whodunnit"
-    t.text "object", limit: 4294967295
+    t.text "object", size: :long
     t.datetime "created_at"
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
-  create_table "volunteer_profile_features", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|
+  create_table "volunteer_profile_features", id: :integer, charset: "utf8", collation: "utf8_bin", force: :cascade do |t|
     t.integer "volunteer_profile_id"
     t.datetime "fromdate"
     t.datetime "todate"
@@ -667,7 +674,7 @@ ActiveRecord::Schema.define(version: 2021_01_09_193743) do
     t.index ["volunteer_profile_id"], name: "index_volunteer_profile_features_on_volunteer_profile_id"
   end
 
-  create_table "volunteer_profiles", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|
+  create_table "volunteer_profiles", id: :integer, charset: "utf8", collation: "utf8_bin", force: :cascade do |t|
     t.string "name"
     t.text "bio"
     t.text "about"
@@ -679,18 +686,18 @@ ActiveRecord::Schema.define(version: 2021_01_09_193743) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "work_likes", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|
+  create_table "work_likes", id: false, charset: "utf8", collation: "utf8_bin", force: :cascade do |t|
     t.integer "manifestation_id", null: false
     t.integer "user_id", null: false
     t.index ["manifestation_id", "user_id"], name: "index_work_likes_on_manifestation_id_and_user_id"
     t.index ["user_id", "manifestation_id"], name: "index_work_likes_on_user_id_and_manifestation_id"
   end
 
-  create_table "works", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "works", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "title"
     t.string "form"
     t.string "date"
-    t.text "comment", limit: 16777215
+    t.text "comment", size: :medium
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "genre"
@@ -702,6 +709,7 @@ ActiveRecord::Schema.define(version: 2021_01_09_193743) do
     t.index ["normalized_pub_date"], name: "index_works_on_normalized_pub_date"
   end
 
+  add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "anthologies", "users"
   add_foreign_key "anthology_texts", "anthologies"
   add_foreign_key "anthology_texts", "manifestations"

@@ -16,8 +16,9 @@ gem 'active_data' # for *Search classes in Chewy
 
 gem "jquery-slick-rails" # for carousel slider
 gem 'rails-jquery-autocomplete', '>= 1.0.5' # for auto-completion
-gem 'property_sets' # for key/value properties per model
-gem "mini_magick", ">= 4.9.4"
+gem 'property_sets' # for key/value properties per model; version held until https://github.com/zendesk/property_sets/issues/85 is fixed
+gem 'image_processing'
+# gem "mini_magick", ">= 4.9.4" # now (Rails 6.1) required by image_processing
 gem "omniauth-rails_csrf_protection"
 
 gem 'rack-cors', require: 'rack/cors'
@@ -92,10 +93,11 @@ end
 
 group :development do
   gem 'byebug'
-  gem 'web-console', '~> 2.0'
+  gem 'web-console'
   gem "capistrano", "~> 3.11", require: false
   gem "capistrano-rails", "~> 1.4", require: false
   gem 'rvm1-capistrano3', require: false
   gem 'capistrano-thin', '~> 2.0.0'
   gem 'capistrano-rvm'
+  gem 'listen'
 end
