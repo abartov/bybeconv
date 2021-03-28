@@ -30,6 +30,7 @@
           #error-e-mail.field-label= t(:email_just_for_proof)
           = email_field_tag 'from', '', {placeholder: t(:email), class: 'field-v02'}
           = hidden_field_tag(:manifestation, @m.id)
+          = invisible_captcha
           #error-notes.field-label= t(:ziburit)
           = text_field_tag(:ziburit, nil, {required: true, class: 'field-v02'})
           .bottomButtonsArea

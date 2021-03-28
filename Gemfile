@@ -33,8 +33,8 @@ gem 'sqlite3' # for dictionary imports
 
 gem 'jquery-rails'
 gem "jquery-ui-rails"
-gem 'rdf', '~> 2.0.1'
-gem 'sparql-client', '~> 2.0.1'
+gem 'rdf'# , '~> 2.0.1'
+gem 'sparql-client' # , '~> 2.0.1'
 gem 'activerecord-session_store'
 gem 'sass-rails'
 gem 'coffee-script'
@@ -63,7 +63,8 @@ gem 'haml'
 gem 'haml-rails'
 gem 'linkeddata' # for RDF etc.
 gem 'rdf-vocab' # for SKOS predefined vocab
-gem 'project-honeypot2', '>= 0.1.3' # for HTTP:BL service by Project Honeypot
+gem 'invisible_captcha' # combat spam
+# gem 'project-honeypot2', '>= 0.1.3' # for HTTP:BL service by Project Honeypot # unmaintained and also requires pcaprub which is incompatible with Ruby 3.x
 gem 'paper_trail', '~> 5.0.0' # for versioning entities
 gem 'gepub' # for generating EPUBs
 gem 'rmagick' # for generating cover images for EPUBs

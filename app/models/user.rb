@@ -8,8 +8,8 @@ class User < ApplicationRecord
   has_and_belongs_to_many :liked_works, join_table: :work_likes, class_name: :Manifestation
 
   has_many :recommendations
-  has_many :anthologies
-  has_many :bookmarks
+  has_many :anthologies, dependent: :destroy
+  has_many :bookmarks, dependent: :destroy
   # no apparent need to be able to retrieve all recommendations a particular (admin) user has *resolved*.  If one arises, use a separate association on the resolved_by foreign key
 
   # editor bits
