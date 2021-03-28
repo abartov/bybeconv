@@ -1,8 +1,8 @@
 source 'http://rubygems.org'
 
-gem 'rails', '~> 5.2'
+gem 'rails'
 gem 'rails-i18n' # , git: 'https://github.com/svenfuchs/rails-i18n.git' # , branch: 'rails-4-x' # For 4.x
-gem 'actionview', '>= 5.2.4.2'
+gem 'actionview'
 gem 'sprockets', '~> 3' # 4.x requires switching to a manifest.js for assets
 gem 'rails-ujs'
 gem 'mysql2' # Rails 5.2 needs a newer one # , '~> 0.3.11'
@@ -26,7 +26,7 @@ gem 'diffy'
 gem 'aws-sdk-s3' # for Active Storage
 
 gem 'paperclip' # , '~>5.2' # for cloud files like author images 6.x requires aws >3.x
-gem 'impressionist', '~>1' # for pageview stats.  2.x requires Rails 6.x
+gem 'impressionist'
 gem 'jbuilder', '~> 2.0' # for JSON APIs
 gem 'sqlite3' # for dictionary imports
 # gem 'rollbar' # error reporting. Airbrake replacement.
@@ -45,7 +45,8 @@ gem 'coffee-script'
 
 
 gem 'execjs'
-gem 'therubyracer'
+#gem 'therubyracer'
+gem 'mini_racer'
 gem 'thin'
 gem 'htmlentities'
 gem 'kaminari', '1.1.1' # pagination. Kaminari 1.2.1 seems to have a bug - https://github.com/kaminari/kaminari/issues/1033
@@ -65,7 +66,7 @@ gem 'linkeddata' # for RDF etc.
 gem 'rdf-vocab' # for SKOS predefined vocab
 gem 'invisible_captcha' # combat spam
 # gem 'project-honeypot2', '>= 0.1.3' # for HTTP:BL service by Project Honeypot # unmaintained and also requires pcaprub which is incompatible with Ruby 3.x
-gem 'paper_trail', '~> 5.0.0' # for versioning entities
+gem 'paper_trail' # , '~> 5.0.0' # for versioning entities
 gem 'gepub' # for generating EPUBs
 gem 'rmagick' # for generating cover images for EPUBs
 gem 'pandoc-ruby' # for converting to DOCX
