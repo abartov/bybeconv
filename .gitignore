@@ -30,6 +30,7 @@
 /config/newrelic.yml
 /config/s3.yml
 /config/behead.payload
+/config/credentials.yml.enc
 
 /vendor/analysis*
 /public/assets/*
@@ -44,3 +45,6 @@ coverage
 export
 storage
 bin/delayed_job
+
+# Ignore master key for decrypting credentials and more.
+/config/master.key
