@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '~> 5.2'
+gem 'rails', '~> 5.2.5'
 gem 'rails-i18n' # , git: 'https://github.com/svenfuchs/rails-i18n.git' # , branch: 'rails-4-x' # For 4.x
 gem 'actionview', '>= 5.2.4.2'
 
@@ -18,6 +18,7 @@ gem "jquery-slick-rails" # for carousel slider
 gem 'rails-jquery-autocomplete', '>= 1.0.5' # for auto-completion
 gem 'property_sets' # for key/value properties per model
 gem "mini_magick", ">= 4.9.4"
+gem 'marcel', '~> 1'
 gem "omniauth-rails_csrf_protection"
 
 gem 'rack-cors', require: 'rack/cors'
