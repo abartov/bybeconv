@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_28_234923) do
+ActiveRecord::Schema.define(version: 2021_04_17_205338) do
 
   create_table "aboutnesses", id: :integer, charset: "utf8", collation: "utf8_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -50,13 +50,13 @@ ActiveRecord::Schema.define(version: 2021_03_28_234923) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
-  create_table "active_storage_variant_records", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+  create_table "active_storage_variant_records", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
-  create_table "anthologies", charset: "utf8", collation: "utf8_bin", force: :cascade do |t|
+  create_table "anthologies", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|
     t.string "title"
     t.integer "user_id"
     t.integer "access"
