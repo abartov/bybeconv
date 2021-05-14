@@ -571,6 +571,8 @@ module BybeUtils
       url = source.item_pattern.sub('__ID__', source_id.strip)
     when 'hebrewbooks'
       url = source_id.strip
+    when 'nli_api'
+      url = source_id.sub('/en/','/he/')
     when 'googlebooks'
       url =  "https://books.google.co.il/books?id=#{source_id.strip}"
     end

@@ -149,7 +149,7 @@ GEM
     fugit (1.4.4)
       et-orbi (~> 1.1, >= 1.1.8)
       raabro (~> 1.4)
-    gared (0.0.22)
+    gared (0.0.23)
       nokogiri (> 1.8)
       rest-client (~> 2)
       watir (~> 6)
@@ -522,7 +522,7 @@ DEPENDENCIES
   diffy
   docx
   execjs
-  gared (>= 0.0.22)
+  gared (>= 0.0.23)
   gepub
   haml
   haml-rails
