@@ -174,7 +174,6 @@ class BibController < ApplicationController
     end
     ret = []
     ret = provider.query_publications_by_person(q, bib_source) if provider # bib_source is sent as context, so that the resulting Publication objects would be able to access the linkify logic for their source; should probably be replaced by a proc
-    byebug
     return ret
   end
 end

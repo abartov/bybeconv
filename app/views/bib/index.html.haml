@@ -2,7 +2,7 @@
   %h1= t(:bib_workshop)
   .container-fluid
     .row
-      .col-md-6
+      .col-md-4
         %h2= t(:statistics)
         %p= t(:bib_stats, {pubs: @counts[:pubs], holdings: @counts[:holdings], obtained: @counts[:obtained], scanned: @counts[:scanned], uploaded: @counts[:uploaded], irrelevant: @counts[:irrelevant], missing: @counts[:missing], authors_todo: @counts[:authors_todo], authors_done: @counts[:authors_done], copyrighted: @counts[:copyrighted]})
         %h2= link_to t(:get_bibs), action: :pubs_by_person
@@ -15,7 +15,7 @@
               = " (#{Holding.to_obtain(bs.id).count.to_s})"
         %h2= t(:administration)
         %p= link_to t(:manage_bib_sources), bib_sources_path
-      .col-md-6
+      .col-md-8
         %h2= link_to t(:available_scans), bib_scans_path
         %table
           - @digipubs.each do |pub|
