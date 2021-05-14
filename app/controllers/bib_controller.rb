@@ -169,9 +169,12 @@ class BibController < ApplicationController
       provider = Gared::Primo.new(bib_source.url, bib_source.institution)
     when 'idea'
       provider = Gared::Idea.new(bib_source.url)
+    when 'nli_api'
+      provider = Gared::Nli_Api.new(bib_source.url, bib_source.api_key)
     end
     ret = []
     ret = provider.query_publications_by_person(q, bib_source) if provider # bib_source is sent as context, so that the resulting Publication objects would be able to access the linkify logic for their source; should probably be replaced by a proc
+    byebug
     return ret
   end
 end
