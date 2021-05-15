@@ -597,4 +597,20 @@ module BybeUtils
   def highlight_suspicious_markdown(buf)
     buf.gsub('**', redspan('**')).gsub('| ', redspan('| ')).gsub('##', redspan('##'))
   end
+  def replace_with_redirect(m_id_to_delete, m_id_to_redirect_to)
+    m = Manifestation.find(m_id_to_delete)
+    h = m.html_files[0]
+    ats = AnthologyText.where(manifestation_id: m_id_to_delete)
+    ats.each do |at|
+      begin
+        at.manifestation_id = m_id_to_redirect_to
+        at.save!
+      rescue
+        at.destroy
+      end
+    end
+    h.manifestations[0].manual_delete
+    h.manifestation_ids << m_id_to_redirect_to
+    h.save
+  end
 end
