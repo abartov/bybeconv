@@ -69,7 +69,8 @@
                   .new-info-v02= item.pinned ? '7' : ''
                   .new-card-right-v02
                     - if item.itemtype == 'publication'
-                      %img.new-card-pic-v02{src: item.thumbnail_url, width: '475', height: '686' }
+                      = link_to author_toc_path(item.person_id) do
+                        %img.new-card-pic-v02{src: item.thumbnail_url, width: '475', height: '686' }
                     - else
                       %div{ 'class' => "new-card-type-v02 #{(item.double || item.itemtype == 'youtube') ? ' double-height-v02' : ''}"}= newsitem_glyph(item)
                   .new-card-left-v02
