@@ -22,13 +22,21 @@ class WelcomeController < ApplicationController
     # @whatsnew = whatsnew_anonymous # TODO: custom calculate for logged-in users
     @cached_newsfeed = cached_newsfeed # new, heterogeneous newsfeed
     @featured_content = featured_content
-    (@fc_snippet, @fc_rest) = @featured_content.nil? ? ['',''] : snippet(@featured_content.body, 500) # prepare snippet for collapsible
+    (@fc_snippet, @fc_rest) = @featured_content.nil? ? ['',''] : snippet(@featured_content.body, 1500) # prepare snippet 
     @fc_snippet = MultiMarkdown.new(@fc_snippet).to_html.force_encoding('UTF-8') unless @fc_snippet.empty?
     @featured_author = featured_author
-    (@fa_snippet, @fa_rest) = @featured_author.nil? ? ['',''] : snippet(@featured_author.body, 500) # prepare snippet for collapsible
+    (@fa_snippet, @fa_rest) = @featured_author.nil? ? ['',''] : snippet(@featured_author.body, 1500) # prepare snippet 
     @fa_snippet = MultiMarkdown.new(@fa_snippet).to_html.force_encoding('UTF-8') unless @fa_snippet.empty?
     @featured_volunteer = featured_volunteer
     @popups_by_genre = popups_by_genre # cached, if available
+  end
+  def featured_popup
+    @featured_content = FeaturedContent.find(params[:id])
+    if @featured_content.nil?
+      head :ok
+    else
+      render partial: 'featured_item_popup'
+    end
   end
   def contact
     render partial: 'contact'

@@ -4,36 +4,26 @@
       %p.headline-1-v02= t(:featured_item)
     .by-card-content-v02.card-with-bottom-links.card-with-button.flash-content
       - unless @featured_content.nil?
-        .flash-text-v02
+        .flash-text-v02.clampable
           %p.headline-3-v02= @featured_content.title
           - unless @featured_content.user.nil?
             %p
               = t(:by)+' '
               = link_to @featured_content.user.name, volunteer_show_path(@featured_content.user)
-          .text-height-flash-work
+          .text-height-flash-work.clampable_body
             != @fc_snippet
             - if @fc_rest != ''
               = ' ...'
-          / TODO: implement
-          /.another-flash{style: 'padding-top: 6px'}
-          /  = link_to '#' do
-          /    %span.right-side-icon= "'"
-          /    %span{style: 'font-weight: bold'}= t(:another_feature)
+          -# TODO: implement
+          -# .another-flash{style: 'padding-top: 6px'}
+          -#   = link_to '#' do
+          -#     %span.right-side-icon= "'"
+          -#     %span{style: 'font-weight: bold'}= t(:another_feature)
           .bottom-left-buttons
-            - if @fc_rest != ''
-              %button.by-button-v02#toggle_featured_item= t(:to_the_full_feature)
             - unless @featured_content.manifestation.nil?
               %a{ href: manifestation_read_path(id: @featured_content.manifestation.id)}
                 %button.by-button-v02= t(:to_the_work_in_the_site)
             - unless @featured_content.external_link.nil? or @featured_content.external_link.empty?
               %a{ href: @featured_content.external_link, target: '_blank'}
                 %button.by-button-v02= t(:to_external_content)
-
-:javascript
-  $(document).ready(function(){
-    $('#toggle_featured_item').click(function(){
-      $('.recommend-text').css('height', 'auto');
-      $('#fc_body').html("#{@featured_content.nil? ? '' : escape_javascript(@featured_content.body)}");
-      $('#toggle_featured_item').hide();
-    });
-  });
+            %button.by-button-v02.popup_btn.pointer{style:'font-weight: bold;display:none;', 'data-popup-id' => 'featured_content_dlg','data-popuppath' => featured_content_popup_path(id: @featured_content.id)}= t(:to_the_full_feature)
