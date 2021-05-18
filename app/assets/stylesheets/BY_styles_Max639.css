@@ -79,7 +79,8 @@ p {
   margin-top: -5px;
   width: 101px;
   height: 5px;
-  margin-right: 9px;}
+  margin-right: 9px;
+	left: 43px}
 	
 .about-author-card-bookmark-fold-v02 {
   margin-right: 10px;
@@ -101,6 +102,7 @@ p {
     height: 138px;
     padding-top: 32px; }
 .surprise-author-name-v02 {
+	width: calc(100% - 140px);
   }
 
 .statistics-box-v02 {
@@ -244,6 +246,9 @@ p {
 	min-width: calc(50% - 28px);
 }
 	
+.surprise-author-card-content-v02 {
+  width: calc(100% - 138px);
+}
 	
 }
 

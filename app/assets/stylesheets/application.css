@@ -17,7 +17,24 @@
 *= require slick
 */
 /*body{font-size:14px;} /* default */
+/* temporary fix */
+.credits{
+  -webkit-column-count: unset; /* Chrome, Safari, Opera */
+  -moz-column-count: unset; /* Firefox */
+  column-count: unset;
+}
 
+.credits ul{
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(15, 3fr);
+  margin-bottom: 25px;
+}
+.credits ul li {
+  margin: 5px;
+  margin-left: 25px;
+
+}
 .padbot12 {
   padding-bottom: 12px;
 }

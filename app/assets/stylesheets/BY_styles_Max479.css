@@ -84,6 +84,7 @@
 
 .surprise-author-name-v02 {
 	padding-top: 0;
+	width: calc(100% - 125px);
   }
 
 .author-name-v02 {
@@ -464,4 +465,20 @@ padding-top: 6px;
 		padding-top: 6px;
 		padding-bottom: 6px;
 	}
+.surprise-author-card-content-v02 {
+  width: calc(100% - 123px);
+}
+.by2-icon{
+    font-size: 14px;
+    line-height: 14px;
+}
+.mainlist ol {
+  padding-right: 34px;
+}
+	
+.mainlist ol > li:before {
+  right:-34px;
+  width:34px;
+}
+	
 }

@@ -143,6 +143,7 @@
 		height:41px;
 	}
 		.surprise-author-name-v02{
+	width: calc(100% - 150px);
 	padding-top: 0;
 	}
  #header-general {
@@ -373,20 +374,16 @@ display: none;	}
 }
 .card-with-bottom-links{
 	padding-bottom: 50px;
-	height: calc(100vh - 60px);
+	max-height: calc(100% - 50px);
 }
 .link-to-all-v02 {
   line-height: 28px;
   }
-	.bottom-right-link{
-  line-height: 28px;
-	}
 .right-side-icon{
 	line-height: 28px;
 	}
 	.by-button-v02{
 		height: 28px;
-		line-height: 28px;
 	}
 	.mobileLogo{
     display:block;
@@ -699,6 +696,14 @@ display: none;	}
 }
 	.topNavEntryAreaMobile{
 	display: flex;
+}
+	
+	.surprise-author-card-content-v02 {
+  width: calc(100% - 174px);
+	}
+.narrow-popup{
+	width: calc(100% + 30px);
+	max-width: calc(100% + 30px);
 }
 	
 }
