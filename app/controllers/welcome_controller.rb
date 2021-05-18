@@ -38,6 +38,18 @@ class WelcomeController < ApplicationController
       render partial: 'featured_item_popup'
     end
   end
+  def featured_author_popup
+    if params[:id].nil?
+      head :not_found
+    else
+      @featured_author = FeaturedAuthor.find(params[:id])
+      if @featured_author.nil?
+        head :ok
+      else
+        render partial: 'featured_author_popup'
+      end
+    end
+  end
   def contact
     render partial: 'contact'
   end

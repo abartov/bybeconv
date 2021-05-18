@@ -4,30 +4,17 @@
       %p.headline-1-v02= t(:featured_author)
     .by-card-content-v02.card-with-bottom-links.card-with-button.flash-content
       - unless @featured_author.nil?
-        %p.headline-3-v02= @featured_author.title
-        - unless @featured_author.user.nil?
-          %p
-            = t(:by)+' '
-            = link_to @featured_author.user.name, volunteer_show_path(@featured_author.user)
-        .text-height-flash-work
-          != @fa_snippet
-          - if @fa_rest != ''
-            = ' ...'
-        - if @fa_rest != ''
-          %span.pointer.btn#toggle_featured_author{style:'color:white; padding-top:0.5rem'}= t(:to_the_full_feature)
-        / TODO: implement
-        /.another-flash
-        /  = link_to '#' do
-        /    %span.right-side-icon= "'"
-        /    %span{style: 'font-weight: bold'}= t(:another_feature)
-        %a{ href: author_toc_path(id: @featured_author.person.id)}
-          %button.by-button-v02.button-to-full-v02= t(:to_the_author_page)
-
-:javascript
-  $(document).ready(function(){
-    $('#toggle_featured_item').click(function(){
-      $('.recommend-text').css('height', 'auto');
-      $('#fc_body').html("#{@featured_author.nil? ? '' : escape_javascript(@featured_author.body)}");
-      $('#toggle_featured_item').hide();
-    });
-  });
+        .clampable
+          %p.headline-3-v02= @featured_author.title
+          - unless @featured_author.user.nil?
+            %p
+              = t(:by)+' '
+              = link_to @featured_author.user.name, volunteer_show_path(@featured_author.user)
+          .text-height-flash-work.clampable_body
+            != @fa_snippet
+            - if @fa_rest != ''
+              = ' ...'
+          .bottom-left-buttons
+            %a{ href: author_toc_path(id: @featured_author.person.id)}
+              %button.by-button-v02= t(:to_the_author_page)
+            %button.by-button-v02.popup_btn.pointer{style:'font-weight: bold;display:none;', 'data-popup-id' => 'featured_content_dlg','data-popuppath' => featured_author_popup_path(id: @featured_author.id)}= t(:to_the_full_feature)
