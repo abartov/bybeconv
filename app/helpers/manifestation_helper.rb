@@ -1,4 +1,7 @@
 module ManifestationHelper
+  # NOTE: these URLs depends on secret_key_base -- once one is generated or change for the app, all URLs change.
+  # out current implementation *stores* the URLs with the digests *in the markdown* of the works, meaning they can
+  # all suddenly break if secret_key_base is changed.
   def options_from_images(images)
     # full resolution URL in value, thumbnail URL in imagesrc!
     actual_images = images.reject{|img| !img.variable?} # skip any non-image attachments that may have been accidentally uploaded

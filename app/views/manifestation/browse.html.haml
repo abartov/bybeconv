@@ -2,7 +2,7 @@
 #content.container-fluid
   .row.top-element
     .col-12.col-lg-5.col-xxxl-4
-      .by-card-v02#browse_intro{style:"display:#{ @filters.empty? ? 'show' : 'none'}"}
+      .by-card-v02.desktop-only#browse_intro{style:"display:#{ @filters.empty? ? 'show' : 'none'}"}
         .work-area
           .work-content
             .headline-1-v02= t(:welcome_to_works_browsing)
