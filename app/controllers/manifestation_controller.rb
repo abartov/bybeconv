@@ -202,7 +202,7 @@ class ManifestationController < ApplicationController
         @headwords_page = nonnil_headwords.page(@page)
         @total_pages = @headwords_page.total_pages
         unless params[:to_letter].nil? || params[:to_letter].empty? # for A-Z navigation, we need to adjust the page
-          adjust_page_by_letter(nonnil_headwords, params[:to_letter], :sort_defhead)
+          adjust_page_by_letter(nonnil_headwords, params[:to_letter], :sort_defhead, nil)
           @headwords_page = nonnil_headwords.page(@page) if oldpage != @page # re-get page X of manifestations if adjustment was made
         end
     
@@ -534,8 +534,8 @@ class ManifestationController < ApplicationController
 
   protected
 
-  def bfunc(coll, page, l, field) # binary-search function for ab_pagination
-    recs = coll.order(field).page(page) 
+  def bfunc(coll, page, l, field, direction) # binary-search function for ab_pagination
+    recs = coll.order(field).page(page)
     rec = recs.first
     return true if rec.nil?
     c = nil
@@ -547,14 +547,19 @@ class ManifestationController < ApplicationController
       rec = recs[i]
     end
     c = '' if c.nil?
-    return true if c == l || c > l # already too high a page
-    return false
+    if(direction == :desc || direction == 'desc')
+      return true if c == l || c < l # already too high a page
+      return false
+    else
+      return true if c == l || c > l # already too high a page
+      return false
+    end
   end
 
-  def adjust_page_by_letter(coll, l, field)
+  def adjust_page_by_letter(coll, l, field, direction)
     # binary search to find page where letter begins
     ret = (1..@total_pages).bsearch{|page|
-      bfunc(coll, page, l, field)
+      bfunc(coll, page, l, field, direction)
     }
     unless ret.nil?
       ret = ret - 1 unless ret == 1
@@ -727,7 +732,7 @@ class ManifestationController < ApplicationController
 
       unless params[:to_letter].nil? || params[:to_letter].empty?
         @total_pages = @works.total_pages
-        adjust_page_by_letter(@collection, params[:to_letter], :sort_title)
+        adjust_page_by_letter(@collection, params[:to_letter], :sort_title, @sort_dir)
         @works = @collection.page(@page) if oldpage != @page # re-get page X of manifestations if adjustment was made
       end
       @ab = prep_ab(@collection, @works, :sort_title)
