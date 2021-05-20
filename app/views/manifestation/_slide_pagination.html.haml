@@ -32,33 +32,29 @@
         e.stopImmediatePropagation(); /* # prevent second pagination bar at bottom from also firing */
         e.preventDefault();
         $('#page_tag').val('1');
-        startModal('spinnerdiv');
         window.history.replaceState($('#works_filters').serialize(), null, '/works');
-        $('#works_filters').submit();
+        submit_filters();
       });
       $('#lastnav').click(function(e){
         e.stopImmediatePropagation();
         e.preventDefault();
         $('#page_tag').val('#{@total_pages}');
-        startModal('spinnerdiv');
         window.history.replaceState($('#works_filters').serialize(), null, '/works');
-        $('#works_filters').submit();
+        submit_filters();
       });
       $('#nextnav').click(function(e){
         e.stopImmediatePropagation();
         e.preventDefault();
         $('#page_tag').val('#{@page.to_i + 1}');
-        startModal('spinnerdiv');
         window.history.replaceState($('#works_filters').serialize(), null, '/works');
-        $('#works_filters').submit();
+        submit_filters();
       });
       $('#prevnav').click(function(e){
         e.stopImmediatePropagation();
         e.preventDefault();
         $('#page_tag').val('#{@page.to_i - 1}');
-        startModal('spinnerdiv');
         window.history.replaceState($('#works_filters').serialize(), null, '/works');
-        $('#works_filters').submit();
+        submit_filters();
       });
     } else {
       /* # window.history.replaceState($('#works_filters').serialize(), null, '/works');  */

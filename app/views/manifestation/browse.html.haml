@@ -35,8 +35,7 @@
         state = event.originalEvent.state;
         if(state != null) {
           $('#works_filters').deserialize(state);
-          startModal('spinnerdiv');
-          $('#works_filters').submit();
+          submit_filters();
         }
       } else {
         

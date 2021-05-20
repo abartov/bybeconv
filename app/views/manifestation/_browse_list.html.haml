@@ -104,9 +104,8 @@
       filters = #{@emit_filters == true};
       if(filters) {
         $('#page_tag').val(slideEvt.value.toString());
-        startModal('spinnerdiv');
         window.history.pushState($('#works_filters').serialize(), null, '/works');
-        $('#works_filters').submit();
+        submit_filters();
       } else {
         window.history.pushState($('#works_filters').serialize(), null, '/works');
         $.get(url+'&page='+slideEvt.value.toString(),'',null, 'script');
@@ -125,12 +124,11 @@
         $('#'+$(this).attr('data-ele')).prop("checked", false);
       }
       // and submit the form
-      startModal('spinnerdiv');
       $('#page_tag').val('1'); // reset pagination
       $('input').attr('disabled', false); // re-enable checkboxes to preserve other filters
       window.history.pushState($('#works_filters').serialize(), null, '/works');
-      $('#works_filters').submit();
-    });
+      submit_filters();
+      });
 
     $.fn.browse_multi_select_toggle = function() {
       // determine whether to toggle on or off
@@ -180,9 +178,8 @@
     $('#sort_by_dd').change(function(){
       $('input[name=sort_by]').val($('#sort_by_dd option:selected').val());
       $('#page_tag').val('1'); // reset pagination
-      startModal('spinnerdiv');
       window.history.pushState($('#works_filters').serialize(), null, '/works');
-      $('#works_filters').submit();
+      submit_filters();
     });
     $('#add-to-anth-btn').click(function() {
       if(#{@anthology.nil? ? 'true' : 'false'} == true) {

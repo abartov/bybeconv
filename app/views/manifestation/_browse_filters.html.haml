@@ -213,11 +213,6 @@
       $('#page_tag').val('1'); // reset pagination
       submit_timeout = window.setTimeout(submit_filters, 300);
     });
-    function submit_filters() {
-      startModal('spinnerdiv');
-      window.history.replaceState($('#works_filters').serialize(), null, '/works');
-      $('#works_filters').submit();
-    }
     $('.reset').click(function(){
       $('#works_filters').find(':input').each(function() {
         switch(this.type) {
@@ -235,12 +230,11 @@
       });
       $('#author_ids').val('');
       $('#authors_names').val('');
-      startModal('spinnerdiv');
       $('#emit_filters').val('true');
       $('#page_tag').val('1'); // reset pagination
       $('#toletter_tag').val(''); // reset pagination
       window.history.replaceState($('#works_filters').serialize(), null, '/works');
-      $('#works_filters').submit();
+      submit_filters();
     });
     $('#lang_xlat').change(function(){
       // set all translated languages on/off accordingly

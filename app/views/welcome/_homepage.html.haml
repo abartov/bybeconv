@@ -52,7 +52,7 @@
         / periods
         = render 'periods'
       .col-12.col-lg-4
-        / whatsnew feed
+        -# whatsnew feed
         .by-card-v02.whats-new-v02
           #whats-new-bg
             .by-side-card-header-v02
@@ -92,11 +92,11 @@
               %a{ href: whatsnew_path}
                 %b= t(:to_all_whatsnew)
                 %span.left-arrow= '1'
-        / work spotlight
+        -# work spotlight
         = render partial: 'featured_item'
-        / author spotlight
+        -# author spotlight
         = render partial: 'featured_author'
-        / volunteer spotlight
+        -# volunteer spotlight
         .by-card-v02.volunteer-v02
           #volunteer-bg
             - unless @featured_volunteer.nil?

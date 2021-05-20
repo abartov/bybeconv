@@ -18,3 +18,18 @@
 //= require moment/he.js
 //= require tempusdominus-bootstrap-4
 //= require_tree .
+
+var mobileWidth = 991;
+
+function submit_filters() {
+  startModal('spinnerdiv');
+  if(window.innerWidth < mobileWidth) {
+    alert('submitting mobile filters!');
+    window.history.replaceState($('#mobile_filters').serialize(), null, '/works');
+    $('#mobile_filters').submit();
+  } else {
+    alert('submitting desktop filters!')
+    window.history.replaceState($('#works_filters').serialize(), null, '/works');
+    $('#works_filters').submit();
+  }
+}
