@@ -17,14 +17,16 @@
 :javascript
   $(document).ready(function() {
     filters = #{@emit_filters == true};
-    if(filters) {
-      $('.letterbutton').click(function(e){
+
+    $('.letterbutton').click(function(e){
+      startModal('spinnerdiv');
+      if(filters) {
         e.preventDefault();
         e.stopImmediatePropagation(); // prevent second pagination bar at bottom from also firing
         $('#toletter_tag').val($(this).attr('id'));
-        startModal('spinnerdiv');
         form_elem = "##{filter_element}"
         $(form_elem).submit();
-      });
-    }
+      }
+      setTimeout(function(){stopModal('spinnerdiv')}, 5000); // workaround
+    });
   });

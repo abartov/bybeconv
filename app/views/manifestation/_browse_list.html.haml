@@ -182,6 +182,7 @@
         window.history.pushState($('#works_filters').serialize(), null, '/works');
         submit_filters();
       } else {
+        startModal('spinnerdiv');
         window.location = "/works?sort_by="+$('#sort_by_dd option:selected').val();
       }
     });
