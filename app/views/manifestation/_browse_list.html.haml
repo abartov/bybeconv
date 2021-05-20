@@ -33,18 +33,18 @@
         #custom-select{title: t(:worklist_sort_tt)}
           %select#sort_by_dd{name: 'sort_by'}
             %optgroup{label: t(:alefbet)}
-              %option{value: 'alphabetical_asc'}= t(:alefbet_asc)
-              %option{value: 'alphabetical_desc'}= t(:alefbet_desc)
+              %option{value: 'alphabetical_asc', selected: @sort == 'alphabetical_asc' ? 'true': nil}= t(:alefbet_asc)
+              %option{value: 'alphabetical_desc', selected: @sort == 'alphabetical_desc' ? 'true': nil}= t(:alefbet_desc)
             %optgroup{label: t(:popularity_group)}
-              %option{value: 'popularity_desc'}= t(:popularity_desc)
-              %option{value: 'popularity_asc'}= t(:popularity_asc)
+              %option{value: 'popularity_desc', selected: @sort == 'popularity_asc' ? 'true': nil}= t(:popularity_desc)
+              %option{value: 'popularity_asc', selected: @sort == 'popularity_desc' ? 'true': nil}= t(:popularity_asc)
             %optgroup{label: t(:dates)}
-              %option{value: 'publication_date_asc'}= t(:pubdate_asc)
-              %option{value: 'publication_date_desc'}= t(:pubdate_desc)
-              %option{value: 'creation_date_asc'}= t(:workdate_asc)
-              %option{value: 'creation_date_desc'}= t(:workdate_desc)
-              %option{value: 'upload_date_asc'}= t(:uploaddate_asc)
-              %option{value: 'upload_date_desc'}= t(:uploaddate_desc)
+              %option{value: 'publication_date_asc', selected: @sort == 'publication_date_asc' ? 'true': nil}= t(:pubdate_asc)
+              %option{value: 'publication_date_desc', selected: @sort == 'publication_date_desc' ? 'true': nil}= t(:pubdate_desc)
+              %option{value: 'creation_date_asc', selected: @sort == 'creation_date_asc' ? 'true': nil}= t(:workdate_asc)
+              %option{value: 'creation_date_desc', selected: @sort == 'creation_date_desc' ? 'true': nil}= t(:workdate_desc)
+              %option{value: 'upload_date_asc', selected: @sort == 'upload_date_asc' ? 'true': nil}= t(:uploaddate_asc)
+              %option{value: 'upload_date_desc', selected: @sort == 'upload_date_desc' ? 'true': nil}= t(:uploaddate_desc)
       .sort-by-mobile
         %p
           %input#RadioGroupSort_1{:name => "RadioGroupSort", :type => "radio", value: "alphabet"}/
@@ -177,9 +177,13 @@
     });
     $('#sort_by_dd').change(function(){
       $('input[name=sort_by]').val($('#sort_by_dd option:selected').val());
-      $('#page_tag').val('1'); // reset pagination
-      window.history.pushState($('#works_filters').serialize(), null, '/works');
-      submit_filters();
+      if($('#works_filters').length > 0) {
+        $('#page_tag').val('1'); // reset pagination
+        window.history.pushState($('#works_filters').serialize(), null, '/works');
+        submit_filters();
+      } else {
+        window.location = "/works?sort_by="+$('#sort_by_dd option:selected').val();
+      }
     });
     $('#add-to-anth-btn').click(function() {
       if(#{@anthology.nil? ? 'true' : 'false'} == true) {
