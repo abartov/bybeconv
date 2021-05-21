@@ -3,7 +3,7 @@
 
 = form_tag(works_path, remote: true, method: :post, id: 'works_filters') do
   = hidden_field_tag(:sort_by, @sort)
-  .by-card-content-v02#filters_panel
+  .by-card-content-v02.desktop-only#filters_panel
     .headline-2-v02= t(:filter_by)
     %span.reset.linkcolor.pointer= t(:reset_filter)
     .sort-type
@@ -12,8 +12,8 @@
       .nested.active.collapse.show#collfauthor
         .nested-content
           .search-mobile-switch
-            %button.search-mobile-option#opt_workname{:href => "#"}= t(:work_title)
-            %button.search-mobile-option#opt_authorname{:href => "#"}= t(:author_name)
+            %button.search-mobile-option.opt_workname{:href => "#"}= t(:work_title)
+            %button.search-mobile-option.opt_authorname{:href => "#"}= t(:author_name)
           %break
           %input.field-v02.field-without-label#search_input{:placeholder => t(:what_to_search_for), name: 'search_input', :type => "text", value: @search_input}/
           = autocomplete_field_tag :authorstr, @authorstr.present? ? @authorstr : '', autocomplete_person_name_path, id_element: '#author_id', 'data-noMatchesLabel' => t(:no_matches_found), style:'display:none', 'class' => 'field-v02 field-without-label author-name-field', id: 'authors', placeholder: t(:author_names)
@@ -166,19 +166,20 @@
     = hidden_field_tag(:cur_page, @page, id: 'cur_page_tag')
     = hidden_field_tag(:page, '', id: 'page_tag')
     = hidden_field_tag(:to_letter, '', id: 'toletter_tag')
+
 :javascript
   $(document).ready(function() {
     window.history.pushState($('#works_filters').serialize(), null, '/works');
     $('#sort_by_dd').val("#{@sort}");
     if("#{@search_type}" == 'authorname') {
-      $('#opt_authorname').addClass('active');
+      $('.opt_authorname').addClass('active');
       $('.multi-name-sort').show();
       $('#authors').show();
       $('#search_input').hide();
       $('#search_type').val('authorname');
     } else {
       $('.multi-name-sort').hide();
-      $('#opt_workname').addClass('active');
+      $('.opt_workname').addClass('active');
       $('#search_type').val('workname');
     }
     $('.datetype').click(function(e) {
@@ -187,19 +188,19 @@
       $(this).addClass('active');
       $('#date_type').val($(this).attr('id'));
     });
-    $('#opt_authorname').click(function(e){
+    $('.opt_authorname').click(function(e){
       e.preventDefault();
-      $('#opt_workname').removeClass('active');
-      $('#opt_authorname').addClass('active');
+      $('.opt_workname').removeClass('active');
+      $('.opt_authorname').addClass('active');
       $('#authors').show();
       $('#search_input').hide();
       $('#search_type').val('authorname');
       $('.multi-name-sort').show();
     });
-    $('#opt_workname').click(function(e){
+    $('.opt_workname').click(function(e){
       e.preventDefault();
-      $('#opt_workname').addClass('active');
-      $('#opt_authorname').removeClass('active');
+      $('.opt_workname').addClass('active');
+      $('.opt_authorname').removeClass('active');
       $('#authors').hide();
       $('#search_input').show();
       $('#search_type').val('workname');

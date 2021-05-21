@@ -2,5 +2,11 @@ $('#thelist').html("<%= j(render partial: 'browse_list') %>");
 <% if @emit_filters %>
 $('#sort_filter_panel').html("<%= j(render partial: 'browse_filters') %>");
 $('#authorsDlg').html("<%= j(render partial: 'authors_select', locals: {authors: @authors, list: @authors_list}) %>");
+$('#mobileFilterDlg').html("<%= j(render partial: 'mobile_filters', locals: {authors: @authors, list: @authors_list}) %>");
+<% if @filters.length == 0 %>
+if(window.innerWidth < mobileWidth) {
+  $('#mobileFilterDlg').modal('show');
+}
+<% end %>
 <% end %>
 stopModal('spinnerdiv');

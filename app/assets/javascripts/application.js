@@ -19,7 +19,7 @@
 //= require tempusdominus-bootstrap-4
 //= require_tree .
 
-var mobileWidth = 991;
+var mobileWidth = 767;
 
 function submit_filters() {
   startModal('spinnerdiv');

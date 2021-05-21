@@ -1,0 +1,290 @@
+= form_tag(works_path, remote: true, method: :post, id: 'mobile_filters') do
+  = hidden_field_tag(:sort_by, @sort)
+  = hidden_field_tag(:author_id, @author_id.present? ? @author_id : nil)
+  = hidden_field_tag(:search_type, id: 'search_type')
+  = hidden_field_tag(:authors, @authors, id: 'author_ids')
+  = hidden_field_tag(:authors_names, @authors_names, id: 'authors_names')
+  = hidden_field_tag(:date_type, id: 'date_type')
+  = hidden_field_tag(:emit_filters, 'true', id: 'emit_filters')
+  = hidden_field_tag(:cur_page, @page, id: 'cur_page_tag')
+  = hidden_field_tag(:page, '', id: 'page_tag')
+  = hidden_field_tag(:to_letter, '', id: 'toletter_tag')
+  #texts-list-filter_M.flex-popup.filter-sort-m-popup
+    .popup-top.sticky-top
+      .row{style: "padding:15px;margin: 0"}
+        .col-4{style: "padding: 0;"}
+          %button.btn-small-outline-v02{'data-dismiss'=>'modal'}
+            .btn-text-v02
+              %span.right-arrow 2
+              %span= t(:back)
+        .col-4{style: "padding: 0;"}
+          .headline-2-v02{style: "text-align: center;margin: 0; padding-top: 3px;"} סינון ומיון
+        .col-4{style: "padding: 0;"}
+          %button.reset.btn-small-outline-v02{style: "float: left"}
+            .btn-text-v02= t(:reset_filter)
+    .by-popup-v02
+      .by-card-content-v02.limited-height-popup-content-v02
+        .author-mobile-sort-and-filter
+          .search-mobile-switch
+            %button.search-mobile-option#opt_filter{href: "#"} סינון
+            %button.search-mobile-option#opt_sort{href: "#"} מיון
+          .by-horizontal-seperator-light
+          .author-mobile-filters-area
+            .headline-2-v02= t(:filter_by)
+            .sort-type
+              .vertical-expand
+                .sort-type-headline= t(:name)
+              .nested
+                .nested-content
+                  .search-mobile-switch
+                    %button.search-mobile-option.opt_workname{href: "#"} שם יצירה
+                    %button.search-mobile-option.opt_authorname{href: "#"} שם היוצר/ת
+                  %break
+                  %input.field-v02.field-without-label{placeholder: "טקסט חופשי", type: "text"}/
+            .sort-type
+              .vertical-expand
+                .sort-type-headline שם
+              .nested
+                .nested-content
+                  .search-mobile-switch
+                    %button.search-mobile-option{href: "#"} שם יצירה
+                    %button.search-mobile-option.active{href: "#"} שם היוצר/ת
+                  %break
+                  %input.field-v02.field-without-label.author-name-field{placeholder: "שם פרטי / משפחה", type: "text"}/
+                  .multi-name-sort
+                    %a{href: "#"} בחירה מרובה של יוצרים
+            .sort-type
+              .vertical-expand
+                .sort-type-headline מגדר
+              .nested
+                .nested-content.nested-list
+                  %ul
+                    %li
+                      %input#CheckboxGroup0_1{name: "CheckboxGroup2", type: "checkbox", value: "sort_by_man"}/
+                      %label
+                        יוצרים
+                        %span (9854)
+                    %li
+                      %input#CheckboxGroup0_2{name: "CheckboxGroup2", type: "checkbox", value: "sort_by_woman"}/
+                      %label
+                        יוצרות
+                        %span (1024)
+            .sort-type
+              .vertical-expand
+                .sort-type-headline מצב זכויות יוצרים
+              .nested
+                .nested-content.nested-list
+                  %ul
+                    %li
+                      %input#CheckboxGroup3_1{name: "CheckboxGroup3", type: "checkbox", value: "sort_by_cc-pd"}/
+                      %label
+                        %span.by-icon-v02> m
+                        נחלת הכלל
+                        %span (203)
+                    %li
+                      %input#CheckboxGroup3_2{name: "CheckboxGroup3", type: "checkbox", value: "sort_by_cc-unknown"}/
+                      %label
+                        יצירות יתומות
+                        %span (570)
+                    %li
+                      %input#CheckboxGroup3_3{name: "CheckboxGroup3", type: "checkbox", value: "sort_by_copyright"}/
+                      %label
+                        %span.by-icon-v02> x
+                        רשות פרסום
+                        %span (127)
+                    %li
+                      %input#CheckboxGroup3_4{disabled: "disabled", name: "CheckboxGroup3", type: "checkbox", value: "sort_by_cc-unknown"}/
+                      %label
+                        לא ידוע
+                        %span (0)
+            .sort-type
+              .vertical-expand
+                .sort-type-headline סוגות
+              .nested
+                .nested-content.nested-list
+                  %ul
+                    %li
+                      %input#CheckboxGroup1_1{name: "CheckboxGroup1", type: "checkbox", value: "sort_by_poetry"}/
+                      %label
+                        %span.by-icon-v02> t
+                        שירה
+                        %span (5261)
+                    %li
+                      %input#CheckboxGroup1_2{name: "CheckboxGroup1", type: "checkbox", value: "sort_by_prose"}/
+                      %label
+                        %span.by-icon-v02> l
+                        פרוזה
+                        %span (1579)
+                    %li
+                      %input#CheckboxGroup1_3{name: "CheckboxGroup1", type: "checkbox", value: "sort_by_drama"}/
+                      %label
+                        %span.by-icon-v02> k
+                        מחזות
+                        %span (69)
+                    %li
+                      %input#CheckboxGroup1_4{name: "CheckboxGroup1", type: "checkbox", value: "sort_by_fables"}/
+                      %label
+                        %span.by-icon-v02> E
+                        משלים
+                        %span (228)
+                    %li
+                      %input#CheckboxGroup1_5{name: "CheckboxGroup1", type: "checkbox", value: "sort_by_letters"}/
+                      %label
+                        %span.by-icon-v02> w
+                        מכתבים
+                        %span (151)
+                    %li
+                      %input#CheckboxGroup1_6{name: "CheckboxGroup1", type: "checkbox", value: "sort_by_memoir"}/
+                      %label
+                        %span.by-icon-v02> j
+                        זכרונות ויומנים
+                        %span (236)
+                    %li
+                      %input#CheckboxGroup1_7{name: "CheckboxGroup1", type: "checkbox", value: "sort_by_article"}/
+                      %label
+                        %span.by-icon-v02> a
+                        מאמרים, מסות ועיון
+                        %span (3031)
+                    %li
+                      %input#CheckboxGroup1_8{name: "CheckboxGroup1", type: "checkbox", value: "sort_by_translations"}/
+                      %label
+                        %span.by-icon-v02> s
+                        תרגומים
+                        %span (151)
+                    %li
+                      %input#CheckboxGroup1_9{name: "CheckboxGroup1", type: "checkbox", value: "sort_by_dictionary"}/
+                      %label
+                        %span.by-icon-v02> f
+                        מילונים ולקסיקונים
+                        %span (2)
+            .sort-type
+              .vertical-expand
+                .sort-type-headline תקופות
+              .nested
+                .nested-content.nested-list
+                  %ul
+                    %li
+                      %input#CheckboxGroup2_1{disabled: "disabled", name: "CheckboxGroup2", type: "checkbox", value: "sort_by_ancient"}/
+                      %label
+                        עת עתיקה ופיוט
+                        %span (0)
+                    %li
+                      %input#CheckboxGroup2_2{disabled: "disabled", name: "CheckboxGroup2", type: "checkbox", value: "sort_by_medieval"}/
+                      %label
+                        ימי הביניים והרנסאנס
+                        %span (0)
+                    %li
+                      %input#CheckboxGroup2_3{name: "CheckboxGroup2", type: "checkbox", value: "sort_by_enlightenment"}/
+                      %label
+                        ההשכלה
+                        %span (33)
+                    %li
+                      %input#CheckboxGroup2_4{name: "CheckboxGroup2", type: "checkbox", value: "sort_by_revival"}/
+                      %label
+                        תחיה
+                        %span (88)
+                    %li
+                      %input#CheckboxGroup2_5{name: "CheckboxGroup2", type: "checkbox", value: "sort_by_modern"}/
+                      %label
+                        העת החדשה
+                        %span (209)
+            .sort-type
+              .vertical-expand
+                .sort-type-headline מאפיינים
+              .nested
+                .nested-content.nested-list
+                  %ul
+                    %li
+                      %input#CheckboxGroup4_1{name: "CheckboxGroup4", type: "checkbox", value: "sort_by_curatorial_content"}/
+                      %label
+                        תוכן אוצרותי
+                        %span (4)
+                    %li
+                      %input#CheckboxGroup4_2{name: "CheckboxGroup4", type: "checkbox", value: "sort_by_recommendations"}/
+                      %label
+                        המלצות קוראים
+                        %span (12)
+                    %li
+                      %input#CheckboxGroup4_3{name: "CheckboxGroup4", type: "checkbox", value: "sort_by_liked"}/
+                      %label
+                        יצירות שאהבתי
+                        %span (2)
+                    %li
+                      %input#CheckboxGroup4_4{disabled: "disabled", name: "CheckboxGroup4", type: "checkbox", value: "sort_by_active_bookmark"}/
+                      %label
+                        סימניה מופעלת
+                        %span (0)
+                    %li
+                      %input#CheckboxGroup4_5{name: "CheckboxGroup4", type: "checkbox", value: "sort_by_no_properties"}/
+                      %label
+                        ללא מאפיינים
+                        %span (312)
+            .sort-type
+              .vertical-expand
+                .sort-type-headline תאריך
+              .nested
+                .nested-content
+                  .search-mobile-switch
+                    %button.search-mobile-option{href: "#"} הוצאה
+                    %button.search-mobile-option.active{href: "#"} יצירה
+                    %button.search-mobile-option{href: "#"} העלאה
+                  %break
+                  .dates-range
+                    .dates-graph-area
+                    .range-outside
+                      .range-inside
+                        .range-handle-right
+                        .range-handle-left
+                    %input.field-v02.field-without-label.range-date-field{placeholder: "dd-mm-yyyy", type: "text"}/
+                    .date-range-to עד
+                    %input.field-v02.field-without-label.range-date-field{placeholder: "dd-mm-yyyy", style: "float: left", type: "text"}/
+            .sort-type
+              .vertical-expand
+                .sort-type-headline= t(:orig_lang)
+              .nested
+                .nested-content{style: "padding-right: 0"}
+                  %ul
+                    %li
+                      - attrs = {name: "ckb_languages[]", :type => "checkbox", id: 'lang_he', value: 'he'}
+                      - attrs.merge!({disabled: 'disabled'}) if @language_facet['he'].nil? || @language_facet['he'] == 0
+                      - attrs.merge!({checked: 'checked'}) if @languages.present? && @languages.include?('he')
+                      %input{attrs}/
+                      %label
+                        = t(:hebrew)
+                        %span= "(#{@language_facet['he'] || '0'})"
+                    %li
+                      - attrs = {name: "ckb_languages[]", :type => "checkbox", id: 'lang_xlat', value: 'xlat'}
+                      - attrs.merge!({disabled: 'disabled'}) if @language_facet[:xlat].nil? || @language_facet[:xlat] == 0
+                      - attrs.merge!({checked: 'checked'}) if @languages.present? && @languages.include?('xlat')
+                      %input{attrs}/
+                      %label
+                        = t(:translations)
+                        %span= "(#{@language_facet[:xlat] || '0'})"
+                      .languages-filters
+                        %ul.nested-list#xlat_langs
+                          - @language_facet.sort{|a,b| b[1] <=> a[1]}.each do |lang, amount|
+                            - next if lang == :xlat || lang == 'he'
+                            %li
+                              - attrs = {name: "ckb_languages[]", :type => "checkbox", id: "lang_#{lang}", value: lang}
+                              - attrs.merge!({disabled: 'disabled'}) if @language_facet[lang].nil? || @language_facet[lang] == 0
+                              - attrs.merge!({checked: 'checked'}) if @languages.present? && @languages.include?(lang)
+                              %input{attrs}/
+                              %label
+                                = textify_lang(lang)
+                                %span= "(#{amount || '0'})"
+      .bottom-button-area.sticky-bottom
+        %button.by-button-v02{href: "#"} יישום סינון נבחר
+:javascript
+  $(document).ready(function() {
+    if("#{@sort_or_filter}" == 'filter') {
+      $('#opt_filter').addClass('active');
+      $('.multi-name-sort').show();
+      $('#authors').show();
+      $('#search_input').hide();
+      $('#search_type').val('authorname');
+    } else {
+      $('.multi-name-sort').hide();
+      $('#opt_sort').addClass('active');
+      $('#search_type').val('workname');
+    }
+  });

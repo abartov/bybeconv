@@ -75,8 +75,13 @@
   }
   $(document).ready(function(){
     $('#sort_filter_toggle').click(function() {
-      $('#browse_intro').toggle();
-      $('#sort_filter_panel').toggle();
+      if(window.innerWidth < mobileWidth) {
+        $('#mobileFilterDlg').modal('show');
+      } else {
+        $('#browse_intro').toggle();
+        $('#sort_filter_panel').toggle();
+      }
+      
       if($('#filters_panel .temporary').length) { // if filter panel yet to be loaded
         startModal('spinnerdiv');
         var url = $('#hurl').val().replace(/page=\d+/,'');
