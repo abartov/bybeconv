@@ -7,9 +7,9 @@
     .headline-2-v02= t(:filter_by)
     %span.reset.linkcolor.pointer= t(:reset_filter)
     .sort-type
-      .vertical-expand.fcoll#fauthor{'data-target' =>'#collfauthor', 'data-toggle' =>'collapse'}
+      .vertical-expand.fcoll#fauthor{'data-target' =>'.collfauthor', 'data-toggle' =>'collapse'}
         .sort-type-headline= t(:name)
-      .nested.active.collapse.show#collfauthor
+      .nested.active.collapse.show.collfauthor
         .nested-content
           .search-mobile-switch
             %button.search-mobile-option.opt_workname{:href => "#"}= t(:work_title)
@@ -25,9 +25,9 @@
           = hidden_field_tag(:authors, @authors, id: 'author_ids')
           = hidden_field_tag(:authors_names, @authors_names, id: 'authors_names')
     .sort-type
-      .vertical-expand.fcoll#fgenre{'data-target' =>'#collfgenre', 'data-toggle' =>'collapse'}
+      .vertical-expand.fcoll#fgenre{'data-target' =>'.collfgenre', 'data-toggle' =>'collapse'}
         .sort-type-headline= t(:genres)
-      .nested.active.collapse.show#collfgenre
+      .nested.active.collapse.show.collfgenre
         .nested-content.nested-list
           - get_genres.each do |g|
             - attrs = @genre_facet[g].nil? ? {disabled: 'disabled'} : {}
@@ -40,9 +40,9 @@
               %span= "(#{@genre_facet[g] || '0'})"
             %br/
     .sort-type
-      .vertical-expand.fcoll#fperiod{'data-target' =>'#collfperiod', 'data-toggle' =>'collapse'}
+      .vertical-expand.fcoll#fperiod{'data-target' =>'.collfperiod', 'data-toggle' =>'collapse'}
         .sort-type-headline= t(:periods)
-      .nested.active.collapse.show#collfperiod
+      .nested.active.collapse.show.collfperiod
         .nested-content.nested-list
           - Expression.periods.invert.each do |p|
             - attrs = @period_facet[p[0]].nil? ? {disabled: 'disabled'} : {}
@@ -54,9 +54,9 @@
               %span= "(#{@period_facet[p[0]] || '0'})"
             %br/
     .sort-type
-      .vertical-expand.fcoll#fcopyright{'data-target' =>'#collfcopyright', 'data-toggle' =>'collapse'}
+      .vertical-expand.fcoll#fcopyright{'data-target' =>'.collfcopyright', 'data-toggle' =>'collapse'}
         .sort-type-headline= t(:copyright_status)
-      .nested.active.collapse.show#collfcopyright
+      .nested.active.collapse.show.collfcopyright
         .nested-content.nested-list
           - attrs = {name: "ckb_copyright[]", :type => "checkbox", id: 'copyright_0', value: 0}
           - attrs.merge!({disabled: 'disabled'}) if @copyright_facet[0].nil?
@@ -108,9 +108,9 @@
     /           ללא מאפיינים
     /           %span (312)
     .sort-type
-      .vertical-expand.fcoll#fdate{'data-target' =>'#collfdate', 'data-toggle' =>'collapse'}
+      .vertical-expand.fcoll#fdate{'data-target' =>'.collfdate', 'data-toggle' =>'collapse'}
         .sort-type-headline= t(:thedate)
-      .nested.active.collapse.show#collfdate
+      .nested.active.collapse.show.collfdate
         .nested-content
           .search-mobile-switch
             %button.search-mobile-option.datetype#published= t(:publication)
@@ -129,9 +129,9 @@
             .date-range-to= t(:until)
             %input.datepicker.datetimepicker-input.field-v02.field-without-label.range-date-field#todate{:placeholder => t(:year), :style => "float: left", 'data-toggle' => 'datetimepicker', name: "todate", 'data-target' => '#todate'}/
     .sort-type
-      .vertical-expand.fcoll#flang{'data-target' =>'#collflang', 'data-toggle' =>'collapse'}
+      .vertical-expand.fcoll#flang{'data-target' =>'.collflang', 'data-toggle' =>'collapse'}
         .sort-type-headline= t(:orig_lang)
-      .nested.active.collapse.show#collflang
+      .nested.active.collapse.show.collflang
         .nested-content{:style => "padding-right: 0"}
           %ul
             %li

@@ -32,31 +32,24 @@
           .author-mobile-filters-area
             .headline-2-v02= t(:filter_by)
             .sort-type
-              .vertical-expand
+              .vertical-expand.collapsed{'data-target' =>'.collfauthor', 'data-toggle' =>'collapse'}
                 .sort-type-headline= t(:name)
-              .nested
-                .nested-content
-                  .search-mobile-switch
-                    %button.search-mobile-option.opt_workname{href: "#"} שם יצירה
-                    %button.search-mobile-option.opt_authorname{href: "#"} שם היוצר/ת
-                  %break
-                  %input.field-v02.field-without-label{placeholder: "טקסט חופשי", type: "text"}/
-            .sort-type
-              .vertical-expand
-                .sort-type-headline שם
-              .nested
+              .collapse.collfauthor
                 .nested-content
                   .search-mobile-switch
                     %button.search-mobile-option{href: "#"} שם יצירה
                     %button.search-mobile-option.active{href: "#"} שם היוצר/ת
                   %break
-                  %input.field-v02.field-without-label.author-name-field{placeholder: "שם פרטי / משפחה", type: "text"}/
-                  .multi-name-sort
-                    %a{href: "#"} בחירה מרובה של יוצרים
+                  %input.field-v02.field-without-label.author-name-field#search_input{:placeholder => t(:what_to_search_for), name: 'search_input', :type => "text", value: @search_input}
+                  = autocomplete_field_tag :authorstr, @authorstr.present? ? @authorstr : '', autocomplete_person_name_path, id_element: '#author_id', 'data-noMatchesLabel' => t(:no_matches_found), style:'display:none', 'class' => 'field-v02 field-without-label author-name-field', id: 'authors', placeholder: t(:author_names)
+                  = hidden_field_tag :author_id, @author_id.present? ? @author_id : nil
+        
+                  .multi-name-sort.pointer
+                    %span.linkcolor{'data-toggle' => 'modal', 'data-target' => '#authorsDlg'}= t(:multiselect)
             .sort-type
-              .vertical-expand
-                .sort-type-headline מגדר
-              .nested
+              .vertical-expand.collapsed{'data-target' =>'.collfgender', 'data-toggle' =>'collapse'}
+                .sort-type-headline= t(:author_gender)
+              .collapse.collfgender
                 .nested-content.nested-list
                   %ul
                     %li
@@ -70,9 +63,9 @@
                         יוצרות
                         %span (1024)
             .sort-type
-              .vertical-expand
+              .vertical-expand.collapsed{'data-target' =>'.collfcopyright', 'data-toggle' =>'collapse'}
                 .sort-type-headline מצב זכויות יוצרים
-              .nested
+              .collapse.collfcopyright
                 .nested-content.nested-list
                   %ul
                     %li
@@ -98,9 +91,9 @@
                         לא ידוע
                         %span (0)
             .sort-type
-              .vertical-expand
+              .vertical-expand.collapsed{'data-target' =>'.collfgenre', 'data-toggle' =>'collapse'}
                 .sort-type-headline סוגות
-              .nested
+              .collapse.collfgenre
                 .nested-content.nested-list
                   %ul
                     %li
@@ -158,9 +151,9 @@
                         מילונים ולקסיקונים
                         %span (2)
             .sort-type
-              .vertical-expand
-                .sort-type-headline תקופות
-              .nested
+              .vertical-expand.collapsed{'data-target' =>'.collfperiod', 'data-toggle' =>'collapse'}
+                .sort-type-headline= t(:periods)
+              .collapse.collfperiod
                 .nested-content.nested-list
                   %ul
                     %li
@@ -189,40 +182,9 @@
                         העת החדשה
                         %span (209)
             .sort-type
-              .vertical-expand
-                .sort-type-headline מאפיינים
-              .nested
-                .nested-content.nested-list
-                  %ul
-                    %li
-                      %input#CheckboxGroup4_1{name: "CheckboxGroup4", type: "checkbox", value: "sort_by_curatorial_content"}/
-                      %label
-                        תוכן אוצרותי
-                        %span (4)
-                    %li
-                      %input#CheckboxGroup4_2{name: "CheckboxGroup4", type: "checkbox", value: "sort_by_recommendations"}/
-                      %label
-                        המלצות קוראים
-                        %span (12)
-                    %li
-                      %input#CheckboxGroup4_3{name: "CheckboxGroup4", type: "checkbox", value: "sort_by_liked"}/
-                      %label
-                        יצירות שאהבתי
-                        %span (2)
-                    %li
-                      %input#CheckboxGroup4_4{disabled: "disabled", name: "CheckboxGroup4", type: "checkbox", value: "sort_by_active_bookmark"}/
-                      %label
-                        סימניה מופעלת
-                        %span (0)
-                    %li
-                      %input#CheckboxGroup4_5{name: "CheckboxGroup4", type: "checkbox", value: "sort_by_no_properties"}/
-                      %label
-                        ללא מאפיינים
-                        %span (312)
-            .sort-type
-              .vertical-expand
-                .sort-type-headline תאריך
-              .nested
+              .vertical-expand.collapsed{'data-target' =>'.collfdate', 'data-toggle' =>'collapse'}
+                .sort-type-headline= t(:thedate)
+              .collapse.collfdate
                 .nested-content
                   .search-mobile-switch
                     %button.search-mobile-option{href: "#"} הוצאה
@@ -239,9 +201,9 @@
                     .date-range-to עד
                     %input.field-v02.field-without-label.range-date-field{placeholder: "dd-mm-yyyy", style: "float: left", type: "text"}/
             .sort-type
-              .vertical-expand
+              .vertical-expand.collapsed{'data-target' =>'.collflang', 'data-toggle' =>'collapse'}
                 .sort-type-headline= t(:orig_lang)
-              .nested
+              .collapse.collflang
                 .nested-content{style: "padding-right: 0"}
                   %ul
                     %li

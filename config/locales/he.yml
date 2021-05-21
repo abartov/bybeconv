@@ -471,7 +471,8 @@ he:
   purged: הפריטים הוסרו.
   rec_file: קובץ
   rec_when: מתי
-  gender: מגדר
+  gender: מיגדר
+  author_gender: מיגדר המחבר/ת
   orphans: יצירות יתומות
   male: זכר
   female: נקבה
