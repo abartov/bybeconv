@@ -31,7 +31,7 @@
           .by-horizontal-seperator-light
           .mobile-sort-area{style:'display: none'}
             %div{style: "margin-top: 15px"}
-              .headline-2-v02 מיון לפי:
+              .headline-2-v02= t(:sort_by)
               #sort-by
                 .sort-by-mobile
                   %p
@@ -107,139 +107,75 @@
                 .sort-type-headline= t(:copyright_status)
               .collapse.collfcopyright
                 .nested-content.nested-list
-                  %ul
-                    %li
-                      %input#CheckboxGroup3_1{name: "CheckboxGroup3", type: "checkbox", value: "sort_by_cc-pd"}/
-                      %label
-                        %span.by-icon-v02> m
-                        נחלת הכלל
-                        %span (203)
-                    %li
-                      %input#CheckboxGroup3_2{name: "CheckboxGroup3", type: "checkbox", value: "sort_by_cc-unknown"}/
-                      %label
-                        יצירות יתומות
-                        %span (570)
-                    %li
-                      %input#CheckboxGroup3_3{name: "CheckboxGroup3", type: "checkbox", value: "sort_by_copyright"}/
-                      %label
-                        %span.by-icon-v02> x
-                        רשות פרסום
-                        %span (127)
-                    %li
-                      %input#CheckboxGroup3_4{disabled: "disabled", name: "CheckboxGroup3", type: "checkbox", value: "sort_by_cc-unknown"}/
-                      %label
-                        לא ידוע
-                        %span (0)
+                  - attrs = {name: "ckb_copyright[]", :type => "checkbox", id: 'copyright_0', value: 0}
+                  - attrs.merge!({disabled: 'disabled'}) if @copyright_facet[0].nil?
+                  - attrs.merge!({checked: 'checked'}) if @copyright.present? && @copyright.include?(0)
+
+                  %input{attrs}/
+                  %label
+                    %span.by-icon-v02> m
+                    = t(:public_domain)
+                    %span= "(#{@copyright_facet[0] || '0'})"
+                  %br/
+                  - attrs = {name: "ckb_copyright[]", :type => "checkbox", id: 'copyright_1', value: 1}
+                  - attrs.merge!({disabled: 'disabled'}) if @copyright_facet[1].nil?
+                  - attrs.merge!({checked: 'checked'}) if @copyright.present? && @copyright.include?(1)
+                  %input{attrs}/
+                  %label
+                    %span.by-icon-v02> x
+                    = t(:by_permission)
+                    %span= "(#{@copyright_facet[1] || '0'})"
+                  %br/
             .sort-type
               .vertical-expand.collapsed{'data-target' =>'.collfgenre', 'data-toggle' =>'collapse'}
                 .sort-type-headline= t(:genres)
               .collapse.collfgenre
                 .nested-content.nested-list
-                  %ul
-                    %li
-                      %input#CheckboxGroup1_1{name: "CheckboxGroup1", type: "checkbox", value: "sort_by_poetry"}/
-                      %label
-                        %span.by-icon-v02> t
-                        שירה
-                        %span (5261)
-                    %li
-                      %input#CheckboxGroup1_2{name: "CheckboxGroup1", type: "checkbox", value: "sort_by_prose"}/
-                      %label
-                        %span.by-icon-v02> l
-                        פרוזה
-                        %span (1579)
-                    %li
-                      %input#CheckboxGroup1_3{name: "CheckboxGroup1", type: "checkbox", value: "sort_by_drama"}/
-                      %label
-                        %span.by-icon-v02> k
-                        מחזות
-                        %span (69)
-                    %li
-                      %input#CheckboxGroup1_4{name: "CheckboxGroup1", type: "checkbox", value: "sort_by_fables"}/
-                      %label
-                        %span.by-icon-v02> E
-                        משלים
-                        %span (228)
-                    %li
-                      %input#CheckboxGroup1_5{name: "CheckboxGroup1", type: "checkbox", value: "sort_by_letters"}/
-                      %label
-                        %span.by-icon-v02> w
-                        מכתבים
-                        %span (151)
-                    %li
-                      %input#CheckboxGroup1_6{name: "CheckboxGroup1", type: "checkbox", value: "sort_by_memoir"}/
-                      %label
-                        %span.by-icon-v02> j
-                        זכרונות ויומנים
-                        %span (236)
-                    %li
-                      %input#CheckboxGroup1_7{name: "CheckboxGroup1", type: "checkbox", value: "sort_by_article"}/
-                      %label
-                        %span.by-icon-v02> a
-                        מאמרים, מסות ועיון
-                        %span (3031)
-                    %li
-                      %input#CheckboxGroup1_8{name: "CheckboxGroup1", type: "checkbox", value: "sort_by_translations"}/
-                      %label
-                        %span.by-icon-v02> s
-                        תרגומים
-                        %span (151)
-                    %li
-                      %input#CheckboxGroup1_9{name: "CheckboxGroup1", type: "checkbox", value: "sort_by_dictionary"}/
-                      %label
-                        %span.by-icon-v02> f
-                        מילונים ולקסיקונים
-                        %span (2)
+                  - get_genres.each do |g|
+                    - attrs = @genre_facet[g].nil? ? {disabled: 'disabled'} : {}
+                    - attrs.merge!({:name => "ckb_genres[]", :type => "checkbox", id: "genre_#{g}", value: g})
+                    - attrs.merge!({checked: 'checked'}) if @genres.present? && @genres.include?(g)
+                    %input{ attrs}/
+                    %label
+                      %span.by-icon-v02>= glyph_for_genre(g)
+                      = textify_genre(g)
+                      %span= "(#{@genre_facet[g] || '0'})"
+                    %br/
             .sort-type
               .vertical-expand.collapsed{'data-target' =>'.collfperiod', 'data-toggle' =>'collapse'}
                 .sort-type-headline= t(:periods)
               .collapse.collfperiod
                 .nested-content.nested-list
-                  %ul
-                    %li
-                      %input#CheckboxGroup2_1{disabled: "disabled", name: "CheckboxGroup2", type: "checkbox", value: "sort_by_ancient"}/
-                      %label
-                        עת עתיקה ופיוט
-                        %span (0)
-                    %li
-                      %input#CheckboxGroup2_2{disabled: "disabled", name: "CheckboxGroup2", type: "checkbox", value: "sort_by_medieval"}/
-                      %label
-                        ימי הביניים והרנסאנס
-                        %span (0)
-                    %li
-                      %input#CheckboxGroup2_3{name: "CheckboxGroup2", type: "checkbox", value: "sort_by_enlightenment"}/
-                      %label
-                        ההשכלה
-                        %span (33)
-                    %li
-                      %input#CheckboxGroup2_4{name: "CheckboxGroup2", type: "checkbox", value: "sort_by_revival"}/
-                      %label
-                        תחיה
-                        %span (88)
-                    %li
-                      %input#CheckboxGroup2_5{name: "CheckboxGroup2", type: "checkbox", value: "sort_by_modern"}/
-                      %label
-                        העת החדשה
-                        %span (209)
+                  - Expression.periods.invert.each do |p|
+                    - attrs = @period_facet[p[0]].nil? ? {disabled: 'disabled'} : {}
+                    - attrs.merge!({:name => "ckb_periods[]", :type => "checkbox", id: "period_#{p[1]}", value: p[1]})
+                    - attrs.merge!({checked: 'checked'}) if @periods.present? && @periods.include?(p[1])
+                    %input{ attrs}/
+                    %label
+                      = t(p[1])
+                      %span= "(#{@period_facet[p[0]] || '0'})"
+                    %br/
             .sort-type
               .vertical-expand.collapsed{'data-target' =>'.collfdate', 'data-toggle' =>'collapse'}
                 .sort-type-headline= t(:thedate)
               .collapse.collfdate
                 .nested-content
                   .search-mobile-switch
-                    %button.search-mobile-option{href: "#"} הוצאה
-                    %button.search-mobile-option.active{href: "#"} יצירה
-                    %button.search-mobile-option{href: "#"} העלאה
+                    %button.search-mobile-option.datetype#published= t(:publication)
+                    %button.search-mobile-option.datetype#created= t(:creation)
+                    %button.search-mobile-option.datetype#uploaded= t(:upload)
+                    = hidden_field_tag(:date_type, id: 'date_type')
                   %break
                   .dates-range
-                    .dates-graph-area
-                    .range-outside
-                      .range-inside
-                        .range-handle-right
-                        .range-handle-left
-                    %input.field-v02.field-without-label.range-date-field{placeholder: "dd-mm-yyyy", type: "text"}/
-                    .date-range-to עד
-                    %input.field-v02.field-without-label.range-date-field{placeholder: "dd-mm-yyyy", style: "float: left", type: "text"}/
+                    / #histogramSlider
+                    /.dates-graph-area
+                    /.range-outside
+                    /  .range-inside
+                    /    .range-handle-right
+                    /    .range-handle-left
+                    %input.datepicker.datetimepicker-input.field-v02.field-without-label.range-date-field#fromdate{:placeholder => t(:year), name: "fromdate", 'data-toggle' => 'datetimepicker', 'data-target' => '#fromdate' }/
+                    .date-range-to= t(:until)
+                    %input.datepicker.datetimepicker-input.field-v02.field-without-label.range-date-field#todate{:placeholder => t(:year), :style => "float: left", 'data-toggle' => 'datetimepicker', name: "todate", 'data-target' => '#todate'}/
             .sort-type
               .vertical-expand.collapsed{'data-target' =>'.collflang', 'data-toggle' =>'collapse'}
                 .sort-type-headline= t(:orig_lang)

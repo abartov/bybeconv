@@ -25,6 +25,31 @@
           = hidden_field_tag(:authors, @authors, id: 'author_ids')
           = hidden_field_tag(:authors_names, @authors_names, id: 'authors_names')
     .sort-type
+      .vertical-expand.fcoll#fcopyright{'data-target' =>'.collfcopyright', 'data-toggle' =>'collapse'}
+        .sort-type-headline= t(:copyright_status)
+      .nested.active.collapse.show.collfcopyright
+        .nested-content.nested-list
+          - attrs = {name: "ckb_copyright[]", :type => "checkbox", id: 'copyright_0', value: 0}
+          - attrs.merge!({disabled: 'disabled'}) if @copyright_facet[0].nil?
+          - attrs.merge!({checked: 'checked'}) if @copyright.present? && @copyright.include?(0)
+
+          %input{attrs}/
+          %label
+            %span.by-icon-v02> m
+            = t(:public_domain)
+            %span= "(#{@copyright_facet[0] || '0'})"
+          %br/
+          - attrs = {name: "ckb_copyright[]", :type => "checkbox", id: 'copyright_1', value: 1}
+          - attrs.merge!({disabled: 'disabled'}) if @copyright_facet[1].nil?
+          - attrs.merge!({checked: 'checked'}) if @copyright.present? && @copyright.include?(1)
+          %input{attrs}/
+          %label
+            %span.by-icon-v02> x
+            = t(:by_permission)
+            %span= "(#{@copyright_facet[1] || '0'})"
+          %br/
+
+    .sort-type
       .vertical-expand.fcoll#fgenre{'data-target' =>'.collfgenre', 'data-toggle' =>'collapse'}
         .sort-type-headline= t(:genres)
       .nested.active.collapse.show.collfgenre
@@ -53,30 +78,6 @@
               = t(p[1])
               %span= "(#{@period_facet[p[0]] || '0'})"
             %br/
-    .sort-type
-      .vertical-expand.fcoll#fcopyright{'data-target' =>'.collfcopyright', 'data-toggle' =>'collapse'}
-        .sort-type-headline= t(:copyright_status)
-      .nested.active.collapse.show.collfcopyright
-        .nested-content.nested-list
-          - attrs = {name: "ckb_copyright[]", :type => "checkbox", id: 'copyright_0', value: 0}
-          - attrs.merge!({disabled: 'disabled'}) if @copyright_facet[0].nil?
-          - attrs.merge!({checked: 'checked'}) if @copyright.present? && @copyright.include?(0)
-
-          %input{attrs}/
-          %label
-            %span.by-icon-v02> m
-            = t(:public_domain)
-            %span= "(#{@copyright_facet[0] || '0'})"
-          %br/
-          - attrs = {name: "ckb_copyright[]", :type => "checkbox", id: 'copyright_1', value: 1}
-          - attrs.merge!({disabled: 'disabled'}) if @copyright_facet[1].nil?
-          - attrs.merge!({checked: 'checked'}) if @copyright.present? && @copyright.include?(1)
-          %input{attrs}/
-          %label
-            %span.by-icon-v02> x
-            = t(:by_permission)
-            %span= "(#{@copyright_facet[1] || '0'})"
-          %br/
     / .sort-type
     /   .vertical-expand
     /     .sort-type-headline מאפיינים
