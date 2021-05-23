@@ -91,17 +91,15 @@
                 .sort-type-headline= t(:author_gender)
               .collapse.collfgender
                 .nested-content.nested-list
-                  %ul
-                    %li
-                      %input#CheckboxGroup0_1{name: "CheckboxGroup2", type: "checkbox", value: "sort_by_man"}/
-                      %label
-                        יוצרים
-                        %span (9854)
-                    %li
-                      %input#CheckboxGroup0_2{name: "CheckboxGroup2", type: "checkbox", value: "sort_by_woman"}/
-                      %label
-                        יוצרות
-                        %span (1024)
+                  - Person.genders.invert.each do |p|
+                    - attrs = @gender_facet[p[0]].nil? ? {disabled: 'disabled'} : {}
+                    - attrs.merge!({:name => "ckb_genders[]", :type => "checkbox", id: "gender_#{p[1]}", value: p[1]})
+                    - attrs.merge!({checked: 'checked'}) if @genders.present? && @genders.include?(p[1])
+                    %input{ attrs}/
+                    %label
+                      = t(p[1])
+                      %span= "(#{@gender_facet[p[0]] || '0'})"
+                    %br/
             .sort-type
               .vertical-expand.collapsed{'data-target' =>'.collfcopyright', 'data-toggle' =>'collapse'}
                 .sort-type-headline= t(:copyright_status)

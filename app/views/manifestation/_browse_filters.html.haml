@@ -25,6 +25,21 @@
           = hidden_field_tag(:authors, @authors, id: 'author_ids')
           = hidden_field_tag(:authors_names, @authors_names, id: 'authors_names')
     .sort-type
+      .vertical-expand.fcoll{'data-target' =>'.collfgender', 'data-toggle' =>'collapse'}
+        .sort-type-headline= t(:author_gender)
+      .nested.active.collapse.show.collfgender
+        .nested-content.nested-list
+          - Person.genders.invert.each do |p|
+            - attrs = @gender_facet[p[0]].nil? ? {disabled: 'disabled'} : {}
+            - attrs.merge!({:name => "ckb_genders[]", :type => "checkbox", id: "gender_#{p[1]}", value: p[1]})
+            - attrs.merge!({checked: 'checked'}) if @genders.present? && @genders.include?(p[1])
+            %input{ attrs}/
+            %label
+              = t(p[1])
+              %span= "(#{@gender_facet[p[0]] || '0'})"
+            %br/
+
+    .sort-type
       .vertical-expand.fcoll#fcopyright{'data-target' =>'.collfcopyright', 'data-toggle' =>'collapse'}
         .sort-type-headline= t(:copyright_status)
       .nested.active.collapse.show.collfcopyright

@@ -621,8 +621,8 @@ class ManifestationController < ApplicationController
       params[:sort_by].sub!(/_(a|de)sc$/,'')
       @sort_dir = $&[1..-1] unless $&.nil?
     end
-    joins_needed = @periods.present? || @genres.present? || params['search_input'].present? || params[:load_filters].present? || params['fromdate'].present? || params['todate'].present? || params['ckb_genres'].present? || params['ckb_periods'].present? || params['ckb_languages'].present? || params['ckb_authors'].present? || params['ckb_copyright'].present? || (params[:sort_by].present? && ['publication_date', 'creation_date'].include?(params[:sort]))
-    people_needed = params['authors'].present?
+    joins_needed = @periods.present? || @genres.present? || params['search_input'].present? || params[:load_filters].present? || params['fromdate'].present? || params['todate'].present? || params['ckb_genres'].present? || params['ckb_genders'].present? || params['ckb_periods'].present? || params['ckb_languages'].present? || params['ckb_authors'].present? || params['ckb_copyright'].present? || (params[:sort_by].present? && ['publication_date', 'creation_date'].include?(params[:sort]))
+    people_needed = params['authors'].present? || params['ckb_genders'].present?
     query_params = {}
     query_parts = {}
     # figure out sort order
@@ -677,6 +677,13 @@ class ManifestationController < ApplicationController
       query_parts[:periods] = 'expressions.period IN (:periods)'
       query_params[:periods] = @periods.map{|x| Expression.periods[x]}
       @filters += @periods.map{|x| [I18n.t(x), "period_#{x}", :checkbox]}
+    end
+    # genders
+    @genders = params['ckb_genders'] if params['ckb_genders'].present?
+    if @genders.present?
+      query_parts[:genders] = 'people.gender IN (:genders)'
+      query_params[:genders] = @genders.map{|x| Person.genders[x]}
+      @filters += @genders.map{|x| [I18n.t(x), "gender_#{x}", :checkbox]}
     end
     # genres
     @genres = params['ckb_genres'] if params['ckb_genres'].present?
@@ -745,6 +752,7 @@ class ManifestationController < ApplicationController
       @genre_facet = make_collection(query_parts.reject{|k,v| k == :genres }, query_params, joins_needed, people_needed, '').group('expressions.genre').count
       @period_facet = make_collection(query_parts.reject{|k,v| k == :periods }, query_params, joins_needed, people_needed, '').group('expressions.period').count
       @copyright_facet = make_collection(query_parts.reject{|k,v| k == :copyright }, query_params, joins_needed, people_needed, '').group(:copyrighted).count
+      @gender_facet = make_collection(query_parts.reject{|k,v| k == :genders }, query_params, joins_needed, true, '').group('people.gender').count
       @language_facet = make_collection(query_parts.reject{|k,v| k == :languages }, query_params, joins_needed, people_needed, '').group('works.orig_lang').count
       @language_facet[:xlat] = @language_facet.values.sum - (@language_facet['he'] || 0)
       get_langs.each do |l|
