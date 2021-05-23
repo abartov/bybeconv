@@ -26,10 +26,50 @@
       .by-card-content-v02.limited-height-popup-content-v02
         .author-mobile-sort-and-filter
           .search-mobile-switch
-            %button.search-mobile-option#opt_filter{href: "#"} סינון
-            %button.search-mobile-option#opt_sort{href: "#"} מיון
+            %button.search-mobile-option#opt_filter= t(:filter)
+            %button.search-mobile-option#opt_sort= t(:sort)
           .by-horizontal-seperator-light
-          .author-mobile-filters-area
+          .mobile-sort-area{style:'display: none'}
+            %div{style: "margin-top: 15px"}
+              .headline-2-v02 מיון לפי:
+              #sort-by
+                .sort-by-mobile
+                  %p
+                    = radio_button_tag(:sort_by, 'alphabetical_asc', @sort == 'alphabetical_asc' ? 'true': nil)
+                    %label= t(:alefbet_asc)
+                    %br
+                    = radio_button_tag(:sort_by, 'alphabetical_desc', @sort == 'alphabetical_desc' ? 'true': nil)
+                    %label= t(:alefbet_desc)
+                    %br
+                    = radio_button_tag(:sort_by, 'popularity_desc', @sort == 'popularity_desc' ? 'true': nil)
+                    %label= t(:popularity_desc)
+                    %br
+                    = radio_button_tag(:sort_by, 'popularity_asc', @sort == 'popularity_asc' ? 'true': nil)
+                    %label= t(:popularity_asc)
+                    %br
+                    %b
+                      %label= t(:dates)
+                    %br
+                    = radio_button_tag(:sort_by, 'publication_date_asc', @sort == 'publication_date_asc' ? 'true': nil)
+                    %label= t(:pubdate_asc)
+                    %br
+                    = radio_button_tag(:sort_by, 'publication_date_desc', @sort == 'publication_date_desc' ? 'true': nil)
+                    %label= t(:pubdate_desc)
+                    %br
+                    = radio_button_tag(:sort_by, 'creation_date_asc', @sort == 'creation_date_asc' ? 'true': nil)
+                    %label= t(:workdate_asc)
+                    %br
+                    = radio_button_tag(:sort_by, 'creation_date_desc', @sort == 'creation_date_desc' ? 'true': nil)
+                    %label= t(:workdate_desc)
+                    %br
+                    = radio_button_tag(:sort_by, 'upload_date_asc', @sort == 'upload_date_asc' ? 'true': nil)
+                    %label= t(:uploaddate_asc)
+                    %br
+                    = radio_button_tag(:sort_by, 'upload_date_desc', @sort == 'upload_date_desc' ? 'true': nil)
+                    %label= t(:uploaddate_desc)
+                    %br
+
+          .author-mobile-filters-area{style:'display: none'}
             .headline-2-v02= t(:filter_by)
             .sort-type
               .vertical-expand.collapsed{'data-target' =>'.collfauthor', 'data-toggle' =>'collapse'}
@@ -37,8 +77,8 @@
               .collapse.collfauthor
                 .nested-content
                   .search-mobile-switch
-                    %button.search-mobile-option{href: "#"} שם יצירה
-                    %button.search-mobile-option.active{href: "#"} שם היוצר/ת
+                    %button.search-mobile-option.opt_workname= t(:work_title)
+                    %button.search-mobile-option.opt_authorname= t(:author_name)
                   %break
                   %input.field-v02.field-without-label.author-name-field#search_input{:placeholder => t(:what_to_search_for), name: 'search_input', :type => "text", value: @search_input}
                   = autocomplete_field_tag :authorstr, @authorstr.present? ? @authorstr : '', autocomplete_person_name_path, id_element: '#author_id', 'data-noMatchesLabel' => t(:no_matches_found), style:'display:none', 'class' => 'field-v02 field-without-label author-name-field', id: 'authors', placeholder: t(:author_names)
@@ -64,7 +104,7 @@
                         %span (1024)
             .sort-type
               .vertical-expand.collapsed{'data-target' =>'.collfcopyright', 'data-toggle' =>'collapse'}
-                .sort-type-headline מצב זכויות יוצרים
+                .sort-type-headline= t(:copyright_status)
               .collapse.collfcopyright
                 .nested-content.nested-list
                   %ul
@@ -92,7 +132,7 @@
                         %span (0)
             .sort-type
               .vertical-expand.collapsed{'data-target' =>'.collfgenre', 'data-toggle' =>'collapse'}
-                .sort-type-headline סוגות
+                .sort-type-headline= t(:genres)
               .collapse.collfgenre
                 .nested-content.nested-list
                   %ul
@@ -238,15 +278,27 @@
         %button.by-button-v02{href: "#"} יישום סינון נבחר
 :javascript
   $(document).ready(function() {
-    if("#{@sort_or_filter}" == 'filter') {
-      $('#opt_filter').addClass('active');
-      $('.multi-name-sort').show();
-      $('#authors').show();
-      $('#search_input').hide();
-      $('#search_type').val('authorname');
-    } else {
-      $('.multi-name-sort').hide();
+    if("#{@sort_or_filter}" == 'sort') {
+      $('.mobile-sort-area').show();
+      $('.author-mobile-filters-area').hide();
       $('#opt_sort').addClass('active');
-      $('#search_type').val('workname');
+    } else {
+      $('.mobile-sort-area').hide();
+      $('.author-mobile-filters-area').show();
+      $('#opt_filter').addClass('active');
     }
+    $('#opt_filter').click(function(e){
+      e.preventDefault();
+      $('.mobile-sort-area').hide();
+      $('.author-mobile-filters-area').show();
+      $('#opt_filter').addClass('active');
+      $('#opt_sort').removeClass('active');
+    });
+    $('#opt_sort').click(function(e){
+      e.preventDefault();
+      $('.mobile-sort-area').show();
+      $('.author-mobile-filters-area').hide();
+      $('#opt_sort').addClass('active');
+      $('#opt_filter').removeClass('active');
+    });
   });

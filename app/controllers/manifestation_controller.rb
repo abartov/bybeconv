@@ -616,6 +616,7 @@ class ManifestationController < ApplicationController
     @emit_filters = false
     @sort_dir = :default
     if params[:sort_by].present?
+      @sort_or_filter = 'sort'
       @sort = params[:sort_by].dup
       params[:sort_by].sub!(/_(a|de)sc$/,'')
       @sort_dir = $&[1..-1] unless $&.nil?
