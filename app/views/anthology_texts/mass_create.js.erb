@@ -17,5 +17,6 @@ $('.errorDlgText').html('');
   $('.errorDlgText').append('<p></p><%= t(:anth_x_works_skipped, {x: @skipped_records}) %>');
 <% end %>
 $('#anth_panel').show();
+$(".anthology-cards-area").scrollTop($(".anthology-cards-area").prop("scrollHeight"));
 $('#anthErrorDlg').modal('show');
 $('#anthologies').val($.cur_anth.toString());
