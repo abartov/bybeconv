@@ -209,7 +209,6 @@
       $('.opt_authorname').addClass('active');
       $('#authors').show();
       $('#search_input').hide();
-      $('#search_type').val('authorname');
       $('.multi-name-sort').show();
     });
     $('.opt_workname').click(function(e){
@@ -218,7 +217,6 @@
       $('.opt_authorname').removeClass('active');
       $('#authors').hide();
       $('#search_input').show();
-      $('#search_type').val('workname');
       $('.multi-name-sort').hide();
     });
     var submit_timeout = null;
@@ -228,6 +226,10 @@
           window.clearTimeout(submit_timeout);
         }
         $('#page_tag').val('1'); // reset pagination
+        if($('.opt_workname').hasClass('active'))
+          $('#search_type').val('workname');
+        else
+          $('#search_type').val('authorname');
         submit_timeout = window.setTimeout(submit_filters, 300);
       }
     });
