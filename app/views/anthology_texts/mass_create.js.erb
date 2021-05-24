@@ -1,3 +1,4 @@
+$('.errorDlgText').html('');
   $('#new_curated')[0].reset();
   <% if @anthology.texts.length > 0 %>
     $('.badge-number').text("<%= @anthology.texts.length.to_s %>");
