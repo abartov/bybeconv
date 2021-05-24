@@ -28,6 +28,7 @@ class AnthologiesController < ApplicationController
   def clone
     if @anthology.accessible?(current_user)
       @na = @anthology.dup
+      @na.sequence = ''
       @na.user = current_user # whoever owned it before (could clone a public anth owned by someone else)
       @na.access = :priv # default to private after cloning
       @na.title = t(:copy_of)+@na.title
@@ -41,6 +42,9 @@ class AnthologiesController < ApplicationController
       end
       @anthology = @na # make the cloned anthology the current one
       @cur_anth_id = @anthology.nil? ? 0 : @anthology.id
+      @na.reload
+      @na.cached_page_count = @na.page_count(true) # force refresh
+      @na.save!
       respond_to do |format|
         format.js
         format.html {redirect_to @anthology, notice: t(:anthology_cloned)}
