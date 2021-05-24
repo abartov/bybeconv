@@ -143,7 +143,7 @@
 		height:41px;
 	}
 		.surprise-author-name-v02{
-	width: calc(100% - 150px);
+	width: calc(100% - 174px);
 	padding-top: 0;
 	}
  #header-general {
@@ -705,7 +705,13 @@ display: none;	}
 	width: calc(100% + 30px);
 	max-width: calc(100% + 30px);
 }
+	.whats-new-v02{
+		height: auto;
+	}
 	
+	.limited-height-popup-content-v02{
+		max-height: 100%;
+	}	
 }
 
 

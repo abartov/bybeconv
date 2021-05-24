@@ -23,7 +23,8 @@
                 .author-name-area
                   .author-name-v02= to_the_author_page(@author)
             .by-card-header-v02
-              %span.headline-1-v02= t(:latest_uploads_for, author: @author.name)
+              .surprise-author-name-v02
+                %span.headline-1-v02= t(:latest_uploads_for, author: @author.name)
             .by-card-content-v02.limited-height-popup-content-v02
               .surprise-author-card-content-v02
                 %p!= @pubs

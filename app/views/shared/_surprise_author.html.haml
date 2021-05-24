@@ -6,7 +6,7 @@
         %img.surprise-author-pic-v02{src: author.profile_image.url(:thumb), alt: author.name}
         .author-name-area
           .surprise-author-name-v02= t(:to_the_author_page)+(author.gender == 'female' ? 'ת' : '') # TODO: unhardcode
-    .by-card-header-type2-v02
+    .by-card-header-v02
       %span.headline-1-v02
         %a{href: author_toc_path(author.id)}= author.name
       %span.date-range!= " (#{author.life_years})"

@@ -666,9 +666,9 @@ input::placeholder {
 }
 
 .by-popup-v02 {
-  width: 50%;
+  width: 80%;
   max-width: 767px;
-	max-height: 90vh;
+	max-height: calc(100vh - 200px);
   background-color: #eeeced;
   border-radius: 3px;
   box-shadow: 0 3px 9px rgba(0, 0, 0, 0.4);
@@ -689,9 +689,6 @@ input::placeholder {
   margin-right: auto;
   margin-left: auto;
   position: relative;
-}
-.by-dual-popup .by-card-header-v02{
-	height: 40px;
 }
 .share-popup{
 	width: 360px;
@@ -720,7 +717,6 @@ input::placeholder {
 
 .by-card-header-v02 {
   width: 100%;
-  min-height: 42px;
   padding: 15px;
   border-bottom: solid 2px #d9cdd5;
 }
@@ -736,6 +732,7 @@ input::placeholder {
 
 .by-side-card-header-v02 {
   width: 100%;
+	min-height: 42px;
   padding: 15px; }
 
 .by-card-content-v02 {
@@ -834,9 +831,14 @@ input::placeholder {
 }
 
 .link-to-all-v02 {
-  position: absolute;
-  left: 15px;
-  bottom: 10px;
+	height: 40px;
+	line-height: 28px;
+    display: flex;
+	flex-direction: row-reverse;
+    padding-top: 15px;
+	position: absolute;
+	left: 15px;
+	bottom: 10px;
   }
 
 .carousel-arrow-right-v02 {
@@ -1045,7 +1047,6 @@ input::placeholder {
   background-image: url("/assets/Stage-light.svg");
   background-repeat: no-repeat;
   background-size: cover;
-  height: auto;
   width: 100%; }
 
 .flash-text-v02 {
@@ -1096,7 +1097,7 @@ input::placeholder {
 
 .whats-new-v02 {
   background-color: #d9cdd5; 
-	height: 1132px;
+	height: 1161px;
   }
 .left-side-card-v02 {
   background-color: #d9cdd5; }
@@ -1108,7 +1109,7 @@ input::placeholder {
 
   overflow:hidden;
   width: 100%;
-  height: 1090px;
+  height: 100%;
 }
 
 .new-card-v02 {
@@ -1593,7 +1594,7 @@ ul #menuMobile {
   display: -webkit-box;
   -webkit-line-clamp: 36;
   -webkit-box-orient: vertical;
-	max-height: 215px;
+	height: 195px;
 }
 .text-height-volunteer{
   overflow: hidden;
@@ -2076,19 +2077,23 @@ display: flex;
   font-size: 16pt;
   font-weight: bold;
   margin-bottom: 4px;
+  margin-top: 15px;
 }
 #maintext h4{
   font-size: 14pt;
   font-weight: bold;
   margin-bottom: 4px;
+  margin-top: 10px;
 }
 #maintext h5{
   font-size: 13pt;
   font-weight: bold;
+  margin-top: 10px;
 }
 #maintext h6{
   font-size: 12.4pt;
   font-weight: bold;
+  margin-top: 10px;
 }
 .work-page-top {
   position: -webkit-sticky;
@@ -2263,13 +2268,14 @@ display: none;}
 	padding-bottom: 42px;
 }
 .whats-new-content{
-	max-height: 1096px;
+	height: 1016px;
+	overflow: hidden;
 }
 .works-in-project-content{
-	height: 360px;
+	height: 344px;
 }
 .volunteer-content{
-	height: 364px;
+	height: 346px;
 }
 .card-with-button{
 	padding-bottom: 62px;
@@ -2285,7 +2291,7 @@ display: none;}
   bottom: 15px;
   }
 .flash-content{
-	height: 351px;
+	height: 338px;
 }
 .author-whats-new-content{
 	min-height: 374px;
@@ -4851,6 +4857,7 @@ break{
 /* datetimepicker style - end */
 .modal-dialog{
 	margin: 100px auto 0 auto;
+	max-width: unset;
 }
 .modal-header{
 	padding: 0;
@@ -4859,6 +4866,10 @@ break{
 	width: 80%;
 	padding: 0;
 	margin: auto;
+}
+.modal-content{
+	width: 100%;
+	border: 0;
 }
 .work-col{
 	width: calc(100% - 130px);
@@ -5236,9 +5247,9 @@ break{
 }
 .limited-height-popup-content-v02 {
   width: 100%;
-  height: calc(100vh - 200px);
+  max-height: calc(100vh - 300px);
   overflow-y: auto;
-  margin-bottom: 15px;
+	margin-bottom: 15px;
 }
 .work-page-top-info-card .row{
 	margin-left: 0;
@@ -5254,8 +5265,7 @@ break{
   display: flex;
   flex-flow: column;
   height: auto;
-  max-height: 90vh;
-  margin-top: 5vh;
+  max-height: calc(100vh - 200px);
 }
 .flex-popup .popup-top {
         flex: 0 1 auto;
@@ -5286,12 +5296,13 @@ break{
 	margin-left: auto;
 }
 .flash-popup-bg-v02 .by-card-content-v02{
-	max-height: calc(90vh - 120px);
+	max-height: calc(100vh - 324px);
 	overflow-y: auto;
 }
-	#texts-about-author-popup .limited-height-popup-content-v02{
-		    height: calc(90vh - 71px);
-	}
+#texts-about-author-popup .limited-height-popup-content-v02{
+  max-height: calc(100vh - 300px);
+  overflow: auto;
+}
 #authors-multi-select-popup .by-popup-v02{
 	width: 80%;
 	max-width: 900px;
