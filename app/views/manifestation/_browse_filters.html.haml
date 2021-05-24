@@ -301,4 +301,9 @@
     if("#{@todate}" != "") {
       $('#todate').val("#{@todate}");
     }
+    $('#authors').bind('railsAutocomplete.select', function(event, data){
+      $('#search_type').val('authorname');
+      submit_filters();
+    });
+
   });
