@@ -1,10 +1,10 @@
 = form_tag(works_path, remote: true, method: :post, id: 'mobile_filters') do
   = hidden_field_tag(:sort_by, @sort)
   = hidden_field_tag(:author_id, @author_id.present? ? @author_id : nil)
-  = hidden_field_tag(:search_type, id: 'search_type')
+  = hidden_field_tag(:search_type, '' ,id: 'search_type')
   = hidden_field_tag(:authors, @authors, id: 'author_ids')
   = hidden_field_tag(:authors_names, @authors_names, id: 'authors_names')
-  = hidden_field_tag(:date_type, id: 'date_type')
+  = hidden_field_tag(:date_type, '', id: 'date_type')
   = hidden_field_tag(:emit_filters, 'true', id: 'emit_filters')
   = hidden_field_tag(:cur_page, @page, id: 'cur_page_tag')
   = hidden_field_tag(:page, '', id: 'page_tag')
@@ -162,7 +162,6 @@
                     %button.search-mobile-option.datetype#published= t(:publication)
                     %button.search-mobile-option.datetype#created= t(:creation)
                     %button.search-mobile-option.datetype#uploaded= t(:upload)
-                    = hidden_field_tag(:date_type, id: 'date_type')
                   %break
                   .dates-range
                     / #histogramSlider

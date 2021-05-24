@@ -131,7 +131,7 @@
             %button.search-mobile-option.datetype#published= t(:publication)
             %button.search-mobile-option.datetype#created= t(:creation)
             %button.search-mobile-option.datetype#uploaded= t(:upload)
-            = hidden_field_tag(:date_type, id: 'date_type')
+            = hidden_field_tag(:date_type, '', id: 'date_type')
           %break
           .dates-range
             / #histogramSlider
