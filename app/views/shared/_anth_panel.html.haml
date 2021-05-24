@@ -192,6 +192,7 @@
       e.preventDefault();
       $('#anth_panel').hide();
       $('#add_curated').show();
+      $('body').attr('anth-open', 'true');
     });
     $('.editmdbutton').click(function(){
       text_id = this.id.replace('edit','');

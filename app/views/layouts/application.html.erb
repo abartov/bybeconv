@@ -224,7 +224,7 @@
       });
     }
     $(document).on('keyup',function(evt) {
-      if (evt.keyCode == 27) {
+      if (evt.keyCode == 27 && $('body').attr('anth-open') != 'true') {
         $('.modal').modal('hide'); // hide all modals on ESC
       }
     });

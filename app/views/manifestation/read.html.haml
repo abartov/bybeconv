@@ -235,7 +235,8 @@
       $('.download_submitter').removeAttr('disabled');
     });
     $('.anthologies_button:not(:has(.must_login))').click(function() {
-      $('#anthologiesDlg').modal('show');
+      $('#anthologiesDlg').modal({  backdrop: 'static',
+        keyboard: false, show: true});
     });
     $('.citebutton').click(function() {
       $('#citeDlg').modal('show');

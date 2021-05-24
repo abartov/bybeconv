@@ -35,6 +35,7 @@
       e.preventDefault();
       $('#add_curated').hide();
       $('#anth_panel').show();
+      $('body').attr('anth-open', 'false');
     });
     $('#curated_markdown').on('paste', function(){
        var rendered = md.render($(this).val());
