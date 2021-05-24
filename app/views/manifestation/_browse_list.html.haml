@@ -46,22 +46,9 @@
               %option{value: 'upload_date_asc', selected: @sort == 'upload_date_asc' ? 'true': nil}= t(:uploaddate_asc)
               %option{value: 'upload_date_desc', selected: @sort == 'upload_date_desc' ? 'true': nil}= t(:uploaddate_desc)
       .sort-by-mobile
-        %p
-          %input#RadioGroupSort_1{:name => "RadioGroupSort", :type => "radio", value: "alphabet"}/
-          %label= t(:alphabetical)
-          %br/
-          %input#RadioGroupSort_2{:name => "RadioGroupSort", :type => "radio", value: "publish_date"}/
-          %label= t(:publication_date)
-          %br/
-          %input#RadioGroupSort_3{:name => "RadioGroupSort", :type => "radio", value: "creation_date"}/
-          %label= t(:creation_date)
-          %br/
-          %input#RadioGroupSort_4{:name => "RadioGroupSort", :type => "radio", value: "online_date"}/
-          %label= t(:upload_date)
-          %br/
-          %input#RadioGroupSort_5{:name => "RadioGroupSort", :type => "radio", value: "popularity"}/
-          %label= t(:popularity)
-          %br/
+        %button.btn-small-outline-v02#current_sort_by
+          .btn-text-v02#current_sort_text
+
   .add-to-anthology{style:'display:none'}
     .left-pointing-arrow= t(:perform_add)
     %button.by-button-v02#add-to-anth-btn
@@ -113,20 +100,26 @@
     });
     $('.tag-x').click(function(){
       // uncheck/clear the appropriate field
-      if($(this).attr('data-which') == 'text') {
-        $('#'+$(this).attr('data-ele')).val('');
+      prefix = '';
+      if(window.innerWidth < mobileWidth) {
+        prefix = '#mobile_filters ';
+      } else {
+        prefix = '#works_filters ';
+      }
+        if($(this).attr('data-which') == 'text') {
+        $(prefix + '#'+$(this).attr('data-ele')).val('');
       } else if($(this).attr('data-which') == 'authorlist') {
-        $('#author_ids').val('');
-        $('#authors_names').val('');
-        $('input[name="ckb_authors[]"]').prop('checked', false);
+        $(prefix + '#author_ids').val('');
+        $(prefix + '#authors_names').val('');
+        $(prefix + 'input[name="ckb_authors[]"]').prop('checked', false);
       }
       else {
-        $('#'+$(this).attr('data-ele')).prop("checked", false);
+        $(prefix + '#'+$(this).attr('data-ele')).prop("checked", false);
       }
       // and submit the form
       $('#page_tag').val('1'); // reset pagination
       $('input').attr('disabled', false); // re-enable checkboxes to preserve other filters
-      window.history.pushState($('#works_filters').serialize(), null, '/works');
+      window.history.pushState($(prefix).serialize(), null, '/works');
       submit_filters();
       });
 
@@ -208,4 +201,13 @@
       }
       // notify user
     });
+
+    $('#current_sort_by').click(function(){
+      $('#mobileFilterDlg').modal('show');
+      $('.mobile-sort-area').show();
+      $('.author-mobile-filters-area').hide();
+      $('#opt_sort').addClass('active');
+      $('#opt_filter').removeClass('active');
+    });
+    $('#current_sort_text').text($('#sort_by_dd option:selected').text());
   });
