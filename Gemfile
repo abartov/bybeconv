@@ -92,10 +92,13 @@ end
 
 group :development do
   gem 'byebug'
-  gem 'web-console', '~> 2.0'
+  gem 'web-console'
+  #gem 'web-console', '~> 2.0'
   gem "capistrano", "~> 3.11", require: false
   gem "capistrano-rails", "~> 1.4", require: false
   gem 'rvm1-capistrano3', require: false
   gem 'capistrano-thin', '~> 2.0.0'
   gem 'capistrano-rvm'
+  gem 'derailed_benchmarks', group: :development
+
 end
