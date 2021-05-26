@@ -71,7 +71,8 @@
     %hr
     %h2= t(:external_links)
     %b= t(:sefaria_linker)
-    = check_box_tag :sefaria_linker, 1, @m.sefaria_linker == 1
+    = check_box_tag :sefaria_linker, 1, @m.sefaria_linker
+    %br
     = render partial: 'external_links', locals: { links: @m.external_links, edit: true }
     = t(:add)
     = text_field_tag :add_url

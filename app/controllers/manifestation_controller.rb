@@ -486,6 +486,7 @@ class ManifestationController < ApplicationController
           @m.responsibility_statement = params[:mresponsibility]
           @m.comment = params[:mcomment]
           @m.status = params[:mstatus].to_i
+          @m.sefaria_linker = params[:sefaria_linker]
           unless params[:add_url].blank?
             l = ExternalLink.new(url: params[:add_url], linktype: params[:link_type], description: params[:link_description], status: Manifestation.linkstatuses[:approved])
             l.manifestation = @m

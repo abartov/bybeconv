@@ -1,4 +1,7 @@
 / standard display mode. "reading mode" implemented in readmode.html.haml
+- if @m.sefaria_linker
+  %script{ type: 'text/javascript', charset:'utf-8', src:'https://www.sefaria.org/linker.js'}
+
 #content.container-fluid.top-element
   .row
     .col-12.col-lg-8
@@ -248,4 +251,7 @@
       $('#recommendationDlg').load($(this).attr('data-recpath'));
       $('#recommendationDlg').modal('show');
     });
+    if("#{@m.sefaria_linker}" != '') {
+      sefaria.link({selector: '#actualtext', contentLang: 'hebrew', interfaceLang: 'hebrew'});
+    }
   });
