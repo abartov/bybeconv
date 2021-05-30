@@ -421,9 +421,7 @@
 	.surprise-author-card-content-v02 {
   width: calc(100% - 163px);
 	}
-	.surprise-author-name-v02 {
-	width: calc(100% - 163px);
-  }
+
 	.flash-popup-bg-v02{
 		height: calc(100vh - 120px);
 	}

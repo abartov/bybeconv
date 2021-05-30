@@ -104,9 +104,7 @@ p {
     width: 96px;
     height: 138px;
     padding-top: 32px; }
-.surprise-author-name-v02 {
-	width: calc(100% - 108px);
-  }
+
 
 .statistics-box-v02 {
     height: 46px;
@@ -123,7 +121,7 @@ p {
     margin-top: 6px; }
 
 .surprise-again-footer-v02 {
-  padding: 15px 15px 15px 20px;
+  padding: 15px;
 }
 
 .by-genre-icon-surprise-v02 {

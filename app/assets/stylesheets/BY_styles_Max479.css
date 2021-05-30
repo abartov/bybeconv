@@ -82,10 +82,6 @@
 		height: 115px;
 		padding-top: 24px; }
 
-.surprise-author-name-v02 {
-	padding-top: 0;
-	width: calc(100% - 93px);
-  }
 
 .author-name-v02 {
 	font-size: 11px;
@@ -288,9 +284,7 @@ body {
   width: 132px;
   height: 36px; 
 }
-.surprise-again-btn-area-v02{
-  width: 132px;
-}
+
 .about-work-card-bookmark-fold-v02 {
   width: 84px;
   height: 3px;

@@ -143,7 +143,6 @@
 		height:41px;
 	}
 		.surprise-author-name-v02{
-	width: calc(100% - 174px);
 	padding-top: 0;
 	}
  #header-general {
@@ -712,6 +711,21 @@ display: none;	}
 	.limited-height-popup-content-v02{
 		max-height: 100%;
 	}	
+	#authors-surprise-replaced{
+		height: auto;
+	}
+	.surprise-again-footer-v02{
+		position: relative;
+	}
+	.surprise-work-height-v02{
+		padding-bottom: 15px;
+	}
+	#works-surprise-replaced{
+		height: auto;
+	}
+	.btn-small-outline-v02{
+		height: 28px;
+	}
 }
 
 
