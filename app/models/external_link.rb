@@ -3,5 +3,5 @@ class ExternalLink < ApplicationRecord
 
   scope :videos, -> { where(linktype: Manifestation.link_types[:youtube])}
   scope :all_approved, -> { where(status: Manifestation.linkstatuses[:approved])}
-
+  scope :publisher_links, ->{where(linktype: Manifestation.link_types[:publisher_site])}
 end

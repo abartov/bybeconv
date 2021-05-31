@@ -19,7 +19,7 @@ class Manifestation < ApplicationRecord
 
   before_save :update_sort_title
 
-  enum link_type: [:wikipedia, :blog, :youtube, :other]
+  enum link_type: [:wikipedia, :blog, :youtube, :other, :publisher_site]
   enum linkstatus: [:approved, :submitted, :rejected]
   enum status: [:published, :nonpd, :unpublished, :deprecated]
 
