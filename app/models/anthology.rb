@@ -60,7 +60,7 @@ class Anthology < ApplicationRecord
       seq = self.sequence.split(';')
       seq.each do |id|
         begin
-          ret << self.texts.find(id)
+          ret << self.texts.select{|x| x.id == id.to_i}.first
         rescue
         end
       end

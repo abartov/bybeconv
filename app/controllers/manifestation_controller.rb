@@ -571,35 +571,31 @@ class ManifestationController < ApplicationController
   end
 
   def make_collection(query_parts, query_params, joins_needed, people_needed, ord)
-    if query_parts.empty? && !people_needed
-      if joins_needed
-        return Manifestation.all_published.joins(expressions: :works).includes(expressions: :works).order(ord)
-      else
-        return Manifestation.all_published.order(ord)
-      end
+    if query_parts.empty?
+      return Manifestation.all_published.joins(<<-SQL).
+        INNER JOIN expressions_manifestations ON expressions_manifestations.manifestation_id = manifestations.id
+        INNER JOIN expressions ON expressions.id = expressions_manifestations.expression_id
+        INNER JOIN realizers ON realizers.expression_id = expressions.id
+        INNER JOIN expressions_works ON expressions_works.expression_id = expressions.id
+        INNER JOIN works ON works.id = expressions_works.work_id
+        INNER JOIN creations ON creations.work_id = works.id
+        INNER JOIN people ON (people.id = realizers.person_id OR people.id = creations.person_id)
+      SQL
+      includes(expressions: [:works, :manifestations]).order(ord)
+      #return Manifestation.all_published.joins(expressions: :works).includes(expressions: :works).order(ord)
     else
       @emit_filters = true
       conditions = query_parts.values.join(' AND ')
-      if joins_needed
-        if people_needed
-          return Manifestation.all_published.joins(<<-SQL).
-            INNER JOIN expressions_manifestations ON expressions_manifestations.manifestation_id = manifestations.id
-            INNER JOIN expressions ON expressions.id = expressions_manifestations.expression_id
-            INNER JOIN realizers ON realizers.expression_id = expressions.id
-            INNER JOIN expressions_works ON expressions_works.expression_id = expressions.id
-            INNER JOIN works ON works.id = expressions_works.work_id
-            INNER JOIN creations ON creations.work_id = works.id
-            INNER JOIN people ON (people.id = realizers.person_id OR people.id = creations.person_id)
-          SQL
-          where(conditions, query_params).order(ord)
-
-          # return Manifestation.all_published.joins(expressions: [:persons, works: [:persons]]).includes(expressions: :works).where(conditions, query_params).order(ord)
-        else
-          return Manifestation.all_published.joins(expressions: :works).includes(expressions: :works).where(conditions, query_params).order(ord)
-        end
-      else
-        return Manifestation.all_published.where(conditions, query_params).order(ord)
-      end
+      return Manifestation.all_published.joins(<<-SQL).
+        INNER JOIN expressions_manifestations ON expressions_manifestations.manifestation_id = manifestations.id
+        INNER JOIN expressions ON expressions.id = expressions_manifestations.expression_id
+        INNER JOIN realizers ON realizers.expression_id = expressions.id
+        INNER JOIN expressions_works ON expressions_works.expression_id = expressions.id
+        INNER JOIN works ON works.id = expressions_works.work_id
+        INNER JOIN creations ON creations.work_id = works.id
+        INNER JOIN people ON (people.id = realizers.person_id OR people.id = creations.person_id)
+      SQL
+      includes(expressions: [:works, :manifestations]).where(conditions, query_params).order(ord)
     end
   end
 
@@ -824,7 +820,7 @@ class ManifestationController < ApplicationController
         end
       else
         begin
-          @anthology = Anthology.find(session[:current_anthology_id])
+          @anthology = Anthology.includes(texts: {manifestation: :expressions}).find(session[:current_anthology_id])
         rescue
           session[:current_anthology_id] = nil # if somehow deleted without resetting the session variable (e.g. during development)
         end

@@ -55,7 +55,8 @@
           .mainlist
             %ol#anth_texts
               - unless @anthology.nil?
-                - @anthology.ordered_texts.each do |text|
+                - otexts = @anthology.ordered_texts
+                - otexts.each do |text|
                   %li{id: 'anth_text_'+text.id.to_s}
                     %div{'class' => "by-card-v02" + (text.manifestation_id.nil? ? ' self-created-text' : '')}
                       .anthology-card-header

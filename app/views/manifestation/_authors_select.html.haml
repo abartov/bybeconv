@@ -25,8 +25,9 @@
                 .authors-names-area
                   .row
                     - unless list.empty?
-                      - if list.count > 5
-                        - list.order(:name).each_slice((list.count/3.0).round) do |slice|
+                      - tot = list.count
+                      - if tot > 5
+                        - list.order(:name).each_slice((tot/3.0).round) do |slice|
                           .col
                             - slice.each do |au|
                               - attrs = {name: "ckb_authors[]", type: "checkbox", id: "au_#{au.id}", value: au.id}

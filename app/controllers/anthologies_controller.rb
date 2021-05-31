@@ -166,7 +166,7 @@ class AnthologiesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_anthology
-      @anthology = Anthology.find(params[:id])
+      @anthology = Anthology.includes(:texts).find(params[:id])
     end
 
     def anthology_params
