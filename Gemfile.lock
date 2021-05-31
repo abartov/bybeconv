@@ -28,6 +28,7 @@ GEM
       activemodel (>= 4.0)
       activesupport (>= 4.0)
       tzinfo
+    active_record_query_trace (1.8)
     activejob (5.2.6)
       activesupport (= 5.2.6)
       globalid (>= 0.3.6)
@@ -81,6 +82,9 @@ GEM
       moment-timezone-rails (~> 1.0)
       momentjs-rails (>= 2.10.5, <= 3.0.0)
     builder (3.2.4)
+    bullet (6.1.4)
+      activesupport (>= 3.0.0)
+      uniform_notifier (~> 1.11)
     byebug (10.0.2)
     capistrano (3.11.0)
       airbrussh (>= 1.0.0)
@@ -500,6 +504,7 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.7)
+    uniform_notifier (1.14.2)
     watir (6.19.1)
       regexp_parser (>= 1.2, < 3)
       selenium-webdriver (>= 3.142.7)
@@ -523,11 +528,13 @@ PLATFORMS
 DEPENDENCIES
   actionview (>= 5.2.4.2)
   active_data
+  active_record_query_trace
   activerecord-session_store
   app_constants
   aws-sdk-s3
   better_sjr
   bootstrap4-datetime-picker-rails
+  bullet
   byebug
   capistrano (~> 3.11)
   capistrano-rails (~> 1.4)

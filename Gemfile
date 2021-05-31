@@ -100,5 +100,7 @@ group :development do
   gem 'capistrano-thin', '~> 2.0.0'
   gem 'capistrano-rvm'
   gem 'derailed_benchmarks', group: :development
+  gem 'bullet'
+  gem 'active_record_query_trace'
 
 end
