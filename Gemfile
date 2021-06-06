@@ -59,7 +59,7 @@ gem 'yt' # for polling YouTube for new videos
 gem 'app_constants' # anything more Railsy?
 gem 'hebrew', '>= 0.2.1' # https://github.com/abartov/hebrew
 gem 'gared', '>= 0.0.23' # https://gitlab.com/abartov/gared # for scraping bibliographic data from Hebrew sources
-
+gem 'goldiloader'
 gem 'haml'
 #gem 'zoom', '~>0.4.1', :git => 'https://github.com/bricestacey/ruby-zoom.git' # for Z39.50 queries to libraries
 gem 'haml-rails'

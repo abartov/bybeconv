@@ -18,7 +18,7 @@ class BibSourcesControllerTest < ActionController::TestCase
 
   test "should create bib_source" do
     assert_difference('BibSource.count') do
-      post :create, bib_source: { api_key: @bib_source.api_key, comments: @bib_source.comments, port: @bib_source.port, source_type: @bib_source.source_type, title: @bib_source.title, url: @bib_source.url }
+      post :create, bib_source: { api_key: @bib_source.api_key, comments: @bib_source.comments, port: @bib_source.port, source_type: @bib_source.source_type, title: textify_bib_source(@bib_source.id), url: @bib_source.url }
     end
 
     assert_redirected_to bib_source_path(assigns(:bib_source))
@@ -35,7 +35,7 @@ class BibSourcesControllerTest < ActionController::TestCase
   end
 
   test "should update bib_source" do
-    patch :update, id: @bib_source, bib_source: { api_key: @bib_source.api_key, comments: @bib_source.comments, port: @bib_source.port, source_type: @bib_source.source_type, title: @bib_source.title, url: @bib_source.url }
+    patch :update, id: @bib_source, bib_source: { api_key: @bib_source.api_key, comments: @bib_source.comments, port: @bib_source.port, source_type: @bib_source.source_type, title: textify_bib_source(@bib_source.id), url: @bib_source.url }
     assert_redirected_to bib_source_path(assigns(:bib_source))
   end
 
