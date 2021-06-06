@@ -113,7 +113,7 @@ class BibController < ApplicationController
     @pubs = []
     ListItem.includes(:item).where(listkey: 'pubs_maybe_done').each do |pub|
       item = pub.item
-      mm = Manifestation.where("title like ?", pub_title_for_comparison(item.title)+'%')
+      mm = pub.person.all_works_by_title(pub_title_for_comparison(pub.title))
       @pubs << [item, mm]
     end
   end
