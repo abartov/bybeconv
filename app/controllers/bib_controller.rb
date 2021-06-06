@@ -5,7 +5,7 @@ class BibController < ApplicationController
 
   def index
     @counts = {pubs: Publication.count, holdings: Holding.count , obtained: Publication.where(status: Publication.statuses[:obtained]).count , scanned: Publication.where(status: Publication.statuses[:scanned]).count, copyrighted: Publication.where(status: Publication.statuses[:copyrighted]).count, uploaded: Publication.where(status: Publication.statuses[:uploaded]).count, irrelevant: Publication.where(status: Publication.statuses[:irrelevant]).count, missing: Holding.where(status: Holding.statuses[:missing]).count, authors_done: Person.has_toc.bib_done.count, authors_todo: Person.has_toc.count - Person.has_toc.bib_done.count}
-    @digipubs = Publication.where(status: Publication.statuses[:scanned]).order('rand()').limit(25)
+    @digipubs = Publication.includes(holdings: :bib_source).where(status: Publication.statuses[:scanned]).order('rand()').limit(25)
     pid = params[:person_id]
     unless pid.nil?
       @person_id = pid.to_i
@@ -15,7 +15,7 @@ class BibController < ApplicationController
   end
 
   def scans
-    @digipubs = Publication.where(status: Publication.statuses[:scanned]).order('updated_at asc')
+    @digipubs = Publication.includes(holdings: :bib_source).where(status: Publication.statuses[:scanned]).order('updated_at asc')
   end
 
   def make_author_page
