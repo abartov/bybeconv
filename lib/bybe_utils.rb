@@ -613,4 +613,13 @@ module BybeUtils
     h.manifestation_ids << m_id_to_redirect_to
     h.save
   end
+  def pub_title_for_comparison(s)
+    ret = ''
+    if s['/'].nil?
+      ret = s[0..[10,s.length].min]
+    else
+      ret = s[0..[10,s.index('/')-1].min]
+    end
+    return ret.strip
+  end
 end

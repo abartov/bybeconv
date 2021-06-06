@@ -310,4 +310,6 @@ class Manifestation < ApplicationRecord
     end
     return @@popular_works
   end
+  def self.update_suspected_typos_list
+  end
 end

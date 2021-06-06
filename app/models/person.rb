@@ -210,8 +210,8 @@ class Person < ApplicationRecord
   end
 
   def all_works_by_title(term)
-    w = original_works.where("expressions.title like '%#{term}%'")
-    t = translations.where("expressions.title like '%#{term}%'")
+    w = original_works.where('expressions.title like ?', "%#{term}%")
+    t = translations.where('expressions.title like ?', "%#{term}%")
     return (w + t).uniq.sort_by{|m| m.title}
   end
 

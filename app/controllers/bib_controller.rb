@@ -14,6 +14,12 @@ class BibController < ApplicationController
     prepare_pubs
   end
 
+  def publication_mark_false_positive
+    pub = Publication.find(params[:id])
+    li = ListItem.new(listkey: 'pubs_false_maybe_done', item: pub)
+    li.save!
+    render js: "$('.pub#{pub.id}').remove();"
+  end
   def scans
     @digipubs = Publication.includes(holdings: :bib_source).where(status: Publication.statuses[:scanned]).order('updated_at asc')
   end
@@ -103,6 +109,14 @@ class BibController < ApplicationController
     Holding.where(status: Holding.statuses[:todo])
   end
 
+  def pubs_maybe_done
+    @pubs = []
+    ListItem.includes(:item).where(listkey: 'pubs_maybe_done').each do |pub|
+      item = pub.item
+      mm = Manifestation.where("title like ?", pub_title_for_comparison(item.title)+'%')
+      @pubs << [item, mm]
+    end
+  end
   def shopping
     hh = []
     case

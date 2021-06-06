@@ -69,6 +69,9 @@ input[type=checkbox].multiselect_checkbox {
 .topMenuItem-v02:hover {
   cursor: pointer;
 }
+.whitehover:hover{
+  color:white;
+}
 #curated_preview ul {
   list-style-type: unset;
 }

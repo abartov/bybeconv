@@ -23,6 +23,10 @@ he:
   authors_select_filter: סינון לפי יוצר - בחירה מרובה
   add_authors_to_filter: הוספת היוצרים שנבחרו לסינון
   back_to_bib_workshop: חזרה לסדנה הביבליוגרפית
+  works_already_online: "יצירות שכבר מצויות במאגר בשם דומה:"
+  no_source_edition: אין פרטי מהדורה
+  mark_as_false_positive: לא אותה יצירה
+  pubs_maybe_done: "דו\"ח רשומות שאולי כבר עלו לאתר"
   apply_filters: הפעל סינון זה!
   filters_loading: טוען את המסננים...
   loading: התוכן נטען...
@@ -606,6 +610,7 @@ he:
   authors_page: דף יוצרים
   total: סך הכל
   total_x_works: סך הכל %{count} יצירות
+  total_x_records: סך הכל %{count} רשומות
   sort_and_filter: סינון
   sort_by: "מיון לפי: "
   filter_by: "סינון לפי: "
