@@ -62,9 +62,7 @@ p {
 .surprise-author-card-v02 {
     width: 96px;
     height: 176px;
-    margin-right: 15px;
-    margin-top: -5px; 
-	left: 15px}
+	}
 	 
 .about-author-card-v02 {
     width: 96px;
@@ -82,7 +80,6 @@ p {
   width: 101px;
   height: 5px;
   margin-right: 9px;
-	left: 15px;
 }
 	
 .about-author-card-bookmark-fold-v02 {
@@ -251,6 +248,16 @@ p {
 	
 .surprise-author-card-content-v02 {
   width: calc(100% - 108px);
+}
+
+.surprise-author-card-content-v02{
+	margin-right: 111px;
+}
+#authors-surprise-replaced .by-card-header-v02{
+	padding-right: 126px;
+}
+#whats-new-author-popup .by-card-header-v02{
+	padding-right: 126px;
 }
 	
 }

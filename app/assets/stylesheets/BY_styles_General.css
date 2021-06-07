@@ -774,6 +774,9 @@ input::placeholder {
 #authors-surprise-replaced {
   height: 400px; }
 
+#authors-surprise-replaced .by-card-header-v02{
+	padding-right: 190px;
+}
 #authors-surprise-initial {
   background-image: url("/assets/surprise-author-b9.jpg");
   background-size: 841px 312px;
@@ -945,9 +948,7 @@ input::placeholder {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
   margin-right: 15px;
   margin-top: -6px;
-  z-index: 2;
   position: absolute;
-  left: 40px;
 }
 .about-author-card-v02 {
   width: 160px;
@@ -978,7 +979,7 @@ input::placeholder {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
   margin-left: 40px;
   margin-top: -6px;
-  float: left;
+  position: absolute;
   z-index: 2; }
 
 .surprise-work-card-v02:hover {
@@ -988,11 +989,9 @@ input::placeholder {
   width: 168px;
   height: 6px;
   object-fit: fill;
-  margin-right: 15px;
-  margin-top: -6px;
 	position: absolute;
-	left: 40px;
-  z-index: 1; 
+  margin-right: 8px;
+  margin-top: -6px;
 }
 .about-author-card-bookmark-fold-v02 {
   width: 168px;
@@ -1244,7 +1243,7 @@ input::placeholder {
 .surprise-again-btn-v02:focus {
   outline: none; }
 .surprise-author-card-content-v02 {
-  width: calc(100% - 204px);
+  margin-right: 175px;
   min-height: 140px;
 }
 
@@ -4213,10 +4212,6 @@ break{
 }
 
 .authors-names-area{
-	margin-left: -15px;
-	padding-left: 15px;
-	margin-right: -15px;
-	padding-right: 15px;
 	overflow: auto;
 }
 .self-content-side-color{
@@ -5254,8 +5249,7 @@ break{
 }
 .limited-height-popup-content-v02 {
   width: 100%;
-  max-height: calc(100vh - 300px);
-  overflow-y: auto;
+  overflow: auto;
 	margin-bottom: 15px;
 }
 .work-page-top-info-card .row{
@@ -5325,3 +5319,6 @@ break{
   margin-top: -4px;
 }
 
+#whats-new-author-popup .by-card-header-v02{
+	padding-right: 190px;
+}

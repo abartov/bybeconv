@@ -474,5 +474,13 @@ padding-top: 6px;
   right:-34px;
   width:34px;
 }
-	
+.surprise-author-card-content-v02{
+	margin-right: 95px;
+}
+#authors-surprise-replaced .by-card-header-v02{
+	padding-right: 110px;
+}
+	#whats-new-author-popup .by-card-header-v02{
+	padding-right: 110px;
+}
 }

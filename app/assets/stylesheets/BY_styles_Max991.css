@@ -99,7 +99,6 @@
 .surprise-author-card-v02 {
     width: 132px;
     height: 231px;
-    margin-right: 20px;
     margin-top: -5px; }
 .about-author-card-v02 {
     width: 132px;
@@ -115,9 +114,9 @@
 .surprise-author-card-bookmark-fold-v02 {
   width: 139px;
   height: 5px;
-  margin-right: 14px;
+  margin-right: 8px;
   margin-top: -5px;
-  z-index: 1; }
+ }
 .about-author-card-bookmark-fold-v02 {
   width: 139px;
   height: 5px;
@@ -142,7 +141,7 @@
 	.author-name-area{
 		height:41px;
 	}
-		.surprise-author-name-v02{
+.surprise-author-name-v02{
 	padding-top: 0;
 	}
  #header-general {
@@ -698,7 +697,7 @@ display: none;	}
 }
 	
 	.surprise-author-card-content-v02 {
-  width: calc(100% - 174px);
+  margin-right: 147px;
 	}
 .narrow-popup{
 	width: calc(100% + 30px);
@@ -726,6 +725,13 @@ display: none;	}
 	.btn-small-outline-v02{
 		height: 28px;
 	}
+	#authors-surprise-replaced .by-card-header-v02{
+	padding-right: 162px;
+}
+#whats-new-author-popup .by-card-header-v02{
+	padding-right: 162px;
+}
+	
 }
 
 

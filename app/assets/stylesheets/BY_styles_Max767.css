@@ -52,25 +52,17 @@
 	}
 .popup-top{
   position: static;
-  width: calc(100% + 30px);
+  width: 100%;
   display: block;
-  margin-left: -15px;
-  margin-right: -15px;
-  padding-left: 0px;
-  padding-right: 0px;
   border-bottom: solid 2px #d9cdd5;
 }
 
 .by-popup-v02 {
-  width: calc(100% + 30px);
+  width: 100%;
   box-shadow: none;
   left: 0;
   margin-top:0px;
-  margin-left: -15px;
-  margin-right: -15px;
   border-radius: 0;
-  padding-left: 0px;
-  padding-right: 0px;
 	max-height: 100vh;
 }
 .by-dual-popup{
@@ -402,7 +394,6 @@
   width: 100%;
   height: calc(100vh - 278px);
   overflow-y: auto;
-  margin-bottom: 0px;
 }
 	
 .flex-popup{
@@ -441,10 +432,6 @@
   max-height: 100vh;
 }
 #authors-multi-select-popup .by-popup-v02{
-	width: calc(100% + 30px);
+	width: 100%;
 }
-.surprise-author-card-bookmark-fold-v02 {
-	left: 30px}	
-.surprise-author-card-v02{
-	left: 30px}	
 }
