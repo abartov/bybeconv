@@ -14,7 +14,7 @@
                 .headline-2-v02{style:'text-align: center;margin:0;padding-top:3px;'}= about_the_author(author)
               .col-3
           .by-popup-v02
-            %button.close.card-header-close{ type: 'button', style: 'margin-left:1.5rem;margin-top:1.9rem;', 'data-dismiss' => 'modal'}
+            %button.close.card-header-close{ type: 'button', 'data-dismiss' => 'modal'}
               .popup-x-v02= '-'
             %img.surprise-author-card-bookmark-fold-v02{src: '/assets/creator-bookmark-back2.png', alt: t(:background), width: 168, height: 6}
             = link_to author_toc_path(author.id) do
