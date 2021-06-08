@@ -53,8 +53,15 @@
 .popup-top{
   position: static;
   width: 100%;
-  display: block;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
   border-bottom: solid 2px #d9cdd5;
+}
+
+.popup-top .headline-2-v02{
+  margin-bottom: 0;
 }
 
 .by-popup-v02 {
@@ -63,6 +70,7 @@
   left: 0;
   margin-top:0px;
   border-radius: 0;
+	height: 100%;
 	max-height: 100vh;
 }
 .by-dual-popup{
@@ -390,6 +398,10 @@
 		width: calc(100% - 85px);
 		    max-height: calc(100vh - 165px);
 	}
+		.surprise-work-card-content-v02{
+		width: calc(100% - 85px);
+		    max-height: calc(100vh - 165px);
+	}
 .limited-height-popup-content-v02 {
   width: 100%;
   height: calc(100vh - 278px);
@@ -434,4 +446,7 @@
 #authors-multi-select-popup .by-popup-v02{
 	width: 100%;
 }
+	#whats-new-author-popup .by-card-header-v02{
+		display: none;
+	}
 }

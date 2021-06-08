@@ -108,7 +108,6 @@
   .surprise-work-card-v02 {
     width: 132px;
     height: 231px;
-    margin-left: 30px;
     margin-top: -5px; }
 
 .surprise-author-card-bookmark-fold-v02 {
@@ -699,6 +698,9 @@ display: none;	}
 	.surprise-author-card-content-v02 {
   margin-right: 147px;
 	}
+		.surprise-work-card-content-v02 {
+  margin-right: 147px;
+	}
 .narrow-popup{
 	width: calc(100% + 30px);
 	max-width: calc(100% + 30px);
@@ -722,6 +724,9 @@ display: none;	}
 	#works-surprise-replaced{
 		height: auto;
 	}
+#works-surprise-replaced .by-card-header-v02{
+			padding-right: 162px;
+	}
 	.btn-small-outline-v02{
 		height: 28px;
 	}
@@ -731,6 +736,10 @@ display: none;	}
 #whats-new-author-popup .by-card-header-v02{
 	padding-right: 162px;
 }
+#author-info-popup .by-card-header-v02{
+	padding-right: 162px;
+}
+	
 	
 }
 

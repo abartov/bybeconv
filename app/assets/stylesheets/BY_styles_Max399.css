@@ -474,6 +474,9 @@ body {
 	.surprise-author-card-content-v02 {
  margin-right: 75px;
 }
+		.surprise-work-card-content-v02 {
+ margin-right: 75px;
+}
 .by2-icon{
     font-size: 12px;
 }
@@ -492,5 +495,11 @@ body {
 	#whats-new-author-popup .by-card-header-v02{
 	padding-right: 90px;
 }
+	#works-surprise-replaced .by-card-header-v02{
+			padding-right: 90px;
+	}
+	#author-info-popup .by-card-header-v02{
+			padding-right: 90px;
+	}
 	
 }

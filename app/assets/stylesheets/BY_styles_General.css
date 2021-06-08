@@ -712,6 +712,7 @@ input::placeholder {
   top:0;
   left: 0;
   display: none;
+  padding: 15px;
 }
 
 .by-card-header-v02 {
@@ -781,7 +782,7 @@ input::placeholder {
   background-image: url("/assets/surprise-author-b9.jpg");
   background-size: 841px 312px;
   background-repeat: repeat-x;
-  height: 356px;
+  height: 344px;
   width: 100%; }
 
 #works-in-project {
@@ -793,6 +794,9 @@ input::placeholder {
 
 #works-surprise-replaced {
   height: 400px }
+#works-surprise-replaced .by-card-header-v02{
+			padding-right: 190px;
+	}
 
 #works-surprise-initial {
   background-image: url("/assets/surprise-work-b9.jpg");
@@ -867,7 +871,8 @@ input::placeholder {
   width: calc(100% - 68px);
   height: 280px;
   overflow: hidden;
-  }
+  margin-bottom: 15px;
+}
 
 .slick-arrow{
 	color:#660248;
@@ -977,7 +982,7 @@ input::placeholder {
   font-weight: bold;
   border-radius: 6px 0 3px 3px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
-  margin-left: 40px;
+  margin-right: 15px;
   margin-top: -6px;
   position: absolute;
   z-index: 2; }
@@ -1094,7 +1099,7 @@ input::placeholder {
 
 .whats-new-v02 {
   background-color: #d9cdd5; 
-	height: 1161px;
+	height: 1176px;
   }
 .left-side-card-v02 {
   background-color: #d9cdd5; }
@@ -1268,7 +1273,7 @@ input::placeholder {
   padding-top: 48px; }
 
 .surprise-work-card-content-v02 {
-  width: 100%;
+  margin-right: 175px;
    }
 
 .popup-x-v02 {
@@ -1609,6 +1614,7 @@ ul #menuMobile {
 .read-more-v02{
  margin-top: 2px;
 	margin-bottom: 12px;
+	float: left;
 }
 .works-most-read{
 	padding-right: 0;
@@ -5321,4 +5327,10 @@ break{
 
 #whats-new-author-popup .by-card-header-v02{
 	padding-right: 190px;
+}
+#author-info-popup .by-card-header-v02{
+	padding-right: 190px;
+}
+.button-placeholder{
+	width: 65px;
 }
