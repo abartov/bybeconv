@@ -677,6 +677,7 @@ input::placeholder {
   display: flex;
   flex-flow: column;
 	margin-top: 5vh;
+	min-height: 290px;
 }
 .by-dual-popup{
   width: 50%;
