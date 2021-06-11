@@ -313,7 +313,7 @@ end
       dl = get_or_create_downloadable_by_type(download_entity, 'pdf')
       dl.stored_file.attach(io: File.open(pdfname), filename: filename)
       File.delete(pdfname) # delete temporary generated PDF
-    when 'doc'
+    when 'docx'
       begin
         temp_file = Tempfile.new('tmp_doc_'+download_entity.id.to_s, 'tmp/')
         temp_file.puts(PandocRuby.convert(html, M: 'dir=rtl', from: :html, to: :docx).force_encoding('UTF-8')) # requires pandoc 1.17.3 or higher, for correct directionality
