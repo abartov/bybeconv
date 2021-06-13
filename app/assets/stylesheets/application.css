@@ -389,3 +389,7 @@ content: unset;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
   margin: 10px;
 }
+
+body:not(.modal-open){
+  padding-right: 0px !important;
+}
