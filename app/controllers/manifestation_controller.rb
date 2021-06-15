@@ -630,9 +630,9 @@ class ManifestationController < ApplicationController
       when 'popularity'
         ord = {impressions_count: (@sort_dir == :default ? :desc : @sort_dir)}
       when 'publication_date'
-        ord = "expressions.date #{@sort_dir == :default ? 'asc' : @sort_dir}"
+        ord = "expressions.normalized_pub_date #{@sort_dir == :default ? 'asc' : @sort_dir}"
       when 'creation_date'
-        ord = "works.date #{@sort_dir == :default ? 'asc' : @sort_dir}"
+        ord = "works.normalized_creation_date #{@sort_dir == :default ? 'asc' : @sort_dir}"
       when 'upload_date'
         ord = {created_at: (@sort_dir == :default ? :desc : @sort_dir)}
       end

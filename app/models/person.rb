@@ -227,7 +227,7 @@ class Person < ApplicationRecord
   def translations_by_genre
     ret = {}
     get_genres.map{|g| ret[g] = []}
-    Manifestation.all_published.joins(expressions: :realizers).includes(expressions: [works: [creations: :person]]).where(realizers:{role: Realizer.roles[:translator], person_id: self.id}).each do |m|
+    Manifestation.all_published.joins(expressions: :realizers).includes(expressions: :works).where(realizers:{role: Realizer.roles[:translator], person_id: self.id}).each do |m|
       ret[m.expressions[0].genre] << m
     end
     return ret

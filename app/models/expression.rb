@@ -17,15 +17,15 @@ class Expression < ApplicationRecord
   end
 
   def editors
-    return realizers.where(role: Realizer.roles[:editor]).map{|x| x.person}
+    return realizers.includes(:person).where(role: Realizer.roles[:editor]).map{|x| x.person}
   end
 
   def translators
-    return realizers.where(role: Realizer.roles[:translator]).map {|x| x.person}
+    return realizers.includes(:person).where(role: Realizer.roles[:translator]).map {|x| x.person}
   end
 
   def illustrators
-    return realizers.where(role: Realizer.roles[:illustrator]).map {|x| x.person}
+    return realizers.includes(:person).where(role: Realizer.roles[:illustrator]).map {|x| x.person}
   end
 
   def should_be_copyrighted?
