@@ -727,7 +727,7 @@ class ManifestationController < ApplicationController
     # build the collection (with/without joins, with/without conditions)
     joins_needed = true if @emit_filters
     @collection = make_collection(query_parts, query_params, joins_needed, people_needed, ord)
-    if @sort[0..11] == 'alphabetical' # ignore direction
+    if @sort[0..11] == 'alphabetical' # subset of @sort to ignore direction
       unless params[:page].nil? || params[:page].empty?
         params[:to_letter] = nil # if page was specified, forget the to_letter directive
       end
@@ -786,6 +786,7 @@ class ManifestationController < ApplicationController
   def prep_ab(whole, subset, fieldname)
     ret = []
     abc_present = whole.pluck(fieldname).map{|t| t.nil? || t.empty? ? '' : t[0] }.uniq.sort
+    dummy = subset[0] # bizarrely, unless we force this query, the pluck below returns *a wrong set* (off by one page or so)
     abc_active = subset.pluck(fieldname).map{|t| t.nil? || t.empty? ? '' : t[0] }.uniq.sort
     ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ז', 'ח', 'ט', 'י', 'כ', 'ל', 'מ', 'נ', 'ס', 'ע', 'פ', 'צ', 'ק', 'ר', 'ש', 'ת'].each{|l|
       status = ''
