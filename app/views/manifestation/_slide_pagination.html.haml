@@ -13,7 +13,7 @@
   .pageSelectorArea
     .pageSelector
       %div= t(:page_colon)
-      %input.field-v02{:placeholder => @page, :type => "text"}
+      %input.field-v02.page_selector{:placeholder => @page, :type => "text"}
       %div= t(:out_of_x, {x: @total_pages})
   %span.by-icon-v02
     = link_to_next_page @works, '1', {remote: true, id: 'nextnav', title: t(:worklist_next_page_tt)} do
@@ -32,6 +32,7 @@
         e.stopImmediatePropagation(); /* # prevent second pagination bar at bottom from also firing */
         e.preventDefault();
         $('#page_tag').val('1');
+        $('#mobile_page_tag').val('1');
         window.history.replaceState($('#works_filters').serialize(), null, '/works');
         submit_filters();
       });
@@ -39,6 +40,7 @@
         e.stopImmediatePropagation();
         e.preventDefault();
         $('#page_tag').val('#{@total_pages}');
+        $('#mobile_page_tag').val('#{@total_pages}');
         window.history.replaceState($('#works_filters').serialize(), null, '/works');
         submit_filters();
       });
@@ -46,6 +48,7 @@
         e.stopImmediatePropagation();
         e.preventDefault();
         $('#page_tag').val('#{@page.to_i + 1}');
+        $('#mobile_page_tag').val('#{@page.to_i + 1}');
         window.history.replaceState($('#works_filters').serialize(), null, '/works');
         submit_filters();
       });
@@ -53,10 +56,30 @@
         e.stopImmediatePropagation();
         e.preventDefault();
         $('#page_tag').val('#{@page.to_i - 1}');
+        $('#mobile_page_tag').val('#{@page.to_i - 1}');
+        window.history.replaceState($('#works_filters').serialize(), null, '/works');
+        submit_filters();
+      });
+      $('.page_selector').change(function(e){
+        e.stopImmediatePropagation();
+        $('#mobile_page_tag').val($(this).val());
         window.history.replaceState($('#works_filters').serialize(), null, '/works');
         submit_filters();
       });
     } else {
       /* # window.history.replaceState($('#works_filters').serialize(), null, '/works');  */
+      $('.page_selector').change(function(e){
+        e.stopImmediatePropagation();
+        url = "#{request.original_url}";
+        url = url.replace(/page=\d+/,'');
+        if(url.indexOf('?') == -1) {
+          url = url + '?page=' + $(this).val();
+        } else {
+          url = url + '&page=' + $(this).val();
+        }
+        startModal('spinnerdiv');
+        window.location = url;
+      });
     }
+
   });

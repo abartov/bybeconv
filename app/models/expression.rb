@@ -8,7 +8,6 @@ class Expression < ApplicationRecord
   has_many :realizers
   has_many :persons, through: :realizers, class_name: 'Person'
   has_many :aboutnesses, as: :aboutable
-  #has_and_belongs_to_many :people # superseded by realizers above
 
   def determine_is_translation?
     # determine whether this expression is a translation or not, i.e. is in a different language to the work it expresses
