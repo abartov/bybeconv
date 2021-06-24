@@ -311,5 +311,12 @@ class Manifestation < ApplicationRecord
     return @@popular_works
   end
   def self.update_suspected_typos_list
+    # code to find probably typos:
+    #- digits within words
+    #- finals within words
+    #- non-final letters that should be finals
+    #- what else?
+    #- non-title paragraphs ending without period, question mark, exclamation point.
+  
   end
 end

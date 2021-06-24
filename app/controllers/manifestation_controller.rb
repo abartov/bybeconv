@@ -925,6 +925,7 @@ class ManifestationController < ApplicationController
           end
         end
       end
+      @ext_links = @m.external_links.load
     end
   end
 end
