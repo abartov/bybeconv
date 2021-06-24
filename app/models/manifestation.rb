@@ -19,7 +19,7 @@ class Manifestation < ApplicationRecord
 
   before_save :update_sort_title
 
-  enum link_type: [:wikipedia, :blog, :youtube, :other]
+  enum link_type: [:wikipedia, :blog, :youtube, :other, :publisher_site]
   enum linkstatus: [:approved, :submitted, :rejected]
   enum status: [:published, :nonpd, :unpublished, :deprecated]
 
@@ -34,7 +34,6 @@ class Manifestation < ApplicationRecord
 
   LONG_LENGTH = 15000 # kind of arbitrary...
 
-  # TODO: re-enable when enabling ElasticSearch, after resolving diskspace issue, and figuring out how to rescue this.
   update_index('manifestations#manifestation'){self} # update ManifestationsIndex when entity is updated
 
   # class variable
@@ -310,5 +309,14 @@ class Manifestation < ApplicationRecord
       self.recalc_popular
     end
     return @@popular_works
+  end
+  def self.update_suspected_typos_list
+    # code to find probably typos:
+    #- digits within words
+    #- finals within words
+    #- non-final letters that should be finals
+    #- what else?
+    #- non-title paragraphs ending without period, question mark, exclamation point.
+  
   end
 end
