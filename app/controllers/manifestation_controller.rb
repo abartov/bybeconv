@@ -864,6 +864,7 @@ class ManifestationController < ApplicationController
         end
         @translators = @m.translators
         @illustrators = @w.illustrators + @e.illustrators
+        @editors = @e.editors
         @page_title = "#{@m.title_and_authors} - #{t(:default_page_title)}"
         if @print
           @html = MultiMarkdown.new(@m.markdown).to_html.force_encoding('UTF-8').gsub(/<figcaption>.*?<\/figcaption>/,'') # remove MMD's automatic figcaptions
