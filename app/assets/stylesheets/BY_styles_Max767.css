@@ -175,7 +175,16 @@
 	display: none;
 }
 	.top-contact-center{
-		padding: 0;width: calc(100% - 160px); padding-top: 1px;text-align: center;
+		padding-left: 6px;
+		padding-right: 6px;
+	}
+	.top-contact-center .headline-1-v02{
+		margin-left: 0;
+	}
+	.top-contact-center .headline-3-v02{
+		padding-left: 0;
+		text-align: center;
+		margin-bottom: 0;
 	}
 	.top-contact-side{
 		width: 80px;
@@ -428,9 +437,6 @@
 	.flash-popup-bg-v02{
 		height: calc(100vh - 120px);
 	}
-	.flash-author-popup-v02{
-		height: calc(100vh - 124px);
-	}
 	.flash-author-popup-v02 .by-card-content-v02{
 		height: calc(100vh - 182px);
 		max-height: calc(100vh - 182px);
@@ -448,5 +454,8 @@
 }
 	#whats-new-author-popup .by-card-header-v02{
 		display: none;
+	}
+	#error-found .button-placeholder{
+		width: 108px;
 	}
 }

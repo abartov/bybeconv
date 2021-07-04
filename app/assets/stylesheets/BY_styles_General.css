@@ -616,6 +616,7 @@ input {
   border: none;
   background-color: transparent;
   width: 100%;
+  display: inline-block;
 }
 
 input::placeholder {
@@ -740,6 +741,7 @@ input::placeholder {
   position: relative;
   padding: 15px;
   overflow: hidden; 
+  min-height: 191px;
 }
 
 #project-finance-support {
@@ -2503,6 +2505,7 @@ input[type=checkbox]:checked, input[type=radio]:checked{
   }
 label{
 	margin-bottom: 12px;
+	display: inline-block;
 }
 .space-under{
 	margin-bottom: 28px;
@@ -2916,7 +2919,7 @@ padding-left: 0;
 	margin-left: 0;
 }
 .bottom-button-area{
-	padding: 15px;
+	padding: 0 15px 15px 15px;
   display: flex;
   align-items: center;
   flex-direction: row-reverse;
@@ -4119,8 +4122,11 @@ break{
 	opacity:.5;
 }
 .bottom-right-buttons{
-	margin-top: 15px;
-	display: flex;
+position: absolute;
+    right: 15px;
+    bottom: 15px;
+    margin-top: 15px;
+    display: flex;
 }
 .bottom-right-buttons .by-button-v02{
 	margin-right: 0;
@@ -5334,4 +5340,16 @@ break{
 }
 .button-placeholder{
 	width: 65px;
+}
+.popup-top .headline-2-v02{
+	text-align: center;
+}
+.popup-top button{
+	flex-shrink: 0;
+}
+.popup-top .button-placeholder{
+	flex-shrink: 0;
+}
+.popup-top .headline-2-v02{
+	padding-right: 6px;
 }

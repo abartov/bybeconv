@@ -701,10 +701,6 @@ display: none;	}
 		.surprise-work-card-content-v02 {
   margin-right: 147px;
 	}
-.narrow-popup{
-	width: calc(100% + 30px);
-	max-width: calc(100% + 30px);
-}
 	.whats-new-v02{
 		height: auto;
 	}
