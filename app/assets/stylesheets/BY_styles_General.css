@@ -1033,11 +1033,11 @@ input::placeholder {
 
 .flash-work-v02 {
   height: 400px;
-  background-color: #d9cdd5; }
+  background-color: #eeeced; }
 
 .flash-author-v02 {
   height: 400px;
-  background-color: #d9cdd5; }
+  background-color: #eeeced; }
 
 .flash-bg-v02 {
   background-image: url("/assets/Stage-light.svg");
@@ -2300,7 +2300,7 @@ display: none;}
   bottom: 15px;
   }
 .flash-content{
-	height: 338px;
+	height: 341px;
 }
 .author-whats-new-content{
 	min-height: 374px;
