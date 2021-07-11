@@ -90,7 +90,7 @@
                       %span.linkcolor{'data-toggle' => 'modal', 'data-target' => '#authorsDlg'}= t(:multiselect)
               .sort-type
                 .vertical-expand.collapsed{'data-target' =>'.collfgender', 'data-toggle' =>'collapse'}
-                  .sort-type-headline= t(:author_gender)
+                  .sort-type-headline= t(:author_or_translator_gender)
                 .collapse.collfgender
                   .nested-content.nested-list
                     - Person.genders.invert.each do |p|

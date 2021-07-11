@@ -479,6 +479,7 @@ he:
   rec_when: מתי
   gender: מיגדר
   author_gender: מיגדר המחבר/ת
+  author_or_translator_gender: מיגדר המחבר/ת או המתרגם/ת
   orphans: יצירות יתומות
   male: זכר
   female: נקבה

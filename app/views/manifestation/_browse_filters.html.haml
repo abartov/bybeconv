@@ -26,7 +26,7 @@
           = hidden_field_tag(:authors_names, @authors_names, id: 'authors_names')
     .sort-type
       .vertical-expand.fcoll{'data-target' =>'.collfgender', 'data-toggle' =>'collapse'}
-        .sort-type-headline= t(:author_gender)
+        .sort-type-headline= t(:author_or_translator_gender)
       .nested.active.collapse.show.collfgender
         .nested-content.nested-list
           - Person.genders.invert.each do |p|
