@@ -477,6 +477,9 @@ he:
   purged: הפריטים הוסרו.
   rec_file: קובץ
   rec_when: מתי
+  publisher_link: קישורית לדף באתר ההוצאה
+  publisher_link_text: טקסט תצוגה לקישורית לאתר ההוצאה
+  for_publishers_project: ליצירות שעולות במסגרת מיזם המו"לים בלבד
   gender: מיגדר
   author_gender: מיגדר המחבר/ת
   author_or_translator_gender: מיגדר המחבר/ת או המתרגם/ת
