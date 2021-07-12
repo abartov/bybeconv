@@ -53,6 +53,8 @@ class HtmlFileController < ApplicationController
       @text.genre = params[:genre] unless params[:genre].blank?
       @text.orig_lang = params[:orig_lang] unless params[:orig_lang].blank?
       @text.comments = params[:comments]
+      @text.pub_link = params[:pub_link]
+      @text.pub_link_text = params[:pub_link_text]
       unless params[:commit] == t(:preview)
         @text.save
       end

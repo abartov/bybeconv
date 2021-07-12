@@ -627,6 +627,10 @@ class HtmlFile < ApplicationRecord
           self.status = 'Published' unless multiple # if called for split parts, we need to keep the status 'Accepted' for the check above. Status will be updated be caller.
           save!
           m.recalc_cached_people!
+          unless self.pub_link.empty? or self.pub_link_text.empty?
+            el = ExternalLink.new(linktype: Manifestation.link_types[:publisher_site], url: self.pub_link, description: self.pub_link_text)
+            m.external_links << el
+          end
         }
         return true
       rescue
