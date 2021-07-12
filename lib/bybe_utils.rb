@@ -622,4 +622,29 @@ module BybeUtils
     end
     return ret.strip
   end
+  def clean_up_spaces(buf)
+    newbuf = ''
+    had_any_content = false
+    add_space = false
+    buf.each_char do |ch|
+      is_space = is_codepoint_space(ch.codepoints[0])
+      is_bracket = ['[',']'].include?(ch)
+      next if is_space and not had_any_content # skip leading whitespace
+      if is_space
+        add_space = true
+      else
+        if add_space and not is_bracket
+          newbuf += ' ' # add a single space
+          add_space = false
+        end
+        had_any_content = true unless is_bracket
+        newbuf += ch
+      end
+    end
+    return newbuf
+  end
+  
+  def is_codepoint_space(cp)
+    [9, 10, 11, 12, 13, 32, 133, 160, 5760, 8192, 8193, 8194, 8195, 8196, 8197, 8198, 8199, 8200, 8201, 8202, 8232, 8233, 8239, 8287, 12288].include?(cp)
+  end
 end
