@@ -190,7 +190,7 @@
                           = t(:hebrew)
                           %span= "(#{@language_facet['he'] || '0'})"
                       %li
-                        - attrs = {name: "ckb_languages[]", :type => "checkbox", id: 'lang_xlat', value: 'xlat'}
+                        - attrs = {name: "ckb_languages[]", :type => "checkbox", id: 'lang_xlat', class: 'lang_xlat', value: 'xlat'}
                         - attrs.merge!({disabled: 'disabled'}) if @language_facet[:xlat].nil? || @language_facet[:xlat] == 0
                         - attrs.merge!({checked: 'checked'}) if @languages.present? && @languages.include?('xlat')
                         %input{attrs}/
@@ -198,7 +198,7 @@
                           = t(:translations)
                           %span= "(#{@language_facet[:xlat] || '0'})"
                         .languages-filters
-                          %ul.nested-list#xlat_langs
+                          %ul.nested-list.xlat_langs
                             - @language_facet.sort{|a,b| b[1] <=> a[1]}.each do |lang, amount|
                               - next if lang == :xlat || lang == 'he'
                               %li
@@ -241,4 +241,21 @@
       $('#mobileFilterDlg').modal('hide');
       submit_filters();
     });
+    $('.lang_xlat').change(function(){
+      // set all translated languages on/off accordingly
+      var checked = $(this).is(":checked");
+      $('.xlat_langs input').each(function(li){
+        $(this).prop('checked', checked);
+      });
+    });
+    var should_check_xlat = $('.xlat_langs input').length > 0;
+    $('.xlat_langs input').each(function(li){
+      if($(this).prop('checked') == false && !$(this).parent().text().match(/\(0\)/)) {
+        should_check_xlat = false;
+      }
+    });
+    if(should_check_xlat) {
+      $('.lang_xlat').prop('checked', true);
+    }
+
   });
