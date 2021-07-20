@@ -703,7 +703,10 @@ class ManifestationController < ApplicationController
         query_parts[:languages] = 'works.orig_lang <> "he"'
         @filters << [I18n.t(:translations), 'lang_xlat', :checkbox]
       else
-        @languages = params['ckb_languages'].reject{|x| x == 'xlat'}
+        @all_xlat = params['ckb_languages'].include?('xlat')
+        langs = get_langs
+        langs.delete('he') unless params['ckb_languages'].include?('he')
+        @languages = @all_xlat ? langs : params['ckb_languages'].reject{|x| x == 'xlat'}
         if @languages.present?
           query_parts[:languages] = 'works.orig_lang IN (:languages)'
           query_params[:languages] = @languages
