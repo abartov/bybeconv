@@ -150,7 +150,7 @@ class AnthologiesController < ApplicationController
     @anthology.destroy
     @anthologies = current_user.anthologies
     unless @anthologies.empty?
-      @anthology = @anthologies.includes(:texts).first
+      @anthology = @anthologies.first
       session[:current_anthology_id] = @anthology.id
     else
       @anthology = nil
@@ -166,7 +166,7 @@ class AnthologiesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_anthology
-      @anthology = Anthology.includes(:texts).find(params[:id])
+      @anthology = Anthology.find(params[:id])
     end
 
     def anthology_params

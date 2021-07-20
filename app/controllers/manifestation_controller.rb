@@ -581,7 +581,8 @@ class ManifestationController < ApplicationController
         INNER JOIN creations ON creations.work_id = works.id
         INNER JOIN people ON (people.id = realizers.person_id OR people.id = creations.person_id)
       SQL
-      includes(expressions: [:works, :manifestations]).order(ord)
+      order(ord)
+      #includes(expressions: [:works, :manifestations]).order(ord)
       #return Manifestation.all_published.joins(expressions: :works).includes(expressions: :works).order(ord)
     else
       @emit_filters = true
@@ -595,7 +596,7 @@ class ManifestationController < ApplicationController
         INNER JOIN creations ON creations.work_id = works.id
         INNER JOIN people ON (people.id = realizers.person_id OR people.id = creations.person_id)
       SQL
-      includes(expressions: [:works, :manifestations]).where(conditions, query_params).order(ord)
+      where(conditions, query_params).order(ord)
     end
   end
 
@@ -816,12 +817,12 @@ class ManifestationController < ApplicationController
       end
       if session[:current_anthology_id].nil?
         unless @anthologies.empty?
-          @anthology = @anthologies.includes(:texts).first
+          @anthology = @anthologies.first
           session[:current_anthology_id] = @anthology.id
         end
       else
         begin
-          @anthology = Anthology.includes(texts: {manifestation: :expressions}).find(session[:current_anthology_id])
+          @anthology =  Anthology.find(session[:current_anthology_id])
         rescue
           session[:current_anthology_id] = nil # if somehow deleted without resetting the session variable (e.g. during development)
         end
