@@ -5360,7 +5360,7 @@ position: absolute;
   height: auto;
   max-height: calc(100vh - 200px) !important;
 	border-radius: 3px;
-    box-shadow: 0 3px 9px rgb(0 0 0 / 40%);
+    box-shadow: 0 3px 9px rgb(0, 0, 0, 40%);
     margin-right: auto;
     margin-left: auto;
     border-left: 0px #ddd solid !important;
