@@ -247,7 +247,7 @@ class HtmlFileController < ApplicationController
             flash[:error] = success
           end
           redirect_to controller: :manifestation, action: :list
-        else
+        else # legacy way (pre-2018). To be removed
           success = @text.create_WEM(@text.person.id)
           if success == true
             flash[:notice] = t(:created_frbr)

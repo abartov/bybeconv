@@ -721,6 +721,7 @@ input::placeholder {
   width: 100%;
   padding: 15px;
   border-bottom: solid 2px #d9cdd5;
+  background-color: #eeeced;
 }
 .by-card-header-left-v02 {
   width: 100%;
@@ -2919,7 +2920,7 @@ padding-left: 0;
 	margin-left: 0;
 }
 .bottom-button-area{
-	padding: 0 15px 15px 15px;
+	padding: 15px;
   display: flex;
   align-items: center;
   flex-direction: row-reverse;
@@ -5263,7 +5264,6 @@ position: absolute;
 .limited-height-popup-content-v02 {
   width: 100%;
   overflow: auto;
-	margin-bottom: 15px;
 }
 .work-page-top-info-card .row{
 	margin-left: 0;
@@ -5352,4 +5352,126 @@ position: absolute;
 }
 .popup-top .headline-2-v02{
 	padding-right: 6px;
+	padding-left: 6px;
 }
+#sefaria-popup{
+  display: flex !important;
+  flex-flow: column;
+  height: auto;
+  max-height: calc(100vh - 200px) !important;
+	border-radius: 3px;
+    box-shadow: 0 3px 9px rgb(0 0 0 / 40%);
+    margin-right: auto;
+    margin-left: auto;
+    border-left: 0px #ddd solid !important;
+    border-right: 0px #ddd solid !important;
+    border-bottom: 0px #ddd solid !important;
+}
+#sefaria-popup .popup-top {
+        flex: 0 1 auto;
+}
+#sefaria-popup .by-popup-v02 {
+	  flex: 1 1 auto;
+	margin-top: 0;
+}
+
+
+#sefaria-popup .by-popup-v02{
+	width: 450px;
+	height: 450px;
+	background-color: white;
+}
+
+
+.sefaria-logo{
+	content: url("assets/sefaria_logo.svg");
+}
+.powered-by-sefaria{
+	width: 70px;
+}
+.popup-bottom-area{
+	padding: 15px;
+	display: flex;
+	background-color: #eeeced;
+	align-items: top;
+	justify-content: space-between;
+}
+.button-with-note{
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+}
+.button-with-note button{
+	margin-bottom: 2px;
+}
+#sefaria-linker-header{
+	border-top: 0px solid #eeeced !important;	
+	background-color:  #eeeced !important;
+    width: 100% !important;
+    padding: 15px !important;
+	padding-bottom: 15px !important;
+    border-bottom: solid 2px #d9cdd5 !important;
+}
+#sefaria-title{
+	margin: 0 !important;
+}
+#sefaria-title .he{
+	font-family: Alef !important;
+	font-size: 16pt !important;
+    line-height: 18pt !important;
+    font-weight: bold !important;
+    margin-left: 6px !important;
+	text-align: right !important;
+}
+#sefaria-close{
+    font-size: 36px !important;
+    height: auto !important;
+    line-height: 36px !important;
+    top: 4px !important;
+    left: 14px !important;
+    color: #660248 !important;
+}
+#sefaria-close:hover{
+	color: #430230;
+}
+#sefaria-popup .he, #sefaria-popup .he * {
+	font-size: 14pt !important;
+	line-height: 22pt !important;
+}
+.sefaria-text .en, .sefaria-text .he {
+    padding: 5px 15px !important;
+    text-align: right !important;
+}
+.sefaria-footer {
+    color: #222222 !important;
+    padding: 15px !important;
+    border-top: 0px solid #d9cdd5 !important;
+    background-color: #eeeced !important;
+    font-size: 11pt !important;
+    font-family: Alef !important;
+}
+.interface-hebrew .sefaria-powered-by-box{
+	margin-top: 0 !important;
+}
+#sefaria-logo{
+	opacity: 1 !important;
+}
+.sefaria-read-more-button {
+    background-color: #660248 !important;
+    padding: 0px 10px !important;
+    margin-top: 0px !important;
+    border: 0px solid #660248 !important;
+    border-radius: 3px !important;
+	font-family: Alef;
+	font-size: 11pt;
+	height: 32px !important;
+	display: flex;
+    align-items: center;
+    margin-right: 6px;
+    cursor: pointer;
+}
+.sefaria-read-more-button a {
+    color: #fff !important;
+}
+.sefaria-popup-ref a:hover {
+  background-color: #430230; }

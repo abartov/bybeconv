@@ -458,4 +458,19 @@
 	#error-found .button-placeholder{
 		width: 108px;
 	}
+	#sefaria-popup .by-popup-v02{
+		width: 100%;
+		height: 100%;
+	}
+#sefaria-popup{
+  display: flex;
+  flex-flow: column;
+  height: 100vh;
+  max-height: 100vh;
+  margin-top: 0vh;
+}
+#sefaria-popup .by-popup-v02 {
+  flex: 1 1 auto;
+}
+	
 }
