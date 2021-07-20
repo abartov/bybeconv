@@ -767,7 +767,7 @@ class ManifestationController < ApplicationController
       # TODO: curated facet
       end
     # {"utf8"=>"✓", "search_input"=>"ביאליק", "search_type"=>"authorname", "ckb_genres"=>["drama"], "ckb_periods"=>["medieval", "enlightenment"], "ckb_copyright"=>["0"], "CheckboxGroup5"=>"sort_by_german", "genre"=>"drama", "load_filters"=>"true", "_"=>"1577388296523", "controller"=>"manifestation", "action"=>"genre"} permitted: false
-    @filters = @filters.sort_by{|text, key, elem| key}
+    @filters = @filters.sort_by{|text, key, elem| key.to_s}
     params[:sort_by] = @sort
   end
 
