@@ -192,7 +192,7 @@
                       %li
                         - attrs = {name: "ckb_languages[]", :type => "checkbox", id: 'lang_xlat', class: 'lang_xlat', value: 'xlat'}
                         - attrs.merge!({disabled: 'disabled'}) if @language_facet[:xlat].nil? || @language_facet[:xlat] == 0
-                        - attrs.merge!({checked: 'checked'}) if @languages.present? && @languages.include?('xlat')
+                        - attrs.merge!({checked: 'checked'}) if @all_xlat || (@languages.present? && @languages.include?('xlat'))
                         %input{attrs}/
                         %label
                           = t(:translations)
@@ -248,13 +248,18 @@
         $(this).prop('checked', checked);
       });
     });
-    var should_check_xlat = $('.xlat_langs input').length > 0;
+    var mshould_check_xlat = $('.xlat_langs input').length > 0;
+    var m_any_checked = false;
     $('.xlat_langs input').each(function(li){
-      if($(this).prop('checked') == false && !$(this).parent().text().match(/\(0\)/)) {
-        should_check_xlat = false;
+      if($(this).prop('checked') == false) {
+        if(!$(this).parent().text().match(/\(0\)/)) {
+          mshould_check_xlat = false;
+        }
+      } else {
+        m_any_checked = true;
       }
     });
-    if(should_check_xlat) {
+    if(mshould_check_xlat && m_any_checked) {
       $('.lang_xlat').prop('checked', true);
     }
 

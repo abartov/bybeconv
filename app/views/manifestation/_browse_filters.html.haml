@@ -160,7 +160,7 @@
             %li
               - attrs = {name: "ckb_languages[]", :type => "checkbox", class: 'lang_xlat', id: 'lang_xlat', value: 'xlat'}
               - attrs.merge!({disabled: 'disabled'}) if @language_facet[:xlat].nil? || @language_facet[:xlat] == 0
-              - attrs.merge!({checked: 'checked'}) if @all_xlat || (@languages.present? && @languages.include?('xlat'))
+              - attrs.merge!({checked: 'checked'}) if (@all_xlat || (@languages.present? && @languages.include?('xlat')))
               %input{attrs}/
               %label
                 = t(:translations)
