@@ -56,8 +56,11 @@
   .mainlist#browse_mainlist
     - pg = @page.to_i
     %ol{style:"counter-reset:li #{pg > 1 ? (pg-1)*100 : 0}"}
+      - decorator = browse_item_decorator_by_sort_type(@sort)
       - @works.each do |m|
-        %li= link_to m.title_and_authors, manifestation_read_path(m.id)
+        %li
+          = link_to m.title_and_authors, manifestation_read_path(m.id)
+          = decorator.call(m)
   - unless @total_pages <= 1
     = render partial: 'slide_pagination'
     - if @sort[0..11] == 'alphabetical'
