@@ -82,7 +82,7 @@
                   <div class="stat-small-v02"><%= t(:authors) %></div>
                 </div>
                 <div class="col-5 statistics-v02">
-                  <div class="stat-big-v02"><%= link_to(get_total_headwords.to_s, '/read/24412')%></div>
+                  <div class="stat-big-v02"><%= link_to(get_total_headwords.to_s, manifestation_genre_path(genre: 'lexicon'))%></div>
                   <div class="stat-small-v02"><%= t(:dictionary_entries) %></div>
                 </div>
               </div>

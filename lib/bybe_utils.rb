@@ -511,7 +511,9 @@ module BybeUtils
   end
 
   def get_total_headwords
-    return DictionaryEntry.where("defhead is not null").count
+    Rails.cache.fetch("total_headwords", expires_in: 24.hours) do # memoize
+      DictionaryEntry.where("defhead is not null").count
+    end
   end
 
   ## hardcoded
