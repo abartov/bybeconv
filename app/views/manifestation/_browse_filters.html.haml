@@ -308,6 +308,7 @@
       $('#todate').val("#{@todate}");
     }
     $('#authors').bind('railsAutocomplete.select', function(event, data){
+      event.preventDefault();
       $('#search_type').val('authorname');
       submit_filters();
     });

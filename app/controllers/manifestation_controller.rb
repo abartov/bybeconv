@@ -649,12 +649,18 @@ class ManifestationController < ApplicationController
     if params['search_input'].present? || params['authorstr'].present? || params['authors'].present?
       if params['authors'].present?
         @search_type = 'authorname'
-        author_ids = params['authors'].split(',').map{|x| x.to_i}
+        author_ids = params['authors'].tr('+ ',',').split(',').map{|x| x.to_i}
+        @authors_names = params['authors_names']
+        if params['author_id'].present? # if in addition to an existing multi-select a new author was added
+          new_aid = params['author_id'].to_i
+          author_ids << new_aid
+          new_p = Person.find(new_aid)
+          @authors_names += new_p.name+'; '
+        end
         query_params[:people_ids] = author_ids
         @authors = author_ids # .join(',')
         query_parts[:authors] = 'people.id IN (:people_ids)'
-        @authors_names = params['authors_names']
-        @filters << [I18n.t(:authors_xx, {xx: params['authors_names']}), 'authors', :authorlist]
+        @filters << [I18n.t(:authors_xx, {xx: @authors_names}), 'authors', :authorlist]
       elsif (params['search_type'].present? && params['search_type'] == 'authorname') || (params['authorstr'].present? && params['search_input'].empty?)
         query_params[:searchstring] = '%'+params['authorstr']+'%'
         query_parts[:people] = 'cached_people LIKE :searchstring'
