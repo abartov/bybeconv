@@ -28,8 +28,15 @@
           .top-left-icons-group
             .icon-in-group-v02.notyet{title: t(:author_liked_tt)}
               %span.linkcolor.pointer.by-icon-v02 5
-            .icon-in-group-v02
-              %span.linkcolor.pointer.by-icon-v02 D
+            - unless current_user
+              .icon-in-group-v02.anthologies_button.must_login
+                %span.linkcolor.pointer.by-icon-v02 D
+            - else
+              .icon-in-group-v02.anthologies_button{'data-toggle' => 'modal', 'title' => "#{t(:open_shelves_tt)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 },'data-backdrop' => 'static', 'data-keyboard' => 'false', 'data-target' => '#anthologiesDlg'}
+                %span.linkcolor.pointer.by-icon-v02 D
+                - unless @anthology.nil?
+                  .anthology-badge{style: "display: #{@anthology.texts.length > 0 ? 'block' : 'none'}"}
+                    .badge-number= @anthology.texts.length.to_s
             .icon-in-group-v02{title: t(:author_print_tt)}
               %span.linkcolor.pointer.printbutton.by-icon-v02 9
             .icon-in-group-v02.notyet{title: t(:author_download_tt)}

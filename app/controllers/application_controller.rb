@@ -490,5 +490,43 @@ end
     lines.join + '...'
   end
 
+  def prep_user_content(context = :manifestation)
+    if current_user
+      @anthologies = current_user.anthologies
+      i = 1
+      prefix = I18n.t(:anthology)
+      anth_titles = @anthologies.pluck(:title)
+      loop do
+        @new_anth_name = prefix+"-#{i}"
+        i += 1
+        break unless anth_titles.include?(@new_anth_name)
+      end
+      if session[:current_anthology_id].nil?
+        unless @anthologies.empty?
+          @anthology = @anthologies.first
+          session[:current_anthology_id] = @anthology.id
+        end
+      else
+        begin
+          @anthology =  Anthology.find(session[:current_anthology_id])
+        rescue
+          session[:current_anthology_id] = nil # if somehow deleted without resetting the session variable (e.g. during development)
+        end
+      end
+      @anthology_select_options = @anthologies.map{|a| [a.title, a.id, @anthology == a ? 'selected' : ''] }
+      @cur_anth_id = @anthology.nil? ? 0 : @anthology.id
+      @bookmark = 0
+      if context == :manifestation
+        b = Bookmark.where(user: current_user, manifestation: @m)
+        unless b.empty?
+          @bookmark = b.first.bookmark_p
+        end
+        @jump_to_bookmarks = current_user.get_pref('jump_to_bookmarks')
+      end
+    else
+      @bookmark = 0
+    end
+  end
+
   helper_method :current_user, :html_entities_coder, :get_intro
 end

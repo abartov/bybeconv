@@ -47,7 +47,7 @@ class ManifestationController < ApplicationController
     @pagetype = :works
     @works_list_title = t(:works_list) # TODO: adjust by query
     prep_for_browse
-    prep_user_content
+    prep_user_content(:manifestation)
     render :browse
     respond_to do |format|
       format.html
@@ -266,7 +266,7 @@ class ManifestationController < ApplicationController
           @header_partial = 'manifestation/work_top'
           @works_about = Work.joins(:topics).where('aboutnesses.aboutable_id': @w.id, 'aboutnesses.aboutable_type': 'Work') # TODO: accommodate works about *expressions* (e.g. an article about a *translation* of Homer's Iliad, not the Iliad)
           @scrollspy_target = 'chapternav'
-          prep_user_content
+          prep_user_content(:manifestation)
         end
       end
     end
@@ -811,42 +811,6 @@ class ManifestationController < ApplicationController
       ret << [l, status]
     }
     return ret
-  end
-
-  def prep_user_content
-    if current_user
-      @anthologies = current_user.anthologies
-      i = 1
-      prefix = I18n.t(:anthology)
-      anth_titles = @anthologies.pluck(:title)
-      loop do
-        @new_anth_name = prefix+"-#{i}"
-        i += 1
-        break unless anth_titles.include?(@new_anth_name)
-      end
-      if session[:current_anthology_id].nil?
-        unless @anthologies.empty?
-          @anthology = @anthologies.first
-          session[:current_anthology_id] = @anthology.id
-        end
-      else
-        begin
-          @anthology =  Anthology.find(session[:current_anthology_id])
-        rescue
-          session[:current_anthology_id] = nil # if somehow deleted without resetting the session variable (e.g. during development)
-        end
-      end
-      @anthology_select_options = @anthologies.map{|a| [a.title, a.id, @anthology == a ? 'selected' : ''] }
-      @cur_anth_id = @anthology.nil? ? 0 : @anthology.id
-      @bookmark = 0
-      b = Bookmark.where(user: current_user, manifestation: @m)
-      unless b.empty?
-        @bookmark = b.first.bookmark_p
-      end
-      @jump_to_bookmarks = current_user.get_pref('jump_to_bookmarks')
-    else
-      @bookmark = 0
-    end
   end
 
   def refuse_unreasonable_page
