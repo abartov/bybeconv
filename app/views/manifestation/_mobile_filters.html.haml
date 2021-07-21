@@ -10,19 +10,15 @@
   = hidden_field_tag(:page, '', id: 'mobile_page_tag')
   = hidden_field_tag(:to_letter, '', id: 'toletter_tag')
   #texts-list-filter_M.flex-popup.filter-sort-m-popup
-    .popup-top.sticky-top
-      .row{style: "padding:15px;margin: 0"}
-        .col-4{style: "padding: 0;"}
-          %button.btn-small-outline-v02{'data-dismiss'=>'modal'}
-            .btn-text-v02
-              %span.right-arrow 2
-              %span= t(:back)
-        .col-4{style: "padding: 0;"}
-          .headline-2-v02{style: "text-align: center;margin: 0; padding-top: 3px;"} סינון ומיון
-        - unless sortonly
-          .col-4{style: "padding: 0;"}
-            %button.reset.btn-small-outline-v02{style: "float: left"}
-              .btn-text-v02= t(:reset_filter)
+    .popup-top
+      %button.btn-small-outline-v02{'data-dismiss'=>'modal'}
+        .btn-text-v02
+          %span.right-arrow 2
+          %span= t(:back)
+      .headline-2-v02{style: "text-align: center;margin: 0; padding-top: 3px;"} סינון ומיון
+      - unless sortonly
+        %button.reset.btn-small-outline-v02
+          .btn-text-v02= t(:reset_filter)
     .by-popup-v02
       .by-card-content-v02.limited-height-popup-content-v02
         .author-mobile-sort-and-filter
@@ -209,7 +205,7 @@
                                 %label
                                   = textify_lang(lang)
                                   %span= "(#{amount || '0'})"
-      .bottom-button-area.sticky-bottom
+      .bottom-button-area
         %button.by-button-v02#apply_mobile_filters= t(:apply_mobile_filters)
 :javascript
   $(document).ready(function() {
@@ -217,10 +213,12 @@
       $('.mobile-sort-area').show();
       $('.author-mobile-filters-area').hide();
       $('#opt_sort').addClass('active');
+      $('#opt_filter').removeClass('active');
     } else {
       $('.mobile-sort-area').hide();
       $('.author-mobile-filters-area').show();
       $('#opt_filter').addClass('active');
+      $('#opt_sort').removeClass('active');
     }
     $('#opt_filter').click(function(e){
       e.preventDefault();
