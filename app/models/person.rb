@@ -129,6 +129,11 @@ class Person < ApplicationRecord
     end
   end
 
+  def self.cached_count
+    Rails.cache.fetch("au_total_count", expires_in: 24.hours) do
+      self.count
+    end
+  end
   def self.cached_toc_count
     Rails.cache.fetch("au_toc_count", expires_in: 24.hours) do
       self.has_toc.count
