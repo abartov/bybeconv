@@ -23,10 +23,11 @@
                     %span.date-range!= "(#{@author.life_years})"
                   .author-about
                     .text-height-author= @author.wikipedia_snippet
-                    .read-more-v02
-                      %a{:href => @author.wikipedia_url, target: '_blank'}
-                        %span{:style => "font-weight: bold"}= t(:rest_in_wikipedia)
-                        %span.left-arrow 1
+                    - unless @author.wikipedia_url.empty?
+                      .read-more-v02
+                        %a{:href => @author.wikipedia_url, target: '_blank'}
+                          %span{:style => "font-weight: bold"}= t(:rest_in_wikipedia)
+                          %span.left-arrow 1
                     %div{style:'margin-top:12px;'}
                       %b= t(:works_in_the_project)+': '
                       = "#{@author.cached_works_count} #{t(:works)}"
