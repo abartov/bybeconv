@@ -236,7 +236,7 @@ class ApplicationController < ActionController::Base
     else
       @fresh_works_markdown = ''
     end
-end
+  end
 
   def is_spider?
     ua = request.user_agent.downcase

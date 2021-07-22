@@ -647,7 +647,7 @@ class ManifestationController < ApplicationController
     @filters = []
     @emit_filters = true if params[:load_filters] == 'true' || params[:emit_filters] == 'true'
     if params['search_input'].present? || params['authorstr'].present? || params['authors'].present?
-      if params['authors'].present?
+      if params['authors'].present? && params['search_input'].empty?
         @search_type = 'authorname'
         author_ids = params['authors'].tr('+ ',',').split(',').map{|x| x.to_i}
         @authors_names = params['authors_names']
