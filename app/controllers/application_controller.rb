@@ -490,17 +490,22 @@ class ApplicationController < ActionController::Base
     lines.join + '...'
   end
 
+  def generate_new_anth_name_from_set(anths)
+    i = 1
+    prefix = I18n.t(:anthology)
+    new_anth_name = prefix+"-#{i}"
+    anth_titles = @anthologies.pluck(:title)
+    loop do
+      new_anth_name = prefix+"-#{i}"
+      i += 1
+      break unless anth_titles.include?(new_anth_name)
+    end
+    return new_anth_name
+  end
   def prep_user_content(context = :manifestation)
     if current_user
       @anthologies = current_user.anthologies
-      i = 1
-      prefix = I18n.t(:anthology)
-      anth_titles = @anthologies.pluck(:title)
-      loop do
-        @new_anth_name = prefix+"-#{i}"
-        i += 1
-        break unless anth_titles.include?(@new_anth_name)
-      end
+      @new_anth_name = generate_new_anth_name_from_set(@anthologies)
       if session[:current_anthology_id].nil?
         unless @anthologies.empty?
           @anthology = @anthologies.first
