@@ -194,6 +194,8 @@
       e.preventDefault();
       $('#anth_panel').hide();
       $('#add_curated').show();
+      $('#curated_title').text("#{t(:add_curated_text)}");
+      $('#curated_add_item').val("#{ t(:add_curated_text) }");
       $('body').attr('anth-open', 'true');
     });
     $('.editmdbutton').click(function(){
