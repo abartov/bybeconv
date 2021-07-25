@@ -5468,6 +5468,9 @@ position: absolute;
     margin-right: 6px;
     cursor: pointer;
 }
+.sefaria-read-more-button:hover{
+    background-color: #430230 !important;
+}
 .sefaria-read-more-button a {
     color: #fff !important;
 }
