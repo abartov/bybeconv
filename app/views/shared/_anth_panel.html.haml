@@ -67,7 +67,7 @@
                               /%span.by-icon-v02.markdown-icon _
                             - else
                               = link_to text.manifestation.title + ' / ' + text.manifestation.author_string, manifestation_read_path(text.manifestation_id)
-                          %button.vertical-expand{id: "collat#{text.id}", 'data-toggle' => 'collapse', 'data-target' => "#at#{text.id}"}
+                          %button.collapsed.vertical-expand{id: "collat#{text.id}", 'data-toggle' => 'collapse', 'data-target' => "#at#{text.id}"}
                           %button.icon-btn.icon-bydelete.delbutton{id: "del#{text.id}"}
                           - if text.manifestation_id.nil?
                             %button.icon-btn.icon-byedit.editmdbutton{id: "edit#{text.id}"}

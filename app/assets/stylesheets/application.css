@@ -119,6 +119,12 @@ input[type=checkbox].multiselect_checkbox {
 .collapsed.vertical-expand::before {
   content: "<";
 }
+#anth_texts .collapsed.vertical-expand::before {
+  content: "<";
+}
+#anth_texts .vertical-expand::before {
+  content: "]";
+}
 .advanced-pagination {
   width: calc(100% - 150px);
 }
