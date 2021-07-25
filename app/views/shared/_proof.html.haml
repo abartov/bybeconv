@@ -2,15 +2,12 @@
   = form_tag('/proof', remote: true, id: 'proof_form') do
     .flex-popup
       .popup-top
-        .row{:style => "padding:15px;margin: 0"}
-          .col-4{:style => "padding: 0;"}
-            %button.btn-small-outline-v02{'data-dismiss'=>'modal'}
-              .btn-text-v02
-                %span.right-arrow 2
-                %span= t(:cancel_and_back)
-          .col-4{:style => "padding: 0;"}
-            .headline-2-v02{:style => "text-align: center;margin: 0; padding-top: 3px;"}= t(:found_mistake)
-          .col-4
+        %button.btn-small-outline-v02{'data-dismiss'=>'modal'}
+          .btn-text-v02
+            %span.right-arrow 2
+            %span= t(:cancel_and_back)
+        .headline-2-v02{:style => "text-align: center;margin: 0; padding-top: 3px;"}= t(:found_mistake)
+        .button-placeholder
       .by-popup-v02
         .by-card-header-v02.desktop-only
           %span.headline-1-v02= t(:report_found_mistake)

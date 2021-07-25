@@ -1,48 +1,44 @@
 .modal-dialog
   .modal-content
-    .container-fluid
-      = form_tag('/download/'+manifestation.id.to_s, id: 'cite_form') do
-        .flex-popup
-          .modal-header
-            .popup-top
-              .row{:style => "padding:15px;margin: 0"}
-                .col-4{:style => "padding: 0;"}
-                  %button.btn-small-outline-v02{'data-dismiss'=>'modal'}
-                    .btn-text-v02
-                      %span.right-arrow 2
-                      %span= t(:back)
-                .col-4{:style => "padding: 0;"}
-                  .modal-title.headline-2-v02{:style => "text-align: center;margin: 0; padding-top: 3px;"}= t(:cite)
-                .col-4
-          .modal-body
-            .by-popup-v02
-              .by-card-header-v02.desktop-only
-                %span.headline-1-v02= t(:cite)
-                %a.popup-x-v02.linkcolor.pointer{'data-dismiss'=>'modal'} -
-              .by-card-content-v02
-                %p= t(:cite_instructions_html)
-                .row.space-under
-                  .col-2 APA:
-                  .col-10
-                    .citation-area
-                      %p#apa_citation!= apa_citation(manifestation)
-                    %button.by-button-v02.citecopybutton#apa= t(:copy_to_clipboard)
-                .row.space-under
-                  .col-2 MLA:
-                  .col-10
-                    .citation-area
-                      %p#mla_citation!= mla_citation(manifestation)
-                    %button.by-button-v02.citecopybutton#mla= t(:copy_to_clipboard)
-                .row.space-under
-                  .col-2 ASA:
-                  .col-10
-                    .citation-area
-                      %p#asa_citation!= asa_citation(manifestation)
-                    %button.by-button-v02.citecopybutton#asa= t(:copy_to_clipboard)
-              .bottom-button-area.left-buttons
-                %button.btn-small-outline-v02.close-btn{'data-dismiss'=>'modal'}
-                  .btn-text-v02= t(:close)
-                %input#tocopy{style:'height:0;width:0;'}
+    = form_tag('/download/'+manifestation.id.to_s, id: 'cite_form') do
+      .flex-popup
+        .modal-header
+          .popup-top
+            %button.btn-small-outline-v02{'data-dismiss'=>'modal'}
+              .btn-text-v02
+                %span.right-arrow 2
+                %span= t(:back)
+            .modal-title.headline-2-v02{:style => "text-align: center;margin: 0; padding-top: 3px;"}= t(:cite)
+            .button-placeholder
+        .modal-body
+          .by-popup-v02
+            .by-card-header-v02.desktop-only
+              %span.headline-1-v02= t(:cite)
+              %a.popup-x-v02.linkcolor.pointer{'data-dismiss'=>'modal'} -
+            .by-card-content-v02
+              %p= t(:cite_instructions_html)
+              .row.space-under
+                .col-2 APA:
+                .col-10
+                  .citation-area
+                    %p#apa_citation!= apa_citation(manifestation)
+                  %button.by-button-v02.citecopybutton#apa= t(:copy_to_clipboard)
+              .row.space-under
+                .col-2 MLA:
+                .col-10
+                  .citation-area
+                    %p#mla_citation!= mla_citation(manifestation)
+                  %button.by-button-v02.citecopybutton#mla= t(:copy_to_clipboard)
+              .row.space-under
+                .col-2 ASA:
+                .col-10
+                  .citation-area
+                    %p#asa_citation!= asa_citation(manifestation)
+                  %button.by-button-v02.citecopybutton#asa= t(:copy_to_clipboard)
+            .bottom-button-area.left-buttons
+              %button.btn-small-outline-v02.close-btn{'data-dismiss'=>'modal'}
+                .btn-text-v02= t(:close)
+              %input#tocopy{style:'height:0;width:0;'}
 
 :javascript
   $(document).ready(function() {

@@ -168,15 +168,11 @@
     .modal-dialog.modal-dialog-centered{role: 'document'}
       .modal-content
         .popup-top
-          .row{:style => "padding:15px;margin: 0"}
-            .col-3{:style => "padding: 0;"}
-              %button.btn-small-outline-v02{'data-dismiss' => 'modal'}
-                .btn-text-v02
-                  %span.right-arrow 2
-                  %span= t(:back)
-            .col-6{:style => "padding: 0;"}
-              .headline-2-v02{:style => "text-align: center;margin: 0; padding-top: 3px;"}= t(:jump_to)
-            .col-3
+          %button.btn-small-outline-v02{'data-dismiss' => 'modal'}
+            .btn-text-v02
+              %span.right-arrow 2
+              %span= t(:back)
+          .headline-2-v02{:style => "text-align: center;margin: 0; padding-top: 3px;"}= t(:jump_to)
         .by-popup-v02
           %div
             .by-card-content-v02.dropdown-content-mobile{:style => "padding-top: 0"}

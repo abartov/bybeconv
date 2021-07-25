@@ -4,15 +4,12 @@
       #flash-on-text-popup.flex-popup
         .modal-header
           .popup-top
-            .row{style: "padding:15px;margin: 0"}
-              .col-3{style: "padding: 0;"}
-                %button.btn-small-outline-v02{'data-dismiss'=>'modal'}
-                  .btn-text-v02
-                    %span.right-arrow 2
-                    %span t(:back)
-              .col-6{style: "padding: 0;"}
-                .headline-2-v02{style: "text-align: center;margin: 0; padding-top: 3px;"}= t(:featured_author)
-              .col-3
+            %button.btn-small-outline-v02{'data-dismiss'=>'modal'}
+              .btn-text-v02
+                %span.right-arrow 2
+                %span t(:back)
+            .headline-2-v02{style: "text-align: center;margin: 0; padding-top: 3px;"}= t(:featured_author)
+            .button-placeholder
         .modal-body
           .by-popup-v02.flash-author-popup-v02
             %a.popup-x-v02.linkcolor.pointer{'data-dismiss'=>'modal'} -
