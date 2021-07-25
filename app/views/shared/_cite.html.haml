@@ -44,6 +44,7 @@
   $(document).ready(function() {
     $('.citecopybutton').click(function(e) {
       e.preventDefault();
+      $('.citecopybutton').text("#{t(:copy_to_clipboard)}");
       the_id = '#'+$(this).attr('id')+'_citation';
       $('#tocopy').val($(the_id).text());
       $('#tocopy').select();
