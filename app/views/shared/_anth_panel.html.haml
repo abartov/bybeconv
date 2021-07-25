@@ -22,9 +22,7 @@
       .by-card-header-v02.desktop-only
         %button.by-button-secondary-v02.horizontal-collapse-expand#anth_collapser{style:'border:none', 'data-dismiss'=>'modal', title: t(:anth_fold_tt)}
         #anthology-select
-          /.anthology-select-desktop
-          /  .field-v02
-          = select_tag :anthologies, options_for_select(anthology_select_options, @selected_anthology), {style:'width:300px'}
+          = select_tag :anthologies, grouped_options_for_select(anthology_select_options, @selected_anthology), {style:'width:300px'}
         .anthology-select-mobile
         %a.popup-x-v02.pointer{'data-dismiss'=>'modal'} -
         .anthologies-actions-area
