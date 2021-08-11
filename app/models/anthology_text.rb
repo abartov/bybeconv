@@ -25,11 +25,13 @@ class AnthologyText < ApplicationRecord
         else
           n = self.manifestation.word_count/500.to_f
           self.cached_page_count = n.ceil
-        end
-        self.save!
+        end 
+        self.save
+        self.touch # update updated_at even if the page count hasn't changed, otherwise we'll keep recalculating
       end
     rescue ActiveRecord::RecordInvalid
       # should only happen with already-invalid records, that were created before the uniqueness requirement. Ignore.
+      puts $!
       nil
     end
     return self.cached_page_count

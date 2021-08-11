@@ -10,4 +10,5 @@
   $('#anth_container').replaceWith(markup);
   $('.badge-number').text("<%= @anthology.texts.length.to_s %>");
   $('.anthology-badge').show();
+  $(".anthology-cards-area").scrollTop($(".anthology-cards-area").prop("scrollHeight"));
 <% end %>

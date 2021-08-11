@@ -13,6 +13,7 @@
             %li
               = link_to bs.title, url_for(action: :shopping, source_id: bs.id)
               = " (#{Holding.to_obtain(bs.id).count.to_s})"
+        %h2= link_to t(:pubs_maybe_done), action: :pubs_maybe_done
         %h2= t(:administration)
         %p= link_to t(:manage_bib_sources), bib_sources_path
       .col-md-8

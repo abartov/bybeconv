@@ -129,6 +129,11 @@ class Person < ApplicationRecord
     end
   end
 
+  def self.cached_count
+    Rails.cache.fetch("au_total_count", expires_in: 24.hours) do
+      self.count
+    end
+  end
   def self.cached_toc_count
     Rails.cache.fetch("au_toc_count", expires_in: 24.hours) do
       self.has_toc.count
@@ -210,8 +215,8 @@ class Person < ApplicationRecord
   end
 
   def all_works_by_title(term)
-    w = original_works.where("expressions.title like '%#{term}%'")
-    t = translations.where("expressions.title like '%#{term}%'")
+    w = original_works.where('expressions.title like ?', "%#{term}%")
+    t = translations.where('expressions.title like ?', "%#{term}%")
     return (w + t).uniq.sort_by{|m| m.title}
   end
 
@@ -227,7 +232,7 @@ class Person < ApplicationRecord
   def translations_by_genre
     ret = {}
     get_genres.map{|g| ret[g] = []}
-    Manifestation.all_published.joins(expressions: :realizers).includes(expressions: [works: [creations: :person]]).where(realizers:{role: Realizer.roles[:translator], person_id: self.id}).each do |m|
+    Manifestation.all_published.joins(expressions: :realizers).includes(expressions: :works).where(realizers:{role: Realizer.roles[:translator], person_id: self.id}).each do |m|
       ret[m.expressions[0].genre] << m
     end
     return ret

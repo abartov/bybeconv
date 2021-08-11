@@ -23,7 +23,7 @@
             .icon-in-group-v02.anthologies_button.must_login
               %span.linkcolor.pointer.by-icon-v02 D
           - else
-            .icon-in-group-v02.anthologies_button{'data-toggle' => 'modal', 'data-target' => '#anthologiesDlg', title: t(:open_shelves_tt)}
+            .icon-in-group-v02.anthologies_button{'data-toggle' => 'modal', 'data-target' => '#anthologiesDlg', 'data-backdrop' => 'static', 'data-keyboard' => 'false', title: t(:open_shelves_tt)}
               %span.linkcolor.pointer.by-icon-v02 D
               - unless @anthology.nil?
                 .anthology-badge{style: "display: #{@anthology.texts.length > 0 ? 'block' : 'none'}"}
@@ -40,7 +40,7 @@
             .icon-in-group-v02.anthologies_button.must_login
               %span.linkcolor.pointer.by-icon-v02 D
           - else
-            .icon-in-group-v02.anthologies_button{'data-toggle' => 'modal', 'data-target' => '#anthologiesDlg'}
+            .icon-in-group-v02.anthologies_button{'data-toggle' => 'modal', 'data-backdrop' => 'static', 'data-keyboard' => 'false', 'data-target' => '#anthologiesDlg'}
               %span.linkcolor.pointer.by-icon-v02 D
               - unless @anthology.nil?
                 .anthology-badge{style: "display: #{@anthology.texts.length > 0 ? 'block' : 'none'}"}
@@ -75,8 +75,13 @@
   }
   $(document).ready(function(){
     $('#sort_filter_toggle').click(function() {
-      $('#browse_intro').toggle();
-      $('#sort_filter_panel').toggle();
+      if(window.innerWidth < mobileWidth) {
+        $('#mobileFilterDlg').modal('show');
+      } else {
+        $('#browse_intro').toggle();
+        $('#sort_filter_panel').toggle();
+      }
+      
       if($('#filters_panel .temporary').length) { // if filter panel yet to be loaded
         startModal('spinnerdiv');
         var url = $('#hurl').val().replace(/page=\d+/,'');

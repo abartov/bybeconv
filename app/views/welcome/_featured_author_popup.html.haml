@@ -1,0 +1,29 @@
+.modal-dialog
+  .modal-content
+    .container-fluid
+      #flash-on-text-popup.flex-popup
+        .modal-header
+          .popup-top
+            %button.btn-small-outline-v02{'data-dismiss'=>'modal'}
+              .btn-text-v02
+                %span.right-arrow 2
+                %span t(:back)
+            .headline-2-v02{style: "text-align: center;margin: 0; padding-top: 3px;"}= t(:featured_author)
+            .button-placeholder
+        .modal-body
+          .by-popup-v02.flash-author-popup-v02
+            %a.popup-x-v02.linkcolor.pointer{'data-dismiss'=>'modal'} -
+            .flash-popup-bg-v02
+              .by-side-card-header-v02
+                %p.headline-1-v02= t(:featured_author)
+              .by-card-content-v02{style: "padding-top: 0"}
+                .flash-popup-text-v02
+                  %p.headline-3-v02= @featured_author.title
+                  - unless @featured_author.user.nil?
+                    %p
+                      = t(:by)+' '
+                      = link_to @featured_author.user.name, volunteer_show_path(@featured_author.user)
+                  %p!= @featured_author.body.gsub("\n",'<br />')
+              .bottom-button-area
+                %a{ href: author_toc_path(id: @featured_author.person.id)}
+                  %button.by-button-v02.button-to-full-v02= t(:to_the_author_page)

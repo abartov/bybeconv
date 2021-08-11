@@ -62,8 +62,8 @@ p {
 .surprise-author-card-v02 {
     width: 96px;
     height: 176px;
-    margin-left: 24px;
-    margin-top: -5px; }
+	}
+	 
 .about-author-card-v02 {
     width: 96px;
     height: 138px;
@@ -79,7 +79,8 @@ p {
   margin-top: -5px;
   width: 101px;
   height: 5px;
-  margin-left: 24px;}
+  margin-right: 9px;
+}
 	
 .about-author-card-bookmark-fold-v02 {
   margin-right: 10px;
@@ -100,8 +101,7 @@ p {
     width: 96px;
     height: 138px;
     padding-top: 32px; }
-.surprise-author-name-v02 {
-  }
+
 
 .statistics-box-v02 {
     height: 46px;
@@ -118,7 +118,7 @@ p {
     margin-top: 6px; }
 
 .surprise-again-footer-v02 {
-  padding: 15px 15px 15px 20px;
+  padding: 15px;
 }
 
 .by-genre-icon-surprise-v02 {
@@ -133,6 +133,8 @@ p {
 	min-height: 148px;
 }
 .headline-1-v02{
+  font-size: 14pt;
+  line-height: 16pt;
 }
 .author-name-area{
 		height: 38px;
@@ -244,6 +246,31 @@ p {
 	min-width: calc(50% - 28px);
 }
 	
+.surprise-author-card-content-v02 {
+  width: calc(100% - 108px);
+	margin-right: 111px;
+}
+
+	.surprise-work-card-content-v02 {
+  width: calc(100% - 108px);
+	margin-right: 111px;
+}
+#authors-surprise-replaced .by-card-header-v02{
+	padding-right: 126px;
+}
+#whats-new-author-popup .by-card-header-v02{
+	padding-right: 126px;
+}
+#works-surprise-replaced .by-card-header-v02{
+	padding-right: 126px;
+}
+#author-info-popup .by-card-header-v02{
+	padding-right: 126px;
+}
+#sefaria-title .he{
+  font-size: 14pt;
+  line-height: 16pt;
+}
 	
 }
 

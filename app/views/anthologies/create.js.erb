@@ -7,4 +7,5 @@
   $('#anthologies').val($.cur_anth.toString());
 <% else %>
   $('#anth_container').replaceWith("<%= j(render partial: 'shared/anth_panel', locals: {show_panel: true}) %>");
+  $('input[name=anthology\\[title\\]]').val("<%= @new_anth_name %>");
 <% end %>

@@ -22,9 +22,7 @@
       .by-card-header-v02.desktop-only
         %button.by-button-secondary-v02.horizontal-collapse-expand#anth_collapser{style:'border:none', 'data-dismiss'=>'modal', title: t(:anth_fold_tt)}
         #anthology-select
-          /.anthology-select-desktop
-          /  .field-v02
-          = select_tag :anthologies, options_for_select(anthology_select_options, @selected_anthology), {style:'width:300px'}
+          = select_tag :anthologies, grouped_options_for_select(anthology_select_options, @selected_anthology), {style:'width:300px'}
         .anthology-select-mobile
         %a.popup-x-v02.pointer{'data-dismiss'=>'modal'} -
         .anthologies-actions-area
@@ -55,52 +53,54 @@
           .mainlist
             %ol#anth_texts
               - unless @anthology.nil?
-                - @anthology.ordered_texts.each do |text|
-                  %li{id: 'anth_text_'+text.id.to_s}
-                    %div{'class' => "by-card-v02" + (text.manifestation_id.nil? ? ' self-created-text' : '')}
-                      .anthology-card-header
-                        .drag-handle{title: t(:anth_drag_tt)}
-                          .handle
-                        .anthology-headline
+                - otexts = @anthology.ordered_texts
+                - otexts.each do |text|
+                  - unless text.nil?
+                    %li{id: 'anth_text_'+text.id.to_s}
+                      %div{'class' => "by-card-v02" + (text.manifestation_id.nil? ? ' self-created-text' : '')}
+                        .anthology-card-header
+                          .drag-handle{title: t(:anth_drag_tt)}
+                            .handle
+                          .anthology-headline
+                            - if text.manifestation_id.nil?
+                              = t(:curated_text_bit)+': '+text.title
+                              /%span.by-icon-v02.markdown-icon _
+                            - else
+                              = link_to text.manifestation.title + ' / ' + text.manifestation.author_string, manifestation_read_path(text.manifestation_id)
+                          %button.collapsed.vertical-expand{id: "collat#{text.id}", 'data-toggle' => 'collapse', 'data-target' => "#at#{text.id}"}
+                          %button.icon-btn.icon-bydelete.delbutton{id: "del#{text.id}"}
                           - if text.manifestation_id.nil?
-                            = t(:curated_text_bit)+': '+text.title
-                            /%span.by-icon-v02.markdown-icon _
-                          - else
-                            = link_to text.manifestation.title + ' / ' + text.manifestation.author_string, manifestation_read_path(text.manifestation_id)
-                        %button.vertical-expand{id: "collat#{text.id}", 'data-toggle' => 'collapse', 'data-target' => "#at#{text.id}"}
-                        %button.icon-btn.icon-bydelete.delbutton{id: "del#{text.id}"}
-                        - if text.manifestation_id.nil?
-                          %button.icon-btn.icon-byedit.editmdbutton{id: "edit#{text.id}"}
-                        .atcoll.collapse.in{id: "at#{text.id}"}
-                          - if text.manifestation_id.nil?
-                            .row.anthology-nested-content
-                              .col-md-4.col-sm-12
-                                %div
-                                  %span{:style => "font-weight:bold"}= t(:a_date)+': '
-                                  %span= text.updated_at.strftime('%d.%m.%Y')
-                              .col-md-4.col-sm-12
-                                %div{:style => "padding-bottom: 12px"}
-                                  %span{:style => "font-weight:bold"}= t(:word_count)+': '
-                                  %span= text.body.split.count
-                          - else
-                            .row.anthology-nested-content
-                              .col-md-4.col-sm-12
-                                %div{:style => "padding-bottom: 12px"}
-                                  %span{:style => "font-weight:bold"}= t(:genre)+': '
-                                  %span= textify_genre(text.manifestation.expressions[0].genre)
-                              .col-md-4.col-sm-12
-                                %div{:style => "padding-bottom: 12px"}
-                                  %span{:style => "font-weight:bold"}= t(:page_count)+': '
-                                  %span= text.page_count
-                            %div
-                              - if text.manifestation.copyright?
-                                %span.by-icon-v02.copyright-icon> x
-                                = textify_copyright_status(true)
-                                = link_to '[?]', '#', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_permission), 'data-content' => t(:permission_popover)
-                              - else
-                                %span.by-icon-v02.copyright-icon> m
-                                = textify_copyright_status(false)
-                                = link_to '[?]', '#', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_public_domain), 'data-content' => t(:public_domain_popover)
+                            %button.icon-btn.icon-byedit.editmdbutton{id: "edit#{text.id}"}
+                          .atcoll.collapse.in{id: "at#{text.id}"}
+                            - if text.manifestation_id.nil?
+                              .row.anthology-nested-content
+                                .col-md-4.col-sm-12
+                                  %div
+                                    %span{:style => "font-weight:bold"}= t(:a_date)+': '
+                                    %span= text.updated_at.strftime('%d.%m.%Y')
+                                .col-md-4.col-sm-12
+                                  %div{:style => "padding-bottom: 12px"}
+                                    %span{:style => "font-weight:bold"}= t(:word_count)+': '
+                                    %span= text.body.split.count
+                            - else
+                              .row.anthology-nested-content
+                                .col-md-4.col-sm-12
+                                  %div{:style => "padding-bottom: 12px"}
+                                    %span{:style => "font-weight:bold"}= t(:genre)+': '
+                                    %span= textify_genre(text.manifestation.expressions[0].genre)
+                                .col-md-4.col-sm-12
+                                  %div{:style => "padding-bottom: 12px"}
+                                    %span{:style => "font-weight:bold"}= t(:page_count)+': '
+                                    %span= text.page_count
+                              %div
+                                - if text.manifestation.copyright?
+                                  %span.by-icon-v02.copyright-icon> x
+                                  = textify_copyright_status(true)
+                                  = link_to '[?]', '#', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_permission), 'data-content' => t(:permission_popover)
+                                - else
+                                  %span.by-icon-v02.copyright-icon> m
+                                  = textify_copyright_status(false)
+                                  = link_to '[?]', '#', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_public_domain), 'data-content' => t(:public_domain_popover)
         .bottom-right-buttons
           #add_work_block{style: 'display: none'}
             .by-button-v02.by-button-secondary-v02#add_work_btn{title: t(:anth_add_work_tt)}
@@ -192,6 +192,9 @@
       e.preventDefault();
       $('#anth_panel').hide();
       $('#add_curated').show();
+      $('#curated_title').text("#{t(:add_curated_text)}");
+      $('#curated_add_item').val("#{ t(:add_curated_text) }");
+      $('body').attr('anth-open', 'true');
     });
     $('.editmdbutton').click(function(){
       text_id = this.id.replace('edit','');

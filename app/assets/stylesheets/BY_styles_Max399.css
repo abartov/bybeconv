@@ -109,7 +109,7 @@
 	
 .surprise-author-pic-v02 {
     width: 60px;
-    height: 80px; }
+    height: 86px; }
 
 .surprise-work-genre-v02 {
     width: 60px;
@@ -122,7 +122,7 @@
 .surprise-author-name-v02 {
 	font-size: 10px;
 	line-height: 10px;
-	padding-top: 0;}
+}
 
 .by-genre-icon-surprise-v02 {
     font-size: 24px;
@@ -467,6 +467,39 @@ body {
 		margin: 0;
 		width: calc(100% - 30px);
 		top: 15px;
+	}
+	.popup-with-bottom-links{
+		height: calc(100% - 54px);
+	}
+	.surprise-author-card-content-v02 {
+ margin-right: 75px;
+}
+		.surprise-work-card-content-v02 {
+ margin-right: 75px;
+}
+.by2-icon{
+    font-size: 12px;
+}
+.flash-popup-bg-v02{
+		height: calc(100vh - 114px);
+	}
+.flash-author-popup-v02{
+		height: calc(100vh - 114px);
+	}
+.flash-author-popup-v02 .by-card-content-v02{
+		height: calc(100vh - 172px);
+	}
+#authors-surprise-replaced .by-card-header-v02{
+	padding-right: 90px;
+}
+	#whats-new-author-popup .by-card-header-v02{
+	padding-right: 90px;
+}
+	#works-surprise-replaced .by-card-header-v02{
+			padding-right: 90px;
+	}
+	#author-info-popup .by-card-header-v02{
+			padding-right: 90px;
 	}
 	
 }

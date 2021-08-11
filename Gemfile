@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '~> 5.2'
+gem 'rails', '~> 5.2.5'
 gem 'rails-i18n' # , git: 'https://github.com/svenfuchs/rails-i18n.git' # , branch: 'rails-4-x' # For 4.x
 gem 'actionview', '>= 5.2.4.2'
 gem 'sprockets', '~> 3' # 4.x requires manifest.js
@@ -19,6 +19,7 @@ gem "jquery-slick-rails" # for carousel slider
 gem 'rails-jquery-autocomplete', '>= 1.0.5' # for auto-completion
 gem 'property_sets' # for key/value properties per model
 gem "mini_magick", ">= 4.9.4"
+gem 'marcel', '~> 1'
 gem "omniauth-rails_csrf_protection"
 
 gem 'rack-cors', require: 'rack/cors'
@@ -50,7 +51,8 @@ gem 'therubyracer'
 gem 'thin'
 gem 'htmlentities'
 gem 'kaminari', '1.1.1' # pagination. Kaminari 1.2.1 seems to have a bug - https://github.com/kaminari/kaminari/issues/1033
-gem "nokogiri", ">= 1.10.4"
+gem "nokogiri"
+#gem "nokogiri", ">= 1.10.4"
 
 gem 'rmultimarkdown' # new wrapper over Fletcher Penney's MultiMarkDown 6 (MMD 6)
 gem 'yt' # for polling YouTube for new videos
@@ -58,7 +60,7 @@ gem 'yt' # for polling YouTube for new videos
 gem 'app_constants' # anything more Railsy?
 gem 'hebrew', '>= 0.2.1' # https://github.com/abartov/hebrew
 gem 'gared', '>= 0.0.23' # https://gitlab.com/abartov/gared # for scraping bibliographic data from Hebrew sources
-
+# gem 'goldiloader'
 gem 'haml'
 #gem 'zoom', '~>0.4.1', :git => 'https://github.com/bricestacey/ruby-zoom.git' # for Z39.50 queries to libraries
 gem 'haml-rails'
@@ -97,4 +99,8 @@ group :development do
   gem 'rvm1-capistrano3', require: false
   gem 'capistrano-thin', '~> 2.0.0'
   gem 'capistrano-rvm'
+  gem 'derailed_benchmarks', group: :development
+  gem 'bullet'
+  gem 'active_record_query_trace'
+
 end

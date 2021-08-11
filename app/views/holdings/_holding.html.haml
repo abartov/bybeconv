@@ -1,5 +1,5 @@
 %li
-  = link_to(h.bib_source.title, h.source_id)
+  = link_to(textify_bib_source(h.bib_source.id), h.source_id)
   = " #{h.location}"
   - if with_actions == :pubs
     = ' '

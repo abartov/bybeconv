@@ -2,7 +2,7 @@
 #content.container-fluid
   .row.top-element
     .col-12.col-lg-5.col-xxxl-4
-      .by-card-v02#browse_intro{style:"display:#{ @filters.empty? ? 'show' : 'none'}"}
+      .by-card-v02.desktop-only#browse_intro{style:"display:#{ @filters.empty? ? 'show' : 'none'}"}
         .work-area
           .work-content
             .headline-1-v02= t(:welcome_to_works_browsing)
@@ -27,6 +27,11 @@
   = render partial: 'authors_select', locals: {authors: @authors, list: @authors_list}
 - if current_user
   = render partial: 'shared/anth_stuff'
+#mobileFilterDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
+  - unless @filters.empty?
+    = render partial: 'mobile_filters', locals: {sortonly: false}
+  - else
+    = render partial: 'mobile_filters', locals: {sortonly: true}
 
 :javascript
   $(document).ready(function(){
@@ -35,8 +40,7 @@
         state = event.originalEvent.state;
         if(state != null) {
           $('#works_filters').deserialize(state);
-          startModal('spinnerdiv');
-          $('#works_filters').submit();
+          submit_filters();
         }
       } else {
         

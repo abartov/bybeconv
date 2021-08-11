@@ -1,0 +1,32 @@
+.modal-dialog
+  .modal-content
+    .container-fluid
+      #flash-on-text-popup.flex-popup
+        .modal-header
+          .popup-top
+            %button.btn-small-outline-v02{'data-dismiss'=>'modal'}
+              .btn-text-v02
+                %span.right-arrow 2
+                %span t(:back)
+            .headline-2-v02{style: "text-align: center;margin: 0; padding-top: 3px;"}= t(:featured_item)
+        .modal-body
+          .by-popup-v02.flash-author-popup-v02
+            %a.popup-x-v02.linkcolor.pointer{'data-dismiss'=>'modal'} -
+            .flash-popup-bg-v02
+              .by-side-card-header-v02
+                %p.headline-1-v02= t(:featured_item)
+              .by-card-content-v02{style: "padding-top: 0"}
+                .flash-popup-text-v02
+                  %p.headline-3-v02= @featured_content.title
+                  - unless @featured_content.user.nil?
+                    %p
+                      = t(:by)+' '
+                      = link_to @featured_content.user.name, volunteer_show_path(@featured_content.user)
+                  %p!= @featured_content.body.gsub("\n",'<br />')
+              .bottom-button-area
+                - unless @featured_content.manifestation.nil?
+                  %a{ href: manifestation_read_path(id: @featured_content.manifestation.id)}
+                    %button.by-button-v02= t(:to_the_work_in_the_site)
+                - unless @featured_content.external_link.nil? or @featured_content.external_link.empty?
+                  %a{ href: @featured_content.external_link, target: '_blank'}
+                    %button.by-button-v02= t(:to_external_content)

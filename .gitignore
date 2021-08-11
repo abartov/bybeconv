@@ -30,6 +30,7 @@
 /config/newrelic.yml
 /config/s3.yml
 /config/behead.payload
+/config/credentials.yml.enc
 
 /vendor/analysis*
 /public/assets/*
