@@ -1,6 +1,7 @@
 .a-b-pagination-frame
+  - letterset = @sort_dir == 'desc' ? @ab.reverse : @ab
   - if @emit_filters
-    - @ab.each do |letter, status|
+    - letterset.each do |letter, status|
       - if status == :disabled
         %span= letter
       - elsif status == :in_range_disabled
@@ -8,7 +9,7 @@
       - else
         %span{class: (status == :active ? 'letterbutton active' : 'letterbutton'), id: letter, style: 'cursor:pointer'}= letter
   - else
-    - @ab.each do |letter, status|
+    - letterset.each do |letter, status|
       - url = request.original_url.match(/to_letter/) ? request.original_url.sub(/to_letter=.+/, 'to_letter='+letter) : (request.original_url.index('?') ? request.original_url + '&to_letter='+letter : request.original_url + '?to_letter='+letter)
       - if status == :disabled
         %span= letter
@@ -17,14 +18,16 @@
 :javascript
   $(document).ready(function() {
     filters = #{@emit_filters == true};
-    if(filters) {
-      $('.letterbutton').click(function(e){
+
+    $('.letterbutton').click(function(e){
+      startModal('spinnerdiv');
+      if(filters) {
         e.preventDefault();
         e.stopImmediatePropagation(); // prevent second pagination bar at bottom from also firing
         $('#toletter_tag').val($(this).attr('id'));
-        startModal('spinnerdiv');
         form_elem = "##{filter_element}"
         $(form_elem).submit();
-      });
-    }
+      }
+      //setTimeout(function(){stopModal('spinnerdiv')}, 5000); // workaround
+    });
   });

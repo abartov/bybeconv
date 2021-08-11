@@ -163,11 +163,15 @@ module ApplicationHelper
     end
   end
   def anthology_select_options
-    ret = [[t(:rename_this_anthology), -1], [t(:create_new_anthology), 0]]
+    ret = [
+      [t(:general),
+      [[t(:rename_this_anthology), -1], [t(:create_new_anthology), 0]]]]
+    anths = []
     current_user.anthologies.each{|a|
-      ret << [a.title, a.id]
+      anths << [a.title, a.id]
       @selected_anthology = a.id if @anthology == a
     }
+    ret << [t(:anthologies), anths] unless anths.empty?
     return ret
   end
   def update_param(uri, key, value)

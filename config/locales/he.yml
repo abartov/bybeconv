@@ -23,6 +23,10 @@ he:
   authors_select_filter: סינון לפי יוצר - בחירה מרובה
   add_authors_to_filter: הוספת היוצרים שנבחרו לסינון
   back_to_bib_workshop: חזרה לסדנה הביבליוגרפית
+  works_already_online: "יצירות שכבר מצויות במאגר בשם דומה:"
+  no_source_edition: אין פרטי מהדורה
+  mark_as_false_positive: לא אותה יצירה
+  pubs_maybe_done: "דו\"ח רשומות שאולי כבר עלו לאתר"
   apply_filters: הפעל סינון זה!
   filters_loading: טוען את המסננים...
   loading: התוכן נטען...
@@ -46,7 +50,7 @@ he:
   sitenotice_management: ניהול הודעות מערכת
   edit_sitenotice: ניהול הודעות מערכת
   type_new_name_below: עדכנו את השם ולחצו על שמירה.
-  ziburit: מהו שם המשפחה של המשורר הנחשב המשורר הלאומי?
+  ziburit: מהו שם המשפחה של המשורר הנחשב המשורר הלאומי? (שאלת אבטחה)
   from_pby_and_available_at: מתוך פרויקט בן־יהודה.  המקראה זמינה בכתובת
   welcome_to_works_browsing: ברוכים הבאים לרשימת היצירות
   works_browsing_intro_paging: ברשימת היצירות בקריטריונים שבחרת ישנן %{total} יצירות. בגלל אורכה, הרשימה מתחלקת לעמודי משנה המכילים 100 יצירות כל אחד. ניתן לדפדף ברשימה באמצעות הבקרים הנמצאים מעל ומתחת לרשימה, המאפשרים מעבר עמודים ואיתור האות הראשונה של שם היצירה.
@@ -165,8 +169,10 @@ he:
   donate_money: תרומה כספית
   donate: תרומה
   bookshelves: רשימות קריאה
+  sefaria_linker: הפעלת קישוריוֹת ספריא
   anthologies: מקראות
   add_curated_text: הוספת טקסט מלווה
+  edit_curated_text: עריכת טקסט מלווה
   edited_by: בעריכת
   anthology_cloned: המקראה שובטה ונוצר עותק משלך ברמת גישה פרטית
   copy_of: "עותק של "
@@ -396,10 +402,10 @@ he:
   pages: עמודים
   proof_show_text: הצג את הטקסט באתר הישן בחלון נפרד
   show_text: הצג את גוף היצירה
-  proof_your_proofs: יש להקליד כאן למטה את ההגהות, או ללחוץ על הלחצן משמאל כדי להעתיק את הטקסט שנבחר ולתקן אותו ידנית למטה.
+  proof_your_proofs: יש להקליד כאן למטה את ההגהות, או ללחוץ על "העתק למטה" כדי להעתיק את הטקסט שנבחר ולתקן אותו ידנית למטה.
   proof_copy_text: העתק למטה
-  your_selected_text: הטקסט שסימנת
-  submit_proof: שמור הגהה
+  your_selected_text: הטקסט שסומן
+  submit_proof: שליחת הגהה
   proof: הגהה
   assign_proofs: הקצה עוד הגהות לטיפולי
   highlighted_passage: הקטע שסומן בדיווח
@@ -578,6 +584,8 @@ he:
   entries: ערכים
   linking_entries: ערכים קשורים
   filter: סינון
+  apply_mobile_filters: יישום סינון נבחר
+  sort: מיון
   sort_name: שם לצורך מיון
   actions: פעולות
   author: מחבר
@@ -608,6 +616,7 @@ he:
   authors_page: דף יוצרים
   total: סך הכל
   total_x_works: סך הכל %{count} יצירות
+  total_x_records: סך הכל %{count} רשומות
   sort_and_filter: סינון
   sort_by: "מיון לפי: "
   filter_by: "סינון לפי: "
@@ -810,6 +819,7 @@ he:
   location_in_work: 'מיקום ביצירה:'
   clear_bibs: אַפֵּס תוצאות
   mark_as_done: סמן סיום טיפול ביבליוגרפי
+  general: כללי
   generated_toc: תוכן עניינים גולמי מהסדנה הביבליוגרפית
   generated_toc_explanation: "שימו לב: מה שבתיבה זו לא נשמר בשום מקום, אלא אם תעתיקו אותו לתיבת העריכה הרגילה, למטה."
   uploaded: עלה למערכת

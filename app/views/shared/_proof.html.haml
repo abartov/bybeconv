@@ -1,21 +1,18 @@
 #content.container-fluid
   = form_tag('/proof', remote: true, id: 'proof_form') do
-    .popup-top
-      .row{:style => "padding:15px;margin: 0"}
-        .col-4{:style => "padding: 0;"}
-          %button.btn-small-outline-v02{'data-dismiss'=>'modal'}
-            .btn-text-v02
-              %span.right-arrow 2
-              %span= t(:cancel_and_back)
-        .col-4{:style => "padding: 0;"}
-          .headline-2-v02{:style => "text-align: center;margin: 0; padding-top: 3px;"}= t(:found_mistake)
-        .col-4
-    .by-popup-v02
-      .by-card-header-v02.desktop-only
-        %span.headline-1-v02= t(:report_found_mistake)
-        %a.popup-x-v02{'data-dismiss'=>'modal'} -
-      %div
-        .by-card-content-v02.card-with-button
+    .flex-popup
+      .popup-top
+        %button.btn-small-outline-v02{'data-dismiss'=>'modal'}
+          .btn-text-v02
+            %span.right-arrow 2
+            %span= t(:cancel_and_back)
+        .headline-2-v02{:style => "text-align: center;margin: 0; padding-top: 3px;"}= t(:found_mistake)
+        .button-placeholder
+      .by-popup-v02
+        .by-card-header-v02.desktop-only
+          %span.headline-1-v02= t(:report_found_mistake)
+          %a.popup-x-v02{'data-dismiss'=>'modal'} -
+        .by-card-content-v02
           #marked-error-text.field-label= t(:your_selected_text)
           = text_area_tag(:highlight, '', id: 'proof_selected_text', rows: 7, cols:40, readonly:true, class: 'field-v02')
           /%input.field-v02{:type => "text"}/
@@ -37,8 +34,11 @@
             %span{:style => "font-weight: bold"}= t(:cancel)
           #error-notes.field-label= t(:ziburit)
           = text_field_tag(:ziburit, nil, {required: true, class: 'field-v02'})
-          = submit_tag(t(:submit_proof), {class: 'by-button-v02 button-to-full-v02'})
-          .no-header
+        .bottom-button-area.left-buttons
+          = submit_tag(t(:submit_proof), {class: 'by-button-v02'})
+          %button.by-button-v02.btn-secondary-v02.desktop-only{'data-dismiss'=>'modal'}
+            %span.right-side-icon= '-'
+            %span{style:'font-weight: bold'}= t(:cancel)
 
   #proof_status
 

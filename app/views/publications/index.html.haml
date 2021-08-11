@@ -13,7 +13,8 @@
           %br
           %b= label_tag(t(:status))
           = select_tag(:status, options_for_select(['']+Publication.statuses.keys.map{|st| [t(st), st]}, params[:status]))
-          = submit_tag(t(:filter))
+          %button.by-button-v02
+            = submit_tag(t(:filter), 'class' => 'by-button-v02')
 
       %table
         - @publications.each do |pub|

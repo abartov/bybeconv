@@ -19,7 +19,8 @@ Bybeconv::Application.routes.draw do
   get 'bib/scans' => 'bib#scans', as: 'bib_scans'
   get 'bib/person/:person_id' => 'bib#person', as: 'bib_person'
   match 'bib/pubs_by_person', via: [:get, :post]
-
+  get 'bib/pubs_maybe_done'
+  get 'bib/publication_mark_false_positive/:id' => 'bib#publication_mark_false_positive', as: 'publication_mark_false_positive'
   get 'bib/todo_by_location'
   get 'bib/holding_status/:id' => 'bib#holding_status', as: 'holding_status'
   post 'bib/make_author_page'
@@ -121,6 +122,8 @@ Bybeconv::Application.routes.draw do
   match 'author/:id' => 'authors#toc', as: 'author_toc', via: [:get, :post]
   get 'author/:id/delete_photo' => 'authors#delete_photo', as: 'delete_author_photo'
   get 'author/:id/whatsnew' => 'authors#whatsnew_popup', as: 'author_whatsnew_popup'
+  get 'welcome/:id/featured_popup' => 'welcome#featured_popup', as: 'featured_content_popup'
+  get 'welcome/:id/featured_author' => 'welcome#featured_author_popup', as: 'featured_author_popup'
   get 'author/:id/latest' => 'authors#latest_popup', as: 'author_latest_popup'
   get '/page/:tag' => 'static_pages#view', as: 'static_pages_by_tag', via: [:get]
   get "read/:id" => 'manifestation#read', as: 'manifestation_read'

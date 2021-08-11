@@ -1,71 +1,66 @@
 .modal-dialog
   .modal-content
-    .container-fluid
-      - formurl = local_assigns.has_key?(:manifestation) ? "/download/#{manifestation.id}" : anthology.nil? ? '#' : "#{anthology_download_path(anthology.id)}"
-      - dlgid = local_assigns.has_key?(:manifestation) ? 'downloadDlg' : 'downloadAnthologyDlg'
-      = form_tag(formurl, id: local_assigns.has_key?(:manifestation) ? 'download_form' : 'anth_download_form') do
+    - formurl = local_assigns.has_key?(:manifestation) ? "/download/#{manifestation.id}" : anthology.nil? ? '#' : "#{anthology_download_path(anthology.id)}"
+    - dlgid = local_assigns.has_key?(:manifestation) ? 'downloadDlg' : 'downloadAnthologyDlg'
+    = form_tag(formurl, id: local_assigns.has_key?(:manifestation) ? 'download_form' : 'anth_download_form') do
+      .flex-popup
         .modal-header
           .popup-top
-            .row{:style => "padding:15px;margin: 0"}
-              .col-4{:style => "padding: 0;"}
-                %button.btn-small-outline-v02{'data-dismiss'=>'modal'}
-                  .btn-text-v02
-                    %span.right-arrow 2
-                    %span= t(:back)
-              .col-4{:style => "padding: 0;"}
-                .modal-title.headline-2-v02{:style => "text-align: center;margin: 0; padding-top: 3px;"}= t(:download_to_file)
-              .col-4
+            %button.btn-small-outline-v02{'data-dismiss'=>'modal'}
+              .btn-text-v02
+                %span.right-arrow 2
+                %span= t(:back)
+            .headline-2-v02{:style => "text-align: center;margin: 0; padding-top: 3px;"}= t(:download_to_file)
+            .button-placeholder
         .modal-body
           .by-popup-v02
-            %div
-              .card-with-button{:style => "padding-top: 0"}
-                .by-card-header-v02.desktop-only
-                  %span.headline-1-v02= t(:save_to_file)
-                %a.popup-x-v02.linkcolor.pointer{'data-dismiss'=>'modal'} -
-                %p= t(:download_instructions)
-                %p
-                  %label
-                    = radio_button_tag 'format', 'pdf', true
-                    %b= 'PDF'
-                    = t(:pdf_format)
-                %p
-                  %label
-                    = radio_button_tag 'format', 'html'
-                    %b= 'HTML'
-                    = t(:html_format)
-                %p
-                  %label
-                    = radio_button_tag 'format', 'doc'
-                    %b= 'DOCX'
-                    = t(:doc_format)
-                %p
-                  %label
-                    = radio_button_tag 'format', 'epub'
-                    %b= 'EPUB'
-                    = t(:epub_format)
-                %p
-                  %label
-                    = radio_button_tag 'format', 'mobi'
-                    %b= 'MOBI'
-                    = t(:mobi_format)
-                %p
-                  %label
-                    = radio_button_tag 'format', 'txt'
-                    %b= 'TXT'
-                    = t(:txt_format)
-                %p
-                  %label
-                    = radio_button_tag 'format', 'odt'
-                    %b= 'ODT'
-                    = t(:odt_format)
-                  = hidden_field_tag :os, 'Windows', id: 'os'
-                %p
-                .desktop-only.bottom-right-link
-                  .linkcolor.pointer{'data-dismiss'=>'modal'}
-                    %span.right-side-icon -
-                    %span{:style => "font-weight: bold"}= t(:cancel)
-                = submit_tag t(:download), {class: 'pointer by-button-v02 button-to-full-v02 download_submitter', id: dlgid+'_do_download'}
-        .modal-footer
+            .by-card-header-v02.desktop-only
+              %span.headline-1-v02= t(:save_to_file)
+              %a.popup-x-v02.linkcolor.pointer{'data-dismiss'=>'modal'} -
+            .by-card-content-v02.card-with-button
+              %p= t(:download_instructions)
+              %p
+                %label
+                  = radio_button_tag 'format', 'pdf', true
+                  %b= 'PDF'
+                  = t(:pdf_format)
+              %p
+                %label
+                  = radio_button_tag 'format', 'html'
+                  %b= 'HTML'
+                  = t(:html_format)
+              %p
+                %label
+                  = radio_button_tag 'format', 'docx'
+                  %b= 'DOCX'
+                  = t(:doc_format)
+              %p
+                %label
+                  = radio_button_tag 'format', 'epub'
+                  %b= 'EPUB'
+                  = t(:epub_format)
+              %p
+                %label
+                  = radio_button_tag 'format', 'mobi'
+                  %b= 'MOBI'
+                  = t(:mobi_format)
+              %p
+                %label
+                  = radio_button_tag 'format', 'txt'
+                  %b= 'TXT'
+                  = t(:txt_format)
+              %p
+                %label
+                  = radio_button_tag 'format', 'odt'
+                  %b= 'ODT'
+                  = t(:odt_format)
+                = hidden_field_tag :os, 'Windows', id: 'os'
+              %p
+              /.desktop-only.bottom-button-area
+              /  .linkcolor.pointer{'data-dismiss'=>'modal'}
+              /    %span.right-side-icon -
+              /    %span{:style => "font-weight: bold"}= t(:cancel)
+              = submit_tag t(:download), {class: 'pointer by-button-v02 button-to-full-v02 download_submitter', id: dlgid+'_do_download'}
 
 :javascript
   var OSName="Unknown OS";

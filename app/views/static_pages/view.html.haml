@@ -2,15 +2,12 @@
   .container-fluid
     .row
       .col-12.col-lg-8
-        .by-card-v02#static_page
-          .by-card-header-v02
-            %span.headline-1-v02= @p.title
-          .by-card-content-v02
-            - if @p.ltr
-              %div{dir:'ltr',align:'left'}
-                != @markdown.gsub('<h2 ','<h2 style="direction:ltr;text-align:left" ').gsub('<h4 ','<h4 style="direction:ltr;text-align:left" ').gsub('<h3 ','<h3 style="direction:ltr;text-align:left" ')
-            - else
-              != @markdown
+        #static_page
+          - if @p.ltr
+            %div{dir:'ltr',align:'left'}
+              != @markdown.gsub('<h2 ','<h2 style="direction:ltr;text-align:left" ').gsub('<h4 ','<h4 style="direction:ltr;text-align:left" ').gsub('<h3 ','<h3 style="direction:ltr;text-align:left" ')
+          - else
+            != @markdown
       .col-12.col-lg-4
 :javascript
   $(document).ready(function(){

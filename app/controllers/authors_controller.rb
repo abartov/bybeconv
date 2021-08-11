@@ -221,6 +221,7 @@ class AuthorsController < ApplicationController
       else
         generate_toc
       end
+      prep_user_content(:author)
       @scrollspy_target = 'genrenav'
     else
       flash[:error] = I18n.t(:no_toc_yet)

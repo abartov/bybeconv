@@ -1,5 +1,5 @@
-/ Main author page
-/ hack to get scrollspy to highlight first genre up top
+-# Main author page
+-# hack to get scrollspy to highlight first genre up top
 - unless @genres_present.nil? or @genres_present.empty?
   %div{id: 'works-'+@genres_present.first}
 #content.container-fluid.top-element
@@ -23,23 +23,24 @@
                     %span.date-range!= "(#{@author.life_years})"
                   .author-about
                     .text-height-author= @author.wikipedia_snippet
-                    .read-more-v02
-                      %a{:href => @author.wikipedia_url, target: '_blank'}
-                        %span{:style => "font-weight: bold"}= t(:rest_in_wikipedia)
-                        %span.left-arrow 1
+                    - unless @author.wikipedia_url.empty?
+                      .read-more-v02
+                        %a{:href => @author.wikipedia_url, target: '_blank'}
+                          %span{:style => "font-weight: bold"}= t(:rest_in_wikipedia)
+                          %span.left-arrow 1
                     %div{style:'margin-top:12px;'}
                       %b= t(:works_in_the_project)+': '
                       = "#{@author.cached_works_count} #{t(:works)}"
-                    /%div{:style => "margin-top: 12px;"}
-                    /  %a{:href => "#"}
-                    /    %span.by-icon-v02.iconNearText-v02> W
-                    /    לינק
-                    /    לוידאו רלוונטי
-                    /%div{:style => "margin-top: 12px;"}
-                    /  %a{:href => "#"}
-                    /    %span.by-icon-v02.iconNearText-v02> +
-                    /    לינק
-                    /    לאתר רלוונטי
+                    -#%div{:style => "margin-top: 12px;"}
+                    -#  %a{:href => "#"}
+                    -#    %span.by-icon-v02.iconNearText-v02> W
+                    -#    לינק
+                    -#    לוידאו רלוונטי
+                    -#%div{:style => "margin-top: 12px;"}
+                    -#  %a{:href => "#"}
+                    -#    %span.by-icon-v02.iconNearText-v02> +
+                    -#    לינק
+                    -#    לאתר רלוונטי
                     - unless @author.blog_category_url.nil? or @author.blog_category_url.empty?
                       %div{:style => "margin-top: 12px;"}
                         %a{:href => @author.blog_category_url, target: '_blank'}
@@ -52,8 +53,23 @@
                         != "&nbsp;&nbsp;&nbsp;"
                         %span.static-btn
                           %b= link_to t(:edit_metadata), authors_edit_path(id: @author.id)
-            / table of contents
+              
+              .select-all-with-buttons{style:'display:none;margin-right:100px;'}
+                .number-of-selected-texts{style: 'display:none'}
+                  = t(:number_of_selected_texts)
+                  %span#selected_counter{style: 'font-weight: bold'}= '0'
+                  %span.pointer.linkcolor#reset_multiselect= t(:reset_multiselect)
+                .select-text-checkbox-area
+                  .select-all-checkbox
+                    %input#select-all{type: 'checkbox', style:'display:none'}
+                %button.btn-small-outline-v02#multiselect_btn{title: t(:worklist_multi_tt)}
+                  .by-icon-top-v02.purple-v02 \
+            -# table of contents
             .toc#maintext
+              .add-to-anthology{style:'display:none'}
+                .left-pointing-arrow= t(:perform_add)
+                %button.by-button-v02#add-to-anth-btn
+                  .by-icon-v02 &amp; D
               - unless @toc.nil?
                 = render partial: 'toc', locals: {margin: true}
                 .by-card-v02#text-volunteers-desktop
@@ -74,10 +90,10 @@
                 .by-side-card-header-v02
                   %p.headline-1-v02{:style => "margin-bottom: 0"}
                     = t(:latest_updates)
-                    /= link_to t(:latest_updates), whatsnew_path # TODO: re-enable when main whatsnew can be filtered by author
+                    -#= link_to t(:latest_updates), whatsnew_path # TODO: re-enable when main whatsnew can be filtered by author
                 .by-card-content-v02.card-with-bottom-links.author-whats-new-content
                   .new-card-v02.last-item
-                    /.new-info-v02 !
+                    -#.new-info-v02 !
                     .new-card-right-v02
                       .new-card-type-v02 q
                     .new-card-left-v02
@@ -106,11 +122,11 @@
                         != @fc_snippet
                         - if @fc_rest != ''
                           = ' ...'
-                          / TODO: add a popup
-                    /.bottom-right-link
-                    /  %a{:href => "#"}
-                    /    %span.right-side-icon '
-                    /    %span{:style => "font-weight: bold"} הצגת זרקור נוסף
+                          -# TODO: add a popup
+                    -#.bottom-right-link
+                    -#  %a{:href => "#"}
+                    -#    %span.right-side-icon '
+                    -#    %span{:style => "font-weight: bold"} הצגת זרקור נוסף
                     - unless featured.manifestation.nil?
                       %a{ href: manifestation_read_path(id: featured.manifestation.id)}
                         %button.by-button-v02.button-to-full-v02= t(:to_the_work_in_the_site)
@@ -124,6 +140,8 @@
               .by-card-content-v02
                 .credits
                   != @credits
+- if current_user
+  = render partial: 'shared/anth_stuff'
 
 :javascript
   $(document).ready(function(){
@@ -136,4 +154,76 @@
         $('#generalDlg').modal('show');
       });
     }
+    $('.anthologies_button:not(:has(.must_login))').click(function() {
+      $('#anthologiesDlg').modal({  backdrop: 'static',
+        keyboard: false, show: true});
+    });
+    $.fn.browse_multi_select_toggle = function() {
+      // determine whether to toggle on or off
+      if($('#browse_mainlist').hasClass('multiselect')) {
+        $('#browse_mainlist').removeClass('multiselect');
+        $('#multiselect_btn').removeClass('btn-active');
+        $('#select-all').hide();
+        $('.number-of-selected-texts').hide();
+        $('.add-to-anthology').hide();
+        $('#browse_mainlist p input').remove();
+        $('#selected_counter').text('0');
+      } else {
+        // turn on multi-select mode
+        $('#browse_mainlist').addClass('multiselect');
+        $('#multiselect_btn').addClass('btn-active');
+        $('.select-all-with-buttons').show();
+        $('#select-all').show();
+        $('.number-of-selected-texts').show();
+        $('#browse_mainlist p').each(function() {
+          intlink = $(this).find('a[href]');
+          if(intlink.length > 0)
+            if(intlink[0].toString().match(/\/read\/\d+/))
+                $(this).prepend("<input class=\"multiselect_checkbox\" type=\"checkbox\" />");
+        });
+        $('.multiselect_checkbox').change(function() {
+          if($(this).prop('checked') && $('.add-to-anthology').css('display') == 'none') {
+            $('.add-to-anthology').show();
+           	startAnimation('blink 2s ease-in','.add-to-anthology');
+          }
+          $('#selected_counter').text($('.multiselect_checkbox:checked').length);
+        });
+      }
+    }
+    $('#reset_multiselect').click(function() {
+      $('.mainlist p input[type=checkbox]').prop('checked', false);
+      $('#select-all').prop('checked', false);
+      $('#selected_counter').text($('.multiselect_checkbox:checked').length);
+    });
+    $('#multiselect_btn').click(function(){
+      $.fn.browse_multi_select_toggle();
+    });
+    $('#select-all').change(function(){
+      $('.mainlist p input[type=checkbox]').prop('checked', $(this).prop('checked'));
+      if($('.add-to-anthology').css('display') == 'none' && $(this).prop('checked')) {
+        $('.add-to-anthology').show();
+        startAnimation('blink 2s ease-in','.add-to-anthology');
+      }
+      $('#selected_counter').text($('.multiselect_checkbox:checked').length);
+    });
+    $('#add-to-anth-btn').click(function() {
+      if(#{@anthology.nil? ? 'true' : 'false'} == true) {
+        alert('create or select an anthology first.');
+      } else {
+        // add to current anth
+        anthology_texts = []
+        $('.multiselect_checkbox:checked').each(function(){
+          hr = $(this).next().attr('href');
+          mid = hr.substring(hr.lastIndexOf('/')+1);
+          anthology_texts.push({manifestation_id: mid, anthology_id: $('#anth_id').val()});
+        });
+
+        $.ajax({
+          type: "POST",
+          url: '#{mass_create_anthology_texts_path}',
+          dataType: 'script',
+          data: { anthology_texts }
+        });
+      }
+    });
   });

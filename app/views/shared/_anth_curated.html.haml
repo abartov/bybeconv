@@ -3,7 +3,7 @@
   = form_with(model: @curated, url: @curated.id.nil? ? anthology_texts_path : anthology_text_path(@curated), data: {remote: true}, id: 'new_curated') do |at|
     = at.hidden_field :anthology_id, value: @anthology.id
     .by-card-header-v02.desktop-only
-      %span.headline-1-v02= t(:add_curated_text)
+      %span.headline-1-v02#curated_title= t(:add_curated_text)
     .by-card-content-v02.card-with-button
       .row
         .col-6
@@ -35,6 +35,7 @@
       e.preventDefault();
       $('#add_curated').hide();
       $('#anth_panel').show();
+      $('body').attr('anth-open', 'false');
     });
     $('#curated_markdown').on('paste', function(){
        var rendered = md.render($(this).val());

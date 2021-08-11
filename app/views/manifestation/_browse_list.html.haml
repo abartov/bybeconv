@@ -36,8 +36,8 @@
               %option{value: 'alphabetical_asc', selected: @sort == 'alphabetical_asc' ? 'true': nil}= t(:alefbet_asc)
               %option{value: 'alphabetical_desc', selected: @sort == 'alphabetical_desc' ? 'true': nil}= t(:alefbet_desc)
             %optgroup{label: t(:popularity_group)}
-              %option{value: 'popularity_desc', selected: @sort == 'popularity_asc' ? 'true': nil}= t(:popularity_desc)
-              %option{value: 'popularity_asc', selected: @sort == 'popularity_desc' ? 'true': nil}= t(:popularity_asc)
+              %option{value: 'popularity_desc', selected: @sort == 'popularity_desc' ? 'true': nil}= t(:popularity_desc)
+              %option{value: 'popularity_asc', selected: @sort == 'popularity_asc' ? 'true': nil}= t(:popularity_asc)
             %optgroup{label: t(:dates)}
               %option{value: 'publication_date_asc', selected: @sort == 'publication_date_asc' ? 'true': nil}= t(:pubdate_asc)
               %option{value: 'publication_date_desc', selected: @sort == 'publication_date_desc' ? 'true': nil}= t(:pubdate_desc)
@@ -46,22 +46,9 @@
               %option{value: 'upload_date_asc', selected: @sort == 'upload_date_asc' ? 'true': nil}= t(:uploaddate_asc)
               %option{value: 'upload_date_desc', selected: @sort == 'upload_date_desc' ? 'true': nil}= t(:uploaddate_desc)
       .sort-by-mobile
-        %p
-          %input#RadioGroupSort_1{:name => "RadioGroupSort", :type => "radio", value: "alphabet"}/
-          %label= t(:alphabetical)
-          %br/
-          %input#RadioGroupSort_2{:name => "RadioGroupSort", :type => "radio", value: "publish_date"}/
-          %label= t(:publication_date)
-          %br/
-          %input#RadioGroupSort_3{:name => "RadioGroupSort", :type => "radio", value: "creation_date"}/
-          %label= t(:creation_date)
-          %br/
-          %input#RadioGroupSort_4{:name => "RadioGroupSort", :type => "radio", value: "online_date"}/
-          %label= t(:upload_date)
-          %br/
-          %input#RadioGroupSort_5{:name => "RadioGroupSort", :type => "radio", value: "popularity"}/
-          %label= t(:popularity)
-          %br/
+        %button.btn-small-outline-v02#current_sort_by
+          .btn-text-v02#current_sort_text
+
   .add-to-anthology{style:'display:none'}
     .left-pointing-arrow= t(:perform_add)
     %button.by-button-v02#add-to-anth-btn
@@ -69,8 +56,11 @@
   .mainlist#browse_mainlist
     - pg = @page.to_i
     %ol{style:"counter-reset:li #{pg > 1 ? (pg-1)*100 : 0}"}
+      - decorator = browse_item_decorator_by_sort_type(@sort)
       - @works.each do |m|
-        %li= link_to m.title_and_authors, manifestation_read_path(m.id)
+        %li
+          = link_to m.title_and_authors, manifestation_read_path(m.id)
+          = decorator.call(m)
   - unless @total_pages <= 1
     = render partial: 'slide_pagination'
     - if @sort[0..11] == 'alphabetical'
@@ -104,9 +94,8 @@
       filters = #{@emit_filters == true};
       if(filters) {
         $('#page_tag').val(slideEvt.value.toString());
-        startModal('spinnerdiv');
         window.history.pushState($('#works_filters').serialize(), null, '/works');
-        $('#works_filters').submit();
+        submit_filters();
       } else {
         window.history.pushState($('#works_filters').serialize(), null, '/works');
         $.get(url+'&page='+slideEvt.value.toString(),'',null, 'script');
@@ -114,23 +103,28 @@
     });
     $('.tag-x').click(function(){
       // uncheck/clear the appropriate field
-      if($(this).attr('data-which') == 'text') {
-        $('#'+$(this).attr('data-ele')).val('');
+      prefix = '';
+      if(window.innerWidth < mobileWidth) {
+        prefix = '#mobile_filters ';
+      } else {
+        prefix = '#works_filters ';
+      }
+        if($(this).attr('data-which') == 'text') {
+        $(prefix + '#'+$(this).attr('data-ele')).val('');
       } else if($(this).attr('data-which') == 'authorlist') {
-        $('#author_ids').val('');
-        $('#authors_names').val('');
-        $('input[name="ckb_authors[]"]').prop('checked', false);
+        $(prefix + '#author_ids').val('');
+        $(prefix + '#authors_names').val('');
+        $(prefix + 'input[name="ckb_authors[]"]').prop('checked', false);
       }
       else {
-        $('#'+$(this).attr('data-ele')).prop("checked", false);
+        $(prefix + '#'+$(this).attr('data-ele')).prop("checked", false);
       }
       // and submit the form
-      startModal('spinnerdiv');
       $('#page_tag').val('1'); // reset pagination
       $('input').attr('disabled', false); // re-enable checkboxes to preserve other filters
-      window.history.pushState($('#works_filters').serialize(), null, '/works');
-      $('#works_filters').submit();
-    });
+      window.history.pushState($(prefix).serialize(), null, '/works');
+      submit_filters();
+      });
 
     $.fn.browse_multi_select_toggle = function() {
       // determine whether to toggle on or off
@@ -181,10 +175,10 @@
       $('input[name=sort_by]').val($('#sort_by_dd option:selected').val());
       if($('#works_filters').length > 0) {
         $('#page_tag').val('1'); // reset pagination
-        startModal('spinnerdiv');
         window.history.pushState($('#works_filters').serialize(), null, '/works');
-        $('#works_filters').submit();
+        submit_filters();
       } else {
+        startModal('spinnerdiv');
         window.location = "/works?sort_by="+$('#sort_by_dd option:selected').val();
       }
     });
@@ -210,4 +204,13 @@
       }
       // notify user
     });
+
+    $('#current_sort_by').click(function(){
+      $('#mobileFilterDlg').modal('show');
+      $('.mobile-sort-area').show();
+      $('.author-mobile-filters-area').hide();
+      $('#opt_sort').addClass('active');
+      $('#opt_filter').removeClass('active');
+    });
+    $('#current_sort_text').text($('#sort_by_dd option:selected').text());
   });

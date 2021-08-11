@@ -78,11 +78,11 @@
                   <div class="stat-small-v02"><%= t(:works) %></div>
                 </div>
                 <div class="col-2 statistics-v02">
-                  <div class="stat-big-v02"><%= link_to(Person.cached_toc_count.to_s, all_authors_path) %></div>
+                  <div class="stat-big-v02"><%= link_to(Person.cached_count.to_s, all_authors_path) %></div>
                   <div class="stat-small-v02"><%= t(:authors) %></div>
                 </div>
                 <div class="col-5 statistics-v02">
-                  <div class="stat-big-v02"><%= link_to(get_total_headwords.to_s, '/read/24412')%></div>
+                  <div class="stat-big-v02"><%= link_to(get_total_headwords.to_s, manifestation_genre_path(genre: 'lexicon'))%></div>
                   <div class="stat-small-v02"><%= t(:dictionary_entries) %></div>
                 </div>
               </div>
@@ -108,7 +108,7 @@
                   <% if current_user.editor? %>
                     <div class="dashboard-link">
                     <br />
-                    <h3><%= link_to t(:back_to_dashboard), url_for(controller: :admin, action: :index) %></h3>
+                    <h4><%= link_to t(:back_to_dashboard), url_for(controller: :admin, action: :index) %></h4>
                     </div>
                   <% end %>
                 <% else %>
@@ -162,7 +162,7 @@
                 <div class="by-footer-nav-item-v02"><a href="/page/about"><span class="by-icon-v02 footer-nav-icon-v02">M</span><%= t(:about) %></a>&rlm;</div>
                 <div class="by-footer-nav-item-v02"><a href="<%= t(:facebook_url) %>"><span class="by-icon-v02 footer-nav-icon-v02">S</span><%= t(:to_the_facebook_page) %></a></div>
                 <div class="by-footer-nav-item-v02"><a href="<%= t(:youtube_url) %>"><span class="by-icon-v02 footer-nav-icon-v02">W</span><%= t(:to_the_youtube_channel) %></a></div>
-                <div class="by-footer-nav-item-v02"><a href="<%= t(:blog_url) %>"><span class="by-icon-v02 footer-nav-icon-v02">Q</span><%= t(:the_blog) %></a></div>
+                <div class="by-footer-nav-item-v02"><a href="<%= t(:blog_url) %>"><span class="by-icon-v02 footer-nav-icon-v02">~</span><%= t(:the_blog) %></a></div>
                 <%= render partial: 'shared/share', locals: {element: :footer} %>
                 <div class="by-footer-nav-item-v02"><a href="/page/volunteer"><span class="by-icon-v02 footer-nav-icon-v02">V</span><%= t(:how_to_help) %></a></div>
                 <div class="by-footer-nav-item-v02"><a href="/page/donate"><span class="by-icon-v02 footer-nav-icon-v02">z</span><%= t(:donate_money) %></a></div>
@@ -224,7 +224,7 @@
       });
     }
     $(document).on('keyup',function(evt) {
-      if (evt.keyCode == 27) {
+      if (evt.keyCode == 27 && $('body').attr('anth-open') != 'true') {
         $('.modal').modal('hide'); // hide all modals on ESC
       }
     });

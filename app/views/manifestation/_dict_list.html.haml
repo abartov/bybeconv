@@ -17,14 +17,15 @@
   - unless @total_pages <= 1
     = render partial: 'dict_slide_pagination'
     = render partial: 'ab_pagination', locals: {filter_element: 'dict_filters'}
-  %div
+  .displayMethodLine
     .switch-label תצוגה:
     .BYD-switch
       %button.search-mobile-option#dictmode_list= t(:dict_list)
       %button.search-mobile-option#dictmode_snippets= t(:dict_snippets)
   .mainlist
     = hidden_field_tag(:hurl, request.original_url)
-    %ol
+    - pg = @page.to_i
+    %ol{style:"counter-reset:li #{pg > 1 ? (pg-1)*100 : 0}"}
       - skipped = 0
       - @headwords.each do |hw|
         - if hw.defhead.nil?

@@ -3,17 +3,17 @@
 
 = form_tag(works_path, remote: true, method: :post, id: 'works_filters') do
   = hidden_field_tag(:sort_by, @sort)
-  .by-card-content-v02#filters_panel
+  .by-card-content-v02.desktop-only#filters_panel
     .headline-2-v02= t(:filter_by)
     %span.reset.linkcolor.pointer= t(:reset_filter)
     .sort-type
-      .vertical-expand.fcoll#fauthor{'data-target' =>'#collfauthor', 'data-toggle' =>'collapse'}
+      .vertical-expand.fcoll#fauthor{'data-target' =>'.collfauthor', 'data-toggle' =>'collapse'}
         .sort-type-headline= t(:name)
-      .nested.active.collapse.show#collfauthor
+      .nested.active.collapse.show.collfauthor
         .nested-content
           .search-mobile-switch
-            %button.search-mobile-option#opt_workname{:href => "#"}= t(:work_title)
-            %button.search-mobile-option#opt_authorname{:href => "#"}= t(:author_name)
+            %button.search-mobile-option.opt_workname= t(:work_title)
+            %button.search-mobile-option.opt_authorname= t(:author_name)
           %break
           %input.field-v02.field-without-label#search_input{:placeholder => t(:what_to_search_for), name: 'search_input', :type => "text", value: @search_input}/
           = autocomplete_field_tag :authorstr, @authorstr.present? ? @authorstr : '', autocomplete_person_name_path, id_element: '#author_id', 'data-noMatchesLabel' => t(:no_matches_found), style:'display:none', 'class' => 'field-v02 field-without-label author-name-field', id: 'authors', placeholder: t(:author_names)
@@ -25,38 +25,23 @@
           = hidden_field_tag(:authors, @authors, id: 'author_ids')
           = hidden_field_tag(:authors_names, @authors_names, id: 'authors_names')
     .sort-type
-      .vertical-expand.fcoll#fgenre{'data-target' =>'#collfgenre', 'data-toggle' =>'collapse'}
-        .sort-type-headline= t(:genres)
-      .nested.active.collapse.show#collfgenre
+      .vertical-expand.fcoll{'data-target' =>'.collfgender', 'data-toggle' =>'collapse'}
+        .sort-type-headline= t(:author_or_translator_gender)
+      .nested.active.collapse.show.collfgender
         .nested-content.nested-list
-          - get_genres.each do |g|
-            - attrs = @genre_facet[g].nil? ? {disabled: 'disabled'} : {}
-            - attrs.merge!({:name => "ckb_genres[]", :type => "checkbox", id: "genre_#{g}", value: g})
-            - attrs.merge!({checked: 'checked'}) if @genres.present? && @genres.include?(g)
-            %input{ attrs}/
-            %label
-              %span.by-icon-v02>= glyph_for_genre(g)
-              = textify_genre(g)
-              %span= "(#{@genre_facet[g] || '0'})"
-            %br/
-    .sort-type
-      .vertical-expand.fcoll#fperiod{'data-target' =>'#collfperiod', 'data-toggle' =>'collapse'}
-        .sort-type-headline= t(:periods)
-      .nested.active.collapse.show#collfperiod
-        .nested-content.nested-list
-          - Expression.periods.invert.each do |p|
-            - attrs = @period_facet[p[0]].nil? ? {disabled: 'disabled'} : {}
-            - attrs.merge!({:name => "ckb_periods[]", :type => "checkbox", id: "period_#{p[1]}", value: p[1]})
-            - attrs.merge!({checked: 'checked'}) if @periods.present? && @periods.include?(p[1])
+          - Person.genders.invert.each do |p|
+            - attrs = @gender_facet[p[0]].nil? ? {disabled: 'disabled'} : {}
+            - attrs.merge!({:name => "ckb_genders[]", :type => "checkbox", id: "gender_#{p[1]}", value: p[1]})
+            - attrs.merge!({checked: 'checked'}) if @genders.present? && @genders.include?(p[1])
             %input{ attrs}/
             %label
               = t(p[1])
-              %span= "(#{@period_facet[p[0]] || '0'})"
+              %span= "(#{@gender_facet[p[0]] || '0'})"
             %br/
     .sort-type
-      .vertical-expand.fcoll#fcopyright{'data-target' =>'#collfcopyright', 'data-toggle' =>'collapse'}
+      .vertical-expand.fcoll#fcopyright{'data-target' =>'.collfcopyright', 'data-toggle' =>'collapse'}
         .sort-type-headline= t(:copyright_status)
-      .nested.active.collapse.show#collfcopyright
+      .nested.active.collapse.show.collfcopyright
         .nested-content.nested-list
           - attrs = {name: "ckb_copyright[]", :type => "checkbox", id: 'copyright_0', value: 0}
           - attrs.merge!({disabled: 'disabled'}) if @copyright_facet[0].nil?
@@ -77,6 +62,36 @@
             = t(:by_permission)
             %span= "(#{@copyright_facet[1] || '0'})"
           %br/
+
+    .sort-type
+      .vertical-expand.fcoll#fgenre{'data-target' =>'.collfgenre', 'data-toggle' =>'collapse'}
+        .sort-type-headline= t(:genres)
+      .nested.active.collapse.show.collfgenre
+        .nested-content.nested-list
+          - get_genres.each do |g|
+            - attrs = @genre_facet[g].nil? ? {disabled: 'disabled'} : {}
+            - attrs.merge!({:name => "ckb_genres[]", :type => "checkbox", id: "genre_#{g}", value: g})
+            - attrs.merge!({checked: 'checked'}) if @genres.present? && @genres.include?(g)
+            %input{ attrs}/
+            %label
+              %span.by-icon-v02>= glyph_for_genre(g)
+              = textify_genre(g)
+              %span= "(#{@genre_facet[g] || '0'})"
+            %br/
+    .sort-type
+      .vertical-expand.fcoll#fperiod{'data-target' =>'.collfperiod', 'data-toggle' =>'collapse'}
+        .sort-type-headline= t(:periods)
+      .nested.active.collapse.show.collfperiod
+        .nested-content.nested-list
+          - Expression.periods.invert.each do |p|
+            - attrs = @period_facet[p[0]].nil? ? {disabled: 'disabled'} : {}
+            - attrs.merge!({:name => "ckb_periods[]", :type => "checkbox", id: "period_#{p[1]}", value: p[1]})
+            - attrs.merge!({checked: 'checked'}) if @periods.present? && @periods.include?(p[1])
+            %input{ attrs}/
+            %label
+              = t(p[1])
+              %span= "(#{@period_facet[p[0]] || '0'})"
+            %br/
     / .sort-type
     /   .vertical-expand
     /     .sort-type-headline מאפיינים
@@ -108,15 +123,15 @@
     /           ללא מאפיינים
     /           %span (312)
     .sort-type
-      .vertical-expand.fcoll#fdate{'data-target' =>'#collfdate', 'data-toggle' =>'collapse'}
+      .vertical-expand.fcoll#fdate{'data-target' =>'.collfdate', 'data-toggle' =>'collapse'}
         .sort-type-headline= t(:thedate)
-      .nested.active.collapse.show#collfdate
+      .nested.active.collapse.show.collfdate
         .nested-content
           .search-mobile-switch
             %button.search-mobile-option.datetype#published= t(:publication)
             %button.search-mobile-option.datetype#created= t(:creation)
             %button.search-mobile-option.datetype#uploaded= t(:upload)
-            = hidden_field_tag(:date_type, id: 'date_type')
+            = hidden_field_tag(:date_type, '', id: 'date_type')
           %break
           .dates-range
             / #histogramSlider
@@ -129,9 +144,9 @@
             .date-range-to= t(:until)
             %input.datepicker.datetimepicker-input.field-v02.field-without-label.range-date-field#todate{:placeholder => t(:year), :style => "float: left", 'data-toggle' => 'datetimepicker', name: "todate", 'data-target' => '#todate'}/
     .sort-type
-      .vertical-expand.fcoll#flang{'data-target' =>'#collflang', 'data-toggle' =>'collapse'}
+      .vertical-expand.fcoll#flang{'data-target' =>'.collflang', 'data-toggle' =>'collapse'}
         .sort-type-headline= t(:orig_lang)
-      .nested.active.collapse.show#collflang
+      .nested.active.collapse.show.collflang
         .nested-content{:style => "padding-right: 0"}
           %ul
             %li
@@ -143,21 +158,21 @@
                 = t(:hebrew)
                 %span= "(#{@language_facet['he'] || '0'})"
             %li
-              - attrs = {name: "ckb_languages[]", :type => "checkbox", id: 'lang_xlat', value: 'xlat'}
+              - attrs = {name: "ckb_languages[]", :type => "checkbox", class: 'lang_xlat', id: 'lang_xlat', value: 'xlat'}
               - attrs.merge!({disabled: 'disabled'}) if @language_facet[:xlat].nil? || @language_facet[:xlat] == 0
-              - attrs.merge!({checked: 'checked'}) if @languages.present? && @languages.include?('xlat')
+              - attrs.merge!({checked: 'checked'}) if (@all_xlat || (@languages.present? && @languages.include?('xlat')))
               %input{attrs}/
               %label
                 = t(:translations)
                 %span= "(#{@language_facet[:xlat] || '0'})"
               .languages-filters
-                %ul.nested-list#xlat_langs
+                %ul.nested-list.xlat_langs
                   - @language_facet.sort{|a,b| b[1] <=> a[1]}.each do |lang, amount|
                     - next if lang == :xlat || lang == 'he'
                     %li
                       - attrs = {name: "ckb_languages[]", :type => "checkbox", id: "lang_#{lang}", value: lang}
                       - attrs.merge!({disabled: 'disabled'}) if @language_facet[lang].nil? || @language_facet[lang] == 0
-                      - attrs.merge!({checked: 'checked'}) if @languages.present? && @languages.include?(lang)
+                      - attrs.merge!({checked: 'checked'}) if @all_xlat || (@languages.present? && @languages.include?(lang))
                       %input{attrs}/
                       %label
                         = textify_lang(lang)
@@ -166,19 +181,20 @@
     = hidden_field_tag(:cur_page, @page, id: 'cur_page_tag')
     = hidden_field_tag(:page, '', id: 'page_tag')
     = hidden_field_tag(:to_letter, '', id: 'toletter_tag')
+
 :javascript
   $(document).ready(function() {
     window.history.pushState($('#works_filters').serialize(), null, '/works');
     $('#sort_by_dd').val("#{@sort}");
     if("#{@search_type}" == 'authorname') {
-      $('#opt_authorname').addClass('active');
+      $('.opt_authorname').addClass('active');
       $('.multi-name-sort').show();
       $('#authors').show();
       $('#search_input').hide();
       $('#search_type').val('authorname');
     } else {
       $('.multi-name-sort').hide();
-      $('#opt_workname').addClass('active');
+      $('.opt_workname').addClass('active');
       $('#search_type').val('workname');
     }
     $('.datetype').click(function(e) {
@@ -187,37 +203,36 @@
       $(this).addClass('active');
       $('#date_type').val($(this).attr('id'));
     });
-    $('#opt_authorname').click(function(e){
+    $('.opt_authorname').click(function(e){
       e.preventDefault();
-      $('#opt_workname').removeClass('active');
-      $('#opt_authorname').addClass('active');
+      $('.opt_workname').removeClass('active');
+      $('.opt_authorname').addClass('active');
       $('#authors').show();
       $('#search_input').hide();
-      $('#search_type').val('authorname');
       $('.multi-name-sort').show();
     });
-    $('#opt_workname').click(function(e){
+    $('.opt_workname').click(function(e){
       e.preventDefault();
-      $('#opt_workname').addClass('active');
-      $('#opt_authorname').removeClass('active');
+      $('.opt_workname').addClass('active');
+      $('.opt_authorname').removeClass('active');
       $('#authors').hide();
       $('#search_input').show();
-      $('#search_type').val('workname');
       $('.multi-name-sort').hide();
     });
     var submit_timeout = null;
     $('#works_filters').change(function(){
-      if(submit_timeout != null){
-        window.clearTimeout(submit_timeout);
+      if(window.innerWidth >= mobileWidth) {
+        if(submit_timeout != null){
+          window.clearTimeout(submit_timeout);
+        }
+        $('#page_tag').val('1'); // reset pagination
+        if($('.opt_workname').hasClass('active'))
+          $('#search_type').val('workname');
+        else
+          $('#search_type').val('authorname');
+        submit_timeout = window.setTimeout(submit_filters, 300);
       }
-      $('#page_tag').val('1'); // reset pagination
-      submit_timeout = window.setTimeout(submit_filters, 300);
     });
-    function submit_filters() {
-      startModal('spinnerdiv');
-      window.history.replaceState($('#works_filters').serialize(), null, '/works');
-      $('#works_filters').submit();
-    }
     $('.reset').click(function(){
       $('#works_filters').find(':input').each(function() {
         switch(this.type) {
@@ -235,28 +250,33 @@
       });
       $('#author_ids').val('');
       $('#authors_names').val('');
-      startModal('spinnerdiv');
       $('#emit_filters').val('true');
       $('#page_tag').val('1'); // reset pagination
       $('#toletter_tag').val(''); // reset pagination
       window.history.replaceState($('#works_filters').serialize(), null, '/works');
-      $('#works_filters').submit();
+      submit_filters();
     });
-    $('#lang_xlat').change(function(){
+    $('.lang_xlat').change(function(){
       // set all translated languages on/off accordingly
       var checked = $(this).is(":checked");
-      $('#xlat_langs input').each(function(li){
+      $('.xlat_langs input').each(function(li){
         $(this).prop('checked', checked);
       });
     });
-    var should_check_xlat = $('#xlat_langs input').length > 0;
-    $('#xlat_langs input').each(function(li){
+    $('.xlat_langs input').change(function(){
+      if($(this).is(":checked")) {
+      } else {
+        $('.lang_xlat').prop('checked', false);
+      }
+    });
+    var should_check_xlat = $('.xlat_langs input').length > 0;
+    $('.xlat_langs input').each(function(li){
       if($(this).prop('checked') == false && !$(this).parent().text().match(/\(0\)/)) {
         should_check_xlat = false;
       }
     });
     if(should_check_xlat) {
-      $('#lang_xlat').prop('checked', true);
+      $('.lang_xlat').prop('checked', true);
     }
     if("#{@datetype}" == "") {
       $('#created').addClass('active');
@@ -287,4 +307,10 @@
     if("#{@todate}" != "") {
       $('#todate').val("#{@todate}");
     }
+    $('#authors').bind('railsAutocomplete.select', function(event, data){
+      event.preventDefault();
+      $('#search_type').val('authorname');
+      submit_filters();
+    });
+
   });

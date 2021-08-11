@@ -1,24 +1,24 @@
 .modal-dialog
   .modal-content
     .container-fluid
-      .modal-header
-        .popup-top
-          %div{:style => "display:flex;padding:15px;margin: 0"}
-            .top-contact-side
-              %button.btn-small-outline-v02{'data-dismiss'=>'modal'}
-                .btn-text-v02
-                  %span.right-arrow 2
-                  %span= t(:back)
-            .top-contact-center
-              .headline-2-v02= t(:volunteer_form_title)
-            .top-contact-side
-      .modal-body#volunteer_dlg_content
-        .by-popup-v02{style: 'max-height:calc(100vh - 100px);'}
-          .by-card-header-v02.desktop-only
-            %span.headline-1-v02= t(:volunteer_form_title)
-            %a.popup-x-v02{'data-dismiss'=>'modal'} -
-          %div
-            .by-card-content-v02.card-with-button
+      .flex-popup
+        .modal-header
+          .popup-top
+            %div{:style => "display:flex;padding:15px;margin: 0"}
+              .top-contact-side
+                %button.btn-small-outline-v02{'data-dismiss'=>'modal'}
+                  .btn-text-v02
+                    %span.right-arrow 2
+                    %span= t(:back)
+              .top-contact-center
+                .headline-2-v02= t(:volunteer_form_title)
+              .top-contact-side
+        .modal-body#volunteer_dlg_content
+          .by-popup-v02{style: 'max-height:calc(100vh - 100px);'}
+            .by-card-header-v02.desktop-only
+              %span.headline-1-v02= t(:volunteer_form_title)
+              %a.popup-x-v02{'data-dismiss'=>'modal'} -
+            .by-card-content-v02
               = form_tag(welcome_submit_volunteer_path, remote: true, method: :post, id: 'contact_form') do
                 #volunteer-name.field-label= t(:contact_name)
                 %input.field-v02{name: :name, :type => "text"}/
@@ -46,9 +46,11 @@
                   %input#CheckboxGroup1_4{:name => "donation", :type => "checkbox"}>/
                   = t(:donation)
                 %br/
-                %label
-                  %input#CheckboxGroup1_5{:name => "other", :type => "checkbox"}>/
-                  = t(:other)+': '
-                %input.field-v02.checkbox-other{name: :other, :type => "text"}/
+                .checkbox-with-field
+                  %label
+                    %input#CheckboxGroup1_5{:name => "other", :type => "checkbox"}>/
+                    = t(:other)+': '
+                  %input.field-v02.checkbox-other{name: :other, :type => "text"}/
 
-                %button.by-button-v02.button-to-full-v02.pointer#send_contact_form= t(:contact_send)
+                .bottom-button-area
+                  %button.by-button-v02.pointer#send_contact_form= t(:contact_send)

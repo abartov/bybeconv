@@ -17,7 +17,24 @@
 *= require slick
 */
 /*body{font-size:14px;} /* default */
+/* temporary fix */
+.credits{
+  -webkit-column-count: unset; /* Chrome, Safari, Opera */
+  -moz-column-count: unset; /* Firefox */
+  column-count: unset;
+}
 
+.credits ul{
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(15, 3fr);
+  margin-bottom: 25px;
+}
+.credits ul li {
+  margin: 5px;
+  margin-left: 25px;
+
+}
 .padbot12 {
   padding-bottom: 12px;
 }
@@ -51,6 +68,9 @@ input[type=checkbox].multiselect_checkbox {
 }
 .topMenuItem-v02:hover {
   cursor: pointer;
+}
+.whitehover:hover{
+  color:white;
 }
 #curated_preview ul {
   list-style-type: unset;
@@ -98,6 +118,12 @@ input[type=checkbox].multiselect_checkbox {
 }
 .collapsed.vertical-expand::before {
   content: "<";
+}
+#anth_texts .collapsed.vertical-expand::before {
+  content: "<";
+}
+#anth_texts .vertical-expand::before {
+  content: "]";
 }
 .advanced-pagination {
   width: calc(100% - 150px);
@@ -368,4 +394,13 @@ content: unset;
   border-radius: 3px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
   margin: 10px;
+}
+
+body.modal-open{
+  padding-right: 0 !important;
+  overflow-y:scroll;
+}
+
+.modal{
+  padding-right: 0 !important;
 }

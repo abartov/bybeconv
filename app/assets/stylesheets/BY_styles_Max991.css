@@ -99,7 +99,6 @@
 .surprise-author-card-v02 {
     width: 132px;
     height: 231px;
-    margin-left: 30px;
     margin-top: -5px; }
 .about-author-card-v02 {
     width: 132px;
@@ -109,15 +108,14 @@
   .surprise-work-card-v02 {
     width: 132px;
     height: 231px;
-    margin-left: 30px;
     margin-top: -5px; }
 
 .surprise-author-card-bookmark-fold-v02 {
   width: 139px;
   height: 5px;
-  margin-left: 30px;
+  margin-right: 8px;
   margin-top: -5px;
-  z-index: 1; }
+ }
 .about-author-card-bookmark-fold-v02 {
   width: 139px;
   height: 5px;
@@ -142,7 +140,7 @@
 	.author-name-area{
 		height:41px;
 	}
-		.surprise-author-name-v02{
+.surprise-author-name-v02{
 	padding-top: 0;
 	}
  #header-general {
@@ -358,9 +356,6 @@ display: none;	}
 .volunteer-content{
 	height: auto;
 }
-.flash-content{
-	height: auto;
-}
 
 
 
@@ -372,20 +367,17 @@ display: none;	}
   min-height: auto;
 }
 .card-with-bottom-links{
-	padding-bottom: 58px;
+	padding-bottom: 50px;
+	max-height: calc(100% - 50px);
 }
 .link-to-all-v02 {
   line-height: 28px;
   }
-	.bottom-right-link{
-  line-height: 28px;
-	}
 .right-side-icon{
 	line-height: 28px;
 	}
 	.by-button-v02{
 		height: 28px;
-		line-height: 28px;
 	}
 	.mobileLogo{
     display:block;
@@ -699,6 +691,54 @@ display: none;	}
 	.topNavEntryAreaMobile{
 	display: flex;
 }
+	
+	.surprise-author-card-content-v02 {
+  margin-right: 147px;
+	}
+		.surprise-work-card-content-v02 {
+  margin-right: 147px;
+	}
+	.whats-new-v02{
+		height: auto;
+	}
+	
+	.limited-height-popup-content-v02{
+		max-height: 100%;
+	}	
+	#authors-surprise-replaced{
+		height: auto;
+	}
+	.surprise-again-footer-v02{
+		position: relative;
+	}
+	.surprise-work-height-v02{
+		padding-bottom: 15px;
+	}
+	#works-surprise-replaced{
+		height: auto;
+	}
+#works-surprise-replaced .by-card-header-v02{
+			padding-right: 162px;
+	}
+	.btn-small-outline-v02{
+		height: 28px;
+	}
+	#authors-surprise-replaced .by-card-header-v02{
+	padding-right: 162px;
+}
+#whats-new-author-popup .by-card-header-v02{
+	padding-right: 162px;
+}
+#author-info-popup .by-card-header-v02{
+	padding-right: 162px;
+}
+.sefaria-read-more-button {
+	height: 28px !important;
+}
+#sefaria-title .he{
+	font-size: 16pt !important;
+    line-height: 18pt !important;
+}	
 	
 }
 
