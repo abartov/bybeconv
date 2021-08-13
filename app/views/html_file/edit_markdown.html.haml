@@ -120,7 +120,21 @@
       $('#markdown').val(buf);
       alert('בוצעו '+replaced.toString()+' החלפות.');
     });
-
+    var somethingChanged=false;
+    $('#markdown').change(function() { 
+      somethingChanged = true; 
+    });
+    $(window).bind('beforeunload', function(e){
+      if(somethingChanged)
+        return true;
+      else 
+        e=null;
+    });
+    $('#frbrize_button').click(function(e){
+      if(somethingChanged) {
+        alert("בוצעו שינויים בטקסט והם יאבדו בלי שמירה! האם באמת לעזוב את הדף [במסך הבא]?");
+      }
+    });
     if(#{@text.has_splits ? true : false})
       $('#frbrize_button').click(function(e){
         e.preventDefault();
