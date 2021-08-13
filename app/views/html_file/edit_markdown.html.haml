@@ -95,7 +95,6 @@
       $txt.focus();
       $txt.caretTo(caretPos+txtToAdd.length);
     });
-
     $('#add_angled_brackets').click(function(e) {
       e.preventDefault();
       if($('#markdown').selection() == '') {
@@ -104,7 +103,7 @@
       else
       {
         var buf = $('#markdown').selection();
-        buf = buf.replace(/\n[^#]/g, "\n> ");
+        buf = buf.replace(/\n([^#])/g, "\n> $1");
         $('#markdown').selection('replace', {text: buf});
       }
     });
@@ -135,6 +134,10 @@
       $('#markdown').val(buf);
       alert('בוצעו '+replaced.toString()+' החלפות.');
     });
+    $('form').submit(function() {
+      $(window).unbind('beforeunload');
+    });
+
     $('#markdown').change(function() { 
       somethingChanged = true; 
     });
