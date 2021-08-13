@@ -433,24 +433,24 @@ class HtmlFileController < ApplicationController
     prev_nikkud = false
     (0..lines.length-1).each {|i|
       lines[i].strip!
-      if lines[i].empty? and prev_nikkud
-        lines[i] = '> '
-        next
-      end
+#      if lines[i].empty? and prev_nikkud
+#        lines[i] = '> '
+#        next
+#      end
       uniq_chars = lines[i].gsub(/[\s\u00a0]/,'').chars.uniq
       if uniq_chars == ['*'] or uniq_chars == ["\u2013"] # if the line only contains asterisks, or Unicode En-Dash (U+2013)
         lines[i] = '***' # make it a Markdown horizontal rule
-        prev_nikkud = false
+#        prev_nikkud = false
       else
-        nikkud = is_full_nikkud(lines[i])
+#        nikkud = is_full_nikkud(lines[i])
         in_footnotes = true if lines[i] =~ /^\[\^\d+\]:/ # once reached the footnotes section, set the footnotes mode to properly handle multiline footnotes with tabs
-        if nikkud
-          # make full-nikkud lines PRE
-          lines[i] = '> '+lines[i]+"\n" unless lines[i] =~ /\[\^\d+/ # produce a blockquote (PRE would ignore bold and other markup)
-          prev_nikkud = true
-        else
-          prev_nikkud = false
-        end
+#        if nikkud
+#          # make full-nikkud lines PRE
+#          lines[i] = '> '+lines[i]+"\n" unless lines[i] =~ /\[\^\d+/ # produce a blockquote (PRE would ignore bold and other markup)
+#          prev_nikkud = true
+#        else
+#          prev_nikkud = false
+#        end
         if in_footnotes && lines[i] !~ /^\[\^\d+\]:/ # add a tab for multiline footnotes
           lines[i] = "\t"+lines[i]
         end
@@ -462,7 +462,7 @@ class HtmlFileController < ApplicationController
       new_buffer.gsub!(" #{c}",c) # remove spaces before punctuation
     }
     new_buffer.gsub!('©כל הזכויות', '© כל הזכויות') # fix an artifact of the conversion
-    new_buffer.gsub!(/> (.*?)\n\s*\n\s*\n/, "> \\1\n\n<br>\n") # add <br> tags for poetry, as a workaround to preserve stanza breaks
+    #new_buffer.gsub!(/> (.*?)\n\s*\n\s*\n/, "> \\1\n\n<br>\n") # add <br> tags for poetry, as a workaround to preserve stanza breaks
     new_buffer.gsub!("&&STANZA&&","\n> \n<br />\n> \n") # sigh
     new_buffer.gsub!("&amp;&amp;STANZA&amp;&amp;","\n> \n<br />\n> \n") # sigh
     new_buffer.gsub!(/(\n\s*)*\n> \n<br \/>\n> (\n\s*)*/,"\n> \n<br />\n> \n\n") # sigh
