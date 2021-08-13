@@ -60,8 +60,10 @@ he:
   docx_too_large: אין די זכרון להסב את הקובץ. יש לפצלו או להסב ידנית.
   add_stanza_break: הוספת מעבר בית
   minuses_to_makafim: תיקון למקפים עבריים גאים
+  add_angled_brackets: הוספת סימון שירה לקטע
   remove_angled_brackets: הסרת סימון שירה בקטע
   select_text_to_remove_from: ראשית יש לסמן (להאיר) קטע בטקסט שממנו רוצים להסיר את סימני השירה.
+  select_text_to_add_to: ראשית יש לסמן (להאיר) קטע בטקסט שלו רוצים להוסיף את סימני השירה.
   add_fresh_works: כל היצירות מ-12 השעות האחרונות
   converted_output: "תוצאת הסבה אוטומטית של הקובץ הישן %{fname}"
   origlang_title: כותרת בשפת המקור
