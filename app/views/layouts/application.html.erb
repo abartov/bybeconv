@@ -36,7 +36,7 @@
   <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.matchHeight/0.7.0/jquery.matchHeight-min.js"></script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <% unless @og_image.nil? %>
+  <% if @og_image.nil? %>
     <meta property="og:image" content="/assets/by_square_ogimg.jpg">
   <% else %>
     <meta property="og:image" content="<%= @og_image %>">
