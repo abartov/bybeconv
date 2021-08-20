@@ -109,7 +109,7 @@ class BibController < ApplicationController
         req = Net::HTTP::Post.new('/api/create_task')
         req.set_form_data(title: pub.title, author: pub.author_line, 
           edition_details: "#{pub.publisher_line}, #{pub.pub_year}", extra_info: "#{pub.language}\n#{pub.notes}",
-          api_key: AppConstants.tasks_system_api_key)
+          api_key: current_user.tasks_api_key)
         task_result = JSON.parse(http.request(req).body)
         logger.debug("task_result: #{task_result.to_s}")
         if task_result['task'].present?

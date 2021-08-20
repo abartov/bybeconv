@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_19_195906) do
+ActiveRecord::Schema.define(version: 2021_08_20_231657) do
 
   create_table "aboutnesses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -660,6 +660,7 @@ ActiveRecord::Schema.define(version: 2021_08_19_195906) do
     t.string "avatar_content_type"
     t.integer "avatar_file_size"
     t.datetime "avatar_updated_at"
+    t.string "tasks_api_key"
   end
 
   create_table "versions", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|

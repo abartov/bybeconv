@@ -21,7 +21,6 @@ development: &default
   toc_template: "## whatever"
   tasks_system_host: 'localhost'
   tasks_system_port: 3001
-  tasks_system_api_key: 'api_key_you_got_from_tasks_server'
 
 production:
   <<: *default
