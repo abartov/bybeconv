@@ -1,5 +1,5 @@
 # config valid for current version and patch releases of Capistrano
-lock "~> 3.11.0"
+#lock "~> 3.11.0"
 
 set :application, "ProjectBenYehuda"
 set :repo_url, "git@github.com:abartov/bybeconv.git"
@@ -40,7 +40,7 @@ append :linked_dirs, '.bundle', 'log', 'tmp/cache', 'public/system', 'tmp/pids',
 # Uncomment the following to require manually verifying the host key before first deploy.
 # set :ssh_options, verify_host_key: :secure
 
-set :rvm1_ruby_version, "2.6.3"
+set :rvm1_ruby_version, "2.6.6"
 #set :rvm1_ruby_version, "2.5.1"
 before 'deploy', 'rvm1:alias:create'
 after 'deploy:publishing', 'thin:restart'
