@@ -19,7 +19,7 @@ Bybeconv::Application.routes.draw do
   get 'bib/scans' => 'bib#scans', as: 'bib_scans'
   get 'bib/person/:person_id' => 'bib#person', as: 'bib_person'
   match 'bib/pubs_by_person', via: [:get, :post]
-
+  get 'bib/make_scanning_task/:id' => 'bib#make_scanning_task', as: 'bib_make_scanning_task'
   get 'bib/todo_by_location'
   get 'bib/holding_status/:id' => 'bib#holding_status', as: 'holding_status'
   post 'bib/make_author_page'

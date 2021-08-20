@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_12_180716) do
+ActiveRecord::Schema.define(version: 2021_08_19_195906) do
 
   create_table "aboutnesses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -428,6 +428,7 @@ ActiveRecord::Schema.define(version: 2021_07_12_180716) do
     t.index ["created_at"], name: "index_manifestations_on_created_at"
     t.index ["impressions_count"], name: "index_manifestations_on_impressions_count"
     t.index ["sort_title"], name: "index_manifestations_on_sort_title"
+    t.index ["status", "sort_title"], name: "index_manifestations_on_status_and_sort_title"
     t.index ["status"], name: "index_manifestations_on_status"
   end
 
@@ -490,6 +491,7 @@ ActiveRecord::Schema.define(version: 2021_07_12_180716) do
     t.datetime "sidepic_updated_at"
     t.string "sort_name"
     t.index ["gender"], name: "gender_index"
+    t.index ["id"], name: "tstid"
     t.index ["impressions_count"], name: "index_people_on_impressions_count"
     t.index ["name"], name: "index_people_on_name"
     t.index ["period"], name: "index_people_on_period"
@@ -532,8 +534,10 @@ ActiveRecord::Schema.define(version: 2021_07_12_180716) do
     t.string "pub_year"
     t.string "language"
     t.integer "bib_source_id"
+    t.integer "task_id"
     t.index ["bib_source_id"], name: "index_publications_on_bib_source_id"
     t.index ["person_id"], name: "index_publications_on_person_id"
+    t.index ["task_id"], name: "index_publications_on_task_id"
   end
 
   create_table "reading_lists", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_bin", force: :cascade do |t|

@@ -10,4 +10,17 @@
         thebtn.text('נשמר!');
       }});
     });
+    $('.create_task').click(function(e){
+      e.stopPropagation();
+      thebtn = $(this);
+      pubid = $(this).attr('id').replace('scn_','');
+      url = "#{bib_make_scanning_task_path(id: '999')}".replace('999',pubid);
+      $(this).prop('disabled', true);
+      $.ajax({type: 'get', url: url, context: this, success: function(response, status){
+        $('#p_'+pubid+'_actions').val('scanned');
+        $(this).parent().append('<a href="'+response+'">#{t(:to_the_task)}</a>');
+        $(this).hide();
+        console.log(response);
+      }});
+    });
   });
