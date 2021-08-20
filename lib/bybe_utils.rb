@@ -511,8 +511,9 @@ module BybeUtils
   end
 
   def get_total_headwords
-    return DictionaryEntry.where("defhead is not null").count
+    return DictionaryEntry.cached_count
   end
+
 
   ## hardcoded
   def get_periods

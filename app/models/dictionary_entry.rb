@@ -16,6 +16,12 @@ class DictionaryEntry < ApplicationRecord
     return 0 if another_def.nil?
     return another_def.sequential_number - sequential_number # earlier defs will return a negative delta, and later defs a positive one, intuitively
   end
+  def self.cached_count
+    Rails.cache.fetch("m_dict_count", expires_in: 24.hours) do
+      self.where("defhead is not null").count
+    end
+  end
+
   protected
   def get_neighboring_defs(quantity, forward)
     if forward
