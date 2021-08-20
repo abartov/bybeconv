@@ -29,7 +29,7 @@ class Publication < ApplicationRecord
         last_author = pub.person_id
         author_title_cache = pub.person.all_works_title_sorted.pluck(:title)
       end
-      searchtitle = pub.title.index('/').nil? ? pub.title : pub.title[0..pub.title.index('/')-1]
+      searchtitle = pub_title_for_comparison(pub.title)
       if author_title_cache.include?(searchtitle)
         li = ListItem.new(listkey: 'pubs_maybe_done', item: pub)
         li.save!
