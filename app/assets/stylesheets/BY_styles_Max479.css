@@ -461,6 +461,11 @@ padding-top: 6px;
 	}
 .surprise-author-card-content-v02 {
   width: calc(100% - 93px);
+	margin-right: 95px;
+}
+	.surprise-work-card-content-v02 {
+  width: calc(100% - 93px);
+	margin-right: 95px;
 }
 .by2-icon{
     font-size: 14px;
@@ -474,5 +479,16 @@ padding-top: 6px;
   right:-34px;
   width:34px;
 }
-	
+#authors-surprise-replaced .by-card-header-v02{
+	padding-right: 110px;
+}
+	#whats-new-author-popup .by-card-header-v02{
+	padding-right: 110px;
+}
+	#works-surprise-replaced .by-card-header-v02{
+			padding-right: 110px;
+	}
+	#author-info-popup .by-card-header-v02{
+			padding-right: 110px;
+	} 
 }

@@ -3,7 +3,8 @@ source 'http://rubygems.org'
 gem 'rails', '~> 5.2.5'
 gem 'rails-i18n' # , git: 'https://github.com/svenfuchs/rails-i18n.git' # , branch: 'rails-4-x' # For 4.x
 gem 'actionview', '>= 5.2.4.2'
-
+gem 'sprockets', '~> 3' # 4.x requires manifest.js
+gem 'marcel', '~> 1'
 gem 'rails-ujs'
 gem 'mysql2' # Rails 5.2 needs a newer one # , '~> 0.3.11'
 gem 'omniauth-google-oauth2'
@@ -11,7 +12,7 @@ gem 'omniauth-twitter'
 #gem 'clockwork' # scheduler
 gem 'rufus-scheduler' # scheduler
 
-gem 'chewy' # for ElasticSearch
+gem 'chewy', '~>6' # for ElasticSearch
 gem 'active_data' # for *Search classes in Chewy
 
 gem "jquery-slick-rails" # for carousel slider
@@ -27,7 +28,7 @@ gem 'diffy'
 gem 'aws-sdk-s3' # for Active Storage
 
 gem 'paperclip' # , '~>5.2' # for cloud files like author images 6.x requires aws >3.x
-gem 'impressionist' # for pageview stats
+gem 'impressionist', '~>1' # for pageview stats, 2.x requires Rails 6.x
 gem 'jbuilder', '~> 2.0' # for JSON APIs
 gem 'sqlite3' # for dictionary imports
 # gem 'rollbar' # error reporting. Airbrake replacement.
@@ -59,7 +60,6 @@ gem 'yt' # for polling YouTube for new videos
 gem 'app_constants' # anything more Railsy?
 gem 'hebrew', '>= 0.2.1' # https://github.com/abartov/hebrew
 gem 'gared', '>= 0.0.23' # https://gitlab.com/abartov/gared # for scraping bibliographic data from Hebrew sources
-gem 'goldiloader'
 gem 'haml'
 #gem 'zoom', '~>0.4.1', :git => 'https://github.com/bricestacey/ruby-zoom.git' # for Z39.50 queries to libraries
 gem 'haml-rails'
@@ -93,7 +93,6 @@ end
 group :development do
   gem 'byebug'
   gem 'web-console'
-  #gem 'web-console', '~> 2.0'
   gem "capistrano", "~> 3.11", require: false
   gem "capistrano-rails", "~> 1.4", require: false
   gem 'rvm1-capistrano3', require: false

@@ -228,6 +228,16 @@ class Manifestation < ApplicationRecord
     end
   end
 
+  def self.add_publisher_link_to_works(worklist, url, linktext)
+    el = ExternalLink.new(linktype: Manifestation.link_types[:publisher_site], url: url, description: linktext)
+    works = Manifestation.find(worklist)
+    works.each do |m|
+      newel = el.dup
+      m.external_links << newel
+      m.save!
+    end
+  end
+
   def self.randomize_in_genre_except(except, genre)
     list = []
     i = 0
@@ -311,5 +321,13 @@ class Manifestation < ApplicationRecord
     return @@popular_works
   end
   def self.update_suspected_typos_list
+    # TODO: implement
+    # code to find probably typos:
+    #- digits within words
+    #- finals within words
+    #- non-final letters that should be finals
+    #- what else?
+    #- non-title paragraphs ending without period, question mark, exclamation point.
+  
   end
 end

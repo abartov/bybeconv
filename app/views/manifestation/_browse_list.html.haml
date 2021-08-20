@@ -172,10 +172,10 @@
       $('input[name=sort_by]').val($('#sort_by_dd option:selected').val());
       if($('#works_filters').length > 0) {
         $('#page_tag').val('1'); // reset pagination
-        window.history.pushState($('#works_filters').serialize(), null, '/works');
-        submit_filters();
-      } else {
         startModal('spinnerdiv');
+        window.history.pushState($('#works_filters').serialize(), null, '/works');
+        $('#works_filters').submit();
+      } else {
         window.location = "/works?sort_by="+$('#sort_by_dd option:selected').val();
       }
     });

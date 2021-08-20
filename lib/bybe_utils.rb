@@ -489,7 +489,7 @@ module BybeUtils
               addition = "[#{anchor_name}](#{url_for(controller: :manifestation, action: :read, id: mft.id)})"
             end
           rescue
-            logger.info("Manifestation not found: #{item[1..-1].to_i}!")
+		  Rails.logger.info("Manifestation not found: #{item[1..-1].to_i}!")
           end
         end
         ret += addition

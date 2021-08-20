@@ -52,25 +52,25 @@
 	}
 .popup-top{
   position: static;
-  width: calc(100% + 30px);
-  display: block;
-  margin-left: -15px;
-  margin-right: -15px;
-  padding-left: 0px;
-  padding-right: 0px;
+  width: 100%;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
   border-bottom: solid 2px #d9cdd5;
 }
 
+.popup-top .headline-2-v02{
+  margin-bottom: 0;
+}
+
 .by-popup-v02 {
-  width: calc(100% + 30px);
+  width: 100%;
   box-shadow: none;
   left: 0;
   margin-top:0px;
-  margin-left: -15px;
-  margin-right: -15px;
   border-radius: 0;
-  padding-left: 0px;
-  padding-right: 0px;
+	height: 100%;
 	max-height: 100vh;
 }
 .by-dual-popup{
@@ -175,7 +175,16 @@
 	display: none;
 }
 	.top-contact-center{
-		padding: 0;width: calc(100% - 160px); padding-top: 1px;text-align: center;
+		padding-left: 6px;
+		padding-right: 6px;
+	}
+	.top-contact-center .headline-1-v02{
+		margin-left: 0;
+	}
+	.top-contact-center .headline-3-v02{
+		padding-left: 0;
+		text-align: center;
+		margin-bottom: 0;
 	}
 	.top-contact-side{
 		width: 80px;
@@ -237,10 +246,6 @@
 	}
 .sort-by-desktop{
 	display: none;
-}
-.sort-by-mobile{
-	display: block;
-	margin-top: 16px;
 }
 .author-side-sort{
   display:none;
@@ -398,11 +403,14 @@
 		width: calc(100% - 85px);
 		    max-height: calc(100vh - 165px);
 	}
+		.surprise-work-card-content-v02{
+		width: calc(100% - 85px);
+		    max-height: calc(100vh - 165px);
+	}
 .limited-height-popup-content-v02 {
   width: 100%;
   height: calc(100vh - 278px);
   overflow-y: auto;
-  margin-bottom: 0px;
 }
 	
 .flex-popup{
@@ -425,9 +433,6 @@
 	.flash-popup-bg-v02{
 		height: calc(100vh - 120px);
 	}
-	.flash-author-popup-v02{
-		height: calc(100vh - 124px);
-	}
 	.flash-author-popup-v02 .by-card-content-v02{
 		height: calc(100vh - 182px);
 		max-height: calc(100vh - 182px);
@@ -441,10 +446,27 @@
   max-height: 100vh;
 }
 #authors-multi-select-popup .by-popup-v02{
-	width: calc(100% + 30px);
+	width: 100%;
 }
-.surprise-author-card-bookmark-fold-v02 {
-	left: 30px}	
-.surprise-author-card-v02{
-	left: 30px}	
+	#whats-new-author-popup .by-card-header-v02{
+		display: none;
+	}
+	#error-found .button-placeholder{
+		width: 108px;
+	}
+	#sefaria-popup .by-popup-v02{
+		width: 100%;
+		height: 100%;
+	}
+#sefaria-popup{
+  display: flex;
+  flex-flow: column;
+  height: 100vh;
+  max-height: 100vh;
+  margin-top: 0vh;
+}
+#sefaria-popup .by-popup-v02 {
+  flex: 1 1 auto;
+}
+	
 }

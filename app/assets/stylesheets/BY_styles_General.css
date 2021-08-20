@@ -35,7 +35,7 @@ p {
   font-weight: bold;
   margin-right: 6px;
   margin-bottom: 8px;
-}
+  }
 
 .headline-2-v02 {
   font-size: 14pt;
@@ -616,6 +616,7 @@ input {
   border: none;
   background-color: transparent;
   width: 100%;
+  display: inline-block;
 }
 
 input::placeholder {
@@ -677,6 +678,7 @@ input::placeholder {
   display: flex;
   flex-flow: column;
 	margin-top: 5vh;
+	min-height: 290px;
 }
 .by-dual-popup{
   width: 50%;
@@ -712,6 +714,7 @@ input::placeholder {
   top:0;
   left: 0;
   display: none;
+  padding: 15px;
 }
 
 .by-card-header-v02 {
@@ -738,6 +741,7 @@ input::placeholder {
   position: relative;
   padding: 15px;
   overflow: hidden; 
+  min-height: 191px;
 }
 
 #project-finance-support {
@@ -762,7 +766,8 @@ input::placeholder {
   display: flex;
   align-items: center;
   margin-right: 6px;
-	cursor: pointer;
+  cursor: pointer;
+  float: left;
 }
 
 .by-button-v02:hover {
@@ -774,11 +779,14 @@ input::placeholder {
 #authors-surprise-replaced {
   height: 400px; }
 
+#authors-surprise-replaced .by-card-header-v02{
+	padding-right: 190px;
+}
 #authors-surprise-initial {
   background-image: url("/assets/surprise-author-b9.jpg");
   background-size: 841px 312px;
   background-repeat: repeat-x;
-  height: 356px;
+  height: 344px;
   width: 100%; }
 
 #works-in-project {
@@ -790,6 +798,9 @@ input::placeholder {
 
 #works-surprise-replaced {
   height: 400px }
+#works-surprise-replaced .by-card-header-v02{
+			padding-right: 190px;
+	}
 
 #works-surprise-initial {
   background-image: url("/assets/surprise-work-b9.jpg");
@@ -864,7 +875,8 @@ input::placeholder {
   width: calc(100% - 68px);
   height: 280px;
   overflow: hidden;
-  }
+  margin-bottom: 15px;
+}
 
 .slick-arrow{
 	color:#660248;
@@ -945,9 +957,8 @@ input::placeholder {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
   margin-right: 15px;
   margin-top: -6px;
-  z-index: 2;
   position: absolute;
-  left: 40px;
+	z-index: 10;
 }
 .about-author-card-v02 {
   width: 160px;
@@ -976,9 +987,9 @@ input::placeholder {
   font-weight: bold;
   border-radius: 6px 0 3px 3px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
-  margin-left: 40px;
+  margin-right: 15px;
   margin-top: -6px;
-  float: left;
+  position: absolute;
   z-index: 2; }
 
 .surprise-work-card-v02:hover {
@@ -988,11 +999,9 @@ input::placeholder {
   width: 168px;
   height: 6px;
   object-fit: fill;
-  margin-right: 15px;
-  margin-top: -6px;
 	position: absolute;
-	left: 40px;
-  z-index: 1; 
+  margin-right: 8px;
+  margin-top: -6px;
 }
 .about-author-card-bookmark-fold-v02 {
   width: 168px;
@@ -1008,6 +1017,9 @@ input::placeholder {
   height: 230px;
   border-radius: 3px 0 0 0;
   object-fit: cover; }
+.surprise-author-card-v02:hover .surprise-author-pic-v02{
+	opacity: .8;
+}
 .about-author-pic-v02 {
   width: 160px;
   height: 230px;
@@ -1026,11 +1038,11 @@ input::placeholder {
 
 .flash-work-v02 {
   height: 400px;
-  background-color: #d9cdd5; }
+  background-color: #eeeced; }
 
 .flash-author-v02 {
   height: 400px;
-  background-color: #d9cdd5; }
+  background-color: #eeeced; }
 
 .flash-bg-v02 {
   background-image: url("/assets/Stage-light.svg");
@@ -1095,7 +1107,7 @@ input::placeholder {
 
 .whats-new-v02 {
   background-color: #d9cdd5; 
-	height: 1161px;
+	height: 1176px;
   }
 .left-side-card-v02 {
   background-color: #d9cdd5; }
@@ -1244,7 +1256,7 @@ input::placeholder {
 .surprise-again-btn-v02:focus {
   outline: none; }
 .surprise-author-card-content-v02 {
-  width: calc(100% - 204px);
+  margin-right: 175px;
   min-height: 140px;
 }
 
@@ -1269,7 +1281,7 @@ input::placeholder {
   padding-top: 48px; }
 
 .surprise-work-card-content-v02 {
-  width: 100%;
+  margin-right: 175px;
    }
 
 .popup-x-v02 {
@@ -1610,6 +1622,7 @@ ul #menuMobile {
 .read-more-v02{
  margin-top: 2px;
 	margin-bottom: 12px;
+	float: left;
 }
 .works-most-read{
 	padding-right: 0;
@@ -1778,7 +1791,7 @@ display: flex;
 	flex-direction: column;
 }
 .navbar-nav .nav-link{
-	padding: 10px;
+	padding: 6px 10px;
 }
 .nav-link:hover{
 	background-color: #d9cdd5;
@@ -1794,10 +1807,8 @@ display: flex;
 	width: 100%;
 }
 .nav-link-chapter{
-	height:30px;
 	width: 100%;
 	text-align: right;
-	padding: 6px;
 }
 .nav-chapter-name{
 	white-space: nowrap; 
@@ -2292,7 +2303,7 @@ display: none;}
   bottom: 15px;
   }
 .flash-content{
-	height: 338px;
+	height: 341px;
 }
 .author-whats-new-content{
 	min-height: 374px;
@@ -2497,6 +2508,7 @@ input[type=checkbox]:checked, input[type=radio]:checked{
   }
 label{
 	margin-bottom: 12px;
+	display: inline-block;
 }
 .space-under{
 	margin-bottom: 28px;
@@ -3655,23 +3667,7 @@ padding-left: 0;
 	width: 100%;
 }
 .advanced-pagination-area a.by-icon-v02{
-	width: 24px;
-	height:24px;
 	padding: 3px 5px;
-  border-radius: 3px;
-	margin-top: 2px;
-}
-.advanced-pagination-area a.by-icon-v02:hover{
-	background-color: #d9cdd5;
-}
-.advanced-pagination-area a.by-icon-v02:disabled{
-	background-color: none;
-}
-.advanced-pagination-area .by-icon-v02{
-	width: 24px;
-	height:24px;
-	padding: 3px 5px;
-	font-size: 18px;
   border-radius: 3px;
 	margin-top: 2px;
 }
@@ -4113,15 +4109,18 @@ break{
 	opacity:.5;
 }
 .bottom-right-buttons{
-	margin-top: 15px;
-	display: flex;
+position: absolute;
+    right: 15px;
+    bottom: 15px;
+    margin-top: 15px;
+    display: flex;
 }
 .bottom-right-buttons .by-button-v02{
 	margin-right: 0;
 	margin-left: 6px;
 }
 .anthology-badge{
-	width: 14px;
+	min-width: 14px;
 	height: 14px;
 	background-color: #660248;
 	border-radius: 7px;
@@ -4213,10 +4212,6 @@ break{
 }
 
 .authors-names-area{
-	margin-left: -15px;
-	padding-left: 15px;
-	margin-right: -15px;
-	padding-right: 15px;
 	overflow: auto;
 }
 .self-content-side-color{
@@ -5254,8 +5249,7 @@ break{
 }
 .limited-height-popup-content-v02 {
   width: 100%;
-  max-height: calc(100vh - 300px);
-  overflow-y: auto;
+  overflow: auto;
 	margin-bottom: 15px;
 }
 .work-page-top-info-card .row{
@@ -5323,5 +5317,27 @@ break{
 .checkbox-with-field .field-v02{
 	width: calc(100% - 54px);
   margin-top: -4px;
+}
+#whats-new-author-popup .by-card-header-v02{
+	padding-right: 190px;
+}
+#author-info-popup .by-card-header-v02{
+	padding-right: 190px;
+}
+.button-placeholder{
+	width: 65px;
+}
+.popup-top .headline-2-v02{
+	text-align: center;
+}
+.popup-top button{
+	flex-shrink: 0;
+}
+.popup-top .button-placeholder{
+	flex-shrink: 0;
+}
+.popup-top .headline-2-v02{
+	padding-right: 6px;
+	padding-left: 6px;
 }
 
