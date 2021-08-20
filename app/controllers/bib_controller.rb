@@ -18,6 +18,10 @@ class BibController < ApplicationController
     pub = Publication.find(params[:id])
     li = ListItem.new(listkey: 'pubs_false_maybe_done', item: pub)
     li.save!
+    li = ListItem.where(listkey: 'pubs_maybe_done', item: pub)
+    unless li.empty?
+      li.each {|item| item.destroy}
+    end
     render js: "$('.pub#{pub.id}').remove();"
   end
   def scans
@@ -90,14 +94,6 @@ class BibController < ApplicationController
         sources << BibSource.find(params['bib_source'])
       end
       sources.each do |bib_source|
-#        recs = query_source_by_type(q, bib_source)
-#        to_add = []
-#        recs.each do |pub|
-#          sid = (pub.source_id.class == Array ? pub.source_id[0] : pub.source_id)
-#          yesno = Holding.where(source_id: url_for_record(bib_source, sid)).empty?
-#          to_add << pub if yesno
-#        end
-#        @pubs += to_add
         @pubs += query_source_by_type(q, bib_source).select  {|pub| Holding.where(source_id: url_for_record(bib_source, (pub.source_id.class == Array ? pub.source_id[0] : pub.source_id))).empty? }
       end
       @total_pubs = @pubs.count.to_s

@@ -27,8 +27,7 @@
               %td= pub.notes.nil? ? '' : pub.notes.sub("\n", "<br />").html_safe
               %td
                 = link_to t(:mark_as_uploaded), publication_path(pub.id), 'class' => 'scanned', method: :put, remote: true, 'data-params' => 'publication[status]=uploaded', class: 'by-button-v02 whitehover', style:'height: auto;'
-                %br
-                %button.by-button-v02#mark_false_positive{style:'height: auto'}= t(:mark_as_false_positive)
+                %button.by-button-v02#mark_false_positive{style:'height: auto;margin-top:15px;'}= t(:mark_as_false_positive)
             %tr{class: 'pub'+pub.id.to_s}
               %td{colspan: 7}
                 = t(:works_already_online)
