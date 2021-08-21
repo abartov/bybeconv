@@ -150,12 +150,17 @@ class Manifestation < ApplicationRecord
   end
 
   def authors
-    return nil if expressions[0].nil? or expressions[0].works[0].nil? or expressions[0].works[0].persons[0].nil?
+    return [] if expressions[0].nil? or expressions[0].works[0].nil? or expressions[0].works[0].persons[0].nil?
     return expressions[0].works[0].authors
   end
-
+  def author_gender
+    authors.pluck(:gender).uniq.reject{|x| x.blank?}
+  end
+  def translator_gender
+    translators.pluck(:gender).uniq.reject{|x| x.blank?}
+  end
   def translators
-    return nil if expressions[0].nil? or expressions[0].works[0].nil? or expressions[0].works[0].persons[0].nil?
+    return [] if expressions[0].nil? or expressions[0].works[0].nil? or expressions[0].works[0].persons[0].nil?
     return expressions[0].translators
   end
 
