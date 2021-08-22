@@ -609,6 +609,55 @@ class ManifestationController < ApplicationController
     return d+'-01-01'
   end
 
+  def es_prep_collection
+    @sort_dir = :default
+    if params[:sort_by].present?
+      @sort_or_filter = 'sort'
+      @sort = params[:sort_by].dup
+      params[:sort_by].sub!(/_(a|de)sc$/,'')
+      @sort_dir = $&[1..-1] unless $&.nil?
+    end
+    # figure out sort order
+    if params[:sort_by].present?
+      case params[:sort_by]
+      when 'alphabetical'
+        ord = {sort_title: (@sort_dir == :default ? :asc : @sort_dir)}
+      when 'popularity'
+        ord = {impressions_count: (@sort_dir == :default ? :desc : @sort_dir)}
+      when 'publication_date'
+        ord = "expressions.date #{@sort_dir == :default ? 'asc' : @sort_dir}"
+      when 'creation_date'
+        ord = "works.date #{@sort_dir == :default ? 'asc' : @sort_dir}"
+      when 'upload_date'
+        ord = {created_at: (@sort_dir == :default ? :desc : @sort_dir)}
+      end
+    else
+      sdir = (@sort_dir == :default ? :asc : @sort_dir)
+      @sort = "alphabetical_#{sdir}"
+      ord = {sort_title: sdir}
+    end
+    # search ES
+    @search = ManifestationsSearch.new(query: @searchterm)
+    @results = @search.search.page(params[:page])
+    @total = @results.count
+
+    ## Main methods of the request DSL are: query, filter and post_filter, it is possible to pass pure query hashes or use elasticsearch-dsl.
+    # CitiesIndex
+    # .filter(term: {name: 'Bangkok'})
+    # .query { match name: 'London' }
+    # .query.not(range: {population: {gt: 1_000_000}})
+
+    ### Faceting
+    # Facets are an optional sidechannel you can request from elasticsearch describing certain fields of the resulting collection. The most common use for facets is to allow the user continue filtering specifically within the subset, as opposed to the global index.
+    # For instance, let's request the ```country``` field as a facet along with our users collection. We can do this with the #facets method like so:
+    # UsersIndex.filter{ [...] }.facets({countries: {terms: {field: 'country'}}}) 
+
+    # Let's look at what we asked from elasticsearch. The facets setter method accepts a hash. You can choose custom/semantic key names for this hash for your own convinience (in this case I used the plural version of the actual field), in our case: ```countries```. The following nested hash tells ES to grab and aggregate values (terms) from the ```country``` field on our indexed records. 
+    # When the response comes back, it will have the ```:facets``` sidechannel included:
+
+    # < { ... ,"facets":{"countries":{"_type":"terms","missing":?,"total":?,"other":?,"terms":[{"term":"USA","count":?},{"term":"Brazil","count":?}, ...}}
+  end
+
   def prep_collection
     @emit_filters = false
     @sort_dir = :default
@@ -774,6 +823,7 @@ class ManifestationController < ApplicationController
     @page = params[:page] || 1
     @page = 1 if ['0',''].include?(@page) # slider sets page to zero, awkwardly
     prep_collection # filtering and sorting is done here
+    #es_prep_collection
     @total = @collection.count
     @total_pages = @works.total_pages
     d = Date.today
