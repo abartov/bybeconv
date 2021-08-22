@@ -149,6 +149,11 @@ class Manifestation < ApplicationRecord
     return expressions[0].works[0].authors.map{|x| x.name}.join(', ')
   end
 
+  def first_hebrew_letter
+    ret = '*'
+    self.title.each_char{|ch| return ch if self.title.is_hebrew_codepoint_utf8(ch.codepoints[0])}
+    return ret
+  end
   def authors
     return [] if expressions[0].nil? or expressions[0].works[0].nil? or expressions[0].works[0].persons[0].nil?
     return expressions[0].works[0].authors

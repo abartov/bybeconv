@@ -39,6 +39,21 @@
               %span= "(#{@gender_facet[p[0]] || '0'})"
             %br/
     .sort-type
+      .vertical-expand.fcoll{'data-target' =>'.collftgender', 'data-toggle' =>'collapse'}
+        .sort-type-headline= t(:translator_gender)
+      .nested.active.collapse.show.collftgender
+        .nested-content.nested-list
+          - Person.genders.invert.each do |p|
+            - attrs = @tgender_facet[p[0]].nil? ? {disabled: 'disabled'} : {}
+            - attrs.merge!({:name => "ckb_tgenders[]", :type => "checkbox", id: "tgender_#{p[1]}", value: p[1]})
+            - attrs.merge!({checked: 'checked'}) if @tgenders.present? && @tgenders.include?(p[1])
+            %input{ attrs}/
+            %label
+              = t(p[1])
+              %span= "(#{@tgender_facet[p[0]] || '0'})"
+            %br/
+
+    .sort-type
       .vertical-expand.fcoll#fcopyright{'data-target' =>'.collfcopyright', 'data-toggle' =>'collapse'}
         .sort-type-headline= t(:copyright_status)
       .nested.active.collapse.show.collfcopyright
@@ -62,7 +77,6 @@
             = t(:by_permission)
             %span= "(#{@copyright_facet[1] || '0'})"
           %br/
-
     .sort-type
       .vertical-expand.fcoll#fgenre{'data-target' =>'.collfgenre', 'data-toggle' =>'collapse'}
         .sort-type-headline= t(:genres)
@@ -177,6 +191,7 @@
                       %label
                         = textify_lang(lang)
                         %span= "(#{amount || '0'})"
+
     = hidden_field_tag(:emit_filters, 'true', id: 'emit_filters')
     = hidden_field_tag(:cur_page, @page, id: 'cur_page_tag')
     = hidden_field_tag(:page, '', id: 'page_tag')

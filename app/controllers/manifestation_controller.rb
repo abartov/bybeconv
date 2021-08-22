@@ -608,7 +608,16 @@ class ManifestationController < ApplicationController
     return d unless datetype == 'uploaded'
     return d+'-01-01'
   end
-
+  def build_es_filter_from_filters
+    return {term: {genre: 'prose'}}
+  end
+  def es_buckets_to_facet(buckets, codehash)
+    facet = {}
+    buckets.each do |facethash|
+      facet[codehash[facethash['key']]] = facethash['doc_count'] unless codehash[facethash['key']].nil?
+    end
+    return facet
+  end
   def es_prep_collection
     @sort_dir = :default
     if params[:sort_by].present?
@@ -637,10 +646,39 @@ class ManifestationController < ApplicationController
       ord = {sort_title: sdir}
     end
     # search ES
-    @search = ManifestationsSearch.new(query: @searchterm)
-    @results = @search.search.page(params[:page])
-    @total = @results.count
-
+    #@search = ManifestationsSearch.new(query: @searchterm)
+    #@results = @search.search.page(params[:page])
+    # byebug
+    filter = build_es_filter_from_filters
+    if filter.blank?
+      @collection = ManifestationsIndex.query({match_all: {}}).aggregations({
+        periods: {terms: {field: 'period'}},
+        genres: {terms: {field: 'genre'}},
+        languages: {terms: {field: 'orig_lang'}},
+        copyright_status: {terms: {field: 'copyright_status'}},
+        author_genders: {terms: {field: 'author_gender'}},
+        translator_genders: {terms: {field: 'translator_gender'}}
+      })
+    else
+      @collection = ManifestationsIndex.filter(filter).aggregations({
+        periods: {terms: {field: 'period'}},
+        genres: {terms: {field: 'genre'}},
+        languages: {terms: {field: 'orig_lang'}},
+        copyright_status: {terms: {field: 'copyright_status'}},
+        author_genders: {terms: {field: 'author_gender'}},
+        translator_genders: {terms: {field: 'translator_gender'}}
+      })
+    end
+    @emit_filters = true if params[:load_filters] == 'true' || params[:emit_filters] == 'true'
+    @total = @collection.count
+    @works = @collection.page(@page)
+    @gender_facet = es_buckets_to_facet(@collection.aggs['author_genders']['buckets'], Person.genders)
+    @tgender_facet = es_buckets_to_facet(@collection.aggs['translator_genders']['buckets'], Person.genders)
+    @period_facet = es_buckets_to_facet(@collection.aggs['periods']['buckets'], Expression.periods)
+    @genre_facet = es_buckets_to_facet(@collection.aggs['genres']['buckets'], get_genres.to_h {|g| [g,g]})
+    @language_facet = es_buckets_to_facet(@collection.aggs['languages']['buckets'], get_langs.to_h {|l| [l,l]})
+    @language_facet[:xlat] = @language_facet.reject{|k,v| k == 'he'}.values.sum
+    @copyright_facet = es_buckets_to_facet(@collection.aggs['copyright_status']['buckets'], {'false' => 0,'true' => 1})
     ## Main methods of the request DSL are: query, filter and post_filter, it is possible to pass pure query hashes or use elasticsearch-dsl.
     # CitiesIndex
     # .filter(term: {name: 'Bangkok'})
@@ -650,7 +688,7 @@ class ManifestationController < ApplicationController
     ### Faceting
     # Facets are an optional sidechannel you can request from elasticsearch describing certain fields of the resulting collection. The most common use for facets is to allow the user continue filtering specifically within the subset, as opposed to the global index.
     # For instance, let's request the ```country``` field as a facet along with our users collection. We can do this with the #facets method like so:
-    # UsersIndex.filter{ [...] }.facets({countries: {terms: {field: 'country'}}}) 
+    # ManifestationsIndex.filter(term: {genre: 'prose'}).aggregations({periods: {terms: {field: 'period'}}}) 
 
     # Let's look at what we asked from elasticsearch. The facets setter method accepts a hash. You can choose custom/semantic key names for this hash for your own convinience (in this case I used the plural version of the actual field), in our case: ```countries```. The following nested hash tells ES to grab and aggregate values (terms) from the ```country``` field on our indexed records. 
     # When the response comes back, it will have the ```:facets``` sidechannel included:
@@ -822,8 +860,13 @@ class ManifestationController < ApplicationController
   def prep_for_browse
     @page = params[:page] || 1
     @page = 1 if ['0',''].include?(@page) # slider sets page to zero, awkwardly
-    prep_collection # filtering and sorting is done here
-    #es_prep_collection
+    #prep_collection # filtering and sorting is done here
+    es_prep_collection
+    # temp placeholders
+    @filters = []
+    @ab = []
+    @authors_list = []
+
     @total = @collection.count
     @total_pages = @works.total_pages
     d = Date.today

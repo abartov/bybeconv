@@ -1,3 +1,34 @@
+- code to find probably typos:
+  - digits within words
+  - finals within words
+  - what else?
+  - non-title paragraphs ending without period, question mark, exclamation point.
+- maintenance report (weekly rake task?) finding texts with such, adding them to a List, *unless* they're already whitelisted.
+- in edit_markdown, identify probable typos and decorate them with large, colorful HTML. Some color for the whole word, and red for the suspected typo.
+- in edit_markdown, add button to whitelist for probable typos.
+- upon markdown save, re-check for probable typos, and if there are none and the work is in the Probable Typos list, remove it from the list.
+
+browser history hack
+
+GET page with params - no filters
+  onload: push state: URL+page+sort
+  onnav: replace state: URL+page+sort
+
+POST page with no filters
+  onload: push state: URL+page+sort
+  onnav: replace state: URL+page+sort
+
+POST page with filters
+  onload: push state: filters
+  onnav: replace state: filters
+  onfilterchange: replace state: filters
+
+onpopstate
+ if type=filters
+   deserialize form and submit
+ else
+   POST url with page and sort params
+
 There is a re-entrancy problem in creating a PDF from works with images (wkhtmltopdf requests the images, and the GVL causes a deadlock).  Need to rewrite to *first* download the images to /tmp, rewrite the IMG src attributes, and then generates the PDF, taking care to enable local file access in wkhtmltopdf.)
   - for PDFs, also *scale* the local copy of images to no more than 20.9cm width, to solve PDF page width issue.
 
