@@ -773,7 +773,31 @@ class ManifestationController < ApplicationController
   def prep_for_browse
     @page = params[:page] || 1
     @page = 1 if ['0',''].include?(@page) # slider sets page to zero, awkwardly
-    prep_collection # filtering and sorting is done here
+    
+    # temporary disabling of filtering TODO: fix
+    #prep_collection # filtering and sorting is done here
+    oldpage = @page
+    @collection = Manifestation.all_published
+    @works = @collection.page(@page)
+    @sort_dir = :default
+    if params[:sort_by].present?
+      @sort_or_filter = 'sort'
+      @sort = params[:sort_by].dup
+      params[:sort_by].sub!(/_(a|de)sc$/,'')
+      @sort_dir = $&[1..-1] unless $&.nil?
+    end
+    unless params[:to_letter].nil? || params[:to_letter].empty?
+      @total_pages = @works.total_pages
+      adjust_page_by_letter(@collection, params[:to_letter], :sort_title, @sort_dir)
+      @works = @collection.page(@page) if oldpage != @page # re-get page X of manifestations if adjustment was made
+    end
+    @filters = []
+    @sort = 'alphabetical_asc'
+
+    @ab = prep_ab(@collection, @works, :sort_title)
+    @authors_list = Person.all
+    # end temporary disabling
+
     @total = @collection.count
     @total_pages = @works.total_pages
     d = Date.today
