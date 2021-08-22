@@ -609,7 +609,41 @@ class ManifestationController < ApplicationController
     return d+'-01-01'
   end
   def build_es_filter_from_filters
-    return {term: {genre: 'prose'}}
+    ret = []
+    @filters = []
+    # periods
+    @periods = params['ckb_periods'] if params['ckb_periods'].present?
+    if @periods.present?
+      ret << {terms: {period: @periods}}
+      @filters += @periods.map{|x| [I18n.t(x), "period_#{x}", :checkbox]}
+    end
+    # genders
+    @genders = params['ckb_genders'] if params['ckb_genders'].present?
+    if @genders.present?
+      ret << {terms: {author_gender: @genders}}
+      @filters += @genders.map{|x| [I18n.t(:author)+': '+I18n.t(x), "gender_#{x}", :checkbox]}
+    end
+    @tgenders = params['ckb_tgenders'] if params['ckb_tgenders'].present?
+    if @tgenders.present?
+      ret << {terms: {translator_gender: @tgenders}}
+      @filters += @tgenders.map{|x| [I18n.t(:translator)+': '+I18n.t(x), "tgender_#{x}", :checkbox]}
+    end
+    # genres
+    @genres = params['ckb_genres'] if params['ckb_genres'].present?
+    if @genres.present?
+      ret << {terms: {genre: @genres}}
+      @filters += @genres.map{|x| [helpers.textify_genre(x), "genre_#{x}", :checkbox]}
+    end
+    # copyright
+    @copyright = params['ckb_copyright'].map{|x| x.to_i} if params['ckb_copyright'].present?
+    if @copyright.present?
+      cright = @copyright.map{|x| x==0 ? 'false' : 'true'}
+      ret << {terms: {copyright_status: cright}}
+      @filters += @copyright.map{|x| [helpers.textify_copyright_status(x == 1), "copyright_#{x}", :checkbox]}
+    end
+
+    #     { "range": { "publish_date": { "gte": "2015-01-01" }}}
+    return ret
   end
   def es_buckets_to_facet(buckets, codehash)
     facet = {}
@@ -649,25 +683,19 @@ class ManifestationController < ApplicationController
     #@search = ManifestationsSearch.new(query: @searchterm)
     #@results = @search.search.page(params[:page])
     # byebug
+    standard_aggregations = {
+      periods: {terms: {field: 'period'}},
+      genres: {terms: {field: 'genre'}},
+      languages: {terms: {field: 'orig_lang'}},
+      copyright_status: {terms: {field: 'copyright_status'}},
+      author_genders: {terms: {field: 'author_gender'}},
+      translator_genders: {terms: {field: 'translator_gender'}}
+    }
     filter = build_es_filter_from_filters
     if filter.blank?
-      @collection = ManifestationsIndex.query({match_all: {}}).aggregations({
-        periods: {terms: {field: 'period'}},
-        genres: {terms: {field: 'genre'}},
-        languages: {terms: {field: 'orig_lang'}},
-        copyright_status: {terms: {field: 'copyright_status'}},
-        author_genders: {terms: {field: 'author_gender'}},
-        translator_genders: {terms: {field: 'translator_gender'}}
-      })
+      @collection = ManifestationsIndex.query({match_all: {}}).aggregations(standard_aggregations)
     else
-      @collection = ManifestationsIndex.filter(filter).aggregations({
-        periods: {terms: {field: 'period'}},
-        genres: {terms: {field: 'genre'}},
-        languages: {terms: {field: 'orig_lang'}},
-        copyright_status: {terms: {field: 'copyright_status'}},
-        author_genders: {terms: {field: 'author_gender'}},
-        translator_genders: {terms: {field: 'translator_gender'}}
-      })
+      @collection = ManifestationsIndex.filter(filter).aggregations(standard_aggregations)
     end
     @emit_filters = true if params[:load_filters] == 'true' || params[:emit_filters] == 'true'
     @total = @collection.count
@@ -679,6 +707,8 @@ class ManifestationController < ApplicationController
     @language_facet = es_buckets_to_facet(@collection.aggs['languages']['buckets'], get_langs.to_h {|l| [l,l]})
     @language_facet[:xlat] = @language_facet.reject{|k,v| k == 'he'}.values.sum
     @copyright_facet = es_buckets_to_facet(@collection.aggs['copyright_status']['buckets'], {'false' => 0,'true' => 1})
+    #@copyright_facet = {@copyright => @total} if @copyright_facet == {} # workaround the fact no buckets are returned when all results are from one bucket
+
     ## Main methods of the request DSL are: query, filter and post_filter, it is possible to pass pure query hashes or use elasticsearch-dsl.
     # CitiesIndex
     # .filter(term: {name: 'Bangkok'})
