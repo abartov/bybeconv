@@ -608,6 +608,16 @@ class ManifestationController < ApplicationController
     return d unless datetype == 'uploaded'
     return d+'-01-01'
   end
+  def es_datefield_name_from_datetype(dt)
+    case dt
+    when 'uploaded'
+      return 'pby_publication_date'
+    when 'created'
+      return 'creation_date'
+    when 'published'
+      return 'orig_publication_date'
+    end
+  end
   def build_es_filter_from_filters
     ret = []
     @filters = []
@@ -654,6 +664,21 @@ class ManifestationController < ApplicationController
         end
       end
     end
+    # dates
+    @fromdate = params['fromdate'] if params['fromdate'].present?
+    @todate = params['todate'] if params['todate'].present?
+    @datetype = params['date_type']
+    range_expr = {}
+    if @fromdate.present?
+      range_expr['gte'] = @fromdate
+      @filters << ["#{I18n.t('d'+@datetype)} #{I18n.t(:fromdate)}: #{@fromdate}", :fromdate, :text]
+    end
+    if @todate.present?
+      range_expr['lte'] = Date.new(@todate.to_i,12,31).to_s
+      @filters << ["#{I18n.t('d'+@datetype)} #{I18n.t(:todate)}: #{@todate}", :todate, :text]
+    end
+    datefield = es_datefield_name_from_datetype(@datetype)
+    ret << {range: {"#{datefield}" => range_expr }} unless range_expr.empty?
 
     #     { "range": { "publish_date": { "gte": "2015-01-01" }}}
     return ret
@@ -720,7 +745,6 @@ class ManifestationController < ApplicationController
     @language_facet = es_buckets_to_facet(@collection.aggs['languages']['buckets'], get_langs.to_h {|l| [l,l]})
     @language_facet[:xlat] = @language_facet.reject{|k,v| k == 'he'}.values.sum
     @copyright_facet = es_buckets_to_facet(@collection.aggs['copyright_status']['buckets'], {'false' => 0,'true' => 1})
-    #@copyright_facet = {@copyright => @total} if @copyright_facet == {} # workaround the fact no buckets are returned when all results are from one bucket
 
     ## Main methods of the request DSL are: query, filter and post_filter, it is possible to pass pure query hashes or use elasticsearch-dsl.
     # CitiesIndex
