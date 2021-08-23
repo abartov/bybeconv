@@ -930,7 +930,6 @@ class ManifestationController < ApplicationController
     #prep_collection # filtering and sorting is done here
     es_prep_collection
     # temp placeholders
-    @filters = []
     @ab = []
     @authors_list = []
 
