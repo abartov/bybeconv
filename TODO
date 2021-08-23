@@ -1,3 +1,12 @@
+Transition to ElasticSearch for filtering TODO:
+- queries by date
+- queries by author substring
+- queries by author from autocomplete
+- queries by author from multi-select
+- queries by 'he' and 'xlat'
+- migrate everything to mobile as well
+
+
 - code to find probably typos:
   - digits within words
   - finals within words

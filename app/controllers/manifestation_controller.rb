@@ -641,6 +641,19 @@ class ManifestationController < ApplicationController
       ret << {terms: {copyright_status: cright}}
       @filters += @copyright.map{|x| [helpers.textify_copyright_status(x == 1), "copyright_#{x}", :checkbox]}
     end
+    # languages
+    if params['ckb_languages'].present?
+      if params['ckb_languages'] == ['xlat']
+        ret << {must_not: {term: {orig_lang: 'he'}}}
+        @filters << [I18n.t(:translations), 'lang_xlat', :checkbox]
+      else
+        @languages = params['ckb_languages'].reject{|x| x == 'xlat'}
+        if @languages.present?
+          ret << {terms: {orig_lang: @languages}}
+          @filters += @languages.map{|x| ["#{I18n.t(:orig_lang)}: #{helpers.textify_lang(x)}", "lang_#{x}", :checkbox]}
+        end
+      end
+    end
 
     #     { "range": { "publish_date": { "gte": "2015-01-01" }}}
     return ret
@@ -693,9 +706,9 @@ class ManifestationController < ApplicationController
     }
     filter = build_es_filter_from_filters
     if filter.blank?
-      @collection = ManifestationsIndex.query({match_all: {}}).aggregations(standard_aggregations)
+      @collection = ManifestationsIndex.query({match_all: {}}).aggregations(standard_aggregations).limit(100)
     else
-      @collection = ManifestationsIndex.filter(filter).aggregations(standard_aggregations)
+      @collection = ManifestationsIndex.filter(filter).aggregations(standard_aggregations).limit(100)
     end
     @emit_filters = true if params[:load_filters] == 'true' || params[:emit_filters] == 'true'
     @total = @collection.count

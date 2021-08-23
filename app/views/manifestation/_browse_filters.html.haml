@@ -185,7 +185,9 @@
               %input{attrs}
                 %label
                 = t(:hebrew)
-                %span= "(#{@language_facet['he'] || '0'})"
+                - count_text = @language_facet['he'] || '0'
+                - count_text = t(:filtered) if count_text == '0' && @languages.present?
+                %span= "(#{count_text})"
             %li
               - attrs = {name: "ckb_languages[]", :type => "checkbox", id: 'lang_xlat', value: 'xlat'}
               -# attrs.merge!({disabled: 'disabled'}) if @language_facet[:xlat].nil? || @language_facet[:xlat] == 0
@@ -196,8 +198,10 @@
                 %span= "(#{@language_facet[:xlat] || '0'})"
               .languages-filters
                 %ul.nested-list#xlat_langs
+                  - emitted_langs = ['he', :xlat]
                   - @language_facet.sort{|a,b| b[1] <=> a[1]}.each do |lang, amount|
                     - next if lang == :xlat || lang == 'he'
+                    - emitted_langs << lang
                     %li
                       - attrs = {name: "ckb_languages[]", :type => "checkbox", id: "lang_#{lang}", value: lang}
                       -# attrs.merge!({disabled: 'disabled'}) if @language_facet[lang].nil? || @language_facet[lang] == 0
@@ -208,6 +212,15 @@
                         - count_text = amount || '0'
                         - count_text = t(:filtered) if count_text == '0' && @languages.present?
                         %span= "(#{count_text})"
+                  - get_langs.reject{|x| emitted_langs.include?(x)}.each do |lang|
+                    %li
+                      %input{name: "ckb_languages[]", :type => "checkbox", id: "lang_#{lang}", value: lang}
+                      %label
+                        = textify_lang(lang)
+                        - count_text = '0'
+                        - count_text = t(:filtered) if @languages.present?
+                        %span= "(#{count_text})"
+
 
     = hidden_field_tag(:emit_filters, 'true', id: 'emit_filters')
     = hidden_field_tag(:cur_page, @page, id: 'cur_page_tag')
