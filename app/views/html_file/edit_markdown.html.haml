@@ -13,7 +13,7 @@
           - else
             %h2= @text.title
           %div{style:'background-color: yellow'}
-            %h4{'data-target' =>'#pub_details', 'data-toggle' =>'collapse'}= t(:for_publishers_project)
+            %h4{'data-target' =>'#pub_details', 'data-toggle' =>'collapse', style:'cursor:pointer'}= t(:for_publishers_project)
             .collapse#pub_details
               = label_tag(t(:publisher_link))
               = text_field_tag(:pub_link, @text.pub_link, size: 100)
