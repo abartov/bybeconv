@@ -10,6 +10,9 @@ class AdminController < ApplicationController
         @open_proofs = Proof.where(status: 'new').count.to_s
         @escalated_proofs = Proof.where(status: 'escalated').count.to_s
       end
+      if current_user.has_bit?('edit_catalog')
+        @current_uploads = HtmlFile.where(assignee: current_user, status: 'Uploaded')
+      end
       @open_recommendations = LegacyRecommendation.where(status: 'new').count.to_s
       @conv_todo = Manifestation.where(conversion_verified: false, status: Manifestation.statuses[:published]).count
       @manifestation_count = Manifestation.published.count

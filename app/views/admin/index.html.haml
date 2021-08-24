@@ -11,6 +11,11 @@
         %p= link_to t(:upload_file), html_file_new_path
       %p
         = link_to t(:html_files_list), html_file_list_path
+      %h3= t(:current_editing_files)
+      %ul
+        - @current_uploads.each do |upl|
+          %li= link_to upl.title, html_file_edit_markdown_path(id: upl.id)
+
   - if current_user.has_bit?('bib_workshop')
     .admin_dashboard_item
       %h2= t(:bibliography)
