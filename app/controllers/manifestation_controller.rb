@@ -677,24 +677,26 @@ class ManifestationController < ApplicationController
       range_expr['lte'] = Date.new(@todate.to_i,12,31).to_s
       @filters << ["#{I18n.t('d'+@datetype)} #{I18n.t(:todate)}: #{@todate}", :todate, :text]
     end
+    # multi-select authors
+    if params['authors'].present?
+      @search_type = 'authorname'
+      author_ids = params['authors'].split(',').map{|x| x.to_i}
+      ret << {terms: {author_ids: author_ids}}
+      @authors = author_ids # .join(',')
+      @authors_names = params['authors_names']
+      @filters << [I18n.t(:authors_xx, {xx: params['authors_names']}), 'authors', :authorlist]
+    end
     datefield = es_datefield_name_from_datetype(@datetype)
     ret << {range: {"#{datefield}" => range_expr }} unless range_expr.empty?
 
     #     { "range": { "publish_date": { "gte": "2015-01-01" }}}
     return ret
+
   end
   def build_es_query_from_filters
     ret = {}
-    if params['search_input'].present? || params['authorstr'].present? || params['authors'].present?
-      if params['authors'].present?
-        # @search_type = 'authorname'
-        # author_ids = params['authors'].split(',').map{|x| x.to_i}
-        # query_params[:people_ids] = author_ids
-        # @authors = author_ids # .join(',')
-        # query_parts[:authors] = 'people.id IN (:people_ids)'
-        # @authors_names = params['authors_names']
-        # @filters << [I18n.t(:authors_xx, {xx: params['authors_names']}), 'authors', :authorlist]
-      elsif (params['search_type'].present? && params['search_type'] == 'authorname') || (params['authorstr'].present? && params['search_input'].empty?)
+    if params['search_input'].present? || params['authorstr'].present?
+      if (params['search_type'].present? && params['search_type'] == 'authorname') || (params['authorstr'].present? && params['search_input'].empty?)
         ret['match'] = {author_string: params['authorstr']}
         @authorstr = params['authorstr']
         @search_type = 'authorname'
