@@ -8,8 +8,8 @@
     .row
       .col-md-12
         - unless @p.bib_done
-          = button_to(t(:mark_as_done), authors_update_path(id:@p.id), method: :post, params: {'person[bib_done]':1})
-        = button_to(t(:make_author_page), action: :make_author_page, method: :post, params: {'person_id':@p.id})
+          = button_to(t(:mark_as_done), authors_update_path(id:@p.id), {method: :post, params: {'person[bib_done]': 1}})
+        = button_to(t(:make_author_page), {action: :make_author_page, formtarget: '_blank'}, method: :post, formtarget: '_blank', params: {'person_id': @p.id} )
     .row
       .col-md-12
         %table#bibs
