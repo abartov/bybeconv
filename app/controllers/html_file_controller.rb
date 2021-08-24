@@ -26,6 +26,7 @@ class HtmlFileController < ApplicationController
   def create
     @text = HtmlFile.new(hf_params)
     if @text.person
+      @text.assignee = current_user
       @text.status = 'Uploaded'
       respond_to do |format|
         if @text.save
