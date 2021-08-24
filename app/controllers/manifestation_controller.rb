@@ -752,7 +752,7 @@ class ManifestationController < ApplicationController
     standard_aggregations = {
       periods: {terms: {field: 'period'}},
       genres: {terms: {field: 'genre'}},
-      languages: {terms: {field: 'orig_lang'}},
+      languages: {terms: {field: 'orig_lang', size: get_langs.count + 1}},
       copyright_status: {terms: {field: 'copyright_status'}},
       author_genders: {terms: {field: 'author_gender'}},
       translator_genders: {terms: {field: 'translator_gender'}},
