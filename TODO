@@ -1,6 +1,4 @@
 Transition to ElasticSearch for filtering TODO:
-- queries by author substring
-- queries by author from autocomplete
 - queries by author from multi-select
 - migrate everything to mobile as well
 

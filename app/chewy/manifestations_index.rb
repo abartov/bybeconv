@@ -11,6 +11,7 @@ class ManifestationsIndex < Chewy::Index
     field :orig_lang, value: ->(manifestation) { manifestation.expressions[0].works[0].orig_lang}, type: 'keyword'
     field :pby_publication_date, type: 'date', value: ->{created_at}
     field :author_string, value: ->(manifestation) {manifestation.author_string}
+    field :author_ids, type: 'integer', value: ->(manifestation) {manifestation.author_and_translator_ids}
     field :title_and_authors, value: ->(manifestation) {manifestation.title_and_authors}
     field :orig_publication_date, value: ->(manifestation) {normalize_date(manifestation.expressions[0].date)}
     # field :video_count, type: 'integer', value: ->(manifestation){ manifestation.video_count}

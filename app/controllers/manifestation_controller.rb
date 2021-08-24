@@ -683,6 +683,31 @@ class ManifestationController < ApplicationController
     #     { "range": { "publish_date": { "gte": "2015-01-01" }}}
     return ret
   end
+  def build_es_query_from_filters
+    ret = {}
+    if params['search_input'].present? || params['authorstr'].present? || params['authors'].present?
+      if params['authors'].present?
+        # @search_type = 'authorname'
+        # author_ids = params['authors'].split(',').map{|x| x.to_i}
+        # query_params[:people_ids] = author_ids
+        # @authors = author_ids # .join(',')
+        # query_parts[:authors] = 'people.id IN (:people_ids)'
+        # @authors_names = params['authors_names']
+        # @filters << [I18n.t(:authors_xx, {xx: params['authors_names']}), 'authors', :authorlist]
+      elsif (params['search_type'].present? && params['search_type'] == 'authorname') || (params['authorstr'].present? && params['search_input'].empty?)
+        ret['match'] = {author_string: params['authorstr']}
+        @authorstr = params['authorstr']
+        @search_type = 'authorname'
+        @filters << [I18n.t(:author_x, {x: params['authorstr']}), :authors, :text]
+      else
+        ret['match'] = {title: params['search_input']}
+        @search_type = 'workname'
+        @filters << [I18n.t(:title_x, {x: params['search_input']}), :search_input, :text]
+      end
+      @search_input = params['search_input']
+    end
+    return ret
+  end
   def es_buckets_to_facet(buckets, codehash)
     facet = {}
     buckets.each do |facethash|
@@ -727,16 +752,15 @@ class ManifestationController < ApplicationController
       languages: {terms: {field: 'orig_lang'}},
       copyright_status: {terms: {field: 'copyright_status'}},
       author_genders: {terms: {field: 'author_gender'}},
-      translator_genders: {terms: {field: 'translator_gender'}}
+      translator_genders: {terms: {field: 'translator_gender'}},
+      author_ids: {terms: {field: 'author_ids'}}
     }
     filter = build_es_filter_from_filters
-    if filter.blank?
-      @collection = ManifestationsIndex.query({match_all: {}}).aggregations(standard_aggregations).limit(100)
-    else
-      @collection = ManifestationsIndex.filter(filter).aggregations(standard_aggregations).limit(100)
-    end
+    es_query = build_es_query_from_filters
+    es_query = {match_all: {}} if es_query == {}
+    @collection = ManifestationsIndex.query(es_query).filter(filter).aggregations(standard_aggregations).limit(100) # prepare ES query
     @emit_filters = true if params[:load_filters] == 'true' || params[:emit_filters] == 'true'
-    @total = @collection.count
+    @total = @collection.count # actual query triggered here
     @works = @collection.page(@page)
     @gender_facet = es_buckets_to_facet(@collection.aggs['author_genders']['buckets'], Person.genders)
     @tgender_facet = es_buckets_to_facet(@collection.aggs['translator_genders']['buckets'], Person.genders)
@@ -745,6 +769,9 @@ class ManifestationController < ApplicationController
     @language_facet = es_buckets_to_facet(@collection.aggs['languages']['buckets'], get_langs.to_h {|l| [l,l]})
     @language_facet[:xlat] = @language_facet.reject{|k,v| k == 'he'}.values.sum
     @copyright_facet = es_buckets_to_facet(@collection.aggs['copyright_status']['buckets'], {'false' => 0,'true' => 1})
+    #@authors_facet = es_buckets_to_facet(@collection.aggs['authors_ids']['buckets'], ) # TODO
+    author_ids = @collection.aggs['author_ids']['buckets'].map{|x| x['key']}
+    @authors_list = (es_query == {match_all: {}} && filter.blank?) ? Person.all : Person.where(id: author_ids)
 
     ## Main methods of the request DSL are: query, filter and post_filter, it is possible to pass pure query hashes or use elasticsearch-dsl.
     # CitiesIndex
@@ -752,15 +779,6 @@ class ManifestationController < ApplicationController
     # .query { match name: 'London' }
     # .query.not(range: {population: {gt: 1_000_000}})
 
-    ### Faceting
-    # Facets are an optional sidechannel you can request from elasticsearch describing certain fields of the resulting collection. The most common use for facets is to allow the user continue filtering specifically within the subset, as opposed to the global index.
-    # For instance, let's request the ```country``` field as a facet along with our users collection. We can do this with the #facets method like so:
-    # ManifestationsIndex.filter(term: {genre: 'prose'}).aggregations({periods: {terms: {field: 'period'}}}) 
-
-    # Let's look at what we asked from elasticsearch. The facets setter method accepts a hash. You can choose custom/semantic key names for this hash for your own convinience (in this case I used the plural version of the actual field), in our case: ```countries```. The following nested hash tells ES to grab and aggregate values (terms) from the ```country``` field on our indexed records. 
-    # When the response comes back, it will have the ```:facets``` sidechannel included:
-
-    # < { ... ,"facets":{"countries":{"_type":"terms","missing":?,"total":?,"other":?,"terms":[{"term":"USA","count":?},{"term":"Brazil","count":?}, ...}}
   end
 
   def prep_collection
@@ -931,7 +949,6 @@ class ManifestationController < ApplicationController
     es_prep_collection
     # temp placeholders
     @ab = []
-    @authors_list = []
 
     @total = @collection.count
     @total_pages = @works.total_pages
