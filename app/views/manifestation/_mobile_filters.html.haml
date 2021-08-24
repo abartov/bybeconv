@@ -94,37 +94,62 @@
                 .collapse.collfgender
                   .nested-content.nested-list
                     - Person.genders.invert.each do |p|
-                      - attrs = @gender_facet[p[0]].nil? ? {disabled: 'disabled'} : {}
+                      -# attrs = @gender_facet[p[0]].nil? ? {disabled: 'disabled'} : {}
+                      - attrs = {}
                       - attrs.merge!({:name => "ckb_genders[]", :type => "checkbox", id: "gender_#{p[1]}", value: p[1]})
                       - attrs.merge!({checked: 'checked'}) if @genders.present? && @genders.include?(p[1])
-                      %input{ attrs}/
+                      %input{ attrs}
                       %label
                         = t(p[1])
-                        %span= "(#{@gender_facet[p[0]] || '0'})"
+                        - count_text = @gender_facet[p[0]] || '0'
+                        - count_text = t(:filtered) if count_text == '0' && @genders.present?
+                        %span= "(#{count_text})"
                       %br/
+              .sort-type
+                .vertical-expand.collapsed{'data-target' =>'.collftgender', 'data-toggle' =>'collapse'}
+                  .sort-type-headline= t(:translator_gender)
+                .collapse.collftgender
+                  .nested-content.nested-list
+                    - Person.genders.invert.each do |p|
+                      -# attrs = @tgender_facet[p[0]].nil? ? {disabled: 'disabled'} : {}
+                      - attrs = {}
+                      - attrs.merge!({:name => "ckb_tgenders[]", :type => "checkbox", id: "tgender_#{p[1]}", value: p[1]})
+                      - attrs.merge!({checked: 'checked'}) if @tgenders.present? && @tgenders.include?(p[1])
+                      %input{ attrs}
+                      %label
+                        = t(p[1])
+                        - count_text = @tgender_facet[p[0]] || '0'
+                        - count_text = t(:filtered) if count_text == '0' && @tgenders.present?
+                        %span= "(#{count_text})"
+                      %br/
+
               .sort-type
                 .vertical-expand.collapsed{'data-target' =>'.collfcopyright', 'data-toggle' =>'collapse'}
                   .sort-type-headline= t(:copyright_status)
                 .collapse.collfcopyright
                   .nested-content.nested-list
                     - attrs = {name: "ckb_copyright[]", :type => "checkbox", id: 'copyright_0', value: 0}
-                    - attrs.merge!({disabled: 'disabled'}) if @copyright_facet[0].nil?
+                    -# attrs.merge!({disabled: 'disabled'}) if @copyright_facet[0].nil?
                     - attrs.merge!({checked: 'checked'}) if @copyright.present? && @copyright.include?(0)
 
-                    %input{attrs}/
+                    %input{attrs}
                     %label
                       %span.by-icon-v02> m
                       = t(:public_domain)
-                      %span= "(#{@copyright_facet[0] || '0'})"
+                      - count_text = @copyright_facet[0] || '0'
+                      - count_text = t(:filtered) if count_text == '0' && @copyright.present?
+                      %span= "(#{count_text})"
                     %br/
                     - attrs = {name: "ckb_copyright[]", :type => "checkbox", id: 'copyright_1', value: 1}
-                    - attrs.merge!({disabled: 'disabled'}) if @copyright_facet[1].nil?
+                    -# attrs.merge!({disabled: 'disabled'}) if @copyright_facet[1].nil?
                     - attrs.merge!({checked: 'checked'}) if @copyright.present? && @copyright.include?(1)
-                    %input{attrs}/
+                    %input{attrs}
                     %label
                       %span.by-icon-v02> x
                       = t(:by_permission)
-                      %span= "(#{@copyright_facet[1] || '0'})"
+                      - count_text = @copyright_facet[1] || '0'
+                      - count_text = t(:filtered) if count_text == '0' && @copyright.present?
+                      %span= "(#{count_text})"
                     %br/
               .sort-type
                 .vertical-expand.collapsed{'data-target' =>'.collfgenre', 'data-toggle' =>'collapse'}
@@ -132,14 +157,17 @@
                 .collapse.collfgenre
                   .nested-content.nested-list
                     - get_genres.each do |g|
-                      - attrs = @genre_facet[g].nil? ? {disabled: 'disabled'} : {}
+                      -# attrs = @genre_facet[g].nil? ? {disabled: 'disabled'} : {}
+                      - attrs = {}
                       - attrs.merge!({:name => "ckb_genres[]", :type => "checkbox", id: "genre_#{g}", value: g})
                       - attrs.merge!({checked: 'checked'}) if @genres.present? && @genres.include?(g)
-                      %input{ attrs}/
+                      %input{ attrs}
                       %label
                         %span.by-icon-v02>= glyph_for_genre(g)
                         = textify_genre(g)
-                        %span= "(#{@genre_facet[g] || '0'})"
+                        - count_text = @genre_facet[g] || '0'
+                        - count_text = t(:filtered) if count_text == '0' && @genres.present?
+                        %span= "(#{count_text})"
                       %br/
               .sort-type
                 .vertical-expand.collapsed{'data-target' =>'.collfperiod', 'data-toggle' =>'collapse'}
@@ -147,13 +175,16 @@
                 .collapse.collfperiod
                   .nested-content.nested-list
                     - Expression.periods.invert.each do |p|
-                      - attrs = @period_facet[p[0]].nil? ? {disabled: 'disabled'} : {}
+                      -# attrs = @period_facet[p[0]].nil? ? {disabled: 'disabled'} : {}
+                      - attrs = {}
                       - attrs.merge!({:name => "ckb_periods[]", :type => "checkbox", id: "period_#{p[1]}", value: p[1]})
                       - attrs.merge!({checked: 'checked'}) if @periods.present? && @periods.include?(p[1])
-                      %input{ attrs}/
+                      %input{ attrs}
                       %label
                         = t(p[1])
-                        %span= "(#{@period_facet[p[0]] || '0'})"
+                        - count_text = @period_facet[p[0]] || '0'
+                        - count_text = t(:filtered) if count_text == '0' && @periods.present?
+                        %span= "(#{count_text})"
                       %br/
               .sort-type
                 .vertical-expand.collapsed{'data-target' =>'.collfdate', 'data-toggle' =>'collapse'}
@@ -183,32 +214,47 @@
                     %ul
                       %li
                         - attrs = {name: "ckb_languages[]", :type => "checkbox", id: 'lang_he', value: 'he'}
-                        - attrs.merge!({disabled: 'disabled'}) if @language_facet['he'].nil? || @language_facet['he'] == 0
+                        -# attrs.merge!({disabled: 'disabled'}) if @language_facet['he'].nil? || @language_facet['he'] == 0
                         - attrs.merge!({checked: 'checked'}) if @languages.present? && @languages.include?('he')
-                        %input{attrs}/
+                        %input{attrs}
                         %label
                           = t(:hebrew)
-                          %span= "(#{@language_facet['he'] || '0'})"
+                          - count_text = @language_facet['he'] || '0'
+                          - count_text = t(:filtered) if count_text == '0' && @languages.present?
+                          %span= "(#{count_text})"
                       %li
-                        - attrs = {name: "ckb_languages[]", :type => "checkbox", id: 'lang_xlat', value: 'xlat'}
-                        - attrs.merge!({disabled: 'disabled'}) if @language_facet[:xlat].nil? || @language_facet[:xlat] == 0
+                        - attrs = {name: "ckb_languages[]", :type => "checkbox", id: 'lang_xlat', class: 'lang_xlat', value: 'xlat'}
+                        -# attrs.merge!({disabled: 'disabled'}) if @language_facet[:xlat].nil? || @language_facet[:xlat] == 0
                         - attrs.merge!({checked: 'checked'}) if @languages.present? && @languages.include?('xlat')
-                        %input{attrs}/
+                        %input{attrs}
                         %label
                           = t(:translations)
                           %span= "(#{@language_facet[:xlat] || '0'})"
                         .languages-filters
-                          %ul.nested-list#xlat_langs
+                          %ul.nested-list.xlat_langs
+                            - emitted_langs = ['he', :xlat]
                             - @language_facet.sort{|a,b| b[1] <=> a[1]}.each do |lang, amount|
                               - next if lang == :xlat || lang == 'he'
+                              - emitted_langs << lang
                               %li
                                 - attrs = {name: "ckb_languages[]", :type => "checkbox", id: "lang_#{lang}", value: lang}
-                                - attrs.merge!({disabled: 'disabled'}) if @language_facet[lang].nil? || @language_facet[lang] == 0
+                                -# attrs.merge!({disabled: 'disabled'}) if @language_facet[lang].nil? || @language_facet[lang] == 0
                                 - attrs.merge!({checked: 'checked'}) if @languages.present? && @languages.include?(lang)
                                 %input{attrs}
                                 %label
                                   = textify_lang(lang)
-                                  %span= "(#{amount || '0'})"
+                                  - count_text = amount || '0'
+                                  - count_text = t(:filtered) if count_text == '0' && @languages.present?
+                                  %span= "(#{count_text})"
+                              - get_langs.reject{|x| emitted_langs.include?(x)}.each do |lang|
+                                %li
+                                  %input{name: "ckb_languages[]", :type => "checkbox", id: "lang_#{lang}", value: lang}
+                                  %label
+                                    = textify_lang(lang)
+                                    - count_text = '0'
+                                    - count_text = t(:filtered) if @languages.present?
+                                    %span= "(#{count_text})"
+
       .bottom-button-area.sticky-bottom
         %button.by-button-v02#apply_mobile_filters= t(:apply_mobile_filters)
 :javascript
