@@ -4,7 +4,6 @@ gem 'rails', '~> 5.2.5'
 gem 'rails-i18n' # , git: 'https://github.com/svenfuchs/rails-i18n.git' # , branch: 'rails-4-x' # For 4.x
 gem 'actionview', '>= 5.2.4.2'
 gem 'sprockets', '~> 3' # 4.x requires manifest.js
-gem 'marcel', '~> 1'
 gem 'rails-ujs'
 gem 'mysql2' # Rails 5.2 needs a newer one # , '~> 0.3.11'
 gem 'omniauth-google-oauth2'

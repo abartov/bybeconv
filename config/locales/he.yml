@@ -49,6 +49,8 @@ he:
   sitenotice_edit: עריכת הודעת מערכת
   sitenotice_management: ניהול הודעות מערכת
   edit_sitenotice: ניהול הודעות מערכת
+  create_scanning_task: צור משימת סריקה
+  to_the_task: אל משימת הסריקה
   type_new_name_below: עדכנו את השם ולחצו על שמירה.
   ziburit: מהו שם המשפחה של המשורר הנחשב המשורר הלאומי? (שאלת אבטחה)
   from_pby_and_available_at: מתוך פרויקט בן־יהודה.  המקראה זמינה בכתובת
@@ -60,8 +62,10 @@ he:
   docx_too_large: אין די זכרון להסב את הקובץ. יש לפצלו או להסב ידנית.
   add_stanza_break: הוספת מעבר בית
   minuses_to_makafim: תיקון למקפים עבריים גאים
+  add_angled_brackets: הוספת סימון שירה לקטע
   remove_angled_brackets: הסרת סימון שירה בקטע
   select_text_to_remove_from: ראשית יש לסמן (להאיר) קטע בטקסט שממנו רוצים להסיר את סימני השירה.
+  select_text_to_add_to: ראשית יש לסמן (להאיר) קטע בטקסט שלו רוצים להוסיף את סימני השירה.
   add_fresh_works: כל היצירות מ-12 השעות האחרונות
   converted_output: "תוצאת הסבה אוטומטית של הקובץ הישן %{fname}"
   origlang_title: כותרת בשפת המקור
@@ -483,6 +487,7 @@ he:
   for_publishers_project: ליצירות שעולות במסגרת מיזם המו"לים בלבד
   gender: מיגדר
   author_gender: מיגדר המחבר/ת
+  translator_gender: מיגדר המתרגם/ת
   author_or_translator_gender: מיגדר המחבר/ת או המתרגם/ת
   orphans: יצירות יתומות
   male: זכר
@@ -577,9 +582,11 @@ he:
   add_from_browse_view: ראשית בחרו רשימת יצירות כלשהי (לפי סוגה, תקופה, או כל היצירות) דרך התפריט הראשי, וממסך הרשימה תוכלו להוסיף יצירות רבות בבת אחת.
   bookmark_mode_begin: מצב סימניה הופעל. כדי להניח את הסימניה, יש ללחוץ על הפסקה שברצונך לסמן.
   bookmark_placed: הסימניה נשמרה.
+  filtered: סונן
   filter_langs: סנן שפות זרות
   please_note: נא לשים לב
   up_to_10_authors: ניתן לבחור רק עד 10 יוצרים
+  current_editing_files: עריכות טכניות נוכחיות
   explain_up_to_10: ניתן לסנן את רשימת היצירות לפי מספר יוצרים בו זמנית על-ידי בחירתם מהרשימה. הסינון מוגבל לעד 10 יוצרים בו זמנית.
   entries: ערכים
   linking_entries: ערכים קשורים

@@ -18,6 +18,10 @@ class BibController < ApplicationController
     pub = Publication.find(params[:id])
     li = ListItem.new(listkey: 'pubs_false_maybe_done', item: pub)
     li.save!
+    li = ListItem.where(listkey: 'pubs_maybe_done', item: pub)
+    unless li.empty?
+      li.each {|item| item.destroy}
+    end
     render js: "$('.pub#{pub.id}').remove();"
   end
   def scans
@@ -90,17 +94,35 @@ class BibController < ApplicationController
         sources << BibSource.find(params['bib_source'])
       end
       sources.each do |bib_source|
-#        recs = query_source_by_type(q, bib_source)
-#        to_add = []
-#        recs.each do |pub|
-#          sid = (pub.source_id.class == Array ? pub.source_id[0] : pub.source_id)
-#          yesno = Holding.where(source_id: url_for_record(bib_source, sid)).empty?
-#          to_add << pub if yesno
-#        end
-#        @pubs += to_add
         @pubs += query_source_by_type(q, bib_source).select  {|pub| Holding.where(source_id: url_for_record(bib_source, (pub.source_id.class == Array ? pub.source_id[0] : pub.source_id))).empty? }
       end
       @total_pubs = @pubs.count.to_s
+    end
+  end
+
+  def make_scanning_task
+    pub = Publication.find(params[:id])
+    if pub.nil?
+      render plain: 'moose'
+    else
+      Net::HTTP.start(AppConstants.tasks_system_host, AppConstants.tasks_system_port, :use_ssl => AppConstants.tasks_system_port == 443 ? true : false) do |http|
+        req = Net::HTTP::Post.new('/api/create_task')
+        req.set_form_data(title: pub.title, author: pub.author_line, 
+          edition_details: "#{pub.publisher_line}, #{pub.pub_year}", extra_info: "#{pub.language}\n#{pub.notes}",
+          api_key: current_user.tasks_api_key)
+        task_result = JSON.parse(http.request(req).body)
+        logger.debug("task_result: #{task_result.to_s}")
+        if task_result['task'].present?
+          pub.status = 'scanned'
+          pub.task_id = task_result['task']['id']
+          pub.save!
+          portpart = AppConstants.tasks_system_port == 80 ? '' : ":#{AppConstants.tasks_system_port }"
+          taskurl = "#{AppConstants.tasks_system_port == 443 ? 'https://' : 'http://'}#{AppConstants.tasks_system_host}#{portpart}/tasks/#{task_result['task']['id']}"
+          render inline: taskurl
+        else
+          render inline: 'alert("אירעה שגיאה ביצירת המשימה.");'
+        end
+      end
     end
   end
 

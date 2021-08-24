@@ -35,7 +35,7 @@ p {
   font-weight: bold;
   margin-right: 6px;
   margin-bottom: 8px;
-}
+  }
 
 .headline-2-v02 {
   font-size: 14pt;
@@ -288,7 +288,7 @@ padding-left: 6px;
 
 .btn-small-outline-v02 {
   min-width: 28px;
-  height: 28px;
+  height: 32px;
   border-radius: 3px;
   border: solid 1px #660248;
   vertical-align: text-bottom;
@@ -318,7 +318,7 @@ padding-left: 6px;
 	cursor: auto;}
 .btn-text-v02 {
   font-weight: bold;
-  padding: 0 10px 2px 10px;
+  padding: 2px 10px 4px 10px;
   color: #660248;   
   cursor: pointer;
 }
@@ -701,7 +701,7 @@ input::placeholder {
   background-color: #eeeced;
   border-radius: 3px;
   box-shadow: 0 3px 9px rgba(0, 0, 0, 0.4);
-  margin-top: 120px;
+  margin-top: 60px;
   margin-right: auto;
   margin-left: auto;
   position: relative;
@@ -767,7 +767,8 @@ input::placeholder {
   display: flex;
   align-items: center;
   margin-right: 6px;
-	cursor: pointer;
+  cursor: pointer;
+  float: left;
 }
 
 .by-button-v02:hover {
@@ -958,6 +959,7 @@ input::placeholder {
   margin-right: 15px;
   margin-top: -6px;
   position: absolute;
+	z-index: 10;
 }
 .about-author-card-v02 {
   width: 160px;
@@ -1016,6 +1018,9 @@ input::placeholder {
   height: 230px;
   border-radius: 3px 0 0 0;
   object-fit: cover; }
+.surprise-author-card-v02:hover .surprise-author-pic-v02{
+	opacity: .8;
+}
 .about-author-pic-v02 {
   width: 160px;
   height: 230px;
@@ -1787,7 +1792,7 @@ display: flex;
 	flex-direction: column;
 }
 .navbar-nav .nav-link{
-	padding: 10px;
+	padding: 6px 10px;
 }
 .nav-link:hover{
 	background-color: #d9cdd5;
@@ -1803,10 +1808,8 @@ display: flex;
 	width: 100%;
 }
 .nav-link-chapter{
-	height:30px;
 	width: 100%;
 	text-align: right;
-	padding: 6px;
 }
 .nav-chapter-name{
 	white-space: nowrap; 
@@ -3665,23 +3668,7 @@ padding-left: 0;
 	width: 100%;
 }
 .advanced-pagination-area a.by-icon-v02{
-	width: 24px;
-	height:24px;
 	padding: 3px 5px;
-  border-radius: 3px;
-	margin-top: 2px;
-}
-.advanced-pagination-area a.by-icon-v02:hover{
-	background-color: #d9cdd5;
-}
-.advanced-pagination-area a.by-icon-v02:disabled{
-	background-color: none;
-}
-.advanced-pagination-area .by-icon-v02{
-	width: 24px;
-	height:24px;
-	padding: 3px 5px;
-	font-size: 18px;
   border-radius: 3px;
 	margin-top: 2px;
 }
@@ -3899,6 +3886,9 @@ a .by-icon-v02:disabled{
 	max-width: 270px;
 	margin-top: 0;
 	margin-bottom: 18px;
+}
+.by-card-content-v02 .sort-type ul{
+	list-style: none;
 }
 .texts-list-top{
 	position: relative;
@@ -4131,7 +4121,7 @@ position: absolute;
 	margin-left: 6px;
 }
 .anthology-badge{
-	width: 14px;
+	min-width: 14px;
 	height: 14px;
 	background-color: #660248;
 	border-radius: 7px;
@@ -5261,6 +5251,7 @@ position: absolute;
 .limited-height-popup-content-v02 {
   width: 100%;
   overflow: auto;
+	margin-bottom: 15px;
 }
 .work-page-top-info-card .row{
 	margin-left: 0;
@@ -5327,6 +5318,28 @@ position: absolute;
 .checkbox-with-field .field-v02{
 	width: calc(100% - 54px);
   margin-top: -4px;
+}
+#whats-new-author-popup .by-card-header-v02{
+	padding-right: 190px;
+}
+#author-info-popup .by-card-header-v02{
+	padding-right: 190px;
+}
+.button-placeholder{
+	width: 65px;
+}
+.popup-top .headline-2-v02{
+	text-align: center;
+}
+.popup-top button{
+	flex-shrink: 0;
+}
+.popup-top .button-placeholder{
+	flex-shrink: 0;
+}
+.popup-top .headline-2-v02{
+	padding-right: 6px;
+	padding-left: 6px;
 }
 
 #whats-new-author-popup .by-card-header-v02{

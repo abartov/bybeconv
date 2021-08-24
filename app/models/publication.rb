@@ -17,16 +17,27 @@ class Publication < ApplicationRecord
   after_save :check_lists
 
   def self.update_publications_that_may_be_done_list
-    coll = Publication.not_uploaded.not_maybe_done.not_false_positive_maybe_done
+    coll = Publication.not_uploaded.not_maybe_done.not_false_positive_maybe_done.order(:person_id)
     total = coll.count
-    # TODO: optimize to group the above by author and then check all author pubs against all extant manifestations of author at the same time
+    author_title_cache = []
+    last_author = nil
+    i = 1
+    added = 0
     coll.each do |pub|
-      mm = pub.person.all_works_by_title(pub_title_for_comparison(pub.title))
-      unless mm.empty?
+      print "\nHandling #{i} out of #{total}..." if i % 50 == 0
+      if pub.person_id != last_author
+        last_author = pub.person_id
+        author_title_cache = pub.person.all_works_title_sorted.pluck(:title)
+      end
+      searchtitle = pub_title_for_comparison(pub.title)
+      if author_title_cache.include?(searchtitle)
         li = ListItem.new(listkey: 'pubs_maybe_done', item: pub)
         li.save!
+        added += 1
       end
+      i += 1
     end
+    puts "...done!\n Added #{added} new maybe_done ListItems."
   end
   def check_lists
     if(self.status == 'uploaded')

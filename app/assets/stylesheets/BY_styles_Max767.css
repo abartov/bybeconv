@@ -67,7 +67,6 @@
 .by-popup-v02 {
   width: 100%;
   box-shadow: none;
-  position: static;
   left: 0;
   margin-top:0px;
   border-radius: 0;
@@ -110,7 +109,7 @@
   display: none;
 }
 .popup-with-bottom-links{
-		height: calc(100% - 62px);
+		height: calc(100% - 58px);
 	}
 	.author-page-top-name{
 		line-height: 36px;
@@ -247,10 +246,6 @@
 	}
 .sort-by-desktop{
 	display: none;
-}
-.sort-by-mobile{
-	display: block;
-	margin-top: 16px;
 }
 .author-side-sort{
   display:none;

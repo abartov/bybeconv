@@ -609,6 +609,180 @@ class ManifestationController < ApplicationController
     return d unless datetype == 'uploaded'
     return d+'-01-01'
   end
+  def es_datefield_name_from_datetype(dt)
+    case dt
+    when 'uploaded'
+      return 'pby_publication_date'
+    when 'created'
+      return 'creation_date'
+    when 'published'
+      return 'orig_publication_date'
+    end
+  end
+  def build_es_filter_from_filters
+    ret = []
+    @filters = []
+    # periods
+    @periods = params['ckb_periods'] if params['ckb_periods'].present?
+    if @periods.present?
+      ret << {terms: {period: @periods}}
+      @filters += @periods.map{|x| [I18n.t(x), "period_#{x}", :checkbox]}
+    end
+    # genders
+    @genders = params['ckb_genders'] if params['ckb_genders'].present?
+    if @genders.present?
+      ret << {terms: {author_gender: @genders}}
+      @filters += @genders.map{|x| [I18n.t(:author)+': '+I18n.t(x), "gender_#{x}", :checkbox]}
+    end
+    @tgenders = params['ckb_tgenders'] if params['ckb_tgenders'].present?
+    if @tgenders.present?
+      ret << {terms: {translator_gender: @tgenders}}
+      @filters += @tgenders.map{|x| [I18n.t(:translator)+': '+I18n.t(x), "tgender_#{x}", :checkbox]}
+    end
+    # genres
+    @genres = params['ckb_genres'] if params['ckb_genres'].present?
+    if @genres.present?
+      ret << {terms: {genre: @genres}}
+      @filters += @genres.map{|x| [helpers.textify_genre(x), "genre_#{x}", :checkbox]}
+    end
+    # copyright
+    @copyright = params['ckb_copyright'].map{|x| x.to_i} if params['ckb_copyright'].present?
+    if @copyright.present?
+      cright = @copyright.map{|x| x==0 ? 'false' : 'true'}
+      ret << {terms: {copyright_status: cright}}
+      @filters += @copyright.map{|x| [helpers.textify_copyright_status(x == 1), "copyright_#{x}", :checkbox]}
+    end
+    # languages
+    if params['ckb_languages'].present?
+      if params['ckb_languages'] == ['xlat']
+        ret << {must_not: {term: {orig_lang: 'he'}}}
+        @filters << [I18n.t(:translations), 'lang_xlat', :checkbox]
+      else
+        @languages = params['ckb_languages'].reject{|x| x == 'xlat'}
+        if @languages.present?
+          ret << {terms: {orig_lang: @languages}}
+          @filters += @languages.map{|x| ["#{I18n.t(:orig_lang)}: #{helpers.textify_lang(x)}", "lang_#{x}", :checkbox]}
+        end
+      end
+    end
+    # dates
+    @fromdate = params['fromdate'] if params['fromdate'].present?
+    @todate = params['todate'] if params['todate'].present?
+    @datetype = params['date_type']
+    range_expr = {}
+    if @fromdate.present?
+      range_expr['gte'] = @fromdate
+      @filters << ["#{I18n.t('d'+@datetype)} #{I18n.t(:fromdate)}: #{@fromdate}", :fromdate, :text]
+    end
+    if @todate.present?
+      range_expr['lte'] = Date.new(@todate.to_i,12,31).to_s
+      @filters << ["#{I18n.t('d'+@datetype)} #{I18n.t(:todate)}: #{@todate}", :todate, :text]
+    end
+    # multi-select authors
+    if params['authors'].present?
+      @search_type = 'authorname'
+      author_ids = params['authors'].split(',').map{|x| x.to_i}
+      ret << {terms: {author_ids: author_ids}}
+      @authors = author_ids # .join(',')
+      @authors_names = params['authors_names']
+      @filters << [I18n.t(:authors_xx, {xx: params['authors_names']}), 'authors', :authorlist]
+    end
+    datefield = es_datefield_name_from_datetype(@datetype)
+    ret << {range: {"#{datefield}" => range_expr }} unless range_expr.empty?
+
+    #     { "range": { "publish_date": { "gte": "2015-01-01" }}}
+    return ret
+
+  end
+  def build_es_query_from_filters
+    ret = {}
+    if params['search_input'].present? || params['authorstr'].present?
+      if (params['search_type'].present? && params['search_type'] == 'authorname') || (params['authorstr'].present? && params['search_input'].empty?)
+        ret['match'] = {author_string: params['authorstr']}
+        @authorstr = params['authorstr']
+        @search_type = 'authorname'
+        @filters << [I18n.t(:author_x, {x: params['authorstr']}), :authors, :text]
+      else
+        ret['match'] = {title: params['search_input']}
+        @search_type = 'workname'
+        @filters << [I18n.t(:title_x, {x: params['search_input']}), :search_input, :text]
+      end
+      @search_input = params['search_input']
+    end
+    return ret
+  end
+  def es_buckets_to_facet(buckets, codehash)
+    facet = {}
+    buckets.each do |facethash|
+      facet[codehash[facethash['key']]] = facethash['doc_count'] unless codehash[facethash['key']].nil?
+    end
+    return facet
+  end
+  def es_prep_collection
+    @sort_dir = :default
+    if params[:sort_by].present?
+      @sort_or_filter = 'sort'
+      @sort = params[:sort_by].dup
+      params[:sort_by].sub!(/_(a|de)sc$/,'')
+      @sort_dir = $&[1..-1] unless $&.nil?
+    end
+    # figure out sort order
+    if params[:sort_by].present?
+      case params[:sort_by]
+      when 'alphabetical'
+        ord = {sort_title: (@sort_dir == :default ? :asc : @sort_dir)}
+      when 'popularity'
+        ord = {impressions_count: (@sort_dir == :default ? :desc : @sort_dir)}
+      when 'publication_date'
+        ord = "expressions.date #{@sort_dir == :default ? 'asc' : @sort_dir}"
+      when 'creation_date'
+        ord = "works.date #{@sort_dir == :default ? 'asc' : @sort_dir}"
+      when 'upload_date'
+        ord = {created_at: (@sort_dir == :default ? :desc : @sort_dir)}
+      end
+    else
+      sdir = (@sort_dir == :default ? :asc : @sort_dir)
+      @sort = "alphabetical_#{sdir}"
+      ord = {sort_title: sdir}
+    end
+    # search ES
+    #@search = ManifestationsSearch.new(query: @searchterm)
+    #@results = @search.search.page(params[:page])
+    # byebug
+    standard_aggregations = {
+      periods: {terms: {field: 'period'}},
+      genres: {terms: {field: 'genre'}},
+      languages: {terms: {field: 'orig_lang'}},
+      copyright_status: {terms: {field: 'copyright_status'}},
+      author_genders: {terms: {field: 'author_gender'}},
+      translator_genders: {terms: {field: 'translator_gender'}},
+      author_ids: {terms: {field: 'author_ids'}}
+    }
+    filter = build_es_filter_from_filters
+    es_query = build_es_query_from_filters
+    es_query = {match_all: {}} if es_query == {}
+    @collection = ManifestationsIndex.query(es_query).filter(filter).aggregations(standard_aggregations).limit(100) # prepare ES query
+    @emit_filters = true if params[:load_filters] == 'true' || params[:emit_filters] == 'true'
+    @total = @collection.count # actual query triggered here
+    @works = @collection.page(@page)
+    @gender_facet = es_buckets_to_facet(@collection.aggs['author_genders']['buckets'], Person.genders)
+    @tgender_facet = es_buckets_to_facet(@collection.aggs['translator_genders']['buckets'], Person.genders)
+    @period_facet = es_buckets_to_facet(@collection.aggs['periods']['buckets'], Expression.periods)
+    @genre_facet = es_buckets_to_facet(@collection.aggs['genres']['buckets'], get_genres.to_h {|g| [g,g]})
+    @language_facet = es_buckets_to_facet(@collection.aggs['languages']['buckets'], get_langs.to_h {|l| [l,l]})
+    @language_facet[:xlat] = @language_facet.reject{|k,v| k == 'he'}.values.sum
+    @copyright_facet = es_buckets_to_facet(@collection.aggs['copyright_status']['buckets'], {'false' => 0,'true' => 1})
+    #@authors_facet = es_buckets_to_facet(@collection.aggs['authors_ids']['buckets'], ) # TODO
+    author_ids = @collection.aggs['author_ids']['buckets'].map{|x| x['key']}
+    @authors_list = (es_query == {match_all: {}} && filter.blank?) ? Person.all : Person.where(id: author_ids)
+
+    ## Main methods of the request DSL are: query, filter and post_filter, it is possible to pass pure query hashes or use elasticsearch-dsl.
+    # CitiesIndex
+    # .filter(term: {name: 'Bangkok'})
+    # .query { match name: 'London' }
+    # .query.not(range: {population: {gt: 1_000_000}})
+
+  end
 
   def prep_collection
     @emit_filters = false
@@ -783,7 +957,11 @@ class ManifestationController < ApplicationController
   def prep_for_browse
     @page = params[:page] || 1
     @page = 1 if ['0',''].include?(@page) # slider sets page to zero, awkwardly
-    prep_collection # filtering and sorting is done here
+    #prep_collection # filtering and sorting is done here
+    es_prep_collection
+    # temp placeholders
+    @ab = []
+
     @total = @collection.count
     @total_pages = @works.total_pages
     d = Date.today

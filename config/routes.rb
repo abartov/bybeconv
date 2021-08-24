@@ -21,6 +21,7 @@ Bybeconv::Application.routes.draw do
   match 'bib/pubs_by_person', via: [:get, :post]
   get 'bib/pubs_maybe_done'
   get 'bib/publication_mark_false_positive/:id' => 'bib#publication_mark_false_positive', as: 'publication_mark_false_positive'
+  get 'bib/make_scanning_task/:id' => 'bib#make_scanning_task', as: 'bib_make_scanning_task'
   get 'bib/todo_by_location'
   get 'bib/holding_status/:id' => 'bib#holding_status', as: 'holding_status'
   post 'bib/make_author_page'

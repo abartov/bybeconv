@@ -149,16 +149,34 @@ class Manifestation < ApplicationRecord
     return expressions[0].works[0].authors.map{|x| x.name}.join(', ')
   end
 
+  def first_hebrew_letter
+    ret = '*'
+    self.title.each_char{|ch| return ch if self.title.is_hebrew_codepoint_utf8(ch.codepoints[0])}
+    return ret
+  end
   def authors
-    return nil if expressions[0].nil? or expressions[0].works[0].nil? or expressions[0].works[0].persons[0].nil?
+    return [] if expressions[0].nil? or expressions[0].works[0].nil? or expressions[0].works[0].persons[0].nil?
     return expressions[0].works[0].authors
   end
-
+  def author_gender
+    authors.pluck(:gender).uniq.reject{|x| x.blank?}
+  end
+  def translator_gender
+    translators.pluck(:gender).uniq.reject{|x| x.blank?}
+  end
   def translators
-    return nil if expressions[0].nil? or expressions[0].works[0].nil? or expressions[0].works[0].persons[0].nil?
+    return [] if expressions[0].nil? or expressions[0].works[0].nil? or expressions[0].works[0].persons[0].nil?
     return expressions[0].translators
   end
-
+  def author_and_translator_ids
+    ret = []
+    au = authors
+    au = [] if au.nil?
+    tra = translators
+    tra = [] if tra.nil?
+    ret = au.pluck(:id)+tra.pluck(:id)
+    return ret.uniq
+  end
   def translators_string
     return I18n.t(:nil) if expressions[0].nil? or expressions[0].works[0].nil? or expressions[0].works[0].persons[0].nil?
     return expressions[0].translators.map{|x| x.name}.join(', ')
@@ -321,6 +339,7 @@ class Manifestation < ApplicationRecord
     return @@popular_works
   end
   def self.update_suspected_typos_list
+    # TODO: implement
     # code to find probably typos:
     #- digits within words
     #- finals within words

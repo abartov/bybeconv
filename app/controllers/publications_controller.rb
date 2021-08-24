@@ -13,7 +13,7 @@ class PublicationsController < ApplicationController
       query << "people.name like '%#{params['author']}%'"
     end
     if params['status'] && (not params['status'].empty?)
-      query << "publications.status = '#{params['status']}'"
+      query << "publications.status = '#{Publication.statuses[params['status']]}'"
     end
     unless query.empty?
       @publications = Publication.joins(:person).includes([:person, holdings: :bib_source]).where(query.join(' and ')).order(status: :asc, person_id: :asc).page(params[:page])
