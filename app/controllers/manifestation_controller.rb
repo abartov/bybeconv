@@ -745,10 +745,6 @@ class ManifestationController < ApplicationController
       @sort = "alphabetical_#{sdir}"
       ord = {sort_title: sdir}
     end
-    # search ES
-    #@search = ManifestationsSearch.new(query: @searchterm)
-    #@results = @search.search.page(params[:page])
-    # byebug
     standard_aggregations = {
       periods: {terms: {field: 'period'}},
       genres: {terms: {field: 'genre'}},
@@ -772,16 +768,8 @@ class ManifestationController < ApplicationController
     @language_facet = es_buckets_to_facet(@collection.aggs['languages']['buckets'], get_langs.to_h {|l| [l,l]})
     @language_facet[:xlat] = @language_facet.reject{|k,v| k == 'he'}.values.sum
     @copyright_facet = es_buckets_to_facet(@collection.aggs['copyright_status']['buckets'], {'false' => 0,'true' => 1})
-    #@authors_facet = es_buckets_to_facet(@collection.aggs['authors_ids']['buckets'], ) # TODO
     author_ids = @collection.aggs['author_ids']['buckets'].map{|x| x['key']}
     @authors_list = (es_query == {match_all: {}} && filter.blank?) ? Person.all : Person.where(id: author_ids)
-
-    ## Main methods of the request DSL are: query, filter and post_filter, it is possible to pass pure query hashes or use elasticsearch-dsl.
-    # CitiesIndex
-    # .filter(term: {name: 'Bangkok'})
-    # .query { match name: 'London' }
-    # .query.not(range: {population: {gt: 1_000_000}})
-
   end
 
   def prep_collection
