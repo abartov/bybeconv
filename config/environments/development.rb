@@ -41,6 +41,33 @@ Bybeconv::Application.configure do
   #config.active_storage.service = :amazon
   #config.force_ssl = true # to debug SSL issues
 
+
+  # checks for the presence of an env variable called PROFILE that
+  # switches several settings to a more "production-like" value for profiling
+  # and benchmarking the application locally. All changes you make to the app
+  # will require restart.
+  if ENV['PROFILE']
+    config.cache_classes = true
+    config.eager_load = true
+
+    config.logger = ActiveSupport::Logger.new(STDOUT)
+    config.log_level = :info
+
+    config.public_file_server.enabled = true
+    config.public_file_server.headers = {
+      'Cache-Control' => 'max-age=315360000, public',
+      'Expires' => 'Thu, 31 Dec 2037 23:55:55 GMT'
+    }
+    config.assets.js_compressor = :uglifier
+    config.assets.css_compressor = :sass
+    config.assets.compile = false
+    config.assets.digest = true
+    config.assets.debug = false
+
+    config.active_record.migration_error = false
+    config.active_record.verbose_query_logs = false
+    config.action_view.cache_template_loading = true
+  end
   #### Bullet settings for performance optimization
   config.after_initialize do
     Bullet.enable = true
