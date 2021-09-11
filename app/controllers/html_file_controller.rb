@@ -463,7 +463,7 @@ class HtmlFileController < ApplicationController
       new_buffer.gsub!(" #{c}",c) # remove spaces before punctuation
     }
     new_buffer.gsub!('©כל הזכויות', '© כל הזכויות') # fix an artifact of the conversion
-    #new_buffer.gsub!(/> (.*?)\n\s*\n\s*\n/, "> \\1\n\n<br>\n") # add <br> tags for poetry, as a workaround to preserve stanza breaks
+    new_buffer.gsub!(/> (.*?)\n\s*\n\s*\n/, "> \\1\n\n<br>\n") # add <br> tags for poetry, as a workaround to preserve stanza breaks
     new_buffer.gsub!("&&STANZA&&","\n> \n<br />\n> \n") # sigh
     new_buffer.gsub!("&amp;&amp;STANZA&amp;&amp;","\n> \n<br />\n> \n") # sigh
     new_buffer.gsub!(/(\n\s*)*\n> \n<br \/>\n> (\n\s*)*/,"\n> \n<br />\n> \n\n") # sigh
