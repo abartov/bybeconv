@@ -579,9 +579,8 @@ class ManifestationController < ApplicationController
         INNER JOIN expressions_works ON expressions_works.expression_id = expressions.id
         INNER JOIN works ON works.id = expressions_works.work_id
         INNER JOIN creations ON creations.work_id = works.id
-        INNER JOIN people ON (people.id = realizers.person_id OR people.id = creations.person_id)
       SQL
-      order(ord)
+      distinct.order(ord)
       #includes(expressions: [:works, :manifestations]).order(ord)
       #return Manifestation.all_published.joins(expressions: :works).includes(expressions: :works).order(ord)
     else
@@ -594,9 +593,8 @@ class ManifestationController < ApplicationController
         INNER JOIN expressions_works ON expressions_works.expression_id = expressions.id
         INNER JOIN works ON works.id = expressions_works.work_id
         INNER JOIN creations ON creations.work_id = works.id
-        INNER JOIN people ON (people.id = realizers.person_id OR people.id = creations.person_id)
       SQL
-      where(conditions, query_params).order(ord)
+      where(conditions, query_params).distinct.order(ord)
     end
   end
 
