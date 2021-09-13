@@ -87,10 +87,10 @@ class ManifestationController < ApplicationController
         end
         render partial: 'set_bookmark'
       else
-        render :nothing
+        head :ok
       end
     else
-      render :nothing
+      head :ok
     end
   end
   def by_tag

@@ -209,7 +209,6 @@ class HtmlFileController < ApplicationController
     @text.status = 'Superseded'
     @text.assignee_id = nil
     @text.save!
-    redirect_to action: :list
   end
 
   def destroy

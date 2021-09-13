@@ -9,6 +9,7 @@ ENCODING_SUBSTS = [{ from: "\xCA", to: "\xC9" }, # fix weird invalid chars inste
                    { from: "\xFB", to: '&ucirc;' },
                    { from: "\xFF".force_encoding('windows-1255'), to: '&yuml;' }] # fix u-circumflex
 
+# TODO: remove the legacy parser
 class NokoDoc < Nokogiri::XML::SAX::Document
   def initialize
     @markdown = ''
