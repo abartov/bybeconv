@@ -13,11 +13,11 @@
             = '; '
 
     .row
-      .col-md-6
+      .col-md-6{style: 'overflow-x: scroll'}
         = render partial: 'find_bibs', locals: {remote: true}
         %h3#total_pubs= t(:total)
 
-        %table#bibs
+        %table#bibs{style:}
           %tr
             %th= t(:title)
             %th= t(:author)
@@ -30,7 +30,7 @@
             %th= t(:is_scanned)
             %th= t(:actions)
           = render partial: 'pubs', locals: {pubs: @pubs}
-      .col-md-6
+      .col-md-6{style: 'overflow-x: scroll'}
         .backend-field
           = label_tag t(:linked_author)
           = hidden_field_tag :person_id
