@@ -16,11 +16,12 @@
                         - au_count = m.authors.count - 1
                         - i = 0
                         = '('+t(:with)
+                        - add_authors = ''
                         - m.authors.each do |au|
                           - next if au == @author
                           - i += 1
-                          = au.name + (i == au_count ? '' : '; ')
-                        = ')'
+                          - add_authors += au.name + (i == au_count ? '' : '; ')
+                        = add_authors+')'
                       - if m.expressions[0].translation
                         = " #{t(:translated_by)} "
                         != m.expressions[0].translators.map{|p| link_to(p.name, author_toc_path(p))}.join('; ')
