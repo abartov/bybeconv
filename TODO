@@ -2,7 +2,8 @@ Data model flattening TODO:
 - Replicate Work and Expression fields in Manifestation, but make them auto-update when they are edited in the Work/Expression entity, using after_save hooks.  They should never be editable manually.
 - Once that's in place, remove the joins and lookups for those fields in manifestation displays, especially in /read and /author views.
 
-Transition to ElasticSearch for filtering TODO:
+ignore illustrators in gen_toc
+(completely? Maybe only if they're not *also* the creators?)
 
 - code to find probably typos:
   - digits within words
