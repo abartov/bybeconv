@@ -121,7 +121,6 @@ class AuthorsController < ApplicationController
     end
     datefield = es_datefield_name_from_datetype(@datetype)
     ret << {range: {"#{datefield}" => range_expr }} unless range_expr.empty?
-
     #     { "range": { "publish_date": { "gte": "2015-01-01" }}}
     return ret
   end
@@ -189,7 +188,7 @@ class AuthorsController < ApplicationController
       @total_pages = @authors.total_pages
 
       unless params[:to_letter].blank?
-        adjust_page_by_letter(@collection, params[:to_letter], :sort_title, @sort_dir, true)
+        adjust_page_by_letter(@collection, params[:to_letter], :sort_name, @sort_dir, true)
         @authors = @collection.page(@page) if oldpage != @page # re-get page X of manifestations if adjustment was made
       end
 
@@ -208,6 +207,8 @@ class AuthorsController < ApplicationController
   def browse
     @page_title = t(:authors_list)+' – '+t(:project_ben_yehuda)
     @pagetype = :authors
+    @page = params[:page] || 1
+    @page = 1 if ['0',''].include?(@page) # slider sets page to zero, awkwardly
     es_prep_collection
     @total = @collection.count
     d = Date.today
