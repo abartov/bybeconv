@@ -216,9 +216,11 @@ class AuthorsController < ApplicationController
     @header_partial = 'authors/browse_top'
   end
   def all
-    @page_title = t(:all_authors)+' '+t(:project_ben_yehuda)
-    @pagetype = :authors
-    @authors_abc = Person.order(:sort_name).page(params[:page]) # get page X of all authors
+    redirect_to '/authors'
+    #browse
+    #@page_title = t(:all_authors)+' '+t(:project_ben_yehuda)
+    #@pagetype = :authors
+    #@authors_abc = Person.order(:sort_name).page(params[:page]) # get page X of all authors
   end
 
   def create_toc

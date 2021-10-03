@@ -132,7 +132,7 @@ Bybeconv::Application.routes.draw do
   get 'dict/:id/:entry' => 'manifestation#dict_entry', as: 'dict_entry'
   get "read/:id/read" => 'manifestation#readmode', as: 'manifestation_readmode'
   get 'periods' => 'manifestation#periods', as: 'periods'
-  match 'authors', to: 'authors#browse', as: 'authors', via: [:get, :post]
+  match 'authors', to: 'authors#browse', as: 'authors', via: [:get, :post], as: 'authors'
   match 'works', to: 'manifestation#browse', as: 'works', via: [:get, :post]
   match 'works/all', to: 'manifestation#all', as: 'all_works', via: [:get, :post]
   match 'manifestation/genre' => 'manifestation#genre', as: 'genre', via: [:get, :post]

@@ -6,7 +6,7 @@
         .by-card-v02#authors-in-project
           .by-card-header-v02
             %span.headline-1-v02
-              = link_to t(:authors_in_the_project), all_authors_path
+              = link_to t(:authors_in_the_project), authors_path
             = t(:x_authors, x: @totals[:authors])
           / author carousels
           = render partial: 'shared/authors', locals: {popular_authors: @pop_authors, random_authors: [], newest_authors: @newest_authors}
