@@ -23,8 +23,6 @@
     .col-12.col-lg-7.col-xxxl-8
       .by-card-v02#thelist
         = render partial: 'browse_list'
-- if current_user
-  = render partial: 'shared/anth_stuff'
 #mobileFilterDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
   -# unless @filters.empty?
   -#  = render partial: 'mobile_filters', locals: {sortonly: false}
