@@ -202,7 +202,7 @@ class ManifestationController < ApplicationController
         @headwords_page = nonnil_headwords.page(@page)
         @total_pages = @headwords_page.total_pages
         unless params[:to_letter].nil? || params[:to_letter].empty? # for A-Z navigation, we need to adjust the page
-          adjust_page_by_letter(nonnil_headwords, params[:to_letter], :sort_defhead, nil)
+          adjust_page_by_letter(nonnil_headwords, params[:to_letter], :sort_defhead, nil, false)
           @headwords_page = nonnil_headwords.page(@page) if oldpage != @page # re-get page X of manifestations if adjustment was made
         end
     
@@ -535,6 +535,27 @@ class ManifestationController < ApplicationController
 
   protected
 
+  def es_bfunc(coll, page, l, field, direction) # binary-search function for ab_pagination over an ES collection
+    recs = coll.order(field).page(page).objects
+    rec = recs.first
+    return true if rec.nil?
+    c = nil
+    i = 0
+    reccount = recs.count
+    while c.nil? && i < reccount do
+      c = rec[field][0] unless rec[field].nil? # unready dictionary definitions will have their sort_defhead (and defhead) nil, so move on
+      i += 1
+      rec = recs[i]
+    end
+    c = '' if c.nil?
+    if(direction == :desc || direction == 'desc')
+      return true if c == l || c < l # already too high a page
+      return false
+    else
+      return true if c == l || c > l # already too high a page
+      return false
+    end
+  end
   def bfunc(coll, page, l, field, direction) # binary-search function for ab_pagination
     recs = coll.order(field).page(page)
     rec = recs.first
@@ -557,10 +578,14 @@ class ManifestationController < ApplicationController
     end
   end
 
-  def adjust_page_by_letter(coll, l, field, direction)
+  def adjust_page_by_letter(coll, l, field, direction, is_es)
     # binary search to find page where letter begins
     ret = (1..@total_pages).bsearch{|page|
-      bfunc(coll, page, l, field, direction)
+      if is_es
+        es_bfunc(coll, page, l, field, direction)
+      else
+        bfunc(coll, page, l, field, direction)
+      end
     }
     unless ret.nil?
       ret = ret - 1 unless ret == 1
@@ -709,13 +734,6 @@ class ManifestationController < ApplicationController
     end
     return ret
   end
-  def es_buckets_to_facet(buckets, codehash)
-    facet = {}
-    buckets.each do |facethash|
-      facet[codehash[facethash['key']]] = facethash['doc_count'] unless codehash[facethash['key']].nil?
-    end
-    return facet
-  end
   def es_prep_collection
     @sort_dir = :default
     if params[:sort_by].present?
@@ -755,10 +773,9 @@ class ManifestationController < ApplicationController
     filter = build_es_filter_from_filters
     es_query = build_es_query_from_filters
     es_query = {match_all: {}} if es_query == {}
-    @collection = ManifestationsIndex.query(es_query).filter(filter).aggregations(standard_aggregations).limit(100) # prepare ES query
+    @collection = ManifestationsIndex.query(es_query).filter(filter).aggregations(standard_aggregations).order(ord).limit(100) # prepare ES query
     @emit_filters = true if params[:load_filters] == 'true' || params[:emit_filters] == 'true'
     @total = @collection.count # actual query triggered here
-    @works = @collection.page(@page)
     @gender_facet = es_buckets_to_facet(@collection.aggs['author_genders']['buckets'], Person.genders)
     @tgender_facet = es_buckets_to_facet(@collection.aggs['translator_genders']['buckets'], Person.genders)
     @period_facet = es_buckets_to_facet(@collection.aggs['periods']['buckets'], Expression.periods)
@@ -768,6 +785,29 @@ class ManifestationController < ApplicationController
     @copyright_facet = es_buckets_to_facet(@collection.aggs['copyright_status']['buckets'], {'false' => 0,'true' => 1})
     author_ids = @collection.aggs['author_ids']['buckets'].map{|x| x['key']}
     @authors_list = (es_query == {match_all: {}} && filter.blank?) ? Person.all : Person.where(id: author_ids)
+    if @sort[0..11] == 'alphabetical' # subset of @sort to ignore direction
+      unless params[:page].blank?
+        params[:to_letter] = nil # if page was specified, forget the to_letter directive
+      end
+      oldpage = @page
+      @works = @collection.page(@page) # get page X of manifestations
+      @total_pages = @works.total_pages
+
+      unless params[:to_letter].blank?
+        adjust_page_by_letter(@collection, params[:to_letter], :sort_title, @sort_dir, true)
+        @works = @collection.page(@page) if oldpage != @page # re-get page X of manifestations if adjustment was made
+      end
+
+      # one idea is to search with the same filters AND a title match for each letter plus * (wildcard), COUNT the results, and calculate the page numbers by division with page size
+      @ab = []
+      ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ז', 'ח', 'ט', 'י', 'כ', 'ל', 'מ', 'נ', 'ס', 'ע', 'פ', 'צ', 'ק', 'ר', 'ש', 'ת'].each{|l|
+        @ab << [l, '']
+      }
+      # @ab = prep_ab(@collection, @works, :sort_title)
+    else
+      @works = @collection.page(@page)
+      @total_pages = @works.total_pages
+    end
   end
 
   def prep_collection
@@ -907,7 +947,7 @@ class ManifestationController < ApplicationController
 
       unless params[:to_letter].nil? || params[:to_letter].empty?
         @total_pages = @works.total_pages
-        adjust_page_by_letter(@collection, params[:to_letter], :sort_title, @sort_dir)
+        adjust_page_by_letter(@collection, params[:to_letter], :sort_title, @sort_dir, false)
         @works = @collection.page(@page) if oldpage != @page # re-get page X of manifestations if adjustment was made
       end
       @ab = prep_ab(@collection, @works, :sort_title)
@@ -945,11 +985,8 @@ class ManifestationController < ApplicationController
     @page = 1 if ['0',''].include?(@page) # slider sets page to zero, awkwardly
     #prep_collection # filtering and sorting is done here
     es_prep_collection
-    # temp placeholders
-    @ab = []
 
     @total = @collection.count
-    @total_pages = @works.total_pages
     d = Date.today
     @maxdate = "#{d.year}-#{'%02d' % d.month}"
     #@maxdate = d.year.to_s

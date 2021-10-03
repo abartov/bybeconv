@@ -5,6 +5,7 @@ class ManifestationsIndex < Chewy::Index
 #    field :title, analyzer: 'hebrew' # from https://github.com/synhershko/elasticsearch-analysis-hebrew
 #    field :fulltext, value: ->(manifestation) {manifestation.to_plaintext}, analyzer: 'hebrew'
     field :title
+    field :sort_title, type: 'keyword' # for sorting
     field :first_letter, value: ->(manifestation) {manifestation.first_hebrew_letter}
     field :fulltext, value: ->(manifestation) {manifestation.to_plaintext}
     field :genre, value: ->(manifestation) { manifestation.expressions[0].works[0].genre}, type: 'keyword'
@@ -13,6 +14,7 @@ class ManifestationsIndex < Chewy::Index
     field :author_string, value: ->(manifestation) {manifestation.author_string}
     field :author_ids, type: 'integer', value: ->(manifestation) {manifestation.author_and_translator_ids}
     field :title_and_authors, value: ->(manifestation) {manifestation.title_and_authors}
+    field :impressions_count, type: 'integer'
     field :orig_publication_date, value: ->(manifestation) {normalize_date(manifestation.expressions[0].date)}
     # field :video_count, type: 'integer', value: ->(manifestation){ manifestation.video_count}
     # field :recommendation_count, type: 'integer', value: ->(manifestation){manifestation.recommendations.all_approved.count}

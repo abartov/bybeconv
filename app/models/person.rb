@@ -198,6 +198,18 @@ class Person < ApplicationRecord
     return true
   end
 
+  def all_genres
+    works_genres = original_works.pluck('expressions.genre')
+    translation_genres = translations.pluck('expressions.genre')
+    all_genres = works_genres + translation_genres
+    return all_genres.uniq
+  end
+  def all_languages
+    work_langs = original_works.pluck('works.orig_lang')
+    translation_langs = translations.pluck('works.orig_lang')
+    all_languages = work_langs + translation_langs
+    return all_languages.uniq
+  end
   def original_works
     Manifestation.all_published.joins(expressions: [works: :creations]).includes(:expressions).where("creations.person_id = #{self.id}")
   end

@@ -39,6 +39,7 @@ namespace :dict do
         i += 1
         print "#{i}... " if i % 200 == 0
       end
+      puts "done!"
       i = 0
       print "linking entries... "
       DictionaryEntry.where(manifestation_id: $mani_id).each do |de|

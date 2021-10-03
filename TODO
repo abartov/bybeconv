@@ -1,9 +1,16 @@
+! Fix A-B BAR!
+
+1. implement news items input/editing for heterogeneous newsfeed
+
 Data model flattening TODO:
 - Replicate Work and Expression fields in Manifestation, but make them auto-update when they are edited in the Work/Expression entity, using after_save hooks.  They should never be editable manually.
 - Once that's in place, remove the joins and lookups for those fields in manifestation displays, especially in /read and /author views.
 
 ignore illustrators in gen_toc
 (completely? Maybe only if they're not *also* the creators?)
+
+  - work aboutnesses
+  - incoming aboutnesses for work!
 
 - code to find probably typos:
   - digits within words
@@ -46,7 +53,7 @@ There is a re-entrancy problem in creating a PDF from works with images (wkhtmlt
 
 EbyDict-Integration TODO
 
-- implement definition view
+- implement definition view remaining buttons (cite etc.)
 - cronjob for exports
 - cronjob for imports (staging for now, eventually production)
 + link stats header to EbyDict entity (staging, prod) [eventually, link instead to genre query for lexicon, but only after figuring out what to do with non-ebydict lexica]

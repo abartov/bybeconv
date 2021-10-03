@@ -10,24 +10,24 @@ module ManifestationHelper
   def all_images_markdown(images)
     escape_javascript(images.map{|img| "\n![#{img.blob.filename}](#{url_for(img)})\n"}.join)
   end
-  def browse_item_decorator_by_sort_type(sort_type)
+  def authorlist_decorator_by_sort_type(sort_type)
     case sort_type
-    when /publ/
-      return method(:browse_pub_date)
-    when /cre/
-      return method(:browse_creation_date)
+    when /birth/
+      return method(:author_birth_date_decorator)
+    when /death/
+      return method(:author_death_date_decorator)
     when /upl/
       return method(:browse_upload_date)
     else
       return method(:browse_null_decorator)
     end
   end
-  def browse_pub_date(item)
-    thedate = item.expressions[0].normalized_pub_date
+  def author_birth_date_decorator(item)
+    thedate = item.normalized_birth_date
     return " (#{thedate.nil? ? t(:unknown) : thedate.to_date.strftime('%d-%m-%Y')})"
   end
-  def browse_creation_date(item)
-    thedate = item.expressions[0].works[0].normalized_creation_date
+  def author_death_date_decorator(item)
+    thedate = item.normalized_death_date
     return " (#{thedate.nil? ? t(:unknown) : thedate.to_date.strftime('%d-%m-%Y')})"
   end
   def browse_upload_date(item)

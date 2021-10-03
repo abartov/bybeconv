@@ -18,7 +18,7 @@
         %span.pointer.tag-x{'data-ele': id, 'data-which' => which}= '-'
 .by-card-content-v02
   - unless @total_pages <= 1
-    = render partial: 'slide_pagination'
+    = render partial: 'shared/slide_pagination', locals: {collection: @works, element: '#works_filters', path: '/works'}
     - if @sort[0..11] == 'alphabetical'
       = render partial: 'ab_pagination', locals: {filter_element: 'works_filters'}
   .select-all-with-buttons
@@ -62,7 +62,7 @@
           = link_to m.title_and_authors, manifestation_read_path(m.id)
           = decorator.call(m)
   - unless @total_pages <= 1
-    = render partial: 'slide_pagination'
+    = render partial: 'shared/slide_pagination', locals: {collection: @works, element: '#works_filters', path: '/works'}
     - if @sort[0..11] == 'alphabetical'
       = render partial: 'ab_pagination', locals: {filter_element: 'works_filters'}
   = hidden_field_tag(:hurl, request.original_url)

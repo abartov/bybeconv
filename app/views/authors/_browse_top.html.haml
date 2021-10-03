@@ -1,0 +1,146 @@
+#header-author.container-fluid
+  .top-space
+  .texts-list-top
+    .texts-list-top-info-card
+      .flex-container
+        .headline-1-v02 רשימת היוצרים
+        .author-sort-area
+          .author-page-top-sort-desktop
+            מצב סינון
+            %a{:href => "#"} [?]
+            .toggle-background-no
+              .toggle-button-no
+          .author-page-top-sort-mobile
+            %button.btn-small-outline-v02.btn-text-v02{:href => "#"} סינון
+        .author-page-top-icons-desktop
+          .top-left-icons-group
+            .icon-in-group-v02
+              %a{:href => "#"}
+                %span.by-icon-v02 9
+            .icon-in-group-v02{:style => "margin-left:0;"}
+              %a{:href => "#"}
+                %span.by-icon-v02 3
+        .author-page-top-icons-mobile
+          .top-left-icons-group
+            #moreMobile-author.by-dropdown-v02
+              %span#nav-more-icon
+                %a{:href => "#"}
+                  %span.by-icon-top-v02 Y
+              #menu-more-mobile.by-dropdown-content-v02{:style => "left: 0; margin-top: 4px"}
+                %a{:href => "#"}
+                  %span.by-icon-v02.iconNearText-v02> 3
+                  הורדה
+                %a{:href => "#"}
+                  %span.by-icon-v02.iconNearText-v02> 9
+                  הדפסה
+    .row.error-found-row
+      .col-4
+      .col-8.error-found-col
+        %button.error-found-btn.notyet
+          .error-found
+            .error-found-text
+              מצאתי
+              %br/
+              שגיאה
+            .error-found-icon g
+
+/ Browse works
+#header-author.container-fluid
+  = render partial: 'shared/breadcrumbs'
+  .top-space
+  .texts-list-top
+    .texts-list-top-info-card
+      .headline-1-v02= @works_list_title
+      .author-sort-area#sort_filter_toggle{title: t(:toggle_filters_tt)}
+        .author-page-top-sort-desktop
+          = t(:sort_and_filter)+' [?]'
+          .toggle-background-no
+            .toggle-button-no{style:"display:#{ @filters.empty? ? 'show' : 'none'}"}
+            .toggle-button-yes{style:"display:#{ @filters.empty? ? 'none' : 'show'}"}
+        .author-page-top-sort-mobile
+          %button.btn-small-outline-v02.btn-text-v02{:href => "#"}= t(:sort_and_filter)
+      .number-of-selected-texts{style: 'display:none'}
+        = t(:number_of_selected_texts)
+        %span#selected_counter{style: 'font-weight: bold'}= '0'
+        %span.pointer.linkcolor#reset_multiselect= t(:reset_multiselect)
+      .author-page-top-icons-desktop
+        .top-left-icons-group
+          - unless current_user
+            .icon-in-group-v02.anthologies_button.must_login
+              %span.linkcolor.pointer.by-icon-v02 D
+          - else
+            .icon-in-group-v02.anthologies_button{'data-toggle' => 'modal', 'data-target' => '#anthologiesDlg', 'data-backdrop' => 'static', 'data-keyboard' => 'false', title: t(:open_shelves_tt)}
+              %span.linkcolor.pointer.by-icon-v02 D
+              - unless @anthology.nil?
+                .anthology-badge{style: "display: #{@anthology.texts.length > 0 ? 'block' : 'none'}"}
+                  .badge-number= @anthology.texts.length.to_s
+          .icon-in-group-v02.notyet{title: t(:worklist_print_tt)}
+            %a{:href => "#"}
+              %span.by-icon-v02 9
+          .icon-in-group-v02.notyet{style: "margin-left:0;", title: t(:worklist_download_tt)}
+            %a{:href => "#"}
+              %span.by-icon-v02 3
+      .author-page-top-icons-mobile
+        .top-left-icons-group
+          - unless current_user
+            .icon-in-group-v02.anthologies_button.must_login
+              %span.linkcolor.pointer.by-icon-v02 D
+          - else
+            .icon-in-group-v02.anthologies_button{'data-toggle' => 'modal', 'data-backdrop' => 'static', 'data-keyboard' => 'false', 'data-target' => '#anthologiesDlg'}
+              %span.linkcolor.pointer.by-icon-v02 D
+              - unless @anthology.nil?
+                .anthology-badge{style: "display: #{@anthology.texts.length > 0 ? 'block' : 'none'}"}
+                  .badge-number= @anthology.texts.length.to_s
+          #moreMobile-author.by-dropdown-v02
+            %span#nav-more-icon.notyet
+              %a{:href => "#"}
+                %span.by-icon-top-v02 Y
+            #menu-more-mobile.by-dropdown-content-v02{:style => "left: 0; margin-top: 4px"}
+              %a{:href => "#"}
+                %span.by-icon-v02.iconNearText-v02> 3
+                = t(:download)
+              %a{:href => "#"}
+                %span.by-icon-v02.iconNearText-v02> 9
+                = t(:print)
+:javascript
+  function startModal(id) {
+      $("body").prepend("<div id='PopupMask' style='position:fixed;width:100%;height:100%;z-index:10;background-color:gray;'></div>");
+      $("#PopupMask").css('opacity', 0.5);
+      $("#"+id).data('saveZindex', $("#"+id).css( "z-index"));
+      $("#"+id).data('savePosition', $("#"+id).css( "position"));
+      $("#"+id).css( "z-index" , 11 );
+      $("#"+id).css( "position" , "fixed" );
+      $("#"+id).css( "display" , "block" );
+  }
+  function stopModal(id) {
+      if ($("#PopupMask") == null) return;
+      $("#PopupMask").remove();
+      $("#"+id).css( "z-index" , $("#"+id).data('saveZindex') );
+      $("#"+id).css( "position" , $("#"+id).data('savePosition') );
+      $("#"+id).css( "display" , "none" );
+  }
+  $(document).ready(function(){
+    $('#sort_filter_toggle').click(function() {
+      if(window.innerWidth < mobileWidth) {
+        $('#mobileFilterDlg').modal('show');
+      } else {
+        $('#browse_intro').toggle();
+        $('#sort_filter_panel').toggle();
+      }
+      
+      if($('#filters_panel .temporary').length) { // if filter panel yet to be loaded
+        startModal('spinnerdiv');
+        var url = $('#hurl').val().replace(/page=\d+/,'');
+        if(url.indexOf('?') == -1) {
+          url = url + '?';
+        }
+        else {
+          url = url + '&';
+        }
+        url = url + 'load_filters=true';
+        $.get(url,'',null, 'script');
+      }
+      $('.toggle-button-no').toggle();
+      $('.toggle-button-yes').toggle();
+    });
+  });
