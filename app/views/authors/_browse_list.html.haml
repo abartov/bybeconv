@@ -50,7 +50,7 @@
       - decorator = authorlist_decorator_by_sort_type(@sort)
       - @authors.each do |au|
         %li
-          = link_to au.name, author_toc_path(au.id)
+          = link_to au.sort_name, author_toc_path(au.id)
           = decorator.call(au)
   - unless @total_pages <= 1
     = render partial: 'shared/slide_pagination', locals: {collection: @authors, element: '#authors_filters', path: '/authors'}
