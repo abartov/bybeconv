@@ -77,7 +77,7 @@ class AuthorsController < ApplicationController
     # genders
     @genders = params['ckb_genders'] if params['ckb_genders'].present?
     if @genders.present?
-      ret << {terms: {author_gender: @genders}}
+      ret << {terms: {gender: @genders}}
       @filters += @genders.map{|x| [I18n.t(:author)+': '+I18n.t(x), "gender_#{x}", :checkbox]}
     end
     # genres
@@ -89,19 +89,19 @@ class AuthorsController < ApplicationController
     # copyright
     @copyright = params['ckb_copyright'].map{|x| x.to_i} if params['ckb_copyright'].present?
     if @copyright.present?
-      cright = @copyright.map{|x| x==0 ? 'false' : 'true'}
-      ret << {terms: {public_domain: cright}}
+      cright = @copyright.map{|x| x==0 ? false : true}
+      ret << {terms: {copyright_status: cright}}
       @filters += @copyright.map{|x| [helpers.textify_copyright_status(x == 1), "copyright_#{x}", :checkbox]}
     end
     # languages
     if params['ckb_languages'].present?
       if params['ckb_languages'] == ['xlat']
-        ret << {must_not: {term: {orig_lang: 'he'}}}
+        ret << {must_not: {term: {language: 'he'}}}
         @filters << [I18n.t(:translations), 'lang_xlat', :checkbox]
       else
         @languages = params['ckb_languages'].reject{|x| x == 'xlat'}
         if @languages.present?
-          ret << {terms: {orig_lang: @languages}}
+          ret << {terms: {language: @languages}}
           @filters += @languages.map{|x| ["#{I18n.t(:orig_lang)}: #{helpers.textify_lang(x)}", "lang_#{x}", :checkbox]}
         end
       end
