@@ -2,7 +2,7 @@
 #content.container-fluid
   .row.top-element
     .col-12.col-lg-4
-      .by-card-v02.desktop-only#browse_intro{style:"display:#{ @filters.empty? ? 'show' : 'none'}"}
+      .by-card-v02.desktop-only#browse_intro{style:"display:#{ @filters.empty? ? 'block' : 'none'}"}
         .work-area
           .work-content
             .headline-1-v02= t(:welcome_to_authors_browsing)
@@ -18,7 +18,7 @@
           .by-card-content-v02#filters_panel
             .temporary
       - else
-        .by-card-v02.text-sorting#sort_filter_panel{style: 'display:show'}
+        .by-card-v02.text-sorting#sort_filter_panel{style: 'display:block'}
           = render partial: 'browse_filters'
     .col-12.col-lg-7.col-xxxl-8
       .by-card-v02#thelist

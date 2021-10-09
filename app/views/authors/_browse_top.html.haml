@@ -4,11 +4,11 @@
   .texts-list-top
     .texts-list-top-info-card
       .flex-container
-        .headline-1-v02 רשימת היוצרים
-        .author-sort-area
+        .headline-1-v02= t(:author_list)
+        .author-sort-area.notyet#sort_filter_toggle
           .author-page-top-sort-desktop
-            מצב סינון
-            %a{:href => "#"} [?]
+            = t(:filter_state)
+            -#%a{:href => "#"} [?]
             .toggle-background-no
               .toggle-button-no
           .author-page-top-sort-mobile
@@ -30,19 +30,16 @@
               #menu-more-mobile.by-dropdown-content-v02{:style => "left: 0; margin-top: 4px"}
                 %a{:href => "#"}
                   %span.by-icon-v02.iconNearText-v02> 3
-                  הורדה
+                  = t(:download)
                 %a{:href => "#"}
                   %span.by-icon-v02.iconNearText-v02> 9
-                  הדפסה
+                  = t(:print)
     .row.error-found-row
       .col-4
       .col-8.error-found-col
         %button.error-found-btn.notyet
           .error-found
-            .error-found-text
-              מצאתי
-              %br/
-              שגיאה
+            .error-found-text= t(:found_br_mistake_html)
             .error-found-icon g
 
 :javascript

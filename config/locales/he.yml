@@ -1,6 +1,7 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 he:
+  author_list: רשימת היוצרים
   to_latest_x_works: הצג %{x} יצירות אחרונות
   contact_name: שם
   contact_email: דואל
@@ -594,6 +595,7 @@ he:
   bookmark_mode_begin: מצב סימניה הופעל. כדי להניח את הסימניה, יש ללחוץ על הפסקה שברצונך לסמן.
   bookmark_placed: הסימניה נשמרה.
   filtered: סונן
+  filter_state: מצב סינון
   filter_langs: סנן שפות זרות
   please_note: נא לשים לב
   up_to_10_authors: ניתן לבחור רק עד 10 יוצרים
