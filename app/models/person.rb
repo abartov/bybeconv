@@ -122,7 +122,12 @@ class Person < ApplicationRecord
   def has_any_bibs?
     return self.publications.count > 0
   end
-
+  def has_any_hebrew_works?
+    Manifestation.all_published.joins(expressions: [works: :creations]).includes(:expressions).where("creations.person_id = #{self.id} and creations.role = #{Creation.roles[:author]} and works.orig_lang = 'he'").count > 0
+  end
+  def has_any_non_hebrew_works?
+    Manifestation.all_published.joins(expressions: [works: :creations]).includes(:expressions).where("creations.person_id = #{self.id} and creations.role = #{Creation.roles[:author]} and works.orig_lang <> 'he'").count > 0
+  end
   def self.cached_translators_count
     Rails.cache.fetch("au_translators_count", expires_in: 24.hours) do
       self.translators.count

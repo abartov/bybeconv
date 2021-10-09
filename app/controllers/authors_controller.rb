@@ -163,7 +163,7 @@ class AuthorsController < ApplicationController
     standard_aggregations = {
       periods: {terms: {field: 'period'}},
       genres: {terms: {field: 'genre'}},
-      languages: {terms: {field: 'orig_lang', size: get_langs.count + 1}},
+      languages: {terms: {field: 'language', size: get_langs.count + 1}},
       copyright_status: {terms: {field: 'copyright_status'}},
       genders: {terms: {field: 'gender'}},
     }
@@ -178,7 +178,7 @@ class AuthorsController < ApplicationController
     @genre_facet = es_buckets_to_facet(@collection.aggs['genres']['buckets'], get_genres.to_h {|g| [g,g]})
     @language_facet = es_buckets_to_facet(@collection.aggs['languages']['buckets'], get_langs.to_h {|l| [l,l]})
     @language_facet[:xlat] = @language_facet.reject{|k,v| k == 'he'}.values.sum
-    @copyright_facet = es_buckets_to_facet(@collection.aggs['copyright_status']['buckets'], {'false' => 0,'true' => 1})
+    @copyright_facet = es_buckets_to_facet(@collection.aggs['copyright_status']['buckets'], {0 => 0, 1 => 1})
     if @sort[0..11] == 'alphabetical' # subset of @sort to ignore direction
       unless params[:page].blank?
         params[:to_letter] = nil # if page was specified, forget the to_letter directive

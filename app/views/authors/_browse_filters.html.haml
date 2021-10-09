@@ -1,0 +1,301 @@
+%link{ rel:'stylesheet', href:'https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/css/tempusdominus-bootstrap-4.min.css'}
+%script{ src: 'https://use.fontawesome.com/3f861a49f5.js'}
+
+= form_tag(authors_path, remote: true, method: :post, id: 'works_filters') do
+  = hidden_field_tag(:sort_by, @sort)
+  .by-card-content-v02.desktop-only#filters_panel
+    .headline-2-v02= t(:filter_by)
+    %span.reset.linkcolor.pointer= t(:reset_filter)
+    .sort-type
+      .vertical-expand.fcoll#fauthor{'data-target' =>'.collfauthor', 'data-toggle' =>'collapse'}
+        .sort-type-headline= t(:name)
+      .nested.active.collapse.show.collfauthor
+        .nested-content
+          %input.field-v02.field-without-label#search_input{name: 'search_input', placeholder: t(:first_last_name), :type => "text", value: @search_input}
+          -#= autocomplete_field_tag :authorstr, @authorstr.present? ? @authorstr : '', autocomplete_person_name_path, id_element: '#author_id', 'data-noMatchesLabel' => t(:no_matches_found), style:'display:none', 'class' => 'field-v02 field-without-label author-name-field', id: 'authors', placeholder: t(:author_names)
+          = hidden_field_tag :author_id, @author_id.present? ? @author_id : nil
+    .sort-type
+      .vertical-expand.fcoll{'data-target' =>'.collfgender', 'data-toggle' =>'collapse'}
+        .sort-type-headline= t(:author_gender)
+      .nested.active.collapse.show.collfgender
+        .nested-content.nested-list
+          - Person.genders.invert.each do |p|
+            -# attrs = @gender_facet[p[0]].nil? ? {disabled: 'disabled'} : {}
+            - attrs = {}
+            - attrs.merge!({:name => "ckb_genders[]", :type => "checkbox", id: "gender_#{p[1]}", value: p[1]})
+            - attrs.merge!({checked: 'checked'}) if @genders.present? && @genders.include?(p[1])
+            %input{ attrs}
+            %label
+              = t(p[1])
+              - count_text = @gender_facet[p[0]] || '0'
+              - count_text = t(:filtered) if count_text == '0' && @genders.present?
+              %span= "(#{count_text})"
+            %br/
+    .sort-type
+      .vertical-expand.fcoll#fcopyright{'data-target' =>'.collfcopyright', 'data-toggle' =>'collapse'}
+        .sort-type-headline= t(:copyright_status)
+      .nested.active.collapse.show.collfcopyright
+        .nested-content.nested-list
+          - attrs = {name: "ckb_copyright[]", :type => "checkbox", id: 'copyright_0', value: 0}
+          -# attrs.merge!({disabled: 'disabled'}) if @copyright_facet[0].nil?
+          - attrs.merge!({checked: 'checked'}) if @copyright.present? && @copyright.include?(0)
+          %input{attrs}
+          %label
+            %span.by-icon-v02> m
+            = t(:public_domain)
+            - count_text = @copyright_facet[0] || '0'
+            - count_text = t(:filtered) if count_text == '0' && @copyright.present?
+            %span= "(#{count_text})"
+          %br/
+          - attrs = {name: "ckb_copyright[]", :type => "checkbox", id: 'copyright_1', value: 1}
+          -# attrs.merge!({disabled: 'disabled'}) if @copyright_facet[1].nil?
+          - attrs.merge!({checked: 'checked'}) if @copyright.present? && @copyright.include?(1)
+          %input{attrs}
+          %label
+            %span.by-icon-v02> x
+            = t(:by_permission)
+            - count_text = @copyright_facet[1] || '0'
+            - count_text = t(:filtered) if count_text == '0' && @copyright.present?
+            %span= "(#{count_text})"
+          %br/
+    .sort-type
+      .vertical-expand.fcoll#fgenre{'data-target' =>'.collfgenre', 'data-toggle' =>'collapse'}
+        .sort-type-headline= t(:genres)
+      .nested.active.collapse.show.collfgenre
+        .nested-content.nested-list
+          - get_genres.each do |g|
+            -# attrs = @genre_facet[g].nil? ? {disabled: 'disabled'} : {}
+            - attrs = {}
+            - attrs.merge!({:name => "ckb_genres[]", :type => "checkbox", id: "genre_#{g}", value: g})
+            - attrs.merge!({checked: 'checked'}) if @genres.present? && @genres.include?(g)
+            %input{ attrs}
+            %label
+              %span.by-icon-v02>= glyph_for_genre(g)
+              = textify_genre(g)
+              - count_text = @genre_facet[g] || '0'
+              - count_text = t(:filtered) if count_text == '0' && @genres.present?
+              %span= "(#{count_text})"
+            %br/
+    .sort-type
+      .vertical-expand.fcoll#fperiod{'data-target' =>'.collfperiod', 'data-toggle' =>'collapse'}
+        .sort-type-headline= t(:periods)
+      .nested.active.collapse.show.collfperiod
+        .nested-content.nested-list
+          - Expression.periods.invert.each do |p|
+            -# attrs = @period_facet[p[0]].nil? ? {disabled: 'disabled'} : {}
+            - attrs = {}
+            - attrs.merge!({:name => "ckb_periods[]", :type => "checkbox", id: "period_#{p[1]}", value: p[1]})
+            - attrs.merge!({checked: 'checked'}) if @periods.present? && @periods.include?(p[1])
+            %input{ attrs}
+            %label
+              = t(p[1])
+              - count_text = @period_facet[p[0]] || '0'
+              - count_text = t(:filtered) if count_text == '0' && @periods.present?
+              %span= "(#{count_text})"
+            %br/
+    / .sort-type
+    /   .vertical-expand
+    /     .sort-type-headline מאפיינים
+    /   .nested.active
+    /     .nested-content.nested-list
+    /       .col-md-6.col-sm-12
+    /         %input#CheckboxGroup4_1{:name => "CheckboxGroup4", :type => "checkbox", value: "sort_by_curatorial_content"}/
+    /         %label
+    /           תוכן אוצרותי
+    /           %span (4)
+    /         %br/
+    /         %input#CheckboxGroup4_2{:name => "CheckboxGroup4", :type => "checkbox", value: "sort_by_recommendations"}/
+    /         %label
+    /           המלצות קוראים
+    /           %span (12)
+    /         %br/
+    /         %input#CheckboxGroup4_3{:name => "CheckboxGroup4", :type => "checkbox", value: "sort_by_liked"}/
+    /         %label
+    /           יצירות שאהבתי
+    /           %span (2)
+    /       .col-md-6.col-sm-12
+    /         %input#CheckboxGroup4_4{:disabled => "disabled", :name => "CheckboxGroup4", :type => "checkbox", value: "sort_by_active_bookmark"}/
+    /         %label
+    /           סימניה מופעלת
+    /           %span (0)
+    /         %br/
+    /         %input#CheckboxGroup4_5{:name => "CheckboxGroup4", :type => "checkbox", value: "sort_by_no_properties"}/
+    /         %label
+    /           ללא מאפיינים
+    /           %span (312)
+    .sort-type
+      .vertical-expand.fcoll#fdate{'data-target' =>'.collfdate', 'data-toggle' =>'collapse'}
+        .sort-type-headline= t(:thedate)
+      .nested.active.collapse.show.collfdate
+        .nested-content
+          .search-mobile-switch
+            %button.search-mobile-option.datetype#published= t(:publication)
+            %button.search-mobile-option.datetype#created= t(:creation)
+            %button.search-mobile-option.datetype#uploaded= t(:upload)
+            = hidden_field_tag(:date_type, '', id: 'date_type')
+          %break
+          .dates-range
+            / #histogramSlider
+            /.dates-graph-area
+            /.range-outside
+            /  .range-inside
+            /    .range-handle-right
+            /    .range-handle-left
+            %input.datepicker.datetimepicker-input.field-v02.field-without-label.range-date-field#fromdate{:placeholder => t(:year), name: "fromdate", 'data-toggle' => 'datetimepicker', 'data-target' => '#fromdate' }/
+            .date-range-to= t(:until)
+            %input.datepicker.datetimepicker-input.field-v02.field-without-label.range-date-field#todate{:placeholder => t(:year), :style => "float: left", 'data-toggle' => 'datetimepicker', name: "todate", 'data-target' => '#todate'}/
+    .sort-type
+      .vertical-expand.fcoll#flang{'data-target' =>'.collflang', 'data-toggle' =>'collapse'}
+        .sort-type-headline= t(:orig_lang)
+      .nested.active.collapse.show.collflang
+        .nested-content{:style => "padding-right: 0"}
+          %ul
+            %li
+              - attrs = {name: "ckb_languages[]", :type => "checkbox", id: 'lang_he', value: 'he'}
+              -# attrs.merge!({disabled: 'disabled'}) if @language_facet['he'].nil? || @language_facet['he'] == 0
+              - attrs.merge!({checked: 'checked'}) if @languages.present? && @languages.include?('he')
+              %input{attrs}
+                %label
+                = t(:hebrew)
+                - count_text = @language_facet['he'] || '0'
+                - count_text = t(:filtered) if count_text == '0' && @languages.present?
+                %span= "(#{count_text})"
+            %li
+              - attrs = {name: "ckb_languages[]", :type => "checkbox", id: 'lang_xlat', class: 'lang_xlat', value: 'xlat'}
+              -# attrs.merge!({disabled: 'disabled'}) if @language_facet[:xlat].nil? || @language_facet[:xlat] == 0
+              - attrs.merge!({checked: 'checked'}) if (@all_xlat || (@languages.present? && @languages.include?('xlat')))
+              %input{attrs}
+              %label
+                = t(:translations)
+                %span= "(#{@language_facet[:xlat] || '0'})"
+              .languages-filters
+                %ul.nested-list.xlat_langs
+                  - emitted_langs = ['he', :xlat]
+                  - @language_facet.sort{|a,b| b[1] <=> a[1]}.each do |lang, amount|
+                    - next if lang == :xlat || lang == 'he'
+                    - emitted_langs << lang
+                    %li
+                      - attrs = {name: "ckb_languages[]", :type => "checkbox", id: "lang_#{lang}", value: lang}
+                      -# attrs.merge!({disabled: 'disabled'}) if @language_facet[lang].nil? || @language_facet[lang] == 0
+                      - attrs.merge!({checked: 'checked'}) if @all_xlat || (@languages.present? && @languages.include?(lang))
+                      %input{attrs}
+                      %label
+                        = textify_lang(lang)
+                        - count_text = amount || '0'
+                        - count_text = t(:filtered) if count_text == '0' && @languages.present?
+                        %span= "(#{count_text})"
+                  - get_langs.reject{|x| emitted_langs.include?(x)}.each do |lang|
+                    %li
+                      %input{name: "ckb_languages[]", :type => "checkbox", id: "lang_#{lang}", value: lang}
+                      %label
+                        = textify_lang(lang)
+                        - count_text = '0'
+                        - count_text = t(:filtered) if @languages.present?
+                        %span= "(#{count_text})"
+
+
+    = hidden_field_tag(:emit_filters, 'true', id: 'emit_filters')
+    = hidden_field_tag(:cur_page, @page, id: 'cur_page_tag')
+    = hidden_field_tag(:page, '', id: 'page_tag')
+    = hidden_field_tag(:to_letter, '', id: 'toletter_tag')
+
+:javascript
+  $(document).ready(function() {
+    window.history.pushState($('#works_filters').serialize(), null, '/authors');
+    $('#sort_by_dd').val("#{@sort}");
+    $('.datetype').click(function(e) {
+      e.preventDefault();
+      $('.datetype').removeClass('active');
+      $(this).addClass('active');
+      $('#date_type').val($(this).attr('id'));
+    });
+    var submit_timeout = null;
+    $('#works_filters').change(function(){
+      if(window.innerWidth >= mobileWidth) {
+        if(submit_timeout != null){
+          window.clearTimeout(submit_timeout);
+        }
+        $('#page_tag').val('1'); // reset pagination
+        submit_timeout = window.setTimeout(submit_author_filters, 300);
+      }
+    });
+    $('.reset').click(function(){
+      $('#works_filters').find(':input').each(function() {
+        switch(this.type) {
+            case 'password':
+            case 'select-multiple':
+            case 'select-one':
+            case 'text':
+            case 'textarea':
+                $(this).val('');
+                break;
+            case 'checkbox':
+            case 'radio':
+                this.checked = false;
+        }
+      });
+      $('#emit_filters').val('true');
+      $('#page_tag').val('1'); // reset pagination
+      $('#toletter_tag').val(''); // reset pagination
+      window.history.replaceState($('#works_filters').serialize(), null, '/authors');
+      submit_author_filters();
+    });
+    $('.lang_xlat').change(function(){
+      // set all translated languages on/off accordingly
+      var checked = $(this).is(":checked");
+      $('.xlat_langs input').each(function(li){
+        $(this).prop('checked', checked);
+      });
+    });
+    $('.xlat_langs input').change(function(){
+      if($(this).is(":checked")) {
+      } else {
+        $('.lang_xlat').prop('checked', false);
+      }
+    });
+    var should_check_xlat = $('.xlat_langs input').length > 0 && !$('.lang_xlat').parent().text().match(/\(0\)/);
+    $('.xlat_langs input').each(function(li){
+      if($(this).prop('checked') == false && !$(this).parent().text().match(/\(0\)/)) {
+        should_check_xlat = false;
+      }
+    });
+    if(should_check_xlat) {
+      $('.lang_xlat').prop('checked', true);
+    }
+    if("#{@datetype}" == "") {
+      $('#created').addClass('active');
+      $('#date_type').val('created');
+    } else {
+      $("##{@datetype}").addClass('active');
+      $('#date_type').val("#{@datetype}");
+    }
+    $('.datepicker').datetimepicker({
+      viewMode: 'years',
+      rtl: true,
+      format: 'L',
+      locale: 'he',
+      format: 'YYYY',
+      maxDate: '#{@maxdate}',
+      useCurrent: false,
+      widgetPositioning: {horizontal: 'right', vertical: 'auto'},
+      icons: {
+        previous: 'fa fa-chevron-right',
+        next: 'fa fa-chevron-left',
+      }
+    }).on('hide.datetimepicker', function(e){
+      window.setTimeout(submit_author_filters, 2000);
+    });
+    if("#{@fromdate}" != "") {
+      $('#fromdate').val("#{@fromdate}");
+    }
+    if("#{@todate}" != "") {
+      $('#todate').val("#{@todate}");
+    }
+    $('#authors').bind('railsAutocomplete.select', function(event, data){
+      event.preventDefault();
+      $('#search_type').val('authorname');
+      submit_author_filters();
+    });
+
+  });
+
