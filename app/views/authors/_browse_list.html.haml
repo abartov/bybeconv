@@ -10,7 +10,7 @@
     #frotateG_08.f_circleG
 
 .by-card-header-v02
-  .headline-2-v02= authors_label_by_gender_filter(@gender_filter, @total)
+  .headline-2-v02= authors_label_by_gender_filter(@genders, @total)
   .filters
     - @filters.each do |f, id, which|
       %button.tag
@@ -87,7 +87,7 @@
       if(filters) {
         $('#page_tag').val(slideEvt.value.toString());
         window.history.pushState($('#works_filters').serialize(), null, '/works');
-        submit_filters();
+        submit_author_filters();
       } else {
         window.history.pushState($('#works_filters').serialize(), null, '/works');
         $.get(url+'&page='+slideEvt.value.toString(),'',null, 'script');
@@ -99,7 +99,7 @@
       if(window.innerWidth < mobileWidth) {
         prefix = '#mobile_filters ';
       } else {
-        prefix = '#authors_filters ';
+        prefix = '#works_filters ';
       }
       if($(this).attr('data-which') == 'text') {
         $(prefix + '#'+$(this).attr('data-ele')).val('');
@@ -110,7 +110,7 @@
       $('#page_tag').val('1'); // reset pagination
       $('input').attr('disabled', false); // re-enable checkboxes to preserve other filters
       window.history.pushState($(prefix).serialize(), null, '/authors');
-      submit_filters();
+      submit_author_filters();
       });
 
     $('#sort_by_dd').change(function(){
@@ -118,7 +118,7 @@
       if($('#authors_filters').length > 0) {
         $('#page_tag').val('1'); // reset pagination
         window.history.pushState($('#authors_filters').serialize(), null, '/authors');
-        submit_filters();
+        submit_author_filters();
       } else {
         startModal('spinnerdiv');
         window.location = "/authors?sort_by="+$('#sort_by_dd option:selected').val();

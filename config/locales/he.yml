@@ -667,6 +667,9 @@ he:
   recommendations_for_work: המלצות קוראים
   x_authors: "(%{x} יוצרים)"
   x_authors_mixed_gender: "%{x} יוצרים ויוצרות"
+  life_years: שנות חיים
+  writing_language: שפת יצירה
+  non_hebrew_languages: שפות אחרות
   x_authors_male: "%{x} יוצרים"
   x_authors_female: "%{x} יוצרות"
   x_works: "(%{x} יצירות)"
@@ -962,6 +965,8 @@ he:
   from_lang: מ
   content: תוכן
   birthdate: תאריך לידה
+  birth_year: שנת לידה
+  death_year: שנת פטירה
   deathdate: תאריך פטירה
   creation_date: תאריך יצירה
   publication_date: תאריך פרסום בדפוס

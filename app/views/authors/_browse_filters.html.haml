@@ -93,60 +93,60 @@
               - count_text = t(:filtered) if count_text == '0' && @periods.present?
               %span= "(#{count_text})"
             %br/
-    / .sort-type
-    /   .vertical-expand
-    /     .sort-type-headline מאפיינים
-    /   .nested.active
-    /     .nested-content.nested-list
-    /       .col-md-6.col-sm-12
-    /         %input#CheckboxGroup4_1{:name => "CheckboxGroup4", :type => "checkbox", value: "sort_by_curatorial_content"}/
-    /         %label
-    /           תוכן אוצרותי
-    /           %span (4)
-    /         %br/
-    /         %input#CheckboxGroup4_2{:name => "CheckboxGroup4", :type => "checkbox", value: "sort_by_recommendations"}/
-    /         %label
-    /           המלצות קוראים
-    /           %span (12)
-    /         %br/
-    /         %input#CheckboxGroup4_3{:name => "CheckboxGroup4", :type => "checkbox", value: "sort_by_liked"}/
-    /         %label
-    /           יצירות שאהבתי
-    /           %span (2)
-    /       .col-md-6.col-sm-12
-    /         %input#CheckboxGroup4_4{:disabled => "disabled", :name => "CheckboxGroup4", :type => "checkbox", value: "sort_by_active_bookmark"}/
-    /         %label
-    /           סימניה מופעלת
-    /           %span (0)
-    /         %br/
-    /         %input#CheckboxGroup4_5{:name => "CheckboxGroup4", :type => "checkbox", value: "sort_by_no_properties"}/
-    /         %label
-    /           ללא מאפיינים
-    /           %span (312)
+    -# .sort-type
+    -#   .vertical-expand
+    -#     .sort-type-headline מאפיינים
+    -#   .nested.active
+    -#     .nested-content.nested-list
+    -#       .col-md-6.col-sm-12
+    -#         %input#CheckboxGroup4_1{:name => "CheckboxGroup4", :type => "checkbox", value: "sort_by_curatorial_content"}/
+    -#         %label
+    -#           תוכן אוצרותי
+    -#           %span (4)
+    -#         %br/
+    -#         %input#CheckboxGroup4_2{:name => "CheckboxGroup4", :type => "checkbox", value: "sort_by_recommendations"}/
+    -#         %label
+    -#           המלצות קוראים
+    -#           %span (12)
+    -#         %br/
+    -#         %input#CheckboxGroup4_3{:name => "CheckboxGroup4", :type => "checkbox", value: "sort_by_liked"}/
+    -#         %label
+    -#           יצירות שאהבתי
+    -#           %span (2)
+    -#       .col-md-6.col-sm-12
+    -#         %input#CheckboxGroup4_4{:disabled => "disabled", :name => "CheckboxGroup4", :type => "checkbox", value: "sort_by_active_bookmark"}/
+    -#         %label
+    -#           סימניה מופעלת
+    -#           %span (0)
+    -#         %br/
+    -#         %input#CheckboxGroup4_5{:name => "CheckboxGroup4", :type => "checkbox", value: "sort_by_no_properties"}/
+    -#         %label
+    -#           ללא מאפיינים
+    -#           %span (312)
     .sort-type
       .vertical-expand.fcoll#fdate{'data-target' =>'.collfdate', 'data-toggle' =>'collapse'}
         .sort-type-headline= t(:thedate)
       .nested.active.collapse.show.collfdate
         .nested-content
           .search-mobile-switch
-            %button.search-mobile-option.datetype#published= t(:publication)
-            %button.search-mobile-option.datetype#created= t(:creation)
+            %button.search-mobile-option.datetype#birth= t(:birth_year)
+            %button.search-mobile-option.datetype#death= t(:death_year)
             %button.search-mobile-option.datetype#uploaded= t(:upload)
             = hidden_field_tag(:date_type, '', id: 'date_type')
           %break
           .dates-range
-            / #histogramSlider
-            /.dates-graph-area
-            /.range-outside
-            /  .range-inside
-            /    .range-handle-right
-            /    .range-handle-left
+            -# #histogramSlider
+            -#.dates-graph-area
+            -#.range-outside
+            -#  .range-inside
+            -#    .range-handle-right
+            -#    .range-handle-left
             %input.datepicker.datetimepicker-input.field-v02.field-without-label.range-date-field#fromdate{:placeholder => t(:year), name: "fromdate", 'data-toggle' => 'datetimepicker', 'data-target' => '#fromdate' }/
             .date-range-to= t(:until)
             %input.datepicker.datetimepicker-input.field-v02.field-without-label.range-date-field#todate{:placeholder => t(:year), :style => "float: left", 'data-toggle' => 'datetimepicker', name: "todate", 'data-target' => '#todate'}/
     .sort-type
       .vertical-expand.fcoll#flang{'data-target' =>'.collflang', 'data-toggle' =>'collapse'}
-        .sort-type-headline= t(:orig_lang)
+        .sort-type-headline= t(:writing_language)
       .nested.active.collapse.show.collflang
         .nested-content{:style => "padding-right: 0"}
           %ul
@@ -166,7 +166,7 @@
               - attrs.merge!({checked: 'checked'}) if (@all_xlat || (@languages.present? && @languages.include?('xlat')))
               %input{attrs}
               %label
-                = t(:translations)
+                = t(:non_hebrew_languages)
                 %span= "(#{@language_facet[:xlat] || '0'})"
               .languages-filters
                 %ul.nested-list.xlat_langs
@@ -263,8 +263,8 @@
       $('.lang_xlat').prop('checked', true);
     }
     if("#{@datetype}" == "") {
-      $('#created').addClass('active');
-      $('#date_type').val('created');
+      $('#birth').addClass('active');
+      $('#date_type').val('birth');
     } else {
       $("##{@datetype}").addClass('active');
       $('#date_type').val("#{@datetype}");

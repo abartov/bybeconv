@@ -116,7 +116,7 @@ class AuthorsController < ApplicationController
       @filters << ["#{I18n.t('d'+@datetype)} #{I18n.t(:fromdate)}: #{@fromdate}", :fromdate, :text]
     end
     if @todate.present?
-      range_expr['lte'] = Date.new(@todate.to_i,12,31).to_s
+      range_expr['lte'] = @todate
       @filters << ["#{I18n.t('d'+@datetype)} #{I18n.t(:todate)}: #{@todate}", :todate, :text]
     end
     datefield = es_datefield_name_from_datetype(@datetype)
@@ -127,8 +127,8 @@ class AuthorsController < ApplicationController
   def build_es_query_from_filters
     ret = {}
     if params['search_input'].present?
-      ret['match'] = {author_string: params['search_input']}
-      @filters << [I18n.t(:author_x, {x: params['search_input']}), :authors, :text]
+      ret['match'] = {name: params['search_input']}
+      @filters << [I18n.t(:author_x, {x: params['search_input']}), :search_input, :text]
       @search_input = params['search_input']
     end
     return ret

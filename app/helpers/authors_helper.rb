@@ -2,10 +2,12 @@ module AuthorsHelper
   def authors_label_by_gender_filter(gender_filter, total)
     if gender_filter.blank?
       return t(:x_authors_mixed_gender, {x: total})
-    elsif gender_filter == 'female'
+    elsif gender_filter == ['female']
       return t(:x_authors_female, {x: total})
-    else
+    elsif gender_filter == ['male']
       return t(:x_authors_male, {x: total})
+    else
+      return t(:x_authors_mixed_gender, {x: total})
     end # TODO: support more genders
   end
 
