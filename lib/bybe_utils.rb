@@ -86,7 +86,7 @@ module BybeUtils
   end
 
   def parse_gregorian(str)
-    return Date.new($3.to_i, $2.to_i, $1.to_i) if(str =~ /(\d\d?)[-\/\.](\d\d?)[-\/\.](\d+)/) # try to match numeric date
+    return Date.new($3.to_i, $2.to_i, $1.to_i) if(str =~ /(\d\d?)[-\/\.–](\d\d?)[-\/\.–](\d+)/) # try to match numeric date
     # perhaps there's a date with spaces and a Gregorian month name in Hebrew
     GREGMONTHS.keys.each do |m|
       unless str.match(/ב?#{m}\s+/).nil?
@@ -94,7 +94,9 @@ module BybeUtils
         pre = $`
         year = $'.match(/\d+/).to_s.to_i
         day = (pre.match(/\d+/)) ? $&.to_i : 15 # mid-month by default
-        return Date.new(year, month, day)
+        unless day > 31 || day < 1 # avoid exceptions on weird date strings
+          return Date.new(year, month, day)
+        end
       end
     end
     # we couldn't identify a month; try to use just the year
