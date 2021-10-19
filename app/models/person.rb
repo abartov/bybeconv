@@ -123,7 +123,9 @@ class Person < ApplicationRecord
     return self.publications.count > 0
   end
   def has_any_hebrew_works?
-    Manifestation.all_published.joins(expressions: [works: :creations]).includes(:expressions).where("creations.person_id = #{self.id} and creations.role = #{Creation.roles[:author]} and works.orig_lang = 'he'").count > 0
+    orig = Manifestation.all_published.joins(expressions: [works: :creations]).includes(:expressions).where("creations.person_id = #{self.id} and creations.role = #{Creation.roles[:author]} and works.orig_lang = 'he'").count > 0
+    xlat = Manifestation.all_published.joins(expressions: :realizers).includes(expressions: [works: [creations: :person]]).where(realizers:{role: Realizer.roles[:translator], person_id: self.id}).count > 0
+    return orig || xlat
   end
   def has_any_non_hebrew_works?
     Manifestation.all_published.joins(expressions: [works: :creations]).includes(:expressions).where("creations.person_id = #{self.id} and creations.role = #{Creation.roles[:author]} and works.orig_lang <> 'he'").count > 0
