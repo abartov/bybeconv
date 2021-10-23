@@ -1,0 +1,79 @@
+openapi: 3.0.0
+info:
+  title: Project Ben-Yehuda API
+  version: 1.0.0
+components:
+  schemas:
+    genre:
+      type: string
+      enum: ["poetry", "prose", "drama", "fables","article", "memoir", "letters", "reference", "lexicon"]
+      description: "the broad field of humanities of a textual work in the database."
+    period:
+      type: string
+      enum: ["ancient", "medieval", "enlightenment", "revival", "modern"]
+      description: "specifies what section of the rough timeline of Hebrew literature an object belongs to."
+paths: 
+  /search:
+    get:
+      description: 
+      responses:
+        '200':
+          description: OK
+  /texts:
+    get:
+      parameters:
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+      summary: "retrieve a specified page from the list of all texts"
+      responses:
+        '200':
+          description: OK
+  /texts/batch:
+    get:
+      parameters:
+        - name: ids
+          in: query
+          required: false
+          description: "array of text IDs to fetch"
+          schema:
+            type: array
+            minItems: 1
+            maxItems: 25
+            items:
+              type: integer
+        - name: view
+          in: query
+          required: false
+          description: "how much detail to return: `full` returns all metadata and the fulltext; `metadata` returns all metadata but no text; `basic` returns basic metadata and a snippet of the beginning of the text, and is the default"
+          schema:
+            type: string
+            enum: ['full', 'metadata', 'basic']
+      summary: "retrieve a collection of texts by specified IDs"
+      responses:
+        '200':
+          description: OK
+  /texts/{id}:
+    get:
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      summary: "returns meta-data and, optionally, the full text, of a textual work from the database"
+      description: "(TBD)"
+      responses:
+        '200':
+          description: OK
+  parameters:
+  - name: key
+    in: query
+    required: true
+    schema:
+      type: string
+servers:
+  - url: "https://benyehuda.org/api"
+    description: "main production server of Project Ben-Yehuda"
