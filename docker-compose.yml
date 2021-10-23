@@ -1,4 +1,5 @@
 # https://linuxtut.com/en/ae5a911e8327252c7ffa/
+# https://dev.to/itnext/setting-up-ruby-on-rails-with-docker-and-mysql-3mpc
 
 # docker-compose build
 # docker-compose up
@@ -30,16 +31,17 @@ services:
       - 5601:5601
     depends_on:
       - elasticsearch
-  #Container for Postgres
+  #Container for MySQL
   db:
-    image: postgres
-    ports:
-      - 5432:5432
-    volumes:
-      - pgdata:/var/lib/postgresql/data
+    image: mysql:5.7
+    restart: always
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: app
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3307:3306"
   #Container for Rails
   rails:
     build: .
@@ -48,15 +50,20 @@ services:
       - db
       - elasticsearch
     ports:
-      - 3000:3000
+      - 3001:3000
+    links:
+      - db
     environment:
       DATABASE_HOST: db
+      DB_USER: root
+      DB_NAME: app
+      DB_PASSWORD: password
     tty: true
     stdin_open: true
     volumes:
       #Abandon consistency with delegated and focus on performance
       - .:/myapp:delegated
+      - .:/app
 #Volume used by elasticsearch and db
 volumes:
   esdata:
-  pgdata:
