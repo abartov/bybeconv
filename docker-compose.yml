@@ -1,0 +1,62 @@
+# https://linuxtut.com/en/ae5a911e8327252c7ffa/
+
+# docker-compose build
+# docker-compose up
+#
+# docker-compose run --rm rails bundle exec rails db:create
+version: "3"
+services:
+  #Container for Elasticsearch
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.1
+    environment:
+      - discovery.type=single-node
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - 9200:9200
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+  #Container for Kibana
+  kibana:
+    #Match the version numbers of elasticsearch and kibana images
+    image: docker.elastic.co/kibana/kibana:7.10.1
+    ports:
+      - 5601:5601
+    depends_on:
+      - elasticsearch
+  #Container for Postgres
+  db:
+    image: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+  #Container for Rails
+  rails:
+    build: .
+    command: bundle exec rails server -p 3000 -b '0.0.0.0'
+    depends_on:
+      - db
+      - elasticsearch
+    ports:
+      - 3000:3000
+    environment:
+      DATABASE_HOST: db
+    tty: true
+    stdin_open: true
+    volumes:
+      #Abandon consistency with delegated and focus on performance
+      - .:/myapp:delegated
+#Volume used by elasticsearch and db
+volumes:
+  esdata:
+  pgdata:
