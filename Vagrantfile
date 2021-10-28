@@ -76,6 +76,7 @@ Vagrant.configure("2") do |config|
       wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.8.20.deb
     fi
     dpkg -i ./elasticsearch-6.8.20.deb
+    update-rc.d elasticsearch defaults 95 10
   SHELL
   config.vm.provision "shell", privileged: false, inline: <<-SHELL
     # Ruby
