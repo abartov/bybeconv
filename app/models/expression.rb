@@ -40,7 +40,7 @@ class Expression < ApplicationRecord
   end
 
   def self.cached_translations_count
-    Rails.cache.fetch("e_works_by_period_#{p}", expires_in: 24.hours) do
+    Rails.cache.fetch("e_translations", expires_in: 24.hours) do
       Expression.where(translation: true).count
     end
   end
