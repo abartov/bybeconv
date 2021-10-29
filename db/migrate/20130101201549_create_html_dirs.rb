@@ -1,4 +1,4 @@
-class CreateHtmlDirs < ActiveRecord::Migration
+class CreateHtmlDirs < ActiveRecord::Migration[4.2]
   def change
     create_table :html_dirs do |t|
       t.string :path

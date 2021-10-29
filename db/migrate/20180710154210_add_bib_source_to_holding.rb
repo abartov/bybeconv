@@ -1,4 +1,4 @@
-class AddBibSourceToHolding < ActiveRecord::Migration
+class AddBibSourceToHolding < ActiveRecord::Migration[4.2]
   def change
     add_reference :holdings, :bib_source, index: true, foreign_key: true
   end

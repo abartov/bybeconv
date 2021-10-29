@@ -1,4 +1,4 @@
-class CreateExpressions < ActiveRecord::Migration
+class CreateExpressions < ActiveRecord::Migration[4.2]
   def change
     create_table :expressions do |t|
       t.string :title

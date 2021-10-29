@@ -1,4 +1,4 @@
-class AddConvCounterToManifestation < ActiveRecord::Migration
+class AddConvCounterToManifestation < ActiveRecord::Migration[4.2]
   def change
     add_column :manifestations, :conv_counter, :integer
     puts "setting counters to 0"

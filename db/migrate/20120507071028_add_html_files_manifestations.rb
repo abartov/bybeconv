@@ -1,4 +1,4 @@
-class AddHtmlFilesManifestations < ActiveRecord::Migration
+class AddHtmlFilesManifestations < ActiveRecord::Migration[4.2]
   def change
    create_table :html_files_manifestations, :id => false do |t|
       t.timestamps

@@ -1,4 +1,4 @@
-class CreateVolunteerProfileFeatures < ActiveRecord::Migration
+class CreateVolunteerProfileFeatures < ActiveRecord::Migration[4.2]
   def change
     create_table :volunteer_profile_features do |t|
       t.references :volunteer_profile, index: true, foreign_key: true

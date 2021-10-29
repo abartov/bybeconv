@@ -1,4 +1,4 @@
-class AddStatusToManifestations < ActiveRecord::Migration
+class AddStatusToManifestations < ActiveRecord::Migration[4.2]
   def change
     add_column :manifestations, :status, :integer
     print "Setting status to 'published' for all existing manifestations... "

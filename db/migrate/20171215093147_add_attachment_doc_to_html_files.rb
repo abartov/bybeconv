@@ -1,4 +1,4 @@
-class AddAttachmentDocToHtmlFiles < ActiveRecord::Migration
+class AddAttachmentDocToHtmlFiles < ActiveRecord::Migration[4.2]
   def self.up
     change_table :html_files do |t|
       t.attachment :doc

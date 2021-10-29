@@ -1,4 +1,4 @@
-class AddMoreFlagToHtmlFile < ActiveRecord::Migration
+class AddMoreFlagToHtmlFile < ActiveRecord::Migration[4.2]
   def change
     add_column :html_files, :nikkud, :string
     add_column :html_files, :line_numbers, :boolean

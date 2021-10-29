@@ -1,4 +1,4 @@
-class FixTocStatus < ActiveRecord::Migration
+class FixTocStatus < ActiveRecord::Migration[4.2]
   def change
     puts "fixing nil TOC status fields"
     Person.has_toc.each do |p|

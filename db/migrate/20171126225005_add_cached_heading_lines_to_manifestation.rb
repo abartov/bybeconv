@@ -1,4 +1,4 @@
-class AddCachedHeadingLinesToManifestation < ActiveRecord::Migration
+class AddCachedHeadingLinesToManifestation < ActiveRecord::Migration[4.2]
   def change
     add_column :manifestations, :cached_heading_lines, :text
     i = 0

@@ -1,4 +1,4 @@
-class RemovePersonIdFromToc < ActiveRecord::Migration
+class RemovePersonIdFromToc < ActiveRecord::Migration[4.2]
   def up
     remove_column :tocs, :person_id
   end

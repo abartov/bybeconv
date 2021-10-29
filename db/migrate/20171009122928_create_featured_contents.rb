@@ -1,4 +1,4 @@
-class CreateFeaturedContents < ActiveRecord::Migration
+class CreateFeaturedContents < ActiveRecord::Migration[4.2]
   def change
     create_table :featured_contents do |t|
       t.string :title

@@ -1,4 +1,4 @@
-class AddSeparateDatesToPerson < ActiveRecord::Migration
+class AddSeparateDatesToPerson < ActiveRecord::Migration[4.2]
   def change
     add_column :people, :birthdate, :string
     add_column :people, :deathdate, :string

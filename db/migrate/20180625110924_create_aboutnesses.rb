@@ -1,4 +1,4 @@
-class CreateAboutnesses < ActiveRecord::Migration
+class CreateAboutnesses < ActiveRecord::Migration[4.2]
   def change
     create_table :aboutnesses do |t|
       t.references :work, index: true, foreign_key: true

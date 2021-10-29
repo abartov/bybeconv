@@ -1,4 +1,4 @@
-class AddCachedPeopleToManifestation < ActiveRecord::Migration
+class AddCachedPeopleToManifestation < ActiveRecord::Migration[4.2]
   def up
     add_column :manifestations, :cached_people, :string
     # populate the field once

@@ -1,4 +1,4 @@
-class CreateHoldings < ActiveRecord::Migration
+class CreateHoldings < ActiveRecord::Migration[4.2]
   def change
     create_table :holdings do |t|
       t.references :publication, index: true, foreign_key: true

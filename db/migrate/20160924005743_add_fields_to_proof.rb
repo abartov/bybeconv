@@ -1,4 +1,4 @@
-class AddFieldsToProof < ActiveRecord::Migration
+class AddFieldsToProof < ActiveRecord::Migration[4.2]
   def change
     add_column :proofs, :highlight, :text
     add_column :proofs, :reported_by, :integer

@@ -1,4 +1,4 @@
-class CreateHtmlFiles < ActiveRecord::Migration
+class CreateHtmlFiles < ActiveRecord::Migration[4.2]
   def change
     create_table :html_files do |t|
       t.string :path

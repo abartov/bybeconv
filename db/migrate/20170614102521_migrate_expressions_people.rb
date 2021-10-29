@@ -1,4 +1,4 @@
-class MigrateExpressionsPeople < ActiveRecord::Migration
+class MigrateExpressionsPeople < ActiveRecord::Migration[4.2]
   def change
     puts "migrating expressions_people to realizers table"
     i = 0

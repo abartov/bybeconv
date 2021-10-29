@@ -1,4 +1,4 @@
-class CreateStaticPages < ActiveRecord::Migration
+class CreateStaticPages < ActiveRecord::Migration[4.2]
   TEXT_BYTES = 1_073_741
 
   def change

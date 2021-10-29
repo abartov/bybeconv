@@ -1,4 +1,4 @@
-class AddCreatedAtIndexToManifestations < ActiveRecord::Migration
+class AddCreatedAtIndexToManifestations < ActiveRecord::Migration[4.2]
   def change
     add_index :manifestations, :created_at
   end

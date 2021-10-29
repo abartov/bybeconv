@@ -1,4 +1,4 @@
-class CreateCreations < ActiveRecord::Migration
+class CreateCreations < ActiveRecord::Migration[4.2]
   def change
     create_table :creations do |t|
       t.integer :work_id

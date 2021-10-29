@@ -1,4 +1,4 @@
-class CreateTocs < ActiveRecord::Migration
+class CreateTocs < ActiveRecord::Migration[4.2]
   def change
     create_table :tocs do |t|
       t.integer :person_id

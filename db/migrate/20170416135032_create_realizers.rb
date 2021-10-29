@@ -1,4 +1,4 @@
-class CreateRealizers < ActiveRecord::Migration
+class CreateRealizers < ActiveRecord::Migration[4.2]
   def change
     create_table :realizers do |t|
       t.references :expression, index: true, foreign_key: true

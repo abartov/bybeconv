@@ -1,4 +1,4 @@
-class AddMarkdownToHtmlFile < ActiveRecord::Migration
+class AddMarkdownToHtmlFile < ActiveRecord::Migration[4.2]
   TEXT_BYTES = 1_073_741_823
 
   def change

@@ -1,4 +1,4 @@
-class CreateFeaturedAuthors < ActiveRecord::Migration
+class CreateFeaturedAuthors < ActiveRecord::Migration[4.2]
   def change
     create_table :featured_authors do |t|
       t.string :title
