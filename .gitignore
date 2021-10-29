@@ -48,3 +48,11 @@ bin/delayed_job
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+
+# Vagrant files
+.vagrant
+*VBox*.log
+ubuntu-*-console.log
+
+# IDE files
+.idea
