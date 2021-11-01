@@ -165,7 +165,7 @@ Bybeconv::Application.routes.draw do
   get 'manifestation/add_aboutnesses/:id' => 'manifestation#add_aboutnesses'
 
   get "api/query"
-  resources :api_keys
+  resources :api_keys, except: :show
   get "taggings/render_tags"
   resources :taggings
   resources :aboutnesses

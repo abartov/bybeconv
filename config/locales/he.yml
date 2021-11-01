@@ -1109,6 +1109,11 @@ he:
       subject: יצירת קשר מהאתר
     volunteer_form_submitted:
       subject: טופס התנדבות מהאתר
+  api_keys_mailer:
+    key_created:
+      subject: Your API key
+    key_created_to_editor:
+      subject: New API key created
   views:
     pagination:
       next: לדף הבא
