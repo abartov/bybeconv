@@ -17,3 +17,13 @@ an_editor:
   oauth_expires_at:
   editor: true
   admin: false
+
+a_admin:
+  name: Administrator
+  email: asaf.bartov+admin@gmail.com
+  provider: developer
+  uid: asaf.bartov+admin@gmail.com
+  editor: false
+  admin: true
+  oauth_token:
+  oauth_expires_at:

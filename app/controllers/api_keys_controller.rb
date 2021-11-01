@@ -1,88 +1,65 @@
 class ApiKeysController < ApplicationController
+  before_action :require_admin, except: [:new, :create]
+
+  before_action :set_model, only: [:edit, :update, :destroy]
+
   # GET /api_keys
   # GET /api_keys.json
   def index
     @api_keys = ApiKey.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @api_keys }
-    end
-  end
-
-  # GET /api_keys/1
-  # GET /api_keys/1.json
-  def show
-    @api_key = ApiKey.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @api_key }
-    end
   end
 
   # GET /api_keys/new
   # GET /api_keys/new.json
   def new
     @api_key = ApiKey.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @api_key }
-    end
-  end
-
-  # GET /api_keys/1/edit
-  def edit
-    @api_key = ApiKey.find(params[:id])
   end
 
   # POST /api_keys
   # POST /api_keys.json
   def create
     @api_key = ApiKey.new(key_params)
+    @api_key.status = :enabled
+    @api_key.key = SecureRandom.hex(32)
 
-    respond_to do |format|
-      if @api_key.save
-        format.html { redirect_to @api_key, notice: 'Api key was successfully created.' }
-        format.json { render json: @api_key, status: :created, location: @api_key }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @api_key.errors, status: :unprocessable_entity }
+    if @api_key.save
+      begin
+        ApiKeysMailer.key_created_to_editor(@api_key).deliver
+        ApiKeysMailer.key_created(@api_key).deliver
+      rescue => e
+        # TODO: add error notification via service like Rollbar
       end
+
+      redirect_to '/', notice: 'Api key was successfully created, check email for details'
+    else
+      render action: "new", status: :unprocessable_entity
     end
   end
 
   # PUT /api_keys/1
   # PUT /api_keys/1.json
   def update
-    @api_key = ApiKey.find(params[:id])
-
-    respond_to do |format|
-      if @api_key.update_attributes(key_params)
-        format.html { redirect_to @api_key, notice: 'Api key was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: "edit" }
-        format.json { render json: @api_key.errors, status: :unprocessable_entity }
-      end
+    if @api_key.update_attributes(key_params)
+      redirect_to api_keys_path, notice: 'Api key was successfully updated.'
+    else
+      render action: "edit", status: :unprocessable_entity
     end
   end
 
   # DELETE /api_keys/1
   # DELETE /api_keys/1.json
   def destroy
-    @api_key = ApiKey.find(params[:id])
-    @api_key.destroy
-
-    respond_to do |format|
-      format.html { redirect_to api_keys_url }
-      format.json { head :no_content }
-    end
+    @api_key.destroy!
+    redirect_to api_keys_url
   end
 
   private
+
   def key_params
-    params[:api_key].permit(:id, :description, :email, :key, :status)
+    params[:api_key].permit(:id, :description, :email, :status)
+  end
+
+  def set_model
+    @api_key = ApiKey.find(params[:id])
   end
 end

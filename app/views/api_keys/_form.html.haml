@@ -1,22 +1,24 @@
-= form_for @api_key do |f|
-  - if @api_key.errors.any?
-    #error_explanation
-      %h2= "#{pluralize(@api_key.errors.count, "error")} prohibited this api_key from being saved:"
-      %ul
-        - @api_key.errors.full_messages.each do |msg|
-          %li= msg
+- if @api_key.errors.any?
+  #error_explanation
+    %h2= "#{pluralize(@api_key.errors.count, "error")} prohibited this api_key from being saved:"
+    %ul
+      - @api_key.errors.full_messages.each do |msg|
+        %li= msg
 
-  .field
+= form_for @api_key do |f|
+  .form-group
     = f.label :email
-    = f.text_field :email
-  .field
+    = f.text_field :email, class: 'form-control'
+  .form-group
     = f.label :description
-    = f.text_field :description
-  .field
-    = f.label :key
-    = f.text_field :key
-  .field
-    = f.label :status
-    = f.number_field :status
-  .actions
-    = f.submit 'Save'
+    = f.text_field :description, class: 'form-control'
+  - unless @api_key.new_record?
+    .form-group
+      = f.label :key
+      .form-control=@api_key.key
+    .form-group
+      = f.label :status
+      = f.select :status, ApiKey.statuses.keys, { }, { class: 'custom-select' }
+  .btn-group
+    = f.submit t('save'), class: 'btn btn-primary'
+    = link_to t('cancel'), @api_key.new_record? ? '/' : api_keys_path, class: 'btn btn-secondary'
