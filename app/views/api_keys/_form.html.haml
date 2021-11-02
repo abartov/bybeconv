@@ -1,9 +1,7 @@
 - if @api_key.errors.any?
-  #error_explanation
-    %h2= "#{pluralize(@api_key.errors.count, "error")} prohibited this api_key from being saved:"
-    %ul
-      - @api_key.errors.full_messages.each do |msg|
-        %li= msg
+  %ul.text-danger
+    - @api_key.errors.full_messages.each do |msg|
+      %li= msg
 
 = form_for @api_key do |f|
   .form-group
@@ -12,7 +10,11 @@
   .form-group
     = f.label :description
     = f.text_field :description, class: 'form-control'
-  - unless @api_key.new_record?
+  - if @api_key.new_record?
+    .form-group
+      = label_tag :ziburit, t(:ziburit)
+      = text_field_tag :ziburit, '', required: true, class: 'form-control'
+  - else
     .form-group
       = f.label :key
       .form-control=@api_key.key

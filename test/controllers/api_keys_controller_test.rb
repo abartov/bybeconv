@@ -1,6 +1,8 @@
 require 'test_helper'
 
 class ApiKeysControllerTest < ActionController::TestCase
+  CORRECT_ZIBURIT = 'חיים נחמן ביאליק‎'
+
   setup do
     @enabled_key = create(:api_key)
     @disabled_key = create(:api_key, status: :disabled, description: 'Disabled Key')
@@ -13,7 +15,7 @@ class ApiKeysControllerTest < ActionController::TestCase
 
   test "create succeed" do
     assert_difference -> { ApiKey.count } => 1, -> {ActionMailer::Base.deliveries.size} => 2 do
-      post :create, params: { api_key: { description: 'test', email: 'New@test.com' } }
+      post :create, params: { api_key: { description: 'test', email: 'New@test.com' }, ziburit: CORRECT_ZIBURIT }
     end
     assert_redirected_to '/'
     assert_equal 'Api key was successfully created, check email for details', flash.notice
@@ -24,21 +26,30 @@ class ApiKeysControllerTest < ActionController::TestCase
     assert key.status_enabled?
     assert_not_empty key.key
 
+    # One email is sent to person who requested API Key
     email = ActionMailer::Base.deliveries[-1]
     assert_equal I18n.t('api_keys_mailer.key_created.subject'), email.subject
     assert_equal [key.email], email.to
     assert email.body.include?(key.key)
 
+    # Second email is sent to editor
     email = ActionMailer::Base.deliveries[-2]
     assert_equal I18n.t('api_keys_mailer.key_created_to_editor.subject'), email.subject
     assert_equal [ApiKeysMailer::EDITOR_EMAIL], email.to
     assert email.body.include?(key.description)
   end
 
-  test "create failed" do
+  test "create failed due to validation error" do
     assert_no_difference 'ApiKey.count' do
       # trying to create key with already taken email
-      post :create, params: { api_key: { description: 'test', email: @enabled_key.email } }
+      post :create, params: { api_key: { description: 'test', email: @enabled_key.email }, ziburit: CORRECT_ZIBURIT }
+    end
+    assert_response :unprocessable_entity
+  end
+
+  test "create failed due to incorrect antispam answer" do
+    assert_no_difference 'ApiKey.count' do
+      post :create, params: { api_key: { description: 'test', email: 'new@new.com' }, ziburit: 'Pushkin' }
     end
     assert_response :unprocessable_entity
   end

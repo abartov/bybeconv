@@ -22,6 +22,13 @@ class ApiKeysController < ApplicationController
     @api_key.status = :enabled
     @api_key.key = SecureRandom.hex(32)
 
+    # Extremely simple antispam protection
+    unless params['ziburit'] =~ /ביאליק/
+      flash.now.alert = 'Antispam protection failed'
+      render action: "new", status: :unprocessable_entity
+      return
+    end
+
     if @api_key.save
       begin
         ApiKeysMailer.key_created_to_editor(@api_key).deliver
