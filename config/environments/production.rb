@@ -68,4 +68,6 @@ Bybeconv::Application.configure do
   # Store Active Storage files on the S3 service
   config.active_storage.service = :amazon
   # config.active_storage.service = :local # temporary
+
+  routes.default_url_options[:host] = 'benyehuda.org'
 end

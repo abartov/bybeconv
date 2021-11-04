@@ -55,10 +55,10 @@ class Manifestation < ApplicationRecord
 
   # this will return the downloadable entity for the Manifestation *if* it is fresh
   def fresh_downloadable_for(doctype)
-    dls = downloadables.where(doctype: Downloadable.doctypes[doctype])
-    return nil if dls.empty?
-    return nil if dls[0].updated_at < self.updated_at # needs to be re-generated
-    return dls[0]
+    dl = downloadables.where(doctype: doctype).first
+    return nil if dl.nil?
+    return nil if dl.updated_at < self.updated_at # needs to be re-generated
+    return dl
   end
 
   def long?
