@@ -21,19 +21,18 @@ components:
       name: view
       in: query
       required: false
-      description: 'how much detail to return: `full` returns all metadata, a snippet, and the fulltext; `metadata` returns all metadata but no text; `basic` returns basic metadata and a snippet of the beginning of the text, and is the default'
+      description: 'how much detail to return: `metadata` returns all metadata and download lnk; `basic` returns basic metadata, download_link and a snippet of the beginning of the text, and is the default'
       schema:
         type: string
         default: basic
         enum:
-          - full
           - metadata
           - basic
     formatParam:
-      name: format
+      name: file_format
       in: query
       required: false
-      description: 'desired text format: `html` for HTML, `txt` for plain text without any formatting, `pdf` for PDF, `epub` for EPUB, `mobi` for MOBI, `docx` for DOCX, `odt` for LibreOffice ODT'
+      description: 'desired text format for download link: `html` for HTML, `txt` for plain text without any formatting, `pdf` for PDF, `epub` for EPUB, `mobi` for MOBI, `docx` for DOCX, `odt` for LibreOffice ODT'
       schema:
         type: string
         default: html
@@ -128,19 +127,22 @@ components:
                     type: boolean
                   period:
                     $ref: '#/components/schemas/period'
+                  raw_creation_date:
+                    type: string
                   creation_date:
                     type: string
                   place_and_publisher:
+                    type: string
+                  raw_publication_date:
                     type: string
                   publication_year:
                     type: string
               snippet:
                   type: string
                   description: plaintext snippet of the first few hundred characters of the text, useful for previews and search results
-              fulltext:
+              download_url:
                 type: string
-                description: the full text of the work, in the requested format (HTML by default)
-
+                description: URL of the full text of the work, in the requested format (HTML by default)
 paths:
   /search:
     get:
