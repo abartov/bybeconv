@@ -41,6 +41,7 @@ Bybeconv::Application.configure do
   #config.active_storage.service = :amazon
   #config.force_ssl = true # to debug SSL issues
 
+  routes.default_url_options[:host] = 'localhost:3000'
 
   # checks for the presence of an env variable called PROFILE that
   # switches several settings to a more "production-like" value for profiling
