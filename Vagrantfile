@@ -26,6 +26,8 @@ Vagrant.configure("2") do |config|
   config.vm.network "forwarded_port", guest: 3000, host: 3003
   # Forwarding MySQL port to be able to connect to it from host machine
   config.vm.network "forwarded_port", guest: 3306, host: 3309
+  # Forwarding ElasticSearch port to be able to connect to it from host machine
+  config.vm.network "forwarded_port", guest: 9200, host: 9203
 
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine and only allow access
@@ -70,7 +72,7 @@ Vagrant.configure("2") do |config|
     apt-get install -y git curl wkhtmltopdf pandoc yaz libyaz-dev  libmagickwand-dev libpcap-dev memcached
     # MySQL
     apt-get install -y mysql-server mysql-client libmysqlclient-dev
-    #allowing external connections to MySQL
+    # allowing external connections to MySQL
     sed -i "s/.*bind-address.*/bind-address = 0.0.0.0/" /etc/mysql/mysql.conf.d/mysqld.cnf
     service mysql restart
     # TODO: configure database
@@ -81,6 +83,9 @@ Vagrant.configure("2") do |config|
       wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.8.20.deb
     fi
     dpkg -i ./elasticsearch-6.8.20.deb
+    # allowing external connections to ElasticSearch
+    sed -i "s/.*network.host: .*/network.host: 0.0.0.0/" /etc/elasticsearch/elasticsearch.yml
+    service elasticsearch restart
     update-rc.d elasticsearch defaults 95 10
   SHELL
   config.vm.provision "shell", privileged: false, inline: <<-SHELL

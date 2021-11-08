@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_20_231657) do
+ActiveRecord::Schema.define(version: 2021_11_01_075649) do
 
   create_table "aboutnesses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -476,17 +476,18 @@ ActiveRecord::Schema.define(version: 2021_08_20_231657) do
     t.integer "impressions_count"
     t.string "blog_category_url"
     t.boolean "bib_done"
+    t.integer "period"
     t.string "sidepic_file_name"
     t.string "sidepic_content_type"
     t.bigint "sidepic_file_size"
     t.datetime "sidepic_updated_at"
-    t.integer "period"
     t.string "sort_name"
     t.index ["gender"], name: "gender_index"
     t.index ["impressions_count"], name: "index_people_on_impressions_count"
     t.index ["name"], name: "index_people_on_name"
     t.index ["period"], name: "index_people_on_period"
     t.index ["sort_name"], name: "index_people_on_sort_name"
+    t.index ["toc_id"], name: "people_toc_id_fk"
   end
 
   create_table "periods", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
@@ -510,6 +511,9 @@ ActiveRecord::Schema.define(version: 2021_08_20_231657) do
     t.text "highlight", limit: 16777215
     t.integer "reported_by"
     t.integer "manifestation_id"
+    t.index ["html_file_id"], name: "proofs_html_file_id_fk"
+    t.index ["manifestation_id"], name: "proofs_manifestation_id_fk"
+    t.index ["resolved_by"], name: "proofs_resolved_by_fk"
   end
 
   create_table "publications", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
@@ -531,7 +535,7 @@ ActiveRecord::Schema.define(version: 2021_08_20_231657) do
     t.index ["task_id"], name: "index_publications_on_task_id"
   end
 
-  create_table "reading_lists", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "reading_lists", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.string "title"
     t.integer "user_id"
     t.integer "access"
@@ -558,6 +562,7 @@ ActiveRecord::Schema.define(version: 2021_08_20_231657) do
     t.integer "manifestation_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["approved_by"], name: "recommendations_approved_by_fk"
     t.index ["manifestation_id", "status"], name: "index_recommendations_on_manifestation_id_and_status"
     t.index ["manifestation_id"], name: "index_recommendations_on_manifestation_id"
     t.index ["user_id"], name: "index_recommendations_on_user_id"
@@ -603,6 +608,10 @@ ActiveRecord::Schema.define(version: 2021_08_20_231657) do
     t.integer "approved_by"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["approved_by"], name: "taggings_approved_by_fk"
+    t.index ["manifestation_id"], name: "taggings_manifestation_id_fk"
+    t.index ["suggested_by"], name: "taggings_suggested_by_fk"
+    t.index ["tag_id"], name: "taggings_tag_id_fk"
   end
 
   create_table "tags", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
@@ -611,6 +620,7 @@ ActiveRecord::Schema.define(version: 2021_08_20_231657) do
     t.integer "created_by"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["created_by"], name: "tags_created_by_fk"
   end
 
   create_table "tocs", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
@@ -721,6 +731,12 @@ ActiveRecord::Schema.define(version: 2021_08_20_231657) do
   add_foreign_key "holdings", "bib_sources"
   add_foreign_key "holdings", "publications"
   add_foreign_key "list_items", "users"
+  add_foreign_key "manifestations_people", "manifestations", name: "manifestations_people_manifestation_id_fk"
+  add_foreign_key "manifestations_people", "people", name: "manifestations_people_person_id_fk"
+  add_foreign_key "people", "tocs", name: "people_toc_id_fk"
+  add_foreign_key "proofs", "html_files", name: "proofs_html_file_id_fk"
+  add_foreign_key "proofs", "manifestations", name: "proofs_manifestation_id_fk"
+  add_foreign_key "proofs", "users", column: "resolved_by", name: "proofs_resolved_by_fk"
   add_foreign_key "publications", "bib_sources"
   add_foreign_key "publications", "people"
   add_foreign_key "reading_lists", "users"
@@ -728,6 +744,14 @@ ActiveRecord::Schema.define(version: 2021_08_20_231657) do
   add_foreign_key "realizers", "people"
   add_foreign_key "recommendations", "manifestations"
   add_foreign_key "recommendations", "users"
+  add_foreign_key "recommendations", "users", column: "approved_by", name: "recommendations_approved_by_fk"
+  add_foreign_key "taggings", "manifestations", name: "taggings_manifestation_id_fk"
+  add_foreign_key "taggings", "tags", name: "taggings_tag_id_fk"
+  add_foreign_key "taggings", "users", column: "approved_by", name: "taggings_approved_by_fk"
+  add_foreign_key "taggings", "users", column: "suggested_by", name: "taggings_suggested_by_fk"
+  add_foreign_key "tags", "users", column: "created_by", name: "tags_created_by_fk"
   add_foreign_key "user_preferences", "users"
   add_foreign_key "volunteer_profile_features", "volunteer_profiles"
+  add_foreign_key "work_likes", "manifestations", name: "work_likes_manifestation_id_fk"
+  add_foreign_key "work_likes", "users", name: "work_likes_user_id_fk"
 end
