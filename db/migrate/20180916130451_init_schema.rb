@@ -1,4 +1,4 @@
-class InitSchema < ActiveRecord::Migration[4.2]
+class InitSchema < ActiveRecord::Migration[5.2]
   def up
     create_table "aboutnesses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin" do |t|
       t.integer "work_id"

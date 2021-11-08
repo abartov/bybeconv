@@ -80,6 +80,9 @@ gem 'momentjs-rails' # for date picker in filters
 gem 'bootstrap4-datetime-picker-rails' # for date picker in filters
 gem 'hebruby' # for Hebrew date handling
 
+gem 'grape', '~> 1.6.0'
+gem 'grape-entity', '~> 0.10.1'
+
 group :production do
 #  gem 'newrelic_rpm' # performance monitoring
   gem 'dalli'

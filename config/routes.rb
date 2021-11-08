@@ -1,5 +1,7 @@
 include BybeUtils
 Bybeconv::Application.routes.draw do
+  mount V1::Api => '/'
+
   resources :anthology_texts do
     post 'mass_create', on: :collection
     get 'confirm_destroy'
