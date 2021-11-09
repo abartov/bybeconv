@@ -46,7 +46,7 @@ gem 'coffee-script'
 
 
 gem 'execjs'
-gem 'therubyracer'
+gem 'mini_racer'
 gem 'thin'
 gem 'htmlentities'
 gem 'kaminari', '1.1.1' # pagination. Kaminari 1.2.1 seems to have a bug - https://github.com/kaminari/kaminari/issues/1033
@@ -80,14 +80,18 @@ gem 'momentjs-rails' # for date picker in filters
 gem 'bootstrap4-datetime-picker-rails' # for date picker in filters
 gem 'hebruby' # for Hebrew date handling
 
+gem 'grape', '~> 1.6.0'
+gem 'grape-entity', '~> 0.10.1'
+
 group :production do
 #  gem 'newrelic_rpm' # performance monitoring
   gem 'dalli'
 end
 
 group :test do
-  gem 'turn', '0.8.2', :require => false
+  gem 'turn', '0.8.2', require: false
   gem 'simplecov', require: false
+  gem 'factory_bot_rails', '~> 6.2.0', require: false
 end
 
 group :development do
@@ -101,5 +105,5 @@ group :development do
   gem 'derailed_benchmarks', group: :development
   gem 'bullet'
   gem 'active_record_query_trace'
-
+  gem 'immigrant'
 end

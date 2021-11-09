@@ -275,16 +275,8 @@ paths:
             maxItems: 25
             items:
               type: integer
-        - name: view
-          in: query
-          required: false
-          description: 'how much detail to return: `full` returns all metadata and the fulltext; `metadata` returns all metadata but no text; `basic` returns basic metadata and a snippet of the beginning of the text, and is the default'
-          schema:
-            type: string
-            enum:
-              - full
-              - metadata
-              - basic
+        - $ref: '#/components/parameters/viewParam'
+        - $ref: '#/components/parameters/formatParam'
       summary: retrieve a collection of texts by specified IDs
       responses:
         '200':
@@ -298,11 +290,14 @@ paths:
           required: true
           schema:
             type: integer
+        - $ref: '#/components/parameters/viewParam'
+        - $ref: '#/components/parameters/formatParam'
       summary: 'returns meta-data and, optionally, the full text, of a textual work from the database'
       description: (TBD)
       responses:
         '200':
-          description: OK
+          "$ref": "#/components/responses/text"
+
 servers:
   - url: 'https://benyehuda.org/api'
     description: main production server of Project Ben-Yehuda
