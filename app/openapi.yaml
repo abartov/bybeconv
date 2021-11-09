@@ -179,20 +179,15 @@ paths:
             maxItems: 25
             items:
               type: integer
-        - name: view
-          in: query
-          required: false
-          description: 'how much detail to return: `full` returns all metadata and the fulltext; `metadata` returns all metadata but no text; `basic` returns basic metadata and a snippet of the beginning of the text, and is the default'
-          schema:
-            type: string
-            enum:
-              - full
-              - metadata
-              - basic
+        - $ref: '#/components/parameters/viewParam'
       summary: retrieve a collection of texts by specified IDs
       responses:
         '200':
           description: OK
+          schema:
+            type: array
+            items:
+              "$ref": "#/components/responses/text"
   '/texts/{id}':
     get:
       parameters:
