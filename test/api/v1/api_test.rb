@@ -5,17 +5,34 @@ class V1::APITest < ActiveSupport::TestCase
 
   def setup
     @key = create(:api_key)
-    @manifestation = create(:manifestation, markdown: 'Sample Text')
+    @disabled_key = create(:api_key, status: :disabled)
+    @manifestation = create(:manifestation, markdown: 'Sample Text 1')
+    @manifestation_2 = create(:manifestation, markdown: 'Sample Text 2')
   end
 
   def app
     Rails.application
   end
 
+  # -------------------
+  # /texts/{id}
+  # -------------------
+
+  test 'GET /v1/api/texts/{id} fails if key is not specified' do
+    get "/api/v1/texts/#{@manifestation.id}"
+    assert last_response.unauthorized?
+    assert_equal "key not found or disabled", JSON.parse(last_response.body)["error"]
+  end
+
+  test 'GET /v1/api/texts/{id} fails if not-existing key is specified' do
+    get "/api/v1/texts/#{@manifestation.id}?key=WRONG_KEY"
+    assert last_response.unauthorized?
+    assert_equal "key not found or disabled", JSON.parse(last_response.body)["error"]
+  end
+
   test 'GET /v1/api/texts/{id} fails if disabled key is specified' do
-    key = create(:api_key, status: :disabled)
-    get "/api/v1/texts/#{@manifestation.id}?key=#{key.key}"
-    assert last_response.bad_request?
+    get "/api/v1/texts/#{@manifestation.id}?key=#{@disabled_key.key}"
+    assert last_response.unauthorized?
     assert_equal "key not found or disabled", JSON.parse(last_response.body)["error"]
   end
 
@@ -40,10 +57,53 @@ class V1::APITest < ActiveSupport::TestCase
     assert_manifestation(json, @manifestation, 'pdf', false)
   end
 
+  test 'GET /v1/api/texts/{id} fails if record not found' do
+    get "/api/v1/texts/-1?key=#{@key.key}"
+    assert last_response.not_found?
+    assert_equal "Couldn't find Manifestation with 'id'=-1", JSON.parse(last_response.body)["error"]
+  end
+
+  # -------------------
+  # /texts/batch
+  # -------------------
+
+  test 'GET /v1/api/texts/batch fails if disabled key is specified' do
+    get "/api/v1/texts/batch?key=#{@disabled_key.key}"
+    assert last_response.unauthorized?
+    assert_equal "key not found or disabled", JSON.parse(last_response.body)["error"]
+  end
+
+  test 'GET /v1/api/texts/batch with default params succeed and returns basic view in html format' do
+    get "/api/v1/texts/batch?key=#{@key.key}&ids[]=#{@manifestation.id}&ids[]=#{@manifestation_2.id}"
+    assert last_response.successful?
+    json = JSON.parse(last_response.body)
+    assert_equal 2, json.size
+    assert_manifestation(json[0], @manifestation, 'html', true)
+    assert_manifestation(json[1], @manifestation_2, 'html', true)
+  end
+
+  test 'GET /v1/api/texts/batch with metadata view and epub format succeed' do
+    get "/api/v1/texts/batch?key=#{@key.key}&ids[]=#{@manifestation.id}&ids[]=#{@manifestation_2.id}&view=metadata&file_format=epub"
+    assert last_response.successful?
+    json = JSON.parse(last_response.body)
+    assert_equal 2, json.size
+    assert_manifestation(json[0], @manifestation, 'epub', false)
+    assert_manifestation(json[1], @manifestation_2, 'epub', false)
+  end
+
+  test 'GET /v1/api/texts/batch fails if more than 25 ids specified' do
+    path = "/api/v1/texts/batch?key=#{@key.key}"
+    (1..26).each do |id|
+      path << "&ids[]=#{id}"
+    end
+    get path
+    assert last_response.bad_request?
+    assert_equal "Couldn't request more that 25 IDs per batch", JSON.parse(last_response.body)["error"]
+  end
+
   private
 
   def assert_manifestation(json, manifestation, format, check_snippet)
-    json = JSON.parse(last_response.body)
     md = json['metadata']
     expression = manifestation.expressions[0]
     work = expression.works[0]
@@ -71,7 +131,8 @@ class V1::APITest < ActiveSupport::TestCase
     if check_snippet
       snippet = json['snippet']
       assert snippet.include? manifestation.title
-      assert snippet.include? 'Sample Text'
+      # we assume that markdown contains plain-text only
+      assert snippet.include? manifestation.markdown
     else
       assert_not json.keys.include?('snippet')
     end

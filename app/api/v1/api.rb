@@ -30,18 +30,44 @@ class V1::Api < Grape::API
   end
 
   params do
-    requires :key, type: String, allow_blank: false, v1_auth_key: true
+    requires :key, type: String, v1_auth_key: true
   end
   resources :texts do
-    desc 'Return text by id'
-    params do
-      requires :id, type: Integer, desc: 'Text ID'
-      use :text_params
+    resource :batch do
+      desc 'Retrieve a collection of texts by specified IDs'
+      params do
+        requires :ids, type: Array[Integer], allow_blank: false, desc: 'array of text IDs to fetch'
+        use :text_params
+      end
+      get do
+        ids = params[:ids]
+        if ids.size > 25
+          error!('Couldn\'t request more that 25 IDs per batch', 400)
+          return
+        end
+        records = Manifestation.find(ids)
+        present records, with: V1::Entities::Manifestation, view: params[:view], file_format: params[:file_format]
+      end
     end
+
     route_param :id do
+      desc 'Return text by id'
+      params do
+        requires :id, type: Integer, desc: 'Text ID'
+        use :text_params
+      end
       get do
         present Manifestation.find(params[:id]), with: V1::Entities::Manifestation, view: params[:view], file_format: params[:file_format]
       end
     end
+  end
+
+  rescue_from ActiveRecord::RecordNotFound do |e|
+    error!(e, 404)
+  end
+
+  rescue_from V1::Validations::AuthKey::AuthFailed do |e|
+    # Returning unauthorized status
+    error!(e.message, 401)
   end
 end
