@@ -45,7 +45,7 @@ class V1::Api < Grape::API
           error!('Couldn\'t request more that 25 IDs per batch', 400)
           return
         end
-        records = Manifestation.find(ids)
+        records = Manifestation.all_published.find(ids)
         present records, with: V1::Entities::Manifestation, view: params[:view], file_format: params[:file_format]
       end
     end
@@ -57,13 +57,21 @@ class V1::Api < Grape::API
         use :text_params
       end
       get do
-        present Manifestation.find(params[:id]), with: V1::Entities::Manifestation, view: params[:view], file_format: params[:file_format]
+        record = Manifestation.all_published.find(params[:id])
+        present record, with: V1::Entities::Manifestation, view: params[:view], file_format: params[:file_format]
       end
     end
   end
 
   rescue_from ActiveRecord::RecordNotFound do |e|
-    error!(e, 404)
+    model = e.model == 'Manifestation' ? "Text" : e.model
+    if e.id.is_a? Array
+      message = "Couldn't find one or more #{model.pluralize} with '#{e.primary_key}'=#{e.id}"
+    else
+      message = "Couldn't find #{model} with '#{e.primary_key}'=#{e.id}"
+    end
+
+    error!(message, 404)
   end
 
   rescue_from V1::Validations::AuthKey::AuthFailed do |e|

@@ -8,6 +8,7 @@ class V1::APITest < ActiveSupport::TestCase
     @disabled_key = create(:api_key, status: :disabled)
     @manifestation = create(:manifestation, markdown: 'Sample Text 1')
     @manifestation_2 = create(:manifestation, markdown: 'Sample Text 2')
+    @unpublished_manifestation = create(:manifestation, status: :unpublished)
   end
 
   def app
@@ -57,10 +58,10 @@ class V1::APITest < ActiveSupport::TestCase
     assert_manifestation(json, @manifestation, 'pdf', false)
   end
 
-  test 'GET /v1/api/texts/{id} fails if record not found' do
-    get "/api/v1/texts/-1?key=#{@key.key}"
+  test 'GET /v1/api/texts/{id} fails if id not found in published manifestations' do
+    get "/api/v1/texts/#{@unpublished_manifestation.id}?key=#{@key.key}"
     assert last_response.not_found?
-    assert_equal "Couldn't find Manifestation with 'id'=-1", JSON.parse(last_response.body)["error"]
+    assert_equal "Couldn't find Text with 'id'=#{@unpublished_manifestation.id}", JSON.parse(last_response.body)["error"]
   end
 
   # -------------------
@@ -99,6 +100,12 @@ class V1::APITest < ActiveSupport::TestCase
     get path
     assert last_response.bad_request?
     assert_equal "Couldn't request more that 25 IDs per batch", JSON.parse(last_response.body)["error"]
+  end
+
+  test 'GET /v1/api/texts/batch fails if some of ids are not found in published manifestations' do
+    get "/api/v1/texts/batch?key=#{@key.key}&ids[]=#{@manifestation.id}&ids[]=#{@unpublished_manifestation.id}"
+    assert last_response.not_found?
+    assert_equal "Couldn't find one or more Texts with 'id'=#{[@manifestation.id, @unpublished_manifestation.id]}", JSON.parse(last_response.body)["error"]
   end
 
   private
