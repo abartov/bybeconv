@@ -156,6 +156,7 @@ paths:
     get:
       parameters:
         - $ref: '#/components/parameters/keyParam'
+        - $ref: '#/components/parameters/viewParam'
         - name: page
           in: query
           required: false
@@ -165,6 +166,10 @@ paths:
       responses:
         '200':
           description: OK
+          schema:
+            type: array
+            items:
+              "$ref": "#/components/responses/text"
   /texts/batch:
     get:
       parameters:
