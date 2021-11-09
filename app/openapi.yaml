@@ -17,6 +17,42 @@ components:
       required: true
       schema:
         type: string
+    viewParam:
+      name: view
+      in: query
+      required: false
+      description: 'how much detail to return: `metadata` returns all metadata and download lnk; `basic` returns basic metadata, download_link and a snippet of the beginning of the text, and is the default'
+      schema:
+        type: string
+        default: basic
+        enum:
+          - metadata
+          - basic
+    formatParam:
+      name: file_format
+      in: query
+      required: false
+      description: 'desired text format for download link: `html` for HTML, `txt` for plain text without any formatting, `pdf` for PDF, `epub` for EPUB, `mobi` for MOBI, `docx` for DOCX, `odt` for LibreOffice ODT'
+      schema:
+        type: string
+        default: html
+        enum:
+          - html
+          - txt
+          - pdf
+          - epub
+          - mobi
+          - docx
+          - odt
+    pageParam:
+      name: page
+      in: query
+      required: false
+      description: 'desired page number of result set'
+      schema:
+        type: integer
+        minimum: 1
+
   schemas:
     genre:
       type: string
@@ -40,24 +76,187 @@ components:
         - revival
         - modern
       description: specifies what section of the rough timeline of Hebrew literature an object belongs to.
+    year_range:
+      type: array
+      minItems: 1
+      maxItems: 2
+      items:
+        type: integer
+
+    gender:
+      type: string
+      enum:
+        - female
+        - male
+        - other
+        - unknown
+      description: describes a person's gender
+  responses:
+    text:
+      description: A response object describing a single text from Project Ben-Yehuda
+      content:
+        application/json:
+          schema:
+            properties:
+              id:
+                type: integer
+              url:
+                type: string
+                description: Canonical URL of the text at Project Ben-Yehuda (useful for giving credit and allowing users to click through)
+              metadata:
+                type: object
+                properties:
+                  title:
+                    type: string
+                  sort_title:
+                    type: string
+                    description: version of the title more useful for alphabetical sorting
+                  genre:
+                    $ref: '#/components/schemas/genre'
+                  orig_lang:
+                    type: string
+                  orig_lang_title:
+                    type: string
+                    description: title of translated text in the original language and script
+                  pby_publication_date:
+                    type: string
+                  author_string:
+                    type: string
+                  author_ids:
+                    type: array
+                    items:
+                      type: integer
+                    description: ID numbers of all authors involved with the text (most often only one)
+                  title_and_authors:
+                    type: string
+                  impressions_count:
+                    type: integer
+                    description: total number of times the text was viewed or printed
+                  orig_publication_date:
+                    type: string
+                  author_gender:
+                    $ref: '#/components/schemas/gender'
+                  translator_gender:
+                    $ref: '#/components/schemas/gender'
+                  copyright_status:
+                    type: boolean
+                  period:
+                    $ref: '#/components/schemas/period'
+                  raw_creation_date:
+                    type: string
+                  creation_date:
+                    type: string
+                  place_and_publisher:
+                    type: string
+                  raw_publication_date:
+                    type: string
+                  publication_year:
+                    type: string
+              snippet:
+                  type: string
+                  description: plaintext snippet of the first few hundred characters of the text, useful for previews and search results
+              download_url:
+                type: string
+                description: URL of the full text of the work, in the requested format (HTML by default)
 paths:
   /search:
     get:
       parameters:
         - $ref: '#/components/parameters/keyParam'
-      description: "(TBD)"
+        - $ref: '#/components/parameters/viewParam'
+        - $ref: '#/components/parameters/pageParam'
+        - name: genres
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              "$ref": "#/components/schemas/genre"
+        - name: periods
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              "$ref": "#/components/schemas/period"
+        - name: is_copyrighted
+          in: query
+          required: false
+          description: "limit search to copyrighted works or to non-copyrighted works"
+          schema:
+            type: boolean
+        - name: author_genders
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              "$ref": "#/components/schemas/gender"
+        - name: translator_genders
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              "$ref": "#/components/schemas/gender"
+        - name: title
+          in: query
+          required: false
+          description: "a substring to match against a text's title"
+          schema:
+            type: string
+        - name: author
+          in: query
+          required: false
+          description: "a substring to match against the name(s) of a text's author(s)"
+          schema:
+            type: string
+        - name: author_ids
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: integer
+        - name: original_language
+          in: query
+          required: false
+          description: "ISO code of language, e.g. 'pl' for Polish, 'grc' for ancient Greek"
+          schema:
+            type: string
+        - name: uploaded_between
+          in: query
+          required: false
+          description: "pass an array of years [min_year, max_year] to get works uploaded to the site at year min_year <= year <= max_year"
+          schema:
+            "$ref": "#/components/schemas/year_range"
+        - name: created_between
+          in: query
+          required: false
+          description: "pass an array of years [min_year, max_year] to get works created at year min_year <= year <= max_year"
+          schema:
+            "$ref": "#/components/schemas/year_range"
+        - name: published_between
+          in: query
+          required: false
+          description: "pass an array of years [min_year, max_year] to get works published in print at year min_year <= year <= max_year"
+          schema:
+            "$ref": "#/components/schemas/year_range"
+
+      description: "Query the site database for texts by a variety of parameters. See API docs for documentation of each parameter. All parameters are combined with a logical AND. Parameters accepting arrays allow a logical OR within that category."
       responses:
         '200':
           description: OK
+          schema:
+            type: array
+            items:
+              "$ref": "#/components/responses/text"
   /texts:
     get:
       parameters:
         - $ref: '#/components/parameters/keyParam'
-        - name: page
-          in: query
-          required: false
-          schema:
-            type: integer
+        - $ref: '#/components/parameters/viewParam'
+        - $ref: '#/components/parameters/pageParam'
       summary: retrieve a specified page from the list of all texts
       responses:
         '200':
