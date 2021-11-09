@@ -24,6 +24,7 @@
 /by
 /ignore/*
 # ignore site-specific config
+/config/chewy.yml
 /config/database.yml
 /config/constants.yml
 /config/storage.yml
