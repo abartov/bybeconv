@@ -261,6 +261,10 @@ paths:
       responses:
         '200':
           description: OK
+          schema:
+            type: array
+            items:
+              "$ref": "#/components/responses/text"
   /texts/batch:
     get:
       parameters:
@@ -276,11 +280,14 @@ paths:
             items:
               type: integer
         - $ref: '#/components/parameters/viewParam'
-        - $ref: '#/components/parameters/formatParam'
       summary: retrieve a collection of texts by specified IDs
       responses:
         '200':
           description: OK
+          schema:
+            type: array
+            items:
+              "$ref": "#/components/responses/text"
   '/texts/{id}':
     get:
       parameters:
