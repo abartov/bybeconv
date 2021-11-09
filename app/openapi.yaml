@@ -1,79 +1,207 @@
 openapi: 3.0.0
 info:
   title: Project Ben-Yehuda API
+  description: A read-only API to query for and retrieve texts and metadata from benyehuda.org
   version: 1.0.0
+  license:
+    name: GNU Affero Public License
+    url: 'https://www.gnu.org/licenses/agpl-3.0.en.html'
+  contact:
+    name: Asaf Bartov
+    email: editor@benyehuda.org
 components:
+  parameters:
+    keyParam:
+      name: key
+      in: query
+      required: true
+      schema:
+        type: string
+    viewParam:
+      name: view
+      in: query
+      required: false
+      description: 'how much detail to return: `metadata` returns all metadata and download lnk; `basic` returns basic metadata, download_link and a snippet of the beginning of the text, and is the default'
+      schema:
+        type: string
+        default: basic
+        enum:
+          - metadata
+          - basic
+    formatParam:
+      name: file_format
+      in: query
+      required: false
+      description: 'desired text format for download link: `html` for HTML, `txt` for plain text without any formatting, `pdf` for PDF, `epub` for EPUB, `mobi` for MOBI, `docx` for DOCX, `odt` for LibreOffice ODT'
+      schema:
+        type: string
+        default: html
+        enum:
+          - html
+          - txt
+          - pdf
+          - epub
+          - mobi
+          - docx
+          - odt
+
   schemas:
     genre:
       type: string
-      enum: ["poetry", "prose", "drama", "fables","article", "memoir", "letters", "reference", "lexicon"]
-      description: "the broad field of humanities of a textual work in the database."
+      enum:
+        - poetry
+        - prose
+        - drama
+        - fables
+        - article
+        - memoir
+        - letters
+        - reference
+        - lexicon
+      description: the broad field of humanities of a textual work in the database.
     period:
       type: string
-      enum: ["ancient", "medieval", "enlightenment", "revival", "modern"]
-      description: "specifies what section of the rough timeline of Hebrew literature an object belongs to."
-paths: 
+      enum:
+        - ancient
+        - medieval
+        - enlightenment
+        - revival
+        - modern
+      description: specifies what section of the rough timeline of Hebrew literature an object belongs to.
+    gender:
+      type: string
+      enum:
+        - female
+        - male
+        - other
+        - unknown
+      description: describes a person's gender
+  responses:
+    text:
+      description: A response object describing a single text from Project Ben-Yehuda
+      content:
+        application/json:
+          schema:
+            properties:
+              id:
+                type: integer
+              url:
+                type: string
+                description: Canonical URL of the text at Project Ben-Yehuda (useful for giving credit and allowing users to click through)
+              metadata:
+                type: object
+                properties:
+                  title:
+                    type: string
+                  sort_title:
+                    type: string
+                    description: version of the title more useful for alphabetical sorting
+                  genre:
+                    $ref: '#/components/schemas/genre'
+                  orig_lang:
+                    type: string
+                  orig_lang_title:
+                    type: string
+                    description: title of translated text in the original language and script
+                  pby_publication_date:
+                    type: string
+                  author_string:
+                    type: string
+                  author_ids:
+                    type: array
+                    items:
+                      type: integer
+                    description: ID numbers of all authors involved with the text (most often only one)
+                  title_and_authors:
+                    type: string
+                  impressions_count:
+                    type: integer
+                    description: total number of times the text was viewed or printed
+                  orig_publication_date:
+                    type: string
+                  author_gender:
+                    $ref: '#/components/schemas/gender'
+                  translator_gender:
+                    $ref: '#/components/schemas/gender'
+                  copyright_status:
+                    type: boolean
+                  period:
+                    $ref: '#/components/schemas/period'
+                  raw_creation_date:
+                    type: string
+                  creation_date:
+                    type: string
+                  place_and_publisher:
+                    type: string
+                  raw_publication_date:
+                    type: string
+                  publication_year:
+                    type: string
+              snippet:
+                  type: string
+                  description: plaintext snippet of the first few hundred characters of the text, useful for previews and search results
+              download_url:
+                type: string
+                description: URL of the full text of the work, in the requested format (HTML by default)
+paths:
   /search:
     get:
-      description: 
+      parameters:
+        - $ref: '#/components/parameters/keyParam'
+      description: (TBD)
       responses:
         '200':
           description: OK
   /texts:
     get:
       parameters:
+        - $ref: '#/components/parameters/keyParam'
         - name: page
           in: query
           required: false
           schema:
             type: integer
-      summary: "retrieve a specified page from the list of all texts"
+      summary: retrieve a specified page from the list of all texts
       responses:
         '200':
           description: OK
   /texts/batch:
     get:
       parameters:
+        - $ref: '#/components/parameters/keyParam'
         - name: ids
           in: query
           required: false
-          description: "array of text IDs to fetch"
+          description: array of text IDs to fetch
           schema:
             type: array
             minItems: 1
             maxItems: 25
             items:
               type: integer
-        - name: view
-          in: query
-          required: false
-          description: "how much detail to return: `full` returns all metadata and the fulltext; `metadata` returns all metadata but no text; `basic` returns basic metadata and a snippet of the beginning of the text, and is the default"
-          schema:
-            type: string
-            enum: ['full', 'metadata', 'basic']
-      summary: "retrieve a collection of texts by specified IDs"
+        - $ref: '#/components/parameters/viewParam'
+        - $ref: '#/components/parameters/formatParam'
+      summary: retrieve a collection of texts by specified IDs
       responses:
         '200':
           description: OK
-  /texts/{id}:
+  '/texts/{id}':
     get:
       parameters:
+        - $ref: '#/components/parameters/keyParam'
         - name: id
           in: path
           required: true
           schema:
             type: integer
-      summary: "returns meta-data and, optionally, the full text, of a textual work from the database"
-      description: "(TBD)"
+        - $ref: '#/components/parameters/viewParam'
+        - $ref: '#/components/parameters/formatParam'
+      summary: 'returns meta-data and, optionally, the full text, of a textual work from the database'
+      description: (TBD)
       responses:
         '200':
-          description: OK
-  parameters:
-  - name: key
-    in: query
-    required: true
-    schema:
-      type: string
+          "$ref": "#/components/responses/text"
+
 servers:
-  - url: "https://benyehuda.org/api"
-    description: "main production server of Project Ben-Yehuda"
+  - url: 'https://benyehuda.org/api'
+    description: main production server of Project Ben-Yehuda

@@ -1,5 +1,7 @@
 include BybeUtils
 Bybeconv::Application.routes.draw do
+  mount V1::Api => '/'
+
   resources :anthology_texts do
     post 'mass_create', on: :collection
     get 'confirm_destroy'
@@ -132,7 +134,7 @@ Bybeconv::Application.routes.draw do
   get 'dict/:id/:entry' => 'manifestation#dict_entry', as: 'dict_entry'
   get "read/:id/read" => 'manifestation#readmode', as: 'manifestation_readmode'
   get 'periods' => 'manifestation#periods', as: 'periods'
-  match 'authors', to: 'authors#browse', as: 'authors', via: [:get, :post], as: 'authors'
+  match 'authors', to: 'authors#browse', as: 'authors', via: [:get, :post]
   match 'works', to: 'manifestation#browse', as: 'works', via: [:get, :post]
   match 'works/all', to: 'manifestation#all', as: 'all_works', via: [:get, :post]
   match 'manifestation/genre' => 'manifestation#genre', as: 'genre', via: [:get, :post]
@@ -165,7 +167,7 @@ Bybeconv::Application.routes.draw do
   get 'manifestation/add_aboutnesses/:id' => 'manifestation#add_aboutnesses'
 
   get "api/query"
-  resources :api_keys
+  resources :api_keys, except: :show
   get "taggings/render_tags"
   resources :taggings
   resources :aboutnesses
