@@ -27,12 +27,31 @@ class V1::Api < Grape::API
           `odt` for LibreOffice ODT'
       DESC
     end
+
+    params :paging_params do
+      requires :page, type: Integer, minimum_value: 1
+      optional :sort_by, type: String, default: 'alphabetical', values: SortedManifestations::SORTING_PROPERTIES.keys
+      optional :sort_dir, type: String, default: 'default', values: SortedManifestations::DIRECTIONS
+    end
   end
 
   params do
     requires :key, type: String, v1_auth_key: true
   end
   resources :texts do
+    desc 'Retrieve a specified page from the list of all texts'
+    params do
+      use :paging_params
+      use :text_params
+    end
+    get do
+      PAGE_SIZE = 25
+      page = params[:page]
+      records = SortedManifestations.call(params[:sort_by], params[:sort_dir]).all_published.limit(PAGE_SIZE).offset((page - 1) * PAGE_SIZE)
+      model = { data: records, total_count: Manifestation.all_published.count }
+      present model, with: V1::Entities::ManifestationsPage, view: params[:view], file_format: params[:file_format]
+    end
+
     resource :batch do
       desc 'Retrieve a collection of texts by specified IDs'
       params do

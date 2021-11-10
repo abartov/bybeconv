@@ -18,9 +18,6 @@ FactoryBot.define do
     translation {}
     source_edition {}
     period { :modern }
-    normalized_pub_date {}
-    normalized_creation_date {}
-
     works { [ create(:work, genre: genre) ] }
   end
 end

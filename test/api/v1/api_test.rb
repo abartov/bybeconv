@@ -6,8 +6,8 @@ class V1::APITest < ActiveSupport::TestCase
   def setup
     @key = create(:api_key)
     @disabled_key = create(:api_key, status: :disabled)
-    @manifestation = create(:manifestation, markdown: 'Sample Text 1')
-    @manifestation_2 = create(:manifestation, markdown: 'Sample Text 2')
+    @manifestation = create(:manifestation, title: '1st', markdown: 'Sample Text 1')
+    @manifestation_2 = create(:manifestation, title: '2nd', markdown: 'Sample Text 2')
     @unpublished_manifestation = create(:manifestation, status: :unpublished)
   end
 
@@ -106,6 +106,78 @@ class V1::APITest < ActiveSupport::TestCase
     get "/api/v1/texts/batch?key=#{@key.key}&ids[]=#{@manifestation.id}&ids[]=#{@unpublished_manifestation.id}"
     assert last_response.not_found?
     assert_equal "Couldn't find one or more Texts with 'id'=#{[@manifestation.id, @unpublished_manifestation.id]}", JSON.parse(last_response.body)["error"]
+  end
+
+  # -------------------
+  # /texts
+  # -------------------
+
+  test 'GET /v1/api/texts fails if disabled key is specified' do
+    get "/api/v1/texts?key=#{@disabled_key.key}&page=1"
+    assert last_response.unauthorized?
+    assert_equal "key not found or disabled", JSON.parse(last_response.body)["error"]
+  end
+
+  test 'GET /v1/api/texts fails if page less than 1 is requested' do
+    get "/api/v1/texts?key=#{@key.key}&page=0"
+    assert last_response.bad_request?
+    assert_equal "page must be equal to or above 1", JSON.parse(last_response.body)["error"]
+  end
+
+  test 'GET /v1/api/texts returns 1st page with default params' do
+    get "/api/v1/texts?key=#{@key.key}&page=1"
+    assert last_response.successful?
+    json = JSON.parse(last_response.body)
+    assert_equal 2, json['total_count']
+    data = json['data']
+    assert_equal 2, data.size
+    assert_manifestation(data[0], @manifestation, 'html', true)
+    assert_manifestation(data[1], @manifestation_2, 'html', true)
+  end
+
+  test 'GET /v1/api/texts returns 1st page with descending alphabetical sorting, metadata view and epub format' do
+    get "/api/v1/texts?key=#{@key.key}&page=1&sort_by=alphabetical&sort_dir=desc&view=metadata&file_format=epub"
+    assert last_response.successful?
+    json = JSON.parse(last_response.body)
+    assert_equal 2, json['total_count']
+    data = json['data']
+    assert_equal 2, data.size
+    assert_manifestation(data[0], @manifestation_2, 'epub', false)
+    assert_manifestation(data[1], @manifestation, 'epub', false)
+  end
+
+  test 'GET /v1/api/texts do correct paging' do
+    Manifestation.destroy_all
+    manifestations = create_list(:manifestation, 60)
+    get "/api/v1/texts?key=#{@key.key}&page=1&sort_by=upload_date&sort_dir=asc"
+    assert last_response.successful?
+    json = JSON.parse(last_response.body)
+    assert_equal 60, json['total_count']
+    data = json['data']
+    assert_equal 25, data.size
+    assert_equal manifestations[0..24].map(&:id), data.map { |rec| rec['id'] }
+
+    get "/api/v1/texts?key=#{@key.key}&page=2&sort_by=upload_date&sort_dir=asc"
+    assert last_response.successful?
+    json = JSON.parse(last_response.body)
+    assert_equal 60, json['total_count']
+    data = json['data']
+    assert_equal 25, data.size
+    assert_equal manifestations[25..49].map(&:id), data.map { |rec| rec['id'] }
+
+    get "/api/v1/texts?key=#{@key.key}&page=3&sort_by=upload_date&sort_dir=asc"
+    assert last_response.successful?
+    json = JSON.parse(last_response.body)
+    assert_equal 60, json['total_count']
+    data = json['data']
+    assert_equal 10, data.size
+    assert_equal manifestations[50..60].map(&:id), data.map { |rec| rec['id'] }
+
+    get "/api/v1/texts?key=#{@key.key}&page=4&sort_by=upload_date&sort_dir=asc"
+    assert last_response.successful?
+    json = JSON.parse(last_response.body)
+    assert_equal 60, json['total_count']
+    assert_empty json['data']
   end
 
   private
