@@ -52,7 +52,32 @@ components:
       schema:
         type: integer
         minimum: 1
-
+    sortByParam:
+      name: sort_by
+      in: query
+      required: false
+      description: 'desired ordering of result set'
+      schema:
+        type: string
+        default: alphabetical
+        enum:
+          - alphabetical
+          - popularity
+          - publication_date
+          - creation_date
+          - upload_date
+    sortDirParam:
+      name: sort_dir
+      in: query
+      required: false
+      description: 'desired ordering direction'
+      schema:
+        type: string
+        default: default
+        enum:
+          - default
+          - asc
+          - desc
   schemas:
     genre:
       type: string
@@ -82,7 +107,6 @@ components:
       maxItems: 2
       items:
         type: integer
-
     gender:
       type: string
       enum:
@@ -158,6 +182,19 @@ components:
               download_url:
                 type: string
                 description: URL of the full text of the work, in the requested format (HTML by default)
+    textsPage:
+      description: "Single page of paginated texts list"
+      content:
+        application/json:
+          schema:
+            properties:
+              total_count:
+                type: integer
+              data:
+                type: array
+                items:
+                  "$ref": "#/components/responses/text"
+
 paths:
   /search:
     get:
@@ -247,24 +284,25 @@ paths:
       responses:
         '200':
           description: OK
-          schema:
-            type: array
-            items:
-              "$ref": "#/components/responses/text"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/responses/text"
   /texts:
     get:
       parameters:
         - $ref: '#/components/parameters/keyParam'
         - $ref: '#/components/parameters/viewParam'
+        - $ref: '#/components/parameters/formatParam'
         - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/sortByParam'
+        - $ref: '#/components/parameters/sortDirParam'
       summary: retrieve a specified page from the list of all texts
       responses:
         '200':
-          description: OK
-          schema:
-            type: array
-            items:
-              "$ref": "#/components/responses/text"
+          "$ref": "#/components/responses/textsPage"
   /texts/batch:
     get:
       parameters:
@@ -284,10 +322,12 @@ paths:
       responses:
         '200':
           description: OK
-          schema:
-            type: array
-            items:
-              "$ref": "#/components/responses/text"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/responses/text"
   '/texts/{id}':
     get:
       parameters:

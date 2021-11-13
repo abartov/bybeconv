@@ -27,12 +27,31 @@ class V1::Api < Grape::API
           `odt` for LibreOffice ODT'
       DESC
     end
+
+    params :paging_params do
+      requires :page, type: Integer, minimum_value: 1
+      optional :sort_by, type: String, default: 'alphabetical', values: SortedManifestations::SORTING_PROPERTIES.keys
+      optional :sort_dir, type: String, default: 'default', values: SortedManifestations::DIRECTIONS
+    end
   end
 
   params do
     requires :key, type: String, v1_auth_key: true
   end
   resources :texts do
+    desc 'Retrieve a specified page from the list of all texts'
+    params do
+      use :paging_params
+      use :text_params
+    end
+    get do
+      PAGE_SIZE = 25
+      page = params[:page]
+      records = SortedManifestations.call(params[:sort_by], params[:sort_dir]).all_published.limit(PAGE_SIZE).offset((page - 1) * PAGE_SIZE)
+      model = { data: records, total_count: Manifestation.all_published.count }
+      present model, with: V1::Entities::ManifestationsPage, view: params[:view], file_format: params[:file_format]
+    end
+
     resource :batch do
       desc 'Retrieve a collection of texts by specified IDs'
       params do
@@ -45,7 +64,7 @@ class V1::Api < Grape::API
           error!('Couldn\'t request more that 25 IDs per batch', 400)
           return
         end
-        records = Manifestation.find(ids)
+        records = Manifestation.all_published.find(ids)
         present records, with: V1::Entities::Manifestation, view: params[:view], file_format: params[:file_format]
       end
     end
@@ -57,13 +76,21 @@ class V1::Api < Grape::API
         use :text_params
       end
       get do
-        present Manifestation.find(params[:id]), with: V1::Entities::Manifestation, view: params[:view], file_format: params[:file_format]
+        record = Manifestation.all_published.find(params[:id])
+        present record, with: V1::Entities::Manifestation, view: params[:view], file_format: params[:file_format]
       end
     end
   end
 
   rescue_from ActiveRecord::RecordNotFound do |e|
-    error!(e, 404)
+    model = e.model == 'Manifestation' ? "Text" : e.model
+    if e.id.is_a? Array
+      message = "Couldn't find one or more #{model.pluralize} with '#{e.primary_key}'=#{e.id}"
+    else
+      message = "Couldn't find #{model} with '#{e.primary_key}'=#{e.id}"
+    end
+
+    error!(message, 404)
   end
 
   rescue_from V1::Validations::AuthKey::AuthFailed do |e|
