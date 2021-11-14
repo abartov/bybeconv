@@ -146,6 +146,7 @@ Bybeconv::Application.routes.draw do
   match "print/:id" => 'manifestation#print', as: 'manifestation_print', via: [:get, :post]
   get "manifestation/show/:id" => 'manifestation#show', as: 'manifestation_show'
   get "manifestation/render_html"
+  match "manifestation/chomp_period/:id" => 'manifestation#chomp_period', as: 'manifestation_chomp_period', via: [:get]
   post 'manifestation/set_bookmark'
   post 'manifestation/remove_bookmark'
   get "manifestation/edit/:id" => 'manifestation#edit', as: 'manifestation_edit'

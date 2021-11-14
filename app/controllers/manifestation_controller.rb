@@ -437,6 +437,17 @@ class ManifestationController < ApplicationController
     @e = @m.expressions[0] # TODO: generalize?
     @w = @e.works[0] # TODO: generalize!
   end
+  def chomp_period
+    @m = Manifestation.find(params[:id])
+    @e = @m.expressions[0] # TODO: generalize?
+    @w = @e.works[0] # TODO: generalize!
+    [@m, @e, @w].each { |rec|
+      if rec.title[-1] == '.'
+        rec.title = rec.title[0..-2]
+        rec.save!
+      end
+    }
+  end
 
   def add_aboutnesses
     @m = Manifestation.find(params[:id])
