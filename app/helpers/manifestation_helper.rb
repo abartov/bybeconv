@@ -31,7 +31,7 @@ module ManifestationHelper
     return " (#{thedate.nil? ? t(:unknown) : thedate.to_date.strftime('%d-%m-%Y')})"
   end
   def browse_upload_date(item)
-    return " (#{item.created_at.strftime('%d-%m-%Y')})"
+    return " (#{item.pby_publication_date.to_date.strftime('%d-%m-%Y')})"
   end
   def browse_null_decorator(item)
     return ''

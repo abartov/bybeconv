@@ -15,7 +15,7 @@ class ManifestationsIndex < Chewy::Index
     field :author_ids, type: 'integer', value: ->(manifestation) {manifestation.author_and_translator_ids}
     field :title_and_authors, value: ->(manifestation) {manifestation.title_and_authors}
     field :impressions_count, type: 'integer'
-    field :orig_publication_date, value: ->(manifestation) {normalize_date(manifestation.expressions[0].date)}
+    field :orig_publication_date, type: 'date', value: ->(manifestation) {normalize_date(manifestation.expressions[0].date)}
     # field :video_count, type: 'integer', value: ->(manifestation){ manifestation.video_count}
     # field :recommendation_count, type: 'integer', value: ->(manifestation){manifestation.recommendations.all_approved.count}
     #field :curated_content_count, type: 'integer', value: ->(manifestation){ 0 } # TODO: implement
@@ -24,7 +24,7 @@ class ManifestationsIndex < Chewy::Index
     field :translator_gender, value: ->(manifestation) {manifestation.translator_gender}, type: 'keyword'
     field :copyright_status, value: ->(manifestation) {manifestation.copyright?}, type: 'keyword' # TODO: make non boolean
     field :period, value: ->(manifestation) {manifestation.expressions[0].period}, type: 'keyword'
-    field :creation_date, value: ->(manifestation) {normalize_date(manifestation.expressions[0].works[0].date)}
+    field :creation_date, type: 'date', value: ->(manifestation) {normalize_date(manifestation.expressions[0].works[0].date)}
   end
 
   # TODO: in future: collections/readers; users; recommendations; curated/featured content
