@@ -28,6 +28,8 @@ Vagrant.configure("2") do |config|
   config.vm.network "forwarded_port", guest: 3306, host: 3309
   # Forwarding ElasticSearch port to be able to connect to it from host machine
   config.vm.network "forwarded_port", guest: 9200, host: 9203
+  # Forwarding Kibana port to be able to connect to it from host machine
+  config.vm.network "forwarded_port", guest: 5601, host: 5604
 
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine and only allow access
@@ -58,7 +60,7 @@ Vagrant.configure("2") do |config|
   #   vb.gui = true
   #
   #   # Customize the amount of memory on the VM:
-     vb.memory = "4096"
+     vb.memory = "6144"
   end
   #
   # View the documentation for the provider you are using for more
@@ -77,16 +79,19 @@ Vagrant.configure("2") do |config|
     service mysql restart
     # TODO: configure database
     # TODO: import database
+    
     # ElasticSearch
-    apt-get install -y openjdk-8-jre
-    if [ ! -f "elasticsearch-6.8.20.deb" ]; then
-      wget https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-6.8.20.deb
-    fi
-    dpkg -i ./elasticsearch-6.8.20.deb
-    # allowing external connections to ElasticSearch
+    wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | apt-key add -
+    echo "deb https://artifacts.elastic.co/packages/6.x/apt stable main" | sudo tee /etc/apt/sources.list.d/elastic-6.x.list
+    apt-get update && apt-get install -y openjdk-8-jre elasticsearch=6.8.20 kibana=6.8.20
+    # allowing external connections to ElasticSearch and Kibana
     sed -i "s/.*network.host: .*/network.host: 0.0.0.0/" /etc/elasticsearch/elasticsearch.yml
+    sed -i "s/.*server.host: .*/server.host: 0.0.0.0/" /etc/kibana/kibana.yml 
     service elasticsearch restart
-    update-rc.d elasticsearch defaults 95 10
+    service kibana restart
+    systemctl daemon-reload
+    systemctl enable elasticsearch.service
+    systemctl enable kibana.service
   SHELL
   config.vm.provision "shell", privileged: false, inline: <<-SHELL
     # Ruby
