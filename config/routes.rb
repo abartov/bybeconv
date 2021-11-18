@@ -167,7 +167,6 @@ Bybeconv::Application.routes.draw do
   get 'work/show/:id' => 'manifestation#workshow', as: 'work_show' # temporary, until we have a works controller
   get 'manifestation/add_aboutnesses/:id' => 'manifestation#add_aboutnesses'
 
-  get "api/query"
   resources :api_keys, except: :show
   get "taggings/render_tags"
   resources :taggings
