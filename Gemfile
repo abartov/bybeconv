@@ -82,7 +82,9 @@ gem 'hebruby' # for Hebrew date handling
 
 gem 'grape', '~> 1.6.0'
 gem 'grape-entity', '~> 0.10.1'
-gem 'grape-extra_validators', '~> 2.0.0'
+
+# TODO: Replace to standard version of gem after PR will be accepted https://github.com/jagaapple/grape-extra_validators/pull/10
+gem 'grape-extra_validators', '~> 2.1.0', git: "https://github.com/damisul/grape-extra_validators"
 
 group :production do
 #  gem 'newrelic_rpm' # performance monitoring
@@ -93,6 +95,7 @@ group :test do
   gem 'turn', '0.8.2', require: false
   gem 'simplecov', require: false
   gem 'factory_bot_rails', '~> 6.2.0', require: false
+  gem 'mocha', '~> 1.13.0'
 end
 
 group :development do

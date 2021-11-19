@@ -39,9 +39,7 @@ module V1
         expose :creation_date do |manifestation|
           normalize_date(manifestation.expressions[0].works[0].date)
         end
-        expose :place_and_publisher do |manifestation|
-          "#{manifestation.publication_place}, #{manifestation.publisher}"
-        end
+        expose :place_and_publisher
         expose :raw_publication_date do |manifestation|
           manifestation.expressions[0].date
         end
@@ -50,26 +48,10 @@ module V1
         end
       end
 
-      expose :snippet, if: lambda { |_manifestation, options| options[:view] == 'basic' } do |manifestation|
-        snippet = snippet(manifestation.markdown, 500)[0]
-        html = <<~HTML
-          <!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">
-          <html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"he\" lang=\"he\" dir=\"rtl\">
-          <head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" /></head>
-          <body dir='rtl' align='right'><div dir=\"rtl\" align=\"right\">
-            #{manifestation.title_and_authors_html}
-            #{MultiMarkdown.new(snippet).to_html.force_encoding('UTF-8').gsub(/<figcaption>.*?<\/figcaption>/,'')}
-            </div>
-          </body>
-          </html>
-          HTML
-        txt = html2txt(html)
-        txt.gsub("\n","\r\n") # windows linebreaks
-      end
+      expose :txt_snippet, as: :snippet, if: lambda { |_manifestation, options| options[:view] == 'basic' }
 
       expose :download_url do |manifestation|
-        dl = GetFreshManifestationDownloadable.call(manifestation, options[:file_format])
-        Rails.application.routes.url_helpers.rails_blob_url(dl.stored_file)
+        Rails.application.routes.url_helpers.manifestation_download_url(manifestation, format: options[:file_format])
       end
     end
   end
