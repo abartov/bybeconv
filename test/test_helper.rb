@@ -7,6 +7,7 @@ require 'rails/test_help'
 
 require 'chewy/minitest'
 require 'factory_bot_rails'
+require 'mocha/minitest'
 
 Chewy.strategy(:bypass)
 

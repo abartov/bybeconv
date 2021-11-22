@@ -338,7 +338,10 @@ paths:
       parameters:
         - $ref: '#/components/parameters/keyParam'
         - $ref: '#/components/parameters/viewParam'
+        - $ref: '#/components/parameters/formatParam'
         - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/sortByParam'
+        - $ref: '#/components/parameters/sortDirParam'
         - name: genres
           in: query
           required: false

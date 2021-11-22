@@ -6,9 +6,12 @@ class V1::APITest < ActiveSupport::TestCase
   def setup
     @key = create(:api_key)
     @disabled_key = create(:api_key, status: :disabled)
-    @manifestation = create(:manifestation, title: '1st', markdown: 'Sample Text 1')
-    @manifestation_2 = create(:manifestation, title: '2nd', markdown: 'Sample Text 2')
-    @unpublished_manifestation = create(:manifestation, status: :unpublished)
+
+    Chewy.strategy(:atomic) do
+      @manifestation = create(:manifestation, title: '1st', impressions_count: 3, markdown: 'Sample Text 1')
+      @manifestation_2 = create(:manifestation, title: '2nd', impressions_count: 2, markdown: 'Sample Text 2')
+      @unpublished_manifestation = create(:manifestation, status: :unpublished)
+    end
   end
 
   def app
@@ -21,20 +24,17 @@ class V1::APITest < ActiveSupport::TestCase
 
   test 'GET /v1/api/texts/{id} fails if key is not specified' do
     get "/api/v1/texts/#{@manifestation.id}"
-    assert last_response.unauthorized?
-    assert_equal "key not found or disabled", JSON.parse(last_response.body)["error"]
+    assert_key_failed
   end
 
   test 'GET /v1/api/texts/{id} fails if not-existing key is specified' do
     get "/api/v1/texts/#{@manifestation.id}?key=WRONG_KEY"
-    assert last_response.unauthorized?
-    assert_equal "key not found or disabled", JSON.parse(last_response.body)["error"]
+    assert_key_failed
   end
 
   test 'GET /v1/api/texts/{id} fails if disabled key is specified' do
     get "/api/v1/texts/#{@manifestation.id}?key=#{@disabled_key.key}"
-    assert last_response.unauthorized?
-    assert_equal "key not found or disabled", JSON.parse(last_response.body)["error"]
+    assert_key_failed
   end
 
   test 'GET /v1/api/texts/{id} with default params succeed and returns basic view in html format' do
@@ -61,7 +61,7 @@ class V1::APITest < ActiveSupport::TestCase
   test 'GET /v1/api/texts/{id} fails if id not found in published manifestations' do
     get "/api/v1/texts/#{@unpublished_manifestation.id}?key=#{@key.key}"
     assert last_response.not_found?
-    assert_equal "Couldn't find Text with 'id'=#{@unpublished_manifestation.id}", JSON.parse(last_response.body)["error"]
+    assert_equal "Couldn't find Text with 'id'=#{@unpublished_manifestation.id}", last_error
   end
 
   # -------------------
@@ -71,7 +71,7 @@ class V1::APITest < ActiveSupport::TestCase
   test 'GET /v1/api/texts/batch fails if disabled key is specified' do
     get "/api/v1/texts/batch?key=#{@disabled_key.key}"
     assert last_response.unauthorized?
-    assert_equal "key not found or disabled", JSON.parse(last_response.body)["error"]
+    assert_key_failed
   end
 
   test 'GET /v1/api/texts/batch with default params succeed and returns basic view in html format' do
@@ -99,13 +99,13 @@ class V1::APITest < ActiveSupport::TestCase
     end
     get path
     assert last_response.bad_request?
-    assert_equal "Couldn't request more that 25 IDs per batch", JSON.parse(last_response.body)["error"]
+    assert_equal "ids must have up to 25 items", last_error
   end
 
   test 'GET /v1/api/texts/batch fails if some of ids are not found in published manifestations' do
     get "/api/v1/texts/batch?key=#{@key.key}&ids[]=#{@manifestation.id}&ids[]=#{@unpublished_manifestation.id}"
     assert last_response.not_found?
-    assert_equal "Couldn't find one or more Texts with 'id'=#{[@manifestation.id, @unpublished_manifestation.id]}", JSON.parse(last_response.body)["error"]
+    assert_equal "Couldn't find one or more Texts with 'id'=#{[@manifestation.id, @unpublished_manifestation.id]}", last_error
   end
 
   # -------------------
@@ -114,14 +114,13 @@ class V1::APITest < ActiveSupport::TestCase
 
   test 'GET /v1/api/texts fails if disabled key is specified' do
     get "/api/v1/texts?key=#{@disabled_key.key}&page=1"
-    assert last_response.unauthorized?
-    assert_equal "key not found or disabled", JSON.parse(last_response.body)["error"]
+    assert_key_failed
   end
 
   test 'GET /v1/api/texts fails if page less than 1 is requested' do
     get "/api/v1/texts?key=#{@key.key}&page=0"
     assert last_response.bad_request?
-    assert_equal "page must be equal to or above 1", JSON.parse(last_response.body)["error"]
+    assert_equal "page must be equal to or above 1", last_error
   end
 
   test 'GET /v1/api/texts returns 1st page with default params' do
@@ -180,6 +179,148 @@ class V1::APITest < ActiveSupport::TestCase
     assert_empty json['data']
   end
 
+  # -------------------
+  # /search
+  # -------------------
+
+  test 'GET /v1/api/search fails if disabled key is specified' do
+    get "/api/v1/search?key=#{@disabled_key.key}&page=1"
+    assert_key_failed
+  end
+
+  test 'GET /v1/api/search returns 1st page with default params' do
+    get "/api/v1/search?key=#{@key.key}&page=1"
+    assert last_response.successful?
+    json = JSON.parse(last_response.body)
+    assert_equal 2, json['total_count']
+    data = json['data']
+    assert_equal 2, data.size
+    assert_manifestation(data[0], @manifestation, 'html', true)
+    assert_manifestation(data[1], @manifestation_2, 'html', true)
+  end
+
+  test 'GET /v1/api/search returns 1st page with descending popularity sorting, metadata view and epub format' do
+    get "/api/v1/search?key=#{@key.key}&page=1&sort_by=popularity&sort_dir=asc&view=metadata&file_format=epub"
+    assert last_response.successful?
+    json = JSON.parse(last_response.body)
+    assert_equal 2, json['total_count']
+    data = json['data']
+    assert_equal 2, data.size
+    assert_manifestation(data[0], @manifestation_2, 'epub', false)
+    assert_manifestation(data[1], @manifestation, 'epub', false)
+  end
+
+  test 'GET /v1/api/search applies filters' do
+    manifestations = []
+    Chewy.strategy(:atomic) do
+      Manifestation.destroy_all
+      (1..60).each do |index|
+        e = create(:expression, copyrighted: index%10 == 0)
+        manifestations << create(:manifestation, impressions_count: Random.rand(100), expressions: [e])
+      end
+    end
+
+    get "/api/v1/search?key=#{@key.key}&page=1&sort_by=popularity&sort_dir=asc&is_copyrighted=true"
+    assert last_response.successful?
+    json = JSON.parse(last_response.body)
+    assert_equal 6, json['total_count']
+    data = json['data']
+    assert_equal 6, data.size
+    expected_ids = manifestations.select(&:copyright?).sort_by(&:impressions_count).map(&:id)
+    assert_equal expected_ids, data.map { |rec| rec['id'] }
+  end
+
+  test 'GET /v1/api/search passes all filter params to SearchManifestation service' do
+    filter = "genres[]=poetry&periods[]=revival&is_copyrighted=true&author_genders[]=male&translator_genders[]=female"
+    filter << "&title=Title&author=Author&author_ids[]=1&author_ids[]=2&original_language=ru"
+    filter << "&uploaded_between[]=&uploaded_between[]=2016"
+    filter << "&created_between[]=1981&created_between[]=1986"
+    filter << "&published_between[]=1990&published_between[]="
+
+    # We simply check if all params are passed to SearchManifestation correctly.
+    # SearchManifestation has own test
+    expected_hash = {
+      'genres' => %w(poetry),
+      'periods' => %w(revival),
+      'is_copyrighted' => true,
+      'author_genders' => %w(male),
+      'translator_genders' => %w(female),
+      'title' => 'Title',
+      'author' => 'Author',
+      'author_ids' => [1, 2],
+      'original_language' => 'ru',
+      'uploaded_between' => [nil, 2016],
+      'created_between' => [1981, 1986],
+      'published_between' => [1990, nil]
+    }
+
+    records = mock()
+    records.expects(:offset).with(25).returns(records)
+    records.expects(:limit).with(25).returns(records)
+    records.expects(:to_a).returns([])
+    records.expects(:count).returns(5)
+
+    SearchManifestations.any_instance.expects(:call).with('popularity', 'asc', expected_hash).returns(records)
+
+    get "/api/v1/search?key=#{@key.key}&view=metadata&file_format=pdf&page=2&sort_by=popularity&sort_dir=asc&#{filter}"
+
+    assert last_response.successful?
+    json = JSON.parse(last_response.body)
+    assert_equal 5, json['total_count']
+    data = json['data']
+    assert_equal 0, data.size
+  end
+
+  test 'GET /v1/api/search do correct paging' do
+    manifestations = []
+    Chewy.strategy(:atomic) do
+      Manifestation.destroy_all
+      (1..60).each do |index|
+        manifestations << create(:manifestation, impressions_count: Random.rand(100))
+      end
+    end
+
+    asc_ids = manifestations.sort_by(&:impressions_count).map(&:id)
+
+    get "/api/v1/search?key=#{@key.key}&page=1&sort_by=popularity&sort_dir=asc"
+    assert last_response.successful?
+    json = JSON.parse(last_response.body)
+    assert_equal 60, json['total_count']
+    data = json['data']
+    assert_equal 25, data.size
+    assert_equal asc_ids[0..24], data.map { |rec| rec['id'] }
+
+    get "/api/v1/search?key=#{@key.key}&page=2&sort_by=popularity&sort_dir=asc"
+    assert last_response.successful?
+    json = JSON.parse(last_response.body)
+    assert_equal 60, json['total_count']
+    data = json['data']
+    assert_equal 25, data.size
+    assert_equal asc_ids[25..49], data.map { |rec| rec['id'] }
+
+    get "/api/v1/search?key=#{@key.key}&page=2&sort_by=popularity&sort_dir=desc"
+    assert last_response.successful?
+    json = JSON.parse(last_response.body)
+    assert_equal 60, json['total_count']
+    data = json['data']
+    assert_equal 25, data.size
+    assert_equal asc_ids.reverse[25..49], data.map { |rec| rec['id'] }
+
+    get "/api/v1/search?key=#{@key.key}&page=3&sort_by=popularity&sort_dir=asc"
+    assert last_response.successful?
+    json = JSON.parse(last_response.body)
+    assert_equal 60, json['total_count']
+    data = json['data']
+    assert_equal 10, data.size
+    assert_equal asc_ids[50..60], data.map { |rec| rec['id'] }
+
+    get "/api/v1/search?key=#{@key.key}&page=4&sort_by=popularity&sort_dir=asc"
+    assert last_response.successful?
+    json = JSON.parse(last_response.body)
+    assert_equal 60, json['total_count']
+    assert_empty json['data']
+  end
+
   private
 
   def assert_manifestation(json, manifestation, format, check_snippet)
@@ -216,7 +357,14 @@ class V1::APITest < ActiveSupport::TestCase
       assert_not json.keys.include?('snippet')
     end
 
-    dl = manifestation.downloadables.where(doctype: format).first
-    assert_equal json['download_url'], Rails.application.routes.url_helpers.rails_blob_url(dl.stored_file)
+    assert_equal json['download_url'], Rails.application.routes.url_helpers.manifestation_download_url(manifestation.id, format: format)
+  end
+
+  def last_error
+    return JSON.parse(last_response.body)["error"]
+  end
+
+  def assert_key_failed
+    assert_equal "key not found or disabled", last_error
   end
 end
