@@ -631,6 +631,7 @@ class HtmlFile < ApplicationRecord
           m.recalc_cached_people!
           unless self.pub_link.empty? or self.pub_link_text.empty?
             m.external_links.build(linktype: :publisher_site, url: self.pub_link, description: self.pub_link_text)
+            m.save!
           end
         }
         return true

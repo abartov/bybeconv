@@ -77,7 +77,7 @@
     = t(:add)
     = text_field_tag :add_url
     = t(:link_type)
-    = select_tag :link_type, options_for_select(Manifestation.link_types.map {|lt| [t(lt[0]), lt[1]]})
+    = select_tag :link_type, options_for_select(ExternalLink.linktypes.map {|lt| [t(lt[0]), lt[1]]})
     %br
     = t(:description)
     = text_field_tag :link_description
