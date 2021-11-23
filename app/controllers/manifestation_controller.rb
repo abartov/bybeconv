@@ -394,14 +394,14 @@ class ManifestationController < ApplicationController
     @urlbase = url_for(action: :show, id:1)[0..-2]
     # DB
     if params[:title].blank? && params[:author].blank?
-      @manifestations = Manifestation.page(params[:page]).order('updated_at DESC')
+      @manifestations = Manifestation.includes(expressions: :works).page(params[:page]).order('updated_at DESC')
     else
-      if params[:author].blank?
-        @manifestations = Manifestation.where('title like ?', '%' + params[:title] + '%').page(params[:page]).order('sort_title ASC')
+      if params[:author].blank? # 
+        @manifestations = Manifestation.includes(expressions: :works).where('title like ?', '%' + params[:title] + '%').page(params[:page]).order('sort_title ASC')
       elsif params[:title].blank?
-        @manifestations = Manifestation.where('cached_people like ?', "%#{params[:author]}%").page(params[:page]).order('sort_title asc')
+        @manifestations = Manifestation.includes(expressions: :works).where('cached_people like ?', "%#{params[:author]}%").page(params[:page]).order('sort_title asc')
       else # both author and title
-        @manifestations = Manifestation.where('manifestations.title like ? and manifestations.cached_people like ?', '%' + params[:title] + '%', '%'+params[:author]+'%').page(params[:page]).order('sort_title asc')
+        @manifestations = Manifestation.includes(expressions: :works).where('manifestations.title like ? and manifestations.cached_people like ?', '%' + params[:title] + '%', '%'+params[:author]+'%').page(params[:page]).order('sort_title asc')
       end
     end
   end
