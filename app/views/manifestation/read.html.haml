@@ -131,7 +131,7 @@
                     %span
                       != tr.translators.map{|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
           -# External links
-          - if @m.external_links.count > 0
+          - if @m.external_links.to_a.size > 0
             .by-card-v02.left-side-card-v02
               .by-card-header-left-v02
                 %span.headline-1-v02= t(:external_links)
