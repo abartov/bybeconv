@@ -187,6 +187,8 @@ GEM
     factory_bot_rails (6.2.0)
       factory_bot (~> 6.2.0)
       railties (>= 5.0.0)
+    faker (2.19.0)
+      i18n (>= 1.6, < 2)
     faraday (1.7.0)
       faraday-em_http (~> 1.0)
       faraday-em_synchrony (~> 1.0)
@@ -612,6 +614,7 @@ DEPENDENCIES
   docx
   execjs
   factory_bot_rails (~> 6.2.0)
+  faker (~> 2.19.0)
   gared (>= 0.0.23)
   gepub
   grape (~> 1.6.0)

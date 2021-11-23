@@ -1,7 +1,7 @@
 class ManifestationsIndex < Chewy::Index
 
   # works
-  define_type Manifestation.all_published.joins([expressions: :works]).includes([expressions: :works]) do
+  define_type Manifestation.all_published.includes(expressions: :works) do
 #    field :title, analyzer: 'hebrew' # from https://github.com/synhershko/elasticsearch-analysis-hebrew
 #    field :fulltext, value: ->(manifestation) {manifestation.to_plaintext}, analyzer: 'hebrew'
     field :id, type: 'integer'
