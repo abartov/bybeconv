@@ -630,8 +630,8 @@ class HtmlFile < ApplicationRecord
           save!
           m.recalc_cached_people!
           unless self.pub_link.empty? or self.pub_link_text.empty?
-            el = ExternalLink.new(linktype: Manifestation.link_types[:publisher_site], url: self.pub_link, description: self.pub_link_text)
-            m.external_links << el
+            m.external_links.build(linktype: :publisher_site, url: self.pub_link, description: self.pub_link_text)
+            m.save!
           end
         }
         return true

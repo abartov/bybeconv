@@ -19,8 +19,6 @@ class Manifestation < ApplicationRecord
 
   before_save :update_sort_title
 
-  enum link_type: [:wikipedia, :blog, :youtube, :other, :publisher_site]
-  enum linkstatus: [:approved, :submitted, :rejected]
   enum status: [:published, :nonpd, :unpublished, :deprecated]
 
   scope :all_published, -> { where(status: Manifestation.statuses[:published])}
@@ -50,7 +48,7 @@ class Manifestation < ApplicationRecord
   end
 
   def video_count
-    return external_links.all_approved.videos.count
+    return external_links.status_approved.linktype_youtube.count
   end
 
   # this will return the downloadable entity for the Manifestation *if* it is fresh
@@ -267,7 +265,7 @@ class Manifestation < ApplicationRecord
   end
 
   def self.add_publisher_link_to_works(worklist, url, linktext)
-    el = ExternalLink.new(linktype: Manifestation.link_types[:publisher_site], url: url, description: linktext)
+    el = ExternalLink.new(linktype: :publisher_site, url: url, description: linktext)
     works = Manifestation.find(worklist)
     works.each do |m|
       newel = el.dup

@@ -4,9 +4,9 @@
   = link_to links[0].url do
     .icon.card-header-element
       - case linktype
-      - when Manifestation.link_types[:youtube]
+      - when ExternalLink.linktypes[:youtube]
         %i.fa.fa-youtube-play
-      - when Manifestation.link_types[:blog]
+      - when ExternalLink.linktypes[:blog]
         %i.fa.fa-pencil-square-o
     .card-header-element{style:'margin-left: 2.4rem'}
       %p= links[0].description
