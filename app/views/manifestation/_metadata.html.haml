@@ -50,15 +50,16 @@
       - unless @e.date.nil? || @e.date.empty?
         - edition += '; '+@e.date
       = edition
-  - if @ext_links.publisher_sites.count > 0
+
+  - publisher_link = @m.external_links.detect(&:linktype_publisher_site?)
+  - if publisher_link.present?
     .work-details
       -# simple case: default title, link to url with description as link text
-      - el = @ext_links.publisher_sites.first
-      - if el.description.index('&&&').nil?
+      - if publisher_link.description.index('&&&').nil?
         %span{style: 'font-weight: bold'}= t(:made_available_by)
-        = link_to el.description, el.url
+        = link_to publisher_link.description, publisher_link.url
       - else # custom case: use description as raw-HTML format string, replacing &&&(.*)&&& with the link
-        != el.description.sub(/&&&(.*)&&&/, "<a href=\"#{el.url}\" target=\"_blank\">\\1</a>")
+        != publisher_link.description.sub(/&&&(.*)&&&/, "<a href=\"#{publisher_link.url}\" target=\"_blank\">\\1</a>")
   / tags and recommendations
   - if tags_etc
     .work-details.mobile-work-details
