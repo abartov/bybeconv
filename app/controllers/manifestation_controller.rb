@@ -496,6 +496,7 @@ class ManifestationController < ApplicationController
           end
           @e.source_edition = params[:source_edition]
           @m.title = params[:mtitle]
+          @m.sort_title = params[:sort_title]
           @m.responsibility_statement = params[:mresponsibility]
           @m.comment = params[:mcomment]
           @m.status = params[:mstatus].to_i

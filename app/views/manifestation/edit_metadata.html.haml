@@ -59,6 +59,9 @@
       %b= t(:title) + ': '
       = text_field_tag :mtitle, @m.title, size: 75
     %p
+      %b= t(:sort_title) + ': '
+      = text_field_tag :sort_title, @m.sort_title, size: 75
+    %p
       %b= t(:responsibility_statement) + ': '
       = text_field_tag :mresponsibility, @m.responsibility_statement # TODO: make editable?
     %p
