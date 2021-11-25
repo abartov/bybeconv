@@ -84,7 +84,8 @@ class V1::APITest < ActiveSupport::TestCase
     assert_manifestation(json, @manifestation, 'enriched', 'pdf', false)
     # ensuring non-published tags are excluded
     assert_equal %w(popular), json['enrichment']['taggings']
-    assert_equal [@manifestation_2.expressions[0].works[0].id], json['enrichment']['works_about']
+    # checking works_about
+    assert_equal [@manifestation_2.id], json['enrichment']['works_about']
   end
 
   test 'GET /v1/api/texts/{id} fails if id not found in published manifestations' do
@@ -402,8 +403,8 @@ class V1::APITest < ActiveSupport::TestCase
         assert_nil json_recommendation['recommender_home_url']
         assert_equal r.created_at.to_date.strftime('%Y-%m-%d'), json_recommendation['recommendation_date']
       end
-
-      assert_equal manifestation.expressions[0].works[0].works_about.pluck(:id).sort, enrichment['works_about']
+      works_about = manifestation.expressions[0].works[0].works_about
+      assert_equal works_about.joins(expressions: :manifestations).pluck('manifestations.id').sort, enrichment['works_about']
     else
       assert_not json.keys.include?('enrichment')
     end

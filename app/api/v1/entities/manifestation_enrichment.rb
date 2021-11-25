@@ -17,7 +17,9 @@ module V1
 
       expose :works_about do |manifestation_id|
         w = ::Work.joins(expressions: :manifestations).where('manifestations.id = ?', manifestation_id)
-        Aboutness.where(aboutable: w).order(:work_id).pluck(:work_id)
+        Aboutness.where(aboutable: w)
+                 .joins(work: {expressions: :manifestations})
+                 .pluck('manifestations.id').sort
       end
     end
   end
