@@ -4,7 +4,7 @@
 	 viewBox="0 0 410 727" style="enable-background:new 0 0 410 727;" xml:space="preserve">
 <style type="text/css">
 	.st0{fill:#D9CDD5;}
-	.st1{fill-rule:evenodd;clip-rule:evenodd;fill:url(#Path-2_1_);}
+	.st1{fill-rule:evenodd;clip-rule:evenodd;fill:#EEECED;}
 	.st2{fill-rule:evenodd;clip-rule:evenodd;fill:#907989;fill-opacity:0.5;}
 </style>
 <rect y="0" class="st0" width="410" height="237.3"/>
@@ -15,11 +15,6 @@
 			<g id="_x2D_">
 				<g id="Rectangle-Copy-2">
 				</g>
-				
-					<linearGradient id="Path-2_1_" gradientUnits="userSpaceOnUse" x1="-428.4604" y1="-242.2604" x2="-428.4604" y2="-241.9203" gradientTransform="matrix(413.3555 0 0 684.3818 177311.4688 166234.1719)">
-					<stop  offset="0" style="stop-color:#F8F7F7"/>
-					<stop  offset="1" style="stop-color:#F8F7F7"/>
-				</linearGradient>
 				<polygon id="Path-2" class="st1" points="0,727 0,186 61,64.4 76.3,42.4 87,43.9 410,186 410,727 				"/>
 				<path id="Fill-1" class="st2" d="M29.3,28.8c1.2-3.9,4-8.1,7.6-11.8c1.9-1.9,4-3.6,6-4.9v25.7l5.8,4V9.4c1.4-0.5,2.8-0.7,4-0.7
 					c1.7,0,3.1,0.5,4,1.4l26.2,26.3l-1.6,1.7c-0.7,0.1-1.5,0.3-2.2,0.6c-3.4,1.1-7,3.2-10.3,6.1h-4.7L52.9,59.9L30,36.9

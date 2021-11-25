@@ -138,10 +138,13 @@
   line-height: 15pt;
 }
 .headline-2-v02{
-  font-size: 13px;
-  line-height: 14px;
+  font-size: 11pt;
+  line-height: 12pt;
 }
-	
+.headline-3-v02 {
+  font-size: 10pt;
+ line-height: 11pt; 
+	}	
 .byPeriodName-v02{
 		font-weight: bold;
 		font-size: 12px;
