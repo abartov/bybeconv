@@ -523,6 +523,7 @@ class ApplicationController < ActionController::Base
           @anthology =  Anthology.find(session[:current_anthology_id])
         rescue
           session[:current_anthology_id] = nil # if somehow deleted without resetting the session variable (e.g. during development)
+          @anthology = @anthologies.first
         end
       end
       @anthology_select_options = @anthologies.map{|a| [a.title, a.id, @anthology == a ? 'selected' : ''] }
