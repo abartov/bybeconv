@@ -27,6 +27,11 @@ class Work < ApplicationRecord
     return nil
   end
 
+  def works_about
+    # TODO: accommodate works about *expressions* (e.g. an article about a *translation* of Homer's Iliad, not the Iliad)
+    Work.joins(:topics).where('aboutnesses.aboutable_id': self.id, 'aboutnesses.aboutable_type': 'Work')
+  end
+
   protected
   def norm_dates
     nd = normalize_date(self.date)

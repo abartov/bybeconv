@@ -155,9 +155,9 @@ components:
       properties:
         url:
           type: string
-        link_description:
+        description:
           type: string
-        link_type:
+        type:
           type: string
           enum:
             - wikipedia
