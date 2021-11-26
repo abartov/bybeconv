@@ -14,10 +14,13 @@ FactoryBot.define do
     comment { "Comment for #{number}" }
     copyrighted { 0 }
     copyright_expiration { nil }
-    genre { 'prose' }
+    genre { Work::GENRES.sample }
     translation {}
     source_edition {}
-    period { :modern }
+    period { Expression.periods.keys.sample }
     works { [ create(:work, genre: genre) ] }
+    realizers do
+       works[0].orig_lang == 'he' ? [] : [ create(:realizer, person: create(:person), role: :translator) ]
+    end
   end
 end

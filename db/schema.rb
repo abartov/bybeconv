@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_01_075649) do
+ActiveRecord::Schema.define(version: 2021_11_24_132658) do
 
   create_table "aboutnesses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -220,6 +220,7 @@ ActiveRecord::Schema.define(version: 2021_11_01_075649) do
     t.datetime "updated_at", null: false
     t.integer "manifestation_id"
     t.string "description"
+    t.index ["manifestation_id"], name: "external_links_manifestation_id_fk"
   end
 
   create_table "featured_author_features", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
@@ -721,6 +722,7 @@ ActiveRecord::Schema.define(version: 2021_11_01_075649) do
   add_foreign_key "dictionary_entries", "manifestations"
   add_foreign_key "dictionary_links", "dictionary_entries", column: "from_entry_id"
   add_foreign_key "dictionary_links", "dictionary_entries", column: "to_entry_id"
+  add_foreign_key "external_links", "manifestations", name: "external_links_manifestation_id_fk"
   add_foreign_key "featured_author_features", "featured_authors"
   add_foreign_key "featured_authors", "people"
   add_foreign_key "featured_authors", "users"

@@ -15,10 +15,11 @@ class V1::Api < Grape::API
     end
 
     params :text_params do
-      optional :view, type: String, default: 'basic', values: %w(metadata basic), desc: <<~DESC
+      optional :view, type: String, default: 'basic', values: %w(metadata basic enriched), desc: <<~DESC
         how much detail to return:
-          `metadata` returns all metadata and download_link but no smippet of the text;
-          `basic` returns basic metadata, download_link. a snippet of the beginning of the text, and is the default
+          `metadata` returns all metadata and download link;
+          `basic` returns basic metadata and a download_link, and is the default;
+          `enriched` returns all metadata as well as tags, recommendations, external links, and aboutnesses
       DESC
 
       optional :file_format, type: String, default: 'html', values: %w(html txt pdf epub mobi docx odt), desc: <<~DESC
@@ -30,6 +31,10 @@ class V1::Api < Grape::API
           `mobi` for MOBI,
           `docx` for DOCX,
           `odt` for LibreOffice ODT'
+      DESC
+
+      optional :snippet, type: Boolean, default: false, desc: <<~DESC
+        whether or not to include a plaintext snippet of the beginning of the text.
       DESC
     end
 
@@ -64,7 +69,7 @@ class V1::Api < Grape::API
       filters = params.slice(*%w(genres periods is_copyrighted author_genders translator_genders title author author_ids original_language uploaded_between created_between published_between))
       records = SearchManifestations.call(params[:sort_by], params[:sort_dir], filters)
       model = { data: records.limit(PAGE_SIZE).offset((page - 1) * PAGE_SIZE).to_a, total_count: records.count }
-      present model, with: V1::Entities::ManifestationsPage, view: params[:view], file_format: params[:file_format]
+      present model, with: V1::Entities::ManifestationsPage, view: params[:view], file_format: params[:file_format], snippet: params[:snippet]
     end
   end
 
@@ -81,7 +86,7 @@ class V1::Api < Grape::API
       page = params[:page]
       records = SortedManifestations.call(params[:sort_by], params[:sort_dir]).all_published.limit(PAGE_SIZE).offset((page - 1) * PAGE_SIZE)
       model = { data: records, total_count: Manifestation.all_published.count }
-      present model, with: V1::Entities::ManifestationsPage, view: params[:view], file_format: params[:file_format]
+      present model, with: V1::Entities::ManifestationsPage, view: params[:view], file_format: params[:file_format], snippet: params[:snippet]
     end
 
     resource :batch do
@@ -93,7 +98,7 @@ class V1::Api < Grape::API
       get do
         ids = params[:ids]
         records = Manifestation.all_published.find(ids)
-        present records, with: V1::Entities::Manifestation, view: params[:view], file_format: params[:file_format]
+        present records, with: V1::Entities::Manifestation, view: params[:view], file_format: params[:file_format], snippet: params[:snippet]
       end
     end
 
@@ -105,7 +110,7 @@ class V1::Api < Grape::API
       end
       get do
         record = Manifestation.all_published.find(params[:id])
-        present record, with: V1::Entities::Manifestation, view: params[:view], file_format: params[:file_format]
+        present record, with: V1::Entities::Manifestation, view: params[:view], file_format: params[:file_format], snippet: params[:snippet]
       end
     end
   end

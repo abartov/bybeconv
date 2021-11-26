@@ -1,6 +1,6 @@
 module V1
   module Entities
-    class V1::Entities::Manifestation < Grape::Entity
+    class Manifestation < Grape::Entity
       expose :id
       expose :url do |manifestation|
         Rails.application.routes.url_helpers.manifestation_read_url(manifestation)
@@ -48,11 +48,17 @@ module V1
         end
       end
 
-      expose :txt_snippet, as: :snippet, if: lambda { |_manifestation, options| options[:view] == 'basic' }
+      expose :enrichment, if: lambda { |_manifestation, options| options[:view] == 'enriched' } do |manifestation|
+        V1::Entities::ManifestationEnrichment.represent manifestation.id
+      end
+
+      expose :txt_snippet, as: :snippet, if: lambda { |_manifestation, options| options[:snippet] }
 
       expose :download_url do |manifestation|
         Rails.application.routes.url_helpers.manifestation_download_url(manifestation, format: options[:file_format])
       end
+
+
     end
   end
 end

@@ -95,11 +95,11 @@ group :test do
   gem 'turn', '0.8.2', require: false
   gem 'simplecov', require: false
   gem 'factory_bot_rails', '~> 6.2.0', require: false
+  gem 'faker', '~> 2.19.0'
   gem 'mocha', '~> 1.13.0'
 end
 
 group :development do
-  gem 'byebug'
   gem 'web-console'
   gem "capistrano", "~> 3.11", require: false
   gem "capistrano-rails", "~> 1.4", require: false
@@ -110,4 +110,8 @@ group :development do
   gem 'bullet'
   gem 'active_record_query_trace'
   gem 'immigrant'
+end
+
+group :test, :development do
+  gem 'byebug'
 end

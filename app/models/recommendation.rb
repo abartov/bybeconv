@@ -5,6 +5,6 @@ class Recommendation < ApplicationRecord
 
   enum status: [:pending, :approved]
 
-  scope :all_pending, -> { where(status: Recommendation.statuses[:pending]) }
-  scope :all_approved, -> { where(status: Recommendation.statuses[:approved]) }
+  scope :all_pending, -> { pending }
+  scope :all_approved, -> { approved }
 end

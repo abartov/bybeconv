@@ -7,9 +7,28 @@ class V1::APITest < ActiveSupport::TestCase
     @key = create(:api_key)
     @disabled_key = create(:api_key, status: :disabled)
 
+    tag_popular = create(:tag, name: :popular)
+    tag_unpopular = create(:tag, name: :unpopular)
+    tag_pending = create(:tag, name: :pending, status: :pending)
+
     Chewy.strategy(:atomic) do
-      @manifestation = create(:manifestation, title: '1st', impressions_count: 3, markdown: 'Sample Text 1')
-      @manifestation_2 = create(:manifestation, title: '2nd', impressions_count: 2, markdown: 'Sample Text 2')
+      @manifestation = create(
+        :manifestation, :with_recommendations, :with_external_links,
+        title: '1st',
+        impressions_count: 3,
+        markdown: 'Sample Text 1',
+        taggings: [ create(:tagging, tag: tag_popular),  create(:tagging, tag: tag_pending) ]
+      )
+      @manifestation_2 = create(
+        :manifestation, :with_recommendations, :with_external_links,
+        title: '2nd',
+        impressions_count: 2,
+        markdown: 'Sample Text 2',
+        taggings: [ create(:tagging, tag: tag_unpopular), create(:tagging, tag: tag_pending) ]
+      )
+
+      create(:aboutness, work: @manifestation_2.expressions[0].works[0], aboutable: @manifestation.expressions[0].works[0])
+
       @unpublished_manifestation = create(:manifestation, status: :unpublished)
     end
   end
@@ -37,25 +56,36 @@ class V1::APITest < ActiveSupport::TestCase
     assert_key_failed
   end
 
-  test 'GET /v1/api/texts/{id} with default params succeed and returns basic view in html format' do
+  test 'GET /v1/api/texts/{id} with default params succeed and returns basic view in html format without snippet' do
     get "/api/v1/texts/#{@manifestation.id}?key=#{@key.key}"
     assert last_response.successful?
     json = JSON.parse(last_response.body)
-    assert_manifestation(json, @manifestation, 'html', true)
+    assert_manifestation(json, @manifestation, 'basic', 'html', false)
   end
 
-  test 'GET /v1/api/texts/{id} with basic view and epub format succeed' do
-    get "/api/v1/texts/#{@manifestation.id}?key=#{@key.key}&view=basic&file_format=epub"
+  test 'GET /v1/api/texts/{id} with basic view, epub format and snippet succeed' do
+    get "/api/v1/texts/#{@manifestation.id}?key=#{@key.key}&view=basic&file_format=epub&snippet=true"
     assert last_response.successful?
     json = JSON.parse(last_response.body)
-    assert_manifestation(json, @manifestation, 'epub', true)
+    assert_manifestation(json, @manifestation, 'basic', 'epub', true)
   end
 
-  test 'GET /v1/api/texts/{id} with metadata view and pdf format succeed' do
-    get "/api/v1/texts/#{@manifestation.id}?key=#{@key.key}&view=metadata&file_format=pdf"
+  test 'GET /v1/api/texts/{id} with metadata view, pdf format and without snippet succeed' do
+    get "/api/v1/texts/#{@manifestation.id}?key=#{@key.key}&view=metadata&file_format=pdf&snippet=false"
     assert last_response.successful?
     json = JSON.parse(last_response.body)
-    assert_manifestation(json, @manifestation, 'pdf', false)
+    assert_manifestation(json, @manifestation, 'metadata', 'pdf', false)
+  end
+
+  test 'GET /v1/api/texts/{id} with enriched view, pdf format and without snippet succeed' do
+    get "/api/v1/texts/#{@manifestation.id}?key=#{@key.key}&view=enriched&file_format=pdf&snippet=false"
+    assert last_response.successful?
+    json = JSON.parse(last_response.body)
+    assert_manifestation(json, @manifestation, 'enriched', 'pdf', false)
+    # ensuring non-published tags are excluded
+    assert_equal %w(popular), json['enrichment']['taggings']
+    # checking works_about
+    assert_equal [@manifestation_2.id], json['enrichment']['works_about']
   end
 
   test 'GET /v1/api/texts/{id} fails if id not found in published manifestations' do
@@ -74,22 +104,22 @@ class V1::APITest < ActiveSupport::TestCase
     assert_key_failed
   end
 
-  test 'GET /v1/api/texts/batch with default params succeed and returns basic view in html format' do
+  test 'GET /v1/api/texts/batch with default params succeed and returns basic view in html format and without snippet' do
     get "/api/v1/texts/batch?key=#{@key.key}&ids[]=#{@manifestation.id}&ids[]=#{@manifestation_2.id}"
     assert last_response.successful?
     json = JSON.parse(last_response.body)
     assert_equal 2, json.size
-    assert_manifestation(json[0], @manifestation, 'html', true)
-    assert_manifestation(json[1], @manifestation_2, 'html', true)
+    assert_manifestation(json[0], @manifestation, 'basic', 'html', false)
+    assert_manifestation(json[1], @manifestation_2, 'basic', 'html', false)
   end
 
-  test 'GET /v1/api/texts/batch with metadata view and epub format succeed' do
-    get "/api/v1/texts/batch?key=#{@key.key}&ids[]=#{@manifestation.id}&ids[]=#{@manifestation_2.id}&view=metadata&file_format=epub"
+  test 'GET /v1/api/texts/batch with enriched view, epub format and snippet succeed' do
+    get "/api/v1/texts/batch?key=#{@key.key}&ids[]=#{@manifestation.id}&ids[]=#{@manifestation_2.id}&view=enriched&file_format=epub&snippet=true"
     assert last_response.successful?
     json = JSON.parse(last_response.body)
     assert_equal 2, json.size
-    assert_manifestation(json[0], @manifestation, 'epub', false)
-    assert_manifestation(json[1], @manifestation_2, 'epub', false)
+    assert_manifestation(json[0], @manifestation, 'enriched', 'epub', true)
+    assert_manifestation(json[1], @manifestation_2, 'enriched', 'epub', true)
   end
 
   test 'GET /v1/api/texts/batch fails if more than 25 ids specified' do
@@ -130,23 +160,23 @@ class V1::APITest < ActiveSupport::TestCase
     assert_equal 2, json['total_count']
     data = json['data']
     assert_equal 2, data.size
-    assert_manifestation(data[0], @manifestation, 'html', true)
-    assert_manifestation(data[1], @manifestation_2, 'html', true)
+    assert_manifestation(data[0], @manifestation, 'basic', 'html', false)
+    assert_manifestation(data[1], @manifestation_2, 'basic', 'html', false)
   end
 
-  test 'GET /v1/api/texts returns 1st page with descending alphabetical sorting, metadata view and epub format' do
-    get "/api/v1/texts?key=#{@key.key}&page=1&sort_by=alphabetical&sort_dir=desc&view=metadata&file_format=epub"
+  test 'GET /v1/api/texts returns 1st page with descending alphabetical sorting, metadata view, epub format and snippet' do
+    get "/api/v1/texts?key=#{@key.key}&page=1&sort_by=alphabetical&sort_dir=desc&view=metadata&file_format=epub&snippet=true"
     assert last_response.successful?
     json = JSON.parse(last_response.body)
     assert_equal 2, json['total_count']
     data = json['data']
     assert_equal 2, data.size
-    assert_manifestation(data[0], @manifestation_2, 'epub', false)
-    assert_manifestation(data[1], @manifestation, 'epub', false)
+    assert_manifestation(data[0], @manifestation_2, 'metadata', 'epub', true)
+    assert_manifestation(data[1], @manifestation, 'metadata', 'epub', true)
   end
 
   test 'GET /v1/api/texts do correct paging' do
-    Manifestation.destroy_all
+    clean_tablees
     manifestations = create_list(:manifestation, 60)
     get "/api/v1/texts?key=#{@key.key}&page=1&sort_by=upload_date&sort_dir=asc"
     assert last_response.successful?
@@ -195,25 +225,25 @@ class V1::APITest < ActiveSupport::TestCase
     assert_equal 2, json['total_count']
     data = json['data']
     assert_equal 2, data.size
-    assert_manifestation(data[0], @manifestation, 'html', true)
-    assert_manifestation(data[1], @manifestation_2, 'html', true)
+    assert_manifestation(data[0], @manifestation, 'basic', 'html', false)
+    assert_manifestation(data[1], @manifestation_2, 'basic', 'html', false)
   end
 
-  test 'GET /v1/api/search returns 1st page with descending popularity sorting, metadata view and epub format' do
-    get "/api/v1/search?key=#{@key.key}&page=1&sort_by=popularity&sort_dir=asc&view=metadata&file_format=epub"
+  test 'GET /v1/api/search returns 1st page with descending popularity sorting, enriched view, epub format and snippet' do
+    get "/api/v1/search?key=#{@key.key}&page=1&sort_by=popularity&sort_dir=asc&view=enriched&file_format=epub&snippet=true"
     assert last_response.successful?
     json = JSON.parse(last_response.body)
     assert_equal 2, json['total_count']
     data = json['data']
     assert_equal 2, data.size
-    assert_manifestation(data[0], @manifestation_2, 'epub', false)
-    assert_manifestation(data[1], @manifestation, 'epub', false)
+    assert_manifestation(data[0], @manifestation_2, 'enriched', 'epub', true)
+    assert_manifestation(data[1], @manifestation, 'enriched', 'epub', true)
   end
 
   test 'GET /v1/api/search applies filters' do
     manifestations = []
     Chewy.strategy(:atomic) do
-      Manifestation.destroy_all
+      clean_tablees
       (1..60).each do |index|
         e = create(:expression, copyrighted: index%10 == 0)
         manifestations << create(:manifestation, impressions_count: Random.rand(100), expressions: [e])
@@ -274,7 +304,7 @@ class V1::APITest < ActiveSupport::TestCase
   test 'GET /v1/api/search do correct paging' do
     manifestations = []
     Chewy.strategy(:atomic) do
-      Manifestation.destroy_all
+      clean_tablees
       (1..60).each do |index|
         manifestations << create(:manifestation, impressions_count: Random.rand(100))
       end
@@ -323,7 +353,7 @@ class V1::APITest < ActiveSupport::TestCase
 
   private
 
-  def assert_manifestation(json, manifestation, format, check_snippet)
+  def assert_manifestation(json, manifestation, view, file_format, snippet)
     md = json['metadata']
     expression = manifestation.expressions[0]
     work = expression.works[0]
@@ -348,8 +378,40 @@ class V1::APITest < ActiveSupport::TestCase
     assert_equal expression.date, md['raw_publication_date']
     assert_equal normalize_date(expression.date).year, md['publication_year']
 
-    if check_snippet
+    if view == 'enriched'
+      enrichment = json['enrichment']
+      assert_not_nil enrichment
+      json_links = enrichment['external_links']
+      links = manifestation.external_links.status_approved.to_a.sort_by(&:id)
+      assert_equal links.size, json_links.size
+      links.each_with_index do |el, i|
+        json_link = json_links[i]
+        assert_equal el.url, json_link['url']
+        assert_equal el.linktype, json_link['type']
+        assert_equal el.description, json_link['description']
+      end
+
+      tags = manifestation.tags.approved.pluck(:name).sort
+      assert_equal tags, enrichment['taggings']
+
+      recommendations = manifestation.recommendations.all_approved.order(:id)
+      json_recommendations = enrichment['recommendations']
+      recommendations.each_with_index do |r, i|
+        json_recommendation = json_recommendations[i]
+        assert_equal r.body, json_recommendation['fulltext']
+        assert_equal r.user_id, json_recommendation['recommender_user_id']
+        assert_nil json_recommendation['recommender_home_url']
+        assert_equal r.created_at.to_date.strftime('%Y-%m-%d'), json_recommendation['recommendation_date']
+      end
+      works_about = manifestation.expressions[0].works[0].works_about
+      assert_equal works_about.joins(expressions: :manifestations).pluck('manifestations.id').sort, enrichment['works_about']
+    else
+      assert_not json.keys.include?('enrichment')
+    end
+
+    if snippet
       snippet = json['snippet']
+      assert_not_nil snippet
       assert snippet.include? manifestation.title
       # we assume that markdown contains plain-text only
       assert snippet.include? manifestation.markdown
@@ -357,7 +419,7 @@ class V1::APITest < ActiveSupport::TestCase
       assert_not json.keys.include?('snippet')
     end
 
-    assert_equal json['download_url'], Rails.application.routes.url_helpers.manifestation_download_url(manifestation.id, format: format)
+    assert_equal json['download_url'], Rails.application.routes.url_helpers.manifestation_download_url(manifestation.id, format: file_format)
   end
 
   def last_error
@@ -366,5 +428,12 @@ class V1::APITest < ActiveSupport::TestCase
 
   def assert_key_failed
     assert_equal "key not found or disabled", last_error
+  end
+
+  def clean_tablees
+    Tagging.destroy_all
+    ExternalLink.destroy_all
+    Recommendation.destroy_all
+    Manifestation.destroy_all
   end
 end

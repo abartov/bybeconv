@@ -1,6 +1,6 @@
 module V1
   module Entities
-    class V1::Entities::ManifestationIndex < Grape::Entity
+    class ManifestationIndex < Grape::Entity
       expose :id
       expose :url do |manifestation|
         Rails.application.routes.url_helpers.manifestation_read_url(manifestation.id)
@@ -34,7 +34,10 @@ module V1
           dt.nil? ? nil : Time.parse(dt).year
         end
       end
-      expose :txt_snippet, as: :snippet, if: lambda { |_manifestation, options| options[:view] == 'basic' }
+      expose :enrichment, if: lambda { |_manifestation, options| options[:view] == 'enriched' } do |manifestation|
+        V1::Entities::ManifestationEnrichment.represent manifestation.id
+      end
+      expose :txt_snippet, as: :snippet, if: lambda { |_manifestation, options| options[:snippet] }
       expose :download_url do |manifestation|
         Rails.application.routes.url_helpers.manifestation_download_url(manifestation.id, format: options[:file_format])
       end
