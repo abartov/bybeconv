@@ -2,7 +2,7 @@ module V1
   module Entities
     class V1::Entities::ManifestationEnrichment < Grape::Entity
       expose :external_links do |manifestation_id|
-        links = ::ExternalLink.where(manifestation_id: manifestation_id).status_approved.order(:id)
+        links = ::ExternalLink.where(linkable_type: :Manifestation, linkable_id: manifestation_id).status_approved.order(:id)
         V1::Entities::ExternalLink.represent links
       end
 
