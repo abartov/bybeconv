@@ -14,7 +14,7 @@ class Manifestation < ApplicationRecord
   has_many :downloadables, as: :object
 
   has_paper_trail
-  has_many :external_links
+  has_many :external_links, as: :linkable
   has_many_attached :images
 
   before_save :update_sort_title
