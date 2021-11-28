@@ -26,7 +26,7 @@
                 %span.date-range!= " (#{author.life_years})"
             .by-card-content-v02
               .surprise-author-card-content-v02
-                .padbot12
+                .metadata
                   %span
                     %a.by-icon-v02.iconNearText-v02{id: "heart_#{author.id}", style:'float:right'}= 5
                   %span.by-icon-v02.copyright-icon= author.rights_icon
@@ -35,10 +35,12 @@
                 %div
                   - unless author.wikipedia_snippet.nil? or author.wikipedia_snippet.length < 10
                     = author.wikipedia_snippet
-                    %div{style: 'font-weight: bold; margin-top: 12px; margin-bottom: 24px'}
-                      = link_to t(:rest_in_wikipedia), author.wikipedia_url
+                    %div.read-more-v02.no-float
+                      = link_to author.wikipedia_url do
+                        %span{style: 'font-weight:bold'}= t(:rest_in_wikipedia)
+                        %span.left-arrow= '1'
                 / future feature: recommendations
-                /.padbot12
+                /.metadata
                 /  %span{style:'font-weight: bold'}= t(:recommendations)+': '
                 /  = link_to number_of_recommendations, ...
                 /    - if author.blog_count > 0
@@ -47,7 +49,7 @@
                 /          %span{ style: 'margin-left: 0.6rem;position:relative;top:3px;'}
                 /            %i.fa.fa-pencil-square-o
                 /          = t(:about_the_author_on_the_blog)
-                .padbot12
+                .metadata
                   %span
                     %b= t(:works_in_the_project)+': '
                   = link_to "#{author.cached_works_count} #{t(:works)}", author_toc_path(author.id)

@@ -28,9 +28,10 @@
                         %a{:href => @author.wikipedia_url, target: '_blank'}
                           %span{:style => "font-weight: bold"}= t(:rest_in_wikipedia)
                           %span.left-arrow 1
-                    %div{style:'margin-top:12px;'}
-                      %b= t(:works_in_the_project)+': '
-                      = "#{@author.cached_works_count} #{t(:works)}"
+                    %br
+                      .metadata
+                        %b= t(:works_in_the_project)+': '
+                        = "#{@author.cached_works_count} #{t(:works)}"
                     -#%div{:style => "margin-top: 12px;"}
                     -#  %a{:href => "#"}
                     -#    %span.by-icon-v02.iconNearText-v02> W
@@ -42,7 +43,7 @@
                     -#    לינק
                     -#    לאתר רלוונטי
                     - unless @author.blog_category_url.nil? or @author.blog_category_url.empty?
-                      %div{:style => "margin-top: 12px;"}
+                      .metadata-link
                         %a{:href => @author.blog_category_url, target: '_blank'}
                           %span.by-icon-v02.iconNearText-v02> Q
                           = t(:about_author_in_blog, author:@author.name)
@@ -112,7 +113,7 @@
                     %p.headline-1-v02= t(:featured_item)
                   .by-card-content-v02.card-with-button.flash-content
                     .flash-text-v02
-                      %p.headline-2-v02
+                      %p.headline-3-v02
                         = featured.title
                       - unless featured.user.nil?
                         %p
@@ -127,12 +128,13 @@
                     -#  %a{:href => "#"}
                     -#    %span.right-side-icon '
                     -#    %span{:style => "font-weight: bold"} הצגת זרקור נוסף
-                    - unless featured.manifestation.nil?
-                      %a{ href: manifestation_read_path(id: featured.manifestation.id)}
-                        %button.by-button-v02.button-to-full-v02= t(:to_the_work_in_the_site)
-                    - unless featured.external_link.nil? or featured.external_link.empty?
-                      %a{ href: featured.external_link, target: '_blank'}
-                        %button.by-button-v02.button-to-full-v02= t(:to_external_content)
+                    .card-bottom
+                      - unless featured.manifestation.nil?
+                        %a{ href: manifestation_read_path(id: featured.manifestation.id)}
+                          %button.by-button-v02.button-to-full-v02= t(:to_the_work_in_the_site)
+                      - unless featured.external_link.nil? or featured.external_link.empty?
+                        %a{ href: featured.external_link, target: '_blank'}
+                          %button.by-button-v02.button-to-full-v02= t(:to_external_content)
             = render partial: 'aboutnesses'
             .by-card-v02#text-volunteers-mobile
               .by-card-header-v02
