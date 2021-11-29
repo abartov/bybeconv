@@ -3,7 +3,7 @@ jobs:
   build:
     # Primary container image where all commands run
     docker:
-      - image: cimg/ruby:2.6.8
+      - image: damisul/bybeconv-circleci:0.0.3
         auth:
           username: mydockerhub-user
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
@@ -31,7 +31,6 @@ jobs:
       - restore_cache:
           keys:
             - bundle-{{ checksum "Gemfile.lock" }}
-      - run: sudo apt update && sudo apt install -y libsqlite3-dev wkhtmltopdf pandoc yaz libyaz-dev  libmagickwand-dev libpcap-dev memcached
       - run:
           # Our primary container isn't MYSQL so run a sleep command until it's ready.
           name: Waiting for MySQL to be ready
