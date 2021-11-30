@@ -1,0 +1,2 @@
+This directory contains dockerfile for image used in CircleCI (we need it to avoid running apt on every build)
+Read more here: https://circleci.com/docs/2.0/custom-images/#creating-a-custom-image-manually

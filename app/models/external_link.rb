@@ -1,5 +1,5 @@
 class ExternalLink < ApplicationRecord
-  belongs_to :manifestation
+  belongs_to :linkable, polymorphic: true
 
   enum linktype: {
     wikipedia: 0,

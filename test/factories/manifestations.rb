@@ -20,11 +20,11 @@ FactoryBot.define do
     expressions { [ create(:expression) ] }
 
     trait :with_external_links do
-      external_links { create_list(:external_link, 2) }
+      external_links { build_list(:external_link, 2) }
     end
 
     trait :with_recommendations do
-      recommendations { create_list(:recommendation, 3) }
+      recommendations { build_list(:recommendation, 3) }
     end
 
   end
