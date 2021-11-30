@@ -374,6 +374,7 @@ class AuthorsController < ApplicationController
       @latest = textify_titles(@author.cached_latest_stuff, @author)
       @featured = @author.featured_work
       @aboutnesses = @author.aboutnesses
+      @external_links = @author.external_links.status_approved
       @any_curated = @featured.present? || @aboutnesses.count > 0
       unless @featured.empty?
         (@fc_snippet, @fc_rest) = snippet(@featured[0].body, 500) # prepare snippet for collapsible
