@@ -48,8 +48,8 @@ module V1
         end
       end
 
-      expose :enrichment, if: lambda { |_manifestation, options| options[:view] == 'enriched' } do |manifestation|
-        V1::Entities::ManifestationEnrichment.represent manifestation.id
+      expose :enrichment, using: V1::Entities::ManifestationEnrichment, if: lambda { |_manifestation, options| options[:view] == 'enriched' } do |manifestation|
+        manifestation.id
       end
 
       expose :txt_snippet, as: :snippet, if: lambda { |_manifestation, options| options[:snippet] }
@@ -57,8 +57,6 @@ module V1
       expose :download_url do |manifestation|
         Rails.application.routes.url_helpers.manifestation_download_url(manifestation, format: options[:file_format])
       end
-
-
     end
   end
 end
