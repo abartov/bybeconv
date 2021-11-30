@@ -103,7 +103,9 @@ class V1::Api < Grape::API
     end
 
     route_param :id do
-      desc 'Return text by id'
+      desc 'Return text by id' do
+        success V1::Entities::Manifestation
+      end
       params do
         requires :id, type: Integer, desc: 'Text ID'
         use :text_params
@@ -131,5 +133,5 @@ class V1::Api < Grape::API
     error!(e.message, 401)
   end
 
-  # add_swagger_documentation info: { title: 'Bybeconv public API', version: '1.0.0' }
+  add_swagger_documentation info: { title: 'Bybeconv public API', version: '1.0.0' }
 end

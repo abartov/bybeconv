@@ -82,9 +82,10 @@ gem 'hebruby' # for Hebrew date handling
 
 gem 'grape', '~> 1.6.0'
 gem 'grape-entity', '~> 0.10.1'
-
 # TODO: Replace to standard version of gem after PR will be accepted https://github.com/jagaapple/grape-extra_validators/pull/10
 gem 'grape-extra_validators', '~> 2.1.0', git: "https://github.com/damisul/grape-extra_validators"
+gem 'grape-swagger', '~> 1.4.2'
+gem 'grape-swagger-entity', '~> 0.5.1'
 
 group :production do
 #  gem 'newrelic_rpm' # performance monitoring
