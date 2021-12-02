@@ -6,6 +6,7 @@ FactoryBot.define do
   factory :work do
     transient do
       number { generate(:work_number) }
+      author { create(:person) }
     end
 
     title { "Title for #{number}" }
@@ -16,6 +17,6 @@ FactoryBot.define do
     origlang_title { "Title in original language for #{number}" }
     normalized_pub_date {}
     normalized_creation_date { normalize_date(date) }
-    creations { [create(:creation, person: create(:person), role: :author)] }
+    creations { [create(:creation, person: author, role: :author)] }
   end
 end

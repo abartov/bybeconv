@@ -6,6 +6,9 @@ FactoryBot.define do
   factory :expression do
     transient do
       number { generate(:expression_number) }
+      author { create(:person) }
+      orig_lang { %w(he en ru de it).sample }
+      translator { orig_lang != 'he' ? create(:person) : nil }
     end
     title { "Title for #{number}" }
     form {}
@@ -18,9 +21,9 @@ FactoryBot.define do
     translation {}
     source_edition {}
     period { Expression.periods.keys.sample }
-    works { [ create(:work, genre: genre) ] }
+    works { [ create(:work, genre: genre, author: author, orig_lang: orig_lang) ] }
     realizers do
-       works[0].orig_lang == 'he' ? [] : [ create(:realizer, person: create(:person), role: :translator) ]
+       orig_lang == 'he' ? [] : [ create(:realizer, person: translator, role: :translator) ]
     end
   end
 end
