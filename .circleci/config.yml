@@ -62,3 +62,6 @@ jobs:
       - run:
           name: Running tests
           command: bin/rails test
+      - run:
+          name: Running rspec
+          command: bundle exec rspec

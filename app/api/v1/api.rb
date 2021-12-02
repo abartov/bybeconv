@@ -1,6 +1,6 @@
 Grape::Validations.register_validator('v1_auth_key', V1::Validations::AuthKey)
 
-class V1::Api < Grape::API
+class V1::Api < V1::ApplicationApi
   PAGE_SIZE = 25
 
   version :v1, using: :path
@@ -8,6 +8,8 @@ class V1::Api < Grape::API
   default_format :json
 
   prefix :api
+
+  mount V1::PeopleAPI => '/'
 
   helpers do
     params :key_param do
@@ -115,22 +117,6 @@ class V1::Api < Grape::API
         present record, with: V1::Entities::Manifestation, view: params[:view], file_format: params[:file_format], snippet: params[:snippet]
       end
     end
-  end
-
-  rescue_from ActiveRecord::RecordNotFound do |e|
-    model = e.model == 'Manifestation' ? "Text" : e.model
-    if e.id.is_a? Array
-      message = "Couldn't find one or more #{model.pluralize} with '#{e.primary_key}'=#{e.id}"
-    else
-      message = "Couldn't find #{model} with '#{e.primary_key}'=#{e.id}"
-    end
-
-    error!(message, 404)
-  end
-
-  rescue_from V1::Validations::AuthKey::AuthFailed do |e|
-    # Returning unauthorized status
-    error!(e.message, 401)
   end
 
   add_swagger_documentation info: { title: 'Bybeconv public API', version: '1.0.0' }

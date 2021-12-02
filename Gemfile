@@ -95,7 +95,6 @@ end
 group :test do
   gem 'turn', '0.8.2', require: false
   gem 'simplecov', require: false
-  gem 'factory_bot_rails', '~> 6.2.0', require: false
   gem 'faker', '~> 2.19.0'
   gem 'mocha', '~> 1.13.0'
 end
@@ -115,4 +114,6 @@ end
 
 group :test, :development do
   gem 'byebug'
+  gem 'factory_bot_rails', '~> 6.2.0'
+  gem 'rspec-rails', '~> 5.0.2'
 end
