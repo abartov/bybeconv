@@ -16,7 +16,7 @@ gem 'active_data' # for *Search classes in Chewy
 
 gem "jquery-slick-rails" # for carousel slider
 gem 'rails-jquery-autocomplete', '>= 1.0.5' # for auto-completion
-gem 'property_sets' # for key/value properties per model; version held until https://github.com/zendesk/property_sets/issues/85 is fixed
+gem 'property_sets', '>= 3.7.1' # for key/value properties per model; version 3.7.1 supports Ruby 3.0 per https://github.com/zendesk/property_sets/issues/85
 gem 'image_processing'
 # gem "mini_magick", ">= 4.9.4" # now (Rails 6.1) required by image_processing
 gem "omniauth-rails_csrf_protection"
@@ -34,8 +34,10 @@ gem 'sqlite3' # for dictionary imports
 
 gem 'jquery-rails'
 gem "jquery-ui-rails"
-gem 'rdf'# , '~> 2.0.1'
-gem 'sparql-client' # , '~> 2.0.1'
+gem 'rdf' #, '~> 2.0.1'
+gem 'sparql-client'#, '~> 2.0.1'
+gem 'linkeddata' # for RDF etc.
+gem 'rdf-vocab' # for SKOS predefined vocab
 gem 'activerecord-session_store'
 gem 'sass-rails'
 gem 'coffee-script'
@@ -63,11 +65,8 @@ gem 'gared', '>= 0.0.22' # https://gitlab.com/abartov/gared # for scraping bibli
 gem 'haml'
 #gem 'zoom', '~>0.4.1', :git => 'https://github.com/bricestacey/ruby-zoom.git' # for Z39.50 queries to libraries
 gem 'haml-rails'
-gem 'linkeddata' # for RDF etc.
-gem 'rdf-vocab' # for SKOS predefined vocab
-gem 'invisible_captcha' # combat spam
-# gem 'project-honeypot2', '>= 0.1.3' # for HTTP:BL service by Project Honeypot # unmaintained and also requires pcaprub which is incompatible with Ruby 3.x
-gem 'paper_trail' # , '~> 5.0.0' # for versioning entities
+gem 'project-honeypot2', '>= 0.1.3' # for HTTP:BL service by Project Honeypot
+gem 'paper_trail'#, '~> 5.0.0' # for versioning entities
 gem 'gepub' # for generating EPUBs
 gem 'rmagick' # for generating cover images for EPUBs
 gem 'pandoc-ruby' # for converting to DOCX
