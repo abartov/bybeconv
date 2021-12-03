@@ -369,7 +369,7 @@ class AuthorsController < ApplicationController
       if(params[:link_description].empty? || params[:add_url].empty?)
         head :bad_request
       else
-        @el = ExternalLink.new(linkable: @author, description: params[:link_description], linktype: params[:link_type].to_i, url: params[:add_url])
+        @el = ExternalLink.new(linkable: @author, description: params[:link_description], linktype: params[:link_type].to_i, url: params[:add_url], status: :approved)
         @el.save!
       end
     end
