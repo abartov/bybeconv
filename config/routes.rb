@@ -120,6 +120,8 @@ Bybeconv::Application.routes.draw do
   post "authors/create"
   patch "authors/update"
   get 'authors/get_random_author'
+  post 'authors/add_link/:id' => 'authors#add_link', as: 'author_add_link'
+  match 'authors/delete_link/:id' => 'authors#delete_link', as: 'author_delete_link', via: [:post]
   match 'author/:id/edit_toc' => 'authors#edit_toc', as: 'authors_edit_toc', via: [:get, :post]
   match 'author/:id/create_toc' => 'authors#create_toc', as: 'authors_create_toc', via: [:get]
   match 'author/:id' => 'authors#toc', as: 'author_toc', via: [:get, :post]

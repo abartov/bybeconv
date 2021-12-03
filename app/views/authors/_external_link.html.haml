@@ -1,0 +1,5 @@
+%li
+  = link_to el.description, el.url, target: :_blank
+  = " (#{t(el.linktype)})"
+  != "&nbsp;&nbsp;&nbsp;"
+  = link_to t(:delete_link), author_delete_link_path(el.id), {remote: true, method: :post, class: 'delete_link'}

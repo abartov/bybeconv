@@ -77,7 +77,7 @@
     = check_box_tag :sefaria_linker, 1, @m.sefaria_linker
     %br
     = render partial: 'external_links', locals: { links: @m.external_links, edit: true }
-    = t(:add)
+    = t(:add_url)
     = text_field_tag :add_url
     = t(:link_type)
     = select_tag :link_type, options_for_select(ExternalLink.linktypes.map {|lt| [t(lt[0]), lt[1]]})

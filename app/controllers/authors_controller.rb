@@ -2,7 +2,7 @@ require 'diffy'
 include BybeUtils
 
 class AuthorsController < ApplicationController
-  before_action only: [:new, :create, :show, :edit, :list, :delete_photo, :edit_toc, :update] do |c| c.require_editor('edit_people') end
+  before_action only: [:new, :create, :show, :edit, :list, :add_link, :delete_link, :delete_photo, :edit_toc, :update] do |c| c.require_editor('edit_people') end
 
   def get_random_author
     @author = nil
@@ -357,6 +357,31 @@ class AuthorsController < ApplicationController
     else
       @q = params[:q]
       @people = Person.joins("LEFT JOIN tocs on people.toc_id = tocs.id ").where('name like ? or other_designation like ?', "%#{params[:q]}%", "%#{params[:q]}%").page(params[:page]).order(params[:order].nil? ? def_order : params[:order])
+    end
+  end
+
+  def add_link
+    @author = Person.find(params[:id])
+    if @author.nil?
+      flash[:error] = t(:no_such_item)
+      redirect_to '/'
+    else
+      if(params[:link_description].empty? || params[:add_url].empty?)
+        head :bad_request
+      else
+        @el = ExternalLink.new(linkable: @author, description: params[:link_description], linktype: params[:link_type].to_i, url: params[:add_url])
+        @el.save!
+      end
+    end
+  end
+  def delete_link
+    @el = ExternalLink.find(params[:id])
+    if @el.nil?
+      flash[:error] = t(:no_such_item)
+      redirect_to '/'
+    else
+      @el.destroy
+      head :ok
     end
   end
 

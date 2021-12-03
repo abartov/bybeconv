@@ -303,6 +303,7 @@ he:
   add_external: הוספת נושא חיצוני למאגר
   perform_add: הוספה
   add_aboutnesses: הוספת נושאים ליצירה
+  add_url: הוסף את הקישורית
   existing_aboutnesses: נושאים קיימים
   bib_workshop: הסדנה הביבליוגרפית
   # genre key names are currently hard-coded in ApplicationController
@@ -803,6 +804,7 @@ he:
   are_you_sure: נא לאשר מחיקה
   confirm_hide: נא לאשר הסתרה
   delete_photo: מחיקת תמונה (לצמיתות!)
+  delete_link: הסרת קישורית
   anth_text_deletion: מחיקת פריט מהמקראה
   anth_text_deletion_p1: 'פעולה זו תמחק ללא אפשרות חזרה את הפריט:'
   anth_text_deletion_p3: מתוך המקראה הנוכחית
