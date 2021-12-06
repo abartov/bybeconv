@@ -79,7 +79,7 @@ he:
   legacy_guessed_person: ניחוש מחבר לפי תיקיה
   legacy_url: היצירה באתר הישן
   to_all_authors: לרשימת כל היוצרים
-  to_all_x_items: לכל {%x} הפריטים
+  to_all_x_items: לכל %{x} הפריטים
   suggest_new_links: הצעת קישורית נוספת
   list_all_authors: רשימת כל היוצרים
   to_all_works: לרשימת כל היצירות

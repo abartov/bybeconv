@@ -417,6 +417,16 @@ class AuthorsController < ApplicationController
     end
   end
 
+  def all_links
+    @author = Person.find(params[:id])
+    unless @author.nil?
+      @external_links = @author.external_links.status_approved
+      render partial: 'all_links'
+    else
+      flash[:error] = I18n.t(:no_toc_yet)
+      redirect_to '/'
+    end
+  end
   def print
     @author = Person.find(params[:id])
     @print = true
