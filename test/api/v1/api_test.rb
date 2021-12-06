@@ -98,14 +98,14 @@ class V1::APITest < ActiveSupport::TestCase
   # /texts/batch
   # -------------------
 
-  test 'GET /v1/api/texts/batch fails if disabled key is specified' do
-    get "/api/v1/texts/batch?key=#{@disabled_key.key}"
+  test 'POST /v1/api/texts/batch fails if disabled key is specified' do
+    post "/api/v1/texts/batch?key=#{@disabled_key.key}"
     assert last_response.unauthorized?
     assert_key_failed
   end
 
-  test 'GET /v1/api/texts/batch with default params succeed and returns basic view in html format and without snippet' do
-    get "/api/v1/texts/batch?key=#{@key.key}&ids[]=#{@manifestation.id}&ids[]=#{@manifestation_2.id}"
+  test 'POST /v1/api/texts/batch with default params succeed and returns basic view in html format and without snippet' do
+    post "/api/v1/texts/batch", key: @key.key, ids: [@manifestation.id, @manifestation_2.id]
     assert last_response.successful?
     json = JSON.parse(last_response.body)
     assert_equal 2, json.size
@@ -113,8 +113,8 @@ class V1::APITest < ActiveSupport::TestCase
     assert_manifestation(json[1], @manifestation_2, 'basic', 'html', false)
   end
 
-  test 'GET /v1/api/texts/batch with enriched view, epub format and snippet succeed' do
-    get "/api/v1/texts/batch?key=#{@key.key}&ids[]=#{@manifestation.id}&ids[]=#{@manifestation_2.id}&view=enriched&file_format=epub&snippet=true"
+  test 'POST /v1/api/texts/batch with enriched view, epub format and snippet succeed' do
+    post "/api/v1/texts/batch", key: @key.key, ids: [@manifestation.id, @manifestation_2.id], view: :enriched, file_format: :epub, snippet: :true
     assert last_response.successful?
     json = JSON.parse(last_response.body)
     assert_equal 2, json.size
@@ -122,18 +122,14 @@ class V1::APITest < ActiveSupport::TestCase
     assert_manifestation(json[1], @manifestation_2, 'enriched', 'epub', true)
   end
 
-  test 'GET /v1/api/texts/batch fails if more than 25 ids specified' do
-    path = "/api/v1/texts/batch?key=#{@key.key}"
-    (1..26).each do |id|
-      path << "&ids[]=#{id}"
-    end
-    get path
+  test 'POST /v1/api/texts/batch fails if more than 25 ids specified' do
+    post "/api/v1/texts/batch", key: @key.key, ids: (1..26).to_a
     assert last_response.bad_request?
     assert_equal "ids must have up to 25 items", last_error
   end
 
-  test 'GET /v1/api/texts/batch fails if some of ids are not found in published manifestations' do
-    get "/api/v1/texts/batch?key=#{@key.key}&ids[]=#{@manifestation.id}&ids[]=#{@unpublished_manifestation.id}"
+  test 'POST /v1/api/texts/batch fails if some of ids are not found in published manifestations' do
+    post "/api/v1/texts/batch", key: @key.key, ids: [@manifestation.id, @unpublished_manifestation.id]
     assert last_response.not_found?
     assert_equal "Couldn't find one or more Texts with 'id'=#{[@manifestation.id, @unpublished_manifestation.id]}", last_error
   end
@@ -213,13 +209,13 @@ class V1::APITest < ActiveSupport::TestCase
   # /search
   # -------------------
 
-  test 'GET /v1/api/search fails if disabled key is specified' do
-    get "/api/v1/search?key=#{@disabled_key.key}&page=1"
+  test 'POST /v1/api/search fails if disabled key is specified' do
+    post "/api/v1/search", key: @disabled_key.key, page: 1
     assert_key_failed
   end
 
-  test 'GET /v1/api/search returns 1st page with default params' do
-    get "/api/v1/search?key=#{@key.key}&page=1"
+  test 'POST /v1/api/search returns 1st page with default params' do
+    post "/api/v1/search", key: @key.key, page: 1
     assert last_response.successful?
     json = JSON.parse(last_response.body)
     assert_equal 2, json['total_count']
@@ -229,8 +225,8 @@ class V1::APITest < ActiveSupport::TestCase
     assert_manifestation(data[1], @manifestation_2, 'basic', 'html', false)
   end
 
-  test 'GET /v1/api/search returns 1st page with descending popularity sorting, enriched view, epub format and snippet' do
-    get "/api/v1/search?key=#{@key.key}&page=1&sort_by=popularity&sort_dir=asc&view=enriched&file_format=epub&snippet=true"
+  test 'POST /v1/api/search returns 1st page with descending popularity sorting, enriched view, epub format and snippet' do
+    post "/api/v1/search", key: @key.key, page: 1, sort_by: :popularity, sort_dir: :asc, view: :enriched, file_format: :epub, snippet: :true
     assert last_response.successful?
     json = JSON.parse(last_response.body)
     assert_equal 2, json['total_count']
@@ -240,7 +236,7 @@ class V1::APITest < ActiveSupport::TestCase
     assert_manifestation(data[1], @manifestation, 'enriched', 'epub', true)
   end
 
-  test 'GET /v1/api/search applies filters' do
+  test 'POST /v1/api/search applies filters' do
     manifestations = []
     Chewy.strategy(:atomic) do
       clean_tablees
@@ -250,7 +246,7 @@ class V1::APITest < ActiveSupport::TestCase
       end
     end
 
-    get "/api/v1/search?key=#{@key.key}&page=1&sort_by=popularity&sort_dir=asc&is_copyrighted=true"
+    post "/api/v1/search", key: @key.key, page: 1, sort_by: :popularity, sort_dir: :asc, is_copyrighted: :true
     assert last_response.successful?
     json = JSON.parse(last_response.body)
     assert_equal 6, json['total_count']
@@ -260,16 +256,10 @@ class V1::APITest < ActiveSupport::TestCase
     assert_equal expected_ids, data.map { |rec| rec['id'] }
   end
 
-  test 'GET /v1/api/search passes all filter params to SearchManifestation service' do
-    filter = "genres[]=poetry&periods[]=revival&is_copyrighted=true&author_genders[]=male&translator_genders[]=female"
-    filter << "&title=Title&author=Author&author_ids[]=1&author_ids[]=2&original_language=ru"
-    filter << "&uploaded_between[]=&uploaded_between[]=2016"
-    filter << "&created_between[]=1981&created_between[]=1986"
-    filter << "&published_between[]=1990&published_between[]="
-
+  test 'POST /v1/api/search passes all filter params to SearchManifestation service' do
     # We simply check if all params are passed to SearchManifestation correctly.
     # SearchManifestation has own test
-    expected_hash = {
+    search_params = {
       'genres' => %w(poetry),
       'periods' => %w(revival),
       'is_copyrighted' => true,
@@ -279,9 +269,9 @@ class V1::APITest < ActiveSupport::TestCase
       'author' => 'Author',
       'author_ids' => [1, 2],
       'original_language' => 'ru',
-      'uploaded_between' => [nil, 2016],
-      'created_between' => [1981, 1986],
-      'published_between' => [1990, nil]
+      'uploaded_between' => { 'to' => 2016 },
+      'created_between' => { 'from' => 1981, 'to' => 1986},
+      'published_between' => { 'from' => 1990 }
     }
 
     records = mock()
@@ -290,9 +280,9 @@ class V1::APITest < ActiveSupport::TestCase
     records.expects(:to_a).returns([])
     records.expects(:count).returns(5)
 
-    SearchManifestations.any_instance.expects(:call).with('popularity', 'asc', expected_hash).returns(records)
+    SearchManifestations.any_instance.expects(:call).with('popularity', 'asc', search_params).returns(records)
 
-    get "/api/v1/search?key=#{@key.key}&view=metadata&file_format=pdf&page=2&sort_by=popularity&sort_dir=asc&#{filter}"
+    post "/api/v1/search", search_params.merge(key: @key.key, view: :metadata, file_format: :pdf, page: 2, sort_by: :popularity, sort_dir: :asc)
 
     assert last_response.successful?
     json = JSON.parse(last_response.body)
@@ -301,7 +291,7 @@ class V1::APITest < ActiveSupport::TestCase
     assert_equal 0, data.size
   end
 
-  test 'GET /v1/api/search do correct paging' do
+  test 'POST /v1/api/search do correct paging' do
     manifestations = []
     Chewy.strategy(:atomic) do
       clean_tablees
@@ -312,7 +302,7 @@ class V1::APITest < ActiveSupport::TestCase
 
     asc_ids = manifestations.sort_by(&:impressions_count).map(&:id)
 
-    get "/api/v1/search?key=#{@key.key}&page=1&sort_by=popularity&sort_dir=asc"
+    post "/api/v1/search", key: @key.key, page: 1, sort_by: :popularity, sort_dir: :asc
     assert last_response.successful?
     json = JSON.parse(last_response.body)
     assert_equal 60, json['total_count']
@@ -320,7 +310,7 @@ class V1::APITest < ActiveSupport::TestCase
     assert_equal 25, data.size
     assert_equal asc_ids[0..24], data.map { |rec| rec['id'] }
 
-    get "/api/v1/search?key=#{@key.key}&page=2&sort_by=popularity&sort_dir=asc"
+    post "/api/v1/search", key: @key.key, page: 2, sort_by: :popularity, sort_dir: :asc
     assert last_response.successful?
     json = JSON.parse(last_response.body)
     assert_equal 60, json['total_count']
@@ -328,7 +318,7 @@ class V1::APITest < ActiveSupport::TestCase
     assert_equal 25, data.size
     assert_equal asc_ids[25..49], data.map { |rec| rec['id'] }
 
-    get "/api/v1/search?key=#{@key.key}&page=2&sort_by=popularity&sort_dir=desc"
+    post "/api/v1/search", key: @key.key, page: 2, sort_by: :popularity, sort_dir: :desc
     assert last_response.successful?
     json = JSON.parse(last_response.body)
     assert_equal 60, json['total_count']
@@ -336,7 +326,7 @@ class V1::APITest < ActiveSupport::TestCase
     assert_equal 25, data.size
     assert_equal asc_ids.reverse[25..49], data.map { |rec| rec['id'] }
 
-    get "/api/v1/search?key=#{@key.key}&page=3&sort_by=popularity&sort_dir=asc"
+    post "/api/v1/search", key: @key.key, page: 3, sort_by: :popularity, sort_dir: :asc
     assert last_response.successful?
     json = JSON.parse(last_response.body)
     assert_equal 60, json['total_count']
@@ -344,7 +334,7 @@ class V1::APITest < ActiveSupport::TestCase
     assert_equal 10, data.size
     assert_equal asc_ids[50..60], data.map { |rec| rec['id'] }
 
-    get "/api/v1/search?key=#{@key.key}&page=4&sort_by=popularity&sort_dir=asc"
+    post "/api/v1/search", key: @key.key, page: 4, sort_by: :popularity, sort_dir: :asc
     assert last_response.successful?
     json = JSON.parse(last_response.body)
     assert_equal 60, json['total_count']

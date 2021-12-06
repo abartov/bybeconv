@@ -52,10 +52,10 @@ class V1::TextsAPI < V1::ApplicationApi
     resource :batch do
       desc 'Retrieve a collection of texts by specified IDs'
       params do
-        requires :ids, type: Array[Integer], maximum_length: 25, allow_blank: false, desc: 'array of text IDs to fetch', documentation: { param_type: 'query' }
+        requires :ids, type: Array[Integer], maximum_length: 25, allow_blank: false, desc: 'array of text IDs to fetch', documentation: { param_type: 'body' }
         use :text_params
       end
-      get do
+      post do
         ids = params[:ids]
         records = Manifestation.all_published.find(ids)
         present records, with: V1::Entities::Manifestation, view: params[:view], file_format: params[:file_format], snippet: params[:snippet]
@@ -82,7 +82,9 @@ class V1::TextsAPI < V1::ApplicationApi
       use :key_param
       use :text_params
       use :paging_params
-      optional :genres, type: Array[String], values: Work::GENRES, desc: 'the broad field of humanities of a textual work in the database.'
+
+      optional :genres, type: Array[String], values: Work::GENRES, desc: 'the broad field of humanities of a textual work in the database.',
+               documentation: { param_type: 'body' }
       optional :periods, type: Array[String], values: Expression.periods.keys, desc: 'specifies what section of the rough timeline of Hebrew literature an object belongs to.'
       optional :is_copyrighted, type: Boolean, desc: 'limit search to copyrighted works or to non-copyrighted works'
       optional :author_genders, type: Array[String], values: Person.genders.keys
@@ -91,12 +93,22 @@ class V1::TextsAPI < V1::ApplicationApi
       optional :author, type: String, desc: "a substring to match against the name(s) of a text's author(s)"
       optional :author_ids, type: Array[Integer]
       optional :original_language, type: String, desc: "ISO code of language, e.g. 'pl' for Polish, 'grc' for ancient Greek. Use magic constant 'xlat' to match all non-Hebrew languages"
-      optional :uploaded_between, type: Array[Integer], length: 2, desc: 'pass an array of years [min_year, max_year] to get works uploaded to the site at year min_year <= year <= max_year'
-      optional :created_between, type: Array[Integer], length: 2, desc: 'pass an array of years [min_year, max_year] to get works created at year min_year <= year <= max_year'
-      optional :published_between, type: Array[Integer], length: 2, desc: 'pass an array of years [min_year, max_year] to get works published in print at year min_year <= year <= max_year'
+
+      optional :uploaded_between, type: JSON, desc: 'pass an years interval json `{ from: min_year, to: max_year}` to get works uploaded to the site at year min_year <= year <= max_year' do
+        optional :from, type: Integer
+        optional :to, type: Integer
+      end
+      optional :created_between, type: JSON, desc: 'pass an years interval json `{ from: min_year, to: max_year}` to get works created at year min_year <= year <= max_year' do
+        optional :from, type: Integer
+        optional :to, type: Integer
+      end
+      optional :published_between, type: JSON, desc: 'pass an years interval json `{ from: min_year, to: max_year}` to get works published in print at year min_year <= year <= max_year' do
+        optional :from, type: Integer
+        optional :to, type: Integer
+      end
     end
 
-    get do
+    post do
       page = params[:page]
       filters = params.slice(*%w(genres periods is_copyrighted author_genders translator_genders title author author_ids original_language uploaded_between created_between published_between))
       records = SearchManifestations.call(params[:sort_by], params[:sort_dir], filters)
@@ -104,5 +116,4 @@ class V1::TextsAPI < V1::ApplicationApi
       present model, with: V1::Entities::ManifestationsPage, view: params[:view], file_format: params[:file_format], snippet: params[:snippet]
     end
   end
-
 end

@@ -132,11 +132,12 @@ components:
         - modern
       description: specifies what section of the rough timeline of Hebrew literature an object belongs to.
     year_range:
-      type: array
-      minItems: 1
-      maxItems: 2
-      items:
-        type: integer
+      type: object
+      properties:
+        from:
+          type: integer
+        to:
+          type: integer
     tagging:
       type: string
     recommendation:
@@ -334,7 +335,7 @@ components:
                   $ref: '#/components/responses/text'
 paths:
   /search:
-    get:
+    post:
       parameters:
         - $ref: '#/components/parameters/keyParam'
         - $ref: '#/components/parameters/viewParam'
@@ -404,19 +405,19 @@ paths:
         - name: uploaded_between
           in: query
           required: false
-          description: 'pass an array of years [min_year, max_year] to get works uploaded to the site at year min_year <= year <= max_year'
+          description: 'pass an years interval json `{ from: min_year, to: max_year}` to get works uploaded to the site at year min_year <= year <= max_year'
           schema:
             $ref: '#/components/schemas/year_range'
         - name: created_between
           in: query
           required: false
-          description: 'pass an array of years [min_year, max_year] to get works created at year min_year <= year <= max_year'
+          description: 'pass an years interval json `{ from: min_year, to: max_year}` to get works created at year min_year <= year <= max_year'
           schema:
             $ref: '#/components/schemas/year_range'
         - name: published_between
           in: query
           required: false
-          description: 'pass an array of years [min_year, max_year] to get works published in print at year min_year <= year <= max_year'
+          description: 'pass an years interval json `{ from: min_year, to: max_year}` to get works published in print at year min_year <= year <= max_year'
           schema:
             $ref: '#/components/schemas/year_range'
       summary: Query the site database for texts by a variety of parameters. See API docs for documentation of each parameter. All parameters are combined with a logical AND. Parameters accepting arrays allow a logical OR within that category.
@@ -446,7 +447,7 @@ paths:
         '200':
           $ref: '#/components/responses/textsPage'
   /texts/batch:
-    get:
+    post:
       parameters:
         - $ref: '#/components/parameters/keyParam'
         - name: ids

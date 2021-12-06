@@ -68,12 +68,12 @@ class SearchManifestations < ApplicationService
   end
 
   def add_date_range(list, field, range_param)
-    return if range_param.nil?
+    return if range_param.nil? || range_param.empty?
     range_expr = {}
-    year = range_param[0]
+    year = range_param['from']
     # Greater than or equal to first day of from-year
     range_expr['gte'] = Time.new(year, 1, 1, 0, 0, 0) if year.present?
-    year = range_param[1]
+    year = range_param['to']
     range_expr['lt'] = Time.new(year + 1, 1, 1, 0, 0, 0) if year.present?
     # Less than first day of year next to to-year
     unless range_expr.empty?

@@ -235,57 +235,57 @@ class SearchManifestationsTest < ActiveSupport::TestCase
   end
 
   test 'Filter by uploaded date works' do
-    records = SearchManifestations.call('alphabetical', 'asc', { 'uploaded_between' => [2010, 2010] })
+    records = SearchManifestations.call('alphabetical', 'asc', { 'uploaded_between' => { 'from' => 2010, 'to' => 2010 } })
     assert_equal 53, records.count
     records.limit(REC_COUNT).each do |rec|
       assert_includes Time.parse('2010-01-01')..Time.parse('2010-12-31 23:59:59'), Time.parse(rec.pby_publication_date)
     end
 
-    records = SearchManifestations.call('alphabetical', 'asc', { 'uploaded_between' => [2010, 2011] })
+    records = SearchManifestations.call('alphabetical', 'asc', { 'uploaded_between' => { 'from' => 2010, 'to' => 2011 } })
     assert_equal 105, records.count
 
-    records = SearchManifestations.call('alphabetical', 'asc', { 'uploaded_between' => [nil, 2010] })
+    records = SearchManifestations.call('alphabetical', 'asc', { 'uploaded_between' => { 'from' => nil, 'to' => 2010 } } )
     assert_equal 53, records.count
 
-    records = SearchManifestations.call('alphabetical', 'asc', { 'uploaded_between' => [2012, nil] })
+    records = SearchManifestations.call('alphabetical', 'asc', { 'uploaded_between' => { 'from' => 2012 } })
     assert_equal 95, records.count
 
     # if no limits specified, it returns all records
-    records = SearchManifestations.call('alphabetical', 'asc', { 'uploaded_between' => [nil, nil] })
+    records = SearchManifestations.call('alphabetical', 'asc', { 'uploaded_between' => { 'from' => nil, 'to' => nil } })
     assert_equal REC_COUNT, records.count
   end
 
   test 'Filter by publication date works' do
-    records = SearchManifestations.call('alphabetical', 'asc', { 'published_between' => [1980, 1980] })
+    records = SearchManifestations.call('alphabetical', 'asc', { 'published_between' => { 'from' => 1980, 'to' => 1980 } })
     assert_equal 12, records.count
     records.limit(REC_COUNT).each do |rec|
       assert_includes Time.parse('1980-01-01')..Time.parse('1980-12-31 23:59:59'), Time.parse(rec.orig_publication_date)
     end
 
-    records = SearchManifestations.call('alphabetical', 'asc', { 'published_between' => [1990, 1992] })
+    records = SearchManifestations.call('alphabetical', 'asc', { 'published_between' => { 'from' => 1990, 'to' => 1992 } })
     assert_equal 36, records.count
 
-    records = SearchManifestations.call('alphabetical', 'asc', { 'published_between' => [nil, 1984] })
+    records = SearchManifestations.call('alphabetical', 'asc', { 'published_between' => { 'from' => nil, 'to' => 1984 } })
     assert_equal 60, records.count
 
-    records = SearchManifestations.call('alphabetical', 'asc', { 'published_between' => [1985, nil] })
+    records = SearchManifestations.call('alphabetical', 'asc', { 'published_between' => { 'from' => 1985 } })
     assert_equal 140, records.count
   end
 
   test 'Filter by creation date works' do
-    records = SearchManifestations.call('alphabetical', 'asc', { 'created_between' => [1950, 1950] })
+    records = SearchManifestations.call('alphabetical', 'asc', { 'created_between' => { 'from' => 1950, 'to' => 1950 } })
     assert_equal 4, records.count
     records.limit(REC_COUNT).each do |rec|
       assert_includes Time.parse('1950-01-01')..Time.parse('1950-12-31 23:59:59'), Time.parse(rec.creation_date)
     end
 
-    records = SearchManifestations.call('alphabetical', 'asc', { 'created_between' => [1950, 1952] })
+    records = SearchManifestations.call('alphabetical', 'asc', { 'created_between' => { 'from' => 1950, 'to' => 1952 } })
     assert_equal 12, records.count
 
-    records = SearchManifestations.call('alphabetical', 'asc', { 'created_between' => [nil, 1952] })
+    records = SearchManifestations.call('alphabetical', 'asc', { 'created_between' => { 'from' => nil, 'to' => 1952 } })
     assert_equal 12, records.count
 
-    records = SearchManifestations.call('alphabetical', 'asc', { 'created_between' => [1985, nil] })
+    records = SearchManifestations.call('alphabetical', 'asc', { 'created_between' => { 'from' => 1985 } })
     assert_equal 60, records.count
   end
 
