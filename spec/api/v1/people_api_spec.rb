@@ -1,54 +1,21 @@
 require 'rails_helper'
 
 describe V1::PeopleAPI do
-  def app
-    Rails.application
-  end
-
-  let(:json_response) { JSON.parse(response.body) }
+  include_context 'API Spec Helpers'
 
   describe 'GET api/v1/people/{id}' do
-    let(:key) { create(:api_key).key }
     let(:detail) { 'metadata' }
+    let(:person_id) { -1 }
     let(:path) { "/api/v1/people/#{person_id}?key=#{key}&authorDetail=#{detail}" }
+    let(:subject) { get path }
 
-    context 'when authentication data is not correct' do
-      before { get path }
-      let(:person_id) { 100 }
-
-      context 'when no key param is provided' do
-        let(:path) { "/api/v1/people/#{person_id}?authorDetail=#{detail}" }
-
-        it 'fails with unauthorized status' do
-          expect(response).to be_unauthorized
-          expect(json_response['error']).to eq('key not found or disabled')
-        end
-      end
-
-      context 'when wrong key param is provided' do
-        let(:key) { 'WRONG' }
-
-        it 'fails with unauthorized status' do
-          expect(response).to be_unauthorized
-          expect(json_response['error']).to eq('key not found or disabled')
-        end
-      end
-
-      context 'when disabled key is provided' do
-        let(:key) { create(:api_key, status: :disabled).key }
-        it 'fails with unauthorized status' do
-          expect(response).to be_unauthorized
-          expect(json_response['error']).to eq('key not found or disabled')
-        end
-      end
-    end
+    include_context 'API Key Check'
 
     context 'when wrong id provided' do
       let(:person_id) { -1 }
       it 'fails with Not Found status' do
-        get path
-        expect(response).to be_not_found
-        expect(json_response['error']).to eq("Couldn't find Person with 'id'=-1")
+        expect(subject).to eq 404
+        expect(error_message).to eq "Couldn't find Person with 'id'=-1"
       end
     end
 
@@ -65,13 +32,11 @@ describe V1::PeopleAPI do
       end
       let(:person_id) { person.id }
 
-      before { get path }
-
       context 'when no details param provided' do
         let(:path) { "/api/v1/people/#{person_id}?key=#{key}" }
 
         it "returns personal  metadata" do
-          expect(response).to be_successful
+          expect(subject).to eq 200
           validate_person(json_response, person, 'metadata')
         end
       end
@@ -79,7 +44,7 @@ describe V1::PeopleAPI do
       context 'when metadata details requested' do
         let(:detail) { 'metadata' }
         it "returns personal  metadata" do
-          expect(response).to be_successful
+          expect(subject).to eq 200
           validate_person(json_response, person, 'metadata')
           expect(json_response['metadata']['work_ids']).to be_nil
           expect(json_response['enrichment']).to be_nil
@@ -89,7 +54,7 @@ describe V1::PeopleAPI do
       context 'when enriched details requested' do
         let(:detail) { 'enriched' }
         it "returns personal metadata plus works about this person (backlinks)" do
-          expect(response).to be_successful
+          expect(subject).to eq 200
           validate_person(json_response, person, 'enriched')
           expect(json_response['metadata']['work_ids']).to be_nil
           expect(json_response['enrichment']['works_about']).to eq([manifestation_about.id])
@@ -99,7 +64,7 @@ describe V1::PeopleAPI do
       context 'when works details requested' do
         let(:detail) { 'works' }
         it "returns a list of IDs of the works this person was involved in, with their role in each" do
-          expect(response).to be_successful
+          expect(subject).to eq 200
           validate_person(json_response, person, 'works')
           expect(json_response['metadata']['work_ids']).to eq([original_manifestation.id, translated_manifestation.id])
           expect(json_response['enrichment']).to be_nil
@@ -109,7 +74,7 @@ describe V1::PeopleAPI do
       context 'when original_works details requested' do
         let(:detail) { 'original_works' }
         it "returns a list of IDs of the works where this person is the original author" do
-          expect(response).to be_successful
+          expect(subject).to eq 200
           validate_person(json_response, person, 'original_works')
           expect(json_response['metadata']['work_ids']).to eq([original_manifestation.id])
           expect(json_response['enrichment']).to be_nil
@@ -119,7 +84,7 @@ describe V1::PeopleAPI do
       context 'when translations details requested' do
         let(:detail) { 'translations' }
         it "returns a list of IDs of the works where this person translated" do
-          expect(response).to be_successful
+          expect(subject).to eq 200
           validate_person(json_response, person, 'translations')
           expect(json_response['metadata']['work_ids']).to eq([translated_manifestation.id])
           expect(json_response['enrichment']).to be_nil
@@ -129,7 +94,7 @@ describe V1::PeopleAPI do
       context 'when full details requested' do
         let(:detail) { 'full' }
         it "returns enriched metadata plus all works" do
-          expect(response).to be_successful
+          expect(subject).to eq 200
           validate_person(json_response, person, 'full')
           expect(json_response['metadata']['work_ids']).to eq([original_manifestation.id, translated_manifestation.id])
           expect(json_response['enrichment']['works_about']).to eq([manifestation_about.id])
