@@ -28,8 +28,8 @@ class V1::TextsAPI < V1::ApplicationApi
 
     params :paging_params do
       requires :page, type: Integer, minimum_value: 1
-      optional :sort_by, type: String, default: 'alphabetical', values: SortedManifestations::SORTING_PROPERTIES.keys
-      optional :sort_dir, type: String, default: 'default', values: SortedManifestations::DIRECTIONS
+      optional :sort_by, type: String, default: 'alphabetical', values: SearchManifestations::SORTING_PROPERTIES.keys
+      optional :sort_dir, type: String, default: 'default', values: SearchManifestations::DIRECTIONS
     end
   end
 
@@ -44,7 +44,7 @@ class V1::TextsAPI < V1::ApplicationApi
     end
     get do
       page = params[:page]
-      records = SortedManifestations.call(params[:sort_by], params[:sort_dir]).all_published.limit(PAGE_SIZE).offset((page - 1) * PAGE_SIZE)
+      records = SearchManifestations.call(params[:sort_by], params[:sort_dir], {}).limit(PAGE_SIZE).offset((page - 1) * PAGE_SIZE)
       model = { data: records, total_count: Manifestation.all_published.count }
       present model, with: V1::Entities::ManifestationsPage, view: params[:view], file_format: params[:file_format], snippet: params[:snippet]
     end
@@ -57,22 +57,24 @@ class V1::TextsAPI < V1::ApplicationApi
       end
       post do
         ids = params[:ids]
-        records = Manifestation.all_published.find(ids)
-        present records, with: V1::Entities::Manifestation, view: params[:view], file_format: params[:file_format], snippet: params[:snippet]
+        records = ManifestationsIndex.find(ids)
+        # sorting result in same order as their ids are passed in parameter
+        records.sort_by! { |rec| ids.find_index(rec.id) }
+        present records, with: V1::Entities::ManifestationIndex, view: params[:view], file_format: params[:file_format], snippet: params[:snippet]
       end
     end
 
     route_param :id do
       desc 'Return text by id' do
-        success V1::Entities::Manifestation
+        success V1::Entities::ManifestationIndex
       end
       params do
         requires :id, type: Integer, desc: 'Text ID'
         use :text_params
       end
       get do
-        record = Manifestation.all_published.find(params[:id])
-        present record, with: V1::Entities::Manifestation, view: params[:view], file_format: params[:file_format], snippet: params[:snippet]
+        record = ManifestationsIndex.find(params[:id])
+        present record, with: V1::Entities::ManifestationIndex, view: params[:view], file_format: params[:file_format], snippet: params[:snippet]
       end
     end
   end

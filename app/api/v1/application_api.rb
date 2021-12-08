@@ -19,6 +19,10 @@ class V1::ApplicationApi < Grape::API
     error!(message, 404)
   end
 
+  rescue_from Chewy::DocumentNotFound do |e|
+    error!(e.message, 404)
+  end
+
   rescue_from V1::Validations::AuthKey::AuthFailed do |e|
     # Returning unauthorized status
     error!(e.message, 401)
