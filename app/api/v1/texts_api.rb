@@ -25,30 +25,12 @@ class V1::TextsAPI < V1::ApplicationApi
         whether or not to include a plaintext snippet of the beginning of the text.
       DESC
     end
-
-    params :paging_params do
-      requires :page, type: Integer, minimum_value: 1
-      optional :sort_by, type: String, default: 'alphabetical', values: SearchManifestations::SORTING_PROPERTIES.keys
-      optional :sort_dir, type: String, default: 'default', values: SearchManifestations::DIRECTIONS
-    end
   end
 
   params do
     use :key_param
   end
   resources :texts do
-    desc 'Retrieve a specified page from the list of all texts'
-    params do
-      use :paging_params
-      use :text_params
-    end
-    get do
-      page = params[:page]
-      records = SearchManifestations.call(params[:sort_by], params[:sort_dir], {}).limit(PAGE_SIZE).offset((page - 1) * PAGE_SIZE)
-      model = { data: records, total_count: Manifestation.all_published.count }
-      present model, with: V1::Entities::ManifestationsPage, view: params[:view], file_format: params[:file_format], snippet: params[:snippet]
-    end
-
     resource :batch do
       desc 'Retrieve a collection of texts by specified IDs'
       params do
@@ -83,7 +65,10 @@ class V1::TextsAPI < V1::ApplicationApi
     params do
       use :key_param
       use :text_params
-      use :paging_params
+
+      requires :page, type: Integer, minimum_value: 1
+      optional :sort_by, type: String, default: 'alphabetical', values: SearchManifestations::SORTING_PROPERTIES.keys
+      optional :sort_dir, type: String, default: 'default', values: SearchManifestations::DIRECTIONS
 
       optional :genres, type: Array[String], values: Work::GENRES, desc: 'the broad field of humanities of a textual work in the database.',
                documentation: { param_type: 'body' }
