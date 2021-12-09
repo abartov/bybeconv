@@ -15,7 +15,7 @@ module V1
           !person.public_domain?
         end
         expose :period
-        expose :work_ids, if: lambda { |_person, options| !%w(metadata enriched).include?(options[:detail]) },
+        expose :text_ids, if: lambda { |_person, options| !%w(metadata enriched).include?(options[:detail]) },
                documentation: { type: 'Integer', is_array: true, desc: 'ID numbers of all texts this person is involved with, filtered per the authorDetail param' } do |person, options|
           works = []
           if %w(works original_works full).include? options[:detail]
@@ -37,7 +37,7 @@ module V1
       end
 
       expose :enrichment, if: lambda { |_person, options| %w(enriched full).include? options[:detail] } do
-        expose :works_about,
+        expose :texts_about,
                documentation: { type: 'Integer', is_array: true, desc: "ID numbers of texts whose subject is this person" } do |person|
           Aboutness.where(aboutable: person)
                    .joins(work: {expressions: :manifestations})

@@ -114,7 +114,7 @@ describe V1::TextsAPI do
           # ensuring non-published tags are excluded
           assert_equal %w(popular), json_response['enrichment']['taggings']
           # ensuring works_about works correctly
-          expect(json_response['enrichment']['works_about']).to eq [ manifestation_2.id ]
+          expect(json_response['enrichment']['texts_about']).to eq [ manifestation_2.id ]
         end
       end
     end
@@ -172,94 +172,6 @@ describe V1::TextsAPI do
       it 'fails with not_found status' do
         expect(subject).to eq 404
         expect(error_message).to eq "Could not find documents for ids: #{unpublished_manifestation.id}"
-      end
-    end
-  end
-
-  describe 'GET /api/v1/texts' do
-    let(:additional_params) { "" }
-    let(:path) { "/api/v1/texts?key=#{key}&page=#{page}#{additional_params}" }
-    let(:subject) { get path }
-    let(:page) { 1 }
-
-    include_context 'API Key Check'
-
-    context 'when page less than 1 requested' do
-      let(:page) { 0 }
-      it 'fails with bad_request status' do
-        expect(subject).to eq 400
-        expect(error_message).to eq 'page must be equal to or above 1'
-      end
-    end
-
-    context 'when 1st page with no additional params specified' do
-      it 'returns 1st page with basic view, html format and without snippet sorted alphabetically in asc order' do
-        expect(subject).to eq 200
-        expect(total_count).to eq 2
-        expect(data.size).to eq 2
-        assert_manifestation(data[0], manifestation_1, 'basic', 'html', false)
-        assert_manifestation(data[1], manifestation_2, 'basic', 'html', false)
-      end
-    end
-
-    context 'when 1st page with descending alphabetical sorting, enriched view, epub format and snippet' do
-      let(:additional_params) { "&sort_by=alphabetical&sort_dir=desc&view=enriched&file_format=epub&snippet=true" }
-      it 'completes successfully' do
-        expect(subject).to eq 200
-        expect(total_count).to eq 2
-        expect(data.size).to eq 2
-        assert_manifestation(data[0], manifestation_2, 'enriched', 'epub', true)
-        assert_manifestation(data[1], manifestation_1, 'enriched', 'epub', true)
-      end
-    end
-
-    context 'when many pages exists' do
-      before do
-        clean_tables
-        Chewy.strategy(:atomic) do
-          create_list(:manifestation, 30)
-        end
-      end
-
-      let(:additional_params) { "&sort_by=alphabetical&sort_dir=#{sort_dir}" }
-      let(:asc_order) { Manifestation.all_published.order(sort_title: :asc, id: :asc).pluck(:id) }
-
-      context 'when 1st page in ascending order is requested' do
-        let(:sort_dir) { :asc }
-        it 'returns items from 0 to 24' do
-          expect(subject).to eq 200
-          expect(total_count).to eq 30
-          expect(data_ids).to eq asc_order[0..24]
-        end
-      end
-
-      context 'when 2nd page in ascending order is requested' do
-        let(:sort_dir) { :asc }
-        let(:page) { 2 }
-        it 'returns items from 25 to 29' do
-          expect(subject).to eq 200
-          expect(total_count).to eq 30
-          expect(data_ids).to eq asc_order[25..29]
-        end
-      end
-
-      context 'when 3rd page in ascending order is requested' do
-        let(:sort_dir) { :asc }
-        let(:page) { 3 }
-        it 'returns empty list' do
-          expect(subject).to eq 200
-          expect(total_count).to eq 30
-          expect(data).to eq []
-        end
-      end
-
-      context 'when 1st page in descending order is requested' do
-        let(:sort_dir) { :desc }
-        it 'returns items from 29 to 5' do
-          expect(subject).to eq 200
-          expect(total_count).to eq 30
-          expect(data_ids).to eq asc_order[5..29].reverse
-        end
       end
     end
   end
@@ -465,7 +377,7 @@ describe V1::TextsAPI do
         expect(json_recommendation['recommendation_date']).to eq r.created_at.to_date.strftime('%Y-%m-%d')
       end
       works_about = manifestation.expressions[0].works[0].works_about
-      expect(enrichment['works_about']).to eq works_about.joins(expressions: :manifestations).pluck('manifestations.id').sort
+      expect(enrichment['texts_about']).to eq works_about.joins(expressions: :manifestations).pluck('manifestations.id').sort
     else
       expect(json.keys).to_not include 'enrichment'
     end

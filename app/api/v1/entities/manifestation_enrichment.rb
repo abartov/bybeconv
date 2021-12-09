@@ -15,7 +15,7 @@ module V1
         V1::Entities::Recommendation.represent recommendations
       end
 
-      expose :works_about do |manifestation_id|
+      expose :texts_about do |manifestation_id|
         w = ::Work.joins(expressions: :manifestations).where('manifestations.id = ?', manifestation_id)
         Aboutness.where(aboutable: w)
                  .joins(work: {expressions: :manifestations})
