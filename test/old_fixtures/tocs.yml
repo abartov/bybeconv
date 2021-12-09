@@ -1,9 +1,0 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
-
-one:
-  toc: MyText
-  status: MyString
-
-two:
-  toc: MyText
-  status: MyString
