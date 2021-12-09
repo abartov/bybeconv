@@ -10,9 +10,9 @@ def clean_tables
 
   Aboutness.delete_all
 
-  Work.delete_all
-  Expression.delete_all
-  Manifestation.delete_all
+  Work.destroy_all
+  Expression.destroy_all
+  Manifestation.destroy_all
 
   # Cleaning-up ElasticSearch indices
   Chewy.massacre
