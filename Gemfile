@@ -107,7 +107,7 @@ group :development do
   gem 'capistrano-thin', '~> 2.0.0'
   gem 'capistrano-rvm'
   gem 'derailed_benchmarks', group: :development
-  gem 'bullet'
+#  gem 'bullet' # for suggestions to add/remove eager loading
   gem 'active_record_query_trace'
   gem 'immigrant'
 end
