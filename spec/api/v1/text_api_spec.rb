@@ -114,7 +114,7 @@ describe V1::TextsAPI do
           # ensuring non-published tags are excluded
           assert_equal %w(popular), json_response['enrichment']['taggings']
           # ensuring works_about works correctly
-          expect(json_response['enrichment']['works_about']).to eq [ manifestation_2.id ]
+          expect(json_response['enrichment']['texts_about']).to eq [ manifestation_2.id ]
         end
       end
     end
@@ -377,7 +377,7 @@ describe V1::TextsAPI do
         expect(json_recommendation['recommendation_date']).to eq r.created_at.to_date.strftime('%Y-%m-%d')
       end
       works_about = manifestation.expressions[0].works[0].works_about
-      expect(enrichment['works_about']).to eq works_about.joins(expressions: :manifestations).pluck('manifestations.id').sort
+      expect(enrichment['texts_about']).to eq works_about.joins(expressions: :manifestations).pluck('manifestations.id').sort
     else
       expect(json.keys).to_not include 'enrichment'
     end
