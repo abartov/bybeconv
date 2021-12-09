@@ -56,8 +56,8 @@ describe V1::PeopleAPI do
         it "returns personal metadata plus works about this person (backlinks)" do
           expect(subject).to eq 200
           validate_person(json_response, person, 'enriched')
-          expect(json_response['metadata']['work_ids']).to be_nil
-          expect(json_response['enrichment']['works_about']).to eq([manifestation_about.id])
+          expect(json_response['metadata']['text_ids']).to be_nil
+          expect(json_response['enrichment']['texts_about']).to eq([manifestation_about.id])
         end
       end
 
@@ -66,7 +66,7 @@ describe V1::PeopleAPI do
         it "returns a list of IDs of the works this person was involved in, with their role in each" do
           expect(subject).to eq 200
           validate_person(json_response, person, 'works')
-          expect(json_response['metadata']['work_ids']).to eq([original_manifestation.id, translated_manifestation.id])
+          expect(json_response['metadata']['text_ids']).to eq([original_manifestation.id, translated_manifestation.id])
           expect(json_response['enrichment']).to be_nil
         end
       end
@@ -76,7 +76,7 @@ describe V1::PeopleAPI do
         it "returns a list of IDs of the works where this person is the original author" do
           expect(subject).to eq 200
           validate_person(json_response, person, 'original_works')
-          expect(json_response['metadata']['work_ids']).to eq([original_manifestation.id])
+          expect(json_response['metadata']['text_ids']).to eq([original_manifestation.id])
           expect(json_response['enrichment']).to be_nil
         end
       end
@@ -86,7 +86,7 @@ describe V1::PeopleAPI do
         it "returns a list of IDs of the works where this person translated" do
           expect(subject).to eq 200
           validate_person(json_response, person, 'translations')
-          expect(json_response['metadata']['work_ids']).to eq([translated_manifestation.id])
+          expect(json_response['metadata']['text_ids']).to eq([translated_manifestation.id])
           expect(json_response['enrichment']).to be_nil
         end
       end
@@ -96,8 +96,8 @@ describe V1::PeopleAPI do
         it "returns enriched metadata plus all works" do
           expect(subject).to eq 200
           validate_person(json_response, person, 'full')
-          expect(json_response['metadata']['work_ids']).to eq([original_manifestation.id, translated_manifestation.id])
-          expect(json_response['enrichment']['works_about']).to eq([manifestation_about.id])
+          expect(json_response['metadata']['text_ids']).to eq([original_manifestation.id, translated_manifestation.id])
+          expect(json_response['enrichment']['texts_about']).to eq([manifestation_about.id])
         end
       end
     end
@@ -117,10 +117,10 @@ describe V1::PeopleAPI do
     expect(metadata['period']).to eq(person.period)
 
     if %w(metadata enriched).include?(detail)
-      expect(metadata).to_not have_key('work_ids')
+      expect(metadata).to_not have_key('text_ids')
     else
-      work_ids = metadata['work_ids']
-      expect(work_ids).to_not be_nil
+      text_ids = metadata['text_ids']
+      expect(text_ids).to_not be_nil
     end
 
     expect(metadata['other_designations']).to eq(person.other_designation)
@@ -131,7 +131,7 @@ describe V1::PeopleAPI do
     if %w(full enriched).include? detail
       enrichment = json['enrichment']
       expect(enrichment).to_not be_nil
-      expect(enrichment['works_about']).to_not be_nil
+      expect(enrichment['texts_about']).to_not be_nil
     else
       expect(json).to_not have_key('enrichment')
     end

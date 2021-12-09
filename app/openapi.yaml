@@ -204,7 +204,7 @@ components:
                     type: boolean
                   period:
                     $ref: '#/components/schemas/period'
-                  work_ids:
+                  text_ids:
                     type: array
                     description: ID numbers of all texts this person is involved with, filtered per the authorDetail param
                     items:
@@ -230,7 +230,7 @@ components:
               enrichment:
                 type: object
                 properties:
-                  works_about:
+                  texts_about:
                     type: array
                     description: ID numbers of texts whose subject is this person
                     items:
@@ -310,7 +310,7 @@ components:
                     type: array
                     items:
                       $ref: '#/components/schemas/recommendation'
-                  works_about:
+                  texts_about:
                     type: array
                     description: ID numbers of texts whose subject is this text (for example, critical essays about a creative work)
                     items:
