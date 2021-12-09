@@ -96,7 +96,6 @@ group :test do
   gem 'turn', '0.8.2', require: false
   gem 'simplecov', require: false
   gem 'faker', '~> 2.19.0'
-  gem 'mocha', '~> 1.13.0'
 end
 
 group :development do

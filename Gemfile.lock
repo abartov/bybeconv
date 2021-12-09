@@ -339,7 +339,6 @@ GEM
     mini_racer (0.4.0)
       libv8-node (~> 15.14.0.0)
     minitest (5.14.4)
-    mocha (1.13.0)
     moment-timezone-rails (1.0.0)
       momentjs-rails (>= 2.10.5, <= 3.0.0)
     momentjs-rails (2.20.1)
@@ -661,7 +660,6 @@ DEPENDENCIES
   marcel (~> 1)
   mini_magick (>= 4.9.4)
   mini_racer
-  mocha (~> 1.13.0)
   momentjs-rails
   mysql2
   nokogiri
