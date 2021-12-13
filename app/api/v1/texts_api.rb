@@ -78,6 +78,7 @@ class V1::TextsAPI < V1::ApplicationApi
       optional :translator_genders, type: Array[String], values: Person.genders.keys
       optional :title, type: String, desc: "a substring to match against a text's title"
       optional :author, type: String, desc: "a substring to match against the name(s) of a text's author(s)"
+      optional :fulltext, type: String, desc: "a substring to match against the work's full text (NOTE: if provided it will enforce result ordering by relevance)"
       optional :author_ids, type: Array[Integer]
       optional :original_language, type: String, desc: "ISO code of language, e.g. 'pl' for Polish, 'grc' for ancient Greek. Use magic constant 'xlat' to match all non-Hebrew languages"
 
@@ -97,8 +98,15 @@ class V1::TextsAPI < V1::ApplicationApi
 
     post do
       page = params[:page]
-      filters = params.slice(*%w(genres periods is_copyrighted author_genders translator_genders title author author_ids original_language uploaded_between created_between published_between))
-      records = SearchManifestations.call(params[:sort_by], params[:sort_dir], filters)
+      filters = params.slice(*%w(genres periods is_copyrighted author_genders translator_genders title author fulltext author_ids original_language uploaded_between created_between published_between))
+      if filters['fulltext'].present?
+        sort_by = nil
+        sort_dir = nil
+      else
+        sort_by = params[:sort_by]
+        sort_dir = params[:sort_dir]
+      end
+      records = SearchManifestations.call(sort_by, sort_dir, filters)
       model = { data: records.limit(PAGE_SIZE).offset((page - 1) * PAGE_SIZE).to_a, total_count: records.count }
       present model, with: V1::Entities::ManifestationsPage, view: params[:view], file_format: params[:file_format], snippet: params[:snippet]
     end
