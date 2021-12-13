@@ -270,6 +270,45 @@ describe SearchManifestations do
       end
     end
 
+    describe 'by fulltext' do
+      let(:filter) { { 'fulltext' => fulltext } }
+      let(:result_ids) { subject.limit(REC_COUNT).map(&:id) }
+      let(:manifestation_1) { create(:manifestation, markdown: 'The quick brown fox jumps over the lazy dog') }
+      let(:manifestation_2) { create(:manifestation, markdown: 'Dogs are not our whole life, but they make our lives whole.') }
+      # Adding word duplication to increase relevance by this word
+      let(:manifestation_3) { create(:manifestation, markdown: 'Dogs do speak, but only to those who know how to listen. Dogs! Dogs! Dogs!') }
+
+      before do
+        Chewy.strategy(:atomic) do
+          manifestation_1
+          manifestation_2
+          manifestation_3
+        end
+      end
+
+      context 'when fulltext snippet is provided' do
+        let(:fulltext) { 'lazy fox' }
+        it 'returns records including those words' do
+          expect(result_ids).to eq [ manifestation_1.id ]
+        end
+      end
+
+      context 'when multiple documents match query' do
+        let(:fulltext) { 'but dogs' }
+        it 'orders them by relevance' do
+          expect(result_ids).to eq [ manifestation_3.id, manifestation_2.id ]
+        end
+      end
+
+      after do
+        Chewy.strategy(:atomic) do
+          manifestation_1.destroy
+          manifestation_2.destroy
+          manifestation_3.destroy
+        end
+      end
+    end
+
     describe 'by author_ids' do
       let(:filter) { { 'author_ids' => author_ids } }
 

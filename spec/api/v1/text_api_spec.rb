@@ -240,7 +240,7 @@ describe V1::TextsAPI do
     end
 
     context 'when complex filter is provided' do
-      let(:search_params) do
+      let(:all_filters) do
         {
           'genres' => %w(poetry),
           'periods' => %w(revival),
@@ -249,6 +249,7 @@ describe V1::TextsAPI do
           'translator_genders' => %w(female),
           'title' => 'Title',
           'author' => 'Author',
+          'fulltext' => 'Random Text',
           'author_ids' => [1, 2],
           'original_language' => 'ru',
           'uploaded_between' => { 'to' => 2016 },
@@ -256,20 +257,37 @@ describe V1::TextsAPI do
           'published_between' => { 'from' => 1990 }
         }
       end
-
-      let(:page) { 2 }
       let(:additional_params) { { sort_by: :popularity, sort_dir: :asc }.merge(search_params) }
 
-      it 'passes all params to SearchManifestation service' do
+      let(:page) { 2 }
+
+      let!(:records) do
         records = double('Search Result', count: 5)
         expect(records).to receive(:offset).with(25).and_return(records)
         expect(records).to receive(:limit).with(25).and_return(records)
         expect(records).to receive(:to_a).and_return([])
-        expect_any_instance_of(SearchManifestations).to receive(:call).with('popularity', 'asc', search_params).and_return(records)
+        records
+      end
 
-        expect(subject).to eq 201
-        expect(total_count).to eq 5
-        expect(data).to eq []
+      context 'when fulltext param is provided' do
+        let(:search_params) { all_filters }
+        it 'passes all params to SearchManifestation service without sorting' do
+          expect_any_instance_of(SearchManifestations).to receive(:call).with(nil, nil, search_params).and_return(records)
+          expect(subject).to eq 201
+          puts error_message
+          expect(total_count).to eq 5
+          expect(data).to eq []
+        end
+      end
+
+      context 'when no fulltext param is provided' do
+        let(:search_params) { all_filters.reject { |k, _v| k == 'fulltext' } }
+        it 'passes all params to SearchManifestation service with sorting' do
+          expect_any_instance_of(SearchManifestations).to receive(:call).with('popularity', 'asc', search_params).and_return(records)
+          expect(subject).to eq 201
+          expect(total_count).to eq 5
+          expect(data).to eq []
+        end
       end
     end
 
