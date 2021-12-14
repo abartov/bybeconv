@@ -142,22 +142,6 @@ class Manifestation < ApplicationRecord
     # stripping tags -- return ActionController::Base.helpers.strip_tags(MultiMarkdown.new(markdown.lines[0..p_count].join("\n")).to_html.force_encoding('UTF-8').gsub(/<h1.*?<\/h1>/,'').gsub(/<figcaption>.*?<\/figcaption>/,'')) # remove MMD's automatic figcaptions, and the initial title
   end
 
-  # Snippet in TXT format
-  def txt_snippet
-    html = <<~HTML
-      <!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">
-      <html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"he\" lang=\"he\" dir=\"rtl\">
-      <head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" /></head>
-      <body dir='rtl' align='right'><div dir=\"rtl\" align=\"right\">
-        #{title_and_authors_html}
-        #{snippet_paragraphs(15)}
-      </div></body>
-      </html>
-    HTML
-    txt = html2txt(html)
-    txt.gsub("\n","\r\n") # windows linebreaks
-  end
-
   def authors_string
     return I18n.t(:nil) if expressions[0].nil? or expressions[0].works[0].nil? or expressions[0].works[0].persons[0].nil?
     return expressions[0].works[0].authors.map{|x| x.name}.join(', ')

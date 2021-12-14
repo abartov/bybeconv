@@ -37,7 +37,9 @@ module V1
       expose :enrichment, if: lambda { |_manifestation, options| options[:view] == 'enriched' } do |manifestation|
         V1::Entities::ManifestationEnrichment.represent manifestation.id
       end
-      expose :txt_snippet, as: :snippet, if: lambda { |_manifestation, options| options[:snippet] }
+      expose :snippet, if: lambda { |_manifestation, options| options[:snippet] } do |manifestation|
+        snippet(manifestation.fulltext, 500)[0]
+      end
       expose :download_url do |manifestation|
         Rails.application.routes.url_helpers.manifestation_download_url(manifestation.id, format: options[:file_format])
       end
