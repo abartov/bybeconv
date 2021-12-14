@@ -15,17 +15,6 @@ module V1
           !person.public_domain?
         end
         expose :period, documentation: { values: ::Person.periods.keys }
-        expose :text_ids, if: lambda { |_person, options| !%w(metadata enriched).include?(options[:detail]) },
-               documentation: { type: 'Integer', is_array: true, desc: 'ID numbers of all texts this person is involved with, filtered per the authorDetail param' } do |person, options|
-          works = []
-          if %w(works original_works full).include? options[:detail]
-            works += person.creations.author.joins(work: {expressions: :manifestations}).pluck('manifestations.id')
-          end
-          if %w(works translations full).include? options[:detail]
-            works += person.realizers.translator.joins(expression: :manifestations).pluck('manifestations.id')
-          end
-          works.uniq.sort
-        end
         expose :other_designation, as: :other_designations,
                documentation: { desc: 'semicolon-separated list of additional names or spellings for this person' }
         expose :wikipedia_snippet, as: :bio_snippet
@@ -36,7 +25,23 @@ module V1
                documentation: { type: 'Integer', desc: "total number of times the person's page OR one of their texts were viewed or printed" }
       end
 
-      expose :enrichment, if: lambda { |_person, options| %w(enriched full).include? options[:detail] } do
+      expose :texts, documentation: { desc: 'ID numbers of all texts this person is involved into with with role in each' },
+        if: lambda { |_person, options| %w(texts enriched).include?(options[:detail]) } do
+        expose :author, documentation: { type: 'Integer', is_array: true } do |person|
+          Creation.where(person_id: person.id).author.joins(work: { expressions: :manifestations } ).pluck('manifestations.id').sort
+        end
+        expose :translator, documentation: { type: 'Integer', is_array: true } do |person|
+          Realizer.where(person_id: person.id).translator.joins(expression: :manifestations).pluck('manifestations.id').sort
+        end
+        expose :editor, documentation: { type: 'Integer', is_array: true } do |person|
+          Realizer.where(person_id: person.id).editor.joins(expression: :manifestations).pluck('manifestations.id').sort
+        end
+        expose :illustrator, documentation: { type: 'Integer', is_array: true } do |person|
+          Realizer.where(person_id: person.id).illustrator.joins(expression: :manifestations).pluck('manifestations.id').sort
+        end
+      end
+
+      expose :enrichment, if: lambda { |_person, options| %w(enriched).include? options[:detail] } do
         expose :texts_about,
                documentation: { type: 'Integer', is_array: true, desc: "ID numbers of texts whose subject is this person" } do |person|
           Aboutness.where(aboutable: person)
