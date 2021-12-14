@@ -9,6 +9,8 @@ FactoryBot.define do
       author { create(:person) }
       orig_lang { %w(he en ru de it).sample }
       translator { orig_lang != 'he' ? create(:person) : nil }
+      editor { nil }
+      illustrator { nil }
     end
 
     title { "Title for #{number}" }
@@ -20,7 +22,7 @@ FactoryBot.define do
     impressions_count { 4 }
     status { :published }
 
-    expressions { [ create(:expression, author: author, translator: translator, orig_lang: orig_lang) ] }
+    expressions { [ create(:expression, author: author, translator: translator, editor: editor, illustrator: illustrator, orig_lang: orig_lang) ] }
 
     trait :with_external_links do
       external_links { build_list(:external_link, 2) }
