@@ -81,7 +81,7 @@ describe V1::TextsAPI do
     context 'when additional params given' do
       let(:additional_params) { "&view=#{view}&file_format=#{file_format}&snippet=#{snippet}" }
 
-      context 'when basic view, epub format, with snipped are requested' do
+      context 'when basic view, epub format, with snippet are requested' do
         let(:view) { :basic }
         let(:file_format) { :epub }
         let(:snippet) { true }
@@ -403,7 +403,6 @@ describe V1::TextsAPI do
     if snippet
       snippet = json['snippet']
       expect(snippet).to_not be_nil
-      expect(snippet).to include manifestation.title
       # we assume that markdown contains plain-text only
       expect(snippet).to include manifestation.markdown
     else
