@@ -10,9 +10,15 @@ def clean_tables
 
   Aboutness.delete_all
 
-  Work.destroy_all
-  Expression.destroy_all
-  Manifestation.destroy_all
+  ListItem.delete_all
+  User.delete_all
+
+  ActiveRecord::Base.connection.execute('delete from expressions_manifestations')
+  ActiveRecord::Base.connection.execute('delete from expressions_works')
+
+  Work.delete_all
+  Expression.delete_all
+  Manifestation.delete_all
 
   # Cleaning-up ElasticSearch indices
   Chewy.massacre

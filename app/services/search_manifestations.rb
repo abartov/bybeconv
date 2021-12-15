@@ -49,15 +49,23 @@ class SearchManifestations < ApplicationService
       filter << { match_phrase: { title: title } }
     end
 
-    sort_props = SORTING_PROPERTIES[sort_by]
-    if sort_dir == 'default'
-      sort_dir = sort_props[:default_dir]
+    result = ManifestationsIndex.filter(filter)
+
+    fulltext = filters['fulltext']
+    if fulltext.present?
+      result = result.query({ match: { fulltext: fulltext } })
+    else
+      # we're only applying sorting if no full-text search is performed, because for full-text search we want to keep
+      # relevance sorting
+      sort_props = SORTING_PROPERTIES[sort_by]
+      if sort_dir == 'default'
+        sort_dir = sort_props[:default_dir]
+      end
+      # We additionally sort by id to order records with equal values in main sorting column
+      result = result.order([ { sort_props[:column] => sort_dir }, { id: sort_dir } ])
     end
 
-    # We additionally sort by id to order records with equal values in main sorting column
-    order = [ { sort_props[:column] => sort_dir }, { id: sort_dir } ]
-
-    return ManifestationsIndex.filter(filter).order(order) # prepare ES query
+    return  result
   end
 
   private

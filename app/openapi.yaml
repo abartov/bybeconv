@@ -389,6 +389,11 @@ paths:
           description: a substring to match against the name(s) of a text's author(s)
           schema:
             type: string
+        - name: fulltext
+          required: false
+          description: a substring to match against the work's full text (NOTE: when provided it will enforce result ordering by relevance).
+          schema:
+            type: string
         - name: author_ids
           in: query
           required: false
