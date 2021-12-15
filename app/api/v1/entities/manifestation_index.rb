@@ -34,12 +34,14 @@ module V1
           dt.nil? ? nil : Time.parse(dt).year
         end
       end
-      expose :id, as: :enrichment, using: V1::Entities::ManifestationEnrichment, if: lambda { |_manifestation, options| options[:view] == 'enriched' }
-      expose :txt_snippet, as: :snippet,
-             documentation: { desc: 'plaintext snippet of the first few hundred characters of the text, useful for previews and search results' },
-             if: lambda { |_manifestation, options| options[:snippet] }
+      expose :enrichment, if: lambda { |_manifestation, options| options[:view] == 'enriched' } do |manifestation|
+        V1::Entities::ManifestationEnrichment.represent manifestation.id
+      end
+      expose :snippet, documentation: { desc: 'plaintext snippet of the first few hundred characters of the text, useful for previews and search results' }, if: lambda { |_manifestation, options| options[:snippet] } do |manifestation|
+        snippet(manifestation.fulltext, 500)[0]
+      end
       expose :download_url,
-             documentation: { desc: 'URL of the full text of the work, in the requested format (HTML by default)' } do |manifestation|
+             documentation: { desc: 'URL of the full text of the work, in the requested format (HTML by default)' }  do |manifestation|
         Rails.application.routes.url_helpers.manifestation_download_url(manifestation.id, format: options[:file_format])
       end
     end
