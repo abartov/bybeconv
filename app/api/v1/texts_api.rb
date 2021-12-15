@@ -30,13 +30,14 @@ class V1::TextsAPI < V1::ApplicationApi
   params do
     use :key_param
   end
+
   resources :texts do
     resource :batch do
-      desc 'Retrieve a collection of texts by specified IDs'
       params do
         requires :ids, type: Array[Integer], maximum_length: 25, allow_blank: false, desc: 'array of text IDs to fetch', documentation: { param_type: 'body' }
         use :text_params
       end
+      desc 'retrieve a collection of texts by specified IDs'
       post do
         ids = params[:ids]
         records = ManifestationsIndex.find(ids)
@@ -47,7 +48,7 @@ class V1::TextsAPI < V1::ApplicationApi
     end
 
     route_param :id do
-      desc 'Return text by id' do
+      desc 'returns meta-data and, optionally, the full text, of a textual work from the database' do
         success V1::Entities::ManifestationIndex
       end
       params do
@@ -66,9 +67,9 @@ class V1::TextsAPI < V1::ApplicationApi
       use :key_param
       use :text_params
 
-      requires :page, type: Integer, minimum_value: 1
-      optional :sort_by, type: String, default: 'alphabetical', values: SearchManifestations::SORTING_PROPERTIES.keys
-      optional :sort_dir, type: String, default: 'default', values: SearchManifestations::DIRECTIONS
+      requires :page, type: Integer, minimum_value: 1, desc: 'desired page number of result set (starting from 1)'
+      optional :sort_by, type: String, default: 'alphabetical', values: SearchManifestations::SORTING_PROPERTIES.keys, desc: 'desired ordering of result set (ignored if fulltext search is used)'
+      optional :sort_dir, type: String, default: 'default', values: SearchManifestations::DIRECTIONS, desc: 'desired ordering direction (ignored if fulltext search is used)'
 
       optional :genres, type: Array[String], values: Work::GENRES, desc: 'the broad field of humanities of a textual work in the database.',
                documentation: { param_type: 'body' }
@@ -96,6 +97,9 @@ class V1::TextsAPI < V1::ApplicationApi
       end
     end
 
+    desc 'Query the site database for texts by a variety of parameters. All parameters are combined with a logical AND. Parameters accepting arrays allow a logical OR within that category.' do
+      success V1::Entities::ManifestationsPage
+    end
     post do
       page = params[:page]
       filters = params.slice(*%w(genres periods is_copyrighted author_genders translator_genders title author fulltext author_ids original_language uploaded_between created_between published_between))

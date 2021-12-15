@@ -2,19 +2,19 @@ module V1
   module Entities
     class Person < Grape::Entity
       expose :id, documentation: { type: :Integer }
-      expose :url do |person|
+      expose :url, documentation: { desc: "Canonical URL of the person at Project Ben-Yehuda (useful for giving credit and allowing users to click through)" } do |person|
         Rails.application.routes.url_helpers.bib_person_url(person)
       end
       expose :metadata do
         expose :name
-        expose :sort_name
+        expose :sort_name,  documentation: { desc: 'version of the name more useful for alphabetical sorting' }
         expose :birth_year, documentation: { type: 'Integer' }
         expose :death_year, documentation: { type: 'Integer' }
-        expose :gender
-        expose :copyright_status do |person|
+        expose :gender, documentation: { values: ::Person.genders.keys }
+        expose :copyright_status, documentation: { type: 'Boolean' } do |person|
           !person.public_domain?
         end
-        expose :period
+        expose :period, documentation: { values: ::Person.periods.keys }
         expose :text_ids, if: lambda { |_person, options| !%w(metadata enriched).include?(options[:detail]) },
                documentation: { type: 'Integer', is_array: true, desc: 'ID numbers of all texts this person is involved with, filtered per the authorDetail param' } do |person, options|
           works = []
@@ -31,7 +31,7 @@ module V1
         expose :wikipedia_snippet, as: :bio_snippet
         expose :all_languages, as: :languages,
                documentation: { type: 'String', is_array: true, desc: 'list of languages (by ISO code) this person worked in' }
-        expose :all_genres, as: :genres, documentation: { is_array: true }
+        expose :all_genres, as: :genres, documentation: { values: Work::GENRES, is_array: true }
         expose :impressions_count,
                documentation: { type: 'Integer', desc: "total number of times the person's page OR one of their texts were viewed or printed" }
       end
