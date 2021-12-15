@@ -12,8 +12,8 @@ FactoryBot.define do
     end
 
     title { "Title for #{number}" }
-    publisher { "Publisher for #{number}" }
-    publication_place { "Publication place for #{number}" }
+    publisher { Faker::Company.name }
+    publication_place { Faker::Address.city }
     publication_date { '2019-01-01' }
     comment { "Comment for #{number}" }
     markdown { "Markdown for #{number}" }

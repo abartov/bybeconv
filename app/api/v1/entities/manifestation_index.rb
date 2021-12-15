@@ -24,7 +24,8 @@ module V1
         expose :period, documentation: { values: Expression.periods.keys }
         expose :raw_creation_date
         expose :creation_date
-        expose :place_and_publisher
+        expose :publication_place
+        expose :publisher
         expose :raw_publication_date
       end
       expose :enrichment, if: lambda { |_manifestation, options| options[:view] == 'enriched' } do |manifestation|

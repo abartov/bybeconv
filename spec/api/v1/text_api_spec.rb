@@ -364,7 +364,8 @@ describe V1::TextsAPI do
     expect(md['period']).to eq expression.period
     expect(md['raw_creation_date']).to eq work.date
     expect(md['creation_date']).to eq normalize_date(work.date).to_s
-    expect(md['place_and_publisher']).to eq "#{manifestation.publication_place}, #{manifestation.publisher}"
+    expect(md['publication_place']).to eq manifestation.publication_place
+    expect(md['publisher']).to eq manifestation.publisher
     expect(md['raw_publication_date']).to eq expression.date
 
     if view == 'enriched'

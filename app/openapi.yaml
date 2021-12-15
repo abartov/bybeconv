@@ -287,7 +287,9 @@ components:
                     type: string
                   creation_date:
                     type: string
-                  place_and_publisher:
+                  publication_place:
+                    type: string
+                  publisher:
                     type: string
                   raw_publication_date:
                     type: string
