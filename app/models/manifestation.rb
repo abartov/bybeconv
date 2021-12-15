@@ -195,10 +195,6 @@ class Manifestation < ApplicationRecord
     end
   end
 
-  def place_and_publisher
-    "#{publication_place}, #{publisher}"
-  end
-
   def legacy_htmlfile
     hh = HtmlFile.joins(:manifestations).where(manifestations: {id: self.id})
     if hh.empty?
