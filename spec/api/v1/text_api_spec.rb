@@ -356,7 +356,6 @@ describe V1::TextsAPI do
     expect(md['pby_publication_date']).to eq work.created_at.to_date.to_s
     expect(md['author_string']).to eq manifestation.author_string
     expect(md['author_ids']).to eq manifestation.author_and_translator_ids
-    expect(md['title_and_authors']).to eq manifestation.title_and_authors
     expect(md['impressions_count']).to eq manifestation.impressions_count
     expect(md['orig_publication_date']).to eq normalize_date(expression.date).to_s
     expect(md['author_gender']).to eq manifestation.author_gender
@@ -367,7 +366,6 @@ describe V1::TextsAPI do
     expect(md['creation_date']).to eq normalize_date(work.date).to_s
     expect(md['place_and_publisher']).to eq "#{manifestation.publication_place}, #{manifestation.publisher}"
     expect(md['raw_publication_date']).to eq expression.date
-    expect(md['publication_year']).to eq normalize_date(expression.date).year
 
     if view == 'enriched'
       enrichment = json['enrichment']

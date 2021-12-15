@@ -16,9 +16,6 @@ module V1
         end
         expose :author_string
         expose :author_ids, documentation: { type: 'Integer', is_array: true, desc: 'ID numbers of all authors involved with the text (most often only one)' }
-        expose :title_and_authors do |manifestation|
-          manifestation.title + ' / ' + manifestation.author_string
-        end
         expose :impressions_count, documentation: { type: 'Integer', desc: 'total number of times the text was viewed or printed' }
         expose :orig_publication_date
         expose :author_gender, documentation: { values: ::Person.genders.keys, is_array: true }
@@ -29,10 +26,6 @@ module V1
         expose :creation_date
         expose :place_and_publisher
         expose :raw_publication_date
-        expose :publication_year, documentation: { type: 'Integer' } do |manifestation|
-          dt = manifestation.orig_publication_date
-          dt.nil? ? nil : Time.parse(dt).year
-        end
       end
       expose :enrichment, if: lambda { |_manifestation, options| options[:view] == 'enriched' } do |manifestation|
         V1::Entities::ManifestationEnrichment.represent manifestation.id
