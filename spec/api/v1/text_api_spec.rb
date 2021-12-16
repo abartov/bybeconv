@@ -81,7 +81,7 @@ describe V1::TextsAPI do
     context 'when additional params given' do
       let(:additional_params) { "&view=#{view}&file_format=#{file_format}&snippet=#{snippet}" }
 
-      context 'when basic view, epub format, with snipped are requested' do
+      context 'when basic view, epub format, with snippet are requested' do
         let(:view) { :basic }
         let(:file_format) { :epub }
         let(:snippet) { true }
@@ -356,7 +356,6 @@ describe V1::TextsAPI do
     expect(md['pby_publication_date']).to eq work.created_at.to_date.to_s
     expect(md['author_string']).to eq manifestation.author_string
     expect(md['author_ids']).to eq manifestation.author_and_translator_ids
-    expect(md['title_and_authors']).to eq manifestation.title_and_authors
     expect(md['impressions_count']).to eq manifestation.impressions_count
     expect(md['orig_publication_date']).to eq normalize_date(expression.date).to_s
     expect(md['author_gender']).to eq manifestation.author_gender
@@ -365,9 +364,9 @@ describe V1::TextsAPI do
     expect(md['period']).to eq expression.period
     expect(md['raw_creation_date']).to eq work.date
     expect(md['creation_date']).to eq normalize_date(work.date).to_s
-    expect(md['place_and_publisher']).to eq "#{manifestation.publication_place}, #{manifestation.publisher}"
+    expect(md['publication_place']).to eq manifestation.publication_place
+    expect(md['publisher']).to eq manifestation.publisher
     expect(md['raw_publication_date']).to eq expression.date
-    expect(md['publication_year']).to eq normalize_date(expression.date).year
 
     if view == 'enriched'
       enrichment = json['enrichment']
@@ -403,7 +402,6 @@ describe V1::TextsAPI do
     if snippet
       snippet = json['snippet']
       expect(snippet).to_not be_nil
-      expect(snippet).to include manifestation.title
       # we assume that markdown contains plain-text only
       expect(snippet).to include manifestation.markdown
     else

@@ -1,5 +1,7 @@
 include BybeUtils
 Bybeconv::Application.routes.draw do
+  mount Rswag::Ui::Engine => '/api-docs'
+  mount Rswag::Api::Engine => '/api-docs'
   mount V1::Api => '/'
 
   resources :anthology_texts do

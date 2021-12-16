@@ -1,7 +1,7 @@
 class V1::PeopleAPI < V1::ApplicationApi
   resources :people do
     route_param :id do
-      desc 'Return text by id' do
+      desc 'Return person by id' do
         success V1::Entities::Person
       end
       params do

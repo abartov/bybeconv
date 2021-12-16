@@ -86,7 +86,7 @@ components:
       name: sort_by
       in: query
       required: false
-      description: desired ordering of result set
+      description: desired ordering of result set (ignored if fulltext search is used)
       schema:
         type: string
         default: alphabetical
@@ -100,7 +100,7 @@ components:
       name: sort_dir
       in: query
       required: false
-      description: desired ordering direction
+      description: desired ordering direction (ignored if fulltext search is used)
       schema:
         type: string
         default: default
@@ -270,8 +270,6 @@ components:
                     items:
                       type: integer
                     description: ID numbers of all authors involved with the text (most often only one)
-                  title_and_authors:
-                    type: string
                   impressions_count:
                     type: integer
                     description: total number of times the text was viewed or printed
@@ -289,11 +287,11 @@ components:
                     type: string
                   creation_date:
                     type: string
-                  place_and_publisher:
+                  publication_place:
+                    type: string
+                  publisher:
                     type: string
                   raw_publication_date:
-                    type: string
-                  publication_year:
                     type: string
               enrichment:
                 type: object
@@ -404,7 +402,7 @@ paths:
         - name: original_language
           in: query
           required: false
-          description: 'ISO code of language, e.g. ''pl'' for Polish, ''grc'' for ancient Greek'
+          description: 'ISO code of language, e.g. ''pl'' for Polish, ''grc'' for ancient Greek. Use magic constant ''xlat'' to match all non-Hebrew languages'
           schema:
             type: string
         - name: uploaded_between

@@ -29,8 +29,8 @@ class ManifestationsIndex < Chewy::Index
     field :period, value: ->(manifestation) {manifestation.expressions[0].period}, type: 'keyword'
     field :raw_creation_date, value: ->(manifestation) {manifestation.expressions[0].works[0].date}
     field :creation_date, type: 'date', value: ->(manifestation) {normalize_date(manifestation.expressions[0].works[0].date)}
-    field :place_and_publisher
-    field :txt_snippet
+    field :publication_place
+    field :publisher
   end
 
   # TODO: in future: collections/readers; users; recommendations; curated/featured content
