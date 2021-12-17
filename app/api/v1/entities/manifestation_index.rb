@@ -18,8 +18,8 @@ module V1
         expose :author_ids, documentation: { type: 'Integer', is_array: true, desc: 'ID numbers of all authors involved with the text (most often only one)' }
         expose :impressions_count, documentation: { type: 'Integer', desc: 'total number of times the text was viewed or printed' }
         expose :orig_publication_date
-        expose :author_gender, documentation: { values: ::Person.genders.keys, is_array: true }
-        expose :translator_gender, documentation: { values: ::Person.genders.keys, is_array: true }
+        expose :author_gender, as: :author_genders, documentation: { values: ::Person.genders.keys, is_array: true }
+        expose :translator_gender, as: :translator_genders, documentation: { values: ::Person.genders.keys, is_array: true }
         expose :copyright_status, documentation: { type: 'Boolean' }
         expose :period, documentation: { values: Expression.periods.keys }
         expose :raw_creation_date

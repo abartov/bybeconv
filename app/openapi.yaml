@@ -43,7 +43,7 @@ components:
       required: false
       description: 'how much detail to return: 
         `metadata` returns personal metadata;
-        `works` returns metadata and a lists of IDs of works this person was involved in with different roles; 
+        `texts` returns IDs of texts this person was involved in, with his role in each;; 
         `enriched` returns personal metadata plus list of works and works about this person (backlinks);'
       schema:
         type: string
@@ -284,10 +284,14 @@ components:
                     description: total number of times the text was viewed or printed
                   orig_publication_date:
                     type: string
-                  author_gender:
-                    $ref: '#/components/schemas/gender'
-                  translator_gender:
-                    $ref: '#/components/schemas/gender'
+                  author_genders:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/gender'
+                  translator_genders:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/gender'
                   copyright_status:
                     type: boolean
                   period:
