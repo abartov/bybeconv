@@ -358,8 +358,8 @@ describe V1::TextsAPI do
     expect(md['author_ids']).to eq manifestation.author_and_translator_ids
     expect(md['impressions_count']).to eq manifestation.impressions_count
     expect(md['orig_publication_date']).to eq normalize_date(expression.date).to_s
-    expect(md['author_gender']).to eq manifestation.author_gender
-    expect(md['translator_gender']).to eq manifestation.translator_gender
+    expect(md['author_genders']).to eq manifestation.author_gender
+    expect(md['translator_genders']).to eq manifestation.translator_gender
     expect(md['copyright_status']).to eq manifestation.copyright?
     expect(md['period']).to eq expression.period
     expect(md['raw_creation_date']).to eq work.date
