@@ -28,8 +28,8 @@ module V1
         expose :publisher
         expose :raw_publication_date
       end
-      expose :enrichment, if: lambda { |_manifestation, options| options[:view] == 'enriched' } do |manifestation|
-        V1::Entities::ManifestationEnrichment.represent manifestation.id
+      expose :enrichment, using: V1::Entities::ManifestationEnrichment, if: lambda { |_manifestation, options| options[:view] == 'enriched' } do |manifestation|
+        manifestation.id
       end
       expose :snippet, documentation: { desc: 'plaintext snippet of the first few hundred characters of the text, useful for previews and search results' }, if: lambda { |_manifestation, options| options[:snippet] } do |manifestation|
         snippet(manifestation.fulltext, 500)[0]

@@ -38,26 +38,20 @@ components:
           - basic
           - enriched
     personDetailParam:
-      name: authorDetail
+      name: author_detail
       in: query
       required: false
-      description: 'how much detail to return: `metadata` returns personal metadata; 
-        `enriched` returns personal metadata plus works about this person (backlinks); 
-        `works` returns a list of IDs of this works this person was involved in, with their role in each; 
-        `original_works` returns that list filtered only to works where this person is the original author; 
-        `translations` returns the works list filtered only to works where this person translated; 
-        `full` returns enriched metadata plus all works'
+      description: 'how much detail to return: 
+        `metadata` returns personal metadata;
+        `works` returns metadata and a lists of IDs of works this person was involved in with different roles; 
+        `enriched` returns personal metadata plus list of works and works about this person (backlinks);'
       schema:
         type: string
         default: metadata
         enum:
           - metadata
-          - enriched
           - works
-          - original_works
-          - translations
-          - full
-
+          - enriched
     formatParam:
       name: file_format
       in: query
@@ -204,11 +198,6 @@ components:
                     type: boolean
                   period:
                     $ref: '#/components/schemas/period'
-                  text_ids:
-                    type: array
-                    description: ID numbers of all texts this person is involved with, filtered per the authorDetail param
-                    items:
-                      type: integer
                   other_designations:
                     type: string
                     description: semicolon-separated list of additional names or spellings for this person
@@ -227,6 +216,26 @@ components:
                   impressions_count:
                     type: integer
                     description: total number of times the person's page OR one of their texts were viewed or printed
+              texts:
+                type: object
+                description: ID numbers of all texts this person is involved into with role in each
+                properties:
+                  author:
+                    type: array
+                    items:
+                      type: integer
+                  translator:
+                    type: array
+                    items:
+                      type: integer
+                  editor:
+                    type: array
+                    items:
+                      type: integer
+                  illustrator:
+                    type: array
+                    items:
+                      type: integer
               enrichment:
                 type: object
                 properties:
@@ -388,8 +397,9 @@ paths:
           schema:
             type: string
         - name: fulltext
+          in: query
           required: false
-          description: a substring to match against the work's full text (NOTE: when provided it will enforce result ordering by relevance).
+          description: a substring to match against the work's full text.
           schema:
             type: string
         - name: author_ids
@@ -426,14 +436,19 @@ paths:
       summary: Query the site database for texts by a variety of parameters. See API docs for documentation of each parameter. All parameters are combined with a logical AND. Parameters accepting arrays allow a logical OR within that category.
       tags: []
       responses:
-        '200':
+        '201':
           description: OK
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/responses/text'
+                type: object
+                properties:
+                  total_count:
+                    type: integer
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/responses/text'
   /texts/batch:
     post:
       parameters:
