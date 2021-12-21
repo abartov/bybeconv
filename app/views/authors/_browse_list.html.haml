@@ -51,7 +51,7 @@
       - @authors.each do |au|
         %li
           = link_to au.sort_name, author_toc_path(au.id)
-          = decorator.call(au)
+          .authors-list-years= decorator.call(au)
   - unless @total_pages <= 1
     = render partial: 'shared/slide_pagination', locals: {collection: @authors, element: '#authors_filters', path: '/authors'}
     -# if @sort[0..11] == 'alphabetical'

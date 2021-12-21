@@ -16,45 +16,43 @@
               .about-author-card-v02
                 %img.surprise-author-pic-v02{:alt => @author.name, src: @author.profile_image.url(:thumb)}/
               .by-card-content-v02
-                .about-author-card-content-v02
-                  .name-under-btn
-                    %span.headline-1-v02
-                      = @author.name
-                    %span.date-range!= "(#{@author.life_years})"
-                  .author-about
-                    .text-height-author= @author.wikipedia_snippet
-                    - unless @author.wikipedia_url.empty?
-                      .read-more-v02
-                        %a{:href => @author.wikipedia_url, target: '_blank'}
-                          %span{:style => "font-weight: bold"}= t(:rest_in_wikipedia)
-                          %span.left-arrow 1
-                    %br
-                      .metadata
-                        %b= t(:works_in_the_project)+': '
-                        = "#{@author.cached_works_count} #{t(:works)}"
-                    -#%div{:style => "margin-top: 12px;"}
-                    -#  %a{:href => "#"}
-                    -#    %span.by-icon-v02.iconNearText-v02> W
-                    -#    לינק
-                    -#    לוידאו רלוונטי
-                    -#%div{:style => "margin-top: 12px;"}
-                    -#  %a{:href => "#"}
-                    -#    %span.by-icon-v02.iconNearText-v02> +
-                    -#    לינק
-                    -#    לאתר רלוונטי
-                    - unless @author.blog_category_url.nil? or @author.blog_category_url.empty?
-                      .metadata-link
-                        %a{:href => @author.blog_category_url, target: '_blank'}
-                          %span.by-icon-v02.iconNearText-v02> Q
-                          = t(:about_author_in_blog, author:@author.name)
-                    - if current_user && current_user.editor?
-                      %p{style:'text-align:left'}
-                        %span.static-btn
-                          %b= link_to t(:edit_toc), authors_edit_toc_path(@author)
-                        != "&nbsp;&nbsp;&nbsp;"
-                        %span.static-btn
-                          %b= link_to t(:edit_metadata), authors_edit_path(id: @author.id)
-              
+                .name-under-btn
+                  %span.headline-1-v02
+                    = @author.name
+                  %span.date-range!= "(#{@author.life_years})"
+                .text-height-author= @author.wikipedia_snippet
+                - unless @author.wikipedia_url.empty?
+                  .read-more-v02
+                    %a{:href => @author.wikipedia_url, target: '_blank'}
+                      %span{:style => "font-weight: bold"}= t(:rest_in_wikipedia)
+                      %span.left-arrow 1
+                %br
+                  .metadata
+                    %b= t(:works_in_the_project)+': '
+                    = "#{@author.cached_works_count} #{t(:works)}"
+                -#%div{:style => "margin-top: 12px;"}
+                -#  %a{:href => "#"}
+                -#    %span.by-icon-v02.iconNearText-v02> W
+                -#    לינק
+                -#    לוידאו רלוונטי
+                -#%div{:style => "margin-top: 12px;"}
+                -#  %a{:href => "#"}
+                -#    %span.by-icon-v02.iconNearText-v02> +
+                -#    לינק
+                -#    לאתר רלוונטי
+                - unless @author.blog_category_url.nil? or @author.blog_category_url.empty?
+                  .metadata-link
+                    %a{:href => @author.blog_category_url, target: '_blank'}
+                      %span.by-icon-v02.iconNearText-v02> Q
+                      = t(:about_author_in_blog, author:@author.name)
+                - if current_user && current_user.editor?
+                  %p{style:'text-align:left'}
+                    %span.static-btn
+                      %b= link_to t(:edit_toc), authors_edit_toc_path(@author)
+                    != "&nbsp;&nbsp;&nbsp;"
+                    %span.static-btn
+                      %b= link_to t(:edit_metadata), authors_edit_path(id: @author.id)
+          
               .select-all-with-buttons{style:'display:none;margin-right:100px;'}
                 .number-of-selected-texts{style: 'display:none'}
                   = t(:number_of_selected_texts)

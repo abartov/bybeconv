@@ -8,7 +8,7 @@
       .author-sort-area#sort_filter_toggle{title: t(:toggle_filters_tt)}
         .author-page-top-sort-desktop
           = t(:filter_state)
-          -#%a{:href => "#"} [?]
+          -#%a.help{:href => "#"} [?]
           .toggle-background-no
             .toggle-button-no{style:"display:#{ @filters.empty? ? 'show' : 'none'}"}
             .toggle-button-yes{style:"display:#{ @filters.empty? ? 'none' : 'show'}"}
