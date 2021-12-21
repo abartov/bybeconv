@@ -1,16 +1,16 @@
-/ standard display mode. "reading mode" implemented in readmode.html.haml
+-# standard display mode. "reading mode" implemented in readmode.html.haml
 - if @m.sefaria_linker
   %script{ type: 'text/javascript', charset:'utf-8', src:'https://www.sefaria.org/linker.js'}
 
 #content.container-fluid.top-element
-  .row
+  .row.text-page-content
     .col-12.col-lg-8
       .logo-for-print
         %img.logoBY-v02{src: "/assets/logo-byp-mobile.svg", alt:""}
       .row
         .col.work-side-menu-area
           != "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
-        .col
+        .col.work-col
           .by-card-v02.work-info-card
             %img.about-work-card-bookmark-fold-v02{alt: t(:background), src: '/assets/creator-bookmark-back2.png'}/
             .about-work-author-card-v02
@@ -20,7 +20,7 @@
           .by-card-v02
             .work-area
               .work-content{"data-spy" => 'scroll', "data-target" => '#chapternav'}
-                / TODO: more nuanced rendering here
+                -# TODO: more nuanced rendering here
                 - if @m.as_prose?
                   #actualtext.maintext-prose-body.search-margin
                     != raw(@html)
@@ -45,9 +45,8 @@
                 %br
               - my_pendings = @recommendations.all_pending.where(user: current_user)
               - app_recs = @recommendations.all_approved
-              - any_recs = app_recs.count > 0 || my_pendings.count > 0
               - total_recs = app_recs.count + my_pendings.count
-              - unless any_recs
+              - unless app_recs.count > 0 || my_pendings.count > 0
                 = t(:no_recommendations_yet)
               - else
                 = t(:this_work_has_x_recommendations, {x: total_recs})
@@ -59,11 +58,11 @@
                 - my_pendings.each do |r|
                   = render partial: 'recommendation', locals: {rec: r, pending: true, last_item: apcounter == total_recs ? true : false}
                   - apcounter += 1
-              / add recommendation
+              -# add recommendation
               - unless current_user.nil?
-                .bottom-right-link{:style => "padding-top: 6px"}
-                  .linkcolor.pointer.notyet#expand-add-rec
-                    %span.right-side-icon &amp;
+                .card-bottom
+                  .metadata-link.linkcolor.pointer.notyet#expand-add-rec
+                    %span.metadata-link-icon.small-icon= '&'
                     %span{:style => "font-weight: bold"}= t(:add_recommendation)
                 #add-rec-form
                   %br
@@ -83,15 +82,15 @@
 
 
           -# Tags
-          .by-card-v02.left-side-card-v02{style:'min-height:250px'}
+          .by-card-v02.left-side-card-v02
             .by-card-header-left-v02
               %span.headline-1-v02= t(:tags)
             .by-card-content-v02.card-with-bottom-links
               .inline-block#taggings
                 = render partial: 'shared/taggings', locals: {taggings: @taggings}
               - unless current_user.nil?
-                #add-tag.bottom-right-link{:style => "padding-top: 6px"}
-                  .linkcolor.pointer.notyet#expand-add-tag
+                #add-tag.card-bottom
+                  .metadata-link.linkcolor.pointer.notyet#expand-add-tag
                     %span.right-side-icon &amp;
                     %span{:style => "font-weight: bold"}= t(:suggest_new_tag)
 
@@ -131,7 +130,7 @@
                     %span
                       != tr.translators.map{|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
           -# External links
-          - if @m.external_links.count > 0
+          - if @m.external_links.to_a.size > 0
             .by-card-v02.left-side-card-v02
               .by-card-header-left-v02
                 %span.headline-1-v02= t(:external_links)
@@ -148,7 +147,7 @@
   %h2= t(:loading)
 #citeDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
   = render partial: 'shared/cite', locals: {manifestation: @m}
-/ found mistake popup
+-# found mistake popup
 #proofDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
   = render partial: 'shared/proof', locals: {manifestation: @m}
 #proofSent{style:'display:none'}
@@ -162,7 +161,7 @@
     = render partial: 'bookmark_panel'
   #bookmarkDeleteDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
     = render partial: 'bookmark_delete'
-/ chapter popup
+-# chapter popup
 - if @m.chapters?
   .modal#chapterDlg{role: 'dialog', tabindex: '-1'}
     .modal-dialog.modal-dialog-centered{role: 'document'}
@@ -238,9 +237,11 @@
         keyboard: false, show: true});
     });
     $('.citebutton').click(function() {
+      $('#text-menu-more').css('display', 'none');
       $('#citeDlg').modal('show');
     });
     $('.download').click(function() {
+      $('#text-menu-more').css('display', 'none');
       $('#downloadDlg').modal('show');
     });
     $('.rec_popup_button').click(function(){

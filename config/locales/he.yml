@@ -79,6 +79,8 @@ he:
   legacy_guessed_person: ניחוש מחבר לפי תיקיה
   legacy_url: היצירה באתר הישן
   to_all_authors: לרשימת כל היוצרים
+  to_all_x_items: לכל %{x} הפריטים
+  suggest_new_links: הצעת קישורית נוספת
   list_all_authors: רשימת כל היוצרים
   to_all_works: לרשימת כל היצירות
   all_authors: כל היוצרים
@@ -246,6 +248,7 @@ he:
   page_x_of_y: עמוד %{x} מתוך %{y}
   out_of_x: מתוך %{x}
   page_colon: 'עמוד: '
+  will_open_in_new_tab: "(תיפתחנה בלשונית חדשה)"
   display_anthology_description: המקראה, הכוללת את כל הטקסטים של היצירות שנבחרו וגם טקסטים עצמיים (אם יוצרו). תוצג בשלמותה בדף נפרד שיפתח בלשונית חדשה
   download_description: המקראה, הכוללת את כל הטקסטים של היצירות שנבחרו וגם טקסטים עצמיים (אם יוצרו), תישמר כקובץ עצמאי נפרד בפורמט לבחירה
   print_description: המקראה, הכוללת את כל הטקסטים של היצירות שנבחרו וגם טקסטים עצמיים (אם יוצרו), תוצג מוכנה להדפסה בלשונית חדשה
@@ -286,8 +289,8 @@ he:
   save_and_exit: שמירה ויציאה
   save_to_file: שמירת היצירה לקובץ
   save_and_update_display: שמירה ועדכון תצוגה
-  works_about_this_author: "יצירות על אודות המחבר%{gender_suffix}"
-  works_about_this_work: יצירות על אודות יצירה זו
+  works_about_this_author: "יצירות בַּמאגר על אודות המחבר%{gender_suffix}"
+  works_about_this_work: יצירות בַּמאגר על אודות יצירה זו
   aboutnesses: נושאי היצירה
   person: אדם
   work: יצירה
@@ -300,6 +303,7 @@ he:
   add_external: הוספת נושא חיצוני למאגר
   perform_add: הוספה
   add_aboutnesses: הוספת נושאים ליצירה
+  add_url: הוסף את הקישורית
   existing_aboutnesses: נושאים קיימים
   bib_workshop: הסדנה הביבליוגרפית
   # genre key names are currently hard-coded in ApplicationController
@@ -316,6 +320,7 @@ he:
   anth_grows: המקראה צומחת!
   most_popular_works_this_month: היצירות הנקראות ביותר החודש
   support_the_project: הצטרפו לתומכי הפרויקט!
+  remove_final_period: הסרת נקודה מסוף הכותרת
   until: עד
   update: עדכן!
   updated_at: עודכן בתאריך
@@ -799,6 +804,7 @@ he:
   are_you_sure: נא לאשר מחיקה
   confirm_hide: נא לאשר הסתרה
   delete_photo: מחיקת תמונה (לצמיתות!)
+  delete_link: הסרת קישורית
   anth_text_deletion: מחיקת פריט מהמקראה
   anth_text_deletion_p1: 'פעולה זו תמחק ללא אפשרות חזרה את הפריט:'
   anth_text_deletion_p3: מתוך המקראה הנוכחית
@@ -891,9 +897,11 @@ he:
   wikipedia: ערך בויקיפדיה
   publisher_site: דף באתר ההוצאה
   YouTube: צפייה בהקראת היצירה
-  youtube: קטע וידאו
-  blog: רשומה בבלוג
+  youtube: סירטונים
+  blog: מאמרים ורשומות בלוג
   other: אחר
+  dedicated_site: אתרים בנושא
+  audio: קטעי שֶמע
   author_details: פרטי מחבר
   work_entity_details: פרטי ישות יצירה
   work_details: פרטי יצירה
@@ -1109,6 +1117,11 @@ he:
       subject: יצירת קשר מהאתר
     volunteer_form_submitted:
       subject: טופס התנדבות מהאתר
+  api_keys_mailer:
+    key_created:
+      subject: Your API key
+    key_created_to_editor:
+      subject: New API key created
   views:
     pagination:
       next: לדף הבא

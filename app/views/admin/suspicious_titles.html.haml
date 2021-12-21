@@ -20,3 +20,6 @@
           = link_to t(:edit_metadata), manifestation_edit_metadata_path(m.id)
           = ' | '
           = link_to t(:render), url_for(controller: :manifestation, action: :read, id: m.id)
+          - if m.title[-1] == '.'
+            = ' | '
+            = link_to t(:remove_final_period), manifestation_chomp_period(m.id)

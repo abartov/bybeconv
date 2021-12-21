@@ -24,15 +24,15 @@ module AuthorsHelper
     end
   end
   def browse_pub_date(item)
-    thedate = item.expressions[0].normalized_pub_date
+    thedate = item.orig_publication_date
     return " (#{thedate.nil? ? t(:unknown) : thedate.to_date.strftime('%d-%m-%Y')})"
   end
   def browse_creation_date(item)
-    thedate = item.expressions[0].works[0].normalized_creation_date
+    thedate = item.creation_date
     return " (#{thedate.nil? ? t(:unknown) : thedate.to_date.strftime('%d-%m-%Y')})"
   end
   def browse_upload_date(item)
-    return " (#{item.created_at.strftime('%d-%m-%Y')})"
+    return " (#{item.pby_publication_date.strftime('%d-%m-%Y')})"
   end
   def browse_null_decorator(item)
     return ''

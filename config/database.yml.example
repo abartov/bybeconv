@@ -4,23 +4,23 @@
 #   Ensure the SQLite 3 gem is defined in your Gemfile
 #   gem 'sqlite3'
 development:
-  adapter: sqlite3
-  database: db/development.sqlite3
-  pool: 5
-  timeout: 5000
-  encoding: utf8
-  collation: utf8_bin
+  adapter: mysql2
+  database: bybe_dev
+  username: bybe
+  password: bybe
+  encoding: utf8mb4
+  collation: utf8mb4_bin
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
-  adapter: sqlite3
-  database: db/test.sqlite3
-  pool: 5
-  timeout: 5000
-  encoding: utf8
-  collation: utf8_bin
+  adapter: mysql2
+  database: bybe_test
+  username: bybe
+  password: bybe
+  encoding: utf8mb4
+  collation: utf8mb4_bin
 
 production:
   adapter: sqlite3

@@ -19,10 +19,9 @@
       .row
         .col-12
           - if @m.chapters?
-            .work-chapters-dropdown-field-desktop#chapter_dropdown
-              .field-v02
-                =t(:jump_to_chapter)
-                %span.dropdown-arrow )
+            .field-v02.work-chapters-dropdown-field-desktop#chapter_dropdown
+              =t(:jump_to_chapter)
+              %span.dropdown-arrow )
               .by-dropdown-content-v02.dropdown_full-width#chapter_dropdown_content
                 - @chapters.each do |ch|
                   %p.pointer.jumpch.linkcolor{style:'text-overflow: ellipsis;overflow-x: hidden;', 'data-target' => "ch#{ch[1]}"}= ch[0]
@@ -36,36 +35,28 @@
                 = t(:jump_to)
           .work-page-top-icons-desktop
             %a.white{:href => url_for(action: :readmode, id: @m.id)}
-              .btn-small-outline-v02.btn-text-v02.reading-mode-btn-v02{'title' => "#{t(:readmode_tt)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }}
+              %button.btn-small-outline-v02.btn-text-v02.reading-mode-btn-v02{'title' => "#{t(:readmode_tt)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }}
+                %span.by-icon-v02.iconNearText-v02> /
                 = t(:reading_mode)
             %div{class: @bookmark != 0 ? 'top-left-icons-group bookmark-added' : 'top-left-icons-group'}
-              .icon-in-group-v02.like.must_login{'title' => "#{t(:work_liked_tt)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }}
-                - if @liked
-                  %span.linkcolor.pointer.by-icon-v02.icon-byheart-full
-                - else
-                  %span.linkcolor.pointer.by-icon-v02.icon-byheart-empty
-              .icon-in-group-v02.bookmark_button.must_login{'title' => "#{t(:bookmark_tt)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }}
-                %span.linkcolor.pointer.by-icon-v02.bookmark-status
-                  / b
+            .top-left-icons-group
+              .icons-group-v02
+                
+              %a.by-icon-v02.pointer.like.must_login{class: @liked ? 'icon-byheart-full' : 'icon-byheart-empty', 'title' => "#{t(:work_liked_tt)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }, tabindex: 0}
+              %a.by-icon-v02.pointer.bookmark-status.bookmark_button.must_login{'title' => "#{t(:bookmark_tt)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }, tabindex: 0}
               - unless current_user
-                .icon-in-group-v02.anthologies_button.must_login
-                  %span.linkcolor.pointer.by-icon-v02 D
+                %a.by-icon-v02.pointer.anthologies_button.must_login{tabindex: 0}= 'D'
               - else
-                .icon-in-group-v02.anthologies_button{'data-toggle' => 'modal', 'title' => "#{t(:open_shelves_tt)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 },'data-backdrop' => 'static', 'data-keyboard' => 'false', 'data-target' => '#anthologiesDlg'}
-                  %span.linkcolor.pointer.by-icon-v02 D
+                %a.by-icon-v02.pointer.anthologies_button{'data-toggle' => 'modal', 'title' => "#{t(:open_shelves_tt)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 },'data-backdrop' => 'static', 'data-keyboard' => 'false', 'data-target' => '#anthologiesDlg', tabindex: 0}
+                  = 'D'
                   - unless @anthology.nil?
                     .anthology-badge{style: "display: #{@anthology.texts.length > 0 ? 'block' : 'none'}"}
                       .badge-number= @anthology.texts.length.to_s
-
               .icons-separator-white
-              .icon-in-group-v02.citebutton{'data-toggle' => 'modal', 'title' => "#{t(:cite_tt)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }, 'data-target' => '#citeDlg'}
-                %span.linkcolor.pointer.by-icon-v02 *
-              .icon-in-group-v02.printbutton{'data-toggle' => 'tooltip', 'title' => "#{t(:work_print_tt)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }}
-                %span.linkcolor.pointer.by-icon-v02 9
-              .icon-in-group-v02.download{'data-toggle' => 'modal', 'title' => "#{t(:work_download_tt)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }, 'data-target' => '#downloadDlg'}
-                %span.linkcolor.pointer.by-icon-v02 3
-              .icon-in-group-v02.pointer.sharebutton{title: "#{ t(:share_tt) }", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }, style: 'margin-left:0;'}
-                %span.linkcolor.pointer.by-icon-v02 U
+              %a.by-icon-v02.pointer.citebutton{'data-toggle' => 'modal', 'title' => "#{t(:cite_tt)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }, 'data-target' => '#citeDlg', tabindex: 0}= '*'
+              %a.by-icon-v02.pointer.printbutton{'data-toggle' => 'tooltip', 'title' => "#{t(:work_print_tt)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }, tabindex: 0}= '9'
+              %a.by-icon-v02.pointer.download{'data-toggle' => 'modal', 'title' => "#{t(:work_download_tt)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }, 'data-target' => '#downloadDlg', tabindex: 0}= '3'
+              %a.by-icon-v02.pointer.sharebutton{title: "#{ t(:share_tt) }", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }, style: 'margin-left:0;', tabindex: 0}= 'U'
           .work-page-top-icons-mobile
             %a.btn-small-outline-v02.btn-text-v02.reading-mode-icon-btn-v02{href: url_for(action: :readmode, id: @m.id)}
               %span.by-icon-v02 /
@@ -77,10 +68,13 @@
                   %span.linkcolor.pointer.by-icon-v02.icon-byheart-empty
               .icon-in-group-v02.bookmark_button.pointer.must_login
                 %span.by-icon-v02.linkcolor.bookmark-status
-              #moreMobile.by-dropdown-v02
-                %span.linkcolor#work-more
+              #text-moreMobile.by-dropdown-v02
+                %span.linkcolor#text-nav-more
                   %span.by-icon-top-v02 Y
-                #workmenu-more.by-dropdown-content-v02{:style => "left: 0; margin-top: 4px"}
+                #text-menu-more.by-dropdown-content-v02{:style => "left: 0; margin-top: 4px"}
+                  %p.anthologies_button{'data-toggle' => 'modal','data-backdrop' => 'static', 'data-keyboard' => 'false', 'data-target' => '#anthologiesDlg'}
+                    %span.by-icon-v02.linkcolor.iconNearText-v02> D
+                    = t(:bookshelves)
                   %p.citebutton
                     %span.by-icon-v02.linkcolor.iconNearText-v02> *
                     = t(:cite)
@@ -90,21 +84,24 @@
                   %p.download
                     %span.by-icon-v02.linkcolor.iconNearText-v02> 3
                     = t(:download)
-                  %p.anthologies_button{'data-toggle' => 'modal','data-backdrop' => 'static', 'data-keyboard' => 'false', 'data-target' => '#anthologiesDlg'}
-                    %span.by-icon-v02.linkcolor.iconNearText-v02> D
-                    = t(:bookshelves)
     .row.error-found-row
-      .col-2.side-nav-col
+      .side-nav-col
         - if @m.chapters?
           .side-menu-headline= t(:chapters_list)
           %nav.navbar#chapternav
             %ul.nav.navbar-nav.navbar-expand.flex-column.by-card-v02#chapter-nav{style:'width: unset', 'aria-orientation' => 'vertical'}
               - first = true
+              -# %li.nav-item
+              -#   %a.nav-link.nav-link-arrows
+              -#     .side-menu-arrow (
               - @chapters.each do |ch|
                 %li.nav-item
                   %a{'class' => 'nav-link nav-chapter-name nav-link-chapter pointer linkcolor '+(first ? ' active' : ''), href: "#ch#{ch[1]}", id: "nl#{ch[1]}", 'data-asaf' => "ch#{ch[1]}",'data-toggle' => 'tooltip', 'title' => ch[0], 'data-placement' => 'top', 'data-delay' => { "show": 500, "hide": 100 }}
                     = ch[0]
                 - first = false
+              -# %li.nav-item
+              -#   %a.nav-link.nav-link-arrows
+              -#     .side-menu-arrow )
       .col{style:'z-index:-1;height:0;'}
       .col-4.error-found-col
         %button.error-found-btn#found_mistake{title: t(:report_error_tt)}
@@ -155,11 +152,14 @@
         $('#chapter_dropdown_content').css('display', 'block');
     });
 
-    $('#work-more').click(function(){
-      if($('#workmenu-more').css('display') == 'block')
-        $('#workmenu-more').css('display', 'none');
+    $('#text-nav-more').click(function(){
+      if($('#text-menu-more').css('display') == 'block')
+        $('#text-menu-more').css('display', 'none');
       else
-        $('#workmenu-more').css('display', 'block');
+        $('#text-menu-more').css('display', 'block');
+    });
+    $('#text-moreMobile').on('show.bs.dropdown', function(){
+      $("#mySidenav").removeClass('sidebar-opened')
     });
 
     $('.bookmark_button').click(function(e){
@@ -215,9 +215,11 @@
       }
     });
     $('.printbutton').click(function() {
+      $('#text-menu-more').css('display', 'none');
       window.open("#{@print_url}",'_blank');
     });
     $('.sharebutton').click(function(){
+      $('#text-menu-more').css('display', 'none');
       $('#shareDlg').modal('show');
     });
     // ensure smooth scrollTo behavior

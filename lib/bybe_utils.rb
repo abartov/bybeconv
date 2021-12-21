@@ -526,7 +526,7 @@ module BybeUtils
     return ['poetry', 'prose', 'drama', 'fables','article', 'memoir', 'letters', 'reference', 'lexicon'] # translations and icon-font refer to these keys!
   end
 
-  def right_side_genres
+  def right_side_genres # TODO: remove if unused
     return ['poetry', 'prose', 'drama', 'fables','article', 'memoir', 'letters', 'reference'] # translations and icon-font refer to these keys!
   end
 

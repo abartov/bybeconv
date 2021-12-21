@@ -59,6 +59,9 @@
       %b= t(:title) + ': '
       = text_field_tag :mtitle, @m.title, size: 75
     %p
+      %b= t(:sort_title) + ': '
+      = text_field_tag :sort_title, @m.sort_title, size: 75
+    %p
       %b= t(:responsibility_statement) + ': '
       = text_field_tag :mresponsibility, @m.responsibility_statement # TODO: make editable?
     %p
@@ -74,10 +77,10 @@
     = check_box_tag :sefaria_linker, 1, @m.sefaria_linker
     %br
     = render partial: 'external_links', locals: { links: @m.external_links, edit: true }
-    = t(:add)
+    = t(:add_url)
     = text_field_tag :add_url
     = t(:link_type)
-    = select_tag :link_type, options_for_select(Manifestation.link_types.map {|lt| [t(lt[0]), lt[1]]})
+    = select_tag :link_type, options_for_select(ExternalLink.linktypes.map {|lt| [t(lt[0]), lt[1]]})
     %br
     = t(:description)
     = text_field_tag :link_description

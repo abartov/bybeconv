@@ -14,13 +14,11 @@ class Manifestation < ApplicationRecord
   has_many :downloadables, as: :object
 
   has_paper_trail
-  has_many :external_links
+  has_many :external_links, as: :linkable
   has_many_attached :images
 
   before_save :update_sort_title
 
-  enum link_type: [:wikipedia, :blog, :youtube, :other, :publisher_site]
-  enum linkstatus: [:approved, :submitted, :rejected]
   enum status: [:published, :nonpd, :unpublished, :deprecated]
 
   scope :all_published, -> { where(status: Manifestation.statuses[:published])}
@@ -50,15 +48,15 @@ class Manifestation < ApplicationRecord
   end
 
   def video_count
-    return external_links.all_approved.videos.count
+    return external_links.status_approved.linktype_youtube.count
   end
 
   # this will return the downloadable entity for the Manifestation *if* it is fresh
   def fresh_downloadable_for(doctype)
-    dls = downloadables.where(doctype: Downloadable.doctypes[doctype])
-    return nil if dls.empty?
-    return nil if dls[0].updated_at < self.updated_at # needs to be re-generated
-    return dls[0]
+    dl = downloadables.where(doctype: doctype).first
+    return nil if dl.nil?
+    return nil if dl.updated_at < self.updated_at # needs to be re-generated
+    return dl
   end
 
   def long?
@@ -247,7 +245,7 @@ class Manifestation < ApplicationRecord
   end
 
   def self.add_publisher_link_to_works(worklist, url, linktext)
-    el = ExternalLink.new(linktype: Manifestation.link_types[:publisher_site], url: url, description: linktext)
+    el = ExternalLink.new(linktype: :publisher_site, url: url, description: linktext)
     works = Manifestation.find(worklist)
     works.each do |m|
       newel = el.dup

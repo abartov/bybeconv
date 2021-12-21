@@ -2,7 +2,7 @@ require 'diffy'
 include BybeUtils
 
 class AuthorsController < ApplicationController
-  before_action only: [:new, :create, :show, :edit, :list, :delete_photo, :edit_toc, :update] do |c| c.require_editor('edit_people') end
+  before_action only: [:new, :create, :show, :edit, :list, :add_link, :delete_link, :delete_photo, :edit_toc, :update] do |c| c.require_editor('edit_people') end
 
   def get_random_author
     @author = nil
@@ -360,6 +360,31 @@ class AuthorsController < ApplicationController
     end
   end
 
+  def add_link
+    @author = Person.find(params[:id])
+    if @author.nil?
+      flash[:error] = t(:no_such_item)
+      redirect_to '/'
+    else
+      if(params[:link_description].empty? || params[:add_url].empty?)
+        head :bad_request
+      else
+        @el = ExternalLink.new(linkable: @author, description: params[:link_description], linktype: params[:link_type].to_i, url: params[:add_url], status: :approved)
+        @el.save!
+      end
+    end
+  end
+  def delete_link
+    @el = ExternalLink.find(params[:id])
+    if @el.nil?
+      flash[:error] = t(:no_such_item)
+      redirect_to '/'
+    else
+      @el.destroy
+      head :ok
+    end
+  end
+
   def toc
     @author = Person.find(params[:id])
     unless @author.nil?
@@ -374,6 +399,7 @@ class AuthorsController < ApplicationController
       @latest = textify_titles(@author.cached_latest_stuff, @author)
       @featured = @author.featured_work
       @aboutnesses = @author.aboutnesses
+      @external_links = @author.external_links.status_approved
       @any_curated = @featured.present? || @aboutnesses.count > 0
       unless @featured.empty?
         (@fc_snippet, @fc_rest) = snippet(@featured[0].body, 500) # prepare snippet for collapsible
@@ -391,6 +417,16 @@ class AuthorsController < ApplicationController
     end
   end
 
+  def all_links
+    @author = Person.find(params[:id])
+    unless @author.nil?
+      @external_links = @author.external_links.status_approved
+      render partial: 'all_links'
+    else
+      flash[:error] = I18n.t(:no_toc_yet)
+      redirect_to '/'
+    end
+  end
   def print
     @author = Person.find(params[:id])
     @print = true

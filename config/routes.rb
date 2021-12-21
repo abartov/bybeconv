@@ -1,5 +1,9 @@
 include BybeUtils
 Bybeconv::Application.routes.draw do
+  mount Rswag::Ui::Engine => '/api-docs'
+  mount Rswag::Api::Engine => '/api-docs'
+  mount V1::Api => '/'
+
   resources :anthology_texts do
     post 'mass_create', on: :collection
     get 'confirm_destroy'
@@ -118,11 +122,14 @@ Bybeconv::Application.routes.draw do
   post "authors/create"
   patch "authors/update"
   get 'authors/get_random_author'
+  post 'authors/add_link/:id' => 'authors#add_link', as: 'author_add_link'
+  match 'authors/delete_link/:id' => 'authors#delete_link', as: 'author_delete_link', via: [:post]
   match 'author/:id/edit_toc' => 'authors#edit_toc', as: 'authors_edit_toc', via: [:get, :post]
   match 'author/:id/create_toc' => 'authors#create_toc', as: 'authors_create_toc', via: [:get]
   match 'author/:id' => 'authors#toc', as: 'author_toc', via: [:get, :post]
   get 'author/:id/delete_photo' => 'authors#delete_photo', as: 'delete_author_photo'
   get 'author/:id/whatsnew' => 'authors#whatsnew_popup', as: 'author_whatsnew_popup'
+  get 'author/:id/links' => 'authors#all_links', as: 'author_links_popup'
   get 'welcome/:id/featured_popup' => 'welcome#featured_popup', as: 'featured_content_popup'
   get 'welcome/:id/featured_author' => 'welcome#featured_author_popup', as: 'featured_author_popup'
   get 'author/:id/latest' => 'authors#latest_popup', as: 'author_latest_popup'
@@ -132,7 +139,7 @@ Bybeconv::Application.routes.draw do
   get 'dict/:id/:entry' => 'manifestation#dict_entry', as: 'dict_entry'
   get "read/:id/read" => 'manifestation#readmode', as: 'manifestation_readmode'
   get 'periods' => 'manifestation#periods', as: 'periods'
-  match 'authors', to: 'authors#browse', as: 'authors', via: [:get, :post], as: 'authors'
+  match 'authors', to: 'authors#browse', as: 'authors', via: [:get, :post]
   match 'works', to: 'manifestation#browse', as: 'works', via: [:get, :post]
   match 'works/all', to: 'manifestation#all', as: 'all_works', via: [:get, :post]
   match 'manifestation/genre' => 'manifestation#genre', as: 'genre', via: [:get, :post]
@@ -144,6 +151,7 @@ Bybeconv::Application.routes.draw do
   match "print/:id" => 'manifestation#print', as: 'manifestation_print', via: [:get, :post]
   get "manifestation/show/:id" => 'manifestation#show', as: 'manifestation_show'
   get "manifestation/render_html"
+  match "manifestation/chomp_period/:id" => 'manifestation#chomp_period', as: 'manifestation_chomp_period', via: [:get]
   post 'manifestation/set_bookmark'
   post 'manifestation/remove_bookmark'
   get "manifestation/edit/:id" => 'manifestation#edit', as: 'manifestation_edit'
@@ -164,8 +172,7 @@ Bybeconv::Application.routes.draw do
   get 'work/show/:id' => 'manifestation#workshow', as: 'work_show' # temporary, until we have a works controller
   get 'manifestation/add_aboutnesses/:id' => 'manifestation#add_aboutnesses'
 
-  get "api/query"
-  resources :api_keys
+  resources :api_keys, except: :show
   get "taggings/render_tags"
   resources :taggings
   resources :aboutnesses

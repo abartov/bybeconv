@@ -367,7 +367,7 @@ body {
 	width: calc(100% - 24px);
 	}
 	.progress-handle{
-	top: -6px;
+	top: -10px;
 }
 		.rm-control-panel-mobile .progress-area{
 	padding-top: 0;

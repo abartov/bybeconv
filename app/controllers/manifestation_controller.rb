@@ -264,7 +264,7 @@ class ManifestationController < ApplicationController
           @links = @m.external_links.group_by {|l| l.linktype}
           @random_work = Manifestation.where(id: Manifestation.pluck(:id).sample(5), status: Manifestation.statuses[:published])[0]
           @header_partial = 'manifestation/work_top'
-          @works_about = Work.joins(:topics).where('aboutnesses.aboutable_id': @w.id, 'aboutnesses.aboutable_type': 'Work') # TODO: accommodate works about *expressions* (e.g. an article about a *translation* of Homer's Iliad, not the Iliad)
+          @works_about = @w.works_about
           @scrollspy_target = 'chapternav'
           prep_user_content(:manifestation)
         end
@@ -286,14 +286,16 @@ class ManifestationController < ApplicationController
   def download
     @m = Manifestation.find(params[:id])
     impressionist(@m) unless is_spider?
-    dl = @m.fresh_downloadable_for(params[:format])
-    if dl
-      redirect_to rails_blob_url(dl.stored_file, disposition: :attachment)
-    else
-      filename = "#{@m.safe_filename}.#{params[:format]}"
-      html = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"><html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"he\" lang=\"he\" dir=\"rtl\"><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" /></head><body dir='rtl' align='right'><div dir=\"rtl\" align=\"right\">#{@m.title_and_authors_html}"+MultiMarkdown.new(@m.markdown).to_html.force_encoding('UTF-8').gsub(/<figcaption>.*?<\/figcaption>/,'')+"\n\n<hr />"+I18n.t(:download_footer_html, url: url_for(action: :read, id: @m.id))+"</div></body></html>"
-      do_download(params[:format], filename, html, @m, @m.author_string)
+
+    format = params[:format]
+    unless Downloadable.doctypes.include?(format)
+      flash[:error] = t(:unrecognized_format)
+      redirect_to manifestation_read_path(download_entity.id) # TODO: handle anthology case
+      return
     end
+
+    dl = GetFreshManifestationDownloadable.call(@m, format)
+    redirect_to rails_blob_url(dl.stored_file, disposition: :attachment)
   end
 
   def render_html
@@ -392,14 +394,14 @@ class ManifestationController < ApplicationController
     @urlbase = url_for(action: :show, id:1)[0..-2]
     # DB
     if params[:title].blank? && params[:author].blank?
-      @manifestations = Manifestation.page(params[:page]).order('updated_at DESC')
+      @manifestations = Manifestation.includes(expressions: :works).page(params[:page]).order('updated_at DESC')
     else
-      if params[:author].blank?
-        @manifestations = Manifestation.where('title like ?', '%' + params[:title] + '%').page(params[:page]).order('sort_title ASC')
+      if params[:author].blank? # 
+        @manifestations = Manifestation.includes(expressions: :works).where('title like ?', '%' + params[:title] + '%').page(params[:page]).order('sort_title ASC')
       elsif params[:title].blank?
-        @manifestations = Manifestation.where('cached_people like ?', "%#{params[:author]}%").page(params[:page]).order('sort_title asc')
+        @manifestations = Manifestation.includes(expressions: :works).where('cached_people like ?', "%#{params[:author]}%").page(params[:page]).order('sort_title asc')
       else # both author and title
-        @manifestations = Manifestation.where('manifestations.title like ? and manifestations.cached_people like ?', '%' + params[:title] + '%', '%'+params[:author]+'%').page(params[:page]).order('sort_title asc')
+        @manifestations = Manifestation.includes(expressions: :works).where('manifestations.title like ? and manifestations.cached_people like ?', '%' + params[:title] + '%', '%'+params[:author]+'%').page(params[:page]).order('sort_title asc')
       end
     end
   end
@@ -434,6 +436,17 @@ class ManifestationController < ApplicationController
     @page_title = t(:edit_metadata)+': '+@m.title_and_authors
     @e = @m.expressions[0] # TODO: generalize?
     @w = @e.works[0] # TODO: generalize!
+  end
+  def chomp_period
+    @m = Manifestation.find(params[:id])
+    @e = @m.expressions[0] # TODO: generalize?
+    @w = @e.works[0] # TODO: generalize!
+    [@m, @e, @w].each { |rec|
+      if rec.title[-1] == '.'
+        rec.title = rec.title[0..-2]
+        rec.save!
+      end
+    }
   end
 
   def add_aboutnesses
@@ -483,14 +496,13 @@ class ManifestationController < ApplicationController
           end
           @e.source_edition = params[:source_edition]
           @m.title = params[:mtitle]
+          @m.sort_title = params[:sort_title]
           @m.responsibility_statement = params[:mresponsibility]
           @m.comment = params[:mcomment]
           @m.status = params[:mstatus].to_i
           @m.sefaria_linker = params[:sefaria_linker]
           unless params[:add_url].blank?
-            l = ExternalLink.new(url: params[:add_url], linktype: params[:link_type], description: params[:link_description], status: Manifestation.linkstatuses[:approved])
-            l.manifestation = @m
-            l.save!
+            @m.external_links.create!(url: params[:add_url], linktype: params[:link_type], description: params[:link_description], status: :approved)
           end
           @w.save!
           @e.save!
@@ -750,11 +762,11 @@ class ManifestationController < ApplicationController
       when 'popularity'
         ord = {impressions_count: (@sort_dir == :default ? :desc : @sort_dir)}
       when 'publication_date'
-        ord = "expressions.date #{@sort_dir == :default ? 'asc' : @sort_dir}"
+        ord = {orig_publication_date: (@sort_dir == :default ? :asc : @sort_dir)}
       when 'creation_date'
-        ord = "works.date #{@sort_dir == :default ? 'asc' : @sort_dir}"
+        ord = {creation_date: (@sort_dir == :default ? :asc : @sort_dir)}
       when 'upload_date'
-        ord = {created_at: (@sort_dir == :default ? :desc : @sort_dir)}
+        ord = {pby_publication_date: (@sort_dir == :default ? :desc : @sort_dir)}
       end
     else
       sdir = (@sort_dir == :default ? :asc : @sort_dir)
@@ -1101,7 +1113,6 @@ class ManifestationController < ApplicationController
           end
         end
       end
-      @ext_links = @m.external_links.load
     end
   end
 end

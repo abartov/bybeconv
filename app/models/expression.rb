@@ -9,6 +9,8 @@ class Expression < ApplicationRecord
   has_many :persons, through: :realizers, class_name: 'Person'
   has_many :aboutnesses, as: :aboutable
 
+  validates_inclusion_of :genre, in: Work::GENRES
+
   def determine_is_translation?
     # determine whether this expression is a translation or not, i.e. is in a different language to the work it expresses
     return nil if works.empty?
@@ -40,7 +42,7 @@ class Expression < ApplicationRecord
   end
 
   def self.cached_translations_count
-    Rails.cache.fetch("e_works_by_period_#{p}", expires_in: 24.hours) do
+    Rails.cache.fetch("e_translations", expires_in: 24.hours) do
       Expression.where(translation: true).count
     end
   end

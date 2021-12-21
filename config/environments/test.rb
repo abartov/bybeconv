@@ -36,4 +36,6 @@ Bybeconv::Application.configure do
   config.active_support.deprecation = :stderr
   config.eager_load = false
   config.active_support.test_order = :random # Rails 5.x-ready :)
+  routes.default_url_options[:host] = 'localhost:3000'
+  config.active_storage.service = :test
 end

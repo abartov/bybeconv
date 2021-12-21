@@ -46,7 +46,7 @@ gem 'coffee-script'
 
 
 gem 'execjs'
-gem 'therubyracer'
+gem 'mini_racer'
 gem 'thin'
 gem 'htmlentities'
 gem 'kaminari', '1.1.1' # pagination. Kaminari 1.2.1 seems to have a bug - https://github.com/kaminari/kaminari/issues/1033
@@ -80,18 +80,27 @@ gem 'momentjs-rails' # for date picker in filters
 gem 'bootstrap4-datetime-picker-rails' # for date picker in filters
 gem 'hebruby' # for Hebrew date handling
 
+gem 'grape', '~> 1.6.0'
+gem 'grape-entity', '~> 0.10.1'
+# TODO: Replace to standard version of gem after PR will be accepted https://github.com/jagaapple/grape-extra_validators/pull/10
+gem 'grape-extra_validators', '~> 2.1.0', git: "https://github.com/damisul/grape-extra_validators"
+gem 'grape-swagger', '~> 1.4.2'
+gem 'grape-swagger-entity', '~> 0.5.1'
+gem 'rswag-api', '~> 2.4.0'
+gem 'rswag-ui', '~> 2.4.0'
+
 group :production do
 #  gem 'newrelic_rpm' # performance monitoring
   gem 'dalli'
 end
 
 group :test do
-  gem 'turn', '0.8.2', :require => false
+  gem 'turn', '0.8.2', require: false
   gem 'simplecov', require: false
+  gem 'faker', '~> 2.19.0'
 end
 
 group :development do
-  gem 'byebug'
   gem 'web-console'
   gem "capistrano", "~> 3.11", require: false
   gem "capistrano-rails", "~> 1.4", require: false
@@ -99,7 +108,13 @@ group :development do
   gem 'capistrano-thin', '~> 2.0.0'
   gem 'capistrano-rvm'
   gem 'derailed_benchmarks', group: :development
-  gem 'bullet'
+#  gem 'bullet' # for suggestions to add/remove eager loading
   gem 'active_record_query_trace'
+  gem 'immigrant'
+end
 
+group :test, :development do
+  gem 'byebug'
+  gem 'factory_bot_rails', '~> 6.2.0'
+  gem 'rspec-rails', '~> 5.0.2'
 end
