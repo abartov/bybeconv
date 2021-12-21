@@ -10,7 +10,7 @@
       .row
         .col.work-side-menu-area
           != "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
-        .col.work-col
+        .col.near-side-menu
           .by-card-v02.work-info-card
             %img.about-work-card-bookmark-fold-v02{alt: t(:background), src: '/assets/creator-bookmark-back2.png'}/
             .about-work-author-card-v02
@@ -103,19 +103,6 @@
                     %div{style: 'display:inline'}
                       %input.btn-small-outline-v02.btn-text-v02{type: :submit, value: t(:suggest_new_tag), style: 'margin-top:0.6rem;width:auto; background-color: #d9cdd5'}
 
-          -# Additional translations of same work
-          - if @e.translation? && (@additional_translations != nil && @additional_translations != [])
-            .by-card-v02.left-side-card-v02
-              .by-card-header-left-v02
-                %span.headline-1-v02= t(:additional_translations)
-              .by-card-content-v02
-                -  @additional_translations.each do |tr|
-                  %div
-                    %span
-                      = link_to tr.title, manifestation_read(id: tr.manifestations[0].id)
-                    %span= ' '+t(:translation)+': '
-                    %span
-                      != tr.translators.map{|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
           -# Additional translations of same work
           - if @e.translation? && (@additional_translations != nil && @additional_translations != [])
             .by-card-v02.left-side-card-v02

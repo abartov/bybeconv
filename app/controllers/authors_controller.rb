@@ -148,12 +148,12 @@ class AuthorsController < ApplicationController
         ord = {sort_name: (@sort_dir == :default ? :asc : @sort_dir)}
       when 'popularity'
         ord = {impressions_count: (@sort_dir == :default ? :desc : @sort_dir)}
-      when 'publication_date'
-        ord = "expressions.date #{@sort_dir == :default ? 'asc' : @sort_dir}"
-      when 'creation_date'
-        ord = "works.date #{@sort_dir == :default ? 'asc' : @sort_dir}"
+      when 'death_date'
+        ord = {death_year: (@sort_dir == :default ? 'asc' : @sort_dir)}
+      when 'birth_date'
+        ord = {birth_year: (@sort_dir == :default ? 'asc' : @sort_dir)}
       when 'upload_date'
-        ord = {created_at: (@sort_dir == :default ? :desc : @sort_dir)}
+        ord = {pby_publication_date: (@sort_dir == :default ? :desc : @sort_dir)}
       end
     else
       sdir = (@sort_dir == :default ? :asc : @sort_dir)
@@ -170,6 +170,7 @@ class AuthorsController < ApplicationController
     filter = build_es_filter_from_filters
     es_query = build_es_query_from_filters
     es_query = {match_all: {}} if es_query == {}
+
     @collection = PeopleIndex.query(es_query).filter(filter).aggregations(standard_aggregations).order(ord).limit(100) # prepare ES query
     @emit_filters = true if params[:load_filters] == 'true' || params[:emit_filters] == 'true'
     @total = @collection.count # actual query triggered here

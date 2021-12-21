@@ -11,6 +11,7 @@ gem 'omniauth-twitter'
 #gem 'clockwork' # scheduler
 gem 'rufus-scheduler' # scheduler
 
+#gem 'chewy' # for ElasticSearch 7.x
 gem 'chewy', '~>6' # for ElasticSearch
 gem 'active_data' # for *Search classes in Chewy
 

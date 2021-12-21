@@ -20,7 +20,7 @@
                 = favorite_glyph(author.favorite_of_user)
               %span.by-icon-v02.copyright-icon= author.rights_icon
               = textify_copyright_status(! author.public_domain)
-              %span{ 'data-toggle' => 'tooltip', title: author.public_domain? ? t(:pd_explain): t(:permission_explain)}= '[?]'
+              %span.help{ 'data-toggle' => 'tooltip', title: author.public_domain? ? t(:pd_explain): t(:permission_explain)}= '[?]'
 
             - unless author.wikipedia_snippet.nil?
               .text-height-author= author.wikipedia_snippet

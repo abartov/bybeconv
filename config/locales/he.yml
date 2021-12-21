@@ -130,7 +130,6 @@ he:
   conversion_stats_html: "סטטיסטיקה -- %{total_texts} סך הכל קבצים ישנים, %{total_known} קבצים אובחנו, %{total_images} עם תמונות, %{total_footnotes} עם הערות שוליים, %{total_tables} עם טבלאות, %{total_nikkud_full} עם ניקוד מלא, %{total_nikkud_some} עם ניקוד חלקי. <p /> מצבים אחרים -- %{total_badenc} עם תקלת קידוד, %{total_fileerr} עם שגיאת קובץ אחרת, %{total_assigned} קבצים מוקצים למסבים,%{total_parsed} קבצים פוענחו, %{total_uploaded} קבצים הועלו ישירות, %{total_superseded} קבצים הוחלפו בהעלאה ישירה, %{total_accepted} קבצים אושרו, %{total_published} ראו אור בקטלוג, %{total_manual} קבצים ממתינים להסבה ידנית."
   assignee: מוקצה ל-
   legacy_text_from_url: מהאתר הישן בכתובת
-  uploaded: הועלה ישירות
   superseded: הוחלף בהעלאה ישירה
   analyze_all_unknown: "אבחון כל הקבצים הלא מאובחנים (עלול להימשך זמן רב)"
   mark_as_manual: סמן כדורש הסבה ידנית
@@ -138,7 +137,6 @@ he:
   footnotes: הערות שוליים
   images: תמונות
   tables: טבלאות
-  none: ללא
   some: חלקי
   full: מלא
   filter: סינון
@@ -170,7 +168,6 @@ he:
   cards_with_shortcuts: כל פסקה בתיבה וגם תיבה נפתחת של קיצורי דרך
   manual: ממתין להסבה ידנית
   WEM: ישויות ביבליוגרפיות
-  nil: אין
   toc_edit_title: "תצוגת תוכן עניינים ליוצר/ת %{author}"
   no_toc_yet: "טרם נקלט תוכן עניינים ליוצר/ת"
   top_ten_works: 10 היצירות הנקראות ביותר החודש
@@ -281,7 +278,6 @@ he:
   random_authors: יוצרים אקראיים
   random_works: יצירות אקראיות
   featured_item: זרקור על יצירה
-  works_by_genre: יצירות על-פי סוגה
   edit_markdown: עריכת הטקסט
   edit_markdown_in_new_window: עריכת הטקסט בלשונית חדשה
   add_work_link: הוספת היצירה
@@ -383,7 +379,6 @@ he:
   handle_proofs: טיפול בהגהות
   handle_recommendations: טיפול בהמלצות
   curate_featured_content: אוצרוּת תוכן מערכת
-  bib_workshop: הסדנה הביבליוגרפית
   edit_catalog: עריכת הקטלוג
   edit_people: עריכת אישים
   conversion_verification: טיוב יצירות לאחר הסבה
@@ -521,7 +516,6 @@ he:
   search_results: תוצאות חיפוש
   search_total: סך תוצאות החיפוש
   search_terms: מה חיפשת
-  works_by_tag: יצירות לפי תגית
   internal_search: חיפוש במנוע שלנו
   welcome_title: "ברוכים הבאים לפרויקט בן־יהודה!"
   welcome_paragraph_html: "הפרויקט הוא מיזם התנדבותי שעוסק ביצירת מהדורות אלקטרוניות של נכסי הספרות העברית וריכוזן באתר האינטרנט לטובת הציבור, בחינם וללא פרסומות.<br />מטרות הפרויקט הן <b>שימור</b> היצירות העבריות, <b>הנגשת</b> היצירות לציבור הרחב, <b>וחשיפת</b> היצירות לקוראים חדשים ועידוד העיסוק בהן."
@@ -612,7 +606,6 @@ he:
   explain_up_to_10: ניתן לסנן את רשימת היצירות לפי מספר יוצרים בו זמנית על-ידי בחירתם מהרשימה. הסינון מוגבל לעד 10 יוצרים בו זמנית.
   entries: ערכים
   linking_entries: ערכים קשורים
-  filter: סינון
   apply_mobile_filters: יישום סינון נבחר
   sort: מיון
   sort_name: שם לצורך מיון
@@ -675,7 +668,6 @@ he:
   recommendations_for_work: המלצות קוראים
   x_authors: "(%{x} יוצרים)"
   x_authors_mixed_gender: "%{x} יוצרים ויוצרות"
-  life_years: שנות חיים
   writing_language: שפת יצירה
   non_hebrew_languages: שפות אחרות
   x_authors_male: "%{x} יוצרים"
@@ -740,7 +732,6 @@ he:
   anthology_explanation: היא גרסה מתקדמת של רשימת קריאה ומיועדת בעיקר לשיתוף עם הקוראים שלכם כדי שיוכלו לצרוך את הטקסטים הכלולים בה. היא מאפשרת סידור פנימי מדויק של כל יצירה ויצירה לפי רצונכם וכן הוספת קטעי טקסט מעשירים שנכתבו על ידכם - כגון עמוד שער, הערות, דגשים וכו׳.
   create_new_list_or_anthology: יצירת רשימת קריאה / מקראה חדשה
   anthology_name: שם המקראה
-  create_new_anthology: יצירת מקראה חדשה
   manage_people: ניהול אישים
   to_manage_people: אם האיש/ה אינו/ה ברשימה, יש ליצור רשומה חדשה בניהול אישים (השינויים לא יישמרו אם לא בוצעה "שמירה ועדכון")
   how_to_help: 'התנדבות בפרויקט'
@@ -902,7 +893,6 @@ he:
   YouTube: צפייה בהקראת היצירה
   youtube: סירטונים
   blog: מאמרים ורשומות בלוג
-  other: אחר
   dedicated_site: אתרים בנושא
   audio: קטעי שֶמע
   author_details: פרטי מחבר
@@ -924,7 +914,6 @@ he:
   to_the_full_work: ליצירה המלאה
   search_tasks_system: חפש במערכת המשימות
   to_the_full_feature: להמלצה המלאה
-  public_domain: נחלת הכלל
   edit: עריכה
   destroy: מחיקה
   our_volunteers: המתנדבים שלנו
@@ -945,7 +934,6 @@ he:
   raw_tocs: מחברים עם תוכן עניינים שטרם עוּבַּד
   back_to_homepage: לדף הבית
   make_corrections_below: "תיקונים יש לבצע בתיבת הטקסט להלן:"
-  homepage: דף הבית
   recommendations_by_status: המלצות לפי סטטוס %{status}
   sign_in: התחברות
   sign_in_google_twitter: התחברו באמצעות זהות גוגל או טוויטר
