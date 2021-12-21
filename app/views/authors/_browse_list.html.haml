@@ -34,10 +34,10 @@
               %option{value: 'popularity_desc', selected: @sort == 'popularity_desc' ? 'true': nil}= t(:popularity_desc)
               %option{value: 'popularity_asc', selected: @sort == 'popularity_asc' ? 'true': nil}= t(:popularity_asc)
             %optgroup{label: t(:dates)}
-              %option{value: 'birth_date_asc', selected: @sort == 'publication_date_asc' ? 'true': nil}= t(:birthdate_asc)
-              %option{value: 'birth_date_desc', selected: @sort == 'publication_date_desc' ? 'true': nil}= t(:birthdate_desc)
-              %option{value: 'death_date_asc', selected: @sort == 'creation_date_asc' ? 'true': nil}= t(:deathdate_asc)
-              %option{value: 'death_date_desc', selected: @sort == 'creation_date_desc' ? 'true': nil}= t(:deathdate_desc)
+              %option{value: 'birth_date_asc', selected: @sort == 'birth_date_asc' ? 'true': nil}= t(:birthdate_asc)
+              %option{value: 'birth_date_desc', selected: @sort == 'birth_date_desc' ? 'true': nil}= t(:birthdate_desc)
+              %option{value: 'death_date_asc', selected: @sort == 'death_date_asc' ? 'true': nil}= t(:deathdate_asc)
+              %option{value: 'death_date_desc', selected: @sort == 'death_date_desc' ? 'true': nil}= t(:deathdate_desc)
               %option{value: 'upload_date_asc', selected: @sort == 'upload_date_asc' ? 'true': nil}= t(:uploaddate_asc)
               %option{value: 'upload_date_desc', selected: @sort == 'upload_date_desc' ? 'true': nil}= t(:uploaddate_desc)
       .sort-by-mobile

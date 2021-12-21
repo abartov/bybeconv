@@ -23,12 +23,12 @@ module ManifestationHelper
     end
   end
   def author_birth_date_decorator(item)
-    thedate = item.normalized_birth_date
-    return " (#{thedate.nil? ? t(:unknown) : thedate.to_date.strftime('%d-%m-%Y')})"
+    thedate = item.birth_year
+    return " (#{thedate.nil? ? t(:unknown) : thedate})"
   end
   def author_death_date_decorator(item)
-    thedate = item.normalized_death_date
-    return " (#{thedate.nil? ? t(:unknown) : thedate.to_date.strftime('%d-%m-%Y')})"
+    thedate = item.death_year
+    return " (#{thedate.nil? ? t(:unknown) : thedate})"
   end
   def browse_upload_date(item)
     return " (#{item.pby_publication_date.to_date.strftime('%d-%m-%Y')})"

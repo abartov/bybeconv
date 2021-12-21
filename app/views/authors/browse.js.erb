@@ -15,4 +15,5 @@ if("#{@sort_or_filter}" == 'sort') {
 $('#mobileFilterDlg').html("<%= j(render partial: 'mobile_filters', locals: { sortonly: true}) %>");
 
 <% end %>
+$('#sort_by_dd').val("<%= @sort %>");
 stopModal('spinnerdiv');
