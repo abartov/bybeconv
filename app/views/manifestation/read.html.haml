@@ -45,9 +45,8 @@
                 %br
               - my_pendings = @recommendations.all_pending.where(user: current_user)
               - app_recs = @recommendations.all_approved
-              - any_recs = app_recs.count > 0 || my_pendings.count > 0
               - total_recs = app_recs.count + my_pendings.count
-              - unless any_recs
+              - unless app_recs.count > 0 || my_pendings.count > 0
                 = t(:no_recommendations_yet)
               - else
                 = t(:this_work_has_x_recommendations, {x: total_recs})
@@ -61,9 +60,9 @@
                   - apcounter += 1
               -# add recommendation
               - unless current_user.nil?
-                .bottom-right-link{:style => "padding-top: 6px"}
-                  .linkcolor.pointer.notyet#expand-add-rec
-                    %span.right-side-icon &amp;
+                .card-bottom
+                  .metadata-link.linkcolor.pointer.notyet#expand-add-rec
+                    %span.metadata-link-icon.small-icon= '&'
                     %span{:style => "font-weight: bold"}= t(:add_recommendation)
                 #add-rec-form
                   %br
@@ -83,15 +82,15 @@
 
 
           -# Tags
-          .by-card-v02.left-side-card-v02{style:'min-height:250px'}
+          .by-card-v02.left-side-card-v02
             .by-card-header-left-v02
               %span.headline-1-v02= t(:tags)
             .by-card-content-v02.card-with-bottom-links
               .inline-block#taggings
                 = render partial: 'shared/taggings', locals: {taggings: @taggings}
               - unless current_user.nil?
-                #add-tag.bottom-right-link{:style => "padding-top: 6px"}
-                  .linkcolor.pointer.notyet#expand-add-tag
+                #add-tag.card-bottom
+                  .metadata-link.linkcolor.pointer.notyet#expand-add-tag
                     %span.right-side-icon &amp;
                     %span{:style => "font-weight: bold"}= t(:suggest_new_tag)
 
