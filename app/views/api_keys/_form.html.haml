@@ -5,10 +5,10 @@
 
 = form_for @api_key do |f|
   .form-group
-    = f.label :email
+    = f.label t(:api_email)
     = f.text_field :email, class: 'form-control'
   .form-group
-    = f.label :description
+    = f.label t(:api_description)
     = f.text_field :description, class: 'form-control'
   - if @api_key.new_record?
     .form-group
@@ -22,5 +22,5 @@
       = f.label :status
       = f.select :status, ApiKey.statuses.keys, { }, { class: 'custom-select' }
   .btn-group
-    = f.submit t('save'), class: 'btn btn-primary'
-    = link_to t('cancel'), @api_key.new_record? ? '/' : api_keys_path, class: 'btn btn-secondary'
+    = f.submit t(:save), class: 'btn btn-primary'
+    = link_to t(:cancel), @api_key.new_record? ? '/' : api_keys_path, class: 'btn btn-secondary'

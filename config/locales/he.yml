@@ -46,6 +46,9 @@ he:
   notice: הודעה
   sitenotice: הודעת מערכת
   new_sitenotice: הודעת מערכת חדשה
+  new_api_key: מַפְתח API חדש
+  api_email: כתובת הדואל שלך
+  api_description: תיאור השתייכות ארגונית ומטרות שימוש עיקריות
   sitenotices: הודעות מערכת
   sitenotice_body: גוף ההודעה
   sitenotice_edit: עריכת הודעת מערכת
