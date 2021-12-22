@@ -41,6 +41,11 @@ class V1::TextsAPI < V1::ApplicationApi
       post do
         ids = params[:ids]
         records = ManifestationsIndex.find(ids)
+        # If ids contains one one value, Chewy returns single object instead of array, so explicitely convert
+        # it to single-element array
+        if ids.size == 1
+          records = [records]
+        end
         # sorting result in same order as their ids are passed in parameter
         records.sort_by! { |rec| ids.find_index(rec.id) }
         present records, with: V1::Entities::ManifestationIndex, view: params[:view], file_format: params[:file_format], snippet: params[:snippet]

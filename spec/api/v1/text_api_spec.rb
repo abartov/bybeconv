@@ -133,7 +133,17 @@ describe V1::TextsAPI do
 
     include_context 'API Key Check'
 
-    context 'when no additional_params specified' do
+    context 'when single id specified' do
+      let(:ids) { [manifestation_1.id] }
+
+      it 'succeed and returns basic view in html format and without snippet' do
+        expect(subject).to eq 201
+        assert_equal 1, json_response.size
+        assert_manifestation(json_response[0], manifestation_1, 'basic', 'html', false)
+      end
+    end
+
+    context 'when multiple ids without additional_params specified' do
       it 'succeed and returns basic view in html format and without snippet' do
         expect(subject).to eq 201
         assert_equal 2, json_response.size
@@ -142,7 +152,7 @@ describe V1::TextsAPI do
       end
     end
 
-    context 'when additional params passed' do
+    context 'when multiple ids with additional params specified' do
       let(:additional_params) {
         {
           view: :enriched,
