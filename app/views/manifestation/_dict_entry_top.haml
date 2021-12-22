@@ -12,7 +12,7 @@
               - if @skipped_to_prev > 0
                 %span.missingValues_desktop= t(:desktop_missing_entries, {x: @skipped_to_prev})
                 %span.missingValues_mobile= t(:mobile_missing_entries, {x: @skipped_to_prev})
-            %div
+            .link-nav
               %a{href: dict_entry_path(id: @m.id, entry: @prev_entry.id)}
                 %span.right-arrow> 2
                 = @prev_entry.defhead
@@ -24,7 +24,7 @@
               - if @skipped_to_next > 0
                 %span.missingValues_desktop= t(:desktop_missing_entries, {x: @skipped_to_next})
                 %span.missingValues_mobile= t(:mobile_missing_entries, {x: @skipped_to_next})
-            %div
+            .link-nav
               %a{href: dict_entry_path(id: @m.id, entry: @next_entry.id)}
                 = @next_entry.defhead
                 %span.left-arrow 1

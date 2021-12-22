@@ -108,10 +108,8 @@
                     <%= link_to t(:sign_out), signout_path, id: "sign_out" %>
                   </div>
                   <% if current_user.editor? %>
-                    <div class="dashboard-link">
                     <br />
-                    <h4><%= link_to t(:back_to_dashboard), url_for(controller: :admin, action: :index) %></h4>
-                    </div>
+                    <%= link_to t(:back_to_dashboard), url_for(controller: :admin, action: :index) %>
                   <% end %>
                 <% else %>
                   <a href="/session/login" id="sign_in"><button class="btn-small-outline-v02"><div class="btn-text-v02"><%= t(:sign_in) %></div></button></a>

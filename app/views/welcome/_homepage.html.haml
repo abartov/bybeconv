@@ -2,18 +2,18 @@
   .container-fluid#content
     .row
       .col-12.col-lg-8
-        / authors
+        -# authors
         .by-card-v02#authors-in-project
           .by-card-header-v02
             %span.headline-1-v02
               = link_to t(:authors_in_the_project), authors_path
             = t(:x_authors, x: @totals[:authors])
-          / author carousels
+          -# author carousels
           = render partial: 'shared/authors', locals: {popular_authors: @pop_authors, random_authors: [], newest_authors: @newest_authors}
-        / surprise author
-        .scroller#surprise-scroller
+        -# surprise author
+        .scroller.by-card-v02#surprise-scroller
           .slide
-            .by-card-v02#authors-surprise{style:'cursor:pointer'}
+            #authors-surprise{style:'cursor:pointer'}
               .by-card-header-v02
                 %span.headline-1-v02= t(:surprise_author)
               .by-card-content-v02#authors-surprise-initial
@@ -22,7 +22,7 @@
           .slide
             = render partial: 'shared/surprise_author', locals: {passed_mode: 'home', author: @surprise_author}
 
-        / most read and new works
+        -# most read and new works
         - cache "homepage_mostread", expires_in: 6.hours do
           .by-card-v02#works-in-project
             .by-card-header-v02
@@ -36,10 +36,10 @@
                 %a{style: 'font-weight:bold', href: all_works_path}
                   %span= t(:to_all_works)
                   %span.left-arrow 1
-        / surprise work
-        .scroller#work-surprise-scroller
+        -# surprise work
+        .scroller.by-card-v02#work-surprise-scroller
           .slide
-            .by-card-v02#works-surprise{style:'cursor:pointer'}
+            #works-surprise{style:'cursor:pointer'}
               .by-card-header-v02
                 %span.headline-1-v02= t(:surprise)
               .by-card-content-v02#works-surprise-initial
@@ -47,9 +47,7 @@
                   %button.by-button-v02.surprise-btn-v02.headline-2-v02= t(:surprise_me)
           .slide
             = render partial: 'shared/surprise_work', locals: {passed_mode: 'home', manifestation: @surprise_work}
-        / genres
         = render 'works'
-        / periods
         = render 'periods'
       .col-12.col-lg-4
         -# whatsnew feed
