@@ -28,7 +28,7 @@
               .surprise-author-card-content-v02
                 .metadata
                   %span
-                    %a.by-icon-v02.iconNearText-v02{id: "heart_#{author.id}", style:'float:right'}= 5
+                    %a.by-icon-v02{id: "heart_#{author.id}", style:'float:right'}= 5
                   %span.by-icon-v02.copyright-icon= author.rights_icon
                   = author.copyright_as_string
                   %span.help{ 'data-toggle' => 'tooltip', title: author.public_domain? ? t(:pd_explain): t(:permission_explain)}= '[?]'

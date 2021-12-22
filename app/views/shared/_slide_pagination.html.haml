@@ -1,9 +1,8 @@
 .advanced-pagination-area
-  %span.by-icon-v02
-    - unless @page == 1 || @page == '1'
-      = link_to '{', update_param(request.original_url, 'page', '1'), {remote: true, id: 'firstnav', title: t(:worklist_first_page_tt)}
-    - else
-      %span.by-icon-v02.navdisabled= '{'
+  - unless @page == 1 || @page == '1'
+    %span.by-icon-v02= link_to '{', update_param(request.original_url, 'page', '1'), {remote: true, id: 'firstnav', title: t(:worklist_first_page_tt)}
+  - else
+    %span.by-icon-v02.navdisabled= '{'
   = link_to_previous_page collection, '2', {class: 'by-icon-v02', remote: true, id: 'prevnav', title: t(:worklist_prev_page_tt), params: {sort_by: @sort}} do
     %span.by-icon-v02.navdisabled
       = '2'
@@ -19,8 +18,7 @@
     = link_to_next_page collection, '1', {remote: true, id: 'nextnav', title: t(:worklist_next_page_tt), params: {sort_by: @sort}} do
       %span.by-icon-v02.navdisabled= '1'
   - unless @page == @total_pages || @page.to_i == @total_pages
-    %span.by-icon-v02
-      = link_to '0', update_param(request.original_url, 'page', @total_pages.to_s), {remote: true, id: 'lastnav', title: t(:worklist_last_page_tt)}
+    %span.by-icon-v02= link_to '0', update_param(request.original_url, 'page', @total_pages.to_s), {remote: true, id: 'lastnav', title: t(:worklist_last_page_tt)}
   - else
     %span.by-icon-v02.navdisabled= '0'
 

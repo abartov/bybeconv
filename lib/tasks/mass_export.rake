@@ -38,7 +38,7 @@ task :mass_export, [:to_path] => :environment do |taskname, args|
           File.open(txt_path+ppath+fname+'.txt', 'w:utf-8'){|f| f.write(plaintext)}
           File.open(txt_stripped_path + ppath + fname+'.txt', 'w:utf-8') {|f| f.write(stripped) }
           File.open(html_path + ppath + fname+'.html', 'w:utf-8') {|f| f.write(html)}
-          pseudocatalogue << [m.id, ppath+fname, m.title, m.expressions[0].works[0].authors.map{|x| x.name}.join('; '), m.expressions[0].translation ? m.expressions[0].translators.map{|x| x.name}.join('; ') : '', m.expressions[0].translation ? m.expressions[0].works[0].orig_lang : '', I18n.t(m.expressions[0].genre), m.expressions[0].source_edition || '']
+          pseudocatalogue << [m.id, ppath+fname, m.title, m.expressions[0].works[0].authors.map{|x| x.name}.join('; '), m.expressions[0].translation ? m.expressions[0].translators.map{|x| x.name}.join('; ') : '', m.expressions[0].works[0].authors.map{|x| x.wikidata_qid.to_s}.join('; '), m.expressions[0].works[0].translators.map{|x| x.wikidata_qid.to_s}.join('; '), m.expressions[0].translation ? m.expressions[0].works[0].orig_lang : '', I18n.t(m.expressions[0].genre), m.expressions[0].source_edition || '']
           tot[:works] += 1
         rescue StandardError => e
           tot[:errors] += 1
@@ -46,7 +46,7 @@ task :mass_export, [:to_path] => :environment do |taskname, args|
         end
       }
       File.open(to_path+"/pseudocatalogue#{dump}.csv",'w:utf-8'){|f|
-        f.puts "ID,path,title,authors,translators,original_language,genre,source_edition"
+        f.puts "ID,path,title,authors,translators,author_qids,translator_qids,original_language,genre,source_edition"
         f.puts pseudocatalogue.map{|line| line.to_csv}.join
       }
       print "\n#{tot[:works]} files processed; #{tot[:errors]} errors encountered.\n"
