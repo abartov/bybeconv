@@ -43,7 +43,7 @@
                 - unless @author.blog_category_url.nil? or @author.blog_category_url.empty?
                   .metadata-link
                     %a{:href => @author.blog_category_url, target: '_blank'}
-                      %span.by-icon-v02.iconNearText-v02> Q
+                      %span.by-icon-v02> Q
                       = t(:about_author_in_blog, author:@author.name)
                 - if current_user && current_user.editor?
                   %p{style:'text-align:left'}

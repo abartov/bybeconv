@@ -10,13 +10,13 @@
               .by-dropdown-header-v02= authors_total
               /%a{href: '/#top_authors'}
               %a{href: '/'}
-                %span.by-icon-v02.iconNearText-v02 N
+                %span.by-icon-v02 N
                 = t(:most_read_authors)
               %a{href: whatsnew_path}
-                %span.by-icon-v02.iconNearText-v02 O
+                %span.by-icon-v02 O
                 = t(:newest_authors)
               %a{href: authors_path}
-                %span.by-icon-v02.iconNearText-v02 T
+                %span.by-icon-v02 T
                 = t(:list_all_authors)
         - works_total = "#{Manifestation.cached_count} #{t(:works_in_the_project)}"
         %li.topMenuItem-v02
@@ -25,13 +25,13 @@
             .by-dropdown-content-v02.dropdown-menu#menu-works
               .by-dropdown-header-v02.dropdown-item-text= works_total
               %a.dropdown-item{href: '/#top_works'}
-                %span.by-icon-v02.iconNearText-v02 N
+                %span.by-icon-v02 N
                 = t(:most_read_works)
               %a.dropdown-item{href: whatsnew_path}
-                %span.by-icon-v02.iconNearText-v02 O
+                %span.by-icon-v02 O
                 = t(:newest_works)
               %a.dropdown-item{href: all_works_path}
-                %span.by-icon-v02.iconNearText-v02 T
+                %span.by-icon-v02 T
                 = t(:list_all_works)
         - combined_totals = authors_total+", "+works_total
         %li.topMenuItem-v02
@@ -41,12 +41,12 @@
               .by-dropdown-header-v02= combined_totals
               - get_genres.each do |g|
                 %a{href: manifestation_genre_path(genre: g)}
-                  %span.by-icon-v02.iconNearText-v02= glyph_for_genre(g)
+                  %span.by-icon-v02= glyph_for_genre(g)
                   = t(g)
                   %span{style:'color:black'}= " - #{Manifestation.cached_work_counts_by_genre[g]} #{t(:works)}"
               .by-dropdown-divider
               %a{href: translations_path}
-                %span.by-icon-v02.iconNearText-v02= glyph_for_genre('translations')
+                %span.by-icon-v02= glyph_for_genre('translations')
                 = t(:translations)
                 %span{style:'color:black'}= " - #{Expression.cached_translations_count} #{t(:works)}"
         %li.topMenuItem-v02
@@ -56,7 +56,7 @@
               .by-dropdown-header-v02= combined_totals
               - Person.periods.each do |p|
                 %a{href: period_path(p[0])}
-                  %span.by-icon-v02.iconNearText-v02 P
+                  %span.by-icon-v02 P
                   = t(p[0]+'_long')
                   %span{style:'color:black'}= " - #{work_count_by_period(p[0])} #{t(:works)}"
         %li.topMenuItem-v02
@@ -65,19 +65,19 @@
             .by-dropdown-content-v02.dropdown-menu#menu-news
               %a.by-dropdown-header-v02{href: whatsnew_path}= t(:to_all_whatsnew)
               %a{href: whatsnew_path}
-                %span.by-icon-v02.iconNearText-v02 H
+                %span.by-icon-v02 H
                 = t(:new_authors)
               %a{href: whatsnew_path}
-                %span.by-icon-v02.iconNearText-v02 G
+                %span.by-icon-v02 G
                 = t(:new_works)
               %a{href: t(:facebook_url)}
-                %span.by-icon-v02.iconNearText-v02 S
+                %span.by-icon-v02 S
                 = t(:latest_facebook)
               %a{href: t(:youtube_url)}
-                %span.by-icon-v02.iconNearText-v02 W
+                %span.by-icon-v02 W
                 = t(:latest_youtube)
               %a{href: t(:blog_url)}
-                %span.by-icon-v02.iconNearText-v02 ~
+                %span.by-icon-v02 ~
                 = t(:latest_blog)
         %li.topMenuItem-v02{:style => "padding-left: 0"}
           .by-dropdown-v02.dropdown#ddabout
@@ -85,31 +85,31 @@
             .by-dropdown-content-v02.dropdown-menu#menu-info
               .by-dropdown-header-v02= t(:more_info)
               %a{href: '/page/about'}
-                %span.by-icon-v02.iconNearText-v02 M
+                %span.by-icon-v02 M
                 = t(:about_the_project)
               %a{href: '/page/english'}
-                %span.by-icon-v02.iconNearText-v02{style:'float:right'} M
+                %span.by-icon-v02{style:'float:right'} M
                 = 'About Project Ben-Yehuda'
               %a{href: '/page/amuta'}
-                %span.by-icon-v02.iconNearText-v02 G
+                %span.by-icon-v02 G
                 = t(:about_amuta)
               %a{href: '/page/volunteer'}
-                %span.by-icon-v02.iconNearText-v02 V
+                %span.by-icon-v02 V
                 = t(:how_to_help)
               %a{href: '/page/donate'}
-                %span.by-icon-v02.iconNearText-v02 z
+                %span.by-icon-v02 z
                 = t(:donate_money)
               %a{href: t(:facebook_url)}
-                %span.by-icon-v02.iconNearText-v02 S
+                %span.by-icon-v02 S
                 = t(:to_the_facebook_page)
               %a{href: t(:youtube_url)}
-                %span.by-icon-v02.iconNearText-v02 W
+                %span.by-icon-v02 W
                 = t(:to_the_youtube)
               %a{href: t(:blog_url)}
-                %span.by-icon-v02.iconNearText-v02 ~
+                %span.by-icon-v02 ~
                 = t(:to_the_blog)
               %a.linkcolor.pointer.contact_btn{href: '/contact'}
-                %span.by-icon-v02.iconNearText-v02 R
+                %span.by-icon-v02 R
                 = t(:contact_us)
     #mySidenav.sidenav-v02
       .mobile-menu-top= t(:mobile_totals, {authors: Person.cached_toc_count, works: Manifestation.cached_count})
@@ -120,30 +120,30 @@
           %ul.nested
             %li
               %a{href: '/'}
-                %span.by-icon-v02.iconNearText-v02.iconInMenu N
+                %span.by-icon-v02.iconInMenu N
                 = t(:most_read_authors)
             %li
               %a{href: whatsnew_path}
-                %span.by-icon-v02.iconNearText-v02.iconInMenu O
+                %span.by-icon-v02.iconInMenu O
                 = t(:newest_authors)
             %li
               %a{href: authors_path}
-                %span.by-icon-v02.iconNearText-v02.iconInMenu T
+                %span.by-icon-v02.iconInMenu T
                 = t(:list_all_authors)
         %li.topMenuItemMobile-v02
           %span.caret= t(:works)
           %ul.nested
             %li
               %a{href: '/#top_works'}
-                %span.by-icon-v02.iconNearText-v02.iconInMenu N
+                %span.by-icon-v02.iconInMenu N
                 = t(:most_read_works)
             %li
               %a{href: '/#new_works'}
-                %span.by-icon-v02.iconNearText-v02.iconInMenu O
+                %span.by-icon-v02.iconInMenu O
                 = t(:newest_works)
             %li
               %a{href: all_works_path}
-                %span.by-icon-v02.iconNearText-v02.iconInMenu T
+                %span.by-icon-v02.iconInMenu T
                 = t(:list_all_works)
         %li.topMenuItemMobile-v02
           %span.caret= t(:genres)
@@ -151,13 +151,13 @@
             - get_genres.each do |g|
               %li
                 %a{href: manifestation_genre_path(genre: g)}
-                  %span.by-icon-v02.iconNearText-v02.iconInMenu= glyph_for_genre(g)
+                  %span.by-icon-v02.iconInMenu= glyph_for_genre(g)
                   = t(g)
                   %span{style:'color:black; font-weight: normal;'}= " - #{Manifestation.cached_work_counts_by_genre[g]} #{t(:works)}"
             .by-dropdown-divider
             %li
               %a{href: translations_path}
-                %span.by-icon-v02.iconNearText-v02.iconInMenu= glyph_for_genre('translations')
+                %span.by-icon-v02.iconInMenu= glyph_for_genre('translations')
                 = t(:translations)
                 %span{style:'color:black; font-weight: normal;'}= " - #{Expression.cached_translations_count} #{t(:works)}"
         %li.topMenuItemMobile-v02
@@ -166,7 +166,7 @@
             - Person.periods.each do |p|
               %li
                 %a{href: period_path(p[0])}
-                  %span.by-icon-v02.iconNearText-v02.iconInMenu P
+                  %span.by-icon-v02.iconInMenu P
                   = t(p[0])
                   %span{style:'color:black; font-weight: normal;'}= " - #{work_count_by_period(p[0])} יצירות"
         %li.topMenuItemMobile-v02
@@ -174,62 +174,62 @@
           %ul.nested
             %li
               %a{href: whatsnew_path}
-                %span.by-icon-v02.iconNearText-v02.iconInMenu H
+                %span.by-icon-v02.iconInMenu H
                 = t(:new_authors)
             %li
               %a{href: whatsnew_path}
-                %span.by-icon-v02.iconNearText-v02.iconInMenu G
+                %span.by-icon-v02.iconInMenu G
                 = t(:new_works)
             %li
               %a{href: t(:facebook_url)}
-                %span.by-icon-v02.iconNearText-v02.iconInMenu S
+                %span.by-icon-v02.iconInMenu S
                 = t(:latest_facebook)
             %li
               %a{href: t(:youtube_url)}
-                %span.by-icon-v02.iconNearText-v02.iconInMenu W
+                %span.by-icon-v02.iconInMenu W
                 = t(:latest_youtube)
             %li
               %a{href: t(:blog_url)}
-                %span.by-icon-v02.iconNearText-v02.iconInMenu ~
+                %span.by-icon-v02.iconInMenu ~
                 = t(:latest_blog)
         %li.topMenuItemMobile-v02
           %span.caret= t(:about)
           %ul.nested
             %li
               %a{href: '/page/about'}
-                %span.by-icon-v02.iconNearText-v02.iconInMenu M
+                %span.by-icon-v02.iconInMenu M
                 = t(:about_the_project)
             %li
               %a{href: '/page/english'}
-                %span.by-icon-v02.iconNearText-v02.iconInMenu{style: "float:right"} M
+                %span.by-icon-v02.iconInMenu{style: "float:right"} M
                 About Project Ben-Yehuda
             %li
               %a{href: '/page/amuta'}
-                %span.by-icon-v02.iconNearText-v02.iconInMenu G
+                %span.by-icon-v02.iconInMenu G
                 = t(:about_amuta)
             %li
               %a{href: '/page/volunteer'}
-                %span.by-icon-v02.iconNearText-v02.iconInMenu V
+                %span.by-icon-v02.iconInMenu V
                 = t(:how_to_help)
             %li
               %a{href: '/page/donate'}
-                %span.by-icon-v02.iconNearText-v02.iconInMenu z
+                %span.by-icon-v02.iconInMenu z
                 = t(:donate)
             %li
               %a{href: t(:facebook_url)}
-                %span.by-icon-v02.iconNearText-v02.iconInMenu S
+                %span.by-icon-v02.iconInMenu S
                 = t(:to_the_facebook_page)
             %li
               %a{href: t(:youtube_url)}
-                %span.by-icon-v02.iconNearText-v02.iconInMenu W
+                %span.by-icon-v02.iconInMenu W
                 = t(:to_the_youtube)
             %li
               %a{href: t(:blog_url)}
-                %span.by-icon-v02.iconNearText-v02.iconInMenu ~
+                %span.by-icon-v02.iconInMenu ~
                 = t(:to_the_blog)
             %li
               %a.linkcolor.pointer.contact_btn{href: '/contact'}
-                %span.by-icon-v02.iconNearText-v02.iconInMenu R
+                %span.by-icon-v02.iconInMenu R
                 = t(:contact_us)
     .menuButton-v02#mobileMenu= ','
 
@@ -237,7 +237,7 @@
     .donation-area-v02{title: t(:donate_tt)}
       %a{href: '/page/donate'}
         %button.btn-small-outline-v02.btn-text-v02.donation-btn-v02
-          %span.by-icon-v02.iconNearText-v02> z
+          %span.by-icon-v02> z
           = t(:donate)
   .col-4
     .top-search-box-v02
@@ -266,25 +266,25 @@
         %span.pointer.by-icon-top-v02.dropdown-toggle#nav-more{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :type => "button"} Y
         .dropdown-menu.dropdown-menu-right#menu-more
           %a.dropdown-item.linkcolor{href: t(:facebook_url)}
-            %span.by-icon-v02.iconNearText-v02 S
+            %span.by-icon-v02 S
             = t(:to_the_facebook_page)
           %a.dropdown-item.linkcolor{href: t(:youtube_url)}
-            %span.by-icon-v02.iconNearText-v02 W
+            %span.by-icon-v02 W
             = t(:to_the_youtube)
           %a.dropdown-item.linkcolor{href: t(:blog_url)}
-            %span.by-icon-v02.iconNearText-v02 ~
+            %span.by-icon-v02 ~
             = t(:to_the_blog)
           = render partial: 'shared/share', locals: {element: :mobile_button}
           %a.dropdown-item.linkcolor.contact_btn{href: '/contact'}
-            %span.by-icon-v02.iconNearText-v02 R
+            %span.by-icon-v02 R
             = t(:contact_us)
           - if current_user
             %a.dropdown-item.linkcolor{:href => "/signout"}
-              %span.by-icon-v02.iconNearText-v02 0
+              %span.by-icon-v02 0
               = t(:sign_out)
           - else
             %a.dropdown-item.linkcolor{:href => "/session/login"}
-              %span.by-icon-v02.iconNearText-v02 Z
+              %span.by-icon-v02 Z
               = t(:sign_in)
 
 #resultsDlg{title: t(:search_results)}

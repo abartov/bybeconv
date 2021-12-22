@@ -30,18 +30,17 @@
                 %span.left-arrow 1
         .work-page-top-icons-desktop
           .top-left-icons-group
-            .icon-in-group-v02.notyet
-              %a{:href => "#"}
-                %span.by-icon-v02 !
+            %a.notyet{:href => "#"}
+              %span.by-icon-v02 !
             .icons-separator-white
-            .icon-in-group-v02.notyet
+            .notyet
               %a{:href => "#"}
                 %span.by-icon-v02 *
-            .icon-in-group-v02.notyet.printbutton{'data-toggle' => 'tooltip', 'title' => "#{t(:work_print_tt)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }}
+            .notyet.printbutton{'data-toggle' => 'tooltip', 'title' => "#{t(:work_print_tt)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }}
               %span.linkcolor.pointer.by-icon-v02 9
-            .icon-in-group-v02.notyet.download{'data-toggle' => 'modal', 'title' => "#{t(:work_download_tt)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }, 'data-target' => '#downloadDlg'}
+            .notyet.download{'data-toggle' => 'modal', 'title' => "#{t(:work_download_tt)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }, 'data-target' => '#downloadDlg'}
               %span.linkcolor.pointer.by-icon-v02 3
-            .icon-in-group-v02.notyet{:style => "margin-left:0;"}
+            .notyet{:style => "margin-left:0;"}
               %a{:href => "#"}
                 %span.by-icon-v02 U
         .work-page-top-icons-mobile
@@ -52,19 +51,19 @@
                   %span.by-icon-top-v02 Y
               #text-menu-more.by-dropdown-content-v02{:style => "left: 0; margin-top: 4px"}
                 %a{:href => "#"}
-                  %span.by-icon-v02.iconNearText-v02> !
+                  %span.by-icon-v02> !
                   = t(:like)
                 %a{:href => "#"}
-                  %span.by-icon-v02.iconNearText-v02> *
+                  %span.by-icon-v02> *
                   = t(:cite)
                 %p.printbutton
-                  %span.by-icon-v02.iconNearText-v02> 9
+                  %span.by-icon-v02> 9
                   = t(:print)
                 %p.download
-                  %span.by-icon-v02.iconNearText-v02> 3
+                  %span.by-icon-v02> 3
                   = t(:download)
                 %a{:href => "#"}
-                  %span.by-icon-v02.iconNearText-v02> U
+                  %span.by-icon-v02> U
                   = t(:share)
         .flexbreak
         .headline-3-v02
@@ -89,7 +88,7 @@
             = link_to '[?]', '#', 'class' => 'help', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_public_domain), 'data-content' => t(:public_domain_popover)
 
     .row.error-found-row
-      .col-2.side-nav-col
+      .side-nav-col
         .side-menu-headline= t(:neighboring_entries)
         %nav#entryNav.navbar
           %ul#chapter-nav.nav.navbar-nav.navbar-expand.flex-column.by-card-v02{"aria-orientation" => "vertical", :style => "width: unset"}
