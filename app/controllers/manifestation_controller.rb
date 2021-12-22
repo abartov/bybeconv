@@ -610,43 +610,6 @@ class ManifestationController < ApplicationController
     end
   end
 
-  def make_collection(query_parts, query_params, joins_needed, people_needed, ord)
-    if query_parts.empty?
-      return Manifestation.all_published.joins(<<-SQL).
-        INNER JOIN expressions_manifestations ON expressions_manifestations.manifestation_id = manifestations.id
-        INNER JOIN expressions ON expressions.id = expressions_manifestations.expression_id
-        INNER JOIN realizers ON realizers.expression_id = expressions.id
-        INNER JOIN expressions_works ON expressions_works.expression_id = expressions.id
-        INNER JOIN works ON works.id = expressions_works.work_id
-        INNER JOIN creations ON creations.work_id = works.id
-      SQL
-      distinct.order(ord)
-      #includes(expressions: [:works, :manifestations]).order(ord)
-      #return Manifestation.all_published.joins(expressions: :works).includes(expressions: :works).order(ord)
-    else
-      @emit_filters = true
-      conditions = query_parts.values.join(' AND ')
-      return Manifestation.all_published.joins(<<-SQL).
-        INNER JOIN expressions_manifestations ON expressions_manifestations.manifestation_id = manifestations.id
-        INNER JOIN expressions ON expressions.id = expressions_manifestations.expression_id
-        INNER JOIN realizers ON realizers.expression_id = expressions.id
-        INNER JOIN expressions_works ON expressions_works.expression_id = expressions.id
-        INNER JOIN works ON works.id = expressions_works.work_id
-        INNER JOIN creations ON creations.work_id = works.id
-      SQL
-      where(conditions, query_params).distinct.order(ord)
-    end
-  end
-
-  def date_query(datetype, which)
-    return "#{DATE_FIELD[@datetype]} #{which == :fromdate ? '>=' : '<='} :#{which}" unless datetype == 'uploaded'
-    return "#{DATE_FIELD[@datetype]} #{which == :fromdate ? '>=' : '<='} CONVERT(:#{which}, DATETIME)"
-  end
-
-  def normalized_date_formatter(datetype, d)
-    return d unless datetype == 'uploaded'
-    return d+'-01-01'
-  end
   def es_datefield_name_from_datetype(dt)
     case dt
     when 'uploaded'
@@ -657,6 +620,7 @@ class ManifestationController < ApplicationController
       return 'orig_publication_date'
     end
   end
+
   def build_es_filter_from_filters
     ret = []
     @filters = []
@@ -730,8 +694,8 @@ class ManifestationController < ApplicationController
 
     #     { "range": { "publish_date": { "gte": "2015-01-01" }}}
     return ret
-
   end
+
   def build_es_query_from_filters
     ret = {}
     if params['search_input'].present? || params['authorstr'].present?
@@ -749,6 +713,7 @@ class ManifestationController < ApplicationController
     end
     return ret
   end
+
   def es_prep_collection
     @sort_dir = :default
     if params[:sort_by].present?
@@ -825,180 +790,9 @@ class ManifestationController < ApplicationController
     end
   end
 
-  def prep_collection
-    @emit_filters = false
-    @sort_dir = :default
-    if params[:sort_by].present?
-      @sort_or_filter = 'sort'
-      @sort = params[:sort_by].dup
-      params[:sort_by].sub!(/_(a|de)sc$/,'')
-      @sort_dir = $&[1..-1] unless $&.nil?
-    end
-    joins_needed = @periods.present? || @genres.present? || params['search_input'].present? || params[:load_filters].present? || params['fromdate'].present? || params['todate'].present? || params['ckb_genres'].present? || params['ckb_genders'].present? || params['ckb_periods'].present? || params['ckb_languages'].present? || params['ckb_authors'].present? || params['ckb_copyright'].present? || (params[:sort_by].present? && ['publication_date', 'creation_date'].include?(params[:sort]))
-    people_needed = params['authors'].present? || params['ckb_genders'].present?
-    query_params = {}
-    query_parts = {}
-    # figure out sort order
-    if params[:sort_by].present?
-      case params[:sort_by]
-      when 'alphabetical'
-        ord = {sort_title: (@sort_dir == :default ? :asc : @sort_dir)}
-      when 'popularity'
-        ord = {impressions_count: (@sort_dir == :default ? :desc : @sort_dir)}
-      when 'publication_date'
-        ord = "expressions.normalized_pub_date #{@sort_dir == :default ? 'asc' : @sort_dir}"
-      when 'creation_date'
-        ord = "works.normalized_creation_date #{@sort_dir == :default ? 'asc' : @sort_dir}"
-      when 'upload_date'
-        ord = {created_at: (@sort_dir == :default ? :desc : @sort_dir)}
-      end
-    else
-      sdir = (@sort_dir == :default ? :asc : @sort_dir)
-      @sort = "alphabetical_#{sdir}"
-      ord = {sort_title: sdir}
-    end
-
-    # collect conditions
-    @filters = []
-    @emit_filters = true if params[:load_filters] == 'true' || params[:emit_filters] == 'true'
-    if params['search_input'].present? || params['authorstr'].present? || params['authors'].present?
-      if params['authors'].present? && params['search_input'].empty?
-        @search_type = 'authorname'
-        author_ids = params['authors'].tr('+ ',',').split(',').map{|x| x.to_i}
-        @authors_names = params['authors_names']
-        if params['author_id'].present? # if in addition to an existing multi-select a new author was added
-          new_aid = params['author_id'].to_i
-          author_ids << new_aid
-          new_p = Person.find(new_aid)
-          @authors_names += new_p.name+'; '
-        end
-        query_params[:people_ids] = author_ids
-        @authors = author_ids # .join(',')
-        query_parts[:authors] = 'people.id IN (:people_ids)'
-        @filters << [I18n.t(:authors_xx, {xx: @authors_names}), 'authors', :authorlist]
-      elsif (params['search_type'].present? && params['search_type'] == 'authorname') || (params['authorstr'].present? && params['search_input'].empty?)
-        query_params[:searchstring] = '%'+params['authorstr']+'%'
-        query_parts[:people] = 'cached_people LIKE :searchstring'
-        @authorstr = params['authorstr']
-        @search_type = 'authorname'
-        @filters << [I18n.t(:author_x, {x: params['authorstr']}), :authors, :text]
-      else
-        query_params[:searchstring] = '%'+params['search_input']+'%'
-        query_parts[:titles] = 'manifestations.title LIKE :searchstring'
-        @search_type = 'workname'
-        @filters << [I18n.t(:title_x, {x: params['search_input']}), :search_input, :text]
-      end
-      @search_input = params['search_input']
-    end
-    # periods
-    @periods = params['ckb_periods'] if params['ckb_periods'].present?
-    if @periods.present?
-      query_parts[:periods] = 'expressions.period IN (:periods)'
-      query_params[:periods] = @periods.map{|x| Expression.periods[x]}
-      @filters += @periods.map{|x| [I18n.t(x), "period_#{x}", :checkbox]}
-    end
-    # genders
-    @genders = params['ckb_genders'] if params['ckb_genders'].present?
-    if @genders.present?
-      query_parts[:genders] = 'people.gender IN (:genders)'
-      query_params[:genders] = @genders.map{|x| Person.genders[x]}
-      @filters += @genders.map{|x| [I18n.t(x), "gender_#{x}", :checkbox]}
-    end
-    # genres
-    @genres = params['ckb_genres'] if params['ckb_genres'].present?
-    if @genres.present?
-      query_parts[:genres] = 'expressions.genre IN (:genres)'
-      query_params[:genres] = @genres
-      @filters += @genres.map{|x| [helpers.textify_genre(x), "genre_#{x}", :checkbox]}
-    end
-    # copyright
-    @copyright = params['ckb_copyright'].map{|x| x.to_i} if params['ckb_copyright'].present?
-    if @copyright.present?
-      query_parts[:copyright] = 'copyrighted IN (:copyright)'
-      query_params[:copyright] = @copyright
-      @filters += @copyright.map{|x| [helpers.textify_copyright_status(x == 1), "copyright_#{x}", :checkbox]}
-    end
-    # languages
-    if params['ckb_languages'].present?
-      if params['ckb_languages'] == ['xlat']
-        query_parts[:languages] = 'works.orig_lang <> "he"'
-        @filters << [I18n.t(:translations), 'lang_xlat', :checkbox]
-      else
-        @all_xlat = params['ckb_languages'].include?('xlat')
-        langs = get_langs
-        langs.delete('he') unless params['ckb_languages'].include?('he')
-        @languages = @all_xlat ? langs : params['ckb_languages'].reject{|x| x == 'xlat'}
-        if @languages.present?
-          query_parts[:languages] = 'works.orig_lang IN (:languages)'
-          query_params[:languages] = @languages
-          @filters += @languages.map{|x| ["#{I18n.t(:orig_lang)}: #{helpers.textify_lang(x)}", "lang_#{x}", :checkbox]}
-        end
-      end
-    end
-    # dates
-    @fromdate = params['fromdate'] if params['fromdate'].present?
-    @todate = params['todate'] if params['todate'].present?
-    @datetype = params['date_type']
-    if @fromdate.present?
-      query_parts[:fromdate] = date_query(@datetype, :fromdate)
-      query_params[:fromdate] = normalized_date_formatter(@datetype, @fromdate)
-      @filters << ["#{I18n.t('d'+@datetype)} #{I18n.t(:fromdate)}: #{@fromdate}", :fromdate, :text]
-    end
-    if @todate.present?
-      query_parts[:todate] = date_query(@datetype, :todate)
-      query_params[:todate] = normalized_date_formatter(@datetype, @todate)
-      @filters << ["#{I18n.t('d'+@datetype)} #{I18n.t(:todate)}: #{@todate}", :todate, :text]
-    end
-    # build the collection (with/without joins, with/without conditions)
-    joins_needed = true if @emit_filters
-    @collection = make_collection(query_parts, query_params, joins_needed, people_needed, ord)
-    if @sort[0..11] == 'alphabetical' # subset of @sort to ignore direction
-      unless params[:page].nil? || params[:page].empty?
-        params[:to_letter] = nil # if page was specified, forget the to_letter directive
-      end
-      oldpage = @page
-      @works = @collection.page(@page) # get page X of manifestations
-      @total_pages = @works.total_pages
-
-      unless params[:to_letter].nil? || params[:to_letter].empty?
-        @total_pages = @works.total_pages
-        adjust_page_by_letter(@collection, params[:to_letter], :sort_title, @sort_dir, false)
-        @works = @collection.page(@page) if oldpage != @page # re-get page X of manifestations if adjustment was made
-      end
-      @ab = prep_ab(@collection, @works, :sort_title)
-    else
-      @works = @collection.page(@page) # get page X of manifestations
-    end
-    @authors_list = Person.all
-    if @emit_filters == true
-      @genre_facet = make_collection(query_parts.reject{|k,v| k == :genres }, query_params, joins_needed, people_needed, '').group('expressions.genre').count
-      @period_facet = make_collection(query_parts.reject{|k,v| k == :periods }, query_params, joins_needed, people_needed, '').group('expressions.period').count
-      @copyright_facet = make_collection(query_parts.reject{|k,v| k == :copyright }, query_params, joins_needed, people_needed, '').group(:copyrighted).count
-      @gender_facet = make_collection(query_parts.reject{|k,v| k == :genders }, query_params, joins_needed, true, '').group('people.gender').count
-      @language_facet = make_collection(query_parts.reject{|k,v| k == :languages }, query_params, joins_needed, people_needed, '').group('works.orig_lang').count
-      @language_facet[:xlat] = @language_facet.values.sum - (@language_facet['he'] || 0)
-      get_langs.each do |l|
-        @language_facet[l] = 0 unless @language_facet[l].present?
-      end
-      @uploaded_dates = make_collection(query_parts.reject{|k,v| k == :uploaded }, query_params, joins_needed, people_needed, '').pluck(:created_at).map{|x| "{value: #{x.strftime("%Y%m%d")}}"}.join(", ")
-      unless query_parts.empty?
-        c = make_collection(query_parts.reject{|k,v| [:people, :authors].include?(k)}, query_params, joins_needed, true,'').pluck('people.id').uniq
-        unless c.empty?
-          @authors_list = Person.where(id: c)
-        end
-      end
-      # TODO: date histogram      # (bins, freqs) = uploaded_dates.histogram
-      # TODO: curated facet
-      end
-    # {"utf8"=>"✓", "search_input"=>"ביאליק", "search_type"=>"authorname", "ckb_genres"=>["drama"], "ckb_periods"=>["medieval", "enlightenment"], "ckb_copyright"=>["0"], "CheckboxGroup5"=>"sort_by_german", "genre"=>"drama", "load_filters"=>"true", "_"=>"1577388296523", "controller"=>"manifestation", "action"=>"genre"} permitted: false
-    @filters = @filters.sort_by{|text, key, elem| key.to_s}
-    params[:sort_by] = @sort
-  end
-
   def prep_for_browse
     @page = params[:page] || 1
     @page = 1 if ['0',''].include?(@page) # slider sets page to zero, awkwardly
-    #prep_collection # filtering and sorting is done here
     es_prep_collection
 
     @total = @collection.count
