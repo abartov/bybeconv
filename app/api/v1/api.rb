@@ -10,5 +10,5 @@ class V1::Api < V1::ApplicationApi
   mount V1::TextsAPI => '/'
   mount V1::PeopleAPI => '/'
 
-  add_swagger_documentation info: { title: 'Project Ben-Yehuda public API', version: '1.0.0' }
+  add_swagger_documentation info: { title: 'Project Ben-Yehuda public API' }, doc_version: '1.0.0'
 end
