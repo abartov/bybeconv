@@ -77,7 +77,12 @@ Vagrant.configure("2") do |config|
     # allowing external connections to MySQL
     sed -i "s/.*bind-address.*/bind-address = 0.0.0.0/" /etc/mysql/mysql.conf.d/mysqld.cnf
     service mysql restart
-    # TODO: configure database
+    # configure database
+    mysql -e "create database bybe_dev"
+    mysql -e "create database bybe_test"
+    mysql -e "create user 'bybe' identified by 'bybe'"
+    mysql -e "grant all privileges on *.* TO 'bybe'"
+    mysql -e "flush privileges"
     # TODO: import database
     
     # ElasticSearch
@@ -95,8 +100,15 @@ Vagrant.configure("2") do |config|
   SHELL
   config.vm.provision "shell", privileged: false, inline: <<-SHELL
     # Ruby
-    curl -sSL https://get.rvm.io | bash
-    source /home/vagrant/.rvm/scripts/rvm
+    if [ -f "/home/vagrant/.rvm/scripts/rvm" ]; then
+      echo "== Updating RVM ============================"
+      rvm get stable
+    else
+      echo "== Installing RVM =========================="
+      gpg --keyserver hkp://keyserver.ubuntu.com --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
+      curl -sSL https://get.rvm.io | bash
+      source /home/vagrant/.rvm/scripts/rvm
+    fi    
     rvm requirements
     rvm install 2.6
     rvm use 2.6 --default
@@ -107,7 +119,11 @@ Vagrant.configure("2") do |config|
     bundle install
     # set up DB
     if [ ! -f "config/database.yml" ]; then
-      cp config/database.yml.example config/database.yml
+      cp config/database.yml.sample config/database.yml
+      cp config/constants.yml.sample config/constants.yml
+      cp config/chewy.yml.sample config/chewy.yml
+      cp config/s3.yml.sample config/s3.yml
+      cp config/storage.yml.sample config/storage.yml
     fi
     #rake db:reset
   SHELL
