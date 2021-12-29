@@ -32,18 +32,3 @@
     = render partial: 'mobile_filters', locals: {sortonly: false}
   - else
     = render partial: 'mobile_filters', locals: {sortonly: true}
-
-:javascript
-  $(document).ready(function(){
-    $(window).on('popstate', function(event) {
-      if($('#works_filters').length > 0) {
-        state = event.originalEvent.state;
-        if(state != null) {
-          $('#works_filters').deserialize(state);
-          submit_filters();
-        }
-      } else {
-        
-      }
-    });
-  });
