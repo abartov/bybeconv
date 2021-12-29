@@ -24,10 +24,8 @@ var mobileWidth = 767;
 function submit_filters() {
   startModal('spinnerdiv');
   if(window.innerWidth < mobileWidth) {
-    window.history.replaceState($('#mobile_filters').serialize(), null, '/works');
     $('#mobile_filters').submit();
   } else {
-    window.history.replaceState($('#works_filters').serialize(), null, '/works');
     $('#works_filters').submit();
   }
 }

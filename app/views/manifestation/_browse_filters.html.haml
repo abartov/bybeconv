@@ -229,7 +229,6 @@
 
 :javascript
   $(document).ready(function() {
-    window.history.pushState($('#works_filters').serialize(), null, '/works');
     $('#sort_by_dd').val("#{@sort}");
     if("#{@search_type}" == 'authorname') {
       $('.opt_authorname').addClass('active');
@@ -298,7 +297,6 @@
       $('#emit_filters').val('true');
       $('#page_tag').val('1'); // reset pagination
       $('#toletter_tag').val(''); // reset pagination
-      window.history.replaceState($('#works_filters').serialize(), null, '/works');
       submit_filters();
     });
     $('.lang_xlat').change(function(){
