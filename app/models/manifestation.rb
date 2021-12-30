@@ -102,7 +102,13 @@ class Manifestation < ApplicationRecord
 
   def safe_filename
     fname = "#{title} #{I18n.t(:by)} #{author_string}"
-    return fname.gsub(/[^0-9א-תA-Za-z.\-]/, '_')
+    fname.gsub!(/[^0-9א-תA-Za-z.\-]/, '_')
+    # Active Storage uses 255-characters column for a file name so we need to truncate filename if it is longer
+    # We also need to reserve 5 characters for extension
+    if fname.length > 250
+      fname = fname[0..249]
+    end
+    return fname
   end
 
   def to_plaintext
