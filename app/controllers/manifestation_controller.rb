@@ -284,18 +284,21 @@ class ManifestationController < ApplicationController
   end
 
   def download
-    @m = Manifestation.find(params[:id])
-    impressionist(@m) unless is_spider?
-
     format = params[:format]
     unless Downloadable.doctypes.include?(format)
       flash[:error] = t(:unrecognized_format)
-      redirect_to manifestation_read_path(download_entity.id) # TODO: handle anthology case
+      redirect_to manifestation_read_path(params[:id])
       return
     end
 
-    dl = GetFreshManifestationDownloadable.call(@m, format)
-    redirect_to rails_blob_url(dl.stored_file, disposition: :attachment)
+    # Wrapping download code into transaction to make it atomic
+    # Without this we had situation when Downloadable object was created but attachmnt creation failed
+    Downloadable.transaction do
+      m = Manifestation.find(params[:id])
+      impressionist(m) unless is_spider?
+      dl = GetFreshManifestationDownloadable.call(m, format)
+      redirect_to rails_blob_url(dl.stored_file, disposition: :attachment)
+    end
   end
 
   def render_html
