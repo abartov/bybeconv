@@ -266,7 +266,7 @@ class HtmlFileController < ApplicationController
   def publish
     @text = HtmlFile.find(params[:id])
     if @text.status == 'Accepted'
-      @text.make_html unless @text.html_ready?
+      @text.make_html
       if @text.metadata_ready?
         @text.publish
         flash[:notice] = t(:html_file_published)
