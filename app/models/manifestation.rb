@@ -101,8 +101,9 @@ class Manifestation < ApplicationRecord
   end
 
   def safe_filename
-    fname = "#{title} #{I18n.t(:by)} #{author_string}"
-    return fname.gsub(/[^0-9א-תA-Za-z.\-]/, '_')
+    # Use manifestation id as a filename to prevent issues with long filename described here
+    # https://github.com/abartov/bybeconv/issues/101#issuecomment-1002994205
+    self.id.to_s
   end
 
   def to_plaintext
