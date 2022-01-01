@@ -69,8 +69,6 @@
               %b
                 - if @text.genre.nil? or @text.genre.empty?
                   = t(:must_set_genre)
-                - elsif @text.status == 'Accepted'
-                  != link_to t(:publish), action: :publish, id: @text.id
                 - elsif @text.status != 'Published'
                   != raw(t(:accept_conversion_and) + link_to(t(:frbrize), html_file_frbrize_path(@text), id: 'frbrize_button'))
 
