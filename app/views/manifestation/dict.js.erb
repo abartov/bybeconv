@@ -1,4 +1,8 @@
 $('#thelist').html("<%= j(render partial: 'dict_list') %>");
 stopModal('spinnerdiv');
 $('#dict_filter_panel').html("<%= j(render partial: 'dict_filters') %>");
+$('.notyet').click(function(e){
+  e.stopPropagation();
+  alert('<%= t(:not_implemented_yet) %>');
+});
 $("#PopupMask").remove();

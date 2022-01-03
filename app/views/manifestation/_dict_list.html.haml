@@ -42,8 +42,8 @@
               - card_collapsible = cardid+'_coll'
               .value-summary-card-v02{id: cardid}
                 %a.deflink{href: dict_entry_path(id: @m.id, entry: hw.id)}= hw.defhead
-                %a.value-summary-top-icon.last-icon.notyet{:href => "#"} U
-                %a.value-summary-top-icon.notyet{:href => "#"} !
+                %a.value-summary-top-icon.last-icon.notyet U
+                %a.value-summary-top-icon.notyet !
                 .summary-text{id: card_collapsible}
                   != hw.deftext
                 .summary-read-more{style: 'display: none'}
