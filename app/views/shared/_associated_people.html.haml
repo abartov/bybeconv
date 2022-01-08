@@ -27,6 +27,6 @@
       = t(:add)
       = select_tag :add_person_e, options_from_collection_for_select(Person.order(:name), 'id', 'name'), include_blank: true
       = t(:in_role)
-      = select_tag :role_e, options_for_select([[t(:author), Realizer.roles[:author]], [t(:editor), Realizer.roles[:editor]], [t(:illustrator), Realizer.roles[:illustrator]], [t(:translator), Realizer.roles[:translator]], [t(:adapter), Realizer.roles[:adapter]]])
+      = select_tag :role_e, options_for_select([[t(:editor), Realizer.roles[:editor]], [t(:illustrator), Realizer.roles[:illustrator]], [t(:translator), Realizer.roles[:translator]]])
       %br
   - when :manifestation
