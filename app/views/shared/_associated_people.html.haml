@@ -13,7 +13,7 @@
       = t(:add)
       = select_tag :add_person_w, options_from_collection_for_select(Person.order(:name), 'id','name'), include_blank: true
       = t(:in_role)
-      = select_tag :role_w, options_for_select([[t(:author), Creation.roles[:author]], [t(:editor), Creation.roles[:editor]], [t(:illustrator), Creation.roles[:illustrator]]])
+      = select_tag :role_w, options_for_select([[t(:author), Creation.roles[:author]], [t(:illustrator), Creation.roles[:illustrator]]])
       %br
   - when :expression
     - @e.realizers.each do |r|
