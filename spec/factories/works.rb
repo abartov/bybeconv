@@ -7,6 +7,7 @@ FactoryBot.define do
     transient do
       number { generate(:work_number) }
       author { create(:person) }
+      illustrator { nil }
     end
 
     title { "Title for #{number}" }
@@ -17,6 +18,12 @@ FactoryBot.define do
     origlang_title { "Title in original language for #{number}" }
     normalized_pub_date {}
     normalized_creation_date { normalize_date(date) }
-    creations { [create(:creation, person: author, role: :author)] }
+    creations do
+      result = [create(:creation, person: author, role: :author)]
+      if illustrator.present?
+        result << create(:creation, person: illustrator, role: :illustrator)
+      end
+      result
+    end
   end
 end

@@ -23,7 +23,7 @@ FactoryBot.define do
     translation {}
     source_edition {}
     period { Expression.periods.keys.sample }
-    works { [ create(:work, genre: genre, author: author, orig_lang: orig_lang) ] }
+    works { [ create(:work, genre: genre, author: author, illustrator: illustrator, orig_lang: orig_lang) ] }
     realizers do
       result = []
       if orig_lang != 'he'
@@ -31,9 +31,6 @@ FactoryBot.define do
       end
       if editor.present?
         result << create(:realizer, person: editor, role: :editor)
-      end
-      if illustrator.present?
-        result << create(:realizer, person: illustrator, role: :illustrator)
       end
       result
     end
