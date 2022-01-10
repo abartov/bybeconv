@@ -14,10 +14,11 @@ class Work < ApplicationRecord
   # has_and_belongs_to_many :people # superseded by creations and persons above
 
   def authors
-    return creations.where(role: Creation.roles[:author]).map {|x| x.person}
+    return creations.author.includes(:person).map(&:person)
   end
+
   def illustrators
-    return creations.where(role: Creation.roles[:illustrator]).map {|x| x.person}
+    return creations.illustrator.includes(:person).map(&:person)
   end
 
   def first_author

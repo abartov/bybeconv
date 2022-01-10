@@ -855,7 +855,7 @@ class ManifestationController < ApplicationController
           @author = Person.new(name: '?')
         end
         @translators = @m.translators
-        @illustrators = @w.illustrators + @e.illustrators
+        @illustrators = @w.illustrators
         @editors = @e.editors
         @page_title = "#{@m.title_and_authors} - #{t(:default_page_title)}"
         if @print

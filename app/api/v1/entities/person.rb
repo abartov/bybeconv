@@ -28,7 +28,7 @@ module V1
       expose :texts, documentation: { desc: 'ID numbers of all texts this person is involved into with with role in each' },
         if: lambda { |_person, options| %w(texts enriched).include?(options[:detail]) } do
         expose :author, documentation: { type: 'Integer', is_array: true } do |person|
-          Creation.where(person_id: person.id).author.joins(work: { expressions: :manifestations } ).pluck('manifestations.id').sort
+          Creation.where(person_id: person.id).author.joins(work: { expressions: :manifestations }).pluck('manifestations.id').sort
         end
         expose :translator, documentation: { type: 'Integer', is_array: true } do |person|
           Realizer.where(person_id: person.id).translator.joins(expression: :manifestations).pluck('manifestations.id').sort
@@ -37,7 +37,7 @@ module V1
           Realizer.where(person_id: person.id).editor.joins(expression: :manifestations).pluck('manifestations.id').sort
         end
         expose :illustrator, documentation: { type: 'Integer', is_array: true } do |person|
-          Realizer.where(person_id: person.id).illustrator.joins(expression: :manifestations).pluck('manifestations.id').sort
+          Creation.where(person_id: person.id).illustrator.joins(work: { expressions: :manifestations }).pluck('manifestations.id').sort
         end
       end
 

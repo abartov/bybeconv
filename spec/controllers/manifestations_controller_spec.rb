@@ -35,6 +35,12 @@ describe ManifestationController do
     it { is_expected.to be_successful }
   end
 
+  describe 'print' do
+    subject { get :print, params: { id: manifestation.id } }
+
+    it { is_expected.to be_successful }
+  end
+
   describe 'edit_metadata' do
     subject { get :edit_metadata, params: { id: manifestation.id } }
 
