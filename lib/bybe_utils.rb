@@ -501,7 +501,7 @@ module BybeUtils
   end
 
   def work_count_by_period(p)
-    return Expression.cached_work_count_by_period(p)
+    return Expression.cached_work_count_by_periods[p]
   end
 
   def get_total_works
@@ -523,7 +523,7 @@ module BybeUtils
   end
 
   def get_genres
-    return ['poetry', 'prose', 'drama', 'fables','article', 'memoir', 'letters', 'reference', 'lexicon'] # translations and icon-font refer to these keys!
+    return Work::GENRES # translations and icon-font refer to these keys!
   end
 
   def right_side_genres # TODO: remove if unused

@@ -43,9 +43,11 @@ class Expression < ApplicationRecord
     end
   end
 
-  def self.cached_work_count_by_period(p)
-    Rails.cache.fetch("e_works_by_period_#{p}", expires_in: 24.hours) do
-      Expression.where(period: Person.periods[p]).count
+  # Returns total count of published works by each period
+  # @return hash where keys are period names and value is a number of works from the given period
+  def self.cached_work_count_by_periods
+    Rails.cache.fetch("e_works_by_periods", expires_in: 24.hours) do
+      Expression.joins(:manifestations).merge(Manifestation.all_published).group(:period).count
     end
   end
 
