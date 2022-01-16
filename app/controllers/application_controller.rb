@@ -83,7 +83,7 @@ class ApplicationController < ActionController::Base
 
   def cached_newest_authors
     Rails.cache.fetch("newest_authors", expires_in: 6.hours) do # memoize
-      Person.has_toc.has_image.joins(expressions: [:works]).group('people.id').having("COUNT(works.id) > 0 OR COUNT(expressions.id) > 0").order(created_at: :desc).limit(10)
+      Person.published.has_toc.has_image.joins(expressions: [:works]).group('people.id').having("COUNT(works.id) > 0 OR COUNT(expressions.id) > 0").order(published_at: :desc).limit(10)
     end
   end
 
@@ -310,7 +310,7 @@ class ApplicationController < ActionController::Base
     authors = {}
     Manifestation.all_published.new_since(timestamp).includes(:expressions).each {|m|
       e = m.expressions[0]
-      person = e.persons[0] # TODO: more nuance
+      person = e.translation ? m.translators.first : m.authors.first # TODO: more nuance
       next if person.nil? # shouldn't happen, but might in a dev. env.
       if authors[person].nil?
         authors[person] = {}

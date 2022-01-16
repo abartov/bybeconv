@@ -3,6 +3,7 @@ class Person < ApplicationRecord
 
   enum gender: %i(male female other unknown)
   enum period: %i(ancient medieval enlightenment revival modern)
+  enum status: %i(published unpublished deprecated)
 
   paginates_per 100
 
@@ -65,6 +66,23 @@ class Person < ApplicationRecord
     p
   end
 
+  def publish!
+    # set all person's works to status published
+    all_works_including_unpublished.each do |m| # be cautious about publishing joint works, because the *other* author(s) or translators may yet be unpublished!
+      next if m.published?
+      can_publish = true
+      m.authors.each {|au| can_publish = false unless au.published? || au == self}
+      m.translators.each {|au| can_publish = false unless au.published? || au == self}
+      if can_publish
+        m.created_at = Time.now # pretend the works were created just now, so that they appear in whatsnew (NOTE: real creation date can be discovered through papertrail)
+        m.status = :published
+        m.save!
+      end
+    end
+    self.published_at = Time.now
+    self.status = :published
+    self.save! # finally, set this person to published
+  end
   # set Expressions' period by author
   def update_expressions_period
     o = original_works.joins(:expressions).includes(:expressions)
@@ -219,6 +237,7 @@ class Person < ApplicationRecord
     #return all_languages.uniq
     return work_langs.uniq
   end
+
   def original_works
     Manifestation.all_published.joins(expressions: [works: :creations]).includes(:expressions).where("creations.person_id = #{self.id}")
   end
@@ -227,8 +246,13 @@ class Person < ApplicationRecord
     Manifestation.all_published.joins(expressions: :realizers).includes(expressions: [works: [creations: :person]]).where(realizers:{role: Realizer.roles[:translator], person_id: self.id})
   end
 
+  def all_works_including_unpublished
+    works = Manifestation.joins(expressions: [works: :creations]).includes(:expressions).where("creations.person_id = #{self.id}").order(sort_title: :asc)
+    xlats = Manifestation.joins(expressions: :realizers).includes(expressions: [works: [creations: :person]]).where(realizers:{role: Realizer.roles[:translator], person_id: self.id}).order(sort_title: :asc)
+    (works + xlats).uniq.sort_by{|m| m.sort_title}
+  end
   def all_works_title_sorted
-    (original_works + translations).uniq.sort_by{|m| m.title}
+    (original_works + translations).uniq.sort_by{|m| m.sort_title}
   end
 
   def all_works_by_order(order)
@@ -238,7 +262,7 @@ class Person < ApplicationRecord
   def all_works_by_title(term)
     w = original_works.where('expressions.title like ?', "%#{term}%")
     t = translations.where('expressions.title like ?', "%#{term}%")
-    return (w + t).uniq.sort_by{|m| m.title}
+    return (w + t).uniq.sort_by{|m| m.sort_title}
   end
 
   def original_works_by_genre

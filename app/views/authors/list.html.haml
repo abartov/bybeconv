@@ -13,6 +13,7 @@
       %th= t(:metadata_approved)
       %th= t(:dates)
       %th= t(:other_designation)
+      %th= t(:status)
       %th= t(:comment)
       %th= t(:viaf_id)
       %th= t(:nli_id)
@@ -28,6 +29,11 @@
         %td= person.metadata_approved ? t(:yes) : t(:no)
         %td= "#{person.birthdate}  - #{person.deathdate}"
         %td= person.other_designation
+        %td
+          = t(person.status)
+          - if person.unpublished?
+            %br
+            = link_to t(:make_published), author_publish_path(id: person.id)
         %td= person.has_comment? ? '+' : ''
         %td= link_to person.viaf_id, "http://viaf.org/viaf/#{person.viaf_id}"
         %td= person.nli_id

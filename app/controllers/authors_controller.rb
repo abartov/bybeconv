@@ -2,8 +2,23 @@ require 'diffy'
 include BybeUtils
 
 class AuthorsController < ApplicationController
-  before_action only: [:new, :create, :show, :edit, :list, :add_link, :delete_link, :delete_photo, :edit_toc, :update] do |c| c.require_editor('edit_people') end
+  before_action only: [:new, :publish, :create, :show, :edit, :list, :add_link, :delete_link, :delete_photo, :edit_toc, :update] do |c| c.require_editor('edit_people') end
 
+  def publish
+    @author = Person.find(params[:id])
+    if @author
+      if params[:commit].present?
+        @author.publish!
+        flash[:success] = t(:published)
+        redirect_to action: :list
+      else
+        @manifestations = @author.all_works_including_unpublished
+      end
+    else
+      flash[:error] = t(:not_found)
+      redirect_to admin_index_path
+    end
+  end
   def get_random_author
     @author = nil
     unless params[:genre].nil? || params[:genre].empty?
@@ -218,10 +233,6 @@ class AuthorsController < ApplicationController
   end
   def all
     redirect_to '/authors'
-    #browse
-    #@page_title = t(:all_authors)+' '+t(:project_ben_yehuda)
-    #@pagetype = :authors
-    #@authors_abc = Person.order(:sort_name).page(params[:page]) # get page X of all authors
   end
 
   def create_toc
@@ -281,6 +292,7 @@ class AuthorsController < ApplicationController
     params[:person][:wikidata_id] = params[:person][:wikidata_id].strip[1..-1] if params[:person] and params[:person][:wikidata_id] and params[:person][:wikidata_id][0] and params[:person][:wikidata_id].strip[0] == 'Q' # tolerate pasting the Wikidata number with the Q
     Chewy.strategy(:atomic) {
       @person = Person.new(person_params)
+      @person.status = :unpublished # default to unpublished. Publishing happens by button in status column in authors#list
 
       respond_to do |format|
         if @person.save
