@@ -6,7 +6,7 @@
         .by-card-v02#dict_intro{style:"display:#{ @filters.empty? ? 'show' : 'none'}"}
           .work-area
             .work-content
-              .headline-1-v02 ברוכים הבאים למילון אליעזר בן-יהודה
+              .headline-1-v02= t(:welcome_to_ebydict)
               != t(:dict_help_x_entries, {x: @total_headwords})
             .work-side-color
               .work-genre.prose-side-icon
