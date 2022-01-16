@@ -9,7 +9,8 @@ Bybeconv::Application.configure do
   # Show full error reports and disable caching
   config.consider_all_requests_local       = true
 
-  config.action_controller.perform_caching = false # generally desirable
+  #config.action_controller.perform_caching = false # generally desirable
+  config.action_controller.perform_caching = true # generally desirable
 
   ## uncomment to test caching
   #config.action_controller.perform_caching = true # uncomment to test caching
@@ -31,7 +32,8 @@ Bybeconv::Application.configure do
   config.assets.js_compressor = false
   config.assets.digest = false
   # Expands the lines which load the assets
-  config.assets.debug = true
+  config.assets.debug = false
+  #config.assets.debug = true
   config.eager_load = false
   # config.public_file_server.enabled = true # Rails 5.x?
   config.i18n.available_locales = :he
