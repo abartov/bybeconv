@@ -67,10 +67,14 @@
           %ul
             %li
               %b
-                - if @text.genre.nil? or @text.genre.empty?
-                  = t(:must_set_genre)
-                - elsif @text.status != 'Published'
-                  != raw(t(:accept_conversion_and) + link_to(t(:frbrize), html_file_frbrize_path(@text), id: 'frbrize_button'))
+          - if @text.genre.nil? or @text.genre.empty?
+            = t(:must_set_genre)
+          - elsif @text.status != 'Published'
+            = t(:status)
+            = select_tag :pub_status, options_for_select(Manifestation.statuses.map {|lt| [t(lt[0]), lt[1]]}), {include_blank: true}
+            = t(:pub_status_explanation)
+            %p
+            %h3.by-button-v02.surprise-btn-v02.headline-2-v02#frbrize_button{style:'float:unset;width:max-content;padding-top:10px;'}!= t(:accept_conversion_and) + t(:frbrize)
 
 :javascript
   var somethingChanged=false;
@@ -146,21 +150,35 @@
       else 
         e=null;
     });
+    function submit_frbr() {
+      url = "#{url_for(controller: :html_file, action: :frbrize, id: @text.id)}"
+      if($('#pub_status').val() != '')
+        url += '?pub_status=' + $('#pub_status').val();
+      location.href = url;
+    }
+    
     $('#frbrize_button').click(function(e){
       if(somethingChanged) {
         alert("בוצעו שינויים בטקסט והם יאבדו בלי שמירה! האם באמת לעזוב את הדף [במסך הבא]?");
       }
     });
-    if(#{@text.has_splits ? true : false})
-      $('#frbrize_button').click(function(e){
-        e.preventDefault();
+    var warned_about_splits = false;
+    $('#frbrize_button').click(function(e){
+      e.preventDefault();
+      if(#{@text.has_splits ? true : false}) {
         if((/&&& /.test($('#markdown').val( ))) && (/^\s*\S+\s*&&& /.test($('#markdown').val()))) {
             alert("#{t(:non_whitespace_before_first_part)}");
-        } else {
+        } else if(!warned_about_splits){
           alert("#{t(:careful_with_splits)}");
-          $('#frbrize_button').off('click'); // show only once
+          warned_about_splits = true;
+        } else {
+          submit_frbr();
         }
-      });
+      } else {
+        submit_frbr();
+      }
+    });
+
     $('#vised').click(function() {
       const el = document.querySelector('#markdown');
       const pv = document.querySelector('#preview');

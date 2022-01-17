@@ -603,7 +603,7 @@ class HtmlFile < ApplicationRecord
     end
   end
 
-  def create_WEM_new(person_id, the_title, the_markdown, multiple)
+  def create_WEM_new(person_id, the_title, the_markdown, multiple, pub_status = nil)
     if self.status == 'Accepted'
       begin
         tt = the_title.strip
@@ -624,7 +624,11 @@ class HtmlFile < ApplicationRecord
             end
 
             em_author = (translator_id.nil? ? p : translator) # the author of the Expression and Manifestation is the translator, if one exists
-            pub_status = (em_author.published? && p.published?) ? :published : :unpublished # default to uploading new works in unpublished status when author/translator is unpublished
+            if pub_status.nil? # default to uploading new works in unpublished status when author/translator is unpublished
+              pub_status = (em_author.published? && p.published?) ? :published : :unpublished 
+            else
+              pub_status = pub_status.to_i
+            end
             m = Manifestation.new(title: tt, responsibility_statement: em_author.name, conversion_verified: true, medium: I18n.t(:etext), publisher: AppConstants.our_publisher, publication_place: AppConstants.our_place_of_publication, publication_date: Date.today, markdown: the_markdown, comment: comments, status: pub_status)
             m.save!
             #m.people << em_author
@@ -634,7 +638,7 @@ class HtmlFile < ApplicationRecord
             self.status = 'Published' unless multiple # if called for split parts, we need to keep the status 'Accepted' for the check above. Status will be updated be caller.
             save!
             m.recalc_cached_people!
-            unless self.pub_link.empty? or self.pub_link_text.empty?
+            if self.pub_link.present? && self.pub_link_text.present?
               m.external_links.build(linktype: :publisher_site, url: self.pub_link, description: self.pub_link_text)
               m.save!
             end
@@ -642,7 +646,7 @@ class HtmlFile < ApplicationRecord
         }
         return true
       rescue
-        return 'Error while create FRBR entities from HTML file!'
+        return I18n.t(:frbrization_error)
       end
     else
       return I18n.t(:must_accept_before_publishing)

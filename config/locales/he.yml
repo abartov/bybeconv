@@ -162,6 +162,7 @@ he:
   author_not_available: דף היוצר/ת אינו זמין לפי שעה.
   illustrations_by: איורים מאת
   deprecated: מחוּק
+  pub_status_explanation: ברירת המחדל אם השדה ריק היא שהיצירה תהא פומבית אם המחבר כבר פומבי, ולא פומבית אם לאו.
   dpublished: פורסם
   duploaded: עלה לאתר
   dcreated: חובר
@@ -335,6 +336,7 @@ he:
   life_years: שנות חיים
   accept_conversion_and: אישור הסבת הטקסט ו
   frbrize: יצירת ישויות קטלוגיות
+  frbrization_error: שגיאה במהלך יצירת ישויות!
   you_can: באפשרותך
   identifiers: מזהים
   toc_status: מצב תוכן עניינים
