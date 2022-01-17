@@ -251,6 +251,12 @@ class Person < ApplicationRecord
     xlats = Manifestation.joins(expressions: :realizers).includes(expressions: [works: [creations: :person]]).where(realizers:{role: Realizer.roles[:translator], person_id: self.id}).order(sort_title: :asc)
     (works + xlats).uniq.sort_by{|m| m.sort_title}
   end
+  def original_work_count_including_unpublished
+    Manifestation.joins(expressions: [works: :creations]).where("creations.person_id = #{self.id}").count
+  end
+  def translations_count_including_unpublished
+    Manifestation.joins(expressions: :realizers).where(realizers:{role: Realizer.roles[:translator], person_id: self.id}).count
+  end
   def all_works_title_sorted
     (original_works + translations).uniq.sort_by{|m| m.sort_title}
   end

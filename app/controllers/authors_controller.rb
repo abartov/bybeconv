@@ -321,6 +321,11 @@ class AuthorsController < ApplicationController
 
   def show
     @author = Person.find(params[:id])
+    @published_works = @author.original_works.count
+    @published_xlats = @author.translations.count
+    @total_orig_works = @author.original_work_count_including_unpublished
+    @total_xlats = @author.translations_count_including_unpublished
+
     if @author.nil?
       flash[:error] = t(:no_such_item)
       redirect_to '/'

@@ -12,7 +12,6 @@
   %p
     %b= t(:metadata_approved)+': '
     = @author.metadata_approved ? t(:yes) : t(:no)
-  / partials?
   %p
     %b{ style: 'font-size: 2rem'}
       = link_to t(:edit_metadata), authors_edit_path(id: @author.id)
@@ -29,7 +28,7 @@
         %h2= t(:identifiers)
     %tr
       %td
-        / ===== basic info =====
+        -# ===== basic info =====
         %b= t(:life_years)
         != @author.life_years
         = '('+t(:x_years_ago, years: @author.died_years_ago)+')'
@@ -58,7 +57,7 @@
         %b= t(:comments)
         = @author.comment
       %td
-        / ===== Identifiers =====
+        -# ===== Identifiers =====
         %b= t(:nli_id)
         = @author.nli_id
         %br
@@ -91,10 +90,14 @@
           %span{style: 'color:red'}= link_to t(:no), bib_person_path({person_id: @author.id})
         %br
         %b= t(:works)
-        = link_to "#{@author.original_works.count} #{t(:original_works)}", author_toc_path(id: @author.id)
+        = link_to "#{@published_works} #{t(:original_works)}", author_toc_path(id: @author.id)
+        - if @total_orig_works != @published_works
+          = " #{t(:published)} + #{@total_orig_works - @published_works} #{t(:unpublished)}"
         %br
         %b= t(:translations_by)
-        = link_to "#{@author.translations.count} #{t(:translations)}", author_toc_path(id: @author.id)
+        = link_to "#{@published_xlats} #{t(:translations)}", author_toc_path(id: @author.id)
+        - if @total_xlats != @published_xlats
+          = " #{t(:published)} + #{@total_xlats - @published_xlats} #{t(:unpublished)}"
         %br
         %b= t(:works_about)
         = t(:TBD)
@@ -107,12 +110,3 @@
 
   %p
   = link_to t(:back), authors_list_path
-
-  /    t.text     "comment",           limit: 65535
-  /    t.datetime "created_at",                      null: false
-  /    t.datetime "updated_at",                      null: false
-  /    t.integer  "toc_id",            limit: 4
-  /  has_and_belongs_to_many :work
-  /  has_and_belongs_to_many :expression
-  /  has_and_belongs_to_many :manifestation
-
