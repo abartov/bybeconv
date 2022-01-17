@@ -82,7 +82,14 @@
       %td
         %h2= t(:photo)
     %tr
-      %td
+      %td{style:'font-size:120%'}
+        %h3= t(:status)
+        = t(@author.status)
+        - if @author.unpublished?
+          %br
+          = link_to t(:make_published), author_publish_path(id: @author.id)
+        %p
+        %h3= t(:works)
         %b= t(:bib_done)
         - if @author.bib_done
           %span{style: 'color:green'}= link_to t(:yes), bib_person_path({person_id: @author.id})

@@ -187,7 +187,6 @@ class AuthorsController < ApplicationController
     filter = build_es_filter_from_filters
     es_query = build_es_query_from_filters
     es_query = {match_all: {}} if es_query == {}
-
     @collection = PeopleIndex.query(es_query).filter(filter).aggregations(standard_aggregations).order(ord).limit(100) # prepare ES query
     @emit_filters = true if params[:load_filters] == 'true' || params[:emit_filters] == 'true'
     @total = @collection.count # actual query triggered here
@@ -408,29 +407,34 @@ class AuthorsController < ApplicationController
   def toc
     @author = Person.find(params[:id])
     unless @author.nil?
-      @tabclass = set_tab('authors')
-      @print_url = url_for(action: :print, id: @author.id)
-      @pagetype = :author
-      @header_partial = 'authors/author_top'
-      @entity = @author
-      @page_title = "#{@author.name} - #{t(:table_of_contents)} - #{t(:project_ben_yehuda)}"
-      impressionist(@author) unless is_spider? # log actions for pageview stats
-      @og_image = @author.profile_image.url(:thumb)
-      @latest = textify_titles(@author.cached_latest_stuff, @author)
-      @featured = @author.featured_work
-      @aboutnesses = @author.aboutnesses
-      @external_links = @author.external_links.status_approved
-      @any_curated = @featured.present? || @aboutnesses.count > 0
-      unless @featured.empty?
-        (@fc_snippet, @fc_rest) = snippet(@featured[0].body, 500) # prepare snippet for collapsible
-      end
-      unless @author.toc.nil?
-        prep_toc
+      if @author.published?
+        @tabclass = set_tab('authors')
+        @print_url = url_for(action: :print, id: @author.id)
+        @pagetype = :author
+        @header_partial = 'authors/author_top'
+        @entity = @author
+        @page_title = "#{@author.name} - #{t(:table_of_contents)} - #{t(:project_ben_yehuda)}"
+        impressionist(@author) unless is_spider? # log actions for pageview stats
+        @og_image = @author.profile_image.url(:thumb)
+        @latest = textify_titles(@author.cached_latest_stuff, @author)
+        @featured = @author.featured_work
+        @aboutnesses = @author.aboutnesses
+        @external_links = @author.external_links.status_approved
+        @any_curated = @featured.present? || @aboutnesses.count > 0
+        unless @featured.empty?
+          (@fc_snippet, @fc_rest) = snippet(@featured[0].body, 500) # prepare snippet for collapsible
+        end
+        unless @author.toc.nil?
+          prep_toc
+        else
+          generate_toc
+        end
+        prep_user_content(:author)
+        @scrollspy_target = 'genrenav'
       else
-        generate_toc
+        flash[:error] = I18n.t(:author_not_available)
+        redirect_to '/'
       end
-      prep_user_content(:author)
-      @scrollspy_target = 'genrenav'
     else
       flash[:error] = I18n.t(:no_toc_yet)
       redirect_to '/'
