@@ -748,7 +748,7 @@ class ManifestationController < ApplicationController
       copyright_status: {terms: {field: 'copyright_status'}},
       author_genders: {terms: {field: 'author_gender'}},
       translator_genders: {terms: {field: 'translator_gender'}},
-      author_ids: {terms: {field: 'author_ids'}}
+      author_ids: {terms: {field: 'author_ids', size: 2000}} # We may need to increase this threshold in future if number of authors exceeds 2000
     }
     filter = build_es_filter_from_filters
     es_query = build_es_query_from_filters
@@ -764,7 +764,11 @@ class ManifestationController < ApplicationController
     @language_facet[:xlat] = @language_facet.reject{|k,v| k == 'he'}.values.sum
     @copyright_facet = es_buckets_to_facet(@collection.aggs['copyright_status']['buckets'], {'false' => 0,'true' => 1})
     author_ids = @collection.aggs['author_ids']['buckets'].map{|x| x['key']}
+
+    # Used to populate authors multiselect modal on works browse page
     @authors_list = (es_query == {match_all: {}} && filter.blank?) ? Person.all : Person.where(id: author_ids)
+    @authors_list = @authors_list.select(:id, :name).sort_by(&:name)
+
     if @sort[0..11] == 'alphabetical' # subset of @sort to ignore direction
       unless params[:page].blank?
         params[:to_letter] = nil # if page was specified, forget the to_letter directive
