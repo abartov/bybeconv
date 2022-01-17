@@ -83,7 +83,7 @@ class ApplicationController < ActionController::Base
 
   def cached_newest_authors
     Rails.cache.fetch("newest_authors", expires_in: 6.hours) do # memoize
-      Person.published.has_toc.has_image.joins(expressions: [:works]).group('people.id').having("COUNT(works.id) > 0 OR COUNT(expressions.id) > 0").order(published_at: :desc).limit(10)
+      Person.published.has_toc.has_image.left_joins([:expressions, :works]).group('people.id').having("COUNT(works.id) > 0 OR COUNT(expressions.id) > 0").order(published_at: :desc).limit(10)
     end
   end
 
