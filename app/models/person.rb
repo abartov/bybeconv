@@ -296,7 +296,7 @@ class Person < ApplicationRecord
   end
 
   def latest_stuff
-    Manifestation.all_published.joins(expressions: [:realizers, works: :creations]).includes(:expressions).where("(creations.person_id = #{self.id}) or ((realizers.person_id = #{self.id}) and (realizers.role = #{Realizer.roles[:translator]}))").order(created_at: :desc).limit(20)
+    Manifestation.all_published.left_joins(expressions: [:realizers, works: :creations]).includes(:expressions).where("(creations.person_id = #{self.id}) or ((realizers.person_id = #{self.id}) and (realizers.role = #{Realizer.roles[:translator]}))").order(created_at: :desc).limit(20)
   end
 
   def cached_latest_stuff
