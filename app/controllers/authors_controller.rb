@@ -9,6 +9,8 @@ class AuthorsController < ApplicationController
     if @author
       if params[:commit].present?
         @author.publish!
+        Rails.cache.delete('newest_authors') # force cache refresh
+        Rails.cache.delete('homepage_authors')
         flash[:success] = t(:published)
         redirect_to action: :list
       else
