@@ -44,11 +44,6 @@
   <%= csrf_meta_tags %>
 </head>
 <body dir="rtl" style="position:relative;">
-<% unless @print
-    flash.each do |name, msg| -%>
-      <%= content_tag :div, msg, class: "top-element #{name}" %>
-  <% end -%>
-<% end -%>
 <% unless @print %>
   <% unless @readmode %>
   <!-- top logo area -->
@@ -119,13 +114,20 @@
           </div>
         </div>
         <%= render partial: 'shared/tabs' %>
+        <% unless @print
+          flash.each do |name, msg| -%>
+            <%= content_tag :div, msg, class: name %>
+        <% end -%>
+      <% end -%>
+    
       </div>
       <div class="header-separator"></div>
       <% unless @header_partial.nil? %>
         <%= render partial: @header_partial %>
       <% end %>
-    </div>
 
+    </div>
+  
   </header>
   <% end -%>
 <% end %>

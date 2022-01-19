@@ -2,8 +2,25 @@ require 'diffy'
 include BybeUtils
 
 class AuthorsController < ApplicationController
-  before_action only: [:new, :create, :show, :edit, :list, :add_link, :delete_link, :delete_photo, :edit_toc, :update] do |c| c.require_editor('edit_people') end
+  before_action only: [:new, :publish, :create, :show, :edit, :list, :add_link, :delete_link, :delete_photo, :edit_toc, :update] do |c| c.require_editor('edit_people') end
 
+  def publish
+    @author = Person.find(params[:id])
+    if @author
+      if params[:commit].present?
+        @author.publish!
+        Rails.cache.delete('newest_authors') # force cache refresh
+        Rails.cache.delete('homepage_authors')
+        flash[:success] = t(:published)
+        redirect_to action: :list
+      else
+        @manifestations = @author.all_works_including_unpublished
+      end
+    else
+      flash[:error] = t(:not_found)
+      redirect_to admin_index_path
+    end
+  end
   def get_random_author
     @author = nil
     unless params[:genre].nil? || params[:genre].empty?
@@ -170,7 +187,6 @@ class AuthorsController < ApplicationController
     filter = build_es_filter_from_filters
     es_query = build_es_query_from_filters
     es_query = {match_all: {}} if es_query == {}
-
     @collection = PeopleIndex.query(es_query).filter(filter).aggregations(standard_aggregations).order(ord).limit(100) # prepare ES query
     @emit_filters = true if params[:load_filters] == 'true' || params[:emit_filters] == 'true'
     @total = @collection.count # actual query triggered here
@@ -218,10 +234,6 @@ class AuthorsController < ApplicationController
   end
   def all
     redirect_to '/authors'
-    #browse
-    #@page_title = t(:all_authors)+' '+t(:project_ben_yehuda)
-    #@pagetype = :authors
-    #@authors_abc = Person.order(:sort_name).page(params[:page]) # get page X of all authors
   end
 
   def create_toc
@@ -281,6 +293,7 @@ class AuthorsController < ApplicationController
     params[:person][:wikidata_id] = params[:person][:wikidata_id].strip[1..-1] if params[:person] and params[:person][:wikidata_id] and params[:person][:wikidata_id][0] and params[:person][:wikidata_id].strip[0] == 'Q' # tolerate pasting the Wikidata number with the Q
     Chewy.strategy(:atomic) {
       @person = Person.new(person_params)
+      @person.status = :unpublished # default to unpublished. Publishing happens by button in status column in authors#list
 
       respond_to do |format|
         if @person.save
@@ -309,6 +322,11 @@ class AuthorsController < ApplicationController
 
   def show
     @author = Person.find(params[:id])
+    @published_works = @author.original_works.count
+    @published_xlats = @author.translations.count
+    @total_orig_works = @author.original_work_count_including_unpublished
+    @total_xlats = @author.translations_count_including_unpublished
+
     if @author.nil?
       flash[:error] = t(:no_such_item)
       redirect_to '/'
@@ -389,29 +407,34 @@ class AuthorsController < ApplicationController
   def toc
     @author = Person.find(params[:id])
     unless @author.nil?
-      @tabclass = set_tab('authors')
-      @print_url = url_for(action: :print, id: @author.id)
-      @pagetype = :author
-      @header_partial = 'authors/author_top'
-      @entity = @author
-      @page_title = "#{@author.name} - #{t(:table_of_contents)} - #{t(:project_ben_yehuda)}"
-      impressionist(@author) unless is_spider? # log actions for pageview stats
-      @og_image = @author.profile_image.url(:thumb)
-      @latest = textify_titles(@author.cached_latest_stuff, @author)
-      @featured = @author.featured_work
-      @aboutnesses = @author.aboutnesses
-      @external_links = @author.external_links.status_approved
-      @any_curated = @featured.present? || @aboutnesses.count > 0
-      unless @featured.empty?
-        (@fc_snippet, @fc_rest) = snippet(@featured[0].body, 500) # prepare snippet for collapsible
-      end
-      unless @author.toc.nil?
-        prep_toc
+      if @author.published?
+        @tabclass = set_tab('authors')
+        @print_url = url_for(action: :print, id: @author.id)
+        @pagetype = :author
+        @header_partial = 'authors/author_top'
+        @entity = @author
+        @page_title = "#{@author.name} - #{t(:table_of_contents)} - #{t(:project_ben_yehuda)}"
+        impressionist(@author) unless is_spider? # log actions for pageview stats
+        @og_image = @author.profile_image.url(:thumb)
+        @latest = textify_titles(@author.cached_latest_stuff, @author)
+        @featured = @author.featured_work
+        @aboutnesses = @author.aboutnesses
+        @external_links = @author.external_links.status_approved
+        @any_curated = @featured.present? || @aboutnesses.count > 0
+        unless @featured.empty?
+          (@fc_snippet, @fc_rest) = snippet(@featured[0].body, 500) # prepare snippet for collapsible
+        end
+        unless @author.toc.nil?
+          prep_toc
+        else
+          generate_toc
+        end
+        prep_user_content(:author)
+        @scrollspy_target = 'genrenav'
       else
-        generate_toc
+        flash[:error] = I18n.t(:author_not_available)
+        redirect_to '/'
       end
-      prep_user_content(:author)
-      @scrollspy_target = 'genrenav'
     else
       flash[:error] = I18n.t(:no_toc_yet)
       redirect_to '/'

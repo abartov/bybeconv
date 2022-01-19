@@ -603,43 +603,50 @@ class HtmlFile < ApplicationRecord
     end
   end
 
-  def create_WEM_new(person_id, the_title, the_markdown, multiple)
+  def create_WEM_new(person_id, the_title, the_markdown, multiple, pub_status = nil)
     if self.status == 'Accepted'
       begin
         tt = the_title.strip
         p = Person.find(person_id)
         Chewy.strategy(:atomic) {
-          w = Work.new(title: tt, orig_lang: orig_lang, genre: genre, comment: comments) # TODO: un-hardcode?
-          q = (translator_id.nil? ? p : translator)
-          copyrighted = ((p.public_domain && q.public_domain) ? false : ((p.public_domain.nil? || q.public_domain.nil?) ? nil : true)) # if author is PD, expression is PD # TODO: make this depend on both work and expression author, for translations
-          e = Expression.new(title: tt, language: 'he', period: q.period, copyrighted: copyrighted, genre: genre, source_edition: publisher, date: year_published, comment: comments) # ISO codes
-          w.expressions << e
-          w.save!
-          c = Creation.new(work_id: w.id, person_id: p.id, role: :author)
-          c.save!
+          ActiveRecord::Base.transaction do
+            w = Work.new(title: tt, orig_lang: orig_lang, genre: genre, comment: comments) # TODO: un-hardcode?
+            q = (translator_id.nil? ? p : translator)
+            copyrighted = ((p.public_domain && q.public_domain) ? false : ((p.public_domain.nil? || q.public_domain.nil?) ? nil : true)) # if author is PD, expression is PD # TODO: make this depend on both work and expression author, for translations
+            e = Expression.new(title: tt, language: 'he', period: q.period, copyrighted: copyrighted, genre: genre, source_edition: publisher, date: year_published, comment: comments) # ISO codes
+            w.expressions << e
+            w.save!
+            c = Creation.new(work_id: w.id, person_id: p.id, role: :author)
+            c.save!
 
-          if translator_id.present?
-            translator.realizers.create!(expression: e, role: :translator)
-          end
+            if translator_id.present?
+              translator.realizers.create!(expression: e, role: :translator)
+            end
 
-          em_author = (translator_id.nil? ? p : translator) # the author of the Expression and Manifestation is the translator, if one exists
-          m = Manifestation.new(title: tt, responsibility_statement: em_author.name, conversion_verified: true, medium: I18n.t(:etext), publisher: AppConstants.our_publisher, publication_place: AppConstants.our_place_of_publication, publication_date: Date.today, markdown: the_markdown, comment: comments, status: Manifestation.statuses[:published])
-          m.save!
-          #m.people << em_author
-          e.manifestations << m
-          e.save!
-          manifestations << m # this HtmlFile itself should know the manifestation created out of it
-          self.status = 'Published' unless multiple # if called for split parts, we need to keep the status 'Accepted' for the check above. Status will be updated be caller.
-          save!
-          m.recalc_cached_people!
-          unless self.pub_link.empty? or self.pub_link_text.empty?
-            m.external_links.build(linktype: :publisher_site, url: self.pub_link, description: self.pub_link_text)
+            em_author = (translator_id.nil? ? p : translator) # the author of the Expression and Manifestation is the translator, if one exists
+            if pub_status.nil? # default to uploading new works in unpublished status when author/translator is unpublished
+              pub_status = (em_author.published? && p.published?) ? :published : :unpublished 
+            else
+              pub_status = pub_status.to_i
+            end
+            m = Manifestation.new(title: tt, responsibility_statement: em_author.name, conversion_verified: true, medium: I18n.t(:etext), publisher: AppConstants.our_publisher, publication_place: AppConstants.our_place_of_publication, publication_date: Date.today, markdown: the_markdown, comment: comments, status: pub_status)
             m.save!
+            #m.people << em_author
+            e.manifestations << m
+            e.save!
+            manifestations << m # this HtmlFile itself should know the manifestation created out of it
+            self.status = 'Published' unless multiple # if called for split parts, we need to keep the status 'Accepted' for the check above. Status will be updated be caller.
+            save!
+            m.recalc_cached_people!
+            if self.pub_link.present? && self.pub_link_text.present?
+              m.external_links.build(linktype: :publisher_site, url: self.pub_link, description: self.pub_link_text)
+              m.save!
+            end
           end
         }
         return true
       rescue
-        return 'Error while create FRBR entities from HTML file!'
+        return I18n.t(:frbrization_error)
       end
     else
       return I18n.t(:must_accept_before_publishing)

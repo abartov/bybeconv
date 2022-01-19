@@ -234,12 +234,12 @@ class HtmlFileController < ApplicationController
         if oldstatus == 'Uploaded' # new, direct way!
           if @text.has_splits
             @text.split_parts.each_pair do |title, markdown|
-              success = @text.create_WEM_new(@text.person.id, title.sub(/_ZZ\d+/,''), markdown, true)
+              success = @text.create_WEM_new(@text.person.id, title.sub(/_ZZ\d+/,''), markdown, true, params[:pub_status])
             end
-            @text.status = 'Published'
+            @text.status = 'Published' if success == true
             @text.save!
           else
-            success = @text.create_WEM_new(@text.person.id, @text.title.sub(/_ZZ\d+/,''), @text.markdown, false)
+            success = @text.create_WEM_new(@text.person.id, @text.title.sub(/_ZZ\d+/,''), @text.markdown, false, params[:pub_status])
           end
           if success == true
             flash[:notice] = t(:created_frbr)
