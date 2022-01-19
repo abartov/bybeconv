@@ -13,6 +13,12 @@ class ApplicationController < ActionController::Base
   def base_user
     return @base_user if @base_user.present?
 
+    if session.id.nil?
+      # if no session exists we need to write something there to create anonymous session
+      session[:dummy] = true
+      session.delete(:dummy)
+    end
+
     if current_user
       # Authenticated user
       attrs = { user: current_user }
