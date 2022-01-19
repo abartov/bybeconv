@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe SessionController do
   describe 'create' do
-    let!(:base_user) { BaseUser.create(session_id: session.id) }
+    let!(:base_user) { BaseUser.create(session_id: session.id.private_id) }
 
     before(:all) do
       OmniAuth.config.test_mode = true

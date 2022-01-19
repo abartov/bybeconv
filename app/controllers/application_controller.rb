@@ -24,7 +24,8 @@ class ApplicationController < ActionController::Base
       attrs = { user: current_user }
     else
       # Not authenticated user
-      attrs = { session_id: session.id.to_s }
+      # We use 'private_id' to have same format as used in Sessions table
+      attrs = { session_id: session.id.private_id }
     end
 
     @base_user = BaseUser.find_by(attrs)

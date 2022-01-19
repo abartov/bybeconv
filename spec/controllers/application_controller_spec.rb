@@ -7,7 +7,7 @@ describe ApplicationController do
 
     context 'when user is not authenticated' do
       context 'when BaseUser with given session_id exists' do
-        let!(:base_user) { create(:base_user, session_id: session.id) }
+        let!(:base_user) { create(:base_user, session_id: session.id.private_id) }
 
         it 'returns it' do
           expect { subject }.to_not change { BaseUser.count }
@@ -20,7 +20,7 @@ describe ApplicationController do
           expect { subject }.to change { BaseUser.count }.by(1)
           bu = BaseUser.order(id: :desc).first
           expect(subject).to eq bu
-          expect(bu.session_id).to eq session.id.to_s
+          expect(bu.session_id).to eq session.id.private_id
           expect(bu.user).to be_nil
         end
       end
