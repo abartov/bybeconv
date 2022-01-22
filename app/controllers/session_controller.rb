@@ -15,7 +15,17 @@ class SessionController < ApplicationController
   end
 
   def create
-    @user = User.from_omniauth(auth_hash)
+    User.transaction do
+      @user = User.from_omniauth(auth_hash)
+
+      # if user doesn't have BaseUser (i.e. if this is a new sign up) we link BaseUser from session to newly created user
+      if @user.base_user.nil? && base_user.user.nil?
+        base_user.session_id = nil
+        base_user.user = @user
+        base_user.save!
+      end
+
+    end
     reset_session
     session[:user_id] = @user.id
     redirect_to '/'
