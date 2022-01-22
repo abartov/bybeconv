@@ -17,8 +17,11 @@
           %th= t(:author)
           %th= t(:recno)
           %th= t(:location)
+        - displayed_pubs = []
         - @holdings.each do |h|
           - pub = h.publication
+          - next if displayed_pubs.include?(pub)
+          - displayed_pubs << pub
           %tr
             %td
               = link_to pub.title, h.source_id
