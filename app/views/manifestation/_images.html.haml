@@ -1,11 +1,12 @@
-- total = m.images.count
+- actual_images = m.images.reject{|img| !img.variable?} # skip any non-image attachments that may have been accidentally uploaded
+- total = actual_images.count
 - i = 0
 - while i < total do
   .row
     - colcount = 0
     - while i < total and colcount < 3
-      .col-md-4{id: "img#{m.images[i].id}"}
-        = link_to(t(:destroy), url_for(action: :remove_image, id: m.id, image_id: m.images[i].id), remote: true, :data => { :confirm => t(:are_you_sure) })
+      .col-md-4{id: "img#{actual_images[i].id}"}
+        = link_to(t(:destroy), url_for(action: :remove_image, id: m.id, image_id: actual_images[i].id), remote: true, :data => { :confirm => t(:are_you_sure) })
         .thumbnail
-          = image_tag m.images[i].variant(resize: "150x150")
+          = image_tag actual_images[i].variant(resize: "150x150")
       - i += 1
