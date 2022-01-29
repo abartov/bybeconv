@@ -3,6 +3,8 @@
 class BaseUser < ApplicationRecord
   belongs_to :user, inverse_of: :base_user, optional: true
 
+  has_many :bookmarks, inverse_of: :base_user
+
   # This record must be identified either by user_id or by session_id, but not by both
   validates_absence_of :session_id, if: -> { self.user_id.present? }
   validates_presence_of :session_id, if: -> { self.user_id.nil? }

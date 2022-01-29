@@ -11,15 +11,32 @@ describe ManifestationController do
       end
     end
 
-    subject { get :browse, params: { sort_by: "#{sort_by}_#{sort_dir}" } }
+    subject { get :browse }
 
-    # Simply ensure all sort combinations works
-    %w(alphabetical pupularity creation_date publication_date upload_date).each do | sort_by |
-      %w(asc desc).each do |dir|
-        context "when #{dir} sorting by #{sort_by} is requested" do
-          let(:sort_by) { sort_by }
-          let(:sort_dir) { dir }
-          it { is_expected.to be_successful }
+    context 'when user is not logged in' do
+      it { is_expected.to be_successful }
+    end
+
+    context 'when user is logged in' do
+      let!(:user) { create(:user) }
+      before do
+        session[:user_id] = user.id
+      end
+
+      it { is_expected.to be_successful }
+    end
+
+    describe 'sorting' do
+      subject { get :browse, params: { sort_by: "#{sort_by}_#{sort_dir}" } }
+
+      # Simply ensure all sort combinations works
+      %w(alphabetical pupularity creation_date publication_date upload_date).each do | sort_by |
+        %w(asc desc).each do |dir|
+          context "when #{dir} sorting by #{sort_by} is requested" do
+            let(:sort_by) { sort_by }
+            let(:sort_dir) { dir }
+            it { is_expected.to be_successful }
+          end
         end
       end
     end
@@ -32,7 +49,18 @@ describe ManifestationController do
   describe 'read' do
     subject { get :read, params: { id: manifestation.id } }
 
-    it { is_expected.to be_successful }
+    context 'when user is not logged in' do
+      it { is_expected.to be_successful }
+    end
+
+    context 'when user is logged in' do
+      let!(:user) { create(:user) }
+      before do
+        session[:user_id] = user.id
+      end
+
+      it { is_expected.to be_successful }
+    end
   end
 
   describe 'print' do
@@ -69,6 +97,48 @@ describe ManifestationController do
           it { is_expected.to be_successful }
         end
       end
+    end
+  end
+
+  describe 'set_bookmark' do
+    let!(:base_user) { create :base_user, session_id: session.id.private_id }
+    let(:manifestation) { create(:manifestation) }
+    subject { post :set_bookmark, params: { id: manifestation.id, bookmark_path: 'NEW_P' }, format: :js }
+
+    context 'when user already have bookmark in this text' do
+      let!(:bookmark) { create(:bookmark, base_user: base_user, manifestation: manifestation) }
+      it 'updates record with new bookmark value' do
+        expect { subject }.to_not change { Bookmark.count }
+        expect(response).to be_successful
+        bookmark.reload
+        expect(bookmark).to have_attributes(bookmark_p: 'NEW_P', manifestation: manifestation, base_user: base_user)
+      end
+    end
+
+    context 'when user have no bookmarks in this text' do
+      it 'updates record with new bookmark value' do
+        expect { subject }.to change { Bookmark.count }.by(1)
+        expect(response).to be_successful
+        bookmark = base_user.bookmarks.first
+        expect(bookmark).to have_attributes(bookmark_p: 'NEW_P', manifestation: manifestation)
+      end
+    end
+  end
+
+  describe 'remove_bookmark' do
+    let(:base_user) { create :base_user, session_id: session.id.private_id }
+    let(:manifestation) { create(:manifestation) }
+    let(:other_manifestation) { create(:manifestation) }
+    let(:other_base_user) { create(:base_user, session_id: '12345') }
+    let!(:bookmark) { create(:bookmark, base_user: base_user, manifestation: manifestation) }
+    let!(:other_bookmark) { create(:bookmark, base_user: base_user, manifestation: other_manifestation) }
+    let!(:other_base_user_bookmark) { create(:bookmark, base_user: other_base_user, manifestation: manifestation) }
+    subject { post :remove_bookmark, params: { id: manifestation.id }, format: :js }
+
+    it 'deletes bookmark of current user from given text' do
+      expect { subject }.to change { Bookmark.count }.by(-1)
+      expect(response).to be_successful
+      expect { bookmark.reload }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 end
