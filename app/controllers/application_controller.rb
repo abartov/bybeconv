@@ -10,13 +10,21 @@ class ApplicationController < ActionController::Base
   @@pop_authors_by_genre = nil
   SPIDERS = ['msnbot', 'yahoo! slurp','googlebot','bingbot','duckduckbot','baiduspider','yandexbot']
 
-  def base_user
+  # returns BaseUser record associated with current user
+  # If user is authenticated it will look for record by user_id, otherwise - by session_id
+  # If force_create arg is set to true it will create new BaseUser record for user if it doesn't exists
+  def base_user(force_create= false)
     return @base_user if @base_user.present?
 
     if session.id.nil?
-      # if no session exists we need to write something there to create anonymous session
-      session[:dummy] = true
-      session.delete(:dummy)
+      if force_create
+        # if no session exists we need to write something there to create anonymous session
+        session[:dummy] = true
+        session.delete(:dummy)
+      else
+        # no session exists, so no stored data for this user yet
+        return nil
+      end
     end
 
     if current_user
@@ -29,7 +37,7 @@ class ApplicationController < ActionController::Base
     end
 
     @base_user = BaseUser.find_by(attrs)
-    if @base_user.nil?
+    if @base_user.nil? && force_create
       @base_user = BaseUser.create!(attrs)
     end
 
@@ -426,6 +434,7 @@ class ApplicationController < ActionController::Base
     end
     return new_anth_name
   end
+
   def prep_user_content(context = :manifestation)
     if current_user
       @anthologies = current_user.anthologies

@@ -16,12 +16,18 @@ describe ApplicationController do
       end
 
       context 'when no BaseUser record exists' do
-        it 'creates new one' do
-          expect { subject }.to change { BaseUser.count }.by(1)
-          bu = BaseUser.order(id: :desc).first
-          expect(subject).to eq bu
-          expect(bu.session_id).to eq session.id.private_id
-          expect(bu.user).to be_nil
+        it { is_expected.to be_nil }
+
+        context 'when force_create arg is provided' do
+          subject { @controller.base_user(true) }
+
+          it 'creates new one' do
+            expect { subject }.to change { BaseUser.count }.by(1)
+            bu = BaseUser.order(id: :desc).first
+            expect(subject).to eq bu
+            expect(bu.session_id).to eq session.id.private_id
+            expect(bu.user).to be_nil
+          end
         end
       end
     end
@@ -41,12 +47,17 @@ describe ApplicationController do
       end
 
       context 'when no BaseUser record exists' do
-        it 'creates new one' do
-          expect { subject }.to change { BaseUser.count }.by(1)
-          bu = BaseUser.order(id: :desc).first
-          expect(subject).to eq bu
-          expect(bu.user_id).to eq user.id
-          expect(bu.session_id).to be_nil
+        it { is_expected.to be_nil }
+
+        context 'when force_create arg is provided' do
+          subject { @controller.base_user(true) }
+          it 'creates new one' do
+            expect { subject }.to change { BaseUser.count }.by(1)
+            bu = BaseUser.order(id: :desc).first
+            expect(subject).to eq bu
+            expect(bu.user_id).to eq user.id
+            expect(bu.session_id).to be_nil
+          end
         end
       end
     end
