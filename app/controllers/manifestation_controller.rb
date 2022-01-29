@@ -62,37 +62,24 @@ class ManifestationController < ApplicationController
   end
 
   def remove_bookmark
-    if current_user
-      @m = Manifestation.find(params[:id])
-      unless @m.nil?
-        Bookmark.where(manifestation: @m, user: current_user).first.destroy
-      end
+    if base_user
+      base_user.bookmarks.where(manifestation_id: params[:id]).first&.destroy
     end
     head :ok
   end
+
   def set_bookmark
-    if current_user
-      @m = Manifestation.find(params[:id])
-      unless @m.nil?
-        @b = Bookmark.where(manifestation: @m, user: current_user)
-        if @b.empty?
-          @b = Bookmark.new(manifestation: @m, user: current_user)
-        else
-          @b = @b.first
-        end
-        @b.bookmark_p = params[:bookmark_path]
-        @b.save
-        respond_to do |format|
-          format.js
-        end
-        render partial: 'set_bookmark'
-      else
-        head :ok
-      end
+    b = base_user(true).bookmarks.where(manifestation_id: params[:id]).first
+    if b.nil?
+      base_user.bookmarks.create!(manifestation_id: params[:id], bookmark_p: params[:bookmark_path])
     else
-      head :ok
+      b.update!(bookmark_p: params[:bookmark_path])
+    end
+    respond_to do |format|
+      format.js do render partial: 'set_bookmark' end
     end
   end
+
   def by_tag
     @page_title = t(:works_by_tag)+' '+t(:project_ben_yehuda)
     @pagetype = :works

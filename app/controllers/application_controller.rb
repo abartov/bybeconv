@@ -435,6 +435,10 @@ class ApplicationController < ActionController::Base
   end
 
   def prep_user_content(context = :manifestation)
+    if context == :manifestation
+      @bookmark = base_user.present? ? base_user.bookmarks.where(manifestation: @m).first.bookmark_p : 0
+    end
+
     if current_user
       @anthologies = current_user.anthologies
       @new_anth_name = generate_new_anth_name_from_set(@anthologies)
@@ -453,16 +457,10 @@ class ApplicationController < ActionController::Base
       end
       @anthology_select_options = @anthologies.map{|a| [a.title, a.id, @anthology == a ? 'selected' : ''] }
       @cur_anth_id = @anthology.nil? ? 0 : @anthology.id
-      @bookmark = 0
+
       if context == :manifestation
-        b = Bookmark.where(user: current_user, manifestation: @m)
-        unless b.empty?
-          @bookmark = b.first.bookmark_p
-        end
         @jump_to_bookmarks = current_user.get_pref('jump_to_bookmarks')
       end
-    else
-      @bookmark = 0
     end
   end
 
