@@ -10,6 +10,32 @@ class ApplicationController < ActionController::Base
   @@pop_authors_by_genre = nil
   SPIDERS = ['msnbot', 'yahoo! slurp','googlebot','bingbot','duckduckbot','baiduspider','yandexbot']
 
+  def base_user
+    return @base_user if @base_user.present?
+
+    if session.id.nil?
+      # if no session exists we need to write something there to create anonymous session
+      session[:dummy] = true
+      session.delete(:dummy)
+    end
+
+    if current_user
+      # Authenticated user
+      attrs = { user: current_user }
+    else
+      # Not authenticated user
+      # We use 'private_id' to have same format as used in Sessions table
+      attrs = { session_id: session.id.private_id }
+    end
+
+    @base_user = BaseUser.find_by(attrs)
+    if @base_user.nil?
+      @base_user = BaseUser.create!(attrs)
+    end
+
+    return @base_user
+  end
+
   def set_font_size
     if current_user
       key = "u_#{current_user.id}_fontsize"
@@ -310,6 +336,7 @@ class ApplicationController < ActionController::Base
     authors = {}
     Manifestation.all_published.new_since(timestamp).includes(:expressions).each {|m|
       e = m.expressions[0]
+      next if e.nil? # shouldn't happen
       person = e.translation ? m.translators.first : m.authors.first # TODO: more nuance
       next if person.nil? # shouldn't happen, but might in a dev. env.
       if authors[person].nil?
