@@ -336,6 +336,7 @@ class ApplicationController < ActionController::Base
     authors = {}
     Manifestation.all_published.new_since(timestamp).includes(:expressions).each {|m|
       e = m.expressions[0]
+      next if e.nil? # shouldn't happen
       person = e.translation ? m.translators.first : m.authors.first # TODO: more nuance
       next if person.nil? # shouldn't happen, but might in a dev. env.
       if authors[person].nil?
