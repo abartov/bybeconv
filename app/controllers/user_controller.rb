@@ -2,22 +2,6 @@ class UserController < ApplicationController
   before_action :require_admin, only: [:list, :make_editor, :make_admin, :unmake_editor, :set_editor_bit]
   before_action :require_user
 
-  def set_pref
-    unless current_user.id == params[:id].to_i
-      render json: { message: 'Forbidden' }, status: 403
-    else
-      u = User.find(params[:id].to_i)
-      if u.nil?
-        render json: { message: 'Not found' }, status: 404
-      else
-        u.preferences.set(params[:pref] => params[:value])
-        u.preferences.save!
-        Rails.cache.write("u_#{current_user.id}_#{params[:pref]}", params[:value])
-        render json: { message: "pref set" }, status: :ok
-      end
-    end
-  end
-
   def list
     unless params[:q].nil? || params[:q].empty?
       @user_list = User.where("name like '%#{sanitize(params[:q])}%' OR email like '%#{sanitize(params[:q])}%'").page params[:page]

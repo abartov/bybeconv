@@ -141,13 +141,13 @@
   %span{style:'color:green'}= t(:proof_thanks_html)
 - if current_user
   = render partial: 'shared/anth_stuff'
-  - if @bookmark != 0 and @jump_to_bookmarks.nil?
-    #bookmarkBehaviorDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
-      = render partial: 'bookmark_behavior'
-  #bookmarkPanelDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
-    = render partial: 'bookmark_panel'
-  #bookmarkDeleteDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
-    = render partial: 'bookmark_delete'
+- if @bookmark != 0 and @jump_to_bookmarks.nil?
+  #bookmarkBehaviorDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
+    = render partial: 'bookmark_behavior'
+#bookmarkPanelDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
+  = render partial: 'bookmark_panel'
+#bookmarkDeleteDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
+  = render partial: 'bookmark_delete'
 -# chapter popup
 - if @m.chapters?
   .modal#chapterDlg{role: 'dialog', tabindex: '-1'}

@@ -177,6 +177,7 @@ Bybeconv::Application.routes.draw do
   get "taggings/render_tags"
   resources :taggings
   resources :aboutnesses
+  resources :preferences, only: [:update]
 
   match 'user/list', via: [:get, :post]
   post 'user/set_editor_bit'
@@ -184,7 +185,6 @@ Bybeconv::Application.routes.draw do
   get "user/:id/make_admin" => 'user#make_admin', as: 'user_make_admin'
   get "user/:id/unmake_editor" => 'user#unmake_editor', as: 'user_unmake_editor'
   get 'user/:id' => 'user#show', as: 'user_show'
-  post 'user/set_pref'
   get "welcome/index"
   get "welcome/contact"
   get "welcome/volunteer"
