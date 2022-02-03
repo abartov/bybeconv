@@ -45,17 +45,10 @@ class ApplicationController < ActionController::Base
   end
 
   def set_font_size
-    if current_user
-      key = "u_#{current_user.id}_fontsize"
-      @fontsize = Rails.cache.fetch(key)
-      if @fontsize.nil?
-        Rails.cache.fetch(key) do
-          current_user.preferences.fontsize
-        end
-        @fontsize = current_user.preferences.fontsize
-      end
+    if base_user
+      @fontsize = base_user.get_preference(:fontsize)
     else
-      @fontsize = '2'
+      @fontsize = BaseUser::DEFAULT_FONT_SIZE
     end
   end
 
@@ -437,7 +430,12 @@ class ApplicationController < ActionController::Base
 
   def prep_user_content(context = :manifestation)
     if context == :manifestation
-      @bookmark = base_user.present? ? base_user.bookmarks.where(manifestation: @m).first.bookmark_p : 0
+      if base_user.present?
+        @bookmark = base_user.bookmarks.where(manifestation: @m).first&.bookmark_p || 0
+        @jump_to_bookmarks = base_user.get_preference(:jump_to_bookmarks)
+      else
+        @bookmark = 0
+      end
     end
 
     if current_user
@@ -458,10 +456,6 @@ class ApplicationController < ActionController::Base
       end
       @anthology_select_options = @anthologies.map{|a| [a.title, a.id, @anthology == a ? 'selected' : ''] }
       @cur_anth_id = @anthology.nil? ? 0 : @anthology.id
-
-      if context == :manifestation
-        @jump_to_bookmarks = current_user.get_pref('jump_to_bookmarks')
-      end
     end
   end
 

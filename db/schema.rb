@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_27_114336) do
+ActiveRecord::Schema.define(version: 2022_01_31_110041) do
 
   create_table "aboutnesses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -81,6 +81,13 @@ ActiveRecord::Schema.define(version: 2022_01_27_114336) do
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_api_keys_on_email", unique: true
     t.index ["key"], name: "index_api_keys_on_key", unique: true
+  end
+
+  create_table "base_user_preferences", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "value"
+    t.bigint "base_user_id", null: false
+    t.index ["base_user_id"], name: "index_base_user_preferences_on_base_user_id"
   end
 
   create_table "base_users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
@@ -486,11 +493,11 @@ ActiveRecord::Schema.define(version: 2022_01_27_114336) do
     t.integer "impressions_count"
     t.string "blog_category_url"
     t.boolean "bib_done"
+    t.integer "period"
     t.string "sidepic_file_name"
     t.string "sidepic_content_type"
     t.bigint "sidepic_file_size"
     t.datetime "sidepic_updated_at"
-    t.integer "period"
     t.string "sort_name"
     t.integer "status"
     t.datetime "published_at"
@@ -500,6 +507,7 @@ ActiveRecord::Schema.define(version: 2022_01_27_114336) do
     t.index ["period"], name: "index_people_on_period"
     t.index ["sort_name"], name: "index_people_on_sort_name"
     t.index ["status", "published_at"], name: "index_people_on_status_and_published_at"
+    t.index ["toc_id"], name: "people_toc_id_fk"
   end
 
   create_table "periods", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
@@ -523,6 +531,9 @@ ActiveRecord::Schema.define(version: 2022_01_27_114336) do
     t.text "highlight", limit: 16777215
     t.integer "reported_by"
     t.integer "manifestation_id"
+    t.index ["html_file_id"], name: "proofs_html_file_id_fk"
+    t.index ["manifestation_id"], name: "proofs_manifestation_id_fk"
+    t.index ["resolved_by"], name: "proofs_resolved_by_fk"
   end
 
   create_table "publications", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
@@ -544,7 +555,7 @@ ActiveRecord::Schema.define(version: 2022_01_27_114336) do
     t.index ["task_id"], name: "index_publications_on_task_id"
   end
 
-  create_table "reading_lists", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "reading_lists", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.string "title"
     t.integer "user_id"
     t.integer "access"
@@ -640,13 +651,6 @@ ActiveRecord::Schema.define(version: 2022_01_27_114336) do
     t.integer "status"
   end
 
-  create_table "user_preferences", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
-    t.string "name", null: false
-    t.string "value"
-    t.integer "user_id", null: false
-    t.index ["user_id", "name"], name: "index_user_preferences_on_user_id_and_name", unique: true
-  end
-
   create_table "users", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.string "name"
     t.string "email"
@@ -724,6 +728,7 @@ ActiveRecord::Schema.define(version: 2022_01_27_114336) do
   add_foreign_key "anthologies", "users"
   add_foreign_key "anthology_texts", "anthologies"
   add_foreign_key "anthology_texts", "manifestations"
+  add_foreign_key "base_user_preferences", "base_users"
   add_foreign_key "base_users", "users"
   add_foreign_key "bookmarks", "base_users"
   add_foreign_key "bookmarks", "manifestations"
@@ -741,6 +746,12 @@ ActiveRecord::Schema.define(version: 2022_01_27_114336) do
   add_foreign_key "holdings", "bib_sources"
   add_foreign_key "holdings", "publications"
   add_foreign_key "list_items", "users"
+  add_foreign_key "manifestations_people", "manifestations", name: "manifestations_people_manifestation_id_fk"
+  add_foreign_key "manifestations_people", "people", name: "manifestations_people_person_id_fk"
+  add_foreign_key "people", "tocs", name: "people_toc_id_fk"
+  add_foreign_key "proofs", "html_files", name: "proofs_html_file_id_fk"
+  add_foreign_key "proofs", "manifestations", name: "proofs_manifestation_id_fk"
+  add_foreign_key "proofs", "users", column: "resolved_by", name: "proofs_resolved_by_fk"
   add_foreign_key "publications", "bib_sources"
   add_foreign_key "publications", "people"
   add_foreign_key "reading_lists", "users"
@@ -754,7 +765,6 @@ ActiveRecord::Schema.define(version: 2022_01_27_114336) do
   add_foreign_key "taggings", "users", column: "approved_by", name: "taggings_approved_by_fk"
   add_foreign_key "taggings", "users", column: "suggested_by", name: "taggings_suggested_by_fk"
   add_foreign_key "tags", "users", column: "created_by", name: "tags_created_by_fk"
-  add_foreign_key "user_preferences", "users"
   add_foreign_key "volunteer_profile_features", "volunteer_profiles"
   add_foreign_key "work_likes", "manifestations", name: "work_likes_manifestation_id_fk"
   add_foreign_key "work_likes", "users", name: "work_likes_user_id_fk"

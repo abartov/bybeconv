@@ -43,7 +43,7 @@
               .icons-group-v02
                 
               %a.by-icon-v02.pointer.like.must_login{class: @liked ? 'icon-byheart-full' : 'icon-byheart-empty', 'title' => "#{t(:work_liked_tt)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }, tabindex: 0}
-              %a.by-icon-v02.pointer.bookmark-status.bookmark_button.must_login{'title' => "#{t(:bookmark_tt)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }, tabindex: 0}
+              %a.by-icon-v02.pointer.bookmark-status.bookmark_button{'title' => "#{t(:bookmark_tt)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }, tabindex: 0}
               - unless current_user
                 %a.by-icon-v02.pointer.anthologies_button.must_login{tabindex: 0}= 'D'
               - else
@@ -66,7 +66,7 @@
                   %span.linkcolor.pointer.by-icon-v02.icon-byheart-full
                 - else
                   %span.linkcolor.pointer.by-icon-v02.icon-byheart-empty
-              .bookmark_button.pointer.must_login
+              .bookmark_button.pointer
                 %span.by-icon-v02.linkcolor.bookmark-status
               #text-moreMobile.by-dropdown-v02
                 %span.linkcolor#text-nav-more
@@ -163,37 +163,35 @@
     });
 
     $('.bookmark_button').click(function(e){
-      if(!#{current_user.nil?}) {
-        if( $('p.bookmark').length > 0 ) {
-          y = $(window).scrollTop()+$('#header').height()+5;
-          var elements = $("#actualtext > p");
-          var el;
-          for (var i=0; i<elements.length; i++) {
-            el = $(elements[i]);
-            if (el.offset().top >= y && el.is(':visible')){
-              saved_elem = el;
-              break;
-            }
+      if( $('p.bookmark').length > 0 ) {
+        y = $(window).scrollTop()+$('#header').height()+5;
+        var elements = $("#actualtext > p");
+        var el;
+        for (var i=0; i<elements.length; i++) {
+          el = $(elements[i]);
+          if (el.offset().top >= y && el.is(':visible')){
+            saved_elem = el;
+            break;
           }
-          $('#bookmarkPanelDlg').modal('show');
-        } else {
-          alert("#{t(:bookmark_mode_begin)}");
-          $('body').css('cursor', 'crosshair');
-          $('#actualtext').click(function(e){
-            $('body').css('cursor', 'default');
-            // set bookmark
-            y = e.pageY - $(window).scrollTop();
-            elem = document.elementFromPoint(e.pageX, y);
-            if(elem != null) {
-              csspath = $(elem).getPath();
-              shortcsspath = '#actualtext '+csspath.substring(csspath.lastIndexOf('div')+3, csspath.length);
-              set_bookmark($(elem));
-              url = "#{raw url_for(action: :set_bookmark)}";
-              $.ajax({url: url, method: 'POST', data: {id: #{@m.id}, bookmark_path: shortcsspath}});
-            }
-            $('#actualtext').off('click'); // disable handler
-          });
         }
+        $('#bookmarkPanelDlg').modal('show');
+      } else {
+        alert("#{t(:bookmark_mode_begin)}");
+        $('body').css('cursor', 'crosshair');
+        $('#actualtext').click(function(e){
+          $('body').css('cursor', 'default');
+          // set bookmark
+          y = e.pageY - $(window).scrollTop();
+          elem = document.elementFromPoint(e.pageX, y);
+          if(elem != null) {
+            csspath = $(elem).getPath();
+            shortcsspath = '#actualtext '+csspath.substring(csspath.lastIndexOf('div')+3, csspath.length);
+            set_bookmark($(elem));
+            url = "#{raw url_for(action: :set_bookmark)}";
+            $.ajax({url: url, method: 'POST', data: {id: #{@m.id}, bookmark_path: shortcsspath}});
+          }
+          $('#actualtext').off('click'); // disable handler
+        });
       }
     });
 
