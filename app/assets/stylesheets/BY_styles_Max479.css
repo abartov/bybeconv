@@ -118,8 +118,6 @@ body {
 		padding-top: 0px;
 	}
 
-.by-icon-v02 {
-		font-size: 14px; }
 .by-icon-header-v02{
 		font-size: 18px;
 		vertical-align: -3px;
@@ -129,23 +127,31 @@ body {
 		line-height: 32px;
 	}
 
+.by-genre-icon-v03 {
+		font-size: 32px;
+		line-height: 32px;
+	}
 .volunteer-height{
 		max-height: 226px;
 	}
 .statistics-box-v02 {
-		height: 40px;
+	margin-top: 8px;
 		border-radius: 12px; 
+	padding-left: 4px;
+	padding-right: 4px;
+	padding-bottom: 2px;
+	padding-top: 2px;
 	}
 
 .stat-big-v02 {
-		font-size: 14px;
+		font-size: 16px;
 		font-weight: bold;
 		line-height: 12px; 
 	}
 .stat-small-v02 {
-		font-size: 8.4px;
+		font-size: 9px;
 		line-height: 8px;
-		margin-top: 4px; 
+		margin-top: 6px; 
 	} 
 .name-under-btn{
   width: 100%;
@@ -270,13 +276,11 @@ body {
   min-width: 280px;
 }
 	.surprise-btn-area-v02 {
-  width: 132px;
   margin-left: auto;
   margin-right: auto;
   margin-top: 260px; }
 
 .surprise-btn-v02 {
-  width: 132px;
   padding: 6px 12px;
   height: 36px; }
 
@@ -316,9 +320,6 @@ body {
 	.work-page-top-icons-mobile{
 	bottom: 0;
 }
-	.top-left-icons-group{
-		padding-top: 0px;
-	}
 	.credits{
   -webkit-column-count: 2; /* Chrome, Safari, Opera */
   -moz-column-count: 2; /* Firefox */
@@ -349,8 +350,6 @@ body {
 	.work-name-top{
 		margin-bottom: 4px;
 	}
-	.work-chapters-popup-mobile{
-	}
 .work-page-top-author{
 	}
 	.work-side-color{
@@ -367,7 +366,7 @@ body {
 	width: calc(100% - 24px);
 	}
 	.progress-handle{
-	top: -10px;
+	top: -6px;
 }
 		.rm-control-panel-mobile .progress-area{
 	padding-top: 0;
@@ -391,15 +390,6 @@ body {
 }
 .by-icon-top-v02{
 	font-size: 16px;
-}
-.top-left-icons-group{
-	height: 14px;
-}
-.top-search-mobile-v02{
-	height: 14px;
-}
-.by-dropdown-v02#moreMobile{
-	height: 14px;
 }
 .minimized .rm-control-panel-mobile{
 	width: 140px;
@@ -491,4 +481,11 @@ padding-top: 6px;
 	#author-info-popup .by-card-header-v02{
 			padding-right: 110px;
 	} 
+	.by-icon-v02{
+		font-size: 18px;
+		line-height: 18px;
+	}
+	.statistics-box-v02 div:nth-of-type(1) {flex-grow: 1;}
+.statistics-box-v02 div:nth-of-type(2) {width: auto;white-space: nowrap}
+.statistics-box-v02 div:nth-of-type(3) {flex-grow: 1;}
 }

@@ -40,12 +40,7 @@
 		margin-left: auto;
 		margin-right: auto;
 	}
-	#whats-new-bg {
-  background-image: url("/assets/bullhorn.svg");
-  background-repeat: no-repeat;
-  background-size: contain;
-  width: 100%; 
-  height:auto;}
+	
 
 
 	.flash-work-v02 {
@@ -54,15 +49,6 @@
 .flash-author-v02 {
  min-height: 400px;
 	}
-	.flash-bg-v02 {
-    height: auto;}
-
-	#volunteer-bg {
-  background-image: url("/assets/giving hand.svg");
-  background-repeat: no-repeat;
-  background-size: contain;
-  min-height: auto;
-  width: 100%; }
 
 
 	
@@ -180,17 +166,21 @@
 
   .statistics-box-v02 {
     word-break: break-all;
-    height: 52px;
     border-radius: 12px;
-    margin-right: 0px; }
+	padding: 0 4px;
+ }
+	
+	.statistics-v02{
+  margin: 1px 0 3px 0;
+	}
 
   .stat-big-v02 {
-    font-size: 24px;
+    font-size: 22px;
     font-weight: bold;
     line-height: 24px; }
 
   .stat-small-v02 {
-    font-size: 11.8px;
+    font-size: 12px;
     line-height: 11px;
     margin-top: 4px; }
 
@@ -218,7 +208,13 @@
 	align-items: center;
     float: left; 
 	margin-left: 10px;
-	margin-top: 4px;}
+	margin-top: 4px;
+	margin-bottom: 4px;
+	gap:4px;
+	}
+	.topMobileBtns-v02 .btn-small-outline-v02{
+		margin-left: 6px;
+	}
 
 
 
@@ -227,14 +223,9 @@
   }
 
 
-  #genre {
-    display: none; }
-
-  #genre-mobile {
-    display: block; }
 
   .top-works {
-    max-height: none; }
+    height: auto; }
 
 
 .side-menu-area{
@@ -273,7 +264,7 @@
 .nav-link{
 	height:34px;
 	width:34px;
-	padding:8px;
+	padding:6px;
 }
 .side-menu-icon{
 	font-size:18px;
@@ -286,14 +277,12 @@
   display: block;
 }
 .error-found-col{
-	padding-left: 15px;
+	padding-left: 0;
 	padding-right: 0;
 }
 .top-element {
   margin-top: 100px;
 }
-.work-side-menu-area{
-display: none;	}
 
 .work-side-menu-area-left{
 	display: none;
@@ -308,22 +297,11 @@ display: none;	}
 	display: none;
 	float: left;
 }
-.work-page-top-icons-mobile{
-	display: flex;
-	align-items: center;
-	float: left;
-}
 
 .popup-x-v02 {
   width: 30px;
 }
 
-.author-page-top-rights{
-	width: calc(50% - 84px);
-  white-space: nowrap;
-	margin-right: 0;
-	display: inline-block;
- }
 
 .by-side-menu-seperator{
   display: block;
@@ -366,16 +344,6 @@ display: none;	}
 .volunteer-v02 {
   min-height: auto;
 }
-.card-with-bottom-links{
-	padding-bottom: 50px;
-	max-height: calc(100% - 50px);
-}
-.link-to-all-v02 {
-  line-height: 28px;
-  }
-.right-side-icon{
-	line-height: 28px;
-	}
 	.by-button-v02{
 		height: 28px;
 	}
@@ -384,7 +352,6 @@ display: none;	}
   }
 
 	.surprise-btn-v02 {
-  width: 160px;
   height: 50px; }
 	
 	.author-page-content{
@@ -410,10 +377,7 @@ display: none;	}
 	#chapternav{
 		display: none;
 	}
-	#text-nav-more{
 
-	}
-	
 	.work-page-top-author{
 		display: block;
 	}
@@ -502,15 +466,6 @@ display: none;	}
   padding-top: 0px;
   padding-bottom: 0px; }
 	
-	#moreMobile{
-		margin-right: 6px;
-	}
-.by-dropdown-v02#moreMobile{
-		height: 18px;
-	}
-	.by-dropdown-v02#text-moreMobile{
-		height: 18px;
-	}
 .bookmark-location{
   position: relative;
   margin-top: 0;
@@ -588,7 +543,7 @@ display: none;	}
   margin-top: 0px;
 }
 .scrolled-logoBY-v02{
-	content: url("/assets/logo-byp-white.svg");
+	content: url("/assets/BYP_logo_scroll_white.svg");
 }
 #text-volunteers-desktop{
   display:none;
@@ -605,9 +560,6 @@ display: none;	}
 }
 	.work-chapters-dropdown-field-desktop{
 	display: none;
-}
-	.work-chapters-popup-mobile{
-	display: inline;
 }
 .list-filters{
 		display: none;
@@ -739,6 +691,99 @@ display: none;	}
 	font-size: 16pt !important;
     line-height: 18pt !important;
 }	
+	.reading-mode-icon-btn-v02 .by-icon-v02{
+		font-size: 18px;
+	}
+	.topMobileBtns-v02 .btn-small-outline-v02{
+		border: none;
+	}
+#menu {
+    display: none; }
+
+.menuButton-v02 {
+    display: block; }
+
+	.sidebar-opened{
+  display: block;
+  width: 360px;
+  padding-left: 15px;
+}
+	.chapters-and-icons-mobile{
+		width: 100%;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+	.work-page-top-icons-mobile{
+		display: flex;
+	}
+	.work-and-author-names-mobile{
+	display: block;
+}
+.work-and-author-names-desktop{
+	display: none;
+}
+	.text-page-content .work-side-menu-area{
+		display: none;
+	}
+	.side-nav-col{
+		width: auto;
+	}
+	#volunteer-bg{
+		background-size:60%;
+	}
+	#whats-new-bg {
+		background-size:70%;
+	}
+	.flash-bg-v02 {
+		background-size:100%;
+ 	}
+	#who-wrote-about-bg {
+		background-size:60%;
+	}
+	.lexicon-home-header{
+		flex-direction: column;
+		align-items: center;
+	}
+	.lexicon-home-header > div{
+		margin-bottom: 12px;
+	}
+	.lexicon-header-he, .lexicon-header-en{
+		text-align: center;
+	}
+	#bibliography-yidish .by-card-content-v02{
+		flex-direction: column;
+	}
+
+	.navbar-nav .nav-link{
+	padding: 6px 6px;
+}
+	.lexicon-author-actions{
+		flex: 0;
+		margin-right: 30px;
+	}
+
+			.mobile-only{
+	display: block;
+}
+	.desktop-only{
+		display: none;
+	}
+			.lexicon-author-top-info .by-card-content-v02{
+		flex-direction: column;
+	}
+		.lexicon-author-nav{
+		margin-top: 15px;
+			margin-left: -5px;
+			margin-right: -5px;
+		  justify-content: space-between;
+	}
+	.lexicon-author-nav-links{
+		flex: 1;
+	}
+	.lexicon-author-page-content{
+		margin-top: 259px;
+	}
 	
 }
 

@@ -118,12 +118,6 @@
 		margin-top: 222px;
 	}
 
-	.desktop-only{
-		display: none;
-	}
-	.mobile-only{
-	display: block;
-}
 .dropdown-menu-seperator{
   display:block;
   width: calc(100% + 30px);
@@ -372,9 +366,6 @@
 }
 .author-page-top-rights{
 	width: calc(50% - 40px);
-  white-space: nowrap;
-	margin-right: 0;
-	display: inline-block;
  }
 .author-page-top-info-card{
   padding: 3px 15px 3px 10px;
@@ -404,7 +395,7 @@
 		    max-height: calc(100vh - 165px);
 	}
 		.surprise-work-card-content-v02{
-		width: calc(100% - 85px);
+		width: calc(100% - 147px);
 		    max-height: calc(100vh - 165px);
 	}
 .limited-height-popup-content-v02 {
@@ -430,9 +421,6 @@
   width: calc(100% - 163px);
 	}
 
-	.flash-popup-bg-v02{
-		height: calc(100vh - 120px);
-	}
 	.flash-author-popup-v02 .by-card-content-v02{
 		height: calc(100vh - 182px);
 		max-height: calc(100vh - 182px);
@@ -468,5 +456,9 @@
 #sefaria-popup .by-popup-v02 {
   flex: 1 1 auto;
 }
+.lexicon-author-nav-links.topNavEntry {
+    margin: 0;
+}
+	
 	
 }
