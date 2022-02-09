@@ -446,7 +446,8 @@
 	}
 	.surprise-author-card-content-v02 {
  margin-right: 75px;
-}
+width: calc(100% - 75px);
+	}
 		.surprise-work-card-content-v02 {
  margin-right: 75px;
 }
