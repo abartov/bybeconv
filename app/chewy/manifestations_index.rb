@@ -1,4 +1,5 @@
 class ManifestationsIndex < Chewy::Index
+  settings 'index.max_result_window' => 40000 # Must be set to value greater than total number of works in db
 
   # works
   define_type Manifestation.all_published.includes(expressions: :works) do
