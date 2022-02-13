@@ -5,7 +5,12 @@
         %h1= t(:generated_toc)
         %p= t(:generated_toc_explanation)
         = text_area_tag(:gen_toc, raw(@gen_toc), rows: 20, style: 'width:100%')
-      %h1= t(:update_toc)
+      %h1
+        = t(:update_toc)
+        != "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+        %span{style:'font-size:70%'}
+          = link_to t(:show_toc), author_toc_path(@author.id)
+        %span{style:'font-size:50%'}= t(:remember_to_save)
       .right
         = t(:toc_order_reminder)
         - get_genres.each do |g|
