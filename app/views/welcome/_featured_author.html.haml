@@ -1,8 +1,9 @@
 .by-card-v02.flash-author-v02
   .flash-bg-v02
     .by-side-card-header-v02
-      %p.headline-1-v02= t(:featured_author)
-    .by-card-content-v02.card-with-bottom-links.card-with-button.flash-content
+      .text-height-flash-work
+        %p.headline-1-v02= t(:featured_author)
+    .by-card-content-v02
       - unless @featured_author.nil?
         .clampable
           %p.headline-3-v02= @featured_author.title

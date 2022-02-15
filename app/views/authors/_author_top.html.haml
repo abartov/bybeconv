@@ -26,29 +26,23 @@
             %button.btn-small-outline-v02.btn-text-v02.notyet= t(:sort_and_filter)
         .author-page-top-icons-desktop
           .top-left-icons-group
-            .icon-in-group-v02.notyet{title: t(:author_liked_tt)}
-              %span.linkcolor.pointer.by-icon-v02 5
+            .linkcolor.pointer.by-icon-v02.notyet{title: t(:author_liked_tt)}= '5'
             - unless current_user
-              .icon-in-group-v02.anthologies_button.must_login
-                %span.linkcolor.pointer.by-icon-v02 D
+              .anthologies_button.must_login.linkcolor.pointer.by-icon-v02= 'D'
             - else
-              .icon-in-group-v02.anthologies_button{'data-toggle' => 'modal', 'title' => "#{t(:open_shelves_tt)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 },'data-backdrop' => 'static', 'data-keyboard' => 'false', 'data-target' => '#anthologiesDlg'}
-                %span.linkcolor.pointer.by-icon-v02 D
+              .anthologies_button.linkcolor.pointer.by-icon-v02{'data-toggle' => 'modal', 'title' => "#{t(:open_shelves_tt)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 },'data-backdrop' => 'static', 'data-keyboard' => 'false', 'data-target' => '#anthologiesDlg'}
+                = 'D'
                 - unless @anthology.nil?
                   .anthology-badge{style: "display: #{@anthology.texts.length > 0 ? 'block' : 'none'}"}
                     .badge-number= @anthology.texts.length.to_s
-            .icon-in-group-v02{title: t(:author_print_tt)}
-              %span.linkcolor.pointer.printbutton.by-icon-v02 9
-            .icon-in-group-v02.notyet{title: t(:author_download_tt)}
-              %span.linkcolor.pointer.by-icon-v02 3
-            .icon-in-group-v02{style: 'margin-left:0;', 'data-target' => '#shareDlg', 'data-toggle' => 'modal', title: t(:share_tt)}
-              %span.linkcolor.pointer.by-icon-v02 U
+            .linkcolor.pointer.printbutton.by-icon-v02{title: t(:author_print_tt)}= '9'
+            .linkcolor.pointer.by-icon-v02.notyet{title: t(:author_download_tt)}= '3'
+            .linkcolor.pointer.by-icon-v02{style: 'margin-left:0;', 'data-target' => '#shareDlg', 'data-toggle' => 'modal', title: t(:share_tt)}= 'U'
         .author-page-top-icons-mobile
           .top-left-icons-group
-            .icon-in-group-v02.notyet{:style => "margin-left:4px;padding-top: 0;"}
-              %span.linkcolor.pointer.by-icon-v02 5
+            .linkcolor.pointer.by-icon-v02.notyet{:style => "margin-left:4px;padding-top: 0;"}= '5'
             .dropdown.d-inline#moreMobile-author
-              %span.pointer.by-icon-top-v02.dropdown-toggle#nav-more{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :type => "button"} Y
+              %span.pointer.by-icon-v02.dropdown-toggle#nav-more{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :type => "button"} Y
               .dropdown-menu.dropdown-menu-right#menu-more
                 .dropdown-item.linkcolor.pointer.notyet
                   %span.by-icon-v02> D
@@ -63,7 +57,7 @@
                   %span.by-icon-v02> U
                   = t(:share)
     .row.error-found-row
-      .col-1.side-nav-col
+      .side-nav-col
         = render partial: 'shared/genre_navbar', locals: {genres_present: @genres_present, page: :toc, curated_content: @any_curated}
       .col{style:'z-index:-1;height:0;'}
       .col-4.error-found-col

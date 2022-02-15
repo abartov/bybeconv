@@ -1,59 +1,27 @@
 - cache "homepage_genres", expires_in: 12.hours do
   .by-card-v02#genre
     .by-card-header-v02
-      %span.headline-1-v02= t(:genres)
+      %span.headline-1-v02= t(:genres_and_types)
     .by-card-content-v02
       .row
-        %div{style: 'width:80%'}
-          .row{style:'margin-top:20px'}
-            - ['poetry', 'prose', 'drama', 'fables'].each do |g|
-              = render partial: 'genre', locals: {genre: g, mobile: false}
-          .row{style:'margin-top:50px'}
-            - ['article', 'memoir', 'letters', 'reference'].each do |g|
-              = render partial: 'genre', locals: {genre: g, mobile: false}
-        %div{style: 'width:20%; border-right: solid 2px #d9cdd5; min-height:320px'}
-          .row{style:'margin-top: 10px'}
-            .col-sm-12
-              %a{href: translations_path}
-                %p.linkcolor.by-genre-icon-v02 s
-                %p.linkcolor.by-genre-name-v02.headline-2-v02= t(:translations)
-              %p.linkcolor.by-genre-details-v02= Person.no_toc.count.to_s+' '+t(:authors)
-              %p.linkcolor.by-genre-details-v02= Manifestation.cached_translated_count.to_s+' '+t(:works)
-          .row{style:'margin-top: 50px'}
-            .col-sm-12
-              %a{href: manifestation_genre_path(genre: 'lexicon')}
-                %p.linkcolor.by-genre-icon-v02 f
-                %p.linkcolor.by-genre-name-v02.headline-2-v02= t(:lexicon)
-              %p.linkcolor.by-genre-details-v02= '...'
-              %p.linkcolor.by-genre-details-v02= '...'
-  .by-card-v02#genre-mobile
-    .by-card-header-v02
-      %span.headline-1-v02
-        %a{ href: all_works_path}= t(:genres)
-    .by-card-content-v02
-      .row{style:'margin-top:10px'}
-        - ['poetry', 'prose', 'drama'].each do |g|
-          = render partial: 'genre', locals: {genre: g, mobile: true}
-      .row{style:'margin-top:40px'}
-        - ['fables', 'article', 'letters'].each do |g|
-          = render partial: 'genre', locals: {genre: g, mobile: true}
-      .row{style:'margin-top:40px; margin-bottom: 30px'}
-        - ['memoir', 'reference'].each do |g|
-          = render partial: 'genre', locals: {genre: g, mobile: true}
-
-      %div{style: 'border-top: solid 2px #d9cdd5;'}
-        .row{style:'margin-top: 30px; margin-bottom:20px;'}
-          .col
-            %a{href: translations_path}
-              %p.linkcolor.by-genre-icon-v02 s
-              %p.linkcolor.by-genre-name-v02.headline-2-v02= t(:translations)
-            %p.linkcolor.by-genre-details-v02= Person.no_toc.count.to_s+' '+t(:authors)
-            %p.linkcolor.by-genre-details-v02= Manifestation.cached_translated_count
-      %div{style: 'border-top: solid 2px #d9cdd5;'}
-        .row{style:'margin-top: 30px; margin-bottom:20px;'}
-          .col-sm-12
-            %a.notyet
-              %p.linkcolor.by-genre-icon-v02 f
-              %p.linkcolor.by-genre-name-v02.headline-2-v02= t(:lexicon)
-            %p.linkcolor.by-genre-details-v02= '...'
-            %p.linkcolor.by-genre-details-v02= '...'
+        - ['poetry', 'prose', 'drama', 'fables'].each do |g|
+          = render partial: 'genre', locals: {genre: g, mobile: false}
+        - ['article', 'memoir', 'letters', 'reference'].each do |g|
+          = render partial: 'genre', locals: {genre: g, mobile: false}
+        .col-md-3.col-4
+          %a{href: manifestation_genre_path(genre: 'lexicon')}
+            .genre-nav
+              %p.by-genre-icon-v02= 'f'
+              %p.by-genre-name-v02.headline-2-v02= t(:lexicon)
+              %p.by-genre-details-v02= @authors_in_genre['lexicon'].to_s+' '+t(:authors)
+              %p.by-genre-details-v02= get_total_headwords.to_s.to_s+' '+t(:entries)
+        -#.by-card-content-seapartor
+        -# types (anthologies, journals, etc.) go here
+        .by-card-content-seapartor
+        .col-md-3.col-4
+          %a{href: translations_path}
+            .genre-nav
+              %p.by-genre-icon-v02= 's'
+              %p.by-genre-name-v02.headline-2-v02= t(:translations)
+              %p.by-genre-details-v02= Person.no_toc.count.to_s+' '+t(:authors)
+              %p.by-genre-details-v02= Manifestation.cached_translated_count.to_s+' '+t(:works)

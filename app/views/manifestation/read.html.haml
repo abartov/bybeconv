@@ -39,7 +39,7 @@
           .by-card-v02.left-side-card-v02#recs
             .by-card-header-left-v02
               %span.headline-1-v02= t(:recommendations_for_work)
-            .by-card-content-v02.card-with-bottom-links
+            .by-card-content-v02
               - unless @m.like_count.nil? || @m.like_count == 0
                 = t(:x_liked, {x: @m.like_count})
                 %br
@@ -85,7 +85,7 @@
           .by-card-v02.left-side-card-v02
             .by-card-header-left-v02
               %span.headline-1-v02= t(:tags)
-            .by-card-content-v02.card-with-bottom-links
+            .by-card-content-v02
               .inline-block#taggings
                 = render partial: 'shared/taggings', locals: {taggings: @taggings}
               - unless current_user.nil?
