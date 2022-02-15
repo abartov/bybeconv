@@ -16,7 +16,7 @@ class Person < ApplicationRecord
   has_many :expressions, through: :realizers, class_name: 'Expression'
   has_many :aboutnesses, as: :aboutable
   has_many :external_links, as: :linkable
-  has_many :publications
+  has_many :publications, dependent: :destroy
 
   has_and_belongs_to_many :manifestations
 
