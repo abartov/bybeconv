@@ -3,7 +3,7 @@
 class BaseUser < ApplicationRecord
   belongs_to :user, inverse_of: :base_user, optional: true
 
-  has_many :bookmarks, inverse_of: :base_user
+  has_many :bookmarks, inverse_of: :base_user, dependent: :destroy
 
   DEFAULT_FONT_SIZE = '2'
 

@@ -1,8 +1,8 @@
 class Publication < ApplicationRecord
   belongs_to :person
   belongs_to :bib_source
-  has_many :holdings, :dependent => :destroy
-  has_many :list_items, as: :item
+  has_many :holdings, dependent: :destroy
+  has_many :list_items, as: :item, dependent: :destroy
 
   enum status: [:todo, :scanned, :obtained, :uploaded, :irrelevant, :copyrighted]
 

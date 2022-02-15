@@ -7,15 +7,15 @@ class Manifestation < ApplicationRecord
   has_and_belongs_to_many :html_files
 
   has_and_belongs_to_many :likers, join_table: :work_likes, class_name: :User
-  has_many :taggings
+  has_many :taggings, dependent: :destroy
   has_many :tags, through: :taggings, class_name: 'Tag'
-  has_many :recommendations
-  has_many :list_items, as: :item
-  has_many :downloadables, as: :object
+  has_many :recommendations, dependent: :destroy
+  has_many :list_items, as: :item, dependent: :destroy
+  has_many :downloadables, as: :object, dependent: :destroy
 
   has_paper_trail
-  has_many :external_links, as: :linkable
-  has_many_attached :images
+  has_many :external_links, as: :linkable, dependent: :destroy
+  has_many_attached :images, dependent: :destroy
 
   before_save :update_sort_title
 

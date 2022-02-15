@@ -1,5 +1,5 @@
 class BibSource < ApplicationRecord
-  has_many :holdings
+  has_many :holdings, dependent: :destroy
   has_many :publications
   enum source_type: [:aleph, :primo, :idea, :hebrewbooks, :googlebooks, :nli_api] # according to the types supported by the Gared gem
   enum status: [:enabled, :disabled]

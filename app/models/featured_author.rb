@@ -3,7 +3,7 @@ class FeaturedAuthor < ApplicationRecord
   belongs_to :person
 
 #  attr_accessible :title, :body
-  has_many :featurings, class_name: 'FeaturedAuthorFeature'
+  has_many :featurings, class_name: 'FeaturedAuthorFeature', dependent: :destroy
 
   def featured_list
     s = ''

@@ -10,8 +10,8 @@ end
 
 class Anthology < ApplicationRecord
   belongs_to :user
-  has_many :texts, class_name: 'AnthologyText', :dependent => :delete_all
-  has_many :downloadables, as: :object
+  has_many :texts, class_name: 'AnthologyText', dependent: :destroy
+  has_many :downloadables, as: :object, dependent: :destroy
   enum access: %i(priv unlisted pub)
   validates :title, presence: true
   validates_with UserAnthTitleValidator
