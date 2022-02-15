@@ -57,7 +57,7 @@ class ManifestationController < ApplicationController
 
   def translations
     @page_title = t(:translations)+' '+t(:project_ben_yehuda)
-    params['ckb_languages'] = Work.pluck(:orig_lang).uniq.reject{|x| x == 'he'}
+    params['ckb_languages'] = ['xlat']
     browse
   end
 
@@ -655,16 +655,18 @@ class ManifestationController < ApplicationController
       @filters += @copyright.map{|x| [helpers.textify_copyright_status(x == 1), "copyright_#{x}", :checkbox]}
     end
     # languages
+
     if params['ckb_languages'].present?
       if params['ckb_languages'] == ['xlat']
-        ret << {must_not: {term: {orig_lang: 'he'}}}
-        @filters << [I18n.t(:translations), 'lang_xlat', :checkbox]
+        #ret << {must_not: {term: {orig_lang: 'he'}}}
+        #@filters << [I18n.t(:translations), 'lang_xlat', :checkbox]
+        @languages = get_langs.reject{|x| x == 'he'}
       else
         @languages = params['ckb_languages'].reject{|x| x == 'xlat'}
-        if @languages.present?
-          ret << {terms: {orig_lang: @languages}}
-          @filters += @languages.map{|x| ["#{I18n.t(:orig_lang)}: #{helpers.textify_lang(x)}", "lang_#{x}", :checkbox]}
-        end
+      end
+      if @languages.present?
+        ret << {terms: {orig_lang: @languages}}
+        @filters += @languages.map{|x| ["#{I18n.t(:orig_lang)}: #{helpers.textify_lang(x)}", "lang_#{x}", :checkbox]}
       end
     end
     # dates
