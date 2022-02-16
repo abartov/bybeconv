@@ -164,7 +164,7 @@ class AdminController < ApplicationController
   end
 
   def periodless
-    @authors = Person.has_toc.where(period: nil)
+    @authors = Person.where(period: nil).select{|p| p.has_any_hebrew_works?}
     Rails.cache.write('report_periodless', @authors.length)
   end
 
