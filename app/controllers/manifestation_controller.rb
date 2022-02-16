@@ -694,8 +694,6 @@ class ManifestationController < ApplicationController
     end
     datefield = es_datefield_name_from_datetype(@datetype)
     ret << {range: {"#{datefield}" => range_expr }} unless range_expr.empty?
-
-    #     { "range": { "publish_date": { "gte": "2015-01-01" }}}
     return ret
   end
 
