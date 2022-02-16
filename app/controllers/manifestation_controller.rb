@@ -703,12 +703,13 @@ class ManifestationController < ApplicationController
     ret = {}
     if params['search_input'].present? || params['authorstr'].present?
       if (params['search_type'].present? && params['search_type'] == 'authorname') || (params['authorstr'].present? && params['search_input'].empty?)
-        ret['match'] = {author_string: params['authorstr']}
+        #ret['match'] = {author_string: params['authorstr'], default_operator: 'and'}
+        ret['query_string'] = {fields: [:author_string], query: params['authorstr'], default_operator: 'and'}
         @authorstr = params['authorstr']
         @search_type = 'authorname'
         @filters << [I18n.t(:author_x, {x: params['authorstr']}), :authors, :text]
       else
-        ret['match'] = {title: params['search_input']}
+        ret['match'] = {title: params['search_input'], default_operator: 'and'}
         @search_type = 'workname'
         @filters << [I18n.t(:title_x, {x: params['search_input']}), :search_input, :text]
       end
