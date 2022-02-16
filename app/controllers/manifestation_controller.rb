@@ -498,6 +498,7 @@ class ManifestationController < ApplicationController
             r.save!
           end
           @e.source_edition = params[:source_edition]
+          @e.period = params[:period]
           @m.title = params[:mtitle]
           @m.sort_title = params[:sort_title]
           @m.responsibility_statement = params[:mresponsibility]
