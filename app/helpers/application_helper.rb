@@ -13,6 +13,10 @@ module ApplicationHelper
     return au.gender == 'female' ? I18n.t(:to_the_authoress_page) : I18n.t(:to_the_author_page)
   end
 
+  def lineclamp(s, max)
+    s.length > max ? s[0..max-3]+'...' : s
+  end
+
   def url_tag(u)
     return '' if u.blank?
     return 'ויקיפדיה' if u =~ /https?:\/\/he.wikipedia.org/
