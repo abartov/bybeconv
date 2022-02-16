@@ -45,6 +45,9 @@
     %b= t(:thedate) + ': '
     = @e.date
   %p
+    %b= t(:period) + ': '
+    = t(@e.period)
+  %p
     %b= t(:copyright_status)
     = textify_copyright_status(@e.copyrighted)
   %p

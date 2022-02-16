@@ -34,6 +34,9 @@
       %b= t(:thedate) + ': '
       = text_field_tag :edate, @e.date
     %p
+      %b= t(:period) + ': '
+      = select_tag :period, options_for_select(Person.periods.map{|p| [t(p[0]), p[0]]}, @e.period), include_blank: true
+    %p
       %b= t(:language) + ': '
       = select_tag :elang, options_for_select(get_langs.map {|lang| [textify_lang(lang), lang]}, @e.language.nil? ? 'he' : @e.language)
     %p
