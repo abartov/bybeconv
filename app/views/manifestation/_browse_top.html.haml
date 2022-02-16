@@ -78,6 +78,8 @@
     $('#sort_filter_toggle').click(function() {
       if(window.innerWidth < mobileWidth) {
         $('#mobileFilterDlg').modal('show');
+        $('#opt_filter').addClass('active');
+        $('#opt_sort').removeClass('active');
       } else {
         $('#browse_intro').toggle();
         $('#sort_filter_panel').toggle();
