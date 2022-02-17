@@ -51,6 +51,11 @@
 	.by-nav-item-v02{
 		font-size: 15px;
 	}
+	a .genre-nav{
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+	
 }
 
 

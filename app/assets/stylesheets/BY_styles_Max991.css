@@ -784,7 +784,9 @@
 	.lexicon-author-page-content{
 		margin-top: 259px;
 	}
-	
+	#genre {
+  height: auto; 
+}
 }
 
 
