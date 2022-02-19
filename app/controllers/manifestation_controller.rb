@@ -69,14 +69,18 @@ class ManifestationController < ApplicationController
   end
 
   def set_bookmark
-    b = base_user(true).bookmarks.where(manifestation_id: params[:id]).first
-    if b.nil?
-      base_user.bookmarks.create!(manifestation_id: params[:id], bookmark_p: params[:bookmark_path])
-    else
-      b.update!(bookmark_p: params[:bookmark_path])
-    end
-    respond_to do |format|
-      format.js do render partial: 'set_bookmark' end
+    manifestation_id = params[:id]
+    BaseUser.transaction do
+      base_user(true).lock!
+      b = base_user.bookmarks.where(manifestation_id: manifestation_id).first
+      if b.nil?
+        base_user.bookmarks.create!(manifestation_id: manifestation_id, bookmark_p: params[:bookmark_path])
+      else
+        b.update!(bookmark_p: params[:bookmark_path])
+      end
+      respond_to do |format|
+        format.js do render partial: 'set_bookmark' end
+      end
     end
   end
 
