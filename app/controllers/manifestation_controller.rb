@@ -1,6 +1,8 @@
 require 'pandoc-ruby'
 
 class ManifestationController < ApplicationController
+  class PageNotFound < StandardError; end;
+
   # class WorkSearch < FortyFacets::FacetSearch
   #   model 'Manifestation' # which model to search for
   #   text :title   # filter by a generic string entered by the user
@@ -53,6 +55,8 @@ class ManifestationController < ApplicationController
       format.html
       format.js
     end
+  rescue PageNotFound
+    head :not_found
   end
 
   def translations
@@ -741,8 +745,17 @@ class ManifestationController < ApplicationController
     es_query = build_es_query_from_filters
     es_query = {match_all: {}} if es_query == {}
     @collection = ManifestationsIndex.query(es_query).filter(filter).aggregations(standard_aggregations).order(ord).limit(100) # prepare ES query
-    @emit_filters = true if params[:load_filters] == 'true' || params[:emit_filters] == 'true'
     @total = @collection.count # actual query triggered here
+
+    @page = params[:page].to_i
+    @page = 1 if @page == 0 # slider sets page to zero, awkwardly
+    if @page > (@total/100.0).ceil
+      # Sometimes we receive requests to pages with extremely large number from bots/search crawlers
+      # So simply respond with NotFound in this case
+      raise PageNotFound
+    end
+
+    @emit_filters = true if params[:load_filters] == 'true' || params[:emit_filters] == 'true'
     @gender_facet = es_buckets_to_facet(@collection.aggs['author_genders']['buckets'], Person.genders)
     @tgender_facet = es_buckets_to_facet(@collection.aggs['translator_genders']['buckets'], Person.genders)
     @period_facet = es_buckets_to_facet(@collection.aggs['periods']['buckets'], Expression.periods)
@@ -782,8 +795,6 @@ class ManifestationController < ApplicationController
   end
 
   def prep_for_browse
-    @page = params[:page] || 1
-    @page = 1 if ['0',''].include?(@page) # slider sets page to zero, awkwardly
     es_prep_collection
 
     @total = @collection.count
