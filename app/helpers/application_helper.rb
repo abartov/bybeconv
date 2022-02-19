@@ -3,7 +3,13 @@ module ApplicationHelper
     return s if s.nil?
     s.force_encoding('UTF-8')
   end
-
+  def get_intro(markdown)
+    lines = markdown[0..2000].lines[1..-2]
+    if lines.empty?
+      lines = markdown[0..[5000,markdown.length].min].lines[0..-2]
+    end
+    lines.join + '...'
+  end
   def about_the_author(au)
     ret = I18n.t(:about_the_author)
     return au.gender == 'female' ? ret + 'ת' : ret

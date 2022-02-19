@@ -8,12 +8,14 @@ class AuthorsController < ApplicationController
     @author = Person.find(params[:id])
     if @author
       if params[:commit].present?
+        # POST request
         @author.publish!
         Rails.cache.delete('newest_authors') # force cache refresh
         Rails.cache.delete('homepage_authors')
         flash[:success] = t(:published)
         redirect_to action: :list
       else
+        # GET request
         @manifestations = @author.all_works_including_unpublished
       end
     else
@@ -21,20 +23,17 @@ class AuthorsController < ApplicationController
       redirect_to admin_index_path
     end
   end
+
   def get_random_author
-    @author = nil
-    unless params[:genre].nil? || params[:genre].empty?
-      @author = Person.where(id: Person.in_genre(params[:genre]).pluck(:id).sample(1))[0]
+    rel = Person.has_toc
+    genre = params[:genre]
+    if genre.present?
+      rel = rel.joins(expressions: [:works, :manifestations]).where(works: { genre: genre })
     else
-      has_something = false
-      i = 0
-      while i < 5 && has_something == false
-        @author = Person.where(id: Person.has_toc.pluck(:id).sample(1))[0]
-        i += 1
-        has_something = true if @author.manifestations.published.count > 0
-      end
+      rel = rel.joins(:manifestations)
     end
-    render partial: 'shared/surprise_author', locals: {author: @author, initial: false, id_frag: params[:id_frag], passed_genre: params[:genre], passed_mode: params[:mode], side: params[:side]}
+    @author = rel.merge(Manifestation.published).distinct.order(Arel.sql('rand()')).first
+    render partial: 'shared/surprise_author', locals: {author: @author, initial: false, id_frag: params[:id_frag], passed_genre: genre, passed_mode: params[:mode], side: params[:side]}
   end
 
   def delete_photo
@@ -47,30 +46,33 @@ class AuthorsController < ApplicationController
     show
     render action: :show
   end
+
   def whatsnew_popup
     @author = Person.find(params[:id])
     pubs = @author.works_since(1.month.ago, 1000)
     @pubscoll = {}
     pubs.each {|m|
-      e = m.expressions[0]
-      @pubscoll[e.genre] = [] if @pubscoll[e.genre].nil?
-      @pubscoll[e.genre] << m
+      genre = m.expressions[0].works[0].genre
+      @pubscoll[genre] = [] if @pubscoll[genre].nil?
+      @pubscoll[genre] << m
     }
     @pubs = textify_new_pubs(@pubscoll)
     render partial: 'whatsnew_popup'
   end
+
   def latest_popup
     @author = Person.find(params[:id])
     pubs = @author.cached_latest_stuff
     @pubscoll = {}
     pubs.each {|m|
-      e = m.expressions[0]
-      @pubscoll[e.genre] = [] if @pubscoll[e.genre].nil?
-      @pubscoll[e.genre] << m
+      genre = m.expressions[0].works[0]
+      @pubscoll[genre] = [] if @pubscoll[genre].nil?
+      @pubscoll[genre] << m
     }
     @pubs = textify_new_pubs(@pubscoll)
     render partial: 'whatsnew_popup'
   end
+
   def es_datefield_name_from_datetype(dt)
     case dt
     when 'uploaded'
@@ -256,29 +258,30 @@ class AuthorsController < ApplicationController
     end
   end
 
-  def index
-    @page_title = t(:authors)+' - '+t(:project_ben_yehuda)
-    @pop_by_genre = cached_popular_authors_by_genre # get popular authors by genre + most popular translated
-    @rand_by_genre = {}
-    @pagetype = :authors
-    @surprise_by_genre = {}
-    get_genres.each do |g|
-      @rand_by_genre[g] = randomize_authors(@pop_by_genre[g][:orig], g) # get random authors by genre
-      @rand_by_genre[g] = @pop_by_genre[g][:orig] if @rand_by_genre[g].empty? # workaround for genres with very few authors (like fables, in 2017)
-      @surprise_by_genre[g] = @rand_by_genre[g].pop # make one of the random authors the surprise author
-    end
-    @authors_abc = Person.order(:sort_name).limit(100) # get page 1 of all authors
-    @author_stats = {total: Person.cached_toc_count, pd: Person.cached_pd_count, translators: Person.cached_translators_count, translated: Person.cached_no_toc_count}
-    @author_stats[:permission] = @author_stats[:total] - @author_stats[:pd]
-    @authors_by_genre = count_authors_by_genre
-    @new_authors = Person.has_toc.latest(3)
-    @featured_author = featured_author
-    (@fa_snippet, @fa_rest) = @featured_author.nil? ? ['',''] : snippet(@featured_author.body, 500)
-    @rand_translated_authors = Person.translatees.order('RAND()').limit(5)
-    @rand_translators = Person.translators.order('RAND()').limit(5)
-    @pop_translated_authors = Person.get_popular_xlat_authors.limit(5)
-    @pop_translators = Person.get_popular_translators.limit(5)
-  end
+  # This code was used for 'secondary portal', but not used anymore. We may need to reimplement it at some point
+  # def index
+  #   @page_title = t(:authors)+' - '+t(:project_ben_yehuda)
+  #   @pop_by_genre = cached_popular_authors_by_genre # get popular authors by genre + most popular translated
+  #   @rand_by_genre = {}
+  #   @pagetype = :authors
+  #   @surprise_by_genre = {}
+  #   get_genres.each do |g|
+  #     @rand_by_genre[g] = randomize_authors(@pop_by_genre[g][:orig], g) # get random authors by genre
+  #     @rand_by_genre[g] = @pop_by_genre[g][:orig] if @rand_by_genre[g].empty? # workaround for genres with very few authors (like fables, in 2017)
+  #     @surprise_by_genre[g] = @rand_by_genre[g].pop # make one of the random authors the surprise author
+  #   end
+  #   @authors_abc = Person.order(:sort_name).limit(100) # get page 1 of all authors
+  #   @author_stats = {total: Person.cached_toc_count, pd: Person.cached_pd_count, translators: Person.cached_translators_count, translated: Person.cached_no_toc_count}
+  #   @author_stats[:permission] = @author_stats[:total] - @author_stats[:pd]
+  #   @authors_by_genre = count_authors_by_genre
+  #   @new_authors = Person.has_toc.latest(3)
+  #   @featured_author = featured_author
+  #   (@fa_snippet, @fa_rest) = @featured_author.nil? ? ['',''] : snippet(@featured_author.body, 500)
+  #   @rand_translated_authors = Person.translatees.order('RAND()').limit(5)
+  #   @rand_translators = Person.translators.order('RAND()').limit(5)
+  #   @pop_translated_authors = Person.get_popular_xlat_authors.limit(5)
+  #   @pop_translators = Person.get_popular_translators.limit(5)
+  # end
 
   def new
     @person = Person.new
@@ -451,6 +454,7 @@ class AuthorsController < ApplicationController
       redirect_to '/'
     end
   end
+
   def print
     @author = Person.find(params[:id])
     @print = true
@@ -494,9 +498,11 @@ class AuthorsController < ApplicationController
     @works.each_key {|k| @genres_present << k unless @works[k].size == 0 || @genres_present.include?(k)}
     @translations.each_key {|k| @genres_present << k unless @works[k].size == 0 || @genres_present.include?(k)}
   end
+
   def person_params
     params[:person].permit(:affiliation, :comment, :country, :name, :nli_id, :other_designation, :viaf_id, :public_domain, :profile_image, :birthdate, :deathdate, :wikidata_id, :wikipedia_url, :wikipedia_snippet, :blog_category_url, :profile_image, :metadata_approved, :gender, :bib_done, :period, :sort_name)
   end
+
   def prep_for_print
     @author = Person.find(params[:id])
     if @author.nil?

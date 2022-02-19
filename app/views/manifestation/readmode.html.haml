@@ -85,7 +85,7 @@
                     #actualtext.maintext-poetry-body.search-margin{tabindex: 1}
                       != raw(@html)
                 .work-side-color
-                  %div{'class' => "work-genre", style: "background-image: url(\"/assets/work_side_icons_#{@e.genre}.svg\"); background-repeat: no-repeat; background-size:auto;"}
+                  %div{'class' => "work-genre", style: "background-image: url(\"/assets/work_side_icons_#{@w.genre}.svg\"); background-repeat: no-repeat; background-size:auto;"}
 / found mistake popup
 #proofDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
   = render partial: 'shared/proof', locals: {manifestation: @m}

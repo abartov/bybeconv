@@ -99,6 +99,7 @@ group :test do
   gem 'turn', '0.8.2', require: false
   gem 'simplecov', require: false
   gem 'faker', '~> 2.19.0'
+  gem 'rails-controller-testing', '~> 1.0.5'
 end
 
 group :development do

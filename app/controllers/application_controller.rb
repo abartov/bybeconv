@@ -187,7 +187,7 @@ class ApplicationController < ActionController::Base
   def cached_authors_in_genre
     Rails.cache.fetch("au_by_genre", expires_in: 24.hours) do # memoize
       ret = {}
-      get_genres.each{ |g| ret[g] = Person.has_toc.joins(:expressions).where(expressions: { genre: g}).uniq.count}
+      get_genres.each { |g| ret[g] = Person.has_toc.joins(expressions: :works).where(works: { genre: g }).uniq.count }
       ret
     end
   end
@@ -338,14 +338,15 @@ class ApplicationController < ActionController::Base
     Manifestation.all_published.new_since(timestamp).includes(:expressions).each {|m|
       e = m.expressions[0]
       next if e.nil? # shouldn't happen
+      w = e.works[0]
       person = e.translation ? m.translators.first : m.authors.first # TODO: more nuance
       next if person.nil? # shouldn't happen, but might in a dev. env.
       if authors[person].nil?
         authors[person] = {}
         authors[person][:latest] = 0
       end
-      authors[person][e.genre] = [] if authors[person][e.genre].nil?
-      authors[person][e.genre] << m
+      authors[person][w.genre] = [] if authors[person][w.genre].nil?
+      authors[person][w.genre] << m
       authors[person][:latest] = m.updated_at if m.updated_at > authors[person][:latest]
     }
     authors
@@ -407,14 +408,6 @@ class ApplicationController < ActionController::Base
     return ret
   end
 
-  def get_intro(markdown)
-    lines = markdown[0..2000].lines[1..-2]
-    if lines.empty?
-      lines = markdown[0..[5000,markdown.length].min].lines[0..-2]
-    end
-    lines.join + '...'
-  end
-
   def generate_new_anth_name_from_set(anths)
     i = 1
     prefix = I18n.t(:anthology)
@@ -459,5 +452,5 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  helper_method :current_user, :html_entities_coder, :get_intro
+  helper_method :current_user, :html_entities_coder
 end

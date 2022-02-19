@@ -30,7 +30,7 @@
         - else
           %td= t(:no)
           %td= ''
-        %td= textify_genre(m.expressions[0].genre)
+        %td= textify_genre(m.expressions[0].works[0].genre)
         %td= m.updated_at.to_s
         %td= m.conversion_verified ? t(:yes) : t(:no)
         %td= t(m.status)
