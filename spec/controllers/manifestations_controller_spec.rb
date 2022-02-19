@@ -41,6 +41,29 @@ describe ManifestationController do
       end
     end
 
+    describe 'paging' do
+      subject { get :browse, params: { page: page } }
+
+      context 'when page number 0 is requested' do
+        let(:page) { 0 }
+        it 'returns first page' do
+          expect(subject).to be_successful
+        end
+      end
+
+      context 'when page number is not specified' do
+        let(:page) { nil }
+        it 'returns first page' do
+          expect(subject).to be_successful
+        end
+      end
+
+      context 'when requested page number is greater than total number of pages' do
+        let(:page) { 2 }
+        it { is_expected.to be_not_found }
+      end
+    end
+
     after(:all) do
       clean_tables
     end
