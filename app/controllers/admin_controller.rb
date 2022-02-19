@@ -51,8 +51,9 @@ class AdminController < ApplicationController
   end
 
   def missing_genres
-    @mans = Manifestation.joins(:expressions).where(expressions: {genre: nil}).page(params[:page]).per(50)
-    @total = Manifestation.joins(:expressions).where(expressions: {genre: nil}).count
+    missing_genres = Manifestation.genre(nil)
+    @mans = missing_genres.page(params[:page]).per(50)
+    @total = missing_genres.count
     @page_title = t(:missing_genre_report)
     Rails.cache.write('report_missing_genres', @total)
   end
@@ -242,7 +243,7 @@ class AdminController < ApplicationController
   end
 
   def suspicious_titles
-    @suspicious = Manifestation.where('(title like "%קבוצה %") OR (title like "%.") OR (title like "__"').select{|x| x.title !~ /\.\.\./}
+    @suspicious = Manifestation.where('(title like "%קבוצה %") OR (title like "%.") OR (title like "__")').select{|x| x.title !~ /\.\.\./}
     Rails.cache.write('report_suspicious_titles', @suspicious.length)
   end
 

@@ -4,7 +4,7 @@
   .surprise-work-card-v02
     %a{href: manifestation_read_path(manifestation.id)}
       .surprise-work-genre-v02
-        - genre = e.genre
+        - genre = e.works[0].genre
         %p.by-genre-icon-surprise-v02= glyph_for_genre(genre)
         %p.by-genre-name-v02.headline-1-v02= textify_genre(genre)
     %a{href: manifestation_read_path(manifestation.id), style: 'color:white'}

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_19_132534) do
+ActiveRecord::Schema.define(version: 2022_02_19_150946) do
 
   create_table "aboutnesses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -202,7 +202,6 @@ ActiveRecord::Schema.define(version: 2022_02_19_132534) do
     t.datetime "updated_at", null: false
     t.boolean "copyrighted"
     t.date "copyright_expiration"
-    t.string "genre"
     t.boolean "translation"
     t.string "source_edition"
     t.integer "period"

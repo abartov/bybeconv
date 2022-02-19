@@ -19,11 +19,11 @@
     - @manifestations.each do |m|
       %li
         = link_to m.title, manifestation_show_path(id: m.id)
-        = " (#{textify_genre(m.expressions[0].genre)}) "
+        = " (#{textify_genre(m.expressions[0].works[0].genre)}) "
         - if m.published?
           %span{style:'color:green'}= t(:published)
         - else
           = t(:unpublished)
   %p
-  = form_tag do
-    = submit_tag t(:make_published), {class:'by-button-v02 surprise-btn-v02 headline-2-v02', style:'float:unset'}
+  = form_tag author_publish_path(@author) do
+    = submit_tag t(:make_published), { class:'by-button-v02 surprise-btn-v02 headline-2-v02', style:'float:unset' }

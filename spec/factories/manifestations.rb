@@ -1,28 +1,25 @@
 FactoryBot.define do
-  sequence :manifestation_number do |n|
-    "Manifestation #{n}"
-  end
-
   factory :manifestation do
     transient do
-      number { generate(:manifestation_number) }
+      sequence(:manifestation_name) { |n| "Manifestation #{n}" }
       author { create(:person) }
       orig_lang { %w(he en ru de it).sample }
+      genre { Work::GENRES.sample }
       translator { orig_lang != 'he' ? create(:person) : nil }
       editor { nil }
       illustrator { nil }
     end
 
-    title { "Title for #{number}" }
+    title { "Title for #{manifestation_name}" }
     publisher { Faker::Company.name }
     publication_place { Faker::Address.city }
     publication_date { '2019-01-01' }
-    comment { "Comment for #{number}" }
-    markdown { "Markdown for #{number}" }
-    impressions_count { 4 }
+    comment { "Comment for #{manifestation_name}" }
+    markdown { "Markdown for #{manifestation_name}" }
+    impressions_count { Random.rand(100) }
     status { :published }
 
-    expressions { [ create(:expression, author: author, translator: translator, editor: editor, illustrator: illustrator, orig_lang: orig_lang) ] }
+    expressions { [ create(:expression, author: author, translator: translator, editor: editor, illustrator: illustrator, orig_lang: orig_lang, genre: genre) ] }
 
     trait :with_external_links do
       external_links { build_list(:external_link, 2) }

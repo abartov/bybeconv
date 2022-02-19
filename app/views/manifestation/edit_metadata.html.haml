@@ -29,7 +29,7 @@
       = text_field_tag :etitle, @e.title, size: 75
     %p
       %b= t(:genre) + ': '
-      = textify_genre(@e.genre) # should be identical to work's genre, so not editable
+      = textify_genre(@w.genre) # should be identical to work's genre, so not editable
     %p
       %b= t(:thedate) + ': '
       = text_field_tag :edate, @e.date

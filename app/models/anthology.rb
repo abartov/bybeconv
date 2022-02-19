@@ -12,7 +12,7 @@ class Anthology < ApplicationRecord
   belongs_to :user
   has_many :texts, class_name: 'AnthologyText', dependent: :destroy
   has_many :downloadables, as: :object, dependent: :destroy
-  enum access: %i(priv unlisted pub)
+  enum access: { priv: 0, unlisted: 1, pub: 2 }
   validates :title, presence: true
   validates_with UserAnthTitleValidator
 

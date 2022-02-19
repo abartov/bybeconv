@@ -9,8 +9,6 @@ class Expression < ApplicationRecord
   has_many :persons, through: :realizers, class_name: 'Person'
   has_many :aboutnesses, as: :aboutable, dependent: :destroy
 
-  validates_inclusion_of :genre, in: Work::GENRES
-
   def determine_is_translation?
     # determine whether this expression is a translation or not, i.e. is in a different language to the work it expresses
     return nil if works.empty?
