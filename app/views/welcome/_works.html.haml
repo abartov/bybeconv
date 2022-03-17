@@ -8,7 +8,7 @@
           = render partial: 'genre', locals: {genre: g, mobile: false}
         - ['article', 'memoir', 'letters', 'reference'].each do |g|
           = render partial: 'genre', locals: {genre: g, mobile: false}
-        .col-md-3.col-4
+        .col-md-3.col-4{style: "margin-left: auto; margin-right:auto;"}
           %a{href: manifestation_genre_path(genre: 'lexicon')}
             .genre-nav
               %p.by-genre-icon-v02= 'f'
@@ -18,7 +18,7 @@
         -#.by-card-content-seapartor
         -# types (anthologies, journals, etc.) go here
         .by-card-content-seapartor
-        .col-md-3.col-4
+        .col-md-3.col-4{style: "margin-left: auto; margin-right:auto;"}
           %a{href: translations_path}
             .genre-nav
               %p.by-genre-icon-v02= 's'

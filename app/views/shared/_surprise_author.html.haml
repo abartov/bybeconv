@@ -14,9 +14,8 @@
       .surprise-author-card-content-v02
         .row
           .col-md-6.col-sm-12
-            %div.padbot12
+            %div.metadata
               %span.by-icon-v02{style: 'float: right'}
-                / %a{ href: }
                 = favorite_glyph(author.favorite_of_user)
               %span.by-icon-v02.copyright-icon= author.rights_icon
               = textify_copyright_status(! author.public_domain)
@@ -29,7 +28,7 @@
                   %span{style: 'font-weight: bold'}= t(:rest_in_wikipedia)
                   %span.left-arrow 1
           .col-md-6.col-sm-12.surprise-author-left-side
-            .padbot12
+            .metadata
               %b= t(:works_in_the_project)+': '
               = link_to "#{author.cached_works_count} #{t(:works)}", author_toc_path(author.id)
             .text-height-author-2
@@ -44,10 +43,10 @@
                       = ' / '+mhash[:author]
                     = ' '+genrebit
 
-            .padbot12
-              / %b= t(:recommendations)
-              / a href
-              / = author.recommendations_count
+            .metadata
+              -# %b= t(:recommendations)
+              -# a href
+              -# = author.recommendations_count
 - else # site v1 logic - probably to be completely rewritten
   = render partial: 'shared/author_popup', locals: {author: author, surprise: true}
   %a{ 'data-toggle' => :modal, 'data-target'=> "#surprise_popup_#{id_frag}"}

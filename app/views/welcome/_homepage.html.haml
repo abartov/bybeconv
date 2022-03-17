@@ -102,17 +102,16 @@
             - unless @featured_volunteer.nil?
               .by-side-card-header-v02
                 %p.headline-1-v02{style: 'margin-bottom: 0'}= t(:our_volunteers)
-              .by-card-content-v02.volunteer-content
+              .by-card-content-v02
                 %p.headline-2-v02= @featured_volunteer.name
-                .volunteer-about-v02
-                  %div
-                    .volunteer-text-v02
-                      %p.text-height-volunteer
-                        = @featured_volunteer.bio
-                        %br
-                        = @featured_volunteer.about
-                    .volunteer-side-pic-v02
-                      %img.volunteer-pic-v02{src: @featured_volunteer.profile_image.url(:thumb)}
+                .internal-content-area
+                  .internal-text-area
+                    %p.text-height-volunteer
+                      = @featured_volunteer.bio
+                      %br
+                      = @featured_volunteer.about
+                  .internal-pic
+                    %img{src: @featured_volunteer.profile_image.url(:thumb)}
 #authorWhatsNewDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1', style: 'padding-right: 0;'}
 #featured_content_dlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1', style: 'padding-right: 0;'}
 

@@ -19,29 +19,28 @@
       - if e.translation
         %div
           != t(:translation)+': '+translators_linked_string(manifestation)
-    .by-card-content-v02.surprise-work-height-v02
-      .surprise-work-card-content-v02
-        .row
-          .col-md-6.col-sm-12
-            .padbot12
-              %span.by-icon-v02.copyright-icon= copyright_glyph(manifestation.copyright?)
-              = textify_copyright_status(manifestation.copyright?)
-              %span.help{ 'data-toggle' => 'tooltip', title: manifestation.copyright? ? t(:permission_explain) : t(:pd_explain)}= '[?]'
-              - if e.translation
-                %br
-                .padbot12
-                  %b= t(:orig_lang)+': '
-                  / TODO: add link to query-by-language
-                  = textify_lang(e.works[0].orig_lang)
-                  / TODO: add display of intermediary language, once we create a field and track it.
-          .col-md-6.col-sm-12
-            .padbot12
-              %b= t(:recommendations)+': '
-              / TODO: link to reading recommendations
-              = manifestation.recommendations.count.to_s+' '+t(:recommendations_for_work)
-            / TODO: mention additional translations to same work -- this require an EPIC reworking of the many hard-coded assumptions of one expression <-> one work
-            / .padbot12
-        .text-height-work!= manifestation.snippet_paragraphs(15)
+    .by-card-content-v02.surprise-work-card-content-v02
+      .row
+        .col-md-6.col-sm-12
+          .metadata
+            %span.by-icon-v02.copyright-icon= copyright_glyph(manifestation.copyright?)
+            = textify_copyright_status(manifestation.copyright?)
+            %span.help{ 'data-toggle' => 'tooltip', title: manifestation.copyright? ? t(:permission_explain) : t(:pd_explain)}= '[?]'
+            - if e.translation
+              %br
+              .metadata
+                %b= t(:orig_lang)+': '
+                / TODO: add link to query-by-language
+                = textify_lang(e.works[0].orig_lang)
+                / TODO: add display of intermediary language, once we create a field and track it.
+        .col-md-6.col-sm-12
+          .metadata
+            %b= t(:recommendations)+': '
+            -# TODO: link to reading recommendations
+            = manifestation.recommendations.count.to_s+' '+t(:recommendations_for_work)
+          -# TODO: mention additional translations to same work -- this require an EPIC reworking of the many hard-coded assumptions of one expression <-> one work
+          -# .metadata
+      .text-height-work!= manifestation.snippet_paragraphs(15)
       .read-more-v02
         %a{ href: manifestation_read_path(manifestation.id) }
           %span{style: 'font-weight: bold'}= t(:rest_of_work)
