@@ -134,7 +134,7 @@
 		margin: 0;
 	}
 .headline-1-v02{
-  font-size: 15pt;
+  font-size: 14pt;
   line-height: 15pt;
 }
 .headline-2-v02{
@@ -484,8 +484,60 @@ width: calc(100% - 75px);
 	  width: 64px;
   height: 3px;	
 	}
+.lexicon-homepage .lexicon-header-he .headline-1-v02{
+		font-size: 12pt;
+		margin-bottom: 2px;
+	}
+		.lexicon-header-en .headline-1-v02{
+		font-size: 12pt;
+		margin-bottom: 2px;
+	}
+	.index-part-of-pby img {
+    margin: 2px 2px;
+    width: 28px;
+    height: 10px;
+}
+		.index-part-of-pby img:first-child {
+    display: none;
+}
+			.index-part-of-pby img:last-child {
+    display: none;
+}
+	.author-in-pby{
+		font-size: 28px;
+		right: 110px;
+	}
+	.authors-list-years{
+		right: 150px;
+	}
+	.lexicon-home-header .lexicon-logo{
+	width: 48px;
+    height: 48px;
+    flex-basis: 48px;
+	}
+			.lexicon-author-page-content{
+		margin-top: 235px;
+	}
 
-	
+	.lexicon-author-pic{
+		width: 50px;
+		margin-left: 8px;
+	}
+	.lexicon-author-details .headline-1-v02{
+		font-size: 14pt;
+	}
+		.lexicon-author-page-content .index-part-of-pby img:first-child{
+		display: block;
+	}
+	.lexicon-author-page-content .index-part-of-pby img:last-child{
+		display: block;
+	}
+			.gateway-header .headline-1-v02{
+		font-size: 14pt;
+	}
+		.gateway-header .by-genre-icon-v02{
+		font-size: 24px;
+	}
 }
 
 @media only screen and (max-width: 319px){
@@ -505,5 +557,7 @@ width: calc(100% - 75px);
 		padding-left: 0;
 		padding-right: 0;
 	}
-	
+	.top-element{
+		margin-top: 74px;
+	}
 }
