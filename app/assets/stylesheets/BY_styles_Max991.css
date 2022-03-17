@@ -277,11 +277,10 @@
   display: block;
 }
 .error-found-col{
-	padding-left: 0;
 	padding-right: 0;
 }
 .top-element {
-  margin-top: 100px;
+  margin-top: 98px;
 }
 
 .work-side-menu-area-left{
@@ -650,9 +649,6 @@
 		.surprise-work-card-content-v02 {
   margin-right: 147px;
 	}
-	.whats-new-v02{
-		height: auto;
-	}
 	
 	.limited-height-popup-content-v02{
 		max-height: 100%;
@@ -741,16 +737,6 @@
 	#who-wrote-about-bg {
 		background-size:60%;
 	}
-	.lexicon-home-header{
-		flex-direction: column;
-		align-items: center;
-	}
-	.lexicon-home-header > div{
-		margin-bottom: 12px;
-	}
-	.lexicon-header-he, .lexicon-header-en{
-		text-align: center;
-	}
 	#bibliography-yidish .by-card-content-v02{
 		flex-direction: column;
 	}
@@ -787,6 +773,301 @@
 	#genre {
   height: auto; 
 }
+#authors-in-project.by-card-v02 {
+	height: auto;
+}
+#authors-in-lexicon.by-card-v02 {
+	height: auto;
+}	
+.gateway-large-genre #genre{
+	height: auto;
+}
+.gateway-small-genre #authors-in-project.by-card-v02{
+	height: auto;
+}
+.gateway-small-genre .whats-new-v02{
+	height: auto;
+}	
+	.gateway-dict-genre .advanced-pagination{
+		display: block;
+	}
+	.gateway-dict-genre .pageSelectorArea{
+		display: none;
+	}
+	.lectures-card{
+	height: auto;
+}
+	.recommendations{
+	height: auto;
+}
+	.gate-recommendation .by-card-content-v02{
+		height: auto;
+	}
+
+	.lexicon-header-he{
+		width: auto;
+	}
+.lexicon-homepage .lexicon-header-he .headline-1-v02{
+		font-size: 21pt;
+	margin-bottom: 4px;
+}
+.index-part-of-pby img{
+	margin: 2px 4px;
+    width: 44px;
+    height: 13px;
+	}
+.lexicon-header-he .compiled-by{
+		margin-top: 4px;
+	}
+	.lexicon-home-header{
+		flex-wrap: wrap;
+	}
+.lexicon-home-header .lexicon-logo{
+	width: 70px;
+	height: 70px;
+	flex-basis: 70px;	
+	}
+
+	.lexicon-home-header .compiled-by{
+		margin-top: 4px;
+	}
+	.lexicon-home-header > div{
+		margin-bottom: 8px;
+	}
+		.lexicon-home-header .lexicon-header-en{
+		margin-bottom: 0;
+	}
+	.author-page-top-icons-desktop{
+	display: none;
+}
+.author-page-top-icons-mobile{
+	display: block;
+	margin-right: auto;
+}
+	
+.author-page-top-sort-desktop{
+	display: none;
+}
+
+.author-page-top-sort-mobile{
+	display: block;
+	margin-right: 5px;
+	margin-left: 15px;
+}
+#sort_by_dd{
+	display: none;
+}
+#current_sort_by{
+	display: block;
+	padding: 0 4px;
+}
+	.side-sort{
+		display:none;
+	}
+	.author-side-sort{
+		display: none;
+	}
+.author-sort-area{
+	width: auto;
+	padding: 0;
+
+}
+	.lexicon-entry-under-construction-desktop{
+	display: none;
+}
+.lexicon-entry-under-construction-mobile{
+	display: flex;
+	width: fit-content;
+	background-color: #efbfb7;
+	padding: 3px 6px;
+	border-radius: 3px;
+	align-items: center;
+}
+.connected-texts{
+	height: auto;
+}
+	.gateway-small-genre #genre{
+	height: auto;
+}
+	.maybe-interest{
+		height: auto;
+	}
+	.gateway-period #authors-in-project.by-card-v02{
+	height: auto;
+}
+.gateway-period .whats-new-v02 {
+    height: auto;
+}
+	.antiquity #works-in-project{
+	height: auto;
+}
+	.list-all-texts{
+	margin-top: 200px;
+}
+	.collection-details:first-child{
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.collections .BYD-switch{
+		width: 220px;
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+	.mainlist ol > li {
+	margin-bottom: 10px;
+}
+.modal-dialog {height: 100%;}
+
+.modal-content {height: 100%;}
+	
+	.modal-dialog .modal-content .container-fluid{
+		height: 100%;
+	}
+		.modal-dialog .modal-content .container-fluid form{
+		height: 100%;
+	}
+			.modal-dialog .modal-body{
+		height: 100%;
+	}
+	
+	.modal-dialog .popup-x-v02{
+		display: none;
+	}
+
+	.by-popup-v02 {
+  width: 100%;
+  box-shadow: none;
+  left: 0;
+  margin-top:0px;
+  border-radius: 0;
+  min-height: 100vh;
+  max-height: fit-content;
+}
+	.by-popup-v02 .popup-x-v02 {
+  display: none;
+}
+	.by-popup-v02-share{
+  width: 100%;
+  height: 140px;
+  box-shadow: none;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  margin-top:0px;
+  margin-left: 0;
+  margin-right: 0;
+  border-radius: 0;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.flex-popup{
+  display: flex;
+  flex-flow: column;
+  height: 100vh;
+  max-height: 100vh;
+  margin-top: 0vh;
+}
+.flex-popup .by-popup-v02 {
+  flex: 1 1 auto;
+}
+.by-popup-v02 .by-card-content-v02 .limited-height-popup-content-v02{
+  flex: 1 1 calc(100vh - 298px);
+}
+	#authors-multi-select-popup .by-popup-v02{
+	width: 100%;
+}
+	#whats-new-author-popup .by-card-header-v02{
+		display: none;
+	}
+	#error-found .button-placeholder{
+		width: 108px;
+	}
+	#sefaria-popup .by-popup-v02{
+		width: 100%;
+		height: 100%;
+	}
+#sefaria-popup{
+  display: flex;
+  flex-flow: column;
+  height: 100vh;
+  max-height: 100vh;
+  margin-top: 0vh;
+}
+#sefaria-popup .by-popup-v02 {
+  flex: 1 1 auto;
+}	
+.popup-top{
+  position: sticky;
+  z-index: 5;
+  width: 100%;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: solid 2px #d9cdd5;
+}
+.popup-top .headline-2-v02{
+  margin-bottom: 0;
+}
+
+.by-dual-popup{
+  width: 92%;
+  background-color: #eeeced;
+  border-radius: 3px;
+  box-shadow: 0 3px 9px rgba(0, 0, 0, 0.4);
+  margin-top: 45px;
+  margin-right: auto;
+  margin-left: auto;
+}
+.share-popup{
+	width: 240px;
+}
+.share-name{
+	display: none;
+}
+
+.popup-with-bottom-links{
+		height: calc(100% - 58px);
+	}
+.dropdown-menu-seperator{
+  display:block;
+  width: calc(100% + 30px);
+  padding: 0px;
+  margin: 0;
+}
+	.curatorial-content{
+	display: block;
+}
+	.BYD-entry-top .headline-1-v02{
+		margin-bottom: 4px;
+	}
+	.lexicon-publication-details-area{
+		flex-direction: column;
+	}	
+	.lexicon-publication-top-info .by-card-content-v02{
+		padding-left: 10px;
+	}
+.lexicon-issue-name{
+	flex-direction: column;
+	gap: 0px;
+}
+.lexicon-publication-page .lexicon-publication-years{
+	padding-top: 0;
+}
+.lexicon-publication-page .author-main-info-card-v02 .metadata{
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 6px;
+}
+.yiddish-list .authors-list-content {
+    margin-top: 380px;
+}
+.periodicals .author-name-area{
+	gap: 0;	
+}
+	
 }
 
 

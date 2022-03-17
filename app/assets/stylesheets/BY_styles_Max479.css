@@ -107,7 +107,7 @@ body {
 		line-height: 10.5pt; 
 	}
 .top-element{
-		margin-top: 96px;
+		margin-top: 89px;
 	}
 #header > .row {
 		margin-left: -15px;
@@ -488,4 +488,49 @@ padding-top: 6px;
 	.statistics-box-v02 div:nth-of-type(1) {flex-grow: 1;}
 .statistics-box-v02 div:nth-of-type(2) {width: auto;white-space: nowrap}
 .statistics-box-v02 div:nth-of-type(3) {flex-grow: 1;}
+.lexicon-homepage .lexicon-header-he .headline-1-v02{
+		font-size: 15pt;
+	}
+	.index-part-of-pby img {
+    margin: 3px 0px;
+    width: 28px;
+    height: 10px;
+}
+.authors-list-content {
+    margin-top: 175px;
+}
+	.author-in-pby{
+  font-size: 36px;
+  position: absolute;
+  right: 160px;
+}
+	.lexicon-header-he .headline-1-v02{
+		font-size: 11pt;
+		line-height: 11pt;
+		margin-bottom: 0;
+	}
+		.lexicon-header-he .headline-3-v02{
+		font-size: 9pt;
+	}
+	.lexicon-author-page-content{
+		margin-top: 245px;
+	}
+		.gateway-header .headline-1-v02{
+		font-size: 18pt;
+	}
+	.gateway-header .by-genre-icon-v02{
+		font-size: 30px;
+	}
+	.collection-details{
+	gap: 6px;
+	margin-bottom: 6px;
+}
+	.switch-label {
+    margin-right: 34px;
+    margin-left: 4px;
+}
+	.topNavEntryAreaMobile{
+		margin-top: 10px;
+	}
+	
 }
