@@ -10,17 +10,6 @@
             = t(:x_authors, x: @totals[:authors])
           -# author carousels
           = render partial: 'shared/authors', locals: {popular_authors: @pop_authors, random_authors: [], newest_authors: @newest_authors}
-        -# surprise author
-        .scroller.by-card-v02#surprise-scroller
-          .slide
-            #authors-surprise{style:'cursor:pointer'}
-              .by-card-header-v02
-                %span.headline-1-v02= t(:surprise_author)
-              .by-card-content-v02#authors-surprise-initial
-                .surprise-btn-area-v02
-                  %button.by-button-v02.surprise-btn-v02.headline-2-v02= t(:surprise_me)
-          .slide
-            = render partial: 'shared/surprise_author', locals: {passed_mode: 'home', author: @surprise_author}
 
         -# most read and new works
         - cache "homepage_mostread", expires_in: 6.hours do
@@ -36,19 +25,30 @@
                 %a{style: 'font-weight:bold', href: all_works_path}
                   %span= t(:to_all_works)
                   %span.left-arrow 1
-        -# surprise work
-        .scroller.by-card-v02#work-surprise-scroller
+        = render 'works'
+        = render 'periods'
+
+        -# surprise author
+        .scroller.by-card-v02#surprise-scroller
           .slide
-            #works-surprise{style:'cursor:pointer'}
+            #authors-surprise{style:'cursor:pointer'}
               .by-card-header-v02
-                %span.headline-1-v02= t(:surprise)
-              .by-card-content-v02#works-surprise-initial
+                %span.headline-1-v02= t(:surprise_author)
+              .by-card-content-v02#authors-surprise-initial
                 .surprise-btn-area-v02
                   %button.by-button-v02.surprise-btn-v02.headline-2-v02= t(:surprise_me)
           .slide
+            = render partial: 'shared/surprise_author', locals: {passed_mode: 'home', author: @surprise_author}                  
+        -# surprise work
+        .scroller.by-card-v02#work-surprise-scroller
+          .slide#works-surprise{style:'cursor:pointer'}
+            .by-card-header-v02
+              %span.headline-1-v02= t(:surprise)
+            .by-card-content-v02#works-surprise-initial
+              .surprise-btn-area-v02
+                %button.by-button-v02.surprise-btn-v02.headline-2-v02= t(:surprise_me)
+          .slide
             = render partial: 'shared/surprise_work', locals: {passed_mode: 'home', manifestation: @surprise_work}
-        = render 'works'
-        = render 'periods'
       .col-12.col-lg-4
         -# whatsnew feed
         .by-card-v02.whats-new-v02
