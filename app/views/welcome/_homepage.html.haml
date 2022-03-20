@@ -7,7 +7,8 @@
           .by-card-header-v02
             %span.headline-1-v02
               = link_to t(:authors_in_the_project), authors_path
-            = t(:x_authors, x: @totals[:authors])
+            -#= t(:x_authors, x: @totals[:authors])
+            = "(#{@totals[:authors]})"
           -# author carousels
           = render partial: 'shared/authors', locals: {popular_authors: @pop_authors, random_authors: [], newest_authors: @newest_authors}
 
@@ -16,7 +17,8 @@
           .by-card-v02#works-in-project
             .by-card-header-v02
               %span.headline-1-v02= t(:works_in_the_project)
-              = t(:x_works, {x: @totals[:works]})
+              -#= t(:x_works, {x: @totals[:works]})
+              = "(#{@totals[:works]})"
             .by-card-content-v02.works-in-project-content
               .row.top-works
                 = render partial: 'works_list', locals: {cache_key: 'top_works', label: t(:most_popular_works_this_month), collection: @pop_works, extra_class: 'works-most-read'}
@@ -74,9 +76,8 @@
                         %div{ 'class' => "new-card-type-v02 #{(item.double || item.itemtype == 'youtube') ? ' double-height-v02' : ''}"}= newsitem_glyph(item)
                     .new-card-left-v02
                       - unless item.url.nil?
-                        %a{ href: item.url}
-                          %p.headline-2-v02
-                            %span.new-headline-v02!= item.title
+                        %a.headline-2-v02{ href: item.url}
+                          %span.new-headline-v02!= item.title
                       - else
                         %p.headline-2-v02
                           %span.new-headline-v02!= item.title

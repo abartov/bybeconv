@@ -511,7 +511,8 @@ module BybeUtils
   end
 
   def get_total_authors
-    return Person.cached_toc_count
+    # return Person.cached_toc_count
+    return Person.cached_count
   end
 
   def get_total_headwords

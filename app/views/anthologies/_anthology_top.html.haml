@@ -4,38 +4,79 @@
   .top-space
   .work-page-top
     .work-page-top-info-card
+      .work-and-author-names-mobile
+        .headline-1-v02= @anthology.title
+        .headline-3-v02
+          = t(:edited_by)+': '
+          %span= @anthology.user.name
       .row
-        .col-4.anthology-name
-          .headline-1-v02.work-name-top= @anthology.title
-          .headline-3-v02= t(:edited_by)+': '+@anthology.user.name
-        .col-4.flex-container
-          #anthology-display-select
-            .anthology-display-select-desktop
-              .custom-select.field-v02
-                - options = [[t(:jump_to), 'top']]
-                - @htmls.each do |title, html, is_curated, genre, i|
-                  - options << [title+(is_curated ? " (#{t(:curated_text)})" : ''), 'title'+i.to_s]
-                = select_tag :jumptitle, options
-            .anthology-select-mobile
-        .col-4.flex-container
-          .anthology-display-top-icons-desktop
+        .col-12
+          .work-and-author-names-desktop
+            .headline-1-v02= @anthology.title
+            .headline-3-v02
+              = t(:edited_by)+': '
+              %span= @anthology.user.name
+          .field-v02.work-chapters-dropdown-field-desktop#chapter_dropdown
+            = t(:jump_to)
+            %span.dropdown-arrow )
+            .by-dropdown-content-v02.dropdown_full-width#chapter_dropdown_content
+              - @htmls.each do |title, html, is_curated, genre, i|
+                %p.pointer.jumpch.linkcolor{style:'text-overflow: ellipsis;overflow-x: hidden;', 'data-target' => "title#{i}"}= title
+          .work-page-top-icons-desktop
             %button.btn-small-outline-v02.btn-text-v02.reading-mode-btn-v02.notyet{:href => "#"}
+              %span.by-icon-v02= '/'
               = t(:reading_mode)
             .top-left-icons-group
-              .by-icon-v02.pointer.linkcolor.notyet= 'b'
-              .by-icon-v02.pointer.linkcolor.printbutton= '9'
-              .by-icon-v02.pointer.linkcolor.download{style: "margin-left:0;", 'data-toggle' => 'modal', 'data-target' => '#downloadDlg', style: "margin-left:0;"}= '3'
+              .icons-group-v02
+                .by-icon-v02.pointer.linkcolor.bookmark-status.notyet= 'b'
+                .by-icon-v02.pointer.linkcolor.printbutton= 9
+                .by-icon-v02.pointer.linkcolor.download{'data-toggle' => 'modal', 'data-target' => '#downloadDlg'}= '3'
+          .chapters-and-icons-mobile
+            .work-chapters-popup-mobile#chapter_mobile_dropdown
+              %button.btn-small-outline-v02.btn-text-v02{ 'data-toggle' => 'modal', 'data-target'=> '#chapterDlg'}
+                = t(:jump_to)
+
+            .work-page-top-icons-mobile
+              %button.btn-small-outline-v02.btn-text-v02.reading-mode-icon-btn-v02{:href => "#"}
+                %span.by-icon-v02= '/'
+              .top-left-icons-group
+                .icons-group-v02
+                  .by-icon-v02.pointer.linkcolor.bookmark-status.notyet= 'b'
+                  .by-icon-v02.pointer.linkcolor.printbutton= 9
+                  .by-icon-v02.pointer.linkcolor.download{'data-toggle' => 'modal', 'data-target' => '#downloadDlg'}= '3'
     .row.error-found-row
       .side-nav-col
         %nav#chapternav.navbar
           %ul#chapter-nav.navbar-nav.flex-column.by-card-v02{"aria-orientation" => "vertical"}
-            /%li.nav-item
-            /  %a.nav-link.nav-link-arrows{"aria-controls" => "#", "aria-selected" => "false", :disabled => "disabled", :href => "#"}
-            /    .side-menu-arrow (
+            -#%li.nav-item
+            -#  %a.nav-link.nav-link-arrows{"aria-controls" => "#", "aria-selected" => "false", :disabled => "disabled", :href => "#"}
+            -#    .side-menu-arrow (
             - @htmls.each do |title, html, is_curated, genre, i|
               %li.nav-item{'data-toggle': 'tooltip', 'data-placement': 'top', 'data-delay' => { "show": 500, "hide": 100 }, title: title}
                 %a.nav-link.nav-link-chapter{"aria-controls" => "#", href: "#title#{i.to_s}"}
                   .nav-chapter-name= title+(is_curated ? " (#{t(:curated_text)})" : '')
-            /%li.nav-item
-            /  %a.nav-link.nav-link-arrows{"aria-controls" => "#", "aria-selected" => "false", :href => "#"}
-            /    .side-menu-arrow )
+            -#%li.nav-item
+            -#  %a.nav-link.nav-link-arrows{"aria-controls" => "#", "aria-selected" => "false", :href => "#"}
+            -#    .side-menu-arrow )
+:javascript
+  $(document).ready(function(){
+    $('#chapter_dropdown').click(function(){
+      if($('#chapter_dropdown_content').css('display') == 'block')
+        $('#chapter_dropdown_content').css('display', 'none');
+      else
+        $('#chapter_dropdown_content').css('display', 'block');
+    });
+    $('.jumpch').click(function(e) {
+      e.preventDefault();
+      anchor = $(this).attr('data-target');
+      $('html, body').animate({
+        scrollTop: $('a[name='+anchor+']').offset().top - $('header').height() - 45
+      }, 800);
+      $('#chapterDlg').modal('hide');
+      $('header').addClass("scrolled");
+      $('html, body').animate({ // re-adjust, after the header height changed
+        scrollTop: $('a[name='+anchor+']').offset().top - $('header').height() - 45
+      }, 0);
+      $('#actualtext').focus();
+    });
+  });
