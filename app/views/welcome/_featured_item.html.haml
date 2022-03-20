@@ -1,8 +1,7 @@
 .by-card-v02.flash-work-v02
   .flash-bg-v02
     .by-side-card-header-v02
-      .text-height-flash-work
-        %p.headline-1-v02= t(:featured_item)
+      %p.headline-1-v02= t(:featured_item)
     .by-card-content-v02.clampable
       - unless @featured_content.nil?
         %p.headline-3-v02= @featured_content.title
@@ -10,16 +9,17 @@
           %p
             = t(:by)+' '
             = link_to @featured_content.user.name, volunteer_show_path(@featured_content.user)
-        .text-height-flash-work.clampable_body
-          != @fc_snippet
-          - if @fc_rest != ''
-            = ' ...'
+        .flash-text-container
+          .text-height-flash-work.clampable_body
+            != @fc_snippet
+            - if @fc_rest != ''
+              = ' ...'
         -# TODO: implement
         -# .another-flash{style: 'padding-top: 6px'}
         -#   = link_to '#' do
         -#     %span.right-side-icon= "'"
         -#     %span{style: 'font-weight: bold'}= t(:another_feature)
-        .bottom-left-buttons
+        .button-to-full-v02
           - unless @featured_content.manifestation.nil?
             %a{ href: manifestation_read_path(id: @featured_content.manifestation.id)}
               %button.by-button-v02= t(:to_the_work_in_the_site)

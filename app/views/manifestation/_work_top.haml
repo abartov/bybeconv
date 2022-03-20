@@ -43,7 +43,7 @@
         .col-12
           - if @m.chapters?
             .field-v02.work-chapters-dropdown-field-desktop#chapter_dropdown
-              =t(:jump_to_chapter)
+              = t(:jump_to_chapter)
               %span.dropdown-arrow )
               .by-dropdown-content-v02.dropdown_full-width#chapter_dropdown_content
                 - @chapters.each do |ch|

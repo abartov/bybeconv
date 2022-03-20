@@ -2,6 +2,21 @@
 #content.container-fluid
   .row.anthology-page-content
     = render partial: 'anth_body'
+.modal#chapterDlg{role: 'dialog', tabindex: '-1'}
+  .modal-dialog.modal-dialog-centered{role: 'document'}
+    .modal-content
+      .popup-top
+        %button.btn-small-outline-v02{'data-dismiss' => 'modal'}
+          .btn-text-v02
+            %span.right-arrow 2
+            %span= t(:back)
+        .headline-2-v02{:style => "text-align: center;margin: 0; padding-top: 3px;"}= t(:jump_to)
+      .by-popup-v02
+        %div
+          .by-card-content-v02.dropdown-content-mobile{:style => "padding-top: 0"}
+            - @htmls.each do |title, html, is_curated, genre, i|
+              %a.jumpch{style:'text-overflow: ellipsis;overflow-x: hidden;', 'data-target' => "title#{i}", href:"#title#{i}"}= title
+
 :javascript
   $(document).ready(function() {
     //$('body').scrollspy('refresh');
