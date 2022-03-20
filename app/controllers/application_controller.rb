@@ -177,7 +177,7 @@ class ApplicationController < ActionController::Base
   end
 
   def randomize_works_by_genre(genre, how_many)
-    return Manifestation.where(id: Manifestation.published.joins(expressions: [:works]).where({works: {genre: 'poetry'}}).pluck(:id).sample(how_many))
+    return Manifestation.where(id: Manifestation.published.joins(expressions: [:works]).where({works: {genre: genre}}).pluck(:id).sample(how_many))
   end
 
   def randomize_works(how_many)
