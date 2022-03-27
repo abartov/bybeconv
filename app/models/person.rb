@@ -159,10 +159,11 @@ class Person < ApplicationRecord
       self.count
     end
   end
+
   def self.cached_toc_count
-    #Rails.cache.fetch("au_toc_count", expires_in: 24.hours) do
+    Rails.cache.fetch("au_toc_count", expires_in: 24.hours) do
       self.has_toc.count
-    #end
+    end
   end
 
   def self.cached_pd_count
