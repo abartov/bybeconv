@@ -1,5 +1,6 @@
 include BybeUtils
 Bybeconv::Application.routes.draw do
+  resources :lex_files
   mount Rswag::Ui::Engine => '/api-docs'
   mount Rswag::Api::Engine => '/api-docs'
   mount V1::Api => '/'

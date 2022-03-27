@@ -53,9 +53,6 @@
 	.author-page-top-name{
 		line-height: 36px;
 	}
-	.author-page-content{
-		margin-top: 222px;
-	}
 
 	.print .col-12{
 	padding-right: 60px;
@@ -238,7 +235,7 @@
 	width: calc(50% - 40px);
  }
 .author-page-top-info-card{
-  padding: 3px 15px 3px 10px;
+  padding: 10px 15px 10px 10px;
 }
 .value-summary-card-v02 {
   margin-left: 0px;
@@ -265,11 +262,6 @@
 		width: calc(100% - 147px);
 		    max-height: calc(100vh - 165px);
 	}
-.limited-height-popup-content-v02 {
-  width: 100%;
-  height: calc(100vh - 278px);
-  overflow-y: auto;
-}
 	
 	
 	.surprise-author-card-content-v02 {
@@ -281,13 +273,7 @@
 		max-height: calc(100vh - 182px);
 		overflow-y: auto;
 	}
-	#texts-about-author-popup .limited-height-popup-content-v02{
-		max-height: calc(100vh - 64px);
-		height: calc(100vh - 64px);
-	}	
- .filter-sort-m-popup .limited-height-popup-content-v02{
-  max-height: 100vh;
-}
+	
 .lexicon-author-nav-links.topNavEntry {
     margin: 0;
 }

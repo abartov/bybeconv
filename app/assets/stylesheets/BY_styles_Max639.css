@@ -150,9 +150,6 @@ p {
 	.author-page-top-name{
 		line-height: 36px;
 	}
-	.author-page-content{
-		margin-top: 203px;
-	}
 	.text-page-content{
 	margin-top: 208px;
 }
@@ -301,7 +298,11 @@ p {
 		margin-bottom: 0;
 	}
 
-	
-	
+	.author-main-info-card-v02 .by-card-header-v02 {
+    padding-right: 125px;
+}
+.by-card-header-v02 {
+	min-height: 50px;
+}	
 }
 

@@ -10,9 +10,6 @@
     max-height: 32px;
 	margin-top: 2px;
 }
-	.author-name-years{
-		display: block;
-	}
 
 	.author-page-top-years{
 		vertical-align: text-bottom;
@@ -212,9 +209,6 @@
 	margin-bottom: 4px;
 	gap:4px;
 	}
-	.topMobileBtns-v02 .btn-small-outline-v02{
-		margin-left: 6px;
-	}
 
 
 
@@ -278,9 +272,6 @@
 }
 .error-found-col{
 	padding-right: 0;
-}
-.top-element {
-  margin-top: 98px;
 }
 
 .work-side-menu-area-left{
@@ -352,10 +343,6 @@
 
 	.surprise-btn-v02 {
   height: 50px; }
-	
-	.author-page-content{
-	margin-top: 215px;
-}
 .text-page-content{
 	margin-top: 214px;
 }
@@ -649,10 +636,7 @@
 		.surprise-work-card-content-v02 {
   margin-right: 147px;
 	}
-	
-	.limited-height-popup-content-v02{
-		max-height: 100%;
-	}	
+		
 	#authors-surprise-replaced{
 		height: auto;
 	}
@@ -690,9 +674,10 @@
 	.reading-mode-icon-btn-v02 .by-icon-v02{
 		font-size: 18px;
 	}
-	.topMobileBtns-v02 .btn-small-outline-v02{
-		border: none;
-	}
+.topMobileBtns-v02 .btn-small-outline-v02{
+	border: none;
+    margin-left: 6px;
+}
 #menu {
     display: none; }
 
@@ -766,9 +751,6 @@
 	}
 	.lexicon-author-nav-links{
 		flex: 1;
-	}
-	.lexicon-author-page-content{
-		margin-top: 259px;
 	}
 	#genre {
   height: auto; 
@@ -937,6 +919,7 @@
 
 	.by-popup-v02 {
   width: 100%;
+		max-width: inherit;
   box-shadow: none;
   left: 0;
   margin-top:0px;
@@ -1067,7 +1050,49 @@
 .periodicals .author-name-area{
 	gap: 0;	
 }
-	
+	.by-popup-v02 .by-card-header-v02{
+		display: none;
+	}
+	.limited-height-popup-content-v02 {
+  width: 100%;
+  height: calc(100vh - 278px);
+  max-height: 100%;
+  overflow-y: auto;
+}
+	#texts-about-author-popup .limited-height-popup-content-v02{
+		max-height: calc(100vh - 64px);
+		height: calc(100vh - 64px);
+	}	
+ .filter-sort-m-popup .limited-height-popup-content-v02{
+  max-height: 100vh;
+}
+	.thanks-page{
+		margin-top: 126px;
+	}
+	.thanks-page .work-side-menu-area{
+		display: none;
+	}
+	.author-page-content .whats-new-v02 {
+    min-height: 100px;
+}
+			.author-main-info-card-v02 .by-card-header-v02 {
+    padding-right: 162px;
+}
+#thanks-first-card{
+	margin-top: 0;
+}
+	.topMobileBtns-v02 a:hover{
+		background-color: transparent;
+		text-decoration: none;
+		color: #d9cdd5;
+	}
+	.bottom-button-area{
+		position: sticky;
+		bottom: 0;
+	}
+.by-dual-popup .bottom-button-area{
+		position: relative;
+	}
 }
 
 

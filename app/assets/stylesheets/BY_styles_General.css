@@ -68,6 +68,13 @@ a:hover {
   color: #2b0d22;
   background-color: #d9cdd5;
 }
+.new-card-right-v02 img:hover{
+	opacity: 0.8;
+}
+
+.new-card-right-v02 a:hover {
+	text-decoration: none;
+}
 #footer a:hover {
   text-decoration: none;
 	background-color: transparent;
@@ -148,11 +155,6 @@ a[disabled=disabled] {
   width: 90%;
   background-color: white;
 }
-.header-separator{
-	width: 100%;
-	height: 2px;
-	background-color: white;
-}
 
 #content-area{
 	padding: 0;
@@ -161,9 +163,6 @@ a[disabled=disabled] {
   width: 90%;
  }
 
-.top-element {
-	margin-top: 116px;
-}
 
 
 #footer {
@@ -571,6 +570,16 @@ a .by-genre-name-v02:hover{
   background-color: #660248;
 }
 
+#footer .footer-share .by-footer-nav-item-v02{
+  padding:5px;
+  margin: 5px;
+  white-space: nowrap;
+  color: #ffffff;
+  text-decoration: none;
+}
+#footer .footer-share:hover .by-footer-nav-item-v02{
+  background-color: #660248;
+}
 .by-dropdown-content-v02 {
   display: none;
   position: absolute;
@@ -658,8 +667,6 @@ a .by-genre-name-v02:hover{
 
 /*	width: calc(100%-140px); */
 input {
-	margin-top: 3px;
-	margin-right: 6px;
   border: none;
   background-color: transparent;
   width: 100%;
@@ -754,6 +761,7 @@ input::placeholder {
   width: 100%;
   padding: 15px;
   border-bottom: solid 2px #d9cdd5;
+	min-height: 54px;
 }
 .by-card-header-left-v02 {
   width: 100%;
@@ -798,9 +806,7 @@ input::placeholder {
   color: #ffffff; 
   display: flex;
   align-items: center;
-  margin-right: 6px;
   cursor: pointer;
-  float: left;
 }
 
 .by-button-v02:hover {
@@ -1177,25 +1183,6 @@ height: auto;}
   background-size: cover;
   width: 100%; }
 
-.volunteer-about-v02 {
-  height: 100%;
-  background-color: #eeeced;
-  padding: 15px; }
-
-.volunteer-text-v02 {
-  width: 75%;
-  display: inline-block; }
-
-.volunteer-side-pic-v02 {
-  width: 20%;
-  display: inline-block;
-  float: left; }
-
-.volunteer-pic-v02 {
-  object-fit: cover;
-  width: 100%;
-  height: auto;
-  max-height: 210px; }
 
 .whats-new-v02 {
   background-color: #d9cdd5; 
@@ -1253,9 +1240,6 @@ height: auto;}
   border-top-right-radius: 3px;
   border-bottom-right-radius: 3px;
   }
-.new-card-pic-v02:hover{
-	opacity: .8;
-}
 .recommend-card-pic-frame-v02{
   width: 60px;
   height: 60px;
@@ -1300,6 +1284,9 @@ height: auto;}
   padding-top: 60px;
   background-image: url("/assets/new_bg1.png");
   background-size: cover; }
+.new-card-right-v02 .new-card-type-v02:hover{
+	opacity: .8;
+}
 
 .new-card-type-v02.double-height-v02 {
   padding-top: 120px;
@@ -1504,10 +1491,17 @@ nav a {
 
 .sidenav-v02 .closebtn-v02 {
   position: absolute;
-  top: 12px;
+  top: 15px;
   left: 15px;
   font-size: 30px;
-  margin-left: 0; }
+  margin-left: 0;
+	padding: 3px 3px 5px 3px;
+	border-radius: 3px;
+}
+.sidenav-v02 .closebtn-v02:hover{
+	color: white;
+	background-color: #660248;
+}
 
 .sidenav-v02 .mobile-menu-top {
   position: absolute;
@@ -1704,7 +1698,7 @@ ul #menuMobile {
   overflow: hidden;
   position: relative;
   display: -webkit-box;
-  -webkit-line-clamp: 4;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
 	max-height: 68px;
 }
@@ -1835,7 +1829,7 @@ ul #menuMobile {
 }
 .author-page-top-info-card{
   width: 100%;
-  padding: 3px 15px 6px 15px;
+  padding: 10px 15px;
   border-radius: 3px;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
   background-color: #d9cdd5;
@@ -1855,12 +1849,9 @@ ul #menuMobile {
 	background-color: #cbb3c3;
 }
 .author-name-years{
-	margin-bottom: 6px;
-}
-.author-page-top-name{
-  display: inline;
-  margin-left: 0;
-	line-height: 30px;
+	display: flex;
+    align-items: baseline;
+	flex-flow: wrap;
 }
 .author-page-top-years{
 	display: inline;
@@ -2456,22 +2447,17 @@ display: none;}
 	flex-direction: column;
 	align-content: space-between;
 }
-.card-with-button{
-	padding-bottom: 62px;
-}
 .button-to-full-v02 {
   display: flex;
 	justify-content: flex-end;
 	margin-top: 15px;
+	gap: 6px;
   }
 .button-to-full-flash {
   position: absolute;
   left: 118px;
   bottom: 15px;
   }
-.author-whats-new-content{
-	min-height: 374px;
-}
 #author-whats-new-bg {
   background-image: url("/assets/bullhorn.svg");
   background-repeat: no-repeat;
@@ -2566,9 +2552,6 @@ a .author-name-area:hover{
 	background-color: #2b0d22;
 	border-bottom-left-radius: 3px;
 	border-bottom-right-radius: 3px;
-}
-.author-page-content{
-	margin-top: 226px;
 }
 .text-page-content{
 	margin-top: 250px;
@@ -2951,6 +2934,9 @@ padding-left: 0;
 #moreMobile{
 	color: white;
 }
+#moreMobile:hover{
+	color: #d9cdd5;
+}
 .minimized #text-moreMobile{
 	display: none;
 }
@@ -3039,19 +3025,22 @@ padding-left: 0;
 }
 .share-options-group{
 	display: flex;
-	align-items: center;
-	gap: 4px;
+	gap: 12px;
 }
-.share-option{
-	padding: 0 10px;
+.share-options-group a{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 3px;
+	gap: 3px;
+}
+.share-options-group a:hover{
+	text-decoration: none;
 }
 .share-icon{
 	font-size: 24px;
-	text-align: center;
-}
-.share-name{
-	padding-top: 10px;
-	text-align: center;
+	width: 30px;
+	height: 30px;
 }
 
 .bottom-donate-btn-area{
@@ -3078,11 +3067,10 @@ padding-left: 0;
 	margin-left: 0;
 }
 .bottom-button-area{
-	min-height: 40px;
 	padding: 15px;
   display: flex;
   align-items: center;
-  flex-direction: row-reverse;
+	gap: 6px;
 }
 .bottom-button-area .close-btn{
 	width: 120px;
@@ -3136,6 +3124,8 @@ padding-left: 0;
 	position: relative; 
 	background-color: #fff;
 	padding-right: 4px;
+	margin-top: 0;
+	margin-right: 0;
 }
 .mobile-search{
 	width: calc(100% - 40px);
@@ -4793,7 +4783,7 @@ position: absolute;
   top: 8px;
 }
 .internal-notification .popup-x-v02:hover{
-  color: #D9CDD5;
+  color: #660248;
 }
 .internal-notification-content{
   margin: auto;
@@ -4858,9 +4848,6 @@ position: absolute;
   color: white;
   left: 8px;
   top: 8px;
-}
-.internal-notification .popup-x-v02:hover{
-  color: #D9CDD5;
 }
 .internal-notification-content{
   padding-top: 6px;
@@ -5243,12 +5230,6 @@ position: absolute;
 .entryCorrectionDate{
 	margin-bottom: 12px;
 }
-.author-whats-new-content .new-card-v02{
-	height: auto;
-}
-.author-whats-new-content .new-card-right-v02{
-	height: 150px;
-}
 .author-page-content .whats-new-v02{
 	min-height: 410px;
 	height: auto;
@@ -5430,7 +5411,6 @@ position: absolute;
 .limited-height-popup-content-v02 {
   width: 100%;
   overflow: auto;
-	margin-bottom: 15px;
 }
 .work-page-top-info-card .row{
 	margin-left: 0;
@@ -5471,6 +5451,7 @@ position: absolute;
 }
 .bottom-right-link{
 	margin-left: auto;
+	margin-top: 4px;
 }
 .flash-popup-bg-v02 .by-card-content-v02{
 	max-height: calc(100vh - 324px);
@@ -5479,6 +5460,7 @@ position: absolute;
 #texts-about-author-popup .limited-height-popup-content-v02{
   max-height: calc(100vh - 300px);
   overflow: auto;
+	margin-bottom: 15px;
 }
 #authors-multi-select-popup .by-popup-v02{
 	width: 80%;
@@ -5760,7 +5742,7 @@ position: absolute;
 }
 a.help {
   line-height: 18px;
-  padding: 2px 3px;
+  padding: 2px;
   border-radius: 3px;
   color: #660248;
   margin-right: 2px;
@@ -5854,11 +5836,23 @@ a.help:hover{
 .donation-area-v02 a:hover{
 	text-decoration: none;
 }
+.topMobileBtns-v02 a.by-icon-v02:hover{
+	background-color: transparent;
+}
 .topMobileBtns-v02 a{
 	color:white;
 }
 .topMobileBtns-v02 a:hover{
 	color: #d9cdd5;
+}
+.topMobileBtns-v02 .dropdown-item a.by-icon-v02:hover{
+	background-color: transparent;
+}
+.topMobileBtns-v02 .dropdown-item a{
+	color:#660248;
+}
+.topMobileBtns-v02 .dropdown-item a:hover{
+	color: #2b0d22;
 }
 #nav-more.by-icon-v02{
 	padding-left: 0;
@@ -6121,6 +6115,9 @@ margin-top: 12px;
 	padding: 15px;
 }
 
+.new-card-right-v02 .lexicon-logo:hover{
+	opacity: .6;
+}
 #genre .row{
 	margin-left: 0;
 	margin-right: 0;
@@ -6505,18 +6502,14 @@ a:hover .genre-nav{
 	display: flex;
 	flex-direction: row;
 	align-content: space-between;
+	gap: 15px;
 }
-.volunteer-v02 .internal-pic{
-	padding-right: 15px;
-	padding-left: 0;
+.internal-pic img{
+	width: 80px;
+	object-fit: contain;
 }
-.internal-pic {
-	object-fit: cover;
-  	width: 85px;
-	height: 144px;
-	margin-left: 15px;
- }
 .internal-text-area{
+	flex-grow: 2;
 	display: flex;
 	flex-direction: column;
 }
@@ -6604,11 +6597,8 @@ a:hover .genre-nav{
 }
 .lexicon-publication-years{
 	display: flex;
-	gap: 20px;
-	padding-top: 6px;
-}
-.lexicon-publication-info-right .headline-1-v02{
-	margin-left: 15px;
+	gap: 15px;
+	align-items: baseline;
 	margin-bottom: 4px;
 }
 .lexicon-publication-info-right .headline-2-v02{
@@ -6667,7 +6657,8 @@ a:hover .genre-nav{
 }
 .lexicon-issue-name{
 	display: flex;
-	gap: 20px;
+	gap: 15px;
+	align-items: baseline;
 }
 .lexicon-publication .author-works-nav {
     border-top: 2px solid #efbfb7;
@@ -6732,3 +6723,48 @@ a:hover .genre-nav{
 }
 
 
+.list-no-bullets ul{
+	list-style: none;
+	padding-right: 0;
+}
+.multi-authors{
+    background-color: #d9cdd5;
+    padding: 0 5px;
+    border-radius: 3px;
+	margin-top: 6px;
+}
+.thanks-page{
+	margin-top: 154px;
+}
+.flash-text-v02 {
+    flex-grow: 1;
+}
+.gateway-title-secondary-text{
+	padding-top: 6px;
+}
+.edition-details{
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	margin-bottom: 6px;
+	gap: 4px;
+}
+.current-work{
+	margin-bottom: 2px;
+}
+.share-icon-button:hover{
+	background-color: #d9cdd5;
+    color: #2b0d22;
+    text-decoration: none;
+}
+#copy_proof{
+	margin-top: 4px;
+	padding-right: 6px;
+}
+#clear_proof{
+	margin-top: 4px;
+	padding-right: 6px;
+}
+#whats-new-author-popup .by-card-content-v02{
+	min-height: 235px;
+}

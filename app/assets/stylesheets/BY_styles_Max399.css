@@ -1,9 +1,6 @@
 /* CSS Document */
 
 @media only screen and (max-width: 399px) {
-.top-element{
-  margin-top: 80px;
-  }
 .byPeriod {
   width: 8%;
  }
@@ -183,7 +180,7 @@
   margin-right: 8px;
 }
 .author-page-top-info-card{
-  padding: 3px 6px;
+  padding: 6px;
 }
 
 .btn-text-v02{
@@ -256,16 +253,7 @@
 	.author-name-area{
 		height: 33px;
 	}
-.author-page-content{
-	margin-top: 178px;
-}
 
-	.text-page-content{
-	margin-top: 166px;
-}
-	.about-page-content{
-		margin-top: 112px;
-	}
 	.logoBY-v02 {
     max-width: 150px;
     max-height:54px;
@@ -371,9 +359,6 @@
 	min-height: 32px;
 	margin-top: 2px;
 }
-	#moreMobile{
-		margin-right: 4px;
-	}
 	.menuButton-v02{
 		font-size: 16px;
 		margin-top: 4px;
@@ -393,9 +378,6 @@
 .share-popup{
 		width: 180px;
 	}
-.by-card-header-v02{
-			min-height: 28px;
-}
 .a-b-pagination-frame{
 	margin-bottom: 12px;
 	display: flex;
@@ -497,12 +479,6 @@ width: calc(100% - 75px);
     width: 28px;
     height: 10px;
 }
-		.index-part-of-pby img:first-child {
-    display: none;
-}
-			.index-part-of-pby img:last-child {
-    display: none;
-}
 	.author-in-pby{
 		font-size: 28px;
 		right: 110px;
@@ -538,6 +514,16 @@ width: calc(100% - 75px);
 		.gateway-header .by-genre-icon-v02{
 		font-size: 24px;
 	}
+	.new-card-right-v02{
+		display: none;
+	}
+		.author-main-info-card-v02 .by-card-header-v02 {
+    padding-right: 90px;
+}
+	.lexicon-publication-pic{
+		width: 60px;
+		margin-top: 4px;
+	}
 }
 
 @media only screen and (max-width: 319px){
@@ -556,8 +542,5 @@ width: calc(100% - 75px);
 		width: 126px;
 		padding-left: 0;
 		padding-right: 0;
-	}
-	.top-element{
-		margin-top: 74px;
 	}
 }
