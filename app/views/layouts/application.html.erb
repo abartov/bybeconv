@@ -219,7 +219,7 @@
     $('body').tooltip();
     // adjust page to accommodate extra header height
     var h = $('#header').height();
-    $('.top-element').css('margin-top',h+5);
+    $('.top-element').css('margin-top',h);
     <% unless @scrollspy_target.nil? %>
     $('body').scrollspy({ target: "#<%= @scrollspy_target %>", offset: $('#header').height() });
     <% end %>
