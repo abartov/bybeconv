@@ -4,7 +4,7 @@ describe AuthorsController do
   describe '#get_random_author' do
     before do
       create_list(:manifestation, 5)
-      # For randomize_authors test we need to have bunch of authors with TOCs
+      # we need to have bunch of authors with TOCs
       authors = Person.joins(:creations).merge(Creation.author).to_a
       authors.each do |author|
         toc = create(:toc)
@@ -13,22 +13,16 @@ describe AuthorsController do
       end
     end
 
-    %w(home gallery).each do |mode|
-      context "when mode is '#{mode}'" do
-        let(:mode) { home }
-      end
+    context 'when genre is not provided' do
+      subject { get :get_random_author, params: { } }
+      it { is_expected.to be_successful }
+    end
 
-      context 'when genre is not provided' do
-        subject { get :get_random_author, params: { mode: mode } }
-        it { is_expected.to be_successful }
-      end
+    context 'when genre provided' do
+      let(:genre) { Work.first.genre }
 
-      context 'when genre provided' do
-        let(:genre) { Work.first.genre }
-
-        subject { get :get_random_author, params: { mode: mode, genre: genre } }
-        it { is_expected.to be_successful }
-      end
+      subject { get :get_random_author, params: { genre: genre } }
+      it { is_expected.to be_successful }
     end
   end
 
