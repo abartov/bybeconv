@@ -76,7 +76,7 @@ describe ManifestationController do
     subject { get :get_random, params: { genre: genre } }
 
     context 'when genre specified' do
-      let(:genre) { :memoir }
+      let(:genre) { Work.first.genre }
       it { is_expected.to be_successful }
     end
 
