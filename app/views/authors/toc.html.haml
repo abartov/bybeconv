@@ -22,7 +22,7 @@
                   .author-page-top-years!= "(#{@author.life_years})"
               .by-card-content-v02
                 .text-height-author= @author.wikipedia_snippet
-                - unless @author.wikipedia_url.empty?
+                - if @author.wikipedia_url.present?
                   .read-more-v02
                     %a{:href => @author.wikipedia_url, target: '_blank'}
                       %span{:style => "font-weight: bold"}= t(:rest_in_wikipedia)
