@@ -12,7 +12,7 @@
           - if @e.translation && @e.translators.size > 0
             .headline-3-v02
               = "#{t(:translation)}: "
-              != @translators.map{|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
+              != @e.translators.map{|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
               = " (#{t(:from_lang)}#{textify_lang(@e.works[0].orig_lang)})"
         - else
           = '?'
