@@ -1,0 +1,18 @@
+%p#notice= notice
+
+%p
+  %b Title:
+  = @lex_entry.title
+%p
+  %b Status:
+  = @lex_entry.status
+%p
+  %b Lex person:
+  = @lex_entry.lex_person
+%p
+  %b Lex publication:
+  = @lex_entry.lex_publication
+
+= link_to 'Edit', edit_lex_entry_path(@lex_entry)
+\|
+= link_to 'Back', lex_entries_path
