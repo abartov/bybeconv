@@ -502,7 +502,7 @@ class ManifestationController < ApplicationController
           @m.status = params[:mstatus].to_i
           @m.sefaria_linker = params[:sefaria_linker]
           unless params[:add_url].blank?
-            @m.external_links.create!(url: params[:add_url], linktype: params[:link_type], description: params[:link_description], status: :approved)
+            @m.external_links.create!(url: params[:add_url], linktype: params[:link_type].to_i, description: params[:link_description], status: :approved)
           end
           @w.save!
           @e.save!
