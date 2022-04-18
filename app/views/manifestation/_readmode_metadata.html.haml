@@ -17,6 +17,6 @@
               %br
               = "#{t(:translation)}: "
               != @translators.map{|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
-              = " (#{t(:from_lang)}#{textify_lang(@e.works[0].orig_lang)})"
+              = " (#{t(:from_lang)}#{textify_lang(@e.work.orig_lang)})"
       .col-sm-3
   .col-lg-1

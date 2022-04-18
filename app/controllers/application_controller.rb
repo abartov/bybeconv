@@ -177,7 +177,7 @@ class ApplicationController < ActionController::Base
   end
 
   def randomize_works_by_genre(genre, how_many)
-    return Manifestation.where(id: Manifestation.published.joins(expressions: [:works]).where({works: {genre: genre}}).pluck(:id).sample(how_many))
+    return Manifestation.where(id: Manifestation.published.joins(expressions: :work).where({ works: { genre: genre } }).pluck(:id).sample(how_many))
   end
 
   def randomize_works(how_many)
@@ -187,7 +187,7 @@ class ApplicationController < ActionController::Base
   def cached_authors_in_genre
     Rails.cache.fetch("au_by_genre", expires_in: 24.hours) do # memoize
       ret = {}
-      get_genres.each { |g| ret[g] = Person.has_toc.joins(expressions: :works).where(works: { genre: g }).uniq.count }
+      get_genres.each { |g| ret[g] = Person.has_toc.joins(expressions: :work).where(works: { genre: g }).uniq.count }
       ret
     end
   end
@@ -338,7 +338,7 @@ class ApplicationController < ActionController::Base
     Manifestation.all_published.new_since(timestamp).includes(:expressions).each {|m|
       e = m.expressions[0]
       next if e.nil? # shouldn't happen
-      w = e.works[0]
+      w = e.work
       person = e.translation ? m.translators.first : m.authors.first # TODO: more nuance
       next if person.nil? # shouldn't happen, but might in a dev. env.
       if authors[person].nil?
@@ -357,7 +357,7 @@ class ApplicationController < ActionController::Base
     manifestations.each do |m|
       ret << "<a href=\"#{url_for(controller: :manifestation, action: :read, id: m.id)}\">#{m.title}</a>"
       if m.expressions[0].translation
-        ret[-1] += ' / '+m.authors_string unless m.expressions[0].works[0].authors.include?(au)
+        ret[-1] += ' / '+m.authors_string unless m.expressions[0].work.authors.include?(au)
       end
     end
     return ret.join('; ')
@@ -372,7 +372,7 @@ class ApplicationController < ActionController::Base
       genre[1].each do |m|
         title = m.expressions[0].title
         if m.expressions[0].translation
-          per = m.expressions[0].works[0].persons[0]
+          per = m.expressions[0].work.persons[0]
           unless per.nil?
             title += " #{I18n.t(:by)} #{per.name}"
           end

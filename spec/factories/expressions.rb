@@ -8,21 +8,22 @@ FactoryBot.define do
       editor { nil }
       illustrator { nil }
       genre { Work::GENRES.sample }
+      work_title { title }
     end
     title { "Title for #{expression_name}" }
     form {}
     date { '2 ביוני 1960' }
-    language {}
+    language { 'he' }
     comment { "Comment for #{expression_name}" }
     copyrighted { false }
     copyright_expiration { nil }
-    translation { orig_lang != 'he' }
+    translation { orig_lang != language }
     source_edition {}
     period { Expression.periods.keys.sample }
-    works { [ create(:work, genre: genre, author: author, illustrator: illustrator, orig_lang: orig_lang) ] }
+    work { create(:work, genre: genre, author: author, illustrator: illustrator, orig_lang: orig_lang) }
     realizers do
       result = []
-      if orig_lang != 'he'
+      if orig_lang != language
         result << create(:realizer, person: translator, role: :translator)
       else
         if translator.present?

@@ -37,6 +37,22 @@ describe AdminController do
     it { is_expected.to be_successful }
   end
 
+  describe '#tocs_missing_links' do
+    subject { get :tocs_missing_links }
+
+    let(:toc) { create(:toc) }
+    let(:author) { create(:person, toc: toc) }
+
+    before do
+      create_list(:manifestation, 3, author: author)
+      create_list(:manifestation, 3, orig_lang: 'ru', translator: author)
+    end
+
+    include_context 'Admin user logged in'
+
+    it { is_expected.to be_successful }
+  end
+
   describe '#incongruous_copyright' do
     include_context 'Admin user logged in'
     subject(:request) { get :incongruous_copyright }
@@ -63,5 +79,42 @@ describe AdminController do
       expect(request).to be_successful
       expect(assigns(:incong).map(&:first).map(&:id)).to match_array wrong_manifestation_ids
     end
+  end
+
+  describe '#missing_languages' do
+    include_context 'Admin user logged in'
+    subject(:request) { get :missing_languages }
+
+    before do
+      create_list(:manifestation, 60, language: 'ru', orig_lang: 'he')
+    end
+
+    it { is_expected.to be_successful }
+  end
+
+  describe '#suspicious_titles' do
+    include_context 'Admin user logged in'
+    subject { get :suspicious_titles }
+
+    before do
+      create(:manifestation, title: 'קבוצה ')
+      create(:manifestation, title: 'Trailing dot.')
+    end
+
+    it { is_expected.to be_successful }
+  end
+
+  describe '#suspicious_translations' do
+    include_context 'Admin user logged in'
+    subject(:request) { get :suspicious_translations }
+
+    let(:person) { create(:person) }
+
+    before do
+      create(:manifestation, language: 'he', orig_lang: 'de', author: person, translator: person)
+      create(:manifestation, language: 'he', orig_lang: 'de', author: person, translator: person)
+    end
+
+    it { is_expected.to be_successful }
   end
 end

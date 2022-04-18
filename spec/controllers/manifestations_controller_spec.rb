@@ -105,11 +105,65 @@ describe ManifestationController do
     it { is_expected.to be_successful }
   end
 
+  describe '#list' do
+    let(:user) { create(:user, :edit_catalog) }
+    let!(:manifestation) { create(:manifestation, orig_lang: 'ru') }
+
+    before do
+      create_list(:manifestation, 3)
+      session[:user_id] = user.id
+
+      Manifestation.all.each do |m|
+        m.recalc_cached_people
+        m.save!
+      end
+    end
+
+    subject { get :list, params: { author: author, title: title } }
+    let(:author) { nil }
+    let(:title) { nil }
+
+    it { is_expected.to be_successful }
+
+    context 'when author is provided' do
+      let(:author) { manifestation.authors.first.name }
+
+      it { is_expected.to be_successful }
+    end
+
+    context 'when title is provided' do
+      let(:title) { manifestation.title }
+
+      it { is_expected.to be_successful }
+    end
+
+    context 'when both title and author are provided' do
+      let(:author) { manifestation.authors.first.name }
+      let(:title) { manifestation.title }
+
+      it { is_expected.to be_successful }
+    end
+  end
+
   describe 'member actions' do
     let(:genre) { :memoir }
-    let!(:manifestation) { create(:manifestation, genre: genre) }
+    let(:title) { 'Some title' }
+    let(:orig_lang) { 'he' }
+    let!(:manifestation) { create(:manifestation, title: title, genre: genre, orig_lang: orig_lang) }
     let(:expression) { manifestation.expressions[0] }
-    let(:work) { expression.works[0] }
+    let(:work) { expression.work }
+
+    describe '#show' do
+      subject { get :show, params: { id: manifestation.id } }
+
+      let!(:user) { create(:user, :edit_catalog) }
+
+      before do
+        session[:user_id] = user.id
+      end
+
+      it { is_expected.to be_successful }
+    end
 
     describe '#read' do
       subject { get :read, params: { id: manifestation.id } }
@@ -238,6 +292,22 @@ describe ManifestationController do
       end
     end
 
+    describe '#dict_entry' do
+      let(:genre) { :lexicon }
+
+      let!(:dictionary_entry) { create(:dictionary_entry, manifestation: manifestation) }
+
+      subject { get :dict_entry, params: { id: manifestation.id, entry: dictionary_entry.id } }
+
+      it { is_expected.to be_successful }
+
+      context 'when manifestation is a translation' do
+        let(:orig_lang) { 'de' }
+
+        it { is_expected.to be_successful }
+      end
+    end
+
     describe '#set_bookmark' do
       let!(:base_user) { create :base_user, session_id: session.id.private_id }
       let(:manifestation) { create(:manifestation) }
@@ -278,6 +348,42 @@ describe ManifestationController do
         expect(response).to be_successful
         expect { bookmark.reload }.to raise_error(ActiveRecord::RecordNotFound)
       end
+    end
+
+    describe '#chomp_period' do
+      subject(:request) { post :chomp_period, params: { id: manifestation.id } }
+
+      context 'when title ends with dot' do
+        let(:title) { 'Trailing dot.'}
+
+        it 'removes trailing dot' do
+          expect(request).to be_successful
+          manifestation.reload
+          expect(manifestation.title).to eq 'Trailing dot'
+        end
+      end
+
+      context 'when title does not ends with dot' do
+        let(:title) { 'No trailing dot'}
+
+        it 'does not changes title' do
+          expect(request).to be_successful
+          manifestation.reload
+          expect(manifestation.title).to eq 'No trailing dot'
+        end
+      end
+    end
+
+    describe '#add_aboutness' do
+      let(:user) { create(:user) }
+
+      before do
+        session[:user_id] = user.id
+      end
+
+      subject { get :add_aboutnesses, params: { id: manifestation.id } }
+
+      it { is_expected.to be_successful }
     end
   end
 end
