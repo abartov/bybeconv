@@ -1,6 +1,7 @@
 FactoryBot.define do
   factory :person do
     name { Faker::Name.name }
+    status { :published }
     gender { 'male' }
     period { 'revival' }
     other_designation { Faker::Name.name_with_middle }

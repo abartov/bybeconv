@@ -120,26 +120,27 @@ class ManifestationController < ApplicationController
     @pagetype = :periods
   end
 
-  def works # /works dashboard
-    @tabclass = set_tab('works')
-    @page_title = t(:works)+' - '+t(:project_ben_yehuda)
-    @pagetype = :works
-    @work_stats = {total: Manifestation.cached_count, pd: Manifestation.cached_pd_count, translated: Manifestation.cached_translated_count}
-    @work_stats[:permission] = @work_stats[:total] - @work_stats[:pd]
-    @work_counts_by_genre = Manifestation.cached_work_counts_by_genre
-    @pop_by_genre = Manifestation.cached_popular_works_by_genre # get popular works by genre + most popular translated
-    @rand_by_genre = {}
-    @surprise_by_genre = {}
-    get_genres.each do |g|
-      @rand_by_genre[g] = Manifestation.randomize_in_genre_except(@pop_by_genre[g][:orig], g) # get random works by genre
-      @surprise_by_genre[g] = @rand_by_genre[g].pop # make one of the random works the surprise work
-    end
-    @works_abc = Manifestation.first_25 # get cached first 25 manifestations
-    @new_works_by_genre = Manifestation.cached_last_month_works
-    @featured_content = featured_content
-    (@fc_snippet, @fc_rest) = @featured_content.nil? ? ['',''] : snippet(@featured_content.body, 500) # prepare snippet for collapsible
-    @popular_tags = cached_popular_tags
-  end
+  # This code was used for 'secondary portal', but not used anymore. We may need to reimplement it at some point
+  # def works # /works dashboard
+  #   @tabclass = set_tab('works')
+  #   @page_title = t(:works)+' - '+t(:project_ben_yehuda)
+  #   @pagetype = :works
+  #   @work_stats = {total: Manifestation.cached_count, pd: Manifestation.cached_pd_count, translated: Manifestation.cached_translated_count}
+  #   @work_stats[:permission] = @work_stats[:total] - @work_stats[:pd]
+  #   @work_counts_by_genre = Manifestation.cached_work_counts_by_genre
+  #   @pop_by_genre = Manifestation.cached_popular_works_by_genre # get popular works by genre + most popular translated
+  #   @rand_by_genre = {}
+  #   @surprise_by_genre = {}
+  #   get_genres.each do |g|
+  #     @rand_by_genre[g] = Manifestation.randomize_in_genre_except(@pop_by_genre[g][:orig], g) # get random works by genre
+  #     @surprise_by_genre[g] = @rand_by_genre[g].pop # make one of the random works the surprise work
+  #   end
+  #   @works_abc = Manifestation.first_25 # get cached first 25 manifestations
+  #   @new_works_by_genre = Manifestation.cached_last_month_works
+  #   @featured_content = featured_content
+  #   (@fc_snippet, @fc_rest) = @featured_content.nil? ? ['',''] : snippet(@featured_content.body, 500) # prepare snippet for collapsible
+  #   @popular_tags = cached_popular_tags
+  # end
 
   def whatsnew
     @tabclass = set_tab('works')
@@ -176,7 +177,7 @@ class ManifestationController < ApplicationController
     if @m.nil?
       head :not_found
     else
-      if @m.expressions[0].genre != 'lexicon'
+      if @m.expressions[0].works[0].genre != 'lexicon'
         redirect_to action: 'read', id: @m.id
       else
         @page = params[:page] || 1
@@ -236,12 +237,13 @@ class ManifestationController < ApplicationController
       @outgoing_links = @entry.outgoing_links.includes(:outgoing_links)
     end
   end
+
   def read
     @m = Manifestation.joins(:expressions).includes(:expressions).find(params[:id])
     if @m.nil?
       head :not_found
     else
-      if @m.expressions[0].genre == 'lexicon' && DictionaryEntry.where(manifestation_id: @m.id).count > 0
+      if @m.expressions[0].works[0].genre == 'lexicon' && DictionaryEntry.where(manifestation_id: @m.id).count > 0
         redirect_to action: 'dict', id: @m.id
       else
         unless @m.published?
@@ -311,7 +313,6 @@ class ManifestationController < ApplicationController
 
   def genre
     @pagetype = :works
-    # @collection = Manifestation.all_published.joins(:expressions).where(expressions: {genre: params[:genre]})
     @works_list_title = t(:works_by_genre)+': '+helpers.textify_genre(params[:genre])
     @genres = [params[:genre]]
     browse
@@ -320,7 +321,7 @@ class ManifestationController < ApplicationController
   # this one is called via AJAX
   def get_random
     work = nil
-    unless params[:genre].nil? || params[:genre].empty?
+    if params[:genre].present?
       work = randomize_works_by_genre(params[:genre], 1)[0]
     else
       work = randomize_works(1)[0]
@@ -435,6 +436,7 @@ class ManifestationController < ApplicationController
     @e = @m.expressions[0] # TODO: generalize?
     @w = @e.works[0] # TODO: generalize!
   end
+
   def chomp_period
     @m = Manifestation.find(params[:id])
     @e = @m.expressions[0] # TODO: generalize?
@@ -469,7 +471,7 @@ class ManifestationController < ApplicationController
     # update attributes
     if params[:commit] == t(:save)
       Chewy.strategy(:atomic) {
-          if params[:markdown].nil? # metadata edit
+        if params[:markdown].nil? # metadata edit
           @e = @m.expressions[0] # TODO: generalize?
           @w = @e.works[0] # TODO: generalize!
           @w.title = params[:wtitle]
@@ -483,7 +485,6 @@ class ManifestationController < ApplicationController
             c.save!
           end
           @e.language = params[:elang]
-          @e.genre = params[:genre] # expression's genre is same as work's
           @e.title = params[:etitle]
           @e.date = params[:edate]
           @e.comment = params[:ecomment]
@@ -501,7 +502,7 @@ class ManifestationController < ApplicationController
           @m.status = params[:mstatus].to_i
           @m.sefaria_linker = params[:sefaria_linker]
           unless params[:add_url].blank?
-            @m.external_links.create!(url: params[:add_url], linktype: params[:link_type], description: params[:link_description], status: :approved)
+            @m.external_links.create!(url: params[:add_url], linktype: params[:link_type].to_i, description: params[:link_description], status: :approved)
           end
           @w.save!
           @e.save!

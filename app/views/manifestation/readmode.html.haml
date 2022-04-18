@@ -7,7 +7,7 @@
         .by-card-v02.rm-control-panel
           .rm-control-top
             .rm-logo
-              %img.logoBY-v02{:alt => t(:logo), :src => "/assets/logo-byp.svg"}
+              %img.logoBY-v02{:alt => t(:logo)}
             %a.collapse-expand-icon{href: manifestation_read_path(@m.id), title: t(:leave_readmode_tt)}
               %span.by-icon-v02 .
           .rm-control-info
@@ -29,18 +29,17 @@
               .progress-inside.progress-bar
             .progress-number= '0%'
           .rm-control-icons
-            .icons-group-v02
-              .notyet{title: t(:readmode_search_tt)}
-                %span.linkcolor.pointer.by-icon-v02 X
-              .notyet{title: t(:bookmark_tt)}
-                %span.linkcolor.pointer.by-icon-v02 F
-              .linkcolor.pointer#found_mistake{title: t(:report_error_tt)}
-                %button.error-found-btn.by-icon-v02.pointer{style:'background-color:unset; border-color: transparent; box-shadow:unset;padding-top:2px;'} g
-              .linkcolor.pointer{'data-toggle' => 'modal', 'data-target' => '#shareDlg', title: t(:share_tt)}
-                %span.by-icon-v02 U
-              .notyet{title: t(:readmode_settings_tt)}
-                %a{:href => "#"}
-                  %span.by-icon-v02 :
+            .notyet{title: t(:readmode_search_tt)}
+              %span.linkcolor.pointer.by-icon-v02 X
+            .notyet{title: t(:bookmark_tt)}
+              %span.linkcolor.pointer.by-icon-v02 F
+            .linkcolor.pointer#found_mistake{title: t(:report_error_tt)}
+              %button.error-found-btn.by-icon-v02.pointer{style:'background-color:unset; border-color: transparent; box-shadow:unset;padding-top:2px;'} g
+            .linkcolor.pointer{'data-toggle' => 'modal', 'data-target' => '#shareDlg', title: t(:share_tt)}
+              %span.by-icon-v02 U
+            .notyet{title: t(:readmode_settings_tt)}
+              %a{:href => "#"}
+                %span.by-icon-v02 :
         .by-card-v02.rm-control-panel-mobile
           .rm-logo
             %img.logoBY-v02{:alt => "", :src => "/assets/logo-byp.svg"}
@@ -86,7 +85,7 @@
                     #actualtext.maintext-poetry-body.search-margin{tabindex: 1}
                       != raw(@html)
                 .work-side-color
-                  %div{'class' => "work-genre", style: "background-image: url(\"/assets/work_side_icons_#{@e.genre}.svg\"); background-repeat: no-repeat; background-size:auto;"}
+                  %div{'class' => "work-genre", style: "background-image: url(\"/assets/work_side_icons_#{@w.genre}.svg\"); background-repeat: no-repeat; background-size:auto;"}
 / found mistake popup
 #proofDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
   = render partial: 'shared/proof', locals: {manifestation: @m}

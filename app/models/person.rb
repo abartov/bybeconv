@@ -27,7 +27,6 @@ class Person < ApplicationRecord
   scope :no_image, -> { where(profile_image_file_name: nil) }
   scope :bib_done, -> {where(bib_done: true)}
   scope :bib_not_done, -> {where("bib_done is null OR bib_done = 0")}
-  scope :in_genre, -> (genre) {has_toc.joins(:expressions).where(expressions: { genre: genre}).distinct}
   scope :new_since, -> (since) { where('created_at > ?', since)}
   scope :latest, -> (limit) {order('created_at desc').limit(limit)}
   scope :translators, -> {joins(:realizers).where(realizers: {role: Realizer.roles[:translator]}).distinct}
@@ -160,6 +159,7 @@ class Person < ApplicationRecord
       self.count
     end
   end
+
   def self.cached_toc_count
     Rails.cache.fetch("au_toc_count", expires_in: 24.hours) do
       self.has_toc.count
@@ -225,11 +225,11 @@ class Person < ApplicationRecord
   end
 
   def all_genres
-    works_genres = original_works.pluck('expressions.genre')
-    translation_genres = translations.pluck('expressions.genre')
-    all_genres = works_genres + translation_genres
-    return all_genres.uniq
+    works_genres = original_works.select('works.genre').distinct.pluck(:genre)
+    translation_genres = translations.select('works.genre').distinct.pluck(:genre)
+    return (works_genres + translation_genres).uniq.sort
   end
+
   def all_languages
     work_langs = original_works.pluck('works.orig_lang')
     #translation_langs = translations.pluck('works.orig_lang')
@@ -243,7 +243,7 @@ class Person < ApplicationRecord
   end
 
   def translations
-    Manifestation.all_published.joins(expressions: :realizers).includes(expressions: [works: [creations: :person]]).where(realizers:{role: Realizer.roles[:translator], person_id: self.id})
+    Manifestation.all_published.joins(expressions: [:works, :realizers]).includes(expressions: [works: [creations: :person]]).where(realizers:{role: Realizer.roles[:translator], person_id: self.id})
   end
 
   def all_works_including_unpublished
@@ -275,7 +275,7 @@ class Person < ApplicationRecord
     ret = {}
     get_genres.map{|g| ret[g] = []}
     Manifestation.all_published.joins(expressions: [works: :creations]).includes(:expressions).where("creations.person_id = #{self.id}").each do |m|
-      ret[m.expressions[0].genre] << m
+      ret[m.expressions[0].works[0].genre] << m
     end
     return ret
   end
@@ -284,14 +284,14 @@ class Person < ApplicationRecord
     ret = {}
     get_genres.map{|g| ret[g] = []}
     Manifestation.all_published.joins(expressions: :realizers).includes(expressions: :works).where(realizers:{role: Realizer.roles[:translator], person_id: self.id}).each do |m|
-      ret[m.expressions[0].genre] << m
+      ret[m.expressions[0].works[0].genre] << m
     end
     return ret
   end
 
   def featured_work
     Rails.cache.fetch("au_#{self.id}_featured", expires_in: 24.hours) do # memoize
-      self.featured_contents.order('RAND()').limit(1)
+      self.featured_contents.order(Arel.sql('RAND()')).limit(1)
     end
   end
 
@@ -319,7 +319,7 @@ class Person < ApplicationRecord
 
   def most_read(limit)
     Rails.cache.fetch("au_#{self.id}_#{limit}_most_read", expires_in: 24.hours) do
-      self.manifestations.all_published.includes(:expressions).order(impressions_count: :desc).limit(limit).map{|m| {id: m.id, title: m.title, author: m.authors_string, translation: m.expressions[0].translation, genre: m.expressions[0].genre }}
+      self.manifestations.all_published.includes(:expressions).order(impressions_count: :desc).limit(limit).map{|m| {id: m.id, title: m.title, author: m.authors_string, translation: m.expressions[0].translation, genre: m.expressions[0].works[0].genre }}
     end
   end
 
@@ -329,7 +329,7 @@ class Person < ApplicationRecord
 
   def self.get_popular_authors_by_genre(genre)
     Rails.cache.fetch("au_pop_in_#{genre}", expires_in: 24.hours) do # memoize
-      Person.has_toc.joins(:expressions).where(expressions: { genre: genre}).order(impressions_count: :desc).distinct.limit(10).all.to_a # top 10
+      Person.has_toc.joins(expressions: :works).where(works: { genre: genre }).order(impressions_count: :desc).distinct.limit(10).all.to_a # top 10
     end
   end
 

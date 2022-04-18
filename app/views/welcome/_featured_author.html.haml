@@ -4,18 +4,18 @@
       %p.headline-1-v02= t(:featured_author)
     .by-card-content-v02
       - unless @featured_author.nil?
-        .clampable
-          %p.headline-3-v02= @featured_author.title
-          - unless @featured_author.user.nil?
-            %p
-              = t(:by)+' '
-              = link_to @featured_author.user.name, volunteer_show_path(@featured_author.user)
-          .flash-text-container
+        .flash-text-container
+          .clampable
+            %p.headline-3-v02= @featured_author.title
+            - unless @featured_author.user.nil?
+              %p
+                = t(:by)+' '
+                = link_to @featured_author.user.name, volunteer_show_path(@featured_author.user)
             .text-height-flash-work.clampable_body
               != @fa_snippet
               - if @fa_rest != ''
                 = ' ...'
-          .button-to-full-v02
-            %a{ href: author_toc_path(id: @featured_author.person.id)}
-              %button.by-button-v02= t(:to_the_author_page)
-            %button.by-button-v02.popup_btn.pointer{style:'font-weight: bold;display:none;', 'data-popup-id' => 'featured_content_dlg','data-popuppath' => featured_author_popup_path(id: @featured_author.id)}= t(:to_the_full_feature)
+            .button-to-full-v02
+              %a{ href: author_toc_path(id: @featured_author.person.id)}
+                %button.by-button-v02= t(:to_the_author_page)
+              %button.by-button-v02.popup_btn.pointer{style:'font-weight: bold;display:none;', 'data-popup-id' => 'featured_content_dlg','data-popuppath' => featured_author_popup_path(id: @featured_author.id)}= t(:to_the_full_feature)

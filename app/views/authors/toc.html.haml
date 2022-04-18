@@ -16,13 +16,13 @@
               .about-author-card-v02
                 %img.surprise-author-pic-v02{:alt => @author.name, src: @author.profile_image.url(:thumb)}/
               .by-card-header-v02
-                .name-under-btn
-                  %span.headline-1-v02
+                .author-name-years
+                  .headline-1-v02
                     = @author.name
-                  %span.date-range!= "(#{@author.life_years})"
+                  .author-page-top-years!= "(#{@author.life_years})"
               .by-card-content-v02
                 .text-height-author= @author.wikipedia_snippet
-                - unless @author.wikipedia_url.empty?
+                - if @author.wikipedia_url.present?
                   .read-more-v02
                     %a{:href => @author.wikipedia_url, target: '_blank'}
                       %span{:style => "font-weight: bold"}= t(:rest_in_wikipedia)
@@ -74,7 +74,7 @@
                 = render partial: 'toc', locals: {margin: true}
                 .by-card-v02#text-volunteers-desktop
                   .by-card-header-v02
-                    %span.headline-1-v02= t(:volunteers_who_helped, {author: @author.name, gender_letter: @author.gender_letter})
+                    .headline-1-v02= t(:volunteers_who_helped, {author: @author.name, gender_letter: @author.gender_letter})
                   .by-card-content-v02
                     .credits
                       != @credits
@@ -91,7 +91,7 @@
                   %p.headline-1-v02{:style => "margin-bottom: 0"}
                     = t(:latest_updates)
                     -#= link_to t(:latest_updates), whatsnew_path # TODO: re-enable when main whatsnew can be filtered by author
-                .by-card-content-v02.author-whats-new-content
+                .by-card-content-v02
                   .new-card-v02.last-item
                     -#.new-info-v02 !
                     .new-card-right-v02
@@ -164,7 +164,7 @@
 
             .by-card-v02#text-volunteers-mobile
               .by-card-header-v02
-                %span.headline-1-v02= t(:volunteers_who_helped, {author: @author.name, gender_letter: @author.gender_letter})
+                .headline-1-v02= t(:volunteers_who_helped, {author: @author.name, gender_letter: @author.gender_letter})
               .by-card-content-v02
                 .credits
                   != @credits
