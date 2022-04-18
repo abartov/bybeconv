@@ -4,7 +4,7 @@
   .surprise-work-card-v02
     %a{href: manifestation_read_path(manifestation.id)}
       .surprise-work-genre-v02
-        - genre = e.works[0].genre
+        - genre = e.work.genre
         %p.by-genre-icon-surprise-v02= glyph_for_genre(genre)
         %p.by-genre-name-v02.headline-1-v02= textify_genre(genre)
     %a{href: manifestation_read_path(manifestation.id), style: 'color:white'}
@@ -30,7 +30,7 @@
             .metadata
               %b= t(:orig_lang)+': '
               -# TODO: add link to query-by-language
-              = textify_lang(e.works[0].orig_lang)
+              = textify_lang(e.work.orig_lang)
               -# TODO: add display of intermediary language, once we create a field and track it.
             -# TODO: add mention of additional translations
             -# .metadata

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_04_09_140937) do
+ActiveRecord::Schema.define(version: 2022_04_18_201702) do
 
   create_table "aboutnesses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -207,9 +207,11 @@ ActiveRecord::Schema.define(version: 2022_04_09_140937) do
     t.integer "period"
     t.string "normalized_pub_date"
     t.string "normalized_creation_date"
+    t.integer "work_id", null: false
     t.index ["normalized_creation_date"], name: "index_expressions_on_normalized_creation_date"
     t.index ["normalized_pub_date"], name: "index_expressions_on_normalized_pub_date"
     t.index ["period"], name: "index_expressions_on_period"
+    t.index ["work_id"], name: "index_expressions_on_work_id"
   end
 
   create_table "expressions_manifestations", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
@@ -217,13 +219,6 @@ ActiveRecord::Schema.define(version: 2022_04_09_140937) do
     t.integer "manifestation_id"
     t.index ["expression_id"], name: "index_expressions_manifestations_on_expression_id"
     t.index ["manifestation_id"], name: "index_expressions_manifestations_on_manifestation_id"
-  end
-
-  create_table "expressions_works", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
-    t.integer "expression_id"
-    t.integer "work_id"
-    t.index ["expression_id"], name: "index_expressions_works_on_expression_id"
-    t.index ["work_id"], name: "index_expressions_works_on_work_id"
   end
 
   create_table "external_links", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
@@ -483,11 +478,11 @@ ActiveRecord::Schema.define(version: 2022_04_09_140937) do
     t.integer "impressions_count"
     t.string "blog_category_url"
     t.boolean "bib_done"
+    t.integer "period"
     t.string "sidepic_file_name"
     t.string "sidepic_content_type"
     t.bigint "sidepic_file_size"
     t.datetime "sidepic_updated_at"
-    t.integer "period"
     t.string "sort_name"
     t.integer "status"
     t.datetime "published_at"
@@ -545,7 +540,7 @@ ActiveRecord::Schema.define(version: 2022_04_09_140937) do
     t.index ["task_id"], name: "index_publications_on_task_id"
   end
 
-  create_table "reading_lists", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "reading_lists", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.string "title"
     t.integer "user_id"
     t.integer "access"
@@ -726,6 +721,7 @@ ActiveRecord::Schema.define(version: 2022_04_09_140937) do
   add_foreign_key "dictionary_entries", "manifestations"
   add_foreign_key "dictionary_links", "dictionary_entries", column: "from_entry_id"
   add_foreign_key "dictionary_links", "dictionary_entries", column: "to_entry_id"
+  add_foreign_key "expressions", "works"
   add_foreign_key "featured_author_features", "featured_authors"
   add_foreign_key "featured_authors", "people"
   add_foreign_key "featured_authors", "users"

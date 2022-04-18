@@ -177,7 +177,7 @@ class ManifestationController < ApplicationController
     if @m.nil?
       head :not_found
     else
-      if @m.expressions[0].works[0].genre != 'lexicon'
+      if @m.expressions[0].work.genre != 'lexicon'
         redirect_to action: 'read', id: @m.id
       else
         @page = params[:page] || 1
@@ -243,7 +243,7 @@ class ManifestationController < ApplicationController
     if @m.nil?
       head :not_found
     else
-      if @m.expressions[0].works[0].genre == 'lexicon' && DictionaryEntry.where(manifestation_id: @m.id).count > 0
+      if @m.expressions[0].work.genre == 'lexicon' && DictionaryEntry.where(manifestation_id: @m.id).count > 0
         redirect_to action: 'dict', id: @m.id
       else
         unless @m.published?
@@ -393,14 +393,14 @@ class ManifestationController < ApplicationController
     @urlbase = url_for(action: :show, id:1)[0..-2]
     # DB
     if params[:title].blank? && params[:author].blank?
-      @manifestations = Manifestation.includes(expressions: :works).page(params[:page]).order('updated_at DESC')
+      @manifestations = Manifestation.includes(expressions: :work).page(params[:page]).order('updated_at DESC')
     else
       if params[:author].blank? # 
-        @manifestations = Manifestation.includes(expressions: :works).where('title like ?', '%' + params[:title] + '%').page(params[:page]).order('sort_title ASC')
+        @manifestations = Manifestation.includes(expressions: :work).where('title like ?', '%' + params[:title] + '%').page(params[:page]).order('sort_title ASC')
       elsif params[:title].blank?
-        @manifestations = Manifestation.includes(expressions: :works).where('cached_people like ?', "%#{params[:author]}%").page(params[:page]).order('sort_title asc')
+        @manifestations = Manifestation.includes(expressions: :work).where('cached_people like ?', "%#{params[:author]}%").page(params[:page]).order('sort_title asc')
       else # both author and title
-        @manifestations = Manifestation.includes(expressions: :works).where('manifestations.title like ? and manifestations.cached_people like ?', '%' + params[:title] + '%', '%'+params[:author]+'%').page(params[:page]).order('sort_title asc')
+        @manifestations = Manifestation.includes(expressions: :work).where('manifestations.title like ? and manifestations.cached_people like ?', '%' + params[:title] + '%', '%'+params[:author]+'%').page(params[:page]).order('sort_title asc')
       end
     end
   end
@@ -409,7 +409,7 @@ class ManifestationController < ApplicationController
     @m = Manifestation.find(params[:id])
     @page_title = t(:show)+': '+@m.title_and_authors
     @e = @m.expressions[0] # TODO: generalize?
-    @w = @e.works[0] # TODO: generalize!
+    @w = @e.work
     @html = MultiMarkdown.new(@m.markdown).to_html.force_encoding('UTF-8').gsub(/<figcaption>.*?<\/figcaption>/,'') # remove MMD's automatic figcaptions
     @html = highlight_suspicious_markdown(@html) # highlight suspicious markdown in backend
     h = @m.legacy_htmlfile
@@ -434,13 +434,13 @@ class ManifestationController < ApplicationController
     @m = Manifestation.find(params[:id])
     @page_title = t(:edit_metadata)+': '+@m.title_and_authors
     @e = @m.expressions[0] # TODO: generalize?
-    @w = @e.works[0] # TODO: generalize!
+    @w = @e.work
   end
 
   def chomp_period
     @m = Manifestation.find(params[:id])
     @e = @m.expressions[0] # TODO: generalize?
-    @w = @e.works[0] # TODO: generalize!
+    @w = @e.work
     [@m, @e, @w].each { |rec|
       if rec.title[-1] == '.'
         rec.title = rec.title[0..-2]
@@ -452,7 +452,7 @@ class ManifestationController < ApplicationController
   def add_aboutnesses
     @m = Manifestation.find(params[:id])
     @e = @m.expressions[0] # TODO: generalize?
-    @w = @e.works[0] # TODO: generalize!
+    @w = @e.work
     @page_title = t(:add_aboutnesses)+': '+@m.title_and_authors
     @aboutness = Aboutness.new
   end
@@ -473,7 +473,7 @@ class ManifestationController < ApplicationController
       Chewy.strategy(:atomic) {
         if params[:markdown].nil? # metadata edit
           @e = @m.expressions[0] # TODO: generalize?
-          @w = @e.works[0] # TODO: generalize!
+          @w = @e.work
           @w.title = params[:wtitle]
           @w.genre = params[:genre]
           @w.orig_lang = params[:wlang]
@@ -509,7 +509,7 @@ class ManifestationController < ApplicationController
         else # markdown edit and save
           unless params[:newtitle].nil? or params[:newtitle].empty?
             @e = @m.expressions[0] # TODO: generalize?
-            @w = @e.works[0] # TODO: generalize!
+            @w = @e.work
             @m.title = params[:newtitle]
             @e.title = params[:newtitle]
             @w.title = params[:newtitle] if @w.orig_lang == @e.language # update work title if work in Hebrew
@@ -852,7 +852,7 @@ class ManifestationController < ApplicationController
         redirect_to '/'
       else
         @e = @m.expressions[0]
-        @w = @e.works[0]
+        @w = @e.work
         @author = @w.persons[0] # TODO: handle multiple authors
         unless is_spider?
           impressionist(@m)
@@ -916,9 +916,9 @@ class ManifestationController < ApplicationController
       @print_url = url_for(action: :print, id: @m.id)
       @liked = (current_user.nil? ? false : @m.likers.include?(current_user))
       if @e.translation?
-        if @e.works[0].expressions.count > 1 # one is the one we're looking at...
+        if @e.work.expressions.count > 1 # one is the one we're looking at...
           @additional_translations = []
-          @e.works[0].expressions.joins(:manifestations).includes(:manifestations).each do |ex|
+          @e.work.expressions.joins(:manifestations).includes(:manifestations).each do |ex|
             @additional_translations << ex unless ex == @e
           end
         end

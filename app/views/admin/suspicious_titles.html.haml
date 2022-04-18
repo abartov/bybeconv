@@ -13,7 +13,7 @@
       %tr
         %td= link_to m.title, manifestation_show_path(m.id)
         %td= m.author_string
-        %td= textify_genre(m.expressions[0].works[0].genre)
+        %td= textify_genre(m.expressions[0].work.genre)
         %td
           %b= link_to t(:edit_markdown), manifestation_edit_path(m.id)
           = ' | '
@@ -22,4 +22,4 @@
           = link_to t(:render), url_for(controller: :manifestation, action: :read, id: m.id)
           - if m.title[-1] == '.'
             = ' | '
-            = link_to t(:remove_final_period), manifestation_chomp_period(m.id)
+            = link_to t(:remove_final_period), manifestation_chomp_period_path(m.id)
