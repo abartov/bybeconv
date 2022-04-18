@@ -7,7 +7,6 @@ def clean_tables
   Realizer.delete_all
   Creation.delete_all
 
-  ActiveRecord::Base.connection.execute('delete from manifestations_people')
   Person.delete_all
 
   Aboutness.delete_all

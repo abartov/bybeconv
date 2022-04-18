@@ -35,11 +35,6 @@ describe Person do
     let!(:manifestation_2) { create(:manifestation, author: person, impressions_count: 20, genre: :memoir) }
     let!(:manifestation_3) { create(:manifestation, author: person, impressions_count: 30, genre: :article) }
 
-    before do
-      person.manifestations = [manifestation_1, manifestation_2, manifestation_3]
-      person.save!
-    end
-
     subject { person.most_read(limit).map{ |rec| rec[:id] } }
 
     context 'when limit is less than total number of works' do
