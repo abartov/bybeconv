@@ -39,8 +39,6 @@
                       = " (#{t(:from_lang)}#{textify_lang(@e.works[0].orig_lang)})"
                 - else
                   = '?'
-      .row
-        .col-12
           - if @m.chapters?
             .field-v02.work-chapters-dropdown-field-desktop#chapter_dropdown
               = t(:jump_to_chapter)
@@ -78,10 +76,6 @@
               %a.by-icon-v02.pointer.download{'data-toggle' => 'modal', 'title' => "#{t(:work_download_tt)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }, 'data-target' => '#downloadDlg', tabindex: 0}= '3'
               %a.by-icon-v02.pointer.sharebutton{title: "#{ t(:share_tt) }", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }, style: 'margin-left:0;', tabindex: 0}= 'U'
           .chapters-and-icons-mobile
-            - if @m.chapters?
-              .work-chapters-popup-mobile#chapter_mobile_dropdown
-                %button.btn-small-outline-v02.btn-text-v02{ 'data-toggle' => 'modal', 'data-target'=> '#chapterDlg'}
-                  = t(:jump_to)
             .work-page-top-icons-mobile
               %a.btn-small-outline-v02.btn-text-v02.reading-mode-icon-btn-v02{href: url_for(action: :readmode, id: @m.id)}
                 %span.by-icon-v02 /
@@ -105,6 +99,10 @@
                       %p.download
                         %span.by-icon-v02.linkcolor> 3
                         = t(:download)
+            - if @m.chapters?
+              .work-chapters-popup-mobile#chapter_mobile_dropdown
+                %button.btn-small-outline-v02.btn-text-v02{ 'data-toggle' => 'modal', 'data-target'=> '#chapterDlg'}
+                  = t(:jump_to)
     .row.error-found-row
       .side-nav-col
         - if @m.chapters?

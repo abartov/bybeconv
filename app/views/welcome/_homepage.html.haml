@@ -16,7 +16,7 @@
         - cache "homepage_mostread", expires_in: 6.hours do
           .by-card-v02#works-in-project
             .by-card-header-v02
-              %span.headline-1-v02= t(:works_in_the_project)
+              %a.headline-1-v02{href: all_works_path}= t(:works_in_the_project)
               -#= t(:x_works, {x: @totals[:works]})
               = "(#{@totals[:works]})"
             .by-card-content-v02.works-in-project-content
