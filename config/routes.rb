@@ -1,5 +1,11 @@
 include BybeUtils
 Bybeconv::Application.routes.draw do
+  get 'lex_migration/index'
+  get 'lex_migration/list_files'
+  get 'lex_migration/analyze_person'
+  get 'lex_migration/analyze_text'
+  get 'lex_migration/analyze_bib'
+  get 'lex_migration/resolve_entry'
   resources :lex_files
   mount Rswag::Ui::Engine => '/api-docs'
   mount Rswag::Api::Engine => '/api-docs'

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_04_18_160254) do
+ActiveRecord::Schema.define(version: 2022_04_18_221122) do
 
   create_table "aboutnesses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -431,12 +431,11 @@ ActiveRecord::Schema.define(version: 2022_04_18_160254) do
   create_table "lex_entries", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.string "title"
     t.integer "status"
-    t.bigint "lex_person_id"
-    t.bigint "lex_publication_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["lex_person_id"], name: "index_lex_entries_on_lex_person_id"
-    t.index ["lex_publication_id"], name: "index_lex_entries_on_lex_publication_id"
+    t.string "lex_item_type"
+    t.bigint "lex_item_id"
+    t.index ["lex_item_type", "lex_item_id"], name: "index_lex_entries_on_lex_item_type_and_lex_item_id", unique: true
     t.index ["status"], name: "index_lex_entries_on_status"
     t.index ["title"], name: "index_lex_entries_on_title"
   end
@@ -449,8 +448,10 @@ ActiveRecord::Schema.define(version: 2022_04_18_160254) do
     t.text "comments"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "lex_entry_id"
     t.index ["entrytype"], name: "index_lex_files_on_entrytype"
     t.index ["fname"], name: "index_lex_files_on_fname"
+    t.index ["lex_entry_id"], name: "index_lex_files_on_lex_entry_id", unique: true
     t.index ["status"], name: "index_lex_files_on_status"
   end
 
@@ -902,8 +903,7 @@ ActiveRecord::Schema.define(version: 2022_04_18_160254) do
   add_foreign_key "legacy_recommendations", "manifestations", name: "legacy_recommendations_manifestation_id_fk"
   add_foreign_key "legacy_recommendations", "users", column: "recommended_by", name: "legacy_recommendations_recommended_by_fk"
   add_foreign_key "lex_citations", "manifestations"
-  add_foreign_key "lex_entries", "lex_people"
-  add_foreign_key "lex_entries", "lex_publications"
+  add_foreign_key "lex_files", "lex_entries"
   add_foreign_key "lex_issues", "lex_publications"
   add_foreign_key "lex_people_items", "lex_people"
   add_foreign_key "lex_texts", "lex_issues"
