@@ -17,7 +17,7 @@
             .by-card-header-v02.desktop-only
               %span.headline-1-v02= t(:save_to_file)
               %a.popup-x-v02.linkcolor.pointer{'data-dismiss'=>'modal'} -
-            .by-card-content-v02.card-with-button
+            .by-card-content-v02
               %p= t(:download_instructions)
               %p
                 %label
@@ -55,11 +55,11 @@
                   %b= 'ODT'
                   = t(:odt_format)
               %p
-              /.desktop-only.bottom-button-area
-              /  .linkcolor.pointer{'data-dismiss'=>'modal'}
-              /    %span.right-side-icon -
-              /    %span{:style => "font-weight: bold"}= t(:cancel)
-              = submit_tag t(:download), {class: 'pointer by-button-v02 button-to-full-v02 download_submitter', id: dlgid+'_do_download'}
+              .desktop-only.bottom-button-area
+                .linkcolor.pointer{'data-dismiss'=>'modal'}
+                  %span.right-side-icon -
+                  %span{:style => "font-weight: bold"}= t(:cancel)
+                = submit_tag t(:download), {class: 'pointer by-button-v02 link-to-all-v02 download_submitter', id: dlgid+'_do_download'}
 
 :javascript
   var OSName="Unknown OS";

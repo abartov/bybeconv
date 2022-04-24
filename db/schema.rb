@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_31_110041) do
+ActiveRecord::Schema.define(version: 2022_02_19_150946) do
 
   create_table "aboutnesses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -121,10 +121,10 @@ ActiveRecord::Schema.define(version: 2022_01_31_110041) do
   create_table "bookmarks", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "manifestation_id"
     t.string "bookmark_p"
-    t.string "context", limit: 250
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "base_user_id", null: false
+    t.index ["base_user_id", "manifestation_id"], name: "index_bookmarks_on_base_user_id_and_manifestation_id", unique: true
     t.index ["base_user_id"], name: "index_bookmarks_on_base_user_id"
     t.index ["manifestation_id"], name: "index_bookmarks_on_manifestation_id"
   end
@@ -209,7 +209,6 @@ ActiveRecord::Schema.define(version: 2022_01_31_110041) do
     t.datetime "updated_at", null: false
     t.boolean "copyrighted"
     t.date "copyright_expiration"
-    t.string "genre"
     t.boolean "translation"
     t.string "source_edition"
     t.integer "period"
@@ -757,8 +756,6 @@ ActiveRecord::Schema.define(version: 2022_01_31_110041) do
   add_foreign_key "base_users", "users"
   add_foreign_key "bookmarks", "base_users"
   add_foreign_key "bookmarks", "manifestations"
-  add_foreign_key "creations", "people", name: "creations_person_id_fk"
-  add_foreign_key "creations", "works", name: "creations_work_id_fk"
   add_foreign_key "dictionary_aliases", "dictionary_entries"
   add_foreign_key "dictionary_entries", "manifestations"
   add_foreign_key "dictionary_links", "dictionary_entries", column: "from_entry_id"

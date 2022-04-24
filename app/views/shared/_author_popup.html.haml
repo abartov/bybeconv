@@ -39,16 +39,16 @@
                       = link_to author.wikipedia_url do
                         %span{style: 'font-weight:bold'}= t(:rest_in_wikipedia)
                         %span.left-arrow= '1'
-                / future feature: recommendations
-                /.metadata
-                /  %span{style:'font-weight: bold'}= t(:recommendations)+': '
-                /  = link_to number_of_recommendations, ...
-                /    - if author.blog_count > 0
-                /      .card-header-element
-                /        %a{ href: author.blog_category_url}
-                /          %span{ style: 'margin-left: 0.6rem;position:relative;top:3px;'}
-                /            %i.fa.fa-pencil-square-o
-                /          = t(:about_the_author_on_the_blog)
+                -# future feature: recommendations
+                -#.metadata
+                -#  %span{style:'font-weight: bold'}= t(:recommendations)+': '
+                -#  = link_to number_of_recommendations, ...
+                -#    - if author.blog_count > 0
+                -#      .card-header-element
+                -#        %a{ href: author.blog_category_url}
+                -#          %span{ style: 'margin-left: 0.6rem;position:relative;top:3px;'}
+                -#            %i.fa.fa-pencil-square-o
+                -#          = t(:about_the_author_on_the_blog)
                 .metadata
                   %span
                     %b= t(:works_in_the_project)+': '

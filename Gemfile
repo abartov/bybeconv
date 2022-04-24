@@ -59,7 +59,7 @@ gem 'yt' # for polling YouTube for new videos
 
 gem 'app_constants' # anything more Railsy?
 gem 'hebrew', '>= 0.2.1' # https://github.com/abartov/hebrew
-gem 'gared', '>= 0.0.25' # https://gitlab.com/abartov/gared # for scraping bibliographic data from Hebrew sources
+gem 'gared', '>= 0.0.26' # https://gitlab.com/abartov/gared # for scraping bibliographic data from Hebrew sources
 # gem 'goldiloader'
 gem 'haml'
 #gem 'zoom', '~>0.4.1', :git => 'https://github.com/bricestacey/ruby-zoom.git' # for Z39.50 queries to libraries
@@ -99,6 +99,7 @@ group :test do
   gem 'turn', '0.8.2', require: false
   gem 'simplecov', require: false
   gem 'faker', '~> 2.19.0'
+  gem 'rails-controller-testing', '~> 1.0.5'
 end
 
 group :development do

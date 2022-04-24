@@ -7,9 +7,29 @@
           .by-card-header-v02
             %span.headline-1-v02
               = link_to t(:authors_in_the_project), authors_path
-            = t(:x_authors, x: @totals[:authors])
+            -#= t(:x_authors, x: @totals[:authors])
+            = "(#{@totals[:authors]})"
           -# author carousels
           = render partial: 'shared/authors', locals: {popular_authors: @pop_authors, random_authors: [], newest_authors: @newest_authors}
+
+        -# most read and new works
+        - cache "homepage_mostread", expires_in: 6.hours do
+          .by-card-v02#works-in-project
+            .by-card-header-v02
+              %a.headline-1-v02{href: all_works_path}= t(:works_in_the_project)
+              -#= t(:x_works, {x: @totals[:works]})
+              = "(#{@totals[:works]})"
+            .by-card-content-v02.works-in-project-content
+              .row.top-works
+                = render partial: 'works_list', locals: {cache_key: 'top_works', label: t(:most_popular_works_this_month), collection: @pop_works, extra_class: 'works-most-read'}
+                = render partial: 'works_list', locals: {cache_key: 'new_works', label: t(:newest_works), collection: @newest_works, extra_class: 'works-most-new'}
+              .link-to-all-v02
+                %a{style: 'font-weight:bold', href: all_works_path}
+                  %span= t(:to_all_works)
+                  %span.left-arrow 1
+        = render 'works'
+        = render 'periods'
+
         -# surprise author
         .scroller.by-card-v02#surprise-scroller
           .slide
@@ -20,35 +40,17 @@
                 .surprise-btn-area-v02
                   %button.by-button-v02.surprise-btn-v02.headline-2-v02= t(:surprise_me)
           .slide
-            = render partial: 'shared/surprise_author', locals: {passed_mode: 'home', author: @surprise_author}
-
-        -# most read and new works
-        - cache "homepage_mostread", expires_in: 6.hours do
-          .by-card-v02#works-in-project
-            .by-card-header-v02
-              %span.headline-1-v02= t(:works_in_the_project)
-              = t(:x_works, {x: @totals[:works]})
-            .by-card-content-v02.card-with-bottom-links.works-in-project-content
-              .row.top-works{style:'min-height:280px;margin:0'}
-                = render partial: 'works_list', locals: {cache_key: 'top_works', label: t(:most_popular_works_this_month), collection: @pop_works, extra_class: 'works-most-read'}
-                = render partial: 'works_list', locals: {cache_key: 'new_works', label: t(:newest_works), collection: @newest_works, extra_class: 'works-most-new'}
-              .button-to-full-v02
-                %a{style: 'font-weight:bold', href: all_works_path}
-                  %span= t(:to_all_works)
-                  %span.left-arrow 1
+            = render partial: 'shared/surprise_author', locals: {passed_mode: 'home', author: @surprise_author}                  
         -# surprise work
         .scroller.by-card-v02#work-surprise-scroller
-          .slide
-            #works-surprise{style:'cursor:pointer'}
-              .by-card-header-v02
-                %span.headline-1-v02= t(:surprise)
-              .by-card-content-v02#works-surprise-initial
-                .surprise-btn-area-v02
-                  %button.by-button-v02.surprise-btn-v02.headline-2-v02= t(:surprise_me)
+          .slide#works-surprise{style:'cursor:pointer'}
+            .by-card-header-v02
+              %span.headline-1-v02= t(:surprise)
+            .by-card-content-v02#works-surprise-initial
+              .surprise-btn-area-v02
+                %button.by-button-v02.surprise-btn-v02.headline-2-v02= t(:surprise_me)
           .slide
             = render partial: 'shared/surprise_work', locals: {passed_mode: 'home', manifestation: @surprise_work}
-        = render 'works'
-        = render 'periods'
       .col-12.col-lg-4
         -# whatsnew feed
         .by-card-v02.whats-new-v02
@@ -57,7 +59,7 @@
               %p.headline-1-v02{style:'margin-bottom:0px'}
                 %a{ href: whatsnew_path}= t(:whatsnew)
               %p{style:'width: 69%;margin-bottom:0px'}= t(:whatsnew_subtitle)
-            .by-card-content-v02.card-with-bottom-links
+            .by-card-content-v02
               .whats-new-content
                 - items = @cached_newsfeed.count
                 - i = 1
@@ -69,15 +71,17 @@
                     .new-card-right-v02
                       - if item.itemtype == 'publication'
                         = link_to author_toc_path(item.person_id) do
-                          %img.new-card-pic-v02{src: item.thumbnail_url, width: '475', height: '686' }
+                          %div
+                            %img.new-card-pic-v02{src: item.thumbnail_url, width: '475', height: '686' }
                       - else
                         %div{ 'class' => "new-card-type-v02 #{(item.double || item.itemtype == 'youtube') ? ' double-height-v02' : ''}"}= newsitem_glyph(item)
                     .new-card-left-v02
                       - unless item.url.nil?
-                        %a{ href: item.url}
-                          %p.headline-2-v02.new-headline-v02!= item.title
+                        %a.headline-2-v02{ href: item.url}
+                          %span.new-headline-v02!= item.title
                       - else
-                        %p.headline-2-v02.new-headline-v02!= item.title
+                        %p.headline-2-v02
+                          %span.new-headline-v02!= item.title
                       %p.text-height-new.clampable_body!= item.body
                       - if item.itemtype == 'youtube'
                         .new-image-frame-v02
@@ -100,17 +104,16 @@
             - unless @featured_volunteer.nil?
               .by-side-card-header-v02
                 %p.headline-1-v02{style: 'margin-bottom: 0'}= t(:our_volunteers)
-              .by-card-content-v02.volunteer-content.card-with-bottom-links
+              .by-card-content-v02
                 %p.headline-2-v02= @featured_volunteer.name
-                .volunteer-about-v02
-                  %div
-                    .volunteer-text-v02
-                      %p.text-height-volunteer
-                        = @featured_volunteer.bio
-                        %br
-                        = @featured_volunteer.about
-                    .volunteer-side-pic-v02
-                      %img.volunteer-pic-v02{src: @featured_volunteer.profile_image.url(:thumb)}
+                .internal-content-area
+                  .internal-text-area
+                    %p.text-height-volunteer
+                      = @featured_volunteer.bio
+                      %br
+                      = @featured_volunteer.about
+                  .internal-pic
+                    %img{src: @featured_volunteer.profile_image.url(:thumb)}
 #authorWhatsNewDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1', style: 'padding-right: 0;'}
 #featured_content_dlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1', style: 'padding-right: 0;'}
 

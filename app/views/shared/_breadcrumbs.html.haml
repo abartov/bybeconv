@@ -5,20 +5,21 @@
     .breadcrumbs-text= link_to t(:authors), authors_path
     .breadcrumbs-arrow= 1
     - e = @entity.expressions[0]
+    - w = e.works[0]
     - if e.translators.count > 0
       - person = e.translators[0]
     - else
-      - person = e.works[0].persons[0]
+      - person = w.persons[0]
     .breadcrumbs-text
       - unless person.nil?
         = link_to person.name, author_toc_path(id: person.id)
       - else
         = '?'
     .breadcrumbs-arrow= 1
-    - genre = textify_genre(e.genre)
+    - genre = textify_genre(w.genre)
     - unless person.nil?
       .breadcrumbs-text
-        = link_to e.translation ? "#{t(:translation)} #{genre}" : genre, :controller => :authors, :action => :toc, :id => person.id, :genre => e.genre
+        = link_to e.translation ? "#{t(:translation)} #{genre}" : genre, :controller => :authors, :action => :toc, :id => person.id, :genre => w.genre
       /.breadcrumbs-arrow= 1
       /.breadcrumbs-text
       /  %b= @entity.title

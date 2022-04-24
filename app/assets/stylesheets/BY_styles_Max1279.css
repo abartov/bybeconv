@@ -17,9 +17,7 @@
   #content {
     width: 100%;
 	}
-  .topMenuItem-v02 {
 
-	}
 
 .rm-control-panel{
 	left: 30px;
@@ -40,22 +38,21 @@
 .select-all-with-buttons .headline-4-v02{
 	line-height: 22px;
 }
-.author-whats-new-content .new-card-right-v02{
-		display: none;
+
+}
+@media only screen and (max-width: 1080px) {
+	.topMenuItem-v02 {
+  margin-left: 1px;
+  margin-right: 1px;
+}
+	.by-nav-item-v02{
+		font-size: 15px;
 	}
+	a .genre-nav{
+	margin-top: 5px;
+	margin-bottom: 5px;
 }
-
-@media only screen and (max-width: 1160px) {
-#menu {
-    display: none; }
-
-.menuButton-v02 {
-    display: block; }
-	.sidebar-opened{
-  display: block;
-  width: 360px;
-  padding-left: 15px;
-}
+	
 }
 
 

@@ -12,7 +12,7 @@
           - if @e.translation && @e.translators.size > 0
             .headline-3-v02
               = "#{t(:translation)}: "
-              != @translators.map{|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
+              != @e.translators.map{|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
               = " (#{t(:from_lang)}#{textify_lang(@e.works[0].orig_lang)})"
         - else
           = '?'
@@ -43,7 +43,7 @@
         .top-left-icons-group
           #moreMobile-author.by-dropdown-v02
             %span.linkcolor#dict-more
-              %span.by-icon-top-v02 Y
+              %span.by-icon-v02 Y
             #dictmenu-more.by-dropdown-content-v02{:style => "left: 0; margin-top: 4px"}
               %p.printbutton
                 %span.by-icon-v02.linkcolor> 9

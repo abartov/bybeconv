@@ -28,7 +28,7 @@
                   #actualtext.maintext-poetry-body.search-margin
                     != raw(@html)
               .work-side-color
-                %div{'class' => "work-genre", style: "background-image: url(\"/assets/work_side_icons_#{@e.genre}.svg\"); background-repeat: no-repeat; background-size:auto;"}
+                %div{'class' => "work-genre", style: "background-image: url(\"/assets/work_side_icons_#{@w.genre}.svg\"); background-repeat: no-repeat; background-size:auto;"}
     .col-12.col-lg-4
       .row
         .col
@@ -39,7 +39,7 @@
           .by-card-v02.left-side-card-v02#recs
             .by-card-header-left-v02
               %span.headline-1-v02= t(:recommendations_for_work)
-            .by-card-content-v02.card-with-bottom-links
+            .by-card-content-v02
               - unless @m.like_count.nil? || @m.like_count == 0
                 = t(:x_liked, {x: @m.like_count})
                 %br
@@ -85,7 +85,7 @@
           .by-card-v02.left-side-card-v02
             .by-card-header-left-v02
               %span.headline-1-v02= t(:tags)
-            .by-card-content-v02.card-with-bottom-links
+            .by-card-content-v02
               .inline-block#taggings
                 = render partial: 'shared/taggings', locals: {taggings: @taggings}
               - unless current_user.nil?
@@ -141,13 +141,13 @@
   %span{style:'color:green'}= t(:proof_thanks_html)
 - if current_user
   = render partial: 'shared/anth_stuff'
-  - if @bookmark != 0 and @jump_to_bookmarks.nil?
-    #bookmarkBehaviorDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
-      = render partial: 'bookmark_behavior'
-  #bookmarkPanelDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
-    = render partial: 'bookmark_panel'
-  #bookmarkDeleteDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
-    = render partial: 'bookmark_delete'
+- if @bookmark != 0 and @jump_to_bookmarks.nil?
+  #bookmarkBehaviorDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
+    = render partial: 'bookmark_behavior'
+#bookmarkPanelDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
+  = render partial: 'bookmark_panel'
+#bookmarkDeleteDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
+  = render partial: 'bookmark_delete'
 -# chapter popup
 - if @m.chapters?
   .modal#chapterDlg{role: 'dialog', tabindex: '-1'}
@@ -170,7 +170,6 @@
                   %a{href:'#curated'}
                     %span.by-icon-v02 Q
                     = t(:curated_content)
-          .popup-bottom-filler
 
 :javascript
   $(document).ready(function() {

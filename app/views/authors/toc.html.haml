@@ -15,13 +15,14 @@
               %img.about-author-card-bookmark-fold-v02{:alt => t(:background), :height => "6", :src => "/assets/creator-bookmark-back2.png", :width => "168"}/
               .about-author-card-v02
                 %img.surprise-author-pic-v02{:alt => @author.name, src: @author.profile_image.url(:thumb)}/
-              .by-card-content-v02
-                .name-under-btn
-                  %span.headline-1-v02
+              .by-card-header-v02
+                .author-name-years
+                  .headline-1-v02
                     = @author.name
-                  %span.date-range!= "(#{@author.life_years})"
+                  .author-page-top-years!= "(#{@author.life_years})"
+              .by-card-content-v02
                 .text-height-author= @author.wikipedia_snippet
-                - unless @author.wikipedia_url.empty?
+                - if @author.wikipedia_url.present?
                   .read-more-v02
                     %a{:href => @author.wikipedia_url, target: '_blank'}
                       %span{:style => "font-weight: bold"}= t(:rest_in_wikipedia)
@@ -62,7 +63,7 @@
                   .select-all-checkbox
                     %input#select-all{type: 'checkbox', style:'display:none'}
                 %button.btn-small-outline-v02#multiselect_btn{title: t(:worklist_multi_tt)}
-                  .by-icon-top-v02.purple-v02 \
+                  .by-icon-v02.purple-v02 \
             -# table of contents
             .toc#maintext
               .add-to-anthology{style:'display:none'}
@@ -73,7 +74,7 @@
                 = render partial: 'toc', locals: {margin: true}
                 .by-card-v02#text-volunteers-desktop
                   .by-card-header-v02
-                    %span.headline-1-v02= t(:volunteers_who_helped, {author: @author.name, gender_letter: @author.gender_letter})
+                    .headline-1-v02= t(:volunteers_who_helped, {author: @author.name, gender_letter: @author.gender_letter})
                   .by-card-content-v02
                     .credits
                       != @credits
@@ -90,13 +91,14 @@
                   %p.headline-1-v02{:style => "margin-bottom: 0"}
                     = t(:latest_updates)
                     -#= link_to t(:latest_updates), whatsnew_path # TODO: re-enable when main whatsnew can be filtered by author
-                .by-card-content-v02.card-with-bottom-links.author-whats-new-content
+                .by-card-content-v02
                   .new-card-v02.last-item
                     -#.new-info-v02 !
                     .new-card-right-v02
                       .new-card-type-v02 q
                     .new-card-left-v02
-                      %p.headline-2-v02.new-headline-v02= t(:latest_added_works, {gender_letter: @author.gender_letter})
+                      %p.headline-2-v02
+                        %span.new-headline-v02= t(:latest_added_works, {gender_letter: @author.gender_letter})
                       %p.text-height-new#clamped_author_whatsnew
                         != @latest
                     .link-to-all-v02#author_latest_popup_link{style: 'display:none'}
@@ -109,19 +111,18 @@
                 .flash-bg-v02
                   .by-side-card-header-v02
                     %p.headline-1-v02= t(:featured_item)
-                  .by-card-content-v02.card-with-button.flash-content
-                    .flash-text-v02
-                      %p.headline-3-v02
-                        = featured.title
-                      - unless featured.user.nil?
-                        %p
-                          = t(:by)+' '
-                          = link_to featured.user.name, volunteer_show_path(featured.user)
-                      .text-height-flash-work
-                        != @fc_snippet
-                        - if @fc_rest != ''
-                          = ' ...'
-                          -# TODO: add a popup
+                  .by-card-content-v02.clampable
+                    %p.headline-3-v02
+                      = featured.title
+                    - unless featured.user.nil?
+                      %p
+                        = t(:by)+' '
+                        = link_to featured.user.name, volunteer_show_path(featured.user)
+                    .text-height-flash-work
+                      != @fc_snippet
+                      - if @fc_rest != ''
+                        = ' ...'
+                        -# TODO: add a popup with .popup_btn class
                     -#.bottom-right-link
                     -#  %a{:href => "#"}
                     -#    %span.right-side-icon '
@@ -129,10 +130,10 @@
                     .card-bottom
                       - unless featured.manifestation.nil?
                         %a{ href: manifestation_read_path(id: featured.manifestation.id)}
-                          %button.by-button-v02.button-to-full-v02= t(:to_the_work_in_the_site)
+                          %button.by-button-v02.link-to-all-v02= t(:to_the_work_in_the_site)
                       - unless featured.external_link.nil? or featured.external_link.empty?
                         %a{ href: featured.external_link, target: '_blank'}
-                          %button.by-button-v02.button-to-full-v02= t(:to_external_content)
+                          %button.by-button-v02.link-to-all-v02= t(:to_external_content)
             = render partial: 'aboutnesses'
             - if @external_links.count > 0
               .by-card-v02.left-side-card-v02
@@ -163,7 +164,7 @@
 
             .by-card-v02#text-volunteers-mobile
               .by-card-header-v02
-                %span.headline-1-v02= t(:volunteers_who_helped, {author: @author.name, gender_letter: @author.gender_letter})
+                .headline-1-v02= t(:volunteers_who_helped, {author: @author.name, gender_letter: @author.gender_letter})
               .by-card-content-v02
                 .credits
                   != @credits

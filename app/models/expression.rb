@@ -5,11 +5,9 @@ class Expression < ApplicationRecord
 
   has_and_belongs_to_many :works
   has_and_belongs_to_many :manifestations
-  has_many :realizers
+  has_many :realizers, dependent: :destroy
   has_many :persons, through: :realizers, class_name: 'Person'
-  has_many :aboutnesses, as: :aboutable
-
-  validates_inclusion_of :genre, in: Work::GENRES
+  has_many :aboutnesses, as: :aboutable, dependent: :destroy
 
   def determine_is_translation?
     # determine whether this expression is a translation or not, i.e. is in a different language to the work it expresses

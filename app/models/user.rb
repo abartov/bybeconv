@@ -11,29 +11,10 @@ class User < ApplicationRecord
   has_one :base_user, inverse_of: :user
   has_many :recommendations
   has_many :anthologies
-  has_many :bookmarks
   # no apparent need to be able to retrieve all recommendations a particular (admin) user has *resolved*.  If one arises, use a separate association on the resolved_by foreign key
 
   # editor bits
   EDITOR_BITS = ['handle_proofs', 'handle_recommendations', 'curate_featured_content', 'bib_workshop', 'edit_catalog', 'legacy_metadata', 'edit_people', 'conversion_verification', 'edit_sitenotice']
-
-  ### User Preferences
-  property_set :preferences do
-    property :fontsize, default: '2'
-    property :volunteer, default: 'false' # boolean  (another option - :protected => true)
-    property :activated, default: 'false' # boolean
-    property :suppress_anthology_intro, default: 'false'
-    property :jump_to_bookmarks
-  end
-
-  def get_pref(name)
-    return self.preferences.try(name)
-  end
-
-  def set_pref(name, value)
-    self.preferences.set(name => value)
-    self.preferences.save!
-  end
 
   def admin?
     admin

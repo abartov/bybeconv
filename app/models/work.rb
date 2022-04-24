@@ -1,11 +1,11 @@
 include BybeUtils
 class Work < ApplicationRecord
   GENRES = %w(poetry prose drama fables article memoir letters reference lexicon).freeze
-
+  
   has_and_belongs_to_many :expressions
-  has_many :creations
+  has_many :creations, dependent: :destroy
   has_many :persons, through: :creations, class_name: 'Person'
-  has_many :aboutnesses, as: :aboutable
+  has_many :aboutnesses, as: :aboutable, dependent: :destroy
   has_many :topics, class_name: 'Aboutness', source: :work
 
   validates_inclusion_of :genre, in: GENRES

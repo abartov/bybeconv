@@ -4,88 +4,108 @@
   .work-page-top
     .entry-page-top-info-card
       .by-card-content-v02.BYD-entry-top
-        .headline-1-v02= link_to @m.title, manifestation_read_path(@m)
-        - unless @prev_entry.nil?
-          .topNavEntry
-            .small-text{style: "float: left"}
-              = t(:prev_entry)
-              - if @skipped_to_prev > 0
-                %span.missingValues_desktop= t(:desktop_missing_entries, {x: @skipped_to_prev})
-                %span.missingValues_mobile= t(:mobile_missing_entries, {x: @skipped_to_prev})
-            .link-nav
-              %a{href: dict_entry_path(id: @m.id, entry: @prev_entry.id)}
-                %span.right-arrow> 2
-                = @prev_entry.defhead
-        .headline-1-v02= @entry.defhead
-        - unless @next_entry.nil?
-          .topNavEntry
-            .small-text
-              = t(:next_entry)
-              - if @skipped_to_next > 0
-                %span.missingValues_desktop= t(:desktop_missing_entries, {x: @skipped_to_next})
-                %span.missingValues_mobile= t(:mobile_missing_entries, {x: @skipped_to_next})
-            .link-nav
-              %a{href: dict_entry_path(id: @m.id, entry: @next_entry.id)}
-                = @next_entry.defhead
-                %span.left-arrow 1
+        .BYD-name
+          .headline-1-v02= link_to @m.title, manifestation_read_path(@m)
+          %div
+            .headline-3-v02
+              = t(:by)+':'
+              - unless @m.authors.nil?
+                != @m.authors.map {|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
+                - if @e.translation && @e.translators.size > 0
+                  .headline-3-v02
+                    = "#{t(:translation)}: "
+                    != @translators.map{|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
+                    = " (#{t(:from_lang)}#{textify_lang(@e.works[0].orig_lang)})"
+              - else
+                = '?'
+            .BYD-rights
+              - if @m.copyright?
+                %span.by-icon-v02.copyright-icon> x
+                = textify_copyright_status(true)
+                = link_to '[?]', '#', 'class' => 'help', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_permission), 'data-content' => t(:permission_popover)
+              - else
+                %span.by-icon-v02.copyright-icon> m
+                = textify_copyright_status(false)
+                = link_to '[?]', '#', 'class' => 'help', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_public_domain), 'data-content' => t(:public_domain_popover)
+        .topNavEntryArea.topNavEntryAreaDesktop
+          - unless @prev_entry.nil?
+            .topNavEntry
+              .small-text{style: "float: left"}
+                = t(:prev_entry)
+                - if @skipped_to_prev > 0
+                  %span.missingValues_desktop= t(:desktop_missing_entries, {x: @skipped_to_prev})
+                  %span.missingValues_mobile= t(:mobile_missing_entries, {x: @skipped_to_prev})
+              .link-nav
+                %a{href: dict_entry_path(id: @m.id, entry: @prev_entry.id)}
+                  %span.right-arrow> 2
+                  = @prev_entry.defhead
+          .headline-1-v02= @entry.defhead
+          - unless @next_entry.nil?
+            .topNavEntry
+              .small-text
+                = t(:next_entry)
+                - if @skipped_to_next > 0
+                  %span.missingValues_desktop= t(:desktop_missing_entries, {x: @skipped_to_next})
+                  %span.missingValues_mobile= t(:mobile_missing_entries, {x: @skipped_to_next})
+              .link-nav
+                %a{href: dict_entry_path(id: @m.id, entry: @next_entry.id)}
+                  = @next_entry.defhead
+                  %span.left-arrow 1
         .work-page-top-icons-desktop
-          .top-left-icons-group
-            %a.notyet{:href => "#"}
-              %span.by-icon-v02 !
+          .icons-group-v02
+            %a.by-icon-v02.pointer.linkcolor.notyet{href: '#'} !
             .icons-separator-white
-            .notyet
-              %a{:href => "#"}
-                %span.by-icon-v02 *
-            .notyet.printbutton{'data-toggle' => 'tooltip', 'title' => "#{t(:work_print_tt)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }}
-              %span.linkcolor.pointer.by-icon-v02 9
-            .notyet.download{'data-toggle' => 'modal', 'title' => "#{t(:work_download_tt)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }, 'data-target' => '#downloadDlg'}
-              %span.linkcolor.pointer.by-icon-v02 3
-            .notyet{:style => "margin-left:0;"}
-              %a{:href => "#"}
-                %span.by-icon-v02 U
+            %a.by-icon-v02.pointer.linkcolor.notyet{href: '#'} *
+            %a.by-icon-v02.pointer.linkcolor.notyet.printbutton{href: '#', 'data-toggle' => 'tooltip', 'title' => "#{t(:work_print_tt)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }} 9
+            %a.by-icon-v02.pointer.linkcolor.notyet.download{href: '#', 'data-toggle' => 'modal', 'title' => "#{t(:work_download_tt)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }, 'data-target' => '#downloadDlg'} 3
+            %a.by-icon-v02.pointer.linkcolor.notyet{href: '#'} U
+        .flexbreak
+        .topNavEntryArea.topNavEntryAreaMobile
+          - unless @prev_entry.nil?
+            .topNavEntry
+              .small-text{style: "float: left"}
+                = t(:prev_entry)
+                - if @skipped_to_prev > 0
+                  %span.missingValues_desktop= t(:desktop_missing_entries, {x: @skipped_to_prev})
+                  %span.missingValues_mobile= t(:mobile_missing_entries, {x: @skipped_to_prev})
+              .link-nav
+                %a{href: dict_entry_path(id: @m.id, entry: @prev_entry.id)}
+                  %span.right-arrow> 2
+                  = @prev_entry.defhead
+
+          .headline-1-v02= @entry.defhead
+          - unless @next_entry.nil?
+            .topNavEntry
+              .small-text
+                = t(:next_entry)
+                - if @skipped_to_next > 0
+                  %span.missingValues_desktop= t(:desktop_missing_entries, {x: @skipped_to_next})
+                  %span.missingValues_mobile= t(:mobile_missing_entries, {x: @skipped_to_next})
+              .link-nav
+                %a{href: dict_entry_path(id: @m.id, entry: @next_entry.id)}
+                  = @next_entry.defhead
+                  %span.left-arrow 1
         .work-page-top-icons-mobile
           .top-left-icons-group
             #text-moreMobile.by-dropdown-v02.notyet
               %span#text-nav-more
-                %a{:href => "#"}
-                  %span.by-icon-top-v02 Y
+                %a.by-icon-v02.linkcolor.notyet Y
               #text-menu-more.by-dropdown-content-v02{:style => "left: 0; margin-top: 4px"}
-                %a{:href => "#"}
-                  %span.by-icon-v02> !
+                %a.linkcolor.notyet{href: '#'}
+                  %span.by-icon-v02.iconNearText-v02> !
                   = t(:like)
-                %a{:href => "#"}
-                  %span.by-icon-v02> *
+                %a.linkcolor.notyet{href: '#'}
+                  %span.by-icon-v02.iconNearText-v02> *
                   = t(:cite)
-                %p.printbutton
-                  %span.by-icon-v02> 9
+                %p.printbutton.linkcolor
+                  %span.by-icon-v02.iconNearText-v02> 9
                   = t(:print)
-                %p.download
-                  %span.by-icon-v02> 3
+                %p.download.linkcolor
+                  %span.by-icon-v02.iconNearText-v02> 3
                   = t(:download)
-                %a{:href => "#"}
-                  %span.by-icon-v02> U
+                %a.linkcolor{href: '#'}
+                  %span.by-icon-v02.iconNearText-v02> U
                   = t(:share)
-        .flexbreak
-        .headline-3-v02
-          = t(:by)+':'
-          - unless @m.authors.nil?
-            != @m.authors.map {|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
-            - if @e.translation && @e.translators.size > 0
-              .headline-3-v02
-                = "#{t(:translation)}: "
-                != @translators.map{|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
-                = " (#{t(:from_lang)}#{textify_lang(@e.works[0].orig_lang)})"
-          - else
-            = '?'
-        .BYD-rights
-          - if @m.copyright?
-            %span.by-icon-v02.copyright-icon> x
-            = textify_copyright_status(true)
-            = link_to '[?]', '#', 'class' => 'help', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_permission), 'data-content' => t(:permission_popover)
-          - else
-            %span.by-icon-v02.copyright-icon> m
-            = textify_copyright_status(false)
-            = link_to '[?]', '#', 'class' => 'help', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_public_domain), 'data-content' => t(:public_domain_popover)
 
     .row.error-found-row
       .side-nav-col

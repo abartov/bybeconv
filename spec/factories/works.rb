@@ -1,21 +1,18 @@
 FactoryBot.define do
-  sequence :work_number do |n|
-    "Work #{n}"
-  end
 
   factory :work do
     transient do
-      number { generate(:work_number) }
+      sequence(:work_name) { |n| "Work #{n}" }
       author { create(:person) }
       illustrator { nil }
     end
 
-    title { "Title for #{number}" }
+    title { "Title for #{work_name}" }
     date { '3 ביוני 1960' }
-    comment { "Comment for #{number}" }
+    comment { "Comment for #{work_name}" }
     genre { Work::GENRES.sample }
     orig_lang { %w(he en ru de it).sample }
-    origlang_title { "Title in original language for #{number}" }
+    origlang_title { "Title in original language for #{work_name}" }
     normalized_pub_date {}
     normalized_creation_date { normalize_date(date) }
     creations do

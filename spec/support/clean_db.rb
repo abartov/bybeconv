@@ -6,6 +6,8 @@ def clean_tables
 
   Realizer.delete_all
   Creation.delete_all
+
+  ActiveRecord::Base.connection.execute('delete from manifestations_people')
   Person.delete_all
 
   Aboutness.delete_all
@@ -19,6 +21,10 @@ def clean_tables
   Work.delete_all
   Expression.delete_all
   Manifestation.delete_all
+
+  Publication.delete_all
+  Holding.delete_all
+  BibSource.delete_all
 
   # Cleaning-up ElasticSearch indices
   Chewy.massacre

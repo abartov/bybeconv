@@ -26,11 +26,13 @@
       .select-all-checkbox
         %input#select-all{type: 'checkbox', style:'display:none'}
     %button.btn-small-outline-v02#multiselect_btn{title: t(:worklist_multi_tt)}
-      .by-icon-top-v02.purple-v02 \
+      .by-icon-v02.purple-v02 \
     .headline-4-v02= t(:sort_by)
     #sort-by
-      .sort-by-desktop
+      %div
         #custom-select{title: t(:worklist_sort_tt)}
+          %button#current_sort_by.btn-small-outline-v02
+            .btn-text-v02#current_sort_text
           %select#sort_by_dd{name: 'sort_by'}
             %optgroup{label: t(:alefbet)}
               %option{value: 'alphabetical_asc', selected: @sort == 'alphabetical_asc' ? 'true': nil}= t(:alefbet_asc)
@@ -45,9 +47,6 @@
               %option{value: 'creation_date_desc', selected: @sort == 'creation_date_desc' ? 'true': nil}= t(:workdate_desc)
               %option{value: 'upload_date_asc', selected: @sort == 'upload_date_asc' ? 'true': nil}= t(:uploaddate_asc)
               %option{value: 'upload_date_desc', selected: @sort == 'upload_date_desc' ? 'true': nil}= t(:uploaddate_desc)
-      .sort-by-mobile
-        %button.btn-small-outline-v02#current_sort_by
-          .btn-text-v02#current_sort_text
 
   .add-to-anthology{style:'display:none'}
     .left-pointing-arrow= t(:perform_add)
@@ -208,6 +207,7 @@
     $('#current_sort_by').click(function(){
       $('#mobileFilterDlg').modal('show');
       $('.mobile-sort-area').show();
+      $('.sort-by-mobile').show();
       $('.author-mobile-filters-area').hide();
       $('#opt_sort').addClass('active');
       $('#opt_filter').removeClass('active');

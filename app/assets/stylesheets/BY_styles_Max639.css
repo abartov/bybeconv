@@ -104,7 +104,6 @@ p {
 
 
 .statistics-box-v02 {
-    height: 46px;
     border-radius: 10px; }
 
 .stat-big-v02 {
@@ -113,7 +112,7 @@ p {
     line-height: 19px; }
 
 .stat-small-v02 {
-    font-size: 10px;
+    font-size: 11px;
     line-height: 10px;
     margin-top: 6px; }
 
@@ -136,6 +135,10 @@ p {
   font-size: 14pt;
   line-height: 16pt;
 }
+.headline-2-v02{
+  font-size: 12pt;
+  line-height: 14pt;
+}
 .author-name-area{
 		height: 38px;
 }
@@ -146,9 +149,6 @@ p {
 	}
 	.author-page-top-name{
 		line-height: 36px;
-	}
-	.author-page-content{
-		margin-top: 203px;
 	}
 	.text-page-content{
 	margin-top: 208px;
@@ -239,9 +239,6 @@ p {
 	.name-under-btn{
 		width: 100%;
 	}
-.author-page-top-sort-mobile{
-	margin-right: 10px;
-}
 	.texts-list-top-info-card .headline-3-v02{
 	min-width: calc(50% - 28px);
 }
@@ -270,6 +267,42 @@ p {
   font-size: 14pt;
   line-height: 16pt;
 }
-	
+		#volunteer-bg{
+		background-size:80%;
+	}
+		#who-wrote-about-bg {
+		background-size:80%;
+	}
+	#whats-new-bg {
+		background-size:90%;
+	}
+
+	.lexicon-author-pic{
+		width: 70px;
+	}
+.lexicon-homepage .lexicon-header-he .headline-1-v02{
+		font-size: 19pt;
+	}
+	.index-part-of-pby img {
+    margin: 3px 3px;
+    width: 38px;
+    height: 11px;
+}
+		.lexicon-author-details .headline-1-v02{
+		font-size: 18pt;
+	}
+	.gateway-header .headline-1-v02{
+		font-size: 18pt;
+	}
+	.BYD-entry-top .headline-1-v02{
+		margin-bottom: 0;
+	}
+
+	.author-main-info-card-v02 .by-card-header-v02 {
+    padding-right: 125px;
+}
+.by-card-header-v02 {
+	min-height: 50px;
+}	
 }
 

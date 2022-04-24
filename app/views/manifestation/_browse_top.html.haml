@@ -49,7 +49,7 @@
           #moreMobile-author.by-dropdown-v02
             %span#nav-more-icon.notyet
               %a{:href => "#"}
-                %span.by-icon-top-v02 Y
+                .by-icon-v02 Y
             #menu-more-mobile.by-dropdown-content-v02{:style => "left: 0; margin-top: 4px"}
               %a{:href => "#"}
                 %span.by-icon-v02> 3
@@ -78,6 +78,8 @@
     $('#sort_filter_toggle').click(function() {
       if(window.innerWidth < mobileWidth) {
         $('#mobileFilterDlg').modal('show');
+        $('#opt_filter').addClass('active');
+        $('#opt_sort').removeClass('active');
       } else {
         $('#browse_intro').toggle();
         $('#sort_filter_panel').toggle();

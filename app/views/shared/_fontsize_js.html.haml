@@ -17,12 +17,11 @@
   });
   function set_fontsize_pref(thepref) {
     enact_font_size(thepref); // first make it happen on-screen
-    if(logged_in) // then, if made by a logged-in user, remember it
-      $.ajax({
-        url: "#{url_for(controller: :user, action: :set_pref, id: (current_user.nil? ? '' : current_user.id)) }",
-        data: {pref: 'fontsize', value: thepref},
-        method: 'POST',
-      });
+    $.ajax({
+      url: "#{preference_url(:fontsize)}",
+      data: { value: thepref },
+      method: 'PUT',
+    });
   }
   function enact_font_size(size) {
     $('#smallfont').removeClass('fontsize-selector-current');

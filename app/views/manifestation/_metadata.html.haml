@@ -36,8 +36,8 @@
       = textify_copyright_status(false)
       = link_to '[?]', '#', 'class' => 'help', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_public_domain), 'data-content' => t(:public_domain_popover)
   .metadata
-    %span.by-icon-v02.internal-genre-icon>= glyph_for_genre(@e.genre)
-    = textify_genre(@e.genre)
+    %span.by-icon-v02.internal-genre-icon>= glyph_for_genre(@w.genre)
+    = textify_genre(@w.genre)
   - if @e.translation?
     .metadata
       %span{:style => "font-weight:bold"}= t(:orig_lang)+': '

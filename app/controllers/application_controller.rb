@@ -10,13 +10,21 @@ class ApplicationController < ActionController::Base
   @@pop_authors_by_genre = nil
   SPIDERS = ['msnbot', 'yahoo! slurp','googlebot','bingbot','duckduckbot','baiduspider','yandexbot']
 
-  def base_user
+  # returns BaseUser record associated with current user
+  # If user is authenticated it will look for record by user_id, otherwise - by session_id
+  # If force_create arg is set to true it will create new BaseUser record for user if it doesn't exists
+  def base_user(force_create= false)
     return @base_user if @base_user.present?
 
     if session.id.nil?
-      # if no session exists we need to write something there to create anonymous session
-      session[:dummy] = true
-      session.delete(:dummy)
+      if force_create
+        # if no session exists we need to write something there to create anonymous session
+        session[:dummy] = true
+        session.delete(:dummy)
+      else
+        # no session exists, so no stored data for this user yet
+        return nil
+      end
     end
 
     if current_user
@@ -29,7 +37,7 @@ class ApplicationController < ActionController::Base
     end
 
     @base_user = BaseUser.find_by(attrs)
-    if @base_user.nil?
+    if @base_user.nil? && force_create
       @base_user = BaseUser.create!(attrs)
     end
 
@@ -37,17 +45,10 @@ class ApplicationController < ActionController::Base
   end
 
   def set_font_size
-    if current_user
-      key = "u_#{current_user.id}_fontsize"
-      @fontsize = Rails.cache.fetch(key)
-      if @fontsize.nil?
-        Rails.cache.fetch(key) do
-          current_user.preferences.fontsize
-        end
-        @fontsize = current_user.preferences.fontsize
-      end
+    if base_user
+      @fontsize = base_user.get_preference(:fontsize)
     else
-      @fontsize = '2'
+      @fontsize = BaseUser::DEFAULT_FONT_SIZE
     end
   end
 
@@ -176,7 +177,7 @@ class ApplicationController < ActionController::Base
   end
 
   def randomize_works_by_genre(genre, how_many)
-    return Manifestation.where(id: Manifestation.published.joins(expressions: [:works]).where({works: {genre: 'poetry'}}).pluck(:id).sample(how_many))
+    return Manifestation.where(id: Manifestation.published.joins(expressions: [:works]).where({works: {genre: genre}}).pluck(:id).sample(how_many))
   end
 
   def randomize_works(how_many)
@@ -186,7 +187,7 @@ class ApplicationController < ActionController::Base
   def cached_authors_in_genre
     Rails.cache.fetch("au_by_genre", expires_in: 24.hours) do # memoize
       ret = {}
-      get_genres.each{ |g| ret[g] = Person.has_toc.joins(:expressions).where(expressions: { genre: g}).uniq.count}
+      get_genres.each { |g| ret[g] = Person.has_toc.joins(expressions: :works).where(works: { genre: g }).uniq.count }
       ret
     end
   end
@@ -337,14 +338,15 @@ class ApplicationController < ActionController::Base
     Manifestation.all_published.new_since(timestamp).includes(:expressions).each {|m|
       e = m.expressions[0]
       next if e.nil? # shouldn't happen
+      w = e.works[0]
       person = e.translation ? m.translators.first : m.authors.first # TODO: more nuance
       next if person.nil? # shouldn't happen, but might in a dev. env.
       if authors[person].nil?
         authors[person] = {}
         authors[person][:latest] = 0
       end
-      authors[person][e.genre] = [] if authors[person][e.genre].nil?
-      authors[person][e.genre] << m
+      authors[person][w.genre] = [] if authors[person][w.genre].nil?
+      authors[person][w.genre] << m
       authors[person][:latest] = m.updated_at if m.updated_at > authors[person][:latest]
     }
     authors
@@ -406,14 +408,6 @@ class ApplicationController < ActionController::Base
     return ret
   end
 
-  def get_intro(markdown)
-    lines = markdown[0..2000].lines[1..-2]
-    if lines.empty?
-      lines = markdown[0..[5000,markdown.length].min].lines[0..-2]
-    end
-    lines.join + '...'
-  end
-
   def generate_new_anth_name_from_set(anths)
     i = 1
     prefix = I18n.t(:anthology)
@@ -426,7 +420,17 @@ class ApplicationController < ActionController::Base
     end
     return new_anth_name
   end
+
   def prep_user_content(context = :manifestation)
+    if context == :manifestation
+      if base_user.present?
+        @bookmark = base_user.bookmarks.where(manifestation: @m).first&.bookmark_p || 0
+        @jump_to_bookmarks = base_user.get_preference(:jump_to_bookmarks)
+      else
+        @bookmark = 0
+      end
+    end
+
     if current_user
       @anthologies = current_user.anthologies
       @new_anth_name = generate_new_anth_name_from_set(@anthologies)
@@ -445,18 +449,8 @@ class ApplicationController < ActionController::Base
       end
       @anthology_select_options = @anthologies.map{|a| [a.title, a.id, @anthology == a ? 'selected' : ''] }
       @cur_anth_id = @anthology.nil? ? 0 : @anthology.id
-      @bookmark = 0
-      if context == :manifestation
-        b = Bookmark.where(user: current_user, manifestation: @m)
-        unless b.empty?
-          @bookmark = b.first.bookmark_p
-        end
-        @jump_to_bookmarks = current_user.get_pref('jump_to_bookmarks')
-      end
-    else
-      @bookmark = 0
     end
   end
 
-  helper_method :current_user, :html_entities_coder, :get_intro
+  helper_method :current_user, :html_entities_coder
 end

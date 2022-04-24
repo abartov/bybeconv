@@ -173,15 +173,15 @@ he:
   cards_with_shortcuts: כל פסקה בתיבה וגם תיבה נפתחת של קיצורי דרך
   manual: ממתין להסבה ידנית
   WEM: ישויות ביבליוגרפיות
-  toc_edit_title: "תצוגת תוכן עניינים ליוצר/ת %{author}"
-  no_toc_yet: "טרם נקלט תוכן עניינים ליוצר/ת"
+  toc_edit_title: "תצוגת דף יוצר ליוצר/ת %{author}"
+  no_toc_yet: "טרם נקלט דף יוצר ליוצר/ת"
   top_ten_works: 10 היצירות הנקראות ביותר החודש
   top_ten_authors: 10 היוצרים הנקראים ביותר החודש
   most_read_authors: רשימת היוצרים הנקראים ביותר
   newest_authors: היוצרים החדשים ביותר
   most_read_works: רשימת היצירות הנקראות ביותר
   newest_works: היצירות החדשות ביותר
-  table_of_contents: תוכן עניינים
+  table_of_contents: דף יוצר
   new_person: "מחבר/ת חדש/ה"
   join_volunteer: התנדבות להפקת תכנים
   donate_money: תרומה כספית
@@ -312,6 +312,7 @@ he:
   bib_workshop: הסדנה הביבליוגרפית
   # genre key names are currently hard-coded in ApplicationController
   genres: סוגות
+  genres_and_types: סוגות וסוגים
   poetry: שירה
   prose: פרוזה
   article: מאמרים ומסות
@@ -339,7 +340,7 @@ he:
   frbrization_error: שגיאה במהלך יצירת ישויות!
   you_can: באפשרותך
   identifiers: מזהים
-  toc_status: מצב תוכן עניינים
+  toc_status: מצב דף יוצר
   nli_id: מזהה בספרייה הלאומית
   viaf_id: "מזהה במאגר VIAF‏"
   TBD: (בעתיד)
@@ -347,7 +348,7 @@ he:
   source_edition: פרטי מהדורת מקור
   name: שם
   edit_metadata: עריכת מטא-דאטה
-  edit_toc: עריכת תוכן עניינים
+  edit_toc: עריכת דף יוצר
   works_about: "יצירות על אודותיו/ה"
   translations_by: תרגומים
   original: מקור
@@ -361,8 +362,8 @@ he:
   full_mode: תצוגה מלאה
   nav_by_genre: ניווט לפי סוגות
   credit_section: קרדיטים
-  current_toc: תוכן עניינים נוכחי
-  update_toc: עדכון תוכן עניינים
+  current_toc: דף יוצר נוכחי
+  update_toc: עדכון דף יוצר
   find_work_by_author: "חיפוש יצירה מאת %{author}"
   rest_in_wikipedia: להמשך הערך בויקיפדיה
   rest_of_work: להמשך קריאה
@@ -536,7 +537,7 @@ he:
   conversion_verified: טקסט עבר טיוב?
   new_file_to_convert: קובץ חדש למערכת
   conversion_verification_report: יצירות עם טקסט שטרם טויב
-  messy_tocs_report: תוכן עניינים עם סוגות בסדר לא נכון
+  messy_tocs_report: דף יוצר עם סוגות בסדר לא נכון
   sample_translators: מבחר מתרגמים
   popular_translators: המתרגמים הנקראים ביותר
   random_order: (בסדר אקראי)
@@ -553,7 +554,7 @@ he:
   empty_markdown_template: קובץ ריק נוצר.  הדבק כאן טקסט במקום המלים הללו.
   upload_file: העלאת מסמך DOCX
   conversion_actions: פעולות הסבה
-  create_toc: יצירת תוכן עניינים ריק
+  create_toc: יצירת דף יוצר ריק
   split_work_mode: מצב פיצול יצירות
   careful_with_splits: " זהירות! \\n\\nלחיצה נוספת על לחצן זה תיצור ישויות עבור כל היצירות שפוצלו לעיל! \\n\\nיש לבדוק בזהירות שהיצירות פוצלו כשורה, ושלכולן יש כותרת תקינה.  אם אין זה המצב, יש לתקן את הכותרות או מיקום הפיצולים. \\n\\nכמו כן, יד לבדוק שכולן שייכות לאותה סוגה ולאותו מחבר ומתרגם. אם אין זה כך, יש לפצל את הקובץ *חיצונית* (בוורד או משהו) ליחידות אחידות מבחינת סוגה ואישים מקושרים.  \\n\\nעכשיו משקראת אזהרה זו, לחיצה נוספת על הלחצן תפעיל את הפיצול ותיצור ישויות קטלוגיות."
   non_whitespace_before_first_part: יש תוכן *לפני* כותרת היצירה הראשונה!  יש לסלקו, או לתת לו כותרת יצירה משלו (ולשמור שינויים), לפני שממשיכים.
@@ -611,6 +612,7 @@ he:
   current_editing_files: עריכות טכניות נוכחיות
   explain_up_to_10: ניתן לסנן את רשימת היצירות לפי מספר יוצרים בו זמנית על-ידי בחירתם מהרשימה. הסינון מוגבל לעד 10 יוצרים בו זמנית.
   entries: ערכים
+  logo_alt: "פרויקט בן־יהודה: שימור, הנגשת, וחשיפת יצירות עבריות לציבור הרחב"
   linking_entries: ערכים קשורים
   apply_mobile_filters: יישום סינון נבחר
   sort: מיון
@@ -659,6 +661,7 @@ he:
   if_you_meant_works: "אם התכוונתם להגיע לדף היצירות, לחצו כאן: "
   to_the_works_page: לדף היצירות
   authors: יוצרים
+  authors_neutral: "יוצרים/ות"
   author_name: "שם היוצר/ת"
   to_the_author_page: לדף היוצר
   to_the_authoress_page: לדף היוצרת
@@ -682,7 +685,7 @@ he:
   x_works_plain: "%{x} יצירות"
   mobile_totals: "%{authors} יוצרים, %{works} יצירות"
   authors_in_the_project: יוצרים במאגר
-  works_in_the_project: יצירות שהועלו למאגר
+  works_in_the_project: יצירות במאגר
   escalated: הועבר לבדיקה נוספת
   the_blog: יומן הרשת
   to_the_blog: ליומן הרשת
@@ -796,9 +799,9 @@ he:
   latest_youtube: קטעי וידאו אחרונים בערוץ היו-טיוב
   youtube_url: https://www.youtube.com/user/ProjectBenYehuda/
   contact_us: יצירת קשר
-  show_toc: הצג תוכן עניינים
+  show_toc: הצג דף יוצר
   remember_to_save: לא לשכוח לשמור!
-  toc: תוכן עניינים
+  toc: דף יוצר
   slogan: <strong>שימור</strong>, <strong>הנגשת</strong> ו<strong>חשיפת</strong> יצירות עבריות לציבור הרחב
   unique_only: רק ייחודיים לספריה זו
   copy_to_clipboard: העתקה ללוח
@@ -859,7 +862,7 @@ he:
   clear_bibs: אַפֵּס תוצאות
   mark_as_done: סמן סיום טיפול ביבליוגרפי
   general: כללי
-  generated_toc: תוכן עניינים גולמי מהסדנה הביבליוגרפית
+  generated_toc: דף יוצר גולמי מהסדנה הביבליוגרפית
   generated_toc_explanation: "שימו לב: מה שבתיבה זו לא נשמר בשום מקום, אלא אם תעתיקו אותו לתיבת העריכה הרגילה, למטה."
   uploaded: עלה למערכת
   make_author_page: הפק דף יוצר גולמי
@@ -942,7 +945,7 @@ he:
   back: חזרה
   back_to_dashboard: למרכז הפעילות
   dashboard: מרכז הפעילות
-  raw_tocs: מחברים עם תוכן עניינים שטרם עוּבַּד
+  raw_tocs: מחברים עם דף יוצר שטרם עוּבַּד
   back_to_homepage: לדף הבית
   make_corrections_below: "תיקונים יש לבצע בתיבת הטקסט להלן:"
   recommendations_by_status: המלצות לפי סטטוס %{status}
@@ -1004,7 +1007,7 @@ he:
   resolved_as: טופל ועבר לסטטוס %{fixed}
   no_url_specified: לא צוינה כתובת URL.
   no_such_item: אין פריט כזה.
-  created_toc: נוצר תוכן עניינים עם תבנית ריקה
+  created_toc: נוצר דף יוצר עם תבנית ריקה
   miscellaneous: שונות
   etext: ספר אלקטרוני
   url: כתובת URL
@@ -1052,8 +1055,8 @@ he:
   translator: מתרגם
   translator_f: מתרגמת
   translated_by: בתרגום
-  pd_explain: TBD
-  permission_explain: TBD
+  pd_explain: פגו זכויות היוצרים על יצירות אלו
+  permission_explain: התקבלה רשות מפורשת מבעלי הזכויות לפרסום היצירות
   about_the_author_on_the_blog: רשומות ביומן הרשת
   donate_title: תמיכה כספית בפרויקט
   donate_p1_html: כל עבודת ההקלדה, ההגהה והעריכה בפרויקט נעשית <b>בהתנדבות וללא קבלת תמורה</b>. עם זאת, אנו מזמינים שירותי פיתוח תוכנה, אפיון, ועיצוב מנשק משתמש מקבלנים, ולשם כך אנו מגייסים תרומות.

@@ -7,15 +7,15 @@ class Manifestation < ApplicationRecord
   has_and_belongs_to_many :html_files
 
   has_and_belongs_to_many :likers, join_table: :work_likes, class_name: :User
-  has_many :taggings
+  has_many :taggings, dependent: :destroy
   has_many :tags, through: :taggings, class_name: 'Tag'
-  has_many :recommendations
-  has_many :list_items, as: :item
-  has_many :downloadables, as: :object
+  has_many :recommendations, dependent: :destroy
+  has_many :list_items, as: :item, dependent: :destroy
+  has_many :downloadables, as: :object, dependent: :destroy
 
   has_paper_trail
-  has_many :external_links, as: :linkable
-  has_many_attached :images
+  has_many :external_links, as: :linkable, dependent: :destroy
+  has_many_attached :images, dependent: :destroy
 
   before_save :update_sort_title
 
@@ -27,7 +27,7 @@ class Manifestation < ApplicationRecord
   scope :copyrighted, -> { joins(:expressions).includes(:expressions).where(expressions: {copyrighted: true})}
   scope :not_translations, -> { joins(:expressions).includes(:expressions).where(expressions: {translation: false})}
   scope :translations, -> { joins(:expressions).includes(:expressions).where(expressions: {translation: true})}
-  scope :genre, -> (genre) { joins(:expressions).includes(:expressions).where(expressions: {genre: genre})}
+  scope :genre, -> (genre) { joins(expressions: :works).where(works: {genre: genre})}
   scope :by_tag, ->(tag_id) {joins(:taggings).where(taggings: {tag_id: tag_id})}
 
   LONG_LENGTH = 15000 # kind of arbitrary...
@@ -236,11 +236,11 @@ class Manifestation < ApplicationRecord
   def self.popular_works_by_genre(genre, xlat)
     if xlat
       Rails.cache.fetch("m_pop_xlat_in_#{genre}", expires_in: 24.hours) do # memoize
-        Manifestation.all_published.joins([expressions: :works]).includes(:expressions).where(expressions: {genre: genre}).where("works.orig_lang != expressions.language").order(impressions_count: :desc).limit(10).map{|m| {id: m.id, title: m.title, author: m.author_string}}
+        Manifestation.all_published.joins([expressions: :works]).includes(:expressions).where(works: {genre: genre}).where("works.orig_lang != expressions.language").order(impressions_count: :desc).limit(10).map{|m| {id: m.id, title: m.title, author: m.author_string}}
       end
     else
       Rails.cache.fetch("m_pop_in_#{genre}", expires_in: 24.hours) do # memoize
-        Manifestation.all_published.joins([expressions: :works]).includes(:expressions).where(expressions: {genre: genre}).where("works.orig_lang = expressions.language").order(impressions_count: :desc).limit(10).map{|m| {id: m.id, title: m.title, author: m.author_string}}
+        Manifestation.all_published.joins([expressions: :works]).includes(:expressions).where(works: {genre: genre}).where("works.orig_lang = expressions.language").order(impressions_count: :desc).limit(10).map{|m| {id: m.id, title: m.title, author: m.author_string}}
       end
     end
   end
@@ -272,20 +272,21 @@ class Manifestation < ApplicationRecord
     end
   end
 
-  def self.cached_last_month_works
-    Rails.cache.fetch("m_new_last_month", expires_in: 24.hours) do
-      ret = {}
-      Manifestation.all_published.new_since(1.month.ago).each {|m|
-        e = m.expressions[0]
-        genre = e.genre
-        person = e.persons[0] # TODO: more nuance
-        next if person.nil? || genre.nil? # shouldn't happen, but might in a dev. env.
-        ret[genre] = [] if ret[genre].nil?
-        ret[genre] << [m.id, m.title, m.author_string]
-      }
-      ret
-    end
-  end
+  # This method was used in ManifestationController#works which is currently not used, but could be reimplemented in future
+  # def self.cached_last_month_works
+  #   Rails.cache.fetch("m_new_last_month", expires_in: 24.hours) do
+  #     ret = {}
+  #     Manifestation.all_published.new_since(1.month.ago).each {|m|
+  #       e = m.expressions[0]
+  #       genre = e.genre
+  #       person = e.persons[0] # TODO: more nuance
+  #       next if person.nil? || genre.nil? # shouldn't happen, but might in a dev. env.
+  #       ret[genre] = [] if ret[genre].nil?
+  #       ret[genre] << [m.id, m.title, m.author_string]
+  #     }
+  #     ret
+  #   end
+  # end
 
   def self.recalc_popular
     @@popular_works = Manifestation.all_published.order(impressions_count: :desc).limit(10) # top 10

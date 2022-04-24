@@ -1,6 +1,8 @@
 require 'pandoc-ruby'
 
 class ManifestationController < ApplicationController
+  class PageNotFound < StandardError; end;
+
   # class WorkSearch < FortyFacets::FacetSearch
   #   model 'Manifestation' # which model to search for
   #   text :title   # filter by a generic string entered by the user
@@ -53,6 +55,8 @@ class ManifestationController < ApplicationController
       format.html
       format.js
     end
+  rescue PageNotFound
+    head :not_found
   end
 
   def translations
@@ -62,37 +66,28 @@ class ManifestationController < ApplicationController
   end
 
   def remove_bookmark
-    if current_user
-      @m = Manifestation.find(params[:id])
-      unless @m.nil?
-        Bookmark.where(manifestation: @m, user: current_user).first.destroy
-      end
+    if base_user
+      base_user.bookmarks.where(manifestation_id: params[:id]).first&.destroy
     end
     head :ok
   end
+
   def set_bookmark
-    if current_user
-      @m = Manifestation.find(params[:id])
-      unless @m.nil?
-        @b = Bookmark.where(manifestation: @m, user: current_user)
-        if @b.empty?
-          @b = Bookmark.new(manifestation: @m, user: current_user)
-        else
-          @b = @b.first
-        end
-        @b.bookmark_p = params[:bookmark_path]
-        @b.save
-        respond_to do |format|
-          format.js
-        end
-        render partial: 'set_bookmark'
+    manifestation_id = params[:id]
+    BaseUser.transaction do
+      base_user(true).lock!
+      b = base_user.bookmarks.where(manifestation_id: manifestation_id).first
+      if b.nil?
+        base_user.bookmarks.create!(manifestation_id: manifestation_id, bookmark_p: params[:bookmark_path])
       else
-        head :ok
+        b.update!(bookmark_p: params[:bookmark_path])
       end
-    else
-      head :ok
+      respond_to do |format|
+        format.js do render partial: 'set_bookmark' end
+      end
     end
   end
+
   def by_tag
     @page_title = t(:works_by_tag)+' '+t(:project_ben_yehuda)
     @pagetype = :works
@@ -125,26 +120,27 @@ class ManifestationController < ApplicationController
     @pagetype = :periods
   end
 
-  def works # /works dashboard
-    @tabclass = set_tab('works')
-    @page_title = t(:works)+' - '+t(:project_ben_yehuda)
-    @pagetype = :works
-    @work_stats = {total: Manifestation.cached_count, pd: Manifestation.cached_pd_count, translated: Manifestation.cached_translated_count}
-    @work_stats[:permission] = @work_stats[:total] - @work_stats[:pd]
-    @work_counts_by_genre = Manifestation.cached_work_counts_by_genre
-    @pop_by_genre = Manifestation.cached_popular_works_by_genre # get popular works by genre + most popular translated
-    @rand_by_genre = {}
-    @surprise_by_genre = {}
-    get_genres.each do |g|
-      @rand_by_genre[g] = Manifestation.randomize_in_genre_except(@pop_by_genre[g][:orig], g) # get random works by genre
-      @surprise_by_genre[g] = @rand_by_genre[g].pop # make one of the random works the surprise work
-    end
-    @works_abc = Manifestation.first_25 # get cached first 25 manifestations
-    @new_works_by_genre = Manifestation.cached_last_month_works
-    @featured_content = featured_content
-    (@fc_snippet, @fc_rest) = @featured_content.nil? ? ['',''] : snippet(@featured_content.body, 500) # prepare snippet for collapsible
-    @popular_tags = cached_popular_tags
-  end
+  # This code was used for 'secondary portal', but not used anymore. We may need to reimplement it at some point
+  # def works # /works dashboard
+  #   @tabclass = set_tab('works')
+  #   @page_title = t(:works)+' - '+t(:project_ben_yehuda)
+  #   @pagetype = :works
+  #   @work_stats = {total: Manifestation.cached_count, pd: Manifestation.cached_pd_count, translated: Manifestation.cached_translated_count}
+  #   @work_stats[:permission] = @work_stats[:total] - @work_stats[:pd]
+  #   @work_counts_by_genre = Manifestation.cached_work_counts_by_genre
+  #   @pop_by_genre = Manifestation.cached_popular_works_by_genre # get popular works by genre + most popular translated
+  #   @rand_by_genre = {}
+  #   @surprise_by_genre = {}
+  #   get_genres.each do |g|
+  #     @rand_by_genre[g] = Manifestation.randomize_in_genre_except(@pop_by_genre[g][:orig], g) # get random works by genre
+  #     @surprise_by_genre[g] = @rand_by_genre[g].pop # make one of the random works the surprise work
+  #   end
+  #   @works_abc = Manifestation.first_25 # get cached first 25 manifestations
+  #   @new_works_by_genre = Manifestation.cached_last_month_works
+  #   @featured_content = featured_content
+  #   (@fc_snippet, @fc_rest) = @featured_content.nil? ? ['',''] : snippet(@featured_content.body, 500) # prepare snippet for collapsible
+  #   @popular_tags = cached_popular_tags
+  # end
 
   def whatsnew
     @tabclass = set_tab('works')
@@ -181,7 +177,7 @@ class ManifestationController < ApplicationController
     if @m.nil?
       head :not_found
     else
-      if @m.expressions[0].genre != 'lexicon'
+      if @m.expressions[0].works[0].genre != 'lexicon'
         redirect_to action: 'read', id: @m.id
       else
         @page = params[:page] || 1
@@ -241,12 +237,13 @@ class ManifestationController < ApplicationController
       @outgoing_links = @entry.outgoing_links.includes(:outgoing_links)
     end
   end
+
   def read
     @m = Manifestation.joins(:expressions).includes(:expressions).find(params[:id])
     if @m.nil?
       head :not_found
     else
-      if @m.expressions[0].genre == 'lexicon' && DictionaryEntry.where(manifestation_id: @m.id).count > 0
+      if @m.expressions[0].works[0].genre == 'lexicon' && DictionaryEntry.where(manifestation_id: @m.id).count > 0
         redirect_to action: 'dict', id: @m.id
       else
         unless @m.published?
@@ -316,7 +313,6 @@ class ManifestationController < ApplicationController
 
   def genre
     @pagetype = :works
-    # @collection = Manifestation.all_published.joins(:expressions).where(expressions: {genre: params[:genre]})
     @works_list_title = t(:works_by_genre)+': '+helpers.textify_genre(params[:genre])
     @genres = [params[:genre]]
     browse
@@ -325,7 +321,7 @@ class ManifestationController < ApplicationController
   # this one is called via AJAX
   def get_random
     work = nil
-    unless params[:genre].nil? || params[:genre].empty?
+    if params[:genre].present?
       work = randomize_works_by_genre(params[:genre], 1)[0]
     else
       work = randomize_works(1)[0]
@@ -440,6 +436,7 @@ class ManifestationController < ApplicationController
     @e = @m.expressions[0] # TODO: generalize?
     @w = @e.works[0] # TODO: generalize!
   end
+
   def chomp_period
     @m = Manifestation.find(params[:id])
     @e = @m.expressions[0] # TODO: generalize?
@@ -474,7 +471,7 @@ class ManifestationController < ApplicationController
     # update attributes
     if params[:commit] == t(:save)
       Chewy.strategy(:atomic) {
-          if params[:markdown].nil? # metadata edit
+        if params[:markdown].nil? # metadata edit
           @e = @m.expressions[0] # TODO: generalize?
           @w = @e.works[0] # TODO: generalize!
           @w.title = params[:wtitle]
@@ -488,7 +485,6 @@ class ManifestationController < ApplicationController
             c.save!
           end
           @e.language = params[:elang]
-          @e.genre = params[:genre] # expression's genre is same as work's
           @e.title = params[:etitle]
           @e.date = params[:edate]
           @e.comment = params[:ecomment]
@@ -767,7 +763,6 @@ class ManifestationController < ApplicationController
     end
 
     @emit_filters = true if params[:load_filters] == 'true' || params[:emit_filters] == 'true'
-    @total = @collection.count # actual query triggered here
     @gender_facet = es_buckets_to_facet(@collection.aggs['author_genders']['buckets'], Person.genders)
     @tgender_facet = es_buckets_to_facet(@collection.aggs['translator_genders']['buckets'], Person.genders)
     @period_facet = es_buckets_to_facet(@collection.aggs['periods']['buckets'], Expression.periods)
@@ -807,8 +802,6 @@ class ManifestationController < ApplicationController
   end
 
   def prep_for_browse
-    @page = params[:page] || 1
-    @page = 1 if ['0',''].include?(@page) # slider sets page to zero, awkwardly
     es_prep_collection
 
     @total = @collection.count

@@ -1,99 +1,47 @@
-- if passed_mode == 'home'
-  .by-card-v02#authors-surprise-replaced
-    %img.surprise-author-card-bookmark-fold-v02{src: '/assets/creator-bookmark-back2.png', width: 168, height: 6}
-    %a{href: author_toc_path(author.id)}
-      .surprise-author-card-v02
-        %img.surprise-author-pic-v02{src: author.profile_image.url(:thumb), alt: author.name}
-        .author-name-area
-          .surprise-author-name-v02= t(:to_the_author_page)+(author.gender == 'female' ? 'ת' : '') # TODO: unhardcode
-    .by-card-header-v02
-      %span.headline-1-v02
-        %a{href: author_toc_path(author.id)}= author.name
-      %span.date-range!= " (#{author.life_years})"
-    .by-card-content-v02.surprise-author-height-v02
-      .surprise-author-card-content-v02
-        .row
-          .col-md-6.col-sm-12
-            %div.padbot12
-              %span.by-icon-v02{style: 'float: right'}
-                / %a{ href: }
-                = favorite_glyph(author.favorite_of_user)
-              %span.by-icon-v02.copyright-icon= author.rights_icon
-              = textify_copyright_status(! author.public_domain)
-              %span.help{ 'data-toggle' => 'tooltip', title: author.public_domain? ? t(:pd_explain): t(:permission_explain)}= '[?]'
+.by-card-v02#authors-surprise-replaced
+  %img.surprise-author-card-bookmark-fold-v02{src: '/assets/creator-bookmark-back2.png', width: 168, height: 6}
+  %a{href: author_toc_path(author.id)}
+    .surprise-author-card-v02
+      %img.surprise-author-pic-v02{src: author.profile_image.url(:thumb), alt: author.name}
+      .author-name-area
+        .surprise-author-name-v02= t(:to_the_author_page)+(author.gender == 'female' ? 'ת' : '') # TODO: unhardcode
+  .by-card-header-v02
+    %span.headline-1-v02
+      %a{href: author_toc_path(author.id)}= author.name
+    %span.date-range!= " (#{author.life_years})"
+  .by-card-content-v02.surprise-author-card-content-v02
+    .row
+      .col-md-6.col-sm-12
+        .metadata
+          %span.by-icon-v02
+            = favorite_glyph(author.favorite_of_user)
+          %span.by-icon-v02= author.rights_icon
+          = textify_copyright_status(! author.public_domain)
+          %span.help{ 'data-toggle' => 'tooltip', title: author.public_domain? ? t(:pd_explain): t(:permission_explain)}= '[?]'
 
-            - unless author.wikipedia_snippet.nil?
-              .text-height-author= author.wikipedia_snippet
-              .read-more-v02
-                %a{ href: author.wikipedia_url }
-                  %span{style: 'font-weight: bold'}= t(:rest_in_wikipedia)
-                  %span.left-arrow 1
-          .col-md-6.col-sm-12.surprise-author-left-side
-            .padbot12
-              %b= t(:works_in_the_project)+': '
-              = link_to "#{author.cached_works_count} #{t(:works)}", author_toc_path(author.id)
-            .text-height-author-2
-              %p{style:'font-weight:bold; margin-bottom: 3px'}= t(:their_most_read_works, gender_letter: author.gender_letter)
-              %ol
-                - author.most_read(5).each do |mhash|
-                  - genre = mhash[:genre]
-                  - genrebit = genre.nil? ? '' : " (#{textify_genre(genre)})"
-                  %li
-                    = link_to mhash[:title], manifestation_read_path(mhash[:id])
-                    - if mhash[:translation]
-                      = ' / '+mhash[:author]
-                    = ' '+genrebit
-
-            .padbot12
-              / %b= t(:recommendations)
-              / a href
-              / = author.recommendations_count
-- else # site v1 logic - probably to be completely rewritten
-  = render partial: 'shared/author_popup', locals: {author: author, surprise: true}
-  %a{ 'data-toggle' => :modal, 'data-target'=> "#surprise_popup_#{id_frag}"}
-    - if passed_mode == 'gallery'
-      .corner
-        %img{ src: '/assets/corner.png', alt: t(:background), width: 80, height: 80}
-      .author-homepage-pic
-        %img{ src: author.profile_image.url(:thumb), alt: author.name, height: '230px'}
-      .author-homepage-surprise-name
-        %p.vcentered= author.name
-    - else
-      .bysurprise-pic
-        .bysurprise-portrait
-          %img{src: author.profile_image.url(:thumb), alt: author.name, width:83}
-      .card-content.bysurprise-text{style:'align-content:center; text-align:center;position:relative;height:12rem;'}
-        %p{style:'font-size:3rem;font-weight:bold;padding-top: 3rem;margin-bottom: -3rem;'}= author.name
-  .replace-icon.text-on-dark{style:'margin-bottom:0.6rem'}
-    %a{ id: "surprise_author_refresh_#{id_frag}#{side}", role: :button}
-      %i.fa.fa-refresh
-
-  :javascript
-    $(document).ready(function() {
-      $("#surprise_author_refresh_#{id_frag}#{side}").click(function(){
-        $("#surprise_author_refresh_#{id_frag}#{side}").off('click') // remove any existing hook
-
-        var the_id;
-        if($("##{id_frag}_side1").hasClass('active')) { // because we're about to flip
-          the_id = "##{id_frag}_side2";
-        } else {
-          the_id = "##{id_frag}_side1";
-        }
-        $("#surprise_author_carousel-#{id_frag}").carousel('next'); // begin transition
-        var $thediv = $(the_id + ' > div').clone(); // and immediately change the popup to be the correct one
-        $("#surprise_popup_#{id_frag}").html($thediv.html());
-      });
-
-      $("#surprise_author_carousel-#{id_frag}").on('slid.bs.carousel', function () {
-        var the_id, side;
-        if($("##{id_frag}_side2").hasClass('active')) { // because we've just flipped
-          the_id = "##{id_frag}_side1";
-          side = '1';
-        } else {
-          the_id = "##{id_frag}_side2";
-          side = '2';
-        }
-        $(the_id).load("#{url_for(controller: :authors, action: :get_random_author, id_frag: id_frag, genre: passed_genre, mode: passed_mode)}"+'&side='+side);
-      });
-
-    });
+        - unless author.wikipedia_snippet.nil?
+          .surprise-text-container
+            .text-height-author= author.wikipedia_snippet
+            .read-more-v02
+              %a{ href: author.wikipedia_url }
+                %span{style: 'font-weight: bold'}= t(:rest_in_wikipedia)
+                %span.left-arrow 1
+      .col-md-6.col-sm-12.surprise-author-left-side
+        -#.metadata
+        -#  %span{style: 'font-weight:bold'}= t(:recommendations)+':'
+        -#  %a{:href => "#"}
+        -#    = "#{author.recommendations_count} #{t(:recommendations_for_work)}"
+        .metadata
+          %b= t(:works_in_the_project)+': '
+          = link_to "#{author.cached_works_count} #{t(:works)}", author_toc_path(author.id)
+        .text-height-author-2
+          %p{style:'font-weight:bold; margin-bottom: 3px'}= t(:their_most_read_works, gender_letter: author.gender_letter)
+          %ol
+            - author.most_read(5).each do |mhash|
+              - genre = mhash[:genre]
+              - genrebit = genre.nil? ? '' : " (#{textify_genre(genre)})"
+              %li
+                = link_to mhash[:title], manifestation_read_path(mhash[:id])
+                - if mhash[:translation]
+                  = ' / '+mhash[:author]
+                = ' '+genrebit

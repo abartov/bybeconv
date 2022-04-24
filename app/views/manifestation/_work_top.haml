@@ -1,26 +1,47 @@
 .container-fluid#header-general
   = render partial: 'shared/breadcrumbs'
+  - xlatbuf = nil
+  - authorbuf = nil
+  - unless @m.authors.nil?
+    - authorbuf = @m.authors.map {|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
+  - if @e.translation && @e.translators.size > 0
+    - xlatbuf = @translators.map{|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
   .top-space
   .work-page-top
     .work-page-top-info-card
-      .headline-1-v02.work-name-top= @m.title
-      .work-page-top-author
-        .headline-3-v02
-          = t(:by)+':'
-          - unless @m.authors.nil?
-            != @m.authors.map {|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
-            - if @e.translation && @e.translators.size > 0
-              .headline-3-v02
-                = "#{t(:translation)}: "
-                != @translators.map{|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
-                = " (#{t(:from_lang)}#{textify_lang(@e.works[0].orig_lang)})"
-          - else
-            = '?'
+      .work-and-author-names-mobile
+        .headline-1-v02.work-name-top= @m.title
+        .work-page-top-author
+          .headline-3-v02
+            = t(:by)+':'
+            - unless authorbuf.nil?
+              != authorbuf
+              - unless xlatbuf.nil?
+                .headline-3-v02
+                  = "#{t(:translation)}: "
+                  != xlatbuf
+                  = " (#{t(:from_lang)}#{textify_lang(@e.works[0].orig_lang)})"
+            - else
+              = '?'
       .row
         .col-12
+          .work-and-author-names-desktop
+            .headline-1-v02.work-name-top= @m.title
+            .work-page-top-author
+              .headline-3-v02
+                = t(:by)+':'
+                - unless authorbuf.nil?
+                  != authorbuf
+                  - unless xlatbuf.nil?
+                    .headline-3-v02
+                      = "#{t(:translation)}: "
+                      != xlatbuf
+                      = " (#{t(:from_lang)}#{textify_lang(@e.works[0].orig_lang)})"
+                - else
+                  = '?'
           - if @m.chapters?
             .field-v02.work-chapters-dropdown-field-desktop#chapter_dropdown
-              =t(:jump_to_chapter)
+              = t(:jump_to_chapter)
               %span.dropdown-arrow )
               .by-dropdown-content-v02.dropdown_full-width#chapter_dropdown_content
                 - @chapters.each do |ch|
@@ -30,9 +51,6 @@
                     %a{href:'#curated'}
                       %span.by-icon-v02 Q
                       = t(:curated_content)
-            .work-chapters-popup-mobile#chapter_mobile_dropdown
-              %button.btn-small-outline-v02.btn-text-v02{ 'data-toggle' => 'modal', 'data-target'=> '#chapterDlg'}
-                = t(:jump_to)
           .work-page-top-icons-desktop
             %a.white{:href => url_for(action: :readmode, id: @m.id)}
               %button.btn-small-outline-v02.btn-text-v02.reading-mode-btn-v02{'title' => "#{t(:readmode_tt)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }}
@@ -43,7 +61,7 @@
               .icons-group-v02
                 
               %a.by-icon-v02.pointer.like.must_login{class: @liked ? 'icon-byheart-full' : 'icon-byheart-empty', 'title' => "#{t(:work_liked_tt)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }, tabindex: 0}
-              %a.by-icon-v02.pointer.bookmark-status.bookmark_button.must_login{'title' => "#{t(:bookmark_tt)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }, tabindex: 0}
+              %a.by-icon-v02.pointer.bookmark-status.bookmark_button{'title' => "#{t(:bookmark_tt)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }, tabindex: 0}
               - unless current_user
                 %a.by-icon-v02.pointer.anthologies_button.must_login{tabindex: 0}= 'D'
               - else
@@ -57,33 +75,34 @@
               %a.by-icon-v02.pointer.printbutton{'data-toggle' => 'tooltip', 'title' => "#{t(:work_print_tt)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }, tabindex: 0}= '9'
               %a.by-icon-v02.pointer.download{'data-toggle' => 'modal', 'title' => "#{t(:work_download_tt)}", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }, 'data-target' => '#downloadDlg', tabindex: 0}= '3'
               %a.by-icon-v02.pointer.sharebutton{title: "#{ t(:share_tt) }", 'data-selector' => 'true', 'data-placement' => 'top', 'data-toggle' => 'tooltip', 'data-delay' => { "show": 200, "hide": 100 }, style: 'margin-left:0;', tabindex: 0}= 'U'
-          .work-page-top-icons-mobile
-            %a.btn-small-outline-v02.btn-text-v02.reading-mode-icon-btn-v02{href: url_for(action: :readmode, id: @m.id)}
-              %span.by-icon-v02 /
-            .top-left-icons-group
-              .like.must_login
-                - if @liked
-                  %span.linkcolor.pointer.by-icon-v02.icon-byheart-full
-                - else
-                  %span.linkcolor.pointer.by-icon-v02.icon-byheart-empty
-              .bookmark_button.pointer.must_login
-                %span.by-icon-v02.linkcolor.bookmark-status
-              #text-moreMobile.by-dropdown-v02
-                %span.linkcolor#text-nav-more
-                  %span.by-icon-top-v02 Y
-                #text-menu-more.by-dropdown-content-v02{:style => "left: 0; margin-top: 4px"}
-                  %p.anthologies_button{'data-toggle' => 'modal','data-backdrop' => 'static', 'data-keyboard' => 'false', 'data-target' => '#anthologiesDlg'}
-                    %span.by-icon-v02.linkcolor> D
-                    = t(:bookshelves)
-                  %p.citebutton
-                    %span.by-icon-v02.linkcolor> *
-                    = t(:cite)
-                  %p.printbutton
-                    %span.by-icon-v02.linkcolor> 9
-                    = t(:print)
-                  %p.download
-                    %span.by-icon-v02.linkcolor> 3
-                    = t(:download)
+          .chapters-and-icons-mobile
+            .work-page-top-icons-mobile
+              %a.btn-small-outline-v02.btn-text-v02.reading-mode-icon-btn-v02{href: url_for(action: :readmode, id: @m.id)}
+                %span.by-icon-v02 /
+              .top-left-icons-group
+                .icons-group-v02
+                  %div{class: 'like must_login linkcolor pointer by-icon-v02 icon-byheart-'+(@liked ? 'full' : 'empty')}
+                  .bookmark_button.pointer.by-icon-v02.linkcolor.bookmark-status
+                  #text-moreMobile.by-dropdown-v02
+                    %span.linkcolor#text-nav-more
+                      %span.by-icon-v02 Y
+                    #text-menu-more.by-dropdown-content-v02{:style => "left: 0; margin-top: 4px"}
+                      %p.anthologies_button{'data-toggle' => 'modal','data-backdrop' => 'static', 'data-keyboard' => 'false', 'data-target' => '#anthologiesDlg'}
+                        %span.by-icon-v02.linkcolor> D
+                        = t(:bookshelves)
+                      %p.citebutton
+                        %span.by-icon-v02.linkcolor> *
+                        = t(:cite)
+                      %p.printbutton
+                        %span.by-icon-v02.linkcolor> 9
+                        = t(:print)
+                      %p.download
+                        %span.by-icon-v02.linkcolor> 3
+                        = t(:download)
+            - if @m.chapters?
+              .work-chapters-popup-mobile#chapter_mobile_dropdown
+                %button.btn-small-outline-v02.btn-text-v02{ 'data-toggle' => 'modal', 'data-target'=> '#chapterDlg'}
+                  = t(:jump_to)
     .row.error-found-row
       .side-nav-col
         - if @m.chapters?
@@ -163,54 +182,52 @@
     });
 
     $('.bookmark_button').click(function(e){
-      if(!#{current_user.nil?}) {
-        if( $('p.bookmark').length > 0 ) {
-          y = $(window).scrollTop()+$('#header').height()+5;
-          var elements = $("#actualtext > p");
-          var el;
-          for (var i=0; i<elements.length; i++) {
-            el = $(elements[i]);
-            if (el.offset().top >= y && el.is(':visible')){
-              saved_elem = el;
-              break;
-            }
+      if( $('p.bookmark').length > 0 ) {
+        y = $(window).scrollTop()+$('#header').height()+5;
+        var elements = $("#actualtext > p");
+        var el;
+        for (var i=0; i<elements.length; i++) {
+          el = $(elements[i]);
+          if (el.offset().top >= y && el.is(':visible')){
+            saved_elem = el;
+            break;
           }
-          $('#bookmarkPanelDlg').modal('show');
-        } else {
-          alert("#{t(:bookmark_mode_begin)}");
-          $('body').css('cursor', 'crosshair');
-          $('#actualtext').click(function(e){
-            $('body').css('cursor', 'default');
-            // set bookmark
-            y = e.pageY - $(window).scrollTop();
-            elem = document.elementFromPoint(e.pageX, y);
-            if(elem != null) {
-              csspath = $(elem).getPath();
-              shortcsspath = '#actualtext '+csspath.substring(csspath.lastIndexOf('div')+3, csspath.length);
-              set_bookmark($(elem));
-              url = "#{raw url_for(action: :set_bookmark)}";
-              $.ajax({url: url, method: 'POST', data: {id: #{@m.id}, bookmark_path: shortcsspath}});
-            }
-            $('#actualtext').off('click'); // disable handler
-          });
         }
+        $('#bookmarkPanelDlg').modal('show');
+      } else {
+        alert("#{t(:bookmark_mode_begin)}");
+        $('body').css('cursor', 'crosshair');
+        $('#actualtext').click(function(e){
+          $('body').css('cursor', 'default');
+          // set bookmark
+          y = e.pageY - $(window).scrollTop();
+          elem = document.elementFromPoint(e.pageX, y);
+          if(elem != null) {
+            csspath = $(elem).getPath();
+            shortcsspath = '#actualtext '+csspath.substring(csspath.lastIndexOf('div')+3, csspath.length);
+            set_bookmark($(elem));
+            url = "#{raw url_for(action: :set_bookmark)}";
+            $.ajax({url: url, method: 'POST', data: {id: #{@m.id}, bookmark_path: shortcsspath}});
+          }
+          $('#actualtext').off('click'); // disable handler
+        });
       }
     });
 
     offsetTop = #{ @readmode ? 40 : 250 },
     $('.like').click(function(){ // toggle like/unlike
       if("#{current_user}" != '') {
-        if($('.like').find(".icon-byheart-full").length > 0) { // already liked
+        if($('.like').hasClass("icon-byheart-full")) { // already liked
           // unlike
           $.ajax({
             url: "#{url_for(action: :unlike, id: @m.id) }",
           });
-          $('.icon-byheart-full').removeClass('icon-byheart-full').addClass('icon-byheart-empty');
+          $('.like').removeClass('icon-byheart-full').addClass('icon-byheart-empty');
         } else { // like
           $.ajax({
             url: "#{url_for(action: :like, id: @m.id) }",
           });
-          $('.icon-byheart-empty').removeClass('icon-byheart-empty').addClass('icon-byheart-full');
+          $('.like').removeClass('icon-byheart-empty').addClass('icon-byheart-full');
         }
       }
     });
