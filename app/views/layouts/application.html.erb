@@ -67,23 +67,50 @@
               <div class="logoBY-scroll-mobile-v02"><img class="scrolled-logoBY-v02" alt="פרויקט בן יהודה"/></div>
             </a>
           </div>
-          <div class="col-6 col-lg-4" style="padding-right: 4px;">
-            <div class="statistics-box-v02">
-              <div class="row">
-                <div class="col-5 statistics-v02">
-                  <div class="stat-big-v02"><%= link_to(Manifestation.cached_count.to_s, all_works_path) %></div>
+          <div class="col-6 col-lg-4">
+            <% if @ltr.nil? %>
+              <div class="statistics-box-v02">
+                <div class="statistics-v02">
+                  <div class="stat-big-v02">
+                    <%= link_to(Manifestation.cached_count.to_s, all_works_path) %>
+                  </div>
                   <div class="stat-small-v02"><%= t(:works) %></div>
                 </div>
-                <div class="col-2 statistics-v02">
-                  <div class="stat-big-v02"><%= link_to(Person.cached_count.to_s, authors_path) %></div>
-                  <div class="stat-small-v02"><%= t(:authors) %></div>
+                <div class="statistics-v02">
+                  <div class="stat-big-v02">
+                    <%= link_to(Person.cached_count.to_s, authors_path) %>
+                  </div>
+                  <div class="stat-small-v02"><%= t(:authors_neutral) %></div>
                 </div>
-                <div class="col-5 statistics-v02">
-                  <div class="stat-big-v02"><%= link_to(get_total_headwords.to_s, manifestation_genre_path(genre: 'lexicon'))%></div>
+                <div class="statistics-v02">
+                  <div class="stat-big-v02">
+                    <%= link_to(get_total_headwords.to_s, manifestation_genre_path(genre: 'lexicon'))%>
+                  </div>
                   <div class="stat-small-v02"><%= t(:dictionary_entries) %></div>
                 </div>
               </div>
-            </div>
+            <% else %>
+              <div class="statistics-box-v02">
+                <div class="statistics-v02">
+                  <div class="stat-big-v02">
+                    <%= link_to(get_total_headwords.to_s, manifestation_genre_path(genre: 'lexicon'))%>
+                  </div>
+                  <div class="stat-small-v02"><%= t(:dictionary_entries_en) %></div>
+                </div>
+                <div class="statistics-v02">
+                  <div class="stat-big-v02">
+                    <%= link_to(Person.cached_count.to_s, authors_path) %>
+                  </div>
+                  <div class="stat-small-v02"><%= t(:authors_neutral_en) %></div>
+                </div>
+                <div class="statistics-v02">
+                  <div class="stat-big-v02">
+                    <%= link_to(Manifestation.cached_count.to_s, all_works_path) %>
+                  </div>
+                  <div class="stat-small-v02"><%= t(:works_en) %></div>
+                </div>
+              </div>
+            <% end %>
           </div>
           <div class="col-lg-4">
             <div class="top-btn-group-v02">
