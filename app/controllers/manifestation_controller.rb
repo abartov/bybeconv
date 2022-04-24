@@ -756,7 +756,7 @@ class ManifestationController < ApplicationController
 
     @page = params[:page].to_i
     @page = 1 if @page == 0 # slider sets page to zero, awkwardly
-    if @page > (@total/100.0).ceil
+    if @page > (@total/100.0).ceil && @page != 1 # a zero-result query would trigger this, otherwise
       # Sometimes we receive requests to pages with extremely large number from bots/search crawlers
       # So simply respond with NotFound in this case
       raise PageNotFound
