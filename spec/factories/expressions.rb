@@ -14,7 +14,7 @@ FactoryBot.define do
     date { '2 ביוני 1960' }
     language {}
     comment { "Comment for #{expression_name}" }
-    copyrighted { 0 }
+    copyrighted { false }
     copyright_expiration { nil }
     translation { orig_lang != 'he' }
     source_edition {}

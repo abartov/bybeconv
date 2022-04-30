@@ -23,18 +23,6 @@ class Expression < ApplicationRecord
     return realizers.includes(:person).where(role: Realizer.roles[:translator]).map {|x| x.person}
   end
 
-  def should_be_copyrighted?
-    creators = works[0].persons
-    realizer_people = realizers.map{|r| r.person}
-    tocheck = creators + realizer_people
-    ret = false
-    tocheck.each{|p|
-      ret = true unless p.public_domain
-      break if ret
-    }
-    return ret
-  end
-
   def self.cached_translations_count
     Rails.cache.fetch("e_translations", expires_in: 24.hours) do
       Expression.where(translation: true).count
