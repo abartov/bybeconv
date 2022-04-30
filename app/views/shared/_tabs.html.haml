@@ -238,7 +238,7 @@
       %a{href: '/page/donate'}
         %button.btn-small-outline-v02.btn-text-v02.donation-btn-v02
           %span.by-icon-v02> z
-          = t(:donate)
+          = @ltr ? t(:donate_en) : t(:donate)
   .header-search-area
     .top-search-box-v02
       -#.top-search-select-v02
