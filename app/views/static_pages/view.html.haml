@@ -1,14 +1,17 @@
 .top-element
   .container-fluid
     .row
-      .col-12.col-lg-8
-        #static_page
-          - if @p.ltr
+      - if @p.ltr
+        .col-12.col-lg-4
+        .col-12.col-lg-8
+          #static_page
             %div{dir:'ltr',align:'left'}
               != @markdown.gsub('<h2 ','<h2 style="direction:ltr;text-align:left" ').gsub('<h4 ','<h4 style="direction:ltr;text-align:left" ').gsub('<h3 ','<h3 style="direction:ltr;text-align:left" ')
-          - else
+      - else
+        .col-12.col-lg-8
+          #static_page
             != @markdown
-      .col-12.col-lg-4
+        .col-12.col-lg-4
 :javascript
   $(document).ready(function(){
     if($('.contact_btn').length > 0 ) {
