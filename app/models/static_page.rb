@@ -23,14 +23,16 @@ class StaticPage < ApplicationRecord
       sections = markdown.split(/(<h2.*?<\/h2>)/)
       newbuf = '<span class="headline-1-v02">' + self.title + '</span>'
       extrastyle = self.ltr ? 'style="direction:ltr;text-align:left"' : ''
+      i = 0
       sections.each do |s|
         if s[0..2] == '<h2'
           s.match(/<h2.*?>(.*?)<\/h2>/)
           title = $1 or ''
           newbuf += "<div class=\"by-card-v02\"><div class=\"by-card-header-v02\"><span class=\"headline-2-v02\" #{extrastyle}>#{title}</span></div><div class=\"by-card-content-v02\">"
         else
-          newbuf += s + '</div></div>' # close card
+          newbuf += s + '</div></div>' unless i == 0 # close card
         end
+        i += 1
       end
       markdown = newbuf
     end
