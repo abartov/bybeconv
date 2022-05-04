@@ -24,6 +24,10 @@ FactoryBot.define do
       result = []
       if orig_lang != 'he'
         result << create(:realizer, person: translator, role: :translator)
+      else
+        if translator.present?
+          raise 'Cannot specify translator if language matches orig_lang'
+        end
       end
       if editor.present?
         result << create(:realizer, person: editor, role: :editor)
