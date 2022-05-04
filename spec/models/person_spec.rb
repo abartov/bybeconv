@@ -20,8 +20,8 @@ describe Person do
       create(:manifestation, author: person, genre: 'poetry')
       create(:manifestation, author: person, genre: 'poetry')
       create(:manifestation, illustrator: person, genre: 'fables')
-      create(:manifestation, translator: person, genre: 'article')
-      create(:manifestation, translator: person, genre: 'memoir')
+      create(:manifestation, translator: person, orig_lang: 'ru', genre: 'article')
+      create(:manifestation, translator: person, orig_lang: 'ru', genre: 'memoir')
       create(:manifestation, editor: person, genre: 'prose') # edited works should not be included
     end
 
