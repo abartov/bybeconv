@@ -229,16 +229,22 @@ class AdminController < ApplicationController
     Rails.cache.write('report_translated_from_multiple_languages', @authors.length)
   end
 
+  # We assume manifestation should be copyrighted if one of its creators or realizers is not in public domain
+  CALCULATED_COPYRIGHT_EXPRESSION = <<~sql
+    (
+      exists (select 1 from creations c join people p on p.id = c.person_id where c.work_id = works.id and not coalesce(p.public_domain, false))
+      or exists (select 1 from realizers r join people p on p.id = r.person_id where r.expression_id = expressions.id and not coalesce(p.public_domain, false))
+    )
+  sql
+
   def incongruous_copyright
-    # Manifestation.joins([expressions: [[realizers: :person],:works]]).where(expressions: {copyrighted:true},people: {public_domain:true})
-    @incong = []
-    Manifestation.all.each {|m|
-      calculated_copyright = m.expressions[0].should_be_copyrighted?
-      db_copyright = m.expressions[0].copyrighted
-      if calculated_copyright != db_copyright
-        @incong << [m, m.title, m.author_string, calculated_copyright, db_copyright]
-      end
-    }
+    @incong = Manifestation.joins(expressions: :works).
+        select('manifestations.title, manifestations.id, expressions.copyrighted').
+        select(Arel.sql("#{CALCULATED_COPYRIGHT_EXPRESSION} as calculated_copyright")).
+        where("expressions.copyrighted is null or #{CALCULATED_COPYRIGHT_EXPRESSION} <> expressions.copyrighted").map do |m|
+      [ m, m.title, m.author_string, m.calculated_copyright, m.copyrighted ]
+    end
+
     Rails.cache.write('report_incongruous_copyright', @incong.length)
   end
 

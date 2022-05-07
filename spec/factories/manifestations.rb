@@ -8,6 +8,7 @@ FactoryBot.define do
       translator { orig_lang != 'he' ? create(:person) : nil }
       editor { nil }
       illustrator { nil }
+      copyrighted { false }
     end
 
     title { "Title for #{manifestation_name}" }
@@ -19,7 +20,20 @@ FactoryBot.define do
     impressions_count { Random.rand(100) }
     status { :published }
 
-    expressions { [ create(:expression, author: author, translator: translator, editor: editor, illustrator: illustrator, orig_lang: orig_lang, genre: genre) ] }
+    expressions {
+      [
+        create(
+          :expression,
+          author: author,
+          translator: translator,
+          editor: editor,
+          illustrator: illustrator,
+          orig_lang: orig_lang,
+          genre: genre,
+          copyrighted: copyrighted
+        )
+      ]
+    }
 
     trait :with_external_links do
       external_links { build_list(:external_link, 2) }

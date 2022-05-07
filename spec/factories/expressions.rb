@@ -14,7 +14,7 @@ FactoryBot.define do
     date { '2 ביוני 1960' }
     language {}
     comment { "Comment for #{expression_name}" }
-    copyrighted { 0 }
+    copyrighted { false }
     copyright_expiration { nil }
     translation { orig_lang != 'he' }
     source_edition {}
@@ -24,6 +24,10 @@ FactoryBot.define do
       result = []
       if orig_lang != 'he'
         result << create(:realizer, person: translator, role: :translator)
+      else
+        if translator.present?
+          raise 'Cannot specify translator if language matches orig_lang'
+        end
       end
       if editor.present?
         result << create(:realizer, person: editor, role: :editor)

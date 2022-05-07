@@ -20,8 +20,8 @@ describe Person do
       create(:manifestation, author: person, genre: 'poetry')
       create(:manifestation, author: person, genre: 'poetry')
       create(:manifestation, illustrator: person, genre: 'fables')
-      create(:manifestation, translator: person, genre: 'article')
-      create(:manifestation, translator: person, genre: 'memoir')
+      create(:manifestation, translator: person, orig_lang: 'ru', genre: 'article')
+      create(:manifestation, translator: person, orig_lang: 'ru', genre: 'memoir')
       create(:manifestation, editor: person, genre: 'prose') # edited works should not be included
     end
 
@@ -34,11 +34,6 @@ describe Person do
     let!(:manifestation_1) { create(:manifestation, author: person, impressions_count: 10, genre: :fables) }
     let!(:manifestation_2) { create(:manifestation, author: person, impressions_count: 20, genre: :memoir) }
     let!(:manifestation_3) { create(:manifestation, author: person, impressions_count: 30, genre: :article) }
-
-    before do
-      person.manifestations = [manifestation_1, manifestation_2, manifestation_3]
-      person.save!
-    end
 
     subject { person.most_read(limit).map{ |rec| rec[:id] } }
 

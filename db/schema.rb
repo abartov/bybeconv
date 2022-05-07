@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_19_150946) do
+ActiveRecord::Schema.define(version: 2022_04_09_140937) do
 
   create_table "aboutnesses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -455,16 +455,7 @@ ActiveRecord::Schema.define(version: 2022_02_19_150946) do
     t.index ["status"], name: "index_manifestations_on_status"
   end
 
-  create_table "manifestations_people", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "manifestation_id"
-    t.integer "person_id"
-    t.index ["manifestation_id"], name: "index_manifestations_people_on_manifestation_id"
-    t.index ["person_id"], name: "index_manifestations_people_on_person_id"
-  end
-
-  create_table "news_items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_bin", force: :cascade do |t|
+  create_table "news_items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.integer "itemtype"
     t.string "title"
     t.boolean "pinned"
@@ -783,8 +774,6 @@ ActiveRecord::Schema.define(version: 2022_02_19_150946) do
   add_foreign_key "legacy_recommendations", "manifestations", name: "legacy_recommendations_manifestation_id_fk"
   add_foreign_key "legacy_recommendations", "users", column: "recommended_by", name: "legacy_recommendations_recommended_by_fk"
   add_foreign_key "list_items", "users"
-  add_foreign_key "manifestations_people", "manifestations", name: "manifestations_people_manifestation_id_fk"
-  add_foreign_key "manifestations_people", "people", name: "manifestations_people_person_id_fk"
   add_foreign_key "people", "tocs", name: "people_toc_id_fk"
   add_foreign_key "proofs", "html_files", name: "proofs_html_file_id_fk"
   add_foreign_key "proofs", "manifestations", name: "proofs_manifestation_id_fk"

@@ -77,7 +77,7 @@ describe AuthorsController do
 
     before do
       create(:manifestation, author: author)
-      create(:manifestation, translator: author)
+      create(:manifestation, orig_lang: 'de', translator: author)
     end
 
     it { is_expected.to be_successful }

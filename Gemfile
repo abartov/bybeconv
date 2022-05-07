@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '~> 5.2.5'
+gem 'rails', '~> 5.2.5' # upgrading to 5.2.7 blocked by Chewy 6 issue https://github.com/toptal/chewy/issues/832 - once we move to ES 7.x we can upgrade Chewy and then Rails
 gem 'rails-i18n' # , git: 'https://github.com/svenfuchs/rails-i18n.git' # , branch: 'rails-4-x' # For 4.x
 gem 'actionview', '>= 5.2.4.2'
 gem 'sprockets', '~> 3' # 4.x requires manifest.js
