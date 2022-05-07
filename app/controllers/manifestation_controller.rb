@@ -906,6 +906,10 @@ class ManifestationController < ApplicationController
       tmphash.keys.reverse.map{|k| @chapters << [k[4..-1], tmphash[k]]}
       @selected_chapter = tmphash.keys.last
       @html = MultiMarkdown.new(lines.join('')).to_html.force_encoding('UTF-8').gsub(/<figcaption>.*?<\/figcaption>/,'').gsub('<table>','<div style="overflow-x:auto;"><table>').gsub('</table>','</table></div>') # remove MMD's automatic figcaptions and make tables scroll to avoid breaking narrow mobile devices
+      # add permalinks
+      @html.gsub!(/<h2(.*?) id="(.*?)"(.*?)>(.*?)<\/h2>/,"<h2\\1 id=\"\\2\"\\3>\\4 &nbsp;&nbsp; <span style=\"font-size: 50%;\"><a title=\"קישור קבוע\" href=\"#{request.original_url}#\\2\">🔗</a></span></h2>")
+      @html.gsub!(/<h3(.*?) id="(.*?)"(.*?)>(.*?)<\/h3>/,"<h3\\1 id=\"\\2\"\\3>\\4 &nbsp;&nbsp; <span style=\"font-size: 50%;\"><a title=\"קישור קבוע\" href=\"#{request.original_url}#\\2\">🔗</a></span></h3>")
+
       @tabclass = set_tab('works')
       @entity = @m
       @pagetype = :manifestation
