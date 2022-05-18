@@ -2,7 +2,7 @@ class ManifestationsIndex < Chewy::Index
   settings 'index.max_result_window' => 40000 # Must be set to value greater than total number of works in db
 
   # works
-  define_type Manifestation.all_published.includes(expressions: :work) do
+  define_type Manifestation.all_published.includes(expression: :work) do
 #    field :title, analyzer: 'hebrew' # from https://github.com/synhershko/elasticsearch-analysis-hebrew
 #    field :fulltext, value: ->(manifestation) {manifestation.to_plaintext}, analyzer: 'hebrew'
     field :id, type: 'integer'
@@ -10,16 +10,16 @@ class ManifestationsIndex < Chewy::Index
     field :sort_title, type: 'keyword' # for sorting
     field :first_letter, value: ->(manifestation) {manifestation.first_hebrew_letter}
     field :fulltext, value: ->(manifestation) {manifestation.to_plaintext}
-    field :genre, value: ->(manifestation) { manifestation.expressions[0].work.genre}, type: 'keyword'
-    field :orig_lang, value: ->(manifestation) { manifestation.expressions[0].work.orig_lang}, type: 'keyword'
-    field :orig_lang_title, value: ->(manifestation) { manifestation.expressions[0].work.origlang_title}, type: 'keyword'
+    field :genre, value: ->(manifestation) { manifestation.expression.work.genre}, type: 'keyword'
+    field :orig_lang, value: ->(manifestation) { manifestation.expression.work.orig_lang}, type: 'keyword'
+    field :orig_lang_title, value: ->(manifestation) { manifestation.expression.work.origlang_title}, type: 'keyword'
     field :pby_publication_date, type: 'date', value: ->{created_at}
     field :author_string, value: ->(manifestation) {manifestation.author_string}
     field :author_ids, type: 'integer', value: ->(manifestation) {manifestation.author_and_translator_ids}
     field :title_and_authors, value: ->(manifestation) {manifestation.title_and_authors}
     field :impressions_count, type: 'integer'
-    field :raw_publication_date, value: -> (manifestation) {manifestation.expressions[0].date}
-    field :orig_publication_date, type: 'date', value: ->(manifestation) {normalize_date(manifestation.expressions[0].date)}
+    field :raw_publication_date, value: -> (manifestation) {manifestation.expression.date}
+    field :orig_publication_date, type: 'date', value: ->(manifestation) {normalize_date(manifestation.expression.date)}
     # field :video_count, type: 'integer', value: ->(manifestation){ manifestation.video_count}
     # field :recommendation_count, type: 'integer', value: ->(manifestation){manifestation.recommendations.all_approved.count}
     #field :curated_content_count, type: 'integer', value: ->(manifestation){ 0 } # TODO: implement
@@ -27,9 +27,9 @@ class ManifestationsIndex < Chewy::Index
     field :author_gender, value: ->(manifestation) {manifestation.author_gender }, type: 'keyword'
     field :translator_gender, value: ->(manifestation) {manifestation.translator_gender}, type: 'keyword'
     field :copyright_status, value: ->(manifestation) {manifestation.copyright?}, type: 'keyword' # TODO: make non boolean
-    field :period, value: ->(manifestation) {manifestation.expressions[0].period}, type: 'keyword'
-    field :raw_creation_date, value: ->(manifestation) {manifestation.expressions[0].work.date}
-    field :creation_date, type: 'date', value: ->(manifestation) {normalize_date(manifestation.expressions[0].work.date)}
+    field :period, value: ->(manifestation) {manifestation.expression.period}, type: 'keyword'
+    field :raw_creation_date, value: ->(manifestation) {manifestation.expression.work.date}
+    field :creation_date, type: 'date', value: ->(manifestation) {normalize_date(manifestation.expression.work.date)}
     field :publication_place
     field :publisher
   end

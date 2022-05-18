@@ -67,7 +67,7 @@ describe SearchManifestations do
           :manifestation,
           title: "#{color} #{vegetable} #{index} title",
           impressions_count: index,
-          expressions: [expression],
+          expression: expression,
           created_at: uploaded_at
         )
 
@@ -504,7 +504,7 @@ describe SearchManifestations do
 
     describe 'publication_date' do
       let(:asc_order) do
-        Manifestation.all_published.joins(:expressions).order('expressions.normalized_pub_date').pluck(:id)
+        Manifestation.all_published.joins(:expression).order('expressions.normalized_pub_date').pluck(:id)
       end
       let(:sorting) { 'publication_date' }
       context 'when default sort direction is requested' do
@@ -523,7 +523,7 @@ describe SearchManifestations do
 
     describe 'creation_date' do
       let(:asc_order) do
-        Manifestation.all_published.joins(expressions: :work).order('works.normalized_creation_date').pluck(:id)
+        Manifestation.all_published.joins(expression: :work).order('works.normalized_creation_date').pluck(:id)
       end
       let(:sorting) { 'creation_date' }
       context 'when default sort direction is requested' do

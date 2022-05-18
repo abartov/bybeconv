@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_04_18_201702) do
+ActiveRecord::Schema.define(version: 2022_05_18_144200) do
 
   create_table "aboutnesses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -212,13 +212,6 @@ ActiveRecord::Schema.define(version: 2022_04_18_201702) do
     t.index ["normalized_pub_date"], name: "index_expressions_on_normalized_pub_date"
     t.index ["period"], name: "index_expressions_on_period"
     t.index ["work_id"], name: "index_expressions_on_work_id"
-  end
-
-  create_table "expressions_manifestations", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
-    t.integer "expression_id"
-    t.integer "manifestation_id"
-    t.index ["expression_id"], name: "index_expressions_manifestations_on_expression_id"
-    t.index ["manifestation_id"], name: "index_expressions_manifestations_on_manifestation_id"
   end
 
   create_table "external_links", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
@@ -427,8 +420,10 @@ ActiveRecord::Schema.define(version: 2022_04_18_201702) do
     t.integer "status"
     t.string "sort_title"
     t.boolean "sefaria_linker"
+    t.integer "expression_id", null: false
     t.index ["conv_counter"], name: "index_manifestations_on_conv_counter"
     t.index ["created_at"], name: "index_manifestations_on_created_at"
+    t.index ["expression_id"], name: "index_manifestations_on_expression_id"
     t.index ["impressions_count"], name: "index_manifestations_on_impressions_count"
     t.index ["sort_title"], name: "index_manifestations_on_sort_title"
     t.index ["status", "sort_title"], name: "index_manifestations_on_status_and_sort_title"
@@ -732,6 +727,7 @@ ActiveRecord::Schema.define(version: 2022_04_18_201702) do
   add_foreign_key "holdings", "bib_sources"
   add_foreign_key "holdings", "publications"
   add_foreign_key "list_items", "users"
+  add_foreign_key "manifestations", "expressions"
   add_foreign_key "people", "tocs", name: "people_toc_id_fk"
   add_foreign_key "proofs", "html_files", name: "proofs_html_file_id_fk"
   add_foreign_key "proofs", "manifestations", name: "proofs_manifestation_id_fk"

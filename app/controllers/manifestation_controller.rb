@@ -173,18 +173,18 @@ class ManifestationController < ApplicationController
   end
 
   def dict
-    @m = Manifestation.joins(:expressions).includes(:expressions).find(params[:id])
+    @m = Manifestation.joins(:expression).includes(:expression).find(params[:id])
     if @m.nil?
       head :not_found
     else
-      if @m.expressions[0].work.genre != 'lexicon'
+      if @m.expression.work.genre != 'lexicon'
         redirect_to action: 'read', id: @m.id
       else
         @page = params[:page] || 1
         @page = 1 if ['0',''].include?(@page) # slider sets page to zero or '', awkwardly
         @dict_list_mode = params[:dict_list_mode] || 'list'
         @emit_filters = true if params[:load_filters] == 'true' || params[:emit_filters] == 'true'
-        @e = @m.expressions[0]
+        @e = @m.expression
         @header_partial = 'manifestation/dict_top'
         @pagetype = :manifestation
         @entity = @m
@@ -226,7 +226,7 @@ class ManifestationController < ApplicationController
       @header_partial = 'manifestation/dict_entry_top'
       @pagetype = :manifestation
       @entity = @m
-      @e = @m.expressions[0]
+      @e = @m.expression
       @prev_entries = @entry.get_prev_defs(5)
       @next_entries = @entry.get_next_defs(5)
       @prev_entry = @prev_entries[0] # may be nil if at beginning of dictionary
@@ -239,11 +239,11 @@ class ManifestationController < ApplicationController
   end
 
   def read
-    @m = Manifestation.joins(:expressions).includes(:expressions).find(params[:id])
+    @m = Manifestation.joins(:expression).includes(:expression).find(params[:id])
     if @m.nil?
       head :not_found
     else
-      if @m.expressions[0].work.genre == 'lexicon' && DictionaryEntry.where(manifestation_id: @m.id).count > 0
+      if @m.expression.work.genre == 'lexicon' && DictionaryEntry.where(manifestation_id: @m.id).count > 0
         redirect_to action: 'dict', id: @m.id
       else
         unless @m.published?
@@ -305,7 +305,6 @@ class ManifestationController < ApplicationController
 
   def period
     @pagetype = :works
-    # @collection = Manifestation.all_published.joins(:expressions).where(expressions: {period: Person.periods[params[:period]]})
     @works_list_title = t(:works_by_period)+': '+t(params[:period])
     @periods = [params[:period]]
     browse
@@ -393,14 +392,14 @@ class ManifestationController < ApplicationController
     @urlbase = url_for(action: :show, id:1)[0..-2]
     # DB
     if params[:title].blank? && params[:author].blank?
-      @manifestations = Manifestation.includes(expressions: :work).page(params[:page]).order('updated_at DESC')
+      @manifestations = Manifestation.includes(expression: :work).page(params[:page]).order('updated_at DESC')
     else
       if params[:author].blank? # 
-        @manifestations = Manifestation.includes(expressions: :work).where('title like ?', '%' + params[:title] + '%').page(params[:page]).order('sort_title ASC')
+        @manifestations = Manifestation.includes(expression: :work).where('title like ?', '%' + params[:title] + '%').page(params[:page]).order('sort_title ASC')
       elsif params[:title].blank?
-        @manifestations = Manifestation.includes(expressions: :work).where('cached_people like ?', "%#{params[:author]}%").page(params[:page]).order('sort_title asc')
+        @manifestations = Manifestation.includes(expression: :work).where('cached_people like ?', "%#{params[:author]}%").page(params[:page]).order('sort_title asc')
       else # both author and title
-        @manifestations = Manifestation.includes(expressions: :work).where('manifestations.title like ? and manifestations.cached_people like ?', '%' + params[:title] + '%', '%'+params[:author]+'%').page(params[:page]).order('sort_title asc')
+        @manifestations = Manifestation.includes(expression: :work).where('manifestations.title like ? and manifestations.cached_people like ?', '%' + params[:title] + '%', '%'+params[:author]+'%').page(params[:page]).order('sort_title asc')
       end
     end
   end
@@ -408,7 +407,7 @@ class ManifestationController < ApplicationController
   def show
     @m = Manifestation.find(params[:id])
     @page_title = t(:show)+': '+@m.title_and_authors
-    @e = @m.expressions[0] # TODO: generalize?
+    @e = @m.expression
     @w = @e.work
     @html = MultiMarkdown.new(@m.markdown).to_html.force_encoding('UTF-8').gsub(/<figcaption>.*?<\/figcaption>/,'') # remove MMD's automatic figcaptions
     @html = highlight_suspicious_markdown(@html) # highlight suspicious markdown in backend
@@ -433,13 +432,13 @@ class ManifestationController < ApplicationController
   def edit_metadata
     @m = Manifestation.find(params[:id])
     @page_title = t(:edit_metadata)+': '+@m.title_and_authors
-    @e = @m.expressions[0] # TODO: generalize?
+    @e = @m.expression
     @w = @e.work
   end
 
   def chomp_period
     @m = Manifestation.find(params[:id])
-    @e = @m.expressions[0] # TODO: generalize?
+    @e = @m.expression
     @w = @e.work
     [@m, @e, @w].each { |rec|
       if rec.title[-1] == '.'
@@ -451,7 +450,7 @@ class ManifestationController < ApplicationController
 
   def add_aboutnesses
     @m = Manifestation.find(params[:id])
-    @e = @m.expressions[0] # TODO: generalize?
+    @e = @m.expression
     @w = @e.work
     @page_title = t(:add_aboutnesses)+': '+@m.title_and_authors
     @aboutness = Aboutness.new
@@ -472,7 +471,7 @@ class ManifestationController < ApplicationController
     if params[:commit] == t(:save)
       Chewy.strategy(:atomic) {
         if params[:markdown].nil? # metadata edit
-          @e = @m.expressions[0] # TODO: generalize?
+          @e = @m.expression
           @w = @e.work
           @w.title = params[:wtitle]
           @w.genre = params[:genre]
@@ -508,7 +507,7 @@ class ManifestationController < ApplicationController
           @e.save!
         else # markdown edit and save
           unless params[:newtitle].nil? or params[:newtitle].empty?
-            @e = @m.expressions[0] # TODO: generalize?
+            @e = @m.expression
             @w = @e.work
             @m.title = params[:newtitle]
             @e.title = params[:newtitle]
@@ -851,7 +850,7 @@ class ManifestationController < ApplicationController
         flash[:notice] = t(:work_not_available)
         redirect_to '/'
       else
-        @e = @m.expressions[0]
+        @e = @m.expression
         @w = @e.work
         @author = @w.persons[0] # TODO: handle multiple authors
         unless is_spider?

@@ -150,7 +150,7 @@ describe ManifestationController do
     let(:title) { 'Some title' }
     let(:orig_lang) { 'he' }
     let!(:manifestation) { create(:manifestation, title: title, genre: genre, orig_lang: orig_lang) }
-    let(:expression) { manifestation.expressions[0] }
+    let(:expression) { manifestation.expression }
     let(:work) { expression.work }
 
     describe '#show' do
@@ -384,6 +384,12 @@ describe ManifestationController do
       subject { get :add_aboutnesses, params: { id: manifestation.id } }
 
       it { is_expected.to be_successful }
+    end
+
+    describe '#workshow' do
+      subject { get :workshow, params: { id: manifestation.expression.work.id} }
+
+      it { is_expected.to redirect_to manifestation_read_path(manifestation) }
     end
   end
 end

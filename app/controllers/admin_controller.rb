@@ -66,8 +66,9 @@ class AdminController < ApplicationController
 
   def missing_copyright
     @authors = Person.where(public_domain: nil)
-    @total = Manifestation.joins(:expressions).where(expressions: {copyrighted: nil}).count
-    @mans = Manifestation.joins(:expressions).where(expressions: {copyrighted: nil}).page(params[:page]).per(50)
+    records = Manifestation.joins(:expression).where(expressions: {copyrighted: nil})
+    @total = records.count
+    @mans = records.page(params[:page]).per(50)
     @page_title = t(:missing_copyright_report)
     Rails.cache.write('report_missing_copyright', @total)
   end
@@ -101,7 +102,7 @@ class AdminController < ApplicationController
   end
 
   def suspicious_translations # find works where the author is also a translator -- this *may* be okay, in the case of self-translation, but probably is a mistake
-    records = Manifestation.joins(expressions: [:realizers, work: :creations]).
+    records = Manifestation.joins(expression: [:realizers, work: :creations]).
       where('realizers.person_id = creations.person_id').
       merge(Realizer.translator).
       merge(Creation.author)
@@ -198,10 +199,10 @@ class AdminController < ApplicationController
       p.original_works.each do |m|
         @tocs_missing_links[p.id][:orig] << m unless toc_items.include?(m)
       end
-      p.translations.includes(expressions: :work).each do |m|
+      p.translations.includes(expression: :work).each do |m|
         @tocs_missing_links[p.id][:xlat] << m unless toc_items.include?(m)
         # additionally, make sure they appear in the original author's ToC, if it's a manual one (relevant for translated authors who *also* wrote in Hebrew, e.g. Y. L. Perets)
-        m.expressions[0].work.authors.each do |au|
+        m.expression.work.authors.each do |au|
           unless au.toc.nil?
             unless au.toc.linked_item_ids.include?(m.id)
               @tocs_missing_links[au.id] = {orig: [], xlat: []} if @tocs_missing_links[au.id].nil?
@@ -242,8 +243,8 @@ class AdminController < ApplicationController
   sql
 
   def incongruous_copyright
-    @incong = Manifestation.joins(expressions: :work).
-        select('manifestations.title, manifestations.id, expressions.copyrighted').
+    @incong = Manifestation.joins(expression: :work).
+        select('manifestations.title, manifestations.id, manifestations.expression_id, expressions.copyrighted').
         select(Arel.sql("#{CALCULATED_COPYRIGHT_EXPRESSION} as calculated_copyright")).
         where("expressions.copyrighted is null or #{CALCULATED_COPYRIGHT_EXPRESSION} <> expressions.copyrighted").map do |m|
       [ m, m.title, m.author_string, m.calculated_copyright, m.copyrighted ]

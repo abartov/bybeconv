@@ -37,8 +37,8 @@
                       = link_to m.title, manifestation_read_path(m.id)
                       = ' '+t(:by)+': '
                       = m.author_string
-                      = " (#{textify_genre(m.expressions[0].work.genre)}) "
-                      = "– #{(m.expressions[0].source_edition.nil? || m.expressions[0].source_edition.empty?) ? t(:no_source_edition) : m.expressions[0].source_edition}"
+                      = " (#{textify_genre(m.expression.work.genre)}) "
+                      = "– #{(m.expression.source_edition.nil? || m.expression.source_edition.empty?) ? t(:no_source_edition) : m.expression.source_edition}"
                       %br
             %tr{class: 'pub'+pub.id.to_s}
               %td{colspan: 7}

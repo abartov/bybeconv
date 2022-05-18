@@ -54,7 +54,7 @@ class AuthorsController < ApplicationController
     pubs = @author.works_since(1.month.ago, 1000)
     @pubscoll = {}
     pubs.each {|m|
-      genre = m.expressions[0].work.genre
+      genre = m.expression.work.genre
       @pubscoll[genre] = [] if @pubscoll[genre].nil?
       @pubscoll[genre] << m
     }
@@ -67,7 +67,7 @@ class AuthorsController < ApplicationController
     pubs = @author.cached_latest_stuff
     @pubscoll = {}
     pubs.each {|m|
-      genre = m.expressions[0].work
+      genre = m.expression.work
       @pubscoll[genre] = [] if @pubscoll[genre].nil?
       @pubscoll[genre] << m
     }
