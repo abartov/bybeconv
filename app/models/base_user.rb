@@ -14,6 +14,9 @@ class BaseUser < ApplicationRecord
   ### User Preferences
   property_set :preferences do
     property :fontsize, default: DEFAULT_FONT_SIZE
+    # property :volunteer, default: 'false' # boolean  (another option - :protected => true)
+    # property :activated, default: 'false' # boolean
+    # property :suppress_anthology_intro, default: 'false'
     property :jump_to_bookmarks
   end
 
