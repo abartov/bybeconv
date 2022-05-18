@@ -2,7 +2,7 @@ include BybeUtils
 class Work < ApplicationRecord
   GENRES = %w(poetry prose drama fables article memoir letters reference lexicon).freeze
   
-  has_many :expressions, inverse_of: :work
+  has_many :expressions, inverse_of: :work, dependent: :destroy
   has_many :creations, dependent: :destroy
   has_many :persons, through: :creations, class_name: 'Person'
   has_many :aboutnesses, as: :aboutable, dependent: :destroy
