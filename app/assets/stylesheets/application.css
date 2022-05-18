@@ -416,3 +416,7 @@ body.modal-open{
 .sort-by-mobile{
 	display: block !important;
 }
+ul.lex {
+    list-style-type:disc;
+
+}

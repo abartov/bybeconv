@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_04_18_221122) do
+ActiveRecord::Schema.define(version: 2022_05_15_233947) do
 
   create_table "aboutnesses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -449,6 +449,7 @@ ActiveRecord::Schema.define(version: 2022_04_18_221122) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "lex_entry_id"
+    t.string "full_path"
     t.index ["entrytype"], name: "index_lex_files_on_entrytype"
     t.index ["fname"], name: "index_lex_files_on_fname"
     t.index ["lex_entry_id"], name: "index_lex_files_on_lex_entry_id", unique: true
@@ -571,15 +572,6 @@ ActiveRecord::Schema.define(version: 2022_04_18_221122) do
     t.index ["sort_title"], name: "index_manifestations_on_sort_title"
     t.index ["status", "sort_title"], name: "index_manifestations_on_status_and_sort_title"
     t.index ["status"], name: "index_manifestations_on_status"
-  end
-
-  create_table "manifestations_people", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "manifestation_id"
-    t.integer "person_id"
-    t.index ["manifestation_id"], name: "index_manifestations_people_on_manifestation_id"
-    t.index ["person_id"], name: "index_manifestations_people_on_person_id"
   end
 
   create_table "news_items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_bin", force: :cascade do |t|
@@ -910,8 +902,6 @@ ActiveRecord::Schema.define(version: 2022_04_18_221122) do
   add_foreign_key "lex_texts", "lex_publications"
   add_foreign_key "lex_texts", "manifestations"
   add_foreign_key "list_items", "users"
-  add_foreign_key "manifestations_people", "manifestations", name: "manifestations_people_manifestation_id_fk"
-  add_foreign_key "manifestations_people", "people", name: "manifestations_people_person_id_fk"
   add_foreign_key "people", "tocs", name: "people_toc_id_fk"
   add_foreign_key "proofs", "html_files", name: "proofs_html_file_id_fk"
   add_foreign_key "proofs", "manifestations", name: "proofs_manifestation_id_fk"

@@ -57,3 +57,6 @@ ubuntu-*-console.log
 
 # IDE files
 .idea
+
+# Lexicon
+/lexicon
