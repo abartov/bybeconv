@@ -61,7 +61,7 @@ describe SearchManifestations do
           copyrighted: copyrighted,
           realizers: realizers,
           date: published_at.strftime('%d.%m.%Y'),
-          works: [work]
+          work: work
         )
         create(
           :manifestation,
@@ -523,7 +523,7 @@ describe SearchManifestations do
 
     describe 'creation_date' do
       let(:asc_order) do
-        Manifestation.all_published.joins(expressions: :works).order('works.normalized_creation_date').pluck(:id)
+        Manifestation.all_published.joins(expressions: :work).order('works.normalized_creation_date').pluck(:id)
       end
       let(:sorting) { 'creation_date' }
       context 'when default sort direction is requested' do

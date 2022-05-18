@@ -26,7 +26,7 @@ describe V1::PeopleAPI do
       let!(:illustrated_manifestation) { create(:manifestation, illustrator: person) }
       let!(:manifestation_about) do
         m = create(:manifestation)
-        create(:aboutness, aboutable: person, work: m.expressions[0].works[0])
+        create(:aboutness, aboutable: person, work: m.expressions[0].work)
         m
       end
       let(:person) do

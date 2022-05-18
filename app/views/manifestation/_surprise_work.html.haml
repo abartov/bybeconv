@@ -7,7 +7,7 @@
       %div{style:'margin-bottom:0.6rem'}
         %p.headline-3{style:'display:inline'}
           = link_to work.title, manifestation_read_path(work.id)
-        %p.headline-4{style:'display:inline;margin-right:1rem;'}= "#{t(:by)} #{work.author_string} (#{textify_genre(work.expressions[0].works[0].genre)})"
+        %p.headline-4{style:'display:inline;margin-right:1rem;'}= "#{t(:by)} #{work.author_string} (#{textify_genre(work.expressions[0].work.genre)})"
       %div{style:'height: 12rem; overflow:hidden; text-overflow: ellipsis;'}
         - opening = MultiMarkdown.new(get_intro(work.markdown)).to_html.force_encoding('UTF-8')
         %p!= opening

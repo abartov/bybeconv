@@ -12,7 +12,7 @@
     - @mans.each do |m|
       %tr
         %td= link_to m.title, manifestation_show_path(m.id)
-        %td!= m.expressions[0].works[0].persons.map{|p| link_to(p.name, authors_show_path(id: p.id))}.join(';')
+        %td!= m.expressions[0].work.persons.map{|p| link_to(p.name, authors_show_path(id: p.id))}.join(';')
         %td!= m.expressions[0].translators.map{|p| link_to(p.name, authors_show_path(id: p.id))}.join('; ')
         %td= link_to t(:edit_metadata), manifestation_edit_metadata_path(m.id)
 

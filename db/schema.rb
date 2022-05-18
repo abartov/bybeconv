@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_04_09_140937) do
+ActiveRecord::Schema.define(version: 2022_05_15_233947) do
 
   create_table "aboutnesses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -90,7 +90,7 @@ ActiveRecord::Schema.define(version: 2022_04_09_140937) do
     t.index ["key"], name: "index_api_keys_on_key", unique: true
   end
 
-  create_table "base_user_preferences", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "base_user_preferences", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_bin", force: :cascade do |t|
     t.string "name", null: false
     t.string "value"
     t.bigint "base_user_id", null: false
@@ -214,9 +214,11 @@ ActiveRecord::Schema.define(version: 2022_04_09_140937) do
     t.integer "period"
     t.string "normalized_pub_date"
     t.string "normalized_creation_date"
+    t.integer "work_id", null: false
     t.index ["normalized_creation_date"], name: "index_expressions_on_normalized_creation_date"
     t.index ["normalized_pub_date"], name: "index_expressions_on_normalized_pub_date"
     t.index ["period"], name: "index_expressions_on_period"
+    t.index ["work_id"], name: "index_expressions_on_work_id"
   end
 
   create_table "expressions_manifestations", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
@@ -224,13 +226,6 @@ ActiveRecord::Schema.define(version: 2022_04_09_140937) do
     t.integer "manifestation_id"
     t.index ["expression_id"], name: "index_expressions_manifestations_on_expression_id"
     t.index ["manifestation_id"], name: "index_expressions_manifestations_on_manifestation_id"
-  end
-
-  create_table "expressions_works", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
-    t.integer "expression_id"
-    t.integer "work_id"
-    t.index ["expression_id"], name: "index_expressions_works_on_expression_id"
-    t.index ["work_id"], name: "index_expressions_works_on_work_id"
   end
 
   create_table "external_links", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
@@ -411,6 +406,125 @@ ActiveRecord::Schema.define(version: 2022_04_09_140937) do
     t.index ["recommended_by"], name: "legacy_recommendations_recommended_by_fk"
   end
 
+  create_table "lex_citations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+    t.string "title"
+    t.string "from_publication"
+    t.string "authors"
+    t.string "pages"
+    t.string "link"
+    t.string "item_type"
+    t.bigint "item_id"
+    t.integer "manifestation_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["authors"], name: "index_lex_citations_on_authors"
+    t.index ["item_type", "item_id"], name: "index_lex_citations_on_item_type_and_item_id"
+    t.index ["manifestation_id"], name: "index_lex_citations_on_manifestation_id"
+    t.index ["title"], name: "index_lex_citations_on_title"
+  end
+
+  create_table "lex_entries", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+    t.string "title"
+    t.integer "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "lex_item_type"
+    t.bigint "lex_item_id"
+    t.index ["lex_item_type", "lex_item_id"], name: "index_lex_entries_on_lex_item_type_and_lex_item_id", unique: true
+    t.index ["status"], name: "index_lex_entries_on_status"
+    t.index ["title"], name: "index_lex_entries_on_title"
+  end
+
+  create_table "lex_files", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+    t.string "fname"
+    t.integer "status"
+    t.string "title"
+    t.integer "entrytype"
+    t.text "comments"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "lex_entry_id"
+    t.string "full_path"
+    t.index ["entrytype"], name: "index_lex_files_on_entrytype"
+    t.index ["fname"], name: "index_lex_files_on_fname"
+    t.index ["lex_entry_id"], name: "index_lex_files_on_lex_entry_id", unique: true
+    t.index ["status"], name: "index_lex_files_on_status"
+  end
+
+  create_table "lex_issues", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+    t.string "subtitle"
+    t.string "volume"
+    t.string "issue"
+    t.integer "seq_num"
+    t.text "toc"
+    t.bigint "lex_publication_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["lex_publication_id"], name: "index_lex_issues_on_lex_publication_id"
+    t.index ["seq_num"], name: "index_lex_issues_on_seq_num"
+    t.index ["subtitle"], name: "index_lex_issues_on_subtitle"
+  end
+
+  create_table "lex_links", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+    t.string "url"
+    t.string "description"
+    t.integer "status"
+    t.string "item_type"
+    t.bigint "item_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["item_type", "item_id"], name: "index_lex_links_on_item_type_and_item_id"
+  end
+
+  create_table "lex_people", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+    t.string "aliases"
+    t.boolean "copyrighted"
+    t.string "birthdate"
+    t.string "deathdate"
+    t.text "bio"
+    t.text "works"
+    t.text "about"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["aliases"], name: "index_lex_people_on_aliases"
+    t.index ["birthdate"], name: "index_lex_people_on_birthdate"
+    t.index ["copyrighted"], name: "index_lex_people_on_copyrighted"
+    t.index ["deathdate"], name: "index_lex_people_on_deathdate"
+  end
+
+  create_table "lex_people_items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+    t.bigint "lex_person_id"
+    t.string "item_type"
+    t.bigint "item_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["item_type", "item_id"], name: "index_lex_people_items_on_item_type_and_item_id"
+    t.index ["lex_person_id"], name: "index_lex_people_items_on_lex_person_id"
+  end
+
+  create_table "lex_publications", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+    t.text "description"
+    t.text "toc"
+    t.boolean "az_navbar"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "lex_texts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+    t.string "title"
+    t.string "authors"
+    t.string "pages"
+    t.bigint "lex_publication_id"
+    t.bigint "lex_issue_id"
+    t.integer "manifestation_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["lex_issue_id"], name: "index_lex_texts_on_lex_issue_id"
+    t.index ["lex_publication_id"], name: "index_lex_texts_on_lex_publication_id"
+    t.index ["manifestation_id"], name: "index_lex_texts_on_manifestation_id"
+    t.index ["title"], name: "index_lex_texts_on_title"
+  end
+
   create_table "list_items", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_bin", force: :cascade do |t|
     t.integer "user_id"
     t.string "listkey"
@@ -455,7 +569,7 @@ ActiveRecord::Schema.define(version: 2022_04_09_140937) do
     t.index ["status"], name: "index_manifestations_on_status"
   end
 
-  create_table "news_items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "news_items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_bin", force: :cascade do |t|
     t.integer "itemtype"
     t.string "title"
     t.boolean "pinned"
@@ -747,14 +861,15 @@ ActiveRecord::Schema.define(version: 2022_04_09_140937) do
   add_foreign_key "base_users", "users"
   add_foreign_key "bookmarks", "base_users"
   add_foreign_key "bookmarks", "manifestations"
+  add_foreign_key "creations", "people", name: "creations_person_id_fk"
+  add_foreign_key "creations", "works", name: "creations_work_id_fk"
   add_foreign_key "dictionary_aliases", "dictionary_entries"
   add_foreign_key "dictionary_entries", "manifestations"
   add_foreign_key "dictionary_links", "dictionary_entries", column: "from_entry_id"
   add_foreign_key "dictionary_links", "dictionary_entries", column: "to_entry_id"
+  add_foreign_key "expressions", "works"
   add_foreign_key "expressions_manifestations", "expressions", name: "expressions_manifestations_expression_id_fk"
   add_foreign_key "expressions_manifestations", "manifestations", name: "expressions_manifestations_manifestation_id_fk"
-  add_foreign_key "expressions_works", "expressions", name: "expressions_works_expression_id_fk"
-  add_foreign_key "expressions_works", "works", name: "expressions_works_work_id_fk"
   add_foreign_key "featured_author_features", "featured_authors"
   add_foreign_key "featured_authors", "people"
   add_foreign_key "featured_authors", "users"
@@ -773,6 +888,13 @@ ActiveRecord::Schema.define(version: 2022_04_09_140937) do
   add_foreign_key "legacy_recommendations", "html_files", name: "legacy_recommendations_html_file_id_fk"
   add_foreign_key "legacy_recommendations", "manifestations", name: "legacy_recommendations_manifestation_id_fk"
   add_foreign_key "legacy_recommendations", "users", column: "recommended_by", name: "legacy_recommendations_recommended_by_fk"
+  add_foreign_key "lex_citations", "manifestations"
+  add_foreign_key "lex_files", "lex_entries"
+  add_foreign_key "lex_issues", "lex_publications"
+  add_foreign_key "lex_people_items", "lex_people"
+  add_foreign_key "lex_texts", "lex_issues"
+  add_foreign_key "lex_texts", "lex_publications"
+  add_foreign_key "lex_texts", "manifestations"
   add_foreign_key "list_items", "users"
   add_foreign_key "people", "tocs", name: "people_toc_id_fk"
   add_foreign_key "proofs", "html_files", name: "proofs_html_file_id_fk"

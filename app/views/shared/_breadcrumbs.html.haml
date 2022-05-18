@@ -5,7 +5,7 @@
     .breadcrumbs-text= link_to t(:authors), authors_path
     .breadcrumbs-arrow= 1
     - e = @entity.expressions[0]
-    - w = e.works[0]
+    - w = e.work
     - if e.translators.count > 0
       - person = e.translators[0]
     - else
