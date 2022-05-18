@@ -186,7 +186,7 @@ class AnthologiesController < ApplicationController
       @htmls = []
       i = 1
       @anthology.ordered_texts.each {|text|
-        @htmls << [text.title, text.render_html, text.manifestation_id.nil? ? true : false, text.manifestation_id.nil? ? nil : text.manifestation.expressions[0].work.genre ,i]
+        @htmls << [text.title, text.render_html, text.manifestation_id.nil? ? true : false, text.manifestation_id.nil? ? nil : text.manifestation.expression.work.genre ,i]
         i += 1
       }
     end

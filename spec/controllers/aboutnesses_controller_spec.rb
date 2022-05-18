@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe AboutnessesController do
   let(:manifestation) { create(:manifestation) }
-  let(:work) { manifestation.expressions[0].work }
+  let(:work) { manifestation.expression.work }
   let(:editor) { create(:user, editor: true) }
 
   before do
@@ -22,7 +22,7 @@ describe AboutnessesController do
 
       it 'creates record' do
         expect { expect(request).to be_successful }.to change { Aboutness.where(work: work).count }.by(1)
-        expect(aboutness).to have_attributes(work: work, aboutable: work_about.expressions[0].work, user: suggested_by_user)
+        expect(aboutness).to have_attributes(work: work, aboutable: work_about.expression.work, user: suggested_by_user)
       end
     end
 

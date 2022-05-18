@@ -26,61 +26,76 @@ describe AuthorsController do
     end
   end
 
-  describe '#toc' do
-    let(:author) { create(:person) }
+  describe 'member actions' do
+    let!(:author) { create(:person) }
 
-    before do
-      create_list(:manifestation, 5, author: author)
-    end
+    describe '#toc' do
+      let(:toc) { create(:toc) }
 
-    subject(:request) { get :toc, params: { id: author.id } }
-
-    it { is_expected.to be_successful }
-  end
-
-  describe '#whatsnew_popup' do
-    let(:manifestation) { create(:manifestation, created_at: created_at) }
-    let(:author) { manifestation.authors.first }
-
-    subject { get :whatsnew_popup, params: { id: author.id } }
-
-    context 'when there is a new work in last month' do
-      let(:created_at) { 20.days.ago }
-      it { is_expected.to be_successful }
-    end
-
-    context 'when there is no new works in last month' do
-      let(:created_at) { 35.days.ago }
-      it { is_expected.to be_successful }
-    end
-  end
-
-  describe '#latest_popup' do
-    let(:author) { create(:person) }
-    subject { get :latest_popup, params: { id: author.id } }
-
-    context 'when author has works' do
       before do
-        create_list(:manifestation, 25, author: author)
+        create_list(:manifestation, 5, author: author, created_at: 3.days.ago)
+        author.toc = toc
+        author.save!
       end
+
+      subject(:request) { get :toc, params: { id: author.id } }
+
+      it 'renders successfully' do
+        expect(request).to be_successful
+      end
+
+      context 'when fresh work exists' do
+        before do
+          create(:manifestation, author: author, created_at: 6.hours.ago)
+        end
+
+        it 'renders successfully' do
+          expect(request).to be_successful
+        end
+      end
+    end
+
+    describe '#whatsnew_popup' do
+      let!(:manifestation) { create(:manifestation, created_at: created_at, author: author) }
+
+      subject { get :whatsnew_popup, params: { id: author.id } }
+
+      context 'when there is a new work in last month' do
+        let(:created_at) { 20.days.ago }
+        it { is_expected.to be_successful }
+      end
+
+      context 'when there is no new works in last month' do
+        let(:created_at) { 35.days.ago }
+        it { is_expected.to be_successful }
+      end
+    end
+
+    describe '#latest_popup' do
+      subject { get :latest_popup, params: { id: author.id } }
+
+      context 'when author has works' do
+        before do
+          create_list(:manifestation, 25, author: author)
+        end
+        it { is_expected.to be_successful }
+      end
+
+      context 'when there are no works' do
+        it { is_expected.to be_successful }
+      end
+    end
+
+    describe '#print' do
+      subject { get :print, params: { id: author.id } }
+
+      before do
+        create(:manifestation, author: author)
+        create(:manifestation, orig_lang: 'de', translator: author)
+      end
+
       it { is_expected.to be_successful }
     end
-
-    context 'when there are no works' do
-      it { is_expected.to be_successful }
-    end
-  end
-
-  describe '#print' do
-    let(:author) { create(:person) }
-    subject { get :print, params: { id: author.id } }
-
-    before do
-      create(:manifestation, author: author)
-      create(:manifestation, orig_lang: 'de', translator: author)
-    end
-
-    it { is_expected.to be_successful }
   end
 
   describe 'Editor actions' do
@@ -91,16 +106,83 @@ describe AuthorsController do
       session[:user_id] = user.id
     end
 
-    describe '#publish' do
-      let(:author) { create(:person) }
-      subject { get :publish, params: { id: author.id } }
+    describe 'member actions' do
+      let(:period) { 'revival' }
+      let(:author) { create(:person, public_domain: true, period: period) }
 
+      describe '#show' do
+        before do
+          create_list(:manifestation, 3, author: author)
+          create(:manifestation, author: author, status: :unpublished)
+          create_list(:manifestation, 6, translator: author, orig_lang: 'de')
+          create_list(:manifestation, 2, translator: author, orig_lang: 'de', status: :unpublished)
+        end
 
-      before do
-        create_list(:manifestation, 3, author: author, status: :unpublished)
+        subject! { get :show, params: { id: author.id } }
+
+        it 'renders successfully' do
+          expect(response).to be_successful
+          expect(assigns(:published_works)).to eq 3
+          expect(assigns(:published_xlats)).to eq 6
+          expect(assigns(:total_orig_works)).to eq 4
+          expect(assigns(:total_xlats)).to eq 8
+        end
       end
 
-      it { is_expected.to be_successful }
+      describe '#publish' do
+        subject { get :publish, params: { id: author.id } }
+
+        before do
+          create_list(:manifestation, 3, author: author, status: :unpublished)
+        end
+
+        it { is_expected.to be_successful }
+      end
+
+      describe '#update' do
+        let(:new_name) { 'New Name' }
+        subject(:request) do
+          put :update, params: {
+            id: author.id,
+            person: {
+              name: new_name,
+              period: new_period
+            }
+          }
+        end
+
+        let(:works_period) { 'modern'}
+        let!(:original_work) { create(:manifestation, author: author, period: works_period) }
+        let!(:translated_work) { create(:manifestation, orig_lang: 'ru', translator: author, period: works_period) }
+
+        context 'when period attribute was changed' do
+          let(:new_period) { 'ancient' }
+
+          it 'updates author and his works' do
+            expect(request).to redirect_to authors_show_path(id: author.id)
+            author.reload
+            expect(author).to have_attributes(name: new_name, period: new_period)
+            original_work.reload
+            expect(original_work.expression.period).to eq new_period
+            translated_work.reload
+            expect(translated_work.expression.period).to eq new_period
+          end
+        end
+
+        context 'when period is not changed' do
+          let(:new_period) { period }
+
+          it 'updates author but not his works' do
+            expect(request).to redirect_to authors_show_path(id: author.id)
+            author.reload
+            expect(author).to have_attributes(name: new_name, period: new_period)
+            original_work.reload
+            expect(original_work.expression.period).to eq works_period
+            translated_work.reload
+            expect(translated_work.expression.period).to eq works_period
+          end
+        end
+      end
     end
   end
 end

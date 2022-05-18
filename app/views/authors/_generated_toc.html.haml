@@ -22,9 +22,9 @@
                           - i += 1
                           - add_authors += au.name + (i == au_count ? '' : '; ')
                         = add_authors+')'
-                      - if m.expressions[0].translation
+                      - if m.expression.translation
                         = " #{t(:translated_by)} "
-                        != m.expressions[0].translators.map{|p| link_to(p.name, author_toc_path(p))}.join('; ')
+                        != m.expression.translators.map{|p| link_to(p.name, author_toc_path(p))}.join('; ')
 
           - if @translations[genre].size > 0
             .by-card-content-v02{:style => "padding-top: 12px;"}
@@ -34,4 +34,4 @@
                   %li
                     = link_to m.title, manifestation_read_path(m)
                     = t(:by)
-                    = link_to m.expressions[0].work.first_author.name, author_toc_path(m.expressions[0].work.first_author)
+                    = link_to m.expression.work.first_author.name, author_toc_path(m.expression.work.first_author)

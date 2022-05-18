@@ -177,7 +177,7 @@ class ApplicationController < ActionController::Base
   end
 
   def randomize_works_by_genre(genre, how_many)
-    return Manifestation.where(id: Manifestation.published.joins(expressions: :work).where({ works: { genre: genre } }).pluck(:id).sample(how_many))
+    return Manifestation.where(id: Manifestation.published.joins(expression: :work).where({ works: { genre: genre } }).pluck(:id).sample(how_many))
   end
 
   def randomize_works(how_many)
@@ -203,7 +203,7 @@ class ApplicationController < ActionController::Base
   def cached_works_by_period
     Rails.cache.fetch("works_by_period", expires_in: 24.hours) do # memoize
       ret = {}
-      get_periods.each{ |p| ret[p] = Manifestation.published.joins(:expressions).where(expressions: { period: p}).uniq.count}
+      get_periods.each{ |p| ret[p] = Manifestation.published.joins(:expression).where(expressions: { period: p}).uniq.count}
       ret
     end
   end
@@ -245,6 +245,7 @@ class ApplicationController < ActionController::Base
     end
     return @@countauthors_cache
   end
+
   def prep_toc
     # TODO: cache this!
     #old_toc = @author.toc.toc
@@ -266,7 +267,7 @@ class ApplicationController < ActionController::Base
     @works = @author.all_works_title_sorted
     @fresh_works = @author.works_since(12.hours.ago, 1000)
     unless @fresh_works.empty?
-      @fresh_works_markdown = @fresh_works.map{|m| "\\n&&& פריט: מ#{m.id} &&& כותרת: #{m.title}#{m.expressions[0].translation ? ' / '+m.authors_string : ''} &&&\\n"}.join('').html_safe
+      @fresh_works_markdown = @fresh_works.map{|m| "\\n&&& פריט: מ#{m.id} &&& כותרת: #{m.title}#{m.expression.translation ? ' / '+m.authors_string : ''} &&&\\n"}.join('').html_safe
     else
       @fresh_works_markdown = ''
     end
@@ -335,8 +336,8 @@ class ApplicationController < ActionController::Base
 
   def whatsnew_since(timestamp)
     authors = {}
-    Manifestation.all_published.new_since(timestamp).includes(:expressions).each {|m|
-      e = m.expressions[0]
+    Manifestation.all_published.new_since(timestamp).includes(:expression).each {|m|
+      e = m.expression
       next if e.nil? # shouldn't happen
       w = e.work
       person = e.translation ? m.translators.first : m.authors.first # TODO: more nuance
@@ -356,8 +357,8 @@ class ApplicationController < ActionController::Base
     ret = []
     manifestations.each do |m|
       ret << "<a href=\"#{url_for(controller: :manifestation, action: :read, id: m.id)}\">#{m.title}</a>"
-      if m.expressions[0].translation
-        ret[-1] += ' / '+m.authors_string unless m.expressions[0].work.authors.include?(au)
+      if m.expression.translation
+        ret[-1] += ' / ' + m.authors_string unless m.expression.work.authors.include?(au)
       end
     end
     return ret.join('; ')
@@ -370,9 +371,9 @@ class ApplicationController < ActionController::Base
       worksbuf = "<strong>#{I18n.t(genre[0])}:</strong> "
       first = true
       genre[1].each do |m|
-        title = m.expressions[0].title
-        if m.expressions[0].translation
-          per = m.expressions[0].work.persons[0]
+        title = m.expression.title
+        if m.expression.translation
+          per = m.expression.work.persons[0]
           unless per.nil?
             title += " #{I18n.t(:by)} #{per.name}"
           end

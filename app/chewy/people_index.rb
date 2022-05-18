@@ -1,7 +1,7 @@
 class PeopleIndex < Chewy::Index
 
   # people
-  define_type Person.published do #.joins([expressions: :work]).includes([expressions: :work]) do
+  define_type Person.published do
     field :name
     field :sort_name, type: 'keyword'
     field :other_designation

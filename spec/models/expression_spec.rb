@@ -5,10 +5,10 @@ describe Expression do
     let(:subject) { Expression.cached_work_count_by_periods }
 
     before do
-      create(:manifestation, status: :unpublished, expressions: [ create(:expression, period: :ancient) ])
-      create(:manifestation, expressions: [ create(:expression, period: :ancient) ])
-      create(:manifestation, expressions: [ create(:expression, period: :medieval) ])
-      create(:manifestation, expressions: [ create(:expression, period: :medieval) ])
+      create(:manifestation, status: :unpublished, period: :ancient)
+      create(:manifestation, period: :ancient)
+      create(:manifestation, period: :medieval)
+      create(:manifestation, period: :medieval)
     end
 
     it 'does not counts unpublished works' do
