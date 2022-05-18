@@ -114,7 +114,7 @@ class Manifestation < ApplicationRecord
   end
 
   def title_and_authors_html
-    ret = "<h1>#{title}</h1><h2>#{I18n.t(:by)} #{authors_string}</h2>"
+    ret = "<h1>#{title}</h1> <h2>#{I18n.t(:by)} #{authors_string}</h2> "
     if self.expressions[0].translation?
       ret += "<h2>#{I18n.t(:translated_from)}#{textify_lang(self.expressions[0].work.orig_lang)} #{I18n.t(:by)} #{translators_string}</h2>"
     end
