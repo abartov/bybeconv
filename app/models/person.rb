@@ -253,7 +253,7 @@ class Person < ApplicationRecord
   end
 
   def original_work_count_including_unpublished
-    Manifestation.joins(expressions: [works: :creations]).where("creations.person_id = #{self.id}").count
+    Manifestation.joins(expressions: [work: :creations]).where("creations.person_id = #{self.id}").count
   end
   def translations_count_including_unpublished
     Manifestation.joins(expressions: :realizers).where(realizers:{role: Realizer.roles[:translator], person_id: self.id}).count
