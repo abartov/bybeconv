@@ -18,7 +18,7 @@
         - if p.nil?
           %td= t(:error)
         - else
-          %td= link_to p.name, authors_show_path(p)
+          %td= link_to p.name, authors_show_path(id: p)
         %td= m.title
         - if m.expressions[0].translation
           %td= t(:yes)+" (#{textify_lang(m.expressions[0].work.orig_lang)})"
