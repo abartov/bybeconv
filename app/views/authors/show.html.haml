@@ -15,6 +15,8 @@
     - unless @author.toc.nil?
       %b{ style: 'font-size: 2rem'}
         = link_to t(:edit_toc), authors_edit_toc_path(id: @author.id)
+    - else
+      %b{ style: 'font-size: 1rem'}= t(:this_author_has_a_generated_toc)
     != "&emsp;"
     %b{ style: 'font-size: 2rem'}
       = link_to link_to t(:bibliography), @author.has_any_bibs? ? bib_person_path(person_id: @author.id) : bib_index_path(person_id: @author.id)
