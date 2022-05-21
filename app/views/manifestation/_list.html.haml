@@ -14,23 +14,23 @@
 
     - manifestations.each do |m|
       %tr
-        - p = m.expressions[0].works[0].persons[0]
+        - p = m.expressions[0].work.persons[0]
         - if p.nil?
           %td= t(:error)
         - else
-          %td= link_to m.expressions[0].works[0].persons[0].name, authors_show_path(id: m.expressions[0].works[0].persons[0].id)
+          %td= link_to p.name, authors_show_path(id: p)
         %td= m.title
         - if m.expressions[0].translation
-          %td= t(:yes)+" (#{textify_lang(m.expressions[0].works[0].orig_lang)})"
+          %td= t(:yes)+" (#{textify_lang(m.expressions[0].work.orig_lang)})"
           - p = m.expressions[0].translators[0]
           - if p.nil?
             %td= t(:error)
           - else
-            %td= link_to m.expressions[0].translators[0].name, authors_show_path(id: m.expressions[0].translators[0].id)
+            %td= link_to p.name, authors_show_path(p)
         - else
           %td= t(:no)
           %td= ''
-        %td= textify_genre(m.expressions[0].works[0].genre)
+        %td= textify_genre(m.expressions[0].work.genre)
         %td= m.updated_at.to_s
         %td= m.conversion_verified ? t(:yes) : t(:no)
         %td= t(m.status)

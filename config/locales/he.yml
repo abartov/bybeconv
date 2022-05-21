@@ -186,6 +186,7 @@ he:
   join_volunteer: התנדבות להפקת תכנים
   donate_money: תרומה כספית
   donate: תרומה
+  donate_en: donate
   bookshelves: רשימות קריאה
   sefaria_linker: הפעלת קישוריוֹת ספריא
   anthologies: מקראות
@@ -337,6 +338,7 @@ he:
   most_popular_works_this_month: היצירות הנקראות ביותר החודש
   support_the_project: הצטרפו לתומכי הפרויקט!
   remove_final_period: הסרת נקודה מסוף הכותרת
+  this_author_has_a_generated_toc: (דף יוצר מחולל אוטומטית!)
   until: עד
   update: עדכן!
   updated_at: עודכן בתאריך
@@ -708,6 +710,9 @@ he:
   more_recommendations_in_the_blog: המלצות נוספות ביומן הרשת
   works: יצירות
   dictionary_entries: ערכים מילוניים
+  works_en: works
+  dictionary_entries_en: dictionary entries
+  authors_neutral_en: authors
   dict_snippets: תקצירי ערכים
   dict_list: רשימת ערכים
   to_the_full_entry: לערך המלא

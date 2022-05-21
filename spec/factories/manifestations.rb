@@ -3,11 +3,15 @@ FactoryBot.define do
     transient do
       sequence(:manifestation_name) { |n| "Manifestation #{n}" }
       author { create(:person) }
+      language { 'he' }
       orig_lang { %w(he en ru de it).sample }
       genre { Work::GENRES.sample }
-      translator { orig_lang != 'he' ? create(:person) : nil }
+      translator { orig_lang != language ? create(:person) : nil }
       editor { nil }
       illustrator { nil }
+      copyrighted { false }
+      expression_title { title }
+      work_title { title }
     end
 
     title { "Title for #{manifestation_name}" }
@@ -19,7 +23,23 @@ FactoryBot.define do
     impressions_count { Random.rand(100) }
     status { :published }
 
-    expressions { [ create(:expression, author: author, translator: translator, editor: editor, illustrator: illustrator, orig_lang: orig_lang, genre: genre) ] }
+    expressions {
+      [
+        create(
+          :expression,
+          author: author,
+          title: expression_title,
+          work_title: work_title,
+          translator: translator,
+          editor: editor,
+          illustrator: illustrator,
+          language: language,
+          orig_lang: orig_lang,
+          genre: genre,
+          copyrighted: copyrighted
+        )
+      ]
+    }
 
     trait :with_external_links do
       external_links { build_list(:external_link, 2) }

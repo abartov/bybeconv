@@ -42,7 +42,7 @@ class AdminController < ApplicationController
   end
 
   def missing_languages
-    ex = Expression.joins([:realizers, :works]).where(realizers: {role: Realizer.roles[:translator]}, works: {orig_lang: 'he'})
+    ex = Expression.joins([:realizers, :work]).where(realizers: {role: Realizer.roles[:translator]}, works: {orig_lang: 'he'})
     mans = ex.map{|e| e.manifestations[0]}
     @total = mans.length
     @mans = Kaminari.paginate_array(mans).page(params[:page]).per(50)
@@ -101,8 +101,12 @@ class AdminController < ApplicationController
   end
 
   def suspicious_translations # find works where the author is also a translator -- this *may* be okay, in the case of self-translation, but probably is a mistake
-    @total = Manifestation.joins(expressions: [:realizers, works: [:creations]]).where('realizers.person_id = creations.person_id and realizers.role = 3').count # TODO: unhardcode
-    @mans = Manifestation.joins(expressions: [:realizers, works: [:creations]]).where('realizers.person_id = creations.person_id and realizers.role = 3').page(params[:page]) # TODO: unhardcode
+    records = Manifestation.joins(expressions: [:realizers, work: :creations]).
+      where('realizers.person_id = creations.person_id').
+      merge(Realizer.translator).
+      merge(Creation.author)
+    @total = records.count
+    @mans = records.page(params[:page])
     @page_title = t(:suspicious_translations_report)
     Rails.cache.write('report_suspicious_translations', @total)
   end
@@ -194,10 +198,10 @@ class AdminController < ApplicationController
       p.original_works.each do |m|
         @tocs_missing_links[p.id][:orig] << m unless toc_items.include?(m)
       end
-      p.translations.joins(expressions: :works).includes(expressions: :works).each do |m|
+      p.translations.includes(expressions: :work).each do |m|
         @tocs_missing_links[p.id][:xlat] << m unless toc_items.include?(m)
         # additionally, make sure they appear in the original author's ToC, if it's a manual one (relevant for translated authors who *also* wrote in Hebrew, e.g. Y. L. Perets)
-        m.expressions[0].works[0].authors.each do |au|
+        m.expressions[0].work.authors.each do |au|
           unless au.toc.nil?
             unless au.toc.linked_item_ids.include?(m.id)
               @tocs_missing_links[au.id] = {orig: [], xlat: []} if @tocs_missing_links[au.id].nil?
@@ -229,16 +233,22 @@ class AdminController < ApplicationController
     Rails.cache.write('report_translated_from_multiple_languages', @authors.length)
   end
 
+  # We assume manifestation should be copyrighted if one of its creators or realizers is not in public domain
+  CALCULATED_COPYRIGHT_EXPRESSION = <<~sql
+    (
+      exists (select 1 from creations c join people p on p.id = c.person_id where c.work_id = works.id and not coalesce(p.public_domain, false))
+      or exists (select 1 from realizers r join people p on p.id = r.person_id where r.expression_id = expressions.id and not coalesce(p.public_domain, false))
+    )
+  sql
+
   def incongruous_copyright
-    # Manifestation.joins([expressions: [[realizers: :person],:works]]).where(expressions: {copyrighted:true},people: {public_domain:true})
-    @incong = []
-    Manifestation.all.each {|m|
-      calculated_copyright = m.expressions[0].should_be_copyrighted?
-      db_copyright = m.expressions[0].copyrighted
-      if calculated_copyright != db_copyright
-        @incong << [m, m.title, m.author_string, calculated_copyright, db_copyright]
-      end
-    }
+    @incong = Manifestation.joins(expressions: :work).
+        select('manifestations.title, manifestations.id, expressions.copyrighted').
+        select(Arel.sql("#{CALCULATED_COPYRIGHT_EXPRESSION} as calculated_copyright")).
+        where("expressions.copyrighted is null or #{CALCULATED_COPYRIGHT_EXPRESSION} <> expressions.copyrighted").map do |m|
+      [ m, m.title, m.author_string, m.calculated_copyright, m.copyrighted ]
+    end
+
     Rails.cache.write('report_incongruous_copyright', @incong.length)
   end
 

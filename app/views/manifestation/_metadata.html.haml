@@ -14,7 +14,7 @@
         %br
         = "#{t(:translation)}: "
         != @translators.map{|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
-        - linktext = t(:from_lang)+textify_lang(@e.works[0].orig_lang)
+        - linktext = t(:from_lang) + textify_lang(@e.work.orig_lang)
         != " (#{linktext})"
   - if @illustrators.size > 0
     .headline-3-v02
@@ -41,7 +41,7 @@
   - if @e.translation?
     .metadata
       %span{:style => "font-weight:bold"}= t(:orig_lang)+': '
-      = link_to textify_lang(@e.works[0].orig_lang), works_path+'?ckb_languages[]='+@e.works[0].orig_lang
+      = link_to textify_lang(@e.work.orig_lang), works_path + '?ckb_languages[]=' + @e.work.orig_lang
   - unless @e.source_edition.nil? || @e.source_edition.empty?
     .metadata
       %span{:style => "font-weight:bold"}= t(:source_edition)+': '

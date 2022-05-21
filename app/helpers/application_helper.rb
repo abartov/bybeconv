@@ -147,12 +147,10 @@ module ApplicationHelper
   end
 
   def authors_linked_string(m)
-    return I18n.t(:nil) if m.expressions[0].nil? or m.expressions[0].works[0].nil? or m.expressions[0].works[0].persons[0].nil?
-    return m.expressions[0].works[0].authors.map{|x| "<a href=\"#{url_for(controller: :authors, action: :toc, id: x.id)}\">#{x.name}</a>"}.join(', ')
+    return m.expressions[0].work.authors.map{|x| "<a href=\"#{url_for(controller: :authors, action: :toc, id: x.id)}\">#{x.name}</a>"}.join(', ')
   end
 
   def translators_linked_string(m)
-    return I18n.t(:nil) if m.expressions[0].nil? or m.expressions[0].works[0].nil? or m.expressions[0].works[0].persons[0].nil?
     return m.expressions[0].translators.map{|x| "<a href=\"#{url_for(controller: :authors, action: :toc, id: x.id)}\">#{x.name}</a>"}.join(', ')
   end
 

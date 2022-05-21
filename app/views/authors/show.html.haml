@@ -1,25 +1,25 @@
 .top-element.backend
-  %h1= @author.name
+  %h1
+    = @author.name
+    - unless @author.period.nil? || @author.period.empty?
+      = " (#{t(@author.period)})"
   %b= t(:sort_name)
   = @author.sort_name
-  - unless @author.period.nil? || @author.period.empty?
-    %h2= t(:period)+': '+t(@author.period)
-  %p
-    %br
   %p
     %b= t(:last_update)+': '
     = @author.updated_at.to_s
   %p
-    %b= t(:metadata_approved)+': '
-    = @author.metadata_approved ? t(:yes) : t(:no)
-  %p
     %b{ style: 'font-size: 2rem'}
       = link_to t(:edit_metadata), authors_edit_path(id: @author.id)
-  %br
-  %p
+    != "&emsp;"
     - unless @author.toc.nil?
       %b{ style: 'font-size: 2rem'}
         = link_to t(:edit_toc), authors_edit_toc_path(id: @author.id)
+    - else
+      %b{ style: 'font-size: 1rem'}= t(:this_author_has_a_generated_toc)
+    != "&emsp;"
+    %b{ style: 'font-size: 2rem'}
+      = link_to link_to t(:bibliography), @author.has_any_bibs? ? bib_person_path(person_id: @author.id) : bib_index_path(person_id: @author.id)
   %table
     %tr
       %td
@@ -106,14 +106,16 @@
         - if @total_xlats != @published_xlats
           = " #{t(:published)} + #{@total_xlats - @published_xlats} #{t(:unpublished)}"
         %br
-        %b= t(:works_about)
-        = t(:TBD)
+        = render partial: 'aboutnesses'
       %td
         %p
           = image_tag @author.profile_image.url(:thumb), alt: @author.name
         - if @author.profile_image.file?
           %br
           = link_to t(:delete_photo), delete_author_photo_path(id: @author.id), data: {confirm: t(:are_you_sure)}
+  %p
+    %b= t(:metadata_approved)+': '
+    = @author.metadata_approved ? t(:yes) : t(:no)
 
   %p
   = link_to t(:back), authors_list_path

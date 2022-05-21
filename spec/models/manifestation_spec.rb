@@ -57,4 +57,123 @@ describe Manifestation do
       end
     end
   end
+
+  describe '.manual_delete' do
+    let!(:manifestation) { create(:manifestation, orig_lang: 'de') }
+
+    subject(:manual_delete) { manifestation.manual_delete }
+
+    it 'removes record with all dependent subrecords' do
+      expect { manual_delete }.to change { Manifestation.count }.by(-1).
+        and change { Expression.count }.by(-1).
+        and change { Work.count }.by(-1).
+        and change { Realizer.count }.by(-1).  # translator removed
+        and change { Creation.count }.by(-1). # author removed
+        and change { Person.count }.by(0)     # people records are kept
+    end
+  end
+
+  describe '.authors_string' do
+    subject { manifestation.authors_string }
+    context 'when authors present' do
+      let(:author_1) { create(:person, name: 'Alpha') }
+      let(:author_2) { create(:person, name: 'Beta') }
+      let(:manifestation) { create(:manifestation, author: author_1) }
+      before do
+        create(:creation, work: manifestation.expressions[0].work, role: :author, person: author_2)
+      end
+      it { is_expected.to eq 'Alpha, Beta' }
+    end
+
+    context 'when no authors present' do
+      let(:manifestation) { create(:manifestation) }
+
+      before do
+        manifestation.expressions[0].work.creations.delete_all
+      end
+
+      it { is_expected.to eq I18n.t(:nil) }
+    end
+  end
+
+  describe '.translators_string' do
+    subject { manifestation.translators_string }
+    context 'when translators present' do
+      let(:translator_1) { create(:person, name: 'Alpha') }
+      let(:translator_2) { create(:person, name: 'Beta') }
+      let(:manifestation) { create(:manifestation, orig_lang: 'de', translator: translator_1) }
+      before do
+        create(:realizer, expression: manifestation.expressions[0], role: :translator, person: translator_2)
+      end
+      it { is_expected.to eq 'Alpha, Beta' }
+    end
+
+    context 'when no authors present' do
+      let(:manifestation) { create(:manifestation) }
+
+      before do
+        manifestation.expressions[0].realizers.delete_all
+      end
+
+      it { is_expected.to eq I18n.t(:nil) }
+    end
+  end
+
+  describe '.author_string' do
+    subject { manifestation.author_string }
+
+    let(:author_1) { create(:person, name: 'Alpha') }
+    let(:author_2) { create(:person, name: 'Beta') }
+
+    before do
+      create(:creation, work: manifestation.expressions[0].work, role: :author, person: author_2)
+    end
+
+    context 'when work is not a translation' do
+      let(:manifestation) { create(:manifestation, orig_lang: 'he', author: author_1) }
+
+      context 'when authors are present' do
+        it { is_expected.to eq 'Alpha, Beta' }
+      end
+
+      context 'when no authors present' do
+        before do
+          manifestation.expressions[0].work.creations.delete_all
+
+          it { is_expected.to eq I18n.t(:nil) }
+        end
+      end
+    end
+
+    context 'when work is a translation' do
+      let(:translator_1) { create(:person, name: 'Gamma') }
+      let(:translator_2) { create(:person, name: 'Delta') }
+
+      let(:manifestation) { create(:manifestation, orig_lang: 'de', author: author_1, translator: translator_1) }
+
+      before do
+        create(:realizer, expression: manifestation.expressions[0], role: :translator, person: translator_2)
+      end
+
+      context 'when both authors and transaltors are present' do
+        it { is_expected.to eq 'Alpha, Beta / Gamma, Delta' }
+      end
+
+      context 'when no authors present' do
+        before do
+          manifestation.expressions[0].work.creations.delete_all
+
+          it { is_expected.to eq I18n.t(:nil) }
+        end
+      end
+
+      context 'when no translators present' do
+        before do
+          manifestation.expressions[0].realizers.delete_all
+        end
+
+        it { is_expected.to eq 'Alpha, Beta / ' + I18n.t(:unknown) }
+      end
+    end
+  end
 end

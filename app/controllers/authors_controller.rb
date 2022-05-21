@@ -54,7 +54,7 @@ class AuthorsController < ApplicationController
     pubs = @author.works_since(1.month.ago, 1000)
     @pubscoll = {}
     pubs.each {|m|
-      genre = m.expressions[0].works[0].genre
+      genre = m.expressions[0].work.genre
       @pubscoll[genre] = [] if @pubscoll[genre].nil?
       @pubscoll[genre] << m
     }
@@ -67,7 +67,7 @@ class AuthorsController < ApplicationController
     pubs = @author.cached_latest_stuff
     @pubscoll = {}
     pubs.each {|m|
-      genre = m.expressions[0].works[0]
+      genre = m.expressions[0].work
       @pubscoll[genre] = [] if @pubscoll[genre].nil?
       @pubscoll[genre] << m
     }
@@ -331,6 +331,7 @@ class AuthorsController < ApplicationController
     @published_xlats = @author.translations.count
     @total_orig_works = @author.original_work_count_including_unpublished
     @total_xlats = @author.translations_count_including_unpublished
+    @aboutnesses = @author.aboutnesses
 
     if @author.nil?
       flash[:error] = t(:no_such_item)

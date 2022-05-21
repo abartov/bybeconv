@@ -3,7 +3,6 @@ class Manifestation < ApplicationRecord
   is_impressionable :counter_cache => true # for statistics
   paginates_per 100
   has_and_belongs_to_many :expressions
-  #has_and_belongs_to_many :people
   has_and_belongs_to_many :html_files
 
   has_and_belongs_to_many :likers, join_table: :work_likes, class_name: :User
@@ -27,7 +26,7 @@ class Manifestation < ApplicationRecord
   scope :copyrighted, -> { joins(:expressions).includes(:expressions).where(expressions: {copyrighted: true})}
   scope :not_translations, -> { joins(:expressions).includes(:expressions).where(expressions: {translation: false})}
   scope :translations, -> { joins(:expressions).includes(:expressions).where(expressions: {translation: true})}
-  scope :genre, -> (genre) { joins(expressions: :works).where(works: {genre: genre})}
+  scope :genre, -> (genre) { joins(expressions: :work).where(works: {genre: genre})}
   scope :by_tag, ->(tag_id) {joins(:taggings).where(taggings: {tag_id: tag_id})}
 
   LONG_LENGTH = 15000 # kind of arbitrary...
@@ -39,7 +38,7 @@ class Manifestation < ApplicationRecord
   @@tmplock = false
 
   def update_sort_title
-    self.sort_title = self.title.strip_nikkud.tr('[]()*"\'', '').strip
+    self.sort_title = self.title.strip_nikkud.tr('-־[]()*"\'', '').strip
     self.sort_title = $' if self.sort_title =~ /^\d+\. /
   end
 
@@ -97,7 +96,7 @@ class Manifestation < ApplicationRecord
 
   def as_prose?
     # TODO: implement more generically
-    return ['poetry','drama'].include?(expressions[0].works[0].genre) ? false : true
+    return ['poetry','drama'].include?(expressions[0].work.genre) ? false : true
   end
 
   def safe_filename
@@ -114,27 +113,22 @@ class Manifestation < ApplicationRecord
     return title + ' / '+author_string
   end
 
-  def title_and_author_if_translation
-    self.expressions[0].translation ? "#{title} / #{self.expressions[0].works[0].authors.map{|x| x.name}.join(', ')}": title
-  end
-
   def title_and_authors_html
-    ret = "<h1>#{title}</h1><h2>#{I18n.t(:by)} #{authors_string}</h2>"
+    ret = "<h1>#{title}</h1> <h2>#{I18n.t(:by)} #{authors_string}</h2> "
     if self.expressions[0].translation?
-      ret += "<h2>#{I18n.t(:translated_from)}#{textify_lang(self.expressions[0].works[0].orig_lang)} #{I18n.t(:by)} #{translators_string}</h2>"
+      ret += "<h2>#{I18n.t(:translated_from)}#{textify_lang(self.expressions[0].work.orig_lang)} #{I18n.t(:by)} #{translators_string}</h2>"
     end
     return ret
   end
 
   def manual_delete
-    expressions.each{|e|
-      e.realizers.each{|r| r.destroy!}
-      e.works.each{|w|
-        w.creations.each{|c| c.destroy!}
-        w.destroy!
-      }
+    expressions.each do |e|
+      e.realizers.each(&:destroy!)
+      w = e.work
       e.destroy!
-    }
+      w.creations.each(&:destroy!)
+      w.destroy!
+    end
     self.destroy!
   end
 
@@ -144,8 +138,8 @@ class Manifestation < ApplicationRecord
   end
 
   def authors_string
-    return I18n.t(:nil) if expressions[0].nil? or expressions[0].works[0].nil? or expressions[0].works[0].persons[0].nil?
-    return expressions[0].works[0].authors.map{|x| x.name}.join(', ')
+    return I18n.t(:nil) if expressions[0].work.authors.empty?
+    return expressions[0].work.authors.map(&:name).join(', ')
   end
 
   def first_hebrew_letter
@@ -153,20 +147,23 @@ class Manifestation < ApplicationRecord
     self.title.each_char{|ch| return ch if self.title.is_hebrew_codepoint_utf8(ch.codepoints[0])}
     return ret
   end
+
   def authors
-    return [] if expressions[0].nil? or expressions[0].works[0].nil? or expressions[0].works[0].persons[0].nil?
-    return expressions[0].works[0].authors
+    return expressions[0].work.authors
   end
+
   def author_gender
     authors.pluck(:gender).uniq.reject{|x| x.blank?}
   end
+
   def translator_gender
     translators.pluck(:gender).uniq.reject{|x| x.blank?}
   end
+
   def translators
-    return [] if expressions[0].nil? or expressions[0].works[0].nil? or expressions[0].works[0].persons[0].nil?
     return expressions[0].translators
   end
+
   def author_and_translator_ids
     ret = []
     au = authors
@@ -176,20 +173,21 @@ class Manifestation < ApplicationRecord
     ret = au.pluck(:id)+tra.pluck(:id)
     return ret.uniq
   end
+
   def translators_string
-    return I18n.t(:nil) if expressions[0].nil? or expressions[0].works[0].nil? or expressions[0].works[0].persons[0].nil?
-    return expressions[0].translators.map{|x| x.name}.join(', ')
+    return I18n.t(:nil) if expressions[0].translators.empty?
+    return expressions[0].translators.map(&:name).join(', ')
   end
 
   def author_string
     Rails.cache.fetch("m_#{self.id}_author_string", expires_in: 24.hours) do
-      return I18n.t(:nil) if expressions[0].nil? or expressions[0].works[0].nil? or expressions[0].works[0].persons[0].nil?
-      ret = expressions[0].works[0].authors.map{|x| x.name}.join(', ')
+      return I18n.t(:nil) if expressions[0].work.authors.empty?
+      ret = expressions[0].work.authors.map(&:name).join(', ')
       if expressions[0].translation
-        if translators.count < 1
+        if translators.empty?
           ret += ' / '+I18n.t(:unknown)
         else
-          ret += ' / '+translators.map{|x| x.name}.join(', ')
+          ret += ' / '+translators.map(&:name).join(', ')
         end
       end
       ret # TODO: be less naive
@@ -219,9 +217,7 @@ class Manifestation < ApplicationRecord
      pp = []
      expressions.each {|e|
        e.persons.each {|p| pp << p unless pp.include?(p) }
-       e.works.each {|w|
-         w.persons.each {|p| pp << p unless pp.include?(p) }
-       }
+       e.work.persons.each {|p| pp << p unless pp.include?(p) }
      }
      self.cached_people = pp.map{|p| "#{p.name} #{p.other_designation}"}.join('; ') # ZZZ
      # self.cached_people_ids = pp.map{|x| x.id}.join() # this doesn't actually make sense; a normalized query would be way faster
@@ -236,11 +232,11 @@ class Manifestation < ApplicationRecord
   def self.popular_works_by_genre(genre, xlat)
     if xlat
       Rails.cache.fetch("m_pop_xlat_in_#{genre}", expires_in: 24.hours) do # memoize
-        Manifestation.all_published.joins([expressions: :works]).includes(:expressions).where(works: {genre: genre}).where("works.orig_lang != expressions.language").order(impressions_count: :desc).limit(10).map{|m| {id: m.id, title: m.title, author: m.author_string}}
+        Manifestation.all_published.joins(expressions: :work).includes(:expressions).where(works: {genre: genre}).where("works.orig_lang != expressions.language").order(impressions_count: :desc).limit(10).map{|m| {id: m.id, title: m.title, author: m.author_string}}
       end
     else
       Rails.cache.fetch("m_pop_in_#{genre}", expires_in: 24.hours) do # memoize
-        Manifestation.all_published.joins([expressions: :works]).includes(:expressions).where(works: {genre: genre}).where("works.orig_lang = expressions.language").order(impressions_count: :desc).limit(10).map{|m| {id: m.id, title: m.title, author: m.author_string}}
+        Manifestation.all_published.joins(expressions: :work).where(works: { genre: genre }).where("works.orig_lang = expressions.language").order(impressions_count: :desc).limit(10).map{|m| {id: m.id, title: m.title, author: m.author_string}}
       end
     end
   end
