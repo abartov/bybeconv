@@ -653,44 +653,6 @@ class HtmlFile < ApplicationRecord
     end
   end
 
-  def create_WEM(person_id)
-    if status == 'Accepted'
-      begin
-        p = Person.find(person_id)
-        markdown = File.open(path + '.markdown', 'r:UTF-8').read
-        title = HtmlFile.title_from_file(path)[0].gsub("\r",' ')
-        w = Work.new(title: title, orig_lang: 'he', genre: genre, comment: comments) # TODO: un-hardcode?
-        copyrighted = (p.public_domain ? false : (p.public_domain.nil? ? nil : true)) # if author is PD, expression is PD # TODO: make this depend on both work and expression author, for translations
-        e = Expression.new(title: title, language: 'he', copyrighted: copyrighted, genre: genre, comment: comments) # ISO codes
-        w.expressions << e
-        w.save!
-        c = Creation.new(work_id: w.id, person_id: p.id, role: :author)
-        c.save!
-
-        if translator_id.present?
-          translator.realizers.create!(expression: e, role: :translator)
-        end
-
-        em_author = (translator_id.nil? ? p : translator) # the author of the Expression and Manifestation is the translator, if one exists
-        clean_utf8 = markdown.encode('utf-8') # for some reason, this string was not getting written properly to the DB
-        m = Manifestation.new(title: title, responsibility_statement: em_author.name, medium: 'e-text', publisher: AppConstants.our_publisher, publication_place: AppConstants.our_place_of_publication, publication_date: Date.today, markdown: clean_utf8, comment: comments, status: Manifestation.statuses[:published])
-        m.save!
-        m.people << em_author
-        e.manifestations << m
-        e.save!
-        manifestations << m # this HtmlFile itself should know the manifestation created out of it
-        save!
-        m.recalc_cached_people!
-
-        return true
-      rescue
-        return 'Error while create FRBR entities from HTML file!'
-      end
-    else
-      return t(:must_accept_before_publishing)
-    end
-  end
-
   def remove_line_nums!
     lines = File.open(path + '.markdown', 'r:UTF-8').read.split("\n")
     new_lines = []
