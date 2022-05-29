@@ -232,24 +232,21 @@ class HtmlFileController < ApplicationController
         @text.save!
         success = false
         if oldstatus == 'Uploaded' # new, direct way!
+          au_id = @text.person.id
           if @text.has_splits
             @text.split_parts.each_pair do |title, markdown|
-              success = @text.create_WEM_new(@text.person.id, title.sub(/_ZZ\d+/,''), markdown, true, params[:pub_status])
+              success = @text.create_WEM_new(au_id, title.sub(/_ZZ\d+/,''), markdown, true, params[:pub_status])
             end
             @text.status = 'Published' if success == true
             @text.save!
           else
-            success = @text.create_WEM_new(@text.person.id, @text.title.sub(/_ZZ\d+/,''), @text.markdown, false, params[:pub_status])
+            success = @text.create_WEM_new(au_id, @text.title.sub(/_ZZ\d+/,''), @text.markdown, false, params[:pub_status])
           end
           if success == true
-            flash[:notice] = t(:created_frbr)
-          else
-            flash[:error] = success
-          end
-          redirect_to controller: :manifestation, action: :list
-        else # legacy way (pre-2018). To be removed
-          success = @text.create_WEM(@text.person.id)
-          if success == true
+            # invalidate cached work list for generated TOCs
+            Rails.cache.delete("au_#{au_id}_original_works_by_genre")
+            Rails.cache.delete("au_#{au_id}_translations_by_genre") 
+            
             flash[:notice] = t(:created_frbr)
           else
             flash[:error] = success
