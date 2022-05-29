@@ -1,3 +1,5 @@
+#content.container-fluid.top-element
+
 %p#notice= notice
 
 %p
@@ -7,11 +9,8 @@
   %b Status:
   = @lex_entry.status
 %p
-  %b Lex person:
-  = @lex_entry.lex_person
-%p
-  %b Lex publication:
-  = @lex_entry.lex_publication
+  %b Lex item:
+  = @lex_entry.lex_item 
 
 = link_to 'Edit', edit_lex_entry_path(@lex_entry)
 \|

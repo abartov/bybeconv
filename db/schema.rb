@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_15_233947) do
+ActiveRecord::Schema.define(version: 2022_05_28_061203) do
 
   create_table "aboutnesses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -430,7 +430,9 @@ ActiveRecord::Schema.define(version: 2022_05_15_233947) do
     t.datetime "updated_at", null: false
     t.string "lex_item_type"
     t.bigint "lex_item_id"
+    t.string "sort_title"
     t.index ["lex_item_type", "lex_item_id"], name: "index_lex_entries_on_lex_item_type_and_lex_item_id", unique: true
+    t.index ["sort_title"], name: "index_lex_entries_on_sort_title"
     t.index ["status"], name: "index_lex_entries_on_status"
     t.index ["title"], name: "index_lex_entries_on_title"
   end
@@ -675,7 +677,7 @@ ActiveRecord::Schema.define(version: 2022_05_15_233947) do
     t.index ["task_id"], name: "index_publications_on_task_id"
   end
 
-  create_table "reading_lists", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "reading_lists", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8_bin", force: :cascade do |t|
     t.string "title"
     t.integer "user_id"
     t.integer "access"
