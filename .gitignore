@@ -22,7 +22,9 @@
 *.code-workspace
 # ignore symlink
 /by
+
 /ignore/*
+
 # ignore site-specific config
 /config/chewy.yml
 /config/database.yml
@@ -60,3 +62,4 @@ ubuntu-*-console.log
 
 # Lexicon
 /lexicon
+
