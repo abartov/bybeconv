@@ -90,7 +90,7 @@ ActiveRecord::Schema.define(version: 2022_04_18_201702) do
     t.index ["base_user_id"], name: "index_base_user_preferences_on_base_user_id"
   end
 
-  create_table "base_users", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "base_users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.integer "user_id"
     t.string "session_id"
     t.index ["session_id"], name: "index_base_users_on_session_id", unique: true
@@ -540,7 +540,7 @@ ActiveRecord::Schema.define(version: 2022_04_18_201702) do
     t.index ["task_id"], name: "index_publications_on_task_id"
   end
 
-  create_table "reading_lists", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "reading_lists", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.string "title"
     t.integer "user_id"
     t.integer "access"
