@@ -17,6 +17,7 @@ class Person < ApplicationRecord
   has_many :aboutnesses, as: :aboutable, dependent: :destroy
   has_many :external_links, as: :linkable, dependent: :destroy
   has_many :publications, dependent: :destroy
+  has_one :lex_person
 
   # scopes
   scope :has_toc, -> { where.not(toc_id: nil) }
