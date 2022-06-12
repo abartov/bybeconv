@@ -1072,6 +1072,9 @@
 	.thanks-page .work-side-menu-area{
 		display: none;
 	}
+		.anthology-page-content .work-side-menu-area{
+		display: none;
+	}
 	.author-page-content .whats-new-v02 {
     min-height: 100px;
 }
@@ -1093,6 +1096,53 @@
 .by-dual-popup .bottom-button-area{
 		position: relative;
 	}
+	.modal-dialog{
+	margin: 0 auto 0 auto;
+}
+.modal-body{
+	width: 100%;
+	height: 100%;
+	margin: 0;
+}
+	.modal-body .popup-x-v02{
+		display: none;
+	}
+	.work-side-menu-area{
+		display: none;
+	}
+	.author-page-top-rights{
+	width: calc(50% - 25px);
+ }
+.author-page-top-info-card{
+  padding: 10px 15px 10px 10px;
+}
+	.BYD-rights{
+	display: none;
+}
+
+
+.value-summary-card-v02 {
+  margin-left: 0px;
+}
+.by-dual-popup input[type=checkbox]{
+	display: none;
+}	
+	
+.by-dual-popup label{
+	display: none;
+}	
+.topNavEntry{
+	margin: 0 12px;
+}
+
+.texts-list-top-info-card .headline-3-v02{
+	min-width: calc(50% - 38px);
+	margin-left: 0;
+}
+		
+#text-volunteers-mobile .credits{
+  column-count: 2;
+}
 }
 
 

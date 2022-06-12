@@ -397,8 +397,8 @@ padding-left: 6px;
   background-color: #ffffff;
   display: inline;
   float: right;
-  margin-left: 8px;
-  margin-right: 8px;
+  margin-left: 4px;
+  margin-right: 4px;
 }
 
 .by-icon-v02 {
@@ -1773,7 +1773,7 @@ ul #menuMobile {
 
 .metadata-link-icon {
     font-family: ben-yehuda;
-    padding-left: 4px;
+    padding-left: 6px;
     font-size: 18px;
     vertical-align: middle;
 }
@@ -1913,7 +1913,7 @@ ul #menuMobile {
 }
 .top-left-icons-group{
 	display: flex;
-	gap: 6px;
+	gap: 4px;
 	align-items: center;
 }
 .author-page-top-icons-desktop{
@@ -2068,9 +2068,9 @@ display: flex;
 	padding-left: 15px;
 }
 .work-genre {
-  object-fit: contain;
+  object-fit: cover;
 	width: 100%;
-	height: 400px;
+	height: 100%;
   color: #2b0d22;
   background-repeat: no-repeat;
 }
@@ -2351,7 +2351,6 @@ display: flex;
 	background-color: #660248;
 	color: white;
 	padding-right: 4px;
-	margin-left: 8px;
 }
 .reading-mode-btn-v02:hover{
     background-color: #2b0d22;
@@ -2553,9 +2552,6 @@ a .author-name-area:hover{
 	border-bottom-left-radius: 3px;
 	border-bottom-right-radius: 3px;
 }
-.text-page-content{
-	margin-top: 250px;
-}
 .anthology-page-content{
 	margin-top: 215px;
 }
@@ -2689,7 +2685,7 @@ label{
 	box-shadow: none;
 }
 .print .col-12{
-	padding-right: 120px;
+	padding-right: 200px;
 	padding-left: 120px;
 }
 .print .col-lg-8{
@@ -2769,6 +2765,7 @@ label{
 	display: inline;
 }
 .rm-logo .logoBY-v02{
+	content: url("/assets/BYP_logo_scroll.svg");
 	width: 160px;
 	height: auto;
 }
@@ -2864,12 +2861,18 @@ label{
 	font-size: 14px;
 }
 .rm-control-icons{
-	display: block;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	height: 30px;
+	padding: 10px;
+}
+.rm-control-icons a{
+	padding: 3px;
 	height: 30px;
 }
-.rm-control-icons .icon-in-group-v02{
-	padding: 3px 4px;
-	height: 30px;
+.rm-control-icons a:hover{
+	text-decoration: none;
 }
 .bookmark-location{
   position: relative;
@@ -3411,7 +3414,7 @@ padding-left: 0;
   font-family: ben-yehuda;
   font-size: 13px;
   position: absolute;
-	left: 13px;
+	right: 13px;
   top: 13px;
   text-align: center;
 	width: 24px;
@@ -3442,9 +3445,10 @@ padding-left: 0;
 }
 .vertical-expand {
   background: none;
+	height: 24px;
   border: none;
   cursor: pointer;
-	padding: 3px;
+	padding: 5px;
 	border-radius: 3px;
   -webkit-user-select: none;
   /* Safari 3.1+ */
@@ -3537,8 +3541,8 @@ padding-left: 0;
   font-size: 12pt;
   font-weight: bold;
   display: inline-block;
-	padding-top: 3px;
   margin-right: 6px;
+	margin-top: 4px;
   width: 440px;
   white-space: nowrap;
   overflow: hidden;
@@ -3568,9 +3572,8 @@ padding-left: 0;
 }
 .markdown-icon{
 	margin-left: 8px;
-	position: absolute;
-	top:12px;
 	display: inline;
+	vertical-align: bottom;
 }
 .self-created-text{
 	background-color: #D9CDD5;
@@ -3893,6 +3896,7 @@ a .by-icon-v02:disabled{
 	margin-top: 15px;
 	display: flex;
 	justify-content: flex-end;
+	gap: 6px;
 }
 .mobile-search-area{
 	position: relative;
@@ -4301,7 +4305,7 @@ position: absolute;
 }
 
 .folded-anthology {
-  z-index: 10;
+  z-index: 15;
   width: 50px;
   height: calc(100% - 30px);
   background-color: #eeeced;
@@ -4438,7 +4442,6 @@ position: absolute;
 
 
 .self-created-text .anthology-text-name{
-	margin-right: 24px;
 	display: inline;
 }
 .anthology .by-card-content-v02{
@@ -4802,12 +4805,16 @@ position: absolute;
 .internal-notification-text p{
   margin-bottom: 2px;
 }
-.internal-notification-text a{
+.internal-notification-content a{
   color: white;
   text-decoration: underline;
 }
-.internal-notification-text a:hover{
-  color: #D9CDD5;
+.internal-notification-content a:hover{
+  color: #660248;
+  background-color: #D9CDD5;
+}
+.by-card-content-v02 .internal-notification-content{
+	margin: 0;
 }
 .by-dropdown-divider{
 	width: 100%; 
@@ -4856,13 +4863,6 @@ position: absolute;
 }
 .internal-notification-content p{
   margin-bottom: 2px;
-}
-.internal-notification-content a{
-  color: white;
-  text-decoration: underline;
-}
-.internal-notification-content a:hover{
-  color: #D9CDD5;
 }
 .datepicker-area{
   width: 224px;
@@ -5060,6 +5060,7 @@ position: absolute;
 	width: 38%;
 	justify-content: flex-end;
 	align-self:flex-end;
+	gap: 8px;
 }
 .thanks-popup{
 	max-width: 400px;
@@ -5439,12 +5440,10 @@ position: absolute;
   flex: 1 1 auto;
   display: flex;
   flex-flow: column;
+	background-color: #eeeced;
 }
 .by-popup-v02 .by-card-content-v02 .limited-height-popup-content-v02{
   flex: 1 1 calc(100vh - 210px);
-}
-.by-popup-v02 .by-card-content-v02 .bottom-button-area{
-  flex: 0 1 50px;
 }
 .left-buttons{
 	flex-direction: row-reverse;
@@ -6161,7 +6160,7 @@ a:hover .genre-nav{
   font-weight: bold;
   margin-bottom: 6px; 
 }
-.new-headline-v02:hover{
+a .new-headline-v02:hover{
   background-color: #d9cdd5;
   text-decoration: none;
 }
@@ -6393,6 +6392,9 @@ a:hover .genre-nav{
 .peach2-lexicon .error-found-btn{
   border: solid 2px #efbfb7; 
 	color: #A23535;
+}
+.rm-control-icons .error-found-btn{
+	margin-left: 0;
 }
 .peach2-lexicon .error-found:hover{
   background-color: #efbfb7;
@@ -6767,4 +6769,13 @@ a:hover .genre-nav{
 }
 #whats-new-author-popup .by-card-content-v02{
 	min-height: 235px;
+}
+#author-links-popup .by-card-header-v02{
+	min-height: inherit;
+}
+.recommend-card-v02 a:hover{
+	background-color: #d9cdd5;
+}
+a.dropdown-item.linkcolor {
+    color: #660248;
 }
