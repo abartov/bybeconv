@@ -26,7 +26,7 @@
           - if p.nil?
             %td= t(:error)
           - else
-            %td= link_to p.name, authors_show_path(p)
+            %td= link_to p.name, authors_show_path(id: p)
         - else
           %td= t(:no)
           %td= ''
