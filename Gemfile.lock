@@ -135,7 +135,7 @@ GEM
       ruby-statistics (>= 2.1)
       thor (>= 0.19, < 2)
     diff-lcs (1.4.4)
-    diffy (3.4.0)
+    diffy (3.4.1)
     docile (1.4.0)
     docx (0.6.2)
       nokogiri (~> 1.10, >= 1.10.4)
