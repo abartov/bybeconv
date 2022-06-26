@@ -1,5 +1,8 @@
 ! Fix A-B BAR!
 
+אסף האם ניתן להוסיף לטופס הבקשה להתנדב שאלה ״היכן שמעת על הפרויקט? ״
+יהיה נחמד לדעת אילו מהאמצים שלנו נושאים פרי (נניח רחל מדווחת שהיו הרבה אנשים בהרצאה הבוקר ושהתגובות היו נלהבות. מעניין אם מוביל לפעולה).
+
 1. implement news items input/editing for heterogeneous newsfeed
 
 Data model flattening TODO:
