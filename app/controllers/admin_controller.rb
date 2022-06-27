@@ -220,17 +220,23 @@ class AdminController < ApplicationController
 
   def translated_from_multiple_languages
     @authors = []
-    translatees = Person.joins(creations: :work).includes(:works).where('works.orig_lang <> "he"').distinct
-    translatees.each {|t|
-      if t.works.pluck(:orig_lang).uniq.count > 1
-        works_by_lang = {}
-        t.works.each { |w|
-          works_by_lang[w.orig_lang] = [] if works_by_lang[w.orig_lang].nil?
-          works_by_lang[w.orig_lang] << w.expressions[0].manifestations[0] # TODO: generalize
-        }
-        @authors << [t, t.works.pluck(:orig_lang).uniq, works_by_lang]
-      end
-    }
+
+    # Getting list of authors, who wrote works in more than one language
+    translatees = Person.joins(creations: :work).
+      merge(Creation.author).
+      group('people.id').
+      select('people.id, people.name').
+      having('min(works.orig_lang) <> max(works.orig_lang)').
+      sort_by(&:name)
+
+    translatees.each do |t|
+      manifestations = Manifestation.joins(expression: { work: :creations }).
+        merge(Creation.author.where(person_id: t.id)).
+        preload(expression: :work).
+        sort_by { |m| [m.expression.work.orig_lang, m.sort_title] }.
+        group_by { |m| m.expression.work.orig_lang }
+      @authors << [t, manifestations.keys, manifestations]
+    end
     Rails.cache.write('report_translated_from_multiple_languages', @authors.length)
   end
 
