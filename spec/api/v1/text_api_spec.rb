@@ -284,7 +284,6 @@ describe V1::TextsAPI do
         it 'passes all params to SearchManifestation service without sorting' do
           expect_any_instance_of(SearchManifestations).to receive(:call).with(nil, nil, search_params).and_return(records)
           expect(subject).to eq 201
-          puts error_message
           expect(total_count).to eq 5
           expect(data).to eq []
         end
