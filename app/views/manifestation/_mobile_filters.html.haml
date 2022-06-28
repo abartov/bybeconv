@@ -242,15 +242,14 @@
                                   - count_text = amount || '0'
                                   - count_text = t(:filtered) if count_text == '0' && @languages.present?
                                   %span= "(#{count_text})"
-                              - get_langs.reject{|x| emitted_langs.include?(x)}.each do |lang|
-                                %li
-                                  %input{name: "ckb_languages[]", :type => "checkbox", id: "lang_#{lang}", value: lang}
-                                  %label
-                                    = textify_lang(lang)
-                                    - count_text = '0'
-                                    - count_text = t(:filtered) if @languages.present?
-                                    %span= "(#{count_text})"
-
+                            - get_langs.reject{|x| emitted_langs.include?(x)}.each do |lang|
+                              %li
+                                %input{name: "ckb_languages[]", :type => "checkbox", id: "lang_#{lang}", value: lang}
+                                %label
+                                  = textify_lang(lang)
+                                  - count_text = '0'
+                                  - count_text = t(:filtered) if @languages.present?
+                                  %span= "(#{count_text})"
       .bottom-button-area
         %button.by-button-v02#apply_mobile_filters= t(:apply_mobile_filters)
 :javascript
