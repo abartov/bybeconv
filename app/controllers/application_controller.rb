@@ -120,39 +120,6 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def featured_content
-    Rails.cache.fetch("featured_content", expires_in: 10.minutes) do # memoize
-      ret = nil
-      fcfs = FeaturedContentFeature.where("fromdate <= :now AND todate >= :now", now: Date.today).order('RAND()').limit(1)
-      if fcfs.count == 1
-        ret = fcfs[0].featured_content
-      end
-      ret
-    end
-  end
-
-  def featured_author
-    Rails.cache.fetch("featured_author", expires_in: 1.hours) do # memoize
-      fas = FeaturedAuthorFeature.where("fromdate <= :now AND todate >= :now", now: Date.today).order('RAND()').limit(1)
-      if fas.count == 1
-        fas[0].featured_author
-      else
-        nil
-      end
-    end
-  end
-
-  def featured_volunteer
-    Rails.cache.fetch("featured_volunteer", expires_in: 10.hours) do # memoize
-      ret = nil
-      vpfs = VolunteerProfileFeature.where("fromdate <= :now AND todate >= :now", now: Date.today).order('RAND()').limit(1)
-      if vpfs.count == 1
-        ret = vpfs[0].volunteer_profile
-      end
-      ret
-    end
-  end
-
   def popular_authors(update = false)
     Person.recalc_popular if update
     @popular_authors = Person.get_popular_authors
