@@ -27,8 +27,6 @@
       $('#add_link_form')[0].reset();
     });
     $('#external_links').on('click', '.delete_link', function(e){
-      e.stopPropagation();
-      e.preventDefault();
       $(this).parent().remove();
     });
   });
