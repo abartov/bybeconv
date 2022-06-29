@@ -42,6 +42,7 @@ localhost.key
 do_chown.sh
 go.sh
 UX/*
+/lexicon/*
 coverage
 export
 storage
