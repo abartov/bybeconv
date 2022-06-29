@@ -8,7 +8,8 @@ class ExternalLink < ApplicationRecord
     other: 3,
     publisher_site: 4,
     dedicated_site: 5,
-    audio: 6
+    audio: 6,
+    gnazim: 7
   }, _prefix: true
 
   enum status: {
