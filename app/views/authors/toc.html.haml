@@ -25,7 +25,7 @@
                 - if @author.wikipedia_url.present?
                   .read-more-v02
                     %a{:href => @author.wikipedia_url, target: '_blank'}
-                      %span{:style => "font-weight: bold"}= t(:rest_in_wikipedia)
+                      %span{:style => "font-weight: bold"}= @author.wikipedia_url =~ /wikipedia\.org/ ? t(:rest_in_wikipedia) : t(:rest_of_work)
                       %span.left-arrow 1
                 %br
                   .metadata
