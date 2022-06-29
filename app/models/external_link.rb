@@ -19,6 +19,6 @@ class ExternalLink < ApplicationRecord
   }, _prefix: true
 
   def self.sidebar_link_types # excluding the publisher_site link, which is used in the main area for texts published by permission
-    return [:wikipedia, :dedicated_site, :blog, :youtube, :audio, :other]
+    return [:wikipedia, :dedicated_site, :blog, :youtube, :audio, :other, :gnazim]
   end
 end
