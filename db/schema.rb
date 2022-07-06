@@ -28,7 +28,7 @@ ActiveRecord::Schema.define(version: 2023_12_02_181505) do
     t.index ["work_id"], name: "index_aboutnesses_on_work_id"
   end
 
-  create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+  create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
     t.bigint "record_id", null: false
@@ -38,7 +38,7 @@ ActiveRecord::Schema.define(version: 2023_12_02_181505) do
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
 
-  create_table "active_storage_blobs", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+  create_table "active_storage_blobs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.string "key", null: false
     t.string "filename", null: false
     t.string "content_type"
@@ -46,7 +46,6 @@ ActiveRecord::Schema.define(version: 2023_12_02_181505) do
     t.bigint "byte_size", null: false
     t.string "checksum", null: false
     t.datetime "created_at", null: false
-    t.string "service_name", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
@@ -772,7 +771,7 @@ ActiveRecord::Schema.define(version: 2023_12_02_181505) do
     t.index ["task_id"], name: "index_publications_on_task_id"
   end
 
-  create_table "reading_lists", charset: "latin1", force: :cascade do |t|
+  create_table "reading_lists", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "title"
     t.integer "user_id"
     t.integer "access"
@@ -792,7 +791,7 @@ ActiveRecord::Schema.define(version: 2023_12_02_181505) do
     t.index ["role", "person_id"], name: "index_realizers_on_role_and_person_id"
   end
 
-  create_table "recommendations", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+  create_table "recommendations", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.text "body"
     t.integer "user_id"
     t.integer "approved_by"
@@ -815,7 +814,7 @@ ActiveRecord::Schema.define(version: 2023_12_02_181505) do
     t.index ["updated_at"], name: "index_sessions_on_updated_at"
   end
 
-  create_table "sitenotices", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+  create_table "sitenotices", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.text "body"
     t.datetime "fromdate"
     t.datetime "todate"
@@ -978,6 +977,7 @@ ActiveRecord::Schema.define(version: 2023_12_02_181505) do
     t.string "origlang_title"
     t.string "normalized_pub_date"
     t.string "normalized_creation_date"
+    t.boolean "primary", null: false
     t.index ["normalized_creation_date"], name: "index_works_on_normalized_creation_date"
     t.index ["normalized_pub_date"], name: "index_works_on_normalized_pub_date"
   end

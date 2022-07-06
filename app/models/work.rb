@@ -12,6 +12,7 @@ class Work < ApplicationRecord
   has_many :tags, through: :taggings, class_name: 'Tag'
 
   validates_inclusion_of :genre, in: GENRES
+  validates_inclusion_of :primary, in: [true, false]
 
   before_save :norm_dates
   # has_and_belongs_to_many :people # superseded by creations and persons above
