@@ -80,12 +80,6 @@ class Person < ApplicationRecord
     self.status = :published
     self.save! # finally, set this person to published
   end
-  # set Expressions' period by author
-  def update_expressions_period
-    o = original_works.preload(:expression).map(&:expression)
-    t = translations.preload(:expression).map(&:expression)
-    (o + t).uniq.each { |e| e.update_attribute(:period, self.period) }
-  end
 
   def died_years_ago
     begin

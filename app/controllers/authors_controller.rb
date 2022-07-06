@@ -355,22 +355,27 @@ class AuthorsController < ApplicationController
 
   def update
     @author = Person.find(params[:id])
-    if @author.nil?
-      flash[:error] = t(:no_such_item)
-      redirect_to '/'
-    else
-      params[:person][:wikidata_id] = params[:person][:wikidata_id].strip[1..-1] if params[:person] and params[:person][:wikidata_id] and params[:person][:wikidata_id][0] and params[:person][:wikidata_id].strip[0] == 'Q' # tolerate pasting the Wikidata number with the Q
-      old_period = @author.period
-      Chewy.strategy(:atomic) {
-        if @author.update_attributes(person_params)
-          @author.update_expressions_period if @author.period != old_period # if period was updated, update the period of this person's Expressions
-          flash[:notice] = I18n.t(:updated_successfully)
-          redirect_to action: :show, id: @author.id
-        else
-          format.html { render action: 'edit' }
-          format.json { render json: @author.errors, status: :unprocessable_entity }
+
+    params[:person][:wikidata_id] = params[:person][:wikidata_id].strip[1..-1] if params[:person] and params[:person][:wikidata_id] and params[:person][:wikidata_id][0] and params[:person][:wikidata_id].strip[0] == 'Q' # tolerate pasting the Wikidata number with the Q
+    Chewy.strategy(:atomic) do
+      if @author.update_attributes(person_params)
+        # if period was updated, update the period of this person's Expressions
+        if @author.period_previously_changed?
+          # In our system period states for Hebrew text period. So for original Hebrew works it should match
+          # period of author, and if this is a translation from other language to Hebrew, it should match period of
+          # translator. See https://github.com/abartov/bybeconv/issues/149#issuecomment-1141062929
+          o = @author.original_works.preload(expression: :work).map(&:expression).
+            select { |e| e.work.orig_lang == 'he' }
+          t = @author.translations.preload(:expression).map(&:expression).
+            select { |e| e.language == 'he' } # we have few translations from Hebrew to other languages
+          (o + t).uniq.each { |e| e.update_attribute(:period, @author.period) }
         end
-      }
+        flash[:notice] = I18n.t(:updated_successfully)
+        redirect_to action: :show, id: @author.id
+      else
+        format.html { render action: 'edit' }
+        format.json { render json: @author.errors, status: :unprocessable_entity }
+      end
     end
   end
 

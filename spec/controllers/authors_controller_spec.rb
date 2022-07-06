@@ -151,14 +151,16 @@ describe AuthorsController do
           }
         end
 
-        let(:works_period) { 'modern'}
-        let!(:original_work) { create(:manifestation, author: author, period: works_period) }
+        let(:works_period) { 'modern' } # intentionally use value different from author period
+        let!(:original_work) { create(:manifestation, orig_lang: 'he', author: author, period: works_period) }
+        let!(:original_foreign_work) { create(:manifestation, orig_lang: 'ru', language: 'he', author: author, period: works_period) }
         let!(:translated_work) { create(:manifestation, orig_lang: 'ru', translator: author, period: works_period) }
+        let!(:translated_to_foreign_work) { create(:manifestation, orig_lang: 'he', language: 'ru', translator: author, period: works_period) }
 
         context 'when period attribute was changed' do
           let(:new_period) { 'ancient' }
 
-          it 'updates author and his works' do
+          it 'updates author and sets period in his hebrew works and translations to hebrew' do
             expect(request).to redirect_to authors_show_path(id: author.id)
             author.reload
             expect(author).to have_attributes(name: new_name, period: new_period)
@@ -166,6 +168,14 @@ describe AuthorsController do
             expect(original_work.expression.period).to eq new_period
             translated_work.reload
             expect(translated_work.expression.period).to eq new_period
+
+            # period of original work in foreign language is not changed
+            original_foreign_work.reload
+            expect(original_foreign_work.expression.period).to eq works_period
+
+            # period of translation to foreign language is not changed
+            translated_to_foreign_work.reload
+            expect(translated_to_foreign_work.expression.period).to eq works_period
           end
         end
 
@@ -180,6 +190,10 @@ describe AuthorsController do
             expect(original_work.expression.period).to eq works_period
             translated_work.reload
             expect(translated_work.expression.period).to eq works_period
+            original_foreign_work.reload
+            expect(original_foreign_work.expression.period).to eq works_period
+            translated_to_foreign_work.reload
+            expect(translated_to_foreign_work.expression.period).to eq works_period
           end
         end
       end
