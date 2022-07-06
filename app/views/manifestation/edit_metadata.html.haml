@@ -10,6 +10,9 @@
       %b= t(:genre) + ': '
       = select_tag :genre, options_for_select(get_genres.map {|genre| [I18n.t(genre), genre]}, @w.genre), {include_blank: true}
     %p
+      %b= t(:primary) + ': '
+      = select_tag :primary, options_for_select([[t(:yes), 'true'], [t(:false), 'false']], @w.primary.to_s)
+    %p
       %b= t(:language) + ': '
       = select_tag :wlang, options_for_select(get_langs.map {|lang| [textify_lang(lang), lang]}, @w.orig_lang.nil? ? 'he' : @w.orig_lang)
     %p
