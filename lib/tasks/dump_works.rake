@@ -10,7 +10,7 @@ task :dump_works => :environment do
     Manifestation.all.each{ |m|
       i += 1
       puts "Dumping #{i}/#{total}" if i % 50 == 0
-      e = m.expressions[0]
+      e = m.expression
       w = e.work
       trstr = ''
       sl = ''

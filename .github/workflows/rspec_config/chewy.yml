@@ -1,0 +1,3 @@
+test:
+  host: 'localhost:<%=ENV['ELASTICSEARCH_PORT']%>'
+  prefix: 'test'

@@ -147,11 +147,11 @@ module ApplicationHelper
   end
 
   def authors_linked_string(m)
-    return m.expressions[0].work.authors.map{|x| "<a href=\"#{url_for(controller: :authors, action: :toc, id: x.id)}\">#{x.name}</a>"}.join(', ')
+    return m.expression.work.authors.map{|x| "<a href=\"#{url_for(controller: :authors, action: :toc, id: x.id)}\">#{x.name}</a>"}.join(', ')
   end
 
   def translators_linked_string(m)
-    return m.expressions[0].translators.map{|x| "<a href=\"#{url_for(controller: :authors, action: :toc, id: x.id)}\">#{x.name}</a>"}.join(', ')
+    return m.expression.translators.map{|x| "<a href=\"#{url_for(controller: :authors, action: :toc, id: x.id)}\">#{x.name}</a>"}.join(', ')
   end
 
   def copyright_glyph(is_copyright)

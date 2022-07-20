@@ -80,7 +80,7 @@ describe Manifestation do
       let(:author_2) { create(:person, name: 'Beta') }
       let(:manifestation) { create(:manifestation, author: author_1) }
       before do
-        create(:creation, work: manifestation.expressions[0].work, role: :author, person: author_2)
+        create(:creation, work: manifestation.expression.work, role: :author, person: author_2)
       end
       it { is_expected.to eq 'Alpha, Beta' }
     end
@@ -89,7 +89,7 @@ describe Manifestation do
       let(:manifestation) { create(:manifestation) }
 
       before do
-        manifestation.expressions[0].work.creations.delete_all
+        manifestation.expression.work.creations.delete_all
       end
 
       it { is_expected.to eq I18n.t(:nil) }
@@ -103,7 +103,7 @@ describe Manifestation do
       let(:translator_2) { create(:person, name: 'Beta') }
       let(:manifestation) { create(:manifestation, orig_lang: 'de', translator: translator_1) }
       before do
-        create(:realizer, expression: manifestation.expressions[0], role: :translator, person: translator_2)
+        create(:realizer, expression: manifestation.expression, role: :translator, person: translator_2)
       end
       it { is_expected.to eq 'Alpha, Beta' }
     end
@@ -112,7 +112,7 @@ describe Manifestation do
       let(:manifestation) { create(:manifestation) }
 
       before do
-        manifestation.expressions[0].realizers.delete_all
+        manifestation.expression.realizers.delete_all
       end
 
       it { is_expected.to eq I18n.t(:nil) }
@@ -126,7 +126,7 @@ describe Manifestation do
     let(:author_2) { create(:person, name: 'Beta') }
 
     before do
-      create(:creation, work: manifestation.expressions[0].work, role: :author, person: author_2)
+      create(:creation, work: manifestation.expression.work, role: :author, person: author_2)
     end
 
     context 'when work is not a translation' do
@@ -138,10 +138,10 @@ describe Manifestation do
 
       context 'when no authors present' do
         before do
-          manifestation.expressions[0].work.creations.delete_all
-
-          it { is_expected.to eq I18n.t(:nil) }
+          manifestation.expression.work.creations.delete_all
         end
+
+        it { is_expected.to eq I18n.t(:nil) }
       end
     end
 
@@ -152,7 +152,7 @@ describe Manifestation do
       let(:manifestation) { create(:manifestation, orig_lang: 'de', author: author_1, translator: translator_1) }
 
       before do
-        create(:realizer, expression: manifestation.expressions[0], role: :translator, person: translator_2)
+        create(:realizer, expression: manifestation.expression, role: :translator, person: translator_2)
       end
 
       context 'when both authors and transaltors are present' do
@@ -161,18 +161,38 @@ describe Manifestation do
 
       context 'when no authors present' do
         before do
-          manifestation.expressions[0].work.creations.delete_all
-
-          it { is_expected.to eq I18n.t(:nil) }
+          manifestation.expression.work.creations.delete_all
         end
+
+        it { is_expected.to eq I18n.t(:nil) }
       end
 
       context 'when no translators present' do
         before do
-          manifestation.expressions[0].realizers.delete_all
+          manifestation.expression.realizers.delete_all
         end
 
         it { is_expected.to eq 'Alpha, Beta / ' + I18n.t(:unknown) }
+      end
+    end
+  end
+
+  describe '.title_and_authors_html' do
+    subject(:string) { manifestation.title_and_authors_html }
+
+    context 'when work is not a translation' do
+      let(:manifestation) { create(:manifestation, orig_lang: :he) }
+
+      it 'does not include info about translation' do
+        expect(string.include?(I18n.t(:translated_from))).to be false
+      end
+    end
+
+    context 'when work is a translation' do
+      let(:manifestation) { create(:manifestation, orig_lang: :de) }
+
+      it 'includes info about translation' do
+        expect(string.include?(I18n.t(:translated_from))).to be_truthy
       end
     end
   end

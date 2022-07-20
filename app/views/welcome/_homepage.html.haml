@@ -200,7 +200,7 @@
     });
     $('.clampable').each(function(){
       elem = $(this).find('.clampable_body')[0];
-      if(elem.scrollHeight - elem.clientHeight > 30) { // clamping happened
+      if(elem && elem.scrollHeight - elem.clientHeight > 30) { // clamping happened
         $(this).find('.popup_btn').css('display', 'unset');
       }
     });

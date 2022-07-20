@@ -30,6 +30,7 @@ class WelcomeController < ApplicationController
     @featured_volunteer = featured_volunteer
     @popups_by_genre = popups_by_genre # cached, if available
   end
+
   def featured_popup
     @featured_content = FeaturedContent.find(params[:id])
     if @featured_content.nil?
@@ -38,6 +39,7 @@ class WelcomeController < ApplicationController
       render partial: 'featured_item_popup'
     end
   end
+
   def featured_author_popup
     if params[:id].nil?
       head :not_found
@@ -50,24 +52,54 @@ class WelcomeController < ApplicationController
       end
     end
   end
+
   def contact
     render partial: 'contact'
   end
+
   def submit_contact
     Notifications.contact_form_submitted(params.permit(:name, :phone, :email, :topic, :body, :rtopic)).deliver
     respond_to do |format|
       format.js
     end
   end
+
   def volunteer
     respond_to do |format|
       format.js
     end
   end
+
   def submit_volunteer
     Notifications.volunteer_form_submitted(params.permit(:name, :phone, :email, :typing, :proofing, :scanning, :donation, :other)).deliver
     respond_to do |format|
       format.js
+    end
+  end
+
+  private
+
+  def featured_content
+    Rails.cache.fetch("featured_content", expires_in: 10.minutes) do # memoize
+      FeaturedContentFeature.where("fromdate <= :now AND todate >= :now", now: Date.today).
+        order(Arel.sql('RAND()')).
+        first&.featured_content
+    end
+  end
+
+  def featured_author
+    Rails.cache.fetch("featured_author", expires_in: 1.hours) do # memoize
+      FeaturedAuthorFeature.where("fromdate <= :now AND todate >= :now", now: Date.today).
+        order(Arel.sql('RAND()')).
+        first&.featured_author
+    end
+  end
+
+  def featured_volunteer
+    Rails.cache.fetch("featured_volunteer", expires_in: 10.hours) do # memoize
+      VolunteerProfileFeature.where("fromdate <= :now AND todate >= :now", now: Date.today).
+        order(Arel.sql('RAND()')).
+        first&.volunteer_profile
     end
   end
 end

@@ -14,8 +14,6 @@ def clean_tables
   ListItem.delete_all
   User.delete_all
 
-  ActiveRecord::Base.connection.execute('delete from expressions_manifestations')
-
   Manifestation.delete_all
   Expression.delete_all
   Work.delete_all

@@ -122,7 +122,7 @@
                       %p
                         = t(:by)+' '
                         = link_to featured.user.name, volunteer_show_path(featured.user)
-                    .text-height-flash-work
+                    .text-height-flash-work.clampable_body
                       != @fc_snippet
                       - if @fc_rest != ''
                         = ' ...'

@@ -53,7 +53,7 @@ class ProofController < ApplicationController
     end
     unless @m.nil?
       @html = MultiMarkdown.new(@m.markdown).to_html.force_encoding('UTF-8').gsub(/<figcaption>.*?<\/figcaption>/,'') # remove MMD's automatic figcaptions
-      @translation = @m.expressions[0].translation
+      @translation = @m.expression.translation
     else
       @html =''
     end

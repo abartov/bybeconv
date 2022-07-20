@@ -117,4 +117,43 @@ describe AdminController do
 
     it { is_expected.to be_successful }
   end
+
+  describe '#missing_copyright' do
+    include_context 'Admin user logged in'
+    subject(:request) { get :missing_copyright }
+
+    let!(:copyrighted_manifestation) { create(:manifestation, copyrighted: true) }
+    let!(:public_domain_manifestation) { create(:manifestation, copyrighted: false) }
+    let!(:missing_copyright_manifestation) { create(:manifestation, copyrighted: nil) }
+
+    it 'shows records where copyright is nil' do
+      expect(request).to be_successful
+      expect(assigns(:mans)).to eq [missing_copyright_manifestation]
+    end
+  end
+
+  describe '#translated_from_multiple_languages' do
+    subject(:request) { get :translated_from_multiple_languages }
+
+    include_context 'Admin user logged in'
+
+    let(:author) { create(:person) }
+    let!(:german_works) { create_list(:manifestation, 3, orig_lang: :de, author: author) }
+    let!(:russian_works) { create_list(:manifestation, 5, orig_lang: :ru, author: author) }
+    let!(:hebrew_works) { create_list(:manifestation, 2, orig_lang: :he, author: author) }
+
+    before do
+      # some additional manifestations to be ignroed
+      create_list(:manifestation, 5)
+    end
+
+    it 'shows authors having original works in different languages' do
+      expect(request).to be_successful
+      authors = assigns(:authors)
+      expect(authors.length).to eq 1
+      expect(authors[0][0]).to eq author
+      expect(authors[0][1]).to match_array %w(he ru de)
+      expect(authors[0][2]).to eq ({ 'he' => hebrew_works, 'ru' => russian_works, 'de' => german_works })
+    end
+  end
 end

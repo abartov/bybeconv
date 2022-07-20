@@ -402,13 +402,13 @@ module BybeUtils
     end
   end
   def apa_citation(manifestation)
-    return author_surname_and_initials(manifestation.author_string)+'. ('+citation_date(manifestation.expressions[0].date)+'). <strong>'+manifestation.title+'</strong>'+'. [גרסה אלקטרונית]. פרויקט בן־יהודה. נדלה בתאריך '+Date.today.to_s+". #{request.original_url}"
+    return author_surname_and_initials(manifestation.author_string)+'. ('+citation_date(manifestation.expression.date)+'). <strong>'+manifestation.title+'</strong>'+'. [גרסה אלקטרונית]. פרויקט בן־יהודה. נדלה בתאריך '+Date.today.to_s+". #{request.original_url}"
   end
   def mla_citation(manifestation)
-    return author_surname_and_firstname(manifestation.author_string)+". \"#{manifestation.title}\". <u>פרויקט בן־יהודה</u>. #{citation_date(manifestation.expressions[0].date)}. #{Date.today.to_s}. &lt;#{request.original_url}&gt;"
+    return author_surname_and_firstname(manifestation.author_string)+". \"#{manifestation.title}\". <u>פרויקט בן־יהודה</u>. #{citation_date(manifestation.expression.date)}. #{Date.today.to_s}. &lt;#{request.original_url}&gt;"
   end
   def asa_citation(manifestation)
-    return author_surname_and_firstname(manifestation.author_string)+'. '+citation_date(manifestation.expressions[0].date)+". \"#{manifestation.title}\". <strong>פרויקט בן־יהודה</strong>. אוחזר בתאריך #{Date.today.to_s}. (#{request.original_url})"
+    return author_surname_and_firstname(manifestation.author_string)+'. '+citation_date(manifestation.expression.date)+". \"#{manifestation.title}\". <strong>פרויקט בן־יהודה</strong>. אוחזר בתאריך #{Date.today.to_s}. (#{request.original_url})"
   end
 
   def identify_genre_by_heading(text)

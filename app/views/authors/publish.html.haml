@@ -19,7 +19,7 @@
     - @manifestations.each do |m|
       %li
         = link_to m.title, manifestation_show_path(id: m.id)
-        = " (#{textify_genre(m.expressions[0].work.genre)}) "
+        = " (#{textify_genre(m.expression.work.genre)}) "
         - if m.published?
           %span{style:'color:green'}= t(:published)
         - else

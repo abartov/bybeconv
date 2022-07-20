@@ -4,7 +4,7 @@ class Expression < ApplicationRecord
   enum period: %i(ancient medieval enlightenment revival modern)
 
   belongs_to :work, inverse_of: :expressions
-  has_and_belongs_to_many :manifestations
+  has_many :manifestations, inverse_of: :expression, dependent: :destroy
   has_many :realizers, dependent: :destroy
   has_many :persons, through: :realizers, class_name: 'Person'
   has_many :aboutnesses, as: :aboutable, dependent: :destroy

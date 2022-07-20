@@ -39,7 +39,7 @@ describe V1::TextsAPI do
       taggings: [ create(:tagging, tag: tag_unpopular), create(:tagging, tag: tag_pending) ]
     )
 
-    create(:aboutness, work: m.expressions[0].work, aboutable: manifestation_1.expressions[0].work)
+    create(:aboutness, work: m.expression.work, aboutable: manifestation_1.expression.work)
     m
   end
 
@@ -228,7 +228,7 @@ describe V1::TextsAPI do
         result = []
         (1..60).each do |index|
           e = create(:expression, copyrighted: index%10 == 0)
-          result << create(:manifestation, impressions_count: Random.rand(100), expressions: [e])
+          result << create(:manifestation, impressions_count: Random.rand(100), expression: e)
         end
         result
       }
@@ -284,7 +284,6 @@ describe V1::TextsAPI do
         it 'passes all params to SearchManifestation service without sorting' do
           expect_any_instance_of(SearchManifestations).to receive(:call).with(nil, nil, search_params).and_return(records)
           expect(subject).to eq 201
-          puts error_message
           expect(total_count).to eq 5
           expect(data).to eq []
         end
@@ -356,7 +355,7 @@ describe V1::TextsAPI do
 
   def assert_manifestation(json, manifestation, view, file_format, snippet)
     md = json['metadata']
-    expression = manifestation.expressions[0]
+    expression = manifestation.expression
     work = expression.work
     expect(md['title']).to eq manifestation.title
     expect(md['sort_title']).to eq manifestation.sort_title
@@ -403,7 +402,7 @@ describe V1::TextsAPI do
         expect(json_recommendation['recommender_home_url']).to be_nil # Currently it is always nil
         expect(json_recommendation['recommendation_date']).to eq r.created_at.to_date.strftime('%Y-%m-%d')
       end
-      works_about = manifestation.expressions[0].work.works_about
+      works_about = manifestation.expression.work.works_about
       expect(enrichment['texts_about']).to eq works_about.joins(expressions: :manifestations).pluck('manifestations.id').sort
     else
       expect(json.keys).to_not include 'enrichment'
