@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_06_29_083044) do
+ActiveRecord::Schema.define(version: 2022_07_22_212240) do
 
   create_table "aboutnesses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -343,6 +343,7 @@ ActiveRecord::Schema.define(version: 2022_06_29_083044) do
     t.index ["assignee_id"], name: "index_html_files_on_assignee_id"
     t.index ["path"], name: "index_html_files_on_path"
     t.index ["person_id"], name: "html_files_person_id_fk"
+    t.index ["status"], name: "index_html_files_on_status"
     t.index ["translator_id"], name: "html_files_translator_id_fk"
     t.index ["url"], name: "index_html_files_on_url"
   end
