@@ -630,9 +630,9 @@ class HtmlFile < ApplicationRecord
               pub_status = pub_status.to_i
             end
             m = Manifestation.new(title: tt, responsibility_statement: em_author.name, conversion_verified: true, medium: I18n.t(:etext), publisher: AppConstants.our_publisher, publication_place: AppConstants.our_place_of_publication, publication_date: Date.today, markdown: the_markdown, comment: comments, status: pub_status)
-            m.save!
             #m.people << em_author
             e.manifestations << m
+            m.save!
             e.save!
             manifestations << m # this HtmlFile itself should know the manifestation created out of it
             self.status = 'Published' unless multiple # if called for split parts, we need to keep the status 'Accepted' for the check above. Status will be updated be caller.
