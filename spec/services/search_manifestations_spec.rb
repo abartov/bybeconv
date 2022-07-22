@@ -260,11 +260,12 @@ describe SearchManifestations do
 
       context 'when multiple names are provided' do
         let(:author) { 'Alpha Sigma' }
-        it 'returns all texts where author_string includes any of given names' do
-          expect(subject.count).to eq 66
+        it 'returns all texts where author_string includes all of given names' do
+          expect(subject.count).to eq 6
           # it takes in account both authors and translators names
           subject.limit(REC_COUNT).each do |rec|
-            expect(rec.author_string).to match /(Sigma|Alpha)/
+            expect(rec.author_string).to match /Alpha/
+            expect(rec.author_string).to match /Sigma/
           end
         end
       end
