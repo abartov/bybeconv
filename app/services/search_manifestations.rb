@@ -44,7 +44,7 @@ class SearchManifestations < ApplicationService
 
     author = filters['author']
     if author.present?
-      filter << { match: { author_string: author } }
+      filter << { match: { author_string: { query: author, operator: 'and' } } }
     end
 
     title = filters['title']
