@@ -337,11 +337,11 @@ describe SearchManifestations do
       end
     end
 
-    describe 'by original_language' do
-      let(:filter) { { 'original_language' => orig_lang } }
+    describe 'by original_languages' do
+      let(:filter) { { 'original_languages' => orig_langs } }
 
-      context 'when language is provided' do
-        let(:orig_lang) { 'ru' }
+      context 'when single language is provided' do
+        let(:orig_langs) { ['ru'] }
         it 'returns all texts written in given language' do
           expect(subject.count).to eq 50
           subject.limit(REC_COUNT).each do |rec|
@@ -350,13 +350,40 @@ describe SearchManifestations do
         end
       end
 
+      context 'when multiple languages are provided' do
+        let(:orig_langs) { %w(ru he) }
+        it 'returns all texts written in given languages' do
+          expect(subject.count).to eq 100
+          subject.limit(REC_COUNT).each do |rec|
+            expect(%w(ru he).include?(rec.orig_lang)).to be_truthy
+          end
+        end
+      end
+
       context 'when magic constant is provided' do
-        let(:orig_lang) { 'xlat' }
+        let(:orig_langs) { ['xlat'] }
         it 'returns all translated texts' do
           expect(subject.count).to eq 150
           subject.limit(REC_COUNT).each do |rec|
             expect(rec.orig_lang).to_not eq 'he'
           end
+        end
+      end
+
+      context 'when magic constant with specific language is provided' do
+        let(:orig_langs) { %w(xlat ru) }
+        it 'returns all translated texts' do
+          expect(subject.count).to eq 150
+          subject.limit(REC_COUNT).each do |rec|
+            expect(rec.orig_lang).to_not eq 'he'
+          end
+        end
+      end
+
+      context 'when both magic constant and hebrew are provided' do
+        let(:orig_langs) { %w(xlat he) }
+        it 'does no filterting and returns all texts' do
+          expect(subject.count).to eq 200
         end
       end
     end
