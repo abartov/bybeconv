@@ -279,10 +279,19 @@ describe V1::TextsAPI do
         records
       end
 
+      let(:service_params) do
+        result = search_params.reject { |k, _v| k == 'original_language' }
+        orig_lang = search_params['original_language']
+        if orig_lang.present?
+          result['original_languages'] = [ orig_lang ]
+        end
+        result
+      end
+
       context 'when fulltext param is provided' do
         let(:search_params) { all_filters }
         it 'passes all params to SearchManifestation service without sorting' do
-          expect_any_instance_of(SearchManifestations).to receive(:call).with(nil, nil, search_params).and_return(records)
+          expect_any_instance_of(SearchManifestations).to receive(:call).with(nil, nil, service_params).and_return(records)
           expect(subject).to eq 201
           expect(total_count).to eq 5
           expect(data).to eq []
@@ -292,7 +301,7 @@ describe V1::TextsAPI do
       context 'when no fulltext param is provided' do
         let(:search_params) { all_filters.reject { |k, _v| k == 'fulltext' } }
         it 'passes all params to SearchManifestation service with sorting' do
-          expect_any_instance_of(SearchManifestations).to receive(:call).with('popularity', 'asc', search_params).and_return(records)
+          expect_any_instance_of(SearchManifestations).to receive(:call).with('popularity', 'asc', service_params).and_return(records)
           expect(subject).to eq 201
           expect(total_count).to eq 5
           expect(data).to eq []

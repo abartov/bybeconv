@@ -25,13 +25,16 @@ class SearchManifestations < ApplicationService
     add_simple_filter(filter, :translator_gender, filters['translator_genders'])
     add_simple_filter(filter, :author_ids, filters['author_ids'])
 
-    original_language = filters['original_language']
-    if original_language.present?
+    original_languages = filters['original_languages']
+    if original_languages.present?
       # xlat - is a magic constant meaning 'any language except hebrew'
-      if original_language == 'xlat'
-        filter << { bool: { must_not: { terms: { orig_lang: ['he'] } } } }
+      if original_languages.include?('xlat')
+        # if all translated and hebrew are requested together this means no filtering
+        unless original_languages.include?('he')
+          filter << { bool: { must_not: { terms: { orig_lang: ['he'] } } } }
+        end
       else
-        filter << { terms: { orig_lang: [original_language] } }
+        filter << { terms: { orig_lang: original_languages } }
       end
     end
 

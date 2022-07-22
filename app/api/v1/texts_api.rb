@@ -107,7 +107,13 @@ class V1::TextsAPI < V1::ApplicationApi
     end
     post do
       page = params[:page]
-      filters = params.slice(*%w(genres periods is_copyrighted author_genders translator_genders title author fulltext author_ids original_language uploaded_between created_between published_between))
+      filters = params.slice(*%w(genres periods is_copyrighted author_genders translator_genders title author fulltext author_ids uploaded_between created_between published_between))
+
+      orig_lang = params['original_language']
+      if orig_lang.present?
+        filters['original_languages'] = [orig_lang]
+      end
+
       if filters['fulltext'].present?
         sort_by = nil
         sort_dir = nil
@@ -115,6 +121,7 @@ class V1::TextsAPI < V1::ApplicationApi
         sort_by = params[:sort_by]
         sort_dir = params[:sort_dir]
       end
+
       records = SearchManifestations.call(sort_by, sort_dir, filters)
       model = { data: records.limit(PAGE_SIZE).offset((page - 1) * PAGE_SIZE).to_a, total_count: records.count }
       present model, with: V1::Entities::ManifestationsPage, view: params[:view], file_format: params[:file_format], snippet: params[:snippet]
