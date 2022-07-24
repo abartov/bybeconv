@@ -10,7 +10,9 @@ describe ManifestationController do
       end
     end
 
-    subject { get :browse }
+    let(:browse_params) { {} }
+
+    subject { get :browse, params: browse_params }
 
     context 'when user is not logged in' do
       it { is_expected.to be_successful }
@@ -25,23 +27,113 @@ describe ManifestationController do
       it { is_expected.to be_successful }
     end
 
-    describe 'sorting' do
-      subject { get :browse, params: { sort_by: "#{sort_by}_#{sort_dir}" } }
+    context 'when no params are provided' do
+      it { is_expected.to be_successful }
+    end
 
-      # Simply ensure all sort combinations works
-      %w(alphabetical pupularity creation_date publication_date upload_date).each do | sort_by |
-        %w(asc desc).each do |dir|
-          context "when #{dir} sorting by #{sort_by} is requested" do
-            let(:sort_by) { sort_by }
-            let(:sort_dir) { dir }
+    describe 'passing params to SearchManifestation service' do
+      let(:browse_params) do
+        {
+          ckb_periods: %w(ancient revival),
+          ckb_genres: %w(poetry memoir),
+          ckb_copyright: %w(1),
+          ckb_genders: %w(male other),
+          ckb_tgenders: %w(female unknown),
+          authors: '1,2,3',
+          ckb_languages: %w(ru en),
+          fromdate: '1980',
+          todate: '1995',
+          date_type: 'created',
+          sort_by: 'alphabetical_desc'
+        }
+      end
+
+      let(:expected_sort_by) { 'alphabetical' }
+      let(:expected_sort_dir) { 'desc' }
+      let(:expected_filter) do
+        {
+          'periods' => %w(ancient revival),
+          'genres' => %w(poetry memoir),
+          'is_copyrighted' => true,
+          'author_genders' => %w(male other),
+          'translator_genders' => %w(female unknown),
+          'author_ids' => [1, 2, 3],
+          'original_languages' => %w(ru en),
+          'created_between' => { 'from' => 1980, 'to' => 1995 }
+        }
+      end
+
+      before do
+        expect(SearchManifestations).to receive(:call).
+          with(expected_sort_by, expected_sort_dir, expected_filter).and_call_original
+      end
+
+      it { is_expected.to be_successful }
+
+      describe 'search queries' do
+        let(:author_filter) { { 'author' => 'Jack London' } }
+        let(:title_filter) { { 'title' => 'Love to Life' } }
+
+        context 'when title specified' do
+          let(:browse_params) { { search_input: 'Love to Life', search_type: 'workname', sort_by: 'alphabetical_desc' } }
+          let(:expected_filter) { title_filter }
+          it { is_expected.to be_successful }
+        end
+
+        context 'when authorname specified' do
+          let(:browse_params) { { authorstr: 'Jack London', search_type: 'authorname', sort_by: 'alphabetical_desc' } }
+          let(:expected_filter) { author_filter }
+          it { is_expected.to be_successful }
+        end
+
+        context 'when both authorname and title specified' do
+          let(:browse_params) do
+            {
+              search_input: 'Love to Life',
+              authorstr: 'Jack London',
+              search_type: search_type,
+              sort_by: 'alphabetical_desc'
+            }
+          end
+
+          context 'when search_type is authorname' do
+            let(:search_type) { 'authorname' }
+            let(:expected_filter) { author_filter }
             it { is_expected.to be_successful }
+          end
+
+          context 'when search_type is workname' do
+            let(:search_type) { 'workname' }
+            let(:expected_filter) { title_filter }
+            it { is_expected.to be_successful }
+          end
+
+          context 'when search_type is empty' do
+            let(:search_type) { nil }
+            let(:expected_filter) { title_filter }
+            it { is_expected.to be_successful }
+          end
+        end
+      end
+
+      describe 'sorting' do
+        let(:expected_filter) { {} }
+        # Simply ensure all sort combinations works
+        %w(alphabetical popularity creation_date publication_date upload_date).each do | column |
+          %w(asc desc).each do |dir|
+            context "when #{dir} sorting by #{column} is requested" do
+              let(:expected_sort_by) { column }
+              let(:expected_sort_dir) { dir }
+              let(:browse_params) { { sort_by: "#{column}_#{dir}" } }
+              it { is_expected.to be_successful }
+            end
           end
         end
       end
     end
 
     describe 'paging' do
-      subject { get :browse, params: { page: page } }
+      let(:browse_params) { { page: page } }
 
       context 'when page number 0 is requested' do
         let(:page) { 0 }
