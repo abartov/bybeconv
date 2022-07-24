@@ -606,138 +606,119 @@ class ManifestationController < ApplicationController
     end
   end
 
-  def es_datefield_name_from_datetype(dt)
-    case dt
-    when 'uploaded'
-      return 'pby_publication_date'
-    when 'created'
-      return 'creation_date'
-    when 'published'
-      return 'orig_publication_date'
-    end
-  end
-
   def build_es_filter_from_filters
-    ret = []
+    ret = {}
     @filters = []
     # periods
-    @periods = params['ckb_periods'] if params['ckb_periods'].present?
+    @periods = params['ckb_periods']
     if @periods.present?
-      ret << {terms: {period: @periods}}
-      @filters += @periods.map{|x| [I18n.t(x), "period_#{x}", :checkbox]}
+      ret['periods'] = @periods
+      @filters += @periods.map { |x| [I18n.t(x), "period_#{x}", :checkbox] }
     end
-    # genders
-    @genders = params['ckb_genders'] if params['ckb_genders'].present?
-    if @genders.present?
-      ret << {terms: {author_gender: @genders}}
-      @filters += @genders.map{|x| [I18n.t(:author)+': '+I18n.t(x), "gender_#{x}", :checkbox]}
-    end
-    @tgenders = params['ckb_tgenders'] if params['ckb_tgenders'].present?
-    if @tgenders.present?
-      ret << {terms: {translator_gender: @tgenders}}
-      @filters += @tgenders.map{|x| [I18n.t(:translator)+': '+I18n.t(x), "tgender_#{x}", :checkbox]}
-    end
-    # genres
-    @genres = params['ckb_genres'] if params['ckb_genres'].present?
-    if @genres.present?
-      ret << {terms: {genre: @genres}}
-      @filters += @genres.map{|x| [helpers.textify_genre(x), "genre_#{x}", :checkbox]}
-    end
-    # copyright
-    @copyright = params['ckb_copyright'].map{|x| x.to_i} if params['ckb_copyright'].present?
-    if @copyright.present?
-      cright = @copyright.map{|x| x==0 ? 'false' : 'true'}
-      ret << {terms: {copyright_status: cright}}
-      @filters += @copyright.map{|x| [helpers.textify_copyright_status(x == 1), "copyright_#{x}", :checkbox]}
-    end
-    # languages
 
-    if params['ckb_languages'].present?
-      if params['ckb_languages'] == ['xlat']
-        #ret << {must_not: {term: {orig_lang: 'he'}}}
-        #@filters << [I18n.t(:translations), 'lang_xlat', :checkbox]
-        @languages = get_langs.reject{|x| x == 'he'}
-      else
-        @languages = params['ckb_languages'].reject{|x| x == 'xlat'}
-      end
-      if @languages.present?
-        ret << {terms: {orig_lang: @languages}}
-        @filters += @languages.map{|x| ["#{I18n.t(:orig_lang)}: #{helpers.textify_lang(x)}", "lang_#{x}", :checkbox]}
-      end
+    # genres
+    @genres = params['ckb_genres']
+    if @genres.present?
+      ret['genres'] = @genres
+      @filters += @genres.map { |x| [helpers.textify_genre(x), "genre_#{x}", :checkbox] }
     end
+
+    # copyright
+    @copyright = params['ckb_copyright']&.map(&:to_i)
+    if @copyright.present?
+      is_copyrighted = @copyright.map { |x| x == 0 ? false : true }.uniq
+      if is_copyrighted.size == 1
+        ret['is_copyrighted'] = is_copyrighted.first
+      end
+      @filters += @copyright.map { |x| [helpers.textify_copyright_status(x == 1), "copyright_#{x}", :checkbox] }
+    end
+
+    # authors genders
+    @genders = params['ckb_genders']
+    if @genders.present?
+      ret['author_genders'] = @genders
+      @filters += @genders.map { |x| [I18n.t(:author) + ': ' + I18n.t(x), "gender_#{x}", :checkbox] }
+    end
+
+    # translator genders
+    @tgenders = params['ckb_tgenders']
+    if @tgenders.present?
+      ret['translator_genders'] = @tgenders
+      @filters += @tgenders.map { |x| [I18n.t(:translator) + ': ' + I18n.t(x), "tgender_#{x}", :checkbox] }
+    end
+
+    # author ids - multi-select authors
+    if params['authors'].present?
+      @search_type = 'authorname'
+      author_ids = params['authors'].split(',').map(&:to_i)
+      ret['author_ids'] = author_ids
+      @authors = author_ids # .join(',')
+      @authors_names = params['authors_names']
+      @filters << [I18n.t(:authors_xx, {xx: @authors_names}), 'authors', :authorlist]
+    end
+
+    # languages
+    @languages = params['ckb_languages']
+    if @languages.present?
+      if @languages == ['xlat']
+        @languages = get_langs.delete('he')
+      else
+        @languages.delete('xlat')
+      end
+      ret['original_languages'] = @languages
+      @filters += @languages.map { |x| ["#{I18n.t(:orig_lang)}: #{helpers.textify_lang(x)}", "lang_#{x}", :checkbox] }
+    end
+
     # dates
-    @fromdate = params['fromdate'] if params['fromdate'].present?
-    @todate = params['todate'] if params['todate'].present?
+    @fromdate = params['fromdate'].to_i if params['fromdate'].present?
+    @todate = params['todate'].to_i if params['todate'].present?
     @datetype = params['date_type']
     range_expr = {}
     if @fromdate.present?
-      range_expr['gte'] = @fromdate
+      range_expr['from'] = @fromdate
       @filters << ["#{I18n.t('d'+@datetype)} #{I18n.t(:fromdate)}: #{@fromdate}", :fromdate, :text]
     end
     if @todate.present?
-      range_expr['lte'] = Date.new(@todate.to_i,12,31).to_s
+      range_expr['to'] = @todate
       @filters << ["#{I18n.t('d'+@datetype)} #{I18n.t(:todate)}: #{@todate}", :todate, :text]
     end
-    # multi-select authors
-    if params['authors'].present?
-      @search_type = 'authorname'
-      author_ids = params['authors'].split(',').map{|x| x.to_i}
-      ret << {terms: {author_ids: author_ids}}
-      @authors = author_ids # .join(',')
-      @authors_names = params['authors_names']
-      @filters << [I18n.t(:authors_xx, {xx: params['authors_names']}), 'authors', :authorlist]
+    unless range_expr.empty?
+      raise "Wrong datetype: #{@datetype}" unless %w(uploaded created published).include?(@datetype)
+      datefield = "#{@datetype}_between"
+      ret[datefield] = range_expr
     end
-    datefield = es_datefield_name_from_datetype(@datetype)
-    ret << {range: {"#{datefield}" => range_expr }} unless range_expr.empty?
-    return ret
-  end
 
-  def build_es_query_from_filters
-    ret = {}
-    if params['search_input'].present? || params['authorstr'].present?
-      if (params['search_type'].present? && params['search_type'] == 'authorname') || (params['authorstr'].present? && params['search_input'].empty?)
-        #ret['match'] = {author_string: params['authorstr'], default_operator: 'and'}
-        ret['query_string'] = {fields: [:author_string], query: params['authorstr'], default_operator: 'and'}
-        @authorstr = params['authorstr']
+    # in browse UI we can either use search by author name or by title, but not together
+    @authorstr = params['authorstr']
+    @search_input = params['search_input']
+    if @search_input.present? || @authorstr.present?
+      if params['search_type'] == 'authorname' || (@authorstr.present? && @search_input.empty?)
+        ret['author'] = @authorstr
         @search_type = 'authorname'
-        @filters << [I18n.t(:author_x, {x: params['authorstr']}), :authors, :text]
+        @filters << [I18n.t(:author_x, { x: @authorstr }), :authors, :text]
       else
-        ret['match'] = {title: params['search_input'], default_operator: 'and'}
+        ret['title'] = @search_input
         @search_type = 'workname'
-        @filters << [I18n.t(:title_x, {x: params['search_input']}), :search_input, :text]
+        @filters << [I18n.t(:title_x, {x: @search_input}), :search_input, :text]
       end
-      @search_input = params['search_input']
     end
     return ret
   end
 
   def es_prep_collection
-    @sort_dir = :default
+    @sort_dir = 'default'
     if params[:sort_by].present?
       @sort_or_filter = 'sort'
       @sort = params[:sort_by].dup
-      params[:sort_by].sub!(/_(a|de)sc$/,'')
+      @sort_by = params[:sort_by].sub(/_(a|de)sc$/,'')
       @sort_dir = $&[1..-1] unless $&.nil?
-    end
-    # figure out sort order
-    if params[:sort_by].present?
-      case params[:sort_by]
-      when 'alphabetical'
-        ord = {sort_title: (@sort_dir == :default ? :asc : @sort_dir)}
-      when 'popularity'
-        ord = {impressions_count: (@sort_dir == :default ? :desc : @sort_dir)}
-      when 'publication_date'
-        ord = {orig_publication_date: (@sort_dir == :default ? :asc : @sort_dir)}
-      when 'creation_date'
-        ord = {creation_date: (@sort_dir == :default ? :asc : @sort_dir)}
-      when 'upload_date'
-        ord = {pby_publication_date: (@sort_dir == :default ? :desc : @sort_dir)}
-      end
     else
-      sdir = (@sort_dir == :default ? :asc : @sort_dir)
-      @sort = "alphabetical_#{sdir}"
-      ord = {sort_title: sdir}
+      # use alphabetical sorting by default
+      @sort = 'alphabetical_asc'
+      @sort_by = 'alphabetical'
+      @sort_dir = 'asc'
     end
+
     standard_aggregations = {
       periods: {terms: {field: 'period'}},
       genres: {terms: {field: 'genre'}},
@@ -747,15 +728,17 @@ class ManifestationController < ApplicationController
       translator_genders: {terms: {field: 'translator_gender'}},
       author_ids: {terms: {field: 'author_ids', size: 2000}} # We may need to increase this threshold in future if number of authors exceeds 2000
     }
+
     filter = build_es_filter_from_filters
-    es_query = build_es_query_from_filters
-    es_query = {match_all: {}} if es_query == {}
-    @collection = ManifestationsIndex.query(es_query).filter(filter).aggregations(standard_aggregations).order(ord).limit(100) # prepare ES query
+    @collection = SearchManifestations.call(@sort_by, @sort_dir, filter)
+
+    @collection = @collection.aggregations(standard_aggregations).limit(100) # prepare ES query
     @total = @collection.count # actual query triggered here
 
     @page = params[:page].to_i
     @page = 1 if @page == 0 # slider sets page to zero, awkwardly
-    if @page > (@total/100.0).ceil && @page != 1 # a zero-result query would trigger this, otherwise
+                            # a zero-result query would trigger this, otherwise
+    if @page > (@total/100.0).ceil && @page != 1
       # Sometimes we receive requests to pages with extremely large number from bots/search crawlers
       # So simply respond with NotFound in this case
       raise PageNotFound
@@ -769,13 +752,17 @@ class ManifestationController < ApplicationController
     @language_facet = es_buckets_to_facet(@collection.aggs['languages']['buckets'], get_langs.to_h {|l| [l,l]})
     @language_facet[:xlat] = @language_facet.reject{|k,v| k == 'he'}.values.sum
     @copyright_facet = es_buckets_to_facet(@collection.aggs['copyright_status']['buckets'], {'false' => 0,'true' => 1})
-    author_ids = @collection.aggs['author_ids']['buckets'].map{|x| x['key']}
 
-    # Used to populate authors multiselect modal on works browse page
-    @authors_list = (es_query == {match_all: {}} && filter.blank?) ? Person.all : Person.where(id: author_ids)
+    # Preparing list of authors to show in multiselect modal on works browse page
+    if filter.empty?
+      @authors_list = Person.all
+    else
+      author_ids = @collection.aggs['author_ids']['buckets'].map{|x| x['key']}
+      @authors_list = Person.where(id: author_ids)
+    end
     @authors_list = @authors_list.select(:id, :name).sort_by(&:name)
 
-    if @sort[0..11] == 'alphabetical' # subset of @sort to ignore direction
+    if @sort_by == 'alphabetical' # subset of @sort to ignore direction
       unless params[:page].blank?
         params[:to_letter] = nil # if page was specified, forget the to_letter directive
       end
@@ -802,8 +789,6 @@ class ManifestationController < ApplicationController
 
   def prep_for_browse
     es_prep_collection
-
-    @total = @collection.count
     d = Date.today
     @maxdate = "#{d.year}-#{'%02d' % d.month}"
     #@maxdate = d.year.to_s
