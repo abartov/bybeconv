@@ -231,7 +231,7 @@ class ApplicationController < ActionController::Base
     @credits = MultiMarkdown.new(credits).to_html.force_encoding('UTF-8')
     @credit_section = @author.toc.credit_section.nil? ? "": @author.toc.credit_section
     @toc_timestamp = @author.toc.updated_at
-    @works = @author.all_works_title_sorted
+    @works = @author.all_works_including_unpublished
     @fresh_works = @author.works_since(12.hours.ago, 1000)
     unless @fresh_works.empty?
       @fresh_works_markdown = @fresh_works.map{|m| "\\n&&& פריט: מ#{m.id} &&& כותרת: #{m.title}#{m.expression.translation ? ' / '+m.authors_string : ''} &&&\\n"}.join('').html_safe
