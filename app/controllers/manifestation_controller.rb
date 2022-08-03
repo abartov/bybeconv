@@ -610,14 +610,14 @@ class ManifestationController < ApplicationController
     ret = {}
     @filters = []
     # periods
-    @periods = params['ckb_periods']
+    @periods = params['ckb_periods'] unless @periods.present?
     if @periods.present?
       ret['periods'] = @periods
       @filters += @periods.map { |x| [I18n.t(x), "period_#{x}", :checkbox] }
     end
 
     # genres
-    @genres = params['ckb_genres']
+    @genres = params['ckb_genres'] unless @genres.present?
     if @genres.present?
       ret['genres'] = @genres
       @filters += @genres.map { |x| [helpers.textify_genre(x), "genre_#{x}", :checkbox] }
