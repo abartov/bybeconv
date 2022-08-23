@@ -446,6 +446,7 @@ class ManifestationController < ApplicationController
         rec.save!
       end
     }
+    head :ok
   end
 
   def add_aboutnesses
