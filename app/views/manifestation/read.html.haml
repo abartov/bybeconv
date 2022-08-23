@@ -112,7 +112,7 @@
                 -  @additional_translations.each do |tr|
                   %div
                     %span
-                      = link_to tr.title, manifestation_read(id: tr.manifestations[0].id)
+                      = link_to tr.title, manifestation_read_path(id: tr.manifestations[0].id)
                     %span= ' '+t(:translation)+': '
                     %span
                       != tr.translators.map{|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
