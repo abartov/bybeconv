@@ -1,4 +1,4 @@
-class AdminController < ApplicationController
+ַַclass AdminController < ApplicationController
   before_action :require_editor
   before_action :require_admin, only: [:missing_languages, :missing_genres, :incongruous_copyright, :missing_copyright, :similar_titles]
   autocomplete :manifestation, :title, display_value: :title_and_authors
@@ -66,9 +66,8 @@ class AdminController < ApplicationController
 
   def missing_copyright
     @authors = Person.where(public_domain: nil)
-    records = Manifestation.joins(:expression).where(expressions: {copyrighted: nil})
-    @total = records.count
-    @mans = records.page(params[:page]).per(50)
+    @total = Manifestation.joins(:expressions).where(expressions: {copyrighted: nil}).count
+    @mans = Manifestation.joins(:expressions).where(expressions: {copyrighted: nil}).page(params[:page]).per(50)
     @page_title = t(:missing_copyright_report)
     Rails.cache.write('report_missing_copyright', @total)
   end
@@ -76,9 +75,10 @@ class AdminController < ApplicationController
   def similar_titles
     prefixes = {}
     @similarities = {}
+    whitelisted_ids = ListItem.where(listkey: 'similar_title_whitelist').pluck(:item_id)
     Manifestation.all.each {|m|
-      next unless m.list_items.where(listkey: 'similar_title_whitelist') == [] # skip whitelisted works
-      prefix = [m.cached_people, m.title[0..(m.title.length > 5 ? 5 : -1)]]
+      next if whitelisted_ids.include?(m.id) # skip whitelisted works
+      prefix = [m.cached_people, m.title[0..(m.title.length > 8 ? 8 : -1)]]
       if prefixes[prefix].nil?
         prefixes[prefix] = [m]
       else
@@ -102,7 +102,7 @@ class AdminController < ApplicationController
   end
 
   def suspicious_translations # find works where the author is also a translator -- this *may* be okay, in the case of self-translation, but probably is a mistake
-    records = Manifestation.joins(expression: [:realizers, work: :creations]).
+    records = Manifestation.joins(expressions: [:realizers, work: :creations]).
       where('realizers.person_id = creations.person_id').
       merge(Realizer.translator).
       merge(Creation.author)
@@ -199,10 +199,10 @@ class AdminController < ApplicationController
       p.original_works.each do |m|
         @tocs_missing_links[p.id][:orig] << m unless toc_items.include?(m)
       end
-      p.translations.includes(expression: :work).each do |m|
+      p.translations.includes(expressions: :work).each do |m|
         @tocs_missing_links[p.id][:xlat] << m unless toc_items.include?(m)
         # additionally, make sure they appear in the original author's ToC, if it's a manual one (relevant for translated authors who *also* wrote in Hebrew, e.g. Y. L. Perets)
-        m.expression.work.authors.each do |au|
+        m.expressions[0].work.authors.each do |au|
           unless au.toc.nil?
             unless au.toc.linked_item_ids.include?(m.id)
               @tocs_missing_links[au.id] = {orig: [], xlat: []} if @tocs_missing_links[au.id].nil?
@@ -220,23 +220,17 @@ class AdminController < ApplicationController
 
   def translated_from_multiple_languages
     @authors = []
-
-    # Getting list of authors, who wrote works in more than one language
-    translatees = Person.joins(creations: :work).
-      merge(Creation.author).
-      group('people.id').
-      select('people.id, people.name').
-      having('min(works.orig_lang) <> max(works.orig_lang)').
-      sort_by(&:name)
-
-    translatees.each do |t|
-      manifestations = Manifestation.joins(expression: { work: :creations }).
-        merge(Creation.author.where(person_id: t.id)).
-        preload(expression: :work).
-        sort_by { |m| [m.expression.work.orig_lang, m.sort_title] }.
-        group_by { |m| m.expression.work.orig_lang }
-      @authors << [t, manifestations.keys, manifestations]
-    end
+    translatees = Person.joins(creations: :work).includes(:works).where('works.orig_lang <> "he"').distinct
+    translatees.each {|t|
+      if t.works.pluck(:orig_lang).uniq.count > 1
+        works_by_lang = {}
+        t.works.each { |w|
+          works_by_lang[w.orig_lang] = [] if works_by_lang[w.orig_lang].nil?
+          works_by_lang[w.orig_lang] << w.expressions[0].manifestations[0] # TODO: generalize
+        }
+        @authors << [t, t.works.pluck(:orig_lang).uniq, works_by_lang]
+      end
+    }
     Rails.cache.write('report_translated_from_multiple_languages', @authors.length)
   end
 
@@ -249,8 +243,8 @@ class AdminController < ApplicationController
   sql
 
   def incongruous_copyright
-    @incong = Manifestation.joins(expression: :work).
-        select('manifestations.title, manifestations.id, manifestations.expression_id, expressions.copyrighted').
+    @incong = Manifestation.joins(expressions: :work).
+        select('manifestations.title, manifestations.id, expressions.copyrighted').
         select(Arel.sql("#{CALCULATED_COPYRIGHT_EXPRESSION} as calculated_copyright")).
         where("expressions.copyrighted is null or #{CALCULATED_COPYRIGHT_EXPRESSION} <> expressions.copyrighted").map do |m|
       [ m, m.title, m.author_string, m.calculated_copyright, m.copyrighted ]
