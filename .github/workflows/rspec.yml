@@ -28,6 +28,7 @@ jobs:
         uses: actions/checkout@v1
       - name: Install dependencies
         run: |
+          sudo apt-get update
           sudo apt-get install -y mysql-client libmysqlclient-dev wkhtmltopdf pandoc yaz libyaz-dev  libmagickwand-dev libpcap-dev memcached
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
