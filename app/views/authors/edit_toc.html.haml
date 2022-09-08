@@ -18,7 +18,7 @@
         = t(:translation)
         %br
         %b.by-button-v02#add_work_link{style:'display:inline;width:200px'}= t(:add_work_link)
-        = select_tag :works, options_from_collection_for_select(@works, 'id', 'title')
+        = select_tag :works, options_for_select(@works_options)
         %br
         - unless @fresh_works.empty?
           = t(:or)
@@ -79,7 +79,7 @@
         var textAreaTxt = $txt.val();
         var scrollLeft = $txt[0].scrollLeft;
         var scrollTop  = $txt[0].scrollTop;
-        var txtToAdd = "\n&&& פריט: מ"+$('#works').val()+" &&& כותרת: "+$( "#works option:selected" ).text()+" &&&\n";
+        var txtToAdd = "\n&&& פריט: מ"+$('#works').val()+" &&& כותרת: "+$( "#works option:selected" ).text().replace("#{t(:already_in_toc)}",'')+" &&&\n";
         $txt.val(textAreaTxt.substring(0, caretPos) + txtToAdd + textAreaTxt.substring(caretPos) );
         $txt.selectionEnd = $txt.selectionStart = caretPos + txtToAdd.length;
         $txt.focus();

@@ -829,6 +829,7 @@ he:
   uploaded_images: נקלטו %{images_added} קבצים נוספים, ועכשיו יש ליצירה %{total} בסך הכל.
   add_image: הוספת תמונה
   add_all_images: הדבקת כל התמונות
+  already_in_toc: "׳ [כבר מקושרת]"
   publisher_details: פרטי הוצאה לאור
   made_available_by: 'מוגש לציבור באדיבות:'
   launch_visual_editor: לעורך החזותי
