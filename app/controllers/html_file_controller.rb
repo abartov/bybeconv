@@ -164,24 +164,25 @@ class HtmlFileController < ApplicationController
     # build query condition
     query = {}
     unless params[:commit].blank?
-      session[:html_q_params] = params.permit(:nikkud, :footnotes, :status, :path) # make prev. params accessible to view
+      session[:html_q_params] = params.permit(:nikkud, :footnotes, :status, :path, :title) # make prev. params accessible to view
     else
-      session[:html_q_params] = { footnotes: '', nikkud: '', status: params['status'], path: '' } if session[:html_q_params].nil?
+      session[:html_q_params] = { footnotes: '', nikkud: '', status: params['status'], path: '', title: '' } if session[:html_q_params].nil?
     end
     f = session[:html_q_params][:footnotes]
     n = session[:html_q_params][:nikkud]
     s = params[:commit].blank? ? session[:html_q_params][:status] : (params[:status] or session[:html_q_params][:status] )
-    p = session[:html_q_params][:path] # retrieve query params whether or not they were POSTed
+    # p = session[:html_q_params][:path] # retrieve query params whether or not they were POSTed
+    title = session[:html_q_params][:title]
     query.merge!(footnotes: f) unless f.blank?
     query.merge!(nikkud: n) unless n.blank?
     query.merge!(status: s) unless s.blank?
     assignee_cond = "assignee_id is null or assignee_id = #{current_user.id}"
 
     # TODO: figure out how to include filter by path without making the query fugly
-    if p.nil? || p.blank?
-      @texts = HtmlFile.where(assignee_cond).where(query).page(params[:page]).order('updated_at DESC')
+    if title.present?
+      @texts = HtmlFile.where(assignee_cond).where(query).where('title like ?', '%' + title + '%').page(params[:page]).order('updated_at DESC')
     else
-      @texts = HtmlFile.where(assignee_cond).where('path like ?', '%' + p + '%').page(params[:page]).order('updated_at DESC')
+      @texts = HtmlFile.where(assignee_cond).where(query).page(params[:page]).order('updated_at DESC')
     end
   end
 

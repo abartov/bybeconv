@@ -16,6 +16,8 @@
       = select_tag(:status, options_for_select([['',''], [t(:unknown), :Unknown], [t(:file_error), :FileError], [t(:bad_encoding), :BadCP1255], [t(:parsed), :Parsed], [t(:manual), :Manual], [t(:superseded), :Superseded], [t(:uploaded), :Uploaded], [t(:accepted), :Accepted], [t(:analyzed), :Analyzed], [t(:published),:Published]], session[:html_q_params][:status]))
       = label_tag(:path_l, t(:path)+': ')
       = text_field_tag(:path, session[:html_q_params][:path])
+      = label_tag(:title, t(:title)+': ')
+      = text_field_tag(:title, session[:html_q_params][:title])
       = submit_tag(t(:filter))
   / end query interface
   %table
