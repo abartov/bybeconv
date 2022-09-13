@@ -61,6 +61,10 @@ GEM
       i18n (>= 0.7, < 2)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
+    ahoy_matey (4.1.0)
+      activesupport (>= 5.2)
+      device_detector
+      safely_block (>= 0.2.1)
     airbrussh (1.4.0)
       sshkit (>= 1.6.1, != 1.7.0)
     ansi (1.5.0)
@@ -134,6 +138,7 @@ GEM
       rake (> 10, < 14)
       ruby-statistics (>= 2.1)
       thor (>= 0.19, < 2)
+    device_detector (1.0.7)
     diff-lcs (1.4.4)
     diffy (3.4.1)
     docile (1.4.0)
@@ -174,6 +179,7 @@ GEM
       multi_json
     equivalent-xml (0.6.0)
       nokogiri (>= 1.4.3)
+    errbase (0.2.2)
     erubi (1.10.0)
     erubis (2.7.0)
     et-orbi (1.2.4)
@@ -544,6 +550,8 @@ GEM
     rvm1-capistrano3 (1.4.0)
       capistrano (~> 3.0)
       sshkit (>= 1.2)
+    safely_block (0.3.0)
+      errbase (>= 0.1.1)
     sass-rails (6.0.0)
       sassc-rails (~> 2.1, >= 2.1.1)
     sassc (2.4.0)
@@ -631,6 +639,7 @@ DEPENDENCIES
   active_data
   active_record_query_trace
   activerecord-session_store
+  ahoy_matey
   app_constants
   aws-sdk-s3
   better_sjr

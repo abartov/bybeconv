@@ -88,6 +88,7 @@ gem 'grape-swagger', '~> 1.4.2'
 gem 'grape-swagger-entity', '~> 0.5.1'
 gem 'rswag-api', '~> 2.4.0'
 gem 'rswag-ui', '~> 2.4.0'
+gem 'ahoy_matey'
 
 group :production do
 #  gem 'newrelic_rpm' # performance monitoring
