@@ -114,7 +114,7 @@ class AdminController < ApplicationController
   end
 
   def assign_proofs
-    @p = Proof.where(status: 'new').order('RAND()').limit(1).first
+    @p = Proof.where(status: 'new').order(created_at: :asc).limit(1).first
     @p.status = 'assigned'
     @p.save!
     li = ListItem.new(listkey: 'proofs_by_user', user: current_user, item: @p)
