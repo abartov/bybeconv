@@ -4,7 +4,7 @@ class BaseUser < ApplicationRecord
   belongs_to :user, inverse_of: :base_user, optional: true
 
   has_many :bookmarks, inverse_of: :base_user, dependent: :destroy
-  has_many :visits, class_name: 'Ahoy::Visit' # track visits, for donation campaigns etc.
+  has_many :visits, class_name: 'Ahoy::Visit', foreign_key: :user_id # track visits, for donation campaigns etc.
 
   DEFAULT_FONT_SIZE = '2'
 
