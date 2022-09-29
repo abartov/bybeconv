@@ -1,0 +1,25 @@
+.top-element.backend
+  %h2= t(:texts_between_dates)
+
+  = form_tag admin_texts_between_dates_path, method: :get do
+    = label_tag :from, t(:fromdate)
+    = text_field_tag :from, params[:from], class: 'form-control', placeholder: 'YYYY-MM-DD'
+    = label_tag :to, t(:todate)
+    = text_field_tag :to, params[:to], class: 'form-control', placeholder: 'YYYY-MM-DD'
+    = submit_tag t(:submit), class: 'btn btn-primary'
+
+  - if @total.present?
+    %h3= t(:total)+': '+@texts.length.to_s
+    %table{style: 'cell-spacing: 10;'}
+      %tr
+        %th= t(:a_date)
+        %th= t(:title)
+        %th= t(:author)
+        %th= t(:genre)
+
+      - @texts.each do |m|
+        %tr
+          %td= m.created_at.strftime('%Y-%m-%d')
+          %td= link_to m.title, manifestation_show_path(m.id)
+          %td= m.author_string
+          %td= textify_genre(m.expression.work.genre)
