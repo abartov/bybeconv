@@ -662,7 +662,7 @@ class ManifestationController < ApplicationController
     @languages = params['ckb_languages']
     if @languages.present?
       if @languages == ['xlat']
-        @languages = get_langs.delete('he')
+        @languages = get_langs.reject{|x| x == 'he'}
       else
         @languages.delete('xlat')
       end
@@ -753,7 +753,6 @@ class ManifestationController < ApplicationController
     @language_facet = es_buckets_to_facet(@collection.aggs['languages']['buckets'], get_langs.to_h {|l| [l,l]})
     @language_facet[:xlat] = @language_facet.reject{|k,v| k == 'he'}.values.sum
     @copyright_facet = es_buckets_to_facet(@collection.aggs['copyright_status']['buckets'], {'false' => 0,'true' => 1})
-
     # Preparing list of authors to show in multiselect modal on works browse page
     if filter.empty?
       @authors_list = Person.all
