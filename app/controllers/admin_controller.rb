@@ -262,7 +262,7 @@ class AdminController < ApplicationController
 
   def texts_between_dates
     if params[:from].present? && params[:to].present?
-      @texts = Manifestation.where('created_at > ? and created_at < ?', Date.parse(params[:from]), Date.parse(params[:to])).order(:created_at)
+      @texts = Manifestation.published.where('created_at > ? and created_at < ?', Date.parse(params[:from]), Date.parse(params[:to])).order(:created_at)
       @total = @texts.count
     end
   end
