@@ -4,7 +4,7 @@ describe AdminController do
   describe '#missing_genre' do
     subject { get :missing_genres }
 
-    include_context 'Unauthorized access to admin page'
+    # include_context 'Unauthorized access to admin page' # no longer restricted to admins
 
     context 'when admin user is authorized' do
       include_context 'Admin user logged in'
