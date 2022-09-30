@@ -746,23 +746,21 @@ class ManifestationController < ApplicationController
     end
 
     @emit_filters = true if params[:load_filters] == 'true' || params[:emit_filters] == 'true'
-    if @total > 0
-      @gender_facet = es_buckets_to_facet(@collection.aggs['author_genders']['buckets'], Person.genders)
-      @tgender_facet = es_buckets_to_facet(@collection.aggs['translator_genders']['buckets'], Person.genders)
-      @period_facet = es_buckets_to_facet(@collection.aggs['periods']['buckets'], Expression.periods)
-      @genre_facet = es_buckets_to_facet(@collection.aggs['genres']['buckets'], get_genres.to_h {|g| [g,g]})
-      @language_facet = es_buckets_to_facet(@collection.aggs['languages']['buckets'], get_langs.to_h {|l| [l,l]})
-      @language_facet[:xlat] = @language_facet.reject{|k,v| k == 'he'}.values.sum
-      @copyright_facet = es_buckets_to_facet(@collection.aggs['copyright_status']['buckets'], {'false' => 0,'true' => 1})
-      # Preparing list of authors to show in multiselect modal on works browse page
-      if filter.empty?
-        @authors_list = Person.all
-      else
-        author_ids = @collection.aggs['author_ids']['buckets'].map{|x| x['key']}
-        @authors_list = Person.where(id: author_ids)
-      end
-      @authors_list = @authors_list.select(:id, :name).sort_by(&:name)
+    @gender_facet = es_buckets_to_facet(@collection.aggs['author_genders']['buckets'], Person.genders)
+    @tgender_facet = es_buckets_to_facet(@collection.aggs['translator_genders']['buckets'], Person.genders)
+    @period_facet = es_buckets_to_facet(@collection.aggs['periods']['buckets'], Expression.periods)
+    @genre_facet = es_buckets_to_facet(@collection.aggs['genres']['buckets'], get_genres.to_h {|g| [g,g]})
+    @language_facet = es_buckets_to_facet(@collection.aggs['languages']['buckets'], get_langs.to_h {|l| [l,l]})
+    @language_facet[:xlat] = @language_facet.reject{|k,v| k == 'he'}.values.sum
+    @copyright_facet = es_buckets_to_facet(@collection.aggs['copyright_status']['buckets'], {'false' => 0,'true' => 1})
+    # Preparing list of authors to show in multiselect modal on works browse page
+    if filter.empty?
+      @authors_list = Person.all
+    else
+      author_ids = @collection.aggs['author_ids']['buckets'].map{|x| x['key']}
+      @authors_list = Person.where(id: author_ids)
     end
+    @authors_list = @authors_list.select(:id, :name).sort_by(&:name)
 
     if @sort_by == 'alphabetical' # subset of @sort to ignore direction
       unless params[:page].blank?
