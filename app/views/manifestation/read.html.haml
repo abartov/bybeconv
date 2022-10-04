@@ -35,49 +35,47 @@
         - if @works_about.count > 0
           = render partial: 'public_aboutnesses', locals: {edit: false, add: false}
         -# Recommendations
-        .by-card-v02.left-side-card-v02#recs
-          .by-card-header-left-v02
-            %span.headline-1-v02= t(:recommendations_for_work)
-          .by-card-content-v02
-            - unless @m.like_count.nil? || @m.like_count == 0
-              = t(:x_liked, {x: @m.like_count})
-              %br
-            - my_pendings = @recommendations.all_pending.where(user: current_user)
-            - app_recs = @recommendations.all_approved
-            - total_recs = app_recs.count + my_pendings.count
-            - unless app_recs.count > 0 || my_pendings.count > 0
-              = t(:no_recommendations_yet)
-            - else
-              = t(:this_work_has_x_recommendations, {x: total_recs})
-              %br
-              - apcounter = 1
-              - app_recs.each do |r|
-                = render partial: 'recommendation', locals: {rec: r, pending: false, last_item: apcounter == total_recs ? true : false}
-                - apcounter += 1
-              - my_pendings.each do |r|
-                = render partial: 'recommendation', locals: {rec: r, pending: true, last_item: apcounter == total_recs ? true : false}
-                - apcounter += 1
-            -# add recommendation
-            - unless current_user.nil?
-              .card-bottom
-                .metadata-link.linkcolor.pointer.notyet#expand-add-rec
-                  %span.metadata-link-icon.small-icon= '&'
-                  %span{:style => "font-weight: bold"}= t(:add_recommendation)
-              #add-rec-form
+        - if @total_recs > 0
+          .by-card-v02.left-side-card-v02#recs
+            .by-card-header-left-v02
+              %span.headline-1-v02= t(:recommendations_for_work)
+            .by-card-content-v02
+              - unless @m.like_count.nil? || @m.like_count == 0
+                = t(:x_liked, {x: @m.like_count})
                 %br
-                .card{style:'background-color:#fff'}
-                  .row.recommendation{style:'min-height:inherit'}
-                    .rec-user
-                      .rec-user-pic
-                        = render partial: 'shared/user_pic', locals:{user: current_user}
-                      .rec-user-name=link_to current_user.name, user_show_path(id: current_user.id)
-                    = form_for(@new_recommendation, remote: true) do |f|
-                      .rec-txt
-                        %div{style:'display:inline;float:right;margin-top:1.3rem;width:100%'}
-                          = f.text_area(:body, size: '70x4',placeholder: t(:offer_a_recommendation), id: 'new_rec_text')
-                      %div
-                        = hidden_field_tag :manifestation_id, @m.id
-                        %input.btn{type: :submit, value: t(:submit), style:'margin-top:2.7rem;margin-left:1.5rem;background-color:#d9cdd5'}
+              - unless @total_recs > 0
+                = t(:no_recommendations_yet)
+              - else
+                = t(:this_work_has_x_recommendations, {x: @total_recs})
+                %br
+                - apcounter = 1
+                - @app_recs.each do |r|
+                  = render partial: 'recommendation', locals: {rec: r, pending: false, last_item: apcounter == @total_recs ? true : false}
+                  - apcounter += 1
+                - @my_pending_recs.each do |r|
+                  = render partial: 'recommendation', locals: {rec: r, pending: true, last_item: apcounter == @total_recs ? true : false}
+                  - apcounter += 1
+              -# add recommendation
+              - unless current_user.nil?
+                .card-bottom
+                  .metadata-link.linkcolor.pointer.notyet#expand-add-rec
+                    %span.metadata-link-icon.small-icon= '&'
+                    %span{:style => "font-weight: bold"}= t(:add_recommendation)
+                #add-rec-form
+                  %br
+                  .card{style:'background-color:#fff'}
+                    .row.recommendation{style:'min-height:inherit'}
+                      .rec-user
+                        .rec-user-pic
+                          = render partial: 'shared/user_pic', locals:{user: current_user}
+                        .rec-user-name=link_to current_user.name, user_show_path(id: current_user.id)
+                      = form_for(@new_recommendation, remote: true) do |f|
+                        .rec-txt
+                          %div{style:'display:inline;float:right;margin-top:1.3rem;width:100%'}
+                            = f.text_area(:body, size: '70x4',placeholder: t(:offer_a_recommendation), id: 'new_rec_text')
+                        %div
+                          = hidden_field_tag :manifestation_id, @m.id
+                          %input.btn{type: :submit, value: t(:submit), style:'margin-top:2.7rem;margin-left:1.5rem;background-color:#d9cdd5'}
 
 
         -# Tags
