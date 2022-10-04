@@ -1,6 +1,6 @@
 class AdminController < ApplicationController
   before_action :require_editor
-  before_action :require_admin, only: [:missing_languages, :missing_genres, :incongruous_copyright, :missing_copyright, :similar_titles]
+  # before_action :require_admin, only: [:missing_languages, :missing_genres, :incongruous_copyright, :missing_copyright, :similar_titles]
   autocomplete :manifestation, :title, display_value: :title_and_authors
   autocomplete :person, :name, full: true
 
@@ -260,6 +260,12 @@ class AdminController < ApplicationController
     Rails.cache.write('report_incongruous_copyright', @incong.length)
   end
 
+  def texts_between_dates
+    if params[:from].present? && params[:to].present?
+      @texts = Manifestation.published.where('created_at > ? and created_at < ?', Date.parse(params[:from]), Date.parse(params[:to])).order(:created_at)
+      @total = @texts.count
+    end
+  end
   def suspicious_titles
     @suspicious = Manifestation.where('(title like "%קבוצה %") OR (title like "%.") OR (title like "__")').select{|x| x.title !~ /\.\.\./}
     Rails.cache.write('report_suspicious_titles', @suspicious.length)
