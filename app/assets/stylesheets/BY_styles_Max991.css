@@ -4,7 +4,7 @@
 
 .scrolled .logoBY-scroll-mobile-v02{
 		position: absolute;
-		right: calc(100% - 110px);
+		right: 60px;
 	}
 .scrolled .logoBY-scroll-mobile-v02 img{
     max-height: 32px;
@@ -681,8 +681,6 @@
 #menu {
     display: none; }
 
-.menuButton-v02 {
-    display: block; }
 
 	.sidebar-opened{
   display: block;
@@ -1143,6 +1141,44 @@
 #text-volunteers-mobile .credits{
   column-count: 2;
 }
+	.donation-top-baner .popup-x-v02{
+	display: none;
+}
+	.donation-top-baner .hide_next_times{
+	display: none;
+}
+	.donation-btn-v02{
+		width: auto;
+	}
+	.donation-btn-v02 .by-icon-v02{
+		padding: 0;
+	}
+	.donation-text{
+		display: none;
+	}
+	.scrolled .money-donation-text{
+		display: none;
+	}
+	.scrolled .donation-text{
+		display: flex;
+		min-width: 80px;
+	}
+	.donation-background-image {
+    background-image: none;
+}
+.donation-background-image-2 {
+    background-image: none;
+}
+.donation-background-image-3 {
+    background-image: none;
+}
+.donation-background-image-4 {
+    background-image: none;
+}
+.donation-bottom-baner .by-card-content-v02{
+		width: 90%;
+	text-align: center;
+	}
 }
 
 

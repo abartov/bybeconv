@@ -375,7 +375,7 @@ padding-left: 6px;
 .icons-group-v02 {
 	display: flex;
 	align-items: center;
-	gap: 4px;
+	gap: 8px;
  }
 
 .icons-group-v02 .btn-small-outline-v02{
@@ -388,8 +388,6 @@ padding-left: 6px;
   background-color: #d9cdd5;
   display: inline;
   float: right; 
-  margin-left: 4px;
-  margin-right: 4px;
 }
 .icons-separator-white{
   height: 18px;
@@ -402,12 +400,9 @@ padding-left: 6px;
 }
 
 .by-icon-v02 {
-  width: 24px;
-  height: 24px;
   font-family: ben-yehuda;
   font-size: 18px; 
 line-height: 18px;
-  padding: 3px;
   border-radius: 3px;
 	vertical-align: text-top;
 }
@@ -615,14 +610,16 @@ a .by-genre-name-v02:hover{
   color: #2b0d22; }
 
 .top-search-box-v02 {
-  height: 28px;
-  border: solid 1px #660248;
+  height: 26px;
+  width: 214px;
+	padding-right: 4px;
   background-color: #eeeced;
   border-radius: 3px;
   margin: 6px 15px 6px 6px;
   position: relative;
-	width: 214px;
 	float: left;
+	display: flex;
+	align-items: center;
 }
 .top-search-box-v03{
   height: 28px;
@@ -661,9 +658,6 @@ a .by-genre-name-v02:hover{
   padding: 6px 15px;
 }
 
-.top-search-v02 {
-  display: inline;
-}
 
 /*	width: calc(100%-140px); */
 input {
@@ -683,9 +677,9 @@ input::placeholder {
 .search-icon-v02 {
   font-family: ben-yehuda;
   font-size: 18px;
-  line-height: 26px;
   position: absolute;
   left: 8px;
+	margin-top: 1px;
  }
 
 
@@ -794,7 +788,6 @@ input::placeholder {
 
 .by-button-v02 {
   width: auto;
-  padding: 0 10px;
   height: 32px;
   border: none;
   border-radius: 3px;
@@ -806,6 +799,7 @@ input::placeholder {
   color: #ffffff; 
   display: flex;
   align-items: center;
+  gap: 4px;
   cursor: pointer;
 }
 
@@ -1398,14 +1392,17 @@ height: auto;}
 
 .donation-btn-v02 {
   height: 28px;
-	margin-top: 6px;
+  min-width: 120px;
   cursor: pointer;
-	background-color: #ffffff;
-	padding: 2px 0px 4px 4px;
+  background-color: #ffffff;
+  padding: 3px;
 }
 .donation-btn-v03 {
   height: 28px;
   cursor: pointer;
+}
+.donation-btn-v02 .by-icon-v02{
+	padding: 0;
 }
 
 .top-logo-scroll-mobile{
@@ -1423,7 +1420,6 @@ nav ul {
 #menu {
   margin-right: 0;
   margin-bottom: 0;
-  margin-top: 7px;
   display: block; }
 #menu2 {
   margin-right: 0;
@@ -1440,7 +1436,6 @@ nav ul {
 	  color: #ffffff;
   display: none;
   padding: 6px 15px;
-	margin-top: 5px;
   cursor:pointer;
 }
 .menuButton-v02:hover{
@@ -1658,13 +1653,13 @@ ul #menuMobile {
 .surprise-text-container{
 	height: 100%;
 	display: flex;
-	flex-direction: column;
+	flex-flow: row wrap;
 	align-content: space-between;
 }
 .flash-text-container{
 	height: 100%;
 	display: flex;
-	flex-direction: column;
+	flex-flow: row wrap;
 	align-content: space-between;
 }
 .text-height-work{
@@ -2447,8 +2442,11 @@ display: none;}
 	align-content: space-between;
 }
 .button-to-full-v02 {
+	width: 100%;
   display: flex;
+	align-items: flex-end;
 	justify-content: flex-end;
+	flex-wrap: wrap;
 	margin-top: 15px;
 	gap: 6px;
   }
@@ -3064,10 +3062,6 @@ padding-left: 0;
 }
 .sort-mode .navbar{
 	display: none;
-}
-.top-search-v02 input { 
-	width: calc(100% - 40px);
-	margin-left: 0;
 }
 .bottom-button-area{
 	padding: 15px;
@@ -4843,26 +4837,12 @@ position: absolute;
 	height:auto;
     max-height: calc(100vh - 260px);
 }
-.internal-notification{
-	position: relative;
-	width: 100%;
-	background-color: #660248;
-	margin-bottom: 8px;
-	color: white;
-    padding-bottom: 6px;
+.donation-top-baner{
+	background-color: #6B5A66;
+	color: #ffffff;
 }
-.internal-notification .popup-x-v02{
-  color: white;
-  left: 8px;
-  top: 8px;
-}
-.internal-notification-content{
-  padding-top: 6px;
-  padding-right: 15px;
-  padding-left: 36px;
-}
-.internal-notification-content p{
-  margin-bottom: 2px;
+.donation-top-baner label{
+	margin-bottom: 0;
 }
 .datepicker-area{
   width: 224px;
@@ -4944,7 +4924,7 @@ position: absolute;
 }
 .second-header-row{
 	display: flex;
-	justify-content: space-between;
+	align-items: center;
 	min-height: 36px;
 	background-color: #660248;
 	margin-left: 0px;
@@ -5864,9 +5844,6 @@ a.help:hover{
 .top-donation-desk-area-v02 {
   text-align: center;
   }
-.header-search-area{
-		width: 100%;
-}
 .chapters-and-icons-mobile{
 	display: none;
 }
@@ -6778,4 +6755,99 @@ a .new-headline-v02:hover{
 }
 a.dropdown-item.linkcolor {
     color: #660248;
+}
+	.donation-icon-only{
+		display: none;
+	}
+.donation-left-card-1{
+	color: #660248;
+}
+.donation-left-card-1a{
+	color: #660248;
+	border: solid 1px #660248;
+}
+.donation-left-card-2{
+	background-color: #660248;
+	color: #ffffff;
+}
+.donation-left-card-2a{
+background-color: #6B5A66;
+	color: #ffffff;
+}
+.donation-left-card-3{
+	background-color: #660248;
+	color: #ffffff;
+}
+.donation-left-card-3a{
+	background-color: #660248;
+	color: #ffffff;
+}
+.donation-left-card-3 .by-card-content-v02 p{
+	margin-left: 30%;
+}
+
+.headline-with-end-icon{
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 12px;
+}
+.donation-bottom-baner{
+background-color: #d9cdd5;
+}
+.by-card-header-left-v02 .headline-1-v02{
+	margin-bottom: 0;
+}
+.donation-top-baner .button-to-full-v02{
+	justify-content: center;
+}
+.by-button-low-contrust{
+background-color: #3a002900;
+border: solid 1px #660248;
+	font-weight: 300;
+}
+.donation-bottom-baner .button-to-full-v02{
+	justify-content: center;
+}
+.donation-top-baner .by-card-content-v02{
+	width: 70%;
+    margin-right: auto;
+    margin-left: auto;
+}.donation-bottom-baner .by-card-content-v02{
+	width: 70%;
+    margin-right: auto;
+    margin-left: auto;
+}
+.donation-background-image {
+    background-image: url("assets/Side elements_donation.svg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+}
+.donation-background-image-2 {
+    background-image: url("assets/Side elements_donation 2.svg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+}
+.donation-background-image-3 {
+    background-image: url("assets/Side elements_donation 3.svg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+}
+.donation-background-image-4 {
+    background-image: url("assets/Side elements_donation 4.svg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+}
+.donation-top-baner a{
+	color: #ffffff;
+}
+.donation-top-baner a:hover{
+	background-color: #660248;
+}
+.header-search-area {
+    width: 100%;
 }
