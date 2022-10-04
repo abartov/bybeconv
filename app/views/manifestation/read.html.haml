@@ -32,6 +32,7 @@
     .row
       .col
         = render partial: 'shared/about_pby'
+        = render partial: 'shared/donation_box_negative'
         -# Works about this work
         - if @works_about.count > 0
           = render partial: 'public_aboutnesses', locals: {edit: false, add: false}
