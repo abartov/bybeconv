@@ -6819,25 +6819,25 @@ border: solid 1px #660248;
     margin-left: auto;
 }
 .donation-background-image {
-    background-image: url("assets/Side elements_donation.svg");
+    background-image: url("/assets/Side elements_donation.svg");
     background-repeat: no-repeat;
     background-size: cover;
     width: 100%;
 }
 .donation-background-image-2 {
-    background-image: url("assets/Side elements_donation 2.svg");
+    background-image: url("/assets/Side elements_donation 2.svg");
     background-repeat: no-repeat;
     background-size: cover;
     width: 100%;
 }
 .donation-background-image-3 {
-    background-image: url("assets/Side elements_donation 3.svg");
+    background-image: url("/assets/Side elements_donation 3.svg");
     background-repeat: no-repeat;
     background-size: cover;
     width: 100%;
 }
 .donation-background-image-4 {
-    background-image: url("assets/Side elements_donation 4.svg");
+    background-image: url("/assets/Side elements_donation 4.svg");
     background-repeat: no-repeat;
     background-size: cover;
     width: 100%;
