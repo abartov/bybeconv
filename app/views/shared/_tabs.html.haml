@@ -96,7 +96,7 @@
               %a{href: '/page/volunteer'}
                 %span.by-icon-v02 V
                 = t(:how_to_help)
-              %a{href: '/page/donate'}
+              %a.donev#donev_menu{href: '/page/donate'}
                 %span.by-icon-v02 z
                 = t(:donate_money)
               %a{href: t(:facebook_url)}
@@ -212,7 +212,7 @@
                 %span.by-icon-v02.iconInMenu V
                 = t(:how_to_help)
             %li
-              %a{href: '/page/donate'}
+              %a.donev#donev_mobile_menu{href: '/page/donate'}
                 %span.by-icon-v02.iconInMenu z
                 = t(:donate)
             %li
@@ -235,10 +235,10 @@
 
   .top-donation-desk-area-v02
     .donation-area-v02{title: t(:donate_tt)}
-      %a{href: '/page/donate'}
+      %a.donev#donev_top_bar{href: '/page/donate'}
         %button.btn-small-outline-v02.btn-text-v02.donation-btn-v02
           %span.by-icon-v02> z
-          = @ltr ? t(:donate_en) : t(:donate)
+          = @ltr ? t(:donate_en) : t(:donate_money)
   .header-search-area
     .top-search-box-v02
       -#.top-search-select-v02
@@ -257,7 +257,7 @@
         -#= f.submit t(:search)
 
     .topMobileBtns-v02
-      %a{href: '/page/donate'}
+      %a.donev#donev_mobile_top_banner{href: '/page/donate'}
         %button.btn-small-outline-v02.by-icon-v02.purple-v02{href: '/page/donate'} z
       %a.by-icon-v02#mobile_search{href: "#"} X
       .dropdown.d-inline#moreMobile

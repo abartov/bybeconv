@@ -195,7 +195,7 @@
                 <a href="<%= t(:blog_url) %>"><div class="by-footer-nav-item-v02"><span class="by-icon-v02 footer-nav-icon-v02">~</span><%= t(:the_blog) %></div></a>
                 <%= render partial: 'shared/share', locals: {element: :footer} %>
                 <a href="/page/volunteer"><div class="by-footer-nav-item-v02"><span class="by-icon-v02 footer-nav-icon-v02">V</span><%= t(:how_to_help) %></div></a>
-                <a href="/page/donate"><div class="by-footer-nav-item-v02"><span class="by-icon-v02 footer-nav-icon-v02">z</span><%= t(:donate_money) %></div></a>
+                <a class="donev" id="donev_footer" href="/page/donate"><div class="by-footer-nav-item-v02"><span class="by-icon-v02 footer-nav-icon-v02">z</span><%= t(:donate_money) %></div></a>
               </div>
             </div>
           </div>
@@ -254,8 +254,13 @@
       });
     }
     $('#visit_info').click(function(){
-      alert("שלום שלום! ביקרת כבר <%= @base_user.visits.count.to_s %> פעמים באתר, וקראת <%= Ahoy::Event.where(user_id: @base_user.id, name: 'text read or printed').count.to_s %> יצירות.");
+      alert("שלום שלום! ביקרת כבר <%= @base_user.present? ? @base_user.visits.count.to_s : '-1' %> פעמים באתר, וקראת <%= @base_user.present? ? Ahoy::Event.where(user_id: @base_user.id, name: 'text read or printed').count.to_s : '-1' %> יצירות.");
     });
+    $('.donev').click(function(e) {
+      e.stopPropagation();
+      ahoy.track($(this).attr('id'), {language: "JavaScript"});
+    });
+
     $(document).on('keyup',function(evt) {
       if (evt.keyCode == 27 && $('body').attr('anth-open') != 'true') {
         $('.modal').modal('hide'); // hide all modals on ESC
