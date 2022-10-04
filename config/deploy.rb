@@ -29,7 +29,7 @@ append :linked_dirs, '.bundle', 'log', 'tmp/cache', 'public/system', 'tmp/pids',
 # append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system"
 
 # Default value for default_env is {}
-# set :default_env, { path: "/opt/ruby/bin:$PATH" }
+# set :default_env, {  }
 
 # Default value for local_user is ENV['USER']
 # set :local_user, -> { `git config user.name`.chomp }
@@ -45,3 +45,11 @@ set :rvm1_ruby_version, "2.6.6"
 before 'deploy', 'rvm1:alias:create'
 after 'deploy:publishing', 'thin:restart'
 
+namespace :debug do
+  desc 'Print ENV variables'
+  task :env do
+    on roles(:app), in: :sequence, wait: 5 do
+      execute :printenv
+    end
+  end
+end
