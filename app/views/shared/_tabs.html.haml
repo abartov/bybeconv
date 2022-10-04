@@ -258,7 +258,13 @@
 
     .topMobileBtns-v02
       %a.donev#donev_mobile_top_banner{href: '/page/donate'}
-        %button.btn-small-outline-v02.by-icon-v02.purple-v02{href: '/page/donate'} z
+        %button.btn-small-outline-v02.btn-text-v02.donation-btn-v02.money-donation-text{href: '/page/donate'}
+          %span.by-icon-v02 z
+          = t(:donate_money)
+      %a.donev#donev_mobile_top_banner_scrolled{href: '/page/donate'}
+        %button.btn-small-outline-v02.btn-text-v02.donation-btn-v02.donation-text{href: '/page/donate'}
+          %span.by-icon-v02 z
+          = t(:donate)
       %a.by-icon-v02#mobile_search{href: "#"} X
       .dropdown.d-inline#moreMobile
         %span.pointer.by-icon-v02.dropdown-toggle#nav-more{"aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :type => "button"} Y
