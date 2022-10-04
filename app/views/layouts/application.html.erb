@@ -261,6 +261,11 @@
     });
     $('.donev').click(function(e) {
       e.stopPropagation();
+      if($('#dont_show_again').length > 0) {
+        if($('#dont_show_again').is(':checked')) {
+          $.ajax( { url: "<%= preference_url(:suppress_donation_banner) %>", method: 'PUT', data: { value: 'true' } });
+        }
+      }
       ahoy.track($(this).attr('id'), {language: "JavaScript"});
     });
 

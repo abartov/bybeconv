@@ -1,4 +1,4 @@
-- if 1
+- if 1 && (not @base_user.get_preference(:suppress_donation_banner) == 'true')
   .by-card-v02.donation-top-baner.donation-background-image-4#donban
     .by-card-content-v02
       %p.headline-1-v02= t(:don_banner_head_happy)
@@ -6,17 +6,23 @@
       %label.hide_next_times
         %br/
         = succeed t(:dont_show_again) do
-          %input{:name => "CheckboxGroup1", :type => "checkbox", :value => "Approve"}
+          %input{name: 'dont_show_again', id: 'dont_show_again', type: 'checkbox'}
       .button-to-full-v02
-        %button.by-button-v02.by-button-secondary-v02
-          %span.by-icon-v02> z
-          = t(:yes_i_would_love_to_help)
-        %button.by-button-v02.by-button-low-contrust{:href => "#"}= t(:no_thank_you)
-    %span.pointer.popup-x-v02#dismiss_b -
+        %a.donev#donev_bannmsg{href: '/page/donate'}
+          %button.by-button-v02.by-button-secondary-v02
+            %span.by-icon-v02> z
+            = t(:yes_i_would_love_to_help)
+        %button.by-button-v02.by-button-low-contrust.dismiss_b= t(:no_thank_you)
+    %span.pointer.popup-x-v02.dismiss_b -
 
 :javascript
   $(document).ready(function() {
-    $('#dismiss_b').click(function() {
+    $('.dismiss_b').click(function() {
+      if($('#dont_show_again').length > 0) {
+        if($('#dont_show_again').is(':checked')) {
+          $.ajax( { url: "#{preference_url(:suppress_donation_banner)}", method: 'PUT', data: { value: 'true' } });
+        }
+      }
       $('.donation-top-baner').hide();
     });
   });
