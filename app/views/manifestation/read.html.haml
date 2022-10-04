@@ -79,26 +79,27 @@
 
 
         -# Tags
-        .by-card-v02.left-side-card-v02
-          .by-card-header-left-v02
-            %span.headline-1-v02= t(:tags)
-          .by-card-content-v02
-            .inline-block#taggings
-              = render partial: 'shared/taggings', locals: {taggings: @taggings}
-            - unless current_user.nil?
-              #add-tag.card-bottom
-                .metadata-link.linkcolor.pointer.notyet#expand-add-tag
-                  %span.right-side-icon &amp;
-                  %span{:style => "font-weight: bold"}= t(:suggest_new_tag)
+        - if @taggings.count > 0
+          .by-card-v02.left-side-card-v02
+            .by-card-header-left-v02
+              %span.headline-1-v02= t(:tags)
+            .by-card-content-v02
+              .inline-block#taggings
+                = render partial: 'shared/taggings', locals: {taggings: @taggings}
+              - unless current_user.nil?
+                #add-tag.card-bottom
+                  .metadata-link.linkcolor.pointer.notyet#expand-add-tag
+                    %span.right-side-icon &amp;
+                    %span{:style => "font-weight: bold"}= t(:suggest_new_tag)
 
-              #add-tag-form
-                = form_for @tagging, remote: true do
-                  %div{style: 'display:inline;margin-top:0.6rem;'}
-                    = autocomplete_field_tag :tag, '', autocomplete_tag_name_path, 'data-noMatchesLabel' => t(:no_matches_found)
-                    = hidden_field_tag :manifestation_id, @tagging.manifestation_id
-                    = hidden_field_tag :suggested_by, @tagging.suggested_by
-                  %div{style: 'display:inline'}
-                    %input.btn-small-outline-v02.btn-text-v02{type: :submit, value: t(:suggest_new_tag), style: 'margin-top:0.6rem;width:auto; background-color: #d9cdd5'}
+                #add-tag-form
+                  = form_for @tagging, remote: true do
+                    %div{style: 'display:inline;margin-top:0.6rem;'}
+                      = autocomplete_field_tag :tag, '', autocomplete_tag_name_path, 'data-noMatchesLabel' => t(:no_matches_found)
+                      = hidden_field_tag :manifestation_id, @tagging.manifestation_id
+                      = hidden_field_tag :suggested_by, @tagging.suggested_by
+                    %div{style: 'display:inline'}
+                      %input.btn-small-outline-v02.btn-text-v02{type: :submit, value: t(:suggest_new_tag), style: 'margin-top:0.6rem;width:auto; background-color: #d9cdd5'}
 
         -# Additional translations of same work
         - if @e.translation? && (@additional_translations != nil && @additional_translations != [])
