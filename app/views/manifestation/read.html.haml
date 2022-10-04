@@ -31,6 +31,7 @@
   .col-12.col-lg-4
     .row
       .col
+        = render partial: 'shared/about_pby'
         -# Works about this work
         - if @works_about.count > 0
           = render partial: 'public_aboutnesses', locals: {edit: false, add: false}
