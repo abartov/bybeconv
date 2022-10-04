@@ -1,0 +1,22 @@
+- if 1
+  .by-card-v02.donation-top-baner.donation-background-image-4#donban
+    .by-card-content-v02
+      %p.headline-1-v02= t(:don_banner_head_happy)
+      %p= t(:don_banner_body_html)
+      %label.hide_next_times
+        %br/
+        = succeed t(:dont_show_again) do
+          %input{:name => "CheckboxGroup1", :type => "checkbox", :value => "Approve"}
+      .button-to-full-v02
+        %button.by-button-v02.by-button-secondary-v02
+          %span.by-icon-v02> z
+          = t(:yes_i_would_love_to_help)
+        %button.by-button-v02.by-button-low-contrust{:href => "#"}= t(:no_thank_you)
+    %span.pointer.popup-x-v02#dismiss_b -
+
+:javascript
+  $(document).ready(function() {
+    $('#dismiss_b').click(function() {
+      $('.donation-top-baner').hide();
+    });
+  });

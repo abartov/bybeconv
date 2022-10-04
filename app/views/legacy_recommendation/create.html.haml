@@ -1,8 +1,7 @@
-.top-element
-  - unless @p.nil?
-    %h1= t(:recommendation_thanks_title)
-    %p= t(:recommendation_thanks_html, :email => @p.from, :what => @p.what)
-    - if @p.subscribe
-      %p= t(:proof_subscribed, :email => @p.from)
+- unless @p.nil?
+  %h1= t(:recommendation_thanks_title)
+  %p= t(:recommendation_thanks_html, :email => @p.from, :what => @p.what)
+  - if @p.subscribe
+    %p= t(:proof_subscribed, :email => @p.from)
 
-    %p= t(:proof_contact_html)
+  %p= t(:proof_contact_html)

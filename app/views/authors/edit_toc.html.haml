@@ -1,75 +1,74 @@
-#maintext.top-element.backend
-  .row
-    .col-md-6
-      - unless @gen_toc.nil?
-        %h1= t(:generated_toc)
-        %p= t(:generated_toc_explanation)
-        = text_area_tag(:gen_toc, raw(@gen_toc), rows: 20, style: 'width:100%')
-      %h1
-        = t(:update_toc)
-        != "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
-        %span{style:'font-size:70%'}
-          = link_to t(:show_toc), author_toc_path(@author.id)
-        %span{style:'font-size:50%'}= t(:remember_to_save)
-      .right
-        = t(:toc_order_reminder)
-        - get_genres.each do |g|
-          = textify_genre(g)+'; '
-        = t(:translation)
+.row
+  .col-md-6
+    - unless @gen_toc.nil?
+      %h1= t(:generated_toc)
+      %p= t(:generated_toc_explanation)
+      = text_area_tag(:gen_toc, raw(@gen_toc), rows: 20, style: 'width:100%')
+    %h1
+      = t(:update_toc)
+      != "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+      %span{style:'font-size:70%'}
+        = link_to t(:show_toc), author_toc_path(@author.id)
+      %span{style:'font-size:50%'}= t(:remember_to_save)
+    .right
+      = t(:toc_order_reminder)
+      - get_genres.each do |g|
+        = textify_genre(g)+'; '
+      = t(:translation)
+      %br
+      %b.by-button-v02#add_work_link{style:'display:inline;width:200px'}= t(:add_work_link)
+      = select_tag :works, options_for_select(@works_options)
+      %br
+      - unless @fresh_works.empty?
+        = t(:or)
+        %b.by-button-v02#add_fresh_works{style:'display:inline;width:200px'}= t(:add_fresh_works)
         %br
-        %b.by-button-v02#add_work_link{style:'display:inline;width:200px'}= t(:add_work_link)
-        = select_tag :works, options_for_select(@works_options)
-        %br
-        - unless @fresh_works.empty?
-          = t(:or)
-          %b.by-button-v02#add_fresh_works{style:'display:inline;width:200px'}= t(:add_fresh_works)
-          %br
-        = t(:in_current_cursor)
-        %br
-        %br
-      .markdown
+      = t(:in_current_cursor)
+      %br
+      %br
+    .markdown
+      .row
+        .col-md-12
+          = form_tag(controller: :authors, action: :edit_toc, id: @author.id) do
+            %p
+              = text_area_tag(:markdown, raw(@toc), rows: 20, style: 'width:100%')
+              %br
+              %p= label_tag :credits, t(:credit_section)
+              = text_area_tag(:credits, raw(@credit_section), rows: 10, style: 'width:100%')
+              %br
+              = label_tag t(:toc_status)
+              %br
+              = radio_button_tag(:toc_status, :raw, @author.toc.status.nil? || @author.toc.status == 'raw')
+              = label_tag t(:raw)
+              = radio_button_tag(:toc_status, :ready, @author.toc.status == 'ready')
+              = label_tag t(:ready)
+              = hidden_field_tag(:old_timestamp, @toc_timestamp)
+              = submit_tag t(:update)
+    = link_to t(:back), :controller => :authors, :action => :list
+
+  .col-md-6
+    %h1= @author.name+' '+t(:current_toc)
+    = render partial: 'authors/toc', locals: {margin: false}
+    %p
+    .card{style:'margin-right:20rem'}
+      .card-content
         .row
-          .col-md-12
-            = form_tag(controller: :authors, action: :edit_toc, id: @author.id) do
-              %p
-                = text_area_tag(:markdown, raw(@toc), rows: 20, style: 'width:100%')
-                %br
-                %p= label_tag :credits, t(:credit_section)
-                = text_area_tag(:credits, raw(@credit_section), rows: 10, style: 'width:100%')
-                %br
-                = label_tag t(:toc_status)
-                %br
-                = radio_button_tag(:toc_status, :raw, @author.toc.status.nil? || @author.toc.status == 'raw')
-                = label_tag t(:raw)
-                = radio_button_tag(:toc_status, :ready, @author.toc.status == 'ready')
-                = label_tag t(:ready)
-                = hidden_field_tag(:old_timestamp, @toc_timestamp)
-                = submit_tag t(:update)
-      = link_to t(:back), :controller => :authors, :action => :list
+          .col-sm-9
+            .credits
+              %p.headline-3= t(:volunteers_who_helped, {author: @author.name, gender_letter: @author.gender_letter})
+              != @credits
+          .col-sm-3
 
-    .col-md-6
-      %h1= @author.name+' '+t(:current_toc)
-      = render partial: 'authors/toc', locals: {margin: false}
-      %p
-      .card{style:'margin-right:20rem'}
-        .card-content
-          .row
-            .col-sm-9
-              .credits
-                %p.headline-3= t(:volunteers_who_helped, {author: @author.name, gender_letter: @author.gender_letter})
-                != @credits
-            .col-sm-3
-
-  - unless @diff.nil? # we have a rejected update
-    .row
-      .col-12
-        = t(:update_conflict)
-        %br
-        = t(:diff)
-        != raw(@diff.to_s(:html))
-        = t(:your_markdown)
-        = @rejected_update
-        %hr
+- unless @diff.nil? # we have a rejected update
+  .row
+    .col-12
+      = t(:update_conflict)
+      %br
+      = t(:diff)
+      != raw(@diff.to_s(:html))
+      = t(:your_markdown)
+      = @rejected_update
+      %hr
 
 :javascript
   $(document).ready(function(){
