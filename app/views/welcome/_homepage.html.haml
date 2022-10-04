@@ -51,6 +51,7 @@
                 %button.by-button-v02.surprise-btn-v02.headline-2-v02= t(:surprise_me)
           .slide
             = render partial: 'shared/surprise_work', locals: {passed_mode: 'home', manifestation: @surprise_work}
+          
       .col-12.col-lg-4
         -# whatsnew feed
         .by-card-v02.whats-new-v02
@@ -114,6 +115,28 @@
                       = @featured_volunteer.about
                   .internal-pic
                     %img{src: @featured_volunteer.profile_image.url(:thumb)}
+    .row
+      .col-12
+        .by-card-v02.donation-bottom-baner
+          .by-card-content-v02
+            %p.headline-1-v02= t(:don_footer_title)
+            .desktop-only
+              %p
+                = t(:don_footer_desktop_html, {total_works: Manifestation.cached_count.to_s, total_authors: Person.cached_count.to_s, total_langs: get_langs.count, total_headwords: get_total_headwords.to_s})
+              %a.donev#donev_footban{href: '/page/donate'}
+                .button-to-full-v02
+                  %button.by-button-v02
+                    %span.by-icon-v02> z
+                    = t(:yes_i_would_love_to_help)
+            .mobile-only
+              %p
+                = t(:don_footer_mobile_text)
+              %a.donev#donev_footban_mobile{href: '/page/donate'}
+                .button-to-full-v02
+                  %button.by-button-v02
+                    %span.by-icon-v02> z
+                    = t(:yes_i_would_love_to_help)
+
 #authorWhatsNewDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1', style: 'padding-right: 0;'}
 #featured_content_dlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1', style: 'padding-right: 0;'}
 
