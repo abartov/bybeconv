@@ -248,6 +248,9 @@ Bybeconv::Application.routes.draw do
   match 'html_file/edit_markdown', via: [:get, :post]
   post 'html_file/create'
   get 'html_file/destroy'
+
+  mount Blazer::Engine, at: "blazer"
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

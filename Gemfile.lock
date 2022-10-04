@@ -89,6 +89,11 @@ GEM
     benchmark-ips (2.9.1)
     better_sjr (1.0.0)
     bindex (0.8.1)
+    blazer (2.6.5)
+      activerecord (>= 5)
+      chartkick (>= 3.2)
+      railties (>= 5)
+      safely_block (>= 0.1.1)
     bootstrap4-datetime-picker-rails (0.3.1)
       jquery-rails (~> 4.2, >= 4.2.0)
       moment-timezone-rails (~> 1.0)
@@ -111,6 +116,7 @@ GEM
     capistrano-thin (2.0.1)
       capistrano (~> 3.0)
       thin (~> 1.6)
+    chartkick (4.2.1)
     chewy (6.0.0)
       activesupport (>= 5.2)
       elasticsearch (>= 6.3.0)
@@ -643,6 +649,7 @@ DEPENDENCIES
   app_constants
   aws-sdk-s3
   better_sjr
+  blazer
   bootstrap4-datetime-picker-rails
   byebug
   capistrano (~> 3.11)
