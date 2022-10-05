@@ -327,7 +327,7 @@ padding-left: 6px;
   cursor: pointer;
   padding: 0;
   display: flex;
-	gap: 4px;
+	gap: 6px;
   align-items: center;
 	justify-content: center;
  }
@@ -1908,8 +1908,9 @@ ul #menuMobile {
 }
 .top-left-icons-group{
 	display: flex;
-	gap: 4px;
-	align-items: center;
+	gap: 8px;
+	align-items: baseline;
+	height: 18px;
 }
 .author-page-top-icons-desktop{
 }
