@@ -126,6 +126,28 @@
                 %li
                   %span
                     = link_to link.description.nil? ? link.url : link.description, link.url, 'target': '_new'
+- if @m.not_short?
+  .row
+    .col-12
+      .by-card-v02.donation-bottom-baner
+        .by-card-content-v02
+          %p.headline-1-v02= t(:don_footer_title)
+          .desktop-only
+            %p
+              = t(:don_footer_desktop_html, {total_works: Manifestation.cached_count.to_s, total_authors: Person.cached_count.to_s, total_langs: get_langs.count, total_headwords: get_total_headwords.to_s})
+            %a.donev#donev_text_footban{href: '/page/donate'}
+              .button-to-full-v02
+                %button.by-button-v02
+                  %span.by-icon-v02> z
+                  = t(:yes_i_would_love_to_help)
+          .mobile-only
+            %p
+              = t(:don_footer_mobile_text)
+            %a.donev#donev_text_footban_mobile{href: '/page/donate'}
+              .button-to-full-v02
+                %button.by-button-v02
+                  %span.by-icon-v02> z
+                  = t(:yes_i_would_love_to_help)
             
 #downloadDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
   = render partial: 'shared/download', locals: {manifestation: @m}
