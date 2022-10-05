@@ -425,6 +425,7 @@ he:
   proofstatus_escalated: טעון בדיקה נוספת
   proofstatus_assigned: מוקצה לטיפול
   proofs: הגהות
+  blazer_system: מערכת בלייזר לתיחקור מסד הנתונים
 # TODO: add notification e-mail when resolving a proof
   left_todo: נותרו לעשות
   new_static_page: דף סטטי חדש

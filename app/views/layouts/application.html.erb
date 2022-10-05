@@ -121,7 +121,7 @@
                 <%= render partial: 'shared/share', locals: {element: :header_button} %>
                 <a class="linkcolor by-icon-v02 pointer contact_btn" href="mailto:editor@benyehuda.org" title="<%= t(:contact_tt) %>">R</a>
                 <div class="icons-seperator"></div>
-                <span class="pointer" id="visit_info">😃</span>
+                <!-- <span class="pointer" id="visit_info">😃</span> -->
                 <% if current_user %>
                   <div class="collapsed" data-toggle="collapse" data-target="#user_collapsible" style="display:inline-block;" title="<%= t(:usermenu_tt) %>">
                     <div style="padding-left: 0.6rem"><%= t(:welcome) %> <strong><%= current_user.name %></strong>!</div>
