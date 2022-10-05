@@ -28,6 +28,7 @@ class Manifestation < ApplicationRecord
   scope :genre, -> (genre) { joins(expression: :work).where(works: {genre: genre})}
   scope :by_tag, ->(tag_id) {joins(:taggings).where(taggings: {tag_id: tag_id})}
 
+  SHORT_LENGTH = 1500 # kind of arbitrary...
   LONG_LENGTH = 15000 # kind of arbitrary...
 
   update_index('manifestations#manifestation'){self} # update ManifestationsIndex when entity is updated
@@ -59,6 +60,10 @@ class Manifestation < ApplicationRecord
 
   def long?
     markdown.length > LONG_LENGTH
+  end
+
+  def not_short?
+    markdown.length > SHORT_LENGTH
   end
 
   def copyright?
