@@ -2,40 +2,42 @@
 - if @m.sefaria_linker
   %script{ type: 'text/javascript', charset:'utf-8', src:'https://www.sefaria.org/linker.js'}
 
-#content.container-fluid.top-element
-  .row.text-page-content
-    .col-12.col-lg-8
-      .logo-for-print
-        %img.logoBY-v02{src: "/assets/logo-byp-mobile.svg", alt:""}
-      .row
-        .col.work-side-menu-area
-          != "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
-        .col.near-side-menu
-          .by-card-v02.work-info-card
-            %img.about-work-card-bookmark-fold-v02{alt: t(:background), src: '/assets/creator-bookmark-back2.png'}/
-            .about-work-author-card-v02
-              %img.about-work-author-pic-v02{alt: @author.name, src: @author.profile_image.url(:thumb)}/
-            .by-card-content-v02
-              = render partial: 'metadata', locals: {tags_etc: true}
-          .by-card-v02
-            .work-area
-              .work-content{"data-spy" => 'scroll', "data-target" => '#chapternav'}
-                -# TODO: more nuanced rendering here
-                - if @m.as_prose?
-                  #actualtext.maintext-prose-body.search-margin
-                    != raw(@html)
-                - else
-                  #actualtext.maintext-poetry-body.search-margin
-                    != raw(@html)
-              .work-side-color
-                %div{'class' => "work-genre", style: "background-image: url(\"/assets/work_side_icons_#{@w.genre}.svg\"); background-repeat: no-repeat; background-size:auto;"}
-    .col-12.col-lg-4
-      .row
-        .col
-          -# Works about this work
-          - if @works_about.count > 0
-            = render partial: 'public_aboutnesses', locals: {edit: false, add: false}
-          -# Recommendations
+.row.text-page-content
+  .col-12.col-lg-8
+    .logo-for-print
+      %img.logoBY-v02{src: "/assets/logo-byp-mobile.svg", alt:""}
+    .row
+      .col.work-side-menu-area
+        != "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+      .col.near-side-menu
+        .by-card-v02.work-info-card
+          %img.about-work-card-bookmark-fold-v02{alt: t(:background), src: '/assets/creator-bookmark-back2.png'}/
+          .about-work-author-card-v02
+            %img.about-work-author-pic-v02{alt: @author.name, src: @author.profile_image.url(:thumb)}/
+          .by-card-content-v02
+            = render partial: 'metadata', locals: {tags_etc: true}
+        .by-card-v02
+          .work-area
+            .work-content{"data-spy" => 'scroll', "data-target" => '#chapternav'}
+              -# TODO: more nuanced rendering here
+              - if @m.as_prose?
+                #actualtext.maintext-prose-body.search-margin
+                  != raw(@html)
+              - else
+                #actualtext.maintext-poetry-body.search-margin
+                  != raw(@html)
+            .work-side-color
+              %div{'class' => "work-genre", style: "background-image: url(\"/assets/work_side_icons_#{@w.genre}.svg\"); background-repeat: no-repeat; background-size:auto;"}
+  .col-12.col-lg-4
+    .row
+      .col
+        = render partial: 'shared/about_pby'
+        = render partial: 'shared/donation_box_negative'
+        -# Works about this work
+        - if @works_about.count > 0
+          = render partial: 'public_aboutnesses', locals: {edit: false, add: false}
+        -# Recommendations
+        - if @total_recs > 0
           .by-card-v02.left-side-card-v02#recs
             .by-card-header-left-v02
               %span.headline-1-v02= t(:recommendations_for_work)
@@ -43,20 +45,17 @@
               - unless @m.like_count.nil? || @m.like_count == 0
                 = t(:x_liked, {x: @m.like_count})
                 %br
-              - my_pendings = @recommendations.all_pending.where(user: current_user)
-              - app_recs = @recommendations.all_approved
-              - total_recs = app_recs.count + my_pendings.count
-              - unless app_recs.count > 0 || my_pendings.count > 0
+              - unless @total_recs > 0
                 = t(:no_recommendations_yet)
               - else
-                = t(:this_work_has_x_recommendations, {x: total_recs})
+                = t(:this_work_has_x_recommendations, {x: @total_recs})
                 %br
                 - apcounter = 1
-                - app_recs.each do |r|
-                  = render partial: 'recommendation', locals: {rec: r, pending: false, last_item: apcounter == total_recs ? true : false}
+                - @app_recs.each do |r|
+                  = render partial: 'recommendation', locals: {rec: r, pending: false, last_item: apcounter == @total_recs ? true : false}
                   - apcounter += 1
-                - my_pendings.each do |r|
-                  = render partial: 'recommendation', locals: {rec: r, pending: true, last_item: apcounter == total_recs ? true : false}
+                - @my_pending_recs.each do |r|
+                  = render partial: 'recommendation', locals: {rec: r, pending: true, last_item: apcounter == @total_recs ? true : false}
                   - apcounter += 1
               -# add recommendation
               - unless current_user.nil?
@@ -80,8 +79,8 @@
                           = hidden_field_tag :manifestation_id, @m.id
                           %input.btn{type: :submit, value: t(:submit), style:'margin-top:2.7rem;margin-left:1.5rem;background-color:#d9cdd5'}
 
-
-          -# Tags
+        -# Tags
+        - if @taggings.count > 0
           .by-card-v02.left-side-card-v02
             .by-card-header-left-v02
               %span.headline-1-v02= t(:tags)
@@ -103,30 +102,30 @@
                     %div{style: 'display:inline'}
                       %input.btn-small-outline-v02.btn-text-v02{type: :submit, value: t(:suggest_new_tag), style: 'margin-top:0.6rem;width:auto; background-color: #d9cdd5'}
 
-          -# Additional translations of same work
-          - if @e.translation? && (@additional_translations != nil && @additional_translations != [])
-            .by-card-v02.left-side-card-v02
-              .by-card-header-left-v02
-                %span.headline-1-v02= t(:additional_translations)
-              .by-card-content-v02
-                -  @additional_translations.each do |tr|
-                  %div
-                    %span
-                      = link_to tr.title, manifestation_read_path(id: tr.manifestations[0].id)
-                    %span= ' '+t(:translation)+': '
-                    %span
-                      != tr.translators.map{|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
-          -# External links
-          - if @m.external_links.to_a.size > 0
-            .by-card-v02.left-side-card-v02
-              .by-card-header-left-v02
-                %span.headline-1-v02= t(:external_links)
-              .by-card-content-v02
-                %ol
-                - @m.external_links.each do |link|
-                  %li
-                    %span
-                      = link_to link.description.nil? ? link.url : link.description, link.url, 'target': '_new'
+        -# Additional translations of same work
+        - if @e.translation? && (@additional_translations != nil && @additional_translations != [])
+          .by-card-v02.left-side-card-v02
+            .by-card-header-left-v02
+              %span.headline-1-v02= t(:additional_translations)
+            .by-card-content-v02
+              -  @additional_translations.each do |tr|
+                %div
+                  %span
+                    = link_to tr.title, manifestation_read_path(id: tr.manifestations[0].id)
+                  %span= ' '+t(:translation)+': '
+                  %span
+                    != tr.translators.map{|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
+        -# External links
+        - if @m.external_links.to_a.size > 0
+          .by-card-v02.left-side-card-v02
+            .by-card-header-left-v02
+              %span.headline-1-v02= t(:external_links)
+            .by-card-content-v02
+              %ol
+              - @m.external_links.each do |link|
+                %li
+                  %span
+                    = link_to link.description.nil? ? link.url : link.description, link.url, 'target': '_new'
             
 #downloadDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
   = render partial: 'shared/download', locals: {manifestation: @m}

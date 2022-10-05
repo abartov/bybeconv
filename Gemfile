@@ -48,7 +48,6 @@ gem 'coffee-script'
 
 gem 'execjs'
 gem 'mini_racer'
-gem 'thin'
 gem 'htmlentities'
 gem 'kaminari', '1.1.1' # pagination. Kaminari 1.2.1 seems to have a bug - https://github.com/kaminari/kaminari/issues/1033
 gem "nokogiri"
@@ -89,10 +88,14 @@ gem 'grape-swagger', '~> 1.4.2'
 gem 'grape-swagger-entity', '~> 0.5.1'
 gem 'rswag-api', '~> 2.4.0'
 gem 'rswag-ui', '~> 2.4.0'
+gem 'ahoy_matey' # for recording events
+gem 'blazer' # for exploring Ahoy events
 
 group :production do
 #  gem 'newrelic_rpm' # performance monitoring
   gem 'dalli'
+  gem 'thin'
+  gem 'capistrano-thin', '~> 2.0.0'
 end
 
 group :test do
@@ -100,6 +103,7 @@ group :test do
   gem 'simplecov', require: false
   gem 'faker', '~> 2.19.0'
   gem 'rails-controller-testing', '~> 1.0.5'
+  gem 'thin'
 end
 
 group :development do
@@ -107,12 +111,12 @@ group :development do
   gem "capistrano", "~> 3.11", require: false
   gem "capistrano-rails", "~> 1.4", require: false
   gem 'rvm1-capistrano3', require: false
-  gem 'capistrano-thin', '~> 2.0.0'
   gem 'capistrano-rvm'
   gem 'derailed_benchmarks', group: :development
 #  gem 'bullet' # for suggestions to add/remove eager loading
   gem 'active_record_query_trace'
   gem 'immigrant'
+  gem 'puma'
 end
 
 group :test, :development do

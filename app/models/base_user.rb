@@ -4,6 +4,7 @@ class BaseUser < ApplicationRecord
   belongs_to :user, inverse_of: :base_user, optional: true
 
   has_many :bookmarks, inverse_of: :base_user, dependent: :destroy
+  has_many :visits, class_name: 'Ahoy::Visit', foreign_key: :user_id # track visits, for donation campaigns etc.
 
   DEFAULT_FONT_SIZE = '2'
 
@@ -17,6 +18,7 @@ class BaseUser < ApplicationRecord
     # property :volunteer, default: 'false' # boolean  (another option - :protected => true)
     # property :activated, default: 'false' # boolean
     # property :suppress_anthology_intro, default: 'false'
+    property :suppress_donation_banner, default: 'false'
     property :jump_to_bookmarks
   end
 

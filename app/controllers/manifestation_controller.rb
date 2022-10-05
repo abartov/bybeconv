@@ -257,7 +257,11 @@ class ManifestationController < ApplicationController
           @tagging.manifestation_id = @m.id
           @tagging.suggester = current_user
           @taggings = @m.taggings
-          @recommendations = @m.recommendations
+          recommendations = @m.recommendations
+          @my_pending_recs = recommendations.all_pending.where(user: current_user)
+          @app_recs = recommendations.all_approved
+          @total_recs = @app_recs.count + @my_pending_recs.count
+
           @links = @m.external_links.group_by {|l| l.linktype}
           @random_work = Manifestation.where(id: Manifestation.pluck(:id).sample(5), status: Manifestation.statuses[:published])[0]
           @header_partial = 'manifestation/work_top'
@@ -843,6 +847,7 @@ class ManifestationController < ApplicationController
           unless @author.nil?
             impressionist(@author) # also increment the author's popularity counter
           end
+          ahoy.track "text read or printed", title: @m.title, author: @m.author_string # log the read, for later recommendation feature using the Disco gem
         end
         if @author.nil?
           @author = Person.new(name: '?')

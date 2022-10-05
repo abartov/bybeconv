@@ -121,6 +121,7 @@
                 <%= render partial: 'shared/share', locals: {element: :header_button} %>
                 <a class="linkcolor by-icon-v02 pointer contact_btn" href="mailto:editor@benyehuda.org" title="<%= t(:contact_tt) %>">R</a>
                 <div class="icons-seperator"></div>
+                <span class="pointer" id="visit_info">😃</span>
                 <% if current_user %>
                   <div class="collapsed" data-toggle="collapse" data-target="#user_collapsible" style="display:inline-block;" title="<%= t(:usermenu_tt) %>">
                     <div style="padding-left: 0.6rem"><%= t(:welcome) %> <strong><%= current_user.name %></strong>!</div>
@@ -159,7 +160,10 @@
   <% end -%>
 <% end %>
 <main>
+<div class="container-fluid top-element" id="content">
+<%= render partial: 'shared/donation_banner' %>
 <%= yield %>
+</div>
 </main>
 <% unless @readmode %>
   <!-- footer start -->
@@ -194,7 +198,7 @@
                 <a href="<%= t(:blog_url) %>"><div class="by-footer-nav-item-v02"><span class="by-icon-v02 footer-nav-icon-v02">~</span><%= t(:the_blog) %></div></a>
                 <%= render partial: 'shared/share', locals: {element: :footer} %>
                 <a href="/page/volunteer"><div class="by-footer-nav-item-v02"><span class="by-icon-v02 footer-nav-icon-v02">V</span><%= t(:how_to_help) %></div></a>
-                <a href="/page/donate"><div class="by-footer-nav-item-v02"><span class="by-icon-v02 footer-nav-icon-v02">z</span><%= t(:donate_money) %></div></a>
+                <a class="donev" id="donev_footer" href="/page/donate"><div class="by-footer-nav-item-v02"><span class="by-icon-v02 footer-nav-icon-v02">z</span><%= t(:donate_money) %></div></a>
               </div>
             </div>
           </div>
@@ -252,6 +256,19 @@
         $.get('<%= session_dismiss_sitenotice_path %>');
       });
     }
+    $('#visit_info').click(function(){
+      alert("שלום שלום! ביקרת כבר <%= @base_user.present? ? @base_user.visits.count.to_s : '-1' %> פעמים באתר, וקראת <%= @base_user.present? ? Ahoy::Event.where(user_id: @base_user.id, name: 'text read or printed').count.to_s : '-1' %> יצירות.");
+    });
+    $('.donev').click(function(e) {
+      e.stopPropagation();
+      if($('#dont_show_again').length > 0) {
+        if($('#dont_show_again').is(':checked')) {
+          $.ajax( { url: "<%= preference_url(:suppress_donation_banner) %>", method: 'PUT', data: { value: 'true' } });
+        }
+      }
+      ahoy.track($(this).attr('id'), {language: "JavaScript"});
+    });
+
     $(document).on('keyup',function(evt) {
       if (evt.keyCode == 27 && $('body').attr('anth-open') != 'true') {
         $('.modal').modal('hide'); // hide all modals on ESC

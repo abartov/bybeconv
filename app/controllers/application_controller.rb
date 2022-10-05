@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   before_action :set_paper_trail_whodunnit
   before_action :set_font_size
+  before_action :set_base_user
   after_action :set_access_control_headers
 
   # class variables
@@ -84,6 +85,9 @@ class ApplicationController < ActionController::Base
       return true unless li.nil?
     end
     redirect_to '/', flash: { error: I18n.t(:not_an_editor) }
+  end
+  def set_base_user
+    @bu = base_user
   end
 
   def require_admin

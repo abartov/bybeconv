@@ -3,7 +3,7 @@
 @media only screen and (max-width: 479px) {
 
 .scrolled .logoBY-scroll-mobile-v02{
-	  top: 3px;
+	  top: 1px;
 	}
 		.scrolled .logoBY-scroll-mobile-v02 img{
     height: 28px;
@@ -406,14 +406,6 @@ padding-top: 6px;
 	margin-top: 0px;
 }
 	
-.scrolled .logoBY-scroll-mobile-v02{
-		position: absolute;
-		right: calc(100% - 130px);
-	}
-.scrolled .logoBY-scroll-mobile-v02 img{
-    max-height: 28px;
-	margin-top: 2px;
-}
 .share-popup{
 	width: 180px;
 }
@@ -472,10 +464,6 @@ padding-top: 6px;
 	#author-info-popup .by-card-header-v02{
 			padding-right: 110px;
 	} 
-	.by-icon-v02{
-		font-size: 18px;
-		line-height: 18px;
-	}
 	.statistics-box-v02 div:nth-of-type(1) {flex-grow: 1;}
 .statistics-box-v02 div:nth-of-type(2) {width: auto;white-space: nowrap}
 .statistics-box-v02 div:nth-of-type(3) {flex-grow: 1;}
@@ -537,5 +525,11 @@ padding-top: 6px;
 		font-size: 32px;
 		vertical-align: -12px;
 	}
+	.author-page-top-rights{
+	width: auto;
+ }
+.author-page-top-info-card{
+  padding: 10px 15px 10px 10px;
+}
 	
 }
