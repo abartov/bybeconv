@@ -847,7 +847,7 @@ class ManifestationController < ApplicationController
           unless @author.nil?
             impressionist(@author) # also increment the author's popularity counter
           end
-          ahoy.track "text read or printed", title: @m.title, author: @m.author_string # log the read, for later recommendation feature using the Disco gem
+          ahoy.track "text read or printed", text_id: @m.id, title: @m.title, author: @m.author_string # log the read, for later recommendation feature using the Disco gem
         end
         if @author.nil?
           @author = Person.new(name: '?')
