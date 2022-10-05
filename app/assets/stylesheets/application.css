@@ -200,11 +200,6 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
   background-color: #eeeced;
   color: #2b0d22; }
 
-.reading-mode-btn-v02 {
-  padding-top: 3px;
-  display: inline-block;
-}
-
 #moreMobile {
   cursor: pointer;
 }
