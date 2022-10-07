@@ -46,7 +46,7 @@
               = submit_tag t(:update)
     = link_to t(:back), :controller => :authors, :action => :list
 
-  .col-md-6
+  .col-md-6.toc
     %h1= @author.name+' '+t(:current_toc)
     = render partial: 'authors/toc', locals: {margin: false}
     %p
