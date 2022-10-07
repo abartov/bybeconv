@@ -1145,8 +1145,8 @@
 	display: none;
 }
 	.donation-top-baner .hide_next_times{
-	display: none;
-}
+	/* display: none; * removed by Asaf */
+	}
 	.donation-btn-v02{
 		width: auto;
 	}
