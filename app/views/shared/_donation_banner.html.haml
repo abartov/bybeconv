@@ -1,5 +1,5 @@
 - suppress = @base_user.present? ? @base_user.get_preference(:suppress_donation_banner) : 0
-- if (@base_user.present?) && (suppress.nil? || (Time.now - suppress.to_i > 1.day)) && ((@base_user.visits.count + 1) % 4 == 0)
+- if (@base_user.present?) && (suppress.nil? || (Time.now.to_i - suppress.to_i > 1.day)) && ((@base_user.visits.count + 1) % 4 == 0)
   .by-card-v02.donation-top-baner.donation-background-image-4#donban
     .by-card-content-v02
       %p.headline-1-v02= t(:don_banner_head_happy)
@@ -16,6 +16,6 @@
   $(document).ready(function() {
     $('.dismiss_b').click(function() {
       $('.donation-top-baner').hide();
-      $.ajax( { url: "#{preference_url(:suppress_donation_banner)}", method: 'PUT', data: { value: Time.now } });
+      $.ajax( { url: "#{preference_url(:suppress_donation_banner)}", method: 'PUT', data: { value: #{Time.now.to_i} } });
     });
   });
