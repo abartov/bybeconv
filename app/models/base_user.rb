@@ -18,7 +18,7 @@ class BaseUser < ApplicationRecord
     # property :volunteer, default: 'false' # boolean  (another option - :protected => true)
     # property :activated, default: 'false' # boolean
     # property :suppress_anthology_intro, default: 'false'
-    property :suppress_donation_banner, default: 'false'
+    property :suppress_donation_banner, default: 0
     property :jump_to_bookmarks
   end
 
