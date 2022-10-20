@@ -3,6 +3,7 @@ class DictionaryEntry < ApplicationRecord
   belongs_to :manifestation
   has_many :from_links, class_name: :DictionaryLink, foreign_key: :from_entry_id, dependent: :destroy
   has_many :to_links, class_name: :DictionaryLink, foreign_key: :to_entry_id, dependent: :destroy
+  has_many :aliases, class_name: :DictionaryAlias, foreign_key: :dictionary_entry_id, dependent: :destroy
   has_many :incoming_links, class_name: :DictionaryEntry, through: :from_links, source: :to_entry
   has_many :outgoing_links, class_name: :DictionaryEntry, through: :to_links, source: :from_entry
 
