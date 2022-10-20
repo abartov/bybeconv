@@ -20,17 +20,17 @@
     - unless person.nil?
       .breadcrumbs-text
         = link_to e.translation ? "#{t(:translation)} #{genre}" : genre, :controller => :authors, :action => :toc, :id => person.id, :genre => w.genre
-      /.breadcrumbs-arrow= 1
-      /.breadcrumbs-text
-      /  %b= @entity.title
+      -#.breadcrumbs-arrow= 1
+      -#.breadcrumbs-text
+      -#  %b= @entity.title
   - elsif @pagetype == :author
     .breadcrumbs-text= link_to t(:authors), authors_path
-    /.breadcrumbs-arrow= 1
-    /.breadcrumbs-text
-    /  %b= @entity.name
+    -#.breadcrumbs-arrow= 1
+    -#.breadcrumbs-text
+    -#  %b= @entity.name
   - elsif @pagetype == :period
     .breadcrumbs-text
       %b= t(:periods)
-    /.breadcrumbs-arrow= 1
-    /.breadcrumbs-text
-    /  %b= @entity.name
+    -#.breadcrumbs-arrow= 1
+    -#.breadcrumbs-text
+    -#  %b= @entity.name
