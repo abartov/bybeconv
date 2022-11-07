@@ -70,4 +70,5 @@ Bybeconv::Application.configure do
   # config.active_storage.service = :local # temporary
 
   routes.default_url_options[:host] = 'benyehuda.org'
+  routes.default_url_options[:protocol] = 'https'
 end
