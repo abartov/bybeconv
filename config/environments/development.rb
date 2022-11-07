@@ -44,6 +44,7 @@ Bybeconv::Application.configure do
   #config.force_ssl = true # to debug SSL issues
 
   routes.default_url_options[:host] = 'localhost:3000'
+  routes.default_url_options[:protocol] = 'https'
 
   # checks for the presence of an env variable called PROFILE that
   # switches several settings to a more "production-like" value for profiling
