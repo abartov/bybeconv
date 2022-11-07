@@ -13,6 +13,8 @@ class Manifestation < ApplicationRecord
 
   has_paper_trail
   has_many :external_links, as: :linkable, dependent: :destroy
+  has_many :proofs, dependent: :destroy
+  has_many :anthology_texts, dependent: :destroy
   has_many_attached :images, dependent: :destroy
 
   before_save :update_sort_title
