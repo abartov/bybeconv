@@ -84,7 +84,14 @@ class V1::TextsAPI < V1::ApplicationApi
       optional :translator_genders, type: Array[String], values: Person.genders.keys
       optional :title, type: String, desc: "a substring to match against a text's title"
       optional :author, type: String, desc: "a substring to match against the name(s) of a text's author(s)"
-      optional :fulltext, type: String, desc: "a substring to match against the work's full text (NOTE: if provided it will enforce result ordering by relevance)"
+      optional :fulltext,
+               type: String,
+               desc: <<~desc
+                 a query string to match against the work's full text, title and authors list
+                 (NOTE: if provided it will enforce result ordering by relevance).
+                 You can use complex expressions here, as documented at 
+                 https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-simple-query-string-query.html#simple-query-string-syntax"
+               desc
       optional :author_ids, type: Array[Integer]
       optional :original_language, type: String, desc: "ISO code of language, e.g. 'pl' for Polish, 'grc' for ancient Greek. Use magic constant 'xlat' to match all non-Hebrew languages"
 
