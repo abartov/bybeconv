@@ -166,7 +166,7 @@ class ApplicationController < ActionController::Base
   def cached_authors_in_period
     Rails.cache.fetch("au_by_period", expires_in: 24.hours) do # memoize
       ret = {}
-      get_periods.each{ |p| ret[p] = Person.has_toc.joins(:expressions).where(expressions: { period: p}).uniq.count}
+      get_periods.each{ |p| ret[p] = Person.has_toc.joins(works: :expressions).where(expressions: { period: p}).uniq.count}
       ret
     end
   end
