@@ -85,7 +85,7 @@
     = t(:link_type)
     = select_tag :link_type, options_for_select(ExternalLink.linktypes.map {|lt| [t(lt[0]), lt[1]]})
     %br
-    = t(:description)
+    = t(:link_description)
     = text_field_tag :link_description
     %p
       = submit_tag t(:save)

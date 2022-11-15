@@ -32,7 +32,7 @@
     %br
     = @w.comment
     = render partial: 'shared/associated_people', locals: { which: :work, work: @w, edit: false}
-  = render partial: 'aboutnesses', locals: {edit: false, add: false}
+  = render partial: 'aboutnesses', locals: {edit: true, add: true}
 
   %h2= t(:expression_details)
   %p
