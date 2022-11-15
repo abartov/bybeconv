@@ -921,6 +921,7 @@ he:
   external_links: קישוריוֹת חיצוניות
   link_type: סוג קישורית
   description: תיאור
+  link_description: "תיאור הקישורית, או מה ייכתב אחרי 'מוגש באדיבות:'"
   "BY blog": 'התייחסויות ביומן הרשת של פב"י'
   Wikipedia: ערך בויקיפדיה
   wikipedia: ערך בויקיפדיה
