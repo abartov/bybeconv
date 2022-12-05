@@ -62,6 +62,9 @@
       %b= t(:title) + ': '
       = text_field_tag :mtitle, @m.title, size: 75
     %p
+      %b= t(:alternate_titles) + ': '
+      = text_field_tag :alternate_titles, @m.alternate_titles, size: 75
+    %p
       %b= t(:sort_name) + ': '
       = text_field_tag :sort_title, @m.sort_title, size: 75
     %p

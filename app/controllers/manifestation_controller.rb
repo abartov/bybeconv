@@ -501,6 +501,7 @@ class ManifestationController < ApplicationController
           @e.period = params[:period]
           @m.title = params[:mtitle]
           @m.sort_title = params[:sort_title]
+          @m.alternate_titles = params[:alternate_titles]
           @m.responsibility_statement = params[:mresponsibility]
           @m.comment = params[:mcomment]
           @m.status = params[:mstatus].to_i

@@ -49,14 +49,14 @@ class SearchManifestations < ApplicationService
 
     title = filters['title']
     if title.present?
-      filter << { match_phrase: { title: title } }
+      filter << { match_phrase: { title: title } } # TODO: also search in alternate_titles
     end
 
     result = ManifestationsIndex.filter(filter)
 
     fulltext = filters['fulltext']
     if fulltext.present?
-      result = result.query(simple_query_string: { fields: [:title, :author_string, :fulltext], query: fulltext, default_operator: :and })
+      result = result.query(simple_query_string: { fields: [:title, :author_string, :alternate_titles, :fulltext], query: fulltext, default_operator: :and })
     else
       # we're only applying sorting if no full-text search is performed, because for full-text search we want to keep
       # relevance sorting

@@ -7,6 +7,7 @@ class ManifestationsIndex < Chewy::Index
 #    field :fulltext, value: ->(manifestation) {manifestation.to_plaintext}, analyzer: 'hebrew'
     field :id, type: 'integer'
     field :title
+    field :alternate_titles
     field :sort_title, type: 'keyword' # for sorting
     field :first_letter, value: ->(manifestation) {manifestation.first_hebrew_letter}
     field :fulltext, value: ->(manifestation) {manifestation.to_plaintext}
