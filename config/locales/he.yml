@@ -1020,6 +1020,7 @@ he:
   resolve_no_email_explanation: אפשרויות הבלי דואל נועדו למקרה של ריבוי דיווחים תקינים, לאחר שליחת דואל עבור הראשון
   resolve_as_fixed: השגיאה תוקנה (שולח דואל!)
   resolve_as_fixed_no_email: השגיאה תוקנה (ללא דואל)
+  resolve_as_fixed_with_explanation: השגיאה תוקנה בצירוף הערות (שולח דואל!)
   resolve_as_wontfix: לא שגיאה, או לא יתוקן (שולח דואל!)
   resolve_as_wontfix_with_explanation: לא שגיאה או לא יתוקן, אבל עם הסבר (שולח דואל!)
   resolve_as_wontfix_no_email: לא שגיאה, או לא יתוקן (בלי דואל)
