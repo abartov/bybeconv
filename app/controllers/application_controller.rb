@@ -101,8 +101,7 @@ class ApplicationController < ActionController::Base
       error: I18n.t(:must_be_logged_in) }
   end
 
-  def popular_works(update = false)
-    Manifestation.recalc_popular if update
+  def popular_works
     @popular_works = Manifestation.get_popular_works
   end
 
