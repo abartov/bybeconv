@@ -331,10 +331,17 @@ class Manifestation < ApplicationRecord
   end
 
   def self.get_popular_works
-    if @@popular_works == nil # TODO: implement race-condition protect with tmplock
-      self.recalc_popular
+    Rails.cache.fetch("m_popular_works", expires_in: 48.hours) do
+      evs = Ahoy::Event.where(name: "text read or printed").where("time > ?", 1.month.ago)
+      pop = {}
+      evs.each do |x| 
+        mid = x.properties['text_id']
+        pop[mid] = 0 unless pop[mid].present?
+        pop[mid] += 1
+      end
+      sorted_pop_keys = pop.keys.sort_by{|k| pop[k]}.reverse
+      Manifestation.find(sorted_pop_keys[0..9])
     end
-    return @@popular_works
   end
   def self.update_suspected_typos_list
     # TODO: implement
