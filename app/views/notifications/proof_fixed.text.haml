@@ -5,6 +5,9 @@
 - else
   = t(:proof_fixed_m, {:url => @url, :title => @m.title_and_authors})
 
+- if @explanation.present?
+  != t(:additional_proof_explanation, explanation: @explanation)
+
 = t(:below_is_your_original_email)
 %hr
 
