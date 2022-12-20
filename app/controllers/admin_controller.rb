@@ -1,7 +1,7 @@
 class AdminController < ApplicationController
   before_action :require_editor
   # before_action :require_admin, only: [:missing_languages, :missing_genres, :incongruous_copyright, :missing_copyright, :similar_titles]
-  autocomplete :manifestation, :title, display_value: :title_and_authors
+  autocomplete :manifestation, :title, display_value: :title_and_authors, extra_data: [:expression_id]
   autocomplete :person, :name, full: true
 
   def index
