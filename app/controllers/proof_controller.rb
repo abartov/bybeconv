@@ -95,7 +95,7 @@ class ProofController < ApplicationController
       @p.status = 'spam'
       fix_text = 'זבל'
     end
-    @p.resolved_by = current_user
+    @p.resolver = current_user
     @p.save!
     flash[:notice] = t(:resolved_as, :fixed => fix_text)
     if current_user.admin?
