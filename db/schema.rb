@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_20_080008) do
+ActiveRecord::Schema.define(version: 2022_12_05_120423) do
 
   create_table "aboutnesses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -658,6 +658,7 @@ ActiveRecord::Schema.define(version: 2022_10_20_080008) do
     t.string "sort_title"
     t.boolean "sefaria_linker"
     t.integer "expression_id", null: false
+    t.string "alternate_titles", limit: 512
     t.index ["conv_counter"], name: "index_manifestations_on_conv_counter"
     t.index ["created_at"], name: "index_manifestations_on_created_at"
     t.index ["expression_id"], name: "index_manifestations_on_expression_id"

@@ -65,12 +65,13 @@ class ProofController < ApplicationController
     if params[:fixed] == 'yes'
       @p.status = 'fixed'
       unless params[:email] == 'no' or @p.from.nil? or @p.from !~ /\w+@\w+\.\w+/
+        @explanation = params[:fixed_explanation]
         if @p.manifestation_id.nil?
-          Notifications.proof_fixed(@p, @p.about, nil).deliver
+          Notifications.proof_fixed(@p, @p.about, nil, @explanation).deliver
         else
-          Notifications.proof_fixed(@p, manifestation_read_path(@p.manifestation_id), @p.manifestation).deliver
+          Notifications.proof_fixed(@p, manifestation_read_path(@p.manifestation_id), @p.manifestation, @explanation).deliver
         end
-		fix_text = 'תוקן (ונשלח דואל)'
+    		fix_text = 'תוקן (ונשלח דואל)'
       else
 	      fix_text = 'תוקן, בלי לשלוח דואל'
       end
@@ -94,7 +95,7 @@ class ProofController < ApplicationController
       @p.status = 'spam'
       fix_text = 'זבל'
     end
-    @p.resolved_by = current_user
+    @p.resolver = current_user
     @p.save!
     flash[:notice] = t(:resolved_as, :fixed => fix_text)
     if current_user.admin?

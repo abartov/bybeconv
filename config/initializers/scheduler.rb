@@ -6,12 +6,13 @@ scheduler = Rufus::Scheduler::singleton
 
 # daily stats
 scheduler.every '24h' do
-  puts "calculating popular works..."
-  Manifestation.recalc_popular
   puts "calculating popular authors..."
   Person.recalc_popular
   puts "calculating recommendation counts..."
   Person.recalc_recommendation_counts
+end
+scheduler.every '36h' do
+  Manifestation.get_popular_works
 end
 
 # slow maintenance reports
