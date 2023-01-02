@@ -56,7 +56,10 @@ class SearchManifestations < ApplicationService
 
     fulltext = filters['fulltext']
     if fulltext.present?
-      result = result.query(simple_query_string: { fields: [:title, :author_string, :alternate_titles, :fulltext], query: fulltext, default_operator: :and })
+      # if fulltext query is performed we also request highlight text, to return snippet matching query
+      result = result.
+        query(simple_query_string: { fields: [:title, :author_string, :alternate_titles, :fulltext], query: fulltext, default_operator: :and }).
+        highlight(fields: { fulltext: {} })
     else
       # we're only applying sorting if no full-text search is performed, because for full-text search we want to keep
       # relevance sorting
