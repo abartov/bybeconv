@@ -18,7 +18,7 @@ class AdminController < ApplicationController
       @manifestation_count = Manifestation.published.count
       @conv_percent_done = (@manifestation_count - @conv_todo) / @manifestation_count.to_f * 100
       @page_title = t(:dashboard)
-      @search = ManifestationsSearch.new(search: [])
+      @search = ManifestationsSearch.new(query: '')
     end
   end
 

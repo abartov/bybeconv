@@ -39,11 +39,13 @@ module BybeUtils
     gc.draw(canvas)
     cover_file = Tempfile.new(['tmp_cover_'+manifestation.id.to_s,'.png'], 'tmp/')
     canvas.write(cover_file.path)
-    book.add_item('cover.jpg',cover_file.path).cover_image
+    book.add_item('cover.png',cover_file.path).cover_image
     book.ordered {
-      buf = '<head><meta charset="UTF-8"><meta http-equiv="content-type" content="text/html; charset=UTF-8"></head><body dir="rtl" align="center"><h1>'+title+'</h1><p/><p/><h3>פרי עמלם של מתנדבי</h3><p/><h2>פרויקט בן־יהודה</h2><p/><h3><a href="https://benyehuda.org/page/volunteer">(רוצים לעזור?)</a></h3><p/>מעודכן לתאריך: '+Date.today.to_s+'</body>'
-      book.add_item('0_title.html').add_content(StringIO.new(buf))
-      book.add_item('1_text.html').add_content(StringIO.new(html)).toc_text(title)
+      buf = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" xml:lang="he" lang="he"><head><meta http-equiv="content-type" content="text/html; charset=UTF-8" /><title>'+title+'</title></head><body dir="rtl"><div style="text-align:center;"><h1>'+title+'</h1><p/><p/><h3>פרי עמלם של מתנדבי</h3><p/><h2>פרויקט בן־יהודה</h2><p/><h3><a href="https://benyehuda.org/page/volunteer">(רוצים לעזור?)</a></h3><p/>מעודכן לתאריך: '+Date.today.to_s+'</div></body></html>'
+      book.add_item('0_title.xhtml').add_content(StringIO.new(buf))
+      book.add_item('1_text.xhtml').add_content(StringIO.new(html)).toc_text(title)
     }
     fname = cover_file.path+'.epub'
     book.generate_epub(fname)
