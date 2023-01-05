@@ -1,6 +1,6 @@
 -# standard display mode. "reading mode" implemented in readmode.html.haml
 - if @m.sefaria_linker
-  %script{ type: 'text/javascript', charset:'utf-8', src:'https://www.sefaria.org/linker.js'}
+  %script{ type: 'text/javascript', charset:'utf-8', src:'https://www.sefaria.org/linker.v3.js'}
 
 .row.text-page-content
   .col-12.col-lg-8
@@ -256,6 +256,6 @@
       $('#recommendationDlg').modal('show');
     });
     if("#{@m.sefaria_linker}" != '') {
-      sefaria.link({selector: '#actualtext', contentLang: 'hebrew', interfaceLang: 'hebrew'});
+      sefaria.link({whitelistSelector: '#actualtext', contentLang: 'hebrew', interfaceLang: 'hebrew'});
     }
   });
