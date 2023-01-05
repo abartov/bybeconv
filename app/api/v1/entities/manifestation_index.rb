@@ -32,7 +32,12 @@ module V1
         manifestation.id
       end
       expose :snippet, documentation: { desc: 'plaintext snippet of the first few hundred characters of the text, useful for previews and search results' }, if: lambda { |_manifestation, options| options[:snippet] } do |manifestation|
-        snippet(manifestation.fulltext, 500)[0]
+        # if highlight feature was used in request (ATM it only happens if fulltext query was used), then we use highlight text
+        if manifestation._data.present? && manifestation._data['highlight'].present?
+          manifestation._data['highlight']['fulltext']
+        else
+          snippet(manifestation.fulltext, 500)[0]
+        end
       end
       expose :download_url,
              documentation: { desc: 'URL of the full text of the work, in the requested format (HTML by default)' }  do |manifestation|
