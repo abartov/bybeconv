@@ -10,31 +10,3 @@
   font-weight: bold;
   background-color: green !important;
 }
-
-.bib-flex {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: flex-start;
-  align-content: flex-start;
-  gap: 5px;
-}
-.bib-flex-row {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: flex-start;
-  align-content: flex-start;
-  gap: 5px;
-}
-.bib-flex-header {
-  font-weight: bold;
-}
-.bib-flex-row div:nth-of-type(odd) {
-  background-color: #e6e6e6;
-}
-.bib-flex-row div:nth-of-type(even) {
-  background-color: #cccccc;
-}

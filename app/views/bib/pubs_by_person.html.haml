@@ -13,24 +13,24 @@
             = '; '
 
     .row
-      .col-md-6
+      .col-md-6{style: 'overflow-x: scroll'}
         = render partial: 'find_bibs', locals: {remote: true}
         %h3#total_pubs= t(:total)
 
-        .bib-flex#bibs
-          .bib-flex-row.bib-flex-header
-            %div= t(:title)
-            %div= t(:author)
-            %div= t(:publisher)
-            %div= t(:year_published)
-            %div= t(:language)
-            %div= t(:comments)
-            %div= t(:record_source)
-            %div= t(:location)
-            %div= t(:is_scanned)
-            %div= t(:actions)
+        %table#bibs
+          %tr
+            %th= t(:title)
+            %th= t(:author)
+            %th= t(:publisher)
+            %th= t(:year_published)
+            %th= t(:language)
+            %th= t(:comments)
+            %th= t(:record_source)
+            %th= t(:location)
+            %th= t(:is_scanned)
+            %th= t(:actions)
           = render partial: 'pubs', locals: {pubs: @pubs}
-      .col-md-6
+      .col-md-6{style: 'overflow-x: scroll'}
         .backend-field
           = label_tag t(:linked_author)
           = hidden_field_tag :person_id
@@ -41,7 +41,8 @@
             %h2
               %a#author_link
                 = t(:pubs_by_author)
-            .bib-flex#pubs
+            %table#pubs
+              %tbody
     .row
       .col-md-12
         = link_to t(:back_to_bib_workshop), action: :index

@@ -1,18 +1,18 @@
 - unless pubs.nil?
   - pubs.each do |pub|
-    .bib-flex-row
-      %div= pub.title
-      %div= pub.author_line
-      %div= pub.publisher_line
-      %div= pub.pub_year
-      %div= pub.language
-      %div= pub.notes.nil? ? '' : pub.notes.sub("\n", "<br />").html_safe
+    %tr
+      %td= pub.title
+      %td= pub.author_line
+      %td= pub.publisher_line
+      %td= pub.pub_year
+      %td= pub.language
+      %td= pub.notes.nil? ? '' : pub.notes.sub("\n", "<br />").html_safe
       /%td= pub.holdings.map{|h| linkify_record(pub.context, h.source_id)}.join(';').html_safe
       - sid = (pub.source_id.class == Array ? pub.source_id[0] : pub.holdings[0].source_id)
-      %div= linkify_record(pub.context, sid).html_safe
-      %div= pub.holdings[0].location
-      %div= pub.scanned ? link_to(t(:yes), pub.holdings[0].scan_url) : t(:no)
-      %div
+      %td= linkify_record(pub.context, sid).html_safe
+      %td= pub.holdings[0].location
+      %td= pub.scanned ? link_to(t(:yes), pub.holdings[0].scan_url) : t(:no)
+      %td
         %button.nuke{onclick: 'this.parentElement.parentElement.remove()'}= t(:remove)
         %br
         %button.moveit{onclick: 'moveit(this)'}= t(:add_publication)
