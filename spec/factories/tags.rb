@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :tag do
-    status { :pending }
+    status { :approved }
     name { "MyString" }
     creator { create(:user)}
   end

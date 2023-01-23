@@ -21,13 +21,15 @@ describe V1::TextsAPI do
   let(:data_ids) { data.map { |rec| rec['id'] } }
 
   let(:manifestation_1) do
-    create(
+    m = create(
       :manifestation, :with_recommendations, :with_external_links,
       title: '1st',
       impressions_count: 3,
       markdown: 'Sample Text 1',
-      taggings: [ create(:tagging, tag: tag_popular),  create(:tagging, tag: tag_pending) ]
     )
+    create(:tagging, tag: tag_popular, manifestation: m)
+    create(:tagging, tag: tag_pending, manifestation: m)
+    m
   end
 
   let(:manifestation_2) do
@@ -35,10 +37,10 @@ describe V1::TextsAPI do
       :manifestation, :with_recommendations, :with_external_links,
       title: '2nd',
       impressions_count: 2,
-      markdown: 'Sample Text 2',
-      taggings: [ create(:tagging, tag: tag_unpopular), create(:tagging, tag: tag_pending) ]
+      markdown: 'Sample Text 2'
     )
-
+    create(:tagging, tag: tag_unpopular, manifestation: m)
+    create(:tagging, tag: tag_pending, manifestation: m)
     create(:aboutness, work: m.expression.work, aboutable: manifestation_1.expression.work)
     m
   end
