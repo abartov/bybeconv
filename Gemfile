@@ -27,7 +27,7 @@ gem 'rack-cors', require: 'rack/cors'
 gem 'diffy'
 gem 'aws-sdk-s3' # for Active Storage
 
-gem 'paperclip' # , '~>5.2' # for cloud files like author images 6.x requires aws >3.x
+gem 'kt-paperclip' # , '~>5.2' # for cloud files like author images 6.x requires aws >3.x
 gem 'impressionist', '~>1' # for pageview stats, 2.x requires Rails 6.x
 gem 'jbuilder', '~> 2.0' # for JSON APIs
 gem 'sqlite3' # for dictionary imports
