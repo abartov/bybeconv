@@ -22,7 +22,7 @@ class ManifestationController < ApplicationController
   before_action only: [:all, :genre, :period, :by_tag] do |c| c.refuse_unreasonable_page end
   autocomplete :manifestation, :title, limit: 20, display_value: :title_and_authors, full: true
   autocomplete :person, :name, :limit => 2, full: true
-  autocomplete :tag, :name
+  autocomplete :tag, :name, :limit => 2
 
   #impressionist :actions=>[:read,:readmode, :print, :download] # log actions for pageview stats
 

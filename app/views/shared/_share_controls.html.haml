@@ -24,7 +24,7 @@
                 .share-name= t(:facebook)
               %a.share-icon.by-icon-v02.icon-bytwitter{href: "https://twitter.com/home?status=#{the_url}", target: '_blank'}
                 .share-name= t(:twitter)
-              %a.share-icon.by-icon-v02.icon-bywhatsapp{href: "https://api.whatsapp.com/send?text=#{URI.encode(the_url)}", target: '_blank'}
+              %a.share-icon.by-icon-v02.icon-bywhatsapp{href: "https://api.whatsapp.com/send?text=#{uri_escape(the_url)}", target: '_blank'}
                 .share-name= t(:whatsapp)
               %a.share-icon.by-icon-v02.icon-byenvelope{href: "mailto:?to=&subject=#{t(:from_project_ben_yehuda)}&body=#{the_url}", target: '_blank'}
                 .share-name= t(:email)
