@@ -130,7 +130,7 @@ GEM
     concurrent-ruby (1.2.0)
     crass (1.0.6)
     daemons (1.4.0)
-    dalli (2.7.11)
+    dalli (3.2.3)
     dead_end (1.1.7)
     derailed_benchmarks (2.1.1)
       benchmark-ips (~> 2)
