@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_12_05_120423) do
+ActiveRecord::Schema.define(version: 2023_01_25_225540) do
 
   create_table "aboutnesses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -46,7 +46,7 @@ ActiveRecord::Schema.define(version: 2022_12_05_120423) do
     t.bigint "byte_size", null: false
     t.string "checksum", limit: 191, null: false
     t.datetime "created_at", null: false
-    t.string "service_name", null: false
+    t.string "service_name"
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
@@ -791,6 +791,7 @@ ActiveRecord::Schema.define(version: 2022_12_05_120423) do
     t.datetime "updated_at", null: false
     t.index ["expression_id"], name: "index_realizers_on_expression_id"
     t.index ["person_id"], name: "index_realizers_on_person_id"
+    t.index ["role", "person_id"], name: "index_realizers_on_role_and_person_id"
   end
 
   create_table "recommendations", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|

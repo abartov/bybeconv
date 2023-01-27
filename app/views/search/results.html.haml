@@ -10,20 +10,21 @@
     %ol
       - @results.each do |result|
         %li
-          - if result.class == ManifestationsIndex::Manifestation
+          - attrs = result.attributes
+          - if result.class == ManifestationsIndex
             %b= t(:work)
             %br
-            %b= link_to result.title, manifestation_read_path(result.id)
-            = " / #{result.author_string}"
-            = " (#{textify_genre(result.genre)})"
+            %b= link_to attrs['title'], manifestation_read_path(attrs['id'])
+            = " / #{attrs['author_string']}"
+            = " (#{textify_genre(attrs['genre'])})"
             - unless result._data.nil? or result._data['highlight'].nil?
               %br
               != result._data['highlight']['fulltext'].join("<br />").gsub('<em>','<b>').gsub('</em>','</b>')
-          - elsif result.class == PeopleIndex::Person
+          - elsif result.class == PeopleIndex
             %b= t(:author)
             %br
-            %b= link_to result.name, author_toc_path(result.id)
+            %b= link_to attrs['name'], author_toc_path(attrs['id'])
             %br
-            %p= result.wikipedia_snippet
+            %p= attrs['wikipedia_snippet']
 
     != paginate @results

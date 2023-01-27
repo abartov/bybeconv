@@ -33,7 +33,7 @@ class Manifestation < ApplicationRecord
   SHORT_LENGTH = 1500 # kind of arbitrary...
   LONG_LENGTH = 15000 # kind of arbitrary...
 
-  update_index('manifestations#manifestation'){self} # update ManifestationsIndex when entity is updated
+  update_index('manifestations'){self} # update ManifestationsIndex when entity is updated
 
   # class variable
   @@popular_works = nil
@@ -345,12 +345,12 @@ class Manifestation < ApplicationRecord
   end
   def self.update_suspected_typos_list
     # TODO: implement
-    # code to find probably typos:
+    # code to find probable typos:
     #- digits within words
     #- finals within words
     #- non-final letters that should be finals
-    #- what else?
     #- non-title paragraphs ending without period, question mark, exclamation point.
+    #- what else?
   
   end
 end
