@@ -1,3 +1,51 @@
+! Fix A-B BAR!
+
+אסף האם ניתן להוסיף לטופס הבקשה להתנדב שאלה ״היכן שמעת על הפרויקט? ״
+יהיה נחמד לדעת אילו מהאמצים שלנו נושאים פרי (נניח רחל מדווחת שהיו הרבה אנשים בהרצאה הבוקר ושהתגובות היו נלהבות. מעניין אם מוביל לפעולה).
+
+1. implement news items input/editing for heterogeneous newsfeed
+
+Data model flattening TODO:
+- Replicate Work and Expression fields in Manifestation, but make them auto-update when they are edited in the Work/Expression entity, using after_save hooks.  They should never be editable manually.
+- Once that's in place, remove the joins and lookups for those fields in manifestation displays, especially in /read and /author views.
+
+ignore illustrators in gen_toc
+(completely? Maybe only if they're not *also* the creators?)
+
+  - work aboutnesses
+  - incoming aboutnesses for work!
+
+- code to find probably typos:
+  - digits within words
+  - finals within words
+  - what else?
+  - non-title paragraphs ending without period, question mark, exclamation point.
+- maintenance report (weekly rake task?) finding texts with such, adding them to a List, *unless* they're already whitelisted.
+- in edit_markdown, identify probable typos and decorate them with large, colorful HTML. Some color for the whole word, and red for the suspected typo.
+- in edit_markdown, add button to whitelist for probable typos.
+- upon markdown save, re-check for probable typos, and if there are none and the work is in the Probable Typos list, remove it from the list.
+
+browser history hack
+
+GET page with params - no filters
+  onload: push state: URL+page+sort
+  onnav: replace state: URL+page+sort
+
+POST page with no filters
+  onload: push state: URL+page+sort
+  onnav: replace state: URL+page+sort
+
+POST page with filters
+  onload: push state: filters
+  onnav: replace state: filters
+  onfilterchange: replace state: filters
+
+onpopstate
+ if type=filters
+   deserialize form and submit
+ else
+   POST url with page and sort params
+
 There is a re-entrancy problem in creating a PDF from works with images (wkhtmltopdf requests the images, and the GVL causes a deadlock).  Need to rewrite to *first* download the images to /tmp, rewrite the IMG src attributes, and then generates the PDF, taking care to enable local file access in wkhtmltopdf.)
   - for PDFs, also *scale* the local copy of images to no more than 20.9cm width, to solve PDF page width issue.
 
@@ -8,7 +56,7 @@ There is a re-entrancy problem in creating a PDF from works with images (wkhtmlt
 
 EbyDict-Integration TODO
 
-- implement definition view
+- implement definition view remaining buttons (cite etc.)
 - cronjob for exports
 - cronjob for imports (staging for now, eventually production)
 + link stats header to EbyDict entity (staging, prod) [eventually, link instead to genre query for lexicon, but only after figuring out what to do with non-ebydict lexica]

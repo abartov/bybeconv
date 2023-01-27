@@ -26,6 +26,7 @@ class HtmlFileController < ApplicationController
   def create
     @text = HtmlFile.new(hf_params)
     if @text.person
+      @text.assignee = current_user
       @text.status = 'Uploaded'
       respond_to do |format|
         if @text.save
@@ -53,6 +54,8 @@ class HtmlFileController < ApplicationController
       @text.genre = params[:genre] unless params[:genre].blank?
       @text.orig_lang = params[:orig_lang] unless params[:orig_lang].blank?
       @text.comments = params[:comments]
+      @text.pub_link = params[:pub_link]
+      @text.pub_link_text = params[:pub_link_text]
       unless params[:commit] == t(:preview)
         @text.save
       end
@@ -161,24 +164,25 @@ class HtmlFileController < ApplicationController
     # build query condition
     query = {}
     unless params[:commit].blank?
-      session[:html_q_params] = params.permit(:nikkud, :footnotes, :status, :path) # make prev. params accessible to view
+      session[:html_q_params] = params.permit(:nikkud, :footnotes, :status, :path, :title) # make prev. params accessible to view
     else
-      session[:html_q_params] = { footnotes: '', nikkud: '', status: params['status'], path: '' } if session[:html_q_params].nil?
+      session[:html_q_params] = { footnotes: '', nikkud: '', status: params['status'], path: '', title: '' } if session[:html_q_params].nil?
     end
     f = session[:html_q_params][:footnotes]
     n = session[:html_q_params][:nikkud]
     s = params[:commit].blank? ? session[:html_q_params][:status] : (params[:status] or session[:html_q_params][:status] )
-    p = session[:html_q_params][:path] # retrieve query params whether or not they were POSTed
+    # p = session[:html_q_params][:path] # retrieve query params whether or not they were POSTed
+    title = session[:html_q_params][:title]
     query.merge!(footnotes: f) unless f.blank?
     query.merge!(nikkud: n) unless n.blank?
     query.merge!(status: s) unless s.blank?
     assignee_cond = "assignee_id is null or assignee_id = #{current_user.id}"
 
     # TODO: figure out how to include filter by path without making the query fugly
-    if p.nil? || p.blank?
-      @texts = HtmlFile.where(assignee_cond).where(query).page(params[:page]).order('updated_at DESC')
+    if title.present?
+      @texts = HtmlFile.where(assignee_cond).where(query).where('title like ?', '%' + title + '%').page(params[:page]).order('updated_at DESC')
     else
-      @texts = HtmlFile.where(assignee_cond).where('path like ?', '%' + p + '%').page(params[:page]).order('updated_at DESC')
+      @texts = HtmlFile.where(assignee_cond).where(query).page(params[:page]).order('updated_at DESC')
     end
   end
 
@@ -206,7 +210,6 @@ class HtmlFileController < ApplicationController
     @text.status = 'Superseded'
     @text.assignee_id = nil
     @text.save!
-    redirect_to action: :list
   end
 
   def destroy
@@ -229,31 +232,25 @@ class HtmlFileController < ApplicationController
         @text.genre = params['genre'] unless params['genre'].nil?
         @text.save!
         success = false
-        if oldstatus == 'Uploaded' # new, direct way!
-          if @text.has_splits
-            @text.split_parts.each_pair do |title, markdown|
-              success = @text.create_WEM_new(@text.person.id, title.sub(/_ZZ\d+/,''), markdown, true)
-            end
-            @text.status = 'Published'
-            @text.save!
-          else
-            success = @text.create_WEM_new(@text.person.id, @text.title.sub(/_ZZ\d+/,''), @text.markdown, false)
+        au_id = @text.person.id
+        if @text.has_splits
+          @text.split_parts.each_pair do |title, markdown|
+            success = @text.create_WEM_new(au_id, title.sub(/_ZZ\d+/,''), markdown, true, params[:pub_status])
           end
-          if success == true
-            flash[:notice] = t(:created_frbr)
-          else
-            flash[:error] = success
-          end
-          redirect_to controller: :manifestation, action: :list
+          @text.status = 'Published' if success == true
+          @text.save!
         else
-          success = @text.create_WEM(@text.person.id)
-          if success == true
-            flash[:notice] = t(:created_frbr)
-          else
-            flash[:error] = success
-          end
-          redirect_to controller: :manifestation, action: :list
+          success = @text.create_WEM_new(au_id, @text.title.sub(/_ZZ\d+/,''), @text.markdown, false, params[:pub_status])
         end
+        if success == true
+          # invalidate cached work list for generated TOCs
+          Rails.cache.delete("au_#{au_id}_original_works_by_genre")
+          Rails.cache.delete("au_#{au_id}_translations_by_genre")
+          flash[:notice] = t(:created_frbr)
+        else
+          flash[:error] = success
+        end
+        redirect_to controller: :manifestation, action: :list
       else
         flash[:error] = t(:cannot_create_frbr)
         redirect_to action: :edit_markdown, id: @text.id
@@ -264,7 +261,7 @@ class HtmlFileController < ApplicationController
   def publish
     @text = HtmlFile.find(params[:id])
     if @text.status == 'Accepted'
-      @text.make_html unless @text.html_ready?
+      @text.make_html
       if @text.metadata_ready?
         @text.publish
         flash[:notice] = t(:html_file_published)

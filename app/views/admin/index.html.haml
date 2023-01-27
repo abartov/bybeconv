@@ -1,4 +1,4 @@
-.top-element.backend.admin_container
+.backend.admin_container
   / %p= link_to 'עריכת מטא-דאטה', html_file_list_for_editor_path
   .admin_dashboard_item
     %h2= t(:main_catalog_management)
@@ -11,6 +11,14 @@
         %p= link_to t(:upload_file), html_file_new_path
       %p
         = link_to t(:html_files_list), html_file_list_path
+      %h3= t(:current_editing_files)
+      %ul
+        - @current_uploads.each do |upl|
+          %li{id: 'cu'+upl.id.to_s}
+            = link_to upl.title, html_file_edit_markdown_path(id: upl.id)
+            != "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+            = link_to t(:mark_as_obsolete), {controller: :html_file, action: :mark_superseded, id: upl.id}, {remote: true, data: {confirm: t(:confirm_hide)}}
+
   - if current_user.has_bit?('bib_workshop')
     .admin_dashboard_item
       %h2= t(:bibliography)
@@ -60,9 +68,13 @@
     /    = f.submit t(:search)
     .admin_dashboard_item
       %h2= t(:reports)
+      -#%p
+      -#  %b= link_to t(:conversion_verification_report), admin_conversion_verification_path
+      -#  = ' ('+Rails.cache.read('report_conversion_verification').to_s+')'
       %p
-        %b= link_to t(:conversion_verification_report), admin_conversion_verification_path
-        = ' ('+Rails.cache.read('report_conversion_verification').to_s+')'
+        %b= link_to t(:blazer_system), '/blazer'
+      %p
+        %b= link_to t(:texts_between_dates), admin_texts_between_dates_path
       %p
         %b= link_to t(:tocs_missing_links_report), admin_tocs_missing_links_path
         = ' ('+Rails.cache.read('report_tocs_missing_links').to_s+')'
@@ -110,17 +122,17 @@
     .admin_dashboard_item
       %h2= t(:admin_actions)
       %p= link_to t(:user_management), user_list_path
-    .admin_dashboard_item
-      - if current_user.has_bit?('conversion_verification')
-        %h2
-          = t(:conversion_verification)
-          = ' ('+Manifestation.where(conversion_verified: false).count.to_s+')'
-        = button_to t(:conversion_verification), url_for(action: :assign_conversion_verification), {method: :get}
-        %p
-        %p= t(:convs_processed_so_far, {done: ListItem.where(listkey: 'convs_by_user', user: current_user).count, percent_done: number_to_percentage(@conv_percent_done, precision: 2)})
-        %button#show_my_convs= t(:show_my_convs)
-        #my_convs
-        %p= link_to t(:html_dirs_list), html_dirs_path
+    -#.admin_dashboard_item
+    -#  - if current_user.has_bit?('conversion_verification')
+    -#    %h2
+    -#      = t(:conversion_verification)
+    -#      = ' ('+Manifestation.where(conversion_verified: false).count.to_s+')'
+    -#    = button_to t(:conversion_verification), url_for(action: :assign_conversion_verification), {method: :get}
+    -#    %p
+    -#    %p= t(:convs_processed_so_far, {done: ListItem.where(listkey: 'convs_by_user', user: current_user).count, percent_done: number_to_percentage(@conv_percent_done, precision: 2)})
+    -#    %button#show_my_convs= t(:show_my_convs)
+    -#    #my_convs
+    -#    %p= link_to t(:html_dirs_list), html_dirs_path
   
 :javascript
   $(document).ready(function() {

@@ -17,9 +17,23 @@
 *= require slick
 */
 /*body{font-size:14px;} /* default */
+/* temporary fix */
+.credits{
+  -webkit-column-count: unset; /* Chrome, Safari, Opera */
+  -moz-column-count: unset; /* Firefox */
+  column-count: unset;
+}
 
-.padbot12 {
-  padding-bottom: 12px;
+.credits ul{
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(15, 3fr);
+  margin-bottom: 25px;
+}
+.credits ul li {
+  margin: 5px;
+  margin-left: 25px;
+
 }
 #chapters {
   width: -webkit-fill-available;
@@ -51,6 +65,9 @@ input[type=checkbox].multiselect_checkbox {
 }
 .topMenuItem-v02:hover {
   cursor: pointer;
+}
+.whitehover:hover{
+  color:white;
 }
 #curated_preview ul {
   list-style-type: unset;
@@ -88,6 +105,10 @@ input[type=checkbox].multiselect_checkbox {
   /* vertical-align: sub; */
   font-size: 70%;
 }
+.comment {
+  color:   #64150f;
+}
+
 /* end dict_top workarounds */
 .navdisabled {
   color: #d9cdd5;
@@ -98,6 +119,12 @@ input[type=checkbox].multiselect_checkbox {
 }
 .collapsed.vertical-expand::before {
   content: "<";
+}
+#anth_texts .collapsed.vertical-expand::before {
+  content: "<";
+}
+#anth_texts .vertical-expand::before {
+  content: "]";
 }
 .advanced-pagination {
   width: calc(100% - 150px);
@@ -172,11 +199,6 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
 .by-dropdown-content-v02 p:hover {
   background-color: #eeeced;
   color: #2b0d22; }
-
-.reading-mode-btn-v02 {
-  padding-top: 3px;
-  display: inline-block;
-}
 
 #moreMobile {
   cursor: pointer;
@@ -368,4 +390,24 @@ content: unset;
   border-radius: 3px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
   margin: 10px;
+}
+
+body.modal-open{
+  padding-right: 0 !important;
+  overflow-y:scroll;
+}
+
+.modal{
+  padding-right: 0 !important;
+}
+.error, .notice, .success {padding:.8em;margin-bottom:1em;border:2px solid #ddd;}
+.error {background:#FBE3E4;color:#8a1f11;border-color:#FBC2C4;}
+.notice {background:#FFF6BF;color:#514721;border-color:#FFD324;}
+.success {background:#E6EFC2;color:#264409;border-color:#C6D880;}
+.error a {color:#8a1f11;}
+.notice a {color:#514721;}
+.success a {color:#264409;}
+
+.sort-by-mobile{
+	display: block !important;
 }

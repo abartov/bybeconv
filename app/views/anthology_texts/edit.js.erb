@@ -1,3 +1,5 @@
 var markup = "<%= j(render partial: 'shared/anth_curated') %>";
 $('#add_curated').replaceWith(markup);
 $('#add_curated').show();
+$('#curated_title').text("<%= t(:edit_curated_text) %>");
+$('#curated_add_item').text("<% t(:save) %>");

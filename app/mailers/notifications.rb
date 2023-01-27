@@ -6,7 +6,7 @@ class Notifications < ActionMailer::Base
   #
   #   en.notifications.proof_fixed.subject
   #
-  def proof_fixed(proof, url, m)
+  def proof_fixed(proof, url, m, explanation)
     @greeting = t(:hello_anon)
     @proof = proof
     @url = url
@@ -14,6 +14,7 @@ class Notifications < ActionMailer::Base
       @url = 'https://benyehuda.org'+@url # TODO: un-hardcode
     end
     @m = m
+    @explanation = explanation
     mail to: proof.from
   end
 

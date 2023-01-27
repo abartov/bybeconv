@@ -22,32 +22,84 @@ class WelcomeController < ApplicationController
     # @whatsnew = whatsnew_anonymous # TODO: custom calculate for logged-in users
     @cached_newsfeed = cached_newsfeed # new, heterogeneous newsfeed
     @featured_content = featured_content
-    (@fc_snippet, @fc_rest) = @featured_content.nil? ? ['',''] : snippet(@featured_content.body, 500) # prepare snippet for collapsible
+    (@fc_snippet, @fc_rest) = @featured_content.nil? ? ['',''] : snippet(@featured_content.body, 1500) # prepare snippet 
     @fc_snippet = MultiMarkdown.new(@fc_snippet).to_html.force_encoding('UTF-8') unless @fc_snippet.empty?
     @featured_author = featured_author
-    (@fa_snippet, @fa_rest) = @featured_author.nil? ? ['',''] : snippet(@featured_author.body, 500) # prepare snippet for collapsible
+    (@fa_snippet, @fa_rest) = @featured_author.nil? ? ['',''] : snippet(@featured_author.body, 1500) # prepare snippet 
     @fa_snippet = MultiMarkdown.new(@fa_snippet).to_html.force_encoding('UTF-8') unless @fa_snippet.empty?
     @featured_volunteer = featured_volunteer
     @popups_by_genre = popups_by_genre # cached, if available
   end
+
+  def featured_popup
+    @featured_content = FeaturedContent.find(params[:id])
+    if @featured_content.nil?
+      head :ok
+    else
+      render partial: 'featured_item_popup'
+    end
+  end
+
+  def featured_author_popup
+    if params[:id].nil?
+      head :not_found
+    else
+      @featured_author = FeaturedAuthor.find(params[:id])
+      if @featured_author.nil?
+        head :ok
+      else
+        render partial: 'featured_author_popup'
+      end
+    end
+  end
+
   def contact
     render partial: 'contact'
   end
+
   def submit_contact
     Notifications.contact_form_submitted(params.permit(:name, :phone, :email, :topic, :body, :rtopic)).deliver
     respond_to do |format|
       format.js
     end
   end
+
   def volunteer
     respond_to do |format|
       format.js
     end
   end
+
   def submit_volunteer
     Notifications.volunteer_form_submitted(params.permit(:name, :phone, :email, :typing, :proofing, :scanning, :donation, :other)).deliver
     respond_to do |format|
       format.js
+    end
+  end
+
+  private
+
+  def featured_content
+    Rails.cache.fetch("featured_content", expires_in: 10.minutes) do # memoize
+      FeaturedContentFeature.where("fromdate <= :now AND todate >= :now", now: Date.today).
+        order(Arel.sql('RAND()')).
+        first&.featured_content
+    end
+  end
+
+  def featured_author
+    Rails.cache.fetch("featured_author", expires_in: 1.hours) do # memoize
+      FeaturedAuthorFeature.where("fromdate <= :now AND todate >= :now", now: Date.today).
+        order(Arel.sql('RAND()')).
+        first&.featured_author
+    end
+  end
+
+  def featured_volunteer
+    Rails.cache.fetch("featured_volunteer", expires_in: 10.hours) do # memoize
+      VolunteerProfileFeature.where("fromdate <= :now AND todate >= :now", now: Date.today).
+        order(Arel.sql('RAND()')).
+        first&.volunteer_profile
     end
   end
 end

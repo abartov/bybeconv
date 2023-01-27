@@ -2,61 +2,62 @@
   .modal{role: 'dialog', id: "author_popup_#{author.id}", tabindex: '-1'}
     .modal-dialog.modal-lg{role: 'document'}
       .modal-content
-        .popup-top
-          .row{style: 'padding:15px;margin:0'}
-            .col-3{style:'padding:0'}
-              %button.btn-small-outline-v02{'data-dismiss' => 'modal'}
-                .btn-text-v02
-                  %span.right-arrow 2
-                  %span= t(:back)
-            .col-6{style:'padding:0'}
-              .headline-2-v02{style:'text-align: center;margin:0;padding-top:3px;'}= about_the_author(author)
-            .col-3
-        .by-popup-v02
-          %button.close.card-header-close{ type: 'button', style: 'margin-left:1.5rem;margin-top:1.9rem;', 'data-dismiss' => 'modal'}
-            .popup-x-v02= '-'
-          %img.surprise-author-card-bookmark-fold-v02{src: '/assets/creator-bookmark-back2.png', alt: t(:background), width: 168, height: 6}
-          = link_to author_toc_path(author.id) do
-            .surprise-author-card-v02
-              %img.surprise-author-pic-v02{ src: author.profile_image.url(:thumb), width: 475, height: 686, alt: author.name}
-              .author-name-area
-                .author-name-v02= to_the_author_page(author)
-          .by-card-header-v02
-            %span.headline-1-v02
-              = link_to author.name, author_toc_path(author.id)
-            %span.date-range!= " (#{author.life_years})"
-          .by-card-content-v02
-            .surprise-author-card-content-v02
-              .padbot12
-                %span
-                  %a.by-icon-v02.iconNearText-v02{id: "heart_#{author.id}", style:'float:right'}= 5
-                %span.by-icon-v02.copyright-icon= author.rights_icon
-                = author.copyright_as_string
-                %span{ 'data-toggle' => 'tooltip', title: author.public_domain? ? t(:pd_explain): t(:permission_explain)}= '[?]'
-              %div
-                - unless author.wikipedia_snippet.nil? or author.wikipedia_snippet.length < 10
-                  = author.wikipedia_snippet
-                  %div{style: 'font-weight: bold; margin-top: 12px; margin-bottom: 24px'}
-                    = link_to t(:rest_in_wikipedia), author.wikipedia_url
-              / future feature: recommendations
-              /.padbot12
-              /  %span{style:'font-weight: bold'}= t(:recommendations)+': '
-              /  = link_to number_of_recommendations, ...
-              /    - if author.blog_count > 0
-              /      .card-header-element
-              /        %a{ href: author.blog_category_url}
-              /          %span{ style: 'margin-left: 0.6rem;position:relative;top:3px;'}
-              /            %i.fa.fa-pencil-square-o
-              /          = t(:about_the_author_on_the_blog)
-              .padbot12
-                %span
-                  %b= t(:works_in_the_project)+': '
-                = link_to "#{author.cached_works_count} #{t(:works)}", author_toc_path(author.id)
-              %div
-                %p
-                  %b= t(:their_most_read_works, gender_letter: author.gender_letter)
-                %ol
-                  - author.most_read(5).each do |mhash|
-                    - genre = mhash[:genre]
-                    - genrebit = genre.nil? ? '' : " (#{textify_genre(genre)})"
-                    %li= link_to mhash[:title]+genrebit, manifestation_read_path(mhash[:id])
+        .flex-popup#author-info-popup
+          .popup-top
+            %button.btn-small-outline-v02{'data-dismiss' => 'modal'}
+              .btn-text-v02
+                %span.right-arrow 2
+                %span= t(:back)
+            .headline-2-v02{style:'text-align: center;margin:0;padding-top:3px;'}= about_the_author(author)
+            .button-placeholder
+          .by-popup-v02
+            %button.close.card-header-close{ type: 'button', 'data-dismiss' => 'modal'}
+              .popup-x-v02= '-'
+            %img.surprise-author-card-bookmark-fold-v02{src: '/assets/creator-bookmark-back2.png', alt: t(:background), width: 168, height: 6}
+            = link_to author_toc_path(author.id) do
+              .surprise-author-card-v02
+                %img.surprise-author-pic-v02{ src: author.profile_image.url(:thumb), width: 475, height: 686, alt: author.name}
+                .author-name-area
+                  .author-name-v02= to_the_author_page(author)
+            .by-card-header-v02
+              .surprise-author-name-v02
+                %span.headline-1-v02
+                  = link_to author.name, author_toc_path(author.id)
+                %span.date-range!= " (#{author.life_years})"
+            .by-card-content-v02
+              .surprise-author-card-content-v02
+                .metadata
+                  %span
+                    %a.by-icon-v02{id: "heart_#{author.id}", style:'float:right'}= 5
+                  %span.by-icon-v02.copyright-icon= author.rights_icon
+                  = author.copyright_as_string
+                  %span.help{ 'data-toggle' => 'tooltip', title: author.public_domain? ? t(:pd_explain): t(:permission_explain)}= '[?]'
+                %div
+                  - unless author.wikipedia_snippet.nil? or author.wikipedia_snippet.length < 10
+                    = author.wikipedia_snippet
+                    %div.read-more-v02.no-float
+                      = link_to author.wikipedia_url do
+                        %span{style: 'font-weight:bold'}= t(:rest_in_wikipedia)
+                        %span.left-arrow= '1'
+                -# future feature: recommendations
+                -#.metadata
+                -#  %span{style:'font-weight: bold'}= t(:recommendations)+': '
+                -#  = link_to number_of_recommendations, ...
+                -#    - if author.blog_count > 0
+                -#      .card-header-element
+                -#        %a{ href: author.blog_category_url}
+                -#          %span{ style: 'margin-left: 0.6rem;position:relative;top:3px;'}
+                -#            %i.fa.fa-pencil-square-o
+                -#          = t(:about_the_author_on_the_blog)
+                .metadata
+                  %span
+                    %b= t(:works_in_the_project)+': '
+                  = link_to "#{author.cached_works_count} #{t(:works)}", author_toc_path(author.id)
+                %div
+                  %p
+                    %b= t(:their_most_read_works, gender_letter: author.gender_letter)
+                  %ol
+                    - author.most_read(5).each do |mhash|
+                      - genre = mhash[:genre]
+                      - genrebit = genre.nil? ? '' : " (#{textify_genre(genre)})"
+                      %li= link_to mhash[:title]+genrebit, manifestation_read_path(mhash[:id])

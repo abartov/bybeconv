@@ -1,8 +1,8 @@
-/ Browse works
+-# Browse works
 #content.container-fluid
-  .row.top-element
-    .col-12.col-lg-5.col-xxxl-4
-      .by-card-v02#browse_intro{style:"display:#{ @filters.empty? ? 'show' : 'none'}"}
+  .row.list-all-texts
+    .col-12.col-lg-4
+      .by-card-v02.desktop-only#browse_intro{style:"display:#{ @filters.empty? ? 'show' : 'none'}"}
         .work-area
           .work-content
             .headline-1-v02= t(:welcome_to_works_browsing)
@@ -20,26 +20,15 @@
       - else
         .by-card-v02.text-sorting#sort_filter_panel{style: 'display:show'}
           = render partial: 'browse_filters'
-    .col-12.col-lg-7.col-xxxl-8
+    .col-12.col-lg-8
       .by-card-v02#thelist
         = render partial: 'browse_list'
 #authorsDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
   = render partial: 'authors_select', locals: {authors: @authors, list: @authors_list}
 - if current_user
   = render partial: 'shared/anth_stuff'
-
-:javascript
-  $(document).ready(function(){
-    $(window).on('popstate', function(event) {
-      if($('#works_filters').length > 0) {
-        state = event.originalEvent.state;
-        if(state != null) {
-          $('#works_filters').deserialize(state);
-          startModal('spinnerdiv');
-          $('#works_filters').submit();
-        }
-      } else {
-        
-      }
-    });
-  });
+#mobileFilterDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
+  - unless @filters.empty?
+    = render partial: 'mobile_filters', locals: {sortonly: false}
+  - else
+    = render partial: 'mobile_filters', locals: {sortonly: true}

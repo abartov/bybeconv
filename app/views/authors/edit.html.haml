@@ -1,5 +1,32 @@
-.top-element.backend
+.backend
   %h1= "#{@author.name}: #{t(:edit_metadata)}"
   = render partial: 'form', locals: {action: :update, person: @author}
   %p
+  %h2= t(:external_links)
+  - els = @author.external_links
+  %ol#external_links
+    - els.each do |el|
+      = render partial: 'external_link', locals: {el: el}
+  %div{style:'width:50%'}
+    %form#add_link_form
+      = t(:add_url)
+      = text_field_tag :add_url
+      = t(:link_type)
+      = select_tag :link_type, options_for_select(ExternalLink.linktypes.map {|lt| [t(lt[0]), lt[1]]})
+      %br
+      = t(:description)
+      = text_field_tag :link_description
+      %button.by-button-v02#add_link_btn{style:'float: unset'}= t(:perform_add)
   = link_to t(:back), authors_show_path(id: @author.id)
+:javascript
+  $(document).ready(function() {
+    $('#add_link_btn').click(function(e){
+      e.preventDefault();
+      $.post('#{author_add_link_path(@author.id)}', $('#add_link_form').serialize(), function(data){
+      });
+      $('#add_link_form')[0].reset();
+    });
+    $('#external_links').on('click', '.delete_link', function(e){
+      $(this).parent().remove();
+    });
+  });

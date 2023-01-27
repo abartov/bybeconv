@@ -3,10 +3,10 @@ module AboutnessesHelper
     html = ''
     case ab.aboutable_type
     when 'Person'
-      html += link_to(ab.aboutable.name, author_toc_path(id: ab.aboutable_id))
+      html += link_to(ab.aboutable.try(:name), author_toc_path(id: ab.aboutable_id))
       html += ' ('+I18n.t(:person)+')'
     when 'Work'
-      html += link_to(ab.aboutable.title, work_show_path(id: ab.aboutable_id))
+      html += link_to(ab.aboutable.try(:title), work_show_path(id: ab.aboutable_id))
       html += ' / '
       austr = ''
       ab.aboutable.authors.each do |au|

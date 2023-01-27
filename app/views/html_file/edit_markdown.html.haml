@@ -1,5 +1,5 @@
 != "<script src=\"https://unpkg.com/stackedit-js@1.0.5/docs/lib/stackedit.min.js\"></script>"
-.top-element.backend
+.backend
   = form_tag(action: 'edit_markdown', id: @text.id) do
     .container-fluid
       .row
@@ -12,18 +12,26 @@
             %p!= t(:split_work_mode_intro)
           - else
             %h2= @text.title
+          %div{style:'background-color: yellow'}
+            %h4{'data-target' =>'#pub_details', 'data-toggle' =>'collapse', style:'cursor:pointer'}= t(:for_publishers_project)
+            .collapse#pub_details
+              = label_tag(t(:publisher_link))
+              = text_field_tag(:pub_link, @text.pub_link, size: 100)
+              %br
+              = label_tag(t(:publisher_link_text))
+              = text_field_tag(:pub_link_text,@text.pub_link_text, size: 70)
         .col-md-6
           - unless @text.person.nil?
             %h3
               = t(:by)+' '
-              = link_to @text.person.name+' ('+t(:author)+')', authors_show_path(id: @text.person.id)
+              = link_to @text.person.name+' ('+t(:author)+')', author_toc_path(id: @text.person)
               - unless @text.translator.nil?
                 = t(:translated_by)+' '
                 = link_to @text.translator.name+' ('+t(:translator)+')', authors_show_path(id: @text.translator.id)
             = t(:publisher)+": #{@text.publisher}; #{t(:year_published)}: #{@text.year_published}"
-          %h3= label_tag t(:orig_lang)
+          %b= label_tag t(:orig_lang)
           = select_tag 'orig_lang', options_for_select(get_langs.map {|lang| [textify_lang(lang), lang]}, @text.orig_lang)
-          %h3= label_tag(:genre, t(:genre))
+          %b= label_tag(:genre, t(:genre))
           = select_tag(:genre, options_for_select(get_genres.map {|genre| [I18n.t(genre), genre]}, @text.genre), {include_blank: true})
       .row
         .col-md-12
@@ -31,11 +39,13 @@
             .col-sm-3
               #legacy_markdown_link
               %h2= t(:markdown)
-              %button.btn-small-outline-v02#add_stanza_break
+              %button.btn-small-outline-v02#add_stanza_break{style:'display:unset'}
                 %b.btn-text-v02= t(:add_stanza_break)
-              %button.btn-small-outline-v02#remove_angled_brackets
+              %button.btn-small-outline-v02#add_angled_brackets{style:'display:unset'}
+                %b.btn-text-v02= t(:add_angled_brackets)
+              %button.btn-small-outline-v02#remove_angled_brackets{style:'display:unset'}
                 %b.btn-text-v02= t(:remove_angled_brackets)
-              %button.btn-small-outline-v02#minuses_to_makafim
+              %button.btn-small-outline-v02#minuses_to_makafim{style:'display:unset'}
                 %b.btn-text-v02= t(:minuses_to_makafim)
               .markdown= text_area_tag(:markdown, raw(@markdown), class: 'textarea100')
             .col-sm-9
@@ -57,14 +67,17 @@
           %ul
             %li
               %b
-                - if @text.genre.nil? or @text.genre.empty?
-                  = t(:must_set_genre)
-                - elsif @text.status == 'Accepted'
-                  != link_to t(:publish), action: :publish, id: @text.id
-                - elsif @text.status != 'Published'
-                  != raw(t(:accept_conversion_and) + link_to(t(:frbrize), html_file_frbrize_path(@text), id: 'frbrize_button'))
+          - if @text.genre.nil? or @text.genre.empty?
+            = t(:must_set_genre)
+          - elsif @text.status != 'Published'
+            = t(:status)
+            = select_tag :pub_status, options_for_select(Manifestation.statuses.map {|lt| [t(lt[0]), lt[1]]}), {include_blank: true}
+            = t(:pub_status_explanation)
+            %p
+            %h3.by-button-v02.surprise-btn-v02.headline-2-v02#frbrize_button{style:'float:unset;width:max-content;padding-top:10px;'}!= t(:accept_conversion_and) + t(:frbrize)
 
 :javascript
+  var somethingChanged=false;
   function highlight_in_red(buf) {
     return "<span style=\"color:red; font-size: 250%\">"+buf+"</span>";
   }
@@ -85,16 +98,27 @@
       $txt.focus();
       $txt.caretTo(caretPos+txtToAdd.length);
     });
-
-    $('#remove_angled_brackets').click(function(e) {
+    $('#add_angled_brackets').click(function(e) {
+      e.preventDefault();
       if($('#markdown').selection() == '') {
-        e.preventDefault();
+        alert("#{t(:select_text_to_add_to)}");
+      }
+      else
+      {
+        var buf = $('#markdown').selection();
+        buf = buf.replace(/\n([^#])/g, "\n> $1");
+        $('#markdown').selection('replace', {text: buf});
+      }
+    });
+    $('#remove_angled_brackets').click(function(e) {
+      e.preventDefault();
+      if($('#markdown').selection() == '') {
         alert("#{t(:select_text_to_remove_from)}");
       }
       else
       {
         var buf = $('#markdown').selection();
-        buf = buf.split(/\n> */).join("\n"); // no replaceAll in JS?
+        buf = buf.split(/\n> */).join("\n");
         $('#markdown').selection('replace', {text: buf});
       }
     });
@@ -113,17 +137,48 @@
       $('#markdown').val(buf);
       alert('בוצעו '+replaced.toString()+' החלפות.');
     });
+    $('form').submit(function() {
+      $(window).unbind('beforeunload');
+    });
 
-    if(#{@text.has_splits ? true : false})
-      $('#frbrize_button').click(function(e){
-        e.preventDefault();
+    $('#markdown').change(function() { 
+      somethingChanged = true; 
+    });
+    $(window).bind('beforeunload', function(e){
+      if(somethingChanged)
+        return true;
+      else 
+        e=null;
+    });
+    function submit_frbr() {
+      url = "#{url_for(controller: :html_file, action: :frbrize, id: @text.id)}"
+      if($('#pub_status').val() != '')
+        url += '?pub_status=' + $('#pub_status').val();
+      location.href = url;
+    }
+    
+    $('#frbrize_button').click(function(e){
+      if(somethingChanged) {
+        alert("בוצעו שינויים בטקסט והם יאבדו בלי שמירה! האם באמת לעזוב את הדף [במסך הבא]?");
+      }
+    });
+    var warned_about_splits = false;
+    $('#frbrize_button').click(function(e){
+      e.preventDefault();
+      if(#{@text.has_splits ? true : false}) {
         if((/&&& /.test($('#markdown').val( ))) && (/^\s*\S+\s*&&& /.test($('#markdown').val()))) {
             alert("#{t(:non_whitespace_before_first_part)}");
-        } else {
+        } else if(!warned_about_splits){
           alert("#{t(:careful_with_splits)}");
-          $('#frbrize_button').off('click'); // show only once
+          warned_about_splits = true;
+        } else {
+          submit_frbr();
         }
-      });
+      } else {
+        submit_frbr();
+      }
+    });
+
     $('#vised').click(function() {
       const el = document.querySelector('#markdown');
       const pv = document.querySelector('#preview');

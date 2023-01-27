@@ -1,9 +1,6 @@
 /* CSS Document */
 
 @media only screen and (max-width: 399px) {
-.top-element{
-  margin-top: 80px;
-  }
 .byPeriod {
   width: 8%;
  }
@@ -109,7 +106,7 @@
 	
 .surprise-author-pic-v02 {
     width: 60px;
-    height: 80px; }
+    height: 86px; }
 
 .surprise-work-genre-v02 {
     width: 60px;
@@ -122,7 +119,7 @@
 .surprise-author-name-v02 {
 	font-size: 10px;
 	line-height: 10px;
-	padding-top: 0;}
+}
 
 .by-genre-icon-surprise-v02 {
     font-size: 24px;
@@ -134,32 +131,39 @@
 		margin: 0;
 	}
 .headline-1-v02{
-  font-size: 15pt;
+  font-size: 14pt;
   line-height: 15pt;
 }
 .headline-2-v02{
-  font-size: 13px;
-  line-height: 14px;
+  font-size: 11pt;
+  line-height: 12pt;
 }
-	
+.headline-3-v02 {
+  font-size: 10pt;
+ line-height: 11pt; 
+	}	
 .byPeriodName-v02{
 		font-weight: bold;
 		font-size: 12px;
 	}
 
 .statistics-box-v02 {
-    height: 34px;
+	margin-top: 6px;
     border-radius: 8px; }
 
+.statistics-v02{
+	margin: 1px 3px 2px 3px;
+}
 .stat-big-v02 {
     font-size: 12px;
     font-weight: bold;
     line-height: 11px; }
 
 .stat-small-v02 {
-    font-size: 7px;
+    font-size: 8px;
     line-height: 7px;
-    margin-top: 2px; }
+    margin-top: 3px; 
+	}
 .logoBY-scroll-v02{
 		padding-top: 6px;
 	}
@@ -168,17 +172,15 @@
 	line-height: 14px;
 	}
 .btn-small-outline-v02 {
-  min-width: 20px;
-  height: 20px;
-  margin-top: 2px;
-  margin-bottom: 2px;
+  min-width: 28px;
+  height: 28px;
   border-radius: 2px;
    }
 .top-search-mobile-v02 {
   margin-right: 8px;
 }
 .author-page-top-info-card{
-  padding: 3px 6px;
+  padding: 6px;
 }
 
 .btn-text-v02{
@@ -192,18 +194,11 @@
 		margin-left: 4px;
 }
 
-.icon-in-group-v02 .by-icon-v02{
-	  line-height: 12px;
-}
 	.work-chapters-dropdown-field{
 	width: 48%;	
 	}
 	.field-v02 {
   padding: 0 4px;
-}
-body {
-	font-size: 11px;
-	line-height: 12px; 
 }
 .left-arrow {
   padding-right:3px;
@@ -233,10 +228,6 @@ body {
 	font-size: 9px;
 	line-height: 28px;
 }	
-.by-icon-v02 {
-  font-size: 12px; 
-	vertical-align: middle;
-}
 .recommend-card-v02 {
   height: 110px;
 }
@@ -262,30 +253,13 @@ body {
 	.author-name-area{
 		height: 33px;
 	}
-.author-page-content{
-	margin-top: 178px;
-}
 
-	.text-page-content{
-	margin-top: 166px;
-}
-	.about-page-content{
-		margin-top: 112px;
-	}
 	.logoBY-v02 {
     max-width: 150px;
     max-height:54px;
     padding-right: 0px;
 	padding-top: 2px;}
 	
-	.scrolled .logoBY-scroll-mobile-v02{
-	}
-		.scrolled .logoBY-scroll-mobile-v02 img{
-    height: 24px;
-}
-	.author-page-top-rights{
-	width: calc(50% - 29px);
- }
 	.reading-mode-icon-btn-v02{
 		padding: 0;
 		line-height: 18px;
@@ -296,19 +270,9 @@ body {
 	.by-icon-top-v02{
 		line-height: 12px;
 	}
-	.top-search-icon-mobile-v02{
-		padding-top: 0;
-		text-align: center;
-	}
-	#moreMobile{
-		padding-top: 0;
-	}
 	.work-page-top-author{
 		min-height: 24px;
 	}
-		.work-page-top-icons-mobile{
-	bottom: 2px;
-}
 	.print .col-12{
 	padding-right: 15px;
 	padding-left: 15px;
@@ -346,9 +310,6 @@ body {
 }
 .share-name{
 	padding-top: 8px;
-}
-.by-dropdown-v02{
-	height: 12px;
 }
 .rm-control-panel-mobile #text-moreMobile{
   padding-top: 1px;
@@ -395,21 +356,16 @@ body {
 	min-height: 32px;
 	margin-top: 2px;
 }
-	#moreMobile{
-		margin-right: 4px;
-	}
 	.menuButton-v02{
 		font-size: 16px;
-		margin-top: 4px;
 	}
 	
 	.scrolled .logoBY-scroll-mobile-v02{
-		position: absolute;
-		right: calc(100% - 130px);
+		right: 24px;
 	}
 .scrolled .logoBY-scroll-mobile-v02 img{
-    max-height: 26px;
-	margin-top: 2px;
+    max-height: 22px;
+	margin-top: 7px;
 }
 .share-popup{
 	width: 260px;
@@ -417,12 +373,6 @@ body {
 .share-popup{
 		width: 180px;
 	}
-.by-card-header-v02{
-			min-height: 28px;
-}
-.work-chapters-popup-mobile{
-	right: calc(50% - 31px);
-}
 .a-b-pagination-frame{
 	margin-bottom: 12px;
 	display: flex;
@@ -470,5 +420,136 @@ body {
 	}
 	.popup-with-bottom-links{
 		height: calc(100% - 54px);
+	}
+	.surprise-author-card-content-v02 {
+ margin-right: 75px;
+width: calc(100% - 75px);
+	}
+		.surprise-work-card-content-v02 {
+ margin-right: 75px;
+}
+.by2-icon{
+    font-size: 12px;
+}
+.flash-author-popup-v02{
+		height: calc(100vh - 114px);
+	}
+.flash-author-popup-v02 .by-card-content-v02{
+		height: calc(100vh - 172px);
+	}
+#authors-surprise-replaced .by-card-header-v02{
+	padding-right: 90px;
+}
+	#whats-new-author-popup .by-card-header-v02{
+	padding-right: 90px;
+}
+	#works-surprise-replaced .by-card-header-v02{
+			padding-right: 90px;
+	}
+	#author-info-popup .by-card-header-v02{
+			padding-right: 90px;
+	}
+	.about-work-author-card-v02{
+		width: 60px;
+		height: 87px;
+	}
+	.about-work-author-pic-v02{
+		width: 60px;
+		height: 87px;
+	}
+	.about-work-card-bookmark-fold-v02{
+	  width: 64px;
+  height: 3px;	
+	}
+.lexicon-homepage .lexicon-header-he .headline-1-v02{
+		font-size: 12pt;
+		margin-bottom: 2px;
+	}
+		.lexicon-header-en .headline-1-v02{
+		font-size: 12pt;
+		margin-bottom: 2px;
+	}
+	.index-part-of-pby img {
+    margin: 2px 2px;
+    width: 28px;
+    height: 10px;
+}
+	.author-in-pby{
+		font-size: 28px;
+		right: 110px;
+	}
+	.authors-list-years{
+		right: 150px;
+	}
+	.lexicon-home-header .lexicon-logo{
+	width: 48px;
+    height: 48px;
+    flex-basis: 48px;
+	}
+			.lexicon-author-page-content{
+		margin-top: 235px;
+	}
+
+	.lexicon-author-pic{
+		width: 50px;
+		margin-left: 8px;
+	}
+	.lexicon-author-details .headline-1-v02{
+		font-size: 14pt;
+	}
+		.lexicon-author-page-content .index-part-of-pby img:first-child{
+		display: block;
+	}
+	.lexicon-author-page-content .index-part-of-pby img:last-child{
+		display: block;
+	}
+			.gateway-header .headline-1-v02{
+		font-size: 14pt;
+	}
+		.gateway-header .by-genre-icon-v02{
+		font-size: 24px;
+	}
+	.new-card-right-v02{
+		display: none;
+	}
+		.author-main-info-card-v02 .by-card-header-v02 {
+    padding-right: 90px;
+}
+	.lexicon-publication-pic{
+		width: 60px;
+		margin-top: 4px;
+	}
+	.money-donation-text {
+    width: 102px;
+}
+
+	
+}
+@media only screen and (max-width: 359px){
+	.scrolled .donation-btn-v02{
+		display: none;
+	}
+	.scrolled .donation-icon-only{
+		display: block;
+	}
+}
+@media only screen and (max-width: 319px){
+	.logoBY-v02 {
+    max-width: 120px;
+    max-height: 43px;
+    padding-right: 0px;
+    padding-top: 3px;
+}
+	.scrolled .logoBY-scroll-mobile-v02 {
+    right: 12px;
+}
+	.scrolled .logoBY-scroll-mobile-v02 img{
+    max-height: 18px;
+}
+	.statistics-box-v02{
+		float: left;
+		width: 126px;
+		padding-left: 0;
+		padding-right: 0;
 	}
 }

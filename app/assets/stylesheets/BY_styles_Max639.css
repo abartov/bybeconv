@@ -20,9 +20,6 @@ p {
   margin-right: 5%;
 }
 	
-.scrolled .logoBY-scroll-mobile-v02{
-		right: calc(100% - 130px);
-	}
 .author-info-v02 {
   width: 24px;
   height: 24px;
@@ -62,8 +59,8 @@ p {
 .surprise-author-card-v02 {
     width: 96px;
     height: 176px;
-    margin-right: 15px;
-    margin-top: -5px; }
+	}
+	 
 .about-author-card-v02 {
     width: 96px;
     height: 138px;
@@ -79,7 +76,8 @@ p {
   margin-top: -5px;
   width: 101px;
   height: 5px;
-  margin-right: 9px;}
+  margin-right: 9px;
+}
 	
 .about-author-card-bookmark-fold-v02 {
   margin-right: 10px;
@@ -100,11 +98,9 @@ p {
     width: 96px;
     height: 138px;
     padding-top: 32px; }
-.surprise-author-name-v02 {
-  }
+
 
 .statistics-box-v02 {
-    height: 46px;
     border-radius: 10px; }
 
 .stat-big-v02 {
@@ -113,12 +109,12 @@ p {
     line-height: 19px; }
 
 .stat-small-v02 {
-    font-size: 10px;
+    font-size: 11px;
     line-height: 10px;
     margin-top: 6px; }
 
 .surprise-again-footer-v02 {
-  padding: 15px 15px 15px 20px;
+  padding: 15px;
 }
 
 .by-genre-icon-surprise-v02 {
@@ -133,6 +129,12 @@ p {
 	min-height: 148px;
 }
 .headline-1-v02{
+  font-size: 14pt;
+  line-height: 16pt;
+}
+.headline-2-v02{
+  font-size: 12pt;
+  line-height: 14pt;
 }
 .author-name-area{
 		height: 38px;
@@ -144,9 +146,6 @@ p {
 	}
 	.author-page-top-name{
 		line-height: 36px;
-	}
-	.author-page-content{
-		margin-top: 203px;
 	}
 	.text-page-content{
 	margin-top: 208px;
@@ -210,14 +209,13 @@ p {
 .second-header-row{
 	margin-top: 2px;
 }
-	.scrolled .logoBY-scroll-mobile-v02{
-		position: absolute;
-		right: calc(100% - 130px);
-	}
 .scrolled .logoBY-scroll-mobile-v02 img{
     max-height: 28px;
 	margin-top: 4px;
 }
+	.scrolled .logoBY-scroll-mobile-v02{
+		right: 48px;
+	}
 .a-b-pagination-frame{
 	height: auto;
 	margin-bottom: 12px;
@@ -237,13 +235,74 @@ p {
 	.name-under-btn{
 		width: 100%;
 	}
-.author-page-top-sort-mobile{
-	margin-right: 10px;
-}
 	.texts-list-top-info-card .headline-3-v02{
 	min-width: calc(50% - 28px);
 }
 	
-	
+.surprise-author-card-content-v02 {
+  width: calc(100% - 108px);
+	margin-right: 111px;
+}
+	.surprise-work-card-content-v02 {
+  width: calc(100% - 108px);
+	margin-right: 111px;
+}
+#authors-surprise-replaced .by-card-header-v02{
+	padding-right: 126px;
+}
+#whats-new-author-popup .by-card-header-v02{
+	padding-right: 126px;
+}
+#works-surprise-replaced .by-card-header-v02{
+	padding-right: 126px;
+}
+#author-info-popup .by-card-header-v02{
+	padding-right: 126px;
+}
+#sefaria-title .he{
+  font-size: 14pt;
+  line-height: 16pt;
+}
+		#volunteer-bg{
+		background-size:80%;
+	}
+		#who-wrote-about-bg {
+		background-size:80%;
+	}
+	#whats-new-bg {
+		background-size:90%;
+	}
+
+	.lexicon-author-pic{
+		width: 70px;
+	}
+.lexicon-homepage .lexicon-header-he .headline-1-v02{
+		font-size: 19pt;
+	}
+	.index-part-of-pby img {
+    margin: 3px 3px;
+    width: 38px;
+    height: 11px;
+}
+		.lexicon-author-details .headline-1-v02{
+		font-size: 18pt;
+	}
+	.gateway-header .headline-1-v02{
+		font-size: 18pt;
+	}
+	.BYD-entry-top .headline-1-v02{
+		margin-bottom: 0;
+	}
+
+	.author-main-info-card-v02 .by-card-header-v02 {
+    padding-right: 125px;
+}
+.by-card-header-v02 {
+	min-height: 50px;
+}	
+			
+#text-volunteers-mobile .credits{
+  column-count: 1;
+}
 }
 

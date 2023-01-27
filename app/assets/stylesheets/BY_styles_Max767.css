@@ -50,86 +50,10 @@
 .surprise-author-left-side{
   margin-top: 0;
 	}
-.popup-top{
-  position: static;
-  width: calc(100% + 30px);
-  display: block;
-  margin-left: -15px;
-  margin-right: -15px;
-  padding-left: 0px;
-  padding-right: 0px;
-}
-
-.by-popup-v02 {
-  width: calc(100% + 30px);
-  height: 100vh;
-  box-shadow: none;
-  left: 0;
-  margin-top:0px;
-  margin-left: -15px;
-  margin-right: -15px;
-  border-top: solid 2px #d9cdd5;
-  border-radius: 0;
-  padding-left: 0px;
-  padding-right: 0px;
-}
-.by-dual-popup{
-  width: 92%;
-  background-color: #eeeced;
-  border-radius: 3px;
-  box-shadow: 0 3px 9px rgba(0, 0, 0, 0.4);
-  margin-top: 45px;
-  margin-right: auto;
-  margin-left: auto;
-}
-.share-popup{
-	width: 240px;
-}
-.share-name{
-	display: none;
-}
-.by-popup-v02-share{
-  width: 100%;
-  height: 140px;
-  box-shadow: none;
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  margin-top:0px;
-  margin-left: 0;
-  margin-right: 0;
-  border-radius: 0;
-  padding-left: 15px;
-  padding-right: 15px;
-}
-.popup-x-v02 {
-  display: block;
-}
-.popup-with-bottom-links{
-		height: calc(100% - 58px);
-	}
 	.author-page-top-name{
 		line-height: 36px;
 	}
-	.author-page-content{
-		margin-top: 222px;
-	}
 
-	.desktop-only{
-		display: none;
-	}
-	.mobile-only{
-	display: block;
-}
-.dropdown-menu-seperator{
-  display:block;
-  width: calc(100% + 30px);
-  padding: 0px;
-  margin: 0;
-}
-	.curatorial-content{
-	display: block;
-}
 	.print .col-12{
 	padding-right: 60px;
 	padding-left: 60px;
@@ -139,45 +63,26 @@
 }
 .by-card-header-v02 {
   width: 100%;
-  padding: 8px 15px 4px 15px;
+  padding: 15px;
   margin-right: 0px;
 }
-.flash-popup-bg-v02 {
-  width: calc(100% + 30px); 
-	margin-left: -15px;
-	margin-right: -15px;
-}
 
 
 
-.modal-dialog {height: 100%;}
-
-.modal-content {height: 100%;}
-	
-	.modal-dialog .modal-content .container-fluid{
-		height: 100%;
-	}
-		.modal-dialog .modal-content .container-fluid form{
-		height: 100%;
-	}
-			.modal-dialog .modal-body{
-		height: 100%;
-	}
-	
-	.modal-dialog .popup-x-v02{
-		display: none;
-	}
-	
-.by-popup-v02-share .popup-top{
-	padding-top: 10px;
-	padding-bottom: 10px;
-	border-bottom: solid 2px #d9cdd5;
-}
 .bottom-button-area .close-btn{
 	display: none;
 }
 	.top-contact-center{
-		padding: 0;width: calc(100% - 160px); padding-top: 1px;text-align: center;
+		padding-left: 6px;
+		padding-right: 6px;
+	}
+	.top-contact-center .headline-1-v02{
+		margin-left: 0;
+	}
+	.top-contact-center .headline-3-v02{
+		padding-left: 0;
+		text-align: center;
+		margin-bottom: 0;
 	}
 	.top-contact-side{
 		width: 80px;
@@ -240,20 +145,11 @@
 .sort-by-desktop{
 	display: none;
 }
-.sort-by-mobile{
-	display: block;
-	margin-top: 16px;
-}
 .author-side-sort{
   display:none;
 }
 .author-mobile-filters-area .headline-2-v02{
 		display: inline;
-	}
-.author-mobile-sort-and-filter{
-  width: 100%;
-  height: 100%;
-	margin-bottom: 200px;
 	}
 .sticky-top{
   position: sticky;
@@ -271,8 +167,6 @@
 .internal-notification .popup-x-v02{
   display: block;
 }
-.system-notification{
-}
 .internal-notification-content{
   display: block;
   padding-bottom: 6px;
@@ -285,62 +179,11 @@
 .internal-notification-text{
 	text-align: center;
 }
-	.scrolled .logoBY-scroll-mobile-v02{
-		position: absolute;
-		right: calc(100% - 120px);
-	}
 .scrolled .logoBY-scroll-mobile-v02 img{
     max-height: 32px;
 	margin-top: 2px;
 }
-		
-#text-volunteers-mobile .credits{
-  column-count: 2;
-}
-.modal-dialog{
-	margin: 0 auto 0 auto;
-}
-.modal-body{
-	width: 100%;
-	height: 100%;
-	margin: 0;
-}
-	.modal-body .popup-x-v02{
-		display: none;
-	}	
-.author-page-top-icons-desktop{
-	display: none;
-}
-.author-page-top-icons-mobile{
-	display: block;
-	margin-right: auto;
-}
-	
-.author-page-top-sort-desktop{
-	display: none;
-}
 
-.author-page-top-sort-mobile{
-	display: block;
-	margin-right: 15px;
-}
-#sort_by_dd{
-	display: none;
-}
-#current_sort_by{
-	display: block;
-	padding: 0 4px;
-}
-	.side-sort{
-		display:none;
-	}
-	.author-side-sort{
-		display: none;
-	}
-.author-sort-area{
-	width: auto;
-	padding: 0;
-}
 	#hide_next_times{
 		display: none;
 }
@@ -359,9 +202,6 @@
     line-height: 32px;
 	height: 32px;
 }
-.mainlist ol > li {
-	line-height: 32px;
-}
 .texts-list-top-info-card{
 	display: flex;
 	align-items: center;
@@ -369,41 +209,42 @@
 	padding-left: 10px;
 	padding-top: 4px;
 }
-.BYD-rights{
-	display: none;
-}
-.author-page-top-rights{
-	width: calc(50% - 40px);
-  white-space: nowrap;
-	margin-right: 0;
-	display: inline-block;
- }
-.author-page-top-info-card{
-  padding: 3px 15px 3px 10px;
-}
-.value-summary-card-v02 {
-  margin-left: 0px;
-}
-.by-dual-popup input[type=checkbox]{
-	display: none;
-}	
-	
-.by-dual-popup label{
-	display: none;
-}	
-.topNavEntry{
-	margin: 0 12px;
-}
-.texts-list-top-info-card .headline-3-v02{
-	min-width: calc(50% - 38px);
-	margin-left: 0;
-}
-  #content {
-    height: 100vh; }
-	.by-card-content-v02{
-		max-height: calc(100vh - 100px);
-	}
 	.surprise-author-card-content-v02{
+		width: calc(100% - 85px);
 		    max-height: calc(100vh - 165px);
+	}
+		.surprise-work-card-content-v02{
+		width: calc(100% - 147px);
+		    max-height: calc(100vh - 165px);
+	}
+	
+	
+	.surprise-author-card-content-v02 {
+  width: calc(100% - 163px);
+	}
+
+	.flash-author-popup-v02 .by-card-content-v02{
+		height: calc(100vh - 182px);
+		max-height: calc(100vh - 182px);
+		overflow-y: auto;
+	}
+	
+.lexicon-author-nav-links.topNavEntry {
+    margin: 0;
+}
+	.topNavEntryArea .headline-1-v02 {
+    margin-right: 5px;
+    margin-left: 5px;
+}	
+.yiddish-list .texts-list-top-info-card{
+		padding-left: 15px;
+		padding-top: 15px;
+		gap: 10px;
+	}
+	.donation-top-baner .by-card-content-v02{
+		width: 100%;
+	}
+	.donation-background-image{
+		background-image: none;
 	}
 }

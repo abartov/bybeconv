@@ -1,25 +1,28 @@
-%h1 Listing api_keys
+#content.container-fluid
+  .row
+    .col-12
+      %h1 Listing api_keys
 
-%table
-  %tr
-    %th Email
-    %th Description
-    %th Key
-    %th Status
-    %th
-    %th
-    %th
+      %table.table
+        %thead
+          %tr
+            %th Email
+            %th Description
+            %th Key
+            %th Status
+            %th
+        %tdbody
+          - @api_keys.each do |api_key|
+            %tr
+              %td= api_key.email
+              %td= api_key.description
+              %td= api_key.key
+              %td
+                %span.badge{ class: api_key.status_enabled? ? 'badge-success' : 'badge-danger' }= api_key.status
+              %td
+                .btn-group
+                  =link_to 'Edit', edit_api_key_path(api_key), class: 'btn btn-primary'
+                  =link_to 'Destroy', api_key, :method => :delete, :data => { :confirm => 'Are you sure?' }, class: 'btn btn-danger'
+      %br
 
-  - @api_keys.each do |api_key|
-    %tr
-      %td= api_key.email
-      %td= api_key.description
-      %td= api_key.key
-      %td= api_key.status
-      %td= link_to 'Show', api_key
-      %td= link_to 'Edit', edit_api_key_path(api_key)
-      %td= link_to 'Destroy', api_key, :method => :delete, :data => { :confirm => 'Are you sure?' }
-
-%br
-
-= link_to 'New Api key', new_api_key_path
+      = link_to 'New Api key', new_api_key_path, class: 'btn btn-primary'

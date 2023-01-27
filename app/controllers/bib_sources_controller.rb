@@ -59,8 +59,9 @@ class BibSourcesController < ApplicationController
         primo:{ typename: t(:primo), enable: [:url, :institution, :item_pattern]},
         idea: { typename: t(:idea), enable: [:url, :item_pattern]},
         hebrewbooks: { typename: t(:hebrewbooks), enable: []},
+        nli_api: { typename: t(:nli_api), enable: [:url, :api_key]},
         googlebooks: { typename: t(:googlebooks), enable: [:api_key]}}.to_json
-      typenames = [:aleph, :primo, :idea, :hebrewbooks, :googlebooks]
+      typenames = [:aleph, :primo, :idea, :hebrewbooks, :googlebooks, :nli_api]
       @select_options = typenames.map{|tn| [t(tn), tn]}
     end
 

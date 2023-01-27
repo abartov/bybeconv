@@ -1,5 +1,10 @@
 include BybeUtils
 Bybeconv::Application.routes.draw do
+  resources :lex_files
+  mount Rswag::Ui::Engine => '/api-docs'
+  mount Rswag::Api::Engine => '/api-docs'
+  mount V1::Api => '/'
+
   resources :anthology_texts do
     post 'mass_create', on: :collection
     get 'confirm_destroy'
@@ -19,7 +24,9 @@ Bybeconv::Application.routes.draw do
   get 'bib/scans' => 'bib#scans', as: 'bib_scans'
   get 'bib/person/:person_id' => 'bib#person', as: 'bib_person'
   match 'bib/pubs_by_person', via: [:get, :post]
-
+  get 'bib/pubs_maybe_done'
+  get 'bib/publication_mark_false_positive/:id' => 'bib#publication_mark_false_positive', as: 'publication_mark_false_positive'
+  get 'bib/make_scanning_task/:id' => 'bib#make_scanning_task', as: 'bib_make_scanning_task'
   get 'bib/todo_by_location'
   get 'bib/holding_status/:id' => 'bib#holding_status', as: 'holding_status'
   post 'bib/make_author_page'
@@ -43,6 +50,7 @@ Bybeconv::Application.routes.draw do
   get 'admin/tocs_missing_links'
   get 'admin/incongruous_copyright'
   get 'admin/suspicious_headings'
+  get 'admin/texts_between_dates'
   get 'admin/suspicious_titles'
   get 'admin/similar_titles'
   get 'admin/periodless'
@@ -116,11 +124,17 @@ Bybeconv::Application.routes.draw do
   post "authors/create"
   patch "authors/update"
   get 'authors/get_random_author'
+  post 'authors/add_link/:id' => 'authors#add_link', as: 'author_add_link'
+  match 'authors/delete_link/:id' => 'authors#delete_link', as: 'author_delete_link', via: [:post]
   match 'author/:id/edit_toc' => 'authors#edit_toc', as: 'authors_edit_toc', via: [:get, :post]
   match 'author/:id/create_toc' => 'authors#create_toc', as: 'authors_create_toc', via: [:get]
   match 'author/:id' => 'authors#toc', as: 'author_toc', via: [:get, :post]
+  match 'author/publish/:id' => 'authors#publish', as: 'author_publish', via: [:get, :post]
   get 'author/:id/delete_photo' => 'authors#delete_photo', as: 'delete_author_photo'
   get 'author/:id/whatsnew' => 'authors#whatsnew_popup', as: 'author_whatsnew_popup'
+  get 'author/:id/links' => 'authors#all_links', as: 'author_links_popup'
+  get 'welcome/:id/featured_popup' => 'welcome#featured_popup', as: 'featured_content_popup'
+  get 'welcome/:id/featured_author' => 'welcome#featured_author_popup', as: 'featured_author_popup'
   get 'author/:id/latest' => 'authors#latest_popup', as: 'author_latest_popup'
   get '/page/:tag' => 'static_pages#view', as: 'static_pages_by_tag', via: [:get]
   get "read/:id" => 'manifestation#read', as: 'manifestation_read'
@@ -128,6 +142,7 @@ Bybeconv::Application.routes.draw do
   get 'dict/:id/:entry' => 'manifestation#dict_entry', as: 'dict_entry'
   get "read/:id/read" => 'manifestation#readmode', as: 'manifestation_readmode'
   get 'periods' => 'manifestation#periods', as: 'periods'
+  match 'authors', to: 'authors#browse', as: 'authors', via: [:get, :post]
   match 'works', to: 'manifestation#browse', as: 'works', via: [:get, :post]
   match 'works/all', to: 'manifestation#all', as: 'all_works', via: [:get, :post]
   match 'manifestation/genre' => 'manifestation#genre', as: 'genre', via: [:get, :post]
@@ -139,6 +154,7 @@ Bybeconv::Application.routes.draw do
   match "print/:id" => 'manifestation#print', as: 'manifestation_print', via: [:get, :post]
   get "manifestation/show/:id" => 'manifestation#show', as: 'manifestation_show'
   get "manifestation/render_html"
+  match "manifestation/chomp_period/:id" => 'manifestation#chomp_period', as: 'manifestation_chomp_period', via: [:get]
   post 'manifestation/set_bookmark'
   post 'manifestation/remove_bookmark'
   get "manifestation/edit/:id" => 'manifestation#edit', as: 'manifestation_edit'
@@ -159,11 +175,11 @@ Bybeconv::Application.routes.draw do
   get 'work/show/:id' => 'manifestation#workshow', as: 'work_show' # temporary, until we have a works controller
   get 'manifestation/add_aboutnesses/:id' => 'manifestation#add_aboutnesses'
 
-  get "api/query"
-  resources :api_keys
+  resources :api_keys, except: :show
   get "taggings/render_tags"
   resources :taggings
   resources :aboutnesses
+  resources :preferences, only: [:update]
 
   match 'user/list', via: [:get, :post]
   post 'user/set_editor_bit'
@@ -171,7 +187,6 @@ Bybeconv::Application.routes.draw do
   get "user/:id/make_admin" => 'user#make_admin', as: 'user_make_admin'
   get "user/:id/unmake_editor" => 'user#unmake_editor', as: 'user_unmake_editor'
   get 'user/:id' => 'user#show', as: 'user_show'
-  post 'user/set_pref'
   get "welcome/index"
   get "welcome/contact"
   get "welcome/volunteer"
@@ -233,6 +248,9 @@ Bybeconv::Application.routes.draw do
   match 'html_file/edit_markdown', via: [:get, :post]
   post 'html_file/create'
   get 'html_file/destroy'
+
+  mount Blazer::Engine, at: "blazer"
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

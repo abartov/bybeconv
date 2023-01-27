@@ -1,0 +1,9 @@
+test:
+  adapter: mysql2
+  host: 127.0.0.1
+  port: <%= ENV['MYSQL_PORT'] %>
+  database: bybe_test
+  username: root
+  password: root
+  encoding: utf8mb4
+  collation: utf8mb4_bin

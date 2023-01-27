@@ -4,7 +4,7 @@ class StaticPage < ApplicationRecord
   has_paper_trail
   enum status: [:unpublished, :published]
   enum mode: [:plain_markdown, :cards, :cards_with_shortcuts]
-  has_many_attached :images
+  has_many_attached :images, dependent: :destroy
   
   def english?
     buf = self.body[0..(self.body.length > 1000 ? 1000 : -1)]
@@ -19,14 +19,23 @@ class StaticPage < ApplicationRecord
 
   def prepare_markdown
     markdown = MultiMarkdown.new(self.body).to_html.force_encoding('UTF-8')
-#    unless self.mode == 'plain_markdown' # then all paragraphs should be in cards
-#      parts = markdown.split("<h2")
-#      newbuf = parts[0]
-#      parts[1..-1].each {|p|
-#        newbuf += '<div class="by-card-v02"><h2' + p + '</div>'
-#      }
-#      markdown = newbuf
-#    end
+    unless self.mode == 'plain_markdown' # then all paragraphs should be in cards
+      sections = markdown.split(/(<h2.*?<\/h2>)/)
+      newbuf = '<span class="headline-1-v02">' + self.title + '</span>'
+      extrastyle = self.ltr ? 'style="direction:ltr;text-align:left"' : ''
+      i = 0
+      sections.each do |s|
+        if s[0..2] == '<h2'
+          s.match(/<h2.*?>(.*?)<\/h2>/)
+          title = $1 or ''
+          newbuf += "<div class=\"by-card-v02\"><div class=\"by-card-header-v02\"><span class=\"headline-2-v02\" #{extrastyle}>#{title}</span></div><div class=\"by-card-content-v02\">"
+        else
+          newbuf += s + '</div></div>' unless i == 0 # close card
+        end
+        i += 1
+      end
+      markdown = newbuf
+    end
     return markdown
   end
 end

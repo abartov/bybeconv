@@ -1,0 +1,84 @@
+.advanced-pagination-area
+  - unless @page == 1 || @page == '1'
+    %span.by-icon-v02= link_to '{', update_param(request.original_url, 'page', '1'), {remote: true, id: 'firstnav', title: t(:worklist_first_page_tt)}
+  - else
+    %span.by-icon-v02.navdisabled= '{'
+  = link_to_previous_page collection, '2', {class: 'by-icon-v02', remote: true, id: 'prevnav', title: t(:worklist_prev_page_tt), params: {sort_by: @sort}} do
+    %span.by-icon-v02.navdisabled
+      = '2'
+  .advanced-pagination#pagination-slider{ title: t(:worklist_pagination_handle_tt)}
+    .page= t(:page_x_of_y, {x: @page, y: @total_pages})
+    %input.slider.progress-handle{'type': 'text', 'data-slider-min': 1, 'data-slider-max': @total_pages, 'data-slider-step':1, 'data-slider-value': @page, 'data-slider-handle': 'custom', title: t(:worklist_pagination_handle_tt)}
+  .pageSelectorArea
+    .pageSelectorF
+      %div= t(:page_colon)
+      %input.field-v02.page_selector{:placeholder => @page, :type => "text"}
+      %div= t(:out_of_x, {x: @total_pages})
+  %span.by-icon-v02
+    = link_to_next_page collection, '1', {remote: true, id: 'nextnav', title: t(:worklist_next_page_tt), params: {sort_by: @sort}} do
+      %span.by-icon-v02.navdisabled= '1'
+  - unless @page == @total_pages || @page.to_i == @total_pages
+    %span.by-icon-v02= link_to '0', update_param(request.original_url, 'page', @total_pages.to_s), {remote: true, id: 'lastnav', title: t(:worklist_last_page_tt)}
+  - else
+    %span.by-icon-v02.navdisabled= '0'
+
+:javascript
+  var filters = #{@emit_filters == true};
+  $(document).ready(function(){
+    if(filters) {
+      elem = "#{element}";
+      $('#firstnav').click(function(e){
+        e.stopImmediatePropagation(); /* # prevent second pagination bar at bottom from also firing */
+        e.preventDefault();
+        $('#page_tag').val('1');
+        $('#mobile_page_tag').val('1');
+        window.history.replaceState($(elem).serialize(), null, "#{path}");
+        submit_filters();
+      });
+      $('#lastnav').click(function(e){
+        e.stopImmediatePropagation();
+        e.preventDefault();
+        $('#page_tag').val('#{@total_pages}');
+        $('#mobile_page_tag').val('#{@total_pages}');
+        window.history.replaceState($(elem).serialize(), null, "#{path}");
+        submit_filters();
+      });
+      $('#nextnav').click(function(e){
+        e.stopImmediatePropagation();
+        e.preventDefault();
+        $('#page_tag').val('#{@page.to_i + 1}');
+        $('#mobile_page_tag').val('#{@page.to_i + 1}');
+        window.history.replaceState($(elem).serialize(), null, "#{path}");
+        submit_filters();
+      });
+      $('#prevnav').click(function(e){
+        e.stopImmediatePropagation();
+        e.preventDefault();
+        $('#page_tag').val('#{@page.to_i - 1}');
+        $('#mobile_page_tag').val('#{@page.to_i - 1}');
+        window.history.replaceState($(elem).serialize(), null, "#{path}");
+        submit_filters();
+      });
+      $('.page_selector').change(function(e){
+        e.stopImmediatePropagation();
+        $('#mobile_page_tag').val($(this).val());
+        window.history.replaceState($(elem).serialize(), null, "#{path}");
+        submit_filters();
+      });
+    } else {
+      /* # window.history.replaceState($('#works_filters').serialize(), null, '/works');  */
+      $('.page_selector').change(function(e){
+        e.stopImmediatePropagation();
+        url = "#{request.original_url}";
+        url = url.replace(/page=\d+/,'');
+        if(url.indexOf('?') == -1) {
+          url = url + '?page=' + $(this).val();
+        } else {
+          url = url + '&page=' + $(this).val();
+        }
+        startModal('spinnerdiv');
+        window.location = url;
+      });
+    }
+
+  });

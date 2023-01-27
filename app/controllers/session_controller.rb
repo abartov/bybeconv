@@ -15,7 +15,26 @@ class SessionController < ApplicationController
   end
 
   def create
-    @user = User.from_omniauth(auth_hash)
+    User.transaction do
+      @user = User.from_omniauth(auth_hash)
+      bu = base_user # base_user of anonymous session
+
+      # if user doesn't have a BaseUser (i.e. if this is a new sign up) we link BaseUser from session to newly created user
+      if @user.base_user.nil?
+        if bu.present? && bu.user.nil?
+          bu.update!(session_id: nil, user: @user)
+        else
+          BaseUser.create!(user: @user)
+        end
+      else
+        # user already has BaseUser record, so we drop BaseUser created for anonymous session if it exists
+        if bu.present?
+          current_visit.update!(user_id: @user.base_user.id) if current_visit.present? # assign this visit to the authenticated user
+          # TODO: consider to move prefs from anonymous BaseUser to user.base_user before deletion
+          bu.destroy
+        end
+      end
+    end
     reset_session
     session[:user_id] = @user.id
     redirect_to '/'

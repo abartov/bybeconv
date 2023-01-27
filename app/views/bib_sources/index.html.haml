@@ -14,7 +14,7 @@
   %tbody
     - @bib_sources.each do |bib_source|
       %tr
-        %td= bib_source.title
+        %td= textify_bib_source(bib_source.id)
         %td= t(bib_source.source_type)
         %td= t(bib_source.status)
         %td= bib_source.comments

@@ -28,6 +28,7 @@ class AnthologiesController < ApplicationController
   def clone
     if @anthology.accessible?(current_user)
       @na = @anthology.dup
+      @na.sequence = ''
       @na.user = current_user # whoever owned it before (could clone a public anth owned by someone else)
       @na.access = :priv # default to private after cloning
       @na.title = t(:copy_of)+@na.title
@@ -41,6 +42,9 @@ class AnthologiesController < ApplicationController
       end
       @anthology = @na # make the cloned anthology the current one
       @cur_anth_id = @anthology.nil? ? 0 : @anthology.id
+      @na.reload
+      @na.cached_page_count = @na.page_count(true) # force refresh
+      @na.save!
       respond_to do |format|
         format.js
         format.html {redirect_to @anthology, notice: t(:anthology_cloned)}
@@ -52,21 +56,27 @@ class AnthologiesController < ApplicationController
 
   def download
     if @anthology.accessible?(current_user)
-      dl = @anthology.fresh_downloadable_for(params[:format])
-      if dl
-        redirect_to rails_blob_url(dl.stored_file, disposition: :attachment)
-      else
+      format = params[:format]
+      unless Downloadable.doctypes.include?(format)
+        flash[:error] = t(:unrecognized_format)
+        redirect_to @anthology # TODO: handle anthology case
+        return
+      end
+
+      dl = @anthology.fresh_downloadable_for(format)
+      if dl.nil?
         prep_for_show
         # impressionist(@m) unless is_spider? # TODO: enable impressionist for anthologies
-        filename = "#{@anthology.title.gsub(/[^0-9א-תA-Za-z.\-]/, '_')}.#{params[:format]}"
+        filename = "#{@anthology.title.gsub(/[^0-9א-תA-Za-z.\-]/, '_')}.#{format}"
         html = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"><html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"he\" lang=\"he\" dir=\"rtl\"><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" /></head><body dir='rtl' align='right'><div dir=\"rtl\" align=\"right\">#{@anthology.title}"+@htmls.map{|h| "<h1>#{h[0]}</h1>\n#{h[1]}"}.join("\n").force_encoding('UTF-8')+"\n\n<hr />"+I18n.t(:download_footer_html, url: url_for(action: :show, id: @anthology.id))+"</div></body></html>"
         austr = begin
             @anthology.user.name
           rescue
             ""
           end
-        do_download(params[:format], filename, html, @anthology, austr)
+        dl = MakeFreshDownloadable.call(params[:format], filename, html, @anthology, austr)
       end
+      redirect_to rails_blob_url(dl.stored_file, disposition: :attachment)
     else
       redirect_to '/', error: t(:no_permission)
     end
@@ -102,6 +112,9 @@ class AnthologiesController < ApplicationController
     begin
       if @anthology.save
         @cur_anth_id = @anthology.nil? ? 0 : @anthology.id
+        @anthologies = current_user.anthologies
+        @new_anth_name = generate_new_anth_name_from_set(@anthologies)
+          
         respond_to do |format|
           format.js
           format.html {redirect_to @anthology, notice: 'Anthology was successfully created.'}
@@ -146,7 +159,7 @@ class AnthologiesController < ApplicationController
     @anthology.destroy
     @anthologies = current_user.anthologies
     unless @anthologies.empty?
-      @anthology = @anthologies.includes(:texts).first
+      @anthology = @anthologies.first
       session[:current_anthology_id] = @anthology.id
     else
       @anthology = nil
@@ -173,7 +186,7 @@ class AnthologiesController < ApplicationController
       @htmls = []
       i = 1
       @anthology.ordered_texts.each {|text|
-        @htmls << [text.title, text.render_html, text.manifestation_id.nil? ? true : false, text.manifestation_id.nil? ? nil : text.manifestation.expressions[0].genre ,i]
+        @htmls << [text.title, text.render_html, text.manifestation_id.nil? ? true : false, text.manifestation_id.nil? ? nil : text.manifestation.expression.work.genre ,i]
         i += 1
       }
     end

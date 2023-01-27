@@ -32,7 +32,7 @@ task :guess_period => :environment do
   todo.each {|e|
     processed += 1
     puts "processed #{processed}/#{todocount}, populated #{populated} periods" if processed % 10 == 0
-    relevant_person = e.translation ? e.translators.first : e.works[0].authors.first
+    relevant_person = e.translation ? e.translators.first : e.work.authors.first
     unless relevant_person.nil? || relevant_person.period.nil?
       populated += 1
       e.period = relevant_person.period

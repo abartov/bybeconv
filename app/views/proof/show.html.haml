@@ -1,5 +1,5 @@
 %script{src: 'https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js'}
-.top-element.backend
+.backend
   %br
   %br
   %br
@@ -39,6 +39,14 @@
     %b= link_to t(:resolve_as_fixed), proof_resolve_path(@p, :fixed => 'yes', :email => 'yes')
   %p{style:'margin-bottom:16px;font-size:16pt'}
     %b= link_to t(:resolve_as_fixed_no_email), proof_resolve_path(@p, :fixed => 'yes', :email => 'no')
+  = form_tag proof_resolve_path(@p.id), id: 'fixed_explain_form' do
+    %p#fixed_but_explain{style:'margin-bottom:16px;font-size:16pt'}
+      %b.pointer.linkcolor= t(:resolve_as_fixed_with_explanation)
+    = hidden_field_tag :email, 'yes'
+    = hidden_field_tag :fixed, 'yes'
+    = hidden_field_tag :escalate, 'no'
+    = text_area_tag 'fixed_explanation', '',{rows: 4, columns: 50}
+
   %hr
   %p{style:'margin-bottom:16px;font-size:16pt'}
     %b= link_to t(:resolve_as_wontfix), proof_resolve_path(@p, :fixed => 'no', email: 'yes', escalate: 'no')
@@ -72,6 +80,9 @@
 
 :javascript
   $(document).ready(function() {
+    $('#fixed_but_explain').click(function(){
+      $('#fixed_explain_form').submit();
+    });
     $('#wontfix_but_explain').click(function(){
       $('#wontfix_explain_form').submit();
     });

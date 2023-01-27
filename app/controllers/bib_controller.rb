@@ -5,7 +5,7 @@ class BibController < ApplicationController
 
   def index
     @counts = {pubs: Publication.count, holdings: Holding.count , obtained: Publication.where(status: Publication.statuses[:obtained]).count , scanned: Publication.where(status: Publication.statuses[:scanned]).count, copyrighted: Publication.where(status: Publication.statuses[:copyrighted]).count, uploaded: Publication.where(status: Publication.statuses[:uploaded]).count, irrelevant: Publication.where(status: Publication.statuses[:irrelevant]).count, missing: Holding.where(status: Holding.statuses[:missing]).count, authors_done: Person.has_toc.bib_done.count, authors_todo: Person.has_toc.count - Person.has_toc.bib_done.count}
-    @digipubs = Publication.where(status: Publication.statuses[:scanned]).order('rand()').limit(25)
+    @digipubs = Publication.includes(holdings: :bib_source).where(status: Publication.statuses[:scanned]).order('rand()').limit(25)
     pid = params[:person_id]
     unless pid.nil?
       @person_id = pid.to_i
@@ -14,8 +14,18 @@ class BibController < ApplicationController
     prepare_pubs
   end
 
+  def publication_mark_false_positive
+    pub = Publication.find(params[:id])
+    li = ListItem.new(listkey: 'pubs_false_maybe_done', item: pub)
+    li.save!
+    li = ListItem.where(listkey: 'pubs_maybe_done', item: pub)
+    unless li.empty?
+      li.each {|item| item.destroy}
+    end
+    render js: "$('.pub#{pub.id}').remove();"
+  end
   def scans
-    @digipubs = Publication.where(status: Publication.statuses[:scanned]).order('updated_at asc')
+    @digipubs = Publication.includes(holdings: :bib_source).where(status: Publication.statuses[:scanned]).order('updated_at asc')
   end
 
   def make_author_page
@@ -84,17 +94,35 @@ class BibController < ApplicationController
         sources << BibSource.find(params['bib_source'])
       end
       sources.each do |bib_source|
-#        recs = query_source_by_type(q, bib_source)
-#        to_add = []
-#        recs.each do |pub|
-#          sid = (pub.source_id.class == Array ? pub.source_id[0] : pub.source_id)
-#          yesno = Holding.where(source_id: url_for_record(bib_source, sid)).empty?
-#          to_add << pub if yesno
-#        end
-#        @pubs += to_add
         @pubs += query_source_by_type(q, bib_source).select  {|pub| Holding.where(source_id: url_for_record(bib_source, (pub.source_id.class == Array ? pub.source_id[0] : pub.source_id))).empty? }
       end
       @total_pubs = @pubs.count.to_s
+    end
+  end
+
+  def make_scanning_task
+    pub = Publication.find(params[:id])
+    if pub.nil?
+      render plain: 'moose'
+    else
+      Net::HTTP.start(AppConstants.tasks_system_host, AppConstants.tasks_system_port, :use_ssl => AppConstants.tasks_system_port == 443 ? true : false) do |http|
+        req = Net::HTTP::Post.new('/api/create_task')
+        req.set_form_data(title: pub.title, author: pub.author_line, 
+          edition_details: "#{pub.publisher_line}, #{pub.pub_year}", extra_info: "#{pub.language}\n#{pub.notes}",
+          api_key: current_user.tasks_api_key)
+        task_result = JSON.parse(http.request(req).body)
+        logger.debug("task_result: #{task_result.to_s}")
+        if task_result['task'].present?
+          pub.status = 'scanned'
+          pub.task_id = task_result['task']['id']
+          pub.save!
+          portpart = AppConstants.tasks_system_port == 80 ? '' : ":#{AppConstants.tasks_system_port }"
+          taskurl = "#{AppConstants.tasks_system_port == 443 ? 'https://' : 'http://'}#{AppConstants.tasks_system_host}#{portpart}/tasks/#{task_result['task']['id']}"
+          render inline: taskurl
+        else
+          render inline: 'alert("אירעה שגיאה ביצירת המשימה.");'
+        end
+      end
     end
   end
 
@@ -103,14 +131,22 @@ class BibController < ApplicationController
     Holding.where(status: Holding.statuses[:todo])
   end
 
+  def pubs_maybe_done
+    @pubs = []
+    ListItem.includes(:item).where(listkey: 'pubs_maybe_done').each do |pub|
+      item = pub.item
+      mm = item.person.all_works_by_title(pub_title_for_comparison(item.title))
+      @pubs << [item, mm]
+    end
+  end
   def shopping
     hh = []
     case
     when params[:pd] == '1' && params[:unique] == '1'
-      pp = Publication.joins(:holdings, :person).group('publications.id').having('COUNT(distinct holdings.bib_source_id) = 1').where('publications.status = "todo" and people.public_domain = 1') # get all publications available in only one source
-      pp.each{|p| p.holdings.each {|h| hh << h if h.bib_source_id == params[:source_id].to_i}}
+      pp = Publication.joins(:holdings, :person).group('publications.id').having('COUNT(distinct holdings.bib_source_id) = 1').where("publications.status = 'todo' and people.public_domain = 1 and holdings.bib_source_id = #{params[:source_id]}") # get all publications available in only one source
+      pp.each{|p| p.holdings.each {|h| hh << h }}
     when params[:pd] == '1' && (params[:unique].nil? || params[:unique] == '0')
-      hh = Holding.to_obtain(params[:source_id]).joins(publication: [:person]).includes(publication: [:person]).where('people.public_domain' => true).to_a
+      hh = Holding.to_obtain(params[:source_id]).joins(publication: [:person]).includes(publication: :holdings).where("people.public_domain = 1 AND publications.status = 'todo'").to_a
     when (params[:pd].nil? || params[:pd] == '0') && params[:unique] == '1'
       pp = Publication.joins(:holdings).group('publications.id').having('COUNT(distinct holdings.bib_source_id) = 1').where('publications.status = "todo"') # get all publications available in only one source
       pp.each{|p| p.holdings.each {|h| hh << h if h.bib_source_id == params[:source_id].to_i}}
@@ -118,7 +154,7 @@ class BibController < ApplicationController
       pp = Publication.joins(:holdings, :person).group('publications.id').having('COUNT(distinct holdings.bib_source_id) = 1').where('publications.status = "todo" and people.public_domain = 0') # get all publications available in only one source
       pp.each{|p| p.holdings.each {|h| hh << h if h.bib_source_id == params[:source_id].to_i}}
     when params[:nonpd] == '1' && (params[:unique].nil? || params[:unique] == '0')
-      hh = Holding.to_obtain(params[:source_id]).joins(publication: [:person]).includes(publication: [:person]).where('people.public_domain' => false).to_a
+      hh = Holding.to_obtain(params[:source_id]).joins(publication: [:person]).includes(publication: :holdings).where('people.public_domain' => false).to_a
     else
         hh = Holding.to_obtain(params[:source_id]).to_a
     end
@@ -169,6 +205,8 @@ class BibController < ApplicationController
       provider = Gared::Primo.new(bib_source.url, bib_source.institution)
     when 'idea'
       provider = Gared::Idea.new(bib_source.url)
+    when 'nli_api'
+      provider = Gared::Nli_Api.new(bib_source.url, bib_source.api_key)
     end
     ret = []
     ret = provider.query_publications_by_person(q, bib_source) if provider # bib_source is sent as context, so that the resulting Publication objects would be able to access the linkify logic for their source; should probably be replaced by a proc

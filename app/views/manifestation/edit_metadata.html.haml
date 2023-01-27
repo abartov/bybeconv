@@ -1,4 +1,4 @@
-.top-element.backend
+.backend
   = form_tag(action: :update, id: @m.id) do
     %h1= @page_title
 
@@ -29,10 +29,13 @@
       = text_field_tag :etitle, @e.title, size: 75
     %p
       %b= t(:genre) + ': '
-      = textify_genre(@e.genre) # should be identical to work's genre, so not editable
+      = textify_genre(@w.genre) # should be identical to work's genre, so not editable
     %p
       %b= t(:thedate) + ': '
       = text_field_tag :edate, @e.date
+    %p
+      %b= t(:period) + ': '
+      = select_tag :period, options_for_select(Person.periods.map{|p| [t(p[0]), p[0]]}, @e.period), include_blank: true
     %p
       %b= t(:language) + ': '
       = select_tag :elang, options_for_select(get_langs.map {|lang| [textify_lang(lang), lang]}, @e.language.nil? ? 'he' : @e.language)
@@ -59,6 +62,12 @@
       %b= t(:title) + ': '
       = text_field_tag :mtitle, @m.title, size: 75
     %p
+      %b= t(:alternate_titles) + ': '
+      = text_field_tag :alternate_titles, @m.alternate_titles, size: 75
+    %p
+      %b= t(:sort_name) + ': '
+      = text_field_tag :sort_title, @m.sort_title, size: 75
+    %p
       %b= t(:responsibility_statement) + ': '
       = text_field_tag :mresponsibility, @m.responsibility_statement # TODO: make editable?
     %p
@@ -70,13 +79,16 @@
     / = render partial: 'shared/associated_people', locals: { which: :manifestation, manifestation: @m, edit: true}
     %hr
     %h2= t(:external_links)
+    %b= t(:sefaria_linker)
+    = check_box_tag :sefaria_linker, 1, @m.sefaria_linker
+    %br
     = render partial: 'external_links', locals: { links: @m.external_links, edit: true }
-    = t(:add)
+    = t(:add_url)
     = text_field_tag :add_url
     = t(:link_type)
-    = select_tag :link_type, options_for_select(Manifestation.link_types.map {|lt| [t(lt[0]), lt[1]]})
+    = select_tag :link_type, options_for_select(ExternalLink.linktypes.map {|lt| [t(lt[0]), lt[1]]})
     %br
-    = t(:description)
+    = t(:link_description)
     = text_field_tag :link_description
     %p
       = submit_tag t(:save)

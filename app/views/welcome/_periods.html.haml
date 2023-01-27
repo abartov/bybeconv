@@ -2,7 +2,8 @@
   .by-card-v02#periods
     .by-card-header-v02
       %span.headline-1-v02
-        %a{ href: periods_path}= t(:periods)
+        -#%a{ href: periods_path}
+        = t(:periods)
     .by-card-content-v02
       %div{style:'min-height:100px'}
         - ['ancient','enlightenment'].each do |period|

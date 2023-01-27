@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   before_action :set_paper_trail_whodunnit
   before_action :set_font_size
+  before_action :set_base_user
   after_action :set_access_control_headers
 
   # class variables
@@ -10,18 +11,45 @@ class ApplicationController < ActionController::Base
   @@pop_authors_by_genre = nil
   SPIDERS = ['msnbot', 'yahoo! slurp','googlebot','bingbot','duckduckbot','baiduspider','yandexbot']
 
-  def set_font_size
-    if current_user
-      key = "u_#{current_user.id}_fontsize"
-      @fontsize = Rails.cache.fetch(key)
-      if @fontsize.nil?
-        Rails.cache.fetch(key) do
-          current_user.preferences.fontsize
-        end
-        @fontsize = current_user.preferences.fontsize
+  # returns BaseUser record associated with current user
+  # If user is authenticated it will look for record by user_id, otherwise - by session_id
+  # If force_create arg is set to true it will create new BaseUser record for user if it doesn't exists
+  def base_user(force_create= false)
+    return @base_user if @base_user.present?
+
+    if session.id.nil?
+      if force_create
+        # if no session exists we need to write something there to create anonymous session
+        session[:dummy] = true
+        session.delete(:dummy)
+      else
+        # no session exists, so no stored data for this user yet
+        return nil
       end
+    end
+
+    if current_user
+      # Authenticated user
+      attrs = { user: current_user }
     else
-      @fontsize = '2'
+      # Not authenticated user
+      # We use 'private_id' to have same format as used in Sessions table
+      attrs = { session_id: session.id.private_id }
+    end
+
+    @base_user = BaseUser.find_by(attrs)
+    if @base_user.nil? && force_create
+      @base_user = BaseUser.create!(attrs)
+    end
+
+    return @base_user
+  end
+
+  def set_font_size
+    if base_user
+      @fontsize = base_user.get_preference(:fontsize)
+    else
+      @fontsize = BaseUser::DEFAULT_FONT_SIZE
     end
   end
 
@@ -38,6 +66,13 @@ class ApplicationController < ActionController::Base
   def mobile_search
     render partial: 'shared/mobile_search'
   end
+  def es_buckets_to_facet(buckets, codehash)
+    facet = {}
+    buckets.each do |facethash|
+      facet[codehash[facethash['key']]] = facethash['doc_count'] unless codehash[facethash['key']].nil?
+    end
+    return facet
+  end
 
   protected
 
@@ -51,6 +86,9 @@ class ApplicationController < ActionController::Base
     end
     redirect_to '/', flash: { error: I18n.t(:not_an_editor) }
   end
+  def set_base_user
+    @bu = base_user
+  end
 
   def require_admin
     return true if current_user && current_user.admin?
@@ -63,8 +101,7 @@ class ApplicationController < ActionController::Base
       error: I18n.t(:must_be_logged_in) }
   end
 
-  def popular_works(update = false)
-    Manifestation.recalc_popular if update
+  def popular_works
     @popular_works = Manifestation.get_popular_works
   end
 
@@ -75,47 +112,14 @@ class ApplicationController < ActionController::Base
   end
 
   def cached_newest_authors
-    Rails.cache.fetch("newest_authors", expires_in: 30.minutes) do # memoize
-      Person.has_toc.has_image.joins(expressions: [:works]).group('people.id').having("COUNT(works.id) > 0 OR COUNT(expressions.id) > 0").order(created_at: :desc).limit(10)
+    Rails.cache.fetch("newest_authors", expires_in: 6.hours) do # memoize
+      Person.published.has_toc.has_image.left_joins([:expressions, :works]).group('people.id').having("COUNT(works.id) > 0 OR COUNT(expressions.id) > 0").order(published_at: :desc).limit(10)
     end
   end
 
   def cached_newest_works
     Rails.cache.fetch("newest_works", expires_in: 30.minutes) do # memoize
       Manifestation.published.order(created_at: :desc).limit(10)
-    end
-  end
-
-  def featured_content
-    Rails.cache.fetch("featured_content", expires_in: 10.minutes) do # memoize
-      ret = nil
-      fcfs = FeaturedContentFeature.where("fromdate <= :now AND todate >= :now", now: Date.today).order('RAND()').limit(1)
-      if fcfs.count == 1
-        ret = fcfs[0].featured_content
-      end
-      ret
-    end
-  end
-
-  def featured_author
-    Rails.cache.fetch("featured_author", expires_in: 1.hours) do # memoize
-      fas = FeaturedAuthorFeature.where("fromdate <= :now AND todate >= :now", now: Date.today).order('RAND()').limit(1)
-      if fas.count == 1
-        fas[0].featured_author
-      else
-        nil
-      end
-    end
-  end
-
-  def featured_volunteer
-    Rails.cache.fetch("featured_volunteer", expires_in: 10.hours) do # memoize
-      ret = nil
-      vpfs = VolunteerProfileFeature.where("fromdate <= :now AND todate >= :now", now: Date.today).order('RAND()').limit(1)
-      if vpfs.count == 1
-        ret = vpfs[0].volunteer_profile
-      end
-      ret
     end
   end
 
@@ -143,7 +147,7 @@ class ApplicationController < ActionController::Base
   end
 
   def randomize_works_by_genre(genre, how_many)
-    return Manifestation.where(id: Manifestation.published.joins(expressions: [:works]).where({works: {genre: 'poetry'}}).pluck(:id).sample(how_many))
+    return Manifestation.where(id: Manifestation.published.joins(expression: :work).where({ works: { genre: genre } }).pluck(:id).sample(how_many))
   end
 
   def randomize_works(how_many)
@@ -153,7 +157,7 @@ class ApplicationController < ActionController::Base
   def cached_authors_in_genre
     Rails.cache.fetch("au_by_genre", expires_in: 24.hours) do # memoize
       ret = {}
-      get_genres.each{ |g| ret[g] = Person.has_toc.joins(:expressions).where(expressions: { genre: g}).uniq.count}
+      get_genres.each { |g| ret[g] = Person.has_toc.joins(expressions: :work).where(works: { genre: g }).uniq.count }
       ret
     end
   end
@@ -161,7 +165,7 @@ class ApplicationController < ActionController::Base
   def cached_authors_in_period
     Rails.cache.fetch("au_by_period", expires_in: 24.hours) do # memoize
       ret = {}
-      get_periods.each{ |p| ret[p] = Person.has_toc.joins(:expressions).where(expressions: { period: p}).uniq.count}
+      get_periods.each{ |p| ret[p] = Person.has_toc.joins(works: :expressions).where(expressions: { period: p}).uniq.count}
       ret
     end
   end
@@ -169,7 +173,7 @@ class ApplicationController < ActionController::Base
   def cached_works_by_period
     Rails.cache.fetch("works_by_period", expires_in: 24.hours) do # memoize
       ret = {}
-      get_periods.each{ |p| ret[p] = Manifestation.published.joins(:expressions).where(expressions: { period: p}).uniq.count}
+      get_periods.each{ |p| ret[p] = Manifestation.published.joins(:expression).where(expressions: { period: p}).uniq.count}
       ret
     end
   end
@@ -211,6 +215,7 @@ class ApplicationController < ActionController::Base
     end
     return @@countauthors_cache
   end
+
   def prep_toc
     # TODO: cache this!
     #old_toc = @author.toc.toc
@@ -229,14 +234,15 @@ class ApplicationController < ActionController::Base
     @credits = MultiMarkdown.new(credits).to_html.force_encoding('UTF-8')
     @credit_section = @author.toc.credit_section.nil? ? "": @author.toc.credit_section
     @toc_timestamp = @author.toc.updated_at
-    @works = @author.all_works_title_sorted
+    @works = @author.all_works_including_unpublished
+    @works_options = @works.map{|m| [@toc.index('מ'+m.id.to_s) ? "#{t(:already_in_toc)} #{m.title}" : m.title, m.id]}.sort_by{|opt| opt[0]}
     @fresh_works = @author.works_since(12.hours.ago, 1000)
     unless @fresh_works.empty?
-      @fresh_works_markdown = @fresh_works.map{|m| "\\n&&& פריט: מ#{m.id} &&& כותרת: #{m.title}#{m.expressions[0].translation ? ' / '+m.authors_string : ''} &&&\\n"}.join('').html_safe
+      @fresh_works_markdown = @fresh_works.map{|m| "\\n&&& פריט: מ#{m.id} &&& כותרת: #{m.title}#{m.expression.translation ? ' / '+m.authors_string : ''} &&&\\n"}.join('').html_safe
     else
       @fresh_works_markdown = ''
     end
-end
+  end
 
   def is_spider?
     ua = request.user_agent.downcase
@@ -285,116 +291,6 @@ end
     return 'https://www.youtube.com/watch?v='+id
   end
 
-  def get_or_create_downloadable_by_type(dl_entity, doctype)
-    dls = dl_entity.downloadables.where(doctype: Downloadable.doctypes[doctype])
-    if dls.empty?
-      dl = Downloadable.new(doctype: doctype)
-      dl_entity.downloadables << dl
-      return dl
-    else
-      return dls[0]
-    end
-  end
-
-  def images_to_absolute_url(buf)
-    return buf.gsub(/<img src="\/rails\/active_storage/,"<img src=\"#{root_url}/rails/active_storage")
-  end
-  def do_download(format, filename, html, download_entity, author_string)
-    html = images_to_absolute_url(html)
-    case format
-    when 'pdf'
-      html.gsub!(/<img src=.*?active_storage.*?>/) {|match| "<div style=\"width:209mm\">#{match}</div>"}
-      html.sub!('</head>','<style>html, body {width: 20cm !important;} p{max-width: 20cm;} div {max-width:20cm;} img {max-width: 100%;}</style></head>')
-      #html.sub!(/<body.*?>/, "#{$&}<div class=\"html-wrapper\" style=\"position:absolute\">")
-      #html.sub!('</body>','</div></body>')
-      pdfname = HtmlFile.pdf_from_any_html(html)
-      pdf = File.read(pdfname)
-      send_data pdf, type: 'application/pdf', filename: filename
-      dl = get_or_create_downloadable_by_type(download_entity, 'pdf')
-      dl.stored_file.attach(io: File.open(pdfname), filename: filename)
-      File.delete(pdfname) # delete temporary generated PDF
-    when 'doc'
-      begin
-        temp_file = Tempfile.new('tmp_doc_'+download_entity.id.to_s, 'tmp/')
-        temp_file.puts(PandocRuby.convert(html, M: 'dir=rtl', from: :html, to: :docx).force_encoding('UTF-8')) # requires pandoc 1.17.3 or higher, for correct directionality
-        temp_file.chmod(0644)
-        send_file temp_file, type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', filename: filename
-        temp_file.rewind
-        dl = get_or_create_downloadable_by_type(download_entity, 'docx')
-        dl.stored_file.attach(io: temp_file, filename: filename)
-      ensure
-        temp_file.close
-      end
-    when 'odt'
-      begin
-        temp_file = Tempfile.new('tmp_doc_'+download_entity.id.to_s, 'tmp/')
-        temp_file.puts(PandocRuby.convert(html, M: 'dir=rtl', from: :html, to: :odt).force_encoding('UTF-8')) # requires pandoc 1.17.3 or higher, for correct directionality
-        temp_file.chmod(0644)
-        send_file temp_file, type: 'application/vnd.oasis.opendocument.text', filename: filename
-        temp_file.rewind
-        dl = get_or_create_downloadable_by_type(download_entity, 'odt')
-        dl.stored_file.attach(io: temp_file, filename: filename)
-      ensure
-        temp_file.close
-      end
-    when 'html'
-      begin
-        temp_file = Tempfile.new('tmp_html_'+download_entity.id.to_s, 'tmp/')
-        temp_file.puts(html)
-        temp_file.chmod(0644)
-        send_file temp_file, type: 'text/html', filename: filename
-        temp_file.rewind
-        dl = get_or_create_downloadable_by_type(download_entity, 'html')
-        dl.stored_file.attach(io: temp_file, filename: filename)
-      ensure
-        temp_file.close
-      end
-    when 'txt'
-      txt = html2txt(html)
-      txt.gsub!("\n","\r\n") if params[:os] == 'Windows' # windows linebreaks
-      begin
-        temp_file = Tempfile.new('tmp_txt_'+download_entity.id.to_s,'tmp/')
-        temp_file.puts(txt)
-        temp_file.chmod(0644)
-        send_file temp_file, type: 'text/plain', filename: filename
-        temp_file.rewind
-        dl = get_or_create_downloadable_by_type(download_entity, 'txt')
-        dl.stored_file.attach(io: temp_file, filename: filename)
-      ensure
-        temp_file.close
-      end
-    when 'epub'
-      begin
-        epubname = make_epub_from_single_html(html, download_entity, author_string)
-        epub_data = File.read(epubname)
-        send_data epub_data, type: 'application/epub+zip', filename: filename
-        dl = get_or_create_downloadable_by_type(download_entity, 'epub')
-        dl.stored_file.attach(io: File.open(epubname), filename: filename)
-        File.delete(epubname) # delete temporary generated EPUB
-      end
-    when 'mobi'
-      begin
-        # TODO: figure out how not to go through epub
-        epubname = make_epub_from_single_html(html, download_entity, author_string)
-        mobiname = epubname[epubname.rindex('/')+1..-6]+'.mobi'
-        out = `kindlegen #{epubname} -c1 -o #{mobiname}`
-        mobiname = epubname[0..-6]+'.mobi'
-        mobi_data = File.read(mobiname)
-        send_data mobi_data, type: 'application/x-mobipocket-ebook', filename: filename
-        dl = get_or_create_downloadable_by_type(download_entity, 'mobi')
-        dl.stored_file.attach(io: File.open(mobiname), filename: filename)
-        File.delete(epubname) # delete temporary generated EPUB
-        File.delete(mobiname) # delete temporary generated MOBI
-      end
-    else
-      flash[:error] = t(:unrecognized_format)
-      if download_entity.class == Anthology
-        redirect_to anthology_path(download_entity.id) # TODO: handle anthology case
-      else
-        redirect_to manifestation_read_path(download_entity.id) # TODO: handle anthology case
-      end
-    end
-  end
   public # temp
   def newsfeed
     unsorted_news_items = NewsItem.last(5) # read at most the last 5 persistent news items (Facebook posts, announcements)
@@ -411,16 +307,18 @@ end
 
   def whatsnew_since(timestamp)
     authors = {}
-    Manifestation.all_published.new_since(timestamp).includes(:expressions).each {|m|
-      e = m.expressions[0]
-      person = e.persons[0] # TODO: more nuance
+    Manifestation.all_published.new_since(timestamp).includes(:expression).each {|m|
+      e = m.expression
+      next if e.nil? # shouldn't happen
+      w = e.work
+      person = e.translation ? m.translators.first : m.authors.first # TODO: more nuance
       next if person.nil? # shouldn't happen, but might in a dev. env.
       if authors[person].nil?
         authors[person] = {}
         authors[person][:latest] = 0
       end
-      authors[person][e.genre] = [] if authors[person][e.genre].nil?
-      authors[person][e.genre] << m
+      authors[person][w.genre] = [] if authors[person][w.genre].nil?
+      authors[person][w.genre] << m
       authors[person][:latest] = m.updated_at if m.updated_at > authors[person][:latest]
     }
     authors
@@ -430,8 +328,8 @@ end
     ret = []
     manifestations.each do |m|
       ret << "<a href=\"#{url_for(controller: :manifestation, action: :read, id: m.id)}\">#{m.title}</a>"
-      if m.expressions[0].translation
-        ret[-1] += ' / '+m.authors_string unless m.expressions[0].works[0].authors.include?(au)
+      if m.expression.translation
+        ret[-1] += ' / ' + m.authors_string unless m.expression.work.authors.include?(au)
       end
     end
     return ret.join('; ')
@@ -444,9 +342,9 @@ end
       worksbuf = "<strong>#{I18n.t(genre[0])}:</strong> "
       first = true
       genre[1].each do |m|
-        title = m.expressions[0].title
-        if m.expressions[0].translation
-          per = m.expressions[0].works[0].persons[0]
+        title = m.expression.title
+        if m.expression.translation
+          per = m.expression.work.persons[0]
           unless per.nil?
             title += " #{I18n.t(:by)} #{per.name}"
           end
@@ -482,13 +380,49 @@ end
     return ret
   end
 
-  def get_intro(markdown)
-    lines = markdown[0..2000].lines[1..-2]
-    if lines.empty?
-      lines = markdown[0..[5000,markdown.length].min].lines[0..-2]
+  def generate_new_anth_name_from_set(anths)
+    i = 1
+    prefix = I18n.t(:anthology)
+    new_anth_name = prefix+"-#{i}"
+    anth_titles = @anthologies.pluck(:title)
+    loop do
+      new_anth_name = prefix+"-#{i}"
+      i += 1
+      break unless anth_titles.include?(new_anth_name)
     end
-    lines.join + '...'
+    return new_anth_name
   end
 
-  helper_method :current_user, :html_entities_coder, :get_intro
+  def prep_user_content(context = :manifestation)
+    if context == :manifestation
+      if base_user.present?
+        @bookmark = base_user.bookmarks.where(manifestation: @m).first&.bookmark_p || 0
+        @jump_to_bookmarks = base_user.get_preference(:jump_to_bookmarks)
+      else
+        @bookmark = 0
+      end
+    end
+
+    if current_user
+      @anthologies = current_user.anthologies
+      @new_anth_name = generate_new_anth_name_from_set(@anthologies)
+      if session[:current_anthology_id].nil?
+        unless @anthologies.empty?
+          @anthology = @anthologies.first
+          session[:current_anthology_id] = @anthology.id
+        end
+      else
+        begin
+          @anthology =  Anthology.find(session[:current_anthology_id])
+        rescue
+          session[:current_anthology_id] = nil # if somehow deleted without resetting the session variable (e.g. during development)
+          @anthology = @anthologies.first
+        end
+      end
+      @anthology_select_options = @anthologies.map{|a| [a.title, a.id, @anthology == a ? 'selected' : ''] }
+      @cur_anth_id = @anthology.nil? ? 0 : @anthology.id
+    end
+  end
+
+  helper_method :current_user, :html_entities_coder
 end

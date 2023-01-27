@@ -1,8 +1,11 @@
 
 class UserAnthTitleValidator < ActiveModel::Validator
   def validate(record)
-    extra_cond = record.id.nil? ? '' : "and id <> #{record.id}"
-    unless record.user.anthologies.where("title = '#{record.title}' #{extra_cond}").empty?
+    records = record.user.anthologies.where(title: record.title)
+    unless record.new_record?
+      records = records.where('id <> ?', record.id)
+    end
+    unless records.empty?
       record.errors[:base] << I18n.t(:title_already_exists)
     end
   end
@@ -10,22 +13,22 @@ end
 
 class Anthology < ApplicationRecord
   belongs_to :user
-  has_many :texts, class_name: 'AnthologyText', :dependent => :delete_all
-  has_many :downloadables, as: :object
-  enum access: %i(priv unlisted pub)
+  has_many :texts, class_name: 'AnthologyText', dependent: :destroy
+  has_many :downloadables, as: :object, dependent: :destroy
+  enum access: { priv: 0, unlisted: 1, pub: 2 }
   validates :title, presence: true
   validates_with UserAnthTitleValidator
 
   # this will return the downloadable entity for the Anthology *if* it is fresh
   def fresh_downloadable_for(doctype)
-    dls = downloadables.where(doctype: Downloadable.doctypes[doctype])
-    return nil if dls.empty?
-    return nil if dls[0].updated_at < self.updated_at # needs to be re-generated
+    dl = downloadables.where(doctype: doctype).first
+    return nil if dl.nil?
+    return nil if dl.updated_at < self.updated_at # needs to be re-generated
     # also ensure none of the *included* texts is fresher than the saved downloadable
     self.texts.where.not(manifestation_id: nil).each do |at|
-      return nil if dls[0].updated_at < at.manifestation.updated_at
+      return nil if dl.updated_at < at.manifestation.updated_at
     end
-    return dls[0]
+    return dl
   end
 
   def has_text?(text_id, anth_text_id = nil)
@@ -60,7 +63,7 @@ class Anthology < ApplicationRecord
       seq = self.sequence.split(';')
       seq.each do |id|
         begin
-          ret << self.texts.find(id)
+          ret << self.texts.select{|x| x.id == id.to_i}.first
         rescue
         end
       end

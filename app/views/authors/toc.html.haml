@@ -1,129 +1,180 @@
-/ Main author page
-/ hack to get scrollspy to highlight first genre up top
+-# Main author page
+-# hack to get scrollspy to highlight first genre up top
 - unless @genres_present.nil? or @genres_present.empty?
   %div{id: 'works-'+@genres_present.first}
-#content.container-fluid.top-element
-  .author-page-content
-    .row
-      .col-12.col-lg-8
-        .logo-for-print
-          %img.logoBY-v02{src: "/assets/logo-byp-mobile.svg", alt:""}
-        .row
-          .col.side-menu-area
-          .col
-            .by-card-v02.author-main-info-card-v02
-              %img.about-author-card-bookmark-fold-v02{:alt => t(:background), :height => "6", :src => "/assets/creator-bookmark-back2.png", :width => "168"}/
-              .about-author-card-v02
-                %img.surprise-author-pic-v02{:alt => @author.name, src: @author.profile_image.url(:thumb)}/
+.author-page-content
+  .row
+    .col-12.col-lg-8
+      .logo-for-print
+        %img.logoBY-v02{src: "/assets/logo-byp-mobile.svg", alt:""}
+      .row
+        .col.side-menu-area
+        .col
+          .by-card-v02.author-main-info-card-v02
+            %img.about-author-card-bookmark-fold-v02{:alt => t(:background), :height => "6", :src => "/assets/creator-bookmark-back2.png", :width => "168"}/
+            .about-author-card-v02
+              %img.surprise-author-pic-v02{:alt => @author.name, src: @author.profile_image.url(:thumb)}/
+            .by-card-header-v02
+              .author-name-years
+                .headline-1-v02
+                  = @author.name
+                .author-page-top-years!= "(#{@author.life_years})"
+            .by-card-content-v02
+              .text-height-author= @author.wikipedia_snippet
+              - if @author.wikipedia_url.present?
+                .read-more-v02
+                  %a{:href => @author.wikipedia_url, target: '_blank'}
+                    %span{:style => "font-weight: bold"}= @author.wikipedia_url =~ /wikipedia\.org/ ? t(:rest_in_wikipedia) : t(:rest_of_work)
+                    %span.left-arrow 1
+              %br
+                .metadata
+                  %b= t(:works_in_the_project)+': '
+                  = "#{@author.cached_works_count} #{t(:works)}"
+              -#%div{:style => "margin-top: 12px;"}
+              -#  %a{:href => "#"}
+              -#    %span.by-icon-v02.iconNearText-v02> W
+              -#    לינק
+              -#    לוידאו רלוונטי
+              -#%div{:style => "margin-top: 12px;"}
+              -#  %a{:href => "#"}
+              -#    %span.by-icon-v02.iconNearText-v02> +
+              -#    לינק
+              -#    לאתר רלוונטי
+              - unless @author.blog_category_url.nil? or @author.blog_category_url.empty?
+                .metadata-link
+                  %a{:href => @author.blog_category_url, target: '_blank'}
+                    %span.by-icon-v02> Q
+                    = t(:about_author_in_blog, author:@author.name)
+              - if current_user && current_user.editor?
+                %p{style:'text-align:left'}
+                  != "&nbsp;&nbsp;&nbsp;"
+                  - unless @author.toc.nil?
+                    %span.static-btn
+                      %b= link_to t(:edit_toc), authors_edit_toc_path(@author)
+                  - else
+                    %b{ style: 'font-size: 1rem'}= t(:this_author_has_a_generated_toc)
+                  != "&nbsp;&nbsp;&nbsp;"
+                  %span.static-btn
+                    %b= link_to t(:edit_metadata), authors_edit_path(id: @author.id)
+        
+            .select-all-with-buttons{style:'display:none;margin-right:100px;'}
+              .number-of-selected-texts{style: 'display:none'}
+                = t(:number_of_selected_texts)
+                %span#selected_counter{style: 'font-weight: bold'}= '0'
+                %span.pointer.linkcolor#reset_multiselect= t(:reset_multiselect)
+              .select-text-checkbox-area
+                .select-all-checkbox
+                  %input#select-all{type: 'checkbox', style:'display:none'}
+              %button.btn-small-outline-v02#multiselect_btn{title: t(:worklist_multi_tt)}
+                .by-icon-v02.purple-v02 \
+          -# table of contents
+          .toc#maintext
+            .add-to-anthology{style:'display:none'}
+              .left-pointing-arrow= t(:perform_add)
+              %button.by-button-v02#add-to-anth-btn
+                .by-icon-v02 &amp; D
+            - unless @toc.nil?
+              = render partial: 'toc', locals: {margin: true}
+              .by-card-v02#text-volunteers-desktop
+                .by-card-header-v02
+                  .headline-1-v02= t(:volunteers_who_helped, {author: @author.name, gender_letter: @author.gender_letter})
+                .by-card-content-v02
+                  .credits
+                    != @credits
+            - else
+              = render partial: 'generated_toc'
+    .col-12.col-lg-4
+      .row
+        %a{name: 'curated_g', 'class' => 'g_anch'}
+        .col.side-menu-area-left
+        .col
+          = render partial: 'shared/about_pby'
+          = render partial: 'shared/donation_box_negative'
+          .by-card-v02.whats-new-v02
+            #author-whats-new-bg
+              .by-side-card-header-v02
+                %p.headline-1-v02{:style => "margin-bottom: 0"}
+                  = t(:latest_updates)
+                  -#= link_to t(:latest_updates), whatsnew_path # TODO: re-enable when main whatsnew can be filtered by author
               .by-card-content-v02
-                .about-author-card-content-v02
-                  .name-under-btn
-                    %span.headline-1-v02
-                      = @author.name
-                    %span.date-range!= "(#{@author.life_years})"
-                  .author-about
-                    .text-height-author= @author.wikipedia_snippet
-                    .read-more-v02
-                      %a{:href => @author.wikipedia_url, target: '_blank'}
-                        %span{:style => "font-weight: bold"}= t(:rest_in_wikipedia)
-                        %span.left-arrow 1
-                    %div{style:'margin-top:12px;'}
-                      %b= t(:works_in_the_project)+': '
-                      = "#{@author.cached_works_count} #{t(:works)}"
-                    /%div{:style => "margin-top: 12px;"}
-                    /  %a{:href => "#"}
-                    /    %span.by-icon-v02.iconNearText-v02> W
-                    /    לינק
-                    /    לוידאו רלוונטי
-                    /%div{:style => "margin-top: 12px;"}
-                    /  %a{:href => "#"}
-                    /    %span.by-icon-v02.iconNearText-v02> +
-                    /    לינק
-                    /    לאתר רלוונטי
-                    - unless @author.blog_category_url.nil? or @author.blog_category_url.empty?
-                      %div{:style => "margin-top: 12px;"}
-                        %a{:href => @author.blog_category_url, target: '_blank'}
-                          %span.by-icon-v02.iconNearText-v02> Q
-                          = t(:about_author_in_blog, author:@author.name)
-                    - if current_user && current_user.editor?
-                      %p{style:'text-align:left'}
-                        %span.static-btn
-                          %b= link_to t(:edit_toc), authors_edit_toc_path(@author)
-                        != "&nbsp;&nbsp;&nbsp;"
-                        %span.static-btn
-                          %b= link_to t(:edit_metadata), authors_edit_path(id: @author.id)
-            / table of contents
-            .toc#maintext
-              - unless @toc.nil?
-                = render partial: 'toc', locals: {margin: true}
-                .by-card-v02#text-volunteers-desktop
-                  .by-card-header-v02
-                    %span.headline-1-v02= t(:volunteers_who_helped, {author: @author.name, gender_letter: @author.gender_letter})
-                  .by-card-content-v02
-                    .credits
-                      != @credits
-              - else
-                = render partial: 'generated_toc'
-      .col-12.col-lg-4
-        .row
-          %a{name: 'curated_g', 'class' => 'g_anch'}
-          .col.side-menu-area-left
-          .col
-            .by-card-v02.whats-new-v02
-              #author-whats-new-bg
+                .new-card-v02.last-item
+                  -#.new-info-v02 !
+                  .new-card-right-v02
+                    .new-card-type-v02 q
+                  .new-card-left-v02
+                    %p.headline-2-v02
+                      %span.new-headline-v02= t(:latest_added_works, {gender_letter: @author.gender_letter})
+                    %p.text-height-new#clamped_author_whatsnew
+                      != @latest
+                  .link-to-all-v02#author_latest_popup_link{style: 'display:none'}
+                    .author_latest_popup_button.linkcolor.pointer
+                      %span{:style => "font-weight: bold"}= t(:to_latest_x_works, {x: @author.cached_latest_stuff.count})
+                      %span.left-arrow 1
+          - unless @featured.empty?
+            - featured = @featured[0]
+            .by-card-v02.flash-work-v02
+              .flash-bg-v02
                 .by-side-card-header-v02
-                  %p.headline-1-v02{:style => "margin-bottom: 0"}
-                    = t(:latest_updates)
-                    /= link_to t(:latest_updates), whatsnew_path # TODO: re-enable when main whatsnew can be filtered by author
-                .by-card-content-v02.card-with-bottom-links.author-whats-new-content
-                  .new-card-v02.last-item
-                    /.new-info-v02 !
-                    .new-card-right-v02
-                      .new-card-type-v02 q
-                    .new-card-left-v02
-                      %p.headline-2-v02.new-headline-v02= t(:latest_added_works, {gender_letter: @author.gender_letter})
-                      %p.text-height-new#clamped_author_whatsnew
-                        != @latest
-                    .link-to-all-v02#author_latest_popup_link{style: 'display:none'}
-                      .author_latest_popup_button.linkcolor.pointer
-                        %span{:style => "font-weight: bold"}= t(:to_latest_x_works, {x: @author.cached_latest_stuff.count})
-                        %span.left-arrow 1
-            - unless @featured.empty?
-              - featured = @featured[0]
-              .by-card-v02.flash-work-v02
-                .flash-bg-v02
-                  .by-side-card-header-v02
-                    %p.headline-1-v02= t(:featured_item)
-                  .by-card-content-v02.card-with-button.flash-content
-                    .flash-text-v02
-                      %p.headline-2-v02
-                        = featured.title
-                      - unless featured.user.nil?
-                        %p
-                          = t(:by)+' '
-                          = link_to featured.user.name, volunteer_show_path(featured.user)
-                      .text-height-flash-work
-                        != @fc_snippet
-                        - if @fc_rest != ''
-                          = ' ...'
-                          / TODO: add a popup
-                    /.bottom-right-link
-                    /  %a{:href => "#"}
-                    /    %span.right-side-icon '
-                    /    %span{:style => "font-weight: bold"} הצגת זרקור נוסף
+                  %p.headline-1-v02= t(:featured_item)
+                .by-card-content-v02.clampable
+                  %p.headline-3-v02
+                    = featured.title
+                  - unless featured.user.nil?
+                    %p
+                      = t(:by)+' '
+                      = link_to featured.user.name, volunteer_show_path(featured.user)
+                  .text-height-flash-work.clampable_body
+                    != @fc_snippet
+                    - if @fc_rest != ''
+                      = ' ...'
+                      -# TODO: add a popup with .popup_btn class
+                  -#.bottom-right-link
+                  -#  %a{:href => "#"}
+                  -#    %span.right-side-icon '
+                  -#    %span{:style => "font-weight: bold"} הצגת זרקור נוסף
+                  .card-bottom
                     - unless featured.manifestation.nil?
                       %a{ href: manifestation_read_path(id: featured.manifestation.id)}
-                        %button.by-button-v02.button-to-full-v02= t(:to_the_work_in_the_site)
+                        %button.by-button-v02.link-to-all-v02= t(:to_the_work_in_the_site)
                     - unless featured.external_link.nil? or featured.external_link.empty?
                       %a{ href: featured.external_link, target: '_blank'}
-                        %button.by-button-v02.button-to-full-v02= t(:to_external_content)
-            = render partial: 'aboutnesses'
-            .by-card-v02#text-volunteers-mobile
-              .by-card-header-v02
-                %span.headline-1-v02= t(:volunteers_who_helped, {author: @author.name, gender_letter: @author.gender_letter})
+                        %button.by-button-v02.link-to-all-v02= t(:to_external_content)
+          = render partial: 'aboutnesses'
+          - if @external_links.count > 0
+            .by-card-v02.left-side-card-v02
+              .by-card-header-left-v02
+                %span.headline-1-v02= t(:external_links)
+                = t(:will_open_in_new_tab)
               .by-card-content-v02
-                .credits
-                  != @credits
+                - ExternalLink.sidebar_link_types.each do |lt|
+                  - links = @external_links.where(linktype: lt)
+                  - if links.count > 0
+                    .metadata-link.headline-2-v02
+                      %span.metadata-link-icon> +
+                      = t(lt)
+                    %div
+                      %ul.ul-inside
+                        - links.first(5).each do |l|
+                          %li
+                            = link_to l.description, l.url, target: :_blank
+                    - if links.count > 5
+                      .bottom-link-space
+                        .internal-link-to-all.all_links_btn.pointer.linkcolor
+                          %span{:style => "font-weight: bold"}= t(:to_all_x_items, x: links.count)
+                          %span.left-arrow 1
+                .metadata-link.notyet
+                  %a{href: ""}
+                    %span.metadata-link-icon.small-icon= '&'
+                    = t(:suggest_new_links)
+
+          .by-card-v02#text-volunteers-mobile
+            .by-card-header-v02
+              .headline-1-v02= t(:volunteers_who_helped, {author: @author.name, gender_letter: @author.gender_letter})
+            .by-card-content-v02
+              .credits
+                != @credits
+- if current_user
+  = render partial: 'shared/anth_stuff'
 
 :javascript
   $(document).ready(function(){
@@ -136,4 +187,81 @@
         $('#generalDlg').modal('show');
       });
     }
+    $('.all_links_btn').click(function(e){
+      e.preventDefault();
+      $('#generalDlg').load("#{author_links_popup_path(id: @author.id)}");
+      $('#generalDlg').modal('show');
+    });
+    $('.anthologies_button:not(:has(.must_login))').click(function() {
+      $('#anthologiesDlg').modal({  backdrop: 'static',
+        keyboard: false, show: true});
+    });
+    $.fn.browse_multi_select_toggle = function() {
+      // determine whether to toggle on or off
+      if($('#browse_mainlist').hasClass('multiselect')) {
+        $('#browse_mainlist').removeClass('multiselect');
+        $('#multiselect_btn').removeClass('btn-active');
+        $('#select-all').hide();
+        $('.number-of-selected-texts').hide();
+        $('.add-to-anthology').hide();
+        $('#browse_mainlist p input').remove();
+        $('#selected_counter').text('0');
+      } else {
+        // turn on multi-select mode
+        $('#browse_mainlist').addClass('multiselect');
+        $('#multiselect_btn').addClass('btn-active');
+        $('.select-all-with-buttons').show();
+        $('#select-all').show();
+        $('.number-of-selected-texts').show();
+        $('#browse_mainlist p').each(function() {
+          intlink = $(this).find('a[href]');
+          if(intlink.length > 0)
+            if(intlink[0].toString().match(/\/read\/\d+/))
+                $(this).prepend("<input class=\"multiselect_checkbox\" type=\"checkbox\" />");
+        });
+        $('.multiselect_checkbox').change(function() {
+          if($(this).prop('checked') && $('.add-to-anthology').css('display') == 'none') {
+            $('.add-to-anthology').show();
+           	startAnimation('blink 2s ease-in','.add-to-anthology');
+          }
+          $('#selected_counter').text($('.multiselect_checkbox:checked').length);
+        });
+      }
+    }
+    $('#reset_multiselect').click(function() {
+      $('.mainlist p input[type=checkbox]').prop('checked', false);
+      $('#select-all').prop('checked', false);
+      $('#selected_counter').text($('.multiselect_checkbox:checked').length);
+    });
+    $('#multiselect_btn').click(function(){
+      $.fn.browse_multi_select_toggle();
+    });
+    $('#select-all').change(function(){
+      $('.mainlist p input[type=checkbox]').prop('checked', $(this).prop('checked'));
+      if($('.add-to-anthology').css('display') == 'none' && $(this).prop('checked')) {
+        $('.add-to-anthology').show();
+        startAnimation('blink 2s ease-in','.add-to-anthology');
+      }
+      $('#selected_counter').text($('.multiselect_checkbox:checked').length);
+    });
+    $('#add-to-anth-btn').click(function() {
+      if(#{@anthology.nil? ? 'true' : 'false'} == true) {
+        alert('create or select an anthology first.');
+      } else {
+        // add to current anth
+        anthology_texts = []
+        $('.multiselect_checkbox:checked').each(function(){
+          hr = $(this).next().attr('href');
+          mid = hr.substring(hr.lastIndexOf('/')+1);
+          anthology_texts.push({manifestation_id: mid, anthology_id: $('#anth_id').val()});
+        });
+
+        $.ajax({
+          type: "POST",
+          url: '#{mass_create_anthology_texts_path}',
+          dataType: 'script',
+          data: { anthology_texts }
+        });
+      }
+    });
   });

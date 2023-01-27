@@ -1,4 +1,4 @@
-.top-element.backend
+.backend
   %h2= t(:missing_language_report)
   %h3= t(:total)+': '+@total.to_s
   %table{style: 'cell-spacing: 10;'}
@@ -9,10 +9,11 @@
       %th
 
     - @mans.each do |m|
-      - xlator = m.expressions[0].realizers.where(role: Realizer.roles[:translator])[0]
+      - xlator = m.expression.realizers.where(role: Realizer.roles[:translator])[0]
       %tr
         %td= link_to m.title, manifestation_show_path(m.id)
-        %td= m.expressions[0].works[0].persons[0].nil? ? '' : m.expressions[0].works[0].persons[0].name
+        - person = m.expression.work.persons[0]
+        %td= person.nil? ? '' : person.name
         %td= xlator.nil? ? '' : xlator.person.name
         %td= link_to t(:edit_metadata), manifestation_edit_metadata_path(m.id)
 

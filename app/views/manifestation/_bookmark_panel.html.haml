@@ -6,15 +6,15 @@
     .edit-bookmark-buttons
       %button.by-button-v02.by-button-secondary-v02.goto_bookmark
         %div
-          %span.by-icon-v02.iconNearText-v02> d
+          %span.by-icon-v02> 1
           = t(:go_to_bookmark)
       %button.by-button-v02.by-button-secondary-v02.update_bookmark
         %div
-          %span.by-icon-v02.iconNearText-v02> e
+          %span.by-icon-v02> C
           = t(:update_bookmark)
       %button.by-button-v02.by-button-secondary-v02.remove_bookmark
         %div
-          %span.by-icon-v02.iconNearText-v02> c
+          %span.by-icon-v02> ^
           = t(:remove_bookmark)
 
 :javascript
@@ -31,7 +31,7 @@
     });
     $('.goto_bookmark').click(function(){
       if($("input[name=bookmark_remember_this]").prop('checked')) {
-        $.ajax({url: "#{url_for(controller: :user, action: :set_pref)}", method: 'POST', data: {id: #{current_user.id}, pref: 'jump_to_bookmarks', value: 'true'}});
+        $.ajax( { url: "#{preference_url(:jump_to_bookmarks)}", method: 'PUT', data: { value: 'true' } });
       }
       $('#bookmarkBehaviorDlg').modal('hide');
       $('#bookmarkPanelDlg').modal('hide');

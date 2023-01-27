@@ -1,6 +1,6 @@
 %p#notice= notice
 
-%h2= @bib_source.title
+%h2= textify_bib_source(@bib_source.id)
 %p
   %b= t(:source_type)
   = @bib_source.source_type

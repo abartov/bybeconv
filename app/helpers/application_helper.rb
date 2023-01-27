@@ -3,7 +3,13 @@ module ApplicationHelper
     return s if s.nil?
     s.force_encoding('UTF-8')
   end
-
+  def get_intro(markdown)
+    lines = markdown[0..2000].lines[1..-2]
+    if lines.empty?
+      lines = markdown[0..[5000,markdown.length].min].lines[0..-2]
+    end
+    lines.join + '...'
+  end
   def about_the_author(au)
     ret = I18n.t(:about_the_author)
     return au.gender == 'female' ? ret + 'ת' : ret
@@ -11,6 +17,10 @@ module ApplicationHelper
 
   def to_the_author_page(au)
     return au.gender == 'female' ? I18n.t(:to_the_authoress_page) : I18n.t(:to_the_author_page)
+  end
+
+  def lineclamp(s, max)
+    s.length > max ? s[0..max-3]+'...' : s
   end
 
   def url_tag(u)
@@ -137,13 +147,11 @@ module ApplicationHelper
   end
 
   def authors_linked_string(m)
-    return I18n.t(:nil) if m.expressions[0].nil? or m.expressions[0].works[0].nil? or m.expressions[0].works[0].persons[0].nil?
-    return m.expressions[0].works[0].authors.map{|x| "<a href=\"#{url_for(controller: :authors, action: :toc, id: x.id)}\">#{x.name}</a>"}.join(', ')
+    return m.expression.work.authors.map{|x| "<a href=\"#{url_for(controller: :authors, action: :toc, id: x.id)}\">#{x.name}</a>"}.join(', ')
   end
 
   def translators_linked_string(m)
-    return I18n.t(:nil) if m.expressions[0].nil? or m.expressions[0].works[0].nil? or m.expressions[0].works[0].persons[0].nil?
-    return m.expressions[0].translators.map{|x| "<a href=\"#{url_for(controller: :authors, action: :toc, id: x.id)}\">#{x.name}</a>"}.join(', ')
+    return m.expression.translators.map{|x| "<a href=\"#{url_for(controller: :authors, action: :toc, id: x.id)}\">#{x.name}</a>"}.join(', ')
   end
 
   def copyright_glyph(is_copyright)
@@ -163,11 +171,15 @@ module ApplicationHelper
     end
   end
   def anthology_select_options
-    ret = [[t(:rename_this_anthology), -1], [t(:create_new_anthology), 0]]
+    ret = [
+      [t(:general),
+      [[t(:rename_this_anthology), -1], [t(:create_new_anthology), 0]]]]
+    anths = []
     current_user.anthologies.each{|a|
-      ret << [a.title, a.id]
+      anths << [a.title, a.id]
       @selected_anthology = a.id if @anthology == a
     }
+    ret << [t(:anthologies), anths] unless anths.empty?
     return ret
   end
   def update_param(uri, key, value)

@@ -17,7 +17,7 @@
   - unless @total_pages <= 1
     = render partial: 'dict_slide_pagination'
     = render partial: 'ab_pagination', locals: {filter_element: 'dict_filters'}
-  %div
+  .displayMethodLine
     .switch-label תצוגה:
     .BYD-switch
       %button.search-mobile-option#dictmode_list= t(:dict_list)
@@ -42,8 +42,8 @@
               - card_collapsible = cardid+'_coll'
               .value-summary-card-v02{id: cardid}
                 %a.deflink{href: dict_entry_path(id: @m.id, entry: hw.id)}= hw.defhead
-                %a.value-summary-top-icon.last-icon.notyet{:href => "#"} U
-                %a.value-summary-top-icon.notyet{:href => "#"} !
+                %a.value-summary-top-icon.last-icon.notyet U
+                %a.value-summary-top-icon.notyet !
                 .summary-text{id: card_collapsible}
                   != hw.deftext
                 .summary-read-more{style: 'display: none'}

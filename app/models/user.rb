@@ -1,12 +1,14 @@
 class User < ApplicationRecord
   # attr_accessible :email, :name, :oauth_expires_at, :oauth_token, :provider, :uid
   has_attached_file :avatar, styles: { full: "720x1040", medium: "360x520", thumb: "180x260", tiny: "90x120"}, storage: :s3, s3_credentials: 'config/s3.yml', s3_region: 'us-east-1'
+
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\z/
   validates :name, :provider, presence: true
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }, uniqueness: { case_sensitive: false}, allow_blank: true #, on: :create
 
   has_and_belongs_to_many :liked_works, join_table: :work_likes, class_name: :Manifestation
 
+  has_one :base_user, inverse_of: :user
   has_many :recommendations
   has_many :anthologies, dependent: :destroy
   has_many :bookmarks, dependent: :destroy
@@ -14,24 +16,6 @@ class User < ApplicationRecord
 
   # editor bits
   EDITOR_BITS = ['handle_proofs', 'handle_recommendations', 'curate_featured_content', 'bib_workshop', 'edit_catalog', 'legacy_metadata', 'edit_people', 'conversion_verification', 'edit_sitenotice']
-
-  ### User Preferences
-  property_set :preferences do
-    property :fontsize, default: '2'
-    property :volunteer, default: 'false' # boolean  (another option - :protected => true)
-    property :activated, default: 'false' # boolean
-    property :suppress_anthology_intro, default: 'false'
-    property :jump_to_bookmarks
-  end
-
-  def get_pref(name)
-    return self.preferences.try(name)
-  end
-
-  def set_pref(name, value)
-    self.preferences.set(name => value)
-    self.preferences.save!
-  end
 
   def admin?
     admin

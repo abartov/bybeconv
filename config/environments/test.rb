@@ -11,6 +11,8 @@ Bybeconv::Application.configure do
   config.serve_static_files = true
   config.static_cache_control = "public, max-age=3600"
 
+  # Don't use cache in test environment
+  config.cache_store = :null_store
 
   # Show full error reports and disable caching
   config.consider_all_requests_local       = true
@@ -36,4 +38,6 @@ Bybeconv::Application.configure do
   config.active_support.deprecation = :stderr
   config.eager_load = false
   config.active_support.test_order = :random # Rails 5.x-ready :)
+  routes.default_url_options[:host] = 'localhost:3000'
+  config.active_storage.service = :test
 end

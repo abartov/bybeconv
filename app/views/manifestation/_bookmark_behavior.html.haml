@@ -7,7 +7,7 @@
     .edit-bookmark-buttons
       %button.by-button-v02.by-button-secondary-v02.goto_bookmark
         %div
-          %span.by-icon-v02.iconNearText-v02> d
+          %span.by-icon-v02> d
           = t(:go_to_bookmark)
       %button.by-button-v02.by-button-secondary-v02.stay_at_top
         %div= t(:stay_at_top)
@@ -21,7 +21,7 @@
   $(document).ready(function(){
     $('.stay_at_top').click(function(){
       if($("input[name=bookmark_remember_this]").prop('checked')) {
-        $.ajax({url: "#{url_for(controller: :user, action: :set_pref)}", method: 'POST', data: {id: #{current_user.id}, pref: 'jump_to_bookmarks', value: 'false'}});
+        $.ajax( { url: "#{preference_url(:jump_to_bookmarks)}", method: 'PUT', data: { value: 'false' } });
       }
       $('#bookmarkPanelDlg').modal('hide');
       $('#bookmarkBehaviorDlg').modal('hide');

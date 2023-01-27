@@ -4,15 +4,12 @@
 
 .scrolled .logoBY-scroll-mobile-v02{
 		position: absolute;
-		right: calc(100% - 110px);
+		right: 60px;
 	}
 .scrolled .logoBY-scroll-mobile-v02 img{
     max-height: 32px;
 	margin-top: 2px;
 }
-	.author-name-years{
-		display: block;
-	}
 
 	.author-page-top-years{
 		vertical-align: text-bottom;
@@ -40,12 +37,7 @@
 		margin-left: auto;
 		margin-right: auto;
 	}
-	#whats-new-bg {
-  background-image: url("/assets/bullhorn.svg");
-  background-repeat: no-repeat;
-  background-size: contain;
-  width: 100%; 
-  height:auto;}
+	
 
 
 	.flash-work-v02 {
@@ -54,15 +46,6 @@
 .flash-author-v02 {
  min-height: 400px;
 	}
-	.flash-bg-v02 {
-    height: auto;}
-
-	#volunteer-bg {
-  background-image: url("/assets/giving hand.svg");
-  background-repeat: no-repeat;
-  background-size: contain;
-  min-height: auto;
-  width: 100%; }
 
 
 	
@@ -99,7 +82,6 @@
 .surprise-author-card-v02 {
     width: 132px;
     height: 231px;
-    margin-right: 20px;
     margin-top: -5px; }
 .about-author-card-v02 {
     width: 132px;
@@ -109,15 +91,14 @@
   .surprise-work-card-v02 {
     width: 132px;
     height: 231px;
-    margin-left: 30px;
     margin-top: -5px; }
 
 .surprise-author-card-bookmark-fold-v02 {
   width: 139px;
   height: 5px;
-  margin-right: 14px;
+  margin-right: 8px;
   margin-top: -5px;
-  z-index: 1; }
+ }
 .about-author-card-bookmark-fold-v02 {
   width: 139px;
   height: 5px;
@@ -142,7 +123,7 @@
 	.author-name-area{
 		height:41px;
 	}
-		.surprise-author-name-v02{
+.surprise-author-name-v02{
 	padding-top: 0;
 	}
  #header-general {
@@ -182,17 +163,21 @@
 
   .statistics-box-v02 {
     word-break: break-all;
-    height: 52px;
     border-radius: 12px;
-    margin-right: 0px; }
+	padding: 0 4px;
+ }
+	
+	.statistics-v02{
+  margin: 1px 0 3px 0;
+	}
 
   .stat-big-v02 {
-    font-size: 24px;
+    font-size: 22px;
     font-weight: bold;
     line-height: 24px; }
 
   .stat-small-v02 {
-    font-size: 11.8px;
+    font-size: 12px;
     line-height: 11px;
     margin-top: 4px; }
 
@@ -220,7 +205,10 @@
 	align-items: center;
     float: left; 
 	margin-left: 10px;
-	margin-top: 4px;}
+	margin-top: 4px;
+	margin-bottom: 4px;
+	gap:4px;
+	}
 
 
 
@@ -229,14 +217,9 @@
   }
 
 
-  #genre {
-    display: none; }
-
-  #genre-mobile {
-    display: block; }
 
   .top-works {
-    max-height: none; }
+    height: auto; }
 
 
 .side-menu-area{
@@ -275,7 +258,7 @@
 .nav-link{
 	height:34px;
 	width:34px;
-	padding:8px;
+	padding:6px;
 }
 .side-menu-icon{
 	font-size:18px;
@@ -288,14 +271,8 @@
   display: block;
 }
 .error-found-col{
-	padding-left: 15px;
 	padding-right: 0;
 }
-.top-element {
-  margin-top: 100px;
-}
-.work-side-menu-area{
-display: none;	}
 
 .work-side-menu-area-left{
 	display: none;
@@ -310,22 +287,11 @@ display: none;	}
 	display: none;
 	float: left;
 }
-.work-page-top-icons-mobile{
-	display: flex;
-	align-items: center;
-	float: left;
-}
 
 .popup-x-v02 {
   width: 30px;
 }
 
-.author-page-top-rights{
-	width: calc(50% - 84px);
-  white-space: nowrap;
-	margin-right: 0;
-	display: inline-block;
- }
 
 .by-side-menu-seperator{
   display: block;
@@ -358,9 +324,6 @@ display: none;	}
 .volunteer-content{
 	height: auto;
 }
-.flash-content{
-	height: auto;
-}
 
 
 
@@ -371,34 +334,15 @@ display: none;	}
 .volunteer-v02 {
   min-height: auto;
 }
-.card-with-bottom-links{
-	padding-bottom: 50px;
-	height: calc(100vh - 60px);
-}
-.link-to-all-v02 {
-  line-height: 28px;
-  }
-	.bottom-right-link{
-  line-height: 28px;
-	}
-.right-side-icon{
-	line-height: 28px;
-	}
 	.by-button-v02{
 		height: 28px;
-		line-height: 28px;
 	}
 	.mobileLogo{
     display:block;
   }
 
 	.surprise-btn-v02 {
-  width: 160px;
   height: 50px; }
-	
-	.author-page-content{
-	margin-top: 215px;
-}
 .text-page-content{
 	margin-top: 214px;
 }
@@ -419,10 +363,7 @@ display: none;	}
 	#chapternav{
 		display: none;
 	}
-	#text-nav-more{
 
-	}
-	
 	.work-page-top-author{
 		display: block;
 	}
@@ -511,15 +452,6 @@ display: none;	}
   padding-top: 0px;
   padding-bottom: 0px; }
 	
-	#moreMobile{
-		margin-right: 6px;
-	}
-.by-dropdown-v02#moreMobile{
-		height: 18px;
-	}
-	.by-dropdown-v02#text-moreMobile{
-		height: 18px;
-	}
 .bookmark-location{
   position: relative;
   margin-top: 0;
@@ -597,7 +529,7 @@ display: none;	}
   margin-top: 0px;
 }
 .scrolled-logoBY-v02{
-	content: url("/assets/logo-byp-white.svg");
+	content: url("/assets/BYP_logo_scroll_white.svg");
 }
 #text-volunteers-desktop{
   display:none;
@@ -614,9 +546,6 @@ display: none;	}
 }
 	.work-chapters-dropdown-field-desktop{
 	display: none;
-}
-	.work-chapters-popup-mobile{
-	display: inline;
 }
 .list-filters{
 		display: none;
@@ -701,6 +630,555 @@ display: none;	}
 	display: flex;
 }
 	
+	.surprise-author-card-content-v02 {
+  margin-right: 147px;
+	}
+		.surprise-work-card-content-v02 {
+  margin-right: 147px;
+	}
+		
+	#authors-surprise-replaced{
+		height: auto;
+	}
+	.surprise-again-footer-v02{
+		position: relative;
+	}
+	.surprise-work-height-v02{
+		padding-bottom: 15px;
+	}
+	#works-surprise-replaced{
+		height: auto;
+	}
+#works-surprise-replaced .by-card-header-v02{
+			padding-right: 162px;
+	}
+	.btn-small-outline-v02{
+		height: 28px;
+	}
+	#authors-surprise-replaced .by-card-header-v02{
+	padding-right: 162px;
+}
+#whats-new-author-popup .by-card-header-v02{
+	padding-right: 162px;
+}
+#author-info-popup .by-card-header-v02{
+	padding-right: 162px;
+}
+.sefaria-read-more-button {
+	height: 28px !important;
+}
+#sefaria-title .he{
+	font-size: 16pt !important;
+    line-height: 18pt !important;
+}	
+	.reading-mode-icon-btn-v02 .by-icon-v02{
+		font-size: 18px;
+	}
+.topMobileBtns-v02 .btn-small-outline-v02{
+	border: none;
+    margin-left: 6px;
+}
+#menu {
+    display: none; }
+
+
+	.sidebar-opened{
+  display: block;
+  width: 360px;
+  padding-left: 15px;
+}
+	.chapters-and-icons-mobile{
+		width: 100%;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+	.work-page-top-icons-mobile{
+		display: flex;
+	}
+	.work-and-author-names-mobile{
+	display: block;
+}
+.work-and-author-names-desktop{
+	display: none;
+}
+	.text-page-content .work-side-menu-area{
+		display: none;
+	}
+	.side-nav-col{
+		width: auto;
+	}
+	#volunteer-bg{
+		background-size:60%;
+	}
+	#whats-new-bg {
+		background-size:70%;
+	}
+	.flash-bg-v02 {
+		background-size:100%;
+ 	}
+	#who-wrote-about-bg {
+		background-size:60%;
+	}
+	#bibliography-yidish .by-card-content-v02{
+		flex-direction: column;
+	}
+
+	.navbar-nav .nav-link{
+	padding: 6px 6px;
+}
+	.lexicon-author-actions{
+		flex: 0;
+		margin-right: 30px;
+	}
+
+			.mobile-only{
+	display: block;
+}
+	.desktop-only{
+		display: none;
+	}
+			.lexicon-author-top-info .by-card-content-v02{
+		flex-direction: column;
+	}
+		.lexicon-author-nav{
+		margin-top: 15px;
+			margin-left: -5px;
+			margin-right: -5px;
+		  justify-content: space-between;
+	}
+	.lexicon-author-nav-links{
+		flex: 1;
+	}
+	#genre {
+  height: auto; 
+}
+#authors-in-project.by-card-v02 {
+	height: auto;
+}
+#authors-in-lexicon.by-card-v02 {
+	height: auto;
+}	
+.gateway-large-genre #genre{
+	height: auto;
+}
+.gateway-small-genre #authors-in-project.by-card-v02{
+	height: auto;
+}
+.gateway-small-genre .whats-new-v02{
+	height: auto;
+}	
+	.gateway-dict-genre .advanced-pagination{
+		display: block;
+	}
+	.gateway-dict-genre .pageSelectorArea{
+		display: none;
+	}
+	.lectures-card{
+	height: auto;
+}
+	.recommendations{
+	height: auto;
+}
+	.gate-recommendation .by-card-content-v02{
+		height: auto;
+	}
+
+	.lexicon-header-he{
+		width: auto;
+	}
+.lexicon-homepage .lexicon-header-he .headline-1-v02{
+		font-size: 21pt;
+	margin-bottom: 4px;
+}
+.index-part-of-pby img{
+	margin: 2px 4px;
+    width: 44px;
+    height: 13px;
+	}
+.lexicon-header-he .compiled-by{
+		margin-top: 4px;
+	}
+	.lexicon-home-header{
+		flex-wrap: wrap;
+	}
+.lexicon-home-header .lexicon-logo{
+	width: 70px;
+	height: 70px;
+	flex-basis: 70px;	
+	}
+
+	.lexicon-home-header .compiled-by{
+		margin-top: 4px;
+	}
+	.lexicon-home-header > div{
+		margin-bottom: 8px;
+	}
+		.lexicon-home-header .lexicon-header-en{
+		margin-bottom: 0;
+	}
+	.author-page-top-icons-desktop{
+	display: none;
+}
+.author-page-top-icons-mobile{
+	display: block;
+	margin-right: auto;
+}
+	
+.author-page-top-sort-desktop{
+	display: none;
+}
+
+.author-page-top-sort-mobile{
+	display: block;
+	margin-right: 5px;
+	margin-left: 15px;
+}
+#sort_by_dd{
+	display: none;
+}
+#current_sort_by{
+	display: block;
+	padding: 0 4px;
+}
+	.side-sort{
+		display:none;
+	}
+	.author-side-sort{
+		display: none;
+	}
+.author-sort-area{
+	width: auto;
+	padding: 0;
+
+}
+	.lexicon-entry-under-construction-desktop{
+	display: none;
+}
+.lexicon-entry-under-construction-mobile{
+	display: flex;
+	width: fit-content;
+	background-color: #efbfb7;
+	padding: 3px 6px;
+	border-radius: 3px;
+	align-items: center;
+}
+.connected-texts{
+	height: auto;
+}
+	.gateway-small-genre #genre{
+	height: auto;
+}
+	.maybe-interest{
+		height: auto;
+	}
+	.gateway-period #authors-in-project.by-card-v02{
+	height: auto;
+}
+.gateway-period .whats-new-v02 {
+    height: auto;
+}
+	.antiquity #works-in-project{
+	height: auto;
+}
+	.list-all-texts{
+	margin-top: 200px;
+}
+	.collection-details:first-child{
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.collections .BYD-switch{
+		width: 220px;
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+	.mainlist ol > li {
+	margin-bottom: 10px;
+}
+.modal-dialog {height: 100%;}
+
+.modal-content {height: 100%;}
+	
+	.modal-dialog .modal-content .container-fluid{
+		height: 100%;
+	}
+		.modal-dialog .modal-content .container-fluid form{
+		height: 100%;
+	}
+			.modal-dialog .modal-body{
+		height: 100%;
+	}
+	
+	.modal-dialog .popup-x-v02{
+		display: none;
+	}
+
+	.by-popup-v02 {
+  width: 100%;
+		max-width: inherit;
+  box-shadow: none;
+  left: 0;
+  margin-top:0px;
+  border-radius: 0;
+  min-height: 100vh;
+  max-height: fit-content;
+}
+	.by-popup-v02 .popup-x-v02 {
+  display: none;
+}
+	.by-popup-v02-share{
+  width: 100%;
+  height: 140px;
+  box-shadow: none;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  margin-top:0px;
+  margin-left: 0;
+  margin-right: 0;
+  border-radius: 0;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.flex-popup{
+  display: flex;
+  flex-flow: column;
+  height: 100vh;
+  max-height: 100vh;
+  margin-top: 0vh;
+}
+.flex-popup .by-popup-v02 {
+  flex: 1 1 auto;
+}
+.by-popup-v02 .by-card-content-v02 .limited-height-popup-content-v02{
+  flex: 1 1 calc(100vh - 298px);
+}
+	#authors-multi-select-popup .by-popup-v02{
+	width: 100%;
+}
+	#whats-new-author-popup .by-card-header-v02{
+		display: none;
+	}
+	#error-found .button-placeholder{
+		width: 108px;
+	}
+	#sefaria-popup .by-popup-v02{
+		width: 100%;
+		height: 100%;
+	}
+#sefaria-popup{
+  display: flex;
+  flex-flow: column;
+  height: 100vh;
+  max-height: 100vh;
+  margin-top: 0vh;
+}
+#sefaria-popup .by-popup-v02 {
+  flex: 1 1 auto;
+}	
+.popup-top{
+  position: sticky;
+  z-index: 5;
+  width: 100%;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: solid 2px #d9cdd5;
+}
+.popup-top .headline-2-v02{
+  margin-bottom: 0;
+}
+
+.by-dual-popup{
+  width: 92%;
+  background-color: #eeeced;
+  border-radius: 3px;
+  box-shadow: 0 3px 9px rgba(0, 0, 0, 0.4);
+  margin-top: 45px;
+  margin-right: auto;
+  margin-left: auto;
+}
+.share-popup{
+	width: 240px;
+}
+.share-name{
+	display: none;
+}
+
+.popup-with-bottom-links{
+		height: calc(100% - 58px);
+	}
+.dropdown-menu-seperator{
+  display:block;
+  width: calc(100% + 30px);
+  padding: 0px;
+  margin: 0;
+}
+	.curatorial-content{
+	display: block;
+}
+	.BYD-entry-top .headline-1-v02{
+		margin-bottom: 4px;
+	}
+	.lexicon-publication-details-area{
+		flex-direction: column;
+	}	
+	.lexicon-publication-top-info .by-card-content-v02{
+		padding-left: 10px;
+	}
+.lexicon-issue-name{
+	flex-direction: column;
+	gap: 0px;
+}
+.lexicon-publication-page .lexicon-publication-years{
+	padding-top: 0;
+}
+.lexicon-publication-page .author-main-info-card-v02 .metadata{
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 6px;
+}
+.yiddish-list .authors-list-content {
+    margin-top: 380px;
+}
+.periodicals .author-name-area{
+	gap: 0;	
+}
+	.by-popup-v02 .by-card-header-v02{
+		display: none;
+	}
+	.limited-height-popup-content-v02 {
+  width: 100%;
+  height: calc(100vh - 278px);
+  max-height: 100%;
+  overflow-y: auto;
+}
+	#texts-about-author-popup .limited-height-popup-content-v02{
+		max-height: calc(100vh - 64px);
+		height: calc(100vh - 64px);
+	}	
+ .filter-sort-m-popup .limited-height-popup-content-v02{
+  max-height: 100vh;
+}
+	.thanks-page{
+		margin-top: 126px;
+	}
+	.thanks-page .work-side-menu-area{
+		display: none;
+	}
+		.anthology-page-content .work-side-menu-area{
+		display: none;
+	}
+	.author-page-content .whats-new-v02 {
+    min-height: 100px;
+}
+			.author-main-info-card-v02 .by-card-header-v02 {
+    padding-right: 162px;
+}
+#thanks-first-card{
+	margin-top: 0;
+}
+	.topMobileBtns-v02 a:hover{
+		background-color: transparent;
+		text-decoration: none;
+		color: #d9cdd5;
+	}
+	.bottom-button-area{
+		position: sticky;
+		bottom: 0;
+	}
+.by-dual-popup .bottom-button-area{
+		position: relative;
+	}
+	.modal-dialog{
+	margin: 0 auto 0 auto;
+}
+.modal-body{
+	width: 100%;
+	height: 100%;
+	margin: 0;
+}
+	.modal-body .popup-x-v02{
+		display: none;
+	}
+	.work-side-menu-area{
+		display: none;
+	}
+	.author-page-top-rights{
+	width: calc(50% - 25px);
+ }
+.author-page-top-info-card{
+  padding: 10px 15px 10px 10px;
+}
+	.BYD-rights{
+	display: none;
+}
+
+
+.value-summary-card-v02 {
+  margin-left: 0px;
+}
+.by-dual-popup input[type=checkbox]{
+	display: none;
+}	
+	
+.by-dual-popup label{
+	display: none;
+}	
+.topNavEntry{
+	margin: 0 12px;
+}
+
+.texts-list-top-info-card .headline-3-v02{
+	min-width: calc(50% - 38px);
+	margin-left: 0;
+}
+		
+#text-volunteers-mobile .credits{
+  column-count: 2;
+}
+	.donation-top-baner .popup-x-v02{
+	display: none;
+}
+	.donation-top-baner .hide_next_times{
+	/* display: none; * removed by Asaf */
+	}
+	.donation-btn-v02{
+		width: auto;
+	}
+	.donation-btn-v02 .by-icon-v02{
+		padding: 0;
+	}
+	.donation-text{
+		display: none;
+	}
+	.scrolled .money-donation-text{
+		display: none;
+	}
+	.scrolled .donation-text{
+		display: flex;
+		min-width: 80px;
+	}
+	.donation-background-image {
+    background-image: none;
+}
+.donation-background-image-2 {
+    background-image: none;
+}
+.donation-background-image-3 {
+    background-image: none;
+}
+.donation-background-image-4 {
+    background-image: none;
+}
+.donation-bottom-baner .by-card-content-v02{
+		width: 90%;
+	text-align: center;
+	}
 }
 
 

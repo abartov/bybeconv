@@ -19,7 +19,7 @@ namespace :dict do
         ordinal = row['ordinal'].to_i
         sort_defhead = get_sort_defhead(row['defhead'])
         deftext = row['deftext']
-        des = DictionaryEntry.where(manifestation_id: $mani_id, source_def_id: source_id, sequential_number: ordinal)
+        des = DictionaryEntry.where(manifestation_id: $mani_id, source_def_id: source_id)
         if des.empty?
           @de = DictionaryEntry.new(manifestation_id: $mani_id, source_def_id: source_id, sequential_number: ordinal, defhead: row['defhead'], deftext: deftext, sort_defhead: sort_defhead)
           created += 1
@@ -39,6 +39,7 @@ namespace :dict do
         i += 1
         print "#{i}... " if i % 200 == 0
       end
+      puts "done!"
       i = 0
       print "linking entries... "
       DictionaryEntry.where(manifestation_id: $mani_id).each do |de|

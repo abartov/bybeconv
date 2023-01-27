@@ -3,7 +3,7 @@
 @media only screen and (max-width: 479px) {
 
 .scrolled .logoBY-scroll-mobile-v02{
-	  top: 3px;
+	  top: 1px;
 	}
 		.scrolled .logoBY-scroll-mobile-v02 img{
     height: 28px;
@@ -82,9 +82,6 @@
 		height: 115px;
 		padding-top: 24px; }
 
-.surprise-author-name-v02 {
-	padding-top: 0;
-  }
 
 .author-name-v02 {
 	font-size: 11px;
@@ -109,9 +106,6 @@ body {
 		font-size: 9.5pt;
 		line-height: 10.5pt; 
 	}
-.top-element{
-		margin-top: 96px;
-	}
 #header > .row {
 		margin-left: -15px;
 		margin-right: -15px;
@@ -121,8 +115,6 @@ body {
 		padding-top: 0px;
 	}
 
-.by-icon-v02 {
-		font-size: 14px; }
 .by-icon-header-v02{
 		font-size: 18px;
 		vertical-align: -3px;
@@ -132,23 +124,31 @@ body {
 		line-height: 32px;
 	}
 
+.by-genre-icon-v03 {
+		font-size: 32px;
+		line-height: 32px;
+	}
 .volunteer-height{
 		max-height: 226px;
 	}
 .statistics-box-v02 {
-		height: 40px;
+	margin-top: 8px;
 		border-radius: 12px; 
+	padding-left: 4px;
+	padding-right: 4px;
+	padding-bottom: 2px;
+	padding-top: 2px;
 	}
 
 .stat-big-v02 {
-		font-size: 14px;
+		font-size: 16px;
 		font-weight: bold;
 		line-height: 12px; 
 	}
 .stat-small-v02 {
-		font-size: 8.4px;
+		font-size: 9px;
 		line-height: 8px;
-		margin-top: 4px; 
+		margin-top: 6px; 
 	} 
 .name-under-btn{
   width: 100%;
@@ -273,13 +273,11 @@ body {
   min-width: 280px;
 }
 	.surprise-btn-area-v02 {
-  width: 132px;
   margin-left: auto;
   margin-right: auto;
   margin-top: 260px; }
 
 .surprise-btn-v02 {
-  width: 132px;
   padding: 6px 12px;
   height: 36px; }
 
@@ -287,9 +285,7 @@ body {
   width: 132px;
   height: 36px; 
 }
-.surprise-again-btn-area-v02{
-  width: 132px;
-}
+
 .about-work-card-bookmark-fold-v02 {
   width: 84px;
   height: 3px;
@@ -321,9 +317,6 @@ body {
 	.work-page-top-icons-mobile{
 	bottom: 0;
 }
-	.top-left-icons-group{
-		padding-top: 0px;
-	}
 	.credits{
   -webkit-column-count: 2; /* Chrome, Safari, Opera */
   -moz-column-count: 2; /* Firefox */
@@ -332,12 +325,6 @@ body {
 	.author-name-area{
 		height: 33px;
 	}
-		.author-page-content{
-	margin-top: 198px;
-}
-	.text-page-content{
-	margin-top: 192px;
-}
 .about-page-content{
 		margin-top: 125px;
 	}
@@ -353,8 +340,6 @@ body {
 
 	.work-name-top{
 		margin-bottom: 4px;
-	}
-	.work-chapters-popup-mobile{
 	}
 .work-page-top-author{
 	}
@@ -397,15 +382,6 @@ body {
 .by-icon-top-v02{
 	font-size: 16px;
 }
-.top-left-icons-group{
-	height: 14px;
-}
-.top-search-mobile-v02{
-	height: 14px;
-}
-.by-dropdown-v02#moreMobile{
-	height: 14px;
-}
 .minimized .rm-control-panel-mobile{
 	width: 140px;
 	height: 36px;
@@ -430,14 +406,6 @@ padding-top: 6px;
 	margin-top: 0px;
 }
 	
-.scrolled .logoBY-scroll-mobile-v02{
-		position: absolute;
-		right: calc(100% - 130px);
-	}
-.scrolled .logoBY-scroll-mobile-v02 img{
-    max-height: 28px;
-	margin-top: 2px;
-}
 .share-popup{
 	width: 180px;
 }
@@ -464,4 +432,104 @@ padding-top: 6px;
 		padding-top: 6px;
 		padding-bottom: 6px;
 	}
+.surprise-author-card-content-v02 {
+  width: calc(100% - 93px);
+	margin-right: 95px;
+}
+	.surprise-work-card-content-v02 {
+  width: calc(100% - 93px);
+	margin-right: 95px;
+}
+.by2-icon{
+    font-size: 14px;
+    line-height: 14px;
+}
+.mainlist ol {
+  padding-right: 34px;
+}
+	
+.mainlist ol > li:before {
+  right:-34px;
+  width:34px;
+}
+#authors-surprise-replaced .by-card-header-v02{
+	padding-right: 110px;
+}
+	#whats-new-author-popup .by-card-header-v02{
+	padding-right: 110px;
+}
+	#works-surprise-replaced .by-card-header-v02{
+			padding-right: 110px;
+	}
+	#author-info-popup .by-card-header-v02{
+			padding-right: 110px;
+	} 
+	.statistics-box-v02 div:nth-of-type(1) {flex-grow: 1;}
+.statistics-box-v02 div:nth-of-type(2) {width: auto;white-space: nowrap}
+.statistics-box-v02 div:nth-of-type(3) {flex-grow: 1;}
+.lexicon-homepage .lexicon-header-he .headline-1-v02{
+		font-size: 15pt;
+	}
+	.index-part-of-pby img {
+    margin: 3px 0px;
+    width: 28px;
+    height: 10px;
+}
+.authors-list-content {
+    margin-top: 175px;
+}
+	.author-in-pby{
+  font-size: 36px;
+  position: absolute;
+  right: 160px;
+}
+	.lexicon-header-he .headline-1-v02{
+		font-size: 11pt;
+		line-height: 11pt;
+		margin-bottom: 0;
+	}
+		.lexicon-header-he .headline-3-v02{
+		font-size: 9pt;
+	}
+	.lexicon-author-page-content{
+		margin-top: 245px;
+	}
+		.gateway-header .headline-1-v02{
+		font-size: 18pt;
+	}
+	.gateway-header .by-genre-icon-v02{
+		font-size: 30px;
+	}
+	.collection-details{
+	gap: 6px;
+	margin-bottom: 6px;
+}
+	.switch-label {
+    margin-right: 34px;
+    margin-left: 4px;
+}
+	.topNavEntryAreaMobile{
+		margin-top: 10px;
+	}
+		.author-main-info-card-v02 .by-card-header-v02 {
+    padding-right: 110px;
+}
+		.lexicon-publication-pic{
+		width: 80px;
+		margin-left: 10px;
+	}
+	.pdf-icon{
+		width: 18px;
+	}
+	.lexicon-publication .author-in-pby{
+		font-size: 32px;
+		vertical-align: -12px;
+	}
+	.author-page-top-rights{
+	width: auto;
+ }
+.author-page-top-info-card{
+  padding: 10px 15px 10px 10px;
+}
+	
 }

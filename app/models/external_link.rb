@@ -1,7 +1,24 @@
 class ExternalLink < ApplicationRecord
-  belongs_to :manifestation
+  belongs_to :linkable, polymorphic: true
 
-  scope :videos, -> { where(linktype: Manifestation.link_types[:youtube])}
-  scope :all_approved, -> { where(status: Manifestation.linkstatuses[:approved])}
+  enum linktype: {
+    wikipedia: 0,
+    blog: 1,
+    youtube: 2,
+    other: 3,
+    publisher_site: 4,
+    dedicated_site: 5,
+    audio: 6,
+    gnazim: 7
+  }, _prefix: true
 
+  enum status: {
+    approved: 0,
+    submitted: 1,
+    rejected: 2
+  }, _prefix: true
+
+  def self.sidebar_link_types # excluding the publisher_site link, which is used in the main area for texts published by permission
+    return [:wikipedia, :dedicated_site, :blog, :youtube, :audio, :other, :gnazim]
+  end
 end

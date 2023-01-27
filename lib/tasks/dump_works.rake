@@ -10,12 +10,12 @@ task :dump_works => :environment do
     Manifestation.all.each{ |m|
       i += 1
       puts "Dumping #{i}/#{total}" if i % 50 == 0
-      e = m.expressions[0]
-      w = e.works[0]
+      e = m.expression
+      w = e.work
       trstr = ''
       sl = ''
       if e.translation?
-        w = e.works[0]
+        w = e.work
         trstr = m.translators_string
         sl = textify_lang(w.orig_lang)
       end

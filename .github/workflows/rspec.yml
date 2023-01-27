@@ -1,0 +1,56 @@
+name: Rspec
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  test:
+    name: CI
+    runs-on: ubuntu-18.04
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+          - 3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+      elasticsearch:
+        image: elasticsearch:6.8.20
+        ports:
+          - 9200/tcp
+        options: -e="discovery.type=single-node" --health-cmd="curl http://localhost:9200/_cluster/health" --health-interval=10s --health-timeout=5s --health-retries=10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y mysql-client libmysqlclient-dev wkhtmltopdf pandoc yaz libyaz-dev  libmagickwand-dev libpcap-dev memcached
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - name: Verify MySQL connection from host
+        run: |
+          mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports[3306] }} -uroot -proot -e "SHOW GRANTS FOR 'root'@'localhost'"
+      - name: Copy Configuration
+        run: |
+          cp ./.github/workflows/rspec_config/* ./config
+      - name: Setup DB
+        env:
+          RAILS_ENV: test
+          MYSQL_PORT: ${{ job.services.mysql.ports[3306] }}
+        run: |
+          bin/rails db:create
+          bin/rails db:migrate
+      - name: Run tests
+        env:
+          RAILS_ENV: test
+          MYSQL_PORT: ${{ job.services.mysql.ports[3306] }}
+          ELASTICSEARCH_PORT: ${{ job.services.elasticsearch.ports[9200] }}
+        run: |
+          bundle exec rspec

@@ -4,7 +4,7 @@ class Holding < ApplicationRecord
   belongs_to :bib_source
   enum status: [:todo, :scanned, :obtained, :missing]
 
-  scope :to_obtain, -> (source_id) { where(status: 'todo', bib_source_id: source_id)}
+  scope :to_obtain, -> (source_id) { includes(:publication).where(status: 'todo', bib_source_id: source_id)}
 
   def recno
     ret = ''

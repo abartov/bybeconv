@@ -1,18 +1,17 @@
 %main
-  .top-element
   #content.container-fluid.BYD
     .row
-      .col-12.col-lg-5.col-xxxl-4.BYD-welcome
+      .col-12.col-lg-4.BYD-welcome
         .by-card-v02#dict_intro{style:"display:#{ @filters.empty? ? 'show' : 'none'}"}
           .work-area
             .work-content
-              .headline-1-v02 ברוכים הבאים למילון אליעזר בן-יהודה
+              .headline-1-v02= t(:welcome_to_ebydict)
               != t(:dict_help_x_entries, {x: @total_headwords})
             .work-side-color
               .work-genre.prose-side-icon
         .by-card-v02.text-sorting#dict_filter_panel{style: "display: #{@filters.empty? ? 'none' : 'show'}"}
           = render partial: 'dict_filters'
         
-      .col-12.col-lg-7.col-xxxl-8
+      .col-12.col-lg-8
         .by-card-v02#thelist
           = render partial: 'dict_list'

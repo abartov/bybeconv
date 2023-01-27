@@ -41,7 +41,8 @@ Rails.application.configure do
   config.assets.js_compressor = false
   config.assets.digest = false
   # Expands the lines which load the assets
-  config.assets.debug = true
+  config.assets.debug = false
+  #config.assets.debug = true
   config.eager_load = false
   # config.public_file_server.enabled = true # Rails 5.x?
   config.i18n.available_locales = :he
@@ -86,4 +87,30 @@ Rails.application.configure do
 
   # Uncomment if you wish to allow Action Cable access from any origin.
   # config.action_cable.disable_request_forgery_protection = true
+
+  routes.default_url_options[:host] = 'localhost:3000'
+  routes.default_url_options[:protocol] = 'https'
+
+  if ENV['PROFILE']
+    config.cache_classes = true
+    config.eager_load = true
+
+    config.logger = ActiveSupport::Logger.new(STDOUT)
+    config.log_level = :info
+
+    config.public_file_server.enabled = true
+    config.public_file_server.headers = {
+      'Cache-Control' => 'max-age=315360000, public',
+      'Expires' => 'Thu, 31 Dec 2037 23:55:55 GMT'
+    }
+    config.assets.js_compressor = :uglifier
+    config.assets.css_compressor = :sass
+    config.assets.compile = false
+    config.assets.digest = true
+    config.assets.debug = false
+
+    config.active_record.migration_error = false
+    config.active_record.verbose_query_logs = false
+    config.action_view.cache_template_loading = true
+  end
 end

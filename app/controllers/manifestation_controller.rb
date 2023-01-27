@@ -1,6 +1,8 @@
 require 'pandoc-ruby'
 
 class ManifestationController < ApplicationController
+  class PageNotFound < StandardError; end;
+
   # class WorkSearch < FortyFacets::FacetSearch
   #   model 'Manifestation' # which model to search for
   #   text :title   # filter by a generic string entered by the user
@@ -20,7 +22,7 @@ class ManifestationController < ApplicationController
   before_action only: [:all, :genre, :period, :by_tag] do |c| c.refuse_unreasonable_page end
   autocomplete :manifestation, :title, limit: 20, display_value: :title_and_authors, full: true
   autocomplete :person, :name, :limit => 2, full: true
-  autocomplete :tag, :name
+  autocomplete :tag, :name, :limit => 2
 
   #impressionist :actions=>[:read,:readmode, :print, :download] # log actions for pageview stats
 
@@ -47,52 +49,45 @@ class ManifestationController < ApplicationController
     @pagetype = :works
     @works_list_title = t(:works_list) # TODO: adjust by query
     prep_for_browse
-    prep_user_content
+    prep_user_content(:manifestation)
     render :browse
     respond_to do |format|
       format.html
       format.js
     end
+  rescue PageNotFound
+    head :not_found
   end
 
   def translations
     @page_title = t(:translations)+' '+t(:project_ben_yehuda)
-    params['ckb_languages'] = Work.pluck(:orig_lang).uniq.reject{|x| x == 'he'}
+    params['ckb_languages'] = ['xlat']
     browse
   end
 
   def remove_bookmark
-    if current_user
-      @m = Manifestation.find(params[:id])
-      unless @m.nil?
-        Bookmark.where(manifestation: @m, user: current_user).first.destroy
-      end
+    if base_user
+      base_user.bookmarks.where(manifestation_id: params[:id]).first&.destroy
     end
     head :ok
   end
+
   def set_bookmark
-    if current_user
-      @m = Manifestation.find(params[:id])
-      unless @m.nil?
-        @b = Bookmark.where(manifestation: @m, user: current_user)
-        if @b.empty?
-          @b = Bookmark.new(manifestation: @m, user: current_user)
-        else
-          @b = @b.first
-        end
-        @b.bookmark_p = params[:bookmark_path]
-        @b.save
-        respond_to do |format|
-          format.js
-        end
-        render partial: 'set_bookmark'
+    manifestation_id = params[:id]
+    BaseUser.transaction do
+      base_user(true).lock!
+      b = base_user.bookmarks.where(manifestation_id: manifestation_id).first
+      if b.nil?
+        base_user.bookmarks.create!(manifestation_id: manifestation_id, bookmark_p: params[:bookmark_path])
       else
-        render :nothing
+        b.update!(bookmark_p: params[:bookmark_path])
       end
-    else
-      render :nothing
+      respond_to do |format|
+        format.js do render partial: 'set_bookmark' end
+      end
     end
   end
+
   def by_tag
     @page_title = t(:works_by_tag)+' '+t(:project_ben_yehuda)
     @pagetype = :works
@@ -125,26 +120,27 @@ class ManifestationController < ApplicationController
     @pagetype = :periods
   end
 
-  def works # /works dashboard
-    @tabclass = set_tab('works')
-    @page_title = t(:works)+' - '+t(:project_ben_yehuda)
-    @pagetype = :works
-    @work_stats = {total: Manifestation.cached_count, pd: Manifestation.cached_pd_count, translated: Manifestation.cached_translated_count}
-    @work_stats[:permission] = @work_stats[:total] - @work_stats[:pd]
-    @work_counts_by_genre = Manifestation.cached_work_counts_by_genre
-    @pop_by_genre = Manifestation.cached_popular_works_by_genre # get popular works by genre + most popular translated
-    @rand_by_genre = {}
-    @surprise_by_genre = {}
-    get_genres.each do |g|
-      @rand_by_genre[g] = Manifestation.randomize_in_genre_except(@pop_by_genre[g][:orig], g) # get random works by genre
-      @surprise_by_genre[g] = @rand_by_genre[g].pop # make one of the random works the surprise work
-    end
-    @works_abc = Manifestation.first_25 # get cached first 25 manifestations
-    @new_works_by_genre = Manifestation.cached_last_month_works
-    @featured_content = featured_content
-    (@fc_snippet, @fc_rest) = @featured_content.nil? ? ['',''] : snippet(@featured_content.body, 500) # prepare snippet for collapsible
-    @popular_tags = cached_popular_tags
-  end
+  # This code was used for 'secondary portal', but not used anymore. We may need to reimplement it at some point
+  # def works # /works dashboard
+  #   @tabclass = set_tab('works')
+  #   @page_title = t(:works)+' - '+t(:project_ben_yehuda)
+  #   @pagetype = :works
+  #   @work_stats = {total: Manifestation.cached_count, pd: Manifestation.cached_pd_count, translated: Manifestation.cached_translated_count}
+  #   @work_stats[:permission] = @work_stats[:total] - @work_stats[:pd]
+  #   @work_counts_by_genre = Manifestation.cached_work_counts_by_genre
+  #   @pop_by_genre = Manifestation.cached_popular_works_by_genre # get popular works by genre + most popular translated
+  #   @rand_by_genre = {}
+  #   @surprise_by_genre = {}
+  #   get_genres.each do |g|
+  #     @rand_by_genre[g] = Manifestation.randomize_in_genre_except(@pop_by_genre[g][:orig], g) # get random works by genre
+  #     @surprise_by_genre[g] = @rand_by_genre[g].pop # make one of the random works the surprise work
+  #   end
+  #   @works_abc = Manifestation.first_25 # get cached first 25 manifestations
+  #   @new_works_by_genre = Manifestation.cached_last_month_works
+  #   @featured_content = featured_content
+  #   (@fc_snippet, @fc_rest) = @featured_content.nil? ? ['',''] : snippet(@featured_content.body, 500) # prepare snippet for collapsible
+  #   @popular_tags = cached_popular_tags
+  # end
 
   def whatsnew
     @tabclass = set_tab('works')
@@ -177,18 +173,18 @@ class ManifestationController < ApplicationController
   end
 
   def dict
-    @m = Manifestation.joins(:expressions).includes(:expressions).find(params[:id])
+    @m = Manifestation.joins(:expression).includes(:expression).find(params[:id])
     if @m.nil?
       head :not_found
     else
-      if @m.expressions[0].genre != 'lexicon'
+      if @m.expression.work.genre != 'lexicon'
         redirect_to action: 'read', id: @m.id
       else
         @page = params[:page] || 1
         @page = 1 if ['0',''].include?(@page) # slider sets page to zero or '', awkwardly
         @dict_list_mode = params[:dict_list_mode] || 'list'
         @emit_filters = true if params[:load_filters] == 'true' || params[:emit_filters] == 'true'
-        @e = @m.expressions[0]
+        @e = @m.expression
         @header_partial = 'manifestation/dict_top'
         @pagetype = :manifestation
         @entity = @m
@@ -202,7 +198,7 @@ class ManifestationController < ApplicationController
         @headwords_page = nonnil_headwords.page(@page)
         @total_pages = @headwords_page.total_pages
         unless params[:to_letter].nil? || params[:to_letter].empty? # for A-Z navigation, we need to adjust the page
-          adjust_page_by_letter(nonnil_headwords, params[:to_letter], :sort_defhead)
+          adjust_page_by_letter(nonnil_headwords, params[:to_letter], :sort_defhead, nil, false)
           @headwords_page = nonnil_headwords.page(@page) if oldpage != @page # re-get page X of manifestations if adjustment was made
         end
     
@@ -230,7 +226,7 @@ class ManifestationController < ApplicationController
       @header_partial = 'manifestation/dict_entry_top'
       @pagetype = :manifestation
       @entity = @m
-      @e = @m.expressions[0]
+      @e = @m.expression
       @prev_entries = @entry.get_prev_defs(5)
       @next_entries = @entry.get_next_defs(5)
       @prev_entry = @prev_entries[0] # may be nil if at beginning of dictionary
@@ -241,12 +237,13 @@ class ManifestationController < ApplicationController
       @outgoing_links = @entry.outgoing_links.includes(:outgoing_links)
     end
   end
+
   def read
-    @m = Manifestation.joins(:expressions).includes(:expressions).find(params[:id])
+    @m = Manifestation.joins(:expression).includes(:expression).find(params[:id])
     if @m.nil?
       head :not_found
     else
-      if @m.expressions[0].genre == 'lexicon' && DictionaryEntry.where(manifestation_id: @m.id).count > 0
+      if @m.expression.work.genre == 'lexicon' && DictionaryEntry.where(manifestation_id: @m.id).count > 0
         redirect_to action: 'dict', id: @m.id
       else
         unless @m.published?
@@ -260,13 +257,17 @@ class ManifestationController < ApplicationController
           @tagging.manifestation_id = @m.id
           @tagging.suggester = current_user
           @taggings = @m.taggings
-          @recommendations = @m.recommendations
+          recommendations = @m.recommendations
+          @my_pending_recs = recommendations.all_pending.where(user: current_user)
+          @app_recs = recommendations.all_approved
+          @total_recs = @app_recs.count + @my_pending_recs.count
+
           @links = @m.external_links.group_by {|l| l.linktype}
           @random_work = Manifestation.where(id: Manifestation.pluck(:id).sample(5), status: Manifestation.statuses[:published])[0]
           @header_partial = 'manifestation/work_top'
-          @works_about = Work.joins(:topics).where('aboutnesses.aboutable_id': @w.id) # TODO: accommodate works about *expressions* (e.g. an article about a *translation* of Homer's Iliad, not the Iliad)
+          @works_about = @w.works_about
           @scrollspy_target = 'chapternav'
-          prep_user_content
+          prep_user_content(:manifestation)
         end
       end
     end
@@ -284,15 +285,20 @@ class ManifestationController < ApplicationController
   end
 
   def download
-    @m = Manifestation.find(params[:id])
-    impressionist(@m) unless is_spider?
-    dl = @m.fresh_downloadable_for(params[:format])
-    if dl
+    format = params[:format]
+    unless Downloadable.doctypes.include?(format)
+      flash[:error] = t(:unrecognized_format)
+      redirect_to manifestation_read_path(params[:id])
+      return
+    end
+
+    # Wrapping download code into transaction to make it atomic
+    # Without this we had situation when Downloadable object was created but attachmnt creation failed
+    Downloadable.transaction do
+      m = Manifestation.find(params[:id])
+      impressionist(m) unless is_spider?
+      dl = GetFreshManifestationDownloadable.call(m, format)
       redirect_to rails_blob_url(dl.stored_file, disposition: :attachment)
-    else
-      filename = "#{@m.safe_filename}.#{params[:format]}"
-      html = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"><html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"he\" lang=\"he\" dir=\"rtl\"><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" /></head><body dir='rtl' align='right'><div dir=\"rtl\" align=\"right\">#{@m.title_and_authors_html}"+MultiMarkdown.new(@m.markdown).to_html.force_encoding('UTF-8').gsub(/<figcaption>.*?<\/figcaption>/,'')+"\n\n<hr />"+I18n.t(:download_footer_html, url: url_for(action: :read, id: @m.id))+"</div></body></html>"
-      do_download(params[:format], filename, html, @m, @m.author_string)
     end
   end
 
@@ -303,7 +309,6 @@ class ManifestationController < ApplicationController
 
   def period
     @pagetype = :works
-    # @collection = Manifestation.all_published.joins(:expressions).where(expressions: {period: Person.periods[params[:period]]})
     @works_list_title = t(:works_by_period)+': '+t(params[:period])
     @periods = [params[:period]]
     browse
@@ -311,7 +316,6 @@ class ManifestationController < ApplicationController
 
   def genre
     @pagetype = :works
-    # @collection = Manifestation.all_published.joins(:expressions).where(expressions: {genre: params[:genre]})
     @works_list_title = t(:works_by_genre)+': '+helpers.textify_genre(params[:genre])
     @genres = [params[:genre]]
     browse
@@ -320,7 +324,7 @@ class ManifestationController < ApplicationController
   # this one is called via AJAX
   def get_random
     work = nil
-    unless params[:genre].nil? || params[:genre].empty?
+    if params[:genre].present?
       work = randomize_works_by_genre(params[:genre], 1)[0]
     else
       work = randomize_works(1)[0]
@@ -392,14 +396,14 @@ class ManifestationController < ApplicationController
     @urlbase = url_for(action: :show, id:1)[0..-2]
     # DB
     if params[:title].blank? && params[:author].blank?
-      @manifestations = Manifestation.page(params[:page]).order('updated_at DESC')
+      @manifestations = Manifestation.includes(expression: :work).page(params[:page]).order('updated_at DESC')
     else
-      if params[:author].blank?
-        @manifestations = Manifestation.where('title like ?', '%' + params[:title] + '%').page(params[:page]).order('sort_title ASC')
+      if params[:author].blank? # 
+        @manifestations = Manifestation.includes(expression: :work).where('title like ?', '%' + params[:title] + '%').page(params[:page]).order('sort_title ASC')
       elsif params[:title].blank?
-        @manifestations = Manifestation.where('cached_people like ?', "%#{params[:author]}%").page(params[:page]).order('sort_title asc')
+        @manifestations = Manifestation.includes(expression: :work).where('cached_people like ?', "%#{params[:author]}%").page(params[:page]).order('sort_title asc')
       else # both author and title
-        @manifestations = Manifestation.where('manifestations.title like ? and manifestations.cached_people like ?', '%' + params[:title] + '%', '%'+params[:author]+'%').page(params[:page]).order('sort_title asc')
+        @manifestations = Manifestation.includes(expression: :work).where('manifestations.title like ? and manifestations.cached_people like ?', '%' + params[:title] + '%', '%'+params[:author]+'%').page(params[:page]).order('sort_title asc')
       end
     end
   end
@@ -407,8 +411,8 @@ class ManifestationController < ApplicationController
   def show
     @m = Manifestation.find(params[:id])
     @page_title = t(:show)+': '+@m.title_and_authors
-    @e = @m.expressions[0] # TODO: generalize?
-    @w = @e.works[0] # TODO: generalize!
+    @e = @m.expression
+    @w = @e.work
     @html = MultiMarkdown.new(@m.markdown).to_html.force_encoding('UTF-8').gsub(/<figcaption>.*?<\/figcaption>/,'') # remove MMD's automatic figcaptions
     @html = highlight_suspicious_markdown(@html) # highlight suspicious markdown in backend
     h = @m.legacy_htmlfile
@@ -432,14 +436,27 @@ class ManifestationController < ApplicationController
   def edit_metadata
     @m = Manifestation.find(params[:id])
     @page_title = t(:edit_metadata)+': '+@m.title_and_authors
-    @e = @m.expressions[0] # TODO: generalize?
-    @w = @e.works[0] # TODO: generalize!
+    @e = @m.expression
+    @w = @e.work
+  end
+
+  def chomp_period
+    @m = Manifestation.find(params[:id])
+    @e = @m.expression
+    @w = @e.work
+    [@m, @e, @w].each { |rec|
+      if rec.title[-1] == '.'
+        rec.title = rec.title[0..-2]
+        rec.save!
+      end
+    }
+    head :ok
   end
 
   def add_aboutnesses
     @m = Manifestation.find(params[:id])
-    @e = @m.expressions[0] # TODO: generalize?
-    @w = @e.works[0] # TODO: generalize!
+    @e = @m.expression
+    @w = @e.work
     @page_title = t(:add_aboutnesses)+': '+@m.title_and_authors
     @aboutness = Aboutness.new
   end
@@ -458,9 +475,9 @@ class ManifestationController < ApplicationController
     # update attributes
     if params[:commit] == t(:save)
       Chewy.strategy(:atomic) {
-          if params[:markdown].nil? # metadata edit
-          @e = @m.expressions[0] # TODO: generalize?
-          @w = @e.works[0] # TODO: generalize!
+        if params[:markdown].nil? # metadata edit
+          @e = @m.expression
+          @w = @e.work
           @w.title = params[:wtitle]
           @w.genre = params[:genre]
           @w.orig_lang = params[:wlang]
@@ -472,7 +489,6 @@ class ManifestationController < ApplicationController
             c.save!
           end
           @e.language = params[:elang]
-          @e.genre = params[:genre] # expression's genre is same as work's
           @e.title = params[:etitle]
           @e.date = params[:edate]
           @e.comment = params[:ecomment]
@@ -482,21 +498,23 @@ class ManifestationController < ApplicationController
             r.save!
           end
           @e.source_edition = params[:source_edition]
+          @e.period = params[:period]
           @m.title = params[:mtitle]
+          @m.sort_title = params[:sort_title]
+          @m.alternate_titles = params[:alternate_titles]
           @m.responsibility_statement = params[:mresponsibility]
           @m.comment = params[:mcomment]
           @m.status = params[:mstatus].to_i
+          @m.sefaria_linker = params[:sefaria_linker]
           unless params[:add_url].blank?
-            l = ExternalLink.new(url: params[:add_url], linktype: params[:link_type], description: params[:link_description], status: Manifestation.linkstatuses[:approved])
-            l.manifestation = @m
-            l.save!
+            @m.external_links.create!(url: params[:add_url], linktype: params[:link_type].to_i, description: params[:link_description], status: :approved)
           end
           @w.save!
           @e.save!
         else # markdown edit and save
           unless params[:newtitle].nil? or params[:newtitle].empty?
-            @e = @m.expressions[0] # TODO: generalize?
-            @w = @e.works[0] # TODO: generalize!
+            @e = @m.expression
+            @w = @e.work
             @m.title = params[:newtitle]
             @e.title = params[:newtitle]
             @w.title = params[:newtitle] if @w.orig_lang == @e.language # update work title if work in Hebrew
@@ -534,8 +552,8 @@ class ManifestationController < ApplicationController
 
   protected
 
-  def bfunc(coll, page, l, field) # binary-search function for ab_pagination
-    recs = coll.order(field).page(page) 
+  def es_bfunc(coll, page, l, field, direction) # binary-search function for ab_pagination over an ES collection
+    recs = coll.order(field).page(page).objects
     rec = recs.first
     return true if rec.nil?
     c = nil
@@ -547,14 +565,44 @@ class ManifestationController < ApplicationController
       rec = recs[i]
     end
     c = '' if c.nil?
-    return true if c == l || c > l # already too high a page
-    return false
+    if(direction == :desc || direction == 'desc')
+      return true if c == l || c < l # already too high a page
+      return false
+    else
+      return true if c == l || c > l # already too high a page
+      return false
+    end
+  end
+  def bfunc(coll, page, l, field, direction) # binary-search function for ab_pagination
+    recs = coll.order(field).page(page)
+    rec = recs.first
+    return true if rec.nil?
+    c = nil
+    i = 0
+    reccount = recs.count
+    while c.nil? && i < reccount do
+      c = rec[field][0] unless rec[field].nil? # unready dictionary definitions will have their sort_defhead (and defhead) nil, so move on
+      i += 1
+      rec = recs[i]
+    end
+    c = '' if c.nil?
+    if(direction == :desc || direction == 'desc')
+      return true if c == l || c < l # already too high a page
+      return false
+    else
+      return true if c == l || c > l # already too high a page
+      return false
+    end
   end
 
-  def adjust_page_by_letter(coll, l, field)
+  def adjust_page_by_letter(coll, l, field, direction, is_es)
     # binary search to find page where letter begins
     ret = (1..@total_pages).bsearch{|page|
-      bfunc(coll, page, l, field)
+      if is_es
+        es_bfunc(coll, page, l, field, direction)
+      else
+        bfunc(coll, page, l, field, direction)
+      end
     }
     unless ret.nil?
       ret = ret - 1 unless ret == 1
@@ -564,206 +612,188 @@ class ManifestationController < ApplicationController
     end
   end
 
-  def make_collection(query_parts, query_params, joins_needed, people_needed, ord)
-    if query_parts.empty? && !people_needed
-      if joins_needed
-        return Manifestation.all_published.joins(expressions: :works).includes(expressions: :works).order(ord)
-      else
-        return Manifestation.all_published.order(ord)
-      end
-    else
-      @emit_filters = true
-      conditions = query_parts.values.join(' AND ')
-      if joins_needed
-        if people_needed
-          return Manifestation.all_published.joins(<<-SQL).
-            INNER JOIN expressions_manifestations ON expressions_manifestations.manifestation_id = manifestations.id
-            INNER JOIN expressions ON expressions.id = expressions_manifestations.expression_id
-            INNER JOIN realizers ON realizers.expression_id = expressions.id
-            INNER JOIN expressions_works ON expressions_works.expression_id = expressions.id
-            INNER JOIN works ON works.id = expressions_works.work_id
-            INNER JOIN creations ON creations.work_id = works.id
-            INNER JOIN people ON (people.id = realizers.person_id OR people.id = creations.person_id)
-          SQL
-          where(conditions, query_params).order(ord)
-
-          # return Manifestation.all_published.joins(expressions: [:persons, works: [:persons]]).includes(expressions: :works).where(conditions, query_params).order(ord)
-        else
-          return Manifestation.all_published.joins(expressions: :works).includes(expressions: :works).where(conditions, query_params).order(ord)
-        end
-      else
-        return Manifestation.all_published.where(conditions, query_params).order(ord)
-      end
-    end
-  end
-
-  def date_query(datetype, which)
-    return "#{DATE_FIELD[@datetype]} #{which == :fromdate ? '>=' : '<='} :#{which}" unless datetype == 'uploaded'
-    return "#{DATE_FIELD[@datetype]} #{which == :fromdate ? '>=' : '<='} CONVERT(:#{which}, DATETIME)"
-  end
-
-  def normalized_date_formatter(datetype, d)
-    return d unless datetype == 'uploaded'
-    return d+'-01-01'
-  end
-
-  def prep_collection
-    @emit_filters = false
-    @sort_dir = :default
-    if params[:sort_by].present?
-      @sort = params[:sort_by].dup
-      params[:sort_by].sub!(/_(a|de)sc$/,'')
-      @sort_dir = $&[1..-1] unless $&.nil?
-    end
-    joins_needed = @periods.present? || @genres.present? || params['search_input'].present? || params[:load_filters].present? || params['fromdate'].present? || params['todate'].present? || params['ckb_genres'].present? || params['ckb_periods'].present? || params['ckb_languages'].present? || params['ckb_authors'].present? || params['ckb_copyright'].present? || (params[:sort_by].present? && ['publication_date', 'creation_date'].include?(params[:sort]))
-    people_needed = params['authors'].present?
-    query_params = {}
-    query_parts = {}
-    # figure out sort order
-    if params[:sort_by].present?
-      case params[:sort_by]
-      when 'alphabetical'
-        ord = {sort_title: (@sort_dir == :default ? :asc : @sort_dir)}
-      when 'popularity'
-        ord = {impressions_count: (@sort_dir == :default ? :desc : @sort_dir)}
-      when 'publication_date'
-        ord = "expressions.date #{@sort_dir == :default ? 'asc' : @sort_dir}"
-      when 'creation_date'
-        ord = "works.date #{@sort_dir == :default ? 'asc' : @sort_dir}"
-      when 'upload_date'
-        ord = {created_at: (@sort_dir == :default ? :desc : @sort_dir)}
-      end
-    else
-      sdir = (@sort_dir == :default ? :asc : @sort_dir)
-      @sort = "alphabetical_#{sdir}"
-      ord = {sort_title: sdir}
-    end
-
-    # collect conditions
+  def build_es_filter_from_filters
+    ret = {}
     @filters = []
-    @emit_filters = true if params[:load_filters] == 'true' || params[:emit_filters] == 'true'
-    if params['search_input'].present? || params['authorstr'].present? || params['authors'].present?
-      if params['authors'].present?
-        @search_type = 'authorname'
-        author_ids = params['authors'].split(',').map{|x| x.to_i}
-        query_params[:people_ids] = author_ids
-        @authors = author_ids # .join(',')
-        query_parts[:authors] = 'people.id IN (:people_ids)'
-        @authors_names = params['authors_names']
-        @filters << [I18n.t(:authors_xx, {xx: params['authors_names']}), 'authors', :authorlist]
-      elsif (params['search_type'].present? && params['search_type'] == 'authorname') || (params['authorstr'].present? && params['search_input'].empty?)
-        query_params[:searchstring] = '%'+params['authorstr']+'%'
-        query_parts[:people] = 'cached_people LIKE :searchstring'
-        @authorstr = params['authorstr']
-        @search_type = 'authorname'
-        @filters << [I18n.t(:author_x, {x: params['authorstr']}), :authors, :text]
-      else
-        query_params[:searchstring] = '%'+params['search_input']+'%'
-        query_parts[:titles] = 'manifestations.title LIKE :searchstring'
-        @search_type = 'workname'
-        @filters << [I18n.t(:title_x, {x: params['search_input']}), :search_input, :text]
-      end
-      @search_input = params['search_input']
-    end
     # periods
-    @periods = params['ckb_periods'] if params['ckb_periods'].present?
+    @periods = params['ckb_periods'] unless @periods.present?
     if @periods.present?
-      query_parts[:periods] = 'expressions.period IN (:periods)'
-      query_params[:periods] = @periods.map{|x| Expression.periods[x]}
-      @filters += @periods.map{|x| [I18n.t(x), "period_#{x}", :checkbox]}
+      ret['periods'] = @periods
+      @filters += @periods.map { |x| [I18n.t(x), "period_#{x}", :checkbox] }
     end
+
     # genres
-    @genres = params['ckb_genres'] if params['ckb_genres'].present?
+    @genres = params['ckb_genres'] unless @genres.present?
     if @genres.present?
-      query_parts[:genres] = 'expressions.genre IN (:genres)'
-      query_params[:genres] = @genres
-      @filters += @genres.map{|x| [helpers.textify_genre(x), "genre_#{x}", :checkbox]}
+      ret['genres'] = @genres
+      @filters += @genres.map { |x| [helpers.textify_genre(x), "genre_#{x}", :checkbox] }
     end
+
     # copyright
-    @copyright = params['ckb_copyright'].map{|x| x.to_i} if params['ckb_copyright'].present?
+    @copyright = params['ckb_copyright']&.map(&:to_i)
     if @copyright.present?
-      query_parts[:copyright] = 'copyrighted IN (:copyright)'
-      query_params[:copyright] = @copyright
-      @filters += @copyright.map{|x| [helpers.textify_copyright_status(x == 1), "copyright_#{x}", :checkbox]}
-    end
-    # languages
-    if params['ckb_languages'].present?
-      if params['ckb_languages'] == ['xlat']
-        query_parts[:languages] = 'works.orig_lang <> "he"'
-        @filters << [I18n.t(:translations), 'lang_xlat', :checkbox]
-      else
-        @languages = params['ckb_languages'].reject{|x| x == 'xlat'}
-        if @languages.present?
-          query_parts[:languages] = 'works.orig_lang IN (:languages)'
-          query_params[:languages] = @languages
-          @filters += @languages.map{|x| ["#{I18n.t(:orig_lang)}: #{helpers.textify_lang(x)}", "lang_#{x}", :checkbox]}
-        end
+      is_copyrighted = @copyright.map { |x| x == 0 ? false : true }.uniq
+      if is_copyrighted.size == 1
+        ret['is_copyrighted'] = is_copyrighted.first
       end
+      @filters += @copyright.map { |x| [helpers.textify_copyright_status(x == 1), "copyright_#{x}", :checkbox] }
     end
+
+    # authors genders
+    @genders = params['ckb_genders']
+    if @genders.present?
+      ret['author_genders'] = @genders
+      @filters += @genders.map { |x| [I18n.t(:author) + ': ' + I18n.t(x), "gender_#{x}", :checkbox] }
+    end
+
+    # translator genders
+    @tgenders = params['ckb_tgenders']
+    if @tgenders.present?
+      ret['translator_genders'] = @tgenders
+      @filters += @tgenders.map { |x| [I18n.t(:translator) + ': ' + I18n.t(x), "tgender_#{x}", :checkbox] }
+    end
+
+    # author ids - multi-select authors
+    if params['authors'].present?
+      @search_type = 'authorname'
+      author_ids = params['authors'].split(',').map(&:to_i)
+      ret['author_ids'] = author_ids
+      @authors = author_ids # .join(',')
+      @authors_names = params['authors_names']
+      @filters << [I18n.t(:authors_xx, {xx: @authors_names}), 'authors', :authorlist]
+    end
+
+    # languages
+    @languages = params['ckb_languages']
+    if @languages.present?
+      if @languages == ['xlat']
+        @languages = get_langs.reject{|x| x == 'he'}
+      else
+        @languages.delete('xlat')
+      end
+      ret['original_languages'] = @languages
+      @filters += @languages.map { |x| ["#{I18n.t(:orig_lang)}: #{helpers.textify_lang(x)}", "lang_#{x}", :checkbox] }
+    end
+
     # dates
-    @fromdate = params['fromdate'] if params['fromdate'].present?
-    @todate = params['todate'] if params['todate'].present?
+    @fromdate = params['fromdate'].to_i if params['fromdate'].present?
+    @todate = params['todate'].to_i if params['todate'].present?
     @datetype = params['date_type']
+    range_expr = {}
     if @fromdate.present?
-      query_parts[:fromdate] = date_query(@datetype, :fromdate)
-      query_params[:fromdate] = normalized_date_formatter(@datetype, @fromdate)
+      range_expr['from'] = @fromdate
       @filters << ["#{I18n.t('d'+@datetype)} #{I18n.t(:fromdate)}: #{@fromdate}", :fromdate, :text]
     end
     if @todate.present?
-      query_parts[:todate] = date_query(@datetype, :todate)
-      query_params[:todate] = normalized_date_formatter(@datetype, @todate)
+      range_expr['to'] = @todate
       @filters << ["#{I18n.t('d'+@datetype)} #{I18n.t(:todate)}: #{@todate}", :todate, :text]
     end
-    # build the collection (with/without joins, with/without conditions)
-    joins_needed = true if @emit_filters
-    @collection = make_collection(query_parts, query_params, joins_needed, people_needed, ord)
-    if @sort[0..11] == 'alphabetical' # ignore direction
-      unless params[:page].nil? || params[:page].empty?
+    unless range_expr.empty?
+      raise "Wrong datetype: #{@datetype}" unless %w(uploaded created published).include?(@datetype)
+      datefield = "#{@datetype}_between"
+      ret[datefield] = range_expr
+    end
+
+    # in browse UI we can either use search by author name or by title, but not together
+    @authorstr = params['authorstr']
+    @search_input = params['search_input']
+    if @search_input.present? || @authorstr.present?
+      if params['search_type'] == 'authorname' || (@authorstr.present? && @search_input.empty?)
+        ret['author'] = @authorstr
+        @search_type = 'authorname'
+        @filters << [I18n.t(:author_x, { x: @authorstr }), :authors, :text]
+      else
+        ret['title'] = @search_input
+        @search_type = 'workname'
+        @filters << [I18n.t(:title_x, {x: @search_input}), :search_input, :text]
+      end
+    end
+    return ret
+  end
+
+  def es_prep_collection
+    @sort_dir = 'default'
+    if params[:sort_by].present?
+      @sort_or_filter = 'sort'
+      @sort = params[:sort_by].dup
+      @sort_by = params[:sort_by].sub(/_(a|de)sc$/,'')
+      @sort_dir = $&[1..-1] unless $&.nil?
+    else
+      # use alphabetical sorting by default
+      @sort = 'alphabetical_asc'
+      @sort_by = 'alphabetical'
+      @sort_dir = 'asc'
+    end
+
+    standard_aggregations = {
+      periods: {terms: {field: 'period'}},
+      genres: {terms: {field: 'genre'}},
+      languages: {terms: {field: 'orig_lang', size: get_langs.count + 1}},
+      copyright_status: {terms: {field: 'copyright_status'}},
+      author_genders: {terms: {field: 'author_gender'}},
+      translator_genders: {terms: {field: 'translator_gender'}},
+      author_ids: {terms: {field: 'author_ids', size: 2000}} # We may need to increase this threshold in future if number of authors exceeds 2000
+    }
+
+    filter = build_es_filter_from_filters
+    @collection = SearchManifestations.call(@sort_by, @sort_dir, filter)
+
+    @collection = @collection.aggregations(standard_aggregations).limit(100) # prepare ES query
+    @total = @collection.count # actual query triggered here
+
+    @page = params[:page].to_i
+    @page = 1 if @page == 0 # slider sets page to zero, awkwardly
+                            # a zero-result query would trigger this, otherwise
+    if @page > (@total/100.0).ceil && @page != 1
+      # Sometimes we receive requests to pages with extremely large number from bots/search crawlers
+      # So simply respond with NotFound in this case
+      raise PageNotFound
+    end
+
+    @emit_filters = true if params[:load_filters] == 'true' || params[:emit_filters] == 'true'
+    @gender_facet = es_buckets_to_facet(@collection.aggs['author_genders']['buckets'], Person.genders)
+    @tgender_facet = es_buckets_to_facet(@collection.aggs['translator_genders']['buckets'], Person.genders)
+    @period_facet = es_buckets_to_facet(@collection.aggs['periods']['buckets'], Expression.periods)
+    @genre_facet = es_buckets_to_facet(@collection.aggs['genres']['buckets'], get_genres.to_h {|g| [g,g]})
+    @language_facet = es_buckets_to_facet(@collection.aggs['languages']['buckets'], get_langs.to_h {|l| [l,l]})
+    @language_facet[:xlat] = @language_facet.reject{|k,v| k == 'he'}.values.sum
+    @copyright_facet = es_buckets_to_facet(@collection.aggs['copyright_status']['buckets'], {'false' => 0,'true' => 1})
+    # Preparing list of authors to show in multiselect modal on works browse page
+    if filter.empty?
+      @authors_list = Person.all
+    else
+      author_ids = @collection.aggs['author_ids']['buckets'].map{|x| x['key']}
+      @authors_list = Person.where(id: author_ids)
+    end
+    @authors_list = @authors_list.select(:id, :name).sort_by(&:name)
+
+    if @sort_by == 'alphabetical' # subset of @sort to ignore direction
+      unless params[:page].blank?
         params[:to_letter] = nil # if page was specified, forget the to_letter directive
       end
       oldpage = @page
       @works = @collection.page(@page) # get page X of manifestations
       @total_pages = @works.total_pages
 
-      unless params[:to_letter].nil? || params[:to_letter].empty?
-        @total_pages = @works.total_pages
-        adjust_page_by_letter(@collection, params[:to_letter], :sort_title)
+      unless params[:to_letter].blank?
+        adjust_page_by_letter(@collection, params[:to_letter], :sort_title, @sort_dir, true)
         @works = @collection.page(@page) if oldpage != @page # re-get page X of manifestations if adjustment was made
       end
-      @ab = prep_ab(@collection, @works, :sort_title)
+
+      # one idea is to search with the same filters AND a title match for each letter plus * (wildcard), COUNT the results, and calculate the page numbers by division with page size
+      @ab = []
+      ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ז', 'ח', 'ט', 'י', 'כ', 'ל', 'מ', 'נ', 'ס', 'ע', 'פ', 'צ', 'ק', 'ר', 'ש', 'ת'].each{|l|
+        @ab << [l, '']
+      }
+      # @ab = prep_ab(@collection, @works, :sort_title)
     else
-      @works = @collection.page(@page) # get page X of manifestations
+      @works = @collection.page(@page)
+      @total_pages = @works.total_pages
     end
-    @authors_list = Person.all
-    if @emit_filters == true
-      @genre_facet = make_collection(query_parts.reject{|k,v| k == :genres }, query_params, joins_needed, people_needed, '').group('expressions.genre').count
-      @period_facet = make_collection(query_parts.reject{|k,v| k == :periods }, query_params, joins_needed, people_needed, '').group('expressions.period').count
-      @copyright_facet = make_collection(query_parts.reject{|k,v| k == :copyright }, query_params, joins_needed, people_needed, '').group(:copyrighted).count
-      @language_facet = make_collection(query_parts.reject{|k,v| k == :languages }, query_params, joins_needed, people_needed, '').group('works.orig_lang').count
-      @language_facet[:xlat] = @language_facet.values.sum - (@language_facet['he'] || 0)
-      get_langs.each do |l|
-        @language_facet[l] = 0 unless @language_facet[l].present?
-      end
-      @uploaded_dates = make_collection(query_parts.reject{|k,v| k == :uploaded }, query_params, joins_needed, people_needed, '').pluck(:created_at).map{|x| "{value: #{x.strftime("%Y%m%d")}}"}.join(", ")
-      unless query_parts.empty?
-        c = make_collection(query_parts.reject{|k,v| [:people, :authors].include?(k)}, query_params, joins_needed, true,'').pluck('people.id').uniq
-        unless c.empty?
-          @authors_list = Person.where(id: c)
-        end
-      end
-      # TODO: date histogram      # (bins, freqs) = uploaded_dates.histogram
-      # TODO: curated facet
-      end
-    # {"utf8"=>"✓", "search_input"=>"ביאליק", "search_type"=>"authorname", "ckb_genres"=>["drama"], "ckb_periods"=>["medieval", "enlightenment"], "ckb_copyright"=>["0"], "CheckboxGroup5"=>"sort_by_german", "genre"=>"drama", "load_filters"=>"true", "_"=>"1577388296523", "controller"=>"manifestation", "action"=>"genre"} permitted: false
-    params[:sort_by] = @sort
   end
 
   def prep_for_browse
-    @page = params[:page] || 1
-    @page = 1 if ['0',''].include?(@page) # slider sets page to zero, awkwardly
-    prep_collection # filtering and sorting is done here
-    @total = @collection.count
-    @total_pages = @works.total_pages
+    es_prep_collection
     d = Date.today
     @maxdate = "#{d.year}-#{'%02d' % d.month}"
     #@maxdate = d.year.to_s
@@ -774,6 +804,7 @@ class ManifestationController < ApplicationController
   def prep_ab(whole, subset, fieldname)
     ret = []
     abc_present = whole.pluck(fieldname).map{|t| t.nil? || t.empty? ? '' : t[0] }.uniq.sort
+    dummy = subset[0] # bizarrely, unless we force this query, the pluck below returns *a wrong set* (off by one page or so)
     abc_active = subset.pluck(fieldname).map{|t| t.nil? || t.empty? ? '' : t[0] }.uniq.sort
     ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ז', 'ח', 'ט', 'י', 'כ', 'ל', 'מ', 'נ', 'ס', 'ע', 'פ', 'צ', 'ק', 'ר', 'ש', 'ת'].each{|l|
       status = ''
@@ -788,42 +819,6 @@ class ManifestationController < ApplicationController
       ret << [l, status]
     }
     return ret
-  end
-
-  def prep_user_content
-    if current_user
-      @anthologies = current_user.anthologies
-      i = 1
-      prefix = I18n.t(:anthology)
-      anth_titles = @anthologies.pluck(:title)
-      loop do
-        @new_anth_name = prefix+"-#{i}"
-        i += 1
-        break unless anth_titles.include?(@new_anth_name)
-      end
-      if session[:current_anthology_id].nil?
-        unless @anthologies.empty?
-          @anthology = @anthologies.includes(:texts).first
-          session[:current_anthology_id] = @anthology.id
-        end
-      else
-        begin
-          @anthology = Anthology.find(session[:current_anthology_id])
-        rescue
-          session[:current_anthology_id] = nil # if somehow deleted without resetting the session variable (e.g. during development)
-        end
-      end
-      @anthology_select_options = @anthologies.map{|a| [a.title, a.id, @anthology == a ? 'selected' : ''] }
-      @cur_anth_id = @anthology.nil? ? 0 : @anthology.id
-      @bookmark = 0
-      b = Bookmark.where(user: current_user, manifestation: @m)
-      unless b.empty?
-        @bookmark = b.first.bookmark_p
-      end
-      @jump_to_bookmarks = current_user.get_pref('jump_to_bookmarks')
-    else
-      @bookmark = 0
-    end
   end
 
   def refuse_unreasonable_page
@@ -845,20 +840,22 @@ class ManifestationController < ApplicationController
         flash[:notice] = t(:work_not_available)
         redirect_to '/'
       else
-        @e = @m.expressions[0]
-        @w = @e.works[0]
+        @e = @m.expression
+        @w = @e.work
         @author = @w.persons[0] # TODO: handle multiple authors
         unless is_spider?
           impressionist(@m)
           unless @author.nil?
             impressionist(@author) # also increment the author's popularity counter
           end
+          ahoy.track "text read or printed", text_id: @m.id, title: @m.title, author: @m.author_string # log the read, for later recommendation feature using the Disco gem
         end
         if @author.nil?
           @author = Person.new(name: '?')
         end
         @translators = @m.translators
-        @illustrators = @w.illustrators + @e.illustrators
+        @illustrators = @w.illustrators
+        @editors = @e.editors
         @page_title = "#{@m.title_and_authors} - #{t(:default_page_title)}"
         if @print
           @html = MultiMarkdown.new(@m.markdown).to_html.force_encoding('UTF-8').gsub(/<figcaption>.*?<\/figcaption>/,'') # remove MMD's automatic figcaptions
@@ -899,15 +896,19 @@ class ManifestationController < ApplicationController
       tmphash.keys.reverse.map{|k| @chapters << [k[4..-1], tmphash[k]]}
       @selected_chapter = tmphash.keys.last
       @html = MultiMarkdown.new(lines.join('')).to_html.force_encoding('UTF-8').gsub(/<figcaption>.*?<\/figcaption>/,'').gsub('<table>','<div style="overflow-x:auto;"><table>').gsub('</table>','</table></div>') # remove MMD's automatic figcaptions and make tables scroll to avoid breaking narrow mobile devices
+      # add permalinks
+      @html.gsub!(/<h2(.*?) id="(.*?)"(.*?)>(.*?)<\/h2>/,"<h2\\1 id=\"\\2\"\\3>\\4 &nbsp;&nbsp; <span style=\"font-size: 50%;\"><a title=\"קישור קבוע\" href=\"#{request.original_url}#\\2\">🔗</a></span></h2>")
+      @html.gsub!(/<h3(.*?) id="(.*?)"(.*?)>(.*?)<\/h3>/,"<h3\\1 id=\"\\2\"\\3>\\4 &nbsp;&nbsp; <span style=\"font-size: 50%;\"><a title=\"קישור קבוע\" href=\"#{request.original_url}#\\2\">🔗</a></span></h3>")
+
       @tabclass = set_tab('works')
       @entity = @m
       @pagetype = :manifestation
       @print_url = url_for(action: :print, id: @m.id)
       @liked = (current_user.nil? ? false : @m.likers.include?(current_user))
       if @e.translation?
-        if @e.works[0].expressions.count > 1 # one is the one we're looking at...
+        if @e.work.expressions.count > 1 # one is the one we're looking at...
           @additional_translations = []
-          @e.works[0].expressions.joins(:manifestations).includes(:manifestations).each do |ex|
+          @e.work.expressions.joins(:manifestations).includes(:manifestations).each do |ex|
             @additional_translations << ex unless ex == @e
           end
         end

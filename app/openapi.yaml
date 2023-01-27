@@ -1,0 +1,522 @@
+openapi: 3.0.0
+info:
+  title: Project Ben-Yehuda API
+  description: A read-only API to query for and retrieve texts and metadata from benyehuda.org
+  version: 1.0.0
+  license:
+    name: GNU Affero Public License
+    url: 'https://www.gnu.org/licenses/agpl-3.0.en.html'
+  contact:
+    name: Asaf Bartov
+    email: editor@benyehuda.org
+components:
+  parameters:
+    keyParam:
+      name: key
+      in: query
+      required: true
+      schema:
+        type: string
+    snippetParam:
+      name: snippet
+      in: query
+      required: false
+      description: 'whether or not to include a plaintext snippet of the beginning of the text. Default is `false`.'
+      schema:
+        type: boolean
+        default: false
+    viewParam:
+      name: view
+      in: query
+      required: false
+      description: 'how much detail to return: `metadata` returns all metadata and download link; `basic` returns basic metadata and a download_link, and is the default; `enriched` returns all metadata as well as tags, recommendations, external links, and aboutnesses'
+      schema:
+        type: string
+        default: basic
+        enum:
+          - metadata
+          - basic
+          - enriched
+    personDetailParam:
+      name: author_detail
+      in: query
+      required: false
+      description: 'how much detail to return: 
+        `metadata` returns personal metadata;
+        `texts` returns IDs of texts this person was involved in, with his role in each;; 
+        `enriched` returns personal metadata plus list of works and works about this person (backlinks);'
+      schema:
+        type: string
+        default: metadata
+        enum:
+          - metadata
+          - works
+          - enriched
+    formatParam:
+      name: file_format
+      in: query
+      required: false
+      description: 'desired text format for download link: `html` for HTML, `txt` for plain text without any formatting, `pdf` for PDF, `epub` for EPUB, `mobi` for MOBI, `docx` for DOCX, `odt` for LibreOffice ODT'
+      schema:
+        type: string
+        default: html
+        enum:
+          - html
+          - txt
+          - pdf
+          - epub
+          - mobi
+          - docx
+          - odt
+    pageParam:
+      name: page
+      in: query
+      required: false
+      description: desired page number of result set
+      schema:
+        type: integer
+        minimum: 1
+    sortByParam:
+      name: sort_by
+      in: query
+      required: false
+      description: desired ordering of result set (ignored if fulltext search is used)
+      schema:
+        type: string
+        default: alphabetical
+        enum:
+          - alphabetical
+          - popularity
+          - publication_date
+          - creation_date
+          - upload_date
+    sortDirParam:
+      name: sort_dir
+      in: query
+      required: false
+      description: desired ordering direction (ignored if fulltext search is used)
+      schema:
+        type: string
+        default: default
+        enum:
+          - default
+          - asc
+          - desc
+  schemas:
+    genre:
+      type: string
+      enum:
+        - poetry
+        - prose
+        - drama
+        - fables
+        - article
+        - memoir
+        - letters
+        - reference
+        - lexicon
+      description: the broad field of humanities of a textual work in the database.
+    period:
+      type: string
+      enum:
+        - ancient
+        - medieval
+        - enlightenment
+        - revival
+        - modern
+      description: specifies what section of the rough timeline of Hebrew literature an object belongs to.
+    year_range:
+      type: object
+      properties:
+        from:
+          type: integer
+        to:
+          type: integer
+    tagging:
+      type: string
+    recommendation:
+      type: object
+      properties:
+        fulltext:
+          type: string
+        recommender_user_id:
+          type: integer
+        recommender_home_url:
+          type: string
+        recommendation_date:
+          type: string
+    external_link:
+      type: object
+      properties:
+        url:
+          type: string
+        description:
+          type: string
+        type:
+          type: string
+          enum:
+            - wikipedia
+            - blog
+            - youtube
+            - publisher_site
+            - other
+    gender:
+      type: string
+      enum:
+        - female
+        - male
+        - other
+        - unknown
+      description: describes a person's gender
+  responses:
+    person:
+      description: A response object describing a person from Project Ben-Yehuda
+      content:
+        application/json:
+          schema:
+            properties:
+              id:
+                type: integer
+              url:
+                type: string
+                description: Canonical URL of the person at Project Ben-Yehuda (useful for giving credit and allowing users to click through)
+              metadata:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  sort_name:
+                    type: string
+                    description: version of the name more useful for alphabetical sorting
+                  birth_year:
+                    type: integer
+                  death_year:
+                    type: integer
+                  gender:
+                    $ref: '#/components/schemas/gender'
+                  copyright_status:
+                    type: boolean
+                  period:
+                    $ref: '#/components/schemas/period'
+                  other_designations:
+                    type: string
+                    description: semicolon-separated list of additional names or spellings for this person
+                  bio_snippet:
+                    type: string
+                  languages:
+                    type: array
+                    description: list of languages (by ISO code) this person worked in
+                    items:
+                      type: string
+                  genres:
+                    type: array
+                    description: list of genres this person worked in
+                    items:
+                      $ref: '#/components/schemas/genre'
+                  impressions_count:
+                    type: integer
+                    description: total number of times the person's page OR one of their texts were viewed or printed
+              texts:
+                type: object
+                description: ID numbers of all texts this person is involved into with role in each
+                properties:
+                  author:
+                    type: array
+                    items:
+                      type: integer
+                  translator:
+                    type: array
+                    items:
+                      type: integer
+                  editor:
+                    type: array
+                    items:
+                      type: integer
+                  illustrator:
+                    type: array
+                    items:
+                      type: integer
+              enrichment:
+                type: object
+                properties:
+                  texts_about:
+                    type: array
+                    description: ID numbers of texts whose subject is this person
+                    items:
+                      type: integer
+    text:
+      description: A response object describing a single text from Project Ben-Yehuda
+      content:
+        application/json:
+          schema:
+            properties:
+              id:
+                type: integer
+              url:
+                type: string
+                description: Canonical URL of the text at Project Ben-Yehuda (useful for giving credit and allowing users to click through)
+              metadata:
+                type: object
+                properties:
+                  title:
+                    type: string
+                  sort_title:
+                    type: string
+                    description: version of the title more useful for alphabetical sorting
+                  genre:
+                    $ref: '#/components/schemas/genre'
+                  orig_lang:
+                    type: string
+                  orig_lang_title:
+                    type: string
+                    description: title of translated text in the original language and script
+                  pby_publication_date:
+                    type: string
+                  author_string:
+                    type: string
+                  author_ids:
+                    type: array
+                    items:
+                      type: integer
+                    description: ID numbers of all authors involved with the text (most often only one)
+                  impressions_count:
+                    type: integer
+                    description: total number of times the text was viewed or printed
+                  orig_publication_date:
+                    type: string
+                  author_genders:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/gender'
+                  translator_genders:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/gender'
+                  copyright_status:
+                    type: boolean
+                  period:
+                    $ref: '#/components/schemas/period'
+                  raw_creation_date:
+                    type: string
+                  creation_date:
+                    type: string
+                  publication_place:
+                    type: string
+                  publisher:
+                    type: string
+                  raw_publication_date:
+                    type: string
+              enrichment:
+                type: object
+                properties:
+                  external_links:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/external_link'
+                  taggings:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/tagging'
+                  recommendations:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/recommendation'
+                  texts_about:
+                    type: array
+                    description: ID numbers of texts whose subject is this text (for example, critical essays about a creative work)
+                    items:
+                      type: integer
+              snippet:
+                type: string
+                description: 'plaintext snippet of the first few hundred characters of the text, useful for previews and search results'
+              download_url:
+                type: string
+                description: 'URL of the full text of the work, in the requested format (HTML by default)'
+    textsPage:
+      description: Single page of paginated texts list
+      content:
+        application/json:
+          schema:
+            properties:
+              total_count:
+                type: integer
+              data:
+                type: array
+                items:
+                  $ref: '#/components/responses/text'
+paths:
+  /search:
+    post:
+      parameters:
+        - $ref: '#/components/parameters/keyParam'
+        - $ref: '#/components/parameters/viewParam'
+        - $ref: '#/components/parameters/formatParam'
+        - $ref: '#/components/parameters/pageParam'
+        - $ref: '#/components/parameters/sortByParam'
+        - $ref: '#/components/parameters/sortDirParam'
+        - name: genres
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/genre'
+        - name: periods
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/period'
+        - name: is_copyrighted
+          in: query
+          required: false
+          description: limit search to copyrighted works or to non-copyrighted works
+          schema:
+            type: boolean
+        - name: author_genders
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/gender'
+        - name: translator_genders
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/gender'
+        - name: title
+          in: query
+          required: false
+          description: a substring to match against a text's title
+          schema:
+            type: string
+        - name: author
+          in: query
+          required: false
+          description: a substring to match against the name(s) of a text's author(s)
+          schema:
+            type: string
+        - name: fulltext
+          in: query
+          required: false
+          description: a substring to match against the work's full text.
+          schema:
+            type: string
+        - name: author_ids
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: integer
+        - name: original_language
+          in: query
+          required: false
+          description: 'ISO code of language, e.g. ''pl'' for Polish, ''grc'' for ancient Greek. Use magic constant ''xlat'' to match all non-Hebrew languages'
+          schema:
+            type: string
+        - name: uploaded_between
+          in: query
+          required: false
+          description: 'pass an years interval json `{ from: min_year, to: max_year}` to get works uploaded to the site at year min_year <= year <= max_year'
+          schema:
+            $ref: '#/components/schemas/year_range'
+        - name: created_between
+          in: query
+          required: false
+          description: 'pass an years interval json `{ from: min_year, to: max_year}` to get works created at year min_year <= year <= max_year'
+          schema:
+            $ref: '#/components/schemas/year_range'
+        - name: published_between
+          in: query
+          required: false
+          description: 'pass an years interval json `{ from: min_year, to: max_year}` to get works published in print at year min_year <= year <= max_year'
+          schema:
+            $ref: '#/components/schemas/year_range'
+      summary: Query the site database for texts by a variety of parameters. See API docs for documentation of each parameter. All parameters are combined with a logical AND. Parameters accepting arrays allow a logical OR within that category.
+      tags: []
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total_count:
+                    type: integer
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/responses/text'
+  /texts/batch:
+    post:
+      parameters:
+        - $ref: '#/components/parameters/keyParam'
+        - name: ids
+          in: query
+          required: false
+          description: array of text IDs to fetch
+          schema:
+            type: array
+            minItems: 1
+            maxItems: 25
+            items:
+              type: integer
+        - $ref: '#/components/parameters/viewParam'
+        - $ref: '#/components/parameters/formatParam'
+        - $ref: '#/components/parameters/snippetParam'
+      tags: []
+
+      summary: retrieve a collection of texts by specified IDs
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/responses/text'
+  '/texts/{id}':
+    get:
+      parameters:
+        - $ref: '#/components/parameters/keyParam'
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - $ref: '#/components/parameters/viewParam'
+        - $ref: '#/components/parameters/formatParam'
+        - $ref: '#/components/parameters/snippetParam'
+      summary: 'returns meta-data and, optionally, the full text, of a textual work from the database'
+      tags: []
+      description: (TBD)
+      responses:
+        '200':
+          $ref: '#/components/responses/text'
+  '/people/{id}':
+    get:
+      summary: Your GET endpoint
+      tags: []
+      parameters:
+        - $ref: '#/components/parameters/keyParam'
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - $ref: '#/components/parameters/personDetailParam'
+      responses: 
+        '200':
+          $ref: '#/components/responses/person'
+      
+      operationId: get-people-id
+servers:
+  - url: 'https://benyehuda.org/api'
+    description: main production server of Project Ben-Yehuda

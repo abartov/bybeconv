@@ -1,0 +1,38 @@
+.modal-dialog
+  .modal-content
+    .flex-popup#all-links-popup
+      .modal-header
+        .popup-top
+          %button.btn-small-outline-v02{'data-dismiss'=>'modal'}
+            .btn-text-v02
+              %span.right-arrow 2
+              %span= t(:back)
+          .top-contact-center
+            .headline-1-v02
+              %span.by-icon-v02 +
+              %span= t(:external_links)
+            .headline-3-v02
+              %span= t(:will_open_in_new_tab)
+            .button-placeholder
+
+      .modal-body
+        .by-popup-v02
+          .by-card-header-v02.desktop-only
+            .headline-1-v02
+              %span.by-icon-v02 +
+              %span= t(:external_links)
+            .headline-3-v02
+              %span= t(:will_open_in_new_tab)
+            %a.popup-x-v02{'data-dismiss'=>'modal'} -
+            .by-card-content-v02.limited-height-popup-content-v02
+              - ExternalLink.sidebar_link_types.each do |lt|
+                - links = @external_links.where(linktype: lt)
+                - if links.count > 0
+                  .metadata-link.headline-2-v02
+                    %span.metadata-link-icon> +
+                    = t(lt)
+                  %div
+                    %ul.ul-inside
+                      - links.each do |l|
+                        %li
+                          = link_to l.description, l.url, target: :_blank

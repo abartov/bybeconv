@@ -1,10 +1,9 @@
-/ TODO: a whole bunch of editable WEM fields
 != "<script src=\"https://unpkg.com/stackedit-js@1.0.5/docs/lib/stackedit.min.js\"></script>"
-/ from http://designwithpc.com/Plugins/ddSlick
+-# from http://designwithpc.com/Plugins/ddSlick
 != '<script src="https://cdn.rawgit.com/prashantchaudhary/ddslick/master/jquery.ddslick.min.js"></script>'
 
 = form_tag(action: :update, id: @m.id) do
-  .container-fluid.top-element
+  .container-fluid
     .row
       .col-md-9
         %h3
@@ -18,7 +17,9 @@
           != "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
           = link_to t(:to_the_work_in_the_site), manifestation_read_path(@m), target: '_blank'
         %h3
-          = t(:by)+': '+@m.author_string
+          = t(:by)+': '
+          - @m.authors.each do |au|
+            = link_to au.name, author_toc_path(id: au)
       .col-md-3
         %h3
           = t(:new_title_only)

@@ -39,11 +39,13 @@ module BybeUtils
     gc.draw(canvas)
     cover_file = Tempfile.new(['tmp_cover_'+manifestation.id.to_s,'.png'], 'tmp/')
     canvas.write(cover_file.path)
-    book.add_item('cover.jpg',cover_file.path).cover_image
+    book.add_item('cover.png',cover_file.path).cover_image
     book.ordered {
-      buf = '<head><meta charset="UTF-8"><meta http-equiv="content-type" content="text/html; charset=UTF-8"></head><body dir="rtl" align="center"><h1>'+title+'</h1><p/><p/><h3>פרי עמלם של מתנדבי</h3><p/><h2>פרויקט בן־יהודה</h2><p/><h3><a href="https://benyehuda.org/page/volunteer">(רוצים לעזור?)</a></h3><p/>מעודכן לתאריך: '+Date.today.to_s+'</body>'
-      book.add_item('0_title.html').add_content(StringIO.new(buf))
-      book.add_item('1_text.html').add_content(StringIO.new(html)).toc_text(title)
+      buf = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" xml:lang="he" lang="he"><head><meta http-equiv="content-type" content="text/html; charset=UTF-8" /><title>'+title+'</title></head><body dir="rtl"><div style="text-align:center;"><h1>'+title+'</h1><p/><p/><h3>פרי עמלם של מתנדבי</h3><p/><h2>פרויקט בן־יהודה</h2><p/><h3><a href="https://benyehuda.org/page/volunteer">(רוצים לעזור?)</a></h3><p/>מעודכן לתאריך: '+Date.today.to_s+'</div></body></html>'
+      book.add_item('0_title.xhtml').add_content(StringIO.new(buf))
+      book.add_item('1_text.xhtml').add_content(StringIO.new(html)).toc_text(title)
     }
     fname = cover_file.path+'.epub'
     book.generate_epub(fname)
@@ -86,7 +88,7 @@ module BybeUtils
   end
 
   def parse_gregorian(str)
-    return Date.new($3.to_i, $2.to_i, $1.to_i) if(str =~ /(\d\d?)[-\/\.](\d\d?)[-\/\.](\d+)/) # try to match numeric date
+    return Date.new($3.to_i, $2.to_i, $1.to_i) if(str =~ /(\d\d?)[-\/\.–](\d\d?)[-\/\.–](\d+)/) # try to match numeric date
     # perhaps there's a date with spaces and a Gregorian month name in Hebrew
     GREGMONTHS.keys.each do |m|
       unless str.match(/ב?#{m}\s+/).nil?
@@ -94,7 +96,9 @@ module BybeUtils
         pre = $`
         year = $'.match(/\d+/).to_s.to_i
         day = (pre.match(/\d+/)) ? $&.to_i : 15 # mid-month by default
-        return Date.new(year, month, day)
+        unless day > 31 || day < 1 # avoid exceptions on weird date strings
+          return Date.new(year, month, day)
+        end
       end
     end
     # we couldn't identify a month; try to use just the year
@@ -240,6 +244,8 @@ module BybeUtils
       return I18n.t(:chinese)
     when 'pl'
       return I18n.t(:polish)
+    when 'ro'
+      return I18n.t(:romanian)
     when 'fr'
       return I18n.t(:french)
     when 'ar'
@@ -398,13 +404,13 @@ module BybeUtils
     end
   end
   def apa_citation(manifestation)
-    return author_surname_and_initials(manifestation.author_string)+'. ('+citation_date(manifestation.expressions[0].date)+'). <strong>'+manifestation.title+'</strong>'+'. [גרסה אלקטרונית]. פרויקט בן־יהודה. נדלה בתאריך '+Date.today.to_s+". #{request.original_url}"
+    return author_surname_and_initials(manifestation.author_string)+'. ('+citation_date(manifestation.expression.date)+'). <strong>'+manifestation.title+'</strong>'+'. [גרסה אלקטרונית]. פרויקט בן־יהודה. נדלה בתאריך '+Date.today.to_s+". #{request.original_url}"
   end
   def mla_citation(manifestation)
-    return author_surname_and_firstname(manifestation.author_string)+". \"#{manifestation.title}\". <u>פרויקט בן־יהודה</u>. #{citation_date(manifestation.expressions[0].date)}. #{Date.today.to_s}. &lt;#{request.original_url}&gt;"
+    return author_surname_and_firstname(manifestation.author_string)+". \"#{manifestation.title}\". <u>פרויקט בן־יהודה</u>. #{citation_date(manifestation.expression.date)}. #{Date.today.to_s}. &lt;#{request.original_url}&gt;"
   end
   def asa_citation(manifestation)
-    return author_surname_and_firstname(manifestation.author_string)+'. '+citation_date(manifestation.expressions[0].date)+". \"#{manifestation.title}\". <strong>פרויקט בן־יהודה</strong>. אוחזר בתאריך #{Date.today.to_s}. (#{request.original_url})"
+    return author_surname_and_firstname(manifestation.author_string)+'. '+citation_date(manifestation.expression.date)+". \"#{manifestation.title}\". <strong>פרויקט בן־יהודה</strong>. אוחזר בתאריך #{Date.today.to_s}. (#{request.original_url})"
   end
 
   def identify_genre_by_heading(text)
@@ -489,7 +495,7 @@ module BybeUtils
               addition = "[#{anchor_name}](#{url_for(controller: :manifestation, action: :read, id: mft.id)})"
             end
           rescue
-            logger.info("Manifestation not found: #{item[1..-1].to_i}!")
+		  Rails.logger.info("Manifestation not found: #{item[1..-1].to_i}!")
           end
         end
         ret += addition
@@ -499,7 +505,7 @@ module BybeUtils
   end
 
   def work_count_by_period(p)
-    return Expression.cached_work_count_by_period(p)
+    return Expression.cached_work_count_by_periods[p]
   end
 
   def get_total_works
@@ -507,12 +513,14 @@ module BybeUtils
   end
 
   def get_total_authors
-    return Person.cached_toc_count
+    # return Person.cached_toc_count
+    return Person.cached_count
   end
 
   def get_total_headwords
-    return DictionaryEntry.where("defhead is not null").count
+    return DictionaryEntry.cached_count
   end
+
 
   ## hardcoded
   def get_periods
@@ -520,10 +528,10 @@ module BybeUtils
   end
 
   def get_genres
-    return ['poetry', 'prose', 'drama', 'fables','article', 'memoir', 'letters', 'reference', 'lexicon'] # translations and icon-font refer to these keys!
+    return Work::GENRES # translations and icon-font refer to these keys!
   end
 
-  def right_side_genres
+  def right_side_genres # TODO: remove if unused
     return ['poetry', 'prose', 'drama', 'fables','article', 'memoir', 'letters', 'reference'] # translations and icon-font refer to these keys!
   end
 
@@ -555,7 +563,7 @@ module BybeUtils
   end
 
   def get_langs
-    return ['he','en','fr','de','ru','yi','pl','ar','el','la','grc','hu','cs','da','no','sv','nl','it','pt','fa','fi','is','es', 'arc', 'lad', 'zh' ,'unk']
+    return ['he','en','fr','de','ru','yi','pl','ar','el','la','grc','hu','cs','da','no','sv','nl','it','pt','fa','fi','is','es','ro', 'arc', 'lad', 'zh' ,'unk']
   end
 
   def get_genres_by_row(row) # just one row at a time
@@ -571,6 +579,8 @@ module BybeUtils
       url = source.item_pattern.sub('__ID__', source_id.strip)
     when 'hebrewbooks'
       url = source_id.strip
+    when 'nli_api'
+      url = source_id.sub('/en/','/he/')
     when 'googlebooks'
       url =  "https://books.google.co.il/books?id=#{source_id.strip}"
     end
@@ -594,5 +604,58 @@ module BybeUtils
 
   def highlight_suspicious_markdown(buf)
     buf.gsub('**', redspan('**')).gsub('| ', redspan('| ')).gsub('##', redspan('##'))
+  end
+  def replace_with_redirect(m_id_to_delete, m_id_to_redirect_to)
+    m = Manifestation.find(m_id_to_delete)
+    h = m.html_files[0]
+    ats = AnthologyText.where(manifestation_id: m_id_to_delete)
+    ats.each do |at|
+      begin
+        at.manifestation_id = m_id_to_redirect_to
+        at.save!
+      rescue
+        at.destroy
+      end
+    end
+    h.manifestations[0].manual_delete
+    h.manifestation_ids << m_id_to_redirect_to
+    h.save
+  end
+  def pub_title_for_comparison(s)
+    ret = ''
+    if s['/'].nil?
+      ret = s[0..[10,s.length].min]
+    else
+      ret = s[0..[10,s.index('/')-1].min]
+    end
+    return ret.strip
+  end
+  def clean_up_spaces(buf)
+    newbuf = ''
+    had_any_content = false
+    add_space = false
+    buf.each_char do |ch|
+      is_space = is_codepoint_space(ch.codepoints[0])
+      is_bracket = ['[',']'].include?(ch)
+      next if is_space and not had_any_content # skip leading whitespace
+      if is_space
+        add_space = true
+      else
+        if add_space and not is_bracket
+          newbuf += ' ' # add a single space
+          add_space = false
+        end
+        had_any_content = true unless is_bracket
+        newbuf += ch
+      end
+    end
+    return newbuf
+  end
+
+  def uri_escape(uri)
+    URI::Parser.new.escape uri
+  end
+  def is_codepoint_space(cp)
+    [9, 10, 11, 12, 13, 32, 133, 160, 5760, 8192, 8193, 8194, 8195, 8196, 8197, 8198, 8199, 8200, 8201, 8202, 8232, 8233, 8239, 8287, 12288].include?(cp)
   end
 end
