@@ -81,7 +81,7 @@ gem 'bootstrap4-datetime-picker-rails' # for date picker in filters
 gem 'hebruby' # for Hebrew date handling
 
 group :production do
-#  gem 'newrelic_rpm' # performance monitoring
+  gem 'newrelic_rpm' # performance monitoring
   gem 'dalli'
 end
 
