@@ -117,9 +117,9 @@ GEM
       capistrano (~> 3.0)
       thin (~> 1.6)
     chartkick (4.2.1)
-    chewy (6.0.0)
+    chewy (7.2.7)
       activesupport (>= 5.2)
-      elasticsearch (>= 6.3.0)
+      elasticsearch (>= 7.12.0, < 7.14.0)
       elasticsearch-dsl
     childprocess (4.1.0)
     climate_control (0.2.0)
@@ -127,7 +127,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.12.2)
-    concurrent-ruby (1.1.9)
+    concurrent-ruby (1.2.0)
     crass (1.0.6)
     daemons (1.4.0)
     dalli (2.7.11)
@@ -174,13 +174,13 @@ GEM
     ebnf (1.1.0)
       rdf (~> 2.0)
       sxp (~> 1.0)
-    elasticsearch (7.16.1)
-      elasticsearch-api (= 7.16.1)
-      elasticsearch-transport (= 7.16.1)
-    elasticsearch-api (7.16.1)
+    elasticsearch (7.13.3)
+      elasticsearch-api (= 7.13.3)
+      elasticsearch-transport (= 7.13.3)
+    elasticsearch-api (7.13.3)
       multi_json
     elasticsearch-dsl (0.1.10)
-    elasticsearch-transport (7.16.1)
+    elasticsearch-transport (7.13.3)
       faraday (~> 1)
       multi_json
     equivalent-xml (0.6.0)
@@ -199,7 +199,7 @@ GEM
       railties (>= 5.0.0)
     faker (2.19.0)
       i18n (>= 1.6, < 2)
-    faraday (1.10.2)
+    faraday (1.10.3)
       faraday-em_http (~> 1.0)
       faraday-em_synchrony (~> 1.0)
       faraday-excon (~> 1.1)
@@ -278,7 +278,7 @@ GEM
     http-accept (1.7.0)
     http-cookie (1.0.4)
       domain_name (~> 0.5)
-    i18n (1.8.11)
+    i18n (1.12.0)
       concurrent-ruby (~> 1.0)
     immigrant (0.3.6)
       activerecord (>= 3.0)
@@ -354,14 +354,14 @@ GEM
     mini_portile2 (2.8.0)
     mini_racer (0.4.0)
       libv8-node (~> 15.14.0.0)
-    minitest (5.15.0)
+    minitest (5.17.0)
     moment-timezone-rails (1.0.0)
       momentjs-rails (>= 2.10.5, <= 3.0.0)
     momentjs-rails (2.20.1)
       railties (>= 3.1)
     multi_json (1.15.0)
     multi_xml (0.6.0)
-    multipart-post (2.2.3)
+    multipart-post (2.3.0)
     mustermann (1.1.1)
       ruby2_keywords (~> 0.0.1)
     mustermann-grape (1.0.1)
@@ -653,7 +653,7 @@ DEPENDENCIES
   capistrano-rails (~> 1.4)
   capistrano-rvm
   capistrano-thin (~> 2.0.0)
-  chewy (~> 6)
+  chewy
   coffee-script
   dalli
   derailed_benchmarks

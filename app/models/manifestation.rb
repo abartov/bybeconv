@@ -33,7 +33,7 @@ class Manifestation < ApplicationRecord
   SHORT_LENGTH = 1500 # kind of arbitrary...
   LONG_LENGTH = 15000 # kind of arbitrary...
 
-  update_index('manifestations#manifestation'){self} # update ManifestationsIndex when entity is updated
+  update_index('manifestations'){self} # update ManifestationsIndex when entity is updated
 
   # class variable
   @@popular_works = nil

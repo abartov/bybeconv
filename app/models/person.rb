@@ -39,7 +39,7 @@ class Person < ApplicationRecord
   validates :name, presence: true
   validates_attachment_content_type :profile_image, content_type: /\Aimage\/.*\z/
 
-  update_index('people#person'){self} # update PeopleIndex when entity is updated
+  update_index('people'){self} # update PeopleIndex when entity is updated
 
   # class variable
   @@popular_authors = nil
