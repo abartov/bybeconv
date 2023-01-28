@@ -29,7 +29,7 @@ gem 'aws-sdk-s3' # for Active Storage
 gem 'kt-paperclip', '7.1.1' # , '~>5.2' # for cloud files like author images 6.x requires aws >3.x
 # gem 'impressionist' # latest released gem incompatible with Ruby 3.x
 gem 'impressionist',
-  git: 'git@github.com:charlotte-ruby/impressionist.git',
+  git: 'https://github.com/charlotte-ruby/impressionist',
   ref: '46a582ff8cd3496da64f174b30b91f9d97e86643'
 gem 'jbuilder', '~> 2.0' # for JSON APIs
 gem 'sqlite3' # for dictionary imports
