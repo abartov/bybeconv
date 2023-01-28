@@ -1,4 +1,14 @@
 GIT
+  remote: git@github.com:charlotte-ruby/impressionist.git
+  revision: 46a582ff8cd3496da64f174b30b91f9d97e86643
+  ref: 46a582ff8cd3496da64f174b30b91f9d97e86643
+  specs:
+    impressionist (2.0.0)
+      friendly_id
+      nokogiri (~> 1)
+      rails (>= 3.2.15)
+
+GIT
   remote: https://github.com/damisul/grape-extra_validators
   revision: 26f125aa6d9fa85548b5724ab84d604b7151d13d
   specs:
@@ -242,6 +252,8 @@ GEM
     faraday-rack (1.0.0)
     faraday-retry (1.0.3)
     ffi (1.15.5)
+    friendly_id (5.5.0)
+      activerecord (>= 4.0.0)
     fugit (1.8.1)
       et-orbi (~> 1, >= 1.2.7)
       raabro (~> 1.4)
@@ -298,8 +310,6 @@ GEM
       ruby-vips (>= 2.0.17, < 3)
     immigrant (0.3.6)
       activerecord (>= 3.0)
-    impressionist (2.0.0)
-      nokogiri (~> 1)
     jbuilder (2.11.5)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
@@ -325,19 +335,19 @@ GEM
       json-ld (~> 3.2)
       rdf (~> 3.2)
     jwt (2.6.0)
-    kaminari (1.1.1)
+    kaminari (1.2.2)
       activesupport (>= 4.1.0)
-      kaminari-actionview (= 1.1.1)
-      kaminari-activerecord (= 1.1.1)
-      kaminari-core (= 1.1.1)
-    kaminari-actionview (1.1.1)
+      kaminari-actionview (= 1.2.2)
+      kaminari-activerecord (= 1.2.2)
+      kaminari-core (= 1.2.2)
+    kaminari-actionview (1.2.2)
       actionview
-      kaminari-core (= 1.1.1)
-    kaminari-activerecord (1.1.1)
+      kaminari-core (= 1.2.2)
+    kaminari-activerecord (1.2.2)
       activerecord
-      kaminari-core (= 1.1.1)
-    kaminari-core (1.1.1)
-    kt-paperclip (7.0.1)
+      kaminari-core (= 1.2.2)
+    kaminari-core (1.2.2)
+    kt-paperclip (7.1.1)
       activemodel (>= 4.2.0)
       activesupport (>= 4.2.0)
       marcel (~> 1.0.1)
@@ -807,13 +817,13 @@ DEPENDENCIES
   htmlentities
   image_processing
   immigrant
-  impressionist
+  impressionist!
   jbuilder (~> 2.0)
   jquery-rails
   jquery-slick-rails
   jquery-ui-rails
-  kaminari (= 1.1.1)
-  kt-paperclip (= 7.0.1)
+  kaminari
+  kt-paperclip (= 7.1.1)
   linkeddata
   listen
   marcel (~> 1)

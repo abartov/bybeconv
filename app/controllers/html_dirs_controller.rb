@@ -83,7 +83,7 @@ class HtmlDirsController < ApplicationController
     @html_dir = HtmlDir.find(params[:id])
 
     respond_to do |format|
-      if @html_dir.update_attributes(hd_params)
+      if @html_dir.update(hd_params)
         format.html { redirect_to @html_dir, notice: t(:updated_successfully) }
         format.json { head :ok }
       else

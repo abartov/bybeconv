@@ -466,7 +466,7 @@ class ManifestationController < ApplicationController
     prev_count = @m.images.count
     @m.images.attach(params.permit(images: [])[:images])
     new_count = @m.images.count
-    flash[:notice] = I18n.t(:uploaded_images, {images_added: new_count - prev_count, total: new_count})
+    flash[:notice] = I18n.t(:uploaded_images, images_added: new_count - prev_count, total: new_count)
     redirect_to action: :show, id: @m.id
   end
 
@@ -660,7 +660,7 @@ class ManifestationController < ApplicationController
       ret['author_ids'] = author_ids
       @authors = author_ids # .join(',')
       @authors_names = params['authors_names']
-      @filters << [I18n.t(:authors_xx, {xx: @authors_names}), 'authors', :authorlist]
+      @filters << [I18n.t(:authors_xx, xx: @authors_names), 'authors', :authorlist]
     end
 
     # languages
@@ -701,11 +701,11 @@ class ManifestationController < ApplicationController
       if params['search_type'] == 'authorname' || (@authorstr.present? && @search_input.empty?)
         ret['author'] = @authorstr
         @search_type = 'authorname'
-        @filters << [I18n.t(:author_x, { x: @authorstr }), :authors, :text]
+        @filters << [I18n.t(:author_x, x: @authorstr), :authors, :text]
       else
         ret['title'] = @search_input
         @search_type = 'workname'
-        @filters << [I18n.t(:title_x, {x: @search_input}), :search_input, :text]
+        @filters << [I18n.t(:title_x, x: @search_input), :search_input, :text]
       end
     end
     return ret

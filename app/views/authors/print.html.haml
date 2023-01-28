@@ -25,7 +25,7 @@
                     %div{:style => "margin-top: 12px;"}
                       %b= t(:works_in_the_project)+': '
                       = "#{@author.cached_works_count} #{t(:works)}"
-            / ToC
+            -# ToC
             - if @author.toc.nil?
               = render partial: 'generated_toc'
             - else
@@ -36,12 +36,12 @@
                     %span.headline-1-v02= textify_genre(genre)
                   .by-card-content-v02{:style => "padding-top: 12px;"}
                     != h
-              /.by-card-v02#volunteers
-              /  .by-card-header-v02
-              /    %span.headline-1-v02= t(:volunteers_who_helped, {author: @author.name, gender_letter: @author.gender_letter})
-              /  .by-card-content-v02
-              /    .credits
-              /      != @credits
+              -#.by-card-v02#volunteers
+              -#  .by-card-header-v02
+              -#    %span.headline-1-v02= t(:volunteers_who_helped, author: @author.name, gender_letter: @author.gender_letter)
+              -#  .by-card-content-v02
+              -#    .credits
+              -#      != @credits
 %br
 
 :javascript

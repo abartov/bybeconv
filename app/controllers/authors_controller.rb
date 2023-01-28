@@ -149,7 +149,7 @@ class AuthorsController < ApplicationController
     ret = {}
     if params['search_input'].present?
       ret['match'] = {name: params['search_input']}
-      @filters << [I18n.t(:author_x, {x: params['search_input']}), :search_input, :text]
+      @filters << [I18n.t(:author_x, x: params['search_input']), :search_input, :text]
       @search_input = params['search_input']
     end
     return ret
@@ -358,7 +358,7 @@ class AuthorsController < ApplicationController
 
     params[:person][:wikidata_id] = params[:person][:wikidata_id].strip[1..-1] if params[:person] and params[:person][:wikidata_id] and params[:person][:wikidata_id][0] and params[:person][:wikidata_id].strip[0] == 'Q' # tolerate pasting the Wikidata number with the Q
     Chewy.strategy(:atomic) do
-      if @author.update_attributes(person_params)
+      if @author.update(person_params)
         # if period was updated, update the period of this person's Expressions
         if @author.period_previously_changed?
           # In our system period states for Hebrew text period. So for original Hebrew works it should match

@@ -6,7 +6,7 @@
         %h1= t(:bib_workshop)+': '+ t(:pubs_maybe_done)
     .row
       .col-md-9
-        %h3= t(:total_x_records, {count: @pubs.count})
+        %h3= t(:total_x_records, count: @pubs.count)
 
         %table#bibs{style: 'font-size:130%; line-height: 130%'}
           %tr

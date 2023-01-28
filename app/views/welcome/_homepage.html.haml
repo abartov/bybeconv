@@ -16,7 +16,7 @@
         .by-card-v02#works-in-project
           .by-card-header-v02
             %a.headline-1-v02{href: all_works_path}= t(:works_in_the_project)
-            -#= t(:x_works, {x: @totals[:works]})
+            -#= t(:x_works, x: @totals[:works])
             = "(#{@totals[:works]})"
           .by-card-content-v02.works-in-project-content
             .row.top-works
@@ -122,7 +122,7 @@
           %p.headline-1-v02= t(:don_footer_title)
           .desktop-only
             %p
-              = t(:don_footer_desktop_html, {total_works: Manifestation.cached_count.to_s, total_authors: Person.cached_count.to_s, total_langs: get_langs.count, total_headwords: get_total_headwords.to_s})
+              = t(:don_footer_desktop_html, total_works: Manifestation.cached_count.to_s, total_authors: Person.cached_count.to_s, total_langs: get_langs.count, total_headwords: get_total_headwords.to_s)
             %a.donev#donev_footban{href: '/page/donate'}
               .button-to-full-v02
                 %button.by-button-v02

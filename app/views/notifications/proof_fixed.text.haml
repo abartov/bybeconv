@@ -1,9 +1,9 @@
 = @greeting
 
 - if @m.nil?
-  = t(:proof_fixed, {:url => @url})
+  = t(:proof_fixed, :url => @url)
 - else
-  = t(:proof_fixed_m, {:url => @url, :title => @m.title_and_authors})
+  = t(:proof_fixed_m, :url => @url, :title => @m.title_and_authors)
 
 - if @explanation.present?
   != t(:additional_proof_explanation, explanation: @explanation)

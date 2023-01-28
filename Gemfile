@@ -26,8 +26,11 @@ gem 'rack-cors', require: 'rack/cors'
 gem 'diffy'
 gem 'aws-sdk-s3' # for Active Storage
 
-gem 'kt-paperclip', '7.0.1' # , '~>5.2' # for cloud files like author images 6.x requires aws >3.x
-gem 'impressionist'
+gem 'kt-paperclip', '7.1.1' # , '~>5.2' # for cloud files like author images 6.x requires aws >3.x
+# gem 'impressionist' # latest released gem incompatible with Ruby 3.x
+gem 'impressionist',
+  git: 'git@github.com:charlotte-ruby/impressionist.git',
+  ref: '46a582ff8cd3496da64f174b30b91f9d97e86643'
 gem 'jbuilder', '~> 2.0' # for JSON APIs
 gem 'sqlite3' # for dictionary imports
 # gem 'rollbar' # error reporting. Airbrake replacement.
@@ -50,7 +53,8 @@ gem 'coffee-script'
 gem 'execjs'
 #gem 'mini_racer'
 gem 'htmlentities'
-gem 'kaminari', '1.1.1' # pagination. Kaminari 1.2.1 seems to have a bug - https://github.com/kaminari/kaminari/issues/1033
+gem 'kaminari'
+#gem 'kaminari', '1.1.1' # pagination. Kaminari 1.2.1 seems to have a bug - https://github.com/kaminari/kaminari/issues/1033
 gem "nokogiri"
 
 gem 'rmultimarkdown' # new wrapper over Fletcher Penney's MultiMarkDown 6 (MMD 6)

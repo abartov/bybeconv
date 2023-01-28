@@ -9,7 +9,9 @@ External (i.e. hosting system) dependencies:
 ** https://github.com/synhershko/elasticsearch-analysis-hebrew for the Hebrew analyzer for ElasticSearch
 * YAZ and libyaz-dev for the 'zoom' gem for the bibliographic workshop
 * watir and selenium for scraping other catalogue systems
-
+* libpcap-dev for net-dns2
+* libmagickwand-dev for RMagick
+* libmysqlclient-dev for mysql2
 License
 -------
 

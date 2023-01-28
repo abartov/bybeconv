@@ -7,7 +7,7 @@
           .work-content
             .headline-1-v02= t(:welcome_to_works_browsing)
             - if @total_pages > 1
-              %p= t(:works_browsing_intro_paging, {total: @total})
+              %p= t(:works_browsing_intro_paging, total: @total)
             %p!= t(:works_browsing_intro_html)
           .work-side-color
             .work-genre.prose-side-icon

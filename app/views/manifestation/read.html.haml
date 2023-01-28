@@ -43,12 +43,12 @@
               %span.headline-1-v02= t(:recommendations_for_work)
             .by-card-content-v02
               - unless @m.like_count.nil? || @m.like_count == 0
-                = t(:x_liked, {x: @m.like_count})
+                = t(:x_liked, x: @m.like_count)
                 %br
               - unless @total_recs > 0
                 = t(:no_recommendations_yet)
               - else
-                = t(:this_work_has_x_recommendations, {x: @total_recs})
+                = t(:this_work_has_x_recommendations, x: @total_recs)
                 %br
                 - apcounter = 1
                 - @app_recs.each do |r|
@@ -134,7 +134,7 @@
           %p.headline-1-v02= t(:don_footer_title)
           .desktop-only
             %p
-              = t(:don_footer_desktop_html, {total_works: Manifestation.cached_count.to_s, total_authors: Person.cached_count.to_s, total_langs: get_langs.count, total_headwords: get_total_headwords.to_s})
+              = t(:don_footer_desktop_html, total_works: Manifestation.cached_count.to_s, total_authors: Person.cached_count.to_s, total_langs: get_langs.count, total_headwords: get_total_headwords.to_s)
             %a.donev#donev_text_footban{href: '/page/donate'}
               .button-to-full-v02
                 %button.by-button-v02
