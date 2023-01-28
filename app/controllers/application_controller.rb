@@ -272,7 +272,7 @@ class ApplicationController < ActionController::Base
   def latest_youtube_videos
     ret = []
     begin
-      channel = Yt::Channel.new id: AppConstants.youtube_channel_id
+      channel = Yt::Channel.new id: Rails.configuration.constants['youtube_channel_id']
       vids = channel.videos
       max = vids.count > 5 ? 5 : vids.count
       i = 0

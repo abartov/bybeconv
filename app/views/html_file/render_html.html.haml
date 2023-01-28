@@ -1,5 +1,5 @@
 .htmlfile{style: 'margin: 5px'}
-  %h2= t(:converted_output, {fname: @text.path.sub(AppConstants.base_dir,'')})
+  %h2= t(:converted_output, {fname: @text.path.sub(Rails.configuration.constants['base_dir'],'')})
   / - unless @text.paras_condensed
   /   %button#bPoetry= t(:treat_as_poetry)
   %button#bPoetry= t(:treat_as_poetry)
@@ -17,7 +17,7 @@
       %div{ style:"vertical-align:top; width: 30%;display:flex;flex-direction:column;height:100%;box-sizing:border-box;float:left;padding-right:7px;"}
         #legacy_markdown_link
           %h2= t(:markdown)
-          = t(:raw_markdown_html, {orig_html: AppConstants.base_uri+ @text.url})
+          = t(:raw_markdown_html, {orig_html: Rails.configuration.constants['base_uri']+ @text.url})
         .markdown
           = text_area_tag(:markdown, raw(@markdown), class: 'textarea100')
       %div{ style:"vertical-align:top; width: 70%; padding-left:10px;background:#d2cfcf;"}

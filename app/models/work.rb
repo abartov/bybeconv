@@ -6,7 +6,7 @@ class Work < ApplicationRecord
   has_many :creations, dependent: :destroy
   has_many :persons, through: :creations, class_name: 'Person'
   has_many :aboutnesses, as: :aboutable, dependent: :destroy
-  has_many :topics, class_name: 'Aboutness', source: :work
+  has_many :topics, through: 'aboutnesses', class_name: 'Aboutness', source: :work
 
   validates_inclusion_of :genre, in: GENRES
 

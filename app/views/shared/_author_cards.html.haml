@@ -11,8 +11,8 @@
         .slide
           %a{ href: author_toc_path(author.id)}
             .author-card-v02
+              - byebug
               %img.author-pic-v02{ src: author.profile_image.url(:thumb), alt: author.name}
-              /, height: (size == :large ? '686px' : '120px')}
               .author-name-area
                 .author-name-v02= author.name
               .author-info-v02

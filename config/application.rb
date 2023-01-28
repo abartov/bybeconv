@@ -62,5 +62,7 @@ module Bybeconv
         resource '*', headers: :any, methods: [:get, :post, :options]
       end
     end
+    # BYBE's own configuration
+    config.constants = config_for(:constants)
   end
 end

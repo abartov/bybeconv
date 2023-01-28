@@ -89,7 +89,6 @@ GEM
       sshkit (>= 1.6.1, != 1.7.0)
     amazing_print (1.4.0)
     ansi (1.5.0)
-    app_constants (1.0.5)
     aws-eventstream (1.2.0)
     aws-partitions (1.701.0)
     aws-sdk-core (3.170.0)
@@ -258,7 +257,7 @@ GEM
       ffi (~> 1.0)
     globalid (1.1.0)
       activesupport (>= 5.0)
-    grape (1.6.2)
+    grape (1.6.0)
       activesupport
       builder
       dry-types (>= 1.1)
@@ -338,7 +337,7 @@ GEM
       activerecord
       kaminari-core (= 1.1.1)
     kaminari-core (1.1.1)
-    kt-paperclip (7.1.1)
+    kt-paperclip (7.0.1)
       activemodel (>= 4.2.0)
       activesupport (>= 4.2.0)
       marcel (~> 1.0.1)
@@ -350,8 +349,6 @@ GEM
       rdf-xsd (~> 3.2)
       sparql (~> 3.2)
       sxp (~> 1.2)
-    libv8-node (16.10.0.0)
-    libv8-node (16.10.0.0-x86_64-linux)
     link_header (0.0.8)
     linkeddata (3.2.1)
       json-ld (~> 3.2, >= 3.2.3)
@@ -404,8 +401,6 @@ GEM
     mini_magick (4.12.0)
     mini_mime (1.1.2)
     mini_portile2 (2.8.1)
-    mini_racer (0.6.3)
-      libv8-node (~> 16.10.0.0)
     minitest (5.17.0)
     moment-timezone-rails (1.0.0)
       momentjs-rails (>= 2.10.5, <= 3.0.0)
@@ -780,7 +775,6 @@ DEPENDENCIES
   active_record_query_trace
   activerecord-session_store
   ahoy_matey
-  app_constants
   aws-sdk-s3
   better_sjr
   blazer
@@ -801,7 +795,7 @@ DEPENDENCIES
   faker (~> 2.19.0)
   gared (>= 0.0.26)
   gepub
-  grape (~> 1.6.0)
+  grape (= 1.6.0)
   grape-entity (~> 0.10.1)
   grape-extra_validators (~> 2.1.0)!
   grape-swagger (~> 1.4.2)
@@ -819,11 +813,10 @@ DEPENDENCIES
   jquery-slick-rails
   jquery-ui-rails
   kaminari (= 1.1.1)
-  kt-paperclip
+  kt-paperclip (= 7.0.1)
   linkeddata
   listen
   marcel (~> 1)
-  mini_racer
   momentjs-rails
   mysql2
   newrelic_rpm
@@ -864,4 +857,4 @@ DEPENDENCIES
   yt
 
 BUNDLED WITH
-   2.2.32
+   2.4.5

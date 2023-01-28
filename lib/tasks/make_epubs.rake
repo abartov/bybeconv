@@ -36,7 +36,7 @@ task :make_ebooks => :environment do
       gc.pointsize(20)
       gc.text(0,250,Date.today.to_s+"מעודכן לתאריך: ".reverse.center(50))
       gc.draw(canvas)
-      covername = AppConstants.base_dir+"/#{dir.path}/cover.jpg"
+      covername = Rails.configuration.constants['base_dir']+"/#{dir.path}/cover.jpg"
       canvas.write(covername)
       tmphtmldir = "/tmp/#{dir.path}" # temp dir for HTMLs to be converted into PDF later
       `mkdir -p #{tmphtmldir}`
@@ -63,7 +63,7 @@ task :make_ebooks => :environment do
         }
       }
       puts "writing epub..."
-      fname = AppConstants.base_dir+"/#{dir.path}/#{dir.path}"
+      fname = Rails.configuration.constants['base_dir']+"/#{dir.path}/#{dir.path}"
       book.generate_epub(fname + '.epub')
       puts "converting #{i} HTML files to PDF..."
       out = `wkhtmltopdf #{tmphtmldir}/*.html #{fname}.pdf` # NOTE: this relies on the static wkhtmltopdf built against patched Qt to work.  Available here: http://wkhtmltopdf.org/downloads.html
@@ -78,7 +78,7 @@ task :make_ebooks => :environment do
     i += 1
   }
   dl_toc.sort!
-  File.open(AppConstants.base_dir+"/ebooks.html","w") {|f| f.write("<html><head><meta charset=\"UTF-8\"></head><body dir=\"rtl\" align=\"right\"><h1>פרויקט בן־יהודה</h1><h2>ספרים אלקטרוניים להורדה</h2><p/><p>בחרו יוצר להלן, ולחצו על תבנית הקובץ הרצויה. (עבור קינדל, בחרו MOBI)</p><p/><ol>"+dl_toc.join("\n")+"</ol><p/><p>בשאלות, כתבו אלינו: <a href=\"mailto:editor@benyehuda.org\">editor@benyehuda.org</a></p><hr><a href=\"/\">חזרה לדף הבית</a></body></html>")}
+  File.open(Rails.configuration.constants['base_dir']+"/ebooks.html","w") {|f| f.write("<html><head><meta charset=\"UTF-8\"></head><body dir=\"rtl\" align=\"right\"><h1>פרויקט בן־יהודה</h1><h2>ספרים אלקטרוניים להורדה</h2><p/><p>בחרו יוצר להלן, ולחצו על תבנית הקובץ הרצויה. (עבור קינדל, בחרו MOBI)</p><p/><ol>"+dl_toc.join("\n")+"</ol><p/><p>בשאלות, כתבו אלינו: <a href=\"mailto:editor@benyehuda.org\">editor@benyehuda.org</a></p><hr><a href=\"/\">חזרה לדף הבית</a></body></html>")}
 end
 
 private

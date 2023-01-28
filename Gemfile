@@ -26,7 +26,7 @@ gem 'rack-cors', require: 'rack/cors'
 gem 'diffy'
 gem 'aws-sdk-s3' # for Active Storage
 
-gem 'kt-paperclip' # , '~>5.2' # for cloud files like author images 6.x requires aws >3.x
+gem 'kt-paperclip', '7.0.1' # , '~>5.2' # for cloud files like author images 6.x requires aws >3.x
 gem 'impressionist'
 gem 'jbuilder', '~> 2.0' # for JSON APIs
 gem 'sqlite3' # for dictionary imports
@@ -48,7 +48,7 @@ gem 'coffee-script'
 
 
 gem 'execjs'
-gem 'mini_racer'
+#gem 'mini_racer'
 gem 'htmlentities'
 gem 'kaminari', '1.1.1' # pagination. Kaminari 1.2.1 seems to have a bug - https://github.com/kaminari/kaminari/issues/1033
 gem "nokogiri"
@@ -56,7 +56,6 @@ gem "nokogiri"
 gem 'rmultimarkdown' # new wrapper over Fletcher Penney's MultiMarkDown 6 (MMD 6)
 gem 'yt' # for polling YouTube for new videos
 
-gem 'app_constants' # anything more Railsy?
 gem 'hebrew', '>= 0.2.1' # https://github.com/abartov/hebrew
 gem 'gared', '>= 0.0.26' # https://gitlab.com/abartov/gared # for scraping bibliographic data from Hebrew sources
 # gem 'goldiloader'
@@ -78,7 +77,7 @@ gem 'momentjs-rails' # for date picker in filters
 gem 'bootstrap4-datetime-picker-rails' # for date picker in filters
 gem 'hebruby' # for Hebrew date handling
 
-gem 'grape', '~> 1.6.0'
+gem 'grape', '1.6.0' # 1.6.1 adds a Validators module damisul's patch isn't ready for
 gem 'grape-entity', '~> 0.10.1'
 # TODO: Replace to standard version of gem after PR will be accepted https://github.com/jagaapple/grape-extra_validators/pull/10
 gem 'grape-extra_validators', '~> 2.1.0', git: "https://github.com/damisul/grape-extra_validators"
@@ -101,7 +100,6 @@ group :test do
   gem 'simplecov', require: false
   gem 'faker', '~> 2.19.0'
   gem 'rails-controller-testing', '~> 1.0.5'
-  gem 'thin'
 end
 
 group :development do
@@ -120,7 +118,6 @@ group :development do
 end
 
 group :test, :development do
-  gem 'byebug'
   gem 'factory_bot_rails', '~> 6.2.0'
   gem 'rspec-rails', '~> 5.0.2'
 end

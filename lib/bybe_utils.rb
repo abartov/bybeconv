@@ -339,8 +339,8 @@ module BybeUtils
   end
   #def is_blacklisted_ip(ip)
   #  # check posting IP against HTTP:BL
-  #  unless AppConstants.project_honeypot_api_key.nil?
-  #    listing = ProjectHoneypot.lookup(AppConstants.project_honeypot_api_key, ip)
+  #  unless Rails.configuration.constants['project_honeypot_api_key'].nil?
+  #    listing = ProjectHoneypot.lookup(Rails.configuration.constants['project_honeypot_api_key'], ip)
   #    if listing.comment_spammer? or listing.suspicious? # silently ignore spam submissions
   #      logger.info "SPAM IP identified by HTTP:BL lookup.  Ignoring form submission."
   #      return true
