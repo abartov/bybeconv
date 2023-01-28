@@ -51,7 +51,7 @@ gem 'coffee-script'
 
 
 gem 'execjs'
-#gem 'mini_racer'
+gem 'mini_racer'
 gem 'htmlentities'
 gem 'kaminari'
 #gem 'kaminari', '1.1.1' # pagination. Kaminari 1.2.1 seems to have a bug - https://github.com/kaminari/kaminari/issues/1033
