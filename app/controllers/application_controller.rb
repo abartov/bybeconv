@@ -324,6 +324,11 @@ class ApplicationController < ActionController::Base
     authors
   end
 
+  def cached_textify_titles(manifestations, au)
+    Rails.cache.fetch("textify_titles_#{au.id}", expires_in: 6.hours) do # memoize
+      return textify_titles(manifestations, au)
+    end
+  end
   def textify_titles(manifestations, au) # translations will also include *original* author names, unless the original author is au
     ret = []
     manifestations.each do |m|

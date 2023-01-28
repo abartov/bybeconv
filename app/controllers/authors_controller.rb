@@ -427,7 +427,7 @@ class AuthorsController < ApplicationController
         @page_title = "#{@author.name} - #{t(:table_of_contents)} - #{t(:project_ben_yehuda)}"
         impressionist(@author) unless is_spider? # log actions for pageview stats
         @og_image = @author.profile_image.url(:thumb)
-        @latest = textify_titles(@author.cached_latest_stuff, @author)
+        @latest = cached_textify_titles(@author.cached_latest_stuff, @author)
         @featured = @author.featured_work
         @aboutnesses = @author.aboutnesses
         @external_links = @author.external_links.status_approved
