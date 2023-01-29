@@ -494,17 +494,7 @@ class AuthorsController < ApplicationController
         end
       end
       prep_toc
-      @toc = @toc.toc
-      @credit_section = @author.toc.credit_section.nil? ? "": @author.toc.credit_section
-      @toc_timestamp = @author.toc.updated_at
-      @works = @author.all_works_including_unpublished
-      @works_options = @works.map{|m| [@toc.index('מ'+m.id.to_s) ? "#{t(:already_in_toc)} #{m.title}" : m.title, m.id]}.sort_by{|opt| opt[0]}
-      @fresh_works = @author.works_since(12.hours.ago, 1000)
-      unless @fresh_works.empty?
-        @fresh_works_markdown = @fresh_works.map{|m| "\\n&&& פריט: מ#{m.id} &&& כותרת: #{m.title}#{m.expression.translation ? ' / '+m.authors_string : ''} &&&\\n"}.join('').html_safe
-      else
-        @fresh_works_markdown = ''
-      end
+      prep_edit_toc
 
     end
   end
