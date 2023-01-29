@@ -56,6 +56,8 @@ class BibController < ApplicationController
       flash[:notice] = t(:created_toc)
       @author = @p
       prep_toc
+      prep_edit_toc
+
       render 'authors/edit_toc'
     end
   end
