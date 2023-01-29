@@ -217,9 +217,12 @@ class ApplicationController < ActionController::Base
   end
 
   def prep_toc
-    # TODO: cache this!
-    @toc = @author.toc.toc
-    markdown_toc = toc_links_to_markdown_links(@toc)
+    @toc = @author.toc
+    unless @toc.cached_toc.present?
+      @toc.update_cached_toc
+      @toc.save
+    end
+    markdown_toc = @toc.cached_toc
     toc_parts = divide_by_genre(markdown_toc)
     @genres_present = toc_parts.shift # first element is the genres array
     @htmls = toc_parts.map{|genre, tocpart| [genre, MultiMarkdown.new(tocpart).to_html.force_encoding('UTF-8')]}

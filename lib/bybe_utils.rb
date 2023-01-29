@@ -470,40 +470,6 @@ module BybeUtils
     return ret_parts
   end
 
-  def toc_links_to_markdown_links(buf)
-    ret = ''
-    until buf.empty?
-      m = buf.match /&&&\s*פריט: (\S\d+)\s*&&&\s*כותרת: (.*?)\s*&&&/ # tolerate whitespace; this will be edited manually
-      if m.nil?
-        ret += buf
-        buf = ''
-      else
-        ret += $`
-        addition = $& # by default
-        buf = $'
-        item = $1
-        anchor_name = $2.gsub('[','\[').gsub(']','\]').gsub('"','\"').gsub("'", "\\\\'")
-        if item[0] == 'ה' # linking to a legacy HtmlFile
-          h = HtmlFile.find_by(id: item[1..-1].to_i)
-          unless h.nil?
-            addition = "[#{anchor_name}](#{h.url})"
-          end
-        else # manifestation
-          begin
-            mft = Manifestation.find(item[1..-1].to_i)
-            unless mft.nil?
-              addition = "[#{anchor_name}](#{url_for(controller: :manifestation, action: :read, id: mft.id)})"
-            end
-          rescue
-		  Rails.logger.info("Manifestation not found: #{item[1..-1].to_i}!")
-          end
-        end
-        ret += addition
-      end
-    end
-    return ret
-  end
-
   def work_count_by_period(p)
     return Expression.cached_work_count_by_periods[p]
   end
