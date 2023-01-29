@@ -161,6 +161,7 @@ he:
   publish: פרסם באתר
   published: פורסם באתר
   unpublished: טרם פורסם
+  awaiting_first: בהמתנה להעלאת יצירה ראשונה
   nonpd: טרם פקעו הזכויות
   make_published: הפוך לפומבי!
   publish_person: הפיכת המחבר/ת %{author} לפומבי/ת

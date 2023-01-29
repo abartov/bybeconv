@@ -246,6 +246,7 @@ class HtmlFileController < ApplicationController
           # invalidate cached work list for generated TOCs
           Rails.cache.delete("au_#{au_id}_original_works_by_genre")
           Rails.cache.delete("au_#{au_id}_translations_by_genre")
+          @text.person.publish_if_first!
           flash[:notice] = t(:created_frbr)
         else
           flash[:error] = success

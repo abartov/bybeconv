@@ -298,7 +298,7 @@ class AuthorsController < ApplicationController
     params[:person][:wikidata_id] = params[:person][:wikidata_id].strip[1..-1] if params[:person] and params[:person][:wikidata_id] and params[:person][:wikidata_id][0] and params[:person][:wikidata_id].strip[0] == 'Q' # tolerate pasting the Wikidata number with the Q
     Chewy.strategy(:atomic) {
       @person = Person.new(person_params)
-      @person.status = :unpublished # default to unpublished. Publishing happens by button in status column in authors#list
+      @person.status = @person.public_domain ? :awaiting_first : :unpublished # default to unpublished. Publishing happens automatically upon first works uploaded if public domain, or by button in status column in authors#list if copyrighted
 
       respond_to do |format|
         if @person.save
