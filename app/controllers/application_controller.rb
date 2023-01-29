@@ -217,31 +217,18 @@ class ApplicationController < ActionController::Base
   end
 
   def prep_toc
-    # TODO: cache this!
-    #old_toc = @author.toc.toc
-    #@toc = @author.toc.refresh_links # TODO: remove this when we're sure we're done with the legacy files
-    #if @toc != old_toc # update the TOC if there have been HtmlFiles published since last time, regardless of whether or not further editing would be saved.
-    #  @author.toc.toc = @toc
-    #  @author.toc.save!
-    #end
-    @toc = @author.toc.toc
-    markdown_toc = toc_links_to_markdown_links(@toc)
+    @toc = @author.toc
+    unless @toc.cached_toc.present?
+      @toc.update_cached_toc
+      @toc.save
+    end
+    markdown_toc = @toc.cached_toc
     toc_parts = divide_by_genre(markdown_toc)
     @genres_present = toc_parts.shift # first element is the genres array
     @htmls = toc_parts.map{|genre, tocpart| [genre, MultiMarkdown.new(tocpart).to_html.force_encoding('UTF-8')]}
     credits = @author.toc.credit_section || ''
     credits.sub!('## הגיהו', "<div class=\"by-horizontal-seperator-light\"></div>\n\n## הגיהו") unless credits =~ /by-horizontal/
     @credits = MultiMarkdown.new(credits).to_html.force_encoding('UTF-8')
-    @credit_section = @author.toc.credit_section.nil? ? "": @author.toc.credit_section
-    @toc_timestamp = @author.toc.updated_at
-    @works = @author.all_works_including_unpublished
-    @works_options = @works.map{|m| [@toc.index('מ'+m.id.to_s) ? "#{t(:already_in_toc)} #{m.title}" : m.title, m.id]}.sort_by{|opt| opt[0]}
-    @fresh_works = @author.works_since(12.hours.ago, 1000)
-    unless @fresh_works.empty?
-      @fresh_works_markdown = @fresh_works.map{|m| "\\n&&& פריט: מ#{m.id} &&& כותרת: #{m.title}#{m.expression.translation ? ' / '+m.authors_string : ''} &&&\\n"}.join('').html_safe
-    else
-      @fresh_works_markdown = ''
-    end
   end
 
   def is_spider?
