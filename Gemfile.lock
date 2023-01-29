@@ -1,5 +1,5 @@
 GIT
-  remote: git@github.com:charlotte-ruby/impressionist.git
+  remote: https://github.com/charlotte-ruby/impressionist
   revision: 46a582ff8cd3496da64f174b30b91f9d97e86643
   ref: 46a582ff8cd3496da64f174b30b91f9d97e86643
   specs:
@@ -257,11 +257,10 @@ GEM
     fugit (1.8.1)
       et-orbi (~> 1, >= 1.2.7)
       raabro (~> 1.4)
-    gared (0.0.26)
+    gared (0.0.28)
       nokogiri (> 1.8)
       rest-client (~> 2)
       watir (~> 6)
-      zoom (~> 0.5)
     gepub (1.0.15)
       nokogiri (>= 1.8.2, < 2.0)
       rubyzip (> 1.1.1, < 2.4)
@@ -359,6 +358,8 @@ GEM
       rdf-xsd (~> 3.2)
       sparql (~> 3.2)
       sxp (~> 1.2)
+    libv8-node (16.10.0.0)
+    libv8-node (16.10.0.0-x86_64-linux)
     link_header (0.0.8)
     linkeddata (3.2.1)
       json-ld (~> 3.2, >= 3.2.3)
@@ -411,6 +412,8 @@ GEM
     mini_magick (4.12.0)
     mini_mime (1.1.2)
     mini_portile2 (2.8.1)
+    mini_racer (0.6.3)
+      libv8-node (~> 16.10.0.0)
     minitest (5.17.0)
     moment-timezone-rails (1.0.0)
       momentjs-rails (>= 2.10.5, <= 3.0.0)
@@ -773,7 +776,6 @@ GEM
     yt (0.33.4)
       activesupport
     zeitwerk (2.6.6)
-    zoom (0.5.0)
 
 PLATFORMS
   ruby
@@ -803,7 +805,7 @@ DEPENDENCIES
   execjs
   factory_bot_rails (~> 6.2.0)
   faker (~> 2.19.0)
-  gared (>= 0.0.26)
+  gared (>= 0.0.28)
   gepub
   grape (= 1.6.0)
   grape-entity (~> 0.10.1)
@@ -827,6 +829,7 @@ DEPENDENCIES
   linkeddata
   listen
   marcel (~> 1)
+  mini_racer
   momentjs-rails
   mysql2
   newrelic_rpm
