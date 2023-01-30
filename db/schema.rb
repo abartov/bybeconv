@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_01_29_183932) do
+ActiveRecord::Schema.define(version: 2023_01_30_172710) do
 
   create_table "aboutnesses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -877,7 +877,7 @@ ActiveRecord::Schema.define(version: 2023_01_29_183932) do
     t.datetime "updated_at", null: false
     t.text "credit_section"
     t.integer "status"
-    t.text "cached_toc"
+    t.text "cached_toc", limit: 16777215
   end
 
   create_table "users", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
