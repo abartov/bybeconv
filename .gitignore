@@ -56,5 +56,8 @@ bin/delayed_job
 *VBox*.log
 ubuntu-*-console.log
 
+# Docker-compose config
+docker/bybe_dev/docker-compose.override.yml
+
 # IDE files
 .idea
