@@ -117,7 +117,10 @@ group :development do
 #  gem 'bullet' # for suggestions to add/remove eager loading
   gem 'active_record_query_trace'
   gem 'immigrant'
+  gem 'ruby-prof' # for profiling
   gem 'puma'
+  gem 'ed25519'
+  gem 'bcrypt_pbkdf'
 end
 
 group :test, :development do

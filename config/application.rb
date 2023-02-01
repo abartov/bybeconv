@@ -62,5 +62,8 @@ module Bybeconv
         resource '*', headers: :any, methods: [:get, :post, :options]
       end
     end
+    if ENV['PROFILE'] == 'true'
+      config.middleware.use Rack::RubyProf, :path => './tmp/profile'
+    end
   end
 end
