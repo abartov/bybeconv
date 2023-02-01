@@ -16,15 +16,19 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql/:delegated
   elasticsearch:
-    image: elasticsearch:6.8.23
+    image: elasticsearch:7.17.8
     restart: unless-stopped
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - ingest.geoip.downloader.enabled=false
     volumes:
       - elasticsearch_data:/usr/share/elasticsearch/data:delegated
     ports:
       - 9201:9200
       - 9301:9300
   kibana:
-    image: kibana:6.8.23
+    image: kibana:7.17.8
     restart: unless-stopped
     environment:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
@@ -44,6 +48,8 @@ services:
     volumes:
       - ../..:/app
       - bundler_data:/usr/local/bundle/:delegated
+    tmpfs:
+      - /tmp/pids/
     depends_on:
       - mysql
       - memcached

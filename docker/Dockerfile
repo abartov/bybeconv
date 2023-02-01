@@ -13,4 +13,4 @@ RUN apt-get update -qq && apt-get install -y \
 
 WORKDIR /app
 
-CMD bundle install && rails server -b 0.0.0.0
+CMD bundle install && rails server -b 0.0.0.0 -P /tmp/pids/server.pid
