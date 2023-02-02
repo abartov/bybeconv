@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_01_30_172710) do
+ActiveRecord::Schema.define(version: 2023_02_01_151053) do
 
   create_table "aboutnesses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -630,6 +630,7 @@ ActiveRecord::Schema.define(version: 2023_01_30_172710) do
     t.datetime "updated_at", null: false
     t.index ["item_type", "item_id"], name: "index_list_items_on_item_type_and_item_id"
     t.index ["listkey", "item_id"], name: "index_list_items_on_listkey_and_item_id"
+    t.index ["listkey", "updated_at"], name: "index_list_items_on_listkey_and_updated_at"
     t.index ["listkey", "user_id", "item_id"], name: "index_list_items_on_listkey_and_user_id_and_item_id"
     t.index ["listkey"], name: "index_list_items_on_listkey"
     t.index ["user_id"], name: "index_list_items_on_user_id"

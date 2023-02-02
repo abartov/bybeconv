@@ -152,6 +152,15 @@ he:
   remove_line_nums: הסר מספרי שורות
   fables: משלים
   analyze: אבחן
+  crowdsourcing: העבודה והמלאכה
+  crowdsourcing_intro: את פרויקט בן־יהודה בונות ובונים מתנדבות ומתנדבים כמוך! הנה כמה משימות שבהן אנו זקוקים לעזרה. בכל משימה יש הדרכה מפורטת, והכל בלי התחייבות ובלי הגבלות זמן.
+  crowdsourcing_populate_edition: הוספת פרטי הוצאה ליצירות
+  crowdsourcing_assign_more_work: הקצאת מטלה נוספת
+  crowdsourcing_continue_work_on: המשך עבודה על %{topic}
+  for_pasting: טקסט להדבקה
+  paste_to_all: הדבק בכל הפריטים הריקים
+  paste_to_selected: הדבק בפריטים המסומנים
+  todo_x_out_of_y_pct: נותרו %{todo} פריטים מתוך %{total}, כלומר סיימנו %{pct} אחוזים.
   error: שגיאה
   file_error: שגיאת קובץ
   bad_encoding: שגיאת קידוד

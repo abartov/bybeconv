@@ -1,5 +1,9 @@
 include BybeUtils
 Bybeconv::Application.routes.draw do
+  get 'crowd/index'
+  get 'crowd/populate_edition' => 'crowd#populate_edition', as: 'crowd_populate_edition'
+  get 'crowd/populate_edition/:id' => 'crowd#populate_edition', as: 'crowd_populate_edition_id'
+  post 'crowd/do_populate_edition' => 'crowd#do_populate_edition', as: 'crowd_do_populate_edition'
   resources :lex_files
   mount Rswag::Ui::Engine => '/api-docs'
   mount Rswag::Api::Engine => '/api-docs'
