@@ -1,5 +1,4 @@
 class Toc < ApplicationRecord
-  is_impressionable
   has_paper_trail
   enum status: [:raw, :ready]
   before_save :update_cached_toc

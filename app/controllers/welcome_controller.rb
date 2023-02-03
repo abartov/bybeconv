@@ -1,6 +1,6 @@
 include BybeUtils
 class WelcomeController < ApplicationController
-  impressionist # log actions for pageview stats
+#  impressionist # log actions for pageview stats
 
   def index
     @tabclass = set_tab('home')
