@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_02_02_085742) do
+ActiveRecord::Schema.define(version: 2023_02_03_202643) do
 
   create_table "aboutnesses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -471,6 +471,7 @@ ActiveRecord::Schema.define(version: 2023_02_02_085742) do
     t.index ["impressionable_type", "impressionable_id", "request_hash"], name: "poly_request_index"
     t.index ["impressionable_type", "impressionable_id", "session_hash"], name: "poly_session_index"
     t.index ["impressionable_type", "message", "impressionable_id"], name: "impressionable_type_message_index", length: { message: 255 }
+    t.index ["updated_at"], name: "index_impressions_on_updated_at"
     t.index ["user_id"], name: "index_impressions_on_user_id"
   end
 
