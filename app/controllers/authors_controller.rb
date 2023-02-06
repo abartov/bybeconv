@@ -425,7 +425,11 @@ class AuthorsController < ApplicationController
         @header_partial = 'authors/author_top'
         @entity = @author
         @page_title = "#{@author.name} - #{t(:table_of_contents)} - #{t(:project_ben_yehuda)}"
-        impressionist(@author) unless is_spider? # log actions for pageview stats
+        unless is_spider?
+          impressionist(@author)  # log actions for pageview stats
+          @author.update_impression
+        end
+
         @og_image = @author.profile_image.url(:thumb)
         @latest = cached_textify_titles(@author.cached_latest_stuff, @author)
         @featured = @author.featured_work
@@ -518,7 +522,10 @@ class AuthorsController < ApplicationController
     if @author.nil?
       head :ok
     else
-      impressionist(@author) unless is_spider?
+      unless is_spider?
+        impressionist(@author)
+        @author.update_impression
+      end      
       @page_title = "#{@author.name} - #{t(:table_of_contents)} - #{t(:project_ben_yehuda)}"
       unless @author.toc.nil?
         prep_toc

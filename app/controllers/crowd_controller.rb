@@ -27,9 +27,11 @@ class CrowdController < ApplicationController
   def do_populate_edition
     mids = []
     source_editions = {}
-    params.select{|key| key =~ /m\d+/}.each do |key|
-      mids << key[1..-1]
-      source_editions[key[1..-1]] = params[key]
+    params.select{|key| key =~ /m\d+/}.each do |key, value|
+      if value.present?
+        mids << key[1..-1]
+        source_editions[key[1..-1]] = value
+      end
     end
     mm = Manifestation.where(id: mids).includes(:expression).load
     mm.each do |m|
@@ -37,7 +39,7 @@ class CrowdController < ApplicationController
       m.expression.save
     end
     flash[:notice] = t(:updated_successfully)
-    redirect_to crowd_path
+    redirect_to crowd_index_path
   end
 
   def self.expire_assigned_tasks
