@@ -67,7 +67,8 @@ class CrowdController < ApplicationController
     # TODO: switch to gem with_advisory_lock once we upgrade to Rails 6.x to prevent double assignments
     assigned_authors = ListItem.where(listkey: LISTKEY_POPULATE_EDITION).pluck(:item_id)
     ret = nil
-    while ret.nil?
+    i = 0
+    while ret.nil? && i < 50 # avoid infinite loop if not much work
       e = Expression.where(source_edition: nil).order('RAND()').first
       unless e.translators.empty?
         au = e.translators.first
@@ -76,6 +77,7 @@ class CrowdController < ApplicationController
         au = e.work.authors.first
         ret = au unless assigned_authors.include?(au.id) || au.toc.nil?
       end
+      i += 1
     end
     ListItem.create(listkey: LISTKEY_POPULATE_EDITION, item_id: ret.id, user_id: current_user.id)
     return ret
