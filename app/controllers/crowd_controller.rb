@@ -69,10 +69,10 @@ class CrowdController < ApplicationController
       e = Expression.where(source_edition: nil).order('RAND()').first
       unless e.translators.empty?
         au = e.translators.first
-        ret = au unless assigned_authors.include?(au.id)
+        ret = au unless assigned_authors.include?(au.id) || au.toc.nil?
       else
         au = e.work.authors.first
-        ret = au unless assigned_authors.include?(au.id)
+        ret = au unless assigned_authors.include?(au.id) || au.toc.nil?
       end
     end
     ListItem.create(listkey: LISTKEY_POPULATE_EDITION, item_id: ret.id, user_id: current_user.id)
