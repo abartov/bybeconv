@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_02_06_073536) do
+ActiveRecord::Schema.define(version: 2023_02_06_150626) do
 
   create_table "aboutnesses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -231,6 +231,7 @@ ActiveRecord::Schema.define(version: 2023_02_06_073536) do
     t.integer "role"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["person_id", "role"], name: "index_creations_on_person_id_and_role"
     t.index ["person_id"], name: "index_creations_on_person_id"
     t.index ["work_id"], name: "index_creations_on_work_id"
   end
