@@ -1,0 +1,43 @@
+%h1= t(:crowdsourcing_populate_edition)+' '+@author.name
+= form_tag crowd_do_populate_edition_path do
+  .by-card-v02
+    .by-card-header-v02= '...'
+    .by-card-content-v02{:style => "padding-top: 12px;"}
+      %input.for_pasting.white_input#for_pasting{:placeholder => t(:for_pasting), :type => "text"}/
+      %br
+      %br
+      %button.paste_to_selected.btn.btn-primary{:style => "margin-left: 12px;"}= t(:paste_to_selected)
+      %button.paste_to_all.btn.btn-primary{:style => "margin-left: 12px;"}= t(:paste_to_all)
+      %br
+      %br
+      != @toc_html
+  = submit_tag(t(:save), :class => 'btn btn-primary')
+
+:javascript
+  $(document).ready(function() {
+    $('.btn_copy').click(function(e) {
+      e.preventDefault();
+      the_id = '#'+$(this).attr('data-id');
+      var textArea = document.createElement("textarea");
+      textArea.value = $(the_id).text();
+      $('.for_pasting').val(textArea.value);
+      document.body.appendChild(textArea);
+      // copy to clipboard
+      textArea.select();
+      document.execCommand("Copy");
+      textArea.remove();
+      $(this).text("#{t(:copied_to_clipboard)}");
+    });
+    $('.paste_to_selected').click(function(e) {
+      e.preventDefault();
+      $('.cb_se:checked').each(function(ele){
+        $(this).parent().find('.se_input').val($('.for_pasting').val());
+      });
+    });
+    $('.paste_to_all').click(function(e) {
+      e.preventDefault();
+      $('.cb_se').each(function(ele){
+        $(this).parent().find('.se_input').val($('.for_pasting').val());
+      });
+    });
+  });

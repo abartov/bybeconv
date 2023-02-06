@@ -67,7 +67,7 @@ gem 'haml-rails'
 gem 'linkeddata' # for RDF etc.
 gem 'rdf-vocab' # for SKOS predefined vocab
 gem 'project-honeypot2', '>= 0.1.3' # for HTTP:BL service by Project Honeypot
-gem 'paper_trail', '~> 5.0.0' # for versioning entities
+gem 'paper_trail', '~> 13.0.0' # for versioning entities
 gem 'gepub' # for generating EPUBs
 gem 'rmagick' # for generating cover images for EPUBs
 gem 'pandoc-ruby' # for converting to DOCX
@@ -104,7 +104,7 @@ group :test do
   gem 'simplecov', require: false
   gem 'faker', '~> 2.19.0'
   gem 'rails-controller-testing', '~> 1.0.5'
-  gem 'thin'
+#  gem 'thin'
 end
 
 group :development do
@@ -117,7 +117,10 @@ group :development do
 #  gem 'bullet' # for suggestions to add/remove eager loading
   gem 'active_record_query_trace'
   gem 'immigrant'
+  gem 'ruby-prof' # for profiling
   gem 'puma'
+  gem 'ed25519'
+  gem 'bcrypt_pbkdf'
 end
 
 group :test, :development do

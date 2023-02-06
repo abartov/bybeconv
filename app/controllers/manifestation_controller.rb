@@ -296,7 +296,10 @@ class ManifestationController < ApplicationController
     # Without this we had situation when Downloadable object was created but attachmnt creation failed
     Downloadable.transaction do
       m = Manifestation.find(params[:id])
-      impressionist(m) unless is_spider?
+      unless is_spider?
+        impressionist(m) 
+        m.update_impression
+      end
       dl = GetFreshManifestationDownloadable.call(m, format)
       redirect_to rails_blob_url(dl.stored_file, disposition: :attachment)
     end
@@ -845,8 +848,10 @@ class ManifestationController < ApplicationController
         @author = @w.persons[0] # TODO: handle multiple authors
         unless is_spider?
           impressionist(@m)
+          @m.update_impression
           unless @author.nil?
             impressionist(@author) # also increment the author's popularity counter
+            @author.update_impression
           end
           ahoy.track "text read or printed", text_id: @m.id, title: @m.title, author: @m.author_string # log the read, for later recommendation feature using the Disco gem
         end

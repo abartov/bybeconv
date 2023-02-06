@@ -8,6 +8,7 @@ class Expression < ApplicationRecord
   has_many :realizers, dependent: :destroy
   has_many :persons, through: :realizers, class_name: 'Person'
   has_many :aboutnesses, as: :aboutable, dependent: :destroy
+  has_paper_trail # for monitoring crowdsourced inputs
 
   def editors
     return realizers.includes(:person).where(role: Realizer.roles[:editor]).map{|x| x.person}
