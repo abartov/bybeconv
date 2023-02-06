@@ -101,6 +101,11 @@ class ApplicationController < ActionController::Base
       error: I18n.t(:must_be_logged_in) }
   end
 
+  def require_crowdsourcer
+    return true if current_user && current_user.crowdsourcer?
+    redirect_to '/', flash: { error: I18n.t(:not_a_crowdsourcer) }
+  end
+  
   def popular_works
     @popular_works = Manifestation.get_popular_works
   end

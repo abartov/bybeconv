@@ -188,8 +188,10 @@ Bybeconv::Application.routes.draw do
   match 'user/list', via: [:get, :post]
   post 'user/set_editor_bit'
   get "user/:id/make_editor" => 'user#make_editor', as: 'user_make_editor'
+  get "user/:id/make_crowdsourcer" => 'user#make_crowdsourcer', as: 'user_make_crowdsourcer'
   get "user/:id/make_admin" => 'user#make_admin', as: 'user_make_admin'
   get "user/:id/unmake_editor" => 'user#unmake_editor', as: 'user_unmake_editor'
+  get "user/:id/unmake_crowdsourcer" => 'user#unmake_crowdsourcer', as: 'user_unmake_crowdsourcer'
   get 'user/:id' => 'user#show', as: 'user_show'
   get "welcome/index"
   get "welcome/contact"
