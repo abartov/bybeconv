@@ -1,12 +1,14 @@
 class CrowdController < ApplicationController
-  before_action :require_user, except: [:index] # for now, we don't allow anonymous crowdsourcing, but we can show the list and encourage logging in
+  before_action :require_crowdsourcer, except: [:index] # for now, we don't allow anonymous crowdsourcing, but we can show the list and encourage logging in
   
   LISTKEY_POPULATE_EDITION = 'crowd_populate_edition_assignment' # key for ListItems
 
   def index
-    @populate_edition_people = current_user.present? ? Person.find(ListItem.where(listkey: LISTKEY_POPULATE_EDITION, user_id: current_user.id).pluck(:item_id)) : []
-    @todo = Expression.where(source_edition: nil).count
-    @total = Expression.count
+    if current_user.present? && current_user.crowdsourcer?
+      @populate_edition_people = current_user.present? ? Person.find(ListItem.where(listkey: LISTKEY_POPULATE_EDITION, user_id: current_user.id).pluck(:item_id)) : []
+      @todo = Expression.where(source_edition: nil).count
+      @total = Expression.count
+    end
   end
 
   def populate_edition
