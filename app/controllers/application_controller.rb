@@ -101,6 +101,11 @@ class ApplicationController < ActionController::Base
       error: I18n.t(:must_be_logged_in) }
   end
 
+  def require_crowdsourcer
+    return true if current_user && current_user.crowdsourcer?
+    redirect_to '/', flash: { error: I18n.t(:not_a_crowdsourcer) }
+  end
+  
   def popular_works
     @popular_works = Manifestation.get_popular_works
   end
@@ -216,22 +221,8 @@ class ApplicationController < ActionController::Base
     return @@countauthors_cache
   end
 
-  def prep_toc
-    # TODO: cache this!
-    #old_toc = @author.toc.toc
-    #@toc = @author.toc.refresh_links # TODO: remove this when we're sure we're done with the legacy files
-    #if @toc != old_toc # update the TOC if there have been HtmlFiles published since last time, regardless of whether or not further editing would be saved.
-    #  @author.toc.toc = @toc
-    #  @author.toc.save!
-    #end
-    @toc = @author.toc.toc
-    markdown_toc = toc_links_to_markdown_links(@toc)
-    toc_parts = divide_by_genre(markdown_toc)
-    @genres_present = toc_parts.shift # first element is the genres array
-    @htmls = toc_parts.map{|genre, tocpart| [genre, MultiMarkdown.new(tocpart).to_html.force_encoding('UTF-8')]}
-    credits = @author.toc.credit_section || ''
-    credits.sub!('## הגיהו', "<div class=\"by-horizontal-seperator-light\"></div>\n\n## הגיהו") unless credits =~ /by-horizontal/
-    @credits = MultiMarkdown.new(credits).to_html.force_encoding('UTF-8')
+  def prep_edit_toc
+    @toc = @toc.toc
     @credit_section = @author.toc.credit_section.nil? ? "": @author.toc.credit_section
     @toc_timestamp = @author.toc.updated_at
     @works = @author.all_works_including_unpublished
@@ -242,6 +233,20 @@ class ApplicationController < ActionController::Base
     else
       @fresh_works_markdown = ''
     end
+  end
+  def prep_toc
+    @toc = @author.toc
+    unless @toc.cached_toc.present?
+      @toc.update_cached_toc
+      @toc.save
+    end
+    markdown_toc = @toc.cached_toc
+    toc_parts = divide_by_genre(markdown_toc)
+    @genres_present = toc_parts.shift # first element is the genres array
+    @htmls = toc_parts.map{|genre, tocpart| [genre, MultiMarkdown.new(tocpart).to_html.force_encoding('UTF-8')]}
+    credits = @author.toc.credit_section || ''
+    credits.sub!('## הגיהו', "<div class=\"by-horizontal-seperator-light\"></div>\n\n## הגיהו") unless credits =~ /by-horizontal/
+    @credits = MultiMarkdown.new(credits).to_html.force_encoding('UTF-8')
   end
 
   def is_spider?
@@ -324,6 +329,11 @@ class ApplicationController < ActionController::Base
     authors
   end
 
+  def cached_textify_titles(manifestations, au)
+    Rails.cache.fetch("textify_titles_#{au.id}", expires_in: 6.hours) do # memoize
+      return textify_titles(manifestations, au)
+    end
+  end
   def textify_titles(manifestations, au) # translations will also include *original* author names, unless the original author is au
     ret = []
     manifestations.each do |m|

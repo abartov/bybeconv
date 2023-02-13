@@ -1,6 +1,6 @@
 include BybeUtils
 class WelcomeController < ApplicationController
-  impressionist # log actions for pageview stats
+#  impressionist # log actions for pageview stats
 
   def index
     @tabclass = set_tab('home')
@@ -58,9 +58,11 @@ class WelcomeController < ApplicationController
   end
 
   def submit_contact
-    Notifications.contact_form_submitted(params.permit(:name, :phone, :email, :topic, :body, :rtopic)).deliver
-    respond_to do |format|
-      format.js
+    if params['ziburit'] =~ /ביאליק/
+      Notifications.contact_form_submitted(params.permit(:name, :phone, :email, :topic, :body, :rtopic)).deliver
+      respond_to do |format|
+        format.js
+      end
     end
   end
 

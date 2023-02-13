@@ -43,7 +43,7 @@
               = radio_button_tag(:toc_status, :ready, @author.toc.status == 'ready')
               = label_tag t(:ready)
               = hidden_field_tag(:old_timestamp, @toc_timestamp)
-              = submit_tag t(:update)
+              = submit_tag t(:update), { class:'by-button-v02 surprise-btn-v02 headline-2-v02', style:'float:unset' }
     = link_to t(:back), :controller => :authors, :action => :list
 
   .col-md-6.toc

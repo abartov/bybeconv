@@ -63,5 +63,8 @@
                     = t(:contact_body)
                     %span.explain-text= t(:contact_body_limit)
                   %textarea.field-v02.text-area-v02{name: :body}
+                = label_tag :ziburit, t(:ziburit)
+                = text_field_tag :ziburit, '', required: true, class: 'form-control'
+
             .bottom-button-area
               %button.by-button-v02.pointer#send_contact_form= t(:contact_send)

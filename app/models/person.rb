@@ -3,7 +3,7 @@ class Person < ApplicationRecord
 
   enum gender: %i(male female other unknown)
   enum period: %i(ancient medieval enlightenment revival modern)
-  enum status: %i(published unpublished deprecated)
+  enum status: %i(published unpublished deprecated awaiting_first)
 
   paginates_per 100
 
@@ -34,6 +34,7 @@ class Person < ApplicationRecord
   has_attached_file :profile_image, styles: { full: "720x1040", medium: "360x520", thumb: "180x260", tiny: "90x120"}, default_url: :placeholder_image_url, storage: :s3, s3_credentials: 'config/s3.yml', s3_region: 'us-east-1'
 #  has_one_attached :image # ActiveStorage
   is_impressionable :counter_cache => true # for statistics
+  include CompactedImpressions
 
   # validations
   validates :name, presence: true
@@ -79,6 +80,11 @@ class Person < ApplicationRecord
     self.published_at = Time.now
     self.status = :published
     self.save! # finally, set this person to published
+  end
+  def publish_if_first!
+    if self.awaiting_first?
+      self.publish!
+    end
   end
 
   def died_years_ago

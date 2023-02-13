@@ -25,6 +25,10 @@ class User < ApplicationRecord
     editor
   end
 
+  def crowdsourcer?
+    crowdsourcer
+  end
+
   def has_bit?(bit)
     li = ListItem.where(listkey: bit, item: self).first
     return (not li.nil?)
@@ -40,6 +44,7 @@ class User < ApplicationRecord
       user.oauth_expires_at = Time.at(auth.credentials.expires_at) unless auth.credentials.expires_at.nil?
       user.admin = false if user.admin.nil?
       user.editor = false if user.editor.nil?
+      user.crowdsourcer = false if user.crowdsourcer.nil?
       user.save!
     end
   end

@@ -1,8 +1,8 @@
 class ProofController < ApplicationController
   protect_from_forgery :except => :submit # allow submission from outside the app
   before_action :only => [:index, :list, :show, :resolve, :purge] do |c| c.require_editor('handle_proofs') end
-  #invisible_captcha only: [:create]
-  impressionist # log actions for pageview stats
+
+#  impressionist # log actions for pageview stats
 
   def create
     if params['manifestation'].nil? # legacy site's buttons.js hack

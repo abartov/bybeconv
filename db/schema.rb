@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_01_25_225540) do
+ActiveRecord::Schema.define(version: 2023_02_06_160711) do
 
   create_table "aboutnesses", id: :integer, charset: "utf8mb3", collation: "utf8mb3_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -28,9 +28,9 @@ ActiveRecord::Schema.define(version: 2023_01_25_225540) do
     t.index ["work_id"], name: "index_aboutnesses_on_work_id"
   end
 
-  create_table "active_storage_attachments", charset: "utf8mb3", collation: "utf8mb3_bin", force: :cascade do |t|
-    t.string "name", limit: 191, null: false
-    t.string "record_type", limit: 191, null: false
+  create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
     t.bigint "record_id", null: false
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -38,13 +38,13 @@ ActiveRecord::Schema.define(version: 2023_01_25_225540) do
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
 
-  create_table "active_storage_blobs", charset: "utf8mb3", collation: "utf8mb3_bin", force: :cascade do |t|
-    t.string "key", limit: 191, null: false
-    t.string "filename", limit: 191, null: false
-    t.string "content_type", limit: 191
+  create_table "active_storage_blobs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
     t.text "metadata"
     t.bigint "byte_size", null: false
-    t.string "checksum", limit: 191, null: false
+    t.string "checksum", null: false
     t.datetime "created_at", null: false
     t.string "service_name", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
@@ -232,6 +232,7 @@ ActiveRecord::Schema.define(version: 2023_01_25_225540) do
     t.integer "role"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["person_id", "role"], name: "index_creations_on_person_id_and_role"
     t.index ["person_id"], name: "index_creations_on_person_id"
     t.index ["work_id"], name: "index_creations_on_work_id"
   end
@@ -325,8 +326,8 @@ ActiveRecord::Schema.define(version: 2023_01_25_225540) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "description"
-    t.integer "linkable_id"
-    t.string "linkable_type"
+    t.integer "linkable_id", null: false
+    t.string "linkable_type", null: false
     t.index ["linkable_type", "linkable_id"], name: "index_external_links_on_linkable_type_and_linkable_id"
   end
 
@@ -367,12 +368,10 @@ ActiveRecord::Schema.define(version: 2023_01_25_225540) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "external_link"
-    t.integer "user_id_id"
     t.integer "user_id"
     t.index ["manifestation_id"], name: "index_featured_contents_on_manifestation_id"
     t.index ["person_id"], name: "index_featured_contents_on_person_id"
     t.index ["user_id"], name: "index_featured_contents_on_user_id"
-    t.index ["user_id_id"], name: "index_featured_contents_on_user_id_id"
   end
 
   create_table "holdings", id: :integer, charset: "utf8mb3", collation: "utf8mb3_bin", force: :cascade do |t|
@@ -396,7 +395,6 @@ ActiveRecord::Schema.define(version: 2023_01_25_225540) do
     t.boolean "need_resequence"
     t.boolean "public_domain"
     t.integer "person_id"
-    t.index ["person_id"], name: "html_dirs_person_id_fk"
   end
 
   create_table "html_files", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -439,9 +437,7 @@ ActiveRecord::Schema.define(version: 2023_01_25_225540) do
     t.string "pub_link_text"
     t.index ["assignee_id"], name: "index_html_files_on_assignee_id"
     t.index ["path"], name: "index_html_files_on_path"
-    t.index ["person_id"], name: "html_files_person_id_fk"
     t.index ["status"], name: "index_html_files_on_status"
-    t.index ["translator_id"], name: "html_files_translator_id_fk"
     t.index ["url"], name: "index_html_files_on_url"
   end
 
@@ -476,7 +472,9 @@ ActiveRecord::Schema.define(version: 2023_01_25_225540) do
     t.index ["impressionable_type", "impressionable_id", "params"], name: "poly_params_request_index", length: { params: 255 }
     t.index ["impressionable_type", "impressionable_id", "request_hash"], name: "poly_request_index"
     t.index ["impressionable_type", "impressionable_id", "session_hash"], name: "poly_session_index"
+    t.index ["impressionable_type", "impressionable_id", "updated_at"], name: "for_compaction"
     t.index ["impressionable_type", "message", "impressionable_id"], name: "impressionable_type_message_index", length: { message: 255 }
+    t.index ["updated_at"], name: "index_impressions_on_updated_at"
     t.index ["user_id"], name: "index_impressions_on_user_id"
   end
 
@@ -492,9 +490,6 @@ ActiveRecord::Schema.define(version: 2023_01_25_225540) do
     t.integer "html_file_id"
     t.integer "recommended_by"
     t.integer "manifestation_id"
-    t.index ["html_file_id"], name: "legacy_recommendations_html_file_id_fk"
-    t.index ["manifestation_id"], name: "legacy_recommendations_manifestation_id_fk"
-    t.index ["recommended_by"], name: "legacy_recommendations_recommended_by_fk"
   end
 
   create_table "list_items", id: :integer, charset: "utf8mb3", collation: "utf8mb3_bin", force: :cascade do |t|
@@ -506,6 +501,7 @@ ActiveRecord::Schema.define(version: 2023_01_25_225540) do
     t.datetime "updated_at", null: false
     t.index ["item_type", "item_id"], name: "index_list_items_on_item_type_and_item_id"
     t.index ["listkey", "item_id"], name: "index_list_items_on_listkey_and_item_id"
+    t.index ["listkey", "updated_at"], name: "index_list_items_on_listkey_and_updated_at"
     t.index ["listkey", "user_id", "item_id"], name: "index_list_items_on_listkey_and_user_id_and_item_id"
     t.index ["listkey"], name: "index_list_items_on_listkey"
     t.index ["user_id"], name: "index_list_items_on_user_id"
@@ -587,16 +583,15 @@ ActiveRecord::Schema.define(version: 2023_01_25_225540) do
     t.integer "impressions_count"
     t.string "blog_category_url"
     t.boolean "bib_done"
-    t.integer "period"
     t.string "sidepic_file_name"
     t.string "sidepic_content_type"
     t.bigint "sidepic_file_size"
     t.datetime "sidepic_updated_at"
+    t.integer "period"
     t.string "sort_name"
     t.integer "status"
     t.datetime "published_at"
     t.index ["gender"], name: "gender_index"
-    t.index ["id"], name: "tstid"
     t.index ["impressions_count"], name: "index_people_on_impressions_count"
     t.index ["name"], name: "index_people_on_name"
     t.index ["period"], name: "index_people_on_period"
@@ -670,7 +665,7 @@ ActiveRecord::Schema.define(version: 2023_01_25_225540) do
     t.index ["role", "person_id"], name: "index_realizers_on_role_and_person_id"
   end
 
-  create_table "recommendations", id: :integer, charset: "utf8mb3", collation: "utf8mb3_bin", force: :cascade do |t|
+  create_table "recommendations", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.text "body"
     t.integer "user_id"
     t.integer "approved_by"
@@ -693,7 +688,7 @@ ActiveRecord::Schema.define(version: 2023_01_25_225540) do
     t.index ["updated_at"], name: "index_sessions_on_updated_at"
   end
 
-  create_table "sitenotices", charset: "utf8mb3", collation: "utf8mb3_bin", force: :cascade do |t|
+  create_table "sitenotices", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.text "body"
     t.datetime "fromdate"
     t.datetime "todate"
@@ -716,7 +711,7 @@ ActiveRecord::Schema.define(version: 2023_01_25_225540) do
   create_table "static_pages", id: :integer, charset: "utf8mb3", collation: "utf8mb3_bin", force: :cascade do |t|
     t.string "tag"
     t.string "title"
-    t.text "body", size: :medium
+    t.text "body", limit: 16777215
     t.integer "status"
     t.integer "mode"
     t.datetime "created_at", null: false
@@ -753,6 +748,7 @@ ActiveRecord::Schema.define(version: 2023_01_25_225540) do
     t.datetime "updated_at", null: false
     t.text "credit_section"
     t.integer "status"
+    t.text "cached_toc", limit: 16777215
   end
 
   create_table "users", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -771,6 +767,7 @@ ActiveRecord::Schema.define(version: 2023_01_25_225540) do
     t.integer "avatar_file_size"
     t.datetime "avatar_updated_at"
     t.string "tasks_api_key"
+    t.boolean "crowdsourcer"
   end
 
   create_table "versions", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -827,8 +824,19 @@ ActiveRecord::Schema.define(version: 2023_01_25_225540) do
     t.index ["normalized_pub_date"], name: "index_works_on_normalized_pub_date"
   end
 
-  add_foreign_key "aboutnesses", "users", name: "aboutnesses_user_id_fk"
-  add_foreign_key "aboutnesses", "works", name: "aboutnesses_work_id_fk"
+  create_table "year_totals", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+    t.integer "total"
+    t.integer "year"
+    t.string "item_type"
+    t.bigint "item_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["item_type", "item_id", "year"], name: "index_year_total_by_year", unique: true
+    t.index ["item_type", "item_id"], name: "index_year_totals_on_item_type_and_item_id"
+  end
+
+  add_foreign_key "aboutnesses", "users"
+  add_foreign_key "aboutnesses", "works"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "anthologies", "users"
   add_foreign_key "anthology_texts", "anthologies"
@@ -837,8 +845,6 @@ ActiveRecord::Schema.define(version: 2023_01_25_225540) do
   add_foreign_key "base_users", "users"
   add_foreign_key "bookmarks", "base_users"
   add_foreign_key "bookmarks", "manifestations"
-  add_foreign_key "creations", "people", name: "creations_person_id_fk"
-  add_foreign_key "creations", "works", name: "creations_work_id_fk"
   add_foreign_key "dictionary_aliases", "dictionary_entries"
   add_foreign_key "dictionary_entries", "manifestations"
   add_foreign_key "dictionary_links", "dictionary_entries", column: "from_entry_id"
@@ -862,6 +868,14 @@ ActiveRecord::Schema.define(version: 2023_01_25_225540) do
   add_foreign_key "legacy_recommendations", "html_files", name: "legacy_recommendations_html_file_id_fk"
   add_foreign_key "legacy_recommendations", "manifestations", name: "legacy_recommendations_manifestation_id_fk"
   add_foreign_key "legacy_recommendations", "users", column: "recommended_by", name: "legacy_recommendations_recommended_by_fk"
+  add_foreign_key "lex_citations", "manifestations"
+  add_foreign_key "lex_files", "lex_entries"
+  add_foreign_key "lex_issues", "lex_publications"
+  add_foreign_key "lex_people", "people"
+  add_foreign_key "lex_people_items", "lex_people"
+  add_foreign_key "lex_texts", "lex_issues"
+  add_foreign_key "lex_texts", "lex_publications"
+  add_foreign_key "lex_texts", "manifestations"
   add_foreign_key "list_items", "users"
   add_foreign_key "manifestations", "expressions"
   add_foreign_key "people", "tocs", name: "people_toc_id_fk"

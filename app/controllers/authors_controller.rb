@@ -298,7 +298,7 @@ class AuthorsController < ApplicationController
     params[:person][:wikidata_id] = params[:person][:wikidata_id].strip[1..-1] if params[:person] and params[:person][:wikidata_id] and params[:person][:wikidata_id][0] and params[:person][:wikidata_id].strip[0] == 'Q' # tolerate pasting the Wikidata number with the Q
     Chewy.strategy(:atomic) {
       @person = Person.new(person_params)
-      @person.status = :unpublished # default to unpublished. Publishing happens by button in status column in authors#list
+      @person.status = @person.public_domain ? :awaiting_first : :unpublished # default to unpublished. Publishing happens automatically upon first works uploaded if public domain, or by button in status column in authors#list if copyrighted
 
       respond_to do |format|
         if @person.save
@@ -425,9 +425,13 @@ class AuthorsController < ApplicationController
         @header_partial = 'authors/author_top'
         @entity = @author
         @page_title = "#{@author.name} - #{t(:table_of_contents)} - #{t(:project_ben_yehuda)}"
-        impressionist(@author) unless is_spider? # log actions for pageview stats
+        unless is_spider?
+          impressionist(@author)  # log actions for pageview stats
+          @author.update_impression
+        end
+
         @og_image = @author.profile_image.url(:thumb)
-        @latest = textify_titles(@author.cached_latest_stuff, @author)
+        @latest = cached_textify_titles(@author.cached_latest_stuff, @author)
         @featured = @author.featured_work
         @aboutnesses = @author.aboutnesses
         @external_links = @author.external_links.status_approved
@@ -494,6 +498,8 @@ class AuthorsController < ApplicationController
         end
       end
       prep_toc
+      prep_edit_toc
+
     end
   end
 
@@ -516,7 +522,10 @@ class AuthorsController < ApplicationController
     if @author.nil?
       head :ok
     else
-      impressionist(@author) unless is_spider?
+      unless is_spider?
+        impressionist(@author)
+        @author.update_impression
+      end      
       @page_title = "#{@author.name} - #{t(:table_of_contents)} - #{t(:project_ben_yehuda)}"
       unless @author.toc.nil?
         prep_toc

@@ -64,5 +64,8 @@ module Bybeconv
     end
     # BYBE's own configuration
     config.constants = config_for(:constants)
+    if ENV['PROFILE'] == 'true'
+      config.middleware.use Rack::RubyProf, :path => './tmp/profile'
+    end
   end
 end
