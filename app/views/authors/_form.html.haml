@@ -90,5 +90,8 @@
     = f.radio_button(:metadata_approved, true, checked: person.metadata_approved)
     = t(:no)
     = f.radio_button(:metadata_approved, false, checked: (not person.metadata_approved))
+  .backend-field
+    %b= t(:status)+': '
+    = f.select :status, options_for_select(Person.statuses.map {|st| [t(st[0]), st[0]]}, person.status)
   .actions
     = f.submit t(:save)
