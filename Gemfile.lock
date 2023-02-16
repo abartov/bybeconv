@@ -16,6 +16,17 @@ GIT
       activesupport
       grape (>= 1.0.0)
 
+GIT
+  remote: https://github.com/kreeti/kt-paperclip.git
+  revision: 11abf222dc31bff71160a1d138b445214f434b2b
+  specs:
+    kt-paperclip (7.1.1)
+      activemodel (>= 4.2.0)
+      activesupport (>= 4.2.0)
+      marcel (~> 1.0.1)
+      mime-types
+      terrapin (~> 0.6.0)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -348,12 +359,6 @@ GEM
       activerecord
       kaminari-core (= 1.2.2)
     kaminari-core (1.2.2)
-    kt-paperclip (7.1.1)
-      activemodel (>= 4.2.0)
-      activesupport (>= 4.2.0)
-      marcel (~> 1.0.1)
-      mime-types
-      terrapin (~> 0.6.0)
     ld-patch (3.2.0)
       ebnf (~> 2.2)
       rdf (~> 3.2)
@@ -830,7 +835,7 @@ DEPENDENCIES
   jquery-slick-rails
   jquery-ui-rails
   kaminari
-  kt-paperclip (= 7.1.1)
+  kt-paperclip!
   linkeddata
   listen
   marcel (~> 1)
