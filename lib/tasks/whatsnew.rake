@@ -6,7 +6,7 @@ task :whatsnew, [:fromdate] => :environment do |taskname, args|
   args.with_defaults(:fromdate => (Date.today-30.days).to_s)
   print "args.fromdate seems to be #{args.fromdate}\n"
   known_authors = {}
-  thedir = AppConstants.base_dir # environment-sensitive constant
+  thedir = Rails.configuration.constants['base_dir'] # environment-sensitive constant
   tot = { :dir => 0, :files => 0, :new => 0, :upd => 0 }
   newfiles = HtmlFile.new_since(Date.parse(args.fromdate).to_time)
   #debugger
@@ -14,7 +14,7 @@ task :whatsnew, [:fromdate] => :environment do |taskname, args|
   files_by_author = {}
   progress = 1
   newfiles.each { |h|
-    relpath = h.path.sub(AppConstants.base_dir,'')
+    relpath = h.path.sub(Rails.configuration.constants['base_dir'],'')
     authordir = relpath[1..-1].sub(/\/.*/,'')
 
     author = HtmlFile.author_name_from_dir(h.author_dir, known_authors)

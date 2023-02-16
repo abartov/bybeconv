@@ -6,15 +6,15 @@ class LegacyRecommendationController < ApplicationController
 #  impressionist # log actions for pageview stats
 
   def create
-    unless params['what'].nil? or params['what'].empty? or is_blacklisted_ip(client_ip) # don't bother capturing null submissions
-      if is_blacklisted_ip(client_ip) # filter out spam
-        render plain: "OK"
-      else
+    unless params['what'].nil? or params['what'].empty? # don't bother capturing null submissions
+      #if is_blacklisted_ip(client_ip) # filter out spam
+      #  render plain: "OK"
+      #else
         @p = Recommendation.new(:from => params['email'], :about => params['about'] || request.env["HTTP_REFERER"] || 'none', :what => params['what'], :subscribe => (params['subscribe'] == "yes" ? true : false), :status => 'new')
         h = HtmlFile.find_by_url(@p.about.sub(/https?:\/\/.*benyehuda.org\//, ''))
         @p.html_file = h unless h.nil?
         @p.save!
-      end
+      #end
     end
   end
   def index

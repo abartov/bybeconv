@@ -339,7 +339,7 @@ class AdminController < ApplicationController
       flash[:error] = I18n.t(:no_such_item)
       redirect_to url_for(action: :index)
     else
-      if @vp.update_attributes(sp_params)
+      if @vp.update(sp_params)
         @vp.images.attach(params[:static_page][:images]) if params[:static_page][:images].present?
         flash[:notice] = I18n.t(:updated_successfully)
         redirect_to action: :static_page_show, id: @vp.id
@@ -396,7 +396,7 @@ class AdminController < ApplicationController
       flash[:error] = I18n.t(:no_such_item)
       redirect_to url_for(action: :index)
     else
-      if @vp.update_attributes(vp_params)
+      if @vp.update(vp_params)
         flash[:notice] = I18n.t(:updated_successfully)
         redirect_to action: :volunteer_profile_show, id: @vp.id
       else
@@ -506,7 +506,7 @@ class AdminController < ApplicationController
         @fc.person = Person.find(params[:linked_author])
       end
       @fc.save
-      if @fc.update_attributes(fc_params)
+      if @fc.update(fc_params)
         flash[:notice] = I18n.t(:updated_successfully)
         redirect_to action: :featured_content_show, id: @fc.id
       else
@@ -683,7 +683,7 @@ class AdminController < ApplicationController
       flash[:error] = I18n.t(:no_such_item)
       redirect_to url_for(action: :index)
     else
-      if @fc.update_attributes(fa_params)
+      if @fc.update(fa_params)
         flash[:notice] = I18n.t(:updated_successfully)
         redirect_to action: :featured_author_show, id: @fc.id
       else

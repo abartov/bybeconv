@@ -1,5 +1,5 @@
 .backend
-  %h1= t(:publish_person, {author: @author.name})
+  %h1= t(:publish_person, author: @author.name)
   %br
   - unless @author.profile_image.file?
     %h2{style:'color:red'}= t(:missing_image)
@@ -14,7 +14,7 @@
   
   %h3= link_to t(:edit), authors_edit_path(id: @author.id)
   %p
-  %h4= t(:publishing_person_explanation, {author: @author.name})
+  %h4= t(:publishing_person_explanation, author: @author.name)
   %ol
     - @manifestations.each do |m|
       %li

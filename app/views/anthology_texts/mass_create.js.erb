@@ -10,11 +10,11 @@ $('.errorDlgText').html('');
   $('#anth_container').replaceWith(markup);
 <% if @added_records > 0 %>
   $('.errorDlgTitle').html('<%= t(:anth_grows) %>');
-  $('.errorDlgText').html('<%= t(:anth_x_works_added, {x: @added_records}) %>');
+  $('.errorDlgText').html('<%= t(:anth_x_works_added, x: @added_records) %>');
 <% end %>
 <% if @skipped_records > 0 %>
   $('.errorDlgTitle').html('<%= t(:please_note) %>');
-  $('.errorDlgText').append('<p></p><%= t(:anth_x_works_skipped, {x: @skipped_records}) %>');
+  $('.errorDlgText').append('<p></p><%= t(:anth_x_works_skipped, x: @skipped_records) %>');
 <% end %>
 $('#anth_panel').show();
 $(".anthology-cards-area").scrollTop($(".anthology-cards-area").prop("scrollHeight"));

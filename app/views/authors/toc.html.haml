@@ -77,7 +77,7 @@
               = render partial: 'toc', locals: {margin: true}
               .by-card-v02#text-volunteers-desktop
                 .by-card-header-v02
-                  .headline-1-v02= t(:volunteers_who_helped, {author: @author.name, gender_letter: @author.gender_letter})
+                  .headline-1-v02= t(:volunteers_who_helped, author: @author.name, gender_letter: @author.gender_letter)
                 .by-card-content-v02
                   .credits
                     != @credits
@@ -103,12 +103,12 @@
                     .new-card-type-v02 q
                   .new-card-left-v02
                     %p.headline-2-v02
-                      %span.new-headline-v02= t(:latest_added_works, {gender_letter: @author.gender_letter})
+                      %span.new-headline-v02= t(:latest_added_works, gender_letter: @author.gender_letter)
                     %p.text-height-new#clamped_author_whatsnew
                       != @latest
                   .link-to-all-v02#author_latest_popup_link{style: 'display:none'}
                     .author_latest_popup_button.linkcolor.pointer
-                      %span{:style => "font-weight: bold"}= t(:to_latest_x_works, {x: @author.cached_latest_stuff.count})
+                      %span{:style => "font-weight: bold"}= t(:to_latest_x_works, x: @author.cached_latest_stuff.count)
                       %span.left-arrow 1
           - unless @featured.empty?
             - featured = @featured[0]
@@ -169,7 +169,7 @@
 
           .by-card-v02#text-volunteers-mobile
             .by-card-header-v02
-              .headline-1-v02= t(:volunteers_who_helped, {author: @author.name, gender_letter: @author.gender_letter})
+              .headline-1-v02= t(:volunteers_who_helped, author: @author.name, gender_letter: @author.gender_letter)
             .by-card-content-v02
               .credits
                 != @credits

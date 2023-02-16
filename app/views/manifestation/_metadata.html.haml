@@ -68,4 +68,4 @@
     .metadata.mobile-work-details
       - if @app_recs.count > 0
         %span{:style => "font-weight:bold"}= t(:recommendations)+': '
-        %span.pointer.linkcolor#jump-to-recs= t(:this_work_has_x_recommendations, {x: @recommendations.all_approved.count})
+        %span.pointer.linkcolor#jump-to-recs= t(:this_work_has_x_recommendations, x: @recommendations.all_approved.count)

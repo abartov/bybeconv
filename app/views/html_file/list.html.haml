@@ -1,6 +1,6 @@
 .backend
   %h1= t(:conversion_dashboard)
-  %p= t(:conversion_stats_html, {total_texts: @total_texts, total_known: @total_known, total_images: @total_images, total_footnotes: @total_footnotes, total_tables: @total_tables, total_nikkud_full: @total_nikkud_full, total_nikkud_some: @total_nikkud_some, total_badenc: @total_badenc, total_fileerr: @total_fileerr, total_uploaded: @total_uploaded, total_parsed: @total_parsed, total_accepted: @total_accepted, total_uploaded: @total_uploaded, total_superseded: @total_superseded, total_published: @total_published, total_manual: @total_manual, total_assigned: @total_assigned })
+  %p= t(:conversion_stats_html, total_texts: @total_texts, total_known: @total_known, total_images: @total_images, total_footnotes: @total_footnotes, total_tables: @total_tables, total_nikkud_full: @total_nikkud_full, total_nikkud_some: @total_nikkud_some, total_badenc: @total_badenc, total_fileerr: @total_fileerr, total_uploaded: @total_uploaded, total_parsed: @total_parsed, total_accepted: @total_accepted, total_uploaded: @total_uploaded, total_superseded: @total_superseded, total_published: @total_published, total_manual: @total_manual, total_assigned: @total_assigned )
   %p
     %b= link_to t(:upload_file), html_file_new_path
   %p
@@ -32,7 +32,7 @@
       %th= t(:actions)
     - @texts.each do |txt|
       %tr
-        %td= txt.path.nil? ? txt.title : txt.path.sub(AppConstants.base_dir,'')
+        %td= txt.path.nil? ? txt.title : txt.path.sub(Rails.configuration.constants['base_dir'],'')
         %td= textify_htmlfile_status(txt.status)
         %td= txt.manifestations.empty? ? t(:no) : t(:yes)
         %td= textify_nikkud(txt.nikkud)

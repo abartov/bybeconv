@@ -12,7 +12,7 @@ task :pseudocatalogue => :environment do
   File.open('pseudocatalogue.csv', 'w') {|f|
     HtmlFile.all.each {|h|
       puts "...#{done}" if done % 100 == 0
-      relpath = h.path.sub(AppConstants.base_dir,'')
+      relpath = h.path.sub(Rails.configuration.constants['base_dir'],'')
       authordir = relpath[1..-1].sub(/\/.*/,'')
       author = author_name_from_dir(authordir, known_authors)
       f.puts([h.url, HtmlFile.title_from_file(h.path), author].map {|s| s.nil? ? '' : coder.decode(s.force_encoding('UTF-8')) }.to_csv)

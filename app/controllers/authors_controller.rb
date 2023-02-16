@@ -9,10 +9,15 @@ class AuthorsController < ApplicationController
     if @author
       if params[:commit].present?
         # POST request
-        @author.publish!
-        Rails.cache.delete('newest_authors') # force cache refresh
-        Rails.cache.delete('homepage_authors')
-        flash[:success] = t(:published)
+        if @author.unpublished? and (@author.original_works.count + @author.translations.count > 0)
+          @author.publish!
+          Rails.cache.delete('newest_authors') # force cache refresh
+          Rails.cache.delete('homepage_authors')
+          flash[:success] = t(:published)
+        else
+          @author.awaiting_first!
+          flash[:success] = t(:awaiting_first)
+        end
         redirect_to action: :list
       else
         # GET request
@@ -149,7 +154,7 @@ class AuthorsController < ApplicationController
     ret = {}
     if params['search_input'].present?
       ret['match'] = {name: params['search_input']}
-      @filters << [I18n.t(:author_x, {x: params['search_input']}), :search_input, :text]
+      @filters << [I18n.t(:author_x, x: params['search_input']), :search_input, :text]
       @search_input = params['search_input']
     end
     return ret
@@ -244,7 +249,7 @@ class AuthorsController < ApplicationController
     author = Person.find(params[:id])
     unless author.nil?
       if author.toc.nil?
-        toc = Toc.new(toc: AppConstants.toc_template, status: :raw, credit_section: '')
+        toc = Toc.new(toc: Rails.configuration.constants['toc_template'], status: :raw, credit_section: '')
         toc.save!
         author.toc = toc
         author.save!
@@ -358,7 +363,7 @@ class AuthorsController < ApplicationController
 
     params[:person][:wikidata_id] = params[:person][:wikidata_id].strip[1..-1] if params[:person] and params[:person][:wikidata_id] and params[:person][:wikidata_id][0] and params[:person][:wikidata_id].strip[0] == 'Q' # tolerate pasting the Wikidata number with the Q
     Chewy.strategy(:atomic) do
-      if @author.update_attributes(person_params)
+      if @author.update(person_params)
         # if period was updated, update the period of this person's Expressions
         if @author.period_previously_changed?
           # In our system period states for Hebrew text period. So for original Hebrew works it should match

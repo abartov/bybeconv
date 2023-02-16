@@ -9,6 +9,8 @@ class Manifestation < ApplicationRecord
   has_many :taggings, dependent: :destroy
   has_many :tags, through: :taggings, class_name: 'Tag'
   has_many :recommendations, dependent: :destroy
+  has_many :bookmarks, dependent: :destroy
+
   has_many :list_items, as: :item, dependent: :destroy
   has_many :downloadables, as: :object, dependent: :destroy
 

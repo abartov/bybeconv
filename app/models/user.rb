@@ -10,7 +10,8 @@ class User < ApplicationRecord
 
   has_one :base_user, inverse_of: :user
   has_many :recommendations
-  has_many :anthologies
+  has_many :anthologies, dependent: :destroy
+  has_many :bookmarks, dependent: :destroy
   # no apparent need to be able to retrieve all recommendations a particular (admin) user has *resolved*.  If one arises, use a separate association on the resolved_by foreign key
 
   # editor bits

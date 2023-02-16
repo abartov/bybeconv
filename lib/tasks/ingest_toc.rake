@@ -1,6 +1,6 @@
 desc "ingest an index.html file and create a Toc"
 task :ingest_toc, [:dirname] => :environment do |taskname, args|
-  thedir = AppConstants.base_dir
+  thedir = Rails.configuration.constants['base_dir']
   if args.dirname.nil?
     puts "run again with a PBY dir name, e.g. rake ingest_toc[bialik]"
     exit

@@ -1,4 +1,4 @@
-require File.expand_path('../boot', __FILE__)
+require_relative "boot"
 
 require 'rails/all'
 require 'active_job'
@@ -62,6 +62,8 @@ module Bybeconv
         resource '*', headers: :any, methods: [:get, :post, :options]
       end
     end
+    # BYBE's own configuration
+    config.constants = config_for(:constants)
     if ENV['PROFILE'] == 'true'
       config.middleware.use Rack::RubyProf, :path => './tmp/profile'
     end
