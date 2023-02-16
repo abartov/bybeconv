@@ -9,10 +9,15 @@ class AuthorsController < ApplicationController
     if @author
       if params[:commit].present?
         # POST request
-        @author.publish!
-        Rails.cache.delete('newest_authors') # force cache refresh
-        Rails.cache.delete('homepage_authors')
-        flash[:success] = t(:published)
+        if @author.unpublished? and (@author.original_works.count + @author.translations.count > 0)
+          @author.publish!
+          Rails.cache.delete('newest_authors') # force cache refresh
+          Rails.cache.delete('homepage_authors')
+          flash[:success] = t(:published)
+        else
+          @author.awaiting_first!
+          flash[:success] = t(:awaiting_first)
+        end
         redirect_to action: :list
       else
         # GET request
