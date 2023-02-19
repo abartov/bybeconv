@@ -68,7 +68,7 @@ gem 'haml'
 #gem 'zoom', '~>0.4.1', :git => 'https://github.com/bricestacey/ruby-zoom.git' # for Z39.50 queries to libraries
 gem 'haml-rails'
 gem 'project-honeypot2', '>= 0.1.3' # for HTTP:BL service by Project Honeypot
-gem 'paper_trail', '~> 13.0.0' # for versioning entities
+gem 'paper_trail' # for versioning entities
 gem 'gepub' # for generating EPUBs
 gem 'rmagick' # for generating cover images for EPUBs
 gem 'pandoc-ruby' # for converting to DOCX

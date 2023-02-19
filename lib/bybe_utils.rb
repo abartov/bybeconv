@@ -25,7 +25,7 @@ module BybeUtils
     book.add_creator(author_string)
     book.page_progression_direction = 'rtl' # Hebrew! :)
     # make cover image
-    canvas = Magick::Image.new(1200, 800){self.background_color = 'white'}
+    canvas = Magick::Image.new(1200, 800){|img| img.background_color = 'white'}
     gc = Magick::Draw.new
     gc.gravity = Magick::CenterGravity
     gc.pointsize(50)
