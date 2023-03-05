@@ -3,4 +3,5 @@ Rails.application.config.middleware.use OmniAuth::Builder do
   provider :twitter, Rails.configuration.constants['twitter_consumer_key'], Rails.configuration.constants['twitter_consumer_secret']
   provider :developer if Rails.env == 'development'
 end
-OmniAuth.config.allowed_request_methods = [:post, :get]
+#OmniAuth.config.allowed_request_methods = [:post, :get]
+OmniAuth.config.allowed_request_methods = [:post]

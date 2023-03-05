@@ -40,7 +40,8 @@ append :linked_dirs, '.bundle', 'log', 'tmp/cache', 'public/system', 'tmp/pids',
 # Uncomment the following to require manually verifying the host key before first deploy.
 # set :ssh_options, verify_host_key: :secure
 
-set :rvm1_ruby_version, "2.6.6"
+set :rvm1_ruby_version, "3.2.1"
+#set :rvm1_ruby_version, "2.6.6"
 #set :rvm1_ruby_version, "2.5.1"
 before 'deploy', 'rvm1:alias:create'
 after 'deploy:publishing', 'thin:restart'
