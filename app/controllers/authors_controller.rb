@@ -431,6 +431,7 @@ class AuthorsController < ApplicationController
         @entity = @author
         @page_title = "#{@author.name} - #{t(:table_of_contents)} - #{t(:project_ben_yehuda)}"
         unless is_spider?
+          @author.record_timestamps = false # avoid the impression count touching the datestamp
           impressionist(@author)  # log actions for pageview stats
           @author.update_impression
         end
@@ -528,6 +529,7 @@ class AuthorsController < ApplicationController
       head :ok
     else
       unless is_spider?
+        @author.record_timestamps = false # avoid the impression count touching the datestamp
         impressionist(@author)
         @author.update_impression
       end      
