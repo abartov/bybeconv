@@ -54,7 +54,7 @@ class ManifestationsSearch
   end
 
   def highlight
-    index.highlight(fields: {fulltext: {}})
+    index.highlight(max_analyzed_offset: 999000, fields: {fulltext: {}})
   end
   def index_order
     index.order(['_index' => {order: :desc}, '_score' => {order: :desc}]) # people before works, then by score
