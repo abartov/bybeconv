@@ -109,6 +109,9 @@ input[type=checkbox].multiselect_checkbox {
   color:   #64150f;
 }
 
+.red {
+  color: red;
+}
 /* end dict_top workarounds */
 .navdisabled {
   color: #d9cdd5;

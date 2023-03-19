@@ -99,9 +99,18 @@ class HtmlFileController < ApplicationController
     end
     @markdown = @text.markdown
     @html = ''
+    @disable_submit = false
     if @text.has_splits
+      validator = TitleValidator.new
       @text.split_parts.each_pair do |title, markdown|
-        @html += "<hr style='border-color:#2b0d22;border-width:20px;margin-top:40px'/><h1>#{title.sub(/_ZZ\d+/,'')}</h1>"+MultiMarkdown.new(markdown).to_html.force_encoding('UTF-8')
+        dummy = Work.new(title: title.sub(/_ZZ\d+/,''))
+        if validator.validate(dummy)
+          doctored_title = title
+        else
+          doctored_title = "<span style='color:red'>#{title}</span><br><span style='color:red'>#{dummy.errors.full_messages.join("<br />")}</span>"
+          @disable_submit = true
+        end
+        @html += "<hr style='border-color:#2b0d22;border-width:20px;margin-top:40px'/><h1>#{doctored_title.sub(/_ZZ\d+/,'')}</h1>"+MultiMarkdown.new(markdown).to_html.force_encoding('UTF-8')
       end
     else
       @html = MultiMarkdown.new(@markdown.gsub(/^&&& (.*)/, '<hr style="border-color:#2b0d22;border-width:20px;margin-top:40px"/><h1>\1</h1>')).to_html.force_encoding('UTF-8') # TODO: figure out why to_html defaults to ASCII 8-bit

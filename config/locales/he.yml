@@ -481,6 +481,10 @@ he:
   no_date: אין תאריך
   title_not_informative: כותרת היצירה חסרה הֶקשר או מטעה
   override_validation: דלג על בדיקת שדות
+  title_ends_with_period: הכותרת מסתיימת בנקודה
+  title_starts_with_ordinals: הכותרת מתחילה עם סודר
+  translation_must_have_translator: שפת המקור אינה עברית אך לא צוין מתרגם
+  translation_must_have_original_language: צוין מתרגם אך לא צוינה שפת מקור
   reading_mode: טקסט בלבד
   mode: סוג תצוגה
   body: גוף הטקסט

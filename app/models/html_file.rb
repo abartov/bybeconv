@@ -9,7 +9,6 @@ ENCODING_SUBSTS = [{ from: "\xCA", to: "\xC9" }, # fix weird invalid chars inste
                    { from: "\xFB", to: '&ucirc;' },
                    { from: "\xFF".force_encoding('windows-1255'), to: '&yuml;' }] # fix u-circumflex
 
-SUSPICIOUS_TITLES = ['מבוא', 'פתיחה', 'הקדמה','אחרית דבר','אפילוג','סוף דבר', 'על הספר']
 # TODO: remove the legacy parser
 class NokoDoc < Nokogiri::XML::SAX::Document
   def initialize
@@ -310,17 +309,17 @@ class NokoDoc < Nokogiri::XML::SAX::Document
   end
 end
 
-class TitleValidator < ActiveModel::Validator
+class TranslationValidator < ActiveModel::Validator
   def validate(record)
-    return false unless record.title.present?
     okay = true
-    SUSPICIOUS_TITLES.each {|suspicious_title|
-      if record.title.strip == suspicious_title
-        okay = false
-        break
-      end
-    }
-    record.errors.add(:title, I18n.t(:title_not_informative)) unless okay
+    if record.translator_id.present? and record.orig_lang == 'he'
+      okay = false
+      record.errors.add(:base, I18n.t(:translation_must_have_original_language))
+    end
+    if record.translator_id.blank? and record.orig_lang != 'he'
+      okay = false
+      record.errors.add(:base, I18n.t(:translation_must_have_translator))
+    end
     return okay
   end
 end
@@ -342,16 +341,12 @@ class HtmlFile < ApplicationRecord
   validates :title, presence: true
   validates :genre, presence: true
   validates :publisher, presence: true
-  validates :orig_lang, presence: true, if: :translation?
   validates :person_id, presence: true
-  validates :translator_id, presence: true, if: :translation?
-  validates_with TitleValidator, on: :create, unless: :override_title_validation
+  validates_with TitleValidator, on: :create, unless: :override_validation
+  validates_with TranslationValidator, on: :create, unless: :override_validation
 
-  def override_title_validation
+  def override_validation
     comments =~ /override/
-  end
-  def translation?
-    (orig_lang.present? && orig_lang != 'he') || translator_id.present?
   end
 
   # a trivial enum just for this entity.  Roles would be expressed with an ActiveRecord enum in the actual (FRBR) catalog entites (Expression etc.)
