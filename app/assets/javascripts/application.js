@@ -18,6 +18,8 @@
 //= require moment/he.js
 //= require tempusdominus-bootstrap-4
 //= require ahoy
+//= require rails.validations
+
 //= require_tree .
 
 var mobileWidth = 767;

@@ -50,6 +50,7 @@ gem 'coffee-script'
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
+gem 'client_side_validations'
 
 gem 'execjs'
 gem 'mini_racer'

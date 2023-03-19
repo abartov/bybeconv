@@ -1,10 +1,14 @@
-= form_for text, url: {action: action, id: text.id} do |f|
+= form_for text, validate: true, url: {action: action, id: text.id} do |f|
   - if text.errors.any?
     #error_explanation
       %h2= "#{pluralize(text.errors.count, "error")} prohibited this text from being saved:"
       %ul
         - text.errors.full_messages.each do |msg|
           %li= msg
+
+  .backend-field
+    = f.label t(:override_validation)
+    = check_box_tag :override_validation, id: 'override_validation'
 
   .backend-field
     = f.label t(:title)
@@ -49,7 +53,9 @@
   %br
 :javascript
   $(document).ready(function() {
-    
-    // form validations
-    // ensure edition details typed
+    $('#override_validation').click(function() {
+      if (this.checked) {
+        $('#html_file_comments').val($('#html_file_comments').val() + ' override');
+      }
+    });
   });

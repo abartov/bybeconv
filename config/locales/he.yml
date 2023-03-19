@@ -479,6 +479,8 @@ he:
   txt_format: טקסט בלבד, ללא הדגשות ועיצוב
   odt_format: מסמך ליברה-אופיס
   no_date: אין תאריך
+  title_not_informative: כותרת היצירה חסרה הֶקשר או מטעה
+  override_validation: דלג על בדיקת שדות
   reading_mode: טקסט בלבד
   mode: סוג תצוגה
   body: גוף הטקסט
