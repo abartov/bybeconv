@@ -15,6 +15,31 @@ HEBMONTHS = { 'ניסן' => 1, 'אייר' => 2, 'סיון' => 3, 'סיוון' =>
 GREGMONTHS = {'ינואר' => 1,'פברואר' => 2,'מרץ' => 3,'מרס' => 3,'מארס' => 3,'אפריל' => 4,'מאי' => 5,'יוני' => 6,'יולי' => 7,'אוגוסט' => 8,'אבגוסט' => 8,'ספטמבר' => 9,'אוקטובר' => 10,'נובמבר' => 11, 'דצמבר' => 12}
 HEB_LETTER_VALUE = {'א' => 1, 'ב' => 2, 'ג' => 3, 'ד' => 4, 'ה' => 5, 'ו' => 6, 'ז' => 7, 'ח' => 8, 'ט' => 9, 'י' => 10, 'כ' => 20, 'ך' => 20, 'ל' => 30, 'מ' => 40, 'ם' => 40, 'נ' => 50, 'ן' => 50, 'ס' => 60, 'ע' => 70, 'פ' => 80, 'ף' => 80, 'צ' => 90, 'ץ' => 90, 'ק' => 100, 'ר' => 200, 'ש' => 300, 'ת' => 400}
 
+SUSPICIOUS_TITLES = ['מבוא', 'פתיחה', 'הקדמה','אחרית דבר','אפילוג','סוף דבר', 'על הספר']
+
+class TitleValidator < ActiveModel::Validator
+  def validate(record)
+    return false unless record.title.present?
+    okay = true
+    SUSPICIOUS_TITLES.each {|suspicious_title|
+      if record.title.strip == suspicious_title
+        okay = false
+        break
+      end
+    }
+    record.errors.add(:title, I18n.t(:title_not_informative)) unless okay
+    if record.title =~ /[^\.]\.\s*$/ # old-fashioned published put periods at ends of titles. We don't want them.
+      okay = false
+      record.errors.add(:title, I18n.t(:title_ends_with_period))
+    end
+    if record.title =~ /^..?\. / # starts with one or two letters/numbers and a period
+      okay = false
+      record.errors.add(:title, I18n.t(:title_starts_with_ordinals))
+    end
+    return okay
+  end
+end
+
 module BybeUtils
   def make_epub_from_single_html(html, manifestation, author_string)
     book = GEPUB::Book.new

@@ -309,6 +309,21 @@ class NokoDoc < Nokogiri::XML::SAX::Document
   end
 end
 
+class TranslationValidator < ActiveModel::Validator
+  def validate(record)
+    okay = true
+    if record.translator_id.present? and record.orig_lang == 'he'
+      okay = false
+      record.errors.add(:base, I18n.t(:translation_must_have_original_language))
+    end
+    if record.translator_id.blank? and record.orig_lang != 'he'
+      okay = false
+      record.errors.add(:base, I18n.t(:translation_must_have_translator))
+    end
+    return okay
+  end
+end
+
 class HtmlFile < ApplicationRecord
   include Ensure_docx_content_type # fixing docx content-type detection problem, per https://github.com/thoughtbot/paperclip/issues/1713
   has_paper_trail
@@ -323,6 +338,16 @@ class HtmlFile < ApplicationRecord
   has_attached_file :doc, storage: :s3, s3_credentials: 'config/s3.yml', s3_region: 'us-east-1'
 #  validates_attachment_content_type :doc, content_type: ['application/vnd.openxmlformats-officedocument.wordprocessingml.document']
   validates_attachment_content_type :doc, content_type: ['application/zip', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']
+  validates :title, presence: true
+  validates :genre, presence: true
+  validates :publisher, presence: true
+  validates :person_id, presence: true
+  validates_with TitleValidator, on: :create, unless: :override_validation
+  validates_with TranslationValidator, on: :create, unless: :override_validation
+
+  def override_validation
+    comments =~ /override/
+  end
 
   # a trivial enum just for this entity.  Roles would be expressed with an ActiveRecord enum in the actual (FRBR) catalog entites (Expression etc.)
   ROLE_AUTHOR = 1

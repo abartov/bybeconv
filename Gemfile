@@ -50,6 +50,7 @@ gem 'coffee-script'
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
+gem 'client_side_validations'
 
 gem 'execjs'
 gem 'mini_racer'
@@ -96,7 +97,8 @@ gem 'blazer' # for exploring Ahoy events
 group :production do
   gem 'newrelic_rpm' # performance monitoring
   gem 'dalli'
-  gem 'thin'
+  gem 'thin', git: 'https://github.com/macournoyer/thin.git' # 1.8.1 still doesn't support Ruby 3.2
+
   gem 'capistrano-thin', '~> 2.0.0'
 end
 

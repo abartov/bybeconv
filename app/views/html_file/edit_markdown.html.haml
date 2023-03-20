@@ -82,6 +82,10 @@
     return "<span style=\"color:red; font-size: 250%\">"+buf+"</span>";
   }
   jQuery(document).ready(function() {
+    if("#{@disable_submit}" == 'true') {
+      $('#frbrize_button').css('background-color','gray');
+      $('#frbrize_button').css('cursor','not-allowed');
+    }
     // highlight suspicious angled brackets in rendered HTML
     $("#preview p:contains('> ')").each(function(){
       $(this).html(highlight_in_red($(this).html()));
@@ -157,28 +161,29 @@
       location.href = url;
     }
     
-    $('#frbrize_button').click(function(e){
-      if(somethingChanged) {
-        alert("בוצעו שינויים בטקסט והם יאבדו בלי שמירה! האם באמת לעזוב את הדף [במסך הבא]?");
-      }
-    });
-    var warned_about_splits = false;
-    $('#frbrize_button').click(function(e){
-      e.preventDefault();
-      if(#{@text.has_splits ? true : false}) {
-        if((/&&& /.test($('#markdown').val( ))) && (/^\s*\S+\s*&&& /.test($('#markdown').val()))) {
-            alert("#{t(:non_whitespace_before_first_part)}");
-        } else if(!warned_about_splits){
-          alert("#{t(:careful_with_splits)}");
-          warned_about_splits = true;
+    if("#{@disable_submit}" != 'true') {
+      $('#frbrize_button').click(function(e){
+        if(somethingChanged) {
+          alert("בוצעו שינויים בטקסט והם יאבדו בלי שמירה! האם באמת לעזוב את הדף [במסך הבא]?");
+        }
+      });
+      var warned_about_splits = false;
+      $('#frbrize_button').click(function(e){
+        e.preventDefault();
+        if(#{@text.has_splits ? true : false}) {
+          if((/&&& /.test($('#markdown').val( ))) && (/^\s*\S+\s*&&& /.test($('#markdown').val()))) {
+              alert("#{t(:non_whitespace_before_first_part)}");
+          } else if(!warned_about_splits){
+            alert("#{t(:careful_with_splits)}");
+            warned_about_splits = true;
+          } else {
+            submit_frbr();
+          }
         } else {
           submit_frbr();
         }
-      } else {
-        submit_frbr();
-      }
-    });
-
+      });
+    }
     $('#vised').click(function() {
       const el = document.querySelector('#markdown');
       const pv = document.querySelector('#preview');

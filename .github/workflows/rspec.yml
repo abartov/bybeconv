@@ -9,7 +9,7 @@ on:
 jobs:
   test:
     name: CI
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     services:
       mysql:
         image: mysql:5.7
@@ -31,15 +31,11 @@ jobs:
           sudo sysctl -w vm.swappiness=1
           sudo sysctl -w fs.file-max=262144
           sudo sysctl -w vm.max_map_count=262144
-
-      - uses: getong/elasticsearch-action@v1.2
+      - name: Runs Elasticsearch
+        uses: elastic/elastic-github-actions/elasticsearch@master
         with:
-          elasticsearch version: '7.17'
-          host port: 9200
-          container port: 9200
-          host node port: 9300
-          node port: 9300
-          discovery type: 'single-node'
+          stack-version: 7.17.8
+          security-enabled: false
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
