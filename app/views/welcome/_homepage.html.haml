@@ -30,26 +30,28 @@
       = render 'periods'
 
       -# surprise author
-      .scroller.by-card-v02#surprise-scroller
-        .slide
-          #authors-surprise{style:'cursor:pointer'}
+      - if @surprise_author.present?
+        .scroller.by-card-v02#surprise-scroller
+          .slide
+            #authors-surprise{style:'cursor:pointer'}
+              .by-card-header-v02
+                %span.headline-1-v02= t(:surprise_author)
+              .by-card-content-v02#authors-surprise-initial
+                .surprise-btn-area-v02
+                  %button.by-button-v02.surprise-btn-v02.headline-2-v02= t(:surprise_me)
+          .slide
+            = render partial: 'shared/surprise_author', locals: {passed_mode: 'home', author: @surprise_author}                  
+      -# surprise work
+      - if @surprise_work.present?
+        .scroller.by-card-v02#work-surprise-scroller
+          .slide#works-surprise{style:'cursor:pointer'}
             .by-card-header-v02
-              %span.headline-1-v02= t(:surprise_author)
-            .by-card-content-v02#authors-surprise-initial
+              %span.headline-1-v02= t(:surprise)
+            .by-card-content-v02#works-surprise-initial
               .surprise-btn-area-v02
                 %button.by-button-v02.surprise-btn-v02.headline-2-v02= t(:surprise_me)
-        .slide
-          = render partial: 'shared/surprise_author', locals: {passed_mode: 'home', author: @surprise_author}                  
-      -# surprise work
-      .scroller.by-card-v02#work-surprise-scroller
-        .slide#works-surprise{style:'cursor:pointer'}
-          .by-card-header-v02
-            %span.headline-1-v02= t(:surprise)
-          .by-card-content-v02#works-surprise-initial
-            .surprise-btn-area-v02
-              %button.by-button-v02.surprise-btn-v02.headline-2-v02= t(:surprise_me)
-        .slide
-          = render partial: 'shared/surprise_work', locals: {passed_mode: 'home', manifestation: @surprise_work}
+          .slide
+            = render partial: 'shared/surprise_work', locals: {passed_mode: 'home', manifestation: @surprise_work}
         
     .col-12.col-lg-4
       -# whatsnew feed
