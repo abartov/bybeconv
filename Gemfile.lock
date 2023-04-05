@@ -284,7 +284,7 @@ GEM
     fugit (1.8.1)
       et-orbi (~> 1, >= 1.2.7)
       raabro (~> 1.4)
-    gared (0.0.28)
+    gared (0.0.29)
       nokogiri (> 1.8)
       rest-client (~> 2)
       watir (~> 6)
@@ -707,7 +707,7 @@ GEM
       sprockets-rails
       tilt
     scanf (1.0.0)
-    selenium-webdriver (4.8.0)
+    selenium-webdriver (4.8.6)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
@@ -836,7 +836,7 @@ DEPENDENCIES
   execjs
   factory_bot_rails (~> 6.2.0)
   faker (~> 2.19.0)
-  gared (>= 0.0.28)
+  gared (>= 0.0.29)
   gepub
   grape (= 1.6.0)
   grape-entity (~> 0.10.1)
