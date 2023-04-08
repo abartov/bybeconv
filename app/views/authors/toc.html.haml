@@ -204,7 +204,7 @@
         $('#select-all').hide();
         $('.number-of-selected-texts').hide();
         $('.add-to-anthology').hide();
-        $('#browse_mainlist p input').remove();
+        $('#browse_mainlist input').remove();
         $('#selected_counter').text('0');
       } else {
         // turn on multi-select mode
@@ -234,7 +234,7 @@
       }
     }
     $('#reset_multiselect').click(function() {
-      $('.mainlist p input[type=checkbox]').prop('checked', false);
+      $('.mainlist input[type=checkbox]').prop('checked', false);
       $('#select-all').prop('checked', false);
       $('#selected_counter').text($('.multiselect_checkbox:checked').length);
     });
@@ -242,7 +242,7 @@
       $.fn.browse_multi_select_toggle();
     });
     $('#select-all').change(function(){
-      $('.mainlist p input[type=checkbox]').prop('checked', $(this).prop('checked'));
+      $('.mainlist input[type=checkbox]').prop('checked', $(this).prop('checked'));
       if($('.add-to-anthology').css('display') == 'none' && $(this).prop('checked')) {
         $('.add-to-anthology').show();
         startAnimation('blink 2s ease-in','.add-to-anthology');
