@@ -213,12 +213,17 @@
         $('.select-all-with-buttons').show();
         $('#select-all').show();
         $('.number-of-selected-texts').show();
-        $('#browse_mainlist p').each(function() {
-          intlink = $(this).find('a[href]');
-          if(intlink.length > 0)
-            if(intlink[0].toString().match(/\/read\/\d+/))
-                $(this).prepend("<input class=\"multiselect_checkbox\" type=\"checkbox\" />");
-        });
+
+        selectors = ['#browse_mainlist p', '#browse_mainlist h3', '#browse_mainlist h4', '#browse_mainlist h5']
+        selectors.forEach(function(item, index){ 
+          $(item).each(function() {
+            intlink = $(this).find('a[href]');
+            if(intlink.length > 0)
+              if(intlink[0].toString().match(/\/read\/\d+/))
+                  $(this).prepend("<input class=\"multiselect_checkbox\" type=\"checkbox\" />");
+          });
+        })
+
         $('.multiselect_checkbox').change(function() {
           if($(this).prop('checked') && $('.add-to-anthology').css('display') == 'none') {
             $('.add-to-anthology').show();
