@@ -66,27 +66,36 @@ module BybeUtils
     canvas.write(cover_file.path)
     book.add_item('cover.png',cover_file.path).cover_image
     book.ordered {
+      # TODO: different cover page for anthologies, including name of anthology author.
       buf = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" xml:lang="he" lang="he"><head><meta http-equiv="content-type" content="text/html; charset=UTF-8" /><title>'+title+'</title></head><body dir="rtl"><div style="text-align:center;"><h1>'+title+'</h1><p/><p/><h3>פרי עמלם של מתנדבי</h3><p/><h2>פרויקט בן־יהודה</h2><p/><h3><a href="https://benyehuda.org/page/volunteer">(רוצים לעזור?)</a></h3><p/>מעודכן לתאריך: '+Date.today.to_s+'</div></body></html>'
       book.add_item('0_title.xhtml').add_content(StringIO.new(buf))
-      section_titles = html.scan((/<h2.*?>(.*?)<\/h2/)).map{|x| x[0]}
       boilerplate_start = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" xml:lang="he" lang="he"><head><meta http-equiv="content-type" content="text/html; charset=UTF-8" /></head><body dir="rtl" align="right">'
       boilerplate_end = '</body></html>'
-      if section_titles.count == 1 # text witout chapters
-        book.add_item('1_text.xhtml').add_content(StringIO.new(html)).toc_text(title)
-      else
-        sections = html.split(/<h2.*?<\/h2>/)
-        #book.add_item('1_text.xhtml').add_content(StringIO.new("#{sections[0]}<h2>#{section_titles[0]}</h2>\n#{sections[1]}")).toc_text(section_titles[0])
-        offset = manifestation.expression.translation? ? 3 : 2
-        sections.shift(offset) # skip the header and the author/translator lines
-        sections.each_with_index{|section, i|
-          book.add_item((i+offset).to_s+'_text.xhtml').add_content(StringIO.new("#{boilerplate_start}<h2>#{section_titles[i+offset-1]}</h2>\n#{section}#{boilerplate_end}")).toc_text(section_titles[i+offset-1])
+      if manifestation.class == Anthology
+        item_titles = html.scan((/<h1.*?>(.*?)<\/h1/)).map{|x| x[0]}
+        items = html.split(/<h1.*?<\/h1>/)
+        items.shift(1) # skip the header
+        items.each_with_index{|item, i|
+          book.add_item((i+1).to_s+'_text.xhtml').add_content(StringIO.new("#{boilerplate_start}<h1>#{item_titles[i]}</h1>\n#{item}#{boilerplate_end}")).toc_text(item_titles[i])
         }
+      else # Manifestation
+        section_titles = html.scan((/<h2.*?>(.*?)<\/h2/)).map{|x| x[0]}
+        if section_titles.count == 1 # text witout chapters
+          book.add_item('1_text.xhtml').add_content(StringIO.new(html)).toc_text(title)
+        else
+          sections = html.split(/<h2.*?<\/h2>/)
+          #book.add_item('1_text.xhtml').add_content(StringIO.new("#{sections[0]}<h2>#{section_titles[0]}</h2>\n#{sections[1]}")).toc_text(section_titles[0])
+          offset = manifestation.expression.translation? ? 3 : 2
+          sections.shift(offset) # skip the header and the author/translator lines
+          sections.each_with_index{|section, i|
+            book.add_item((i+offset).to_s+'_text.xhtml').add_content(StringIO.new("#{boilerplate_start}<h2>#{section_titles[i+offset-1]}</h2>\n#{section}#{boilerplate_end}")).toc_text(section_titles[i+offset-1])
+          }
+        end
       end
-      #book.add_item('1_text.xhtml').add_content(StringIO.new(html)).toc_text(title)
     }
     fname = cover_file.path+'.epub'
     book.generate_epub(fname)
