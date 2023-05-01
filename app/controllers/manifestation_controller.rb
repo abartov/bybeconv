@@ -187,6 +187,7 @@ class ManifestationController < ApplicationController
         @e = @m.expression
         @header_partial = 'manifestation/dict_top'
         @pagetype = :manifestation
+        @page_title = "#{@m.title_and_authors} - #{t(:default_page_title)}"
         @entity = @m
         @all_headwords = DictionaryEntry.where(manifestation_id: @m.id)
         unless params[:page].nil? || params[:page].empty?
@@ -225,6 +226,7 @@ class ManifestationController < ApplicationController
     else
       @header_partial = 'manifestation/dict_entry_top'
       @pagetype = :manifestation
+      @page_title = "#{@entry.defhead} – #{@m.title_and_authors} – #{t(:default_page_title)}"
       @entity = @m
       @e = @m.expression
       @prev_entries = @entry.get_prev_defs(5)
