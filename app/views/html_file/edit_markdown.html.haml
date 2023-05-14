@@ -131,7 +131,7 @@
       var buf = $('#markdown').val();
       replaced = 0;
       buf = buf.replace(/\S(-|‑)\S/g, function(occurrence){
-        if((occurrence[0].match(/[a-z]/i)) && (occurrence[2].match(/[a-z]/i))) {
+        if((occurrence[0].match(/[a-z]/i)) || (occurrence[2].match(/[a-z]/i))) {
           return occurrence;
         } else {
           replaced += 1;
