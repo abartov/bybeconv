@@ -89,8 +89,8 @@ gem 'grape-entity', '~> 0.10.1'
 gem 'grape-extra_validators', '~> 2.1.0', git: "https://github.com/damisul/grape-extra_validators"
 gem 'grape-swagger', '~> 1.4.2'
 gem 'grape-swagger-entity', '~> 0.5.1'
-gem 'rswag-api', '~> 2.4.0'
-gem 'rswag-ui', '~> 2.4.0'
+gem 'rswag-api'
+gem 'rswag-ui'
 gem 'ahoy_matey' # for recording events
 gem 'blazer' # for exploring Ahoy events
 
