@@ -48,12 +48,16 @@ class ManifestationController < ApplicationController
   def browse
     @pagetype = :works
     @works_list_title = t(:works_list) # TODO: adjust by query
-    prep_for_browse
-    prep_user_content(:manifestation)
-    render :browse
-    respond_to do |format|
-      format.html
-      format.js
+    if valid_query?
+      prep_for_browse
+      prep_user_content(:manifestation)
+      render :browse
+      respond_to do |format|
+        format.html
+        format.js
+      end
+    else
+      head :bad_request
     end
   rescue PageNotFound
     head :not_found
@@ -558,6 +562,9 @@ class ManifestationController < ApplicationController
 
   protected
 
+  def valid_query?
+    return true unless params[:to_letter].present? && (params[:to_letter].any_hebrew? == false)
+  end
   def es_bfunc(coll, page, l, field, direction) # binary-search function for ab_pagination over an ES collection
     recs = coll.order(field).page(page).objects
     rec = recs.first
