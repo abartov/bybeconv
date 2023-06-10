@@ -84,7 +84,7 @@ module BybeUtils
         }
       else # Manifestation
         section_titles = html.scan((/<h2.*?>(.*?)<\/h2/)).map{|x| x[0]}
-        if section_titles.count < 2 # text witout chapters
+        if section_titles.count < (manifestation.expression.translation? ? 3 : 2) # text witout chapters
           book.add_item('1_text.xhtml').add_content(StringIO.new(html)).toc_text(title)
         else
           sections = html.split(/<h2.*?<\/h2>/)
