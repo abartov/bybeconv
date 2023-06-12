@@ -303,9 +303,11 @@ class ManifestationController < ApplicationController
     Downloadable.transaction do
       m = Manifestation.find(params[:id])
       unless is_spider?
-        m.record_timestamps = false # avoid the impression count touching the datestamp
-        impressionist(m) 
-        m.update_impression
+        Chewy.strategy(:bypass) do
+          m.record_timestamps = false # avoid the impression count touching the datestamp
+          impressionist(m) 
+          m.update_impression
+        end
       end
       dl = GetFreshManifestationDownloadable.call(m, format)
       redirect_to rails_blob_url(dl.stored_file, disposition: :attachment)
@@ -857,13 +859,15 @@ class ManifestationController < ApplicationController
         @w = @e.work
         @author = @w.persons[0] # TODO: handle multiple authors
         unless is_spider?
-          @m.record_timestamps = false # avoid the impression count touching the datestamp
-          impressionist(@m)
-          @m.update_impression
-          unless @author.nil?
-            @author.record_timestamps = false # avoid the impression count touching the datestamp
-            impressionist(@author) # also increment the author's popularity counter
-            @author.update_impression
+          Chewy.strategy(:bypass) do
+            @m.record_timestamps = false # avoid the impression count touching the datestamp
+            impressionist(@m)
+            @m.update_impression
+            unless @author.nil?
+              @author.record_timestamps = false # avoid the impression count touching the datestamp
+              impressionist(@author) # also increment the author's popularity counter
+              @author.update_impression
+            end
           end
           ahoy.track "text read or printed", text_id: @m.id, title: @m.title, author: @m.author_string # log the read, for later recommendation feature using the Disco gem
         end
