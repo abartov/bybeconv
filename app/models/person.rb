@@ -125,7 +125,7 @@ class Person < ApplicationRecord
     Rails.cache.fetch("au_#{self.id}_work_count", expires_in: 24.hours) do
       created_work_ids = self.works.pluck(:id)
       expressions_work_ids = self.expressions.pluck(:work_id)
-      return (created_work_ids + expressions_work_ids).uniq.size
+      (created_work_ids + expressions_work_ids).uniq.size
     end
   end
 

@@ -257,20 +257,20 @@ class ApplicationController < ActionController::Base
   def whatsnew_anonymous
     Rails.cache.fetch("whatsnew_anonymous", expires_in: 2.hours) do # memoize
       logger.info("cache miss: calculating whatsnew anonymous")
-      return whatsnew_since(1.month.ago)
+      whatsnew_since(1.month.ago)
     end
   end
 
   def cached_newsfeed
     Rails.cache.fetch("cached_newsfeed", expires_in: 1.hours) do # memoize
-      return newsfeed
+      newsfeed
     end
   end
 
   def cached_youtube_videos
     Rails.cache.fetch("cached_youtube", expires_in: 24.hours) do # memoize
       # return latest_youtube_videos # commented out due to quote problem, and caching failure yet TBD
-      return []
+      []
     end
   end
 
@@ -331,7 +331,7 @@ class ApplicationController < ActionController::Base
 
   def cached_textify_titles(manifestations, au)
     Rails.cache.fetch("textify_titles_#{au.id}", expires_in: 6.hours) do # memoize
-      return textify_titles(manifestations, au)
+      textify_titles(manifestations, au)
     end
   end
   def textify_titles(manifestations, au) # translations will also include *original* author names, unless the original author is au

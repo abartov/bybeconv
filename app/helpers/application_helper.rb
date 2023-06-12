@@ -130,7 +130,7 @@ module ApplicationHelper
 
   def sitenotice
     Rails.cache.fetch("sitenotices", expires_in: 2.hours) do # memoize
-      return uncached_sitenotice
+      uncached_sitenotice
     end
   end
 
@@ -182,7 +182,7 @@ module ApplicationHelper
     ret << [t(:anthologies), anths] unless anths.empty?
     return ret
   end
-  def update_param(uri, key, value)
+  def update_param(uri, key, value) 
     u = URI(uri)
     pp = URI.decode_www_form(u.query || "").to_h
     pp[key] = value
