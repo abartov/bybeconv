@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_02_16_191931) do
+ActiveRecord::Schema.define(version: 2023_06_27_211610) do
 
   create_table "aboutnesses", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -748,6 +748,8 @@ ActiveRecord::Schema.define(version: 2023_02_16_191931) do
     t.index ["html_file_id"], name: "proofs_html_file_id_fk"
     t.index ["manifestation_id"], name: "proofs_manifestation_id_fk"
     t.index ["resolved_by"], name: "proofs_resolved_by_fk"
+    t.index ["status", "created_at"], name: "index_proofs_on_status_and_created_at"
+    t.index ["status", "manifestation_id"], name: "index_proofs_on_status_and_manifestation_id"
   end
 
   create_table "publications", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
