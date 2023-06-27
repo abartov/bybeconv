@@ -84,6 +84,7 @@ class ApplicationController < ActionController::Base
       li = ListItem.where(listkey: bits, item: current_user).first
       return true unless li.nil?
     end
+
     redirect_to '/', flash: { error: I18n.t(:not_an_editor) }
   end
   def set_base_user

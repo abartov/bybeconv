@@ -466,8 +466,19 @@ describe ManifestationController do
       end
     end
 
-    describe '#add_aboutness' do
+    describe '#add_aboutness_unauthorized' do
       let(:user) { create(:user) }
+
+      before do
+        session[:user_id] = user.id
+      end
+
+      subject { get :add_aboutnesses, params: { id: manifestation.id } }
+
+      it { is_expected.to redirect_to '/' }
+    end
+    describe '#add_aboutness' do
+      let(:user) { create(:user, :edit_catalog) }
 
       before do
         session[:user_id] = user.id

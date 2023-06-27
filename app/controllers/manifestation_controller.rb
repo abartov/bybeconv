@@ -17,7 +17,7 @@ class ManifestationController < ApplicationController
   #   #custom :for_manual_handling
   # end
 
-  before_action only: [:list, :show, :remove_link, :edit_metadata] do |c| c.require_editor('edit_catalog') end
+  before_action only: [:list, :show, :remove_link, :edit_metadata, :add_aboutnesses] do |c| c.require_editor('edit_catalog') end
   before_action only: [:edit, :update] do |c| c.require_editor(['edit_catalog', 'conversion_verification', 'handle_proofs']) end
   before_action only: [:all, :genre, :period, :by_tag] do |c| c.refuse_unreasonable_page end
   autocomplete :manifestation, :title, limit: 20, display_value: :title_and_authors, full: true
