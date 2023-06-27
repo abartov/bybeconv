@@ -23,8 +23,10 @@ class TaggingsController < ApplicationController
     # TODO: implement
     tagging = Tagging.find(params[:id])
     unless tagging.nil?
-      @manifestation_id = tagging.manifestation_id
-      tagging.destroy
+      if tagging.status == :pending && tagging.suggested_by == current_user.id
+        @manifestation_id = tagging.manifestation_id
+        tagging.destroy
+      end
     end
   end
 
