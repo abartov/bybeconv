@@ -205,6 +205,8 @@ Bybeconv::Application.routes.draw do
   post "session/do_login"
 
   get '/auth/:provider/callback' => 'session#create'
+  post '/auth/:provider/callback' => 'session#create'
+
   match 'auth/failure', to: redirect('/'), via: [:get, :post]
   match 'signout', to: 'session#destroy', as: 'signout', via: [:get, :post]
 

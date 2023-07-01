@@ -89,10 +89,19 @@ module BybeUtils
         else
           sections = html.split(/<h2.*?<\/h2>/)
           #book.add_item('1_text.xhtml').add_content(StringIO.new("#{sections[0]}<h2>#{section_titles[0]}</h2>\n#{sections[1]}")).toc_text(section_titles[0])
-          offset = manifestation.expression.translation? ? 3 : 2
+          offset = manifestation.expression.translation? ? 2 : 1
+          no_first_title = sections.count - section_titles.count == 1 ? true : false
           sections.shift(offset) # skip the header and the author/translator lines
           sections.each_with_index{|section, i|
-            book.add_item((i+offset).to_s+'_text.xhtml').add_content(StringIO.new("#{boilerplate_start}<h2>#{section_titles[i+offset-1]}</h2>\n#{section}#{boilerplate_end}")).toc_text(section_titles[i+offset-1])
+            buf = boilerplate_start
+            if no_first_title && i == 0
+              stitle = '*' # no title
+            else
+              stitle = section_titles[i+offset-1]
+              buf += "<h2>#{section_titles[i+offset-1]}</h2>\n"
+            end
+            buf += section + boilerplate_end
+            book.add_item((i+offset).to_s+'_text.xhtml').add_content(StringIO.new(buf)).toc_text(stitle)
           }
         end
       end
