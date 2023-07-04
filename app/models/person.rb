@@ -7,6 +7,7 @@ class Person < ApplicationRecord
 
   paginates_per 100
 
+  has_paper_trail ignore: [:impressions_count, :created_at, :updated_at]
   # relationships
   belongs_to :toc
   has_many :featured_contents

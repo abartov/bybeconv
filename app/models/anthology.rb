@@ -6,7 +6,7 @@ class UserAnthTitleValidator < ActiveModel::Validator
       records = records.where('id <> ?', record.id)
     end
     unless records.empty?
-      errors.add(I18n.t(:title_already_exists))
+      record.errors.add(:title, I18n.t(:title_already_exists))
     end
   end
 end
