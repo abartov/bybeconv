@@ -28,7 +28,7 @@ describe Anthology do
           let(:anthology_title) { existing_title }
           it 'generates validation error' do
             expect(result).to be false
-            expect(record.errors[:base]).to eq [I18n.t(:title_already_exists)]
+            expect(record.errors[:title]).to eq [I18n.t(:title_already_exists)]
           end
         end
       end
@@ -50,7 +50,7 @@ describe Anthology do
           let(:anthology_title) { existing_title }
           it 'generates validation error' do
             expect(result).to be false
-            expect(record.errors[:base]).to eq [I18n.t(:title_already_exists)]
+            expect(record.errors[:title]).to eq [I18n.t(:title_already_exists)]
           end
         end
       end
