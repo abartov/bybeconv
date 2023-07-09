@@ -1,6 +1,8 @@
 class Tagging < ApplicationRecord
 
   belongs_to :tag, foreign_key: 'tag_id'
+#  belongs_to :taggable, polymorphic: true # taggable things include Manifestations, People, Anthologies, ...
+
   belongs_to :manifestation, foreign_key: 'manifestation_id'
   belongs_to :suggester, foreign_key: 'suggested_by', class_name: 'User'
   belongs_to :approver, foreign_key: 'approved_by', class_name: 'User'
@@ -9,10 +11,11 @@ class Tagging < ApplicationRecord
   validates :tag, presence: true
   validates :manifestation, presence: true
   
-  enum status: [:pending, :approved, :rejected]
+  enum status: [:pending, :approved, :rejected, :semiapproved]
 
   scope :pending, -> { where(status: Tagging.statuses[:pending]) }
   scope :approved, -> { where(status: Tagging.statuses[:approved]) }
+  scope :semiapproved, -> { where(status: Tagging.statuses[:semiapproved]) }
   scope :rejected, -> { where(status: Tagging.statuses[:rejected]) }
   scope :by_suggester, ->(user) { where(suggested_by: user.id) }
 
