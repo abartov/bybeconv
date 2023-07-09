@@ -331,19 +331,23 @@ class ApplicationController < ActionController::Base
   end
 
   def cached_textify_titles(manifestations, au)
-    Rails.cache.fetch("textify_titles_#{au.id}", expires_in: 6.hours) do # memoize
+    Rails.cache.fetch("textify_titles_#{au.id}", expires_in: 12.hours) do # memoize
       textify_titles(manifestations, au)
     end
   end
-  def textify_titles(manifestations, au) # translations will also include *original* author names, unless the original author is au
-    ret = []
-    manifestations.each do |m|
-      ret << "<a href=\"#{url_for(controller: :manifestation, action: :read, id: m.id)}\">#{m.title}</a>"
-      if m.expression.translation
-        ret[-1] += ' / ' + m.authors_string unless m.expression.work.authors.include?(au)
-      end
-    end
-    return ret.join('; ')
+  #def old_textify_titles(manifestations, au) # translations will also include *original* author names, unless the original author is au
+  #  ret = []
+  #  manifestations.each do |m|
+# #     ret << "<a href=\"#{url_for(controller: :manifestation, action: :read, id: m.id)}\">#{m.title}</a>"
+  #    ret << "<a href=\"#{m.title}</a>"
+  #    if m.expression.translation
+  #      ret[-1] += ' / ' + m.authors_string unless m.expression.work.authors.include?(au)
+  #    end
+  #  end
+  #  return ret.join('; ')
+  #end
+  def textify_titles(manifestations, au) # translations will be marked as translations, without mentioning the author names, for performance reasons
+    Manifestation.includes(expression: [work: [creations: :person]]).find(manifestations.pluck(:id)).map{|m| "<a href=\"#{url_for(controller: :manifestation, action: :read, id: m.id)}\">#{m.title}</a>#{m.expression.translation ? " (#{I18n.t(:translation)})" : ''}"}.join('; ')
   end
 
   def textify_new_pubs(author)

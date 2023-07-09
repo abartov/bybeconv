@@ -188,17 +188,20 @@ class Manifestation < ApplicationRecord
 
   def author_string
     Rails.cache.fetch("m_#{self.id}_author_string", expires_in: 24.hours) do
-      return I18n.t(:nil) if expression.work.authors.empty?
-      ret = expression.work.authors.map(&:name).join(', ')
-      if expression.translation
-        if translators.empty?
-          ret += ' / '+I18n.t(:unknown)
-        else
-          ret += ' / '+translators.map(&:name).join(', ')
-        end
-      end
-      ret # TODO: be less naive
+      author_string!
     end
+  end
+  def author_string!
+    return I18n.t(:nil) if expression.work.authors.empty?
+    ret = expression.work.authors.map(&:name).join(', ')
+    if expression.translation
+      if translators.empty?
+        ret += ' / '+I18n.t(:unknown)
+      else
+        ret += ' / '+translators.map(&:name).join(', ')
+      end
+    end
+    ret # TODO: be less naive
   end
 
   def legacy_htmlfile
@@ -221,10 +224,11 @@ class Manifestation < ApplicationRecord
   end
 
   def recalc_cached_people
-     pp = []
-     expression.persons.each {|p| pp << p unless pp.include?(p) }
-     expression.work.persons.each {|p| pp << p unless pp.include?(p) }
-     self.cached_people = pp.map{|p| "#{p.name} #{p.other_designation}"}.join('; ') # ZZZ
+     #pp = []
+     #expression.persons.each {|p| pp << p unless pp.include?(p) }
+     #expression.work.persons.each {|p| pp << p unless pp.include?(p) }
+     #self.cached_people = pp.map{|p| "#{p.name} #{p.other_designation}"}.join('; ') # ZZZ
+    self.cached_people = self.author_string!
      # self.cached_people_ids = pp.map{|x| x.id}.join() # this doesn't actually make sense; a normalized query would be way faster
   end
 
