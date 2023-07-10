@@ -99,6 +99,8 @@ class ProofController < ApplicationController
     end
     @p.resolver = current_user
     @p.save!
+    li = ListItem.where(listkey: 'proofs_by_user', item_id: @p.id)
+    li.destroy_all unless li.nil? # unassign the proof from the user's list
     flash[:notice] = t(:resolved_as, :fixed => fix_text)
     if current_user.admin?
       redirect_to :action => :list, :status => 'new'
