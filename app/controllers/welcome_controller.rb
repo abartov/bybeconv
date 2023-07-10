@@ -28,7 +28,7 @@ class WelcomeController < ApplicationController
     (@fa_snippet, @fa_rest) = @featured_author.nil? ? ['',''] : snippet(@featured_author.body, 1500) # prepare snippet 
     @fa_snippet = MultiMarkdown.new(@fa_snippet).to_html.force_encoding('UTF-8') unless @fa_snippet.empty?
     @featured_volunteer = featured_volunteer
-    @popups_by_genre = popups_by_genre # cached, if available
+    # @popups_by_genre = popups_by_genre # cached, if available # used by older version of homepage
   end
 
   def featured_popup
