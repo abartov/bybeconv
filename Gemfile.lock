@@ -751,6 +751,9 @@ GEM
     sparql-client (3.2.1)
       net-http-persistent (~> 4.0, >= 4.0.1)
       rdf (~> 3.2, >= 3.2.6)
+    spring (4.1.1)
+    spring-commands-rspec (1.0.4)
+      spring (>= 0.9.1)
     sprockets (3.7.2)
       concurrent-ruby (~> 1.0)
       rack (> 1, < 3)
@@ -894,6 +897,8 @@ DEPENDENCIES
   sass-rails
   simplecov
   sparql-client
+  spring
+  spring-commands-rspec
   sprockets (~> 3)
   sqlite3
   thin!

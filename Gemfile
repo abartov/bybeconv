@@ -131,4 +131,6 @@ end
 group :test, :development do
   gem 'factory_bot_rails', '~> 6.2.0'
   gem 'rspec-rails', '~> 5.0.2'
+  gem 'spring'
+  gem 'spring-commands-rspec'
 end
