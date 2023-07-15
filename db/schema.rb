@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_06_27_211610) do
+ActiveRecord::Schema.define(version: 2023_07_08_194303) do
 
   create_table "aboutnesses", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -847,16 +847,18 @@ ActiveRecord::Schema.define(version: 2023_06_27_211610) do
 
   create_table "taggings", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "tag_id"
-    t.integer "manifestation_id"
+    t.integer "taggable_id"
     t.integer "status"
     t.integer "suggested_by"
     t.integer "approved_by"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "taggable_type"
     t.index ["approved_by"], name: "taggings_approved_by_fk"
-    t.index ["manifestation_id"], name: "taggings_manifestation_id_fk"
     t.index ["suggested_by"], name: "taggings_suggested_by_fk"
     t.index ["tag_id"], name: "taggings_tag_id_fk"
+    t.index ["taggable_id", "taggable_type"], name: "index_taggings_on_taggable_id_and_taggable_type"
+    t.index ["taggable_id"], name: "taggings_manifestation_id_fk"
   end
 
   create_table "tags", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -1007,7 +1009,7 @@ ActiveRecord::Schema.define(version: 2023_06_27_211610) do
   add_foreign_key "recommendations", "manifestations"
   add_foreign_key "recommendations", "users"
   add_foreign_key "recommendations", "users", column: "approved_by", name: "recommendations_approved_by_fk"
-  add_foreign_key "taggings", "manifestations", name: "taggings_manifestation_id_fk"
+  add_foreign_key "taggings", "manifestations", column: "taggable_id", name: "taggings_manifestation_id_fk"
   add_foreign_key "taggings", "tags", name: "taggings_tag_id_fk"
   add_foreign_key "taggings", "users", column: "approved_by", name: "taggings_approved_by_fk"
   add_foreign_key "taggings", "users", column: "suggested_by", name: "taggings_suggested_by_fk"

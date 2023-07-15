@@ -69,21 +69,24 @@ describe Tag do
   it 'links to tagged manifestation via approved taggings' do
     t = Tag.create!(name: Faker::Science.science, creator: create(:user), status: 'approved')
     5.times do 
-      Tagging.create!(tag: t, manifestation: create(:manifestation), suggester: create(:user), status: 'approved')
+      Tagging.create!(tag: t, taggable: create(:manifestation), suggester: create(:user), status: 'approved')
     end
     t2 = Tag.create!(name: Faker::Science.science, creator: create(:user), status: 'approved')
     5.times do
-      Tagging.create!(tag: t2, manifestation: create(:manifestation), suggester: create(:user), status: 'pending')
+      Tagging.create!(tag: t2, taggable: create(:manifestation), suggester: create(:user), status: 'pending')
     end
     expect(Tagging.all.count).to eq 10
     expect(t.taggings.count).to eq 5
-    expect(t.manifestations.count).to eq 5
+    expect(t.manifestation_taggings.count).to eq 5
+    expect(t2.taggings.count).to eq 5
+    expect(t2.manifestation_taggings.count).to eq 5
+    expect(t2.manifestation_taggings.approved.count).to eq 0
   end
 
   it 'deletes taggings when tag is deleted' do
     t = Tag.create!(name: Faker::Science.science, creator: create(:user), status: 'approved')
     5.times do 
-      Tagging.create!(tag: t, manifestation: create(:manifestation), suggester: create(:user), status: 'pending')
+      Tagging.create!(tag: t, taggable: create(:manifestation), suggester: create(:user), status: 'pending')
     end
     expect(Tag.last.taggings.count).to eq 5
     t.destroy

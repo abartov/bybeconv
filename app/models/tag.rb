@@ -1,6 +1,5 @@
 class Tag < ApplicationRecord
   has_many :taggings, dependent: :destroy
-  has_many :manifestations, through: :taggings, class_name: 'Manifestation'
   belongs_to :creator, foreign_key: :created_by, class_name: 'User'
   enum status: [:pending, :approved, :rejected]
   validates :name, presence: true
@@ -10,7 +9,9 @@ class Tag < ApplicationRecord
   scope :pending, -> { where(status: Tag.statuses[:pending]) }
   scope :approved, -> { where(status: Tag.statuses[:approved]) }
   scope :rejected, -> { where(status: Tag.statuses[:rejected]) }
+
   scope :by_user, ->(user) { where(created_by: user.id) }
+
   def approve!
     self.update(status: Tag.statuses[:approved])
   end
@@ -28,5 +29,23 @@ class Tag < ApplicationRecord
   end
   def delete_taggings_by_user(user)
     self.taggings.where(created_by: user.id).destroy_all
+  end
+  def approved_taggings
+    self.taggings.where(status: Tagging.statuses[:approved])
+  end
+  def work_taggings
+    self.taggings.where(taggable_type: 'Work')
+  end
+  def expression_taggings
+    self.taggings.where(taggable_type: 'Expression')
+  end
+  def manifestation_taggings
+    self.taggings.where(taggable_type: 'Manifestation')
+  end
+  def anthology_taggings
+    self.taggings.where(taggable_type: 'Anthology')
+  end
+  def people_taggings
+    self.taggings.where(taggable_type: 'Person')
   end
 end

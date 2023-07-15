@@ -4,5 +4,8 @@ FactoryBot.define do
     name { "MyString" }
     creator { create(:user)}
   end
+  trait :pending do
+    status { :pending }
+  end
 end
 
