@@ -27,8 +27,8 @@ describe V1::TextsAPI do
       impressions_count: 3,
       markdown: 'Sample Text 1',
     )
-    create(:tagging, tag: tag_popular, manifestation: m)
-    create(:tagging, tag: tag_pending, manifestation: m)
+    create(:tagging, tag: tag_popular, taggable: m, status: :approved)
+    create(:tagging, tag: tag_pending, taggable: m)
     m
   end
 
@@ -39,8 +39,8 @@ describe V1::TextsAPI do
       impressions_count: 2,
       markdown: 'Sample Text 2'
     )
-    create(:tagging, tag: tag_unpopular, manifestation: m)
-    create(:tagging, tag: tag_pending, manifestation: m)
+    create(:tagging, tag: tag_unpopular, taggable: m, status: :approved)
+    create(:tagging, tag: tag_pending, taggable: m)
     create(:aboutness, work: m.expression.work, aboutable: manifestation_1.expression.work)
     m
   end
@@ -401,7 +401,7 @@ describe V1::TextsAPI do
         expect(json_link['description']).to eq el.description
       end
 
-      tags = manifestation.tags.approved.pluck(:name).sort
+      tags = manifestation.approved_tags.pluck(:name).sort
       expect(enrichment['taggings']).to eq tags
 
       recommendations = manifestation.recommendations.all_approved.order(:id)
