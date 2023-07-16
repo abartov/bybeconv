@@ -6,8 +6,10 @@ class Manifestation < ApplicationRecord
   belongs_to :expression, inverse_of: :manifestations
   has_and_belongs_to_many :html_files
   has_and_belongs_to_many :likers, join_table: :work_likes, class_name: :User
-  has_many :taggings, dependent: :destroy
+
+  has_many :taggings, as: :taggable, dependent: :destroy
   has_many :tags, through: :taggings, class_name: 'Tag'
+
   has_many :recommendations, dependent: :destroy
   has_many :bookmarks, dependent: :destroy
 
