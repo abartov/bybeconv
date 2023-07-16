@@ -8,6 +8,9 @@ class Work < ApplicationRecord
   has_many :aboutnesses, as: :aboutable, dependent: :destroy # works that are ABOUT this work
   has_many :topics, class_name: 'Aboutness' # topics that this work is ABOUT 
 
+  has_many :taggings, as: :taggable, dependent: :destroy
+  has_many :tags, through: :taggings, class_name: 'Tag'
+
   validates_inclusion_of :genre, in: GENRES
 
   before_save :norm_dates

@@ -8,6 +8,8 @@ class Expression < ApplicationRecord
   has_many :realizers, dependent: :destroy
   has_many :persons, through: :realizers, class_name: 'Person'
   has_many :aboutnesses, as: :aboutable, dependent: :destroy
+  has_many :taggings, as: :taggable, dependent: :destroy
+  has_many :tags, through: :taggings, class_name: 'Tag'
   has_paper_trail # for monitoring crowdsourced inputs
 
   def editors

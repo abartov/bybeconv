@@ -15,6 +15,8 @@ class Anthology < ApplicationRecord
   belongs_to :user
   has_many :texts, class_name: 'AnthologyText', dependent: :destroy
   has_many :downloadables, as: :object, dependent: :destroy
+  has_many :taggings, as: :taggable, dependent: :destroy
+  has_many :tags, through: :taggings, class_name: 'Tag'
   enum access: { priv: 0, unlisted: 1, pub: 2 }
   validates :title, presence: true
   validates_with UserAnthTitleValidator
