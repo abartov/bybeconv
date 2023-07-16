@@ -102,7 +102,10 @@ class Manifestation < ApplicationRecord
   end
 
   def approved_tags
-    return Tag.find(self.taggings.approved.pluck(:tag_id))
+    tags.joins(:taggings).where(taggings: {status: Tagging.statuses[:approved]})
+  end
+  def approved_taggings
+    taggings.where(status: Tagging.statuses[:approved])
   end
 
   def as_prose?

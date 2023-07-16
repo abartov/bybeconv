@@ -86,6 +86,25 @@ describe Tagging do
     expect(m2.tags.count).to eq 5
     expect(m2.taggings.count).to eq 5
   end
+  it 'gets only approved tags for manifestation via taggings' do
+    m = create(:manifestation)
+    5.times do
+      Tagging.create!(tag: build(:tag), suggester: create(:user), status: 'approved', taggable: m)
+    end
+    3.times do
+      Tagging.create!(tag: build(:tag), suggester: create(:user), status: 'pending', taggable: m)
+    end
+    expect(m.tags.count).to eq 8
+    expect(m.approved_tags.count).to eq 5
+    3.times do
+      Tagging.create!(tag: build(:tag), suggester: create(:user), status: 'approved', taggable: build(:manifestation))
+    end
+    m2 = Manifestation.find(m.id)
+    expect(m2.tags.count).to eq 8
+    expect(m2.approved_tags.count).to eq 5
+    expect(m2.taggings.count).to eq 8
+    expect(m2.approved_taggings.count).to eq 5
+  end
 
   it 'deletes tagging but not tag or manifestation' do
     tag = Tag.create!(name: Faker::Science.science, creator: create(:user), status: 'approved')
