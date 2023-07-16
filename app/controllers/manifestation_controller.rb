@@ -260,7 +260,7 @@ class ManifestationController < ApplicationController
           @proof = Proof.new
           @new_recommendation = Recommendation.new
           @tagging = Tagging.new
-          @tagging.manifestation_id = @m.id
+          @tagging.taggable = @m
           @tagging.suggester = current_user
           @taggings = @m.taggings
           recommendations = @m.recommendations
