@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_07_17_164740) do
+ActiveRecord::Schema.define(version: 2023_07_17_175515) do
 
   create_table "aboutnesses", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -867,7 +867,11 @@ ActiveRecord::Schema.define(version: 2023_07_17_164740) do
     t.integer "created_by"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "approver_id"
+    t.index ["approver_id"], name: "index_tags_on_approver_id"
     t.index ["created_by"], name: "tags_created_by_fk"
+    t.index ["name"], name: "index_tags_on_name", unique: true
+    t.index ["status", "name"], name: "index_tags_on_status_and_name", unique: true
   end
 
   create_table "tocs", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -1012,6 +1016,7 @@ ActiveRecord::Schema.define(version: 2023_07_17_164740) do
   add_foreign_key "taggings", "tags", name: "taggings_tag_id_fk"
   add_foreign_key "taggings", "users", column: "approved_by", name: "taggings_approved_by_fk"
   add_foreign_key "taggings", "users", column: "suggested_by", name: "taggings_suggested_by_fk"
+  add_foreign_key "tags", "users", column: "approver_id"
   add_foreign_key "tags", "users", column: "created_by", name: "tags_created_by_fk"
   add_foreign_key "volunteer_profile_features", "volunteer_profiles"
   add_foreign_key "work_likes", "manifestations", name: "work_likes_manifestation_id_fk"
