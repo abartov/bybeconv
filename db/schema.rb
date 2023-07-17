@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_07_08_194303) do
+ActiveRecord::Schema.define(version: 2023_07_17_164740) do
 
   create_table "aboutnesses", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -1009,7 +1009,6 @@ ActiveRecord::Schema.define(version: 2023_07_08_194303) do
   add_foreign_key "recommendations", "manifestations"
   add_foreign_key "recommendations", "users"
   add_foreign_key "recommendations", "users", column: "approved_by", name: "recommendations_approved_by_fk"
-  add_foreign_key "taggings", "manifestations", column: "taggable_id", name: "taggings_manifestation_id_fk"
   add_foreign_key "taggings", "tags", name: "taggings_tag_id_fk"
   add_foreign_key "taggings", "users", column: "approved_by", name: "taggings_approved_by_fk"
   add_foreign_key "taggings", "users", column: "suggested_by", name: "taggings_suggested_by_fk"
