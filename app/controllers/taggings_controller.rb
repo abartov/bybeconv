@@ -3,8 +3,9 @@ class TaggingsController < ApplicationController
   layout false
 
   def create
-    if params[:new_tagging_tag_id].present? # selecting from autocomplete would populate this
-      tag = Tag.find(params[:new_tagging_tag_id])
+    if params[:tagname_id].present? # selecting from autocomplete would populate this
+      tname = TagName.find(params[:tagname_id])
+      tag = tname.tag unless tname.nil?
     else # user may have typed an existing tag name or alias without selecting from autocomplete
       tname = TagName.find_by_name(params[:tag])
       tag = tname.nil? ? nil : tname.tag

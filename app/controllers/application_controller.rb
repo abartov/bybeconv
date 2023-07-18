@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   # before_action :set_font_size # TODO: re-enable when we support this
   before_action :set_base_user
   after_action :set_access_control_headers
-  autocomplete :tag_name, :name, limit: 15, extra_data: [:tag_id] # TODO: also search alternate titles!
+  autocomplete :tag_name, :name, limit: 15 # TODO: also search alternate titles!
 
   # class variables
   @@countauthors_cache = nil

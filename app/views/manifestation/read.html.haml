@@ -100,7 +100,7 @@
                       = autocomplete_field_tag :tag, '', autocomplete_tag_name_path, {'data-noMatchesLabel' => t(:no_matches_found), class: 'field-v02', id_element: '#new_tagging_tag_id', style: 'width: 10rem;'}
                       = hidden_field_tag :taggable_id, @tagging.taggable_id
                       = hidden_field_tag :taggable_type, 'Manifestation'
-                      = hidden_field_tag :new_tagging_tag_id, '', id: 'new_tagging_tag_id'
+                      = hidden_field_tag :tagname_id, '', id: 'tagname_id'
                     %div{style: 'display:inline'}
                       %input.btn-small-outline-v02.btn-text-v02{type: :submit, value: t(:suggest_new_tag), style: 'margin-top:0.6rem;width:auto; background-color: #d9cdd5'}
 
