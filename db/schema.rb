@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_07_17_175515) do
+ActiveRecord::Schema.define(version: 2023_07_17_181626) do
 
   create_table "aboutnesses", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -845,6 +845,14 @@ ActiveRecord::Schema.define(version: 2023_07_17_175515) do
     t.boolean "ltr"
   end
 
+  create_table "tag_names", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.integer "tag_id"
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["tag_id"], name: "index_tag_names_on_tag_id"
+  end
+
   create_table "taggings", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "tag_id"
     t.integer "taggable_id"
@@ -1013,6 +1021,7 @@ ActiveRecord::Schema.define(version: 2023_07_17_175515) do
   add_foreign_key "recommendations", "manifestations"
   add_foreign_key "recommendations", "users"
   add_foreign_key "recommendations", "users", column: "approved_by", name: "recommendations_approved_by_fk"
+  add_foreign_key "tag_names", "tags"
   add_foreign_key "taggings", "tags", name: "taggings_tag_id_fk"
   add_foreign_key "taggings", "users", column: "approved_by", name: "taggings_approved_by_fk"
   add_foreign_key "taggings", "users", column: "suggested_by", name: "taggings_suggested_by_fk"

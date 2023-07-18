@@ -1,6 +1,12 @@
 class Tag < ApplicationRecord
+  
   has_many :taggings, dependent: :destroy
+  has_many :tag_names, dependent: :destroy
+  # NOTE: the 'name' field in tag is the *preferred*/display name. All tag names are in TagName records (including this main preferred one, so that one can search *only* the TagName records)
+  after_create :create_tag_name
+
   belongs_to :creator, foreign_key: :created_by, class_name: 'User'
+  belongs_to :approver, foreign_key: :approver_id, class_name: 'User', optional: true
   enum status: [:pending, :approved, :rejected]
   validates :name, presence: true
   validates :created_by, presence: true
@@ -47,5 +53,9 @@ class Tag < ApplicationRecord
   end
   def people_taggings
     self.taggings.where(taggable_type: 'Person')
+  end
+  protected
+  def create_tag_name # create a TagName with the preferred name
+    TagName.create!(tag_id: self.id, name: self.name)
   end
 end
