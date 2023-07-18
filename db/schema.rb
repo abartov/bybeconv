@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_07_17_181626) do
+ActiveRecord::Schema.define(version: 2023_07_18_145931) do
 
   create_table "aboutnesses", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -850,6 +850,7 @@ ActiveRecord::Schema.define(version: 2023_07_17_181626) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_tag_names_on_name", unique: true
     t.index ["tag_id"], name: "index_tag_names_on_tag_id"
   end
 

@@ -121,4 +121,18 @@ describe Tag do
     t.destroy
     expect(Tagging.count).to eq 0
   end
+  it 'finds tags by TagName' do
+    u = create(:user)
+    5.times do
+      t = Tag.new(name: Faker::Science.science, creator: u, status: 'pending')
+      t.save
+    end
+    t = Tag.last
+    tn = t.name + '_alias'
+    TagName.create!(name: tn, tag: t)
+    expect(TagName.last.tag).to eq t
+    expect(TagName.last.name).to eq tn
+    expect(TagName.where(name: tn).count).to eq 1
+    expect(TagName.where(name: t.name).count).to eq 1
+  end
 end
