@@ -1,15 +1,16 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
   before_action :set_paper_trail_whodunnit
-  before_action :set_font_size
+  # before_action :set_font_size # TODO: re-enable when we support this
   before_action :set_base_user
   after_action :set_access_control_headers
+  autocomplete :tag_name, :name, limit: 15, extra_data: [:tag_id] # TODO: also search alternate titles!
 
   # class variables
   @@countauthors_cache = nil
   @@genre_popups_cache = nil
   @@pop_authors_by_genre = nil
-  SPIDERS = ['msnbot', 'yahoo! slurp','googlebot','bingbot','duckduckbot','baiduspider','yandexbot']
+  SPIDERS = ['msnbot', 'yahoo! slurp','googlebot','bingbot','duckduckbot','baiduspider','yandexbot','semrushbot']
 
   # returns BaseUser record associated with current user
   # If user is authenticated it will look for record by user_id, otherwise - by session_id
