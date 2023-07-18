@@ -261,7 +261,6 @@ class ManifestationController < ApplicationController
           @new_recommendation = Recommendation.new
           @tagging = Tagging.new
           @tagging.taggable = @m
-          @tagging.suggester = current_user
           @taggings = @m.taggings
           recommendations = @m.recommendations
           @my_pending_recs = recommendations.all_pending.where(user: current_user)

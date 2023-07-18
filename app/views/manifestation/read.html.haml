@@ -80,7 +80,7 @@
                           %input.btn{type: :submit, value: t(:submit), style:'margin-top:2.7rem;margin-left:1.5rem;background-color:#d9cdd5'}
 
         -# Tags
-        - if @taggings.count > 0
+        - if @taggings.count > 0 || current_user
           .by-card-v02.left-side-card-v02
             .by-card-header-left-v02
               %span.headline-1-v02= t(:tags)
@@ -89,16 +89,18 @@
                 = render partial: 'shared/taggings', locals: {taggings: @taggings}
               - unless current_user.nil?
                 #add-tag.card-bottom
-                  .metadata-link.linkcolor.pointer.notyet#expand-add-tag
+                  .metadata-link.linkcolor.pointer#expand-add-tag
                     %span.right-side-icon &amp;
                     %span{:style => "font-weight: bold"}= t(:suggest_new_tag)
 
                 #add-tag-form
                   = form_for @tagging, remote: true do
                     %div{style: 'display:inline;margin-top:0.6rem;'}
-                      = autocomplete_field_tag :tag, '', autocomplete_tag_name_path, 'data-noMatchesLabel' => t(:no_matches_found)
-                      = hidden_field_tag :manifestation_id, @tagging.manifestation_id
-                      = hidden_field_tag :suggested_by, @tagging.suggested_by
+                      %b= t(:suggested_tag_name)
+                      = autocomplete_field_tag :tag, '', autocomplete_tag_name_path, {'data-noMatchesLabel' => t(:no_matches_found), class: 'field-v02', id_element: '#new_tagging_tag_id', style: 'width: 10rem;'}
+                      = hidden_field_tag :taggable_id, @tagging.taggable_id
+                      = hidden_field_tag :taggable_type, 'Manifestation'
+                      = hidden_field_tag :new_tagging_tag_id, '', id: 'new_tagging_tag_id'
                     %div{style: 'display:inline'}
                       %input.btn-small-outline-v02.btn-text-v02{type: :submit, value: t(:suggest_new_tag), style: 'margin-top:0.6rem;width:auto; background-color: #d9cdd5'}
 
@@ -205,10 +207,8 @@
       }
     });
     $('#expand-add-tag').click(function() {
-      /*
       $('#expand-add-tag').css('display','none');
       $('#add-tag-form').css('display','block');
-      */
     });
     $('#expand-add-rec').click(function() {
       /*
