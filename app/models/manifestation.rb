@@ -1,6 +1,7 @@
 include BybeUtils
 class Manifestation < ApplicationRecord
-  is_impressionable :counter_cache => true # for statistics
+  #is_impressionable :counter_cache => true # for statistics
+  is_impressionable #:counter_cache => true # for statistics
   include CompactedImpressions
   paginates_per 100
   belongs_to :expression, inverse_of: :manifestations
