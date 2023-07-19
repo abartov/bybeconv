@@ -1,13 +1,16 @@
 include BybeUtils
 class Manifestation < ApplicationRecord
-  is_impressionable :counter_cache => true # for statistics
+  #is_impressionable :counter_cache => true # for statistics
+  is_impressionable #:counter_cache => true # for statistics
   include CompactedImpressions
   paginates_per 100
   belongs_to :expression, inverse_of: :manifestations
   has_and_belongs_to_many :html_files
   has_and_belongs_to_many :likers, join_table: :work_likes, class_name: :User
-  has_many :taggings, dependent: :destroy
+
+  has_many :taggings, as: :taggable, dependent: :destroy
   has_many :tags, through: :taggings, class_name: 'Tag'
+
   has_many :recommendations, dependent: :destroy
   has_many :bookmarks, dependent: :destroy
 
@@ -100,7 +103,10 @@ class Manifestation < ApplicationRecord
   end
 
   def approved_tags
-    return Tag.find(self.taggings.approved.pluck(:tag_id))
+    tags.joins(:taggings).where(taggings: {status: Tagging.statuses[:approved]})
+  end
+  def approved_taggings
+    taggings.where(status: Tagging.statuses[:approved])
   end
 
   def as_prose?
