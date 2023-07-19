@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_06_27_211610) do
+ActiveRecord::Schema.define(version: 2023_07_19_164520) do
 
   create_table "aboutnesses", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -845,18 +845,29 @@ ActiveRecord::Schema.define(version: 2023_06_27_211610) do
     t.boolean "ltr"
   end
 
+  create_table "tag_names", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.integer "tag_id"
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_tag_names_on_name", unique: true
+    t.index ["tag_id"], name: "index_tag_names_on_tag_id"
+  end
+
   create_table "taggings", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "tag_id"
-    t.integer "manifestation_id"
+    t.integer "taggable_id"
     t.integer "status"
     t.integer "suggested_by"
     t.integer "approved_by"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "taggable_type"
     t.index ["approved_by"], name: "taggings_approved_by_fk"
-    t.index ["manifestation_id"], name: "taggings_manifestation_id_fk"
     t.index ["suggested_by"], name: "taggings_suggested_by_fk"
     t.index ["tag_id"], name: "taggings_tag_id_fk"
+    t.index ["taggable_id", "taggable_type"], name: "index_taggings_on_taggable_id_and_taggable_type"
+    t.index ["taggable_id"], name: "taggings_manifestation_id_fk"
   end
 
   create_table "tags", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -865,7 +876,11 @@ ActiveRecord::Schema.define(version: 2023_06_27_211610) do
     t.integer "created_by"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "approver_id"
+    t.index ["approver_id"], name: "index_tags_on_approver_id"
     t.index ["created_by"], name: "tags_created_by_fk"
+    t.index ["name"], name: "index_tags_on_name", unique: true
+    t.index ["status", "name"], name: "index_tags_on_status_and_name", unique: true
   end
 
   create_table "tocs", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -1007,10 +1022,11 @@ ActiveRecord::Schema.define(version: 2023_06_27_211610) do
   add_foreign_key "recommendations", "manifestations"
   add_foreign_key "recommendations", "users"
   add_foreign_key "recommendations", "users", column: "approved_by", name: "recommendations_approved_by_fk"
-  add_foreign_key "taggings", "manifestations", name: "taggings_manifestation_id_fk"
+  add_foreign_key "tag_names", "tags"
   add_foreign_key "taggings", "tags", name: "taggings_tag_id_fk"
   add_foreign_key "taggings", "users", column: "approved_by", name: "taggings_approved_by_fk"
   add_foreign_key "taggings", "users", column: "suggested_by", name: "taggings_suggested_by_fk"
+  add_foreign_key "tags", "users", column: "approver_id"
   add_foreign_key "tags", "users", column: "created_by", name: "tags_created_by_fk"
   add_foreign_key "volunteer_profile_features", "volunteer_profiles"
   add_foreign_key "work_likes", "manifestations", name: "work_likes_manifestation_id_fk"
