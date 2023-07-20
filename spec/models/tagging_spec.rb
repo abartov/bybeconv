@@ -1,5 +1,4 @@
 require 'rails_helper'
-
 describe Tagging do
   it "considers invalid an empty tagging" do
     t = Tagging.new
@@ -30,6 +29,7 @@ describe Tagging do
   it 'fetches only approved taggings' do
     u = create(:user)
     5.times do
+      tag = build(:tag)
       Tagging.create!(tag: build(:tag), suggester: u, status: 'pending', taggable: build(:manifestation))
     end
     3.times do

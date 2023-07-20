@@ -190,6 +190,9 @@ GEM
     dalli (3.2.3)
     date (3.3.3)
     dead_end (4.0.0)
+    debug (1.8.0)
+      irb (>= 1.5.0)
+      reline (>= 0.3.1)
     derailed_benchmarks (2.1.2)
       benchmark-ips (~> 2)
       dead_end
@@ -336,6 +339,9 @@ GEM
       ruby-vips (>= 2.0.17, < 3)
     immigrant (0.3.6)
       activerecord (>= 3.0)
+    io-console (0.6.0)
+    irb (1.7.4)
+      reline (>= 0.3.6)
     jbuilder (2.11.5)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
@@ -647,6 +653,8 @@ GEM
       rexml (~> 3.2)
     regexp_parser (2.7.0)
     regexp_property_values (1.3.0)
+    reline (0.3.6)
+      io-console (~> 0.5)
     request_store (1.5.1)
       rack (>= 1.4)
     responders (3.1.0)
@@ -833,6 +841,7 @@ DEPENDENCIES
   client_side_validations
   coffee-script
   dalli
+  debug
   derailed_benchmarks
   diffy
   docx
