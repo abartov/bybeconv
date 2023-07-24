@@ -54,6 +54,12 @@ class Tag < ApplicationRecord
   def people_taggings
     self.taggings.where(taggable_type: 'Person')
   end
+  def merge_taggings_into(tag)
+    self.taggings.each do |tagging|
+      tagging.update(tag_id: tag.id)
+    end
+  end
+
   protected
   def create_tag_name # create a TagName with the preferred name
     TagName.create!(tag_id: self.id, name: self.name)
