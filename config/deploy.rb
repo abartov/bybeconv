@@ -21,7 +21,7 @@ set :deploy_to, "/home/bybe/bybeconv_staging"
 # set :pty, true
 
 # Default value for :linked_files is []
-append :linked_files, "config/database.yml", "config/s3.yml", "config/constants.yml", "config/storage.yml", "config/thin.yml", "config/chewy.yml"
+append :linked_files, "config/database.yml", "config/s3.yml", "config/constants.yml", "config/storage.yml", "config/thin.yml", "config/chewy.yml", "config/puma.rb"
 
 append :linked_dirs, '.bundle', 'log', 'tmp/cache', 'public/system', 'tmp/pids', 'tmp/sockets'
 
@@ -41,8 +41,6 @@ append :linked_dirs, '.bundle', 'log', 'tmp/cache', 'public/system', 'tmp/pids',
 # set :ssh_options, verify_host_key: :secure
 
 set :rvm1_ruby_version, "3.2.1"
-#set :rvm1_ruby_version, "2.6.6"
-#set :rvm1_ruby_version, "2.5.1"
 before 'deploy', 'rvm1:alias:create'
 after 'deploy:publishing', 'thin:restart'
 

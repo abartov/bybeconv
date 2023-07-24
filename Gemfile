@@ -124,6 +124,7 @@ group :development do
   gem 'immigrant'
   gem 'ruby-prof' # for profiling
   gem 'puma'
+  gem 'puma-daemon', require: false
   gem 'ed25519'
   gem 'bcrypt_pbkdf'
 end
