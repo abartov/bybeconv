@@ -84,7 +84,7 @@
           .by-card-v02.left-side-card-v02
             .by-card-header-left-v02
               %span.headline-1-v02= t(:tags)
-            .by-card-content-v02
+            .by-card-content-v02.card-with-bottom-links
               .inline-block#taggings
                 = render partial: 'shared/taggings', locals: {taggings: @taggings}
               - unless current_user.nil?
