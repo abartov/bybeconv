@@ -18,5 +18,6 @@ class PeopleIndex < Chewy::Index
   field :birth_year, type: 'integer', value: ->(person){ person.birth_year == '?' ? nil : person.birth_year.to_i}
   field :death_year, type: 'integer', value: ->(person){ person.death_year == '?' ? nil : person.death_year.to_i}
   field :wikipedia_snippet
+  field :tags, type: 'keyword', value: ->{ tags.map(&:name) }
 
 end
