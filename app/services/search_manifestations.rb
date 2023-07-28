@@ -38,6 +38,11 @@ class SearchManifestations < ApplicationService
       end
     end
 
+#    tags = filters['tags']
+#    if tags.present?
+#      filter << { terms: { tags: tags } }
+#    end
+
     add_date_range(filter, :pby_publication_date, filters['uploaded_between'])
     add_date_range(filter, :creation_date, filters['created_between'])
     add_date_range(filter, :orig_publication_date, filters['published_between'])
