@@ -93,13 +93,14 @@ gem 'rswag-api'
 gem 'rswag-ui'
 gem 'ahoy_matey' # for recording events
 gem 'blazer' # for exploring Ahoy events
+gem 'puma'
 
 group :production do
   gem 'newrelic_rpm' # performance monitoring
   gem 'dalli'
-  gem 'thin', git: 'https://github.com/macournoyer/thin.git' # 1.8.1 still doesn't support Ruby 3.2
-
-  gem 'capistrano-thin', '~> 2.0.0'
+#  gem 'thin', git: 'https://github.com/macournoyer/thin.git' # 1.8.1 still doesn't support Ruby 3.2
+#  gem 'capistrano-thin', '~> 2.0.0'
+  gem 'puma-daemon', require: false
 end
 
 group :test do
@@ -111,7 +112,6 @@ group :test do
 end
 
 group :development do
-  gem 'byebug'
   gem 'web-console'
   gem "capistrano", "~> 3.11", require: false
   gem "capistrano-rails", "~> 1.4", require: false
@@ -123,7 +123,6 @@ group :development do
   gem 'active_record_query_trace'
   gem 'immigrant'
   gem 'ruby-prof' # for profiling
-  gem 'puma'
   gem 'ed25519'
   gem 'bcrypt_pbkdf'
 end
@@ -131,4 +130,7 @@ end
 group :test, :development do
   gem 'factory_bot_rails', '~> 6.2.0'
   gem 'rspec-rails', '~> 5.0.2'
+  gem 'spring'
+  gem 'spring-commands-rspec'
+  gem 'debug'
 end

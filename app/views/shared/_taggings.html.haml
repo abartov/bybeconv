@@ -8,9 +8,8 @@
     - any = true
     %button.tag
       = tagging.tag.name
-    .tag-close
-      = link_to '×', tagging, remote: true, method: :delete
-    .tag-wait-confirm
-      %i.fa.fa-clock-o
+      = link_to '×', tagging, remote: true, method: :delete, class: 'tag-x'
+      .tag-wait-confirm
+        %i.fa.fa-clock-o
 - unless any
   = t(:no_tags_yet)

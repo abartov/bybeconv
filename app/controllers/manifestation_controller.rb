@@ -260,8 +260,7 @@ class ManifestationController < ApplicationController
           @proof = Proof.new
           @new_recommendation = Recommendation.new
           @tagging = Tagging.new
-          @tagging.manifestation_id = @m.id
-          @tagging.suggester = current_user
+          @tagging.taggable = @m
           @taggings = @m.taggings
           recommendations = @m.recommendations
           @my_pending_recs = recommendations.all_pending.where(user: current_user)

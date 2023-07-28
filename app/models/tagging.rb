@@ -1,15 +1,15 @@
 class Tagging < ApplicationRecord
 
   belongs_to :tag, foreign_key: 'tag_id'
-#  belongs_to :taggable, polymorphic: true # taggable things include Manifestations, People, Anthologies, ...
+  belongs_to :taggable, polymorphic: true # taggable things include Manifestations, People, Anthologies, ...
 
-  belongs_to :manifestation, foreign_key: 'manifestation_id'
+#  belongs_to :manifestation, foreign_key: 'manifestation_id'
   belongs_to :suggester, foreign_key: 'suggested_by', class_name: 'User'
   belongs_to :approver, foreign_key: 'approved_by', class_name: 'User'
   validates :suggester, presence: true
   validates :status, presence: true
   validates :tag, presence: true
-  validates :manifestation, presence: true
+  validates :taggable, presence: true
   
   enum status: [:pending, :approved, :rejected, :semiapproved]
 

@@ -3,6 +3,6 @@ FactoryBot.define do
     status { :pending }
     suggester { create(:user)}
     tag { create(:tag)}
-    manifestation { create(:manifestation)}
+    taggable { create(:manifestation)}
   end
 end
