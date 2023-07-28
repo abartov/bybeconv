@@ -3,9 +3,8 @@
     %h1= t(:error)
     %p= @errmsg
   - else
-    %h1= t(:search_results)
-    %p= "#{t(:search_terms)}: #{@search.query}"
-    %p= "#{t(:search_total)}: #{@total}"
+    %h1= "#{t(:search_results)}: #{@search.query}"
+    %h4= "#{t(:search_total)}: #{@total} #{t(:items)}"
     %p
     %ol
       - @results.each do |result|
@@ -17,6 +16,13 @@
             %b= link_to attrs['title'], manifestation_read_path(attrs['id'])
             = " / #{attrs['author_string']}"
             = " (#{textify_genre(attrs['genre'])})"
+            - unless result.tags.empty?
+              %br
+              %div{style: 'line-height: 2.2;'}
+                %b= t(:tags)+':'
+                - result.tags.each do |tag|
+                  %button.tag
+                    = tag
             - unless result._data.nil? or result._data['highlight'].nil?
               %br
               != result._data['highlight']['fulltext'].join("<br />").gsub('<em>','<b>').gsub('</em>','</b>')
@@ -24,6 +30,12 @@
             %b= t(:author)
             %br
             %b= link_to attrs['name'], author_toc_path(attrs['id'])
+            - unless result.tags.empty?
+              %br
+              %b= t(:tags)+':'
+              - result.tags.each do |tag|
+                %button.tag
+                  = tag
             %br
             %p= attrs['wikipedia_snippet']
 
