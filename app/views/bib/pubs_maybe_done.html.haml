@@ -34,7 +34,7 @@
                 %ol{style:'margin-top:10px; font-size:120%'}
                   - possible_works.each do |m|
                     %li
-                      = link_to m.title, manifestation_read_path(m.id)
+                      = link_to m.title, manifestation_path(m.id)
                       = ' '+t(:by)+': '
                       = m.author_string
                       = " (#{textify_genre(m.expression.work.genre)}) "

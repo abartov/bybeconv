@@ -113,10 +113,10 @@
               -  @additional_translations.each do |tr|
                 %div
                   %span
-                    = link_to tr.title, manifestation_read_path(id: tr.manifestations[0].id)
+                    = link_to tr.title, manifestation_path(id: tr.manifestations[0].id)
                   %span= ' '+t(:translation)+': '
                   %span
-                    != tr.translators.map{|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
+                    != tr.translators.map{|t| link_to(t.name, person_path(id: t.id))}.join(', ')
         -# External links
         - if @m.external_links.to_a.size > 0
           .by-card-v02.left-side-card-v02

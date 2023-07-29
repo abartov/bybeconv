@@ -13,7 +13,7 @@
           - if result.class == ManifestationsIndex
             %b= t(:work)
             %br
-            %b= link_to attrs['title'], manifestation_read_path(attrs['id'])
+            %b= link_to attrs['title'], manifestation_path(attrs['id'])
             = " / #{attrs['author_string']}"
             = " (#{textify_genre(attrs['genre'])})"
             - unless result.tags.empty?
@@ -29,7 +29,7 @@
           - elsif result.class == PeopleIndex
             %b= t(:author)
             %br
-            %b= link_to attrs['name'], author_toc_path(attrs['id'])
+            %b= link_to attrs['name'], person_path(attrs['id'])
             - unless result.tags.empty?
               %br
               %b= t(:tags)+':'

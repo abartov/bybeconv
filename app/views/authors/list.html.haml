@@ -45,7 +45,7 @@
           - else
             %span{style: 'color:green'}= t(:ready)
           %br
-          = link_to t(:show_toc), author_toc_path(person)
+          = link_to t(:show_toc), person_path(person)
         %td= link_to t(:edit_metadata), authors_edit_path(id: person.id)
         %td
           - unless person.toc.nil?

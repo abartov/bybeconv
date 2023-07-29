@@ -715,6 +715,12 @@ he:
   more_info: מידע נוסף
   tags: תגיות
   tag: תגית
+  moderate_tags: עיון בתיוגים מהציבור
+  pending_tags_and_taggings: יש %{pending_tags} תגיות ו־%{pending_taggings} תיוגים ממתינים לאישור
+  pending_tags: תגיות ממתינות לאישור
+  pending_taggings: תיוגים ממתינים לאישור
+  approve: אישור
+  reject: דחייה
   another_feature: הצגת זרקור נוסף
   tags_for_work: תגיות ליצירה
   recommendations_for_work: המלצות קוראים

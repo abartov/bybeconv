@@ -1,0 +1,18 @@
+.backend.admin_container
+  .admin_dashboard_item
+    %h2= t(:pending_tags)
+    %ul
+    - @pending_tags.each do |tag|
+      %li
+      = link_to tag.name, tag
+      = link_to t(:approve), approve_tag_path(tag), method: :post
+      = link_to t(:reject), reject_tag_path(tag), method: :post
+  .admin_dashboard_item
+    %h2= t(:pending_taggings)
+    %ul
+    - @pending_taggings.each do |tagging|
+      %li
+      = link_to tagging.tag.name, tagging.tag
+      = link_to tagging.taggable.title, tagging.taggable
+      = link_to t(:approve), approve_tagging_path(tagging), method: :post
+      = link_to t(:reject), reject_tagging_path(tagging), method: :post    

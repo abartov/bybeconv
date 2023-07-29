@@ -4,5 +4,5 @@
     / actual authors
     %ol.mainlist
       - @authors_abc.each do |au|
-        %li= link_to au.name, author_toc_path(au.id)
+        %li= link_to au.name, person_path(au.id)
 != paginate @authors_abc

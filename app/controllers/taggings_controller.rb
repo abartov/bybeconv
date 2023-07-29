@@ -21,7 +21,7 @@ class TaggingsController < ApplicationController
     # TODO: implement
     tagging = Tagging.find(params[:id])
     unless tagging.nil?
-      if tagging.status == :pending && tagging.suggested_by == current_user.id
+      if tagging.status == :pending && (tagging.suggested_by == current_user.id || (current_user.editor? && current_user.has_bit?('moderate_tags')))
         @manifestation_id = tagging.manifestation_id
         tagging.destroy
       end

@@ -274,6 +274,9 @@ class Person < ApplicationRecord
     return (w + t).uniq.sort_by{|m| m.sort_title}
   end
 
+  def title # convenience method for polymorphic handling (e.g. Taggable)
+    name
+  end
   def original_works_by_genre
     ret = {}
     get_genres.map{|g| ret[g] = []}

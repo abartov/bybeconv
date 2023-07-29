@@ -19,10 +19,10 @@
       = t(:none)
   %p
     %b= t(:linked_manifestation)+': '
-    = @fc.manifestation.nil? ? t(:none) : link_to("#{@fc.manifestation.title} - #{@fc.manifestation.author_string}", manifestation_read_path(id: @fc.manifestation.id))
+    = @fc.manifestation.nil? ? t(:none) : link_to("#{@fc.manifestation.title} - #{@fc.manifestation.author_string}", manifestation_path(id: @fc.manifestation.id))
   %p
     %b= t(:linked_author)+': '
-    = @fc.person.nil? ? t(:none) : link_to("#{@fc.person.name}", author_toc_path(@fc.person))
+    = @fc.person.nil? ? t(:none) : link_to("#{@fc.person.name}", person_path(@fc.person))
 
   %h3= t(:feature_on)
   %table

@@ -20,7 +20,6 @@ Bybeconv::Application.routes.draw do
   match "anthologies/seq/:id" => 'anthologies#seq', as: 'anthology_seq', via: [:get, :post]
   match "anthologies/clone/:id" => 'anthologies#clone', as: 'anthology_clone', via: [:get]
   resources :news_items
-  resources :mooses
   resources :bib_sources
   resources :holdings
   resources :publications
@@ -63,6 +62,11 @@ Bybeconv::Application.routes.draw do
   get 'admin/translated_from_multiple_languages'
   get 'admin/raw_tocs'
   get 'admin/my_convs/:id' => 'admin#my_convs', as: 'my_convs'
+  get 'admin/tag_moderation' => 'admin#tag_moderation', as: 'tag_moderation'
+  get 'admin/approve_tag/:id' => 'admin#approve_tag', as: 'approve_tag'
+  get 'admin/reject_tag/:id' => 'admin#reject_tag', as: 'reject_tag'
+  get 'admin/approve_tagging/:id' => 'admin#approve_tagging', as: 'approve_tagging'
+  get 'admin/reject_tagging/:id' => 'admin#reject_tagging', as: 'reject_tagging'
   get 'admin/conversion_verification'
   get 'admin/assign_conversion_verification' => 'admin#assign_conversion_verification', as: 'assign_conversion_verification'
   get 'admin/assign_proofs' => 'admin#assign_proofs', as: 'assign_proofs'
@@ -132,7 +136,8 @@ Bybeconv::Application.routes.draw do
   match 'authors/delete_link/:id' => 'authors#delete_link', as: 'author_delete_link', via: [:post]
   match 'author/:id/edit_toc' => 'authors#edit_toc', as: 'authors_edit_toc', via: [:get, :post]
   match 'author/:id/create_toc' => 'authors#create_toc', as: 'authors_create_toc', via: [:get]
-  match 'author/:id' => 'authors#toc', as: 'author_toc', via: [:get, :post]
+  match 'author/:id' => 'authors#toc', as: 'person', via: [:get, :post]
+
   match 'author/publish/:id' => 'authors#publish', as: 'author_publish', via: [:get, :post]
   get 'author/:id/delete_photo' => 'authors#delete_photo', as: 'delete_author_photo'
   get 'author/:id/whatsnew' => 'authors#whatsnew_popup', as: 'author_whatsnew_popup'
@@ -141,7 +146,7 @@ Bybeconv::Application.routes.draw do
   get 'welcome/:id/featured_author' => 'welcome#featured_author_popup', as: 'featured_author_popup'
   get 'author/:id/latest' => 'authors#latest_popup', as: 'author_latest_popup'
   get '/page/:tag' => 'static_pages#view', as: 'static_pages_by_tag', via: [:get]
-  get "read/:id" => 'manifestation#read', as: 'manifestation_read'
+  get "read/:id" => 'manifestation#read', as: 'manifestation'
   match 'dict/:id' => 'manifestation#dict', as: 'dict_browse', via: [:get, :post]
   get 'dict/:id/:entry' => 'manifestation#dict_entry', as: 'dict_entry'
   get "read/:id/read" => 'manifestation#readmode', as: 'manifestation_readmode'

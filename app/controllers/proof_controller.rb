@@ -71,7 +71,7 @@ class ProofController < ApplicationController
         if @p.manifestation_id.nil?
           Notifications.proof_fixed(@p, @p.about, nil, @explanation).deliver
         else
-          Notifications.proof_fixed(@p, manifestation_read_path(@p.manifestation_id), @p.manifestation, @explanation).deliver
+          Notifications.proof_fixed(@p, manifestation_path(@p.manifestation_id), @p.manifestation, @explanation).deliver
         end
     		fix_text = 'תוקן (ונשלח דואל)'
       else
@@ -88,7 +88,7 @@ class ProofController < ApplicationController
         if @p.manifestation_id.nil?
           Notifications.proof_wontfix(@p, @p.about, nil, @explanation).deliver
         else
-          Notifications.proof_wontfix(@p, manifestation_read_path(@p.manifestation_id), @p.manifestation, @explanation).deliver
+          Notifications.proof_wontfix(@p, manifestation_path(@p.manifestation_id), @p.manifestation, @explanation).deliver
         end
       end
       fix_text = 'כבר תקין (ונשלח דואל)'

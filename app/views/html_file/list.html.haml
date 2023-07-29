@@ -43,7 +43,7 @@
           - if txt.status == 'Published' && txt.manifestations[0] != nil
             = link_to t(:to_the_work_in_the_catalog), controller: 'manifestation', action: 'show', id: txt.manifestations[0]
             = ' | '
-            = link_to t(:to_the_work_in_the_site), manifestation_read_path(txt.manifestations[0].id)
+            = link_to t(:to_the_work_in_the_site), manifestation_path(txt.manifestations[0].id)
           - elsif txt.status == 'Uploaded'
             = link_to t(:edit_markdown), action: 'edit_markdown', id: txt
           - elsif txt.status != 'Accepted' # don't allow re-parsing of possibly-improved markdown

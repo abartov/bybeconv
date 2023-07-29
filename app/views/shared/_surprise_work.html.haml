@@ -2,18 +2,18 @@
   - e = manifestation.expression
   %img.surprise-author-card-bookmark-fold-v02{src: '/assets/creator-bookmark-back2.png', width: 168, height: 6}
   .surprise-work-card-v02
-    %a{href: manifestation_read_path(manifestation.id)}
+    %a{href: manifestation_path(manifestation.id)}
       .surprise-work-genre-v02
         - genre = e.work.genre
         %p.by-genre-icon-surprise-v02= glyph_for_genre(genre)
         %p.by-genre-name-v02.headline-1-v02= textify_genre(genre)
-    %a{href: manifestation_read_path(manifestation.id), style: 'color:white'}
+    %a{href: manifestation_path(manifestation.id), style: 'color:white'}
       .author-name-area
         .surprise-author-name-v02= t(:to_the_work_page)
   .by-card-header-v02
     %p
       %span.headline-1-v02
-        %a{href: manifestation_read_path(manifestation.id)}= manifestation.title
+        %a{href: manifestation_path(manifestation.id)}= manifestation.title
       %br
       != t(:by)+': '+authors_linked_string(manifestation)
     - if e.translation
@@ -44,6 +44,6 @@
     .surprise-text-container
       .ellipsis.text-height-work!= manifestation.snippet_paragraphs(15)
     .read-more-v02
-      %a{ href: manifestation_read_path(manifestation.id) }
+      %a{ href: manifestation_path(manifestation.id) }
         %span{style: 'font-weight: bold'}= t(:rest_of_work)
         %span.left-arrow 1

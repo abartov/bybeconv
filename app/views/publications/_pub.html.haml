@@ -30,4 +30,4 @@
     - when :none
       %td= t(pub.status)
     - if with_person
-      %td= pub.person.nil? ? '--' : link_to(pub.person.name, author_toc_path(id: pub.person.id))
+      %td= pub.person.nil? ? '--' : link_to(pub.person.name, person_path(id: pub.person.id))

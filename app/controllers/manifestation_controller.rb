@@ -293,7 +293,7 @@ class ManifestationController < ApplicationController
     format = params[:format]
     unless Downloadable.doctypes.include?(format)
       flash[:error] = t(:unrecognized_format)
-      redirect_to manifestation_read_path(params[:id])
+      redirect_to manifestation_path(params[:id])
       return
     end
 

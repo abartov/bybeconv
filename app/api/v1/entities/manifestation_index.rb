@@ -3,7 +3,7 @@ module V1
     class ManifestationIndex < Grape::Entity
       expose :id, documentation: { type: 'Integer' }
       expose :url, documentation: { desc: 'Canonical URL of the text at Project Ben-Yehuda (useful for giving credit and allowing users to click through)' } do |manifestation|
-        Rails.application.routes.url_helpers.manifestation_read_url(manifestation.id)
+        Rails.application.routes.url_helpers.manifestation_url(manifestation.id)
       end
       expose :metadata do
         expose :title

@@ -3,4 +3,4 @@
     %p.headline-2-v02= label
     %ol{style:'margin-bottom:0'}
       - collection.each do |manifestation|
-        %li= link_to lineclamp(manifestation.title_and_authors, 100), manifestation_read_path(manifestation.id)
+        %li= link_to lineclamp(manifestation.title_and_authors, 100), manifestation_path(manifestation.id)

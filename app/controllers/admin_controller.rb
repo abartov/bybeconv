@@ -13,6 +13,10 @@ class AdminController < ApplicationController
       if current_user.has_bit?('edit_catalog')
         @current_uploads = HtmlFile.where(assignee: current_user, status: 'Uploaded')
       end
+      if current_user.has_bit?('moderate_tags')
+        @pending_tags = Tag.where(status: :pending).count
+        @pending_taggings = Tagging.where(status: :pending).count
+      end
       @open_recommendations = LegacyRecommendation.where(status: 'new').count.to_s
       @conv_todo = Manifestation.where(conversion_verified: false, status: Manifestation.statuses[:published]).count
       @manifestation_count = Manifestation.published.count
@@ -723,6 +727,44 @@ class AdminController < ApplicationController
       redirect_to url_for(action: :index)
     end
   end
+
+  ########################################################
+  ## user content moderation
+  def tag_moderation
+    require_editor('moderate_tags')
+    @pending_tags = Tag.where(status: :pending)
+    @pending_taggings = Tagging.where(status: :pending)
+  end
+  def approve_tag(id)
+    require_editor('moderate_tags')
+    t = Tag.find(id)
+    t.status = :approved
+    t.save!
+    head :ok
+  end
+  def reject_tag(id)
+    require_editor('moderate_tags')
+    t = Tag.find(id)
+    t.status = :rejected
+    t.save!
+    head :ok
+  end
+  def approve_tagging(id)
+    require_editor('moderate_tags')
+    t = Tagging.find(id)
+    t.status = :approved
+    t.save!
+    head :ok
+  end
+  def reject_tagging(id)
+    require_editor('moderate_tags')
+    t = Tagging.find(id)
+    t.status = :rejected
+    t.save!
+    head :ok
+  end
+  
+
 
   private
 
