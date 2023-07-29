@@ -47,7 +47,7 @@ class ManifestationController < ApplicationController
 
   def browse
     @pagetype = :works
-    @works_list_title = t(:works_list) # TODO: adjust by query
+    @works_list_title = t(:works_list) unless @works_list_title.present? # TODO: adjust by query
     if valid_query?
       prep_for_browse
       prep_user_content(:manifestation)
@@ -95,10 +95,10 @@ class ManifestationController < ApplicationController
   def by_tag
     @page_title = t(:works_by_tag)+' '+t(:project_ben_yehuda)
     @pagetype = :works
-    @tag = Tag.find(params[:id])
-    if @tag
-      @collection = Manifestation.all_published.by_tag(params[:id]) # TODO: re-implement within prep_collection
-      @works_list_title = t(:works_by_tag)+': '+@tag.name
+    @tag_ids = params[:id]
+    tag = Tag.find(params[:id])
+    if tag.present?
+      @works_list_title = t(:works_by_tag)+': '+tag.name
       browse
     else
       flash[:error] = t(:no_such_item)
@@ -641,6 +641,14 @@ class ManifestationController < ApplicationController
     if @genres.present?
       ret['genres'] = @genres
       @filters += @genres.map { |x| [helpers.textify_genre(x), "genre_#{x}", :checkbox] }
+    end
+
+    # tags by tag_id
+    @tag_ids = params['tag_ids'].split(',').map(&:to_i) unless @tag_ids.present? || params['tag_ids'].blank?
+    if @tag_ids.present?
+      tag_data = Tag.where(id: @tag_ids).pluck(:id, :name)
+      ret['tags'] = tag_data.map(&:last)
+      @filters += tag_data.map { |x| [x.last, "tag_#{x.first}", :checkbox] }
     end
 
     # copyright
