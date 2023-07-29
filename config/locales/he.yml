@@ -1062,6 +1062,7 @@ he:
   resolved_as: טופל ועבר לסטטוס %{fixed}
   no_url_specified: לא צוינה כתובת URL.
   no_such_item: אין פריט כזה.
+  item: פריט
   created_toc: נוצר דף יוצר עם תבנית ריקה
   miscellaneous: שונות
   etext: ספר אלקטרוני

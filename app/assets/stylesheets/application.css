@@ -414,3 +414,13 @@ body.modal-open{
 .sort-by-mobile{
 	display: block !important;
 }
+.flex-row {
+  display: flex;
+  /* flex: 1 0 100%; */
+}
+.flex-col{
+  display: flex;
+  flex-wrap: nowrap;
+  flex-grow: 1;
+  flex-basis: 0;
+}

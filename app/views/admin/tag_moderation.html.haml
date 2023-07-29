@@ -1,18 +1,29 @@
-.backend.admin_container
+%br
+.backend.container
   .admin_dashboard_item
     %h2= t(:pending_tags)
-    %ul
+    .flex-row
+      .flex-col.headline-2-v02= t(:tag)
+      .flex-col.headline-2-v02{style: "flex: 2;"}= t(:actions)
     - @pending_tags.each do |tag|
-      %li
-      = link_to tag.name, tag
-      = link_to t(:approve), approve_tag_path(tag), method: :post
-      = link_to t(:reject), reject_tag_path(tag), method: :post
+      .flex-row
+        .flex-col= link_to tag.name, tag
+        .flex-col{style: 'flex: 2'}
+          = link_to t(:approve), approve_tag_path(tag), method: :post
+          != '&nbsp;&nbsp;&nbsp;'
+          = link_to t(:reject), reject_tag_path(tag), method: :post
+
   .admin_dashboard_item
     %h2= t(:pending_taggings)
-    %ul
+    .flex-row
+      .flex-col.headline-2-v02= t(:tag)
+      .flex-col.headline-2-v02= t(:item)
+      .flex-col.headline-2-v02{style: 'flex: 2'}= t(:actions)
     - @pending_taggings.each do |tagging|
-      %li
-      = link_to tagging.tag.name, tagging.tag
-      = link_to tagging.taggable.title, tagging.taggable
-      = link_to t(:approve), approve_tagging_path(tagging), method: :post
-      = link_to t(:reject), reject_tagging_path(tagging), method: :post    
+      .flex-row
+        .flex-col= link_to tagging.tag.name, tagging.tag
+        .flex-col= link_to tagging.taggable.title, tagging.taggable
+        .flex-col{style: 'flex: 2'}
+          = link_to t(:approve), approve_tagging_path(tagging), method: :post
+          != '&nbsp;&nbsp;&nbsp;'
+          = link_to t(:reject), reject_tagging_path(tagging), method: :post
