@@ -32,6 +32,22 @@ class User < ApplicationRecord
     li = ListItem.where(listkey: bit, item: self).first
     return (not li.nil?)
   end
+  def tag_acceptance_rate
+    tags = Tag.where(creator: self)
+    return 0 if tags.count == 0
+    (tags.where(status: :approved).count.to_f / tags.count.to_f).round(2)*100
+  end
+  def pending_tags
+    Tag.where(creator: self, status: :pending)
+  end
+  def tagging_acceptance_rate
+    taggings = Tagging.where(suggester: self)
+    return 0 if taggings.count == 0
+    (taggings.where(status: :approved).count.to_f / taggings.count.to_f).round(2)*100
+  end
+  def pending_taggings
+    Tagging.where(suggester: self, status: :pending)
+  end
 
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_initialize.tap do |user|

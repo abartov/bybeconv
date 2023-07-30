@@ -735,35 +735,31 @@ class AdminController < ApplicationController
     @pending_tags = Tag.where(status: :pending)
     @pending_taggings = Tagging.where(status: :pending)
   end
-  def approve_tag(id)
+  def approve_tag
     require_editor('moderate_tags')
-    t = Tag.find(id)
-    t.status = :approved
-    t.save!
+    t = Tag.find(params[:id])
+    t.approved!
     head :ok
   end
-  def reject_tag(id)
+  def reject_tag
     require_editor('moderate_tags')
-    t = Tag.find(id)
-    t.status = :rejected
-    t.save!
+    t = Tag.find(params[:id])
+    t.rejected!
     head :ok
   end
-  def approve_tagging(id)
+  def approve_tagging
     require_editor('moderate_tags')
-    t = Tagging.find(id)
-    t.status = :approved
-    t.save!
+    t = Tagging.find(params[:id])
+    t.approved!
     head :ok
   end
-  def reject_tagging(id)
+  def reject_tagging
     require_editor('moderate_tags')
-    t = Tagging.find(id)
-    t.status = :rejected
-    t.save!
+    t = Tagging.find(params[:id])
+    t.rejected!
     head :ok
   end
-  
+
 
 
   private
