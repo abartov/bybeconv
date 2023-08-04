@@ -414,10 +414,10 @@ class HtmlFileController < ApplicationController
     redirect_to action: :render_html, id: params[:id]
   end
 
-  def metadata
-    @text = HtmlFile.find(params[:id])
-    @authors = @text.guess_authors
-  end
+  #def metadata
+  #  @text = HtmlFile.find(params[:id])
+  #  @authors = @text.guess_authors
+  #end
   def confirm_html_dir_person
     @text = HtmlFile.find(params[:id])
     @text.person = @text.html_dir.person

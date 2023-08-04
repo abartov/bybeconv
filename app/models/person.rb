@@ -54,20 +54,20 @@ class Person < ApplicationRecord
     Person.find_by_viaf_id(viaf_id)
   end
 
-  def self.create_or_get_person_by_viaf(viaf_id)
-    p = Person.person_by_viaf(viaf_id)
-    if p.nil?
-      viaf_record = viaf_record_by_id(viaf_id)
-      fail Exception if viaf_record.nil?
-      #debugger
-      bdate = viaf_record['birthDate'].nil? ? '?' : viaf_record['birthDate'].encode('utf-8')
-      ddate = viaf_record['deathDate'].nil? ? '?' : viaf_record['deathDate'].encode('utf-8')
-      datestr = bdate+'-'+ddate
-      p = Person.new(dates: datestr, name: viaf_record['labels'][0].encode('utf-8'), viaf_id: viaf_id, birthdate: bdate, deathdate: ddate)
-      p.save!
-    end
-    p
-  end
+  #def self.create_or_get_person_by_viaf(viaf_id)
+  #  p = Person.person_by_viaf(viaf_id)
+  #  if p.nil?
+  #    viaf_record = viaf_record_by_id(viaf_id)
+  #    fail Exception if viaf_record.nil?
+  #    #debugger
+  #    bdate = viaf_record['birthDate'].nil? ? '?' : viaf_record['birthDate'].encode('utf-8')
+  #    ddate = viaf_record['deathDate'].nil? ? '?' : viaf_record['deathDate'].encode('utf-8')
+  #    datestr = bdate+'-'+ddate
+  #    p = Person.new(dates: datestr, name: viaf_record['labels'][0].encode('utf-8'), viaf_id: viaf_id, birthdate: bdate, deathdate: ddate)
+  #    p.save!
+  #  end
+  #  p
+  #end
 
   def publish!
     # set all person's works to status published

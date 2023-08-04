@@ -3,7 +3,7 @@
   - if tagging.status == 'approved'
     - any = true
     %button.tag
-      = link_to tagging.tag.name, '/works', class: 'notyet tag-x'
+      = link_to tagging.tag.name, tag_path(tagging.tag.id)
   - if current_user && tagging.status == 'pending' && (tagging.suggested_by == current_user.id || current_user.admin?) # only show pending tags to the users who suggested them, or to admins
     - any = true
     %button.tag

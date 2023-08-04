@@ -19,7 +19,6 @@ threads 1, threads_count
 preload_app!
 
 # port        ENV['PORT']     || 3000
-stdout_redirect "#{shared_dir}/log/puma.stdout.log", "#{shared_dir}/log/puma.stderr.log", true
 pidfile "#{shared_dir}/tmp/pids/puma.pid"
 
 

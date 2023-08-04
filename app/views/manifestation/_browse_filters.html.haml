@@ -126,9 +126,9 @@
         .sort-type-headline= t(:tags)
       .nested.active.collapse.show.collftags
         .nested-content
-          %input.field-v02.field-without-label#tag_input{:placeholder => t(:what_to_search_for), name: 'tag_input', :type => "text"}/
-          = autocomplete_field_tag :tagstr, '', autocomplete_tag_name_path, id_element: '#tag_id', 'data-noMatchesLabel' => t(:no_matches_found), style:'display:none', 'class' => 'field-v02 field-without-label author-name-field', id: 'tags', placeholder: t(:tag)
-          = hidden_field_tag :tag_id
+          /%input.field-v02.field-without-label#tag_input{:placeholder => t(:what_to_search_for), name: 'tag_input', :type => "text"}/
+          = autocomplete_field_tag :tagstr, '', autocomplete_tag_name_path, id_element: '#tag_id', 'data-noMatchesLabel' => t(:no_matches_found), 'class' => 'field-v02 field-without-label author-name-field', id: 'tags', placeholder: t(:tag)
+          = hidden_field_tag :tag_ids, @tag_ids, id: 'tag_ids'
 
     / .sort-type
     /   .vertical-expand
@@ -273,17 +273,25 @@
       $('.multi-name-sort').hide();
     });
     var submit_timeout = null;
-    $('#works_filters').change(function(){
-      if(window.innerWidth >= mobileWidth) {
-        if(submit_timeout != null){
-          window.clearTimeout(submit_timeout);
+    $('#tags').on('railsAutocomplete.select', function(event, data){
+      event.preventDefault();
+      tag_id = data.item.tag_id.toString();
+      $('#tag_ids').val( $('#tag_ids').val() == '' ? tag_id : $('#tag_ids').val()+','+tag_id);
+      submit_filters();
+    });
+    $('#works_filters').on('change', function(e){
+      if(e.target.id != 'tags') {
+        if(window.innerWidth >= mobileWidth) {
+          if(submit_timeout != null){
+            window.clearTimeout(submit_timeout);
+          }
+          $('#page_tag').val('1'); // reset pagination
+          if($('.opt_workname').hasClass('active'))
+            $('#search_type').val('workname');
+          else
+            $('#search_type').val('authorname');
+          submit_timeout = window.setTimeout(submit_filters, 300);
         }
-        $('#page_tag').val('1'); // reset pagination
-        if($('.opt_workname').hasClass('active'))
-          $('#search_type').val('workname');
-        else
-          $('#search_type').val('authorname');
-        submit_timeout = window.setTimeout(submit_filters, 300);
       }
     });
     $('.reset').click(function(){
@@ -302,6 +310,7 @@
         }
       });
       $('#author_ids').val('');
+      $('#tag_ids').val('');
       $('#authors_names').val('');
       $('#emit_filters').val('true');
       $('#page_tag').val('1'); // reset pagination
