@@ -760,8 +760,6 @@ class AdminController < ApplicationController
     head :ok
   end
 
-
-
   private
 
   def vp_params

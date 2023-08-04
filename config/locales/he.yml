@@ -859,6 +859,8 @@ he:
   pd_only: רק נחלת הכלל
   nonpd_only: רק רשות פרסום
   are_you_sure: נא לאשר מחיקה
+  confirm_approve: נא לאשר אישור
+  confirm_reject: נא לאשר דחייה
   confirm_hide: נא לאשר הסתרה
   delete_photo: מחיקת תמונה (לצמיתות!)
   delete_link: הסרת קישורית
