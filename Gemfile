@@ -118,8 +118,9 @@ group :development do
   gem 'rvm1-capistrano3', require: false
   gem 'capistrano-rvm'
   gem 'listen'
-  gem 'derailed_benchmarks', group: :development
+  gem 'derailed_benchmarks'
 #  gem 'bullet' # for suggestions to add/remove eager loading
+  gem 'stackprof'
   gem 'active_record_query_trace'
   gem 'immigrant'
   gem 'ruby-prof' # for profiling

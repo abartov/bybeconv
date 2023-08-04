@@ -763,6 +763,7 @@ GEM
     sshkit (1.21.3)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
+    stackprof (0.2.25)
     stringio (3.0.5)
     sxp (1.2.3)
       matrix (~> 0.4)
@@ -897,6 +898,7 @@ DEPENDENCIES
   spring-commands-rspec
   sprockets (~> 3)
   sqlite3
+  stackprof
   turn (= 0.8.2)
   uglifier
   web-console
