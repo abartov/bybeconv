@@ -1,5 +1,5 @@
 User-Agent: *
-Disallow: /*print
+Disallow: /*print/*
 Disallow: /*read$
 Crawl-delay: 10
 
