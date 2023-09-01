@@ -90,6 +90,7 @@ gem 'rswag-ui'
 gem 'ahoy_matey' # for recording events
 gem 'blazer' # for exploring Ahoy events
 gem 'puma'
+gem 'rack-attack' # control misbehaving clients
 
 ## these were used for some legacy HtmlDir VIAF lookup stuff. They have a huge RAM footprint (~160MB per process), so commented out until needed again.
 #gem 'rdf' #, '~> 2.0.1'

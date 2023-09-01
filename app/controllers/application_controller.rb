@@ -252,6 +252,7 @@ class ApplicationController < ActionController::Base
   end
 
   def is_spider?
+    return false unless request.user_agent.present?
     ua = request.user_agent.downcase
     return (SPIDERS.detect{|s| ua.include?(s)} ? true : false)
   end
