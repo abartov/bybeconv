@@ -459,6 +459,8 @@ GEM
     rack (2.2.7)
     rack-accept (0.4.5)
       rack (>= 0.4)
+    rack-attack (6.7.0)
+      rack (>= 1.0, < 4)
     rack-cors (1.1.1)
       rack (>= 2.0.0)
     rack-protection (3.0.5)
@@ -705,6 +707,7 @@ DEPENDENCIES
   property_sets (>= 3.7.1)
   puma
   puma-daemon
+  rack-attack
   rack-cors
   rails (~> 6)
   rails-controller-testing (~> 1.0.5)
