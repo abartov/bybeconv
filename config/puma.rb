@@ -4,7 +4,7 @@ rackup(File.expand_path('../config.ru', __dir__))
 if ENV['RACK_ENV'] == 'production'
   require 'puma/daemon'
   environment 'production'
-  workers Integer(ENV['WEB_CONCURRENCY'] || 5)
+  workers Integer(ENV['WEB_CONCURRENCY'] || 3)
   daemonize
   bind "unix://#{shared_dir}/tmp/sockets/puma.sock"
   stdout_redirect "#{shared_dir}/log/puma.stdout.log", "#{shared_dir}/log/puma.stderr.log", true
