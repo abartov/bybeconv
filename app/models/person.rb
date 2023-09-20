@@ -128,8 +128,8 @@ class Person < ApplicationRecord
 
   def cached_works_count
     Rails.cache.fetch("au_#{self.id}_work_count", expires_in: 24.hours) do
-      created_work_ids = self.works.pluck(:id)
-      expressions_work_ids = self.expressions.pluck(:work_id)
+      created_work_ids = self.works.includes(expressions: [:manifestations]).where(manifestations: {status: :published}).pluck(:id)
+      expressions_work_ids = self.expressions.includes(:manifestations).where(manifestations: {status: :published}).pluck(:work_id)
       (created_work_ids + expressions_work_ids).uniq.size
     end
   end
