@@ -1,0 +1,8 @@
+%br
+.backend
+  %h2= t(:authors_without_works)
+
+  %h3= t(:authors)+" (#{@authors.length})"
+
+  - @authors.each do |au|
+    %p= link_to au.name, authors_show_path(id: au.id)

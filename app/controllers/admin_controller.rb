@@ -175,6 +175,10 @@ class AdminController < ApplicationController
     Rails.cache.write('report_periodless', @authors.length)
   end
 
+  def authors_without_works
+    @authors = nw = Person.left_joins(:realizers, :creations).group('people.id').having('(count(realizers.id) = 0) and (count(creations.id) = 0)')
+    Rails.cache.write('report_authors_without_works', @authors.length)
+  end
   # this is a massive report that takes a long time to run!
   def tocs_missing_links
     @author_keys = []
