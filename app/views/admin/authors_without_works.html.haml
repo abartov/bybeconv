@@ -4,5 +4,15 @@
 
   %h3= t(:authors)+" (#{@authors.length})"
 
-  - @authors.each do |au|
-    %p= link_to au.name, authors_show_path(id: au.id)
+  %table
+    %tr
+      %th= t(:name)
+      %th= t(:bib_records)
+      %th= t(:uploaded_to_tasks)
+      %th= t(:todo)
+    - @authors.each do |au|
+      %tr
+        %td= link_to au.name, authors_show_path(id: au.id)
+        %td= au.publications.length
+        %td= au.publications.where(status: 'uploaded').length
+        %td= au.publications.where(status: 'todo').length
