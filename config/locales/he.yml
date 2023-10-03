@@ -608,6 +608,7 @@ he:
   similar_titles_report: "דו\"ח כותרות דומות (שאולי הן פרקים של יצירה אחת שיש לאחד)"
   suspicious_translations_report: "דו\"ח יצירות עם מחבר שווה למתרגם"
   most_read_authors_of_genre: יוצרי ה%{genre} הנקראים ביותר החודש
+  authors_without_works: יוצרים ללא יצירות באתר
   most_read_works_of_genre: יצירות ה%{genre} הנקראות ביותר החודש
   most_read_translated_works_of_genre: יצירות ה%{genre} המתורגמות הנקראות ביותר החודש
   surprise_author_in_genre: יוצר/ת %{genre} בהפתעה
