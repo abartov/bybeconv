@@ -2,8 +2,8 @@
 .backend
   %h2= t(:authors_without_works)
 
-  %h3= t(:authors)+" (#{@authors.length})"
-
+  %h3= "(#{@authors.length} #{t(:authors)})"
+  
   %table
     %tr
       %th= t(:name)

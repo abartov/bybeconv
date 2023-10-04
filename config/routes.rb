@@ -52,7 +52,7 @@ Bybeconv::Application.routes.draw do
   get 'admin/missing_images'
   get 'admin/messy_tocs'
   get 'admin/tocs_missing_links'
-  get 'admin/authors_without_works'
+  match 'admin/authors_without_works', via: [:get, :post]
   get 'admin/incongruous_copyright'
   get 'admin/suspicious_headings'
   get 'admin/texts_between_dates'
