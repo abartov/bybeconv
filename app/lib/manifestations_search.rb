@@ -19,7 +19,8 @@ class ManifestationsSearch
   end
 
   def index
-    MultiIndexSearchRequest.new(ManifestationsIndex, PeopleIndex) # , ThirdIndex, ...) # just shorthand for our Chewy index class
+#    MultiIndexSearchRequest.new(ManifestationsIndex, PeopleIndex) # , ThirdIndex, ...) # just shorthand for our Chewy index class
+    MultiIndexSearchRequest.new(ManifestationsIndex, PeopleIndex, DictIndex) # , ThirdIndex, ...) # just shorthand for our Chewy index class
   end
 
   def search
@@ -29,7 +30,7 @@ class ManifestationsSearch
 
   # Using query_string advanced query for the main query input
   def query_string
-    index.query(query_string: {fields: ['title^10', 'alternate_titles^5', :name, :other_designation, :author_string, :fulltext], query: query, default_operator: 'and'}) if query?
+    index.query(query_string: {fields: ['title^10', 'alternate_titles^5', 'defhead^7', 'aliases^4', :name, :other_designation, :author_string, :fulltext, :deftext], query: query, default_operator: 'and'}) if query?
   end
 
   # Simple term filter for genre. ignored if empty.
@@ -54,7 +55,7 @@ class ManifestationsSearch
   end
 
   def highlight
-    index.highlight(max_analyzed_offset: 999000, fields: {fulltext: {}})
+    index.highlight(max_analyzed_offset: 999000, fields: {fulltext: {}, deftext: {}})
   end
   def index_order
     index.order(['_index' => {order: :desc}, '_score' => {order: :desc}]) # people before works, then by score
