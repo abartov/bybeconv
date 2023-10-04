@@ -44,6 +44,8 @@
             %br
             %b= link_to attrs['defhead'], dict_entry_path(id: attrs['manifestation_id'], entry: attrs['id'])
             %br
-            != result._data['highlight']['deftext'].join("<br />").gsub('<em>','<b>').gsub('</em>','</b>')
+            - unless result._data.nil? or result._data['highlight'].nil?
+              %br
+              != result._data['highlight']['deftext'].join("<br />").gsub('<em>','<b>').gsub('</em>','</b>')
 
     != paginate @results
