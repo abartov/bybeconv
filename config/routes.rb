@@ -52,7 +52,7 @@ Bybeconv::Application.routes.draw do
   get 'admin/missing_images'
   get 'admin/messy_tocs'
   get 'admin/tocs_missing_links'
-  get 'admin/authors_without_works'
+  match 'admin/authors_without_works', via: [:get, :post]
   get 'admin/incongruous_copyright'
   get 'admin/suspicious_headings'
   get 'admin/texts_between_dates'
@@ -132,6 +132,7 @@ Bybeconv::Application.routes.draw do
   post 'authors/add_link/:id' => 'authors#add_link', as: 'author_add_link'
   match 'authors/delete_link/:id' => 'authors#delete_link', as: 'author_delete_link', via: [:post]
   match 'author/:id/edit_toc' => 'authors#edit_toc', as: 'authors_edit_toc', via: [:get, :post]
+  match 'author/:id/to_manual_toc' => 'authors#to_manual_toc', as: 'authors_to_manual_toc', via: [:get, :post]
   match 'author/:id/create_toc' => 'authors#create_toc', as: 'authors_create_toc', via: [:get]
   match 'author/:id' => 'authors#toc', as: 'author_toc', via: [:get, :post]
   match 'author/publish/:id' => 'authors#publish', as: 'author_publish', via: [:get, :post]
