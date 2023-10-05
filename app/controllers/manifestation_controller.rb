@@ -760,7 +760,7 @@ class ManifestationController < ApplicationController
     filter = build_es_filter_from_filters
     @collection = SearchManifestations.call(@sort_by, @sort_dir, filter)
 
-    @collection = @collection.aggregations(standard_aggregations).limit(100) # prepare ES query
+    @collection = @collection.aggregations(standard_aggregations).limit(100) # prepare ES query - limit is the per-page limit
     @total = @collection.count # actual query triggered here
 
     @page = params[:page].to_i
