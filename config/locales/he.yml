@@ -81,7 +81,7 @@ he:
   remove_angled_brackets: הסרת סימון שירה בקטע
   select_text_to_remove_from: ראשית יש לסמן (להאיר) קטע בטקסט שממנו רוצים להסיר את סימני השירה.
   select_text_to_add_to: ראשית יש לסמן (להאיר) קטע בטקסט שלו רוצים להוסיף את סימני השירה.
-  add_fresh_works: כל היצירות מ-12 השעות האחרונות
+  add_fresh_works: כל היצירות שטרם קושרו מהדף
   converted_output: "תוצאת הסבה אוטומטית של הקובץ הישן %{fname}"
   origlang_title: כותרת בשפת המקור
   treat_as_poetry: מצב שירה
