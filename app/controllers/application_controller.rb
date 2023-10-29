@@ -229,7 +229,8 @@ class ApplicationController < ActionController::Base
     @toc_timestamp = @author.toc.updated_at
     @works = @author.all_works_including_unpublished
     @works_options = @works.map{|m| [@toc.index('מ'+m.id.to_s) ? "#{t(:already_in_toc)} #{m.title}" : m.title, m.id]}.sort_by{|opt| opt[0]}
-    @fresh_works = @author.works_since(12.hours.ago, 1000)
+    @fresh_works = @works.select{|m| @toc.index('מ'+m.id.to_s).nil? }.sort_by{|m| m.created_at} # in the fresh_works context, the order of creation is more useful
+    # @fresh_works = @author.works_since(12.hours.ago, 1000)
     unless @fresh_works.empty?
       @fresh_works_markdown = @fresh_works.map{|m| "\\n&&& פריט: מ#{m.id} &&& כותרת: #{m.title}#{m.expression.translation ? ' / '+m.authors_string : ''} &&&\\n"}.join('').html_safe
     else
@@ -252,6 +253,7 @@ class ApplicationController < ActionController::Base
   end
 
   def is_spider?
+    return false unless request.user_agent.present?
     ua = request.user_agent.downcase
     return (SPIDERS.detect{|s| ua.include?(s)} ? true : false)
   end

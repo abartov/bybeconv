@@ -38,10 +38,6 @@ gem 'sqlite3' # for dictionary imports
 
 gem 'jquery-rails'
 gem "jquery-ui-rails"
-gem 'rdf' #, '~> 2.0.1'
-gem 'sparql-client'#, '~> 2.0.1'
-gem 'linkeddata' # for RDF etc.
-gem 'rdf-vocab' # for SKOS predefined vocab
 gem 'activerecord-session_store'
 gem 'sass-rails'
 gem 'coffee-script'
@@ -94,6 +90,14 @@ gem 'rswag-ui'
 gem 'ahoy_matey' # for recording events
 gem 'blazer' # for exploring Ahoy events
 gem 'puma'
+gem 'puma_worker_killer' # cycle workers when they bloat
+gem 'rack-attack' # control misbehaving clients
+
+## these were used for some legacy HtmlDir VIAF lookup stuff. They have a huge RAM footprint (~160MB per process), so commented out until needed again.
+#gem 'rdf' #, '~> 2.0.1'
+#gem 'linkeddata' # for RDF etc.
+#gem 'rdf-vocab' # for SKOS predefined vocab
+#gem 'sparql-client'#, '~> 2.0.1'
 
 group :production do
   gem 'newrelic_rpm' # performance monitoring
@@ -118,8 +122,9 @@ group :development do
   gem 'rvm1-capistrano3', require: false
   gem 'capistrano-rvm'
   gem 'listen'
-  gem 'derailed_benchmarks', group: :development
+  gem 'derailed_benchmarks'
 #  gem 'bullet' # for suggestions to add/remove eager loading
+  gem 'stackprof'
   gem 'active_record_query_trace'
   gem 'immigrant'
   gem 'ruby-prof' # for profiling

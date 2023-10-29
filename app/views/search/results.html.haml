@@ -1,3 +1,4 @@
+%br
 #content.container-fluid.search_results
   - if @total == -1
     %h1= t(:error)
@@ -38,5 +39,13 @@
                   = tag
             %br
             %p= attrs['wikipedia_snippet']
+          - elsif result.class == DictIndex
+            %b= t(:dictionary_definition)
+            %br
+            %b= link_to attrs['defhead'], dict_entry_path(id: attrs['manifestation_id'], entry: attrs['id'])
+            %br
+            - unless result._data.nil? or result._data['highlight'].nil?
+              %br
+              != result._data['highlight']['deftext'].join("<br />").gsub('<em>','<b>').gsub('</em>','</b>')
 
     != paginate @results

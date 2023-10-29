@@ -1,8 +1,9 @@
 require 'diffy'
 include BybeUtils
+include ApplicationHelper
 
 class AuthorsController < ApplicationController
-  before_action only: [:new, :publish, :create, :show, :edit, :list, :add_link, :delete_link, :delete_photo, :edit_toc, :update] do |c| c.require_editor('edit_people') end
+  before_action only: [:new, :publish, :create, :show, :edit, :list, :add_link, :delete_link, :delete_photo, :edit_toc, :update, :to_manual_toc] do |c| c.require_editor('edit_people') end
 
   def publish
     @author = Person.find(params[:id])
@@ -254,11 +255,69 @@ class AuthorsController < ApplicationController
         author.toc = toc
         author.save!
         flash[:notice] = t(:created_toc)
-        redirect_to controller: :authors, action: :show, id: params[:id]
       else
         flash[:error] = t(:already_has_toc)
-        redirect_to controller: :authors, action: :show, id: params[:id]
       end
+      redirect_to controller: :authors, action: :show, id: params[:id]
+    else
+      flash[:error] = t(:no_such_item)
+      redirect_to controller: :admin, action: :index
+    end
+  end
+  def to_manual_toc
+    author = Person.find(params[:id])
+    unless author.nil?
+      if author.toc.nil?
+        @works = author.original_works_by_genre # deliberately NOT using cache here
+        @translations = author.translations_by_genre
+        @genres_present = []
+        @works.each_key {|k| @genres_present << k unless @works[k].size == 0 || @genres_present.include?(k)}
+        @translations.each_key {|k| @genres_present << k unless @works[k].size == 0 || @genres_present.include?(k)}
+        toc = ''
+        get_genres.each do |genre|
+          if @works[genre].size > 0 || @translations[genre].size > 0
+            toc += "## #{textify_genre(genre)}\n"
+            if @works[genre].size > 0
+              @works[genre].each do |m|
+                toc += "&&& פריט: מ#{m.id} &&& כותרת: #{m.title.strip} &&&"
+                if m.authors.count > 1
+                  au_count = m.authors.count - 1
+                  i = 0
+                  toc += '('+t(:with)
+                  add_authors = ''
+                  m.authors.each do |au|
+                    next if au == author
+                    i += 1
+                    add_authors += au.name + (i == au_count ? '' : '; ')
+                  end
+                  toc += add_authors+')'
+                end
+                if m.expression.translation
+                  toc += " #{t(:translated_by)} "
+                  toc += m.expression.translators.map{|p| p.name}.join('; ')
+                end
+                toc += "\n\n"
+              end
+            end
+            if @translations[genre].size > 0
+              toc += "### #{t(:translation)}\n"
+              @translations[genre].each do |m|
+                toc += "&&& פריט: מ#{m.id} &&& כותרת: #{m.title.strip} &&&"
+                toc += t(:by)
+                toc += m.expression.work.first_author.name
+              end
+            end
+          end
+        end
+        newtoc = Toc.new(toc: toc, status: :raw, credit_section: '')
+        newtoc.save!
+        author.toc = newtoc
+        author.save!
+        flash[:notice] = t(:created_toc)
+      else
+        flash[:error] = t(:already_has_toc)
+      end
+      redirect_to controller: :authors, action: :edit_toc, id: params[:id]
     else
       flash[:error] = t(:no_such_item)
       redirect_to controller: :admin, action: :index

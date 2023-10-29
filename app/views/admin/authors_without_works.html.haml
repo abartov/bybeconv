@@ -1,0 +1,18 @@
+%br
+.backend
+  %h2= t(:authors_without_works)
+
+  %h3= "(#{@authors.length} #{t(:authors)})"
+  
+  %table
+    %tr
+      %th= t(:name)
+      %th= t(:bib_records)
+      %th= t(:uploaded_to_tasks)
+      %th= t(:todo)
+    - @authors.each do |au|
+      %tr
+        %td= link_to au.name, authors_show_path(id: au.id)
+        %td= link_to au.publications.length.to_s, bib_person_path(person_id: au.id)
+        %td= au.publications.where(status: 'uploaded').length
+        %td= au.publications.where(status: 'todo').length

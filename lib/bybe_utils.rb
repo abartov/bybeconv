@@ -1,6 +1,6 @@
 require 'json' # for VIAF AutoSuggest
-require 'rdf'
-require 'rdf/vocab'
+#require 'rdf'
+#require 'rdf/vocab'
 require 'hebrew'
 require 'htmlentities'
 require 'gepub'
@@ -257,20 +257,20 @@ module BybeUtils
     return Person.where("name LIKE ?", "%#{lastname}%")
   end
 
-  def guess_authors_viaf(author_string)
-    # Try VIAF first
-    viaf = Net::HTTP.new('www.viaf.org')
-    viaf.start unless viaf.started?
-    viaf_result = JSON.parse(viaf.get("/viaf/AutoSuggest?query=#{URI.escape(author_string)}").body)
-    logger.debug("viaf_result: #{viaf_result.to_s}")
-    logger.debug("viaf_result['result']: #{viaf_result['result'].to_s}")
-    if viaf_result['result'].nil?
-      viaf_result = JSON.parse(viaf.get("/viaf/AutoSuggest?query=#{URI.escape(author_string.split(/[, ]/)[0])}").body) # try again with just the first word
-    end
-    return nil if viaf_result['result'].nil? # give up
-    viaf_items = viaf_result['result'].map { |h| [h['term'], h['viafid']] }
-    logger.info("#{viaf_items.length} results from VIAF for #{author_string}")
-    viaf_items
+  #def guess_authors_viaf(author_string)
+  #  # Try VIAF first
+  #  viaf = Net::HTTP.new('www.viaf.org')
+  #  viaf.start unless viaf.started?
+  #  viaf_result = JSON.parse(viaf.get("/viaf/AutoSuggest?query=#{URI.escape(author_string)}").body)
+  #  logger.debug("viaf_result: #{viaf_result.to_s}")
+  #  logger.debug("viaf_result['result']: #{viaf_result['result'].to_s}")
+  #  if viaf_result['result'].nil?
+  #    viaf_result = JSON.parse(viaf.get("/viaf/AutoSuggest?query=#{URI.escape(author_string.split(/[, ]/)[0])}").body) # try again with just the first word
+  #  end
+  #  return nil if viaf_result['result'].nil? # give up
+  #  viaf_items = viaf_result['result'].map { |h| [h['term'], h['viafid']] }
+  #  logger.info("#{viaf_items.length} results from VIAF for #{author_string}")
+  #  viaf_items
 
     # Try NLI
     # ZOOM::Connection.open('aleph.nli.org.il', 9991) do |conn|
@@ -280,7 +280,7 @@ module BybeUtils
     #  rset = conn.search("@attr 1=1003 @attr 2=3 @attr 4=1 @attr 5=100 \"#{author_string}\"")
     #  p rset[0]
     # end
-  end
+  #end
 
   def textify_lang(iso)
     return I18n.t(:unknown) if iso.nil? or iso.empty?
@@ -355,41 +355,41 @@ module BybeUtils
     return [ret, tmp[pos..-1]+' '+buf[maxchars..-1]]
   end
 
-  def raw_viaf_xml_by_viaf_id(viaf_id)
-    RDF::Graph.load("http://viaf.org/viaf/#{viaf_id}/rdf.xml")
-  end
+  #def raw_viaf_xml_by_viaf_id(viaf_id)
+  #  RDF::Graph.load("http://viaf.org/viaf/#{viaf_id}/rdf.xml")
+  #end
 
-  def rdf_collect(graph, uri)
-    ret = []
-    query = RDF::Query.new do
-      pattern [:labels, uri, :datum]
-    end
-    query.execute(graph) do |entity|
-      ret << entity.datum.to_s if entity.datum.to_s.any_hebrew? # we only care about Hebrew labels
-    end
-    ret
-  end
+  #def rdf_collect(graph, uri)
+  #  ret = []
+  #  query = RDF::Query.new do
+  #    pattern [:labels, uri, :datum]
+  #  end
+  #  query.execute(graph) do |entity|
+  #    ret << entity.datum.to_s if entity.datum.to_s.any_hebrew? # we only care about Hebrew labels
+  #  end
+  #  ret
+  #end
 
-  def viaf_record_by_id(viaf_id)
-    graph = raw_viaf_xml_by_viaf_id(viaf_id)
-    query = RDF::Query.new(person: {
-                             RDF::URI('http://schema.org/birthDate') => :birthDate,
-                             RDF::URI('http://schema.org/deathDate') => :deathDate
-                           })
-    ret = {}
-    query.execute(graph) do |entity|
-      ret['birthDate'] = entity.birthDate.to_s unless entity.birthDate.nil?
-      ret['deathDate'] = entity.deathDate.to_s unless entity.deathDate.nil?
-    end
-    ret['labels'] = []
-    ret['labels'] += rdf_collect(graph, RDF::URI('http://www.w3.org/2004/02/skos/core#prefLabel'))
-    ret['labels'] += rdf_collect(graph, RDF::URI(SKOS_PREFLABEL))
-    if ret['labels'].empty? # if there are no Hebrew prefLabels, try the altLabels
-      ret['labels'] += rdf_collect(graph, RDF::URI(SKOS_ALTLABEL))
-    end
-
-    ret
-  end
+  #def viaf_record_by_id(viaf_id)
+  #  graph = raw_viaf_xml_by_viaf_id(viaf_id)
+  #  query = RDF::Query.new(person: {
+  #                           RDF::URI('http://schema.org/birthDate') => :birthDate,
+  #                           RDF::URI('http://schema.org/deathDate') => :deathDate
+  #                         })
+  #  ret = {}
+  #  query.execute(graph) do |entity|
+  #    ret['birthDate'] = entity.birthDate.to_s unless entity.birthDate.nil?
+  #    ret['deathDate'] = entity.deathDate.to_s unless entity.deathDate.nil?
+  #  end
+  #  ret['labels'] = []
+  #  ret['labels'] += rdf_collect(graph, RDF::URI('http://www.w3.org/2004/02/skos/core#prefLabel'))
+  #  ret['labels'] += rdf_collect(graph, RDF::URI(SKOS_PREFLABEL))
+  #  if ret['labels'].empty? # if there are no Hebrew prefLabels, try the altLabels
+  #    ret['labels'] += rdf_collect(graph, RDF::URI(SKOS_ALTLABEL))
+  #  end
+  #
+  #  ret
+  #end
 
   def fix_encoding(buf)
     newbuf = buf.force_encoding('windows-1255')

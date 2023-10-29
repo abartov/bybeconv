@@ -145,12 +145,14 @@ describe Tag do
     expect(TagName.where(name: t.name).count).to eq 1
   end
   it 'merges taggings into another tag' do
-    t = Tag.create!(name: Faker::Science.science, creator: create(:user), status: 'approved')
+    i = 0
+    t = Tag.create!(name: Faker::Science.science+i.to_s, creator: create(:user), status: 'approved')
     5.times do 
       Tagging.create!(tag: t, taggable: create(:manifestation), suggester: create(:user), status: 'pending')
     end
+    i += 1
     expect(Tag.last.taggings.count).to eq 5
-    t2 = Tag.create!(name: Faker::Science.science, creator: create(:user), status: 'approved')
+    t2 = Tag.create!(name: Faker::Science.science+i.to_s, creator: create(:user), status: 'approved')
     5.times do
       Tagging.create!(tag: t2, taggable: create(:manifestation), suggester: create(:user), status: 'pending')
     end
