@@ -1,5 +1,7 @@
+# handle everything related to Tags and Taggings
 class TaggingsController < ApplicationController
   before_action :require_user # for now, we don't allow anonymous taggings
+  before_action :require_editor, only: [:rename_tag]
   layout false
 
   def create
@@ -27,11 +29,28 @@ class TaggingsController < ApplicationController
       end
     end
   end
-
+  
   def render_tags
     @manifestation = Manifestation.find(params[:manifestation_id])
     @taggings = @manifestation.nil? ? [] : @manifestation.taggings
   end
+
+  # editor actions
+  def rename_tag
+    @tag = Tag.find(params[:id])
+    newname = params[:name]
+    existingtag = Tag.by_name(newname)
+    if existingtag.empty?
+      @tag.name = newname
+      @tag.save!
+      flash[:notice] = t(:tag_renamed, newname: newname)
+    else
+      @tag.merge_taggings_into(existingtag.first)
+      @tag.destroy
+      flash[:notice] = t(:taggings_merged, toname: existingtag.first.name))
+    end
+  end
+
   protected
   def instantiate_taggable(klass, id)
     case klass

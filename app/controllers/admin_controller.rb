@@ -742,26 +742,42 @@ class AdminController < ApplicationController
   def approve_tag
     require_editor('moderate_tags')
     t = Tag.find(params[:id])
-    t.approved!
-    head :ok
+    if t.present?
+      t.approved!
+      return render json: { tag_id: t.id, tag_name: t.name }
+    else
+      head :not_found
+    end
   end
   def reject_tag
     require_editor('moderate_tags')
     t = Tag.find(params[:id])
-    t.rejected!
-    head :ok
+    if t.present?
+      t.rejected!
+      return render json: { tag_id: t.id, tag_name: t.name }
+    else
+      head :not_found
+    end
   end
   def approve_tagging
     require_editor('moderate_tags')
     t = Tagging.find(params[:id])
-    t.approved!
-    head :ok
+    if t.present?
+      t.approved!
+      return render json: { tagging_id: t.id }
+    else
+      head :not_found
+    end
   end
   def reject_tagging
     require_editor('moderate_tags')
     t = Tagging.find(params[:id])
-    t.rejected!
-    head :ok
+    if t.present?
+      t.rejected!
+      return render json: { tagging_id: t.id }
+    else
+      head :not_found
+    end
   end
 
   private
