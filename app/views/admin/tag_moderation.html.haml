@@ -12,9 +12,9 @@
           %h3= link_to tag.name, tag
         .flex-col= "#{tag.creator.name} (%.1f #{t(:acceptance_rate)})" % tag.creator.tag_acceptance_rate
         .flex-col{style: 'flex: 2'}
-          = link_to t(:approve), approve_tag_path(tag), method: :post, remote: true, class: 'by-button-v02 approve_tag_btn', data: { confirm: t(:confirm_approve) } 
+          = link_to t(:approve), approve_tag_path(tag), method: :post, remote: true, class: 'by-button-v02 approve-tag-btn', data: { confirm: t(:confirm_approve) } 
           != '&nbsp;&nbsp;&nbsp;'
-          = link_to t(:reject), reject_tag_path(tag), method: :post, remote: true, class: 'by-button-v02 reject_tag_btn', data: { confirm: t(:confirm_reject) }
+          = link_to t(:reject), reject_tag_path(tag), method: :post, remote: true, class: 'by-button-v02 reject-tag-btn', data: { confirm: t(:confirm_reject) }
 
   .admin_dashboard_item
     %h2= t(:pending_taggings)
@@ -29,9 +29,9 @@
         .flex-col= link_to tagging.taggable.title, tagging.taggable
         .flex-col= "#{tagging.suggester.name} (%.1f #{t(:acceptance_rate)})" % tagging.suggester.tagging_acceptance_rate
         .flex-col{style: 'flex: 2'}
-          = link_to t(:approve), approve_tagging_path(tagging), method: :post, remote: true, class: 'by-button-v02', data: { confirm: t(:confirm_approve) }
+          = link_to t(:approve), approve_tagging_path(tagging), method: :post, remote: true, class: 'by-button-v02 approve-tagging-btn', data: { confirm: t(:confirm_approve) }
           != '&nbsp;&nbsp;&nbsp;'
-          = link_to t(:reject), reject_tagging_path(tagging), method: :post, remote: true, class: 'by-button-v02', data: { confirm: t(:confirm_reject) }
+          = link_to t(:reject), reject_tagging_path(tagging), method: :post, remote: true, class: 'by-button-v02 reject-tagging-btn', data: { confirm: t(:confirm_reject) }
 :javascript
   function remove_row(event, color) {
     row = $(event.target).closest('.flex-row');
@@ -39,11 +39,19 @@
     row.fadeOut(2000);
   }
   $(document).ready(function() {
-    $('.reject_tag_btn').on('ajax:complete', function(event, data, status, xhr) {
+    $('.reject-tag-btn').on('ajax:complete', function(event, data, status, xhr) {
       // response will come underneath of ‘data’ variable
       remove_row(event, '#ff3333');
     });
-    $('.approve_tag_btn').on('ajax:complete', function(event, data, status, xhr) {
+    $('.approve-tag-btn').on('ajax:complete', function(event, data, status, xhr) {
+      // response will come underneath of ‘data’ variable
+      remove_row(event, '#33ff33');
+    });
+    $('.reject-tagging-btn').on('ajax:complete', function(event, data, status, xhr) {
+      // response will come underneath of ‘data’ variable
+      remove_row(event, '#ff3333');
+    });
+    $('.approve-tagging-btn').on('ajax:complete', function(event, data, status, xhr) {
       // response will come underneath of ‘data’ variable
       remove_row(event, '#33ff33');
     });
