@@ -15,6 +15,7 @@ class Tag < ApplicationRecord
   scope :pending, -> { where(status: Tag.statuses[:pending]) }
   scope :approved, -> { where(status: Tag.statuses[:approved]) }
   scope :rejected, -> { where(status: Tag.statuses[:rejected]) }
+  scope :by_popularity, -> { order('taggings_count DESC') }
 
   scope :by_user, ->(user) { where(created_by: user.id) }
   scope :by_name, ->(name) { joins(:tag_names).where(tag_names: {name: name}) } # only use this to search for tags, to ensure aliases are searched as well!
