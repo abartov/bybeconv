@@ -11,6 +11,7 @@ class User < ApplicationRecord
   has_one :base_user, inverse_of: :user
   has_many :recommendations
   has_many :anthologies, dependent: :destroy
+  has_many :taggings, foreign_key: 'suggested_by'
   # no apparent need to be able to retrieve all recommendations a particular (admin) user has *resolved*.  If one arises, use a separate association on the resolved_by foreign key
 
   # editor bits
@@ -32,19 +33,35 @@ class User < ApplicationRecord
     li = ListItem.where(listkey: bit, item: self).first
     return (not li.nil?)
   end
+
   def tag_acceptance_rate
     tags = Tag.where(creator: self)
     return 0 if tags.count == 0
     (tags.where(status: :approved).count.to_f / tags.count.to_f).round(2)*100
   end
+
   def pending_tags
     Tag.where(creator: self, status: :pending)
   end
+
+  def recent_tags_used(limit=10)
+    Tag.joins(:taggings).where(taggings: {suggester: self}).group('tags.id').order('MAX(taggings.created_at) DESC').limit(limit)
+  end
+
+  def popular_tags_used(limit=10)
+    Tag.find(popular_tags_used_with_count.keys.first(limit))
+  end
+
+  def popular_tags_used_with_count
+    Tag.joins(:taggings).where(taggings: {suggester: self}).group('tags.id').order('count_all DESC').count
+  end
+
   def tagging_acceptance_rate
     taggings = Tagging.where(suggester: self)
     return 0 if taggings.count == 0
     (taggings.where(status: :approved).count.to_f / taggings.count.to_f).round(2)*100
   end
+
   def pending_taggings
     Tagging.where(suggester: self, status: :pending)
   end
