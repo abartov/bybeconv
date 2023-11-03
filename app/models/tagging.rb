@@ -1,6 +1,6 @@
 class Tagging < ApplicationRecord
 
-  belongs_to :tag, foreign_key: 'tag_id'
+  belongs_to :tag, foreign_key: 'tag_id', counter_cache: true
   belongs_to :taggable, polymorphic: true # taggable things include Manifestations, People, Anthologies, ...
 
 #  belongs_to :manifestation, foreign_key: 'manifestation_id'
