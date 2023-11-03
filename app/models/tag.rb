@@ -60,6 +60,12 @@ class Tag < ApplicationRecord
       tagging.update(tag_id: tag.id)
     end
   end
+  def prev_tags_alphabetically(limit = 5)
+    TagName.where('name < ?', self.name).order('name DESC').limit(limit)
+  end
+  def next_tags_alphabetically(limit = 5)
+    TagName.where('name > ?', self.name).order('name ASC').limit(limit)
+  end
 
   protected
   def create_tag_name # create a TagName with the preferred name

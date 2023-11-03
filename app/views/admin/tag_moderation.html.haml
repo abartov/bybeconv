@@ -9,7 +9,18 @@
     - @pending_tags.each do |tag|
       .flex-row
         .flex-col
-          %h3= link_to tag.name, tag
+          .container
+            .flex-row
+              %h3= link_to tag.name, tag
+            .flex-row
+              .container
+                - tag.prev_tags_alphabetically.each do |prev_tag|
+                  = prev_tag.name
+                  = '-->'
+                %b= tag.name
+                - tag.next_tags_alphabetically.each do |next_tag|
+                  = '-->'
+                  = next_tag.name
         .flex-col= "#{tag.creator.name} (%.1f #{t(:acceptance_rate)})" % tag.creator.tag_acceptance_rate
         .flex-col{style: 'flex: 2'}
           = link_to t(:approve), approve_tag_path(tag), method: :post, remote: true, class: 'by-button-v02 approve-tag-btn', data: { confirm: t(:confirm_approve) } 
@@ -32,6 +43,7 @@
           = link_to t(:approve), approve_tagging_path(tagging), method: :post, remote: true, class: 'by-button-v02 approve-tagging-btn', data: { confirm: t(:confirm_approve) }
           != '&nbsp;&nbsp;&nbsp;'
           = link_to t(:reject), reject_tagging_path(tagging), method: :post, remote: true, class: 'by-button-v02 reject-tagging-btn', data: { confirm: t(:confirm_reject) }
+          
 :javascript
   function remove_row(event, color) {
     row = $(event.target).closest('.flex-row');
