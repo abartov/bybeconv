@@ -101,8 +101,12 @@
                       = hidden_field_tag :taggable_id, @tagging.taggable_id
                       = hidden_field_tag :taggable_type, 'Manifestation'
                       = hidden_field_tag :tagname_id, '', id: 'tagname_id'
+                    #suggested_tags{style:'display:none'}
                     %div{style: 'display:inline'}
-                      %input.btn-small-outline-v02.btn-text-v02{type: :submit, value: t(:suggest_new_tag), style: 'margin-top:0.6rem;width:auto; background-color: #d9cdd5'}
+                      .container
+                        .flex-row
+                          %input.btn-small-outline-v02.btn-text-v02{type: :submit, value: t(:save_tag_suggestion), style: 'margin-top:0.6rem;width:auto; background-color: #d9cdd5'}
+                          %button.btn-small-outline-v02.btn-text-v02#load_tag_suggestions{style: 'margin-top:0.6rem; margin-right: 0.6rem; width:auto; background-color: #d9cdd5'}= t(:suggest_tags)
 
         -# Additional translations of same work
         - if @e.translation? && (@additional_translations != nil && @additional_translations != [])
@@ -258,4 +262,10 @@
     if("#{@m.sefaria_linker}" != '') {
       sefaria.link({whitelistSelector: '#actualtext', contentLang: 'hebrew', interfaceLang: 'hebrew'});
     }
+    $('#load_tag_suggestions').click(function(e) {
+      $('#load_tag_suggestions').hide();
+      $('#suggested_tags').load("/tag_suggest?work=#{@m.id}&author=#{@author.id}&user=#{current_user ? current_user.id : ''}");
+      $('#suggested_tags').show();
+      e.preventDefault();
+    });
   });

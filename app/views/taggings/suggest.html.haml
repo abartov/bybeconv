@@ -1,0 +1,8 @@
+%select{name: 'suggested_tag_id'}
+  %option{value: ""}= t(:recommendations_below)
+  - @tag_suggestions.each_pair do |heuristic, tags|
+    - if tags.any?
+      %optgroup{label: t(heuristic)}
+        - tags.each do |tag|
+          %option{value: tag.id}= tag.name
+    

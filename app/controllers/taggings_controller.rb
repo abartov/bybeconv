@@ -5,18 +5,28 @@ class TaggingsController < ApplicationController
   layout false
 
   def create
-    if params[:tagname_id].present? # selecting from autocomplete would populate this
-      tname = TagName.find(params[:tagname_id])
-      tag = tname.tag unless tname.nil?
-    else # user may have typed an existing tag name or alias without selecting from autocomplete
-      tname = TagName.find_by_name(params[:tag])
-      tag = tname.nil? ? nil : tname.tag
+    if params[:tag].present?
+      if params[:tagname_id].present? # selecting from autocomplete would populate this
+        tname = TagName.find(params[:tagname_id])
+        tag = tname.tag unless tname.nil?
+      else # user may have typed an existing tag name or alias without selecting from autocomplete
+        tname = TagName.find_by_name(params[:tag])
+        tag = tname.nil? ? nil : tname.tag
+      end
+      if tag.nil? # user submitted a nonexistent tag name
+        tag = Tag.create!(name: params[:tag], creator: current_user, status: :pending)
+      end
+    else
+      if params[:suggested_tag_id].present?
+        tag = Tag.find(params[:suggested_tag_id])
+      else
+        head :not_found
+      end
     end
-    if tag.nil? # user submitted a nonexistent tag name
-      tag = Tag.create!(name: params[:tag], creator: current_user, status: :pending)
+    if tag
+      @t = Tagging.new(taggable: instantiate_taggable(params[:taggable_type], params[:taggable_id]), suggester: current_user, status: :pending)
+      tag.taggings << @t
     end
-    @t = Tagging.new(taggable: instantiate_taggable(params[:taggable_type], params[:taggable_id]), suggester: current_user, status: :pending)
-    tag.taggings << @t
   end
 
   def destroy
@@ -35,6 +45,19 @@ class TaggingsController < ApplicationController
     @taggings = @manifestation.nil? ? [] : @manifestation.taggings
   end
 
+  def suggest
+    @tag_suggestions = {}
+    if params[:author].present?
+      @tag_suggestions[:used_on_other_works] = Person.find(params[:author]).popular_tags_used_on_works
+    end
+    if params[:user].present?
+      u = User.find(params[:user])
+      @tag_suggestions[:popular_tags_by_user] = u.popular_tags_used
+      @tag_suggestions[:recent_tags_by_user] = u.recent_tags_used
+    end
+    @tag_suggestions[:popular_tags] = Tag.by_popularity.limit(10)
+  end
+
   # editor actions
   def rename_tag
     @tag = Tag.find(params[:id])
@@ -47,7 +70,7 @@ class TaggingsController < ApplicationController
     else
       @tag.merge_taggings_into(existingtag.first)
       @tag.destroy
-      flash[:notice] = t(:taggings_merged, toname: existingtag.first.name))
+      flash[:notice] = t(:taggings_merged, toname: existingtag.first.name)
     end
   end
 

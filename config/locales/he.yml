@@ -1091,6 +1091,13 @@ he:
   rec_published: "המלצתך על היצירה בכתובת:\n\n%{url}\n\nשולבה עתה בטקסט שפרסמנו כאן:\n\n%{published_url}\n"
   taggings_merged: "התיוגים הועברו לתגית הקיימת '%{toname}'"
   tag_renamed: "שם התגית הוחלף לשם '%{newname}'"
+  save_tag_suggestion: שלח הצעת תיוג!
+  suggest_tags: הצע לי תיוגים
+  used_on_other_works: תגיות מיצירות אחרות של המחבר/ת
+  popular_tags_by_user: תגיות ששימשו אותך הרבה
+  recent_tags_by_user: תגיות שהוספת באחרונה
+  popular_tags: תגיות פופולריות
+  recommendations_below: תגיות מוצעות להלן
   hebrew: עברית
   english: אנגלית
   german: גרמנית

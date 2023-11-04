@@ -1,1 +1,1 @@
-$("#taggings").append("<div class=\"card tag-card\"><div class=\"tag-content\"><%= @t.tag.name %></div><div class=\"tag-close\"><%= escape_javascript(link_to '×', @t, remote: true, method: :delete) %><div class=\"tag-wait-confirm\"><i class=\"fa fa-clock-o\"></i></div></div>");
+$("#taggings").append("<button class=\"tag\"><%= @t.tag.name %> <%= escape_javascript(link_to '×', @t, remote: true, method: :delete) %></button>");
