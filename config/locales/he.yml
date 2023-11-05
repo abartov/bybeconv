@@ -1097,7 +1097,11 @@ he:
   popular_tags_by_user: תגיות ששימשו אותך הרבה
   recent_tags_by_user: תגיות שהוספת באחרונה
   popular_tags: תגיות פופולריות
+  taggings_count: כמות פריטים מתויגים
+  tag_list: רשימת תגיות
   recommendations_below: תגיות מוצעות להלן
+  tagging_system_locked_by: מערכת ניטור התגיות בשימוש על ידי %{user}, והפעולה האחרונה בוצעה לפני %{ago} דקות.
+  tagging_system_locked: מערכת הניטור נעולה
   hebrew: עברית
   english: אנגלית
   german: גרמנית

@@ -2,6 +2,8 @@
 .backend.container
   .admin_dashboard_item
     %h2= t(:pending_tags)
+    - unless session[:tagging_lock]
+      %h3{style: 'color:red'}= t(:tagging_system_locked_by, user: @tagging_lock_owner, ago: @tagging_lock_refreshed)
     .flex-row
       .flex-col.headline-2-v02= t(:tag)
       .flex-col.headline-2-v02= t(:suggested_by)
@@ -23,9 +25,12 @@
                   = next_tag.name
         .flex-col= "#{tag.creator.name} (%.1f #{t(:acceptance_rate)})" % tag.creator.tag_acceptance_rate
         .flex-col{style: 'flex: 2'}
-          = link_to t(:approve), approve_tag_path(tag), method: :post, remote: true, class: 'by-button-v02 approve-tag-btn', data: { confirm: t(:confirm_approve) } 
-          != '&nbsp;&nbsp;&nbsp;'
-          = link_to t(:reject), reject_tag_path(tag), method: :post, remote: true, class: 'by-button-v02 reject-tag-btn', data: { confirm: t(:confirm_reject) }
+          - if session[:tagging_lock]
+            = link_to t(:approve), approve_tag_path(tag), method: :post, remote: true, class: 'by-button-v02 approve-tag-btn', data: { confirm: t(:confirm_approve) } 
+            != '&nbsp;&nbsp;&nbsp;'
+            = link_to t(:reject), reject_tag_path(tag), method: :post, remote: true, class: 'by-button-v02 reject-tag-btn', data: { confirm: t(:confirm_reject) }
+          - else
+            = t(:tagging_system_locked)
 
   .admin_dashboard_item
     %h2= t(:pending_taggings)
@@ -40,9 +45,12 @@
         .flex-col= link_to tagging.taggable.title, tagging.taggable
         .flex-col= "#{tagging.suggester.name} (%.1f #{t(:acceptance_rate)})" % tagging.suggester.tagging_acceptance_rate
         .flex-col{style: 'flex: 2'}
-          = link_to t(:approve), approve_tagging_path(tagging), method: :post, remote: true, class: 'by-button-v02 approve-tagging-btn', data: { confirm: t(:confirm_approve) }
-          != '&nbsp;&nbsp;&nbsp;'
-          = link_to t(:reject), reject_tagging_path(tagging), method: :post, remote: true, class: 'by-button-v02 reject-tagging-btn', data: { confirm: t(:confirm_reject) }
+          - if session[:tagging_lock]
+            = link_to t(:approve), approve_tagging_path(tagging), method: :post, remote: true, class: 'by-button-v02 approve-tagging-btn', data: { confirm: t(:confirm_approve) }
+            != '&nbsp;&nbsp;&nbsp;'
+            = link_to t(:reject), reject_tagging_path(tagging), method: :post, remote: true, class: 'by-button-v02 reject-tagging-btn', data: { confirm: t(:confirm_reject) }
+          - else
+            = t(:tagging_system_locked)
           
 :javascript
   function remove_row(event, color) {

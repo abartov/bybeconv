@@ -188,6 +188,7 @@ Bybeconv::Application.routes.draw do
   match "tag_suggest" => 'taggings#suggest', via: :get, as: 'tag_suggest'
   resources :api_keys, except: :show
   get "taggings/render_tags"
+  match "tags" => 'taggings#list_tags', via: [:get, :post]
   resources :taggings
   resources :aboutnesses
   resources :preferences, only: [:update]

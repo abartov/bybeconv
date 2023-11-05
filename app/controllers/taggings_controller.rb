@@ -2,7 +2,7 @@
 class TaggingsController < ApplicationController
   before_action :require_user # for now, we don't allow anonymous taggings
   before_action :require_editor, only: [:rename_tag]
-  layout false
+  layout false, only: [:render_tags, :suggest]
 
   def create
     if params[:tag].present?
@@ -39,7 +39,15 @@ class TaggingsController < ApplicationController
       end
     end
   end
-  
+
+  def list_tags
+    # TODO: handle filters
+    @page = params[:page]
+    @page = 1 unless @page.present?
+    @tags = Tag.approved.all.page(@page)
+    render 'list_tags', layout: true
+  end
+
   def render_tags
     @manifestation = Manifestation.find(params[:manifestation_id])
     @taggings = @manifestation.nil? ? [] : @manifestation.taggings
@@ -72,6 +80,7 @@ class TaggingsController < ApplicationController
       @tag.destroy
       flash[:notice] = t(:taggings_merged, toname: existingtag.first.name)
     end
+    # TODO: render or redirect
   end
 
   protected
