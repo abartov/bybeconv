@@ -247,8 +247,8 @@ class Person < ApplicationRecord
   end
 
   def all_works_including_unpublished
-    works = Manifestation.joins(expression: [work: :creations]).includes(:expression).where("creations.person_id = #{self.id}").order(sort_title: :asc)
-    xlats = Manifestation.joins(expression: :realizers).includes(expression: [work: [creations: :person]]).where(realizers:{role: Realizer.roles[:translator], person_id: self.id}).order(sort_title: :asc)
+    works = Manifestation.joins(expression: [work: :creations]).includes(:expression).where("creations.person_id = #{self.id}")
+    xlats = Manifestation.joins(expression: :realizers).includes(expression: [work: [creations: :person]]).where(realizers:{role: Realizer.roles[:translator], person_id: self.id})
     (works + xlats).uniq.sort_by{|m| m.sort_title}
   end
 
