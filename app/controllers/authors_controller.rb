@@ -14,6 +14,7 @@ class AuthorsController < ApplicationController
           @author.publish!
           Rails.cache.delete('newest_authors') # force cache refresh
           Rails.cache.delete('homepage_authors')
+          Rails.cache.delete("au_#{@author.id}_work_count")
           flash[:success] = t(:published)
         else
           @author.awaiting_first!
