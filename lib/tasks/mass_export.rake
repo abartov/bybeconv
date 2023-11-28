@@ -32,7 +32,7 @@ task :mass_export, [:to_path] => :environment do |taskname, args|
           stripped = plaintext.strip_nikkud
           [txt_path, html_path, txt_stripped_path].each {|d|
             dname = d+ppath
-            FileUtils.mkdir_p(dname) unless Dir.exists?(dname)
+            FileUtils.mkdir_p(dname) unless Dir.exist?(dname)
           }
           # dump works
           File.open(txt_path+ppath+fname+'.txt', 'w:utf-8'){|f| f.write(plaintext)}
