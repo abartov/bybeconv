@@ -1,5 +1,6 @@
 include BybeUtils
 Bybeconv::Application.routes.draw do
+  resources :user_blocks
   get 'crowd/index'
   get 'crowd/populate_edition' => 'crowd#populate_edition', as: 'crowd_populate_edition'
   get 'crowd/populate_edition/:id' => 'crowd#populate_edition', as: 'crowd_populate_edition_id'
