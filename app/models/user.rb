@@ -67,6 +67,24 @@ class User < ApplicationRecord
     Tagging.where(suggester: self, status: :pending)
   end
 
+  def block!(context, blocker, reason, expires_at = nil)
+    blocker = User.find(blocker) unless blocker.is_a? User
+    self.blocks.create(context: context, blocker: blocker, reason: reason, expires_at: expires_at)
+  end
+
+  def unblock!(context, blocker)
+    blocker = User.find(blocker) unless blocker.is_a? User
+    self.blocks.where(context: context, blocker: blocker).update!(expires_at: Time.now)
+  end
+
+  def blocked?(context = nil)
+    return context.nil? ? current_blocks.count > 0 : current_blocks.where(context: context).count > 0
+  end
+
+  def current_blocks
+    self.blocks.where('expires_at is null OR expires_at > ?', Time.now)
+  end
+
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_initialize.tap do |user|
       user.provider = auth.provider
