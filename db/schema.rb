@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_11_29_202810) do
+ActiveRecord::Schema.define(version: 2023_12_01_172931) do
 
   create_table "aboutnesses", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -901,7 +901,10 @@ ActiveRecord::Schema.define(version: 2023_11_29_202810) do
     t.string "reason"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "context_item_type"
+    t.bigint "context_item_id"
     t.index ["context"], name: "index_user_blocks_on_context"
+    t.index ["context_item_type", "context_item_id"], name: "index_user_blocks_on_context_item"
     t.index ["user_id"], name: "index_user_blocks_on_user_id"
   end
 
