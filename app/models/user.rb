@@ -67,13 +67,13 @@ class User < ApplicationRecord
     Tagging.where(suggester: self, status: :pending)
   end
 
-  def block!(context, blocker, reason, expires_at = nil)
+  def block!(context, blocker, reason, context_item = nil, expires_at = nil)
     blocker = User.find(blocker) unless blocker.is_a? User
     self.blocks.create(context: context, blocker: blocker, reason: reason, expires_at: expires_at)
   end
 
   def unblock!(context)
-    self.blocks.where(context: context).update!(expires_at: Time.now)
+    self.blocks.where(context: context).each{|b| b.update!(expires_at: Time.now)}
   end
 
   def blocked?(context = nil)
