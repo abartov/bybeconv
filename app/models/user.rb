@@ -72,9 +72,8 @@ class User < ApplicationRecord
     self.blocks.create(context: context, blocker: blocker, reason: reason, expires_at: expires_at)
   end
 
-  def unblock!(context, blocker)
-    blocker = User.find(blocker) unless blocker.is_a? User
-    self.blocks.where(context: context, blocker: blocker).update!(expires_at: Time.now)
+  def unblock!(context)
+    self.blocks.where(context: context).update!(expires_at: Time.now)
   end
 
   def blocked?(context = nil)
