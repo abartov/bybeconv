@@ -175,6 +175,8 @@
   = render partial: 'bookmark_panel'
 #bookmarkDeleteDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
   = render partial: 'bookmark_delete'
+#tagPolicyDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
+  = render partial: 'tag_policy'
 -# chapter popup
 - if @m.chapters?
   .modal#chapterDlg{role: 'dialog', tabindex: '-1'}
@@ -211,8 +213,11 @@
       }
     });
     $('#expand-add-tag').click(function() {
-      $('#expand-add-tag').css('display','none');
-      $('#add-tag-form').css('display','block');
+      //$('#expand-add-tag').css('display','none');
+      if("#{@base_user.get_preference(:accepted_tag_policy)}" != "false")
+        $('#add-tag-form').css('display','block');
+      else
+        $('#tagPolicyDlg').modal({  backdrop: 'static', keyboard: false, show: true});
     });
     $('#expand-add-rec').click(function() {
       /*

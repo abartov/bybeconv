@@ -1,0 +1,35 @@
+.by-popup-v02.narrow-popup
+  .by-card-header-v02.desktop-only
+    %span.headline-1-v02.desktop-only= t(:add_tag)
+    %a.popup-x-v02.linkcolor.pointer{'data-dismiss'=>'modal'} -
+  %div
+    .by-card-content-v02
+      %p= t(:tag_policy_intro_html)
+      %a{href: Rails.configuration.constants['full_tagging_policy_url'], target: "_blank"}
+        %span{style: "font-weight: bold"}= t(:to_full_tagging_policy)
+        %span.open-in-new-tab T
+      %p/
+      %p
+        %label#approve_tags_guidelines
+          %input#accept_cbox{name: "CheckboxGroup1", type: "checkbox", value: "Approve"}>/
+          = t(:i_understand_and_accept)
+        %br/
+      .bottom-button-area.left-buttons
+        %button.by-button-v02.pointer.disabled#accept_tag_policy= t(:can_proceed)
+        %button.by-button-v02.by-button-secondary-v02.linkcolor.pointer{'data-dismiss'=>'modal'}
+          %div= t(:cancel)
+
+:javascript
+  $(document).ready(function(){
+    $('#accept_cbox').click(function(){
+      if ($('#accept_cbox').is(':checked')) {
+        $('#accept_tag_policy').removeClass('disabled');
+      } else {
+        $('#accept_tag_policy').addClass('disabled');
+      }
+    });
+    $('#accept_tag_policy').click(function(){
+      $.ajax( { url: "#{preference_url(:accepted_tag_policy)}", method: 'PUT', data: { value: "true" } });
+      $('#tagPolicyDlg').modal('hide');
+    });
+  });
