@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_07_19_164520) do
+ActiveRecord::Schema.define(version: 2023_12_02_181505) do
 
   create_table "aboutnesses", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -662,6 +662,7 @@ ActiveRecord::Schema.define(version: 2023_07_19_164520) do
     t.index ["sort_title"], name: "index_manifestations_on_sort_title"
     t.index ["status", "sort_title"], name: "index_manifestations_on_status_and_sort_title"
     t.index ["status"], name: "index_manifestations_on_status"
+    t.index ["updated_at"], name: "index_manifestations_on_updated_at"
   end
 
   create_table "news_items", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -877,6 +878,7 @@ ActiveRecord::Schema.define(version: 2023_07_19_164520) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "approver_id"
+    t.integer "taggings_count"
     t.index ["approver_id"], name: "index_tags_on_approver_id"
     t.index ["created_by"], name: "tags_created_by_fk"
     t.index ["name"], name: "index_tags_on_name", unique: true
@@ -890,6 +892,21 @@ ActiveRecord::Schema.define(version: 2023_07_19_164520) do
     t.text "credit_section"
     t.integer "status"
     t.text "cached_toc", size: :medium
+  end
+
+  create_table "user_blocks", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "context"
+    t.datetime "expires_at"
+    t.integer "blocker_id"
+    t.string "reason"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "context_item_type"
+    t.bigint "context_item_id"
+    t.index ["context"], name: "index_user_blocks_on_context"
+    t.index ["context_item_type", "context_item_id"], name: "index_user_blocks_on_context_item"
+    t.index ["user_id"], name: "index_user_blocks_on_user_id"
   end
 
   create_table "users", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -1028,6 +1045,7 @@ ActiveRecord::Schema.define(version: 2023_07_19_164520) do
   add_foreign_key "taggings", "users", column: "suggested_by", name: "taggings_suggested_by_fk"
   add_foreign_key "tags", "users", column: "approver_id"
   add_foreign_key "tags", "users", column: "created_by", name: "tags_created_by_fk"
+  add_foreign_key "user_blocks", "users"
   add_foreign_key "volunteer_profile_features", "volunteer_profiles"
   add_foreign_key "work_likes", "manifestations", name: "work_likes_manifestation_id_fk"
   add_foreign_key "work_likes", "users", name: "work_likes_user_id_fk"
