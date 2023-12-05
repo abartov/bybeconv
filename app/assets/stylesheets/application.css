@@ -177,9 +177,6 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
 .error-found-row{
   height: 1px;
 }
-#add-tag-form{
-  display:none;
-}
 #add-rec-form{
   display:none;
 }
@@ -426,4 +423,7 @@ body.modal-open{
 }
 .flex-break {
   flex-basis: 100%;
+}
+.ui-menu.ui-autocomplete.ui-front {
+  z-index: 1100;
 }
