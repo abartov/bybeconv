@@ -1,0 +1,66 @@
+.modal-dialog
+  .modal-content
+    .flex-popup
+      .modal-header
+        .popup-top
+          .row{style: "padding:15px;margin: 0"}
+            .col-4{style: "padding: 0;"}
+              %button.btn-small-outline-v02{'data-dismiss'=>'modal'}
+                .btn-text-v02
+                  %span.right-arrow 2
+                  %span= t(:back)
+            .col-4{style: "padding: 0;"}
+              .headline-2-v02{:style => "text-align: center;margin: 0; padding-top: 3px;"}= t(:add_tag)
+            .col-4
+      .modal-body
+        .by-popup-v02.narrow-popup
+          .by-card-header-v02.desktop-only
+            %span.headline-1-v02.desktop-only= t(:add_tag)
+            %a.popup-x-v02{'data-dismiss'=>'modal'} -
+          %div
+            .by-card-content-v02
+              .search-mobile-switch
+                %button.search-mobile-option.active{href: "#"}= t(:i_want_to_suggest_a_tag)
+                %button.search-mobile-option{href: "#"}= t(:autosuggest_tags)
+              #add-tag-form
+                = form_for @tagging, remote: true do
+                  %div{style: 'display:inline;margin-top:0.6rem;'}
+                    .field-label= t(:suggested_tag_name)
+                    = autocomplete_field_tag :tag, '', autocomplete_tag_name_path, {'data-noMatchesLabel' => t(:no_matches_found), class: 'field-v02', id_element: '#tagname_id', style: 'width: 10rem;'}
+                    = hidden_field_tag :taggable_id, @tagging.taggable_id
+                    = hidden_field_tag :taggable_type, 'Manifestation'
+                    = hidden_field_tag :tagname_id, '', id: 'tagname_id'
+                  .field-label= t(:last_proposed_tags)
+                  = select :tagging, :tag_id, @recent_tags_by_user.map{|tag| [tag.name, tag.id]}, {include_blank: t(:click_to_select)}, {class: 'field-v02', style: 'min-height: 12px;'}
+
+                .no-header
+                .bottom-button-area.left-buttons
+                  %button.by-button-v02.disabled{href: "#"}= t(:suggest_tag)
+                  %button.by-button-v02.by-button-secondary-v02{'data-dismiss'=>'modal'}
+                    %div= t(:cancel)
+
+          .by-card-content-v02.limited-height-popup-content-v02
+            #suggested_tags{style:'display:none'}
+            %div{style: 'display:inline'}
+              .container
+                .flex-row
+                  %input.btn-small-outline-v02.btn-text-v02{type: :submit, value: t(:save_tag_suggestion), style: 'margin-top:0.6rem;width:auto; background-color: #d9cdd5'}
+                  %button.btn-small-outline-v02.btn-text-v02#load_tag_suggestions{style: 'margin-top:0.6rem; margin-right: 0.6rem; width:auto; background-color: #d9cdd5'}= t(:suggest_tags)
+:javascript
+  $(document).ready(function() {
+    /*$('#tag').on('railsAutocomplete.select', function(event, data){
+      $('#tagname_id').val(data.item.id);
+    });*/
+    $('#load_tag_suggestions').click(function() {
+      $.ajax({
+        url: '/taggings/load_tag_suggestions',
+        type: 'GET',
+        data: {
+          taggable_id: $('#taggable_id').val(),
+          taggable_type: $('#taggable_type').val()
+        },
+        dataType: 'script'
+      });
+    });
+  });
+```
