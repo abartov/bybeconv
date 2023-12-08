@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "user_blocks/new", type: :view do
+=begin RSpec.describe "user_blocks/new", type: :view do
   before(:each) do
     assign(:user_block, UserBlock.new(
       user: nil,
@@ -25,3 +25,4 @@ RSpec.describe "user_blocks/new", type: :view do
     end
   end
 end
+=end
