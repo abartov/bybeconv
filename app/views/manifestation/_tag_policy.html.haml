@@ -31,5 +31,8 @@
     $('#accept_tag_policy').click(function(){
       $.ajax( { url: "#{preference_url(:accepted_tag_policy)}", method: 'PUT', data: { value: "true" } });
       $('#tagPolicyDlg').modal('hide');
+      $('#accepted_tag_policy').val('true');
+      $('#generalDlg').load("#{ add_tagging_popup_path(taggable_id: @m.id, taggable_type: 'Manifestation') }");
+      $('#generalDlg').modal('show');
     });
   });

@@ -2,8 +2,16 @@
 class TaggingsController < ApplicationController
   before_action :require_user # for now, we don't allow anonymous taggings
   before_action :require_editor, only: [:rename_tag]
-  layout false, only: [:render_tags, :suggest]
+  layout false, only: [:render_tags, :suggest, :add_tagging_popup]
 
+  def add_tagging_popup
+    @taggable = instantiate_taggable(params[:taggable_type], params[:taggable_id])
+    @tagging = Tagging.new
+    @tagging.suggester = current_user
+    @tagging.status = :pending
+    @tagging.taggable = @taggable
+    @recent_tags_by_user = current_user.recent_tags_used
+  end
   def create
     if params[:tag].present?
       if params[:tagname_id].present? # selecting from autocomplete would populate this

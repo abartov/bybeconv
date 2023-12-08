@@ -427,3 +427,8 @@ body.modal-open{
 .ui-menu.ui-autocomplete.ui-front {
   z-index: 1100;
 }
+
+.recent-tags-list {
+ overflow-y: scroll;
+ max-height: 200px; 
+}

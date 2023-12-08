@@ -148,6 +148,7 @@ Bybeconv::Application.routes.draw do
   get 'welcome/:id/featured_popup' => 'welcome#featured_popup', as: 'featured_content_popup'
   get 'welcome/:id/featured_author' => 'welcome#featured_author_popup', as: 'featured_author_popup'
   get 'author/:id/latest' => 'authors#latest_popup', as: 'author_latest_popup'
+  get 'add_tagging/:taggable_type/:taggable_id' => 'taggings#add_tagging_popup', as: 'add_tagging_popup'
   get '/page/:tag' => 'static_pages#view', as: 'static_pages_by_tag', via: [:get]
   get "read/:id" => 'manifestation#read', as: 'manifestation'
   match 'dict/:id' => 'manifestation#dict', as: 'dict_browse', via: [:get, :post]

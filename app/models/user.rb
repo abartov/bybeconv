@@ -46,7 +46,7 @@ class User < ApplicationRecord
   end
 
   def recent_tags_used(limit=10)
-    Tag.joins(:taggings).where(taggings: {suggester: self}).group('tags.id').order('MAX(taggings.created_at) DESC').limit(limit)
+    Tag.joins(:taggings).where(taggings: {suggester: self}).where.not(taggings: { status: :rejected}).group('tags.id').order('MAX(taggings.created_at) DESC').limit(limit)
   end
 
   def popular_tags_used(limit=10)
@@ -54,7 +54,7 @@ class User < ApplicationRecord
   end
 
   def popular_tags_used_with_count
-    Tag.joins(:taggings).where(taggings: {suggester: self}).group('tags.id').order('count_all DESC').count
+    Tag.joins(:taggings).where(taggings: {suggester: self}).where.not(taggings: { status: :rejected}).group('tags.id').order('count_all DESC').count
   end
 
   def tagging_acceptance_rate

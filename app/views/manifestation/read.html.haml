@@ -88,25 +88,11 @@
               .inline-block#taggings
                 = render partial: 'shared/taggings', locals: {taggings: @taggings}
               - unless current_user.nil?
+                = hidden_field_tag :accepted_tag_policy, @bu.present? ? @bu.get_preference(:accepted_tag_policy) : 'false', id: 'accepted_tag_policy'
                 #add-tag.card-bottom
                   .metadata-link.linkcolor.pointer#expand-add-tag
                     %span.right-side-icon &amp;
                     %span{:style => "font-weight: bold"}= t(:suggest_new_tag)
-
-                #add-tag-form
-                  = form_for @tagging, remote: true do
-                    %div{style: 'display:inline;margin-top:0.6rem;'}
-                      %b= t(:suggested_tag_name)
-                      = autocomplete_field_tag :tag, '', autocomplete_tag_name_path, {'data-noMatchesLabel' => t(:no_matches_found), class: 'field-v02', id_element: '#new_tagging_tag_id', style: 'width: 10rem;'}
-                      = hidden_field_tag :taggable_id, @tagging.taggable_id
-                      = hidden_field_tag :taggable_type, 'Manifestation'
-                      = hidden_field_tag :tagname_id, '', id: 'tagname_id'
-                    #suggested_tags{style:'display:none'}
-                    %div{style: 'display:inline'}
-                      .container
-                        .flex-row
-                          %input.btn-small-outline-v02.btn-text-v02{type: :submit, value: t(:save_tag_suggestion), style: 'margin-top:0.6rem;width:auto; background-color: #d9cdd5'}
-                          %button.btn-small-outline-v02.btn-text-v02#load_tag_suggestions{style: 'margin-top:0.6rem; margin-right: 0.6rem; width:auto; background-color: #d9cdd5'}= t(:suggest_tags)
 
         -# Additional translations of same work
         - if @e.translation? && (@additional_translations != nil && @additional_translations != [])
@@ -214,8 +200,11 @@
     });
     $('#expand-add-tag').click(function() {
       //$('#expand-add-tag').css('display','none');
-      if("#{@base_user.get_preference(:accepted_tag_policy)}" != "false")
-        $('#add-tag-form').css('display','block');
+      if($('#accepted_tag_policy').val() != 'false') {
+        $('#generalDlg').load("#{ add_tagging_popup_path(taggable_id: @m.id, taggable_type: 'Manifestation') }");
+        $('#generalDlg').modal('show');
+        /*$('#add-tag-form').css('display','block'); */
+      }
       else
         $('#tagPolicyDlg').modal({  backdrop: 'static', keyboard: false, show: true});
     });
@@ -273,4 +262,5 @@
       $('#suggested_tags').show();
       e.preventDefault();
     });
+
   });

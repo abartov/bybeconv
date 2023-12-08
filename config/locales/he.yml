@@ -1083,7 +1083,12 @@ he:
   hello_x: שלום %{name}
   hello_anon: שלום רב!
   suggest_new_tag: הצעת תגית חדשה
+  click_to_select: לחצו לבחירה
+  suggest_tag: הצעת תגית
   suggested_by: הוצע על ידי
+  i_want_to_suggest_a_tag: אני רוצה להציע תגית
+  autosuggest_tags: הציעו לי תגית
+  last_proposed_tags: "תגיות אחרונות שהצעתי:"
   acceptance_rate: אחוז התקבלות
   add_recommendation: הוספת המלצה
   email_footer_html: "בברכה, צוות פרויקט בן־יהודה.\n\nאולי תמצא/י ענין ביומן הרשת של פרויקט בן־יהודה: http://benyehuda.org/blog/ \n\n או בערוץ היו-טיוב של פרויקט בן־יהודה: http://www.youtube.com/user/ProjectBenYehuda/videos?flow=grid&view=0"

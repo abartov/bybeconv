@@ -31,13 +31,17 @@
                     = hidden_field_tag :taggable_type, 'Manifestation'
                     = hidden_field_tag :tagname_id, '', id: 'tagname_id'
                   .field-label= t(:last_proposed_tags)
-                  = select :tagging, :tag_id, @recent_tags_by_user.map{|tag| [tag.name, tag.id]}, {include_blank: t(:click_to_select)}, {class: 'field-v02', style: 'min-height: 12px;'}
+                  -#= select :tagging, :tag_id, @recent_tags_by_user.map{|tag| [tag.name, tag.id]}, {include_blank: t(:click_to_select)}, {class: 'field-v02', style: 'min-height: 12px;'}
+                  -#.auto-complete-area.list-group
+                  .recent-tags-list.list-group
+                    - @recent_tags_by_user.each do |tag|
+                      %button.pointer.list-group-item{style: 'padding: 0.5rem 0.75rem;'}= tag.name
 
-                .no-header
-                .bottom-button-area.left-buttons
-                  %button.by-button-v02.disabled{href: "#"}= t(:suggest_tag)
-                  %button.by-button-v02.by-button-secondary-v02{'data-dismiss'=>'modal'}
-                    %div= t(:cancel)
+                  .no-header
+                  .bottom-button-area.left-buttons
+                    %button.by-button-v02.disabled#submit_tagging{href: "#"}= t(:suggest_tag)
+                    %button.by-button-v02.by-button-secondary-v02{'data-dismiss'=>'modal'}
+                      %div= t(:cancel)
 
           .by-card-content-v02.limited-height-popup-content-v02
             #suggested_tags{style:'display:none'}
@@ -62,5 +66,21 @@
         dataType: 'script'
       });
     });
+    $('.recent-tags-list .list-group-item').click(function(e) {
+      e.preventDefault();
+      $('#tagname_id').val($(this).attr('id'));
+      $('#tag').val($(this).text());
+      $('#tag').change();
+    });
+    $('#tag').change(function() {
+      if($(this).val() == '' || $(this).val() == null) {
+        $('#submit_tagging').addClass('disabled');
+        $('#tagname_id').val('');
+      } else {
+        $('#submit_tagging').removeClass('disabled');
+      }
+    });
+    $('#tag').keyup(function(){
+      $(this).change();
+    });
   });
-```
