@@ -49,6 +49,12 @@ class User < ApplicationRecord
     Tag.joins(:taggings).where(taggings: {suggester: self}).where.not(taggings: { status: :rejected}).group('tags.id').order('MAX(taggings.created_at) DESC').limit(limit)
   end
 
+  def cached_popular_tags_used
+    Rails.cache.fetch("u_#{self.id}_pop_tags", expires_in: 6.hours) do
+      popular_tags_used
+    end
+  end
+
   def popular_tags_used(limit=10)
     Tag.find(popular_tags_used_with_count.keys.first(limit))
   end

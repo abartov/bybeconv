@@ -432,3 +432,25 @@ body.modal-open{
  overflow-y: scroll;
  max-height: 200px; 
 }
+
+.ui-state-default{
+	color: #fff;
+	background-color: #660248;
+}
+.ui-state-active{
+	color: #fff;
+	background-color: #660248 !important;
+}
+.tag-suggestion-heuristic {
+  font-size: 0.8rem;
+  color: #999;
+}
+
+.suggested-tags-list {
+  overflow-y: scroll;
+  max-height: 200px; 
+ }
+ 
+.indented {
+  margin-right: 15px !important;
+}

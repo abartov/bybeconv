@@ -64,14 +64,13 @@ class TaggingsController < ApplicationController
   def suggest
     @tag_suggestions = {}
     if params[:author].present?
-      @tag_suggestions[:used_on_other_works] = Person.find(params[:author]).popular_tags_used_on_works
+      @tag_suggestions[:used_on_other_works] = Person.find(params[:author]).cached_popular_tags_used_on_works
     end
-    if params[:user].present?
-      u = User.find(params[:user])
-      @tag_suggestions[:popular_tags_by_user] = u.popular_tags_used
-      @tag_suggestions[:recent_tags_by_user] = u.recent_tags_used
+    if current_user.present?
+      @tag_suggestions[:popular_tags_by_user] = current_user.cached_popular_tags_used
+      @tag_suggestions[:recent_tags_by_user] = current_user.recent_tags_used
     end
-    @tag_suggestions[:popular_tags] = Tag.by_popularity.limit(10)
+    @tag_suggestions[:popular_tags] = Tag.cached_popular_tags
   end
 
   # editor actions

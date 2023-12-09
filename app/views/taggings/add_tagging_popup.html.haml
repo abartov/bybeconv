@@ -17,16 +17,18 @@
           .by-card-header-v02.desktop-only
             %span.headline-1-v02.desktop-only= t(:add_tag)
             %a.popup-x-v02{'data-dismiss'=>'modal'} -
-          %div
+          %div#add_tagging_tabs
+            %ul{style: 'display: flex;'}
+              %li
+                %a{href: "#add-tag-form"}= t(:i_want_to_suggest_a_tag)
+              %li
+                %a{href: "#suggested_tags"}= t(:autosuggest_tags)
             .by-card-content-v02
-              .search-mobile-switch
-                %button.search-mobile-option.active{href: "#"}= t(:i_want_to_suggest_a_tag)
-                %button.search-mobile-option{href: "#"}= t(:autosuggest_tags)
               #add-tag-form
                 = form_for @tagging, remote: true do
                   %div{style: 'display:inline;margin-top:0.6rem;'}
                     .field-label= t(:suggested_tag_name)
-                    = autocomplete_field_tag :tag, '', autocomplete_tag_name_path, {'data-noMatchesLabel' => t(:no_matches_found), class: 'field-v02', id_element: '#tagname_id', style: 'width: 10rem;'}
+                    = autocomplete_field_tag :tag, '', autocomplete_tag_name_path, {'data-noMatchesLabel' => t(:no_matches_found), class: 'field-v02', id_element: '#tagname_id'}
                     = hidden_field_tag :taggable_id, @tagging.taggable_id
                     = hidden_field_tag :taggable_type, 'Manifestation'
                     = hidden_field_tag :tagname_id, '', id: 'tagname_id'
@@ -36,36 +38,16 @@
                   .recent-tags-list.list-group
                     - @recent_tags_by_user.each do |tag|
                       %button.pointer.list-group-item{style: 'padding: 0.5rem 0.75rem;'}= tag.name
-
-                  .no-header
-                  .bottom-button-area.left-buttons
-                    %button.by-button-v02.disabled#submit_tagging{href: "#"}= t(:suggest_tag)
-                    %button.by-button-v02.by-button-secondary-v02{'data-dismiss'=>'modal'}
-                      %div= t(:cancel)
-
-          .by-card-content-v02.limited-height-popup-content-v02
-            #suggested_tags{style:'display:none'}
-            %div{style: 'display:inline'}
-              .container
-                .flex-row
-                  %input.btn-small-outline-v02.btn-text-v02{type: :submit, value: t(:save_tag_suggestion), style: 'margin-top:0.6rem;width:auto; background-color: #d9cdd5'}
-                  %button.btn-small-outline-v02.btn-text-v02#load_tag_suggestions{style: 'margin-top:0.6rem; margin-right: 0.6rem; width:auto; background-color: #d9cdd5'}= t(:suggest_tags)
+              #suggested_tags
+                .field-label= t(:select_tag_from_list)
+                .suggested-tags-list{style:'margin-top: 20px;'}
+              .no-header
+              .bottom-button-area.left-buttons
+                %input.by-button-v02.disabled#submit_tagging{type: :submit, value: t(:suggest_tag)}
+                %button.by-button-v02.by-button-secondary-v02{'data-dismiss'=>'modal'}
+                  %div= t(:cancel)
 :javascript
   $(document).ready(function() {
-    /*$('#tag').on('railsAutocomplete.select', function(event, data){
-      $('#tagname_id').val(data.item.id);
-    });*/
-    $('#load_tag_suggestions').click(function() {
-      $.ajax({
-        url: '/taggings/load_tag_suggestions',
-        type: 'GET',
-        data: {
-          taggable_id: $('#taggable_id').val(),
-          taggable_type: $('#taggable_type').val()
-        },
-        dataType: 'script'
-      });
-    });
     $('.recent-tags-list .list-group-item').click(function(e) {
       e.preventDefault();
       $('#tagname_id').val($(this).attr('id'));
@@ -83,4 +65,14 @@
     $('#tag').keyup(function(){
       $(this).change();
     });
+    $( "#add_tagging_tabs" ).tabs({
+      activate: function( event, ui ) {
+        if(ui.newPanel.attr('id') == 'suggested_tags') {
+          if($('.suggested-tags-list').children().length == 0) {
+            $('.suggested-tags-list').load("/tag_suggest?author=#{''}");
+          }
+        }
+      }
+    });
+    $('#tag').focus();
   });

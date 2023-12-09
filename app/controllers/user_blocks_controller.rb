@@ -1,5 +1,5 @@
 class UserBlocksController < ApplicationController
-  before_action :set_user_block, only: %i[ show edit update destroy ]
+  before_action :set_user_block, only: [:show, :edit, :update, :destroy]
 
   # GET /user_blocks or /user_blocks.json
   def index

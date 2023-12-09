@@ -67,6 +67,11 @@ class Tag < ApplicationRecord
   def next_tags_alphabetically(limit = 5)
     TagName.where('name > ?', self.name).order('name ASC').limit(limit)
   end
+  def self.cached_popular_tags
+    Rails.cache.fetch('popular_tags', expires_in: 1.hour) do
+      Tag.approved.by_popularity.limit(10)
+    end
+  end
 
   protected
   def create_tag_name # create a TagName with the preferred name

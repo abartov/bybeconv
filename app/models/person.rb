@@ -349,6 +349,12 @@ class Person < ApplicationRecord
     return public_domain ? I18n.t(:public_domain) : I18n.t(:by_permission)
   end
 
+  def cached_popular_tags_used_on_works
+    Rails.cache.fetch("au_#{self.id}_pop_tags", expires_in: 12.hours) do
+      popular_tags_used_on_works
+    end
+  end
+
   def popular_tags_used_on_works(limit=10)
     Tag.find(popular_tags_used_on_works_with_count.keys.first(limit))
   end
@@ -357,7 +363,6 @@ class Person < ApplicationRecord
     mm = (original_works + translations).uniq.pluck(:id)
     Tag.joins(:taggings).where(taggings: {taggable_type: 'Manifestation', taggable_id: mm}).group('tags.id').order('count_all DESC').count
   end
-
 
   def self.get_popular_authors_by_genre(genre)
     Rails.cache.fetch("au_pop_in_#{genre}", expires_in: 24.hours) do # memoize

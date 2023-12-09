@@ -1,8 +1,7 @@
-%select{name: 'suggested_tag_id'}
-  %option{value: ""}= t(:recommendations_below)
-  - @tag_suggestions.each_pair do |heuristic, tags|
-    - if tags.any?
-      %optgroup{label: t(heuristic)}
-        - tags.each do |tag|
-          %option{value: tag.id}= tag.name
-    
+- @tag_suggestions.each_pair do |heuristic, tags|
+  .list-group{style: 'margin-bottom: 20px;'}
+    - heuristic_label = t(heuristic)
+    %h3= heuristic_label
+    - tags.each do |tag|
+      %button.pointer.list-group-item.indented{style: 'padding: 0.5rem 0.75rem;', id: tag.id}
+        = tag.name
