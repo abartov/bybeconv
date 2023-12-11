@@ -36,7 +36,7 @@
                   -#%h2.field-label= t(:autosuggest_tags)
                   -#= select :tagging, :tag_id, @recent_tags_by_user.map{|tag| [tag.name, tag.id]}, {include_blank: t(:click_to_select)}, {class: 'field-v02', style: 'min-height: 12px;'}
                   -#.auto-complete-area.list-group
-                  .suggested-tags-list.scrolling-200-list{style:'margin-top: 20px;'}= t(:loading)
+                  .suggested-tags-list{style:'margin-top: 20px;'}= t(:loading)
                   -#.recent-tags-list.list-group
                   -#  - @recent_tags_by_user.each do |tag|
                   -#    %button.pointer.list-group-item{style: 'padding: 0.5rem 0.75rem;'}= tag.name

@@ -1,10 +1,15 @@
-- @tag_suggestions.each_pair do |heuristic, tags|
-  .list-group{style: 'margin-bottom: 20px;'}
-    - heuristic_label = t(heuristic)
-    %h3.heuristic-label= heuristic_label
-    - tags.each do |tag|
-      %button.pointer.list-group-item.indented{style: 'padding: 0.5rem 0.75rem;', id: tag.id}
-        = tag.name
+%div#suggestion_heuristics
+  %ul{style: 'display: flex; flex-wrap: wrap;'}
+    - @tag_suggestions.keys.each do |key|
+      %li
+        %a{href: '#'+key.to_s}
+          %h3.heuristic-label= t(key)
+
+  - @tag_suggestions.each_pair do |heuristic, tags|
+    .list-group.scrolling-200-list{style: 'margin-bottom: 20px;', id: heuristic.to_s}
+      - tags.each do |tag|
+        %button.pointer.list-group-item.indented{style: 'padding: 0.5rem 0.75rem;', id: tag.id}
+          = tag.name
 
 :javascript
   $(document).ready(function() {
@@ -14,4 +19,5 @@
       $('#tag').val($(this).text());
       $('#tag').change();
     });
+    $('#suggestion_heuristics').tabs();
   });
