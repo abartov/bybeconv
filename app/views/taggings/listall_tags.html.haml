@@ -1,0 +1,15 @@
+.list-group.full-tags-list.scrolling-200-list{style: 'margin-bottom: 20px;'}
+  - @tags.each do |tag|
+    %button.pointer.list-group-item.indented{style: 'padding: 0.5rem 0.75rem;', id: tag.id}
+      = tag.name
+:javascript
+  $(document).ready(function() {
+    $('.full-tags-list > .list-group-item').click(function(e) {
+      e.preventDefault();
+      $(this).css('background-color', '#a3f5a3'); 
+      e.preventDefault();
+      $('#tagname_id').val($(this).attr('id'));
+      $('#tag').val($(this).text());
+      $('#tag').change();
+    });
+  });

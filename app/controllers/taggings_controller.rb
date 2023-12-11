@@ -2,10 +2,15 @@
 class TaggingsController < ApplicationController
   before_action :require_user # for now, we don't allow anonymous taggings
   before_action :require_editor, only: [:rename_tag]
-  layout false, only: [:render_tags, :suggest, :add_tagging_popup]
+  layout false, only: [:render_tags, :suggest, :add_tagging_popup, :listall_tags]
 
   def add_tagging_popup
     @taggable = instantiate_taggable(params[:taggable_type], params[:taggable_id])
+    if @taggable.class == Manifestation
+      @author = @taggable.authors.first
+    elsif @taggable.class == Person
+      @author = @taggable
+    end
     @tagging = Tagging.new
     @tagging.suggester = current_user
     @tagging.status = :pending
@@ -48,12 +53,16 @@ class TaggingsController < ApplicationController
     end
   end
 
-  def list_tags
+  def list_tags # for backend
     # TODO: handle filters
     @page = params[:page]
     @page = 1 unless @page.present?
     @tags = Tag.approved.all.page(@page)
     render 'list_tags', layout: true
+  end
+
+  def listall_tags # for frontend
+    @tags = Tag.approved.all.order(:name) # TODO: at some point, we'll need to paginate this
   end
 
   def render_tags

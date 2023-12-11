@@ -446,10 +446,10 @@ body.modal-open{
   color: #999;
 }
 
-.suggested-tags-list {
+.scrolling-200-list {
   overflow-y: scroll;
   max-height: 200px; 
- }
+}
  
 .indented {
   margin-right: 15px !important;

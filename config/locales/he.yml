@@ -1087,6 +1087,7 @@ he:
   select_tag_from_list: 'בחרו מהרשימה את התגית שתרצו להוסיף:'
   suggest_tag: הצעת תגית
   suggested_by: הוצע על ידי
+  select_from_full_list: בחירה מהרשימה המלאה
   i_want_to_suggest_a_tag: אני רוצה להציע תגית
   autosuggest_tags: הציעו לי תגית
   last_proposed_tags: "תגיות אחרונות שהצעתי:"

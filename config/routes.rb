@@ -187,10 +187,11 @@ Bybeconv::Application.routes.draw do
   get 'manifestation/autocomplete_works_by_author'
   get 'work/show/:id' => 'manifestation#workshow', as: 'work_show' # temporary, until we have a works controller
   get 'manifestation/add_aboutnesses/:id' => 'manifestation#add_aboutnesses'
-  match "tag_suggest" => 'taggings#suggest', via: :get, as: 'tag_suggest'
   resources :api_keys, except: :show
   get "taggings/render_tags"
+  match "tag_suggest" => 'taggings#suggest', via: :get, as: 'tag_suggest'
   match "tags" => 'taggings#list_tags', via: [:get, :post]
+  get 'tags/listall' => 'taggings#listall_tags', as: 'tags_listall'
   resources :taggings
   resources :aboutnesses
   resources :preferences, only: [:update]

@@ -256,11 +256,4 @@
     if("#{@m.sefaria_linker}" != '') {
       sefaria.link({whitelistSelector: '#actualtext', contentLang: 'hebrew', interfaceLang: 'hebrew'});
     }
-    $('#load_tag_suggestions').click(function(e) {
-      $('#load_tag_suggestions').hide();
-      $('#suggested_tags').load("/tag_suggest?work=#{@m.id}&author=#{@author.id}&user=#{current_user ? current_user.id : ''}");
-      $('#suggested_tags').show();
-      e.preventDefault();
-    });
-
   });

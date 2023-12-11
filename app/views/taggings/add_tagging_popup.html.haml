@@ -22,25 +22,27 @@
               %li
                 %a{href: "#add-tag-form"}= t(:i_want_to_suggest_a_tag)
               %li
-                %a{href: "#suggested_tags"}= t(:autosuggest_tags)
+                %a{href: "#tag_list"}= t(:select_from_full_list)
             .by-card-content-v02
               #add-tag-form
                 = form_for @tagging, remote: true do
                   %div{style: 'display:inline;margin-top:0.6rem;'}
-                    .field-label= t(:suggested_tag_name)
+                    %h2.field-label= t(:suggested_tag_name)
                     = autocomplete_field_tag :tag, '', autocomplete_tag_name_path, {'data-noMatchesLabel' => t(:no_matches_found), class: 'field-v02', id_element: '#tagname_id'}
                     = hidden_field_tag :taggable_id, @tagging.taggable_id
                     = hidden_field_tag :taggable_type, 'Manifestation'
                     = hidden_field_tag :tagname_id, '', id: 'tagname_id'
-                  .field-label= t(:last_proposed_tags)
+                  %hr
+                  -#%h2.field-label= t(:autosuggest_tags)
                   -#= select :tagging, :tag_id, @recent_tags_by_user.map{|tag| [tag.name, tag.id]}, {include_blank: t(:click_to_select)}, {class: 'field-v02', style: 'min-height: 12px;'}
                   -#.auto-complete-area.list-group
-                  .recent-tags-list.list-group
-                    - @recent_tags_by_user.each do |tag|
-                      %button.pointer.list-group-item{style: 'padding: 0.5rem 0.75rem;'}= tag.name
-              #suggested_tags
+                  .suggested-tags-list.scrolling-200-list{style:'margin-top: 20px;'}= t(:loading)
+                  -#.recent-tags-list.list-group
+                  -#  - @recent_tags_by_user.each do |tag|
+                  -#    %button.pointer.list-group-item{style: 'padding: 0.5rem 0.75rem;'}= tag.name
+              #tag_list
                 .field-label= t(:select_tag_from_list)
-                .suggested-tags-list{style:'margin-top: 20px;'}
+                .full-tags-list-area
               .no-header
               .bottom-button-area.left-buttons
                 %input.by-button-v02.disabled#submit_tagging{type: :submit, value: t(:suggest_tag)}
@@ -48,12 +50,6 @@
                   %div= t(:cancel)
 :javascript
   $(document).ready(function() {
-    $('.recent-tags-list .list-group-item').click(function(e) {
-      e.preventDefault();
-      $('#tagname_id').val($(this).attr('id'));
-      $('#tag').val($(this).text());
-      $('#tag').change();
-    });
     $('#tag').change(function() {
       if($(this).val() == '' || $(this).val() == null) {
         $('#submit_tagging').addClass('disabled');
@@ -67,12 +63,13 @@
     });
     $( "#add_tagging_tabs" ).tabs({
       activate: function( event, ui ) {
-        if(ui.newPanel.attr('id') == 'suggested_tags') {
-          if($('.suggested-tags-list').children().length == 0) {
-            $('.suggested-tags-list').load("/tag_suggest?author=#{''}");
+        if(ui.newPanel.attr('id') == 'tag_list') {
+          if($('.full-tags-list-area').children().length == 0) {
+            $('.full-tags-list-area').load("/tags/listall");
           }
         }
       }
     });
     $('#tag').focus();
+    $('.suggested-tags-list').load("/tag_suggest?author=#{@author.id}");
   });

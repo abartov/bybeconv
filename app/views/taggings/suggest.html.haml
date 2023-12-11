@@ -1,7 +1,17 @@
 - @tag_suggestions.each_pair do |heuristic, tags|
   .list-group{style: 'margin-bottom: 20px;'}
     - heuristic_label = t(heuristic)
-    %h3= heuristic_label
+    %h3.heuristic-label= heuristic_label
     - tags.each do |tag|
       %button.pointer.list-group-item.indented{style: 'padding: 0.5rem 0.75rem;', id: tag.id}
         = tag.name
+
+:javascript
+  $(document).ready(function() {
+    $('.suggested-tags-list .list-group-item').click(function(e) {
+      e.preventDefault();
+      $('#tagname_id').val($(this).attr('id'));
+      $('#tag').val($(this).text());
+      $('#tag').change();
+    });
+  });
