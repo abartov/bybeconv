@@ -19,9 +19,8 @@ class TaggingsController < ApplicationController
   end
   def create
     if params[:tag].present?
-      if params[:tagname_id].present? # selecting from autocomplete would populate this
-        tname = TagName.find(params[:tagname_id])
-        tag = tname.tag unless tname.nil?
+      if params[:tag_id].present? # selecting from autocomplete would populate this
+        tag = Tag.find(params[:tag_id])
       else # user may have typed an existing tag name or alias without selecting from autocomplete
         tname = TagName.find_by_name(params[:tag])
         tag = tname.nil? ? nil : tname.tag
@@ -46,8 +45,9 @@ class TaggingsController < ApplicationController
     # TODO: implement
     tagging = Tagging.find(params[:id])
     unless tagging.nil?
-      if tagging.status == :pending && (tagging.suggested_by == current_user.id || (current_user.editor? && current_user.has_bit?('moderate_tags')))
-        @manifestation_id = tagging.manifestation_id
+      if tagging.pending? && (tagging.suggested_by == current_user.id || (current_user.editor? && current_user.has_bit?('moderate_tags')))
+        @taggable_id = tagging.taggable_id
+        @taggable_type = tagging.taggable_type
         tagging.destroy
       end
     end
@@ -66,8 +66,8 @@ class TaggingsController < ApplicationController
   end
 
   def render_tags
-    @manifestation = Manifestation.find(params[:manifestation_id])
-    @taggings = @manifestation.nil? ? [] : @manifestation.taggings
+    @taggable = instantiate_taggable(params[:taggable_type], params[:taggable_id])
+    @taggings = @taggable.nil? ? [] : @taggable.taggings
   end
 
   def suggest

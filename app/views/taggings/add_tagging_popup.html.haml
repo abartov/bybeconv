@@ -24,14 +24,14 @@
               %li
                 %a{href: "#tag_list"}= t(:select_from_full_list)
             .by-card-content-v02
-              #add-tag-form
-                = form_for @tagging, remote: true do
+              = form_for @tagging, remote: true do
+                #add-tag-form
                   %div{style: 'display:inline;margin-top:0.6rem;'}
                     %h2.field-label= t(:suggested_tag_name)
-                    = autocomplete_field_tag :tag, '', autocomplete_tag_name_path, {'data-noMatchesLabel' => t(:no_matches_found), class: 'field-v02', id_element: '#tagname_id'}
+                    = autocomplete_field_tag :tag, '', autocomplete_tag_name_path, {'data-noMatchesLabel' => t(:no_matches_found), class: 'field-v02', id_element: '#tag_id'}
                     = hidden_field_tag :taggable_id, @tagging.taggable_id
                     = hidden_field_tag :taggable_type, 'Manifestation'
-                    = hidden_field_tag :tagname_id, '', id: 'tagname_id'
+                    = hidden_field_tag :tag_id, '', id: 'tag_id'
                   %hr
                   -#%h2.field-label= t(:autosuggest_tags)
                   -#= select :tagging, :tag_id, @recent_tags_by_user.map{|tag| [tag.name, tag.id]}, {include_blank: t(:click_to_select)}, {class: 'field-v02', style: 'min-height: 12px;'}
@@ -40,16 +40,19 @@
                   -#.recent-tags-list.list-group
                   -#  - @recent_tags_by_user.each do |tag|
                   -#    %button.pointer.list-group-item{style: 'padding: 0.5rem 0.75rem;'}= tag.name
-              #tag_list
-                .field-label= t(:select_tag_from_list)
-                .full-tags-list-area
-              .no-header
-              .bottom-button-area.left-buttons
-                %input.by-button-v02.disabled#submit_tagging{type: :submit, value: t(:suggest_tag)}
-                %button.by-button-v02.by-button-secondary-v02{'data-dismiss'=>'modal'}
-                  %div= t(:cancel)
+                #tag_list
+                  .field-label= t(:select_tag_from_list)
+                  .full-tags-list-area
+                .no-header
+                .bottom-button-area.left-buttons
+                  %input.by-button-v02.disabled#submit_tagging{type: :submit, value: t(:suggest_tag)}
+                  %button.by-button-v02.by-button-secondary-v02{'data-dismiss'=>'modal'}
+                    %div= t(:cancel)
 :javascript
   $(document).ready(function() {
+    $('#tag').bind('railsAutocomplete.select', function(event, data){
+      $('#tag_id').val(data.item.tag_id);
+    });
     $('#tag').change(function() {
       if($(this).val() == '' || $(this).val() == null) {
         $('#submit_tagging').addClass('disabled');

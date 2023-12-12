@@ -188,7 +188,7 @@ Bybeconv::Application.routes.draw do
   get 'work/show/:id' => 'manifestation#workshow', as: 'work_show' # temporary, until we have a works controller
   get 'manifestation/add_aboutnesses/:id' => 'manifestation#add_aboutnesses'
   resources :api_keys, except: :show
-  get "taggings/render_tags"
+  get "taggings/render_tags", as: 'render_tags'
   match "tag_suggest" => 'taggings#suggest', via: :get, as: 'tag_suggest'
   match "tags" => 'taggings#list_tags', via: [:get, :post]
   get 'tags/listall' => 'taggings#listall_tags', as: 'tags_listall'

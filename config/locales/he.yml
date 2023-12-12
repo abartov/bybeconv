@@ -1106,10 +1106,10 @@ he:
   tag_renamed: "שם התגית הוחלף לשם '%{newname}'"
   save_tag_suggestion: שלח הצעת תיוג!
   suggest_tags: הצע לי תיוגים
-  used_on_other_works: תגיות מיצירות אחרות של המחבר/ת
-  popular_tags_by_user: תגיות ששימשו אותך הרבה
-  recent_tags_by_user: תגיות שהוספת באחרונה
-  popular_tags: תגיות פופולריות
+  used_on_other_works: מיצירות סמוכות
+  popular_tags_by_user: הוספת תכופות
+  recent_tags_by_user: הוספת באחרונה
+  popular_tags: נפוצות
   taggings_count: כמות פריטים מתויגים
   tag_list: רשימת תגיות
   recommendations_below: תגיות מוצעות להלן

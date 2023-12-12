@@ -1,9 +1,9 @@
 %div#suggestion_heuristics
-  %ul{style: 'display: flex; flex-wrap: wrap;'}
+  %ul{style: 'display: flex; flex-wrap: wrap;font-size:80%'}
     - @tag_suggestions.keys.each do |key|
       %li
         %a{href: '#'+key.to_s}
-          %h3.heuristic-label= t(key)
+          .heuristic-label= t(key)
 
   - @tag_suggestions.each_pair do |heuristic, tags|
     .list-group.scrolling-200-list{style: 'margin-bottom: 20px;', id: heuristic.to_s}
@@ -15,7 +15,7 @@
   $(document).ready(function() {
     $('.suggested-tags-list .list-group-item').click(function(e) {
       e.preventDefault();
-      $('#tagname_id').val($(this).attr('id'));
+      $('#tag_id').val($(this).attr('id'));
       $('#tag').val($(this).text());
       $('#tag').change();
     });

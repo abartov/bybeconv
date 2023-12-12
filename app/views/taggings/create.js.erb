@@ -1,1 +1,2 @@
 $("#taggings").append("<button class=\"tag\"><%= @t.tag.name %> <%= escape_javascript(link_to '×', @t, remote: true, method: :delete) %></button>");
+$('#generalDlg').modal('hide');
