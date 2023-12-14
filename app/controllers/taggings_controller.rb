@@ -62,7 +62,8 @@ class TaggingsController < ApplicationController
   end
 
   def listall_tags # for frontend
-    @tags = Tag.approved.all.order(:name) # TODO: at some point, we'll need to paginate this
+    @tags = Tagging.approved.joins(:tag).order(:name).pluck(:tag_id,:name).group_by(&:pop).map{|x| {id: x[1][0], name: x[0], count: x[1].length}} # TODO: at some point, we'll need to paginate this
+    #@tags = Tag.approved.all.order(:name) 
   end
 
   def render_tags
