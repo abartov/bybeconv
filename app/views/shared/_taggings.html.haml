@@ -1,15 +1,20 @@
-- any = false
-- taggings.each do |tagging|
-  - if tagging.status == 'approved'
-    - any = true
-    %button.tag
-      = link_to tagging.tag.name, tag_path(tagging.tag.id)
-  - if current_user && tagging.status == 'pending' && (tagging.suggested_by == current_user.id || current_user.admin?) # only show pending tags to the users who suggested them, or to admins
-    - any = true
-    %button.tag
-      = tagging.tag.name
-      = link_to '×', tagging, remote: true, method: :delete, class: 'tag-x'
-      .tag-wait-confirm
-        %i.fa.fa-clock-o
-- unless any
-  = t(:no_tags_yet)
+.tags-area
+  - any = false
+  - taggings.each do |tagging|
+    - if tagging.status == 'approved'
+      - any = true
+      - if current_user && tagging.suggested_by == current_user.id && tagging.updated_at > 2.weeks.ago
+        .tags.recently-approved
+          .by-icon-v02.recently-approved-tag M
+          = link_to tagging.tag.name, tag_path(tagging.tag.id)
+      - else
+        .tags
+          = link_to tagging.tag.name, tag_path(tagging.tag.id)
+    - if current_user && tagging.status == 'pending' && (tagging.suggested_by == current_user.id || current_user.admin?) # only show pending tags to the users who suggested them, or to admins
+      - any = true
+      .tags.pending
+        .by-icon-v02.pending-tag{title: t(:awaiting_approval)} L
+        = link_to tagging.tag.name, tag_path(tagging.tag.id)
+        = link_to '×', tagging, remote: true, method: :delete, class: 'tag-x', title: t(:cancel)
+  - unless any
+    = t(:no_tags_yet)

@@ -449,3 +449,10 @@ body.modal-open{
 .indented {
   margin-right: 15px !important;
 }
+
+.tags a {
+  color: #fff;
+}
+.tags.pending a {
+	color: #660248;
+}

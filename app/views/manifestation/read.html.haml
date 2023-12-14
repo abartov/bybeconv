@@ -84,15 +84,18 @@
           .by-card-v02.left-side-card-v02
             .by-card-header-left-v02
               %span.headline-1-v02= t(:tags)
+              .new-tag-teaser= t(:excited_new)
+              .new-tag-teaser-text= t(:new_tag_teaser)
             .by-card-content-v02.card-with-bottom-links
               .inline-block#taggings
                 = render partial: 'shared/taggings', locals: {taggings: @taggings}
               - unless current_user.nil?
                 = hidden_field_tag :accepted_tag_policy, @bu.present? ? @bu.get_preference(:accepted_tag_policy) : 'false', id: 'accepted_tag_policy'
                 #add-tag.card-bottom
-                  .metadata-link.linkcolor.pointer#expand-add-tag
-                    %span.right-side-icon &amp;
-                    %span{:style => "font-weight: bold"}= t(:suggest_new_tag)
+                  .link-to-all-v02
+                    %button.by-button-v02
+                      .metadata-link-icon.small-icon.pointer#initiate-add-tag &amp;
+                      %div= t(:suggest_new_tag)
 
         -# Additional translations of same work
         - if @e.translation? && (@additional_translations != nil && @additional_translations != [])
@@ -198,12 +201,10 @@
         window.scrollTo(0,position);
       }
     });
-    $('#expand-add-tag').click(function() {
-      //$('#expand-add-tag').css('display','none');
+    $('#initiate-add-tag').click(function() {
       if($('#accepted_tag_policy').val() != 'false') {
         $('#generalDlg').load("#{ add_tagging_popup_path(taggable_id: @m.id, taggable_type: 'Manifestation') }");
         $('#generalDlg').modal('show');
-        /*$('#add-tag-form').css('display','block'); */
       }
       else
         $('#tagPolicyDlg').modal({  backdrop: 'static', keyboard: false, show: true});
