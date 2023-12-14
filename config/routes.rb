@@ -162,7 +162,9 @@ Bybeconv::Application.routes.draw do
   match 'period/:period' => 'manifestation#period', as: 'period', via: [:get, :post]
   match 'translations' => 'manifestation#translations', as: 'translations', via: [:get, :post]
   get 'whatsnew' => 'manifestation#whatsnew', as: 'whatsnew'
-  match 'tag/:id' => 'manifestation#by_tag', as: 'tag', via: [:get, :post]
+  match 'tag/:id/works' => 'manifestation#by_tag', as: 'search_by_tag', via: [:get, :post]
+  match 'tag/:id/authors' => 'authors#by_tag', as: 'authors_by_tag', via: [:get, :post]
+  match 'tag/:id' => 'taggings#tag_portal', as: 'tag', via: :get
   match "download/:id" => 'manifestation#download', as: 'manifestation_download', via: [:get, :post]
   match "print/:id" => 'manifestation#print', as: 'manifestation_print', via: [:get, :post]
   get "manifestation/show/:id" => 'manifestation#show', as: 'manifestation_show'

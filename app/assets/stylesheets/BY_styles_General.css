@@ -7091,11 +7091,11 @@ a.by-icon-v02.edit-tag:hover{
 	gap: 8px;
   background-color: #907989;
 	border-radius: 4px;
-	color: #ffffff;
 	padding: 8px;
 }
 .edits-numbers{
 	width: 48px;
+	color: #ffffff;
 }
 .next-goals{
     display: flex;
@@ -7114,6 +7114,7 @@ a.by-icon-v02.edit-tag:hover{
 	background-color: #7D5F74;
 	border-radius: 4px;
 	border: 1px solid #430230;
+	color: #ffffff;
 }
 #labels-goal{
 	padding: 0 8px;
@@ -7426,7 +7427,7 @@ a.new-tag-teaser:hover{
 .new-tag-teaser:hover + .new-tag-teaser-text {
     display: inline;
 }
-select.field-v02{
+.current-tags-list{
 	height: auto;
 }
 .header-number{
@@ -7450,7 +7451,7 @@ select.field-v02{
 	justify-content: flex-start;
 }
 .my-edits{
-	color: #242424;
+	font-weight: bold;
 	margin-left: 8px;}
 .tagging-management-area .tag-actions-buttons-group .by-button-v02{
 	width: 180px;
@@ -7459,4 +7460,14 @@ select.field-v02{
 	font-size: 28px;
 	vertical-align: -8px;
 	margin-left: 6px;
+}
+.header-content{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	gap: 8px;
+	align-items: flex-end;
+}
+.header-content .headline-1-v02{
+	margin-left: 0;
 }

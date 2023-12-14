@@ -17,7 +17,7 @@ class TaggingsController < ApplicationController
     @tagging.taggable = @taggable
     @recent_tags_by_user = current_user.recent_tags_used
   end
-  def create
+  def create # creates a tagging and, if necessary, a tag
     if params[:tag].present?
       if params[:tag_id].present? # selecting from autocomplete would populate this
         tag = Tag.find(params[:tag_id])
@@ -62,8 +62,8 @@ class TaggingsController < ApplicationController
   end
 
   def listall_tags # for frontend
-    @tags = Tagging.approved.joins(:tag).order(:name).pluck(:tag_id,:name).group_by(&:pop).map{|x| {id: x[1][0], name: x[0], count: x[1].length}} # TODO: at some point, we'll need to paginate this
-    #@tags = Tag.approved.all.order(:name) 
+    @tags = Tag.approved.all.order('taggings_count desc') # TODO: at some point, we'll need to paginate this
+    #@tags = Tagging.approved.joins(:tag).order(:name).pluck(:tag_id,:name).group_by(&:pop).map{|x| {id: x[1][0], name: x[0], count: x[1].length}} # TODO: at some point, we'll need to paginate this
   end
 
   def render_tags
@@ -81,6 +81,23 @@ class TaggingsController < ApplicationController
       @tag_suggestions[:recent_tags_by_user] = current_user.recent_tags_used
     end
     @tag_suggestions[:popular_tags] = Tag.cached_popular_tags
+  end
+
+  def tag_portal
+    @tag = Tag.find(params[:id])
+    if @tag.present? && @tag.approved?
+      @taggings = @tag.taggings.approved
+      @page_title = "#{@tag.name} - #{t(:tag_page)}"
+      #debugger
+      @tagged_authors_count = Person.tagged_with(@tag.id).count
+      @tagged_authors = Person.tagged_with(@tag.id).order(:impressions_count).limit(10)
+      @tagged_works_count = Manifestation.tagged_with(@tag.id).count
+      @popular_tagged_works = Manifestation.tagged_with(@tag.id).order(:impressions_count).limit(10)
+      @newest_tagged_works = Manifestation.tagged_with(@tag.id).order('created_at desc').limit(10)
+    else
+      flash[:error] = t(:tag_not_found)
+      redirect_to root_path
+    end
   end
 
   # editor actions

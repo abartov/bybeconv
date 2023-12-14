@@ -21,7 +21,6 @@ class Person < ApplicationRecord
   has_many :taggings, as: :taggable, dependent: :destroy
   has_many :tags, through: :taggings, class_name: 'Tag'
 
-
   # scopes
   scope :has_toc, -> { where.not(toc_id: nil) }
   scope :no_toc, -> { where(toc_id: nil) }
@@ -33,6 +32,7 @@ class Person < ApplicationRecord
   scope :latest, -> (limit) {order('created_at desc').limit(limit)}
   scope :translators, -> {joins(:realizers).where(realizers: {role: Realizer.roles[:translator]}).distinct}
   scope :translatees, -> {joins(creations: {work: :expressions}).where(creations: {role: Creation.roles[:author]}, expressions: {translation: true}).distinct}
+  scope :tagged_with, -> (tag_id) {joins(:taggings).where(taggings: {tag_id: tag_id, status: Tagging.statuses[:approved]}).distinct}
 
   # features
   has_attached_file :profile_image, styles: { full: "720x1040", medium: "360x520", thumb: "180x260", tiny: "90x120"}, default_url: :placeholder_image_url, storage: :s3, s3_credentials: 'config/s3.yml', s3_region: 'us-east-1'

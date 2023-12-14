@@ -24,7 +24,7 @@ class ManifestationsIndex < Chewy::Index
     # field :video_count, type: 'integer', value: ->(manifestation){ manifestation.video_count}
     # field :recommendation_count, type: 'integer', value: ->(manifestation){manifestation.recommendations.all_approved.count}
     #field :curated_content_count, type: 'integer', value: ->(manifestation){ 0 } # TODO: implement
-  field :tags, type: 'keyword', value: ->{ tags.map(&:name) }
+  field :tags, type: 'keyword', value: ->{ approved_tags.map(&:name) }
   field :author_gender, value: ->(manifestation) {manifestation.author_gender }, type: 'keyword'
   field :translator_gender, value: ->(manifestation) {manifestation.translator_gender}, type: 'keyword'
   field :copyright_status, value: ->(manifestation) {manifestation.copyright?}, type: 'keyword' # TODO: make non boolean

@@ -34,7 +34,7 @@ class Manifestation < ApplicationRecord
   scope :not_translations, -> { joins(:expression).includes(:expression).where(expressions: {translation: false})}
   scope :translations, -> { joins(:expression).includes(:expression).where(expressions: {translation: true})}
   scope :genre, -> (genre) { joins(expression: :work).where(works: {genre: genre})}
-  scope :by_tag, ->(tag_id) {joins(:taggings).where(taggings: {tag_id: tag_id})}
+  scope :tagged_with, ->(tag_id) {joins(:taggings).where(taggings: {tag_id: tag_id, status: Tagging.statuses[:approved]}).distinct}
 
   SHORT_LENGTH = 1500 # kind of arbitrary...
   LONG_LENGTH = 15000 # kind of arbitrary...

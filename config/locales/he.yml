@@ -294,12 +294,15 @@ he:
   volunteers_who_helped: "מתנדבים שנטלו חלק בהנגשת יצירותי%{gender_letter} של %{author}"
   html_file_published: הקובץ מהמערכת הישנה פורסם עתה במערכת החדשה, ונוסף לקטלוג המערכת!
   most_popular_authors: היוצרים הנקראים ביותר
+  to_all_authors_tagged: לכל היוצרים/ות שתויגו "%{tag}"
+  to_all_works_tagged: לכל היצירות שתויגו "%{tag}"
+  latest_works_tagged: יצירות שתויגו "%{tag}" באחרונה
   most_popular_translated_authors: היוצרים המתורגמים הנקראים ביותר
   most_read_last_month: היצירות הנקראות ביותר בחודש החולף
   most_read_xlat_last_month: היצירות המתורגמות הנקראות ביותר בחודש החולף
   to_all_works_in_this_genre: לכל היצירות בסוגה זו
   most_read_authors_last_month: היוצרים הנקראים ביותר בחודש החולף
-  authors_list: רשימת יוצרים
+  authors_list: רשימת יוצרים ויוצרות
   to_the_full_list: לרשימה המלאה
   whatsnew: "מה חדש?"
   whatsnew_subtitle: יצירות ויוצרים חדשים באתר, אירועים, סרטונים, וחדשות.
@@ -349,6 +352,7 @@ he:
   # end genres
   anth_grows: המקראה צומחת!
   most_popular_works_this_month: היצירות הנקראות ביותר החודש
+  most_popular_works: היצירות הנקראות ביותר
   support_the_project: הצטרפו לתומכי הפרויקט!
   remove_final_period: הסרת נקודה מסוף הכותרת
   this_author_has_a_generated_toc: (דף יוצר מחולל אוטומטית!)
@@ -1115,6 +1119,11 @@ he:
   popular_tags: נפוצות
   taggings_count: כמות פריטים מתויגים
   tag_list: רשימת תגיות
+  tag_page: דף תגית
+  tag_not_found: אין תגית כזו!
+  authors_tagged_with_this: יוצרים/ות שתויגו "%{tag}"
+  works_tagged_with_this: יצירות שתויגו "%{tag}"
+  search_by_tag: לחיפוש פריטים מתויגים בתגית זו בפרויקט
   recommendations_below: תגיות מוצעות להלן
   tagging_system_locked_by: מערכת ניטור התגיות בשימוש על ידי %{user}, והפעולה האחרונה בוצעה לפני %{ago} דקות.
   tagging_system_locked: מערכת הניטור נעולה
