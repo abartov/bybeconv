@@ -150,6 +150,9 @@ GEM
     capistrano-rvm (0.1.2)
       capistrano (~> 3.0)
       sshkit (~> 1.2)
+    capistrano3-puma (1.2.1)
+      capistrano (~> 3.0)
+      puma (>= 2.6)
     character_set (1.6.0)
       sorted_set (~> 1.0)
     chartkick (5.0.1)
@@ -661,6 +664,7 @@ DEPENDENCIES
   capistrano (~> 3.11)
   capistrano-rails (~> 1.4)
   capistrano-rvm
+  capistrano3-puma
   chewy
   client_side_validations
   coffee-script

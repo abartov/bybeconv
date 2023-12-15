@@ -121,6 +121,7 @@ group :development do
   gem "capistrano-rails", "~> 1.4", require: false
   gem 'rvm1-capistrano3', require: false
   gem 'capistrano-rvm'
+  gem 'capistrano3-puma'
   gem 'listen'
   gem 'derailed_benchmarks'
 #  gem 'bullet' # for suggestions to add/remove eager loading
