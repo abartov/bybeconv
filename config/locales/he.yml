@@ -38,7 +38,7 @@ he:
   loading: התוכן נטען...
   work_title: שם יצירה
   what_to_search_for: מה לחפש...
-  author_names: שם(ות) מחבר(ים)
+  author_names: שם(ות) יוצר(ים)
   works_list: רשימת יצירות
   month_year: חודש/שנה
   year: שנה
@@ -69,7 +69,7 @@ he:
   about_pby_learn_more: קִראו עוד על אודות הפרויקט ועל איך לעזור
   welcome_to_works_browsing: ברוכים הבאים לרשימת היצירות
   welcome_to_authors_browsing: ברוכים הבאים לרשימת היוצרים
-  authors_browsing_intro_paging: ברשימת היוצרים בקריטריונים שבחרת ישנן %{total} תוצאות. בגלל אורכה, הרשימה מתחלקת לעמודי משנה המכילים 100 תוצאות כל אחד. ניתן לדפדף ברשימה באמצעות הבקרים הנמצאים מעל ומתחת לרשימה, המאפשרים מעבר עמודים ואיתור האות הראשונה של שם המחבר.
+  authors_browsing_intro_paging: ברשימת היוצרים בקריטריונים שבחרת ישנן %{total} תוצאות. בגלל אורכה, הרשימה מתחלקת לעמודי משנה המכילים 100 תוצאות כל אחד. ניתן לדפדף ברשימה באמצעות הבקרים הנמצאים מעל ומתחת לרשימה, המאפשרים מעבר עמודים ואיתור האות הראשונה של שם היוצר.
   works_browsing_intro_paging: ברשימת היצירות בקריטריונים שבחרת ישנן %{total} יצירות. בגלל אורכה, הרשימה מתחלקת לעמודי משנה המכילים 100 יצירות כל אחד. ניתן לדפדף ברשימה באמצעות הבקרים הנמצאים מעל ומתחת לרשימה, המאפשרים מעבר עמודים ואיתור האות הראשונה של שם היצירה.
   authors_browsing_intro_html: "<p>הרשימה מכילה גם יוצרים עבריים וגם יוצרים לועזיים אשר יצירותיהם זמינות בפרויקט בתרגום עברי. ניתן להפעיל פעולות סינון מתקדמות המאפשרות צמצום הרשימה על-ידי בחירה בו-זמנית של המאפיינים: סוגה, תקופה, מגדר, ותאריכים.</p><p><b>  להפעלת אפשרויות סינון מתקדמות יש ללחוץ על המתג בפס העליון.</b></p>"
   works_browsing_intro_html: "<p> שמות יצירות המופיעים בסוגריים מרובעים מעידים כי ליצירה לא ניתן שם, ואנו משתמשים במילים הראשונות של הטקסט ככותרת לצורכי רשימות וחיפוש. יצירות מנוקדות ישולבו בסדר היצירות הכללי ואילו יצירות באנגלית יופיעו בנפרד.</p><p>
@@ -87,7 +87,7 @@ he:
   origlang_title: כותרת בשפת המקור
   treat_as_poetry: מצב שירה
   associated_persons: אישים מקושרים
-  legacy_guessed_person: ניחוש מחבר לפי תיקיה
+  legacy_guessed_person: ניחוש יוצר לפי תיקיה
   legacy_url: היצירה באתר הישן
   to_all_authors: לרשימת כל היוצרים
   to_all_x_items: לכל %{x} הפריטים
@@ -124,14 +124,14 @@ he:
   wikipedia_url: קישורית לויקיפדיה
   # tags and taggings
   add_tag: הוספת תגית
-  tag_policy_intro_html: "תודה שבחרתם להציע תגית ליצירה. תגיות הן דרך נוספת לסווג יצירות ולסייע לאחרים לגלותן. אפשר להציע תגיות משלכם או לבחור מרשימת תגיות קיימות.</p><p>לטובת הכלל, יש להקפיד על העקרונות הבאים: התגית לא נועדה להחליף איתור דרך שם יצירה, מחבר, סוגה, ושאר אופני החיפוש הקיימים ממילא; לכן אין טעם לתייג יצירה בשם המחבר, למשל. התגית צריכה להיות עובדתית (שסביר שלא תעורר מחלוקת) ולא התרשמותית. התגית אינה ביקורת או הבעת דיעה; לכן יש להימנע מתגיות כגון ״אהבתי״, ״משעמם״ וכדומה. תגיות מוצעות תיבדקנה בידי צוות האתר לפני שתוצגנה לכלל המשתמשים."
+  tag_policy_intro_html: "תודה שבחרתם להציע תגית ליצירה. תגיות הן דרך נוספת לסווג יצירות ולסייע לאחרים לגלותן. אפשר להציע תגיות משלכם או לבחור מרשימת תגיות קיימות.</p><p>לטובת הכלל, יש להקפיד על העקרונות הבאים: התגית לא נועדה להחליף איתור דרך שם יצירה, יוצר, סוגה, ושאר אופני החיפוש הקיימים ממילא; לכן אין טעם לתייג יצירה בשם היוצר, למשל. התגית צריכה להיות עובדתית (שסביר שלא תעורר מחלוקת) ולא התרשמותית. התגית אינה ביקורת או הבעת דיעה; לכן יש להימנע מתגיות כגון ״אהבתי״, ״משעמם״ וכדומה. תגיות מוצעות תיבדקנה בידי צוות האתר לפני שתוצגנה לכלל המשתמשים."
   to_full_tagging_policy: לפירוט מלא של כללי השימוש בתגיות
   i_understand_and_accept: הבנתי והסכמתי לעקרונות אלו.
   can_proceed: אפשר להתקדם
   # end tags and taggings
   none_yet_click_edit_to_associate: טרם קושר. יש ללחוץ על עריכה כדי לקשר.
-  send_to_viaf: חיפוש מחבר במאגר VIAF
-  person_entity: ישות מחבר
+  send_to_viaf: חיפוש יוצר במאגר VIAF
+  person_entity: ישות יוצר
   report_inappropriate_content: דיווח על תוכן בעייתי
   this_work_has_x_recommendations: "ליצירה זו יש %{x} המלצות קוראים"
   x_liked_y_recommended: "%{x} קוראות וקוראים אהבו את היצירה, %{y} המלצות כתובות"
@@ -140,7 +140,7 @@ he:
   with: "עם "
   associate_with_viaf: קשר את התיקיה לרשומת ה-VIAF הזו
   associated_with_viaf: קושר לרשומה מספר %{viaf} במאגר VIAF
-  nothing_found_try_surname: אין תוצאות.  נסו לעדכן (זמנית!) את שם המחבר לשם המשפחה בלבד וחפשו שוב.
+  nothing_found_try_surname: אין תוצאות.  נסו לעדכן (זמנית!) את שם היוצר לשם המשפחה בלבד וחפשו שוב.
   conversion_stats_html: "סטטיסטיקה -- %{total_texts} סך הכל קבצים ישנים, %{total_known} קבצים אובחנו, %{total_images} עם תמונות, %{total_footnotes} עם הערות שוליים, %{total_tables} עם טבלאות, %{total_nikkud_full} עם ניקוד מלא, %{total_nikkud_some} עם ניקוד חלקי. <p /> מצבים אחרים -- %{total_badenc} עם תקלת קידוד, %{total_fileerr} עם שגיאת קובץ אחרת, %{total_assigned} קבצים מוקצים למסבים,%{total_parsed} קבצים פוענחו, %{total_uploaded} קבצים הועלו ישירות, %{total_superseded} קבצים הוחלפו בהעלאה ישירה, %{total_accepted} קבצים אושרו, %{total_published} ראו אור בקטלוג, %{total_manual} קבצים ממתינים להסבה ידנית."
   assignee: מוקצה ל-
   legacy_text_from_url: מהאתר הישן בכתובת
@@ -181,13 +181,13 @@ he:
   awaiting_first: בהמתנה להעלאת יצירה ראשונה
   nonpd: טרם פקעו הזכויות
   make_published: הפוך לפומבי!
-  publish_person: הפיכת המחבר/ת %{author} לפומבי/ת
-  publishing_person_explanation: להלן רשימת יצירות של %{author}. לחיצה על הלחצן בתחתית הרשימה תהפוך מחבר/ת זה/זו לפומבי/ת!
+  publish_person: הפיכת היוצר/ת %{author} לפומבי/ת
+  publishing_person_explanation: להלן רשימת יצירות של %{author}. לחיצה על הלחצן בתחתית הרשימה תהפוך יוצר/ת זה/זו לפומבי/ת!
   work_not_available: יצירה זו אינה זמינה לפי שעה.
   author_not_available: דף היוצר/ת אינו זמין לפי שעה.
   illustrations_by: איורים מאת
   deprecated: מחוּק
-  pub_status_explanation: ברירת המחדל אם השדה ריק היא שהיצירה תהא פומבית אם המחבר כבר פומבי, ולא פומבית אם לאו.
+  pub_status_explanation: ברירת המחדל אם השדה ריק היא שהיצירה תהא פומבית אם היוצר כבר פומבי, ולא פומבית אם לאו.
   dpublished: פורסם
   duploaded: עלה לאתר
   dcreated: חובר
@@ -207,7 +207,7 @@ he:
   most_read_works: רשימת היצירות הנקראות ביותר
   newest_works: היצירות החדשות ביותר
   table_of_contents: דף יוצר
-  new_person: "מחבר/ת חדש/ה"
+  new_person: "יוצר/ת חדש/ה"
   join_volunteer: התנדבות להפקת תכנים
   donate_money: תרומה כספית
   donate: תרומה
@@ -322,7 +322,7 @@ he:
   save_and_exit: שמירה ויציאה
   save_to_file: שמירת היצירה לקובץ
   save_and_update_display: שמירה ועדכון תצוגה
-  works_about_this_author: "יצירות בַּמאגר על אודות המחבר%{gender_suffix}"
+  works_about_this_author: "יצירות בַּמאגר על אודות היוצר%{gender_suffix}"
   works_about_this_work: יצירות בַּמאגר על אודות יצירה זו
   aboutnesses: נושאי היצירה
   person: אדם
@@ -411,7 +411,7 @@ he:
   logo: לוגו
   statistics: סטטיסטיקה
   holdings: מצאי
-  bib_stats: ידועים %{pubs} חיבורים ו-%{holdings} רשומות מצאי. מתוך החיבורים, %{obtained} הושגו וטרם נסרקו, %{scanned} נסרקו וטרם עלו למערכת המשימות, %{uploaded} עלו למערכת, %{irrelevant} סומנו כלא רלבנטיים, %{copyrighted} עדיין מוגנים וללא רשות פרסום, ומתוך רשומות המצאי, %{missing} חסרים בפועל.  הביבליוגרפיה של %{authors_done} מחברים הושלמה, ו-%{authors_todo} מחברים נותרו.
+  bib_stats: ידועים %{pubs} חיבורים ו-%{holdings} רשומות מצאי. מתוך החיבורים, %{obtained} הושגו וטרם נסרקו, %{scanned} נסרקו וטרם עלו למערכת המשימות, %{uploaded} עלו למערכת, %{irrelevant} סומנו כלא רלבנטיים, %{copyrighted} עדיין מוגנים וללא רשות פרסום, ומתוך רשומות המצאי, %{missing} חסרים בפועל.  הביבליוגרפיה של %{authors_done} יוצרים הושלמה, ו-%{authors_todo} יוצרים נותרו.
   added_to_group: נוסף/ה לקבוצה
   removed_from_group: נגרע/ה מהקבוצה
   handle_proofs: טיפול בהגהות
@@ -425,8 +425,8 @@ he:
   unmake_crowdsourcer: ביטול הרשאת מיקור המונים
   legacy_metadata: עריכת מטא-דאטה אתר ישן
   mark_as_valid: סמן כתקין ואל תציג שוב
-  get_bibs: חיפוש רשומות ביבליוגרפיות לפי מחבר
-  get_bibs_instructions: הזינו שם מחבר (אפשר חלקי; אם מלא, שם משפחה, שם פרטי), והקישו על חיפוש.
+  get_bibs: חיפוש רשומות ביבליוגרפיות לפי יוצר
+  get_bibs_instructions: הזינו שם יוצר (אפשר חלקי; אם מלא, שם משפחה, שם פרטי), והקישו על חיפוש.
   search: חיפוש
   true: כן
   false: לא
@@ -647,8 +647,8 @@ he:
   uploaddate_desc: 'ת. עלייה לאתר: מהחדש לישן'
   title: כותרת
   title_x: "כותרת: %{x}"
-  author_x: "מחבר: %{x}"
-  authors_xx: "מחברים: %{xx}"
+  author_x: "יוצר: %{x}"
+  authors_xx: "יוצרים: %{xx}"
   title_already_exists: השם כבר קיים. נא לתת שם אחר.
   text_already_in_anthology: היצירה הנוכחית כבר מופיעה במקראה הזאת.
   anth_x_works_added: "%{x} יצירות נוספו לסוף המקראה. אפשר לשנות את מיקומן בגרירה."
@@ -671,8 +671,8 @@ he:
   sort: מיון
   sort_name: שם לצורך מיון
   actions: פעולות
-  author: מחבר
-  author_f: מחברת
+  author: יוצר
+  author_f: יוצרת
   render: הצגת יצירה
   show: הצגת פרטים
   thedate: תאריך
@@ -681,7 +681,11 @@ he:
   publication: הוצאה
   comments: הערות
   popular_work_tags: תגיות נפוצות ליצירות
-  no_tags_yet: ליצירה זו טרם הוצעו תגיות
+  no_tags_yet: "%{taggee} טרם הוצעו תגיות"
+  this_work: ליצירה זו
+  this_author_m: ליוצר זה 
+  this_author_f: ליוצרת זו
+  this_item: לפריט זה
   suggested_tag_name: איזו תגית ברצונך להציע?
   no_recommendations_yet: על יצירה זו טרם נכתבו המלצות. נשמח אם תהיו הראשונים לכתוב המלצה.
   to_all_whatsnew: לכל מה שחדש
@@ -785,7 +789,7 @@ he:
   link: קישורית
   period: תקופה
   periods: תקופות
-  periodless: מחברים חסרי תקופה
+  periodless: יוצרים חסרי תקופה
   ancient: עת עתיקה ופיוט
   medieval: ימי הביניים והרנסאנס
   enlightenment: ההשכלה
@@ -950,12 +954,12 @@ he:
   copyrighted: עדיין מוגן
   no_matches_found: לא נמצאו תוצאות
   bibliography: ביבליוגרפיה
-  pubs_by_person_instructions_html: "1. יש להזין שם משפחה (עם או בלי שם פרטי אחריו) לחיפוש ולבחור מאגר לחפש בו.<br />2. אם נמצאו תוצאות מעניינות, יש לקשר מחבר מן המערכת בתיבה משמאל. <br />3. אם הכותר מימין עוד לא מופיע משמאל, אפשר ללחוץ על '+ פריט' ולהוסיפו.<br />4. אם הכותר כבר מופיע, אבל זה עותק ממקור אחר, יש לבחור את העותק המופיע, משמאל, ואז ללחוץ על '+עותק' מימין, כדי לשייך את העותק הנוסף לאותו פריט. <br />5. עם מיצוי החיפוש, אפשר לעבור לדף הביבליוגרפי של היוצר בקישור הסגול בראש הרשימה משמאל. "
-  pubs_by_author: חיבורים מקושרים למחבר/ת
+  pubs_by_person_instructions_html: "1. יש להזין שם משפחה (עם או בלי שם פרטי אחריו) לחיפוש ולבחור מאגר לחפש בו.<br />2. אם נמצאו תוצאות מעניינות, יש לקשר יוצר מן המערכת בתיבה משמאל. <br />3. אם הכותר מימין עוד לא מופיע משמאל, אפשר ללחוץ על '+ פריט' ולהוסיפו.<br />4. אם הכותר כבר מופיע, אבל זה עותק ממקור אחר, יש לבחור את העותק המופיע, משמאל, ואז ללחוץ על '+עותק' מימין, כדי לשייך את העותק הנוסף לאותו פריט. <br />5. עם מיצוי החיפוש, אפשר לעבור לדף הביבליוגרפי של היוצר בקישור הסגול בראש הרשימה משמאל. "
+  pubs_by_author: חיבורים מקושרים ליוצר/ת
   is_scanned: סרוק?
   bib_done: ביבליוגרפיה הושלמה בסדנה?
   record_source: מקור הרשומה
-  select_person_first: יש לשייך מחבר/ת לפני שיוך פריטים
+  select_person_first: יש לשייך יוצר/ת לפני שיוך פריטים
   select_publication_first: יש ללחוץ על שורת פריט משמאל לפני שיוך עותק
   item_pattern: "תבנית קישור לפריט בקטלוג (המזהה יישתל במקום שבו תכתבו __ID__)"
   add_publication: '+פריט --->'
@@ -980,7 +984,7 @@ he:
   dedicated_site: אתרים בנושא
   audio: קטעי שֶמע
   gnazim: 'מכון "גנזים" – אגודת הסופרים'
-  author_details: פרטי מחבר
+  author_details: פרטי יוצר
   work_entity_details: פרטי ישות יצירה
   work_details: פרטי יצירה
   expression_details: פרטי ביטוי
@@ -1003,7 +1007,7 @@ he:
   destroy: מחיקה
   our_volunteers: המתנדבים שלנו
   featured_content_management: ניהול תוכן מומלץ (זרקור)
-  featured_authors_management: ניהול זרקור על מחברים
+  featured_authors_management: ניהול זרקור על יוצרים
   recommendations_by_volunteer: המלצות עורכים ומתנדבים
   featured_author: זרקור על יוצר/ת
   folder_list: רשימת תיקיות
@@ -1016,7 +1020,7 @@ he:
   back: חזרה
   back_to_dashboard: למרכז הפעילות
   dashboard: מרכז הפעילות
-  raw_tocs: מחברים עם דף יוצר שטרם עוּבַּד
+  raw_tocs: יוצרים עם דף יוצר שטרם עוּבַּד
   back_to_homepage: לדף הבית
   make_corrections_below: "תיקונים יש לבצע בתיבת הטקסט להלן:"
   recommendations_by_status: המלצות לפי סטטוס %{status}
@@ -1043,7 +1047,7 @@ he:
   in_role: בתפקיד
   recommendation_for: המלצה עבור הקובץ
   back_to_top: לראש הדף
-  confirmed_person_as_author: המחבר %{author} אושר כמחבר היצירה הזו.
+  confirmed_person_as_author: היוצר %{author} אושר כיוצר היצירה הזו.
   from: מאת
   from_lang: מ
   content: תוכן
@@ -1195,7 +1199,7 @@ he:
   add_feature_date: הוספת טווח תאריכי הצגה
   featured_content_body: תוכן ההמלצה
   linked_manifestation: יצירה מקושרת
-  linked_author: מחבר/ת מקושר/ת
+  linked_author: יוצר/ת מקושר/ת
   featured_content: תוכן מערכת
   new_featured_content: תוכן מערכת חדש
   new_featured_author: יצירת זרקור חדש על יוצר

@@ -151,7 +151,7 @@
                 .new-tag-teaser-text= t(:new_tag_teaser)
               .by-card-content-v02.card-with-bottom-links
                 .inline-block#taggings
-                  = render partial: 'shared/taggings', locals: {taggings: @taggings}
+                  = render partial: 'shared/taggings', locals: {taggings: @taggings, taggable: @author}
                 - unless current_user.nil?
                   = hidden_field_tag :accepted_tag_policy, @bu.present? ? @bu.get_preference(:accepted_tag_policy) : 'false', id: 'accepted_tag_policy'
                   #add-tag.card-bottom

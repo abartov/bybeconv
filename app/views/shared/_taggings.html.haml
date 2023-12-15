@@ -20,4 +20,5 @@
           = tagging.tag.name
         = link_to '×', tagging, remote: true, method: :delete, class: 'tag-x', title: t(:cancel)
   - unless any
-    = t(:no_tags_yet)
+    - taggee = taggee_from_taggable(taggable)
+    %p#no_tags_yet= t(:no_tags_yet, taggee: taggee)
