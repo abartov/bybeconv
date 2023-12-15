@@ -47,6 +47,7 @@ he:
   works_by_period: יצירות לפי תקופה
   works_by_genre: יצירות לפי סוגה
   works_by_tag: יצירות לפי תגית
+  authors_by_tag: יוצרים לפי תגית
   notice: הודעה
   sitenotice: הודעת מערכת
   new_sitenotice: הודעת מערכת חדשה
@@ -1114,6 +1115,8 @@ he:
   excited_new: חדש!
   awaiting_approval: ממתין לאישור
   new_tag_teaser: עזרו לנו לחשוף יצירות לקוראים נוספים באמצעות תיוג!
+  tags_are_a_way: תגיות מסייעות לגילוי יצירות ויוצרים לפי נושאים ומכנים משותפים
+  want_to_tag: רוצים לתייג?
   popular_tags_by_user: הוספת תכופות
   recent_tags_by_user: הוספת באחרונה
   popular_tags: נפוצות
