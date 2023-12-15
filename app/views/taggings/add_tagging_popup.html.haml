@@ -30,7 +30,7 @@
                     %h2.field-label= t(:suggested_tag_name)
                     = autocomplete_field_tag :tag, '', autocomplete_tag_name_path, {'data-noMatchesLabel' => t(:no_matches_found), class: 'field-v02', id_element: '#tag_id'}
                     = hidden_field_tag :taggable_id, @tagging.taggable_id
-                    = hidden_field_tag :taggable_type, 'Manifestation'
+                    = hidden_field_tag :taggable_type, @tagging.taggable_type
                     = hidden_field_tag :tag_id, '', id: 'tag_id'
                   %hr
                   -#%h2.field-label= t(:autosuggest_tags)
