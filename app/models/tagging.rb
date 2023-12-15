@@ -1,4 +1,4 @@
-class Tagging < ApplicationRecord
+ class Tagging < ApplicationRecord
 
   belongs_to :tag, foreign_key: 'tag_id', counter_cache: true
   belongs_to :taggable, polymorphic: true # taggable things include Manifestations, People, Anthologies, ...
@@ -18,6 +18,8 @@ class Tagging < ApplicationRecord
   scope :semiapproved, -> { where(status: Tagging.statuses[:semiapproved]) }
   scope :rejected, -> { where(status: Tagging.statuses[:rejected]) }
   scope :by_suggester, ->(user) { where(suggested_by: user.id) }
+
+  update_index(->(tagging) { tagging.taggable.class.to_s == 'Person' ? 'people' : 'manifestations'}) {taggable} # change in tags should be reflected in search indexes
 
   def approve!(approver)
     self.approved_by = approver.id

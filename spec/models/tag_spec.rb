@@ -39,8 +39,9 @@ describe Tag do
       t.save
       i += 1
     end
+    u2 = create(:user)
     Tag.last(2).each do |tag|
-      tag.approve!
+      tag.approve!(u2)
     end
     expect(Tag.approved.count).to eq 2
   end
@@ -53,8 +54,9 @@ describe Tag do
       t.save
       i += 1
     end
+    u2 = create(:user)
     Tag.last(2).each do |tag|
-      tag.approve!
+      tag.approve!(u2)
     end
     expect(Tag.pending.count).to eq 3
   end
@@ -62,7 +64,8 @@ describe Tag do
   it 'approves a tag' do
     t = Tag.create!(name: Faker::Science.science, creator: create(:user), status: 'pending')
     expect(Tag.last.status).to eq 'pending'
-    t.approve!
+    u = create(:user)
+    t.approve!(u)
     expect(Tag.last.status).to eq 'approved'
   end
 

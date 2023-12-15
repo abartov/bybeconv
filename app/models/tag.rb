@@ -20,8 +20,10 @@ class Tag < ApplicationRecord
   scope :by_user, ->(user) { where(created_by: user.id) }
   scope :by_name, ->(name) { joins(:tag_names).where(tag_names: {name: name}) } # only use this to search for tags, to ensure aliases are searched as well!
 
-  def approve!
-    self.update(status: Tag.statuses[:approved])
+  def approve!(approver)
+    self.approver = approver
+    self.status = Tag.statuses[:approved]
+    self.save
   end
   def reject!
     self.update(status: Tag.statuses[:rejected])
