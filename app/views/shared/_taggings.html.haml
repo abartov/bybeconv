@@ -14,7 +14,10 @@
       - any = true
       .tags.pending
         .by-icon-v02.pending-tag{title: t(:awaiting_approval)} L
-        = link_to tagging.tag.name, tag_path(tagging.tag.id)
+        - if tagging.tag.approved?
+          = link_to tagging.tag.name, tag_path(tagging.tag.id)
+        - else # if the tag itself is pending, don't link to it
+          = tagging.tag.name
         = link_to '×', tagging, remote: true, method: :delete, class: 'tag-x', title: t(:cancel)
   - unless any
     = t(:no_tags_yet)
