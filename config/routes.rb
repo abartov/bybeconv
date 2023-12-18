@@ -65,6 +65,7 @@ Bybeconv::Application.routes.draw do
   get 'admin/raw_tocs'
   get 'admin/my_convs/:id' => 'admin#my_convs', as: 'my_convs'
   get 'admin/tag_moderation' => 'admin#tag_moderation', as: 'tag_moderation'
+  get 'admin/tag_review/:id' => 'admin#tag_review', as: 'tag_review'
   post 'admin/approve_tag/:id' => 'admin#approve_tag', as: 'approve_tag'
   post 'admin/reject_tag/:id' => 'admin#reject_tag', as: 'reject_tag'
   post 'admin/approve_tagging/:id' => 'admin#approve_tagging', as: 'approve_tagging'

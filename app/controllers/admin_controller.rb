@@ -743,6 +743,16 @@ class AdminController < ApplicationController
     @pending_tags = Tag.joins(:taggings).where(status: :pending).order(:created_at)
     @pending_taggings = Tagging.where(status: :pending).order(:created_at)
   end
+  def tag_review
+    require_editor('moderate_tags')
+    @tag = Tag.find(params[:id])
+    if @tag.nil?
+      flash[:error] = I18n.t(:no_such_item)
+      redirect_to url_for(action: :tag_moderation)
+    end
+    
+  end
+
   def approve_tag
     require_editor('moderate_tags')
     if session[:tagging_lock]

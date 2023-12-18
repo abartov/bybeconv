@@ -1,5 +1,5 @@
 class Tag < ApplicationRecord
-  
+
   has_many :taggings, dependent: :destroy
   has_many :tag_names, dependent: :destroy
   # NOTE: the 'name' field in tag is the *preferred*/display name. All tag names are in TagName records (including this main preferred one, so that one can search *only* the TagName records)

@@ -9,6 +9,7 @@ gem 'mysql2' # Rails 5.2 needs a newer one # , '~> 0.3.11'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-twitter'
 gem 'rufus-scheduler' # scheduler
+gem 'damerau-levenshtein' # string distance
 
 gem 'chewy' # for ElasticSearch 7.x
 gem 'active_data' # for *Search classes in Chewy
@@ -140,3 +141,5 @@ group :test, :development do
   gem 'spring-commands-rspec'
   gem 'debug'
 end
+
+gem "sidekiq", "~> 7.2"

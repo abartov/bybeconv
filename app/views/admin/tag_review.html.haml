@@ -1,0 +1,82 @@
+.tagging-management-area.tags-content
+  #offered-tag.by-card-v02
+    .by-card-header-v02
+      .headline-1-v02
+        = "#{t(:suggested_tag)}: #{@tag.name}"
+    %div
+      %div{style: "display:flex"}
+        .by-card-content-v02{style: "width: 50%;"}
+          .headline-3-v02 המלצות והערות:
+          .flex-container
+            %div המערכת מצאה תגית דומה באיות אחר: ״מעשיות וסיפורי עם״
+            %button.by-button-v02
+              .by2-icon> Q
+              מיזוג עם תגית זו
+          %br/
+          .flex-container
+            %div תגית זו יכולה להיות דומה ל: ״סיפורי פולקלור״
+            %button.by-button-v02
+              .by2-icon> Q
+              מיזוג עם תגית זו
+          %br/
+          .headline-3-v02 פעולות:
+          .tag-actions-buttons-group
+            %button.by-button-v02
+              .by2-icon> N
+              אישור ומעבר לתגית הבאה
+            %button.by-button-v02
+              .by-icon-v02 -
+              %div דחיה ומעבר לתגית הבאה
+            %button.by-button-v02
+              .by2-icon N
+              %div אישור ומעבר לתיוגים המקושרים לתגית זו
+            %button.by-button-v02
+              .by-icon-v02> -
+              דחיה + הסבר
+            %button.by-button-v02
+              .by2-icon> Q
+              שינוי / מיזוג
+          %br/
+          %button.ghost-btn.more-actions-btn פעולות נוספות...
+        .by-card-content-v02{style: "width: 50%;"}
+          .headline-3-v02= t(:suggested_by)
+          .offered-by
+            %a{href: "#"}= @tag.creator.name
+            %p
+              = t(:suggested_tags)+':'
+              - tag_count = Tag.by_user(@tag.creator).count
+              %a{href: "#"}= tag_count
+            %p
+              = t(:acceptance_rate)+':'
+              - additional_class = ''
+              - acceptance_rate = @tag.creator.tag_acceptance_rate
+              - if tag_count > 3 && acceptance_rate < 25
+                - additional_class = 'low-approval-rate'
+              - elsif tag_count > 3 && acceptance_rate > 75
+                - additional_class = 'high-approval-rate'
+              %span{class: additional_class}= "%.1f%%" % acceptance_rate
+          .headline-2-v02
+            = t(:items_pending_for_this_tag, tag: @tag.name)
+            %span= "(#{@tag.taggings.count})"
+          %div{href: "#"}
+            %span{style: "font-weight: bold"} הפריטים יפתחו בטאב חדש
+            %span.open-in-new-tab T
+          #available-tags-list.scrollable-area
+            %ol
+              - @tag.taggings.each do |tagging|
+                %li
+                  - if tagging.taggable_type == 'Manifestation'
+                    %a{href: manifestation_path(tagging.taggable_id), target: "_blank"}
+                      = "#{tagging.taggable.title} / #{tagging.taggable.author_string}"
+                  - elsif tagging.taggable_type == 'Person'
+                    %a{href: person_path(tagging.taggable_id), target: "_blank"}
+                      = tagging.taggable.name
+
+      .offered-tags-nav
+        .tags-nav-small
+          %button.ghost-btn
+            .right-arrow> 2
+            דילוג לתגית הקודמת
+          %button.ghost-btn
+            דילוג לתגית הבאה
+            .left-arrow 1
