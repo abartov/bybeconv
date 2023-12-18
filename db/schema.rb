@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_12_01_172931) do
+ActiveRecord::Schema.define(version: 2023_12_18_063920) do
 
   create_table "aboutnesses", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -662,6 +662,7 @@ ActiveRecord::Schema.define(version: 2023_12_01_172931) do
     t.index ["sort_title"], name: "index_manifestations_on_sort_title"
     t.index ["status", "sort_title"], name: "index_manifestations_on_status_and_sort_title"
     t.index ["status"], name: "index_manifestations_on_status"
+    t.index ["updated_at"], name: "index_manifestations_on_updated_at"
   end
 
   create_table "news_items", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -878,10 +879,12 @@ ActiveRecord::Schema.define(version: 2023_12_01_172931) do
     t.datetime "updated_at", null: false
     t.integer "approver_id"
     t.integer "taggings_count"
+    t.string "wikidata_qid"
     t.index ["approver_id"], name: "index_tags_on_approver_id"
     t.index ["created_by"], name: "tags_created_by_fk"
     t.index ["name"], name: "index_tags_on_name", unique: true
     t.index ["status", "name"], name: "index_tags_on_status_and_name", unique: true
+    t.index ["wikidata_qid"], name: "index_tags_on_wikidata_qid"
   end
 
   create_table "tocs", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -925,6 +928,7 @@ ActiveRecord::Schema.define(version: 2023_12_01_172931) do
     t.datetime "avatar_updated_at"
     t.string "tasks_api_key"
     t.boolean "crowdsourcer"
+    t.date "warned_on"
   end
 
   create_table "versions", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|

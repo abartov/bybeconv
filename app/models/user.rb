@@ -90,6 +90,15 @@ class User < ApplicationRecord
     self.blocks.where('expires_at is null OR expires_at > ?', Time.now)
   end
 
+  def warned?
+    self.warned_on.present? # TODO: auto-blank (=expire) warnings at some point?
+  end
+
+  def warn!(msg)
+    self.update(warned_on: Time.now)
+    Notifications.warn(self, msg).deliver
+  end
+  
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_initialize.tap do |user|
       user.provider = auth.provider
