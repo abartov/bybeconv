@@ -741,6 +741,7 @@ he:
   tags_for_work: תגיות ליצירה
   recommendations_for_work: המלצות קוראים
   x_authors: "(%{x} יוצרים)"
+  x_pending_taggings_for_tag: "%{x} תיוגים מוצעים לתגית %{tag}"
   x_authors_mixed_gender: "%{x} יוצרים ויוצרות"
   writing_language: שפת יצירה
   non_hebrew_languages: שפות אחרות
@@ -1101,6 +1102,7 @@ he:
   autosuggest_tags: הציעו לי תגית
   last_proposed_tags: "תגיות אחרונות שהצעתי:"
   acceptance_rate: אחוז התקבלות
+
   add_recommendation: הוספת המלצה
   email_footer_html: "בברכה, צוות פרויקט בן־יהודה.\n\nאולי תמצא/י ענין ביומן הרשת של פרויקט בן־יהודה: http://benyehuda.org/blog/ \n\n או בערוץ היו-טיוב של פרויקט בן־יהודה: http://www.youtube.com/user/ProjectBenYehuda/videos?flow=grid&view=0"
   proof_fixed: "תודה רבה על ההגהה ששלחת עבור היצירה בכתובת:\n\n%{url}\n\nלאחר בדיקה, תיקנו את הטקסט באתר.  נשמח לקבל הצעות הגהה גם בעתיד!"
@@ -1108,13 +1110,27 @@ he:
   proof_wontfix: "תודה רבה על ההגהה ששלחת עבור היצירה בכתובת:\n\n%{url}\n\nלאחר בדיקה, הגענו למסקנה שאין מדובר בשגיאה, אלא בשימוש לשון בלתי-שכיח, ובכל אופן כך מופיע במקור.  לכן לא נתקן את הטקסט באתר.  נשמח לקבל הצעות הגהה גם בעתיד!"
   proof_wontfix_m: "תודה רבה על ההגהה ששלחת עבור היצירה %{title} בכתובת:\n\n%{url}\n\nלאחר בדיקה, הגענו למסקנה שאין מדובר בשגיאה, אלא בשימוש לשון בלתי-שכיח, ובכל אופן כך מופיע במקור.  לכן לא נתקן את הטקסט באתר.  נשמח לקבל הצעות הגהה גם בעתיד!"
   additional_proof_explanation: "להלן הערה מטעם העורך/ת שטיפל/ה בהצעת ההגהה שלך: \"%{explanation}\""
+  additional_tagging_explanation: "להלן הערה מטעם העורך/ת שטיפל/ה בהצעת התיוג שלך: \"%{explanation}\""
   below_is_your_original_email: להלן נוסח הדואל ששלחת אלינו בשעתו, לשם תזכורת.
+  tag_rejected_intro: "לאחר עיון, החלטנו לא להוסיף את התגית \"%{tag}\" שהצעת. התגית אינה מתאימה למדיניות התיוג שלנו, או שהיא נרדפת לתגית קיימת."
+  user_warning_email: "יש להקפיד על תנאי השימוש באתר: על שפה נאותה, על זכויות יוצרים, ועל אי־הפרת חוק לשון הרע. זו אזהרה בלבד; אם תהיינה הפרות נוספות מצדך, חשבונך ייחסם."
+  additional_warning_explanation: "להלן הערה מטעם העורך/ת שזיהה את הבעייה: \"%{msg}\""
   rec_accepted: "קיבלנו בתודה את המלצתך על היצירה:\n\n%{url}\n\nכשנתפנה לעיין בה, נשקול לשלב אותה בפרסום בפייסבוק או ברשומה ביומן הרשת שלנו, כדי שגם אחרים ייהנו."
   rec_published: "המלצתך על היצירה בכתובת:\n\n%{url}\n\nשולבה עתה בטקסט שפרסמנו כאן:\n\n%{published_url}\n"
   taggings_merged: "התיוגים הועברו לתגית הקיימת '%{toname}'"
   tag_renamed: "שם התגית הוחלף לשם '%{newname}'"
   save_tag_suggestion: שלח הצעת תיוג!
   suggest_tags: הצע לי תיוגים
+  suggested_tag: התגית המוצעת
+  quick_actions: פעולות מהירות
+  time_waiting: ממתינה מזה
+  block_user: חסימת משתמש
+  warn_user: אזהרת משתמש
+  escalate_to_editor: העברה לעורך ראשי להכרעה
+  reject_and_explain: "דחיה + הסבר"
+  explain_rejection: נא להסביר את סיבת הדחייה
+  suggested_tags: תגיות שהוצעו
+  linked_taggings: תיוגים מקושרים
   used_on_other_works: מיצירות סמוכות
   excited_new: חדש!
   awaiting_approval: ממתין לאישור
@@ -1173,6 +1189,7 @@ he:
   donate_p2_html: כספי תרומתכם מועברים לחשבון העמותה למחשוב ספרות עברית (מס״ע), שהקמנו עבור תמיכה בפרויקט, וישמשו אך ורק לצרכים אלו.
   about_amuta: על העמותה למחשוב ספרות עברית
   reports: "דו\"חות"
+  user: משתמש/ת
   tocs_missing_links_report: "דו\"ח יצירות לא מקושרות לדפי יוצר"
   tocs_linking_to_missing_items: "דפי יוצר שמקשרים ליצירות לא קיימות"
   missing_copyright_report: "דו\"ח אישים ויצירות ללא מצב זכויות יוצרים"
@@ -1236,6 +1253,10 @@ he:
       subject: יצירת קשר מהאתר
     volunteer_form_submitted:
       subject: טופס התנדבות מהאתר
+    tag_rejected:
+      subject: הצעת התגית שלך לא התקבלה
+    warn:
+      subject: אזהרה לפני חסימה מפרויקט בן־יהודה
   api_keys_mailer:
     key_created:
       subject: Your API key

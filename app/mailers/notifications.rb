@@ -21,6 +21,28 @@ class Notifications < ActionMailer::Base
   # Subject can be set in your I18n file at config/locales/en.yml
   # with the following lookup:
   #
+  #   he.notifications.tag_rejected.subject
+  def tag_rejected(tag, explanation)
+    @greeting = t(:hello_anon)
+    @tag = tag
+    @explanation = explanation
+    mail to: tag.creator.email
+  end
+
+  # Subject can be set in your I18n file at config/locales/en.yml
+  # with the following lookup:
+  #
+  #   he.notifications.warn.subject
+  def warn(user, msg)
+    @greeting = t(:hello_anon)
+    @user = user
+    @msg = msg
+    mail to: user.email
+  end
+
+  # Subject can be set in your I18n file at config/locales/en.yml
+  # with the following lookup:
+  #
   #   en.notifications.proof_wontfix.subject
   #
   def proof_wontfix(proof, url, m, explanation)

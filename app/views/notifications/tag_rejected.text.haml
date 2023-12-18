@@ -1,0 +1,10 @@
+= "#{@greeting}, #{@tag.creator.name}!"
+
+= t(:tag_rejected_intro, tag: @tag.name)
+
+- if @explanation.present?
+  != t(:additional_tagging_explanation, explanation: @explanation)
+
+%hr
+
+!= raw t(:email_footer_html)

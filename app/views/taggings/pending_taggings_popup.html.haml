@@ -1,0 +1,42 @@
+
+
+
+.modal-dialog
+  .modal-content
+    .flex-popup
+      .modal-header
+        .popup-top
+          .row{style: "padding:15px;margin: 0"}
+            .col-4{style: "padding: 0;"}
+              %button.btn-small-outline-v02{'data-dismiss'=>'modal'}
+                .btn-text-v02
+                  %span.right-arrow 2
+                  %span= t(:back)
+            .col-4{style: "padding: 0;"}
+              .headline-2-v02{:style => "text-align: center;margin: 0; padding-top: 3px;"}= t(:x_pending_taggings_for_tag, tag: @tag.name, x: @tag.taggings.pending.count)
+            .col-4
+      .modal-body
+        .by-popup-v02.narrow-popup
+          .by-card-header-v02.desktop-only
+            %span.headline-1-v02.desktop-only= t(:x_pending_taggings_for_tag, tag: @tag.name, x: @tag.taggings.pending.count)
+            %a.popup-x-v02{'data-dismiss'=>'modal'} -
+          %div
+            .by-card-content-v02
+              %div
+                %span{style: "font-weight: bold"}= t(:will_open_in_new_tab)
+                %span.open-in-new-tab T
+              %br/
+              #available-tags-list.scrollable-area
+                %ol
+                  - @taggings.each do |tagging|
+                    %li
+                      - if tagging.taggable_type == 'Manifestation'
+                        %a{href: manifestation_path(tagging.taggable_id), target: "_blank"}
+                          = "#{tagging.taggable.title} / #{tagging.taggable.author_string}"
+                      - elsif tagging.taggable_type == 'Person'
+                        %a{href: person_path(tagging.taggable_id), target: "_blank"}
+                          = tagging.taggable.name
+              .no-header
+              .bottom-button-area.left-buttons
+                %button.by-button-v02.by-button-secondary-v02{'data-dismiss'=>'modal'}
+                  %div= t(:cancel)

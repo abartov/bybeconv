@@ -69,6 +69,11 @@ Bybeconv::Application.routes.draw do
   post 'admin/reject_tag/:id' => 'admin#reject_tag', as: 'reject_tag'
   post 'admin/approve_tagging/:id' => 'admin#approve_tagging', as: 'approve_tagging'
   post 'admin/reject_tagging/:id' => 'admin#reject_tagging', as: 'reject_tagging'
+  post 'admin/warn_user/:id' => 'admin#warn_user', as: 'warn_user'
+  post 'admin/block_user/:id' => 'admin#block_user', as: 'block_user'
+  post 'admin/unblock_user/:id' => 'admin#unblock_user', as: 'unblock_user'
+  post 'admin/escalate_tag/:id' => 'admin#escalate_tag', as: 'escalate_tag'
+  post 'admin/escalate_tagging/:id' => 'admin#escalate_tagging', as: 'escalate_tagging'
   get 'admin/conversion_verification'
   get 'admin/assign_conversion_verification' => 'admin#assign_conversion_verification', as: 'assign_conversion_verification'
   get 'admin/assign_proofs' => 'admin#assign_proofs', as: 'assign_proofs'
@@ -149,6 +154,7 @@ Bybeconv::Application.routes.draw do
   get 'welcome/:id/featured_author' => 'welcome#featured_author_popup', as: 'featured_author_popup'
   get 'author/:id/latest' => 'authors#latest_popup', as: 'author_latest_popup'
   get 'add_tagging/:taggable_type/:taggable_id' => 'taggings#add_tagging_popup', as: 'add_tagging_popup'
+  get 'pending_taggings/:tag_id' => 'taggings#pending_taggings_popup', as: 'pending_taggings_popup'
   get '/page/:tag' => 'static_pages#view', as: 'static_pages_by_tag', via: [:get]
   get "read/:id" => 'manifestation#read', as: 'manifestation'
   match 'dict/:id' => 'manifestation#dict', as: 'dict_browse', via: [:get, :post]

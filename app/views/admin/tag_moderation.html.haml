@@ -1,3 +1,541 @@
+.tagging-management-area
+  #tags-mamagement.management
+    .title-area
+      .title-right-side
+        .by2-icon X
+        %p.headline-2-v02= t(:pending_tags)
+        %p= "(#{@pending_tags.count})"
+        - unless session[:tagging_lock]
+          %h3{style: 'color:red'}= t(:tagging_system_locked_by, user: @tagging_lock_owner, ago: @tagging_lock_refreshed)
+      %a.by-icon-v02.pointer /
+    .by-card-content-v02
+      .management-content
+        %table
+          %tr
+            %th
+              %input{name: "#", type: "checkbox", value: "#"}/
+            %th.th-sort
+              = t(:suggested_tag)
+              .by-icon-v02.sort
+            %th.th-sort
+              = t(:linked_taggings)
+              .by-icon-v02.sort
+            %th.th-sort
+              = t(:time_waiting)
+              .by-icon-v02.sort
+                %a{href: "#"} )
+            %th= t(:user)
+            %th= t(:suggested_tags)
+            %th= t(:acceptance_rate)
+            %th= t(:quick_actions)
+          - @pending_tags.each do |tag|
+            %tr
+              %td
+                %input{name: "#", type: "checkbox", value: "#"}/
+              %td.label-name
+                %a{href: tag_path(tag)}= tag.name
+              %td.pending-taggings.pointer.linkcolor{'data-tagid': tag.id}
+                = tag.taggings.count
+              %td.wait-time= distance_of_time_in_words(tag.created_at, Date.today)
+              - if tag.creator.warned?
+                %td.in-td.red
+                  %a{href: "#"}
+                    %span.by2-icon> P
+                    = tag.creator.name
+              - else
+                %td
+                  %a{href: "#"}= tag.creator.name
+              - tag_count = Tag.by_user(tag.creator).count
+              %td
+                %a{href: "#"}= tag_count
+              - additional_class = ''
+              - acceptance_rate = tag.creator.tag_acceptance_rate
+              - if tag_count > 3 && acceptance_rate < 25
+                - additional_class = 'low-approval-rate'
+              - elsif tag_count > 3 && acceptance_rate > 75
+                - additional_class = 'high-approval-rate'
+              %td{class: "%-approved #{additional_class}"}= "%.1f%%" % acceptance_rate
+              %td
+                .quick-actions
+                  - if session[:tagging_lock]
+                    = button_to reject_tag_path(tag), method: :post, remote: true, class: 'reject-tag-btn ghost-btn', form_class: 'reject_tag_form', data: { confirm: t(:confirm_reject) } do
+                      .by-icon-v02> -
+                      = t(:reject)
+                    = button_to reject_tag_path(tag), method: :post, remote: true, class: 'reject-tag-btn with-explanation ghost-btn', form_class: 'reject_tag_form', data: { confirm: t(:confirm_reject) } do
+                      .by-icon-v02> -
+                      = t(:reject_and_explain)
+                  - else
+                    = t(:tagging_system_locked)
+          %tr
+            %td
+              %input{name: "#", type: "checkbox", value: "#"}/
+            %td.label-name.in-td
+              %a{href: "#"} מעשיות וסיפורי עם
+              %a.by2-icon{href: "#"} P
+            %td
+              %a{href: "#"} 28
+            %td.wait-time 25
+            %td
+              %a{href: "#"} GideonTamam
+            %td
+              %a{href: "#"} 138
+            %td.high-approval-rate{class: "%-approved"} 89%
+            %td
+              .quick-actions
+                %button.ghost-btn
+                  .by-icon-v02> -
+                  דחיה
+                %button.ghost-btn
+                  .by-icon-v02> -
+                  דחיה + הסבר
+          %tr
+            %td
+              %input{name: "#", type: "checkbox", value: "#"}/
+            %td.label-name
+              %a{href: "#"} חנוכה
+            %td
+              %a{href: "#"} 7
+            %td.wait-time 19
+            %td
+              %a{href: "#"} VeryLongUserNameIndeed
+            %td
+              %a{href: "#"} 12
+            %td.high-approval-rate{class: "%-approved"} 90%
+            %td
+              .quick-actions
+                %button.ghost-btn
+                  .by-icon-v02> -
+                  דחיה
+                %button.ghost-btn
+                  .by-icon-v02> -
+                  דחיה + הסבר
+          %tr
+            %td
+              %input{name: "#", type: "checkbox", value: "#"}/
+            %td.label-name
+              %a{href: "#"} אסטרונומיה
+            %td
+              %a{href: "#"} 8
+            %td.wait-time 18
+            %td
+              %a{href: "#"} StandardUser
+            %td
+              %a{href: "#"} 47
+            %td.high-approval-rate{class: "%-approved"} 85%
+            %td
+              .quick-actions
+                %button.ghost-btn
+                  .by-icon-v02> -
+                  דחיה
+                %button.ghost-btn
+                  .by-icon-v02> -
+                  דחיה + הסבר
+          %tr
+            %td
+              %input{name: "#", type: "checkbox", value: "#"}/
+            %td.label-name
+              %a{href: "#"} אנטי ציונות
+            %td
+              %a{href: "#"} 1
+            %td.wait-time 16
+            %td.in-td.red
+              %a{href: "#"}
+                %span.by2-icon> P
+                AnnoyingUser
+            %td
+              %a{href: "#"} 22
+            %td.low-approval-rate{class: "%-approved"} 8%
+            %td
+              .quick-actions
+                %button.ghost-btn
+                  .by-icon-v02> -
+                  דחיה
+                %button.ghost-btn
+                  .by-icon-v02> -
+                  דחיה + הסבר
+          %tr
+            %td
+              %input{name: "#", type: "checkbox", value: "#"}/
+            %td.label-name
+              %a{href: "#"} סיפורי ילדים
+            %td
+              %a{href: "#"} 37
+            %td.wait-time 29
+            %td
+              %a{href: "#"} david0103043
+            %td
+              %a{href: "#"} 22
+            %td{class: "%-approved"} 67%
+            %td
+              .quick-actions
+                %button.ghost-btn
+                  .by-icon-v02> -
+                  דחיה
+                %button.ghost-btn
+                  .by-icon-v02> -
+                  דחיה + הסבר
+          %tr
+            %td
+              %input{name: "#", type: "checkbox", value: "#"}/
+            %td.label-name
+              %a{href: "#"} פלפולי לשון
+            %td
+              %a{href: "#"} 18
+            %td.wait-time 24
+            %td
+              %a{href: "#"} shlomitH17
+            %td
+              %a{href: "#"} 7
+            %td.low-approval-rate{class: "%-approved"} 14%
+            %td
+              .quick-actions
+                %button.ghost-btn
+                  .by-icon-v02> -
+                  דחיה
+                %button.ghost-btn
+                  .by-icon-v02> -
+                  דחיה + הסבר
+          %tr
+            %td
+              %input{name: "#", type: "checkbox", value: "#"}/
+            %td.label-name
+              %a{href: "#"} מעשיות וסיפורי עם
+              %span.system-recommendation המלצת מערכת!
+            %td
+              %a{href: "#"} 28
+            %td.wait-time 25
+            %td
+              %a{href: "#"} GideonTamam
+            %td
+              %a{href: "#"} 138
+            %td.high-approval-rate{class: "%-approved"} 89%
+            %td
+              .quick-actions
+                %button.ghost-btn
+                  .by-icon-v02> -
+                  דחיה
+                %button.ghost-btn
+                  .by-icon-v02> -
+                  דחיה + הסבר
+  #labels-mamagement.management
+    .title-area
+      .title-right-side
+        .by2-icon Y
+        %p.headline-2-v02 תיוגים לאישור
+        %p (212)
+      %a.by-icon-v02.pointer /
+    .by-card-content-v02
+      .management-content
+        %table
+          %tr
+            %th
+              %input{name: "#", type: "checkbox", value: "#"}/
+            %th.th-sort פריט מוצע לתיוג
+            %th.th-sort תגית
+            %th.th-sort
+              המתנה (בימים)
+              .by-icon-v02.sort
+                %a{href: "#"} )
+            %th משתמש/ת
+            %th תיוגים שהוצעו
+            %th אחוז מאושר
+            %th פעולות מהירות
+          %tr
+            %td
+              %input{name: "#", type: "checkbox", value: "#"}/
+            %td.label-name
+              %a{href: "#"} חושחושית סיפור חייה של אוגרת / רות צרפתי
+            %td.tags-for-labels
+              %a{href: "#"} סיפורי ילדים
+              %span
+                %a.tags-number{href: "#"} 37
+            %td.wait-time 29
+            %td
+              %a{href: "#"} david0103043
+            %td
+              %a{href: "#"} 22
+            %td{class: "%-approved"} 67%
+            %td
+              .quick-actions
+                %button.ghost-btn
+                  .by2-icon> N
+                  אישור
+                %button.ghost-btn
+                  .by-icon-v02> -
+                  דחיה
+                %button.ghost-btn
+                  .by-icon-v02> -
+                  דחיה + הסבר
+                %button.ghost-btn
+                  .by2-icon> Q
+                  שינוי / מיזוג
+                %button.ghost-btn.more-actions-btn פעולות נוספות...
+          %tr
+            %td
+              %input{name: "#", type: "checkbox", value: "#"}/
+            %td.label-name
+              %a{href: "#"} אל אי החתולים אשר ביון / רות צרפתי
+            %td.tags-for-labels
+              %a{href: "#"} סיפורי ילדים
+              %span.tags-number חדש
+            %td.wait-time 29
+            %td
+              %a{href: "#"} david0103043
+            %td
+              %a{href: "#"} 22
+            %td{class: "%-approved"} 67%
+            %td
+              .quick-actions
+                %button.ghost-btn
+                  .by2-icon> N
+                  אישור
+                %button.ghost-btn
+                  .by-icon-v02> -
+                  דחיה
+                %button.ghost-btn
+                  .by-icon-v02> -
+                  דחיה + הסבר
+                %button.ghost-btn
+                  .by2-icon> Q
+                  שינוי / מיזוג
+                %button.ghost-btn.more-actions-btn פעולות נוספות...
+          %tr
+            %td
+              %input{name: "#", type: "checkbox", value: "#"}/
+            %td.label-name
+              %a{href: "#"} חושחושית סיפור חייה של אוגרת / רות צרפתי
+            %td.tags-for-labels
+              %a{href: "#"} סיפורי ילדים
+              %span
+                %a.tags-number{href: "#"} 37
+            %td.wait-time 29
+            %td
+              %a{href: "#"} david0103043
+            %td
+              %a{href: "#"} 22
+            %td{class: "%-approved"} 67%
+            %td
+              .quick-actions
+                %button.ghost-btn
+                  .by2-icon> N
+                  אישור
+                %button.ghost-btn
+                  .by-icon-v02> -
+                  דחיה
+                %button.ghost-btn
+                  .by-icon-v02> -
+                  דחיה + הסבר
+                %button.ghost-btn
+                  .by2-icon> Q
+                  שינוי / מיזוג
+                %button.ghost-btn.more-actions-btn פעולות נוספות...
+          %tr
+            %td
+              %input{name: "#", type: "checkbox", value: "#"}/
+            %td.label-name
+              %a{href: "#"} אל אי החתולים אשר ביון / רות צרפתי
+            %td.tags-for-labels
+              %a{href: "#"} סיפורי ילדים
+              %span.tags-number חדש
+            %td.wait-time 29
+            %td
+              %a{href: "#"} david0103043
+            %td
+              %a{href: "#"} 22
+            %td{class: "%-approved"} 67%
+            %td
+              .quick-actions
+                %button.ghost-btn
+                  .by2-icon> N
+                  אישור
+                %button.ghost-btn
+                  .by-icon-v02> -
+                  דחיה
+                %button.ghost-btn
+                  .by-icon-v02> -
+                  דחיה + הסבר
+                %button.ghost-btn
+                  .by2-icon> Q
+                  שינוי / מיזוג
+                %button.ghost-btn.more-actions-btn פעולות נוספות...
+          %tr
+            %td
+              %input{name: "#", type: "checkbox", value: "#"}/
+            %td.label-name
+              %a{href: "#"} חושחושית סיפור חייה של אוגרת / רות צרפתי
+            %td.tags-for-labels
+              %a{href: "#"} סיפורי ילדים
+              %span
+                %a.tags-number{href: "#"} 37
+            %td.wait-time 29
+            %td
+              %a{href: "#"} david0103043
+            %td
+              %a{href: "#"} 22
+            %td{class: "%-approved"} 67%
+            %td
+              .quick-actions
+                %button.ghost-btn
+                  .by2-icon> N
+                  אישור
+                %button.ghost-btn
+                  .by-icon-v02> -
+                  דחיה
+                %button.ghost-btn
+                  .by-icon-v02> -
+                  דחיה + הסבר
+                %button.ghost-btn
+                  .by2-icon> Q
+                  שינוי / מיזוג
+                %button.ghost-btn.more-actions-btn פעולות נוספות...
+          %tr
+            %td
+              %input{name: "#", type: "checkbox", value: "#"}/
+            %td.label-name
+              %a{href: "#"} אל אי החתולים אשר ביון / רות צרפתי
+            %td.tags-for-labels
+              %a{href: "#"} סיפורי ילדים
+              %span.tags-number חדש
+            %td.wait-time 29
+            %td
+              %a{href: "#"} david0103043
+            %td
+              %a{href: "#"} 22
+            %td{class: "%-approved"} 67%
+            %td
+              .quick-actions
+                %button.ghost-btn
+                  .by2-icon> N
+                  אישור
+                %button.ghost-btn
+                  .by-icon-v02> -
+                  דחיה
+                %button.ghost-btn
+                  .by-icon-v02> -
+                  דחיה + הסבר
+                %button.ghost-btn
+                  .by2-icon> Q
+                  שינוי / מיזוג
+                %button.ghost-btn.more-actions-btn פעולות נוספות...
+          %tr
+            %td
+              %input{name: "#", type: "checkbox", value: "#"}/
+            %td.label-name
+              %a{href: "#"} חושחושית סיפור חייה של אוגרת / רות צרפתי
+            %td.tags-for-labels
+              %a{href: "#"} סיפורי ילדים
+              %span
+                %a.tags-number{href: "#"} 37
+            %td.wait-time 29
+            %td
+              %a{href: "#"} david0103043
+            %td
+              %a{href: "#"} 22
+            %td{class: "%-approved"} 67%
+            %td
+              .quick-actions
+                %button.ghost-btn
+                  .by2-icon> N
+                  אישור
+                %button.ghost-btn
+                  .by-icon-v02> -
+                  דחיה
+                %button.ghost-btn
+                  .by-icon-v02> -
+                  דחיה + הסבר
+                %button.ghost-btn
+                  .by2-icon> Q
+                  שינוי / מיזוג
+                %button.ghost-btn.more-actions-btn פעולות נוספות...
+          %tr
+            %td
+              %input{name: "#", type: "checkbox", value: "#"}/
+            %td.label-name
+              %a{href: "#"} אל אי החתולים אשר ביון / רות צרפתי
+            %td.tags-for-labels
+              %a{href: "#"} סיפורי ילדים
+              %span.tags-number חדש
+            %td.wait-time 29
+            %td
+              %a{href: "#"} david0103043
+            %td
+              %a{href: "#"} 22
+            %td{class: "%-approved"} 67%
+            %td
+              .quick-actions
+                %button.ghost-btn
+                  .by2-icon> N
+                  אישור
+                %button.ghost-btn
+                  .by-icon-v02> -
+                  דחיה
+                %button.ghost-btn
+                  .by-icon-v02> -
+                  דחיה + הסבר
+                %button.ghost-btn
+                  .by2-icon> Q
+                  שינוי / מיזוג
+                %button.ghost-btn.more-actions-btn פעולות נוספות...
+          %tr
+            %td
+              %input{name: "#", type: "checkbox", value: "#"}/
+            %td.label-name
+              %a{href: "#"} חושחושית סיפור חייה של אוגרת / רות צרפתי
+            %td.tags-for-labels
+              %a{href: "#"} סיפורי ילדים
+              %span
+                %a.tags-number{href: "#"} 37
+            %td.wait-time 29
+            %td
+              %a{href: "#"} david0103043
+            %td
+              %a{href: "#"} 22
+            %td{class: "%-approved"} 67%
+            %td
+              .quick-actions
+                %button.ghost-btn
+                  .by2-icon> N
+                  אישור
+                %button.ghost-btn
+                  .by-icon-v02> -
+                  דחיה
+                %button.ghost-btn
+                  .by-icon-v02> -
+                  דחיה + הסבר
+                %button.ghost-btn
+                  .by2-icon> Q
+                  שינוי / מיזוג
+                %button.ghost-btn.more-actions-btn פעולות נוספות...
+          %tr
+            %td
+              %input{name: "#", type: "checkbox", value: "#"}/
+            %td.label-name
+              %a{href: "#"} אל אי החתולים אשר ביון / רות צרפתי
+            %td.tags-for-labels
+              %a{href: "#"} סיפורי ילדים
+              %span.tags-number חדש
+            %td.wait-time 29
+            %td
+              %a{href: "#"} david0103043
+            %td
+              %a{href: "#"} 22
+            %td{class: "%-approved"} 67%
+            %td
+              .quick-actions
+                %button.ghost-btn
+                  .by2-icon> N
+                  אישור
+                %button.ghost-btn
+                  .by-icon-v02> -
+                  דחיה
+                %button.ghost-btn
+                  .by-icon-v02> -
+                  דחיה + הסבר
+                %button.ghost-btn
+                  .by2-icon> Q
+                  שינוי / מיזוג
+                %button.ghost-btn.more-actions-btn פעולות נוספות...
+
 %br
 .backend.container
   .admin_dashboard_item
@@ -54,12 +592,26 @@
           
 :javascript
   function remove_row(event, color) {
-    row = $(event.target).closest('.flex-row');
+    row = $(event.target).closest('tr');
     row.css('background-color', color);
     row.fadeOut(2000);
   }
   $(document).ready(function() {
-    $('.reject-tag-btn').on('ajax:complete', function(event, data, status, xhr) {
+    $('.pending-taggings').click(function(e){
+      e.stopPropagation();
+      url = "#{ pending_taggings_popup_path(tag_id: 999) }";
+      url = url.replace('999', $(this).attr('data-tagid'));
+      $('#generalDlg').load(url);
+      $('#generalDlg').modal('show');
+    });
+    $('.with-explanation').click(function(e) {
+      e.stopPropagation();
+      var explanation = prompt("#{t(:explain_rejection)}");
+      const sanitized = $("<p>").text(explanation).text(); 
+      var newParam = $("<input name='reason' type='hidden' value='" + sanitized + "' />")
+      $(this.parentElement).append(newParam);
+    });
+    $('.reject_tag_form').on('ajax:complete', function(event, data, status, xhr) {
       // response will come underneath of ‘data’ variable
       remove_row(event, '#ff3333');
     });

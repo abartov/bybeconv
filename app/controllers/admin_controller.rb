@@ -740,8 +740,8 @@ class AdminController < ApplicationController
   ## user content moderation
   def tag_moderation
     require_editor('moderate_tags')
-    @pending_tags = Tag.where(status: :pending)
-    @pending_taggings = Tagging.where(status: :pending)
+    @pending_tags = Tag.joins(:taggings).where(status: :pending).order(:created_at)
+    @pending_taggings = Tagging.where(status: :pending).order(:created_at)
   end
   def approve_tag
     require_editor('moderate_tags')
@@ -763,6 +763,9 @@ class AdminController < ApplicationController
       t = Tag.find(params[:id])
       if t.present?
         t.rejected!
+        if params[:reason].present?
+          Notifications.tag_rejected(t, params[:reason]).deliver
+        end
         return render json: { tag_id: t.id, tag_name: t.name }
       else
         head :not_found

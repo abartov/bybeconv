@@ -2,7 +2,7 @@
 class TaggingsController < ApplicationController
   before_action :require_user # for now, we don't allow anonymous taggings
   before_action :require_editor, only: [:rename_tag]
-  layout false, only: [:render_tags, :suggest, :add_tagging_popup, :listall_tags]
+  layout false, only: [:render_tags, :suggest, :add_tagging_popup, :listall_tags, :pending_taggings_popup]
 
   def add_tagging_popup
     @taggable = instantiate_taggable(params[:taggable_type], params[:taggable_id])
@@ -16,6 +16,10 @@ class TaggingsController < ApplicationController
     @tagging.status = :pending
     @tagging.taggable = @taggable
     @recent_tags_by_user = current_user.recent_tags_used
+  end
+  def pending_taggings_popup
+    @tag = Tag.find(params[:tag_id])
+    @taggings = @tag.taggings.pending
   end
   def create # creates a tagging and, if necessary, a tag
     if params[:tag].present?

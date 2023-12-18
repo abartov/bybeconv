@@ -4,15 +4,15 @@
     - if tagging.status == 'approved'
       - any = true
       - if current_user && tagging.suggested_by == current_user.id && tagging.updated_at > 2.weeks.ago
-        .tags.recently-approved
+        .tags.recently-approved{"data-tagname": j(tagging.tag.name)}
           .by-icon-v02.recently-approved-tag M
           = link_to tagging.tag.name, tag_path(tagging.tag.id)
       - else
-        .tags
+        .tags{"data-tagname": j(tagging.tag.name)}
           = link_to tagging.tag.name, tag_path(tagging.tag.id)
     - if current_user && tagging.status == 'pending' && (tagging.suggested_by == current_user.id || current_user.admin?) # only show pending tags to the users who suggested them, or to admins
       - any = true
-      .tags.pending
+      .tags.pending{"data-tagname": j(tagging.tag.name)}
         .by-icon-v02.pending-tag{title: t(:awaiting_approval)} L
         - if tagging.tag.approved?
           = link_to tagging.tag.name, tag_path(tagging.tag.id)
@@ -22,3 +22,11 @@
   - unless any
     - taggee = taggee_from_taggable(taggable)
     %p#no_tags_yet= t(:no_tags_yet, taggee: taggee)
+
+:javascript
+  $(document).ready(function() {
+    $('.tags').click(function(e){
+      e.stopPropagation();
+      ahoy.track('clicked tag name', {tag: $(this).attr('data-tagname')});
+    });
+  });
