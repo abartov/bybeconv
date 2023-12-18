@@ -742,6 +742,8 @@ class AdminController < ApplicationController
     require_editor('moderate_tags')
     @pending_tags = Tag.joins(:taggings).where(status: :pending).order(:created_at)
     @pending_taggings = Tagging.where(status: :pending).order(:created_at)
+    @page_title = t(:moderate_tags)
+    @similar_tags = ListItem.where(listkey: 'tag_similarity').pluck(:item_id, :extra).to_h
   end
   def tag_review
     require_editor('moderate_tags')

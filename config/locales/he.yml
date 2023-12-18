@@ -737,6 +737,7 @@ he:
   tags: תגיות
   tag: תגית
   moderate_tags: עיון בתיוגים מהציבור
+  similar_to_x: "דומה לפריט: %{x}"
   pending_tags_and_taggings: יש %{pending_tags} תגיות ו־%{pending_taggings} תיוגים ממתינים לאישור
   pending_tags: תגיות ממתינות לאישור
   pending_taggings: תיוגים ממתינים לאישור
