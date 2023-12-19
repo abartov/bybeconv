@@ -1,0 +1,58 @@
+.modal-dialog
+  .modal-content
+    .flex-popup
+      .modal-header
+        .popup-top
+          .row{style: "padding:15px;margin: 0"}
+            .col-4{style: "padding: 0;"}
+              %button.btn-small-outline-v02{'data-dismiss'=>'modal'}
+                .btn-text-v02
+                  %span.right-arrow 2
+                  %span= t(:back)
+            .col-4{style: "padding: 0;"}
+              .headline-2-v02{:style => "text-align: center;margin: 0; padding-top: 3px;"}= t(:merge_tag_title)
+            .col-4
+      .modal-body
+        .by-popup-v02.narrow-popup
+          .by-card-header-v02.desktop-only
+            %span.headline-1-v02.desktop-only= t(:merge_tag_title)
+            %a.popup-x-v02{'data-dismiss'=>'modal'} -
+          %div
+            .by-card-content-v02
+              - if @with_tag.present?
+                %p= t(:merge_tag_preview_html, tag: @tag.name, src_tag_taggings_count: @tag.taggings_count, dest_tag: @with_tag.name, dest_tag_taggings_count: @with_tag.taggings_count).html_safe
+              - else
+                %p= t(:merge_tag_preview_html, tag: @tag.name, src_tag_taggings_count: @tag.taggings_count, dest_tag: '', dest_tag_taggings_count: 0).html_safe
+              %p= t(:taggings_will_be_merged)
+              .bottom-button-area.left-buttons
+                %input.by-button-v02.disabled#do_merge_tag{type: :submit, value: t(:confirm_merge_tag)}
+                %button.by-button-v02.by-button-secondary-v02{'data-dismiss'=>'modal'}
+                  %div= t(:cancel)
+
+:javascript
+  $(document).ready(function() {
+    $('#tag').bind('railsAutocomplete.select', function(event, data){
+      $('#tag_id').val(data.item.tag_id);
+    });
+    $('#tag').change(function() {
+      if($(this).val() == '' || $(this).val() == null) {
+        $('#submit_tagging').addClass('disabled');
+        $('#tag_id').val('');
+      } else {
+        $('#submit_tagging').removeClass('disabled');
+      }
+    });
+    $('#tag').keyup(function(){
+      $(this).change();
+    });
+    $( "#add_tagging_tabs" ).tabs({
+      activate: function( event, ui ) {
+        if(ui.newPanel.attr('id') == 'tag_list') {
+          if($('.full-tags-list-area').children().length == 0) {
+            $('.full-tags-list-area').load("/tags/listall");
+          }
+        }
+      }
+    });
+    $('#tag').focus();
+  });

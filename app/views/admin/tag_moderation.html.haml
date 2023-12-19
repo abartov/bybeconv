@@ -37,7 +37,7 @@
                 - if @similar_tags[tag.id]
                   %span.by2-icon{title: t(:similar_to_x, x: Tag.find(@similar_tags[tag.id].split(':')[1].to_i).name)}> P
               %td.pending-taggings.pointer.linkcolor{'data-tagid': tag.id}
-                = tag.taggings.count
+                = tag.taggings_count
               %td.wait-time= distance_of_time_in_words(tag.created_at, Date.today)
               - if tag.creator.warned?
                 %td.in-td.red
@@ -102,7 +102,7 @@
                 - elsif tagging.taggable_type == 'Person'
                   %a{href: person_path(tagging.taggable_id), target: "_blank"}
                     = tagging.taggable.name
-              - tagging_count = tagging.tag.taggings.count
+              - tagging_count = tagging.tag.taggings_count
               %td.tags-for-labels
                 %a{href: "#"}= tagging.tag.name
                 %span

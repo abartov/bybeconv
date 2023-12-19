@@ -6,36 +6,49 @@
     %div
       %div{style: "display:flex"}
         .by-card-content-v02{style: "width: 50%;"}
-          .headline-3-v02 המלצות והערות:
-          .flex-container
-            %div המערכת מצאה תגית דומה באיות אחר: ״מעשיות וסיפורי עם״
-            %button.by-button-v02
-              .by2-icon> Q
-              מיזוג עם תגית זו
-          %br/
-          .flex-container
-            %div תגית זו יכולה להיות דומה ל: ״סיפורי פולקלור״
-            %button.by-button-v02
-              .by2-icon> Q
-              מיזוג עם תגית זו
-          %br/
-          .headline-3-v02 פעולות:
+          .headline-2-v02= t(:adjacent_or_similar_tags)
+          - @similar_tags.each do |tag|
+            .flex-container
+              %b{style: 'color:blue'}= t(:similar_to_x, x: tag.name)
+              = link_to merge_tag_path(@tag.id, with_tag: tag.id), class: 'by-button-secondary-v02 pointer pad10rl' do
+                .by2-icon{style: 'display: inline; margin-left: 7px;'}> Q
+                = t(:merge_with_this_tag)
+            %br/
+          .headline-3-v02= t(:adjacent_tags)
+          %ul
+            - @tag.prev_tags_alphabetically.each do |prev_tag|
+              %li.flex-container
+                = prev_tag.name
+                .by-button-secondary-v02.pointer.pad10rl.merge-btn{'data-tag-id': @tag.id, 'data-with-tag': prev_tag.tag_id}
+                  .by2-icon{style: 'display: inline; margin-left: 7px;'}> Q
+                  = t(:merge_with_this_tag)
+
+            %li{style: 'font-size: 120%;'}
+              %b= @tag.name
+            - @tag.next_tags_alphabetically.each do |next_tag|
+              %li.flex-container
+                = next_tag.name
+                = link_to merge_tag_path(@tag.id, with_tag: next_tag.tag_id), class: 'by-button-secondary-v02 pointer pad10rl' do
+                  .by2-icon{style: 'display: inline; margin-left: 7px;'}> Q
+                  = t(:merge_with_this_tag)
+          %hr
+          .headline-3-v02= t(:actions)
           .tag-actions-buttons-group
-            %button.by-button-v02
+            = button_to approve_tag_and_next_path(@tag), class: 'by-button-v02', form_class: 'approve_tag_form', data: { confirm: t(:confirm_approve) } do
               .by2-icon> N
-              אישור ומעבר לתגית הבאה
-            %button.by-button-v02
+              = t(:approve_and_next)
+            = button_to reject_tag_and_next_path(@tag), class: 'by-button-v02', form_class: 'reject_tag_form', data: { confirm: t(:confirm_reject) } do
               .by-icon-v02 -
-              %div דחיה ומעבר לתגית הבאה
-            %button.by-button-v02
+              = t(:reject_and_next)
+            = button_to approve_tag_path(@tag), class: 'by-button-v02', form_class: 'approve_tag_form', data: { confirm: t(:confirm_approve) } do
               .by2-icon N
-              %div אישור ומעבר לתיוגים המקושרים לתגית זו
-            %button.by-button-v02
+              = t(:approve_and_review_taggings)
+            = button_to reject_tag_and_next_path(@tag), class: 'by-button-v02 with-explanation', form_class: 'reject_tag_form', data: { confirm: t(:confirm_reject) } do
               .by-icon-v02> -
-              דחיה + הסבר
+              = t(:reject_and_explain)
             %button.by-button-v02
               .by2-icon> Q
-              שינוי / מיזוג
+              = t(:change_or_merge)
           %br/
           %button.ghost-btn.more-actions-btn פעולות נוספות...
         .by-card-content-v02{style: "width: 50%;"}
@@ -57,9 +70,9 @@
               %span{class: additional_class}= "%.1f%%" % acceptance_rate
           .headline-2-v02
             = t(:items_pending_for_this_tag, tag: @tag.name)
-            %span= "(#{@tag.taggings.count})"
+            %span= "(#{@tag.taggings_count})"
           %div{href: "#"}
-            %span{style: "font-weight: bold"} הפריטים יפתחו בטאב חדש
+            %span{style: "font-weight: bold"}= t(:will_open_in_new_tab)
             %span.open-in-new-tab T
           #available-tags-list.scrollable-area
             %ol
@@ -71,7 +84,6 @@
                   - elsif tagging.taggable_type == 'Person'
                     %a{href: person_path(tagging.taggable_id), target: "_blank"}
                       = tagging.taggable.name
-
       .offered-tags-nav
         .tags-nav-small
           %button.ghost-btn
@@ -80,3 +92,23 @@
           %button.ghost-btn
             דילוג לתגית הבאה
             .left-arrow 1
+.div{style: 'width:150px;'}
+  = button_to t(:back), tag_moderation_path, class: 'by-button-v02', method: 'get'
+:javascript
+  $(document).ready(function() {
+    $('.with-explanation').click(function(e) {
+      e.stopPropagation();
+      var explanation = prompt("#{t(:explain_rejection)}");
+      const sanitized = $("<p>").text(explanation).text(); 
+      var newParam = $("<input name='reason' type='hidden' value='" + sanitized + "' />")
+      $(this.parentElement).append(newParam);
+    });
+    $('.merge-btn').click(function(e) {
+      e.stopPropagation();
+      var url = "#{ merge_tag_path(99, with_tag: 88)}";
+      url = url.replace('99', $(this).data('tag-id')).replace('88', $(this).data('with-tag'));
+      $('.modal').modal('hide');
+      $('#generalDlg').load(url);
+      $('#generalDlg').modal('show');
+    });
+  });

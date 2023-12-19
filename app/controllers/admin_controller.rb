@@ -3,10 +3,11 @@ TAGGING_LOCK_TIMEOUT = 15 # 15 minutes
 
 class AdminController < ApplicationController
   before_action :require_editor
-  before_action :obtain_tagging_lock, only: [:approve_tagging, :reject_tagging, :unapprove_tagging, :unreject_tagging, :tag_moderation]
+  before_action :obtain_tagging_lock, only: [:approve_tag, :approve_tag_and_next, :reject_tag, :reject_tag_and_next, :merge_tag, :approve_tagging, :reject_tagging, :unapprove_tagging, :unreject_tagging, :tag_moderation, :tag_review]
   # before_action :require_admin, only: [:missing_languages, :missing_genres, :incongruous_copyright, :missing_copyright, :similar_titles]
   autocomplete :manifestation, :title, display_value: :title_and_authors, extra_data: [:expression_id] # TODO: also search alternate titles!
   autocomplete :person, :name, full: true
+  layout false, only: [:merge_tag]
 
   def index
     if current_user && current_user.editor?
@@ -741,7 +742,12 @@ class AdminController < ApplicationController
   def tag_moderation
     require_editor('moderate_tags')
     @pending_tags = Tag.joins(:taggings).where(status: :pending).order(:created_at)
-    @pending_taggings = Tagging.where(status: :pending).order(:created_at)
+    if params[:tag_id].present?
+      @tag_id = params[:tag_id].to_i
+      @pending_taggings = Tagging.where(status: :pending, tag_id: @tag_id).order(:created_at)
+    else
+      @pending_taggings = Tagging.where(status: :pending).order(:created_at)
+    end
     @page_title = t(:moderate_tags)
     @similar_tags = ListItem.where(listkey: 'tag_similarity').pluck(:item_id, :extra).to_h
   end
@@ -752,16 +758,96 @@ class AdminController < ApplicationController
       flash[:error] = I18n.t(:no_such_item)
       redirect_to url_for(action: :tag_moderation)
     end
-    
+    stags = ListItem.where(listkey: 'tag_similarity', item: @tag).pluck(:extra).map{|x| x.split(':')}.sort_by{|score, tag| score}.reverse
+    @similar_tags = Tag.find(stags.map{|x| x[1]})
   end
 
-  def approve_tag
+  def merge_tag
     require_editor('moderate_tags')
     if session[:tagging_lock]
       t = Tag.find(params[:id])
       if t.present?
+        @tag = t
+        if params[:with_tag].present?
+          @with_tag = Tag.find(params[:with_tag].to_i)
+        end
+      else
+        head :not_found
+      end
+    else
+      head :forbidden
+    end
+  end
+
+  def do_merge_tag
+    require_editor('moderate_tags')
+    if session[:tagging_lock]
+      t = Tag.find(params[:id])
+      if t.present?
+        t.merge_into(params[:with_tag].to_i)
+        redirect_to url_for(action: :tag_moderation)
+      else
+        head :not_found
+      end
+    else
+      head :forbidden
+    end
+  end
+
+  def approve_tag # approve tag and proceed to review taggings
+    require_editor('moderate_tags')
+    debugger
+    if session[:tagging_lock]
+      t = Tag.find(params[:id])
+      if t.present?
         t.approved!
-        return render json: { tag_id: t.id, tag_name: t.name }
+        flash[:notice] = t(:tag_approved)
+        redirect_to url_for(action: :tag_moderation, tag_id: t.id)
+      else
+        head :not_found
+      end
+    else
+      head :forbidden
+    end
+  end
+  def approve_tag_and_next # to be called from tag review page (non-AJAX)
+    require_editor('moderate_tags')
+    debugger
+    if session[:tagging_lock]
+      t = Tag.find(params[:id])
+      if t.present?
+        t.approved!
+        next_items = Tag.where(status: :pending).where('created_at > ?', t.created_at).order(:created_at).limit(1)
+        if next_items.first.present?
+          redirect_to url_for(action: :tag_review, id: next_items.first.id)
+        else
+          flash[:notice] = t(:no_more_to_review)
+          redirect_to url_for(action: :tag_moderation)
+        end
+      else
+        head :not_found
+      end
+    else
+      head :forbidden
+    end
+  end
+  def reject_tag_and_next
+    require_editor('moderate_tags')
+    debugger
+    if session[:tagging_lock]
+      t = Tag.find(params[:id])
+      if t.present?
+        t.rejected!
+        #if params[:reason].present?
+          Notifications.tag_rejected(t, params[:reason]).deliver
+        #end
+        next_items = Tag.where(status: :pending).where('created_at > ?', t.created_at).order(:created_at).limit(1)
+        if next_items.first.present?
+          redirect_to url_for(action: :tag_review, id: next_items.first.id)
+        else
+          flash[:notice] = t(:no_more_to_review)
+          redirect_to url_for(action: :tag_moderation)
+        end
       else
         head :not_found
       end
@@ -771,13 +857,14 @@ class AdminController < ApplicationController
   end
   def reject_tag
     require_editor('moderate_tags')
+    debugger
     if session[:tagging_lock]
       t = Tag.find(params[:id])
       if t.present?
         t.rejected!
-        if params[:reason].present?
+        #if params[:reason].present?
           Notifications.tag_rejected(t, params[:reason]).deliver
-        end
+        #end
         return render json: { tag_id: t.id, tag_name: t.name }
       else
         head :not_found

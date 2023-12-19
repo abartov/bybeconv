@@ -456,3 +456,10 @@ body.modal-open{
 .tags.pending a {
 	color: #660248;
 }
+.pad10rl {
+  padding: 0 5px 0 5px;
+}
+
+.by-button-v02 a:hover {
+  color: #ffffff;
+}

@@ -741,6 +741,18 @@ he:
   pending_tags_and_taggings: יש %{pending_tags} תגיות ו־%{pending_taggings} תיוגים ממתינים לאישור
   pending_tags: תגיות ממתינות לאישור
   pending_taggings: תיוגים ממתינים לאישור
+  adjacent_or_similar_tags: תגיות סמוכות או דומות
+  adjacent_tags: תגיות סמוכות
+  approve_and_next: אישור ומעבר לפריט הבא
+  reject_and_next: דחייה ומעבר לפריט הבא
+  approve_and_review_taggings: אישור ועיון בתיוגים
+  merge_with_this_tag: מיזוג עם תגית זו
+  merge_tag_title: מיזוג עם תווית קיימת
+  confirm_merge_tag: אישור מיזוג התוית
+  merge_tag_preview_html: "התגית המוצעת <b>%{tag}</b> (%{src_tag_taggings_count} תיוגים מקושרים) תמוזג עם התגית <b>%{dest_tag}</b> (%{dest_tag_taggings_count} תיוגים מקושרים)."
+  taggings_will_be_merged: גם התיוגים המקושרים לתגית יועברו לתגית היעד, ללא שינוי במצב אישורם.
+  no_more_to_review: "אין פריטים נוספים לבדוק! :)"
+  tag_approved: התגית אושרה!
   approve: אישור
   reject: דחייה
   another_feature: הצגת זרקור נוסף
