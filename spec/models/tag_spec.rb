@@ -147,21 +147,30 @@ describe Tag do
     expect(TagName.where(name: tn).count).to eq 1
     expect(TagName.where(name: t.name).count).to eq 1
   end
-  it 'merges taggings into another tag' do
+  it 'merges tag into another tag, including tag_names and taggings' do
     i = 0
     t = Tag.create!(name: Faker::Science.science+i.to_s, creator: create(:user), status: 'approved')
     5.times do 
       Tagging.create!(tag: t, taggable: create(:manifestation), suggester: create(:user), status: 'pending')
+      TagName.create!(name: "#{Faker::Science.science} #{i*10}", tag: t)
+      i += 1
     end
-    i += 1
     expect(Tag.last.taggings.count).to eq 5
+    expect(Tag.last.tag_names.count).to eq 6 # including one created upon tag creation
     t2 = Tag.create!(name: Faker::Science.science+i.to_s, creator: create(:user), status: 'approved')
     5.times do
       Tagging.create!(tag: t2, taggable: create(:manifestation), suggester: create(:user), status: 'pending')
+      TagName.create!(name: "#{Faker::Science.science} #{i*10}", tag: t)
+      i += 1
     end
     expect(Tagging.count).to eq 10
-    t.merge_taggings_into(t2)
-    expect(t.taggings.count).to eq 0
+    expect(TagName.count).to eq 12
+    tid = t.id
+    t.merge_into(t2)
+    expect(Tag.find_by(id: tid)).to be_nil # should be destroyed by the merge
+    expect(Tag.count).to eq 1
     expect(t2.taggings.count).to eq 10
+    expect(t2.tag_names.count).to eq 12
   end
+
 end

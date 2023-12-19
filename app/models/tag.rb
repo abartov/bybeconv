@@ -58,15 +58,23 @@ class Tag < ApplicationRecord
   def people_taggings
     self.taggings.where(taggable_type: 'Person')
   end
+
+  def merge_into(tag)
+    self.tag_names.update_all(tag_id: tag.id) # make all this tag's tag_names be aliases of the destination tag
+    self.merge_taggings_into(tag)
+    self.reload # to avoid destroying the taggings we just moved!
+    self.destroy
+  end
+
   def merge_taggings_into(tag)
     self.taggings.each do |tagging|
-      tagging.update(tag_id: tag.id)
+      tagging.update!(tag_id: tag.id)
     end
   end
-  def prev_tags_alphabetically(limit = 5)
+  def prev_tags_alphabetically(limit = 3)
     TagName.where('name < ?', self.name).order('name DESC').limit(limit)
   end
-  def next_tags_alphabetically(limit = 5)
+  def next_tags_alphabetically(limit = 3)
     TagName.where('name > ?', self.name).order('name ASC').limit(limit)
   end
   def self.cached_popular_tags
