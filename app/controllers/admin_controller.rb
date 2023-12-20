@@ -784,8 +784,13 @@ class AdminController < ApplicationController
     if session[:tagging_lock]
       t = Tag.find(params[:id])
       if t.present?
-        t.merge_into(params[:with_tag].to_i)
-        redirect_to url_for(action: :tag_moderation)
+        with_tag = Tag.find(params[:with_tag].to_i)
+        if with_tag.present?
+          t.merge_into(with_tag)
+          redirect_to url_for(action: :tag_moderation)
+        else
+          head :not_found
+        end
       else
         head :not_found
       end

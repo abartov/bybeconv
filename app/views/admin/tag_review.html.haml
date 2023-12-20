@@ -10,7 +10,7 @@
           - @similar_tags.each do |tag|
             .flex-container
               %b{style: 'color:blue'}= t(:similar_to_x, x: tag.name)
-              = link_to merge_tag_path(@tag.id, with_tag: tag.id), class: 'by-button-secondary-v02 pointer pad10rl' do
+              .by-button-secondary-v02.pointer.pad10rl.merge-btn{'data-tag-id': @tag.id, 'data-with-tag': tag.id}
                 .by2-icon{style: 'display: inline; margin-left: 7px;'}> Q
                 = t(:merge_with_this_tag)
             %br/
@@ -28,7 +28,7 @@
             - @tag.next_tags_alphabetically.each do |next_tag|
               %li.flex-container
                 = next_tag.name
-                = link_to merge_tag_path(@tag.id, with_tag: next_tag.tag_id), class: 'by-button-secondary-v02 pointer pad10rl' do
+                .by-button-secondary-v02.pointer.pad10rl.merge-btn{'data-tag-id': @tag.id, 'data-with-tag': next_tag.tag_id}
                   .by2-icon{style: 'display: inline; margin-left: 7px;'}> Q
                   = t(:merge_with_this_tag)
           %hr

@@ -19,15 +19,18 @@
             %a.popup-x-v02{'data-dismiss'=>'modal'} -
           %div
             .by-card-content-v02
-              - if @with_tag.present?
-                %p= t(:merge_tag_preview_html, tag: @tag.name, src_tag_taggings_count: @tag.taggings_count, dest_tag: @with_tag.name, dest_tag_taggings_count: @with_tag.taggings_count).html_safe
-              - else
-                %p= t(:merge_tag_preview_html, tag: @tag.name, src_tag_taggings_count: @tag.taggings_count, dest_tag: '', dest_tag_taggings_count: 0).html_safe
-              %p= t(:taggings_will_be_merged)
-              .bottom-button-area.left-buttons
-                %input.by-button-v02.disabled#do_merge_tag{type: :submit, value: t(:confirm_merge_tag)}
-                %button.by-button-v02.by-button-secondary-v02{'data-dismiss'=>'modal'}
-                  %div= t(:cancel)
+              = form_tag(action: :do_merge_tag) do
+                - if @with_tag.present?
+                  %p= t(:merge_tag_preview_html, tag: @tag.name, src_tag_taggings_count: @tag.taggings_count, dest_tag: @with_tag.name, dest_tag_taggings_count: @with_tag.taggings_count).html_safe
+                - else
+                  %p= t(:merge_tag_preview_html, tag: @tag.name, src_tag_taggings_count: @tag.taggings_count, dest_tag: '', dest_tag_taggings_count: 0).html_safe
+                %p= t(:taggings_will_be_merged)
+                = hidden_field_tag :id, @tag.id
+                = hidden_field_tag :with_tag, @with_tag.try(:id)
+                .bottom-button-area.left-buttons
+                  %input.by-button-v02#do_merge_tag{type: :submit, value: t(:confirm_merge_tag)}
+                  %button.by-button-v02.by-button-secondary-v02{'data-dismiss'=>'modal'}
+                    %div= t(:cancel)
 
 :javascript
   $(document).ready(function() {
