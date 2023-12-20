@@ -8,7 +8,7 @@
         - unless session[:tagging_lock]
           %h3{style: 'color:red'}= t(:tagging_system_locked_by, user: @tagging_lock_owner, ago: @tagging_lock_refreshed)
       %a.by-icon-v02.pointer /
-    .by-card-content-v02
+    .by-card-content-v02#tags-card
       .management-content
         %table
           %tr
@@ -75,7 +75,7 @@
         %p.headline-2-v02= t(:pending_taggings)
         %p= "(#{@pending_taggings.count})"
       %a.by-icon-v02.pointer /
-    .by-card-content-v02
+    .by-card-content-v02#taggings-card
       .management-content
         %table
           %tr

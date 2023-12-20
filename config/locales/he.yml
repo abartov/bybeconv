@@ -735,8 +735,11 @@ he:
   edition_details: פרטי מהדורה ומידע נוסף
   more_info: מידע נוסף
   tags: תגיות
+  taggings: תיוגים
   tag: תגית
   moderate_tags: עיון בתיוגים מהציבור
+  next_milestone: היעד הבא
+  my_activity: הפעילות שלי
   similar_to_x: "דומה לפריט: %{x}"
   pending_tags_and_taggings: יש %{pending_tags} תגיות ו־%{pending_taggings} תיוגים ממתינים לאישור
   pending_tags: תגיות ממתינות לאישור

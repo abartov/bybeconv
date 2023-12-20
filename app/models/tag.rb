@@ -25,8 +25,8 @@ class Tag < ApplicationRecord
     self.status = Tag.statuses[:approved]
     self.save
   end
-  def reject!
-    self.update(status: Tag.statuses[:rejected])
+  def reject!(rejecter)
+    self.update(status: Tag.statuses[:rejected], approver_id: rejecter.id)
   end
   def unreject!
     self.update(status: Tag.statuses[:pending])

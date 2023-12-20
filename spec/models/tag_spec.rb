@@ -72,7 +72,8 @@ describe Tag do
   it 'rejects and blacklists a tag' do
     t = Tag.create!(name: Faker::Science.science, creator: create(:user), status: 'pending')
     expect(Tag.last.status).to eq 'pending'
-    t.reject!
+    u = create(:user)
+    t.reject!(u)
     expect(Tag.last.status).to eq 'rejected'
   end
 

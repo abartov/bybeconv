@@ -1,0 +1,83 @@
+!!!
+%html
+  %head
+    %meta{content: "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+    %title= @page_title ? @page_title : t(:default_page_title)
+    %link{crossorigin: "anonymous", href: "https://cdn.rtlcss.com/bootstrap/v4.2.1/css/bootstrap.min.css", integrity: "sha384-vus3nQHTD+5mpDiZ4rkEPlnkcyTP+49BhJ4wJeJunw06ZAp+wzzeBPUXr42fi8If", rel: "stylesheet"}/
+    %link{href: "/assets/fonts.css", rel: "stylesheet"}/
+    %link{href: "https://fonts.googleapis.com/css?family=Alef", rel: "stylesheet"}/
+    = stylesheet_link_tag    "application"
+    %script{crossorigin: "anonymous", integrity: "sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q", src: "https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"}
+    = javascript_include_tag "application"
+    %script{crossorigin: "anonymous", integrity: "sha384-a9xOd0rz8w0J8zqj1qJic7GPFfyMfoiuDjC9rqXlVOcGO/dmRqzMn34gZYDTel8k", src: "https://cdn.rtlcss.com/bootstrap/v4.2.1/js/bootstrap.min.js"}
+    %script{src: "//cdnjs.cloudflare.com/ajax/libs/jquery.matchHeight/0.7.0/jquery.matchHeight-min.js"}
+    %meta{charset: "utf-8"}/
+    %meta{content: "width=device-width, initial-scale=1", name: "viewport"}/
+    - if @og_image.nil?
+      %meta{content: "https://benyehuda.org/assets/by_square_ogimg.jpg", property: "og:image"}/
+    - else
+      %meta{content: "#{@og_image}", property: "og:image"}/
+    = csrf_meta_tags
+  %body{dir: "rtl", style: "position:relative;"}
+    %header
+      #header.container-fluid
+        #header-general.container-fluid
+          - unless sitenotice.empty? or session[:dismissed_sitenotice]
+            .internal-notification
+              .internal-notification-content
+                %div
+                  %p= raw sitenotice
+              %span#dismiss_sitenotice.popup-x-v02.pointer -
+          - flash.each do |name, msg|
+            = content_tag :div, msg, class: name
+        .header-separator
+        - unless @header_partial.nil?
+          = render partial: @header_partial
+    %main
+      #content.container-fluid.top-element
+        = yield
+    / footer start
+    %footer
+      - if @print
+        = t(:download_footer_html, url: @footer_url)
+      - else
+        - if current_user
+          - if current_user.editor?
+            %br/
+            %h2= link_to t(:back_to_dashboard), url_for(controller: :admin, action: :index)
+        - unless @pagetype == :homepage
+          = link_to t(:back_to_homepage), "/"
+        %p
+    #generalDlg.modal{"aria-hidden" => "true", role: "dialog"}
+      "&gt;
+:javascript
+  $(document).ready(function() {
+    var header = $("header");
+    var body = $('body');
+  
+    $(window).scroll(function() {
+        var scroll = $(window).scrollTop();
+        if (scroll >= 100) {
+            header.addClass("scrolled");
+            body.addClass("scrolled");
+        } else if(scroll <= 70) {
+            header.removeClass("scrolled");
+            body.removeClass("scrolled");
+        }
+    });
+    $('.notyet').click(function(e){
+      e.stopPropagation();
+      alert('#{t(:not_implemented_yet)}');
+    });
+    $('[data-toggle="popover"]').popover();
+    $('body').tooltip();
+    // adjust page to accommodate extra header height
+    var h = $('#header').height();
+    $('.top-element').css('margin-top',h);
+  
+    $(document).on('keyup',function(evt) {
+      if (evt.keyCode == 27 && $('body').attr('anth-open') != 'true') {
+        $('.modal').modal('hide'); // hide all modals on ESC
+      }
+    });
+  });

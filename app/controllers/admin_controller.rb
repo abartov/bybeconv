@@ -1,5 +1,6 @@
 TAGGING_LOCK = '/tmp/tagging.lock'
 TAGGING_LOCK_TIMEOUT = 15 # 15 minutes
+PROGRESS_SERIES = [5, 10, 25, 50, 75, 100, 150, 200, 300, 400, 500, 750, 1000, 1250, 1500, 2000, 3000, 4000, 5000, 10000]
 
 class AdminController < ApplicationController
   before_action :require_editor
@@ -7,7 +8,8 @@ class AdminController < ApplicationController
   # before_action :require_admin, only: [:missing_languages, :missing_genres, :incongruous_copyright, :missing_copyright, :similar_titles]
   autocomplete :manifestation, :title, display_value: :title_and_authors, extra_data: [:expression_id] # TODO: also search alternate titles!
   autocomplete :person, :name, full: true
-  layout false, only: [:merge_tag]
+  layout false, only: [:merge_tag] # popups
+  layout 'backend', only: [:tag_moderation, :tag_review] # eventually change to except: [<popups>]
 
   def index
     if current_user && current_user.editor?
@@ -738,9 +740,10 @@ class AdminController < ApplicationController
   end
 
   ########################################################
-  ## user content moderation
+  # user content moderation
   def tag_moderation
     require_editor('moderate_tags')
+    @header_partial = 'tagmod_top'
     @pending_tags = Tag.joins(:taggings).where(status: :pending).order(:created_at)
     if params[:tag_id].present?
       @tag_id = params[:tag_id].to_i
@@ -750,9 +753,12 @@ class AdminController < ApplicationController
     end
     @page_title = t(:moderate_tags)
     @similar_tags = ListItem.where(listkey: 'tag_similarity').pluck(:item_id, :extra).to_h
+    calculate_editor_tagging_stats
   end
+
   def tag_review
     require_editor('moderate_tags')
+    @header_partial = 'tagmod_top'
     @tag = Tag.find(params[:id])
     if @tag.nil?
       flash[:error] = I18n.t(:no_such_item)
@@ -789,14 +795,15 @@ class AdminController < ApplicationController
           t.merge_into(with_tag)
           redirect_to url_for(action: :tag_moderation)
         else
-          head :not_found
+          flash[:error] = t(:no_such_item)
         end
       else
-        head :not_found
+        flash[:error] = t(:no_such_item)
       end
     else
-      head :forbidden
+      flash[:error] = t(:tagging_system_locked)
     end
+    redirect_to url_for(action: :tag_moderation)
   end
 
   def approve_tag # approve tag and proceed to review taggings
@@ -805,7 +812,7 @@ class AdminController < ApplicationController
     if session[:tagging_lock]
       t = Tag.find(params[:id])
       if t.present?
-        t.approved!
+        t.approve!(current_user)
         flash[:notice] = t(:tag_approved)
         redirect_to url_for(action: :tag_moderation, tag_id: t.id)
       else
@@ -815,13 +822,14 @@ class AdminController < ApplicationController
       head :forbidden
     end
   end
+
   def approve_tag_and_next # to be called from tag review page (non-AJAX)
     require_editor('moderate_tags')
     debugger
     if session[:tagging_lock]
       t = Tag.find(params[:id])
       if t.present?
-        t.approved!
+        t.approve!(current_user)
         next_items = Tag.where(status: :pending).where('created_at > ?', t.created_at).order(:created_at).limit(1)
         if next_items.first.present?
           redirect_to url_for(action: :tag_review, id: next_items.first.id)
@@ -836,13 +844,13 @@ class AdminController < ApplicationController
       head :forbidden
     end
   end
+
   def reject_tag_and_next
     require_editor('moderate_tags')
-    debugger
     if session[:tagging_lock]
       t = Tag.find(params[:id])
       if t.present?
-        t.rejected!
+        t.reject!(current_user)
         #if params[:reason].present?
           Notifications.tag_rejected(t, params[:reason]).deliver
         #end
@@ -860,13 +868,13 @@ class AdminController < ApplicationController
       head :forbidden
     end
   end
+  
   def reject_tag
     require_editor('moderate_tags')
-    debugger
     if session[:tagging_lock]
       t = Tag.find(params[:id])
       if t.present?
-        t.rejected!
+        t.reject!(current_user)
         #if params[:reason].present?
           Notifications.tag_rejected(t, params[:reason]).deliver
         #end
@@ -878,12 +886,13 @@ class AdminController < ApplicationController
       head :forbidden
     end
   end
+  
   def approve_tagging
     require_editor('moderate_tags')
     if session[:tagging_lock]
       t = Tagging.find(params[:id])
       if t.present?
-        t.approved!
+        t.approve!(current_user)
         return render json: { tagging_id: t.id }
       else
         head :not_found
@@ -892,12 +901,13 @@ class AdminController < ApplicationController
       head :forbidden
     end
   end
+  
   def reject_tagging
     require_editor('moderate_tags')
     if session[:tagging_lock]
       t = Tagging.find(params[:id])
       if t.present?
-        t.rejected!
+        t.reject!(current_user)
         return render json: { tagging_id: t.id }
       else
         head :not_found
@@ -946,5 +956,15 @@ class AdminController < ApplicationController
       session[:tagging_lock] = true
     end
     return true
+  end
+  def calculate_editor_tagging_stats
+    @tags_done = Tag.where(approver_id: current_user.id).where.not(status: :pending).count
+    @prev_tags_milestone = PROGRESS_SERIES.find { |element| element < @tags_done } || 0
+    @next_tags_milestone = PROGRESS_SERIES.find { |element| element > @tags_done }
+    @tags_progress = (@tags_done - @prev_tags_milestone) * 100 / @next_tags_milestone
+    @taggings_done = Tagging.where(approved_by: current_user.id).where.not(status: :pending).count
+    @prev_taggings_milestone = PROGRESS_SERIES.find { |element| element < @taggings_done } || 0
+    @next_taggings_milestone = PROGRESS_SERIES.find { |element| element > @taggings_done }
+    @taggings_progress = (@taggings_done - @prev_taggings_milestone) * 100 / @next_taggings_milestone
   end
 end
