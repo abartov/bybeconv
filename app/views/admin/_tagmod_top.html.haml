@@ -3,17 +3,18 @@
     .backend-top-card
       %div
         .headline-1-v02= t(:moderate_tags)
-        .layout-selection
-          %div= t(:display)
-          %button#layout-same.layout-option.active
-            .layout-option-part.same
-            .layout-option-part.same
-          %button#layout-top.layout-option
-            .layout-option-part.small
-            .layout-option-part.large
-          %button#layout-bottom.layout-option
-            .layout-option-part.large
-            .layout-option-part.small
+        - if @dashboards
+          .layout-selection
+            %div= t(:display)
+            %button#layout-same.layout-option.active
+              .layout-option-part.same
+              .layout-option-part.same
+            %button#layout-top.layout-option
+              .layout-option-part.small
+              .layout-option-part.large
+            %button#layout-bottom.layout-option
+              .layout-option-part.large
+              .layout-option-part.small
       .user-stats
         .my-edits= t(:my_activity)
         .next-goals
@@ -33,25 +34,27 @@
             %span= @next_taggings_milestone
 :javascript
   $(document).ready(function() {
-    $('#layout-same').click(function() {
-      $('.layout-option').removeClass('active');
-      $(this).addClass('active');
-      $('#tags-card').show();
-      $('#taggings-card').show();
-      $('.management-content').css('height', 'unset');
-    });
-    $('#layout-top').click(function() {
-      $('.layout-option').removeClass('active');
-      $(this).addClass('active');
-      $('#tags-card').show();
-      $('#taggings-card').hide();
-      $('.management-content').css('height', 'calc(100vh - 270px');
-    });
-    $('#layout-bottom').click(function() {
-      $('.layout-option').removeClass('active');
-      $(this).addClass('active');
-      $('#tags-card').hide();
-      $('#taggings-card').show();
-      $('.management-content').css('height', 'calc(100vh - 270px');
-    });
+    if($('#tags-card').length > 0) {
+      $('#layout-same').click(function() {
+        $('.layout-option').removeClass('active');
+        $(this).addClass('active');
+        $('#tags-card').show();
+        $('#taggings-card').show();
+        $('.management-content').css('height', 'unset');
+      });
+      $('#layout-top').click(function() {
+        $('.layout-option').removeClass('active');
+        $(this).addClass('active');
+        $('#tags-card').show();
+        $('#taggings-card').hide();
+        $('.management-content').css('height', 'calc(100vh - 270px');
+      });
+      $('#layout-bottom').click(function() {
+        $('.layout-option').removeClass('active');
+        $(this).addClass('active');
+        $('#tags-card').hide();
+        $('#taggings-card').show();
+        $('.management-content').css('height', 'calc(100vh - 270px');
+      });
+    }
   });

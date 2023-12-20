@@ -754,6 +754,7 @@ class AdminController < ApplicationController
     @page_title = t(:moderate_tags)
     @similar_tags = ListItem.where(listkey: 'tag_similarity').pluck(:item_id, :extra).to_h
     calculate_editor_tagging_stats
+    @dashboards = true
   end
 
   def tag_review
@@ -766,6 +767,7 @@ class AdminController < ApplicationController
     end
     stags = ListItem.where(listkey: 'tag_similarity', item: @tag).pluck(:extra).map{|x| x.split(':')}.sort_by{|score, tag| score}.reverse
     @similar_tags = Tag.find(stags.map{|x| x[1]})
+    calculate_editor_tagging_stats
   end
 
   def merge_tag
