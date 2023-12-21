@@ -6,8 +6,8 @@ task :refresh_blob_urls => :environment do
   i = 0
   replaced = 0
   missing_imgs = []
-  Chewy.strategy(:atomic) do
-    mm_ids.each do |mid|
+  mm_ids.each do |mid|
+    Chewy.strategy(:atomic) do
       puts "Processing item #{i} of #{total}" if i % 50 == 0
       m = Manifestation.find(mid)
       m.markdown = m.markdown.gsub(/!\[.*?\]\(\/rails\/active_storage\/blobs\/.*\/(.*)\)/) do |match|
