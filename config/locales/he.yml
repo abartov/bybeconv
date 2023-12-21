@@ -753,7 +753,9 @@ he:
   merge_with_this_tag: מיזוג עם תגית זו
   merge_tag_title: מיזוג עם תווית קיימת
   confirm_merge_tag: אישור מיזוג התוית
+  tag_merged: התגית מוזגה, על תיוגיה הממתינים
   merge_tag_preview_html: "התגית המוצעת <b>%{tag}</b> (%{src_tag_taggings_count} תיוגים מקושרים) תמוזג עם התגית <b>%{dest_tag}</b> (%{dest_tag_taggings_count} תיוגים מקושרים)."
+  merge_tag_generic_html: "התגית המוצעת <b>%{tag}</b> (%{src_tag_taggings_count} תיוגים מקושרים) תמוזג עם התגית:"
   taggings_will_be_merged: גם התיוגים המקושרים לתגית יועברו לתגית היעד, ללא שינוי במצב אישורם.
   no_more_to_review: "אין פריטים נוספים לבדוק! :)"
   tag_approved: התגית אושרה!
@@ -1283,6 +1285,8 @@ he:
       subject: הצעת התגית שלך לא התקבלה
     warn:
       subject: אזהרה לפני חסימה מפרויקט בן־יהודה
+    block:
+      subject: חסימה מפרויקט בן־יהודה
   api_keys_mailer:
     key_created:
       subject: Your API key

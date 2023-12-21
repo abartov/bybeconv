@@ -46,8 +46,8 @@
             = button_to reject_tag_and_next_path(@tag), class: 'by-button-v02 with-explanation', form_class: 'reject_tag_form', data: { confirm: t(:confirm_reject) } do
               .by-icon-v02> -
               = t(:reject_and_explain)
-            %button.by-button-v02
-              .by2-icon> Q
+            .by-button-secondary-v02.pointer.pad10rl.general-merge-btn
+              .by2-icon{style: 'display: inline; margin-left: 7px;'}> Q
               = t(:change_or_merge)
           %br/
           %button.ghost-btn.more-actions-btn= t(:additional_actions)
@@ -125,6 +125,12 @@
       url = url.replace('99', $(this).data('tag-id')).replace('88', $(this).data('with-tag'));
       $('.modal').modal('hide');
       $('#generalDlg').load(url);
+      $('#generalDlg').modal('show');
+    });
+    $('.general-merge-btn').click(function(e) {
+      e.stopPropagation();
+      $('.modal').modal('hide');
+      $('#generalDlg').load("#{ merge_tag_path(@tag)}");
       $('#generalDlg').modal('show');
     });
     $('.more-actions-btn').click(function(e) {

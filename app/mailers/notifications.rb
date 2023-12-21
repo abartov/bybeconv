@@ -37,7 +37,18 @@ class Notifications < ActionMailer::Base
     @greeting = t(:hello_anon)
     @user = user
     @msg = msg
-    mail to: user.email
+    mail to: [user.email, Rails.configuration.constants[:editor_email]]
+  end
+
+  # Subject can be set in your I18n file at config/locales/en.yml
+  # with the following lookup:
+  #
+  #   he.notifications.block.subject
+  def block(user, msg)
+    @greeting = t(:hello_anon)
+    @user = user
+    @msg = msg
+    mail to: [user.email, Rails.configuration.constants[:editor_email]]
   end
 
   # Subject can be set in your I18n file at config/locales/en.yml

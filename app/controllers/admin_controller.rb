@@ -797,7 +797,7 @@ class AdminController < ApplicationController
         with_tag = Tag.find(params[:with_tag].to_i)
         if with_tag.present?
           t.merge_into(with_tag)
-          redirect_to url_for(action: :tag_moderation)
+          flash[:notice] = t(:tag_merged)
         else
           flash[:error] = t(:no_such_item)
         end
@@ -919,6 +919,13 @@ class AdminController < ApplicationController
     else
       head :forbidden
     end
+  end
+
+  def warn_user(id)
+
+  end
+
+  def block_user(id)
   end
 
   private
