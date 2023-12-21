@@ -16,7 +16,7 @@
             %br/
           .headline-3-v02= t(:adjacent_tags)
           %ul
-            - @tag.prev_tags_alphabetically.each do |prev_tag|
+            - @tag.prev_tags_alphabetically.reverse.each do |prev_tag|
               %li.flex-container
                 = prev_tag.name
                 .by-button-secondary-v02.pointer.pad10rl.merge-btn{'data-tag-id': @tag.id, 'data-with-tag': prev_tag.tag_id}
