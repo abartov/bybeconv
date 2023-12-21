@@ -86,12 +86,14 @@
                       = tagging.taggable.name
       .offered-tags-nav
         .tags-nav-small
-          %button.ghost-btn
-            .right-arrow> 2
-            דילוג לתגית הקודמת
-          %button.ghost-btn
-            דילוג לתגית הבאה
-            .left-arrow 1
+          - if @prev_tag_id.present?
+            = link_to tag_review_path(@prev_tag_id), class: 'ghost-btn' do
+              .right-arrow> 2
+              = t(:to_previous_item)
+          - if @next_tag_id.present?
+            = link_to tag_review_path(@next_tag_id), class: 'ghost-btn' do
+              = t(:to_next_item)
+              .left-arrow 1
 .div{style: 'width:150px;'}
   = button_to t(:back), tag_moderation_path, class: 'by-button-v02', method: 'get'
 :javascript

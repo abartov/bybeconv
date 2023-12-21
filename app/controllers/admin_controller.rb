@@ -768,6 +768,8 @@ class AdminController < ApplicationController
     stags = ListItem.where(listkey: 'tag_similarity', item: @tag).pluck(:extra).map{|x| x.split(':')}.sort_by{|score, tag| score}.reverse
     @similar_tags = Tag.find(stags.map{|x| x[1]})
     calculate_editor_tagging_stats
+    @next_tag_id = Tag.where(status: :pending).where('created_at > ?', @tag.created_at).order(:created_at).limit(1).pluck(:id).first
+    @prev_tag_id = Tag.where(status: :pending).where('created_at < ?', @tag.created_at).order('created_at desc').limit(1).pluck(:id).first
   end
 
   def merge_tag
