@@ -43,7 +43,7 @@
 
 :javascript
   $(document).ready(function(){
-    $('#proofSent').dialog({autoOpen:false, height:200, width:500, modal:true,buttons:{"#{t(:close)}": function(){$('#proofSent').dialog('close');}}});
+    $('#proofSent').dialog({autoOpen:false, height:200, width:200, modal:true,buttons:{"#{t(:close)}": function(){$('#proofSent').dialog('close');}}});
 
     $('#proof_form').on('ajax:success', function(e, data, status, xhr) {
       $('#prooftext').val('');
