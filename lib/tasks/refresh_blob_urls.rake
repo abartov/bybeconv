@@ -1,7 +1,7 @@
 desc "Refresh active storage blob URLs in markdown"
 task :refresh_blob_urls => :environment do
   puts "Refreshing blob urls due to signed_id change..."
-  mm_ids = ActiveStorage::Attachment.where(name: 'images').pluck(:record_id).uniq
+  mm_ids = ActiveStorage::Attachment.where(name: 'images', record_type: 'Manifestation').pluck(:record_id).uniq
   total = mm_ids.count
   i = 0
   replaced = 0
