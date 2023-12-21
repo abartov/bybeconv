@@ -50,7 +50,21 @@
               .by2-icon> Q
               = t(:change_or_merge)
           %br/
-          %button.ghost-btn.more-actions-btn פעולות נוספות...
+          %button.ghost-btn.more-actions-btn= t(:additional_actions)
+          #additional_actions{style: 'display:none'}
+            %p
+            = button_to escalate_tag_path(@tag.id), class: 'by-button-v02', style: 'background-color:lightblue', data: { confirm: t(:confirm_escalation) } do
+              .by-icon-v02> -
+              = t(:escalate_to_editor)
+            %p
+            = button_to warn_user_path(@tag.creator.id), class: 'by-button-v02', style: 'background-color:orange', data: { confirm: t(:confirm_warn) } do
+              .by-icon-v02> -
+              = t(:warn_user)
+            %p
+            = button_to block_user_path(@tag.creator.id), class: 'by-button-v02', style: 'background-color:red', data: { confirm: t(:confirm_block) } do
+              .by-icon-v02> -
+              = t(:block_user)
+
         .by-card-content-v02{style: "width: 50%;"}
           .headline-3-v02= t(:suggested_by)
           .offered-by
@@ -112,5 +126,9 @@
       $('.modal').modal('hide');
       $('#generalDlg').load(url);
       $('#generalDlg').modal('show');
+    });
+    $('.more-actions-btn').click(function(e) {
+      e.stopPropagation();
+      $('#additional_actions').toggle();
     });
   });
