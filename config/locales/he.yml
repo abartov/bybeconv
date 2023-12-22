@@ -752,7 +752,10 @@ he:
   approve_and_review_taggings: אישור ועיון בתיוגים
   merge_with_this_tag: מיזוג עם תגית זו
   merge_tag_title: מיזוג עם תווית קיימת
-  confirm_merge_tag: אישור מיזוג התוית
+  merge_tagging_title: העברת תיוג מוצג לתגית קיימת
+  merge_tagging_preview_html: "התיוג <b>יאושר</b> ויועבר מהתגית \"%{tag}\" (שלה יש כרגע %{src_tag_taggings_count} תיוגים, כולל מוצעים, לתגית שתבחר/י:"
+  confirm_merge_tag: אישור מיזוג התגית
+  confirm_merge_tagging: אישור העברת התיוג
   confirm_escalation: אישור העברה לבדיקה נוספת
   tag_merged: התגית מוזגה, על תיוגיה הממתינים
   tag_escalated: התגית הועברה לבדיקה נוספת
@@ -1148,6 +1151,7 @@ he:
   rec_accepted: "קיבלנו בתודה את המלצתך על היצירה:\n\n%{url}\n\nכשנתפנה לעיין בה, נשקול לשלב אותה בפרסום בפייסבוק או ברשומה ביומן הרשת שלנו, כדי שגם אחרים ייהנו."
   rec_published: "המלצתך על היצירה בכתובת:\n\n%{url}\n\nשולבה עתה בטקסט שפרסמנו כאן:\n\n%{published_url}\n"
   taggings_merged: "התיוגים הועברו לתגית הקיימת '%{toname}'"
+  tagging_merged: התיוג הועבר.
   tag_renamed: "שם התגית הוחלף לשם '%{newname}'"
   save_tag_suggestion: שלח הצעת תיוג!
   suggest_tags: הצע לי תיוגים

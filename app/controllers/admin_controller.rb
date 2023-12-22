@@ -4,11 +4,11 @@ PROGRESS_SERIES = [5, 10, 25, 50, 75, 100, 150, 200, 300, 400, 500, 750, 1000, 1
 
 class AdminController < ApplicationController
   before_action :require_editor
-  before_action :obtain_tagging_lock, only: [:approve_tag, :approve_tag_and_next, :reject_tag, :reject_tag_and_next, :merge_tag, :approve_tagging, :reject_tagging, :unapprove_tagging, :unreject_tagging, :tag_moderation, :tag_review]
+  before_action :obtain_tagging_lock, only: [:approve_tag, :approve_tag_and_next, :reject_tag, :escalate_tag, :reject_tag_and_next, :merge_tag, :merge_tagging, :approve_tagging, :reject_tagging, :escalate_tagging, :unapprove_tagging, :unreject_tagging, :tag_moderation, :tag_review]
   # before_action :require_admin, only: [:missing_languages, :missing_genres, :incongruous_copyright, :missing_copyright, :similar_titles]
   autocomplete :manifestation, :title, display_value: :title_and_authors, extra_data: [:expression_id] # TODO: also search alternate titles!
   autocomplete :person, :name, full: true
-  layout false, only: [:merge_tag] # popups
+  layout false, only: [:merge_tag, :merge_tagging] # popups
   layout 'backend', only: [:tag_moderation, :tag_review] # eventually change to except: [<popups>]
 
   def index
@@ -815,6 +815,42 @@ class AdminController < ApplicationController
     redirect_to url_for(action: :tag_moderation)
   end
 
+  def merge_tagging
+    require_editor('moderate_tags')
+    if session[:tagging_lock]
+      t = Tagging.find(params[:id])
+      if t.present?
+        @tagging = t
+        render layout: false
+      else
+        head :not_found
+      end
+    else
+      head :forbidden
+    end
+  end
+
+  def do_merge_tagging
+    require_editor('moderate_tags')
+    if session[:tagging_lock]
+      t = Tagging.find(params[:id])
+      if t.present?
+        with_tag = Tag.find(params[:with_tag].to_i)
+        if with_tag.present?
+          t.update(tag_id: with_tag.id, status: :approved)
+          flash[:notice] = t(:tagging_merged)
+        else
+          flash[:error] = t(:no_such_item)
+        end
+      else
+        flash[:error] = t(:no_such_item)
+      end
+    else
+      flash[:error] = t(:tagging_system_locked)
+    end
+    redirect_to url_for(action: :tag_moderation)
+  end
+  
   def approve_tag # approve tag and proceed to review taggings
     require_editor('moderate_tags')
     if session[:tagging_lock]

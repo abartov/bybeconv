@@ -134,7 +134,7 @@
                     = button_to reject_tagging_path(tagging), method: :post, remote: true, class: 'ghost-btn reject-tagging-btn with-explanation', form_class: 'reject-tagging-form', data: { confirm: t(:confirm_reject) } do
                       .by-icon-v02> -
                       = t(:reject_and_explain)
-                    = button_to merge_tagging_path(tagging), method: :post, remote: true, class: 'ghost-btn merge-tagging-btn', form_class: 'merge-tagging-form' do
+                    .ghost-btn.merge-tagging-btn{'data-tagging-id': tagging.id}
                       .by-icon-v02> Q
                       = t(:change_or_merge)
                     %button.ghost-btn.more-actions-btn= t(:additional_actions)
@@ -192,4 +192,13 @@
         $('#layout-bottom').click();
       }
     });
+    $('.merge-tagging-btn').click(function(e) {
+      e.stopPropagation();
+      $('.modal').modal('hide');
+      url = "#{ merge_tagging_path(999) }";
+      url = url.replace('999', $(this).attr('data-tagging-id'));
+      $('#generalDlg').load(url);
+      $('#generalDlg').modal('show');
+    });
+
   });
