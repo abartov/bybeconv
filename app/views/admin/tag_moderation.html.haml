@@ -29,26 +29,27 @@
             %th= t(:acceptance_rate)
             %th= t(:quick_actions)
           - @pending_tags.each do |tag|
+            - extra_style = tag.escalated? ? 'background-color: #f7a7a7;' : ''
             %tr
-              %td
+              %td{style: extra_style}
                 %input{name: "#", type: "checkbox", value: "#"}/
-              %td.label-name
+              %td.label-name{style: extra_style}
                 %a{href: tag_review_path(tag.id)}= tag.name
                 - if @similar_tags[tag.id]
                   %span.by2-icon{title: t(:similar_to_x, x: Tag.find(@similar_tags[tag.id].split(':')[1].to_i).name)}> P
-              %td.pending-taggings.pointer.linkcolor{'data-tagid': tag.id}
+              %td.pending-taggings.pointer.linkcolor{'data-tagid': tag.id, style: extra_style}
                 = tag.taggings_count
-              %td.wait-time= distance_of_time_in_words(tag.created_at, Date.today)
+              %td.wait-time{style: extra_style}= distance_of_time_in_words(tag.created_at, Date.today)
               - if tag.creator.warned?
-                %td.in-td.red
+                %td.in-td.red{style: extra_style}
                   %a{href: "#"}
                     %span.by2-icon> P
                     = tag.creator.name
               - else
-                %td
+                %td{style: extra_style}
                   %a{href: "#"}= tag.creator.name
               - tag_count = Tag.by_user(tag.creator).count
-              %td
+              %td{style: extra_style}
                 %a{href: "#"}= tag_count
               - additional_class = ''
               - acceptance_rate = tag.creator.tag_acceptance_rate
@@ -56,8 +57,8 @@
                 - additional_class = 'low-approval-rate'
               - elsif tag_count > 3 && acceptance_rate > 75
                 - additional_class = 'high-approval-rate'
-              %td{class: "%-approved #{additional_class}"}= "%.1f%%" % acceptance_rate
-              %td
+              %td{style: extra_style, class: "%-approved #{additional_class}"}= "%.1f%%" % acceptance_rate
+              %td{style: extra_style}
                 .quick-actions
                   - if session[:tagging_lock]
                     = button_to reject_tag_path(tag), method: :post, remote: true, class: 'reject-tag-btn ghost-btn', form_class: 'reject_tag_form', data: { confirm: t(:confirm_reject) } do

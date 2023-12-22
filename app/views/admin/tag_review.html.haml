@@ -1,7 +1,7 @@
 .tagging-management-area.tags-content
   #offered-tag.by-card-v02
     .by-card-header-v02
-      .headline-1-v02
+      .headline-1-v02{style: @tag.escalated? ? 'background-color: #f7a7a7' : ''}
         = "#{t(:suggested_tag)}: #{@tag.name}"
     %div
       %div{style: "display:flex"}
@@ -57,11 +57,11 @@
               .by-icon-v02> -
               = t(:escalate_to_editor)
             %p
-            = button_to warn_user_path(@tag.creator.id), class: 'by-button-v02', style: 'background-color:orange', data: { confirm: t(:confirm_warn) } do
+            = button_to warn_user_path(@tag.creator.id, return_url: tag_review_path(@tag.id)), class: 'by-button-v02 with-explanation', style: 'background-color:orange', data: { confirm: t(:confirm_warn) } do
               .by-icon-v02> -
               = t(:warn_user)
             %p
-            = button_to block_user_path(@tag.creator.id), class: 'by-button-v02', style: 'background-color:red', data: { confirm: t(:confirm_block) } do
+            = button_to block_user_path(@tag.creator.id, return_url: tag_review_path(@tag.id)), class: 'by-button-v02 with-explanation', style: 'background-color:red', data: { confirm: t(:confirm_block) } do
               .by-icon-v02> -
               = t(:block_user)
 
@@ -114,7 +114,7 @@
   $(document).ready(function() {
     $('.with-explanation').click(function(e) {
       e.stopPropagation();
-      var explanation = prompt("#{t(:explain_rejection)}");
+      var explanation = prompt("#{t(:provide_reason)}");
       const sanitized = $("<p>").text(explanation).text(); 
       var newParam = $("<input name='reason' type='hidden' value='" + sanitized + "' />")
       $(this.parentElement).append(newParam);

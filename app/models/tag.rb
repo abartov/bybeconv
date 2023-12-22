@@ -7,7 +7,7 @@ class Tag < ApplicationRecord
 
   belongs_to :creator, foreign_key: :created_by, class_name: 'User'
   belongs_to :approver, foreign_key: :approver_id, class_name: 'User', optional: true
-  enum status: [:pending, :approved, :rejected]
+  enum status: [:pending, :approved, :rejected, :escalated]
   validates :name, presence: true
   validates :created_by, presence: true
   validates :status, presence: true
@@ -27,6 +27,9 @@ class Tag < ApplicationRecord
   end
   def reject!(rejecter)
     self.update(status: Tag.statuses[:rejected], approver_id: rejecter.id)
+  end
+  def escalate!(escalator)
+    self.update(status: Tag.statuses[:escalated], approver_id: escalator.id)
   end
   def unreject!
     self.update(status: Tag.statuses[:pending])

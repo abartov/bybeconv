@@ -744,12 +744,17 @@ class AdminController < ApplicationController
   def tag_moderation
     require_editor('moderate_tags')
     @header_partial = 'tagmod_top'
-    @pending_tags = Tag.joins(:taggings).where(status: :pending).order(:created_at)
+    if current_user.admin?
+      status_to_query = [:pending, :escalated]
+    else
+      status_to_query = :pending
+    end
+    @pending_tags = Tag.joins(:taggings).where(status: status_to_query).order(:created_at)
     if params[:tag_id].present?
       @tag_id = params[:tag_id].to_i
-      @pending_taggings = Tagging.where(status: :pending, tag_id: @tag_id).order(:created_at)
+      @pending_taggings = Tagging.where(status: status_to_query, tag_id: @tag_id).order(:created_at)
     else
-      @pending_taggings = Tagging.where(status: :pending).order(:created_at)
+      @pending_taggings = Tagging.where(status: status_to_query).order(:created_at)
     end
     @page_title = t(:moderate_tags)
     @similar_tags = ListItem.where(listkey: 'tag_similarity').pluck(:item_id, :extra).to_h
@@ -812,7 +817,6 @@ class AdminController < ApplicationController
 
   def approve_tag # approve tag and proceed to review taggings
     require_editor('moderate_tags')
-    debugger
     if session[:tagging_lock]
       t = Tag.find(params[:id])
       if t.present?
@@ -829,7 +833,6 @@ class AdminController < ApplicationController
 
   def approve_tag_and_next # to be called from tag review page (non-AJAX)
     require_editor('moderate_tags')
-    debugger
     if session[:tagging_lock]
       t = Tag.find(params[:id])
       if t.present?
@@ -856,10 +859,11 @@ class AdminController < ApplicationController
       if t.present?
         t.reject!(current_user)
         #if params[:reason].present?
-          Notifications.tag_rejected(t, params[:reason]).deliver
+          Notifications.tag_rejected(t, params[:reason]).deliver unless t.creator.warned? || t.creator.blocked? # don't send email if user is already warned or blocked
         #end
         next_items = Tag.where(status: :pending).where('created_at > ?', t.created_at).order(:created_at).limit(1)
         if next_items.first.present?
+          flash[:notice] = t(:tag_rejected)
           redirect_to url_for(action: :tag_review, id: next_items.first.id)
         else
           flash[:notice] = t(:no_more_to_review)
@@ -880,7 +884,7 @@ class AdminController < ApplicationController
       if t.present?
         t.reject!(current_user)
         #if params[:reason].present?
-          Notifications.tag_rejected(t, params[:reason]).deliver
+          Notifications.tag_rejected(t, params[:reason]).deliver unless t.creator.warned? || t.creator.blocked? # don't send email if user is already warned or blocked
         #end
         return render json: { tag_id: t.id, tag_name: t.name }
       else
@@ -890,7 +894,29 @@ class AdminController < ApplicationController
       head :forbidden
     end
   end
-  
+
+  def escalate_tag
+    require_editor('moderate_tags')
+    if session[:tagging_lock]
+      t = Tag.find(params[:id])
+      if t.present?
+        t.escalate!(current_user)
+        next_items = Tag.where(status: :pending).where('created_at > ?', t.created_at).order(:created_at).limit(1)
+        if next_items.first.present?
+          flash[:notice] = t(:tag_escalated)
+          redirect_to url_for(action: :tag_review, id: next_items.first.id)
+        else
+          flash[:notice] = t(:no_more_to_review)
+          redirect_to url_for(action: :tag_moderation)
+        end
+      else
+        head :not_found
+      end
+    else
+      head :forbidden
+    end
+  end
+
   def approve_tagging
     require_editor('moderate_tags')
     if session[:tagging_lock]
@@ -921,11 +947,31 @@ class AdminController < ApplicationController
     end
   end
 
-  def warn_user(id)
-
+  def warn_user
+    require_editor('moderate_tags') # TODO: update to a more generic editor bit
+    u = User.find(params[:id])
+    if u.present?
+      u.warn!(params[:reason])
+      flash[:notice] = t(:user_warned)
+      url = params[:return_url] || url_for(action: :tag_moderation)
+      redirect_to url
+    else
+      head :not_found
+    end
   end
 
-  def block_user(id)
+  def block_user
+    require_editor('moderate_tags') # TODO: update to a more generic editor bit
+    u = User.find(params[:id])
+    if u.present?
+      u.block!('tags', current_user, params[:reason])
+
+      flash[:notice] = t(:user_blocked)
+      url = params[:return_url] || url_for(action: :tag_moderation)
+      redirect_to url
+    else
+      head :not_found
+    end
   end
 
   private

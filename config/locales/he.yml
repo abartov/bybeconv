@@ -753,7 +753,11 @@ he:
   merge_with_this_tag: מיזוג עם תגית זו
   merge_tag_title: מיזוג עם תווית קיימת
   confirm_merge_tag: אישור מיזוג התוית
+  confirm_escalation: אישור העברה לבדיקה נוספת
   tag_merged: התגית מוזגה, על תיוגיה הממתינים
+  tag_escalated: התגית הועברה לבדיקה נוספת
+  tag_rejected: התגית נדחתה
+  user_warned: המשתמש/ת הוזהר/ה
   merge_tag_preview_html: "התגית המוצעת <b>%{tag}</b> (%{src_tag_taggings_count} תיוגים מקושרים) תמוזג עם התגית <b>%{dest_tag}</b> (%{dest_tag_taggings_count} תיוגים מקושרים)."
   merge_tag_generic_html: "התגית המוצעת <b>%{tag}</b> (%{src_tag_taggings_count} תיוגים מקושרים) תמוזג עם התגית:"
   taggings_will_be_merged: גם התיוגים המקושרים לתגית יועברו לתגית היעד, ללא שינוי במצב אישורם.
@@ -1157,6 +1161,7 @@ he:
   escalate_to_editor: העברה לעורך ראשי להכרעה
   reject_and_explain: "דחיה + הסבר"
   explain_rejection: נא להסביר את סיבת הדחייה
+  provide_reason: נא להסביר את סיבת הפעולה
   suggested_tags: תגיות שהוצעו
   linked_taggings: תיוגים מקושרים
   used_on_other_works: מיצירות סמוכות
