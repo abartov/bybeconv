@@ -33,7 +33,6 @@
 :javascript
   $(document).ready(function() {
     $('#tag').bind('railsAutocomplete.select', function(event, data){
-      alert('hello');
       $('#with_tag').val(data.item.tag_id);
     });
     $('#tag').change(function() {
