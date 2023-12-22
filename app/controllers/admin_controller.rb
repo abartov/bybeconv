@@ -752,9 +752,9 @@ class AdminController < ApplicationController
     @pending_tags = Tag.joins(:taggings).where(status: status_to_query).order(:created_at)
     if params[:tag_id].present?
       @tag_id = params[:tag_id].to_i
-      @pending_taggings = Tagging.where(status: status_to_query, tag_id: @tag_id).order(:created_at)
+      @pending_taggings = Tagging.where(status: status_to_query, tag_id: @tag_id).where(tag: {status: :approved}).order(:created_at)
     else
-      @pending_taggings = Tagging.where(status: status_to_query).order(:created_at)
+      @pending_taggings = Tagging.joins(:tag).where(status: status_to_query).where(tag: {status: :approved}).order(:created_at)
     end
     @page_title = t(:moderate_tags)
     @similar_tags = ListItem.where(listkey: 'tag_similarity').pluck(:item_id, :extra).to_h

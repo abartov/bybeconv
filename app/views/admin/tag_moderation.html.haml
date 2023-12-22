@@ -125,48 +125,26 @@
               %td
                 .quick-actions
                   - if session[:tagging_lock]
-                    = button_to approve_tagging_path(tagging), method: :post, remote: true, class: 'ghost-btn approve-tagging-btn', data: { confirm: t(:confirm_approve) } do
+                    = button_to approve_tagging_path(tagging), method: :post, remote: true, class: 'ghost-btn approve-tagging-btn', form_class: 'approve-tagging-form', data: { confirm: t(:confirm_approve) } do
                       .by2-icon> N
                       = t(:approve)
-                    = button_to reject_tagging_path(tagging), method: :post, remote: true, class: 'ghost-btn reject-tagging-btn', form_class: 'reject_tagging_form', data: { confirm: t(:confirm_reject) } do
+                    = button_to reject_tagging_path(tagging), method: :post, remote: true, class: 'ghost-btn reject-tagging-btn', form_class: 'reject-tagging-form', data: { confirm: t(:confirm_reject) } do
                       .by-icon-v02> -
                       = t(:reject)
-                    = button_to reject_tagging_path(tagging), method: :post, remote: true, class: 'ghost-btn reject-tagging-btn with-explanation', form_class: 'reject_tagging_form', data: { confirm: t(:confirm_reject) } do
+                    = button_to reject_tagging_path(tagging), method: :post, remote: true, class: 'ghost-btn reject-tagging-btn with-explanation', form_class: 'reject-tagging-form', data: { confirm: t(:confirm_reject) } do
                       .by-icon-v02> -
                       = t(:reject_and_explain)
-                    = button_to reject_tagging_path(tagging), method: :post, remote: true, class: 'ghost-btn reject-tagging-btn', form_class: 'reject_tagging_form' do
+                    = button_to merge_tagging_path(tagging), method: :post, remote: true, class: 'ghost-btn merge-tagging-btn', form_class: 'merge-tagging-form' do
                       .by-icon-v02> Q
                       = t(:change_or_merge)
-                    %button.ghost-btn.more-actions-btn פעולות נוספות...
+                    %button.ghost-btn.more-actions-btn= t(:additional_actions)
                   - else
                     = t(:tagging_system_locked)
-
-%br
-.backend.container
-  .admin_dashboard_item
-    %h2= t(:pending_taggings)
-    .flex-row
-      .flex-col.headline-2-v02= t(:tag)
-      .flex-col.headline-2-v02= t(:item)
-      .flex-col.headline-2-v02= t(:suggested_by)
-      .flex-col.headline-2-v02{style: 'flex: 2'}= t(:actions)
-    - @pending_taggings.each do |tagging|
-      .flex-row{style:'padding-bottom: 0.3em;'}
-        .flex-col= link_to tagging.tag.name, tagging.tag
-        .flex-col= link_to tagging.taggable.title, tagging.taggable
-        .flex-col= "#{tagging.suggester.name} (%.1f #{t(:acceptance_rate)})" % tagging.suggester.tagging_acceptance_rate
-        .flex-col{style: 'flex: 2'}
-          - if session[:tagging_lock]
-            = link_to t(:approve), approve_tagging_path(tagging), method: :post, remote: true, class: 'by-button-v02 approve-tagging-btn', data: { confirm: t(:confirm_approve) }
-            != '&nbsp;&nbsp;&nbsp;'
-            = link_to t(:reject), reject_tagging_path(tagging), method: :post, remote: true, class: 'by-button-v02 reject-tagging-btn', data: { confirm: t(:confirm_reject) }
-          - else
-            = t(:tagging_system_locked)
           
 :javascript
   function remove_row(event, color) {
     row = $(event.target).closest('tr');
-    row.css('background-color', color);
+    row.find('td').css('background-color', color);
     row.fadeOut(2000);
   }
   $(document).ready(function() {
@@ -192,13 +170,13 @@
       // response will come underneath of ‘data’ variable
       remove_row(event, '#33ff33');
     });
-    $('.reject-tagging_form').on('ajax:complete', function(event, data, status, xhr) {
+    $('.reject-tagging-form').on('ajax:complete', function(event, data, status, xhr) {
       // response will come underneath of ‘data’ variable
-      remove_row(event, '#ff3333');
+      remove_row(event, '#f7a7a7');
     });
-    $('.approve-tagging_form').on('ajax:complete', function(event, data, status, xhr) {
+    $('.approve-tagging-form').on('ajax:complete', function(event, data, status, xhr) {
       // response will come underneath of ‘data’ variable
-      remove_row(event, '#33ff33');
+      remove_row(event, '#a7f7a7');
     });
     $('#minmax_taggings').click(function() {
       if($('#layout-top').hasClass('active')) {
