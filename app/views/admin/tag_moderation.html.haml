@@ -7,7 +7,7 @@
         %p= "(#{@pending_tags.count})"
         - unless session[:tagging_lock]
           %h3{style: 'color:red'}= t(:tagging_system_locked_by, user: @tagging_lock_owner, ago: @tagging_lock_refreshed)
-      %a.by-icon-v02.pointer /
+      %a.by-icon-v02.pointer#minmax_tags /
     .by-card-content-v02#tags-card
       .management-content
         %table
@@ -75,7 +75,7 @@
         .by2-icon Y
         %p.headline-2-v02= t(:pending_taggings)
         %p= "(#{@pending_taggings.count})"
-      %a.by-icon-v02.pointer /
+      %a.by-icon-v02.pointer#minmax_taggings /
     .by-card-content-v02#taggings-card
       .management-content
         %table
@@ -465,5 +465,18 @@
       // response will come underneath of ‘data’ variable
       remove_row(event, '#33ff33');
     });
-
+    $('#minmax_taggings').click(function() {
+      if($('#layout-bottom').hasClass('active')) {
+        $('#layout-same').click();
+      } else {
+        $('#layout-bottom').click();
+      }
+    });
+    $('#minmax_tags').click(function() {
+      if($('#layout-top').hasClass('active')) {
+        $('#layout-same').click();
+      } else {
+        $('#layout-top').click();
+      }
+    });
   });
