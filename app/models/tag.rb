@@ -27,6 +27,7 @@ class Tag < ApplicationRecord
   end
   def reject!(rejecter)
     self.update(status: Tag.statuses[:rejected], approver_id: rejecter.id)
+    self.taggings.update_all(status: Tagging.statuses[:rejected], approved_by: rejecter.id)
   end
   def escalate!(escalator)
     self.update(status: Tag.statuses[:escalated], approver_id: escalator.id)
