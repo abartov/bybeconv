@@ -820,6 +820,7 @@ class AdminController < ApplicationController
         with_tag = Tag.find(params[:with_tag].to_i)
         if with_tag.present?
           t.merge_into(with_tag)
+          Notifications.tag_merged(t.name, t.creator, with_tag).deliver unless t.creator.blocked? # don't send email if user is blocked
           flash[:notice] = t(:tag_merged)
         else
           flash[:error] = t(:no_such_item)
@@ -853,9 +854,11 @@ class AdminController < ApplicationController
     if session[:tagging_lock]
       t = Tagging.find(params[:id])
       if t.present?
+        orig_name = t.tag.name
         with_tag = Tag.find(params[:with_tag].to_i)
         if with_tag.present?
           t.update(tag_id: with_tag.id, status: :approved)
+          Notifications.tag_merged(t, orig_name, t.suggester).deliver unless t.suggester.blocked? # don't send email if user is blocked
           flash[:notice] = t(:tagging_merged)
         else
           flash[:error] = t(:no_such_item)
@@ -875,6 +878,7 @@ class AdminController < ApplicationController
       t = Tag.find(params[:id])
       if t.present?
         t.approve!(current_user)
+        Notifications.tag_approved(t).deliver unless t.creator.blocked? # don't send email if user is blocked
         flash[:notice] = t(:tag_approved)
         redirect_to url_for(action: :tag_moderation, tag_id: t.id)
       else
@@ -891,6 +895,7 @@ class AdminController < ApplicationController
       t = Tag.find(params[:id])
       if t.present?
         t.approve!(current_user)
+        Notifications.tag_approved(t).deliver unless t.creator.blocked? # don't send email if user is blocked
         next_items = Tag.where(status: :pending).where('created_at > ?', t.created_at).order(:created_at).limit(1)
         if next_items.first.present?
           redirect_to url_for(action: :tag_review, id: next_items.first.id)
@@ -913,7 +918,7 @@ class AdminController < ApplicationController
       if t.present?
         t.reject!(current_user)
         #if params[:reason].present?
-          Notifications.tag_rejected(t, params[:reason]).deliver unless t.creator.warned? || t.creator.blocked? # don't send email if user is already warned or blocked
+          Notifications.tag_rejected(t, params[:reason]).deliver unless t.creator.blocked? # don't send email if user is already blocked
         #end
         next_items = Tag.where(status: :pending).where('created_at > ?', t.created_at).order(:created_at).limit(1)
         if next_items.first.present?
@@ -938,7 +943,7 @@ class AdminController < ApplicationController
       if t.present?
         t.reject!(current_user)
         #if params[:reason].present?
-          Notifications.tag_rejected(t, params[:reason]).deliver unless t.creator.warned? || t.creator.blocked? # don't send email if user is already warned or blocked
+          Notifications.tag_rejected(t, params[:reason]).deliver unless t.creator.blocked? # don't send email if user is already blocked
         #end
         return render json: { tag_id: t.id, tag_name: t.name }
       else
@@ -995,6 +1000,7 @@ class AdminController < ApplicationController
       t = Tagging.find(params[:id])
       if t.present?
         t.approve!(current_user)
+        Notifications.tagging_approved(t).deliver unless t.suggester.blocked? # don't send email if user is blocked
         respond_to do |format|
           format.html { redirect_to_next_tagging(t, I18n.t(:tagging_approved)) }
           format.json { head :ok }
@@ -1013,6 +1019,7 @@ class AdminController < ApplicationController
       t = Tagging.find(params[:id])
       if t.present?
         t.reject!(current_user)
+        Notifications.tagging_rejected(t, params[:explanation]).deliver unless t.suggester.blocked? # don't send email if user is blocked
         respond_to do |format|
           format.html { redirect_to_next_tagging(t, I18n.t(:tagging_rejected)) }
           format.json { head :ok }

@@ -1,0 +1,8 @@
+%div{align: 'right', dir: 'rtl'}
+  %p= "#{@tag.creator.name}, #{@greeting}"
+
+  %p= t(:tag_approved_intro, tag: @tag.name)
+
+  %hr
+
+  != raw t(:email_footer_html)

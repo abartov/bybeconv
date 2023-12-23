@@ -21,6 +21,50 @@ class Notifications < ActionMailer::Base
   # Subject can be set in your I18n file at config/locales/en.yml
   # with the following lookup:
   #
+  #   he.notifications.tag_approved.subject
+  def tag_approved(tag)
+    @greeting = t(:hello_anon)
+    @tag = tag
+    mail to: tag.creator.email
+  end
+
+  # Subject can be set in your I18n file at config/locales/en.yml
+  # with the following lookup:
+  #
+  #   he.notifications.tag_merged.subject
+  def tag_merged(orig_name, suggester, destination_tag)
+    @greeting = t(:hello_anon)
+    @orig_tag_name = orig_name
+    @suggester = suggester.name
+    @tag = destination_tag
+    mail to: suggester.email
+  end
+
+  def tagging_approved(tagging)
+    @greeting = t(:hello_anon)
+    @tagging = tagging
+    mail to: tagging.suggester.email
+  end
+
+  def tagging_rejected(tagging, explanation)
+    @greeting = t(:hello_anon)
+    @tagging = tagging
+    @explanation = explanation
+    mail to: tagging.suggester.email
+  end
+
+  def tagging_merged(tagging, original_tagname, suggester)
+    @greeting = t(:hello_anon)
+    @original_tagname = original_tagname
+    @tagging_suggester = suggester.name
+    @tagging = tagging
+    @tag = tagging.tag
+    mail to: suggester.email
+  end
+
+  # Subject can be set in your I18n file at config/locales/en.yml
+  # with the following lookup:
+  #
   #   he.notifications.tag_rejected.subject
   def tag_rejected(tag, explanation)
     @greeting = t(:hello_anon)

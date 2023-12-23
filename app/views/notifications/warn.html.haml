@@ -1,10 +1,11 @@
-= "#{@user.name}, #{@greeting}"
+%div{align: 'right', dir: 'rtl'}
+  = "#{@user.name}, #{@greeting}"
 
-= t(:user_warning_email)
+  = t(:user_warning_email)
 
-- if @msg.present?
-  != t(:additional_warning_explanation, msg: @msg)
+  - if @msg.present?
+    != t(:additional_warning_explanation, msg: @msg)
 
-%hr
+  %hr
 
-!= raw t(:email_footer_html)
+  != raw t(:email_footer_html)
