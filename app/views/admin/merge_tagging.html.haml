@@ -26,7 +26,7 @@
                 = hidden_field_tag :id, @tagging.id
                 = hidden_field_tag :with_tag, @with_tag.try(:id), id: 'with_tag'
                 .bottom-button-area.left-buttons
-                  %input.by-button-v02#do_merge_tagging{type: :submit, value: t(:confirm_merge_tagging)}
+                  %input.by-button-v02.disabled#do_merge_tagging{type: :submit, value: t(:confirm_merge_tagging)}
                   %button.by-button-v02.by-button-secondary-v02{'data-dismiss'=>'modal'}
                     %div= t(:cancel)
 

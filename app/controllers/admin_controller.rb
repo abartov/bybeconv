@@ -9,7 +9,7 @@ class AdminController < ApplicationController
   autocomplete :manifestation, :title, display_value: :title_and_authors, extra_data: [:expression_id] # TODO: also search alternate titles!
   autocomplete :person, :name, full: true
   layout false, only: [:merge_tag, :merge_tagging] # popups
-  layout 'backend', only: [:tag_moderation, :tag_review] # eventually change to except: [<popups>]
+  layout 'backend', only: [:tag_moderation, :tag_review, :tagging_review] # eventually change to except: [<popups>]
 
   def index
     if current_user && current_user.editor?
@@ -769,12 +769,29 @@ class AdminController < ApplicationController
     if @tag.nil?
       flash[:error] = I18n.t(:no_such_item)
       redirect_to url_for(action: :tag_moderation)
+    else
+      stags = ListItem.where(listkey: 'tag_similarity', item: @tag).pluck(:extra).map{|x| x.split(':')}.sort_by{|score, tag| score}.reverse
+      @similar_tags = Tag.find(stags.map{|x| x[1]})
+      calculate_editor_tagging_stats
+      @next_tag_id = Tag.where(status: :pending).where('created_at > ?', @tag.created_at).order(:created_at).limit(1).pluck(:id).first
+      @prev_tag_id = Tag.where(status: :pending).where('created_at < ?', @tag.created_at).order('created_at desc').limit(1).pluck(:id).first
     end
-    stags = ListItem.where(listkey: 'tag_similarity', item: @tag).pluck(:extra).map{|x| x.split(':')}.sort_by{|score, tag| score}.reverse
-    @similar_tags = Tag.find(stags.map{|x| x[1]})
-    calculate_editor_tagging_stats
-    @next_tag_id = Tag.where(status: :pending).where('created_at > ?', @tag.created_at).order(:created_at).limit(1).pluck(:id).first
-    @prev_tag_id = Tag.where(status: :pending).where('created_at < ?', @tag.created_at).order('created_at desc').limit(1).pluck(:id).first
+  end
+
+  def tagging_review
+    require_editor('moderate_tags')
+    @header_partial = 'tagmod_top'
+    @tagging = Tagging.find(params[:id])
+    if @tagging.nil?
+      flash[:error] = I18n.t(:no_such_item)
+      redirect_to url_for(action: :tag_moderation)
+    else
+      @suggester_taggings_count = @tagging.suggester.taggings.count
+      @suggester_acceptance_rate = @tagging.suggester.taggings.where(status: :approved).count.to_f / @suggester_taggings_count
+      calculate_editor_tagging_stats
+      @next_tagging_id = Tagging.where(status: :pending).where('created_at > ?', @tagging.created_at).order(:created_at).limit(1).pluck(:id).first
+      @prev_tagging_id = Tagging.where(status: :pending).where('created_at < ?', @tagging.created_at).order('created_at desc').limit(1).pluck(:id).first
+    end
   end
 
   def merge_tag
@@ -953,13 +970,34 @@ class AdminController < ApplicationController
     end
   end
 
+  def escalate_tagging
+    require_editor('moderate_tags')
+    if session[:tagging_lock]
+      t = Tagging.find(params[:id])
+      if t.present?
+        t.escalate!(current_user)
+        respond_to do |format|
+          format.html { redirect_to_next_tagging(t, I18n.t(:tagging_escalated)) }
+          format.json { head :ok }
+        end
+      else
+        head :not_found
+      end
+    else
+      head :forbidden
+    end
+  end
+
   def approve_tagging
     require_editor('moderate_tags')
     if session[:tagging_lock]
       t = Tagging.find(params[:id])
       if t.present?
         t.approve!(current_user)
-        return render json: { tagging_id: t.id }
+        respond_to do |format|
+          format.html { redirect_to_next_tagging(t, I18n.t(:tagging_approved)) }
+          format.json { head :ok }
+        end
       else
         head :not_found
       end
@@ -974,7 +1012,10 @@ class AdminController < ApplicationController
       t = Tagging.find(params[:id])
       if t.present?
         t.reject!(current_user)
-        return render json: { tagging_id: t.id }
+        respond_to do |format|
+          format.html { redirect_to_next_tagging(t, I18n.t(:tagging_rejected)) }
+          format.json { head :ok }
+        end
       else
         head :not_found
       end
@@ -1052,12 +1093,15 @@ class AdminController < ApplicationController
   end
   def calculate_editor_tagging_stats
     @tags_done = Tag.where(approver_id: current_user.id).where.not(status: :pending).count
-    @prev_tags_milestone = PROGRESS_SERIES.find { |element| element < @tags_done } || 0
     @next_tags_milestone = PROGRESS_SERIES.find { |element| element > @tags_done }
-    @tags_progress = (@tags_done - @prev_tags_milestone) * 100 / @next_tags_milestone
+    @tags_progress = (@tags_done) * 100 / @next_tags_milestone
     @taggings_done = Tagging.where(approved_by: current_user.id).where.not(status: :pending).count
-    @prev_taggings_milestone = PROGRESS_SERIES.find { |element| element < @taggings_done } || 0
     @next_taggings_milestone = PROGRESS_SERIES.find { |element| element > @taggings_done }
-    @taggings_progress = (@taggings_done - @prev_taggings_milestone) * 100 / @next_taggings_milestone
+    @taggings_progress = (@taggings_done) * 100 / @next_taggings_milestone
   end
+  def redirect_to_next_tagging(t, msg)
+    @next_tagging_id = Tagging.where(status: :pending).where('created_at > ?', t.created_at).order(:created_at).limit(1).pluck(:id).first
+    redirect_to(@next_tagging_id.present? ? url_for(tagging_review_path(@next_tagging_id)) : url_for(action: :tag_moderation), notice: msg)
+  end
+
 end

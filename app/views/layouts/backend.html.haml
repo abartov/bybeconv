@@ -29,7 +29,7 @@
                   %p= raw sitenotice
               %span#dismiss_sitenotice.popup-x-v02.pointer -
           - flash.each do |name, msg|
-            = content_tag :div, msg, class: name
+            = content_tag :div, msg, class: "#{name} flash-backend"
         .header-separator
         - unless @header_partial.nil?
           = render partial: @header_partial
@@ -80,4 +80,5 @@
         $('.modal').modal('hide'); // hide all modals on ESC
       }
     });
+    $('.flash-backend').delay(5000).fadeOut(1000);
   });

@@ -759,7 +759,13 @@ he:
   confirm_escalation: אישור העברה לבדיקה נוספת
   tag_merged: התגית מוזגה, על תיוגיה הממתינים
   tag_escalated: התגית הועברה לבדיקה נוספת
+  tagging_escalated: התיוג הועבר לבדיקה נוספת
+  tagging_of: "תיוג של:"
+  to_the_item: לפריט
+  with_the_tag: בתגית
   tag_rejected: התגית נדחתה
+  tagging_approved: התיוג אושר.
+  tagging_rejected: התיוג נדחה.
   user_warned: המשתמש/ת הוזהר/ה
   merge_tag_preview_html: "התגית המוצעת <b>%{tag}</b> (%{src_tag_taggings_count} תיוגים מקושרים) תמוזג עם התגית <b>%{dest_tag}</b> (%{dest_tag_taggings_count} תיוגים מקושרים)."
   merge_tag_generic_html: "התגית המוצעת <b>%{tag}</b> (%{src_tag_taggings_count} תיוגים מקושרים) תמוזג עם התגית:"
@@ -1135,7 +1141,7 @@ he:
   autosuggest_tags: הציעו לי תגית
   last_proposed_tags: "תגיות אחרונות שהצעתי:"
   acceptance_rate: אחוז התקבלות
-
+  existing_tags_for_this_item: "תגיות קיימות לפריט זה:"
   add_recommendation: הוספת המלצה
   email_footer_html: "בברכה, צוות פרויקט בן־יהודה.\n\nאולי תמצא/י ענין ביומן הרשת של פרויקט בן־יהודה: http://benyehuda.org/blog/ \n\n או בערוץ היו-טיוב של פרויקט בן־יהודה: http://www.youtube.com/user/ProjectBenYehuda/videos?flow=grid&view=0"
   proof_fixed: "תודה רבה על ההגהה ששלחת עבור היצירה בכתובת:\n\n%{url}\n\nלאחר בדיקה, תיקנו את הטקסט באתר.  נשמח לקבל הצעות הגהה גם בעתיד!"

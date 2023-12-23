@@ -463,3 +463,7 @@ body.modal-open{
 .by-button-v02 a:hover {
   color: #ffffff;
 }
+.flash-backend {
+  position: fixed;
+  z-index: 9000;
+}

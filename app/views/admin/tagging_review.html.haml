@@ -1,0 +1,99 @@
+.tagging-management-area
+  #pending-tag.by-card-v02
+    .by-card-content-v02
+      .headline-3-v02= t(:tagging_of)
+      %a.headline-1-v02{style: @tagging.escalated? ? 'background-color: #f7a7a7' : ''}= @tagging.taggable.title
+      - if @tagging.taggable_type == 'Manifestation'
+        .headline-2-v02= @tagging.taggable.author_string
+      .dash-vertical
+      .headline-3-v02= t(:with_the_tag)
+      .by-label
+        = @tagging.tag.name
+        %span.tags-number= @tagging.tag.taggings_count.to_s
+      .headline-3-v02= t(:existing_tags_for_this_item)
+      - other_taggings = @tagging.taggable.taggings.where.not(tag_id: @tagging.tag_id)
+      = render partial: 'shared/taggings', locals: {taggings: other_taggings, taggable: @tagging.taggable}
+      %br/
+      .headline-3-v02= t(:suggested_by)
+      .offered-by
+        %a{href: '#', style: @tagging.suggester.warned? ? 'background-color:orange;' : ''}= @tagging.suggester.name
+        %p
+          = t(:tagging_suggestions_count)+':'
+          %a{href: "#"}= @suggester_taggings_count
+        %p
+          - additional_class = ''
+          - acceptance_rate = @tagging.suggester.tagging_acceptance_rate
+          - if @suggester_taggings_count > 3 && acceptance_rate < 25
+            - additional_class = 'low-approval-rate'
+          - elsif @suggester_taggings_count > 3 && acceptance_rate > 75
+            - additional_class = 'high-approval-rate'
+          = t(:acceptance_rate)
+          %span{class: "%-approved #{additional_class}"}= "%.1f%%" % acceptance_rate
+      .headline-3-v02= t(:actions)
+      .tag-actions-buttons-group
+        = button_to approve_tagging_path(@tagging), method: :post, class: 'by-button-v02 approve-tagging-btn', form_class: 'approve-tagging-form', data: { confirm: t(:confirm_approve) } do
+          .by-icon-v02> -
+          = t(:approve_and_next)
+      .tag-actions-buttons-group
+        = button_to reject_tagging_path(@tagging), method: :post,  class: 'by-button-v02 reject-tagging-btn', form_class: 'reject-tagging-form', data: { confirm: t(:confirm_reject) } do
+          .by-icon-v02> -
+          = t(:reject_and_next)
+        = button_to reject_tagging_path(@tagging), method: :post,  class: 'by-button-v02 reject-tagging-btn with-explanation', form_class: 'reject-tagging-form', data: { confirm: t(:confirm_reject) } do
+          .by-icon-v02> -
+          = t(:reject_and_explain)
+      %br/
+      %button.ghost-btn.more-actions-btn= t(:additional_actions)
+      #additional_actions{style: 'display:none'}
+        %p
+        = button_to escalate_tagging_path(@tagging), method: :post, class: 'by-button-v02 escalate-tagging-btn', style: 'background-color:lightblue', form_class: 'escalate-tagging-form', data: { confirm: t(:confirm_escalation) } do
+          .by-icon-v02> -
+          = t(:escalate_to_editor)
+        %p
+        = button_to warn_user_path(@tagging.suggested_by, return_url: tagging_review_path(@tagging.id)), class: 'by-button-v02 with-explanation', style: 'background-color:orange', data: { confirm: t(:confirm_warn) } do
+          .by-icon-v02> -
+          = t(:warn_user)
+        %p
+        = button_to block_user_path(@tagging.suggested_by, return_url: tagging_review_path(@tagging.id)), class: 'by-button-v02 with-explanation', style: 'background-color:red', data: { confirm: t(:confirm_block) } do
+          .by-icon-v02> -
+          = t(:block_user)
+
+    .offered-tags-nav
+      - if @prev_tagging_id.present?
+        = link_to tagging_review_path(@prev_tagging_id), class: 'ghost-btn' do
+          .right-arrow> 2
+          = t(:to_previous_item)
+      - if @next_tagging_id.present?
+        = link_to tagging_review_path(@next_tagging_id), class: 'ghost-btn' do
+          = t(:to_next_item)
+          .left-arrow 1
+
+.div{style: 'width:150px;'}
+  = button_to t(:back), tag_moderation_path, class: 'by-button-v02', method: 'get'
+:javascript
+  $(document).ready(function() {
+    $('.with-explanation').click(function(e) {
+      e.stopPropagation();
+      var explanation = prompt("#{t(:provide_reason)}");
+      const sanitized = $("<p>").text(explanation).text(); 
+      var newParam = $("<input name='reason' type='hidden' value='" + sanitized + "' />")
+      $(this.parentElement).append(newParam);
+    });
+    $('.merge-btn').click(function(e) {
+      e.stopPropagation();
+      var url = "#{ merge_tag_path(99, with_tag: 88)}";
+      url = url.replace('99', $(this).data('tag-id')).replace('88', $(this).data('with-tag'));
+      $('.modal').modal('hide');
+      $('#generalDlg').load(url);
+      $('#generalDlg').modal('show');
+    });
+    $('.general-merge-btn').click(function(e) {
+      e.stopPropagation();
+      $('.modal').modal('hide');
+      $('#generalDlg').load("#{ merge_tagging_path(@tagging)}");
+      $('#generalDlg').modal('show');
+    });
+    $('.more-actions-btn').click(function(e) {
+      e.stopPropagation();
+      $('#additional_actions').toggle();
+    });
+  });

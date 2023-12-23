@@ -93,27 +93,31 @@
             %th= t(:acceptance_rate)
             %th= t(:quick_actions)
           - @pending_taggings.each do |tagging|
+            - extra_style = tagging.escalated? ? 'background-color: #f7a7a7;' : ''
             %tr
-              %td
+              %td{style: extra_style}
                 %input{name: "#", type: "checkbox", value: "#"}/
-              %td.label-name
+              %td.label-name{style: extra_style}
                 - if tagging.taggable_type == 'Manifestation'
-                  %a{href: manifestation_path(tagging.taggable_id), target: "_blank"}
-                    = "#{tagging.taggable.title} / #{tagging.taggable.author_string}"
+                  - taggable_url = manifestation_path(tagging.taggable_id)
+                  - taggable_title = "#{tagging.taggable.title} / #{tagging.taggable.author_string}"
                 - elsif tagging.taggable_type == 'Person'
-                  %a{href: person_path(tagging.taggable_id), target: "_blank"}
-                    = tagging.taggable.name
-              - tagging_count = tagging.tag.taggings_count
-              %td.tags-for-labels
+                  - taggable_url = person_path(tagging.taggable_id)
+                  - taggable_title = tagging.taggable.name
+                = link_to taggable_title, tagging_review_path(tagging.id)
+                = " – "
+                = link_to t(:to_the_item), taggable_url, target: "_blank"
+              - tagging_count =   tagging.suggester.taggings.count
+              %td.tags-for-labels{style: extra_style}
                 %a{href: "#"}= tagging.tag.name
                 %span
                   %a.tags-number{href: "#"}
-                    = tagging.tag.approved? ? tagging_count : t(:new)
-              %td.wait-time= distance_of_time_in_words(tagging.created_at, Date.today)
-              %td
+                    = tagging.tag.approved? ? tagging.tag.taggings_count : t(:new)
+              %td.wait-time{style: extra_style}= distance_of_time_in_words(tagging.created_at, Date.today)
+              %td{style: extra_style}
                 %a{href: "#"}= tagging.suggester.name
-              %td
-                %a{href: "#"}= tagging.suggester.taggings.count
+              %td{style: extra_style}
+                %a{href: "#"}= tagging_count
               - additional_class = ''
               - acceptance_rate = tagging.suggester.tagging_acceptance_rate
               - if tagging_count > 3 && acceptance_rate < 25
@@ -121,8 +125,8 @@
               - elsif tagging_count > 3 && acceptance_rate > 75
                 - additional_class = 'high-approval-rate'
 
-              %td{class: "%-approved #{additional_class}"}= "%.1f%%" % acceptance_rate
-              %td
+              %td{style: extra_style, class: "%-approved #{additional_class}"}= "%.1f%%" % acceptance_rate
+              %td{style: extra_style}
                 .quick-actions
                   - if session[:tagging_lock]
                     = button_to approve_tagging_path(tagging), method: :post, remote: true, class: 'ghost-btn approve-tagging-btn', form_class: 'approve-tagging-form', data: { confirm: t(:confirm_approve) } do
@@ -137,7 +141,21 @@
                     .ghost-btn.merge-tagging-btn{'data-tagging-id': tagging.id}
                       .by-icon-v02> Q
                       = t(:change_or_merge)
-                    %button.ghost-btn.more-actions-btn= t(:additional_actions)
+                    %button.ghost-btn.more-actions-btn.tagging-more= t(:additional_actions)
+                    .additional_actions{style: 'display:none'}
+                      %p
+                      = button_to escalate_tagging_path(tagging.id), class: 'by-button-v02', style: 'background-color:lightblue', data: { confirm: t(:confirm_escalation) } do
+                        .by-icon-v02> -
+                        = t(:escalate_to_editor)
+                      %p
+                      = button_to warn_user_path(tagging.suggested_by, return_url: tag_moderation_path), class: 'by-button-v02 with-explanation', style: 'background-color:orange', data: { confirm: t(:confirm_warn) } do
+                        .by-icon-v02> -
+                        = t(:warn_user)
+                      %p
+                      = button_to block_user_path(tagging.suggested_by, return_url: tag_moderation_path), class: 'by-button-v02 with-explanation', style: 'background-color:red', data: { confirm: t(:confirm_block) } do
+                        .by-icon-v02> -
+                        = t(:block_user)
+
                   - else
                     = t(:tagging_system_locked)
           
@@ -200,5 +218,8 @@
       $('#generalDlg').load(url);
       $('#generalDlg').modal('show');
     });
-
+    $('.tagging-more').click(function(e) {
+      e.stopPropagation();
+      $(this).parent().find('.additional_actions').toggle();
+    });
   });
