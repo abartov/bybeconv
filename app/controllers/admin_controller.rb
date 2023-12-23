@@ -752,7 +752,8 @@ class AdminController < ApplicationController
     @pending_tags = Tag.joins(:taggings).where(status: status_to_query).order(:created_at)
     if params[:tag_id].present?
       @tag_id = params[:tag_id].to_i
-      @pending_taggings = Tagging.where(status: status_to_query, tag_id: @tag_id).where(tag: {status: :approved}).order(:created_at)
+      @tag = Tag.find(@tag_id)
+      @pending_taggings = Tagging.joins(:tag).where(status: status_to_query, tag_id: @tag_id).where(tag: {status: :approved}).order(:created_at)
     else
       @pending_taggings = Tagging.joins(:tag).where(status: status_to_query).where(tag: {status: :approved}).order(:created_at)
     end

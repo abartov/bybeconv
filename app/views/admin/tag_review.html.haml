@@ -68,7 +68,7 @@
         .by-card-content-v02{style: "width: 50%;"}
           .headline-3-v02= t(:suggested_by)
           .offered-by
-            %a{href: "#", style: @tagging.suggester.warned? ? 'background-color:orange;' : ''}= @tag.creator.name
+            %a{href: "#", style: @tag.creator.warned? ? 'background-color:orange;' : ''}= @tag.creator.name
             %p
               = t(:suggested_tags)+':'
               - tag_count = Tag.by_user(@tag.creator).count

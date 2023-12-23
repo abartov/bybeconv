@@ -73,7 +73,10 @@
     .title-area
       .title-right-side
         .by2-icon Y
-        %p.headline-2-v02= t(:pending_taggings)
+        %p.headline-2-v02
+          = t(:pending_taggings)
+          - if @tag_id.present?
+            %span= " – #{t(:for_tag, tag: @tag.name)}"
         %p= "(#{@pending_taggings.count})"
       %a.by-icon-v02.pointer#minmax_taggings /
     .by-card-content-v02#taggings-card
@@ -222,4 +225,7 @@
       e.stopPropagation();
       $(this).parent().find('.additional_actions').toggle();
     });
+    if("#{@tag_id}" != "") {
+      $('#minmax_taggings').click();
+    }
   });

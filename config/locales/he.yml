@@ -779,6 +779,7 @@ he:
   recommendations_for_work: המלצות קוראים
   x_authors: "(%{x} יוצרים)"
   x_pending_taggings_for_tag: "%{x} תיוגים מוצעים לתגית %{tag}"
+  for_tag: 'לתגית "%{tag}"'
   x_authors_mixed_gender: "%{x} יוצרים ויוצרות"
   writing_language: שפת יצירה
   non_hebrew_languages: שפות אחרות
