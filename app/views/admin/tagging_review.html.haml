@@ -1,4 +1,4 @@
-.tagging-management-area
+.tagging-management-area.tagging-review
   #pending-tag.by-card-v02
     .by-card-content-v02
       .headline-3-v02= t(:tagging_of)
@@ -66,6 +66,14 @@
         = link_to tagging_review_path(@next_tagging_id), class: 'ghost-btn' do
           = t(:to_next_item)
           .left-arrow 1
+  #taggable-content
+    - if @tagging.taggable_type == 'Manifestation'
+      %h1= t(:taggable_item)+': '+@m.title + ' / ' + @m.author_string
+      .read_html#preview{ style:"padding-left:10px;padding-right:15px;background:#d2cfcf;"}
+        != raw(@html)
+    - elsif @tagging.taggable_type == 'Person'
+      %h1= t(:taggable_item)+': '+@author.name
+      = render partial: 'authors/toc', locals: {margin: false}
 
 .div{style: 'width:150px;'}
   = button_to t(:back), tag_moderation_path, class: 'by-button-v02', method: 'get'

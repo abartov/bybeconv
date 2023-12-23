@@ -467,3 +467,11 @@ body.modal-open{
   position: fixed;
   z-index: 9000;
 }
+.tagging-review {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+#pending-tag {
+  min-width: 350px;
+}
