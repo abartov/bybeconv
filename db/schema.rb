@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_12_02_181505) do
+ActiveRecord::Schema.define(version: 2023_12_18_165322) do
 
   create_table "aboutnesses", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -28,7 +28,7 @@ ActiveRecord::Schema.define(version: 2023_12_02_181505) do
     t.index ["work_id"], name: "index_aboutnesses_on_work_id"
   end
 
-  create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
     t.bigint "record_id", null: false
@@ -38,7 +38,7 @@ ActiveRecord::Schema.define(version: 2023_12_02_181505) do
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
 
-  create_table "active_storage_blobs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "active_storage_blobs", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "key", null: false
     t.string "filename", null: false
     t.string "content_type"
@@ -46,6 +46,7 @@ ActiveRecord::Schema.define(version: 2023_12_02_181505) do
     t.bigint "byte_size", null: false
     t.string "checksum", null: false
     t.datetime "created_at", null: false
+    t.string "service_name", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
@@ -622,6 +623,7 @@ ActiveRecord::Schema.define(version: 2023_12_02_181505) do
     t.string "item_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "extra"
     t.index ["item_type", "item_id"], name: "index_list_items_on_item_type_and_item_id"
     t.index ["listkey", "item_id"], name: "index_list_items_on_listkey_and_item_id"
     t.index ["listkey", "updated_at"], name: "index_list_items_on_listkey_and_updated_at"
@@ -771,7 +773,7 @@ ActiveRecord::Schema.define(version: 2023_12_02_181505) do
     t.index ["task_id"], name: "index_publications_on_task_id"
   end
 
-  create_table "reading_lists", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+  create_table "reading_lists", charset: "latin1", force: :cascade do |t|
     t.string "title"
     t.integer "user_id"
     t.integer "access"
@@ -791,7 +793,7 @@ ActiveRecord::Schema.define(version: 2023_12_02_181505) do
     t.index ["role", "person_id"], name: "index_realizers_on_role_and_person_id"
   end
 
-  create_table "recommendations", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "recommendations", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.text "body"
     t.integer "user_id"
     t.integer "approved_by"
@@ -814,7 +816,7 @@ ActiveRecord::Schema.define(version: 2023_12_02_181505) do
     t.index ["updated_at"], name: "index_sessions_on_updated_at"
   end
 
-  create_table "sitenotices", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "sitenotices", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.text "body"
     t.datetime "fromdate"
     t.datetime "todate"
@@ -878,10 +880,12 @@ ActiveRecord::Schema.define(version: 2023_12_02_181505) do
     t.datetime "updated_at", null: false
     t.integer "approver_id"
     t.integer "taggings_count"
+    t.string "wikidata_qid"
     t.index ["approver_id"], name: "index_tags_on_approver_id"
     t.index ["created_by"], name: "tags_created_by_fk"
     t.index ["name"], name: "index_tags_on_name", unique: true
     t.index ["status", "name"], name: "index_tags_on_status_and_name", unique: true
+    t.index ["wikidata_qid"], name: "index_tags_on_wikidata_qid"
   end
 
   create_table "tocs", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -925,6 +929,7 @@ ActiveRecord::Schema.define(version: 2023_12_02_181505) do
     t.datetime "avatar_updated_at"
     t.string "tasks_api_key"
     t.boolean "crowdsourcer"
+    t.date "warned_on"
   end
 
   create_table "versions", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
