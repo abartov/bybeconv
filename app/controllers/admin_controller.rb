@@ -115,26 +115,29 @@ class AdminController < ApplicationController
 
   def assign_proofs
     @p = Proof.where(status: 'new').order(created_at: :asc).limit(1).first
-    @p.status = 'assigned'
-    @p.save!
-    li = ListItem.new(listkey: 'proofs_by_user', user: current_user, item: @p)
-    li.save!
-    # check if there are any other proofs on this manifestation, and if so, assign them too, for efficiency
-    other_proofs = []
-    unless @p.manifestation_id.nil?
-      other_proofs = Proof.where(status: 'new', manifestation_id: @p.manifestation_id)
+    if @p.nil?
+      flash[:notice] = t(:no_more_items)
     else
-      other_proofs = Proof.where(status: 'new', about: @p.about)
-    end
-    other_proofs.each do |other|
-      other.status = 'assigned'
-      other.save
-      li = ListItem.new(listkey: 'proofs_by_user', user: current_user, item: other)
+      @p.status = 'assigned'
+      @p.save!
+      li = ListItem.new(listkey: 'proofs_by_user', user: current_user, item: @p)
+      li.save!
+      # check if there are any other proofs on this manifestation, and if so, assign them too, for efficiency
+      other_proofs = []
+      unless @p.manifestation_id.nil?
+        other_proofs = Proof.where(status: 'new', manifestation_id: @p.manifestation_id)
+      else
+        other_proofs = Proof.where(status: 'new', about: @p.about)
+      end
+      other_proofs.each do |other|
+        other.status = 'assigned'
+        other.save
+        li = ListItem.new(listkey: 'proofs_by_user', user: current_user, item: other)
+        li.save!
+      end
+      li = ListItem.new(listkey: 'proofs_by_user', user: current_user, item: @p)
       li.save!
     end
-    li = ListItem.new(listkey: 'proofs_by_user', user: current_user, item: @p)
-    li.save!
-
     redirect_to url_for(action: :index)
   end
 
