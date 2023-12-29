@@ -1166,7 +1166,7 @@ he:
   latest_uploads_for: יצירות שנוספו באחרונה מאת %{author}
   temporary_worklist: רשימת יצירות (זמנית)
   improvements_soon: דף זה טרם עוצב. בקרוב נכניס בו שיפורים, אבל רצינו שבינתיים תוכלו לגשת ליצירות עצמן.
-  primary: primary (TODO - translate)
+  primary: יצירה עיקרית
 
   notifications:
     proof_fixed:
