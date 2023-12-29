@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_12_18_165322) do
+ActiveRecord::Schema.define(version: 2023_12_29_210113) do
 
   create_table "aboutnesses", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -224,6 +224,38 @@ ActiveRecord::Schema.define(version: 2023_12_18_165322) do
     t.index ["base_user_id", "manifestation_id"], name: "index_bookmarks_on_base_user_id_and_manifestation_id", unique: true
     t.index ["base_user_id"], name: "index_bookmarks_on_base_user_id"
     t.index ["manifestation_id"], name: "index_bookmarks_on_manifestation_id"
+  end
+
+  create_table "collection_items", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.bigint "collection_id"
+    t.string "alt_title"
+    t.text "context"
+    t.integer "seqno"
+    t.string "item_type"
+    t.bigint "item_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["collection_id"], name: "index_collection_items_on_collection_id"
+    t.index ["item_type", "item_id"], name: "index_collection_items_on_item"
+  end
+
+  create_table "collections", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "title"
+    t.string "sort_title"
+    t.string "subtitle"
+    t.string "issn"
+    t.integer "collection_type"
+    t.string "inception"
+    t.integer "inception_year"
+    t.integer "publication_id"
+    t.integer "toc_id"
+    t.integer "toc_strategy"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["inception_year"], name: "index_collections_on_inception_year"
+    t.index ["publication_id"], name: "index_collections_on_publication_id"
+    t.index ["sort_title"], name: "index_collections_on_sort_title"
+    t.index ["toc_id"], name: "index_collections_on_toc_id"
   end
 
   create_table "creations", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -1008,6 +1040,9 @@ ActiveRecord::Schema.define(version: 2023_12_18_165322) do
   add_foreign_key "base_users", "users"
   add_foreign_key "bookmarks", "base_users"
   add_foreign_key "bookmarks", "manifestations"
+  add_foreign_key "collection_items", "collections"
+  add_foreign_key "collections", "publications"
+  add_foreign_key "collections", "tocs"
   add_foreign_key "dictionary_aliases", "dictionary_entries"
   add_foreign_key "dictionary_entries", "manifestations"
   add_foreign_key "dictionary_links", "dictionary_entries", column: "from_entry_id"

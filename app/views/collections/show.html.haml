@@ -1,0 +1,36 @@
+%p#notice= notice
+
+%p
+  %b Title:
+  = @collection.title
+%p
+  %b Sort title:
+  = @collection.sort_title
+%p
+  %b Subtitle:
+  = @collection.subtitle
+%p
+  %b Issn:
+  = @collection.issn
+%p
+  %b Collection type:
+  = @collection.collection_type
+%p
+  %b Inception:
+  = @collection.inception
+%p
+  %b Inception year:
+  = @collection.inception_year
+%p
+  %b Publication:
+  = @collection.publication
+%p
+  %b Toc:
+  = @collection.toc
+%p
+  %b Toc strategy:
+  = @collection.toc_strategy
+
+= link_to 'Edit', edit_collection_path(@collection)
+\|
+= link_to 'Back', collections_path

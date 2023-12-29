@@ -819,8 +819,6 @@ class ManifestationController < ApplicationController
     es_prep_collection
     d = Date.today
     @maxdate = "#{d.year}-#{'%02d' % d.month}"
-    #@maxdate = d.year.to_s
-    #@maxdate = Date.today
     @header_partial = 'manifestation/browse_top'
   end
 
