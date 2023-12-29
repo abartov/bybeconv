@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_12_02_181505) do
+ActiveRecord::Schema.define(version: 2023_12_18_165322) do
 
   create_table "aboutnesses", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -623,6 +623,7 @@ ActiveRecord::Schema.define(version: 2023_12_02_181505) do
     t.string "item_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "extra"
     t.index ["item_type", "item_id"], name: "index_list_items_on_item_type_and_item_id"
     t.index ["listkey", "item_id"], name: "index_list_items_on_listkey_and_item_id"
     t.index ["listkey", "updated_at"], name: "index_list_items_on_listkey_and_updated_at"
@@ -879,10 +880,12 @@ ActiveRecord::Schema.define(version: 2023_12_02_181505) do
     t.datetime "updated_at", null: false
     t.integer "approver_id"
     t.integer "taggings_count"
+    t.string "wikidata_qid"
     t.index ["approver_id"], name: "index_tags_on_approver_id"
     t.index ["created_by"], name: "tags_created_by_fk"
     t.index ["name"], name: "index_tags_on_name", unique: true
     t.index ["status", "name"], name: "index_tags_on_status_and_name", unique: true
+    t.index ["wikidata_qid"], name: "index_tags_on_wikidata_qid"
   end
 
   create_table "tocs", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -926,6 +929,7 @@ ActiveRecord::Schema.define(version: 2023_12_02_181505) do
     t.datetime "avatar_updated_at"
     t.string "tasks_api_key"
     t.boolean "crowdsourcer"
+    t.date "warned_on"
   end
 
   create_table "versions", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -978,6 +982,7 @@ ActiveRecord::Schema.define(version: 2023_12_02_181505) do
     t.string "origlang_title"
     t.string "normalized_pub_date"
     t.string "normalized_creation_date"
+    t.boolean "primary", null: false
     t.index ["normalized_creation_date"], name: "index_works_on_normalized_creation_date"
     t.index ["normalized_pub_date"], name: "index_works_on_normalized_pub_date"
   end

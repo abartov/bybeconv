@@ -495,6 +495,7 @@ class ManifestationController < ApplicationController
           @w.origlang_title = params[:origlang_title]
           @w.date = params[:wdate]
           @w.comment = params[:wcomment]
+          @w.primary = params[:primary] == 'true'
           unless params[:add_person_w].blank?
             c = Creation.new(work_id: @w.id, person_id: params[:add_person_w], role: params[:role_w].to_i)
             c.save!

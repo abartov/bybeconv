@@ -13,6 +13,7 @@ FactoryBot.define do
       copyrighted { false }
       expression_title { title }
       work_title { title }
+      primary { true }
     end
 
     title { "Title for #{manifestation_name}" }
@@ -37,7 +38,8 @@ FactoryBot.define do
         orig_lang: orig_lang,
         genre: genre,
         period: period,
-        copyrighted: copyrighted
+        copyrighted: copyrighted,
+        primary: primary
       )
     end
 
