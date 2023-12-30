@@ -59,11 +59,23 @@ RSpec.describe Collection, type: :model do
   end
 
   it "has access to an optional associated custom TOC" do
+    c = create(:collection)
+    t = create(:toc)
+    c.toc = t
+    c.save!
+    expect(c.toc).to eq t
   end
+
   it "has access to an optional associated Publication" do
+    c = create(:collection)
+    p = create(:publication)
+    c.publication = p
+    c.save!
+    expect(c.publication).to eq p
   end
-  it "lists people associated with it, optionally filtered by role" do
-  end
+
+  pending "lists people associated with it, optionally filtered by role"
+
   it "lists tags associated with it" do
     c = create(:collection)
     t1 = create(:tag)
@@ -74,12 +86,39 @@ RSpec.describe Collection, type: :model do
     create(:tagging, tag: t3, taggable: c)
     expect(c.tags).to eq [t1, t2, t3]
   end
+
   it "can move an item up in the order" do
+    c = create(:collection)
+    i1 = create(:collection_item, collection: c, seqno: 1)
+    i2 = create(:collection_item, collection: c, seqno: 3)
+    i3 = create(:collection_item, collection: c, seqno: 2)
+    expect(c.collection_items).to eq [i1, i3, i2]
+    c.move_item_up(i2.id)
+    expect(c.collection_items.reload).to eq [i1, i2, i3]
   end
+
   it "can move an item down in the order" do
+    c = create(:collection)
+    i1 = create(:collection_item, collection: c, seqno: 1)
+    i2 = create(:collection_item, collection: c, seqno: 3)
+    i3 = create(:collection_item, collection: c, seqno: 2)
+    expect(c.collection_items).to eq [i1, i3, i2]
+    c.move_item_down(i1.id)
+    expect(c.collection_items.reload).to eq [i3, i1, i2]
   end
+
   it "can append an item to the end of the order" do
+    c = create(:collection)
+    i1 = create(:collection_item, collection: c, seqno: 1)
+    i2 = create(:collection_item, collection: c, seqno: 3)
+    i3 = create(:collection_item, collection: c, seqno: 2)
+    expect(c.collection_items).to eq [i1, i3, i2]
+    m = create(:manifestation)
+    c.append_item(m)
+    expect(c.collection_items.reload.count).to eq 4
+    expect(c.collection_items.last.item).to eq m
   end
+
   it "can be emptied" do
     c = create(:collection)
     5.times { create(:collection_item, collection: c) }

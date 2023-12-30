@@ -5,6 +5,11 @@ class Collection < ApplicationRecord
   belongs_to :toc
   has_many :collection_items, -> { order(:seqno) }, dependent: :destroy
 
+  has_many :creations, dependent: :destroy
+  has_many :persons, through: :creations, class_name: 'Person'
+  has_many :aboutnesses, as: :aboutable, dependent: :destroy # works that are ABOUT this work
+  has_many :topics, class_name: 'Aboutness' # topics that this work is ABOUT 
+
     # convenience methods
     has_many :manifestation_items, through: :collection_items, source: :item, source_type: 'Manifestation'
     has_many :person_items, through: :collection_items, source: :item, source_type: 'Person'
@@ -26,7 +31,35 @@ class Collection < ApplicationRecord
   def collection_items_by_type(item_type)
     self.collection_items.where(item_type: item_type)
   end
+
   def items_by_type(item_type)
     self.collection_items_by_type(item_type).map(&:item)
   end
+  
+  def move_item_up(item_id)
+    ci = CollectionItem.find(item_id)
+    return false if ci.nil?
+    prev = self.collection_items.where("seqno < ?", ci.seqno).last
+    return if prev.nil?
+    prev.seqno, ci.seqno = ci.seqno, prev.seqno
+    prev.save!
+    ci.save!
+  end
+
+  def move_item_down(item_id)
+    ci = CollectionItem.find(item_id)
+    return false if ci.nil?
+    nxt = self.collection_items.where("seqno > ?", ci.seqno).first
+    return if nxt.nil?
+    nxt.seqno, ci.seqno = ci.seqno, nxt.seqno
+    nxt.save!
+    ci.save!
+  end
+
+  def append_item(item)
+    ci = CollectionItem.new(collection: self, item: item)
+    ci.seqno = self.collection_items.maximum(:seqno).to_i + 1
+    ci.save!
+  end
+  
 end
