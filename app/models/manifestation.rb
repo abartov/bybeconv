@@ -22,7 +22,7 @@ class Manifestation < ApplicationRecord
   has_many :proofs, dependent: :destroy
   has_many :anthology_texts, dependent: :destroy
   has_many_attached :images, dependent: :destroy
-
+  has_many :collection_items, as: :item
   before_save :update_sort_title!
 
   enum status: [:published, :nonpd, :unpublished, :deprecated]

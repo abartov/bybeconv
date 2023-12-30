@@ -20,6 +20,7 @@ class Person < ApplicationRecord
   has_many :publications, dependent: :destroy
   has_many :taggings, as: :taggable, dependent: :destroy
   has_many :tags, through: :taggings, class_name: 'Tag'
+  has_many :collection_items, as: :item
 
 
   # scopes
