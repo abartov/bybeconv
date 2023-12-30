@@ -8,7 +8,7 @@ class AddSortTitleToManifestation < ActiveRecord::Migration[5.2]
     i = 0
     Manifestation.all.each do |m|
       puts "#{i}/#{total} done" if i % 100 == 0
-      m.update_sort_title
+      m.update_sort_title!
       m.save
       i += 1
     end

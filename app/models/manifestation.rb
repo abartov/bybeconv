@@ -23,7 +23,7 @@ class Manifestation < ApplicationRecord
   has_many :anthology_texts, dependent: :destroy
   has_many_attached :images, dependent: :destroy
 
-  before_save :update_sort_title
+  before_save :update_sort_title!
 
   enum status: [:published, :nonpd, :unpublished, :deprecated]
 
@@ -44,11 +44,6 @@ class Manifestation < ApplicationRecord
   # class variable
   @@popular_works = nil
   @@tmplock = false
-
-  def update_sort_title
-    self.sort_title = self.title.strip_nikkud.tr('[]()*"\'', '').tr('-־',' ').strip
-    self.sort_title = $' if self.sort_title =~ /^\d+\. /
-  end
 
   def like_count
     return likers.count
