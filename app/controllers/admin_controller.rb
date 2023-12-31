@@ -240,8 +240,8 @@ class AdminController < ApplicationController
     @authors = []
 
     # Getting list of authors, who wrote works in more than one language
-    translatees = Person.joins(creations: :work).
-      merge(Creation.author).
+    translatees = Person.joins(involvements: :work).
+      merge(InvolvedAuthority.author).
       group('people.id').
       select('people.id, people.name').
       having('min(works.orig_lang) <> max(works.orig_lang)').
@@ -261,7 +261,7 @@ class AdminController < ApplicationController
   # We assume manifestation should be copyrighted if one of its creators or realizers is not in public domain
   CALCULATED_COPYRIGHT_EXPRESSION = <<~sql
     (
-      exists (select 1 from creations c join people p on p.id = c.person_id where c.work_id = works.id and not coalesce(p.public_domain, false))
+      exists (select 1 from involved_authorities c join people p on p.id = c.authority_id and c.authority_type = 'Person' where c.item_id = works.id and c.item_type = 'Work' and not coalesce(p.public_domain, false))
       or exists (select 1 from realizers r join people p on p.id = r.person_id where r.expression_id = expressions.id and not coalesce(p.public_domain, false))
     )
   sql
