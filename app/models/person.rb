@@ -20,7 +20,7 @@ class Person < ApplicationRecord
   has_many :publications, dependent: :destroy
   has_many :taggings, as: :taggable, dependent: :destroy
   has_many :tags, through: :taggings, class_name: 'Tag'
-
+  has_many :involvements, class_name: 'InvolvedAuthority', as: :authority
 
   # scopes
   scope :has_toc, -> { where.not(toc_id: nil) }

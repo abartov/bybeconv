@@ -1,0 +1,2 @@
+module InvolvedAuthoritiesHelper
+end

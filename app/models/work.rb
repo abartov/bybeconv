@@ -5,6 +5,7 @@ class Work < ApplicationRecord
   has_many :expressions, inverse_of: :work, dependent: :destroy
   has_many :creations, dependent: :destroy
   has_many :persons, through: :creations, class_name: 'Person'
+  has_many :involved_authorities, as: :item, dependent: :destroy
   has_many :aboutnesses, as: :aboutable, dependent: :destroy # works that are ABOUT this work
   has_many :topics, class_name: 'Aboutness' # topics that this work is ABOUT 
 

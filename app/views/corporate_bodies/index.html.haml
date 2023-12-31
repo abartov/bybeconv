@@ -1,0 +1,39 @@
+%h1 Listing corporate_bodies
+
+%table
+  %thead
+    %tr
+      %th Name
+      %th Alternate names
+      %th Location
+      %th Inception
+      %th Inception year
+      %th Dissolution
+      %th Dissolution year
+      %th Wikidata uri
+      %th Viaf
+      %th Comments
+      %th
+      %th
+      %th
+
+  %tbody
+    - @corporate_bodies.each do |corporate_body|
+      %tr
+        %td= corporate_body.name
+        %td= corporate_body.alternate_names
+        %td= corporate_body.location
+        %td= corporate_body.inception
+        %td= corporate_body.inception_year
+        %td= corporate_body.dissolution
+        %td= corporate_body.dissolution_year
+        %td= corporate_body.wikidata_uri
+        %td= corporate_body.viaf_id
+        %td= corporate_body.comments
+        %td= link_to 'Show', corporate_body
+        %td= link_to 'Edit', edit_corporate_body_path(corporate_body)
+        %td= link_to 'Destroy', corporate_body, method: :delete, data: { confirm: 'Are you sure?' }
+
+%br
+
+= link_to 'New Corporate body', new_corporate_body_path
