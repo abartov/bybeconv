@@ -20,6 +20,7 @@ class Person < ApplicationRecord
   has_many :publications, dependent: :destroy
   has_many :taggings, as: :taggable, dependent: :destroy
   has_many :tags, through: :taggings, class_name: 'Tag'
+  has_many :involvements, class_name: 'InvolvedAuthority', as: :authority
 
   # scopes
   scope :has_toc, -> { where.not(toc_id: nil) }
@@ -277,6 +278,7 @@ class Person < ApplicationRecord
   def title # convenience method for polymorphic handling (e.g. Taggable)
     name
   end
+
   def original_works_by_genre
     ret = {}
     get_genres.map{|g| ret[g] = []}
@@ -404,7 +406,9 @@ class Person < ApplicationRecord
     end
     return @@popular_authors
   end
+
   protected
+
   def placeholder_image_url
     if gender == 'female'
       return '/assets/:style/placeholder_woman.jpg'

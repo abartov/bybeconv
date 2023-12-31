@@ -7,6 +7,7 @@ class Expression < ApplicationRecord
   has_many :manifestations, inverse_of: :expression, dependent: :destroy
   has_many :realizers, dependent: :destroy
   has_many :persons, through: :realizers, class_name: 'Person'
+  has_many :involved_authorities, as: :item, dependent: :destroy
   has_many :aboutnesses, as: :aboutable, dependent: :destroy
   has_many :taggings, as: :taggable, dependent: :destroy
   has_many :tags, through: :taggings, class_name: 'Tag'

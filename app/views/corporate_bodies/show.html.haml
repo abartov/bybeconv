@@ -1,0 +1,36 @@
+%p#notice= notice
+
+%p
+  %b Name:
+  = @corporate_body.name
+%p
+  %b Alternate names:
+  = @corporate_body.alternate_names
+%p
+  %b Location:
+  = @corporate_body.location
+%p
+  %b Inception:
+  = @corporate_body.inception
+%p
+  %b Inception year:
+  = @corporate_body.inception_year
+%p
+  %b Dissolution:
+  = @corporate_body.dissolution
+%p
+  %b Dissolution year:
+  = @corporate_body.dissolution_year
+%p
+  %b Wikidata uri:
+  = @corporate_body.wikidata_uri
+%p
+  %b Viaf:
+  = @corporate_body.viaf_id
+%p
+  %b Comments:
+  = @corporate_body.comments
+
+= link_to 'Edit', edit_corporate_body_path(@corporate_body)
+\|
+= link_to 'Back', corporate_bodies_path

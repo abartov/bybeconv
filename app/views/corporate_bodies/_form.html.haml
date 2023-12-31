@@ -1,0 +1,40 @@
+= form_for @corporate_body do |f|
+  - if @corporate_body.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@corporate_body.errors.count, "error")} prohibited this corporate_body from being saved:"
+      %ul
+        - @corporate_body.errors.full_messages.each do |message|
+          %li= message
+
+  .field
+    = f.label :name
+    = f.text_field :name
+  .field
+    = f.label :alternate_names
+    = f.text_field :alternate_names
+  .field
+    = f.label :location
+    = f.text_field :location
+  .field
+    = f.label :inception
+    = f.text_field :inception
+  .field
+    = f.label :inception_year
+    = f.number_field :inception_year
+  .field
+    = f.label :dissolution
+    = f.text_field :dissolution
+  .field
+    = f.label :dissolution_year
+    = f.number_field :dissolution_year
+  .field
+    = f.label :wikidata_uri
+    = f.text_field :wikidata_uri
+  .field
+    = f.label :viaf_id
+    = f.text_field :viaf_id
+  .field
+    = f.label :comments
+    = f.text_area :comments
+  .actions
+    = f.submit 'Save'
