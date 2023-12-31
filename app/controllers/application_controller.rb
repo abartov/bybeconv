@@ -350,7 +350,7 @@ class ApplicationController < ActionController::Base
   #  return ret.join('; ')
   #end
   def textify_titles(manifestations, au) # translations will be marked as translations, without mentioning the author names, for performance reasons
-    Manifestation.includes(expression: [work: [creations: :person]]).find(manifestations.pluck(:id)).map{|m| "<a href=\"#{url_for(controller: :manifestation, action: :read, id: m.id)}\">#{m.title}</a>#{m.expression.translation ? " (#{I18n.t(:translation)})" : ''}"}.join('; ')
+    Manifestation.includes(expression: [work: :involved_authorities]).find(manifestations.pluck(:id)).map{|m| "<a href=\"#{url_for(controller: :manifestation, action: :read, id: m.id)}\">#{m.title}</a>#{m.expression.translation ? " (#{I18n.t(:translation)})" : ''}"}.join('; ')
   end
 
   def textify_new_pubs(author)
@@ -362,7 +362,7 @@ class ApplicationController < ActionController::Base
       genre[1].each do |m|
         title = m.expression.title
         if m.expression.translation
-          per = m.expression.work.persons[0]
+          per = m.expression.work.first_author
           unless per.nil?
             title += " #{I18n.t(:by)} #{per.name}"
           end

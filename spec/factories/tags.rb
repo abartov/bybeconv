@@ -1,7 +1,10 @@
 FactoryBot.define do
   factory :tag do
+    transient do
+      sequence(:tagname) { |n| "Tag #{n} #{Time.now}" }
+    end
     status { :approved }
-    name { "MyString #{Time.now} #{rand(1000)}" }
+    name { "#{tagname}" }
     creator { create(:user)}
   end
   trait :pending do
