@@ -9,6 +9,9 @@ class CreationsToInvolvedAuthorities < ActiveRecord::Migration[6.1]
       i += 1
       puts "migrated #{i} Creations to InvolvedAuthorities" if i % 200 == 0
     end
+    stale = InvolvedAuthority.where.missing(:work)
+    puts "Removing #{stale.count} stale creations no longer pointing at existing items..."
+    stale.destroy_all
     puts "done."
   end
 end
