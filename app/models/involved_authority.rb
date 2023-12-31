@@ -7,7 +7,9 @@ class InvolvedAuthority < ApplicationRecord
   validates :authority, presence: true
   validates :item, presence: true
   validates :role, presence: true
-  
+
+  paginates_per 100
+
   # type-specific associations
 
   belongs_to :person, -> { where(involved_authorities: {authority_type: 'Person'}) }, foreign_key: 'authority_id', optional: true

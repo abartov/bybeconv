@@ -1,9 +1,10 @@
 class InvolvedAuthoritiesController < ApplicationController
+  before_action :require_editor
   before_action :set_involved_authority, only: %i[ show edit update destroy ]
 
   # GET /involved_authorities or /involved_authorities.json
   def index
-    @involved_authorities = InvolvedAuthority.all
+    @involved_authorities = InvolvedAuthority.all.page(params[:page])
   end
 
   # GET /involved_authorities/1 or /involved_authorities/1.json

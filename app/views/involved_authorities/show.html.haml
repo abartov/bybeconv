@@ -2,13 +2,13 @@
 
 %p
   %b Authority:
-  = @involved_authority.authority
+  = @involved_authority.authority.name
 %p
   %b Role:
   = @involved_authority.role
 %p
   %b Item:
-  = @involved_authority.item
+  = @involved_authority.item.title
 
 = link_to 'Edit', edit_involved_authority_path(@involved_authority)
 \|
