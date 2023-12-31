@@ -865,7 +865,7 @@ class ManifestationController < ApplicationController
       else
         @e = @m.expression
         @w = @e.work
-        @author = @w.persons[0] # TODO: handle multiple authors
+        @author = @w.first_author # TODO: handle multiple authors
         unless is_spider?
           Chewy.strategy(:bypass) do
             @m.record_timestamps = false # avoid the impression count touching the datestamp

@@ -138,11 +138,9 @@ class Manifestation < ApplicationRecord
 
   def manual_delete
     self.destroy!
-    expression.realizers.each(&:destroy!)
     w = expression.work
     expression.destroy!
-    w.creations.each(&:destroy!)
-    w.destroy!
+    w.destroy! if w.expressions.empty? # the work could have another expression and manifestation!
   end
 
   def snippet_paragraphs(p_count)

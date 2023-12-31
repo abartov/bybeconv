@@ -185,18 +185,18 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def cached_popular_authors_by_genre
-    if @@pop_authors_by_genre.nil?
-      ret = {}
-      get_genres.each {|g|
-        ret[g] = {}
-        ret[g][:orig] = Person.get_popular_authors_by_genre(g)
-        ret[g][:xlat] = Person.get_popular_xlat_authors_by_genre(g)
-      }
-      @@pop_authors_by_genre = ret
-    end
-    return @@pop_authors_by_genre
-  end
+#  def cached_popular_authors_by_genre
+#    if @@pop_authors_by_genre.nil?
+#      ret = {}
+#      get_genres.each {|g|
+#        ret[g] = {}
+#        ret[g][:orig] = Person.get_popular_authors_by_genre(g)
+#        ret[g][:xlat] = Person.get_popular_xlat_authors_by_genre(g)
+#      }
+#      @@pop_authors_by_genre = ret
+#    end
+#    return @@pop_authors_by_genre
+#  end
 
   def popups_by_genre
     if @@genre_popups_cache.nil?
