@@ -134,18 +134,6 @@ module ApplicationHelper
     end
   end
 
-  def linkify_people(people)
-    return '' if people.nil? or people.empty?
-    ret = ''
-    i = 0
-    people.each {|p|
-      ret += ', ' if i > 0
-      ret += link_to p.name, authors_show_path(id: p.id)
-      i += 1
-    }
-    return ret
-  end
-
   def authors_linked_string(m)
     return m.expression.work.authors.map{|x| "<a href=\"#{url_for(controller: :authors, action: :toc, id: x.id)}\">#{x.name}</a>"}.join(', ')
   end
@@ -170,6 +158,7 @@ module ApplicationHelper
       return 'O'
     end
   end
+
   def anthology_select_options
     ret = [
       [t(:general),
@@ -182,13 +171,42 @@ module ApplicationHelper
     ret << [t(:anthologies), anths] unless anths.empty?
     return ret
   end
-  def update_param(uri, key, value) 
+
+  def update_param(uri, key, value)
     u = URI(uri)
     pp = URI.decode_www_form(u.query || "").to_h
     pp[key] = value
     u.query = URI.encode_www_form(pp.to_a)
     u.to_s
   end
+
+  def default_link_by_class(klass, id)
+    case klass.to_s
+    when 'Manifestation'
+      manifestation_path(id)
+    when 'Person'
+      author_toc_path(id)
+    when 'CorporateBody'
+      corp_toc_path(id)
+    when 'Anthology'
+      anthology_path(id)
+    when 'Work'
+      work_show_path(id: id)
+    end
+  end
+
+  def linkify_authorities(authorities)
+    return '' if authorities.blank?
+    ret = ''
+    i = 0
+    authorities.each {|p|
+      ret += ', ' if i > 0
+      ret += link_to p.name, default_link_by_class(p.class, p.id)
+      i += 1
+    }
+    return ret
+  end
+
   def taggee_from_taggable(taggable)
     case taggable.class.to_s
     when 'Manifestation'

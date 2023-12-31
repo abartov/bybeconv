@@ -114,10 +114,9 @@ class AdminController < ApplicationController
   end
 
   def suspicious_translations # find works where the author is also a translator -- this *may* be okay, in the case of self-translation, but probably is a mistake
-    records = Manifestation.joins(expression: [:realizers, work: :creations]).
-      where('realizers.person_id = creations.person_id').
-      merge(Realizer.translator).
-      merge(Creation.author)
+    records = Manifestation.joins(expression: [:realizers, work: :involved_authorities]).
+      where("realizers.person_id = involved_authorities.authority_id and involved_authorities.authority_type = 'Person' and involved_authorities.role = #{InvolvedAuthority.roles[:author]}").
+      merge(Realizer.translator)
     @total = records.count
     @mans = records.page(params[:page])
     @page_title = t(:suspicious_translations_report)
@@ -190,7 +189,7 @@ class AdminController < ApplicationController
   end
 
   def authors_without_works
-    @authors = nw = Person.left_joins(:realizers, :creations).group('people.id').having('(count(realizers.id) = 0) and (count(creations.id) = 0)').order('people.name asc')
+    @authors = nw = Person.left_joins(:realizers, :involved_authorities).group('people.id').having('(count(realizers.id) = 0) and (count(involved_authorities.id) = 0)').order('people.name asc')
     Rails.cache.write('report_authors_without_works', @authors.length)
   end
   # this is a massive report that takes a long time to run!
@@ -249,8 +248,8 @@ class AdminController < ApplicationController
       sort_by(&:name)
 
     translatees.each do |t|
-      manifestations = Manifestation.joins(expression: { work: :creations }).
-        merge(Creation.author.where(person_id: t.id)).
+      manifestations = Manifestation.joins(expression: { work: :involved_authorities }).
+        where(involved_authorities: {authority_id: t.id, authority_type: 'Person'}).
         preload(expression: :work).
         sort_by { |m| [m.expression.work.orig_lang, m.sort_title] }.
         group_by { |m| m.expression.work.orig_lang }

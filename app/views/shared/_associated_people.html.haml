@@ -2,12 +2,12 @@
 %ul
 - case which
   - when :work
-    - @w.creations.each do |c|
+    - @w.involved_authorities.each do |ia|
       %li
-        = link_to c.person.name, authors_show_path(id: c.person.id)
-        = ' ('+t(c.role.nil? ? :nil : c.role)+')'
+        = link_to ia.authority.name, default_link_by_class(ia.authority.class, ia.authority.id)
+        = ' ('+t(ia.role)+')'
         - if edit
-          = link_to t(:destroy), url_for(controller: :creations, action: :remove, id: c.id, manifestation_id: @m.id), :data => { :confirm => t(:are_you_sure) }
+          = link_to t(:destroy), url_for(controller: :involved_authorities, action: :destroy, id: ia.id), :data => { :confirm => t(:are_you_sure) }
     - if edit
       %br
       = t(:add)
@@ -29,4 +29,3 @@
       = t(:in_role)
       = select_tag :role_e, options_for_select(Realizer.roles.map { |role, role_id| [t(role), role_id] })
       %br
-  - when :manifestation

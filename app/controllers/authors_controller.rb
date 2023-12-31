@@ -35,16 +35,12 @@ class AuthorsController < ApplicationController
   end
 
   def get_random_author
-    rel = Person.has_toc.
-        joins(creations: { work: { expressions: :manifestations } }).
-        merge(Manifestation.published).
-        merge(Creation.author)
-
     genre = params[:genre]
     if genre.present?
-      rel = rel.where(works: { genre: genre })
+      @author = Person.published.has_toc.joins(involvements: :work).where(involved_authorities: { role: 'author'}).where(work: { genre: genre}).distinct.order(Arel.sql('rand()')).first
+    else
+      @author = Person.published.has_toc.joins(:involvements).where(involved_authorities: { role: 'author'}).distinct.order(Arel.sql('rand()')).first
     end
-    @author = rel.distinct.order(Arel.sql('rand()')).first
     render partial: 'shared/surprise_author', locals: {author: @author, initial: false, id_frag: params[:id_frag], passed_genre: genre, passed_mode: params[:mode], side: params[:side]}
   end
 
