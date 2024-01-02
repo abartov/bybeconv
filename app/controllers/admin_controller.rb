@@ -187,7 +187,7 @@ class AdminController < ApplicationController
   end
 
   def authors_without_works
-    @authors = nw = Person.left_joins(:realizers, :involved_authorities).group('people.id').having('(count(realizers.id) = 0) and (count(involved_authorities.id) = 0)').order('people.name asc')
+    @authors = nw = Person.left_joins(:involved_authorities).group('people.id').having('count(involved_authorities.id) = 0').order('people.name asc')
     Rails.cache.write('report_authors_without_works', @authors.length)
   end
   # this is a massive report that takes a long time to run!

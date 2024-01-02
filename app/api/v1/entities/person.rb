@@ -31,13 +31,13 @@ module V1
           InvolvedAuthority.where(authority_id: person.id, authority_type: 'Person').author.joins(work: { expressions: :manifestations }).pluck('manifestations.id').sort
         end
         expose :translator, documentation: { type: 'Integer', is_array: true } do |person|
-          Realizer.where(person_id: person.id).translator.joins(expression: :manifestations).pluck('manifestations.id').sort
+          Manifestation.select(:id).all_published.joins(expression: :involved_authorities).where(involved_authorities: {authority: person, role: :translator}).pluck(:id).sort
         end
         expose :editor, documentation: { type: 'Integer', is_array: true } do |person|
-          Realizer.where(person_id: person.id).editor.joins(expression: :manifestations).pluck('manifestations.id').sort
+          Manifestation.select(:id).all_published.joins(expression: :involved_authorities).where(involved_authorities: {authority: person, role: :editor}).pluck(:id).sort
         end
         expose :illustrator, documentation: { type: 'Integer', is_array: true } do |person|
-          InvolvedAuthority.where(authority_id: person.id, authority_type: 'Person').illustrator.joins(work: { expressions: :manifestations }).pluck('manifestations.id').sort
+          Manifestation.select(:id).all_published.joins(expression: {work: :involved_authorities}).where(involved_authorities: {authority: person, role: :illustrator}).pluck(:id).sort
         end
       end
 
