@@ -5,7 +5,7 @@ describe AuthorsController do
     before do
       create_list(:manifestation, 5)
       # we need to have bunch of authors with TOCs
-      authors = Person.joins(:involvements).where(involvements: {role: :author}).distinct
+      authors = Person.joins(:involved_authorities).where(involved_authorities: {role: :author}).distinct
       authors.each do |author|
         toc = create(:toc)
         author.toc = toc
