@@ -50,7 +50,13 @@ class InvolvedAuthoritiesController < ApplicationController
 
   # DELETE /involved_authorities/1 or /involved_authorities/1.json
   def destroy
+    item = @involved_authority.item
+    unless item.blank?
+      m = (item.class == Expression) ? item.manifestations.first : item.expressions.first.manifestations.first
+      m.recalc_cached_people! if m
+    end
     @involved_authority.destroy
+    flash[:notice] = t(:deleted_successfully)
 
     respond_to do |format|
       format.html { redirect_to involved_authorities_url, notice: "Involved authority was successfully destroyed." }

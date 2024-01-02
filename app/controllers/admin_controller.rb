@@ -240,7 +240,7 @@ class AdminController < ApplicationController
     @authors = []
 
     # Getting list of authors, who wrote works in more than one language
-    translatees = Person.joins(involvements: :work).
+    translatees = Person.joins(involved_authorities: :work).
       merge(InvolvedAuthority.author).
       group('people.id').
       select('people.id, people.name').

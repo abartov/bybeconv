@@ -5,8 +5,7 @@ def clean_tables
   Recommendation.destroy_all
 
   Realizer.destroy_all
-  Creation.destroy_all
-
+  InvolvedAuthority.destroy_all
   Person.destroy_all
 
   Aboutness.destroy_all

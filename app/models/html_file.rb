@@ -641,8 +641,7 @@ class HtmlFile < ApplicationRecord
             e = Expression.new(title: tt, language: 'he', period: q.period, copyrighted: copyrighted, source_edition: publisher, date: year_published, comment: comments) # ISO codes
             w.expressions << e
             w.save!
-            c = Creation.new(work_id: w.id, person_id: p.id, role: :author)
-            c.save!
+            ia = InvolvedAuthority.create!(item: w, authority: p, role: :author)
 
             if translator_id.present?
               translator.realizers.create!(expression: e, role: :translator)

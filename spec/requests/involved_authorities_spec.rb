@@ -135,6 +135,10 @@ RSpec.describe "/involved_authorities", type: :request do
   describe "DELETE /destroy" do
     it "destroys the requested involved_authority" do
       involved_authority = InvolvedAuthority.create! valid_attributes
+      e = create(:expression)
+      involved_authority.item.expressions << e
+      m = create(:manifestation)
+      e.manifestations << m
       fake_editor(InvolvedAuthoritiesController)
       expect {
         delete involved_authority_url(involved_authority)
@@ -143,6 +147,10 @@ RSpec.describe "/involved_authorities", type: :request do
 
     it "redirects to the involved_authorities list" do
       involved_authority = InvolvedAuthority.create! valid_attributes
+      e = create(:expression)
+      involved_authority.item.expressions << e
+      m = create(:manifestation)
+      e.manifestations << m
       fake_editor(InvolvedAuthoritiesController)
       delete involved_authority_url(involved_authority)
       expect(response).to redirect_to(involved_authorities_url)
