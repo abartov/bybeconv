@@ -7,7 +7,8 @@
           .col-md-12.main-group#works
             - cache (@anonymous ? "whatsnew_page" : 'whatsnew_nonanon'), expires_in: 2.hours do
               %p.headline-2-v02#new_works= t(:new_works_in_the_project)
-              - @whatsnew.each do |author, works|
+              - @whatsnew.keys.sort_by{|x| x.sort_name}.each do |author|
+                - works = @whatsnew[author]
                 .by-card-v02
                   .by-card-header-v02
                     .whatsnew-text{style:'max-height:none'}
