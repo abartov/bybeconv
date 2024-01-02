@@ -53,7 +53,7 @@ class AdminController < ApplicationController
   end
 
   def missing_languages
-    ex = Expression.joins([:realizers, :work]).where(realizers: {role: Realizer.roles[:translator]}, works: {orig_lang: 'he'})
+    ex = Expression.joins([:involved_authorities, :work]).where(involved_authorities: {role: :translator}, works: {orig_lang: 'he'})
     mans = ex.map{|e| e.manifestations[0]}
     @total = mans.length
     @mans = Kaminari.paginate_array(mans).page(params[:page]).per(50)
@@ -114,9 +114,7 @@ class AdminController < ApplicationController
   end
 
   def suspicious_translations # find works where the author is also a translator -- this *may* be okay, in the case of self-translation, but probably is a mistake
-    records = Manifestation.joins(expression: [:realizers, work: :involved_authorities]).
-      where("realizers.person_id = involved_authorities.authority_id and involved_authorities.authority_type = 'Person' and involved_authorities.role = #{InvolvedAuthority.roles[:author]}").
-      merge(Realizer.translator)
+    records = Manifestation.joins(expression: :work).joins("inner join involved_authorities ia_w on ia_w.item_id = works.id and ia_w.item_type = 'Work'").joins("inner join involved_authorities ia_e on ia_e.item_id = expressions.id and ia_e.item_type = 'Expression'").where("ia_w.authority_id = ia_e.authority_id and ia_w.authority_type = ia_e.authority_type and ia_w.role = #{InvolvedAuthority.roles[:author]} and ia_e.role = #{InvolvedAuthority.roles[:translator]}")
     @total = records.count
     @mans = records.page(params[:page])
     @page_title = t(:suspicious_translations_report)
@@ -262,7 +260,7 @@ class AdminController < ApplicationController
   CALCULATED_COPYRIGHT_EXPRESSION = <<~sql
     (
       exists (select 1 from involved_authorities c join people p on p.id = c.authority_id and c.authority_type = 'Person' where c.item_id = works.id and c.item_type = 'Work' and not coalesce(p.public_domain, false))
-      or exists (select 1 from realizers r join people p on p.id = r.person_id where r.expression_id = expressions.id and not coalesce(p.public_domain, false))
+      or exists (select 1 from involved_authorities r join people p on p.id = r.authority_id and r.authority_type = 'Person' where r.item_id = expressions.id and not coalesce(p.public_domain, false))
     )
   sql
 

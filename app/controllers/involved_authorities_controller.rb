@@ -23,7 +23,6 @@ class InvolvedAuthoritiesController < ApplicationController
   # POST /involved_authorities or /involved_authorities.json
   def create
     @involved_authority = InvolvedAuthority.new(involved_authority_params)
-
     respond_to do |format|
       if @involved_authority.save
         format.html { redirect_to involved_authority_url(@involved_authority), notice: "Involved authority was successfully created." }

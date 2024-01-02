@@ -22,17 +22,17 @@ FactoryBot.define do
     source_edition {}
     period { Expression.periods.keys.sample }
     work { create(:work, genre: genre, author: author, illustrator: illustrator, orig_lang: orig_lang) }
-    realizers do
+    involved_authorities do
       result = []
       if orig_lang != language
-        result << create(:realizer, person: translator, role: :translator)
+        result << build(:involved_authority, authority: translator, role: :translator)
       else
         if translator.present?
           raise 'Cannot specify translator if language matches orig_lang'
         end
       end
       if editor.present?
-        result << create(:realizer, person: editor, role: :editor)
+        result << build(:involved_authority, authority: editor, role: :editor)
       end
       result
     end
