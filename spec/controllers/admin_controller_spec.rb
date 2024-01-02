@@ -58,13 +58,15 @@ describe AdminController do
     subject(:request) { get :incongruous_copyright }
 
     let(:copyrighted_person) { create(:person, public_domain: false) }
+    let(:public_domain_person) { create(:person, public_domain: true) }
+    let(:public_domain_translator) { create(:person, public_domain: true) }
 
-    let!(:public_domain_manifestation) { create(:manifestation, copyrighted: false) }
+    let!(:public_domain_manifestation) { create(:manifestation, author: public_domain_person, copyrighted: false) }
     let!(:copyrighted_manifestation) { create(:manifestation, author: copyrighted_person, copyrighted: true) }
     let!(:wrong_public_domain_manifestation_1) { create(:manifestation, author: copyrighted_person, copyrighted: false) }
-    let!(:wrong_public_domain_manifestation_2) { create(:manifestation, orig_lang: 'ru', translator: copyrighted_person, copyrighted: false) }
-    let!(:wrong_copyrighted_manifestation_1) { create(:manifestation, copyrighted: true) }
-    let!(:wrong_copyrighted_manifestation_2) { create(:manifestation, orig_lang: 'ru', copyrighted: true) }
+    let!(:wrong_public_domain_manifestation_2) { create(:manifestation, author: public_domain_person, orig_lang: 'ru', translator: copyrighted_person, copyrighted: false) }
+    let!(:wrong_copyrighted_manifestation_1) { create(:manifestation, author: public_domain_person, copyrighted: true) }
+    let!(:wrong_copyrighted_manifestation_2) { create(:manifestation, author: public_domain_person, translator: public_domain_translator, orig_lang: 'ru', copyrighted: true) }
 
     let(:wrong_manifestation_ids) {
       [

@@ -1,8 +1,8 @@
 class InvolvedAuthority < ApplicationRecord
   enum role: { author: 0, editor: 1, illustrator: 2, translator: 3, photographer: 4, designer: 5, contributor: 6, other: 7 }
 
-  belongs_to :authority, polymorphic: true
-  belongs_to :item, polymorphic: true
+  belongs_to :authority, polymorphic: true # Person or CorporateBody
+  belongs_to :item, polymorphic: true # Work or Expression
 
   validates :authority, presence: true
   validates :item, presence: true
@@ -28,6 +28,12 @@ class InvolvedAuthority < ApplicationRecord
   belongs_to :work, -> { where(involved_authorities: {item_type: 'Work'}) }, foreign_key: 'item_id', optional: true
   def work
     return unless item_type == 'Work'
+    super
+  end
+
+  belongs_to :expression, -> { where(involved_authorities: {item_type: 'Expression'}) }, foreign_key: 'item_id', optional: true
+  def expression
+    return unless item_type == 'Expression'
     super
   end
 
