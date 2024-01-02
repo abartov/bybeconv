@@ -13,20 +13,29 @@ require 'rails_helper'
 # sticking to rails and rspec-rails APIs to keep things simple and stable.
 
 RSpec.describe "/involved_authorities", type: :request do
-  
+
   # InvolvedAuthority. As you add validations to InvolvedAuthority, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+    w = create(:work)
+    p = create(:person)
+    {item_id: w.id,
+    item_type: 'Work',
+    authority_id: p.id,
+    authority_type: 'Person',
+    role: :illustrator}
   }
 
-  let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
+  let(:invalid_attributes) { {
+    item_id: nil,
+    authority_id: nil,
+    role: :illustrator}
   }
 
   describe "GET /index" do
     it "renders a successful response" do
       InvolvedAuthority.create! valid_attributes
+      fake_editor(InvolvedAuthoritiesController)
       get involved_authorities_url
       expect(response).to be_successful
     end
@@ -35,6 +44,7 @@ RSpec.describe "/involved_authorities", type: :request do
   describe "GET /show" do
     it "renders a successful response" do
       involved_authority = InvolvedAuthority.create! valid_attributes
+      fake_editor(InvolvedAuthoritiesController)
       get involved_authority_url(involved_authority)
       expect(response).to be_successful
     end
@@ -42,6 +52,7 @@ RSpec.describe "/involved_authorities", type: :request do
 
   describe "GET /new" do
     it "renders a successful response" do
+      fake_editor(InvolvedAuthoritiesController)
       get new_involved_authority_url
       expect(response).to be_successful
     end
@@ -50,6 +61,7 @@ RSpec.describe "/involved_authorities", type: :request do
   describe "GET /edit" do
     it "render a successful response" do
       involved_authority = InvolvedAuthority.create! valid_attributes
+      fake_editor(InvolvedAuthoritiesController)
       get edit_involved_authority_url(involved_authority)
       expect(response).to be_successful
     end
@@ -58,12 +70,14 @@ RSpec.describe "/involved_authorities", type: :request do
   describe "POST /create" do
     context "with valid parameters" do
       it "creates a new InvolvedAuthority" do
+        fake_editor(InvolvedAuthoritiesController)
         expect {
           post involved_authorities_url, params: { involved_authority: valid_attributes }
-        }.to change(InvolvedAuthority, :count).by(1)
+        }.to change(InvolvedAuthority, :count).by(2) # the Work factory creates one too
       end
 
       it "redirects to the created involved_authority" do
+        fake_editor(InvolvedAuthoritiesController)
         post involved_authorities_url, params: { involved_authority: valid_attributes }
         expect(response).to redirect_to(involved_authority_url(InvolvedAuthority.last))
       end
@@ -71,14 +85,16 @@ RSpec.describe "/involved_authorities", type: :request do
 
     context "with invalid parameters" do
       it "does not create a new InvolvedAuthority" do
+        fake_editor(InvolvedAuthoritiesController)
         expect {
           post involved_authorities_url, params: { involved_authority: invalid_attributes }
         }.to change(InvolvedAuthority, :count).by(0)
       end
 
       it "renders a successful response (i.e. to display the 'new' template)" do
+        fake_editor(InvolvedAuthoritiesController)
         post involved_authorities_url, params: { involved_authority: invalid_attributes }
-        expect(response).to be_successful
+        expect(response.status).to eql 422
       end
     end
   end
@@ -86,18 +102,20 @@ RSpec.describe "/involved_authorities", type: :request do
   describe "PATCH /update" do
     context "with valid parameters" do
       let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
+        { role: :author}
       }
 
       it "updates the requested involved_authority" do
         involved_authority = InvolvedAuthority.create! valid_attributes
+        fake_editor(InvolvedAuthoritiesController)
         patch involved_authority_url(involved_authority), params: { involved_authority: new_attributes }
         involved_authority.reload
-        skip("Add assertions for updated state")
+        assert(involved_authority.role == 'author')
       end
 
       it "redirects to the involved_authority" do
         involved_authority = InvolvedAuthority.create! valid_attributes
+        fake_editor(InvolvedAuthoritiesController)
         patch involved_authority_url(involved_authority), params: { involved_authority: new_attributes }
         involved_authority.reload
         expect(response).to redirect_to(involved_authority_url(involved_authority))
@@ -107,8 +125,9 @@ RSpec.describe "/involved_authorities", type: :request do
     context "with invalid parameters" do
       it "renders a successful response (i.e. to display the 'edit' template)" do
         involved_authority = InvolvedAuthority.create! valid_attributes
+        fake_editor(InvolvedAuthoritiesController)
         patch involved_authority_url(involved_authority), params: { involved_authority: invalid_attributes }
-        expect(response).to be_successful
+        expect(response.status).to eql 422
       end
     end
   end
@@ -116,6 +135,7 @@ RSpec.describe "/involved_authorities", type: :request do
   describe "DELETE /destroy" do
     it "destroys the requested involved_authority" do
       involved_authority = InvolvedAuthority.create! valid_attributes
+      fake_editor(InvolvedAuthoritiesController)
       expect {
         delete involved_authority_url(involved_authority)
       }.to change(InvolvedAuthority, :count).by(-1)
@@ -123,6 +143,7 @@ RSpec.describe "/involved_authorities", type: :request do
 
     it "redirects to the involved_authorities list" do
       involved_authority = InvolvedAuthority.create! valid_attributes
+      fake_editor(InvolvedAuthoritiesController)
       delete involved_authority_url(involved_authority)
       expect(response).to redirect_to(involved_authorities_url)
     end
