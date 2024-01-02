@@ -505,8 +505,7 @@ class ManifestationController < ApplicationController
           @e.comment = params[:ecomment]
           @e.copyrighted = (params[:public_domain] == 'false' ? true : false) # field name semantics are flipped from param name, yeah
           unless params[:add_person_e].blank?
-            r = Realizer.new(expression_id: @e.id, person_id: params[:add_person_e], role: params[:role_e].to_i)
-            r.save!
+            ia = InvolvedAuthority.create!(item: @e, authority_id: params[:add_person_e], authority_type: 'Person', role: params[:role_e].to_i)
           end
           @e.source_edition = params[:source_edition]
           @e.period = params[:period]

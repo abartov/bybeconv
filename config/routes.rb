@@ -42,8 +42,6 @@ Bybeconv::Application.routes.draw do
 
   get 'static_pages/render'
 
-  get 'realizers/remove'
-
   get 'admin/index'
   get 'admin/missing_languages'
   get 'admin/missing_genres'
