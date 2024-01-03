@@ -1,0 +1,27 @@
+%h1 Listing involved_authorities
+
+%table
+  %thead
+    %tr
+      %th Authority
+      %th Role
+      %th Item
+      %th
+      %th
+      %th
+
+  %tbody
+    - @involved_authorities.each do |involved_authority|
+      %tr
+        %td= involved_authority.authority.name
+        %td= involved_authority.role
+        %td= involved_authority.item.title
+        %td= link_to 'Show', involved_authority
+        %td= link_to 'Edit', edit_involved_authority_path(involved_authority)
+        %td= link_to 'Destroy', involved_authority, method: :delete, data: { confirm: 'Are you sure?' }
+
+%br
+
+!= paginate @involved_authorities
+
+= link_to 'New Involved authority', new_involved_authority_path

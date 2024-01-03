@@ -185,18 +185,18 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def cached_popular_authors_by_genre
-    if @@pop_authors_by_genre.nil?
-      ret = {}
-      get_genres.each {|g|
-        ret[g] = {}
-        ret[g][:orig] = Person.get_popular_authors_by_genre(g)
-        ret[g][:xlat] = Person.get_popular_xlat_authors_by_genre(g)
-      }
-      @@pop_authors_by_genre = ret
-    end
-    return @@pop_authors_by_genre
-  end
+#  def cached_popular_authors_by_genre
+#    if @@pop_authors_by_genre.nil?
+#      ret = {}
+#      get_genres.each {|g|
+#        ret[g] = {}
+#        ret[g][:orig] = Person.get_popular_authors_by_genre(g)
+#        ret[g][:xlat] = Person.get_popular_xlat_authors_by_genre(g)
+#      }
+#      @@pop_authors_by_genre = ret
+#    end
+#    return @@pop_authors_by_genre
+#  end
 
   def popups_by_genre
     if @@genre_popups_cache.nil?
@@ -350,7 +350,7 @@ class ApplicationController < ActionController::Base
   #  return ret.join('; ')
   #end
   def textify_titles(manifestations, au) # translations will be marked as translations, without mentioning the author names, for performance reasons
-    Manifestation.includes(expression: [work: [creations: :person]]).find(manifestations.pluck(:id)).map{|m| "<a href=\"#{url_for(controller: :manifestation, action: :read, id: m.id)}\">#{m.title}</a>#{m.expression.translation ? " (#{I18n.t(:translation)})" : ''}"}.join('; ')
+    Manifestation.includes(expression: [work: :involved_authorities]).find(manifestations.pluck(:id)).map{|m| "<a href=\"#{url_for(controller: :manifestation, action: :read, id: m.id)}\">#{m.title}</a>#{m.expression.translation ? " (#{I18n.t(:translation)})" : ''}"}.join('; ')
   end
 
   def textify_new_pubs(author)
@@ -362,7 +362,7 @@ class ApplicationController < ActionController::Base
       genre[1].each do |m|
         title = m.expression.title
         if m.expression.translation
-          per = m.expression.work.persons[0]
+          per = m.expression.work.first_author
           unless per.nil?
             title += " #{I18n.t(:by)} #{per.name}"
           end

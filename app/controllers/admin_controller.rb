@@ -42,7 +42,7 @@ class AdminController < ApplicationController
   end
 
   def missing_languages
-    ex = Expression.joins([:realizers, :work]).where(realizers: {role: Realizer.roles[:translator]}, works: {orig_lang: 'he'})
+    ex = Expression.joins([:involved_authorities, :work]).where(involved_authorities: {role: :translator}, works: {orig_lang: 'he'})
     mans = ex.map{|e| e.manifestations[0]}
     @total = mans.length
     @mans = Kaminari.paginate_array(mans).page(params[:page]).per(50)
@@ -103,10 +103,7 @@ class AdminController < ApplicationController
   end
 
   def suspicious_translations # find works where the author is also a translator -- this *may* be okay, in the case of self-translation, but probably is a mistake
-    records = Manifestation.joins(expression: [:realizers, work: :creations]).
-      where('realizers.person_id = creations.person_id').
-      merge(Realizer.translator).
-      merge(Creation.author)
+    records = Manifestation.joins(expression: :work).joins("inner join involved_authorities ia_w on ia_w.item_id = works.id and ia_w.item_type = 'Work'").joins("inner join involved_authorities ia_e on ia_e.item_id = expressions.id and ia_e.item_type = 'Expression'").where("ia_w.authority_id = ia_e.authority_id and ia_w.authority_type = ia_e.authority_type and ia_w.role = #{InvolvedAuthority.roles[:author]} and ia_e.role = #{InvolvedAuthority.roles[:translator]}")
     @total = records.count
     @mans = records.page(params[:page])
     @page_title = t(:suspicious_translations_report)
@@ -179,7 +176,7 @@ class AdminController < ApplicationController
   end
 
   def authors_without_works
-    @authors = nw = Person.left_joins(:realizers, :creations).group('people.id').having('(count(realizers.id) = 0) and (count(creations.id) = 0)').order('people.name asc')
+    @authors = nw = Person.left_joins(:involved_authorities).group('people.id').having('count(involved_authorities.id) = 0').order('people.name asc')
     Rails.cache.write('report_authors_without_works', @authors.length)
   end
   # this is a massive report that takes a long time to run!
@@ -230,16 +227,16 @@ class AdminController < ApplicationController
     @authors = []
 
     # Getting list of authors, who wrote works in more than one language
-    translatees = Person.joins(creations: :work).
-      merge(Creation.author).
+    translatees = Person.joins(involved_authorities: :work).
+      merge(InvolvedAuthority.author).
       group('people.id').
       select('people.id, people.name').
       having('min(works.orig_lang) <> max(works.orig_lang)').
       sort_by(&:name)
 
     translatees.each do |t|
-      manifestations = Manifestation.joins(expression: { work: :creations }).
-        merge(Creation.author.where(person_id: t.id)).
+      manifestations = Manifestation.joins(expression: { work: :involved_authorities }).
+        where(involved_authorities: {authority_id: t.id, authority_type: 'Person'}).
         preload(expression: :work).
         sort_by { |m| [m.expression.work.orig_lang, m.sort_title] }.
         group_by { |m| m.expression.work.orig_lang }
@@ -251,8 +248,8 @@ class AdminController < ApplicationController
   # We assume manifestation should be copyrighted if one of its creators or realizers is not in public domain
   CALCULATED_COPYRIGHT_EXPRESSION = <<~sql
     (
-      exists (select 1 from creations c join people p on p.id = c.person_id where c.work_id = works.id and not coalesce(p.public_domain, false))
-      or exists (select 1 from realizers r join people p on p.id = r.person_id where r.expression_id = expressions.id and not coalesce(p.public_domain, false))
+      exists (select 1 from involved_authorities c join people p on p.id = c.authority_id and c.authority_type = 'Person' where c.item_id = works.id and c.item_type = 'Work' and not coalesce(p.public_domain, false))
+      or exists (select 1 from involved_authorities r join people p on p.id = r.authority_id and r.authority_type = 'Person' where r.item_id = expressions.id and not coalesce(p.public_domain, false))
     )
   sql
 

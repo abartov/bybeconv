@@ -497,8 +497,7 @@ class ManifestationController < ApplicationController
           @w.comment = params[:wcomment]
           @w.primary = params[:primary] == 'true'
           unless params[:add_person_w].blank?
-            c = Creation.new(work_id: @w.id, person_id: params[:add_person_w], role: params[:role_w].to_i)
-            c.save!
+            ia = InvolvedAuthority.create!(item: @w, authority_id: params[:add_person_w], authority_type: 'Person', role: params[:role_w].to_i)
           end
           @e.language = params[:elang]
           @e.title = params[:etitle]
@@ -506,8 +505,7 @@ class ManifestationController < ApplicationController
           @e.comment = params[:ecomment]
           @e.copyrighted = (params[:public_domain] == 'false' ? true : false) # field name semantics are flipped from param name, yeah
           unless params[:add_person_e].blank?
-            r = Realizer.new(expression_id: @e.id, person_id: params[:add_person_e], role: params[:role_e].to_i)
-            r.save!
+            ia = InvolvedAuthority.create!(item: @e, authority_id: params[:add_person_e], authority_type: 'Person', role: params[:role_e].to_i)
           end
           @e.source_edition = params[:source_edition]
           @e.period = params[:period]
@@ -863,7 +861,7 @@ class ManifestationController < ApplicationController
       else
         @e = @m.expression
         @w = @e.work
-        @author = @w.persons[0] # TODO: handle multiple authors
+        @author = @w.first_author # TODO: handle multiple authors
         unless is_spider?
           Chewy.strategy(:bypass) do
             @m.record_timestamps = false # avoid the impression count touching the datestamp

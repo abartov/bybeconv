@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_12_29_210113) do
+ActiveRecord::Schema.define(version: 2024_01_01_053832) do
 
   create_table "aboutnesses", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -256,6 +256,22 @@ ActiveRecord::Schema.define(version: 2023_12_29_210113) do
     t.index ["publication_id"], name: "index_collections_on_publication_id"
     t.index ["sort_title"], name: "index_collections_on_sort_title"
     t.index ["toc_id"], name: "index_collections_on_toc_id"
+  end
+
+  create_table "corporate_bodies", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "name"
+    t.string "alternate_names"
+    t.string "location"
+    t.string "inception"
+    t.integer "inception_year"
+    t.string "dissolution"
+    t.integer "dissolution_year"
+    t.string "wikidata_uri"
+    t.string "viaf_id"
+    t.text "comments"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_corporate_bodies_on_name"
   end
 
   create_table "creations", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -508,6 +524,18 @@ ActiveRecord::Schema.define(version: 2023_12_29_210113) do
     t.index ["impressionable_type", "message", "impressionable_id"], name: "impressionable_type_message_index", length: { message: 255 }
     t.index ["updated_at"], name: "index_impressions_on_updated_at"
     t.index ["user_id"], name: "index_impressions_on_user_id"
+  end
+
+  create_table "involved_authorities", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "authority_type"
+    t.bigint "authority_id"
+    t.integer "role"
+    t.string "item_type"
+    t.bigint "item_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["authority_type", "authority_id"], name: "index_involved_authorities_on_authority"
+    t.index ["item_type", "item_id"], name: "index_involved_authorities_on_item"
   end
 
   create_table "legacy_recommendations", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|

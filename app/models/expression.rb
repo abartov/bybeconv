@@ -5,19 +5,22 @@ class Expression < ApplicationRecord
 
   belongs_to :work, inverse_of: :expressions
   has_many :manifestations, inverse_of: :expression, dependent: :destroy
-  has_many :realizers, dependent: :destroy
-  has_many :persons, through: :realizers, class_name: 'Person'
+#  has_many :realizers, dependent: :destroy
+#  has_many :persons, through: :realizers, class_name: 'Person'
+  has_many :involved_authorities, as: :item, dependent: :destroy
   has_many :aboutnesses, as: :aboutable, dependent: :destroy
   has_many :taggings, as: :taggable, dependent: :destroy
   has_many :tags, through: :taggings, class_name: 'Tag'
   has_paper_trail # for monitoring crowdsourced inputs
 
+  validates_presence_of [:title, :language, :work]
+  
   def editors
-    return realizers.includes(:person).where(role: Realizer.roles[:editor]).map{|x| x.person}
+    involved_authorities.where(role: :editor).map{|ia| ia.authority}
   end
 
   def translators
-    return realizers.includes(:person).where(role: Realizer.roles[:translator]).map {|x| x.person}
+    involved_authorities.where(role: :translator).map{|ia| ia.authority}
   end
 
   def self.cached_translations_count
