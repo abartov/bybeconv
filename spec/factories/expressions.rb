@@ -4,7 +4,7 @@ FactoryBot.define do
       sequence(:expression_name) { |n| "Expression #{n}" }
       author { create(:person) }
       orig_lang { %w(he en ru de it).sample }
-      translator { orig_lang != 'he' ? create(:person) : nil }
+      translator { orig_lang != 'he' ? create(:person, gender: %w(male female).sample) : nil }
       editor { nil }
       illustrator { nil }
       genre { Work::GENRES.sample }
@@ -24,11 +24,11 @@ FactoryBot.define do
     work { create(:work, genre: genre, author: author, illustrator: illustrator, orig_lang: orig_lang) }
     involved_authorities do
       result = []
-      if orig_lang != language
+      if orig_lang != 'he'
         result << build(:involved_authority, authority: translator, role: :translator)
       else
         if translator.present?
-          raise 'Cannot specify translator if language matches orig_lang'
+          #raise "Cannot specify translator if language matches orig_lang - lang: #{language} orig_lang: #{orig_lang} translator: #{translator}"
         end
       end
       if editor.present?
