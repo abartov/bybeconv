@@ -644,7 +644,7 @@ class HtmlFile < ApplicationRecord
             ia = InvolvedAuthority.create!(item: w, authority: p, role: :author)
 
             if translator_id.present?
-              translator.realizers.create!(expression: e, role: :translator)
+              ia = InvolvedAuthority.create!(item: e, authority: translator, role: :translator)
             end
 
             em_author = (translator_id.nil? ? p : translator) # the author of the Expression and Manifestation is the translator, if one exists
