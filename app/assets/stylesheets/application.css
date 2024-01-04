@@ -415,6 +415,6 @@ body.modal-open{
 	display: block !important;
 }
 
-.small p{
+small p{
   font-size: 80% !important;
 }
