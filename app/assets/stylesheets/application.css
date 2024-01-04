@@ -414,3 +414,7 @@ body.modal-open{
 .sort-by-mobile{
 	display: block !important;
 }
+
+.small p{
+  font-size: 80% !important;
+}
