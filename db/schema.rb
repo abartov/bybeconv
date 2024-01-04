@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_01_01_053832) do
+ActiveRecord::Schema.define(version: 2024_01_04_155418) do
 
   create_table "aboutnesses", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -777,6 +777,7 @@ ActiveRecord::Schema.define(version: 2024_01_01_053832) do
     t.string "sort_name"
     t.integer "status"
     t.datetime "published_at"
+    t.integer "root_collection_id"
     t.index ["gender"], name: "gender_index"
     t.index ["impressions_count"], name: "index_people_on_impressions_count"
     t.index ["name"], name: "index_people_on_name"

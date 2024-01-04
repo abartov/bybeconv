@@ -37,4 +37,9 @@ class InvolvedAuthority < ApplicationRecord
     super
   end
 
+  belongs_to :collection, -> { where(involved_authorities: {item_type: 'Collection'}) }, foreign_key: 'item_id', optional: true
+  def collection
+    return unless item_type == 'Collection'
+    super
+  end
 end

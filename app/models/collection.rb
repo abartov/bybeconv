@@ -1,12 +1,14 @@
 class Collection < ApplicationRecord
   before_save :update_sort_title!
 
+  validates_presence_of :status, :collection_type
+  
   belongs_to :publication
   belongs_to :toc
   has_many :collection_items, -> { order(:seqno) }, dependent: :destroy
 
-  has_many :creations, dependent: :destroy
-  has_many :persons, through: :creations, class_name: 'Person'
+  has_many :involved_authorities, as: :item, dependent: :destroy
+  
   has_many :aboutnesses, as: :aboutable, dependent: :destroy # works that are ABOUT this work
   has_many :topics, class_name: 'Aboutness' # topics that this work is ABOUT 
 
@@ -21,12 +23,13 @@ class Collection < ApplicationRecord
 
   enum status: [:published, :nonpd, :unpublished, :deprecated]
   # series express anything from a cycle of poems to a multi-volume work or a series of detective novels; anthologies are collections of texts by multiple authors, such as festschrifts, almanacs, or collective anthologies; periodicals are journals, magazines, newspapers, etc., where there is a known sequence of issues; periodical issues are individual issues of a periodical; series items are individual items in a series, such as a single volume in a multi-volume work; other is a catch-all for anything else
-  enum collection_type: [:anthology, :periodical, :periodical_issue, :series, :series_item, :other]
+  enum collection_type: [:volume, :anthology, :periodical, :periodical_issue, :series, :series_item, :root, :other]
   enum toc_strategy: [:default, :custom_markdown] # placeholder for future custom ToC-generation strategies
 
   scope :published, -> { where(status: Collection.statuses[:published]) }
   scope :by_type, -> (thetype) { where(collection_type: thetype) }
   scope :by_tag, ->(tag_id) {joins(:taggings).where(taggings: {tag_id: tag_id})}
+  scope :by_authority, ->(authority) {joins(:involved_authorities).where(involved_authorities: {authority: authority})}
 
   def collection_items_by_type(item_type)
     self.collection_items.where(item_type: item_type)
@@ -57,9 +60,12 @@ class Collection < ApplicationRecord
   end
 
   def append_item(item)
-    ci = CollectionItem.new(collection: self, item: item)
+    if item.class == String # if a string, just create a wrapper item
+      ci = CollectionItem.new(collection: self, alt_title: item)
+    else
+      ci = CollectionItem.new(collection: self, item: item)
+    end
     ci.seqno = self.collection_items.maximum(:seqno).to_i + 1
     ci.save!
   end
-  
 end

@@ -3,7 +3,7 @@ include BybeUtils
 include ApplicationHelper
 
 class AuthorsController < ApplicationController
-  before_action only: [:new, :publish, :create, :show, :edit, :list, :add_link, :delete_link, :delete_photo, :edit_toc, :update, :to_manual_toc] do |c| c.require_editor('edit_people') end
+  before_action only: [:new, :publish, :create, :show, :edit, :list, :add_link, :delete_link, :delete_photo, :edit_toc, :update, :to_manual_toc, :collect_toc] do |c| c.require_editor('edit_people') end
 
   def publish
     @author = Person.find(params[:id])
@@ -538,6 +538,20 @@ class AuthorsController < ApplicationController
     @print = true
     prep_for_print
     @footer_url = url_for(action: :toc, id: @author.id)
+  end
+
+  def collect_toc
+    @author = Person.find(params[:id])
+    if @author.nil?
+      flash[:error] = I18n.t('no_such_item')
+      redirect_to '/'
+    elsif @author.toc.nil?
+      flash[:error] = I18n.t('no_toc_yet')
+      redirect_to '/'
+    else
+      @page_title = t(:edit_toc)+': '+@author.name
+      prep_toc_as_collection
+    end
   end
 
   def edit_toc

@@ -51,6 +51,12 @@ class Person < ApplicationRecord
   # class variable
   @@popular_authors = nil
 
+  # instance methods
+  def root_collection
+    return Collection.find(self.root_collection_id) if self.root_collection_id
+    return generate_root_collection!
+  end
+
   def publish!
     # set all person's works to status published
     all_works_including_unpublished.each do |m| # be cautious about publishing joint works, because the *other* author(s) or translators may yet be unpublished!
@@ -68,6 +74,7 @@ class Person < ApplicationRecord
     self.status = :published
     self.save! # finally, set this person to published
   end
+
   def publish_if_first!
     if self.awaiting_first?
       self.publish!
@@ -363,5 +370,33 @@ class Person < ApplicationRecord
     else
       return '/assets/:style/placeholder_man.jpg'
     end
+  end
+
+  def generate_root_collection!
+    works = toc.present? ? toc.linked_items : []
+    colls = Collection.by_authority(self) # include any existing collections possibly already defined for this person
+    extra_works = self.all_works_including_unpublished.reject{|m| works.include?(m)}
+    c = nil
+    ActiveRecord::Base.transaction do
+      c = Collection.create!(title: self.name, status: :published, collection_type: :root, toc_strategy: :default)
+      self.root_collection_id = c.id
+      self.save!
+      seqno = 1
+      # make a (technical, to-be-reviewed-and-handled) collection out of the works not already linked from the TOC
+      extra_works_collection = Collection.create!(title: "#{self.name} - #{I18n.t(:additional_items)}", status: :published, collection_type: :other, toc_strategy: :default)
+      extra_seqno = 1
+      extra_works.each do |m|
+        ci = CollectionItem.create!(collection: extra_works_collection, item: m, seqno: extra_seqno)
+        extra_seqno += 1
+      end
+      [publications, colls, works].each do |arr|
+        arr.each do |m|
+          ci = CollectionItem.create!(collection: c, item: m, seqno: seqno)
+          seqno += 1
+        end
+      end
+      CollectionItem.create!(collection: c, item: extra_works_collection, seqno: seqno)
+    end
+    return c
   end
 end
