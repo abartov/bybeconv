@@ -130,36 +130,6 @@ class Person < ApplicationRecord
     return Manifestation.all_published.joins(expression: { work: :involved_authorities }).where(involved_authorities: {authority: self}).where.not(works: { orig_lang: 'he' }).exists?
   end
 
-  def self.cached_translators_count
-    Rails.cache.fetch("au_translators_count", expires_in: 24.hours) do
-      self.translators.count
-    end
-  end
-
-  def self.cached_count
-    Rails.cache.fetch("au_total_count", expires_in: 24.hours) do
-      self.count
-    end
-  end
-
-  def self.cached_toc_count
-    Rails.cache.fetch("au_toc_count", expires_in: 24.hours) do
-      self.has_toc.count
-    end
-  end
-
-  def self.cached_pd_count
-    Rails.cache.fetch("au_pd_count", expires_in: 24.hours) do
-      self.has_toc.where(public_domain: true).count
-    end
-  end
-
-  def self.cached_no_toc_count
-    Rails.cache.fetch("au_no_toc_count", expires_in: 24.hours) do
-      self.no_toc.count
-    end
-  end
-
   def gender_letter
     return gender == 'female' ? 'ה' : 'ו'
   end
@@ -326,6 +296,37 @@ class Person < ApplicationRecord
     return public_domain ? I18n.t(:public_domain) : I18n.t(:by_permission)
   end
 
+  # class methods
+  def self.cached_translators_count
+    Rails.cache.fetch("au_translators_count", expires_in: 24.hours) do
+      self.translators.count
+    end
+  end
+
+  def self.cached_count
+    Rails.cache.fetch("au_total_count", expires_in: 24.hours) do
+      self.count
+    end
+  end
+
+  def self.cached_toc_count
+    Rails.cache.fetch("au_toc_count", expires_in: 24.hours) do
+      self.has_toc.count
+    end
+  end
+
+  def self.cached_pd_count
+    Rails.cache.fetch("au_pd_count", expires_in: 24.hours) do
+      self.has_toc.where(public_domain: true).count
+    end
+  end
+
+  def self.cached_no_toc_count
+    Rails.cache.fetch("au_no_toc_count", expires_in: 24.hours) do
+      self.no_toc.count
+    end
+  end
+
   def self.get_popular_authors_by_genre(genre)
     Rails.cache.fetch("au_pop_in_#{genre}", expires_in: 24.hours) do # memoize
       Person.has_toc.joins(expressions: :work).where(works: { genre: genre }).order(impressions_count: :desc).distinct.limit(10).all.to_a # top 10
@@ -354,6 +355,7 @@ class Person < ApplicationRecord
     end
     return @@popular_authors
   end
+
   protected
   def placeholder_image_url
     if gender == 'female'
