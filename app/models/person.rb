@@ -29,7 +29,7 @@ class Person < ApplicationRecord
   scope :has_image, -> { where.not(profile_image_file_name: nil) }
   scope :no_image, -> { where(profile_image_file_name: nil) }
   scope :bib_done, -> {where(bib_done: true)}
-  scope :bib_not_done, -> {where("bib_done is null OR bib_done = 0")}
+  scope :bib_not_done, -> {where.not(bib_done: true)}
   scope :new_since, -> (since) { where('created_at > ?', since)}
   scope :latest, -> (limit) {order('created_at desc').limit(limit)}
   scope :translators, -> {joins(:involved_authorities).where(involved_authorities: {role: :translator}).distinct}
@@ -53,8 +53,9 @@ class Person < ApplicationRecord
 
   # instance methods
   def root_collection
-    return Collection.find(self.root_collection_id) if self.root_collection_id
-    return generate_root_collection!
+    return @root_collection if @root_collection
+    return @root_collection = Collection.find(self.root_collection_id) if self.root_collection_id
+    return @root_collection = generate_root_collection!
   end
 
   def publish!
@@ -382,18 +383,24 @@ class Person < ApplicationRecord
       self.root_collection_id = c.id
       self.save!
       seqno = 1
+      # make an empty collection per publication (even if one already exists in some other context). Later an editor would populate the empty collection according to an existing manual TOC or a scanned TOC
+      pub_colls = []
+      publications.each do |pub|
+        coll = Collection.create!(title: pub.title, status: :published, collection_type: :volume, toc_strategy: :default)
+        pub_colls << coll
+      end
+      [colls, pub_colls, works].each do |arr|
+        arr.each do |m|
+          ci = CollectionItem.create!(collection: c, item: m, seqno: seqno)
+          seqno += 1
+        end
+      end
       # make a (technical, to-be-reviewed-and-handled) collection out of the works not already linked from the TOC
       extra_works_collection = Collection.create!(title: "#{self.name} - #{I18n.t(:additional_items)}", status: :published, collection_type: :other, toc_strategy: :default)
       extra_seqno = 1
       extra_works.each do |m|
         ci = CollectionItem.create!(collection: extra_works_collection, item: m, seqno: extra_seqno)
         extra_seqno += 1
-      end
-      [publications, colls, works].each do |arr|
-        arr.each do |m|
-          ci = CollectionItem.create!(collection: c, item: m, seqno: seqno)
-          seqno += 1
-        end
       end
       CollectionItem.create!(collection: c, item: extra_works_collection, seqno: seqno)
     end
