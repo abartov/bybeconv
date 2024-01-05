@@ -1,0 +1,26 @@
+.row
+  .col-md-6
+    %h1
+      = t(:group_in_collections)
+      != "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+      %span{style:'font-size:70%'}
+        = link_to t(:show_toc), author_toc_path(@author.id)
+    = link_to t(:back), :controller => :authors, :action => :list
+
+  .col-md-6.toc
+    %h1= @author.name+' '+t(:current_toc)
+    = render partial: 'shared/collection', locals: {collection: @root_collection}
+    %p
+    .card
+      .card-content
+        .row
+          .col-sm-9
+            .credits
+              %p.headline-3= t(:volunteers_who_helped, author: @author.name, gender_letter: @author.gender_letter)
+              -# != @credits
+          .col-sm-3
+
+:javascript
+  $(document).ready(function(){
+
+  });

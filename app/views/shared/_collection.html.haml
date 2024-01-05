@@ -1,0 +1,22 @@
+.collection
+  - if collection
+    - collection.collection_items.each do |ci|
+      .row
+        .col-sm-9
+          - if ci.item.nil?
+            .headline-2-v02
+              = ci.alt_title
+          - elsif ci.item.class == Collection
+            .headline-2-v02
+              - if ci.item.collection_type == 'volume'
+                = t(:publication)+': '
+
+              = link_to collection_item_string(ci), default_link_by_class(ci.item.class, ci.item.id)
+              %div{style: 'margin-right: 15px;'}
+                = render partial: 'shared/collection', locals: {collection: ci.item}
+          - else
+            .headline-3-v02
+              = link_to collection_item_string(ci), default_link_by_class(ci.item.class, ci.item.id)
+        .col-sm-3
+          -#= link_to t(:edit), edit_collection_path(child.id)
+          -#= link_to t(:delete), collection_path(child.id), method: :delete, data: { confirm: t(:are_you_sure) }

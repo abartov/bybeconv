@@ -540,13 +540,10 @@ class AuthorsController < ApplicationController
     @footer_url = url_for(action: :toc, id: @author.id)
   end
 
-  def collect_toc
+  def manage_toc
     @author = Person.find(params[:id])
     if @author.nil?
       flash[:error] = I18n.t('no_such_item')
-      redirect_to '/'
-    elsif @author.toc.nil?
-      flash[:error] = I18n.t('no_toc_yet')
       redirect_to '/'
     else
       @page_title = t(:edit_toc)+': '+@author.name

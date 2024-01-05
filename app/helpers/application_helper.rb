@@ -183,7 +183,7 @@ module ApplicationHelper
   def default_link_by_class(klass, id)
     case klass.to_s
     when 'Manifestation'
-      manifestation_path(id)
+      manifestation_read_path(id)
     when 'Person'
       author_toc_path(id)
     when 'CorporateBody'
@@ -193,6 +193,16 @@ module ApplicationHelper
     when 'Work'
       work_show_path(id: id)
     end
+  end
+
+  def collection_item_string(ci)
+    return '' if ci.nil?
+    return ci.alt_title if ci.alt_title.present?
+    s = ci.item.try(:title) if ci.item.present?
+    return s if s.present?
+    s = ci.item.try(:name) if ci.item.present?
+    return s if s.present?
+    return ''
   end
 
   def linkify_authorities(authorities)
