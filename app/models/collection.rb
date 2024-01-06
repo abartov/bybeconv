@@ -68,4 +68,22 @@ class Collection < ApplicationRecord
     ci.seqno = self.collection_items.maximum(:seqno).to_i + 1
     ci.save!
   end
+
+  def apply_drag(coll_item_id, old_pos, new_pos)
+    ci = CollectionItem.find(coll_item_id)
+    return false if ci.nil?
+    if new_pos > old_pos
+      self.collection_items.where("seqno > ? AND seqno <= ?", old_pos, new_pos).each do |ci|
+        ci.seqno -= 1
+        ci.save!
+      end
+    else
+      self.collection_items.where("seqno >= ? AND seqno < ?", new_pos, old_pos).each do |ci|
+        ci.seqno += 1
+        ci.save!
+      end
+    end
+    ci.seqno = new_pos
+    ci.save!
+  end
 end

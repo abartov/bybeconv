@@ -1,13 +1,29 @@
 .row
-  .col-md-6
+  .col-md-5
     %h1
       = t(:group_in_collections)
       != "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
       %span{style:'font-size:70%'}
         = link_to t(:show_toc), author_toc_path(@author.id)
+    .toc#maintext
+      .add-to-anthology{style:'display:none'}
+        .left-pointing-arrow= t(:perform_add)
+        %button.by-button-v02#add-to-anth-btn
+          .by-icon-v02 &amp; D
+      - unless @toc.nil?
+        = render partial: 'toc', locals: {margin: true}
+        .by-card-v02#text-volunteers-desktop
+          .by-card-header-v02
+            .headline-1-v02= t(:volunteers_who_helped, author: @author.name, gender_letter: @author.gender_letter)
+          .by-card-content-v02
+            .credits
+              != @credits
+      - else
+        = render partial: 'generated_toc'
+
     = link_to t(:back), :controller => :authors, :action => :list
 
-  .col-md-6.toc
+  .col-md-7.toc
     %h1= @author.name+' '+t(:current_toc)
     = render partial: 'shared/collection', locals: {collection: @root_collection}
     %p

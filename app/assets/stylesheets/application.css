@@ -418,3 +418,13 @@ body.modal-open{
 .small p{
   font-size: 80% !important;
 }
+
+.collection_draggable_item{
+  margin-top: 5px; 
+  margin-bottom: 5px;
+}
+.draggable-content {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-right: 20px;
+}

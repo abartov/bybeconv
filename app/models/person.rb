@@ -382,13 +382,13 @@ class Person < ApplicationRecord
       c = Collection.create!(title: self.name, status: :published, collection_type: :root, toc_strategy: :default)
       self.root_collection_id = c.id
       self.save!
-      seqno = 1
       # make an empty collection per publication (even if one already exists in some other context). Later an editor would populate the empty collection according to an existing manual TOC or a scanned TOC
       pub_colls = []
       publications.each do |pub|
         coll = Collection.create!(title: pub.title, status: :published, collection_type: :volume, toc_strategy: :default)
         pub_colls << coll
       end
+      seqno = 0
       [colls, pub_colls, works].each do |arr|
         arr.each do |m|
           ci = CollectionItem.create!(collection: c, item: m, seqno: seqno)
@@ -397,7 +397,7 @@ class Person < ApplicationRecord
       end
       # make a (technical, to-be-reviewed-and-handled) collection out of the works not already linked from the TOC
       extra_works_collection = Collection.create!(title: "#{self.name} - #{I18n.t(:additional_items)}", status: :published, collection_type: :other, toc_strategy: :default)
-      extra_seqno = 1
+      extra_seqno = 0
       extra_works.each do |m|
         ci = CollectionItem.create!(collection: extra_works_collection, item: m, seqno: extra_seqno)
         extra_seqno += 1

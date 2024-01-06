@@ -1,5 +1,6 @@
 class CollectionsController < ApplicationController
-  before_action :set_collection, only: %i[ show edit update destroy ]
+  before_action :require_editor
+  before_action :set_collection, only: %i[ show edit update destroy]
 
   # GET /collections or /collections.json
   def index
@@ -54,6 +55,18 @@ class CollectionsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to collections_url, notice: "Collection was successfully destroyed." }
       format.json { head :no_content }
+    end
+  end
+
+  # POST /collections/1/apply_drag
+  def apply_drag
+    @collection = Collection.find(params[:collection_id])
+    if @collection.nil?
+      flash[:error] = t(:no_such_item)
+      redirect_to collections_url
+    else
+      @collection.apply_drag(params[:coll_item_id], params[:old_pos], params[:new_pos])
+      redirect_to collection_url(@collection)
     end
   end
 

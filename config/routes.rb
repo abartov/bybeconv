@@ -1,7 +1,9 @@
 include BybeUtils
 Bybeconv::Application.routes.draw do
   resources :collection_items
-  resources :collections
+  resources :collections do
+    post 'apply_drag'
+  end
   resources :corporate_bodies
   resources :involved_authorities
   get 'crowd/index'

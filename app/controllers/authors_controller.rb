@@ -548,6 +548,7 @@ class AuthorsController < ApplicationController
     else
       @page_title = t(:edit_toc)+': '+@author.name
       prep_toc_as_collection
+      prep_toc # for the auxiliary view
     end
   end
 
