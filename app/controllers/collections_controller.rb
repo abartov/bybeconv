@@ -63,11 +63,28 @@ class CollectionsController < ApplicationController
     @collection = Collection.find(params[:collection_id])
     if @collection.nil?
       flash[:error] = t(:no_such_item)
-      redirect_to collections_url
+      head :not_found
     else
-      @collection.apply_drag(params[:coll_item_id], params[:old_pos], params[:new_pos])
-      redirect_to collection_url(@collection)
+      @collection.apply_drag(params[:coll_item_id], params[:old_pos], params[:new_pos]) if params[:coll_item_id].present? && params[:old_pos].present? && params[:new_pos].present?
+      head :ok
     end
+  end
+
+  def transplant_item
+    @collection = Collection.find(params[:collection_id])
+    @dest_coll = Collection.find(params[:dest_coll_id].to_i)
+    @src_coll = Collection.find(params[:src_coll_id].to_i)
+    @item = CollectionItem.find(params[:item_id].to_i)
+    if(@dest_coll.nil? || @src_coll.nil? || @item.nil?)
+      flash[:error] = t(:no_such_item)
+      head :not_found
+      return
+    end
+    ActiveRecord::Base.transaction do
+      @dest_coll.insert_item_at(@item, params[:new_pos].to_i)
+      @src_coll.remove_item(@item)
+    end
+    head :ok
   end
 
   private

@@ -126,4 +126,57 @@ RSpec.describe Collection, type: :model do
     c.collection_items.destroy_all
     expect(c.collection_items.count).to eq 0
   end
+
+  it "removes an item" do
+    c = create(:collection)
+    i1 = create(:collection_item, collection: c, seqno: 1)
+    i2 = create(:collection_item, collection: c, seqno: 3)
+    i3 = create(:collection_item, collection: c, seqno: 2)
+    expect(c.collection_items.count).to eq 3
+    c.remove_item(i3.id)
+    expect(c.collection_items.count).to eq 2
+    expect(c.collection_items.first).to eq i1
+    expect(c.collection_items.last).to eq i2
+  end
+
+  context "inserts an item" do
+    it "at the end of the list" do
+      c = create(:collection)
+      i1 = create(:collection_item, collection: c, seqno: 1)
+      i2 = create(:collection_item, collection: c, seqno: 3)
+      i3 = create(:collection_item, collection: c, seqno: 2)
+      expect(c.collection_items.count).to eq 3
+      m = create(:manifestation)
+      c.insert_item_at(m, 4)
+      c.reload
+      expect(c.collection_items.count).to eq 4
+      expect(c.collection_items.last.item).to eq m
+    end
+
+    it "at the beginning of the list" do
+      c = create(:collection)
+      i1 = create(:collection_item, collection: c, seqno: 1)
+      i2 = create(:collection_item, collection: c, seqno: 3)
+      i3 = create(:collection_item, collection: c, seqno: 2)
+      expect(c.collection_items.count).to eq 3
+      m = create(:manifestation)
+      c.insert_item_at(m, 1)
+      c.reload
+      expect(c.collection_items.count).to eq 4
+      expect(c.collection_items.first.item).to eq m
+    end
+
+    it "at specified position" do
+      c = create(:collection)
+      i1 = create(:collection_item, collection: c, seqno: 1)
+      i2 = create(:collection_item, collection: c, seqno: 3)
+      i3 = create(:collection_item, collection: c, seqno: 2)
+      expect(c.collection_items.count).to eq 3
+      m = create(:manifestation)
+      c.insert_item_at(m, 2)
+      c.reload
+      expect(c.collection_items.count).to eq 4
+      expect(c.collection_items.map(&:item)).to eq [i1.item, m, i3.item, i2.item]
+    end
+  end
 end

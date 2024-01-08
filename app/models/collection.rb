@@ -60,13 +60,30 @@ class Collection < ApplicationRecord
   end
 
   def append_item(item)
-    if item.class == String # if a string, just create a wrapper item
-      ci = CollectionItem.new(collection: self, alt_title: item)
-    else
-      ci = CollectionItem.new(collection: self, item: item)
-    end
+    ci = collection_item_from_anything(item)
     ci.seqno = self.collection_items.maximum(:seqno).to_i + 1
     ci.save!
+  end
+
+  def remove_item(item_id)
+    ci = self.collection_items.where(id: item_id).first
+    return false if ci.nil?
+    ci.destroy!
+  end
+
+  def insert_item_at(item, pos) # pos is effective 1-based position in the list, not the seqno (which is not necessarily contiguous!)
+    if pos > self.collection_items.count + 1
+      self.append_item(item)
+    else
+      before_seqno = pos - 2 < 0 ? 0 : self.collection_items[pos - 2].seqno
+      ci = collection_item_from_anything(item)
+      ci.seqno = before_seqno + 1
+      self.collection_items[pos-1..-1].each do |coli|
+        coli.seqno += 1
+        coli.save!
+      end
+      ci.save!
+    end
   end
 
   def apply_drag(coll_item_id, old_pos, new_pos)
@@ -85,5 +102,17 @@ class Collection < ApplicationRecord
     end
     ci.seqno = new_pos
     ci.save!
+  end
+
+  protected
+  def collection_item_from_anything(item)
+    # if a string, just create a wrapper item with the string as the alt_title
+    if item.class == String 
+      CollectionItem.new(collection: self, alt_title: item)
+    elsif item.class == CollectionItem
+      CollectionItem.new(collection: self, item: item.item, alt_title: item.alt_title, context: item.context)
+    else
+      CollectionItem.new(collection: self, item: item)
+    end
   end
 end

@@ -431,3 +431,8 @@ body.modal-open{
 
 .collection_insert{
 }
+.ui-sortable-placeholder {
+  border: 1px dashed #660248;
+  visibility: visible !important;
+  height: 100px !important;
+}

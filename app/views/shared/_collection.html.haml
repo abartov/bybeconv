@@ -1,8 +1,8 @@
 - if collection
-  .collection.connectable{id: "coll_#{collection.id}"}
-    .collection_insert
-      .collection_insert_button
-        = link_to t(:add_item), new_collection_item_path(collection_id: collection.id), remote: true, class: 'btn btn-primary btn-sm'
+  .collection_insert
+    .collection_insert_button
+      = link_to t(:add_item), new_collection_item_path(collection_id: collection.id), remote: true, class: 'btn btn-primary btn-sm'
+  .collection.connectable{id: "coll_#{collection.id}", style:'min-height:40px'}
     - collection.collection_items.each do |ci|
       .collection_draggable_item{id: "collitem_#{ci.id}"}
         .by-card-v02
@@ -30,6 +30,7 @@
     $("#coll_#{collection.id}").sortable({
       handle: '.drag-handle',
       connectWith: '.collection.connectable',
+      dropOnEmpty: true,
       start: function(e, ui) {
         // creates a temporary attribute on the element with the old index
         $(this).attr('data-previndex', ui.item.index());
@@ -40,7 +41,6 @@
         var newIndex = ui.item.index();
         var oldIndex = $(this).attr('data-previndex');
         var element_id = ui.item.attr('id').replace('collitem_','');
-        //alert('id of Item moved = '+element_id+' old position = '+oldIndex+' new position = '+newIndex);
         $(this).removeAttr('data-previndex');
 
         ///code to pass the data using AJAX
@@ -49,10 +49,8 @@
         }
       },
       receive: function(event, ui) {
-        $.post('#{collection_transplant_item_path(collection.id)}', { dest_coll_id: this.id.replace('coll_',''), src_coll_id: ui.sender[0].id.replace('coll_',''), item_id: ui.item[0].id.replace('collitem_',''), old_pos: ui.item.attr('data-previndex'), new_pos: ui.item.index() } );
-        /* alert("dropped on = "+this.id); // Where the item is dropped
-          alert("sender = "+ui.sender[0].id); // Where it came from
-          alert("item = "+ui.item[0].id); //Which item (or ui.item[0].id) */
+        $.post('#{collection_transplant_item_path(collection.id)}', { dest_coll_id: this.id.replace('coll_',''), src_coll_id: ui.sender[0].id.replace('coll_',''), item_id: ui.item[0].id.replace('collitem_',''), old_pos: ui.item.attr('data-previndex'), new_pos: ui.item.index() + 1} );
+        event.stopPropagation();
       }         
 
     });
