@@ -1,7 +1,9 @@
 - if collection
-  .collection_insert
-    .collection_insert_button
-      = link_to t(:add_item), new_collection_item_path(collection_id: collection.id), remote: true, class: 'btn btn-primary btn-sm'
+  .collection_action_btns
+    .collection_insert_button.by-button-v02
+      %b= link_to '+', new_collection_item_path(collection_id: collection.id), remote: true, class: 'white'
+    .collection_focus_button.by-button-v02
+      %b= link_to '⤝', collection_manage_path(collection.id), class: 'white'
   .collection.connectable{id: "coll_#{collection.id}", style:'min-height:40px'}
     - collection.collection_items.each do |ci|
       .collection_draggable_item{id: "collitem_#{ci.id}"}
@@ -38,20 +40,19 @@
       },
       update: function(e, ui) {
         // gets the new and old index then removes the temporary attribute
-        var newIndex = ui.item.index();
-        var oldIndex = $(this).attr('data-previndex');
+        var newIndex = ui.item.index() + 1;
+        var oldIndex = parseInt($(this).attr('data-previndex')) + 1;
         var element_id = ui.item.attr('id').replace('collitem_','');
         $(this).removeAttr('data-previndex');
 
         ///code to pass the data using AJAX
         if (newIndex != oldIndex) {
-          $.post('#{collection_apply_drag_path(collection.id)}', { coll_item_id: element_id, old_pos: oldIndex, new_pos: newIndex } );
+          $.post('#{collection_apply_drag_path(collection.id)}', { coll_item_id: element_id, old_pos: oldIndex, new_pos: newIndex} );
         }
       },
       receive: function(event, ui) {
-        $.post('#{collection_transplant_item_path(collection.id)}', { dest_coll_id: this.id.replace('coll_',''), src_coll_id: ui.sender[0].id.replace('coll_',''), item_id: ui.item[0].id.replace('collitem_',''), old_pos: ui.item.attr('data-previndex'), new_pos: ui.item.index() + 1} );
+        $.post('#{collection_transplant_item_path(collection.id)}', { dest_coll_id: this.id.replace('coll_',''), src_coll_id: ui.sender[0].id.replace('coll_',''), item_id: ui.item[0].id.replace('collitem_',''), old_pos: parseInt(ui.item.attr('data-previndex'))+1, new_pos: ui.item.index() + 1} );
         event.stopPropagation();
       }         
-
     });
   });

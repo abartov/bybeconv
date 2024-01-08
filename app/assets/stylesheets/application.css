@@ -429,7 +429,17 @@ body.modal-open{
   margin-right: 20px;
 }
 
-.collection_insert{
+.collection_action_btns{
+  position: absolute;
+  inset: 0px auto auto 5px;
+  display: flex;
+  gap: 10px;
+}
+.collection_action_btns .by-button-v02 {
+  height: unset;
+  line-height: 1.2rem;
+  color: white;
+  font-size: 150%; 
 }
 .ui-sortable-placeholder {
   border: 1px dashed #660248;

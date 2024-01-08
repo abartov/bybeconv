@@ -89,19 +89,24 @@ class Collection < ApplicationRecord
   def apply_drag(coll_item_id, old_pos, new_pos)
     ci = CollectionItem.find(coll_item_id)
     return false if ci.nil?
-    if new_pos > old_pos
-      self.collection_items.where("seqno > ? AND seqno <= ?", old_pos, new_pos).each do |ci|
-        ci.seqno -= 1
-        ci.save!
-      end
+    if new_pos >= self.collection_items.count
+      ci.seqno = self.collection_items.maximum(:seqno).to_i + 1
+      ci.save!
+    elsif old_pos == 1 && new_pos == 2
+      old_seqno = ci.seqno
+      ci.seqno = self.collection_items[1].seqno
+      self.collection_items[1].seqno = old_seqno
+      ci.save!
+      self.collection_items[1].save!
     else
-      self.collection_items.where("seqno >= ? AND seqno < ?", new_pos, old_pos).each do |ci|
-        ci.seqno += 1
-        ci.save!
+      before_seqno = new_pos - 2 < 0 ? 0 : self.collection_items[new_pos - 2].seqno
+      ci.seqno = before_seqno + 1
+      self.collection_items[new_pos-1..-1].each do |coli|
+        coli.seqno += 1
+        coli.save!
       end
+      ci.save!
     end
-    ci.seqno = new_pos
-    ci.save!
   end
 
   def parent_collections

@@ -65,7 +65,7 @@ class CollectionsController < ApplicationController
       flash[:error] = t(:no_such_item)
       head :not_found
     else
-      @collection.apply_drag(params[:coll_item_id], params[:old_pos], params[:new_pos]) if params[:coll_item_id].present? && params[:old_pos].present? && params[:new_pos].present?
+      @collection.apply_drag(params[:coll_item_id].to_i, params[:old_pos].to_i, params[:new_pos].to_i) if params[:coll_item_id].present? && params[:old_pos].present? && params[:new_pos].present?
       head :ok
     end
   end
@@ -86,6 +86,20 @@ class CollectionsController < ApplicationController
       @src_coll.remove_item(@item)
     end
     head :ok
+  end
+
+  def manage
+    @collection = Collection.find(params[:collection_id])
+    if @collection.nil?
+      flash[:error] = t(:no_such_item)
+      redirect_to admin_index_path
+    elsif @collection.root? # switch to side-by-side view with legacy author TOC for root collections (for now)
+      @author = Person.find_by_root_collection_id(@collection.id)
+      if @author.present?
+        redirect_to authors_manage_toc_path(id: @author.id)
+        return
+      end
+    end
   end
 
   private

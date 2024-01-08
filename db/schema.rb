@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_01_04_155418) do
+ActiveRecord::Schema.define(version: 2024_01_08_220233) do
 
   create_table "aboutnesses", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -782,6 +782,7 @@ ActiveRecord::Schema.define(version: 2024_01_04_155418) do
     t.index ["impressions_count"], name: "index_people_on_impressions_count"
     t.index ["name"], name: "index_people_on_name"
     t.index ["period"], name: "index_people_on_period"
+    t.index ["root_collection_id"], name: "index_people_on_root_collection_id"
     t.index ["sort_name"], name: "index_people_on_sort_name"
     t.index ["status", "published_at"], name: "index_people_on_status_and_published_at"
     t.index ["toc_id"], name: "people_toc_id_fk"
