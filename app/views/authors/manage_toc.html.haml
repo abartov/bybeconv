@@ -24,8 +24,7 @@
     = link_to t(:back), :controller => :authors, :action => :list
 
   .col-md-7.toc
-    %h1= @author.name+' '+t(:current_toc)
-    = render partial: 'shared/collection', locals: {collection: @root_collection}
+    = render partial: 'shared/manage_collection', locals: {collection: @root_collection, title: @author.name+' '+t(:current_toc)}
     %p
     .card
       .card-content
@@ -35,8 +34,3 @@
               %p.headline-3= t(:volunteers_who_helped, author: @author.name, gender_letter: @author.gender_letter)
               -# != @credits
           .col-sm-3
-
-:javascript
-  $(document).ready(function(){
-
-  });

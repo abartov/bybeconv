@@ -1,0 +1,4 @@
+%h1= title
+- collection.parent_collections.each do |pc|
+  = link_to "🠕 🠕 🠕 #{pc.title}", collection_manage_path(pc.id)
+= render partial: 'shared/collection', locals: {collection: collection}

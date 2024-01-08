@@ -179,4 +179,14 @@ RSpec.describe Collection, type: :model do
       expect(c.collection_items.map(&:item)).to eq [i1.item, m, i3.item, i2.item]
     end
   end
+
+  it "knows its parent collections" do
+    c = create(:collection)
+    p1 = create(:collection)
+    p2 = create(:collection)
+    i1 = create(:collection_item, collection: c, seqno: 1)
+    i2 = create(:collection_item, collection: p1, seqno: 1, item: c)
+    i3 = create(:collection_item, collection: p2, seqno: 1, item: c)
+    expect(c.parent_collections).to eq [p1, p2]
+  end
 end

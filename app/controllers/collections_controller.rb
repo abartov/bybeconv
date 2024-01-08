@@ -70,6 +70,7 @@ class CollectionsController < ApplicationController
     end
   end
 
+  # POST /collections/1/transplant_item
   def transplant_item
     @collection = Collection.find(params[:collection_id])
     @dest_coll = Collection.find(params[:dest_coll_id].to_i)

@@ -4,6 +4,7 @@ Bybeconv::Application.routes.draw do
   resources :collections do
     post 'apply_drag'
     post 'transplant_item'
+    get 'manage'
   end
   resources :corporate_bodies
   resources :involved_authorities

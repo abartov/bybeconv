@@ -104,6 +104,9 @@ class Collection < ApplicationRecord
     ci.save!
   end
 
+  def parent_collections
+    CollectionItem.where(item: self).map(&:collection)
+  end
   protected
   def collection_item_from_anything(item)
     # if a string, just create a wrapper item with the string as the alt_title
