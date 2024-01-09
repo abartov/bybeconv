@@ -1,31 +1,32 @@
-- if collection
-  .collection_action_btns
-    .collection_insert_button.by-button-v02
-      %b= link_to '+', new_collection_item_path(collection_id: collection.id), remote: true, class: 'white'
-    .collection_focus_button.by-button-v02
-      %b= link_to '⤝', collection_manage_path(collection.id), class: 'white'
-  .collection.connectable{id: "coll_#{collection.id}", style:'min-height:40px'}
-    - collection.collection_items.each do |ci|
-      .collection_draggable_item{id: "collitem_#{ci.id}"}
-        .by-card-v02
-          .drag-handle{title: t(:coll_drag_tt)}
-            .handle
-          .draggable-content
-            - if ci.item.nil?
-              = ci.alt_title
-            - elsif ci.item.class == Collection
-              .headline-2-v02
-                - if ci.item.collection_type == 'volume'
-                  = t(:publication)+': '
-                = link_to collection_item_string(ci), default_link_by_class(ci.item.class, ci.item.id)
-                - if ci.item.collection_type == 'volume' && ci.item.publication.present?
-                  %br
-                  = "#{ci.item.publication.publisher_line} #{ci.item.publication.pub_year}"
-              %div{style: 'margin-right: 25px;'}
-                = render partial: 'shared/collection', locals: {collection: ci.item}
-            - else
-              .headline-3-v02
-                = link_to collection_item_string(ci), default_link_by_class(ci.item.class, ci.item.id)
+.container-fluid{style: 'position:relative;'}
+  - if collection
+    - unless focused
+      .collection_action_btns
+        .collection_focus_button.by-button-v02
+          %b= link_to '⤝', collection_manage_path(collection.id), class: 'white'
+    .collection.connectable{id: "coll_#{collection.id}", style:'min-height:40px'}
+      - collection.collection_items.each do |ci|
+        .collection_draggable_item{id: "collitem_#{ci.id}"}
+          .by-card-v02
+            .drag-handle{title: t(:coll_drag_tt)}
+              .handle
+            .draggable-content
+              - if ci.item.nil?
+                = ci.alt_title
+              - elsif ci.item.class == Collection
+                .headline-2-v02
+                  = textify_collection_type(ci.item.collection_type)+': '
+                  = link_to collection_item_string(ci), default_link_by_class(ci.item.class, ci.item.id)
+                  - if ci.item.collection_type == 'volume' && ci.item.publication.present?
+                    %br
+                    = "#{ci.item.publication.publisher_line} #{ci.item.publication.pub_year}"
+                  .collection_insert_button.by-button-v02{style: 'width: 40px; justify-content: center; margin-top:10px;'}
+                    %b= link_to '+', new_collection_item_path(collection_id: collection.id), remote: true, class: 'white'
+                %div{style: 'margin-right: 25px;'}
+                  = render partial: 'shared/collection', locals: {collection: ci.item, focused: false}
+              - else
+                .headline-3-v02
+                  = link_to collection_item_string(ci), default_link_by_class(ci.item.class, ci.item.id)
 
 :javascript
   $(document).ready(function(){

@@ -1,4 +1,17 @@
+- if collection.parent_collections.count > 0
+  = t(:parent_collections)
+  %ol
+  - collection.parent_collections.each do |pc|
+    %li{style: 'list-style-type: decimal;'}= link_to "🢁 🢁 🢁 #{pc.title}", collection_manage_path(pc.id)
 %h1= title
-- collection.parent_collections.each do |pc|
-  = link_to "🢁 🢁 🢁 #{pc.title}", collection_manage_path(pc.id)
-= render partial: 'shared/collection', locals: {collection: collection}
+.headline-2-v02
+  .collection_insert_button.by-button-v02{style: 'width: 50px; justify-content: center;'}
+    %b= link_to '+', new_collection_item_path(collection_id: collection.id), remote: true, class: 'white'
+
+%div{style: 'margin-right: 10px;'}
+  = render partial: 'shared/collection', locals: {collection: collection, focused: true}
+
+:javascript
+  $(document).ready(function(){
+
+  });

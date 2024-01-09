@@ -1171,6 +1171,14 @@ he:
   improvements_soon: דף זה טרם עוצב. בקרוב נכניס בו שיפורים, אבל רצינו שבינתיים תוכלו לגשת ליצירות עצמן.
   primary: יצירה עיקרית
   group_in_collections: קיבוץ לאוספים
+  ctype_volume: כותר
+  ctype_anthology: אסופה
+  ctype_periodical: כתב עת
+  ctype_periodical_issue: גליון
+  ctype_series: סדרה, מחזור, או שער
+  ctype_root: כלל היצירה של אדם או גוף
+  ctype_other: אחר
+  parent_collections: "שייך לאוספים:"
 
   notifications:
     proof_fixed:

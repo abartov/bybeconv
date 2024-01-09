@@ -217,4 +217,7 @@ module ApplicationHelper
     return ret
   end
 
+  def textify_collection_type(ctype)
+    t("ctype_#{ctype}")
+  end
 end

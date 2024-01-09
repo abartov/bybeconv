@@ -431,9 +431,11 @@ body.modal-open{
 
 .collection_action_btns{
   position: absolute;
-  inset: 0px auto auto 5px;
+  left: 5px;
+  top: -42px;
   display: flex;
   gap: 10px;
+  z-index: 1000;
 }
 .collection_action_btns .by-button-v02 {
   height: unset;
