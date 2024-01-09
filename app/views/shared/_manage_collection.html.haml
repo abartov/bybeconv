@@ -11,7 +11,17 @@
 %div{style: 'margin-right: 10px;'}
   = render partial: 'shared/collection', locals: {collection: collection, focused: true}
 
+#collection_insert_dropdown{style: 'display: none;'}
+  = select_tag :insert, options_for_select(collection_item_types_options)
+  .collection_do_insert.by-button-v02{style: 'width: 50px; justify-content: center;font-weight: bold;'}= t(:perform_add)
+
 :javascript
   $(document).ready(function(){
-
+    $('.collection_insert_button').click(function(){
+      $(this).parent().append($('#collection_insert_dropdown'));
+      $('#collection_insert_dropdown').show();
+      //$('#generalDlg').load(collection_insert_popup_path, function(){
+      //  $('#generalDlg').dialog('open');
+      //}
+    });
   });

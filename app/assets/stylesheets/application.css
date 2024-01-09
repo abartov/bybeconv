@@ -448,3 +448,10 @@ body.modal-open{
   visibility: visible !important;
   height: 100px !important;
 }
+
+#collection_insert_dropdown {
+ width: 30%; 
+}
+.collection_do_insert{
+  display: inline;
+}

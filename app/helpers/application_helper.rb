@@ -220,4 +220,9 @@ module ApplicationHelper
   def textify_collection_type(ctype)
     t("ctype_#{ctype}")
   end
+
+  def collection_item_types_options
+    Collection.collection_types.reject{|x| x == 'root'}.map{|k,v| [textify_collection_type(k), k]}
+  end
+
 end
