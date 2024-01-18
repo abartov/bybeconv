@@ -318,6 +318,7 @@ he:
   person: אדם
   work: יצירה
   search_term: מונח לחיפוש
+  or_search_term: 'או חיפוש יצירה קיימת בשם: '
   search_wikidata: חיפוש בויקינתונים
   search_the_site: חיפוש באתר
   wikidata_item: פריט ויקינתונים
@@ -1171,6 +1172,7 @@ he:
   improvements_soon: דף זה טרם עוצב. בקרוב נכניס בו שיפורים, אבל רצינו שבינתיים תוכלו לגשת ליצירות עצמן.
   primary: יצירה עיקרית
   group_in_collections: קיבוץ לאוספים
+  collection_item_type: סוג פריט
   ctype_volume: כותר
   ctype_anthology: אסופה
   ctype_periodical: כתב עת

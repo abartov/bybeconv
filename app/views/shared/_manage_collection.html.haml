@@ -4,24 +4,72 @@
   - collection.parent_collections.each do |pc|
     %li{style: 'list-style-type: decimal;'}= link_to "🢁 🢁 🢁 #{pc.title}", collection_manage_path(pc.id)
 %h1= title
-.headline-2-v02
+.headline-2-v02{'data-collection-id': collection.id}
   .collection_insert_button.by-button-v02{style: 'width: 50px; justify-content: center;'}
     %b= link_to '+', new_collection_item_path(collection_id: collection.id), remote: true, class: 'white'
 
 %div{style: 'margin-right: 10px;'}
   = render partial: 'shared/collection', locals: {collection: collection, focused: true}
 
-#collection_insert_dropdown{style: 'display: none;'}
-  = select_tag :insert, options_for_select(collection_item_types_options)
-  .collection_do_insert.by-button-v02{style: 'width: 50px; justify-content: center;font-weight: bold;'}= t(:perform_add)
+#collection_insert_section{style: 'display: none; border: 1px solid #660248; background-color: rgb(157 157 241); padding: 10px;'}
+  .admin_container
+    %b= t(:collection_item_type)+': '
+    = select_tag :insert, options_for_select(collection_item_types_options)
+    %b= t(:title)+': '
+    = text_field_tag :insert_title, '', type: 'text', id: 'insert_title', style: 'background-color: #ffffff;'
+  %br
+  .admin_container
+    %b= t(:or_search_term)
+    = autocomplete_field_tag :qterm, '', autocomplete_manifestation_title_path, 'data-noMatchesLabel' => t(:no_matches_found), id: 'qterm', style: 'background-color: #ffffff;', id_element: '#insert_mid'
+
+    = hidden_field_tag :insert_mid, '', id: 'insert_mid'
+    .collection_item_search.by-button-v02{style: 'width: 50px; justify-content: center;font-weight: bold;'}= t(:search)
+  %br
+  .admin_container
+    .collection_do_insert.by-button-v02{style: 'width: 50px; justify-content: center;font-weight: bold;'}= t(:perform_add)
 
 :javascript
   $(document).ready(function(){
     $('.collection_insert_button').click(function(){
-      $(this).parent().append($('#collection_insert_dropdown'));
-      $('#collection_insert_dropdown').show();
+      $(this).parent().append($('#collection_insert_section'));
+      $('#collection_insert_section').show();
       //$('#generalDlg').load(collection_insert_popup_path, function(){
       //  $('#generalDlg').dialog('open');
       //}
+    });
+    $('.collection_do_insert').click(function(){
+      var item_type = $('#insert').val();
+      var collection_id = $(this).parent().parent().attr('data-collection-id');
+      $.ajax({
+        url: '/collection_items',
+        type: 'POST',
+        data: {collection_item: {collection_id: collection_id, item_type: item_type}},
+        success: function(data){
+          $('#collection_insert_section').hide();
+          $('#collection_insert_section').parent().append(data);
+        }
+      });
+    });
+    $('#insert').change(function(){
+      if($(this).val() == 'manifestation' && $('#insert_mid').val() == '') {
+        $('.collection_do_insert').css('background-color', 'grey');
+      }
+      else {
+        $('.collection_do_insert').css('background-color', '#660248');
+      }
+    });
+    $('.collection_item_search').click(function(){
+      var qterm = $('#qterm').val();
+      var item_type = $('#insert').val();
+      var collection_id = $(this).parent().parent().attr('data-collection-id');
+      $.ajax({
+        url: '/collection_items/search',
+        type: 'POST',
+        data: {collection_item: {collection_id: collection_id, item_type: item_type, qterm: qterm}},
+        success: function(data){
+          $('#collection_insert_section').hide();
+          $('#collection_insert_section').parent().append(data);
+        }
+      });
     });
   });
