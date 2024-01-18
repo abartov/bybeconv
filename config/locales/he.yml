@@ -448,6 +448,8 @@ he:
   pages: עמודים
   proof_show_text: הצג את הטקסט באתר הישן בחלון נפרד
   show_text: הצג את גוף היצירה
+  text: טקסט
+  paratext: פרטקסט
   proof_your_proofs: יש להקליד כאן למטה את ההגהות, או ללחוץ על "העתק למטה" כדי להעתיק את הטקסט שנבחר ולתקן אותו ידנית למטה.
   proof_copy_text: העתק למטה
   your_selected_text: הטקסט שסומן

@@ -12,6 +12,7 @@
               .handle
             .draggable-content
               - if ci.item.nil?
+                %b= t(:paratext)+': '
                 = ci.alt_title
               - elsif ci.item.class == Collection
                 .headline-2-v02
@@ -26,6 +27,7 @@
                   = render partial: 'shared/collection', locals: {collection: ci.item, focused: false}
               - else
                 .headline-3-v02
+                  = t(:text)+': '
                   = link_to collection_item_string(ci), default_link_by_class(ci.item.class, ci.item.id)
 
 :javascript

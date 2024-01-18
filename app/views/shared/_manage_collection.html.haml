@@ -37,6 +37,13 @@
       //  $('#generalDlg').dialog('open');
       //}
     });
+    $('#qterm').on('railsAutocomplete.select', function(event, data){
+      event.preventDefault();
+      $('#insert').val('manifestation');
+      mid = data.item.id;
+      $('#insert_mid').val( mid );
+    });
+
     $('.collection_do_insert').click(function(){
       var item_type = $('#insert').val();
       var collection_id = $(this).parent().parent().attr('data-collection-id');
