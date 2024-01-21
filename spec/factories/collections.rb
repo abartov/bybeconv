@@ -10,6 +10,5 @@ FactoryBot.define do
     publication { nil }
     toc { nil }
     toc_strategy { 1 }
-    status { 1 }
   end
 end

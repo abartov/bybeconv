@@ -4,7 +4,7 @@ RSpec.describe Collection, type: :model do
 
   it "validates a collection" do
     expect(build(:collection)).to be_valid
-    expect { build(:collection, status: :made_up) }.to raise_error(ArgumentError)
+    expect { build(:collection, collection_type: 'made_up') }.to raise_error(ArgumentError)
   end
 
   it "iterates over its collection_items in order" do
@@ -16,11 +16,11 @@ RSpec.describe Collection, type: :model do
   end
 
   it "can be queried by type" do
-    c1 = create(:collection, collection_type: :anthology)
+    c1 = create(:collection, collection_type: :series)
     c2 = create(:collection, collection_type: :periodical)
     c3 = create(:collection, collection_type: :periodical)
     c4 = create(:collection, collection_type: :other)
-    expect(Collection.by_type(:anthology)).to eq [c1]
+    expect(Collection.by_type(:series)).to eq [c1]
     expect(Collection.by_type(:periodical)).to eq [c2, c3]
     expect(Collection.by_type(:other)).to eq [c4]
     expect(Collection.count).to eq 4
