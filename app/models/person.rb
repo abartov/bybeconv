@@ -375,13 +375,14 @@ class Person < ApplicationRecord
 
   def generate_root_collection!
     works = toc.present? ? toc.linked_items : []
-    colls = Collection.by_authority(self) # include any existing collections possibly already defined for this person
+    colls = Collection.by_authority(self).where.not(collection_type: :root) # include any existing collections possibly already defined for this person
     extra_works = self.all_works_including_unpublished.reject{|m| works.include?(m)}
     c = nil
     ActiveRecord::Base.transaction do
       c = Collection.create!(title: self.name, status: :published, collection_type: :root, toc_strategy: :default)
       self.root_collection_id = c.id
       self.save!
+      c.involved_authorities.create!(authority: self, role: :author) # by default
       # make an empty collection per publication (even if one already exists in some other context). Later an editor would populate the empty collection according to an existing manual TOC or a scanned TOC
       pub_colls = []
       publications.each do |pub|

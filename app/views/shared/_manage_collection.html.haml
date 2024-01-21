@@ -12,6 +12,7 @@
   = render partial: 'shared/collection', locals: {collection: collection, focused: true}
 
 #collection_insert_section{style: 'display: none; border: 1px solid #660248; background-color: rgb(157 157 241); padding: 10px;'}
+  = hidden_field_tag :collection_id, '', id: 'collection_id'
   .admin_container
     %b= t(:collection_item_type)+': '
     = select_tag :insert, options_for_select(collection_item_types_options)
@@ -23,7 +24,12 @@
     = autocomplete_field_tag :qterm, '', autocomplete_manifestation_title_path, 'data-noMatchesLabel' => t(:no_matches_found), id: 'qterm', style: 'background-color: #ffffff;', id_element: '#insert_mid'
 
     = hidden_field_tag :insert_mid, '', id: 'insert_mid'
-    .collection_item_search.by-button-v02{style: 'width: 50px; justify-content: center;font-weight: bold;'}= t(:search)
+  %br
+  .admin_container
+    %b= t(:or_search_for_collection)
+    = autocomplete_field_tag :cterm, '', autocomplete_collection_title_path, 'data-noMatchesLabel' => t(:no_matches_found), id: 'cterm', style: 'background-color: #ffffff;', id_element: '#insert_mid'
+
+    = hidden_field_tag :insert_cid, '', id: 'insert_cid'
   %br
   .admin_container
     .collection_do_insert.by-button-v02{style: 'width: 50px; justify-content: center;font-weight: bold;'}= t(:perform_add)
@@ -33,6 +39,7 @@
     $('.collection_insert_button').click(function(){
       $(this).parent().append($('#collection_insert_section'));
       $('#collection_insert_section').show();
+      $('#collection_id').val($(this).parent().parent().attr('data-collection-id'));
       //$('#generalDlg').load(collection_insert_popup_path, function(){
       //  $('#generalDlg').dialog('open');
       //}
@@ -43,14 +50,22 @@
       mid = data.item.id;
       $('#insert_mid').val( mid );
     });
+    $('#cterm').on('railsAutocomplete.select', function(event, data){
+      event.preventDefault();
+      $('#insert').val('collection');
+      cid = data.item.id;
+      $('#insert_cid').val( cid );
+    });
 
     $('.collection_do_insert').click(function(){
       var item_type = $('#insert').val();
-      var collection_id = $(this).parent().parent().attr('data-collection-id');
+      var collection_id = $('#collection_id').val();
+      var item_id = (item_type == 'manifestation') ? $('#insert_mid').val() : (item_type == 'collection') ? $('#insert_cid').val() : '';
+      var new_title = $('#insert_title').val();
       $.ajax({
         url: '/collection_items',
         type: 'POST',
-        data: {collection_item: {collection_id: collection_id, item_type: item_type}},
+        data: {collection_item: {collection_id: collection_id, item_type: item_type, item_id: item_id, alt_title: new_title}},
         success: function(data){
           $('#collection_insert_section').hide();
           $('#collection_insert_section').parent().append(data);
@@ -64,19 +79,5 @@
       else {
         $('.collection_do_insert').css('background-color', '#660248');
       }
-    });
-    $('.collection_item_search').click(function(){
-      var qterm = $('#qterm').val();
-      var item_type = $('#insert').val();
-      var collection_id = $(this).parent().parent().attr('data-collection-id');
-      $.ajax({
-        url: '/collection_items/search',
-        type: 'POST',
-        data: {collection_item: {collection_id: collection_id, item_type: item_type, qterm: qterm}},
-        success: function(data){
-          $('#collection_insert_section').hide();
-          $('#collection_insert_section').parent().append(data);
-        }
-      });
     });
   });

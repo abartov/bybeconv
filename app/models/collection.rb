@@ -23,7 +23,7 @@ class Collection < ApplicationRecord
 
   enum status: [:published, :nonpd, :unpublished, :deprecated]
   # series express anything from a cycle of poems to a multi-volume work or a series of detective novels; anthologies are collections of texts by multiple authors, such as festschrifts, almanacs, or collective anthologies; periodicals are journals, magazines, newspapers, etc., where there is a known sequence of issues; periodical issues are individual issues of a periodical; individual items in a series, such as a single volume in a multi-volume work, are their appropriate type -- a manifestation if a single text, a collection of type volume if a book, etc.; other is a catch-all for anything else
-  enum collection_type: [:volume, :anthology, :periodical, :periodical_issue, :series, :root, :other]
+  enum collection_type: [:volume, :periodical, :periodical_issue, :series, :root, :other]
   enum toc_strategy: [:default, :custom_markdown] # placeholder for future custom ToC-generation strategies
 
   scope :published, -> { where(status: Collection.statuses[:published]) }
@@ -37,6 +37,14 @@ class Collection < ApplicationRecord
 
   def items_by_type(item_type)
     self.collection_items_by_type(item_type).map(&:item)
+  end
+  
+  def title_and_authors
+    return title + ' / '+authors_string
+  end
+
+  def authors_string
+    self.involved_authorities.where(role: 'author').map(&:authority).map(&:name).join(', ')
   end
   
   def move_item_up(item_id)

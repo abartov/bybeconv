@@ -22,7 +22,7 @@
                     %br
                     = "#{ci.item.publication.publisher_line} #{ci.item.publication.pub_year}"
                   .collection_insert_button.by-button-v02{style: 'width: 40px; justify-content: center; margin-top:10px;'}
-                    %b= link_to '+', new_collection_item_path(collection_id: collection.id), remote: true, class: 'white'
+                    %b.white= '+'
                 %div{style: 'margin-right: 25px;'}
                   = render partial: 'shared/collection', locals: {collection: ci.item, focused: false}
               - else

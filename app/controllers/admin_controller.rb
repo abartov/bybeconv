@@ -3,6 +3,7 @@ class AdminController < ApplicationController
   # before_action :require_admin, only: [:missing_languages, :missing_genres, :incongruous_copyright, :missing_copyright, :similar_titles]
   autocomplete :manifestation, :title, display_value: :title_and_authors, extra_data: [:expression_id] # TODO: also search alternate titles!
   autocomplete :person, :name, full: true
+  autocomplete :collection, :title, full: true, display_value: :title_and_authors
 
   def index
     if current_user && current_user.editor?

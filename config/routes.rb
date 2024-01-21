@@ -97,6 +97,7 @@ Bybeconv::Application.routes.draw do
   get 'autocomplete_manifestation_title' => 'admin#autocomplete_manifestation_title', as: 'autocomplete_manifestation_title'
   get 'autocomplete_person_name' => 'admin#autocomplete_person_name', as: 'autocomplete_person_name'
   get 'autocomplete_tag_name' => 'application#autocomplete_tag_name_name', as: 'autocomplete_tag_name'
+  get 'autocomplete_collection_title' => 'admin#autocomplete_collection_title', as: 'autocomplete_collection_title'
   get 'admin/featured_author_list'
   get 'admin/featured_author/new' => 'admin#featured_author_new', as: 'featured_author_new'
   post 'admin/featured_author/create' => 'admin#featured_author_create', as: 'featured_author_create'
