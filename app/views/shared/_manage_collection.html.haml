@@ -46,13 +46,13 @@
     });
     $('#qterm').on('railsAutocomplete.select', function(event, data){
       event.preventDefault();
-      $('#insert').val('manifestation');
+      $('#insert').val('Manifestation');
       mid = data.item.id;
       $('#insert_mid').val( mid );
     });
     $('#cterm').on('railsAutocomplete.select', function(event, data){
       event.preventDefault();
-      $('#insert').val('collection');
+      $('#insert').val('Collection');
       cid = data.item.id;
       $('#insert_cid').val( cid );
     });
@@ -60,20 +60,20 @@
     $('.collection_do_insert').click(function(){
       var item_type = $('#insert').val();
       var collection_id = $('#collection_id').val();
-      var item_id = (item_type == 'manifestation') ? $('#insert_mid').val() : (item_type == 'collection') ? $('#insert_cid').val() : '';
+      var item_id = (item_type == 'Manifestation') ? $('#insert_mid').val() : (item_type == 'Collection') ? $('#insert_cid').val() : '';
       var new_title = $('#insert_title').val();
       $.ajax({
         url: '/collection_items',
         type: 'POST',
+        dataType: "script",
         data: {collection_item: {collection_id: collection_id, item_type: item_type, item_id: item_id, alt_title: new_title}},
         success: function(data){
           $('#collection_insert_section').hide();
-          $('#collection_insert_section').parent().append(data);
         }
       });
     });
     $('#insert').change(function(){
-      if($(this).val() == 'manifestation' && $('#insert_mid').val() == '') {
+      if($(this).val() == 'Manifestation' && $('#insert_mid').val() == '') {
         $('.collection_do_insert').css('background-color', 'grey');
       }
       else {

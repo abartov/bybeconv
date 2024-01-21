@@ -379,14 +379,14 @@ class Person < ApplicationRecord
     extra_works = self.all_works_including_unpublished.reject{|m| works.include?(m)}
     c = nil
     ActiveRecord::Base.transaction do
-      c = Collection.create!(title: self.name, status: :published, collection_type: :root, toc_strategy: :default)
+      c = Collection.create!(title: self.name, collection_type: :root, toc_strategy: :default)
       self.root_collection_id = c.id
       self.save!
       c.involved_authorities.create!(authority: self, role: :author) # by default
       # make an empty collection per publication (even if one already exists in some other context). Later an editor would populate the empty collection according to an existing manual TOC or a scanned TOC
       pub_colls = []
       publications.each do |pub|
-        coll = Collection.create!(title: pub.title, status: :published, collection_type: :volume, toc_strategy: :default)
+        coll = Collection.create!(title: pub.title, collection_type: :volume, toc_strategy: :default)
         pub_colls << coll
       end
       seqno = 0
@@ -397,7 +397,7 @@ class Person < ApplicationRecord
         end
       end
       # make a (technical, to-be-reviewed-and-handled) collection out of the works not already linked from the TOC
-      extra_works_collection = Collection.create!(title: "#{self.name} - #{I18n.t(:additional_items)}", status: :published, collection_type: :other, toc_strategy: :default)
+      extra_works_collection = Collection.create!(title: "#{self.name} - #{I18n.t(:additional_items)}", collection_type: :other, toc_strategy: :default)
       extra_seqno = 0
       extra_works.each do |m|
         ci = CollectionItem.create!(collection: extra_works_collection, item: m, seqno: extra_seqno)

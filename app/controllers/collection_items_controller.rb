@@ -20,13 +20,34 @@ class CollectionItemsController < ApplicationController
   end
 
   # POST /collection_items or /collection_items.json
+  # called from _manage_collection_items.html.haml
   def create
+    success = true
     @collection_item = CollectionItem.new(collection_item_params)
-
+    if params[:collection_item][:item_id].blank?
+      unless params[:collection_item][:item_type] == 'Manifestation' # can't create manifestations from here
+        if params[:collection_item][:item_type] == 'paratext'
+          # ...
+        elsif params[:collection_item][:item_type] == 'placeholder'
+          @collection_item.item_id = nil
+          @collection_item.item_type = nil
+        else
+          c = Collection.create!(title: params[:collection_item][:alt_title], collection_type: params[:collection_item][:item_type])
+          @collection_item.item = c # this overrides the passed item_type which is actually collection_type
+          @collection_item.alt_title = nil
+        end
+      else
+        success = false
+      end
+    end # if item_id was specified, the autocomplete populated a correct item_id and item_type :)
+    @collection_id = params[:collection_item][:collection_id]
+    @collection = Collection.find(@collection_id)
+    @collection_item.seqno = @collection.collection_items.maximum(:seqno).to_i + 1 unless c.nil?
+    success = @collection_item.save if success
     respond_to do |format|
-      if @collection_item.save
+      if success
         format.html { redirect_to collection_item_url(@collection_item), notice: "Collection item was successfully created." }
-        format.json { render :show, status: :created, location: @collection_item }
+        format.js
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @collection_item.errors, status: :unprocessable_entity }

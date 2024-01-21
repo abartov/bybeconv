@@ -1,4 +1,4 @@
-.container-fluid{style: 'position:relative;'}
+.container-fluid{style: 'position:relative;', id: "coll_container_#{collection.id}"}
   - if collection
     - unless focused
       .collection_action_btns
@@ -10,7 +10,7 @@
           .by-card-v02
             .drag-handle{title: t(:coll_drag_tt)}
               .handle
-            .draggable-content
+            .draggable-content{'data-collection-id': (ci.item.class == Collection ? ci.item_id : collection.id)}
               - if ci.item.nil?
                 %b= t(:paratext)+': '
                 = ci.alt_title

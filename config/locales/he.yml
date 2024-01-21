@@ -449,7 +449,8 @@ he:
   proof_show_text: הצג את הטקסט באתר הישן בחלון נפרד
   show_text: הצג את גוף היצירה
   text: טקסט
-  paratext: פרטקסט
+  paratext: פאראטקסט
+  placeholder_item: פריט לא מקושר
   or_search_for_collection: 'או חיפוש אוסף קיים בשם: '
   proof_your_proofs: יש להקליד כאן למטה את ההגהות, או ללחוץ על "העתק למטה" כדי להעתיק את הטקסט שנבחר ולתקן אותו ידנית למטה.
   proof_copy_text: העתק למטה
