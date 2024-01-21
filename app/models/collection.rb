@@ -44,7 +44,15 @@ class Collection < ApplicationRecord
   end
 
   def authors_string
-    self.involved_authorities.where(role: 'author').map(&:authority).map(&:name).join(', ')
+    auths = self.involved_authorities.where(role: 'author')
+    if auths.count > 0
+      return auths.map(&:authority).map(&:name).join(', ')
+    else
+      parent_collections.each{|pc| # iterate until we find authorship
+        s = pc.authors_string
+        return s if s.present?
+      }
+    end
   end
   
   def move_item_up(item_id)
