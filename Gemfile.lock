@@ -454,9 +454,7 @@ GEM
     property_sets (3.12.0)
       activerecord (>= 6.0, < 7.2)
       json
-    psych (5.1.2)
-      stringio
-    puma (6.4.1)
+    puma (6.4.2)
       nio4r (~> 2.0)
     puma-daemon (0.3.2)
       puma (>= 5.0)
