@@ -10,7 +10,7 @@ class AuthorsController < ApplicationController
     if @author
       if params[:commit].present?
         # POST request
-        if @author.unpublished? and (@author.all_works_including_unpublished > 0)
+        if @author.unpublished? and (@author.all_works_including_unpublished.count > 0)
           @author.publish!
           Rails.cache.delete('newest_authors') # force cache refresh
           Rails.cache.delete('homepage_authors')
