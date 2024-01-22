@@ -6,7 +6,7 @@
 %h1= title
 .headline-2-v02{'data-collection-id': collection.id}
   .collection_insert_button.by-button-v02{style: 'width: 50px; justify-content: center;'}
-    %b= link_to '+', new_collection_item_path(collection_id: collection.id), remote: true, class: 'white'
+    %b.white= '+'
 
 %div{style: 'margin-right: 10px;'}
   = render partial: 'shared/collection', locals: {collection: collection, focused: true}
@@ -36,10 +36,14 @@
 
 :javascript
   $(document).ready(function(){
-    $('.collection_insert_button').click(function(){
+    $('body').on('click', '.collection_insert_button', function(){
+    //$('.collection_insert_button').click(function(){
       $(this).parent().append($('#collection_insert_section'));
       $('#collection_insert_section').show();
       $('#collection_id').val($(this).parent().parent().attr('data-collection-id'));
+      if($('#collection_id').val() == '') {
+        $('#collection_id').val($(this).parent().attr('data-collection-id'));
+      }
       //$('#generalDlg').load(collection_insert_popup_path, function(){
       //  $('#generalDlg').dialog('open');
       //}
@@ -69,6 +73,7 @@
         data: {collection_item: {collection_id: collection_id, item_type: item_type, item_id: item_id, alt_title: new_title}},
         success: function(data){
           $('#collection_insert_section').hide();
+          $('html, body').animate({scrollTop: $('#coll_container_'+collection_id).offset().top + $('#coll_container_'+collection_id).outerHeight() - $('header').height() - 150}, 500);
         }
       });
     });
