@@ -28,7 +28,7 @@ class CollectionItemsController < ApplicationController
       unless params[:collection_item][:item_type] == 'Manifestation' # can't create manifestations from here
         if params[:collection_item][:item_type] == 'paratext'
           # ...
-        elsif params[:collection_item][:item_type] == 'placeholder'
+        elsif params[:collection_item][:item_type] == 'placeholder_item'
           @collection_item.item_id = nil
           @collection_item.item_type = nil
         else

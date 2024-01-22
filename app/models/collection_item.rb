@@ -11,4 +11,8 @@ class CollectionItem < ApplicationRecord
       self.item.title
     end
   end
+
+  def paratext?
+    self.item.nil? && self.markdown.present?
+  end
 end

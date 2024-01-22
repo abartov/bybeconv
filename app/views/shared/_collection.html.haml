@@ -11,8 +11,13 @@
             .drag-handle{title: t(:coll_drag_tt)}
               .handle
             .draggable-content{'data-collection-id': (ci.item.class == Collection ? ci.item_id : collection.id)}
-              - if ci.item.nil?
-                %b= t(:paratext)+': '
+              - if ci.paratext? # a paratext (with markdown)
+                %b= "#{t(:paratext)}: "
+                = ci.alt_title
+                %br
+                != MultiMarkdown.new(ci.markdown).to_html
+              - elsif ci.item.nil? # a placeholder (no markdown)
+                %b= "#{t(:placeholder_item)}: "
                 = ci.alt_title
               - elsif ci.item.class == Collection
                 .headline-2-v02

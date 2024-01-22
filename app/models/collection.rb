@@ -139,7 +139,7 @@ class Collection < ApplicationRecord
     if item.class == String 
       CollectionItem.new(collection: self, alt_title: item)
     elsif item.class == CollectionItem
-      CollectionItem.new(collection: self, item: item.item, alt_title: item.alt_title, context: item.context)
+      CollectionItem.new(collection: self, item: item.item, alt_title: item.alt_title, context: item.context, markdown: item.markdown)
     else
       CollectionItem.new(collection: self, item: item)
     end

@@ -222,7 +222,7 @@ module ApplicationHelper
   end
 
   def collection_item_types_options
-    ret = Collection.collection_types.reject{|x| x == 'root'}.map{|k,v| [textify_collection_type(k), k]} + [[t(:work), 'Manifestation'], [t(:paratext), 'paratext'], [t(:placeholder_item), 'placeholder']]
+    ret = Collection.collection_types.reject{|x| x == 'root'}.map{|k,v| [textify_collection_type(k), k]} + [[t(:work), 'Manifestation'], [t(:paratext), 'paratext'], [t(:placeholder_item), 'placeholder_item']]
   end
 
 end
