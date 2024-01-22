@@ -42,7 +42,7 @@ class CollectionItemsController < ApplicationController
     end # if item_id was specified, the autocomplete populated a correct item_id and item_type :)
     @collection_id = params[:collection_item][:collection_id]
     @collection = Collection.find(@collection_id)
-    @collection_item.seqno = @collection.collection_items.maximum(:seqno).to_i + 1 unless c.nil?
+    @collection_item.seqno = @collection.collection_items.maximum(:seqno).to_i + 1 unless @collection.nil?
     success = @collection_item.save if success
     respond_to do |format|
       if success
