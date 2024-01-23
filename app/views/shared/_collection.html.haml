@@ -15,7 +15,15 @@
                 %b= "#{t(:paratext)}: "
                 = ci.alt_title
                 %br
-                != MultiMarkdown.new(ci.markdown).to_html
+                .paratext{id: "editable_#{ci.id}", style: 'margin-bottom: 10px;'}
+                  != MultiMarkdown.new(ci.markdown).to_html
+                .editable_edit{style: 'display:none;'}
+                  = form_for ci, url: collection_item_path(ci.id), method: :put, remote: true do |f|
+                    = f.label :alt_title, t(:title_only_if_needed)
+                    = f.text_field :alt_title, class: 'form-control'
+                    = f.text_area :markdown, class: 'form-control', rows: 4
+                    = f.submit t(:save), class: 'by-button-v02', style: 'display:inline-block;'
+                    .by-button-v02.cancel_editable_edit{style:'width:100px; display:inline-block;'}= t(:cancel)
               - elsif ci.item.nil? # a placeholder (no markdown)
                 %b= "#{t(:placeholder_item)}: "
                 = ci.alt_title

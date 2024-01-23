@@ -48,6 +48,14 @@
       //  $('#generalDlg').dialog('open');
       //}
     });
+    $('body').on('dblclick', '.paratext', function(){
+      $(this).hide();
+      $(this).parent().find('.editable_edit').show();
+    });
+    $('body').on('click', '.cancel_editable_edit', function(){
+      $(this).parent().parent().hide();
+      $(this).parent().parent().parent().find('.paratext').show();
+    });
     $('#qterm').on('railsAutocomplete.select', function(event, data){
       event.preventDefault();
       $('#insert').val('Manifestation');

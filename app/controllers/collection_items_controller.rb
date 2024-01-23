@@ -59,8 +59,10 @@ class CollectionItemsController < ApplicationController
   def update
     respond_to do |format|
       if @collection_item.update(collection_item_params)
+        @element_id = "#editable_#{@collection_item.id}"
+        @html = MultiMarkdown.new(@collection_item.markdown).to_html
         format.html { redirect_to collection_item_url(@collection_item), notice: "Collection item was successfully updated." }
-        format.json { render :show, status: :ok, location: @collection_item }
+        format.js
       else
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @collection_item.errors, status: :unprocessable_entity }
@@ -86,6 +88,6 @@ class CollectionItemsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def collection_item_params
-      params.require(:collection_item).permit(:collection_id, :alt_title, :context, :seqno, :item_id, :item_type)
+      params.require(:collection_item).permit(:collection_id, :alt_title, :context, :seqno, :item_id, :item_type, :markdown)
     end
 end
