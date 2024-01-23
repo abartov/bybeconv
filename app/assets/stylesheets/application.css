@@ -455,3 +455,7 @@ body.modal-open{
 .collection_do_insert{
   display: inline;
 }
+.editable {
+  cursor: pointer;
+  margin-bottom: 10px;
+}

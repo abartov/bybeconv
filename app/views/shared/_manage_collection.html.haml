@@ -2,8 +2,20 @@
   = t(:parent_collections)
   %ol
   - collection.parent_collections.each do |pc|
-    %li{style: 'list-style-type: decimal;'}= link_to "🢁 🢁 🢁 #{pc.title}", collection_manage_path(pc.id)
-%h1= title
+    %li{style: 'list-style-type: decimal; font-size:120%;'}= link_to "🢁 🢁 🢁 #{pc.title}", collection_manage_path(pc.id)
+.editable{id: "editable_collection_details"}
+  %h1
+    %span{id: 'editable_ctype'}= textify_collection_type(collection.collection_type)+': '
+    %span{id: "editable_coll_title"}= title
+.editable_edit{style: 'display:none;'}
+  = form_for collection, url: collection_path(collection.id), method: :put, remote: true do |f|
+    %b= t(:collection_item_type)+': '
+    = f.select 'collection_type', options_for_select(collection_types_options, collection.collection_type)
+    = f.label :title, t(:title)
+    = f.text_field :title, class: 'form-control'
+    = f.submit t(:save), class: 'by-button-v02', style: 'display:inline-block;'
+    .by-button-v02.cancel_editable_edit{style:'width:100px; display:inline-block;'}= t(:cancel)
+
 .headline-2-v02{'data-collection-id': collection.id}
   .collection_insert_button.by-button-v02{style: 'width: 50px; justify-content: center;'}
     %b.white= '+'

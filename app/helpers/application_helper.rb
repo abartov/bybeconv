@@ -221,6 +221,10 @@ module ApplicationHelper
     t("ctype_#{ctype}")
   end
 
+  def collection_types_options
+    ret = Collection.collection_types.reject{|x| x == 'root'}.map{|k,v| [textify_collection_type(k), k]}
+  end
+
   def collection_item_types_options
     ret = Collection.collection_types.reject{|x| x == 'root'}.map{|k,v| [textify_collection_type(k), k]} + [[t(:work), 'Manifestation'], [t(:paratext), 'paratext'], [t(:placeholder_item), 'placeholder_item']]
   end

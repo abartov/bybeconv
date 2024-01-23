@@ -15,7 +15,7 @@
                 %b= "#{t(:paratext)}: "
                 %span{id: "ci_title_#{ci.id}"}= ci.alt_title
                 %br
-                .editable{id: "editable_#{ci.id}", style: 'margin-bottom: 10px;'}
+                .editable{id: "editable_#{ci.id}"}
                   != MultiMarkdown.new(ci.markdown).to_html
                 .editable_edit{style: 'display:none;'}
                   = form_for ci, url: collection_item_path(ci.id), method: :put, remote: true do |f|
