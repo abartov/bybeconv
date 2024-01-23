@@ -60,7 +60,9 @@ class CollectionItemsController < ApplicationController
     respond_to do |format|
       if @collection_item.update(collection_item_params)
         @element_id = "#editable_#{@collection_item.id}"
-        @html = MultiMarkdown.new(@collection_item.markdown).to_html
+        @html = MultiMarkdown.new(@collection_item.markdown).to_html if params[:collection_item][:markdown].present?
+        @title_id = "#ci_title_#{@collection_item.id}"
+        @title = @collection_item.alt_title
         format.html { redirect_to collection_item_url(@collection_item), notice: "Collection item was successfully updated." }
         format.js
       else

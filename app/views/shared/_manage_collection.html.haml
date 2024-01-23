@@ -48,13 +48,13 @@
       //  $('#generalDlg').dialog('open');
       //}
     });
-    $('body').on('dblclick', '.paratext', function(){
+    $('body').on('dblclick', '.editable', function(){
       $(this).hide();
       $(this).parent().find('.editable_edit').show();
     });
     $('body').on('click', '.cancel_editable_edit', function(){
       $(this).parent().parent().hide();
-      $(this).parent().parent().parent().find('.paratext').show();
+      $(this).parent().parent().parent().find('.editable').show();
     });
     $('#qterm').on('railsAutocomplete.select', function(event, data){
       event.preventDefault();

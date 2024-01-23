@@ -13,9 +13,9 @@
             .draggable-content{'data-collection-id': (ci.item.class == Collection ? ci.item_id : collection.id)}
               - if ci.paratext? # a paratext (with markdown)
                 %b= "#{t(:paratext)}: "
-                = ci.alt_title
+                %span{id: "ci_title_#{ci.id}"}= ci.alt_title
                 %br
-                .paratext{id: "editable_#{ci.id}", style: 'margin-bottom: 10px;'}
+                .editable{id: "editable_#{ci.id}", style: 'margin-bottom: 10px;'}
                   != MultiMarkdown.new(ci.markdown).to_html
                 .editable_edit{style: 'display:none;'}
                   = form_for ci, url: collection_item_path(ci.id), method: :put, remote: true do |f|
@@ -25,12 +25,19 @@
                     = f.submit t(:save), class: 'by-button-v02', style: 'display:inline-block;'
                     .by-button-v02.cancel_editable_edit{style:'width:100px; display:inline-block;'}= t(:cancel)
               - elsif ci.item.nil? # a placeholder (no markdown)
-                %b= "#{t(:placeholder_item)}: "
-                = ci.alt_title
+                .editable{id: "editable_#{ci.id}", style: 'margin-bottom: 10px;'}
+                  %b= "#{t(:placeholder_item)}: "
+                  %span{id: "ci_title_#{ci.id}"}= ci.alt_title
+                .editable_edit{style: 'display:none;'}
+                  = form_for ci, url: collection_item_path(ci.id), method: :put, remote: true do |f|
+                    = f.label :alt_title, t(:title)
+                    = f.text_field :alt_title, class: 'form-control'
+                    = f.submit t(:save), class: 'by-button-v02', style: 'display:inline-block;'
+                    .by-button-v02.cancel_editable_edit{style:'width:100px; display:inline-block;'}= t(:cancel)
               - elsif ci.item.class == Collection
                 .headline-2-v02
                   = textify_collection_type(ci.item.collection_type)+': '
-                  = link_to collection_item_string(ci), default_link_by_class(ci.item.class, ci.item.id)
+                  = collection_item_string(ci)
                   - if ci.item.collection_type == 'volume' && ci.item.publication.present?
                     %br
                     = "#{ci.item.publication.publisher_line} #{ci.item.publication.pub_year}"
