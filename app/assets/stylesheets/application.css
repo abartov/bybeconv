@@ -459,3 +459,26 @@ body.modal-open{
   cursor: pointer;
   margin-bottom: 10px;
 }
+
+.delete-collection {
+  cursor: pointer;
+  position:absolute;
+  top: -50px;
+  left: -50px;
+  z-index: 1000;
+  min-width: 40px;
+}
+.button_series{
+  display: flex;
+  gap: 10px;
+}
+.coll_toggle{
+  width: 50px;
+  margin-top: 10px;
+  justify-content: center;
+}
+.collection_insert_button{
+  width: 50px;
+  justify-content: center;
+  margin-top: 10px;
+}

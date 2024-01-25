@@ -215,6 +215,7 @@ he:
   copy_of: "עותק של "
   curated_text_title: שם קטע הטקסט
   confirm_clone: נא לאשר שיבוט המקראה
+  confirm_delete_collection: נא לאשר מחיקת כל האוסף על פריטיו!
   public_anthologies: מקראות פומביות
   clone_this_anthology: שיבוט מקראה זו
   curated_text: טקסט מלווה
@@ -867,6 +868,7 @@ he:
   confirm_hide: נא לאשר הסתרה
   delete_photo: מחיקת תמונה (לצמיתות!)
   delete_link: הסרת קישורית
+  delete: מחיקה
   anth_text_deletion: מחיקת פריט מהמקראה
   anth_text_deletion_p1: 'פעולה זו תמחק ללא אפשרות חזרה את הפריט:'
   anth_text_deletion_p3: מתוך המקראה הנוכחית

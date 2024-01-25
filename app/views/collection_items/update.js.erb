@@ -3,5 +3,5 @@ var is_html = <%= @html.present? ? 'true' : 'false' %>;
 if (is_html) {
   $('<%= @element_id %>').html("<%= raw j @html %>");
 }
-$('<%= @title_id %>').text("<%= @title %>");
+$('<%= @title_id %>').text("<%= raw j @title %>");
 $('<%= @element_id %>').show();
