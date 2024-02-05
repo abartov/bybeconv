@@ -749,7 +749,7 @@ class AdminController < ApplicationController
     else
       status_to_query = :pending
     end
-    @pending_tags = Tag.joins(:taggings).where(status: status_to_query).distinct.order(:created_at)
+    @pending_tags = Tag.includes(:taggings).where(status: status_to_query).distinct.order(:created_at)
     if params[:tag_id].present?
       @tag_id = params[:tag_id].to_i
       @tag = Tag.find(@tag_id)
