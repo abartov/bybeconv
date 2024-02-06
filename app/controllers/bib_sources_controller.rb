@@ -56,7 +56,7 @@ class BibSourcesController < ApplicationController
       # set up which fields are needed for different source types (according to the Gared gem)
       @options = {
         aleph: { typename: t(:aleph), enable: [:url, :port, :institution, :item_pattern]},
-        primo:{ typename: t(:primo), enable: [:url, :institution, :item_pattern]},
+        primo:{ typename: t(:primo), enable: [:url, :item_pattern, :vid, :scope, :api_key]},
         idea: { typename: t(:idea), enable: [:url, :item_pattern]},
         hebrewbooks: { typename: t(:hebrewbooks), enable: []},
         nli_api: { typename: t(:nli_api), enable: [:url, :api_key]},
@@ -67,6 +67,6 @@ class BibSourcesController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def bib_source_params
-      params.require(:bib_source).permit(:title, :source_type, :institution, :status, :url, :port, :api_key, :comments, :item_pattern)
+      params.require(:bib_source).permit(:title, :source_type, :institution, :status, :url, :port, :api_key, :comments, :item_pattern, :vid, :scope)
     end
 end
