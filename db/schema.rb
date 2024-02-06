@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_12_02_181505) do
+ActiveRecord::Schema.define(version: 2024_02_06_222123) do
 
   create_table "aboutnesses", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -157,6 +157,8 @@ ActiveRecord::Schema.define(version: 2023_12_02_181505) do
     t.integer "status"
     t.string "institution"
     t.string "item_pattern", limit: 2048
+    t.string "vid"
+    t.string "scope"
   end
 
   create_table "blazer_audits", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -224,6 +226,55 @@ ActiveRecord::Schema.define(version: 2023_12_02_181505) do
     t.index ["base_user_id", "manifestation_id"], name: "index_bookmarks_on_base_user_id_and_manifestation_id", unique: true
     t.index ["base_user_id"], name: "index_bookmarks_on_base_user_id"
     t.index ["manifestation_id"], name: "index_bookmarks_on_manifestation_id"
+  end
+
+  create_table "collection_items", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.bigint "collection_id"
+    t.string "alt_title"
+    t.text "context"
+    t.integer "seqno"
+    t.string "item_type"
+    t.bigint "item_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "markdown", limit: 2048
+    t.index ["collection_id"], name: "index_collection_items_on_collection_id"
+    t.index ["item_type", "item_id"], name: "index_collection_items_on_item"
+  end
+
+  create_table "collections", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "title"
+    t.string "sort_title"
+    t.string "subtitle"
+    t.string "issn"
+    t.integer "collection_type"
+    t.string "inception"
+    t.integer "inception_year"
+    t.integer "publication_id"
+    t.integer "toc_id"
+    t.integer "toc_strategy"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["inception_year"], name: "index_collections_on_inception_year"
+    t.index ["publication_id"], name: "index_collections_on_publication_id"
+    t.index ["sort_title"], name: "index_collections_on_sort_title"
+    t.index ["toc_id"], name: "index_collections_on_toc_id"
+  end
+
+  create_table "corporate_bodies", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "name"
+    t.string "alternate_names"
+    t.string "location"
+    t.string "inception"
+    t.integer "inception_year"
+    t.string "dissolution"
+    t.integer "dissolution_year"
+    t.string "wikidata_uri"
+    t.string "viaf_id"
+    t.text "comments"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_corporate_bodies_on_name"
   end
 
   create_table "creations", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -478,6 +529,18 @@ ActiveRecord::Schema.define(version: 2023_12_02_181505) do
     t.index ["user_id"], name: "index_impressions_on_user_id"
   end
 
+  create_table "involved_authorities", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "authority_type"
+    t.bigint "authority_id"
+    t.integer "role"
+    t.string "item_type"
+    t.bigint "item_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["authority_type", "authority_id"], name: "index_involved_authorities_on_authority"
+    t.index ["item_type", "item_id"], name: "index_involved_authorities_on_item"
+  end
+
   create_table "legacy_recommendations", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "from"
     t.string "about"
@@ -716,10 +779,12 @@ ActiveRecord::Schema.define(version: 2023_12_02_181505) do
     t.string "sort_name"
     t.integer "status"
     t.datetime "published_at"
+    t.integer "root_collection_id"
     t.index ["gender"], name: "gender_index"
     t.index ["impressions_count"], name: "index_people_on_impressions_count"
     t.index ["name"], name: "index_people_on_name"
     t.index ["period"], name: "index_people_on_period"
+    t.index ["root_collection_id"], name: "index_people_on_root_collection_id"
     t.index ["sort_name"], name: "index_people_on_sort_name"
     t.index ["status", "published_at"], name: "index_people_on_status_and_published_at"
     t.index ["toc_id"], name: "people_toc_id_fk"
@@ -1003,6 +1068,9 @@ ActiveRecord::Schema.define(version: 2023_12_02_181505) do
   add_foreign_key "base_users", "users"
   add_foreign_key "bookmarks", "base_users"
   add_foreign_key "bookmarks", "manifestations"
+  add_foreign_key "collection_items", "collections"
+  add_foreign_key "collections", "publications"
+  add_foreign_key "collections", "tocs"
   add_foreign_key "dictionary_aliases", "dictionary_entries"
   add_foreign_key "dictionary_entries", "manifestations"
   add_foreign_key "dictionary_links", "dictionary_entries", column: "from_entry_id"

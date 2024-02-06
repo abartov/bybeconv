@@ -329,6 +329,8 @@ he:
   add_url: הוסף את הקישורית
   existing_aboutnesses: נושאים קיימים
   bib_workshop: הסדנה הביבליוגרפית
+  bib_vid: קוד VID
+  bib_scope: קוד scope
   # genre key names are currently hard-coded in ApplicationController
   genres: סוגות
   genres_and_types: סוגות וסוגים

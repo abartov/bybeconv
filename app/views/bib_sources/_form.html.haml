@@ -28,6 +28,12 @@
     = f.label :api_key, t(:api_key)
     = f.text_field :api_key
   .scfield
+    = f.label :vid, t(:bib_vid)
+    = f.text_field :vid
+  .scfield
+    = f.label :scope, t(:bib_scope)
+    = f.text_field :scope
+  .scfield
     = f.label t(:comments)
     = f.text_area :comments
   .scfield
@@ -48,6 +54,8 @@
       $('#bib_source_item_pattern').prop('disabled', options[v].enable.includes('item_pattern') ? false : true);
       $('#bib_source_institution').prop('disabled', options[v].enable.includes('institution') ? false : true);
       $('#bib_source_api_key').prop('disabled', options[v].enable.includes('api_key') ? false : true);
+      $('#bib_source_vid').prop('disabled', options[v].enable.includes('vid') ? false : true);
+      $('#bib_source_scope').prop('disabled', options[v].enable.includes('scope') ? false : true);
     }
   }
 
