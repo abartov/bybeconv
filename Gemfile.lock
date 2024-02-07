@@ -259,7 +259,7 @@ GEM
     fugit (1.8.1)
       et-orbi (~> 1, >= 1.2.7)
       raabro (~> 1.4)
-    gared (0.1.1)
+    gared (0.1.2)
       nokogiri (> 1.8)
       rest-client (~> 2)
       watir (~> 6)
@@ -671,7 +671,7 @@ DEPENDENCIES
   execjs
   factory_bot_rails (~> 6.2.0)
   faker (~> 2.19.0)
-  gared (>= 0.1.1)
+  gared (>= 0.1.2)
   gepub
   grape (= 1.6.0)
   grape-entity (~> 0.10.1)
