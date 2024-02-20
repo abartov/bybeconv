@@ -98,6 +98,20 @@
         }
       });
     });
+    $('.collection_insert_all_siblings').click(function(){
+      var collection_id = $('#collection_id').val();
+      
+      $.ajax({
+        url: '/collection_items',
+        type: 'POST',
+        dataType: "script",
+        data: {collection_item: {collection_id: collection_id, item_type: 'Collection', item_id: collection_id, alt_title: ''}},
+        success: function(data){
+          $('#collection_insert_section').hide();
+          $('html, body').animate({scrollTop: $('#coll_container_'+collection_id).offset().top + $('#coll_container_'+collection_id).outerHeight() - $('header').height() - 180}, 500);
+        }
+      });
+    });
     $('#insert').change(function(){
       if($(this).val() == 'Manifestation' && $('#insert_mid').val() == '') {
         $('.collection_do_insert').css('background-color', 'grey');

@@ -1,9 +1,11 @@
 .container-fluid{style: 'position:relative;', id: "coll_container_#{collection.id}"}
-  .delete-collection
-    = link_to t(:delete), collection_path(collection.id), method: :delete, data: {confirm: t(:confirm_delete_collection)}, class: 'by-button-v02 by-button-secondary-v02'
   - if collection
-    - unless focused
-      .collection_action_btns
+    .collection-btn.delete-collection
+      = link_to t(:delete), collection_path(collection.id), method: :delete, data: {confirm: t(:confirm_delete_collection)}, class: 'by-button-v02 by-button-secondary-v02'
+    .collection_action_btns
+      - unless focused
+        .collection_insert_all_siblings.by-button-v02
+          %b.white= '⇇'
         .collection_focus_button.by-button-v02
           %b= link_to '⤝', collection_manage_path(collection.id), class: 'white'
     .collection.connectable.collapse.show{id: "coll_#{collection.id}", style:'min-height:40px'}
