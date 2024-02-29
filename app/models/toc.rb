@@ -68,7 +68,7 @@ class Toc < ApplicationRecord
     self.cached_toc = toc_links_to_markdown_links(self.toc)
   end
   protected
-  def toc_links_to_markdown_links(buf)
+  def toc_links_to_markdown_links(buf) # TODO: retire this when the last legacy links are done with
     ret = ''
     until buf.empty?
       m = buf.match /&&&\s*פריט: (\S\d+)\s*&&&\s*כותרת: (.*?)\s*&&&/ # tolerate whitespace; this will be edited manually
