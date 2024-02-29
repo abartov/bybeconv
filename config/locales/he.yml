@@ -1303,6 +1303,14 @@ he:
       subject: טופס התנדבות מהאתר
     tag_rejected:
       subject: הצעת התגית שלך לא התקבלה
+    tagging_rejected:
+      subject: הצעת התיוג שלך לא התקבלה
+    tag_approved:
+      subject: התגית שהצעת התקבלה
+    tagging_approved:
+      subject: התיוג שהצעת התקבל
+    tag_merged:
+      subject: התגית שהצעת אוחדה עם תגית קיימת
     warn:
       subject: אזהרה לפני חסימה מפרויקט בן־יהודה
     block:

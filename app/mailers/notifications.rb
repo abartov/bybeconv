@@ -53,7 +53,7 @@ class Notifications < ActionMailer::Base
     mail to: tagging.suggester.email
   end
 
-  def tagging_merged(tagging, original_tagname, suggester)
+  def tagging_merged(tagging, original_tagname, suggester) # is this used?
     @greeting = t(:hello_anon)
     @original_tagname = original_tagname
     @tagging_suggester = suggester.name
