@@ -152,7 +152,8 @@ Rails.application.configure do
   # config.active_record.database_resolver = ActiveRecord::Middleware::DatabaseSelector::Resolver
   # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
 
-  if ENV['CACHE_NONCE'] == 'staging'
+  pwd = `pwd`
+  if pwd =~ /staging/
     routes.default_url_options[:host] = 'staging.benyehuda.org'
   else
     routes.default_url_options[:host] = 'benyehuda.org'
