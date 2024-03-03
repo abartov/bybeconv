@@ -2,7 +2,8 @@
   #header-text.container-fluid
     .backend-top-card
       %div
-        .headline-1-v02= t(:moderate_tags)
+        = link_to tag_moderation_path do
+          .headline-1-v02= t(:moderate_tags)
         - if @dashboards
           .layout-selection
             %div= t(:display)
