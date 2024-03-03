@@ -811,6 +811,7 @@ class AdminController < ApplicationController
         if params[:with_tag].present?
           @with_tag = Tag.find(params[:with_tag].to_i)
         end
+        render layout: false
       else
         head :not_found
       end
