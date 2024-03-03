@@ -108,11 +108,11 @@
                   - taggable_url = person_path(tagging.taggable_id)
                   - taggable_title = tagging.taggable.name
                 = link_to taggable_title, tagging_review_path(tagging.id)
-                = " – "
-                = link_to t(:to_the_item), taggable_url, target: "_blank"
+                /= " – "
+                /= link_to t(:to_the_item), taggable_url, target: "_blank"
               - tagging_count =   tagging.suggester.taggings.count
               %td.tags-for-labels{style: extra_style}
-                %a{href: "#"}= tagging.tag.name
+                = tagging.tag.name
                 %span
                   %a.tags-number{href: "#"}
                     = tagging.tag.approved? ? tagging.tag.taggings_count : t(:new)
@@ -120,7 +120,7 @@
               %td{style: extra_style}
                 %a{href: "#"}= tagging.suggester.name
               %td{style: extra_style}
-                %a{href: "#"}= tagging_count
+                = tagging_count
               - additional_class = ''
               - acceptance_rate = tagging.suggester.tagging_acceptance_rate
               - if tagging_count > 3 && acceptance_rate < 25

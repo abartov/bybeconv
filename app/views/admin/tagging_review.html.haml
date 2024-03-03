@@ -62,6 +62,9 @@
         = link_to tagging_review_path(@prev_tagging_id), class: 'ghost-btn' do
           .right-arrow> 2
           = t(:to_previous_item)
+      - else
+        .ghost-btn
+          = ' '
       - if @next_tagging_id.present?
         = link_to tagging_review_path(@next_tagging_id), class: 'ghost-btn' do
           = t(:to_next_item)
