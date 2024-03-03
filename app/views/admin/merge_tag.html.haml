@@ -31,7 +31,7 @@
                 = hidden_field_tag :id, @tag.id
                 = hidden_field_tag :with_tag, @with_tag.try(:id), id: 'with_tag'
                 .bottom-button-area.left-buttons
-                  %input.by-button-v02#do_merge_tag{type: :submit, value: t(:confirm_merge_tag)}
+                  %input.by-button-v02#do_merge_tag{type: :submit, value: t(:confirm_merge_tag), class: 'disabled'}
                   %button.by-button-v02.by-button-secondary-v02{'data-dismiss'=>'modal'}
                     %div= t(:cancel)
 
@@ -42,10 +42,10 @@
     });
     $('#tag').change(function() {
       if($(this).val() == '' || $(this).val() == null) {
-        $('#submit_tagging').addClass('disabled');
+        $('#do_merge_tag').addClass('disabled');
         $('#tag_id').val('');
       } else {
-        $('#submit_tagging').removeClass('disabled');
+        $('#do_merge_tag').removeClass('disabled');
       }
     });
     $('#tag').keyup(function(){
