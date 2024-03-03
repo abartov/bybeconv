@@ -32,7 +32,7 @@
       .headline-3-v02= t(:actions)
       .tag-actions-buttons-group
         = button_to approve_tagging_path(@tagging), method: :post, class: 'by-button-v02 approve-tagging-btn', form_class: 'approve-tagging-form', data: { confirm: t(:confirm_approve) } do
-          .by-icon-v02> -
+          .by2-icon> N
           = t(:approve_and_next)
       .tag-actions-buttons-group
         = button_to reject_tagging_path(@tagging), method: :post,  class: 'by-button-v02 reject-tagging-btn', form_class: 'reject-tagging-form', data: { confirm: t(:confirm_reject) } do
