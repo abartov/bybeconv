@@ -237,6 +237,7 @@ class ApplicationController < ActionController::Base
       @fresh_works_markdown = ''
     end
   end
+
   def prep_toc
     @toc = @author.toc
     unless @toc.cached_toc.present?
@@ -250,6 +251,14 @@ class ApplicationController < ActionController::Base
     credits = @author.toc.credit_section || ''
     credits.sub!('## הגיהו', "<div class=\"by-horizontal-seperator-light\"></div>\n\n## הגיהו") unless credits =~ /by-horizontal/
     @credits = MultiMarkdown.new(credits).to_html.force_encoding('UTF-8')
+  end
+
+  def generate_toc
+    @works = @author.cached_original_works_by_genre
+    @translations = @author.cached_translations_by_genre
+    @genres_present = []
+    @works.each_key {|k| @genres_present << k unless @works[k].size == 0 || @genres_present.include?(k)}
+    @translations.each_key {|k| @genres_present << k unless @works[k].size == 0 || @genres_present.include?(k)}
   end
 
   def is_spider?

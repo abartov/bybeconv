@@ -76,7 +76,10 @@
         != raw(@html)
     - elsif @tagging.taggable_type == 'Person'
       %h1= t(:taggable_item)+': '+@author.name
-      = render partial: 'authors/toc', locals: {margin: false}
+      - if @author.toc.nil?
+        = render partial: 'authors/generated_toc', locals: {margin: false}
+      - else
+        = render partial: 'authors/toc', locals: {margin: false}
 
 .div{style: 'width:150px;'}
   = button_to t(:back), tag_moderation_path, class: 'by-button-v02', method: 'get'

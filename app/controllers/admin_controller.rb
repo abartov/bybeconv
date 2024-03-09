@@ -794,7 +794,11 @@ class AdminController < ApplicationController
       @prev_tagging_id = Tagging.where(status: :pending).where('created_at < ?', @tagging.created_at).order('created_at desc').limit(1).pluck(:id).first
       if @tagging.taggable_type == 'Person'
         @author = Person.find(@tagging.taggable_id)
-        prep_toc
+        unless @author.toc.nil?
+          prep_toc
+        else
+          generate_toc
+        end
       elsif @tagging.taggable_type == 'Manifestation'
         @m = Manifestation.find(@tagging.taggable_id)
         @html = MultiMarkdown.new(@m.markdown).to_html.force_encoding('UTF-8').gsub(/<figcaption>.*?<\/figcaption>/,'') # remove MMD's automatic figcaptions
