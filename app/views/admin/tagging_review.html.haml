@@ -16,7 +16,13 @@
       %br/
       .headline-3-v02= t(:suggested_by)
       .offered-by
-        %a{href: '#', style: @tagging.suggester.warned? ? 'background-color:orange;' : ''}= @tagging.suggester.name
+        - if @tagging.suggester.warned?
+          %a.pointer.red{href: '#'}
+            %span.by2-icon> P
+            = @tagging.suggester.name
+        - else
+          %a.pointer{href: '#'}
+            = @tagging.suggester.name
         %p
           = t(:tagging_suggestions_count)+':'
           %a{href: "#"}= @suggester_taggings_count

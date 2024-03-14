@@ -68,7 +68,13 @@
         .by-card-content-v02{style: "width: 50%;"}
           .headline-3-v02= t(:suggested_by)
           .offered-by
-            %a{href: "#", style: @tag.creator.warned? ? 'background-color:orange;' : ''}= @tag.creator.name
+            - if @tag.creator.warned?
+              %a.pointer.red{href: '#'}
+                %span.by2-icon> P
+                = @tag.creator.name
+            - else
+              %a.pointer{href: '#'}
+                = @tag.creator.name
             %p
               = t(:suggested_tags)+':'
               - tag_count = Tag.by_user(@tag.creator).count
