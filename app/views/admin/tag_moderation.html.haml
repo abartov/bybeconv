@@ -197,13 +197,6 @@
       $('#generalDlg').load(url);
       $('#generalDlg').modal('show');
     });
-    $('.with-explanation').click(function(e) {
-      e.stopPropagation();
-      var explanation = prompt("#{t(:explain_rejection)}");
-      const sanitized = $("<p>").text(explanation).text(); 
-      var newParam = $("<input name='reason' type='hidden' value='" + sanitized + "' />")
-      $(this.parentElement).append(newParam);
-    });
     $('.reject_tag_form').on('ajax:complete', function(event, data, status, xhr) {
       // response will come underneath of ‘data’ variable
       remove_row(event, '#ff3333');

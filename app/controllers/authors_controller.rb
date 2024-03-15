@@ -607,14 +607,6 @@ class AuthorsController < ApplicationController
 
   protected
 
-  def generate_toc
-    @works = @author.cached_original_works_by_genre
-    @translations = @author.cached_translations_by_genre
-    @genres_present = []
-    @works.each_key {|k| @genres_present << k unless @works[k].size == 0 || @genres_present.include?(k)}
-    @translations.each_key {|k| @genres_present << k unless @works[k].size == 0 || @genres_present.include?(k)}
-  end
-
   def person_params
     params[:person].permit(:affiliation, :comment, :country, :name, :nli_id, :other_designation, :viaf_id, :public_domain, :profile_image, :birthdate, :deathdate, :wikidata_id, :wikipedia_url, :wikipedia_snippet, :blog_category_url, :profile_image, :metadata_approved, :gender, :bib_done, :period, :sort_name, :status)
   end
