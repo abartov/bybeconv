@@ -11,6 +11,7 @@
     = javascript_include_tag "application"
     %script{crossorigin: "anonymous", integrity: "sha384-a9xOd0rz8w0J8zqj1qJic7GPFfyMfoiuDjC9rqXlVOcGO/dmRqzMn34gZYDTel8k", src: "https://cdn.rtlcss.com/bootstrap/v4.2.1/js/bootstrap.min.js"}
     %script{src: "//cdnjs.cloudflare.com/ajax/libs/jquery.matchHeight/0.7.0/jquery.matchHeight-min.js"}
+
     %meta{charset: "utf-8"}/
     %meta{content: "width=device-width, initial-scale=1", name: "viewport"}/
     - if @og_image.nil?
@@ -81,4 +82,13 @@
       }
     });
     $('.flash-backend').delay(5000).fadeOut(1000);
+
+    $('.confirmable').click(function(e) {
+      e.stopPropagation();
+      e.preventDefault();
+      var url = "#{ confirm_with_comment_path(confirm_title: '123', element_id: '456', p1: '789', with_comment: '012')}";
+      url = encodeURI(url.replace('123', $(this).data('confirm-title')).replace('456', $(this).data('element-id')).replace('789', $(this).data('p1')).replace('012', $(this).data('with-comment')));
+      $('#generalDlg').load(url);
+      $('#generalDlg').modal('show');
+    });
   });

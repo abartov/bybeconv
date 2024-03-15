@@ -92,6 +92,7 @@ Bybeconv::Application.routes.draw do
   patch 'admin/static_page/update' => 'admin#static_page_update', as: 'static_page_update'
   get 'admin/static_page/:id' => 'admin#static_page_show', as: 'static_page_show'
   get 'admin/volunteer_profiles_list'
+  get 'admin/confirm_with_comment' => 'admin#confirm_with_comment', as: 'confirm_with_comment'
   get 'admin/volunteer_profile/new' => 'admin#volunteer_profile_new', as: 'volunteer_profile_new'
   post 'admin/volunteer_profile/create' => 'admin#volunteer_profile_create', as: 'volunteer_profile_create'
   get 'admin/volunteer_profile/edit/:id' => 'admin#volunteer_profile_edit', as: 'volunteer_profile_edit'

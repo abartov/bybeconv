@@ -8,7 +8,7 @@ class AdminController < ApplicationController
   # before_action :require_admin, only: [:missing_languages, :missing_genres, :incongruous_copyright, :missing_copyright, :similar_titles]
   autocomplete :manifestation, :title, display_value: :title_and_authors, extra_data: [:expression_id] # TODO: also search alternate titles!
   autocomplete :person, :name, full: true
-  layout false, only: [:merge_tag, :merge_tagging] # popups
+  layout false, only: [:merge_tag, :merge_tagging, :confirm_with_comment] # popups
   layout 'backend', only: [:tag_moderation, :tag_review, :tagging_review] # eventually change to except: [<popups>]
 
   def index
@@ -739,6 +739,7 @@ class AdminController < ApplicationController
     end
   end
 
+
   ########################################################
   # user content moderation
   def tag_moderation
@@ -1069,6 +1070,10 @@ class AdminController < ApplicationController
     else
       head :not_found
     end
+  end
+
+  def confirm_with_comment
+    render partial: 'shared/confirm_with_comment', locals: {p1: params['p1'], with_comment: params['with_comment'], title: params['title'], element_id: params['element_id']}
   end
 
   private
