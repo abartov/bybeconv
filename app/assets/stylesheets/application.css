@@ -475,3 +475,7 @@ body.modal-open{
 #pending-tag {
   min-width: 350px;
 }
+td.label-name{
+	white-space: unset;
+  min-width: 200px;
+}
