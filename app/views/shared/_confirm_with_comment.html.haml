@@ -21,13 +21,24 @@
                 %p.headline-2-v02{:style => "display: inline"}= title
               %p= p1
               - if with_comment == 'true'
-                = text_area_tag :comment, '', class: 'field-v02', id: 'comment'
+                = text_field_tag :comment, '', class: 'field-v02', id: 'comment'
               .bottom-left-buttons
                 %button.by-button-v02.by-button-secondary-v02{'data-dismiss'=>'modal'}
                   %div= t(:cancel)
                 %button.by-button-v02#confirm_with_comment_btn= t(:confirm)
 :javascript
   $(document).ready(function(){
+    if("#{with_comment}" == 'true') {
+      $('#confirm_with_comment_btn').addClass('disabled');
+      $('#comment').on('input', function() {
+        if($(this).val() == '' || $(this).val() == null) {
+          $('#confirm_with_comment_btn').addClass('disabled');
+        } else {
+          $('#confirm_with_comment_btn').removeClass('disabled');
+        }
+      });
+    };
+
     $('#confirm_with_comment_btn').click(function() {
       ele = $('##{element_id}').parent();
       $('.modal').modal('hide');
