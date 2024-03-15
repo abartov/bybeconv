@@ -479,3 +479,6 @@ td.label-name{
 	white-space: unset;
   min-width: 200px;
 }
+.tagging-management-area {
+  width: unset;
+}
