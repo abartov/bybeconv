@@ -1089,6 +1089,7 @@ he:
   recommendation_for: המלצה עבור הקובץ
   back_to_top: לראש הדף
   confirmed_person_as_author: היוצר %{author} אושר כיוצר היצירה הזו.
+  please_confirm_action: נא לאשר את הפעולה
   from: מאת
   from_lang: מ
   content: תוכן
@@ -1144,7 +1145,7 @@ he:
   acceptance_rate: אחוז התקבלות
   existing_tags_for_this_item: "תגיות קיימות לפריט זה:"
   add_recommendation: הוספת המלצה
-  email_footer_html: "בברכה, צוות פרויקט בן־יהודה.\n\nאולי תמצא/י ענין ביומן הרשת של פרויקט בן־יהודה: http://benyehuda.org/blog/ \n\n או בערוץ היו-טיוב של פרויקט בן־יהודה: http://www.youtube.com/user/ProjectBenYehuda/videos?flow=grid&view=0"
+  email_footer_html: "בברכה, צוות פרויקט בן־יהודה.\n\nאולי תמצא/י ענין בדף הפייסבוק של פרויקט בן־יהודה: https://www.facebook.com/projectbenyehuda \n\n או בערוץ היו-טיוב של פרויקט בן־יהודה: https://www.youtube.com/user/ProjectBenYehuda/videos?flow=grid&view=0"
   proof_fixed: "תודה רבה על ההגהה ששלחת עבור היצירה בכתובת:\n\n%{url}\n\nלאחר בדיקה, תיקנו את הטקסט באתר.  נשמח לקבל הצעות הגהה גם בעתיד!"
   proof_fixed_m: "תודה רבה על ההגהה ששלחת עבור היצירה %{title} בכתובת:\n\n%{url}\n\nלאחר בדיקה, תיקנו את הטקסט באתר.  נשמח לקבל הצעות הגהה גם בעתיד!"
   proof_wontfix: "תודה רבה על ההגהה ששלחת עבור היצירה בכתובת:\n\n%{url}\n\nלאחר בדיקה, הגענו למסקנה שאין מדובר בשגיאה, אלא בשימוש לשון בלתי-שכיח, ובכל אופן כך מופיע במקור.  לכן לא נתקן את הטקסט באתר.  נשמח לקבל הצעות הגהה גם בעתיד!"
