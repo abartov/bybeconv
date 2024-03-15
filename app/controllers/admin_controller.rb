@@ -970,16 +970,21 @@ class AdminController < ApplicationController
   def escalate_tag
     require_editor('moderate_tags')
     if session[:tagging_lock]
-      t = Tag.find(params[:id])
-      if t.present?
-        t.escalate!(current_user)
-        next_items = Tag.where(status: :pending).where('created_at > ?', t.created_at).order(:created_at).limit(1)
-        if next_items.first.present?
-          flash[:notice] = t(:tag_escalated)
-          redirect_to url_for(action: :tag_review, id: next_items.first.id)
-        else
-          flash[:notice] = t(:no_more_to_review)
-          redirect_to url_for(action: :tag_moderation)
+      @tag = Tag.find(params[:id])
+      if @tag.present?
+        @tag.escalate!(current_user)
+        respond_to do |format|
+          format.html {
+            next_items = Tag.where(status: :pending).where('created_at > ?', @tag.created_at).order(:created_at).limit(1)
+            if next_items.first.present?
+              flash[:notice] = t(:tag_escalated)
+              redirect_to url_for(action: :tag_review, id: next_items.first.id)
+            else
+              flash[:notice] = t(:no_more_to_review)
+              redirect_to url_for(action: :tag_moderation)
+            end
+          }
+          format.js
         end
       else
         head :not_found
@@ -992,11 +997,12 @@ class AdminController < ApplicationController
   def escalate_tagging
     require_editor('moderate_tags')
     if session[:tagging_lock]
-      t = Tagging.find(params[:id])
-      if t.present?
-        t.escalate!(current_user)
+      @tagging = Tagging.find(params[:id])
+      if @tagging.present?
+        @tagging.escalate!(current_user)
         respond_to do |format|
-          format.html { redirect_to_next_tagging(t, I18n.t(:tagging_escalated)) }
+          format.html { redirect_to_next_tagging(@tagging, I18n.t(:tagging_escalated)) }
+          format.js
           format.json { head :ok }
         end
       else

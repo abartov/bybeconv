@@ -69,10 +69,11 @@
                       = t(:reject_and_explain)
                     %button.ghost-btn.more-actions-btn.tagging-more= t(:additional_actions)
                     .additional_actions{style: 'display:none'}
-                      %p
-                      = button_to escalate_tag_path(tag.id), class: 'by-button-v02', style: 'background-color:lightblue' do
-                        .by-icon-v02> -
-                        = t(:escalate_to_editor)
+                      - unless tag.escalated?
+                        %p
+                        = button_to escalate_tag_path(tag.id), method: :post, remote: true, id: "esc_tag_#{tag.id}", class: 'by-button-v02 escalate-tag-btn', style: 'background-color:lightblue' do
+                          .by-icon-v02> -
+                          = t(:escalate_to_editor)
                       %p
                       = button_to warn_user_path(tag.created_by, return_url: tag_moderation_path), class: 'by-button-v02 confirmable', style: 'background-color:orange', id: 'warn_user_btn', data: { 'confirm-title': t(:confirm_warn), p1: t(:confirm_warn), 'with-comment': false, element_id: 'warn_user_btn' } do
                         .by-icon-v02> -
@@ -167,10 +168,11 @@
                       = t(:change_or_merge)
                     %button.ghost-btn.more-actions-btn.tagging-more= t(:additional_actions)
                     .additional_actions{style: 'display:none'}
-                      %p
-                      = button_to escalate_tagging_path(tagging.id), class: 'by-button-v02', style: 'background-color:lightblue' do
-                        .by-icon-v02> -
-                        = t(:escalate_to_editor)
+                      - unless tagging.escalated?
+                        %p
+                        = button_to escalate_tagging_path(tagging.id), method: :post, remote: true, id: "esc_tagg_#{tagging.id}", class: 'by-button-v02 escalate-tagging-btn', style: 'background-color:lightblue' do
+                          .by-icon-v02> -
+                          = t(:escalate_to_editor)
                       %p
                       = button_to warn_user_path(tagging.suggested_by, return_url: tag_moderation_path), class: 'by-button-v02 confirmable', style: 'background-color:orange', id: 'warn_user2_btn', data: { 'confirm-title': t(:confirm_warn), p1: t(:confirm_warn), 'with-comment': false, element_id: 'warn_user2_btn' } do
                         .by-icon-v02> -
@@ -213,6 +215,7 @@
       // response will come underneath of ‘data’ variable
       remove_row(event, '#a7f7a7');
     });
+
     $('#minmax_taggings').click(function() {
       if($('#layout-top').hasClass('active')) {
         $('#layout-same').click();
