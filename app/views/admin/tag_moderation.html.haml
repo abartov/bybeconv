@@ -93,7 +93,11 @@
           = t(:pending_taggings)
           - if @tag_id.present?
             %span= " – #{t(:for_tag, tag: @tag.name)}"
-        %p= "(#{@pending_taggings.count})"
+            %p
+              = "(#{@pending_taggings.count}) "
+              = link_to t(:cancel_focus_on_this_tag), tag_moderation_path
+          - else
+            %p= "(#{@pending_taggings.count})"
       %a.by-icon-v02.pointer#minmax_taggings /
     .by-card-content-v02#taggings-card
       .management-content
