@@ -1,0 +1,60 @@
+.top-element
+  #content.container-fluid.gateway-small-genre
+    .row
+      .by-card-v02.gateway-header
+        .by-card-content-v02
+          %p.headline-1-v02= "#{@tag.name} - #{t(:tag_page)}"
+          %a{href: search_by_tag_path(@tag.id)}
+            = t(:search_by_tag)
+            %span.left-arrow 1
+    .row
+      .col-12.col-lg-8
+        - if @tagged_authors_count > 0
+          .by-card-v02
+            .by-card-header-v02.header-content
+              .headline-1-v02
+                %a{href: authors_by_tag_path(@tag.id)}= t(:authors_tagged_with_this, tag: @tag.name)
+              .header-number= "(#{@tagged_authors_count})"
+            .by-card-content-v02
+              %div
+                = render partial: 'shared/author_cards', locals: {title: t(:most_popular_authors), authors: @tagged_authors, surprise: false, id_frag: 'pop', skip_title: false}
+              .link-to-all-v02
+                %a{href: authors_by_tag_path(@tag.id)}
+                  %span{style: "font-weight: bold;"}= t(:to_all_authors_tagged, tag: @tag.name)
+                  %span.left-arrow 1
+        .by-card-v02
+          .by-card-header-v02.header-content
+            .headline-1-v02
+              %a{href: search_by_tag_path(@tag.id)}= t(:works_tagged_with_this, tag: @tag.name)
+            .header-number= "(#{@tagged_works_count})"
+          .by-card-content-v02.works-in-project-content
+            .row.top-works
+              .col-sm-12.works-most-read.text-height-works-in-project
+                %p.headline-2-v02= t(:most_popular_works)
+                %ol{style: "margin-bottom: 0;"}
+                  - @popular_tagged_works.each do |work|
+                    %li
+                      %a{href: manifestation_path(work.id)}
+                        = "#{work.title} / #{work.author_string}"
+            .link-to-all-v02
+              %a{href: search_by_tag_path(@tag.id)}
+                %span{style: "font-weight: bold"}= t(:to_all_works_tagged, tag: @tag.name)
+                %span.left-arrow 1
+      .col-12.col-lg-4
+        .by-card-v02.left-side-card-v02
+          .by-card-header-left-v02
+            .headline-1-v02= t(:latest_works_tagged, tag: @tag.name)
+          .by-card-content-v02
+            - @newest_tagged_works.each do |work|
+              %div
+                %a{href: manifestation_path(work.id)}= "#{work.title} / #{work.author_string}"
+            -#.link-to-all-v02
+            -#  %a{href: "#"}
+            -#    %span{style: "font-weight: bold;"} לכל היצירות האחרונות שתויגו ״המאה ה-17״
+            -#    %span.left-arrow 1
+        .by-card-v02.left-side-card-v02.donation-left-card-1a
+          .by-card-content-v02{style: 'color:black'}
+            %p.headline-1-v02= t(:new_tag_teaser)
+            %p= t(:tags_are_a_way)
+            -# TODO: put something behind this link...
+            %button.by-button-v02{href: "#", style: "width: 100%; justify-content: center"}= t(:want_to_tag)

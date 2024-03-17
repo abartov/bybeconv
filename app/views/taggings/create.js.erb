@@ -1,1 +1,3 @@
-$("#taggings").append("<div class=\"card tag-card\"><div class=\"tag-content\"><%= @t.tag.name %></div><div class=\"tag-close\"><%= escape_javascript(link_to '×', @t, remote: true, method: :delete) %><div class=\"tag-wait-confirm\"><i class=\"fa fa-clock-o\"></i></div></div>");
+$(".tags-area").append("<div class=\"tags pending\"><div class=\"by-icon-v02 pending-tag\" title=\"<%= t(:awaiting_approval) %>\">L</div><%= j(link_to @t.tag.name, tag_path(@t.tag.id)) %> <%= escape_javascript(link_to '×', @t, remote: true, method: :delete) %></div>");
+$('#generalDlg').modal('hide');
+$('#no_tags_yet').hide();

@@ -12,7 +12,7 @@
       - person = w.persons[0]
     .breadcrumbs-text
       - unless person.nil?
-        = link_to person.name, author_toc_path(id: person.id)
+        = link_to person.name, person_path(id: person.id)
       - else
         = '?'
     .breadcrumbs-arrow= 1

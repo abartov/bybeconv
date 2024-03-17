@@ -391,7 +391,7 @@ describe ManifestationController do
       context 'when genre is not a lexicon' do
         let(:genre) { :memoir }
 
-        it { is_expected.to redirect_to manifestation_read_path(manifestation) }
+        it { is_expected.to redirect_to manifestation_path(manifestation) }
       end
     end
 
@@ -503,7 +503,7 @@ describe ManifestationController do
     describe '#workshow' do
       subject { get :workshow, params: { id: manifestation.expression.work.id} }
 
-      it { is_expected.to redirect_to manifestation_read_path(manifestation) }
+      it { is_expected.to redirect_to manifestation_path(manifestation) }
     end
   end
 end

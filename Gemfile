@@ -9,10 +9,10 @@ gem 'mysql2' # Rails 5.2 needs a newer one # , '~> 0.3.11'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-twitter'
 gem 'rufus-scheduler' # scheduler
+gem 'damerau-levenshtein' # string distance
 
 gem 'chewy' # for ElasticSearch 7.x
 gem 'active_data' # for *Search classes in Chewy
-
 gem "jquery-slick-rails" # for carousel slider
 gem 'rails-jquery-autocomplete', '>= 1.0.5' # for auto-completion
 gem 'property_sets', '>= 3.7.1' # for key/value properties per model; version 3.7.1 supports Ruby 3.0 per https://github.com/zendesk/property_sets/issues/85
@@ -102,8 +102,6 @@ gem 'rack-attack' # control misbehaving clients
 group :production do
   gem 'newrelic_rpm' # performance monitoring
   gem 'dalli'
-#  gem 'thin', git: 'https://github.com/macournoyer/thin.git' # 1.8.1 still doesn't support Ruby 3.2
-#  gem 'capistrano-thin', '~> 2.0.0'
   gem 'puma-daemon', require: false
 end
 
@@ -112,7 +110,6 @@ group :test do
   gem 'simplecov', require: false
   gem 'faker', '~> 2.19.0'
   gem 'rails-controller-testing', '~> 1.0.5'
-#  gem 'thin'
 end
 
 group :development do
@@ -121,6 +118,7 @@ group :development do
   gem "capistrano-rails", "~> 1.4", require: false
   gem 'rvm1-capistrano3', require: false
   gem 'capistrano-rvm'
+  gem 'capistrano3-puma'
   gem 'listen'
   gem 'derailed_benchmarks'
 #  gem 'bullet' # for suggestions to add/remove eager loading
@@ -139,3 +137,5 @@ group :test, :development do
   gem 'spring-commands-rspec'
   gem 'debug'
 end
+
+gem "sidekiq", "~> 7.2"

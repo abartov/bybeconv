@@ -1,0 +1,51 @@
+.modal-dialog
+  .modal-content
+    .container-fluid
+      .modal-header
+        .popup-top
+          %div{:style => "display:flex;padding:15px;margin: 0"}
+            .top-contact-side
+              %button.btn-small-outline-v02{'data-dismiss'=>'modal'}
+                .btn-text-v02
+                  %span.right-arrow 2
+                  %span= t(:back)
+            .top-contact-center
+              .headline-2-v02= title
+            .top-contact-side
+      .modal-body#volunteer_dlg_content
+        .by-popup-v02.narrow-popup
+          %div
+            .card-with-button
+              .flex-container.headline-area-with-large-icon
+                .large-icon-near-headline.icon-bywarning
+                %p.headline-2-v02{:style => "display: inline"}= title
+              %p= p1
+              - if with_comment == 'true'
+                = text_field_tag :comment, '', class: 'field-v02', id: 'comment'
+              .bottom-left-buttons
+                %button.by-button-v02.by-button-secondary-v02{'data-dismiss'=>'modal'}
+                  %div= t(:cancel)
+                %button.by-button-v02#confirm_with_comment_btn= t(:confirm)
+:javascript
+  $(document).ready(function(){
+    if("#{with_comment}" == 'true') {
+      $('#confirm_with_comment_btn').addClass('disabled');
+      $('#comment').on('input', function() {
+        if($(this).val() == '' || $(this).val() == null) {
+          $('#confirm_with_comment_btn').addClass('disabled');
+        } else {
+          $('#confirm_with_comment_btn').removeClass('disabled');
+        }
+      });
+    };
+
+    $('#confirm_with_comment_btn').click(function() {
+      ele = $('##{element_id}').parent();
+      $('.modal').modal('hide');
+      ele.attr('data-confirmed', 'true');
+      const sanitized = $("<p>").text($('#comment').val()).text(); 
+      var newParam = $("<input name='reason' type='hidden' value='" + sanitized + "' />")
+      ele.append(newParam);
+      ele.submit();
+    });
+  });

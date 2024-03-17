@@ -13,11 +13,11 @@
         %td= link_to author.name, authors_edit_toc_path(author)
         %td
           - @tocs_missing_links[au_id][:orig].each do |m|
-            = link_to m.title, manifestation_read_path(m)
+            = link_to m.title, manifestation_path(m)
             = '; '
         %td
           - @tocs_missing_links[au_id][:xlat].each do |m|
-            = link_to m.title_and_authors, manifestation_read_path(m)
+            = link_to m.title_and_authors, manifestation_path(m)
             = '; '
   %hr
   %h2= t(:tocs_linking_to_missing_items)

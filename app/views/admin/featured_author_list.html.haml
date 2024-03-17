@@ -17,7 +17,7 @@
       %tr
         %td= link_to v.title, url_for(action: :featured_author_show, id: v.id)
         %td!= v.featured_list
-        %td= v.person.nil? ? t(:none) : link_to(v.person.name, author_toc_path(v.person))
+        %td= v.person.nil? ? t(:none) : link_to(v.person.name, person_path(v.person))
         %td
           = link_to t(:edit), url_for(action: :featured_author_show, id: v.id)
           = link_to t(:destroy), url_for(action: :featured_author_destroy, id: v.id), :data => { :confirm => t(:are_you_sure) }

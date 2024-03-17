@@ -137,11 +137,29 @@
                   -#    %span{:style => "font-weight: bold"} הצגת זרקור נוסף
                   .card-bottom
                     - unless featured.manifestation.nil?
-                      %a{ href: manifestation_read_path(id: featured.manifestation.id)}
+                      %a{ href: manifestation_path(id: featured.manifestation.id)}
                         %button.by-button-v02.link-to-all-v02= t(:to_the_work_in_the_site)
                     - unless featured.external_link.nil? or featured.external_link.empty?
                       %a{ href: featured.external_link, target: '_blank'}
                         %button.by-button-v02.link-to-all-v02= t(:to_external_content)
+          -# Tags
+          - if @taggings.count > 0 || current_user
+            .by-card-v02.left-side-card-v02
+              .by-card-header-left-v02
+                %span.headline-1-v02= t(:tags)
+                .new-tag-teaser= t(:excited_new)
+                .new-tag-teaser-text= t(:new_tag_teaser)
+              .by-card-content-v02.card-with-bottom-links
+                .inline-block#taggings
+                  = render partial: 'shared/taggings', locals: {taggings: @taggings, taggable: @author}
+                - unless current_user.nil?
+                  = hidden_field_tag :accepted_tag_policy, @bu.present? ? @bu.get_preference(:accepted_tag_policy) : 'false', id: 'accepted_tag_policy'
+                  #add-tag.card-bottom
+                    .link-to-all-v02
+                      %button.by-button-v02#initiate-add-tag
+                        .metadata-link-icon.small-icon.pointer &amp;
+                        %div= t(:suggest_new_tag)
+          
           = render partial: 'aboutnesses', cached: true
           - if @external_links.count > 0
             - cache "au_#{@author.id}_links", expires_in: 24.hours do
@@ -237,6 +255,15 @@
         });
       }
     }
+    $('#initiate-add-tag').click(function() {
+      if($('#accepted_tag_policy').val() != 'false') {
+        $('#generalDlg').load("#{ add_tagging_popup_path(taggable_id: @author.id, taggable_type: 'Person') }");
+        $('#generalDlg').modal('show');
+      }
+      else
+        $('#tagPolicyDlg').modal({  backdrop: 'static', keyboard: false, show: true});
+    });
+
     $('#reset_multiselect').click(function() {
       $('.mainlist input[type=checkbox]').prop('checked', false);
       $('#select-all').prop('checked', false);

@@ -1,5 +1,6 @@
 include BybeUtils
 Bybeconv::Application.routes.draw do
+  resources :user_blocks
   get 'crowd/index'
   get 'crowd/populate_edition' => 'crowd#populate_edition', as: 'crowd_populate_edition'
   get 'crowd/populate_edition/:id' => 'crowd#populate_edition', as: 'crowd_populate_edition_id'
@@ -20,7 +21,6 @@ Bybeconv::Application.routes.draw do
   match "anthologies/seq/:id" => 'anthologies#seq', as: 'anthology_seq', via: [:get, :post]
   match "anthologies/clone/:id" => 'anthologies#clone', as: 'anthology_clone', via: [:get]
   resources :news_items
-  resources :mooses
   resources :bib_sources
   resources :holdings
   resources :publications
@@ -64,6 +64,24 @@ Bybeconv::Application.routes.draw do
   get 'admin/translated_from_multiple_languages'
   get 'admin/raw_tocs'
   get 'admin/my_convs/:id' => 'admin#my_convs', as: 'my_convs'
+  get 'admin/tag_moderation' => 'admin#tag_moderation', as: 'tag_moderation'
+  get 'admin/tag_review/:id' => 'admin#tag_review', as: 'tag_review'
+  get 'admin/tagging_review/:id' => 'admin#tagging_review', as: 'tagging_review'
+  post 'admin/approve_tag/:id' => 'admin#approve_tag', as: 'approve_tag'
+  post 'admin/approve_tag_and_next/:id' => 'admin#approve_tag_and_next', as: 'approve_tag_and_next'
+  post 'admin/reject_tag/:id' => 'admin#reject_tag', as: 'reject_tag'
+  post 'admin/reject_tag_and_next/:id' => 'admin#reject_tag_and_next', as: 'reject_tag_and_next'
+  post 'admin/approve_tagging/:id' => 'admin#approve_tagging', as: 'approve_tagging'
+  post 'admin/reject_tagging/:id' => 'admin#reject_tagging', as: 'reject_tagging'
+  post 'admin/escalate_tag/:id' => 'admin#escalate_tag', as: 'escalate_tag'
+  post 'admin/escalate_tagging/:id' => 'admin#escalate_tagging', as: 'escalate_tagging'
+  get 'admin/merge_tag/:id' => 'admin#merge_tag', as: 'merge_tag'
+  post 'admin/merge_tag' => 'admin#do_merge_tag', as: 'do_merge_tag'
+  get 'admin/merge_tagging/:id' => 'admin#merge_tagging', as: 'merge_tagging'
+  post 'admin/merge_tagging' => 'admin#do_merge_tagging', as: 'do_merge_tagging'
+  post 'admin/warn_user/:id' => 'admin#warn_user', as: 'warn_user'
+  post 'admin/block_user/:id' => 'admin#block_user', as: 'block_user'
+  post 'admin/unblock_user/:id' => 'admin#unblock_user', as: 'unblock_user'
   get 'admin/conversion_verification'
   get 'admin/assign_conversion_verification' => 'admin#assign_conversion_verification', as: 'assign_conversion_verification'
   get 'admin/assign_proofs' => 'admin#assign_proofs', as: 'assign_proofs'
@@ -74,6 +92,7 @@ Bybeconv::Application.routes.draw do
   patch 'admin/static_page/update' => 'admin#static_page_update', as: 'static_page_update'
   get 'admin/static_page/:id' => 'admin#static_page_show', as: 'static_page_show'
   get 'admin/volunteer_profiles_list'
+  get 'admin/confirm_with_comment' => 'admin#confirm_with_comment', as: 'confirm_with_comment'
   get 'admin/volunteer_profile/new' => 'admin#volunteer_profile_new', as: 'volunteer_profile_new'
   post 'admin/volunteer_profile/create' => 'admin#volunteer_profile_create', as: 'volunteer_profile_create'
   get 'admin/volunteer_profile/edit/:id' => 'admin#volunteer_profile_edit', as: 'volunteer_profile_edit'
@@ -134,7 +153,8 @@ Bybeconv::Application.routes.draw do
   match 'author/:id/edit_toc' => 'authors#edit_toc', as: 'authors_edit_toc', via: [:get, :post]
   match 'author/:id/to_manual_toc' => 'authors#to_manual_toc', as: 'authors_to_manual_toc', via: [:get, :post]
   match 'author/:id/create_toc' => 'authors#create_toc', as: 'authors_create_toc', via: [:get]
-  match 'author/:id' => 'authors#toc', as: 'author_toc', via: [:get, :post]
+  match 'author/:id' => 'authors#toc', as: 'person', via: [:get, :post]
+
   match 'author/publish/:id' => 'authors#publish', as: 'author_publish', via: [:get, :post]
   get 'author/:id/delete_photo' => 'authors#delete_photo', as: 'delete_author_photo'
   get 'author/:id/whatsnew' => 'authors#whatsnew_popup', as: 'author_whatsnew_popup'
@@ -142,8 +162,10 @@ Bybeconv::Application.routes.draw do
   get 'welcome/:id/featured_popup' => 'welcome#featured_popup', as: 'featured_content_popup'
   get 'welcome/:id/featured_author' => 'welcome#featured_author_popup', as: 'featured_author_popup'
   get 'author/:id/latest' => 'authors#latest_popup', as: 'author_latest_popup'
+  get 'add_tagging/:taggable_type/:taggable_id' => 'taggings#add_tagging_popup', as: 'add_tagging_popup'
+  get 'pending_taggings/:tag_id' => 'taggings#pending_taggings_popup', as: 'pending_taggings_popup'
   get '/page/:tag' => 'static_pages#view', as: 'static_pages_by_tag', via: [:get]
-  get "read/:id" => 'manifestation#read', as: 'manifestation_read'
+  get "read/:id" => 'manifestation#read', as: 'manifestation'
   match 'dict/:id' => 'manifestation#dict', as: 'dict_browse', via: [:get, :post]
   get 'dict/:id/:entry' => 'manifestation#dict_entry', as: 'dict_entry'
   get "read/:id/read" => 'manifestation#readmode', as: 'manifestation_readmode'
@@ -155,7 +177,9 @@ Bybeconv::Application.routes.draw do
   match 'period/:period' => 'manifestation#period', as: 'period', via: [:get, :post]
   match 'translations' => 'manifestation#translations', as: 'translations', via: [:get, :post]
   get 'whatsnew' => 'manifestation#whatsnew', as: 'whatsnew'
-  match 'tag/:id' => 'manifestation#by_tag', as: 'tag', via: [:get, :post]
+  match 'tag/:id/works' => 'manifestation#by_tag', as: 'search_by_tag', via: [:get, :post]
+  match 'tag/:id/authors' => 'authors#by_tag', as: 'authors_by_tag', via: [:get, :post]
+  match 'tag/:id' => 'taggings#tag_portal', as: 'tag', via: :get
   match "download/:id" => 'manifestation#download', as: 'manifestation_download', via: [:get, :post]
   match "print/:id" => 'manifestation#print', as: 'manifestation_print', via: [:get, :post]
   get "manifestation/show/:id" => 'manifestation#show', as: 'manifestation_show'
@@ -180,9 +204,11 @@ Bybeconv::Application.routes.draw do
   get 'manifestation/autocomplete_works_by_author'
   get 'work/show/:id' => 'manifestation#workshow', as: 'work_show' # temporary, until we have a works controller
   get 'manifestation/add_aboutnesses/:id' => 'manifestation#add_aboutnesses'
-
   resources :api_keys, except: :show
-  get "taggings/render_tags"
+  get "taggings/render_tags", as: 'render_tags'
+  match "tag_suggest" => 'taggings#suggest', via: :get, as: 'tag_suggest'
+  match "tags" => 'taggings#list_tags', via: [:get, :post]
+  get 'tags/listall' => 'taggings#listall_tags', as: 'tags_listall'
   resources :taggings
   resources :aboutnesses
   resources :preferences, only: [:update]

@@ -16,9 +16,9 @@
             - unless mhash[:id] == @m.id # avoid linking to same work, in case it's one of the most popular
               %p
                 %li
-                  = link_to mhash[:title], manifestation_read_path(mhash[:id])
+                  = link_to mhash[:title], manifestation_path(mhash[:id])
                   = " (#{textify_genre(mhash[:genre])})"
         - if translation && role == :translator
-          %p{style:'margin:3.2rem 0 0 0'}= link_to t(:to_other_translations_of_author, author: author.name), author_toc_path(author.id, genre: 'translations')
-        %p{style:'margin:3.2rem 0 0 0'}= link_to t(:to_the_works_in_the_genre_of_this_author, author: author.name, genre: textify_genre(@w.genre)), author_toc_path(author.id, genre: @w.genre)
-        %p{style:'margin:1.2rem 0 0 0'}= link_to t(:to_all_the_works_of_this_author, author: author.name), author_toc_path(author.id)
+          %p{style:'margin:3.2rem 0 0 0'}= link_to t(:to_other_translations_of_author, author: author.name), person_path(author.id, genre: 'translations')
+        %p{style:'margin:3.2rem 0 0 0'}= link_to t(:to_the_works_in_the_genre_of_this_author, author: author.name, genre: textify_genre(@w.genre)), person_path(author.id, genre: @w.genre)
+        %p{style:'margin:1.2rem 0 0 0'}= link_to t(:to_all_the_works_of_this_author, author: author.name), person_path(author.id)

@@ -189,4 +189,14 @@ module ApplicationHelper
     u.query = URI.encode_www_form(pp.to_a)
     u.to_s
   end
+  def taggee_from_taggable(taggable)
+    case taggable.class.to_s
+    when 'Manifestation'
+      t(:this_work)
+    when 'Person'
+      taggable.gender == 'female' ? t(:this_author_f) : t(:this_author_m)
+    else
+      t(:this_item)
+    end
+  end
 end

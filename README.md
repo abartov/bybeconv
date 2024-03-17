@@ -12,6 +12,10 @@ External (i.e. hosting system) dependencies:
 * libpcap-dev for net-dns2
 * libmagickwand-dev for RMagick
 * libmysqlclient-dev for mysql2
+* sidekiq for scheduled jobs [using systemd](https://github.com/sidekiq/sidekiq/wiki/Deployment)
+* redis as [backend for sidekiq](https://github.com/sidekiq/sidekiq/wiki/Using-Redis)
+* memcached for caching
+
 License
 -------
 

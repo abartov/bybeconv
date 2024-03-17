@@ -1,8 +1,15 @@
+TAGGING_LOCK = '/tmp/tagging.lock'
+TAGGING_LOCK_TIMEOUT = 15 # 15 minutes
+PROGRESS_SERIES = [5, 10, 25, 50, 75, 100, 150, 200, 300, 400, 500, 750, 1000, 1250, 1500, 2000, 3000, 4000, 5000, 10000]
+
 class AdminController < ApplicationController
   before_action :require_editor
+  before_action :obtain_tagging_lock, only: [:approve_tag, :approve_tag_and_next, :reject_tag, :escalate_tag, :reject_tag_and_next, :merge_tag, :merge_tagging, :approve_tagging, :reject_tagging, :escalate_tagging, :unapprove_tagging, :unreject_tagging, :tag_moderation, :tag_review]
   # before_action :require_admin, only: [:missing_languages, :missing_genres, :incongruous_copyright, :missing_copyright, :similar_titles]
   autocomplete :manifestation, :title, display_value: :title_and_authors, extra_data: [:expression_id] # TODO: also search alternate titles!
   autocomplete :person, :name, full: true
+  layout false, only: [:merge_tag, :merge_tagging, :confirm_with_comment] # popups
+  layout 'backend', only: [:tag_moderation, :tag_review, :tagging_review] # eventually change to except: [<popups>]
 
   def index
     if current_user && current_user.editor?
@@ -12,6 +19,10 @@ class AdminController < ApplicationController
       end
       if current_user.has_bit?('edit_catalog')
         @current_uploads = HtmlFile.where(assignee: current_user, status: 'Uploaded')
+      end
+      if current_user.has_bit?('moderate_tags')
+        @pending_tags = Tag.where(status: :pending).count
+        @pending_taggings = Tagging.where(status: :pending).count
       end
       @open_recommendations = LegacyRecommendation.where(status: 'new').count.to_s
       @conv_todo = Manifestation.where(conversion_verified: false, status: Manifestation.statuses[:published]).count
@@ -731,6 +742,349 @@ class AdminController < ApplicationController
     end
   end
 
+
+  ########################################################
+  # user content moderation
+  def tag_moderation
+    require_editor('moderate_tags')
+    @header_partial = 'tagmod_top'
+    if current_user.admin?
+      status_to_query = [:pending, :escalated]
+    else
+      status_to_query = :pending
+    end
+    @pending_tags = Tag.includes(:taggings).where(status: status_to_query).distinct.order(:created_at)
+    if params[:tag_id].present?
+      @tag_id = params[:tag_id].to_i
+      @tag = Tag.find(@tag_id)
+      @pending_taggings = Tagging.joins(:tag).where(status: status_to_query, tag_id: @tag_id).where(tag: {status: :approved}).distinct.order(:created_at)
+    else
+      @pending_taggings = Tagging.joins(:tag).where(status: status_to_query).where(tag: {status: :approved}).distinct.order(:created_at)
+    end
+    @page_title = t(:moderate_tags)
+    @similar_tags = ListItem.where(listkey: 'tag_similarity').pluck(:item_id, :extra).to_h
+    calculate_editor_tagging_stats
+    @dashboards = true
+  end
+
+  def tag_review
+    require_editor('moderate_tags')
+    @header_partial = 'tagmod_top'
+    @tag = Tag.find(params[:id])
+    if @tag.nil?
+      flash[:error] = I18n.t(:no_such_item)
+      redirect_to url_for(action: :tag_moderation)
+    else
+      stags = ListItem.where(listkey: 'tag_similarity', item: @tag).pluck(:extra).map{|x| x.split(':')}.sort_by{|score, tag| score}.reverse
+      @similar_tags = Tag.find(stags.map{|x| x[1]})
+      calculate_editor_tagging_stats
+      @next_tag_id = Tag.where(status: :pending).where('created_at > ?', @tag.created_at).order(:created_at).limit(1).pluck(:id).first
+      @prev_tag_id = Tag.where(status: :pending).where('created_at < ?', @tag.created_at).order('created_at desc').limit(1).pluck(:id).first
+    end
+  end
+
+  def tagging_review
+    require_editor('moderate_tags')
+    @header_partial = 'tagmod_top'
+    @tagging = Tagging.find(params[:id])
+    if @tagging.nil?
+      flash[:error] = I18n.t(:no_such_item)
+      redirect_to url_for(action: :tag_moderation)
+    else
+      @suggester_taggings_count = @tagging.suggester.taggings.count
+      @suggester_acceptance_rate = @tagging.suggester.taggings.where(status: :approved).count.to_f / @suggester_taggings_count
+      calculate_editor_tagging_stats
+      @next_tagging_id = Tagging.where(status: :pending).where('created_at > ?', @tagging.created_at).order(:created_at).limit(1).pluck(:id).first
+      @prev_tagging_id = Tagging.where(status: :pending).where('created_at < ?', @tagging.created_at).order('created_at desc').limit(1).pluck(:id).first
+      if @tagging.taggable_type == 'Person'
+        @author = Person.find(@tagging.taggable_id)
+        unless @author.toc.nil?
+          prep_toc
+        else
+          generate_toc
+        end
+      elsif @tagging.taggable_type == 'Manifestation'
+        @m = Manifestation.find(@tagging.taggable_id)
+        @html = MultiMarkdown.new(@m.markdown).to_html.force_encoding('UTF-8').gsub(/<figcaption>.*?<\/figcaption>/,'') # remove MMD's automatic figcaptions
+      end
+    end
+  end
+
+  def merge_tag
+    require_editor('moderate_tags')
+    if session[:tagging_lock]
+      t = Tag.find(params[:id])
+      if t.present?
+        @tag = t
+        if params[:with_tag].present?
+          @with_tag = Tag.find(params[:with_tag].to_i)
+        end
+        render layout: false
+      else
+        head :not_found
+      end
+    else
+      head :forbidden
+    end
+  end
+
+  def do_merge_tag
+    require_editor('moderate_tags')
+    if session[:tagging_lock]
+      t = Tag.find(params[:id])
+      if t.present?
+        with_tag = Tag.find(params[:with_tag].to_i)
+        if with_tag.present?
+          t.merge_into(with_tag)
+          Notifications.tag_merged(t.name, t.creator, with_tag).deliver unless t.creator.blocked? # don't send email if user is blocked
+          flash[:notice] = t(:tag_merged)
+        else
+          flash[:error] = t(:no_such_item)
+        end
+      else
+        flash[:error] = t(:no_such_item)
+      end
+    else
+      flash[:error] = t(:tagging_system_locked)
+    end
+    redirect_to url_for(action: :tag_moderation)
+  end
+
+  def merge_tagging
+    require_editor('moderate_tags')
+    if session[:tagging_lock]
+      t = Tagging.find(params[:id])
+      if t.present?
+        @tagging = t
+        render layout: false
+      else
+        head :not_found
+      end
+    else
+      head :forbidden
+    end
+  end
+
+  def do_merge_tagging
+    require_editor('moderate_tags')
+    if session[:tagging_lock]
+      t = Tagging.find(params[:id])
+      if t.present?
+        orig_name = t.tag.name
+        with_tag = Tag.find(params[:with_tag].to_i)
+        if with_tag.present?
+          t.update(tag_id: with_tag.id, status: :approved)
+          Notifications.tag_merged(t, orig_name, t.suggester).deliver unless t.suggester.blocked? # don't send email if user is blocked
+          flash[:notice] = t(:tagging_merged)
+        else
+          flash[:error] = t(:no_such_item)
+        end
+      else
+        flash[:error] = t(:no_such_item)
+      end
+    else
+      flash[:error] = t(:tagging_system_locked)
+    end
+    redirect_to url_for(action: :tag_moderation)
+  end
+  
+  def approve_tag # approve tag and proceed to review taggings
+    require_editor('moderate_tags')
+    if session[:tagging_lock]
+      t = Tag.find(params[:id])
+      if t.present?
+        t.approve!(current_user)
+        Notifications.tag_approved(t).deliver unless t.creator.blocked? # don't send email if user is blocked
+        flash[:notice] = t(:tag_approved)
+        redirect_to url_for(action: :tag_moderation, tag_id: t.id)
+      else
+        head :not_found
+      end
+    else
+      head :forbidden
+    end
+  end
+
+  def approve_tag_and_next # to be called from tag review page (non-AJAX)
+    require_editor('moderate_tags')
+    if session[:tagging_lock]
+      t = Tag.find(params[:id])
+      if t.present?
+        t.approve!(current_user)
+        Notifications.tag_approved(t).deliver unless t.creator.blocked? # don't send email if user is blocked
+        next_items = Tag.where(status: :pending).where('created_at > ?', t.created_at).order(:created_at).limit(1)
+        if next_items.first.present?
+          redirect_to url_for(action: :tag_review, id: next_items.first.id)
+        else
+          flash[:notice] = t(:no_more_to_review)
+          redirect_to url_for(action: :tag_moderation)
+        end
+      else
+        head :not_found
+      end
+    else
+      head :forbidden
+    end
+  end
+
+  def reject_tag_and_next
+    require_editor('moderate_tags')
+    if session[:tagging_lock]
+      t = Tag.find(params[:id])
+      if t.present?
+        t.reject!(current_user)
+        #if params[:reason].present?
+          Notifications.tag_rejected(t, params[:reason]).deliver unless t.creator.blocked? # don't send email if user is already blocked
+        #end
+        next_items = Tag.where(status: :pending).where('created_at > ?', t.created_at).order(:created_at).limit(1)
+        if next_items.first.present?
+          flash[:notice] = t(:tag_rejected)
+          redirect_to url_for(action: :tag_review, id: next_items.first.id)
+        else
+          flash[:notice] = t(:no_more_to_review)
+          redirect_to url_for(action: :tag_moderation)
+        end
+      else
+        head :not_found
+      end
+    else
+      head :forbidden
+    end
+  end
+  
+  def reject_tag
+    require_editor('moderate_tags')
+    if session[:tagging_lock]
+      t = Tag.find(params[:id])
+      if t.present?
+        t.reject!(current_user)
+        #if params[:reason].present?
+          Notifications.tag_rejected(t, params[:reason]).deliver unless t.creator.blocked? # don't send email if user is already blocked
+        #end
+        return render json: { tag_id: t.id, tag_name: t.name }
+      else
+        head :not_found
+      end
+    else
+      head :forbidden
+    end
+  end
+
+  def escalate_tag
+    require_editor('moderate_tags')
+    if session[:tagging_lock]
+      @tag = Tag.find(params[:id])
+      if @tag.present?
+        @tag.escalate!(current_user)
+        respond_to do |format|
+          format.html {
+            next_items = Tag.where(status: :pending).where('created_at > ?', @tag.created_at).order(:created_at).limit(1)
+            if next_items.first.present?
+              flash[:notice] = t(:tag_escalated)
+              redirect_to url_for(action: :tag_review, id: next_items.first.id)
+            else
+              flash[:notice] = t(:no_more_to_review)
+              redirect_to url_for(action: :tag_moderation)
+            end
+          }
+          format.js
+        end
+      else
+        head :not_found
+      end
+    else
+      head :forbidden
+    end
+  end
+
+  def escalate_tagging
+    require_editor('moderate_tags')
+    if session[:tagging_lock]
+      @tagging = Tagging.find(params[:id])
+      if @tagging.present?
+        @tagging.escalate!(current_user)
+        respond_to do |format|
+          format.html { redirect_to_next_tagging(@tagging, I18n.t(:tagging_escalated)) }
+          format.js
+          format.json { head :ok }
+        end
+      else
+        head :not_found
+      end
+    else
+      head :forbidden
+    end
+  end
+
+  def approve_tagging
+    require_editor('moderate_tags')
+    if session[:tagging_lock]
+      t = Tagging.find(params[:id])
+      if t.present?
+        t.approve!(current_user)
+        Notifications.tagging_approved(t).deliver unless t.suggester.blocked? # don't send email if user is blocked
+        respond_to do |format|
+          format.html { redirect_to_next_tagging(t, I18n.t(:tagging_approved)) }
+          format.json { head :ok }
+        end
+      else
+        head :not_found
+      end
+    else
+      head :forbidden
+    end
+  end
+  
+  def reject_tagging
+    require_editor('moderate_tags')
+    if session[:tagging_lock]
+      t = Tagging.find(params[:id])
+      if t.present?
+        t.reject!(current_user)
+        Notifications.tagging_rejected(t, params[:explanation]).deliver unless t.suggester.blocked? # don't send email if user is blocked
+        respond_to do |format|
+          format.html { redirect_to_next_tagging(t, I18n.t(:tagging_rejected)) }
+          format.json { head :ok }
+        end
+      else
+        head :not_found
+      end
+    else
+      head :forbidden
+    end
+  end
+
+  def warn_user
+    require_editor('moderate_tags') # TODO: update to a more generic editor bit
+    u = User.find(params[:id])
+    if u.present?
+      u.warn!(params[:reason])
+      flash[:notice] = t(:user_warned)
+      url = params[:return_url] || url_for(action: :tag_moderation)
+      redirect_to url
+    else
+      head :not_found
+    end
+  end
+
+  def block_user
+    require_editor('moderate_tags') # TODO: update to a more generic editor bit
+    u = User.find(params[:id])
+    if u.present?
+      u.block!('tags', current_user, params[:reason])
+
+      flash[:notice] = t(:user_blocked)
+      url = params[:return_url] || url_for(action: :tag_moderation)
+      redirect_to url
+    else
+      head :not_found
+    end
+  end
+
+  def confirm_with_comment
+    render partial: 'shared/confirm_with_comment', locals: {p1: params['p1'], with_comment: params['with_comment'], title: params['title'], element_id: params['element_id']}
+  end
+
   private
 
   def vp_params
@@ -748,4 +1102,40 @@ class AdminController < ApplicationController
   def sn_params
     params[:sitenotice].permit(:body, :status)
   end
+  def obtain_tagging_lock
+    if File.exist?(TAGGING_LOCK)
+      mtime = File.mtime(TAGGING_LOCK)
+      if mtime.to_i < TAGGING_LOCK_TIMEOUT.minutes.ago.to_i
+        File.open(TAGGING_LOCK, 'w') {|f| f.write("#{current_user.id}")}
+        session[:tagging_lock] = true
+      else
+        lock_owner = File.open(TAGGING_LOCK).read.to_i
+        if lock_owner == current_user.id
+          FileUtils.touch(TAGGING_LOCK) # refresh the lock
+          session[:tagging_lock] = true
+        else
+          @tagging_lock_owner = User.find(lock_owner).name
+          @tagging_lock_refreshed = ((Time.current - mtime) / 60).floor
+          session[:tagging_lock] = false
+        end
+      end
+    else
+      File.open(TAGGING_LOCK, 'w') {|f| f.write("#{current_user.id}")}
+      session[:tagging_lock] = true
+    end
+    return true
+  end
+  def calculate_editor_tagging_stats
+    @tags_done = Tag.where(approver_id: current_user.id).where.not(status: :pending).count
+    @next_tags_milestone = PROGRESS_SERIES.find { |element| element > @tags_done }
+    @tags_progress = (@tags_done) * 100 / @next_tags_milestone
+    @taggings_done = Tagging.where(approved_by: current_user.id).where.not(status: :pending).count
+    @next_taggings_milestone = PROGRESS_SERIES.find { |element| element > @taggings_done }
+    @taggings_progress = (@taggings_done) * 100 / @next_taggings_milestone
+  end
+  def redirect_to_next_tagging(t, msg)
+    @next_tagging_id = Tagging.where(status: :pending).where('created_at > ?', t.created_at).order(:created_at).limit(1).pluck(:id).first
+    redirect_to(@next_tagging_id.present? ? url_for(tagging_review_path(@next_tagging_id)) : url_for(action: :tag_moderation), notice: msg)
+  end
+
 end

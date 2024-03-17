@@ -5,5 +5,5 @@
       / actual works
       %ol
         - @manifestations.each do |m|
-          %li= link_to m.title_and_authors, manifestation_read_path(m.id)
+          %li= link_to m.title_and_authors, manifestation_path(m.id)
 != paginate @manifestations

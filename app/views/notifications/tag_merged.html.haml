@@ -1,0 +1,8 @@
+%div{align: 'right', dir: 'rtl'}
+  %p= "#{@suggester_name}, #{@greeting}"
+
+  %p= t(:tag_merged_intro, orig_name: @orig_tag_name, tag: @tag.name)
+
+  %hr
+
+  != raw t(:email_footer_html)

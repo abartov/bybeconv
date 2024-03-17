@@ -21,7 +21,6 @@ class Person < ApplicationRecord
   has_many :taggings, as: :taggable, dependent: :destroy
   has_many :tags, through: :taggings, class_name: 'Tag'
 
-
   # scopes
   scope :has_toc, -> { where.not(toc_id: nil) }
   scope :no_toc, -> { where(toc_id: nil) }
@@ -33,6 +32,7 @@ class Person < ApplicationRecord
   scope :latest, -> (limit) {order('created_at desc').limit(limit)}
   scope :translators, -> {joins(:realizers).where(realizers: {role: Realizer.roles[:translator]}).distinct}
   scope :translatees, -> {joins(creations: {work: :expressions}).where(creations: {role: Creation.roles[:author]}, expressions: {translation: true}).distinct}
+  scope :tagged_with, -> (tag_id) {joins(:taggings).where(taggings: {tag_id: tag_id, status: Tagging.statuses[:approved]}).distinct}
 
   # features
   has_attached_file :profile_image, styles: { full: "720x1040", medium: "360x520", thumb: "180x260", tiny: "90x120"}, default_url: :placeholder_image_url, storage: :s3, s3_credentials: 'config/s3.yml', s3_region: 'us-east-1'
@@ -274,6 +274,9 @@ class Person < ApplicationRecord
     return (w + t).uniq.sort_by{|m| m.sort_title}
   end
 
+  def title # convenience method for polymorphic handling (e.g. Taggable)
+    name
+  end
   def original_works_by_genre
     ret = {}
     get_genres.map{|g| ret[g] = []}
@@ -344,6 +347,21 @@ class Person < ApplicationRecord
 
   def copyright_as_string
     return public_domain ? I18n.t(:public_domain) : I18n.t(:by_permission)
+  end
+
+  def cached_popular_tags_used_on_works
+    Rails.cache.fetch("au_#{self.id}_pop_tags", expires_in: 12.hours) do
+      popular_tags_used_on_works
+    end
+  end
+
+  def popular_tags_used_on_works(limit=10)
+    Tag.find(popular_tags_used_on_works_with_count.keys.first(limit))
+  end
+
+  def popular_tags_used_on_works_with_count
+    mm = (original_works + translations).uniq.pluck(:id)
+    Tag.joins(:taggings).where(taggings: {taggable_type: 'Manifestation', taggable_id: mm}).group('tags.id').order('count_all DESC').count
   end
 
   def self.get_popular_authors_by_genre(genre)

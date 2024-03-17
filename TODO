@@ -2,6 +2,7 @@
 - migrate from Impressionist to Ahoy for Manifestation/Author/Anthology tracking (Impressionist is abandoned, and not Rails 7.x compatible)
 אסף האם ניתן להוסיף לטופס הבקשה להתנדב שאלה ״היכן שמעת על הפרויקט? ״
 יהיה נחמד לדעת אילו מהאמצים שלנו נושאים פרי (נניח רחל מדווחת שהיו הרבה אנשים בהרצאה הבוקר ושהתגובות היו נלהבות. מעניין אם מוביל לפעולה).
+- refactor header views into single files (author_top -> toc) using https://guides.rubyonrails.org/layouts_and_rendering.html#structuring-layouts
 
 1. implement news items input/editing for heterogeneous newsfeed
 

@@ -20,6 +20,7 @@ class BaseUser < ApplicationRecord
     # property :suppress_anthology_intro, default: 'false'
     property :suppress_donation_banner, default: 0
     property :jump_to_bookmarks
+    property :accepted_tag_policy, default: 'false'
   end
 
   def get_preference(pref)

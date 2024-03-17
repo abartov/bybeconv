@@ -58,7 +58,7 @@
       - decorator = browse_item_decorator_by_sort_type(@sort)
       - @works.each do |m|
         %li
-          = link_to m.title_and_authors, manifestation_read_path(m.id)
+          = link_to m.title_and_authors, manifestation_path(m.id)
           = decorator.call(m)
   - unless @total_pages <= 1
     = render partial: 'shared/slide_pagination', locals: {collection: @works, element: '#works_filters', path: '/works'}

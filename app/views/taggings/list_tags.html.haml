@@ -1,0 +1,15 @@
+.backend
+  %h1= t(:tag_list)
+  %table{style: 'cell-spacing: 10;'}
+    %tr
+      %th= t(:name)
+      %th= t(:taggings_count)
+
+    - @tags.each do |tag|
+      %tr
+        %td= link_to tag.name, tag
+        %td= tag.taggings.approved.count # this will eventually become too slow and need to be replaced with tag.taggings_count (which will INCLUDE unapproved taggings!)
+
+  %br
+
+  != paginate @tags

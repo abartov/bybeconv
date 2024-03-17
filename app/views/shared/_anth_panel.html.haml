@@ -66,7 +66,7 @@
                               = t(:curated_text_bit)+': '+text.title
                               /%span.by-icon-v02.markdown-icon _
                             - else
-                              = link_to text.manifestation.title + ' / ' + text.manifestation.author_string, manifestation_read_path(text.manifestation_id)
+                              = link_to text.manifestation.title + ' / ' + text.manifestation.author_string, manifestation_path(text.manifestation_id)
                           %button.collapsed.vertical-expand{id: "collat#{text.id}", 'data-toggle' => 'collapse', 'data-target' => "#at#{text.id}"}
                           %button.icon-btn.icon-bydelete.delbutton{id: "del#{text.id}"}
                           - if text.manifestation_id.nil?

@@ -8,7 +8,7 @@
     - unless @m.nil?
       - @austr = authors_linked_string(@m)
       - @austr += " / #{translators_linked_string(@m)}" if @translation
-      = link_to @m.title, manifestation_read_path(@m.id), target: '_blank'
+      = link_to @m.title, manifestation_path(@m.id), target: '_blank'
       = " / "
       != @austr
       %br
