@@ -26,6 +26,6 @@ class SearchController < ApplicationController
   protected
 
   def sanitize_term(term)
-    return term.gsub(/(\S)\"(\S)/,'\1\2')
+    return term.gsub(/(\S)\"(\S)/,'\1\2').gsub('׳',"'")
   end
 end

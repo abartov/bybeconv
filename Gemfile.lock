@@ -204,7 +204,7 @@ GEM
       nokogiri (~> 1.13, >= 1.13.0)
       rubyzip (~> 2.0)
     domain_name (0.6.20240107)
-    dry-core (1.0.1)
+    dry-core (1.0.0)
       concurrent-ruby (~> 1.0)
       zeitwerk (~> 2.6)
     dry-inflector (1.0.0)
@@ -702,7 +702,7 @@ DEPENDENCIES
   execjs
   factory_bot_rails (~> 6.2.0)
   faker (~> 2.19.0)
-  gared (>= 0.0.29)
+  gared (>= 0.1.2)
   gepub
   grape (= 1.6.0)
   grape-entity (~> 0.10.1)

@@ -482,3 +482,7 @@ td.label-name{
 .tagging-management-area {
   width: unset;
 }
+
+small p{
+  font-size: 80% !important;
+}

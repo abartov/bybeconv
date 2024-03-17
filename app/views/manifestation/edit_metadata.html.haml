@@ -10,6 +10,9 @@
       %b= t(:genre) + ': '
       = select_tag :genre, options_for_select(get_genres.map {|genre| [I18n.t(genre), genre]}, @w.genre), {include_blank: true}
     %p
+      %b= t(:primary) + ': '
+      = select_tag :primary, options_for_select([[t(:yes), 'true'], [t(:false), 'false']], @w.primary.to_s)
+    %p
       %b= t(:language) + ': '
       = select_tag :wlang, options_for_select(get_langs.map {|lang| [textify_lang(lang), lang]}, @w.orig_lang.nil? ? 'he' : @w.orig_lang)
     %p
@@ -57,7 +60,7 @@
     %h2= t(:manifestation_details)
     %p
       %b= t(:status)+': '
-      = select_tag :mstatus, options_for_select(Manifestation.statuses.map {|st| [t(st[0]), st[1]]}, @m.status)
+      = select_tag :mstatus, options_for_select(Manifestation.statuses.map {|st| [t(st[0]), st[1]]}, Manifestation.statuses[@m.status])
     %p
       %b= t(:title) + ': '
       = text_field_tag :mtitle, @m.title, size: 75

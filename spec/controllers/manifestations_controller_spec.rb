@@ -241,7 +241,9 @@ describe ManifestationController do
     let(:genre) { :memoir }
     let(:title) { 'Some title' }
     let(:orig_lang) { 'he' }
-    let!(:manifestation) { create(:manifestation, title: title, genre: genre, orig_lang: orig_lang) }
+    let!(:manifestation) do
+      create(:manifestation, title: title, genre: genre, orig_lang: orig_lang, primary: true)
+    end
     let(:expression) { manifestation.expression }
     let(:work) { expression.work }
 
@@ -346,7 +348,16 @@ describe ManifestationController do
         end
 
         context 'when metadata was changed' do
-          let(:params) { { wtitle: 'New Work Title', mtitle: 'New Manifestation Title', etitle: 'New Expression Title', genre: 'fables', wlang: 'ru' } }
+          let(:params) do
+            {
+              wtitle: 'New Work Title',
+              mtitle: 'New Manifestation Title',
+              etitle: 'New Expression Title',
+              genre: 'fables',
+              wlang: 'ru',
+              primary: 'false'
+            }
+          end
 
           it 'updates metadata and redirects to show page' do
             expect(subject).to redirect_to(manifestation_show_path(manifestation))
@@ -354,7 +365,7 @@ describe ManifestationController do
             manifestation.reload
             expect(manifestation).to have_attributes(title: 'New Manifestation Title')
             expect(expression).to have_attributes(title: 'New Expression Title')
-            expect(work).to have_attributes(title: 'New Work Title', orig_lang: 'ru', genre: 'fables')
+            expect(work).to have_attributes(title: 'New Work Title', orig_lang: 'ru', genre: 'fables', primary: false)
           end
         end
       end

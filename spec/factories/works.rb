@@ -15,6 +15,7 @@ FactoryBot.define do
     origlang_title { "Title in original language for #{work_name}" }
     normalized_pub_date {}
     normalized_creation_date { normalize_date(date) }
+    primary { true }
     creations do
       result = [create(:creation, person: author, role: :author)]
       if illustrator.present?

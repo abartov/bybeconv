@@ -16,6 +16,9 @@
     %b= t(:title) + ': '
     = @w.title
   %p
+    %b= t(:primary)+'? '
+    = (@w.primary ? t(:yes) : t(:no))
+  %p
     %b= t(:genre) + ': '
     = textify_genre(@w.genre)
   %p
