@@ -89,6 +89,16 @@ class TaggingsController < ApplicationController
     @tag_suggestions[:popular_tags] = Tag.cached_popular_tags
   end
 
+  def tag_by_name
+    @tag = Tag.by_name(params[:name]).first
+    if @tag.present?
+      redirect_to tag_path(@tag.id)
+    else
+      flash[:error] = t(:tag_not_found)
+      redirect_to root_path
+    end
+  end
+
   def tag_portal
     @tag = Tag.find(params[:id])
     if @tag.present? && @tag.approved?

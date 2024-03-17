@@ -49,3 +49,13 @@
               != result._data['highlight']['deftext'].join("<br />").gsub('<em>','<b>').gsub('</em>','</b>')
 
     != paginate @results
+= form_tag tag_by_name_path, method: :post, id: 'tag_by_name' do
+  = hidden_field_tag :name, nil, id: 'tag_by_name_field'
+
+:javascript
+  $(document).ready(function() {
+    $('.tag').click(function() {
+      $('#tag_by_name_field').val($(this).text());
+      $('#tag_by_name').submit();
+    });
+  });
