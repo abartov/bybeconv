@@ -177,6 +177,7 @@ Bybeconv::Application.routes.draw do
   match 'tag/:id/works' => 'manifestation#by_tag', as: 'search_by_tag', via: [:get, :post]
   match 'tag/:id/authors' => 'authors#by_tag', as: 'authors_by_tag', via: [:get, :post]
   match 'tag/:id' => 'taggings#tag_portal', as: 'tag', via: :get
+  match 'tag_by_name' => 'taggings#tag_by_name', as: 'tag_by_name', via: :post
   match "download/:id" => 'manifestation#download', as: 'manifestation_download', via: [:get, :post]
   match "print/:id" => 'manifestation#print', as: 'manifestation_print', via: [:get, :post]
   get "manifestation/show/:id" => 'manifestation#show', as: 'manifestation_show'
