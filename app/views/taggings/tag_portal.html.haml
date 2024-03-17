@@ -56,5 +56,5 @@
           .by-card-content-v02{style: 'color:black'}
             %p.headline-1-v02= t(:new_tag_teaser)
             %p= t(:tags_are_a_way)
-            -# TODO: put something behind this link...
-            %button.by-button-v02{href: "#", style: "width: 100%; justify-content: center"}= t(:want_to_tag)
+            %a{href: Rails.configuration.constants['full_tagging_policy_url']], target: "_blank" }
+              %button.by-button-v02.pointer{style: "width: 100%; justify-content: center"}= t(:want_to_tag)
