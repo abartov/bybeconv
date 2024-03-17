@@ -9,6 +9,7 @@ FactoryBot.define do
       illustrator { nil }
       genre { Work::GENRES.sample }
       work_title { title }
+      primary { true }
     end
     title { "Title for #{expression_name}" }
     form {}
