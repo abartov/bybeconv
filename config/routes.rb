@@ -131,11 +131,8 @@ Bybeconv::Application.routes.draw do
   get 'admin/sitenotice/:id' => 'admin#sitenotice_show', as: 'sitenotice_show'
   get 'volunteer/:id' => 'user#show', as: 'volunteer_show'
 
-  get '/search_results' => 'application#search_results'
-  get "search/index"
   get '/mobile_search' => 'application#mobile_search'
   match "search/results", via: [:get, :post], as: 'search_results_internal'
-  get "search/advanced"
   get 'authors/all', as: 'all_authors'
   get 'authors/genre'
   get "authors/show"

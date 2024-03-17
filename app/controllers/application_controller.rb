@@ -61,9 +61,6 @@ class ApplicationController < ActionController::Base
     headers['Access-Control-Request-Method'] = '*'
   end
 
-  def search_results
-    render 'shared/search_results', layout: false
-  end
   def mobile_search
     render partial: 'shared/mobile_search'
   end
