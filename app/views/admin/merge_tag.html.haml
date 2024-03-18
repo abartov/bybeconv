@@ -25,7 +25,7 @@
                 - else
                   %p= t(:merge_tag_generic_html, tag: @tag.name, src_tag_taggings_count: @tag.taggings_count).html_safe
                   %p#dest_tag
-                  = autocomplete_field_tag :tag, '', autocomplete_tag_name_path, {'data-noMatchesLabel' => t(:no_matches_found), class: 'field-v02', id_element: '#with_tag'}
+                  = autocomplete_field_tag :tag, '', autocomplete_tag_name_path, {'data-noMatchesLabel' => t(:no_matches_found), class: 'field-v02'}
                   
                 %p= t(:taggings_will_be_merged)
                 = hidden_field_tag :id, @tag.id
@@ -38,7 +38,7 @@
 :javascript
   $(document).ready(function() {
     $('#tag').bind('railsAutocomplete.select', function(event, data){
-      $('#tag_id').val(data.item.tag_id);
+      $('#with_tag').val(data.item.tag_id);
     });
     $('#tag').change(function() {
       if($(this).val() == '' || $(this).val() == null) {
