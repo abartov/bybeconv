@@ -55,7 +55,7 @@
 :javascript
   $(document).ready(function() {
     $('.tag').click(function() {
-      $('#tag_by_name_field').val($(this).text());
+      $('#tag_by_name_field').val($(this).text().trim());
       $('#tag_by_name').submit();
     });
   });
