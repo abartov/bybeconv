@@ -245,7 +245,7 @@ class ManifestationController < ApplicationController
   end
 
   def read
-    @m = Manifestation.joins(:expression).includes(:expression).find(params[:id])
+    @m = Manifestation.joins(:expression).includes(:expression).find(params[:id].to_i)
     if @m.nil?
       head :not_found
     else
