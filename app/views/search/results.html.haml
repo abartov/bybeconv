@@ -22,7 +22,7 @@
               %div{style: 'line-height: 2.2;'}
                 %b= t(:tags)+':'
                 - result.tags.each do |tag|
-                  %button.tag
+                  %button.tag.pointer
                     = tag
             - unless result._data.nil? or result._data['highlight'].nil?
               %br
