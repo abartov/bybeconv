@@ -37,7 +37,7 @@ gem 'sqlite3' # for dictionary imports
 # gem 'rollbar' # error reporting. Airbrake replacement.
 
 gem 'jquery-rails'
-gem "jquery-ui-rails"
+gem "jquery-ui-rails", git: 'https://github.com/jquery-ui-rails/jquery-ui-rails' # v 7.0 has not been pushed to RubyGems yet
 gem 'activerecord-session_store'
 gem 'sass-rails'
 gem 'coffee-script'
