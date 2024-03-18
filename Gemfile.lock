@@ -17,6 +17,13 @@ GIT
       grape (>= 1.0.0)
 
 GIT
+  remote: https://github.com/jquery-ui-rails/jquery-ui-rails
+  revision: c7460b447589eb04aa948ecaf0d1245c88f6ff45
+  specs:
+    jquery-ui-rails (7.0.0)
+      railties (>= 3.2.16)
+
+GIT
   remote: https://github.com/kreeti/kt-paperclip.git
   revision: ff04ddc779102550b46aa6bb86b1632e36423574
   specs:
@@ -334,8 +341,6 @@ GEM
       thor (>= 0.14, < 2.0)
     jquery-slick-rails (1.10.0)
       railties (>= 3.1)
-    jquery-ui-rails (6.0.1)
-      railties (>= 3.2.16)
     js_regex (3.11.1)
       character_set (~> 1.4)
       regexp_parser (>= 2.6.2, < 3.0.0)
@@ -380,7 +385,7 @@ GEM
     mini_portile2 (2.8.5)
     mini_racer (0.8.0)
       libv8-node (~> 18.16.0.0)
-    minitest (5.22.2)
+    minitest (5.22.3)
     moment-timezone-rails (1.1.0)
       momentjs-rails (>= 2.10.5, <= 3.0.0)
     momentjs-rails (2.29.4.1)
@@ -413,10 +418,10 @@ GEM
     netrc (0.11.0)
     newrelic_rpm (9.7.1)
     nio4r (2.7.0)
-    nokogiri (1.16.2)
+    nokogiri (1.16.3)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
-    nokogiri (1.16.2-x86_64-linux)
+    nokogiri (1.16.3-x86_64-linux)
       racc (~> 1.4)
     oauth (1.1.0)
       oauth-tty (~> 1.0, >= 1.0.1)
@@ -720,7 +725,7 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   jquery-rails
   jquery-slick-rails
-  jquery-ui-rails
+  jquery-ui-rails!
   kaminari
   kt-paperclip!
   listen
