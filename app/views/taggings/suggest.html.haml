@@ -17,7 +17,7 @@
       e.preventDefault();
       $('#tag_id').val($(this).attr('id'));
       $('#tag').val($(this).text());
-      $('#tag').change();
+      $('#tag').trigger('input');
     });
     $('#suggestion_heuristics').tabs();
   });
