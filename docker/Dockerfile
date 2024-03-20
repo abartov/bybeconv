@@ -1,4 +1,4 @@
-FROM ruby:2.6.10-buster
+FROM ruby:3.2.1-buster
 
 RUN apt-get update -qq && apt-get install -y \
     curl \
