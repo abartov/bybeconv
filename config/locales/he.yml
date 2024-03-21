@@ -760,7 +760,7 @@ he:
   confirm_merge_tagging: אישור העברת התיוג
   confirm_escalation: אישור העברה לבדיקה נוספת
   tag_merged: התגית מוזגה, על תיוגיה הממתינים
-  tag_merged_intro: התגית שהצעת (%{orig_tag_name}) מוזגה עם תגית קיימת (%{tag}). תודה רבה על ההצעה! מעכשיו יוכלו למצוא את התגית גם דרך השם שהצעת.
+  tag_merged_intro: "התגית שהצעת (%{orig_tag_name}) מוזגה עם תגית קיימת (%{tag}). תודה רבה על ההצעה! מעכשיו יוכלו למצוא את התגית גם דרך השם שהצעת."
   tag_escalated: התגית הועברה לבדיקה נוספת
   tagging_escalated: התיוג הועבר לבדיקה נוספת
   tagging_of: "תיוג של:"
@@ -1079,7 +1079,7 @@ he:
   purge_spam_proofs: מחק הגהות זבל
   all_proofs: כל ההגהות
   proofs_by_status: הגהות לפי סטטוס %{status}
-  welcome: 'שלום '
+  welcome_heading: 'שלום '
   please_log_in: אין מה לראות לפני התחברות למערכת.
   user_management: ניהול משתמשים
   editor_actions: פעולות עורך
@@ -1343,3 +1343,7 @@ he:
       - "day"
       - "month"
       - "year"
+  welcome:
+    submit_contact:
+      ziburit_failed: Control question failed
+      email_missing: Please provide an email address
