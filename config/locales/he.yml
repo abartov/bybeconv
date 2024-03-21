@@ -1345,5 +1345,5 @@ he:
       - "year"
   welcome:
     submit_contact:
-      ziburit_failed: Control question failed
-      email_missing: Please provide an email address
+      ziburit_failed: לא השתכנענו שאינך רובוט.
+      email_missing: נא לציין כתובת דואל, כדי שנוכל להשיב לך.
