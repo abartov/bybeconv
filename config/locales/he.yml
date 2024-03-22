@@ -533,7 +533,7 @@ he:
   our_own_content: 'תוכן משלנו:'
   bookshelf: מדפים
   found_mistake: מצאתי שגיאה
-  email_just_for_proof: כתובת דואל (לא חובה) רק לקבלת עדכון על הגהה זו
+  email_just_for_proof: כתובת דואל רק לקבלת עדכון על הגהה זו
   report_found_mistake: דיווח על מציאת שגיאה בדף
   clear_text_and_reset_proof: מחיקת טקסט וניקוי חלון ההגהה
   found_br_mistake_html: מצאתי<BR /> שגיאה
