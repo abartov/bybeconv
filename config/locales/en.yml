@@ -4,3 +4,7 @@ en:
     submit_contact:
       ziburit_failed: Control question failed
       email_missing: Please provide an email address
+  proof:
+    create:
+      ziburit_failed: Control question failed
+      email_missing: Please provide an email address
