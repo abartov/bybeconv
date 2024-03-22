@@ -28,7 +28,7 @@
     .graybox#highlight{style:'font-size: 14pt; border:1px;background-color:#dedede'}
       != sanitize(@p.highlight.gsub("\n","<br/>"))
   %br
-  %h3= t(:proof)+':'
+  %h3= t(:proof_heading)+':'
   %br
   .graybox{style:'font-size: 14pt; border:1px;background-color:#dedede'}
     != sanitize(@p.what.gsub("\n","<br/>"))
