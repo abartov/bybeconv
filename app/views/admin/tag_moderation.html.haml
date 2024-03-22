@@ -59,32 +59,33 @@
                 - additional_class = 'high-approval-rate'
               %td{style: extra_style, class: "%-approved #{additional_class}"}= "%.1f%%" % acceptance_rate
               %td{style: extra_style}
-                .quick-actions
-                  - if session[:tagging_lock]
+                - if session[:tagging_lock]
+                  .quick-actions
                     = button_to reject_tag_path(tag), method: :post, remote: true, class: 'reject-tag-btn confirmable ghost-btn', form_class: 'reject_tag_form', id: "reject_tag_btn_#{tag.id}", data: { 'confirm-title': t(:confirm_reject), p1: t(:confirm_reject), 'with-comment': false, element_id: "reject_tag_btn_#{tag.id}" } do
                       .by-icon-v02> -
                       = t(:reject)
                     = button_to reject_tag_path(tag), method: :post, remote: true, class: 'reject-tag-btn confirmable ghost-btn', form_class: 'reject_tag_form', id: "reject_tag_with_explanation_btn_#{tag.id}", data: { confirm: t(:confirm_reject), p1: t(:explain_rejection), 'with-comment': true, element_id: "reject_tag_with_explanation_btn_#{tag.id}" } do
                       .by-icon-v02> -
                       = t(:reject_and_explain)
-                    %button.ghost-btn.more-actions-btn.tagging-more= t(:additional_actions)
-                    .additional_actions{style: 'display:none'}
-                      - unless tag.escalated?
+                    .additional_actions_container
+                      %button.ghost-btn.more-actions-btn.tagging-more{style:'height:30px'}= t(:additional_actions)
+                      .additional_actions.show{style: 'display:none; padding-bottom: 15px;'}
+                        - unless tag.escalated?
+                          %p
+                          = button_to escalate_tag_path(tag.id), method: :post, remote: true, id: "esc_tag_#{tag.id}", class: 'by-button-v02 escalate-tag-btn' do
+                            .by-icon-v02> Z
+                            = t(:escalate_to_editor)
                         %p
-                        = button_to escalate_tag_path(tag.id), method: :post, remote: true, id: "esc_tag_#{tag.id}", class: 'by-button-v02 escalate-tag-btn', style: 'background-color:lightblue' do
-                          .by-icon-v02> -
-                          = t(:escalate_to_editor)
-                      %p
-                      = button_to warn_user_path(tag.created_by, return_url: tag_moderation_path), class: 'by-button-v02 confirmable', style: 'background-color:orange', id: "warn_user_btn_#{tag.id}", data: { 'confirm-title': t(:confirm_warn), p1: t(:confirm_warn), 'with-comment': false, element_id: "warn_user_btn_#{tag.id}" } do
-                        .by-icon-v02> -
-                        = t(:warn_user)
-                      %p
-                      = button_to block_user_path(tag.created_by, return_url: tag_moderation_path), class: 'by-button-v02 confirmable', style: 'background-color:red', id: "block_user_btn_#{tag.id}", data: { 'confirm-title': t(:confirm_block), p1: t(:confirm_block), 'with-comment': false, element_id: "block_user_btn_#{tag.id}" } do
-                        .by-icon-v02> -
-                        = t(:block_user)
+                        = button_to warn_user_path(tag.created_by, return_url: tag_moderation_path), class: 'by-button-v02 confirmable', id: "warn_user_btn_#{tag.id}", data: { 'confirm-title': t(:confirm_warn), p1: t(:confirm_warn), 'with-comment': false, element_id: "warn_user_btn_#{tag.id}" } do
+                          .by-icon-v02> P
+                          = t(:warn_user)
+                        %p
+                        = button_to block_user_path(tag.created_by, return_url: tag_moderation_path), class: 'by-button-v02 confirmable', id: "block_user_btn_#{tag.id}", data: { 'confirm-title': t(:confirm_block), p1: t(:confirm_block), 'with-comment': false, element_id: "block_user_btn_#{tag.id}" } do
+                          .by-icon-v02> R
+                          = t(:block_user)
 
-                  - else
-                    = t(:tagging_system_locked)
+                - else
+                  = t(:tagging_system_locked)
   #labels-mamagement.management
     .title-area
       .title-right-side
@@ -170,21 +171,22 @@
                     .ghost-btn.merge-tagging-btn{'data-tagging-id': tagging.id}
                       .by-icon-v02> Q
                       = t(:change_or_merge)
-                    %button.ghost-btn.more-actions-btn.tagging-more= t(:additional_actions)
-                    .additional_actions{style: 'display:none'}
-                      - unless tagging.escalated?
+                    .additional_actions_container
+                      %button.ghost-btn.more-actions-btn.tagging-more{style:'height:30px'}= t(:additional_actions)
+                      .additional_actions.show{style: 'display:none; padding-bottom: 15px;'}
+                        - unless tagging.escalated?
+                          %p
+                          = button_to escalate_tagging_path(tagging.id), method: :post, remote: true, id: "esc_tagg_#{tagging.id}", class: 'by-button-v02 escalate-tagging-btn' do
+                            .by-icon-v02> -
+                            = t(:escalate_to_editor)
                         %p
-                        = button_to escalate_tagging_path(tagging.id), method: :post, remote: true, id: "esc_tagg_#{tagging.id}", class: 'by-button-v02 escalate-tagging-btn', style: 'background-color:lightblue' do
+                        = button_to warn_user_path(tagging.suggested_by, return_url: tag_moderation_path), class: 'by-button-v02 confirmable', id: "warn_user2_btn_#{tagging.id}", data: { 'confirm-title': t(:confirm_warn), p1: t(:confirm_warn), 'with-comment': false, element_id: "warn_user2_btn_#{tagging.id}" } do
                           .by-icon-v02> -
-                          = t(:escalate_to_editor)
-                      %p
-                      = button_to warn_user_path(tagging.suggested_by, return_url: tag_moderation_path), class: 'by-button-v02 confirmable', style: 'background-color:orange', id: "warn_user2_btn_#{tagging.id}", data: { 'confirm-title': t(:confirm_warn), p1: t(:confirm_warn), 'with-comment': false, element_id: "warn_user2_btn_#{tagging.id}" } do
-                        .by-icon-v02> -
-                        = t(:warn_user)
-                      %p
-                      = button_to block_user_path(tagging.suggested_by, return_url: tag_moderation_path), class: 'by-button-v02 confirmable', style: 'background-color:red', id: "block_user2_btn_#{tagging.id}", data: { 'confirm-title': t(:confirm_block), p1: t(:confirm_block), 'with-comment': false, element_id: "block_user2_btn_#{tagging.id}" } do
-                        .by-icon-v02> -
-                        = t(:block_user)
+                          = t(:warn_user)
+                        %p
+                        = button_to block_user_path(tagging.suggested_by, return_url: tag_moderation_path), class: 'by-button-v02 confirmable', id: "block_user2_btn_#{tagging.id}", data: { 'confirm-title': t(:confirm_block), p1: t(:confirm_block), 'with-comment': false, element_id: "block_user2_btn_#{tagging.id}" } do
+                          .by-icon-v02> -
+                          = t(:block_user)
 
                   - else
                     = t(:tagging_system_locked)
@@ -244,7 +246,7 @@
     });
     $('.tagging-more').click(function(e) {
       e.stopPropagation();
-      $(this).parent().find('.additional_actions').toggle();
+      $(this).parent().parent().find('.additional_actions').toggle();
     });
     if("#{@tag_id}" != "") {
       $('#minmax_taggings').click();

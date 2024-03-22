@@ -467,6 +467,11 @@ body.modal-open{
   position: fixed;
   z-index: 9000;
 }
+.additional_actions_container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
 .tagging-review {
   display: flex;
   flex-direction: row;
