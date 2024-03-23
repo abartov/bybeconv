@@ -836,7 +836,7 @@ class AdminController < ApplicationController
         with_tag = Tag.find(params[:with_tag].to_i)
         if with_tag.present?
           t.merge_into(with_tag)
-          Notifications.tag_merged(t.name, t.creator, with_tag).deliver unless t.creator.blocked? # don't send email if user is blocked
+          Notifications.tag_merged(t.name, t.creator, with_tag.name).deliver unless t.creator.blocked? # don't send email if user is blocked
           flash[:notice] = t(:tag_merged)
         else
           flash[:error] = t(:no_such_item)
