@@ -66,10 +66,11 @@ class Notifications < ActionMailer::Base
   # with the following lookup:
   #
   #   he.notifications.tag_rejected.subject
-  def tag_rejected(tag, explanation)
+  def tag_rejected(tag, explanation, orig_name = nil)
     @greeting = t(:hello_anon)
     @tag = tag
     @explanation = explanation
+    @name = orig_name ? orig_name : @tag.name
     mail to: tag.creator.email
   end
 

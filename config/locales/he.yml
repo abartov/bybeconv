@@ -26,6 +26,7 @@ he:
   contact_form_email_greeting: "התקבל טופס צור קשר. להלן הפרטים:"
   volunteer_form_email_greeting: "התקבל טופס התנדבות. להלן הפרטים:"
   rename_this_anthology: שינוי שם מקראה זו
+  merge_rename: אישור התגית בשם אחר
   authors_select_filter: סינון לפי יוצר - בחירה מרובה
   add_authors_to_filter: הוספת היוצרים שנבחרו לסינון
   back_to_bib_workshop: חזרה לסדנה הביבליוגרפית
@@ -769,7 +770,7 @@ he:
   tagging_rejected: התיוג נדחה.
   user_warned: המשתמש/ת הוזהר/ה
   merge_tag_preview_html: "התגית המוצעת <b>%{tag}</b> (%{src_tag_taggings_count} תיוגים מקושרים) תמוזג עם התגית <b>%{dest_tag}</b> (%{dest_tag_taggings_count} תיוגים מקושרים)."
-  merge_tag_generic_html: "התגית המוצעת <b>%{tag}</b> (%{src_tag_taggings_count} תיוגים מקושרים) תמוזג עם התגית:"
+  merge_tag_generic_html: "התגית המוצעת <b>%{tag}</b> (%{src_tag_taggings_count} תיוגים מקושרים) <b>תאושר</b> בשם שיוזן להלן, או תמוזג לתגית שתיבחר בהשלמה אוטומטית, או מהרשימה בלשונית השנייה:"
   taggings_will_be_merged: גם התיוגים המקושרים לתגית יועברו לתגית היעד, ללא שינוי במצב אישורם.
   no_more_to_review: "אין פריטים נוספים לבדוק! :)"
   tag_approved: התגית אושרה!
@@ -1180,6 +1181,7 @@ he:
   escalate_to_editor: העברה לעורך ראשי להכרעה
   reject_and_explain: "דחיה + הסבר"
   explain_rejection: נא להסביר את סיבת הדחייה
+  optional_explanation_of_rejection: במקרה של קבלה בשם שונה, המציע יקבל הודעת דחייה, ואפשר להזין להלן נימוק.
   provide_reason: נא להסביר את סיבת הפעולה
   suggested_tags: תגיות שהוצעו
   linked_taggings: תיוגים מקושרים

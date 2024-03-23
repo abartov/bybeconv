@@ -833,11 +833,17 @@ class AdminController < ApplicationController
     if session[:tagging_lock]
       t = Tag.find(params[:id])
       if t.present?
-        with_tag = Tag.find(params[:with_tag].to_i)
-        if with_tag.present?
-          t.merge_into(with_tag)
-          Notifications.tag_merged(t.name, t.creator, with_tag.name).deliver unless t.creator.blocked? # don't send email if user is blocked
-          flash[:notice] = t(:tag_merged)
+        if params[:with_tag].present?
+          with_tag = Tag.find(params[:with_tag].to_i)
+          if with_tag.present?
+            t.merge_into(with_tag)
+            Notifications.tag_merged(t.name, t.creator, with_tag.name).deliver unless t.creator.blocked? # don't send email if user is blocked
+            flash[:notice] = t(:tag_merged)
+          end
+        elsif params[:tag].present?
+          t.update(name: params[:tag], status: :approved)
+          #Notifications.tag_renamed_and_approved(t.name, t.creator, params[:tag]).deliver unless t.creator.blocked? # don't send email if user is blocked
+          Notifications.tag_rejected(t, params[:reason], params[:orig_tag_name]).deliver unless t.creator.blocked? # don't send email if user is blocked
         else
           flash[:error] = t(:no_such_item)
         end

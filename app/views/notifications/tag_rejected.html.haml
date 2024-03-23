@@ -1,7 +1,7 @@
 %div{align: 'right', dir: 'rtl'}
   %p= "#{@tag.creator.name}, #{@greeting}"
 
-  %p= t(:tag_rejected_intro, tag: @tag.name)
+  %p= t(:tag_rejected_intro, tag: @name)
 
   - if @explanation.present?
     %p!= t(:additional_tagging_explanation, explanation: @explanation)

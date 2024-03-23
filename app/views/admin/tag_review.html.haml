@@ -50,6 +50,7 @@
               .by2-icon{style: 'display: inline; margin-left: 7px;'}> Q
               = t(:change_or_merge)
           %br/
+          %input{type: 'textarea', id: 'reason', placeholder: t(:explain_rejection), style: 'width: 100%', name: 'reason'}
           %button.ghost-btn.more-actions-btn= t(:additional_actions)
           #additional_actions{style: 'display:none'}
             %p
