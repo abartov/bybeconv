@@ -25,7 +25,7 @@
                   %p!= @featured_content.body.gsub("\n",'<br />')
               .bottom-button-area
                 - unless @featured_content.manifestation.nil?
-                  %a{ href: manifestation_read_path(id: @featured_content.manifestation.id)}
+                  %a{ href: manifestation_path(id: @featured_content.manifestation.id)}
                     %button.by-button-v02= t(:to_the_work_in_the_site)
                 - unless @featured_content.external_link.nil? or @featured_content.external_link.empty?
                   %a{ href: @featured_content.external_link, target: '_blank'}

@@ -1,6 +1,9 @@
 User-Agent: *
 Disallow: /*print/*
+<<<<<<< HEAD
+=======
 
+>>>>>>> df3c6ad29a3f096a81baf5b4d044cfa5fb7179ec
 Disallow: /*read$
 Crawl-delay: 10
 

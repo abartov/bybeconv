@@ -1,5 +1,5 @@
 class Tag < ApplicationRecord
-  
+
   has_many :taggings, dependent: :destroy
   has_many :tag_names, dependent: :destroy
   # NOTE: the 'name' field in tag is the *preferred*/display name. All tag names are in TagName records (including this main preferred one, so that one can search *only* the TagName records)
@@ -7,7 +7,7 @@ class Tag < ApplicationRecord
 
   belongs_to :creator, foreign_key: :created_by, class_name: 'User'
   belongs_to :approver, foreign_key: :approver_id, class_name: 'User', optional: true
-  enum status: [:pending, :approved, :rejected]
+  enum status: [:pending, :approved, :rejected, :escalated]
   validates :name, presence: true
   validates :created_by, presence: true
   validates :status, presence: true
@@ -15,14 +15,22 @@ class Tag < ApplicationRecord
   scope :pending, -> { where(status: Tag.statuses[:pending]) }
   scope :approved, -> { where(status: Tag.statuses[:approved]) }
   scope :rejected, -> { where(status: Tag.statuses[:rejected]) }
+  scope :by_popularity, -> { order('taggings_count DESC') }
 
   scope :by_user, ->(user) { where(created_by: user.id) }
+  scope :by_name, ->(name) { joins(:tag_names).where(tag_names: {name: name}) } # only use this to search for tags, to ensure aliases are searched as well!
 
-  def approve!
-    self.update(status: Tag.statuses[:approved])
+  def approve!(approver)
+    self.approver = approver
+    self.status = Tag.statuses[:approved]
+    self.save
   end
-  def reject!
-    self.update(status: Tag.statuses[:rejected])
+  def reject!(rejecter)
+    self.update(status: Tag.statuses[:rejected], approver_id: rejecter.id)
+    self.taggings.update_all(status: Tagging.statuses[:rejected], approved_by: rejecter.id)
+  end
+  def escalate!(escalator)
+    self.update(status: Tag.statuses[:escalated], approver_id: escalator.id)
   end
   def unreject!
     self.update(status: Tag.statuses[:pending])
@@ -54,9 +62,28 @@ class Tag < ApplicationRecord
   def people_taggings
     self.taggings.where(taggable_type: 'Person')
   end
+
+  def merge_into(tag)
+    self.tag_names.update_all(tag_id: tag.id) # make all this tag's tag_names be aliases of the destination tag
+    self.merge_taggings_into(tag)
+    self.reload # to avoid destroying the taggings we just moved!
+    self.destroy
+  end
+
   def merge_taggings_into(tag)
     self.taggings.each do |tagging|
-      tagging.update(tag_id: tag.id)
+      tagging.update!(tag_id: tag.id)
+    end
+  end
+  def prev_tags_alphabetically(limit = 3)
+    TagName.where('name < ?', self.name).order('name DESC').limit(limit)
+  end
+  def next_tags_alphabetically(limit = 3)
+    TagName.where('name > ?', self.name).order('name ASC').limit(limit)
+  end
+  def self.cached_popular_tags
+    Rails.cache.fetch('popular_tags', expires_in: 1.hour) do
+      Tag.approved.by_popularity.limit(10)
     end
   end
 

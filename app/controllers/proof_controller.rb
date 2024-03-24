@@ -5,28 +5,25 @@ class ProofController < ApplicationController
 #  impressionist # log actions for pageview stats
 
   def create
-    if params['manifestation'].nil? # legacy site's buttons.js hack
-      unless params['what'].nil? or params['what'].empty? # don't bother capturing null submissions
-        #if is_blacklisted_ip(client_ip) # filter out spam
-        #  render plain: "OK"
-        #else
-          @p = Proof.new(:from => params['email'], :about => params['about'] || request.env["HTTP_REFERER"] || 'none', :what => params['what'], :subscribe => (params['subscribe'] == "yes" ? true : false), :status => 'new')
-          h = HtmlFile.find_by_url(@p.about.sub(/https?:\/\/.*benyehuda.org\//, ''))
-          @p.html_file = h unless h.nil?
-          @p.save!
-        #end
-      else
-        render plain: "OK"
-      end
-    else # new BYBE
-      if params['ziburit'] =~ /ביאליק/
-        @p = Proof.new(from: params['from'], manifestation_id: params['manifestation'].to_i, what: params['what'], highlight: params['highlight'], status: 'new')
-        @p.save!
-      end
+    @errors = []
+    unless params[:ziburit] =~ /ביאליק/
+      @errors << I18n.t('proof.create.ziburit_failed')
     end
-    respond_to do |fmt|
-      fmt.html { }
-      fmt.js { flash[:notice] = I18n.t(:proof_thanks_html) }
+    if params[:from].blank?
+      @errors << I18n.t('proof.create.email_missing')
+    end
+
+    if @errors.empty?
+      Proof.create!(
+        from: params[:from],
+        manifestation_id: params['manifestation'].to_i,
+        what: params[:what],
+        highlight: params[:highlight],
+        status: :new
+      )
+      head :ok
+    else
+      render json: @errors, status: :unprocessable_entity
     end
   end
   def index
@@ -71,7 +68,7 @@ class ProofController < ApplicationController
         if @p.manifestation_id.nil?
           Notifications.proof_fixed(@p, @p.about, nil, @explanation).deliver
         else
-          Notifications.proof_fixed(@p, manifestation_read_path(@p.manifestation_id), @p.manifestation, @explanation).deliver
+          Notifications.proof_fixed(@p, manifestation_path(@p.manifestation_id), @p.manifestation, @explanation).deliver
         end
     		fix_text = 'תוקן (ונשלח דואל)'
       else
@@ -88,7 +85,7 @@ class ProofController < ApplicationController
         if @p.manifestation_id.nil?
           Notifications.proof_wontfix(@p, @p.about, nil, @explanation).deliver
         else
-          Notifications.proof_wontfix(@p, manifestation_read_path(@p.manifestation_id), @p.manifestation, @explanation).deliver
+          Notifications.proof_wontfix(@p, manifestation_path(@p.manifestation_id), @p.manifestation, @explanation).deliver
         end
       end
       fix_text = 'כבר תקין (ונשלח דואל)'

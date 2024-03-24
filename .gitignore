@@ -8,7 +8,6 @@
 /.bundle
 
 # other misc
-.byebug*
 # Mac crap
 .DS_Store
 
@@ -20,6 +19,7 @@
 /tmp
 *.swp
 *.code-workspace
+.vscode
 # ignore symlink
 /by
 /ignore/*
@@ -42,6 +42,8 @@ localhost.key
 do_chown.sh
 go.sh
 UX/*
+doc/*
+bkk/*
 /lexicon/*
 coverage
 export

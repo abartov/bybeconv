@@ -6,7 +6,7 @@ volumes:
   elasticsearch_data:
 services:
   mysql:
-    image: mysql:5.7
+    image: mysql:8.0.36
     restart: unless-stopped
     command: --max_allowed_packet=256M      # Set max_allowed_packet to 256M (or any other value)
     environment:
@@ -39,6 +39,9 @@ services:
   memcached:
     image: memcached:1.6.17
     restart: unless-stopped
+  redis:
+    image: redis:7.2.3
+    restart: unless-stopped
   app:
     build: ..
     environment:
@@ -53,4 +56,5 @@ services:
     depends_on:
       - mysql
       - memcached
+      - redis
       - elasticsearch

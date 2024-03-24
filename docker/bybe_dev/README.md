@@ -1,4 +1,7 @@
-This folder contains docker-compose configuration for development environment
+This folder contains docker-compose configuration for development environment.
+
+Docker Compose v2 syntax is used in examples, if you use older version simply replace `docker compose` 
+with `docker-compose`. 
 
 ## Preparing development environment for using docker
 
@@ -42,44 +45,44 @@ You need to update set of configuration files in `config` folder:
 ### 4. Install required gems
 
 ```
-# docker-compose run --rm app bundle install
+# docker compose run --rm app bundle install
 ```
 
 ### 5. Prepare databases
 At first you need to create databases:
 ```
-# docker-compose run --rm app rails db:create
+# docker compose run --rm app rails db:create
 ```
 
 You'll probably want to use snapshot of production db for development. So you need to restore it from dump:
 ```
-# cat <PATH_TO_DUMP_FILE> | docker exec -i bybe_dev_mysql_1 mysql -u root --password=root bybe_dev
+# cat <PATH_TO_DUMP_FILE> | docker exec -i bybe_dev-mysql-1 mysql -u root --password=root bybe_dev
 ```
 
 Now we need to migrate this db:
 ```
-# docker-compose run --rm app rails db:migrate
+# docker compose run --rm app rails db:migrate
 ```
 And migrate test database as well:
 ```
-# docker-compose run --rm app rails db:migrate RAILS_ENV=test
+# docker compose run --rm app rails db:migrate RAILS_ENV=test
 ```
 
 ### 6. Rebuild Elasticsearch indices
 ```
-# docker-compose run --rm app rake chewy:reset
+# docker compose run --rm app rake chewy:reset
 ```
 
 ### 7. Running tests
 
 Now you can try to run specs to check your setup 
 ```
-# docker-compose run --rm app rspec
+# docker compose run --rm app rspec
 ```
 
 ### 8. Staring app
 ```
-# docker-compose up -d
+# docker compose up -d
 ```
 
 App should be available at http://localhost:3001
@@ -92,32 +95,32 @@ And you can connect to MySQL at localhost:3307, using root/root credentials
 
 To create and start containers defined in docker-compose file simply run:
 ```
-# docker-compose up -d
+# docker compose up -d
 ```
 
 If you have changed docker images config you may need to provide additional keys to force image rebuild:
 ```
-# docker-compose up --build -d 
+# docker compose up --build -d 
 ```
 
 To stop containers temporarily run:
 ```
-# docker-compose stop
+# docker compose stop
 ```
 
 To start stopped containers run:
 ```
-# docker-compose start
+# docker compose start
 ```
 
 To stop and remove all containers
 ```
-# docker-compose down
+# docker compose down
 ```
 
 If you also want to remove all volumes used by containers, add `-v' key:
 ```
-# docker-compose down -v
+# docker compose down -v
 ```
 NOTE: this will remove all database and elastic search data, as well as bundler cache
 
@@ -125,7 +128,7 @@ NOTE: this will remove all database and elastic search data, as well as bundler 
 
 If you need to get bash console on app container use:
 ```
-# docker-compose run --rm app bash
+# docker compose run --rm app bash
 ```
 
 You can replace `bash`command with any other program you want to run.
@@ -136,11 +139,11 @@ NOTE: `run` command creates new container, so `--rm` is added to remove this new
 
 ### Creating DB dump
 ```
-# docker exec bybe_dev_mysql_1 mysqldump -u root --password=root <DB_NAME> | cat > <PATH_TO_DUMP_FILE>
+# docker exec bybe_dev-mysql-1 mysqldump -u root --password=root <DB_NAME> | cat > <PATH_TO_DUMP_FILE>
 ```
 
 ### Restoring DB dump
 
 ```
-# cat <PATH_TO_DUMP_FILE> | docker exec -i bybe_dev_mysql_1 mysql -u root --password=root <DB_NAME>
+# cat <PATH_TO_DUMP_FILE> | docker exec -i bybe_dev-mysql-1 mysql -u root --password=root <DB_NAME>
 ```

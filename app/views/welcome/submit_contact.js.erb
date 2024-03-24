@@ -1,1 +1,5 @@
-$('#contact_content').replaceWith("<%= j(render partial: 'contact_thankyou') %>");
+<% if @errors.empty? %>
+  $('#contact_content').replaceWith("<%= j(render partial: 'contact_thankyou') %>");
+<% else %>
+  alert('<%= escape_javascript(@errors.join("\n")) %>');
+<% end %>

@@ -1,0 +1,11 @@
+%div{align: 'right', dir: 'rtl'}
+  = "#{@user.name}, #{@greeting}"
+
+  = t(:user_warning_email)
+
+  - if @msg.present?
+    != t(:additional_warning_explanation, msg: @msg)
+
+  %hr
+
+  != raw t(:email_footer_html)

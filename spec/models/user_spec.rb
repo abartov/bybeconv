@@ -24,6 +24,32 @@ describe User do
     end
   end
 
+  describe 'blocking' do
+    let(:user) { create(:user) }
+    let(:admin) { create(:user, admin: true) }
+    context 'when user is not blocked' do
+      it 'returns false' do
+        expect(user.blocked?).to be_falsey
+      end
+      it 'ignores expired blocks' do
+        user.block!(:test, admin, 'test reason', nil, 1.day.ago)
+        expect(user.blocked?).to be_falsey
+      end
+    end
+    context 'when user is blocked' do
+      before do
+        user.block!(:test, admin, 'test reason')
+      end
+      it 'returns true' do
+        expect(user.blocked?).to be_truthy
+      end
+      it 'can be unblocked' do
+        user.unblock!(:test)
+        expect(user.blocked?).to be_falsey
+      end
+    end
+  end
+
   describe 'has_bit?' do
     let(:user) { create(:user, editor: true) }
 

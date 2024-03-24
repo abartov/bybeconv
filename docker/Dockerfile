@@ -1,4 +1,4 @@
-FROM ruby:2.6.10-buster
+FROM ruby:3.2.1-buster
 
 RUN apt-get update -qq && apt-get install -y \
     curl \
@@ -13,4 +13,4 @@ RUN apt-get update -qq && apt-get install -y \
 
 WORKDIR /app
 
-CMD bundle install && rails server -b 0.0.0.0 -P /tmp/pids/server.pid
+CMD bundle install && rails server -b 0.0.0.0 -P /tmp/pids/puma.pid

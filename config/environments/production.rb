@@ -152,6 +152,11 @@ Rails.application.configure do
   # config.active_record.database_resolver = ActiveRecord::Middleware::DatabaseSelector::Resolver
   # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
 
-  routes.default_url_options[:host] = 'benyehuda.org'
+  pwd = `pwd`
+  if pwd =~ /staging/
+    routes.default_url_options[:host] = 'staging.benyehuda.org'
+  else
+    routes.default_url_options[:host] = 'benyehuda.org'
+  end
   routes.default_url_options[:protocol] = 'https'
 end

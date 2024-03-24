@@ -18,7 +18,7 @@
   integrity="sha384-vus3nQHTD+5mpDiZ4rkEPlnkcyTP+49BhJ4wJeJunw06ZAp+wzzeBPUXr42fi8If"
   crossorigin="anonymous">
 
-  <link href="/assets/icons.css" rel="stylesheet">
+  <link href="/assets/fonts.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Alef" rel="stylesheet">
 
   <%= stylesheet_link_tag    "application" %>
@@ -124,7 +124,7 @@
                 <!-- <span class="pointer" id="visit_info">😃</span> -->
                 <% if current_user %>
                   <div class="collapsed" data-toggle="collapse" data-target="#user_collapsible" style="display:inline-block;" title="<%= t(:usermenu_tt) %>">
-                    <div style="padding-left: 0.6rem"><%= t(:welcome) %> <strong><%= current_user.name %></strong>!</div>
+                    <div style="padding-left: 0.6rem"><%= t(:welcome_heading) %> <strong><%= current_user.name %></strong>!</div>
                     <div class="dropdown-arrow pointer" style="top: 0.1rem; left: 0"><i class="fa chevron"></i></div>
                   </div>
                   <div id="user_collapsible" class="collapse"><span id="sign_in" class="linkcolor pointer notyet">כניסה לאזור האישי</a><br/>
@@ -257,9 +257,9 @@
         $.get('<%= session_dismiss_sitenotice_path %>');
       });
     }
-    $('#visit_info').click(function(){
-      alert("שלום שלום! ביקרת כבר <%= @base_user.present? ? @base_user.visits.count.to_s : '-1' %> פעמים באתר, וקראת <%= @base_user.present? ? Ahoy::Event.where(user_id: @base_user.id, name: 'text read or printed').count.to_s : '-1' %> יצירות.");
-    });
+    // $('#visit_info').click(function(){
+    //  alert("שלום שלום! ביקרת כבר <%= @base_user.present? ? @base_user.visits.count.to_s : '-1' %> פעמים באתר, וקראת <%= @base_user.present? ? Ahoy::Event.where(user_id: @base_user.id, name: 'text read or printed').count.to_s : '-1' %> יצירות.");
+    //});
     $('.donev').click(function(e) {
       e.stopPropagation();
       if($('#dont_show_again').length > 0) {

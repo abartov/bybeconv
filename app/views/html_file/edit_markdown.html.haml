@@ -24,7 +24,7 @@
           - unless @text.person.nil?
             %h3
               = t(:by)+' '
-              = link_to @text.person.name+' ('+t(:author)+')', author_toc_path(id: @text.person)
+              = link_to @text.person.name+' ('+t(:author)+')', person_path(id: @text.person)
               - unless @text.translator.nil?
                 = t(:translated_by)+' '
                 = link_to @text.translator.name+' ('+t(:translator)+')', authors_show_path(id: @text.translator.id)

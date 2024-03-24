@@ -84,25 +84,18 @@
           .by-card-v02.left-side-card-v02
             .by-card-header-left-v02
               %span.headline-1-v02= t(:tags)
+              .new-tag-teaser= t(:excited_new)
+              .new-tag-teaser-text= t(:new_tag_teaser)
             .by-card-content-v02.card-with-bottom-links
               .inline-block#taggings
-                = render partial: 'shared/taggings', locals: {taggings: @taggings}
-              - unless current_user.nil?
+                = render partial: 'shared/taggings', locals: {taggings: @taggings, taggable: @m}
+              - unless current_user.nil? || current_user.blocked?
+                = hidden_field_tag :accepted_tag_policy, @bu.present? ? @bu.get_preference(:accepted_tag_policy) : 'false', id: 'accepted_tag_policy'
                 #add-tag.card-bottom
-                  .metadata-link.linkcolor.pointer#expand-add-tag
-                    %span.right-side-icon &amp;
-                    %span{:style => "font-weight: bold"}= t(:suggest_new_tag)
-
-                #add-tag-form
-                  = form_for @tagging, remote: true do
-                    %div{style: 'display:inline;margin-top:0.6rem;'}
-                      %b= t(:suggested_tag_name)
-                      = autocomplete_field_tag :tag, '', autocomplete_tag_name_path, {'data-noMatchesLabel' => t(:no_matches_found), class: 'field-v02', id_element: '#new_tagging_tag_id', style: 'width: 10rem;'}
-                      = hidden_field_tag :taggable_id, @tagging.taggable_id
-                      = hidden_field_tag :taggable_type, 'Manifestation'
-                      = hidden_field_tag :tagname_id, '', id: 'tagname_id'
-                    %div{style: 'display:inline'}
-                      %input.btn-small-outline-v02.btn-text-v02{type: :submit, value: t(:suggest_new_tag), style: 'margin-top:0.6rem;width:auto; background-color: #d9cdd5'}
+                  .link-to-all-v02
+                    %button.by-button-v02#initiate-add-tag
+                      .metadata-link-icon.small-icon.pointer &amp;
+                      %div= t(:suggest_new_tag)
 
         -# Additional translations of same work
         - if @e.translation? && (@additional_translations != nil && @additional_translations != [])
@@ -113,10 +106,10 @@
               -  @additional_translations.each do |tr|
                 %div
                   %span
-                    = link_to tr.title, manifestation_read_path(id: tr.manifestations[0].id)
+                    = link_to tr.title, manifestation_path(id: tr.manifestations[0].id)
                   %span= ' '+t(:translation)+': '
                   %span
-                    != tr.translators.map{|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
+                    != tr.translators.map{|t| link_to(t.name, person_path(id: t.id))}.join(', ')
         -# External links
         - if @m.external_links.to_a.size > 0
           .by-card-v02.left-side-card-v02
@@ -171,6 +164,8 @@
   = render partial: 'bookmark_panel'
 #bookmarkDeleteDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
   = render partial: 'bookmark_delete'
+#tagPolicyDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
+  = render partial: 'tag_policy'
 -# chapter popup
 - if @m.chapters?
   .modal#chapterDlg{role: 'dialog', tabindex: '-1'}
@@ -206,16 +201,20 @@
         window.scrollTo(0,position);
       }
     });
-    $('#expand-add-tag').click(function() {
-      $('#expand-add-tag').css('display','none');
-      $('#add-tag-form').css('display','block');
+    $('#initiate-add-tag').click(function() {
+      if($('#accepted_tag_policy').val() != 'false') {
+        $('#generalDlg').load("#{ add_tagging_popup_path(taggable_id: @m.id, taggable_type: 'Manifestation') }");
+        $('#generalDlg').modal('show');
+      }
+      else
+        $('#tagPolicyDlg').modal({  backdrop: 'static', keyboard: false, show: true});
     });
-    $('#expand-add-rec').click(function() {
       /*
+    $('#expand-add-rec').click(function() {
       $('#expand-add-rec').css('display','none');
       $('#add-rec-form').css('display','block');
-      */
     });
+      */
     $('.jumpch').click(function(e) {
       e.preventDefault();
       anchor = $(this).attr('data-target');

@@ -72,7 +72,7 @@
                   .new-info-v02= item.pinned ? '7' : ''
                   .new-card-right-v02
                     - if item.itemtype == 'publication'
-                      = link_to author_toc_path(item.person_id) do
+                      = link_to person_path(item.person_id) do
                         %div
                           %img.new-card-pic-v02{src: item.thumbnail_url, width: '475', height: '686' }
                     - else

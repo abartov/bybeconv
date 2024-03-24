@@ -1,8 +1,9 @@
 set :stage, :staging
 set :rails_env, :production # we want to test production behavior on the staging server
-set :thin_config_path, -> { "#{shared_path}/config/thin.yml" }
+#set :thin_config_path, -> { "#{shared_path}/config/thin.yml" }
+set :puma_config_path, -> { "#{shared_path}/config/puma.rb" }
 
-set :default_env, { path: "/opt/ruby/bin:$PATH", cache_nonce: 'staging', blazer_database_url: "mysql2://blazer:bla!zer@bybe.ck1760yb2dta.us-east-1.rds.amazonaws.com/bybe_staging" }
+set :default_env, { path: "/opt/ruby/bin:$PATH", cache_nonce: 'staging' }
  
 # server-based syntax
 # ======================

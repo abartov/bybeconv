@@ -9,10 +9,10 @@ gem 'mysql2' # Rails 5.2 needs a newer one # , '~> 0.3.11'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-twitter'
 gem 'rufus-scheduler' # scheduler
+gem 'damerau-levenshtein' # string distance
 
 gem 'chewy' # for ElasticSearch 7.x
 gem 'active_data' # for *Search classes in Chewy
-
 gem "jquery-slick-rails" # for carousel slider
 gem 'rails-jquery-autocomplete', '>= 1.0.5' # for auto-completion
 gem 'property_sets', '>= 3.7.1' # for key/value properties per model; version 3.7.1 supports Ruby 3.0 per https://github.com/zendesk/property_sets/issues/85
@@ -37,7 +37,7 @@ gem 'sqlite3' # for dictionary imports
 # gem 'rollbar' # error reporting. Airbrake replacement.
 
 gem 'jquery-rails'
-gem "jquery-ui-rails"
+gem "jquery-ui-rails", git: 'https://github.com/jquery-ui-rails/jquery-ui-rails' # v 7.0 has not been pushed to RubyGems yet
 gem 'activerecord-session_store'
 gem 'sass-rails'
 gem 'coffee-script'
@@ -59,7 +59,7 @@ gem 'rmultimarkdown' # new wrapper over Fletcher Penney's MultiMarkDown 6 (MMD 6
 gem 'yt' # for polling YouTube for new videos
 
 gem 'hebrew', '>= 0.2.1' # https://github.com/abartov/hebrew
-gem 'gared', '>= 0.0.29' # https://gitlab.com/abartov/gared # for scraping bibliographic data from Hebrew sources
+gem 'gared', '>= 0.1.2' # https://gitlab.com/abartov/gared # for scraping bibliographic data from Hebrew sources
 # gem 'goldiloader'
 gem 'haml'
 #gem 'zoom', '~>0.4.1', :git => 'https://github.com/bricestacey/ruby-zoom.git' # for Z39.50 queries to libraries
@@ -102,8 +102,6 @@ gem 'rack-attack' # control misbehaving clients
 group :production do
   gem 'newrelic_rpm' # performance monitoring
   gem 'dalli'
-#  gem 'thin', git: 'https://github.com/macournoyer/thin.git' # 1.8.1 still doesn't support Ruby 3.2
-#  gem 'capistrano-thin', '~> 2.0.0'
   gem 'puma-daemon', require: false
 end
 
@@ -112,7 +110,6 @@ group :test do
   gem 'simplecov', require: false
   gem 'faker', '~> 2.19.0'
   gem 'rails-controller-testing', '~> 1.0.5'
-#  gem 'thin'
 end
 
 group :development do
@@ -121,6 +118,7 @@ group :development do
   gem "capistrano-rails", "~> 1.4", require: false
   gem 'rvm1-capistrano3', require: false
   gem 'capistrano-rvm'
+  gem 'capistrano3-puma'
   gem 'listen'
   gem 'derailed_benchmarks'
 #  gem 'bullet' # for suggestions to add/remove eager loading
@@ -139,3 +137,5 @@ group :test, :development do
   gem 'spring-commands-rspec'
   gem 'debug'
 end
+
+gem "sidekiq", "~> 7.2"

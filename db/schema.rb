@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_01_22_205047) do
+ActiveRecord::Schema.define(version: 2024_02_06_222123) do
 
   create_table "aboutnesses", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -157,6 +157,8 @@ ActiveRecord::Schema.define(version: 2024_01_22_205047) do
     t.integer "status"
     t.string "institution"
     t.string "item_pattern", limit: 2048
+    t.string "vid"
+    t.string "scope"
   end
 
   create_table "blazer_audits", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|

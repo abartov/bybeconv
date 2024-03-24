@@ -1,0 +1,25 @@
+= form_for @user_block do |f|
+  - if @user_block.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@user_block.errors.count, "error")} prohibited this user_block from being saved:"
+      %ul
+        - @user_block.errors.full_messages.each do |message|
+          %li= message
+
+  .field
+    = f.label :user
+    = f.text_field :user
+  .field
+    = f.label :context
+    = f.text_field :context
+  .field
+    = f.label :expires_at
+    = f.datetime_select :expires_at
+  .field
+    = f.label :blocker_id
+    = f.number_field :blocker_id
+  .field
+    = f.label :reason
+    = f.text_field :reason
+  .actions
+    = f.submit 'Save'

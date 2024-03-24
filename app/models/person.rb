@@ -13,8 +13,6 @@ class Person < ApplicationRecord
   has_many :featured_contents
   has_many :involved_authorities, class_name: 'InvolvedAuthority', as: :authority
   has_many :works, through: :involved_authorities, class_name: 'Work'
-#  has_many :realizers
-#  has_many :expressions, through: :realizers, class_name: 'Expression'
   has_many :expressions, through: :involved_authorities, class_name: 'Expression'
   has_many :aboutnesses, as: :aboutable, dependent: :destroy
   has_many :external_links, as: :linkable, dependent: :destroy
@@ -34,6 +32,7 @@ class Person < ApplicationRecord
   scope :latest, -> (limit) {order('created_at desc').limit(limit)}
   scope :translators, -> {joins(:involved_authorities).where(involved_authorities: {role: :translator}).distinct}
   scope :translatees, -> {joins(involved_authorities: {work: :expressions}).where(involved_authorities: {role: InvolvedAuthority.roles[:author]}, expressions: {translation: true}).distinct}
+  scope :tagged_with, -> (tag_id) {joins(:taggings).where(taggings: {tag_id: tag_id, status: Tagging.statuses[:approved]}).distinct}
 
   # features
   has_attached_file :profile_image, styles: { full: "720x1040", medium: "360x520", thumb: "180x260", tiny: "90x120"}, default_url: :placeholder_image_url, storage: :s3, s3_credentials: 'config/s3.yml', s3_region: 'us-east-1'
@@ -234,6 +233,9 @@ class Person < ApplicationRecord
     return (w + t).uniq.sort_by{|m| m.sort_title}
   end
 
+  def title # convenience method for polymorphic handling (e.g. Taggable)
+    name
+  end
   def original_works_by_genre
     ret = {}
     get_genres.map{|g| ret[g] = []}
@@ -333,6 +335,21 @@ class Person < ApplicationRecord
     Rails.cache.fetch("au_no_toc_count", expires_in: 24.hours) do
       self.no_toc.count
     end
+  end
+
+  def cached_popular_tags_used_on_works
+    Rails.cache.fetch("au_#{self.id}_pop_tags", expires_in: 12.hours) do
+      popular_tags_used_on_works
+    end
+  end
+
+  def popular_tags_used_on_works(limit=10)
+    Tag.find(popular_tags_used_on_works_with_count.keys.first(limit))
+  end
+
+  def popular_tags_used_on_works_with_count
+    mm = (original_works + translations).uniq.pluck(:id)
+    Tag.joins(:taggings).where(taggings: {taggable_type: 'Manifestation', taggable_id: mm}).group('tags.id').order('count_all DESC').count
   end
 
   def self.get_popular_authors_by_genre(genre)

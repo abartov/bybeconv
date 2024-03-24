@@ -5,33 +5,33 @@
         .by-card-header-v02
           %span.by-icon-header-v02= glyph_for_genre(genre)
           %span.headline-1-v02= textify_genre(genre)
-          - if @works[genre].size > 0
-            .by-card-content-v02.mainlist{:style => "padding-top: 12px;"}
-              %ol
-                - @works[genre].each do |m|
-                  %li
-                    %p
-                      = link_to m.title, manifestation_read_path(m)
-                      - if m.authors.count > 1
-                        - au_count = m.authors.count - 1
-                        - i = 0
-                        = '('+t(:with)
-                        - add_authors = ''
-                        - m.authors.each do |au|
-                          - next if au == @author
-                          - i += 1
-                          - add_authors += au.name + (i == au_count ? '' : '; ')
-                        = add_authors+')'
-                      - if m.expression.translation
-                        = " #{t(:translated_by)} "
-                        != m.expression.translators.map{|p| link_to(p.name, author_toc_path(p))}.join('; ')
+        - if @works[genre].size > 0
+          .by-card-content-v02.mainlist{:style => "padding-top: 12px;"}
+            %ol
+              - @works[genre].each do |m|
+                %li
+                  %p
+                    = link_to m.title, manifestation_path(m)
+                    - if m.authors.count > 1
+                      - au_count = m.authors.count - 1
+                      - i = 0
+                      = '('+t(:with)
+                      - add_authors = ''
+                      - m.authors.each do |au|
+                        - next if au == @author
+                        - i += 1
+                        - add_authors += au.name + (i == au_count ? '' : '; ')
+                      = add_authors+')'
+                    - if m.expression.translation
+                      = " #{t(:translated_by)} "
+                      != m.expression.translators.map{|p| link_to(p.name, person_path(p))}.join('; ')
 
-          - if @translations[genre].size > 0
-            .by-card-content-v02{:style => "padding-top: 12px;"}
-              %h3= t(:translation)
-              %ol
-                - @translations[genre].each do |m|
-                  %li
-                    = link_to m.title, manifestation_read_path(m)
-                    = t(:by)
-                    = link_to m.expression.work.first_author.name, author_toc_path(m.expression.work.first_author)
+        - if @translations[genre].size > 0
+          .by-card-content-v02{:style => "padding-top: 12px;"}
+            %h3= t(:translation)
+            %ol
+              - @translations[genre].each do |m|
+                %li
+                  = link_to m.title, manifestation_path(m)
+                  = t(:by)
+                  = link_to m.expression.work.first_author.name, person_path(m.expression.work.first_author)

@@ -61,9 +61,6 @@ class ApplicationController < ActionController::Base
     headers['Access-Control-Request-Method'] = '*'
   end
 
-  def search_results
-    render 'shared/search_results', layout: false
-  end
   def mobile_search
     render partial: 'shared/mobile_search'
   end
@@ -261,6 +258,14 @@ class ApplicationController < ActionController::Base
     #@credits = MultiMarkdown.new(credits).to_html.force_encoding('UTF-8')
   end
 
+  def generate_toc
+    @works = @author.cached_original_works_by_genre
+    @translations = @author.cached_translations_by_genre
+    @genres_present = []
+    @works.each_key {|k| @genres_present << k unless @works[k].size == 0 || @genres_present.include?(k)}
+    @translations.each_key {|k| @genres_present << k unless @works[k].size == 0 || @genres_present.include?(k)}
+  end
+
   def is_spider?
     return false unless request.user_agent.present?
     ua = request.user_agent.downcase
@@ -314,7 +319,7 @@ class ApplicationController < ActionController::Base
     unsorted_news_items = NewsItem.last(5) # read at most the last 5 persistent news items (Facebook posts, announcements)
 
     whatsnew_since(1.month.ago).each {|person, pubs| # add newly-published works
-      unsorted_news_items << NewsItem.from_publications(person, textify_new_pubs(pubs), pubs, author_toc_path(person.id), person.profile_image.url(:thumb))
+      unsorted_news_items << NewsItem.from_publications(person, textify_new_pubs(pubs), pubs, person_path(person.id), person.profile_image.url(:thumb))
     }
     cached_youtube_videos.each {|title, desc, id, thumbnail_url, relevance| # add latest videos
       unsorted_news_items << NewsItem.from_youtube(title, desc, youtube_url_from_id(id), thumbnail_url, relevance)

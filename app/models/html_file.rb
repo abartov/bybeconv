@@ -635,7 +635,7 @@ class HtmlFile < ApplicationRecord
         p = Person.find(person_id)
         Chewy.strategy(:atomic) {
           ActiveRecord::Base.transaction do
-            w = Work.new(title: tt, orig_lang: orig_lang, genre: genre, comment: comments) # TODO: un-hardcode?
+            w = Work.new(title: tt, orig_lang: orig_lang, genre: genre, comment: comments, primary: true) # TODO: un-hardcode primariness in new upload flow
             q = (translator_id.nil? ? p : translator)
             copyrighted = ((p.public_domain && q.public_domain) ? false : ((p.public_domain.nil? || q.public_domain.nil?) ? nil : true)) # if author is PD, expression is PD # TODO: make this depend on both work and expression author, for translations
             e = Expression.new(title: tt, language: 'he', period: q.period, copyrighted: copyrighted, source_edition: publisher, date: year_published, comment: comments) # ISO codes

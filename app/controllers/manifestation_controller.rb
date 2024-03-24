@@ -245,7 +245,7 @@ class ManifestationController < ApplicationController
   end
 
   def read
-    @m = Manifestation.joins(:expression).includes(:expression).find(params[:id])
+    @m = Manifestation.joins(:expression).includes(:expression).find(params[:id].to_i)
     if @m.nil?
       head :not_found
     else
@@ -293,7 +293,7 @@ class ManifestationController < ApplicationController
     format = params[:format]
     unless Downloadable.doctypes.include?(format)
       flash[:error] = t(:unrecognized_format)
-      redirect_to manifestation_read_path(params[:id])
+      redirect_to manifestation_path(params[:id])
       return
     end
 
@@ -761,11 +761,13 @@ class ManifestationController < ApplicationController
 
     @collection = @collection.aggregations(standard_aggregations).limit(100) # prepare ES query - limit is the per-page limit
     @total = @collection.count # actual query triggered here
+    @total_pages = (@total/100.0).ceil # looks like there is a bug in kaminari ES adapter and its `total_pages` method
+                                       # cannot return value greater than 100, so we calculate it like this
 
     @page = params[:page].to_i
     @page = 1 if @page == 0 # slider sets page to zero, awkwardly
                             # a zero-result query would trigger this, otherwise
-    if @page > (@total/100.0).ceil && @page != 1
+    if @page > @total_pages && @page != 1
       # Sometimes we receive requests to pages with extremely large number from bots/search crawlers
       # So simply respond with NotFound in this case
       raise PageNotFound
@@ -794,7 +796,6 @@ class ManifestationController < ApplicationController
       end
       oldpage = @page
       @works = @collection.page(@page) # get page X of manifestations
-      @total_pages = @works.total_pages
 
       unless params[:to_letter].blank?
         adjust_page_by_letter(@collection, params[:to_letter], :sort_title, @sort_dir, true)
@@ -809,7 +810,6 @@ class ManifestationController < ApplicationController
       # @ab = prep_ab(@collection, @works, :sort_title)
     else
       @works = @collection.page(@page)
-      @total_pages = @works.total_pages
     end
   end
 

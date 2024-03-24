@@ -185,7 +185,7 @@ module ApplicationHelper
     when 'Manifestation'
       manifestation_read_path(id)
     when 'Person'
-      author_toc_path(id)
+      person_path(id)
     when 'CorporateBody'
       corp_toc_path(id)
     when 'Anthology'
@@ -229,4 +229,14 @@ module ApplicationHelper
     ret = Collection.collection_types.reject{|x| x == 'root'}.map{|k,v| [textify_collection_type(k), k]} + [[t(:work), 'Manifestation'], [t(:paratext), 'paratext'], [t(:placeholder_item), 'placeholder_item']]
   end
 
+  def taggee_from_taggable(taggable)
+    case taggable.class.to_s
+    when 'Manifestation'
+      t(:this_work)
+    when 'Person'
+      taggable.gender == 'female' ? t(:this_author_f) : t(:this_author_m)
+    else
+      t(:this_item)
+    end
+  end
 end

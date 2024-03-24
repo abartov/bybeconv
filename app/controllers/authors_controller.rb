@@ -4,6 +4,7 @@ include ApplicationHelper
 
 class AuthorsController < ApplicationController
   before_action only: [:new, :publish, :create, :show, :edit, :list, :add_link, :delete_link, :delete_photo, :edit_toc, :update, :to_manual_toc, :collect_toc] do |c| c.require_editor('edit_people') end
+  autocomplete :tag, :name, :limit => 2
 
   def publish
     @author = Person.find(params[:id])
@@ -130,6 +131,14 @@ class AuthorsController < ApplicationController
         end
       end
     end
+    # tags by tag_id
+    @tag_ids = params['tag_ids'].split(',').map(&:to_i) unless @tag_ids.present? || params['tag_ids'].blank?
+    if @tag_ids.present?
+      tag_data = Tag.where(id: @tag_ids).pluck(:id, :name)
+      ret << {terms: {tags: tag_data.map(&:last)}}
+      @filters += tag_data.map { |x| [x.last, "tag_#{x.first}", :checkbox] }
+    end
+    
     # dates
     @fromdate = params['fromdate'] if params['fromdate'].present?
     @todate = params['todate'] if params['todate'].present?
@@ -238,9 +247,30 @@ class AuthorsController < ApplicationController
     d = Date.today
     @maxdate = "#{d.year}-#{'%02d' % d.month}"
     @header_partial = 'authors/browse_top'
+    @authors_list_title = t(:author_list) unless @authors_list_title.present?
+    render :browse
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
   def all
     redirect_to '/authors'
+  end
+
+  def by_tag
+    @page_title = t(:authors_by_tag)+' '+t(:project_ben_yehuda)
+    @pagetype = :authors
+    tid = params[:id].to_i
+    @tag_ids = tid
+    tag = Tag.find(tid)
+    if tag.present?
+      @authors_list_title = t(:authors_by_tag)+': '+tag.name
+      browse
+    else
+      flash[:error] = t(:no_such_item)
+      redirect_to '/'
+    end
   end
 
   def create_toc
@@ -505,6 +535,8 @@ class AuthorsController < ApplicationController
         unless @featured.empty?
           (@fc_snippet, @fc_rest) = snippet(@featured[0].body, 500) # prepare snippet for collapsible
         end
+        @taggings = @author.taggings
+
         unless @author.toc.nil?
           prep_toc
         else
@@ -582,14 +614,6 @@ class AuthorsController < ApplicationController
   end
 
   protected
-
-  def generate_toc
-    @works = @author.cached_original_works_by_genre
-    @translations = @author.cached_translations_by_genre
-    @genres_present = []
-    @works.each_key {|k| @genres_present << k unless @works[k].size == 0 || @genres_present.include?(k)}
-    @translations.each_key {|k| @genres_present << k unless @works[k].size == 0 || @genres_present.include?(k)}
-  end
 
   def person_params
     params[:person].permit(:affiliation, :comment, :country, :name, :nli_id, :other_designation, :viaf_id, :public_domain, :profile_image, :birthdate, :deathdate, :wikidata_id, :wikipedia_url, :wikipedia_snippet, :blog_category_url, :profile_image, :metadata_approved, :gender, :bib_done, :period, :sort_name, :status)

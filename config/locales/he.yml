@@ -26,6 +26,7 @@ he:
   contact_form_email_greeting: "התקבל טופס צור קשר. להלן הפרטים:"
   volunteer_form_email_greeting: "התקבל טופס התנדבות. להלן הפרטים:"
   rename_this_anthology: שינוי שם מקראה זו
+  merge_rename: אישור התגית בשם אחר
   authors_select_filter: סינון לפי יוצר - בחירה מרובה
   add_authors_to_filter: הוספת היוצרים שנבחרו לסינון
   back_to_bib_workshop: חזרה לסדנה הביבליוגרפית
@@ -38,7 +39,7 @@ he:
   loading: התוכן נטען...
   work_title: שם יצירה
   what_to_search_for: מה לחפש...
-  author_names: שם(ות) מחבר(ים)
+  author_names: שם(ות) יוצר(ים)
   works_list: רשימת יצירות
   month_year: חודש/שנה
   year: שנה
@@ -47,6 +48,7 @@ he:
   works_by_period: יצירות לפי תקופה
   works_by_genre: יצירות לפי סוגה
   works_by_tag: יצירות לפי תגית
+  authors_by_tag: יוצרים לפי תגית
   notice: הודעה
   sitenotice: הודעת מערכת
   new_sitenotice: הודעת מערכת חדשה
@@ -68,7 +70,7 @@ he:
   about_pby_learn_more: קִראו עוד על אודות הפרויקט ועל איך לעזור
   welcome_to_works_browsing: ברוכים הבאים לרשימת היצירות
   welcome_to_authors_browsing: ברוכים הבאים לרשימת היוצרים
-  authors_browsing_intro_paging: ברשימת היוצרים בקריטריונים שבחרת ישנן %{total} תוצאות. בגלל אורכה, הרשימה מתחלקת לעמודי משנה המכילים 100 תוצאות כל אחד. ניתן לדפדף ברשימה באמצעות הבקרים הנמצאים מעל ומתחת לרשימה, המאפשרים מעבר עמודים ואיתור האות הראשונה של שם המחבר.
+  authors_browsing_intro_paging: ברשימת היוצרים בקריטריונים שבחרת ישנן %{total} תוצאות. בגלל אורכה, הרשימה מתחלקת לעמודי משנה המכילים 100 תוצאות כל אחד. ניתן לדפדף ברשימה באמצעות הבקרים הנמצאים מעל ומתחת לרשימה, המאפשרים מעבר עמודים ואיתור האות הראשונה של שם היוצר.
   works_browsing_intro_paging: ברשימת היצירות בקריטריונים שבחרת ישנן %{total} יצירות. בגלל אורכה, הרשימה מתחלקת לעמודי משנה המכילים 100 יצירות כל אחד. ניתן לדפדף ברשימה באמצעות הבקרים הנמצאים מעל ומתחת לרשימה, המאפשרים מעבר עמודים ואיתור האות הראשונה של שם היצירה.
   authors_browsing_intro_html: "<p>הרשימה מכילה גם יוצרים עבריים וגם יוצרים לועזיים אשר יצירותיהם זמינות בפרויקט בתרגום עברי. ניתן להפעיל פעולות סינון מתקדמות המאפשרות צמצום הרשימה על-ידי בחירה בו-זמנית של המאפיינים: סוגה, תקופה, מגדר, ותאריכים.</p><p><b>  להפעלת אפשרויות סינון מתקדמות יש ללחוץ על המתג בפס העליון.</b></p>"
   works_browsing_intro_html: "<p> שמות יצירות המופיעים בסוגריים מרובעים מעידים כי ליצירה לא ניתן שם, ואנו משתמשים במילים הראשונות של הטקסט ככותרת לצורכי רשימות וחיפוש. יצירות מנוקדות ישולבו בסדר היצירות הכללי ואילו יצירות באנגלית יופיעו בנפרד.</p><p>
@@ -86,7 +88,7 @@ he:
   origlang_title: כותרת בשפת המקור
   treat_as_poetry: מצב שירה
   associated_persons: אישים מקושרים
-  legacy_guessed_person: ניחוש מחבר לפי תיקיה
+  legacy_guessed_person: ניחוש יוצר לפי תיקיה
   legacy_url: היצירה באתר הישן
   to_all_authors: לרשימת כל היוצרים
   to_all_x_items: לכל %{x} הפריטים
@@ -121,10 +123,21 @@ he:
   editing_dir: עריכת תיקיה ישנה
   wikipedia_snippet: תקציר מויקיפדיה
   wikipedia_url: קישורית לויקיפדיה
-
+  # tags and taggings front-end
+  add_tag: הוספת תגית
+  tag_policy_intro_html: "תודה שבחרת להציע תגית ליצירה. תגיות הן דרך נוספת לסווג יצירות ולסייע לאחרים לגלותן. אפשר להציע תגיות משלך או לבחור מרשימת תגיות קיימות.</p><p>לטובת הכלל, יש להקפיד על העקרונות הבאים: התגית לא נועדה להחליף איתור דרך שם יצירה, יוצר, סוגה, ושאר אופני החיפוש הקיימים ממילא; לכן אין טעם לתייג יצירה בשם היוצר, למשל. התגית צריכה להיות עובדתית (שסביר שלא תעורר מחלוקת) ולא התרשמותית. התגית אינה ביקורת או הבעת דיעה; לכן יש להימנע מתגיות כגון ״אהבתי״, ״משעמם״ וכדומה. תגיות מוצעות תיבדקנה בידי צוות האתר לפני שתוצגנה לכלל המשתמשים."
+  to_full_tagging_policy: לפירוט מלא של כללי השימוש בתגיות
+  i_understand_and_accept: הבנתי והסכמתי לעקרונות אלו.
+  can_proceed: אפשר להתקדם
+  suggested_tagging: פריט מוצע לתיוג
+  tagging_suggestions_count: תיוגים שהוצעו
+  new: חדש
+  change_or_merge: "שינוי / מיזוג"
+  items_pending_for_this_tag: "פריטים הממתינים לתיוג בתגית: %{tag}"
+  # end tags and taggings
   none_yet_click_edit_to_associate: טרם קושר. יש ללחוץ על עריכה כדי לקשר.
-  send_to_viaf: חיפוש מחבר במאגר VIAF
-  person_entity: ישות מחבר
+  send_to_viaf: חיפוש יוצר במאגר VIAF
+  person_entity: ישות יוצר
   report_inappropriate_content: דיווח על תוכן בעייתי
   this_work_has_x_recommendations: "ליצירה זו יש %{x} המלצות קוראים"
   x_liked_y_recommended: "%{x} קוראות וקוראים אהבו את היצירה, %{y} המלצות כתובות"
@@ -133,7 +146,7 @@ he:
   with: "עם "
   associate_with_viaf: קשר את התיקיה לרשומת ה-VIAF הזו
   associated_with_viaf: קושר לרשומה מספר %{viaf} במאגר VIAF
-  nothing_found_try_surname: אין תוצאות.  נסו לעדכן (זמנית!) את שם המחבר לשם המשפחה בלבד וחפשו שוב.
+  nothing_found_try_surname: אין תוצאות.  נסו לעדכן (זמנית!) את שם היוצר לשם המשפחה בלבד וחפשו שוב.
   conversion_stats_html: "סטטיסטיקה -- %{total_texts} סך הכל קבצים ישנים, %{total_known} קבצים אובחנו, %{total_images} עם תמונות, %{total_footnotes} עם הערות שוליים, %{total_tables} עם טבלאות, %{total_nikkud_full} עם ניקוד מלא, %{total_nikkud_some} עם ניקוד חלקי. <p /> מצבים אחרים -- %{total_badenc} עם תקלת קידוד, %{total_fileerr} עם שגיאת קובץ אחרת, %{total_assigned} קבצים מוקצים למסבים,%{total_parsed} קבצים פוענחו, %{total_uploaded} קבצים הועלו ישירות, %{total_superseded} קבצים הוחלפו בהעלאה ישירה, %{total_accepted} קבצים אושרו, %{total_published} ראו אור בקטלוג, %{total_manual} קבצים ממתינים להסבה ידנית."
   assignee: מוקצה ל-
   legacy_text_from_url: מהאתר הישן בכתובת
@@ -174,13 +187,13 @@ he:
   awaiting_first: בהמתנה להעלאת יצירה ראשונה
   nonpd: טרם פקעו הזכויות
   make_published: הפוך לפומבי!
-  publish_person: הפיכת המחבר/ת %{author} לפומבי/ת
-  publishing_person_explanation: להלן רשימת יצירות של %{author}. לחיצה על הלחצן בתחתית הרשימה תהפוך מחבר/ת זה/זו לפומבי/ת!
+  publish_person: הפיכת היוצר/ת %{author} לפומבי/ת
+  publishing_person_explanation: להלן רשימת יצירות של %{author}. לחיצה על הלחצן בתחתית הרשימה תהפוך יוצר/ת זה/זו לפומבי/ת!
   work_not_available: יצירה זו אינה זמינה לפי שעה.
   author_not_available: דף היוצר/ת אינו זמין לפי שעה.
   illustrations_by: איורים מאת
   deprecated: מחוּק
-  pub_status_explanation: ברירת המחדל אם השדה ריק היא שהיצירה תהא פומבית אם המחבר כבר פומבי, ולא פומבית אם לאו.
+  pub_status_explanation: ברירת המחדל אם השדה ריק היא שהיצירה תהא פומבית אם היוצר כבר פומבי, ולא פומבית אם לאו.
   dpublished: פורסם
   duploaded: עלה לאתר
   dcreated: חובר
@@ -200,7 +213,7 @@ he:
   most_read_works: רשימת היצירות הנקראות ביותר
   newest_works: היצירות החדשות ביותר
   table_of_contents: דף יוצר
-  new_person: "מחבר/ת חדש/ה"
+  new_person: "יוצר/ת חדש/ה"
   join_volunteer: התנדבות להפקת תכנים
   donate_money: תרומה כספית
   donate: תרומה
@@ -289,12 +302,15 @@ he:
   volunteers_who_helped: "מתנדבים שנטלו חלק בהנגשת יצירותי%{gender_letter} של %{author}"
   html_file_published: הקובץ מהמערכת הישנה פורסם עתה במערכת החדשה, ונוסף לקטלוג המערכת!
   most_popular_authors: היוצרים הנקראים ביותר
+  to_all_authors_tagged: לכל היוצרים/ות שתויגו "%{tag}"
+  to_all_works_tagged: לכל היצירות שתויגו "%{tag}"
+  latest_works_tagged: יצירות שתויגו "%{tag}" באחרונה
   most_popular_translated_authors: היוצרים המתורגמים הנקראים ביותר
   most_read_last_month: היצירות הנקראות ביותר בחודש החולף
   most_read_xlat_last_month: היצירות המתורגמות הנקראות ביותר בחודש החולף
   to_all_works_in_this_genre: לכל היצירות בסוגה זו
   most_read_authors_last_month: היוצרים הנקראים ביותר בחודש החולף
-  authors_list: רשימת יוצרים
+  authors_list: רשימת יוצרים ויוצרות
   to_the_full_list: לרשימה המלאה
   whatsnew: "מה חדש?"
   whatsnew_subtitle: יצירות ויוצרים חדשים באתר, אירועים, סרטונים, וחדשות.
@@ -313,7 +329,7 @@ he:
   save_and_exit: שמירה ויציאה
   save_to_file: שמירת היצירה לקובץ
   save_and_update_display: שמירה ועדכון תצוגה
-  works_about_this_author: "יצירות בַּמאגר על אודות המחבר%{gender_suffix}"
+  works_about_this_author: "יצירות בַּמאגר על אודות היוצר%{gender_suffix}"
   works_about_this_work: יצירות בַּמאגר על אודות יצירה זו
   aboutnesses: נושאי היצירה
   person: אדם
@@ -331,6 +347,8 @@ he:
   add_url: הוסף את הקישורית
   existing_aboutnesses: נושאים קיימים
   bib_workshop: הסדנה הביבליוגרפית
+  bib_vid: קוד VID
+  bib_scope: קוד scope
   # genre key names are currently hard-coded in ApplicationController
   genres: סוגות
   genres_and_types: סוגות וסוגים
@@ -345,6 +363,7 @@ he:
   # end genres
   anth_grows: המקראה צומחת!
   most_popular_works_this_month: היצירות הנקראות ביותר החודש
+  most_popular_works: היצירות הנקראות ביותר
   support_the_project: הצטרפו לתומכי הפרויקט!
   remove_final_period: הסרת נקודה מסוף הכותרת
   this_author_has_a_generated_toc: (דף יוצר מחולל אוטומטית!)
@@ -402,7 +421,7 @@ he:
   logo: לוגו
   statistics: סטטיסטיקה
   holdings: מצאי
-  bib_stats: ידועים %{pubs} חיבורים ו-%{holdings} רשומות מצאי. מתוך החיבורים, %{obtained} הושגו וטרם נסרקו, %{scanned} נסרקו וטרם עלו למערכת המשימות, %{uploaded} עלו למערכת, %{irrelevant} סומנו כלא רלבנטיים, %{copyrighted} עדיין מוגנים וללא רשות פרסום, ומתוך רשומות המצאי, %{missing} חסרים בפועל.  הביבליוגרפיה של %{authors_done} מחברים הושלמה, ו-%{authors_todo} מחברים נותרו.
+  bib_stats: ידועים %{pubs} חיבורים ו-%{holdings} רשומות מצאי. מתוך החיבורים, %{obtained} הושגו וטרם נסרקו, %{scanned} נסרקו וטרם עלו למערכת המשימות, %{uploaded} עלו למערכת, %{irrelevant} סומנו כלא רלבנטיים, %{copyrighted} עדיין מוגנים וללא רשות פרסום, ומתוך רשומות המצאי, %{missing} חסרים בפועל.  הביבליוגרפיה של %{authors_done} יוצרים הושלמה, ו-%{authors_todo} יוצרים נותרו.
   added_to_group: נוסף/ה לקבוצה
   removed_from_group: נגרע/ה מהקבוצה
   handle_proofs: טיפול בהגהות
@@ -416,8 +435,8 @@ he:
   unmake_crowdsourcer: ביטול הרשאת מיקור המונים
   legacy_metadata: עריכת מטא-דאטה אתר ישן
   mark_as_valid: סמן כתקין ואל תציג שוב
-  get_bibs: חיפוש רשומות ביבליוגרפיות לפי מחבר
-  get_bibs_instructions: הזינו שם מחבר (אפשר חלקי; אם מלא, שם משפחה, שם פרטי), והקישו על חיפוש.
+  get_bibs: חיפוש רשומות ביבליוגרפיות לפי יוצר
+  get_bibs_instructions: הזינו שם יוצר (אפשר חלקי; אם מלא, שם משפחה, שם פרטי), והקישו על חיפוש.
   search: חיפוש
   true: כן
   false: לא
@@ -428,7 +447,6 @@ he:
   activate_bit: הוסף תפקיד
   deactivate_bit: בטל תפקיד
   editor_bits: תפקידי עורך
-  proof_thanks_title: קיבלנו, תודה!
   from_project_ben_yehuda: מפרויקט בן־יהודה
   proof_thanks_html: תודה רבה על שטרחת לשלוח אלינו הגהה או הערה!  נעיין בה בקפידה ונתקן את הטקסט במידת הצורך, ונעדכן אותך כשנעשה זאת.
   proof_subscribed: אנו שמחים שברצונך לקבל עדכונים מפרויקט בן־יהודה בעתיד.  נוסיף אותך לרשימת הדיוור שלנו בהקדם, בכתובת %{email}
@@ -439,7 +457,6 @@ he:
   proofstatus_wontfix: לא שגוי
   proofstatus_escalated: טעון בדיקה נוספת
   proofstatus_assigned: מוקצה לטיפול
-  proofs: הגהות
   blazer_system: מערכת בלייזר לתיחקור מסד הנתונים
 # TODO: add notification e-mail when resolving a proof
   left_todo: נותרו לעשות
@@ -458,7 +475,7 @@ he:
   proof_copy_text: העתק למטה
   your_selected_text: הטקסט שסומן
   submit_proof: שליחת הגהה
-  proof: הגהה
+  proof_heading: הגהה
   assign_proofs: הקצה עוד הגהות לטיפולי
   highlighted_passage: הקטע שסומן בדיווח
   find_in_text: איתור בטקסט
@@ -524,7 +541,7 @@ he:
   our_own_content: 'תוכן משלנו:'
   bookshelf: מדפים
   found_mistake: מצאתי שגיאה
-  email_just_for_proof: כתובת דואל (לא חובה) רק לקבלת עדכון על הגהה זו
+  email_just_for_proof: כתובת דואל רק לקבלת עדכון על הגהה זו
   report_found_mistake: דיווח על מציאת שגיאה בדף
   clear_text_and_reset_proof: מחיקת טקסט וניקוי חלון ההגהה
   found_br_mistake_html: מצאתי<BR /> שגיאה
@@ -644,8 +661,8 @@ he:
   uploaddate_desc: 'ת. עלייה לאתר: מהחדש לישן'
   title: כותרת
   title_x: "כותרת: %{x}"
-  author_x: "מחבר: %{x}"
-  authors_xx: "מחברים: %{xx}"
+  author_x: "יוצר: %{x}"
+  authors_xx: "יוצרים: %{xx}"
   title_already_exists: השם כבר קיים. נא לתת שם אחר.
   text_already_in_anthology: היצירה הנוכחית כבר מופיעה במקראה הזאת.
   anth_x_works_added: "%{x} יצירות נוספו לסוף המקראה. אפשר לשנות את מיקומן בגרירה."
@@ -668,8 +685,8 @@ he:
   sort: מיון
   sort_name: שם לצורך מיון
   actions: פעולות
-  author: מחבר
-  author_f: מחברת
+  author: יוצר
+  author_f: יוצרת
   render: הצגת יצירה
   show: הצגת פרטים
   thedate: תאריך
@@ -678,7 +695,11 @@ he:
   publication: כותר
   comments: הערות
   popular_work_tags: תגיות נפוצות ליצירות
-  no_tags_yet: ליצירה זו טרם הוצעו תגיות
+  no_tags_yet: "%{taggee} טרם הוצעו תגיות"
+  this_work: ליצירה זו
+  this_author_m: ליוצר זה 
+  this_author_f: ליוצרת זו
+  this_item: לפריט זה
   suggested_tag_name: איזו תגית ברצונך להציע?
   no_recommendations_yet: על יצירה זו טרם נכתבו המלצות. נשמח אם תהיו הראשונים לכתוב המלצה.
   to_all_whatsnew: לכל מה שחדש
@@ -723,11 +744,52 @@ he:
   edition_details: פרטי מהדורה ומידע נוסף
   more_info: מידע נוסף
   tags: תגיות
+  taggings: תיוגים
   tag: תגית
+  moderate_tags: עיון בתיוגים מהציבור
+  next_milestone: היעד הבא
+  my_activity: הפעילות שלי
+  similar_to_x: "דומה לפריט: %{x}"
+  pending_tags_and_taggings: יש %{pending_tags} תגיות ו־%{pending_taggings} תיוגים ממתינים לאישור
+  pending_tags: תגיות ממתינות לאישור
+  pending_taggings: תיוגים ממתינים לאישור
+  additional_actions: "פעולות נוספות..."
+  adjacent_or_similar_tags: תגיות סמוכות או דומות
+  adjacent_tags: תגיות סמוכות
+  approve_and_next: אישור ומעבר לפריט הבא
+  reject_and_next: דחייה ומעבר לפריט הבא
+  approve_and_review_taggings: אישור ועיון בתיוגים
+  merge_with_this_tag: מיזוג עם תגית זו
+  merge_tag_title: מיזוג עם תווית קיימת
+  merge_tagging_title: העברת תיוג מוצג לתגית קיימת
+  merge_tagging_preview_html: "התיוג <b>יאושר</b> ויועבר מהתגית \"%{tag}\" (שלה יש כרגע %{src_tag_taggings_count} תיוגים, כולל מוצעים, לתגית שתבחר/י:"
+  confirm_merge_tag: אישור מיזוג התגית
+  confirm_merge_tagging: אישור העברת התיוג
+  confirm_escalation: אישור העברה לבדיקה נוספת
+  tag_merged: התגית מוזגה, על תיוגיה הממתינים
+  tag_merged_intro: "התגית שהצעת (%{orig_tag_name}) מוזגה עם תגית קיימת (%{tag}). תודה רבה על ההצעה! מעכשיו יוכלו למצוא את התגית גם דרך השם שהצעת."
+  tag_escalated: התגית הועברה לבדיקה נוספת
+  tagging_escalated: התיוג הועבר לבדיקה נוספת
+  tagging_of: "תיוג של:"
+  to_the_item: לפריט
+  with_the_tag: בתגית
+  tag_rejected: התגית נדחתה
+  tagging_approved: התיוג אושר.
+  tagging_rejected: התיוג נדחה.
+  user_warned: המשתמש/ת הוזהר/ה
+  merge_tag_preview_html: "התגית המוצעת <b>%{tag}</b> (%{src_tag_taggings_count} תיוגים מקושרים) תמוזג עם התגית <b>%{dest_tag}</b> (%{dest_tag_taggings_count} תיוגים מקושרים)."
+  merge_tag_generic_html: "התגית המוצעת <b>%{tag}</b> (%{src_tag_taggings_count} תיוגים מקושרים) <b>תאושר</b> בשם שיוזן להלן, או תמוזג לתגית שתיבחר בהשלמה אוטומטית, או מהרשימה בלשונית השנייה:"
+  taggings_will_be_merged: גם התיוגים המקושרים לתגית יועברו לתגית היעד, ללא שינוי במצב אישורם.
+  no_more_to_review: "אין פריטים נוספים לבדוק! :)"
+  tag_approved: התגית אושרה!
+  approve: אישור
+  reject: דחייה
   another_feature: הצגת זרקור נוסף
   tags_for_work: תגיות ליצירה
   recommendations_for_work: המלצות קוראים
   x_authors: "(%{x} יוצרים)"
+  x_pending_taggings_for_tag: "%{x} תיוגים מוצעים לתגית %{tag}"
+  for_tag: 'לתגית "%{tag}"'
   x_authors_mixed_gender: "%{x} יוצרים ויוצרות"
   writing_language: שפת יצירה
   non_hebrew_languages: שפות אחרות
@@ -776,7 +838,7 @@ he:
   link: קישורית
   period: תקופה
   periods: תקופות
-  periodless: מחברים חסרי תקופה
+  periodless: יוצרים חסרי תקופה
   ancient: עת עתיקה ופיוט
   medieval: ימי הביניים והרנסאנס
   enlightenment: ההשכלה
@@ -865,10 +927,15 @@ he:
   pd_only: רק נחלת הכלל
   nonpd_only: רק רשות פרסום
   are_you_sure: נא לאשר מחיקה
+  confirm_approve: נא לאשר אישור
+  confirm_reject: נא לאשר דחייה
   confirm_hide: נא לאשר הסתרה
+  confirm_warn: נא לאשר אזהרה
+  confirm_block: נא לאשר חסימה
   delete_photo: מחיקת תמונה (לצמיתות!)
   delete_link: הסרת קישורית
   delete: מחיקה
+  cancel_focus_on_this_tag: ביטול מיקוד בתגית זו
   anth_text_deletion: מחיקת פריט מהמקראה
   anth_text_deletion_p1: 'פעולה זו תמחק ללא אפשרות חזרה את הפריט:'
   anth_text_deletion_p3: מתוך המקראה הנוכחית
@@ -942,12 +1009,12 @@ he:
   no_matches_found: לא נמצאו תוצאות
   no_more_items: אין עוד פריטים!
   bibliography: ביבליוגרפיה
-  pubs_by_person_instructions_html: "1. יש להזין שם משפחה (עם או בלי שם פרטי אחריו) לחיפוש ולבחור מאגר לחפש בו.<br />2. אם נמצאו תוצאות מעניינות, יש לקשר מחבר מן המערכת בתיבה משמאל. <br />3. אם הכותר מימין עוד לא מופיע משמאל, אפשר ללחוץ על '+ פריט' ולהוסיפו.<br />4. אם הכותר כבר מופיע, אבל זה עותק ממקור אחר, יש לבחור את העותק המופיע, משמאל, ואז ללחוץ על '+עותק' מימין, כדי לשייך את העותק הנוסף לאותו פריט. <br />5. עם מיצוי החיפוש, אפשר לעבור לדף הביבליוגרפי של היוצר בקישור הסגול בראש הרשימה משמאל. "
-  pubs_by_author: חיבורים מקושרים למחבר/ת
+  pubs_by_person_instructions_html: "1. יש להזין שם משפחה (עם או בלי שם פרטי אחריו) לחיפוש ולבחור מאגר לחפש בו.<br />2. אם נמצאו תוצאות מעניינות, יש לקשר יוצר מן המערכת בתיבה משמאל. <br />3. אם הכותר מימין עוד לא מופיע משמאל, אפשר ללחוץ על '+ פריט' ולהוסיפו.<br />4. אם הכותר כבר מופיע, אבל זה עותק ממקור אחר, יש לבחור את העותק המופיע, משמאל, ואז ללחוץ על '+עותק' מימין, כדי לשייך את העותק הנוסף לאותו פריט. <br />5. עם מיצוי החיפוש, אפשר לעבור לדף הביבליוגרפי של היוצר בקישור הסגול בראש הרשימה משמאל. "
+  pubs_by_author: חיבורים מקושרים ליוצר/ת
   is_scanned: סרוק?
   bib_done: ביבליוגרפיה הושלמה בסדנה?
   record_source: מקור הרשומה
-  select_person_first: יש לשייך מחבר/ת לפני שיוך פריטים
+  select_person_first: יש לשייך יוצר/ת לפני שיוך פריטים
   select_publication_first: יש ללחוץ על שורת פריט משמאל לפני שיוך עותק
   item_pattern: "תבנית קישור לפריט בקטלוג (המזהה יישתל במקום שבו תכתבו __ID__)"
   add_publication: '+פריט --->'
@@ -972,7 +1039,7 @@ he:
   dedicated_site: אתרים בנושא
   audio: קטעי שֶמע
   gnazim: 'מכון "גנזים" – אגודת הסופרים'
-  author_details: פרטי מחבר
+  author_details: פרטי יוצר
   work_entity_details: פרטי ישות יצירה
   work_details: פרטי יצירה
   expression_details: פרטי ביטוי
@@ -995,7 +1062,7 @@ he:
   destroy: מחיקה
   our_volunteers: המתנדבים שלנו
   featured_content_management: ניהול תוכן מומלץ (זרקור)
-  featured_authors_management: ניהול זרקור על מחברים
+  featured_authors_management: ניהול זרקור על יוצרים
   recommendations_by_volunteer: המלצות עורכים ומתנדבים
   featured_author: זרקור על יוצר/ת
   folder_list: רשימת תיקיות
@@ -1008,7 +1075,7 @@ he:
   back: חזרה
   back_to_dashboard: למרכז הפעילות
   dashboard: מרכז הפעילות
-  raw_tocs: מחברים עם דף יוצר שטרם עוּבַּד
+  raw_tocs: יוצרים עם דף יוצר שטרם עוּבַּד
   back_to_homepage: לדף הבית
   make_corrections_below: "תיקונים יש לבצע בתיבת הטקסט להלן:"
   recommendations_by_status: המלצות לפי סטטוס %{status}
@@ -1021,7 +1088,7 @@ he:
   purge_spam_proofs: מחק הגהות זבל
   all_proofs: כל ההגהות
   proofs_by_status: הגהות לפי סטטוס %{status}
-  welcome: 'שלום '
+  welcome_heading: 'שלום '
   please_log_in: אין מה לראות לפני התחברות למערכת.
   user_management: ניהול משתמשים
   editor_actions: פעולות עורך
@@ -1035,7 +1102,8 @@ he:
   in_role: בתפקיד
   recommendation_for: המלצה עבור הקובץ
   back_to_top: לראש הדף
-  confirmed_person_as_author: המחבר %{author} אושר כמחבר היצירה הזו.
+  confirmed_person_as_author: היוצר %{author} אושר כיוצר היצירה הזו.
+  please_confirm_action: נא לאשר את הפעולה
   from: מאת
   from_lang: מ
   content: תוכן
@@ -1071,6 +1139,7 @@ he:
   resolved_as: טופל ועבר לסטטוס %{fixed}
   no_url_specified: לא צוינה כתובת URL.
   no_such_item: אין פריט כזה.
+  item: פריט
   created_toc: נוצר דף יוצר עם תבנית ריקה
   miscellaneous: שונות
   etext: ספר אלקטרוני
@@ -1079,16 +1148,72 @@ he:
   hello_x: שלום %{name}
   hello_anon: שלום רב!
   suggest_new_tag: הצעת תגית חדשה
+  click_to_select: לחצו לבחירה
+  select_tag_from_list: 'בחרו מהרשימה את התגית שתרצו להוסיף:'
+  suggest_tag: הצעת תגית
+  suggested_by: הוצע על ידי
+  select_from_full_list: בחירה מהרשימה המלאה
+  i_want_to_suggest_a_tag: אני רוצה להציע תגית
+  autosuggest_tags: הציעו לי תגית
+  last_proposed_tags: "תגיות אחרונות שהצעתי:"
+  acceptance_rate: אחוז התקבלות
+  existing_tags_for_this_item: "תגיות קיימות לפריט זה:"
   add_recommendation: הוספת המלצה
-  email_footer_html: "בברכה, צוות פרויקט בן־יהודה.\n\nאולי תמצא/י ענין ביומן הרשת של פרויקט בן־יהודה: http://benyehuda.org/blog/ \n\n או בערוץ היו-טיוב של פרויקט בן־יהודה: http://www.youtube.com/user/ProjectBenYehuda/videos?flow=grid&view=0"
+  email_footer_html: "בברכה, צוות פרויקט בן־יהודה.\n\nאולי תמצא/י ענין בדף הפייסבוק של פרויקט בן־יהודה: https://www.facebook.com/projectbenyehuda \n\n או בערוץ היו-טיוב של פרויקט בן־יהודה: https://www.youtube.com/user/ProjectBenYehuda/videos?flow=grid&view=0"
   proof_fixed: "תודה רבה על ההגהה ששלחת עבור היצירה בכתובת:\n\n%{url}\n\nלאחר בדיקה, תיקנו את הטקסט באתר.  נשמח לקבל הצעות הגהה גם בעתיד!"
   proof_fixed_m: "תודה רבה על ההגהה ששלחת עבור היצירה %{title} בכתובת:\n\n%{url}\n\nלאחר בדיקה, תיקנו את הטקסט באתר.  נשמח לקבל הצעות הגהה גם בעתיד!"
   proof_wontfix: "תודה רבה על ההגהה ששלחת עבור היצירה בכתובת:\n\n%{url}\n\nלאחר בדיקה, הגענו למסקנה שאין מדובר בשגיאה, אלא בשימוש לשון בלתי-שכיח, ובכל אופן כך מופיע במקור.  לכן לא נתקן את הטקסט באתר.  נשמח לקבל הצעות הגהה גם בעתיד!"
   proof_wontfix_m: "תודה רבה על ההגהה ששלחת עבור היצירה %{title} בכתובת:\n\n%{url}\n\nלאחר בדיקה, הגענו למסקנה שאין מדובר בשגיאה, אלא בשימוש לשון בלתי-שכיח, ובכל אופן כך מופיע במקור.  לכן לא נתקן את הטקסט באתר.  נשמח לקבל הצעות הגהה גם בעתיד!"
   additional_proof_explanation: "להלן הערה מטעם העורך/ת שטיפל/ה בהצעת ההגהה שלך: \"%{explanation}\""
+  additional_tagging_explanation: "להלן הערה מטעם העורך/ת שטיפל/ה בהצעת התיוג שלך: \"%{explanation}\""
   below_is_your_original_email: להלן נוסח הדואל ששלחת אלינו בשעתו, לשם תזכורת.
+  tag_rejected_intro: "לאחר עיון, החלטנו לא להוסיף את התגית \"%{tag}\" שהצעת. התגית אינה מתאימה למדיניות התיוג שלנו, או שהיא נרדפת לתגית קיימת."
+  tag_approved_intro: "לאחר עיון, החלטנו להוסיף את התגית \"%{tag}\" שהצעת. תודה רבה על ההצעה, ונשמח לקבל הצעות לתגיות ולתיוגים של יצירות גם בעתיד!"
+  user_warning_email: "יש להקפיד על תנאי השימוש באתר: על שפה נאותה, על זכויות יוצרים, ועל אי־הפרת חוק לשון הרע. זו אזהרה בלבד; אם תהיינה הפרות נוספות מצדך, חשבונך ייחסם."
+  tagging_approved_email_html: "תודה רבה על התיוג שהצעת עבור הפריט בכתובת:<p/><p/>%{url}.<p/><p/>לאחר בדיקה, הוספנו את התיוג %{tag} לפריט \"%{taggable}\". נשמח לקבל הצעות תיוג גם בעתיד!"
+  tagging_rejected_email_html: "לאחר עיון, החלטנו לא להוסיף את התיוג \"%{tag}\" שהצעת עבור הפריט בכתובת:<p/><p/>%{url}.<p/><p/>התיוג אינו מתאים למדיניות התיוג שלנו, או שהוא נרדף לתיוג קיים. נשמח לקבל הצעות תיוג גם בעתיד!"
+  taggable_item: הפריט לתיוג
+  additional_warning_explanation: "להלן הערה מטעם העורך/ת שזיהה את הבעייה: \"%{msg}\""
   rec_accepted: "קיבלנו בתודה את המלצתך על היצירה:\n\n%{url}\n\nכשנתפנה לעיין בה, נשקול לשלב אותה בפרסום בפייסבוק או ברשומה ביומן הרשת שלנו, כדי שגם אחרים ייהנו."
   rec_published: "המלצתך על היצירה בכתובת:\n\n%{url}\n\nשולבה עתה בטקסט שפרסמנו כאן:\n\n%{published_url}\n"
+  taggings_merged: "התיוגים הועברו לתגית הקיימת '%{toname}'"
+  tagging_merged: התיוג הועבר.
+  tag_renamed: "שם התגית הוחלף לשם '%{newname}'"
+  save_tag_suggestion: שלח הצעת תיוג!
+  suggest_tags: הצע לי תיוגים
+  suggested_tag: התגית המוצעת
+  quick_actions: פעולות מהירות
+  to_next_item: לפריט הבא
+  to_previous_item: לפריט הקודם
+  time_waiting: זמן המתנה
+  block_user: חסימת משתמש
+  warn_user: אזהרת משתמש
+  escalate_to_editor: העברה לעורך ראשי להכרעה
+  reject_and_explain: "דחיה + הסבר"
+  explain_rejection: נא להסביר את סיבת הדחייה
+  optional_explanation_of_rejection: במקרה של קבלה בשם שונה, המציע יקבל הודעת דחייה, ואפשר להזין להלן נימוק.
+  provide_reason: נא להסביר את סיבת הפעולה
+  suggested_tags: תגיות שהוצעו
+  linked_taggings: תיוגים מקושרים
+  used_on_other_works: מיצירות סמוכות
+  excited_new: חדש!
+  awaiting_approval: ממתין לאישור
+  new_tag_teaser: עזרו לנו לחשוף יצירות לקוראים נוספים באמצעות תיוג!
+  tags_are_a_way: תגיות מסייעות לגילוי יצירות ויוצרים לפי נושאים ומכנים משותפים
+  want_to_tag: רוצה לתייג?
+  popular_tags_by_user: הוספת תכופות
+  recent_tags_by_user: הוספת באחרונה
+  popular_tags: נפוצות
+  taggings_count: כמות פריטים מתויגים
+  tag_list: רשימת תגיות
+  tag_page: דף תגית
+  tag_not_found: אין תגית כזו!
+  authors_tagged_with_this: יוצרים/ות שתויגו "%{tag}"
+  works_tagged_with_this: יצירות שתויגו "%{tag}"
+  search_by_tag: לחיפוש פריטים מתויגים בתגית זו בפרויקט
+  recommendations_below: תגיות מוצעות להלן
+  tagging_system_locked_by: מערכת ניטור התגיות בשימוש על ידי %{user}, והפעולה האחרונה בוצעה לפני %{ago} דקות.
+  tagging_system_locked: מערכת הניטור נעולה
   hebrew: עברית
   english: אנגלית
   german: גרמנית
@@ -1099,6 +1224,7 @@ he:
   french: צרפתית
   russian: רוסית
   yiddish: יידיש
+  bulgarian: בולגרית
   georgian: גאורגית
   ladino: לדינו
   chinese: סינית
@@ -1128,6 +1254,7 @@ he:
   donate_p2_html: כספי תרומתכם מועברים לחשבון העמותה למחשוב ספרות עברית (מס״ע), שהקמנו עבור תמיכה בפרויקט, וישמשו אך ורק לצרכים אלו.
   about_amuta: על העמותה למחשוב ספרות עברית
   reports: "דו\"חות"
+  user: משתמש/ת
   tocs_missing_links_report: "דו\"ח יצירות לא מקושרות לדפי יוצר"
   tocs_linking_to_missing_items: "דפי יוצר שמקשרים ליצירות לא קיימות"
   missing_copyright_report: "דו\"ח אישים ויצירות ללא מצב זכויות יוצרים"
@@ -1154,7 +1281,7 @@ he:
   add_feature_date: הוספת טווח תאריכי הצגה
   featured_content_body: תוכן ההמלצה
   linked_manifestation: יצירה מקושרת
-  linked_author: מחבר/ת מקושר/ת
+  linked_author: יוצר/ת מקושר/ת
   featured_content: תוכן מערכת
   new_featured_content: תוכן מערכת חדש
   new_featured_author: יצירת זרקור חדש על יוצר
@@ -1202,6 +1329,20 @@ he:
       subject: יצירת קשר מהאתר
     volunteer_form_submitted:
       subject: טופס התנדבות מהאתר
+    tag_rejected:
+      subject: הצעת התגית שלך לא התקבלה
+    tagging_rejected:
+      subject: הצעת התיוג שלך לא התקבלה
+    tag_approved:
+      subject: התגית שהצעת התקבלה
+    tagging_approved:
+      subject: התיוג שהצעת התקבל
+    tag_merged:
+      subject: התגית שהצעת אוחדה עם תגית קיימת
+    warn:
+      subject: אזהרה לפני חסימה מפרויקט בן־יהודה
+    block:
+      subject: חסימה מפרויקט בן־יהודה
   api_keys_mailer:
     key_created:
       subject: Your API key
@@ -1222,3 +1363,11 @@ he:
       - "day"
       - "month"
       - "year"
+  welcome:
+    submit_contact:
+      ziburit_failed: לא השתכנענו שאינך רובוט.
+      email_missing: נא לציין כתובת דואל, כדי שנוכל להשיב לך.
+  proof:
+    create:
+      ziburit_failed: לא השתכנענו שאינך רובוט.
+      email_missing: נא לציין כתובת דואל, כדי שנוכל להשיב לך.

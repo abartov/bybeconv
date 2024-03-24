@@ -1,0 +1,29 @@
+%h1 Listing user_blocks
+
+%table
+  %thead
+    %tr
+      %th User
+      %th Context
+      %th Expires at
+      %th Blocker
+      %th Reason
+      %th
+      %th
+      %th
+
+  %tbody
+    - @user_blocks.each do |user_block|
+      %tr
+        %td= user_block.user
+        %td= user_block.context
+        %td= user_block.expires_at
+        %td= user_block.blocker_id
+        %td= user_block.reason
+        %td= link_to 'Show', user_block
+        %td= link_to 'Edit', edit_user_block_path(user_block)
+        %td= link_to 'Destroy', user_block, method: :delete, data: { confirm: 'Are you sure?' }
+
+%br
+
+= link_to 'New User block', new_user_block_path

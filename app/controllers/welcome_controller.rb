@@ -59,11 +59,16 @@ class WelcomeController < ApplicationController
   end
 
   def submit_contact
-    if params['ziburit'] =~ /ביאליק/
+    @errors = []
+    unless params[:ziburit] =~ /ביאליק/
+      @errors << t('.ziburit_failed')
+    end
+    if params[:email].blank?
+      @errors << t('.email_missing')
+    end
+
+    if @errors.empty?
       Notifications.contact_form_submitted(params.permit(:name, :phone, :email, :topic, :body, :rtopic)).deliver
-      respond_to do |format|
-        format.js
-      end
     end
   end
 

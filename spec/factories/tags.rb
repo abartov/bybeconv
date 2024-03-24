@@ -4,7 +4,7 @@ FactoryBot.define do
       sequence(:tagname) { |n| "Tag #{n} #{Time.now}" }
     end
     status { :approved }
-    name { "#{tagname}" }
+    name { Faker::Lorem.unique.word }
     creator { create(:user)}
   end
   trait :pending do
