@@ -261,7 +261,7 @@ class AdminController < ApplicationController
   CALCULATED_COPYRIGHT_EXPRESSION = <<~sql
     (
       exists (select 1 from involved_authorities c join people p on p.id = c.authority_id and c.authority_type = 'Person' where c.item_id = works.id and c.item_type = 'Work' and not coalesce(p.public_domain, false))
-      or exists (select 1 from involved_authorities r join people p on p.id = r.authority_id and r.authority_type = 'Person' where r.item_id = expressions.id and not coalesce(p.public_domain, false))
+      or exists (select 1 from involved_authorities r join people q on q.id = r.authority_id and r.authority_type = 'Person' where r.item_id = expressions.id and not coalesce(q.public_domain, false))
     )
   sql
 
