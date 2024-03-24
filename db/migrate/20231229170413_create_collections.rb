@@ -13,8 +13,8 @@ class CreateCollections < ActiveRecord::Migration[6.1]
       t.integer :toc_strategy
 
       t.timestamps
-    end
-    add_index :collections, :sort_title
-    add_index :collections, :inception_year
+    end unless table_exists? :collections
+    add_index :collections, :sort_title unless index_exists? :collections, :sort_title
+    add_index :collections, :inception_year unless index_exists? :collections, :inception_year
   end
 end

@@ -13,7 +13,7 @@ class CreateCorporateBodies < ActiveRecord::Migration[6.1]
       t.text :comments
 
       t.timestamps
-    end
-    add_index :corporate_bodies, :name
+    end unless table_exists? :corporate_bodies
+    add_index :corporate_bodies, :name unless index_exists? :corporate_bodies, :name
   end
 end

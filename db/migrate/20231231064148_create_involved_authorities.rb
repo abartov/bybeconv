@@ -6,6 +6,6 @@ class CreateInvolvedAuthorities < ActiveRecord::Migration[6.1]
       t.references :item, polymorphic: true
 
       t.timestamps
-    end
+    end unless table_exists? :involved_authorities
   end
 end
