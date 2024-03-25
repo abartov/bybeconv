@@ -7,19 +7,19 @@
     - e = @entity.expression
     - w = e.work
     - if e.translators.count > 0
-      - person = e.translators[0]
+      - authority = e.translators[0]
     - else
-      - person = w.persons[0]
+      - authority = w.involved_authorities[0].authority
     .breadcrumbs-text
-      - unless person.nil?
-        = link_to person.name, person_path(id: person.id)
+      - unless authority.nil?
+        = link_to authority.name, default_link_by_class(authority.class, authority.id)
       - else
         = '?'
     .breadcrumbs-arrow= 1
     - genre = textify_genre(w.genre)
-    - unless person.nil?
+    - unless authority.nil?
       .breadcrumbs-text
-        = link_to e.translation ? "#{t(:translation)} #{genre}" : genre, :controller => :authors, :action => :toc, :id => person.id, :genre => w.genre
+        = link_to e.translation ? "#{t(:translation)} #{genre}" : genre, :controller => :authors, :action => authority.class.to_s == 'Person' ? :toc : :corp_toc, :id => authority.id, :genre => w.genre
       -#.breadcrumbs-arrow= 1
       -#.breadcrumbs-text
       -#  %b= @entity.title

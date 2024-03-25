@@ -755,7 +755,7 @@ DEPENDENCIES
   responders
   rmagick
   rmultimarkdown
-  rspec-rails (~> 5.0.2)
+  rspec-rails
   rswag-api
   rswag-ui
   ruby-prof

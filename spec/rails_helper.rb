@@ -65,3 +65,8 @@ RSpec.configure do |config|
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
 end
+
+def fake_editor(controller)
+  u = create(:user, editor: true)
+  allow_any_instance_of(controller).to receive(:current_user).and_return(u)
+end

@@ -355,6 +355,7 @@ describe ManifestationController do
               etitle: 'New Expression Title',
               genre: 'fables',
               wlang: 'ru',
+              elang: 'he',
               primary: 'false'
             }
           end

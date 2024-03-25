@@ -14,7 +14,7 @@
 
     - manifestations.each do |m|
       %tr
-        - p = m.expression.work.persons[0]
+        - p = m.expression.work.first_author
         - if p.nil?
           %td= t(:error)
         - else

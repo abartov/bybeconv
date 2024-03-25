@@ -140,11 +140,9 @@ class Manifestation < ApplicationRecord
 
   def manual_delete
     self.destroy!
-    expression.realizers.each(&:destroy!)
     w = expression.work
     expression.destroy!
-    w.creations.each(&:destroy!)
-    w.destroy!
+    w.destroy! if w.expressions.empty? # the work could have another expression and manifestation!
   end
 
   def snippet_paragraphs(p_count)
@@ -232,17 +230,12 @@ class Manifestation < ApplicationRecord
   end
 
   def recalc_cached_people
-     #pp = []
-     #expression.persons.each {|p| pp << p unless pp.include?(p) }
-     #expression.work.persons.each {|p| pp << p unless pp.include?(p) }
-     #self.cached_people = pp.map{|p| "#{p.name} #{p.other_designation}"}.join('; ') # ZZZ
     self.cached_people = self.author_string!
-     # self.cached_people_ids = pp.map{|x| x.id}.join() # this doesn't actually make sense; a normalized query would be way faster
   end
 
   def recalc_cached_people!
     recalc_cached_people
-     save!
+    save!
   end
 
   # TODO: calculate this by month
@@ -284,22 +277,6 @@ class Manifestation < ApplicationRecord
       Manifestation.all_published.order(:sort_title).limit(25)
     end
   end
-
-  # This method was used in ManifestationController#works which is currently not used, but could be reimplemented in future
-  # def self.cached_last_month_works
-  #   Rails.cache.fetch("m_new_last_month", expires_in: 24.hours) do
-  #     ret = {}
-  #     Manifestation.all_published.new_since(1.month.ago).each {|m|
-  #       e = m.expressions[0]
-  #       genre = e.genre
-  #       person = e.persons[0] # TODO: more nuance
-  #       next if person.nil? || genre.nil? # shouldn't happen, but might in a dev. env.
-  #       ret[genre] = [] if ret[genre].nil?
-  #       ret[genre] << [m.id, m.title, m.author_string]
-  #     }
-  #     ret
-  #   end
-  # end
 
   def self.recalc_popular
     @@popular_works = Manifestation.all_published.order(impressions_count: :desc).limit(10) # top 10
