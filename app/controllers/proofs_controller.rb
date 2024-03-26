@@ -1,16 +1,16 @@
-class ProofController < ApplicationController
+class ProofsController < ApplicationController
   protect_from_forgery :except => :submit # allow submission from outside the app
-  before_action :only => [:index, :list, :show, :resolve, :purge] do |c| c.require_editor('handle_proofs') end
+  before_action :only => [:index, :show, :resolve, :purge] do |c| c.require_editor('handle_proofs') end
 
-#  impressionist # log actions for pageview stats
+  # impressionist # log actions for pageview stats
 
   def create
     @errors = []
     unless params[:ziburit] =~ /ביאליק/
-      @errors << I18n.t('proof.create.ziburit_failed')
+      @errors << t('.ziburit_failed')
     end
     if params[:from].blank?
-      @errors << I18n.t('proof.create.email_missing')
+      @errors << t('.email_missing')
     end
 
     if @errors.empty?
@@ -26,17 +26,26 @@ class ProofController < ApplicationController
       render json: @errors, status: :unprocessable_entity
     end
   end
+
   def index
-    redirect_to :action => :list
-  end
-  def list
     # calculate tallies
-    @count = { 'all' => Proof.count, 'new' => Proof.where(status: 'new').count, 'fixed' => Proof.where(status: 'fixed').count, 'wontfix' => Proof.where(status: 'wontfix').count, 'escalated' => Proof.where(status: 'escalated').count, 'spam' => Proof.where(status: 'spam').count }
-    if params[:status].nil?
-      @proofs = Proof.where('status != "spam"').page(params[:page]).order(:manifestation_id)
+    @count = {
+      'all' => Proof.count,
+      'new' => Proof.where(status: 'new').count,
+      'fixed' => Proof.where(status: 'fixed').count,
+      'wontfix' => Proof.where(status: 'wontfix').count,
+      'escalated' => Proof.where(status: 'escalated').count,
+      'spam' => Proof.where(status: 'spam').count
+    }
+
+    @status = params[:status]
+    if @status.nil?
+      @proofs = Proof.where.not(status: :spam)
     else
-      @proofs = Proof.where(status: params[:status]).page(params[:page]).order(:manifestation_id)
+      @proofs = Proof.where(status: @status)
     end
+
+    @proofs = @proofs.page(params[:page]).order(:manifestation_id)
   end
 
   def show
@@ -59,16 +68,15 @@ class ProofController < ApplicationController
   end
 
   def resolve
-    fix_text = ''
     @p = Proof.find(params[:id])
     if params[:fixed] == 'yes'
       @p.status = 'fixed'
       unless params[:email] == 'no' or @p.from.nil? or @p.from !~ /\w+@\w+\.\w+/
-        @explanation = params[:fixed_explanation]
+        explanation = params[:fixed_explanation]
         if @p.manifestation_id.nil?
           Notifications.proof_fixed(@p, @p.about, nil, @explanation).deliver
         else
-          Notifications.proof_fixed(@p, manifestation_path(@p.manifestation_id), @p.manifestation, @explanation).deliver
+          Notifications.proof_fixed(@p, manifestation_path(@p.manifestation_id), @p.manifestation, explanation).deliver
         end
     		fix_text = 'תוקן (ונשלח דואל)'
       else
@@ -79,16 +87,16 @@ class ProofController < ApplicationController
         @p.status = 'escalated'
         fix_text = t(:escalated)
       else
-      @p.status = 'wontfix'
-      @explanation = params[:wontfix_explanation]
-      unless @p.from.nil? or @p.from !~ /\w+@\w+\.\w+/
-        if @p.manifestation_id.nil?
-          Notifications.proof_wontfix(@p, @p.about, nil, @explanation).deliver
-        else
-          Notifications.proof_wontfix(@p, manifestation_path(@p.manifestation_id), @p.manifestation, @explanation).deliver
+        @p.status = 'wontfix'
+        @explanation = params[:wontfix_explanation]
+        unless @p.from.nil? or @p.from !~ /\w+@\w+\.\w+/
+          if @p.manifestation_id.nil?
+            Notifications.proof_wontfix(@p, @p.about, nil, @explanation).deliver
+          else
+            Notifications.proof_wontfix(@p, manifestation_path(@p.manifestation_id), @p.manifestation, @explanation).deliver
+          end
         end
-      end
-      fix_text = 'כבר תקין (ונשלח דואל)'
+        fix_text = 'כבר תקין (ונשלח דואל)'
       end
     else # spam, just ignore
       @p.status = 'spam'
@@ -98,16 +106,17 @@ class ProofController < ApplicationController
     @p.save!
     li = ListItem.where(listkey: 'proofs_by_user', item_id: @p.id)
     li.destroy_all unless li.nil? # unassign the proof from the user's list
-    flash[:notice] = t(:resolved_as, :fixed => fix_text)
+    flash[:notice] = t(:resolved_as, fixed: fix_text)
     if current_user.admin?
-      redirect_to :action => :list, :status => 'new'
+      redirect_to action: :index, params: { status: :new }
     else
       redirect_to controller: :admin
     end
   end
+
   def purge
     Proof.where(status: 'spam').delete_all
     flash[:notice] = t(:purged)
-    redirect_to :action => :list
+    redirect_to action: :index
   end
 end
