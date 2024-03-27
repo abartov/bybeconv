@@ -441,5 +441,11 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def cached_authorities
+    Rails.cache.fetch("involved_authorities", expires_in: 4.hours) do # memoize
+      { people: Person.all.order(:name).pluck(:id, :name, :birth_year, :death_year), corporate_bodies: CorporateBody.all.order(:name).pluck(:id, :name, :inception_year, :dissolution_year ) } # limit to Person.published ? I think the use will be mostly in the back-end, so all.
+    end
+  end
+
   helper_method :current_user, :html_entities_coder
 end
