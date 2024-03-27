@@ -232,8 +232,10 @@
 
 
     = hidden_field_tag(:emit_filters, 'true', id: 'emit_filters')
-    = hidden_field_tag(:cur_page, @page, id: 'cur_page_tag')
-    = hidden_field_tag(:page, '', id: 'page_tag')
+    = hidden_field_tag(:search_after_value, '')
+    = hidden_field_tag(:search_after_manifestation_id, '')
+    = hidden_field_tag(:page, '1')
+    = hidden_field_tag(:reverse, 'false')
     = hidden_field_tag(:to_letter, '', id: 'toletter_tag')
 
 :javascript
@@ -285,7 +287,6 @@
           if(submit_timeout != null){
             window.clearTimeout(submit_timeout);
           }
-          $('#page_tag').val('1'); // reset pagination
           if($('.opt_workname').hasClass('active'))
             $('#search_type').val('workname');
           else
@@ -313,7 +314,6 @@
       $('#tag_ids').val('');
       $('#authors_names').val('');
       $('#emit_filters').val('true');
-      $('#page_tag').val('1'); // reset pagination
       $('#toletter_tag').val(''); // reset pagination
       submit_filters();
     });

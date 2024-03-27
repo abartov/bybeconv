@@ -1,6 +1,4 @@
 class ManifestationsIndex < Chewy::Index
-  settings 'index.max_result_window' => 50000 # Must be set to value greater than total number of works in db
-
   # works
   index_scope Manifestation.all_published.includes(expression: :work)
 #    field :title, analyzer: 'hebrew' # from https://github.com/synhershko/elasticsearch-analysis-hebrew

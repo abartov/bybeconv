@@ -657,6 +657,7 @@ he:
   title_x: "כותרת: %{x}"
   author_x: "יוצר: %{x}"
   authors_xx: "יוצרים: %{xx}"
+  title_starts_with_x: "Title starts with '%{x}'"
   title_already_exists: השם כבר קיים. נא לתת שם אחר.
   text_already_in_anthology: היצירה הנוכחית כבר מופיעה במקראה הזאת.
   anth_x_works_added: "%{x} יצירות נוספו לסוף המקראה. אפשר לשנות את מיקומן בגרירה."
@@ -1354,3 +1355,9 @@ he:
     create:
       ziburit_failed: לא השתכנענו שאינך רובוט.
       email_missing: נא לציין כתובת דואל, כדי שנוכל להשיב לך.
+  manifestation:
+    pagination:
+      page_x_of_total: Page %{page} of %{total}
+      next_page: Next page
+      previous_page: Previous page
+      first_page: First page

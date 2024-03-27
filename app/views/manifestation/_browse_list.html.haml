@@ -17,10 +17,8 @@
         = f
         %span.pointer.tag-x{'data-ele': id, 'data-which' => which}= '-'
 .by-card-content-v02
-  - unless @total_pages <= 1
-    = render partial: 'shared/slide_pagination', locals: {collection: @works, element: '#works_filters', path: '/works'}
-    - if @sort[0..11] == 'alphabetical'
-      = render partial: 'ab_pagination', locals: {filter_element: 'works_filters'}
+  = render partial: 'pagination'
+  %hr
   .select-all-with-buttons
     .select-text-checkbox-area
       .select-all-checkbox
@@ -53,18 +51,14 @@
     %button.by-button-v02#add-to-anth-btn
       .by-icon-v02 &amp; D
   .mainlist#browse_mainlist
-    - pg = @page.to_i
-    %ol{style:"counter-reset:li #{pg > 1 ? (pg-1)*100 : 0}"}
+    %ol{style:"counter-reset:li #{ (@page.to_i - 1) * ManifestationController::PAGE_SIZE }"}
       - decorator = browse_item_decorator_by_sort_type(@sort)
       - @works.each do |m|
         %li
           = link_to m.title_and_authors, manifestation_path(m.id)
           = decorator.call(m)
-  - unless @total_pages <= 1
-    = render partial: 'shared/slide_pagination', locals: {collection: @works, element: '#works_filters', path: '/works'}
-    - if @sort[0..11] == 'alphabetical'
-      = render partial: 'ab_pagination', locals: {filter_element: 'works_filters'}
   = hidden_field_tag(:hurl, request.original_url)
+  = render partial: 'pagination'
 :javascript
   /**
    * Handle Animation (Start, Reset, Restart)
@@ -80,46 +74,20 @@
     });
   }
   $(document).ready(function() {
-    // Instantiate a slider
-    var mySlider = $("input.slider").bootstrapSlider({
-      tooltip: 'always',
-    });
-    var url = $('#hurl').val().replace(/page=\d+/, '');
-    if(url.indexOf('?') == -1) {
-      url = url + '?'
-    }
-    $("input.slider").on('slideStop', function(slideEvt){
-      slideEvt.stopImmediatePropagation();
-      filters = #{@emit_filters == true};
-      if(filters) {
-        $('#page_tag').val(slideEvt.value.toString());
-        window.history.pushState($('#works_filters').serialize(), null, '/works');
-        submit_filters();
-      } else {
-        window.history.pushState($('#works_filters').serialize(), null, '/works');
-        $.get(url+'&page='+slideEvt.value.toString(),'',null, 'script');
-      }
-    });
     $('.tag-x').click(function(){
       // uncheck/clear the appropriate field
-      prefix = '';
-      if(window.innerWidth < mobileWidth) {
-        prefix = '#mobile_filters ';
-      } else {
-        prefix = '#works_filters ';
-      }
-        if($(this).attr('data-which') == 'text') {
+      var prefix = (window.innerWidth < mobileWidth) ? '#mobile_filters ' : '#works_filters ';
+
+      if($(this).attr('data-which') == 'text') {
         $(prefix + '#'+$(this).attr('data-ele')).val('');
-      } else if($(this).attr('data-which') == 'authorlist') {
+      } else if ($(this).attr('data-which') == 'authorlist') {
         $(prefix + '#author_ids').val('');
         $(prefix + '#authors_names').val('');
         $(prefix + 'input[name="ckb_authors[]"]').prop('checked', false);
-      }
-      else {
+      } else {
         $(prefix + '#'+$(this).attr('data-ele')).prop("checked", false);
       }
       // and submit the form
-      $('#page_tag').val('1'); // reset pagination
       $('input').attr('disabled', false); // re-enable checkboxes to preserve other filters
       window.history.pushState($(prefix).serialize(), null, '/works');
       submit_filters();
@@ -173,7 +141,6 @@
     $('#sort_by_dd').change(function(){
       $('input[name=sort_by]').val($('#sort_by_dd option:selected').val());
       if($('#works_filters').length > 0) {
-        $('#page_tag').val('1'); // reset pagination
         window.history.pushState($('#works_filters').serialize(), null, '/works');
         submit_filters();
       } else {

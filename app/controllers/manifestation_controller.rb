@@ -1,22 +1,6 @@
 require 'pandoc-ruby'
 
 class ManifestationController < ApplicationController
-  class PageNotFound < StandardError; end;
-
-  # class WorkSearch < FortyFacets::FacetSearch
-  #   model 'Manifestation' # which model to search for
-  #   text :title   # filter by a generic string entered by the user
-  #   # scope :classics   # only return movies which are in the scope 'classics'
-  #   # range :price, name: 'Price' # filter by ranges for decimal fields
-  #   facet :created_at, name: 'pub_date' # , order: :year # additionally order values in the year field
-  #   facet [:expressions], :language
-  #   facet [:expressions], :genre #, name: 'Genre' # generate a filter with all values of 'genre' occuring in the result
-  #   #facet [:studio, :country], name: 'Country' # generate a filter several belongs_to 'hops' away
-
-  #   # orders 'Title' => :title, 'price, cheap first' => "price asc", 'price, expensive first' => {price: :desc, title: :desc}
-  #   #custom :for_manual_handling
-  # end
-
   before_action only: [:list, :show, :remove_link, :edit_metadata, :add_aboutnesses] do |c| c.require_editor('edit_catalog') end
   before_action only: [:edit, :update] do |c| c.require_editor(['edit_catalog', 'conversion_verification', 'handle_proofs']) end
   before_action only: [:all, :genre, :period, :by_tag] do |c| c.refuse_unreasonable_page end
@@ -29,13 +13,12 @@ class ManifestationController < ApplicationController
   #layout false, only: [:print]
 
   DATE_FIELD = {'uploaded' => 'manifestations.created_at', 'created' => 'works.normalized_creation_date', 'published' => 'expressions.normalized_pub_date'}
+
   #############################################
   # public actions
   def all
     @page_title = t(:all_works)+' '+t(:project_ben_yehuda)
     @pagetype = :works
-    # @collection = Manifestation.all_published.limit(100)
-    # @collection = Manifestation.all_published
     @works_list_title = t(:works_list)
     # update the total works count cache if stale, because specifically in "all works" view, the discrepancy is painful
     fresh_count = Manifestation.all_published.count
@@ -45,22 +28,23 @@ class ManifestationController < ApplicationController
     browse
   end
 
+  # This method can be called either from other action like `all` with html view and in this case it renders single page
+  # or directly with with js format, and then it updates existing html view with a new data after filters refresh or
+  # page switch
   def browse
     @pagetype = :works
     @works_list_title = t(:works_list) unless @works_list_title.present? # TODO: adjust by query
     if valid_query?
-      prep_for_browse
+      es_prep_collection
+      d = Date.today
+      @maxdate = "#{d.year}-#{'%02d' % d.month}"
+      @header_partial = 'manifestation/browse_top'
+
       prep_user_content(:manifestation)
       render :browse
-      respond_to do |format|
-        format.html
-        format.js
-      end
     else
       head :bad_request
     end
-  rescue PageNotFound
-    head :not_found
   end
 
   def translations
@@ -567,27 +551,6 @@ class ManifestationController < ApplicationController
   def valid_query?
     return true unless params[:to_letter].present? && (params[:to_letter].any_hebrew? == false)
   end
-  def es_bfunc(coll, page, l, field, direction) # binary-search function for ab_pagination over an ES collection
-    recs = coll.order(field).page(page).objects
-    rec = recs.first
-    return true if rec.nil?
-    c = nil
-    i = 0
-    reccount = recs.count
-    while c.nil? && i < reccount do
-      c = rec[field][0] unless rec[field].nil? # unready dictionary definitions will have their sort_defhead (and defhead) nil, so move on
-      i += 1
-      rec = recs[i]
-    end
-    c = '' if c.nil?
-    if(direction == :desc || direction == 'desc')
-      return true if c == l || c < l # already too high a page
-      return false
-    else
-      return true if c == l || c > l # already too high a page
-      return false
-    end
-  end
   def bfunc(coll, page, l, field, direction) # binary-search function for ab_pagination
     recs = coll.order(field).page(page)
     rec = recs.first
@@ -626,6 +589,9 @@ class ManifestationController < ApplicationController
       @page = @total_pages
     end
   end
+
+  PAGE_SIZE = 100.freeze
+  LETTERS = ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ז', 'ח', 'ט', 'י', 'כ', 'ל', 'מ', 'נ', 'ס', 'ע', 'פ', 'צ', 'ק', 'ר', 'ש', 'ת'].freeze
 
   def build_es_filter_from_filters
     ret = {}
@@ -703,14 +669,17 @@ class ManifestationController < ApplicationController
     @todate = params['todate'].to_i if params['todate'].present?
     @datetype = params['date_type']
     range_expr = {}
+
     if @fromdate.present?
       range_expr['from'] = @fromdate
       @filters << ["#{I18n.t('d'+@datetype)} #{I18n.t(:fromdate)}: #{@fromdate}", :fromdate, :text]
     end
+
     if @todate.present?
       range_expr['to'] = @todate
       @filters << ["#{I18n.t('d'+@datetype)} #{I18n.t(:todate)}: #{@todate}", :todate, :text]
     end
+
     unless range_expr.empty?
       raise "Wrong datetype: #{@datetype}" unless %w(uploaded created published).include?(@datetype)
       datefield = "#{@datetype}_between"
@@ -731,6 +700,7 @@ class ManifestationController < ApplicationController
         @filters << [I18n.t(:title_x, x: @search_input), :search_input, :text]
       end
     end
+
     return ret
   end
 
@@ -759,21 +729,28 @@ class ManifestationController < ApplicationController
     }
 
     filter = build_es_filter_from_filters
-    @collection = SearchManifestations.call(@sort_by, @sort_dir, filter)
 
-    @collection = @collection.aggregations(standard_aggregations).limit(100) # prepare ES query - limit is the per-page limit
-    @total = @collection.count # actual query triggered here
-    @total_pages = (@total/100.0).ceil # looks like there is a bug in kaminari ES adapter and its `total_pages` method
-                                       # cannot return value greater than 100, so we calculate it like this
+    # This param means that we're getting previous page
+    # so we should revert sort ordering while quering ElasticSearch index
+    reverse = params[:reverse] == 'true'
+    sort_dir_to_use = reverse ? (@sort_dir == 'asc' ? 'desc' : 'asc') : @sort_dir
 
-    @page = params[:page].to_i
-    @page = 1 if @page == 0 # slider sets page to zero, awkwardly
-                            # a zero-result query would trigger this, otherwise
-    if @page > @total_pages && @page != 1
-      # Sometimes we receive requests to pages with extremely large number from bots/search crawlers
-      # So simply respond with NotFound in this case
-      raise PageNotFound
+    @collection = SearchManifestations.call(@sort_by, sort_dir_to_use, filter)
+
+    # Adding filtering by first letter
+    @to_letter = params['to_letter']
+    if @to_letter.present?
+      @collection = @collection.filter({ prefix: {sort_title: @to_letter}})
+      @filters << [I18n.t(:title_starts_with_x, x: @to_letter), :to_letter, :text]
     end
+
+    @collection = @collection.aggregations(standard_aggregations)
+    @total = @collection.count # actual query triggered here
+    @total_pages = (@total/PAGE_SIZE.to_f).ceil
+
+    # After we've swtiched to search_after logic for paging, page is only used to generate proper offset of item indices
+    # in works list (e.g. to start second page from index 101)
+    @page = (params[:page] || 1).to_i
 
     @emit_filters = true if params[:load_filters] == 'true' || params[:emit_filters] == 'true'
     @gender_facet = es_buckets_to_facet(@collection.aggs['author_genders']['buckets'], Person.genders)
@@ -792,36 +769,37 @@ class ManifestationController < ApplicationController
     end
     @authors_list = @authors_list.select(:id, :name).sort_by(&:name)
 
-    if @sort_by == 'alphabetical' # subset of @sort to ignore direction
-      unless params[:page].blank?
-        params[:to_letter] = nil # if page was specified, forget the to_letter directive
-      end
-      oldpage = @page
-      @works = @collection.page(@page) # get page X of manifestations
-
-      unless params[:to_letter].blank?
-        adjust_page_by_letter(@collection, params[:to_letter], :sort_title, @sort_dir, true)
-        @works = @collection.page(@page) if oldpage != @page # re-get page X of manifestations if adjustment was made
-      end
-
-      # one idea is to search with the same filters AND a title match for each letter plus * (wildcard), COUNT the results, and calculate the page numbers by division with page size
-      @ab = []
-      ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ז', 'ח', 'ט', 'י', 'כ', 'ל', 'מ', 'נ', 'ס', 'ע', 'פ', 'צ', 'ק', 'ר', 'ש', 'ת'].each{|l|
-        @ab << [l, '']
-      }
-      # @ab = prep_ab(@collection, @works, :sort_title)
-    else
-      @works = @collection.page(@page)
+    # checking if non-first page should be loaded
+    search_after_manifestation_id = params[:search_after_manifestation_id]
+    search_after_value = params[:search_after_value]
+    unless search_after_manifestation_id.blank?
+      @collection = @collection.search_after(search_after_value, search_after_manifestation_id)
     end
+
+    unless reverse
+      # Fetching next page
+      # we're retrieving one extra item to check if we have more items after fetched page
+      @works = @collection.limit(PAGE_SIZE + 1).to_a
+      have_more_items = @works.size == PAGE_SIZE + 1
+      @works = @works[0..-2] if have_more_items # removing extra item
+    else
+      # Fetching previous page
+      @works = @collection.limit(PAGE_SIZE).to_a
+      have_more_items = true # we know that there are more items after fetched page
+      @works.reverse! # reordering items to display them in proper ordering
+    end
+
+    @search_after_for_next = search_after_for_item(@works.last, false) if have_more_items
+    @search_after_for_previous = search_after_for_item(@works.first, true) if @page > 1
   end
 
-  def prep_for_browse
-    es_prep_collection
-    d = Date.today
-    @maxdate = "#{d.year}-#{'%02d' % d.month}"
-    #@maxdate = d.year.to_s
-    #@maxdate = Date.today
-    @header_partial = 'manifestation/browse_top'
+  def search_after_for_item(work, reverse)
+    {
+      value: work.send(SearchManifestations::SORTING_PROPERTIES[@sort_by][:column]),
+      manifestation_id: work.id,
+      page: reverse ? @page - 1 : @page + 1,
+      reverse: reverse.to_s
+    }
   end
 
   def prep_ab(whole, subset, fieldname)
@@ -829,7 +807,7 @@ class ManifestationController < ApplicationController
     abc_present = whole.pluck(fieldname).map{|t| t.nil? || t.empty? ? '' : t[0] }.uniq.sort
     dummy = subset[0] # bizarrely, unless we force this query, the pluck below returns *a wrong set* (off by one page or so)
     abc_active = subset.pluck(fieldname).map{|t| t.nil? || t.empty? ? '' : t[0] }.uniq.sort
-    ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ז', 'ח', 'ט', 'י', 'כ', 'ל', 'מ', 'נ', 'ס', 'ע', 'פ', 'צ', 'ק', 'ר', 'ש', 'ת'].each{|l|
+    LETTERS.each{|l|
       status = ''
       unless abc_present.include?(l)
         if(abc_active.empty? || l >= abc_active.last)

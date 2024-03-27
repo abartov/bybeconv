@@ -1,0 +1,70 @@
+- if @total_pages > 1
+  .row
+    .col-sm-8
+      .sort-buttons-area
+        - if @search_after_for_next.present?
+          %button.by-button-v02.browse_paging{ data: { search_after: @search_after_for_next } }
+            = t('.next_page')
+        - if @search_after_for_previous.present?
+          %button.by-button-v02.btn-secondary-v02.browse_paging{ data: { search_after: @search_after_for_previous } }
+            = t('.previous_page')
+        - if @page > 1
+          %button.by-button-v02.btn-secondary-v02.browse_paging
+            = t('.first_page')
+    .col-sm-4
+      = t('.page_x_of_total', page: @page, total: @total_pages)
+  %br
+.a-b-pagination-frame
+  - ManifestationController::LETTERS.each do |letter|
+    = link_to letter, '', { 'class': (letter == @to_letter ? 'letterbutton active' : 'letterbutton'), data: {letter: letter}}
+
+:javascript
+  $(function() {
+    $('.letterbutton').click(function(e) {
+      e.stopImmediatePropagation();
+      e.preventDefault();
+      const filters = #{@emit_filters == true};
+      const letter = $(this).data('letter');
+      if(filters) {
+        $('#toletter_tag').val(letter);
+        $('#search_after_value').val('');
+        $('#search_after_manifestation_id').val('');
+        submit_filters();
+      } else {
+        const urlObject = new URL($('#hurl').val());
+        urlObject.searchParams.set('to_letter', letter);
+        urlObject.searchParams.delete('search_after_value');
+        urlObject.searchParams.delete('search_after_manifestation_id');
+        urlObject.searchParams.delete('page');
+        urlObject.searchParams.delete('reverse');
+        window.history.pushState($('#works_filters').serialize(), null, '/works');
+        $.get(urlObject.href, '', null, 'script');
+      }
+    });
+
+    $('.browse_paging').click(function() {
+      const filters = #{@emit_filters == true};
+      const manifestation_id = $(this).data('search-after-manifestation-id') || '';
+      const value = $(this).data('search-after-value') || '';
+      const page = $(this).data('search-after-page') || 1;
+      const reverse = $(this).data('search-after-reverse') || false;
+
+      if(filters) {
+        $('#search_after_value').val(value);
+        $('#search_after_manifestation_id').val(manifestation_id);
+        $('#page').val(page);
+        $('#reverse').val(reverse);
+        $('#toletter_tag').val('#{@to_letter}');
+        window.history.pushState($('#works_filters').serialize(), null, '/works');
+        submit_filters();
+      } else {
+        const urlObject = new URL($('#hurl').val());
+        urlObject.searchParams.set('search_after_value', value);
+        urlObject.searchParams.set('search_after_manifestation_id', manifestation_id);
+        urlObject.searchParams.set('page', page);
+        urlObject.searchParams.set('reverse', reverse);
+        window.history.pushState($('#works_filters').serialize(), null, '/works');
+        $.get(urlObject.href, '', null, 'script');
+      }
+    });
+  });

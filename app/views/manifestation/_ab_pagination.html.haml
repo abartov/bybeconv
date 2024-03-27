@@ -17,8 +17,7 @@
         = link_to letter, url, { 'class': (status == :active ? 'letterbutton active' : 'letterbutton'), remote: true, id: letter}
 :javascript
   $(document).ready(function() {
-    filters = #{@emit_filters == true};
-
+    const filters = #{@emit_filters == true};
     $('.letterbutton').click(function(e){
       startModal('spinnerdiv');
       e.stopImmediatePropagation(); // prevent second pagination bar at bottom from also firing
