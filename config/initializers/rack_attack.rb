@@ -5,7 +5,7 @@ class Rack::Attack
   end
   blocklist_ip("84.95.84.30")
   # Throttle requests to 5 requests per second per IP
-  throttle('req/ip', limit: 300, period: 5.minutes) do |req|
+  throttle('req/ip', limit: 500, period: 3.minutes) do |req|
     req.ip unless req.path.start_with?('/assets')
   end
 end
