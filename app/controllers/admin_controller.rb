@@ -846,6 +846,7 @@ class AdminController < ApplicationController
           tn.update(name: params[:tag]) # also change the TagName that was created for the proposed tag
           #Notifications.tag_renamed_and_approved(t.name, t.creator, params[:tag]).deliver unless t.creator.blocked? # don't send email if user is blocked
           Notifications.tag_rejected(t, params[:reason], params[:orig_tag_name]).deliver unless t.creator.blocked? # don't send email if user is blocked
+          flash[:notice] = t(:tag_approved_with_different_name)
         else
           flash[:error] = t(:no_such_item)
         end

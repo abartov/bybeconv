@@ -49,6 +49,7 @@ he:
   works_by_genre: יצירות לפי סוגה
   works_by_tag: יצירות לפי תגית
   authors_by_tag: יוצרים לפי תגית
+  tag_approved_with_different_name: התגית אושרה תוך שינוי השם הרצוי
   notice: הודעה
   sitenotice: הודעת מערכת
   new_sitenotice: הודעת מערכת חדשה
