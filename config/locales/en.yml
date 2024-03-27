@@ -1,10 +1,16 @@
 en:
   welcome:
-    contact:
     submit_contact:
       ziburit_failed: Control question failed
       email_missing: Please provide an email address
-  proof:
+  proofs:
+    index:
+      title_all: All proofs
+      title_by_status: Proofs in %{status} status
+      show_all: Show all proofs
+      show_open: Show new proofs
+      show_escalated: Show escalated proofs
+      purge_spam: Purge spam!
     create:
       ziburit_failed: Control question failed
       email_missing: Please provide an email address

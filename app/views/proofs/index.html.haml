@@ -1,14 +1,14 @@
 .backend
-  - if params[:status].nil?
-    %h1= t(:all_proofs)
+  - if @status.nil?
+    %h1= t('.title_all')
   - else
-    %h1= t(:proofs_by_status, :status => textify_proof_status(params[:status]))
+    %h1= t('.title_by_status', status: textify_proof_status(@status))
     %p
-      = link_to t(:show_all_proofs), proof_list_path(:status => nil)
+      = link_to t('.show_all'), proofs_path
   %p
-    = link_to t(:show_open_proofs), proof_list_path(:status => 'new')
+    = link_to t('.show_open'), proofs_path(status: 'new')
   %p
-    = link_to t(:show_escalated_proofs), proof_list_path(:status => 'escalated')
+    = link_to t('.show_escalated'), proofs_path(status: 'escalated')
   %h2= t(:statistics)
   %p
     - ['all', 'new', 'assigned', 'fixed', 'escalated', 'wontfix', 'spam'].each do |st|
@@ -37,6 +37,6 @@
         %td= u
 
   %p
-    = link_to t(:purge_spam_proofs), proof_purge_path
+    = link_to t('.purge_spam'), purge_proofs_path, method: 'post'
   %hr
   != paginate @proofs
