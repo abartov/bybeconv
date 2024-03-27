@@ -42,6 +42,7 @@
                 = hidden_field_tag :id, @tag.id
                 = hidden_field_tag :with_tag, @with_tag.try(:id), id: 'with_tag'
                 = hidden_field_tag :orig_tag_name, @tag.name
+                = hidden_field_tag :last_autocompleted_tag, ''
                 .bottom-button-area.left-buttons
                   %input.by-button-v02#do_merge_tag{type: :submit, value: t(:confirm_merge_tag), class: @with_tag.present? ? '' : 'disabled'}
                   %button.by-button-v02.by-button-secondary-v02{'data-dismiss'=>'modal'}
@@ -51,6 +52,7 @@
   $(document).ready(function() {
     $('#tag').bind('railsAutocomplete.select', function(event, data){
       $('#with_tag').val(data.item.tag_id);
+      $('#last_autocompleted_tag').val(data.item.value);
     });
     $('#tag').change(function() {
       if($(this).val() == '' || $(this).val() == null) {
@@ -58,7 +60,9 @@
         $('#tag_id').val('');
       } else {
         $('#do_merge_tag').removeClass('disabled');
-        $('#with_tag').val('');
+        if($('#last_autocompleted_tag').val() != $(this).val()) {
+          $('#with_tag').val('');
+        }
       }
     });
     $('#tag').keyup(function(){

@@ -842,6 +842,8 @@ class AdminController < ApplicationController
           end
         elsif params[:tag].present?
           t.update(name: params[:tag], status: :approved)
+          tn = t.tag_names.first
+          tn.update(name: params[:tag]) # also change the TagName that was created for the proposed tag
           #Notifications.tag_renamed_and_approved(t.name, t.creator, params[:tag]).deliver unless t.creator.blocked? # don't send email if user is blocked
           Notifications.tag_rejected(t, params[:reason], params[:orig_tag_name]).deliver unless t.creator.blocked? # don't send email if user is blocked
         else
