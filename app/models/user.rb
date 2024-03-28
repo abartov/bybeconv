@@ -38,7 +38,7 @@ class User < ApplicationRecord
   def tag_acceptance_rate
     tags = Tag.where(creator: self)
     return 0 if tags.count == 0
-    (tags.where(status: :approved).count.to_f / tags.count.to_f).round(2)*100
+    (tags.where(status: :approved).count.to_f / tags.where(status: [:approved, :rejected]).count.to_f).round(2)*100
   end
 
   def pending_tags
