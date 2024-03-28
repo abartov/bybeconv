@@ -794,8 +794,8 @@ class AdminController < ApplicationController
       @suggester_taggings_count = @tagging.suggester.taggings.count
       @suggester_acceptance_rate = @tagging.suggester.taggings.where(status: :approved).count.to_f / @suggester_taggings_count
       calculate_editor_tagging_stats
-      @next_tagging_id = Tagging.where(status: :pending).where('created_at > ?', @tagging.created_at).order(:created_at).limit(1).pluck(:id).first
-      @prev_tagging_id = Tagging.where(status: :pending).where('created_at < ?', @tagging.created_at).order('created_at desc').limit(1).pluck(:id).first
+      @next_tagging_id = Tagging.joins(:tag).where(status: :pending, tag: {status: :approved}).where('taggings.created_at > ?', @tagging.created_at).order('taggings.created_at').limit(1).pluck(:id).first
+      @prev_tagging_id = Tagging.joins(:tag).where(status: :pending, tag: {status: :approved}).where('taggings.created_at < ?', @tagging.created_at).order('taggings.created_at desc').limit(1).pluck(:id).first
       if @tagging.taggable_type == 'Person'
         @author = Person.find(@tagging.taggable_id)
         unless @author.toc.nil?
