@@ -31,12 +31,8 @@
         $('#search_after_manifestation_id').val('');
         submit_filters();
       } else {
-        const urlObject = new URL($('#hurl').val());
+        const urlObject = urlWithoutPaging();
         urlObject.searchParams.set('to_letter', letter);
-        urlObject.searchParams.delete('search_after_value');
-        urlObject.searchParams.delete('search_after_manifestation_id');
-        urlObject.searchParams.delete('page');
-        urlObject.searchParams.delete('reverse');
         window.history.pushState($('#works_filters').serialize(), null, '/works');
         $.get(urlObject.href, '', null, 'script');
       }

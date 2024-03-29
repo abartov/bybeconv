@@ -73,19 +73,44 @@
     targetElement.off();
     });
   }
+
+  function urlWithoutPaging() {
+    const urlObject = new URL($('#hurl').val());
+    urlObject.searchParams.delete('search_after_value');
+    urlObject.searchParams.delete('search_after_manifestation_id');
+    urlObject.searchParams.delete('page');
+    urlObject.searchParams.delete('reverse');
+    return urlObject;
+  }
+
   $(document).ready(function() {
     $('.tag-x').click(function(){
+      const field = $(this).data('ele');
+
+      if (field == 'to_letter') {
+        const filters = #{@emit_filters == true};
+        if(filters) {
+          submit_filters();
+        } else {
+          const url = urlWithoutPaging();
+          url.searchParams.delete('to_letter');
+          window.history.pushState($('#works_filters').serialize(), null, '/works');
+          $.get(url.href, '', null, 'script');
+        }
+        return;
+      }
+
       // uncheck/clear the appropriate field
       var prefix = (window.innerWidth < mobileWidth) ? '#mobile_filters ' : '#works_filters ';
 
       if($(this).attr('data-which') == 'text') {
-        $(prefix + '#'+$(this).attr('data-ele')).val('');
+        $(prefix + '#' + field).val('');
       } else if ($(this).attr('data-which') == 'authorlist') {
         $(prefix + '#author_ids').val('');
         $(prefix + '#authors_names').val('');
         $(prefix + 'input[name="ckb_authors[]"]').prop('checked', false);
       } else {
-        $(prefix + '#'+$(this).attr('data-ele')).prop("checked", false);
+        $(prefix + '#' + field).prop("checked", false);
       }
       // and submit the form
       $('input').attr('disabled', false); // re-enable checkboxes to preserve other filters
