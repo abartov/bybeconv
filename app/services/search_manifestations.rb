@@ -71,7 +71,7 @@ class SearchManifestations < ApplicationService
       # if fulltext query is performed we also request highlight text, to return snippet matching query
       result = result.
         query(simple_query_string: { fields: [:title, :author_string, :alternate_titles, :fulltext], query: fulltext, default_operator: :and }).
-        highlight(fields: { fulltext: {} })
+        highlight(fields: { fulltext: {} }, max_analyzed_offset: 1000000)
     end
 
     sort_props = SORTING_PROPERTIES[sort_by]
