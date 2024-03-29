@@ -657,7 +657,7 @@ he:
   title_x: "כותרת: %{x}"
   author_x: "יוצר: %{x}"
   authors_xx: "יוצרים: %{xx}"
-  title_starts_with_x: "Title starts with '%{x}'"
+  title_starts_with_x: "כותרת מתחילה באות '%{x}'"
   title_already_exists: השם כבר קיים. נא לתת שם אחר.
   text_already_in_anthology: היצירה הנוכחית כבר מופיעה במקראה הזאת.
   anth_x_works_added: "%{x} יצירות נוספו לסוף המקראה. אפשר לשנות את מיקומן בגרירה."
