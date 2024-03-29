@@ -83,7 +83,10 @@ describe SearchManifestations do
   end
 
   describe 'filtering' do
-    let!(:subject) { SearchManifestations.call('alphabetical', 'asc', filter) }
+    let(:sort_by) { 'alphabetical' }
+    let(:sort_dir) { 'asc' }
+
+    let!(:subject) { SearchManifestations.call(sort_by, sort_dir, filter) }
 
     describe 'by genres' do
       let(:filter) { { 'genres' => genres } }
@@ -272,6 +275,8 @@ describe SearchManifestations do
     end
 
     describe 'by fulltext' do
+      let(:sort_by) { 'relevance' }
+      let(:sort_dir) { 'desc' }
       let(:filter) { { 'fulltext' => fulltext } }
       let(:result_ids) { subject.limit(REC_COUNT).map(&:id) }
       let(:manifestation_1) { create(:manifestation, markdown: 'The quick brown fox jumps over the lazy dog') }

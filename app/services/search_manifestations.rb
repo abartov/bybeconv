@@ -2,12 +2,15 @@ class SearchManifestations < ApplicationService
 
   DIRECTIONS = %w(default asc desc)
 
+  RELEVANCE_SORT_BY = 'relevance'
+
   SORTING_PROPERTIES = {
     'alphabetical' => { default_dir: 'asc', column: :sort_title },
     'popularity' => { default_dir: 'desc', column: :impressions_count },
     'publication_date' => { default_dir: 'asc', column: :orig_publication_date },
     'creation_date' => { default_dir: 'asc', column: :creation_date },
-    'upload_date' => { default_dir: 'desc', column: :pby_publication_date }
+    'upload_date' => { default_dir: 'desc', column: :pby_publication_date },
+    RELEVANCE_SORT_BY => { default_dir: 'desc', column: :_score }
   }
 
   def call(sort_by, sort_dir, filters)
@@ -69,16 +72,14 @@ class SearchManifestations < ApplicationService
       result = result.
         query(simple_query_string: { fields: [:title, :author_string, :alternate_titles, :fulltext], query: fulltext, default_operator: :and }).
         highlight(fields: { fulltext: {} })
-    else
-      # we're only applying sorting if no full-text search is performed, because for full-text search we want to keep
-      # relevance sorting
-      sort_props = SORTING_PROPERTIES[sort_by]
-      if sort_dir == 'default'
-        sort_dir = sort_props[:default_dir]
-      end
-      # We additionally sort by id to order records with equal values in main sorting column
-      result = result.order([ { sort_props[:column] => sort_dir }, { id: sort_dir } ])
     end
+
+    sort_props = SORTING_PROPERTIES[sort_by]
+    if sort_dir == 'default'
+      sort_dir = sort_props[:default_dir]
+    end
+    # We additionally sort by id to order records with equal values in main sorting column
+    result = result.order([ { sort_props[:column] => sort_dir }, { id: sort_dir } ])
 
     return  result
   end
