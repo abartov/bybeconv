@@ -53,11 +53,11 @@
                 %a{href: "#"}= tag_count
               - additional_class = ''
               - acceptance_rate = tag.creator.tag_acceptance_rate
-              - if tag_count > 3 && acceptance_rate < 25
+              - if acceptance_rate && tag_count > 3 && acceptance_rate < 25
                 - additional_class = 'low-approval-rate'
-              - elsif tag_count > 3 && acceptance_rate > 75
+              - elsif acceptance_rate && tag_count > 3 && acceptance_rate > 75
                 - additional_class = 'high-approval-rate'
-              %td{style: extra_style, class: "%-approved #{additional_class}"}= "%.1f%%" % acceptance_rate
+              %td{style: extra_style, class: "%-approved #{additional_class}"}= acceptance_rate ? "%.1f%%" % acceptance_rate : '--'
               %td{style: extra_style}
                 - if session[:tagging_lock]
                   .quick-actions
@@ -150,12 +150,12 @@
                 = tagging_count
               - additional_class = ''
               - acceptance_rate = tagging.suggester.tagging_acceptance_rate
-              - if tagging_count > 3 && acceptance_rate < 25
+              - if acceptance_rate && tagging_count > 3 && acceptance_rate < 25
                 - additional_class = 'low-approval-rate'
-              - elsif tagging_count > 3 && acceptance_rate > 75
+              - elsif acceptance_rate && tagging_count > 3 && acceptance_rate > 75
                 - additional_class = 'high-approval-rate'
 
-              %td{style: extra_style, class: "%-approved #{additional_class}"}= "%.1f%%" % acceptance_rate
+              %td{style: extra_style, class: "%-approved #{additional_class}"}= acceptance_rate ? "%.1f%%" % acceptance_rate : '--'
               %td{style: extra_style}
                 .quick-actions
                   - if session[:tagging_lock]
