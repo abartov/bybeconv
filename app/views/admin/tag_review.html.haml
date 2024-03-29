@@ -88,7 +88,7 @@
                 - additional_class = 'low-approval-rate'
               - elsif acceptance_rate && tag_count > 3 && acceptance_rate > 75
                 - additional_class = 'high-approval-rate'
-              %span{class: additional_class}= "%.1f%%" % acceptance_rate
+              %span{class: additional_class}= acceptance_rate ? "%.1f%%" % acceptance_rate : '--'
           .headline-2-v02
             = t(:items_pending_for_this_tag, tag: @tag.name)
             %span= "(#{@tag.taggings_count})"
