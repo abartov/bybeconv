@@ -799,7 +799,7 @@ he:
   the_blog: יומן הרשת
   to_the_blog: ליומן הרשת
   to_the_youtube: לערוץ היו-טיוב
-  contact_url: "/page/about/יצירתקשר"
+  contact_url: "/page/about"
   blog_url: https://benyehuda.org/blog/
   latest_blog: פרסומים אחרונים ביומן הרשת
   recommendations: המלצות
@@ -1322,9 +1322,9 @@ he:
       subject: חסימה מפרויקט בן־יהודה
   api_keys_mailer:
     key_created:
-      subject: Your API key
+      subject: מפתח ה־API שלך
     key_created_to_editor:
-      subject: New API key created
+      subject: נוצר מפתח API חדש
   views:
     pagination:
       next: לדף הבא
@@ -1357,7 +1357,7 @@ he:
       email_missing: נא לציין כתובת דואל, כדי שנוכל להשיב לך.
   manifestation:
     pagination:
-      page_x_of_total: Page %{page} of %{total}
-      next_page: Next page
-      previous_page: Previous page
-      first_page: First page
+      page_x_of_total: דף %{page} מתוך %{total}
+      next_page: לדף הבא
+      previous_page: לדף הקודם
+      first_page: לדף הראשון
