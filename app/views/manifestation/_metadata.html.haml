@@ -9,21 +9,21 @@
     %br
   .headline-2-v02
     - unless @m.authors.nil? # shouldn't happen, but eh
-      != @m.authors.map {|t| link_to(t.name, person_path(id: t.id))}.join(', ')
+      != @m.authors.map {|t| link_to(t.name,  default_link_by_class(t.class, t.id))}.join(', ')
       - if @e.translation && @e.translators.size > 0
         %br
         = "#{t(:translation)}: "
-        != @translators.map{|t| link_to(t.name, person_path(id: t.id))}.join(', ')
+        != @translators.map{|t| link_to(t.name, default_link_by_class(t.class, t.id))}.join(', ')
         - linktext = t(:from_lang) + textify_lang(@e.work.orig_lang)
         != " (#{linktext})"
   - if @illustrators.size > 0
     .headline-3-v02
       = "#{t(:illustrations_by)}: "
-      != @illustrators.map{|t| link_to(t.name, person_path(id: t.id))}.join(', ')
+      != @illustrators.map{|t| link_to(t.name, default_link_by_class(t.class, t.id))}.join(', ')
   - if @editors.size > 0
     .headline-3-v02
       = "#{t(:editing_or_compilation)}: "
-      != @editors.map{|t| link_to(t.name, person_path(id: t.id))}.join(', ')
+      != @editors.map{|t| link_to(t.name, default_link_by_class(t.class, t.id))}.join(', ')
 
 %div
   .metadata

@@ -481,16 +481,20 @@ class ManifestationController < ApplicationController
           @w.date = params[:wdate]
           @w.comment = params[:wcomment]
           @w.primary = params[:primary] == 'true'
-          unless params[:add_person_w].blank?
+          if params[:add_person_w].present?
             ia = InvolvedAuthority.create!(item: @w, authority_id: params[:add_person_w], authority_type: 'Person', role: params[:role_w].to_i)
+          elsif params[:add_corp_w].present?
+            ia = InvolvedAuthority.create!(item: @w, authority_id: params[:add_corp_w], authority_type: 'CorporateBody', role: params[:role_w].to_i)
           end
           @e.language = params[:elang]
           @e.title = params[:etitle]
           @e.date = params[:edate]
           @e.comment = params[:ecomment]
           @e.copyrighted = (params[:public_domain] == 'false' ? true : false) # field name semantics are flipped from param name, yeah
-          unless params[:add_person_e].blank?
+          if params[:add_person_e].present?
             ia = InvolvedAuthority.create!(item: @e, authority_id: params[:add_person_e], authority_type: 'Person', role: params[:role_e].to_i)
+          elsif params[:add_corp_e].present?
+            ia = InvolvedAuthority.create!(item: @e, authority_id: params[:add_corp_e], authority_type: 'CorporateBody', role: params[:role_e].to_i)
           end
           @e.source_edition = params[:source_edition]
           @e.period = params[:period]

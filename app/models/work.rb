@@ -25,7 +25,7 @@ class Work < ApplicationRecord
   end
 
   def first_author
-    involved_authorities.where(role: InvolvedAuthority.roles[:author]).first.authority
+    involved_authorities.where(role: InvolvedAuthority.roles[:author]).first.try(:authority)
   end
 
   def works_about
