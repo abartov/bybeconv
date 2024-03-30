@@ -49,6 +49,7 @@ he:
   works_by_genre: יצירות לפי סוגה
   works_by_tag: יצירות לפי תגית
   authors_by_tag: יוצרים לפי תגית
+  tag_approved_with_different_name: התגית אושרה תוך שינוי השם הרצוי
   notice: הודעה
   sitenotice: הודעת מערכת
   new_sitenotice: הודעת מערכת חדשה
@@ -602,6 +603,7 @@ he:
   translated_from_multiple_languages: מתורגמים מיותר משפה אחת
   translated_from: תורגם מ
   translation_from: תרגום מ
+  languages: שפות
   new_file: קובץ חדש
   new_works_by_new_authors: יצירות חדשות של יוצרים חדשים בפרויקט
   new_works_by_existing_authors: יצירות חדשות של יוצרים קיימים בפרויקט
@@ -1072,12 +1074,6 @@ he:
   sign_in: התחברות
   sign_in_google_twitter: התחברו באמצעות זהות גוגל או טוויטר
   sign_out: התנתקות
-  show_all_proofs: הצג את כל ההגהות
-  show_open_proofs: הצג הגהות חדשות
-  show_escalated_proofs: הצג הגהות טעונות עיון נוסף
-  purge_spam_proofs: מחק הגהות זבל
-  all_proofs: כל ההגהות
-  proofs_by_status: הגהות לפי סטטוס %{status}
   welcome_heading: 'שלום '
   please_log_in: אין מה לראות לפני התחברות למערכת.
   user_management: ניהול משתמשים
@@ -1347,7 +1343,14 @@ he:
     submit_contact:
       ziburit_failed: לא השתכנענו שאינך רובוט.
       email_missing: נא לציין כתובת דואל, כדי שנוכל להשיב לך.
-  proof:
+  proofs:
+    index:
+      title_all: כל ההגהות
+      title_by_status: הגהות לפי סטטוס %{status}
+      show_all: הצג את כל ההגהות
+      show_open: הצג הגהות חדשות
+      show_escalated: הצג הגהות טעונות עיון נוסף
+      purge_spam: מחק הגהות זבל
     create:
       ziburit_failed: לא השתכנענו שאינך רובוט.
       email_missing: נא לציין כתובת דואל, כדי שנוכל להשיב לך.

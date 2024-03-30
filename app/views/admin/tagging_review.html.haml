@@ -29,12 +29,12 @@
         %p
           - additional_class = ''
           - acceptance_rate = @tagging.suggester.tagging_acceptance_rate
-          - if @suggester_taggings_count > 3 && acceptance_rate < 25
+          - if acceptance_rate && @suggester_taggings_count > 3 && acceptance_rate < 25
             - additional_class = 'low-approval-rate'
-          - elsif @suggester_taggings_count > 3 && acceptance_rate > 75
+          - elsif acceptance_rate && @suggester_taggings_count > 3 && acceptance_rate > 75
             - additional_class = 'high-approval-rate'
           = t(:acceptance_rate)
-          %span{class: "%-approved #{additional_class}"}= "%.1f%%" % acceptance_rate
+          %span{class: "%-approved #{additional_class}"}= acceptance_rate ? "%.1f%%" % acceptance_rate : '--'
       .headline-3-v02= t(:actions)
       .tag-actions-buttons-group
         = button_to approve_tagging_path(@tagging), method: :post, class: 'by-button-v02 approve-tagging-btn confirmable', form_class: 'approve-tagging-form', id: 'approve_tagging_btn', data: { 'confirm-title': t(:confirm_approve), p1: t(:confirm_approve), 'with-comment': false, element_id: 'approve_tagging_btn' } do

@@ -791,8 +791,8 @@ class AdminController < ApplicationController
       @suggester_taggings_count = @tagging.suggester.taggings.count
       @suggester_acceptance_rate = @tagging.suggester.taggings.where(status: :approved).count.to_f / @suggester_taggings_count
       calculate_editor_tagging_stats
-      @next_tagging_id = Tagging.where(status: :pending).where('created_at > ?', @tagging.created_at).order(:created_at).limit(1).pluck(:id).first
-      @prev_tagging_id = Tagging.where(status: :pending).where('created_at < ?', @tagging.created_at).order('created_at desc').limit(1).pluck(:id).first
+      @next_tagging_id = Tagging.joins(:tag).where(status: :pending, tag: {status: :approved}).where('taggings.created_at > ?', @tagging.created_at).order('taggings.created_at').limit(1).pluck(:id).first
+      @prev_tagging_id = Tagging.joins(:tag).where(status: :pending, tag: {status: :approved}).where('taggings.created_at < ?', @tagging.created_at).order('taggings.created_at desc').limit(1).pluck(:id).first
       if @tagging.taggable_type == 'Person'
         @author = Person.find(@tagging.taggable_id)
         unless @author.toc.nil?
@@ -839,8 +839,11 @@ class AdminController < ApplicationController
           end
         elsif params[:tag].present?
           t.update(name: params[:tag], status: :approved)
+          tn = t.tag_names.first
+          tn.update(name: params[:tag]) # also change the TagName that was created for the proposed tag
           #Notifications.tag_renamed_and_approved(t.name, t.creator, params[:tag]).deliver unless t.creator.blocked? # don't send email if user is blocked
           Notifications.tag_rejected(t, params[:reason], params[:orig_tag_name]).deliver unless t.creator.blocked? # don't send email if user is blocked
+          flash[:notice] = t(:tag_approved_with_different_name)
         else
           flash[:error] = t(:no_such_item)
         end

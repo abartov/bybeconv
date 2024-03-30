@@ -237,10 +237,14 @@ Bybeconv::Application.routes.draw do
   match "html_dirs/:id/guess_author" => 'html_dirs#guess_author', via: [:get, :post]
   match "html_dirs/:id/associate_viaf" => 'html_dirs#associate_viaf', as: 'html_dirs_associate_viaf', via: [:get, :post]
 
-  get "proof/list"
-  get "proof/purge" => 'proof#purge', as: 'proof_purge'
-  match "proof/:id/resolve" => 'proof#resolve', as: 'proof_resolve', via: [:get, :post]
-  resources :proof
+  resources :proofs, only: [:index, :show, :create, :new] do
+    member do
+      post :resolve
+    end
+    collection do
+      post :purge
+    end
+  end
 
   get "legacy_recommendation/list"
   get "legacy_recommendation/purge" => 'legacy_recommendation#purge', as: 'legacy_recommendation_purge'
