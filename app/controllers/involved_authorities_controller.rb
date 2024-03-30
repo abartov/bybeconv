@@ -54,12 +54,14 @@ class InvolvedAuthoritiesController < ApplicationController
       m = (item.class == Expression) ? item.manifestations.first : item.expressions.first.manifestations.first
       m.recalc_cached_people! if m
     end
+    @the_id = 'ia' + @involved_authority.id.to_s
     @involved_authority.destroy
     flash[:notice] = t(:deleted_successfully)
 
     respond_to do |format|
       format.html { redirect_to involved_authorities_url, notice: "Involved authority was successfully destroyed." }
       format.json { head :no_content }
+      format.js
     end
   end
 

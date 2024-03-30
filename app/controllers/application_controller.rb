@@ -310,8 +310,8 @@ class ApplicationController < ActionController::Base
   def newsfeed
     unsorted_news_items = NewsItem.last(5) # read at most the last 5 persistent news items (Facebook posts, announcements)
 
-    whatsnew_since(1.month.ago).each {|person, pubs| # add newly-published works
-      unsorted_news_items << NewsItem.from_publications(person, textify_new_pubs(pubs), pubs, person_path(person.id), person.profile_image.url(:thumb))
+    whatsnew_since(1.month.ago).each {|authority, pubs| # add newly-published works
+      unsorted_news_items << NewsItem.from_publications(authority, textify_new_pubs(pubs), pubs, default_link_by_class(authority.class, authority.id), authority.profile_image.url(:thumb))
     }
     cached_youtube_videos.each {|title, desc, id, thumbnail_url, relevance| # add latest videos
       unsorted_news_items << NewsItem.from_youtube(title, desc, youtube_url_from_id(id), thumbnail_url, relevance)
@@ -450,9 +450,10 @@ class ApplicationController < ActionController::Base
 
   def cached_authorities
     Rails.cache.fetch("involved_authorities", expires_in: 4.hours) do # memoize
-      { people: Person.all.order(:name).pluck(:id, :name, :birth_year, :death_year), corporate_bodies: CorporateBody.all.order(:name).pluck(:id, :name, :inception_year, :dissolution_year ) } # limit to Person.published ? I think the use will be mostly in the back-end, so all.
+      { people: Person.all.order(:name).pluck(:name, :id), # limit to Person.published ? I think the use will be mostly in the back-end, so all.
+      corporate_bodies: CorporateBody.all.order(:name).pluck(:name, :id ) } 
     end
   end
 
-  helper_method :current_user, :html_entities_coder
+  helper_method :current_user, :html_entities_coder, :cached_authorities
 end
