@@ -776,7 +776,7 @@ class AdminController < ApplicationController
       redirect_to url_for(action: :tag_moderation)
     else
       stags = ListItem.where(listkey: 'tag_similarity', item: @tag).pluck(:extra).map{|x| x.split(':')}.sort_by{|score, tag| score}.reverse
-      @similar_tags = Tag.find(stags.map{|x| x[1]})
+      @similar_tags = Tag.where(id: stags.map{|x| x[1]})
       calculate_editor_tagging_stats
       @next_tag_id = Tag.where(status: :pending).where('created_at > ?', @tag.created_at).order(:created_at).limit(1).pluck(:id).first
       @prev_tag_id = Tag.where(status: :pending).where('created_at < ?', @tag.created_at).order('created_at desc').limit(1).pluck(:id).first
@@ -1147,4 +1147,7 @@ class AdminController < ApplicationController
     redirect_to(@next_tagging_id.present? ? url_for(tagging_review_path(@next_tagging_id)) : url_for(action: :tag_moderation), notice: msg)
   end
 
+  def prepare_similar_tags
+    stags = ListItem.where(listkey: 'tag_similarity').pluck(:item_id, :extra).to_h
+  end
 end
