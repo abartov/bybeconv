@@ -35,8 +35,8 @@
                 %input{name: "#", type: "checkbox", value: "#"}/
               %td.label-name{style: extra_style}
                 %a{href: tag_review_path(tag.id)}= tag.name
-                - if @similar_tags[tag.id]
-                  %span.by2-icon{title: t(:similar_to_x, x: Tag.find(@similar_tags[tag.id].split(':')[1].to_i).name)}> P
+                - if @similar_tags[tag.id] && stag = Tag.where(id: @similar_tags[tag.id].split(':')[1].to_i).first
+                  %span.by2-icon{title: t(:similar_to_x, x: stag.name)}> P
               %td.pending-taggings.pointer.linkcolor{'data-tagid': tag.id, style: extra_style}
                 = tag.taggings_count
               %td.wait-time{style: extra_style}= distance_of_time_in_words(tag.created_at, Date.today)
