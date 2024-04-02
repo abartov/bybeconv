@@ -1,3 +1,5 @@
+ruby '3.2.1'
+
 source 'http://rubygems.org'
 
 gem 'rails', '~> 6'
@@ -129,11 +131,14 @@ group :development do
   gem 'ed25519'
   gem 'bcrypt_pbkdf'
 
-  gem 'haml_lint', '~> 0.57.0'
+  gem 'haml_lint', '~> 0.57.0', require: false
   gem 'pronto', '~> 0.11.2'
-  gem 'pronto-haml', '~> 0.11.1'
-  gem 'pronto-rubocop', '~> 0.11.5'
-  gem 'rubocop', '~> 1.62.1'
+  gem 'pronto-haml', '~> 0.11.1', require: false
+  gem 'pronto-rubocop', '~> 0.11.5', require: false
+  gem 'rubocop', '~> 1.61.0', require: false
+  gem 'rubocop-factory_bot', '~> 2.25.1', require: false
+  gem 'rubocop-rails', '~> 2.24.1', require: false
+  gem 'rubocop-rspec', '~> 2.28.0', require: false
 end
 
 group :test, :development do
