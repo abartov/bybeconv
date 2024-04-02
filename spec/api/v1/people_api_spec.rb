@@ -4,7 +4,7 @@ describe V1::PeopleAPI do
   include_context 'API Spec Helpers'
 
   describe 'GET api/v1/people/{id}' do
-    let(:detail) { 'metadata' }
+    let(:detail) { "metadata" }
     let(:person_id) { -1 }
     let(:path) { "/api/v1/people/#{person_id}?key=#{key}&author_detail=#{detail}" }
     let(:subject) { get path }
