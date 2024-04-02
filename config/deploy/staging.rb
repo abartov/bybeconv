@@ -1,6 +1,5 @@
 set :stage, :staging
 set :rails_env, :production # we want to test production behavior on the staging server
-#set :thin_config_path, -> { "#{shared_path}/config/thin.yml" }
 set :puma_config_path, -> { "#{shared_path}/config/puma.rb" }
 
 set :default_env, { path: "/opt/ruby/bin:$PATH", cache_nonce: 'staging' }
