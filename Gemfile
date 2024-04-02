@@ -121,13 +121,19 @@ group :development do
   gem 'capistrano3-puma'
   gem 'listen'
   gem 'derailed_benchmarks'
-#  gem 'bullet' # for suggestions to add/remove eager loading
+  # gem 'bullet' # for suggestions to add/remove eager loading
   gem 'stackprof'
   gem 'active_record_query_trace'
   gem 'immigrant'
   gem 'ruby-prof' # for profiling
   gem 'ed25519'
   gem 'bcrypt_pbkdf'
+
+  gem 'haml_lint', '~> 0.57.0'
+  gem 'pronto', '~> 0.11.2'
+  gem 'pronto-haml', '~> 0.11.1'
+  gem 'pronto-rubocop', '~> 0.11.5'
+  gem 'rubocop', '~> 1.62.1'
 end
 
 group :test, :development do
