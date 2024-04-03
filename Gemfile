@@ -26,6 +26,8 @@ gem 'rack-cors', require: 'rack/cors'
 gem 'diffy'
 gem 'aws-sdk-s3' # for Active Storage
 
+gem 'simple_form', '~> 5.3.0'
+
 gem 'kt-paperclip', git: 'https://github.com/kreeti/kt-paperclip.git' # for Ruby 3.2 compatibility, until https://github.com/kreeti/kt-paperclip/pull/98 is officially released
 #gem 'kt-paperclip', '7.1.1' # , '~>5.2' # for cloud files like author images 6.x requires aws >3.x
 # gem 'impressionist' # latest released gem incompatible with Ruby 3.x
