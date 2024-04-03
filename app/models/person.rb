@@ -1,5 +1,6 @@
 include BybeUtils
 class Person < ApplicationRecord
+  include Authority
 
   enum gender: %i(male female other unknown)
   enum period: %i(ancient medieval enlightenment revival modern)
@@ -110,9 +111,7 @@ class Person < ApplicationRecord
 
   def cached_works_count
     Rails.cache.fetch("au_#{self.id}_work_count", expires_in: 24.hours) do
-      created_work_ids = self.works.includes(expressions: [:manifestations]).where(manifestations: {status: :published}).pluck(:id)
-      expressions_work_ids = self.expressions.includes(:manifestations).where(manifestations: {status: :published}).pluck(:work_id)
-      (created_work_ids + expressions_work_ids).uniq.size
+      authority_works_count
     end
   end
 
@@ -190,6 +189,10 @@ class Person < ApplicationRecord
     return "#{birth_year}&rlm;-#{death_year}"
   end
 
+  def image_url
+    return profile_image.url(:thumb)
+  end
+  
   def period_string
     return '' if period.nil?
     return t(period)
@@ -259,36 +262,11 @@ class Person < ApplicationRecord
   def title # convenience method for polymorphic handling (e.g. Taggable)
     name
   end
-  def original_works_by_genre
-    ret = {}
-    get_genres.map{|g| ret[g] = []}
-    Manifestation.all_published.joins(expression: [work: :involved_authorities]).includes(:expression).where("involved_authorities.authority_id = #{self.id} and involved_authorities.authority_type = 'Person'").each do |m|
-      ret[m.expression.work.genre] << m
-    end
-    return ret
-  end
-
-  def translations_by_genre
-    ret = {}
-    get_genres.map{|g| ret[g] = []}
-    Manifestation.all_published.joins(expression: :involved_authorities).includes(expression: :work).where(involved_authorities:{role: :translator, authority: self}).each do |m|
-      ret[m.expression.work.genre] << m
-    end
-    return ret
-  end
 
   def featured_work
     Rails.cache.fetch("au_#{self.id}_featured", expires_in: 24.hours) do # memoize
       self.featured_contents.order(Arel.sql('RAND()')).limit(1)
     end
-  end
-
-  def latest_stuff
-    latest_original_works = Manifestation.all_published.joins(expression: [work: :involved_authorities]).includes(:expression).where("involved_authorities.authority_id = #{self.id} and involved_authorities.authority_type = 'Person'").order(created_at: :desc).limit(20)
-
-    latest_translations = Manifestation.all_published.joins(expression: :involved_authorities).includes(expression: [work: :involved_authorities]).where(involved_authorities:{role: :translator, authority: self}).order(created_at: :desc).limit(20)
-
-    return (latest_original_works + latest_translations).uniq.sort_by{|m| m.created_at}.reverse.first(20)
   end
 
   def cached_latest_stuff

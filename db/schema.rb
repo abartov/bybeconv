@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_02_06_222123) do
+ActiveRecord::Schema.define(version: 2024_03_31_120740) do
 
   create_table "aboutnesses", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -274,7 +274,17 @@ ActiveRecord::Schema.define(version: 2024_02_06_222123) do
     t.text "comments"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "sort_name"
+    t.string "country"
+    t.string "nli_id"
+    t.string "wikipedia_url", limit: 800
+    t.text "wikipedia_snippet"
+    t.boolean "public_domain"
+    t.boolean "bib_done"
+    t.integer "status"
+    t.datetime "published_at"
     t.index ["name"], name: "index_corporate_bodies_on_name"
+    t.index ["sort_name"], name: "index_corporate_bodies_on_sort_name"
   end
 
   create_table "creations", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|

@@ -40,7 +40,7 @@
               -#    %span.by-icon-v02.iconNearText-v02> +
               -#    לינק
               -#    לאתר רלוונטי
-              - unless @author.blog_category_url.nil? or @author.blog_category_url.empty?
+              - unless @author.try(:blog_category_url).nil? or @author.try(:blog_category_url).empty?
                 .metadata-link
                   %a{:href => @author.blog_category_url, target: '_blank'}
                     %span.by-icon-v02> Q
@@ -48,7 +48,7 @@
               - if current_user && current_user.editor?
                 %p{style:'text-align:left'}
                   != "&nbsp;&nbsp;&nbsp;"
-                  - unless @author.toc.nil?
+                  - unless @author.try(:toc).nil?
                     %span.static-btn
                       %b= link_to t(:edit_toc), authors_edit_toc_path(@author)
                   - else
@@ -77,7 +77,7 @@
               %button.by-button-v02#add-to-anth-btn
                 .by-icon-v02 &amp; D
             - unless @toc.nil?
-              = render partial: 'toc', locals: {margin: true}
+              = render partial: 'authors/toc', locals: {margin: true}
               .by-card-v02#text-volunteers-desktop
                 .by-card-header-v02
                   .headline-1-v02= t(:volunteers_who_helped, author: @author.name, gender_letter: @author.gender_letter)
@@ -85,7 +85,7 @@
                   .credits
                     != @credits
             - else
-              = render partial: 'generated_toc'
+              = render partial: 'authors/generated_toc'
     .col-12.col-lg-4
       .row
         %a{name: 'curated_g', 'class' => 'g_anch'}
@@ -113,7 +113,7 @@
                     .author_latest_popup_button.linkcolor.pointer
                       %span{:style => "font-weight: bold"}= t(:to_latest_x_works, x: @author.cached_latest_stuff.count)
                       %span.left-arrow 1
-          - unless @featured.empty?
+          - if @featured.present?
             - featured = @featured[0]
             .by-card-v02.flash-work-v02
               .flash-bg-v02
@@ -160,7 +160,7 @@
                         .metadata-link-icon.small-icon.pointer &amp;
                         %div= t(:suggest_new_tag)
           
-          = render partial: 'aboutnesses', cached: true
+          = render partial: 'authors/aboutnesses', cached: true
           - if @external_links.count > 0
             - cache "au_#{@author.id}_links", expires_in: 24.hours do
               .by-card-v02.left-side-card-v02
