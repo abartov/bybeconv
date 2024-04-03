@@ -1,7 +1,7 @@
 - if @aboutnesses.count > 0
   .by-card-v02.left-side-card-v02
     .by-card-header-left-v02
-      %span.headline-1-v02= t(:works_about_this_author, gender_suffix: @author.gender == 'female' ? '/ת' : '')
+      %span.headline-1-v02= t(:works_about_this_author, gender_suffix: @author.try(:gender) == 'female' ? '/ת' : '')
     .by-card-content-v02
       %div
         %div
