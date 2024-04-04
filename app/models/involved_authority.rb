@@ -1,5 +1,14 @@
 class InvolvedAuthority < ApplicationRecord
-  enum role: { author: 0, editor: 1, illustrator: 2, translator: 3, photographer: 4, designer: 5, contributor: 6, other: 7 }
+  enum role: {
+    author: 0,
+    editor: 1,
+    illustrator: 2,
+    translator: 3,
+    photographer: 4,
+    designer: 5,
+    contributor: 6,
+    other: 7
+  }
 
   belongs_to :authority, polymorphic: true # Person or CorporateBody
   belongs_to :item, polymorphic: true # Work or Expression
