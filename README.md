@@ -16,6 +16,50 @@ External (i.e. hosting system) dependencies:
 * redis as [backend for sidekiq](https://github.com/sidekiq/sidekiq/wiki/Using-Redis)
 * memcached for caching
 
+Linters
+-------
+Since 2024 we've included some linters in project, namely:
+- [rubocop](https://github.com/rubocop/rubocop)
+- [haml_lint](https://github.com/sds/haml-lint)
+
+### Some quick rubocop tips
+Most simple command:
+```shell
+rubocop
+```
+Will check whole project. In most cases it is not required. Also it will produce tons of warnings, as many parts of
+codebase does not follow style guidelines.
+
+In most cases you may want to check single file:
+```shell
+rubocop <Path to file>
+```
+
+Another useful feature is rubocop's autocorrection. In some cases rubocop can try to fix style violations on its own.
+
+There is "safe" autocorrection which should be OK in most cases:
+```shell
+rubocop -a <Path to file>
+```
+
+And more risky version of it, which can fix more issues, but known to produce errors more often:
+```shell
+rubocop -A <Path to file>
+```
+
+In any case you should be careful with autocorrection and always check result of autocorrection before commiting it 
+to git.
+
+### Pronto
+
+To run linters only on those parts of projects, affected by your PR you can use 
+[pronto](https://github.com/prontolabs/pronto) tool. For example following command:
+```shell
+pronto run -c origin/master
+```
+will run linters only on lines of code which were changed compared to `origin/master` branch. Our CI pipeline uses
+this approach for all PRs.
+
 License
 -------
 

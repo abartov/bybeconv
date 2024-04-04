@@ -8,11 +8,11 @@ on:
 
 jobs:
   test:
-    name: CI
-    runs-on: ubuntu-20.04
+    name: RSpec
+    runs-on: ubuntu-22.04
     services:
       mysql:
-        image: mysql:5.7
+        image: mysql:8.0
         env:
           MYSQL_ROOT_PASSWORD: root
         ports:
@@ -20,11 +20,11 @@ jobs:
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v4
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y mysql-client libmysqlclient-dev wkhtmltopdf pandoc yaz libyaz-dev  libmagickwand-dev libpcap-dev memcached
+          sudo apt-get install -y mysql-client libmysqlclient-dev wkhtmltopdf pandoc yaz libyaz-dev  libmagickwand-dev libpcap-dev memcached cmake
       - name: Configure sysctl limits
         run: |
           sudo swapoff -a
