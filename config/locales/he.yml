@@ -1360,8 +1360,8 @@ he:
       email_missing: נא לציין כתובת דואל, כדי שנוכל להשיב לך.
   corporate_bodies:
     create:
-      success: Corporate body was successfully created.
+      success: הגוף/מוסד החדש נוצר.
     update:
-      success: Corporate body was successfully updated.
+      success: הגוף/מוסד עודכן בהצלחה.
     destroy:
-      success: Corporate body was successfully destroyed.
+      success: הגוף/מוסד נמחק.
