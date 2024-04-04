@@ -263,7 +263,7 @@ ActiveRecord::Schema.define(version: 2024_03_31_120740) do
 
   create_table "corporate_bodies", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "name"
-    t.string "alternate_names"
+    t.text "alternate_names"
     t.string "location"
     t.string "inception"
     t.integer "inception_year"
