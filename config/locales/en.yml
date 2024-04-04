@@ -1,4 +1,7 @@
 en:
+  back: back
+  back_to_list: back to list
+
   welcome:
     submit_contact:
       ziburit_failed: Control question failed
@@ -14,3 +17,10 @@ en:
     create:
       ziburit_failed: Control question failed
       email_missing: Please provide an email address
+  corporate_bodies:
+    create:
+      success: Corporate body was successfully created.
+    update:
+      success: Corporate body was successfully updated.
+    destroy:
+      success: Corporate body was successfully destroyed.

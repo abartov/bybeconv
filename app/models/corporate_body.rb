@@ -13,6 +13,8 @@ class CorporateBody < ApplicationRecord
 
   has_one_attached :profile_image
 
+  validates_presence_of :name, :status
+
   def cached_latest_stuff
     Rails.cache.fetch("cb_#{self.id}_latest_stuff", expires_in: 24.hours) do
       latest_stuff
@@ -48,5 +50,4 @@ class CorporateBody < ApplicationRecord
   def gender_letter
     return 'ו'
   end
-
 end

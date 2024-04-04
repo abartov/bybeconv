@@ -1069,6 +1069,7 @@ he:
   purge_rejected_recommendations: מחק המלצות שנדחו וזבל
   back: חזרה
   back_to_dashboard: למרכז הפעילות
+  back_to_list: back to list
   dashboard: מרכז הפעילות
   raw_tocs: יוצרים עם דף יוצר שטרם עוּבַּד
   back_to_homepage: לדף הבית
@@ -1357,3 +1358,10 @@ he:
     create:
       ziburit_failed: לא השתכנענו שאינך רובוט.
       email_missing: נא לציין כתובת דואל, כדי שנוכל להשיב לך.
+  corporate_bodies:
+    create:
+      success: Corporate body was successfully created.
+    update:
+      success: Corporate body was successfully updated.
+    destroy:
+      success: Corporate body was successfully destroyed.

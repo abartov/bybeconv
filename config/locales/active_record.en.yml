@@ -1,0 +1,24 @@
+en:
+  attributes:
+    created_at: Created At
+    updated_at: Updated At
+    name: Name
+    status: Status
+    country: Country
+  activerecord:
+    models:
+      corporate_body: Corporate Body
+    attributes:
+      corporate_body:
+        alternate_names: Alternate Names
+        location: Location
+        inception: Inception
+        inception_year: Inception Year
+        dissolution: Dissolution
+        dissolution_year: Dissolution Year
+        wikipedia_url: Wikipedia URL
+        wikipedia_snippet: Snippet from Wikipedia
+        wikidata_uri: WikiData URI
+        viaf_id: VIAF
+        nli_id: NLI
+        comments: Comments
