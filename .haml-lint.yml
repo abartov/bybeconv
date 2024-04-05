@@ -1,0 +1,12 @@
+linters:
+  LineLength:
+    max: 120
+
+  InstanceVariables:
+    enabled: false
+
+  InlineStyles:
+    enabled: false
+
+  IdNames:
+    enabled: false
