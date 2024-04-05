@@ -36,8 +36,7 @@ class ManifestationController < ApplicationController
     @works_list_title = t(:works_list) unless @works_list_title.present? # TODO: adjust by query
     if valid_query?
       es_prep_collection
-      d = Date.today
-      @maxdate = "#{d.year}-#{'%02d' % d.month}"
+      @maxdate = Time.zone.today.strftime('%Y-%m')
       @header_partial = 'manifestation/browse_top'
 
       prep_user_content(:manifestation)
@@ -590,8 +589,8 @@ class ManifestationController < ApplicationController
     end
   end
 
-  PAGE_SIZE = 100.freeze
-  LETTERS = ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ז', 'ח', 'ט', 'י', 'כ', 'ל', 'מ', 'נ', 'ס', 'ע', 'פ', 'צ', 'ק', 'ר', 'ש', 'ת'].freeze
+  PAGE_SIZE = 100
+  LETTERS = %w(א ב ג ד ה ו ז ח ט י כ ל מ נ ס ע פ צ ק ר ש ת).freeze
 
   def build_es_filter_from_filters
     ret = {}
@@ -733,20 +732,24 @@ class ManifestationController < ApplicationController
     # This param means that we're getting previous page
     # so we should revert sort ordering while quering ElasticSearch index
     reverse = params[:reverse] == 'true'
-    sort_dir_to_use = reverse ? (@sort_dir == 'asc' ? 'desc' : 'asc') : @sort_dir
+    sort_dir_to_use = if reverse
+                        @sort_dir == 'asc' ? 'desc' : 'asc'
+                      else
+                        @sort_dir
+                      end
 
     @collection = SearchManifestations.call(@sort_by, sort_dir_to_use, filter)
 
     # Adding filtering by first letter
     @to_letter = params['to_letter']
     if @to_letter.present?
-      @collection = @collection.filter({ prefix: {sort_title: @to_letter}})
+      @collection = @collection.filter({ prefix: { sort_title: @to_letter } })
       @filters << [I18n.t(:title_starts_with_x, x: @to_letter), :to_letter, :text]
     end
 
     @collection = @collection.aggregations(standard_aggregations)
     @total = @collection.count # actual query triggered here
-    @total_pages = (@total/PAGE_SIZE.to_f).ceil
+    @total_pages = (@total / PAGE_SIZE.to_f).ceil
 
     # After we've swtiched to search_after logic for paging, page is only used to generate proper offset of item indices
     # in works list (e.g. to start second page from index 101)
@@ -772,21 +775,21 @@ class ManifestationController < ApplicationController
     # checking if non-first page should be loaded
     search_after_manifestation_id = params[:search_after_manifestation_id]
     search_after_value = params[:search_after_value]
-    unless search_after_manifestation_id.blank?
+    if search_after_manifestation_id.present?
       @collection = @collection.search_after(search_after_value, search_after_manifestation_id)
     end
 
-    unless reverse
+    if reverse
+      # Fetching previous page
+      @works = @collection.limit(PAGE_SIZE).to_a
+      have_more_items = true # we know that there are more items after fetched page
+      @works.reverse! # reordering items to display them in proper ordering
+    else
       # Fetching next page
       # we're retrieving one extra item to check if we have more items after fetched page
       @works = @collection.limit(PAGE_SIZE + 1).to_a
       have_more_items = @works.size == PAGE_SIZE + 1
       @works = @works[0..-2] if have_more_items # removing extra item
-    else
-      # Fetching previous page
-      @works = @collection.limit(PAGE_SIZE).to_a
-      have_more_items = true # we know that there are more items after fetched page
-      @works.reverse! # reordering items to display them in proper ordering
     end
 
     @search_after_for_next = search_after_for_item(@works.last, false) if have_more_items
@@ -807,18 +810,14 @@ class ManifestationController < ApplicationController
     abc_present = whole.pluck(fieldname).map{|t| t.nil? || t.empty? ? '' : t[0] }.uniq.sort
     dummy = subset[0] # bizarrely, unless we force this query, the pluck below returns *a wrong set* (off by one page or so)
     abc_active = subset.pluck(fieldname).map{|t| t.nil? || t.empty? ? '' : t[0] }.uniq.sort
-    LETTERS.each{|l|
+    LETTERS.each do |l|
       status = ''
       unless abc_present.include?(l)
-        if(abc_active.empty? || l >= abc_active.last)
-          status = :disabled
-        else
-          status = :in_range_disabled
-        end
+        status = abc_active.empty? || l >= abc_active.last ? :disabled : :in_range_disabled
       end
       status = :active if abc_active.include?(l)
       ret << [l, status]
-    }
+    end
     return ret
   end
 

@@ -83,10 +83,10 @@ describe SearchManifestations do
   end
 
   describe 'filtering' do
+    subject! { described_class.call(sort_by, sort_dir, filter) }
+
     let(:sort_by) { 'alphabetical' }
     let(:sort_dir) { 'asc' }
-
-    let!(:subject) { SearchManifestations.call(sort_by, sort_dir, filter) }
 
     describe 'by genres' do
       let(:filter) { { 'genres' => genres } }

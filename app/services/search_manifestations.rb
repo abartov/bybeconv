@@ -1,6 +1,7 @@
-class SearchManifestations < ApplicationService
+# frozen_string_literal: true
 
-  DIRECTIONS = %w(default asc desc)
+class SearchManifestations < ApplicationService
+  DIRECTIONS = %w(default asc desc).freeze
 
   RELEVANCE_SORT_BY = 'relevance'
 
@@ -11,7 +12,7 @@ class SearchManifestations < ApplicationService
     'creation_date' => { default_dir: 'asc', column: :creation_date },
     'upload_date' => { default_dir: 'desc', column: :pby_publication_date },
     RELEVANCE_SORT_BY => { default_dir: 'desc', column: :_score }
-  }
+  }.freeze
 
   def call(sort_by, sort_dir, filters)
     filter = []
@@ -69,9 +70,12 @@ class SearchManifestations < ApplicationService
     fulltext = filters['fulltext']
     if fulltext.present?
       # if fulltext query is performed we also request highlight text, to return snippet matching query
-      result = result.
-        query(simple_query_string: { fields: [:title, :author_string, :alternate_titles, :fulltext], query: fulltext, default_operator: :and }).
-        highlight(fields: { fulltext: {} }, max_analyzed_offset: 1000000)
+      result = result.query(simple_query_string: {
+                              fields: %i(title author_string alternate_titles fulltext),
+                              query: fulltext,
+                              default_operator: :and
+                            })
+                     .highlight(fields: { fulltext: {} }, max_analyzed_offset: 1_000_000)
     end
 
     sort_props = SORTING_PROPERTIES[sort_by]
@@ -79,9 +83,7 @@ class SearchManifestations < ApplicationService
       sort_dir = sort_props[:default_dir]
     end
     # We additionally sort by id to order records with equal values in main sorting column
-    result = result.order([ { sort_props[:column] => sort_dir }, { id: sort_dir } ])
-
-    return  result
+    result.order([{ sort_props[:column] => sort_dir }, { id: sort_dir }])
   end
 
   private

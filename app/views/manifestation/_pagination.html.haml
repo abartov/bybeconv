@@ -16,7 +16,9 @@
   %br
 .a-b-pagination-frame
   - ManifestationController::LETTERS.each do |letter|
-    = link_to letter, '', { 'class': (letter == @to_letter ? 'letterbutton active' : 'letterbutton'), data: {letter: letter}}
+    = link_to letter,
+              '',
+              { class: (letter == @to_letter ? 'letterbutton active' : 'letterbutton'), data: { letter: letter } }
 
 :javascript
   $(function() {

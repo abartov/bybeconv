@@ -248,8 +248,7 @@ class AuthorsController < ApplicationController
     @page = 1 if ['0',''].include?(@page) # slider sets page to zero, awkwardly
     es_prep_collection
     @total = @collection.count
-    d = Date.today
-    @maxdate = "#{d.year}-#{'%02d' % d.month}"
+    @maxdate = Time.zone.today.strftime('%Y-%m')
     @header_partial = 'authors/browse_top'
     @authors_list_title = t(:author_list) unless @authors_list_title.present?
     render :browse

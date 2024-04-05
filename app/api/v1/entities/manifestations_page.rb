@@ -5,9 +5,9 @@ module V1
       expose :next_page_search_after,
              documentation: {
                is_array: true,
-               desc: <<~desc
+               desc: <<~DESC
                  Use this value as `search after` to get next page. If null is returned then this page is the last one.
-               desc
+               DESC
              }
       expose :data, using: V1::Entities::ManifestationIndex, documentation: { is_array: true }
     end

@@ -51,7 +51,7 @@
     %button.by-button-v02#add-to-anth-btn
       .by-icon-v02 &amp; D
   .mainlist#browse_mainlist
-    %ol{style:"counter-reset:li #{ (@page.to_i - 1) * ManifestationController::PAGE_SIZE }"}
+    %ol{ style: "counter-reset:li #{(@page.to_i - 1) * ManifestationController::PAGE_SIZE}" }
       - decorator = browse_item_decorator_by_sort_type(@sort)
       - @works.each do |m|
         %li
