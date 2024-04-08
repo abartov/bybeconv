@@ -590,8 +590,6 @@ class ManifestationController < ApplicationController
   end
 
   PAGE_SIZE = 100
-  LETTERS = %w(א ב ג ד ה ו ז ח ט י כ ל מ נ ס ע פ צ ק ר ש ת).freeze
-
   def build_es_filter_from_filters
     ret = {}
     @filters = []

@@ -15,7 +15,7 @@
       = t('.page_x_of_total', page: @page, total: @total_pages)
   %br
 .a-b-pagination-frame
-  - ManifestationController::LETTERS.each do |letter|
+  - LETTERS.each do |letter|
     = link_to letter,
               '',
               { class: (letter == @to_letter ? 'letterbutton active' : 'letterbutton'), data: { letter: letter } }
