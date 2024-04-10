@@ -17,7 +17,7 @@
         = f
         %span.pointer.tag-x{'data-ele': id, 'data-which' => which}= '-'
 .by-card-content-v02
-  = render partial: 'shared/pagination'
+  = render partial: 'shared/pagination', locals: { add_js: false }
   .select-all-with-buttons
     .headline-4-v02= t(:sort_by)
     #sort-by
@@ -49,7 +49,7 @@
           = link_to au.sort_name.presence || '_', person_path(au.id)
           .authors-list-years= decorator.call(au)
   = hidden_field_tag(:hurl, request.original_url)
-  = render partial: 'shared/pagination'
+  = render partial: 'shared/pagination', locals: { add_js: true }
 :javascript
   /**
    * Handle Animation (Start, Reset, Restart)
