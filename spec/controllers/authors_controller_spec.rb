@@ -1,6 +1,19 @@
 require 'rails_helper'
 
 describe AuthorsController do
+  describe '#browse' do
+    subject(:call) { get :browse }
+
+    before do
+      clean_tables
+      Chewy.strategy(:atomic) do
+        create_list(:manifestation, 20)
+      end
+    end
+
+    it { is_expected.to be_successful }
+  end
+
   describe '#get_random_author' do
     before do
       create_list(:manifestation, 5)
