@@ -1,0 +1,31 @@
+name: Pronto
+
+on:
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  pronto:
+    name: Linters
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y mysql-client libmysqlclient-dev wkhtmltopdf pandoc yaz libyaz-dev  libmagickwand-dev libpcap-dev memcached cmake
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - name: Run pronto
+        env:
+          RAILS_ENV: "test"
+          PRONTO_PULL_REQUEST_ID: ${{ github.event.pull_request.number }}
+          PRONTO_GITHUB_ACCESS_TOKEN: "${{ github.token }}"
+          BUNDLE_PATH: "vendor/bundle"
+        run:
+          bundle exec pronto run -f github_pr github_status -c origin/${{ github.base_ref }}

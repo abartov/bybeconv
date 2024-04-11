@@ -122,4 +122,13 @@ Rails.application.configure do
     config.active_record.verbose_query_logs = false
     config.action_view.cache_template_loading = true
   end
+
+  # Applying rubocop-rails autocorrection to generated content
+  # see https://github.com/rubocop/rubocop-rails?tab=readme-ov-file#rails-configuration-tip
+  config.generators.after_generate do |files|
+    parsable_files = files.filter { |file| file.end_with?('.rb') }
+    unless parsable_files.empty?
+      system("bundle exec rubocop -A --fail-level=E #{parsable_files.shelljoin}", exception: true)
+    end
+  end
 end

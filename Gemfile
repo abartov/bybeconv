@@ -1,3 +1,7 @@
+# frozen_string_literal: true
+
+ruby '3.2.1'
+
 source 'http://rubygems.org'
 
 gem 'rails', '~> 6'
@@ -121,13 +125,22 @@ group :development do
   gem 'capistrano3-puma'
   gem 'listen'
   gem 'derailed_benchmarks'
-#  gem 'bullet' # for suggestions to add/remove eager loading
+  # gem 'bullet' # for suggestions to add/remove eager loading
   gem 'stackprof'
   gem 'active_record_query_trace'
   gem 'immigrant'
   gem 'ruby-prof' # for profiling
   gem 'ed25519'
   gem 'bcrypt_pbkdf'
+
+  gem 'haml_lint', '~> 0.57.0', require: false
+  gem 'pronto', '~> 0.11.2'
+  gem 'pronto-haml', '~> 0.11.1', require: false
+  gem 'pronto-rubocop', '~> 0.11.5', require: false
+  gem 'rubocop', '~> 1.61.0', require: false
+  gem 'rubocop-factory_bot', '~> 2.25.1', require: false
+  gem 'rubocop-rails', '~> 2.24.1', require: false
+  gem 'rubocop-rspec', '~> 2.28.0', require: false
 end
 
 group :test, :development do

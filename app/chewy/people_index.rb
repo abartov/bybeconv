@@ -2,6 +2,7 @@ class PeopleIndex < Chewy::Index
 
   # people
   index_scope  Person.published
+  field :id, type: 'integer'
   field :name
   field :sort_name, type: 'keyword'
   field :other_designation

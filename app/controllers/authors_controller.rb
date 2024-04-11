@@ -3,6 +3,8 @@ include BybeUtils
 include ApplicationHelper
 
 class AuthorsController < ApplicationController
+  include FilteringAndPaginationConcern
+
   before_action only: [:new, :publish, :create, :show, :edit, :list, :add_link, :delete_link, :delete_photo, :edit_toc, :update, :to_manual_toc] do |c| c.require_editor('edit_people') end
   autocomplete :tag, :name, :limit => 2
 
@@ -142,7 +144,7 @@ class AuthorsController < ApplicationController
       ret << {terms: {tags: tag_data.map(&:last)}}
       @filters += tag_data.map { |x| [x.last, "tag_#{x.first}", :checkbox] }
     end
-    
+
     # dates
     @fromdate = params['fromdate'] if params['fromdate'].present?
     @todate = params['todate'] if params['todate'].present?
@@ -158,7 +160,14 @@ class AuthorsController < ApplicationController
     end
     datefield = es_datefield_name_from_datetype(@datetype)
     ret << {range: {"#{datefield}" => range_expr }} unless range_expr.empty?
-    #     { "range": { "publish_date": { "gte": "2015-01-01" }}}
+
+    # Adding filtering by first letter
+    @to_letter = params['to_letter']
+    if @to_letter.present?
+      ret << { prefix: { sort_name: @to_letter } }
+      @filters << [I18n.t(:name_starts_with_x, x: @to_letter), :to_letter, :text]
+    end
+
     return ret
   end
   def build_es_query_from_filters
@@ -170,33 +179,8 @@ class AuthorsController < ApplicationController
     end
     return ret
   end
-  def es_prep_collection
-    @sort_dir = :default
-    if params[:sort_by].present?
-      @sort_or_filter = 'sort'
-      @sort = params[:sort_by].dup
-      params[:sort_by].sub!(/_(a|de)sc$/,'')
-      @sort_dir = $&[1..-1] unless $&.nil?
-    end
-    # figure out sort order
-    if params[:sort_by].present?
-      case params[:sort_by]
-      when 'alphabetical'
-        ord = {sort_name: (@sort_dir == :default ? :asc : @sort_dir)}
-      when 'popularity'
-        ord = {impressions_count: (@sort_dir == :default ? :desc : @sort_dir)}
-      when 'death_date'
-        ord = {death_year: (@sort_dir == :default ? 'asc' : @sort_dir)}
-      when 'birth_date'
-        ord = {birth_year: (@sort_dir == :default ? 'asc' : @sort_dir)}
-      when 'upload_date'
-        ord = {pby_publication_date: (@sort_dir == :default ? :desc : @sort_dir)}
-      end
-    else
-      sdir = (@sort_dir == :default ? :asc : @sort_dir)
-      @sort = "alphabetical_#{sdir}"
-      ord = {sort_name: sdir}
-    end
+
+  def fill_aggregated_facets(collection)
     standard_aggregations = {
       periods: {terms: {field: 'period'}},
       genres: {terms: {field: 'genre'}},
@@ -204,52 +188,71 @@ class AuthorsController < ApplicationController
       copyright_status: {terms: {field: 'copyright_status'}},
       genders: {terms: {field: 'gender'}},
     }
+
+    collection = collection.aggregations(standard_aggregations)
+
+    @gender_facet = es_buckets_to_facet(collection.aggs['genders']['buckets'], Person.genders)
+    @period_facet = es_buckets_to_facet(collection.aggs['periods']['buckets'], Expression.periods)
+    @genre_facet = es_buckets_to_facet(collection.aggs['genres']['buckets'], get_genres.to_h { |g| [g, g] })
+    @language_facet = es_buckets_to_facet(collection.aggs['languages']['buckets'], get_langs.to_h { |l| [l, l] })
+    @language_facet[:xlat] = @language_facet.reject{|k,v| k == 'he'}.values.sum
+    @copyright_facet = es_buckets_to_facet(collection.aggs['copyright_status']['buckets'], { 0 => 0, 1 => 1 })
+  end
+
+  SORTING_PROPERTIES = {
+    'alphabetical' => { default_dir: 'asc', column: :sort_name },
+    'popularity' => { default_dir: 'desc', column: :impressions_count },
+    'death_date' => { default_dir: 'asc', column: :death_year },
+    'birth_date' => { default_dir: 'asc', column: :birth_year },
+    'upload_date' => { default_dir: 'desc', column: :pby_publication_date }
+  }.freeze
+
+  def get_sort_column(sort_by)
+    SORTING_PROPERTIES[sort_by][:column]
+  end
+
+  def es_prep_collection
+    @sort_dir = 'default'
+    if params[:sort_by].present?
+      @sort_or_filter = 'sort'
+      @sort = params[:sort_by].dup
+      @sort_by = params[:sort_by].sub(/_(a|de)sc$/, '')
+      @sort_dir = Regexp.last_match(0)[1..] unless Regexp.last_match(0).nil?
+    else
+      # use alphabetical sorting by default
+      @sort = 'alphabetical_asc'
+      @sort_by = 'alphabetical'
+      @sort_dir = 'asc'
+    end
+
+    # This param means that we're getting previous page
+    # so we should revert sort ordering while quering ElasticSearch index
+    @reverse = params[:reverse] == 'true'
+    sort_dir_to_use = if @reverse
+                        @sort_dir == 'asc' ? 'desc' : 'asc'
+                      else
+                        @sort_dir
+                      end
+    ord = { SORTING_PROPERTIES[@sort_by][:column] => sort_dir_to_use, id: sort_dir_to_use }
+
     filter = build_es_filter_from_filters
     es_query = build_es_query_from_filters
-    es_query = {match_all: {}} if es_query == {}
-    @collection = PeopleIndex.query(es_query).filter(filter).aggregations(standard_aggregations).order(ord).limit(100) # prepare ES query
-    @emit_filters = true if params[:load_filters] == 'true' || params[:emit_filters] == 'true'
-    @total = @collection.count # actual query triggered here
-    @gender_facet = es_buckets_to_facet(@collection.aggs['genders']['buckets'], Person.genders)
-    @period_facet = es_buckets_to_facet(@collection.aggs['periods']['buckets'], Expression.periods)
-    @genre_facet = es_buckets_to_facet(@collection.aggs['genres']['buckets'], get_genres.to_h {|g| [g,g]})
-    @language_facet = es_buckets_to_facet(@collection.aggs['languages']['buckets'], get_langs.to_h {|l| [l,l]})
-    @language_facet[:xlat] = @language_facet.reject{|k,v| k == 'he'}.values.sum
-    @copyright_facet = es_buckets_to_facet(@collection.aggs['copyright_status']['buckets'], {0 => 0, 1 => 1})
-    if @sort[0..11] == 'alphabetical' # subset of @sort to ignore direction
-      unless params[:page].blank?
-        params[:to_letter] = nil # if page was specified, forget the to_letter directive
-      end
-      oldpage = @page
-      @authors = @collection.page(@page) # get page X of manifestations
-      @total_pages = @authors.total_pages
+    es_query = { match_all: {} } if es_query == {}
 
-      unless params[:to_letter].blank?
-        adjust_page_by_letter(@collection, params[:to_letter], :sort_name, @sort_dir, true)
-        @authors = @collection.page(@page) if oldpage != @page # re-get page X of manifestations if adjustment was made
-      end
+    @collection = PeopleIndex.query(es_query)
+                             .filter(filter)
+                             .order(ord)
 
-      # one idea is to search with the same filters AND a title match for each letter plus * (wildcard), COUNT the results, and calculate the page numbers by division with page size
-      @ab = []
-      ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ז', 'ח', 'ט', 'י', 'כ', 'ל', 'מ', 'נ', 'ס', 'ע', 'פ', 'צ', 'ק', 'ר', 'ש', 'ת'].each{|l|
-        @ab << [l, '']
-      }
-      # @ab = prep_ab(@collection, @works, :sort_title)
-    else
-      @authors = @collection.page(@page)
-      @total_pages = @authors.total_pages
-    end
+    @authors = paginate(@collection)
   end
 
   def browse
-    @page_title = t(:authors_list)+' – '+t(:project_ben_yehuda)
+    @page_title = "#{t(:authors_list)} – #{t(:project_ben_yehuda)}"
     @pagetype = :authors
-    @page = params[:page] || 1
     @page = 1 if ['0',''].include?(@page) # slider sets page to zero, awkwardly
     es_prep_collection
     @total = @collection.count
-    d = Date.today
-    @maxdate = "#{d.year}-#{'%02d' % d.month}"
+    @maxdate = Time.zone.today.strftime('%Y-%m')
     @header_partial = 'authors/browse_top'
     @authors_list_title = t(:author_list) unless @authors_list_title.present?
     render :browse
@@ -258,6 +261,7 @@ class AuthorsController < ApplicationController
       format.js
     end
   end
+
   def all
     redirect_to '/authors'
   end

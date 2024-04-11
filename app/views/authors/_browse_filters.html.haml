@@ -204,8 +204,10 @@
 
 
     = hidden_field_tag(:emit_filters, 'true', id: 'emit_filters')
-    = hidden_field_tag(:cur_page, @page, id: 'cur_page_tag')
-    = hidden_field_tag(:page, '', id: 'page_tag')
+    = hidden_field_tag(:search_after_value, '')
+    = hidden_field_tag(:search_after_id, '')
+    = hidden_field_tag(:page, '1')
+    = hidden_field_tag(:reverse, 'false')
     = hidden_field_tag(:to_letter, '', id: 'toletter_tag')
 
 :javascript
