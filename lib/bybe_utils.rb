@@ -8,6 +8,8 @@ require 'rmagick'
 
 include ActionView::Helpers::SanitizeHelper
 
+LETTERS = %w(א ב ג ד ה ו ז ח ט י כ ל מ נ ס ע פ צ ק ר ש ת).freeze
+
 # temporary constants until I figure out what changed in RDF.rb's RDF::Vocab::SKOS
 SKOS_PREFLABEL = "http://www.w3.org/2004/02/skos/core#prefLabel"
 SKOS_ALTLABEL = "http://www.w3.org/2004/02/skos/core#altLabel"

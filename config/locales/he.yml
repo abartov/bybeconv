@@ -657,6 +657,7 @@ he:
   title_x: "כותרת: %{x}"
   author_x: "יוצר: %{x}"
   authors_xx: "יוצרים: %{xx}"
+  name_starts_with_x: "שם מתחיל באות '%{x}'"
   title_starts_with_x: "כותרת מתחילה באות '%{x}'"
   title_already_exists: השם כבר קיים. נא לתת שם אחר.
   text_already_in_anthology: היצירה הנוכחית כבר מופיעה במקראה הזאת.
@@ -1340,6 +1341,12 @@ he:
       - "day"
       - "month"
       - "year"
+  shared:
+    pagination:
+      page_x_of_total: דף %{page} מתוך %{total}
+      next_page: לדף הבא
+      previous_page: לדף הקודם
+      first_page: לדף הראשון
   welcome:
     submit_contact:
       ziburit_failed: לא השתכנענו שאינך רובוט.
@@ -1356,8 +1363,3 @@ he:
       ziburit_failed: לא השתכנענו שאינך רובוט.
       email_missing: נא לציין כתובת דואל, כדי שנוכל להשיב לך.
   manifestation:
-    pagination:
-      page_x_of_total: דף %{page} מתוך %{total}
-      next_page: לדף הבא
-      previous_page: לדף הקודם
-      first_page: לדף הראשון

@@ -1,6 +1,8 @@
 require 'pandoc-ruby'
 
 class ManifestationController < ApplicationController
+  include FilteringAndPaginationConcern
+
   before_action only: [:list, :show, :remove_link, :edit_metadata, :add_aboutnesses] do |c| c.require_editor('edit_catalog') end
   before_action only: [:edit, :update] do |c| c.require_editor(['edit_catalog', 'conversion_verification', 'handle_proofs']) end
   before_action only: [:all, :genre, :period, :by_tag] do |c| c.refuse_unreasonable_page end
@@ -590,8 +592,6 @@ class ManifestationController < ApplicationController
   end
 
   PAGE_SIZE = 100
-  LETTERS = %w(א ב ג ד ה ו ז ח ט י כ ל מ נ ס ע פ צ ק ר ש ת).freeze
-
   def build_es_filter_from_filters
     ret = {}
     @filters = []
@@ -703,6 +703,45 @@ class ManifestationController < ApplicationController
     return ret
   end
 
+  def fill_aggregated_facets(collection)
+    standard_aggregations = {
+      periods: { terms: { field: 'period' } },
+      genres: { terms: { field: 'genre' } },
+      languages: { terms: { field: 'orig_lang', size: get_langs.count + 1 } },
+      copyright_status: { terms: { field: 'copyright_status' } },
+      author_genders: { terms: { field: 'author_gender' } },
+      translator_genders: { terms: { field: 'translator_gender' } },
+      # We may need to increase `size` threshold in future if number of authors exceeds 2000
+      author_ids: { terms: { field: 'author_ids', size: 2000 } }
+    }
+
+    collection = collection.aggregations(standard_aggregations)
+
+    @gender_facet = es_buckets_to_facet(collection.aggs['author_genders']['buckets'], Person.genders)
+    @tgender_facet = es_buckets_to_facet(collection.aggs['translator_genders']['buckets'], Person.genders)
+    @period_facet = es_buckets_to_facet(collection.aggs['periods']['buckets'], Expression.periods)
+    @genre_facet = es_buckets_to_facet(collection.aggs['genres']['buckets'], get_genres.to_h { |g| [g, g] })
+    @language_facet = es_buckets_to_facet(collection.aggs['languages']['buckets'], get_langs.to_h { |l| [l, l] })
+    @language_facet[:xlat] = @language_facet.except('he').values.sum
+    @copyright_facet = es_buckets_to_facet(
+      collection.aggs['copyright_status']['buckets'],
+      { 'false' => 0, 'true' => 1 }
+    )
+
+    # Preparing list of authors to show in multiselect modal on works browse page
+    if collection.filter.present?
+      author_ids = collection.aggs['author_ids']['buckets'].pluck('key')
+      @authors_list = Person.where(id: author_ids)
+    else
+      @authors_list = Person.all
+    end
+    @authors_list = @authors_list.select(:id, :name).sort_by(&:name)
+  end
+
+  def get_sort_column(sort_by)
+    SearchManifestations::SORTING_PROPERTIES[sort_by][:column]
+  end
+
   def es_prep_collection
     @sort_dir = 'default'
     if params[:sort_by].present?
@@ -717,22 +756,12 @@ class ManifestationController < ApplicationController
       @sort_dir = 'asc'
     end
 
-    standard_aggregations = {
-      periods: {terms: {field: 'period'}},
-      genres: {terms: {field: 'genre'}},
-      languages: {terms: {field: 'orig_lang', size: get_langs.count + 1}},
-      copyright_status: {terms: {field: 'copyright_status'}},
-      author_genders: {terms: {field: 'author_gender'}},
-      translator_genders: {terms: {field: 'translator_gender'}},
-      author_ids: {terms: {field: 'author_ids', size: 2000}} # We may need to increase this threshold in future if number of authors exceeds 2000
-    }
-
     filter = build_es_filter_from_filters
 
     # This param means that we're getting previous page
     # so we should revert sort ordering while quering ElasticSearch index
-    reverse = params[:reverse] == 'true'
-    sort_dir_to_use = if reverse
+    @reverse = params[:reverse] == 'true'
+    sort_dir_to_use = if @reverse
                         @sort_dir == 'asc' ? 'desc' : 'asc'
                       else
                         @sort_dir
@@ -747,69 +776,14 @@ class ManifestationController < ApplicationController
       @filters << [I18n.t(:title_starts_with_x, x: @to_letter), :to_letter, :text]
     end
 
-    @collection = @collection.aggregations(standard_aggregations)
-    @total = @collection.count # actual query triggered here
-    @total_pages = (@total / PAGE_SIZE.to_f).ceil
-
-    # After we've swtiched to search_after logic for paging, page is only used to generate proper offset of item indices
-    # in works list (e.g. to start second page from index 101)
-    @page = (params[:page] || 1).to_i
-
-    @emit_filters = true if params[:load_filters] == 'true' || params[:emit_filters] == 'true'
-    @gender_facet = es_buckets_to_facet(@collection.aggs['author_genders']['buckets'], Person.genders)
-    @tgender_facet = es_buckets_to_facet(@collection.aggs['translator_genders']['buckets'], Person.genders)
-    @period_facet = es_buckets_to_facet(@collection.aggs['periods']['buckets'], Expression.periods)
-    @genre_facet = es_buckets_to_facet(@collection.aggs['genres']['buckets'], get_genres.to_h {|g| [g,g]})
-    @language_facet = es_buckets_to_facet(@collection.aggs['languages']['buckets'], get_langs.to_h {|l| [l,l]})
-    @language_facet[:xlat] = @language_facet.reject{|k,v| k == 'he'}.values.sum
-    @copyright_facet = es_buckets_to_facet(@collection.aggs['copyright_status']['buckets'], {'false' => 0,'true' => 1})
-    # Preparing list of authors to show in multiselect modal on works browse page
-    if filter.empty?
-      @authors_list = Person.all
-    else
-      author_ids = @collection.aggs['author_ids']['buckets'].map{|x| x['key']}
-      @authors_list = Person.where(id: author_ids)
-    end
-    @authors_list = @authors_list.select(:id, :name).sort_by(&:name)
-
-    # checking if non-first page should be loaded
-    search_after_manifestation_id = params[:search_after_manifestation_id]
-    search_after_value = params[:search_after_value]
-    if search_after_manifestation_id.present?
-      @collection = @collection.search_after(search_after_value, search_after_manifestation_id)
-    end
-
-    if reverse
-      # Fetching previous page
-      @works = @collection.limit(PAGE_SIZE).to_a
-      have_more_items = true # we know that there are more items after fetched page
-      @works.reverse! # reordering items to display them in proper ordering
-    else
-      # Fetching next page
-      # we're retrieving one extra item to check if we have more items after fetched page
-      @works = @collection.limit(PAGE_SIZE + 1).to_a
-      have_more_items = @works.size == PAGE_SIZE + 1
-      @works = @works[0..-2] if have_more_items # removing extra item
-    end
-
-    @search_after_for_next = search_after_for_item(@works.last, false) if have_more_items
-    @search_after_for_previous = search_after_for_item(@works.first, true) if @page > 1
-  end
-
-  def search_after_for_item(work, reverse)
-    {
-      value: work.send(SearchManifestations::SORTING_PROPERTIES[@sort_by][:column]),
-      manifestation_id: work.id,
-      page: reverse ? @page - 1 : @page + 1,
-      reverse: reverse.to_s
-    }
+    @works = paginate(@collection)
   end
 
   def prep_ab(whole, subset, fieldname)
     ret = []
-    abc_present = whole.pluck(fieldname).map{|t| t.nil? || t.empty? ? '' : t[0] }.uniq.sort
+    abc_present = whole.pluck(fieldname).map { |t| t.blank? ? '' : t[0] }.uniq.sort
     dummy = subset[0] # bizarrely, unless we force this query, the pluck below returns *a wrong set* (off by one page or so)
-    abc_active = subset.pluck(fieldname).map{|t| t.nil? || t.empty? ? '' : t[0] }.uniq.sort
+    abc_active = subset.pluck(fieldname).map { |t| t.blank? ? '' : t[0] }.uniq.sort
     LETTERS.each do |l|
       status = ''
       unless abc_present.include?(l)

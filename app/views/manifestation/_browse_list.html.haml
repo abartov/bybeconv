@@ -17,7 +17,7 @@
         = f
         %span.pointer.tag-x{'data-ele': id, 'data-which' => which}= '-'
 .by-card-content-v02
-  = render partial: 'pagination'
+  = render partial: 'shared/pagination', locals: { add_js: false }
   %hr
   .select-all-with-buttons
     .select-text-checkbox-area
@@ -58,7 +58,7 @@
           = link_to m.title_and_authors, manifestation_path(m.id)
           = decorator.call(m)
   = hidden_field_tag(:hurl, request.original_url)
-  = render partial: 'pagination'
+  = render partial: 'shared/pagination', locals: { add_js: true }
 :javascript
   /**
    * Handle Animation (Start, Reset, Restart)
@@ -72,15 +72,6 @@
     targetElement.css('animation','');
     targetElement.off();
     });
-  }
-
-  function urlWithoutPaging() {
-    const urlObject = new URL($('#hurl').val());
-    urlObject.searchParams.delete('search_after_value');
-    urlObject.searchParams.delete('search_after_manifestation_id');
-    urlObject.searchParams.delete('page');
-    urlObject.searchParams.delete('reverse');
-    return urlObject;
   }
 
   $(document).ready(function() {

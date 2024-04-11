@@ -64,13 +64,6 @@ class ApplicationController < ActionController::Base
   def mobile_search
     render partial: 'shared/mobile_search'
   end
-  def es_buckets_to_facet(buckets, codehash)
-    facet = {}
-    buckets.each do |facethash|
-      facet[codehash[facethash['key']]] = facethash['doc_count'] unless codehash[facethash['key']].nil?
-    end
-    return facet
-  end
 
   protected
 
