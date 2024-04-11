@@ -657,6 +657,8 @@ he:
   title_x: "כותרת: %{x}"
   author_x: "יוצר: %{x}"
   authors_xx: "יוצרים: %{xx}"
+  name_starts_with_x: "שם מתחיל באות '%{x}'"
+  title_starts_with_x: "כותרת מתחילה באות '%{x}'"
   title_already_exists: השם כבר קיים. נא לתת שם אחר.
   text_already_in_anthology: היצירה הנוכחית כבר מופיעה במקראה הזאת.
   anth_x_works_added: "%{x} יצירות נוספו לסוף המקראה. אפשר לשנות את מיקומן בגרירה."
@@ -798,7 +800,7 @@ he:
   the_blog: יומן הרשת
   to_the_blog: ליומן הרשת
   to_the_youtube: לערוץ היו-טיוב
-  contact_url: "/page/about/יצירתקשר"
+  contact_url: "/page/about"
   blog_url: https://benyehuda.org/blog/
   latest_blog: פרסומים אחרונים ביומן הרשת
   recommendations: המלצות
@@ -1322,9 +1324,9 @@ he:
       subject: חסימה מפרויקט בן־יהודה
   api_keys_mailer:
     key_created:
-      subject: Your API key
+      subject: מפתח ה־API שלך
     key_created_to_editor:
-      subject: New API key created
+      subject: נוצר מפתח API חדש
   views:
     pagination:
       next: לדף הבא
@@ -1340,6 +1342,12 @@ he:
       - "day"
       - "month"
       - "year"
+  shared:
+    pagination:
+      page_x_of_total: דף %{page} מתוך %{total}
+      next_page: לדף הבא
+      previous_page: לדף הקודם
+      first_page: לדף הראשון
   welcome:
     submit_contact:
       ziburit_failed: לא השתכנענו שאינך רובוט.
@@ -1355,3 +1363,4 @@ he:
     create:
       ziburit_failed: לא השתכנענו שאינך רובוט.
       email_missing: נא לציין כתובת דואל, כדי שנוכל להשיב לך.
+  manifestation:

@@ -37,3 +37,26 @@ Layout/LineLength:
 
 Style/HashSyntax:
   EnforcedShorthandSyntax: never
+
+Style/IfUnlessModifier:
+  Enabled: false
+
+Style/PercentLiteralDelimiters:
+  PreferredDelimiters:
+    default: '()'
+    '%w': '()'
+    '%W': '()'
+    '%i': '()'
+    '%I': '()'
+
+RSpec/MultipleMemoizedHelpers:
+  Max: 20
+
+RSpec/MultipleExpectations:
+  Enabled: false
+
+RSpec/NestedGroups:
+  Max: 6
+
+FactoryBot/ExcessiveCreateList:
+  MaxAmount: 100

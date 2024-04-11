@@ -17,6 +17,7 @@ describe V1::TextsAPI do
   let(:tag_pending) { create(:tag, name: :pending, status: :pending) }
 
   let(:total_count) { json_response['total_count'] }
+  let(:next_page_search_after) { json_response['next_page_search_after'] }
   let(:data) { json_response['data'] }
   let(:data_ids) { data.map { |rec| rec['id'] } }
 
@@ -189,10 +190,11 @@ describe V1::TextsAPI do
   end
 
   describe 'POST /api/v1/search' do
-    let(:params) { { key: key, page: page }.merge(additional_params) }
+    subject(:call) { post '/api/v1/search', params: params }
+
+    let(:params) { { key: key, search_after: search_after }.merge(additional_params).compact }
     let(:additional_params) { {} }
-    let(:page) { 1 }
-    let(:subject) { post '/api/v1/search', params: params }
+    let(:search_after) { nil }
 
     include_context 'API Key Check'
 
@@ -271,11 +273,8 @@ describe V1::TextsAPI do
       end
       let(:additional_params) { { sort_by: :popularity, sort_dir: :asc }.merge(search_params) }
 
-      let(:page) { 2 }
-
       let!(:records) do
         records = double('Search Result', count: 5)
-        expect(records).to receive(:offset).with(25).and_return(records)
         expect(records).to receive(:limit).with(25).and_return(records)
         expect(records).to receive(:to_a).and_return([])
         records
@@ -292,9 +291,16 @@ describe V1::TextsAPI do
 
       context 'when fulltext param is provided' do
         let(:search_params) { all_filters }
-        it 'passes all params to SearchManifestation service without sorting' do
-          expect_any_instance_of(SearchManifestations).to receive(:call).with(nil, nil, service_params).and_return(records)
-          expect(subject).to eq 201
+        let(:service) { instance_double(SearchManifestations) }
+
+        before do
+          allow(SearchManifestations).to receive(:new).and_return(service)
+          allow(service).to receive(:call).and_return(records)
+        end
+
+        it 'passes all params to SearchManifestation service and requests desc sorting by relevance' do
+          expect(call).to eq 201
+          expect(service).to have_received(:call).with('relevance', 'desc', service_params)
           expect(total_count).to eq 5
           expect(data).to eq []
         end
@@ -320,34 +326,32 @@ describe V1::TextsAPI do
       end
 
       let(:additional_params) { { sort_by: :alphabetical, sort_dir: sort_dir } }
-      let(:asc_order) { Manifestation.all_published.order(sort_title: :asc, id: :asc).pluck(:id) }
+
+      let(:db_records) { Manifestation.all_published.order(sort_title: :asc, id: :asc) }
+
+      let(:search_after_first_page) { [db_records[24].sort_title, db_records[24].id.to_s] }
+      let(:asc_order) { db_records.pluck(:id) }
 
       context 'when 1st page in ascending order is requested' do
         let(:sort_dir) { :asc }
-        it 'returns items from 0 to 24' do
+
+        it 'returns items from 0 to 24 and proper search_after value' do
           expect(subject).to eq 201
           expect(total_count).to eq 30
+          expect(next_page_search_after).to eq search_after_first_page
           expect(data_ids).to eq asc_order[0..24]
         end
       end
 
       context 'when 2nd page in ascending order is requested' do
         let(:sort_dir) { :asc }
-        let(:page) { 2 }
-        it 'returns items from 25 to 29' do
+        let(:search_after) { search_after_first_page }
+
+        it 'returns items from 25 to 29 and no search_after value' do
           expect(subject).to eq 201
           expect(total_count).to eq 30
           expect(data_ids).to eq asc_order[25..29]
-        end
-      end
-
-      context 'when 3rd page in ascending order is requested' do
-        let(:sort_dir) { :asc }
-        let(:page) { 3 }
-        it 'returns empty list' do
-          expect(subject).to eq 201
-          expect(total_count).to eq 30
-          expect(data).to eq []
+          expect(next_page_search_after).to be_nil
         end
       end
 
@@ -421,13 +425,17 @@ describe V1::TextsAPI do
 
     if snippet
       snippet = json['snippet']
-      expect(snippet).to_not be_nil
+      expect(snippet).not_to be_nil
       # we assume that markdown contains plain-text only
       expect(snippet).to include manifestation.markdown
     else
-      expect(json.keys).to_not include 'snippet'
+      expect(json.keys).not_to include 'snippet'
     end
 
-    expect(json['download_url']).to eq Rails.application.routes.url_helpers.manifestation_download_url(manifestation.id, format: file_format)
+    expect(json['download_url']).to eq expected_url(manifestation, file_format)
+  end
+
+  def expected_url(manifestation, file_format)
+    Rails.application.routes.url_helpers.manifestation_download_url(manifestation.id, format: file_format)
   end
 end

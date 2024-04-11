@@ -148,11 +148,6 @@ describe ManifestationController do
           expect(subject).to be_successful
         end
       end
-
-      context 'when requested page number is greater than total number of pages' do
-        let(:page) { 2 }
-        it { is_expected.to be_not_found }
-      end
     end
 
     after(:all) do

@@ -34,7 +34,12 @@ class V1::TextsAPI < V1::ApplicationApi
   resources :texts do
     resource :batch do
       params do
-        requires :ids, type: Array[Integer], maximum_length: 25, allow_blank: false, desc: 'array of text IDs to fetch', documentation: { param_type: 'body' }
+        requires :ids,
+                 type: [Integer],
+                 maximum_length: 25,
+                 allow_blank: false,
+                 desc: 'array of text IDs to fetch',
+                 documentation: { param_type: 'body' }
         use :text_params
       end
       desc 'retrieve a collection of texts by specified IDs'
@@ -72,27 +77,48 @@ class V1::TextsAPI < V1::ApplicationApi
       use :key_param
       use :text_params
 
-      requires :page, type: Integer, minimum_value: 1, desc: 'desired page number of result set (starting from 1)'
-      optional :sort_by, type: String, default: 'alphabetical', values: SearchManifestations::SORTING_PROPERTIES.keys, desc: 'desired ordering of result set (ignored if fulltext search is used)'
-      optional :sort_dir, type: String, default: 'default', values: SearchManifestations::DIRECTIONS, desc: 'desired ordering direction (ignored if fulltext search is used)'
-
-      optional :genres, type: Array[String], values: Work::GENRES, desc: 'the broad field of humanities of a textual work in the database.',
+      optional :sort_by,
+               type: String,
+               default: 'alphabetical',
+               values: SearchManifestations::SORTING_PROPERTIES.keys - [SearchManifestations::RELEVANCE_SORT_BY],
+               desc: 'desired ordering of result set (ignored if fulltext search is used)'
+      optional :sort_dir,
+               type: String,
+               default: 'default',
+               values: SearchManifestations::DIRECTIONS,
+               desc: 'desired ordering direction (ignored if fulltext search is used)'
+      optional :search_after,
+               default: nil,
+               type: [String],
+               desc: <<~DESC
+                 special param to fetch next page of results, to get first page skip it,
+                 to get next page use value returned in `next_page_search_after` attribute of previous page response
+               DESC
+      optional :genres,
+               type: [String],
+               values: Work::GENRES,
+               desc: 'the broad field of humanities of a textual work in the database.',
                documentation: { param_type: 'body' }
-      optional :periods, type: Array[String], values: Expression.periods.keys, desc: 'specifies what section of the rough timeline of Hebrew literature an object belongs to.'
-      optional :is_copyrighted, type: Boolean, desc: 'limit search to copyrighted works or to non-copyrighted works'
-      optional :author_genders, type: Array[String], values: Person.genders.keys
-      optional :translator_genders, type: Array[String], values: Person.genders.keys
+      optional :periods,
+               type: [String],
+               values: Expression.periods.keys,
+               desc: 'specifies what section of the rough timeline of Hebrew literature an object belongs to.'
+      optional :is_copyrighted,
+               type: Boolean,
+               desc: 'limit search to copyrighted works or to non-copyrighted works'
+      optional :author_genders, type: [String], values: Person.genders.keys
+      optional :translator_genders, type: [String], values: Person.genders.keys
       optional :title, type: String, desc: "a substring to match against a text's title"
       optional :author, type: String, desc: "a substring to match against the name(s) of a text's author(s)"
       optional :fulltext,
                type: String,
-               desc: <<~desc
+               desc: <<~DESC
                  a query string to match against the work's full text, title and authors list
                  (NOTE: if provided it will enforce result ordering by relevance).
                  You can use complex expressions here, as documented at 
                  https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-simple-query-string-query.html#simple-query-string-syntax"
-               desc
-      optional :author_ids, type: Array[Integer]
+               DESC
+      optional :author_ids, type: [Integer]
       optional :original_language, type: String, desc: "ISO code of language, e.g. 'pl' for Polish, 'grc' for ancient Greek. Use magic constant 'xlat' to match all non-Hebrew languages"
 
       optional :uploaded_between, type: JSON, desc: 'pass an years interval json `{ from: min_year, to: max_year}` to get works uploaded to the site at year min_year <= year <= max_year' do
@@ -109,11 +135,11 @@ class V1::TextsAPI < V1::ApplicationApi
       end
     end
 
-    desc 'Query the site database for texts by a variety of parameters. All parameters are combined with a logical AND. Parameters accepting arrays allow a logical OR within that category.' do
+    desc 'Query the site database for texts by a variety of parameters. All parameters are combined with a ' \
+         'logical AND. Parameters accepting arrays allow a logical OR within that category.' do
       success V1::Entities::ManifestationsPage
     end
     post do
-      page = params[:page]
       filters = params.slice(*%w(genres periods is_copyrighted author_genders translator_genders title author fulltext author_ids uploaded_between created_between published_between))
 
       orig_lang = params['original_language']
@@ -122,15 +148,38 @@ class V1::TextsAPI < V1::ApplicationApi
       end
 
       if filters['fulltext'].present?
-        sort_by = nil
-        sort_dir = nil
+        sort_by = 'relevance'
+        sort_dir = 'desc'
       else
         sort_by = params[:sort_by]
         sort_dir = params[:sort_dir]
       end
 
       records = SearchManifestations.call(sort_by, sort_dir, filters)
-      model = { data: records.limit(PAGE_SIZE).offset((page - 1) * PAGE_SIZE).to_a, total_count: records.count }
+      total_count = records.count
+
+      search_after = params[:search_after]
+      if search_after.present?
+        records = records.search_after(search_after)
+      end
+
+      records = records.limit(PAGE_SIZE).to_a
+
+      if records.size == PAGE_SIZE
+        last = records.last
+        next_page_search_after = [
+          last.send(SearchManifestations::SORTING_PROPERTIES[sort_by][:column])&.to_s,
+          last.id.to_s
+        ]
+      else
+        next_page_search_after = nil
+      end
+
+      model = {
+        data: records,
+        total_count: total_count,
+        next_page_search_after: next_page_search_after
+      }
       present model, with: V1::Entities::ManifestationsPage, view: params[:view], file_format: params[:file_format], snippet: params[:snippet]
     end
   end
