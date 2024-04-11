@@ -44,6 +44,8 @@
                   .field-label= t(:select_tag_from_list)
                   .full-tags-list-area
                 .no-header
+                = link_to 'https://benyehuda.org/page/tagging', target: '_blank' do
+                  %b.linkcolor= t(:to_tagging_instructions)
                 .bottom-button-area.left-buttons
                   %input.by-button-v02.disabled#submit_tagging{type: :submit, value: t(:suggest_tag)}
                   %button.by-button-v02.by-button-secondary-v02{'data-dismiss'=>'modal'}
