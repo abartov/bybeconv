@@ -1,0 +1,9 @@
+= render layout: 'shared/collapsible_block', locals: { container_name: "collf#{group_name}", title: title, content_class: 'nested-list'} do
+  - all_values.each do |value|
+    - checked = selected_values.present? && selected_values.include?(value)
+    %input{ name: "#{field_name}[]", id: "#{group_name}_#{value}", type: "checkbox", value: value, checked: checked }
+    %label
+      = t("#{i18n_prefix}#{value}")
+      - count_text = facet[value] || (selected_values.present? ? t(:filtered) : '0')
+      %span= "(#{count_text})"
+    %br/

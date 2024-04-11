@@ -6,31 +6,20 @@
   .by-card-content-v02.desktop-only#filters_panel
     .headline-2-v02= t(:filter_by)
     %span.reset.linkcolor.pointer= t(:reset_filter)
-    .sort-type
-      .vertical-expand.fcoll#fauthor{'data-target' =>'.collfauthor', 'data-toggle' =>'collapse'}
-        .sort-type-headline= t(:name)
-      .nested.active.collapse.show.collfauthor
-        .nested-content
-          %input.field-v02.field-without-label#search_input{name: 'search_input', placeholder: t(:first_last_name), :type => "text", value: @search_input}
-          -#= autocomplete_field_tag :authorstr, @authorstr.present? ? @authorstr : '', autocomplete_person_name_path, id_element: '#author_id', 'data-noMatchesLabel' => t(:no_matches_found), style:'display:none', 'class' => 'field-v02 field-without-label author-name-field', id: 'authors', placeholder: t(:author_names)
-          = hidden_field_tag :author_id, @author_id.present? ? @author_id : nil
-    .sort-type
-      .vertical-expand.fcoll{'data-target' =>'.collfgender', 'data-toggle' =>'collapse'}
-        .sort-type-headline= t(:author_gender)
-      .nested.active.collapse.show.collfgender
-        .nested-content.nested-list
-          - Person.genders.invert.each do |p|
-            -# attrs = @gender_facet[p[0]].nil? ? {disabled: 'disabled'} : {}
-            - attrs = {}
-            - attrs.merge!({:name => "ckb_genders[]", :type => "checkbox", id: "gender_#{p[1]}", value: p[1]})
-            - attrs.merge!({checked: 'checked'}) if @genders.present? && @genders.include?(p[1])
-            %input{ attrs}
-            %label
-              = t(p[1])
-              - count_text = @gender_facet[p[0]] || '0'
-              - count_text = t(:filtered) if count_text == '0' && @genders.present?
-              %span= "(#{count_text})"
-            %br/
+    = render layout: 'shared/collapsible_block', locals: {container_name: 'collfauthor', title: t(:name)} do
+      %input.field-v02.field-without-label#search_input{name: 'search_input', placeholder: t(:first_last_name), :type => "text", value: @search_input}
+      -#= autocomplete_field_tag :authorstr, @authorstr.present? ? @authorstr : '', autocomplete_person_name_path, id_element: '#author_id', 'data-noMatchesLabel' => t(:no_matches_found), style:'display:none', 'class' => 'field-v02 field-without-label author-name-field', id: 'authors', placeholder: t(:author_names)
+      = hidden_field_tag :author_id, @author_id.present? ? @author_id : nil
+
+    = render partial: 'checkbox_group',
+             locals: { group_name: :gender,
+                       title: t(:author_gender),
+                       field_name: :ckb_genders,
+                       all_values: Person.genders.keys,
+                       i18n_prefix: '',
+                       selected_values: @genders,
+                       facet: @gender_facet }
+
     .sort-type
       .vertical-expand.fcoll#fcopyright{'data-target' =>'.collfcopyright', 'data-toggle' =>'collapse'}
         .sort-type-headline= t(:copyright_status)
@@ -58,150 +47,83 @@
             - count_text = t(:filtered) if count_text == '0' && @copyright.present?
             %span= "(#{count_text})"
           %br/
-    .sort-type
-      .vertical-expand.fcoll#fgenre{'data-target' =>'.collfgenre', 'data-toggle' =>'collapse'}
-        .sort-type-headline= t(:genres)
-      .nested.active.collapse.show.collfgenre
-        .nested-content.nested-list
-          - get_genres.each do |g|
-            -# attrs = @genre_facet[g].nil? ? {disabled: 'disabled'} : {}
-            - attrs = {}
-            - attrs.merge!({:name => "ckb_genres[]", :type => "checkbox", id: "genre_#{g}", value: g})
-            - attrs.merge!({checked: 'checked'}) if @genres.present? && @genres.include?(g)
-            %input{ attrs}
-            %label
-              %span.by-icon-v02>= glyph_for_genre(g)
-              = textify_genre(g)
-              - count_text = @genre_facet[g] || '0'
-              - count_text = t(:filtered) if count_text == '0' && @genres.present?
-              %span= "(#{count_text})"
-            %br/
-    .sort-type
-      .vertical-expand.fcoll#fperiod{'data-target' =>'.collfperiod', 'data-toggle' =>'collapse'}
-        .sort-type-headline= t(:periods)
-      .nested.active.collapse.show.collfperiod
-        .nested-content.nested-list
-          - Expression.periods.invert.each do |p|
-            -# attrs = @period_facet[p[0]].nil? ? {disabled: 'disabled'} : {}
-            - attrs = {}
-            - attrs.merge!({:name => "ckb_periods[]", :type => "checkbox", id: "period_#{p[1]}", value: p[1]})
-            - attrs.merge!({checked: 'checked'}) if @periods.present? && @periods.include?(p[1])
-            %input{ attrs}
-            %label
-              = t(p[1])
-              - count_text = @period_facet[p[0]] || '0'
-              - count_text = t(:filtered) if count_text == '0' && @periods.present?
-              %span= "(#{count_text})"
-            %br/
-    .sort-type
-      .vertical-expand.fcoll#ftags{'data-target' =>'.collftags', 'data-toggle' =>'collapse'}
-        .sort-type-headline= t(:tags)
-      .nested.active.collapse.show.collftags
-        .nested-content
-          /%input.field-v02.field-without-label#tag_input{:placeholder => t(:what_to_search_for), name: 'tag_input', :type => "text"}/
-          = autocomplete_field_tag :tagstr, '', autocomplete_tag_name_path, id_element: '#tag_id', 'data-noMatchesLabel' => t(:no_matches_found), 'class' => 'field-v02 field-without-label author-name-field', id: 'tags', placeholder: t(:tag)
-          = hidden_field_tag :tag_ids, @tag_ids, id: 'tag_ids'
 
-    -# .sort-type
-    -#   .vertical-expand
-    -#     .sort-type-headline מאפיינים
-    -#   .nested.active
-    -#     .nested-content.nested-list
-    -#       .col-md-6.col-sm-12
-    -#         %input#CheckboxGroup4_1{:name => "CheckboxGroup4", :type => "checkbox", value: "sort_by_curatorial_content"}/
-    -#         %label
-    -#           תוכן אוצרותי
-    -#           %span (4)
-    -#         %br/
-    -#         %input#CheckboxGroup4_2{:name => "CheckboxGroup4", :type => "checkbox", value: "sort_by_recommendations"}/
-    -#         %label
-    -#           המלצות קוראים
-    -#           %span (12)
-    -#         %br/
-    -#         %input#CheckboxGroup4_3{:name => "CheckboxGroup4", :type => "checkbox", value: "sort_by_liked"}/
-    -#         %label
-    -#           יצירות שאהבתי
-    -#           %span (2)
-    -#       .col-md-6.col-sm-12
-    -#         %input#CheckboxGroup4_4{:disabled => "disabled", :name => "CheckboxGroup4", :type => "checkbox", value: "sort_by_active_bookmark"}/
-    -#         %label
-    -#           סימניה מופעלת
-    -#           %span (0)
-    -#         %br/
-    -#         %input#CheckboxGroup4_5{:name => "CheckboxGroup4", :type => "checkbox", value: "sort_by_no_properties"}/
-    -#         %label
-    -#           ללא מאפיינים
-    -#           %span (312)
-    .sort-type
-      .vertical-expand.fcoll#fdate{'data-target' =>'.collfdate', 'data-toggle' =>'collapse'}
-        .sort-type-headline= t(:thedate)
-      .nested.active.collapse.show.collfdate
-        .nested-content
-          .search-mobile-switch
-            %button.search-mobile-option.datetype#birth= t(:birth_year)
-            %button.search-mobile-option.datetype#death= t(:death_year)
-            %button.search-mobile-option.datetype#uploaded= t(:upload)
-            = hidden_field_tag(:date_type, '', id: 'date_type')
-          %break
-          .dates-range
-            -# #histogramSlider
-            -#.dates-graph-area
-            -#.range-outside
-            -#  .range-inside
-            -#    .range-handle-right
-            -#    .range-handle-left
-            %input.datepicker.datetimepicker-input.field-v02.field-without-label.range-date-field#fromdate{:placeholder => t(:year), name: "fromdate", 'data-toggle' => 'datetimepicker', 'data-target' => '#fromdate' }/
-            .date-range-to= t(:until)
-            %input.datepicker.datetimepicker-input.field-v02.field-without-label.range-date-field#todate{:placeholder => t(:year), :style => "float: left", 'data-toggle' => 'datetimepicker', name: "todate", 'data-target' => '#todate'}/
-    .sort-type
-      .vertical-expand.fcoll#flang{'data-target' =>'.collflang', 'data-toggle' =>'collapse'}
-        .sort-type-headline= t(:writing_language)
-      .nested.active.collapse.show.collflang
-        .nested-content{:style => "padding-right: 0"}
-          %ul
-            %li
-              - attrs = {name: "ckb_languages[]", :type => "checkbox", id: 'lang_he', value: 'he'}
-              -# attrs.merge!({disabled: 'disabled'}) if @language_facet['he'].nil? || @language_facet['he'] == 0
-              - attrs.merge!({checked: 'checked'}) if @languages.present? && @languages.include?('he')
-              %input{attrs}
-                %label
-                = t(:hebrew)
-                - count_text = @language_facet['he'] || '0'
-                - count_text = t(:filtered) if count_text == '0' && @languages.present?
-                %span= "(#{count_text})"
-            %li
-              - attrs = {name: "ckb_languages[]", :type => "checkbox", id: 'lang_xlat', class: 'lang_xlat', value: 'xlat'}
-              -# attrs.merge!({disabled: 'disabled'}) if @language_facet[:xlat].nil? || @language_facet[:xlat] == 0
-              - attrs.merge!({checked: 'checked'}) if (@all_xlat || (@languages.present? && @languages.include?('xlat')))
-              %input{attrs}
-              %label
-                = t(:non_hebrew_languages)
-                %span= "(#{@language_facet[:xlat] || '0'})"
-              .languages-filters
-                %ul.nested-list.xlat_langs
-                  - emitted_langs = ['he', :xlat]
-                  - @language_facet.sort{|a,b| b[1] <=> a[1]}.each do |lang, amount|
-                    - next if lang == :xlat || lang == 'he'
-                    - emitted_langs << lang
-                    %li
-                      - attrs = {name: "ckb_languages[]", :type => "checkbox", id: "lang_#{lang}", value: lang}
-                      -# attrs.merge!({disabled: 'disabled'}) if @language_facet[lang].nil? || @language_facet[lang] == 0
-                      - attrs.merge!({checked: 'checked'}) if @all_xlat || (@languages.present? && @languages.include?(lang))
-                      %input{attrs}
-                      %label
-                        = textify_lang(lang)
-                        - count_text = amount || '0'
-                        - count_text = t(:filtered) if count_text == '0' && @languages.present?
-                        %span= "(#{count_text})"
-                  - get_langs.reject{|x| emitted_langs.include?(x)}.each do |lang|
-                    %li
-                      %input{name: "ckb_languages[]", :type => "checkbox", id: "lang_#{lang}", value: lang}
-                      %label
-                        = textify_lang(lang)
-                        - count_text = '0'
-                        - count_text = t(:filtered) if @languages.present?
-                        %span= "(#{count_text})"
+    = render partial: 'checkbox_group',
+             locals: { group_name: :genre,
+                       title: t(:genres),
+                       field_name: :ckb_genres,
+                       all_values: get_genres,
+                       i18n_prefix: '',
+                       selected_values: @genres,
+                       facet: @genre_facet }
+    = render partial: 'checkbox_group',
+             locals: { group_name: :period,
+                       title: t(:periods),
+                       field_name: :ckb_periods,
+                       all_values: Expression.periods.keys,
+                       i18n_prefix: '',
+                       selected_values: @periods,
+                       facet: @period_facet }
+    = render layout: 'shared/collapsible_block', locals: { container_name: 'collftags', title: t(:tags)} do
+      = autocomplete_field_tag :tagstr, '', autocomplete_tag_name_path, id_element: '#tag_id', 'data-noMatchesLabel' => t(:no_matches_found), 'class' => 'field-v02 field-without-label author-name-field', id: 'tags', placeholder: t(:tag)
+      = hidden_field_tag :tag_ids, @tag_ids, id: 'tag_ids'
 
+    = render layout: 'shared/collapsible_block', locals: { container_name: 'collfdate', title: t(:thedate)} do
+      .search-mobile-switch
+        %button.search-mobile-option.datetype#birth= t(:birth_year)
+        %button.search-mobile-option.datetype#death= t(:death_year)
+        %button.search-mobile-option.datetype#uploaded= t(:upload)
+        = hidden_field_tag(:date_type, '', id: 'date_type')
+      %break
+      .dates-range
+        %input.datepicker.datetimepicker-input.field-v02.field-without-label.range-date-field#fromdate{:placeholder => t(:year), name: "fromdate", 'data-toggle' => 'datetimepicker', 'data-target' => '#fromdate' }/
+        .date-range-to= t(:until)
+        %input.datepicker.datetimepicker-input.field-v02.field-without-label.range-date-field#todate{:placeholder => t(:year), :style => "float: left", 'data-toggle' => 'datetimepicker', name: "todate", 'data-target' => '#todate'}/
+
+    = render layout: 'shared/collapsible_block', locals: { container_name: 'collflang', title: t(:writing_language)} do
+      %ul
+        %li
+          - attrs = {name: "ckb_languages[]", :type => "checkbox", id: 'lang_he', value: 'he'}
+          -# attrs.merge!({disabled: 'disabled'}) if @language_facet['he'].nil? || @language_facet['he'] == 0
+          - attrs.merge!({checked: 'checked'}) if @languages.present? && @languages.include?('he')
+          %input{attrs}
+            %label
+            = t(:hebrew)
+            - count_text = @language_facet['he'] || '0'
+            - count_text = t(:filtered) if count_text == '0' && @languages.present?
+            %span= "(#{count_text})"
+        %li
+          - attrs = {name: "ckb_languages[]", :type => "checkbox", id: 'lang_xlat', class: 'lang_xlat', value: 'xlat'}
+          -# attrs.merge!({disabled: 'disabled'}) if @language_facet[:xlat].nil? || @language_facet[:xlat] == 0
+          - attrs.merge!({checked: 'checked'}) if (@languages.present? && @languages.include?('xlat'))
+          %input{attrs}
+          %label
+            = t(:non_hebrew_languages)
+            %span= "(#{@language_facet[:xlat] || '0'})"
+          .languages-filters
+            %ul.nested-list.xlat_langs
+              - emitted_langs = ['he', :xlat]
+              - @language_facet.sort{|a,b| b[1] <=> a[1]}.each do |lang, amount|
+                - next if lang == :xlat || lang == 'he'
+                - emitted_langs << lang
+                %li
+                  - attrs = {name: "ckb_languages[]", :type => "checkbox", id: "lang_#{lang}", value: lang}
+                  -# attrs.merge!({disabled: 'disabled'}) if @language_facet[lang].nil? || @language_facet[lang] == 0
+                  - attrs.merge!({checked: 'checked'}) if @all_xlat || (@languages.present? && @languages.include?(lang))
+                  %input{attrs}
+                  %label
+                    = textify_lang(lang)
+                    - count_text = amount || '0'
+                    - count_text = t(:filtered) if count_text == '0' && @languages.present?
+                    %span= "(#{count_text})"
+              - get_langs.reject{|x| emitted_langs.include?(x)}.each do |lang|
+                %li
+                  %input{name: "ckb_languages[]", :type => "checkbox", id: "lang_#{lang}", value: lang}
+                  %label
+                    = textify_lang(lang)
+                    - count_text = '0'
+                    - count_text = t(:filtered) if @languages.present?
+                    %span= "(#{count_text})"
 
     = hidden_field_tag(:emit_filters, 'true', id: 'emit_filters')
     = hidden_field_tag(:search_after_value, '')

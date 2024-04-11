@@ -180,7 +180,7 @@ class AuthorsController < ApplicationController
     return ret
   end
 
-  def fill_aggregated_facets(collection)
+  def prepare_totals(collection)
     standard_aggregations = {
       periods: {terms: {field: 'period'}},
       genres: {terms: {field: 'genre'}},
@@ -191,12 +191,12 @@ class AuthorsController < ApplicationController
 
     collection = collection.aggregations(standard_aggregations)
 
-    @gender_facet = es_buckets_to_facet(collection.aggs['genders']['buckets'], Person.genders)
-    @period_facet = es_buckets_to_facet(collection.aggs['periods']['buckets'], Expression.periods)
-    @genre_facet = es_buckets_to_facet(collection.aggs['genres']['buckets'], get_genres.to_h { |g| [g, g] })
-    @language_facet = es_buckets_to_facet(collection.aggs['languages']['buckets'], get_langs.to_h { |l| [l, l] })
-    @language_facet[:xlat] = @language_facet.reject{|k,v| k == 'he'}.values.sum
-    @copyright_facet = es_buckets_to_facet(collection.aggs['copyright_status']['buckets'], { 0 => 0, 1 => 1 })
+    @gender_facet = buckets_to_totals_hash(collection.aggs['genders']['buckets'])
+    @period_facet = buckets_to_totals_hash(collection.aggs['periods']['buckets'])
+    @genre_facet = buckets_to_totals_hash(collection.aggs['genres']['buckets'])
+    @language_facet = buckets_to_totals_hash(collection.aggs['languages']['buckets'])
+    @language_facet[:xlat] = @language_facet.reject{ |k,_v| k == 'he' }.values.sum
+    @copyright_facet = buckets_to_totals_hash(collection.aggs['copyright_status']['buckets'])
   end
 
   SORTING_PROPERTIES = {
