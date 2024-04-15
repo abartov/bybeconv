@@ -1,7 +1,7 @@
 -# Browse authors
 .row
-  .col-12.col-lg-4
-    .by-card-v02.desktop-only#browse_intro{style:"display:#{ @filters.empty? ? 'block' : 'none'}"}
+  .col-sm-12.col-md-4
+    .by-card-v02#browse_intro{ style: "display:#{@filters.empty? ? 'block' : 'none'}" }
       .work-area
         .work-content
           .headline-1-v02= t(:welcome_to_authors_browsing)
@@ -10,20 +10,15 @@
           %p!= t(:authors_browsing_intro_html)
         .work-side-color
           .work-genre.author-side-default-picture
-    - if @filters.empty?
-      .by-card-v02.text-sorting#sort_filter_panel{style: 'display:none'}
-        .by-card-header-v02
-          .headline-2-v02= t(:sort_by)
-        .by-card-content-v02#filters_panel
-          .temporary
-    - else
-      .by-card-v02.text-sorting#sort_filter_panel{style: 'display:block'}
-        = render partial: 'browse_filters'
-  .col-12.col-lg-8
+    .by-card-v02#sort_filter_panel{ style: 'display:none' }
+      = render partial: 'browse_filters'
+  .col-sm-12.col-md-8
     .by-card-v02#thelist
       = render partial: 'browse_list'
-#mobileFilterDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
-  -# unless @filters.empty?
-  -#  = render partial: 'mobile_filters', locals: {sortonly: false}
-  -# else
-  -#  = render partial: 'mobile_filters', locals: {sortonly: true}
+
+:javascript
+  function submit_author_filters() {
+    window.history.pushState($('#authors_filters').serialize(), null, '/authors');
+    startModal('spinnerdiv');
+    $('#authors_filters').submit();
+  }

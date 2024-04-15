@@ -703,7 +703,7 @@ class ManifestationController < ApplicationController
     return ret
   end
 
-  def fill_aggregated_facets(collection)
+  def prepare_totals(collection)
     standard_aggregations = {
       periods: { terms: { field: 'period' } },
       genres: { terms: { field: 'genre' } },

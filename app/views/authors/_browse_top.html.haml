@@ -58,26 +58,13 @@
   }
   $(document).ready(function(){
     $('#sort_filter_toggle').click(function() {
-      if(window.innerWidth < mobileWidth) {
-        $('#mobileFilterDlg').modal('show');
+      $('#browse_intro').toggle();
+      $('#sort_filter_panel').toggle();
+      if (isMobile()) {
+        $('#thelist').toggle();
       } else {
-        $('#browse_intro').toggle();
-        $('#sort_filter_panel').toggle();
+        $('.toggle-button-no').toggle();
+        $('.toggle-button-yes').toggle();
       }
-      
-      if($('#filters_panel .temporary').length) { // if filter panel yet to be loaded
-        startModal('spinnerdiv');
-        var url = $('#hurl').val().replace(/page=\d+/,'');
-        if(url.indexOf('?') == -1) {
-          url = url + '?';
-        }
-        else {
-          url = url + '&';
-        }
-        url = url + 'load_filters=true';
-        $.get(url,'',null, 'script');
-      }
-      $('.toggle-button-no').toggle();
-      $('.toggle-button-yes').toggle();
     });
   });
