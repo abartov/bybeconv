@@ -195,7 +195,7 @@ class AuthorsController < ApplicationController
     @period_facet = buckets_to_totals_hash(collection.aggs['periods']['buckets'])
     @genre_facet = buckets_to_totals_hash(collection.aggs['genres']['buckets'])
     @language_facet = buckets_to_totals_hash(collection.aggs['languages']['buckets'])
-    @language_facet[:xlat] = @language_facet.reject{ |k,_v| k == 'he' }.values.sum
+    @language_facet[:xlat] = @language_facet.except('he').values.sum
     @copyright_facet = buckets_to_totals_hash(collection.aggs['copyright_status']['buckets'])
   end
 

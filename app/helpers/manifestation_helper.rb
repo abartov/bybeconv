@@ -31,9 +31,9 @@ module ManifestationHelper
     return " (#{thedate.nil? ? t(:unknown) : thedate})"
   end
   def browse_upload_date(item)
-    return " (#{item.pby_publication_date.to_date.strftime('%d-%m-%Y')})"
+    " (#{item.pby_publication_date&.to_date&.strftime('%d-%m-%Y')})"
   end
   def browse_null_decorator(item)
-    return ''
+    ''
   end
 end

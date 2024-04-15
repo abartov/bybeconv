@@ -1,15 +1,17 @@
 %link{ rel:'stylesheet', href:'https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/css/tempusdominus-bootstrap-4.min.css'}
 %script{ src: 'https://use.fontawesome.com/3f861a49f5.js'}
 
-= form_tag(authors_path, remote: true, method: :post, id: 'works_filters') do
+- form_id = 'authors_filters'
+= form_tag(authors_path, remote: true, method: :post, id: form_id, autocomplete: :off) do
   = hidden_field_tag(:sort_by, @sort)
-  .by-card-content-v02.desktop-only#filters_panel
+  .by-card-content-v02#filters_panel
     .headline-2-v02= t(:filter_by)
     %span.reset.linkcolor.pointer= t(:reset_filter)
-    = render layout: 'shared/collapsible_block', locals: {container_name: 'collfauthor', title: t(:name)} do
-      %input.field-v02.field-without-label#search_input{name: 'search_input', placeholder: t(:first_last_name), :type => "text", value: @search_input}
-      -#= autocomplete_field_tag :authorstr, @authorstr.present? ? @authorstr : '', autocomplete_person_name_path, id_element: '#author_id', 'data-noMatchesLabel' => t(:no_matches_found), style:'display:none', 'class' => 'field-v02 field-without-label author-name-field', id: 'authors', placeholder: t(:author_names)
-      = hidden_field_tag :author_id, @author_id.present? ? @author_id : nil
+    = render layout: 'shared/collapsible_block', locals: { container_name: 'collfauthor', title: t(:name) } do
+      %input.field-v02.field-without-label#search_input{
+        name: 'search_input', placeholder: t(:first_last_name), type: :text, value: @search_input
+      }
+      = hidden_field_tag :author_id, @author_id.presence
 
     = render partial: 'checkbox_group',
              locals: { group_name: :gender,
@@ -26,7 +28,6 @@
       .nested.active.collapse.show.collfcopyright
         .nested-content.nested-list
           - attrs = {name: "ckb_copyright[]", :type => "checkbox", id: 'copyright_0', value: 0}
-          -# attrs.merge!({disabled: 'disabled'}) if @copyright_facet[0].nil?
           - attrs.merge!({checked: 'checked'}) if @copyright.present? && @copyright.include?(0)
           %input{attrs}
           %label
@@ -37,7 +38,6 @@
             %span= "(#{count_text})"
           %br/
           - attrs = {name: "ckb_copyright[]", :type => "checkbox", id: 'copyright_1', value: 1}
-          -# attrs.merge!({disabled: 'disabled'}) if @copyright_facet[1].nil?
           - attrs.merge!({checked: 'checked'}) if @copyright.present? && @copyright.include?(1)
           %input{attrs}
           %label
@@ -64,11 +64,15 @@
                        i18n_prefix: '',
                        selected_values: @periods,
                        facet: @period_facet }
-    = render layout: 'shared/collapsible_block', locals: { container_name: 'collftags', title: t(:tags)} do
-      = autocomplete_field_tag :tagstr, '', autocomplete_tag_name_path, id_element: '#tag_id', 'data-noMatchesLabel' => t(:no_matches_found), 'class' => 'field-v02 field-without-label author-name-field', id: 'tags', placeholder: t(:tag)
+    = render layout: 'shared/collapsible_block', locals: { container_name: 'collftags', title: t(:tags) } do
+      = autocomplete_field_tag :tagstr, '', autocomplete_tag_name_path,
+                               id_element: '#tag_id',
+                               'data-noMatchesLabel' => t(:no_matches_found),
+                               class: 'field-v02 field-without-label author-name-field',
+                               id: 'tags', placeholder: t(:tag)
       = hidden_field_tag :tag_ids, @tag_ids, id: 'tag_ids'
 
-    = render layout: 'shared/collapsible_block', locals: { container_name: 'collfdate', title: t(:thedate)} do
+    = render layout: 'shared/collapsible_block', locals: { container_name: 'collfdate', title: t(:thedate) } do
       .search-mobile-switch
         %button.search-mobile-option.datetype#birth= t(:birth_year)
         %button.search-mobile-option.datetype#death= t(:death_year)
@@ -76,91 +80,110 @@
         = hidden_field_tag(:date_type, '', id: 'date_type')
       %break
       .dates-range
-        %input.datepicker.datetimepicker-input.field-v02.field-without-label.range-date-field#fromdate{:placeholder => t(:year), name: "fromdate", 'data-toggle' => 'datetimepicker', 'data-target' => '#fromdate' }/
+        %input.datepicker.datetimepicker-input.field-v02.field-without-label.range-date-field#fromdate{
+          placeholder: t(:year), name: :fromdate, 'data-toggle' => 'datetimepicker', 'data-target' => '#fromdate'
+        }/
         .date-range-to= t(:until)
-        %input.datepicker.datetimepicker-input.field-v02.field-without-label.range-date-field#todate{:placeholder => t(:year), :style => "float: left", 'data-toggle' => 'datetimepicker', name: "todate", 'data-target' => '#todate'}/
+        %input.datepicker.datetimepicker-input.field-v02.field-without-label.range-date-field#todate{
+          placeholder: t(:year), style: 'float: left', 'data-toggle' => 'datetimepicker', name: :todate,
+          'data-target' => '#todate'
+        }/
 
-    = render layout: 'shared/collapsible_block', locals: { container_name: 'collflang', title: t(:writing_language)} do
+    = render layout: 'shared/collapsible_block', locals: { container_name: 'collflang', title: t(:writing_language) } do
       %ul
         %li
-          - attrs = {name: "ckb_languages[]", :type => "checkbox", id: 'lang_he', value: 'he'}
+          - attrs = { name: 'ckb_languages[]', type: :checkbox, id: 'lang_he', value: 'he' }
           -# attrs.merge!({disabled: 'disabled'}) if @language_facet['he'].nil? || @language_facet['he'] == 0
-          - attrs.merge!({checked: 'checked'}) if @languages.present? && @languages.include?('he')
-          %input{attrs}
+          - attrs.merge!({ checked: 'checked' }) if @languages.present? && @languages.include?('he')
+          %input{ attrs }
             %label
             = t(:hebrew)
             - count_text = @language_facet['he'] || '0'
             - count_text = t(:filtered) if count_text == '0' && @languages.present?
-            %span= "(#{count_text})"
+            %span
+              (#{count_text})
         %li
-          - attrs = {name: "ckb_languages[]", :type => "checkbox", id: 'lang_xlat', class: 'lang_xlat', value: 'xlat'}
+          - attrs = { name: 'ckb_languages[]', type: :checkbox, id: 'lang_xlat', class: 'lang_xlat', value: 'xlat' }
           -# attrs.merge!({disabled: 'disabled'}) if @language_facet[:xlat].nil? || @language_facet[:xlat] == 0
-          - attrs.merge!({checked: 'checked'}) if (@languages.present? && @languages.include?('xlat'))
-          %input{attrs}
+          - attrs.merge!({ checked: 'checked' }) if @languages.present? && @languages.include?('xlat')
+          %input{ attrs }
           %label
             = t(:non_hebrew_languages)
-            %span= "(#{@language_facet[:xlat] || '0'})"
+            %span
+              (#{@language_facet[:xlat] || '0'})
           .languages-filters
             %ul.nested-list.xlat_langs
               - emitted_langs = ['he', :xlat]
-              - @language_facet.sort{|a,b| b[1] <=> a[1]}.each do |lang, amount|
-                - next if lang == :xlat || lang == 'he'
+              - @language_facet.sort { |a, b| b[1] <=> a[1] }.each do |lang, amount|
+                - next if [:xlat, 'he'].include?(lang)
+
                 - emitted_langs << lang
                 %li
-                  - attrs = {name: "ckb_languages[]", :type => "checkbox", id: "lang_#{lang}", value: lang}
+                  - attrs = { name: 'ckb_languages[]', type: :checkbox, id: "lang_#{lang}", value: lang }
                   -# attrs.merge!({disabled: 'disabled'}) if @language_facet[lang].nil? || @language_facet[lang] == 0
-                  - attrs.merge!({checked: 'checked'}) if @all_xlat || (@languages.present? && @languages.include?(lang))
-                  %input{attrs}
+                  - attrs.merge!({ checked: 'checked' }) if @all_xlat || @languages&.include?(lang)
+                  %input{ attrs }
                   %label
                     = textify_lang(lang)
                     - count_text = amount || '0'
                     - count_text = t(:filtered) if count_text == '0' && @languages.present?
-                    %span= "(#{count_text})"
-              - get_langs.reject{|x| emitted_langs.include?(x)}.each do |lang|
+                    %span
+                      (#{count_text})
+              - get_langs.reject { |x| emitted_langs.include?(x) }.each do |lang|
                 %li
-                  %input{name: "ckb_languages[]", :type => "checkbox", id: "lang_#{lang}", value: lang}
+                  %input{ name: 'ckb_languages[]', type: :checkbox, id: "lang_#{lang}", value: lang }
                   %label
                     = textify_lang(lang)
                     - count_text = '0'
                     - count_text = t(:filtered) if @languages.present?
-                    %span= "(#{count_text})"
-
-    = hidden_field_tag(:emit_filters, 'true', id: 'emit_filters')
-    = hidden_field_tag(:search_after_value, '')
-    = hidden_field_tag(:search_after_id, '')
-    = hidden_field_tag(:page, '1')
+                    %span
+                      (#{count_text})
+    = hidden_field_tag(:search_after_value, nil)
+    = hidden_field_tag(:search_after_id, nil)
+    = hidden_field_tag(:page, 1)
     = hidden_field_tag(:reverse, 'false')
-    = hidden_field_tag(:to_letter, '', id: 'toletter_tag')
+    = hidden_field_tag(:to_letter, @to_letter)
+    .mobile-only
+      .bottom-button-area
+        %button.by-button-v02#apply_mobile_filters{ type: :submit }= t(:apply_mobile_filters)
+
 
 :javascript
+  function resetPagination() {
+    $('##{form_id} #page_tag').val('1');
+    $('##{form_id} #to_letter').val('');
+  }
+
   $(document).ready(function() {
-    window.history.pushState($('#works_filters').serialize(), null, '/authors');
-    $('#sort_by_dd').val("#{@sort}");
+    $('#sort_by_select').val("#{@sort}");
     $('.datetype').click(function(e) {
       e.preventDefault();
       $('.datetype').removeClass('active');
       $(this).addClass('active');
       $('#date_type').val($(this).attr('id'));
     });
-    var submit_timeout = null;
+
     $('#tags').on('railsAutocomplete.select', function(event, data){
       event.preventDefault();
       tag_id = data.item.tag_id.toString();
       $('#tag_ids').val( $('#tag_ids').val() == '' ? tag_id : $('#tag_ids').val()+','+tag_id);
-      submit_filters();
+      submit_author_filters();
     });
 
-    $('#works_filters').change(function(){
-      if(window.innerWidth >= mobileWidth) {
-        if(submit_timeout != null){
-          window.clearTimeout(submit_timeout);
-        }
-        $('#page_tag').val('1'); // reset pagination
-        submit_timeout = window.setTimeout(submit_author_filters, 300);
-      }
-    });
+    if (!isMobile()) {
+      // On Desktop we automatically submit form after some values were changed by user
+      var submit_timeout = null;
+      $('##{form_id}').change(function() {
+          if(submit_timeout != null){
+            window.clearTimeout(submit_timeout);
+          }
+          resetPagination();
+          submit_timeout = window.setTimeout(submit_author_filters, 300);
+      });
+    }
+
     $('.reset').click(function(){
-      $('#works_filters').find(':input').each(function() {
+      $('#authors_filters').find(':input').each(function() {
         switch(this.type) {
             case 'password':
             case 'select-multiple':
@@ -174,10 +197,7 @@
                 this.checked = false;
         }
       });
-      $('#emit_filters').val('true');
-      $('#page_tag').val('1'); // reset pagination
-      $('#toletter_tag').val(''); // reset pagination
-      window.history.replaceState($('#works_filters').serialize(), null, '/authors');
+      resetPagination();
       submit_author_filters();
     });
     $('.lang_xlat').change(function(){
@@ -225,6 +245,7 @@
     }).on('hide.datetimepicker', function(e){
       window.setTimeout(submit_author_filters, 2000);
     });
+
     if("#{@fromdate}" != "") {
       $('#fromdate').val("#{@fromdate}");
     }
@@ -236,6 +257,10 @@
       $('#search_type').val('authorname');
       submit_author_filters();
     });
-
+    $('#apply_mobile_filters').click(function() {
+      resetPagination();
+      $('#browse_intro').toggle();
+      $('#sort_filter_panel').toggle();
+      $('#thelist').toggle();
+    });
   });
-

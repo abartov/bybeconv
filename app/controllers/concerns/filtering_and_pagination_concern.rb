@@ -18,7 +18,7 @@ module FilteringAndPaginationConcern
   end
 
   def buckets_to_totals_hash(buckets)
-    Hash[buckets.map { |facethash| [facethash['key'], facethash['doc_count']]}]
+    buckets.to_h { |facethash| [facethash['key'], facethash['doc_count']] }
   end
 
   def paginate(collection)
@@ -37,6 +37,9 @@ module FilteringAndPaginationConcern
     search_after_id = params[:search_after_id]
     search_after_value = params[:search_after_value]
     if search_after_id.present?
+      if search_after_value.blank? && @sort_by != 'alphabetical'
+        search_after_value = '0'
+      end
       collection = collection.search_after(search_after_value, search_after_id)
     end
 
