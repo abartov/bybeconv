@@ -183,7 +183,7 @@ module ApplicationHelper
   def default_link_by_class(klass, id)
     case klass.to_s
     when 'Manifestation'
-      manifestation_read_path(id)
+      manifestation_path(id)
     when 'Person'
       person_path(id)
     when 'CorporateBody'
