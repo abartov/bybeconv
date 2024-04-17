@@ -1,0 +1,31 @@
+= render layout: 'shared/collapsible_block', locals: { container_name: 'collflang', title: t(:writing_language) } do
+  :ruby
+    foreign_langs = get_langs.reject { |lang| lang == 'he' }.sort_by { |lang| textify_lang(lang) }
+    selected_values ||= []
+    selected_top_level_values = []
+    selected_top_level_values << 'he' if selected_values.include?('he')
+    selected_top_level_values << :xlat if foreign_langs.all? { |lang| selected_values.include?(lang) }
+  = render partial: 'shared/filters/checkboxes',
+           locals: { group_name: :lang,
+                     field_name: :ckb_languages,
+                     all_values: ['he', :xlat],
+                     labels: { 'he' => textify_lang('he'), :xlat => t(:non_hebrew_languages)},
+                     selected_values: selected_top_level_values,
+                     facet: facet,
+                     icons: {} }
+
+  .languages-filters.nested-list
+    = render partial: 'shared/filters/checkboxes',
+             locals: { group_name: :lang,
+                       field_name: :ckb_languages,
+                       all_values: foreign_langs,
+                       labels: foreign_langs.map { |lang| [lang, textify_lang(lang)] }.to_h,
+                       selected_values: selected_values,
+                       facet: facet,
+                       icons: {} }
+:javascript
+  $(function() {
+    $('input#lang_xlat').change(function(){
+      $('.languages-filters input').prop('checked', $(this).is(":checked"));
+    });
+  });
