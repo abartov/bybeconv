@@ -21,26 +21,21 @@
   .select-all-with-buttons
     .headline-4-v02= t(:sort_by)
     #sort-by
-      .sort-by-desktop
-        #custom-select{title: t(:worklist_sort_tt)}
-          %select#sort_by_dd{name: 'sort_by'}
-            %optgroup{label: t(:alefbet)}
-              %option{value: 'alphabetical_asc', selected: @sort == 'alphabetical_asc' ? 'true': nil}= t(:alefbet_asc)
-              %option{value: 'alphabetical_desc', selected: @sort == 'alphabetical_desc' ? 'true': nil}= t(:alefbet_desc)
-            %optgroup{label: t(:popularity_group)}
-              %option{value: 'popularity_desc', selected: @sort == 'popularity_desc' ? 'true': nil}= t(:popularity_desc)
-              %option{value: 'popularity_asc', selected: @sort == 'popularity_asc' ? 'true': nil}= t(:popularity_asc)
-            %optgroup{label: t(:dates)}
-              %option{value: 'birth_date_asc', selected: @sort == 'birth_date_asc' ? 'true': nil}= t(:birthdate_asc)
-              %option{value: 'birth_date_desc', selected: @sort == 'birth_date_desc' ? 'true': nil}= t(:birthdate_desc)
-              %option{value: 'death_date_asc', selected: @sort == 'death_date_asc' ? 'true': nil}= t(:deathdate_asc)
-              %option{value: 'death_date_desc', selected: @sort == 'death_date_desc' ? 'true': nil}= t(:deathdate_desc)
-              %option{value: 'upload_date_asc', selected: @sort == 'upload_date_asc' ? 'true': nil}= t(:uploaddate_asc)
-              %option{value: 'upload_date_desc', selected: @sort == 'upload_date_desc' ? 'true': nil}= t(:uploaddate_desc)
-      .sort-by-mobile
-        %button.btn-small-outline-v02#current_sort_by
-          .btn-text-v02#current_sort_text
-
+      #custom-select{ title: t(:worklist_sort_tt) }
+        %select#sort_by_select
+          %optgroup{ label: t(:alefbet) }
+            %option{ value: 'alphabetical_asc', selected: @sort == 'alphabetical_asc' }= t(:alefbet_asc)
+            %option{ value: 'alphabetical_desc', selected: @sort == 'alphabetical_desc' }= t(:alefbet_desc)
+          %optgroup{ label: t(:popularity_group) }
+            %option{ value: 'popularity_desc', selected: @sort == 'popularity_desc' }= t(:popularity_desc)
+            %option{ value: 'popularity_asc', selected: @sort == 'popularity_asc' }= t(:popularity_asc)
+          %optgroup{ label: t(:dates) }
+            %option{ value: 'birth_date_asc', selected: @sort == 'birth_date_asc' }= t(:birthdate_asc)
+            %option{ value: 'birth_date_desc', selected: @sort == 'birth_date_desc' }= t(:birthdate_desc)
+            %option{ value: 'death_date_asc', selected: @sort == 'death_date_asc' }= t(:deathdate_asc)
+            %option{ value: 'death_date_desc', selected: @sort == 'death_date_desc' }= t(:deathdate_desc)
+            %option{ value: 'upload_date_asc', selected: @sort == 'upload_date_asc' }= t(:uploaddate_asc)
+            %option{ value: 'upload_date_desc', selected: @sort == 'upload_date_desc' }= t(:uploaddate_desc)
   .mainlist#browse_mainlist
     %ol{ style: "counter-reset:li #{@page > 1 ? (@page - 1) * AuthorsController::PAGE_SIZE : 0}" }
       - decorator = authorlist_decorator_by_sort_type(@sort)
@@ -51,66 +46,23 @@
   = hidden_field_tag(:hurl, request.original_url)
   = render partial: 'shared/pagination', locals: { add_js: true }
 :javascript
-  /**
-   * Handle Animation (Start, Reset, Restart)
-   * animationProprierties | Animation name, Animation time, Animation tween (Sample: animation 1s ease-in )
-   * targetElementClass    | Target element class or id (Sample: .box)
-   * 	 */
-  function startAnimation (animationProprierties , targetElementClass) {
-    var targetElement = $(targetElementClass)
-    targetElement.css('animation', animationProprierties);
-    targetElement.on('animationend webkitAnimationEnd oanimationend MSAnimationEnd', function () {
-    targetElement.css('animation','');
-    targetElement.off();
-    });
-  }
   $(document).ready(function() {
     $('.tag-x').click(function() {
-      const prefix = (window.innerWidth < mobileWidth) ? '#mobile_filters ' : '#works_filters ';
       const field = $(this).data('ele');
-
-      if (field == 'to_letter') {
-        const filters = #{@emit_filters == true};
-        if(filters) {
-          submit_author_filters();
-        } else {
-          const url = urlWithoutPaging();
-          url.searchParams.delete('to_letter');
-          window.history.pushState($(prefix).serialize(), null, '/authors');
-          $.get(url.href, '', null, 'script');
-        }
-        return;
-      }
-
       // uncheck/clear the appropriate field
-      if($(this).attr('data-which') == 'text') {
-        $(prefix + '#'+$(this).attr('data-ele')).val('');
+      if ($(this).attr('data-which') == 'text') {
+        $('#authors_filters #' + field).val('');
       } else {
-        $(prefix + '#'+$(this).attr('data-ele')).prop("checked", false);
+        $('#authors_filters #' + field).prop("checked", false);
       }
-      // and submit the form
-      $('input').attr('disabled', false); // re-enable checkboxes to preserve other filters
-      window.history.pushState($(prefix).serialize(), null, '/authors');
+
+      $('#authors_filters input').attr('disabled', false);
       submit_author_filters();
     });
 
-    $('#sort_by_dd').change(function(){
-      $('input[name=sort_by]').val($('#sort_by_dd option:selected').val());
-      if($('#authors_filters').length > 0) {
-        window.history.pushState($('#authors_filters').serialize(), null, '/authors');
-        submit_author_filters();
-      } else {
-        startModal('spinnerdiv');
-        window.location = "/authors?sort_by="+$('#sort_by_dd option:selected').val();
-      }
+    $('#sort_by_select').change(function(){
+      $('#authors_filters input[name=sort_by]').val($('#sort_by_select option:selected').val());
+      resetPagination();
+      submit_author_filters();
     });
-
-    $('#current_sort_by').click(function(){
-      $('#mobileFilterDlg').modal('show');
-      $('.mobile-sort-area').show();
-      $('.author-mobile-filters-area').hide();
-      $('#opt_sort').addClass('active');
-      $('#opt_filter').removeClass('active');
-    });
-    $('#current_sort_text').text($('#sort_by_dd option:selected').text());
   });

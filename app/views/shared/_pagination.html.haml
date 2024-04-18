@@ -20,7 +20,9 @@
               '',
               { class: (letter == @to_letter ? 'letterbutton active' : 'letterbutton'), data: { letter: letter } }
 
-- if add_js
+- if add_js && controller_name == 'manifestation'
+  -# TODO: this block of code is made for compatibility with works controller. Should be removed after works browse
+     will be updated
   :javascript
     function urlWithoutPaging() {
       const urlObject = new URL($('#hurl').val());
@@ -74,5 +76,32 @@
           window.history.pushState($('#works_filters').serialize(), null, '/works');
           $.get(urlObject.href, '', null, 'script');
         }
+      });
+    });
+
+- if add_js && controller_name == 'authors'
+  :javascript
+    $(function() {
+      $('.letterbutton').click(function(e) {
+        e.stopImmediatePropagation();
+        e.preventDefault();
+        const letter = $(this).data('letter');
+        $('#to_letter').val(letter);
+        $('#search_after_value').val('');
+        $('#search_after_id').val('');
+        submit_author_filters();
+      });
+
+      $('.browse_paging').click(function() {
+        const id = $(this).data('search-after-id') || '';
+        const value = $(this).data('search-after-value') || '';
+        const page = $(this).data('search-after-page') || 1;
+        const reverse = $(this).data('search-after-reverse') || false;
+
+        $('#search_after_value').val(value);
+        $('#search_after_id').val(id);
+        $('#page').val(page);
+        $('#reverse').val(reverse);
+        submit_author_filters();
       });
     });

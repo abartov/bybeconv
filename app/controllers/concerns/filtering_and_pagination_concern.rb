@@ -8,12 +8,17 @@ module FilteringAndPaginationConcern
 
   private
 
-  def es_buckets_to_facet(buckets, codehash)
+  def es_buckets_to_facet(buckets, codes)
     facet = {}
     buckets.each do |facethash|
-      facet[codehash[facethash['key']]] = facethash['doc_count'] unless codehash[facethash['key']].nil?
+      code = codes[facethash['key']]
+      facet[code] = facethash['doc_count'] unless code.nil?
     end
     facet
+  end
+
+  def buckets_to_totals_hash(buckets)
+    buckets.to_h { |facethash| [facethash['key'], facethash['doc_count']] }
   end
 
   def paginate(collection)
@@ -26,12 +31,15 @@ module FilteringAndPaginationConcern
 
     @emit_filters = params[:load_filters] == 'true' || params[:emit_filters] == 'true'
 
-    fill_aggregated_facets(collection) # This method should be implemented in controllers using this concern
+    prepare_totals(collection) # This method should be implemented in controllers using this concern
 
     # checking if non-first page should be loaded
     search_after_id = params[:search_after_id]
     search_after_value = params[:search_after_value]
     if search_after_id.present?
+      if search_after_value.blank? && @sort_by != 'alphabetical'
+        search_after_value = '0'
+      end
       collection = collection.search_after(search_after_value, search_after_id)
     end
 

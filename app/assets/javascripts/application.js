@@ -24,22 +24,15 @@
 
 var mobileWidth = 767;
 
+function isMobile() {
+  return window.innerWidth < mobileWidth;
+}
+
 function submit_filters() {
   startModal('spinnerdiv');
   if(window.innerWidth < mobileWidth) {
     $('#mobile_filters').submit();
   } else {
-    $('#works_filters').submit();
-  }
-}
-
-function submit_author_filters() {
-  startModal('spinnerdiv');
-  if(window.innerWidth < mobileWidth) {
-    window.history.replaceState($('#mobile_filters').serialize(), null, '/authors');
-    $('#mobile_filters').submit();
-  } else {
-    window.history.replaceState($('#works_filters').serialize(), null, '/authors');
     $('#works_filters').submit();
   }
 }
