@@ -8,15 +8,6 @@ module FilteringAndPaginationConcern
 
   private
 
-  def es_buckets_to_facet(buckets, codes)
-    facet = {}
-    buckets.each do |facethash|
-      code = codes[facethash['key']]
-      facet[code] = facethash['doc_count'] unless code.nil?
-    end
-    facet
-  end
-
   def buckets_to_totals_hash(buckets)
     buckets.to_h { |facethash| [facethash['key'], facethash['doc_count']] }
   end

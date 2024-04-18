@@ -717,16 +717,17 @@ class ManifestationController < ApplicationController
 
     collection = collection.aggregations(standard_aggregations)
 
-    @gender_facet = es_buckets_to_facet(collection.aggs['author_genders']['buckets'], Person.genders)
-    @tgender_facet = es_buckets_to_facet(collection.aggs['translator_genders']['buckets'], Person.genders)
-    @period_facet = es_buckets_to_facet(collection.aggs['periods']['buckets'], Expression.periods)
-    @genre_facet = es_buckets_to_facet(collection.aggs['genres']['buckets'], get_genres.to_h { |g| [g, g] })
-    @language_facet = es_buckets_to_facet(collection.aggs['languages']['buckets'], get_langs.to_h { |l| [l, l] })
+    @gender_facet = buckets_to_totals_hash(collection.aggs['author_genders']['buckets'])
+    @tgender_facet = buckets_to_totals_hash(collection.aggs['translator_genders']['buckets'])
+    @period_facet = buckets_to_totals_hash(collection.aggs['periods']['buckets'])
+    @genre_facet = buckets_to_totals_hash(collection.aggs['genres']['buckets'])
+
+    @language_facet = buckets_to_totals_hash(collection.aggs['languages']['buckets'])
     @language_facet[:xlat] = @language_facet.except('he').values.sum
-    @copyright_facet = es_buckets_to_facet(
-      collection.aggs['copyright_status']['buckets'],
-      { 'false' => 0, 'true' => 1 }
-    )
+
+    @copyright_facet = collection.aggs['copyright_status']['buckets'].map do |hash|
+      [ hash['key'] == 'true' ? 1 : 0, hash['doc_count'] ]
+    end.to_h
 
     # Preparing list of authors to show in multiselect modal on works browse page
     if collection.filter.present?
