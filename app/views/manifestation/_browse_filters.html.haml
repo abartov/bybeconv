@@ -12,20 +12,20 @@
         %button.search-mobile-option.opt_workname= t(:work_title)
         %button.search-mobile-option.opt_authorname= t(:author_name)
       %break
-      %input.field-v02.field-without-label#search_input{ placeholder: t(:what_to_search_for),
-                                                         name: 'search_input',
-                                                         type: :text,
-                                                         value: @search_input}/
+      = text_field_tag :search_input, @search_input,
+                       id: :search_input,
+                       class: %w(field-v02 field-without-label),
+                       placeholder: t(:what_to_search_for)
       = autocomplete_field_tag :authorstr, @authorstr, autocomplete_person_name_path,
                                id_element: '#author_id',
                                'data-noMatchesLabel' => t(:no_matches_found),
-                               style:'display:none',
+                               style: 'display:none',
                                class: 'field-v02 field-without-label author-name-field',
                                id: 'authors',
                                placeholder: t(:author_names)
-      = hidden_field_tag :author_id, @author_id.present? ? @author_id : nil
+      = hidden_field_tag :author_id, @author_id
       .multi-name-sort.desktop-only.pointer
-        %span.linkcolor.pointer{'data-toggle' => 'modal', 'data-target' => '#authorsDlg'}= t(:multiselect)
+        %span.linkcolor.pointer{ data: { toggle: :modal, target: '#authorsDlg' } }= t(:multiselect)
       = hidden_field_tag(:authors, @authors, id: 'author_ids')
       = hidden_field_tag(:authors_names, @authors_names, id: 'authors_names')
 
@@ -52,10 +52,10 @@
                        title: t(:copyright_status),
                        field_name: :ckb_copyright,
                        all_values: [0, 1],
-                       labels: {0 => t(:public_domain), 1 => t(:by_permission) },
+                       labels: { 0 => t(:public_domain), 1 => t(:by_permission) },
                        selected_values: @copyright,
                        facet: @copyright_facet,
-                       icons: {0 => 'm', 1 => 'x'} }
+                       icons: { 0 => 'm', 1 => 'x' } }
 
     = render partial: 'shared/filters/checkbox_group',
              locals: { group_name: :genre,
@@ -64,7 +64,7 @@
                        all_values: get_genres,
                        selected_values: @genres,
                        facet: @genre_facet,
-                       icons: Work::GENRES.map { |g| [g, glyph_for_genre(g)] }.to_h }
+                       icons: Work::GENRES.index_with { |g| glyph_for_genre(g) } }
 
     = render partial: 'shared/filters/checkbox_group',
              locals: { group_name: :period,
@@ -75,7 +75,12 @@
                        facet: @period_facet }
 
     = render layout: 'shared/collapsible_block', locals: { container_name: 'collftags', title: t(:tags) } do
-      = autocomplete_field_tag :tagstr, '', autocomplete_tag_name_path, id_element: '#tag_id', 'data-noMatchesLabel' => t(:no_matches_found), 'class' => 'field-v02 field-without-label author-name-field', id: 'tags', placeholder: t(:tag)
+      = autocomplete_field_tag :tagstr, '', autocomplete_tag_name_path,
+                               id_element: '#tag_id',
+                               'data-noMatchesLabel' => t(:no_matches_found),
+                               class: 'field-v02 field-without-label author-name-field',
+                               id: 'tags',
+                               placeholder: t(:tag)
       = hidden_field_tag :tag_ids, @tag_ids, id: 'tag_ids'
 
     = render layout: 'shared/collapsible_block', locals: { container_name: 'collfdate', title: t(:thedate) } do
@@ -86,9 +91,18 @@
         = hidden_field_tag(:date_type, '', id: 'date_type')
       %break
       .dates-range
-        %input.datepicker.datetimepicker-input.field-v02.field-without-label.range-date-field#fromdate{:placeholder => t(:year), name: "fromdate", 'data-toggle' => 'datetimepicker', 'data-target' => '#fromdate' }/
+        %input.datepicker.datetimepicker-input.field-v02.field-without-label.range-date-field#fromdate{
+          placeholder: t(:year),
+          name: :fromdate,
+          data: { toggle: :datetimepicker, target: '#fromdate' }
+        }/
         .date-range-to= t(:until)
-        %input.datepicker.datetimepicker-input.field-v02.field-without-label.range-date-field#todate{:placeholder => t(:year), :style => "float: left", 'data-toggle' => 'datetimepicker', name: "todate", 'data-target' => '#todate'}/
+        %input.datepicker.datetimepicker-input.field-v02.field-without-label.range-date-field#todate{
+          placeholder: t(:year),
+          style: 'float: left;',
+          name: :todate,
+          data: { toggle: :datetimepicker, target: '#todate' }
+        }/
 
     = render partial: 'shared/filters/languages', locals: { facet: @language_facet, selected_values: @languages }
 
@@ -227,7 +241,6 @@
 
     $('#apply_mobile_filters').click(function() {
       resetPagination();
-      // TODO: adjust
       $('#browse_intro').toggle();
       $('#sort_filter_panel').toggle();
       $('#thelist').toggle();

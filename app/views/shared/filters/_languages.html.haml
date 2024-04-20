@@ -9,7 +9,7 @@
            locals: { group_name: :lang,
                      field_name: :ckb_languages,
                      all_values: ['he', :xlat],
-                     labels: { 'he' => textify_lang('he'), :xlat => t(:non_hebrew_languages)},
+                     labels: { 'he' => textify_lang('he'), :xlat => t(:non_hebrew_languages) },
                      selected_values: selected_top_level_values,
                      facet: facet,
                      icons: {} }
@@ -19,7 +19,7 @@
              locals: { group_name: :lang,
                        field_name: :ckb_languages,
                        all_values: foreign_langs,
-                       labels: foreign_langs.map { |lang| [lang, textify_lang(lang)] }.to_h,
+                       labels: foreign_langs.index_with { |lang| textify_lang(lang) },
                        selected_values: selected_values,
                        facet: facet,
                        icons: {} }

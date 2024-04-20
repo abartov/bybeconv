@@ -1,13 +1,4 @@
 $('#thelist').html("<%= j(render partial: 'browse_list') %>");
 $('#sort_filter_panel').html("<%= j(render partial: 'browse_filters') %>");
 $('#authorsDlg').html("<%= j(render partial: 'authors_select', locals: {authors: @authors, list: @authors_list}) %>");
-if("#{@sort_or_filter}" == 'sort') {
-  $('.mobile-sort-area').show();
-  $('.author-mobile-filters-area').hide();
-  $('#opt_sort').addClass('active');
-} else {
-  $('.mobile-sort-area').hide();
-  $('.author-mobile-filters-area').show();
-  $('#opt_filter').addClass('active');
-}
 stopModal('spinnerdiv');

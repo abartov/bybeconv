@@ -17,10 +17,9 @@
         = f
         %span.pointer.tag-x{'data-ele': id, 'data-which' => which}= '-'
 .by-card-content-v02
-  = render partial: 'shared/pagination',
-           locals: { submit_function: 'submit_filters', form_id: 'works_filters', add_js: false }
+  = render partial: 'shared/filters/pagination', locals: { form_id: 'works_filters', add_js: false }
   %hr
-  .select-all-with-buttons
+  .select-all-with-buttons.desktop-only
     .select-text-checkbox-area
       .select-all-checkbox
         %input#select-all{type: 'checkbox', style:'display:none'}
@@ -30,8 +29,6 @@
     #sort-by
       %div
         #custom-select{title: t(:worklist_sort_tt)}
-          %button#current_sort_by.btn-small-outline-v02
-            .btn-text-v02#current_sort_text
           %select#sort_by_dd{name: 'sort_by'}
             %optgroup{label: t(:alefbet)}
               %option{value: 'alphabetical_asc', selected: @sort == 'alphabetical_asc' ? 'true': nil}= t(:alefbet_asc)
@@ -59,8 +56,7 @@
           = link_to m.title_and_authors, manifestation_path(m.id)
           = decorator.call(m)
   = hidden_field_tag(:hurl, request.original_url)
-  = render partial: 'shared/pagination',
-           locals: { submit_function: 'submit_filters', form_id: 'works_filters', add_js: true }
+  = render partial: 'shared/filters/pagination', locals: { form_id: 'works_filters', add_js: true }
 :javascript
   /**
    * Handle Animation (Start, Reset, Restart)
@@ -171,14 +167,4 @@
       }
       // notify user
     });
-
-    $('#current_sort_by').click(function(){
-      // TODO: display dialog on mobile
-      $('.mobile-sort-area').show();
-      $('.sort-by-mobile').show();
-      $('.author-mobile-filters-area').hide();
-      $('#opt_sort').addClass('active');
-      $('#opt_filter').removeClass('active');
-    });
-    $('#current_sort_text').text($('#sort_by_dd option:selected').text());
   });

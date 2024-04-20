@@ -727,9 +727,9 @@ class ManifestationController < ApplicationController
     @language_facet = buckets_to_totals_hash(collection.aggs['languages']['buckets'])
     @language_facet[:xlat] = @language_facet.except('he').values.sum
 
-    @copyright_facet = collection.aggs['copyright_status']['buckets'].map do |hash|
-      [ hash['key'] == 'true' ? 1 : 0, hash['doc_count'] ]
-    end.to_h
+    @copyright_facet = collection.aggs['copyright_status']['buckets'].to_h do |hash|
+      [hash['key'] == 'true' ? 1 : 0, hash['doc_count']]
+    end
 
     # Preparing list of authors to show in multiselect modal on works browse page
     if collection.filter.present?
@@ -748,7 +748,6 @@ class ManifestationController < ApplicationController
   def es_prep_collection
     @sort_dir = 'default'
     if params[:sort_by].present?
-      @sort_or_filter = 'sort'
       @sort = params[:sort_by].dup
       @sort_by = params[:sort_by].sub(/_(a|de)sc$/,'')
       @sort_dir = $&[1..-1] unless $&.nil?

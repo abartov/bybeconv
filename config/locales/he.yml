@@ -1343,11 +1343,12 @@ he:
       - "month"
       - "year"
   shared:
-    pagination:
-      page_x_of_total: דף %{page} מתוך %{total}
-      next_page: לדף הבא
-      previous_page: לדף הקודם
-      first_page: לדף הראשון
+    filters:
+      pagination:
+        page_x_of_total: דף %{page} מתוך %{total}
+        next_page: לדף הבא
+        previous_page: לדף הקודם
+        first_page: לדף הראשון
   welcome:
     submit_contact:
       ziburit_failed: לא השתכנענו שאינך רובוט.

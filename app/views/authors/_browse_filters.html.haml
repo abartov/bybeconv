@@ -25,10 +25,10 @@
                        title: t(:copyright_status),
                        field_name: :ckb_copyright,
                        all_values: [0, 1],
-                       labels: {0 => t(:public_domain), 1 => t(:by_permission) },
+                       labels: { 0 => t(:public_domain), 1 => t(:by_permission) },
                        selected_values: @copyright,
                        facet: @copyright_facet,
-                       icons: {0 => 'm', 1 => 'x'} }
+                       icons: { 0 => 'm', 1 => 'x' } }
 
     = render partial: 'shared/filters/checkbox_group',
              locals: { group_name: :genre,
@@ -37,7 +37,7 @@
                        all_values: get_genres,
                        selected_values: @genres,
                        facet: @genre_facet,
-                       icons: Work::GENRES.map { |g| [g, glyph_for_genre(g)] }.to_h }
+                       icons: Work::GENRES.index_with { |g| glyph_for_genre(g) } }
 
     = render partial: 'shared/filters/checkbox_group',
              locals: { group_name: :period,
@@ -97,7 +97,7 @@
       event.preventDefault();
       tag_id = data.item.tag_id.toString();
       $('#tag_ids').val( $('#tag_ids').val() == '' ? tag_id : $('#tag_ids').val()+','+tag_id);
-      submit_author_filters();
+      submit_filters();
     });
 
     if (!isMobile()) {
@@ -108,7 +108,7 @@
             window.clearTimeout(submit_timeout);
           }
           resetPagination();
-          submit_timeout = window.setTimeout(submit_author_filters, 300);
+          submit_timeout = window.setTimeout(submit_filters, 300);
       });
     }
 
@@ -128,7 +128,7 @@
         }
       });
       resetPagination();
-      submit_author_filters();
+      submit_filters();
     });
 
     if("#{@datetype}" == "") {
@@ -152,7 +152,7 @@
         next: 'fa fa-chevron-left',
       }
     }).on('hide.datetimepicker', function(e){
-      window.setTimeout(submit_author_filters, 2000);
+      window.setTimeout(submit_filters, 2000);
     });
 
     if("#{@fromdate}" != "") {
@@ -164,7 +164,7 @@
     $('#authors').bind('railsAutocomplete.select', function(event, data){
       event.preventDefault();
       $('#search_type').val('authorname');
-      submit_author_filters();
+      submit_filters();
     });
     $('#apply_mobile_filters').click(function() {
       resetPagination();

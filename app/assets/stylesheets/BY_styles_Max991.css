@@ -837,16 +837,12 @@
 #sort_by_dd{
 	display: none;
 }
-#current_sort_by{
-	display: block;
-	padding: 0 4px;
+.side-sort{
+	display:none;
 }
-	.side-sort{
-		display:none;
-	}
-	.author-side-sort{
-		display: none;
-	}
+.author-side-sort{
+	display: none;
+}
 .author-sort-area{
 	width: auto;
 	padding: 0;

@@ -17,7 +17,7 @@
       = render partial: 'browse_list'
 
 :javascript
-  function submit_author_filters() {
+  function submit_filters() {
     window.history.pushState($('#authors_filters').serialize(), null, '/authors');
     startModal('spinnerdiv');
     $('#authors_filters').submit();

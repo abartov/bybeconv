@@ -17,8 +17,7 @@
         = f
         %span.pointer.tag-x{'data-ele': id, 'data-which' => which}= '-'
 .by-card-content-v02
-  = render partial: 'shared/pagination',
-           locals: { submit_function: 'submit_author_filters', form_id: 'authors_filters', add_js: false }
+  = render partial: 'shared/filters/pagination', locals: { form_id: 'authors_filters', add_js: false }
   .select-all-with-buttons
     .headline-4-v02= t(:sort_by)
     #sort-by
@@ -45,8 +44,7 @@
           = link_to au.sort_name.presence || '_', person_path(au.id)
           .authors-list-years= decorator.call(au)
   = hidden_field_tag(:hurl, request.original_url)
-  = render partial: 'shared/pagination',
-           locals: { submit_function: 'submit_author_filters', form_id: 'authors_filters', add_js: true }
+  = render partial: 'shared/filters/pagination', locals: { form_id: 'authors_filters', add_js: true }
 :javascript
   $(document).ready(function() {
     $('.tag-x').click(function() {
@@ -59,12 +57,12 @@
       }
 
       $('#authors_filters input').attr('disabled', false);
-      submit_author_filters();
+      submit_filters();
     });
 
     $('#sort_by_select').change(function(){
       $('#authors_filters input[name=sort_by]').val($('#sort_by_select option:selected').val());
       resetPagination();
-      submit_author_filters();
+      submit_filters();
     });
   });

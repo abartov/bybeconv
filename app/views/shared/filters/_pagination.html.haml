@@ -35,7 +35,7 @@
         $('##{form_id} #to_letter').val(letter);
         $('##{form_id} #search_after_value').val('');
         $('##{form_id} #search_after_id').val('');
-        #{submit_function}();
+        submit_filters();
       });
 
       $('.browse_paging').click(function() {
@@ -48,6 +48,6 @@
         $('##{form_id} #search_after_id').val(id);
         $('##{form_id} #page').val(page);
         $('##{form_id} #reverse').val(reverse);
-        #{submit_function}();
+        submit_filters();
       });
     });
