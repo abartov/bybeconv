@@ -20,8 +20,6 @@ module FilteringAndPaginationConcern
     # in works list (e.g. to start second page from index 101)
     @page = (params[:page] || 1).to_i
 
-    @emit_filters = params[:load_filters] == 'true' || params[:emit_filters] == 'true'
-
     prepare_totals(collection) # This method should be implemented in controllers using this concern
 
     # checking if non-first page should be loaded

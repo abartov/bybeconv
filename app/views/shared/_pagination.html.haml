@@ -20,76 +20,22 @@
               '',
               { class: (letter == @to_letter ? 'letterbutton active' : 'letterbutton'), data: { letter: letter } }
 
-- if add_js && controller_name == 'manifestation'
-  -# TODO: this block of code is made for compatibility with works controller. Should be removed after works browse
-     will be updated
+- if add_js
   :javascript
-    function urlWithoutPaging() {
-      const urlObject = new URL($('#hurl').val());
-      urlObject.searchParams.delete('search_after_value');
-      urlObject.searchParams.delete('search_after_id');
-      urlObject.searchParams.delete('page');
-      urlObject.searchParams.delete('reverse');
-      return urlObject;
+    function resetPagination() {
+      $('##{form_id} #page').val('1');
+      $('##{form_id} #to_letter').val('');
     }
 
     $(function() {
       $('.letterbutton').click(function(e) {
         e.stopImmediatePropagation();
         e.preventDefault();
-        const filters = #{@emit_filters == true};
         const letter = $(this).data('letter');
-        if(filters) {
-          $('#toletter_tag').val(letter);
-          $('#search_after_value').val('');
-          $('#search_after_id').val('');
-          submit_filters();
-        } else {
-          const urlObject = urlWithoutPaging();
-          urlObject.searchParams.set('to_letter', letter);
-          window.history.pushState($('#works_filters').serialize(), null, '/works');
-          $.get(urlObject.href, '', null, 'script');
-        }
-      });
-
-      $('.browse_paging').click(function() {
-        const filters = #{@emit_filters == true};
-        const id = $(this).data('search-after-id') || '';
-        const value = $(this).data('search-after-value') || '';
-        const page = $(this).data('search-after-page') || 1;
-        const reverse = $(this).data('search-after-reverse') || false;
-
-        if(filters) {
-          $('#search_after_value').val(value);
-          $('#search_after_id').val(id);
-          $('#page').val(page);
-          $('#reverse').val(reverse);
-          $('#toletter_tag').val('#{@to_letter}');
-          window.history.pushState($('#works_filters').serialize(), null, '/works');
-          submit_filters();
-        } else {
-          const urlObject = new URL($('#hurl').val());
-          urlObject.searchParams.set('search_after_value', value);
-          urlObject.searchParams.set('search_after_id', id);
-          urlObject.searchParams.set('page', page);
-          urlObject.searchParams.set('reverse', reverse);
-          window.history.pushState($('#works_filters').serialize(), null, '/works');
-          $.get(urlObject.href, '', null, 'script');
-        }
-      });
-    });
-
-- if add_js && controller_name == 'authors'
-  :javascript
-    $(function() {
-      $('.letterbutton').click(function(e) {
-        e.stopImmediatePropagation();
-        e.preventDefault();
-        const letter = $(this).data('letter');
-        $('#to_letter').val(letter);
-        $('#search_after_value').val('');
-        $('#search_after_id').val('');
-        submit_author_filters();
+        $('##{form_id} #to_letter').val(letter);
+        $('##{form_id} #search_after_value').val('');
+        $('##{form_id} #search_after_id').val('');
+        #{submit_function}();
       });
 
       $('.browse_paging').click(function() {
@@ -98,10 +44,10 @@
         const page = $(this).data('search-after-page') || 1;
         const reverse = $(this).data('search-after-reverse') || false;
 
-        $('#search_after_value').val(value);
-        $('#search_after_id').val(id);
-        $('#page').val(page);
-        $('#reverse').val(reverse);
-        submit_author_filters();
+        $('##{form_id} #search_after_value').val(value);
+        $('##{form_id} #search_after_id').val(id);
+        $('##{form_id} #page').val(page);
+        $('##{form_id} #reverse').val(reverse);
+        #{submit_function}();
       });
     });

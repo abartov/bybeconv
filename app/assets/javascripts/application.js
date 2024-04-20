@@ -27,12 +27,3 @@ var mobileWidth = 767;
 function isMobile() {
   return window.innerWidth < mobileWidth;
 }
-
-function submit_filters() {
-  startModal('spinnerdiv');
-  if(window.innerWidth < mobileWidth) {
-    $('#mobile_filters').submit();
-  } else {
-    $('#works_filters').submit();
-  }
-}

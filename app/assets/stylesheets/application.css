@@ -408,9 +408,6 @@ body.modal-open{
 .notice a {color:#514721;}
 .success a {color:#264409;}
 
-.sort-by-mobile{
-	display: block !important;
-}
 .flex-row {
   display: flex;
   /* flex: 1 0 100%; */

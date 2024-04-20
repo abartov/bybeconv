@@ -641,16 +641,6 @@ class ManifestationController < ApplicationController
       @filters += @tgenders.map { |x| [I18n.t(:translator) + ': ' + I18n.t(x), "tgender_#{x}", :checkbox] }
     end
 
-    # author ids - multi-select authors
-    if params['authors'].present?
-      @search_type = 'authorname'
-      author_ids = params['authors'].split(',').map(&:to_i)
-      ret['author_ids'] = author_ids
-      @authors = author_ids # .join(',')
-      @authors_names = params['authors_names']
-      @filters << [I18n.t(:authors_xx, xx: @authors_names), 'authors', :authorlist]
-    end
-
     # languages
     @languages = params['ckb_languages']
     if @languages.present?
@@ -685,17 +675,29 @@ class ManifestationController < ApplicationController
       ret[datefield] = range_expr
     end
 
+    # author ids - multi-select authors
+    if params['authors'].present?
+      author_ids = params['authors'].split(',').map(&:to_i)
+      ret['author_ids'] = author_ids
+      @authors = author_ids # .join(',')
+      @authors_names = params['authors_names']
+      @filters << [I18n.t(:authors_xx, xx: @authors_names), 'authors', :authorlist]
+    end
+
     # in browse UI we can either use search by author name or by title, but not together
-    @authorstr = params['authorstr']
-    @search_input = params['search_input']
-    if @search_input.present? || @authorstr.present?
-      if params['search_type'] == 'authorname' || (@authorstr.present? && @search_input.empty?)
+    @search_type = params['search_type'] || 'authorname'
+    if @search_type == 'authorname'
+      @authorstr = params['authorstr']
+      @search_input = ''
+      if @authorstr.present?
         ret['author'] = @authorstr
-        @search_type = 'authorname'
         @filters << [I18n.t(:author_x, x: @authorstr), :authors, :text]
-      else
+      end
+    else
+      @authorstr = ''
+      @search_input = params['search_input']
+      if @search_input.present?
         ret['title'] = @search_input
-        @search_type = 'workname'
         @filters << [I18n.t(:title_x, x: @search_input), :search_input, :text]
       end
     end

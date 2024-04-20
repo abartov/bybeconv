@@ -84,11 +84,6 @@
         %button.by-button-v02#apply_mobile_filters{ type: :submit }= t(:apply_mobile_filters)
 
 :javascript
-  function resetPagination() {
-    $('##{form_id} #page_tag').val('1');
-    $('##{form_id} #to_letter').val('');
-  }
-
   $(document).ready(function() {
     $('#sort_by_select').val("#{@sort}");
     $('.datetype').click(function(e) {
