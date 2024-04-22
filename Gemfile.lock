@@ -179,10 +179,6 @@ GEM
       js_regex (~> 3.7)
       rails (>= 6.1, < 7.2)
     climate_control (1.2.0)
-    coffee-script (2.4.1)
-      coffee-script-source
-      execjs
-    coffee-script-source (1.12.2)
     concurrent-ruby (1.2.3)
     connection_pool (2.4.1)
     crass (1.0.6)
@@ -773,7 +769,6 @@ DEPENDENCIES
   capistrano3-puma
   chewy
   client_side_validations
-  coffee-script
   dalli
   damerau-levenshtein
   debug

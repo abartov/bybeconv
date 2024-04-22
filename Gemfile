@@ -46,7 +46,6 @@ gem 'sqlite3' # for dictionary imports
 gem 'jquery-rails'
 gem "jquery-ui-rails", git: 'https://github.com/jquery-ui-rails/jquery-ui-rails' # v 7.0 has not been pushed to RubyGems yet
 gem 'activerecord-session_store'
-gem 'coffee-script'
 #gem "jquery-ui-rails", "~> 4.0.4"
 
 # To use ActiveModel has_secure_password
