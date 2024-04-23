@@ -1,0 +1,18 @@
+he:
+  simple_form:
+    "yes": 'כן'
+    "no": 'לא'
+    required:
+      text: 'חובה'
+      mark: '*'
+      # You can uncomment the line below if you need to overwrite the whole required html.
+      # When using html, text and mark won't be used.
+      # html: '<abbr title="required">*</abbr>'
+    error_notification:
+      default_message: "נא לתקן את השגיאות להלן:"
+    hints:
+      corporate_body:
+        name: שם הגוף/מוסד
+    placeholders:
+      corporate_body:
+        alternate_names: (אם ישנם)

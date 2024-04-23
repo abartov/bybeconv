@@ -1,0 +1,24 @@
+he:
+  attributes:
+    created_at: נוצר בתאריך
+    updated_at: עודכן בתאריך
+    name: שם
+    status: סטטוס
+    country: מדינה
+  activerecord:
+    models:
+      corporate_body: גוף/מוסד
+    attributes:
+      corporate_body:
+        alternate_names: שמות נוספים
+        location: מיקום
+        inception: תאריך ייסוד
+        inception_year: שנת ייסוד
+        dissolution: תאריך פירוק
+        dissolution_year: שנת פירוק
+        wikipedia_url: קישורית לויקיפדיה
+        wikipedia_snippet: ציטטה מויקיפדיה
+        wikidata_uri: קישורית לויקינתונים
+        viaf_id: מזהה VIAF
+        nli_id: מזהה NLI
+        comments: הערות
