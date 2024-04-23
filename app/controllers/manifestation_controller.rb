@@ -247,9 +247,9 @@ class ManifestationController < ApplicationController
           @tagging = Tagging.new
           @tagging.taggable = @m
           @taggings = @m.taggings
-          recommendations = @m.recommendations
-          @my_pending_recs = recommendations.all_pending.where(user: current_user)
-          @app_recs = recommendations.all_approved
+          @recommendations = @m.recommendations
+          @my_pending_recs = @recommendations.all_pending.where(user: current_user)
+          @app_recs = @recommendations.all_approved
           @total_recs = @app_recs.count + @my_pending_recs.count
 
           @links = @m.external_links.group_by {|l| l.linktype}
