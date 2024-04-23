@@ -1,0 +1,53 @@
+- if @total_pages > 1
+  .row
+    .col-sm-8
+      .sort-buttons-area
+        - if @search_after_for_next.present?
+          %button.by-button-v02.browse_paging{ data: { search_after: @search_after_for_next } }
+            = t('.next_page')
+        - if @search_after_for_previous.present?
+          %button.by-button-v02.btn-secondary-v02.browse_paging{ data: { search_after: @search_after_for_previous } }
+            = t('.previous_page')
+        - if @page > 1
+          %button.by-button-v02.btn-secondary-v02.browse_paging
+            = t('.first_page')
+    .col-sm-4
+      = t('.page_x_of_total', page: @page, total: @total_pages)
+  %br
+.a-b-pagination-frame
+  - LETTERS.each do |letter|
+    = link_to letter,
+              '',
+              { class: (letter == @to_letter ? 'letterbutton active' : 'letterbutton'), data: { letter: letter } }
+
+- if add_js
+  :javascript
+    function resetPagination() {
+      $('##{form_id} #page').val('1');
+      $('##{form_id} #to_letter').val('');
+    }
+
+    $(function() {
+      $('.letterbutton').click(function(e) {
+        e.stopImmediatePropagation();
+        e.preventDefault();
+        const letter = $(this).data('letter');
+        $('##{form_id} #to_letter').val(letter);
+        $('##{form_id} #search_after_value').val('');
+        $('##{form_id} #search_after_id').val('');
+        submit_filters();
+      });
+
+      $('.browse_paging').click(function() {
+        const id = $(this).data('search-after-id') || '';
+        const value = $(this).data('search-after-value') || '';
+        const page = $(this).data('search-after-page') || 1;
+        const reverse = $(this).data('search-after-reverse') || false;
+
+        $('##{form_id} #search_after_value').val(value);
+        $('##{form_id} #search_after_id').val(id);
+        $('##{form_id} #page').val(page);
+        $('##{form_id} #reverse').val(reverse);
+        submit_filters();
+      });
+    });

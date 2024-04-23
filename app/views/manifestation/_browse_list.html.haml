@@ -17,9 +17,9 @@
         = f
         %span.pointer.tag-x{'data-ele': id, 'data-which' => which}= '-'
 .by-card-content-v02
-  = render partial: 'shared/pagination', locals: { add_js: false }
+  = render partial: 'shared/filters/pagination', locals: { form_id: 'works_filters', add_js: false }
   %hr
-  .select-all-with-buttons
+  .select-all-with-buttons.desktop-only
     .select-text-checkbox-area
       .select-all-checkbox
         %input#select-all{type: 'checkbox', style:'display:none'}
@@ -29,8 +29,6 @@
     #sort-by
       %div
         #custom-select{title: t(:worklist_sort_tt)}
-          %button#current_sort_by.btn-small-outline-v02
-            .btn-text-v02#current_sort_text
           %select#sort_by_dd{name: 'sort_by'}
             %optgroup{label: t(:alefbet)}
               %option{value: 'alphabetical_asc', selected: @sort == 'alphabetical_asc' ? 'true': nil}= t(:alefbet_asc)
@@ -58,7 +56,7 @@
           = link_to m.title_and_authors, manifestation_path(m.id)
           = decorator.call(m)
   = hidden_field_tag(:hurl, request.original_url)
-  = render partial: 'shared/pagination', locals: { add_js: true }
+  = render partial: 'shared/filters/pagination', locals: { form_id: 'works_filters', add_js: true }
 :javascript
   /**
    * Handle Animation (Start, Reset, Restart)
@@ -78,34 +76,18 @@
     $('.tag-x').click(function(){
       const field = $(this).data('ele');
 
-      if (field == 'to_letter') {
-        const filters = #{@emit_filters == true};
-        if(filters) {
-          submit_filters();
-        } else {
-          const url = urlWithoutPaging();
-          url.searchParams.delete('to_letter');
-          window.history.pushState($('#works_filters').serialize(), null, '/works');
-          $.get(url.href, '', null, 'script');
-        }
-        return;
-      }
-
-      // uncheck/clear the appropriate field
-      var prefix = (window.innerWidth < mobileWidth) ? '#mobile_filters ' : '#works_filters ';
-
       if($(this).attr('data-which') == 'text') {
-        $(prefix + '#' + field).val('');
+        $('#works_filters #' + field).val('');
       } else if ($(this).attr('data-which') == 'authorlist') {
-        $(prefix + '#author_ids').val('');
-        $(prefix + '#authors_names').val('');
-        $(prefix + 'input[name="ckb_authors[]"]').prop('checked', false);
+        $('#works_filters #author_ids').val('');
+        $('#works_filters #authors_names').val('');
+        $('#works_filters input[name="ckb_authors[]"]').prop('checked', false);
       } else {
-        $(prefix + '#' + field).prop("checked", false);
+        $('#works_filters #' + field).prop("checked", false);
       }
       // and submit the form
       $('input').attr('disabled', false); // re-enable checkboxes to preserve other filters
-      window.history.pushState($(prefix).serialize(), null, '/works');
+
       submit_filters();
     });
 
@@ -138,14 +120,17 @@
         });
       }
     }
+
     $('#reset_multiselect').click(function() {
       $('.mainlist li input[type=checkbox]').prop('checked', false);
       $('#select-all').prop('checked', false);
       $('#selected_counter').text($('.multiselect_checkbox:checked').length);
     });
+
     $('#multiselect_btn').click(function(){
       $.fn.browse_multi_select_toggle();
     });
+
     $('#select-all').change(function(){
       $('.mainlist li input[type=checkbox]').prop('checked', $(this).prop('checked'));
       if($('.add-to-anthology').css('display') == 'none' && $(this).prop('checked')) {
@@ -154,16 +139,12 @@
       }
       $('#selected_counter').text($('.multiselect_checkbox:checked').length);
     });
+
     $('#sort_by_dd').change(function(){
       $('input[name=sort_by]').val($('#sort_by_dd option:selected').val());
-      if($('#works_filters').length > 0) {
-        window.history.pushState($('#works_filters').serialize(), null, '/works');
-        submit_filters();
-      } else {
-        startModal('spinnerdiv');
-        window.location = "/works?sort_by="+$('#sort_by_dd option:selected').val();
-      }
+      submit_filters();
     });
+
     $('#add-to-anth-btn').click(function() {
       if(#{@anthology.nil? ? 'true' : 'false'} == true) {
         alert('create or select an anthology first.');
@@ -186,14 +167,4 @@
       }
       // notify user
     });
-
-    $('#current_sort_by').click(function(){
-      $('#mobileFilterDlg').modal('show');
-      $('.mobile-sort-area').show();
-      $('.sort-by-mobile').show();
-      $('.author-mobile-filters-area').hide();
-      $('#opt_sort').addClass('active');
-      $('#opt_filter').removeClass('active');
-    });
-    $('#current_sort_text').text($('#sort_by_dd option:selected').text());
   });

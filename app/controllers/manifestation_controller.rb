@@ -641,16 +641,6 @@ class ManifestationController < ApplicationController
       @filters += @tgenders.map { |x| [I18n.t(:translator) + ': ' + I18n.t(x), "tgender_#{x}", :checkbox] }
     end
 
-    # author ids - multi-select authors
-    if params['authors'].present?
-      @search_type = 'authorname'
-      author_ids = params['authors'].split(',').map(&:to_i)
-      ret['author_ids'] = author_ids
-      @authors = author_ids # .join(',')
-      @authors_names = params['authors_names']
-      @filters << [I18n.t(:authors_xx, xx: @authors_names), 'authors', :authorlist]
-    end
-
     # languages
     @languages = params['ckb_languages']
     if @languages.present?
@@ -685,17 +675,29 @@ class ManifestationController < ApplicationController
       ret[datefield] = range_expr
     end
 
+    # author ids - multi-select authors
+    if params['authors'].present?
+      author_ids = params['authors'].split(',').map(&:to_i)
+      ret['author_ids'] = author_ids
+      @authors = author_ids # .join(',')
+      @authors_names = params['authors_names']
+      @filters << [I18n.t(:authors_xx, xx: @authors_names), 'authors', :authorlist]
+    end
+
     # in browse UI we can either use search by author name or by title, but not together
-    @authorstr = params['authorstr']
-    @search_input = params['search_input']
-    if @search_input.present? || @authorstr.present?
-      if params['search_type'] == 'authorname' || (@authorstr.present? && @search_input.empty?)
+    @search_type = params['search_type'] || 'authorname'
+    if @search_type == 'authorname'
+      @authorstr = params['authorstr']
+      @search_input = ''
+      if @authorstr.present?
         ret['author'] = @authorstr
-        @search_type = 'authorname'
         @filters << [I18n.t(:author_x, x: @authorstr), :authors, :text]
-      else
+      end
+    else
+      @authorstr = ''
+      @search_input = params['search_input']
+      if @search_input.present?
         ret['title'] = @search_input
-        @search_type = 'workname'
         @filters << [I18n.t(:title_x, x: @search_input), :search_input, :text]
       end
     end
@@ -717,16 +719,17 @@ class ManifestationController < ApplicationController
 
     collection = collection.aggregations(standard_aggregations)
 
-    @gender_facet = es_buckets_to_facet(collection.aggs['author_genders']['buckets'], Person.genders)
-    @tgender_facet = es_buckets_to_facet(collection.aggs['translator_genders']['buckets'], Person.genders)
-    @period_facet = es_buckets_to_facet(collection.aggs['periods']['buckets'], Expression.periods)
-    @genre_facet = es_buckets_to_facet(collection.aggs['genres']['buckets'], get_genres.to_h { |g| [g, g] })
-    @language_facet = es_buckets_to_facet(collection.aggs['languages']['buckets'], get_langs.to_h { |l| [l, l] })
+    @gender_facet = buckets_to_totals_hash(collection.aggs['author_genders']['buckets'])
+    @tgender_facet = buckets_to_totals_hash(collection.aggs['translator_genders']['buckets'])
+    @period_facet = buckets_to_totals_hash(collection.aggs['periods']['buckets'])
+    @genre_facet = buckets_to_totals_hash(collection.aggs['genres']['buckets'])
+
+    @language_facet = buckets_to_totals_hash(collection.aggs['languages']['buckets'])
     @language_facet[:xlat] = @language_facet.except('he').values.sum
-    @copyright_facet = es_buckets_to_facet(
-      collection.aggs['copyright_status']['buckets'],
-      { 'false' => 0, 'true' => 1 }
-    )
+
+    @copyright_facet = collection.aggs['copyright_status']['buckets'].to_h do |hash|
+      [hash['key'] == 'true' ? 1 : 0, hash['doc_count']]
+    end
 
     # Preparing list of authors to show in multiselect modal on works browse page
     if collection.filter.present?
@@ -745,7 +748,6 @@ class ManifestationController < ApplicationController
   def es_prep_collection
     @sort_dir = 'default'
     if params[:sort_by].present?
-      @sort_or_filter = 'sort'
       @sort = params[:sort_by].dup
       @sort_by = params[:sort_by].sub(/_(a|de)sc$/,'')
       @sort_dir = $&[1..-1] unless $&.nil?

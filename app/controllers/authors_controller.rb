@@ -126,15 +126,10 @@ class AuthorsController < ApplicationController
     end
     # languages
     if params['ckb_languages'].present?
-      if params['ckb_languages'] == ['xlat']
-        ret << {must_not: {term: {language: 'he'}}}
-        @filters << [I18n.t(:translations), 'lang_xlat', :checkbox]
-      else
-        @languages = params['ckb_languages'].reject{|x| x == 'xlat'}
-        if @languages.present?
-          ret << {terms: {language: @languages}}
-          @filters += @languages.map{|x| ["#{I18n.t(:orig_lang)}: #{helpers.textify_lang(x)}", "lang_#{x}", :checkbox]}
-        end
+      @languages = params['ckb_languages'].reject { |x| x == 'xlat' }
+      if @languages.present?
+        ret << { terms: { language: @languages } }
+        @filters += @languages.map { |x| ["#{I18n.t(:orig_lang)}: #{helpers.textify_lang(x)}", "lang_#{x}", :checkbox] }
       end
     end
     # tags by tag_id
@@ -214,7 +209,6 @@ class AuthorsController < ApplicationController
   def es_prep_collection
     @sort_dir = 'default'
     if params[:sort_by].present?
-      @sort_or_filter = 'sort'
       @sort = params[:sort_by].dup
       @sort_by = params[:sort_by].sub(/_(a|de)sc$/, '')
       @sort_dir = Regexp.last_match(0)[1..] unless Regexp.last_match(0).nil?

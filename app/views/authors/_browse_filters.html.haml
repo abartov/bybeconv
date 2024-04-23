@@ -11,59 +11,42 @@
       %input.field-v02.field-without-label#search_input{
         name: 'search_input', placeholder: t(:first_last_name), type: :text, value: @search_input
       }
-      = hidden_field_tag :author_id, @author_id.presence
 
-    = render partial: 'checkbox_group',
+    = render partial: 'shared/filters/checkbox_group',
              locals: { group_name: :gender,
                        title: t(:author_gender),
                        field_name: :ckb_genders,
                        all_values: Person.genders.keys,
-                       i18n_prefix: '',
                        selected_values: @genders,
                        facet: @gender_facet }
 
-    .sort-type
-      .vertical-expand.fcoll#fcopyright{'data-target' =>'.collfcopyright', 'data-toggle' =>'collapse'}
-        .sort-type-headline= t(:copyright_status)
-      .nested.active.collapse.show.collfcopyright
-        .nested-content.nested-list
-          - attrs = {name: "ckb_copyright[]", :type => "checkbox", id: 'copyright_0', value: 0}
-          - attrs.merge!({checked: 'checked'}) if @copyright.present? && @copyright.include?(0)
-          %input{attrs}
-          %label
-            %span.by-icon-v02> m
-            = t(:public_domain)
-            - count_text = @copyright_facet[0] || '0'
-            - count_text = t(:filtered) if count_text == '0' && @copyright.present?
-            %span= "(#{count_text})"
-          %br/
-          - attrs = {name: "ckb_copyright[]", :type => "checkbox", id: 'copyright_1', value: 1}
-          - attrs.merge!({checked: 'checked'}) if @copyright.present? && @copyright.include?(1)
-          %input{attrs}
-          %label
-            %span.by-icon-v02> x
-            = t(:by_permission)
-            - count_text = @copyright_facet[1] || '0'
-            - count_text = t(:filtered) if count_text == '0' && @copyright.present?
-            %span= "(#{count_text})"
-          %br/
+    = render partial: 'shared/filters/checkbox_group',
+             locals: { group_name: :copyright,
+                       title: t(:copyright_status),
+                       field_name: :ckb_copyright,
+                       all_values: [0, 1],
+                       labels: { 0 => t(:public_domain), 1 => t(:by_permission) },
+                       selected_values: @copyright,
+                       facet: @copyright_facet,
+                       icons: { 0 => 'm', 1 => 'x' } }
 
-    = render partial: 'checkbox_group',
+    = render partial: 'shared/filters/checkbox_group',
              locals: { group_name: :genre,
                        title: t(:genres),
                        field_name: :ckb_genres,
                        all_values: get_genres,
-                       i18n_prefix: '',
                        selected_values: @genres,
-                       facet: @genre_facet }
-    = render partial: 'checkbox_group',
+                       facet: @genre_facet,
+                       icons: Work::GENRES.index_with { |g| glyph_for_genre(g) } }
+
+    = render partial: 'shared/filters/checkbox_group',
              locals: { group_name: :period,
                        title: t(:periods),
                        field_name: :ckb_periods,
                        all_values: Expression.periods.keys,
-                       i18n_prefix: '',
                        selected_values: @periods,
                        facet: @period_facet }
+
     = render layout: 'shared/collapsible_block', locals: { container_name: 'collftags', title: t(:tags) } do
       = autocomplete_field_tag :tagstr, '', autocomplete_tag_name_path,
                                id_element: '#tag_id',
@@ -89,55 +72,8 @@
           'data-target' => '#todate'
         }/
 
-    = render layout: 'shared/collapsible_block', locals: { container_name: 'collflang', title: t(:writing_language) } do
-      %ul
-        %li
-          - attrs = { name: 'ckb_languages[]', type: :checkbox, id: 'lang_he', value: 'he' }
-          -# attrs.merge!({disabled: 'disabled'}) if @language_facet['he'].nil? || @language_facet['he'] == 0
-          - attrs.merge!({ checked: 'checked' }) if @languages.present? && @languages.include?('he')
-          %input{ attrs }
-            %label
-            = t(:hebrew)
-            - count_text = @language_facet['he'] || '0'
-            - count_text = t(:filtered) if count_text == '0' && @languages.present?
-            %span
-              (#{count_text})
-        %li
-          - attrs = { name: 'ckb_languages[]', type: :checkbox, id: 'lang_xlat', class: 'lang_xlat', value: 'xlat' }
-          -# attrs.merge!({disabled: 'disabled'}) if @language_facet[:xlat].nil? || @language_facet[:xlat] == 0
-          - attrs.merge!({ checked: 'checked' }) if @languages.present? && @languages.include?('xlat')
-          %input{ attrs }
-          %label
-            = t(:non_hebrew_languages)
-            %span
-              (#{@language_facet[:xlat] || '0'})
-          .languages-filters
-            %ul.nested-list.xlat_langs
-              - emitted_langs = ['he', :xlat]
-              - @language_facet.sort { |a, b| b[1] <=> a[1] }.each do |lang, amount|
-                - next if [:xlat, 'he'].include?(lang)
+    = render partial: 'shared/filters/languages', locals: { facet: @language_facet, selected_values: @languages }
 
-                - emitted_langs << lang
-                %li
-                  - attrs = { name: 'ckb_languages[]', type: :checkbox, id: "lang_#{lang}", value: lang }
-                  -# attrs.merge!({disabled: 'disabled'}) if @language_facet[lang].nil? || @language_facet[lang] == 0
-                  - attrs.merge!({ checked: 'checked' }) if @all_xlat || @languages&.include?(lang)
-                  %input{ attrs }
-                  %label
-                    = textify_lang(lang)
-                    - count_text = amount || '0'
-                    - count_text = t(:filtered) if count_text == '0' && @languages.present?
-                    %span
-                      (#{count_text})
-              - get_langs.reject { |x| emitted_langs.include?(x) }.each do |lang|
-                %li
-                  %input{ name: 'ckb_languages[]', type: :checkbox, id: "lang_#{lang}", value: lang }
-                  %label
-                    = textify_lang(lang)
-                    - count_text = '0'
-                    - count_text = t(:filtered) if @languages.present?
-                    %span
-                      (#{count_text})
     = hidden_field_tag(:search_after_value, nil)
     = hidden_field_tag(:search_after_id, nil)
     = hidden_field_tag(:page, 1)
@@ -147,13 +83,7 @@
       .bottom-button-area
         %button.by-button-v02#apply_mobile_filters{ type: :submit }= t(:apply_mobile_filters)
 
-
 :javascript
-  function resetPagination() {
-    $('##{form_id} #page_tag').val('1');
-    $('##{form_id} #to_letter').val('');
-  }
-
   $(document).ready(function() {
     $('#sort_by_select').val("#{@sort}");
     $('.datetype').click(function(e) {
@@ -167,7 +97,7 @@
       event.preventDefault();
       tag_id = data.item.tag_id.toString();
       $('#tag_ids').val( $('#tag_ids').val() == '' ? tag_id : $('#tag_ids').val()+','+tag_id);
-      submit_author_filters();
+      submit_filters();
     });
 
     if (!isMobile()) {
@@ -178,7 +108,7 @@
             window.clearTimeout(submit_timeout);
           }
           resetPagination();
-          submit_timeout = window.setTimeout(submit_author_filters, 300);
+          submit_timeout = window.setTimeout(submit_filters, 300);
       });
     }
 
@@ -198,30 +128,9 @@
         }
       });
       resetPagination();
-      submit_author_filters();
+      submit_filters();
     });
-    $('.lang_xlat').change(function(){
-      // set all translated languages on/off accordingly
-      var checked = $(this).is(":checked");
-      $('.xlat_langs input').each(function(li){
-        $(this).prop('checked', checked);
-      });
-    });
-    $('.xlat_langs input').change(function(){
-      if($(this).is(":checked")) {
-      } else {
-        $('.lang_xlat').prop('checked', false);
-      }
-    });
-    var should_check_xlat = $('.xlat_langs input').length > 0 && !$('.lang_xlat').parent().text().match(/\(0\)/);
-    $('.xlat_langs input').each(function(li){
-      if($(this).prop('checked') == false && !$(this).parent().text().match(/\(0\)/)) {
-        should_check_xlat = false;
-      }
-    });
-    if(should_check_xlat) {
-      $('.lang_xlat').prop('checked', true);
-    }
+
     if("#{@datetype}" == "") {
       $('#birth').addClass('active');
       $('#date_type').val('birth');
@@ -243,7 +152,7 @@
         next: 'fa fa-chevron-left',
       }
     }).on('hide.datetimepicker', function(e){
-      window.setTimeout(submit_author_filters, 2000);
+      window.setTimeout(submit_filters, 2000);
     });
 
     if("#{@fromdate}" != "") {
@@ -255,12 +164,12 @@
     $('#authors').bind('railsAutocomplete.select', function(event, data){
       event.preventDefault();
       $('#search_type').val('authorname');
-      submit_author_filters();
+      submit_filters();
     });
     $('#apply_mobile_filters').click(function() {
       resetPagination();
-      $('#browse_intro').toggle();
-      $('#sort_filter_panel').toggle();
-      $('#thelist').toggle();
+      $('#sort_filter_panel').hide();
+      $('#thelist').show();
+      $('html').scrollTop($('#thelist').offset().top);
     });
   });

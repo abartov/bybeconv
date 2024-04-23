@@ -3998,13 +3998,6 @@ a .by-icon-v02:disabled{
 #sort-by{
 	width: auto;
 }
-.sort-by-desktop{
-	display: block;
-	margin-right: 8px;
-}
-.sort-by-mobile{
-	display: none;
-}
 
 .sort-type{
 	margin-top: 15px;
@@ -5067,9 +5060,6 @@ position: absolute;
 }
 #sort_by_dd{
 	display: block;
-}
-#current_sort_by{
-	display: none;
 }
 .select-text label{
 	line-height: 24px;
