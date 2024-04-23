@@ -1,4 +1,10 @@
 en:
+  attributes:
+    created_at: Created At
+    updated_at: Updated At
+    name: Name
+    status: Status
+    country: Country
   activerecord:
     attributes:
       expression:
