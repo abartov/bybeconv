@@ -1,4 +1,10 @@
 he:
+  attributes:
+    created_at: נוצר בתאריך
+    updated_at: עודכן בתאריך
+    name: שם
+    status: סטטוס
+    country: מדינה
   activerecord:
     attributes:
       expression:

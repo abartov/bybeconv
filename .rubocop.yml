@@ -6,6 +6,8 @@ AllCops:
     - config/environments/*
     - db/migrate/*
     - db/schema.rb
+    - config/initializers/simple_form.rb
+    - config/initializers/simple_form_bootstrap.rb
 
 require:
   - rubocop-rails
