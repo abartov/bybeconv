@@ -2,11 +2,12 @@ en:
   name_starts_with_x: "Name starts with: '%{x}'"
   title_starts_with_x: "Title starts with: '%{x}'"
   shared:
-    pagination:
-      page_x_of_total: Page %{page} of %{total}
-      next_page: Next page
-      previous_page: Previous page
-      first_page: First page
+    filters:
+      pagination:
+        page_x_of_total: Page %{page} of %{total}
+        next_page: Next page
+        previous_page: Previous page
+        first_page: First page
   welcome:
     submit_contact:
       ziburit_failed: Control question failed

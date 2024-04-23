@@ -1,7 +1,7 @@
 -# Browse authors
 .row
   .col-sm-12.col-md-4
-    .by-card-v02#browse_intro{ style: "display:#{@filters.empty? ? 'block' : 'none'}" }
+    .by-card-v02.desktop-only#browse_intro
       .work-area
         .work-content
           .headline-1-v02= t(:welcome_to_authors_browsing)
@@ -17,7 +17,7 @@
       = render partial: 'browse_list'
 
 :javascript
-  function submit_author_filters() {
+  function submit_filters() {
     window.history.pushState($('#authors_filters').serialize(), null, '/authors');
     startModal('spinnerdiv');
     $('#authors_filters').submit();

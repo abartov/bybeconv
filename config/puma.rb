@@ -4,7 +4,7 @@ rackup(File.expand_path('../config.ru', __dir__))
 if ENV['RACK_ENV'] == 'production'
   require 'puma/daemon'
   environment 'production'
-  workers Integer(ENV['WEB_CONCURRENCY'] || 3)
+  workers Integer(ENV['WEB_CONCURRENCY'] || 8)
   daemonize
   bind "unix://#{shared_dir}/tmp/sockets/puma.sock"
   stdout_redirect "#{shared_dir}/log/puma.stdout.log", "#{shared_dir}/log/puma.stderr.log", true
@@ -29,7 +29,7 @@ else
   environment 'development'
 end
 
-threads_count = Integer(ENV['RAILS_MAX_THREADS'] || 5)
+threads_count = Integer(ENV['RAILS_MAX_THREADS'] || 3)
 threads 1, threads_count
 
 preload_app!
