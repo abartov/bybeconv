@@ -147,7 +147,7 @@ Bybeconv::Application.routes.draw do
   match 'author/:id/edit_toc' => 'authors#edit_toc', as: 'authors_edit_toc', via: [:get, :post]
   match 'author/:id/to_manual_toc' => 'authors#to_manual_toc', as: 'authors_to_manual_toc', via: [:get, :post]
   match 'author/:id/create_toc' => 'authors#create_toc', as: 'authors_create_toc', via: [:get]
-  match 'author/:id' => 'authors#toc', as: 'person', via: [:get, :post]
+  match 'author/:id' => 'authors#toc', as: 'author_toc', via: [:get, :post]
   match 'org/:id' => 'corporate_bodies#corp_toc', as: 'corp_toc', via: [:get, :post]
   match 'org/:id/print' => 'corporate_bodies#print', as: 'corp_print', via: [:get, :post]
   match 'author/publish/:id' => 'authors#publish', as: 'author_publish', via: [:get, :post]

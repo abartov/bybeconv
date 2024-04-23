@@ -237,7 +237,6 @@ ActiveRecord::Schema.define(version: 2024_03_31_120740) do
     t.bigint "item_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "markdown", limit: 2048
     t.index ["collection_id"], name: "index_collection_items_on_collection_id"
     t.index ["item_type", "item_id"], name: "index_collection_items_on_item"
   end
@@ -790,12 +789,10 @@ ActiveRecord::Schema.define(version: 2024_03_31_120740) do
     t.string "sort_name"
     t.integer "status"
     t.datetime "published_at"
-    t.integer "root_collection_id"
     t.index ["gender"], name: "gender_index"
     t.index ["impressions_count"], name: "index_people_on_impressions_count"
     t.index ["name"], name: "index_people_on_name"
     t.index ["period"], name: "index_people_on_period"
-    t.index ["root_collection_id"], name: "index_people_on_root_collection_id"
     t.index ["sort_name"], name: "index_people_on_sort_name"
     t.index ["status", "published_at"], name: "index_people_on_status_and_published_at"
     t.index ["toc_id"], name: "people_toc_id_fk"
