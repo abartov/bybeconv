@@ -168,8 +168,8 @@
     });
     $('#apply_mobile_filters').click(function() {
       resetPagination();
-      $('#browse_intro').toggle();
-      $('#sort_filter_panel').toggle();
-      $('#thelist').toggle();
+      $('#sort_filter_panel').hide();
+      $('#thelist').show();
+      $('html').scrollTop($('#thelist').offset().top);
     });
   });

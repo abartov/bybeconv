@@ -76,11 +76,11 @@
   }
   $(document).ready(function(){
     $('#sort_filter_toggle').click(function() {
-      $('#browse_intro').toggle();
       $('#sort_filter_panel').toggle();
       if (isMobile()) {
         $('#thelist').toggle();
       } else {
+        $('#browse_intro').toggle();
         $('.toggle-button-no').toggle();
         $('.toggle-button-yes').toggle();
       }
