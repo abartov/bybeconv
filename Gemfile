@@ -7,7 +7,10 @@ source 'http://rubygems.org'
 gem 'rails', '~> 6'
 gem 'rails-i18n' # , git: 'https://github.com/svenfuchs/rails-i18n.git' # , branch: 'rails-4-x' # For 4.x
 gem 'actionview'
-gem 'sprockets', '~> 3' # 4.x requires switching to a manifest.js for assets
+
+gem 'sass-rails', '~> 6.0.0'
+gem 'sprockets', '~> 4.2.1'
+
 gem 'rails-ujs'
 gem 'mysql2' # Rails 5.2 needs a newer one # , '~> 0.3.11'
 gem 'omniauth-google-oauth2'
@@ -43,8 +46,6 @@ gem 'sqlite3' # for dictionary imports
 gem 'jquery-rails'
 gem "jquery-ui-rails", git: 'https://github.com/jquery-ui-rails/jquery-ui-rails' # v 7.0 has not been pushed to RubyGems yet
 gem 'activerecord-session_store'
-gem 'sass-rails'
-gem 'coffee-script'
 #gem "jquery-ui-rails", "~> 4.0.4"
 
 # To use ActiveModel has_secure_password
