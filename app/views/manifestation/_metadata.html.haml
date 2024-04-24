@@ -27,14 +27,7 @@
 
 %div
   .metadata
-    - if @m.copyright?
-      %span.by-icon-v02> x
-      = textify_copyright_status(true)
-      = link_to '[?]', '#', 'class' => 'help', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_permission), 'data-content' => t(:permission_popover)
-    - else
-      %span.by-icon-v02> m
-      = textify_copyright_status(false)
-      = link_to '[?]', '#', 'class' => 'help', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_public_domain), 'data-content' => t(:public_domain_popover)
+    = render partial: 'shared/intellectual_property', locals: { intellectual_property: @e.intellectual_property }
   .metadata
     %span.by-icon-v02.internal-genre-icon>= glyph_for_genre(@w.genre)
     = textify_genre(@w.genre)

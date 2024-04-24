@@ -48,8 +48,8 @@
     %b= t(:period) + ': '
     = t(@e.period)
   %p
-    %b= t(:copyright_status)
-    = textify_copyright_status(@e.copyrighted)
+    %b #{Expression.human_attribute_name(:intellectual_property)}:
+    = textify_intellectual_property(@e.intellectual_property)
   %p
     %b= t(:language) + ': '
     = textify_lang(@e.language)

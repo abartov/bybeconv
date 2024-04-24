@@ -38,7 +38,7 @@ describe SearchManifestations do
 
         genre = %w(poetry prose drama fables article)[index % 5]
         period = %w(ancient medieval enlightenment revival modern)[index % 5]
-        copyrighted = index % 10 == 0
+        intellectual_property = %w(public_domain copyrighted by_permission unknown)[index % 4]
 
         realizers = []
 
@@ -58,7 +58,7 @@ describe SearchManifestations do
           :expression,
           period: period,
           genre: genre,
-          copyrighted: copyrighted,
+          intellectual_property: intellectual_property,
           realizers: realizers,
           date: published_at.strftime('%d.%m.%Y'),
           work: work
@@ -83,7 +83,7 @@ describe SearchManifestations do
   end
 
   describe 'filtering' do
-    subject! { described_class.call(sort_by, sort_dir, filter) }
+    subject!(:result) { described_class.call(sort_by, sort_dir, filter) }
 
     let(:sort_by) { 'alphabetical' }
     let(:sort_dir) { 'asc' }
@@ -136,26 +136,14 @@ describe SearchManifestations do
       end
     end
 
-    describe 'by copyright' do
-      let(:filter)  { { 'is_copyrighted' => is_copyrighted } }
+    describe 'by intellectual property types' do
+      let(:types) { %w(public_domain unknown) }
+      let(:filter)  { { 'intellectual_property_types' => types } }
 
-      context 'when copyrighted texts requested' do
-        let(:is_copyrighted) { true }
-        it 'returns all copyrighted texts' do
-          expect(subject.count).to eq 20
-          subject.limit(REC_COUNT).each do |rec|
-            expect(rec.copyright_status).to be_truthy
-          end
-        end
-      end
-
-      context 'when not copyrighted texts requested' do
-        let(:is_copyrighted) { false }
-        it 'returns all not copyrighted texts' do
-          expect(subject.count).to eq 180
-          subject.limit(REC_COUNT).each do |rec|
-            expect(rec.copyright_status).to be_falsey
-          end
+      it 'returns all works with given intellectual property types' do
+        expect(result.count).to eq 100
+        result.limit(REC_COUNT).each do |rec|
+          expect(types).to include(rec.intellectual_property)
         end
       end
     end

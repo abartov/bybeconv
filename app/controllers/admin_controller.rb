@@ -2,6 +2,7 @@ TAGGING_LOCK = '/tmp/tagging.lock'
 TAGGING_LOCK_TIMEOUT = 15 # 15 minutes
 PROGRESS_SERIES = [5, 10, 25, 50, 75, 100, 150, 200, 300, 400, 500, 750, 1000, 1250, 1500, 2000, 3000, 4000, 5000, 10000]
 
+# rubocop:disable Metrics/ClassLength
 class AdminController < ApplicationController
   before_action :require_editor
   before_action :obtain_tagging_lock, only: [:approve_tag, :approve_tag_and_next, :reject_tag, :escalate_tag, :reject_tag_and_next, :merge_tag, :merge_tagging, :approve_tagging, :reject_tagging, :escalate_tagging, :unapprove_tagging, :unreject_tagging, :tag_moderation, :tag_review]
@@ -77,7 +78,7 @@ class AdminController < ApplicationController
 
   def missing_copyright
     @authors = Person.where(public_domain: nil)
-    records = Manifestation.joins(:expression).where(expressions: {copyrighted: nil})
+    records = Manifestation.joins(:expression).merge(Expression.intellectual_property_unknown)
     @total = records.count
     @mans = records.page(params[:page]).per(50)
     @page_title = t(:missing_copyright_report)
@@ -1151,3 +1152,4 @@ class AdminController < ApplicationController
     stags = ListItem.where(listkey: 'tag_similarity').pluck(:item_id, :extra).to_h
   end
 end
+# rubocop:enable Metrics/ClassLength

@@ -5,6 +5,7 @@ AllCops:
     - bin/*
     - config/environments/*
     - db/migrate/*
+    - db/schema.rb
 
 require:
   - rubocop-rails
@@ -32,6 +33,9 @@ Metrics/CyclomaticComplexity:
 Metrics/PerceivedComplexity:
   Enabled: false
 
+Naming/VariableNumber:
+  Enabled: false
+
 Layout/LineLength:
   Max: 120
 
@@ -49,6 +53,18 @@ Style/PercentLiteralDelimiters:
     '%i': '()'
     '%I': '()'
 
+Style/RedundantReturn:
+  Enabled: false
+
+RSpec/ExampleLength:
+  Max: 20
+
+RSpec/IndexedLet:
+  Enabled: false
+
+RSpec/LetSetup:
+  Enabled: false
+
 RSpec/MultipleMemoizedHelpers:
   Max: 20
 
@@ -60,3 +76,6 @@ RSpec/NestedGroups:
 
 FactoryBot/ExcessiveCreateList:
   MaxAmount: 100
+
+FactoryBot/FactoryAssociationWithStrategy:
+  Enabled: false

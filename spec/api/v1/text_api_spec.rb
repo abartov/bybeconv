@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe V1::TextsAPI do
@@ -19,14 +21,14 @@ describe V1::TextsAPI do
   let(:total_count) { json_response['total_count'] }
   let(:next_page_search_after) { json_response['next_page_search_after'] }
   let(:data) { json_response['data'] }
-  let(:data_ids) { data.map { |rec| rec['id'] } }
+  let(:data_ids) { data.pluck('id') }
 
   let(:manifestation_1) do
     m = create(
       :manifestation, :with_recommendations, :with_external_links,
       title: '1st',
       impressions_count: 3,
-      markdown: 'Sample Text 1',
+      markdown: 'Sample Text 1'
     )
     create(:tagging, tag: tag_popular, taggable: m, status: :approved)
     create(:tagging, tag: tag_pending, taggable: m)
@@ -52,7 +54,7 @@ describe V1::TextsAPI do
 
   describe 'GET /api/v1/texts/{id}' do
     let(:manifestation_id) { manifestation_1.id }
-    let(:additional_params) { "" }
+    let(:additional_params) { '' }
     let(:path) { "/api/v1/texts/#{manifestation_id}?key=#{key}#{additional_params}" }
     let(:subject) { get path }
 
@@ -60,6 +62,7 @@ describe V1::TextsAPI do
 
     context 'when wrong text_id is given' do
       let(:manifestation_id) { -1 }
+
       it 'fails with not_found status' do
         expect(subject).to eq 404
         expect(error_message).to eq 'Could not find documents for ids: -1'
@@ -68,6 +71,7 @@ describe V1::TextsAPI do
 
     context 'when id of unpublished text is given' do
       let(:manifestation_id) { unpublished_manifestation.id }
+
       it 'fails with not_found status' do
         expect(subject).to eq 404
         expect(error_message).to eq "Could not find documents for ids: #{manifestation_id}"
@@ -115,9 +119,9 @@ describe V1::TextsAPI do
           expect(subject).to eq 200
           assert_manifestation(json_response, manifestation_1, 'enriched', 'txt', false)
           # ensuring non-published tags are excluded
-          assert_equal %w(popular), json_response['enrichment']['taggings']
+          expect(json_response['enrichment']['taggings']).to eq(%w(popular))
           # ensuring works_about works correctly
-          expect(json_response['enrichment']['texts_about']).to eq [ manifestation_2.id ]
+          expect(json_response['enrichment']['texts_about']).to eq [manifestation_2.id]
         end
       end
     end
@@ -125,12 +129,12 @@ describe V1::TextsAPI do
 
   describe 'POST /api/v1/texts/batch' do
     let(:ids) { [manifestation_1.id, manifestation_2.id] }
-    let(:params) {
+    let(:params) do
       {
         key: key,
         ids: ids
       }.merge(additional_params)
-    }
+    end
     let(:additional_params) { {} }
     let(:subject) { post '/api/v1/texts/batch', params: params }
 
@@ -141,7 +145,7 @@ describe V1::TextsAPI do
 
       it 'succeed and returns basic view in html format and without snippet' do
         expect(subject).to eq 201
-        assert_equal 1, json_response.size
+        expect(json_response.size).to eq(1)
         assert_manifestation(json_response[0], manifestation_1, 'basic', 'html', false)
       end
     end
@@ -149,24 +153,24 @@ describe V1::TextsAPI do
     context 'when multiple ids without additional_params specified' do
       it 'succeed and returns basic view in html format and without snippet' do
         expect(subject).to eq 201
-        assert_equal 2, json_response.size
+        expect(json_response.size).to eq(2)
         assert_manifestation(json_response[0], manifestation_1, 'basic', 'html', false)
         assert_manifestation(json_response[1], manifestation_2, 'basic', 'html', false)
       end
     end
 
     context 'when multiple ids with additional params specified' do
-      let(:additional_params) {
+      let(:additional_params) do
         {
           view: :enriched,
           file_format: :odt,
           snippet: true
         }
-      }
+      end
 
       it 'completes successfully' do
         expect(subject).to eq 201
-        assert_equal 2, json_response.size
+        expect(json_response.size).to eq(2)
         assert_manifestation(json_response[0], manifestation_1, 'enriched', 'odt', true)
         assert_manifestation(json_response[1], manifestation_2, 'enriched', 'odt', true)
       end
@@ -174,6 +178,7 @@ describe V1::TextsAPI do
 
     context 'when more than 25 ids are specified' do
       let(:ids) { (1..26).to_a }
+
       it 'fails with bad_request status' do
         expect(subject).to eq 400
         expect(error_message).to eq 'ids must have up to 25 items'
@@ -182,6 +187,7 @@ describe V1::TextsAPI do
 
     context 'when some of provided text ids is not published' do
       let(:ids) { [manifestation_1.id, manifestation_2.id, unpublished_manifestation.id] }
+
       it 'fails with not_found status' do
         expect(subject).to eq 404
         expect(error_message).to eq "Could not find documents for ids: #{unpublished_manifestation.id}"
@@ -209,7 +215,7 @@ describe V1::TextsAPI do
     end
 
     context 'when 1st page with descending alphabetical sorting, enriched view, odt format and snippet' do
-      let(:additional_params) {
+      let(:additional_params) do
         {
           sort_by: :alphabetical,
           sort_dir: :desc,
@@ -217,7 +223,8 @@ describe V1::TextsAPI do
           file_format: :odt,
           snippet: true
         }
-      }
+      end
+
       it 'completes successfully' do
         expect(subject).to eq 201
         expect(total_count).to eq 2
@@ -227,15 +234,7 @@ describe V1::TextsAPI do
       end
     end
 
-    context 'when filter by copyright is provided' do
-      let(:manifestations) {
-        result = []
-        (1..60).each do |index|
-          e = create(:expression, copyrighted: index%10 == 0)
-          result << create(:manifestation, impressions_count: Random.rand(100), expression: e)
-        end
-        result
-      }
+    context 'when filter by intellectual property types is provided' do
       before do
         clean_tables
         Chewy.strategy(:atomic) do
@@ -243,13 +242,30 @@ describe V1::TextsAPI do
         end
       end
 
-      let(:additional_params) { { is_copyrighted: true, sort_by: :popularity, sort_dir: :asc } }
+      let(:manifestations) do
+        result = []
+        (1..60).each do |index|
+          intellectual_property = %w(public_domain by_permission copyrighted unknown)[index % 4]
+          e = create(:expression, intellectual_property: intellectual_property)
+          result << create(:manifestation, impressions_count: Random.rand(100), expression: e)
+        end
+        result
+      end
+
+      let(:additional_params) do
+        { intellectual_property_types: %w(public_domain unknown), sort_by: :popularity, sort_dir: :asc }
+      end
 
       it 'returns only copyrighted works' do
-        expect(subject).to eq 201
-        expect(total_count).to eq 6
-        expect(data.size).to eq 6
-        expect(data_ids).to eq manifestations.select(&:copyright?).sort_by(&:impressions_count).map(&:id)
+        expect(call).to eq 201
+        expect(total_count).to eq 30
+        expect(data.size).to eq 25
+
+        matched = manifestations.select do |m|
+          m.expression.intellectual_property_public_domain? || m.expression.intellectual_property_unknown?
+        end
+
+        expect(data_ids).to eq matched.sort_by(&:impressions_count).map(&:id)[0..24]
       end
     end
 
@@ -258,7 +274,7 @@ describe V1::TextsAPI do
         {
           'genres' => %w(poetry),
           'periods' => %w(revival),
-          'is_copyrighted' => true,
+          'intellectual_property_types' => %w(public_domain),
           'author_genders' => %w(male),
           'translator_genders' => %w(female),
           'title' => 'Title',
@@ -267,7 +283,7 @@ describe V1::TextsAPI do
           'author_ids' => [1, 2],
           'original_language' => 'ru',
           'uploaded_between' => { 'to' => 2016 },
-          'created_between' => { 'from' => 1981, 'to' => 1986},
+          'created_between' => { 'from' => 1981, 'to' => 1986 },
           'published_between' => { 'from' => 1990 }
         }
       end
@@ -281,10 +297,10 @@ describe V1::TextsAPI do
       end
 
       let(:service_params) do
-        result = search_params.reject { |k, _v| k == 'original_language' }
+        result = search_params.except('original_language')
         orig_lang = search_params['original_language']
         if orig_lang.present?
-          result['original_languages'] = [ orig_lang ]
+          result['original_languages'] = [orig_lang]
         end
         result
       end
@@ -307,10 +323,17 @@ describe V1::TextsAPI do
       end
 
       context 'when no fulltext param is provided' do
-        let(:search_params) { all_filters.reject { |k, _v| k == 'fulltext' } }
+        let(:search_params) { all_filters.except('fulltext') }
+        let(:service) { instance_double(SearchManifestations) }
+
+        before do
+          allow(SearchManifestations).to receive(:new).and_return(service)
+          allow(service).to receive(:call).and_return(records)
+        end
+
         it 'passes all params to SearchManifestation service with sorting' do
-          expect_any_instance_of(SearchManifestations).to receive(:call).with('popularity', 'asc', service_params).and_return(records)
-          expect(subject).to eq 201
+          expect(call).to eq 201
+          expect(service).to have_received(:call).with('popularity', 'asc', service_params)
           expect(total_count).to eq 5
           expect(data).to eq []
         end
@@ -357,6 +380,7 @@ describe V1::TextsAPI do
 
       context 'when 1st page in descending order is requested' do
         let(:sort_dir) { :desc }
+
         it 'returns items from 29 to 5' do
           expect(subject).to eq 201
           expect(total_count).to eq 30
@@ -384,7 +408,7 @@ describe V1::TextsAPI do
     expect(md['orig_publication_date']).to eq normalize_date(expression.date).to_s
     expect(md['author_genders']).to eq manifestation.author_gender
     expect(md['translator_genders']).to eq manifestation.translator_gender
-    expect(md['copyright_status']).to eq manifestation.copyright?
+    expect(md['intellectual_property']).to eq manifestation.expression.intellectual_property
     expect(md['period']).to eq expression.period
     expect(md['raw_creation_date']).to eq work.date
     expect(md['creation_date']).to eq normalize_date(work.date).to_s
@@ -394,7 +418,7 @@ describe V1::TextsAPI do
 
     if view == 'enriched'
       enrichment = json['enrichment']
-      expect(enrichment).to_not be_nil
+      expect(enrichment).not_to be_nil
       json_links = enrichment['external_links']
       links = manifestation.external_links.status_approved.to_a.sort_by(&:id)
       expect(json_links.size).to eq links.size
@@ -418,9 +442,11 @@ describe V1::TextsAPI do
         expect(json_recommendation['recommendation_date']).to eq r.created_at.to_date.strftime('%Y-%m-%d')
       end
       works_about = manifestation.expression.work.works_about
-      expect(enrichment['texts_about']).to eq works_about.joins(expressions: :manifestations).pluck('manifestations.id').sort
+      expect(enrichment['texts_about']).to eq works_about.joins(expressions: :manifestations)
+                                                         .pluck('manifestations.id')
+                                                         .sort
     else
-      expect(json.keys).to_not include 'enrichment'
+      expect(json.keys).not_to include 'enrichment'
     end
 
     if snippet

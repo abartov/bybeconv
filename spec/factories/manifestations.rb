@@ -10,7 +10,7 @@ FactoryBot.define do
       translator { orig_lang != language ? create(:person) : nil }
       editor { nil }
       illustrator { nil }
-      copyrighted { false }
+      intellectual_property { :public_domain }
       expression_title { title }
       work_title { title }
       primary { true }
@@ -38,7 +38,7 @@ FactoryBot.define do
         orig_lang: orig_lang,
         genre: genre,
         period: period,
-        copyrighted: copyrighted,
+        intellectual_property: intellectual_property,
         primary: primary
       )
     end

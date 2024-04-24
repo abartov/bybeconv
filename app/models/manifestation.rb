@@ -29,8 +29,6 @@ class Manifestation < ApplicationRecord
 
   scope :all_published, -> { where(status: Manifestation.statuses[:published])}
   scope :new_since, -> (since) { where('created_at > ?', since)}
-  scope :pd, -> { joins(:expression).includes(:expression).where(expressions: {copyrighted: false})}
-  scope :copyrighted, -> { joins(:expression).includes(:expression).where(expressions: {copyrighted: true})}
   scope :not_translations, -> { joins(:expression).includes(:expression).where(expressions: {translation: false})}
   scope :translations, -> { joins(:expression).includes(:expression).where(expressions: {translation: true})}
   scope :genre, -> (genre) { joins(expression: :work).where(works: {genre: genre})}
@@ -72,10 +70,6 @@ class Manifestation < ApplicationRecord
 
   def not_short?
     markdown.length > SHORT_LENGTH
-  end
-
-  def copyright?
-    return expression.copyrighted
   end
 
   def heading_lines

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_02_06_222123) do
+ActiveRecord::Schema.define(version: 2024_04_24_145657) do
 
   create_table "aboutnesses", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -356,7 +356,6 @@ ActiveRecord::Schema.define(version: 2024_02_06_222123) do
     t.text "comment", size: :medium
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "copyrighted"
     t.date "copyright_expiration"
     t.boolean "translation"
     t.string "source_edition"
@@ -364,6 +363,8 @@ ActiveRecord::Schema.define(version: 2024_02_06_222123) do
     t.string "normalized_pub_date"
     t.string "normalized_creation_date"
     t.integer "work_id", null: false
+    t.integer "intellectual_property", null: false
+    t.index ["intellectual_property"], name: "index_expressions_on_intellectual_property"
     t.index ["normalized_creation_date"], name: "index_expressions_on_normalized_creation_date"
     t.index ["normalized_pub_date"], name: "index_expressions_on_normalized_pub_date"
     t.index ["period"], name: "index_expressions_on_period"

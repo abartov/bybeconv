@@ -350,7 +350,8 @@ describe ManifestationController do
               etitle: 'New Expression Title',
               genre: 'fables',
               wlang: 'ru',
-              primary: 'false'
+              primary: 'false',
+              intellectual_property: 'by_permission'
             }
           end
 
@@ -359,7 +360,7 @@ describe ManifestationController do
             expect(flash.notice).to eq I18n.t(:updated_successfully)
             manifestation.reload
             expect(manifestation).to have_attributes(title: 'New Manifestation Title')
-            expect(expression).to have_attributes(title: 'New Expression Title')
+            expect(expression).to have_attributes(title: 'New Expression Title', intellectual_property: 'by_permission')
             expect(work).to have_attributes(title: 'New Work Title', orig_lang: 'ru', genre: 'fables', primary: false)
           end
         end

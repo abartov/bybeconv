@@ -23,9 +23,9 @@
     .row
       .col-md-6.col-sm-12
         .metadata
-          .by-icon-v02.copyright-icon= copyright_glyph(manifestation.copyright?)
-          = textify_copyright_status(manifestation.copyright?)
-          %span.help{ 'data-toggle' => 'tooltip', title: manifestation.copyright? ? t(:permission_explain) : t(:pd_explain)}= '[?]'
+          .by-icon-v02.copyright-icon= intellectual_property_glyph(e.intellectual_property)
+          = textify_intellectual_property(e.intellectual_property)
+          %span.help{ data: { toggle: :tooltip }, title: t(".explanations.#{e.intellectual_property}") }= '[?]'
           - if e.translation
             .metadata
               %b= t(:orig_lang)+': '
