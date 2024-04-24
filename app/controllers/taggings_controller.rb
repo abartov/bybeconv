@@ -1,6 +1,6 @@
 # handle everything related to Tags and Taggings
 class TaggingsController < ApplicationController
-  before_action :require_user # for now, we don't allow anonymous taggings
+  before_action :require_user, except: [:tag_portal] # for now, we don't allow anonymous taggings
   before_action :require_editor, only: [:rename_tag]
   layout false, only: [:render_tags, :suggest, :add_tagging_popup, :listall_tags, :pending_taggings_popup]
 
