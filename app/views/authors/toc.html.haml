@@ -153,11 +153,11 @@
                 = render partial: 'shared/taggings', locals: {taggings: @taggings, taggable: @author}
               - unless current_user.nil?
                 = hidden_field_tag :accepted_tag_policy, @bu.present? ? @bu.get_preference(:accepted_tag_policy) : 'false', id: 'accepted_tag_policy'
-                #add-tag.card-bottom
-                  .link-to-all-v02
-                    %button.by-button-v02.must-login#initiate-add-tag
-                      .metadata-link-icon.small-icon.pointer &amp;
-                      %div= t(:suggest_new_tag)
+              #add-tag.card-bottom
+                .link-to-all-v02
+                  %button.by-button-v02.must-login#initiate-add-tag
+                    .metadata-link-icon.small-icon.pointer &amp;
+                    %div= t(:suggest_new_tag)
           
           = render partial: 'aboutnesses', cached: true
           - if @external_links.count > 0
