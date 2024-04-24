@@ -13,6 +13,8 @@ require:
 
 Metrics/BlockLength:
   Max: 100
+  Exclude:
+    - 'config/routes.rb'
 
 Metrics/ClassLength:
   Max: 1000
