@@ -86,10 +86,19 @@ class Person < ApplicationRecord
     self.status = :published
     self.save! # finally, set this person to published
   end
+
   def publish_if_first!
     if self.awaiting_first?
       self.publish!
     end
+  end
+
+  def approved_tags
+    approved_taggings.joins(:tag).where(tag: {status: Tag.statuses[:approved]} ).map{|x| x.tag}
+  end
+
+  def approved_taggings
+    taggings.where(status: Tagging.statuses[:approved])
   end
 
   def died_years_ago
