@@ -2,4 +2,4 @@ he:
   activerecord:
     attributes:
       expression:
-        intellectual_property: Type of intellectual property
+        intellectual_property: מצב זכויות יוצרים
