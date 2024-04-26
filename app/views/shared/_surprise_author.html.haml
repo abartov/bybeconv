@@ -15,9 +15,8 @@
         .metadata
           %span.by-icon-v02
             = favorite_glyph(author.favorite_of_user)
-          %span.by-icon-v02= author.rights_icon
-          = textify_copyright_status(! author.public_domain)
-          %span.help{ 'data-toggle' => 'tooltip', title: author.public_domain? ? t(:pd_explain): t(:permission_explain)}= '[?]'
+          = render partial: 'shared/intellectual_property',
+                   locals: { intellectual_property: author.intellectual_property }
 
         - unless author.wikipedia_snippet.nil?
           .surprise-text-container

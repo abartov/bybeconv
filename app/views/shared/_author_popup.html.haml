@@ -29,9 +29,8 @@
                 .metadata
                   %span
                     %a.by-icon-v02{id: "heart_#{author.id}", style:'float:right'}= 5
-                  %span.by-icon-v02.copyright-icon= author.rights_icon
-                  = author.copyright_as_string
-                  %span.help{ 'data-toggle' => 'tooltip', title: author.public_domain? ? t(:pd_explain): t(:permission_explain)}= '[?]'
+                  = render partial: 'shared/intellectual_property',
+                           locals: { intellectual_property: author.intellectual_property }
                 %div
                   - unless author.wikipedia_snippet.nil? or author.wikipedia_snippet.length < 10
                     = author.wikipedia_snippet

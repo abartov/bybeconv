@@ -20,15 +20,17 @@
                        selected_values: @genders,
                        facet: @gender_facet }
 
+    - labels = Person.intellectual_properties.keys.index_with { |key| textify_intellectual_property(key) }
+    - icons = Person.intellectual_properties.keys.index_with { |key| intellectual_property_glyph(key) }
     = render partial: 'shared/filters/checkbox_group',
-             locals: { group_name: :copyright,
-                       title: t(:copyright_status),
-                       field_name: :ckb_copyright,
-                       all_values: [0, 1],
-                       labels: { 0 => t(:public_domain), 1 => t(:by_permission) },
-                       selected_values: @copyright,
-                       facet: @copyright_facet,
-                       icons: { 0 => 'm', 1 => 'x' } }
+             locals: { group_name: :intellectual_property,
+                       title: Person.human_attribute_name(:intellectual_property),
+                       field_name: :ckb_intellectual_property,
+                       all_values: Person.intellectual_properties.keys,
+                       labels: labels,
+                       selected_values: @intellectual_property_types,
+                       facet: @intellectual_property_facet,
+                       icons: icons }
 
     = render partial: 'shared/filters/checkbox_group',
              locals: { group_name: :genre,

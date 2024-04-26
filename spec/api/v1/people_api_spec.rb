@@ -93,7 +93,7 @@ describe V1::PeopleAPI do
     expect(metadata['birth_year']).to eq(person.birth_year)
     expect(metadata['death_year']).to eq(person.death_year)
     expect(metadata['gender']).to eq(person.gender)
-    expect(metadata['copyright_status']).to eq(!person.public_domain?)
+    expect(metadata['intellectual_property']).to eq(person.intellectual_property)
     expect(metadata['period']).to eq(person.period)
 
     if %w(texts enriched).include?(detail)

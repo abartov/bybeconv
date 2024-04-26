@@ -3,12 +3,12 @@ require 'rails_helper'
 describe Person do
   describe 'validations' do
     it 'considers empty Person invalid' do
-      p = Person.new
+      p = described_class.new
       expect(p).to_not be_valid
     end
 
-    it 'considers Person with only name as valid' do
-      p = Person.new(name: Faker::Artist.name)
+    it 'considers Person with all mandatory fields filled as valid' do
+      p = described_class.new(name: Faker::Artist.name, intellectual_property: :public_domain)
       expect(p).to be_valid
     end
   end

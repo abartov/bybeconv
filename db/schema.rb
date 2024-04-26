@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_04_24_145657) do
+ActiveRecord::Schema.define(version: 2024_04_26_134401) do
 
   create_table "aboutnesses", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -263,7 +263,7 @@ ActiveRecord::Schema.define(version: 2024_04_24_145657) do
 
   create_table "corporate_bodies", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "name"
-    t.string "alternate_names", limit: 5000
+    t.string "alternate_names"
     t.string "location"
     t.string "inception"
     t.integer "inception_year"
@@ -274,17 +274,7 @@ ActiveRecord::Schema.define(version: 2024_04_24_145657) do
     t.text "comments"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "sort_name"
-    t.string "country"
-    t.string "nli_id"
-    t.string "wikipedia_url", limit: 800
-    t.text "wikipedia_snippet"
-    t.boolean "public_domain"
-    t.boolean "bib_done"
-    t.integer "status"
-    t.datetime "published_at"
     t.index ["name"], name: "index_corporate_bodies_on_name"
-    t.index ["sort_name"], name: "index_corporate_bodies_on_sort_name"
   end
 
   create_table "creations", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -767,7 +757,6 @@ ActiveRecord::Schema.define(version: 2024_04_24_145657) do
     t.string "viaf_id"
     t.string "nli_id"
     t.integer "toc_id"
-    t.boolean "public_domain"
     t.text "wikipedia_snippet", size: :medium
     t.string "wikipedia_url", limit: 1024
     t.string "image_url", limit: 1024
@@ -792,8 +781,10 @@ ActiveRecord::Schema.define(version: 2024_04_24_145657) do
     t.integer "status"
     t.datetime "published_at"
     t.integer "root_collection_id"
+    t.integer "intellectual_property", null: false
     t.index ["gender"], name: "gender_index"
     t.index ["impressions_count"], name: "index_people_on_impressions_count"
+    t.index ["intellectual_property"], name: "index_people_on_intellectual_property"
     t.index ["name"], name: "index_people_on_name"
     t.index ["period"], name: "index_people_on_period"
     t.index ["root_collection_id"], name: "index_people_on_root_collection_id"

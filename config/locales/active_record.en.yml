@@ -3,3 +3,5 @@ en:
     attributes:
       expression:
         intellectual_property: Type of intellectual property
+      person:
+        intellectual_property: Type of intellectual property

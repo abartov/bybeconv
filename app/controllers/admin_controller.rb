@@ -77,7 +77,7 @@ class AdminController < ApplicationController
   end
 
   def missing_copyright
-    @authors = Person.where(public_domain: nil)
+    @authors = Person.intellectual_property_unknown
     records = Manifestation.joins(:expression).merge(Expression.intellectual_property_unknown)
     @total = records.count
     @mans = records.page(params[:page]).per(50)

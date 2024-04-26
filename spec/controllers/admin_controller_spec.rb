@@ -56,7 +56,7 @@ describe AdminController do
   describe '#incongruous_copyright' do
     include_context 'Admin user logged in'
     subject(:request) { get :incongruous_copyright }
-    let(:copyrighted_person) { create(:person, public_domain: false) }
+    let(:copyrighted_person) { create(:person, intellectual_property: :permission_for_selected) }
 
     let!(:public_domain_manifestation) do
       create(:manifestation, intellectual_property: :public_domain)

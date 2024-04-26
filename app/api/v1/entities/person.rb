@@ -11,9 +11,7 @@ module V1
         expose :birth_year, documentation: { type: 'Integer' }
         expose :death_year, documentation: { type: 'Integer' }
         expose :gender, documentation: { values: ::Person.genders.keys }
-        expose :copyright_status, documentation: { type: 'Boolean' } do |person|
-          !person.public_domain?
-        end
+        expose :intellectual_property, documentation: { values: ::Person.intellectual_properties.keys }
         expose :period, documentation: { values: ::Person.periods.keys }
         expose :other_designation, as: :other_designations,
                documentation: { desc: 'semicolon-separated list of additional names or spellings for this person' }
