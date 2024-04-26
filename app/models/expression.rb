@@ -12,6 +12,16 @@ class Expression < ApplicationRecord
   has_many :tags, through: :taggings, class_name: 'Tag'
   has_paper_trail # for monitoring crowdsourced inputs
 
+  enum intellectual_property: {
+    public_domain: 0,
+    by_permission: 1,
+    copyrighted: 2,
+    orphan: 3,
+    unknown: 100
+  }, _prefix: true
+
+  validates :intellectual_property, presence: true
+
   def editors
     return realizers.includes(:person).where(role: Realizer.roles[:editor]).map{|x| x.person}
   end

@@ -1,0 +1,6 @@
+%span.by-icon-v02= intellectual_property_glyph(intellectual_property)
+= textify_intellectual_property(intellectual_property)
+= link_to '[?]', '#',
+          class: :help,
+          data: { toggle: :popover, trigger: :focus, content: t(".popover.#{intellectual_property}") },
+          title: t(".about.#{intellectual_property}")

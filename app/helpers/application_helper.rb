@@ -61,6 +61,11 @@ module ApplicationHelper
     return I18n.t(genre)
   end
 
+  def textify_intellectual_property(value)
+    t(value, scope: 'intellectual_property')
+  end
+
+  # TODO: remove
   def textify_copyright_status(copyrighted)
     copyrighted ? t(:by_permission) : t(:public_domain)
   end
@@ -154,11 +159,18 @@ module ApplicationHelper
     return m.expression.translators.map{|x| "<a href=\"#{url_for(controller: :authors, action: :toc, id: x.id)}\">#{x.name}</a>"}.join(', ')
   end
 
-  def copyright_glyph(is_copyright)
-    return is_copyright ? 'x' : 'm' # per /BY icons font/ben-yehuda/icons-reference.html
+  def intellectual_property_glyph(intellectual_property)
+    # per /BY icons font/ben-yehuda/icons-reference.html
+    case intellectual_property
+    when 'public_domain'
+      return 'm'
+    when 'copyrighted', 'by_permission'
+      return 'x'
+    end
   end
 
-  def newsitem_glyph(item) # per icons-reference.html
+  def newsitem_glyph(item)
+    # per icons-reference.html
     case
     when item.publication?
       return nil

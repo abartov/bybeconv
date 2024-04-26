@@ -20,7 +20,8 @@ module V1
         expose :orig_publication_date
         expose :author_gender, as: :author_genders, documentation: { values: ::Person.genders.keys, is_array: true }
         expose :translator_gender, as: :translator_genders, documentation: { values: ::Person.genders.keys, is_array: true }
-        expose :copyright_status, documentation: { type: 'Boolean' }
+        expose :intellectual_property,
+               documentation: { values: ::Expression.intellectual_properties.keys, is_array: true }
         expose :period, documentation: { values: Expression.periods.keys }
         expose :raw_creation_date
         expose :creation_date
