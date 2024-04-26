@@ -62,3 +62,6 @@ RSpec/NestedGroups:
 
 FactoryBot/ExcessiveCreateList:
   MaxAmount: 100
+
+FactoryBot/FactoryAssociationWithStrategy:
+  Enabled: false
