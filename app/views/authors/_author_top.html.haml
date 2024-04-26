@@ -9,7 +9,7 @@
       .author-top-second-line
         .author-page-top-rights
           = render partial: 'shared/intellectual_property',
-                   locals: { intellectual_property: @author.public_domain ? :public_domain : :by_permission }
+                   locals: { intellectual_property: @author.intellectual_property }
         .author-sort-area
           .author-page-top-sort-desktop.notyet
             = t(:sort_and_filter)

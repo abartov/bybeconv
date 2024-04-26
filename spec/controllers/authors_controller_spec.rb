@@ -121,7 +121,7 @@ describe AuthorsController do
 
     describe 'member actions' do
       let(:period) { 'revival' }
-      let(:author) { create(:person, public_domain: true, period: period) }
+      let(:author) { create(:person, intellectual_property: :public_domain, period: period) }
 
       describe '#show' do
         before do
@@ -152,17 +152,48 @@ describe AuthorsController do
         it { is_expected.to be_successful }
       end
 
+      describe '#edit' do
+        subject { get :edit, params: { id: author.id } }
+
+        it { is_expected.to be_successful }
+      end
+
+      describe '#edit_toc' do
+        subject(:call) { get :edit_toc, params: { id: author.id } }
+
+        context 'when TOC does not exists yet' do
+          it 'redirects to home page' do
+            expect(call).to redirect_to '/'
+            expect(flash['error']).to eq I18n.t('no_toc_yet')
+          end
+        end
+
+        context 'when TOC exists' do
+          let(:toc) { create(:toc) }
+
+          before do
+            author.toc = toc
+            author.save!
+          end
+
+          it { is_expected.to be_successful }
+        end
+      end
+
       describe '#update' do
-        let(:new_name) { 'New Name' }
         subject(:request) do
           put :update, params: {
             id: author.id,
             person: {
               name: new_name,
-              period: new_period
+              period: new_period,
+              intellectual_property: new_intellectual_property
             }
           }
         end
+
+        let(:new_name) { 'New Name' }
+        let(:new_intellectual_property) { 'unknown' }
 
         let(:works_period) { 'modern' } # intentionally use value different from author period
         let!(:original_work) { create(:manifestation, orig_lang: 'he', author: author, period: works_period) }
@@ -176,7 +207,11 @@ describe AuthorsController do
           it 'updates author and sets period in his hebrew works and translations to hebrew' do
             expect(request).to redirect_to authors_show_path(id: author.id)
             author.reload
-            expect(author).to have_attributes(name: new_name, period: new_period)
+            expect(author).to have_attributes(
+              name: new_name,
+              period: new_period,
+              intellectual_property: new_intellectual_property
+            )
             original_work.reload
             expect(original_work.expression.period).to eq new_period
             translated_work.reload
@@ -198,7 +233,11 @@ describe AuthorsController do
           it 'updates author but not his works' do
             expect(request).to redirect_to authors_show_path(id: author.id)
             author.reload
-            expect(author).to have_attributes(name: new_name, period: new_period)
+            expect(author).to have_attributes(
+              name: new_name,
+              period: new_period,
+              intellectual_property: new_intellectual_property
+            )
             original_work.reload
             expect(original_work.expression.period).to eq works_period
             translated_work.reload

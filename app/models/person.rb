@@ -21,6 +21,17 @@ class Person < ApplicationRecord
   has_many :taggings, as: :taggable, dependent: :destroy
   has_many :tags, through: :taggings, class_name: 'Tag'
 
+  enum intellectual_property: {
+    public_domain: 0,
+    copyrighted: 2,
+    orphan: 3,
+    permission_for_all: 4,
+    permission_for_selected: 5,
+    unknown: 100
+  }, _prefix: true
+
+  validates :intellectual_property, presence: true
+
   # scopes
   scope :has_toc, -> { where.not(toc_id: nil) }
   scope :no_toc, -> { where(toc_id: nil) }
@@ -175,18 +186,6 @@ class Person < ApplicationRecord
     end
   end
 
-  def self.cached_pd_count
-    Rails.cache.fetch("au_pd_count", expires_in: 24.hours) do
-      self.has_toc.where(public_domain: true).count
-    end
-  end
-
-  def self.cached_no_toc_count
-    Rails.cache.fetch("au_no_toc_count", expires_in: 24.hours) do
-      self.no_toc.count
-    end
-  end
-
   def gender_letter
     return gender == 'female' ? 'ה' : 'ו'
   end
@@ -220,11 +219,6 @@ class Person < ApplicationRecord
   def period_string
     return '' if period.nil?
     return t(period)
-  end
-
-  def rights_icon
-    # return public_domain ? 'bycc-pd' : 'bycopyright'
-    return public_domain ? 'm' : 'x'
   end
 
   def has_comment?
@@ -352,10 +346,6 @@ class Person < ApplicationRecord
           }
         end
     end
-  end
-
-  def copyright_as_string
-    return public_domain ? I18n.t(:public_domain) : I18n.t(:by_permission)
   end
 
   def cached_popular_tags_used_on_works

@@ -65,11 +65,6 @@ module ApplicationHelper
     t(value, scope: 'intellectual_property')
   end
 
-  # TODO: remove
-  def textify_copyright_status(copyrighted)
-    copyrighted ? t(:by_permission) : t(:public_domain)
-  end
-
   def textify_boolean(bool)
     bool ? t(:yes) : t(:no)
   end
@@ -164,7 +159,7 @@ module ApplicationHelper
     case intellectual_property
     when 'public_domain'
       return 'm'
-    when 'copyrighted', 'by_permission'
+    when 'copyrighted', 'by_permission', 'permission_for_all', 'permission_for_selected'
       return 'x'
     end
   end

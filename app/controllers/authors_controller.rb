@@ -117,11 +117,12 @@ class AuthorsController < ApplicationController
       @filters += @genres.map{|x| [helpers.textify_genre(x), "genre_#{x}", :checkbox]}
     end
     # copyright
-    @copyright = params['ckb_copyright'].map{|x| x.to_i} if params['ckb_copyright'].present?
-    if @copyright.present?
-      cright = @copyright.map{|x| x==0 ? false : true}
-      ret << {terms: {copyright_status: cright}}
-      @filters += @copyright.map{|x| [helpers.textify_copyright_status(x == 1), "copyright_#{x}", :checkbox]}
+    @intellectual_property_types = params['ckb_intellectual_property']
+    if @intellectual_property_types.present?
+      ret << { terms: { intellectual_property: @intellectual_property_types } }
+      @filters += @intellectual_property_types.map do |ip|
+        [helpers.textify_intellectual_property(ip), "intellectual_property_#{ip}", :checkbox]
+      end
     end
     # languages
     if params['ckb_languages'].present?
@@ -176,11 +177,11 @@ class AuthorsController < ApplicationController
 
   def prepare_totals(collection)
     standard_aggregations = {
-      periods: {terms: {field: 'period'}},
-      genres: {terms: {field: 'genre'}},
-      languages: {terms: {field: 'language', size: get_langs.count + 1}},
-      copyright_status: {terms: {field: 'copyright_status'}},
-      genders: {terms: {field: 'gender'}},
+      periods: { terms: { field: 'period' } },
+      genres: { terms: { field: 'genre' } },
+      languages: { terms: { field: 'language', size: get_langs.count + 1 } },
+      intellectual_property_types: { terms: { field: 'intellectual_property' } },
+      genders: { terms: { field: 'gender' } }
     }
 
     collection = collection.aggregations(standard_aggregations)
@@ -190,7 +191,7 @@ class AuthorsController < ApplicationController
     @genre_facet = buckets_to_totals_hash(collection.aggs['genres']['buckets'])
     @language_facet = buckets_to_totals_hash(collection.aggs['languages']['buckets'])
     @language_facet[:xlat] = @language_facet.except('he').values.sum
-    @copyright_facet = buckets_to_totals_hash(collection.aggs['copyright_status']['buckets'])
+    @intellectual_property_facet = buckets_to_totals_hash(collection.aggs['intellectual_property_types']['buckets'])
   end
 
   SORTING_PROPERTIES = {
@@ -605,7 +606,30 @@ class AuthorsController < ApplicationController
   protected
 
   def person_params
-    params[:person].permit(:affiliation, :comment, :country, :name, :nli_id, :other_designation, :viaf_id, :public_domain, :profile_image, :birthdate, :deathdate, :wikidata_id, :wikipedia_url, :wikipedia_snippet, :blog_category_url, :profile_image, :metadata_approved, :gender, :bib_done, :period, :sort_name, :status)
+    params[:person].permit(
+      :affiliation,
+      :comment,
+      :country,
+      :name,
+      :nli_id,
+      :other_designation,
+      :viaf_id,
+      :intellectual_property,
+      :profile_image,
+      :birthdate,
+      :deathdate,
+      :wikidata_id,
+      :wikipedia_url,
+      :wikipedia_snippet,
+      :blog_category_url,
+      :profile_image,
+      :metadata_approved,
+      :gender,
+      :bib_done,
+      :period,
+      :sort_name,
+      :status
+    )
   end
 
   def prep_for_print

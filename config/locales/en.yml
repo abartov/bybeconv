@@ -21,12 +21,16 @@ en:
         by_permission: what does it means 'by permission'?
         copyrighted: what does it means 'copyrighted'?
         orphan: what does it means 'orphan'?
+        permission_for_all: what does it means 'permission for all'?
+        permission_for_selected: what does it means 'permission for selected'?
         unknown: what does it means 'unknown'?
       popover:
         public_domain: Copyright Law protects against unauthorized use of works for the duration of its validity (in Israel, seventy years from the end of the year of the creator's death). With the expiry of the rights, the creation becomes 'public domain', that is, the property of the public. This means that the work belongs to all of us, and we are all entitled to make any use of it, including commercial use, without the need to ask permission of anyone.
         by_permission: Although the work is still copyrighted, the Ben־Yehuda Project has received *explicit permission to publish* The work in the Ben־Yehuda Project database, for the general public to read and research. Other uses (such as play, composition, or commercial performance) still *require express approval* from the rights holders.
         copyrighted: TBD description for 'copyrighted'
         orphan: TBD description for 'orphan'
+        permission_for_all: TBD description for 'permission_for_all'
+        permission_for_selected: TBD description for 'permission_for_selected'
         unknown: TBD description for 'unknown'
   welcome:
     submit_contact:
@@ -49,4 +53,6 @@ en:
     by_permission: by permission
     copyrighted: copyrighted
     orphan: orphan
+    permission_for_all: permission for all
+    permission_for_selected: permission for selected
     unknown: unknown
