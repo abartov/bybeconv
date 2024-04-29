@@ -52,11 +52,11 @@
           = link_to t(:back_to_bib_workshop), action: :index
 :javascript
   $(document).ready(function() {
-    fpurl = '#{publication_mark_false_positive_path(999)}';
+    fpurl = '#{publication_mark_false_positive_path(-1)}';
     $('.mark_false_positive').click(function(e){
       e.stopPropagation();
       e.preventDefault();
       theid = $(this).parent().parent().attr('class').replace('pub','');
-      $.get(fpurl.replace('999',theid));
+      $.get(fpurl.replace('-1',theid));
     });
   });

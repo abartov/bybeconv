@@ -193,7 +193,7 @@
     });
     $('.editmdbutton').click(function(){
       text_id = this.id.replace('edit','');
-      $.ajax({type: 'GET', url: "#{edit_anthology_text_path(999)}".replace('999',text_id), dataType: 'script', error: function(xhr, status, error){
+      $.ajax({type: 'GET', url: "#{edit_anthology_text_path(-1)}".replace('-1',text_id), dataType: 'script', error: function(xhr, status, error){
         console.log("Error: "+status+"\n"+error);
       }});
       // ~~~ curated text pop-up updated by server response ~~~
