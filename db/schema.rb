@@ -263,7 +263,7 @@ ActiveRecord::Schema.define(version: 2024_04_24_145657) do
 
   create_table "corporate_bodies", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "name"
-    t.string "alternate_names"
+    t.string "alternate_names", limit: 5000
     t.string "location"
     t.string "inception"
     t.integer "inception_year"
@@ -274,7 +274,17 @@ ActiveRecord::Schema.define(version: 2024_04_24_145657) do
     t.text "comments"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "sort_name"
+    t.string "country"
+    t.string "nli_id"
+    t.string "wikipedia_url", limit: 800
+    t.text "wikipedia_snippet"
+    t.boolean "public_domain"
+    t.boolean "bib_done"
+    t.integer "status"
+    t.datetime "published_at"
     t.index ["name"], name: "index_corporate_bodies_on_name"
+    t.index ["sort_name"], name: "index_corporate_bodies_on_sort_name"
   end
 
   create_table "creations", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
