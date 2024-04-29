@@ -2,7 +2,7 @@ FactoryBot.define do
   factory :manifestation do
     transient do
       sequence(:manifestation_name) { |n| "Manifestation #{n}" }
-      author { create(:person) }
+      author { create(:person, toc: create(:toc)) }
       language { 'he' }
       orig_lang { %w(he en ru de it).sample }
       genre { Work::GENRES.sample }
