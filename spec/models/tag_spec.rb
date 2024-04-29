@@ -148,21 +148,19 @@ describe Tag do
     expect(TagName.where(name: tn).count).to eq 1
     expect(TagName.where(name: t.name).count).to eq 1
   end
+
   it 'merges tag into another tag, including tag_names and taggings' do
-    i = 0
-    t = Tag.create!(name: Faker::Science.science+i.to_s, creator: create(:user), status: 'approved')
+    t = Tag.create!(name: Faker::Science.unique.science, creator: create(:user), status: 'approved')
     5.times do 
       Tagging.create!(tag: t, taggable: create(:manifestation), suggester: create(:user), status: 'pending')
-      TagName.create!(name: "#{Faker::Science.science} #{i*10}", tag: t)
-      i += 1
+      TagName.create!(name: Faker::Science.unique.science, tag: t)
     end
     expect(Tag.last.taggings.count).to eq 5
     expect(Tag.last.tag_names.count).to eq 6 # including one created upon tag creation
-    t2 = Tag.create!(name: Faker::Science.science+i.to_s, creator: create(:user), status: 'approved')
+    t2 = Tag.create!(name: Faker::Science.unique.science, creator: create(:user), status: 'approved')
     5.times do
       Tagging.create!(tag: t2, taggable: create(:manifestation), suggester: create(:user), status: 'pending')
-      TagName.create!(name: "#{Faker::Science.science} #{i*10}", tag: t)
-      i += 1
+      TagName.create!(name: Faker::Science.unique.science, tag: t)
     end
     expect(Tagging.count).to eq 10
     expect(TagName.count).to eq 12
@@ -172,6 +170,24 @@ describe Tag do
     expect(Tag.count).to eq 1
     expect(t2.taggings.count).to eq 10
     expect(t2.tag_names.count).to eq 12
+  end
+
+  it 'merges tag into another tag, but does not create duplicate taggings' do
+    t = Tag.create!(name: Faker::Science.unique.science, creator: create(:user), status: 'approved')
+    5.times { Tagging.create!(tag: t, taggable: create(:manifestation), suggester: create(:user), status: 'pending') }
+    expect(Tag.last.taggings.count).to eq 5
+    t2 = Tag.create!(name: Faker::Science.unique.science, creator: create(:user), status: 'approved')
+    5.times do
+      Tagging.create!(tag: t2, taggable: create(:manifestation), suggester: create(:user), status: 'pending')
+    end
+    Tagging.create!(tag: t2, taggable: t.taggings.last.taggable, suggester: create(:user),
+                    status: 'pending') # create a tagging that would be a duplicate after merge
+    expect(Tagging.count).to eq 11
+    tid = t.id
+    t.merge_into(t2)
+    expect(Tag.find_by(id: tid)).to be_nil # should be destroyed by the merge
+    expect(Tag.count).to eq 1
+    expect(t2.taggings.count).to eq 10 # duplicate removed
   end
 
 end

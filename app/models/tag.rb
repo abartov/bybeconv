@@ -72,7 +72,12 @@ class Tag < ApplicationRecord
 
   def merge_taggings_into(tag)
     self.taggings.each do |tagging|
-      tagging.update!(tag_id: tag.id)
+      # avoid duplicating taggings post-merge
+      if tag.taggings.where(taggable_id: tagging.taggable_id, taggable_type: tagging.taggable_type).exists?
+        tagging.destroy
+      else
+        tagging.update!(tag_id: tag.id)
+      end
     end
   end
   def prev_tags_alphabetically(limit = 3)
