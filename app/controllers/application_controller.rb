@@ -152,10 +152,14 @@ class ApplicationController < ActionController::Base
   end
 
   def cached_authors_in_genre
-    Rails.cache.fetch("au_by_genre", expires_in: 24.hours) do # memoize
-      ret = {}
-      get_genres.each { |g| ret[g] = Person.has_toc.joins(expressions: :work).where(works: { genre: g }).uniq.count }
-      ret
+    Rails.cache.fetch('au_by_genre', expires_in: 24.hours) do # memoize
+      totals = Person.has_toc
+                     .joins(expressions: :work)
+                     .group(:genre)
+                     .distinct
+                     .count
+                     .to_h
+      get_genres.index_with { |genre| totals[genre] || 0 }
     end
   end
 
@@ -168,10 +172,9 @@ class ApplicationController < ActionController::Base
   end
 
   def cached_works_by_period
-    Rails.cache.fetch("works_by_period", expires_in: 24.hours) do # memoize
-      ret = {}
-      get_periods.each{ |p| ret[p] = Manifestation.published.joins(:expression).where(expressions: { period: p}).uniq.count}
-      ret
+    Rails.cache.fetch('works_by_period', expires_in: 24.hours) do # memoize
+      totals = Manifestation.published.joins(:expression).group(:period).count
+      get_periods.index_with { |period| totals[Expression.periods[period]] || 0 }
     end
   end
 

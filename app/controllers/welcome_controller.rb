@@ -14,7 +14,7 @@ class WelcomeController < ApplicationController
     # @newest_authors = cached_newest_authors # deprecated because we stopped producing portraits
     @random_authors = Person.published.has_image.order(Arel.sql('RAND()')).limit(10)
     @newest_works = cached_newest_works
-    @surprise_author = Person.where(id: Person.has_toc.pluck(:id).sample(1))[0]
+    @surprise_author = RandomAuthor.call
     @surprise_work = randomize_works(1)[0]
     @authors_in_genre = cached_authors_in_genre
     @works_by_genre = Manifestation.cached_work_counts_by_genre
