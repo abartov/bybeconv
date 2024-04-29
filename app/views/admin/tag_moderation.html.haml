@@ -239,8 +239,8 @@
     $('.merge-tagging-btn').click(function(e) {
       e.stopPropagation();
       $('.modal').modal('hide');
-      url = "#{ merge_tagging_path(999) }";
-      url = url.replace('999', $(this).attr('data-tagging-id'));
+      url = "#{ merge_tagging_path(-1) }";
+      url = url.replace('-1', $(this).attr('data-tagging-id'));
       $('#generalDlg').load(url);
       $('#generalDlg').modal('show');
     });
