@@ -121,8 +121,8 @@
   $(document).ready(function() {
     $('.merge-btn').click(function(e) {
       e.stopPropagation();
-      var url = "#{ merge_tag_path(99, with_tag: 88)}";
-      url = url.replace('99', $(this).data('tag-id')).replace('88', $(this).data('with-tag'));
+      var url = "#{ merge_tag_path(-1, with_tag: -2)}";
+      url = url.replace('-1', $(this).data('tag-id')).replace('-2', $(this).data('with-tag'));
       $('.modal').modal('hide');
       $('#generalDlg').load(url);
       $('#generalDlg').modal('show');
