@@ -36,7 +36,7 @@ describe ManifestationController do
         {
           ckb_periods: %w(ancient revival),
           ckb_genres: %w(poetry memoir),
-          ckb_copyright: %w(1),
+          ckb_intellectual_property: %w(orphan unknown),
           ckb_genders: %w(male other),
           ckb_tgenders: %w(female unknown),
           authors: '1,2,3',
@@ -54,7 +54,7 @@ describe ManifestationController do
         {
           'periods' => %w(ancient revival),
           'genres' => %w(poetry memoir),
-          'is_copyrighted' => true,
+          'intellectual_property_types' => %w(orphan unknown),
           'author_genders' => %w(male other),
           'translator_genders' => %w(female unknown),
           'author_ids' => [1, 2, 3],
