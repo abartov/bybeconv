@@ -107,9 +107,9 @@ class TaggingsController < ApplicationController
       @page_title = "#{@tag.name} - #{t(:tag_page)}"
       #debugger
       @tagged_authors_count = Person.tagged_with(@tag.id).count
-      @tagged_authors = Person.tagged_with(@tag.id).order(:impressions_count).limit(10)
+      @tagged_authors = Person.tagged_with(@tag.id).order(impressions_count: :desc).limit(10)
       @tagged_works_count = Manifestation.tagged_with(@tag.id).count
-      @popular_tagged_works = Manifestation.tagged_with(@tag.id).order(:impressions_count).limit(10)
+      @popular_tagged_works = Manifestation.tagged_with(@tag.id).order(impressions_count: :desc).limit(10)
       @newest_tagged_works = Manifestation.tagged_with(@tag.id).order('created_at desc').limit(10)
     else
       flash[:error] = t(:tag_not_found)
