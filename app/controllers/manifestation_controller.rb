@@ -591,7 +591,6 @@ class ManifestationController < ApplicationController
     end
   end
 
-  PAGE_SIZE = 100
   def build_es_filter_from_filters
     ret = {}
     @filters = []
@@ -618,13 +617,12 @@ class ManifestationController < ApplicationController
     end
 
     # copyright
-    @copyright = params['ckb_copyright']&.map(&:to_i)
-    if @copyright.present?
-      is_copyrighted = @copyright.map { |x| x == 0 ? false : true }.uniq
-      if is_copyrighted.size == 1
-        ret['is_copyrighted'] = is_copyrighted.first
+    @intellectual_property_types = params['ckb_intellectual_property']
+    if @intellectual_property_types.present?
+      ret['intellectual_property_types'] = @intellectual_property_types
+      @filters += @intellectual_property_types.map do |x|
+        [helpers.textify_intellectual_property(x), "intellectual_property_#{x}", :checkbox]
       end
-      @filters += @copyright.map { |x| [helpers.textify_copyright_status(x == 1), "copyright_#{x}", :checkbox] }
     end
 
     # authors genders
@@ -710,7 +708,7 @@ class ManifestationController < ApplicationController
       periods: { terms: { field: 'period' } },
       genres: { terms: { field: 'genre' } },
       languages: { terms: { field: 'orig_lang', size: get_langs.count + 1 } },
-      copyright_status: { terms: { field: 'copyright_status' } },
+      intellectual_property_types: { terms: { field: 'intellectual_property' } },
       author_genders: { terms: { field: 'author_gender' } },
       translator_genders: { terms: { field: 'translator_gender' } },
       # We may need to increase `size` threshold in future if number of authors exceeds 2000
@@ -723,13 +721,10 @@ class ManifestationController < ApplicationController
     @tgender_facet = buckets_to_totals_hash(collection.aggs['translator_genders']['buckets'])
     @period_facet = buckets_to_totals_hash(collection.aggs['periods']['buckets'])
     @genre_facet = buckets_to_totals_hash(collection.aggs['genres']['buckets'])
+    @intellectual_property_facet = buckets_to_totals_hash(collection.aggs['intellectual_property_types']['buckets'])
 
     @language_facet = buckets_to_totals_hash(collection.aggs['languages']['buckets'])
     @language_facet[:xlat] = @language_facet.except('he').values.sum
-
-    @copyright_facet = collection.aggs['copyright_status']['buckets'].to_h do |hash|
-      [hash['key'] == 'true' ? 1 : 0, hash['doc_count']]
-    end
 
     # Preparing list of authors to show in multiselect modal on works browse page
     if collection.filter.present?
