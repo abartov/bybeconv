@@ -56,41 +56,89 @@ describe AdminController do
   describe '#incongruous_copyright' do
     include_context 'Admin user logged in'
     subject(:request) { get :incongruous_copyright }
-    let(:copyrighted_person) { create(:person, intellectual_property: :permission_for_selected) }
+    let(:copyrighted_person) { create(:person, intellectual_property: :copyrighted) }
+    let(:by_permission_person) { create(:person, intellectual_property: :permission_for_selected) }
+    let(:public_domain_person) { create(:person, intellectual_property: :public_domain) }
 
-    let!(:public_domain_manifestation) do
-      create(:manifestation, intellectual_property: :public_domain)
+    let!(:public_domain) do
+      create(
+        :manifestation,
+        orig_lang: 'he',
+        intellectual_property: :public_domain,
+        author: public_domain_person
+      )
     end
-    let!(:by_permission_manifestation) do
-      create(:manifestation, author: copyrighted_person, intellectual_property: :by_permission)
+
+    let!(:public_domain_translated) do
+      create(
+        :manifestation,
+        orig_lang: 'ru',
+        intellectual_property: :public_domain,
+        translator: public_domain_person,
+        author: public_domain_person
+      )
     end
-    let!(:wrong_public_domain_manifestation_1) do
-      create(:manifestation, author: copyrighted_person, intellectual_property: :public_domain)
+
+    let!(:by_permission_translated) do
+      create(
+        :manifestation,
+        orig_lang: 'ru',
+        intellectual_property: :by_permission,
+        translator: by_permission_person,
+        author: public_domain_person
+      )
     end
-    let!(:wrong_public_domain_manifestation_2) do
-      create(:manifestation, orig_lang: 'ru', translator: copyrighted_person, intellectual_property: :public_domain)
+
+    let!(:wrong_public_domain) do
+      create(
+        :manifestation,
+        orig_lang: 'he',
+        intellectual_property: :public_domain,
+        author: copyrighted_person
+      )
     end
-    let!(:wrong_by_permission_manifestation) do
-      create(:manifestation, intellectual_property: :by_permission)
+
+    let!(:wrong_public_domain_translated) do
+      create(
+        :manifestation,
+        orig_lang: 'de',
+        intellectual_property: :public_domain,
+        author: public_domain_person,
+        translator: by_permission_person
+      )
     end
-    let!(:wrong_copyrighted_manifestation) do
-      create(:manifestation, orig_lang: 'ru', intellectual_property: :copyrighted)
+
+    let!(:wrong_by_permission) do
+      create(
+        :manifestation,
+        orig_lang: 'he',
+        intellectual_property: :by_permission,
+        author: public_domain_person
+      )
+    end
+
+    let!(:wrong_copyrighted_translated) do
+      create(
+        :manifestation,
+        orig_lang: 'de',
+        intellectual_property: :copyrighted,
+        author: public_domain_person,
+        translator: public_domain_person
+      )
     end
 
     let(:wrong_manifestation_ids) do
       [
-        wrong_public_domain_manifestation_1.id,
-        wrong_public_domain_manifestation_2.id,
-        wrong_by_permission_manifestation.id,
-        wrong_copyrighted_manifestation.id
+        wrong_public_domain.id,
+        wrong_public_domain_translated.id,
+        wrong_by_permission.id,
+        wrong_copyrighted_translated.id
       ]
     end
 
     it 'renders successfully' do
-      # TODO: re-enable
-      skip 'Not sure how to fix'
       expect(request).to be_successful
-      expect(assigns(:incong).map(&:first).map(&:id)).to match_array wrong_manifestation_ids
+      expect(assigns(:incong).map(&:id)).to match_array wrong_manifestation_ids
     end
   end
 
