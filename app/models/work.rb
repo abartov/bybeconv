@@ -18,11 +18,11 @@ class Work < ApplicationRecord
   # has_and_belongs_to_many :people # superseded by creations and persons above
 
   def authors
-    return creations.author.includes(:person).map(&:person)
+    return creations.to_a.select(&:author?).map(&:person)
   end
 
   def illustrators
-    return creations.illustrator.includes(:person).map(&:person)
+    return creations.to_a.select(&:illustrator?).map(&:person)
   end
 
   def first_author

@@ -81,6 +81,7 @@ describe Manifestation do
       let(:manifestation) { create(:manifestation, author: author_1) }
       before do
         create(:creation, work: manifestation.expression.work, role: :author, person: author_2)
+        manifestation.reload
       end
       it { is_expected.to eq 'Alpha, Beta' }
     end
@@ -104,6 +105,7 @@ describe Manifestation do
       let(:manifestation) { create(:manifestation, orig_lang: 'de', translator: translator_1) }
       before do
         create(:realizer, expression: manifestation.expression, role: :translator, person: translator_2)
+        manifestation.reload
       end
       it { is_expected.to eq 'Alpha, Beta' }
     end
@@ -113,6 +115,7 @@ describe Manifestation do
 
       before do
         manifestation.expression.realizers.delete_all
+        manifestation.reload
       end
 
       it { is_expected.to eq I18n.t(:nil) }
@@ -127,6 +130,7 @@ describe Manifestation do
 
     before do
       create(:creation, work: manifestation.expression.work, role: :author, person: author_2)
+      manifestation.reload
     end
 
     context 'when work is not a translation' do
@@ -139,6 +143,7 @@ describe Manifestation do
       context 'when no authors present' do
         before do
           manifestation.expression.work.creations.delete_all
+          manifestation.reload
         end
 
         it { is_expected.to eq I18n.t(:nil) }
@@ -153,6 +158,7 @@ describe Manifestation do
 
       before do
         create(:realizer, expression: manifestation.expression, role: :translator, person: translator_2)
+        manifestation.reload
       end
 
       context 'when both authors and transaltors are present' do
@@ -162,6 +168,7 @@ describe Manifestation do
       context 'when no authors present' do
         before do
           manifestation.expression.work.creations.delete_all
+          manifestation.reload
         end
 
         it { is_expected.to eq I18n.t(:nil) }
@@ -170,6 +177,7 @@ describe Manifestation do
       context 'when no translators present' do
         before do
           manifestation.expression.realizers.delete_all
+          manifestation.reload
         end
 
         it { is_expected.to eq 'Alpha, Beta / ' + I18n.t(:unknown) }
