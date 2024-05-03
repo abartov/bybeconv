@@ -30,8 +30,6 @@ class Person < ApplicationRecord
     unknown: 100
   }, _prefix: true
 
-  validates :intellectual_property, presence: true
-
   # scopes
   scope :has_toc, -> { where.not(toc_id: nil) }
   scope :no_toc, -> { where(toc_id: nil) }
@@ -53,7 +51,8 @@ class Person < ApplicationRecord
   include CompactedImpressions
 
   # validations
-  validates :name, presence: true
+  validates :name, :intellectual_property, presence: true
+
   validates_attachment_content_type :profile_image, content_type: /\Aimage\/.*\z/
 
   update_index('people'){self} # update PeopleIndex when entity is updated

@@ -36,7 +36,7 @@
   .backend-field
     = f.label Person.human_attribute_name(:intellectual_property)
     - options = Person.intellectual_properties.keys.map { |ip| [textify_intellectual_property(ip), ip] }
-    = f.select :intellectual_property, options_for_select(options, @author.intellectual_property)
+    = f.select :intellectual_property, options_for_select(options, person.intellectual_property)
   .backend-field
     = f.label t(:bib_done)
     %br

@@ -379,7 +379,7 @@ class AuthorsController < ApplicationController
   # end
 
   def new
-    @person = Person.new
+    @person = Person.new(intellectual_property: :unknown)
     @page_title = t(:new_author)
     respond_to do |format|
       format.html # new.html.erb
@@ -391,18 +391,15 @@ class AuthorsController < ApplicationController
     params[:person][:wikidata_id] = params[:person][:wikidata_id].strip[1..-1] if params[:person] and params[:person][:wikidata_id] and params[:person][:wikidata_id][0] and params[:person][:wikidata_id].strip[0] == 'Q' # tolerate pasting the Wikidata number with the Q
     Chewy.strategy(:atomic) {
       @person = Person.new(person_params)
-      unless @person.status.present?
-        @person.status = @person.public_domain ? :awaiting_first : :unpublished # default to unpublished. Publishing happens automatically upon first works uploaded if public domain, or by button in status column in authors#list if copyrighted
+      if @person.status.blank?
+        @person.status = @person.intellectual_property_public_domain? ? :awaiting_first : :unpublished
       end
 
-      respond_to do |format|
-        if @person.save
-          format.html { redirect_to url_for(action: :show, id: @person.id), notice: t(:updated_successfully) }
-          format.json { render json: @person, status: :created, location: @person }
-        else
-          format.html { render action: "new" }
-          format.json { render json: @person.errors, status: :unprocessable_entity }
-        end
+      if @person.save
+        flash.notice = t(:created_successfully)
+        redirect_to action: :show, params: { id: @person.id }
+      else
+        render action: :new, status: :unprocessable_entity
       end
     }
   end
@@ -606,7 +603,7 @@ class AuthorsController < ApplicationController
   protected
 
   def person_params
-    params[:person].permit(
+    params.require(:person).permit(
       :affiliation,
       :comment,
       :country,

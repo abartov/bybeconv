@@ -149,6 +149,7 @@ group :test, :development do
   gem 'rspec-rails', '~> 5.0.2'
   gem 'spring'
   gem 'spring-commands-rspec'
+  gem 'debug'
 end
 
 gem "sidekiq", "~> 7.2"
