@@ -285,6 +285,7 @@ class AdminController < ApplicationController
 
   def incongruous_copyright
     @incong = Manifestation.joins(expression: :work)
+                           .with_involved_authorities
                            .select('expressions.id as expression_id, expressions.intellectual_property')
                            .select('manifestations.title, manifestations.id as id')
                            .select(Arel.sql("#{HAS_NON_PUBLIC_DOMAIN_AUTHORITY} as has_non_pd_authority"))

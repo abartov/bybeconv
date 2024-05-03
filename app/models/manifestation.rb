@@ -33,6 +33,7 @@ class Manifestation < ApplicationRecord
   scope :translations, -> { joins(:expression).includes(:expression).where(expressions: {translation: true})}
   scope :genre, -> (genre) { joins(expression: :work).where(works: {genre: genre})}
   scope :tagged_with, ->(tag_id) {joins(:taggings).where(taggings: {tag_id: tag_id, status: Tagging.statuses[:approved]}).distinct}
+  scope :with_involved_authorities, -> { preload(expression: { realizers: :person, work: { creations: :person } }) }
 
   SHORT_LENGTH = 1500 # kind of arbitrary...
   LONG_LENGTH = 15000 # kind of arbitrary...

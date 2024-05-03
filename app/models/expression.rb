@@ -23,11 +23,11 @@ class Expression < ApplicationRecord
   validates :intellectual_property, presence: true
 
   def editors
-    return realizers.includes(:person).where(role: Realizer.roles[:editor]).map{|x| x.person}
+    realizers.to_a.select(&:editor?).map(&:person)
   end
 
   def translators
-    return realizers.includes(:person).where(role: Realizer.roles[:translator]).map {|x| x.person}
+    realizers.to_a.select(&:translator?).map(&:person)
   end
 
   def self.cached_translations_count
