@@ -119,6 +119,71 @@ describe AuthorsController do
       session[:user_id] = user.id
     end
 
+    describe '#new' do
+      subject { get :new }
+
+      it { is_expected.to be_successful }
+    end
+
+    describe '#create' do
+      subject(:call) { post :create, params: { person: person_params } }
+
+      let(:intellectual_property) { 'permission_for_selected' }
+      let(:status) { 'published' }
+
+      let(:person_params) do
+        {
+          name: 'New name',
+          intellectual_property: intellectual_property,
+          status: status
+        }
+      end
+
+      let(:created_person) { Person.order(id: :desc).first }
+
+      context 'when save successful' do
+        it 'creates record' do
+          expect { call }.to change(Person, :count).by(1)
+          expect(created_person).to have_attributes(person_params)
+
+          expect(call).to redirect_to authors_show_path(id: created_person.id)
+          expect(flash.notice).to eq I18n.t(:created_successfully)
+        end
+
+        context 'when status is not set' do
+          let(:status) { nil }
+
+          context 'when intellectual_property is public_domain' do
+            let(:intellectual_property) { 'public_domain' }
+
+            it 'sets status to awaiting_first' do
+              expect { call }.to change(Person, :count).by(1)
+              expect(created_person.status).to eq 'awaiting_first'
+            end
+          end
+
+          context 'when intellectual_property is not public_domain' do
+            let(:intellectual_property) { 'permission_for_selected' }
+
+            it 'sets status to unpublished' do
+              expect { call }.to change(Person, :count).by(1)
+              expect(created_person.status).to eq 'unpublished'
+            end
+          end
+        end
+      end
+
+      context 'when save fails' do
+        let(:status) { :unpublished }
+        let(:intellectual_property) { nil }
+
+        it 're-renders new form' do
+          expect(call).to render_template(:new)
+          expect(call).to have_http_status(:unprocessable_entity)
+        end
+      end
+    end
+
     describe 'member actions' do
       let(:period) { 'revival' }
       let(:author) { create(:person, intellectual_property: :public_domain, period: period) }
