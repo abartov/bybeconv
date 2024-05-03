@@ -260,22 +260,45 @@ class AdminController < ApplicationController
     Rails.cache.write('report_translated_from_multiple_languages', @authors.length)
   end
 
-  # We assume manifestation should be copyrighted if one of its creators or realizers is not in public domain
-  CALCULATED_COPYRIGHT_EXPRESSION = <<~sql
+  PUBLIC_DOMAIN_TYPE = Person.intellectual_properties['public_domain']
+
+  HAS_NON_PUBLIC_DOMAIN_AUTHORITY = <<~SQL.squish
     (
-      exists (select 1 from creations c join people p on p.id = c.person_id where c.work_id = works.id and not coalesce(p.public_domain, false))
-      or exists (select 1 from realizers r join people p on p.id = r.person_id where r.expression_id = expressions.id and not coalesce(p.public_domain, false))
+      exists (
+        select 1 from
+          people p
+          join creations c on p.id = c.person_id
+        where
+          c.work_id = works.id
+          and p.intellectual_property <> #{PUBLIC_DOMAIN_TYPE}
+      )
+      or exists (
+        select 1 from
+          people p
+          join realizers r on p.id = r.person_id
+        where
+          r.expression_id = expressions.id
+          and p.intellectual_property <> #{PUBLIC_DOMAIN_TYPE}
+      )
     )
-  sql
+  SQL
 
   def incongruous_copyright
-    @incong = Manifestation.joins(expression: :work).
-        select('manifestations.title, manifestations.id, manifestations.expression_id, expressions.copyrighted').
-        select(Arel.sql("#{CALCULATED_COPYRIGHT_EXPRESSION} as calculated_copyright")).
-        where("expressions.copyrighted is null or #{CALCULATED_COPYRIGHT_EXPRESSION} <> expressions.copyrighted").map do |m|
-      [ m, m.title, m.author_string, m.calculated_copyright, m.copyrighted ]
-    end
-
+    @incong = Manifestation.joins(expression: :work)
+                           .select('expressions.id as expression_id, expressions.intellectual_property')
+                           .select('manifestations.title, manifestations.id as id')
+                           .select(Arel.sql("#{HAS_NON_PUBLIC_DOMAIN_AUTHORITY} as has_non_pd_authority"))
+                           .where(
+                             <<~SQL.squish
+                               (
+                                 expressions.intellectual_property <> #{PUBLIC_DOMAIN_TYPE}
+                                 and not #{HAS_NON_PUBLIC_DOMAIN_AUTHORITY}
+                               ) or (
+                                 expressions.intellectual_property = #{PUBLIC_DOMAIN_TYPE}
+                                 and #{HAS_NON_PUBLIC_DOMAIN_AUTHORITY}
+                               )
+                             SQL
+                           )
     Rails.cache.write('report_incongruous_copyright', @incong.length)
   end
 

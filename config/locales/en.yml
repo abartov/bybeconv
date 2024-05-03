@@ -1,6 +1,14 @@
 en:
   name_starts_with_x: "Name starts with: '%{x}'"
   title_starts_with_x: "Title starts with: '%{x}'"
+  admin:
+    index:
+      takes_long_time: Takes long time
+    incongruous_copyright:
+      title: Probably incongruous copyright report
+      columns:
+        db_intellectual_property: Intellectual property in DB
+        has_non_public_domain_authority: Has non public domain authority
   shared:
     filters:
       pagination:
