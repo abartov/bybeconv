@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe Manifestation do
@@ -203,5 +205,19 @@ describe Manifestation do
         expect(string.include?(I18n.t(:translated_from))).to be_truthy
       end
     end
+  end
+
+  describe '.approved_tags' do
+    subject { manifestation.approved_tags }
+
+    let(:manifestation) { create(:manifestation) }
+    let(:approved_tag) { create(:tag, status: :approved) }
+    let(:pending_tag) { create(:tag, status: :pending) }
+
+    let!(:approved_approved_tagging) { create(:tagging, tag: approved_tag, taggable: manifestation, status: :approved) }
+    let!(:approved_pending_tagging) { create(:tagging, tag: pending_tag, taggable: manifestation, status: :approved) }
+    let!(:pending_approved_tagging) { create(:tagging, tag: approved_tag, taggable: manifestation, status: :pending) }
+
+    it { is_expected.to contain_exactly(approved_tag) }
   end
 end

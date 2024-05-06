@@ -1,4 +1,7 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
+
 describe Tagging do
   it "considers invalid an empty tagging" do
     t = Tagging.new
@@ -86,33 +89,17 @@ describe Tagging do
     expect(m2.tags.count).to eq 5
     expect(m2.taggings.count).to eq 5
   end
-  it 'gets only approved tags for manifestation via taggings' do
-    m = create(:manifestation)
-    5.times do
-      Tagging.create!(tag: build(:tag), suggester: create(:user), status: 'approved', taggable: m)
+
+  describe '.destroy' do
+    subject(:destroy) { tagging.destroy }
+
+    let!(:tagging) { create(:tagging) }
+
+    it 'deletes tagging but not tag or manifestation' do
+      expect { destroy }.to change(described_class, :count).by(-1)
+                                                           .and not_change(Tag, :count)
+                                                           .and not_change(Manifestation, :count)
     end
-    3.times do
-      Tagging.create!(tag: build(:tag), suggester: create(:user), status: 'pending', taggable: m)
-    end
-    expect(m.tags.count).to eq 8
-    expect(m.approved_tags.count).to eq 5
-    3.times do
-      Tagging.create!(tag: build(:tag), suggester: create(:user), status: 'approved', taggable: build(:manifestation))
-    end
-    m2 = Manifestation.find(m.id)
-    expect(m2.tags.count).to eq 8
-    expect(m2.approved_tags.count).to eq 5
-    expect(m2.taggings.count).to eq 8
-    expect(m2.approved_taggings.count).to eq 5
   end
 
-  it 'deletes tagging but not tag or manifestation' do
-    tag = Tag.create!(name: Faker::Science.science, creator: create(:user), status: 'approved')
-    m = create(:manifestation)
-    tagging = Tagging.create!(tag: tag, taggable: m, suggester: create(:user), status: 'pending')
-    tagging.destroy
-    expect(Tagging.count).to eq 0
-    expect(Tag.count).to eq 1
-    expect(Manifestation.count).to eq 1
-  end
 end

@@ -98,12 +98,7 @@ class Manifestation < ApplicationRecord
   end
 
   def approved_tags
-    # tags.joins(:taggings).where(taggings: {status: Tagging.statuses[:approved], taggable: self})
-    approved_taggings.joins(:tag).where(tag: {status: Tag.statuses[:approved]} ).map{|x| x.tag}
-  end
-  
-  def approved_taggings
-    taggings.where(status: Tagging.statuses[:approved])
+    taggings.to_a.select { |t| t.approved? && t.tag.approved? }.map(&:tag)
   end
 
   def as_prose?
