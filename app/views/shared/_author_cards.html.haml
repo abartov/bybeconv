@@ -9,7 +9,7 @@
       - authors[0..9].each do |author|
         - break if author.nil? # devmode protection against fewer than 5 most-popular authors
         .slide
-          %a{ href: person_path(author.id)}
+          %a{ href: author_toc_path(author.id)}
             .author-card-v02
               %img.author-pic-v02{ src: author.profile_image.url(:thumb), alt: author.name}
               .author-name-area
