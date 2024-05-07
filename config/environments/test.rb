@@ -35,7 +35,6 @@ Bybeconv::Application.configure do
   # config.active_record.schema_format = :sql
 
   config.i18n.raise_on_missing_translations = true
-  config.i18n.exception_handler = Proc.new { |exception| raise exception.to_exception }
 
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
