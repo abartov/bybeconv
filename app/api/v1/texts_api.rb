@@ -106,7 +106,7 @@ class V1::TextsAPI < V1::ApplicationApi
                desc: 'specifies what section of the rough timeline of Hebrew literature an object belongs to.'
       optional :intellectual_property_types,
                type: [String],
-               values: Expression.intellectual_properties.keys,
+               values: Expression::PUBLIC_INTELLECTUAL_PROPERTY_TYPES,
                desc: 'limit search to works with selected intellectual property types'
       optional :author_genders, type: [String], values: Person.genders.keys
       optional :translator_genders, type: [String], values: Person.genders.keys
