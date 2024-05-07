@@ -22,6 +22,7 @@ services:
       - discovery.type=single-node
       - xpack.security.enabled=false
       - ingest.geoip.downloader.enabled=false
+      - action.destructive_requires_name=false
     volumes:
       - elasticsearch_data:/usr/share/elasticsearch/data:delegated
     ports:
