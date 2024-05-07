@@ -11,10 +11,8 @@ class Person < ApplicationRecord
   # relationships
   belongs_to :toc
   has_many :featured_contents
-  has_many :creations, dependent: :destroy
-  has_many :works, through: :creations, class_name: 'Work'
-  has_many :realizers
-  has_many :expressions, through: :realizers, class_name: 'Expression'
+  has_many :involved_authorities, dependent: :destroy, inverse_of: :person
+
   has_many :aboutnesses, as: :aboutable, dependent: :destroy
   has_many :external_links, as: :linkable, dependent: :destroy
   has_many :publications, dependent: :destroy
@@ -124,11 +122,22 @@ class Person < ApplicationRecord
     end
   end
 
+  def published_manifestations(role = nil)
+    rel = involved_authorities
+    rel = rel.where(role: role) if role.present?
+    ids = rel.pluck(:work_id, :expression_id)
+
+    work_ids = ids.map(&:first).compact.uniq
+    expression_ids = ids.map(&:last).compact.uniq
+
+    Manifestation.all_published
+                 .joins(:expression)
+                 .where('expressions.work_id in (?) or expressions.id in (?)', work_ids, expression_ids)
+  end
+
   def cached_works_count
     Rails.cache.fetch("au_#{self.id}_work_count", expires_in: 24.hours) do
-      created_work_ids = self.works.includes(expressions: [:manifestations]).where(manifestations: {status: :published}).pluck(:id)
-      expressions_work_ids = self.expressions.includes(:manifestations).where(manifestations: {status: :published}).pluck(:work_id)
-      (created_work_ids + expressions_work_ids).uniq.size
+      published_manifestations.count
     end
   end
 
@@ -137,13 +146,25 @@ class Person < ApplicationRecord
   end
 
   def has_any_hebrew_works?
-    return true if Manifestation.all_published.joins(expression: { work: :creations }).merge(Creation.author.where(person_id: self.id)).where(works: { orig_lang: 'he' }).exists?
-    return true if Manifestation.all_published.joins(expression: :realizers).merge(Realizer.translator.where(person_id: self.id)).where(expressions: { language: 'he' }).exists?
+    return true if Manifestation.all_published
+                                .joins(expression: { work: :involved_authorities })
+                                .merge(InvolvedAuthority.role_author.where(person_id: id))
+                                .exists?(works: { orig_lang: 'he' })
+
+    return true if Manifestation.all_published
+                                .joins(expression: :involved_authorities)
+                                .merge(InvolvedAuthority.role_translator.where(person_id: id))
+                                .exists?(expressions: { language: 'he' })
+
     return false
   end
 
   def has_any_non_hebrew_works?
-    return Manifestation.all_published.joins(expression: { work: :creations }).merge(Creation.author.where(person_id: self.id)).where.not(works: { orig_lang: 'he' }).exists?
+    return Manifestation.all_published
+                        .joins(expression: { work: :involved_authorities })
+                        .merge(InvolvedAuthority.role_author.where(person_id: id))
+                        .where.not(works: { orig_lang: 'he' })
+                        .exists?
   end
 
   def self.cached_count
@@ -214,25 +235,35 @@ class Person < ApplicationRecord
   end
 
   def original_works
-    Manifestation.all_published.joins(expression: [work: :creations]).where("creations.person_id = #{self.id}")
+    Manifestation.all_published
+                 .joins(expression: [work: :involved_authorities])
+                 .where(involved_authorities: { person_id: id })
   end
 
   def translations
-    Manifestation.all_published.joins(expression: [:work, :realizers]).includes(expression: [work: [creations: :person]]).where(realizers:{role: Realizer.roles[:translator], person_id: self.id})
+    Manifestation.all_published
+                 .joins(expression: %i(work involved_authorities))
+                 .merge(InvolvedAuthority.role_translator)
+                 .where(involved_authorities: { person_id: id })
   end
 
   def all_works_including_unpublished
-    works = Manifestation.joins(expression: [work: :creations]).includes(:expression).where("creations.person_id = #{self.id}")
-    xlats = Manifestation.joins(expression: :realizers).includes(expression: [work: [creations: :person]]).where(realizers:{role: Realizer.roles[:translator], person_id: self.id})
-    (works + xlats).uniq.sort_by{|m| m.sort_title}
+    works = Manifestation.joins(expression: [work: :involved_authorities])
+                         .merge(InvolvedAuthority.where(person_id: id))
+    xlats = Manifestation.joins(expression: :involved_authorities)
+                         .merge(InvolvedAuthority.role_translator.where(person_id: id))
+    (works + xlats).uniq.sort_by(&:sort_title)
   end
 
   def original_work_count_including_unpublished
-    Manifestation.joins(expression: { work: :creations }).merge(Creation.where(person_id: self.id)).count
+    Manifestation.joins(expression: { work: :involved_authorities })
+                 .merge(InvolvedAuthority.where(person_id: id)).count
   end
 
   def translations_count_including_unpublished
-    Manifestation.joins(expression: :realizers).merge(Realizer.translator.where(person_id: self.id)).count
+    Manifestation.joins(expression: :involved_authorities)
+                 .merge(InvolvedAuthority.role_translator.where(person_id: id))
+                 .count
   end
 
   def all_works_title_sorted
@@ -255,7 +286,10 @@ class Person < ApplicationRecord
   def original_works_by_genre
     ret = {}
     get_genres.map{|g| ret[g] = []}
-    Manifestation.all_published.joins(expression: [work: :creations]).includes(:expression).where("creations.person_id = #{self.id}").each do |m|
+    Manifestation.all_published
+                 .joins(expression: [work: :involved_authorities])
+                 .includes(:expression)
+                 .merge(InvolvedAuthority.where(person_id: id)).each do |m|
       ret[m.expression.work.genre] << m
     end
     return ret
@@ -264,7 +298,9 @@ class Person < ApplicationRecord
   def translations_by_genre
     ret = {}
     get_genres.map{|g| ret[g] = []}
-    Manifestation.all_published.joins(expression: :realizers).includes(expression: :work).where(realizers:{role: Realizer.roles[:translator], person_id: self.id}).each do |m|
+    Manifestation.all_published
+                 .joins(expression: :involved_authorities)
+                 .merge(InvolvedAuthority.role_translator.where(person_id: id)).each do |m|
       ret[m.expression.work.genre] << m
     end
     return ret
@@ -277,12 +313,18 @@ class Person < ApplicationRecord
   end
 
   def latest_stuff
-    latest_original_works = Manifestation.all_published.left_joins(expression: [:realizers, work: :creations]).includes(:expression).where(creations: {person_id: self.id}).order(created_at: :desc).limit(20)
+    latest_original_works = Manifestation.all_published
+                                         .joins(expression: [work: :involved_authorities])
+                                         .where(involved_authorities: { person_id: id })
+                                         .order(created_at: :desc).limit(20)
 
-    latest_translations = Manifestation.all_published.left_joins(expression: [:realizers, work: :creations]).includes(:expression).where(realizers: {role: Realizer.roles[:translator], person_id: self.id}).order(created_at: :desc).limit(20)
+    latest_translations = Manifestation.all_published
+                                       .joins(expression: [:involved_authorities])
+                                       .merge(InvolvedAuthority.role_translator)
+                                       .where(involved_authorities: { person_id: id })
+                                       .order(created_at: :desc).limit(20)
 
-    #Manifestation.all_published.left_joins(expression: [:realizers, work: :creations]).includes(:expression).where("(creations.person_id = #{self.id}) or ((realizers.person_id = #{self.id}) and (realizers.role = #{Realizer.roles[:translator]}))").order(created_at: :desc).limit(20)
-    return (latest_original_works + latest_translations).sort_by{|m| m.created_at}.reverse.first(20)
+    (latest_original_works + latest_translations).sort_by(&:created_at).reverse.first(20)
   end
 
   def cached_latest_stuff
@@ -305,18 +347,18 @@ class Person < ApplicationRecord
 
   def most_read(limit)
     Rails.cache.fetch("au_#{self.id}_#{limit}_most_read", expires_in: 24.hours) do
-      Manifestation.joins(expression: { work: :creations }).
-        merge(Creation.author.where(person_id: self.id)).
-        order(impressions_count: :desc).
-        limit(limit).map do |m|
-          {
-            id: m.id,
-            title: m.title,
-            author: m.authors_string,
-            translation: m.expression.translation,
-            genre: m.expression.work.genre
-          }
-        end
+      Manifestation.joins(expression: { work: :involved_authorities })
+                   .merge(InvolvedAuthority.role_author.where(person_id: id))
+                   .order(impressions_count: :desc)
+                   .limit(limit).map do |m|
+                     {
+                       id: m.id,
+                       title: m.title,
+                       author: m.authors_string,
+                       translation: m.expression.translation,
+                       genre: m.expression.work.genre
+                     }
+                   end
     end
   end
 

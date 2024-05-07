@@ -9,12 +9,10 @@
       %th
 
     - @mans.each do |m|
-      - xlator = m.expression.realizers.where(role: Realizer.roles[:translator])[0]
       %tr
         %td= link_to m.title, manifestation_show_path(m.id)
-        - person = m.expression.work.persons[0]
-        %td= person.nil? ? '' : person.name
-        %td= xlator.nil? ? '' : xlator.person.name
+        %td= m.authors.map(&:name).join(', ')
+        %td= m.translators.map(&:name).join(', ')
         %td= link_to t(:edit_metadata), manifestation_edit_metadata_path(m.id)
 
   != paginate @mans

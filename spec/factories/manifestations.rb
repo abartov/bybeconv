@@ -7,13 +7,15 @@ FactoryBot.define do
       orig_lang { %w(he en ru de it).sample }
       genre { Work::GENRES.sample }
       period { Expression.periods.keys.sample }
-      translator { orig_lang != language ? create(:person) : nil }
+      translator { orig_lang.to_s == language.to_s ? nil : create(:person) }
       editor { nil }
       illustrator { nil }
       intellectual_property { :public_domain }
       expression_title { title }
       work_title { title }
       primary { true }
+      expression_date { '2 ביוני 1960' }
+      work_date { '3 ביוני 1960' }
     end
 
     title { "Title for #{manifestation_name}" }
@@ -39,7 +41,9 @@ FactoryBot.define do
         genre: genre,
         period: period,
         intellectual_property: intellectual_property,
-        primary: primary
+        primary: primary,
+        date: expression_date,
+        work_date: work_date
       )
     end
 

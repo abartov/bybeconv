@@ -23,19 +23,13 @@ module V1
                documentation: { type: 'Integer', desc: "total number of times the person's page OR one of their texts were viewed or printed" }
       end
 
-      expose :texts, documentation: { desc: 'ID numbers of all texts this person is involved into with with role in each' },
-        if: lambda { |_person, options| %w(texts enriched).include?(options[:detail]) } do
-        expose :author, documentation: { type: 'Integer', is_array: true } do |person|
-          Creation.where(person_id: person.id).author.joins(work: { expressions: :manifestations }).pluck('manifestations.id').sort
-        end
-        expose :translator, documentation: { type: 'Integer', is_array: true } do |person|
-          Realizer.where(person_id: person.id).translator.joins(expression: :manifestations).pluck('manifestations.id').sort
-        end
-        expose :editor, documentation: { type: 'Integer', is_array: true } do |person|
-          Realizer.where(person_id: person.id).editor.joins(expression: :manifestations).pluck('manifestations.id').sort
-        end
-        expose :illustrator, documentation: { type: 'Integer', is_array: true } do |person|
-          Creation.where(person_id: person.id).illustrator.joins(work: { expressions: :manifestations }).pluck('manifestations.id').sort
+      expose :texts,
+             documentation: { desc: 'ID numbers of all texts this person is involved into with with role in each' },
+             if: ->(_person, options) { %w(texts enriched).include?(options[:detail]) } do
+        InvolvedAuthority.roles.each_key do |role|
+          expose role, documentation: { type: 'Integer', is_array: true } do |person|
+            person.published_manifestations(role).pluck('manifestations.id').sort
+          end
         end
       end
 

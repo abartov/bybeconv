@@ -667,10 +667,10 @@ class HtmlFile < ApplicationRecord
               date: year_published,
               comment: comments
             )
-            w.creations.build(person: p, role: :author)
+            w.involved_authorities.build(person: p, role: :author)
 
             if translator_id.present?
-              e.realizers.build(person: translator, role: :translator)
+              e.involved_authorities.build(person: translator, role: :translator)
             end
 
             # the author of the Expression and Manifestation is the translator, if one exists

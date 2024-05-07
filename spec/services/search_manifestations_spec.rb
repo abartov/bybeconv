@@ -40,35 +40,19 @@ describe SearchManifestations do
         period = %w(ancient medieval enlightenment revival modern)[index % 5]
         intellectual_property = %w(public_domain copyrighted by_permission unknown)[index % 4]
 
-        realizers = []
-
-        # only translated works have translator
-        unless lang == 'he'
-          realizers << create(:realizer, person: translators[(index  + 7) % translators.length], role: :translator)
-        end
-
-        work = create(
-          :work,
-          orig_lang: lang,
-          genre: genre,
-          author: authors[index % authors.length],
-          date: created_at.strftime('%d.%m.%Y')
-        )
-        expression = create(
-          :expression,
-          period: period,
-          genre: genre,
-          intellectual_property: intellectual_property,
-          realizers: realizers,
-          date: published_at.strftime('%d.%m.%Y'),
-          work: work
-        )
         create(
           :manifestation,
           title: "#{color} #{vegetable} #{index} title",
           impressions_count: index,
-          expression: expression,
-          created_at: uploaded_at
+          created_at: uploaded_at,
+          period: period,
+          genre: genre,
+          orig_lang: lang,
+          intellectual_property: intellectual_property,
+          author: authors[index % authors.length],
+          translator: lang == 'he' ? nil : translators[(index + 7) % translators.length],
+          expression_date: published_at.strftime('%d.%m.%Y'),
+          work_date: created_at.strftime('%d.%m.%Y')
         )
 
         uploaded_at += 1.week

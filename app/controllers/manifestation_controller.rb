@@ -492,8 +492,7 @@ class ManifestationController < ApplicationController
           @w.comment = params[:wcomment]
           @w.primary = params[:primary] == 'true'
           unless params[:add_person_w].blank?
-            c = Creation.new(work_id: @w.id, person_id: params[:add_person_w], role: params[:role_w].to_i)
-            c.save!
+            @w.involved_authorities.build(person_id: params[:add_person_w], role: params[:role_w])
           end
           @e.language = params[:elang]
           @e.title = params[:etitle]
@@ -501,8 +500,7 @@ class ManifestationController < ApplicationController
           @e.comment = params[:ecomment]
           @e.intellectual_property = params[:intellectual_property]
           unless params[:add_person_e].blank?
-            r = Realizer.new(expression_id: @e.id, person_id: params[:add_person_e], role: params[:role_e].to_i)
-            r.save!
+            @e.involved_authorities.build(person_id: params[:add_person_e], role: params[:role_e])
           end
           @e.source_edition = params[:source_edition]
           @e.period = params[:period]
@@ -820,33 +818,37 @@ class ManifestationController < ApplicationController
       unless @m.published?
         flash[:notice] = t(:work_not_available)
         redirect_to '/'
-      else
-        @e = @m.expression
-        @w = @e.work
-        @author = @w.persons[0] # TODO: handle multiple authors
-        unless is_spider?
-          Chewy.strategy(:bypass) do
-            @m.record_timestamps = false # avoid the impression count touching the datestamp
-            impressionist(@m)
-            @m.update_impression
-            unless @author.nil?
-              @author.record_timestamps = false # avoid the impression count touching the datestamp
-              impressionist(@author) # also increment the author's popularity counter
-              @author.update_impression
-            end
+        return
+      end
+
+      @e = @m.expression
+      @w = @e.work
+      @author = @w.authors[0] # TODO: handle multiple authors
+      unless is_spider?
+        Chewy.strategy(:bypass) do
+          @m.record_timestamps = false # avoid the impression count touching the datestamp
+          impressionist(@m)
+          @m.update_impression
+          unless @author.nil?
+            @author.record_timestamps = false # avoid the impression count touching the datestamp
+            impressionist(@author) # also increment the author's popularity counter
+            @author.update_impression
           end
-          ahoy.track "text read or printed", text_id: @m.id, title: @m.title, author: @m.author_string # log the read, for later recommendation feature using the Disco gem
         end
-        if @author.nil?
-          @author = Person.new(name: '?')
-        end
-        @translators = @m.translators
-        @illustrators = @w.illustrators
-        @editors = @e.editors
-        @page_title = "#{@m.title_and_authors} - #{t(:default_page_title)}"
-        if @print
-          @html = MultiMarkdown.new(@m.markdown).to_html.force_encoding('UTF-8').gsub(/<figcaption>.*?<\/figcaption>/,'') # remove MMD's automatic figcaptions
-        end
+        # log the read, for later recommendation feature using the Disco gem
+        ahoy.track 'text read or printed', text_id: @m.id, title: @m.title, author: @m.author_string
+      end
+      if @author.nil?
+        @author = Person.new(name: '?')
+      end
+      @translators = @m.translators
+      @illustrators = @m.involved_authorities_by_role(:illustrator)
+      @editors = @m.involved_authorities_by_role(:editor)
+      @page_title = "#{@m.title_and_authors} - #{t(:default_page_title)}"
+      if @print
+        # remove MMD's automatic figcaptions
+        @html = MultiMarkdown.new(@m.markdown).to_html
+                             .force_encoding('UTF-8').gsub(%r{<figcaption>.*?</figcaption>}, '')
       end
     end
   end

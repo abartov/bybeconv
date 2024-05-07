@@ -16,10 +16,10 @@ FactoryBot.define do
     normalized_pub_date {}
     normalized_creation_date { normalize_date(date) }
     primary { true }
-    creations do
-      result = [create(:creation, person: author, role: :author)]
+    involved_authorities do
+      result = [build(:involved_authority, person: author, role: :author)]
       if illustrator.present?
-        result << create(:creation, person: illustrator, role: :illustrator)
+        result << build(:involved_authority, person: illustrator, role: :illustrator)
       end
       result
     end

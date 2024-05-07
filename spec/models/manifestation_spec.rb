@@ -61,17 +61,16 @@ describe Manifestation do
   end
 
   describe '.manual_delete' do
-    let!(:manifestation) { create(:manifestation, orig_lang: 'de') }
-
     subject(:manual_delete) { manifestation.manual_delete }
 
+    let!(:manifestation) { create(:manifestation, orig_lang: 'de') }
+
     it 'removes record with all dependent subrecords' do
-      expect { manual_delete }.to change { Manifestation.count }.by(-1).
-        and change { Expression.count }.by(-1).
-        and change { Work.count }.by(-1).
-        and change { Realizer.count }.by(-1).  # translator removed
-        and change { Creation.count }.by(-1). # author removed
-        and change { Person.count }.by(0)     # people records are kept
+      expect { manual_delete }.to change(described_class, :count).by(-1)
+                                                                 .and change(Expression, :count).by(-1)
+                                                                 .and change(Work, :count).by(-1)
+                                                                 .and change(InvolvedAuthority, :count).by(-2)
+                                                                 .and not_change(Person, :count)
     end
   end
 
@@ -82,7 +81,7 @@ describe Manifestation do
       let(:author_2) { create(:person, name: 'Beta') }
       let(:manifestation) { create(:manifestation, author: author_1) }
       before do
-        create(:creation, work: manifestation.expression.work, role: :author, person: author_2)
+        create(:involved_authority, work: manifestation.expression.work, role: :author, person: author_2)
         manifestation.reload
       end
       it { is_expected.to eq 'Alpha, Beta' }
@@ -92,7 +91,8 @@ describe Manifestation do
       let(:manifestation) { create(:manifestation) }
 
       before do
-        manifestation.expression.work.creations.delete_all
+        manifestation.expression.work.involved_authorities.delete_all
+        manifestation.reload
       end
 
       it { is_expected.to eq I18n.t(:nil) }
@@ -106,7 +106,7 @@ describe Manifestation do
       let(:translator_2) { create(:person, name: 'Beta') }
       let(:manifestation) { create(:manifestation, orig_lang: 'de', translator: translator_1) }
       before do
-        create(:realizer, expression: manifestation.expression, role: :translator, person: translator_2)
+        create(:involved_authority, expression: manifestation.expression, role: :translator, person: translator_2)
         manifestation.reload
       end
       it { is_expected.to eq 'Alpha, Beta' }
@@ -116,7 +116,7 @@ describe Manifestation do
       let(:manifestation) { create(:manifestation) }
 
       before do
-        manifestation.expression.realizers.delete_all
+        manifestation.expression.involved_authorities.delete_all
         manifestation.reload
       end
 
@@ -131,7 +131,7 @@ describe Manifestation do
     let(:author_2) { create(:person, name: 'Beta') }
 
     before do
-      create(:creation, work: manifestation.expression.work, role: :author, person: author_2)
+      create(:involved_authority, work: manifestation.expression.work, role: :author, person: author_2)
       manifestation.reload
     end
 
@@ -144,7 +144,7 @@ describe Manifestation do
 
       context 'when no authors present' do
         before do
-          manifestation.expression.work.creations.delete_all
+          manifestation.expression.work.involved_authorities.delete_all
           manifestation.reload
         end
 
@@ -159,7 +159,7 @@ describe Manifestation do
       let(:manifestation) { create(:manifestation, orig_lang: 'de', author: author_1, translator: translator_1) }
 
       before do
-        create(:realizer, expression: manifestation.expression, role: :translator, person: translator_2)
+        create(:involved_authority, expression: manifestation.expression, role: :translator, person: translator_2)
         manifestation.reload
       end
 
@@ -169,7 +169,7 @@ describe Manifestation do
 
       context 'when no authors present' do
         before do
-          manifestation.expression.work.creations.delete_all
+          manifestation.expression.work.involved_authorities.delete_all
           manifestation.reload
         end
 
@@ -178,7 +178,7 @@ describe Manifestation do
 
       context 'when no translators present' do
         before do
-          manifestation.expression.realizers.delete_all
+          manifestation.expression.involved_authorities.delete_all
           manifestation.reload
         end
 

@@ -54,8 +54,10 @@ class AdminController < ApplicationController
   end
 
   def missing_languages
-    ex = Expression.joins([:realizers, :work]).where(realizers: {role: Realizer.roles[:translator]}, works: {orig_lang: 'he'})
-    mans = ex.map{|e| e.manifestations[0]}
+    ex = Expression.joins(%i(involved_authorities work))
+                   .where(works: { orig_lang: :he })
+                   .merge(InvolvedAuthority.role_translator)
+    mans = ex.map { |e| e.manifestations[0] }
     @total = mans.length
     @mans = Kaminari.paginate_array(mans).page(params[:page]).per(50)
     @page_title = t(:missing_language_report)
@@ -114,11 +116,24 @@ class AdminController < ApplicationController
     head :ok
   end
 
-  def suspicious_translations # find works where the author is also a translator -- this *may* be okay, in the case of self-translation, but probably is a mistake
-    records = Manifestation.joins(expression: [:realizers, work: :creations]).
-      where('realizers.person_id = creations.person_id').
-      merge(Realizer.translator).
-      merge(Creation.author)
+  # Find works where the author is also a translator -- this *may* be okay, in the case of self-translation,
+  # but probably is a mistake
+  def suspicious_translations
+    records = Manifestation.joins(expression: { work: :involved_authorities })
+                           .merge(InvolvedAuthority.role_author)
+                           .where(
+                             <<~SQL.squish,
+                               exists (
+                                 select 1 from
+                                   involved_authorities iat
+                                 where
+                                   iat.expression_id = expressions.id
+                                   and iat.person_id = involved_authorities.person_id
+                                   and iat.role = ?
+                               )
+                             SQL
+                             InvolvedAuthority.roles[:translator]
+                           )
     @total = records.count
     @mans = records.page(params[:page])
     @page_title = t(:suspicious_translations_report)
@@ -191,9 +206,11 @@ class AdminController < ApplicationController
   end
 
   def authors_without_works
-    @authors = nw = Person.left_joins(:realizers, :creations).group('people.id').having('(count(realizers.id) = 0) and (count(creations.id) = 0)').order('people.name asc')
+    @authors = Person.where('not exists (select 1 from involved_authorities ia where ia.person_id = people.id)')
+                     .order(:name)
     Rails.cache.write('report_authors_without_works', @authors.length)
   end
+
   # this is a massive report that takes a long time to run!
   def tocs_missing_links
     @author_keys = []
@@ -242,19 +259,19 @@ class AdminController < ApplicationController
     @authors = []
 
     # Getting list of authors, who wrote works in more than one language
-    translatees = Person.joins(creations: :work).
-      merge(Creation.author).
-      group('people.id').
-      select('people.id, people.name').
-      having('min(works.orig_lang) <> max(works.orig_lang)').
-      sort_by(&:name)
+    translatees = Person.joins(involved_authorities: :work)
+                        .merge(InvolvedAuthority.role_author)
+                        .group('people.id')
+                        .select('people.id, people.name')
+                        .having('min(works.orig_lang) <> max(works.orig_lang)')
+                        .sort_by(&:name)
 
     translatees.each do |t|
-      manifestations = Manifestation.joins(expression: { work: :creations }).
-        merge(Creation.author.where(person_id: t.id)).
-        preload(expression: :work).
-        sort_by { |m| [m.expression.work.orig_lang, m.sort_title] }.
-        group_by { |m| m.expression.work.orig_lang }
+      manifestations = Manifestation.joins(expression: { work: :involved_authorities })
+                                    .merge(InvolvedAuthority.role_author.where(person_id: t.id))
+                                    .preload(expression: :work)
+                                    .sort_by { |m| [m.expression.work.orig_lang, m.sort_title] }
+                                    .group_by { |m| m.expression.work.orig_lang }
       @authors << [t, manifestations.keys, manifestations]
     end
     Rails.cache.write('report_translated_from_multiple_languages', @authors.length)
@@ -267,17 +284,17 @@ class AdminController < ApplicationController
       exists (
         select 1 from
           people p
-          join creations c on p.id = c.person_id
+          join involved_authorities ia on p.id = ia.person_id
         where
-          c.work_id = works.id
+          ia.work_id = works.id
           and p.intellectual_property <> #{PUBLIC_DOMAIN_TYPE}
       )
       or exists (
         select 1 from
           people p
-          join realizers r on p.id = r.person_id
+          join involved_authorities ia on p.id = ia.person_id
         where
-          r.expression_id = expressions.id
+          ia.expression_id = expressions.id
           and p.intellectual_property <> #{PUBLIC_DOMAIN_TYPE}
       )
     )

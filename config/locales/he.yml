@@ -1076,7 +1076,6 @@ he:
   user_management: ניהול משתמשים
   editor_actions: פעולות עורך
   editor: עורך
-  illustrator: מאייר
   admin_actions: פעולות מנהל
   proof_for: הגהה עבור
   or: או
@@ -1393,7 +1392,16 @@ he:
     permission_for_all: כלל היצירה מוגש ברשות
     permission_for_selected: כותרים מסוימים מונגשים ברשות
     unknown: לא ידוע
-
+  involved_authority:
+    role:
+      author: יוצר
+      editor: עורך
+      illustrator: מאייר
+      translator: מתרגם
+      photographer: צלם
+      designer: מעצב
+      contributor: משתתף
+      other: אחר
 
   # This block of strings below should be removed when we finish work. Grouped them together to make it easier to find them again
   public_domain: נחלת הכלל

@@ -27,8 +27,7 @@ describe HtmlFile do
         expect { call }.to change(Manifestation, :count).by(1)
                                                         .and change(Expression, :count).by(1)
                                                         .and change(Work, :count).by(1)
-                                                        .and change(Creation, :count).by(1)
-                                                        .and change(Realizer, :count).by(1)
+                                                        .and change(InvolvedAuthority, :count).by(2)
         expect(manifestation.authors).to eq [author]
         expect(manifestation.translators).to eq [translator]
         expect(manifestation).to have_attributes(
