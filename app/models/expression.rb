@@ -20,6 +20,9 @@ class Expression < ApplicationRecord
     unknown: 100
   }, _prefix: true
 
+  # In browse works filters and API we should not show copyrighted works
+  PUBLIC_INTELLECTUAL_PROPERTY_TYPES = intellectual_properties.keys - ['copyrighted']
+
   validates :intellectual_property, presence: true
 
   def editors

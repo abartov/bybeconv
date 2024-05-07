@@ -53,7 +53,7 @@
              locals: { group_name: :intellectual_property,
                        title: Expression.human_attribute_name(:intellectual_property),
                        field_name: :ckb_intellectual_property,
-                       all_values: Expression.intellectual_properties.keys,
+                       all_values: Expression::PUBLIC_INTELLECTUAL_PROPERTY_TYPES,
                        labels: labels,
                        selected_values: @intellectual_property_types,
                        facet: @intellectual_property_facet,
