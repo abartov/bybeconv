@@ -1,6 +1,23 @@
 require 'rails_helper'
 
 describe AdminController do
+  describe '#authors_without_works' do
+    subject(:call) { get :authors_without_works }
+
+    include_context 'when editor logged in'
+
+    before do
+      create_list(:manifestation, 5)
+      create_list(:person, 3)
+      allow(Rails.cache).to receive(:write)
+    end
+
+    it 'is successful' do
+      expect(call).to be_successful
+      expect(Rails.cache).to have_received(:write).with('report_authors_without_works', 3)
+    end
+  end
+
   describe '#missing_genre' do
     subject { get :missing_genres }
 

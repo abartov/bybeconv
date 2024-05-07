@@ -1,5 +1,6 @@
 include BybeUtils
 Bybeconv::Application.routes.draw do
+  resources :involved_authorities, only: :destroy
   resources :user_blocks
   get 'crowd/index'
   get 'crowd/populate_edition' => 'crowd#populate_edition', as: 'crowd_populate_edition'
@@ -39,11 +40,6 @@ Bybeconv::Application.routes.draw do
   get 'aboutnesses/remove'
 
   get 'static_pages/render'
-
-  get 'realizers/remove'
-
-  get 'creations/add'
-  get 'creations/remove'
 
   get 'admin/index'
   get 'admin/missing_languages'

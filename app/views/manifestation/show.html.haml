@@ -6,9 +6,9 @@
   %p
     %b= link_to t(:render), url_for(action: :read, id: @m.id)
   %h1
-    != t(:work_details)+': '+@m.title+" / "+linkify_people(@w.persons)
+    #{t(:work_details)}: #{@m.title} / #{linkify_people(@w.involved_authorities.map(&:person))}
     - if @e.translation
-      != ' / '+linkify_people(@e.translators)
+      != " / #{linkify_people(@e.translators)}"
   - unless @legacy_url.nil?
     %h2= link_to t(:legacy_url), @legacy_url
   %h2= t(:work_entity_details)
@@ -34,7 +34,7 @@
     %b= t(:comments)+':'
     %br
     = @w.comment
-    = render partial: 'shared/associated_people', locals: { which: :work, work: @w, edit: false}
+    = render partial: 'involved_authorities', locals: { involved_authorities: @w.involved_authorities, edit: false }
   = render partial: 'aboutnesses', locals: {edit: true, add: true}
 
   %h2= t(:expression_details)
@@ -60,7 +60,7 @@
     %b= t(:comments)+':'
     %br
     = @e.comment
-    = render partial: 'shared/associated_people', locals: { which: :expression, expression: @e, edit: false}
+    = render partial: 'involved_authorities', locals: { involved_authorities: @e.involved_authorities, edit: false }
 
   %h2= t(:manifestation_details)
   %p
@@ -88,7 +88,6 @@
     %b= t(:comments)+':'
     %br
     = @m.comment
-    = render partial: 'shared/associated_people', locals: { which: :manifestation, manifestation: @m, edit: false}
   %hr
   %h2= t(:external_links)
   = render partial: 'external_links', locals: { links: @m.external_links, edit: false }

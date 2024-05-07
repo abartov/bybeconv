@@ -33,7 +33,9 @@ class Manifestation < ApplicationRecord
   scope :translations, -> { joins(:expression).includes(:expression).where(expressions: {translation: true})}
   scope :genre, -> (genre) { joins(expression: :work).where(works: {genre: genre})}
   scope :tagged_with, ->(tag_id) {joins(:taggings).where(taggings: {tag_id: tag_id, status: Tagging.statuses[:approved]}).distinct}
-  scope :with_involved_authorities, -> { preload(expression: { realizers: :person, work: { creations: :person } }) }
+  scope :with_involved_authorities, lambda {
+    preload(expression: { involved_authorities: :person, work: { involved_authorities: :person } })
+  }
 
   SHORT_LENGTH = 1500 # kind of arbitrary...
   LONG_LENGTH = 15000 # kind of arbitrary...
@@ -43,6 +45,11 @@ class Manifestation < ApplicationRecord
   # class variable
   @@popular_works = nil
   @@tmplock = false
+
+  def involved_authorities_by_role(role)
+    (expression.involved_authorities_by_role(role) + expression.work.involved_authorities_by_role(role)).uniq
+                                                                                                        .sort_by(&:name)
+  end
 
   def update_sort_title
     self.sort_title = self.title.strip_nikkud.tr('[]()*"\'', '').tr('-־',' ').strip
@@ -129,11 +136,11 @@ class Manifestation < ApplicationRecord
   end
 
   def manual_delete
-    self.destroy!
-    expression.realizers.each(&:destroy!)
+    destroy!
+    expression.involved_authorities.each(&:destroy!)
     w = expression.work
     expression.destroy!
-    w.creations.each(&:destroy!)
+    w.involved_authorities.each(&:destroy!)
     w.destroy!
   end
 

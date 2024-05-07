@@ -9,7 +9,7 @@
     - if e.translators.count > 0
       - person = e.translators[0]
     - else
-      - person = w.persons[0]
+      - person = w.authors[0]
     .breadcrumbs-text
       - unless person.nil?
         = link_to person.name, person_path(id: person.id)

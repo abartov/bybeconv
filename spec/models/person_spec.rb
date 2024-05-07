@@ -137,10 +137,12 @@ describe Person do
       subject { person.cached_works_count }
 
       before do
-        create(:manifestation, author: person)
-        create(:manifestation, editor: person)
-        create(:manifestation, orig_lang: 'de', author: person, translator: person) # This one should be counted only once
-        create(:manifestation) # should not be counted
+        create(:manifestation, author: person) # should be counted
+        create(:manifestation, editor: person) # should be counted
+        create(:manifestation, orig_lang: 'de', author: person, translator: person) # should be counted only once
+        create(:manifestation, author: person, status: :unpublished) # should not be counted
+        create(:manifestation, editor: person, status: :unpublished) # should not be counted
+        create(:manifestation)                                       # should not be counted
       end
 
       it { is_expected.to eq 3 }

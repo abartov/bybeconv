@@ -318,13 +318,13 @@ describe ManifestationController do
     end
 
     describe '#update' do
+      subject(:call) { put :update, params: params.merge(commit: commit, id: manifestation.id) }
+
       let(:user) { create(:user, :edit_catalog) }
 
       before do
         session[:user_id] = user.id
       end
-
-      subject { put :update, params: params.merge(commit: commit, id: manifestation.id) }
 
       context "when 'save' button pressed" do
         let(:commit) { I18n.t(:save) }
@@ -343,6 +343,9 @@ describe ManifestationController do
         end
 
         context 'when metadata was changed' do
+          let(:new_author) { create(:person) }
+          let(:new_translator) { create(:person) }
+
           let(:params) do
             {
               wtitle: 'New Work Title',
@@ -351,14 +354,21 @@ describe ManifestationController do
               genre: 'fables',
               wlang: 'ru',
               primary: 'false',
-              intellectual_property: 'by_permission'
+              intellectual_property: 'by_permission',
+              add_person_w: new_author.id,
+              role_w: :author,
+              add_person_e: new_translator.id,
+              role_e: :translator
             }
           end
 
           it 'updates metadata and redirects to show page' do
-            expect(subject).to redirect_to(manifestation_show_path(manifestation))
+            expect { call }.to change(InvolvedAuthority, :count).by(2)
+            expect(call).to redirect_to(manifestation_show_path(manifestation))
             expect(flash.notice).to eq I18n.t(:updated_successfully)
             manifestation.reload
+            expect(manifestation.authors).to include(new_author)
+            expect(manifestation.translators).to include(new_translator)
             expect(manifestation).to have_attributes(title: 'New Manifestation Title')
             expect(expression).to have_attributes(title: 'New Expression Title', intellectual_property: 'by_permission')
             expect(work).to have_attributes(title: 'New Work Title', orig_lang: 'ru', genre: 'fables', primary: false)

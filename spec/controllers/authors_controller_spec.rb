@@ -17,13 +17,6 @@ describe AuthorsController do
   describe '#get_random_author' do
     before do
       create_list(:manifestation, 5)
-      # we need to have bunch of authors with TOCs
-      authors = Person.joins(:creations).merge(Creation.author).to_a
-      authors.each do |author|
-        toc = create(:toc)
-        author.toc = toc
-        author.save!
-      end
     end
 
     context 'when genre is not provided' do

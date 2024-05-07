@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_04_26_134401) do
+ActiveRecord::Schema.define(version: 2024_05_07_172835) do
 
   create_table "aboutnesses", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -219,17 +219,6 @@ ActiveRecord::Schema.define(version: 2024_04_26_134401) do
     t.index ["base_user_id", "manifestation_id"], name: "index_bookmarks_on_base_user_id_and_manifestation_id", unique: true
     t.index ["base_user_id"], name: "index_bookmarks_on_base_user_id"
     t.index ["manifestation_id"], name: "index_bookmarks_on_manifestation_id"
-  end
-
-  create_table "creations", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
-    t.integer "work_id"
-    t.integer "person_id"
-    t.integer "role"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["person_id", "role"], name: "index_creations_on_person_id_and_role"
-    t.index ["person_id"], name: "index_creations_on_person_id"
-    t.index ["work_id"], name: "index_creations_on_work_id"
   end
 
   create_table "delayed_jobs", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -474,6 +463,18 @@ ActiveRecord::Schema.define(version: 2024_04_26_134401) do
     t.index ["user_id"], name: "index_impressions_on_user_id"
   end
 
+  create_table "involved_authorities", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.integer "person_id", null: false
+    t.integer "work_id"
+    t.integer "expression_id"
+    t.integer "role", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["expression_id"], name: "index_involved_authorities_on_expression_id"
+    t.index ["person_id"], name: "index_involved_authorities_on_person_id"
+    t.index ["work_id"], name: "index_involved_authorities_on_work_id"
+  end
+
   create_table "legacy_recommendations", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "from"
     t.string "about"
@@ -653,17 +654,6 @@ ActiveRecord::Schema.define(version: 2024_04_26_134401) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_reading_lists_on_user_id"
-  end
-
-  create_table "realizers", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
-    t.integer "expression_id"
-    t.integer "person_id"
-    t.integer "role"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["expression_id"], name: "index_realizers_on_expression_id"
-    t.index ["person_id"], name: "index_realizers_on_person_id"
-    t.index ["role", "person_id"], name: "index_realizers_on_role_and_person_id"
   end
 
   create_table "recommendations", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -884,6 +874,9 @@ ActiveRecord::Schema.define(version: 2024_04_26_134401) do
   add_foreign_key "featured_contents", "users"
   add_foreign_key "holdings", "bib_sources"
   add_foreign_key "holdings", "publications"
+  add_foreign_key "involved_authorities", "expressions"
+  add_foreign_key "involved_authorities", "people"
+  add_foreign_key "involved_authorities", "works"
   add_foreign_key "list_items", "users"
   add_foreign_key "manifestations", "expressions"
   add_foreign_key "people", "tocs", name: "people_toc_id_fk"
@@ -893,8 +886,6 @@ ActiveRecord::Schema.define(version: 2024_04_26_134401) do
   add_foreign_key "publications", "bib_sources"
   add_foreign_key "publications", "people"
   add_foreign_key "reading_lists", "users"
-  add_foreign_key "realizers", "expressions"
-  add_foreign_key "realizers", "people"
   add_foreign_key "recommendations", "manifestations"
   add_foreign_key "recommendations", "users"
   add_foreign_key "recommendations", "users", column: "approved_by", name: "recommendations_approved_by_fk"

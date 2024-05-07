@@ -64,3 +64,13 @@ en:
     permission_for_all: permission for all
     permission_for_selected: permission for selected
     unknown: unknown
+  involved_authority:
+    role:
+      author: Author
+      editor: Editor
+      illustrator: Illustrator
+      translator: Translator
+      photographer: Photographer
+      designer: Designer
+      contributor: Contributor
+      other: Other

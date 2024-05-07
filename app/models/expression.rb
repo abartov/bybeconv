@@ -1,12 +1,13 @@
 class Expression < ApplicationRecord
+  include RecordWithInvolvedAuthorities
+
   before_save :set_translation
   before_save :norm_dates
   enum period: %i(ancient medieval enlightenment revival modern)
 
   belongs_to :work, inverse_of: :expressions
   has_many :manifestations, inverse_of: :expression, dependent: :destroy
-  has_many :realizers, dependent: :destroy
-  has_many :persons, through: :realizers, class_name: 'Person'
+  has_many :involved_authorities, dependent: :destroy, inverse_of: :expression
   has_many :aboutnesses, as: :aboutable, dependent: :destroy
   has_many :taggings, as: :taggable, dependent: :destroy
   has_many :tags, through: :taggings, class_name: 'Tag'
@@ -25,12 +26,8 @@ class Expression < ApplicationRecord
 
   validates :intellectual_property, presence: true
 
-  def editors
-    realizers.to_a.select(&:editor?).map(&:person)
-  end
-
   def translators
-    realizers.to_a.select(&:translator?).map(&:person)
+    involved_authorities_by_role(:translator)
   end
 
   def self.cached_translations_count
