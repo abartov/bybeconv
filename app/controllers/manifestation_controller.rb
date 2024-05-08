@@ -10,8 +10,6 @@ class ManifestationController < ApplicationController
   autocomplete :person, :name, :limit => 2, full: true
   autocomplete :tag, :name, :limit => 2
 
-  #impressionist :actions=>[:read,:readmode, :print, :download] # log actions for pageview stats
-
   #layout false, only: [:print]
 
   DATE_FIELD = {'uploaded' => 'manifestations.created_at', 'created' => 'works.normalized_creation_date', 'published' => 'expressions.normalized_pub_date'}
@@ -344,6 +342,18 @@ class ManifestationController < ApplicationController
     end
   end
 
+  def autocomplete_dict_entry
+    term = params[:term]
+    # we search *aliases*, to find headwords even without diacritics, or with spelling variants
+    items = if term&.present?
+              DictionaryAlias.joins(:dictionary_entry).where(dictionary_entry: {manifestation_id: params[:manifestation_id]}).where('alias like ?', "#{term}%").limit(15)
+            else
+              {}
+            end
+    results = items.map {|item| val = item.dictionary_entry.defhead
+                        {id: item.dictionary_entry_id, label: val, value: val}}
+    render json: results, root: false
+  end
   #############################################
   # editor actions
 

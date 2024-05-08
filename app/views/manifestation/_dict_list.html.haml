@@ -14,6 +14,11 @@
     = @total_headwords 
     = 'ערכים'
 .by-card-content-v02
+  = form_tag 'searchbox' do
+    = t(:search_the_dictionary)
+    = hidden_field_tag :mid, @m.id
+    = autocomplete_field_tag :dictq, '', autocomplete_dict_entry_path, {'data-noMatchesLabel' => t(:no_matches_found), id: 'dict_autocomplete', placeholder: t(:search_term), class: 'field-v02', style: 'width: unset; margin-top: unset; margin-bottom:10px;', fields: {manifestation_id: '#mid'}}
+ 
   - unless @total_pages <= 1
     = render partial: 'dict_slide_pagination'
     = render partial: 'ab_pagination', locals: {filter_element: 'dict_filters'}
@@ -114,4 +119,10 @@
         }
       }
     });
+    $('#dict_autocomplete').on('railsAutocomplete.select', function(event, data){
+      event.preventDefault();
+      entry_id = data.item.id.toString();
+      window.location.href = '/dict/'+$('#mid').val()+'/'+entry_id;
+    });
+
   });
