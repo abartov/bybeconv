@@ -43,10 +43,16 @@ Naming/VariableNumber:
 Layout/LineLength:
   Max: 120
 
+Lint/DuplicateBranch:
+  Enabled: false
+
 Style/HashSyntax:
   EnforcedShorthandSyntax: never
 
 Style/IfUnlessModifier:
+  Enabled: false
+
+Style/NumericPredicate:
   Enabled: false
 
 Style/PercentLiteralDelimiters:
