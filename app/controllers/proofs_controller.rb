@@ -89,14 +89,16 @@ class ProofsController < ApplicationController
       else
         @p.status = 'wontfix'
         @explanation = params[:wontfix_explanation]
-        unless @p.from.nil? or @p.from !~ /\w+@\w+\.\w+/
+        unless params[:email] == 'no' or @p.from.nil? or @p.from !~ /\w+@\w+\.\w+/
           if @p.manifestation_id.nil?
             Notifications.proof_wontfix(@p, @p.about, nil, @explanation).deliver
           else
             Notifications.proof_wontfix(@p, manifestation_path(@p.manifestation_id), @p.manifestation, @explanation).deliver
           end
+          fix_text = 'כבר תקין (ונשלח דואל)'
+        else
+  	      fix_text = 'כבר תקין, בלי לשלוח דואל'
         end
-        fix_text = 'כבר תקין (ונשלח דואל)'
       end
     else # spam, just ignore
       @p.status = 'spam'
