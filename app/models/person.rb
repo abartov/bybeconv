@@ -343,30 +343,6 @@ class Person < ApplicationRecord
     Tag.joins(:taggings).where(taggings: {taggable_type: 'Manifestation', taggable_id: mm}).group('tags.id').order('count_all DESC').count
   end
 
-  def self.get_popular_authors_by_genre(genre)
-    Rails.cache.fetch("au_pop_in_#{genre}", expires_in: 24.hours) do # memoize
-      Person.has_toc.joins(expressions: :work).where(works: { genre: genre }).order(impressions_count: :desc).distinct.limit(10).all.to_a # top 10
-    end
-  end
-
-  def self.get_popular_translators
-    Rails.cache.fetch("au_pop_translators", expires_in: 24.hours) do # memoize
-      Person.joins(:realizers).where(realizers: {role: Realizer.roles[:translator]}).order(impressions_count: :desc).distinct.limit(10)
-    end
-  end
-
-  def self.get_popular_xlat_authors
-    Rails.cache.fetch("au_pop_xlat", expires_in: 24.hours) do # memoize
-      Person.joins(creations: {work: :expressions}).where(creations: {role: Creation.roles[:author]}, expressions: {translation: true}).order(impressions_count: :desc).distinct
-    end
-  end
-
-  def self.get_popular_xlat_authors_by_genre(genre)
-    Rails.cache.fetch("au_pop_xlat_in_#{genre}", expires_in: 24.hours) do # memoize
-      Person.joins(creations: {work: :expressions}).where(creations: {role: Creation.roles[:author]}, expressions: { genre:genre, translation: true}).order(impressions_count: :desc).distinct.limit(10).all.to_a # top 10
-    end
-  end
-
   def self.recalc_popular
     @@popular_authors = Person.has_toc.order(impressions_count: :desc).limit(10).all.to_a # top 10 #TODO: make it actually about *most-read* authors, rather than authors whose *TOC* is most-read
   end
