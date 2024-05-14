@@ -353,31 +353,6 @@ class AuthorsController < ApplicationController
     end
   end
 
-  # This code was used for 'secondary portal', but not used anymore. We may need to reimplement it at some point
-  # def index
-  #   @page_title = t(:authors)+' - '+t(:project_ben_yehuda)
-  #   @pop_by_genre = cached_popular_authors_by_genre # get popular authors by genre + most popular translated
-  #   @rand_by_genre = {}
-  #   @pagetype = :authors
-  #   @surprise_by_genre = {}
-  #   get_genres.each do |g|
-  #     @rand_by_genre[g] = randomize_authors(@pop_by_genre[g][:orig], g) # get random authors by genre
-  #     @rand_by_genre[g] = @pop_by_genre[g][:orig] if @rand_by_genre[g].empty? # workaround for genres with very few authors (like fables, in 2017)
-  #     @surprise_by_genre[g] = @rand_by_genre[g].pop # make one of the random authors the surprise author
-  #   end
-  #   @authors_abc = Person.order(:sort_name).limit(100) # get page 1 of all authors
-  #   @author_stats = {total: Person.cached_toc_count, pd: Person.cached_pd_count, translators: Person.cached_translators_count, translated: Person.cached_no_toc_count}
-  #   @author_stats[:permission] = @author_stats[:total] - @author_stats[:pd]
-  #   @authors_by_genre = count_authors_by_genre
-  #   @new_authors = Person.has_toc.latest(3)
-  #   @featured_author = featured_author
-  #   (@fa_snippet, @fa_rest) = @featured_author.nil? ? ['',''] : snippet(@featured_author.body, 500)
-  #   @rand_translated_authors = Person.translatees.order('RAND()').limit(5)
-  #   @rand_translators = Person.translators.order('RAND()').limit(5)
-  #   @pop_translated_authors = Person.get_popular_xlat_authors.limit(5)
-  #   @pop_translators = Person.get_popular_translators.limit(5)
-  # end
-
   def new
     @person = Person.new(intellectual_property: :unknown)
     @page_title = t(:new_author)

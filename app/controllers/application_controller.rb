@@ -6,10 +6,6 @@ class ApplicationController < ActionController::Base
   after_action :set_access_control_headers
   autocomplete :tag_name, :name, limit: 15, scopes: [:approved], extra_data: [:tag_id] # TODO: also search alternate titles!
 
-  # class variables
-  @@countauthors_cache = nil
-  @@genre_popups_cache = nil
-  @@pop_authors_by_genre = nil
   SPIDERS = ['msnbot', 'yahoo! slurp','googlebot','bingbot','duckduckbot','baiduspider','yandexbot','semrushbot']
 
   # returns BaseUser record associated with current user
@@ -176,44 +172,6 @@ class ApplicationController < ActionController::Base
       totals = Manifestation.published.joins(:expression).group(:period).count
       get_periods.index_with { |period| totals[Expression.periods[period]] || 0 }
     end
-  end
-
-  def cached_popular_authors_by_genre
-    if @@pop_authors_by_genre.nil?
-      ret = {}
-      get_genres.each {|g|
-        ret[g] = {}
-        ret[g][:orig] = Person.get_popular_authors_by_genre(g)
-        ret[g][:xlat] = Person.get_popular_xlat_authors_by_genre(g)
-      }
-      @@pop_authors_by_genre = ret
-    end
-    return @@pop_authors_by_genre
-  end
-
-  def popups_by_genre
-    if @@genre_popups_cache.nil?
-      ret = {}
-      get_genres.each {|g|
-        ret[g] = {}
-        ret[g][:authors] = Person.get_popular_authors_by_genre(g)
-        ret[g][:heb_works] = Manifestation.popular_works_by_genre(g, false)
-        ret[g][:xlat_works] = Manifestation.popular_works_by_genre(g, true)
-      }
-      @@genre_popups_cache = ret
-    end
-    return @@genre_popups_cache
-  end
-
-  def count_authors_by_genre
-    if @@countauthors_cache.nil?
-      ret = {}
-      get_genres.each {|g|
-        ret[g] = Person.has_toc.joins(:expressions).where(expressions: {genre: g}).distinct.count
-      }
-      @@countauthors_cache = ret
-    end
-    return @@countauthors_cache
   end
 
   def prep_edit_toc
