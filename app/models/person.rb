@@ -39,8 +39,6 @@ class Person < ApplicationRecord
   scope :bib_not_done, -> {where("bib_done is null OR bib_done = 0")}
   scope :new_since, -> (since) { where('created_at > ?', since)}
   scope :latest, -> (limit) {order('created_at desc').limit(limit)}
-  scope :translators, -> {joins(:realizers).where(realizers: {role: Realizer.roles[:translator]}).distinct}
-  scope :translatees, -> {joins(creations: {work: :expressions}).where(creations: {role: Creation.roles[:author]}, expressions: {translation: true}).distinct}
   scope :tagged_with, -> (tag_id) {joins(:taggings).where(taggings: {tag_id: tag_id, status: Tagging.statuses[:approved]}).distinct}
 
   # features
@@ -146,12 +144,6 @@ class Person < ApplicationRecord
 
   def has_any_non_hebrew_works?
     return Manifestation.all_published.joins(expression: { work: :creations }).merge(Creation.author.where(person_id: self.id)).where.not(works: { orig_lang: 'he' }).exists?
-  end
-
-  def self.cached_translators_count
-    Rails.cache.fetch("au_translators_count", expires_in: 24.hours) do
-      self.translators.count
-    end
   end
 
   def self.cached_count
