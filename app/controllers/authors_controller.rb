@@ -353,6 +353,23 @@ class AuthorsController < ApplicationController
     end
   end
 
+  def show
+    @author = Person.find(params[:id])
+    @published_works = @author.original_works.count
+    @published_xlats = @author.translations.count
+    @total_orig_works = @author.manifestations(:author).count
+    @total_xlats = @author.manifestations(:translator).count
+    @aboutnesses = @author.aboutnesses
+
+    if @author.nil?
+      flash[:error] = t(:no_such_item)
+      redirect_to '/'
+    else
+      # TODO: add other types of content
+      @page_title = "#{t(:author_details)}: #{@author.name}"
+    end
+  end
+
   def new
     @person = Person.new(intellectual_property: :unknown)
     @page_title = t(:new_author)
@@ -381,7 +398,7 @@ class AuthorsController < ApplicationController
 
   def destroy
     @author = Person.find(params[:id])
-    Chewy.strategy(:atomic) {
+    Chewy.strategy(:atomic) do
       if @author.nil?
         flash[:error] = t(:no_such_item)
         redirect_to '/'
@@ -389,23 +406,6 @@ class AuthorsController < ApplicationController
         @author.destroy!
         redirect_to action: :list
       end
-    }
-  end
-
-  def show
-    @author = Person.find(params[:id])
-    @published_works = @author.original_works.count
-    @published_xlats = @author.translations.count
-    @total_orig_works = @author.original_work_count_including_unpublished
-    @total_xlats = @author.translations_count_including_unpublished
-    @aboutnesses = @author.aboutnesses
-
-    if @author.nil?
-      flash[:error] = t(:no_such_item)
-      redirect_to '/'
-    else
-      # TODO: add other types of content
-      @page_title = t(:author_details)+': '+@author.name
     end
   end
 

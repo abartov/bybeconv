@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe Person do
   describe 'validations' do
     it 'considers empty Person invalid' do
       p = described_class.new
-      expect(p).to_not be_valid
+      expect(p).not_to be_valid
     end
 
     it 'considers Person with all mandatory fields filled as valid' do
@@ -22,34 +24,37 @@ describe Person do
       before do
         create(:manifestation, author: person, genre: 'poetry')
         create(:manifestation, author: person, genre: 'poetry')
-        create(:manifestation, illustrator: person, genre: 'fables')
+        create(:manifestation, illustrator: person, genre: 'fables') # illustrated works should not be included
         create(:manifestation, translator: person, orig_lang: 'ru', genre: 'article')
         create(:manifestation, translator: person, orig_lang: 'ru', genre: 'memoir')
         create(:manifestation, editor: person, genre: 'prose') # edited works should not be included
       end
 
-      it { is_expected.to eq %w(article fables memoir poetry) }
+      it { is_expected.to eq %w(article memoir poetry) }
     end
 
     describe '.most_read' do
+      subject { person.most_read(limit).pluck(:id) }
+
       let!(:manifestation_1) { create(:manifestation, author: person, impressions_count: 10, genre: :fables) }
       let!(:manifestation_2) { create(:manifestation, author: person, impressions_count: 20, genre: :memoir) }
       let!(:manifestation_3) { create(:manifestation, author: person, impressions_count: 30, genre: :article) }
 
-      subject { person.most_read(limit).map{ |rec| rec[:id] } }
-
       context 'when limit is less than total number of works' do
         let(:limit) { 2 }
+
         it { is_expected.to eq [manifestation_3.id, manifestation_2.id] }
       end
 
       context 'when limit is equal to total number of works' do
         let(:limit) { 3 }
+
         it { is_expected.to eq [manifestation_3.id, manifestation_2.id, manifestation_1.id] }
       end
 
       context 'when limit is bigger than total number of works' do
         let(:limit) { 4 }
+
         it { is_expected.to eq [manifestation_3.id, manifestation_2.id, manifestation_1.id] }
       end
     end
@@ -112,14 +117,14 @@ describe Person do
     end
 
     describe '.latest_stuff' do
+      subject(:latest_stuff) { person.latest_stuff }
+
       let!(:original_work) { create(:manifestation, author: person) }
       let!(:translated_work) { create(:manifestation, orig_lang: 'ru', translator: person) }
       let!(:edited_work) { create(:manifestation, orig_lang: 'ru', editor: person) }
 
-      subject(:latest_stuff) { person.latest_stuff }
-
       it 'returns latest original and translated works' do
-        expect(latest_stuff).to match_array [original_work, translated_work]
+        expect(latest_stuff).to contain_exactly(original_work, translated_work)
       end
 
       context 'when more than 20 records present' do
@@ -161,7 +166,8 @@ describe Person do
 
       # this item should not be duplicated
       let!(:original_and_translated_work) do
-        create(:manifestation, title: "original translated #{title} work", language: 'he', orig_lang: 'ru', author: person, translator: person)
+        create(:manifestation, title: "original translated #{title} work", language: 'he', orig_lang: 'ru',
+                               author: person, translator: person)
       end
 
       before do
@@ -170,7 +176,139 @@ describe Person do
         create_list(:manifestation, 2, author: person)
       end
 
-      it { is_expected.to match_array [original_work, translated_work, original_and_translated_work] }
+      it { is_expected.to contain_exactly(original_work, translated_work, original_and_translated_work) }
+    end
+
+    describe '.manifestations' do
+      let!(:as_author) { create(:manifestation, author: person) }
+      let!(:as_translator) { create(:manifestation, translator: person, orig_lang: 'en') }
+      let!(:as_author_and_illustrator) { create(:manifestation, author: person, illustrator: person) }
+      let!(:as_author_unpublished) { create(:manifestation, author: person, status: :unpublished) }
+      let!(:as_illustrator_on_expression_level) do
+        create(:manifestation).tap do |manifestation|
+          manifestation.expression.involved_authorities.create!(role: :illustrator, person: person)
+        end
+      end
+
+      before do
+        create_list(:manifestation, 5)
+      end
+
+      context 'when single role is passed' do
+        it 'returns all manifestations where person has given role, including unpublished' do
+          expect(person.manifestations(:author)).to contain_exactly(
+            as_author,
+            as_author_unpublished,
+            as_author_and_illustrator
+          )
+          expect(person.manifestations(:translator)).to eq [as_translator]
+          expect(person.manifestations(:illustrator)).to contain_exactly(
+            as_author_and_illustrator,
+            as_illustrator_on_expression_level
+          )
+          expect(person.manifestations(:editor)).to be_empty
+        end
+      end
+
+      context 'when several roles are passed' do
+        it 'returns all manifestations where person has given role, including unpublished' do
+          expect(person.manifestations(:author, :editor)).to contain_exactly(
+            as_author,
+            as_author_unpublished,
+            as_author_and_illustrator
+          )
+
+          expect(person.manifestations(:author, :translator)).to contain_exactly(
+            as_author,
+            as_author_unpublished,
+            as_author_and_illustrator,
+            as_translator
+          )
+
+          expect(person.manifestations(:translator, :illustrator)).to contain_exactly(
+            as_translator,
+            as_author_and_illustrator,
+            as_illustrator_on_expression_level
+          )
+
+          expect(person.manifestations(:editor, :other)).to be_empty
+        end
+      end
+
+      context 'when no roles are passed' do
+        it 'returns all manifestations where person has any role, including unpublished' do
+          expect(person.manifestations).to contain_exactly(
+            as_author,
+            as_author_unpublished,
+            as_author_and_illustrator,
+            as_translator,
+            as_illustrator_on_expression_level
+          )
+        end
+      end
+    end
+
+    describe '.published_manifestations' do
+      let!(:as_author) { create(:manifestation, author: person) }
+      let!(:as_translator) { create(:manifestation, translator: person, orig_lang: 'en') }
+      let!(:as_author_and_illustrator) { create(:manifestation, author: person, illustrator: person) }
+      let!(:as_author_unpublished) { create(:manifestation, author: person, status: :unpublished) }
+
+      before do
+        create_list(:manifestation, 5)
+      end
+
+      it 'works correctly and ignores unpublished works' do
+        expect(person.published_manifestations).to contain_exactly(as_author, as_translator, as_author_and_illustrator)
+        expect(person.published_manifestations(:author)).to contain_exactly(as_author, as_author_and_illustrator)
+        expect(person.published_manifestations(:translator, :illustrator)).to contain_exactly(
+          as_translator, as_author_and_illustrator
+        )
+        expect(person.published_manifestations(:editor)).to be_empty
+      end
+    end
+
+    describe '.original_works_by_genre' do
+      subject(:result) { person.original_works_by_genre }
+
+      let!(:fables) { create_list(:manifestation, 5, genre: :fables, author: person) }
+      let!(:poetry) { create_list(:manifestation, 2, genre: :poetry, author: person) }
+
+      it 'works correctly' do
+        expect(result).to eq({
+                               'article' => [],
+                               'drama' => [],
+                               'fables' => fables,
+                               'letters' => [],
+                               'lexicon' => [],
+                               'memoir' => [],
+                               'poetry' => poetry,
+                               'prose' => [],
+                               'reference' => []
+                             })
+      end
+    end
+
+    describe '.translations_by_genre' do
+      subject(:result) { person.translations_by_genre }
+
+      let!(:memoirs) { create_list(:manifestation, 5, genre: :memoir, orig_lang: :ru, translator: person) }
+      let!(:poetry) { create_list(:manifestation, 2, genre: :poetry, orig_lang: :en, translator: person) }
+      let!(:articles) { create_list(:manifestation, 3, genre: :article, orig_lang: :de, translator: person) }
+
+      it 'works correctly' do
+        expect(result).to eq({
+                               'article' => articles,
+                               'drama' => [],
+                               'fables' => [],
+                               'letters' => [],
+                               'lexicon' => [],
+                               'memoir' => memoirs,
+                               'poetry' => poetry,
+                               'prose' => [],
+                               'reference' => []
+                             })
+      end
     end
   end
 end
