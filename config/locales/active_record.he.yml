@@ -11,8 +11,8 @@ he:
         involved_authority:
           attributes:
             base:
-              no_item: either Work or Expression object must be specified
-              multiple_items: Work and Expression objects cannot be specified together
+              no_item: חובה לשייך יצירה או ביטוי
+              multiple_items: אי אפשר לשייך גם יצירה וגם ביטוי
     attributes:
       expression:
         intellectual_property: מצב זכויות יוצרים
