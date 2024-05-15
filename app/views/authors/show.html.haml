@@ -116,9 +116,6 @@
         - if @author.profile_image.file?
           %br
           = link_to t(:delete_photo), delete_author_photo_path(id: @author.id), data: {confirm: t(:are_you_sure)}
-  %p
-    %b= t(:metadata_approved)+': '
-    = @author.metadata_approved ? t(:yes) : t(:no)
 
   %p
   = link_to t(:back), authors_list_path

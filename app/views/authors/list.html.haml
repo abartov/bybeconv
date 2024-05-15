@@ -10,7 +10,6 @@
   %table{style: 'cell-spacing: 10;'}
     %tr
       %th= t(:name)
-      %th= t(:metadata_approved)
       %th= t(:dates)
       %th= t(:other_designation)
       %th= t(:status)
@@ -26,7 +25,6 @@
     - @people.each do |person|
       %tr
         %td= link_to person.name, authors_show_path(id: person.id)
-        %td= person.metadata_approved ? t(:yes) : t(:no)
         %td= "#{person.birthdate}  - #{person.deathdate}"
         %td= person.other_designation
         %td
