@@ -8,11 +8,19 @@ module V1
       expose :metadata do
         expose :name
         expose :sort_name,  documentation: { desc: 'version of the name more useful for alphabetical sorting' }
-        expose :birth_year, documentation: { type: 'Integer' }
-        expose :death_year, documentation: { type: 'Integer' }
-        expose :gender, documentation: { values: ::Person.genders.keys }
-        expose :intellectual_property, documentation: { values: ::Person.intellectual_properties.keys }
-        expose :period, documentation: { values: ::Person.periods.keys }
+        expose :birth_year, documentation: { type: 'Integer' } do |au|
+          au.person.birth_year
+        end
+        expose :death_year, documentation: { type: 'Integer' } do |au|
+          au.person.death_year
+        end
+        expose :gender, documentation: { values: ::Person.genders.keys } do |au|
+          au.person.gender
+        end
+        expose :intellectual_property, documentation: { values: ::Authority.intellectual_properties.keys }
+        expose :period, documentation: { values: ::Person.periods.keys } do |au|
+          au.person.period
+        end
         expose :other_designation, as: :other_designations,
                documentation: { desc: 'semicolon-separated list of additional names or spellings for this person' }
         expose :wikipedia_snippet, as: :bio_snippet

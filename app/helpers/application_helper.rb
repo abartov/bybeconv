@@ -10,6 +10,7 @@ module ApplicationHelper
     end
     lines.join + '...'
   end
+
   def about_the_author(au)
     ret = I18n.t(:about_the_author)
     return au.gender == 'female' ? ret + 'ת' : ret

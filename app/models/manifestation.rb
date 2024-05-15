@@ -34,7 +34,7 @@ class Manifestation < ApplicationRecord
   scope :genre, -> (genre) { joins(expression: :work).where(works: {genre: genre})}
   scope :tagged_with, ->(tag_id) {joins(:taggings).where(taggings: {tag_id: tag_id, status: Tagging.statuses[:approved]}).distinct}
   scope :with_involved_authorities, lambda {
-    preload(expression: { involved_authorities: :person, work: { involved_authorities: :person } })
+    preload(expression: { involved_authorities: :authority, work: { involved_authorities: :authority } })
   }
 
   SHORT_LENGTH = 1500 # kind of arbitrary...
@@ -161,13 +161,12 @@ class Manifestation < ApplicationRecord
   end
 
   def author_gender
-    authors.pluck(:gender).uniq.reject{|x| x.blank?}
+    authors.map { |authority| authority&.person&.gender }.compact.uniq
   end
 
   def translator_gender
-    translators.pluck(:gender).uniq.reject{|x| x.blank?}
+    translators.map { |authority| authority&.person&.gender }.compact.uniq
   end
-
   def translators
     return expression.translators
   end
@@ -235,7 +234,7 @@ class Manifestation < ApplicationRecord
 
   def recalc_cached_people!
     recalc_cached_people
-     save!
+    save!
   end
 
   # TODO: calculate this by month

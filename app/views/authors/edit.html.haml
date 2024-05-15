@@ -1,6 +1,6 @@
 .backend
   %h1= "#{@author.name}: #{t(:edit_metadata)}"
-  = render partial: 'form', locals: {action: :update, person: @author}
+  = render partial: 'form', locals: { action: :update, authority: @author }
   %p
   %h2= t(:external_links)
   - els = @author.external_links

@@ -6,7 +6,7 @@ FactoryBot.define do
     title { "#{Faker::Lorem.sentence}." }
     genre { Work::GENRES.sample }
     publisher { Faker::Company.name }
-    person { create(:person) }
-    translator { create(:person) }
+    author { create(:authority) }
+    translator { create(:authority) }
   end
 end

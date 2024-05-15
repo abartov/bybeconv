@@ -8,7 +8,7 @@
               .btn-text-v02
                 %span.right-arrow 2
                 %span= t(:back)
-            .headline-2-v02{style:'text-align: center;margin:0;padding-top:3px;'}= about_the_author(author)
+            .headline-2-v02{ style: 'text-align: center;margin:0;padding-top:3px;' }= about_the_author(author.person)
             .button-placeholder
           .by-popup-v02
             %button.close.card-header-close{ type: 'button', 'data-dismiss' => 'modal'}
@@ -18,12 +18,13 @@
               .surprise-author-card-v02
                 %img.surprise-author-pic-v02{ src: author.profile_image.url(:thumb), width: 475, height: 686, alt: author.name}
                 .author-name-area
-                  .author-name-v02= to_the_author_page(author)
+                  .author-name-v02= to_the_author_page(author.person)
             .by-card-header-v02
               .surprise-author-name-v02
                 %span.headline-1-v02
                   = link_to author.name, person_path(author.id)
-                %span.date-range!= " (#{author.life_years})"
+                - if author.person.present?
+                  %span.date-range (#{author.person.life_years})
             .by-card-content-v02
               .surprise-author-card-content-v02
                 .metadata

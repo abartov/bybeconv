@@ -59,8 +59,9 @@ class Tag < ApplicationRecord
   def anthology_taggings
     self.taggings.where(taggable_type: 'Anthology')
   end
-  def people_taggings
-    self.taggings.where(taggable_type: 'Person')
+
+  def authority_taggings
+    taggings.where(taggable_type: 'Authority')
   end
 
   def merge_into(tag)

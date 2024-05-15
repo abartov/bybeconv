@@ -18,7 +18,8 @@
               .author-name-years
                 .headline-1-v02
                   = @author.name
-                .author-page-top-years!= "(#{@author.life_years})"
+                - if @author.person.present?
+                  .author-page-top-years (#{@author.person.life_years})
             .by-card-content-v02
               .text-height-author= @author.wikipedia_snippet
               - if @author.wikipedia_url.present?

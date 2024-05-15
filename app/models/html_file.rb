@@ -328,8 +328,12 @@ class HtmlFile < ApplicationRecord
   include Ensure_docx_content_type # fixing docx content-type detection problem, per https://github.com/thoughtbot/paperclip/issues/1713
   has_paper_trail
   has_and_belongs_to_many :manifestations
-  belongs_to :person # for simplicity, only a single author considered per HtmlFile -- additional authors can be added on the WEM entities later
-  belongs_to :translator, class_name: 'Person', foreign_key: 'translator_id'
+
+  # for simplicity, only a single author considered per HtmlFile
+  # additional authors can be added on the WEM entities later
+  belongs_to :author, class_name: 'Authority'
+  belongs_to :translator, class_name: 'Authority'
+
   belongs_to :assignee, class_name: 'User', foreign_key: 'assignee_id'
   scope :with_nikkud, -> { where("nikkud IS NOT NULL and nikkud <> 'none'") }
   scope :not_stripped, -> { where('stripped_nikkud IS NULL or stripped_nikkud = 0') }
@@ -341,7 +345,7 @@ class HtmlFile < ApplicationRecord
   validates :title, presence: true
   validates :genre, presence: true
   validates :publisher, presence: true
-  validates :person_id, presence: true
+
   validates_with TitleValidator, on: :create, unless: :override_validation
   validates_with TranslationValidator, on: :create, unless: :override_validation
 
@@ -609,29 +613,31 @@ class HtmlFile < ApplicationRecord
     manifestations.empty? ? false : true # ensure WEM created
   end
 
-  def set_orig_author(author_id)
-    self.translator_id = self.person_id unless self.person_id.nil? # assume current person should be the translator
-    self.person_id = author_id
+  # rubocop:disable Naming/AccessorMethodName
+  def set_orig_author(orig_author_id)
+    self.translator_id = author_id unless author_id.nil? # assume current person should be the translator
+    self.author_id = orig_author_id
   end
+  # rubocop:enable Naming/AccessorMethodName
 
   def set_translator(author_id)
     self.translator_id = author_id
   end
 
   def publish
-    if status == 'Accepted' && metadata_ready? && (not self.person.nil?)
-      self.status = 'Published'
-      save!
-    else
-      return false
-    end
+    return false unless status == 'Accepted' && metadata_ready? && authority.present?
+
+    self.status = 'Published'
+    save!
   end
 
-  def create_WEM_new(person_id, the_title, the_markdown, multiple, pub_status = nil)
-    if self.status == 'Accepted'
+  # rubocop:disable Naming/MethodName
+  # rubocop:disable Style/GuardClause
+  def create_WEM_new(author_id, the_title, the_markdown, multiple, pub_status = nil)
+    if status == 'Accepted'
       begin
         tt = the_title.strip
-        p = Person.find(person_id) # TODO: use self.person_id instead of argument? (Damir)
+        p = Authority.find(author_id) # TODO: use self.author_id instead of argument? (Damir)
         Chewy.strategy(:atomic) do
           ActiveRecord::Base.transaction do
             w = Work.new(
@@ -642,7 +648,7 @@ class HtmlFile < ApplicationRecord
               primary: true # TODO: un-hardcode primariness in new upload flow
             )
 
-            q = (translator_id.nil? ? p : translator)
+            q = (translator.nil? ? p : translator)
             intellectual_property =
               if p.intellectual_property_copyrighted? || q.intellectual_property_copyrighted?
                 :copyrighted
@@ -661,16 +667,16 @@ class HtmlFile < ApplicationRecord
             e = w.expressions.build(
               title: tt,
               language: 'he',
-              period: q.period,
+              period: q.person&.period, # what to do if corporate body?
               intellectual_property: intellectual_property,
               source_edition: publisher,
               date: year_published,
               comment: comments
             )
-            w.involved_authorities.build(person: p, role: :author)
+            w.involved_authorities.build(authority: p, role: :author)
 
             if translator_id.present?
-              e.involved_authorities.build(person: translator, role: :translator)
+              e.involved_authorities.build(authority: translator, role: :translator)
             end
 
             # the author of the Expression and Manifestation is the translator, if one exists
@@ -718,6 +724,8 @@ class HtmlFile < ApplicationRecord
       return I18n.t(:must_accept_before_publishing)
     end
   end
+  # rubocop:enable Style/GuardClause
+  # rubocop:enable Naming/MethodName
 
   def remove_line_nums!
     lines = File.open(path + '.markdown', 'r:UTF-8').read.split("\n")

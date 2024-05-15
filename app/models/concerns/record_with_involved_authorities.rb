@@ -12,6 +12,6 @@ module RecordWithInvolvedAuthorities
     role = role.to_s
     raise "Unknown role #{role}" unless InvolvedAuthority.roles.keys.include?(role)
 
-    involved_authorities.to_a.select { |ia| ia.role == role.to_s }.map(&:person)
+    involved_authorities.to_a.select { |ia| ia.role == role.to_s }.map(&:authority)
   end
 end

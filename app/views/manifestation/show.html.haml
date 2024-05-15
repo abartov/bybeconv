@@ -6,7 +6,7 @@
   %p
     %b= link_to t(:render), url_for(action: :read, id: @m.id)
   %h1
-    #{t(:work_details)}: #{@m.title} / #{linkify_people(@w.involved_authorities.map(&:person))}
+    #{t(:work_details)}: #{@m.title} / #{linkify_people(@w.involved_authorities.map(&:authority))}
     - if @e.translation
       != " / #{linkify_people(@e.translators)}"
   - unless @legacy_url.nil?
@@ -45,7 +45,7 @@
     %b= t(:thedate) + ': '
     = @e.date
   %p
-    %b= t(:period) + ': '
+    %b #{Manifestation.human_attribute_name(:period)}:
     = t(@e.period)
   %p
     %b #{Expression.human_attribute_name(:intellectual_property)}:
@@ -73,7 +73,7 @@
     %b= t(:alternate_titles) + ': '
     = @m.alternate_titles
   %p
-    %b= t(:sort_name) + ': '
+    %b #{Manifestation.human_attribute_name(:sort_name)}:
     = @m.sort_title
   %p
     %b= t(:responsibility_statement) + ': '

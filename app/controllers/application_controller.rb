@@ -117,8 +117,8 @@ class ApplicationController < ActionController::Base
   end
 
   def popular_authors(update = false)
-    Person.recalc_popular if update
-    @popular_authors = Person.get_popular_authors
+    Authority.recalc_popular if update
+    @popular_authors = Authority.popular_authors
   end
 
   def randomize_authors(exclude_list, genre = nil)
@@ -149,7 +149,7 @@ class ApplicationController < ActionController::Base
 
   def cached_authors_in_genre
     Rails.cache.fetch('au_by_genre', expires_in: 24.hours) do # memoize
-      totals = Person.has_toc
+      totals = Authority.has_toc
                      .joins(involved_authorities: :work)
                      .merge(InvolvedAuthority.role_author)
                      .group(:genre)
@@ -164,11 +164,11 @@ class ApplicationController < ActionController::Base
     Rails.cache.fetch("au_by_period", expires_in: 24.hours) do # memoize
       ret = {}
       get_periods.each do |p|
-        ret[p] = Person.has_toc
-                       .joins(involved_authorities: { work: :expressions })
-                       .merge(InvolvedAuthority.role_author)
-                       .where(expressions: { period: p })
-                       .uniq.count
+        ret[p] = Authority.has_toc
+                          .joins(involved_authorities: { work: :expressions })
+                          .merge(InvolvedAuthority.role_author)
+                          .where(expressions: { period: p })
+                          .uniq.count
       end
       ret
     end

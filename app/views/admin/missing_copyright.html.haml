@@ -10,7 +10,7 @@
     - @authors.each do |au|
       %tr
         %td= au.name
-        %td!= au.life_years
+        %td!= au.person&.life_years
         %td= link_to t(:edit), authors_edit_path(id: au.id)
 
   %h3= t(:works)

@@ -16,7 +16,7 @@
                        id: :search_input,
                        class: %w(field-v02 field-without-label),
                        placeholder: t(:what_to_search_for)
-      = autocomplete_field_tag :authorstr, @authorstr, manifestation_autocomplete_person_name_path,
+      = autocomplete_field_tag :authorstr, @authorstr, manifestation_autocomplete_authority_name_path,
                                id_element: '#author_id',
                                'data-noMatchesLabel' => t(:no_matches_found),
                                style: 'display:none',

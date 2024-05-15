@@ -16,7 +16,8 @@
                 .about-author-card-content-v02
                   .name-under-btn
                     %span.headline-1-v02= @author.name
-                    %span.date-range!= "(#{@author.life_years})"
+                    - if @author.person.present?
+                      %span.date-range! (#{@author.person.life_years})
                   .author-about
                     .text-height-author= @author.wikipedia_snippet
                     .read-more-v02

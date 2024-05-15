@@ -3,7 +3,7 @@
 # This record represent relation between authorities and texts. Text can be represented either as Work or Expression
 # instance, but not both.
 class InvolvedAuthority < ApplicationRecord
-  belongs_to :person
+  belongs_to :authority, inverse_of: :involved_authorities
   belongs_to :expression, optional: true
   belongs_to :work, optional: true
   enum role: {

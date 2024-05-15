@@ -21,8 +21,8 @@ describe SearchManifestations do
                  else
                    index % 2 == 0 ? 'male' : 'female'
                  end
-        authors << create(:person, name: "#{author_name} #{index}", gender: gender)
-        translators << create(:person, name: "#{translator_name} #{index}", gender: gender)
+        authors << create(:authority, name: "#{author_name} #{index}", gender: gender)
+        translators << create(:authority, name: "#{translator_name} #{index}", gender: gender)
       end
 
       uploaded_at = Time.parse('2010-01-01 12:00:00')
@@ -291,7 +291,7 @@ describe SearchManifestations do
       let(:filter) { { 'author_ids' => author_ids } }
 
       context 'when author id is provided' do
-        let(:author_id) { Person.find_by(name: 'Beta 1').id }
+        let(:author_id) { Authority.find_by(name: 'Beta 1').id }
         let(:author_ids) { [ author_id ] }
 
         it 'returns all texts written by this author' do
@@ -303,7 +303,7 @@ describe SearchManifestations do
       end
 
       context 'when translator id is provided' do
-        let(:translator_id) { Person.find_by(name: 'Rho 1').id }
+        let(:translator_id) { Authority.find_by(name: 'Rho 1').id }
         let(:author_ids) { [ translator_id ] }
 
         it 'returns all texts translated by this translator' do

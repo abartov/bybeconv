@@ -15,8 +15,10 @@ class V1::PeopleAPI < V1::ApplicationApi
         DESC
       end
       get do
-        person = Person.find(params[:id])
-        present person, with: V1::Entities::Person, detail: params[:author_detail]
+        # TODO: for now it only supports person Authorities. We need to add support for CorporateBodies and
+        #  rename endpoint to Authorities or Authors
+        authority = Authority.joins(:person).find(params[:id])
+        present authority, with: V1::Entities::Person, detail: params[:author_detail]
       end
     end
   end

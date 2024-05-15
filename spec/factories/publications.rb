@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :publication do
-    person
+    authority
     bib_source
     title { Faker::Book.title }
     publisher_line { Faker::Company.name }

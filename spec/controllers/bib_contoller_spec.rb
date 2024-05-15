@@ -58,11 +58,31 @@ describe BibController do
     subject(:request) { get :pubs_maybe_done }
 
     let!(:original_maybe_done_pub) { create(:publication, :pubs_maybe_done, title: 'original title') }
-    let!(:original_manifestation) { create(:manifestation, title: "#{original_maybe_done_pub.title} manifestation", author: original_maybe_done_pub.person)}
+    let!(:original_manifestation) do
+      create(
+        :manifestation,
+        title: "#{original_maybe_done_pub.title} manifestation",
+        author: original_maybe_done_pub.authority
+      )
+    end
 
     let!(:translated_maybe_done_pub) { create(:publication, :pubs_maybe_done, title: 'translated title') }
-    let!(:translated_manifestation_1) { create(:manifestation, title: "#{translated_maybe_done_pub.title} manifestation 1", orig_lang: 'ru', translator: translated_maybe_done_pub.person)}
-    let!(:translated_manifestation_2) { create(:manifestation, title: "#{translated_maybe_done_pub.title} manifestation 2", orig_lang: 'ru', translator: translated_maybe_done_pub.person)}
+    let!(:translated_manifestation_1) do
+      create(
+        :manifestation,
+        title: "#{translated_maybe_done_pub.title} manifestation 1",
+        orig_lang: 'ru',
+        translator: translated_maybe_done_pub.authority
+      )
+    end
+    let!(:translated_manifestation_2) do
+      create(
+        :manifestation,
+        title: "#{translated_maybe_done_pub.title} manifestation 2",
+        orig_lang: 'ru',
+        translator: translated_maybe_done_pub.authority
+      )
+    end
 
     let!(:other_pubs) { create_list(:publication, 2) }
 

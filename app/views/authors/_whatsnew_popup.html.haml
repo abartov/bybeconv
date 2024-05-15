@@ -17,7 +17,7 @@
             .surprise-author-card-v02
               %img.surprise-author-pic-v02{:alt => @author.name, src: @author.profile_image.url(:thumb), height: "686", width: "475"}
               .author-name-area
-                .author-name-v02= to_the_author_page(@author)
+                .author-name-v02= to_the_author_page(@author.person)
           .by-card-header-v02
             .surprise-author-name-v02.headline-1-v02= t(:latest_uploads_for, author: @author.name)
           .by-card-content-v02.limited-height-popup-content-v02

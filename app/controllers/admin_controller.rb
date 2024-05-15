@@ -8,7 +8,9 @@ class AdminController < ApplicationController
   before_action :obtain_tagging_lock, only: [:approve_tag, :approve_tag_and_next, :reject_tag, :escalate_tag, :reject_tag_and_next, :merge_tag, :merge_tagging, :approve_tagging, :reject_tagging, :escalate_tagging, :unapprove_tagging, :unreject_tagging, :tag_moderation, :tag_review]
   # before_action :require_admin, only: [:missing_languages, :missing_genres, :incongruous_copyright, :missing_copyright, :similar_titles]
   autocomplete :manifestation, :title, display_value: :title_and_authors, extra_data: [:expression_id] # TODO: also search alternate titles!
-  autocomplete :person, :name, full: true
+  autocomplete :authority, :name, full: true
+  autocomplete :person, :name, scopes: :with_name, full: true
+
   layout false, only: [:merge_tag, :merge_tagging, :confirm_with_comment] # popups
   layout 'backend', only: [:tag_moderation, :tag_review, :tagging_review] # eventually change to except: [<popups>]
 
@@ -79,7 +81,7 @@ class AdminController < ApplicationController
   end
 
   def missing_copyright
-    @authors = Person.intellectual_property_unknown
+    @authors = Authority.intellectual_property_unknown
     records = Manifestation.joins(:expression).merge(Expression.intellectual_property_unknown)
     @total = records.count
     @mans = records.page(params[:page]).per(50)
@@ -128,7 +130,7 @@ class AdminController < ApplicationController
                                    involved_authorities iat
                                  where
                                    iat.expression_id = expressions.id
-                                   and iat.person_id = involved_authorities.person_id
+                                   and iat.authority_id = involved_authorities.authority_id
                                    and iat.role = ?
                                )
                              SQL
@@ -201,13 +203,14 @@ class AdminController < ApplicationController
   end
 
   def periodless
-    @authors = Person.where(period: nil).select{|p| p.has_any_hebrew_works?}
+    @authors = Authority.joins(:person).merge(Person.where(period: nil)).select(&:any_hebrew_works?)
     Rails.cache.write('report_periodless', @authors.length)
   end
 
   def authors_without_works
-    @authors = Person.where('not exists (select 1 from involved_authorities ia where ia.person_id = people.id)')
-                     .order(:name)
+    @authors = Authority.where(
+      'not exists (select 1 from involved_authorities ia where ia.authority_id = authorities.id)'
+    ).order(:name)
     Rails.cache.write('report_authors_without_works', @authors.length)
   end
 
@@ -216,8 +219,9 @@ class AdminController < ApplicationController
     @author_keys = []
     @tocs_missing_links = {}
     @tocs_linking_to_missing_items = {}
-    Person.has_toc.each do |p|
-      @tocs_missing_links[p.id] = {orig: [], xlat: []} if @tocs_missing_links[p.id].nil? # it may already exist because of being translated by an author we've already processed
+    Authority.has_toc.each do |p|
+      # it may already exist because of being translated by an author we've already processed
+      @tocs_missing_links[p.id] = { orig: [], xlat: [] } if @tocs_missing_links[p.id].nil?
       toc_items = []
       begin
         toc_items = p.toc.linked_items
@@ -259,16 +263,16 @@ class AdminController < ApplicationController
     @authors = []
 
     # Getting list of authors, who wrote works in more than one language
-    translatees = Person.joins(involved_authorities: :work)
-                        .merge(InvolvedAuthority.role_author)
-                        .group('people.id')
-                        .select('people.id, people.name')
-                        .having('min(works.orig_lang) <> max(works.orig_lang)')
-                        .sort_by(&:name)
+    translatees = Authority.joins(involved_authorities: :work)
+                           .merge(InvolvedAuthority.role_author)
+                           .group('authorities.id')
+                           .select('authorities.id, authorities.name')
+                           .having('min(works.orig_lang) <> max(works.orig_lang)')
+                           .sort_by(&:name)
 
     translatees.each do |t|
       manifestations = Manifestation.joins(expression: { work: :involved_authorities })
-                                    .merge(InvolvedAuthority.role_author.where(person_id: t.id))
+                                    .merge(InvolvedAuthority.role_author.where(authority_id: t.id))
                                     .preload(expression: :work)
                                     .sort_by { |m| [m.expression.work.orig_lang, m.sort_title] }
                                     .group_by { |m| m.expression.work.orig_lang }
@@ -277,25 +281,25 @@ class AdminController < ApplicationController
     Rails.cache.write('report_translated_from_multiple_languages', @authors.length)
   end
 
-  PUBLIC_DOMAIN_TYPE = Person.intellectual_properties['public_domain']
+  PUBLIC_DOMAIN_TYPE = Authority.intellectual_properties['public_domain']
 
   HAS_NON_PUBLIC_DOMAIN_AUTHORITY = <<~SQL.squish
     (
       exists (
         select 1 from
-          people p
-          join involved_authorities ia on p.id = ia.person_id
+          authorities a
+          join involved_authorities ia on a.id = ia.authority_id
         where
           ia.work_id = works.id
-          and p.intellectual_property <> #{PUBLIC_DOMAIN_TYPE}
+          and a.intellectual_property <> #{PUBLIC_DOMAIN_TYPE}
       )
       or exists (
         select 1 from
-          people p
-          join involved_authorities ia on p.id = ia.person_id
+          authorities a
+          join involved_authorities ia on a.id = ia.authority_id
         where
           ia.expression_id = expressions.id
-          and p.intellectual_property <> #{PUBLIC_DOMAIN_TYPE}
+          and a.intellectual_property <> #{PUBLIC_DOMAIN_TYPE}
       )
     )
   SQL

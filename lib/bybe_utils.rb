@@ -539,15 +539,6 @@ module BybeUtils
     return Expression.cached_work_count_by_periods[p]
   end
 
-  def get_total_works
-    return Manifestation.cached_count
-  end
-
-  def get_total_authors
-    # return Person.cached_toc_count
-    return Person.cached_count
-  end
-
   def get_total_headwords
     return DictionaryEntry.cached_count
   end

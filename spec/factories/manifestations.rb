@@ -2,12 +2,12 @@ FactoryBot.define do
   factory :manifestation do
     transient do
       sequence(:manifestation_name) { |n| "Manifestation #{n}" }
-      author { create(:person, toc: create(:toc)) }
+      author { create(:authority, toc: create(:toc)) }
       language { 'he' }
       orig_lang { %w(he en ru de it).sample }
       genre { Work::GENRES.sample }
       period { Expression.periods.keys.sample }
-      translator { orig_lang.to_s == language.to_s ? nil : create(:person) }
+      translator { orig_lang.to_s == language.to_s ? nil : create(:authority) }
       editor { nil }
       illustrator { nil }
       intellectual_property { :public_domain }
