@@ -122,17 +122,24 @@ class Person < ApplicationRecord
     end
   end
 
-  def published_manifestations(role = nil)
+  # @param roles [String / Symbol] optional, if provided will only return Manifestations where person has
+  #   one of the given roles.
+  # @return relation representing [Manifestation] objects current person is involved into.
+  def manifestations(*roles)
     rel = involved_authorities
-    rel = rel.where(role: role) if role.present?
+    rel = rel.where(role: roles.to_a) if roles.present?
     ids = rel.pluck(:work_id, :expression_id)
 
     work_ids = ids.map(&:first).compact.uniq
     expression_ids = ids.map(&:last).compact.uniq
 
-    Manifestation.all_published
-                 .joins(:expression)
+    Manifestation.joins(:expression)
                  .where('expressions.work_id in (?) or expressions.id in (?)', work_ids, expression_ids)
+  end
+
+  # Works like {#manifestaions} method, but returns only published manifestations
+  def published_manifestations(*roles)
+    manifestations(*roles).all_published
   end
 
   def cached_works_count
@@ -221,13 +228,15 @@ class Person < ApplicationRecord
   end
 
   def all_genres
-    works_genres = original_works.select('works.genre').distinct.pluck(:genre)
-    translation_genres = translations.select('works.genre').distinct.pluck(:genre)
-    return (works_genres + translation_genres).uniq.sort
+    published_manifestations(:author, :translator).joins(expression: :work)
+                                                  .select('works.genre')
+                                                  .distinct
+                                                  .pluck(:genre)
+                                                  .sort
   end
 
   def all_languages
-    work_langs = original_works.pluck('works.orig_lang')
+    work_langs = original_works.joins(expression: :work).pluck('works.orig_lang')
     #translation_langs = translations.pluck('works.orig_lang')
     #all_languages = work_langs + translation_langs
     #return all_languages.uniq
@@ -235,35 +244,15 @@ class Person < ApplicationRecord
   end
 
   def original_works
-    Manifestation.all_published
-                 .joins(expression: [work: :involved_authorities])
-                 .where(involved_authorities: { person_id: id })
+    published_manifestations(:author)
   end
 
   def translations
-    Manifestation.all_published
-                 .joins(expression: %i(work involved_authorities))
-                 .merge(InvolvedAuthority.role_translator)
-                 .where(involved_authorities: { person_id: id })
+    published_manifestations(:translator)
   end
 
   def all_works_including_unpublished
-    works = Manifestation.joins(expression: [work: :involved_authorities])
-                         .merge(InvolvedAuthority.where(person_id: id))
-    xlats = Manifestation.joins(expression: :involved_authorities)
-                         .merge(InvolvedAuthority.role_translator.where(person_id: id))
-    (works + xlats).uniq.sort_by(&:sort_title)
-  end
-
-  def original_work_count_including_unpublished
-    Manifestation.joins(expression: { work: :involved_authorities })
-                 .merge(InvolvedAuthority.where(person_id: id)).count
-  end
-
-  def translations_count_including_unpublished
-    Manifestation.joins(expression: :involved_authorities)
-                 .merge(InvolvedAuthority.role_translator.where(person_id: id))
-                 .count
+    manifestations(:author, :translator).sort_by(&:sort_title)
   end
 
   def all_works_title_sorted
@@ -283,27 +272,17 @@ class Person < ApplicationRecord
   def title # convenience method for polymorphic handling (e.g. Taggable)
     name
   end
+
   def original_works_by_genre
-    ret = {}
-    get_genres.map{|g| ret[g] = []}
-    Manifestation.all_published
-                 .joins(expression: [work: :involved_authorities])
-                 .includes(:expression)
-                 .merge(InvolvedAuthority.where(person_id: id)).each do |m|
-      ret[m.expression.work.genre] << m
-    end
-    return ret
+    hash = published_manifestations(:author).preload(expression: :work)
+                                            .group_by { |m| m.expression.work.genre }
+    Work::GENRES.index_with { |genre| hash[genre] || [] }
   end
 
   def translations_by_genre
-    ret = {}
-    get_genres.map{|g| ret[g] = []}
-    Manifestation.all_published
-                 .joins(expression: :involved_authorities)
-                 .merge(InvolvedAuthority.role_translator.where(person_id: id)).each do |m|
-      ret[m.expression.work.genre] << m
-    end
-    return ret
+    hash = published_manifestations(:translator).preload(expression: :work)
+                                                .group_by { |m| m.expression.work.genre }
+    Work::GENRES.index_with { |genre| hash[genre] || [] }
   end
 
   def featured_work
@@ -313,18 +292,7 @@ class Person < ApplicationRecord
   end
 
   def latest_stuff
-    latest_original_works = Manifestation.all_published
-                                         .joins(expression: [work: :involved_authorities])
-                                         .where(involved_authorities: { person_id: id })
-                                         .order(created_at: :desc).limit(20)
-
-    latest_translations = Manifestation.all_published
-                                       .joins(expression: [:involved_authorities])
-                                       .merge(InvolvedAuthority.role_translator)
-                                       .where(involved_authorities: { person_id: id })
-                                       .order(created_at: :desc).limit(20)
-
-    (latest_original_works + latest_translations).sort_by(&:created_at).reverse.first(20)
+    published_manifestations(:author, :translator).order(created_at: :desc).limit(20).to_a
   end
 
   def cached_latest_stuff
