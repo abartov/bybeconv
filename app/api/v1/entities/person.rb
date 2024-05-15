@@ -24,14 +24,14 @@ module V1
       end
 
       expose :texts,
-             documentation: { desc: 'ID numbers of all texts this person is involved into with with role in each' },
+             documentation: { desc: 'ID numbers of all texts this person is involved in, with role in each' },
              if: ->(_person, options) { %w(texts enriched).include?(options[:detail]) } do
-        InvolvedAuthority.roles.each_key do |role|
-          expose role, documentation: { type: 'Integer', is_array: true } do |person|
-            person.published_manifestations(role).pluck('manifestations.id').sort
-          end
-        end
-      end
+               InvolvedAuthority.roles.each_key do |role|
+                 expose role, documentation: { type: 'Integer', is_array: true } do |person|
+                   person.published_manifestations(role).pluck('manifestations.id').sort
+                 end
+               end
+             end
 
       expose :enrichment, if: lambda { |_person, options| %w(enriched).include? options[:detail] } do
         expose :texts_about,
