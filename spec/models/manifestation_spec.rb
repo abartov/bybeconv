@@ -77,13 +77,14 @@ describe Manifestation do
   describe '.authors_string' do
     subject { manifestation.authors_string }
     context 'when authors present' do
-      let(:author_1) { create(:person, name: 'Alpha') }
-      let(:author_2) { create(:person, name: 'Beta') }
-      let(:manifestation) { create(:manifestation, author: author_1) }
-      before do
-        create(:involved_authority, work: manifestation.expression.work, role: :author, person: author_2)
-        manifestation.reload
+      let(:author_1) { create(:authority, name: 'Alpha') }
+      let(:author_2) { create(:authority, name: 'Beta') }
+      let(:manifestation) do
+        create(:manifestation, author: author_1).tap do |manifestation|
+          manifestation.expression.work.involved_authorities.create!(role: :author, authority: author_2)
+        end
       end
+
       it { is_expected.to eq 'Alpha, Beta' }
     end
 
@@ -102,18 +103,19 @@ describe Manifestation do
   describe '.translators_string' do
     subject { manifestation.translators_string }
     context 'when translators present' do
-      let(:translator_1) { create(:person, name: 'Alpha') }
-      let(:translator_2) { create(:person, name: 'Beta') }
-      let(:manifestation) { create(:manifestation, orig_lang: 'de', translator: translator_1) }
-      before do
-        create(:involved_authority, expression: manifestation.expression, role: :translator, person: translator_2)
-        manifestation.reload
+      let(:translator_1) { create(:authority, name: 'Alpha') }
+      let(:translator_2) { create(:authority, name: 'Beta') }
+      let(:manifestation) do
+        create(:manifestation, orig_lang: 'de', translator: translator_1).tap do |manifestation|
+          manifestation.expression.involved_authorities.create!(role: :translator, authority: translator_2)
+        end
       end
+
       it { is_expected.to eq 'Alpha, Beta' }
     end
 
-    context 'when no authors present' do
-      let(:manifestation) { create(:manifestation) }
+    context 'when no translators present' do
+      let(:manifestation) { create(:manifestation, orig_lang: 'de') }
 
       before do
         manifestation.expression.involved_authorities.delete_all
@@ -127,11 +129,11 @@ describe Manifestation do
   describe '.author_string' do
     subject { manifestation.author_string }
 
-    let(:author_1) { create(:person, name: 'Alpha') }
-    let(:author_2) { create(:person, name: 'Beta') }
+    let(:author_1) { create(:authority, name: 'Alpha') }
+    let(:author_2) { create(:authority, name: 'Beta') }
 
     before do
-      create(:involved_authority, work: manifestation.expression.work, role: :author, person: author_2)
+      create(:involved_authority, work: manifestation.expression.work, role: :author, authority: author_2)
       manifestation.reload
     end
 
@@ -153,14 +155,13 @@ describe Manifestation do
     end
 
     context 'when work is a translation' do
-      let(:translator_1) { create(:person, name: 'Gamma') }
-      let(:translator_2) { create(:person, name: 'Delta') }
+      let(:translator_1) { create(:authority, name: 'Gamma') }
+      let(:translator_2) { create(:authority, name: 'Delta') }
 
-      let(:manifestation) { create(:manifestation, orig_lang: 'de', author: author_1, translator: translator_1) }
-
-      before do
-        create(:involved_authority, expression: manifestation.expression, role: :translator, person: translator_2)
-        manifestation.reload
+      let(:manifestation) do
+        create(:manifestation, orig_lang: 'de', author: author_1, translator: translator_1).tap do |manifestation|
+          manifestation.expression.involved_authorities.create!(role: :translator, authority: translator_2)
+        end
       end
 
       context 'when both authors and transaltors are present' do

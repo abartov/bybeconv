@@ -137,7 +137,7 @@ class BibController < ApplicationController
     @pubs = []
     ListItem.includes(:item).where(listkey: 'pubs_maybe_done').each do |pub|
       item = pub.item
-      mm = item.person.all_works_by_title(pub_title_for_comparison(item.title))
+      mm = item.authority.all_works_by_title(pub_title_for_comparison(item.title))
       @pubs << [item, mm]
     end
   end

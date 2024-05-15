@@ -7,8 +7,8 @@ class ManifestationController < ApplicationController
   before_action only: [:edit, :update] do |c| c.require_editor(['edit_catalog', 'conversion_verification', 'handle_proofs']) end
   before_action only: [:all, :genre, :period, :by_tag] do |c| c.refuse_unreasonable_page end
   autocomplete :manifestation, :title, limit: 20, display_value: :title_and_authors, full: true
-  autocomplete :person, :name, :limit => 2, full: true
-  autocomplete :tag, :name, :limit => 2
+  autocomplete :authority, :name, limit: 2, full: true
+  autocomplete :tag, :name, limit: 2
 
   #layout false, only: [:print]
 
@@ -140,7 +140,7 @@ class ManifestationController < ApplicationController
       @whatsnew = whatsnew_since(params[:months].to_i.months.ago)
       @anonymous = false
     end
-    @new_authors = Person.new_since(1.month.ago)
+    @new_authors = Authority.new_since(1.month.ago)
   end
 
   def like
@@ -491,16 +491,16 @@ class ManifestationController < ApplicationController
           @w.date = params[:wdate]
           @w.comment = params[:wcomment]
           @w.primary = params[:primary] == 'true'
-          unless params[:add_person_w].blank?
-            @w.involved_authorities.build(person_id: params[:add_person_w], role: params[:role_w])
+          if params[:add_authority_w].present?
+            @w.involved_authorities.build(authority_id: params[:add_authority_w], role: params[:role_w])
           end
           @e.language = params[:elang]
           @e.title = params[:etitle]
           @e.date = params[:edate]
           @e.comment = params[:ecomment]
           @e.intellectual_property = params[:intellectual_property]
-          unless params[:add_person_e].blank?
-            @e.involved_authorities.build(person_id: params[:add_person_e], role: params[:role_e])
+          if params[:add_authority_e].present?
+            @e.involved_authorities.build(authority_id: params[:add_authority_e], role: params[:role_e])
           end
           @e.source_edition = params[:source_edition]
           @e.period = params[:period]
@@ -737,9 +737,9 @@ class ManifestationController < ApplicationController
     # Preparing list of authors to show in multiselect modal on works browse page
     if collection.filter.present?
       author_ids = collection.aggs['author_ids']['buckets'].pluck('key')
-      @authors_list = Person.where(id: author_ids)
+      @authors_list = Authority.where(id: author_ids)
     else
-      @authors_list = Person.all
+      @authors_list = Authority.all
     end
     @authors_list = @authors_list.select(:id, :name).sort_by(&:name)
   end

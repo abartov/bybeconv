@@ -1,5 +1,5 @@
 class Publication < ApplicationRecord
-  belongs_to :person
+  belongs_to :authority, inverse_of: :publications
   belongs_to :bib_source
   has_many :holdings, dependent: :destroy
   has_many :list_items, as: :item, dependent: :destroy

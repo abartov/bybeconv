@@ -33,7 +33,7 @@ describe AuthorsController do
   end
 
   describe 'member actions' do
-    let!(:author) { create(:person) }
+    let!(:author) { create(:authority) }
 
     describe '#toc' do
       let(:toc) { create(:toc) }
@@ -116,7 +116,7 @@ describe AuthorsController do
       subject { get :list }
 
       before do
-        create_list(:person, 5) # people without works
+        create_list(:authority, 5) # people without works
         create_list(:manifestation, 5) # this will create people with works
       end
 
@@ -130,12 +130,13 @@ describe AuthorsController do
     end
 
     describe '#create' do
-      subject(:call) { post :create, params: { person: person_params } }
+      subject(:call) { post :create, params: { authority: authority_params } }
 
       let(:intellectual_property) { 'permission_for_selected' }
       let(:status) { 'published' }
 
-      let(:person_params) do
+      let(:person_attributes) { { birthdate: '1850' } }
+      let(:authority_attributes) do
         {
           name: 'New name',
           intellectual_property: intellectual_property,
@@ -143,14 +144,19 @@ describe AuthorsController do
         }
       end
 
-      let(:created_person) { Person.order(id: :desc).first }
+      let(:authority_params) do
+        authority_attributes.merge(person_attributes: person_attributes)
+      end
+
+      let(:created_authority) { Authority.order(id: :desc).first }
 
       context 'when save successful' do
         it 'creates record' do
-          expect { call }.to change(Person, :count).by(1)
-          expect(created_person).to have_attributes(person_params)
+          expect { call }.to change(Authority, :count).by(1).and change(Person, :count).by(1)
+          expect(created_authority).to have_attributes(authority_attributes)
+          expect(created_authority.person).to have_attributes(person_attributes)
 
-          expect(call).to redirect_to authors_show_path(id: created_person.id)
+          expect(call).to redirect_to authors_show_path(id: created_authority.id)
           expect(flash.notice).to eq I18n.t(:created_successfully)
         end
 
@@ -161,8 +167,8 @@ describe AuthorsController do
             let(:intellectual_property) { 'public_domain' }
 
             it 'sets status to awaiting_first' do
-              expect { call }.to change(Person, :count).by(1)
-              expect(created_person.status).to eq 'awaiting_first'
+              expect { call }.to change(Authority, :count).by(1)
+              expect(created_authority.status).to eq 'awaiting_first'
             end
           end
 
@@ -170,8 +176,8 @@ describe AuthorsController do
             let(:intellectual_property) { 'permission_for_selected' }
 
             it 'sets status to unpublished' do
-              expect { call }.to change(Person, :count).by(1)
-              expect(created_person.status).to eq 'unpublished'
+              expect { call }.to change(Authority, :count).by(1)
+              expect(created_authority.status).to eq 'unpublished'
             end
           end
         end
@@ -182,6 +188,7 @@ describe AuthorsController do
         let(:intellectual_property) { nil }
 
         it 're-renders new form' do
+          expect { call }.not_to change(Authority, :count)
           expect(call).to render_template(:new)
           expect(call).to have_http_status(:unprocessable_entity)
         end
@@ -190,7 +197,8 @@ describe AuthorsController do
 
     describe 'member actions' do
       let(:period) { 'revival' }
-      let(:author) { create(:person, intellectual_property: :public_domain, period: period) }
+      let(:intellectual_property) { :public_domain }
+      let(:author) { create(:authority, intellectual_property: intellectual_property, period: period) }
 
       describe '#show' do
         before do
@@ -208,6 +216,13 @@ describe AuthorsController do
           expect(assigns(:published_xlats)).to eq 6
           expect(assigns(:total_orig_works)).to eq 4
           expect(assigns(:total_xlats)).to eq 8
+        end
+
+        context 'when non-public domain' do
+          # there is a special logic in view for such case
+          let(:intellectual_property) { :permission_for_selected }
+
+          it { is_expected.to be_successful }
         end
       end
 
@@ -253,11 +268,14 @@ describe AuthorsController do
         subject(:request) do
           put :update, params: {
             id: author.id,
-            person: {
+            authority: {
               name: new_name,
-              period: new_period,
               intellectual_property: new_intellectual_property,
-              wikidata_uri: new_wikidata_uri
+              wikidata_uri: new_wikidata_uri,
+              person_attributes: {
+                id: author.person.id,
+                period: new_period
+              }
             }
           }
         end
@@ -280,10 +298,10 @@ describe AuthorsController do
             author.reload
             expect(author).to have_attributes(
               name: new_name,
-              period: new_period,
               intellectual_property: new_intellectual_property,
               wikidata_uri: new_wikidata_uri
             )
+            expect(author.person).to have_attributes(period: new_period)
             original_work.reload
             expect(original_work.expression.period).to eq new_period
             translated_work.reload
@@ -307,10 +325,10 @@ describe AuthorsController do
             author.reload
             expect(author).to have_attributes(
               name: new_name,
-              period: new_period,
               intellectual_property: new_intellectual_property,
               wikidata_uri: new_wikidata_uri
             )
+            expect(author.person).to have_attributes(period: new_period)
             original_work.reload
             expect(original_work.expression.period).to eq works_period
             translated_work.reload

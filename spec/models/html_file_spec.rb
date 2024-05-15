@@ -7,7 +7,7 @@ describe HtmlFile do
     subject(:call) { html_file.create_WEM_new(author.id, title, markdown, true) }
 
     let(:html_file) { create(:html_file, status: status) }
-    let(:author) { html_file.person }
+    let(:author) { html_file.author }
     let(:translator) { html_file.translator }
     let(:markdown) { 'TEST' }
     let(:title) { '   TITLE WITH WHITESPACES ' }

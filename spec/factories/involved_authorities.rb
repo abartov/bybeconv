@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :involved_authority do
-    person { create(:person) }
+    authority { create(:authority) }
     role { :author }
   end
 end

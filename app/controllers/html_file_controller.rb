@@ -241,7 +241,7 @@ class HtmlFileController < ApplicationController
         @text.genre = params['genre'] unless params['genre'].nil?
         @text.save!
         success = false
-        au_id = @text.person.id
+        au_id = @text.author.id
         if @text.has_splits
           @text.split_parts.each_pair do |title, markdown|
             success = @text.create_WEM_new(au_id, title.sub(/_ZZ\d+/,''), markdown, true, params[:pub_status])

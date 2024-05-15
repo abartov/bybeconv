@@ -108,6 +108,7 @@ Bybeconv::Application.routes.draw do
   get 'admin/featured_content/destroy/:id' => 'admin#featured_content_destroy', as: 'featured_content_destroy'
   get 'autocomplete_manifestation_title' => 'admin#autocomplete_manifestation_title', as: 'autocomplete_manifestation_title'
   get 'autocomplete_person_name' => 'admin#autocomplete_person_name', as: 'autocomplete_person_name'
+  get 'autocomplete_authority_name' => 'admin#autocomplete_authority_name', as: 'autocomplete_authority_name'
   get 'autocomplete_tag_name' => 'application#autocomplete_tag_name_name', as: 'autocomplete_tag_name'
   get 'autocomplete_dict_entry' => 'manifestation#autocomplete_dict_entry', as: 'autocomplete_dict_entry'
   get 'admin/featured_author_list'
@@ -197,8 +198,8 @@ Bybeconv::Application.routes.draw do
   get 'manifestation/unlike'
   get 'manifestation/surprise_work'
   get 'manifestation/autocomplete_works_by_author'
-  get 'manifestation/autocomplete_person_name' => 'manifestation#autocomplete_person_name',
-      as: 'manifestation_autocomplete_person_name'
+  get 'manifestation/autocomplete_authority_name' => 'manifestation#autocomplete_authority_name',
+      as: 'manifestation_autocomplete_authority_name'
   get 'work/show/:id' => 'manifestation#workshow', as: 'work_show' # temporary, until we have a works controller
   get 'manifestation/add_aboutnesses/:id' => 'manifestation#add_aboutnesses'
   resources :api_keys, except: :show

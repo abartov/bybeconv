@@ -3,8 +3,10 @@ en:
     created_at: Created At
     updated_at: Updated At
     name: Name
+    sort_name: Sort Name
     status: Status
     country: Country
+    period: Period
   activerecord:
     errors:
       models:
@@ -14,8 +16,21 @@ en:
               no_item: either Work or Expression object must be specified
               multiple_items: Work and Expression objects cannot be specified together
     attributes:
+      authority:
+        other_designation: Other designation
+        intellectual_property: Type of intellectual property
+        wikidata_uri: Wikidata URI
+        comment: Comment
+        bib_done: Is bibliography done?
+        nli_id: ID in National Library
+        viaf_id: ID in VIAF database
+        blog_category_url: Link to category about the creator in blog
+        wikipedia_snippet: Snippet from Wikipedia
+        wikipedia_url: Link to the article in Wikipedia
+
       expression:
         intellectual_property: Type of intellectual property
       person:
-        intellectual_property: Type of intellectual property
-        wikidata_uri: Wikidata URI
+        birthdate: Birthdate
+        deathdate: Deathdate
+        gender: Gender

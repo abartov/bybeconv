@@ -1,6 +1,6 @@
 class FeaturedContent < ApplicationRecord
   belongs_to :manifestation
-  belongs_to :person
+  belongs_to :authority, inverse_of: :featured_contents
   belongs_to :user
 
   # attr_accessible :title, :body, :external_link

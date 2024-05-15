@@ -1,6 +1,6 @@
 .backend
   %h1= t(:new_person)
 
-  = render partial: 'form', locals: {action: 'create', person: @person}
+  = render partial: 'form', locals: { action: 'create', authority: @author }
 
   = link_to t(:back), authors_list_path

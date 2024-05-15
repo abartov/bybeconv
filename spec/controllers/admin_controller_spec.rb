@@ -8,13 +8,35 @@ describe AdminController do
 
     before do
       create_list(:manifestation, 5)
-      create_list(:person, 3)
+      create_list(:authority, 3)
       allow(Rails.cache).to receive(:write)
     end
 
     it 'is successful' do
       expect(call).to be_successful
       expect(Rails.cache).to have_received(:write).with('report_authors_without_works', 3)
+    end
+  end
+
+  describe '#periodless' do
+    subject(:call) { get :periodless }
+
+    include_context 'when editor logged in'
+
+    let(:periodless_hebrew) { create(:authority, period: nil) }
+    let(:periodless_foreign) { create(:authority, period: nil) }
+
+    before do
+      create_list(:authority, 5)
+      create_list(:manifestation, 5, orig_lang: 'he', author: periodless_hebrew)
+      create_list(:manifestation, 5, orig_lang: 'ru', author: periodless_foreign)
+      allow(Rails.cache).to receive(:write)
+    end
+
+    it 'completes successfully' do
+      expect(call).to be_successful
+      expect(assigns(:authors)).to contain_exactly(periodless_hebrew)
+      expect(Rails.cache).to have_received(:write).with('report_periodless', 1)
     end
   end
 
@@ -46,7 +68,7 @@ describe AdminController do
     subject { get :tocs_missing_links }
 
     let(:toc) { create(:toc) }
-    let(:author) { create(:person, toc: toc) }
+    let(:author) { create(:authority, toc: toc) }
 
     before do
       create_list(:manifestation, 3, author: author)
@@ -61,16 +83,16 @@ describe AdminController do
   describe '#incongruous_copyright' do
     include_context 'Admin user logged in'
     subject(:request) { get :incongruous_copyright }
-    let(:copyrighted_person) { create(:person, intellectual_property: :copyrighted) }
-    let(:by_permission_person) { create(:person, intellectual_property: :permission_for_selected) }
-    let(:public_domain_person) { create(:person, intellectual_property: :public_domain) }
+    let(:copyrighted_author) { create(:authority, intellectual_property: :copyrighted) }
+    let(:by_permission_author) { create(:authority, intellectual_property: :permission_for_selected) }
+    let(:public_domain_author) { create(:authority, intellectual_property: :public_domain) }
 
     let!(:public_domain) do
       create(
         :manifestation,
         orig_lang: 'he',
         intellectual_property: :public_domain,
-        author: public_domain_person
+        author: public_domain_author
       )
     end
 
@@ -79,8 +101,8 @@ describe AdminController do
         :manifestation,
         orig_lang: 'ru',
         intellectual_property: :public_domain,
-        translator: public_domain_person,
-        author: public_domain_person
+        translator: public_domain_author,
+        author: public_domain_author
       )
     end
 
@@ -89,8 +111,8 @@ describe AdminController do
         :manifestation,
         orig_lang: 'ru',
         intellectual_property: :by_permission,
-        translator: by_permission_person,
-        author: public_domain_person
+        translator: by_permission_author,
+        author: public_domain_author
       )
     end
 
@@ -99,7 +121,7 @@ describe AdminController do
         :manifestation,
         orig_lang: 'he',
         intellectual_property: :public_domain,
-        author: copyrighted_person
+        author: copyrighted_author
       )
     end
 
@@ -108,8 +130,8 @@ describe AdminController do
         :manifestation,
         orig_lang: 'de',
         intellectual_property: :public_domain,
-        author: public_domain_person,
-        translator: by_permission_person
+        author: public_domain_author,
+        translator: by_permission_author
       )
     end
 
@@ -118,7 +140,7 @@ describe AdminController do
         :manifestation,
         orig_lang: 'he',
         intellectual_property: :by_permission,
-        author: public_domain_person
+        author: public_domain_author
       )
     end
 
@@ -127,8 +149,8 @@ describe AdminController do
         :manifestation,
         orig_lang: 'de',
         intellectual_property: :copyrighted,
-        author: public_domain_person,
-        translator: public_domain_person
+        author: public_domain_author,
+        translator: public_domain_author
       )
     end
 
@@ -188,11 +210,12 @@ describe AdminController do
 
     include_context 'Admin user logged in'
 
-    let(:person) { create(:person) }
+    let(:translator) { create(:authority) }
 
     before do
-      create(:manifestation, language: 'he', orig_lang: 'de', author: person, translator: person)
-      create(:manifestation, language: 'he', orig_lang: 'de', author: person, translator: person)
+      create(:manifestation, language: 'he', orig_lang: 'de', author: translator, translator: translator)
+      create(:manifestation, language: 'he', orig_lang: 'de', author: translator, translator: translator)
+      create(:manifestation, language: 'he', orig_lang: 'en', translator: translator)
     end
 
     it { is_expected.to be_successful }
@@ -203,7 +226,7 @@ describe AdminController do
 
     include_context 'Admin user logged in'
 
-    let!(:unknown_person) { create(:person, intellectual_property: :unknown) }
+    let!(:unknown_authority) { create(:authority, intellectual_property: :unknown) }
 
     let!(:by_permission_manifestation) { create(:manifestation, intellectual_property: :by_permission) }
     let!(:public_domain_manifestation) { create(:manifestation, intellectual_property: :public_domain) }
@@ -216,7 +239,7 @@ describe AdminController do
     it 'shows records where copyright is nil' do
       expect(request).to be_successful
       expect(assigns(:mans)).to eq unknown_manifestations
-      expect(assigns(:authors)).to eq [unknown_person]
+      expect(assigns(:authors)).to eq [unknown_authority]
       expect(Rails.cache).to have_received(:write).with('report_missing_copyright', unknown_manifestations.length)
     end
   end
@@ -226,7 +249,7 @@ describe AdminController do
 
     include_context 'Admin user logged in'
 
-    let(:author) { create(:person) }
+    let(:author) { create(:authority) }
     let!(:german_works) { create_list(:manifestation, 3, orig_lang: :de, author: author) }
     let!(:russian_works) { create_list(:manifestation, 5, orig_lang: :ru, author: author) }
     let!(:hebrew_works) { create_list(:manifestation, 2, orig_lang: :he, author: author) }
@@ -268,14 +291,14 @@ describe AdminController do
     describe '#featured_author_create' do
       subject(:call) { post :featured_author_create, params: { featured_author: create_params } }
 
-      let(:person) { create(:person) }
+      let(:person) { create(:authority).person }
 
       context 'when params are valid' do
         let(:create_params) do
           {
             title: 'Title',
             body: 'Body',
-            person_id: person.id
+            authority_id: person.id
           }
         end
 

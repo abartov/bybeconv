@@ -8,7 +8,7 @@
       %th= t(:missing_xlat)
 
     - @author_keys.each do |au_id|
-      - author = Person.find(au_id)
+      - author = Authority.find(au_id)
       %tr
         %td= link_to author.name, authors_edit_toc_path(author)
         %td

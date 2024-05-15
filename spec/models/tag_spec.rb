@@ -93,39 +93,51 @@ describe Tag do
     expect(t2.manifestation_taggings.count).to eq 5
     expect(t2.manifestation_taggings.approved.count).to eq 0
   end
-  it 'links to tagged items of all kinds via approved taggings' do
-    t = Tag.create!(name: Faker::Science.science, creator: create(:user), status: 'approved')
-    5.times do 
-      Tagging.create!(tag: t, taggable: create(:manifestation), suggester: create(:user), status: 'approved')
+
+  describe 'taggings scopes' do
+    let(:first) do
+      described_class.create!(name: Faker::Science.science, creator: create(:user), status: 'approved')
     end
-    t2 = Tag.create!(name: Faker::Science.science+' 2', creator: create(:user), status: 'approved')
-    5.times do
-      Tagging.create!(tag: t, taggable: create(:manifestation), suggester: create(:user), status: 'pending')
+
+    let(:second) do
+      described_class.create!(name: Faker::Science.science, creator: create(:user), status: 'approved')
     end
-    5.times do
-      Tagging.create!(tag: t, taggable: create(:person), suggester: create(:user), status: 'approved')
+
+    before do
+      5.times do
+        Tagging.create!(tag: first, taggable: create(:manifestation), suggester: create(:user), status: 'approved')
+      end
+      5.times do
+        Tagging.create!(tag: first, taggable: create(:manifestation), suggester: create(:user), status: 'pending')
+      end
+      5.times do
+        Tagging.create!(tag: first, taggable: create(:authority), suggester: create(:user), status: 'approved')
+      end
+      3.times do
+        Tagging.create!(tag: first, taggable: create(:authority), suggester: create(:user), status: 'pending')
+      end
+      5.times do
+        Tagging.create!(tag: second, taggable: create(:manifestation), suggester: create(:user), status: 'pending')
+      end
     end
-    3.times do
-      Tagging.create!(tag: t, taggable: create(:person), suggester: create(:user), status: 'pending')
+
+    it 'links to tagged items of all kinds via approved taggings' do
+      expect(Tagging.count).to eq 23
+      expect(first.taggings.count).to eq 18
+      expect(first.manifestation_taggings.count).to eq 10
+      expect(first.authority_taggings.count).to eq 8
+      expect(first.authority_taggings.approved.count).to eq 5
+      expect(first.taggings.approved.count).to eq 10
+      expect(first.manifestation_taggings.approved.count).to eq 5
+      expect(second.taggings.count).to eq 5
+      expect(second.manifestation_taggings.count).to eq 5
+      expect(second.manifestation_taggings.approved.count).to eq 0
     end
-    5.times do
-      Tagging.create!(tag: t2, taggable: create(:manifestation), suggester: create(:user), status: 'pending')
-    end
-    expect(Tagging.all.count).to eq 23
-    expect(t.taggings.count).to eq 18
-    expect(t.manifestation_taggings.count).to eq 10
-    expect(t.people_taggings.count).to eq 8
-    expect(t.people_taggings.approved.count).to eq 5
-    expect(t.taggings.approved.count).to eq 10
-    expect(t.manifestation_taggings.approved.count).to eq 5
-    expect(t2.taggings.count).to eq 5
-    expect(t2.manifestation_taggings.count).to eq 5
-    expect(t2.manifestation_taggings.approved.count).to eq 0
   end
 
   it 'deletes taggings when tag is deleted' do
     t = Tag.create!(name: "#{Faker::Science.science} #{rand(1000)}", creator: create(:user), status: 'approved')
-    5.times do 
+    5.times do
       Tagging.create!(tag: t, taggable: create(:manifestation), suggester: create(:user), status: 'pending')
     end
     expect(Tag.last.taggings.count).to eq 5

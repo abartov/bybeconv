@@ -343,8 +343,8 @@ describe ManifestationController do
         end
 
         context 'when metadata was changed' do
-          let(:new_author) { create(:person) }
-          let(:new_translator) { create(:person) }
+          let(:new_author) { create(:authority) }
+          let(:new_translator) { create(:authority) }
 
           let(:params) do
             {
@@ -355,9 +355,9 @@ describe ManifestationController do
               wlang: 'ru',
               primary: 'false',
               intellectual_property: 'by_permission',
-              add_person_w: new_author.id,
+              add_authority_w: new_author.id,
               role_w: :author,
-              add_person_e: new_translator.id,
+              add_authority_e: new_translator.id,
               role_e: :translator
             }
           end
@@ -494,6 +494,7 @@ describe ManifestationController do
 
       it { is_expected.to redirect_to '/' }
     end
+
     describe '#add_aboutness' do
       let(:user) { create(:user, :edit_catalog) }
 

@@ -2,9 +2,9 @@ FactoryBot.define do
   factory :expression do
     transient do
       sequence(:expression_name) { |n| "Expression #{n}" }
-      author { create(:person) }
+      author { create(:authority) }
       orig_lang { %w(he en ru de it).sample }
-      translator { orig_lang.to_s == 'he' ? nil : create(:person) }
+      translator { orig_lang.to_s == 'he' ? nil : create(:authority) }
       editor { nil }
       illustrator { nil }
       genre { Work::GENRES.sample }
@@ -39,10 +39,10 @@ FactoryBot.define do
           raise 'Cannot specify translator if language matches orig_lang'
         end
       else
-        result << build(:involved_authority, person: translator, role: :translator)
+        result << build(:involved_authority, authority: translator, role: :translator)
       end
       if editor.present?
-        result << build(:involved_authority, person: editor, role: :editor)
+        result << build(:involved_authority, authority: editor, role: :editor)
       end
       result
     end

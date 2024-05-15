@@ -66,6 +66,13 @@ Style/PercentLiteralDelimiters:
 Style/RedundantReturn:
   Enabled: false
 
+# TODO: Re-enable later, currently too hard to fix all places
+Style/UnlessElse:
+  Enabled: false
+
+Rails/ActionOrder: # TODO: temporary disabled. it would be good to enable in future
+  Enabled: false
+
 RSpec/ExampleLength:
   Max: 20
 
