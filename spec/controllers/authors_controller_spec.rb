@@ -112,6 +112,17 @@ describe AuthorsController do
       session[:user_id] = user.id
     end
 
+    describe '#list' do
+      subject { get :list }
+
+      before do
+        create_list(:person, 5) # people without works
+        create_list(:manifestation, 5) # this will create people with works
+      end
+
+      it { is_expected.to be_successful }
+    end
+
     describe '#new' do
       subject { get :new }
 

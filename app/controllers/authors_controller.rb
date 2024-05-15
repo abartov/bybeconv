@@ -448,7 +448,7 @@ class AuthorsController < ApplicationController
 
   def list
     @page_title = t(:authors)+' - '+t(:project_ben_yehuda)
-    def_order = 'tocs.status asc, metadata_approved asc, sort_name asc'
+    def_order = 'tocs.status asc, sort_name asc'
     if params[:q].nil? or params[:q].empty?
       @people = Person.joins("LEFT JOIN tocs on people.toc_id = tocs.id ").page(params[:page]).order(params[:order].nil? ? def_order : params[:order]) # TODO: pagination
     else
@@ -595,7 +595,6 @@ class AuthorsController < ApplicationController
       :wikipedia_snippet,
       :blog_category_url,
       :profile_image,
-      :metadata_approved,
       :gender,
       :bib_done,
       :period,

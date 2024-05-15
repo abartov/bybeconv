@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_05_07_172835) do
+ActiveRecord::Schema.define(version: 2024_05_15_114242) do
 
   create_table "aboutnesses", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -556,7 +556,6 @@ ActiveRecord::Schema.define(version: 2024_05_07_172835) do
   create_table "people", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "name"
     t.string "dates"
-    t.string "title"
     t.string "other_designation", limit: 1024
     t.string "affiliation"
     t.string "country"
@@ -568,7 +567,6 @@ ActiveRecord::Schema.define(version: 2024_05_07_172835) do
     t.integer "toc_id"
     t.text "wikipedia_snippet", size: :medium
     t.string "wikipedia_url", limit: 1024
-    t.string "image_url", limit: 1024
     t.string "profile_image_file_name"
     t.string "profile_image_content_type"
     t.integer "profile_image_file_size"
@@ -576,16 +574,11 @@ ActiveRecord::Schema.define(version: 2024_05_07_172835) do
     t.integer "wikidata_id"
     t.string "birthdate"
     t.string "deathdate"
-    t.boolean "metadata_approved", default: false
     t.integer "gender"
     t.integer "impressions_count"
     t.string "blog_category_url"
     t.boolean "bib_done"
     t.integer "period"
-    t.string "sidepic_file_name"
-    t.string "sidepic_content_type"
-    t.bigint "sidepic_file_size"
-    t.datetime "sidepic_updated_at"
     t.string "sort_name"
     t.integer "status"
     t.datetime "published_at"
