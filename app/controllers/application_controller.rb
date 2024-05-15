@@ -151,6 +151,7 @@ class ApplicationController < ActionController::Base
     Rails.cache.fetch('au_by_genre', expires_in: 24.hours) do # memoize
       totals = Person.has_toc
                      .joins(involved_authorities: :work)
+                     .merge(InvolvedAuthority.role_author)
                      .group(:genre)
                      .distinct
                      .count
