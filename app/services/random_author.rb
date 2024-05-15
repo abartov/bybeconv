@@ -14,10 +14,12 @@ class RandomAuthor < ApplicationService
                              join manifestations m on (m.expression_id = e.id)
                            where
                              ia.person_id = people.id
+                             and ia.role = ?
                              and m.status = ?
                              and w.genre = coalesce(?, w.genre)
                          )
                        SQL
+                       InvolvedAuthority.roles[:author],
                        Manifestation.statuses[:published],
                        genre
                      )
