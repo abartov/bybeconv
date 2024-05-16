@@ -22,8 +22,8 @@ class Manifestation < ApplicationRecord
   has_many :proofs, dependent: :destroy
   has_many :anthology_texts, dependent: :destroy
   has_many_attached :images, dependent: :destroy
-
-  before_save :update_sort_title
+  has_many :collection_items, as: :item
+  before_save :update_sort_title!
 
   enum status: [:published, :nonpd, :unpublished, :deprecated]
 
@@ -45,11 +45,6 @@ class Manifestation < ApplicationRecord
   def involved_authorities_by_role(role)
     (expression.involved_authorities_by_role(role) + expression.work.involved_authorities_by_role(role)).uniq
                                                                                                         .sort_by(&:name)
-  end
-
-  def update_sort_title
-    self.sort_title = self.title.strip_nikkud.tr('[]()*"\'', '').tr('-־',' ').strip
-    self.sort_title = $' if self.sort_title =~ /^\d+\. /
   end
 
   def like_count
