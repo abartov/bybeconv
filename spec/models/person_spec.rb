@@ -35,7 +35,7 @@ describe Person do
       end
 
       context 'when uri is correct but id is not numeric' do
-        let(:value) { 'https://wikidata.org/wiki/q1234A' }
+        let(:value) { 'https://wikidata.org/wiki/Q1234A' }
 
         it { is_expected.to be false }
       end
@@ -45,7 +45,7 @@ describe Person do
 
         it 'succeed, removes leading/trailing whitespaces and converts to downcase' do
           expect(result).to be true
-          expect(person.wikidata_uri).to eq 'https://wikidata.org/wiki/q1234'
+          expect(person.wikidata_uri).to eq 'https://wikidata.org/wiki/Q1234'
         end
       end
     end
