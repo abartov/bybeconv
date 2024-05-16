@@ -8,6 +8,12 @@ class Person < ApplicationRecord
 
   has_paper_trail
 
+  def root_collection
+    return @root_collection if @root_collection
+    return @root_collection = Collection.find(self.root_collection_id) if self.root_collection_id
+    return @root_collection = generate_root_collection!
+  end
+
   def publish!
     # set all person's works to status published
     all_works_including_unpublished.each do |m| # be cautious about publishing joint works, because the *other* author(s) or translators may yet be unpublished!
@@ -77,5 +83,40 @@ class Person < ApplicationRecord
   def period_string
     return '' if period.nil?
     return t(period)
+  end
+
+  def generate_root_collection!
+    works = toc.present? ? toc.linked_items : []
+    colls = Collection.by_authority(self).where.not(collection_type: :root) # include any existing collections possibly already defined for this person
+    extra_works = self.all_works_including_unpublished.reject{|m| works.include?(m)}
+    c = nil
+    ActiveRecord::Base.transaction do
+      c = Collection.create!(title: self.name, collection_type: :root, toc_strategy: :default)
+      self.root_collection_id = c.id
+      self.save!
+      c.involved_authorities.create!(authority: self, role: :author) # by default
+      # make an empty collection per publication (even if one already exists in some other context). Later an editor would populate the empty collection according to an existing manual TOC or a scanned TOC
+      pub_colls = []
+      publications.each do |pub|
+        coll = Collection.create!(title: pub.title, collection_type: :volume, toc_strategy: :default)
+        pub_colls << coll
+      end
+      seqno = 0
+      [colls, pub_colls, works].each do |arr|
+        arr.each do |m|
+          ci = CollectionItem.create!(collection: c, item: m, seqno: seqno)
+          seqno += 1
+        end
+      end
+      # make a (technical, to-be-reviewed-and-handled) collection out of the works not already linked from the TOC
+      extra_works_collection = Collection.create!(title: "#{self.name} - #{I18n.t(:additional_items)}", collection_type: :other, toc_strategy: :default)
+      extra_seqno = 0
+      extra_works.each do |m|
+        ci = CollectionItem.create!(collection: extra_works_collection, item: m, seqno: extra_seqno)
+        extra_seqno += 1
+      end
+      CollectionItem.create!(collection: c, item: extra_works_collection, seqno: seqno)
+    end
+    return c
   end
 end
