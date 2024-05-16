@@ -380,7 +380,6 @@ class AuthorsController < ApplicationController
   end
 
   def create
-    params[:person][:wikidata_id] = params[:person][:wikidata_id].strip[1..-1] if params[:person] and params[:person][:wikidata_id] and params[:person][:wikidata_id][0] and params[:person][:wikidata_id].strip[0] == 'Q' # tolerate pasting the Wikidata number with the Q
     Chewy.strategy(:atomic) {
       @person = Person.new(person_params)
       if @person.status.blank?
@@ -423,7 +422,6 @@ class AuthorsController < ApplicationController
   def update
     @author = Person.find(params[:id])
 
-    params[:person][:wikidata_id] = params[:person][:wikidata_id].strip[1..-1] if params[:person] and params[:person][:wikidata_id] and params[:person][:wikidata_id][0] and params[:person][:wikidata_id].strip[0] == 'Q' # tolerate pasting the Wikidata number with the Q
     Chewy.strategy(:atomic) do
       if @author.update(person_params)
         # if period was updated, update the period of this person's Expressions
@@ -440,8 +438,7 @@ class AuthorsController < ApplicationController
         flash[:notice] = I18n.t(:updated_successfully)
         redirect_to action: :show, id: @author.id
       else
-        format.html { render action: 'edit' }
-        format.json { render json: @author.errors, status: :unprocessable_entity }
+        render action: 'edit', status: :unprocessable_entity
       end
     end
   end
@@ -590,7 +587,7 @@ class AuthorsController < ApplicationController
       :profile_image,
       :birthdate,
       :deathdate,
-      :wikidata_id,
+      :wikidata_uri,
       :wikipedia_url,
       :wikipedia_snippet,
       :blog_category_url,

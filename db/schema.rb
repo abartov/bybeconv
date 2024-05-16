@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_05_15_114242) do
+ActiveRecord::Schema.define(version: 2024_05_16_170503) do
 
   create_table "aboutnesses", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -571,7 +571,6 @@ ActiveRecord::Schema.define(version: 2024_05_15_114242) do
     t.string "profile_image_content_type"
     t.integer "profile_image_file_size"
     t.datetime "profile_image_updated_at"
-    t.integer "wikidata_id"
     t.string "birthdate"
     t.string "deathdate"
     t.integer "gender"
@@ -583,6 +582,7 @@ ActiveRecord::Schema.define(version: 2024_05_15_114242) do
     t.integer "status"
     t.datetime "published_at"
     t.integer "intellectual_property", null: false
+    t.string "wikidata_uri"
     t.index ["gender"], name: "gender_index"
     t.index ["impressions_count"], name: "index_people_on_impressions_count"
     t.index ["intellectual_property"], name: "index_people_on_intellectual_property"

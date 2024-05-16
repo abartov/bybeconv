@@ -1,5 +1,6 @@
 include BybeUtils
 class Person < ApplicationRecord
+  WIKIDATA_URI_PATTERN = %r{\Ahttps://wikidata.org/wiki/q[0-9]+\z}
 
   enum gender: %i(male female other unknown)
   enum period: %i(ancient medieval enlightenment revival modern)
@@ -48,10 +49,15 @@ class Person < ApplicationRecord
 
   # validations
   validates :name, :intellectual_property, presence: true
+  validates :wikidata_uri, format: WIKIDATA_URI_PATTERN, allow_nil: true
 
   validates_attachment_content_type :profile_image, content_type: /\Aimage\/.*\z/
 
   update_index('people'){self} # update PeopleIndex when entity is updated
+
+  before_validation do
+    self.wikidata_uri = wikidata_uri.blank? ? nil : wikidata_uri.strip.downcase
+  end
 
   # class variable
   @@popular_authors = nil
