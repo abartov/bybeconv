@@ -66,8 +66,8 @@
     = f.label t(:blog_category_url)
     = f.text_area :blog_category_url, rows: 3, cols: 50
   .backend-field
-    = f.label t(:wikidata_id)
-    = f.text_field :wikidata_id, size: 10
+    = f.label Person.human_attribute_name(:wikidata_uri)
+    = f.text_field :wikidata_uri
   .backend-field
     = t(:wikipedia_url)
     = f.text_area :wikipedia_url, rows: 3, cols: 50

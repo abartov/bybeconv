@@ -256,13 +256,15 @@ describe AuthorsController do
             person: {
               name: new_name,
               period: new_period,
-              intellectual_property: new_intellectual_property
+              intellectual_property: new_intellectual_property,
+              wikidata_uri: new_wikidata_uri
             }
           }
         end
 
         let(:new_name) { 'New Name' }
         let(:new_intellectual_property) { 'unknown' }
+        let(:new_wikidata_uri) { 'https://wikidata.org/wiki/q1234' }
 
         let(:works_period) { 'modern' } # intentionally use value different from author period
         let!(:original_work) { create(:manifestation, orig_lang: 'he', author: author, period: works_period) }
@@ -279,7 +281,8 @@ describe AuthorsController do
             expect(author).to have_attributes(
               name: new_name,
               period: new_period,
-              intellectual_property: new_intellectual_property
+              intellectual_property: new_intellectual_property,
+              wikidata_uri: new_wikidata_uri
             )
             original_work.reload
             expect(original_work.expression.period).to eq new_period
@@ -305,7 +308,8 @@ describe AuthorsController do
             expect(author).to have_attributes(
               name: new_name,
               period: new_period,
-              intellectual_property: new_intellectual_property
+              intellectual_property: new_intellectual_property,
+              wikidata_uri: new_wikidata_uri
             )
             original_work.reload
             expect(original_work.expression.period).to eq works_period
@@ -315,6 +319,16 @@ describe AuthorsController do
             expect(original_foreign_work.expression.period).to eq works_period
             translated_to_foreign_work.reload
             expect(translated_to_foreign_work.expression.period).to eq works_period
+          end
+        end
+
+        context 'when validation error occurs' do
+          let(:new_wikidata_uri) { 'https://wrongsite.com/Q123' }
+          let(:new_period) { period }
+
+          it 'fails to save and re-renders edit form' do
+            expect(request).to have_http_status(:unprocessable_entity)
+            expect(response).to render_template :edit
           end
         end
       end

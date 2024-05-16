@@ -72,9 +72,9 @@
         - unless(@author.blog_category_url.nil? or @author.blog_category_url.empty?)
           %a{ href: @author.blog_category_url}= t(:link)
         %br
-        %b= t(:wikidata_id)
-        - unless @author.wikidata_id.nil?
-          %a{ href: "https://wikidata.org/wiki/Q#{@author.wikidata_id}"}= @author.wikidata_id.to_s
+        %b= Person.human_attribute_name(:wikidata_uri)
+        - if @author.wikidata_uri.present?
+          = link_to @author.wikidata_uri, @author.wikidata_uri
         %br
         %b= t(:wikipedia_url)
         - unless @author.wikipedia_url.nil? or @author.wikipedia_url.empty?

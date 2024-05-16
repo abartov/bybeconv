@@ -18,3 +18,4 @@ en:
         intellectual_property: Type of intellectual property
       person:
         intellectual_property: Type of intellectual property
+        wikidata_uri: Wikidata URI
