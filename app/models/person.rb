@@ -1,6 +1,6 @@
 include BybeUtils
 class Person < ApplicationRecord
-  WIKIDATA_URI_PATTERN = %r{\Ahttps://wikidata.org/wiki/q[0-9]+\z}
+  WIKIDATA_URI_PATTERN = %r{\Ahttps://wikidata.org/wiki/Q[0-9]+\z}
 
   enum gender: %i(male female other unknown)
   enum period: %i(ancient medieval enlightenment revival modern)
