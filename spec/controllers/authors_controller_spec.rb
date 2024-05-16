@@ -264,7 +264,7 @@ describe AuthorsController do
 
         let(:new_name) { 'New Name' }
         let(:new_intellectual_property) { 'unknown' }
-        let(:new_wikidata_uri) { 'https://wikidata.org/wiki/q1234' }
+        let(:new_wikidata_uri) { 'https://wikidata.org/wiki/Q1234' }
 
         let(:works_period) { 'modern' } # intentionally use value different from author period
         let!(:original_work) { create(:manifestation, orig_lang: 'he', author: author, period: works_period) }
