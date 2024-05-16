@@ -6,7 +6,7 @@ class ChangePeopleWikidataIdToWikidataUri < ActiveRecord::Migration[6.1]
 
     execute <<~SQL
       update people
-      set wikidata_uri = CONCAT('https://wikidata.org/wiki/q', wikidata_id)
+      set wikidata_uri = CONCAT('https://wikidata.org/wiki/Q', wikidata_id)
       where wikidata_id is not null
     SQL
 
