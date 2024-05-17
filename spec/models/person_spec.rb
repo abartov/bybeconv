@@ -29,24 +29,24 @@ describe Person do
       end
 
       context 'when uri has wrong format' do
-        let(:value) { 'http://wikidata.org/wiki/q1234' }
+        let(:value) { 'http://wikidata.org/wiki/q1234' } # wrong protocol
 
         it { is_expected.to be false }
+      end
+
+      context 'when uri is correct has wrong case' do
+        let(:value) { ' HTTPS://wikidata.org/WIKI/q1234  ' }
+
+        it 'normalizes it by adjusting case and removing leading/trailing whitespaces' do
+          expect(result).to be_truthy
+          expect(person.wikidata_uri).to eq 'https://wikidata.org/wiki/Q1234'
+        end
       end
 
       context 'when uri is correct but id is not numeric' do
         let(:value) { 'https://wikidata.org/wiki/Q1234A' }
 
         it { is_expected.to be false }
-      end
-
-      context 'when value has correct format' do
-        let(:value) { '  HTTPS://wikidata.org/WIKI/Q1234  ' }
-
-        it 'succeed, removes leading/trailing whitespaces and converts to downcase' do
-          expect(result).to be true
-          expect(person.wikidata_uri).to eq 'https://wikidata.org/wiki/Q1234'
-        end
       end
     end
   end

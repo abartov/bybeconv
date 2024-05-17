@@ -1,5 +1,6 @@
 include BybeUtils
 class Person < ApplicationRecord
+  # NOTE: Wikidata URIs are case-sensitive
   WIKIDATA_URI_PATTERN = %r{\Ahttps://wikidata.org/wiki/Q[0-9]+\z}
 
   enum gender: %i(male female other unknown)
@@ -56,7 +57,14 @@ class Person < ApplicationRecord
   update_index('people'){self} # update PeopleIndex when entity is updated
 
   before_validation do
-    self.wikidata_uri = wikidata_uri.blank? ? nil : wikidata_uri.strip.downcase
+    self.wikidata_uri = if wikidata_uri.blank?
+                          nil
+                        else
+                          # 'Q' in wikidata URI must be uppercase
+                          wikidata_uri.strip
+                                      .downcase
+                                      .gsub(%r{\Ahttps://wikidata.org/wiki/q}, 'https://wikidata.org/wiki/Q')
+                        end
   end
 
   # class variable
