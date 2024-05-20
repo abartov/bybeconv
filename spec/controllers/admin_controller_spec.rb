@@ -42,18 +42,6 @@ describe AdminController do
     it { is_expected.to be_successful }
   end
 
-  describe '#suspicious_titles' do
-    subject { get :suspicious_titles }
-
-    include_context 'Admin user logged in'
-
-    before do
-      create(:manifestation, cached_heading_lines: '1|2|3|4', markdown: "Some\nmultiline\ntext\nfor\n\test")
-    end
-
-    it { is_expected.to be_successful }
-  end
-
   describe '#tocs_missing_links' do
     subject { get :tocs_missing_links }
 
@@ -171,20 +159,34 @@ describe AdminController do
   end
 
   describe '#suspicious_titles' do
-    include_context 'Admin user logged in'
-    subject { get :suspicious_titles }
+    subject(:call) { get :suspicious_titles }
 
-    before do
-      create(:manifestation, title: 'קבוצה ')
-      create(:manifestation, title: 'Trailing dot.')
+    include_context 'Admin user logged in'
+
+    let!(:suspicious_titles) do
+      [
+        create(:manifestation, title: 'קבוצה '),
+        create(:manifestation, title: 'Trailing dot.'),
+        create(:manifestation, title: 'ab')
+      ]
     end
 
-    it { is_expected.to be_successful }
+    before do
+      create_list(:manifestation, 5)
+      allow(Rails.cache).to receive(:write)
+    end
+
+    it 'completes successfully' do
+      expect(call).to be_successful
+      expect(Rails.cache).to have_received(:write).with('report_suspicious_titles', suspicious_titles.length)
+      expect(assigns(:suspicious)).to match_array suspicious_titles
+    end
   end
 
   describe '#suspicious_translations' do
-    include_context 'Admin user logged in'
     subject(:request) { get :suspicious_translations }
+
+    include_context 'Admin user logged in'
 
     let(:person) { create(:person) }
 
@@ -198,15 +200,24 @@ describe AdminController do
 
   describe '#missing_copyright' do
     subject(:request) { get :missing_copyright }
+
     include_context 'Admin user logged in'
+
+    let!(:unknown_person) { create(:person, intellectual_property: :unknown) }
 
     let!(:by_permission_manifestation) { create(:manifestation, intellectual_property: :by_permission) }
     let!(:public_domain_manifestation) { create(:manifestation, intellectual_property: :public_domain) }
-    let!(:unknown_manifestation) { create(:manifestation, intellectual_property: :unknown) }
+    let!(:unknown_manifestations) { create_list(:manifestation, 3, intellectual_property: :unknown) }
+
+    before do
+      allow(Rails.cache).to receive(:write)
+    end
 
     it 'shows records where copyright is nil' do
       expect(request).to be_successful
-      expect(assigns(:mans)).to eq [unknown_manifestation]
+      expect(assigns(:mans)).to eq unknown_manifestations
+      expect(assigns(:authors)).to eq [unknown_person]
+      expect(Rails.cache).to have_received(:write).with('report_missing_copyright', unknown_manifestations.length)
     end
   end
 
