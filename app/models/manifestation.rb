@@ -42,10 +42,6 @@ class Manifestation < ApplicationRecord
 
   update_index('manifestations'){self} # update ManifestationsIndex when entity is updated
 
-  # class variable
-  @@popular_works = nil
-  @@tmplock = false
-
   def involved_authorities_by_role(role)
     (expression.involved_authorities_by_role(role) + expression.work.involved_authorities_by_role(role)).uniq
                                                                                                         .sort_by(&:name)
@@ -280,26 +276,6 @@ class Manifestation < ApplicationRecord
     Rails.cache.fetch("m_first_25", expires_in: 24.hours) do
       Manifestation.all_published.order(:sort_title).limit(25)
     end
-  end
-
-  # This method was used in ManifestationController#works which is currently not used, but could be reimplemented in future
-  # def self.cached_last_month_works
-  #   Rails.cache.fetch("m_new_last_month", expires_in: 24.hours) do
-  #     ret = {}
-  #     Manifestation.all_published.new_since(1.month.ago).each {|m|
-  #       e = m.expressions[0]
-  #       genre = e.genre
-  #       person = e.persons[0] # TODO: more nuance
-  #       next if person.nil? || genre.nil? # shouldn't happen, but might in a dev. env.
-  #       ret[genre] = [] if ret[genre].nil?
-  #       ret[genre] << [m.id, m.title, m.author_string]
-  #     }
-  #     ret
-  #   end
-  # end
-
-  def self.recalc_popular
-    @@popular_works = Manifestation.all_published.order(impressions_count: :desc).limit(10) # top 10
   end
 
   def self.cached_popular_works_by_genre
