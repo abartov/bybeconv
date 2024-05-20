@@ -576,7 +576,6 @@ class AuthorsController < ApplicationController
 
   def person_params
     params.require(:person).permit(
-      :affiliation,
       :comment,
       :country,
       :name,

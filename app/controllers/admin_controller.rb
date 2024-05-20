@@ -326,6 +326,7 @@ class AdminController < ApplicationController
       @total = @texts.count
     end
   end
+
   def suspicious_titles
     @suspicious = Manifestation.where('(title like "%קבוצה %") OR (title like "%.") OR (title like "__")').select{|x| x.title !~ /\.\.\./}
     Rails.cache.write('report_suspicious_titles', @suspicious.length)
