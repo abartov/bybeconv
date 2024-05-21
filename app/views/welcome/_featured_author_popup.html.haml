@@ -26,4 +26,4 @@
                   %p!= @featured_author.body.gsub("\n",'<br />')
               .bottom-button-area
                 %a{ href: person_path(id: @featured_author.person.id)}
-                  %button.by-button-v02.link-to-all-v02= t(:to_the_author_page)
+                  %button.by-button-v02.link-to-all-v02= to_the_author_page(@featured_author.person)
