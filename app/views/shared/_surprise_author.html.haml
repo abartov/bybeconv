@@ -4,7 +4,7 @@
     .surprise-author-card-v02
       %img.surprise-author-pic-v02{src: author.profile_image.url(:thumb), alt: author.name}
       .author-name-area
-        .surprise-author-name-v02= t(:to_the_author_page)+(author.gender == 'female' ? 'ת' : '') # TODO: unhardcode
+        .surprise-author-name-v02= to_the_author_page(author)
   .by-card-header-v02
     %span.headline-1-v02
       %a{href: person_path(author.id)}= author.name
