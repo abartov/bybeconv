@@ -6,6 +6,54 @@ describe BibController do
     session[:user_id] = user.id
   end
 
+  describe '#shopping' do
+    subject { get :shopping, params: { source_id: source.id, pd: pd, nonpd: nonpd, unique: unique } }
+
+    let(:pd) { nil }
+    let(:nonpd) { nil }
+    let(:unique) { nil }
+    let(:source) { create(:bib_source) }
+
+    context 'when no additional params are provided' do
+      it { is_expected.to be_successful }
+    end
+
+    context 'when unique public_domain' do
+      let(:pd) { 1 }
+      let(:unique) { 1 }
+
+      it { is_expected.to be_successful }
+    end
+
+    context 'when non-unique public_domain' do
+      let(:pd) { 1 }
+      let(:unique) { 0 }
+
+      it { is_expected.to be_successful }
+    end
+
+    context 'when unique' do
+      let(:pd) { 0 }
+      let(:unique) { 1 }
+
+      it { is_expected.to be_successful }
+    end
+
+    context 'when non-public domain unique' do
+      let(:nonpd) { 1 }
+      let(:unique) { 1 }
+
+      it { is_expected.to be_successful }
+    end
+
+    context 'when non-public domain non-unique' do
+      let(:nonpd) { 1 }
+      let(:unique) { 0 }
+
+      it { is_expected.to be_successful }
+    end
+  end
+
   describe '#pubs_maybe_done' do
     subject(:request) { get :pubs_maybe_done }
 
