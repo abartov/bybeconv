@@ -36,6 +36,7 @@ class Authority < ApplicationRecord
   has_many :tags, through: :taggings, class_name: 'Tag'
 
   belongs_to :person, optional: true
+  belongs_to :corporate_body, optional: true
 
   accepts_nested_attributes_for :person
 

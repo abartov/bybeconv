@@ -6,6 +6,28 @@ describe BibController do
     session[:user_id] = user.id
   end
 
+  describe '#index' do
+    subject { get :index, params: { authority_id: authority_id } }
+
+    let(:publication) { create(:publication) }
+
+    before do
+      create_list(:publication, 5)
+    end
+
+    context 'when authority_id is not provided' do
+      let(:authority_id) { nil }
+
+      it { is_expected.to be_successful }
+    end
+
+    context 'when authority_id is provided' do
+      let(:authority_id) { publication.authority.id }
+
+      it { is_expected.to be_successful }
+    end
+  end
+
   describe '#shopping' do
     subject { get :shopping, params: { source_id: source.id, pd: pd, nonpd: nonpd, unique: unique } }
 
@@ -49,6 +71,43 @@ describe BibController do
     context 'when non-public domain non-unique' do
       let(:nonpd) { 1 }
       let(:unique) { 0 }
+
+      it { is_expected.to be_successful }
+    end
+  end
+
+  describe '#authority' do
+    subject { get :authority, params: { authority_id: authority.id } }
+
+    let!(:authority) { create(:authority, bib_done: false) }
+    let!(:pubs) { create(:publication, authority: authority) }
+
+    it { is_expected.to be_successful }
+  end
+
+  describe '#make_author_page' do
+    subject { post :make_author_page, params: { authority_id: authority.id } }
+
+    let!(:authority) { create(:authority, bib_done: false) }
+    let!(:pubs) { create(:publication, authority: authority) }
+
+    it { is_expected.to be_successful }
+  end
+
+  describe '#pubs_by_authority' do
+    subject(:call) { get :pubs_by_authority, params: { authority_id: authority_id, q: query } }
+
+    let(:query) { nil }
+
+    context 'when authority id is not provided' do
+      let(:authority_id) { nil }
+
+      it { is_expected.to be_successful }
+    end
+
+    context 'when authority id is provided' do
+      let(:authority) { create(:authority) }
+      let(:authority_id) { authority.id }
 
       it { is_expected.to be_successful }
     end

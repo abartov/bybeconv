@@ -116,8 +116,9 @@ describe AuthorsController do
       subject { get :list }
 
       before do
-        create_list(:authority, 5) # people without works
-        create_list(:manifestation, 5) # this will create people with works
+        create_list(:authority, 5)     # authors without works
+        create_list(:manifestation, 5) # this will create authors with works
+        create_list(:publication, 2)   # will create authors with publications
       end
 
       it { is_expected.to be_successful }
@@ -201,6 +202,8 @@ describe AuthorsController do
       let(:author) { create(:authority, intellectual_property: intellectual_property, period: period) }
 
       describe '#show' do
+        subject(:call) { get :show, params: { id: author.id } }
+
         before do
           create_list(:manifestation, 3, author: author)
           create(:manifestation, author: author, status: :unpublished)
@@ -208,10 +211,8 @@ describe AuthorsController do
           create_list(:manifestation, 2, translator: author, orig_lang: 'de', status: :unpublished)
         end
 
-        subject! { get :show, params: { id: author.id } }
-
         it 'renders successfully' do
-          expect(response).to be_successful
+          expect(call).to be_successful
           expect(assigns(:published_works)).to eq 3
           expect(assigns(:published_xlats)).to eq 6
           expect(assigns(:total_orig_works)).to eq 4
@@ -221,6 +222,12 @@ describe AuthorsController do
         context 'when non-public domain' do
           # there is a special logic in view for such case
           let(:intellectual_property) { :permission_for_selected }
+
+          it { is_expected.to be_successful }
+        end
+
+        context 'when bibliography exists' do
+          let!(:publications) { create_list(:publication, 3, authority: author) }
 
           it { is_expected.to be_successful }
         end
