@@ -145,20 +145,44 @@ class BibController < ApplicationController
     hh = []
     case
     when params[:pd] == '1' && params[:unique] == '1'
-      pp = Publication.joins(:holdings, :person).group('publications.id').having('COUNT(distinct holdings.bib_source_id) = 1').where("publications.status = 'todo' and people.public_domain = 1 and holdings.bib_source_id = #{params[:source_id]}") # get all publications available in only one source
+      # get all publications available in only one source
+      pp = Publication.joins(:holdings, :person)
+                      .group('publications.id')
+                      .having('COUNT(distinct holdings.bib_source_id) = 1')
+                      .merge(Person.intellectual_property_public_domain)
+                      .where("publications.status = 'todo' and holdings.bib_source_id = ?", params[:source_id])
       pp.each{|p| p.holdings.each {|h| hh << h }}
     when params[:pd] == '1' && (params[:unique].nil? || params[:unique] == '0')
-      hh = Holding.to_obtain(params[:source_id]).joins(publication: [:person]).includes(publication: :holdings).where("people.public_domain = 1 AND publications.status = 'todo'").to_a
+      hh = Holding.to_obtain(params[:source_id])
+                  .joins(publication: :person)
+                  .merge(Person.intellectual_property_public_domain)
+                  .where("publications.status = 'todo'").to_a
     when (params[:pd].nil? || params[:pd] == '0') && params[:unique] == '1'
-      pp = Publication.joins(:holdings).group('publications.id').having('COUNT(distinct holdings.bib_source_id) = 1').where('publications.status = "todo"') # get all publications available in only one source
+      # get all publications available in only one source
+      pp = Publication.joins(:holdings).group('publications.id')
+                      .having('COUNT(distinct holdings.bib_source_id) = 1')
+                      .where('publications.status = "todo"')
       pp.each{|p| p.holdings.each {|h| hh << h if h.bib_source_id == params[:source_id].to_i}}
     when params[:nonpd] == '1' && params[:unique] == '1'
-      pp = Publication.joins(:holdings, :person).group('publications.id').having('COUNT(distinct holdings.bib_source_id) = 1').where('publications.status = "todo" and people.public_domain = 0') # get all publications available in only one source
+      # get all publications available in only one source
+      pp = Publication.joins(:holdings, :person)
+                      .group('publications.id')
+                      .having('COUNT(distinct holdings.bib_source_id) = 1')
+                      .where('publications.status = "todo"')
+                      .where.not(
+                        'people.intellectual_property = ?',
+                        Person.intellectual_properties[:public_domain]
+                      )
       pp.each{|p| p.holdings.each {|h| hh << h if h.bib_source_id == params[:source_id].to_i}}
     when params[:nonpd] == '1' && (params[:unique].nil? || params[:unique] == '0')
-      hh = Holding.to_obtain(params[:source_id]).joins(publication: [:person]).includes(publication: :holdings).where('people.public_domain' => false).to_a
+      hh = Holding.to_obtain(params[:source_id])
+                  .joins(publication: :person)
+                  .where.not(
+                    'people.intellectual_property = ?',
+                    Person.intellectual_properties[:public_domain]
+                  ).to_a
     else
-        hh = Holding.to_obtain(params[:source_id]).to_a
+      hh = Holding.to_obtain(params[:source_id]).to_a
     end
 
     @holdings = hh.sort_by!{|h|
