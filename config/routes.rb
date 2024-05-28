@@ -27,8 +27,8 @@ Bybeconv::Application.routes.draw do
   resources :publications
   get 'bib/index'
   get 'bib/scans' => 'bib#scans', as: 'bib_scans'
-  get 'bib/person/:person_id' => 'bib#person', as: 'bib_person'
-  match 'bib/pubs_by_person', via: [:get, :post]
+  get 'bib/authority/:authority_id' => 'bib#authority', as: 'bib_authority'
+  match 'bib/pubs_by_authority', via: %i(get post)
   get 'bib/pubs_maybe_done'
   get 'bib/publication_mark_false_positive/:id' => 'bib#publication_mark_false_positive', as: 'publication_mark_false_positive'
   get 'bib/make_scanning_task/:id' => 'bib#make_scanning_task', as: 'bib_make_scanning_task'

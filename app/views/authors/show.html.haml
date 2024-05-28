@@ -18,7 +18,7 @@
     - else
       %b{ style: 'font-size: 1rem'}= t(:this_author_has_a_generated_toc)
     != "&emsp;"
-    - link = @author.any_bibs? ? bib_person_path(person_id: @author.id) : bib_index_path(person_id: @author.id)
+    - link = @author.any_bibs? ? bib_authority_path(authority_id: @author.id) : bib_index_path(person_id: @author.id)
     %b{ style: 'font-size: 2rem'}
       = link_to link_to t(:bibliography), link
   %table
@@ -98,9 +98,9 @@
         %h3= t(:works)
         %b= Authority.human_attribute_name(:bib_done)
         - if @author.bib_done
-          %span{style: 'color:green'}= link_to t(:yes), bib_person_path({person_id: @author.id})
+          %span{ style: 'color:green' }= link_to t(:yes), bib_authority_path({ authority_id: @author.id })
         - else
-          %span{style: 'color:red'}= link_to t(:no), bib_person_path({person_id: @author.id})
+          %span{ style: 'color:red' }= link_to t(:no), bib_authority_path({ authority_id: @author.id })
         %br
         %b= t(:works)
         = link_to "#{@published_works} #{t(:original_works)}", person_path(id: @author.id)

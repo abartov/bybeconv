@@ -22,35 +22,35 @@
       %th
       %th
 
-    - @authorities.each do |authority|
-      - link = authority.any_bibs? ? bib_person_path(person_id: authority.id) : bib_index_path(person_id: authority.id)
+    - @authorities.each do |au|
+      - link = au.any_bibs? ? bib_authority_path(authority_id: au.id) : bib_index_path(authority_id: au.id)
       %tr
-        %td= link_to authority.name, authors_show_path(id: authority.id)
-        %td!= authority&.person&.life_years
-        %td= authority.other_designation
+        %td= link_to au.name, authors_show_path(id: au.id)
+        %td!= au&.person&.life_years
+        %td= au.other_designation
         %td
-          = t(authority.status)
-          - if authority.unpublished?
+          = t(au.status)
+          - if au.unpublished?
             %br
-            = link_to t(:make_published), author_publish_path(id: authority.id)
-        %td= authority.comment.present? ? '+' : ''
-        %td= link_to authority.viaf_id, "http://viaf.org/viaf/#{authority.viaf_id}"
-        %td= authority.nli_id
+            = link_to t(:make_published), author_publish_path(id: au.id)
+        %td= au.comment.present? ? '+' : ''
+        %td= link_to au.viaf_id, "http://viaf.org/viaf/#{au.viaf_id}"
+        %td= au.nli_id
         %td
-          - if authority.toc.nil?
+          - if au.toc.nil?
             %span{ style: 'color: red' }= t(:no_toc_yet)
-          - elsif authority.toc.status.nil? || authority.toc.status == 'raw'
+          - elsif au.toc.status.nil? || au.toc.status == 'raw'
             %span{style: 'color: black'}= t(:raw)
           - else
             %span{style: 'color:green'}= t(:ready)
           %br
-          = link_to t(:show_toc), person_path(authority)
-        %td= link_to t(:edit_metadata), authors_edit_path(id: authority.id)
+          = link_to t(:show_toc), person_path(au)
+        %td= link_to t(:edit_metadata), authors_edit_path(id: au.id)
         %td
-          - unless authority.toc.nil?
-            = link_to t(:edit_toc), authors_edit_toc_path(authority)
+          - unless au.toc.nil?
+            = link_to t(:edit_toc), authors_edit_toc_path(au)
         %td= link_to t(:bibliography), link
-        %td= link_to t(:destroy), authors_destroy_path(id: authority.id), data: { confirm: t(:are_you_sure) }
+        %td= link_to t(:destroy), authors_destroy_path(id: au.id), data: { confirm: t(:are_you_sure) }
   %br
 
   != paginate @authorities

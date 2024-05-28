@@ -8,7 +8,7 @@
       .col-md-6
         %h2= t(:some_authors_to_work_on)
         %p
-          - Person.has_toc.bib_not_done.order('RAND()').limit(20).map{|p| p.name}.each do |p|
+          - Authority.has_toc.bib_not_done.order('RAND()').limit(20).map(&:name).each do |p|
             %span.copyme.pointer= p
             = '; '
 
@@ -33,8 +33,10 @@
       .col-md-6{style: 'overflow-x: auto'}
         .backend-field
           = label_tag t(:linked_author)
-          = hidden_field_tag :person_id
-          = autocomplete_field_tag :person, '', autocomplete_person_name_path, id_element: '#person_id', scopes: [:bib_not_done], 'data-noMatchesLabel' => t(:no_matches_found)
+          = hidden_field_tag :authority_id
+          = autocomplete_field_tag :authority, '', autocomplete_authority_name_path,
+                                   id_element: '#authority_id', scopes: [:bib_not_done],
+                                   'data-noMatchesLabel' => t(:no_matches_found)
         = link_to t(:new_author), authors_new_path
         .card
           .card-content
@@ -48,8 +50,8 @@
         = link_to t(:back_to_bib_workshop), action: :index
 :javascript
   function moveit(elem){
-    var person_id = $('#person_id').val();
-    if (person_id == null || person_id == "") {
+    var authority_id = $('#authority_id').val();
+    if (authority_id == null || authority_id == "") {
       alert("#{t(:select_person_first)}");
     } else {
       var row = elem.parentElement.parentElement;
@@ -61,7 +63,7 @@
           data: { publication: {title: row.children[0].textContent , author_line: row.children[1].textContent, publisher_line: row.children[2].textContent,
             pub_year: row.children[3].textContent, language: row.children[4].textContent,
             notes: row.children[5].textContent, bib_source: row.children[6].textContent, source_id: row.children[6].children[0].href, callnum: row.children[7].textContent,
-            person_id: person_id, status: status } },
+            authority_id: authority_id, status: status } },
           dataType: "script"
         }).done(function(xhr, status) {
           if(status == "success") {
@@ -107,7 +109,7 @@
     }
   };
   function load_pubs(pid) {
-      var url = "#{bib_person_path({person_id: 999})}".replace("999", pid);
+      var url = "#{bib_authority_path({ authority_id: 999 })}".replace("999", pid);
       $('#author_link').attr('href', url);
       $.ajax({
         url: url,
@@ -116,12 +118,12 @@
   };
 
   $(document).ready(function() {
-    var pid = "#{@person_id}";
+    var pid = "#{@authority_id}";
     if(pid != "") {
       load_pubs(pid);
-      $('#person').val("#{@person_id.nil? || @person_id.empty? ? '' : @person.name}");
+      $('#authority').val("#{@authority_id.blank? ? '' : @authority.name}");
     }
-    $('#person').bind('railsAutocomplete.select', function(event, data){
+    $('#authority').bind('railsAutocomplete.select', function(event, data){
       load_pubs(data.item.id)
     });
     $('.copyme').click(function(e){
@@ -144,5 +146,5 @@
       $(this).addClass('pub_selected');
     });
 
-    $('#person').on('railsAutocomplete.select', function() { $('#person_name').val($(this).val());});
+    $('#authority').on('railsAutocomplete.select', function() { $('#authority_name').val($(this).val());});
   });

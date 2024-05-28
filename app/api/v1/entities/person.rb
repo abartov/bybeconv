@@ -2,8 +2,11 @@ module V1
   module Entities
     class Person < Grape::Entity
       expose :id, documentation: { type: :Integer }
-      expose :url, documentation: { desc: "Canonical URL of the person at Project Ben-Yehuda (useful for giving credit and allowing users to click through)" } do |person|
-        Rails.application.routes.url_helpers.bib_person_url(person)
+      expose :url, documentation: {
+        desc: 'Canonical URL of the person at Project Ben-Yehuda (useful for giving credit and allowing' \
+              'users to click through)'
+      } do |au|
+        Rails.application.routes.url_helpers.bib_authority_url(au)
       end
       expose :metadata do
         expose :name
@@ -43,7 +46,10 @@ module V1
 
       expose :enrichment, if: lambda { |_person, options| %w(enriched).include? options[:detail] } do
         expose :texts_about,
-               documentation: { type: 'Integer', is_array: true, desc: "ID numbers of texts whose subject is this person" } do |person|
+               documentation: {
+                 type: 'Integer', is_array: true,
+                 desc: 'ID numbers of texts whose subject is this person'
+               } do |person|
           Aboutness.where(aboutable: person)
                    .joins(work: {expressions: :manifestations})
                    .pluck('manifestations.id').sort
