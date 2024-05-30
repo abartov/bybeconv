@@ -2,9 +2,9 @@ module AboutnessesHelper
   def aboutness_html(ab, edit)
     html = ''
     case ab.aboutable_type
-    when 'Person'
+    when 'Authority'
       html += link_to(ab.aboutable.try(:name), person_path(id: ab.aboutable_id))
-      html += ' ('+I18n.t(:person)+')'
+      html += "(#{Authority.model_name.human})"
     when 'Work'
       html += link_to(ab.aboutable.try(:title), work_show_path(id: ab.aboutable_id))
       html += ' / '
