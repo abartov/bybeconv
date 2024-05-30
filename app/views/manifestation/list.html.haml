@@ -18,7 +18,10 @@
 
             = label_tag(:author_l, t(:author))
             /= text_field_tag(:author, session[:mft_q_params][:author])
-            = autocomplete_field_tag :author, session[:mft_q_params][:author], autocomplete_authority_name_path, 'data-noMatchesLabel' => t(:no_matches_found)
+            = autocomplete_field_tag :author,
+                                     session[:mft_q_params][:author],
+                                     autocomplete_authority_name_path,
+                                     data: { noMatchesLabel: t(:no_matches_found) }
             = submit_tag(t(:filter))
 
         / end query interface
