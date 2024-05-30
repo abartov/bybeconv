@@ -39,6 +39,17 @@
           %b= Person.human_attribute_name(:gender)
           = t(person.gender.nil? ? :unknown : person.gender)
           %br
+        - if @author.corporate_body.present?
+          - corporate_body = @author.corporate_body
+          %b= CorporateBody.human_attribute_name(:location)
+          = corporate_body.location
+          %br
+          %b= CorporateBody.human_attribute_name(:inception_year)
+          = corporate_body.inception_year
+          %br
+          %b= CorporateBody.human_attribute_name(:dissolution_year)
+          = corporate_body.dissolution_year
+          %br
         %b= Authority.human_attribute_name(:intellectual_property)
         :ruby
           color = case @author.intellectual_property
@@ -75,7 +86,7 @@
         - unless(@author.blog_category_url.nil? or @author.blog_category_url.empty?)
           %a{ href: @author.blog_category_url}= t(:link)
         %br
-        %b= Person.human_attribute_name(:wikidata_uri)
+        %b= Authority.human_attribute_name(:wikidata_uri)
         - if @author.wikidata_uri.present?
           = link_to @author.wikidata_uri, @author.wikidata_uri
         %br

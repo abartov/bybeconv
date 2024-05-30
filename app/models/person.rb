@@ -85,12 +85,4 @@ class Person < ApplicationRecord
     return '' if period.nil?
     return t(period)
   end
-
-  def placeholder_image_url
-    if gender == 'female'
-      return '/assets/:style/placeholder_woman.jpg'
-    else
-      return '/assets/:style/placeholder_man.jpg'
-    end
-  end
 end

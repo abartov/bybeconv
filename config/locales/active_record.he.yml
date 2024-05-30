@@ -8,6 +8,10 @@ he:
     country: מדינה
     period: תקופה
   activerecord:
+    models:
+      person: אדם
+      corporate_body: גוף/מוסד
+      authority: Authority
     errors:
       models:
         involved_authority:
@@ -15,6 +19,11 @@ he:
             base:
               no_item: חובה לשייך יצירה או ביטוי
               multiple_items: אי אפשר לשייך גם יצירה וגם ביטוי
+        authority:
+          attributes:
+            base:
+              no_linked_authority: either Person or CorporateBody object must be specified
+              multiple_linked_authorities: Person and CorporateBody objects cannot be specified together
     attributes:
       authority:
         other_designation: כינויים אחרים
@@ -27,6 +36,12 @@ he:
         blog_category_url: קישורית לקטגוריה על היוצר/ת ביומן הרשת
         wikipedia_snippet: תקציר מויקיפדיה
         wikipedia_url: קישורית לויקיפדיה
+      corporate_body:
+        location: מיקום
+        inception: תאריך ייסוד
+        inception_year: שנת ייסוד
+        dissolution: תאריך פירוק
+        dissolution_year: שנת פירוק
       expression:
         intellectual_property: מצב זכויות יוצרים
       person:

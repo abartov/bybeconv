@@ -8,6 +8,10 @@ en:
     country: Country
     period: Period
   activerecord:
+    models:
+      person: Person
+      corporate_body: Corporate Body
+      authority: Authority
     errors:
       models:
         involved_authority:
@@ -15,6 +19,11 @@ en:
             base:
               no_item: either Work or Expression object must be specified
               multiple_items: Work and Expression objects cannot be specified together
+        authority:
+          attributes:
+            base:
+              no_linked_authority: either Person or CorporateBody object must be specified
+              multiple_linked_authorities: Person and CorporateBody objects cannot be specified together
     attributes:
       authority:
         other_designation: Other designation
@@ -27,7 +36,12 @@ en:
         blog_category_url: Link to category about the creator in blog
         wikipedia_snippet: Snippet from Wikipedia
         wikipedia_url: Link to the article in Wikipedia
-
+      corporate_body:
+        location: Location
+        inception: Inception
+        inception_year: Inception Year
+        dissolution: Dissolution
+        dissolution_year: Dissolution Year
       expression:
         intellectual_property: Type of intellectual property
       person:

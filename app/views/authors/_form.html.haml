@@ -25,6 +25,14 @@
         = pf.input :period, collection: Person.periods.keys.map { |p| [t(p), p] }
         = pf.input :gender, as: :radio_buttons, collection: Person.genders.keys.map { |g| [t(g), g] }
 
+    - if authority.corporate_body.present?
+      = f.simple_fields_for :corporate_body do |cbf|
+        = cbf.input :location
+        = cbf.input :inception
+        = cbf.input :inception_year
+        = cbf.input :dissolution
+        = cbf.input :dissolution_year
+
     = f.input :current_image, label: t(:current_image) do
       = image_tag authority.profile_image.url(:thumb), alt: authority.name
 
