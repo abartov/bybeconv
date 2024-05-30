@@ -18,6 +18,26 @@ describe AdminController do
     end
   end
 
+  describe '#index' do
+    subject { get :index }
+
+    include_context 'Admin user logged in'
+
+    before do
+      %w(
+        bib_workshop
+        handle_proofs
+        moderate_tags
+        handle_recommendations
+        edit_sitenotice
+        curate_featured_content
+        conversion_verification
+      ).each { |bit| ListItem.create!(listkey: bit, item: admin) }
+    end
+
+    it { is_expected.to be_successful }
+  end
+
   describe '#periodless' do
     subject(:call) { get :periodless }
 
@@ -40,10 +60,121 @@ describe AdminController do
     end
   end
 
+  describe 'Featured Content management' do
+    include_context 'Admin user logged in'
+
+    describe '#featured_content_list' do
+      subject { get :featured_content_list }
+
+      before do
+        create_list(:featured_content, 5)
+      end
+
+      it { is_expected.to be_successful }
+    end
+
+    describe '#featured_content_new' do
+      subject { get :featured_content_new }
+
+      it { is_expected.to be_successful }
+    end
+
+    describe '#featured_content_create' do
+      subject(:call) { post :featured_content_create, params: featured_content_params }
+
+      let(:authority) { create(:authority) }
+      let(:manifestation) { create(:manifestation) }
+
+      let(:featured_content_params) do
+        {
+          featured_content: {
+            title: Faker::Book.title,
+            body: Faker::Lorem.paragraph,
+            external_link: Faker::Internet.url
+          },
+          linked_author: authority.id,
+          linked_manifestation: manifestation.id
+        }
+      end
+
+      let(:created_featured_content) { FeaturedContent.order(id: :desc).first }
+
+      it 'creates record' do
+        expect { call }.to change(FeaturedContent, :count).by(1)
+        expect(call).to redirect_to featured_content_show_path(created_featured_content.id)
+        expect(created_featured_content).to have_attributes(featured_content_params[:featured_content])
+        expect(created_featured_content).to have_attributes(
+          authority: authority,
+          manifestation: manifestation,
+          user: admin
+        )
+      end
+    end
+
+    describe 'member actions' do
+      let(:featured_content) { create(:featured_content) }
+
+      describe '#featured_content_show' do
+        subject { get :featured_content_show, params: { id: featured_content.id } }
+
+        it { is_expected.to be_successful }
+      end
+
+      describe '#featured_content_edit' do
+        subject { get :featured_content_edit, params: { id: featured_content.id } }
+
+        it { is_expected.to be_successful }
+      end
+
+      describe '#featured_content_update' do
+        subject(:call) { post :featured_content_update, params: featured_content_params }
+
+        let(:new_authority) { create(:authority) }
+        let(:new_manifestation) { create(:manifestation) }
+
+        let(:featured_content_params) do
+          {
+            id: featured_content.id,
+            featured_content: {
+              title: 'new_title',
+              body: 'new_body',
+              external_link: 'https://test.com'
+            },
+            linked_author: new_authority.id,
+            linked_manifestation: new_manifestation.id
+          }
+        end
+
+        it 'updates record' do
+          expect(call).to redirect_to featured_content_show_path(featured_content.id)
+          featured_content.reload
+          expect(featured_content).to have_attributes(
+            title: 'new_title',
+            body: 'new_body',
+            external_link: 'https://test.com',
+            authority: new_authority,
+            manifestation: new_manifestation
+          )
+        end
+      end
+
+      describe '#destroy_featured_content' do
+        subject(:call) { delete :featured_content_destroy, params: { id: featured_content.id } }
+
+        before do
+          featured_content
+        end
+
+        it 'removes record' do
+          expect { call }.to change(FeaturedContent, :count).by(-1)
+          expect(call).to redirect_to admin_featured_content_list_path
+        end
+      end
+    end
+  end
+
   describe '#missing_genre' do
     subject { get :missing_genres }
-
-    # include_context 'Unauthorized access to admin page' # no longer restricted to admins
 
     context 'when admin user is authorized' do
       include_context 'Admin user logged in'
@@ -81,8 +212,10 @@ describe AdminController do
   end
 
   describe '#incongruous_copyright' do
-    include_context 'Admin user logged in'
     subject(:request) { get :incongruous_copyright }
+
+    include_context 'Admin user logged in'
+
     let(:copyrighted_author) { create(:authority, intellectual_property: :copyrighted) }
     let(:by_permission_author) { create(:authority, intellectual_property: :permission_for_selected) }
     let(:public_domain_author) { create(:authority, intellectual_property: :public_domain) }
