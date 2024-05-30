@@ -256,6 +256,7 @@ describe AuthorsController do
           create(:manifestation, author: author, status: :unpublished)
           create_list(:manifestation, 6, translator: author, orig_lang: 'de')
           create_list(:manifestation, 2, translator: author, orig_lang: 'de', status: :unpublished)
+          create_list(:aboutness, 3, aboutable: author)
         end
 
         it 'renders successfully' do
@@ -450,6 +451,34 @@ describe AuthorsController do
             author.reload
             expect(author).to have_attributes(authority_attributes)
             expect(author.corporate_body).to have_attributes(corporate_body_attributes)
+          end
+        end
+      end
+
+      describe '#add_link' do
+        subject(:call) { post :add_link, params: { id: author.id, link_description: desc, add_url: url }, format: :js }
+
+        context 'when required params are missing' do
+          let(:desc) { nil }
+          let(:url) { nil }
+
+          it { is_expected.to have_http_status(:bad_request) }
+        end
+
+        context 'when all required params are present' do
+          let(:desc) { 'description' }
+          let(:url) { 'https://test.com' }
+
+          let(:created_link) { ExternalLink.order(id: :desc).first }
+
+          it 'creates link' do
+            expect { call }.to change(ExternalLink, :count).by(1)
+            expect(created_link).to have_attributes(
+              description: desc,
+              url: url,
+              status: 'approved',
+              linkable: author
+            )
           end
         end
       end

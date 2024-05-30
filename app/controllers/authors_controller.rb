@@ -6,7 +6,7 @@ class AuthorsController < ApplicationController
   include FilteringAndPaginationConcern
 
   before_action only: %i(new publish create show edit list add_link delete_link
-                         delete_photo edit_toc update to_manual_toc) do |c|
+                         delete_photo edit_toc update to_manual_toc add_link) do |c|
     c.require_editor('edit_people')
   end
 
@@ -456,19 +456,20 @@ class AuthorsController < ApplicationController
   end
 
   def add_link
-    @author = Person.find(params[:id])
-    if @author.nil?
-      flash[:error] = t(:no_such_item)
-      redirect_to '/'
+    @author = Authority.find(params[:id])
+    if(params[:link_description].empty? || params[:add_url].empty?)
+      head :bad_request
     else
-      if(params[:link_description].empty? || params[:add_url].empty?)
-        head :bad_request
-      else
-        @el = ExternalLink.new(linkable: @author, description: params[:link_description], linktype: params[:link_type].to_i, url: params[:add_url], status: :approved)
-        @el.save!
-      end
+      @el = ExternalLink.create!(
+        linkable: @author,
+        description: params[:link_description],
+        linktype: params[:link_type].to_i,
+        url: params[:add_url],
+        status: :approved
+      )
     end
   end
+
   def delete_link
     @el = ExternalLink.find(params[:id])
     if @el.nil?
