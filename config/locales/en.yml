@@ -1,6 +1,8 @@
 en:
   name_starts_with_x: "Name starts with: '%{x}'"
   title_starts_with_x: "Title starts with: '%{x}'"
+  new_person: New Person
+  new_corporate_body: New Corporate Body
   admin:
     index:
       takes_long_time: Takes long time

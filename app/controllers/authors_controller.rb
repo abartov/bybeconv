@@ -374,7 +374,15 @@ class AuthorsController < ApplicationController
 
   def new
     @author = Authority.new(intellectual_property: :unknown)
-    @author.person = Person.new
+    type = params[:type]
+    if type == 'person'
+      @author.person = Person.new
+    elsif type == 'corporate_body'
+      @author.corporate_body = CorporateBody.new
+    else
+      raise "Unknown type: '#{type}'"
+    end
+
     @page_title = t(:new_author)
   end
 
@@ -579,7 +587,8 @@ class AuthorsController < ApplicationController
       :bib_done,
       :sort_name,
       :status,
-      person_attributes: %i(id gender period birthdate deathdate)
+      person_attributes: %i(id gender period birthdate deathdate),
+      corporate_body_attributes: %i(id location inception inception_year dissolution dissolution_year)
     )
   end
 

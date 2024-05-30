@@ -38,7 +38,9 @@ class Authority < ApplicationRecord
   belongs_to :person, optional: true
   belongs_to :corporate_body, optional: true
 
-  accepts_nested_attributes_for :person
+  attr_readonly :person, :corporate_body # Should not be modified after creation
+
+  accepts_nested_attributes_for :person, :corporate_body
 
   paginates_per 100
 
@@ -72,6 +74,7 @@ class Authority < ApplicationRecord
   # validations
   validates :name, :intellectual_property, presence: true
   validates :wikidata_uri, format: WIKIDATA_URI_PATTERN, allow_nil: true
+  validate :validate_linked_authority
 
   validates_attachment_content_type :profile_image, content_type: %r{\Aimage/.*\z}
 
@@ -296,6 +299,20 @@ class Authority < ApplicationRecord
   protected
 
   def placeholder_image_url
-    return person.placeholder_image_url if person.present?
+    if person.present?
+      if person.female?
+        '/assets/:style/placeholder_woman.jpg'
+      else
+        '/assets/:style/placeholder_man.jpg'
+      end
+    else
+      # TODO: add placeholder image for corporate bodies
+      '/assets/:style/placeholder_man.jpg'
+    end
+  end
+
+  def validate_linked_authority
+    errors.add(:base, :no_linked_authority) if person.nil? && corporate_body.nil?
+    errors.add(:base, :multiple_linked_authorities) if person.present? && corporate_body.present?
   end
 end

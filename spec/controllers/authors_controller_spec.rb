@@ -125,9 +125,35 @@ describe AuthorsController do
     end
 
     describe '#new' do
-      subject { get :new }
+      subject(:call) { get :new, params: { type: type } }
 
-      it { is_expected.to be_successful }
+      context 'when person' do
+        let(:type) { 'person' }
+
+        it 'succeed' do
+          expect(call).to be_successful
+          expect(assigns(:author).person).to be_present
+          expect(assigns(:author).corporate_body).to be_nil
+        end
+      end
+
+      context 'when corporate_body' do
+        let(:type) { 'corporate_body' }
+
+        it 'succeed' do
+          expect(call).to be_successful
+          expect(assigns(:author).person).to be_nil
+          expect(assigns(:author).corporate_body).to be_present
+        end
+      end
+
+      context 'when wrong type is specified' do
+        let(:type) { 'wrong' }
+
+        it 'raises error' do
+          expect { call }.to raise_error 'Unknown type: \'wrong\''
+        end
+      end
     end
 
     describe '#create' do
@@ -153,7 +179,9 @@ describe AuthorsController do
 
       context 'when save successful' do
         it 'creates record' do
-          expect { call }.to change(Authority, :count).by(1).and change(Person, :count).by(1)
+          expect { call }.to change(Authority, :count).by(1)
+                                                      .and change(Person, :count).by(1)
+                                                      .and not_change(CorporateBody, :count)
           expect(created_authority).to have_attributes(authority_attributes)
           expect(created_authority.person).to have_attributes(person_attributes)
 
@@ -180,6 +208,25 @@ describe AuthorsController do
               expect { call }.to change(Authority, :count).by(1)
               expect(created_authority.status).to eq 'unpublished'
             end
+          end
+        end
+
+        context 'when corporate_body' do
+          let(:corporate_body_attributes) { { location: 'Tallin', inception: '1982' } }
+
+          let(:authority_params) do
+            authority_attributes.merge(corporate_body_attributes: corporate_body_attributes)
+          end
+
+          it 'creates record' do
+            expect { call }.to change(Authority, :count).by(1)
+                                                        .and change(CorporateBody, :count).by(1)
+                                                        .and not_change(Person, :count)
+            expect(created_authority).to have_attributes(authority_attributes)
+            expect(created_authority.corporate_body).to have_attributes(corporate_body_attributes)
+
+            expect(call).to redirect_to authors_show_path(id: created_authority.id)
+            expect(flash.notice).to eq I18n.t(:created_successfully)
           end
         end
       end
@@ -231,6 +278,12 @@ describe AuthorsController do
 
           it { is_expected.to be_successful }
         end
+
+        context 'when corporate_body' do
+          let(:author) { create(:authority, :corporate_body) }
+
+          it { is_expected.to be_successful }
+        end
       end
 
       describe '#publish' do
@@ -241,12 +294,24 @@ describe AuthorsController do
         end
 
         it { is_expected.to be_successful }
+
+        context 'when corporate_body' do
+          let(:author) { create(:authority, :corporate_body) }
+
+          it { is_expected.to be_successful }
+        end
       end
 
       describe '#edit' do
         subject { get :edit, params: { id: author.id } }
 
         it { is_expected.to be_successful }
+
+        context 'when corporate_body' do
+          let(:author) { create(:authority, :corporate_body) }
+
+          it { is_expected.to be_successful }
+        end
       end
 
       describe '#edit_toc' do
@@ -268,6 +333,12 @@ describe AuthorsController do
           end
 
           it { is_expected.to be_successful }
+
+          context 'when corporate_body' do
+            let(:author) { create(:authority, :corporate_body) }
+
+            it { is_expected.to be_successful }
+          end
         end
       end
 
@@ -275,16 +346,27 @@ describe AuthorsController do
         subject(:request) do
           put :update, params: {
             id: author.id,
-            authority: {
-              name: new_name,
-              intellectual_property: new_intellectual_property,
-              wikidata_uri: new_wikidata_uri,
-              person_attributes: {
-                id: author.person.id,
-                period: new_period
-              }
-            }
+            authority: authority_params
           }
+        end
+
+        let(:authority_attributes) do
+          {
+            name: new_name,
+            intellectual_property: new_intellectual_property,
+            wikidata_uri: new_wikidata_uri
+          }
+        end
+
+        let(:person_attributes) do
+          {
+            id: author.person.id,
+            period: new_period
+          }
+        end
+
+        let(:authority_params) do
+          authority_attributes.merge(person_attributes: person_attributes)
         end
 
         let(:new_name) { 'New Name' }
@@ -303,11 +385,7 @@ describe AuthorsController do
           it 'updates author and sets period in his hebrew works and translations to hebrew' do
             expect(request).to redirect_to authors_show_path(id: author.id)
             author.reload
-            expect(author).to have_attributes(
-              name: new_name,
-              intellectual_property: new_intellectual_property,
-              wikidata_uri: new_wikidata_uri
-            )
+            expect(author).to have_attributes(authority_attributes)
             expect(author.person).to have_attributes(period: new_period)
             original_work.reload
             expect(original_work.expression.period).to eq new_period
@@ -330,12 +408,8 @@ describe AuthorsController do
           it 'updates author but not his works' do
             expect(request).to redirect_to authors_show_path(id: author.id)
             author.reload
-            expect(author).to have_attributes(
-              name: new_name,
-              intellectual_property: new_intellectual_property,
-              wikidata_uri: new_wikidata_uri
-            )
-            expect(author.person).to have_attributes(period: new_period)
+            expect(author).to have_attributes(authority_attributes)
+            expect(author.person).to have_attributes(person_attributes)
             original_work.reload
             expect(original_work.expression.period).to eq works_period
             translated_work.reload
@@ -354,6 +428,28 @@ describe AuthorsController do
           it 'fails to save and re-renders edit form' do
             expect(request).to have_http_status(:unprocessable_entity)
             expect(response).to render_template :edit
+          end
+        end
+
+        context 'when corporate_body' do
+          let(:author) { create(:authority, :corporate_body) }
+
+          let(:corporate_body_attributes) do
+            {
+              id: author.corporate_body.id,
+              location: 'NEW LOCATION'
+            }
+          end
+
+          let(:authority_params) do
+            authority_attributes.merge(corporate_body_attributes: corporate_body_attributes)
+          end
+
+          it 'updates authority and corporate_body' do
+            expect(request).to redirect_to authors_show_path(id: author.id)
+            author.reload
+            expect(author).to have_attributes(authority_attributes)
+            expect(author.corporate_body).to have_attributes(corporate_body_attributes)
           end
         end
       end

@@ -1,6 +1,7 @@
 .backend
   %h1= t(:manage_people)
-  = link_to t(:new_person), authors_new_path
+  = link_to t(:new_person), authors_new_path(type: :person)
+  = link_to t(:new_corporate_body), authors_new_path(type: :corporate_body)
   %br
   = form_tag do
     = label_tag(t(:name))

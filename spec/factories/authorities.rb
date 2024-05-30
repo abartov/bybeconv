@@ -14,6 +14,10 @@ FactoryBot.define do
     impressions_count { Random.rand(200) }
     intellectual_property { :public_domain }
 
-    person { create(:person, gender: gender, period: period) }
+    person { create(:person, gender: gender, period: period) if corporate_body.nil? }
+
+    trait :corporate_body do
+      corporate_body { create(:corporate_body) }
+    end
   end
 end

@@ -5,13 +5,68 @@ require 'rails_helper'
 describe Authority do
   describe 'validations' do
     it 'considers empty Person invalid' do
-      p = described_class.new
-      expect(p).not_to be_valid
+      a = described_class.new
+      expect(a).not_to be_valid
     end
 
-    it 'considers Person with all mandatory fields filled as valid' do
-      p = described_class.new(name: Faker::Artist.name, intellectual_property: :public_domain)
-      expect(p).to be_valid
+    it 'considers Authority with all mandatory fields filled as valid' do
+      a = described_class.new(
+        name: Faker::Artist.name,
+        intellectual_property: :public_domain,
+        person: create(:person)
+      )
+      expect(a).to be_valid
+    end
+
+    describe '.validate_linked_authority' do
+      subject(:result) { authority.valid? }
+
+      let(:authority) do
+        described_class.new(
+          name: Faker::Artist.name,
+          intellectual_property: :public_domain,
+          person: person,
+          corporate_body: corporate_body
+        )
+      end
+
+      context 'when person and corporate body are nil' do
+        let(:corporate_body) { nil }
+        let(:person) { nil }
+
+        it 'fails' do
+          expect(result).to be false
+          expect(authority.errors[:base]).to contain_exactly(
+            I18n.t('activerecord.errors.models.authority.attributes.base.no_linked_authority')
+          )
+        end
+      end
+
+      context 'when person and corporate body both present' do
+        let(:corporate_body) { create(:corporate_body) }
+        let(:person) { create(:person) }
+
+        it 'fails' do
+          expect(result).to be false
+          expect(authority.errors[:base]).to contain_exactly(
+            I18n.t('activerecord.errors.models.authority.attributes.base.multiple_linked_authorities')
+          )
+        end
+      end
+
+      context 'when person present' do
+        let(:corporate_body) { nil }
+        let(:person) { create(:person) }
+
+        it { is_expected.to be_truthy }
+      end
+
+      context 'when corporate_body present' do
+        let(:corporate_body) { create(:corporate_body) }
+        let(:person) { nil }
+
+        it { is_expected.to be_truthy }
+      end
     end
 
     describe '.wikidata_uri' do

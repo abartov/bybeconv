@@ -2,7 +2,7 @@
 
 # Index representing all published Authorities
 class AuthoritiesIndex < Chewy::Index
-  index_scope Authority.published
+  index_scope Authority.published.preload(:person, :corporate_body)
   field :id, type: 'integer'
   field :name
   field :sort_name, type: 'keyword'
@@ -13,6 +13,12 @@ class AuthoritiesIndex < Chewy::Index
     field :gender, type: 'keyword'
     field :birth_year, type: 'integer', value: ->(p) { p.birth_year == '?' ? nil : p.birth_year.to_i }
     field :death_year, type: 'integer', value: ->(p) { p.death_year == '?' ? nil : p.death_year.to_i }
+  end
+
+  field :corporate_body do
+    field :location
+    field :inception_year, type: 'integer'
+    field :dissolution_year, type: 'integer'
   end
 
   field :any_hebrew_works, type: 'boolean', value: ->(a) { a.any_hebrew_works? }
