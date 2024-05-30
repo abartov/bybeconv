@@ -519,10 +519,6 @@ class AdminController < ApplicationController
 
   def featured_content_new
     @fc = FeaturedContent.new
-    respond_to do |format|
-      format.html
-      format.json { render json: @fc }
-    end
   end
 
   def featured_content_create
@@ -532,17 +528,13 @@ class AdminController < ApplicationController
       @fc.manifestation = Manifestation.find(params[:linked_manifestation])
     end
     unless params[:linked_author].empty?
-      @fc.person = Person.find(params[:linked_author])
+      @fc.authority = Authority.find(params[:linked_author])
     end
 
-    respond_to do |format|
-      if @fc.save
-        format.html { redirect_to url_for(action: :featured_content_show, id: @fc.id), notice: t(:updated_successfully) }
-        format.json { render json: @fc, status: :created, location: @fc }
-      else
-        format.html { render action: 'featured_content_new'}
-        format.json { render json: @fc.errors, status: :unprocessable_entity }
-      end
+    if @fc.save
+      redirect_to url_for(action: :featured_content_show, id: @fc.id), notice: t(:updated_successfully)
+    else
+      render action: 'featured_content_new'
     end
   end
 
@@ -568,7 +560,7 @@ class AdminController < ApplicationController
         @fc.manifestation = Manifestation.find(params[:linked_manifestation])
       end
       unless params[:linked_author].empty?
-        @fc.person = Person.find(params[:linked_author])
+        @fc.authority = Authority.find(params[:linked_author])
       end
       @fc.save
       if @fc.update(fc_params)

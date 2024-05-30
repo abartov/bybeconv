@@ -16,7 +16,11 @@
         = hidden_field_tag :linked_manifestation, fc.manifestation.nil? ? nil : fc.manifestation.id
       .backend-field
         = f.label t(:linked_author)
-        = autocomplete_field_tag :linked_author_f, fc.person.nil? ? '' : fc.person.name, autocomplete_person_name_path, id_element: '#linked_author', 'data-noMatchesLabel' => t(:no_matches_found)
-        = hidden_field_tag :linked_author, fc.person.nil? ? nil : fc.person.id
+        = autocomplete_field_tag :linked_author_f,
+                                 fc.authority.nil? ? '' : fc.authority.name,
+                                 autocomplete_authority_name_path,
+                                 id_element: '#linked_author',
+                                 data: { noMatchesLabel: t(:no_matches_found) }
+        = hidden_field_tag :linked_author, fc.authority.nil? ? nil : fc.authority.id
       .actions
         = f.submit t(:save)
