@@ -39,6 +39,14 @@ describe WelcomeController do
     end
   end
 
+  describe '#featured_popup' do
+    subject { get :featured_popup, params: { id: featured_content.id } }
+
+    let(:featured_content) { create(:featured_content) }
+
+    it { is_expected.to be_successful }
+  end
+
   describe '#contact' do
     subject { get :contact }
 

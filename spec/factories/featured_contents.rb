@@ -7,5 +7,6 @@ FactoryBot.define do
     title { Faker::Book.title }
     body { Faker::Lorem.paragraph }
     external_link { Faker::Internet.url }
+    featured_content_features { create_list(:featured_content_feature, 1) }
   end
 end
