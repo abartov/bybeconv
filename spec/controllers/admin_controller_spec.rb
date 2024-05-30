@@ -422,22 +422,25 @@ describe AdminController do
     end
 
     describe '#featured_author_create' do
-      subject(:call) { post :featured_author_create, params: { featured_author: create_params } }
+      subject(:call) { post :featured_author_create, params: create_params }
 
       let(:person) { create(:authority).person }
 
       context 'when params are valid' do
         let(:create_params) do
           {
-            title: 'Title',
-            body: 'Body',
-            authority_id: person.id
+            featured_author: {
+              title: 'Title',
+              body: 'Body'
+            },
+            person_id: person.id
           }
         end
 
         it 'creates record' do
           expect { call }.to change(FeaturedAuthor, :count).by(1)
           fa = FeaturedAuthor.order(id: :desc).first
+          expect(fa).to have_attributes(title: 'Title', body: 'Body', person_id: person.id, user: admin)
           expect(call).to redirect_to featured_author_show_path(fa)
         end
       end

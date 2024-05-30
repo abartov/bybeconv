@@ -457,7 +457,7 @@ class AuthorsController < ApplicationController
 
   def add_link
     @author = Authority.find(params[:id])
-    if(params[:link_description].empty? || params[:add_url].empty?)
+    if params[:link_description].empty? || params[:add_url].empty?
       head :bad_request
     else
       @el = ExternalLink.create!(
