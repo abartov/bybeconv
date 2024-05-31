@@ -13,7 +13,7 @@
     != @fc.body
   %p
     %b= t(:linked_author)+': '
-    = @fc.person.nil? ? t(:none) : link_to(@fc.person.authority.name, person_path(@fc.person.authority))
+    = @fc.person.nil? ? t(:none) : link_to(@fc.person.authority.name, authority_path(@fc.person.authority))
 
   %h3= t(:feature_on)
   %table
