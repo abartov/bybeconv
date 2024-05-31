@@ -6,7 +6,7 @@ module V1
         desc: 'Canonical URL of the person at Project Ben-Yehuda (useful for giving credit and allowing' \
               'users to click through)'
       } do |au|
-        Rails.application.routes.url_helpers.bib_authority_url(au)
+        Rails.application.routes.url_helpers.person_url(au)
       end
       expose :metadata do
         expose :name
