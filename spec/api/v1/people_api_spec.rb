@@ -85,7 +85,7 @@ describe V1::PeopleAPI do
 
   def validate_person(json, authority, detail)
     expect(json['id']).to eq authority.id
-    expect(json['url']).to eq Rails.application.routes.url_helpers.bib_authority_url(authority)
+    expect(json['url']).to eq Rails.application.routes.url_helpers.person_url(authority)
     metadata = json['metadata']
     expect(metadata).to_not be_nil
     expect(metadata['name']).to eq(authority.name)
