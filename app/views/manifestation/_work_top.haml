@@ -3,9 +3,9 @@
   - xlatbuf = nil
   - authorbuf = nil
   - unless @m.authors.nil?
-    - authorbuf = @m.authors.map {|t| link_to(t.name, person_path(id: t.id))}.join(', ')
+    - authorbuf = @m.authors.map { |t| link_to(t.name, authority_path(t)) }.join(', ')
   - if @e.translation && @e.translators.size > 0
-    - xlatbuf = @translators.map{|t| link_to(t.name, person_path(id: t.id))}.join(', ')
+    - xlatbuf = @translators.map { |t| link_to(t.name, authority_path(t)) }.join(', ')
   .top-space
   .work-page-top
     .work-page-top-info-card
