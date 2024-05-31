@@ -11,7 +11,7 @@ he:
     models:
       person: אדם
       corporate_body: גוף/מוסד
-      authority: Authority
+      authority: מחבר
     errors:
       models:
         involved_authority:
@@ -22,8 +22,8 @@ he:
         authority:
           attributes:
             base:
-              no_linked_authority: either Person or CorporateBody object must be specified
-              multiple_linked_authorities: Person and CorporateBody objects cannot be specified together
+              no_linked_authority: יש לקשר או רשומת אישים או רשומת ארגונים
+              multiple_linked_authorities: אי אפשר לקשר גם רשומת אישים וגם רשומת ארגונים
     attributes:
       authority:
         other_designation: כינויים אחרים
