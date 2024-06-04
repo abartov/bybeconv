@@ -19,11 +19,15 @@
   .backend-field
     = f.label t(:first_author)
     %br
-    = select_tag 'html_file[person_id]', options_from_collection_for_select(Person.order(:name), 'id','name'), include_blank: true
+    = select_tag 'html_file[author_id]',
+                 options_from_collection_for_select(Authority.order(:name), 'id', 'name'),
+                 include_blank: true
   .backend-field
     = f.label t(:translator)
     %br
-    = select_tag 'html_file[translator_id]', options_from_collection_for_select(Person.order(:name), 'id','name'), include_blank: true
+    = select_tag 'html_file[translator_id]',
+                 options_from_collection_for_select(Authority.order(:name), 'id', 'name'),
+                 include_blank: true
   %br
   = link_to t(:to_manage_people), authors_list_path
   %br

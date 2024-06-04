@@ -8,5 +8,9 @@ FactoryBot.define do
     publisher { Faker::Company.name }
     author { create(:authority) }
     translator { create(:authority) }
+
+    trait :with_markdown do
+      markdown { Faker::Lorem.paragraph }
+    end
   end
 end
