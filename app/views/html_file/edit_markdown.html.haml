@@ -21,13 +21,13 @@
               = label_tag(t(:publisher_link_text))
               = text_field_tag(:pub_link_text,@text.pub_link_text, size: 70)
         .col-md-6
-          - unless @text.person.nil?
+          - unless @text.author.nil?
             %h3
               = t(:by)+' '
-              = link_to @text.person.name+' ('+t(:author)+')', person_path(id: @text.person)
+              = link_to "#{@text.author.name} (#{t(:author)})", person_path(id: @text.author)
               - unless @text.translator.nil?
                 = t(:translated_by)+' '
-                = link_to @text.translator.name+' ('+t(:translator)+')', authors_show_path(id: @text.translator.id)
+                = link_to "#{@text.translator.name} (#{t(:translator)})", authors_show_path(id: @text.translator.id)
             = t(:publisher)+": #{@text.publisher}; #{t(:year_published)}: #{@text.year_published}"
           %b= label_tag t(:orig_lang)
           = select_tag 'orig_lang', options_for_select(get_langs.map {|lang| [textify_lang(lang), lang]}, @text.orig_lang)

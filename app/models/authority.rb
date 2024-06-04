@@ -296,6 +296,10 @@ class Authority < ApplicationRecord
     person.present? ? person.gender_letter : 'ו'
   end
 
+  def publish_if_first!
+    publish! if awaiting_first?
+  end
+
   protected
 
   def placeholder_image_url

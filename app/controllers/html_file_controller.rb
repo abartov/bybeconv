@@ -25,7 +25,7 @@ class HtmlFileController < ApplicationController
 
   def create
     @text = HtmlFile.new(hf_params)
-    if @text.person
+    if @text.author
       @text.assignee = current_user
       @text.status = 'Uploaded'
       respond_to do |format|
@@ -235,7 +235,7 @@ class HtmlFileController < ApplicationController
       flash[:error] = t(:must_set_genre)
       redirect_to action: :render_html, id: @text.id
     else
-      unless @text.person.nil?
+      unless @text.author.nil?
         oldstatus = @text.status
         @text.status = 'Accepted'
         @text.genre = params['genre'] unless params['genre'].nil?
@@ -257,7 +257,7 @@ class HtmlFileController < ApplicationController
           Rails.cache.delete("au_#{au_id}_translations_by_genre")
           Rails.cache.delete("au_#{au_id}_work_count")
 
-          @text.person.publish_if_first!
+          @text.author.publish_if_first!
           flash[:notice] = t(:created_frbr)
         else
           flash[:error] = success
@@ -515,6 +515,23 @@ class HtmlFileController < ApplicationController
   private
 
   def hf_params
-    params[:html_file].permit(:title, :genre, :markdown, :publisher, :comments, :path, :url, :status, :orig_mtime, :orig_ctime, :person_id, :doc, :translator_id, :orig_lang, :year_published)
+    params.require(:html_file)
+          .permit(
+            :title,
+            :genre,
+            :markdown,
+            :publisher,
+            :comments,
+            :path,
+            :url,
+            :status,
+            :orig_mtime,
+            :orig_ctime,
+            :author_id,
+            :doc,
+            :translator_id,
+            :orig_lang,
+            :year_published
+          )
   end
 end
