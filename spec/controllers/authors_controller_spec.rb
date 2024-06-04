@@ -105,12 +105,7 @@ describe AuthorsController do
   end
 
   describe 'Editor actions' do
-    let(:user) { create(:user, editor: true, admin: true) }
-
-    before do
-      create(:list_item, item: user, listkey: :edit_people)
-      session[:user_id] = user.id
-    end
+    include_context 'when editor logged in', :edit_people
 
     describe '#list' do
       subject { get :list }
