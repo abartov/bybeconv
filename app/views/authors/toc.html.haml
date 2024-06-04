@@ -258,7 +258,9 @@
     $('#initiate-add-tag').click(function(e) {
       if("#{current_user}" != '') {
         if($('#accepted_tag_policy').val() != 'false') {
-          $('#generalDlg').load("#{ add_tagging_popup_path(taggable_id: @author.id, taggable_type: 'Person') }");
+          $('#generalDlg').load(
+            "#{add_tagging_popup_path(taggable_id: @author.id, taggable_type: @author.class.name)}"
+          );
           $('#generalDlg').modal('show');
         }
         else

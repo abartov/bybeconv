@@ -6,9 +6,9 @@ class TaggingsController < ApplicationController
 
   def add_tagging_popup
     @taggable = instantiate_taggable(params[:taggable_type], params[:taggable_id])
-    if @taggable.class == Manifestation
+    if @taggable.instance_of?(Manifestation)
       @author = @taggable.authors.first
-    elsif @taggable.class == Person
+    elsif @taggable.instance_of?(Authority)
       @author = @taggable
     end
     @tagging = Tagging.new
@@ -81,7 +81,7 @@ class TaggingsController < ApplicationController
   def suggest
     @tag_suggestions = {}
     if params[:author].present?
-      @tag_suggestions[:used_on_other_works] = Person.find(params[:author]).cached_popular_tags_used_on_works
+      @tag_suggestions[:used_on_other_works] = Authority.find(params[:author]).cached_popular_tags_used_on_works
     end
     if current_user.present?
       @tag_suggestions[:popular_tags_by_user] = current_user.cached_popular_tags_used
@@ -139,14 +139,16 @@ class TaggingsController < ApplicationController
     case klass
     when 'Manifestation'
       Manifestation.find(id)
-    when 'Person'
-      Person.find(id)
+    when 'Authority'
+      Authority.find(id)
     when 'Anthology'
       Anthology.find(id)
     when 'Work'
       Work.find(id)
     when 'Expression'
       Expression.find(id)
+    else
+      raise "Unsupported taggable type: #{klass}"
     end
   end
 end

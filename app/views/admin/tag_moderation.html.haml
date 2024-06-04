@@ -122,12 +122,14 @@
               %td{style: extra_style}
                 %input{name: "#", type: "checkbox", value: "#"}/
               %td.label-name{style: extra_style}
-                - if tagging.taggable_type == 'Manifestation'
-                  - taggable_url = manifestation_path(tagging.taggable_id)
-                  - taggable_title = "#{tagging.taggable.title} / #{tagging.taggable.author_string}"
-                - elsif tagging.taggable_type == 'Person'
-                  - taggable_url = person_path(tagging.taggable_id)
-                  - taggable_title = tagging.taggable.name
+                :ruby
+                  if tagging.taggable_type == 'Manifestation'
+                    # taggable_url = manifestation_path(tagging.taggable_id)
+                    taggable_title = "#{tagging.taggable.title} / #{tagging.taggable.author_string}"
+                  elsif tagging.taggable_type == 'Authority'
+                    # taggable_url = person_path(tagging.taggable_id)
+                    taggable_title = tagging.taggable.name
+                  end
                 = link_to taggable_title, tagging_review_path(tagging.id)
                 /= " – "
                 /= link_to t(:to_the_item), taggable_url, target: "_blank"
