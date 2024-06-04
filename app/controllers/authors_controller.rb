@@ -259,10 +259,6 @@ class AuthorsController < ApplicationController
     end
   end
 
-  def all
-    redirect_to '/authors'
-  end
-
   def by_tag
     @page_title = t(:authors_by_tag)+' '+t(:project_ben_yehuda)
     @pagetype = :authors
