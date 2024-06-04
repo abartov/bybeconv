@@ -51,7 +51,7 @@
       %br
       = t(:add)
       = select_tag :add_person,
-                   options_from_collection_for_select(Authority.order(:name), 'id','name'),
+                   options_from_collection_for_select(Authority.order(:name), 'id', 'name'),
                    include_blank: true
       = t(:in_role)
       = select_tag :role, options_for_select([[t(:author), HtmlFile::ROLE_AUTHOR], [t(:translator), HtmlFile::ROLE_TRANSLATOR]])
