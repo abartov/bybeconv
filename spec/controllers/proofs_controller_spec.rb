@@ -1,12 +1,7 @@
 require 'rails_helper'
 
 describe ProofsController do
-  let(:user) { create(:user, editor: true) }
-
-  before do
-    create(:list_item, item: user, listkey: :handle_proofs)
-    session[:user_id] = user.id
-  end
+  include_context 'when editor logged in', :handle_proofs
 
   describe '#index' do
     let!(:new_proof) { create(:proof, status: :new) }
@@ -148,7 +143,7 @@ describe ProofsController do
 
       context 'when current user is an admin' do
         before do
-          user.update!(admin: true)
+          current_user.update!(admin: true)
         end
 
         it 'marks proof as fixed and redirects to new proofs page' do
