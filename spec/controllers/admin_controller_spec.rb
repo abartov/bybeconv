@@ -490,4 +490,77 @@ describe AdminController do
       end
     end
   end
+
+  describe 'Tagging functionality' do
+    include_context 'when editor logged in', :moderate_tags
+
+    let(:tag) { create(:tag, status: tag_status) }
+    let(:manifestation) { create(:manifestation) }
+    let(:authority) { manifestation.authors.first }
+    let(:tag_status) { :approved }
+
+    describe '#tag_moderation' do
+      subject { get :tag_moderation }
+
+      let!(:pending_tag) { create(:tag, status: :pending) }
+      let!(:pending_manifestation_tagging) { create(:tagging, tag: tag, taggable: manifestation, status: :pending) }
+      let!(:pending_authority_tagging) { create(:tagging, tag: tag, taggable: authority, status: :pending) }
+
+      before do
+        File.delete(TAGGING_LOCK) if File.file?(TAGGING_LOCK)
+      end
+
+      after do
+        File.delete(TAGGING_LOCK) if File.file?(TAGGING_LOCK)
+      end
+
+      it { is_expected.to be_successful }
+    end
+
+    describe '#tag_review' do
+      subject { get :tag_review, params: { id: tag.id } }
+
+      let(:tag_status) { :pending }
+
+      before do
+        create(:tagging, tag: tag, taggable: manifestation)
+        create(:tagging, tag: tag, taggable: authority)
+
+        File.delete(TAGGING_LOCK) if File.file?(TAGGING_LOCK)
+      end
+
+      after do
+        File.delete(TAGGING_LOCK) if File.file?(TAGGING_LOCK)
+      end
+
+      it { is_expected.to be_successful }
+    end
+
+    describe '#tagging_review' do
+      subject { get :tagging_review, params: { id: tagging.id } }
+
+      let(:tagging) { create(:tagging, tag: tag, taggable: taggable) }
+
+      context 'when Authority' do
+        let(:taggable) { authority }
+
+        it { is_expected.to be_successful }
+
+        context 'when TOC does not exists' do
+          before do
+            authority.toc = nil
+            authority.save!
+          end
+
+          it { is_expected.to be_successful }
+        end
+      end
+
+      context 'when Manifestation' do
+        let(:taggable) { manifestation }
+
+        it { is_expected.to be_successful }
+      end
+    end
+  end
 end
