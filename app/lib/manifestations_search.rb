@@ -19,8 +19,7 @@ class ManifestationsSearch
   end
 
   def index
-#    MultiIndexSearchRequest.new(ManifestationsIndex, PeopleIndex) # , ThirdIndex, ...) # just shorthand for our Chewy index class
-    MultiIndexSearchRequest.new(ManifestationsIndex, PeopleIndex, DictIndex) # , ThirdIndex, ...) # just shorthand for our Chewy index class
+    MultiIndexSearchRequest.new(ManifestationsIndex, AuthoritiesIndex, DictIndex)
   end
 
   def search

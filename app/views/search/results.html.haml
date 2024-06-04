@@ -11,7 +11,7 @@
       - @results.each do |result|
         %li
           - attrs = result.attributes
-          - if result.class == ManifestationsIndex
+          - if result.instance_of?(ManifestationsIndex)
             %b= t(:work)
             %br
             %b= link_to attrs['title'], manifestation_path(attrs['id'])
@@ -27,7 +27,7 @@
             - unless result._data.nil? or result._data['highlight'].nil?
               %br
               != result._data['highlight']['fulltext'].join("<br />").gsub('<em>','<b>').gsub('</em>','</b>')
-          - elsif result.class == PeopleIndex
+          - elsif result.instance_of?(AuthoritiesIndex)
             %b= t(:author)
             %br
             %b= link_to attrs['name'], person_path(attrs['id'])
@@ -39,7 +39,7 @@
                   = tag
             %br
             %p= attrs['wikipedia_snippet']
-          - elsif result.class == DictIndex
+          - elsif result.instance_of?(DictIndex)
             %b= t(:dictionary_definition)
             %br
             %b= link_to attrs['defhead'], dict_entry_path(id: attrs['manifestation_id'], entry: attrs['id'])
