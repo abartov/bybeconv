@@ -14,6 +14,12 @@ describe AuthorsController do
     it { is_expected.to be_successful }
   end
 
+  describe '#all' do
+    subject { get :all }
+
+    it { is_expected.to redirect_to authors_path }
+  end
+
   describe '#get_random_author' do
     before do
       create_list(:manifestation, 5)
