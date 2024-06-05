@@ -80,7 +80,7 @@
       %h1= t(:taggable_item)+': '+@m.title + ' / ' + @m.author_string
       .read_html#preview{ style:"padding-left:10px;padding-right:15px;background:#d2cfcf;"}
         != raw(@html)
-    - elsif @tagging.taggable_type == 'Person'
+    - elsif @tagging.taggable_type == 'Authority'
       %h1= t(:taggable_item)+': '+@author.name
       - if @author.toc.nil?
         = render partial: 'authors/generated_toc', locals: {margin: false}

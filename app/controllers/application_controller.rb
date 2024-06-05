@@ -272,7 +272,13 @@ class ApplicationController < ActionController::Base
     unsorted_news_items = NewsItem.last(5) # read at most the last 5 persistent news items (Facebook posts, announcements)
 
     whatsnew_since(1.month.ago).each {|person, pubs| # add newly-published works
-      unsorted_news_items << NewsItem.from_publications(person, textify_new_pubs(pubs), pubs, person_path(person.id), person.profile_image.url(:thumb))
+      unsorted_news_items << NewsItem.from_publications(
+        person,
+        textify_new_pubs(pubs),
+        pubs,
+        authority_path(person.id),
+        person.profile_image.url(:thumb)
+      )
     }
     cached_youtube_videos.each {|title, desc, id, thumbnail_url, relevance| # add latest videos
       unsorted_news_items << NewsItem.from_youtube(title, desc, youtube_url_from_id(id), thumbnail_url, relevance)
@@ -287,15 +293,16 @@ class ApplicationController < ActionController::Base
       e = m.expression
       next if e.nil? # shouldn't happen
       w = e.work
-      person = e.translation ? m.translators.first : m.authors.first # TODO: more nuance
-      next if person.nil? # shouldn't happen, but might in a dev. env.
-      if authors[person].nil?
-        authors[person] = {}
-        authors[person][:latest] = 0
+      authority = e.translation ? m.translators.first : m.authors.first # TODO: more nuance
+      next if authority.nil? # shouldn't happen, but might in a dev. env.
+
+      if authors[authority].nil?
+        authors[authority] = {}
+        authors[authority][:latest] = 0
       end
-      authors[person][w.genre] = [] if authors[person][w.genre].nil?
-      authors[person][w.genre] << m
-      authors[person][:latest] = m.updated_at if m.updated_at > authors[person][:latest]
+      authors[authority][w.genre] = [] if authors[authority][w.genre].nil?
+      authors[authority][w.genre] << m
+      authors[authority][:latest] = m.updated_at if m.updated_at > authors[authority][:latest]
     }
     authors
   end

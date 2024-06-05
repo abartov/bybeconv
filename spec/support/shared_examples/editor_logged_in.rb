@@ -1,9 +1,5 @@
 # frozen_string_literal: true
 
-RSpec.shared_context 'when editor logged in' do
-  let(:editor) { create(:user, editor: true) }
-
-  before do
-    session[:user_id] = editor.id
-  end
+RSpec.shared_context 'when editor logged in' do |*bits|
+  include_context 'when user logged in', *bits, editor: true
 end

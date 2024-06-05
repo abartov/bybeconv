@@ -25,13 +25,6 @@ class Person < ApplicationRecord
     self.status = :published
     self.save! # finally, set this person to published
   end
-
-  def publish_if_first!
-    if self.awaiting_first?
-      self.publish!
-    end
-  end
-
   def died_years_ago
     begin
       dy = death_year.to_i

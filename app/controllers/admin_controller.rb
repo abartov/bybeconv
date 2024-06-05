@@ -835,15 +835,15 @@ class AdminController < ApplicationController
       calculate_editor_tagging_stats
       @next_tagging_id = Tagging.joins(:tag).where(status: :pending, tag: {status: :approved}).where('taggings.created_at > ?', @tagging.created_at).order('taggings.created_at').limit(1).pluck(:id).first
       @prev_tagging_id = Tagging.joins(:tag).where(status: :pending, tag: {status: :approved}).where('taggings.created_at < ?', @tagging.created_at).order('taggings.created_at desc').limit(1).pluck(:id).first
-      if @tagging.taggable_type == 'Person'
-        @author = Person.find(@tagging.taggable_id)
+      if @tagging.taggable_type == 'Authority'
+        @author = @tagging.taggable
         unless @author.toc.nil?
           prep_toc
         else
           generate_toc
         end
       elsif @tagging.taggable_type == 'Manifestation'
-        @m = Manifestation.find(@tagging.taggable_id)
+        @m = @tagging.taggable
         @html = MultiMarkdown.new(@m.markdown).to_html.force_encoding('UTF-8').gsub(/<figcaption>.*?<\/figcaption>/,'') # remove MMD's automatic figcaptions
       end
     end

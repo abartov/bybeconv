@@ -5,11 +5,20 @@ class NewsItem < ApplicationRecord
   scope :new_since, -> (since) { where('created_at > ?', since)}
 
   # itemtype, title, pinned, relevance, body, url, double,
-  attr_accessor :person_id, :pub_count
+  attr_accessor :authority_id, :pub_count
 
-  def self.from_publications(person, textified_pubs, pubs, url, thumbnail_url)
+  def self.from_publications(authority, textified_pubs, pubs, url, thumbnail_url)
     total_pubs = pubs.each_key.map{|g| g == :latest ? 0 : pubs[g].count}.sum
-    return NewsItem.new(itemtype: :publication, title: person.name, body: textified_pubs, relevance: pubs[:latest], url: url, thumbnail_url: thumbnail_url, person_id: person.id, pub_count: total_pubs)
+    return NewsItem.new(
+      itemtype: :publication,
+      title: authority.name,
+      body: textified_pubs,
+      relevance: pubs[:latest],
+      url: url,
+      thumbnail_url: thumbnail_url,
+      authority_id: authority.id,
+      pub_count: total_pubs
+    )
   end
 
   def self.from_blog(title, text, url, relevance)

@@ -262,10 +262,16 @@ describe ManifestationController do
       end
 
       context 'when user is logged in' do
-        let!(:user) { create(:user) }
-        before do
-          session[:user_id] = user.id
-        end
+        include_context 'when user logged in'
+
+        it { is_expected.to be_successful }
+      end
+
+      context 'when it is a translation and work has other translations' do
+        let(:orig_lang) { 'ru' }
+
+        let(:other_translation_expression) { create(:expression, language: 'he', work: manifestation.expression.work) }
+        let!(:other_translation_manifestation) { create(:manifestation, expression: other_translation_expression) }
 
         it { is_expected.to be_successful }
       end
@@ -278,6 +284,14 @@ describe ManifestationController do
 
         it { is_expected.to redirect_to dict_browse_path(manifestation.id) }
       end
+    end
+
+    describe '#readmode' do
+      subject { get :readmode, params: { id: manifestation.id } }
+
+      let(:orig_lang) { 'de' }
+
+      it { is_expected.to be_successful }
     end
 
     describe '#print' do

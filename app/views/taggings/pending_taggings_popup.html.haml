@@ -30,8 +30,8 @@
                       - if tagging.taggable_type == 'Manifestation'
                         %a{href: manifestation_path(tagging.taggable_id), target: "_blank"}
                           = "#{tagging.taggable.title} / #{tagging.taggable.author_string}"
-                      - elsif tagging.taggable_type == 'Person'
-                        %a{href: person_path(tagging.taggable_id), target: "_blank"}
+                      - elsif tagging.taggable_type == 'Authority'
+                        %a{ href: authority_path(tagging.taggable_id), target: '_blank' }
                           = tagging.taggable.name
               .no-header
               .bottom-button-area.left-buttons
