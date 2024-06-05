@@ -259,6 +259,13 @@ class AuthorsController < ApplicationController
     end
   end
 
+  def all
+    # This action is used for backward compatibility.
+    # The URL /authors/all did exist at one time, and may be linked to from outside our site, and we want not to
+    # break it, but to seamlessly redirect it to just /authors.
+    redirect_to authors_path
+  end
+
   def by_tag
     @page_title = t(:authors_by_tag)+' '+t(:project_ben_yehuda)
     @pagetype = :authors
