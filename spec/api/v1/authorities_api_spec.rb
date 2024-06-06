@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-describe V1::PeopleAPI do
+describe V1::AuthoritiesAPI do
   include_context 'API Spec Helpers'
 
   describe 'GET api/v1/people/{id}' do
@@ -8,7 +10,7 @@ describe V1::PeopleAPI do
 
     let(:detail) { 'metadata' }
     let(:authority_id) { -1 }
-    let(:path) { "/api/v1/people/#{authority_id}?key=#{key}&author_detail=#{detail}" }
+    let(:path) { "/api/v1/authorities/#{authority_id}?key=#{key}&author_detail=#{detail}" }
 
     include_context 'API Key Check'
 
@@ -35,29 +37,42 @@ describe V1::PeopleAPI do
       let(:authority_id) { authority.id }
 
       context 'when no details param provided' do
-        let(:path) { "/api/v1/people/#{authority_id}?key=#{key}" }
+        let(:path) { "/api/v1/authorities/#{authority_id}?key=#{key}" }
 
         it 'returns personal metadata' do
           expect(call).to eq 200
-          validate_person(json_response, authority, 'metadata')
+          validate_authority(json_response, authority, 'metadata')
         end
       end
 
       context 'when metadata details requested' do
         let(:detail) { 'metadata' }
+
         it 'returns personal metadata' do
           expect(call).to eq 200
-          validate_person(json_response, authority, 'metadata')
-          expect(json_response['texts']).to be_nil
-          expect(json_response['enrichment']).to be_nil
+          validate_authority(json_response, authority, 'metadata')
+          expect(json_response).not_to have_key('texts')
+          expect(json_response).not_to have_key('enrichment')
+        end
+
+        context 'when corporate_body' do
+          let(:authority) { create(:authority, :corporate_body) }
+
+          it 'returns corporate metadata' do
+            expect(call).to eq 200
+            validate_authority(json_response, authority, 'metadata')
+            expect(json_response).not_to have_key('texts')
+            expect(json_response).not_to have_key('enrichment')
+          end
         end
       end
 
       context 'when texts details requested' do
         let(:detail) { 'texts' }
+
         it 'returns a list of IDs of the works this person was involved in, with their role in each' do
           expect(call).to eq 200
-          validate_person(json_response, authority, 'texts')
+          validate_authority(json_response, authority, 'texts')
           texts = json_response['texts']
           expect(texts['author']).to eq([original_manifestation.id])
           expect(texts['editor']).to eq([edited_manifestation.id])
@@ -69,9 +84,10 @@ describe V1::PeopleAPI do
 
       context 'when enriched details requested' do
         let(:detail) { 'enriched' }
+
         it 'returns personal metadata plus texts he was involved into, plus texts about this person (backlinks)' do
           expect(call).to eq 200
-          validate_person(json_response, authority, 'enriched')
+          validate_authority(json_response, authority, 'enriched')
           texts = json_response['texts']
           expect(texts['author']).to eq([original_manifestation.id])
           expect(texts['editor']).to eq([edited_manifestation.id])
@@ -83,27 +99,51 @@ describe V1::PeopleAPI do
     end
   end
 
-  def validate_person(json, authority, detail)
+  private
+
+  def validate_person(metadata, person)
+    if person.nil?
+      expect(metadata).not_to have_key('person')
+    else
+      person_data = metadata['person']
+      expect(person_data['birth_year']).to eq(person.birth_year)
+      expect(person_data['death_year']).to eq(person.death_year)
+      expect(person_data['gender']).to eq(person.gender)
+      expect(person_data['period']).to eq(person.period)
+    end
+  end
+
+  def validate_corporate_body(metadata, corporate_body)
+    if corporate_body.nil?
+      expect(metadata).not_to have_key('corporate_body')
+    else
+      corporate_data = metadata['corporate_body']
+      expect(corporate_data['location']).to eq(corporate_body.location)
+      expect(corporate_data['inception_year']).to eq(corporate_body.inception_year)
+      expect(corporate_data['dissolution_year']).to eq(corporate_body.dissolution_year)
+    end
+  end
+
+  def validate_authority(json, authority, detail)
     expect(json['id']).to eq authority.id
     expect(json['url']).to eq Rails.application.routes.url_helpers.authority_url(authority)
     metadata = json['metadata']
-    expect(metadata).to_not be_nil
+    expect(metadata).not_to be_nil
     expect(metadata['name']).to eq(authority.name)
     expect(metadata['sort_name']).to eq(authority.sort_name)
-    expect(metadata['birth_year']).to eq(authority.person.birth_year)
-    expect(metadata['death_year']).to eq(authority.person.death_year)
-    expect(metadata['gender']).to eq(authority.person.gender)
+
+    validate_person(metadata, authority.person)
+    validate_corporate_body(metadata, authority.corporate_body)
+
     expect(metadata['intellectual_property']).to eq(authority.intellectual_property)
-    expect(metadata['period']).to eq(authority.person.period)
 
     if %w(texts enriched).include?(detail)
       texts = json['texts']
-      expect(texts).to_not be_nil
-      expect(texts).to have_key('author')
-      expect(texts).to have_key('translator')
-      expect(texts).to have_key('editor')
+      InvolvedAuthority.roles.each_key do |role|
+        expect(texts).to have_key(role)
+      end
     else
-      expect(metadata).to_not have_key('texts')
+      expect(metadata).not_to have_key('texts')
     end
 
     expect(metadata['other_designations']).to eq(authority.other_designation)
@@ -114,10 +154,10 @@ describe V1::PeopleAPI do
 
     if detail == 'enriched'
       enrichment = json['enrichment']
-      expect(enrichment).to_not be_nil
-      expect(enrichment['texts_about']).to_not be_nil
+      expect(enrichment).not_to be_nil
+      expect(enrichment['texts_about']).not_to be_nil
     else
-      expect(json).to_not have_key('enrichment')
+      expect(json).not_to have_key('enrichment')
     end
   end
 end
