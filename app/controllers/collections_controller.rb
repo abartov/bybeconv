@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class CollectionsController < ApplicationController
-  before_action :require_editor, except: %i[ show ]
-  before_action :set_collection, only: %i[ show edit update destroy]
+  before_action :require_editor, except: %i(show)
+  before_action :set_collection, only: %i(show edit update destroy)
 
   # GET /collections or /collections.json
   def index
@@ -11,7 +13,7 @@ class CollectionsController < ApplicationController
   def show
     @header_partial = 'shared/collection_top'
     @colls_traversed = [@collection.id]
-    #@print_url = url_for(action: :print, id: @collection.id)
+    # @print_url = url_for(action: :print, id: @collection.id)
   end
 
   # GET /collections/new
@@ -20,8 +22,7 @@ class CollectionsController < ApplicationController
   end
 
   # GET /collections/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /collections or /collections.json
   def create
@@ -29,7 +30,7 @@ class CollectionsController < ApplicationController
 
     respond_to do |format|
       if @collection.save
-        format.html { redirect_to collection_url(@collection), notice: "Collection was successfully created." }
+        format.html { redirect_to collection_url(@collection), notice: 'Collection was successfully created.' }
         format.json { render :show, status: :created, location: @collection }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -42,7 +43,7 @@ class CollectionsController < ApplicationController
   def update
     respond_to do |format|
       if @collection.update(collection_params)
-        format.html { redirect_to collection_url(@collection), notice: "Collection was successfully updated." }
+        format.html { redirect_to collection_url(@collection), notice: 'Collection was successfully updated.' }
         format.js
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -56,7 +57,7 @@ class CollectionsController < ApplicationController
     @collection.destroy
 
     respond_to do |format|
-      format.html { redirect_to collections_url, notice: "Collection was successfully destroyed." }
+      format.html { redirect_to collections_url, notice: 'Collection was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -68,7 +69,10 @@ class CollectionsController < ApplicationController
       flash[:error] = t(:no_such_item)
       head :not_found
     else
-      @collection.apply_drag(params[:coll_item_id].to_i, params[:old_pos].to_i, params[:new_pos].to_i) if params[:coll_item_id].present? && params[:old_pos].present? && params[:new_pos].present?
+      if params[:coll_item_id].present? && params[:old_pos].present? && params[:new_pos].present?
+        @collection.apply_drag(params[:coll_item_id].to_i, params[:old_pos].to_i,
+                               params[:new_pos].to_i)
+      end
       head :ok
     end
   end
@@ -79,7 +83,7 @@ class CollectionsController < ApplicationController
     @dest_coll = Collection.find(params[:dest_coll_id].to_i)
     @src_coll = Collection.find(params[:src_coll_id].to_i)
     @item = CollectionItem.find(params[:item_id].to_i)
-    if(@dest_coll.nil? || @src_coll.nil? || @item.nil?)
+    if @dest_coll.nil? || @src_coll.nil? || @item.nil?
       flash[:error] = t(:no_such_item)
       head :not_found
       return
@@ -97,7 +101,7 @@ class CollectionsController < ApplicationController
       flash[:error] = t(:no_such_item)
       redirect_to admin_index_path
     elsif @collection.root? # switch to side-by-side view with legacy author TOC for root collections (for now)
-      @author = Person.find_by_root_collection_id(@collection.id)
+      @author = Authority.find_by(root_collection_id: @collection.id)
       if @author.present?
         redirect_to authors_manage_toc_path(id: @author.id)
         return
@@ -106,13 +110,15 @@ class CollectionsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_collection
-      @collection = Collection.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def collection_params
-      params.require(:collection).permit(:title, :sort_title, :subtitle, :issn, :collection_type, :inception, :inception_year, :publication_id, :toc_id, :toc_strategy)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_collection
+    @collection = Collection.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def collection_params
+    params.require(:collection).permit(:title, :sort_title, :subtitle, :issn, :collection_type, :inception,
+                                       :inception_year, :publication_id, :toc_id, :toc_strategy)
+  end
 end

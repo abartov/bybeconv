@@ -1,5 +1,5 @@
 .by-card-v02
-  = render partial: 'shared/collection', locals: {collection: @collection, focused: true}
+  = render partial: 'shared/collection', locals: { collection: @collection, focused: true }
 
-- if current_user && current_user.editor?
+- if current_user&.editor?
   = link_to t(:edit), edit_collection_path(@collection)

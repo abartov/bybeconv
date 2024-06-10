@@ -93,7 +93,7 @@ class ManifestationController < ApplicationController
     term = params[:term]
     author = params[:author]
     if term && author && !term.blank? && !author.blank?
-      items = Person.find(author.to_i).all_works_by_title(term)
+      items = Authority.find(author.to_i).all_works_by_title(term)
     else
       items = {}
     end
