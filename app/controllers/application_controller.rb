@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
   before_action :set_paper_trail_whodunnit
   # before_action :set_font_size # TODO: re-enable when we support this
   before_action :set_base_user
+  before_action :mention_skipped
   after_action :set_access_control_headers
   autocomplete :tag_name, :name, limit: 15, scopes: [:approved], extra_data: [:tag_id] # TODO: also search alternate titles!
 
@@ -412,6 +413,18 @@ class ApplicationController < ActionController::Base
       @anthology_select_options = @anthologies.map{|a| [a.title, a.id, @anthology == a ? 'selected' : ''] }
       @cur_anth_id = @anthology.nil? ? 0 : @anthology.id
     end
+  end
+
+  def prep_toc_as_collection
+    @root_collection = @author.root_collection
+    @toc = @author.toc # may be nil
+    #credits = @author.toc.credit_section || ''
+    #credits.sub!('## הגיהו', "<div class=\"by-horizontal-seperator-light\"></div>\n\n## הגיהו") unless credits =~ /by-horizontal/
+    #@credits = MultiMarkdown.new(credits).to_html.force_encoding('UTF-8')
+  end
+
+  def mention_skipped
+    flash[:notice] = I18n.t(:skipped_x_items, x: params[:skipped]) if params[:skipped].present?
   end
 
   helper_method :current_user, :html_entities_coder

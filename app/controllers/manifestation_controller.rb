@@ -902,6 +902,7 @@ class ManifestationController < ApplicationController
           end
         end
       end
+      @containments = @m.collection_items
     end
   end
 end

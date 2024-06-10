@@ -1,0 +1,61 @@
+= form_for @ingestible do |f|
+  - if @ingestible.errors.any?
+    #error_explanation
+      %h2= t('ingestible.invalid')
+      %ul
+        - @ingestible.errors.full_messages.each do |message|
+          %li= message
+
+  .field
+    = f.label :title
+    = f.text_field :title, style: 'width:80%'
+  .field
+    = f.label :volume
+    = autocomplete_field_tag :volume, '', autocomplete_collection_title_path, 'data-noMatchesLabel' => t(:no_matches_found), id: 'cterm', style: 'width:400px;', id_element: '#insert_cid'
+    = hidden_field_tag :insert_cid, value: '', id: 'insert_cid'
+
+    = f.check_box :no_volume
+    = f.label :no_volume
+    &nbsp;
+    %span{id: 'explain_no_volume'}= '[?]'
+  .field
+    = f.label :scenario
+    = f.select :scenario, options_for_select(Ingestible.scenarios.map{|k,v| [t("ingestibles.#{k}"), k]}, @ingestible.scenario)
+    = f.label :status
+    %b= t("ingestibles.#{@ingestible.status}")
+    = f.hidden_field :status, value: @ingestible.status
+  %h2= t('ingestible.defaults')
+  = f.label t(:genre)
+  - genres = [[t(:mixed_genres), 'mixed']]+get_genres.map {|genre| [I18n.t(genre), genre]}
+  = f.select :genre, options_for_select(genres, @ingestible.genre), {include_blank: true}
+  = f.label t(:publisher)
+  = f.text_field :publisher, required: true, style: 'width:400px;'
+  = f.label t(:year_published)
+  = f.text_field :year_published, style: 'width:100px;'
+  %br
+  = f.label t(:orig_lang)
+  = f.select :orig_lang, options_for_select(get_langs.map {|lang| [textify_lang(lang), lang]}, @ingestible.orig_lang)
+  = render partial: 'authorities', locals: {authorities: @ingestible.default_authorities}
+  %hr
+  .field
+    = f.label :comments
+    = f.text_area :comments
+  .field
+    = f.check_box :attach_photos
+    = f.label :attach_photos
+    &nbsp;
+    %span{id: 'explain_attach_photos'}= '[?]'
+  .field
+    = f.label :markdown
+    = f.text_area :markdown, style: 'width:80%; height: 200px;'
+  - if @ingestible.docx.present?
+    %p
+      = t('.current_file')
+      = link_to @ingestible.docx.filename.to_s, url_for(@ingestible.docx)
+      = t('.or_replace_file')
+  - else
+    %b= t(:upload_file)
+    = t(:file_can_be_skipped)
+  = f.file_field :docx
+  .actions
+    = f.submit t(:save)

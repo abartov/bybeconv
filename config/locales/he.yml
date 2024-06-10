@@ -1,6 +1,8 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 he:
+  ingestible:
+    defaults: שדות לכל היצירות
   author_list: רשימת היוצרים
   first_last_name: "שם פרטי / משפחה"
   to_latest_x_works: הצג %{x} יצירות אחרונות
@@ -228,6 +230,7 @@ he:
   copy_of: "עותק של "
   curated_text_title: שם קטע הטקסט
   confirm_clone: נא לאשר שיבוט המקראה
+  confirm_delete_collection: נא לאשר מחיקת כל האוסף על פריטיו!
   public_anthologies: מקראות פומביות
   clone_this_anthology: שיבוט מקראה זו
   curated_text: טקסט מלווה
@@ -334,6 +337,7 @@ he:
   person: אדם
   work: יצירה
   search_term: מונח לחיפוש
+  or_search_term: 'או חיפוש יצירה קיימת בשם: '
   search_the_dictionary: 'חיפוש במילון: '
   search_wikidata: חיפוש בויקינתונים
   search_the_site: חיפוש באתר
@@ -359,6 +363,7 @@ he:
   letters: מכתבים
   reference: עיון
   lexicon: מילונים ולקסיקונים
+  mixed_genres: סוגות שונות
   # end genres
   anth_grows: המקראה צומחת!
   most_popular_works_this_month: היצירות הנקראות ביותר החודש
@@ -406,11 +411,13 @@ he:
   rest_in_wikipedia: להמשך הערך בויקיפדיה
   rest_of_work: להמשך קריאה
   to_the_wikipedia_article: לערך בויקיפדיה
+  wikidata_id: מזהה בויקינתונים
   additional_options: אפשרויות נוספות
   raw: טרם עוּבַּד
   ready: מוכן
   photo: תמונה
   last_update: עדכון אחרון
+  copyright_status: מצב זכויות יוצרים
   basic_details: פרטים בסיסיים
   submit: שליחה
   logo: לוגו
@@ -461,6 +468,11 @@ he:
   pages: עמודים
   proof_show_text: הצג את הטקסט באתר הישן בחלון נפרד
   show_text: הצג את גוף היצירה
+  text: טקסט
+  paratext: פאראטקסט
+  placeholder_item: פריט לא מקושר
+  title_only_if_needed: "כותרת (רק אם צריך)"
+  or_search_for_collection: 'או חיפוש אוסף קיים בשם: '
   proof_your_proofs: יש להקליד כאן למטה את ההגהות, או ללחוץ על "העתק למטה" כדי להעתיק את הטקסט שנבחר ולתקן אותו ידנית למטה.
   proof_copy_text: העתק למטה
   your_selected_text: הטקסט שסומן
@@ -579,6 +591,7 @@ he:
   welcome_stats_html: "כיום כלולות בפרויקט <b>%{works}</b> יצירות, מאת כ-<b>%{authors}</b> יוצרים, ו-<b>%{headwords}</b> ערכים מילוניים."
   total_manifestations: "סה\"כ יצירות: %{total}"
   additional_content: 'תוכן נוסף:'
+  additional_items: פריטים נוספים
   authors_of: יוצרי
   sample_authors_of: מבחר יוצרי
   sample_works_of: מבחר יצירות
@@ -679,7 +692,7 @@ he:
   thedate: תאריך
   upload: העלאה
   creation: יצירה
-  publication: הוצאה
+  publication: כותר
   comments: הערות
   popular_work_tags: תגיות נפוצות ליצירות
   no_tags_yet: "%{taggee} טרם הוצעו תגיות"
@@ -891,6 +904,7 @@ he:
   anth_share_tt: שיתוף המקראה
   anth_access_tt: 'בחירת רמת גישה: מי יכול לגשת למקראה'
   anth_drag_tt: איזור גרירה לשינוי סדר הפריטים במקראה
+  coll_drag_tt: איזור גרירה לשינוי סדר הפריטים באסופה
   anth_add_work_tt: הוספת היצירה שממנה נפתח חלון המקראות
   anth_add_works_tt: הוספת יצירות מעמוד רשימת היצירות
   anth_add_curated_tt: "הוספת טקסט מלווה מטעמך כגון שער, הערות, שיעורי בית, וכו'"
@@ -919,6 +933,7 @@ he:
   confirm_block: נא לאשר חסימה
   delete_photo: מחיקת תמונה (לצמיתות!)
   delete_link: הסרת קישורית
+  delete: מחיקה
   cancel_focus_on_this_tag: ביטול מיקוד בתגית זו
   anth_text_deletion: מחיקת פריט מהמקראה
   anth_text_deletion_p1: 'פעולה זו תמחק ללא אפשרות חזרה את הפריט:'
@@ -1267,6 +1282,23 @@ he:
   temporary_worklist: רשימת יצירות (זמנית)
   improvements_soon: דף זה טרם עוצב. בקרוב נכניס בו שיפורים, אבל רצינו שבינתיים תוכלו לגשת ליצירות עצמן.
   primary: יצירה עיקרית
+  group_in_collections: קיבוץ לאוספים
+  collection_item_type: סוג פריט
+  skipped_x_items: דילגנו על %{x} פריטים שטרם עלו לאתר.
+  ctype_volume: כותר
+  ctype_anthology: אסופה
+  ctype_periodical: כתב עת
+  ctype_periodical_issue: גליון
+  ctype_series: סדרה, מחזור, או שער
+  ctype_root: כלל היצירה של אדם או גוף
+  ctype_other: אחר
+  ctype_volume_up_link: לתצוגת הכותר
+  ctype_anthology_up_link: לתצוגת האסופה
+  ctype_periodical_up_link: לתצוגת כתב העת
+  ctype_periodical_issue_up_link: לתצוגת הגליון
+  ctype_series_up_link: לתצוגת המחזור/שער כולו
+  parent_collections: "שייך לאוספים:"
+  collection_circular_reference: אוסף מקושר לעצמו!
 
   notifications:
     proof_fixed:
@@ -1388,7 +1420,24 @@ he:
       designer: מעצב
       contributor: משתתף
       other: אחר
-
+  ingestibles:
+    new:
+      title: העלאת טקסטים לאתר
+      invalid: 'שמירת הקובץ נמנעה בגלל:'
+    edit:
+      title: העלאת טקסטים לאתר
+    authorities:
+      or_new_person: או הקלידו שם יוצר/ת חדש/ה
+    form:
+      current_file: קובץ נוכחי
+      or_replace_file: 'או החלפת הקובץ בהעלאה מחדש:'
+    single: יצירה בודדת
+    multiple: מספר יצירות עם אותם מאפיינים
+    mixed: יצירות בעלות מחברים או מאפיינים שונים
+    draft: העלאה בעבודה
+    ingested: העלאה הושלמה
+    failed: העלאה נכשלה
+    awaiting_authorities: בהמתנה ליצירת ישויות אישים חסרות
   # This block of strings below should be removed when we finish work. Grouped them together to make it easier to find them again
   public_domain: נחלת הכלל
   viaf_id: "מזהה במאגר VIAF‏"

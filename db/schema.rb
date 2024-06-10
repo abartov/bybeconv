@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_05_28_193335) do
+ActiveRecord::Schema.define(version: 2024_06_09_165640) do
 
   create_table "aboutnesses", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -255,6 +255,39 @@ ActiveRecord::Schema.define(version: 2024_05_28_193335) do
     t.index ["base_user_id", "manifestation_id"], name: "index_bookmarks_on_base_user_id_and_manifestation_id", unique: true
     t.index ["base_user_id"], name: "index_bookmarks_on_base_user_id"
     t.index ["manifestation_id"], name: "index_bookmarks_on_manifestation_id"
+  end
+
+  create_table "collection_items", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.bigint "collection_id"
+    t.string "alt_title"
+    t.text "context"
+    t.integer "seqno"
+    t.string "item_type"
+    t.bigint "item_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "markdown", limit: 2048
+    t.index ["collection_id"], name: "index_collection_items_on_collection_id"
+    t.index ["item_type", "item_id"], name: "index_collection_items_on_item"
+  end
+
+  create_table "collections", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "title"
+    t.string "sort_title"
+    t.string "subtitle"
+    t.string "issn"
+    t.integer "collection_type"
+    t.string "inception"
+    t.integer "inception_year"
+    t.integer "publication_id"
+    t.integer "toc_id"
+    t.integer "toc_strategy"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["inception_year"], name: "index_collections_on_inception_year"
+    t.index ["publication_id"], name: "index_collections_on_publication_id"
+    t.index ["sort_title"], name: "index_collections_on_sort_title"
+    t.index ["toc_id"], name: "index_collections_on_toc_id"
   end
 
   create_table "corporate_bodies", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -507,6 +540,37 @@ ActiveRecord::Schema.define(version: 2024_05_28_193335) do
     t.index ["user_id"], name: "index_impressions_on_user_id"
   end
 
+  create_table "ingestibles", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "title"
+    t.integer "status"
+    t.integer "scenario"
+    t.text "default_authorities"
+    t.text "metadata"
+    t.text "comments"
+    t.text "markdown"
+    t.integer "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "problem"
+    t.string "orig_lang"
+    t.string "year_published"
+    t.string "genre"
+    t.string "publisher"
+    t.string "pub_link"
+    t.string "pub_link_text"
+    t.boolean "attach_photos", default: false, null: false
+    t.boolean "no_volume", default: false, null: false
+    t.text "toc_buffer"
+    t.integer "volume_id"
+    t.text "works_buffer", size: :medium
+    t.datetime "markdown_updated_at"
+    t.datetime "works_buffer_updated_at"
+    t.index ["status"], name: "index_ingestibles_on_status"
+    t.index ["title"], name: "index_ingestibles_on_title"
+    t.index ["user_id"], name: "index_ingestibles_on_user_id"
+    t.index ["volume_id"], name: "index_ingestibles_on_volume_id"
+  end
+
   create_table "involved_authorities", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "authority_id", null: false
     t.integer "work_id"
@@ -514,7 +578,9 @@ ActiveRecord::Schema.define(version: 2024_05_28_193335) do
     t.integer "role", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "collection_id"
     t.index ["authority_id"], name: "index_involved_authorities_on_authority_id"
+    t.index ["collection_id"], name: "index_involved_authorities_on_collection_id"
     t.index ["expression_id"], name: "index_involved_authorities_on_expression_id"
     t.index ["work_id"], name: "index_involved_authorities_on_work_id"
   end
@@ -602,6 +668,8 @@ ActiveRecord::Schema.define(version: 2024_05_28_193335) do
     t.string "birthdate"
     t.string "deathdate"
     t.integer "gender"
+    t.integer "root_collection_id"
+    t.index ["root_collection_id"], name: "index_people_on_root_collection_id"
   end
 
   create_table "periods", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -867,6 +935,9 @@ ActiveRecord::Schema.define(version: 2024_05_28_193335) do
   add_foreign_key "base_users", "users"
   add_foreign_key "bookmarks", "base_users"
   add_foreign_key "bookmarks", "manifestations"
+  add_foreign_key "collection_items", "collections"
+  add_foreign_key "collections", "publications"
+  add_foreign_key "collections", "tocs"
   add_foreign_key "dictionary_aliases", "dictionary_entries"
   add_foreign_key "dictionary_entries", "manifestations"
   add_foreign_key "dictionary_links", "dictionary_entries", column: "from_entry_id"

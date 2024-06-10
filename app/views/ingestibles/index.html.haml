@@ -1,0 +1,31 @@
+%h1 Listing ingestibles
+
+%table
+  %thead
+    %tr
+      %th Title
+      %th Status
+      %th Defaults
+      %th Metadata
+      %th Comments
+      %th Markdown
+      %th
+      %th
+      %th
+
+  %tbody
+    - @ingestibles.each do |ingestible|
+      %tr
+        %td= ingestible.title
+        %td= ingestible.status
+        %td= ingestible.defaults
+        %td= ingestible.metadata
+        %td= ingestible.comments
+        %td= ingestible.markdown
+        %td= link_to 'Show', ingestible
+        %td= link_to 'Edit', edit_ingestible_path(ingestible)
+        %td= link_to 'Destroy', ingestible, method: :delete, data: { confirm: 'Are you sure?' }
+
+%br
+
+= link_to 'New Ingestible', new_ingestible_path
