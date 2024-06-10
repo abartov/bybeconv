@@ -27,9 +27,9 @@
                 #actualtext.maintext-poetry-body.search-margin
                   != raw(@html)
             .work-side-color
-              %div{'class' => "work-genre", style: "background-image: url(\"/assets/work_side_icons_#{@w.genre}.svg\"); background-repeat: no-repeat; background-size:auto;"}
+              .work-genre{ style: "background-image: url(\"/assets/work_side_icons_#{@w.genre}.svg\"); background-repeat: no-repeat; background-size:auto;" }
           - @containments.each do |ci|
-            .topNavEntryArea.topNavEntryAreaDesktop{style: 'justify-content: space-between; border-top: 3px #660248 solid;'}
+            .topNavEntryArea.topNavEntryAreaDesktop{ style: 'justify-content: space-between; border-top: 3px #660248 solid;' }
               .topNavEntry
                 .link-nav
                   - prev = ci.prev_sibling_item

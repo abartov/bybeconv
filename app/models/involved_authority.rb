@@ -29,7 +29,11 @@ class InvolvedAuthority < ApplicationRecord
   private
 
   def validate_item
-    errors.add(:base, :no_item) if work.nil? && expression.nil?
-    errors.add(:base, :multiple_items) if work.present? && expression.present?
+    items_count = work.present? ? 1 : 0
+    items_count += 1 if expression.present?
+    items_count += 1 if collection.present?
+
+    errors.add(:base, :no_item) if items_count.zero?
+    errors.add(:base, :multiple_items) if items_count > 1
   end
 end

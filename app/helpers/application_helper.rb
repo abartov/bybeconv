@@ -213,12 +213,14 @@ module ApplicationHelper
     end
   end
 
-  def collection_item_string(ci)
-    return '' if ci.nil?
-    return ci.alt_title if ci.alt_title.present?
-    s = ci.item.try(:title) if ci.item.present?
+  def collection_item_string(collection_item)
+    return '' if collection_item.nil?
+    return collection_item.alt_title if collection_item.alt_title.present?
+
+    s = collection_item.item.try(:title) if collection_item.item.present?
     return s if s.present?
-    s = ci.item.try(:name) if ci.item.present?
+
+    s = collection_item.item.try(:name) if collection_item.item.present?
     return s if s.present?
     return ''
   end
@@ -227,8 +229,8 @@ module ApplicationHelper
     case klass.to_s
     when 'Manifestation'
       manifestation_path(id)
-    when 'Person'
-      person_path(id)
+    when 'Authority'
+      authority_path(id)
     when 'Anthology'
       anthology_path(id)
     when 'Work'
@@ -247,11 +249,19 @@ module ApplicationHelper
   end
 
   def collection_types_options
-    ret = Collection.collection_types.reject{|x| x == 'root'}.map{|k,v| [textify_collection_type(k), k]}
+    Collection.collection_types
+              .reject { |x| x == 'root' }
+              .map { |k, _v| [textify_collection_type(k), k] }
   end
 
   def collection_item_types_options
-    ret = Collection.collection_types.reject{|x| x == 'root'}.map{|k,v| [textify_collection_type(k), k]} + [[t(:work), 'Manifestation'], [t(:paratext), 'paratext'], [t(:placeholder_item), 'placeholder_item']]
+    Collection.collection_types
+              .reject { |x| x == 'root' }
+              .map { |k, _v| [textify_collection_type(k), k] } +
+      [
+        [t(:work), 'Manifestation'],
+        [t(:paratext), 'paratext'],
+        [t(:placeholder_item), 'placeholder_item']
+      ]
   end
-
 end

@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :collection do
-    title { "MyString" }
-    sort_title { "MyString" }
-    subtitle { "MyString" }
-    issn { "MyString" }
+    title { 'MyString' }
+    sort_title { 'MyString' }
+    subtitle { 'MyString' }
+    issn { 'MyString' }
     collection_type { 1 }
-    inception { "MyString" }
+    inception { 'MyString' }
     inception_year { 1 }
     publication { nil }
     toc { nil }

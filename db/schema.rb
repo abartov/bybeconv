@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_06_09_165640) do
+ActiveRecord::Schema.define(version: 2024_06_10_055048) do
 
   create_table "aboutnesses", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -150,11 +150,13 @@ ActiveRecord::Schema.define(version: 2024_06_09_165640) do
     t.string "wikidata_uri"
     t.integer "person_id"
     t.integer "corporate_body_id"
+    t.integer "root_collection_id"
     t.index ["corporate_body_id"], name: "index_authorities_on_corporate_body_id", unique: true
     t.index ["impressions_count"], name: "index_authorities_on_impressions_count"
     t.index ["intellectual_property"], name: "index_authorities_on_intellectual_property"
     t.index ["name"], name: "index_authorities_on_name"
     t.index ["person_id"], name: "index_authorities_on_person_id", unique: true
+    t.index ["root_collection_id"], name: "index_authorities_on_root_collection_id"
     t.index ["sort_name"], name: "index_authorities_on_sort_name"
     t.index ["status", "published_at"], name: "index_authorities_on_status_and_published_at"
     t.index ["toc_id"], name: "people_toc_id_fk"
@@ -257,21 +259,21 @@ ActiveRecord::Schema.define(version: 2024_06_09_165640) do
     t.index ["manifestation_id"], name: "index_bookmarks_on_manifestation_id"
   end
 
-  create_table "collection_items", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
-    t.bigint "collection_id"
+  create_table "collection_items", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.integer "collection_id"
     t.string "alt_title"
     t.text "context"
     t.integer "seqno"
     t.string "item_type"
     t.bigint "item_id"
+    t.string "markdown", limit: 2048
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "markdown", limit: 2048
     t.index ["collection_id"], name: "index_collection_items_on_collection_id"
     t.index ["item_type", "item_id"], name: "index_collection_items_on_item"
   end
 
-  create_table "collections", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+  create_table "collections", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "title"
     t.string "sort_title"
     t.string "subtitle"
@@ -549,8 +551,6 @@ ActiveRecord::Schema.define(version: 2024_06_09_165640) do
     t.text "comments"
     t.text "markdown"
     t.integer "user_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
     t.string "problem"
     t.string "orig_lang"
     t.string "year_published"
@@ -565,6 +565,8 @@ ActiveRecord::Schema.define(version: 2024_06_09_165640) do
     t.text "works_buffer", size: :medium
     t.datetime "markdown_updated_at"
     t.datetime "works_buffer_updated_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
     t.index ["status"], name: "index_ingestibles_on_status"
     t.index ["title"], name: "index_ingestibles_on_title"
     t.index ["user_id"], name: "index_ingestibles_on_user_id"
@@ -668,8 +670,6 @@ ActiveRecord::Schema.define(version: 2024_06_09_165640) do
     t.string "birthdate"
     t.string "deathdate"
     t.integer "gender"
-    t.integer "root_collection_id"
-    t.index ["root_collection_id"], name: "index_people_on_root_collection_id"
   end
 
   create_table "periods", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -928,6 +928,7 @@ ActiveRecord::Schema.define(version: 2024_06_09_165640) do
   add_foreign_key "anthologies", "users"
   add_foreign_key "anthology_texts", "anthologies"
   add_foreign_key "anthology_texts", "manifestations"
+  add_foreign_key "authorities", "collections", column: "root_collection_id"
   add_foreign_key "authorities", "corporate_bodies"
   add_foreign_key "authorities", "people"
   add_foreign_key "authorities", "tocs", name: "people_toc_id_fk"
@@ -952,6 +953,7 @@ ActiveRecord::Schema.define(version: 2024_06_09_165640) do
   add_foreign_key "featured_contents", "users"
   add_foreign_key "holdings", "bib_sources"
   add_foreign_key "holdings", "publications"
+  add_foreign_key "ingestibles", "collections", column: "volume_id"
   add_foreign_key "involved_authorities", "authorities"
   add_foreign_key "involved_authorities", "expressions"
   add_foreign_key "involved_authorities", "works"

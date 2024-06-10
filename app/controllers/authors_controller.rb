@@ -6,7 +6,7 @@ class AuthorsController < ApplicationController
   include FilteringAndPaginationConcern
 
   before_action only: %i(new publish create show edit list add_link delete_link
-                         delete_photo edit_toc update to_manual_toc add_link collect_toc) do |c|
+                         delete_photo edit_toc update to_manual_toc add_link manage_toc) do |c|
     c.require_editor('edit_people')
   end
 
@@ -568,15 +568,10 @@ class AuthorsController < ApplicationController
   end
 
   def manage_toc
-    @author = Person.find(params[:id])
-    if @author.nil?
-      flash[:error] = I18n.t('no_such_item')
-      redirect_to '/'
-    else
-      @page_title = t(:edit_toc)+': '+@author.name
-      prep_toc_as_collection
-      prep_toc # for the auxiliary view
-    end
+    @author = Authority.find(params[:id])
+    @page_title = "#{t(:edit_toc)}: #{@author.name}"
+    prep_toc_as_collection
+    prep_toc # for the auxiliary view
   end
 
   protected
