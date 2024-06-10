@@ -82,7 +82,6 @@ class Authority < ApplicationRecord
     # 'Q' in wikidata URI must be uppercase
     self.wikidata_uri = wikidata_uri.blank? ? nil : wikidata_uri.strip.downcase.gsub('q', 'Q')
   end
-
   def approved_tags
     approved_taggings.joins(:tag).where(tag: { status: Tag.statuses[:approved] }).map(&:tag)
   end
@@ -319,6 +318,54 @@ class Authority < ApplicationRecord
 
   def publish_if_first!
     publish! if awaiting_first?
+  end
+
+  def root_collection
+    return @root_collection if @root_collection
+    return @root_collection = Collection.find(root_collection_id) if root_collection_id
+
+    return @root_collection = generate_root_collection!
+  end
+
+  def generate_root_collection!
+    works = toc.present? ? toc.linked_items : []
+    # include any existing collections possibly already defined for this person
+    colls = Collection.by_authority(self).where.not(collection_type: :root)
+    extra_works = all_works_including_unpublished.reject { |m| works.include?(m) }
+    c = nil
+    ActiveRecord::Base.transaction do
+      c = Collection.create!(title: name, collection_type: :root, toc_strategy: :default)
+      self.root_collection_id = c.id
+      save!
+      c.involved_authorities.create!(authority: self, role: :author) # by default
+      # make an empty collection per publication (even if one already exists in some other context).
+      # Later an editor would populate the empty collection according to an existing manual TOC or a scanned TOC
+      pub_colls = []
+      publications.each do |pub|
+        coll = Collection.create!(title: pub.title, collection_type: :volume, toc_strategy: :default)
+        pub_colls << coll
+      end
+      seqno = 0
+      [colls, pub_colls, works].each do |arr|
+        arr.each do |m|
+          CollectionItem.create!(collection: c, item: m, seqno: seqno)
+          seqno += 1
+        end
+      end
+      # make a (technical, to-be-reviewed-and-handled) collection out of the works not already linked from the TOC
+      extra_works_collection = Collection.create!(
+        title: "#{name} - #{I18n.t(:additional_items)}",
+        collection_type: :other,
+        toc_strategy: :default
+      )
+      extra_seqno = 0
+      extra_works.each do |m|
+        CollectionItem.create!(collection: extra_works_collection, item: m, seqno: extra_seqno)
+        extra_seqno += 1
+      end
+      CollectionItem.create!(collection: c, item: extra_works_collection, seqno: seqno)
+    end
+    return c
   end
 
   protected

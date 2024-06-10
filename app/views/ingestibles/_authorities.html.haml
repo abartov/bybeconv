@@ -4,12 +4,14 @@
     %ul#authorities
       = render partial: 'authority', collection: JSON.parse(authorities)
   = t(:add)
-  = select_tag :add_authority, options_from_collection_for_select(Person.order(:name), 'id', 'name'),
-            include_blank: true
+  = select_tag :add_authority,
+               options_from_collection_for_select(Authority.order(:name), 'id', 'name'),
+               include_blank: true
   = t('.or_new_person')
   = text_field_tag :new_person, '', {style: 'width: 150px;'}
   = t(:in_role)
-  = select_tag :role, options_for_select(InvolvedAuthority.roles.keys.map { |role| [textify_authority_role(role), role] })
+  = select_tag :role,
+               options_for_select(InvolvedAuthority.roles.keys.map { |role| [textify_authority_role(role), role] })
   = button_tag t(:perform_add), id: 'do_add_authority'
   :javascript
     $(document).ready(function() {
