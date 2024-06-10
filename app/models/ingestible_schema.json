@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://benyehuda.org/ingestion.schema.json",
+  "title": "Ingestible",
+  "description": "An ingestion session object",
+  "type": "object",
+  "properties": {
+    "taskId": {
+      "description": "The unique identifier of the PBY tasks system this ingestible is associated with",
+      "type": "integer"
+    },
+    "defaults": {
+      "description": "default values for metadata for all texts in the ingestible unless overridden",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "key",
+          "value"
+        ]
+      }
+    },
+    "texts": {
+      "description": "texts to be ingested",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "markdown": {
+            "type": "string"
+          },
+          "authorIds": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 1
+          },
+          "authorIds": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+          },
+          "genre": {
+            "type": "string"
+          },
+          "originalLanguage": {
+            "type": "string"
+          },
+          "originalLanguageTitle": {
+            "type": "string"
+          },
+          "metadata": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "key": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "key",
+                "value"
+              ]
+            }
+          }
+        },
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "taskId",
+    "texts"
+  ]
+}

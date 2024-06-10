@@ -28,6 +28,32 @@
                   != raw(@html)
             .work-side-color
               %div{'class' => "work-genre", style: "background-image: url(\"/assets/work_side_icons_#{@w.genre}.svg\"); background-repeat: no-repeat; background-size:auto;"}
+          - @containments.each do |ci|
+            .topNavEntryArea.topNavEntryAreaDesktop{style: 'justify-content: space-between; border-top: 3px #660248 solid;'}
+              .topNavEntry
+                .link-nav
+                  - prev = ci.prev_sibling_item
+                  - if prev.present?
+                    - extra = prev[:skipped] > 0 ? "?skipped=#{prev[:skipped]}" : ''
+                    = link_to "#{default_link_by_class(prev[:item].class, prev[:item].id)}#{extra}" do
+                      %span.right-arrow= '2'
+                      = t(:to_previous_item)
+              .topNavEntry
+                .link-nav
+                  - unless ci.collection.root?
+                    = link_to default_link_by_class(ci.collection.class, ci.collection.id) do
+                      %span.right-arrow= '🢁'
+                      = textify_collection_up_link(ci.collection)
+                      %span.right-arrow= '🢁'
+              .topNavEntry
+                .link-nav
+                  - nextsib = ci.next_sibling_item
+                  - if nextsib.present?
+                    - extra = nextsib[:skipped] > 0 ? "?skipped=#{nextsib[:skipped]}" : ''
+                    = link_to "#{default_link_by_class(nextsib[:item].class, nextsib[:item].id)}#{extra}" do
+                      = t(:to_next_item)
+                      %span.left-arrow= '1'
+
   .col-12.col-lg-4
     .row
       .col

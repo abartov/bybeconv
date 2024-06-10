@@ -58,3 +58,11 @@ he:
         birthdate: תאריך לידה
         deathdate: תאריך פטירה
         gender: מגדר
+      ingestible:
+        defaults: שדות לכל היצירות
+        title: כותרת להעלאה
+        scenario: סוג ההעלאה
+        status: סטטוס
+        metadata: מטא־דאטה
+        comments: הערות
+        markdown: מארקדאון

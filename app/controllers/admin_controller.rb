@@ -10,6 +10,7 @@ class AdminController < ApplicationController
   autocomplete :manifestation, :title, display_value: :title_and_authors, extra_data: [:expression_id] # TODO: also search alternate titles!
   autocomplete :authority, :name, full: true
   autocomplete :person, :name, scopes: :with_name, full: true
+  autocomplete :collection, :title, full: true, display_value: :title_and_authors
 
   layout false, only: [:merge_tag, :merge_tagging, :confirm_with_comment] # popups
   layout 'backend', only: [:tag_moderation, :tag_review, :tagging_review] # eventually change to except: [<popups>]

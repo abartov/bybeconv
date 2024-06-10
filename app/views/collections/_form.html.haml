@@ -1,0 +1,40 @@
+= form_for @collection do |f|
+  - if @collection.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@collection.errors.count, "error")} prohibited this collection from being saved:"
+      %ul
+        - @collection.errors.full_messages.each do |message|
+          %li= message
+
+  .field
+    = f.label :title
+    = f.text_field :title
+  .field
+    = f.label :sort_title
+    = f.text_field :sort_title
+  .field
+    = f.label :subtitle
+    = f.text_field :subtitle
+  .field
+    = f.label :issn
+    = f.text_field :issn
+  .field
+    = f.label :collection_type
+    = f.number_field :collection_type
+  .field
+    = f.label :inception
+    = f.text_field :inception
+  .field
+    = f.label :inception_year
+    = f.number_field :inception_year
+  .field
+    = f.label :publication
+    = f.text_field :publication
+  .field
+    = f.label :toc
+    = f.text_field :toc
+  .field
+    = f.label :toc_strategy
+    = f.number_field :toc_strategy
+  .actions
+    = f.submit 'Save'

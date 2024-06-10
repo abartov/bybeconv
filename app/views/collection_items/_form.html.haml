@@ -1,0 +1,25 @@
+= form_for @collection_item do |f|
+  - if @collection_item.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@collection_item.errors.count, "error")} prohibited this collection_item from being saved:"
+      %ul
+        - @collection_item.errors.full_messages.each do |message|
+          %li= message
+
+  .field
+    = f.label :collection
+    = f.text_field :collection
+  .field
+    = f.label :alt_title
+    = f.text_field :alt_title
+  .field
+    = f.label :context
+    = f.text_area :context
+  .field
+    = f.label :seqno
+    = f.number_field :seqno
+  .field
+    = f.label :item
+    = f.text_field :item
+  .actions
+    = f.submit 'Save'

@@ -201,6 +201,7 @@ module ApplicationHelper
     u.query = URI.encode_www_form(pp.to_a)
     u.to_s
   end
+
   def taggee_from_taggable(taggable)
     case taggable.class.to_s
     when 'Manifestation'
@@ -211,4 +212,46 @@ module ApplicationHelper
       t(:this_item)
     end
   end
+
+  def collection_item_string(ci)
+    return '' if ci.nil?
+    return ci.alt_title if ci.alt_title.present?
+    s = ci.item.try(:title) if ci.item.present?
+    return s if s.present?
+    s = ci.item.try(:name) if ci.item.present?
+    return s if s.present?
+    return ''
+  end
+
+  def default_link_by_class(klass, id)
+    case klass.to_s
+    when 'Manifestation'
+      manifestation_path(id)
+    when 'Person'
+      person_path(id)
+    when 'Anthology'
+      anthology_path(id)
+    when 'Work'
+      work_show_path(id: id)
+    when 'Collection'
+      collection_path(id)
+    end
+  end
+
+  def textify_collection_type(ctype)
+    t("ctype_#{ctype}")
+  end
+
+  def textify_collection_up_link(coll)
+    "#{t("ctype_#{coll.collection_type}_up_link")} - #{coll.title.truncate(35)}"
+  end
+
+  def collection_types_options
+    ret = Collection.collection_types.reject{|x| x == 'root'}.map{|k,v| [textify_collection_type(k), k]}
+  end
+
+  def collection_item_types_options
+    ret = Collection.collection_types.reject{|x| x == 'root'}.map{|k,v| [textify_collection_type(k), k]} + [[t(:work), 'Manifestation'], [t(:paratext), 'paratext'], [t(:placeholder_item), 'placeholder_item']]
+  end
+
 end
