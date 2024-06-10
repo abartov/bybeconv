@@ -1,0 +1,2 @@
+module IngestiblesHelper
+end

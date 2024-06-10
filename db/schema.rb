@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_06_14_064855) do
+ActiveRecord::Schema.define(version: 2024_06_09_165640) do
 
   create_table "aboutnesses", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -46,14 +46,7 @@ ActiveRecord::Schema.define(version: 2024_06_14_064855) do
     t.bigint "byte_size", null: false
     t.string "checksum", null: false
     t.datetime "created_at", null: false
-    t.string "service_name", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
-  end
-
-  create_table "active_storage_variant_records", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
-    t.bigint "blob_id", null: false
-    t.string "variation_digest", null: false
-    t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
   create_table "ahoy_events", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -153,7 +146,6 @@ ActiveRecord::Schema.define(version: 2024_06_14_064855) do
     t.string "sort_name"
     t.integer "status"
     t.datetime "published_at"
-    t.integer "root_collection_id"
     t.integer "intellectual_property", null: false
     t.string "wikidata_uri"
     t.integer "person_id"
@@ -163,7 +155,6 @@ ActiveRecord::Schema.define(version: 2024_06_14_064855) do
     t.index ["intellectual_property"], name: "index_authorities_on_intellectual_property"
     t.index ["name"], name: "index_authorities_on_name"
     t.index ["person_id"], name: "index_authorities_on_person_id", unique: true
-    t.index ["root_collection_id"], name: "index_authorities_on_root_collection_id"
     t.index ["sort_name"], name: "index_authorities_on_sort_name"
     t.index ["status", "published_at"], name: "index_authorities_on_status_and_published_at"
     t.index ["toc_id"], name: "people_toc_id_fk"
@@ -549,6 +540,37 @@ ActiveRecord::Schema.define(version: 2024_06_14_064855) do
     t.index ["user_id"], name: "index_impressions_on_user_id"
   end
 
+  create_table "ingestibles", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "title"
+    t.integer "status"
+    t.integer "scenario"
+    t.text "default_authorities"
+    t.text "metadata"
+    t.text "comments"
+    t.text "markdown"
+    t.integer "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "problem"
+    t.string "orig_lang"
+    t.string "year_published"
+    t.string "genre"
+    t.string "publisher"
+    t.string "pub_link"
+    t.string "pub_link_text"
+    t.boolean "attach_photos", default: false, null: false
+    t.boolean "no_volume", default: false, null: false
+    t.text "toc_buffer"
+    t.integer "volume_id"
+    t.text "works_buffer", size: :medium
+    t.datetime "markdown_updated_at"
+    t.datetime "works_buffer_updated_at"
+    t.index ["status"], name: "index_ingestibles_on_status"
+    t.index ["title"], name: "index_ingestibles_on_title"
+    t.index ["user_id"], name: "index_ingestibles_on_user_id"
+    t.index ["volume_id"], name: "index_ingestibles_on_volume_id"
+  end
+
   create_table "involved_authorities", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "authority_id", null: false
     t.integer "work_id"
@@ -556,7 +578,9 @@ ActiveRecord::Schema.define(version: 2024_06_14_064855) do
     t.integer "role", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "collection_id"
     t.index ["authority_id"], name: "index_involved_authorities_on_authority_id"
+    t.index ["collection_id"], name: "index_involved_authorities_on_collection_id"
     t.index ["expression_id"], name: "index_involved_authorities_on_expression_id"
     t.index ["work_id"], name: "index_involved_authorities_on_work_id"
   end
@@ -573,130 +597,6 @@ ActiveRecord::Schema.define(version: 2024_06_14_064855) do
     t.integer "html_file_id"
     t.integer "recommended_by"
     t.integer "manifestation_id"
-  end
-
-  create_table "lex_citations", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
-    t.string "title"
-    t.string "from_publication"
-    t.string "authors"
-    t.string "pages"
-    t.string "link"
-    t.string "item_type"
-    t.bigint "item_id"
-    t.integer "manifestation_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["authors"], name: "index_lex_citations_on_authors"
-    t.index ["item_type", "item_id"], name: "index_lex_citations_on_item_type_and_item_id"
-    t.index ["manifestation_id"], name: "index_lex_citations_on_manifestation_id"
-    t.index ["title"], name: "index_lex_citations_on_title"
-  end
-
-  create_table "lex_entries", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
-    t.string "title"
-    t.integer "status"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "lex_item_type"
-    t.bigint "lex_item_id"
-    t.string "sort_title"
-    t.index ["lex_item_type", "lex_item_id"], name: "index_lex_entries_on_lex_item_type_and_lex_item_id", unique: true
-    t.index ["sort_title"], name: "index_lex_entries_on_sort_title"
-    t.index ["status"], name: "index_lex_entries_on_status"
-    t.index ["title"], name: "index_lex_entries_on_title"
-  end
-
-  create_table "lex_files", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
-    t.string "fname"
-    t.integer "status"
-    t.string "title"
-    t.integer "entrytype"
-    t.text "comments"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.bigint "lex_entry_id"
-    t.string "full_path"
-    t.index ["entrytype"], name: "index_lex_files_on_entrytype"
-    t.index ["fname"], name: "index_lex_files_on_fname"
-    t.index ["lex_entry_id"], name: "index_lex_files_on_lex_entry_id", unique: true
-    t.index ["status"], name: "index_lex_files_on_status"
-  end
-
-  create_table "lex_issues", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
-    t.string "subtitle"
-    t.string "volume"
-    t.string "issue"
-    t.integer "seq_num"
-    t.text "toc"
-    t.bigint "lex_publication_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["lex_publication_id"], name: "index_lex_issues_on_lex_publication_id"
-    t.index ["seq_num"], name: "index_lex_issues_on_seq_num"
-    t.index ["subtitle"], name: "index_lex_issues_on_subtitle"
-  end
-
-  create_table "lex_links", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
-    t.string "url"
-    t.string "description"
-    t.integer "status"
-    t.string "item_type"
-    t.bigint "item_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["item_type", "item_id"], name: "index_lex_links_on_item_type_and_item_id"
-  end
-
-  create_table "lex_people", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
-    t.string "aliases"
-    t.boolean "copyrighted"
-    t.string "birthdate"
-    t.string "deathdate"
-    t.text "bio"
-    t.text "works"
-    t.text "about"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "person_id"
-    t.text "translations"
-    t.index ["aliases"], name: "index_lex_people_on_aliases"
-    t.index ["birthdate"], name: "index_lex_people_on_birthdate"
-    t.index ["copyrighted"], name: "index_lex_people_on_copyrighted"
-    t.index ["deathdate"], name: "index_lex_people_on_deathdate"
-    t.index ["person_id"], name: "index_lex_people_on_person_id"
-  end
-
-  create_table "lex_people_items", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
-    t.bigint "lex_person_id"
-    t.string "item_type"
-    t.bigint "item_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["item_type", "item_id"], name: "index_lex_people_items_on_item_type_and_item_id"
-    t.index ["lex_person_id"], name: "index_lex_people_items_on_lex_person_id"
-  end
-
-  create_table "lex_publications", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
-    t.text "description"
-    t.text "toc"
-    t.boolean "az_navbar"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "lex_texts", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
-    t.string "title"
-    t.string "authors"
-    t.string "pages"
-    t.bigint "lex_publication_id"
-    t.bigint "lex_issue_id"
-    t.integer "manifestation_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["lex_issue_id"], name: "index_lex_texts_on_lex_issue_id"
-    t.index ["lex_publication_id"], name: "index_lex_texts_on_lex_publication_id"
-    t.index ["manifestation_id"], name: "index_lex_texts_on_manifestation_id"
-    t.index ["title"], name: "index_lex_texts_on_title"
   end
 
   create_table "list_items", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -768,6 +668,8 @@ ActiveRecord::Schema.define(version: 2024_06_14_064855) do
     t.string "birthdate"
     t.string "deathdate"
     t.integer "gender"
+    t.integer "root_collection_id"
+    t.index ["root_collection_id"], name: "index_people_on_root_collection_id"
   end
 
   create_table "periods", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -817,7 +719,7 @@ ActiveRecord::Schema.define(version: 2024_06_14_064855) do
     t.index ["task_id"], name: "index_publications_on_task_id"
   end
 
-  create_table "reading_lists", charset: "latin1", force: :cascade do |t|
+  create_table "reading_lists", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "title"
     t.integer "user_id"
     t.integer "access"
@@ -861,14 +763,6 @@ ActiveRecord::Schema.define(version: 2024_06_14_064855) do
     t.index ["todate"], name: "index_sitenotices_on_todate"
   end
 
-  create_table "sitenotices_users", id: false, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
-    t.bigint "sitenotice_id", null: false
-    t.bigint "user_id", null: false
-    t.string "session_id"
-    t.boolean "suppress"
-    t.index ["session_id"], name: "index_sitenotices_users_on_session_id"
-  end
-
   create_table "static_pages", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "tag"
     t.string "title"
@@ -902,7 +796,6 @@ ActiveRecord::Schema.define(version: 2024_06_14_064855) do
     t.index ["suggested_by"], name: "taggings_suggested_by_fk"
     t.index ["tag_id"], name: "taggings_tag_id_fk"
     t.index ["taggable_id", "taggable_type"], name: "index_taggings_on_taggable_id_and_taggable_type"
-    t.index ["taggable_id"], name: "taggings_manifestation_id_fk"
   end
 
   create_table "tags", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -916,7 +809,6 @@ ActiveRecord::Schema.define(version: 2024_06_14_064855) do
     t.string "wikidata_qid"
     t.index ["approver_id"], name: "index_tags_on_approver_id"
     t.index ["created_by"], name: "tags_created_by_fk"
-    t.index ["name"], name: "index_tags_on_name", unique: true
     t.index ["status", "name"], name: "index_tags_on_status_and_name", unique: true
     t.index ["wikidata_qid"], name: "index_tags_on_wikidata_qid"
   end
@@ -1033,7 +925,6 @@ ActiveRecord::Schema.define(version: 2024_06_14_064855) do
 
   add_foreign_key "aboutnesses", "users"
   add_foreign_key "aboutnesses", "works"
-  add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "anthologies", "users"
   add_foreign_key "anthology_texts", "anthologies"
   add_foreign_key "anthology_texts", "manifestations"
@@ -1064,14 +955,6 @@ ActiveRecord::Schema.define(version: 2024_06_14_064855) do
   add_foreign_key "involved_authorities", "authorities"
   add_foreign_key "involved_authorities", "expressions"
   add_foreign_key "involved_authorities", "works"
-  add_foreign_key "lex_citations", "manifestations"
-  add_foreign_key "lex_files", "lex_entries"
-  add_foreign_key "lex_issues", "lex_publications"
-  add_foreign_key "lex_people", "authorities", column: "person_id"
-  add_foreign_key "lex_people_items", "lex_people"
-  add_foreign_key "lex_texts", "lex_issues"
-  add_foreign_key "lex_texts", "lex_publications"
-  add_foreign_key "lex_texts", "manifestations"
   add_foreign_key "list_items", "users"
   add_foreign_key "manifestations", "expressions"
   add_foreign_key "proofs", "html_files", name: "proofs_html_file_id_fk"

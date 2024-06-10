@@ -6,6 +6,7 @@ class InvolvedAuthority < ApplicationRecord
   belongs_to :authority, inverse_of: :involved_authorities
   belongs_to :expression, optional: true
   belongs_to :work, optional: true
+  belongs_to :collection, optional: true
   enum role: {
     author: 0,
     editor: 1,

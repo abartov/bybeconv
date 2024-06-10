@@ -1,0 +1,25 @@
+- if @ingestible.try(:id)
+  %h3= t(:associated_persons)
+  - if authorities
+    %ul#authorities
+      = render partial: 'authority', collection: JSON.parse(authorities)
+  = t(:add)
+  = select_tag :add_authority, options_from_collection_for_select(Person.order(:name), 'id', 'name'),
+            include_blank: true
+  = t('.or_new_person')
+  = text_field_tag :new_person, '', {style: 'width: 150px;'}
+  = t(:in_role)
+  = select_tag :role, options_for_select(InvolvedAuthority.roles.keys.map { |role| [textify_authority_role(role), role] })
+  = button_tag t(:perform_add), id: 'do_add_authority'
+  :javascript
+    $(document).ready(function() {
+      $('#do_add_authority').click(function(e) {
+        e.preventDefault();
+        $.post('#{@ingestible.id.nil? ? '' : ingestible_add_authority_path(@ingestible.id)}', {
+          authority_id: $('select[name=add_authority]').val(),
+          authority_name: $('#add_authority option:selected').text(),
+          new_person: $('#new_person').val(),
+          role: $('#role').val()
+        });
+      });
+    });

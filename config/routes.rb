@@ -1,5 +1,16 @@
 include BybeUtils
 Bybeconv::Application.routes.draw do
+  resources :ingestibles #, only: [:index, :create, :edit, :update, :destroy]
+  resources :collection_items
+  resources :collections do
+    post 'apply_drag'
+    post 'transplant_item'
+    get 'manage'
+  end
+
+  get 'autocomplete_collection_title' => 'admin#autocomplete_collection_title', as: 'autocomplete_collection_title'
+  match 'author/:id/manage_toc' => 'authors#manage_toc', as: 'authors_manage_toc', via: [:get, :post]
+  
   resources :involved_authorities, only: :destroy
   resources :user_blocks
   get 'crowd/index'
@@ -144,6 +155,8 @@ Bybeconv::Application.routes.draw do
   patch "authors/update"
   get 'authors/get_random_author'
   post 'authors/add_link/:id' => 'authors#add_link', as: 'author_add_link'
+  match 'ingestibles/:id/rmauth/:seqno' => 'ingestibles#rmauth', as: 'ingestible_remove_authority', via: [:post, :delete]
+  post 'ingestibles/:id/addauth' => 'ingestibles#addauth', as: 'ingestible_add_authority'
   match 'authors/delete_link/:id' => 'authors#delete_link', as: 'author_delete_link', via: [:post]
   match 'author/:id/edit_toc' => 'authors#edit_toc', as: 'authors_edit_toc', via: [:get, :post]
   match 'author/:id/to_manual_toc' => 'authors#to_manual_toc', as: 'authors_to_manual_toc', via: [:get, :post]
