@@ -2,18 +2,47 @@ require 'rails_helper'
 
 describe WelcomeController do
   describe '#index' do
+    subject { get :index }
 
     before do
-      # We need few persons with toc to fetch surprise author
       create_list(:manifestation, 5)
-      Person.joins(:creations).merge(Creation.author).each do |p|
-        toc = create(:toc)
-        p.toc = toc
-        p.save!
-      end
     end
 
-    subject { get :index }
+    it { is_expected.to be_successful }
+
+    context 'when featured author present' do
+      before do
+        create_list(:featured_author, 3)
+      end
+
+      it { is_expected.to be_successful }
+    end
+  end
+
+  describe '#featured_author_popup' do
+    subject { get :featured_author_popup, params: { id: featured_author.id } }
+
+    context 'when featured author is male' do
+      let(:featured_author) do
+        create(:featured_author, person: create(:person, gender: :male))
+      end
+
+      it { is_expected.to be_successful }
+    end
+
+    context 'when featured author is female' do
+      let(:featured_author) do
+        create(:featured_author, person: create(:person, gender: :female))
+      end
+
+      it { is_expected.to be_successful }
+    end
+  end
+
+  describe '#featured_popup' do
+    subject { get :featured_popup, params: { id: featured_content.id } }
+
+    let(:featured_content) { create(:featured_content) }
 
     it { is_expected.to be_successful }
   end

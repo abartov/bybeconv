@@ -1,4 +1,7 @@
- class Tagging < ApplicationRecord
+# frozen_string_literal: true
+
+# Maps tags to other system object (Authorities, Manifestations, etc)
+class Tagging < ApplicationRecord
 
   belongs_to :tag, foreign_key: 'tag_id', counter_cache: true
   belongs_to :taggable, polymorphic: true # taggable things include Manifestations, People, Anthologies, ...
@@ -9,7 +12,8 @@
   validates :status, presence: true
   validates :tag, presence: true
   validates :taggable, presence: true
-  
+  validates :taggable_type, inclusion: { in: %w(Anthology Authority Expression Manifestation Work) }
+
   enum status: [:pending, :approved, :rejected, :semiapproved, :escalated]
 
   scope :by_suggester, ->(user) { where(suggested_by: user.id) }

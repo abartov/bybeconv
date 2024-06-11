@@ -9,32 +9,25 @@
     %br
   .headline-2-v02
     - unless @m.authors.nil? # shouldn't happen, but eh
-      != @m.authors.map {|t| link_to(t.name, person_path(id: t.id))}.join(', ')
+      != @m.authors.map { |t| link_to(t.name, authority_path(t)) }.join(', ')
       - if @e.translation && @e.translators.size > 0
         %br
         = "#{t(:translation)}: "
-        != @translators.map{|t| link_to(t.name, person_path(id: t.id))}.join(', ')
+        != @translators.map { |t| link_to(t.name, authority_path(t)) }.join(', ')
         - linktext = t(:from_lang) + textify_lang(@e.work.orig_lang)
         != " (#{linktext})"
   - if @illustrators.size > 0
     .headline-3-v02
       = "#{t(:illustrations_by)}: "
-      != @illustrators.map{|t| link_to(t.name, person_path(id: t.id))}.join(', ')
+      != @illustrators.map { |t| link_to(t.name, authority_path(t)) }.join(', ')
   - if @editors.size > 0
     .headline-3-v02
       = "#{t(:editing_or_compilation)}: "
-      != @editors.map{|t| link_to(t.name, person_path(id: t.id))}.join(', ')
+      != @editors.map { |t| link_to(t.name, authority_path(t)) }.join(', ')
 
 %div
   .metadata
-    - if @m.copyright?
-      %span.by-icon-v02> x
-      = textify_copyright_status(true)
-      = link_to '[?]', '#', 'class' => 'help', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_permission), 'data-content' => t(:permission_popover)
-    - else
-      %span.by-icon-v02> m
-      = textify_copyright_status(false)
-      = link_to '[?]', '#', 'class' => 'help', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_public_domain), 'data-content' => t(:public_domain_popover)
+    = render partial: 'shared/intellectual_property', locals: { intellectual_property: @e.intellectual_property }
   .metadata
     %span.by-icon-v02.internal-genre-icon>= glyph_for_genre(@w.genre)
     = textify_genre(@w.genre)

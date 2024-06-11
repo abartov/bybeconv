@@ -3,10 +3,12 @@
   = render partial: 'aboutnesses', locals: {edit: true, add: false}
   %h3= t(:add_person)
 
-  #add-person
+  #add-authority
     = form_for @aboutness, remote: true do |f|
-      = select_tag :add_person_topic, options_from_collection_for_select(Person.order(:name), 'id','name'), include_blank: true
-      = hidden_field_tag :aboutness_type, 'Person'
+      = select_tag :add_authority_topic,
+                   options_from_collection_for_select(Authority.order(:name), 'id', 'name'),
+                   include_blank: true
+      = hidden_field_tag :aboutness_type, 'Authority'
       = hidden_field_tag :work_id, @w.id
       = hidden_field_tag :manifestation_id, @m.id
       = hidden_field_tag :suggested_by, current_user.id

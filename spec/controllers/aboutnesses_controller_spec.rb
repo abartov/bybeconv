@@ -26,14 +26,14 @@ describe AboutnessesController do
       end
     end
 
-    context 'when aboutness is a Person' do
-      let(:aboutness_type) { 'Person' }
-      let(:person_about) { create(:person) }
-      let(:additional_params) { { add_person_topic: person_about.id } }
+    context 'when aboutness is an Authority' do
+      let(:aboutness_type) { 'Authority' }
+      let(:authority_about) { create(:authority) }
+      let(:additional_params) { { add_authority_topic: authority_about.id } }
 
       it 'creates record' do
         expect { expect(request).to be_successful }.to change { Aboutness.where(work: work).count }.by(1)
-        expect(aboutness).to have_attributes(work: work, aboutable: person_about, user: suggested_by_user)
+        expect(aboutness).to have_attributes(work: work, aboutable: authority_about, user: suggested_by_user)
       end
     end
 

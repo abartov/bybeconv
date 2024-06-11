@@ -19,12 +19,7 @@ class SearchManifestations < ApplicationService
 
     add_simple_filter(filter, :genre, filters['genres'])
     add_simple_filter(filter, :period, filters['periods'])
-    is_copyrighted = filters['is_copyrighted']
-
-    unless is_copyrighted.nil?
-      filter << { terms: { copyright_status: [is_copyrighted] } }
-    end
-
+    add_simple_filter(filter, :intellectual_property, filters['intellectual_property_types'])
     add_simple_filter(filter, :author_gender, filters['author_genders'])
     add_simple_filter(filter, :translator_gender, filters['translator_genders'])
     add_simple_filter(filter, :author_ids, filters['author_ids'])

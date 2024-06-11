@@ -1,6 +1,6 @@
 class ManifestationsIndex < Chewy::Index
   # works
-  index_scope Manifestation.all_published.includes(expression: :work)
+  index_scope Manifestation.all_published.with_involved_authorities.preload(taggings: :tag)
 #    field :title, analyzer: 'hebrew' # from https://github.com/synhershko/elasticsearch-analysis-hebrew
 #    field :fulltext, value: ->(manifestation) {manifestation.to_plaintext}, analyzer: 'hebrew'
   field :id, type: 'integer'
@@ -26,7 +26,8 @@ class ManifestationsIndex < Chewy::Index
   field :tags, type: 'keyword', value: ->{ approved_tags.map(&:name) }
   field :author_gender, value: ->(manifestation) {manifestation.author_gender }, type: 'keyword'
   field :translator_gender, value: ->(manifestation) {manifestation.translator_gender}, type: 'keyword'
-  field :copyright_status, value: ->(manifestation) {manifestation.copyright?}, type: 'keyword' # TODO: make non boolean
+  field :intellectual_property,
+        value: ->(manifestation) { manifestation.expression.intellectual_property }, type: 'keyword'
   field :period, value: ->(manifestation) {manifestation.expression.period}, type: 'keyword'
   field :raw_creation_date, value: ->(manifestation) {manifestation.expression.work.date}
   field :creation_date, type: 'date', value: ->(manifestation) {normalize_date(manifestation.expression.work.date)}

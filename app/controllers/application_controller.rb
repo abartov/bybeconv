@@ -6,10 +6,6 @@ class ApplicationController < ActionController::Base
   after_action :set_access_control_headers
   autocomplete :tag_name, :name, limit: 15, scopes: [:approved], extra_data: [:tag_id] # TODO: also search alternate titles!
 
-  # class variables
-  @@countauthors_cache = nil
-  @@genre_popups_cache = nil
-  @@pop_authors_by_genre = nil
   SPIDERS = ['msnbot', 'yahoo! slurp','googlebot','bingbot','duckduckbot','baiduspider','yandexbot','semrushbot']
 
   # returns BaseUser record associated with current user
@@ -121,8 +117,8 @@ class ApplicationController < ActionController::Base
   end
 
   def popular_authors(update = false)
-    Person.recalc_popular if update
-    @popular_authors = Person.get_popular_authors
+    Authority.recalc_popular if update
+    @popular_authors = Authority.popular_authors
   end
 
   def randomize_authors(exclude_list, genre = nil)
@@ -153,8 +149,9 @@ class ApplicationController < ActionController::Base
 
   def cached_authors_in_genre
     Rails.cache.fetch('au_by_genre', expires_in: 24.hours) do # memoize
-      totals = Person.has_toc
-                     .joins(expressions: :work)
+      totals = Authority.has_toc
+                     .joins(involved_authorities: :work)
+                     .merge(InvolvedAuthority.role_author)
                      .group(:genre)
                      .distinct
                      .count
@@ -166,7 +163,13 @@ class ApplicationController < ActionController::Base
   def cached_authors_in_period
     Rails.cache.fetch("au_by_period", expires_in: 24.hours) do # memoize
       ret = {}
-      get_periods.each{ |p| ret[p] = Person.has_toc.joins(works: :expressions).where(expressions: { period: p}).uniq.count}
+      get_periods.each do |p|
+        ret[p] = Authority.has_toc
+                          .joins(involved_authorities: { work: :expressions })
+                          .merge(InvolvedAuthority.role_author)
+                          .where(expressions: { period: p })
+                          .uniq.count
+      end
       ret
     end
   end
@@ -176,44 +179,6 @@ class ApplicationController < ActionController::Base
       totals = Manifestation.published.joins(:expression).group(:period).count
       get_periods.index_with { |period| totals[Expression.periods[period]] || 0 }
     end
-  end
-
-  def cached_popular_authors_by_genre
-    if @@pop_authors_by_genre.nil?
-      ret = {}
-      get_genres.each {|g|
-        ret[g] = {}
-        ret[g][:orig] = Person.get_popular_authors_by_genre(g)
-        ret[g][:xlat] = Person.get_popular_xlat_authors_by_genre(g)
-      }
-      @@pop_authors_by_genre = ret
-    end
-    return @@pop_authors_by_genre
-  end
-
-  def popups_by_genre
-    if @@genre_popups_cache.nil?
-      ret = {}
-      get_genres.each {|g|
-        ret[g] = {}
-        ret[g][:authors] = Person.get_popular_authors_by_genre(g)
-        ret[g][:heb_works] = Manifestation.popular_works_by_genre(g, false)
-        ret[g][:xlat_works] = Manifestation.popular_works_by_genre(g, true)
-      }
-      @@genre_popups_cache = ret
-    end
-    return @@genre_popups_cache
-  end
-
-  def count_authors_by_genre
-    if @@countauthors_cache.nil?
-      ret = {}
-      get_genres.each {|g|
-        ret[g] = Person.has_toc.joins(:expressions).where(expressions: {genre: g}).distinct.count
-      }
-      @@countauthors_cache = ret
-    end
-    return @@countauthors_cache
   end
 
   def prep_edit_toc
@@ -307,7 +272,13 @@ class ApplicationController < ActionController::Base
     unsorted_news_items = NewsItem.last(5) # read at most the last 5 persistent news items (Facebook posts, announcements)
 
     whatsnew_since(1.month.ago).each {|person, pubs| # add newly-published works
-      unsorted_news_items << NewsItem.from_publications(person, textify_new_pubs(pubs), pubs, person_path(person.id), person.profile_image.url(:thumb))
+      unsorted_news_items << NewsItem.from_publications(
+        person,
+        textify_new_pubs(pubs),
+        pubs,
+        authority_path(person.id),
+        person.profile_image.url(:thumb)
+      )
     }
     cached_youtube_videos.each {|title, desc, id, thumbnail_url, relevance| # add latest videos
       unsorted_news_items << NewsItem.from_youtube(title, desc, youtube_url_from_id(id), thumbnail_url, relevance)
@@ -322,37 +293,33 @@ class ApplicationController < ActionController::Base
       e = m.expression
       next if e.nil? # shouldn't happen
       w = e.work
-      person = e.translation ? m.translators.first : m.authors.first # TODO: more nuance
-      next if person.nil? # shouldn't happen, but might in a dev. env.
-      if authors[person].nil?
-        authors[person] = {}
-        authors[person][:latest] = 0
+      authority = e.translation ? m.translators.first : m.authors.first # TODO: more nuance
+      next if authority.nil? # shouldn't happen, but might in a dev. env.
+
+      if authors[authority].nil?
+        authors[authority] = {}
+        authors[authority][:latest] = 0
       end
-      authors[person][w.genre] = [] if authors[person][w.genre].nil?
-      authors[person][w.genre] << m
-      authors[person][:latest] = m.updated_at if m.updated_at > authors[person][:latest]
+      authors[authority][w.genre] = [] if authors[authority][w.genre].nil?
+      authors[authority][w.genre] << m
+      authors[authority][:latest] = m.updated_at if m.updated_at > authors[authority][:latest]
     }
     authors
   end
 
   def cached_textify_titles(manifestations, au)
     Rails.cache.fetch("textify_titles_#{au.id}", expires_in: 12.hours) do # memoize
-      textify_titles(manifestations, au)
+      textify_titles(manifestations)
     end
   end
-  #def old_textify_titles(manifestations, au) # translations will also include *original* author names, unless the original author is au
-  #  ret = []
-  #  manifestations.each do |m|
-# #     ret << "<a href=\"#{url_for(controller: :manifestation, action: :read, id: m.id)}\">#{m.title}</a>"
-  #    ret << "<a href=\"#{m.title}</a>"
-  #    if m.expression.translation
-  #      ret[-1] += ' / ' + m.authors_string unless m.expression.work.authors.include?(au)
-  #    end
-  #  end
-  #  return ret.join('; ')
-  #end
-  def textify_titles(manifestations, au) # translations will be marked as translations, without mentioning the author names, for performance reasons
-    Manifestation.includes(expression: [work: [creations: :person]]).find(manifestations.pluck(:id)).map{|m| "<a href=\"#{url_for(controller: :manifestation, action: :read, id: m.id)}\">#{m.title}</a>#{m.expression.translation ? " (#{I18n.t(:translation)})" : ''}"}.join('; ')
+
+  def textify_titles(manifestations)
+    # translations will be marked as translations, without mentioning the author names, for performance reasons
+    titles = Manifestation.preload(:expression).find(manifestations.pluck(:id)).map do |m|
+      appendix = m.expression.translation ? " (#{I18n.t(:translation)})" : ''
+      "<a href=\"#{url_for(controller: :manifestation, action: :read, id: m.id)}\">#{m.title}</a>#{appendix}"
+    end
+    titles.join('; ')
   end
 
   def textify_new_pubs(author)
@@ -364,7 +331,7 @@ class ApplicationController < ActionController::Base
       genre[1].each do |m|
         title = m.expression.title
         if m.expression.translation
-          per = m.expression.work.persons[0]
+          per = m.expression.work.authors[0] # TODO: add handing for several persons
           unless per.nil?
             title += " #{I18n.t(:by)} #{per.name}"
           end
@@ -387,6 +354,9 @@ class ApplicationController < ActionController::Base
 
   def current_user
     @current_user ||= User.find(session[:user_id]) if session[:user_id]
+  rescue ActiveRecord::RecordNotFound
+    # Should only happen in development environment
+    session.delete(:user_id)
   end
 
   def html_entities_coder

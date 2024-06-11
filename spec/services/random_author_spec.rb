@@ -13,7 +13,7 @@ describe RandomAuthor do
     context 'when genre is not provided' do
       subject { described_class.call }
 
-      it { is_expected.to be_an Person }
+      it { is_expected.to be_an Authority }
     end
 
     context 'when genre is provided' do

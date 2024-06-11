@@ -1,9 +1,9 @@
 .backend
   %h1
     = @author.name
-    - unless @author.period.nil? || @author.period.empty?
-      = " (#{t(@author.period)})"
-  %b= t(:sort_name)
+    - if @author.person&.period.present?
+      (#{t(@author.person.period)})
+  %b= Authority.human_attribute_name(:sort_name)
   = @author.sort_name
   %p
     %b= t(:last_update)+': '
@@ -18,8 +18,9 @@
     - else
       %b{ style: 'font-size: 1rem'}= t(:this_author_has_a_generated_toc)
     != "&emsp;"
+    - link = @author.any_bibs? ? bib_authority_path(authority_id: @author.id) : bib_index_path(person_id: @author.id)
     %b{ style: 'font-size: 2rem'}
-      = link_to link_to t(:bibliography), @author.has_any_bibs? ? bib_person_path(person_id: @author.id) : bib_index_path(person_id: @author.id)
+      = link_to link_to t(:bibliography), link
   %table
     %tr
       %td
@@ -29,23 +30,39 @@
     %tr
       %td
         -# ===== basic info =====
-        %b= t(:life_years)
-        != @author.life_years
-        = '('+t(:x_years_ago, years: @author.died_years_ago)+')'
+        - if @author.person.present?
+          - person = @author.person
+          %b= t(:life_years)
+          != person.life_years
+          (#{t(:x_years_ago, years: person.died_years_ago)})
+          %br
+          %b= Person.human_attribute_name(:gender)
+          = t(person.gender.nil? ? :unknown : person.gender)
+          %br
+        - if @author.corporate_body.present?
+          - corporate_body = @author.corporate_body
+          %b= CorporateBody.human_attribute_name(:location)
+          = corporate_body.location
+          %br
+          %b= CorporateBody.human_attribute_name(:inception_year)
+          = corporate_body.inception_year
+          %br
+          %b= CorporateBody.human_attribute_name(:dissolution_year)
+          = corporate_body.dissolution_year
+          %br
+        %b= Authority.human_attribute_name(:intellectual_property)
+        :ruby
+          color = case @author.intellectual_property
+          when 'unknown'
+            'red'
+          when 'permission_for_all', 'permission_for_selected', 'copyrighted'
+            @author.person.present? && @author.person.died_years_ago > 70 ? 'red' : 'green'
+          else
+            'green'
+          end
+        %span{ style: "color:#{color};" }= textify_intellectual_property(@author.intellectual_property)
         %br
-        %b= t(:copyright_status)
-        - if @author.public_domain.nil?
-          %span{style: 'color:red'}= t(:unknown)
-        - else
-          - if @author.public_domain
-            %span{style: 'color:green'}= t(:public_domain)
-          - else
-            %span{style: (@author.died_years_ago > 70 ? 'color:red' : 'color:green')}= t(:by_permission)
-        %br
-        %b= t(:gender)
-        = t(@author.gender.nil? ? :unknown : @author.gender)
-        %br
-        %b= t(:other_designation)
+        %b= Authority.human_attribute_name(:other_designation)
         = @author.other_designation
         %br
         %b= t(:country)
@@ -58,22 +75,22 @@
         = @author.comment
       %td
         -# ===== Identifiers =====
-        %b= t(:nli_id)
+        %b= Authority.human_attribute_name(:nli_id)
         = @author.nli_id
         %br
-        %b= t(:viaf_id)
+        %b= Authority.human_attribute_name(:viaf_id)
         != "&rlm;"
         = @author.viaf_id
         %br
-        %b= t(:blog_category_url)
+        %b= Authority.human_attribute_name(:blog_category_url)
         - unless(@author.blog_category_url.nil? or @author.blog_category_url.empty?)
           %a{ href: @author.blog_category_url}= t(:link)
         %br
-        %b= t(:wikidata_id)
-        - unless @author.wikidata_id.nil?
-          %a{ href: "https://wikidata.org/wiki/Q#{@author.wikidata_id}"}= @author.wikidata_id.to_s
+        %b= Authority.human_attribute_name(:wikidata_uri)
+        - if @author.wikidata_uri.present?
+          = link_to @author.wikidata_uri, @author.wikidata_uri
         %br
-        %b= t(:wikipedia_url)
+        %b= Authority.human_attribute_name(:wikipedia_url)
         - unless @author.wikipedia_url.nil? or @author.wikipedia_url.empty?
           %a{ href: @author.wikipedia_url}= t(:to_the_wikipedia_article)
     %tr
@@ -90,19 +107,19 @@
           = link_to t(:make_published), author_publish_path(id: @author.id)
         %p
         %h3= t(:works)
-        %b= t(:bib_done)
+        %b= Authority.human_attribute_name(:bib_done)
         - if @author.bib_done
-          %span{style: 'color:green'}= link_to t(:yes), bib_person_path({person_id: @author.id})
+          %span{ style: 'color:green' }= link_to t(:yes), bib_authority_path({ authority_id: @author.id })
         - else
-          %span{style: 'color:red'}= link_to t(:no), bib_person_path({person_id: @author.id})
+          %span{ style: 'color:red' }= link_to t(:no), bib_authority_path({ authority_id: @author.id })
         %br
         %b= t(:works)
-        = link_to "#{@published_works} #{t(:original_works)}", person_path(id: @author.id)
+        = link_to "#{@published_works} #{t(:original_works)}", authority_path(id: @author.id)
         - if @total_orig_works != @published_works
           = " #{t(:published)} + #{@total_orig_works - @published_works} #{t(:unpublished)}"
         %br
         %b= t(:translations_by)
-        = link_to "#{@published_xlats} #{t(:translations)}", person_path(id: @author.id)
+        = link_to "#{@published_xlats} #{t(:translations)}", authority_path(id: @author.id)
         - if @total_xlats != @published_xlats
           = " #{t(:published)} + #{@total_xlats - @published_xlats} #{t(:unpublished)}"
         %br
@@ -113,9 +130,6 @@
         - if @author.profile_image.file?
           %br
           = link_to t(:delete_photo), delete_author_photo_path(id: @author.id), data: {confirm: t(:are_you_sure)}
-  %p
-    %b= t(:metadata_approved)+': '
-    = @author.metadata_approved ? t(:yes) : t(:no)
 
   %p
   = link_to t(:back), authors_list_path

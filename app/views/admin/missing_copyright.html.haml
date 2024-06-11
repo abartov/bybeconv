@@ -6,13 +6,11 @@
     %tr
       %th= t(:name)
       %th= t(:life_years)
-      %th= t(:deathdate)
       %th
     - @authors.each do |au|
       %tr
         %td= au.name
-        %td= au.dates
-        %td= au.deathdate
+        %td!= au.person&.life_years
         %td= link_to t(:edit), authors_edit_path(id: au.id)
 
   %h3= t(:works)

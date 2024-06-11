@@ -19,7 +19,7 @@
         %td= link_to v.title, url_for(action: :featured_content_show, id: v.id)
         %td!= v.featured_list
         %td= v.manifestation.nil? ? t(:none) : link_to(v.manifestation.title_and_authors, manifestation_path(id: v.manifestation.id))
-        %td= v.person.nil? ? t(:none) : link_to(v.person.name, person_path(v.person))
+        %td= v.authority.nil? ? t(:none) : link_to(v.authority.name, authority_path(v.authority))
         %td
           = link_to t(:edit), url_for(action: :featured_content_show, id: v.id)
           = link_to t(:destroy), url_for(action: :featured_content_destroy, id: v.id), data: { confirm: t(:are_you_sure)}

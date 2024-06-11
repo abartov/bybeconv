@@ -1,5 +1,6 @@
 include BybeUtils
 Bybeconv::Application.routes.draw do
+  resources :involved_authorities, only: :destroy
   resources :user_blocks
   get 'crowd/index'
   get 'crowd/populate_edition' => 'crowd#populate_edition', as: 'crowd_populate_edition'
@@ -26,8 +27,8 @@ Bybeconv::Application.routes.draw do
   resources :publications
   get 'bib/index'
   get 'bib/scans' => 'bib#scans', as: 'bib_scans'
-  get 'bib/person/:person_id' => 'bib#person', as: 'bib_person'
-  match 'bib/pubs_by_person', via: [:get, :post]
+  get 'bib/authority/:authority_id' => 'bib#authority', as: 'bib_authority'
+  match 'bib/pubs_by_authority', via: %i(get post)
   get 'bib/pubs_maybe_done'
   get 'bib/publication_mark_false_positive/:id' => 'bib#publication_mark_false_positive', as: 'publication_mark_false_positive'
   get 'bib/make_scanning_task/:id' => 'bib#make_scanning_task', as: 'bib_make_scanning_task'
@@ -39,11 +40,6 @@ Bybeconv::Application.routes.draw do
   get 'aboutnesses/remove'
 
   get 'static_pages/render'
-
-  get 'realizers/remove'
-
-  get 'creations/add'
-  get 'creations/remove'
 
   get 'admin/index'
   get 'admin/missing_languages'
@@ -112,6 +108,7 @@ Bybeconv::Application.routes.draw do
   get 'admin/featured_content/destroy/:id' => 'admin#featured_content_destroy', as: 'featured_content_destroy'
   get 'autocomplete_manifestation_title' => 'admin#autocomplete_manifestation_title', as: 'autocomplete_manifestation_title'
   get 'autocomplete_person_name' => 'admin#autocomplete_person_name', as: 'autocomplete_person_name'
+  get 'autocomplete_authority_name' => 'admin#autocomplete_authority_name', as: 'autocomplete_authority_name'
   get 'autocomplete_tag_name' => 'application#autocomplete_tag_name_name', as: 'autocomplete_tag_name'
   get 'autocomplete_dict_entry' => 'manifestation#autocomplete_dict_entry', as: 'autocomplete_dict_entry'
   get 'admin/featured_author_list'
@@ -151,7 +148,7 @@ Bybeconv::Application.routes.draw do
   match 'author/:id/edit_toc' => 'authors#edit_toc', as: 'authors_edit_toc', via: [:get, :post]
   match 'author/:id/to_manual_toc' => 'authors#to_manual_toc', as: 'authors_to_manual_toc', via: [:get, :post]
   match 'author/:id/create_toc' => 'authors#create_toc', as: 'authors_create_toc', via: [:get]
-  match 'author/:id' => 'authors#toc', as: 'person', via: [:get, :post]
+  match 'author/:id' => 'authors#toc', as: 'authority', via: %i(get post)
 
   match 'author/publish/:id' => 'authors#publish', as: 'author_publish', via: [:get, :post]
   get 'author/:id/delete_photo' => 'authors#delete_photo', as: 'delete_author_photo'
@@ -201,6 +198,8 @@ Bybeconv::Application.routes.draw do
   get 'manifestation/unlike'
   get 'manifestation/surprise_work'
   get 'manifestation/autocomplete_works_by_author'
+  get 'manifestation/autocomplete_authority_name' => 'manifestation#autocomplete_authority_name',
+      as: 'manifestation_autocomplete_authority_name'
   get 'work/show/:id' => 'manifestation#workshow', as: 'work_show' # temporary, until we have a works controller
   get 'manifestation/add_aboutnesses/:id' => 'manifestation#add_aboutnesses'
   resources :api_keys, except: :show

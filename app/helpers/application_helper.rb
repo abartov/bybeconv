@@ -10,13 +10,14 @@ module ApplicationHelper
     end
     lines.join + '...'
   end
+
   def about_the_author(au)
     ret = I18n.t(:about_the_author)
     return au.gender == 'female' ? ret + 'ת' : ret
   end
 
   def to_the_author_page(au)
-    return au.gender == 'female' ? I18n.t(:to_the_authoress_page) : I18n.t(:to_the_author_page)
+    return au&.gender == 'female' ? I18n.t(:to_the_authoress_page) : I18n.t(:to_the_author_page)
   end
 
   def lineclamp(s, max)
@@ -61,8 +62,8 @@ module ApplicationHelper
     return I18n.t(genre)
   end
 
-  def textify_copyright_status(copyrighted)
-    copyrighted ? t(:by_permission) : t(:public_domain)
+  def textify_intellectual_property(value)
+    t(value, scope: 'intellectual_property')
   end
 
   def textify_boolean(bool)
@@ -76,6 +77,10 @@ module ApplicationHelper
 
   def favorite_glyph(value)
     return value ? '6' : '5' # per /BY icons font/ben-yehuda/icons-reference.html
+  end
+
+  def textify_authority_role(role)
+    I18n.t(role, scope: 'involved_authority.role')
   end
 
   def textify_role(role, gender)
@@ -154,11 +159,18 @@ module ApplicationHelper
     return m.expression.translators.map{|x| "<a href=\"#{url_for(controller: :authors, action: :toc, id: x.id)}\">#{x.name}</a>"}.join(', ')
   end
 
-  def copyright_glyph(is_copyright)
-    return is_copyright ? 'x' : 'm' # per /BY icons font/ben-yehuda/icons-reference.html
+  def intellectual_property_glyph(intellectual_property)
+    # per /BY icons font/ben-yehuda/icons-reference.html
+    case intellectual_property
+    when 'public_domain'
+      return 'm'
+    when 'copyrighted', 'by_permission', 'permission_for_all', 'permission_for_selected'
+      return 'x'
+    end
   end
 
-  def newsitem_glyph(item) # per icons-reference.html
+  def newsitem_glyph(item)
+    # per icons-reference.html
     case
     when item.publication?
       return nil

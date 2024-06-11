@@ -24,7 +24,7 @@
       %h2= t(:bibliography)
       %p
         %b= link_to t(:bib_workshop), bib_index_path
-      %p= link_to t(:get_bibs), controller: :bib, action: :pubs_by_person
+      %p= link_to t(:get_bibs), controller: :bib, action: :pubs_by_authority
       %p= link_to t(:review_bibs), publications_path
   .admin_dashboard_item
     %h2= t(:maintenance)
@@ -119,9 +119,9 @@
         = ' ('+Rails.cache.read('report_similar_titles').to_s+')'
       %p
         = link_to admin_incongruous_copyright_path do
-          = t(:incongruous_copyright_report)+' '
-          %b= t(:takes_long_time)
-        = ' ('+Rails.cache.read('report_incongruous_copyright').to_s+')'
+          = t('admin.incongruous_copyright.title')
+          %b= t('.takes_long_time')
+        (#{Rails.cache.read('report_incongruous_copyright')})
       %p
         = link_to t(:missing_images), admin_missing_images_path
         = ' ('+Rails.cache.read('report_missing_images').to_s+')'

@@ -1,0 +1,17 @@
+%h3= t(:associated_persons)
+%ul
+  - involved_authorities.each do |ia|
+    %li{ id: "ia#{ia.id}" }
+      = link_to ia.authority.name, authors_show_path(ia.authority)
+      (#{textify_authority_role(ia.role)})
+      - if edit
+        = link_to t(:destroy), involved_authority_path(ia),
+                  remote: true, method: :delete, data: { confirm: t(:are_you_sure) }
+- if edit
+  %br
+  = t(:add)
+  = select_tag add_authority_param, options_from_collection_for_select(Authority.order(:name), 'id', 'name'),
+               include_blank: true
+  = t(:in_role)
+  = select_tag role_param, options_for_select(roles.map { |role| [textify_authority_role(role), role] })
+  %br

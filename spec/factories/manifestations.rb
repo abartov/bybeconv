@@ -2,18 +2,20 @@ FactoryBot.define do
   factory :manifestation do
     transient do
       sequence(:manifestation_name) { |n| "Manifestation #{n}" }
-      author { create(:person, toc: create(:toc)) }
+      author { create(:authority, toc: create(:toc)) }
       language { 'he' }
       orig_lang { %w(he en ru de it).sample }
       genre { Work::GENRES.sample }
       period { Expression.periods.keys.sample }
-      translator { orig_lang != language ? create(:person) : nil }
+      translator { orig_lang.to_s == language.to_s ? nil : create(:authority) }
       editor { nil }
       illustrator { nil }
-      copyrighted { false }
+      intellectual_property { :public_domain }
       expression_title { title }
       work_title { title }
       primary { true }
+      expression_date { '2 ביוני 1960' }
+      work_date { '3 ביוני 1960' }
     end
 
     title { "Title for #{manifestation_name}" }
@@ -38,8 +40,10 @@ FactoryBot.define do
         orig_lang: orig_lang,
         genre: genre,
         period: period,
-        copyrighted: copyrighted,
-        primary: primary
+        intellectual_property: intellectual_property,
+        primary: primary,
+        date: expression_date,
+        work_date: work_date
       )
     end
 

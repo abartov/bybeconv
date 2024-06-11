@@ -4,8 +4,8 @@ ruby '3.2.1'
 
 source 'http://rubygems.org'
 
-gem 'rails', '~> 6'
-gem 'rails-i18n' # , git: 'https://github.com/svenfuchs/rails-i18n.git' # , branch: 'rails-4-x' # For 4.x
+gem 'rails', '~> 6.1.7.7'
+gem 'rails-i18n', '~> 6.0' # version should match major version of Rails
 gem 'actionview'
 
 gem 'sass-rails', '~> 6.0.0'
@@ -32,6 +32,8 @@ gem 'rack-cors', require: 'rack/cors'
 
 gem 'diffy'
 gem 'aws-sdk-s3' # for Active Storage
+
+gem 'simple_form', '~> 5.3.0'
 
 gem 'kt-paperclip', git: 'https://github.com/kreeti/kt-paperclip.git' # for Ruby 3.2 compatibility, until https://github.com/kreeti/kt-paperclip/pull/98 is officially released
 #gem 'kt-paperclip', '7.1.1' # , '~>5.2' # for cloud files like author images 6.x requires aws >3.x
@@ -149,7 +151,6 @@ group :test, :development do
   gem 'rspec-rails', '~> 5.0.2'
   gem 'spring'
   gem 'spring-commands-rspec'
-  gem 'debug'
 end
 
 gem "sidekiq", "~> 7.2"

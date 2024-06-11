@@ -7,8 +7,8 @@ class ManifestationController < ApplicationController
   before_action only: [:edit, :update] do |c| c.require_editor(['edit_catalog', 'conversion_verification', 'handle_proofs']) end
   before_action only: [:all, :genre, :period, :by_tag] do |c| c.refuse_unreasonable_page end
   autocomplete :manifestation, :title, limit: 20, display_value: :title_and_authors, full: true
-  autocomplete :person, :name, :limit => 2, full: true
-  autocomplete :tag, :name, :limit => 2
+  autocomplete :authority, :name, limit: 2, full: true
+  autocomplete :tag, :name, limit: 2
 
   #layout false, only: [:print]
 
@@ -140,7 +140,7 @@ class ManifestationController < ApplicationController
       @whatsnew = whatsnew_since(params[:months].to_i.months.ago)
       @anonymous = false
     end
-    @new_authors = Person.new_since(1.month.ago)
+    @new_authors = Authority.new_since(1.month.ago)
   end
 
   def like
@@ -491,18 +491,16 @@ class ManifestationController < ApplicationController
           @w.date = params[:wdate]
           @w.comment = params[:wcomment]
           @w.primary = params[:primary] == 'true'
-          unless params[:add_person_w].blank?
-            c = Creation.new(work_id: @w.id, person_id: params[:add_person_w], role: params[:role_w].to_i)
-            c.save!
+          if params[:add_authority_w].present?
+            @w.involved_authorities.build(authority_id: params[:add_authority_w], role: params[:role_w])
           end
           @e.language = params[:elang]
           @e.title = params[:etitle]
           @e.date = params[:edate]
           @e.comment = params[:ecomment]
-          @e.copyrighted = (params[:public_domain] == 'false' ? true : false) # field name semantics are flipped from param name, yeah
-          unless params[:add_person_e].blank?
-            r = Realizer.new(expression_id: @e.id, person_id: params[:add_person_e], role: params[:role_e].to_i)
-            r.save!
+          @e.intellectual_property = params[:intellectual_property]
+          if params[:add_authority_e].present?
+            @e.involved_authorities.build(authority_id: params[:add_authority_e], role: params[:role_e])
           end
           @e.source_edition = params[:source_edition]
           @e.period = params[:period]
@@ -601,7 +599,6 @@ class ManifestationController < ApplicationController
     end
   end
 
-  PAGE_SIZE = 100
   def build_es_filter_from_filters
     ret = {}
     @filters = []
@@ -628,13 +625,12 @@ class ManifestationController < ApplicationController
     end
 
     # copyright
-    @copyright = params['ckb_copyright']&.map(&:to_i)
-    if @copyright.present?
-      is_copyrighted = @copyright.map { |x| x == 0 ? false : true }.uniq
-      if is_copyrighted.size == 1
-        ret['is_copyrighted'] = is_copyrighted.first
+    @intellectual_property_types = params['ckb_intellectual_property']
+    if @intellectual_property_types.present?
+      ret['intellectual_property_types'] = @intellectual_property_types
+      @filters += @intellectual_property_types.map do |x|
+        [helpers.textify_intellectual_property(x), "intellectual_property_#{x}", :checkbox]
       end
-      @filters += @copyright.map { |x| [helpers.textify_copyright_status(x == 1), "copyright_#{x}", :checkbox] }
     end
 
     # authors genders
@@ -720,7 +716,7 @@ class ManifestationController < ApplicationController
       periods: { terms: { field: 'period' } },
       genres: { terms: { field: 'genre' } },
       languages: { terms: { field: 'orig_lang', size: get_langs.count + 1 } },
-      copyright_status: { terms: { field: 'copyright_status' } },
+      intellectual_property_types: { terms: { field: 'intellectual_property' } },
       author_genders: { terms: { field: 'author_gender' } },
       translator_genders: { terms: { field: 'translator_gender' } },
       # We may need to increase `size` threshold in future if number of authors exceeds 2000
@@ -733,20 +729,17 @@ class ManifestationController < ApplicationController
     @tgender_facet = buckets_to_totals_hash(collection.aggs['translator_genders']['buckets'])
     @period_facet = buckets_to_totals_hash(collection.aggs['periods']['buckets'])
     @genre_facet = buckets_to_totals_hash(collection.aggs['genres']['buckets'])
+    @intellectual_property_facet = buckets_to_totals_hash(collection.aggs['intellectual_property_types']['buckets'])
 
     @language_facet = buckets_to_totals_hash(collection.aggs['languages']['buckets'])
     @language_facet[:xlat] = @language_facet.except('he').values.sum
 
-    @copyright_facet = collection.aggs['copyright_status']['buckets'].to_h do |hash|
-      [hash['key'] == 'true' ? 1 : 0, hash['doc_count']]
-    end
-
     # Preparing list of authors to show in multiselect modal on works browse page
     if collection.filter.present?
       author_ids = collection.aggs['author_ids']['buckets'].pluck('key')
-      @authors_list = Person.where(id: author_ids)
+      @authors_list = Authority.where(id: author_ids)
     else
-      @authors_list = Person.all
+      @authors_list = Authority.all
     end
     @authors_list = @authors_list.select(:id, :name).sort_by(&:name)
   end
@@ -825,33 +818,37 @@ class ManifestationController < ApplicationController
       unless @m.published?
         flash[:notice] = t(:work_not_available)
         redirect_to '/'
-      else
-        @e = @m.expression
-        @w = @e.work
-        @author = @w.persons[0] # TODO: handle multiple authors
-        unless is_spider?
-          Chewy.strategy(:bypass) do
-            @m.record_timestamps = false # avoid the impression count touching the datestamp
-            impressionist(@m)
-            @m.update_impression
-            unless @author.nil?
-              @author.record_timestamps = false # avoid the impression count touching the datestamp
-              impressionist(@author) # also increment the author's popularity counter
-              @author.update_impression
-            end
+        return
+      end
+
+      @e = @m.expression
+      @w = @e.work
+      @author = @w.authors[0] # TODO: handle multiple authors
+      unless is_spider?
+        Chewy.strategy(:bypass) do
+          @m.record_timestamps = false # avoid the impression count touching the datestamp
+          impressionist(@m)
+          @m.update_impression
+          unless @author.nil?
+            @author.record_timestamps = false # avoid the impression count touching the datestamp
+            impressionist(@author) # also increment the author's popularity counter
+            @author.update_impression
           end
-          ahoy.track "text read or printed", text_id: @m.id, title: @m.title, author: @m.author_string # log the read, for later recommendation feature using the Disco gem
         end
-        if @author.nil?
-          @author = Person.new(name: '?')
-        end
-        @translators = @m.translators
-        @illustrators = @w.illustrators
-        @editors = @e.editors
-        @page_title = "#{@m.title_and_authors} - #{t(:default_page_title)}"
-        if @print
-          @html = MultiMarkdown.new(@m.markdown).to_html.force_encoding('UTF-8').gsub(/<figcaption>.*?<\/figcaption>/,'') # remove MMD's automatic figcaptions
-        end
+        # log the read, for later recommendation feature using the Disco gem
+        ahoy.track 'text read or printed', text_id: @m.id, title: @m.title, author: @m.author_string
+      end
+      if @author.nil?
+        @author = Person.new(name: '?')
+      end
+      @translators = @m.translators
+      @illustrators = @m.involved_authorities_by_role(:illustrator)
+      @editors = @m.involved_authorities_by_role(:editor)
+      @page_title = "#{@m.title_and_authors} - #{t(:default_page_title)}"
+      if @print
+        # remove MMD's automatic figcaptions
+        @html = MultiMarkdown.new(@m.markdown).to_html
+                             .force_encoding('UTF-8').gsub(%r{<figcaption>.*?</figcaption>}, '')
       end
     end
   end

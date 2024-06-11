@@ -8,7 +8,7 @@ class V1::Api < V1::ApplicationApi
   prefix :api
 
   mount V1::TextsAPI => '/'
-  mount V1::PeopleAPI => '/'
+  mount V1::AuthoritiesAPI => '/'
 
-  add_swagger_documentation info: { title: 'Project Ben-Yehuda public API' }, doc_version: '1.1.0'
+  add_swagger_documentation info: { title: 'Project Ben-Yehuda public API' }, doc_version: '1.2.0'
 end

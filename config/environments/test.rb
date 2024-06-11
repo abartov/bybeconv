@@ -34,8 +34,7 @@ Bybeconv::Application.configure do
   # like if you have constraints or database-specific column types
   # config.active_record.schema_format = :sql
 
-  config.action_view.raise_on_missing_translations = true
-  config.i18n.exception_handler = Proc.new { |exception| raise exception.to_exception }
+  config.i18n.raise_on_missing_translations = true
 
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr

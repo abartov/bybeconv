@@ -2,12 +2,15 @@ TAGGING_LOCK = '/tmp/tagging.lock'
 TAGGING_LOCK_TIMEOUT = 15 # 15 minutes
 PROGRESS_SERIES = [5, 10, 25, 50, 75, 100, 150, 200, 300, 400, 500, 750, 1000, 1250, 1500, 2000, 3000, 4000, 5000, 10000]
 
+# rubocop:disable Metrics/ClassLength
 class AdminController < ApplicationController
   before_action :require_editor
   before_action :obtain_tagging_lock, only: [:approve_tag, :approve_tag_and_next, :reject_tag, :escalate_tag, :reject_tag_and_next, :merge_tag, :merge_tagging, :approve_tagging, :reject_tagging, :escalate_tagging, :unapprove_tagging, :unreject_tagging, :tag_moderation, :tag_review]
   # before_action :require_admin, only: [:missing_languages, :missing_genres, :incongruous_copyright, :missing_copyright, :similar_titles]
   autocomplete :manifestation, :title, display_value: :title_and_authors, extra_data: [:expression_id] # TODO: also search alternate titles!
-  autocomplete :person, :name, full: true
+  autocomplete :authority, :name, full: true
+  autocomplete :person, :name, scopes: :with_name, full: true
+
   layout false, only: [:merge_tag, :merge_tagging, :confirm_with_comment] # popups
   layout 'backend', only: [:tag_moderation, :tag_review, :tagging_review] # eventually change to except: [<popups>]
 
@@ -53,8 +56,10 @@ class AdminController < ApplicationController
   end
 
   def missing_languages
-    ex = Expression.joins([:realizers, :work]).where(realizers: {role: Realizer.roles[:translator]}, works: {orig_lang: 'he'})
-    mans = ex.map{|e| e.manifestations[0]}
+    ex = Expression.joins(%i(involved_authorities work))
+                   .where(works: { orig_lang: :he })
+                   .merge(InvolvedAuthority.role_translator)
+    mans = ex.map { |e| e.manifestations[0] }
     @total = mans.length
     @mans = Kaminari.paginate_array(mans).page(params[:page]).per(50)
     @page_title = t(:missing_language_report)
@@ -76,8 +81,8 @@ class AdminController < ApplicationController
   end
 
   def missing_copyright
-    @authors = Person.where(public_domain: nil)
-    records = Manifestation.joins(:expression).where(expressions: {copyrighted: nil})
+    @authors = Authority.intellectual_property_unknown
+    records = Manifestation.joins(:expression).merge(Expression.intellectual_property_unknown)
     @total = records.count
     @mans = records.page(params[:page]).per(50)
     @page_title = t(:missing_copyright_report)
@@ -113,11 +118,24 @@ class AdminController < ApplicationController
     head :ok
   end
 
-  def suspicious_translations # find works where the author is also a translator -- this *may* be okay, in the case of self-translation, but probably is a mistake
-    records = Manifestation.joins(expression: [:realizers, work: :creations]).
-      where('realizers.person_id = creations.person_id').
-      merge(Realizer.translator).
-      merge(Creation.author)
+  # Find works where the author is also a translator -- this *may* be okay, in the case of self-translation,
+  # but probably is a mistake
+  def suspicious_translations
+    records = Manifestation.joins(expression: { work: :involved_authorities })
+                           .merge(InvolvedAuthority.role_author)
+                           .where(
+                             <<~SQL.squish,
+                               exists (
+                                 select 1 from
+                                   involved_authorities iat
+                                 where
+                                   iat.expression_id = expressions.id
+                                   and iat.authority_id = involved_authorities.authority_id
+                                   and iat.role = ?
+                               )
+                             SQL
+                             InvolvedAuthority.roles[:translator]
+                           )
     @total = records.count
     @mans = records.page(params[:page])
     @page_title = t(:suspicious_translations_report)
@@ -185,21 +203,25 @@ class AdminController < ApplicationController
   end
 
   def periodless
-    @authors = Person.where(period: nil).select{|p| p.has_any_hebrew_works?}
+    @authors = Authority.joins(:person).merge(Person.where(period: nil)).select(&:any_hebrew_works?)
     Rails.cache.write('report_periodless', @authors.length)
   end
 
   def authors_without_works
-    @authors = nw = Person.left_joins(:realizers, :creations).group('people.id').having('(count(realizers.id) = 0) and (count(creations.id) = 0)').order('people.name asc')
+    @authors = Authority.where(
+      'not exists (select 1 from involved_authorities ia where ia.authority_id = authorities.id)'
+    ).order(:name)
     Rails.cache.write('report_authors_without_works', @authors.length)
   end
+
   # this is a massive report that takes a long time to run!
   def tocs_missing_links
     @author_keys = []
     @tocs_missing_links = {}
     @tocs_linking_to_missing_items = {}
-    Person.has_toc.each do |p|
-      @tocs_missing_links[p.id] = {orig: [], xlat: []} if @tocs_missing_links[p.id].nil? # it may already exist because of being translated by an author we've already processed
+    Authority.has_toc.each do |p|
+      # it may already exist because of being translated by an author we've already processed
+      @tocs_missing_links[p.id] = { orig: [], xlat: [] } if @tocs_missing_links[p.id].nil?
       toc_items = []
       begin
         toc_items = p.toc.linked_items
@@ -241,40 +263,64 @@ class AdminController < ApplicationController
     @authors = []
 
     # Getting list of authors, who wrote works in more than one language
-    translatees = Person.joins(creations: :work).
-      merge(Creation.author).
-      group('people.id').
-      select('people.id, people.name').
-      having('min(works.orig_lang) <> max(works.orig_lang)').
-      sort_by(&:name)
+    translatees = Authority.joins(involved_authorities: :work)
+                           .merge(InvolvedAuthority.role_author)
+                           .group('authorities.id')
+                           .select('authorities.id, authorities.name')
+                           .having('min(works.orig_lang) <> max(works.orig_lang)')
+                           .sort_by(&:name)
 
     translatees.each do |t|
-      manifestations = Manifestation.joins(expression: { work: :creations }).
-        merge(Creation.author.where(person_id: t.id)).
-        preload(expression: :work).
-        sort_by { |m| [m.expression.work.orig_lang, m.sort_title] }.
-        group_by { |m| m.expression.work.orig_lang }
+      manifestations = Manifestation.joins(expression: { work: :involved_authorities })
+                                    .merge(InvolvedAuthority.role_author.where(authority_id: t.id))
+                                    .preload(expression: :work)
+                                    .sort_by { |m| [m.expression.work.orig_lang, m.sort_title] }
+                                    .group_by { |m| m.expression.work.orig_lang }
       @authors << [t, manifestations.keys, manifestations]
     end
     Rails.cache.write('report_translated_from_multiple_languages', @authors.length)
   end
 
-  # We assume manifestation should be copyrighted if one of its creators or realizers is not in public domain
-  CALCULATED_COPYRIGHT_EXPRESSION = <<~sql
+  PUBLIC_DOMAIN_TYPE = Authority.intellectual_properties['public_domain']
+
+  HAS_NON_PUBLIC_DOMAIN_AUTHORITY = <<~SQL.squish
     (
-      exists (select 1 from creations c join people p on p.id = c.person_id where c.work_id = works.id and not coalesce(p.public_domain, false))
-      or exists (select 1 from realizers r join people p on p.id = r.person_id where r.expression_id = expressions.id and not coalesce(p.public_domain, false))
+      exists (
+        select 1 from
+          authorities a
+          join involved_authorities ia on a.id = ia.authority_id
+        where
+          ia.work_id = works.id
+          and a.intellectual_property <> #{PUBLIC_DOMAIN_TYPE}
+      )
+      or exists (
+        select 1 from
+          authorities a
+          join involved_authorities ia on a.id = ia.authority_id
+        where
+          ia.expression_id = expressions.id
+          and a.intellectual_property <> #{PUBLIC_DOMAIN_TYPE}
+      )
     )
-  sql
+  SQL
 
   def incongruous_copyright
-    @incong = Manifestation.joins(expression: :work).
-        select('manifestations.title, manifestations.id, manifestations.expression_id, expressions.copyrighted').
-        select(Arel.sql("#{CALCULATED_COPYRIGHT_EXPRESSION} as calculated_copyright")).
-        where("expressions.copyrighted is null or #{CALCULATED_COPYRIGHT_EXPRESSION} <> expressions.copyrighted").map do |m|
-      [ m, m.title, m.author_string, m.calculated_copyright, m.copyrighted ]
-    end
-
+    @incong = Manifestation.joins(expression: :work)
+                           .with_involved_authorities
+                           .select('expressions.id as expression_id, expressions.intellectual_property')
+                           .select('manifestations.title, manifestations.id as id')
+                           .select(Arel.sql("#{HAS_NON_PUBLIC_DOMAIN_AUTHORITY} as has_non_pd_authority"))
+                           .where(
+                             <<~SQL.squish
+                               (
+                                 expressions.intellectual_property <> #{PUBLIC_DOMAIN_TYPE}
+                                 and not #{HAS_NON_PUBLIC_DOMAIN_AUTHORITY}
+                               ) or (
+                                 expressions.intellectual_property = #{PUBLIC_DOMAIN_TYPE}
+                                 and #{HAS_NON_PUBLIC_DOMAIN_AUTHORITY}
+                               )
+                             SQL
+                           )
     Rails.cache.write('report_incongruous_copyright', @incong.length)
   end
 
@@ -284,6 +330,7 @@ class AdminController < ApplicationController
       @total = @texts.count
     end
   end
+
   def suspicious_titles
     @suspicious = Manifestation.where('(title like "%קבוצה %") OR (title like "%.") OR (title like "__")').select{|x| x.title !~ /\.\.\./}
     Rails.cache.write('report_suspicious_titles', @suspicious.length)
@@ -472,10 +519,6 @@ class AdminController < ApplicationController
 
   def featured_content_new
     @fc = FeaturedContent.new
-    respond_to do |format|
-      format.html
-      format.json { render json: @fc }
-    end
   end
 
   def featured_content_create
@@ -485,17 +528,13 @@ class AdminController < ApplicationController
       @fc.manifestation = Manifestation.find(params[:linked_manifestation])
     end
     unless params[:linked_author].empty?
-      @fc.person = Person.find(params[:linked_author])
+      @fc.authority = Authority.find(params[:linked_author])
     end
 
-    respond_to do |format|
-      if @fc.save
-        format.html { redirect_to url_for(action: :featured_content_show, id: @fc.id), notice: t(:updated_successfully) }
-        format.json { render json: @fc, status: :created, location: @fc }
-      else
-        format.html { render action: 'featured_content_new'}
-        format.json { render json: @fc.errors, status: :unprocessable_entity }
-      end
+    if @fc.save
+      redirect_to url_for(action: :featured_content_show, id: @fc.id), notice: t(:updated_successfully)
+    else
+      render action: 'featured_content_new'
     end
   end
 
@@ -521,7 +560,7 @@ class AdminController < ApplicationController
         @fc.manifestation = Manifestation.find(params[:linked_manifestation])
       end
       unless params[:linked_author].empty?
-        @fc.person = Person.find(params[:linked_author])
+        @fc.authority = Authority.find(params[:linked_author])
       end
       @fc.save
       if @fc.update(fc_params)
@@ -796,15 +835,15 @@ class AdminController < ApplicationController
       calculate_editor_tagging_stats
       @next_tagging_id = Tagging.joins(:tag).where(status: :pending, tag: {status: :approved}).where('taggings.created_at > ?', @tagging.created_at).order('taggings.created_at').limit(1).pluck(:id).first
       @prev_tagging_id = Tagging.joins(:tag).where(status: :pending, tag: {status: :approved}).where('taggings.created_at < ?', @tagging.created_at).order('taggings.created_at desc').limit(1).pluck(:id).first
-      if @tagging.taggable_type == 'Person'
-        @author = Person.find(@tagging.taggable_id)
+      if @tagging.taggable_type == 'Authority'
+        @author = @tagging.taggable
         unless @author.toc.nil?
           prep_toc
         else
           generate_toc
         end
       elsif @tagging.taggable_type == 'Manifestation'
-        @m = Manifestation.find(@tagging.taggable_id)
+        @m = @tagging.taggable
         @html = MultiMarkdown.new(@m.markdown).to_html.force_encoding('UTF-8').gsub(/<figcaption>.*?<\/figcaption>/,'') # remove MMD's automatic figcaptions
       end
     end
@@ -1151,3 +1190,4 @@ class AdminController < ApplicationController
     stags = ListItem.where(listkey: 'tag_similarity').pluck(:item_id, :extra).to_h
   end
 end
+# rubocop:enable Metrics/ClassLength

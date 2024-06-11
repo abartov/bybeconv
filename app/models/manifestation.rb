@@ -29,21 +29,23 @@ class Manifestation < ApplicationRecord
 
   scope :all_published, -> { where(status: Manifestation.statuses[:published])}
   scope :new_since, -> (since) { where('created_at > ?', since)}
-  scope :pd, -> { joins(:expression).includes(:expression).where(expressions: {copyrighted: false})}
-  scope :copyrighted, -> { joins(:expression).includes(:expression).where(expressions: {copyrighted: true})}
   scope :not_translations, -> { joins(:expression).includes(:expression).where(expressions: {translation: false})}
   scope :translations, -> { joins(:expression).includes(:expression).where(expressions: {translation: true})}
   scope :genre, -> (genre) { joins(expression: :work).where(works: {genre: genre})}
   scope :tagged_with, ->(tag_id) {joins(:taggings).where(taggings: {tag_id: tag_id, status: Tagging.statuses[:approved]}).distinct}
+  scope :with_involved_authorities, lambda {
+    preload(expression: { involved_authorities: :authority, work: { involved_authorities: :authority } })
+  }
 
   SHORT_LENGTH = 1500 # kind of arbitrary...
   LONG_LENGTH = 15000 # kind of arbitrary...
 
   update_index('manifestations'){self} # update ManifestationsIndex when entity is updated
 
-  # class variable
-  @@popular_works = nil
-  @@tmplock = false
+  def involved_authorities_by_role(role)
+    (expression.involved_authorities_by_role(role) + expression.work.involved_authorities_by_role(role)).uniq
+                                                                                                        .sort_by(&:name)
+  end
 
   def update_sort_title
     self.sort_title = self.title.strip_nikkud.tr('[]()*"\'', '').tr('-־',' ').strip
@@ -74,10 +76,6 @@ class Manifestation < ApplicationRecord
     markdown.length > SHORT_LENGTH
   end
 
-  def copyright?
-    return expression.copyrighted
-  end
-
   def heading_lines
     if cached_heading_lines.nil?
       recalc_heading_lines!
@@ -103,12 +101,7 @@ class Manifestation < ApplicationRecord
   end
 
   def approved_tags
-    # tags.joins(:taggings).where(taggings: {status: Tagging.statuses[:approved], taggable: self})
-    approved_taggings.joins(:tag).where(tag: {status: Tag.statuses[:approved]} ).map{|x| x.tag}
-  end
-  
-  def approved_taggings
-    taggings.where(status: Tagging.statuses[:approved])
+    taggings.to_a.select { |t| t.approved? && t.tag.approved? }.map(&:tag)
   end
 
   def as_prose?
@@ -139,11 +132,11 @@ class Manifestation < ApplicationRecord
   end
 
   def manual_delete
-    self.destroy!
-    expression.realizers.each(&:destroy!)
+    destroy!
+    expression.involved_authorities.each(&:destroy!)
     w = expression.work
     expression.destroy!
-    w.creations.each(&:destroy!)
+    w.involved_authorities.each(&:destroy!)
     w.destroy!
   end
 
@@ -168,13 +161,12 @@ class Manifestation < ApplicationRecord
   end
 
   def author_gender
-    authors.pluck(:gender).uniq.reject{|x| x.blank?}
+    authors.map { |authority| authority&.person&.gender }.compact.uniq
   end
 
   def translator_gender
-    translators.pluck(:gender).uniq.reject{|x| x.blank?}
+    translators.map { |authority| authority&.person&.gender }.compact.uniq
   end
-
   def translators
     return expression.translators
   end
@@ -242,7 +234,7 @@ class Manifestation < ApplicationRecord
 
   def recalc_cached_people!
     recalc_cached_people
-     save!
+    save!
   end
 
   # TODO: calculate this by month
@@ -283,26 +275,6 @@ class Manifestation < ApplicationRecord
     Rails.cache.fetch("m_first_25", expires_in: 24.hours) do
       Manifestation.all_published.order(:sort_title).limit(25)
     end
-  end
-
-  # This method was used in ManifestationController#works which is currently not used, but could be reimplemented in future
-  # def self.cached_last_month_works
-  #   Rails.cache.fetch("m_new_last_month", expires_in: 24.hours) do
-  #     ret = {}
-  #     Manifestation.all_published.new_since(1.month.ago).each {|m|
-  #       e = m.expressions[0]
-  #       genre = e.genre
-  #       person = e.persons[0] # TODO: more nuance
-  #       next if person.nil? || genre.nil? # shouldn't happen, but might in a dev. env.
-  #       ret[genre] = [] if ret[genre].nil?
-  #       ret[genre] << [m.id, m.title, m.author_string]
-  #     }
-  #     ret
-  #   end
-  # end
-
-  def self.recalc_popular
-    @@popular_works = Manifestation.all_published.order(impressions_count: :desc).limit(10) # top 10
   end
 
   def self.cached_popular_works_by_genre

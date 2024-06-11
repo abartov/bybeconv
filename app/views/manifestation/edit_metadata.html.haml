@@ -24,7 +24,9 @@
     %p
       %b= t(:comments)+': '
       = text_area_tag :wcomment, @w.comment, rows: 4, cols: 40
-    = render partial: 'shared/associated_people', locals: { which: :work, work: @w, edit: true}
+    = render partial: 'involved_authorities',
+             locals: { involved_authorities: @w.involved_authorities, edit: true, add_authority_param: :add_authority_w,
+                       role_param: :role_w, roles: InvolvedAuthority::WORK_ROLES }
     = render partial: 'aboutnesses', locals: {edit: true, add: true}
     %h2= t(:expression_details)
     %p
@@ -37,7 +39,7 @@
       %b= t(:thedate) + ': '
       = text_field_tag :edate, @e.date
     %p
-      %b= t(:period) + ': '
+      %b #{Manifestation.human_attribute_name(:period)}:
       = select_tag :period, options_for_select(Person.periods.map{|p| [t(p[0]), p[0]]}, @e.period), include_blank: true
     %p
       %b= t(:language) + ': '
@@ -49,13 +51,12 @@
       %b= t(:comments)+': '
       = text_area_tag :ecomment, @e.comment, rows: 4, cols: 40
     %p
-      %h3= t(:copyright_status)
-      = radio_button_tag :public_domain, true, @e.copyrighted.nil? ? false : (not @e.copyrighted)
-      = label_tag t(:public_domain)
-      = radio_button_tag(:public_domain, false, @e.copyrighted.nil? ? false : @e.copyrighted)
-      = label_tag t(:by_permission)
-      / = textify_copyright_status(@e.copyrighted) # TODO: make editable
-    = render partial: 'shared/associated_people', locals: { which: :expression, expression: @e, edit: true}
+      %h3= Expression.human_attribute_name(:intellectual_property)
+      - options = Expression.intellectual_properties.keys.map { |code| [textify_intellectual_property(code), code] }
+      = select_tag :intellectual_property, options_for_select(options, @e.intellectual_property)
+    = render partial: 'involved_authorities',
+             locals: { involved_authorities: @e.involved_authorities, edit: true, add_authority_param: :add_authority_e,
+                       role_param: :role_e, roles: InvolvedAuthority::EXPRESSION_ROLES }
 
     %h2= t(:manifestation_details)
     %p
@@ -68,7 +69,7 @@
       %b= t(:alternate_titles) + ': '
       = text_field_tag :alternate_titles, @m.alternate_titles, size: 75
     %p
-      %b= t(:sort_name) + ': '
+      %b #{Manifestation.human_attribute_name(:sort_name)}:
       = text_field_tag :sort_title, @m.sort_title, size: 75
     %p
       %b= t(:responsibility_statement) + ': '

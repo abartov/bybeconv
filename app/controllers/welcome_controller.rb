@@ -7,12 +7,16 @@ class WelcomeController < ApplicationController
     @pagetype = :homepage
     @page_title = t(:default_page_title)+' - '+t(:homepage)
 
-    @totals = { works: get_total_works, authors: get_total_authors, headwords: get_total_headwords }
+    @totals = {
+      works: Manifestation.cached_count,
+      authors: Authority.cached_count,
+      headwords: get_total_headwords
+    }
     @pop_authors = popular_authors
     @pop_authors_this_month = @pop_authors # Temporary hack! TODO: stop cheating and actually count by month
     @pop_works = popular_works
     # @newest_authors = cached_newest_authors # deprecated because we stopped producing portraits
-    @random_authors = Person.published.has_image.order(Arel.sql('RAND()')).limit(10)
+    @random_authors = Authority.published.has_image.order(Arel.sql('RAND()')).limit(10)
     @newest_works = cached_newest_works
     @surprise_author = RandomAuthor.call
     @surprise_work = randomize_works(1)[0]

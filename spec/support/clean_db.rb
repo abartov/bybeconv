@@ -4,10 +4,10 @@ def clean_tables
   ExternalLink.destroy_all
   Recommendation.destroy_all
 
-  Realizer.destroy_all
-  Creation.destroy_all
+  InvolvedAuthority.destroy_all
 
   Person.destroy_all
+  Authority.destroy_all
 
   Aboutness.destroy_all
 

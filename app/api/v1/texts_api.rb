@@ -1,4 +1,5 @@
 class V1::TextsAPI < V1::ApplicationApi
+  # rubocop:disable Metrics/BlockLength
   PAGE_SIZE = 25
 
   helpers do
@@ -103,9 +104,10 @@ class V1::TextsAPI < V1::ApplicationApi
                type: [String],
                values: Expression.periods.keys,
                desc: 'specifies what section of the rough timeline of Hebrew literature an object belongs to.'
-      optional :is_copyrighted,
-               type: Boolean,
-               desc: 'limit search to copyrighted works or to non-copyrighted works'
+      optional :intellectual_property_types,
+               type: [String],
+               values: Expression::PUBLIC_INTELLECTUAL_PROPERTY_TYPES,
+               desc: 'limit search to works with selected intellectual property types'
       optional :author_genders, type: [String], values: Person.genders.keys
       optional :translator_genders, type: [String], values: Person.genders.keys
       optional :title, type: String, desc: "a substring to match against a text's title"
@@ -140,7 +142,20 @@ class V1::TextsAPI < V1::ApplicationApi
       success V1::Entities::ManifestationsPage
     end
     post do
-      filters = params.slice(*%w(genres periods is_copyrighted author_genders translator_genders title author fulltext author_ids uploaded_between created_between published_between))
+      filters = params.slice(*%w(
+                               genres
+                               periods
+                               intellectual_property_types
+                               author_genders
+                               translator_genders
+                               title
+                               author
+                               fulltext
+                               author_ids
+                               uploaded_between
+                               created_between
+                               published_between
+                             ))
 
       orig_lang = params['original_language']
       if orig_lang.present?
@@ -183,4 +198,5 @@ class V1::TextsAPI < V1::ApplicationApi
       present model, with: V1::Entities::ManifestationsPage, view: params[:view], file_format: params[:file_format], snippet: params[:snippet]
     end
   end
+  # rubocop:enable Metrics/BlockLength
 end

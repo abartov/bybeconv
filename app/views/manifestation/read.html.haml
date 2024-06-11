@@ -108,7 +108,7 @@
                     = link_to tr.title, manifestation_path(id: tr.manifestations[0].id)
                   %span= ' '+t(:translation)+': '
                   %span
-                    != tr.translators.map{|t| link_to(t.name, person_path(id: t.id))}.join(', ')
+                    != tr.translators.map { |t| link_to(t.name, authority_path(id: t.id)) }.join(', ')
         -# External links
         - if @m.external_links.to_a.size > 0
           .by-card-v02.left-side-card-v02
@@ -128,7 +128,10 @@
           %p.headline-1-v02= t(:don_footer_title)
           .desktop-only
             %p
-              = t(:don_footer_desktop_html, total_works: Manifestation.cached_count.to_s, total_authors: Person.cached_count.to_s, total_langs: get_langs.count, total_headwords: get_total_headwords.to_s)
+              = t(:don_footer_desktop_html, total_works: Manifestation.cached_count.to_s,
+                                            total_authors: Authority.cached_count.to_s,
+                                            total_langs: get_langs.count,
+                                            total_headwords: get_total_headwords.to_s)
             %a.donev#donev_text_footban{href: '/page/donate'}
               .button-to-full-v02
                 %button.by-button-v02

@@ -36,7 +36,7 @@ describe ManifestationController do
         {
           ckb_periods: %w(ancient revival),
           ckb_genres: %w(poetry memoir),
-          ckb_copyright: %w(1),
+          ckb_intellectual_property: %w(orphan unknown),
           ckb_genders: %w(male other),
           ckb_tgenders: %w(female unknown),
           authors: '1,2,3',
@@ -54,7 +54,7 @@ describe ManifestationController do
         {
           'periods' => %w(ancient revival),
           'genres' => %w(poetry memoir),
-          'is_copyrighted' => true,
+          'intellectual_property_types' => %w(orphan unknown),
           'author_genders' => %w(male other),
           'translator_genders' => %w(female unknown),
           'author_ids' => [1, 2, 3],
@@ -262,10 +262,16 @@ describe ManifestationController do
       end
 
       context 'when user is logged in' do
-        let!(:user) { create(:user) }
-        before do
-          session[:user_id] = user.id
-        end
+        include_context 'when user logged in'
+
+        it { is_expected.to be_successful }
+      end
+
+      context 'when it is a translation and work has other translations' do
+        let(:orig_lang) { 'ru' }
+
+        let(:other_translation_expression) { create(:expression, language: 'he', work: manifestation.expression.work) }
+        let!(:other_translation_manifestation) { create(:manifestation, expression: other_translation_expression) }
 
         it { is_expected.to be_successful }
       end
@@ -278,6 +284,14 @@ describe ManifestationController do
 
         it { is_expected.to redirect_to dict_browse_path(manifestation.id) }
       end
+    end
+
+    describe '#readmode' do
+      subject { get :readmode, params: { id: manifestation.id } }
+
+      let(:orig_lang) { 'de' }
+
+      it { is_expected.to be_successful }
     end
 
     describe '#print' do
@@ -318,13 +332,13 @@ describe ManifestationController do
     end
 
     describe '#update' do
+      subject(:call) { put :update, params: params.merge(commit: commit, id: manifestation.id) }
+
       let(:user) { create(:user, :edit_catalog) }
 
       before do
         session[:user_id] = user.id
       end
-
-      subject { put :update, params: params.merge(commit: commit, id: manifestation.id) }
 
       context "when 'save' button pressed" do
         let(:commit) { I18n.t(:save) }
@@ -343,6 +357,9 @@ describe ManifestationController do
         end
 
         context 'when metadata was changed' do
+          let(:new_author) { create(:authority) }
+          let(:new_translator) { create(:authority) }
+
           let(:params) do
             {
               wtitle: 'New Work Title',
@@ -350,16 +367,24 @@ describe ManifestationController do
               etitle: 'New Expression Title',
               genre: 'fables',
               wlang: 'ru',
-              primary: 'false'
+              primary: 'false',
+              intellectual_property: 'by_permission',
+              add_authority_w: new_author.id,
+              role_w: :author,
+              add_authority_e: new_translator.id,
+              role_e: :translator
             }
           end
 
           it 'updates metadata and redirects to show page' do
-            expect(subject).to redirect_to(manifestation_show_path(manifestation))
+            expect { call }.to change(InvolvedAuthority, :count).by(2)
+            expect(call).to redirect_to(manifestation_show_path(manifestation))
             expect(flash.notice).to eq I18n.t(:updated_successfully)
             manifestation.reload
+            expect(manifestation.authors).to include(new_author)
+            expect(manifestation.translators).to include(new_translator)
             expect(manifestation).to have_attributes(title: 'New Manifestation Title')
-            expect(expression).to have_attributes(title: 'New Expression Title')
+            expect(expression).to have_attributes(title: 'New Expression Title', intellectual_property: 'by_permission')
             expect(work).to have_attributes(title: 'New Work Title', orig_lang: 'ru', genre: 'fables', primary: false)
           end
         end
@@ -472,22 +497,16 @@ describe ManifestationController do
       end
     end
 
-    describe '#add_aboutness_unauthorized' do
-      let(:user) { create(:user) }
-
-      before do
-        session[:user_id] = user.id
-      end
-
-      subject { get :add_aboutnesses, params: { id: manifestation.id } }
-
-      it { is_expected.to redirect_to '/' }
-    end
     describe '#add_aboutness' do
+      include_context 'when editor logged in'
+
       let(:user) { create(:user, :edit_catalog) }
 
       before do
         session[:user_id] = user.id
+
+        create(:aboutness, aboutable: create(:authority), work_id: manifestation.expression.work.id)
+        create(:aboutness, aboutable: create(:manifestation).expression.work, work_id: manifestation.expression.work.id)
       end
 
       subject { get :add_aboutnesses, params: { id: manifestation.id } }

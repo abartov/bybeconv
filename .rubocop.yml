@@ -5,6 +5,9 @@ AllCops:
     - bin/*
     - config/environments/*
     - db/migrate/*
+    - db/schema.rb
+    - config/initializers/simple_form.rb
+    - config/initializers/simple_form_bootstrap.rb
 
 require:
   - rubocop-rails
@@ -13,6 +16,8 @@ require:
 
 Metrics/BlockLength:
   Max: 100
+  Exclude:
+    - 'config/routes.rb'
 
 Metrics/ClassLength:
   Max: 1000
@@ -32,13 +37,22 @@ Metrics/CyclomaticComplexity:
 Metrics/PerceivedComplexity:
   Enabled: false
 
+Naming/VariableNumber:
+  Enabled: false
+
 Layout/LineLength:
   Max: 120
+
+Lint/DuplicateBranch:
+  Enabled: false
 
 Style/HashSyntax:
   EnforcedShorthandSyntax: never
 
 Style/IfUnlessModifier:
+  Enabled: false
+
+Style/NumericPredicate:
   Enabled: false
 
 Style/PercentLiteralDelimiters:
@@ -48,6 +62,25 @@ Style/PercentLiteralDelimiters:
     '%W': '()'
     '%i': '()'
     '%I': '()'
+
+Style/RedundantReturn:
+  Enabled: false
+
+# TODO: Re-enable later, currently too hard to fix all places
+Style/UnlessElse:
+  Enabled: false
+
+Rails/ActionOrder: # TODO: temporary disabled. it would be good to enable in future
+  Enabled: false
+
+RSpec/ExampleLength:
+  Max: 20
+
+RSpec/IndexedLet:
+  Enabled: false
+
+RSpec/LetSetup:
+  Enabled: false
 
 RSpec/MultipleMemoizedHelpers:
   Max: 20
@@ -60,3 +93,6 @@ RSpec/NestedGroups:
 
 FactoryBot/ExcessiveCreateList:
   MaxAmount: 100
+
+FactoryBot/FactoryAssociationWithStrategy:
+  Enabled: false

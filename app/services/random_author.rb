@@ -3,21 +3,23 @@
 # Service to fetch random author
 class RandomAuthor < ApplicationService
   def call(genre = nil)
-    relation = Person.has_toc
+    relation = Authority.has_toc
                      .where(
                        <<~SQL.squish,
                          exists (
                            select 1 from
-                             creations c
-                             join works w on (c.work_id = w.id)
+                             involved_authorities ia
+                             join works w on (ia.work_id = w.id)
                              join expressions e on (e.work_id = w.id)
                              join manifestations m on (m.expression_id = e.id)
                            where
-                             c.person_id = people.id
+                             ia.authority_id = authorities.id
+                             and ia.role = ?
                              and m.status = ?
                              and w.genre = coalesce(?, w.genre)
                          )
                        SQL
+                       InvolvedAuthority.roles[:author],
                        Manifestation.statuses[:published],
                        genre
                      )

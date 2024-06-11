@@ -1,23 +1,33 @@
 class Expression < ApplicationRecord
+  include RecordWithInvolvedAuthorities
+
   before_save :set_translation
   before_save :norm_dates
   enum period: %i(ancient medieval enlightenment revival modern)
 
   belongs_to :work, inverse_of: :expressions
   has_many :manifestations, inverse_of: :expression, dependent: :destroy
-  has_many :realizers, dependent: :destroy
-  has_many :persons, through: :realizers, class_name: 'Person'
+  has_many :involved_authorities, dependent: :destroy, inverse_of: :expression
   has_many :aboutnesses, as: :aboutable, dependent: :destroy
   has_many :taggings, as: :taggable, dependent: :destroy
   has_many :tags, through: :taggings, class_name: 'Tag'
   has_paper_trail # for monitoring crowdsourced inputs
 
-  def editors
-    return realizers.includes(:person).where(role: Realizer.roles[:editor]).map{|x| x.person}
-  end
+  enum intellectual_property: {
+    public_domain: 0,
+    by_permission: 1,
+    copyrighted: 2,
+    orphan: 3,
+    unknown: 100
+  }, _prefix: true
+
+  # In browse works filters and API we should not show copyrighted works
+  PUBLIC_INTELLECTUAL_PROPERTY_TYPES = intellectual_properties.keys - ['copyrighted']
+
+  validates :intellectual_property, presence: true
 
   def translators
-    return realizers.includes(:person).where(role: Realizer.roles[:translator]).map {|x| x.person}
+    involved_authorities_by_role(:translator)
   end
 
   def self.cached_translations_count

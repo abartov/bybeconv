@@ -72,7 +72,7 @@
                   .new-info-v02= item.pinned ? '7' : ''
                   .new-card-right-v02
                     - if item.itemtype == 'publication'
-                      = link_to person_path(item.person_id) do
+                      = link_to authority_path(item.authority_id) do
                         %div
                           %img.new-card-pic-v02{src: item.thumbnail_url, width: '475', height: '686' }
                     - else
@@ -89,7 +89,13 @@
                       .new-image-frame-v02
                         %iframe{frameborder: '0', scrolling: 'no', marginheight: '0', marginwidth: '0', width: '267', height: '150', type: 'text/html', allow: 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture', allowfullscreen:'', src: item.url.sub('watch?v=','embed/')}
                   - if item.itemtype == 'publication'
-                    .link-to-all-v02.popup_btn.pointer.linkcolor{style:'font-weight: bold;display:none;', 'data-popup-id' => 'authorWhatsNewDlg','data-popuppath' => author_whatsnew_popup_path(id: item.person_id)}
+                    .link-to-all-v02.popup_btn.pointer.linkcolor{
+                      style: 'font-weight: bold;display:none;',
+                      data: {
+                        popup_id: 'authorWhatsNewDlg',
+                        popuppath: author_whatsnew_popup_path(item.authority_id)
+                      }
+                    }
                       = t(:total_x_works, count: item.pub_count)
                 - i += 1
             .link-to-all-v02
@@ -124,7 +130,11 @@
           %p.headline-1-v02= t(:don_footer_title)
           .desktop-only
             %p
-              = t(:don_footer_desktop_html, total_works: Manifestation.cached_count.to_s, total_authors: Person.cached_count.to_s, total_langs: get_langs.count, total_headwords: get_total_headwords.to_s)
+              = t(:don_footer_desktop_html,
+                  total_works: Manifestation.cached_count.to_s,
+                  total_authors: Authority.cached_count.to_s,
+                  total_langs: get_langs.count,
+                  total_headwords: get_total_headwords.to_s)
             %a.donev#donev_footban{href: '/page/donate'}
               .button-to-full-v02
                 %button.by-button-v02

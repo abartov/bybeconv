@@ -1,0 +1,37 @@
+.backend
+  %h1
+    = t(:bib_workshop)+': '
+    = link_to @authority.name, authority_path(@authority.id)
+  %br
+  -# haml-lint:disable LineLength
+  = link_to t(:search_tasks_system), "https://tasks.benyehuda.org/admin/tasks?utf8=%E2%9C%93&state=&kind=%D7%94%D7%A7%D7%9C%D7%93%D7%94&difficulty=&length=&priority=&query=#{@authority.name}&commit=%D7%A1%D7%99%D7%A0%D7%95%D7%9F"
+  -# haml-lint:enable LineLength
+  .container-fluid
+    .row
+      .col-md-12
+        - unless @authority.bib_done
+          = button_to(t(:mark_as_done),
+                      authors_update_path(id: @authority.id),
+                      { method: :post, params: { 'authority[bib_done]': 1 } })
+        = button_to(t(:make_author_page),
+                    { action: :make_author_page, formtarget: '_blank' },
+                    method: :post, formtarget: '_blank', params: { authority_id: @authority.id })
+    .row
+      .col-md-12
+        %table#bibs
+          %tr
+            %th= t(:title)
+            %th= t(:author)
+            %th= t(:publisher)
+            %th= t(:year_published)
+            %th= t(:language)
+            %th= t(:comments)
+            %th= t(:holdings)
+            %th= t(:status)
+            %th= t(:actions)
+          - @pubs.each do |pub|
+            = render partial: 'publications/pub', locals: {pub: pub, with_person: false, with_actions: :pubs}
+  %hr
+  = render 'shared/note_saving'
+
+  %p= link_to t(:back), action: :index

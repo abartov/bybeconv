@@ -328,8 +328,12 @@ class HtmlFile < ApplicationRecord
   include Ensure_docx_content_type # fixing docx content-type detection problem, per https://github.com/thoughtbot/paperclip/issues/1713
   has_paper_trail
   has_and_belongs_to_many :manifestations
-  belongs_to :person # for simplicity, only a single author considered per HtmlFile -- additional authors can be added on the WEM entities later
-  belongs_to :translator, class_name: 'Person', foreign_key: 'translator_id'
+
+  # for simplicity, only a single author considered per HtmlFile
+  # additional authors can be added on the WEM entities later
+  belongs_to :author, class_name: 'Authority'
+  belongs_to :translator, class_name: 'Authority'
+
   belongs_to :assignee, class_name: 'User', foreign_key: 'assignee_id'
   scope :with_nikkud, -> { where("nikkud IS NOT NULL and nikkud <> 'none'") }
   scope :not_stripped, -> { where('stripped_nikkud IS NULL or stripped_nikkud = 0') }
@@ -341,7 +345,7 @@ class HtmlFile < ApplicationRecord
   validates :title, presence: true
   validates :genre, presence: true
   validates :publisher, presence: true
-  validates :person_id, presence: true
+
   validates_with TitleValidator, on: :create, unless: :override_validation
   validates_with TranslationValidator, on: :create, unless: :override_validation
 
@@ -366,16 +370,15 @@ class HtmlFile < ApplicationRecord
       coder = HTMLEntities.new
       buf = coder.decode($1) # convert Unicode entities back to actual letters, important for counting nikkud!
       nikkud_info = count_nikkud(buf)
-      case
-        when nikkud_info[:nikkud] == 0
-          self.nikkud = "none"
-        when (nikkud_info[:total] > 2000 and nikkud_info[:ratio] < 0.4)
-          self.nikkud = "some"
-        when (nikkud_info[:total] <= 2000 and nikkud_info[:ratio] < 0.2)
-          self.nikkud = "some"
-        else
-          self.nikkud = "full"
-      end
+      self.nikkud = if nikkud_info[:nikkud] == 0
+                      'none'
+                    elsif nikkud_info[:total] > 2000 && nikkud_info[:ratio] < 0.4
+                      'some'
+                    elsif nikkud_info[:total] <= 2000 && nikkud_info[:ratio] < 0.2
+                      'some'
+                    else
+                      'full'
+                    end
       self.tables = false # unless proven otherwise below
       while buf =~ /<table[^>]*>/ do
         # ignore the Ben-Yehuda standard prose 70% table
@@ -610,65 +613,109 @@ class HtmlFile < ApplicationRecord
     manifestations.empty? ? false : true # ensure WEM created
   end
 
-  def set_orig_author(author_id)
-    self.translator_id = self.person_id unless self.person_id.nil? # assume current person should be the translator
-    self.person_id = author_id
+  # rubocop:disable Naming/AccessorMethodName
+  def set_orig_author(orig_author_id)
+    self.translator_id = author_id unless author_id.nil? # assume current person should be the translator
+    self.author_id = orig_author_id
   end
+  # rubocop:enable Naming/AccessorMethodName
 
   def set_translator(author_id)
     self.translator_id = author_id
   end
 
   def publish
-    if status == 'Accepted' && metadata_ready? && (not self.person.nil?)
-      self.status = 'Published'
-      save!
-    else
-      return false
-    end
+    return false unless status == 'Accepted' && metadata_ready? && authority.present?
+
+    self.status = 'Published'
+    save!
   end
 
-  def create_WEM_new(person_id, the_title, the_markdown, multiple, pub_status = nil)
-    if self.status == 'Accepted'
+  # rubocop:disable Naming/MethodName
+  # rubocop:disable Style/GuardClause
+  def create_WEM_new(author_id, the_title, the_markdown, multiple, pub_status = nil)
+    if status == 'Accepted'
       begin
         tt = the_title.strip
-        p = Person.find(person_id)
-        Chewy.strategy(:atomic) {
+        p = Authority.find(author_id) # TODO: use self.author_id instead of argument? (Damir)
+        Chewy.strategy(:atomic) do
           ActiveRecord::Base.transaction do
-            w = Work.new(title: tt, orig_lang: orig_lang, genre: genre, comment: comments, primary: true) # TODO: un-hardcode primariness in new upload flow
-            q = (translator_id.nil? ? p : translator)
-            copyrighted = ((p.public_domain && q.public_domain) ? false : ((p.public_domain.nil? || q.public_domain.nil?) ? nil : true)) # if author is PD, expression is PD # TODO: make this depend on both work and expression author, for translations
-            e = Expression.new(title: tt, language: 'he', period: q.period, copyrighted: copyrighted, source_edition: publisher, date: year_published, comment: comments) # ISO codes
-            w.expressions << e
-            w.save!
-            c = Creation.new(work_id: w.id, person_id: p.id, role: :author)
-            c.save!
+            w = Work.new(
+              title: tt,
+              orig_lang: orig_lang,
+              genre: genre,
+              comment: comments,
+              primary: true # TODO: un-hardcode primariness in new upload flow
+            )
+
+            q = (translator.nil? ? p : translator)
+            intellectual_property =
+              if p.intellectual_property_copyrighted? || q.intellectual_property_copyrighted?
+                :copyrighted
+              elsif p.intellectual_property_permission_for_selected? || q.intellectual_property_permission_for_selected?
+                :copyrighted # assuming worse case when permission is not applied to current work
+              elsif p.intellectual_property_unknown? || q.intellectual_property_unknown?
+                :unknown
+              elsif p.intellectual_property_permission_for_all? || q.intellectual_property_permission_for_all?
+                :by_permission
+              elsif p.intellectual_property_public_domain? && q.intellectual_property_public_domain?
+                :public_domain
+              else
+                :unknown
+              end
+
+            e = w.expressions.build(
+              title: tt,
+              language: 'he',
+              period: q.person&.period, # what to do if corporate body?
+              intellectual_property: intellectual_property,
+              source_edition: publisher,
+              date: year_published,
+              comment: comments
+            )
+            w.involved_authorities.build(authority: p, role: :author)
 
             if translator_id.present?
-              translator.realizers.create!(expression: e, role: :translator)
+              e.involved_authorities.build(authority: translator, role: :translator)
             end
 
-            em_author = (translator_id.nil? ? p : translator) # the author of the Expression and Manifestation is the translator, if one exists
-            if pub_status.nil? # default to uploading new works in unpublished status when author/translator is unpublished
-              pub_status = (em_author.published? && p.published?) ? :published : :unpublished 
-            else
-              pub_status = pub_status.to_i
-            end
-            m = Manifestation.new(title: tt, responsibility_statement: em_author.name, conversion_verified: true, medium: I18n.t(:etext), publisher: Rails.configuration.constants['our_publisher'], publication_place: Rails.configuration.constants['our_place_of_publication'], publication_date: Date.today, markdown: the_markdown, comment: comments, status: pub_status)
-            #m.people << em_author
-            e.manifestations << m
-            m.save!
-            e.save!
+            # the author of the Expression and Manifestation is the translator, if one exists
+            em_author = (translator_id.nil? ? p : translator)
+
+            pub_status = if pub_status.nil?
+                           # default to uploading new works in unpublished status when author/translator is unpublished
+                           em_author.published? && p.published? ? :published : :unpublished
+                         else
+                           pub_status.to_i
+                         end
+
+            m = e.manifestations.build(
+              title: tt,
+              responsibility_statement: em_author.name,
+              conversion_verified: true,
+              medium: I18n.t(:etext),
+              publisher: Rails.configuration.constants['our_publisher'],
+              publication_place: Rails.configuration.constants['our_place_of_publication'],
+              publication_date: Time.zone.today,
+              markdown: the_markdown,
+              comment: comments,
+              status: pub_status
+            )
+            w.save!
+
             manifestations << m # this HtmlFile itself should know the manifestation created out of it
-            self.status = 'Published' unless multiple # if called for split parts, we need to keep the status 'Accepted' for the check above. Status will be updated be caller.
+
+            # if called for split parts, we need to keep the status 'Accepted' for the check above.
+            # Status will be updated be caller.
+            self.status = 'Published' unless multiple
+
             save!
             m.recalc_cached_people!
-            if self.pub_link.present? && self.pub_link_text.present?
-              m.external_links.build(linktype: :publisher_site, url: self.pub_link, description: self.pub_link_text)
-              m.save!
+            if pub_link.present? && pub_link_text.present?
+              m.external_links.create!(linktype: :publisher_site, url: pub_link, description: pub_link_text)
             end
           end
-        }
+        end
         return true
       rescue
         return I18n.t(:frbrization_error)
@@ -677,6 +724,8 @@ class HtmlFile < ApplicationRecord
       return I18n.t(:must_accept_before_publishing)
     end
   end
+  # rubocop:enable Style/GuardClause
+  # rubocop:enable Naming/MethodName
 
   def remove_line_nums!
     lines = File.open(path + '.markdown', 'r:UTF-8').read.split("\n")

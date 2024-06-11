@@ -5,11 +5,17 @@ include ApplicationHelper
 class AuthorsController < ApplicationController
   include FilteringAndPaginationConcern
 
-  before_action only: [:new, :publish, :create, :show, :edit, :list, :add_link, :delete_link, :delete_photo, :edit_toc, :update, :to_manual_toc] do |c| c.require_editor('edit_people') end
+  before_action only: %i(new publish create show edit list add_link delete_link
+                         delete_photo edit_toc update to_manual_toc add_link) do |c|
+    c.require_editor('edit_people')
+  end
+
+  before_action :set_author,
+                only: %i(show edit update destroy toc edit_toc prep_for_print print all_links delete_photo
+                         whatsnew_popup latest_popup publish)
   autocomplete :tag, :name, :limit => 2
 
   def publish
-    @author = Person.find(params[:id])
     if @author
       if params[:commit].present?
         # POST request
@@ -48,7 +54,6 @@ class AuthorsController < ApplicationController
   end
 
   def delete_photo
-    @author = Person.find(params[:id])
     if @author.profile_image.file?
       @author.profile_image.destroy
       @author.save!
@@ -59,7 +64,6 @@ class AuthorsController < ApplicationController
   end
 
   def whatsnew_popup
-    @author = Person.find(params[:id])
     pubs = @author.works_since(1.month.ago, 1000)
     @pubscoll = {}
     pubs.each {|m|
@@ -72,7 +76,6 @@ class AuthorsController < ApplicationController
   end
 
   def latest_popup
-    @author = Person.find(params[:id])
     pubs = @author.cached_latest_stuff
     @pubscoll = {}
     pubs.each {|m|
@@ -117,11 +120,12 @@ class AuthorsController < ApplicationController
       @filters += @genres.map{|x| [helpers.textify_genre(x), "genre_#{x}", :checkbox]}
     end
     # copyright
-    @copyright = params['ckb_copyright'].map{|x| x.to_i} if params['ckb_copyright'].present?
-    if @copyright.present?
-      cright = @copyright.map{|x| x==0 ? false : true}
-      ret << {terms: {copyright_status: cright}}
-      @filters += @copyright.map{|x| [helpers.textify_copyright_status(x == 1), "copyright_#{x}", :checkbox]}
+    @intellectual_property_types = params['ckb_intellectual_property']
+    if @intellectual_property_types.present?
+      ret << { terms: { intellectual_property: @intellectual_property_types } }
+      @filters += @intellectual_property_types.map do |ip|
+        [helpers.textify_intellectual_property(ip), "intellectual_property_#{ip}", :checkbox]
+      end
     end
     # languages
     if params['ckb_languages'].present?
@@ -176,11 +180,11 @@ class AuthorsController < ApplicationController
 
   def prepare_totals(collection)
     standard_aggregations = {
-      periods: {terms: {field: 'period'}},
-      genres: {terms: {field: 'genre'}},
-      languages: {terms: {field: 'language', size: get_langs.count + 1}},
-      copyright_status: {terms: {field: 'copyright_status'}},
-      genders: {terms: {field: 'gender'}},
+      periods: { terms: { field: 'person.period' } },
+      genres: { terms: { field: 'genre' } },
+      languages: { terms: { field: 'language', size: get_langs.count + 1 } },
+      intellectual_property_types: { terms: { field: 'intellectual_property' } },
+      genders: { terms: { field: 'person.gender' } }
     }
 
     collection = collection.aggregations(standard_aggregations)
@@ -190,7 +194,7 @@ class AuthorsController < ApplicationController
     @genre_facet = buckets_to_totals_hash(collection.aggs['genres']['buckets'])
     @language_facet = buckets_to_totals_hash(collection.aggs['languages']['buckets'])
     @language_facet[:xlat] = @language_facet.except('he').values.sum
-    @copyright_facet = buckets_to_totals_hash(collection.aggs['copyright_status']['buckets'])
+    @intellectual_property_facet = buckets_to_totals_hash(collection.aggs['intellectual_property_types']['buckets'])
   end
 
   SORTING_PROPERTIES = {
@@ -232,9 +236,9 @@ class AuthorsController < ApplicationController
     es_query = build_es_query_from_filters
     es_query = { match_all: {} } if es_query == {}
 
-    @collection = PeopleIndex.query(es_query)
-                             .filter(filter)
-                             .order(ord)
+    @collection = AuthoritiesIndex.query(es_query)
+                                  .filter(filter)
+                                  .order(ord)
 
     @authors = paginate(@collection)
   end
@@ -256,7 +260,10 @@ class AuthorsController < ApplicationController
   end
 
   def all
-    redirect_to '/authors'
+    # This action is used for backward compatibility.
+    # The URL /authors/all did exist at one time, and may be linked to from outside our site, and we want not to
+    # break it, but to seamlessly redirect it to just /authors.
+    redirect_to authors_path
   end
 
   def by_tag
@@ -352,79 +359,11 @@ class AuthorsController < ApplicationController
     end
   end
 
-  # This code was used for 'secondary portal', but not used anymore. We may need to reimplement it at some point
-  # def index
-  #   @page_title = t(:authors)+' - '+t(:project_ben_yehuda)
-  #   @pop_by_genre = cached_popular_authors_by_genre # get popular authors by genre + most popular translated
-  #   @rand_by_genre = {}
-  #   @pagetype = :authors
-  #   @surprise_by_genre = {}
-  #   get_genres.each do |g|
-  #     @rand_by_genre[g] = randomize_authors(@pop_by_genre[g][:orig], g) # get random authors by genre
-  #     @rand_by_genre[g] = @pop_by_genre[g][:orig] if @rand_by_genre[g].empty? # workaround for genres with very few authors (like fables, in 2017)
-  #     @surprise_by_genre[g] = @rand_by_genre[g].pop # make one of the random authors the surprise author
-  #   end
-  #   @authors_abc = Person.order(:sort_name).limit(100) # get page 1 of all authors
-  #   @author_stats = {total: Person.cached_toc_count, pd: Person.cached_pd_count, translators: Person.cached_translators_count, translated: Person.cached_no_toc_count}
-  #   @author_stats[:permission] = @author_stats[:total] - @author_stats[:pd]
-  #   @authors_by_genre = count_authors_by_genre
-  #   @new_authors = Person.has_toc.latest(3)
-  #   @featured_author = featured_author
-  #   (@fa_snippet, @fa_rest) = @featured_author.nil? ? ['',''] : snippet(@featured_author.body, 500)
-  #   @rand_translated_authors = Person.translatees.order('RAND()').limit(5)
-  #   @rand_translators = Person.translators.order('RAND()').limit(5)
-  #   @pop_translated_authors = Person.get_popular_xlat_authors.limit(5)
-  #   @pop_translators = Person.get_popular_translators.limit(5)
-  # end
-
-  def new
-    @person = Person.new
-    @page_title = t(:new_author)
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @person }
-    end
-  end
-
-  def create
-    params[:person][:wikidata_id] = params[:person][:wikidata_id].strip[1..-1] if params[:person] and params[:person][:wikidata_id] and params[:person][:wikidata_id][0] and params[:person][:wikidata_id].strip[0] == 'Q' # tolerate pasting the Wikidata number with the Q
-    Chewy.strategy(:atomic) {
-      @person = Person.new(person_params)
-      unless @person.status.present?
-        @person.status = @person.public_domain ? :awaiting_first : :unpublished # default to unpublished. Publishing happens automatically upon first works uploaded if public domain, or by button in status column in authors#list if copyrighted
-      end
-
-      respond_to do |format|
-        if @person.save
-          format.html { redirect_to url_for(action: :show, id: @person.id), notice: t(:updated_successfully) }
-          format.json { render json: @person, status: :created, location: @person }
-        else
-          format.html { render action: "new" }
-          format.json { render json: @person.errors, status: :unprocessable_entity }
-        end
-      end
-    }
-  end
-
-  def destroy
-    @author = Person.find(params[:id])
-    Chewy.strategy(:atomic) {
-      if @author.nil?
-        flash[:error] = t(:no_such_item)
-        redirect_to '/'
-      else
-        @author.destroy!
-        redirect_to action: :list
-      end
-    }
-  end
-
   def show
-    @author = Person.find(params[:id])
     @published_works = @author.original_works.count
     @published_xlats = @author.translations.count
-    @total_orig_works = @author.original_work_count_including_unpublished
-    @total_xlats = @author.translations_count_including_unpublished
+    @total_orig_works = @author.manifestations(:author).count
+    @total_xlats = @author.manifestations(:translator).count
     @aboutnesses = @author.aboutnesses
 
     if @author.nil?
@@ -432,72 +371,108 @@ class AuthorsController < ApplicationController
       redirect_to '/'
     else
       # TODO: add other types of content
-      @page_title = t(:author_details)+': '+@author.name
+      @page_title = "#{t(:author_details)}: #{@author.name}"
+    end
+  end
+
+  def new
+    @author = Authority.new(intellectual_property: :unknown)
+    type = params[:type]
+    if type == 'person'
+      @author.person = Person.new
+    elsif type == 'corporate_body'
+      @author.corporate_body = CorporateBody.new
+    else
+      raise "Unknown type: '#{type}'"
+    end
+
+    @page_title = t(:new_author)
+  end
+
+  def create
+    Chewy.strategy(:atomic) do
+      @author = Authority.new(authority_params)
+      if @author.status.blank?
+        @author.status = @author.intellectual_property_public_domain? ? :awaiting_first : :unpublished
+      end
+
+      if @author.save
+        flash.notice = t(:created_successfully)
+        redirect_to action: :show, params: { id: @author.id }
+      else
+        render action: :new, status: :unprocessable_entity
+      end
+    end
+  end
+
+  def destroy
+    @author = Person.find(params[:id])
+    Chewy.strategy(:atomic) do
+      if @author.nil?
+        flash[:error] = t(:no_such_item)
+        redirect_to '/'
+      else
+        @author.destroy!
+        redirect_to action: :list
+      end
     end
   end
 
   def edit
-    @author = Person.find(params[:id])
-    if @author.nil?
-      flash[:error] = t(:no_such_item)
-      redirect_to '/'
-    else
-      @page_title = t(:edit)+': '+@author.name
-      # do stuff
-    end
+    @page_title = "#{t(:edit)}: #{@author.name}"
   end
 
   def update
-    @author = Person.find(params[:id])
-
-    params[:person][:wikidata_id] = params[:person][:wikidata_id].strip[1..-1] if params[:person] and params[:person][:wikidata_id] and params[:person][:wikidata_id][0] and params[:person][:wikidata_id].strip[0] == 'Q' # tolerate pasting the Wikidata number with the Q
     Chewy.strategy(:atomic) do
-      if @author.update(person_params)
+      if @author.update(authority_params)
         # if period was updated, update the period of this person's Expressions
-        if @author.period_previously_changed?
+        if @author.person.present? && @author.person.period_previously_changed?
           # In our system period states for Hebrew text period. So for original Hebrew works it should match
           # period of author, and if this is a translation from other language to Hebrew, it should match period of
           # translator. See https://github.com/abartov/bybeconv/issues/149#issuecomment-1141062929
-          o = @author.original_works.preload(expression: :work).map(&:expression).
-            select { |e| e.work.orig_lang == 'he' }
-          t = @author.translations.preload(:expression).map(&:expression).
-            select { |e| e.language == 'he' } # we have few translations from Hebrew to other languages
-          (o + t).uniq.each { |e| e.update_attribute(:period, @author.period) }
+          o = @author.original_works.preload(expression: :work).map(&:expression)
+                     .select { |e| e.work.orig_lang == 'he' }
+          t = @author.translations.preload(:expression).map(&:expression)
+                     .select { |e| e.language == 'he' } # we have few translations from Hebrew to other languages
+          (o + t).uniq.each { |e| e.update(period: @author.person.period) }
         end
         flash[:notice] = I18n.t(:updated_successfully)
         redirect_to action: :show, id: @author.id
       else
-        format.html { render action: 'edit' }
-        format.json { render json: @author.errors, status: :unprocessable_entity }
+        render action: 'edit', status: :unprocessable_entity
       end
     end
   end
 
   def list
-    @page_title = t(:authors)+' - '+t(:project_ben_yehuda)
-    def_order = 'tocs.status asc, metadata_approved asc, sort_name asc'
-    if params[:q].nil? or params[:q].empty?
-      @people = Person.joins("LEFT JOIN tocs on people.toc_id = tocs.id ").page(params[:page]).order(params[:order].nil? ? def_order : params[:order]) # TODO: pagination
-    else
-      @q = params[:q]
-      @people = Person.joins("LEFT JOIN tocs on people.toc_id = tocs.id ").where('name like ? or other_designation like ?', "%#{params[:q]}%", "%#{params[:q]}%").page(params[:page]).order(params[:order].nil? ? def_order : params[:order])
-    end
+    @page_title = "#{t(:authors)} - #{t(:project_ben_yehuda)}"
+
+    # TODO: pagination
+    @authorities = Authority.left_joins(:toc)
+                            .page(params[:page])
+                            .order(params[:order].nil? ? ['tocs.status, sort_name'] : params[:order])
+
+    @q = params[:q]
+    return if @q.blank?
+
+    @authorities = @authorities.where('name like ? or other_designation like ?', "%#{params[:q]}%", "%#{params[:q]}%")
   end
 
   def add_link
-    @author = Person.find(params[:id])
-    if @author.nil?
-      flash[:error] = t(:no_such_item)
-      redirect_to '/'
+    @author = Authority.find(params[:id])
+    if params[:link_description].empty? || params[:add_url].empty?
+      head :bad_request
     else
-      if(params[:link_description].empty? || params[:add_url].empty?)
-        head :bad_request
-      else
-        @el = ExternalLink.new(linkable: @author, description: params[:link_description], linktype: params[:link_type].to_i, url: params[:add_url], status: :approved)
-        @el.save!
-      end
+      @el = ExternalLink.create!(
+        linkable: @author,
+        description: params[:link_description],
+        linktype: params[:link_type].to_i,
+        url: params[:add_url],
+        status: :approved
+      )
     end
   end
+
   def delete_link
     @el = ExternalLink.find(params[:id])
     if @el.nil?
@@ -510,53 +485,46 @@ class AuthorsController < ApplicationController
   end
 
   def toc
-    @author = Person.find(params[:id])
-    unless @author.nil?
-      if @author.published?
-        @tabclass = set_tab('authors')
-        @print_url = url_for(action: :print, id: @author.id)
-        @pagetype = :author
-        @header_partial = 'authors/author_top'
-        @entity = @author
-        @page_title = "#{@author.name} - #{t(:table_of_contents)} - #{t(:project_ben_yehuda)}"
-        unless is_spider?
-          Chewy.strategy(:bypass) do
-            @author.record_timestamps = false # avoid the impression count touching the datestamp
-            impressionist(@author)  # log actions for pageview stats
-            @author.update_impression
-          end
+    if @author.published?
+      @tabclass = set_tab('authors')
+      @print_url = url_for(action: :print, id: @author.id)
+      @pagetype = :author
+      @header_partial = 'authors/author_top'
+      @entity = @author
+      @page_title = "#{@author.name} - #{t(:table_of_contents)} - #{t(:project_ben_yehuda)}"
+      unless is_spider?
+        Chewy.strategy(:bypass) do
+          @author.record_timestamps = false # avoid the impression count touching the datestamp
+          impressionist(@author) # log actions for pageview stats
+          @author.update_impression
         end
-
-        @og_image = @author.profile_image.url(:thumb)
-        @latest = cached_textify_titles(@author.cached_latest_stuff, @author)
-        @featured = @author.featured_work
-        @aboutnesses = @author.aboutnesses
-        @external_links = @author.external_links.status_approved
-        @any_curated = @featured.present? || @aboutnesses.count > 0
-        unless @featured.empty?
-          (@fc_snippet, @fc_rest) = snippet(@featured[0].body, 500) # prepare snippet for collapsible
-        end
-        @taggings = @author.taggings
-
-        unless @author.toc.nil?
-          prep_toc
-        else
-          generate_toc
-        end
-        prep_user_content(:author)
-        @scrollspy_target = 'genrenav'
-      else
-        flash[:error] = I18n.t(:author_not_available)
-        redirect_to '/'
       end
+
+      @og_image = @author.profile_image.url(:thumb)
+      @latest = cached_textify_titles(@author.cached_latest_stuff, @author)
+      @featured = @author.featured_work
+      @aboutnesses = @author.aboutnesses
+      @external_links = @author.external_links.status_approved
+      @any_curated = @featured.present? || @aboutnesses.count > 0
+      unless @featured.empty?
+        (@fc_snippet, @fc_rest) = snippet(@featured[0].body, 500) # prepare snippet for collapsible
+      end
+      @taggings = @author.taggings
+
+      if @author.toc.present?
+        prep_toc
+      else
+        generate_toc
+      end
+      prep_user_content(:author)
+      @scrollspy_target = 'genrenav'
     else
-      flash[:error] = I18n.t(:no_toc_yet)
+      flash[:error] = I18n.t(:author_not_available)
       redirect_to '/'
     end
   end
 
   def all_links
-    @author = Person.find(params[:id])
     unless @author.nil?
       @external_links = @author.external_links.status_approved
       render partial: 'all_links'
@@ -567,14 +535,12 @@ class AuthorsController < ApplicationController
   end
 
   def print
-    @author = Person.find(params[:id])
     @print = true
     prep_for_print
     @footer_url = url_for(action: :toc, id: @author.id)
   end
 
   def edit_toc
-    @author = Person.find(params[:id])
     if @author.nil?
       flash[:error] = I18n.t('no_such_item')
       redirect_to '/'
@@ -598,18 +564,39 @@ class AuthorsController < ApplicationController
       end
       prep_toc
       prep_edit_toc
-
     end
   end
 
   protected
 
-  def person_params
-    params[:person].permit(:affiliation, :comment, :country, :name, :nli_id, :other_designation, :viaf_id, :public_domain, :profile_image, :birthdate, :deathdate, :wikidata_id, :wikipedia_url, :wikipedia_snippet, :blog_category_url, :profile_image, :metadata_approved, :gender, :bib_done, :period, :sort_name, :status)
+  def set_author
+    @author = Authority.find(params[:id])
+  end
+
+  def authority_params
+    params.require(:authority).permit(
+      :comment,
+      :country,
+      :name,
+      :nli_id,
+      :other_designation,
+      :viaf_id,
+      :intellectual_property,
+      :profile_image,
+      :wikidata_uri,
+      :wikipedia_url,
+      :wikipedia_snippet,
+      :blog_category_url,
+      :profile_image,
+      :bib_done,
+      :sort_name,
+      :status,
+      person_attributes: %i(id gender period birthdate deathdate),
+      corporate_body_attributes: %i(id location inception inception_year dissolution dissolution_year)
+    )
   end
 
   def prep_for_print
-    @author = Person.find(params[:id])
     if @author.nil?
       head :ok
     else

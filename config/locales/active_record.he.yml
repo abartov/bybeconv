@@ -1,0 +1,50 @@
+he:
+  attributes:
+    created_at: נוצר בתאריך
+    updated_at: עודכן בתאריך
+    name: שם
+    sort_name: שם לצורך מיון
+    status: סטטוס
+    country: מדינה
+    period: תקופה
+  activerecord:
+    models:
+      person: אדם
+      corporate_body: גוף/מוסד
+      authority: מחבר
+    errors:
+      models:
+        involved_authority:
+          attributes:
+            base:
+              no_item: חובה לשייך יצירה או ביטוי
+              multiple_items: אי אפשר לשייך גם יצירה וגם ביטוי
+        authority:
+          attributes:
+            base:
+              no_linked_authority: יש לקשר או רשומת אישים או רשומת ארגונים
+              multiple_linked_authorities: אי אפשר לקשר גם רשומת אישים וגם רשומת ארגונים
+    attributes:
+      authority:
+        other_designation: כינויים אחרים
+        intellectual_property: מצב זכויות יוצרים
+        wikidata_uri: כתובת בויקינתונים
+        comment: הערה
+        bib_done: ביבליוגרפיה הושלמה בסדנה?
+        nli_id: מזהה בספרייה הלאומית
+        viaf_id: "מזהה במאגר VIAF‏"
+        blog_category_url: קישורית לקטגוריה על היוצר/ת ביומן הרשת
+        wikipedia_snippet: תקציר מויקיפדיה
+        wikipedia_url: קישורית לויקיפדיה
+      corporate_body:
+        location: מיקום
+        inception: תאריך ייסוד
+        inception_year: שנת ייסוד
+        dissolution: תאריך פירוק
+        dissolution_year: שנת פירוק
+      expression:
+        intellectual_property: מצב זכויות יוצרים
+      person:
+        birthdate: תאריך לידה
+        deathdate: תאריך פטירה
+        gender: מגדר

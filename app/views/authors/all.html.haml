@@ -1,8 +1,0 @@
-/ All authors list
-.row
-  .col-sm-12
-    / actual authors
-    %ol.mainlist
-      - @authors_abc.each do |au|
-        %li= link_to au.name, person_path(au.id)
-!= paginate @authors_abc

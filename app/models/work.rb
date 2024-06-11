@@ -1,10 +1,12 @@
 include BybeUtils
 class Work < ApplicationRecord
+  include RecordWithInvolvedAuthorities
+
   GENRES = %w(poetry prose drama fables article memoir letters reference lexicon).freeze
-  
+
   has_many :expressions, inverse_of: :work, dependent: :destroy
-  has_many :creations, dependent: :destroy
-  has_many :persons, through: :creations, class_name: 'Person'
+  has_many :involved_authorities, dependent: :destroy, inverse_of: :work
+
   has_many :aboutnesses, as: :aboutable, dependent: :destroy # works that are ABOUT this work
   has_many :topics, class_name: 'Aboutness' # topics that this work is ABOUT 
 
@@ -15,21 +17,13 @@ class Work < ApplicationRecord
   validates_inclusion_of :primary, in: [true, false]
 
   before_save :norm_dates
-  # has_and_belongs_to_many :people # superseded by creations and persons above
 
   def authors
-    return creations.author.includes(:person).map(&:person)
-  end
-
-  def illustrators
-    return creations.illustrator.includes(:person).map(&:person)
+    involved_authorities_by_role(:author)
   end
 
   def first_author
-    creations.each do |c|
-      return c.person if c.role == 'author'
-    end
-    return nil
+    authors[0]
   end
 
   def works_about
