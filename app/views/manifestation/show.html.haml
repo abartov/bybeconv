@@ -6,7 +6,7 @@
   %p
     %b= link_to t(:render), url_for(action: :read, id: @m.id)
   %h1
-    #{t(:work_details)}: #{@m.title} / #{linkify_people(@w.involved_authorities.map(&:authority))}
+    != "#{t(:work_details)}: #{@m.title} / #{linkify_people(@w.involved_authorities.map(&:authority))}"
     - if @e.translation
       != " / #{linkify_people(@e.translators)}"
   - unless @legacy_url.nil?
