@@ -67,6 +67,34 @@ describe AuthorsController do
       end
     end
 
+    describe '#create_toc' do
+      subject(:call) { get :create_toc, params: { id: author.id } }
+
+      context 'when there is no TOC yet' do
+        it 'creates new TOC' do
+          expect { call }.to change(Toc, :count).by(1)
+          toc = Toc.order(id: :desc).first
+          author.reload
+          expect(author.toc).to eq(toc)
+          expect(flash.notice).to eq I18n.t(:created_toc)
+          expect(call).to redirect_to authors_show_path(id: author)
+        end
+      end
+
+      context 'when author already has TOC' do
+        before do
+          author.toc = create(:toc)
+          author.save!
+        end
+
+        it 'shows error message' do
+          expect { call }.to not_change(Toc, :count)
+          expect(flash[:error]).to eq I18n.t(:already_has_toc)
+          expect(call).to redirect_to authors_show_path(id: author)
+        end
+      end
+    end
+
     describe '#whatsnew_popup' do
       let!(:manifestation) { create(:manifestation, created_at: created_at, author: author) }
 
@@ -316,6 +344,46 @@ describe AuthorsController do
         end
       end
 
+      describe '#to_manual_toc' do
+        subject(:call) { get :to_manual_toc, params: { id: author.id } }
+
+        before do
+          create_list(:manifestation, 3, author: author, orig_lang: 'de')
+          create_list(:manifestation, 2, orig_lang: 'ru', translator: author)
+
+          # work with several authors and translators
+          m = create(:manifestation, author: author, orig_lang: 'en')
+          create(:involved_authority, work: m.expression.work, role: :author)
+          create(:involved_authority, work: m.expression.work, role: :author)
+          create(:involved_authority, expression: m.expression, role: :translator)
+          create(:involved_authority, expression: m.expression, role: :translator)
+        end
+
+        context 'when there is no TOC yet' do
+          it 'creates new TOC' do
+            expect { call }.to change(Toc, :count).by(1)
+            toc = Toc.order(id: :desc).first
+            author.reload
+            expect(author.toc).to eq(toc)
+            expect(flash.notice).to eq I18n.t(:created_toc)
+            expect(call).to redirect_to authors_edit_toc_path(id: author)
+          end
+        end
+
+        context 'when author already has TOC' do
+          before do
+            author.toc = create(:toc)
+            author.save!
+          end
+
+          it 'shows error message' do
+            expect { call }.to not_change(Toc, :count)
+            expect(flash[:error]).to eq I18n.t(:already_has_toc)
+            expect(call).to redirect_to authors_edit_toc_path(id: author)
+          end
+        end
+      end
+
       describe '#edit_toc' do
         subject(:call) { get :edit_toc, params: { id: author.id } }
 
@@ -453,6 +521,22 @@ describe AuthorsController do
             expect(author).to have_attributes(authority_attributes)
             expect(author.corporate_body).to have_attributes(corporate_body_attributes)
           end
+        end
+      end
+
+      describe '#destroy' do
+        subject(:call) { delete :destroy, params: { id: author.id } }
+
+        before do
+          create_list(:manifestation, 3, author: author)
+          create_list(:manifestation, 2, orig_lang: 'ru', translator: author)
+        end
+
+        it 'removes authority but keeps texts it was involved into' do
+          expect { call }.to change(Authority, :count).by(-1)
+                                                      .and change(InvolvedAuthority, :count).by(-5)
+                                                      .and not_change(Manifestation, :count)
+          expect(call).to redirect_to authors_list_path
         end
       end
 

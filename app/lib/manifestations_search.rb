@@ -19,7 +19,7 @@ class ManifestationsSearch
   end
 
   def index
-    MultiIndexSearchRequest.new(ManifestationsIndex, AuthoritiesIndex, DictIndex)
+    MultiIndexSearchRequest.new(AuthoritiesIndex, ManifestationsIndex, DictIndex)
   end
 
   def search
