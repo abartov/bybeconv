@@ -296,6 +296,27 @@ class Authority < ApplicationRecord
     person.present? ? person.gender_letter : 'ו'
   end
 
+  def publish!
+    # set all person's works to status published
+    # be cautious about publishing joint works, because the *other* author(s) or translators may yet be unpublished!
+    all_works_including_unpublished.each do |m|
+      next if m.published?
+
+      can_publish = true
+      m.authors.each { |au| can_publish = false unless au.published? || au == self }
+      m.translators.each { |au| can_publish = false unless au.published? || au == self }
+
+      next unless can_publish
+
+      # pretend the works were created just now, so that they appear in whatsnew
+      # (NOTE: real creation date can be discovered through papertrail)
+      m.created_at = Time.zone.now
+      m.published!
+    end
+    self.published_at = Time.zone.now
+    published! # finally, set this person to published
+  end
+
   def publish_if_first!
     publish! if awaiting_first?
   end

@@ -6,6 +6,7 @@ def clean_tables
 
   InvolvedAuthority.destroy_all
 
+  CorporateBody.destroy_all
   Person.destroy_all
   Authority.destroy_all
 
