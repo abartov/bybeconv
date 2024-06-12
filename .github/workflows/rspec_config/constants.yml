@@ -17,7 +17,6 @@ development: &default
   primo_url: 'http://your.primo.server/PrimoWebServices/xservice/search/brief'
   primo_institution: 'some_code'
   idea_url: 'http://your.IDEA.url'
-  toc_template: "## whatever"
   tasks_system_host: 'localhost'
   tasks_system_port: 3001
 

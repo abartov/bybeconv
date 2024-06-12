@@ -12,7 +12,7 @@ class AuthorsController < ApplicationController
 
   before_action :set_author,
                 only: %i(show edit update destroy toc edit_toc prep_for_print print all_links delete_photo
-                         whatsnew_popup latest_popup publish create_toc to_manual_toc)
+                         whatsnew_popup latest_popup publish to_manual_toc)
   autocomplete :tag, :name, :limit => 2
 
   def publish
@@ -279,19 +279,6 @@ class AuthorsController < ApplicationController
       flash[:error] = t(:no_such_item)
       redirect_to '/'
     end
-  end
-
-  def create_toc
-    if @author.toc.nil?
-      toc = Toc.new(toc: Rails.configuration.constants['toc_template'], status: :raw, credit_section: '')
-      toc.save!
-      @author.toc = toc
-      @author.save!
-      flash[:notice] = t(:created_toc)
-    else
-      flash[:error] = t(:already_has_toc)
-    end
-    redirect_to controller: :authors, action: :show, id: @author.id
   end
 
   def to_manual_toc
