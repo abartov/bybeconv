@@ -7,24 +7,6 @@ class Person < ApplicationRecord
   scope :with_name, -> { joins(:authority).select('people.*, authorities.name') }
 
   has_paper_trail
-
-  def publish!
-    # set all person's works to status published
-    all_works_including_unpublished.each do |m| # be cautious about publishing joint works, because the *other* author(s) or translators may yet be unpublished!
-      next if m.published?
-      can_publish = true
-      m.authors.each {|au| can_publish = false unless au.published? || au == self}
-      m.translators.each {|au| can_publish = false unless au.published? || au == self}
-      if can_publish
-        m.created_at = Time.now # pretend the works were created just now, so that they appear in whatsnew (NOTE: real creation date can be discovered through papertrail)
-        m.status = :published
-        m.save!
-      end
-    end
-    self.published_at = Time.now
-    self.status = :published
-    self.save! # finally, set this person to published
-  end
   def died_years_ago
     begin
       dy = death_year.to_i
