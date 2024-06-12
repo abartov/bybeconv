@@ -24,7 +24,7 @@
                 %span.headline-1-v02
                   = link_to author.name, authority_path(author)
                 - if author.person.present?
-                  %span.date-range (#{author.person.life_years})
+                  %span.date-range!= "(#{author.person.life_years})"
             .by-card-content-v02
               .surprise-author-card-content-v02
                 .metadata
