@@ -9,4 +9,4 @@
     - @authors.each do |author|
       %tr
         %td= link_to author.name, authors_show_path(id: author.id)
-        %td= author.person&.life_years
+        %td!= author.person&.life_years

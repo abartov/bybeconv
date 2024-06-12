@@ -6,7 +6,7 @@
       .author-name-years
         .headline-1-v02= @author.name
         - if @author.person.present?
-          .author-page-top-years (#{@author.person.life_years})
+          .author-page-top-years!= "(#{@author.person.life_years})"
       .author-top-second-line
         .author-page-top-rights
           = render partial: 'shared/intellectual_property',
