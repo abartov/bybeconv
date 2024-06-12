@@ -16,27 +16,22 @@ class AuthorsController < ApplicationController
   autocomplete :tag, :name, :limit => 2
 
   def publish
-    if @author
-      if params[:commit].present?
-        # POST request
-        if @author.unpublished? and (@author.all_works_including_unpublished.count > 0)
-          @author.publish!
-          Rails.cache.delete('newest_authors') # force cache refresh
-          Rails.cache.delete('homepage_authors')
-          Rails.cache.delete("au_#{@author.id}_work_count")
-          flash[:success] = t(:published)
-        else
-          @author.awaiting_first!
-          flash[:success] = t(:awaiting_first)
-        end
-        redirect_to action: :list
+    if params[:commit].present?
+      # POST request
+      if @author.unpublished? && @author.all_works_including_unpublished.count > 0
+        @author.publish!
+        Rails.cache.delete('newest_authors') # force cache refresh
+        Rails.cache.delete('homepage_authors')
+        Rails.cache.delete("au_#{@author.id}_work_count")
+        flash[:success] = t(:published)
       else
-        # GET request
-        @manifestations = @author.all_works_including_unpublished
+        @author.awaiting_first!
+        flash[:success] = t(:awaiting_first)
       end
+      redirect_to action: :list
     else
-      flash[:error] = t(:not_found)
-      redirect_to admin_index_path
+      # GET request
+      @manifestations = @author.all_works_including_unpublished
     end
   end
 

@@ -275,7 +275,10 @@ describe AuthorsController do
     describe 'member actions' do
       let(:period) { 'revival' }
       let(:intellectual_property) { :public_domain }
-      let(:author) { create(:authority, intellectual_property: intellectual_property, period: period) }
+      let(:status) { 'published' }
+      let(:author) do
+        create(:authority, intellectual_property: intellectual_property, period: period, status: status)
+      end
 
       describe '#show' do
         subject(:call) { get :show, params: { id: author.id } }
@@ -317,18 +320,55 @@ describe AuthorsController do
       end
 
       describe '#publish' do
-        subject { get :publish, params: { id: author.id } }
+        subject(:call) { get :publish, params: { id: author.id, commit: commit }.compact }
 
-        before do
-          create_list(:manifestation, 3, author: author, status: :unpublished)
+        let(:status) { :unpublished }
+        let(:works) { create_list(:manifestation, 3, author: author, status: :unpublished) }
+
+        context 'when list is requested' do
+          let(:commit) { nil }
+
+          before { works }
+
+          it 'renders page' do
+            expect(call).to be_successful
+            expect(call).to render_template(:publish)
+            expect(assigns(:manifestations)).to eq works
+          end
+
+          context 'when corporate_body' do
+            let(:author) { create(:authority, :corporate_body) }
+
+            it { is_expected.to be_successful }
+          end
         end
 
-        it { is_expected.to be_successful }
+        context 'when publish action is requested' do
+          let(:commit) { 'publish' }
 
-        context 'when corporate_body' do
-          let(:author) { create(:authority, :corporate_body) }
+          context 'when there are no works' do
+            it 'sets author status to awaiting_first' do
+              expect(call).to redirect_to authors_list_path
+              author.reload
+              expect(author.status).to eq 'awaiting_first'
+              expect(flash[:success]).to eq I18n.t(:awaiting_first)
+            end
+          end
 
-          it { is_expected.to be_successful }
+          context 'when there are unpublished works' do
+            before { works }
+
+            it 'sets author status to published and publish all works' do
+              expect(call).to redirect_to authors_list_path
+              author.reload
+              expect(author.status).to eq 'published'
+              works.each do |work|
+                work.reload
+                expect(work).to be_published
+              end
+              expect(flash[:success]).to eq I18n.t(:published)
+            end
+          end
         end
       end
 
