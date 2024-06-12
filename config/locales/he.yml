@@ -1109,6 +1109,7 @@ he:
   no_such_item: אין פריט כזה.
   item: פריט
   created_toc: נוצר דף יוצר עם תבנית ריקה
+  already_has_toc: Author already has TOC
   miscellaneous: שונות
   etext: ספר אלקטרוני
   url: כתובת URL

@@ -12,7 +12,7 @@ class AuthorsController < ApplicationController
 
   before_action :set_author,
                 only: %i(show edit update destroy toc edit_toc prep_for_print print all_links delete_photo
-                         whatsnew_popup latest_popup publish)
+                         whatsnew_popup latest_popup publish create_toc to_manual_toc)
   autocomplete :tag, :name, :limit => 2
 
   def publish
@@ -282,81 +282,63 @@ class AuthorsController < ApplicationController
   end
 
   def create_toc
-    author = Person.find(params[:id])
-    unless author.nil?
-      if author.toc.nil?
-        toc = Toc.new(toc: Rails.configuration.constants['toc_template'], status: :raw, credit_section: '')
-        toc.save!
-        author.toc = toc
-        author.save!
-        flash[:notice] = t(:created_toc)
-      else
-        flash[:error] = t(:already_has_toc)
-      end
-      redirect_to controller: :authors, action: :show, id: params[:id]
+    if @author.toc.nil?
+      toc = Toc.new(toc: Rails.configuration.constants['toc_template'], status: :raw, credit_section: '')
+      toc.save!
+      @author.toc = toc
+      @author.save!
+      flash[:notice] = t(:created_toc)
     else
-      flash[:error] = t(:no_such_item)
-      redirect_to controller: :admin, action: :index
+      flash[:error] = t(:already_has_toc)
     end
+    redirect_to controller: :authors, action: :show, id: @author.id
   end
+
   def to_manual_toc
-    author = Person.find(params[:id])
-    unless author.nil?
-      if author.toc.nil?
-        @works = author.original_works_by_genre # deliberately NOT using cache here
-        @translations = author.translations_by_genre
-        @genres_present = []
-        @works.each_key {|k| @genres_present << k unless @works[k].size == 0 || @genres_present.include?(k)}
-        @translations.each_key {|k| @genres_present << k unless @works[k].size == 0 || @genres_present.include?(k)}
-        toc = ''
-        get_genres.each do |genre|
-          if @works[genre].size > 0 || @translations[genre].size > 0
-            toc += "## #{textify_genre(genre)}\n"
-            if @works[genre].size > 0
-              @works[genre].each do |m|
-                toc += "&&& פריט: מ#{m.id} &&& כותרת: #{m.title.strip} &&&"
-                if m.authors.count > 1
-                  au_count = m.authors.count - 1
-                  i = 0
-                  toc += '('+t(:with)
-                  add_authors = ''
-                  m.authors.each do |au|
-                    next if au == author
-                    i += 1
-                    add_authors += au.name + (i == au_count ? '' : '; ')
-                  end
-                  toc += add_authors+')'
-                end
-                if m.expression.translation
-                  toc += " #{t(:translated_by)} "
-                  toc += m.expression.translators.map{|p| p.name}.join('; ')
-                end
-                toc += "\n\n"
-              end
+    if @author.toc.nil?
+      @works = @author.original_works_by_genre # deliberately NOT using cache here
+      @translations = @author.translations_by_genre
+      @genres_present = []
+      @works.each_key { |k| @genres_present << k unless @works[k].empty? || @genres_present.include?(k) }
+      @translations.each_key { |k| @genres_present << k unless @works[k].empty? || @genres_present.include?(k) }
+      toc = ''
+      get_genres.each do |genre|
+        next if @works[genre].empty? && @translations[genre].empty?
+
+        toc += "## #{textify_genre(genre)}\n"
+        unless @works[genre].empty?
+          @works[genre].each do |m|
+            toc += "&&& פריט: מ#{m.id} &&& כותרת: #{m.title.strip} &&&"
+            if m.authors.count > 1
+              add_authors = m.authors.reject { |au| au == @author }.map(&:name).join('; ')
+              toc += "(#{t(:with)} #{add_authors})"
             end
-            if @translations[genre].size > 0
-              toc += "### #{t(:translation)}\n"
-              @translations[genre].each do |m|
-                toc += "&&& פריט: מ#{m.id} &&& כותרת: #{m.title.strip} &&&"
-                toc += t(:by)
-                toc += m.expression.work.first_author.name
-              end
+            if m.expression.translation
+              toc += " #{t(:translated_by)} "
+              toc += m.expression.translators.map(&:name).join('; ')
             end
+            toc += "\n\n"
           end
         end
-        newtoc = Toc.new(toc: toc, status: :raw, credit_section: '')
-        newtoc.save!
-        author.toc = newtoc
-        author.save!
-        flash[:notice] = t(:created_toc)
-      else
-        flash[:error] = t(:already_has_toc)
+
+        next if @translations[genre].empty?
+
+        toc += "### #{t(:translation)}\n"
+        @translations[genre].each do |m|
+          toc += "&&& פריט: מ#{m.id} &&& כותרת: #{m.title.strip} &&&"
+          toc += t(:by)
+          toc += m.expression.work.first_author.name
+        end
       end
-      redirect_to controller: :authors, action: :edit_toc, id: params[:id]
+      newtoc = Toc.new(toc: toc, status: :raw, credit_section: '')
+      newtoc.save!
+      @author.toc = newtoc
+      @author.save!
+      flash[:notice] = t(:created_toc)
     else
-      flash[:error] = t(:no_such_item)
-      redirect_to controller: :admin, action: :index
+      flash[:error] = t(:already_has_toc)
     end
+    redirect_to authors_edit_toc_path(id: @author.id)
   end
 
   def show
@@ -406,15 +388,9 @@ class AuthorsController < ApplicationController
   end
 
   def destroy
-    @author = Person.find(params[:id])
     Chewy.strategy(:atomic) do
-      if @author.nil?
-        flash[:error] = t(:no_such_item)
-        redirect_to '/'
-      else
-        @author.destroy!
-        redirect_to action: :list
-      end
+      @author.destroy!
+      redirect_to action: :list
     end
   end
 
