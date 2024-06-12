@@ -14,7 +14,6 @@ development: &default
   google_cse_cx: 'your CSE code'
   google_api_key: 'your Google API key'
   youtube_channel_id: "your YouTube channel ID for what's new feed"
-  toc_template: "## whatever"
   tasks_system_host: 'localhost'
   tasks_system_port: 3001
   full_tagging_policy_url: 'https://benyehuda.org/page/tagging'

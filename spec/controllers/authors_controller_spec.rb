@@ -67,34 +67,6 @@ describe AuthorsController do
       end
     end
 
-    describe '#create_toc' do
-      subject(:call) { get :create_toc, params: { id: author.id } }
-
-      context 'when there is no TOC yet' do
-        it 'creates new TOC' do
-          expect { call }.to change(Toc, :count).by(1)
-          toc = Toc.order(id: :desc).first
-          author.reload
-          expect(author.toc).to eq(toc)
-          expect(flash.notice).to eq I18n.t(:created_toc)
-          expect(call).to redirect_to authors_show_path(id: author)
-        end
-      end
-
-      context 'when author already has TOC' do
-        before do
-          author.toc = create(:toc)
-          author.save!
-        end
-
-        it 'shows error message' do
-          expect { call }.to not_change(Toc, :count)
-          expect(flash[:error]).to eq I18n.t(:already_has_toc)
-          expect(call).to redirect_to authors_show_path(id: author)
-        end
-      end
-    end
-
     describe '#whatsnew_popup' do
       let!(:manifestation) { create(:manifestation, created_at: created_at, author: author) }
 
