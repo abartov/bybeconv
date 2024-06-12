@@ -92,9 +92,9 @@ class AuthorsController < ApplicationController
     when 'uploaded'
       return 'pby_publication_date'
     when 'birth'
-      return 'birth_year'
+      return 'person.birth_year'
     when 'death'
-      return 'death_year'
+      return 'person.death_year'
     end
   end
 
@@ -104,14 +104,14 @@ class AuthorsController < ApplicationController
     # periods
     @periods = params['ckb_periods'] if params['ckb_periods'].present?
     if @periods.present?
-      ret << {terms: {period: @periods}}
-      @filters += @periods.map{|x| [I18n.t(x), "period_#{x}", :checkbox]}
+      ret << { terms: { 'person.period' => @periods } }
+      @filters += @periods.map { |x| [I18n.t(x), "period_#{x}", :checkbox] }
     end
     # genders
     @genders = params['ckb_genders'] if params['ckb_genders'].present?
     if @genders.present?
-      ret << {terms: {gender: @genders}}
-      @filters += @genders.map{|x| [I18n.t(:author)+': '+I18n.t(x), "gender_#{x}", :checkbox]}
+      ret << { terms: { 'person.gender' => @genders } }
+      @filters += @genders.map { |x| ["#{I18n.t(:author)}: #{I18n.t(x)}", "gender_#{x}", :checkbox] }
     end
     # genres
     @genres = params['ckb_genres'] if params['ckb_genres'].present?
