@@ -59,6 +59,9 @@ bin/delayed_job
 *VBox*.log
 ubuntu-*-console.log
 
+# Ignore local dotenv configs (as they should be different for every developer)
+.env.*.local
+
 # Docker-compose config
 docker/bybe_dev/docker-compose.override.yml
 
