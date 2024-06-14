@@ -68,16 +68,12 @@ Rails.application.configure do
   # Enable threaded mode
   # config.threadsafe!
 
-  # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
-  # the I18n.default_locale when a translation can not be found)
-  config.i18n.fallbacks = true
-
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
 
   config.action_mailer.delivery_method = :sendmail # let's start sending mail :)
   config.eager_load = true
-  config.i18n.available_locales = :he
+  config.i18n.available_locales = :he # to not load other locales in memory
 
   # Store Active Storage files on the S3 service
   config.active_storage.service = :amazon
@@ -101,10 +97,6 @@ Rails.application.configure do
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false
-
-  # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
-  # the I18n.default_locale when a translation cannot be found).
-  config.i18n.fallbacks = true
 
   # Send deprecation notices to registered listeners.
   config.active_support.deprecation = :notify
