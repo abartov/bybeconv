@@ -123,6 +123,18 @@ Rails.application.configure do
     config.action_view.cache_template_loading = true
   end
 
+  # disabling some Rails generators to avoid creation of unnecessary files during controller creation
+  config.generators do |g|
+    g.assets false
+    g.helper false
+    g.stylesheets false
+    g.test_framework :rspec,
+                     view_specs: false,
+                     request_specs: false,
+                     routing_specs: false,
+                     controller_specs: true
+  end
+
   # Applying rubocop-rails autocorrection to generated content
   # see https://github.com/rubocop/rubocop-rails?tab=readme-ov-file#rails-configuration-tip
   config.generators.after_generate do |files|
