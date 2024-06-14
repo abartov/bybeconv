@@ -13,6 +13,8 @@ class SearchController < ApplicationController
         @search = ManifestationsSearch.new(query: @searchterm)
       end
       @results = @search.search.page(params[:page])
+      page = (params[:page] || 1).to_i
+      @offset = (page - 1) * Kaminari.config.default_per_page
       @total = @results.count
     rescue # Faraday::Error::ConnectionFailed => e
       @total = -1
