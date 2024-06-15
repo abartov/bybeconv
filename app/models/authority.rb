@@ -82,6 +82,15 @@ class Authority < ApplicationRecord
     # 'Q' in wikidata URI must be uppercase
     self.wikidata_uri = wikidata_uri.blank? ? nil : wikidata_uri.strip.downcase.gsub('q', 'Q')
   end
+
+  # returns all volumes that are items of this authority's root collection
+  def volumes
+    return [] unless root_collection
+
+    # it is assumed all volumes this authority is responsible for are children of the root collection
+    root_collection.coll_items.where(collection_type: :volume)
+  end
+
   def approved_tags
     approved_taggings.joins(:tag).where(tag: { status: Tag.statuses[:approved] }).map(&:tag)
   end

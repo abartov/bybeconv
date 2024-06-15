@@ -154,6 +154,7 @@ Bybeconv::Application.routes.draw do
   post "authors/create"
   patch "authors/update"
   get 'authors/get_random_author'
+  get 'authors/volumes', as: 'authority_volumes'
   post 'authors/add_link/:id' => 'authors#add_link', as: 'author_add_link'
   match 'ingestibles/:id/rmauth/:seqno' => 'ingestibles#rmauth', as: 'ingestible_remove_authority', via: [:post, :delete]
   post 'ingestibles/:id/addauth' => 'ingestibles#addauth', as: 'ingestible_add_authority'

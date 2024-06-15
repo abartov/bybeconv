@@ -6,13 +6,13 @@ class AuthorsController < ApplicationController
   include FilteringAndPaginationConcern
 
   before_action only: %i(new publish create show edit list add_link delete_link
-                         delete_photo edit_toc update to_manual_toc add_link manage_toc) do |c|
+                         delete_photo edit_toc update to_manual_toc add_link manage_toc volumes) do |c|
     c.require_editor('edit_people')
   end
 
   before_action :set_author,
                 only: %i(show edit update destroy toc edit_toc prep_for_print print all_links delete_photo
-                         whatsnew_popup latest_popup publish to_manual_toc)
+                         whatsnew_popup latest_popup publish to_manual_toc volumes)
   autocomplete :tag, :name, :limit => 2
 
   def publish
@@ -33,6 +33,10 @@ class AuthorsController < ApplicationController
       # GET request
       @manifestations = @author.all_works_including_unpublished
     end
+  end
+
+  def volumes
+    render json: { volumes: @author.volumes, publications: @author.publications.no_volume }
   end
 
   def get_random_author

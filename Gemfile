@@ -135,6 +135,7 @@ group :development do
   gem 'ruby-prof' # for profiling
   gem 'ed25519'
   gem 'bcrypt_pbkdf'
+  gem 'debug'
 
   gem 'haml_lint', '~> 0.57.0', require: false
   gem 'pronto', '~> 0.11.2'
