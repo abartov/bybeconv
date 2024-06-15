@@ -98,4 +98,7 @@
         }
       });
     });
+    $('#authority_volumes').on('change', function() {
+      $('#insert_cid').val($('#authority_volumes').val());
+    });
   });
