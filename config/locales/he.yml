@@ -1,8 +1,6 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 he:
-  ingestible:
-    defaults: שדות לכל היצירות
   author_list: רשימת היוצרים
   first_last_name: "שם פרטי / משפחה"
   to_latest_x_works: הצג %{x} יצירות אחרונות
@@ -1424,17 +1422,23 @@ he:
       designer: מעצב
       contributor: משתתף
       other: אחר
-  ingestibles:
-    new:
-      title: העלאת טקסטים לאתר
-      invalid: 'שמירת הקובץ נמנעה בגלל:'
-    edit:
-      title: העלאת טקסטים לאתר
+  ingestible:
+    title: העלאת טקסטים לאתר
+    invalid: 'שמירת הקובץ נמנעה בגלל:'
     authorities:
       or_new_person: או הקלידו שם יוצר/ת חדש/ה
-    form:
-      current_file: קובץ נוכחי
-      or_replace_file: 'או החלפת הקובץ בהעלאה מחדש:'
+    current_file: קובץ נוכחי
+    or_replace_file: 'או החלפת הקובץ בהעלאה מחדש:'
+    any_volume: איתור כותר מכלל המאגר
+    no_volume: לא מתוך כותר
+    volume: כותר
+    new_volume: צור כותר חדש! – 
+    defaults: שדות לכל היצירות
+    attach_photos: צירוף תמונות
+    volume_by_author: איתור כותר מאת יוצר
+    no_volume_explanation: יצירות לא מקובצות
+    attach_photos_explanation: יש לסמן כדי להעלות תמונות בהמשך
+
     single: יצירה בודדת
     multiple: מספר יצירות עם אותם מאפיינים
     mixed: יצירות בעלות מחברים או מאפיינים שונים

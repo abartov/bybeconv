@@ -7,22 +7,30 @@
           %li= message
 
   .field
-    = f.label :title
+    = f.label t('ingestible.title')
     = f.text_field :title, style: 'width:80%'
-  .field
-    = f.label :volume
+  .field{style: 'border: 1px solid #ccc; padding: 10px;'}
+    %h3= t('ingestible.volume')
+    = f.label t('ingestible.volume_by_author')
+    = autocomplete_field_tag :author, '', autocomplete_authority_name_path, 'data-noMatchesLabel' => t(:no_matches_found), id: 'aterm', style: 'width:400px;', id_element: '#authority_id'
+    = hidden_field_tag :authority_id, value: '', id: 'authority_id'
+    = f.check_box :no_volume
+    = f.label t('ingestible.no_volume')
+    &nbsp;
+    %span{id: 'explain_no_volume'}= '[?]'
+    %br
+    = select_tag :authority_volumes, [], {id: 'authority_volumes', style: 'display:none;'}
+    %br
+
+    = f.label t('ingestible.any_volume')
     = autocomplete_field_tag :volume, '', autocomplete_collection_title_path, 'data-noMatchesLabel' => t(:no_matches_found), id: 'cterm', style: 'width:400px;', id_element: '#insert_cid'
     = hidden_field_tag :insert_cid, value: '', id: 'insert_cid'
 
-    = f.check_box :no_volume
-    = f.label :no_volume
-    &nbsp;
-    %span{id: 'explain_no_volume'}= '[?]'
   .field
     = f.label :scenario
     = f.select :scenario, options_for_select(Ingestible.scenarios.map{|k,v| [t("ingestibles.#{k}"), k]}, @ingestible.scenario)
     = f.label :status
-    %b= t("ingestibles.#{@ingestible.status}")
+    %b= t("ingestible.#{@ingestible.status}")
     = f.hidden_field :status, value: @ingestible.status
   %h2= t('ingestible.defaults')
   = f.label t(:genre)
@@ -42,7 +50,7 @@
     = f.text_area :comments
   .field
     = f.check_box :attach_photos
-    = f.label :attach_photos
+    = f.label t('ingestible.attach_photos')
     &nbsp;
     %span{id: 'explain_attach_photos'}= '[?]'
   .field
@@ -59,3 +67,35 @@
   = f.file_field :docx
   .actions
     = f.submit t(:save)
+:javascript
+  $(document).ready(function() {
+    $('#explain_no_volume').popover({content: 
+    "#{t('ingestible.no_volume_explanation')}", 
+    trigger: 'hover', placement: 'right'});
+    $('#explain_attach_photos').popover({content: 
+    "#{t('ingestible.attach_photos_explanation')}", 
+    trigger: 'hover', placement: 'right'});
+    $('#aterm').on('railsAutocomplete.select', function(event, data){
+      $('#authority_id').val(data.item.id);
+      // look up volumes by authority
+      url = "#{authority_volumes_path}?id=" + data.item.id;
+      $.ajax({
+        url: url,
+        success: function(data) {
+          $('#authority_volumes').show();
+          data['volumes'].forEach(function(volume) {
+            $('#authority_volumes').append($('<option>', {
+              value: volume.id,
+              text: volume.title
+            }));
+          });
+          data['publications'].forEach(function(publication) {
+            $('#authority_volumes').append($('<option>', {
+              value: 'P'+publication.id.toString(),
+              text: "#{t('ingestible.new_volume')} " + publication.title
+            }));
+          });
+        }
+      });
+    });
+  });
