@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_06_09_165640) do
+ActiveRecord::Schema.define(version: 2024_06_14_064855) do
 
   create_table "aboutnesses", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -549,36 +549,6 @@ ActiveRecord::Schema.define(version: 2024_06_09_165640) do
     t.index ["user_id"], name: "index_impressions_on_user_id"
   end
 
-  create_table "ingestibles", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
-    t.string "title"
-    t.integer "status"
-    t.text "default_authorities"
-    t.text "metadata"
-    t.text "comments"
-    t.text "markdown"
-    t.integer "user_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.string "problem"
-    t.string "orig_lang"
-    t.string "year_published"
-    t.string "genre"
-    t.string "publisher"
-    t.string "pub_link"
-    t.string "pub_link_text"
-    t.boolean "attach_photos", default: false, null: false
-    t.boolean "no_volume", default: false, null: false
-    t.text "toc_buffer"
-    t.integer "volume_id"
-    t.text "works_buffer", size: :medium
-    t.datetime "markdown_updated_at"
-    t.datetime "works_buffer_updated_at"
-    t.index ["status"], name: "index_ingestibles_on_status"
-    t.index ["title"], name: "index_ingestibles_on_title"
-    t.index ["user_id"], name: "index_ingestibles_on_user_id"
-    t.index ["volume_id"], name: "index_ingestibles_on_volume_id"
-  end
-
   create_table "involved_authorities", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "authority_id", null: false
     t.integer "work_id"
@@ -586,9 +556,7 @@ ActiveRecord::Schema.define(version: 2024_06_09_165640) do
     t.integer "role", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "collection_id"
     t.index ["authority_id"], name: "index_involved_authorities_on_authority_id"
-    t.index ["collection_id"], name: "index_involved_authorities_on_collection_id"
     t.index ["expression_id"], name: "index_involved_authorities_on_expression_id"
     t.index ["work_id"], name: "index_involved_authorities_on_work_id"
   end

@@ -1,4 +1,5 @@
 en:
+  edit_metadata: Edit metadata
   name_starts_with_x: "Name starts with: '%{x}'"
   title_starts_with_x: "Title starts with: '%{x}'"
   new_person: New Person

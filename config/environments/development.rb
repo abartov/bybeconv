@@ -27,7 +27,8 @@ Rails.application.configure do
     config.cache_store = :null_store
   end
 
-  config.i18n.enforce_available_locales = false
+  # In development we allow using of different locales (en for now) for non-hebrew speaking developers
+  config.i18n.default_locale = ENV['BY_LANGUAGE']&.to_sym || :he
 
   # Don't care if the mailer can't send
   config.action_mailer.raise_delivery_errors = true
@@ -54,7 +55,6 @@ Rails.application.configure do
   #config.assets.debug = true
   config.eager_load = false
   # config.public_file_server.enabled = true # Rails 5.x?
-  config.i18n.available_locales = :he
 
   # Store Active Storage files locally.
   config.active_storage.service = :local
@@ -83,9 +83,6 @@ Rails.application.configure do
 
   # Suppress logger output for asset requests.
   config.assets.quiet = true
-
-  # Raises error for missing translations.
-  # config.i18n.raise_on_missing_translations = true
 
   # Annotate rendered view with file names.
   # config.action_view.annotate_rendered_view_with_filenames = true
@@ -121,6 +118,18 @@ Rails.application.configure do
     config.active_record.migration_error = false
     config.active_record.verbose_query_logs = false
     config.action_view.cache_template_loading = true
+  end
+
+  # disabling some Rails generators to avoid creation of unnecessary files during controller creation
+  config.generators do |g|
+    g.assets false
+    g.helper false
+    g.stylesheets false
+    g.test_framework :rspec,
+                     view_specs: false,
+                     request_specs: false,
+                     routing_specs: false,
+                     controller_specs: true
   end
 
   # Applying rubocop-rails autocorrection to generated content
