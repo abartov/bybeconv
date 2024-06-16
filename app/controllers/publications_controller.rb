@@ -110,6 +110,6 @@ class PublicationsController < ApplicationController
     end
   end
   def publication_params
-    params.require(:publication).permit(:title, :publisher_line, :author_line, :notes, :source_id, :person_id, :status, :pub_year, :language, :callnum)
+    params.require(:publication).permit(:title, :publisher_line, :author_line, :notes, :source_id, :authority_id, :status, :pub_year, :language, :callnum)
   end
 end
