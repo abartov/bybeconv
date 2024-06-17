@@ -7,7 +7,7 @@
     %h1= "#{t(:search_results)}: #{@search.query}"
     %h4= "#{t(:search_total)}: #{@total} #{t(:items)}"
     %p
-    %ol
+    %ol{ start: @offset + 1 }
       - @results.each do |result|
         %li
           - attrs = result.attributes
