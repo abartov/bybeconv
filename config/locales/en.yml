@@ -53,6 +53,9 @@ en:
       columns:
         db_intellectual_property: Intellectual property in DB
         has_non_public_domain_authority: Has non public domain authority
+  ingestibles:
+    new:
+      title: New Ingestible
   shared:
     filters:
       pagination:
@@ -118,3 +121,13 @@ en:
       designer: Designer
       contributor: Contributor
       other: Other
+  ingestible:
+    scenario:
+      single: Single piece
+      multiple: Multiple works with same properties
+      mixed: Works with different authors or properties
+    status:
+      draft: Draft
+      ingested: Ingestion Complete
+      failed: Failed to Ingest
+      awaiting_authorities: Awaiting Creation of Missed Authorities

@@ -28,9 +28,9 @@
 
   .field
     = f.label :scenario
-    = f.select :scenario, options_for_select(Ingestible.scenarios.map{|k,v| [t("ingestibles.#{k}"), k]}, @ingestible.scenario)
+    = f.select :scenario, options_for_select(Ingestible.scenarios.map{|k,v| [t("ingestible.scenario.#{k}"), k]}, @ingestible.scenario)
     = f.label :status
-    %b= t("ingestible.#{@ingestible.status}")
+    %b= t("ingestible.status.#{@ingestible.status}")
     = f.hidden_field :status, value: @ingestible.status
   %h2= t('ingestible.defaults')
   = f.label t(:genre)
