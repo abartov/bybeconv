@@ -1353,6 +1353,9 @@ he:
       columns:
         db_intellectual_property: מצב זכויות יוצרים במערכת
         has_non_public_domain_authority: זכויות הישות טרם פקעו
+  ingestibles:
+    new:
+      title: New Ingestible
   shared:
     filters:
       pagination:
@@ -1419,6 +1422,15 @@ he:
       contributor: משתתף
       other: אחר
   ingestible:
+    scenario:
+      single: יצירה בודדת
+      multiple: מספר יצירות עם אותם מאפיינים
+      mixed: יצירות בעלות מחברים או מאפיינים שונים
+    status:
+      draft: העלאה בעבודה
+      ingested: העלאה הושלמה
+      failed: העלאה נכשלה
+      awaiting_authorities: בהמתנה ליצירת ישויות אישים חסרות
     title: העלאת טקסטים לאתר
     invalid: 'שמירת הקובץ נמנעה בגלל:'
     authorities:
@@ -1434,14 +1446,6 @@ he:
     volume_by_author: איתור כותר מאת יוצר
     no_volume_explanation: יצירות לא מקובצות
     attach_photos_explanation: יש לסמן כדי להעלות תמונות בהמשך
-
-    single: יצירה בודדת
-    multiple: מספר יצירות עם אותם מאפיינים
-    mixed: יצירות בעלות מחברים או מאפיינים שונים
-    draft: העלאה בעבודה
-    ingested: העלאה הושלמה
-    failed: העלאה נכשלה
-    awaiting_authorities: בהמתנה ליצירת ישויות אישים חסרות
   # This block of strings below should be removed when we finish work. Grouped them together to make it easier to find them again
   public_domain: נחלת הכלל
   viaf_id: "מזהה במאגר VIAF‏"
