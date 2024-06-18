@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_06_14_064855) do
+ActiveRecord::Schema.define(version: 2024_06_18_155831) do
 
   create_table "aboutnesses", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -574,6 +574,9 @@ ActiveRecord::Schema.define(version: 2024_06_14_064855) do
     t.datetime "works_buffer_updated_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "locked_by_user_id"
+    t.timestamp "locked_at"
+    t.index ["locked_by_user_id"], name: "index_ingestibles_on_locked_by_user_id"
     t.index ["status"], name: "index_ingestibles_on_status"
     t.index ["title"], name: "index_ingestibles_on_title"
     t.index ["user_id"], name: "index_ingestibles_on_user_id"
@@ -1096,6 +1099,7 @@ ActiveRecord::Schema.define(version: 2024_06_14_064855) do
   add_foreign_key "holdings", "bib_sources"
   add_foreign_key "holdings", "publications"
   add_foreign_key "ingestibles", "collections", column: "volume_id"
+  add_foreign_key "ingestibles", "users", column: "locked_by_user_id"
   add_foreign_key "involved_authorities", "authorities"
   add_foreign_key "involved_authorities", "expressions"
   add_foreign_key "involved_authorities", "works"

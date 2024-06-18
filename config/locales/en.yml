@@ -54,8 +54,21 @@ en:
         db_intellectual_property: Intellectual property in DB
         has_non_public_domain_authority: Has non public domain authority
   ingestibles:
+    ingestible_locked: Ingestible locked by user %{user}
+    # _authorities partial
+    authorities:
+      or_new_person: או הקלידו שם יוצר/ת חדש/ה
     new:
       title: New Ingestible
+    create:
+      success: Ingestible was successfully created
+      failure: Failed to create Ingestible
+    edit:
+      title: Edit Ingestible
+    update:
+      success: Ingestible was successfully updated
+    destroy:
+      success: Ingestible was successfully destroyed
   shared:
     filters:
       pagination:
