@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
 class IngestiblesController < ApplicationController
+  include LockIngestibleConcern
+
+  before_action { |c| c.require_editor('edit_catalog') }
   before_action :set_ingestible, only: %i(show edit update destroy addauth rmauth)
+  before_action :try_to_lock_ingestible, only: %i(show edit update destroy addauth rmauth)
 
   DEFAULTS = { title: '', status: 'draft', orig_lang: 'he', default_authorities: [], metadata: {}, comments: '',
                markdown: '' }.freeze
@@ -31,14 +35,10 @@ class IngestiblesController < ApplicationController
     # TODO: use params to set defaults (callable from the tasks system, which means we can populate the title (=task name), genre, credits)
     @ingestible = Ingestible.new(ingestible_params)
 
-    respond_to do |format|
-      if @ingestible.save
-        format.html { redirect_to edit_ingestible_url(@ingestible), notice: 'Ingestible was successfully created.' }
-        format.json { render :edit, status: :created, location: @ingestible }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @ingestible.errors, status: :unprocessable_entity }
-      end
+    if @ingestible.save
+      redirect_to edit_ingestible_url(@ingestible), notice: t('.success')
+    else
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -71,25 +71,18 @@ class IngestiblesController < ApplicationController
 
   # PATCH/PUT /ingestibles/1 or /ingestibles/1.json
   def update
-    respond_to do |format|
-      if @ingestible.update(ingestible_params)
-        format.html { redirect_to edit_ingestible_url(@ingestible), notice: 'Ingestible was successfully updated.' }
-        format.json { render :edit, status: :ok, location: @ingestible }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @ingestible.errors, status: :unprocessable_entity }
-      end
+    if @ingestible.update(ingestible_params)
+      flash.now.notice = t('.success')
+      render :edit
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
   # DELETE /ingestibles/1 or /ingestibles/1.json
   def destroy
     @ingestible.destroy
-
-    respond_to do |format|
-      format.html { redirect_to ingestibles_url, notice: 'Ingestible was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    redirect_to ingestibles_url, notice: t('.success')
   end
 
   private
@@ -101,7 +94,21 @@ class IngestiblesController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def ingestible_params
-    params.require(:ingestible).permit(:title, :status, :scenario, :genre, :publisher, :year_published, :orig_lang,
-                                       :docx, :metadata, :comments, :markdown, :no_volume, :insert_cid, :attach_photos)
+    params.require(:ingestible).permit(
+      :title,
+      :status,
+      :scenario,
+      :genre,
+      :publisher,
+      :year_published,
+      :orig_lang,
+      :docx,
+      :metadata,
+      :comments,
+      :markdown,
+      :no_volume,
+      :insert_cid,
+      :attach_photos
+    )
   end
 end

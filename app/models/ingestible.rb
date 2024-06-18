@@ -4,19 +4,25 @@ require 'pandoc-ruby' # for generic DOCX-to-HTML conversions
 
 # Ingestible is a set of text being prepared for inclusion into a main database
 class Ingestible < ApplicationRecord
+  LOCK_TIMEOUT_IN_SECONDS = 900
+
   enum status: { draft: 0, ingested: 1, failed: 2, awaiting_authorities: 3 }
   enum scenario: { single: 0, multiple: 1, mixed: 2 }
 
   belongs_to :user
+  belongs_to :locked_by_user, class_name: 'User', optional: true
 
   DEFAULTS_SCHEMA = {}.freeze
   validates :title, presence: true
   validates :status, presence: true
+  validates :locked_at, presence: true, if: -> { locked_by_user.present? }
+  validates :locked_at, absence: true, unless: -> { locked_by_user.present? }
 
   has_one_attached :docx # ActiveStorage
 
   before_save :update_timestamps
   before_create :init_timestamps
+
   # after_commit :update_parsing # this results in ActiveStorage::FileNotFoundError in dev/local storage
 
   def volume_valid?
@@ -157,5 +163,20 @@ class Ingestible < ApplicationRecord
     self.works_buffer = buf.to_json
     self.works_buffer_updated_at = Time.current
     save
+  end
+
+  def locked?
+    locked_at.present? && locked_at > LOCK_TIMEOUT_IN_SECONDS.seconds.ago
+  end
+
+  def obtain_lock(user)
+    return false if locked? && locked_by_user_id != user.id
+
+    update!(locked_at: Time.zone.now, locked_by_user: user)
+    return true
+  end
+
+  def release_lock
+    update!(locked_at: nil, locked_by_user: nil)
   end
 end

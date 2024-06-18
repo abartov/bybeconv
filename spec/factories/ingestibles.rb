@@ -2,11 +2,8 @@
 
 FactoryBot.define do
   factory :ingestible do
-    title { 'MyString' }
-    status { 1 }
-    defaults { 'MyText' }
-    metadata { 'MyText' }
-    comments { 'MyText' }
-    markdown { 'MyText' }
+    title { Faker::Book.title }
+    status { 'draft' }
+    markdown { Faker::Lorem.paragraph }
   end
 end
