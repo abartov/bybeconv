@@ -16,7 +16,7 @@ en:
     ingestible_locked: Ingestible locked by user %{user}
     # _authorities partial
     authorities:
-      or_new_person: או הקלידו שם יוצר/ת חדש/ה
+      or_new_person: or type a new authority name
     new:
       title: New Ingestible
     create:
