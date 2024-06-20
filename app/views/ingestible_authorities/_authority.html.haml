@@ -4,5 +4,5 @@
   - else
     = authority['new_person']
   (#{textify_authority_role(authority['role'])})
-  = link_to t(:destroy), ingestible_remove_authority_path(@ingestible.id, authority['seqno']),
+  = link_to t(:destroy), ingestible_authority_path(@ingestible, authority['seqno']),
             remote: true, method: :delete, data: { confirm: t(:are_you_sure) }

@@ -1,8 +1,8 @@
 - if @ingestible.try(:id)
   %h3= t(:associated_persons)
-  - if authorities
-    %ul#authorities
-      = render partial: 'authority', collection: JSON.parse(authorities)
+  %ul#authorities
+    - if authorities
+      = render partial: 'ingestible_authorities/authority', collection: JSON.parse(authorities)
   = t(:add)
   = select_tag :add_authority,
                options_from_collection_for_select(Authority.order(:name), 'id', 'name'),
@@ -17,7 +17,7 @@
     $(document).ready(function() {
       $('#do_add_authority').click(function(e) {
         e.preventDefault();
-        $.post('#{@ingestible.id.nil? ? '' : ingestible_add_authority_path(@ingestible.id)}', {
+        $.post('#{ingestible_authorities_path(@ingestible)}', {
           authority_id: $('select[name=add_authority]').val(),
           authority_name: $('#add_authority option:selected').text(),
           new_person: $('#new_person').val(),
