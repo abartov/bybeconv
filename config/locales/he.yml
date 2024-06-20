@@ -1358,21 +1358,21 @@ he:
         db_intellectual_property: מצב זכויות יוצרים במערכת
         has_non_public_domain_authority: זכויות הישות טרם פקעו
   ingestibles:
-    ingestible_locked: Ingestible locked by user %{user}
+    ingestible_locked: ההעלאה נעולה לטיפול מידֵי %{user}
     # _authorities partial
     authorities:
       or_new_person: או הקלידו שם יוצר/ת חדש/ה
     new:
-      title: New Ingestible
+      title: העלאה חדשה
     create:
-      success: Ingestible was successfully created
-      failure: Failed to create Ingestible
+      success: ההעלאה נוצרה
+      failure: אירעה שגיאה בפתיחת ההעלאה
     edit:
-      title: Edit Ingestible
+      title: עדכון העלאה
     update:
-      success: Ingestible was successfully updated
+      success: ההעלאה עודכנה
     destroy:
-      success: Ingestible was successfully destroyed
+      success: ההעלאה נמחקה
   shared:
     filters:
       pagination:
