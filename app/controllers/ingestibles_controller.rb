@@ -4,8 +4,8 @@ class IngestiblesController < ApplicationController
   include LockIngestibleConcern
 
   before_action { |c| c.require_editor('edit_catalog') }
-  before_action :set_ingestible, only: %i(show edit update destroy addauth rmauth)
-  before_action :try_to_lock_ingestible, only: %i(show edit update destroy addauth rmauth)
+  before_action :set_ingestible, only: %i(show edit update destroy)
+  before_action :try_to_lock_ingestible, only: %i(show edit update destroy)
 
   DEFAULTS = { title: '', status: 'draft', orig_lang: 'he', default_authorities: [], metadata: {}, comments: '',
                markdown: '' }.freeze
@@ -39,33 +39,6 @@ class IngestiblesController < ApplicationController
       redirect_to edit_ingestible_url(@ingestible), notice: t('.success')
     else
       render :new, status: :unprocessable_entity
-    end
-  end
-
-  def addauth
-    @auths = @ingestible.default_authorities.present? ? JSON.parse(@ingestible.default_authorities) : []
-    highest_seqno = @auths.pluck('seqno').max || 0
-    h = { 'seqno' => highest_seqno + 1, 'role' => params[:role] }
-    if params[:new_person].present?
-      h['new_person'] = params[:new_person]
-    else
-      h['authority_id'] = params[:authority_id]
-      h['authority_name'] = params[:authority_name]
-    end
-    @auths << h
-    @ingestible.update!(default_authorities: @auths.to_json)
-    respond_to do |format|
-      format.js # addauth.js.erb
-    end
-  end
-
-  def rmauth
-    @auths = @ingestible.default_authorities.present? ? JSON.parse(@ingestible.default_authorities) : []
-    @auths.delete_if { |auth| auth['seqno'] == params[:seqno].to_i }
-    @ingestible.update!(default_authorities: @auths.to_json)
-    @li_id = "#ia#{params[:seqno]}"
-    respond_to do |format|
-      format.js # rmauth.js.erb
     end
   end
 

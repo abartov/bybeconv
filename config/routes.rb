@@ -7,7 +7,10 @@ Bybeconv::Application.routes.draw do
     resources :featured_content_features, only: %i(destroy)
   end
 
-  resources :ingestibles #, only: [:index, :create, :edit, :update, :destroy]
+  resources :ingestibles do
+    resources :authorities, controller: :ingestible_authorities, only: %i(create destroy)
+  end
+
   resources :collection_items
   resources :collections do
     post 'apply_drag'
@@ -154,8 +157,6 @@ Bybeconv::Application.routes.draw do
   get 'authors/get_random_author'
   get 'authors/volumes', as: 'authority_volumes'
   post 'authors/add_link/:id' => 'authors#add_link', as: 'author_add_link'
-  match 'ingestibles/:id/rmauth/:seqno' => 'ingestibles#rmauth', as: 'ingestible_remove_authority', via: [:post, :delete]
-  post 'ingestibles/:id/addauth' => 'ingestibles#addauth', as: 'ingestible_add_authority'
   match 'authors/delete_link/:id' => 'authors#delete_link', as: 'author_delete_link', via: [:post]
   match 'author/:id/edit_toc' => 'authors#edit_toc', as: 'authors_edit_toc', via: [:get, :post]
   match 'author/:id/to_manual_toc' => 'authors#to_manual_toc', as: 'authors_to_manual_toc', via: [:get, :post]
