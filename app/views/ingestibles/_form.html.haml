@@ -8,9 +8,13 @@
 
   %ul.nav.nav-tabs{style: 'width: 100%;'}
     %li.nav-item
-      %a.nav-link.active{href: '#general', 'data-toggle': 'tab'}= t('.general')
+      %a.nav-link.active{href: '#general', 'data-toggle': 'tab', style: 'width: unset;'}= t('.general')
     %li.nav-item
-      %a.nav-link{href: '#texts', 'data-toggle': 'tab'}= t('.texts')
+      %a.nav-link{href: '#full_markdown', 'data-toggle': 'tab', style: 'width: unset;'}= t('.full_markdown')
+    %li.nav-item
+      %a.nav-link{href: '#toc', 'data-toggle': 'tab', style: 'width: unset;'}= t('.toc')
+    %li.nav-item
+      %a.nav-link{href: '#texts', 'data-toggle': 'tab', style: 'width: unset;'}= t('.texts')
   .tab-content
     .tab-pane.active#general
       .field
@@ -60,6 +64,18 @@
         = f.label t('ingestible.attach_photos')
         &nbsp;
         %span{id: 'explain_attach_photos'}= '[?]'
+
+      - if @ingestible.docx.present?
+        %p
+          = t('.current_file')
+          = link_to @ingestible.docx.filename.to_s, url_for(@ingestible.docx)
+          = t('.or_replace_file')
+      - else
+        %b= t(:upload_file)
+        = t(:file_can_be_skipped)
+      = f.file_field :docx
+    .tab-pane#full_markdown
+      %h2= t('.full_markdown')
       .container-fluid
         .row
           .col-md-12
@@ -81,16 +97,9 @@
                 #preview{ style:"padding-left:10px;padding-right:15px;background:#d2cfcf; overflow-y:auto"}
                   != raw(@html)
                   %br
-
-      - if @ingestible.docx.present?
-        %p
-          = t('.current_file')
-          = link_to @ingestible.docx.filename.to_s, url_for(@ingestible.docx)
-          = t('.or_replace_file')
-      - else
-        %b= t(:upload_file)
-        = t(:file_can_be_skipped)
-      = f.file_field :docx
+    .tab-pane#toc
+      %h2= t('.toc')
+      = f.text_area :toc_buffer, class: 'textarea100'
     .tab-pane#texts
       = 'Implement texts here'
   .actions

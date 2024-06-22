@@ -82,7 +82,8 @@ class IngestiblesController < ApplicationController
       :markdown,
       :no_volume,
       :insert_cid,
-      :attach_photos
+      :attach_photos,
+      :toc_buffer
     )
   end
 end
