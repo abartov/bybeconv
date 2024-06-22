@@ -28,6 +28,7 @@ class IngestiblesController < ApplicationController
   # GET /ingestibles/1/edit
   def edit
     @ingestible.update_parsing # refresh markdown or text buffers if necessary
+    @html = MultiMarkdown.new(@ingestible.markdown).to_html.force_encoding('UTF-8').gsub(/<figcaption>.*?<\/figcaption>/,'') # remove MMD's automatic figcaptions
   end
 
   # POST /ingestibles or /ingestibles.json
