@@ -6,84 +6,93 @@
         - @ingestible.errors.full_messages.each do |message|
           %li= message
 
-  .field
-    = f.label t('ingestible.title')
-    = f.text_field :title, style: 'width:80%'
-  .field{style: 'border: 1px solid #ccc; padding: 10px;'}
-    %h3= t('ingestible.volume')
-    = f.label t('ingestible.volume_by_author')
-    = autocomplete_field_tag :author, '', autocomplete_authority_name_path, 'data-noMatchesLabel' => t(:no_matches_found), id: 'aterm', style: 'width:400px;', id_element: '#authority_id'
-    = hidden_field_tag :authority_id, value: '', id: 'authority_id'
-    = f.check_box :no_volume
-    = f.label t('ingestible.no_volume')
-    &nbsp;
-    %span{id: 'explain_no_volume'}= '[?]'
-    %br
-    = select_tag :authority_volumes, [], {id: 'authority_volumes', style: 'display:none;'}
-    %br
+  %ul.nav.nav-tabs{style: 'width: 100%;'}
+    %li.nav-item
+      %a.nav-link.active{href: '#general', 'data-toggle': 'tab'}= t('.general')
+    %li.nav-item
+      %a.nav-link{href: '#texts', 'data-toggle': 'tab'}= t('.texts')
+  .tab-content
+    .tab-pane.active#general
+      .field
+        = f.label t('ingestible.title')
+        = f.text_field :title, style: 'width:80%'
+      .field{style: 'border: 1px solid #ccc; padding: 10px;'}
+        %h3= t('ingestible.volume')
+        = f.label t('ingestible.volume_by_author')
+        = autocomplete_field_tag :author, '', autocomplete_authority_name_path, 'data-noMatchesLabel' => t(:no_matches_found), id: 'aterm', style: 'width:400px;', id_element: '#authority_id'
+        = hidden_field_tag :authority_id, value: '', id: 'authority_id'
+        = f.check_box :no_volume
+        = f.label t('ingestible.no_volume')
+        &nbsp;
+        %span{id: 'explain_no_volume'}= '[?]'
+        %br
+        = select_tag :authority_volumes, [], {id: 'authority_volumes', style: 'display:none;'}
+        %br
 
-    = f.label t('ingestible.any_volume')
-    = autocomplete_field_tag :volume, '', autocomplete_collection_title_path, 'data-noMatchesLabel' => t(:no_matches_found), id: 'cterm', style: 'width:400px;', id_element: '#insert_cid'
-    = hidden_field_tag :insert_cid, value: '', id: 'insert_cid'
+        = f.label t('ingestible.any_volume')
+        = autocomplete_field_tag :volume, '', autocomplete_collection_title_path, 'data-noMatchesLabel' => t(:no_matches_found), id: 'cterm', style: 'width:400px;', id_element: '#insert_cid'
+        = hidden_field_tag :insert_cid, value: '', id: 'insert_cid'
 
-  .field
-    = f.label :scenario
-    = f.select :scenario, options_for_select(Ingestible.scenarios.map{|k,v| [t("ingestible.scenario.#{k}"), k]}, @ingestible.scenario)
-    = f.label :status
-    %b= t("ingestible.status.#{@ingestible.status}")
-    = f.hidden_field :status, value: @ingestible.status
-  %h2= t('ingestible.defaults')
-  = f.label t(:genre)
-  - genres = [[t(:mixed_genres), 'mixed']]+get_genres.map {|genre| [I18n.t(genre), genre]}
-  = f.select :genre, options_for_select(genres, @ingestible.genre), {include_blank: true}
-  = f.label t(:publisher)
-  = f.text_field :publisher, required: true, style: 'width:400px;'
-  = f.label t(:year_published)
-  = f.text_field :year_published, style: 'width:100px;'
-  %br
-  = f.label t(:orig_lang)
-  = f.select :orig_lang, options_for_select(get_langs.map {|lang| [textify_lang(lang), lang]}, @ingestible.orig_lang)
-  = render partial: 'authorities', locals: {authorities: @ingestible.default_authorities}
-  %hr
-  .field
-    = f.label :comments
-    = f.text_area :comments
-  .field
-    = f.check_box :attach_photos
-    = f.label t('ingestible.attach_photos')
-    &nbsp;
-    %span{id: 'explain_attach_photos'}= '[?]'
-  .container-fluid
-    .row
-      .col-md-12
-        .markdown_container.row
-          .col-sm-3
-            #legacy_markdown_link
-            %h2= t(:markdown)
-            %button.btn-small-outline-v02#add_stanza_break{style:'display:unset'}
-              %b.btn-text-v02= t(:add_stanza_break)
-            %button.btn-small-outline-v02#add_angled_brackets{style:'display:unset'}
-              %b.btn-text-v02= t(:add_angled_brackets)
-            %button.btn-small-outline-v02#remove_angled_brackets{style:'display:unset'}
-              %b.btn-text-v02= t(:remove_angled_brackets)
-            %button.btn-small-outline-v02#minuses_to_makafim{style:'display:unset'}
-              %b.btn-text-v02= t(:minuses_to_makafim)
-            = f.text_area :markdown, class: 'textarea100 markdown'
-          .col-sm-9
-            %h2= t(:display_text)
-            #preview{ style:"padding-left:10px;padding-right:15px;background:#d2cfcf; overflow-y:auto"}
-              != raw(@html)
-              %br
+      .field
+        = f.label :scenario
+        = f.select :scenario, options_for_select(Ingestible.scenarios.map{|k,v| [t("ingestible.scenario.#{k}"), k]}, @ingestible.scenario)
+        = f.label :status
+        %b= t("ingestible.status.#{@ingestible.status}")
+        = f.hidden_field :status, value: @ingestible.status
+      %h2= t('ingestible.defaults')
+      = f.label t(:genre)
+      - genres = [[t(:mixed_genres), 'mixed']]+get_genres.map {|genre| [I18n.t(genre), genre]}
+      = f.select :genre, options_for_select(genres, @ingestible.genre), {include_blank: true}
+      = f.label t(:publisher)
+      = f.text_field :publisher, required: true, style: 'width:400px;'
+      = f.label t(:year_published)
+      = f.text_field :year_published, style: 'width:100px;'
+      %br
+      = f.label t(:orig_lang)
+      = f.select :orig_lang, options_for_select(get_langs.map {|lang| [textify_lang(lang), lang]}, @ingestible.orig_lang)
+      = render partial: 'authorities', locals: {authorities: @ingestible.default_authorities}
+      %hr
+      .field
+        = f.label :comments
+        = f.text_area :comments
+      .field
+        = f.check_box :attach_photos
+        = f.label t('ingestible.attach_photos')
+        &nbsp;
+        %span{id: 'explain_attach_photos'}= '[?]'
+      .container-fluid
+        .row
+          .col-md-12
+            .markdown_container.row
+              .col-sm-3
+                #legacy_markdown_link
+                %h2= t(:markdown)
+                %button.btn-small-outline-v02#add_stanza_break{style:'display:unset'}
+                  %b.btn-text-v02= t(:add_stanza_break)
+                %button.btn-small-outline-v02#add_angled_brackets{style:'display:unset'}
+                  %b.btn-text-v02= t(:add_angled_brackets)
+                %button.btn-small-outline-v02#remove_angled_brackets{style:'display:unset'}
+                  %b.btn-text-v02= t(:remove_angled_brackets)
+                %button.btn-small-outline-v02#minuses_to_makafim{style:'display:unset'}
+                  %b.btn-text-v02= t(:minuses_to_makafim)
+                = f.text_area :markdown, class: 'textarea100 markdown'
+              .col-sm-9
+                %h2= t(:display_text)
+                #preview{ style:"padding-left:10px;padding-right:15px;background:#d2cfcf; overflow-y:auto"}
+                  != raw(@html)
+                  %br
 
-  - if @ingestible.docx.present?
-    %p
-      = t('.current_file')
-      = link_to @ingestible.docx.filename.to_s, url_for(@ingestible.docx)
-      = t('.or_replace_file')
-  - else
-    %b= t(:upload_file)
-    = t(:file_can_be_skipped)
-  = f.file_field :docx
+      - if @ingestible.docx.present?
+        %p
+          = t('.current_file')
+          = link_to @ingestible.docx.filename.to_s, url_for(@ingestible.docx)
+          = t('.or_replace_file')
+      - else
+        %b= t(:upload_file)
+        = t(:file_can_be_skipped)
+      = f.file_field :docx
+    .tab-pane#texts
+      = 'Implement texts here'
   .actions
     = f.submit t(:save), class: 'btn btn-primary'
 :javascript

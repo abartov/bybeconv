@@ -1461,6 +1461,8 @@ he:
     volume_by_author: איתור כותר מאת יוצר
     no_volume_explanation: יצירות לא מקובצות
     attach_photos_explanation: יש לסמן כדי להעלות תמונות בהמשך
+    general: כל ההעלאה
+    texts: טקסטים
   # This block of strings below should be removed when we finish work. Grouped them together to make it easier to find them again
   public_domain: נחלת הכלל
   viaf_id: "מזהה במאגר VIAF‏"
