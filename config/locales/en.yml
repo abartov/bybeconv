@@ -4,6 +4,10 @@ en:
   title_starts_with_x: "Title starts with: '%{x}'"
   new_person: New Person
   new_corporate_body: New Corporate Body
+  "yes": "Yes"
+  "no": "No"
+  back: Back
+  save: Save
   admin:
     index:
       takes_long_time: Takes long time
