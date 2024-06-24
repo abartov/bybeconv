@@ -4,6 +4,19 @@ en:
   title_starts_with_x: "Title starts with: '%{x}'"
   new_person: New Person
   new_corporate_body: New Corporate Body
+  "yes": "Yes"
+  "no": "No"
+  are_you_sure: Are you sure?
+  none: None
+  back: Back
+  edit: Edit
+  save: Save
+  update: Update
+  destroy: Destroy
+  created_successfully: Created Successfully
+  updated_successfully: Updated Successfully
+  deleted_successfully: Deleted Successfully
+  add_feature_date: Add feature date
   admin:
     index:
       takes_long_time: Takes long time

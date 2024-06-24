@@ -8,7 +8,7 @@
               collection: Authority.statuses.map { |st| [t(st[0]), st[0]] }
     = f.input :intellectual_property,
               collection: Authority.intellectual_properties.keys.map { |ip| [textify_intellectual_property(ip), ip] }
-    = f.input :bib_done, as: :radio_buttons, collection: [[t(:no), 0], [t(:yes), 1]]
+    = f.input :bib_done, as: :radio_buttons, collection: [[t(:no), false], [t(:yes), true]]
     = f.input :country, as: :string
     = f.input :comment, as: :text
     = f.input :viaf_id
