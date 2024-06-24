@@ -7,11 +7,15 @@ he:
     status: סטטוס
     country: מדינה
     period: תקופה
+    title: כותרת
+    fromdate: מתאריך
+    todate: עד תאריך
   activerecord:
     models:
-      person: אדם
-      corporate_body: גוף/מוסד
       authority: מחבר
+      corporate_body: גוף/מוסד
+      featured_content: תוכן מערכת
+      person: אדם
     errors:
       models:
         involved_authority:
@@ -44,6 +48,12 @@ he:
         dissolution_year: שנת פירוק
       expression:
         intellectual_property: מצב זכויות יוצרים
+      featured_content:
+        body: תוכן ההמלצה
+        external_link: קישורית חיצונית
+        manifestation: יצירה מקושרת
+        authority: יוצר/ת מקושר/ת
+
       person:
         birthdate: תאריך לידה
         deathdate: תאריך פטירה

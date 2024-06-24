@@ -1,0 +1,24 @@
+= simple_form_for [:admin, fc] do |f|
+  .form-inputs
+    = f.error_notification
+    = f.input :title
+    = f.input :body, as: :text, input_html: { rows: 10, cols: 100 }
+    = f.input :external_link
+    = f.input :manifestation do
+      = autocomplete_field_tag :manifestation_autocomplete,
+                               fc.manifestation&.title_and_authors,
+                               autocomplete_manifestation_title_path,
+                               id_element: '#featured_content_manifestation_id',
+                               class: 'form-control',
+                               data: { noMatchesLabel: t(:no_matches_found) }
+    = f.hidden_field :manifestation_id
+    = f.input :authority do
+      = autocomplete_field_tag :authority_autocomplete,
+                               fc.authority&.name,
+                               autocomplete_authority_name_path,
+                               id_element: '#featured_content_authority_id',
+                               class: 'form-control',
+                               data: { noMatchesLabel: t(:no_matches_found) }
+    = f.hidden_field :authority_id
+    .actions
+      = f.submit t(:save), class: 'btn btn-primary'

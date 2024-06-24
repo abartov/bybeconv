@@ -7,11 +7,15 @@ en:
     status: Status
     country: Country
     period: Period
+    title: Title
+    fromdate: From Date
+    todate: To Date
   activerecord:
     models:
-      person: Person
-      corporate_body: Corporate Body
       authority: Authority
+      corporate_body: Corporate Body
+      featured_content: Featured Content
+      person: Person
     errors:
       models:
         involved_authority:
@@ -44,6 +48,11 @@ en:
         dissolution_year: Dissolution Year
       expression:
         intellectual_property: Type of intellectual property
+      featured_content:
+        body: Text of Recommendation
+        external_link: External Link
+        manifestation: Linked Creation
+        authority: Linked Authority
       person:
         birthdate: Birthdate
         deathdate: Deathdate

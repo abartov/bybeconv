@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :featured_content_feature do
-    fromdate { 5.days.ago }
-    todate { 5.days.from_now }
+    fromdate { rand(30).days.ago }
+    todate { fromdate + rand(60).days }
   end
 end
