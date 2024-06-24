@@ -17,7 +17,16 @@ en:
   updated_successfully: Updated Successfully
   deleted_successfully: Deleted Successfully
   add_feature_date: Add feature date
+  feature_on: Featuring Periods
   admin:
+    featured_contents:
+      index:
+        title: Featured Content Management
+      new:
+        title: New Featured Content
+    featured_content_features:
+      create:
+        failed: Failed to create feature period, ensure dates are provided
     index:
       takes_long_time: Takes long time
     incongruous_copyright:

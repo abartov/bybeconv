@@ -1,0 +1,48 @@
+.backend
+  %h1= FeaturedContent.model_name.human
+  %a{ href: edit_admin_featured_content_path(@fc) }
+    .btn.btn-primary
+      %b= t(:edit)
+  %br
+  %br
+  %p
+    %b #{FeaturedContent.human_attribute_name(:title)}:
+    = @fc.title
+  %p
+    %b #{FeaturedContent.human_attribute_name(:body)}:
+    != MultiMarkdown.new(@fc.body).to_html.force_encoding('UTF-8')
+  %p
+    %b #{FeaturedContent.human_attribute_name(:external_link)}:
+    - unless @fc.external_link.nil? or @fc.external_link.empty?
+      = link_to @fc.external_link, @fc.external_link
+    - else
+      = t(:none)
+  %p
+    %b #{FeaturedContent.human_attribute_name(:manifestation)}:
+    = @fc.manifestation.nil? ? t(:none) : link_to("#{@fc.manifestation.title} - #{@fc.manifestation.author_string}", manifestation_path(id: @fc.manifestation.id))
+  %p
+    %b #{FeaturedContent.human_attribute_name(:authority)}:
+    = @fc.authority.nil? ? t(:none) : link_to(@fc.authority.name, authority_path(@fc.authority))
+
+  %h3= t(:feature_on)
+  %table
+    %tr
+      %th= FeaturedContentFeature.human_attribute_name(:fromdate)
+      %th= FeaturedContentFeature.human_attribute_name(:todate)
+      %th
+    - @fc.featured_content_features.each do |fcf|
+      %tr
+        %td= fcf.fromdate&.strftime('%d-%m-%Y')
+        %td= fcf.todate&.strftime('%d-%m-%Y')
+        %td
+          = link_to t(:destroy),
+                    admin_featured_content_feature_path(fcf),
+                    data: { confirm: t(:are_you_sure) },
+                    method: :delete
+  .row
+    .col-sm-6
+      = simple_form_for @fc.featured_content_features.build, url: admin_featured_content_features_path(@fc) do |f|
+        = f.input :fromdate, as: :date, html5: true
+        = f.input :todate, as: :date, html5: true
+        = f.submit t(:add_feature_date), class: 'btn btn-sm btn-primary'
+  = link_to t(:back), admin_featured_contents_path

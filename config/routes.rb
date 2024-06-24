@@ -1,5 +1,12 @@
 include BybeUtils
 Bybeconv::Application.routes.draw do
+  namespace :admin do
+    resources :featured_contents do
+      resources :features, controller: 'featured_content_features', only: %i(create)
+    end
+    resources :featured_content_features, only: %i(destroy)
+  end
+
   resources :involved_authorities, only: :destroy
   resources :user_blocks
   get 'crowd/index'
@@ -97,15 +104,6 @@ Bybeconv::Application.routes.draw do
   get 'admin/volunteer_profile/delete_feature/:id' => 'admin#volunteer_profile_delete_feature', as: 'volunteer_profile_delete_feature'
   get 'admin/volunteer_profile/:id' => 'admin#volunteer_profile_show', as: 'volunteer_profile_show'
   get 'admin/volunteer_profile/destroy/:id' => 'admin#volunteer_profile_destroy', as: 'volunteer_profile_destroy'
-  get 'admin/featured_content_list'
-  get 'admin/featured_content/new' => 'admin#featured_content_new', as: 'featured_content_new'
-  post 'admin/featured_content/create' => 'admin#featured_content_create', as: 'featured_content_create'
-  get 'admin/featured_content/edit/:id' => 'admin#featured_content_edit', as: 'featured_content_edit'
-  patch 'admin/featured_content/update' => 'admin#featured_content_update', as: 'featured_content_update'
-  post 'admin/featured_content/add_feature' => 'admin#featured_content_add_feature', as: 'featured_content_add_feature'
-  get 'admin/featured_content/delete_feature/:id' => 'admin#featured_content_delete_feature', as: 'featured_content_delete_feature'
-  get 'admin/featured_content/:id' => 'admin#featured_content_show', as: 'featured_content_show'
-  get 'admin/featured_content/destroy/:id' => 'admin#featured_content_destroy', as: 'featured_content_destroy'
   get 'autocomplete_manifestation_title' => 'admin#autocomplete_manifestation_title', as: 'autocomplete_manifestation_title'
   get 'autocomplete_person_name' => 'admin#autocomplete_person_name', as: 'autocomplete_person_name'
   get 'autocomplete_authority_name' => 'admin#autocomplete_authority_name', as: 'autocomplete_authority_name'
