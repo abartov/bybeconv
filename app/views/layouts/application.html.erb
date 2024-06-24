@@ -134,7 +134,7 @@
                   </div>
                   <% if current_user.editor? %>
                     <br />
-                    <%= link_to t(:back_to_dashboard), url_for(controller: :admin, action: :index) %>
+                    <%= link_to t(:back_to_dashboard), admin_index_path %>
                   <% end %>
                 <% else %>
                   <a href="/session/login" id="sign_in"><button class="btn-small-outline-v02"><div class="btn-text-v02"><%= t(:sign_in) %></div></button></a>
@@ -176,7 +176,7 @@
       <% if current_user %>
         <% if current_user.editor? %>
           <br />
-          <h2><%= link_to t(:back_to_dashboard), url_for(controller: :admin, action: :index) %></h2>
+          <h2><%= link_to t(:back_to_dashboard), admin_index_path %></h2>
         <% end %>
       <% end %>
       <% unless @pagetype == :homepage %>
