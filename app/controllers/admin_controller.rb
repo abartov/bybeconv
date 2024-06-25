@@ -511,108 +511,6 @@ class AdminController < ApplicationController
     redirect_to action: :volunteer_profile_list
   end
 
-  ########################################################
-  ## featured content
-  def featured_content_list
-    @fcs = FeaturedContent.page(params[:page])
-  end
-
-  def featured_content_new
-    @fc = FeaturedContent.new
-  end
-
-  def featured_content_create
-    @fc = FeaturedContent.new(fc_params)
-    @fc.user = current_user
-    unless params[:linked_manifestation].empty?
-      @fc.manifestation = Manifestation.find(params[:linked_manifestation])
-    end
-    unless params[:linked_author].empty?
-      @fc.authority = Authority.find(params[:linked_author])
-    end
-
-    if @fc.save
-      redirect_to url_for(action: :featured_content_show, id: @fc.id), notice: t(:updated_successfully)
-    else
-      render action: 'featured_content_new'
-    end
-  end
-
-  def featured_content_show
-    @fc = FeaturedContent.find(params[:id])
-    if @fc.nil?
-      flash[:error] = I18n.t(:no_such_item)
-      redirect_to url_for(action: :index)
-    end
-  end
-
-  def featured_content_edit
-    @fc = FeaturedContent.find(params[:id])
-  end
-
-  def featured_content_update
-    @fc = FeaturedContent.find(params[:id])
-    if @fc.nil?
-      flash[:error] = I18n.t(:no_such_item)
-      redirect_to url_for(action: :index)
-    else
-      unless params[:linked_manifestation].empty?
-        @fc.manifestation = Manifestation.find(params[:linked_manifestation])
-      end
-      unless params[:linked_author].empty?
-        @fc.authority = Authority.find(params[:linked_author])
-      end
-      @fc.save
-      if @fc.update(fc_params)
-        flash[:notice] = I18n.t(:updated_successfully)
-        redirect_to action: :featured_content_show, id: @fc.id
-      else
-        format.html { render action: 'featured_content_edit' }
-        format.json { render json: @fc.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  def featured_content_destroy
-    @fc = FeaturedContent.find(params[:id])
-    unless @fc.nil?
-      @fc.destroy
-    end
-    flash[:notice] = I18n.t(:deleted_successfully)
-    redirect_to action: :featured_content_list
-  end
-
-  def featured_content_add_feature
-    unless params[:fromdate].nil? or params[:todate].nil?
-      fc = FeaturedContent.find(params[:fcid])
-      unless fc.nil?
-        fcf = FeaturedContentFeature.new(fromdate: Date.new(params[:fromdate][:year].to_i, params[:fromdate][:month].to_i, params[:fromdate][:day].to_i),
-          todate: Date.new(params[:todate][:year].to_i, params[:todate][:month].to_i, params[:todate][:day].to_i))
-        fcf.featured_content = fc
-        fcf.save!
-
-        flash[:notice] = I18n.t(:created_successfully)
-        redirect_to url_for(action: :featured_content_show, id: fc.id)
-      else
-        flash[:error] = I18n.t(:no_such_item)
-        redirect_to url_for(action: :index)
-      end
-    end
-  end
-
-  def featured_content_delete_feature
-    fcf = FeaturedContentFeature.find(params[:id])
-    unless fcf.nil?
-      fcid = fcf.featured_content_id
-      fcf.destroy!
-      flash[:notice] = I18n.t(:deleted_successfully)
-      redirect_to url_for(action: :featured_content_show, id: fcid)
-    else
-      flash[:error] = I18n.t(:no_such_item)
-      redirect_to url_for(action: :index)
-    end
-  end
-
   ## sitenotices
   def sitenotice_list
     @sns = Sitenotice.page(params[:page])
@@ -1140,9 +1038,6 @@ class AdminController < ApplicationController
   end
   def fa_params
     params[:featured_author].permit(:title, :body)
-  end
-  def fc_params
-    params[:featured_content].permit(:title, :body, :external_link)
   end
   def sp_params
     params[:static_page].permit(:tag, :title, :body, :status, :mode, :ltr)

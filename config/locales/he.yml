@@ -1037,7 +1037,6 @@ he:
   edit: עריכה
   destroy: מחיקה
   our_volunteers: המתנדבים שלנו
-  featured_content_management: ניהול תוכן מומלץ (זרקור)
   featured_authors_management: ניהול זרקור על יוצרים
   recommendations_by_volunteer: המלצות עורכים ומתנדבים
   featured_author: זרקור על יוצר/ת
@@ -1242,12 +1241,8 @@ he:
   add_bookmark: הוספת סימניה
   add_feature_date: הוספת טווח תאריכי הצגה
   featured_content_body: תוכן ההמלצה
-  linked_manifestation: יצירה מקושרת
   linked_author: יוצר/ת מקושר/ת
-  featured_content: תוכן מערכת
-  new_featured_content: תוכן מערכת חדש
   new_featured_author: יצירת זרקור חדש על יוצר
-  external_link: קישורית חיצונית
   to_external_content: לתוכן חיצוני
   preview: תצוגה מקדימה ללא שמירה
   new_title_only: כותרת (בלבד) חדשה, אם צריך
@@ -1316,6 +1311,14 @@ he:
       - "month"
       - "year"
   admin:
+    featured_contents:
+      index:
+        title: ניהול תוכן מומלץ (זרקור)
+      new:
+        title: תוכן מערכת חדש
+    featured_content_features:
+      create:
+        failed: קליטת טווח תאריכי תצוגה נכשלה. יש לבדוק את התאריכים.
     index:
       takes_long_time: דורש זמן רב!
     incongruous_copyright:
