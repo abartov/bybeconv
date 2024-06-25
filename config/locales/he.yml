@@ -1318,7 +1318,7 @@ he:
         title: תוכן מערכת חדש
     featured_content_features:
       create:
-        failed: Failed to create feature period, ensure dates are provided
+        failed: קליטת טווח תאריכי תצוגה נכשלה. יש לבדוק את התאריכים.
     index:
       takes_long_time: דורש זמן רב!
     incongruous_copyright:
