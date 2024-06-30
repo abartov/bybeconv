@@ -47,6 +47,8 @@
                 %b.btn-text-v02= t(:remove_angled_brackets)
               %button.btn-small-outline-v02#minuses_to_makafim{style:'display:unset'}
                 %b.btn-text-v02= t(:minuses_to_makafim)
+              %button.btn-small-outline-v02#tidy_footnote_dirs{style:'display:unset'}
+                %b.btn-text-v02= t(:tidy_footnote_dirs)
               .markdown= text_area_tag(:markdown, raw(@markdown), class: 'textarea100')
             .col-sm-9
               %h2= t(:display_text)
@@ -125,6 +127,24 @@
         buf = buf.split(/\n> */).join("\n");
         $('#markdown').selection('replace', {text: buf});
       }
+    });
+    $('#tidy_footnote_dirs').click(function(e) {
+      e.preventDefault();
+      var buf = $('#markdown').val();
+      replaced = 0;
+      buf = buf.replace(/(\[.*?]: )(.*)/g, function(occurrence, p1, p2){
+        if(occurrence.match(/[\u0590-\u05FF]/)) {
+          return occurrence;
+        } else {
+          if(occurrence.match(/dir="ltr"/)) {
+            return occurrence;
+          }
+          replaced += 1;
+          return p1 + '<div dir="ltr" align="left">' + p2 + '</div>';
+        }
+      });
+      $('#markdown').val(buf);
+      alert('בוצעו '+replaced.toString()+' החלפות.');
     });
     $('#minuses_to_makafim').click(function(e) {
       e.preventDefault();
