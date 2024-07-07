@@ -83,8 +83,13 @@ class Authority < ApplicationRecord
     self.wikidata_uri = wikidata_uri.blank? ? nil : wikidata_uri.strip.downcase.gsub('q', 'Q')
   end
 
-  # returns all volumes that are items of this authority's root collection
+  # return all collections of type volume that are associated with this authority
   def volumes
+    Collection.joins(:involved_authorities).where(collection_type: 'volume', involved_authorities: {authority_id: id})
+  end
+
+  # returns all volumes that are items of this authority's root collection
+  def volumes_by_root_collection
     return [] unless root_collection
 
     # it is assumed all volumes this authority is responsible for are children of the root collection

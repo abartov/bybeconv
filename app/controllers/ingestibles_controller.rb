@@ -50,7 +50,6 @@ class IngestiblesController < ApplicationController
   # PATCH/PUT /ingestibles/1 or /ingestibles/1.json
   def update
     update_params = ingestible_params
-    update_params[:volume_id] = params[:insert_cid].to_i if params[:insert_cid].present?
     if @ingestible.update(update_params)
       flash.now.notice = t('.success')
       render :edit
@@ -88,6 +87,7 @@ class IngestiblesController < ApplicationController
       :markdown,
       :no_volume,
       :attach_photos,
+      :prospective_volume_id,
       :toc_buffer
     )
   end

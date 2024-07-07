@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_06_18_155831) do
+ActiveRecord::Schema.define(version: 2024_07_07_201410) do
 
   create_table "aboutnesses", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -281,7 +281,7 @@ ActiveRecord::Schema.define(version: 2024_06_18_155831) do
   end
 
   create_table "collections", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
-    t.string "title"
+    t.string "title", limit: 1024
     t.string "sort_title"
     t.string "subtitle"
     t.string "issn"
@@ -576,6 +576,7 @@ ActiveRecord::Schema.define(version: 2024_06_18_155831) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "locked_by_user_id"
     t.timestamp "locked_at"
+    t.string "prospective_volume_id"
     t.index ["locked_by_user_id"], name: "index_ingestibles_on_locked_by_user_id"
     t.index ["status"], name: "index_ingestibles_on_status"
     t.index ["title"], name: "index_ingestibles_on_title"
