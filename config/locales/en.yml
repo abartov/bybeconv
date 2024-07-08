@@ -65,10 +65,19 @@ en:
       failure: Failed to create Ingestible
     edit:
       title: Edit Ingestible
+    form:
+      general: General
+      texts: Texts
+      full_markdown: Full Markdown
+      toc: TOC
+      review: Review
     update:
       success: Ingestible was successfully updated
     destroy:
       success: Ingestible was successfully destroyed
+  ingestible_texts:
+    edit:
+      text_x_of_total: Text %{index} of %{total}
   shared:
     filters:
       pagination:

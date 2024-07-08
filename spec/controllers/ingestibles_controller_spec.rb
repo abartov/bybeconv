@@ -83,16 +83,15 @@ describe IngestiblesController do
     describe '#update' do
       subject(:call) { patch :update, params: { id: ingestible.id, ingestible: ingestible_params } }
 
-      let(:ingestible_params) { attributes_for(:ingestible) }
+      let(:ingestible_params) { attributes_for(:ingestible).except(:markdown, :toc_buffer) }
 
       it_behaves_like 'redirects to show page if record cannot be locked'
 
       context 'when valid params' do
         it 'updates record and re-renders edit page' do
-          expect(call).to be_successful
+          expect(call).to redirect_to edit_ingestible_path(ingestible)
           ingestible.reload
           expect(ingestible).to have_attributes(ingestible_params)
-          expect(call).to render_template :edit
           expect(flash.notice).to eq I18n.t('ingestibles.update.success')
         end
       end
@@ -104,6 +103,21 @@ describe IngestiblesController do
           expect(call).to have_http_status(:unprocessable_entity)
           expect(call).to render_template(:edit)
         end
+      end
+    end
+
+    describe '#update_markdown' do
+      subject(:call) { patch :update_markdown, params: { id: ingestible.id, ingestible: { markdown: new_markdown } } }
+
+      let(:new_markdown) { Faker::Lorem.paragraph }
+
+      it_behaves_like 'redirects to show page if record cannot be locked'
+
+      it 'updates record and re-renders edit page' do
+        expect(call).to redirect_to edit_ingestible_path(ingestible)
+        ingestible.reload
+        expect(ingestible.markdown).to eq new_markdown
+        expect(flash.notice).to eq I18n.t(:updated_successfully)
       end
     end
 
