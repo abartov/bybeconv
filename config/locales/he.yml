@@ -1375,10 +1375,14 @@ he:
       texts: טקסטים
       full_markdown: מארקדאון מלא
       toc: תוכן עניינים
+      review: Review
     update:
       success: ההעלאה עודכנה
     destroy:
       success: ההעלאה נמחקה
+  ingestible_texts:
+    edit:
+      text_x_of_total: Text %{index} of %{total}
   shared:
     filters:
       pagination:

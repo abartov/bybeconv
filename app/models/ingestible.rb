@@ -25,6 +25,12 @@ class Ingestible < ApplicationRecord
 
   # after_commit :update_parsing # this results in ActiveStorage::FileNotFoundError in dev/local storage
 
+  before_save do
+    if @texts.present?
+      self.works_buffer = @texts.map(&:to_hash).to_json
+    end
+  end
+
   def volume_valid?
     return volume_id.present? || no_volume
   end
@@ -163,6 +169,11 @@ class Ingestible < ApplicationRecord
     self.works_buffer = buf.to_json
     self.works_buffer_updated_at = Time.current
     save
+  end
+
+  def texts
+    # TODO: invalidate memoized value
+    @texts ||= works_buffer.nil? ? [] : JSON.parse(works_buffer).map { |json| IngestibleText.new(json) }
   end
 
   def locked?

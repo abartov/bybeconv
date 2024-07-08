@@ -4,8 +4,8 @@ class IngestiblesController < ApplicationController
   include LockIngestibleConcern
 
   before_action { |c| c.require_editor('edit_catalog') }
-  before_action :set_ingestible, only: %i(show edit update destroy review)
-  before_action :try_to_lock_ingestible, only: %i(show edit update destroy review)
+  before_action :set_ingestible, only: %i(show edit update update_markdown destroy review)
+  before_action :try_to_lock_ingestible, only: %i(show edit update update_markdown destroy review)
 
   DEFAULTS = { title: '', status: 'draft', orig_lang: 'he', default_authorities: [], metadata: {}, comments: '',
                markdown: '' }.freeze
@@ -28,11 +28,11 @@ class IngestiblesController < ApplicationController
   # GET /ingestibles/1/review
   def review
   end
-  
+
   # GET /ingestibles/1/edit
   def edit
     @ingestible.update_parsing # refresh markdown or text buffers if necessary
-    @html = MultiMarkdown.new(@ingestible.markdown).to_html.force_encoding('UTF-8').gsub(/<figcaption>.*?<\/figcaption>/,'') # remove MMD's automatic figcaptions
+    @html = MarkdownToHtml.call(@ingestible.markdown)
   end
 
   # POST /ingestibles or /ingestibles.json
@@ -50,11 +50,16 @@ class IngestiblesController < ApplicationController
   # PATCH/PUT /ingestibles/1 or /ingestibles/1.json
   def update
     if @ingestible.update(ingestible_params)
-      flash.now.notice = t('.success')
-      render :edit
+      redirect_to edit_ingestible_url(@ingestible), notice: t('.success')
     else
       render :edit, status: :unprocessable_entity
     end
+  end
+
+  def update_markdown
+    markdown_params = params.require(:ingestible).permit(:markdown)
+    @ingestible.update!(markdown_params)
+    redirect_to edit_ingestible_url(@ingestible), notice: t(:updated_successfully)
   end
 
   # DELETE /ingestibles/1 or /ingestibles/1.json
@@ -83,7 +88,6 @@ class IngestiblesController < ApplicationController
       :docx,
       :metadata,
       :comments,
-      :markdown,
       :no_volume,
       :attach_photos,
       :prospective_volume_id,

@@ -1,0 +1,31 @@
+- text = ingestible.texts[index]
+.container-fluid
+  = form_for [ingestible, text], url: ingestible_text_path(ingestible, index), method: :patch do |f|
+    .row
+      .col-sm-2
+        - if index > 0
+          = link_to 'Previous',
+                    edit_ingestible_text_path(ingestible, index - 1),
+                    class: 'btn btn-primary form-control',
+                    remote: true
+      .col-sm-8
+        .row
+          .col-sm-2
+            %label.control-label= IngestibleText.human_attribute_name(:title)
+          .col-sm-10
+            .form-control= f.text_field :title
+      .col-sm-2
+        - if index < ingestible.texts.length - 1
+          = link_to 'Next',
+                    edit_ingestible_text_path(ingestible, index + 1),
+                    class: 'btn btn-primary form-control',
+                    remote: true
+    .markdown_container.row
+      .col-sm-3
+        = f.text_area :content, class: 'textarea100 markdown'
+      .col-sm-9
+        %h2= t(:display_text)
+        #buffer_preview{ style: 'padding-left:10px;padding-right:15px;background:#d2cfcf; overflow-y:auto' }
+          != raw(MarkdownToHtml.call(text.content))
+    .actions
+      = f.submit t(:save), class: 'btn btn-primary btn-sm', remote: true

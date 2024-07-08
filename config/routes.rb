@@ -9,8 +9,10 @@ Bybeconv::Application.routes.draw do
 
   resources :ingestibles do
     resources :authorities, controller: :ingestible_authorities, only: %i(create destroy)
+    resources :texts, controller: :ingestible_texts, only: %i(edit update)
     member do
       get :review
+      patch :update_markdown
     end
   end
 
