@@ -2,16 +2,33 @@ require 'rails_helper'
 
 describe AuthorsController do
   describe '#browse' do
-    subject(:call) { get :browse }
+    subject(:call) { get :browse, params: { sort_by: sort_by }.compact }
+
+    let(:sort_by) { nil }
+
+    let(:corporate_body) { create(:authority, :corporate_body) }
 
     before do
       clean_tables
       Chewy.strategy(:atomic) do
-        create_list(:manifestation, 20)
+        create_list(:manifestation, 5)
+        create(:manifestation, author: corporate_body)
       end
     end
 
     it { is_expected.to be_successful }
+
+    describe 'sorting' do
+      AuthorsController::SORTING_PROPERTIES.each_key do |sort|
+        %w(asc desc).each do |dir|
+          context "when by #{sort} in #{dir} order" do
+            let(:sort_by) { "#{sort}_#{dir}" }
+
+            it { is_expected.to be_successful }
+          end
+        end
+      end
+    end
   end
 
   describe '#all' do
