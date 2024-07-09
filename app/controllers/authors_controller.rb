@@ -195,8 +195,8 @@ class AuthorsController < ApplicationController
   SORTING_PROPERTIES = {
     'alphabetical' => { default_dir: 'asc', column: :sort_name },
     'popularity' => { default_dir: 'desc', column: :impressions_count },
-    'death_date' => { default_dir: 'asc', column: :death_year },
-    'birth_date' => { default_dir: 'asc', column: :birth_year },
+    'death_date' => { default_dir: 'asc', column: 'person.death_year' },
+    'birth_date' => { default_dir: 'asc', column: 'person.birth_year' },
     'upload_date' => { default_dir: 'desc', column: :pby_publication_date }
   }.freeze
 

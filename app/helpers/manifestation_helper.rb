@@ -23,11 +23,11 @@ module ManifestationHelper
     end
   end
   def author_birth_date_decorator(item)
-    thedate = item.birth_year
+    thedate = item.person.present? ? item.person['birth_year'] : nil
     return " (#{thedate.nil? ? t(:unknown) : thedate})"
   end
   def author_death_date_decorator(item)
-    thedate = item.death_year
+    thedate = item.person.present? ? item.person['death_year'] : nil
     return " (#{thedate.nil? ? t(:unknown) : thedate})"
   end
   def browse_upload_date(item)

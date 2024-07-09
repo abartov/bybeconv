@@ -30,19 +30,29 @@
       %div
         #custom-select{title: t(:worklist_sort_tt)}
           %select#sort_by_dd{name: 'sort_by'}
-            %optgroup{label: t(:alefbet)}
-              %option{value: 'alphabetical_asc', selected: @sort == 'alphabetical_asc' ? 'true': nil}= t(:alefbet_asc)
-              %option{value: 'alphabetical_desc', selected: @sort == 'alphabetical_desc' ? 'true': nil}= t(:alefbet_desc)
-            %optgroup{label: t(:popularity_group)}
-              %option{value: 'popularity_desc', selected: @sort == 'popularity_desc' ? 'true': nil}= t(:popularity_desc)
-              %option{value: 'popularity_asc', selected: @sort == 'popularity_asc' ? 'true': nil}= t(:popularity_asc)
-            %optgroup{label: t(:dates)}
-              %option{value: 'publication_date_asc', selected: @sort == 'publication_date_asc' ? 'true': nil}= t(:pubdate_asc)
-              %option{value: 'publication_date_desc', selected: @sort == 'publication_date_desc' ? 'true': nil}= t(:pubdate_desc)
-              %option{value: 'creation_date_asc', selected: @sort == 'creation_date_asc' ? 'true': nil}= t(:creation_date_asc)
-              %option{value: 'creation_date_desc', selected: @sort == 'creation_date_desc' ? 'true': nil}= t(:creation_date_desc)
-              %option{value: 'upload_date_asc', selected: @sort == 'upload_date_asc' ? 'true': nil}= t(:uploaddate_asc)
-              %option{value: 'upload_date_desc', selected: @sort == 'upload_date_desc' ? 'true': nil}= t(:uploaddate_desc)
+            %optgroup{ label: t(:alefbet) }
+              %option{ value: 'alphabetical_asc', selected: @sort == 'alphabetical_asc' }
+                = t(:alefbet_asc)
+              %option{ value: 'alphabetical_desc', selected: @sort == 'alphabetical_desc' }
+                = t(:alefbet_desc)
+            %optgroup{ label: t(:popularity_group) }
+              %option{ value: 'popularity_desc', selected: @sort == 'popularity_desc' }
+                = t(:popularity_desc)
+              %option{ value: 'popularity_asc', selected: @sort == 'popularity_asc' }
+                = t(:popularity_asc)
+            %optgroup{ label: t(:dates) }
+              %option{ value: 'publication_date_asc', selected: @sort == 'publication_date_asc' }
+                = t(:pubdate_asc)
+              %option{ value: 'publication_date_desc', selected: @sort == 'publication_date_desc' }
+                = t(:pubdate_desc)
+              %option{ value: 'creation_date_asc', selected: @sort == 'creation_date_asc' }
+                = t(:creation_date_asc)
+              %option{ value: 'creation_date_desc', selected: @sort == 'creation_date_desc' }
+                = t(:creation_date_desc)
+              %option{ value: 'upload_date_asc', selected: @sort == 'upload_date_asc' }
+                = t(:uploaddate_asc)
+              %option{ value: 'upload_date_desc', selected: @sort == 'upload_date_desc' }
+                = t(:uploaddate_desc)
 
   .add-to-anthology{style:'display:none'}
     .left-pointing-arrow= t(:perform_add)
