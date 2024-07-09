@@ -49,8 +49,7 @@ class IngestiblesController < ApplicationController
 
   # PATCH/PUT /ingestibles/1 or /ingestibles/1.json
   def update
-    update_params = ingestible_params
-    if @ingestible.update(update_params)
+    if @ingestible.update(ingestible_params)
       flash.now.notice = t('.success')
       render :edit
     else
