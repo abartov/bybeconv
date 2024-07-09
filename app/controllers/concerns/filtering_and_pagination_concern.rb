@@ -53,8 +53,12 @@ module FilteringAndPaginationConcern
   end
 
   def search_after_for_item(item, sort_column, reverse)
+    # Checking if nested field like 'person.birth_year' was used for sorting
+    # NOTE: for now we only support single level of nesting
+    sort_path = sort_column.to_s.split('.')
+    sort_value = sort_path.length > 1 ? item.send(sort_path.first)[sort_path.last] : item.send(sort_column)
     {
-      value: item.send(sort_column),
+      value: sort_value,
       id: item.id,
       page: reverse ? @page - 1 : @page + 1,
       reverse: reverse.to_s
