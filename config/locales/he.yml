@@ -641,8 +641,8 @@ he:
   deathdate_desc: 'ת. פטירה: מהמאוחר למוקדם'
   pubdate_asc: 'ת. הוצאה: מהישן לחדש'
   pubdate_desc: 'ת. הוצאה: מהחדש לישן'
-  workdate_asc: 'ת. חיבור: מהישן לחדש'
-  workdate_desc: 'ת. חיבור: מהחדש לישן'
+  creation_date_asc: 'ת. חיבור: מהישן לחדש'
+  creation_date_desc: 'ת. חיבור: מהחדש לישן'
   uploaddate_asc: 'ת. עלייה לאתר: מהישן לחדש'
   uploaddate_desc: 'ת. עלייה לאתר: מהחדש לישן'
   title: כותרת
