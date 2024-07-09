@@ -16,8 +16,27 @@ en:
   created_successfully: Created Successfully
   updated_successfully: Updated Successfully
   deleted_successfully: Deleted Successfully
+  alefbet: Alphabetical
+  alefbet_asc: 'Alphabetical: A-Z'
+  alefbet_desc: 'Alphabetical: Z-A'
+  popularity_group: Poplularity
+  popularity_desc: 'Popularity: descending'
+  popularity_asc: 'Popularity: ascending'
+  birthdate_asc: 'Birth date: ascending'
+  birthdate_desc: 'Birth date: descending'
+  deathdate_asc: 'Death date: ascending'
+  deathdate_desc: 'Death date: descending'
+  pubdate_asc: 'Publication date: ascending'
+  pubdate_desc: 'Publication date: descending'
+  creation_date_asc: 'Creation date: ascending'
+  creation_date_desc: 'Creation date: descending'
+  uploaddate_asc: 'Added to site: from old to new'
+  uploaddate_desc: 'Added to site: from new to old'
+  dates: Dates
   add_feature_date: Add feature date
   feature_on: Featuring Periods
+  unknown: Unknown
+  sort_by: Sort by
   admin:
     featured_contents:
       index:
