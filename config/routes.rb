@@ -9,7 +9,9 @@ Bybeconv::Application.routes.draw do
 
   resources :ingestibles do
     resources :authorities, controller: :ingestible_authorities, only: %i(create destroy)
-    get 'review'
+    member do
+      get :review
+    end
   end
 
   resources :collection_items

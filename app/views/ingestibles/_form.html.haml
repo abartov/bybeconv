@@ -111,7 +111,7 @@
     = f.submit t(:save), class: 'btn btn-primary'
   - if @ingestible.persisted?
     .review
-      = link_to t(:review), ingestible_review_path(@ingestible), class: 'btn btn-primary'
+      = link_to t(:review), review_ingestible_path(@ingestible), class: 'btn btn-primary'
 :javascript
   $(document).ready(function() {
     $('#explain_no_volume').popover({content: 
