@@ -59,6 +59,18 @@ describe Ingestible do
       it_behaves_like 'lock obtained'
     end
 
+    context 'when record is locked by same user less than 10 seconds ago' do
+      let(:locked_at) { 5.seconds.ago }
+      let(:other_user) { user }
+
+      it 'returns true but does not updates lock timestamp' do
+        expect(result).to be_truthy
+        ingestible.reload
+        expect(ingestible.locked_by_user).to eq user
+        expect(ingestible.locked_at).to be_within(1.second).of(locked_at)
+      end
+    end
+
     context 'when record is locked by different user, but lock is expired' do
       let(:locked_at) { 20.minutes.ago }
       let(:other_user) { create(:user) }
