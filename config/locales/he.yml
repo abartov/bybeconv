@@ -1382,7 +1382,7 @@ he:
       success: ההעלאה נמחקה
   ingestible_texts:
     edit:
-      text_x_of_total: Text %{index} of %{total}
+      text_x_of_total: טקסט %{index} מתוך %{total}
   shared:
     filters:
       pagination:
