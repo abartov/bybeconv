@@ -1375,7 +1375,7 @@ he:
       texts: טקסטים
       full_markdown: מארקדאון מלא
       toc: תוכן עניינים
-      review: Review
+      review: סקירה
     update:
       success: ההעלאה עודכנה
     destroy:
