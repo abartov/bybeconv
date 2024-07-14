@@ -183,7 +183,11 @@ class Ingestible < ApplicationRecord
   def obtain_lock(user)
     return false if locked? && locked_by_user_id != user.id
 
-    update!(locked_at: Time.zone.now, locked_by_user: user)
+    # To avoid excessive updates we only refresh lock if more than 10 seconds passed since previous lock refresh
+    if locked_at.nil? || locked_at < 10.seconds.ago
+      update!(locked_at: Time.zone.now, locked_by_user: user)
+    end
+
     return true
   end
 
