@@ -4,6 +4,7 @@
 class IngestibleTextsController < ApplicationController
   include LockIngestibleConcern
 
+  before_action { |c| c.require_editor('edit_catalog') }
   before_action :set_ingestible
   before_action :try_to_lock_ingestible
 
