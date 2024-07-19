@@ -28,6 +28,7 @@ en:
             base:
               no_linked_authority: either Person or CorporateBody object must be specified
               multiple_linked_authorities: Person and CorporateBody objects cannot be specified together
+          wrong_collection_type: must be of '%{expected_type}' type
     attributes:
       authority:
         other_designation: Other designation

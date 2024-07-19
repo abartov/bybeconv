@@ -37,6 +37,8 @@ en:
   feature_on: Featuring Periods
   unknown: Unknown
   sort_by: Sort by
+  uncollected_works_collection_title: Uncollected works
+
   admin:
     featured_contents:
       index:

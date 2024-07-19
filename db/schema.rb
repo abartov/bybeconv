@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_07_07_201410) do
+ActiveRecord::Schema.define(version: 2024_07_19_103532) do
 
   create_table "aboutnesses", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -158,6 +158,7 @@ ActiveRecord::Schema.define(version: 2024_07_07_201410) do
     t.integer "person_id"
     t.integer "corporate_body_id"
     t.integer "root_collection_id"
+    t.integer "uncollected_works_collection_id"
     t.index ["corporate_body_id"], name: "index_authorities_on_corporate_body_id", unique: true
     t.index ["impressions_count"], name: "index_authorities_on_impressions_count"
     t.index ["intellectual_property"], name: "index_authorities_on_intellectual_property"
@@ -167,6 +168,7 @@ ActiveRecord::Schema.define(version: 2024_07_07_201410) do
     t.index ["sort_name"], name: "index_authorities_on_sort_name"
     t.index ["status", "published_at"], name: "index_authorities_on_status_and_published_at"
     t.index ["toc_id"], name: "people_toc_id_fk"
+    t.index ["uncollected_works_collection_id"], name: "index_authorities_on_uncollected_works_collection_id", unique: true
   end
 
   create_table "base_user_preferences", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -1075,6 +1077,7 @@ ActiveRecord::Schema.define(version: 2024_07_07_201410) do
   add_foreign_key "anthology_texts", "anthologies"
   add_foreign_key "anthology_texts", "manifestations"
   add_foreign_key "authorities", "collections", column: "root_collection_id"
+  add_foreign_key "authorities", "collections", column: "uncollected_works_collection_id"
   add_foreign_key "authorities", "corporate_bodies"
   add_foreign_key "authorities", "people"
   add_foreign_key "authorities", "tocs", name: "people_toc_id_fk"

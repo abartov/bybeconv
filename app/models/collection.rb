@@ -34,7 +34,16 @@ class Collection < ApplicationRecord
   #   a multi-volume work, are their appropriate type -- a manifestation if a single text, a collection of type volume
   #   if a book, etc.;
   # other is a catch-all for anything else
-  enum collection_type: { volume: 0, periodical: 1, periodical_issue: 2, series: 3, root: 4, other: 5 }
+  # uncollected is used to group authority's works not belonging to any other collections. Each authority can have one.
+  enum collection_type: {
+    volume: 0,
+    periodical: 1,
+    periodical_issue: 2,
+    series: 3,
+    root: 4,
+    other: 5,
+    uncollected: 100
+  }
   enum toc_strategy: { default: 0, custom_markdown: 1 } # placeholder for future custom ToC-generation strategies
 
   # scope :published, -> { where(status: Collection.statuses[:published]) }
