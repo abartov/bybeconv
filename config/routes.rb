@@ -5,6 +5,12 @@ Bybeconv::Application.routes.draw do
       resources :features, controller: 'featured_content_features', only: %i(create)
     end
     resources :featured_content_features, only: %i(destroy)
+
+    resources :authorities, only: [] do
+      member do
+        post :refresh_uncollected_works_collection
+      end
+    end
   end
 
   resources :ingestibles do

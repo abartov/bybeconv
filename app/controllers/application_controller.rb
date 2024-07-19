@@ -416,7 +416,7 @@ class ApplicationController < ActionController::Base
   end
 
   def prep_toc_as_collection
-    @root_collection = @author.root_collection
+    @root_collection = @author.obtain_root_collection
     @toc = @author.toc # may be nil
     # credits = @author.toc.credit_section || ''
     # credits.sub!(

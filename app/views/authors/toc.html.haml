@@ -60,7 +60,13 @@
                   != "&nbsp;&nbsp;&nbsp;"
                   %span.static-btn
                     %b= link_to t(:edit_metadata), authors_edit_path(id: @author.id)
-        
+
+                  != '&nbsp;&nbsp;&nbsp;'
+                  %span.static-btn
+                    %b= link_to 'Refresh uncollected works',
+                                refresh_uncollected_works_collection_admin_authority_path(@author),
+                                method: :post
+
             .select-all-with-buttons{style:'display:none;margin-right:100px;'}
               .number-of-selected-texts{style: 'display:none'}
                 = t(:number_of_selected_texts)

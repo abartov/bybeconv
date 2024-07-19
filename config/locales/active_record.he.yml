@@ -28,6 +28,7 @@ he:
             base:
               no_linked_authority: יש לקשר או רשומת אישים או רשומת ארגונים
               multiple_linked_authorities: אי אפשר לקשר גם רשומת אישים וגם רשומת ארגונים
+          wrong_collection_type: must be of '%{expected_type}' type
     attributes:
       authority:
         other_designation: כינויים אחרים

@@ -37,6 +37,8 @@ class Authority < ApplicationRecord
 
   belongs_to :person, optional: true
   belongs_to :corporate_body, optional: true
+  belongs_to :root_collection, class_name: 'Collection', optional: true
+  belongs_to :uncollected_works_collection, class_name: 'Collection', optional: true
 
   attr_readonly :person, :corporate_body # Should not be modified after creation
 
@@ -74,6 +76,8 @@ class Authority < ApplicationRecord
   # validations
   validates :name, :intellectual_property, presence: true
   validates :wikidata_uri, format: WIKIDATA_URI_PATTERN, allow_nil: true
+  validates :uncollected_works_collection, uniqueness: true, allow_nil: true
+  validate :validate_collection_types
   validate :validate_linked_authority
 
   validates_attachment_content_type :profile_image, content_type: %r{\Aimage/.*\z}
@@ -334,11 +338,8 @@ class Authority < ApplicationRecord
     publish! if awaiting_first?
   end
 
-  def root_collection
-    return @root_collection if @root_collection
-    return @root_collection = Collection.find(root_collection_id) if root_collection_id
-
-    return @root_collection = generate_root_collection!
+  def obtain_root_collection
+    self.root_collection ||= generate_root_collection!
   end
 
   def generate_root_collection!
@@ -401,4 +402,16 @@ class Authority < ApplicationRecord
     errors.add(:base, :no_linked_authority) if person.nil? && corporate_body.nil?
     errors.add(:base, :multiple_linked_authorities) if person.present? && corporate_body.present?
   end
+
+  # rubocop:disable Style/GuardClause
+  def validate_collection_types
+    if root_collection.present? && !root_collection.root?
+      errors.add(:root_collection, :wrong_collection_type, expected_type: :root)
+    end
+
+    if uncollected_works_collection.present? && !uncollected_works_collection.uncollected?
+      errors.add(:uncollected_works_collection, :wrong_collection_type, expected_type: :uncollected)
+    end
+  end
+  # rubocop:enable Style/GuardClause
 end
