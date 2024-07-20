@@ -1,9 +1,13 @@
 require 'pandoc-ruby' # for generic DOCX-to-HTML conversions
 
 class HtmlFileController < ApplicationController
-  before_action only: [:edit, :update, :new, :create, :destroy, :list, :list_for_editor, :publish, :frbrize, :edit_markdown, :mark_superseded] do |c| c.require_editor('edit_catalog') end
+  before_action only: %i(edit update new create destroy list list_for_editor publish frbrize edit_markdown
+                         mark_superseded) do |c|
+    c.require_editor('edit_catalog')
+  end
   # before_action :require_user, :only => [:edit, :update]
-  before_action :require_admin, only: [:analyze, :analyze_all,  :parse, :unsplit, :chop1, :chop2, :chop3, :choplast1, :choplast2, :poetry]
+  before_action :require_admin,
+                only: %i(analyze analyze_all parse unsplit chop1 chop2 chop3 choplast1 choplast2 poetry)
 
   def analyze
     @text = HtmlFile.find(params[:id])
@@ -33,14 +37,14 @@ class HtmlFileController < ApplicationController
           format.html { redirect_to url_for(action: :edit_markdown, id: @text.id), notice: t(:updated_successfully) }
           format.json { render json: @text, status: :created, location: @text }
         else
-          format.html { render action: "new" }
+          format.html { render action: 'new' }
           format.json { render json: @text.errors, status: :unprocessable_entity }
         end
       end
     else
       flash[:error] = t(:must_set_author)
       respond_to do |format|
-        format.html { render action: 'new'}
+        format.html { render action: 'new' }
         format.json { render json: @text.errors, status: :unprocessable_entity }
       end
     end
@@ -51,8 +55,8 @@ class HtmlFileController < ApplicationController
     @page_title = t(:edit_markdown)
     unless params[:markdown].nil?
       @text.markdown = params[:markdown]
-      @text.genre = params[:genre] unless params[:genre].blank?
-      @text.orig_lang = params[:orig_lang] unless params[:orig_lang].blank?
+      @text.genre = params[:genre] if params[:genre].present?
+      @text.orig_lang = params[:orig_lang] if params[:orig_lang].present?
       @text.comments = params[:comments]
       @text.pub_link = params[:pub_link]
       @text.pub_link_text = params[:pub_link_text]
@@ -67,8 +71,8 @@ class HtmlFileController < ApplicationController
         @text.save
       else
         bin = Faraday.get @text.doc.url # grab the doc/x binary
-        tmpfile = Tempfile.new(['docx2mmd__','.docx'], :encoding => 'ascii-8bit')
-        tmpfile_pp = Tempfile.new(['docx2mmd__pp_','.docx'], :encoding => 'ascii-8bit')
+        tmpfile = Tempfile.new(['docx2mmd__', '.docx'], encoding: 'ascii-8bit')
+        tmpfile_pp = Tempfile.new(['docx2mmd__pp_', '.docx'], encoding: 'ascii-8bit')
         begin
           tmpfile.write(bin.body)
           tmpfile.flush
@@ -89,7 +93,7 @@ class HtmlFileController < ApplicationController
             redirect_to controller: :admin, action: :index
           end
           @text.save
-        rescue => e
+        rescue StandardError => e
           flash[:error] = t(:conversion_error)
           redirect_to controller: :admin, action: :index
         ensure
@@ -103,14 +107,15 @@ class HtmlFileController < ApplicationController
     if @text.has_splits
       validator = TitleValidator.new
       @text.split_parts.each_pair do |title, markdown|
-        dummy = Work.new(title: title.sub(/_ZZ\d+/,''))
+        dummy = Work.new(title: title.sub(/_ZZ\d+/, ''))
         if validator.validate(dummy)
           doctored_title = title
         else
-          doctored_title = "<span style='color:red'>#{title}</span><br><span style='color:red'>#{dummy.errors.full_messages.join("<br />")}</span>"
+          doctored_title = "<span style='color:red'>#{title}</span><br><span style='color:red'>#{dummy.errors.full_messages.join('<br />')}</span>"
           @disable_submit = true
         end
-        @html += "<hr style='border-color:#2b0d22;border-width:20px;margin-top:40px'/><h1>#{doctored_title.sub(/_ZZ\d+/,'')}</h1>"+MultiMarkdown.new(markdown).to_html.force_encoding('UTF-8')
+        @html += "<hr style='border-color:#2b0d22;border-width:20px;margin-top:40px'/><h1>#{doctored_title.sub(/_ZZ\d+/,
+                                                                                                               '')}</h1>" + MultiMarkdown.new(markdown).to_html.force_encoding('UTF-8')
       end
     else
       @html = MultiMarkdown.new(@markdown.gsub(/^&&& (.*)/, '<hr style="border-color:#2b0d22;border-width:20px;margin-top:40px"/><h1>\1</h1>')).to_html.force_encoding('UTF-8') # TODO: figure out why to_html defaults to ASCII 8-bit
@@ -172,24 +177,26 @@ class HtmlFileController < ApplicationController
     @total_assigned = HtmlFile.where("assignee_id is not null and status != 'Published' and status != 'Superseded'").count
     # build query condition
     query = {}
-    unless params[:commit].blank?
+    if params[:commit].present?
       session[:html_q_params] = params.permit(:nikkud, :footnotes, :status, :path, :title) # make prev. params accessible to view
-    else
-      session[:html_q_params] = { footnotes: '', nikkud: '', status: params['status'], path: '', title: '' } if session[:html_q_params].nil?
+    elsif session[:html_q_params].nil?
+      session[:html_q_params] =
+        { footnotes: '', nikkud: '', status: params['status'], path: '', title: '' }
     end
     f = session[:html_q_params][:footnotes]
     n = session[:html_q_params][:nikkud]
-    s = params[:commit].blank? ? session[:html_q_params][:status] : (params[:status] or session[:html_q_params][:status] )
+    s = params[:commit].blank? ? session[:html_q_params][:status] : (params[:status] or session[:html_q_params][:status])
     # p = session[:html_q_params][:path] # retrieve query params whether or not they were POSTed
     title = session[:html_q_params][:title]
-    query.merge!(footnotes: f) unless f.blank?
-    query.merge!(nikkud: n) unless n.blank?
-    query.merge!(status: s) unless s.blank?
+    query.merge!(footnotes: f) if f.present?
+    query.merge!(nikkud: n) if n.present?
+    query.merge!(status: s) if s.present?
     assignee_cond = "assignee_id is null or assignee_id = #{current_user.id}"
 
     # TODO: figure out how to include filter by path without making the query fugly
     if title.present?
-      @texts = HtmlFile.where(assignee_cond).where(query).where('title like ?', '%' + title + '%').page(params[:page]).order('updated_at DESC')
+      @texts = HtmlFile.where(assignee_cond).where(query).where('title like ?',
+                                                                '%' + title + '%').page(params[:page]).order('updated_at DESC')
     else
       @texts = HtmlFile.where(assignee_cond).where(query).page(params[:page]).order('updated_at DESC')
     end
@@ -244,12 +251,13 @@ class HtmlFileController < ApplicationController
         au_id = @text.author.id
         if @text.has_splits
           @text.split_parts.each_pair do |title, markdown|
-            success = @text.create_WEM_new(au_id, title.sub(/_ZZ\d+/,''), markdown, true, params[:pub_status])
+            success = @text.create_WEM_new(au_id, title.sub(/_ZZ\d+/, ''), markdown, true, params[:pub_status])
           end
           @text.status = 'Published' if success == true
           @text.save!
         else
-          success = @text.create_WEM_new(au_id, @text.title.sub(/_ZZ\d+/,''), @text.markdown, false, params[:pub_status])
+          success = @text.create_WEM_new(au_id, @text.title.sub(/_ZZ\d+/, ''), @text.markdown, false,
+                                         params[:pub_status])
         end
         if success == true
           # invalidate cached work list for generated TOCs
@@ -284,7 +292,6 @@ class HtmlFileController < ApplicationController
       flash[:error] = t(:must_accept_before_publishing)
     end
     redirect_to url_for(action: :list, status: 'Parsed') # help user find the newly-parsed files
-
   end
 
   def unsplit
@@ -306,18 +313,16 @@ class HtmlFileController < ApplicationController
         # TODO: handle errors, at least path not found
         if h.status != 'Published'
           @html = File.open(h.path, 'r:UTF-8').read
+        elsif h.manifestations.empty?
+          head :bad_request
         else
-          if h.manifestations.empty?
-            head :bad_request
-          else
-            redirect_to url_for(controller: :manifestation, action: :read, id: h.manifestations[0].id)
-          end
+          redirect_to url_for(controller: :manifestation, action: :read, id: h.manifestations[0].id)
         end
       else
         path = params[:path]
         path = '/' + path if path[0] != '/' # prepend slash if necessary
-        if path =~ /\/([^\/]*)\/?(index)?/
-          d = HtmlDir.find_by_path($1)
+        if path =~ %r{/([^/]*)/?(index)?}
+          d = HtmlDir.find_by_path(::Regexp.last_match(1))
           unless d.nil?
             unless d.person.nil?
               redirect_to url_for(controller: :authors, action: :toc, id: d.person.id)
@@ -341,10 +346,10 @@ class HtmlFileController < ApplicationController
       @markdown = pp[:markdown] || @text.markdown # TODO: make secure
       @text.update_markdown(@markdown.gsub('__________', '__SPLIT__')) # TODO: add locking of some sort to avoid concurrent overwrites
       @text.delete_pregen
-      @text.genre = pp[:genre] unless pp[:genre].blank?
+      @text.genre = pp[:genre] if pp[:genre].present?
       @text.comments = pp[:comments]
-      @markdown = @text.remove_line_nums! unless pp[:remove_line_nums].blank?
-      unless pp[:add_person].blank?
+      @markdown = @text.remove_line_nums! if pp[:remove_line_nums].present?
+      if pp[:add_person].present?
         if pp[:role].to_i == HtmlFile::ROLE_AUTHOR
           @text.set_orig_author(pp[:add_person].to_i)
         else # translator
@@ -373,17 +378,17 @@ class HtmlFileController < ApplicationController
     new_title = lines.shift while new_title !~ /\p{Word}/
     slashpos = new_title.index('/')
     slashpos = 0 if slashpos.nil?
-    updated_title = new_title[0..slashpos-1].strip
+    updated_title = new_title[0..slashpos - 1].strip
     unless slashpos.nil?
-      title =~ /\//
-      newbuf = '# '+updated_title+' /'
-      if $'.nil?
-        newbuf += ' '+@text.html_dir.person.name
-      else
-        newbuf += $'
-      end
-      newbuf += "\n"+lines.join("\n")
-      File.open(@text.path + '.markdown', 'wb') {|f| f.write(newbuf)} # write back
+      title =~ %r{/}
+      newbuf = '# ' + updated_title + ' /'
+      newbuf += if ::Regexp.last_match.post_match.nil?
+                  ' ' + @text.html_dir.person.name
+                else
+                  ::Regexp.last_match.post_match
+                end
+      newbuf += "\n" + lines.join("\n")
+      File.binwrite(@text.path + '.markdown', newbuf) # write back
       flash[:notice] = t(:updated_successfully)
     else
       flash[:error] = t(:malformed_line)
@@ -416,10 +421,10 @@ class HtmlFileController < ApplicationController
     redirect_to action: :render_html, id: params[:id]
   end
 
-  #def metadata
+  # def metadata
   #  @text = HtmlFile.find(params[:id])
   #  @authors = @text.guess_authors
-  #end
+  # end
   def confirm_html_dir_person
     @text = HtmlFile.find(params[:id])
     @text.person = @text.html_dir.person
@@ -427,25 +432,26 @@ class HtmlFileController < ApplicationController
     flash[:notice] = t(:confirmed_person_as_author, author: @text.person.name)
     render json: nil
   end
+
   protected
 
   def new_postprocess(buf)
     # join lines in <span> elements that, er, span more than one line
-    buf.gsub!(/<span.*?>.*?\n.*?<\/span>/) {|thematch| thematch.sub("\n",' ')}
+    buf.gsub!(%r{<span.*?>.*?\n.*?</span>}) { |thematch| thematch.sub("\n", ' ') }
     # remove all <span> tags because pandoc generates them excessively
-    buf.gsub!(/<span.*?>/m,'')
-    buf.gsub!(/<\/span>/,'')
+    buf.gsub!(/<span.*?>/m, '')
+    buf.gsub!('</span>', '')
     lines = buf.split("\n")
     in_footnotes = false
     prev_nikkud = false
-    (0..lines.length-1).each {|i|
+    (0..lines.length - 1).each do |i|
       lines[i].strip!
       if lines[i].empty? and prev_nikkud
         lines[i] = '> '
         next
       end
-      uniq_chars = lines[i].gsub(/[\s\u00a0]/,'').chars.uniq
-      if uniq_chars == ['*'] or uniq_chars == ["\u2013"] # if the line only contains asterisks, or Unicode En-Dash (U+2013)
+      uniq_chars = lines[i].gsub(/[\s\u00a0]/, '').chars.uniq
+      if [['*'], ["\u2013"]].include?(uniq_chars) # if the line only contains asterisks, or Unicode En-Dash (U+2013)
         lines[i] = '***' # make it a Markdown horizontal rule
         prev_nikkud = false
       else
@@ -453,42 +459,44 @@ class HtmlFileController < ApplicationController
         in_footnotes = true if lines[i] =~ /^\[\^\d+\]:/ # once reached the footnotes section, set the footnotes mode to properly handle multiline footnotes with tabs
         if nikkud
           # make full-nikkud lines PRE
-          lines[i] = '> '+lines[i]+"\n" unless lines[i] =~ /\[\^\d+/ # produce a blockquote (PRE would ignore bold and other markup)
+          lines[i] = '> ' + lines[i] + "\n" unless lines[i] =~ /\[\^\d+/ # produce a blockquote (PRE would ignore bold and other markup)
           prev_nikkud = true
         else
           prev_nikkud = false
         end
         if in_footnotes && lines[i] !~ /^\[\^\d+\]:/ # add a tab for multiline footnotes
-          lines[i] = "\t"+lines[i]
+          lines[i] = "\t" + lines[i]
         end
       end
-    }
+    end
     new_buffer = lines.join "\n"
     new_buffer.gsub!("\n\s*\n\s*\n", "\n\n")
-    ['.',',',':',';','?','!'].each {|c|
-      new_buffer.gsub!(" #{c}",c) # remove spaces before punctuation
-    }
+    ['.', ',', ':', ';', '?', '!'].each do |c|
+      new_buffer.gsub!(" #{c}", c) # remove spaces before punctuation
+    end
     new_buffer.gsub!('©כל הזכויות', '© כל הזכויות') # fix an artifact of the conversion
     new_buffer.gsub!(/> (.*?)\n\s*\n\s*\n/, "> \\1\n\n<br>\n") # add <br> tags for poetry, as a workaround to preserve stanza breaks
-    new_buffer.gsub!("&&STANZA&&","\n> \n<br />\n> \n") # sigh
-    new_buffer.gsub!("&amp;&amp;STANZA&amp;&amp;","\n> \n<br />\n> \n") # sigh
-    new_buffer.gsub!(/(\n\s*)*\n> \n<br \/>\n> (\n\s*)*/,"\n> \n<br />\n> \n\n") # sigh
-    new_buffer.gsub!(/\n> *> +/,"\n> ") # we basically never want this super-large indented poetry
-    new_buffer.gsub!(/\n\s*\n> *\n> /,"\n> \n> ") # remove extra newlines before verse lines
-    new_buffer.gsub!(/> <br \/>/,'<br />') # remove PRE from line-break, which confuses the markdown processor
+    new_buffer.gsub!('&&STANZA&&', "\n> \n<br />\n> \n") # sigh
+    new_buffer.gsub!('&amp;&amp;STANZA&amp;&amp;', "\n> \n<br />\n> \n") # sigh
+    new_buffer.gsub!(%r{(\n\s*)*\n> \n<br />\n> (\n\s*)*}, "\n> \n<br />\n> \n\n") # sigh
+    new_buffer.gsub!(/\n> *> +/, "\n> ") # we basically never want this super-large indented poetry
+    new_buffer.gsub!(/\n\s*\n> *\n> /, "\n> \n> ") # remove extra newlines before verse lines
+    new_buffer.gsub!('> <br />', '<br />') # remove PRE from line-break, which confuses the markdown processor
+    new_buffer.gsub!('</div>', "</div>\n") # add newlines after divs
     return new_buffer
   end
 
   def render_from_markdown(htmlfile)
     markdown = File.open(htmlfile.path + '.markdown', 'r:UTF-8').read
-    html = MultiMarkdown.new(markdown.gsub('__SPLIT__', '__________')).to_html.force_encoding('UTF-8') # TODO: figure out why to_html defaults to ASCII 8-bit
-    html
+    MultiMarkdown.new(markdown.gsub('__SPLIT__', '__________')).to_html.force_encoding('UTF-8') # TODO: figure out why to_html defaults to ASCII 8-bit
   end
+
   def choplastN(line_count)
     @text = HtmlFile.find(params[:id])
     @markdown = File.open(@text.path + '.markdown', 'r:UTF-8').read
-    File.open(@text.path + '.markdown', 'wb') {|f| f.write(@markdown.split("\n")[0..-(line_count+1)].join("\n"))}
+    File.binwrite(@text.path + '.markdown', @markdown.split("\n")[0..-(line_count + 1)].join("\n"))
   end
+
   def chopN(line_count) # TODO: rewrite this weird mess
     @text = HtmlFile.find(params[:id])
     @markdown = File.open(@text.path + '.markdown', 'r:UTF-8').read
@@ -500,7 +508,7 @@ class HtmlFileController < ApplicationController
     end
     while line_count > 0
       line = lines.shift
-      if line.match /\S/
+      if line.match(/\S/)
         line_count -= 1 # skip one non-empty line and decrement
       else
         new_lines.push line # preserve whitespace lines
@@ -509,7 +517,7 @@ class HtmlFileController < ApplicationController
     end
     new_lines += lines # just append the remaining lines
     @markdown = new_lines.join "\n"
-    File.open(@text.path + '.markdown', 'wb') { |f| f.write(@markdown) } # write back
+    File.binwrite(@text.path + '.markdown', @markdown) # write back
   end
 
   private
