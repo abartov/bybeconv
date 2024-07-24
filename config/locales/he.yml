@@ -1294,7 +1294,7 @@ he:
   ctype_series_up_link: לתצוגת המחזור/שער כולו
   parent_collections: "שייך לאוספים:"
   collection_circular_reference: אוסף מקושר לעצמו!
-  uncollected_works_collection_title: Uncollected works
+  uncollected_works_collection_title: יצירות שלא כונסו
 
   notifications:
     proof_fixed:
