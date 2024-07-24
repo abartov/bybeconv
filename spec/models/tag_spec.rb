@@ -96,11 +96,11 @@ describe Tag do
 
   describe 'taggings scopes' do
     let(:first) do
-      described_class.create!(name: Faker::Science.science, creator: create(:user), status: 'approved')
+      described_class.create!(name: Faker::Science.unique.science, creator: create(:user), status: 'approved')
     end
 
     let(:second) do
-      described_class.create!(name: Faker::Science.science, creator: create(:user), status: 'approved')
+      described_class.create!(name: Faker::Science.unique.science, creator: create(:user), status: 'approved')
     end
 
     before do
