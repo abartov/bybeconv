@@ -1,0 +1,24 @@
+.author-page-content
+  .row
+    .col-lg-2.col-sm-4
+      %ul
+        %li= link_to 'TOC', authority_path(@author)
+        %li= link_to 'Refresh uncollected works',
+                      refresh_uncollected_works_collection_admin_authority_path(@author),
+                      method: :post
+
+    .col-lg-10.col-sm-8
+      %h2= @author.name
+      .toc#maintext
+        .mainlist#browse_mainlist
+          = cache @author, expires_in: 12.hour do
+            - top_nodes = GenerateTocTree.call(@author)
+            = render partial: 'toc_by_role',
+                     locals: { top_nodes: top_nodes, title: t(:original_works), role: :author,
+                     authority_id: @author.id }
+            = render partial: 'toc_by_role',
+                     locals: { top_nodes: top_nodes, title: t(:translations), role: :translator,
+                     authority_id: @author.id }
+            = render partial: 'toc_by_role',
+                     locals: { top_nodes: top_nodes, title: t(:edited_works), role: :editor,
+                     authority_id: @author.id }

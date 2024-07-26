@@ -1,0 +1,4 @@
+- top_level_by_role = top_nodes.select { |node| node.children_by_role(role, authority_id).present? }
+%h3= title
+%ol
+  = render partial: 'toc_node', collection: top_level_by_role, locals: { role: role, authority_id: authority_id }
