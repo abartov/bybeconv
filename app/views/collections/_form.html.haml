@@ -20,7 +20,7 @@
     = f.text_field :issn
   .field
     = f.label :collection_type
-    = f.number_field :collection_type
+    = f.select :collection_type, options_for_select(Collection.collection_types.keys - %w(uncollected))
   .field
     = f.label :inception
     = f.text_field :inception

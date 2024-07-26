@@ -12,7 +12,7 @@ class AuthorsController < ApplicationController
 
   before_action :set_author,
                 only: %i(show edit update destroy toc edit_toc prep_for_print print all_links delete_photo
-                         whatsnew_popup latest_popup publish to_manual_toc volumes)
+                         whatsnew_popup latest_popup publish to_manual_toc volumes new_toc)
   autocomplete :tag, :name, :limit => 2
 
   def publish
@@ -454,13 +454,7 @@ class AuthorsController < ApplicationController
       @header_partial = 'authors/author_top'
       @entity = @author
       @page_title = "#{@author.name} - #{t(:table_of_contents)} - #{t(:project_ben_yehuda)}"
-      unless is_spider?
-        Chewy.strategy(:bypass) do
-          @author.record_timestamps = false # avoid the impression count touching the datestamp
-          impressionist(@author) # log actions for pageview stats
-          @author.update_impression
-        end
-      end
+      update_impression
 
       @og_image = @author.profile_image.url(:thumb)
       @latest = cached_textify_titles(@author.cached_latest_stuff, @author)
@@ -484,6 +478,15 @@ class AuthorsController < ApplicationController
       flash[:error] = I18n.t(:author_not_available)
       redirect_to '/'
     end
+  end
+
+  def new_toc
+    unless @author.published?
+      flash.alert = I18n.t(:author_not_available)
+      redirect_to '/'
+      return
+    end
+    update_impression
   end
 
   def all_links
@@ -585,4 +588,15 @@ class AuthorsController < ApplicationController
     end
   end
 
+  private
+
+  def update_impression
+    return if is_spider?
+
+    Chewy.strategy(:bypass) do
+      @author.record_timestamps = false # avoid the impression count touching the datestamp
+      impressionist(@author) # log actions for pageview stats
+      @author.update_impression
+    end
+  end
 end
