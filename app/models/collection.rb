@@ -177,7 +177,12 @@ class Collection < ApplicationRecord
   end
 
   def parent_collections
-    CollectionItem.where(item: self).map(&:collection)
+    parent_collection_items.preload(:collection).map(&:collection)
+  end
+
+  # returns collection_items where given collection is specified as an item
+  def parent_collection_items
+    CollectionItem.where(item: self)
   end
 
   protected

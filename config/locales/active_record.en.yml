@@ -13,6 +13,8 @@ en:
   activerecord:
     models:
       authority: Authority
+      collection: Collection
+      collection_item: Collection Item
       corporate_body: Corporate Body
       featured_content: Featured Content
       person: Person
@@ -29,6 +31,10 @@ en:
               no_linked_authority: either Person or CorporateBody object must be specified
               multiple_linked_authorities: Person and CorporateBody objects cannot be specified together
           wrong_collection_type: must be of '%{expected_type}' type
+        collection_item:
+          attributes:
+            collection:
+              cycle_found: Cycle found
     attributes:
       authority:
         other_designation: Other designation
