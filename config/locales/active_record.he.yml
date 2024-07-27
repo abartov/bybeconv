@@ -13,6 +13,8 @@ he:
   activerecord:
     models:
       authority: מחבר
+      collection: Collection
+      collection_item: Collection Item
       corporate_body: גוף/מוסד
       featured_content: תוכן מערכת
       person: אדם
@@ -29,6 +31,10 @@ he:
               no_linked_authority: יש לקשר או רשומת אישים או רשומת ארגונים
               multiple_linked_authorities: אי אפשר לקשר גם רשומת אישים וגם רשומת ארגונים
           wrong_collection_type: חייב להיות מסוג '%{expected_type}'
+        collection_item:
+          attributes:
+            collection:
+              cycle_found: Cycle found
     attributes:
       authority:
         other_designation: כינויים אחרים
