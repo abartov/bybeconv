@@ -84,6 +84,14 @@ describe AuthorsController do
       end
     end
 
+    describe '#new_toc' do
+      subject { get :new_toc, params: { id: authority.id } }
+
+      include_context 'when authority has several collections'
+
+      it { is_expected.to be_successful }
+    end
+
     describe '#whatsnew_popup' do
       let!(:manifestation) { create(:manifestation, created_at: created_at, author: author) }
 

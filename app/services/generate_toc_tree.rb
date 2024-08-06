@@ -7,11 +7,15 @@ class GenerateTocTree < ApplicationService
     attr_accessor :item, :children, :new
 
     # Item is an collection
-    # Children is an array of manifestations or other nodes
-    def initialize(item, children)
+    # Children is an array of [x, seqno] where x is a manifestations or other node (representing subcollection)
+    def initialize(item)
       @item = item
-      @children = children
+      @children = []
       @new = true
+    end
+
+    def add_child(child, seqno)
+      @children << [child, seqno] unless child.nil? || @children.any? { |ch, _seqno| ch == child }
     end
 
     # Returns array of child elements (Manifestations or Nodes) where given author is invovled with given role
@@ -37,12 +41,12 @@ class GenerateTocTree < ApplicationService
     end
 
     def sorted_children
-      @sorted_children ||= children.sort_by do |child|
+      @sorted_children ||= children.sort_by do |child, seqno|
         [
-          child.is_a?(Node) ? (child.item.uncollected? ? 1 : 0) : 2,
+          seqno,
           child.is_a?(Node) ? child.item.created_at : child.created_at
         ]
-      end
+      end.map { |child, _seqno| child }
     end
   end
 
@@ -53,14 +57,13 @@ class GenerateTocTree < ApplicationService
     @top_level = []
 
     manifestations.each do |manifestation|
-      collections = manifestation.collection_items.map(&:collection)
-      collections.each do |c|
-        node(c, manifestation)
+      manifestation.collection_items.each do |collection_item|
+        node(collection_item.collection, manifestation, collection_item.seqno)
       end
     end
 
     authority.collections.each do |collection|
-      node(collection, nil)
+      node(collection, nil, nil)
     end
 
     current_level = @nodes.values
@@ -73,18 +76,16 @@ class GenerateTocTree < ApplicationService
   private
 
   # This method either creates a new node with given child, or finds existing node and adds child to it
-  def node(collection, child)
+  def node(collection, child, seqno)
     node = @nodes[collection.id]
     if node.nil?
-      node = @nodes[collection.id] = Node.new(collection, [child].compact)
+      node = @nodes[collection.id] = Node.new(collection)
     else
       # This collection was already visited
       node.new = false # marking node as not new
-      if child.present? && node.children.exclude?(child)
-        node.children << child
-      end
     end
 
+    node.add_child(child, seqno)
     node
   end
 
@@ -92,12 +93,12 @@ class GenerateTocTree < ApplicationService
     # NOTE: consider using batch loading
     parents = []
     nodes.each do |node|
-      parent_collections = node.item.parent_collections
-      if parent_collections.empty?
+      parent_collection_items = node.item.parent_collection_items.preload(:collection)
+      if parent_collection_items.empty?
         @top_level << node
       else
-        parent_collections.each do |parent_collection|
-          parent_node = node(parent_collection, node)
+        parent_collection_items.each do |collection_item|
+          parent_node = node(collection_item.collection, node, collection_item.seqno)
           parents << parent_node if parent_node.new
         end
       end
