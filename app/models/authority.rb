@@ -108,6 +108,20 @@ class Authority < ApplicationRecord
     taggings.where(status: Tagging.statuses[:approved])
   end
 
+  def collections
+    Collection.where(
+      <<~SQL.squish
+        exists (
+          select 1 from
+            involved_authorities ia
+          where
+            ia.collection_id = collections.id
+            and ia.authority_id = #{id}
+        )
+      SQL
+    )
+  end
+
   # @param roles [String / Symbol] optional, if provided will only return Manifestations where authority has
   #   one of the given roles.
   # @return relation representing [Manifestation] objects current authority is involved into.

@@ -13,6 +13,7 @@ describe Collection do
     i1 = create(:collection_item, collection: c, seqno: 1)
     i2 = create(:collection_item, collection: c, seqno: 3)
     i3 = create(:collection_item, collection: c, seqno: 2)
+    c.reload
     expect(c.collection_items).to eq [i1, i3, i2]
   end
 
@@ -93,6 +94,7 @@ describe Collection do
     i1 = create(:collection_item, collection: c, seqno: 1)
     i2 = create(:collection_item, collection: c, seqno: 3)
     i3 = create(:collection_item, collection: c, seqno: 2)
+    c.reload
     expect(c.collection_items).to eq [i1, i3, i2]
     c.move_item_up(i2.id)
     expect(c.collection_items.reload).to eq [i1, i2, i3]
@@ -103,6 +105,7 @@ describe Collection do
     i1 = create(:collection_item, collection: c, seqno: 1)
     i2 = create(:collection_item, collection: c, seqno: 3)
     i3 = create(:collection_item, collection: c, seqno: 2)
+    c.reload
     expect(c.collection_items).to eq [i1, i3, i2]
     c.move_item_down(i1.id)
     expect(c.collection_items.reload).to eq [i3, i1, i2]
@@ -113,6 +116,7 @@ describe Collection do
     i1 = create(:collection_item, collection: c, seqno: 1)
     i2 = create(:collection_item, collection: c, seqno: 3)
     i3 = create(:collection_item, collection: c, seqno: 2)
+    c.reload
     expect(c.collection_items).to eq [i1, i3, i2]
     m = create(:manifestation)
     c.append_item(m)
@@ -124,6 +128,7 @@ describe Collection do
     c = create(:collection)
     create_list(:collection_item, 5, collection: c)
     expect(c.collection_items.count).to eq 5
+    c.reload
     c.collection_items.destroy_all
     expect(c.collection_items.count).to eq 0
   end
@@ -135,6 +140,7 @@ describe Collection do
     i3 = create(:collection_item, collection: c, seqno: 2)
     expect(c.collection_items.count).to eq 3
     c.remove_item(i3.id)
+    c.reload
     expect(c.collection_items.count).to eq 2
     expect(c.collection_items.first).to eq i1
     expect(c.collection_items.last).to eq i2
@@ -151,6 +157,7 @@ describe Collection do
     let!(:third_item) { create(:collection_item, collection: collection, seqno: 2) }
 
     before do
+      collection.reload
       call
       collection.reload
     end

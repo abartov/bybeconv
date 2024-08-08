@@ -6,6 +6,7 @@ class CollectionItem < ApplicationRecord
   belongs_to :item, polymorphic: true
 
   validates :seqno, presence: true
+  validate :ensure_no_cycle
 
   def title
     if item.nil?
@@ -52,6 +53,24 @@ class CollectionItem < ApplicationRecord
       return { item: prv.item, skipped: skipped } unless prv.item.nil? # placeholders are not items
 
       skipped += 1
+    end
+  end
+
+  protected
+
+  def ensure_no_cycle
+    return unless item.is_a?(Collection)
+
+    return unless given_parent?(item)
+
+    errors.add(:collection, :cycle_found)
+  end
+
+  def given_parent?(parent_collection)
+    return true if collection == parent_collection
+
+    return collection.parent_collection_items.preload(:collection).any? do |ci|
+      ci.given_parent?(parent_collection)
     end
   end
 end
