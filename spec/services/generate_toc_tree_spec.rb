@@ -27,7 +27,7 @@ describe GenerateTocTree do
 
       expect(top_level_node.children.map(&:first)).to match_array top_level_manifestations
       expect(
-        top_level_with_nested_node.children.map { |c| c.first.item}
+        top_level_with_nested_node.children.map { |c| c.first.item }
       ).to contain_exactly nested_translated_collection,
                            nested_edited_collection
 
