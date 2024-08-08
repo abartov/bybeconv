@@ -1,4 +1,6 @@
-- top_level_by_role = top_nodes.select { |node| node.children_by_role(role, authority_id).present? }
+:ruby
+  top_level_by_role = top_nodes.select { |node| node.children_by_role(role, authority_id).present? }
+                               .sort_by { |node| [ node.item.uncollected? ? 1 : 0, node.item.created_at ] }
 %h3= title
 %ol
   = render partial: 'toc_node', collection: top_level_by_role, locals: { role: role, authority_id: authority_id }
