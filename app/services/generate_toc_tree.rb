@@ -51,6 +51,7 @@ class GenerateTocTree < ApplicationService
   end
 
   def call(authority)
+    @authority = authority
     manifestations = authority.manifestations(:author, :translator, :editor)
                               .preload(collection_items: :collection).with_involved_authorities
     @nodes = {}
@@ -58,7 +59,11 @@ class GenerateTocTree < ApplicationService
 
     manifestations.each do |manifestation|
       manifestation.collection_items.each do |collection_item|
-        node(collection_item.collection, manifestation, collection_item.seqno)
+        col = collection_item.collection
+        # We should not include in results 'uncollected' collections belonging to other authorities
+        next if col.uncollected? && col.id != @authority.uncollected_works_collection_id
+
+        node(col, manifestation, collection_item.seqno)
       end
     end
 
