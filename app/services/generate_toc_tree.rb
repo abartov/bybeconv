@@ -18,6 +18,17 @@ class GenerateTocTree < ApplicationService
       @children << [child, seqno] unless child.nil? || @children.any? { |ch, _seqno| ch == child }
     end
 
+    # Checks if given Node should be displayed in TOC tree for given authority and role combination
+    def visible?(role, authority_id)
+      if item.involved_authorities.any? { |ia| ia.role == role && ia.authority_id == authority_id }
+        # authority is specified on collection level with given role
+        true
+      else
+        # or collection contains other items where given authority has given role (will be recursive check)
+        children_by_role(role, authority_id).present?
+      end
+    end
+
     # Returns array of child elements (Manifestations or Nodes) where given author is invovled with given role
     def children_by_role(role, authority_id)
       @children_by_role ||= {}
@@ -27,15 +38,7 @@ class GenerateTocTree < ApplicationService
           child.involved_authorities_by_role(role).any? { |a| a.id == authority_id }
         else
           # child is a node representing other collection
-          collection = child.item
-
-          if collection.involved_authorities.any? { |ia| ia.role == role && ia.authority_id == authority_id }
-            # authority is specified on collection level with given role
-            true
-          else
-            # or collection contains other items where given authority has given role (will be recursive check)
-            child.children_by_role(role, authority_id).present?
-          end
+          child.visible?(role, authority_id)
         end
       end
     end
