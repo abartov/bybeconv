@@ -20,7 +20,7 @@ class GenerateTocTree < ApplicationService
 
     # Checks if given Node should be displayed in TOC tree for given authority and role combination
     def visible?(role, authority_id)
-      if item.involved_authorities.any? { |ia| ia.role == role && ia.authority_id == authority_id }
+      if item.involved_authorities.any? { |ia| ia.role == role.to_s && ia.authority_id == authority_id }
         # authority is specified on collection level with given role
         true
       else
