@@ -48,7 +48,7 @@
                     = t(:about_author_in_blog, author:@author.name)
               - if current_user && current_user.editor?
                 %p{style:'text-align:left'}
-                  != "&nbsp;&nbsp;&nbsp;"
+                  != '&nbsp;&nbsp;&nbsp;'
                   - unless @author.toc.nil?
                     %span.static-btn
                       %b= link_to t(:edit_toc), authors_edit_toc_path(@author)
@@ -57,10 +57,10 @@
                     != "&nbsp;&nbsp;&nbsp;"
                     %b= link_to t(:convert_to_manual_toc), authors_to_manual_toc_path(@author)
 
-                  != "&nbsp;&nbsp;&nbsp;"
+                  != '&nbsp;&nbsp;&nbsp;'
                   %span.static-btn
                     %b= link_to t(:edit_metadata), authors_edit_path(id: @author.id)
-                  != "&nbsp;&nbsp;&nbsp;"
+                  != '&nbsp;&nbsp;&nbsp;'
                   %span.static-btn
                     %b= link_to 'New TOC', authority_new_toc_path(@author)
 

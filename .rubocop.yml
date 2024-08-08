@@ -52,6 +52,9 @@ Style/HashSyntax:
 Style/IfUnlessModifier:
   Enabled: false
 
+Style/MultilineBlockChain:
+  Enabled: false
+
 Style/NumericPredicate:
   Enabled: false
 
