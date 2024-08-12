@@ -13,8 +13,8 @@ he:
   activerecord:
     models:
       authority: מחבר
-      collection: Collection
-      collection_item: Collection Item
+      collection: אוסף
+      collection_item: פריט באוסף
       corporate_body: גוף/מוסד
       featured_content: תוכן מערכת
       person: אדם
@@ -34,7 +34,7 @@ he:
         collection_item:
           attributes:
             collection:
-              cycle_found: Cycle found
+              cycle_found: נמצאה מעגליות באוסף!
     attributes:
       authority:
         other_designation: כינויים אחרים
