@@ -397,7 +397,7 @@ he:
   already_done: כבר טופל
   original_works: יצירות מקור
   translation: תרגום
-  edited_works: Edited Works
+  edited_works: יצירות בעריכת%{gender_letter}
   toc_order_reminder: 'תזכורת לגבי סדר הסוגות: '
   translations: יצירות מתורגמות
   translator_name: "שם המתרגם/ת"
