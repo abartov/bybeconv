@@ -2,7 +2,7 @@
 %ul
   - involved_authorities.each do |ia|
     %li{ id: "ia#{ia.id}" }
-      = link_to ia.authority.name, authors_show_path(ia.authority)
+      = link_to ia.authority.name, authors_show_path(id: ia.authority.id)
       (#{textify_authority_role(ia.role)})
       - if edit
         = link_to t(:destroy), involved_authority_path(ia),
