@@ -37,4 +37,16 @@ module AuthorsHelper
   def browse_null_decorator(item)
     return ''
   end
+
+  # Returns string, containing comma-separated list of names of authorities linked to given text with given role
+  # @param manifestation
+  # @param role
+  # @param exclude_authority_id - if provided given authority will be excluded from the list
+  def authorities_string(manifestation, role, exclude_authority_id: nil)
+    manifestation.involved_authorities_by_role(role)
+                 .reject { |au| au.id == exclude_authority_id }
+                 .map(&:name)
+                 .sort
+                 .join(', ')
+  end
 end

@@ -1,9 +1,28 @@
 %li
   - if toc_node.is_a?(Manifestation)
+    - genre = toc_node.expression.work.genre
+    %span.by-icon-v02{ title: t(genre) }>= glyph_for_genre(genre)
+    &nbsp;
+    :ruby
+      label = toc_node.title
+      case role
+      when :editor
+        label += "/ #{toc_node.author_string}"
+      when :translator
+        label += "/ #{authorities_string(toc_node, :author)}"
+        if toc_node.translators.size > 1
+          label += "/ #{authorities_string(toc_node, :translator, exclude_authority_id: authority_id)}"
+        end
+      when :author
+        if toc_node.authors.size > 1
+          label += "/ #{authorities_string(toc_node, :author, exclude_authority_id: authority_id)}"
+        end
+      end
+
     - if toc_node.published?
-      = link_to toc_node.title, manifestation_path(toc_node)
+      = link_to label, manifestation_path(toc_node)
     - else
-      = toc_node.title
+      = label
   - else
     -# Collection node
     - collection = toc_node.item
