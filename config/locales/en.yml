@@ -130,6 +130,22 @@ en:
       ziburit_failed: Control question failed
       email_missing: Please provide an email address
   manifestation:
+  collection:
+    type:
+      volume: Volume
+      anthology: Anthology
+      periodical: Periodical
+      periodical_issue: Periodical Issue
+      series: Series
+      root: Root
+      other: Other
+      uncollected: Uncollected works
+    up_link:
+      volume: to volume
+      anthology: to anthology
+      periodical: to periodical
+      periodical_issue: to issue
+      series: to whole series
   intellectual_property:
     public_domain: public domain
     by_permission: by permission
