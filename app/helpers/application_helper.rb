@@ -241,11 +241,11 @@ module ApplicationHelper
   end
 
   def textify_collection_type(ctype)
-    t("ctype_#{ctype}")
+    t("collection.type.#{ctype}")
   end
 
   def textify_collection_up_link(coll)
-    "#{t("ctype_#{coll.collection_type}_up_link")} - #{coll.title.truncate(35)}"
+    "#{t("collection.up_link.#{coll.collection_type}")} - #{coll.title.truncate(35)}"
   end
 
   def collection_types_options
