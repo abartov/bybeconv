@@ -40,7 +40,7 @@
                       = t(:to_previous_item)
               .topNavEntry
                 .link-nav
-                  - unless ci.collection.root?
+                  - unless ci.collection.system?
                     = link_to default_link_by_class(ci.collection.class, ci.collection.id) do
                       %span.right-arrow= '🢁'
                       = textify_collection_up_link(ci.collection)

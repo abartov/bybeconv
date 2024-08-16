@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Controller to work with Collections.
+# Most of the actions require editor's permissions
 class CollectionsController < ApplicationController
   before_action :require_editor, except: %i(show)
   before_action :set_collection, only: %i(show edit update destroy)
@@ -28,27 +30,19 @@ class CollectionsController < ApplicationController
   def create
     @collection = Collection.new(collection_params)
 
-    respond_to do |format|
-      if @collection.save
-        format.html { redirect_to collection_url(@collection), notice: 'Collection was successfully created.' }
-        format.json { render :show, status: :created, location: @collection }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @collection.errors, status: :unprocessable_entity }
-      end
+    if @collection.save
+      redirect_to collection_url(@collection), notice: t(:created_successfully)
+    else
+      render :new, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /collections/1 or /collections/1.json
   def update
-    respond_to do |format|
-      if @collection.update(collection_params)
-        format.html { redirect_to collection_url(@collection), notice: 'Collection was successfully updated.' }
-        format.js
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @collection.errors, status: :unprocessable_entity }
-      end
+    if @collection.update(collection_params)
+      redirect_to collection_url(@collection), notice: t(:updated_successfully)
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 
@@ -56,10 +50,7 @@ class CollectionsController < ApplicationController
   def destroy
     @collection.destroy
 
-    respond_to do |format|
-      format.html { redirect_to collections_url, notice: 'Collection was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    redirect_to collections_url, notice: t(:deleted_successfully)
   end
 
   # POST /collections/1/apply_drag
