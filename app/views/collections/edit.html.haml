@@ -1,6 +1,6 @@
 %h1 Editing collection
 
-= render 'form'
+= render partial: 'form', locals: { collection: @collection }
 
 = link_to 'Show', @collection
 \|
