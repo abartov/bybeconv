@@ -7,15 +7,15 @@
       label = toc_node.title
       case role
       when :editor
-        label += "/ #{toc_node.author_string}"
+        label += " / #{toc_node.author_string}"
       when :translator
-        label += "/ #{authorities_string(toc_node, :author)}"
+        label += " / #{authorities_string(toc_node, :author)}"
         if toc_node.translators.size > 1
-          label += "/ #{authorities_string(toc_node, :translator, exclude_authority_id: authority_id)}"
+          label += " / #{authorities_string(toc_node, :translator, exclude_authority_id: authority_id)}"
         end
       when :author
         if toc_node.authors.size > 1
-          label += "/ #{authorities_string(toc_node, :author, exclude_authority_id: authority_id)}"
+          label += " / #{authorities_string(toc_node, :author, exclude_authority_id: authority_id)}"
         end
       end
 
