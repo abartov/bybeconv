@@ -12,8 +12,6 @@ class Collection < ApplicationRecord
   belongs_to :toc
   has_many :collection_items, -> { order(:seqno) }, inverse_of: :collection, dependent: :destroy
 
-  has_many :involved_authorities, inverse_of: :collection, dependent: :destroy
-
   has_many :aboutnesses, as: :aboutable, dependent: :destroy # works that are ABOUT this work
   has_many :topics, class_name: 'Aboutness', dependent: :destroy # topics that this work is ABOUT
 

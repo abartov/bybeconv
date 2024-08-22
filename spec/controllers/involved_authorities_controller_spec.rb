@@ -9,11 +9,10 @@ describe InvolvedAuthoritiesController do
     include_context 'when editor logged in'
 
     let(:manifestation) { create(:manifestation) }
-    let!(:involved_authority) { create(:involved_authority, work: work, expression: expression, role: :editor) }
+    let!(:involved_authority) { create(:involved_authority, item: item, role: :editor) }
 
     context 'when Expression authority' do
-      let(:work) { nil }
-      let(:expression) { manifestation.expression }
+      let(:item) { manifestation.expression }
 
       it 'destroys record' do
         expect { call }.to change(InvolvedAuthority, :count).by(-1)
@@ -22,8 +21,16 @@ describe InvolvedAuthoritiesController do
     end
 
     context 'when Work authority' do
-      let(:work) { manifestation.expression.work }
-      let(:expression) { nil }
+      let(:item) { manifestation.expression.work }
+
+      it 'destroys record' do
+        expect { call }.to change(InvolvedAuthority, :count).by(-1)
+        expect(call).to be_successful
+      end
+    end
+
+    context 'when Collection authority' do
+      let(:item) { create(:collection, manifestations: [manifestation]) }
 
       it 'destroys record' do
         expect { call }.to change(InvolvedAuthority, :count).by(-1)

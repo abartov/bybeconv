@@ -390,10 +390,10 @@ describe AuthorsController do
 
           # work with several authors and translators
           m = create(:manifestation, author: author, orig_lang: 'en')
-          create(:involved_authority, work: m.expression.work, role: :author)
-          create(:involved_authority, work: m.expression.work, role: :author)
-          create(:involved_authority, expression: m.expression, role: :translator)
-          create(:involved_authority, expression: m.expression, role: :translator)
+          create(:involved_authority, item: m.expression.work, role: :author)
+          create(:involved_authority, item: m.expression.work, role: :author)
+          create(:involved_authority, item: m.expression, role: :translator)
+          create(:involved_authority, item: m.expression, role: :translator)
         end
 
         context 'when there is no TOC yet' do

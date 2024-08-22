@@ -7,12 +7,14 @@ class InvolvedAuthoritiesController < ApplicationController
 
   # DELETE /involved_authorities/1 or /involved_authorities/1.json
   def destroy
-    manifestations = if @involved_authority.expression.present?
-                       @involved_authority.expression.manifestations
-                     else
-                       @involved_authority.work.expressions.map(&:manifestations).flatten
+    manifestations = if @involved_authority.item.is_a? Expression
+                       @involved_authority.item.manifestations
+                     elsif @involved_authority.item.is_a? Work
+                       @involved_authority.item.expressions.map(&:manifestations).flatten
                      end
-    manifestations.compact.each(&:recalc_cached_people!)
+
+    manifestations.compact.each(&:recalc_cached_people!) if manifestations.present?
+
     @the_id = "ia#{@involved_authority.id}"
     @involved_authority.destroy!
   end

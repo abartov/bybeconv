@@ -115,7 +115,8 @@ class Authority < ApplicationRecord
           select 1 from
             involved_authorities ia
           where
-            ia.collection_id = collections.id
+            ia.item_id = collections.id
+            and ia.item_type = 'Collection'
             and ia.authority_id = #{id}
         )
       SQL
@@ -128,10 +129,10 @@ class Authority < ApplicationRecord
   def manifestations(*roles)
     rel = involved_authorities
     rel = rel.where(role: roles.to_a) if roles.present?
-    ids = rel.pluck(:work_id, :expression_id)
+    ids = rel.pluck(:item_type, :item_id)
 
-    work_ids = ids.map(&:first).compact.uniq
-    expression_ids = ids.map(&:last).compact.uniq
+    work_ids = ids.select { |type, _id| type == 'Work' }.map(&:last).compact.uniq
+    expression_ids = ids.select { |type, _id| type == 'Expression' }.map(&:last).compact.uniq
 
     Manifestation.joins(:expression)
                  .where('expressions.work_id in (?) or expressions.id in (?)', work_ids, expression_ids)
