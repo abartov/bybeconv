@@ -23,4 +23,5 @@ class InvolvedAuthority < ApplicationRecord
   validates :role, presence: true
   validates :role, inclusion: WORK_ROLES, if: ->(ia) { ia.item.is_a? Work }
   validates :role, inclusion: EXPRESSION_ROLES, if: ->(ia) { ia.item.is_a? Expression }
+  validates :authority_id, uniqueness: { scope: %i(item_type item_id role) }
 end

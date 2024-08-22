@@ -41,7 +41,7 @@ en:
   unknown: Unknown
   sort_by: Sort by
   uncollected_works_collection_title: Uncollected works
-
+  add: Add
   admin:
     featured_contents:
       index:
@@ -83,6 +83,9 @@ en:
   ingestible_texts:
     edit:
       text_x_of_total: Text %{index} of %{total}
+  involved_authorities:
+    list:
+      select_authority: Select authority!
   shared:
     filters:
       pagination:

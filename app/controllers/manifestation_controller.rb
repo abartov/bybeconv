@@ -491,17 +491,11 @@ class ManifestationController < ApplicationController
           @w.date = params[:wdate]
           @w.comment = params[:wcomment]
           @w.primary = params[:primary] == 'true'
-          if params[:add_authority_w].present?
-            @w.involved_authorities.build(authority_id: params[:add_authority_w], role: params[:role_w])
-          end
           @e.language = params[:elang]
           @e.title = params[:etitle]
           @e.date = params[:edate]
           @e.comment = params[:ecomment]
           @e.intellectual_property = params[:intellectual_property]
-          if params[:add_authority_e].present?
-            @e.involved_authorities.build(authority_id: params[:add_authority_e], role: params[:role_e])
-          end
           @e.source_edition = params[:source_edition]
           @e.period = params[:period]
           @m.title = params[:mtitle]

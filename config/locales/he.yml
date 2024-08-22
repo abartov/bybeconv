@@ -1385,6 +1385,9 @@ he:
   ingestible_texts:
     edit:
       text_x_of_total: טקסט %{index} מתוך %{total}
+  involved_authorities:
+    list:
+      select_authority: Select authority!
   shared:
     filters:
       pagination:

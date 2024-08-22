@@ -2,8 +2,27 @@
 
 # Controller to work with InvolvedAuthority records
 class InvolvedAuthoritiesController < ApplicationController
-  before_action :require_editor
+  before_action except: %i(index) do |c|
+    c.require_editor('edit_catalog')
+  end
   before_action :set_involved_authority, only: :destroy
+  before_action :set_item, only: %i(create index)
+
+  # renders list of involved authorities linked to item
+  def index
+    # for now this method is only called from editing forms (after adding new Involved Authority),
+    # so we can always pass edit as true
+    render partial: 'list_items', locals: { item: @item, edit: true }
+  end
+
+  def create
+    ia = @item.involved_authorities.build(params.require(:involved_authority).permit(:authority_id, :role))
+    if ia.save
+      render plain: 'OK'
+    else
+      render plain: 'Unprocessable entity', status: :unprocessable_entity
+    end
+  end
 
   # DELETE /involved_authorities/1 or /involved_authorities/1.json
   def destroy
@@ -23,5 +42,11 @@ class InvolvedAuthoritiesController < ApplicationController
 
   def set_involved_authority
     @involved_authority = InvolvedAuthority.find(params[:id])
+  end
+
+  def set_item
+    item_type = params.fetch(:item_type)
+    item_id = params.fetch(:item_id)
+    @item = item_type.constantize.find(item_id)
   end
 end

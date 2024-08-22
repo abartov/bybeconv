@@ -131,7 +131,7 @@ class AdminController < ApplicationController
                                    involved_authorities iat
                                  where
                                    iat.item_id = expressions.id
-                                   and iat.item_type = 'Expression' 
+                                   and iat.item_type = 'Expression'
                                    and iat.authority_id = involved_authorities.authority_id
                                    and iat.role = ?
                                )
@@ -306,7 +306,7 @@ class AdminController < ApplicationController
           join involved_authorities ia on a.id = ia.authority_id
         where
           ia.item_id = expressions.id
-          and ia.item_type = 'Expression' 
+          and ia.item_type = 'Expression'
           and a.intellectual_property <> #{PUBLIC_DOMAIN_TYPE}
       )
     )
