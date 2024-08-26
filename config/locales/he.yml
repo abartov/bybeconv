@@ -1281,18 +1281,6 @@ he:
   group_in_collections: קיבוץ לאוספים
   collection_item_type: סוג פריט
   skipped_x_items: דילגנו על %{x} פריטים שטרם עלו לאתר.
-  ctype_volume: כותר
-  ctype_anthology: אסופה
-  ctype_periodical: כתב עת
-  ctype_periodical_issue: גליון
-  ctype_series: סדרה, מחזור, או שער
-  ctype_root: כלל היצירה של אדם או גוף
-  ctype_other: אחר
-  ctype_volume_up_link: לתצוגת הכותר
-  ctype_anthology_up_link: לתצוגת האסופה
-  ctype_periodical_up_link: לתצוגת כתב העת
-  ctype_periodical_issue_up_link: לתצוגת הגליון
-  ctype_series_up_link: לתצוגת המחזור/שער כולו
   parent_collections: "שייך לאוספים:"
   collection_circular_reference: אוסף מקושר לעצמו!
   uncollected_works_collection_title: יצירות שלא כונסו
@@ -1435,6 +1423,23 @@ he:
       ziburit_failed: לא השתכנענו שאינך רובוט.
       email_missing: נא לציין כתובת דואל, כדי שנוכל להשיב לך.
   manifestation:
+  collection:
+    type:
+      volume: כותר
+      anthology: אסופה
+      periodical: כתב עת
+      periodical_issue: גליון
+      series: סדרה, מחזור, או שער
+      root: כלל היצירה של אדם או גוף
+      other: אחר
+      uncollected: Uncollected works
+    up_link:
+      volume: לתצוגת הכותר
+      anthology: לתצוגת האסופה
+      periodical: לתצוגת כתב העת
+      periodical_issue: לתצוגת הגליון
+      series: לתצוגת המחזור/שער כולו
+
   intellectual_property:
     public_domain: נחלת הכלל
     by_permission: מוגש ברשות פרסום

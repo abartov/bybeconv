@@ -1,40 +1,28 @@
-= form_for @collection do |f|
-  - if @collection.errors.any?
-    #error_explanation
-      %h2= "#{pluralize(@collection.errors.count, "error")} prohibited this collection from being saved:"
-      %ul
-        - @collection.errors.full_messages.each do |message|
-          %li= message
-
-  .field
-    = f.label :title
-    = f.text_field :title
-  .field
-    = f.label :sort_title
-    = f.text_field :sort_title
-  .field
-    = f.label :subtitle
-    = f.text_field :subtitle
-  .field
-    = f.label :issn
-    = f.text_field :issn
-  .field
-    = f.label :collection_type
-    = f.select :collection_type, options_for_select(Collection.collection_types.keys - %w(uncollected))
-  .field
-    = f.label :inception
-    = f.text_field :inception
-  .field
-    = f.label :inception_year
-    = f.number_field :inception_year
-  .field
-    = f.label :publication
-    = f.text_field :publication
-  .field
-    = f.label :toc
-    = f.text_field :toc
-  .field
-    = f.label :toc_strategy
-    = f.number_field :toc_strategy
+= simple_form_for collection do |f|
+  .form-inputs
+    = f.error_notification
+  = f.input :title
+  = f.input :sort_title
+  = f.input :subtitle
+  = f.input :issn
+  - unless collection.system?
+    - types = Collection.collection_types.keys - Collection::SYSTEM_TYPES
+    = f.input :collection_type,
+              collection: types.map { |ct| [textify_collection_type(ct), ct] }
+  - else
+    = f.input :collection_type do
+      .form-control= collection.collection_type
+  = f.input :inception
+  = f.input :inception_year, as: :numeric
+  = f.input :publication do
+    = autocomplete_field_tag :publication_autocomplete,
+                             collection.publication&.title,
+                             autocomplete_publication_title_path,
+                             id_element: '#collection_publication_id',
+                             class: 'form-control',
+                             data: { noMatchesLabel: t(:no_matches_found) }
+    = f.hidden_field :publication_id
+  = f.input :toc
+  = f.input :toc_strategy, collection: Collection.toc_strategies.keys
   .actions
-    = f.submit 'Save'
+    = f.submit t(:save)

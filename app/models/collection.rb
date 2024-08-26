@@ -2,6 +2,8 @@
 
 # Heterogeneous collection
 class Collection < ApplicationRecord
+  SYSTEM_TYPES = %w(uncollected root).freeze
+
   include RecordWithInvolvedAuthorities
 
   before_save :update_sort_title!
@@ -12,8 +14,8 @@ class Collection < ApplicationRecord
   belongs_to :toc
   has_many :collection_items, -> { order(:seqno) }, inverse_of: :collection, dependent: :destroy
 
-  has_many :aboutnesses, as: :aboutable, dependent: :destroy # works that are ABOUT this work
-  has_many :topics, class_name: 'Aboutness', dependent: :destroy # topics that this work is ABOUT
+  has_many :aboutnesses, as: :aboutable, dependent: :destroy # works that are ABOUT this collection
+  # has_many :topics, class_name: 'Aboutness', dependent: :destroy # topics that this work is ABOUT
 
   # convenience methods
   has_many :manifestation_items, through: :collection_items, source: :item, source_type: 'Manifestation'
@@ -52,6 +54,14 @@ class Collection < ApplicationRecord
   scope :by_authority, lambda { |authority|
                          joins(:involved_authorities).where(involved_authorities: { authority: authority })
                        }
+
+  validates :title, presence: true
+
+  # Checks if collection is a system-managed collection. We cannot change type of system collection (maybe some
+  # other limitations will be added in future)
+  def system?
+    SYSTEM_TYPES.include?(collection_type)
+  end
 
   def collection_items_by_type(item_type)
     collection_items.where(item_type: item_type)
