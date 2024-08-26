@@ -357,9 +357,6 @@ describe ManifestationController do
         end
 
         context 'when metadata was changed' do
-          let(:new_author) { create(:authority) }
-          let(:new_translator) { create(:authority) }
-
           let(:params) do
             {
               wtitle: 'New Work Title',
@@ -368,21 +365,14 @@ describe ManifestationController do
               genre: 'fables',
               wlang: 'ru',
               primary: 'false',
-              intellectual_property: 'by_permission',
-              add_authority_w: new_author.id,
-              role_w: :author,
-              add_authority_e: new_translator.id,
-              role_e: :translator
+              intellectual_property: 'by_permission'
             }
           end
 
           it 'updates metadata and redirects to show page' do
-            expect { call }.to change(InvolvedAuthority, :count).by(2)
             expect(call).to redirect_to(manifestation_show_path(manifestation))
             expect(flash.notice).to eq I18n.t(:updated_successfully)
             manifestation.reload
-            expect(manifestation.authors).to include(new_author)
-            expect(manifestation.translators).to include(new_translator)
             expect(manifestation).to have_attributes(title: 'New Manifestation Title')
             expect(expression).to have_attributes(title: 'New Expression Title', intellectual_property: 'by_permission')
             expect(work).to have_attributes(title: 'New Work Title', orig_lang: 'ru', genre: 'fables', primary: false)

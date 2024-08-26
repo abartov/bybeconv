@@ -9,7 +9,7 @@ class RandomAuthor < ApplicationService
                          exists (
                            select 1 from
                              involved_authorities ia
-                             join works w on (ia.work_id = w.id)
+                             join works w on (ia.item_id = w.id and ia.item_type = 'Work')
                              join expressions e on (e.work_id = w.id)
                              join manifestations m on (m.expression_id = e.id)
                            where

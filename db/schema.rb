@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_07_19_103532) do
+ActiveRecord::Schema.define(version: 2024_08_26_215102) do
 
   create_table "aboutnesses", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -588,16 +588,14 @@ ActiveRecord::Schema.define(version: 2024_07_19_103532) do
 
   create_table "involved_authorities", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "authority_id", null: false
-    t.integer "work_id"
-    t.integer "expression_id"
     t.integer "role", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "collection_id"
+    t.string "item_type", null: false
+    t.integer "item_id", null: false
+    t.index ["authority_id", "item_id", "item_type", "role"], name: "index_involved_authority_uniq", unique: true
     t.index ["authority_id"], name: "index_involved_authorities_on_authority_id"
-    t.index ["collection_id"], name: "index_involved_authorities_on_collection_id"
-    t.index ["expression_id"], name: "index_involved_authorities_on_expression_id"
-    t.index ["work_id"], name: "index_involved_authorities_on_work_id"
+    t.index ["item_type", "item_id"], name: "index_involved_authorities_on_item"
   end
 
   create_table "legacy_recommendations", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -1105,8 +1103,6 @@ ActiveRecord::Schema.define(version: 2024_07_19_103532) do
   add_foreign_key "ingestibles", "collections", column: "volume_id"
   add_foreign_key "ingestibles", "users", column: "locked_by_user_id"
   add_foreign_key "involved_authorities", "authorities"
-  add_foreign_key "involved_authorities", "expressions"
-  add_foreign_key "involved_authorities", "works"
   add_foreign_key "lex_citations", "manifestations"
   add_foreign_key "lex_files", "lex_entries"
   add_foreign_key "lex_issues", "lex_publications"

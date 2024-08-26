@@ -150,13 +150,13 @@ class ApplicationController < ActionController::Base
 
   def cached_authors_in_genre
     Rails.cache.fetch('au_by_genre', expires_in: 24.hours) do # memoize
-      totals = Authority.has_toc
-                     .joins(involved_authorities: :work)
-                     .merge(InvolvedAuthority.role_author)
-                     .group(:genre)
-                     .distinct
-                     .count
-                     .to_h
+      totals = Work.joins(involved_authorities: :authority)
+                   .merge(InvolvedAuthority.role_author)
+                   .merge(Authority.has_toc)
+                   .group(:genre)
+                   .distinct
+                   .count('authorities.id')
+                   .to_h
       get_genres.index_with { |genre| totals[genre] || 0 }
     end
   end
@@ -165,11 +165,12 @@ class ApplicationController < ActionController::Base
     Rails.cache.fetch("au_by_period", expires_in: 24.hours) do # memoize
       ret = {}
       get_periods.each do |p|
-        ret[p] = Authority.has_toc
-                          .joins(involved_authorities: { work: :expressions })
-                          .merge(InvolvedAuthority.role_author)
-                          .where(expressions: { period: p })
-                          .uniq.count
+        ret[p] = Work.joins(:expressions, involved_authorities: :authority)
+                     .merge(InvolvedAuthority.role_author)
+                     .merge(Authority.has_toc)
+                     .where(expressions: { period: p })
+                     .distinct
+                     .count('authorities.id')
       end
       ret
     end
