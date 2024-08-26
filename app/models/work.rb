@@ -5,11 +5,9 @@ class Work < ApplicationRecord
   GENRES = %w(poetry prose drama fables article memoir letters reference lexicon).freeze
 
   has_many :expressions, inverse_of: :work, dependent: :destroy
-  has_many :involved_authorities, dependent: :destroy, inverse_of: :work
 
   has_many :aboutnesses, as: :aboutable, dependent: :destroy # works that are ABOUT this work
-  has_many :topics, class_name: 'Aboutness' # topics that this work is ABOUT 
-
+  has_many :topics, class_name: 'Aboutness' # topics that this work is ABOUT
   has_many :taggings, as: :taggable, dependent: :destroy
   has_many :tags, through: :taggings, class_name: 'Tag'
 

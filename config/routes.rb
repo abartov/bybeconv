@@ -33,7 +33,8 @@ Bybeconv::Application.routes.draw do
   get 'autocomplete_collection_title' => 'admin#autocomplete_collection_title', as: 'autocomplete_collection_title'
   match 'author/:id/manage_toc' => 'authors#manage_toc', as: 'authors_manage_toc', via: [:get, :post]
 
-  resources :involved_authorities, only: :destroy
+  resources :involved_authorities, only: %i(index create destroy)
+
   resources :user_blocks
   get 'crowd/index'
   get 'crowd/populate_edition' => 'crowd#populate_edition', as: 'crowd_populate_edition'

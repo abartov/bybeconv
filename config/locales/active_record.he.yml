@@ -22,9 +22,6 @@ he:
       models:
         involved_authority:
           attributes:
-            base:
-              no_item: חובה לשייך יצירה או ביטוי
-              multiple_items: אי אפשר לשייך גם יצירה וגם ביטוי
         authority:
           attributes:
             base:

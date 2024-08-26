@@ -133,7 +133,7 @@ describe Manifestation do
     let(:author_2) { create(:authority, name: 'Beta') }
 
     before do
-      create(:involved_authority, work: manifestation.expression.work, role: :author, authority: author_2)
+      create(:involved_authority, item: manifestation.expression.work, role: :author, authority: author_2)
       manifestation.reload
     end
 

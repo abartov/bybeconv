@@ -22,9 +22,6 @@ en:
       models:
         involved_authority:
           attributes:
-            base:
-              no_item: either Work or Expression object must be specified
-              multiple_items: Work and Expression objects cannot be specified together
         authority:
           attributes:
             base:

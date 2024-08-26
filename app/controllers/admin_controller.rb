@@ -131,7 +131,8 @@ class AdminController < ApplicationController
                                  select 1 from
                                    involved_authorities iat
                                  where
-                                   iat.expression_id = expressions.id
+                                   iat.item_id = expressions.id
+                                   and iat.item_type = 'Expression'
                                    and iat.authority_id = involved_authorities.authority_id
                                    and iat.role = ?
                                )
@@ -265,7 +266,11 @@ class AdminController < ApplicationController
     @authors = []
 
     # Getting list of authors, who wrote works in more than one language
-    translatees = Authority.joins(involved_authorities: :work)
+    translatees = Authority.joins(:involved_authorities)
+                           .joins(
+                             'join works on involved_authorities.item_id = works.id ' \
+                             "and involved_authorities.item_type = 'Work'"
+                           )
                            .merge(InvolvedAuthority.role_author)
                            .group('authorities.id')
                            .select('authorities.id, authorities.name')
@@ -292,7 +297,8 @@ class AdminController < ApplicationController
           authorities a
           join involved_authorities ia on a.id = ia.authority_id
         where
-          ia.work_id = works.id
+          ia.item_id = works.id
+          and ia.item_type = 'Work'
           and a.intellectual_property <> #{PUBLIC_DOMAIN_TYPE}
       )
       or exists (
@@ -300,7 +306,8 @@ class AdminController < ApplicationController
           authorities a
           join involved_authorities ia on a.id = ia.authority_id
         where
-          ia.expression_id = expressions.id
+          ia.item_id = expressions.id
+          and ia.item_type = 'Expression'
           and a.intellectual_property <> #{PUBLIC_DOMAIN_TYPE}
       )
     )
