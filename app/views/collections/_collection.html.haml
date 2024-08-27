@@ -1,5 +1,6 @@
 .container-fluid{ style: 'position:relative;', id: "coll_container_#{collection.id}" }
   - if collection
+    = render partial: 'involved_authorities/list', locals: { item: collection, edit: false }
     .button_series
       .collection_action_btns
         - unless focused
