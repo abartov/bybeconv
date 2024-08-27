@@ -24,8 +24,9 @@
                                  class: 'form-control',
                                  data: { noMatchesLabel: t(:no_matches_found) }
         = f.hidden_field :publication_id
-      -# = f.input :toc
-      -# = f.input :toc_strategy, collection: Collection.toc_strategies.keys
+      -#
+        = f.input :toc
+        = f.input :toc_strategy, collection: Collection.toc_strategies.keys
       .actions
         = f.submit t(:save)
   .col-sm-6.backend

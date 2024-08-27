@@ -34,7 +34,7 @@
                     %b= t(:collection_circular_reference)
                   - else
                     - @colls_traversed << ci.item.id
-                    = render partial: 'shared/collection', locals: { collection: ci.item, focused: false }
+                    = render partial: 'collection', locals: { collection: ci.item, focused: false }
               - else
                 .headline-3-v02
                   = t(:text)
