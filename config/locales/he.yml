@@ -1375,7 +1375,7 @@ he:
       text_x_of_total: טקסט %{index} מתוך %{total}
   involved_authorities:
     list:
-      select_authority: Select authority!
+      select_authority: נא לבחור ישות אחראית
   shared:
     filters:
       pagination:
@@ -1432,7 +1432,7 @@ he:
       series: סדרה, מחזור, או שער
       root: כלל היצירה של אדם או גוף
       other: אחר
-      uncollected: Uncollected works
+      uncollected: יצירות שלא כונסו
     up_link:
       volume: לתצוגת הכותר
       anthology: לתצוגת האסופה
