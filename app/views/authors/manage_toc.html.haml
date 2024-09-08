@@ -5,7 +5,7 @@
         = t(:group_in_collections)
         != '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
         %span{ style: 'font-size:70%' }
-          = link_to t(:show_toc), person_path(@author.id)
+          = link_to t(:show_toc), authority_path(@author.id)
       .toc#maintext
         .add-to-anthology{ style: 'display:none' }
           .left-pointing-arrow= t(:perform_add)

@@ -19,7 +19,7 @@
           .by-card-v02
             .drag-handle{ title: t(:coll_drag_tt) }
               .handle
-            .draggable-content{ 'data-collection-id': (ci.item.instance_of?(Collection) ? ci.item_id : collection.id) }
+            .draggable-content{ 'data-collection-id': (ci.item.kind_of?(Collection) ? ci.item_id : collection.id) }
               - if ci.paratext? # a paratext (with markdown)
                 %b #{t(:paratext)}:
                 %span{ id: "ci_title_#{ci.id}" }= ci.alt_title
@@ -43,7 +43,7 @@
                     = f.text_field :alt_title, class: 'form-control'
                     = f.submit t(:save), class: 'by-button-v02', style: 'display:inline-block;'
                     .by-button-v02.cancel_editable_edit{ style: 'width:100px; display:inline-block;' }= t(:cancel)
-              - elsif ci.item.instance_of(Collection)
+              - elsif ci.item.kind_of?(Collection)
                 .headline-2-v02
                   #{textify_collection_type(ci.item.collection_type)}:
                   = collection_item_string(ci)
