@@ -423,7 +423,7 @@ GEM
     net-ssh (7.2.1)
     netrc (0.11.0)
     newrelic_rpm (9.7.1)
-    nio4r (2.7.0)
+    nio4r (2.7.3)
     nokogiri (1.16.5)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
@@ -499,7 +499,7 @@ GEM
       activerecord (>= 6.0, < 7.2)
       json
     public_suffix (5.0.5)
-    puma (6.4.2)
+    puma (6.4.3)
       nio4r (~> 2.0)
     puma-daemon (0.3.2)
       puma (>= 5.0)
