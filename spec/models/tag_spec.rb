@@ -1,13 +1,17 @@
 require 'rails_helper'
 
 describe Tag do
-  it "considers invalid an empty tag" do
+  before do
+    Faker::UniqueGenerator.clear
+  end
+
+  it 'considers invalid an empty tag' do
     t = Tag.new
-    expect(t).to_not be_valid
+    expect(t).not_to be_valid
   end
 
   it 'considers valid tag with minimal attributes set' do
-    t = Tag.new(name: Faker::Science.science, creator: create(:user), status: 'pending')
+    t = Tag.new(name: Faker::Science.unique.science, creator: create(:user), status: 'pending')
     expect(t).to be_valid
   end
 
@@ -19,12 +23,13 @@ describe Tag do
     u = create(:user)
     i = 0
     3.times do
-      t = Tag.new(name: "#{Faker::Science.science} #{i.to_s} #{rand(1000)}", creator: u, status: 'pending')
+      t = Tag.new(name: "#{Faker::Science.unique.science} #{i} #{rand(1000)}", creator: u, status: 'pending')
       t.save
       i += 1
     end
     2.times do
-      t = Tag.new(name: "#{Faker::Science.science} #{i.to_s} #{rand(1000)}", creator: create(:user), status: 'pending')
+      t = Tag.new(name: "#{Faker::Science.unique.science} #{i} #{rand(1000)}", creator: create(:user),
+                  status: 'pending')
       t.save
       i += 1
     end
@@ -35,7 +40,7 @@ describe Tag do
     u = create(:user)
     i = 0
     5.times do
-      t = Tag.new(name: "#{Faker::Science.science} #{i.to_s} #{rand(1000)}", creator: u, status: 'pending')
+      t = Tag.new(name: "#{Faker::Science.unique.science} #{i} #{rand(1000)}", creator: u, status: 'pending')
       t.save
       i += 1
     end
@@ -50,7 +55,7 @@ describe Tag do
     u = create(:user)
     i = 0
     5.times do
-      t = Tag.new(name: "#{Faker::Science.science} #{i.to_s} #{rand(1000)}", creator: u, status: 'pending')
+      t = Tag.new(name: "#{Faker::Science.unique.science} #{i} #{rand(1000)}", creator: u, status: 'pending')
       t.save
       i += 1
     end
@@ -62,7 +67,7 @@ describe Tag do
   end
 
   it 'approves a tag' do
-    t = Tag.create!(name: Faker::Science.science, creator: create(:user), status: 'pending')
+    t = Tag.create!(name: Faker::Science.unique.science, creator: create(:user), status: 'pending')
     expect(Tag.last.status).to eq 'pending'
     u = create(:user)
     t.approve!(u)
@@ -70,7 +75,7 @@ describe Tag do
   end
 
   it 'rejects and blacklists a tag' do
-    t = Tag.create!(name: Faker::Science.science, creator: create(:user), status: 'pending')
+    t = Tag.create!(name: Faker::Science.unique.science, creator: create(:user), status: 'pending')
     expect(Tag.last.status).to eq 'pending'
     u = create(:user)
     t.reject!(u)
@@ -78,11 +83,11 @@ describe Tag do
   end
 
   it 'links to tagged manifestation via approved taggings' do
-    t = Tag.create!(name: Faker::Science.science, creator: create(:user), status: 'approved')
-    5.times do 
+    t = Tag.create!(name: Faker::Science.unique.science, creator: create(:user), status: 'approved')
+    5.times do
       Tagging.create!(tag: t, taggable: create(:manifestation), suggester: create(:user), status: 'approved')
     end
-    t2 = Tag.create!(name: Faker::Science.science+' 2', creator: create(:user), status: 'approved')
+    t2 = Tag.create!(name: Faker::Science.unique.science, creator: create(:user), status: 'approved')
     5.times do
       Tagging.create!(tag: t2, taggable: create(:manifestation), suggester: create(:user), status: 'pending')
     end
@@ -96,11 +101,11 @@ describe Tag do
 
   describe 'taggings scopes' do
     let(:first) do
-      described_class.create!(name: Faker::Science.science, creator: create(:user), status: 'approved')
+      described_class.create!(name: Faker::Science.unique.science, creator: create(:user), status: 'approved')
     end
 
     let(:second) do
-      described_class.create!(name: Faker::Science.science, creator: create(:user), status: 'approved')
+      described_class.create!(name: Faker::Science.unique.science, creator: create(:user), status: 'approved')
     end
 
     before do
@@ -136,7 +141,7 @@ describe Tag do
   end
 
   it 'deletes taggings when tag is deleted' do
-    t = Tag.create!(name: "#{Faker::Science.science} #{rand(1000)}", creator: create(:user), status: 'approved')
+    t = Tag.create!(name: "#{Faker::Science.unique.science} #{rand(1000)}", creator: create(:user), status: 'approved')
     5.times do
       Tagging.create!(tag: t, taggable: create(:manifestation), suggester: create(:user), status: 'pending')
     end
@@ -144,11 +149,12 @@ describe Tag do
     t.destroy
     expect(Tagging.count).to eq 0
   end
+
   it 'finds tags by TagName' do
     u = create(:user)
     i = 0
     5.times do
-      t = Tag.new(name: "#{Faker::Science.science} #{i.to_s} #{rand(1000)}", creator: u, status: 'pending')
+      t = Tag.new(name: "#{Faker::Science.unique.science} #{i} #{rand(1000)}", creator: u, status: 'pending')
       t.save
       i += 1
     end
@@ -163,7 +169,7 @@ describe Tag do
 
   it 'merges tag into another tag, including tag_names and taggings' do
     t = Tag.create!(name: Faker::Science.unique.science, creator: create(:user), status: 'approved')
-    5.times do 
+    5.times do
       Tagging.create!(tag: t, taggable: create(:manifestation), suggester: create(:user), status: 'pending')
       TagName.create!(name: Faker::Science.unique.science, tag: t)
     end
@@ -201,5 +207,4 @@ describe Tag do
     expect(Tag.count).to eq 1
     expect(t2.taggings.count).to eq 10 # duplicate removed
   end
-
 end
