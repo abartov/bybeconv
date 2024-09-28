@@ -34,6 +34,10 @@ class CollectionItem < ApplicationRecord
     ret
   end
 
+  def is_collection?
+    item.is_a?(Collection)
+  end
+
   def to_html
     if item.present?
       return item.to_html

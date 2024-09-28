@@ -672,6 +672,7 @@ module BybeUtils
     html.gsub!(/<li id="fn:(\d+)"/m) do |fn|
       "<li id=\"fn:#{nonce}_#{::Regexp.last_match(1)}\""
     end
+    html
   end
 
   def pub_title_for_comparison(s)

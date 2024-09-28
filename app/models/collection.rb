@@ -76,6 +76,13 @@ class Collection < ApplicationRecord
     return "#{title} / #{authors_string}"
   end
 
+  def title_and_authors_html
+    ret = "<h1>#{title}</h1>"
+    as = authors_string
+    ret += "#{I18n.t(:by)}<h2>#{as}</h2>" if as.present?
+    ret
+  end
+
   # this will return the downloadable entity for the Collection *if* it is fresh
   def fresh_downloadable_for(doctype)
     dl = downloadables.where(doctype: doctype).first
@@ -91,13 +98,14 @@ class Collection < ApplicationRecord
   end
 
   def to_html(nonce = '')
-    return nil if collection_items.count == 0
+    return '' if collection_items.count == 0
 
-    html = title_and_authors
+    html = title_and_authors_html
     i = 0
     collection_items.each do |ci|
+      html += ci.title_and_authors_html
       inner_nonce = "#{nonce}_#{i}"
-      html += ci.to_html(inner_nonce)
+      html += footnotes_noncer(ci.to_html, inner_nonce)
       i += 1
     end
     return html
@@ -117,7 +125,7 @@ class Collection < ApplicationRecord
       seen_colls << pc.id
     end
 
-    return nil
+    return I18n.t(:nil)
   end
 
   def destroy

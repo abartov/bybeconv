@@ -157,7 +157,7 @@ class CollectionsController < ApplicationController
     @htmls = []
     i = 1
     @collection.collection_items.each do |ci|
-      @htmls << [ci.title_and_authors_html, footnotes_noncer(ci.to_html, i)]
+      @htmls << [ci.is_collection? ? '' : ci.title_and_authors_html, footnotes_noncer(ci.to_html, i)]
       i += 1
     end
   end
