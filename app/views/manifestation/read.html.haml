@@ -173,7 +173,7 @@
                   = t(:yes_i_would_love_to_help)
             
 #downloadDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
-  = render partial: 'shared/download', locals: {manifestation: @m}
+  = render partial: 'shared/download', locals: {entity: @m}
 #recommendationDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
   %h2= t(:loading)
 #citeDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}

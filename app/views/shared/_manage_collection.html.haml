@@ -82,11 +82,13 @@
       $('#insert_cid').val( cid );
     });
 
-    $('.collection_do_insert').click(function(){
-      var item_type = $('#insert').val();
-      var collection_id = $('#collection_id').val();
-      var item_id = (item_type == 'Manifestation') ? $('#insert_mid').val() : (item_type == 'Collection') ? $('#insert_cid').val() : '';
-      var new_title = $('#insert_title').val();
+    $('.collection_do_insert').click(function(e){
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      var item_type = $(this).parent().parent().find('#insert').val();
+      var collection_id = $(this).parent().parent().find('#collection_id').val();
+      var item_id = (item_type == 'Manifestation') ? $(this).parent().parent().find('#insert_mid').val() : (item_type == 'Collection') ? $(this).parent().parent().find('#insert_cid').val() : '';
+      var new_title = $(this).parent().parent().find('#insert_title').val();
       $.ajax({
         url: '/collection_items',
         type: 'POST',

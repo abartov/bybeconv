@@ -11,7 +11,7 @@
   = text_field_tag :new_person, '', {style: 'width: 150px;'}
   = t(:in_role)
   = select_tag :role,
-               options_for_select(InvolvedAuthority.roles.keys.map { |role| [textify_authority_role(role), role] })
+               options_for_select(role_options)
   = button_tag t(:perform_add), id: 'do_add_authority'
   :javascript
     $(document).ready(function() {

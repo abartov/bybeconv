@@ -1,8 +1,9 @@
 .modal-dialog
   .modal-content
-    - formurl = local_assigns.has_key?(:manifestation) ? "/download/#{manifestation.id}" : anthology.nil? ? '#' : "#{anthology_download_path(anthology.id)}"
-    - dlgid = local_assigns.has_key?(:manifestation) ? 'downloadDlg' : 'downloadAnthologyDlg'
-    = form_tag(formurl, id: local_assigns.has_key?(:manifestation) ? 'download_form' : 'anth_download_form') do
+    - formurl = download_url_by_entity(entity)
+    - dlgid = download_dialog_id(entity)
+    - formid = download_form_id(entity)
+    = form_tag(formurl, id: formid) do
       .flex-popup
         .modal-header
           .popup-top

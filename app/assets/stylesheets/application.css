@@ -870,3 +870,7 @@ small p{
     /* Disable the selection */
     user-select: none;
 }
+
+.draggable-content {
+  margin-right: 15px;
+}

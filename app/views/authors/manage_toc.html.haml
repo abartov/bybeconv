@@ -25,8 +25,41 @@
       = link_to t(:back), authors_list_path
 
     .col-md-7.toc
-      = render partial: 'shared/manage_collection',
-               locals: { collection: @root_collection, title: "#{@author.name} #{t(:current_toc)}" }
+      .button_series
+        .newcoll_insert_button.by-button-v02
+          %b.white= '+'
+      #newcoll_section{style: 'display: none; border: 1px solid #660248; background-color: rgb(157 157 241); padding: 10px;'}
+        .admin_container
+          %b= t(:collection_item_type)+': '
+          = select_tag :insert, options_for_select(collection_item_types_options)
+          %b= "#{t(:title)}: "
+          = text_field_tag :insert_title, '', type: 'text', id: 'insert_title', style: 'background-color: #ffffff;'
+        %br
+        .admin_container
+          %b= t(:add_person_in_role, author: @author.name)
+          = select_tag :role, options_for_select(role_options)
+
+        .admin_container
+          .newcoll_do_insert.by-button-v02{style: 'width: 50px; justify-content: center;font-weight: bold;'}= t(:perform_add)
+
+      = render partial: 'toc_by_role',
+                locals: { top_nodes: @top_nodes,
+                          title: t(:original_works),
+                          role: :author,
+                          authority_id: @author.id, editable: true }
+      = render partial: 'toc_by_role',
+                locals: { top_nodes: @top_nodes,
+                          title: t(:translations),
+                          role: :translator,
+                          authority_id: @author.id, editable: true }
+      = render partial: 'toc_by_role',
+                locals: { top_nodes: @top_nodes,
+                          title: t(:edited_works, gender_letter: @author.gender_letter),
+                          role: :editor,
+                          authority_id: @author.id, editable: true }
+
+      -#= render partial: 'shared/manage_collection',
+      -#         locals: { top_nodes: @top_nodes, title: "#{@author.name} #{t(:current_toc)}" }
       %p
       .card
         .card-content
@@ -36,3 +69,24 @@
                 %p.headline-3= t(:volunteers_who_helped, author: @author.name, gender_letter: @author.gender_letter)
                 -# != @credits
             .col-sm-3
+:javascript
+  $(document).ready(function(){
+    $('body').on('click', '.newcoll_insert_button', function(){
+      $('#newcoll_section').show();
+    });
+    $('.newcoll_do_insert').click(function(){
+      var item_type = $('#insert').val();
+      var new_title = $('#insert_title').val();
+      $.ajax({
+        url: '/collections',
+        type: 'POST',
+        dataType: "script",
+        data: {collection: { collection_type: item_type, title: new_title}, authority: { id: #{@author.id } , role: $('#role').val()}},
+        success: function(data){
+          $('#newcoll_section').hide();
+          $('html, body').animate({scrollTop: $('#coll_container_'+collection_id).offset().top + $('#coll_container_'+collection_id).outerHeight() - $('header').height() - 180}, 500);
+        }
+      });
+    });
+
+  });

@@ -42,11 +42,20 @@
               .icons-group-v02
                 .by-icon-v02.pointer.linkcolor.bookmark-status.notyet
                 .by-icon-v02.pointer.linkcolor.printbutton.notyet= 9
-                .by-icon-v02.pointer.linkcolor.download.notyet{ data: { toggle: :modal, target: '#downloadDlg' } }= 3
+                .by-icon-v02.pointer.linkcolor.download{ data: { 'downloadable-id' => @collection.id, toggle: :modal, target: '#downloadDlg' } }= 3
           .chapters-and-icons-mobile
             .work-page-top-icons-mobile
               .top-left-icons-group
                 .icons-group-v02
                   .by-icon-v02.pointer.linkcolor.bookmark-status.notyet
                   .by-icon-v02.pointer.linkcolor.printbutton.notyet= 9
-                  .by-icon-v02.pointer.linkcolor.download.notyet{ data: { toggle: :modal, target: '#downloadDlg' } }= 3
+                  .by-icon-v02.pointer.linkcolor.download{ data: { 'downloadable-id' => @collection.id, toggle: :modal, target: '#downloadDlg' } }= 3
+:javascript
+  $(document).ready(function() {
+    $('.by-icon-v02.download').click(function(e) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      $('#downloadDlg').modal('show');
+      $('#downloadable_id').val($(this).attr('data-downloadable-id'));
+    });
+  });

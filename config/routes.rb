@@ -27,11 +27,12 @@ Bybeconv::Application.routes.draw do
     post 'apply_drag'
     post 'transplant_item'
     get 'manage'
+    post 'download'
   end
 
   get 'autocomplete_publication_title' => 'admin#autocomplete_publication_title', as: 'autocomplete_publication_title'
   get 'autocomplete_collection_title' => 'admin#autocomplete_collection_title', as: 'autocomplete_collection_title'
-  match 'author/:id/manage_toc' => 'authors#manage_toc', as: 'authors_manage_toc', via: [:get, :post]
+  match 'author/:id/manage_toc' => 'authors#manage_toc', as: 'authors_manage_toc', via: %i(get post)
 
   resources :involved_authorities, only: %i(index create destroy)
 
@@ -51,10 +52,10 @@ Bybeconv::Application.routes.draw do
   end
 
   resources :anthologies
-  match "anthologies/print/:id" => 'anthologies#print', as: 'anthology_print', via: [:get, :post]
-  match "anthologies/download/:id" => 'anthologies#download', as: 'anthology_download', via: [:get, :post]
-  match "anthologies/seq/:id" => 'anthologies#seq', as: 'anthology_seq', via: [:get, :post]
-  match "anthologies/clone/:id" => 'anthologies#clone', as: 'anthology_clone', via: [:get]
+  match 'anthologies/print/:id' => 'anthologies#print', as: 'anthology_print', via: %i(get post)
+  match 'anthologies/download/:id' => 'anthologies#download', as: 'anthology_download', via: %i(get post)
+  match 'anthologies/seq/:id' => 'anthologies#seq', as: 'anthology_seq', via: %i(get post)
+  get 'anthologies/clone/:id' => 'anthologies#clone', as: 'anthology_clone'
   resources :news_items
   resources :bib_sources
   resources :holdings
@@ -64,12 +65,13 @@ Bybeconv::Application.routes.draw do
   get 'bib/authority/:authority_id' => 'bib#authority', as: 'bib_authority'
   match 'bib/pubs_by_authority', via: %i(get post)
   get 'bib/pubs_maybe_done'
-  get 'bib/publication_mark_false_positive/:id' => 'bib#publication_mark_false_positive', as: 'publication_mark_false_positive'
+  get 'bib/publication_mark_false_positive/:id' => 'bib#publication_mark_false_positive',
+      as: 'publication_mark_false_positive'
   get 'bib/make_scanning_task/:id' => 'bib#make_scanning_task', as: 'bib_make_scanning_task'
   get 'bib/todo_by_location'
   get 'bib/holding_status/:id' => 'bib#holding_status', as: 'holding_status'
   post 'bib/make_author_page'
-  match 'bib/shopping/:source_id' => 'bib#shopping', as: 'bib_shopping', via: [:get, :post]
+  match 'bib/shopping/:source_id' => 'bib#shopping', as: 'bib_shopping', via: %i(get post)
 
   get 'aboutnesses/remove'
 
@@ -82,7 +84,7 @@ Bybeconv::Application.routes.draw do
   get 'admin/missing_images'
   get 'admin/messy_tocs'
   get 'admin/tocs_missing_links'
-  match 'admin/authors_without_works', via: [:get, :post]
+  match 'admin/authors_without_works', via: %i(get post)
   get 'admin/incongruous_copyright'
   get 'admin/suspicious_headings'
   get 'admin/texts_between_dates'
@@ -113,7 +115,8 @@ Bybeconv::Application.routes.draw do
   post 'admin/block_user/:id' => 'admin#block_user', as: 'block_user'
   post 'admin/unblock_user/:id' => 'admin#unblock_user', as: 'unblock_user'
   get 'admin/conversion_verification'
-  get 'admin/assign_conversion_verification' => 'admin#assign_conversion_verification', as: 'assign_conversion_verification'
+  get 'admin/assign_conversion_verification' => 'admin#assign_conversion_verification',
+      as: 'assign_conversion_verification'
   get 'admin/assign_proofs' => 'admin#assign_proofs', as: 'assign_proofs'
   get 'admin/static_pages_list'
   get 'admin/static_page/new' => 'admin#static_page_new', as: 'static_page_new'
@@ -127,11 +130,14 @@ Bybeconv::Application.routes.draw do
   post 'admin/volunteer_profile/create' => 'admin#volunteer_profile_create', as: 'volunteer_profile_create'
   get 'admin/volunteer_profile/edit/:id' => 'admin#volunteer_profile_edit', as: 'volunteer_profile_edit'
   patch 'admin/volunteer_profile/update' => 'admin#volunteer_profile_update', as: 'volunteer_profile_update'
-  post 'admin/volunteer_profile/add_feature' => 'admin#volunteer_profile_add_feature', as: 'volunteer_profile_add_feature'
-  get 'admin/volunteer_profile/delete_feature/:id' => 'admin#volunteer_profile_delete_feature', as: 'volunteer_profile_delete_feature'
+  post 'admin/volunteer_profile/add_feature' => 'admin#volunteer_profile_add_feature',
+       as: 'volunteer_profile_add_feature'
+  get 'admin/volunteer_profile/delete_feature/:id' => 'admin#volunteer_profile_delete_feature',
+      as: 'volunteer_profile_delete_feature'
   get 'admin/volunteer_profile/:id' => 'admin#volunteer_profile_show', as: 'volunteer_profile_show'
   get 'admin/volunteer_profile/destroy/:id' => 'admin#volunteer_profile_destroy', as: 'volunteer_profile_destroy'
-  get 'autocomplete_manifestation_title' => 'admin#autocomplete_manifestation_title', as: 'autocomplete_manifestation_title'
+  get 'autocomplete_manifestation_title' => 'admin#autocomplete_manifestation_title',
+      as: 'autocomplete_manifestation_title'
   get 'autocomplete_person_name' => 'admin#autocomplete_person_name', as: 'autocomplete_person_name'
   get 'autocomplete_authority_name' => 'admin#autocomplete_authority_name', as: 'autocomplete_authority_name'
   get 'autocomplete_tag_name' => 'application#autocomplete_tag_name_name', as: 'autocomplete_tag_name'
@@ -143,7 +149,8 @@ Bybeconv::Application.routes.draw do
   patch 'admin/featured_author/update' => 'admin#featured_author_update', as: 'featured_author_update'
   get 'admin/featured_author/destroy/:id' => 'admin#featured_author_destroy', as: 'featured_author_destroy'
   post 'admin/featured_author/add_feature' => 'admin#featured_author_add_feature', as: 'featured_author_add_feature'
-  get 'admin/featured_author/delete_feature/:id' => 'admin#featured_author_delete_feature', as: 'featured_author_delete_feature'
+  get 'admin/featured_author/delete_feature/:id' => 'admin#featured_author_delete_feature',
+      as: 'featured_author_delete_feature'
   get 'admin/featured_author/:id' => 'admin#featured_author_show', as: 'featured_author_show'
   get 'admin/sitenotice_list'
   get 'admin/sitenotice/new' => 'admin#sitenotice_new', as: 'sitenotice_new'
@@ -155,28 +162,28 @@ Bybeconv::Application.routes.draw do
   get 'volunteer/:id' => 'user#show', as: 'volunteer_show'
 
   get '/mobile_search' => 'application#mobile_search'
-  match "search/results", via: [:get, :post], as: 'search_results_internal'
+  match 'search/results', via: %i(get post), as: 'search_results_internal'
   get 'authors/all', as: 'all_authors'
   get 'authors/genre'
-  get "authors/show"
-  get "authors/new", as: 'authors_new'
-  get "authors/edit"
-  match "authors/list", via: [:get, :post]
-  get "authors/print"
-  post "authors/update"
-  get "authors/destroy", as: 'authors_destroy'
-  post "authors/create"
-  patch "authors/update"
+  get 'authors/show'
+  get 'authors/new', as: 'authors_new'
+  get 'authors/edit'
+  match 'authors/list', via: %i(get post)
+  get 'authors/print'
+  post 'authors/update'
+  get 'authors/destroy', as: 'authors_destroy'
+  post 'authors/create'
+  patch 'authors/update'
   get 'authors/get_random_author'
   get 'authors/volumes', as: 'authority_volumes'
   post 'authors/add_link/:id' => 'authors#add_link', as: 'author_add_link'
-  match 'authors/delete_link/:id' => 'authors#delete_link', as: 'author_delete_link', via: [:post]
-  match 'author/:id/edit_toc' => 'authors#edit_toc', as: 'authors_edit_toc', via: [:get, :post]
-  match 'author/:id/to_manual_toc' => 'authors#to_manual_toc', as: 'authors_to_manual_toc', via: [:get, :post]
+  post 'authors/delete_link/:id' => 'authors#delete_link', as: 'author_delete_link'
+  match 'author/:id/edit_toc' => 'authors#edit_toc', as: 'authors_edit_toc', via: %i(get post)
+  match 'author/:id/to_manual_toc' => 'authors#to_manual_toc', as: 'authors_to_manual_toc', via: %i(get post)
   match 'author/:id' => 'authors#toc', as: 'authority', via: %i(get post)
   get 'author/:id/new_toc' => 'authors#new_toc', as: 'authority_new_toc'
 
-  match 'author/publish/:id' => 'authors#publish', as: 'author_publish', via: [:get, :post]
+  match 'author/publish/:id' => 'authors#publish', as: 'author_publish', via: %i(get post)
   get 'author/:id/delete_photo' => 'authors#delete_photo', as: 'delete_author_photo'
   get 'author/:id/whatsnew' => 'authors#whatsnew_popup', as: 'author_whatsnew_popup'
   get 'author/:id/links' => 'authors#all_links', as: 'author_links_popup'
@@ -186,39 +193,39 @@ Bybeconv::Application.routes.draw do
   get 'add_tagging/:taggable_type/:taggable_id' => 'taggings#add_tagging_popup', as: 'add_tagging_popup'
   get 'pending_taggings/:tag_id' => 'taggings#pending_taggings_popup', as: 'pending_taggings_popup'
   get '/page/:tag' => 'static_pages#view', as: 'static_pages_by_tag', via: [:get]
-  get "read/:id" => 'manifestation#read', as: 'manifestation'
-  match 'dict/:id' => 'manifestation#dict', as: 'dict_browse', via: [:get, :post]
+  get 'read/:id' => 'manifestation#read', as: 'manifestation'
+  match 'dict/:id' => 'manifestation#dict', as: 'dict_browse', via: %i(get post)
   get 'dict/:id/:entry' => 'manifestation#dict_entry', as: 'dict_entry'
-  get "read/:id/read" => 'manifestation#readmode', as: 'manifestation_readmode'
+  get 'read/:id/read' => 'manifestation#readmode', as: 'manifestation_readmode'
   get 'periods' => 'manifestation#periods', as: 'periods'
-  match 'authors', to: 'authors#browse', as: 'authors', via: [:get, :post]
-  match 'works', to: 'manifestation#browse', as: 'works', via: [:get, :post]
-  match 'works/all', to: 'manifestation#all', as: 'all_works', via: [:get, :post]
-  match 'manifestation/genre' => 'manifestation#genre', as: 'genre', via: [:get, :post]
-  match 'period/:period' => 'manifestation#period', as: 'period', via: [:get, :post]
-  match 'translations' => 'manifestation#translations', as: 'translations', via: [:get, :post]
+  match 'authors', to: 'authors#browse', as: 'authors', via: %i(get post)
+  match 'works', to: 'manifestation#browse', as: 'works', via: %i(get post)
+  match 'works/all', to: 'manifestation#all', as: 'all_works', via: %i(get post)
+  match 'manifestation/genre' => 'manifestation#genre', as: 'genre', via: %i(get post)
+  match 'period/:period' => 'manifestation#period', as: 'period', via: %i(get post)
+  match 'translations' => 'manifestation#translations', as: 'translations', via: %i(get post)
   get 'whatsnew' => 'manifestation#whatsnew', as: 'whatsnew'
-  match 'tag/:id/works' => 'manifestation#by_tag', as: 'search_by_tag', via: [:get, :post]
-  match 'tag/:id/authors' => 'authors#by_tag', as: 'authors_by_tag', via: [:get, :post]
-  match 'tag/:id' => 'taggings#tag_portal', as: 'tag', via: :get
-  match 'tag_by_name' => 'taggings#tag_by_name', as: 'tag_by_name', via: :post
-  match "download/:id" => 'manifestation#download', as: 'manifestation_download', via: [:get, :post]
-  match "print/:id" => 'manifestation#print', as: 'manifestation_print', via: [:get, :post]
-  get "manifestation/show/:id" => 'manifestation#show', as: 'manifestation_show'
-  get "manifestation/render_html"
-  match "manifestation/chomp_period/:id" => 'manifestation#chomp_period', as: 'manifestation_chomp_period', via: [:get]
+  match 'tag/:id/works' => 'manifestation#by_tag', as: 'search_by_tag', via: %i(get post)
+  match 'tag/:id/authors' => 'authors#by_tag', as: 'authors_by_tag', via: %i(get post)
+  get 'tag/:id' => 'taggings#tag_portal', as: 'tag'
+  post 'tag_by_name' => 'taggings#tag_by_name', as: 'tag_by_name'
+  match 'download/:id' => 'manifestation#download', as: 'manifestation_download', via: %i(get post)
+  match 'print/:id' => 'manifestation#print', as: 'manifestation_print', via: %i(get post)
+  get 'manifestation/show/:id' => 'manifestation#show', as: 'manifestation_show'
+  get 'manifestation/render_html'
+  get 'manifestation/chomp_period/:id' => 'manifestation#chomp_period', as: 'manifestation_chomp_period'
   post 'manifestation/set_bookmark'
   post 'manifestation/remove_bookmark'
-  get "manifestation/edit/:id" => 'manifestation#edit', as: 'manifestation_edit'
-  get "manifestation/remove_image/:id" => 'manifestation#remove_image'
-  get "manifestation/edit_metadata/:id" => 'manifestation#edit_metadata', as: 'manifestation_edit_metadata'
-  match "manifestation/list", via: [:get, :post]
-  get "manifestation/genre" => 'manifestation#genre', as: 'manifestation_genre'
-  get "manifestation/index", as: 'manifestation_index'
-  get "manifestation/remove_link"
-  post "manifestation/update"
-  patch "manifestation/update"
-  post "manifestation/add_images"
+  get 'manifestation/edit/:id' => 'manifestation#edit', as: 'manifestation_edit'
+  get 'manifestation/remove_image/:id' => 'manifestation#remove_image'
+  get 'manifestation/edit_metadata/:id' => 'manifestation#edit_metadata', as: 'manifestation_edit_metadata'
+  match 'manifestation/list', via: %i(get post)
+  get 'manifestation/genre' => 'manifestation#genre', as: 'manifestation_genre'
+  get 'manifestation/index', as: 'manifestation_index'
+  get 'manifestation/remove_link'
+  post 'manifestation/update'
+  patch 'manifestation/update'
+  post 'manifestation/add_images'
   get 'manifestation/get_random'
   get 'manifestation/like'
   get 'manifestation/unlike'
@@ -229,44 +236,44 @@ Bybeconv::Application.routes.draw do
   get 'work/show/:id' => 'manifestation#workshow', as: 'work_show' # temporary, until we have a works controller
   get 'manifestation/add_aboutnesses/:id' => 'manifestation#add_aboutnesses'
   resources :api_keys, except: :show
-  get "taggings/render_tags", as: 'render_tags'
-  match "tag_suggest" => 'taggings#suggest', via: :get, as: 'tag_suggest'
-  match "tags" => 'taggings#list_tags', via: [:get, :post]
+  get 'taggings/render_tags', as: 'render_tags'
+  get 'tag_suggest' => 'taggings#suggest', as: 'tag_suggest'
+  match 'tags' => 'taggings#list_tags', via: %i(get post)
   get 'tags/listall' => 'taggings#listall_tags', as: 'tags_listall'
   resources :taggings
   resources :aboutnesses
   resources :preferences, only: [:update]
 
-  match 'user/list', via: [:get, :post]
+  match 'user/list', via: %i(get post)
   post 'user/set_editor_bit'
-  get "user/:id/make_editor" => 'user#make_editor', as: 'user_make_editor'
-  get "user/:id/make_crowdsourcer" => 'user#make_crowdsourcer', as: 'user_make_crowdsourcer'
-  get "user/:id/make_admin" => 'user#make_admin', as: 'user_make_admin'
-  get "user/:id/unmake_editor" => 'user#unmake_editor', as: 'user_unmake_editor'
-  get "user/:id/unmake_crowdsourcer" => 'user#unmake_crowdsourcer', as: 'user_unmake_crowdsourcer'
+  get 'user/:id/make_editor' => 'user#make_editor', as: 'user_make_editor'
+  get 'user/:id/make_crowdsourcer' => 'user#make_crowdsourcer', as: 'user_make_crowdsourcer'
+  get 'user/:id/make_admin' => 'user#make_admin', as: 'user_make_admin'
+  get 'user/:id/unmake_editor' => 'user#unmake_editor', as: 'user_unmake_editor'
+  get 'user/:id/unmake_crowdsourcer' => 'user#unmake_crowdsourcer', as: 'user_unmake_crowdsourcer'
   get 'user/:id' => 'user#show', as: 'user_show'
-  get "welcome/index"
-  get "welcome/contact"
-  get "welcome/volunteer"
+  get 'welcome/index'
+  get 'welcome/contact'
+  get 'welcome/volunteer'
   post 'welcome/submit_contact'
   post 'welcome/submit_volunteer'
-  get "session/create"
-  get "session/destroy"
-  get "session/login"
+  get 'session/create'
+  get 'session/destroy'
+  get 'session/login'
   get 'session/dismiss_sitenotice'
-  post "session/do_login"
+  post 'session/do_login'
 
   get '/auth/:provider/callback' => 'session#create'
   post '/auth/:provider/callback' => 'session#create'
 
-  match 'auth/failure', to: redirect('/'), via: [:get, :post]
-  match 'signout', to: 'session#destroy', as: 'signout', via: [:get, :post]
+  match 'auth/failure', to: redirect('/'), via: %i(get post)
+  match 'signout', to: 'session#destroy', as: 'signout', via: %i(get post)
 
   resources :html_dirs
-  match "html_dirs/:id/guess_author" => 'html_dirs#guess_author', via: [:get, :post]
-  match "html_dirs/:id/associate_viaf" => 'html_dirs#associate_viaf', as: 'html_dirs_associate_viaf', via: [:get, :post]
+  match 'html_dirs/:id/guess_author' => 'html_dirs#guess_author', via: %i(get post)
+  match 'html_dirs/:id/associate_viaf' => 'html_dirs#associate_viaf', as: 'html_dirs_associate_viaf', via: %i(get post)
 
-  resources :proofs, only: [:index, :show, :create, :new] do
+  resources :proofs, only: %i(index show create new) do
     member do
       post :resolve
     end
@@ -275,45 +282,47 @@ Bybeconv::Application.routes.draw do
     end
   end
 
-  get "legacy_recommendation/list"
-  get "legacy_recommendation/purge" => 'legacy_recommendation#purge', as: 'legacy_recommendation_purge'
-  match "legacy_recommendation/:id/resolve" => 'legacy_recommendation#resolve', as: 'legacy_recommendation_resolve', via: [:get, :post]
+  get 'legacy_recommendation/list'
+  get 'legacy_recommendation/purge' => 'legacy_recommendation#purge', as: 'legacy_recommendation_purge'
+  match 'legacy_recommendation/:id/resolve' => 'legacy_recommendation#resolve', as: 'legacy_recommendation_resolve',
+        via: %i(get post)
   resources :legacy_recommendations
   resources :recommendations
 
   get 'recommendation/display/:id' => 'recommendations#display', as: 'recommendation_display'
 
-  get "html_file/analyze"
-  match "html_file/:id/edit" => 'html_file#edit', as: 'html_file_edit', via: [:get, :post]
-  post "html_file/:id/update" => 'html_file#update'
-  match "html_file/:id/confirm_html_dir_person" => 'html_file#confirm_html_dir_person', as: 'html_file_confirm_html_dir_person', via: [:get, :post]
-  get "html_file/analyze_all"
-  match "html_file/:id/frbrize" => 'html_file#frbrize', as: 'html_file_frbrize', via: [:get]
+  get 'html_file/analyze'
+  match 'html_file/:id/edit' => 'html_file#edit', as: 'html_file_edit', via: %i(get post)
+  post 'html_file/:id/update' => 'html_file#update'
+  match 'html_file/:id/confirm_html_dir_person' => 'html_file#confirm_html_dir_person',
+        as: 'html_file_confirm_html_dir_person', via: %i(get post)
+  get 'html_file/analyze_all'
+  get 'html_file/:id/frbrize' => 'html_file#frbrize', as: 'html_file_frbrize'
 
-  get "html_file/list"
-  get "html_file/list_for_editor"
-  get "html_file/publish"
-  post "html_file/list"
-  get "html_file/publish"
-  get "html_file/parse"
-  get "html_file/render_html"
-  post "html_file/render_html"
-  get "html_file/unsplit"
-  get "html_file/chop1"
-  get "html_file/choplast1"
-  get "html_file/chop2"
-  get "html_file/choplast2"
-  get "html_file/chop3"
-  get "html_file/chop_title"
-  get "html_file/poetry"
+  get 'html_file/list'
+  get 'html_file/list_for_editor'
+  get 'html_file/publish'
+  post 'html_file/list'
+  get 'html_file/publish'
+  get 'html_file/parse'
+  get 'html_file/render_html'
+  post 'html_file/render_html'
+  get 'html_file/unsplit'
+  get 'html_file/chop1'
+  get 'html_file/choplast1'
+  get 'html_file/chop2'
+  get 'html_file/choplast2'
+  get 'html_file/chop3'
+  get 'html_file/chop_title'
+  get 'html_file/poetry'
   get 'html_file/mark_manual'
   get 'html_file/new'
   get 'html_file/mark_superseded'
-  match 'html_file/edit_markdown', via: [:get, :post]
+  match 'html_file/edit_markdown', via: %i(get post)
   post 'html_file/create'
   get 'html_file/destroy'
 
-  mount Blazer::Engine, at: "blazer"
+  mount Blazer::Engine, at: 'blazer'
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
@@ -350,7 +359,7 @@ Bybeconv::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-  root :to => 'welcome#index'
+  root to: 'welcome#index'
 
   # See how all your routes lay out with "rake routes"
 
@@ -359,7 +368,7 @@ Bybeconv::Application.routes.draw do
   # match ':controller(/:action(/:id(.:format)))'
   #
   # match legacy BY urls, but *only* those
-  match '*path' => "html_file#render_by_legacy_url", via: [:get], constraints: lambda {|req|
+  get '*path' => 'html_file#render_by_legacy_url', constraints: lambda { |req|
     is_legacy_url(req.path)
   }
 end

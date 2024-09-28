@@ -16,6 +16,33 @@ class CollectionItem < ApplicationRecord
     end
   end
 
+  def title_and_authors
+    ret = title
+    return ret if item.blank?
+
+    as = item.authors_string
+    ret += " #{I18n.t(:by)} #{as}" if as.present?
+    ret
+  end
+
+  def title_and_authors_html
+    ret = "<h1>#{title}</h1>"
+    return ret if item.blank?
+
+    as = item.authors_string
+    ret += "#{I18n.t(:by)}<h2>#{as}</h2>" if as.present?
+    ret
+  end
+
+  def to_html
+    if item.present?
+      return item.to_html
+    end
+    return '' if markdown.blank?
+
+    return MultiMarkdown.new(markdown).to_html
+  end
+
   def paratext?
     item.nil? && markdown.present?
   end

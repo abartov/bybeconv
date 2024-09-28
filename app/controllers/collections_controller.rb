@@ -3,7 +3,7 @@
 # Controller to work with Collections.
 # Most of the actions require editor's permissions
 class CollectionsController < ApplicationController
-  before_action :require_editor, except: %i(show)
+  before_action :require_editor, except: %i(show download print)
   before_action :set_collection, only: %i(show edit update destroy)
 
   # GET /collections or /collections.json
@@ -16,6 +16,44 @@ class CollectionsController < ApplicationController
     @header_partial = 'shared/collection_top'
     @colls_traversed = [@collection.id]
     # @print_url = url_for(action: :print, id: @collection.id)
+  end
+
+  # GET /collections/1/download
+  def download
+    @collection = Collection.find(params[:collection_id])
+    format = params[:format]
+    unless Downloadable.doctypes.include?(format)
+      flash[:error] = t(:unrecognized_format)
+      redirect_to @collection
+      return
+    end
+
+    dl = @collection.fresh_downloadable_for(format)
+    if dl.nil?
+      prep_for_show # TODO
+      # impressionist(@m) unless is_spider? # TODO: enable impressionist for collections
+      filename = "#{@collection.title.gsub(/[^0-9א-תA-Za-z.\-]/, '_')}.#{format}"
+      html = <<~WRAPPER
+        <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+        <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="he" lang="he" dir="rtl">
+        <head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+        <body dir='rtl' align='right'><div dir="rtl" align="right">
+        <div style="font-size:300%; font-weight: bold;">#{@collection.title}</div>
+        #{@htmls.map { |h| "<h1>#{h[0]}</h1>\n#{h[1]}" }.join("\n").force_encoding('UTF-8')}
+
+        <hr />
+        #{I18n.t(:download_footer_html, url: url_for(action: :show, id: @collection.id))}
+        </div></body></html>
+      WRAPPER
+      austr = begin
+        @collection.authorities.map { |a| a.authority.name }.join(', ')
+      rescue StandardError
+        ''
+      end
+      dl = MakeFreshDownloadable.call(params[:format], filename, html, @collection, austr)
+    end
+    redirect_to rails_blob_url(dl.stored_file, disposition: :attachment)
   end
 
   # GET /collections/new
@@ -31,6 +69,8 @@ class CollectionsController < ApplicationController
     @collection = Collection.new(collection_params)
 
     if @collection.save
+      @collection.involved_authorities.create!(authority_id: params['authority']['id'].to_i,
+                                               role: params['authority']['role'])
       redirect_to collection_url(@collection), notice: t(:created_successfully)
     else
       render :new, status: :unprocessable_entity
@@ -111,5 +151,14 @@ class CollectionsController < ApplicationController
   def collection_params
     params.require(:collection).permit(:title, :sort_title, :subtitle, :issn, :collection_type, :inception,
                                        :inception_year, :publication_id, :toc_id, :toc_strategy)
+  end
+
+  def prep_for_show
+    @htmls = []
+    i = 1
+    @collection.collection_items.each do |ci|
+      @htmls << [ci.title_and_authors_html, footnotes_noncer(ci.to_html, i)]
+      i += 1
+    end
   end
 end

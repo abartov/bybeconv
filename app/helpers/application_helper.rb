@@ -1,12 +1,14 @@
 module ApplicationHelper
   def u8(s)
     return s if s.nil?
+
     s.force_encoding('UTF-8')
   end
+
   def get_intro(markdown)
     lines = markdown[0..2000].lines[1..-2]
     if lines.empty?
-      lines = markdown[0..[5000,markdown.length].min].lines[0..-2]
+      lines = markdown[0..[5000, markdown.length].min].lines[0..-2]
     end
     lines.join + '...'
   end
@@ -21,14 +23,15 @@ module ApplicationHelper
   end
 
   def lineclamp(s, max)
-    s.length > max ? s[0..max-3]+'...' : s
+    s.length > max ? s[0..max - 3] + '...' : s
   end
 
   def url_tag(u)
     return '' if u.blank?
-    return 'ויקיפדיה' if u =~ /https?:\/\/he.wikipedia.org/
-    return 'לקסיקון' if u =~ /https?:\/\/library.osu.edu\/projects\/hebrew-lexicon/
-    return 'VIAF' if u =~ /https?:\/\/viaf.org\/viaf\//
+    return 'ויקיפדיה' if u =~ %r{https?://he.wikipedia.org}
+    return 'לקסיקון' if u =~ %r{https?://library.osu.edu/projects/hebrew-lexicon}
+    return 'VIAF' if u =~ %r{https?://viaf.org/viaf/}
+
     'אחר'
   end
 
@@ -47,18 +50,23 @@ module ApplicationHelper
     end
     ret += '</ul>'
   end
+
   def absolute_url_from_urlpart(u)
-    return Rails.configuration.constants['base_dir']+u
+    return Rails.configuration.constants['base_dir'] + u
   end
+
   def textify_external_link_type(linktype)
     return I18n.t(linktype)
   end
+
   def options_for_shelves
     # TODO: once user system is in place, add user's custom shelves
-    return '<option>'+t(:want_to_read)+'</option><option>'+t(:currently_reading)+'</option><option>'+t(:have_read)+'</option>'
+    return '<option>' + t(:want_to_read) + '</option><option>' + t(:currently_reading) + '</option><option>' + t(:have_read) + '</option>'
   end
+
   def textify_genre(genre)
     return I18n.t(:unknown) if genre.nil? or genre.empty?
+
     return I18n.t(genre)
   end
 
@@ -72,6 +80,7 @@ module ApplicationHelper
 
   def textify_nikkud(nik)
     return I18n.t(:unknown) if nik.nil? or nik.empty?
+
     return I18n.t(nik)
   end
 
@@ -96,6 +105,7 @@ module ApplicationHelper
 
   def textify_htmlfile_status(st)
     return I18n.t(:unknown) if st.nil? or st.empty?
+
     case st
     when 'Unknown'
       return t(:unknown)
@@ -124,39 +134,46 @@ module ApplicationHelper
 
   def textify_toc_status(st)
     return I18n.t(:unknown) if st.nil? or st.empty?
+
     return I18n.t(st)
   end
 
   def uncached_sitenotice
     @sns = Sitenotice.enabled.where('fromdate <= ? and todate >= ?', Date.today, Date.today)
     return '' if @sns.empty?
-    return @sns.pluck(:body).join("<br />")
+
+    return @sns.pluck(:body).join('<br />')
   end
 
   def sitenotice
-    Rails.cache.fetch("sitenotices", expires_in: 2.hours) do # memoize
+    Rails.cache.fetch('sitenotices', expires_in: 2.hours) do # memoize
       uncached_sitenotice
     end
   end
 
   def linkify_people(people)
     return '' if people.nil? or people.empty?
+
     ret = ''
     i = 0
-    people.each {|p|
+    people.each do |p|
       ret += ', ' if i > 0
       ret += link_to p.name, authors_show_path(id: p.id)
       i += 1
-    }
+    end
     return ret
   end
 
   def authors_linked_string(m)
-    return m.expression.work.authors.map{|x| "<a href=\"#{url_for(controller: :authors, action: :toc, id: x.id)}\">#{x.name}</a>"}.join(', ')
+    return m.expression.work.authors.map do |x|
+             "<a href=\"#{url_for(controller: :authors, action: :toc, id: x.id)}\">#{x.name}</a>"
+           end.join(', ')
   end
 
   def translators_linked_string(m)
-    return m.expression.translators.map{|x| "<a href=\"#{url_for(controller: :authors, action: :toc, id: x.id)}\">#{x.name}</a>"}.join(', ')
+    return m.expression.translators.map do |x|
+             "<a href=\"#{url_for(controller: :authors, action: :toc, id: x.id)}\">#{x.name}</a>"
+           end.join(', ')
   end
 
   def intellectual_property_glyph(intellectual_property)
@@ -182,21 +199,24 @@ module ApplicationHelper
       return 'O'
     end
   end
+
   def anthology_select_options
     ret = [
       [t(:general),
-      [[t(:rename_this_anthology), -1], [t(:create_new_anthology), 0]]]]
+       [[t(:rename_this_anthology), -1], [t(:create_new_anthology), 0]]]
+    ]
     anths = []
-    current_user.anthologies.each{|a|
+    current_user.anthologies.each do |a|
       anths << [a.title, a.id]
       @selected_anthology = a.id if @anthology == a
-    }
+    end
     ret << [t(:anthologies), anths] unless anths.empty?
     return ret
   end
-  def update_param(uri, key, value) 
+
+  def update_param(uri, key, value)
     u = URI(uri)
-    pp = URI.decode_www_form(u.query || "").to_h
+    pp = URI.decode_www_form(u.query || '').to_h
     pp[key] = value
     u.query = URI.encode_www_form(pp.to_a)
     u.to_s
@@ -222,7 +242,45 @@ module ApplicationHelper
 
     s = collection_item.item.try(:name) if collection_item.item.present?
     return s if s.present?
+
     return ''
+  end
+
+  def download_url_by_entity(entity)
+    return '#' if entity.blank?
+
+    case entity.class.to_s
+    when 'Manifestation'
+      return "/download/#{entity.id}"
+    # when 'Authority'
+    #  return download_author_path(entity)
+    when 'Collection'
+      return collection_download_path(entity.id)
+    when 'Anthology'
+      return anthology_download_path(entity.id)
+    end
+  end
+
+  def download_dialog_id(entity)
+    return '' if entity.blank?
+
+    case entity.class.to_s
+    when 'Manifestation', 'Collection'
+      return 'downloadDlg'
+    when 'Anthology'
+      return 'downloadAnthologyDlg'
+    end
+  end
+
+  def download_form_id(entity)
+    return '' if entity.blank?
+
+    case entity.class.to_s
+    when 'Manifestation', 'Collection'
+      return 'download_form'
+    when 'Anthology'
+      return 'anth_download_form'
+    end
   end
 
   def default_link_by_class(klass, id)
@@ -263,5 +321,9 @@ module ApplicationHelper
         [t(:paratext), 'paratext'],
         [t(:placeholder_item), 'placeholder_item']
       ]
+  end
+
+  def role_options
+    InvolvedAuthority.roles.keys.map { |role| [textify_authority_role(role), role] }
   end
 end

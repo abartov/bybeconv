@@ -16,6 +16,7 @@ class Collection < ApplicationRecord
 
   has_many :aboutnesses, as: :aboutable, dependent: :destroy # works that are ABOUT this collection
   # has_many :topics, class_name: 'Aboutness', dependent: :destroy # topics that this work is ABOUT
+  has_many :downloadables, as: :object, dependent: :destroy
 
   # convenience methods
   has_many :manifestation_items, through: :collection_items, source: :item, source_type: 'Manifestation'
@@ -75,6 +76,33 @@ class Collection < ApplicationRecord
     return "#{title} / #{authors_string}"
   end
 
+  # this will return the downloadable entity for the Collection *if* it is fresh
+  def fresh_downloadable_for(doctype)
+    dl = downloadables.where(doctype: doctype).first
+    return nil if dl.nil?
+    return nil if dl.updated_at < updated_at # needs to be re-generated
+
+    # also ensure none of the collection items is fresher than the saved downloadable
+    collection_items.each do |ci|
+      return nil if dl.updated_at < ci.updated_at
+      return nil if ci.item.present? && (ci.item.updated_at > dl.updated_at)
+    end
+    return dl
+  end
+
+  def to_html(nonce = '')
+    return nil if collection_items.count == 0
+
+    html = title_and_authors
+    i = 0
+    collection_items.each do |ci|
+      inner_nonce = "#{nonce}_#{i}"
+      html += ci.to_html(inner_nonce)
+      i += 1
+    end
+    return html
+  end
+
   def authors_string
     auths = involved_authorities.where(role: 'author')
     return auths.map(&:authority).map(&:name).join(', ') if auths.count > 0
@@ -90,6 +118,14 @@ class Collection < ApplicationRecord
     end
 
     return nil
+  end
+
+  def destroy
+    collection_items.each do |ci|
+      ci.destroy!
+    end
+    CollectionItem.where(item: self).each { |ci| ci.destroy! } # destroy all references to this collection
+    super
   end
 
   def editors_string

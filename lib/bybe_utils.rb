@@ -1,6 +1,6 @@
 require 'json' # for VIAF AutoSuggest
-#require 'rdf'
-#require 'rdf/vocab'
+# require 'rdf'
+# require 'rdf/vocab'
 require 'hebrew'
 require 'htmlentities'
 require 'gepub'
@@ -11,24 +11,27 @@ include ActionView::Helpers::SanitizeHelper
 LETTERS = %w(א ב ג ד ה ו ז ח ט י כ ל מ נ ס ע פ צ ק ר ש ת).freeze
 
 # temporary constants until I figure out what changed in RDF.rb's RDF::Vocab::SKOS
-SKOS_PREFLABEL = "http://www.w3.org/2004/02/skos/core#prefLabel"
-SKOS_ALTLABEL = "http://www.w3.org/2004/02/skos/core#altLabel"
+SKOS_PREFLABEL = 'http://www.w3.org/2004/02/skos/core#prefLabel'
+SKOS_ALTLABEL = 'http://www.w3.org/2004/02/skos/core#altLabel'
 HEBMONTHS = { 'ניסן' => 1, 'אייר' => 2, 'סיון' => 3, 'סיוון' => 3, 'תמוז' => 4, 'אב' => 5, 'אלול' => 6, 'תשרי' => 7, 'חשון' => 8, 'חשוון' => 8, 'כסלו' => 9, 'טבת' => 10, 'שבט' => 11, 'אדר' => 12 } # handling Adar Bet is a special pain we're knowingly ignoring
-GREGMONTHS = {'ינואר' => 1,'פברואר' => 2,'מרץ' => 3,'מרס' => 3,'מארס' => 3,'אפריל' => 4,'מאי' => 5,'יוני' => 6,'יולי' => 7,'אוגוסט' => 8,'אבגוסט' => 8,'ספטמבר' => 9,'אוקטובר' => 10,'נובמבר' => 11, 'דצמבר' => 12}
-HEB_LETTER_VALUE = {'א' => 1, 'ב' => 2, 'ג' => 3, 'ד' => 4, 'ה' => 5, 'ו' => 6, 'ז' => 7, 'ח' => 8, 'ט' => 9, 'י' => 10, 'כ' => 20, 'ך' => 20, 'ל' => 30, 'מ' => 40, 'ם' => 40, 'נ' => 50, 'ן' => 50, 'ס' => 60, 'ע' => 70, 'פ' => 80, 'ף' => 80, 'צ' => 90, 'ץ' => 90, 'ק' => 100, 'ר' => 200, 'ש' => 300, 'ת' => 400}
+GREGMONTHS = { 'ינואר' => 1, 'פברואר' => 2, 'מרץ' => 3, 'מרס' => 3, 'מארס' => 3, 'אפריל' => 4, 'מאי' => 5, 'יוני' => 6,
+               'יולי' => 7, 'אוגוסט' => 8, 'אבגוסט' => 8, 'ספטמבר' => 9, 'אוקטובר' => 10, 'נובמבר' => 11, 'דצמבר' => 12 }
+HEB_LETTER_VALUE = { 'א' => 1, 'ב' => 2, 'ג' => 3, 'ד' => 4, 'ה' => 5, 'ו' => 6, 'ז' => 7, 'ח' => 8, 'ט' => 9,
+                     'י' => 10, 'כ' => 20, 'ך' => 20, 'ל' => 30, 'מ' => 40, 'ם' => 40, 'נ' => 50, 'ן' => 50, 'ס' => 60, 'ע' => 70, 'פ' => 80, 'ף' => 80, 'צ' => 90, 'ץ' => 90, 'ק' => 100, 'ר' => 200, 'ש' => 300, 'ת' => 400 }
 
-SUSPICIOUS_TITLES = ['מבוא', 'פתיחה', 'הקדמה','אחרית דבר','אפילוג','סוף דבר', 'על הספר']
+SUSPICIOUS_TITLES = ['מבוא', 'פתיחה', 'הקדמה', 'אחרית דבר', 'אפילוג', 'סוף דבר', 'על הספר']
 
 class TitleValidator < ActiveModel::Validator
   def validate(record)
     return false unless record.title.present?
+
     okay = true
-    SUSPICIOUS_TITLES.each {|suspicious_title|
+    SUSPICIOUS_TITLES.each do |suspicious_title|
       if record.title.strip == suspicious_title
         okay = false
         break
       end
-    }
+    end
     record.errors.add(:title, I18n.t(:title_not_informative)) unless okay
     if record.title =~ /[^\.]\.\s*$/ # old-fashioned published put periods at ends of titles. We don't want them.
       okay = false
@@ -45,70 +48,70 @@ end
 module BybeUtils
   def make_epub_from_single_html(html, manifestation, author_string)
     book = GEPUB::Book.new
-    book.primary_identifier('http://benyehuda.org/read/'+manifestation.id.to_s, 'BookID', 'URL')
+    book.primary_identifier('http://benyehuda.org/read/' + manifestation.id.to_s, 'BookID', 'URL')
     book.language = 'he'
-    title = manifestation.title+' מאת '+author_string
+    title = manifestation.title + ' מאת ' + author_string
     book.add_title(title, nil, GEPUB::TITLE_TYPE::MAIN)
     book.add_creator(author_string)
     book.page_progression_direction = 'rtl' # Hebrew! :)
     # make cover image
-    canvas = Magick::Image.new(1200, 800){|img| img.background_color = 'white'}
+    canvas = Magick::Image.new(1200, 800) { |img| img.background_color = 'white' }
     gc = Magick::Draw.new
     gc.gravity = Magick::CenterGravity
     gc.pointsize(50)
     gc.font('David CLM')
-    gc.text(0,0,title.reverse.center(50))
+    gc.text(0, 0, title.reverse.center(50))
     gc.draw(canvas)
     gc.pointsize(30)
-    gc.text(0,150,"פרי עמלם של מתנדבי פרויקט בן־יהודה".reverse.center(50))
+    gc.text(0, 150, 'פרי עמלם של מתנדבי פרויקט בן־יהודה'.reverse.center(50))
     gc.pointsize(20)
-    gc.text(0,250,Date.today.to_s+"מעודכן לתאריך: ".reverse.center(50))
+    gc.text(0, 250, Date.today.to_s + 'מעודכן לתאריך: '.reverse.center(50))
     gc.draw(canvas)
-    cover_file = Tempfile.new(['tmp_cover_'+manifestation.id.to_s,'.png'], 'tmp/')
+    cover_file = Tempfile.new(['tmp_cover_' + manifestation.id.to_s, '.png'], 'tmp/')
     canvas.write(cover_file.path)
-    book.add_item('cover.png',cover_file.path).cover_image
-    book.ordered {
+    book.add_item('cover.png', cover_file.path).cover_image
+    book.ordered do
       # TODO: different cover page for anthologies, including name of anthology author.
       buf = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" xml:lang="he" lang="he"><head><meta http-equiv="content-type" content="text/html; charset=UTF-8" /><title>'+title+'</title></head><body dir="rtl"><div style="text-align:center;"><h1>'+title+'</h1><p/><p/><h3>פרי עמלם של מתנדבי</h3><p/><h2>פרויקט בן־יהודה</h2><p/><h3><a href="https://benyehuda.org/page/volunteer">(רוצים לעזור?)</a></h3><p/>מעודכן לתאריך: '+Date.today.to_s+'</div></body></html>'
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" xml:lang="he" lang="he"><head><meta http-equiv="content-type" content="text/html; charset=UTF-8" /><title>' + title + '</title></head><body dir="rtl"><div style="text-align:center;"><h1>' + title + '</h1><p/><p/><h3>פרי עמלם של מתנדבי</h3><p/><h2>פרויקט בן־יהודה</h2><p/><h3><a href="https://benyehuda.org/page/volunteer">(רוצים לעזור?)</a></h3><p/>מעודכן לתאריך: ' + Date.today.to_s + '</div></body></html>'
       book.add_item('0_title.xhtml').add_content(StringIO.new(buf))
       boilerplate_start = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" xml:lang="he" lang="he"><head><meta http-equiv="content-type" content="text/html; charset=UTF-8" /></head><body dir="rtl" align="right">'
       boilerplate_end = '</body></html>'
       if manifestation.class == Anthology
-        item_titles = html.scan((/<h1.*?>(.*?)<\/h1/)).map{|x| x[0]}
-        items = html.split(/<h1.*?<\/h1>/)
+        item_titles = html.scan(%r{<h1.*?>(.*?)</h1}).map { |x| x[0] }
+        items = html.split(%r{<h1.*?</h1>})
         items.shift(1) # skip the header
-        items.each_with_index{|item, i|
-          book.add_item((i+1).to_s+'_text.xhtml').add_content(StringIO.new("#{boilerplate_start}<h1>#{item_titles[i]}</h1>\n#{item}#{boilerplate_end}")).toc_text(item_titles[i])
-        }
+        items.each_with_index do |item, i|
+          book.add_item((i + 1).to_s + '_text.xhtml').add_content(StringIO.new("#{boilerplate_start}<h1>#{item_titles[i]}</h1>\n#{item}#{boilerplate_end}")).toc_text(item_titles[i])
+        end
       else # Manifestation
-        section_titles = html.scan((/<h2.*?>(.*?)<\/h2/)).map{|x| x[0]}
+        section_titles = html.scan(%r{<h2.*?>(.*?)</h2}).map { |x| x[0] }
         if section_titles.count < (manifestation.expression.translation? ? 3 : 2) # text witout chapters
           book.add_item('1_text.xhtml').add_content(StringIO.new(html)).toc_text(title)
         else
-          sections = html.split(/<h2.*?<\/h2>/)
-          #book.add_item('1_text.xhtml').add_content(StringIO.new("#{sections[0]}<h2>#{section_titles[0]}</h2>\n#{sections[1]}")).toc_text(section_titles[0])
+          sections = html.split(%r{<h2.*?</h2>})
+          # book.add_item('1_text.xhtml').add_content(StringIO.new("#{sections[0]}<h2>#{section_titles[0]}</h2>\n#{sections[1]}")).toc_text(section_titles[0])
           offset = manifestation.expression.translation? ? 2 : 1
-          no_first_title = sections.count - section_titles.count == 1 ? true : false
+          no_first_title = sections.count - section_titles.count == 1
           sections.shift(offset) # skip the header and the author/translator lines
-          sections.each_with_index{|section, i|
+          sections.each_with_index do |section, i|
             buf = boilerplate_start
             if no_first_title && i == 0
               stitle = '*' # no title
             else
-              stitle = section_titles[i+offset-1]
-              buf += "<h2>#{section_titles[i+offset-1]}</h2>\n"
+              stitle = section_titles[i + offset - 1]
+              buf += "<h2>#{section_titles[i + offset - 1]}</h2>\n"
             end
             buf += section + boilerplate_end
-            book.add_item((i+offset).to_s+'_text.xhtml').add_content(StringIO.new(buf)).toc_text(stitle)
-          }
+            book.add_item((i + offset).to_s + '_text.xhtml').add_content(StringIO.new(buf)).toc_text(stitle)
+          end
         end
       end
-    }
-    fname = cover_file.path+'.epub'
+    end
+    fname = cover_file.path + '.epub'
     book.generate_epub(fname)
     cover_file.close
     return fname
@@ -125,7 +128,7 @@ module BybeUtils
         ignore = false
         next
       end
-      unless ignore or c.match /\s/ # ignore tags and whitespace
+      unless ignore or c.match(/\s/) # ignore tags and whitespace
         info[:nikkud] += 1 if text.is_nikkud(c)
         info[:total] += 1
       end
@@ -134,37 +137,38 @@ module BybeUtils
       info[:total] -= 35 # rough compensation for text of index and main page links, to mitigate ratio problem for very short texts
     end
     info[:ratio] = info[:nikkud].to_f / info[:total]
-#    puts "DBG: total #{info[:total]} - nikkud #{info[:nikkud]} - ratio #{info[:ratio]}"
+    #    puts "DBG: total #{info[:total]} - nikkud #{info[:nikkud]} - ratio #{info[:ratio]}"
     return info
   end
 
   # new definition of full nikkud: no more than two (or one, if under three words) of the words lack nikkud
   def is_full_nikkud(text)
-    a = text.split /\b/ # split at word boundaries
-    b = a.select{|x| x =~ /[^\s,?!.;'`"\-–]/} # leave only actual words
+    a = text.split(/\b/) # split at word boundaries
+    b = a.select { |x| x =~ /[^\s,?!.;'`"\-–]/ } # leave only actual words
     count = 0
-    b.each{|word| count += 1 if word.any_nikkud?}
+    b.each { |word| count += 1 if word.any_nikkud? }
     target = b.length < 3 ? 1 : b.length - 2
-    return (count < target ? false : true)
+    return !(count < target)
   end
 
   def parse_gregorian(str)
-    return Date.new($3.to_i, $2.to_i, $1.to_i) if(str =~ /(\d\d?)[-\/\.–](\d\d?)[-\/\.–](\d+)/) # try to match numeric date
+    return Date.new(::Regexp.last_match(3).to_i, ::Regexp.last_match(2).to_i, ::Regexp.last_match(1).to_i) if str =~ %r{(\d\d?)[-/\.–](\d\d?)[-/\.–](\d+)} # try to match numeric date
+
     # perhaps there's a date with spaces and a Gregorian month name in Hebrew
     GREGMONTHS.keys.each do |m|
-      unless str.match(/ב?#{m}\s+/).nil?
-        month = GREGMONTHS[m]
-        pre = $`
-        year = $'.match(/\d+/).to_s.to_i
-        day = (pre.match(/\d+/)) ? $&.to_i : 15 # mid-month by default
-        unless day > 31 || day < 1 # avoid exceptions on weird date strings
-          return Date.new(year, month, day)
-        end
+      next if str.match(/ב?#{m}\s+/).nil?
+
+      month = GREGMONTHS[m]
+      pre = ::Regexp.last_match.pre_match
+      year = ::Regexp.last_match.post_match.match(/\d+/).to_s.to_i
+      day = pre.match(/\d+/) ? ::Regexp.last_match(0).to_i : 15 # mid-month by default
+      unless day > 31 || day < 1 # avoid exceptions on weird date strings
+        return Date.new(year, month, day)
       end
     end
     # we couldn't identify a month; try to use just the year
     str.match(/\d+/)
-    return Date.new($&.to_i, 7, 1) # mid-year by default
+    return Date.new(::Regexp.last_match(0).to_i, 7, 1) # mid-year by default
   end
 
   def parse_hebrew_year(str)
@@ -177,43 +181,41 @@ module BybeUtils
       i += 4000
       s = str[1..-1]
     end
-    s.each_char{|c| i += HEB_LETTER_VALUE[c]}
+    s.each_char { |c| i += HEB_LETTER_VALUE[c] }
     i += 5000 if i < 1000 and i != 0 # assume current Hebrew millennium if no other one is specified
     return i
   end
 
   def parse_hebrew_day(str)
-    s = str.tr("\'\"",'') # ignore quotes
+    s = str.tr("'\"", '') # ignore quotes
     s = s[0..1] if s.length > 2 # ignore prefixes like ב
-    s = s[0] unless s.length == 1 || ['ט','י','כ','ל'].include?(s[0]) # only possible first-letters of a two-character hebrew date day
+    s = s[0] unless s.length == 1 || %w(ט י כ ל).include?(s[0]) # only possible first-letters of a two-character hebrew date day
     i = 0
-    s.each_char{|c| i += HEB_LETTER_VALUE[c]}
+    s.each_char { |c| i += HEB_LETTER_VALUE[c] }
     return i
   end
 
   def parse_hebrew_date(str)
     HEBMONTHS.keys.each do |m|
-      unless str.match(/ב?\S*#{m}\s+/).nil?
-        month = HEBMONTHS[m]
-        pre = $`
-        rpos = $`.rindex(' ')
-        pre = $`[0..rpos - 1] unless rpos.nil? # move back to last space (because month may have contained a prefix, like מרחשוון)
-        rpos = pre.rindex(' ')
-        pre = pre[rpos + 1..-1] unless pre.empty? or rpos.nil?
-        year = $'.match(/\S+\"\S/).to_s.strip.tr('\"\'','')
-        if pre.empty?
-          day = 15
-        else
-          day = parse_hebrew_day(pre) || 15 # mid-month by default
-        end
-        hyear = parse_hebrew_year(year)
-        unless hyear.nil? || hyear == 0
-          hd = Hebruby::HebrewDate.new(day, month, hyear)
-          return hd.julian_date
-        else
-          return nil
-        end
-      end
+      next if str.match(/ב?\S*#{m}\s+/).nil?
+
+      month = HEBMONTHS[m]
+      pre = ::Regexp.last_match.pre_match
+      rpos = ::Regexp.last_match.pre_match.rindex(' ')
+      pre = ::Regexp.last_match.pre_match[0..rpos - 1] unless rpos.nil? # move back to last space (because month may have contained a prefix, like מרחשוון)
+      rpos = pre.rindex(' ')
+      pre = pre[rpos + 1..-1] unless pre.empty? or rpos.nil?
+      year = ::Regexp.last_match.post_match.match(/\S+"\S/).to_s.strip.tr('\"\'', '')
+      day = if pre.empty?
+              15
+            else
+              parse_hebrew_day(pre) || 15 # mid-month by default
+            end
+      hyear = parse_hebrew_year(year)
+      return nil if hyear.nil? || hyear == 0
+
+      hd = Hebruby::HebrewDate.new(day, month, hyear)
+      return hd.julian_date
     end
     return nil
   end
@@ -223,11 +225,9 @@ module BybeUtils
     # first look for digits
     return parse_gregorian(str) if str.match(/\d+/)
     # parse hebrew date
-    if str.any_hebrew?
-      return parse_hebrew_date(str)
-    else
-      return nil
-    end
+    return parse_hebrew_date(str) if str.any_hebrew?
+
+    return nil
   end
 
   # just return a boolean if the buffer is "full" nikkud
@@ -255,11 +255,12 @@ module BybeUtils
   def match_person(str)
     matches = Person.where(name: str)
     return matches unless matches.nil?
+
     lastname = str.split(' ')[-1]
-    return Person.where("name LIKE ?", "%#{lastname}%")
+    return Person.where('name LIKE ?', "%#{lastname}%")
   end
 
-  #def guess_authors_viaf(author_string)
+  # def guess_authors_viaf(author_string)
   #  # Try VIAF first
   #  viaf = Net::HTTP.new('www.viaf.org')
   #  viaf.start unless viaf.started?
@@ -274,18 +275,19 @@ module BybeUtils
   #  logger.info("#{viaf_items.length} results from VIAF for #{author_string}")
   #  viaf_items
 
-    # Try NLI
-    # ZOOM::Connection.open('aleph.nli.org.il', 9991) do |conn|
-    #  conn.database_name = 'NNL01'
-    #  conn.preferred_record_syntax = 'XML'
-    #  #conn.preferred_record_syntax = 'USMARC'
-    #  rset = conn.search("@attr 1=1003 @attr 2=3 @attr 4=1 @attr 5=100 \"#{author_string}\"")
-    #  p rset[0]
-    # end
-  #end
+  # Try NLI
+  # ZOOM::Connection.open('aleph.nli.org.il', 9991) do |conn|
+  #  conn.database_name = 'NNL01'
+  #  conn.preferred_record_syntax = 'XML'
+  #  #conn.preferred_record_syntax = 'USMARC'
+  #  rset = conn.search("@attr 1=1003 @attr 2=3 @attr 4=1 @attr 5=100 \"#{author_string}\"")
+  #  p rset[0]
+  # end
+  # end
 
   def textify_lang(iso)
     return I18n.t(:unknown) if iso.nil? or iso.empty?
+
     case iso
     when 'he'
       return I18n.t(:hebrew)
@@ -352,18 +354,19 @@ module BybeUtils
 
   # returns an up-to-maxchars-character snippet and the rest of the buffer
   def snippet(buf, maxchars)
-    return [buf,''] if buf.length < maxchars
+    return [buf, ''] if buf.length < maxchars
+
     tmp = buf[0..maxchars]
     pos = tmp.rindex(' ')
     ret = tmp[0..pos] # don't break up mid-word
-    return [ret, tmp[pos..-1]+' '+buf[maxchars..-1]]
+    return [ret, tmp[pos..-1] + ' ' + buf[maxchars..-1]]
   end
 
-  #def raw_viaf_xml_by_viaf_id(viaf_id)
+  # def raw_viaf_xml_by_viaf_id(viaf_id)
   #  RDF::Graph.load("http://viaf.org/viaf/#{viaf_id}/rdf.xml")
-  #end
+  # end
 
-  #def rdf_collect(graph, uri)
+  # def rdf_collect(graph, uri)
   #  ret = []
   #  query = RDF::Query.new do
   #    pattern [:labels, uri, :datum]
@@ -372,9 +375,9 @@ module BybeUtils
   #    ret << entity.datum.to_s if entity.datum.to_s.any_hebrew? # we only care about Hebrew labels
   #  end
   #  ret
-  #end
+  # end
 
-  #def viaf_record_by_id(viaf_id)
+  # def viaf_record_by_id(viaf_id)
   #  graph = raw_viaf_xml_by_viaf_id(viaf_id)
   #  query = RDF::Query.new(person: {
   #                           RDF::URI('http://schema.org/birthDate') => :birthDate,
@@ -393,16 +396,17 @@ module BybeUtils
   #  end
   #
   #  ret
-  #end
+  # end
 
   def fix_encoding(buf)
     newbuf = buf.force_encoding('windows-1255')
-        ENCODING_SUBSTS.each { |s|
-          newbuf.gsub!(s[:from].force_encoding('windows-1255'), s[:to])
-        }
+    ENCODING_SUBSTS.each do |s|
+      newbuf.gsub!(s[:from].force_encoding('windows-1255'), s[:to])
+    end
     return newbuf
   end
-  #def is_blacklisted_ip(ip)
+
+  # def is_blacklisted_ip(ip)
   #  # check posting IP against HTTP:BL
   #  unless Rails.configuration.constants['project_honeypot_api_key'].nil?
   #    listing = ProjectHoneypot.lookup(Rails.configuration.constants['project_honeypot_api_key'], ip)
@@ -412,40 +416,49 @@ module BybeUtils
   #    end
   #  end
   #  return false
-  #end
+  # end
   def client_ip
-    #logger.debug "client_ip - request.env dump follows\n#{request.env.to_s}"
+    # logger.debug "client_ip - request.env dump follows\n#{request.env.to_s}"
     request.env['HTTP_X_FORWARDED_FOR'] || request.remote_ip
   end
+
   def remove_payload(buf)
     m = buf.match(/<!-- begin BY head -->/)
     return buf if m.nil? # though, seriously?
-    tmpbuf = $`
+
+    tmpbuf = ::Regexp.last_match.pre_match
     m = buf.match(/<!-- end BY head -->/)
-    tmpbuf += $'
+    tmpbuf += ::Regexp.last_match.post_match
     m = tmpbuf.match(/<!-- begin BY body -->/)
-    newbuf = $`
+    newbuf = ::Regexp.last_match.pre_match
     m = tmpbuf.match(/<!-- end BY body -->/)
-    newbuf += $'
+    newbuf += ::Regexp.last_match.post_match
     return newbuf
   end
+
   def remove_toc_links(buf)
-    return buf.gsub(/<a\s+?href="index.html">.*?<\/a>/mi, '').gsub(/<a\s+?href="\/">.*?<\/a>/mi,'').gsub(/<a\s+?href="http:\/\/benyehuda.org\/"/mi,'')
+    return buf.gsub(%r{<a\s+?href="index.html">.*?</a>}mi, '').gsub(%r{<a\s+?href="/">.*?</a>}mi, '').gsub(
+      %r{<a\s+?href="http://benyehuda.org/"}mi, ''
+    )
   end
+
   def remove_prose_table(buf)
-    buf =~ /<table.*? width="70%".*?>.*?<td.*?>(.*)<\/td>.*?<\/table>/im # if prose table exists, grab its contents
-    return buf if $1 == nil
-    return $` + $1 + $'
+    buf =~ %r{<table.*? width="70%".*?>.*?<td.*?>(.*)</td>.*?</table>}im # if prose table exists, grab its contents
+    return buf if ::Regexp.last_match(1).nil?
+
+    return ::Regexp.last_match.pre_match + ::Regexp.last_match(1) + ::Regexp.last_match.post_match
   end
+
   def html2txt(buf)
     coder = HTMLEntities.new
-    return strip_tags(coder.decode(buf)).gsub(/<!\[.*?\]>/,'')
+    return strip_tags(coder.decode(buf)).gsub(/<!\[.*?\]>/, '')
   end
+
   def author_surname_and_initials(author_string) # TODO: support multiple authors
     parts = author_string.split(' ')
     surname = parts.pop
     initials = ''
-    parts.each {|p| initials += p[0]}
+    parts.each { |p| initials += p[0] }
     if initials.length == 1
       initials += "'"
     elsif initials.length == 0
@@ -455,27 +468,30 @@ module BybeUtils
     end
     return surname + ', ' + initials
   end
+
   def author_surname_and_firstname(author_string) # TODO: support multiple authors
     parts = author_string.split(' ')
     surname = parts.pop
-    return surname+', '+parts.join(' ')
+    return surname + ', ' + parts.join(' ')
   end
+
   def citation_date(date_str)
     return I18n.t(:no_date) if date_str.nil?
-    if date_str =~ /\d\d\d+/
-      return $&
-    else
-      return date_str
-    end
+    return ::Regexp.last_match(0) if date_str =~ /\d\d\d+/
+
+    return date_str
   end
+
   def apa_citation(manifestation)
-    return author_surname_and_initials(manifestation.author_string)+'. ('+citation_date(manifestation.expression.date)+'). <strong>'+manifestation.title+'</strong>'+'. [גרסה אלקטרונית]. פרויקט בן־יהודה. נדלה בתאריך '+Date.today.to_s+". #{request.original_url}"
+    return author_surname_and_initials(manifestation.author_string) + '. (' + citation_date(manifestation.expression.date) + '). <strong>' + manifestation.title + '</strong>' + '. [גרסה אלקטרונית]. פרויקט בן־יהודה. נדלה בתאריך ' + Date.today.to_s + ". #{request.original_url}"
   end
+
   def mla_citation(manifestation)
-    return author_surname_and_firstname(manifestation.author_string)+". \"#{manifestation.title}\". <u>פרויקט בן־יהודה</u>. #{citation_date(manifestation.expression.date)}. #{Date.today.to_s}. &lt;#{request.original_url}&gt;"
+    return author_surname_and_firstname(manifestation.author_string) + ". \"#{manifestation.title}\". <u>פרויקט בן־יהודה</u>. #{citation_date(manifestation.expression.date)}. #{Date.today}. &lt;#{request.original_url}&gt;"
   end
+
   def asa_citation(manifestation)
-    return author_surname_and_firstname(manifestation.author_string)+'. '+citation_date(manifestation.expression.date)+". \"#{manifestation.title}\". <strong>פרויקט בן־יהודה</strong>. אוחזר בתאריך #{Date.today.to_s}. (#{request.original_url})"
+    return author_surname_and_firstname(manifestation.author_string) + '. ' + citation_date(manifestation.expression.date) + ". \"#{manifestation.title}\". <strong>פרויקט בן־יהודה</strong>. אוחזר בתאריך #{Date.today}. (#{request.original_url})"
   end
 
   def identify_genre_by_heading(text)
@@ -511,9 +527,9 @@ module BybeUtils
     genres = []
     part = ''
     lines = buf.lines
-    lines.each{|l|
+    lines.each do |l|
       if l =~ /^##[^#]/
-        genre = identify_genre_by_heading($')
+        genre = identify_genre_by_heading(::Regexp.last_match.post_match)
         unless genre.nil?
           unless part.empty? # if not first genre
             genres << part
@@ -528,7 +544,7 @@ module BybeUtils
       else
         ret_a << l
       end
-    }
+    end
     ret_parts << [part, ret_a.join] # add last batch
     genres << part
     ret_parts.unshift(genres)
@@ -543,10 +559,9 @@ module BybeUtils
     return DictionaryEntry.cached_count
   end
 
-
   ## hardcoded
   def get_periods
-    return ['ancient','medieval','enlightenment','revival', 'modern']
+    return %w(ancient medieval enlightenment revival modern)
   end
 
   def get_genres
@@ -554,47 +569,49 @@ module BybeUtils
   end
 
   def right_side_genres # TODO: remove if unused
-    return ['poetry', 'prose', 'drama', 'fables','article', 'memoir', 'letters', 'reference'] # translations and icon-font refer to these keys!
+    return %w(poetry prose drama fables article memoir letters reference) # translations and icon-font refer to these keys!
   end
 
   ## hardcoded according to graphic design
   def glyph_for_genre(genre)
     case genre
-      when 'poetry'
-        return 't'
-      when 'prose'
-        return 'l'
-      when 'drama'
-        return 'k'
-      when 'fables'
-        return 'E'
-      when 'article'
-        return 'a'
-      when 'memoir'
-        return 'j'
-      when 'letters'
-        return 'w'
-      when 'reference'
-        return 'v'
-      when 'lexicon'
-        return 'f'
-      when 'translations'
-        return 's'
+    when 'poetry'
+      return 't'
+    when 'prose'
+      return 'l'
+    when 'drama'
+      return 'k'
+    when 'fables'
+      return 'E'
+    when 'article'
+      return 'a'
+    when 'memoir'
+      return 'j'
+    when 'letters'
+      return 'w'
+    when 'reference'
+      return 'v'
+    when 'lexicon'
+      return 'f'
+    when 'translations'
+      return 's'
     end
     return '' # fallback
   end
 
   def get_langs
-    return ['he','en','fr','de','ru','yi','pl','ar','el','la','grc','hu','cs','da','no','sv','nl','it','pt','fa','fi','is','es','ro', 'arc', 'lad', 'zh', 'ka', 'bg', 'unk']
+    return %w(he en fr de ru yi pl ar el la grc hu cs da no sv nl it pt fa fi
+              is es ro arc lad zh ka bg unk)
   end
 
   def get_genres_by_row(row) # just one row at a time
     return case row
-      when 1 then ['poetry', 'prose', 'drama', 'fables']
-      when 2 then ['article', 'memoir', 'letters', 'reference']
-      when 3 then ['surprise', 'lexicon','translations']
-    end
+           when 1 then %w(poetry prose drama fables)
+           when 2 then %w(article memoir letters reference)
+           when 3 then %w(surprise lexicon translations)
+           end
   end
+
   def url_for_record(source, source_id)
     case source.source_type
     when 'aleph', 'primo', 'idea'
@@ -602,68 +619,84 @@ module BybeUtils
     when 'hebrewbooks'
       url = source_id.strip
     when 'nli_api'
-      url = source_id.sub('/en/','/he/')
+      url = source_id.sub('/en/', '/he/')
     when 'googlebooks'
-      url =  "https://books.google.co.il/books?id=#{source_id.strip}"
+      url = "https://books.google.co.il/books?id=#{source_id.strip}"
     end
     return url
   end
+
   def is_legacy_url(url)
     url = '/' + url if url[0] != '/' # prepend slash if necessary
     h = HtmlFile.find_by_url(url)
     # also treat /{author} or /{author}/ or /{author}/index.html as legacy urls
-    if h.nil?
-      if url =~ /\/([^\/]*)\/?(index\.html)?/
-        h = HtmlDir.find_by_path($1)
-      end
+    if h.nil? && (url =~ %r{/([^/]*)/?(index\.html)?})
+      h = HtmlDir.find_by_path(::Regexp.last_match(1))
     end
-    return h != nil
+    return !h.nil?
   end
 
   def redspan(s)
-    return '<span style="color:red; font-size: 250%">'+s+'</span>'
+    return '<span style="color:red; font-size: 250%">' + s + '</span>'
   end
 
   def highlight_suspicious_markdown(buf)
     buf.gsub('**', redspan('**')).gsub('| ', redspan('| ')).gsub('##', redspan('##'))
   end
+
   def replace_with_redirect(m_id_to_delete, m_id_to_redirect_to)
     m = Manifestation.find(m_id_to_delete)
     h = m.html_files[0]
     ats = AnthologyText.where(manifestation_id: m_id_to_delete)
     ats.each do |at|
-      begin
-        at.manifestation_id = m_id_to_redirect_to
-        at.save!
-      rescue
-        at.destroy
-      end
+      at.manifestation_id = m_id_to_redirect_to
+      at.save!
+    rescue StandardError
+      at.destroy
     end
     h.manifestations[0].manual_delete
     h.manifestation_ids << m_id_to_redirect_to
     h.save
   end
+
+  def footnotes_noncer(html, nonce) # salt footnote markers and bodies with a nonce, to make them unique in collections/anthologies
+    # id of footnote reference in body text and link to footnote body
+    html.gsub!(/<a href="#fn:(\d+)" id="fnref:(\d+)"/m) do |fn|
+      "<a href=\"#fn:#{nonce}_#{::Regexp.last_match(1)}\" id=\"fnref:#{nonce}_#{::Regexp.last_match(2)}\""
+    end
+    # link back to footnote reference in body text
+    html.gsub!(/<a href="#fnref:(\d+)"/m) do |fn|
+      "<a href=\"#fnref:#{nonce}_#{::Regexp.last_match(1)}\""
+    end
+    # id of footnote body anchor
+    html.gsub!(/<li id="fn:(\d+)"/m) do |fn|
+      "<li id=\"fn:#{nonce}_#{::Regexp.last_match(1)}\""
+    end
+  end
+
   def pub_title_for_comparison(s)
     ret = ''
-    if s['/'].nil?
-      ret = s[0..[10,s.length].min]
-    else
-      ret = s[0..[10,s.index('/')-1].min]
-    end
+    ret = if s['/'].nil?
+            s[0..[10, s.length].min]
+          else
+            s[0..[10, s.index('/') - 1].min]
+          end
     return ret.strip
   end
+
   def clean_up_spaces(buf)
     newbuf = ''
     had_any_content = false
     add_space = false
     buf.each_char do |ch|
       is_space = is_codepoint_space(ch.codepoints[0])
-      is_bracket = ['[',']'].include?(ch)
-      next if is_space and not had_any_content # skip leading whitespace
+      is_bracket = ['[', ']'].include?(ch)
+      next if is_space and !had_any_content # skip leading whitespace
+
       if is_space
         add_space = true
       else
-        if add_space and not is_bracket
+        if add_space and !is_bracket
           newbuf += ' ' # add a single space
           add_space = false
         end
@@ -677,7 +710,9 @@ module BybeUtils
   def uri_escape(uri)
     URI::Parser.new.escape uri
   end
+
   def is_codepoint_space(cp)
-    [9, 10, 11, 12, 13, 32, 133, 160, 5760, 8192, 8193, 8194, 8195, 8196, 8197, 8198, 8199, 8200, 8201, 8202, 8232, 8233, 8239, 8287, 12288].include?(cp)
+    [9, 10, 11, 12, 13, 32, 133, 160, 5760, 8192, 8193, 8194, 8195, 8196, 8197, 8198, 8199, 8200, 8201, 8202, 8232,
+     8233, 8239, 8287, 12_288].include?(cp)
   end
 end
