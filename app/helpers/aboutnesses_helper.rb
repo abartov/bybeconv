@@ -4,7 +4,7 @@ module AboutnessesHelper
     case ab.aboutable_type
     when 'Authority'
       html += link_to(ab.aboutable.try(:name), authority_path(ab.aboutable.id))
-      html += "(#{Authority.model_name.human})"
+      html += " (#{Authority.model_name.human})"
     when 'Work'
       html += link_to(ab.aboutable.try(:title), work_show_path(id: ab.aboutable_id))
       html += ' / '
