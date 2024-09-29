@@ -43,7 +43,7 @@ class CollectionsController < ApplicationController
         #{@htmls.map { |h| "<h1>#{h[0]}</h1>\n#{h[1]}" }.join("\n").force_encoding('UTF-8')}
 
         <hr />
-        #{I18n.t(:download_footer_html, url: url_for(action: :show, id: @collection.id))}
+        #{I18n.t(:download_footer_html, url: url_for(@collection.id))}
         </div></body></html>
       WRAPPER
       austr = begin
@@ -54,6 +54,14 @@ class CollectionsController < ApplicationController
       dl = MakeFreshDownloadable.call(params[:format], filename, html, @collection, austr)
     end
     redirect_to rails_blob_url(dl.stored_file, disposition: :attachment)
+  end
+
+  # GET /collections/1/print
+  def print
+    @print = true
+    @collection = Collection.find(params[:collection_id])
+    prep_for_show
+    @footer_url = url_for(@collection)
   end
 
   # GET /collections/new
@@ -159,7 +167,8 @@ class CollectionsController < ApplicationController
     @htmls = []
     i = 1
     @collection.collection_items.each do |ci|
-      @htmls << [ci.is_collection? ? '' : ci.title_and_authors_html, footnotes_noncer(ci.to_html, i)]
+      @htmls << [ci.is_collection? ? '' : ci.title_and_authors_html, footnotes_noncer(ci.to_html, i), false, ci.genre,
+                 i]
       i += 1
     end
   end

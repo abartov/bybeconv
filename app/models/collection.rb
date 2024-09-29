@@ -103,7 +103,7 @@ class Collection < ApplicationRecord
     html = title_and_authors_html
     i = 0
     collection_items.each do |ci|
-      html += ci.title_and_authors_html
+      html += '<hr/><p/>' + ci.title_and_authors_html
       inner_nonce = "#{nonce}_#{i}"
       html += footnotes_noncer(ci.to_html, inner_nonce)
       i += 1

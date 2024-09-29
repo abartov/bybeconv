@@ -28,6 +28,7 @@ Bybeconv::Application.routes.draw do
     post 'transplant_item'
     get 'manage'
     post 'download'
+    get 'print'
   end
 
   get 'autocomplete_publication_title' => 'admin#autocomplete_publication_title', as: 'autocomplete_publication_title'

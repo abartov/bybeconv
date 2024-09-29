@@ -13,7 +13,7 @@ class AuthorsController < ApplicationController
   before_action :set_author,
                 only: %i(show edit update destroy toc edit_toc prep_for_print print all_links delete_photo
                          whatsnew_popup latest_popup publish to_manual_toc volumes new_toc)
-  autocomplete :tag, :name, :limit => 2
+  autocomplete :tag, :name, limit: 2
 
   def publish
     if params[:commit].present?
@@ -65,11 +65,11 @@ class AuthorsController < ApplicationController
   def whatsnew_popup
     pubs = @author.works_since(1.month.ago, 1000)
     @pubscoll = {}
-    pubs.each {|m|
+    pubs.each do |m|
       genre = m.expression.work.genre
       @pubscoll[genre] = [] if @pubscoll[genre].nil?
       @pubscoll[genre] << m
-    }
+    end
     @pubs = textify_new_pubs(@pubscoll)
     render partial: 'whatsnew_popup'
   end
@@ -77,11 +77,11 @@ class AuthorsController < ApplicationController
   def latest_popup
     pubs = @author.cached_latest_stuff
     @pubscoll = {}
-    pubs.each {|m|
+    pubs.each do |m|
       genre = m.expression.work.genre
       @pubscoll[genre] = [] if @pubscoll[genre].nil?
       @pubscoll[genre] << m
-    }
+    end
     @pubs = textify_new_pubs(@pubscoll)
     render partial: 'whatsnew_popup'
   end
@@ -115,8 +115,8 @@ class AuthorsController < ApplicationController
     # genres
     @genres = params['ckb_genres'] if params['ckb_genres'].present?
     if @genres.present?
-      ret << {terms: {genre: @genres}}
-      @filters += @genres.map{|x| [helpers.textify_genre(x), "genre_#{x}", :checkbox]}
+      ret << { terms: { genre: @genres } }
+      @filters += @genres.map { |x| [helpers.textify_genre(x), "genre_#{x}", :checkbox] }
     end
     # copyright
     @intellectual_property_types = params['ckb_intellectual_property']
@@ -138,7 +138,7 @@ class AuthorsController < ApplicationController
     @tag_ids = params['tag_ids'].split(',').map(&:to_i) unless @tag_ids.present? || params['tag_ids'].blank?
     if @tag_ids.present?
       tag_data = Tag.where(id: @tag_ids).pluck(:id, :name)
-      ret << {terms: {tags: tag_data.map(&:last)}}
+      ret << { terms: { tags: tag_data.map(&:last) } }
       @filters += tag_data.map { |x| [x.last, "tag_#{x.first}", :checkbox] }
     end
 
@@ -149,14 +149,14 @@ class AuthorsController < ApplicationController
     range_expr = {}
     if @fromdate.present?
       range_expr['gte'] = @fromdate
-      @filters << ["#{I18n.t('d'+@datetype)} #{I18n.t(:fromdate)}: #{@fromdate}", :fromdate, :text]
+      @filters << ["#{I18n.t('d' + @datetype)} #{I18n.t(:fromdate)}: #{@fromdate}", :fromdate, :text]
     end
     if @todate.present?
       range_expr['lte'] = @todate
-      @filters << ["#{I18n.t('d'+@datetype)} #{I18n.t(:todate)}: #{@todate}", :todate, :text]
+      @filters << ["#{I18n.t('d' + @datetype)} #{I18n.t(:todate)}: #{@todate}", :todate, :text]
     end
     datefield = es_datefield_name_from_datetype(@datetype)
-    ret << {range: {"#{datefield}" => range_expr }} unless range_expr.empty?
+    ret << { range: { "#{datefield}" => range_expr } } unless range_expr.empty?
 
     # Adding filtering by first letter
     @to_letter = params['to_letter']
@@ -167,10 +167,11 @@ class AuthorsController < ApplicationController
 
     return ret
   end
+
   def build_es_query_from_filters
     ret = {}
     if params['search_input'].present?
-      ret['match'] = {name: params['search_input']}
+      ret['match'] = { name: params['search_input'] }
       @filters << [I18n.t(:author_x, x: params['search_input']), :search_input, :text]
       @search_input = params['search_input']
     end
@@ -245,7 +246,7 @@ class AuthorsController < ApplicationController
   def browse
     @page_title = "#{t(:authors_list)} – #{t(:project_ben_yehuda)}"
     @pagetype = :authors
-    @page = 1 if ['0',''].include?(@page) # slider sets page to zero, awkwardly
+    @page = 1 if ['0', ''].include?(@page) # slider sets page to zero, awkwardly
     es_prep_collection
     @total = @collection.count
     @maxdate = Time.zone.today.strftime('%Y-%m')
@@ -266,13 +267,13 @@ class AuthorsController < ApplicationController
   end
 
   def by_tag
-    @page_title = t(:authors_by_tag)+' '+t(:project_ben_yehuda)
+    @page_title = t(:authors_by_tag) + ' ' + t(:project_ben_yehuda)
     @pagetype = :authors
     tid = params[:id].to_i
     @tag_ids = tid
     tag = Tag.find(tid)
     if tag.present?
-      @authors_list_title = t(:authors_by_tag)+': '+tag.name
+      @authors_list_title = t(:authors_by_tag) + ': ' + tag.name
       browse
     else
       flash[:error] = t(:no_such_item)
@@ -453,7 +454,7 @@ class AuthorsController < ApplicationController
       @pagetype = :author
       @header_partial = 'authors/author_top'
       @entity = @author
-      @page_title = "#{@author.name} - #{t(:table_of_contents)} - #{t(:project_ben_yehuda)}"
+      @page_title = "#{@author.name} - #{t(:author_table_of_contents)} - #{t(:project_ben_yehuda)}"
       update_impression
 
       @og_image = @author.profile_image.url(:thumb)
@@ -513,18 +514,18 @@ class AuthorsController < ApplicationController
       flash[:error] = I18n.t('no_toc_yet')
       redirect_to '/'
     else
-      @page_title = t(:edit_toc)+': '+@author.name
+      @page_title = t(:edit_toc) + ': ' + @author.name
       unless params[:markdown].nil? # handle update payload
-        if params[:old_timestamp].to_datetime != @author.toc.updated_at.to_datetime # check for update since form was issued
-          # reject update, provide diff and fresh editbox
-          @diff = Diffy::Diff.new(params[:markdown], @author.toc.toc)
-          @rejected_update = params[:markdown]
-        else
+        if params[:old_timestamp].to_datetime == @author.toc.updated_at.to_datetime
           t = @author.toc
           t.toc = params[:markdown]
           t.credit_section = params[:credits]
           t.status = Toc.statuses[params[:toc_status]]
           t.save!
+        else # check for update since form was issued
+          # reject update, provide diff and fresh editbox
+          @diff = Diffy::Diff.new(params[:markdown], @author.toc.toc)
+          @rejected_update = params[:markdown]
         end
       end
       prep_toc
@@ -578,8 +579,8 @@ class AuthorsController < ApplicationController
           impressionist(@author)
           @author.update_impression
         end
-      end      
-      @page_title = "#{@author.name} - #{t(:table_of_contents)} - #{t(:project_ben_yehuda)}"
+      end
+      @page_title = "#{@author.name} - #{t(:author_table_of_contents)} - #{t(:project_ben_yehuda)}"
       unless @author.toc.nil?
         prep_toc
       else

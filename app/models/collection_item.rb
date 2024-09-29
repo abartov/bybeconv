@@ -38,6 +38,14 @@ class CollectionItem < ApplicationRecord
     item.is_a?(Collection)
   end
 
+  def genre
+    return item.genre if item.present? && item.respond_to?(:genre)
+
+    return 'paratext' if markdown.present?
+
+    return ''
+  end
+
   def to_html
     if item.present?
       return item.to_html
