@@ -15,7 +15,7 @@ class CollectionsController < ApplicationController
   def show
     @header_partial = 'shared/collection_top'
     @colls_traversed = [@collection.id]
-    # @print_url = url_for(action: :print, id: @collection.id)
+    @print_url = url_for(action: :print, collection_id: @collection.id)
   end
 
   # GET /collections/1/download
@@ -40,10 +40,10 @@ class CollectionsController < ApplicationController
         <head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
         <body dir='rtl' align='right'><div dir="rtl" align="right">
         <div style="font-size:300%; font-weight: bold;">#{@collection.title}</div>
-        #{@htmls.map { |h| "<h1>#{h[0]}</h1>\n#{h[1]}" }.join("\n").force_encoding('UTF-8')}
+        #{@htmls.map { |h| "<h1>#{h[0]}</h1>\n#{I18n.t(:by)}<h2>#{h[1].map { |p| "<a href=\"/author/#{p.id}\">#{p.name}</a>" }.join(', ')}</h2>#{h[2]}" }.join("\n").force_encoding('UTF-8')}
 
         <hr />
-        #{I18n.t(:download_footer_html, url: url_for(@collection.id))}
+        #{I18n.t(:download_footer_html, url: url_for(@collection))}
         </div></body></html>
       WRAPPER
       austr = begin
@@ -167,7 +167,7 @@ class CollectionsController < ApplicationController
     @htmls = []
     i = 1
     @collection.collection_items.each do |ci|
-      @htmls << [ci.is_collection? ? '' : ci.title_and_authors_html, footnotes_noncer(ci.to_html, i), false, ci.genre,
+      @htmls << [ci.title, ci.authors, footnotes_noncer(ci.to_html, i), false, ci.genre,
                  i]
       i += 1
     end

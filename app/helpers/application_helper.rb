@@ -164,6 +164,19 @@ module ApplicationHelper
     return ret
   end
 
+  def pub_linkify_people(people)
+    return '' if people.nil? or people.empty?
+
+    ret = ''
+    i = 0
+    people.each do |p|
+      ret += ', ' if i > 0
+      ret += link_to p.name, authority_path(id: p.id)
+      i += 1
+    end
+    return ret
+  end
+
   def authors_linked_string(m)
     return m.expression.work.authors.map do |x|
              "<a href=\"#{url_for(controller: :authors, action: :toc, id: x.id)}\">#{x.name}</a>"

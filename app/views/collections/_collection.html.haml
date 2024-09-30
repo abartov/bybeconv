@@ -1,31 +1,34 @@
 .container-fluid{ style: 'position:relative;', id: "coll_container_#{collection.id}" }
   - if collection
     = render partial: 'involved_authorities/list', locals: { item: collection, edit: false }
-    .button_series
-      .collection_action_btns
-        - unless focused
-          = link_to collection_path(collection.id), class: 'white' do
-            .collection_focus_button.by-button-v02
-              %b= '⤝'
+    -#.button_series
+    -#  .collection_action_btns
+    -#    - unless focused
+    -#      = link_to collection_path(collection.id), class: 'white' do
+    -#        .collection_focus_button.by-button-v02
+    -#          %b= '⤝'
     .collection.connectable.collapse.show{ id: "coll_#{collection.id}", style: 'min-height:40px' }
       - collection.collection_items.each do |ci|
         .collection_draggable_item{ id: "collitem_#{ci.id}" }
           .by-card-v02
             .draggable-content{ 'data-collection-id': (ci.item.instance_of?(Collection) ? ci.item_id : collection.id) }
               - if ci.paratext? # a paratext (with markdown)
-                %b= "#{t(:paratext)}: "
+                - if label_ci_types
+                  %b= "#{t(:paratext)}: "
                 %span{ id: "ci_title_#{ci.id}" }= ci.alt_title
                 %br
                 .editable{ id: "editable_#{ci.id}" }
                   != MultiMarkdown.new(ci.markdown).to_html
               - elsif ci.item.nil? # a placeholder (no markdown)
                 .editable{ id: "editable_#{ci.id}", style: 'margin-bottom: 10px;' }
-                  %b= "#{t(:placeholder_item)}: "
+                  - if label_ci_types
+                    %b= "#{t(:placeholder_item)}: "
                   %span{ id: "ci_title_#{ci.id}" }= ci.alt_title
               - elsif ci.item.instance_of?(Collection)
                 .headline-2-v02
-                  = "#{textify_collection_type(ci.item.collection_type)}: "
-                  = collection_item_string(ci)
+                  - if label_ci_types
+                    = "#{textify_collection_type(ci.item.collection_type)}: "
+                  = link_to ci.title, collection_path(ci.item.id)
                   - if ci.item.collection_type == 'volume' && ci.item.publication.present?
                     %br
                     = "#{ci.item.publication.publisher_line} #{ci.item.publication.pub_year}"
@@ -34,9 +37,10 @@
                     %b= t(:collection_circular_reference)
                   - else
                     - @colls_traversed << ci.item.id
-                    = render partial: 'collection', locals: { collection: ci.item, focused: false }
+                    = render partial: 'collection', locals: { collection: ci.item, focused: false, label_ci_types: label_ci_types }
               - else
                 .headline-3-v02
-                  = t(:text)
-                  \:
+                  - if label_ci_types
+                    = t(:text)
+                    \:
                   = link_to collection_item_string(ci), default_link_by_class(ci.item.class, ci.item.id)

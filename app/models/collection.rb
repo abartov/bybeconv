@@ -111,21 +111,27 @@ class Collection < ApplicationRecord
     return html
   end
 
-  def authors_string
-    auths = involved_authorities.where(role: 'author')
-    return auths.map(&:authority).map(&:name).join(', ') if auths.count > 0
+  def authors
+    auths = involved_authorities_by_role(:author)
+    return auths if auths.count > 0
 
     seen_colls = []
     parent_collections.each do |pc| # iterate until we find authorship
       next if seen_colls.include?(pc.id)
 
-      s = pc.authors_string
-      return s if s.present?
+      auths = pc.authors
+      return auths if auths.present?
 
       seen_colls << pc.id
     end
 
-    return I18n.t(:nil)
+    return []
+  end
+
+  def authors_string
+    ret = authors.map(&:name).join(', ')
+
+    return ret.presence || I18n.t(:nil)
   end
 
   def destroy

@@ -874,3 +874,8 @@ small p{
 .draggable-content {
   margin-right: 15px;
 }
+
+.print .col-12{
+	padding-right: 0px;
+	padding-left: 0px;
+}

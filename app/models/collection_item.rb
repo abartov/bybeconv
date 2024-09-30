@@ -16,6 +16,12 @@ class CollectionItem < ApplicationRecord
     end
   end
 
+  def authors
+    return [] if item.nil?
+
+    item.authors
+  end
+
   def title_and_authors
     ret = title
     return ret if item.blank?
