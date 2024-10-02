@@ -368,7 +368,7 @@ class ApplicationController < ActionController::Base
         end
         worksbuf += "<a href=\"/read/#{m.id}\">#{title}</a>"
       end
-      ret += worksbuf + '<br>'
+      ret += worksbuf + '<br />'
     end
     return ret
   end

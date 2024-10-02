@@ -83,6 +83,17 @@ class Collection < ApplicationRecord
     ret
   end
 
+  def flatten_items
+    ret = []
+    collection_items.each do |ci|
+      ret << ci
+      if ci.item.present? && ci.item.instance_of?(Collection)
+        ret += ci.item.flatten_items
+      end
+    end
+    return ret
+  end
+
   # this will return the downloadable entity for the Collection *if* it is fresh
   def fresh_downloadable_for(doctype)
     dl = downloadables.where(doctype: doctype).first

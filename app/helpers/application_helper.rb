@@ -88,10 +88,6 @@ module ApplicationHelper
     return value ? '6' : '5' # per /BY icons font/ben-yehuda/icons-reference.html
   end
 
-  def textify_authority_role(role)
-    I18n.t(role, scope: 'involved_authority.role')
-  end
-
   def textify_role(role, gender)
     case role
     when :author

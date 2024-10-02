@@ -46,40 +46,144 @@ class TitleValidator < ActiveModel::Validator
 end
 
 module BybeUtils
-  def make_epub_from_single_html(html, manifestation, author_string)
+  def boilerplate(title)
+    '<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+    <!DOCTYPE html>
+    <html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" xml:lang="he" lang="he"><head><meta http-equiv="content-type" content="text/html; charset=UTF-8" /><title>' + title + '</title></head><body dir="rtl">'
+  end
+
+  def textify_authority_role(role)
+    I18n.t(role, scope: 'involved_authority.role')
+  end
+
+  def textify_authorities_and_roles(ias)
+    return '' unless ias.present?
+
+    ret = ''
+    i = 0
+    ias.each do |ia|
+      ret += ', ' if i > 0
+      ret += ia.authority.name
+      ret += ' (' + textify_authority_role(ia.role) + ')' unless ia.role == 'author'
+      i += 1
+    end
+    return ret
+  end
+
+  def epub_role_from_ia_role(role)
+    # per https://www.loc.gov/marc/relators/relaterm.html
+    case role
+    when 'author'
+      return 'aut'
+    when 'translator'
+      return 'trl'
+    when 'editor'
+      return 'edt'
+    when 'illustrator'
+      return 'ill'
+    when 'photographer'
+      return 'pht'
+    when 'contributor'
+      return 'ctb'
+    else
+      return 'oth'
+    end
+  end
+
+  def epub_sanitize_html(html)
+    coder = HTMLEntities.new
+    buf = coder.decode(html) # convert HTML entities back to actual characters.
+
+    return buf.gsub('<br>', '<br />') # W3C epubcheck doesn't like <br> without closing
+  end
+
+  def make_epub(identifier, title, involved_authorities, section_titles, section_texts, tmpid)
     book = GEPUB::Book.new
-    book.primary_identifier('http://benyehuda.org/read/' + manifestation.id.to_s, 'BookID', 'URL')
+    book.primary_identifier(identifier, 'BookID', 'URL')
     book.language = 'he'
-    title = manifestation.title + ' מאת ' + author_string
-    book.add_title(title, nil, GEPUB::TITLE_TYPE::MAIN)
-    book.add_creator(author_string)
+    book.add_title(title, nil, title_type: GEPUB::TITLE_TYPE::MAIN)
+    involved_authorities.where(role: :author).each { |a| book.add_creator(a.authority.name) }
+    involved_authorities.where.not(role: :author).each do |a|
+      book.add_contributor(a.authority.name, role: epub_role_from_ia_role(a.role))
+    end
     book.page_progression_direction = 'rtl' # Hebrew! :)
+
+    # TODO: fix this -- Hebrew text is not being displayed at all, for some reason
     # make cover image
-    canvas = Magick::Image.new(1200, 800) { |img| img.background_color = 'white' }
-    gc = Magick::Draw.new
-    gc.gravity = Magick::CenterGravity
-    gc.pointsize(50)
-    gc.font('David CLM')
-    gc.text(0, 0, title.reverse.center(50))
-    gc.draw(canvas)
-    gc.pointsize(30)
-    gc.text(0, 150, 'פרי עמלם של מתנדבי פרויקט בן־יהודה'.reverse.center(50))
-    gc.pointsize(20)
-    gc.text(0, 250, Date.today.to_s + 'מעודכן לתאריך: '.reverse.center(50))
-    gc.draw(canvas)
-    cover_file = Tempfile.new(['tmp_cover_' + manifestation.id.to_s, '.png'], 'tmp/')
-    canvas.write(cover_file.path)
-    book.add_item('cover.png', cover_file.path).cover_image
+    # canvas = Magick::Image.new(1200, 800) { |img| img.background_color = 'white' }
+    # gc = Magick::Draw.new
+    # gc.gravity = Magick::CenterGravity
+    # gc.pointsize(50)
+    ## gc.font('David CLM')
+    # gc.font('Noto Sans Hebrew')
+    # gc.font_weight(Magick::NormalWeight)
+    # gc.font_style(Magick::NormalStyle)
+    # gc.fill('black')
+    # gc.text(0, 0, title.reverse.center(50))
+    # gc.draw(canvas)
+    # gc.pointsize(30)
+    # gc.text(0, 150, 'פרי עמלם של מתנדבי פרויקט בן־יהודה'.reverse.center(50))
+    # gc.pointsize(20)
+    # gc.text(0, 250, Date.today.to_s + 'מעודכן לתאריך: '.reverse.center(50))
+    # gc.draw(canvas)
+    # cover_file = Tempfile.new(['tmp_cover_' + tmpid, '.png'], 'tmp/')
+    # canvas.write(cover_file.path)
+    # book.add_item('cover.png', content: cover_file.path).cover_image # re-enable when fixed
+
+    # add texts
+    boilerplate_start = boilerplate(title)
+    boilerplate_end = '</body></html>'
+
+    # add front page instead of graphical cover, for now
+    authorities_html = textify_authorities_and_roles(involved_authorities)
+    front_page = boilerplate_start + "<h1>#{title}</h1>\n<p/><h2>#{authorities_html}</h2><p/><p/><p/><h3>פרי עמלם של מתנדבי</h3><p/><h2>פרויקט בן־יהודה</h2><p/><h3><a href='https://benyehuda.org/page/volunteer'>(רוצים לעזור?)</a></h3><p/>מעודכן לתאריך: #{Date.today}" + boilerplate_end
+    book.ordered do
+      book.add_item('0_front.xhtml').add_content(StringIO.new(front_page)).toc_text(title)
+      section_titles.each_with_index do |stitle, i|
+        book.add_item((i + 1).to_s + '_text.xhtml').add_content(StringIO.new("#{boilerplate(title)}<h1>#{stitle}</h1>\n#{epub_sanitize_html(section_texts[i])}#{boilerplate_end}")).toc_text(stitle)
+      end
+    end
+    # fname = cover_file.path + '.epub'
+    fname = Tempfile.new(['tmp_epub_' + tmpid, '.epub'], 'tmp/')
+    book.generate_epub(fname)
+    # cover_file.close
+    return fname
+  end
+
+  def make_epub_from_collection(collection)
+    section_titles = []
+    section_texts = []
+    collection.flatten_items.each do |ci|
+      section_titles << ci.title
+      section_texts << (ci.is_collection? ? '<p/>' : ci.to_html)
+    end
+    make_epub('https://benyehuda.org/collection/' + collection.id.to_s, collection.title,
+              collection.involved_authorities, section_titles, section_texts, "coll_#{collection.id}")
+  end
+
+  def make_epub_from_user_anthology(user_anthology)
+  end
+
+  def make_epub_from_single_html(html, entity, author_string)
+    case entity.class
+    when Manifestation
+      title = entity.title + ' מאת ' + author_string
+      # TODO: create section list and text list
+      return make_epub('https://benyehuda.org/read/' + entity.id.to_s, title, authors, section_titles,
+                       section_texts, entity.id.to_s)
+    when Anthology
+      title = entity.title + ' מאת ' + author_string
+      # TODO: create section list and text list
+    when Collection
+      title = entity.title + ' מאת ' + author_string
+      # TODO: create section list and text list
+    end
     book.ordered do
       # TODO: different cover page for anthologies, including name of anthology author.
       buf = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" xml:lang="he" lang="he"><head><meta http-equiv="content-type" content="text/html; charset=UTF-8" /><title>' + title + '</title></head><body dir="rtl"><div style="text-align:center;"><h1>' + title + '</h1><p/><p/><h3>פרי עמלם של מתנדבי</h3><p/><h2>פרויקט בן־יהודה</h2><p/><h3><a href="https://benyehuda.org/page/volunteer">(רוצים לעזור?)</a></h3><p/>מעודכן לתאריך: ' + Date.today.to_s + '</div></body></html>'
       book.add_item('0_title.xhtml').add_content(StringIO.new(buf))
-      boilerplate_start = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" xml:lang="he" lang="he"><head><meta http-equiv="content-type" content="text/html; charset=UTF-8" /></head><body dir="rtl" align="right">'
-      boilerplate_end = '</body></html>'
       if manifestation.class == Anthology
         item_titles = html.scan(%r{<h1.*?>(.*?)</h1}).map { |x| x[0] }
         items = html.split(%r{<h1.*?</h1>})
