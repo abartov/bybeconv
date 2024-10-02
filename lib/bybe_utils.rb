@@ -102,10 +102,18 @@ module BybeUtils
     book.primary_identifier(identifier, 'BookID', 'URL')
     book.language = 'he'
     book.add_title(title, nil, title_type: GEPUB::TITLE_TYPE::MAIN)
-    involved_authorities.where(role: :author).each { |a| book.add_creator(a.authority.name) }
-    involved_authorities.where.not(role: :author).each do |a|
-      book.add_contributor(a.authority.name, role: epub_role_from_ia_role(a.role))
+    aus = []
+    contributors = []
+    involved_authorities.each do |ia|
+      if ia.role == 'author'
+        aus << ia.authority.name
+      else
+        contributors << [ia.authority.name, epub_role_from_ia_role(ia.role)]
+      end
     end
+    aus.each { |a| book.add_creator(a) }
+    contributors.each { |c, r| book.add_contributor(c, role: r) }
+
     book.page_progression_direction = 'rtl' # Hebrew! :)
 
     # TODO: fix this -- Hebrew text is not being displayed at all, for some reason
@@ -184,7 +192,7 @@ module BybeUtils
         end
         section_texts.shift(offset) # skip the header and the author/translator lines
       end
-      fname = make_epub('https://benyehuda.org/read/' + entity.id.to_s, title, entity.involved_authorities, [entity.title],
+      fname = make_epub('https://benyehuda.org/read/' + entity.id.to_s, entity.title, entity.involved_authorities, [entity.title],
                         [html], entity.id.to_s, "#{Rails.application.routes.url_helpers.root_url}#{Rails.application.routes.url_helpers.manifestation_path(entity)}")
     when 'Anthology'
       fname = make_epub_from_user_anthology(entity)

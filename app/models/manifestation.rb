@@ -44,6 +44,10 @@ class Manifestation < ApplicationRecord
 
   update_index('manifestations') { self } # update ManifestationsIndex when entity is updated
 
+  def involved_authorities
+    (expression.involved_authorities + expression.work.involved_authorities).uniq
+  end
+
   def involved_authorities_by_role(role)
     (expression.involved_authorities_by_role(role) + expression.work.involved_authorities_by_role(role)).uniq
                                                                                                         .sort_by(&:name)
