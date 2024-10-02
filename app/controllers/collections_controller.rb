@@ -46,11 +46,7 @@ class CollectionsController < ApplicationController
         #{I18n.t(:download_footer_html, url: url_for(@collection))}
         </div></body></html>
       WRAPPER
-      austr = begin
-        @collection.authorities.map { |a| a.authority.name }.join(', ')
-      rescue StandardError
-        ''
-      end
+      austr = textify_authorities_and_roles(@collection.involved_authorities)
       dl = MakeFreshDownloadable.call(params[:format], filename, html, @collection, austr)
     end
     redirect_to rails_blob_url(dl.stored_file, disposition: :attachment)

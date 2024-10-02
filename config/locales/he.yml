@@ -535,7 +535,7 @@ he:
   profile_image: תמונת פרופיל
   upload_new_image: העלאת תמונה חדשה
   current_image: תמונה נוכחית
-  download_footer_html: "את הטקסט[ים] לעיל הפיקו מתנדבי <a href=\"https://benyehuda.org/\">פרויקט בן־יהודה באינטרנט</a>.  הכל זמין תמיד בכתובת הבאה:<br /><a href=\"%{url}\">%{url}</a>"
+  download_footer_html: "את הטקסט[ים] לעיל הפיקו מתנדבי <a href=\"https://benyehuda.org/\">פרויקט בן־יהודה באינטרנט</a>.  <br />הכל זמין תמיד בכתובת הבאה:<br /><a href=\"%{url}\">%{url}</a>"
   proof_please_select_something: "מצוין, אבל ראשית נא לסמן (להאיר, לבחור) את הפיסקה השגויה (או כמה שורות, אם מדובר בשורות קצרצרות), כדי שנדע איפה לתקן.  אחרי הסימון, יש ללחוץ שוב על לחצן זה."
   like: אהבתי
   our_own_content: 'תוכן משלנו:'

@@ -139,6 +139,23 @@ class Collection < ApplicationRecord
     return []
   end
 
+  def authorities
+    auths = involved_authorities
+    return auths if auths.count > 0
+
+    seen_colls = []
+    parent_collections.each do |pc| # iterate until we find authorship
+      next if seen_colls.include?(pc.id)
+
+      auths = pc.authorities
+      return auths if auths.present?
+
+      seen_colls << pc.id
+    end
+
+    return []
+  end
+
   def authors_string
     ret = authors.map(&:name).join(', ')
 

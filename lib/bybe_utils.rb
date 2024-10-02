@@ -97,7 +97,7 @@ module BybeUtils
     return buf.gsub('<br>', '<br />') # W3C epubcheck doesn't like <br> without closing
   end
 
-  def make_epub(identifier, title, involved_authorities, section_titles, section_texts, tmpid)
+  def make_epub(identifier, title, involved_authorities, section_titles, section_texts, tmpid, purl)
     book = GEPUB::Book.new
     book.primary_identifier(identifier, 'BookID', 'URL')
     book.language = 'he'
@@ -136,7 +136,7 @@ module BybeUtils
 
     # add front page instead of graphical cover, for now
     authorities_html = textify_authorities_and_roles(involved_authorities)
-    front_page = boilerplate_start + "<h1>#{title}</h1>\n<p/><h2>#{authorities_html}</h2><p/><p/><p/><h3>פרי עמלם של מתנדבי</h3><p/><h2>פרויקט בן־יהודה</h2><p/><h3><a href='https://benyehuda.org/page/volunteer'>(רוצים לעזור?)</a></h3><p/>מעודכן לתאריך: #{Date.today}" + boilerplate_end
+    front_page = boilerplate_start + "<h1>#{title}</h1>\n<p/><h2>#{authorities_html}</h2><p/><p/><p/><p/>מעודכן לתאריך: #{Date.today}<p/><p/>#{I18n.t(:from_pby_and_available_at)} #{purl} <p/><h3><a href='https://benyehuda.org/page/volunteer'>(רוצים לעזור?)</a></h3>" + boilerplate_end
     book.ordered do
       book.add_item('0_front.xhtml').add_content(StringIO.new(front_page)).toc_text(title)
       section_titles.each_with_index do |stitle, i|
@@ -144,7 +144,7 @@ module BybeUtils
       end
     end
     # fname = cover_file.path + '.epub'
-    fname = Tempfile.new(['tmp_epub_' + tmpid, '.epub'], 'tmp/')
+    fname = "tmp/tmp_epub_#{tmpid}.epub"
     book.generate_epub(fname)
     # cover_file.close
     return fname
@@ -158,66 +158,39 @@ module BybeUtils
       section_texts << (ci.is_collection? ? '<p/>' : ci.to_html)
     end
     make_epub('https://benyehuda.org/collection/' + collection.id.to_s, collection.title,
-              collection.involved_authorities, section_titles, section_texts, "coll_#{collection.id}")
+              collection.authorities, section_titles, section_texts, "coll_#{collection.id}", "#{Rails.application.routes.url_helpers.root_url}#{Rails.application.routes.url_helpers.collection_path(collection)}")
   end
 
   def make_epub_from_user_anthology(user_anthology)
+    section_titles = html.scan(%r{<h1.*?>(.*?)</h1}).map { |x| x[0] }
+    section_texts = html.split(%r{<h1.*?</h1>})
+    section_texts.shift(1) # skip the header
+    make_epub('https://benyehuda.org/anthology/' + user_anthology.id.to_s, user_anthology.title, [], section_titles,
+              section_texts, "anth_#{user_anthology.id}", "#{Rails.application.routes.url_helpers.root_url}#{Rails.application.routes.url_helpers.anthology_path(user_anthology)}")
   end
 
   def make_epub_from_single_html(html, entity, author_string)
-    case entity.class
-    when Manifestation
-      title = entity.title + ' מאת ' + author_string
-      # TODO: create section list and text list
-      return make_epub('https://benyehuda.org/read/' + entity.id.to_s, title, authors, section_titles,
-                       section_texts, entity.id.to_s)
-    when Anthology
-      title = entity.title + ' מאת ' + author_string
-      # TODO: create section list and text list
-    when Collection
-      title = entity.title + ' מאת ' + author_string
-      # TODO: create section list and text list
-    end
-    book.ordered do
-      # TODO: different cover page for anthologies, including name of anthology author.
-      buf = '<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" xml:lang="he" lang="he"><head><meta http-equiv="content-type" content="text/html; charset=UTF-8" /><title>' + title + '</title></head><body dir="rtl"><div style="text-align:center;"><h1>' + title + '</h1><p/><p/><h3>פרי עמלם של מתנדבי</h3><p/><h2>פרויקט בן־יהודה</h2><p/><h3><a href="https://benyehuda.org/page/volunteer">(רוצים לעזור?)</a></h3><p/>מעודכן לתאריך: ' + Date.today.to_s + '</div></body></html>'
-      book.add_item('0_title.xhtml').add_content(StringIO.new(buf))
-      if manifestation.class == Anthology
-        item_titles = html.scan(%r{<h1.*?>(.*?)</h1}).map { |x| x[0] }
-        items = html.split(%r{<h1.*?</h1>})
-        items.shift(1) # skip the header
-        items.each_with_index do |item, i|
-          book.add_item((i + 1).to_s + '_text.xhtml').add_content(StringIO.new("#{boilerplate_start}<h1>#{item_titles[i]}</h1>\n#{item}#{boilerplate_end}")).toc_text(item_titles[i])
+    fname = ''
+    case entity.class.to_s
+    when 'Manifestation'
+      section_titles = html.scan(%r{<h2.*?>(.*?)</h2}).map { |x| x[0] }
+      if section_titles.count < (entity.expression.translation? ? 3 : 2) # text witout chapters
+        section_texts = [html]
+      else
+        section_texts = html.split(%r{<h2.*?</h2>})
+        offset = entity.expression.translation? ? 2 : 1
+        if sections.count - section_titles.count == 1
+          section_titles.unshift('*') # no title
         end
-      else # Manifestation
-        section_titles = html.scan(%r{<h2.*?>(.*?)</h2}).map { |x| x[0] }
-        if section_titles.count < (manifestation.expression.translation? ? 3 : 2) # text witout chapters
-          book.add_item('1_text.xhtml').add_content(StringIO.new(html)).toc_text(title)
-        else
-          sections = html.split(%r{<h2.*?</h2>})
-          # book.add_item('1_text.xhtml').add_content(StringIO.new("#{sections[0]}<h2>#{section_titles[0]}</h2>\n#{sections[1]}")).toc_text(section_titles[0])
-          offset = manifestation.expression.translation? ? 2 : 1
-          no_first_title = sections.count - section_titles.count == 1
-          sections.shift(offset) # skip the header and the author/translator lines
-          sections.each_with_index do |section, i|
-            buf = boilerplate_start
-            if no_first_title && i == 0
-              stitle = '*' # no title
-            else
-              stitle = section_titles[i + offset - 1]
-              buf += "<h2>#{section_titles[i + offset - 1]}</h2>\n"
-            end
-            buf += section + boilerplate_end
-            book.add_item((i + offset).to_s + '_text.xhtml').add_content(StringIO.new(buf)).toc_text(stitle)
-          end
-        end
+        section_texts.shift(offset) # skip the header and the author/translator lines
       end
+      fname = make_epub('https://benyehuda.org/read/' + entity.id.to_s, title, entity.involved_authorities, [entity.title],
+                        [html], entity.id.to_s, "#{Rails.application.routes.url_helpers.root_url}#{Rails.application.routes.url_helpers.manifestation_path(entity)}")
+    when 'Anthology'
+      fname = make_epub_from_user_anthology(entity)
+    when 'Collection'
+      fname = make_epub_from_collection(entity)
     end
-    fname = cover_file.path + '.epub'
-    book.generate_epub(fname)
-    cover_file.close
     return fname
   end
 
