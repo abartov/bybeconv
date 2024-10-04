@@ -17,6 +17,9 @@ class Ingestible < ApplicationRecord
   validates :status, presence: true
   validates :locked_at, presence: true, if: -> { locked_by_user.present? }
   validates :locked_at, absence: true, unless: -> { locked_by_user.present? }
+  validate :volume_decision
+  validates :scenario, presence: true
+  validates :scenario, inclusion: { in: scenarios.keys }
 
   has_one_attached :docx # ActiveStorage
 
@@ -31,8 +34,13 @@ class Ingestible < ApplicationRecord
     end
   end
 
-  def volume_valid?
-    return volume_id.present? || no_volume
+  def volume_decision
+    return if no_volume
+
+    return unless volume_id.blank? && prospective_volume_id.blank? && prospective_volume_title.blank?
+
+    errors.add(:volume_id,
+               'must be present if no_volume is false')
   end
 
   def multiple_works?
@@ -161,7 +169,7 @@ class Ingestible < ApplicationRecord
                 content = [title]
                 title = nil
               end
-              { title: title, content: content.join } if content.present?
+              { title: title, content: content.join("\n") } if content.present?
             end.compact
           else
             [{ title: self.title, content: markdown }]
@@ -185,13 +193,13 @@ class Ingestible < ApplicationRecord
 
     # To avoid excessive updates we only refresh lock if more than 10 seconds passed since previous lock refresh
     if locked_at.nil? || locked_at < 10.seconds.ago
-      update!(locked_at: Time.zone.now, locked_by_user: user)
+      update_columns(locked_at: Time.zone.now, locked_by_user_id: user.id) # we deliberately skip validations here # rubocop:disable Rails/SkipsModelValidations
     end
 
     return true
   end
 
   def release_lock
-    update!(locked_at: nil, locked_by_user: nil)
+    update_columns(locked_at: nil, locked_by_user_id: nil) # we deliberately skip validations here # rubocop:disable Rails/SkipsModelValidations
   end
 end

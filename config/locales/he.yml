@@ -1470,7 +1470,7 @@ he:
       ingested: העלאה הושלמה
       failed: העלאה נכשלה
       awaiting_authorities: בהמתנה ליצירת ישויות אישים חסרות
-    title: העלאת טקסטים לאתר
+    title: כותרת פנימית להעלאה
     invalid: 'שמירת הקובץ נמנעה בגלל:'
     current_file: קובץ נוכחי
     or_replace_file: 'או החלפת הקובץ בהעלאה מחדש:'
@@ -1483,6 +1483,7 @@ he:
     volume_by_author: איתור כותר מאת יוצר
     no_volume_explanation: יצירות לא מקובצות
     attach_photos_explanation: יש לסמן כדי להעלות תמונות בהמשך
+    create_new_volume: צור כותר חדש שלא מתוך כותרים ידועים לסדנה הביבליוגרפית
   # This block of strings below should be removed when we finish work. Grouped them together to make it easier to find them again
   public_domain: נחלת הכלל
   viaf_id: "מזהה במאגר VIAF‏"

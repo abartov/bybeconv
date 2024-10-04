@@ -20,14 +20,15 @@
     = form_for @ingestible do |f|
       .field
         = f.label t('ingestible.title')
-        = f.text_field :title, style: 'width:80%'
+        %b= f.text_field :title, style: 'width:80%'
       .field{style: 'border: 1px solid #ccc; padding: 10px;'}
         %h3= t('ingestible.volume')
-        - if @ingestible.prospective_volume_id.present?
-          %b= title_from_prospective_volume_id(@ingestible.prospective_volume_id)
+        - vid = @ingestible.volume_id.present? ? @ingestible.volume_id : @ingestible.prospective_volume_id
+        - if vid.present? || @ingestible.prospective_volume_title.present?
+          %b#volume_title= title_from_prospective_volume_id(vid, @ingestible.prospective_volume_title)
           %button.btn-small-outline-v02#change_volume{style: 'display: unset;'}
             %b.btn-text-v02= t(:edit)
-        .volume-details{style: @ingestible.prospective_volume_id.present? ? 'display:none;' : ''}
+        .volume-details{style: vid.present? ? 'display:none;' : ''}
           = f.label t('ingestible.volume_by_author')
           = autocomplete_field_tag :author, '', autocomplete_authority_name_path, 'data-noMatchesLabel' => t(:no_matches_found), id: 'aterm', style: 'width:400px;', id_element: '#authority_id'
           = hidden_field_tag :authority_id, value: '', id: 'authority_id'
@@ -41,11 +42,16 @@
 
           = f.label t('ingestible.any_volume')
           = autocomplete_field_tag :volume, '', autocomplete_collection_title_path, 'data-noMatchesLabel' => t(:no_matches_found), id: 'cterm', style: 'width:400px;', id_element: '#prospective_volume_id'
+          %br
+          = t(:or)
+          %br
+          = f.label t('ingestible.create_new_volume')
+          = f.text_field :prospective_volume_title, style: 'width:400px;'
           = f.hidden_field :prospective_volume_id, id: 'prospective_volume_id'
 
       .field
-        = f.label :scenario
-        = f.select :scenario, options_for_select(Ingestible.scenarios.map{|k,v| [t("ingestible.scenario.#{k}"), k]}, @ingestible.scenario)
+        -#= f.label :scenario
+        -#= f.select :scenario, options_for_select(Ingestible.scenarios.map{|k,v| [t("ingestible.scenario.#{k}"), k]}, @ingestible.scenario)
         = f.label :status
         %b= t("ingestible.status.#{@ingestible.status}")
         = f.hidden_field :status, value: @ingestible.status
@@ -145,6 +151,11 @@
           if (data['volumes'].length == 0 && data['publications'].length == 0) {
             $('#authority_volumes').hide();
           } else {
+            $('#authority_volumes').empty();
+            $('#authority_volumes').append($('<option>', {
+              value: '',
+              text: ''
+            }));
             data['volumes'].forEach(function(volume) {
               $('#authority_volumes').append($('<option>', {
                 value: volume.id,
@@ -163,9 +174,29 @@
     });
     $('#authority_volumes').on('change', function() {
       $('#prospective_volume_id').val($('#authority_volumes').val());
+      $('#volume_title').text($('#authority_volumes option:selected').text());
+      $('#ingestible_no_volume').prop('checked', false);
+    });
+    $('#cterm').on('railsAutocomplete.select', function(event, data){
+      $('#prospective_volume_id').val(data.item.id);
+      $('#volume_title').text(data.item.value);
+      $('#ingestible_no_volume').prop('checked', false);
     });
     $('#change_volume').on('click', function(e) {
       e.preventDefault();
       $('.volume-details').toggle();
+    });
+    $('#ingestible_no_volume').on('change', function() {
+      if ($('#ingestible_no_volume').is(':checked')) {
+        $('#authority_volumes').hide();
+        $('#prospective_volume_id').val('');
+        $('#volume_title').text('');
+        $('#ingestible_prospective_volume_title').text('');
+      } else {
+        $('#authority_volumes').show();
+      }
+    });
+    $('#ingestible_prospective_volume_title').on('change', function() {
+      $('#ingestible_no_volume').prop('checked', false);
     });
   });

@@ -91,6 +91,7 @@ class IngestiblesController < ApplicationController
       :no_volume,
       :attach_photos,
       :prospective_volume_id,
+      :prospective_volume_title,
       :toc_buffer
     )
   end
