@@ -4,7 +4,7 @@ class IngestiblesController < ApplicationController
   include LockIngestibleConcern
 
   before_action { |c| c.require_editor('edit_catalog') }
-  before_action :set_ingestible, only: %i(show edit update update_markdown destroy review)
+  before_action :set_ingestible, only: %i(show edit update update_markdown update_toc destroy review)
   before_action :try_to_lock_ingestible, only: %i(show edit update update_markdown destroy review)
 
   DEFAULTS = { title: '', status: 'draft', orig_lang: 'he', default_authorities: [], metadata: {}, comments: '',
@@ -60,6 +60,24 @@ class IngestiblesController < ApplicationController
     markdown_params = params.require(:ingestible).permit(:markdown)
     @ingestible.update!(markdown_params)
     redirect_to edit_ingestible_url(@ingestible), notice: t(:updated_successfully)
+  end
+
+  def update_toc
+    toc_params = params.permit(%i(title genre orig_lang))
+    cur_toc = @ingestible.decode_toc
+    updated = false
+    cur_toc.each do |x|
+      next unless x[0] == params[:title] # update the existing entry
+
+      x[1] = toc_params[:genre]
+      x[2] = toc_params[:orig_lang]
+      updated = true
+      break
+    end
+    if updated
+      @ingestible.update_columns(toc_buffer: @ingestible.encode_toc(cur_toc))
+    end
+    head :ok
   end
 
   # DELETE /ingestibles/1 or /ingestibles/1.json

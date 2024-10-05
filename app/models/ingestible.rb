@@ -43,6 +43,16 @@ class Ingestible < ApplicationRecord
                'must be present if no_volume is false')
   end
 
+  def encode_toc(lines)
+    return lines.map { |x| x.join('||') }.join("\n")
+  end
+
+  def decode_toc
+    return [] unless toc_buffer.present?
+
+    return toc_buffer.lines.map(&:strip).reject(&:empty?).map { |x| x.split('||') }
+  end
+
   def multiple_works?
     return markdown =~ /^&&& / # the magic marker for a new work
   end

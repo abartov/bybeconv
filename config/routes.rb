@@ -19,6 +19,7 @@ Bybeconv::Application.routes.draw do
     member do
       get :review
       patch :update_markdown
+      patch :update_toc
     end
   end
 

@@ -86,6 +86,11 @@
         %b= t(:upload_file)
         = t(:file_can_be_skipped)
       = f.file_field :docx
+      %hr
+      .field
+        = button_tag t('ingestible.included_works'), id: 'edit_toc'
+        %br
+        = render partial: 'toc'
       .actions
         = f.submit t(:save), class: 'btn btn-primary'
   - unless @ingestible.new_record?

@@ -1,0 +1,41 @@
+%table
+  %thead
+    %tr
+      %th= t(:title)
+      %th= t(:genre)
+      %th= t(:orig_lang)
+  - @ingestible.decode_toc.each do |title, genre, orig_lang|
+    %tr
+      %td= title
+      %td
+        = select_tag :tgenre, options_for_select(get_genres.map {|x| [I18n.t(x), x]}, genre), {include_blank: true, class: 'toc-genre'}
+      %td
+        = select_tag :orig_lang, options_for_select(get_langs.map {|lang| [textify_lang(lang), lang]}, orig_lang), {class: 'toc-lang'}
+
+:javascript
+  $(document).ready(function() {
+    function update_toc(e) {
+      var title = e.closest('tr').find('td').first().text();
+      var genre = e.closest('tr').find('.toc-genre').val();
+      var orig_lang = e.closest('tr').find('.toc-lang').val();
+      $.ajax({
+        url: "#{update_toc_ingestible_path(@ingestible)}",
+        type: 'PATCH',
+        data: {title: title, genre: genre, orig_lang: orig_lang},
+        success: function(data) {
+          e.parent().append("<span id='checkmark_fader' style='color:green;'>✓</span>");
+          $('#checkmark_fader').fadeOut(2000);
+        }
+      });
+    }
+    $('.toc-lang').change(function(e) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      update_toc($(this));
+    });
+    $('.toc-genre').change(function(e) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      update_toc($(this));
+    });
+  });
