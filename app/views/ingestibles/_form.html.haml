@@ -86,11 +86,6 @@
         %b= t(:upload_file)
         = t(:file_can_be_skipped)
       = f.file_field :docx
-      %hr
-      .field
-        = button_tag t('ingestible.included_works'), id: 'edit_toc'
-        %br
-        = render partial: 'toc'
       .actions
         = f.submit t(:save), class: 'btn btn-primary'
   - unless @ingestible.new_record?
@@ -122,6 +117,10 @@
                   = f.submit t(:save), class: 'btn btn-primary'
     .tab-pane#toc
       %h2= t('.toc')
+      .field
+        = button_tag t('ingestible.included_works'), id: 'edit_toc'
+        %br
+        = render partial: 'toc'
       = form_for @ingestible do |f|
         = f.text_area :toc_buffer, class: 'textarea100'
         .actions
@@ -203,5 +202,10 @@
     });
     $('#ingestible_prospective_volume_title').on('change', function() {
       $('#ingestible_no_volume').prop('checked', false);
+    });
+    $('#edit_toc').on('click', function(e) {
+      e.preventDefault();
+      $('#generalDlg').load("#{ edit_toc_ingestible_path(@ingestible) }");
+      $('#generalDlg').modal('show');
     });
   });

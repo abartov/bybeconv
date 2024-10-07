@@ -89,7 +89,7 @@ class Authority < ApplicationRecord
 
   # return all collections of type volume that are associated with this authority
   def volumes
-    Collection.joins(:involved_authorities).where(collection_type: 'volume', involved_authorities: {authority_id: id})
+    Collection.joins(:involved_authorities).where(collection_type: 'volume', involved_authorities: { authority_id: id })
   end
 
   # returns all volumes that are items of this authority's root collection
@@ -242,6 +242,10 @@ class Authority < ApplicationRecord
     hash = published_manifestations(:translator).preload(expression: :work)
                                                 .group_by { |m| m.expression.work.genre }
     Work::GENRES.index_with { |genre| hash[genre] || [] }
+  end
+
+  def legacy_toc?
+    return toc.present? && toc.status == 'deprecated'
   end
 
   def featured_work

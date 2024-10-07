@@ -50,7 +50,7 @@ class Ingestible < ApplicationRecord
   def decode_toc
     return [] unless toc_buffer.present?
 
-    return toc_buffer.lines.map(&:strip).reject(&:empty?).map { |x| x.split('||') }
+    return toc_buffer.lines.map(&:strip).reject(&:empty?).map { |x| x.split('||').map(&:strip) }
   end
 
   def multiple_works?

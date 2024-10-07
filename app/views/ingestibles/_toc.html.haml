@@ -1,12 +1,14 @@
 %table
   %thead
     %tr
+      %th= t('ingestible.included_in_upload')
       %th= t(:title)
       %th= t(:genre)
       %th= t(:orig_lang)
-  - @ingestible.decode_toc.each do |title, genre, orig_lang|
+  - @ingestible.decode_toc.each do |included, title, genre, orig_lang|
     %tr
-      %td= title
+      %td= included == 'yes' ? '✓' : '✗'
+      %td.toc-title= title
       %td
         = select_tag :tgenre, options_for_select(get_genres.map {|x| [I18n.t(x), x]}, genre), {include_blank: true, class: 'toc-genre'}
       %td
@@ -15,7 +17,7 @@
 :javascript
   $(document).ready(function() {
     function update_toc(e) {
-      var title = e.closest('tr').find('td').first().text();
+      var title = e.closest('tr').find('.toc-title').text();
       var genre = e.closest('tr').find('.toc-genre').val();
       var orig_lang = e.closest('tr').find('.toc-lang').val();
       $.ajax({

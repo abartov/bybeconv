@@ -4,8 +4,10 @@ class IngestiblesController < ApplicationController
   include LockIngestibleConcern
 
   before_action { |c| c.require_editor('edit_catalog') }
-  before_action :set_ingestible, only: %i(show edit update update_markdown update_toc destroy review)
-  before_action :try_to_lock_ingestible, only: %i(show edit update update_markdown destroy review)
+  before_action :set_ingestible,
+                only: %i(show edit update update_markdown update_toc destroy review edit_toc update_toc_list)
+  before_action :try_to_lock_ingestible,
+                only: %i(show edit update update_markdown destroy review update_toc update_toc_list edit_toc)
 
   DEFAULTS = { title: '', status: 'draft', orig_lang: 'he', default_authorities: [], metadata: {}, comments: '',
                markdown: '' }.freeze
@@ -47,6 +49,23 @@ class IngestiblesController < ApplicationController
     end
   end
 
+  def edit_toc
+    include = false
+    toc_buf = []
+    @ingestible.decode_toc.each do |x|
+      if include && x[0].strip != 'yes'
+        include = false
+        toc_buf << '$$$ סוף'
+      end
+      if !include && x[0].strip == 'yes'
+        include = true
+        toc_buf << '$$$ התחלה'
+      end
+      toc_buf << x[1]
+    end
+    @toc_list = toc_buf.join("\n")
+  end
+
   # PATCH/PUT /ingestibles/1 or /ingestibles/1.json
   def update
     if @ingestible.update(ingestible_params)
@@ -67,10 +86,11 @@ class IngestiblesController < ApplicationController
     cur_toc = @ingestible.decode_toc
     updated = false
     cur_toc.each do |x|
-      next unless x[0] == params[:title] # update the existing entry
+      next unless x[0] == 'yes' && x[1] == params[:title] # update the existing entry
 
-      x[1] = toc_params[:genre]
-      x[2] = toc_params[:orig_lang]
+      x[2] = toc_params[:genre]
+      x[3] = toc_params[:orig_lang]
+
       updated = true
       break
     end
@@ -78,6 +98,30 @@ class IngestiblesController < ApplicationController
       @ingestible.update_columns(toc_buffer: @ingestible.encode_toc(cur_toc))
     end
     head :ok
+  end
+
+  def update_toc_list
+    toc_list = params[:toc_list].split("\n").map(&:strip)
+    ret = []
+    cur_toc = @ingestible.decode_toc
+    include = false
+    toc_list.each do |x|
+      next if x.blank?
+
+      if x =~ /^\$\$\$ /
+        include = x == '$$$ התחלה'
+        next
+      end
+      existing = cur_toc.find { |y| y[1].strip == x }
+      ret << if existing.nil?
+               " #{include ? 'yes' : 'no'} || #{x} || || he"
+             else
+               " #{include ? 'yes' : 'no'} || #{x} || #{existing[2]} || #{existing[3]}" # preserve any existing metadata
+             end
+    end
+    @ingestible.update_columns(toc_buffer: ret.join("\n"))
+    edit
+    render :edit
   end
 
   # DELETE /ingestibles/1 or /ingestibles/1.json
