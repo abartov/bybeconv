@@ -64,6 +64,8 @@
       = ' | '
       = submit_tag t(:save), 'class' => 'by-button-v02'
 
+= render partial: 'shared/markdown_utils'
+
 :javascript
   var selected_image_url = '';
   var selected_filename = '';
@@ -118,21 +120,6 @@
         pv.innerHTML = file.content.html;
       });
     });
-    $('#minuses_to_makafim').click(function(e) {
-      e.preventDefault();
-      var buf = $('#markdown').val();
-      replaced = 0;
-      buf = buf.replace(/\S(-|‑)\S/g, function(occurrence){
-        if((occurrence[0].match(/[a-z]/i)) && (occurrence[2].match(/[a-z]/i))) {
-          return occurrence;
-        } else {
-          replaced += 1;
-          return occurrence.replace('-','־').replace('‑','־');
-        }
-      });
-      $('#markdown').val(buf);
-      alert('בוצעו '+replaced.toString()+' החלפות.');
-    });
 
     $('#add_image').click(function(e) {
       e.preventDefault();
@@ -155,19 +142,6 @@
       var caretPos = $txt[0].selectionStart;
       var textAreaTxt = $txt.val();
       var txtToAdd = "#{all_images_markdown(@m.images)}";
-      $txt.val(textAreaTxt.substring(0, caretPos) + txtToAdd + textAreaTxt.substring(caretPos) );
-      $txt.focus();
-      $txt.caretTo(caretPos+txtToAdd.length);
-      $txt[0].scrollTo(scrollLeft, scrollTop); // restore scroll position
-    });
-    $('#add_stanza_break').click(function(e) {
-      e.preventDefault();
-      var $txt = jQuery("#markdown");
-      var scrollLeft = $txt[0].scrollLeft;
-      var scrollTop  = $txt[0].scrollTop;
-      var caretPos = $txt[0].selectionStart;
-      var textAreaTxt = $txt.val();
-      var txtToAdd = "\n>\n<br />\n>\n";
       $txt.val(textAreaTxt.substring(0, caretPos) + txtToAdd + textAreaTxt.substring(caretPos) );
       $txt.focus();
       $txt.caretTo(caretPos+txtToAdd.length);
