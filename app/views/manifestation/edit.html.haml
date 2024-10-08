@@ -64,7 +64,7 @@
       = ' | '
       = submit_tag t(:save), 'class' => 'by-button-v02'
 
-= render partial: 'shared/markdown_utils'
+= render partial: 'shared/markdown_utils', locals: { element_id: 'markdown' }
 
 :javascript
   var selected_image_url = '';

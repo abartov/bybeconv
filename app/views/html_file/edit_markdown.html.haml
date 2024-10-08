@@ -78,7 +78,8 @@
             %p
             %h3.by-button-v02.surprise-btn-v02.headline-2-v02#frbrize_button{style:'float:unset;width:max-content;padding-top:10px;'}!= t(:accept_conversion_and) + t(:frbrize)
 
-= render partial: 'shared/markdown_utils'
+= render partial: 'shared/markdown_utils', locals: { element_id: 'markdown' }
+
 :javascript
   var somethingChanged=false;
   function highlight_in_red(buf) {

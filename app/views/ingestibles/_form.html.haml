@@ -115,6 +115,7 @@
                     %br
                 .actions
                   = f.submit t(:save), class: 'btn btn-primary'
+      = render partial: 'shared/markdown_utils', locals: { element_id: 'ingestible_markdown' }                  
     .tab-pane#toc
       %h2= t('.toc')
       .field
