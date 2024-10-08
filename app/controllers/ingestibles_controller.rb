@@ -113,8 +113,9 @@ class IngestiblesController < ApplicationController
         next
       end
       existing = cur_toc.find { |y| y[1].strip == x }
+
       ret << if existing.nil?
-               " #{include ? 'yes' : 'no'} || #{x} || || he"
+               " #{include ? 'yes' : 'no'} || #{x} || #{@ingestible.genre} || #{@ingestible.orig_lang}" # use ingestible defaults when set
              else
                " #{include ? 'yes' : 'no'} || #{x} || #{existing[2]} || #{existing[3]}" # preserve any existing metadata
              end
