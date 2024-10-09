@@ -1,5 +1,5 @@
 != "<script src=\"https://unpkg.com/stackedit-js@1.0.5/docs/lib/stackedit.min.js\"></script>"
-.backend
+.backend#edit_markdown
   = form_tag(action: 'edit_markdown', id: @text.id) do
     .container-fluid
       .row
@@ -78,7 +78,7 @@
             %p
             %h3.by-button-v02.surprise-btn-v02.headline-2-v02#frbrize_button{style:'float:unset;width:max-content;padding-top:10px;'}!= t(:accept_conversion_and) + t(:frbrize)
 
-= render partial: 'shared/markdown_utils', locals: { element_id: 'markdown' }
+= render partial: 'shared/markdown_utils', locals: { container_id: 'edit_markdown', element_id: 'markdown' }
 
 :javascript
   var somethingChanged=false;

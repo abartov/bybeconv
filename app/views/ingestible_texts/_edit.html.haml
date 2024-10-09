@@ -1,5 +1,5 @@
 - text = ingestible.texts[index]
-.container-fluid
+.container-fluid#ingestible_edit_texts
   = form_for [ingestible, text], url: ingestible_text_path(ingestible, index), method: :patch do |f|
     .row
       .col-sm-2
@@ -8,10 +8,21 @@
                     edit_ingestible_text_path(ingestible, index - 1),
                     class: 'btn btn-primary form-control',
                     remote: true
+        %div{style: 'display:flex; flex-direction:column;  justify-content: space-between;'}
+          %button.btn-small-outline-v02#add_stanza_break
+            %b.btn-text-v02= t(:add_stanza_break)
+          %button.btn-small-outline-v02#add_angled_brackets{ style: 'display:unset' }
+            %b.btn-text-v02= t(:add_angled_brackets)
+          %button.btn-small-outline-v02#remove_angled_brackets{ style: 'display:unset' }
+            %b.btn-text-v02= t(:remove_angled_brackets)
+          %button.btn-small-outline-v02#minuses_to_makafim{ style: 'display:unset' }
+            %b.btn-text-v02= t(:minuses_to_makafim)
+
       .col-sm-8
         .row
           .col-sm-2
             %label.control-label= IngestibleText.human_attribute_name(:title)
+
           .col-sm-10
             .form-control= f.text_field :title
       .col-sm-2
@@ -29,3 +40,4 @@
           != raw(MarkdownToHtml.call(text.content))
     .actions
       = f.submit t(:save), class: 'btn btn-primary btn-sm', remote: true
+= render partial: 'shared/markdown_utils', locals: { container_id: 'ingestible_edit_texts', element_id: 'ingestible_text_content' }
