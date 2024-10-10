@@ -8,4 +8,17 @@ module IngestibleHelper
     pub = Publication.find(prospective_volume_id[1..-1])
     return "#{pub.authority.name} – #{pub.title} (#{t(:new)}!)"
   end
+
+  def cell_style(found_in_markdown, included)
+    case [found_in_markdown, included]
+    when [true, 'yes']
+      'lgreenbg'
+    when [false, 'yes']
+      'lredbg'
+    when [true, 'no']
+      'yellowbg'
+    else
+      ''
+    end
+  end
 end

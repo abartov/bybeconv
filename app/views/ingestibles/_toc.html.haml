@@ -2,13 +2,38 @@
   %thead
     %tr
       %th= t('ingestible.included_in_upload')
+      %th= t('ingestible.matched_in_markdown')
       %th= t(:title)
+      %th= t(:associated_persons)
       %th= t(:genre)
       %th= t(:orig_lang)
-  - @ingestible.decode_toc.each do |included, title, genre, orig_lang|
+  - @ingestible.decode_toc.each do |included, title, ias, genre, orig_lang|
     %tr
       %td= included == 'yes' ? '✓' : '✗'
+      - found_in_markdown = @markdown_titles.include?(title)
+      - cell_style = cell_style(found_in_markdown, included)
+      %td{class: cell_style}= found_in_markdown ? '✓' : '✗'
       %td.toc-title= title
+      %td
+        - if ias.present?
+          - ias.split(';').each do |ia|
+            - auth_id, role = ia.split(',').map(&:to_i)
+            = "#{Authority.find(auth_id).name} (#{textify_authority_role(role)})"
+            %br
+        - elsif @ingestible.default_authorities.present?
+          = t(:default)
+          %br
+          = render partial: 'ingestible_authorities/authority', collection: JSON.parse(@ingestible.default_authorities), locals: {editable: false}
+        = t(:add)
+        = select_tag :add_authority,
+                    options_from_collection_for_select(Authority.order(:name), 'id', 'name'),
+                    include_blank: true
+        = t('ingestibles.authorities.or_new_person')
+        = text_field_tag :new_person, '', {style: 'width: 150px;'}
+        = t(:in_role)
+        = select_tag :role,
+                    options_for_select(role_options)
+        = button_tag t(:perform_add), class: 'do_add_authority'
       %td
         = select_tag :tgenre, options_for_select(get_genres.map {|x| [I18n.t(x), x]}, genre), {include_blank: true, class: 'toc-genre'}
       %td
@@ -16,14 +41,22 @@
 
 :javascript
   $(document).ready(function() {
-    function update_toc(e) {
+    function update_toc(e, new_authority_id, new_name, new_role, new_person_tbd) {
       var title = e.closest('tr').find('.toc-title').text();
       var genre = e.closest('tr').find('.toc-genre').val();
       var orig_lang = e.closest('tr').find('.toc-lang').val();
       $.ajax({
         url: "#{update_toc_ingestible_path(@ingestible)}",
         type: 'PATCH',
-        data: {title: title, genre: genre, orig_lang: orig_lang},
+        data: {
+          title: title,
+          genre: genre,
+          orig_lang: orig_lang,
+          authority_id: new_authority_id,
+          authority_name: new_name,
+          role: new_role,
+          new_person_tbd: new_person_tbd
+        },
         success: function(data) {
           e.parent().append("<span id='checkmark_fader' style='color:green;'>✓</span>");
           $('#checkmark_fader').fadeOut(2000);
@@ -33,11 +66,24 @@
     $('.toc-lang').change(function(e) {
       e.preventDefault();
       e.stopImmediatePropagation();
-      update_toc($(this));
+      update_toc($(this), null, null, null);
     });
     $('.toc-genre').change(function(e) {
       e.preventDefault();
       e.stopImmediatePropagation();
-      update_toc($(this));
+      update_toc($(this), null, null, null);
     });
+    $('.do_add_authority').click(function(e) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      // pick up data from fields
+      var new_au = $(this).closest('tr').find('select[name=add_authority]').val();
+      var new_name = $(this).closest('tr').find('select[name=add_authority] option:selected').text();
+      var new_role = $(this).closest('tr').find('select[name=role]').val();
+      var new_person_tbd = $(this).closest('tr').find('input[name=new_person]').val();
+
+      // PATCH ajax
+      update_toc($(this), new_au, new_name, new_role, new_person);
+    });
+
   });

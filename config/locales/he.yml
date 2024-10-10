@@ -1228,6 +1228,7 @@ he:
   norwegian: נורווגית
   swedish: שוודית
   dutch: הולנדית
+  default: ברירת מחדל
   translator: מתרגם
   translator_f: מתרגמת
   translated_by: בתרגום
@@ -1488,6 +1489,7 @@ he:
     no_volume_explanation: יצירות לא מקובצות
     attach_photos_explanation: יש לסמן כדי להעלות תמונות בהמשך
     create_new_volume: צור כותר חדש שלא מתוך כותרים ידועים לסדנה הביבליוגרפית
+    matched_in_markdown: תואם כותרת במארקדאון?
   # This block of strings below should be removed when we finish work. Grouped them together to make it easier to find them again
   public_domain: נחלת הכלל
   viaf_id: "מזהה במאגר VIAF‏"

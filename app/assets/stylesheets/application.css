@@ -112,6 +112,24 @@ input[type=checkbox].multiselect_checkbox {
 .red {
   color: red;
 }
+.redbg {
+  background-color: red !important;
+}
+.lredbg {
+  background-color: lightcoral !important;
+}
+.green {
+  color: green;
+}
+.greenbg {
+  background-color: green !important;
+}
+.lgreenbg {
+  background-color: lightgreen !important;
+}
+.yellowbg {
+  background-color: yellow !important;
+}
 /* end dict_top workarounds */
 .navdisabled {
   color: #d9cdd5;

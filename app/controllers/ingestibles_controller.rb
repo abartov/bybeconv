@@ -35,6 +35,7 @@ class IngestiblesController < ApplicationController
   def edit
     @ingestible.update_parsing # refresh markdown or text buffers if necessary
     @html = MarkdownToHtml.call(@ingestible.markdown)
+    @markdown_titles = @ingestible.markdown.scan(/^&&&\s+(.+?)\s*\n/).map(&:first)
   end
 
   # POST /ingestibles or /ingestibles.json
@@ -88,8 +89,28 @@ class IngestiblesController < ApplicationController
     cur_toc.each do |x|
       next unless x[0] == 'yes' && x[1] == params[:title] # update the existing entry
 
-      x[2] = toc_params[:genre]
-      x[3] = toc_params[:orig_lang]
+      x[4] = toc_params[:genre]
+      x[5] = toc_params[:orig_lang]
+
+      add_auth = params[:new_person].present? or params[:authority_id].present?
+      if add_auth
+        authorities = JSON.parse(x[2] || '[]')
+        highest_seqno = authorities.pluck('seqno').max || 0
+        new_authority = { 'seqno' => highest_seqno + 1, 'role' => params[:role] }
+        if params[:new_person].present?
+          # Authority not yet present in database
+          new_authority['new_person'] = params[:new_person_tbd]
+        elsif params[:authority_id].present?
+          # Existing authority from database
+          new_authority['authority_id'] = params[:authority_id].to_i
+          new_authority['authority_name'] = params[:authority_name]
+        else
+          head :bad_request
+          return
+        end
+        authorities << new_authority
+        x[2] = authorities.to_json
+      end
 
       updated = true
       break
