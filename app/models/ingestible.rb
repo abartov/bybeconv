@@ -171,6 +171,7 @@ class Ingestible < ApplicationRecord
             # this would skip the first match if no text appeared before the first &&&
             sections.map do |section|
               title = section.lines.first # may be nil - handle in view
+              title.strip! if title.present?
               content = section.lines[1].nil? ? [] : section.lines[1..].map(&:strip)
               # the file may have multiple works but also some words (e.g. a dedication) before
               # the first work. This should be treated as text without a title, and is handled

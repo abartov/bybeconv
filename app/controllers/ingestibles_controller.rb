@@ -29,6 +29,7 @@ class IngestiblesController < ApplicationController
 
   # GET /ingestibles/1/review
   def review
+    @markdown_titles = @ingestible.markdown.scan(/^&&&\s+(.+?)\s*\n/).map(&:first)
   end
 
   # GET /ingestibles/1/edit

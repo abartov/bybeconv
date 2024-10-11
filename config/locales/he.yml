@@ -1376,6 +1376,10 @@ he:
   ingestible_texts:
     edit:
       text_x_of_total: טקסט %{index} מתוך %{total}
+      next: הטקסט הבא
+      previous: הטקסט הקודם
+      not_in_toc: הטקסט לא סומן ככלול בהעלאה!
+
   involved_authorities:
     list:
       select_authority: נא לבחור ישות אחראית
@@ -1493,3 +1497,5 @@ he:
   # This block of strings below should be removed when we finish work. Grouped them together to make it easier to find them again
   public_domain: נחלת הכלל
   viaf_id: "מזהה במאגר VIAF‏"
+  text_n_of_m: "טקסט %{n} מתוך %{m}"
+  and_n_placeholders: "ועוד %{n} שומרי מקום"
