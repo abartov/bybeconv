@@ -82,15 +82,15 @@ class IngestiblesController < ApplicationController
   end
 
   def update_toc
-    toc_params = params.permit(%i(title genre orig_lang authority_id authority_name role new_person_tbd))
+    toc_params = params.permit(%i(title genre orig_lang authority_id authority_name role new_person_tbd rmauth seqno))
     cur_toc = @ingestible.decode_toc
     updated = false
 
     cur_toc.each do |x|
       next unless x[0] == 'yes' && x[1] == params[:title] # update the existing entry
 
-      x[3] = toc_params[:genre]
-      x[4] = toc_params[:orig_lang]
+      x[3] = toc_params[:genre] if toc_params[:genre].present?
+      x[4] = toc_params[:orig_lang] if toc_params[:orig_lang].present?
 
       if params[:new_person_tbd].present? or params[:authority_id].present?
         authorities = x[2].present? ? JSON.parse(x[2]) : []
@@ -108,6 +108,10 @@ class IngestiblesController < ApplicationController
           return
         end
         authorities << new_authority
+        x[2] = authorities.to_json
+      elsif params[:rmauth].present?
+        authorities = x[2].present? ? JSON.parse(x[2]) : []
+        authorities.reject! { |a| a['seqno'] == params[:seqno].to_i }
         x[2] = authorities.to_json
       end
 

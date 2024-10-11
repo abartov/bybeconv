@@ -2,7 +2,7 @@
   %h3= t(:associated_persons)
   %ul#authorities
     - if authorities
-      = render partial: 'ingestible_authorities/authority', collection: JSON.parse(authorities), locals: {editable: true}
+      = render partial: 'ingestible_authorities/authority', collection: JSON.parse(authorities), locals: {editable: true, toc: false}
   = t(:add)
   = select_tag :add_authority,
                options_from_collection_for_select(Authority.order(:name), 'id', 'name'),

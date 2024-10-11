@@ -17,12 +17,20 @@
       - if included == 'yes'
         %td
           - if ias.present?
-            = render partial: 'ingestible_authorities/authority', collection: JSON.parse(ias), locals: {editable: true}
+            - JSON.parse(ias).each do |authority|
+              %ul
+                %li{ id: "ia#{authority['seqno']}" }
+                  - if authority['authority_id']
+                    = link_to authority['authority_name'], authors_show_path(id: authority['authority_id'])
+                  - else
+                    = authority['new_person']
+                  (#{textify_authority_role(authority['role'])})
+                  = button_tag t(:destroy), class: 'delete_toc_authority'
           - elsif @ingestible.default_authorities.present?
             %div{style: 'background: repeating-linear-gradient(45deg,#dddddd,#dedede 10px,#efefef 10px,#eeeeee 20px);'}
               %b= t(:default)
               %br
-              = render partial: 'ingestible_authorities/authority', collection: JSON.parse(@ingestible.default_authorities), locals: {editable: false}
+              = render partial: 'ingestible_authorities/authority', collection: JSON.parse(@ingestible.default_authorities), locals: {editable: false, toc: true}
           = t(:add)
           = select_tag :add_authority,
                       options_from_collection_for_select(Authority.order(:name), 'id', 'name'),
@@ -87,5 +95,20 @@
 
       update_toc($(this), new_au, new_name, new_role, new_person_tbd);
     });
-
+    $('.delete_toc_authority').click(function(e) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      var seqno = $(this).closest('li').attr('id').substring(2);
+      var title = $(this).closest('tr').find('.toc-title').text();
+      startModal('spinnerdiv');
+      $.ajax({
+        url: "#{update_toc_ingestible_path(@ingestible)}",
+        type: 'PATCH',
+        data: {
+          title: title,
+          rmauth: true,
+          seqno: seqno
+        },
+      });
+    });
   });
