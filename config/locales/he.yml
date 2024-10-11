@@ -1483,7 +1483,7 @@ he:
     start_upload_block: סמן תחילת יצירות להעלאה
     end_upload_block:  סמן סיום יצירות להעלאה
     defaults: שדות לכל היצירות בהעלאה זו
-    included_works: עריכת פרטי היצירות בהעלאה זו
+    included_works: עריכת רשימת היצירות בהעלאה זו
     attach_photos: צירוף תמונות
     volume_by_author: איתור כותר מאת יוצר
     no_volume_explanation: יצירות לא מקובצות

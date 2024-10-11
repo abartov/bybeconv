@@ -139,14 +139,13 @@ class IngestiblesController < ApplicationController
       existing = cur_toc.find { |y| y[1].strip == x }
 
       ret << if existing.nil?
-               " #{include ? 'yes' : 'no'} || #{x} || #{@ingestible.genre} || #{@ingestible.orig_lang}" # use ingestible defaults when set
+               " #{include ? 'yes' : 'no'} || #{x} || || #{@ingestible.genre} || #{@ingestible.orig_lang}" # use ingestible defaults when set
              else
-               " #{include ? 'yes' : 'no'} || #{x} || #{existing[2]} || #{existing[3]}" # preserve any existing metadata
+               " #{include ? 'yes' : 'no'} || #{x} || || #{existing[2]} || #{existing[3]}" # preserve any existing metadata
              end
     end
     @ingestible.update_columns(toc_buffer: ret.join("\n"))
-    edit
-    render :edit
+    redirect_to edit_ingestible_url(@ingestible), notice: t('updated_successfully'), status: :see_other
   end
 
   # DELETE /ingestibles/1 or /ingestibles/1.json
