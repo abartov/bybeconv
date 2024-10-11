@@ -34,8 +34,7 @@ class IngestiblesController < ApplicationController
   # GET /ingestibles/1/edit
   def edit
     @ingestible.update_parsing # refresh markdown or text buffers if necessary
-    @html = MarkdownToHtml.call(@ingestible.markdown)
-    @markdown_titles = @ingestible.markdown.scan(/^&&&\s+(.+?)\s*\n/).map(&:first)
+    prep
   end
 
   # POST /ingestibles or /ingestibles.json
@@ -83,21 +82,21 @@ class IngestiblesController < ApplicationController
   end
 
   def update_toc
-    toc_params = params.permit(%i(title genre orig_lang))
+    toc_params = params.permit(%i(title genre orig_lang authority_id authority_name role new_person_tbd))
     cur_toc = @ingestible.decode_toc
     updated = false
+
     cur_toc.each do |x|
       next unless x[0] == 'yes' && x[1] == params[:title] # update the existing entry
 
-      x[4] = toc_params[:genre]
-      x[5] = toc_params[:orig_lang]
+      x[3] = toc_params[:genre]
+      x[4] = toc_params[:orig_lang]
 
-      add_auth = params[:new_person].present? or params[:authority_id].present?
-      if add_auth
-        authorities = JSON.parse(x[2] || '[]')
+      if params[:new_person_tbd].present? or params[:authority_id].present?
+        authorities = x[2].present? ? JSON.parse(x[2]) : []
         highest_seqno = authorities.pluck('seqno').max || 0
         new_authority = { 'seqno' => highest_seqno + 1, 'role' => params[:role] }
-        if params[:new_person].present?
+        if params[:new_person_tbd].present?
           # Authority not yet present in database
           new_authority['new_person'] = params[:new_person_tbd]
         elsif params[:authority_id].present?
@@ -115,10 +114,10 @@ class IngestiblesController < ApplicationController
       updated = true
       break
     end
-    if updated
-      @ingestible.update_columns(toc_buffer: @ingestible.encode_toc(cur_toc))
-    end
-    head :ok
+    return unless updated
+
+    prep
+    @ingestible.update_columns(toc_buffer: @ingestible.encode_toc(cur_toc))
   end
 
   def update_toc_list
@@ -157,6 +156,11 @@ class IngestiblesController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_ingestible
     @ingestible = Ingestible.find(params[:id])
+  end
+
+  def prep
+    @html = MarkdownToHtml.call(@ingestible.markdown)
+    @markdown_titles = @ingestible.markdown.scan(/^&&&\s+(.+?)\s*\n/).map(&:first)
   end
 
   # Only allow a list of trusted parameters through.

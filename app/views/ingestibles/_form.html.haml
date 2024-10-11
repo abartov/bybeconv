@@ -121,7 +121,7 @@
       .field
         = button_tag t('ingestible.included_works'), id: 'edit_toc'
         %br
-        = render partial: 'toc'
+        #toc_div= render partial: 'toc'
       = form_for @ingestible do |f|
         = f.text_area :toc_buffer, class: 'textarea100'
         .actions
