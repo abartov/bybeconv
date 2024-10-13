@@ -190,8 +190,13 @@ class IngestiblesController < ApplicationController
     @collection = @ingestible.volume # would be nil for new volumes
     @authority_changes = {}
     @missing_in_markdown = []
+    @missing_genre = []
+    @missing_origlang = []
+    @missing_authority = []
     @texts_to_upload.each do |x|
       @missing_in_markdown << x[1] unless @markdown_titles.include?(x[1])
+      @missing_genre << x[1] if x[3].blank?
+      @missing_origlang << x[1] if x[4].blank?
       aus = if x[2].present?
               JSON.parse(x[2])
             elsif @ingestible.default_authorities.present?
@@ -199,6 +204,7 @@ class IngestiblesController < ApplicationController
             else
               []
             end
+      @missing_authority << x[1] if aus.empty?
       aus.each do |ia|
         name = ia['new_person'].presence || ia['authority_name']
         role = ia['role']
@@ -207,6 +213,7 @@ class IngestiblesController < ApplicationController
         @authority_changes[name][role] << x[1]
       end
     end
+    @errors = @missing_in_markdown.present? || @missing_genre.present? || @missing_origlang.present? || @missing_authority.present?
   end
 
   # Only allow a list of trusted parameters through.

@@ -1,11 +1,13 @@
 %h1= t('.title', title: @ingestible.title)
-- if @missing_in_markdown.present?
+- if @errors
   .redbg
     %h2= t('.errors')
-    %p= t('.missing_in_markdown')
-    %ul
-      - @missing_in_markdown.each do |title|
-        %li= title
+    - [[@missing_genre, '.missing_genre'], [@missing_origlang, '.missing_origlang'], [@missing_authority, '.missing_authority'], [@missing_in_markdown, '.missing_in_markdown']].each do |missing, label|
+      - if missing.present?
+        %p= t(label)
+        %ul
+          - missing.each do |title|
+            %li= title
 %div{style: 'display: flex;flex-wrap: wrap;'}
   .admin_dashboard_item
     %h2= t('.volume_information')
@@ -82,7 +84,10 @@
                     = title
                     %br
 
-= button_to t('.ingest'), ingest_ingestible_path(@ingestible), method: :post, id: 'ingest_button', class: 'btn btn-primary'
+- if @errors
+  %h2.redbg= t('.cannot_ingest_with_errors')
+- else
+  = button_to t('.ingest'), ingest_ingestible_path(@ingestible), method: :post, id: 'ingest_button', class: 'btn btn-primary'
 %br
 = link_to t('.back_to_editing'), edit_ingestible_path(@ingestible), class: 'by-button-v02 btn-secondary-v02'
 = link_to t(:back), ingestibles_path
