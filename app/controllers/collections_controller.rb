@@ -24,6 +24,12 @@ class CollectionsController < ApplicationController
     render json: { issues: @collection.coll_items.where(collection_type: 'periodical_issue') }
   end
 
+  def add_periodical_issue
+    @collection = Collection.find(params[:collection_id])
+    @issue = Collection.create!(title: params[:title], sort_title: params[:title], collection_type: 'periodical_issue')
+    @collection.append_item(@issue)
+  end
+
   # GET /collections/1/download
   def download
     @collection = Collection.find(params[:collection_id])

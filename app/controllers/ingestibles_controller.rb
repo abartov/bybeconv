@@ -74,7 +74,12 @@ class IngestiblesController < ApplicationController
 
   # PATCH/PUT /ingestibles/1 or /ingestibles/1.json
   def update
+    existing_volume_id = @ingestible.volume_id
+    existing_prospective_volume_id = @ingestible.prospective_volume_id
     if @ingestible.update(ingestible_params)
+      if existing_volume_id != @ingestible.volume_id || existing_prospective_volume_id != @ingestible.prospective_volume_id
+        @ingestible.update_authorities_from_volume
+      end
       redirect_to edit_ingestible_url(@ingestible), notice: t('.success')
     else
       render :edit, status: :unprocessable_entity

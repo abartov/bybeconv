@@ -1515,6 +1515,11 @@ he:
     matched_in_markdown: תואם כותרת במארקדאון?
     pick_periodical: בחירת כתב עת
     pick_issue: בחירת גליון
+    add_new_issue: (הוספת גליון חדש)
+    new_issue_title: 'כותרת הגליון החדש (לדוגמה: "חדרים 4" או "גליון 56")'
+    need_to_save: יש לשמור את ההעלאה לאחר עדכון כותר
+    need_to_save_explanation: השמירה תעדכן אישים מקושרים להעלאה (לפי הכותר)
+
   # This block of strings below should be removed when we finish work. Grouped them together to make it easier to find them again
   public_domain: נחלת הכלל
   viaf_id: "מזהה במאגר VIAF‏"

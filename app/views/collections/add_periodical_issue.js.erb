@@ -1,0 +1,5 @@
+$('#prospective_volume_id').val("<%= @issue.id %>");
+$('#volume_title').text("<%= j(@issue.title) %>");
+$('#periodical_issues').find("option:selected").text("<%= j(@issue.title) %>");
+$('#periodical_issues').find("option:selected").val("<%= @issue.id %>");
+$('#periodical_issues').append($('<option>', { value: '', text: '' }));

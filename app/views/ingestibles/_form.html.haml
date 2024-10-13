@@ -4,7 +4,9 @@
     %ul
       - @ingestible.errors.full_messages.each do |message|
         %li= message
-
+#need_to_save{style: 'display:none; background-color: #f8d7da; border: 1px solid #f5c6cb; padding: 10px;'}
+  %h2= t('ingestible.need_to_save')
+  %p= t('ingestible.need_to_save_explanation')
 %ul.nav.nav-tabs{ style: 'width: 100%;' }
   %li.nav-item
     %a.nav-link.active{ href: '#general', 'data-toggle': 'tab', style: 'width: unset;' }= t('.general')
@@ -190,10 +192,29 @@
       $('#prospective_volume_id').val($('#authority_volumes').val());
       $('#volume_title').text($('#authority_volumes option:selected').text());
       $('#ingestible_no_volume').prop('checked', false);
+      $('#need_to_save').show();
     });
     $('#periodical_issues').on('change', function() {
-      $('#prospective_volume_id').val($('#periodical_issues').val());
-      $('#volume_title').text($('#periodical_issues option:selected').text());
+      if($('#periodical_issues').val() == '!new') {
+        // show pop-up asking for new periodical issue title
+        $('<form>#{t("ingestible.new_issue_title")}<input type="text" style="z-index:10000" name="issue_title"><br></form>').dialog({
+          modal: true,
+          buttons: {
+            'OK': function () {
+              var name = $('input[name="issue_title"]').val();
+              $.post("#{collection_add_periodical_issue_path(999)}".replace('999', $('#ingestible_periodical_id').val()), {title: name});
+              $(this).dialog('close');
+            },
+            'Cancel': function () {
+              $(this).dialog('close');
+            }
+          }
+        });
+      } else {
+        $('#prospective_volume_id').val($('#periodical_issues').val());
+        $('#volume_title').text($('#periodical_issues option:selected').text());
+    }
+      $('#need_to_save').show();
       $('#ingestible_no_volume').prop('checked', false);
     });
 
@@ -216,6 +237,11 @@
                 text: issue.title
               }));
             });
+            $('#periodical_issues').append($('<option>', {
+              value: '!new',
+              text: "#{t('ingestible.add_new_issue')}"
+            }));
+
           }
         }
       });
@@ -225,6 +251,7 @@
       $('#prospective_volume_id').val(data.item.id);
       $('#volume_title').text(data.item.value);
       $('#ingestible_no_volume').prop('checked', false);
+      $('#need_to_save').show();
     });
     $('#change_volume').on('click', function(e) {
       e.preventDefault();
@@ -238,6 +265,7 @@
         $('#volume_title').text('');
         $('#ingestible_periodical_id').val('');
         $('#ingestible_prospective_volume_title').val('');
+        $('#need_to_save').show();
       } else {
         $('#authority_volumes').show();
       }

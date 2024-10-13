@@ -86,6 +86,36 @@ class Ingestible < ApplicationRecord
     save if changed?
   end
 
+  def update_authorities_from_volume
+    self.default_authorities = '' # reset *default* authorities on any volume change
+    aus = []
+    seqno = 1
+    if volume_id.present?
+      volume = Collection.find(volume_id)
+      volume.involved_authorities.each do |ia|
+        aus << { seqno: seqno, authority_id: ia.authority.id, authority_name: ia.authority.name, role: ia.role }
+        seqno += 1
+      end
+    elsif prospective_volume_id.present?
+      if prospective_volume_id[0] == 'P'
+        pub = Publication.find(prospective_volume_id[1..-1])
+        # populate with default role of author, though this would be false when the Hebrew author
+        # is the translator of a foreign work. Such cases would need to be corrected manually.
+        aus << { seqno: seqno, authority_id: pub.authority.id, authority_name: pub.authority.name, role: 'author' }
+      else
+        volume = Collection.find(prospective_volume_id)
+        volume.involved_authorities.each do |ia|
+          aus << { seqno: seqno, authority_id: ia.authority.id, authority_name: ia.authority.name, role: ia.role }
+          seqno += 1
+        end
+      end
+    end
+    return unless aus.present?
+
+    self.default_authorities = aus.to_json
+    save!
+  end
+
   def convert_to_markdown
     return unless docx.attached?
 
