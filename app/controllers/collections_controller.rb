@@ -18,6 +18,12 @@ class CollectionsController < ApplicationController
     @print_url = url_for(action: :print, collection_id: @collection.id)
   end
 
+  # GET /collections/1/periodical_issues
+  def periodical_issues
+    @collection = Collection.find(params[:collection_id])
+    render json: { issues: @collection.coll_items.where(collection_type: 'periodical_issue') }
+  end
+
   # GET /collections/1/download
   def download
     @collection = Collection.find(params[:collection_id])

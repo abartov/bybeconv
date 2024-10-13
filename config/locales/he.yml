@@ -1388,6 +1388,8 @@ he:
       placeholders: שומרי מקום
       already_in_collection: כבר קיים בכותר
       back_to_editing: חזרה לעריכת ההעלאה
+      missing_in_markdown: 'הכותרות הבאות חסרות במארקדאון:'
+      errors: שגיאות!
     destroy:
       success: ההעלאה נמחקה
   ingestible_texts:
@@ -1511,6 +1513,8 @@ he:
     attach_photos_explanation: יש לסמן כדי להעלות תמונות בהמשך
     create_new_volume: צור כותר חדש שלא מתוך כותרים ידועים לסדנה הביבליוגרפית
     matched_in_markdown: תואם כותרת במארקדאון?
+    pick_periodical: בחירת כתב עת
+    pick_issue: בחירת גליון
   # This block of strings below should be removed when we finish work. Grouped them together to make it easier to find them again
   public_domain: נחלת הכלל
   viaf_id: "מזהה במאגר VIAF‏"

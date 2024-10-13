@@ -181,9 +181,12 @@ class IngestiblesController < ApplicationController
     @decoded_toc = @ingestible.decode_toc
     @texts_to_upload = @ingestible.texts_to_upload
     @placeholders = @ingestible.placeholders
+    @markdown_titles = @ingestible.markdown.scan(/^&&&\s+(.+?)\s*\n/).map(&:first)
     @collection = @ingestible.volume # would be nil for new volumes
     @authority_changes = {}
+    @missing_in_markdown = []
     @texts_to_upload.each do |x|
+      @missing_in_markdown << x[1] unless @markdown_titles.include?(x[1])
       aus = if x[2].present?
               JSON.parse(x[2])
             elsif @ingestible.default_authorities.present?

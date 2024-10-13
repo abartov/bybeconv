@@ -48,6 +48,15 @@
           = f.label t('ingestible.create_new_volume')
           = f.text_field :prospective_volume_title, style: 'width:400px;'
           = f.hidden_field :prospective_volume_id, id: 'prospective_volume_id'
+          %br
+          = t(:or)
+          %br
+          = f.label t('ingestible.pick_periodical')
+          = f.select :periodical_id, options_for_select(Collection.by_type(:periodical).map{|j| [j.title, j.id]}, @ingestible.periodical_id), {include_blank: true, style: 'width:400px;'}
+          %br
+          %div#periodical_issues_div{style: 'display:none;'}
+            = t('ingestible.pick_issue')
+            = select_tag :periodical_issues, [], {id: 'periodical_issues'}
 
       .field
         -#= f.label :scenario
@@ -182,6 +191,36 @@
       $('#volume_title').text($('#authority_volumes option:selected').text());
       $('#ingestible_no_volume').prop('checked', false);
     });
+    $('#periodical_issues').on('change', function() {
+      $('#prospective_volume_id').val($('#periodical_issues').val());
+      $('#volume_title').text($('#periodical_issues option:selected').text());
+      $('#ingestible_no_volume').prop('checked', false);
+    });
+
+    $('#ingestible_periodical_id').on('change', function() {
+      $('#ingestible_no_volume').prop('checked', false);
+      url = "#{collection_periodical_issues_path(999)}".replace('999', $(this).val());
+      $.ajax({
+        url: url,
+        success: function(data) {
+          if (data['issues'].length > 0) {
+            $('#periodical_issues').empty();
+            $('#periodical_issues_div').show();
+            $('#periodical_issues').append($('<option>', {
+              value: '',
+              text: ''
+            }));
+            data['issues'].forEach(function(issue) {
+              $('#periodical_issues').append($('<option>', {
+                value: issue.id,
+                text: issue.title
+              }));
+            });
+          }
+        }
+      });
+
+    });
     $('#cterm').on('railsAutocomplete.select', function(event, data){
       $('#prospective_volume_id').val(data.item.id);
       $('#volume_title').text(data.item.value);
@@ -194,8 +233,10 @@
     $('#ingestible_no_volume').on('change', function() {
       if ($('#ingestible_no_volume').is(':checked')) {
         $('#authority_volumes').hide();
+        $('#periodical_issues_div').hide();
         $('#prospective_volume_id').val('');
         $('#volume_title').text('');
+        $('#ingestible_periodical_id').val('');
         $('#ingestible_prospective_volume_title').val('');
       } else {
         $('#authority_volumes').show();

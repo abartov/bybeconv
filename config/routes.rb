@@ -33,6 +33,7 @@ Bybeconv::Application.routes.draw do
     get 'manage'
     post 'download'
     get 'print'
+    get 'periodical_issues'
   end
 
   get 'autocomplete_publication_title' => 'admin#autocomplete_publication_title', as: 'autocomplete_publication_title'

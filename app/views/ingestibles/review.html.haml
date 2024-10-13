@@ -1,4 +1,11 @@
 %h1= t('.title', title: @ingestible.title)
+- if @missing_in_markdown.present?
+  .redbg
+    %h2= t('.errors')
+    %p= t('.missing_in_markdown')
+    %ul
+      - @missing_in_markdown.each do |title|
+        %li= title
 %div{style: 'display: flex;flex-wrap: wrap;'}
   .admin_dashboard_item
     %h2= t('.volume_information')
