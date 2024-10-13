@@ -11,6 +11,7 @@ class Ingestible < ApplicationRecord
 
   belongs_to :user
   belongs_to :locked_by_user, class_name: 'User', optional: true
+  belongs_to :volume, optional: true, class_name: 'Collection'
 
   DEFAULTS_SCHEMA = {}.freeze
   validates :title, presence: true
@@ -51,6 +52,14 @@ class Ingestible < ApplicationRecord
     return [] unless toc_buffer.present?
 
     return toc_buffer.lines.map(&:strip).reject(&:empty?).map { |x| x.split('||').map(&:strip) }
+  end
+
+  def texts_to_upload
+    return decode_toc.select { |x| x[0].strip == 'yes' }
+  end
+
+  def placeholders
+    return decode_toc.select { |x| x[0].strip == 'no' }
   end
 
   def multiple_works?

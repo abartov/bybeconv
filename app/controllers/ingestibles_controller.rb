@@ -30,6 +30,11 @@ class IngestiblesController < ApplicationController
   # GET /ingestibles/1/review
   def review
     @markdown_titles = @ingestible.markdown.scan(/^&&&\s+(.+?)\s*\n/).map(&:first)
+    prep_for_ingestion
+  end
+
+  # GET /ingestibles/1/ingest
+  def ingest
   end
 
   # GET /ingestibles/1/edit
@@ -165,6 +170,17 @@ class IngestiblesController < ApplicationController
   def prep
     @html = MarkdownToHtml.call(@ingestible.markdown)
     @markdown_titles = @ingestible.markdown.scan(/^&&&\s+(.+?)\s*\n/).map(&:first)
+  end
+
+  # this method prepares the ingestible for ingestion:
+  # it collects the placeholders to be created according to the toc,
+  # it collects the manifestations to be created for the included texts,
+  # and it maps the affected involved authorities.
+  # It is called by the review action for the user's approval, but also from the actual ingestion action.
+  def prep_for_ingestion
+    @decoded_toc = @ingestible.decode_toc
+    @texts_to_upload = @ingestible.texts_to_upload
+    @placeholders = @ingestible.placeholders
   end
 
   # Only allow a list of trusted parameters through.

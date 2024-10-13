@@ -1,0 +1,78 @@
+%h1= t('.title', title: @ingestible.title)
+%div{style: 'display: flex;flex-wrap: wrap;'}
+  .admin_dashboard_item
+    %h2= t('.volume_information')
+    - if @ingestible.no_volume
+      %h3= t('.no_volume')
+    - elsif @ingestible.volume.present?
+      %h3= t('.adding_to_existing_volume')
+      %p= @ingestible.volume.title
+      %p= @ingestible.volume.authorities.map(&:name).join(', ')
+    - elsif @ingestible.prospective_volume_id.present?
+      %h3= t('.new_volume_by_workshop')
+      - pub = Publication.where(id: @ingestible.prospective_volume_id[1..-1].to_i)
+      - if pub.present?
+        %p
+          %b= pub.first.title
+    - elsif @ingestible.prospective_volume_title.present?
+      %h3= t('.new_volume')
+      %p= @ingestible.prospective_volume_title
+  .admin_dashboard_item
+    %h2= t('.statistics')
+    %b= t('.texts')
+    = @texts_to_upload.count.to_s
+    %br
+    %b= t('.placeholders')
+    = @placeholders.count.to_s
+    %br
+
+  .admin_dashboard_item
+    %h2= t(:associated_persons)
+    - if @ingestible.default_authorities.present?
+      %p!= JSON.parse(@ingestible.default_authorities).map{ |ia| "#{ia['authority_name'].presence || ia['new_person']} (#{textify_authority_role(ia['role'])})"}.join('<br />')
+    - else
+      %p= t(:none)
+
+  .admin_dashboard_item
+    %h2= t('.text_information')
+    %table
+      %thead
+        %tr
+          %th= t(:title)
+          %th= t(:associated_persons)
+          %th= t(:genre)
+          %th= t(:orig_lang)
+      %tbody
+        - @decoded_toc.each do |text|
+          %tr
+            %td= text[1]
+            - if text[0] == 'no'
+              %td{colspan: 3, align: 'center'}= t('.placeholder')
+            - else
+              - authorities_string = authorities_including_implicit(text[2])
+              %td!= authorities_string
+              %td= textify_genre(text[3])
+              %td= textify_lang(text[4])
+  .admin_dashboard_item
+    %h2= t('.affected_authorities')
+    %table
+      %thead
+        %tr
+          %th= t(:name)
+          %th= t('.additions')
+      %tbody
+        -# @ingestible.review_authorities.each do |authority|
+
+= button_to t('.ingest'), ingest_ingestible_path(@ingestible), method: :post, id: 'ingest_button', class: 'btn btn-primary'
+
+= link_to t(:back), ingestibles_path
+%div#spinnerdiv{style: 'display: none; top: 50%; left: 50%;'}
+  #floatingCirclesG
+    #frotateG_01.f_circleG
+    #frotateG_02.f_circleG
+    #frotateG_03.f_circleG
+    #frotateG_04.f_circleG
+    #frotateG_05.f_circleG
+    #frotateG_06.f_circleG
+    #frotateG_07.f_circleG
+    #frotateG_08.f_circleG

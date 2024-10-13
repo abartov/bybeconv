@@ -1371,6 +1371,21 @@ he:
       review: סקירה
     update:
       success: ההעלאה עודכנה
+    review:
+      title: "סקירת העלאה: %{title}"
+      statistics: סטטיסטיקה
+      text_information: מידע על יצירות
+      affected_authorities: מידע על יוצרים
+      ingest: סיים העלאה וצור ישויות!
+      additions: תוספות
+      volume_information: פרטי כותר
+      no_volume: העלאת יצירות לא מקובצות – ללא כותר כלל
+      adding_to_existing_volume: הוספת יצירות לכותר קיים
+      new_volume: יצירת כותר חדש שטרם אותר בסדנה
+      new_volume_by_workshop: יצירת כותר חדש על סמך רשומה ביבליוגרפית קיימת
+      placeholder: '--- שומר מקום ---'
+      texts: יצירות שיעלו
+      placeholders: שומרי מקום
     destroy:
       success: ההעלאה נמחקה
   ingestible_texts:

@@ -22,6 +22,7 @@ Bybeconv::Application.routes.draw do
       patch :update_toc
       post :update_toc_list
       get :edit_toc
+      post :ingest
     end
   end
 

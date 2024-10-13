@@ -21,4 +21,22 @@ module IngestibleHelper
       ''
     end
   end
+
+  def authorities_including_implicit(toc_text)
+    aus = if toc_text.present?
+            JSON.parse(toc_text)
+          elsif @ingestible.default_authorities.present?
+            JSON.parse(@ingestible.default_authorities)
+          else
+            []
+          end
+
+    if aus.present?
+      return aus.map do |ia|
+               "#{ia['authority_name'].presence || ia['new_person']} (#{textify_authority_role(ia['role'])})"
+             end.join('<br />')
+    end
+
+    return t(:unknown)
+  end
 end
