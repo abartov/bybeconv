@@ -1386,6 +1386,8 @@ he:
       placeholder: '--- שומר מקום ---'
       texts: יצירות שיעלו
       placeholders: שומרי מקום
+      already_in_collection: כבר קיים בכותר
+      back_to_editing: חזרה לעריכת ההעלאה
     destroy:
       success: ההעלאה נמחקה
   ingestible_texts:

@@ -47,7 +47,10 @@
           %tr
             %td= text[1]
             - if text[0] == 'no'
-              %td{colspan: 3, align: 'center'}= t('.placeholder')
+              %td{colspan: 3, align: 'center'}
+                = t('.placeholder')
+                - if @collection.blank? || (@collection.present? && @collection.placeholders.map(&:alt_title).include?(text[1]))
+                  %span{style: 'font-size:70%;'}!= t('.already_in_collection')
             - else
               - authorities_string = authorities_including_implicit(text[2])
               %td!= authorities_string
@@ -61,10 +64,20 @@
           %th= t(:name)
           %th= t('.additions')
       %tbody
-        -# @ingestible.review_authorities.each do |authority|
+        - @authority_changes.each do |name, roles|
+          %tr
+            %td= name
+            %td
+              - roles.each do |role, titles|
+                %b= textify_authority_role(role)+': '
+                %div{style: 'margin-right: 1em;'}
+                  - titles.each do |title|
+                    = title
+                    %br
 
 = button_to t('.ingest'), ingest_ingestible_path(@ingestible), method: :post, id: 'ingest_button', class: 'btn btn-primary'
-
+%br
+= link_to t('.back_to_editing'), edit_ingestible_path(@ingestible), class: 'by-button-v02 btn-secondary-v02'
 = link_to t(:back), ingestibles_path
 %div#spinnerdiv{style: 'display: none; top: 50%; left: 50%;'}
   #floatingCirclesG

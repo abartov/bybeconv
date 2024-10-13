@@ -72,6 +72,10 @@ class Collection < ApplicationRecord
     collection_items_by_type(item_type).map(&:item)
   end
 
+  def placeholders
+    collection_items.where(item: nil, markdown: nil)
+  end
+
   def title_and_authors
     return "#{title} / #{authors_string}"
   end

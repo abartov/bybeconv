@@ -181,6 +181,24 @@ class IngestiblesController < ApplicationController
     @decoded_toc = @ingestible.decode_toc
     @texts_to_upload = @ingestible.texts_to_upload
     @placeholders = @ingestible.placeholders
+    @collection = @ingestible.volume # would be nil for new volumes
+    @authority_changes = {}
+    @texts_to_upload.each do |x|
+      aus = if x[2].present?
+              JSON.parse(x[2])
+            elsif @ingestible.default_authorities.present?
+              JSON.parse(@ingestible.default_authorities)
+            else
+              []
+            end
+      aus.each do |ia|
+        name = ia['new_person'].presence || ia['authority_name']
+        role = ia['role']
+        @authority_changes[name] = {} unless @authority_changes.key?(name)
+        @authority_changes[name][role] = [] unless @authority_changes[name].key?(role)
+        @authority_changes[name][role] << x[1]
+      end
+    end
   end
 
   # Only allow a list of trusted parameters through.
