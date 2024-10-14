@@ -1392,8 +1392,9 @@ he:
       missing_genre: 'ליצירות הבאות לא הוגדרה סוגה:'
       missing_origlang: 'ליצירות הבאות לא הוגדרה שפת מקור:'
       missing_authority: 'ליצירות הבאות לא קושר אף אדם או ארגון:'
+      missing_publisher_info: לא הוזנו פרטי הוצאה על אף שהוגדר כותר
       errors: שגיאות!
-      cannot_ingest_with_errors: יש לתקן את השגיאות כדי שלחצן ההעלאה יהיה זמין.
+      cannot_ingest_with_errors: יש לתקן את השגיאות המתוארות בראש הדף כדי שלחצן ההעלאה יהיה זמין.
     destroy:
       success: ההעלאה נמחקה
   ingestible_texts:

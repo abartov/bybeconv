@@ -98,7 +98,7 @@ class IngestiblesController < ApplicationController
     existing_prospective_volume_id = @ingestible.prospective_volume_id
     if @ingestible.update(ingestible_params)
       if existing_volume_id != @ingestible.volume_id || existing_prospective_volume_id != @ingestible.prospective_volume_id
-        @ingestible.update_authorities_from_volume
+        @ingestible.update_authorities_and_metadata_from_volume
       end
       redirect_to edit_ingestible_url(@ingestible), notice: t('.success')
     else
@@ -213,7 +213,7 @@ class IngestiblesController < ApplicationController
     @missing_genre = []
     @missing_origlang = []
     @missing_authority = []
-    @ingestible.volu
+    @missing_publisher_info = !@ingestible.no_volume && (@ingestible.publisher.blank? || @ingestible.year_published.blank?)
     @texts_to_upload.each do |x|
       @missing_in_markdown << x[1] unless @markdown_titles.include?(x[1])
       @missing_genre << x[1] if x[3].blank?
@@ -234,7 +234,7 @@ class IngestiblesController < ApplicationController
         @authority_changes[name][role] << x[1]
       end
     end
-    @errors = @missing_in_markdown.present? || @missing_genre.present? || @missing_origlang.present? || @missing_authority.present?
+    @errors = @missing_in_markdown.present? || @missing_genre.present? || @missing_origlang.present? || @missing_authority.present? || @missing_publisher_info
   end
 
   # Only allow a list of trusted parameters through.
@@ -264,13 +264,15 @@ class IngestiblesController < ApplicationController
       if @ingestible.prospective_volume_id[0] == 'P' # new volume from known Publication
         @publication = Publication.find(@ingestible.prospective_volume_id[1..-1])
         @collection = Collection.create!(title: @ingestible.prospective_volume_title,
-                                         collection_type: 'volume', publication: @publication)
+                                         collection_type: 'volume', publication: @publication,
+                                         publisher_line: @publication.publisher_line, pub_year: @publication.pub_year)
         created_volume = true
       else # existing volume
         @collection = Collection.find(@ingestible.prospective_volume_id)
       end
     else # new volume from scratch!
-      @collection = Collection.create!(title: @ingestible.prospective_volume_title, collection_type: 'volume')
+      @collection = Collection.create!(title: @ingestible.prospective_volume_title, collection_type: 'volume',
+                                       pub_year: @ingestible.year_published, publisher_line: @ingestible.publisher)
       created_volume = true
     end
     return unless created_volume

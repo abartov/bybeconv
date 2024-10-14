@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_10_13_041937) do
+ActiveRecord::Schema.define(version: 2024_10_14_192457) do
 
   create_table "aboutnesses", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -295,6 +295,9 @@ ActiveRecord::Schema.define(version: 2024_10_13_041937) do
     t.integer "toc_strategy"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "publisher_line"
+    t.string "pub_year"
+    t.integer "normalized_pub_year"
     t.index ["inception_year"], name: "index_collections_on_inception_year"
     t.index ["publication_id"], name: "index_collections_on_publication_id"
     t.index ["sort_title"], name: "index_collections_on_sort_title"

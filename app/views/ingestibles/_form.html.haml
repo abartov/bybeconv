@@ -71,7 +71,7 @@
       - genres = [[t(:mixed_genres), 'mixed']]+get_genres.map {|genre| [I18n.t(genre), genre]}
       = f.select :genre, options_for_select(genres, @ingestible.genre), {include_blank: true}
       = f.label t(:publisher)
-      = f.text_field :publisher, required: true, style: 'width:400px;'
+      = f.text_field :publisher, style: 'width:400px;'
       = f.label t(:year_published)
       = f.text_field :year_published, style: 'width:100px;'
       %br
