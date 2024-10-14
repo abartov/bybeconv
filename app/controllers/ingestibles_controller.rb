@@ -35,6 +35,26 @@ class IngestiblesController < ApplicationController
 
   # GET /ingestibles/1/ingest
   def ingest
+    prep_for_ingestion
+    if @errors
+      redirect_to review_ingestible_url(@ingestible), alert: t('.errors')
+    else
+      @collection = nil # default
+      @collection = create_or_load_collection unless no_volume # no_volume means we don't want to ingest into a Collection
+
+      # - loop over whole TOC
+      # - create placeholders
+      # - create Work, Expression, Manifestation entities
+      # - associate authorities
+      # - add to collection, replacing placeholder if appropriate
+      # - record all IDs in ingestible, for undoability
+      # - record ingesting user
+      # - email (whom?) with news about the ingestion, and links to all the created entities
+      # - show post-ingestion screen, with links to all created entities and affected authorities
+      # - trigger an updating of whatsnew
+
+      redirect_to ingestibles_url, notice: t('.success')
+    end
   end
 
   # GET /ingestibles/1/edit
@@ -193,6 +213,7 @@ class IngestiblesController < ApplicationController
     @missing_genre = []
     @missing_origlang = []
     @missing_authority = []
+    @ingestible.volu
     @texts_to_upload.each do |x|
       @missing_in_markdown << x[1] unless @markdown_titles.include?(x[1])
       @missing_genre << x[1] if x[3].blank?
@@ -235,5 +256,28 @@ class IngestiblesController < ApplicationController
       :prospective_volume_title,
       :toc_buffer
     )
+  end
+
+  def create_or_load_collection
+    created_volume = false
+    if @ingestible.prospective_volume_id.present?
+      if @ingestible.prospective_volume_id[0] == 'P' # new volume from known Publication
+        @publication = Publication.find(@ingestible.prospective_volume_id[1..-1])
+        @collection = Collection.create!(title: @ingestible.prospective_volume_title,
+                                         collection_type: 'volume', publication: @publication)
+        created_volume = true
+      else # existing volume
+        @collection = Collection.find(@ingestible.prospective_volume_id)
+      end
+    else # new volume from scratch!
+      @collection = Collection.create!(title: @ingestible.prospective_volume_title, collection_type: 'volume')
+      created_volume = true
+    end
+    return unless created_volume
+
+    @ingestible.default_authorities.each do |auth|
+      @collection.involved_authorities.create!(authority: Authority.find(auth['authority_id']),
+                                               role: auth['role'])
+    end
   end
 end
