@@ -143,6 +143,19 @@ class Collection < ApplicationRecord
     return []
   end
 
+  # return nearest parent volume or periodical_issue
+  def parent_volume_or_isssue
+    seen_colls = []
+    parent_collections.each do |pc| # iterate until we find a volume of collection_type parent or periodical_issue
+      next if seen_colls.include?(pc.id)
+
+      return pc if pc.volume? || pc.periodical_issue?
+
+      seen_colls << pc.id
+    end
+    return nil
+  end
+
   def authorities
     auths = involved_authorities
     return auths if auths.count > 0

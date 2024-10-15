@@ -16,6 +16,8 @@ class CollectionsController < ApplicationController
     @header_partial = 'shared/collection_top'
     @colls_traversed = [@collection.id]
     @print_url = url_for(action: :print, collection_id: @collection.id)
+    @pagetype = :collection
+    prep_for_show
   end
 
   # GET /collections/1/periodical_issues
@@ -175,7 +177,8 @@ class CollectionsController < ApplicationController
     @htmls = []
     i = 1
     @collection.collection_items.each do |ci|
-      @htmls << [ci.title, ci.authors, footnotes_noncer(ci.to_html, i), false, ci.genre,
+      html = ci.to_html
+      @htmls << [ci.title, ci.authors, html.present? ? footnotes_noncer(ci.to_html, i) : '', false, ci.genre,
                  i]
       i += 1
     end

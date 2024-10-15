@@ -918,5 +918,6 @@ class ManifestationController < ApplicationController
       end
     end
     @containments = @m.collection_items
+    @volumes = @m.volumes
   end
 end

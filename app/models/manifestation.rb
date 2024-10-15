@@ -124,6 +124,21 @@ class Manifestation < ApplicationRecord
     )
   end
 
+  # return containing collections of collectin_type volume or periodical_issue
+  def volumes
+    ret = []
+    containers = collection_items.includes(:collection).map(&:collection)
+    containers.each do |c|
+      if %w(volume periodical_issue).include?(c.collection_type)
+        ret << c
+      else
+        pc = c.parent_volume_or_isssue
+        ret << pc unless pc.nil?
+      end
+    end
+    return ret.flatten
+  end
+
   def to_html
     return MultiMarkdown.new(markdown).to_html.force_encoding('UTF-8').gsub(%r{<figcaption>.*?</figcaption>}, '')
   end

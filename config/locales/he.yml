@@ -1,6 +1,7 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 he:
+  inside: 'בתוך: '
   author_list: רשימת היוצרים
   first_last_name: "שם פרטי / משפחה"
   to_latest_x_works: הצג %{x} יצירות אחרונות

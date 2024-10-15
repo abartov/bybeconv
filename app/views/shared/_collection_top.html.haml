@@ -22,9 +22,6 @@
           - elsif eds.present?
             #{t(:edited_by)}:
             %span= eds
-      .watermark
-        .watermark__inner
-          .watermark__body= 'מסך טיוטה'
       .row
         .col-12
           .work-and-author-names-desktop
@@ -37,7 +34,13 @@
               - elsif eds.present?
                 #{t(:edited_by)}:
                 %span= eds
+          .field-v02.work-chapters-dropdown-field-desktop#collitem_dropdown{style: 'background-color: unset;'}
+            = select_tag 'collitem', options_for_select(@htmls.map{ |title, html, is_curated, genre, i| [title, i] }, 0), class: 'dropdown-v02', id: 'chapter', style: 'width: 100%;'
+
           .work-page-top-icons-desktop
+            %button.btn-small-outline-v02.btn-text-v02.reading-mode-btn-v02{href: "#"}
+              %span.by-icon-v02= '/'
+              = t(:reading_mode)
             .top-left-icons-group
               .icons-group-v02
                 .by-icon-v02.pointer.linkcolor.bookmark-status.notyet
@@ -61,4 +64,24 @@
     $('.printbutton').click(function() {
       window.open("#{@print_url}",'_blank');
     });
+    $('#collitem_dropdown').click(function(){
+      if($('#collitem_dropdown_content').css('display') == 'block')
+        $('#collitem_dropdown_content').css('display', 'none');
+      else
+        $('#collitem_dropdown_content').css('display', 'block');
+    });
+    $('.jumpch').click(function(e) {
+      e.preventDefault();
+      anchor = $(this).attr('data-target');
+      $('html, body').animate({
+        scrollTop: $('a[name='+anchor+']').offset().top - $('header').height() - 45
+      }, 800);
+      $('#chapterDlg').modal('hide');
+      $('header').addClass("scrolled");
+      $('html, body').animate({ // re-adjust, after the header height changed
+        scrollTop: $('a[name='+anchor+']').offset().top - $('header').height() - 45
+      }, 0);
+      $('#actualtext').focus();
+    });
+
   });

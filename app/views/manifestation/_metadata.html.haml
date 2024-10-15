@@ -24,6 +24,8 @@
     .headline-3-v02
       = "#{t(:editing_or_compilation)}: "
       != @editors.map { |t| link_to(t.name, authority_path(t)) }.join(', ')
+  - @volumes.each do |v|
+    = link_to "#{t(:inside)} #{v.title}", collection_path(v)
 
 %div
   .metadata
