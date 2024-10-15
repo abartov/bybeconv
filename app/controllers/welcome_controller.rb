@@ -64,10 +64,10 @@ class WelcomeController < ApplicationController
 
   def submit_contact
     @errors = []
-    unless params[:ziburit] =~ /ביאליק/
+    unless params[:ziburit2] =~ /ביאליק/
       @errors << t('.ziburit_failed')
     end
-    if params[:email].blank?
+    if params[:email].blank? || params[:email].match(/example\.com/)
       @errors << t('.email_missing')
     end
 
