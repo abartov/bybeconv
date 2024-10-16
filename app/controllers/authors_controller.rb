@@ -345,7 +345,7 @@ class AuthorsController < ApplicationController
   end
 
   def new
-    @author = Authority.new(intellectual_property: :unknown)
+    @author = Authority.new(intellectual_property: :unknown, name: params[:name])
     type = params[:type]
     if type == 'person'
       @author.person = Person.new

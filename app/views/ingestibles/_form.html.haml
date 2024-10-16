@@ -134,7 +134,7 @@
         %br
         #toc_div= render partial: 'toc'
       = form_for @ingestible do |f|
-        = f.text_area :toc_buffer, class: 'textarea100'
+        -#= f.text_area :toc_buffer, class: 'textarea100'
         .actions
           = f.submit t(:save), class: 'btn btn-primary'
     .tab-pane#texts
