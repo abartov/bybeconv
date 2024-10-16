@@ -18,14 +18,17 @@ class Collection < ApplicationRecord
   # has_many :topics, class_name: 'Aboutness', dependent: :destroy # topics that this work is ABOUT
   has_many :downloadables, as: :object, dependent: :destroy
 
+  has_many :taggings, as: :taggable, dependent: :destroy
+  has_many :tags, through: :taggings, class_name: 'Tag'
+  # TODO: implement
+  #  has_many :likings, as: :likeable, dependent: :destroy
+  #  has_many :likers, through: :likings, class_name: 'User'
+
   # convenience methods
   has_many :manifestation_items, through: :collection_items, source: :item, source_type: 'Manifestation'
   has_many :person_items, through: :collection_items, source: :item, source_type: 'Person'
   has_many :work_items, through: :collection_items, source: :item, source_type: 'Work'
   has_many :coll_items, through: :collection_items, source: :item, source_type: 'Collection'
-
-  has_many :taggings, as: :taggable, dependent: :destroy
-  has_many :tags, through: :taggings, class_name: 'Tag'
 
   # enum status: [:published, :nonpd, :unpublished, :deprecated]
 
@@ -185,6 +188,17 @@ class Collection < ApplicationRecord
       recs += ci.included_recommendations
     end
     return recs
+  end
+
+  def like_count
+    return 0
+    # TODO: enable after implementing the likings table
+    # return likers.count
+  end
+
+  # TODO: replace with activerecord association
+  def recommendations
+    return []
   end
 
   # return nearest parent volume or periodical_issue

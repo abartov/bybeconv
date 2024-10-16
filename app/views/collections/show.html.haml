@@ -95,27 +95,36 @@
                     .metadata-link-icon.small-icon.pointer &amp;
                     %div= t(:suggest_new_tag)
 
-          / המלצות
-          .by-card-v02.left-side-card-v02
+          .by-card-v02.left-side-card-v02#recs
+            - ctype = textify_collection_type(@collection.collection_type)
             .by-card-header-left-v02
-              .by-icon-v02 )
-              .headline-1-v02 המלצות קוראים
-            .by-card-content-v02.card-with-bottom-links
-              לאסופה זו או ליצירות הכלולות בה יש 5 המלצות קוראים
-          / המלצות
-          .by-card-v02.left-side-card-v02
-            .by-card-header-left-v02
-              .by-icon-v02 )
-              .headline-1-v02 יצירות על אודות
-            .by-card-content-v02.card-with-bottom-links
-              ישנן 4 יצירות על אודות אסופה זו ו/או יצירות המופיעות בה
-          / תרגומים נוספים
-          .by-card-v02.left-side-card-v02
-            .by-card-header-left-v02
-              .by-icon-v02 )
-              .headline-1-v02 תרגומים נוספים
-            .by-card-content-v02.card-with-bottom-links
-              ישנם 2 תרגומים נוספים נוספים ליצירות המופיעות בקובץ יצירות זה
+              %span.headline-1-v02= t(:recommendations_for_collection, ctype: ctype)
+            .by-card-content-v02
+              - if @collection.like_count.present?
+                = t(:x_liked_ctype, x: @collection.like_count, ctype: ctype)
+                %br
+              - if @total_recs > 0
+                -# TODO: add recs for the collection itself, after Recommendations are made polymorphic
+                - if @included_recs > 0
+                  = t(:works_in_this_collection_have_x_recommendations, x: @included_recs, ctype: ctype)
+              - else
+                = t(:no_recommendations_yet)
+              -# TODO: add add-a-recommendation UI
+
+          -#/ יצירות על אודות
+          -#.by-card-v02.left-side-card-v02
+          -#  .by-card-header-left-v02
+          -#    .by-icon-v02 )
+          -#    .headline-1-v02 יצירות על אודות
+          -#  .by-card-content-v02.card-with-bottom-links
+          -#    ישנן 4 יצירות על אודות אסופה זו ו/או יצירות המופיעות בה
+          -#/ תרגומים נוספים
+          -#.by-card-v02.left-side-card-v02
+          -#  .by-card-header-left-v02
+          -#    .by-icon-v02 )
+          -#    .headline-1-v02 תרגומים נוספים
+          -#  .by-card-content-v02.card-with-bottom-links
+          -#    ישנם 2 תרגומים נוספים נוספים ליצירות המופיעות בקובץ יצירות זה
 -#.by-card-v02
 -#  = render partial: 'collection', locals: { collection: @collection, focused: true, label_ci_types: false }
 

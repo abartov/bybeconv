@@ -141,8 +141,12 @@ he:
   person_entity: ישות יוצר
   report_inappropriate_content: דיווח על תוכן בעייתי
   this_work_has_x_recommendations: "ליצירה זו יש %{x} המלצות קוראים"
+  works_in_this_collection_have_x_recommendations: "ליצירות הכלולות ב%{ctype} יש %{x} המלצות קוראים"
+  recommendations_for_collection: המלצות על ה%{ctype} או על היצירות הכלולות
+
   x_liked_y_recommended: "%{x} קוראות וקוראים אהבו את היצירה, %{y} המלצות כתובות"
   x_liked: "%{x} קוראות וקוראים אהבו את היצירה"
+  x_liked_ctype: "%{x} קוראות וקוראים אהבו את ה%{ctype}"
   wait: נא להמתין
   with: "עם "
   associate_with_viaf: קשר את התיקיה לרשומת ה-VIAF הזו

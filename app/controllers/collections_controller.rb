@@ -19,7 +19,8 @@ class CollectionsController < ApplicationController
     @print_url = url_for(action: :print, collection_id: @collection.id)
     @pagetype = :collection
     @taggings = @collection.taggings
-
+    @included_recs = @collection.included_recommendations.count
+    @total_recs = @collection.recommendations.count + @included_recs
     prep_for_show
     prep_user_content(:collection) # user anthologies, bookmarks
   end

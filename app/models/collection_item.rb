@@ -79,6 +79,15 @@ class CollectionItem < ApplicationRecord
     return []
   end
 
+  # return Recommendations for included items
+  def included_recommendations
+    return [item.recommendations] if %w(Manifestation Collection).include?(item_type)
+
+    return item.included_recommendations if item.respond_to?(:included_recommendations) # sub-collections
+
+    return []
+  end
+
   def paratext?
     item.nil? && markdown.present?
   end
