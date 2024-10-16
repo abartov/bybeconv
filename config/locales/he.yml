@@ -214,6 +214,7 @@ he:
   most_read_works: רשימת היצירות הנקראות ביותר
   newest_works: היצירות החדשות ביותר
   table_of_contents: תוכן עניינים
+  x_of_y_items_available: "%{x}/%{y} יצירות מתוך %{ctype} זה הועלו למאגר"
   author_table_of_contents: דף יוצר
   new_person: "יוצר/ת חדש/ה"
   new_corporate_body: ארגון חדש

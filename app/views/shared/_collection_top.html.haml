@@ -34,8 +34,8 @@
               - elsif eds.present?
                 #{t(:edited_by)}:
                 %span= eds
-          .field-v02.work-chapters-dropdown-field-desktop#collitem_dropdown{style: 'background-color: unset;'}
-            = select_tag 'collitem', options_for_select(@htmls.map{ |title, html, is_curated, genre, i| [title, i] }, 0), class: 'dropdown-v02', id: 'chapter', style: 'width: 100%;'
+          .field-v02.work-chapters-dropdown-field-desktop{style: 'background-color: unset;'}
+            = select_tag 'collitem', options_for_select(@htmls.map{ |title, authors, html, is_curated, genre, i| [title, i] }, 0), class: 'dropdown-v02', id: 'collitem_dropdown', style: 'width: 100%;'
 
           .work-page-top-icons-desktop
             %button.btn-small-outline-v02.btn-text-v02.reading-mode-btn-v02{href: "#"}
@@ -53,8 +53,43 @@
                   .by-icon-v02.pointer.linkcolor.bookmark-status.notyet
                   .by-icon-v02.pointer.linkcolor.printbutton= 9
                   .by-icon-v02.pointer.linkcolor.download{ data: { 'downloadable-id' => @collection.id, toggle: :modal, target: '#downloadDlg' } }= 3
+
+  .row.error-found-row
+    .side-nav-col
+      .side-menu-headline= t(:table_of_contents)+':'
+      %nav#chapternav.navbar
+        %ul#chapter-nav.navbar-nav.flex-column.by-card-v02{style:'width: unset', "aria-orientation" => "vertical"}
+          - first = true
+          - @htmls.each do |title, authors, html, is_curated, genre, i|
+            %li.nav-item.side-menu-item{ id: "collitem_#{i}_button", 'data-target' => "collitem_text_#{i}"}
+              %a{'class' => 'nav-link nav-chapter-name nav-link-chapter pointer linkcolor '+(first ? ' active' : ''), "aria-controls" => "#", "aria-selected" => "false", 'data-toggle' => 'tooltip', 'title' => title, 'data-placement' => 'top', 'data-delay' => { "show": 500, "hide": 100 }, href: "#"}
+                .nav-chapter-name= title
+                - first = false
+
+    .col{style: "z-order:-1;height:0;"}
+    .col-4.error-found-col
+      %button.error-found-btn.notyet
+        .error-found
+          .error-found-text
+            = t(:found_br_mistake_html)
+          .error-found-icon g
+    .col-lg-4{style: "height:1px"}
 :javascript
   $(document).ready(function() {
+    $('.side-menu-item').click(function(e) {
+      e.preventDefault();
+      $('.side-menu-item').removeClass('current-menu-item');
+      $(this).addClass('current-menu-item');
+      anchor = $(this).attr('data-target');
+      $('html, body').animate({
+        scrollTop: $('a[name='+anchor+']').offset().top - $('header').height() - 120
+      }, 800);
+      $('header').addClass("scrolled");
+      $('html, body').animate({ // re-adjust, after the header height changed
+        scrollTop: $('a[name='+anchor+']').offset().top - $('header').height() - 120
+      }, 0);
+    });
+
     $('.by-icon-v02.download').click(function(e) {
       e.preventDefault();
       e.stopImmediatePropagation();
@@ -64,24 +99,15 @@
     $('.printbutton').click(function() {
       window.open("#{@print_url}",'_blank');
     });
-    $('#collitem_dropdown').click(function(){
-      if($('#collitem_dropdown_content').css('display') == 'block')
-        $('#collitem_dropdown_content').css('display', 'none');
-      else
-        $('#collitem_dropdown_content').css('display', 'block');
-    });
-    $('.jumpch').click(function(e) {
-      e.preventDefault();
-      anchor = $(this).attr('data-target');
+    $('#collitem_dropdown').change(function() {
+      anchor = 'collitem_text_'+$('#collitem_dropdown').val();
       $('html, body').animate({
-        scrollTop: $('a[name='+anchor+']').offset().top - $('header').height() - 45
+        scrollTop: $('a[name='+anchor+']').offset().top - $('header').height() - 120
       }, 800);
-      $('#chapterDlg').modal('hide');
       $('header').addClass("scrolled");
       $('html, body').animate({ // re-adjust, after the header height changed
-        scrollTop: $('a[name='+anchor+']').offset().top - $('header').height() - 45
+        scrollTop: $('a[name='+anchor+']').offset().top - $('header').height() - 120
       }, 0);
-      $('#actualtext').focus();
     });
 
   });

@@ -143,6 +143,23 @@ class Collection < ApplicationRecord
     return []
   end
 
+  def editors
+    eds = involved_authorities_by_role(:editor)
+    return eds if eds.count > 0
+
+    seen_colls = []
+    parent_collections.each do |pc| # iterate until we find editors
+      next if seen_colls.include?(pc.id)
+
+      eds = pc.editors
+      return eds if eds.present?
+
+      seen_colls << pc.id
+    end
+
+    return []
+  end
+
   # return nearest parent volume or periodical_issue
   def parent_volume_or_isssue
     seen_colls = []

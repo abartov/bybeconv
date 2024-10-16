@@ -182,5 +182,7 @@ class CollectionsController < ApplicationController
                  i]
       i += 1
     end
+    @collection_total_items = @collection.collection_items.count
+    @collection_minus_placeholders = @collection.collection_items.reject { |ci| ci.item.nil? }.count
   end
 end
