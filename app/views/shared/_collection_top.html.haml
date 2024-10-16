@@ -82,11 +82,11 @@
       $(this).addClass('current-menu-item');
       anchor = $(this).attr('data-target');
       $('html, body').animate({
-        scrollTop: $('a[name='+anchor+']').offset().top - $('header').height() - 120
+        scrollTop: $('a[name='+anchor+']').offset().top - $('header').height() - 160
       }, 800);
       $('header').addClass("scrolled");
       $('html, body').animate({ // re-adjust, after the header height changed
-        scrollTop: $('a[name='+anchor+']').offset().top - $('header').height() - 120
+        scrollTop: $('a[name='+anchor+']').offset().top - $('header').height() - 160
       }, 0);
     });
 

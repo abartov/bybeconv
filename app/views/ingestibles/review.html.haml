@@ -10,6 +10,16 @@
         %ul
           - missing.each do |title|
             %li= title
+- if @ingestible.awaiting_authorities?
+  .yellowbg
+    %h3= t('.awaiting_authorities')
+    %ol
+      - @authorities_tbd.each do |authority|
+        %li= "#{authority['new_person']} (#{textify_authority_role(authority['role'])})"
+- elsif @authorities_tbd.present?
+  .yellowbg
+    %h3= t('.authorities_tbd')
+
 %div{style: 'display: flex;flex-wrap: wrap;'}
   .admin_dashboard_item
     %h2= t('.volume_information')
@@ -94,7 +104,10 @@
 - if @errors
   %h2.redbg= t('.cannot_ingest_with_errors')
 - else
-  = button_to t('.ingest'), ingest_ingestible_path(@ingestible), method: :post, id: 'ingest_button', class: 'btn btn-primary'
+  - if @authorities_tbd.present?
+    .yellowbg
+      %h3= t('.authorities_tbd')
+  = button_to @authorities_tbd.present? ? t('.pending_ingest') : t('.ingest'), ingest_ingestible_path(@ingestible), method: :post, id: 'ingest_button', class: 'btn btn-primary'
 %br
 = link_to t('.back_to_editing'), edit_ingestible_path(@ingestible), class: 'by-button-v02 btn-secondary-v02'
 = link_to t(:back), ingestibles_path

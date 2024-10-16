@@ -71,3 +71,8 @@ he:
         comments: הערות
         markdown: מארקדאון
         volume_id: כותר
+        statuses:
+          awaiting_authorities: ממתינה ליצירת אישים
+          draft: טיוטה בעבודה
+          ingested: נקלטה בקטלוג
+          failed: ההעלאה נכשלה

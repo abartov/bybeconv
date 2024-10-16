@@ -218,7 +218,7 @@ he:
   most_read_works: רשימת היצירות הנקראות ביותר
   newest_works: היצירות החדשות ביותר
   table_of_contents: תוכן עניינים
-  x_of_y_items_available: "%{x}/%{y} יצירות מתוך %{ctype} זה הועלו למאגר"
+  x_of_y_items_available: "%{x}/%{y} פריטים מתוך %{ctype} זה הועלו למאגר"
   author_table_of_contents: דף יוצר
   new_person: "יוצר/ת חדש/ה"
   new_corporate_body: ארגון חדש
@@ -1377,12 +1377,15 @@ he:
       review: סקירה
     update:
       success: ההעלאה עודכנה
+    ingest:
+      ingestion_now_pending: ההעלאה ממתינה עכשיו ליצירת אישים
     review:
       title: "סקירת העלאה: %{title}"
       statistics: סטטיסטיקה
       text_information: מידע על יצירות
       affected_authorities: מידע על יוצרים
       ingest: סיים העלאה וצור ישויות!
+      pending_ingest: העבר ליצירת ישויות אישים. ההעלאה תושלם לאחר יצירת האישים החסרים.
       additions: תוספות
       volume_information: פרטי כותר
       no_volume: העלאת יצירות לא מקובצות – ללא כותר כלל
@@ -1401,6 +1404,8 @@ he:
       missing_publisher_info: לא הוזנו פרטי הוצאה על אף שהוגדר כותר
       errors: שגיאות!
       cannot_ingest_with_errors: יש לתקן את השגיאות המתוארות בראש הדף כדי שלחצן ההעלאה יהיה זמין.
+      authorities_tbd: אחד או יותר מהאישים המקושרים טרם מוכר במערכת. אם כל השאר מוכן, אפשר להעביר את ההעלאה למצב המתנה ליצירת האישים, והיא תעלה מייד לאחר יצירת הישויות החסרות.
+      awaiting_authorities: "ההעלאה מוכנה פרט לישויות חסרות:"
     destroy:
       success: ההעלאה נמחקה
   ingestible_texts:
@@ -1485,6 +1490,7 @@ he:
     permission_for_all: כלל היצירה מוגש ברשות
     permission_for_selected: כותרים מסוימים מונגשים ברשות
     unknown: לא ידוע
+    
   involved_authority:
     role:
       author: יוצר

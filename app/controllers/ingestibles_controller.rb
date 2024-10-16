@@ -5,7 +5,7 @@ class IngestiblesController < ApplicationController
 
   before_action { |c| c.require_editor('edit_catalog') }
   before_action :set_ingestible,
-                only: %i(show edit update update_markdown update_toc destroy review edit_toc update_toc_list)
+                only: %i(show edit update update_markdown update_toc destroy review ingest edit_toc update_toc_list)
   before_action :try_to_lock_ingestible,
                 only: %i(show edit update update_markdown destroy review update_toc update_toc_list edit_toc)
 
@@ -37,7 +37,11 @@ class IngestiblesController < ApplicationController
   def ingest
     prep_for_ingestion
     if @errors
+      @ingestible.draft! unless @ingestible.draft?
       redirect_to review_ingestible_url(@ingestible), alert: t('.errors')
+    elsif @authorities_tbd.present?
+      @ingestible.awaiting_authorities!
+      redirect_to ingestibles_path, alert: t('.ingestion_now_pending')
     else
       @collection = nil # default
       @collection = create_or_load_collection unless no_volume # no_volume means we don't want to ingest into a Collection
@@ -214,6 +218,7 @@ class IngestiblesController < ApplicationController
     @missing_origlang = []
     @missing_authority = []
     @missing_publisher_info = !@ingestible.no_volume && (@ingestible.publisher.blank? || @ingestible.year_published.blank?)
+    @authorities_tbd = []
     @texts_to_upload.each do |x|
       @missing_in_markdown << x[1] unless @markdown_titles.include?(x[1])
       @missing_genre << x[1] if x[3].blank?
@@ -227,6 +232,7 @@ class IngestiblesController < ApplicationController
             end
       @missing_authority << x[1] if aus.empty?
       aus.each do |ia|
+        @authorities_tbd << ia if ia['new_person'].present?
         name = ia['new_person'].presence || ia['authority_name']
         role = ia['role']
         @authority_changes[name] = {} unless @authority_changes.key?(name)

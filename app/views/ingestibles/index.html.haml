@@ -3,26 +3,24 @@
 %table
   %thead
     %tr
-      %th Title
-      %th Status
-      %th Metadata
-      %th Comments
-      %th Markdown
-      %th
-      %th
-      %th
+      %th= t(:title)
+      %th= t(:status)
+      %th= t(:edition_details)
+      %th= t(:comments)
+      %th= t(:markdown)
+      %th{colspan: 3}= t(:actions)
 
   %tbody
     - @ingestibles.each do |ingestible|
       %tr
         %td= ingestible.title
-        %td= ingestible.status
-        %td= ingestible.metadata
+        %td= Ingestible.human_enum_name(:status, ingestible.status)
+        %td= ingestible.publisher
         %td= ingestible.comments
         %td= ingestible.markdown
-        %td= link_to 'Show', ingestible
-        %td= link_to 'Edit', edit_ingestible_path(ingestible)
-        %td= link_to 'Destroy', ingestible, method: :delete, data: { confirm: 'Are you sure?' }
+        %td= link_to t(:show), ingestible.draft? ? ingestible : review_ingestible_url(ingestible)
+        %td= link_to t(:edit), edit_ingestible_path(ingestible)
+        %td= link_to t(:destroy), ingestible, method: :delete, data: { confirm: t(:are_you_sure) }
 
 %br
 

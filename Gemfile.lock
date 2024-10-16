@@ -332,6 +332,8 @@ GEM
     httparty (0.21.0)
       mini_mime (>= 1.0.0)
       multi_xml (>= 0.5.2)
+    human_enum_name (0.1.0)
+      activesupport (>= 4.2.0)
     i18n (1.14.6)
       concurrent-ruby (~> 1.0)
     image_processing (1.12.2)
@@ -799,6 +801,7 @@ DEPENDENCIES
   hebrew (>= 0.2.1)
   hebruby
   htmlentities
+  human_enum_name
   image_processing
   immigrant
   impressionist!
