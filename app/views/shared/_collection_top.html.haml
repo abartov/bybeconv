@@ -35,9 +35,9 @@
                 #{t(:edited_by)}:
                 %span= eds
           .field-v02.work-chapters-dropdown-field-desktop{style: 'background-color: unset;'}
-            = select_tag 'collitem', options_for_select(@htmls.map{ |title, authors, html, is_curated, genre, i| [title, i] }, 0), class: 'dropdown-v02', id: 'collitem_dropdown', style: 'width: 100%;'
+            = select_tag 'collitem', options_for_select(@htmls.map{ |title, authors, html, is_curated, genre, i, ci| [title, i] }, 0), class: 'dropdown-v02', id: 'collitem_dropdown', style: 'width: 100%;'
 
-          .work-page-top-icons-desktop
+          .work-page-top-icons-desktop.notyet
             %button.btn-small-outline-v02.btn-text-v02.reading-mode-btn-v02{href: "#"}
               %span.by-icon-v02= '/'
               = t(:reading_mode)
@@ -60,7 +60,7 @@
       %nav#chapternav.navbar
         %ul#chapter-nav.navbar-nav.flex-column.by-card-v02{style:'width: unset', "aria-orientation" => "vertical"}
           - first = true
-          - @htmls.each do |title, authors, html, is_curated, genre, i|
+          - @htmls.each do |title, authors, html, is_curated, genre, i, ci|
             %li.nav-item.side-menu-item{ id: "collitem_#{i}_button", 'data-target' => "collitem_text_#{i}"}
               %a{'class' => 'nav-link nav-chapter-name nav-link-chapter pointer linkcolor '+(first ? ' active' : ''), "aria-controls" => "#", "aria-selected" => "false", 'data-toggle' => 'tooltip', 'title' => title, 'data-placement' => 'top', 'data-delay' => { "show": 500, "hide": 100 }, href: "#"}
                 .nav-chapter-name= title

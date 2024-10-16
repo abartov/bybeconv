@@ -10,7 +10,7 @@
           .by-card-v02.work-info-card
             %img.about-work-card-bookmark-fold-v02{alt: "", src: "/assets/creator-bookmark-back2.png"}/
             .about-work-author-card-v02
-              %img.about-work-author-pic-v02{alt: "", src: "/assets/Multi_Authors_16.jpg"}/
+              %img.about-work-author-pic-v02{alt: @authority_for_image.name, src: @authority_for_image.profile_image.url(:thumb)}/
             .by-card-content-v02
               .work-title.name-under-btn
                 .headline-1-v02
@@ -30,40 +30,49 @@
                     - edition = edition[0..-1] if edition[-1] == ','
                     - edition += '; '+@collection.pub_year unless edition[-1] == ';'
                   = edition
-                .metadata
-                  %span.by-icon-v02.copyright-icon> m
-                  נחלת הכלל
-                  %a.help{href: "#"} [?]
                 .metadata{style: "gap: 20px"}
-                  %div
-                    %span.metadata-link-icon> l
-                    פרוזה
-                  %div
-                    %span.metadata-link-icon> t
-                    שירה
+                  - @collection.intellectual_property_statuses.each do |intellectual_property|
+                    = render partial: 'shared/intellectual_property', locals: {intellectual_property: intellectual_property}
+                .metadata{style: "gap: 20px"}
+                  - @collection.included_genres.each do |genre|
+                    %div
+                      %span.by-icon-v02= glyph_for_genre(genre)
+                      = textify_genre(genre)
                 .metadata= t(:x_of_y_items_available, x: @collection_minus_placeholders, y: @collection_total_items, ctype: textify_collection_type(@collection.collection_type))
                 .metadata.mobile-work-details
                   %span{style: "font-weight:bold"} המלצות:
                   %a{href: "#"} 3 המלצות קוראים
 
-          .by-card-v02.binder-texts-list
-            .by-card-content-v02
-              .list-no-bullets
-                %ul
-                  - @htmls.each do |title, authors, html, is_curated, genre, i|
-                    - effective_authors = authors.reject{|a| @collection.authors.map(&:id).include?(a.id)}
-                    %li
-                      - if effective_authors.present?
-                        %a{href: "#"}= "#{title} / #{effective_authors.map(&:name).join(', ')}"
-                      - else
-                        %a{href: "#"}= title
+          :ruby
+            eauthors = {}
+            @htmls.each do |title, authors, html, is_curated, genre, i, ci|
+              effective_authors = authors.reject{|a| @collection.authors.map(&:id).include?(a.id)}
+              eauthors[title] = effective_authors.map(&:name).join(', ') if effective_authors.present?
+            end
+          - if eauthors.present?
+            .by-card-v02.binder-texts-list
+              .by-card-content-v02
+                .list-no-bullets
+                  %ul
+                    - @htmls.each do |title, authors, html, is_curated, genre, i, ci|
+                      %li
+                        %a.side-menu-item{href: "#collitem_text_#{i}", 'data-target' => "collitem_text_#{i}"}
+                          - if eauthors[title].present?
+                            = "#{title} / #{eauthors[title]}"
+                          - else
+                            = title
 
-          - @htmls.each do |title, authors, html, is_curated, genre, i|
+          - @htmls.each do |title, authors, html, is_curated, genre, i, ci|
             %a{ name: "collitem_text_#{i}" }
             .by-card-v02
               .by-card-header-v02
                 .by-icon-v02
-                .headline-1-v02= title
+                .headline-1-v02
+                  - link = url_for_collection_item(ci)
+                  - if link.present?
+                    = link_to title, link
+                  - else
+                    = title
               .by-card-content-v02
                 != html
     .col-12.col-lg-4

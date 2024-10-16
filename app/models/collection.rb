@@ -160,6 +160,24 @@ class Collection < ApplicationRecord
     return []
   end
 
+  # return list of genres in included items
+  def included_genres
+    genres = []
+    collection_items.each do |ci|
+      genres += ci.included_genres
+    end
+    return genres.uniq
+  end
+
+  # return list of copyright statuses in included items
+  def intellectual_property_statuses
+    ips = []
+    collection_items.each do |ci|
+      ips += ci.intellectual_property_statuses
+    end
+    return ips.uniq
+  end
+
   # return nearest parent volume or periodical_issue
   def parent_volume_or_isssue
     seen_colls = []

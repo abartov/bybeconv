@@ -179,10 +179,19 @@ class CollectionsController < ApplicationController
     @collection.collection_items.each do |ci|
       html = ci.to_html
       @htmls << [ci.title, ci.authors, html.present? ? footnotes_noncer(ci.to_html, i) : '', false, ci.genre,
-                 i]
+                 i, ci]
       i += 1
     end
     @collection_total_items = @collection.collection_items.count
     @collection_minus_placeholders = @collection.collection_items.reject { |ci| ci.item.nil? }.count
+    @authority_for_image = if @collection.authors.present?
+                             @collection.authors.first
+                           elsif @collection.translators.present?
+                             @collection.translators.first
+                           elsif @collection.editors.present?
+                             @collection.editors.first
+                           else
+                             nil
+                           end
   end
 end

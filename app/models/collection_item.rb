@@ -61,6 +61,24 @@ class CollectionItem < ApplicationRecord
     return MultiMarkdown.new(markdown).to_html
   end
 
+  # return list of genres in included items
+  def included_genres
+    return [item.expression.work.genre] if item_type == 'Manifestation'
+
+    return item.included_genres if item.respond_to?(:included_genres) # sub-collections
+
+    return []
+  end
+
+  # return list of copyright statuses in included items
+  def intellectual_property_statuses
+    return [item.expression.intellectual_property] if item_type == 'Manifestation'
+
+    return item.intellectual_property_statuses if item.respond_to?(:intellectual_property_statuses) # sub-collections
+
+    return []
+  end
+
   def paratext?
     item.nil? && markdown.present?
   end
