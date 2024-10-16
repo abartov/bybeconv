@@ -78,26 +78,23 @@
     .col-12.col-lg-4
       .row
         .col
-          / תגיות
+          -# Tags
           .by-card-v02.left-side-card-v02
-            .by-card-header-left-v02.headline-1-v02
-              %div תגיות עבור מסבה של סופרי א״י
-              .by-icon-v02.binder-icon G
+            .by-card-header-left-v02
+              %span.headline-1-v02= t(:tags)
+              .new-tag-teaser= t(:excited_new)
+              .new-tag-teaser-text= t(:new_tag_teaser)
             .by-card-content-v02.card-with-bottom-links
-              %button.tag
-                ספרות עכשווית
-                %a.tag-x{href: "#"} -
-              %button.tag
-                ישראליות
-                %a.tag-x{href: "#"} -
-              %button.tag
-                ארץ ישראל
-                %a.tag-x{href: "#"} -
-              .card-bottom
+              .inline-block#taggings
+                = render partial: 'shared/taggings', locals: {taggings: @taggings, taggable: @collection}
+              - unless current_user.nil? || current_user.blocked?
+                = hidden_field_tag :accepted_tag_policy, @bu.present? ? @bu.get_preference(:accepted_tag_policy) : 'false', id: 'accepted_tag_policy'
+              #add-tag.card-bottom
                 .link-to-all-v02
-                  %a{href: "#"}
-                    %span.metadata-link-icon.small-icon> &amp;
-                    הוספת תגית
+                  %button.by-button-v02.must-login#initiate-add-tag
+                    .metadata-link-icon.small-icon.pointer &amp;
+                    %div= t(:suggest_new_tag)
+
           / המלצות
           .by-card-v02.left-side-card-v02
             .by-card-header-left-v02
@@ -127,3 +124,21 @@
 
 #downloadDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
   = render partial: 'shared/download', locals: {entity: @collection}
+
+:javascript
+  $(document).ready(function() {
+    $('#initiate-add-tag').click(function(e) {
+      if("#{current_user}" != '') {
+        if($('#accepted_tag_policy').val() != 'false') {
+          $('#generalDlg').load("#{ add_tagging_popup_path(taggable_id: @collection.id, taggable_type: 'Collection') }");
+          $('#generalDlg').modal('show');
+        }
+        else
+          $('#tagPolicyDlg').modal({  backdrop: 'static', keyboard: false, show: true});
+      } else {
+        e.stopPropagation();
+        alert("#{t(:must_login_for_this)}");
+        return;
+      }
+    });
+  });

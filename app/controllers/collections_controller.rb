@@ -14,10 +14,14 @@ class CollectionsController < ApplicationController
   # GET /collections/1 or /collections/1.json
   def show
     @header_partial = 'shared/collection_top'
+    @scrollspy_target = 'chapternav'
     @colls_traversed = [@collection.id]
     @print_url = url_for(action: :print, collection_id: @collection.id)
     @pagetype = :collection
+    @taggings = @collection.taggings
+
     prep_for_show
+    prep_user_content(:collection) # user anthologies, bookmarks
   end
 
   # GET /collections/1/periodical_issues

@@ -1,8 +1,8 @@
 # handle everything related to Tags and Taggings
 class TaggingsController < ApplicationController
-  before_action :require_user, except: [:tag_portal, :tag_by_name] # for now, we don't allow anonymous taggings
+  before_action :require_user, except: %i(tag_portal tag_by_name) # for now, we don't allow anonymous taggings
   before_action :require_editor, only: [:rename_tag]
-  layout false, only: [:render_tags, :suggest, :add_tagging_popup, :listall_tags, :pending_taggings_popup]
+  layout false, only: %i(render_tags suggest add_tagging_popup listall_tags pending_taggings_popup)
 
   def add_tagging_popup
     @taggable = instantiate_taggable(params[:taggable_type], params[:taggable_id])
@@ -17,10 +17,12 @@ class TaggingsController < ApplicationController
     @tagging.taggable = @taggable
     @recent_tags_by_user = current_user.recent_tags_used
   end
+
   def pending_taggings_popup
     @tag = Tag.find(params[:tag_id])
     @taggings = @tag.taggings.pending
   end
+
   def create # creates a tagging and, if necessary, a tag
     if params[:tag].present?
       if params[:tag_id].present? # selecting from autocomplete would populate this
@@ -34,29 +36,29 @@ class TaggingsController < ApplicationController
         TagSimilarityJob.perform_async(tag.id) # schedule a job to find similar tags
       end
       # TODO: handle case where tag exists but has already been rejected, and DO NOT create a tagging
+    elsif params[:suggested_tag_id].present?
+      tag = Tag.find(params[:suggested_tag_id])
     else
-      if params[:suggested_tag_id].present?
-        tag = Tag.find(params[:suggested_tag_id])
-      else
-        head :not_found
-      end
+      head :not_found
     end
-    if tag
-      @t = Tagging.new(taggable: instantiate_taggable(params[:taggable_type], params[:taggable_id]), suggester: current_user, status: :pending)
-      tag.taggings << @t
-    end
+    return unless tag
+
+    @t = Tagging.new(taggable: instantiate_taggable(params[:taggable_type], params[:taggable_id]),
+                     suggester: current_user, status: :pending)
+    tag.taggings << @t
   end
 
   def destroy
     # TODO: implement
     tagging = Tagging.find(params[:id])
-    unless tagging.nil?
-      if tagging.pending? && (tagging.suggested_by == current_user.id || (current_user.editor? && current_user.has_bit?('moderate_tags')))
-        @taggable_id = tagging.taggable_id
-        @taggable_type = tagging.taggable_type
-        tagging.destroy
-      end
+    return if tagging.nil?
+    unless tagging.pending? && (tagging.suggested_by == current_user.id || (current_user.editor? && current_user.has_bit?('moderate_tags')))
+      return
     end
+
+    @taggable_id = tagging.taggable_id
+    @taggable_type = tagging.taggable_type
+    tagging.destroy
   end
 
   def list_tags # for backend
@@ -70,7 +72,7 @@ class TaggingsController < ApplicationController
   def listall_tags # for frontend
     order = params[:order] == 'abc' ? 'name asc' : 'taggings_count desc'
     @tags = Tag.approved.all.order(order) # TODO: at some point, we'll need to paginate this
-    #@tags = Tagging.approved.joins(:tag).order(:name).pluck(:tag_id,:name).group_by(&:pop).map{|x| {id: x[1][0], name: x[0], count: x[1].length}} # TODO: at some point, we'll need to paginate this
+    # @tags = Tagging.approved.joins(:tag).order(:name).pluck(:tag_id,:name).group_by(&:pop).map{|x| {id: x[1][0], name: x[0], count: x[1].length}} # TODO: at some point, we'll need to paginate this
   end
 
   def render_tags
@@ -105,7 +107,7 @@ class TaggingsController < ApplicationController
     if @tag.present? && @tag.approved?
       @taggings = @tag.taggings.approved
       @page_title = "#{@tag.name} - #{t(:tag_page)}"
-      #debugger
+      # debugger
       @tagged_authors_count = Person.tagged_with(@tag.id).count
       @tagged_authors = Person.tagged_with(@tag.id).order(impressions_count: :desc).limit(10)
       @tagged_works_count = Manifestation.tagged_with(@tag.id).count
@@ -135,6 +137,7 @@ class TaggingsController < ApplicationController
   end
 
   protected
+
   def instantiate_taggable(klass, id)
     case klass
     when 'Manifestation'
@@ -147,6 +150,8 @@ class TaggingsController < ApplicationController
       Work.find(id)
     when 'Expression'
       Expression.find(id)
+    when 'Collection'
+      Collection.find(id)
     else
       raise "Unsupported taggable type: #{klass}"
     end

@@ -76,5 +76,5 @@
       }
     });
     $('#tag').focus();
-    $('.suggested-tags-list').load("/tag_suggest?author=#{@author.id}");
+    $('.suggested-tags-list').load("/tag_suggest?author=#{@author.present? ? @author.id : ''}");
   });

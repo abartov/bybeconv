@@ -178,6 +178,15 @@ class Collection < ApplicationRecord
     return ips.uniq
   end
 
+  # return a list of Recommendations for any included items
+  def included_recommendations
+    recs = []
+    collection_items.each do |ci|
+      recs += ci.included_recommendations
+    end
+    return recs
+  end
+
   # return nearest parent volume or periodical_issue
   def parent_volume_or_isssue
     seen_colls = []
