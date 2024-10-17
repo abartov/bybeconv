@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_10_14_192457) do
+ActiveRecord::Schema.define(version: 2024_10_17_114910) do
 
   create_table "aboutnesses", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -584,6 +584,7 @@ ActiveRecord::Schema.define(version: 2024_10_14_192457) do
     t.string "prospective_volume_id"
     t.string "prospective_volume_title"
     t.integer "periodical_id"
+    t.string "intellectual_property"
     t.index ["locked_by_user_id"], name: "index_ingestibles_on_locked_by_user_id"
     t.index ["status"], name: "index_ingestibles_on_status"
     t.index ["title"], name: "index_ingestibles_on_title"

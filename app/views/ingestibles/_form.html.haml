@@ -77,6 +77,8 @@
       %br
       = f.label t(:orig_lang)
       = f.select :orig_lang, options_for_select(get_langs.map {|lang| [textify_lang(lang), lang]}, @ingestible.orig_lang)
+      = f.label t(:copyright_status)
+      = f.select :intellectual_property, options_for_select(Expression.intellectual_properties.keys.map { |code| [textify_intellectual_property(code), code] }, @ingestible.intellectual_property)
       = render partial: 'authorities', locals: {authorities: @ingestible.default_authorities}
       %hr
       .field
@@ -133,17 +135,17 @@
         = button_tag t('ingestible.included_works'), id: 'edit_toc'
         %br
         #toc_div= render partial: 'toc'
-      = form_for @ingestible do |f|
+      -#= form_for @ingestible do |f|
         -#= f.text_area :toc_buffer, class: 'textarea100'
-        .actions
-          = f.submit t(:save), class: 'btn btn-primary'
+      -#  .actions
+      -#    = f.submit t(:save), class: 'btn btn-primary'
     .tab-pane#texts
       - unless @ingestible.texts.empty?
         = render partial: 'ingestible_texts/edit',
                  locals: { ingestible: @ingestible, index: (params[:text_index] || 0).to_i }
   - if @ingestible.persisted?
     .review
-      = link_to t('.review'), review_ingestible_path(@ingestible), class: 'btn btn-primary'
+      = link_to t('.review'), review_ingestible_path(@ingestible), class: 'btn btn-primary', style: 'width:100%;'
 :javascript
   $(function() {
     if (#{params[:text_index].present?}) {

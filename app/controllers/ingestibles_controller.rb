@@ -43,21 +43,29 @@ class IngestiblesController < ApplicationController
       @ingestible.awaiting_authorities!
       redirect_to ingestibles_path, alert: t('.ingestion_now_pending')
     else
+      @failures = []
       @collection = nil # default
       @collection = create_or_load_collection unless no_volume # no_volume means we don't want to ingest into a Collection
-
       # - loop over whole TOC
-      # - create placeholders
-      # - create Work, Expression, Manifestation entities
-      # - associate authorities
-      # - add to collection, replacing placeholder if appropriate
+      @decoded_toc.each do |x|
+        if x[0] == 'yes' # a text to ingest
+          upload_text(x)
+        else # a placeholder
+          create_placeholder(x)
+        end
+      end
       # - record all IDs in ingestible, for undoability
       # - record ingesting user
-      # - email (whom?) with news about the ingestion, and links to all the created entities
-      # - show post-ingestion screen, with links to all created entities and affected authorities
-      # - trigger an updating of whatsnew
-
-      redirect_to ingestibles_url, notice: t('.success')
+      if @failures.present?
+        @ingestible.failed!
+        redirect_to review_ingestible_url(@ingestible), alert: t('.failures')
+      else
+        @ingestible.ingested!
+        # - email (whom?) with news about the ingestion, and links to all the created entities
+        # - show post-ingestion screen, with links to all created entities and affected authorities
+        # - trigger an updating of whatsnew
+        redirect_to ingestibles_url, notice: t('.success')
+      end
     end
   end
 
@@ -117,15 +125,17 @@ class IngestiblesController < ApplicationController
   end
 
   def update_toc
-    toc_params = params.permit(%i(title genre orig_lang authority_id authority_name role new_person_tbd rmauth seqno))
+    toc_params = params.permit(%i(title new_title genre orig_lang intellectual_property authority_id authority_name role new_person_tbd rmauth seqno))
     cur_toc = @ingestible.decode_toc
     updated = false
-
+    prep
+  
     cur_toc.each do |x|
-      next unless x[0] == 'yes' && x[1] == params[:title] # update the existing entry
-
+      next unless x[1] == params[:title] # update the existing entry
+      x[1] = toc_params[:new_title] if toc_params[:title].present? # allow changing the title
       x[3] = toc_params[:genre] if toc_params[:genre].present?
       x[4] = toc_params[:orig_lang] if toc_params[:orig_lang].present?
+      x[5] = toc_params[:intellectual_property] if toc_params[:intellectual_property].present?
 
       if params[:new_person_tbd].present? or params[:authority_id].present?
         authorities = x[2].present? ? JSON.parse(x[2]) : []
@@ -174,9 +184,9 @@ class IngestiblesController < ApplicationController
       existing = cur_toc.find { |y| y[1].strip == x }
 
       ret << if existing.nil?
-               " #{include ? 'yes' : 'no'} || #{x} || || #{@ingestible.genre} || #{@ingestible.orig_lang}" # use ingestible defaults when set
+               " #{include ? 'yes' : 'no'} || #{x} || || #{@ingestible.genre} || #{@ingestible.orig_lang} || #{@ingestible.intellectual_property}" # use ingestible defaults when set
              else
-               " #{include ? 'yes' : 'no'} || #{x} || || #{existing[2]} || #{existing[3]}" # preserve any existing metadata
+               " #{include ? 'yes' : 'no'} || #{x} || #{existing[2]} || #{existing[3]} || #{existing[4]} || #{existing[5]}" # preserve any existing metadata
              end
     end
     @ingestible.update_columns(toc_buffer: ret.join("\n"))
@@ -253,6 +263,7 @@ class IngestiblesController < ApplicationController
       :publisher,
       :year_published,
       :orig_lang,
+      :intellectual_property,
       :docx,
       :metadata,
       :comments,
@@ -287,5 +298,11 @@ class IngestiblesController < ApplicationController
       @collection.involved_authorities.create!(authority: Authority.find(auth['authority_id']),
                                                role: auth['role'])
     end
+  end
+
+  def upload_text(toc_line)
+    # - create Work, Expression, Manifestation entities
+    # - associate authorities
+    # - add to collection, replacing placeholder if appropriate
   end
 end
