@@ -19,8 +19,10 @@
         %button{class: 'change_title'}= t(:edit)
       - if included == 'yes'
         %td
+          - seen_translator = false
           - if ias.present?
             - JSON.parse(ias).each do |authority|
+              - seen_translator = true if authority['role'] == 'translator'
               %ul
                 %li{ id: "ia#{authority['seqno']}" }
                   - if authority['authority_id']
@@ -30,10 +32,15 @@
                   (#{textify_authority_role(authority['role'])})
                   = button_tag t(:destroy), class: 'delete_toc_authority'
           - elsif @ingestible.default_authorities.present?
+            - JSON.parse(@ingestible.default_authorities).each do |authority|
+              - seen_translator = true if authority['role'] == 'translator'
             %div{style: 'background: repeating-linear-gradient(45deg,#dddddd,#dedede 10px,#efefef 10px,#eeeeee 20px);'}
               %b= t(:default)
               %br
               = render partial: 'ingestible_authorities/authority', collection: JSON.parse(@ingestible.default_authorities), locals: {editable: false, toc: true}
+          - if @orig_lang != 'he' && !seen_translator
+            .lredbg 
+              = t('ingestible.translator_missing')
           = t(:add)
           = select_tag :add_authority,
                       options_from_collection_for_select(Authority.order(:name), 'id', 'name'),

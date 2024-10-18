@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_10_17_114910) do
+ActiveRecord::Schema.define(version: 2024_10_17_230610) do
 
   create_table "aboutnesses", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -568,8 +568,8 @@ ActiveRecord::Schema.define(version: 2024_10_17_114910) do
     t.string "year_published"
     t.string "genre"
     t.string "publisher"
-    t.string "pub_link"
-    t.string "pub_link_text"
+    t.string "pub_link", limit: 2048
+    t.string "pub_link_text", limit: 1024
     t.boolean "attach_photos", default: false, null: false
     t.boolean "no_volume", default: false, null: false
     t.text "toc_buffer"

@@ -897,3 +897,7 @@ small p{
 	padding-right: 0px;
 	padding-left: 0px;
 }
+
+.ingestible_edit input {
+  background-color: #e0e0e0;
+}

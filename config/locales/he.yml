@@ -1398,6 +1398,7 @@ he:
       already_in_collection: כבר קיים בכותר
       back_to_editing: חזרה לעריכת ההעלאה
       missing_in_markdown: 'הכותרות הבאות חסרות במארקדאון:'
+      extraneous_markdown: 'הכותרות הבאות מופיעות במארקדאון ולא נכללו בהעלאה:'
       missing_genre: 'ליצירות הבאות לא הוגדרה סוגה:'
       missing_origlang: 'ליצירות הבאות לא הוגדרה שפת מקור:'
       missing_authority: 'ליצירות הבאות לא קושר אף אדם או ארגון:'
@@ -1538,6 +1539,7 @@ he:
     new_issue_title: 'כותרת הגליון החדש (לדוגמה: "חדרים 4" או "גליון 56")'
     need_to_save: יש לשמור את ההעלאה לאחר עדכון כותר
     need_to_save_explanation: השמירה תעדכן אישים מקושרים להעלאה (לפי הכותר)
+    translator_missing: שפת המקור אינה עברית ולא הוגדר מתרגם!
 
   # This block of strings below should be removed when we finish work. Grouped them together to make it easier to find them again
   public_domain: נחלת הכלל

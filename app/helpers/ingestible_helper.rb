@@ -16,7 +16,7 @@ module IngestibleHelper
     when [false, 'yes']
       'lredbg'
     when [true, 'no']
-      'yellowbg'
+      'lredbg'
     else
       ''
     end

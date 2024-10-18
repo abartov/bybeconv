@@ -288,6 +288,7 @@ class Collection < ApplicationRecord
   end
 
   def append_collection_item(item)
+    item.collection = self
     item.seqno = collection_items.maximum(:seqno).to_i + 1
     item.save!
   end
