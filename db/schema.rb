@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_10_17_230610) do
+ActiveRecord::Schema.define(version: 2024_10_18_012458) do
 
   create_table "aboutnesses", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -561,9 +561,9 @@ ActiveRecord::Schema.define(version: 2024_10_17_230610) do
     t.text "default_authorities"
     t.text "metadata"
     t.text "comments"
-    t.text "markdown"
+    t.text "markdown", size: :long
     t.integer "user_id"
-    t.string "problem"
+    t.text "problem", size: :medium
     t.string "orig_lang"
     t.string "year_published"
     t.string "genre"
@@ -574,7 +574,7 @@ ActiveRecord::Schema.define(version: 2024_10_17_230610) do
     t.boolean "no_volume", default: false, null: false
     t.text "toc_buffer"
     t.integer "volume_id"
-    t.text "works_buffer", size: :medium
+    t.text "works_buffer", size: :long
     t.datetime "markdown_updated_at"
     t.datetime "works_buffer_updated_at"
     t.datetime "created_at", precision: 6, null: false
@@ -585,6 +585,7 @@ ActiveRecord::Schema.define(version: 2024_10_17_230610) do
     t.string "prospective_volume_title"
     t.integer "periodical_id"
     t.string "intellectual_property"
+    t.text "ingested_changes"
     t.index ["locked_by_user_id"], name: "index_ingestibles_on_locked_by_user_id"
     t.index ["status"], name: "index_ingestibles_on_status"
     t.index ["title"], name: "index_ingestibles_on_title"

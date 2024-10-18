@@ -106,6 +106,8 @@
           %b= t(:upload_file)
           = t(:file_can_be_skipped)
         = f.file_field :docx
+        = f.label t('.problem')
+        = f.text_area :problem
       .actions
         = f.submit t(:save), class: 'btn btn-primary'
   - unless @ingestible.new_record?
@@ -199,7 +201,9 @@
     });
     $('#authority_volumes').on('change', function() {
       $('#prospective_volume_id').val($('#authority_volumes').val());
-      $('#volume_title').text($('#authority_volumes option:selected').text());
+      new_title = $('#authority_volumes option:selected').text();
+      $('#volume_title').text(new_title);
+      $('#prospective_volume_title').val(new_title);
       $('#ingestible_no_volume').prop('checked', false);
       $('#need_to_save').show();
     });
@@ -221,7 +225,9 @@
         });
       } else {
         $('#prospective_volume_id').val($('#periodical_issues').val());
-        $('#volume_title').text($('#periodical_issues option:selected').text());
+        new_title = $('#periodical_issues option:selected').text();
+        $('#volume_title').text(new_title);
+        $('#prospective_volume_title').val(new_title);
     }
       $('#need_to_save').show();
       $('#ingestible_no_volume').prop('checked', false);
@@ -258,6 +264,7 @@
     });
     $('#cterm').on('railsAutocomplete.select', function(event, data){
       $('#prospective_volume_id').val(data.item.id);
+      $('#prospective_volume_title').val(data.item.value);
       $('#volume_title').text(data.item.value);
       $('#ingestible_no_volume').prop('checked', false);
       $('#need_to_save').show();
@@ -271,6 +278,7 @@
         $('#authority_volumes').hide();
         $('#periodical_issues_div').hide();
         $('#prospective_volume_id').val('');
+        $('#prospective_volume_title').val('');
         $('#volume_title').text('');
         $('#ingestible_periodical_id').val('');
         $('#ingestible_prospective_volume_title').val('');

@@ -196,7 +196,7 @@ class CollectionsController < ApplicationController
                            elsif @collection.editors.present?
                              @collection.editors.first
                            else
-                             nil
+                             Authority.new(name: '')
                            end
   end
 end

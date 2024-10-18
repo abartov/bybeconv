@@ -852,7 +852,7 @@ class ManifestationController < ApplicationController
         ahoy.track 'text read or printed', text_id: @m.id, title: @m.title, author: @m.author_string
       end
       if @author.nil?
-        @author = Person.new(name: '?')
+        @author = Authority.new(name: '?')
       end
       @translators = @m.translators
       @illustrators = @m.involved_authorities_by_role(:illustrator)

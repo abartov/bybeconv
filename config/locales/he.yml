@@ -1375,10 +1375,13 @@ he:
       full_markdown: מארקדאון מלא
       toc: תוכן עניינים
       review: סקירה לקראת אישור העלאה
+      problem: תיאור בעיה
     update:
       success: ההעלאה עודכנה
     ingest:
       ingestion_now_pending: ההעלאה ממתינה עכשיו ליצירת אישים
+      failures: אירעו שגיאות. ראו בשדה תיאור בעיה בלשונית הראשונה.
+      success: הידד! היצירות עלו וההעלאה הסתיימה בהצלחה.
     review:
       title: "סקירת העלאה: %{title}"
       statistics: סטטיסטיקה
@@ -1408,6 +1411,7 @@ he:
       authorities_tbd: אחד או יותר מהאישים המקושרים טרם מוכר במערכת. אם כל השאר מוכן, אפשר להעביר את ההעלאה למצב המתנה ליצירת האישים, והיא תעלה מייד לאחר יצירת הישויות החסרות.
       awaiting_authorities: "ההעלאה מוכנה פרט לישויות חסרות:"
       awaiting_authorities_resolved: ההעלאה במצב המתנה לישויות, אבל כל הישויות כבר סודרו. אפשר לסיים את ההעלאה!
+      problem_is_not_empty: שדה הבעיות אינו ריק!
     destroy:
       success: ההעלאה נמחקה
   ingestible_texts:
@@ -1540,6 +1544,7 @@ he:
     need_to_save: יש לשמור את ההעלאה לאחר עדכון כותר
     need_to_save_explanation: השמירה תעדכן אישים מקושרים להעלאה (לפי הכותר)
     translator_missing: שפת המקור אינה עברית ולא הוגדר מתרגם!
+    author_missing: לא הוגדר יוצר (אפילו אלמוני)
 
   # This block of strings below should be removed when we finish work. Grouped them together to make it easier to find them again
   public_domain: נחלת הכלל

@@ -146,6 +146,23 @@ class Collection < ApplicationRecord
     return []
   end
 
+  def translators
+    auths = involved_authorities_by_role(:translator)
+    return auths if auths.count > 0
+
+    seen_colls = []
+    parent_collections.each do |pc| # iterate until we find authorship
+      next if seen_colls.include?(pc.id)
+
+      auths = pc.translators
+      return auths if auths.present?
+
+      seen_colls << pc.id
+    end
+
+    return []
+  end
+
   def editors
     eds = involved_authorities_by_role(:editor)
     return eds if eds.count > 0

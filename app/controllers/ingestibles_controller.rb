@@ -45,8 +45,7 @@ class IngestiblesController < ApplicationController
     else
       @failures = []
       @changes = {placeholders: [], texts: []}
-      @collection = nil # default
-      @collection = create_or_load_collection unless no_volume # no_volume means we don't want to ingest into a Collection
+      create_or_load_collection unless @ingestible.no_volume # no_volume means we don't want to ingest into a Collection, and @collection would be nil.
       # - loop over whole TOC
       i = 0
       @decoded_toc.each do |x|
@@ -54,16 +53,21 @@ class IngestiblesController < ApplicationController
           upload_text(x, i)
           i += 1
         else # a placeholder
-          create_placeholder(x)
+          create_placeholder(x) unless @ingestible.no_volume # placeholders only make sense in volumes
         end
       end
       # - record all IDs in ingestible, for undoability
+      @ingestible.ingested_changes = @changes.to_json
       # - record ingesting user
       if @failures.present?
-        @ingestible.failed!
+        @ingestible.status = 'failed'
+        @ingestible.problem = '' if @ingestible.problem.nil?
+        @ingestible.problem += @failures.join("\n")
+        @ingestible.save!
         redirect_to review_ingestible_url(@ingestible), alert: t('.failures')
       else
-        @ingestible.ingested!
+        @ingestible.status = 'ingested'
+        @ingestible.save!
         # - email (whom?) with news about the ingestion, and links to all the created entities
         # - show post-ingestion screen, with links to all created entities and affected authorities
         # - trigger an updating of whatsnew
@@ -235,6 +239,7 @@ class IngestiblesController < ApplicationController
     @missing_publisher_info = !@ingestible.no_volume && (@ingestible.publisher.blank? || @ingestible.year_published.blank?)
     @authorities_tbd = []
     @missing_translators = []
+    @missing_authors = []
     @texts_to_upload.each do |x|
       @missing_in_markdown << x[1] unless @markdown_titles.include?(x[1])
       @missing_genre << x[1] if x[3].blank?
@@ -248,9 +253,11 @@ class IngestiblesController < ApplicationController
             end
       @missing_authority << x[1] if aus.empty?
       seen_translator = false
+      seen_author = false
       aus.each do |ia|
         @authorities_tbd << ia if ia['new_person'].present?
         seen_translator = true if ia['role'] == 'translator'
+        seen_author = true if ia['role'] == 'author'
         name = ia['new_person'].presence || ia['authority_name']
         role = ia['role']
         @authority_changes[name] = {} unless @authority_changes.key?(name)
@@ -258,8 +265,9 @@ class IngestiblesController < ApplicationController
         @authority_changes[name][role] << x[1]
       end
       @missing_translators << x[1] if x[4] != 'he' && !seen_translator
+      @missing_authors << x[1] if !seen_author
     end
-    @errors = @missing_in_markdown.present? || @extraneous_markdown.present? ||@missing_genre.present? || @missing_origlang.present? || @missing_authority.present? || @missing_translators.present? || @missing_publisher_info
+    @errors = @missing_in_markdown.present? || @extraneous_markdown.present? ||@missing_genre.present? || @missing_origlang.present? || @missing_authority.present? || @missing_translators.present? || @missing_authors.present? || @missing_publisher_info
   end
 
   # Only allow a list of trusted parameters through.
@@ -278,6 +286,7 @@ class IngestiblesController < ApplicationController
       :comments,
       :no_volume,
       :attach_photos,
+      :problem,
       :prospective_volume_id,
       :prospective_volume_title,
       :pub_link,
@@ -291,10 +300,13 @@ class IngestiblesController < ApplicationController
     if @ingestible.prospective_volume_id.present?
       if @ingestible.prospective_volume_id[0] == 'P' # new volume from known Publication
         @publication = Publication.find(@ingestible.prospective_volume_id[1..-1])
-        @collection = Collection.create!(title: @ingestible.prospective_volume_title,
+        @collection = Collection.find_by(publication: @publication) # might have been created by another ingestion while we we working on this, after identifying the publication...
+        if @collection.nil? # new volume from known Publication
+          @collection = Collection.create!(title: @publication.title,
                                          collection_type: 'volume', publication: @publication,
                                          publisher_line: @publication.publisher_line, pub_year: @publication.pub_year)
-        created_volume = true
+          created_volume = true
+        end
       else # existing volume
         @collection = Collection.find(@ingestible.prospective_volume_id)
       end
@@ -305,9 +317,11 @@ class IngestiblesController < ApplicationController
     end
     return unless created_volume
 
-    @ingestible.default_authorities.each do |auth|
-      @collection.involved_authorities.create!(authority: Authority.find(auth['authority_id']),
+    if @ingestible.default_authorities
+      JSON.parse(@ingestible.default_authorities).each do |auth|
+        @collection.involved_authorities.create!(authority: Authority.find(auth['authority_id']),
                                                role: auth['role'])
+      end
     end
   end
 
@@ -315,7 +329,7 @@ class IngestiblesController < ApplicationController
   def determine_period_by_involved_authorities(ids)
     periods = []
     Authority.find(ids).each do |a|
-      periods << a.period if a.person?
+      periods << a.person.period if a.person.present?
     end
     return periods.present? ? periods.max_by { |i| periods.count(i) } : nil
   end
@@ -331,80 +345,104 @@ class IngestiblesController < ApplicationController
 
   # add a placeholder (itemless CollectionItem) to the collection
   def create_placeholder(toc_line)
-    return if @collection.placeholders.map(&:alt_title).include?(toc_line[1]) # don't create duplicate placeholders. It is expected they are unique within the collection. Genuine duplicate titles that the user DOES want created should have been disambiguated at the review phase.
+    return if @collection.collection_items.where(alt_title: toc_line[1]) # don't create duplicate placeholders. It is expected they are unique within the collection. Genuine duplicate titles that the user DOES want created should have been disambiguated at the review phase.
     @collection.append_collection_item(CollectionItem.new(alt_title: toc_line[1]))
     @changes[:placeholders] << toc_line[1]
   end
 
   def upload_text(toc_line, index)
-    # - create Work, Expression, Manifestation entities
-    Chewy.strategy(:atomic) do
-      ActiveRecord::Base.transaction do
-        w = Work.new(
-          title: toc_line[1],
-          orig_lang: toc_line[4],
-          genre: toc_line[3],
-          primary: true # TODO: un-hardcode primariness when ingestible TOC editing supports it
-        )
-        author_names = []
-        author_ids = []
-        translator_names = []
-        translator_ids = []
-        other_authorities = []
-        JSON.parse(toc_line[2]).each do |ia|
-          if ia['role'] == 'author'
-            author_names << ia['authority_name']
-            author_ids << ia['authority_id']
-          elsif ia['role'] == 'translator'
-            translator_names << ia['authority_name']
-            translator_ids << ia['authority_id']
-          else
-            other_authorities << [ia['authority_id'], ia['role']]
+    # create Work, Expression, Manifestation entities
+    begin
+      Chewy.strategy(:atomic) do
+        ActiveRecord::Base.transaction do
+          w = Work.new(
+            title: toc_line[1],
+            orig_lang: toc_line[4],
+            genre: toc_line[3],
+            primary: true # TODO: un-hardcode primariness when ingestible TOC editing supports it
+          )
+          author_names = []
+          author_ids = []
+          translator_names = []
+          translator_ids = []
+          other_authorities = []
+          auths = if toc_line[2].present?
+                    JSON.parse(toc_line[2])
+                  elsif @ingestible.default_authorities.present?
+                    JSON.parse(@ingestible.default_authorities)
+                  else
+                    []
+                  end
+          auths.each do |ia|
+            if ia['role'] == 'author'
+              author_names << ia['authority_name']
+              author_ids << ia['authority_id']
+            elsif ia['role'] == 'translator'
+              translator_names << ia['authority_name']
+              translator_ids << ia['authority_id']
+            else
+              other_authorities << [ia['authority_id'], ia['role']]
+            end
           end
-        end
-        period = determine_period_by_involved_authorities(w.orig_lang != 'he' ? translator_ids : author_ids) # translator's period is the relevant one for translations
-        pub_status = determine_publication_status_by_involved_authorities(author_ids + translator_ids + other_authorities.map(&:first))
-        e = w.expressions.build(
-          title: toc_line[1],
-          language: 'he',
-          period: period, # what to do if corporate body?
-          intellectual_property: toc_line[5],
-          source_edition: @ingestible.publisher,
-          date: @ingestible.year_published
-        )
-        authors = JSON.parse(toc_line[2]).select{ |ia| ia['role'] == 'author' }.map{ |ia| ia['authority_name']}
-        translators = JSON.parse(toc_line[2]).select{ |ia| ia['role'] == 'translator' }.map{ |ia| ia['authority_name']}.join(', ')
-        responsibility_line = translators.present? ? translator_names.join(', ') : authors.join(', ')
-        #the_markdown = @ingestible.markdown.scan(/^&&&\s+#{toc_line[1]}\s*\n(.+?)(?=\n&&&|$)/m).first.first
-        m = e.manifestations.build(
-          title: toc_line[1],
-          responsibility_statement: responsibility_line,
-          conversion_verified: true,
-          medium: I18n.t(:etext),
-          publisher: Rails.configuration.constants['our_publisher'],
-          publication_place: Rails.configuration.constants['our_place_of_publication'],
-          publication_date: Time.zone.today,
-          markdown: @ingestible.texts[index].content,
-          status: pub_status
-        )
-        w.save!
+          period = determine_period_by_involved_authorities(w.orig_lang != 'he' ? translator_ids : author_ids) # translator's period is the relevant one for translations
+          pub_status = determine_publication_status_by_involved_authorities(author_ids + translator_ids + other_authorities.map(&:first))
+          e = w.expressions.build(
+            title: toc_line[1],
+            language: 'he',
+            period: period, # what to do if corporate body?
+            intellectual_property: toc_line[5],
+            source_edition: @ingestible.publisher,
+            date: @ingestible.year_published
+          )
+          authors = auths.select{ |ia| ia['role'] == 'author' }.map{ |ia| ia['authority_name']}
+          translators = auths.select{ |ia| ia['role'] == 'translator' }.map{ |ia| ia['authority_name']}.join(', ')
+          responsibility_line = translators.present? ? translator_names.join(', ') : authors.join(', ')
+          #the_markdown = @ingestible.markdown.scan(/^&&&\s+#{toc_line[1]}\s*\n(.+?)(?=\n&&&|$)/m).first.first
+          m = e.manifestations.build(
+            title: toc_line[1],
+            responsibility_statement: responsibility_line,
+            conversion_verified: true,
+            medium: I18n.t(:etext),
+            publisher: Rails.configuration.constants['our_publisher'],
+            publication_place: Rails.configuration.constants['our_place_of_publication'],
+            publication_date: Time.zone.today,
+            markdown: @ingestible.texts[index].content,
+            status: pub_status
+          )
+          w.save!
 
-        # - associate authorities
-        Authority.find(author_ids).each do |a|
-          w.involved_authorities.build(authority: a, role: :author)
-        end
-        Authority.find(translator_ids).each do |a|
-          e.involved_authorities.build(authority: a, role: :translator)
-        end
-        Authority.find(other_authorities).each_with_index do |auth, i|
-          e.involved_authorities.build(authority: auth, role: other_authorities[i][1])
-        end
-        @changes[:texts] << m
-        m.recalc_cached_people!
-        # - add to collection, replacing placeholder if appropriate
-        placeholder = @collection.collection_items.where(alt_title: toc_line[1], item: nil)
-        placeholder_seqno = placeholder.first.seqno if placeholder.present? # we will replace the placeholder if it exists
-      end # transaction
-    end # Chewy strategy
+          # associate authorities
+          Authority.find(author_ids).each do |a|
+            w.involved_authorities.build(authority: a, role: :author)
+          end
+          Authority.find(translator_ids).each do |a|
+            e.involved_authorities.build(authority: a, role: :translator)
+          end
+          Authority.find(other_authorities.map(&:first)).each_with_index do |auth, i|
+            e.involved_authorities.build(authority: auth, role: other_authorities[i][1])
+          end
+          @changes[:texts] << [m.id, m.title, m.responsibility_statement]
+          m.recalc_cached_people!
+          if @ingestible.pub_link.present? && @ingestible.pub_link_text.present?
+            m.external_links.create!(linktype: :publisher_site, url: @ingestible.pub_link, description: @ingestible.pub_link_text)
+          end
+
+          unless @ingestible.no_volume
+            # finally, add to collection, replacing placeholder if appropriate
+            placeholder = @collection.collection_items.where(alt_title: toc_line[1], item: nil)
+            if placeholder.present? # we will replace the placeholder if it exists
+              placeholder_seqno = placeholder.first.seqno 
+              @collection.append_collection_item(CollectionItem.new(item: m, seqno: placeholder_seqno))
+              placeholder.destroy_all if placeholder.present? # delete old placeholder, now replaced by the actual text
+            else
+              @collection.append_item(m) # append the new text to the (current) end of the collection if there were no placeholders already
+            end
+          end
+        end # transaction
+      end # Chewy strategy
+    rescue
+      @failures << "#{toc_line[1]} - #{$!}"
+      return I18n.t(:frbrization_error)
+    end
   end
 end

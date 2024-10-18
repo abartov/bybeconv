@@ -1,10 +1,10 @@
 %h1= t('.title', title: @ingestible.title)
 - if @errors
-  .redbg
+  .lredbg
     %h2= t('.errors')
     - if @missing_publisher_info
       %p= t('.missing_publisher_info')
-    - [[@missing_genre, '.missing_genre'], [@missing_origlang, '.missing_origlang'], [@missing_authority, '.missing_authority'], [@missing_translators, 'ingestible.translator_missing'], [@missing_in_markdown, '.missing_in_markdown'], [@extraneous_markdown, '.extraneous_markdown']].each do |missing, label|
+    - [[@missing_genre, '.missing_genre'], [@missing_origlang, '.missing_origlang'], [@missing_authority, '.missing_authority'], [@missing_authors, 'ingestible.author_missing'], [@missing_translators, 'ingestible.translator_missing'], [@missing_in_markdown, '.missing_in_markdown'], [@extraneous_markdown, '.extraneous_markdown']].each do |missing, label|
       - if missing.present?
         %p= t(label)
         %ul
@@ -26,11 +26,13 @@
     .greenbg{style: 'color:yellow;'}
       %h3= t('.awaiting_authorities_resolved')
       = button_to t('.ingest'), ingest_ingestible_path(@ingestible), method: :post, id: 'extra_ingest_button', class: 'btn btn-primary'
-
 - elsif @authorities_tbd.present?
   .yellowbg
     %h3= t('.authorities_tbd')
-
+- if @ingestible.problem.present?
+  .lredbg
+    %h2= t('.problem_is_not_empty')
+    %p= @ingestible.problem
 %div{style: 'display: flex;flex-wrap: wrap;'}
   .admin_dashboard_item
     %h2= t('.volume_information')
