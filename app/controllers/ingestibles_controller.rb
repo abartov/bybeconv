@@ -281,6 +281,7 @@ class IngestiblesController < ApplicationController
       :year_published,
       :orig_lang,
       :intellectual_property,
+      :periodical_id,
       :docx,
       :metadata,
       :comments,

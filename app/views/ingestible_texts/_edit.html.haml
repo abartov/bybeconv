@@ -5,7 +5,8 @@
       .col-sm-3
       .col-sm-6
         %b= t(:text_n_of_m, n: index + 1, m: ingestible.texts.length)
-        = t(:and_n_placeholders, n: ingestible.toc_buffer.lines.count - ingestible.texts.length)
+        - if ingestible.toc_buffer.present?
+          = t(:and_n_placeholders, n: ingestible.toc_buffer.lines.count - ingestible.texts.length)
         - if ingestible.decode_toc.select{|x| x[1] == text.title && x[0] == 'yes'}.blank?
           %b.redbg= t('.not_in_toc')
       .col-sm-3

@@ -19,8 +19,8 @@ class Ingestible < ApplicationRecord
   validates :locked_at, presence: true, if: -> { locked_by_user.present? }
   validates :locked_at, absence: true, unless: -> { locked_by_user.present? }
   validate :volume_decision
-  validates :scenario, presence: true
-  validates :scenario, inclusion: { in: scenarios.keys }
+#  validates :scenario, presence: true
+#  validates :scenario, inclusion: { in: scenarios.keys }
 
   has_one_attached :docx # ActiveStorage
 
