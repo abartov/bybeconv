@@ -292,7 +292,7 @@
     });
     $('#edit_toc').on('click', function(e) {
       e.preventDefault();
-      $('#generalDlg').load("#{ edit_toc_ingestible_path(@ingestible) }");
+      $('#generalDlg').load("#{ @ingestible.id.present? ? edit_toc_ingestible_path(@ingestible) : ''}");
       $('#generalDlg').modal('show');
     });
   });
