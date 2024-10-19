@@ -244,7 +244,6 @@ class IngestiblesController < ApplicationController
     @texts_to_upload.each do |x|
       @missing_in_markdown << x[1] unless @markdown_titles.include?(x[1])
       @missing_genre << x[1] if x[3].blank?
-      @missing_origlang << x[1] if x[4].blank?
       aus = if x[2].present?
               JSON.parse(x[2])
             elsif @ingestible.default_authorities.present?
@@ -266,6 +265,7 @@ class IngestiblesController < ApplicationController
         @authority_changes[name][role] << x[1]
       end
       @missing_translators << x[1] if x[4] != 'he' && !seen_translator
+      @missing_origlang << x[1] if x[4].blank? || (x[4] == 'he' && seen_translator)
       @missing_authors << x[1] if !seen_author
     end
     @errors = @missing_in_markdown.present? || @extraneous_markdown.present? ||@missing_genre.present? || @missing_origlang.present? || @missing_authority.present? || @missing_translators.present? || @missing_authors.present? || @missing_publisher_info
