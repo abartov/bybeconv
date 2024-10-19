@@ -215,8 +215,9 @@ class IngestiblesController < ApplicationController
   end
 
   def prep
-    @html = MarkdownToHtml.call(@ingestible.markdown)
-    @markdown_titles = @ingestible.markdown.scan(/^&&&\s+(.+?)\s*\n/).map(&:first)
+    markdown = @ingestible.markdown.presence || ''
+    @html = MarkdownToHtml.call(markdown)
+    @markdown_titles = markdown.scan(/^&&&\s+(.+?)\s*\n/).map(&:first)
   end
 
   # this method prepares the ingestible for ingestion:
