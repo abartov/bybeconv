@@ -44,7 +44,7 @@ class IngestiblesController < ApplicationController
       redirect_to ingestibles_path, alert: t('.ingestion_now_pending')
     else
       @failures = []
-      @changes = {placeholders: [], texts: []}
+      @changes = {placeholders: [], texts: [], collections: []}
       create_or_load_collection unless @ingestible.no_volume # no_volume means we don't want to ingest into a Collection, and @collection would be nil.
       # - loop over whole TOC
       i = 0
@@ -317,8 +317,8 @@ class IngestiblesController < ApplicationController
                                        pub_year: @ingestible.year_published, publisher_line: @ingestible.publisher)
       created_volume = true
     end
+    @changes[:collections] << [@collection.id, @collection.title, created_volume ? 'created' : 'updated'] # record the new volume for the post-ingestion screen
     return unless created_volume
-
     if @ingestible.default_authorities
       JSON.parse(@ingestible.default_authorities).each do |auth|
         @collection.involved_authorities.create!(authority: Authority.find(auth['authority_id']),
@@ -415,13 +415,13 @@ class IngestiblesController < ApplicationController
 
           # associate authorities
           Authority.find(author_ids).each do |a|
-            w.involved_authorities.build(authority: a, role: :author)
+            w.involved_authorities.create!(authority: a, role: :author)
           end
           Authority.find(translator_ids).each do |a|
-            e.involved_authorities.build(authority: a, role: :translator)
+            e.involved_authorities.create!(authority: a, role: :translator)
           end
           Authority.find(other_authorities.map(&:first)).each_with_index do |auth, i|
-            e.involved_authorities.build(authority: auth, role: other_authorities[i][1])
+            e.involved_authorities.create!(authority: auth, role: other_authorities[i][1])
           end
           @changes[:texts] << [m.id, m.title, m.responsibility_statement]
           m.recalc_cached_people!

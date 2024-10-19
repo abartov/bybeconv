@@ -12,40 +12,41 @@
       else InvolvedAuthority.roles.keys
       end
     %br
-    = t(:add)
-    = autocomplete_field_tag "#{prefix}_autocomplete", '', autocomplete_authority_name_path,
-                            id_element: "##{prefix}_authority_id"
-    = hidden_field_tag "#{prefix}_authority_id"
-    = t(:in_role)
-    = select_tag "#{prefix}_role",
-                options_for_select(roles.map { |role| [textify_authority_role(role), role] })
-    = button_tag t(:add), id: "#{prefix}_add_button", type: :button
-    %br
-    :javascript
-      $(function() {
-        $('##{prefix}_add_button').click(function(e) {
-          const role = $('##{prefix}_role').val();
-          const authority_id = $('##{prefix}_authority_id').val();
+- if edit
+  = t(:add)
+  = autocomplete_field_tag "#{prefix}_autocomplete", '', autocomplete_authority_name_path,
+                          id_element: "##{prefix}_authority_id"
+  = hidden_field_tag "#{prefix}_authority_id"
+  = t(:in_role)
+  = select_tag "#{prefix}_role",
+              options_for_select(roles.map { |role| [textify_authority_role(role), role] })
+  = button_tag t(:add), id: "#{prefix}_add_button", type: :button
+  %br
+  :javascript
+    $(function() {
+      $('##{prefix}_add_button').click(function(e) {
+        const role = $('##{prefix}_role').val();
+        const authority_id = $('##{prefix}_authority_id').val();
 
-          if (authority_id == '') {
-            alert('#{t('.select_authority')}');
-            return false;
-          }
+        if (authority_id == '') {
+          alert('#{t('.select_authority')}');
+          return false;
+        }
 
-          $.post(
-            '#{involved_authorities_path}',
-            {
-              item_type: '#{item.class.name}',
-              item_id: #{item.id},
-              involved_authority: {
-                role: role,
-                authority_id: authority_id
-              }
+        $.post(
+          '#{involved_authorities_path}',
+          {
+            item_type: '#{item.class.name}',
+            item_id: #{item.id},
+            involved_authority: {
+              role: role,
+              authority_id: authority_id
             }
-          ).always(function() {
-              $('##{prefix}_autocomplete').val('');
-              $('##{prefix}_authority_id').val('');
-              $('##{list_id}').load('#{involved_authorities_path(item_type: item.class.name, item_id: item.id)}');
-          });
+          }
+        ).always(function() {
+            $('##{prefix}_autocomplete').val('');
+            $('##{prefix}_authority_id').val('');
+            $('##{list_id}').load('#{involved_authorities_path(item_type: item.class.name, item_id: item.id)}');
         });
       });
+    });
