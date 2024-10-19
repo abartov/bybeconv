@@ -16,7 +16,7 @@
         .headline-1-v02
           #{textify_collection_type(@collection.collection_type)}: #{@collection.title}
         .headline-3-v02
-          - if c.authors.present?
+          - if @collection.authors.present?
             #{t(:by)}:
             %span= aus
           - elsif eds.present?
