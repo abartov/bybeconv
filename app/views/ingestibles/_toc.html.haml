@@ -149,14 +149,8 @@
           data: {
             title: title,
             new_title: new_title
-          },
-          success: function(data) {
-            if (location.href.match('#toc'))
-              location.reload();
-            else
-              location.href = location.href + '#toc';
           }
-        });
+         });
       }
     });
   });
