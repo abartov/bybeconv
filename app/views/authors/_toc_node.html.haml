@@ -26,7 +26,8 @@
   - else
     -# Collection node
     - collection = toc_node.item
-    = link_to collection.title, collection_path(collection)
+    - type_prefix = collection.collection_type == 'uncollected' ? '' : "#{textify_collection_type(collection.collection_type)}: "
+    %span{style:'font-size:120%;'}= link_to "#{type_prefix}#{collection.title}", collection_path(collection)
     - if editable
       = render partial: 'shared/manage_collection', locals: { collection: collection, title: collection.title }
     - else

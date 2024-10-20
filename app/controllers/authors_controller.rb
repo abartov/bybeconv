@@ -471,7 +471,10 @@ class AuthorsController < ApplicationController
       if @author.toc.present?
         prep_toc
       else
-        generate_toc
+        unless @author.uncollected_works_collection_id.present?
+          RefreshUncollectedWorksCollection.call(@author)
+        end
+        # generate_toc # legacy generated TOC
       end
       prep_user_content(:author)
       @scrollspy_target = 'genrenav'

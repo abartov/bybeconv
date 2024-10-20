@@ -19,7 +19,7 @@ class RefreshUncollectedWorksCollection < ApplicationService
     nextseqno = (collection.collection_items.maximum(:seqno) || 0) + 1
 
     # Checking all manifestations given authority is involved into as author or translator
-    authority.manifestations(:author, :translator, :editor)
+    authority.manifestations(:author, :translator, :editor) # TODO: consider other roles?
              .preload(collection_items: :collection)
              .find_each do |m|
       # skipping if manifestation is included in some other collection or already included in uncollected works

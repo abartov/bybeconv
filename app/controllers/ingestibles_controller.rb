@@ -56,9 +56,8 @@ class IngestiblesController < ApplicationController
           create_placeholder(x) unless @ingestible.no_volume # placeholders only make sense in volumes
         end
       end
-      # - record all IDs in ingestible, for undoability
-      @ingestible.ingested_changes = @changes.to_json
-      # - record ingesting user
+      @ingestible.ingested_changes = @changes.to_json # record all IDs in ingestible, for undoability
+      @ingestible.user = current_user # record ingesting user
       if @failures.present?
         @ingestible.status = 'failed'
         @ingestible.problem = '' if @ingestible.problem.nil?
@@ -70,7 +69,7 @@ class IngestiblesController < ApplicationController
         @ingestible.save!
         # - email (whom?) with news about the ingestion, and links to all the created entities
         # - show post-ingestion screen, with links to all created entities and affected authorities
-        # - trigger an updating of whatsnew
+        Rails.cache.delete('whatsnew_anonymous') # trigger an updating of whatsnew
         redirect_to ingestibles_url, notice: t('.success')
       end
     end
