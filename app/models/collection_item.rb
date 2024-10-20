@@ -26,17 +26,24 @@ class CollectionItem < ApplicationRecord
     ret = title
     return ret if item.blank?
 
-    as = item.authors_string
-    ret += " #{I18n.t(:by)} #{as}" if as.present?
+    if item.authors.present?
+      as = item.authors_string
+      ret += " #{I18n.t(:by)} #{as}" if as.present?
+    elsif item.editors.present?
+      ret += " #{I18n.t(:edited_by)} #{item.editors_string}"
+    end
     ret
   end
 
   def title_and_authors_html
     ret = "<h1>#{title}</h1>"
     return ret if item.blank?
-
-    as = item.authors_string
-    ret += "#{I18n.t(:by)}<h2>#{as}</h2>" if as.present?
+    if item.authors.present?
+      as = item.authors_string
+      ret += "#{I18n.t(:by)}<h2>#{as}</h2>" if as.present?
+    elsif item.editors.present?
+      ret += "#{I18n.t(:edited_by)} <h2>#{item.editors_string}</h2>"
+    end
     ret
   end
 
@@ -63,6 +70,7 @@ class CollectionItem < ApplicationRecord
 
   # return list of genres in included items
   def included_genres
+    return [] unless item.present?
     return [item.expression.work.genre] if item_type == 'Manifestation'
 
     return item.included_genres if item.respond_to?(:included_genres) # sub-collections
@@ -72,6 +80,7 @@ class CollectionItem < ApplicationRecord
 
   # return list of copyright statuses in included items
   def intellectual_property_statuses
+    return [] unless item.present?
     return [item.expression.intellectual_property] if item_type == 'Manifestation'
 
     return item.intellectual_property_statuses if item.respond_to?(:intellectual_property_statuses) # sub-collections
@@ -81,6 +90,7 @@ class CollectionItem < ApplicationRecord
 
   # return Recommendations for included items
   def included_recommendations
+    return [] unless item.present?
     return [item.recommendations] if %w(Manifestation Collection).include?(item_type)
 
     return item.included_recommendations if item.respond_to?(:included_recommendations) # sub-collections

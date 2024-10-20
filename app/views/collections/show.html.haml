@@ -23,14 +23,18 @@
                     = t(:edited_by)
                     != @collection.editors.map { |t| link_to(t.name, authority_path(t)) }.join(', ')
                 -# %button.by-button-v02{href: "#"} יוצרים שונים
+                - if @collection.periodical_issue?
+                  = link_to "#{t(:issue_of)} #{@collection.parent_collections.first.title}", collection_path(@collection.parent_collections.first)
+
               %div
                 .edition-details
-                  %span{:style => "font-weight:bold"}= t(:source_edition)+': '
                   - edition = "#{@collection.publisher_line}".strip
                   - if @collection.pub_year.present?
                     - edition = edition[0..-1] if edition[-1] == ','
                     - edition += '; '+@collection.pub_year unless edition[-1] == ';'
-                  = edition
+                  - if edition.present?
+                    %span{:style => "font-weight:bold"}= t(:source_edition)+': '
+                    = edition
                 .metadata{style: "gap: 20px"}
                   - @collection.intellectual_property_statuses.each do |intellectual_property|
                     = render partial: 'shared/intellectual_property', locals: {intellectual_property: intellectual_property}
@@ -39,7 +43,10 @@
                     %div
                       %span.by-icon-v02= glyph_for_genre(genre)
                       = textify_genre(genre)
-                .metadata= t(:x_of_y_items_available, x: @collection_minus_placeholders, y: @collection_total_items, ctype: textify_collection_type(@collection.collection_type))
+                - if @collection.periodical? # we won't usually know the complete issue count of periodicals in progress, and counting extant issues only would imply the periodical run is complete
+                  .metadata= t(:x_issues_available, x: @collection.collection_items.count)
+                - else
+                  .metadata= t(:x_of_y_items_available, x: @collection_minus_placeholders, y: @collection_total_items, ctype: textify_collection_type(@collection.collection_type))
                 .metadata.mobile-work-details
                   %span{style: "font-weight:bold"} המלצות:
                   %a{href: "#"} 3 המלצות קוראים

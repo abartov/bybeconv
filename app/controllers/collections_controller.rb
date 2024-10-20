@@ -181,11 +181,20 @@ class CollectionsController < ApplicationController
   def prep_for_show
     @htmls = []
     i = 1
-    @collection.collection_items.each do |ci|
-      html = ci.to_html
-      @htmls << [ci.title, ci.authors, html.present? ? footnotes_noncer(ci.to_html, i) : '', false, ci.genre,
-                 i, ci]
-      i += 1
+    if @collection.periodical? # we don't want to show an entire periodical's run in a single Web page; instead, we show the complete TOC of all issues
+      @collection.collection_items.each do |ci|
+        next unless ci.item.present? && ci.item.collection_type == 'periodical_issue'
+        html = ci.item.toc_html
+        @htmls << [ci.item.title, ci.item.editors, html, false, ci.genre, i, ci]
+      end
+    else
+      @collection.collection_items.each do |ci|
+        html = ci.to_html
+        next unless html.present?
+        @htmls << [ci.title, ci.authors, html.present? ? footnotes_noncer(ci.to_html, i) : '', false, ci.genre,
+                  i, ci]
+        i += 1
+      end
     end
     @collection_total_items = @collection.collection_items.count
     @collection_minus_placeholders = @collection.collection_items.reject { |ci| ci.item.nil? }.count

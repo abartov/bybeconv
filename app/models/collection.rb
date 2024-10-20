@@ -80,14 +80,37 @@ class Collection < ApplicationRecord
   end
 
   def title_and_authors
-    return "#{title} / #{authors_string}"
+    if authors.present?
+      return "#{title} / #{authors_string}"
+    elsif editors.present?
+      return "#{title} / #{I18n.t(:edited_by)} #{editors_string}"
+    else
+      return title
+    end
   end
 
   def title_and_authors_html
     ret = "<h1>#{title}</h1>"
-    as = authors_string
-    ret += "#{I18n.t(:by)}<h2>#{as}</h2>" if as.present?
+    if authors.present?
+      as = authors_string
+      ret += "#{I18n.t(:by)}<h2>#{as}</h2>" if as.present?
+    elsif editors.present?
+      es = editors_string
+      ret += "#{I18n.t(:edited_by)}<h2>#{es}</h2>" if es.present?
+    end
     ret
+  end
+
+  # produce HTML for a table of contents of the collection
+  def toc_html
+    ret = '<div class="collection_toc"><ul>'
+    flatten_items.each do |ci|
+      next if ci.item.nil? && ci.markdown.blank?
+
+      ret += '<li>' + ci.title_and_authors
+    end
+    ret += '</div>'
+    return ret
   end
 
   def flatten_items
@@ -121,6 +144,7 @@ class Collection < ApplicationRecord
     html = title_and_authors_html
     i = 0
     collection_items.each do |ci|
+      next if ci.item.nil? && ci.markdown.blank?
       html += '<hr/><p/>' + ci.title_and_authors_html
       inner_nonce = "#{nonce}_#{i}"
       html += footnotes_noncer(ci.to_html, inner_nonce)
@@ -204,7 +228,7 @@ class Collection < ApplicationRecord
     collection_items.each do |ci|
       recs += ci.included_recommendations
     end
-    return recs
+    return recs.flatten
   end
 
   def like_count

@@ -746,18 +746,18 @@ module BybeUtils
 
   def footnotes_noncer(html, nonce) # salt footnote markers and bodies with a nonce, to make them unique in collections/anthologies
     # id of footnote reference in body text and link to footnote body
-    html.gsub!(/<a href="#fn:(\d+)" id="fnref:(\d+)"/m) do |fn|
+    ret = html.gsub(/<a href="#fn:(\d+)" id="fnref:(\d+)"/m) do |fn|
       "<a href=\"#fn:#{nonce}_#{::Regexp.last_match(1)}\" id=\"fnref:#{nonce}_#{::Regexp.last_match(2)}\""
     end
     # link back to footnote reference in body text
-    html.gsub!(/<a href="#fnref:(\d+)"/m) do |fn|
+    ret.gsub!(/<a href="#fnref:(\d+)"/m) do |fn|
       "<a href=\"#fnref:#{nonce}_#{::Regexp.last_match(1)}\""
     end
     # id of footnote body anchor
-    html.gsub!(/<li id="fn:(\d+)"/m) do |fn|
+    ret.gsub!(/<li id="fn:(\d+)"/m) do |fn|
       "<li id=\"fn:#{nonce}_#{::Regexp.last_match(1)}\""
     end
-    html
+    ret
   end
 
   def pub_title_for_comparison(s)

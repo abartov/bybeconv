@@ -901,3 +901,8 @@ small p{
 .ingestible_edit input {
   background-color: #e0e0e0;
 }
+
+.collection_toc {
+  font-size: 130%;
+  line-height: 1.2;
+}

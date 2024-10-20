@@ -120,7 +120,6 @@ class Ingestible < ApplicationRecord
       end
     end
     return unless aus.present?
-
     self.default_authorities = aus.to_json
     save!
   end
