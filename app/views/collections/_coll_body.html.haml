@@ -1,0 +1,50 @@
+.col-12
+  .logo-for-print
+    %img.logoBY-v02{:alt => "", :src => "/assets/logo-byp-mobile.svg"}/
+  .row
+    .col.work-side-menu-area
+    .col.near-side-menu
+      .by-card-v02
+        .by-card-header-v02
+          .headline-1-v02= t(:table_of_contents)
+        .by-card-content-v02
+          - @htmls.each do |title, authors, html, is_curated, genre, i, ci|
+            %p
+              %a{href: "#title#{i}"}= title.gsub(/<[^>]*>/, ' ')
+              - if is_curated
+                %span= ' ('+t(:curated_text)+')'
+                %span.by-icon-v02 _
+              = t(:by)
+              != pub_linkify_people(authors)
+          %br
+          .headline-3-v02= t(:from_pby_and_available_at)+": #{request.base_url+collection_path(@collection.id)}"
+      #actualtext
+        - first = true
+        - @htmls.each do |title, authors, html, is_curated, genre, i, ci|
+          %div{id: 'title'+i.to_s}
+          %a{name: 'title'+i.to_s}
+
+          - unless first
+            %div{style:'height:20px'}
+            %br
+            %br
+          %br
+          .anthology-separator
+          %br
+          - unless first
+            %div{style:'height:20px'}
+            %br
+            %br
+          - first = false
+          .by-card-v02
+            .by-card-header-v02
+              .headline-1-v02= title.gsub(/<[^>]*>/, ' ')
+              = t(:by)
+              != pub_linkify_people(authors)
+
+            .work-area
+              %div{class: is_curated ? 'anthology-self-content' : 'anthology-by-content'}
+                != html
+              - unless is_curated
+                .work-side-color
+                  %div{'class' => "work-genre", style: "background-image: url(\"/assets/work_side_icons_#{genre}.svg\");"}

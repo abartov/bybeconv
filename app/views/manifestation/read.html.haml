@@ -9,13 +9,39 @@
     .row
       .col.work-side-menu-area
         != "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
-      .col.near-side-menu
+      .col.work-col.near-side-menu
         .by-card-v02.work-info-card
           %img.about-work-card-bookmark-fold-v02{alt: t(:background), src: '/assets/creator-bookmark-back2.png'}/
           .about-work-author-card-v02
             %img.about-work-author-pic-v02{alt: @author.name, src: @author.profile_image.url(:thumb)}/
           .by-card-content-v02
             = render partial: 'metadata', locals: {tags_etc: true}
+          .author-works-nav
+            - @containments.each do |ci|
+              .topNavEntry
+                .link-nav
+                  - prev = ci.prev_sibling_item
+                  - if prev.present?
+                    - extra = prev[:skipped] > 0 ? "?skipped=#{prev[:skipped]}" : ''
+                    = link_to "#{default_link_by_class(prev[:item].class, prev[:item].id)}#{extra}" do
+                      %span.right-arrow= '2'
+                      = t(:to_previous_item)
+              .topNavEntry
+                .link-nav{style: 'margin-left:20px; margin-right:20px;'}
+                  - unless ci.collection.system?
+                    = link_to default_link_by_class(ci.collection.class, ci.collection.id) do
+                      %span.right-arrow= '🢁'
+                      = textify_collection_up_link(ci.collection)
+                      %span.left-arrow= '🢁'
+              .topNavEntry
+                .link-nav
+                  - nextsib = ci.next_sibling_item
+                  - if nextsib.present?
+                    - extra = nextsib[:skipped] > 0 ? "?skipped=#{nextsib[:skipped]}" : ''
+                    = link_to "#{default_link_by_class(nextsib[:item].class, nextsib[:item].id)}#{extra}" do
+                      = t(:to_next_item)
+                      %span.left-arrow= '1'
+
         .by-card-v02
           .work-area
             .work-content{"data-spy" => 'scroll', "data-target" => '#chapternav'}
@@ -27,7 +53,8 @@
                 #actualtext.maintext-poetry-body.search-margin
                   != raw(@html)
             .work-side-color
-              %div{'class' => "work-genre", style: "background-image: url(\"/assets/work_side_icons_#{@w.genre}.svg\"); background-repeat: no-repeat; background-size:auto;"}
+              .work-genre{ style: "background-image: url(\"/assets/work_side_icons_#{@w.genre}.svg\"); background-repeat: no-repeat; background-size:auto;" }
+
   .col-12.col-lg-4
     .row
       .col
@@ -147,7 +174,7 @@
                   = t(:yes_i_would_love_to_help)
             
 #downloadDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
-  = render partial: 'shared/download', locals: {manifestation: @m}
+  = render partial: 'shared/download', locals: {entity: @m}
 #recommendationDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
   %h2= t(:loading)
 #citeDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}

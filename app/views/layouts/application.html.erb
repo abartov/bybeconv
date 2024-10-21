@@ -209,6 +209,7 @@
     <% end %>
   </footer>
 <% end %>
+<input type="hidden" name="downloadable_id" id="downloadable_id" />
 <div class="modal" id="shareDlg", aria-hidden = "true", role="dialog", title="<%= t(:choose_sharing_medium) %>">
   <%= render partial: 'shared/share_controls' %>
 </div>
@@ -248,7 +249,7 @@
     $('body').tooltip();
     // adjust page to accommodate extra header height
     var h = $('#header').height();
-    $('.top-element').css('margin-top',h);
+    $('.top-element').css('margin-top',h+25);
     <% unless @scrollspy_target.nil? %>
     $('body').scrollspy({ target: "#<%= @scrollspy_target %>", offset: $('#header').height() });
     <% end %>

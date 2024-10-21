@@ -1,0 +1,4 @@
+$('.cancel_editable_edit').parent().parent().hide();
+$('#editable_coll_title').text("<%= @collection.title %>");
+$('#editable_ctype').text("<%= textify_collection_type(@collection.collection_type) %>: ");
+$('#editable_collection_details').show();

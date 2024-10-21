@@ -1,0 +1,46 @@
+.modal-dialog
+  .modal-content
+    .flex-popup
+      .modal-header
+        .popup-top
+          .row{style: "padding:15px;margin: 0"}
+            .col-4{style: "padding: 0;"}
+              %button.btn-small-outline-v02{'data-dismiss'=>'modal'}
+                .btn-text-v02
+                  %span.right-arrow 2
+                  %span= t(:back)
+            .col-4{style: "padding: 0;"}
+              .headline-2-v02{:style => "text-align: center;margin: 0; padding-top: 3px;"}= t('ingestible.included_works')
+            .col-4
+      .modal-body
+        .by-popup-v02.narrow-popup
+          .by-card-header-v02.desktop-only
+            %span.headline-1-v02.desktop-only= t('ingestible.included_works')
+            %a.popup-x-v02{'data-dismiss'=>'modal'} -
+          %div
+            %button.btn-small-outline-v02#start_upload_block{ style: 'display:unset' }
+              %b.btn-text-v02= t('ingestible.start_upload_block')
+            %button.btn-small-outline-v02#end_upload_block{ style: 'display:unset' }
+              %b.btn-text-v02= t('ingestible.end_upload_block')
+            .by-card-content-v02
+              = form_tag update_toc_list_ingestible_path(@ingestible) do
+                = text_area_tag :toc_list, @toc_list, {rows: 25, cols: 70}
+                .actions
+                  = submit_tag t(:save), class: 'btn btn-primary', id: 'save_toc'
+
+:javascript
+  $(document).ready(function() {
+    function insert_at_cursor(text) {
+      var cursorPos = $('#toc_list').prop('selectionStart');
+      var v = $('#toc_list').val();
+      var textBefore = v.substring(0, cursorPos);
+      var textAfter  = v.substring(cursorPos, v.length);
+      $('#toc_list').val(textBefore + text + textAfter);
+    }
+    $('#start_upload_block').click(function() {
+      insert_at_cursor('\n$$$ התחלה\n');
+    });
+    $('#end_upload_block').click(function() {
+      insert_at_cursor('\n$$$ סוף\n');
+    });
+  });

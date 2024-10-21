@@ -112,6 +112,24 @@ input[type=checkbox].multiselect_checkbox {
 .red {
   color: red;
 }
+.redbg {
+  background-color: red !important;
+}
+.lredbg {
+  background-color: lightcoral !important;
+}
+.green {
+  color: green;
+}
+.greenbg {
+  background-color: green !important;
+}
+.lgreenbg {
+  background-color: lightgreen !important;
+}
+.yellowbg {
+  background-color: yellow !important;
+}
 /* end dict_top workarounds */
 .navdisabled {
   color: #d9cdd5;
@@ -823,4 +841,68 @@ small p{
 }
 .icon-byadditionals:before {
   content: "\e003";
+}
+
+
+.button_series {
+  display: flex;
+}
+.collection_action_btns {
+  display: flex;
+  flex-direction: row;
+}
+
+.watermark {
+    /* Used to position the watermark */
+    position: relative;
+}
+
+.watermark__inner {
+    /* Center the content */
+    align-items: center;
+    display: flex;
+    justify-content: center;
+
+    /* Absolute position */
+    left: 0px;
+    position: absolute;
+    top: 0px;
+
+    /* Take full size */
+    height: 100%;
+    width: 100%;
+}
+
+.watermark__body {
+    /* Text color */
+    color: rgba(0, 0, 0, 0.2);
+
+    /* Text styles */
+    font-size: 3rem;
+    font-weight: bold;
+    text-transform: uppercase;
+
+    /* Rotate the text */
+    transform: rotate(-45deg);
+
+    /* Disable the selection */
+    user-select: none;
+}
+
+.draggable-content {
+  margin-right: 15px;
+}
+
+.print .col-12{
+	padding-right: 0px;
+	padding-left: 0px;
+}
+
+.ingestible_edit input {
+  background-color: #e0e0e0;
+}
+
+.collection_toc {
+  font-size: 130%;
+  line-height: 1.2;
 }

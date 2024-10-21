@@ -1,0 +1,162 @@
+.top-element
+#content.container-fluid
+  .row.text-page-content
+    .col-12.col-lg-8
+      .logo-for-print
+        %img.logoBY-v02{alt: "", src: "/assets/logo-byp-mobile.svg"}/
+      .row
+        .col.work-side-menu-area
+        .col.work-col.near-side-menu
+          .by-card-v02.work-info-card
+            %img.about-work-card-bookmark-fold-v02{alt: "", src: "/assets/creator-bookmark-back2.png"}/
+            .about-work-author-card-v02
+              %img.about-work-author-pic-v02{alt: @authority_for_image.name, src: @authority_for_image.profile_image.url(:thumb)}/
+            .by-card-content-v02
+              .work-title.name-under-btn
+                .headline-1-v02
+                  = @collection.title
+                  %span.metadata-link-icon.binder-icon G
+                .headline-1-v02
+                  - if @collection.authors.present?
+                    != @collection.authors.map { |t| link_to(t.name, authority_path(t)) }.join(', ')
+                  - if @collection.editors.present?
+                    = t(:edited_by)
+                    != @collection.editors.map { |t| link_to(t.name, authority_path(t)) }.join(', ')
+                -# %button.by-button-v02{href: "#"} יוצרים שונים
+                - if @collection.periodical_issue?
+                  = link_to "#{t(:issue_of)} #{@collection.parent_collections.first.title}", collection_path(@collection.parent_collections.first)
+
+              %div
+                .edition-details
+                  - edition = "#{@collection.publisher_line}".strip
+                  - if @collection.pub_year.present?
+                    - edition = edition[0..-1] if edition[-1] == ','
+                    - edition += '; '+@collection.pub_year unless edition[-1] == ';'
+                  - if edition.present?
+                    %span{:style => "font-weight:bold"}= t(:source_edition)+': '
+                    = edition
+                .metadata{style: "gap: 20px"}
+                  - @collection.intellectual_property_statuses.each do |intellectual_property|
+                    = render partial: 'shared/intellectual_property', locals: {intellectual_property: intellectual_property}
+                .metadata{style: "gap: 20px"}
+                  - @collection.included_genres.each do |genre|
+                    %div
+                      %span.by-icon-v02= glyph_for_genre(genre)
+                      = textify_genre(genre)
+                - if @collection.periodical? # we won't usually know the complete issue count of periodicals in progress, and counting extant issues only would imply the periodical run is complete
+                  .metadata= t(:x_issues_available, x: @collection.collection_items.count)
+                - else
+                  .metadata= t(:x_of_y_items_available, x: @collection_minus_placeholders, y: @collection_total_items, ctype: textify_collection_type(@collection.collection_type))
+                .metadata.mobile-work-details
+                  %span{style: "font-weight:bold"} המלצות:
+                  %a{href: "#"} 3 המלצות קוראים
+
+          :ruby
+            eauthors = {}
+            @htmls.each do |title, authors, html, is_curated, genre, i, ci|
+              effective_authors = authors.reject{|a| @collection.authors.map(&:id).include?(a.id)}
+              eauthors[title] = effective_authors.map(&:name).join(', ') if effective_authors.present?
+            end
+          - if eauthors.present?
+            .by-card-v02.binder-texts-list
+              .by-card-content-v02
+                .list-no-bullets
+                  %ul
+                    - @htmls.each do |title, authors, html, is_curated, genre, i, ci|
+                      %li
+                        %a.side-menu-item{href: "#collitem_text_#{i}", 'data-target' => "collitem_text_#{i}"}
+                          - if eauthors[title].present?
+                            = "#{title} / #{eauthors[title]}"
+                          - else
+                            = title
+
+          - @htmls.each do |title, authors, html, is_curated, genre, i, ci|
+            %a{ name: "collitem_text_#{i}" }
+            .by-card-v02
+              .by-card-header-v02
+                .by-icon-v02
+                .headline-1-v02
+                  - link = url_for_collection_item(ci)
+                  - tstr = eauthors[title].present? ? "#{title} / #{eauthors[title]}" : title
+                  - if link.present?
+                    = link_to tstr, link
+                  - else
+                    = tstr
+              .by-card-content-v02
+                != html
+    .col-12.col-lg-4
+      .row
+        .col
+          -# Tags
+          .by-card-v02.left-side-card-v02
+            .by-card-header-left-v02
+              %span.headline-1-v02= t(:tags)
+              .new-tag-teaser= t(:excited_new)
+              .new-tag-teaser-text= t(:new_tag_teaser)
+            .by-card-content-v02.card-with-bottom-links
+              .inline-block#taggings
+                = render partial: 'shared/taggings', locals: {taggings: @taggings, taggable: @collection}
+              - unless current_user.nil? || current_user.blocked?
+                = hidden_field_tag :accepted_tag_policy, @bu.present? ? @bu.get_preference(:accepted_tag_policy) : 'false', id: 'accepted_tag_policy'
+              #add-tag.card-bottom
+                .link-to-all-v02
+                  %button.by-button-v02.must-login#initiate-add-tag
+                    .metadata-link-icon.small-icon.pointer &amp;
+                    %div= t(:suggest_new_tag)
+
+          .by-card-v02.left-side-card-v02#recs
+            - ctype = textify_collection_type(@collection.collection_type)
+            .by-card-header-left-v02
+              %span.headline-1-v02= t(:recommendations_for_collection, ctype: ctype)
+            .by-card-content-v02
+              - if @collection.like_count.present?
+                = t(:x_liked_ctype, x: @collection.like_count, ctype: ctype)
+                %br
+              - if @total_recs > 0
+                -# TODO: add recs for the collection itself, after Recommendations are made polymorphic
+                - if @included_recs > 0
+                  = t(:works_in_this_collection_have_x_recommendations, x: @included_recs, ctype: ctype)
+              - else
+                = t(:no_recommendations_yet)
+              -# TODO: add add-a-recommendation UI
+
+          -#/ יצירות על אודות
+          -#.by-card-v02.left-side-card-v02
+          -#  .by-card-header-left-v02
+          -#    .by-icon-v02 )
+          -#    .headline-1-v02 יצירות על אודות
+          -#  .by-card-content-v02.card-with-bottom-links
+          -#    ישנן 4 יצירות על אודות אסופה זו ו/או יצירות המופיעות בה
+          -#/ תרגומים נוספים
+          -#.by-card-v02.left-side-card-v02
+          -#  .by-card-header-left-v02
+          -#    .by-icon-v02 )
+          -#    .headline-1-v02 תרגומים נוספים
+          -#  .by-card-content-v02.card-with-bottom-links
+          -#    ישנם 2 תרגומים נוספים נוספים ליצירות המופיעות בקובץ יצירות זה
+-#.by-card-v02
+-#  = render partial: 'collection', locals: { collection: @collection, focused: true, label_ci_types: false }
+
+- if current_user&.editor?
+  = link_to t(:edit), edit_collection_path(@collection)
+
+#downloadDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
+  = render partial: 'shared/download', locals: {entity: @collection}
+
+:javascript
+  $(document).ready(function() {
+    $('#initiate-add-tag').click(function(e) {
+      if("#{current_user}" != '') {
+        if($('#accepted_tag_policy').val() != 'false') {
+          $('#generalDlg').load("#{ add_tagging_popup_path(taggable_id: @collection.id, taggable_type: 'Collection') }");
+          $('#generalDlg').modal('show');
+        }
+        else
+          $('#tagPolicyDlg').modal({  backdrop: 'static', keyboard: false, show: true});
+      } else {
+        e.stopPropagation();
+        alert("#{t(:must_login_for_this)}");
+        return;
+      }
+    });
+  });

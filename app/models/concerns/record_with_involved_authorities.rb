@@ -4,6 +4,10 @@
 module RecordWithInvolvedAuthorities
   extend ActiveSupport::Concern
 
+  included do
+    has_many :involved_authorities, as: :item, dependent: :destroy
+  end
+
   # Returns list of authorities involved into given object with the given role.
   # Note: some roles can be specified both on Work and Expression level and this method will fetch only part of them.
   # If you need a full list use {#Manifestation.involved_authorities_by_role}

@@ -102,7 +102,7 @@ class ManifestationController < ApplicationController
     term = params[:term]
     author = params[:author]
     items = if term && author && term.present? && author.present?
-              Person.find(author.to_i).all_works_by_title(term)
+              Authority.find(author.to_i).all_works_by_title(term)
             else
               {}
             end
@@ -505,17 +505,11 @@ class ManifestationController < ApplicationController
           @w.date = params[:wdate]
           @w.comment = params[:wcomment]
           @w.primary = params[:primary] == 'true'
-          if params[:add_authority_w].present?
-            @w.involved_authorities.build(authority_id: params[:add_authority_w], role: params[:role_w])
-          end
           @e.language = params[:elang]
           @e.title = params[:etitle]
           @e.date = params[:edate]
           @e.comment = params[:ecomment]
           @e.intellectual_property = params[:intellectual_property]
-          if params[:add_authority_e].present?
-            @e.involved_authorities.build(authority_id: params[:add_authority_e], role: params[:role_e])
-          end
           @e.source_edition = params[:source_edition]
           @e.period = params[:period]
           @m.title = params[:mtitle]
@@ -858,7 +852,7 @@ class ManifestationController < ApplicationController
         ahoy.track 'text read or printed', text_id: @m.id, title: @m.title, author: @m.author_string
       end
       if @author.nil?
-        @author = Person.new(name: '?')
+        @author = Authority.new(name: '?')
       end
       @translators = @m.translators
       @illustrators = @m.involved_authorities_by_role(:illustrator)
@@ -917,12 +911,13 @@ class ManifestationController < ApplicationController
     @pagetype = :manifestation
     @print_url = url_for(action: :print, id: @m.id)
     @liked = (current_user.nil? ? false : @m.likers.include?(current_user))
-    return unless @e.translation?
-    return unless @e.work.expressions.count > 1 # one is the one we're looking at...
-
-    @additional_translations = []
-    @e.work.expressions.joins(:manifestations).includes(:manifestations).each do |ex|
-      @additional_translations << ex unless ex == @e
+    if @e.translation? && (@e.work.expressions.count > 1) # one is the one we're looking at...
+      @additional_translations = []
+      @e.work.expressions.joins(:manifestations).includes(:manifestations).each do |ex|
+        @additional_translations << ex unless ex == @e
+      end
     end
+    @containments = @m.collection_items
+    @volumes = @m.volumes
   end
 end

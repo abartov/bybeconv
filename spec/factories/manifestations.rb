@@ -16,6 +16,7 @@ FactoryBot.define do
       primary { true }
       expression_date { '2 ביוני 1960' }
       work_date { '3 ביוני 1960' }
+      collections { [] }
     end
 
     title { "Title for #{manifestation_name}" }
@@ -45,6 +46,12 @@ FactoryBot.define do
         date: expression_date,
         work_date: work_date
       )
+    end
+
+    collection_items do
+      collections.map do |c|
+        build(:collection_item, collection: c)
+      end
     end
 
     trait :with_external_links do

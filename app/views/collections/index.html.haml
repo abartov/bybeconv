@@ -1,0 +1,31 @@
+%h1 Listing collections
+
+%table
+  %thead
+    %tr
+      %th Title
+      %th Issn
+      %th Collection type
+      %th Inception
+      %th Inception year
+      %th Publication
+      %th
+      %th
+      %th
+
+  %tbody
+    - @collections.each do |collection|
+      %tr
+        %td= collection.title
+        %td= collection.issn
+        %td= collection.collection_type
+        %td= collection.inception
+        %td= collection.inception_year
+        %td= collection.publication&.title
+        %td= link_to 'Show', collection
+        %td= link_to 'Edit', edit_collection_path(collection)
+        %td= link_to 'Destroy', collection, method: :delete, data: { confirm: 'Are you sure?' }
+
+%br
+
+= link_to 'New Collection', new_collection_path

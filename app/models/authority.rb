@@ -37,6 +37,8 @@ class Authority < ApplicationRecord
 
   belongs_to :person, optional: true
   belongs_to :corporate_body, optional: true
+  belongs_to :root_collection, class_name: 'Collection', optional: true
+  belongs_to :uncollected_works_collection, class_name: 'Collection', optional: true
 
   attr_readonly :person, :corporate_body # Should not be modified after creation
 
@@ -74,6 +76,8 @@ class Authority < ApplicationRecord
   # validations
   validates :name, :intellectual_property, presence: true
   validates :wikidata_uri, format: WIKIDATA_URI_PATTERN, allow_nil: true
+  validates :uncollected_works_collection, uniqueness: true, allow_nil: true
+  validate :validate_collection_types
   validate :validate_linked_authority
 
   validates_attachment_content_type :profile_image, content_type: %r{\Aimage/.*\z}
@@ -81,6 +85,19 @@ class Authority < ApplicationRecord
   before_validation do
     # 'Q' in wikidata URI must be uppercase
     self.wikidata_uri = wikidata_uri.blank? ? nil : wikidata_uri.strip.downcase.gsub('q', 'Q')
+  end
+
+  # return all collections of type volume that are associated with this authority
+  def volumes
+    Collection.joins(:involved_authorities).where(collection_type: 'volume', involved_authorities: { authority_id: id })
+  end
+
+  # returns all volumes that are items of this authority's root collection
+  def volumes_by_root_collection
+    return [] unless root_collection
+
+    # it is assumed all volumes this authority is responsible for are children of the root collection
+    root_collection.coll_items.where(collection_type: :volume)
   end
 
   def approved_tags
@@ -91,16 +108,31 @@ class Authority < ApplicationRecord
     taggings.where(status: Tagging.statuses[:approved])
   end
 
+  def collections
+    Collection.where(
+      <<~SQL.squish
+        exists (
+          select 1 from
+            involved_authorities ia
+          where
+            ia.item_id = collections.id
+            and ia.item_type = 'Collection'
+            and ia.authority_id = #{id}
+        )
+      SQL
+    )
+  end
+
   # @param roles [String / Symbol] optional, if provided will only return Manifestations where authority has
   #   one of the given roles.
   # @return relation representing [Manifestation] objects current authority is involved into.
   def manifestations(*roles)
     rel = involved_authorities
     rel = rel.where(role: roles.to_a) if roles.present?
-    ids = rel.pluck(:work_id, :expression_id)
+    ids = rel.pluck(:item_type, :item_id)
 
-    work_ids = ids.map(&:first).compact.uniq
-    expression_ids = ids.map(&:last).compact.uniq
+    work_ids = ids.select { |type, _id| type == 'Work' }.map(&:last).compact.uniq
+    expression_ids = ids.select { |type, _id| type == 'Expression' }.map(&:last).compact.uniq
 
     Manifestation.joins(:expression)
                  .where('expressions.work_id in (?) or expressions.id in (?)', work_ids, expression_ids)
@@ -212,6 +244,10 @@ class Authority < ApplicationRecord
     Work::GENRES.index_with { |genre| hash[genre] || [] }
   end
 
+  def legacy_toc?
+    return toc.present? && toc.status == 'deprecated'
+  end
+
   def featured_work
     Rails.cache.fetch("au_#{id}_featured", expires_in: 24.hours) do # memoize
       featured_contents.order(Arel.sql('RAND()')).limit(1)
@@ -321,6 +357,51 @@ class Authority < ApplicationRecord
     publish! if awaiting_first?
   end
 
+  def obtain_root_collection
+    self.root_collection ||= generate_root_collection!
+  end
+
+  def generate_root_collection!
+    works = toc.present? ? toc.linked_items : []
+    # include any existing collections possibly already defined for this person
+    colls = Collection.by_authority(self).where.not(collection_type: :root)
+    extra_works = all_works_including_unpublished.reject { |m| works.include?(m) }
+    c = nil
+    ActiveRecord::Base.transaction do
+      c = Collection.create!(title: name, collection_type: :root, toc_strategy: :default)
+      self.root_collection_id = c.id
+      save!
+      c.involved_authorities.create!(authority: self, role: :author) # by default
+      # make an empty collection per publication (even if one already exists in some other context).
+      # Later an editor would populate the empty collection according to an existing manual TOC or a scanned TOC
+      pub_colls = []
+      publications.each do |pub|
+        coll = Collection.create!(title: pub.title, collection_type: :volume, toc_strategy: :default)
+        pub_colls << coll
+      end
+      seqno = 0
+      [colls, pub_colls, works].each do |arr|
+        arr.each do |m|
+          CollectionItem.create!(collection: c, item: m, seqno: seqno)
+          seqno += 1
+        end
+      end
+      # make a (technical, to-be-reviewed-and-handled) collection out of the works not already linked from the TOC
+      extra_works_collection = Collection.create!(
+        title: "#{name} - #{I18n.t(:additional_items)}",
+        collection_type: :other,
+        toc_strategy: :default
+      )
+      extra_seqno = 0
+      extra_works.each do |m|
+        CollectionItem.create!(collection: extra_works_collection, item: m, seqno: extra_seqno)
+        extra_seqno += 1
+      end
+      CollectionItem.create!(collection: c, item: extra_works_collection, seqno: seqno)
+    end
+    return c
+  end
+
   protected
 
   def placeholder_image_url
@@ -340,4 +421,16 @@ class Authority < ApplicationRecord
     errors.add(:base, :no_linked_authority) if person.nil? && corporate_body.nil?
     errors.add(:base, :multiple_linked_authorities) if person.present? && corporate_body.present?
   end
+
+  # rubocop:disable Style/GuardClause
+  def validate_collection_types
+    if root_collection.present? && !root_collection.root?
+      errors.add(:root_collection, :wrong_collection_type, expected_type: :root)
+    end
+
+    if uncollected_works_collection.present? && !uncollected_works_collection.uncollected?
+      errors.add(:uncollected_works_collection, :wrong_collection_type, expected_type: :uncollected)
+    end
+  end
+  # rubocop:enable Style/GuardClause
 end

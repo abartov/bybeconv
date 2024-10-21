@@ -1,0 +1,156 @@
+%table
+  %thead
+    %tr
+      %th= t('ingestible.included_in_upload')
+      %th= t('ingestible.matched_in_markdown')
+      %th= t(:title)
+      %th= t(:associated_persons)
+      %th= t(:genre)
+      %th= t(:orig_lang)
+      %th= t(:copyright_status)
+  - @ingestible.decode_toc.each do |included, title, ias, genre, orig_lang, intellectual_property|
+    %tr
+      %td= included == 'yes' ? '✓' : '✗'
+      - found_in_markdown = @markdown_titles.include?(title)
+      - cell_style = cell_style(found_in_markdown, included)
+      %td{class: cell_style}= found_in_markdown ? '✓' : '✗'
+      %td
+        %span.toc-title= title
+        %button{class: 'change_title'}= t(:edit)
+      - if included == 'yes'
+        %td
+          - seen_translator = false
+          - seen_author = false
+          - if ias.present?
+            - JSON.parse(ias).each do |authority|
+              - seen_translator = true if authority['role'] == 'translator'
+              - seen_author = true if authority['role'] == 'author'
+              %ul
+                %li{ id: "ia#{authority['seqno']}" }
+                  - if authority['authority_id']
+                    = link_to authority['authority_name'], authors_show_path(id: authority['authority_id'])
+                  - else
+                    = authority['new_person']
+                  (#{textify_authority_role(authority['role'])})
+                  = button_tag t(:destroy), class: 'delete_toc_authority'
+          - elsif @ingestible.default_authorities.present?
+            - JSON.parse(@ingestible.default_authorities).each do |authority|
+              - seen_translator = true if authority['role'] == 'translator'
+              - seen_author = true if authority['role'] == 'author'
+            %div{style: 'background: repeating-linear-gradient(45deg,#dddddd,#dedede 10px,#efefef 10px,#eeeeee 20px);'}
+              %b= t(:default)
+              %br
+              = render partial: 'ingestible_authorities/authority', collection: JSON.parse(@ingestible.default_authorities), locals: {editable: false, toc: true}
+          - unless seen_author
+            .lredbg
+              = t('ingestible.author_missing')
+          - if orig_lang != 'he' && !seen_translator
+            .lredbg
+              = t('ingestible.translator_missing')
+          = t(:add)
+          = select_tag :add_authority,
+                      options_from_collection_for_select(Authority.order(:name), 'id', 'name'),
+                      include_blank: true
+          = t('ingestibles.authorities.or_new_person')
+          = text_field_tag :new_person, '', {style: 'width: 150px;'}
+          = t(:in_role)
+          = select_tag :role,
+                      options_for_select(role_options)
+          = button_tag t(:perform_add), class: 'do_add_authority'
+        %td
+          = select_tag :tgenre, options_for_select(get_genres.map {|x| [I18n.t(x), x]}, genre), {include_blank: true, class: 'toc-genre'}
+        %td
+          = select_tag :orig_lang, options_for_select(get_langs.map {|lang| [textify_lang(lang), lang]}, orig_lang), {class: 'toc-lang'}
+        %td
+          = select_tag :intellectual_property, options_for_select(Expression.intellectual_properties.keys.map { |code| [textify_intellectual_property(code), code] }, intellectual_property), {class: 'toc-intellectual-property'}
+      - else
+        %td
+        %td
+        %td
+
+:javascript
+  $(document).ready(function() {
+    function update_toc(e, new_authority_id, new_name, new_role, new_person_tbd) {
+      startModal('spinnerdiv');
+      var title = e.closest('tr').find('.toc-title').text();
+      var genre = e.closest('tr').find('.toc-genre').val();
+      var orig_lang = e.closest('tr').find('.toc-lang').val();
+      var intellectual_property = e.closest('tr').find('.toc-intellectual-property').val();
+      $.ajax({
+        url: "#{update_toc_ingestible_path(@ingestible)}",
+        type: 'PATCH',
+        data: {
+          title: title,
+          genre: genre,
+          orig_lang: orig_lang,
+          intellectual_property: intellectual_property,
+          authority_id: new_authority_id,
+          authority_name: new_name,
+          role: new_role,
+          new_person_tbd: new_person_tbd
+        },
+        success: function(data) {
+          e.parent().append("<span id='checkmark_fader' style='color:green;'>✓</span>");
+          $('#checkmark_fader').fadeOut(2000);
+        }
+      });
+    }
+    $('.toc-lang').change(function(e) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      update_toc($(this), null, null, null, null);
+    });
+    $('.toc-genre').change(function(e) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      update_toc($(this), null, null, null, null);
+    });
+    $('.toc-intellectual-property').change(function(e) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      update_toc($(this), null, null, null, null);
+    });
+    $('.do_add_authority').click(function(e) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      var new_au = $(this).closest('tr').find('select[name=add_authority]').val();
+      var new_name = $(this).closest('tr').find('select[name=add_authority] option:selected').text();
+      var new_role = $(this).closest('tr').find('select[name=role]').val();
+      var new_person_tbd = $(this).closest('tr').find('input[name=new_person]').val();
+
+      update_toc($(this), new_au, new_name, new_role, new_person_tbd);
+    });
+    $('.delete_toc_authority').click(function(e) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      var seqno = $(this).closest('li').attr('id').substring(2);
+      var title = $(this).closest('tr').find('.toc-title').text();
+      startModal('spinnerdiv');
+      $.ajax({
+        url: "#{update_toc_ingestible_path(@ingestible)}",
+        type: 'PATCH',
+        data: {
+          title: title,
+          rmauth: true,
+          seqno: seqno
+        },
+      });
+    });
+    $('.change_title').click(function(e) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      var title = $(this).closest('tr').find('.toc-title').text();
+      var new_title = prompt("#{I18n.t('ingestible.new_title')}", title);
+      if (new_title) {
+        startModal('spinnerdiv');
+        $.ajax({
+          url: "#{update_toc_ingestible_path(@ingestible)}",
+          type: 'PATCH',
+          data: {
+            title: title,
+            new_title: new_title
+          }
+         });
+      }
+    });
+  });

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_06_14_064855) do
+ActiveRecord::Schema.define(version: 2024_10_18_012458) do
 
   create_table "aboutnesses", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -153,11 +153,12 @@ ActiveRecord::Schema.define(version: 2024_06_14_064855) do
     t.string "sort_name"
     t.integer "status"
     t.datetime "published_at"
-    t.integer "root_collection_id"
     t.integer "intellectual_property", null: false
     t.string "wikidata_uri"
     t.integer "person_id"
     t.integer "corporate_body_id"
+    t.integer "root_collection_id"
+    t.integer "uncollected_works_collection_id"
     t.index ["corporate_body_id"], name: "index_authorities_on_corporate_body_id", unique: true
     t.index ["impressions_count"], name: "index_authorities_on_impressions_count"
     t.index ["intellectual_property"], name: "index_authorities_on_intellectual_property"
@@ -167,6 +168,7 @@ ActiveRecord::Schema.define(version: 2024_06_14_064855) do
     t.index ["sort_name"], name: "index_authorities_on_sort_name"
     t.index ["status", "published_at"], name: "index_authorities_on_status_and_published_at"
     t.index ["toc_id"], name: "people_toc_id_fk"
+    t.index ["uncollected_works_collection_id"], name: "index_authorities_on_uncollected_works_collection_id", unique: true
   end
 
   create_table "base_user_preferences", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -266,22 +268,22 @@ ActiveRecord::Schema.define(version: 2024_06_14_064855) do
     t.index ["manifestation_id"], name: "index_bookmarks_on_manifestation_id"
   end
 
-  create_table "collection_items", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
-    t.bigint "collection_id"
+  create_table "collection_items", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.integer "collection_id"
     t.string "alt_title"
     t.text "context"
     t.integer "seqno"
     t.string "item_type"
     t.bigint "item_id"
+    t.string "markdown", limit: 2048
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "markdown", limit: 2048
     t.index ["collection_id"], name: "index_collection_items_on_collection_id"
     t.index ["item_type", "item_id"], name: "index_collection_items_on_item"
   end
 
-  create_table "collections", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
-    t.string "title"
+  create_table "collections", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "title", limit: 1024
     t.string "sort_title"
     t.string "subtitle"
     t.string "issn"
@@ -293,6 +295,9 @@ ActiveRecord::Schema.define(version: 2024_06_14_064855) do
     t.integer "toc_strategy"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "publisher_line"
+    t.string "pub_year"
+    t.integer "normalized_pub_year"
     t.index ["inception_year"], name: "index_collections_on_inception_year"
     t.index ["publication_id"], name: "index_collections_on_publication_id"
     t.index ["sort_title"], name: "index_collections_on_sort_title"
@@ -549,16 +554,55 @@ ActiveRecord::Schema.define(version: 2024_06_14_064855) do
     t.index ["user_id"], name: "index_impressions_on_user_id"
   end
 
+  create_table "ingestibles", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.string "title"
+    t.integer "status"
+    t.integer "scenario"
+    t.text "default_authorities"
+    t.text "metadata"
+    t.text "comments"
+    t.text "markdown", size: :long
+    t.integer "user_id"
+    t.text "problem", size: :medium
+    t.string "orig_lang"
+    t.string "year_published"
+    t.string "genre"
+    t.string "publisher"
+    t.string "pub_link", limit: 2048
+    t.string "pub_link_text", limit: 1024
+    t.boolean "attach_photos", default: false, null: false
+    t.boolean "no_volume", default: false, null: false
+    t.text "toc_buffer"
+    t.integer "volume_id"
+    t.text "works_buffer", size: :long
+    t.datetime "markdown_updated_at"
+    t.datetime "works_buffer_updated_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "locked_by_user_id"
+    t.timestamp "locked_at"
+    t.string "prospective_volume_id"
+    t.string "prospective_volume_title"
+    t.integer "periodical_id"
+    t.string "intellectual_property"
+    t.text "ingested_changes"
+    t.index ["locked_by_user_id"], name: "index_ingestibles_on_locked_by_user_id"
+    t.index ["status"], name: "index_ingestibles_on_status"
+    t.index ["title"], name: "index_ingestibles_on_title"
+    t.index ["user_id"], name: "index_ingestibles_on_user_id"
+    t.index ["volume_id"], name: "index_ingestibles_on_volume_id"
+  end
+
   create_table "involved_authorities", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "authority_id", null: false
-    t.integer "work_id"
-    t.integer "expression_id"
     t.integer "role", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "item_type", null: false
+    t.integer "item_id", null: false
+    t.index ["authority_id", "item_id", "item_type", "role"], name: "index_involved_authority_uniq", unique: true
     t.index ["authority_id"], name: "index_involved_authorities_on_authority_id"
-    t.index ["expression_id"], name: "index_involved_authorities_on_expression_id"
-    t.index ["work_id"], name: "index_involved_authorities_on_work_id"
+    t.index ["item_type", "item_id"], name: "index_involved_authorities_on_item"
   end
 
   create_table "legacy_recommendations", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -1037,6 +1081,8 @@ ActiveRecord::Schema.define(version: 2024_06_14_064855) do
   add_foreign_key "anthologies", "users"
   add_foreign_key "anthology_texts", "anthologies"
   add_foreign_key "anthology_texts", "manifestations"
+  add_foreign_key "authorities", "collections", column: "root_collection_id"
+  add_foreign_key "authorities", "collections", column: "uncollected_works_collection_id"
   add_foreign_key "authorities", "corporate_bodies"
   add_foreign_key "authorities", "people"
   add_foreign_key "authorities", "tocs", name: "people_toc_id_fk"
@@ -1061,9 +1107,9 @@ ActiveRecord::Schema.define(version: 2024_06_14_064855) do
   add_foreign_key "featured_contents", "users"
   add_foreign_key "holdings", "bib_sources"
   add_foreign_key "holdings", "publications"
+  add_foreign_key "ingestibles", "collections", column: "volume_id"
+  add_foreign_key "ingestibles", "users", column: "locked_by_user_id"
   add_foreign_key "involved_authorities", "authorities"
-  add_foreign_key "involved_authorities", "expressions"
-  add_foreign_key "involved_authorities", "works"
   add_foreign_key "lex_citations", "manifestations"
   add_foreign_key "lex_files", "lex_entries"
   add_foreign_key "lex_issues", "lex_publications"

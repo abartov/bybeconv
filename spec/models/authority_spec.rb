@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe Authority do
   describe 'validations' do
-    it 'considers empty Person invalid' do
+    it 'considers empty Authority invalid' do
       a = described_class.new
       expect(a).not_to be_valid
     end
@@ -16,6 +16,60 @@ describe Authority do
         person: create(:person)
       )
       expect(a).to be_valid
+    end
+
+    describe 'root collection type validation' do
+      let(:authority) { build(:authority, root_collection: root_collection) }
+
+      context 'when root collection is not set' do
+        let(:root_collection) { nil }
+
+        it { expect(authority).to be_valid }
+      end
+
+      context 'when root collection is set and has root type' do
+        let(:root_collection) { create(:collection, collection_type: :root) }
+
+        it { expect(authority).to be_valid }
+      end
+
+      context 'when root collection is set but has wrong type' do
+        let(:root_collection) { create(:collection) }
+
+        it 'fails validation' do
+          expect(authority).not_to be_valid
+          expect(authority.errors[:root_collection]).to eq [
+            I18n.t('activerecord.errors.models.authority.wrong_collection_type', expected_type: :root)
+          ]
+        end
+      end
+    end
+
+    describe 'uncollected works collection type validation' do
+      let(:authority) { build(:authority, uncollected_works_collection: uncollected_works_collection) }
+
+      context 'when root collection is not set' do
+        let(:uncollected_works_collection) { nil }
+
+        it { expect(authority).to be_valid }
+      end
+
+      context 'when root collection is set and has uncollected type' do
+        let(:uncollected_works_collection) { create(:collection, collection_type: :uncollected) }
+
+        it { expect(authority).to be_valid }
+      end
+
+      context 'when root collection is set but has wrong type' do
+        let(:uncollected_works_collection) { create(:collection) }
+
+        it 'fails validation' do
+          expect(authority).not_to be_valid
+          expect(authority.errors[:uncollected_works_collection]).to eq [
+            I18n.t('activerecord.errors.models.authority.wrong_collection_type', expected_type: :uncollected)
+          ]
+        end
+      end
     end
 
     describe '.validate_linked_authority' do

@@ -3,9 +3,12 @@
     return "<span style=\"color:red; font-size: 250%\">"+buf+"</span>";
   }
   jQuery(document).ready(function() {
-    $('#minuses_to_makafim').click(function(e) {
+    var element_id = "##{element_id}";
+    if(element_id == '')
+      element_id = '#markdown';
+    $('##{container_id} #minuses_to_makafim').click(function(e) {
       e.preventDefault();
-      var buf = $('#markdown').val();
+      var buf = $(element_id).val();
       replaced = 0;
       buf = buf.replace(/\S(-|‑)\S/g, function(occurrence){
         if((occurrence[0].match(/[A-Za-z]/i)) || (occurrence[2].match(/[A-Za-z]/i)) || occurrence[0] == '-' || occurrence[2] == '-' || (occurrence[0].match(/[0-9]/) && occurrence[2].match(/[0-9]/))) {
@@ -15,36 +18,36 @@
           return occurrence.replace('-','־').replace('‑','־');
         }
       });
-      $('#markdown').val(buf);
+      $(element_id).val(buf);
       alert('בוצעו '+replaced.toString()+' החלפות.');
     });
-    $('#add_angled_brackets').click(function(e) {
+    $('##{container_id} #add_angled_brackets').click(function(e) {
       e.preventDefault();
-      if($('#markdown').selection() == '') {
+      if($(element_id).selection() == '') {
         alert("#{t(:select_text_to_add_to)}");
       }
       else
       {
-        var buf = $('#markdown').selection();
+        var buf = $(element_id).selection();
         buf = buf.replace(/\n([^#])/g, "\n> $1");
-        $('#markdown').selection('replace', {text: buf});
+        $(element_id).selection('replace', {text: buf});
       }
     });
-    $('#remove_angled_brackets').click(function(e) {
+    $('##{container_id} #remove_angled_brackets').click(function(e) {
       e.preventDefault();
-      if($('#markdown').selection() == '') {
+      if($(element_id).selection() == '') {
         alert("#{t(:select_text_to_remove_from)}");
       }
       else
       {
-        var buf = $('#markdown').selection();
+        var buf = $(element_id).selection();
         buf = buf.split(/\n> */).join("\n");
-        $('#markdown').selection('replace', {text: buf});
+        $(element_id).selection('replace', {text: buf});
       }
     });
-    $('#add_stanza_break').click(function(e) {
+    $('##{container_id} #add_stanza_break').click(function(e) {
       e.preventDefault();
-      var $txt = jQuery("#markdown");
+      var $txt = jQuery(element_id);
       var scrollLeft = $txt[0].scrollLeft;
       var scrollTop  = $txt[0].scrollTop;
       var caretPos = $txt[0].selectionStart;
@@ -62,9 +65,9 @@
     $("#preview blockquote:contains('> ')").each(function(){
       $(this).html(highlight_in_red($(this).html()));
     });
-    $('#tidy_footnote_dirs').click(function(e) {
+    $('##{container_id} #tidy_footnote_dirs').click(function(e) {
       e.preventDefault();
-      var buf = $('#markdown').val();
+      var buf = $(element_id).val();
       replaced = 0;
       buf = buf.replace(/(\[.*?]: )(.*)/g, function(occurrence, p1, p2){
         if(occurrence.match(/[\u0590-\u05FF]/)) {
@@ -77,7 +80,7 @@
           return p1 + '<div dir="ltr" align="left">' + p2 + '</div>';
         }
       });
-      $('#markdown').val(buf);
+      $(element_id).val(buf);
       alert('בוצעו '+replaced.toString()+' החלפות.');
     });
 
