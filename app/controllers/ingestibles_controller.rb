@@ -346,9 +346,10 @@ class IngestiblesController < ApplicationController
 
   # add a placeholder (itemless CollectionItem) to the collection
   def create_placeholder(toc_line)
-    return if @collection.collection_items.where(alt_title: toc_line[1]) # don't create duplicate placeholders. It is expected they are unique within the collection. Genuine duplicate titles that the user DOES want created should have been disambiguated at the review phase.
-    @collection.append_collection_item(CollectionItem.new(alt_title: toc_line[1]))
-    @changes[:placeholders] << toc_line[1]
+    unless @collection.collection_items.where(alt_title: toc_line[1]).present? # don't create duplicate placeholders. It is expected they are unique within the collection. Genuine duplicate titles that the user DOES want created should have been disambiguated at the review phase.
+      @collection.append_collection_item(CollectionItem.new(alt_title: toc_line[1]))
+      @changes[:placeholders] << toc_line[1]
+    end
   end
 
   def upload_text(toc_line, index)

@@ -190,7 +190,7 @@ class CollectionsController < ApplicationController
     else
       @collection.collection_items.each do |ci|
         html = ci.to_html
-        next unless html.present?
+        #next unless html.present?
         @htmls << [ci.title, ci.authors, html.present? ? footnotes_noncer(ci.to_html, i) : '', false, ci.genre,
                   i, ci]
         i += 1

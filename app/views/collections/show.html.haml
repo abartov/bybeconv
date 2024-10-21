@@ -64,11 +64,14 @@
                   %ul
                     - @htmls.each do |title, authors, html, is_curated, genre, i, ci|
                       %li
-                        %a.side-menu-item{href: "#collitem_text_#{i}", 'data-target' => "collitem_text_#{i}"}
-                          - if eauthors[title].present?
-                            = "#{title} / #{eauthors[title]}"
-                          - else
-                            = title
+                        - if html.present?
+                          %a.side-menu-item{href: "#collitem_text_#{i}", 'data-target' => "collitem_text_#{i}"}
+                            - if eauthors[title].present?
+                              = "#{title} / #{eauthors[title]}"
+                            - else
+                              = title
+                        - else
+                          = title
 
           - @htmls.each do |title, authors, html, is_curated, genre, i, ci|
             %a{ name: "collitem_text_#{i}" }
