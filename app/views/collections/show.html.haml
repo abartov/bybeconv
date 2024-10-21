@@ -23,7 +23,7 @@
                     = t(:edited_by)
                     != @collection.editors.map { |t| link_to(t.name, authority_path(t)) }.join(', ')
                 -# %button.by-button-v02{href: "#"} יוצרים שונים
-                - if @collection.periodical_issue?
+                - if @collection.periodical_issue? && @collection.parent_collections.present?
                   = link_to "#{t(:issue_of)} #{@collection.parent_collections.first.title}", collection_path(@collection.parent_collections.first)
 
               %div
