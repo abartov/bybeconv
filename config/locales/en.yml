@@ -16,6 +16,9 @@ en:
   created_successfully: Created Successfully
   updated_successfully: Updated Successfully
   deleted_successfully: Deleted Successfully
+  original_works: Original Works
+  translations: Translations
+  edited_works: Edited Works
   alefbet: Alphabetical
   alefbet_asc: 'Alphabetical: A-Z'
   alefbet_desc: 'Alphabetical: Z-A'
@@ -37,6 +40,8 @@ en:
   feature_on: Featuring Periods
   unknown: Unknown
   sort_by: Sort by
+  uncollected_works_collection_title: Uncollected works
+  add: Add
   admin:
     featured_contents:
       index:
@@ -53,6 +58,34 @@ en:
       columns:
         db_intellectual_property: Intellectual property in DB
         has_non_public_domain_authority: Has non public domain authority
+  ingestibles:
+    ingestible_locked: Ingestible locked by user %{user}
+    # _authorities partial
+    authorities:
+      or_new_person: or type a new authority name
+    new:
+      title: New Ingestible
+    create:
+      success: Ingestible was successfully created
+      failure: Failed to create Ingestible
+    edit:
+      title: Edit Ingestible
+    form:
+      general: General
+      texts: Texts
+      full_markdown: Full Markdown
+      toc: TOC
+      review: Review
+    update:
+      success: Ingestible was successfully updated
+    destroy:
+      success: Ingestible was successfully destroyed
+  ingestible_texts:
+    edit:
+      text_x_of_total: Text %{index} of %{total}
+  involved_authorities:
+    list:
+      select_authority: Select authority!
   shared:
     filters:
       pagination:
@@ -100,6 +133,22 @@ en:
       ziburit_failed: Control question failed
       email_missing: Please provide an email address
   manifestation:
+  collection:
+    type:
+      volume: Volume
+      anthology: Anthology
+      periodical: Periodical
+      periodical_issue: Periodical Issue
+      series: Series
+      root: Root
+      other: Other
+      uncollected: Uncollected works
+    up_link:
+      volume: to volume
+      anthology: to anthology
+      periodical: to periodical
+      periodical_issue: to issue
+      series: to whole series
   intellectual_property:
     public_domain: public domain
     by_permission: by permission
@@ -118,3 +167,13 @@ en:
       designer: Designer
       contributor: Contributor
       other: Other
+  ingestible:
+    scenario:
+      single: Single piece
+      multiple: Multiple works with same properties
+      mixed: Works with different authors or properties
+    status:
+      draft: Draft
+      ingested: Ingestion Complete
+      failed: Failed to Ingest
+      awaiting_authorities: Awaiting Creation of Missed Authorities

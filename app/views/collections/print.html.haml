@@ -1,0 +1,15 @@
+/ print mode.
+.print
+  #content.container-fluid
+    .row.anthology-page-content
+      = render partial: 'coll_body'
+
+:javascript
+  $(document).ready(function() {
+    $(document).on('keyup',function(evt) {
+      if (evt.keyCode == 27) {
+        window.location.href = '#{url_for(action: :show, id: @collection.id)}';
+      }
+    });
+    window.print();
+  });

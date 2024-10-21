@@ -1,0 +1,298 @@
+- if @ingestible.errors.any?
+  #error_explanation
+    %h2= t('ingestible.invalid')
+    %ul
+      - @ingestible.errors.full_messages.each do |message|
+        %li= message
+#need_to_save{style: 'display:none; background-color: #f8d7da; border: 1px solid #f5c6cb; padding: 10px;'}
+  %h2= t('ingestible.need_to_save')
+  %p= t('ingestible.need_to_save_explanation')
+%ul.nav.nav-tabs{ style: 'width: 100%;' }
+  %li.nav-item
+    %a.nav-link.active{ href: '#general', 'data-toggle': 'tab', style: 'width: unset;' }= t('.general')
+  - unless @ingestible.new_record?
+    %li.nav-item
+      %a.nav-link{href: '#full_markdown', 'data-toggle': 'tab', style: 'width: unset;'}= t('.full_markdown')
+    %li.nav-item
+      %a.nav-link{href: '#toc', 'data-toggle': 'tab', style: 'width: unset;'}= t('.toc')
+    %li.nav-item
+      %a.nav-link#texts_header{ href: '#texts', 'data-toggle': 'tab', style: 'width: unset;' }= t('.texts')
+.tab-content
+  .tab-pane.active#general
+    = form_for @ingestible do |f|
+      .ingestible_edit
+        .field
+          = f.label t('ingestible.title')
+          %b= f.text_field :title, style: 'width:80%'
+        .field{style: 'border: 1px solid #ccc; padding: 10px;'}
+          %h3= t('ingestible.volume')
+          - vid = @ingestible.volume_id.present? ? @ingestible.volume_id : @ingestible.prospective_volume_id
+          - if vid.present? || @ingestible.prospective_volume_title.present?
+            %b#volume_title= title_from_prospective_volume_id(vid, @ingestible.prospective_volume_title)
+            %button.btn-small-outline-v02#change_volume{style: 'display: unset;'}
+              %b.btn-text-v02= t(:edit)
+          .volume-details{style: vid.present? ? 'display:none;' : ''}
+            = f.label t('ingestible.volume_by_author')
+            = autocomplete_field_tag :author, '', autocomplete_authority_name_path, 'data-noMatchesLabel' => t(:no_matches_found), id: 'aterm', style: 'width:400px;', id_element: '#authority_id'
+            = hidden_field_tag :authority_id, value: '', id: 'authority_id'
+            = f.check_box :no_volume
+            = f.label t('ingestible.no_volume')
+            &nbsp;
+            %span{id: 'explain_no_volume'}= '[?]'
+            %br
+            = select_tag :authority_volumes, [], {id: 'authority_volumes', style: 'display:none;'}
+            %br
+
+            = f.label t('ingestible.any_volume')
+            = autocomplete_field_tag :volume, '', autocomplete_collection_title_path, 'data-noMatchesLabel' => t(:no_matches_found), id: 'cterm', style: 'width:400px;', id_element: '#prospective_volume_id'
+            %br
+            = t(:or)
+            %br
+            = f.label t('ingestible.create_new_volume')
+            = f.text_field :prospective_volume_title, style: 'width:400px;'
+            = f.hidden_field :prospective_volume_id, id: 'prospective_volume_id'
+            %br
+            = t(:or)
+            %br
+            = f.label t('ingestible.pick_periodical')
+            = f.select :periodical_id, options_for_select(Collection.by_type(:periodical).map{|j| [j.title, j.id]}, @ingestible.periodical_id), {include_blank: true, style: 'width:400px;'}
+            %br
+            %div#periodical_issues_div{style: 'display:none;'}
+              = t('ingestible.pick_issue')
+              = select_tag :periodical_issues, [], {id: 'periodical_issues'}
+
+        .field
+          -#= f.label :scenario
+          -#= f.select :scenario, options_for_select(Ingestible.scenarios.map{|k,v| [t("ingestible.scenario.#{k}"), k]}, @ingestible.scenario)
+          = f.label :status
+          %b= t("ingestible.status.#{@ingestible.status}")
+          = f.hidden_field :status, value: @ingestible.status
+        %h2= t('ingestible.defaults')
+        = f.label t(:genre)
+        - genres = [[t(:mixed_genres), 'mixed']]+get_genres.map {|genre| [I18n.t(genre), genre]}
+        = f.select :genre, options_for_select(genres, @ingestible.genre), {include_blank: true}
+        = f.label t(:publisher)
+        = f.text_field :publisher, style: 'width:400px;'
+        = f.label t(:year_published)
+        = f.text_field :year_published, style: 'width:100px;'
+        %br
+        = f.label t(:orig_lang)
+        = f.select :orig_lang, options_for_select(get_langs.map {|lang| [textify_lang(lang), lang]}, @ingestible.orig_lang)
+        = f.label t(:copyright_status)
+        = f.select :intellectual_property, options_for_select(Expression.intellectual_properties.keys.map { |code| [textify_intellectual_property(code), code] }, @ingestible.intellectual_property)
+        %br
+        = f.label t(:publisher_link)
+        = f.text_field :pub_link, style: 'width:400px;'
+        %br
+        = f.label t(:publisher_link_text)
+        = f.text_field :pub_link_text, style: 'width:400px;'
+        = render partial: 'authorities', locals: {authorities: @ingestible.default_authorities}
+        %hr
+        .field
+          = f.label :comments
+          = f.text_area :comments
+        .field
+          = f.check_box :attach_photos
+          = f.label t('ingestible.attach_photos')
+          &nbsp;
+          %span{id: 'explain_attach_photos'}= '[?]'
+
+        - if @ingestible.docx.present?
+          %p
+            = t('.current_file')
+            = link_to @ingestible.docx.filename.to_s, url_for(@ingestible.docx)
+            = t('.or_replace_file')
+        - else
+          %b= t(:upload_file)
+          = t(:file_can_be_skipped)
+        = f.file_field :docx
+        = f.label t('.problem')
+        = f.text_area :problem
+      .actions
+        = f.submit t(:save), class: 'btn btn-primary'
+  - unless @ingestible.new_record?
+    .tab-pane#full_markdown
+      %h2= t('.full_markdown')
+      .container-fluid
+        .row
+          .col-md-12
+            = form_for @ingestible, url: update_markdown_ingestible_path(@ingestible) do |f|
+              .markdown_container.row
+                .col-sm-3
+                  #legacy_markdown_link
+                  %h2= t(:markdown)
+                  %button.btn-small-outline-v02#add_stanza_break{ style: 'display:unset' }
+                    %b.btn-text-v02= t(:add_stanza_break)
+                  %button.btn-small-outline-v02#add_angled_brackets{ style: 'display:unset' }
+                    %b.btn-text-v02= t(:add_angled_brackets)
+                  %button.btn-small-outline-v02#remove_angled_brackets{ style: 'display:unset' }
+                    %b.btn-text-v02= t(:remove_angled_brackets)
+                  %button.btn-small-outline-v02#minuses_to_makafim{ style: 'display:unset' }
+                    %b.btn-text-v02= t(:minuses_to_makafim)
+                  = f.text_area :markdown, class: 'textarea100 markdown'
+                .col-sm-9
+                  %h2= t(:display_text)
+                  #preview{ style: 'padding-left:10px;padding-right:15px;background:#d2cfcf; overflow-y:auto' }
+                    != raw(@html)
+                    %br
+                .actions{style: 'width: 100%;'}
+                  = f.submit t(:save), class: 'btn btn-primary'
+      = render partial: 'shared/markdown_utils', locals: { container_id: 'full_markdown', element_id: 'ingestible_markdown' }
+    .tab-pane#toc
+      %h2= t('.toc')
+      .field.ingestible_edit
+        = button_tag t('ingestible.included_works'), id: 'edit_toc'
+        %br
+        #toc_div= render partial: 'toc'
+      -#= form_for @ingestible do |f|
+        -#= f.text_area :toc_buffer, class: 'textarea100'
+      -#  .actions
+      -#    = f.submit t(:save), class: 'btn btn-primary'
+    .tab-pane#texts
+      - unless @ingestible.texts.empty?
+        = render partial: 'ingestible_texts/edit',
+                 locals: { ingestible: @ingestible, index: (params[:text_index] || 0).to_i }
+  - if @ingestible.persisted?
+    .review
+      = link_to t('.review'), review_ingestible_path(@ingestible), class: 'btn btn-primary', style: 'width:100%;'
+:javascript
+  $(function() {
+    if (#{params[:text_index].present?}) {
+      $('#texts_header').click();
+    }
+
+    $('#explain_no_volume').popover({content:
+    "#{t('ingestible.no_volume_explanation')}", 
+    trigger: 'hover', placement: 'right'});
+    $('#explain_attach_photos').popover({content: 
+    "#{t('ingestible.attach_photos_explanation')}", 
+    trigger: 'hover', placement: 'right'});
+    $('#aterm').on('railsAutocomplete.select', function(event, data){
+      $('#authority_id').val(data.item.id);
+      // look up volumes by authority
+      url = "#{authority_volumes_path}?id=" + data.item.id;
+      $.ajax({
+        url: url,
+        success: function(data) {
+          $('#authority_volumes').show();
+          if (data['volumes'].length == 0 && data['publications'].length == 0) {
+            $('#authority_volumes').hide();
+          } else {
+            $('#authority_volumes').empty();
+            $('#authority_volumes').append($('<option>', {
+              value: '',
+              text: ''
+            }));
+            data['volumes'].forEach(function(volume) {
+              $('#authority_volumes').append($('<option>', {
+                value: volume.id,
+                text: volume.title
+              }));
+            });
+            data['publications'].forEach(function(publication) {
+              $('#authority_volumes').append($('<option>', {
+                value: 'P'+publication.id.toString(),
+                text: "#{t('ingestible.new_volume')} " + publication.title
+              }));
+            });
+          }
+        }
+      });
+    });
+    $('#authority_volumes').on('change', function() {
+      $('#prospective_volume_id').val($('#authority_volumes').val());
+      new_title = $('#authority_volumes option:selected').text();
+      $('#volume_title').text(new_title);
+      $('#prospective_volume_title').val(new_title);
+      $('#ingestible_no_volume').prop('checked', false);
+      $('#need_to_save').show();
+    });
+    $('#periodical_issues').on('change', function() {
+      if($('#periodical_issues').val() == '!new') {
+        // show pop-up asking for new periodical issue title
+        $('<form>#{t("ingestible.new_issue_title")}<input type="text" style="z-index:10000" name="issue_title"><br></form>').dialog({
+          modal: true,
+          buttons: {
+            'OK': function () {
+              var name = $('input[name="issue_title"]').val();
+              $.post("#{collection_add_periodical_issue_path(999)}".replace('999', $('#ingestible_periodical_id').val()), {title: name});
+              $(this).dialog('close');
+            },
+            'Cancel': function () {
+              $(this).dialog('close');
+            }
+          }
+        });
+      } else {
+        $('#prospective_volume_id').val($('#periodical_issues').val());
+        new_title = $('#periodical_issues option:selected').text();
+        $('#volume_title').text(new_title);
+        $('#prospective_volume_title').val(new_title);
+    }
+      $('#need_to_save').show();
+      $('#ingestible_no_volume').prop('checked', false);
+    });
+
+    $('#ingestible_periodical_id').on('change', function() {
+      $('#ingestible_no_volume').prop('checked', false);
+      url = "#{collection_periodical_issues_path(999)}".replace('999', $(this).val());
+      $.ajax({
+        url: url,
+        success: function(data) {
+          if (data['issues'].length > 0) {
+            $('#periodical_issues').empty();
+            $('#periodical_issues_div').show();
+            $('#periodical_issues').append($('<option>', {
+              value: '',
+              text: ''
+            }));
+            data['issues'].forEach(function(issue) {
+              $('#periodical_issues').append($('<option>', {
+                value: issue.id,
+                text: issue.title
+              }));
+            });
+            $('#periodical_issues').append($('<option>', {
+              value: '!new',
+              text: "#{t('ingestible.add_new_issue')}"
+            }));
+
+          }
+        }
+      });
+
+    });
+    $('#cterm').on('railsAutocomplete.select', function(event, data){
+      $('#prospective_volume_id').val(data.item.id);
+      $('#prospective_volume_title').val(data.item.value);
+      $('#volume_title').text(data.item.value);
+      $('#ingestible_no_volume').prop('checked', false);
+      $('#need_to_save').show();
+    });
+    $('#change_volume').on('click', function(e) {
+      e.preventDefault();
+      $('.volume-details').toggle();
+    });
+    $('#ingestible_no_volume').on('change', function() {
+      if ($('#ingestible_no_volume').is(':checked')) {
+        $('#authority_volumes').hide();
+        $('#periodical_issues_div').hide();
+        $('#prospective_volume_id').val('');
+        $('#prospective_volume_title').val('');
+        $('#volume_title').text('');
+        $('#ingestible_periodical_id').val('');
+        $('#ingestible_prospective_volume_title').val('');
+        $('#need_to_save').show();
+      } else {
+        $('#authority_volumes').show();
+      }
+    });
+    $('#ingestible_prospective_volume_title').on('change', function() {
+      $('#ingestible_no_volume').prop('checked', false);
+    });
+    $('#edit_toc').on('click', function(e) {
+      e.preventDefault();
+      $('#generalDlg').load("#{ @ingestible.id.present? ? edit_toc_ingestible_path(@ingestible) : ''}");
+      $('#generalDlg').modal('show');
+    });
+  });

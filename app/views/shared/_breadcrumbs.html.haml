@@ -33,3 +33,5 @@
     -#.breadcrumbs-arrow= 1
     -#.breadcrumbs-text
     -#  %b= @entity.name
+  - elsif @pagetype == :collection
+    .breadcrumbs-text= link_to t(:works), works_path

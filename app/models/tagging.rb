@@ -12,7 +12,7 @@ class Tagging < ApplicationRecord
   validates :status, presence: true
   validates :tag, presence: true
   validates :taggable, presence: true
-  validates :taggable_type, inclusion: { in: %w(Anthology Authority Expression Manifestation Work) }
+  validates :taggable_type, inclusion: { in: %w(Anthology Authority Collection Expression Manifestation Work) }
 
   enum status: [:pending, :approved, :rejected, :semiapproved, :escalated]
 

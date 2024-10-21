@@ -1,0 +1,29 @@
+%h1 Listing ingestibles
+
+%table
+  %thead
+    %tr
+      %th= t(:title)
+      %th= t(:status)
+      %th= t(:edition_details)
+      %th= t(:comments)
+      %th= t(:markdown)
+      %th{colspan: 3}= t(:actions)
+
+  %tbody
+    - @ingestibles.each do |ingestible|
+      %tr
+        %td= ingestible.title
+        %td= Ingestible.human_enum_name(:status, ingestible.status)
+        %td= ingestible.publisher
+        %td= ingestible.comments
+        %td
+          = ingestible.markdown[0..[200, ingestible.markdown.length].min]
+          %strong= " (#{t(:x_words, x: ingestible.markdown.split.length)})"
+        %td= link_to t(:show), ingestible.draft? ? ingestible : review_ingestible_url(ingestible)
+        %td= link_to t(:edit), edit_ingestible_path(ingestible)
+        %td= link_to t(:destroy), ingestible, method: :delete, data: { confirm: t(:are_you_sure) }
+
+%br
+
+= link_to 'New Ingestible', new_ingestible_path

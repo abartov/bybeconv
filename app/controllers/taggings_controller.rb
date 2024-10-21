@@ -150,6 +150,8 @@ class TaggingsController < ApplicationController
       Work.find(id)
     when 'Expression'
       Expression.find(id)
+    when 'Collection'
+      Collection.find(id)
     else
       raise "Unsupported taggable type: #{klass}"
     end

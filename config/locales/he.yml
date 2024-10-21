@@ -1,6 +1,7 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 he:
+  inside: 'בתוך: '
   author_list: רשימת היוצרים
   first_last_name: "שם פרטי / משפחה"
   to_latest_x_works: הצג %{x} יצירות אחרונות
@@ -65,7 +66,7 @@ he:
   to_the_task: אל משימת הסריקה
   type_new_name_below: עדכנו את השם ולחצו על שמירה.
   ziburit: מהו שם המשפחה של המשורר הנחשב המשורר הלאומי? (שאלת אבטחה)
-  from_pby_and_available_at: מתוך פרויקט בן־יהודה.  המקראה זמינה בכתובת
+  from_pby_and_available_at: מתוך פרויקט בן־יהודה. זמין בכתובת
   about_pby_title: מהו פרויקט בן־יהודה?
   about_pby_text: "פרויקט בן־יהודה הוא מיזם התנדבותי היוצר מהדורות אלקטרוניות של נכסי הספרות העברית. הפרויקט, שהוקם ב־1999, מנגיש לציבור – חינם וללא פרסומות – יצירות שעליהן פקעו הזכויות זה כבר, או שעבורן ניתנה רשות פרסום, ובונה ספרייה דיגיטלית של יצירה עברית לסוגיה: פרוזה, שירה, מאמרים ומסות, מְשלים, זכרונות ומכתבים, עיון, תרגום, ומילונים."
   about_pby_learn_more: קִראו עוד על אודות הפרויקט ועל איך לעזור
@@ -140,8 +141,12 @@ he:
   person_entity: ישות יוצר
   report_inappropriate_content: דיווח על תוכן בעייתי
   this_work_has_x_recommendations: "ליצירה זו יש %{x} המלצות קוראים"
+  works_in_this_collection_have_x_recommendations: "ליצירות הכלולות ב%{ctype} יש %{x} המלצות קוראים"
+  recommendations_for_collection: המלצות על ה%{ctype} או על היצירות הכלולות
+
   x_liked_y_recommended: "%{x} קוראות וקוראים אהבו את היצירה, %{y} המלצות כתובות"
   x_liked: "%{x} קוראות וקוראים אהבו את היצירה"
+  x_liked_ctype: "%{x} קוראות וקוראים אהבו את ה%{ctype}"
   wait: נא להמתין
   with: "עם "
   associate_with_viaf: קשר את התיקיה לרשומת ה-VIAF הזו
@@ -212,7 +217,11 @@ he:
   newest_authors: היוצרים החדשים ביותר
   most_read_works: רשימת היצירות הנקראות ביותר
   newest_works: היצירות החדשות ביותר
-  table_of_contents: דף יוצר
+  table_of_contents: תוכן עניינים
+  x_of_y_items_available: "%{x}/%{y} פריטים מתוך %{ctype} זה הועלו למאגר"
+  x_issues_available: "%{x} גליונות מצויים במאגר"
+  issue_of: גליון של כתב העת
+  author_table_of_contents: דף יוצר
   new_person: "יוצר/ת חדש/ה"
   new_corporate_body: ארגון חדש
   join_volunteer: התנדבות להפקת תכנים
@@ -229,6 +238,7 @@ he:
   copy_of: "עותק של "
   curated_text_title: שם קטע הטקסט
   confirm_clone: נא לאשר שיבוט המקראה
+  confirm_delete_collection: נא לאשר מחיקת כל האוסף על פריטיו!
   public_anthologies: מקראות פומביות
   clone_this_anthology: שיבוט מקראה זו
   curated_text: טקסט מלווה
@@ -335,6 +345,7 @@ he:
   person: אדם
   work: יצירה
   search_term: מונח לחיפוש
+  or_search_term: 'או חיפוש יצירה קיימת בשם: '
   search_the_dictionary: 'חיפוש במילון: '
   search_wikidata: חיפוש בויקינתונים
   search_the_site: חיפוש באתר
@@ -360,6 +371,7 @@ he:
   letters: מכתבים
   reference: עיון
   lexicon: מילונים ולקסיקונים
+  mixed_genres: סוגות שונות
   # end genres
   anth_grows: המקראה צומחת!
   most_popular_works_this_month: היצירות הנקראות ביותר החודש
@@ -394,6 +406,7 @@ he:
   already_done: כבר טופל
   original_works: יצירות מקור
   translation: תרגום
+  edited_works: יצירות בעריכת%{gender_letter}
   toc_order_reminder: 'תזכורת לגבי סדר הסוגות: '
   translations: יצירות מתורגמות
   translator_name: "שם המתרגם/ת"
@@ -407,11 +420,13 @@ he:
   rest_in_wikipedia: להמשך הערך בויקיפדיה
   rest_of_work: להמשך קריאה
   to_the_wikipedia_article: לערך בויקיפדיה
+  wikidata_id: מזהה בויקינתונים
   additional_options: אפשרויות נוספות
   raw: טרם עוּבַּד
   ready: מוכן
   photo: תמונה
   last_update: עדכון אחרון
+  copyright_status: מצב זכויות יוצרים
   basic_details: פרטים בסיסיים
   submit: שליחה
   logo: לוגו
@@ -462,6 +477,11 @@ he:
   pages: עמודים
   proof_show_text: הצג את הטקסט באתר הישן בחלון נפרד
   show_text: הצג את גוף היצירה
+  text: טקסט
+  paratext: פאראטקסט
+  placeholder_item: פריט לא מקושר
+  title_only_if_needed: "כותרת (רק אם צריך)"
+  or_search_for_collection: 'או חיפוש אוסף קיים בשם: '
   proof_your_proofs: יש להקליד כאן למטה את ההגהות, או ללחוץ על "העתק למטה" כדי להעתיק את הטקסט שנבחר ולתקן אותו ידנית למטה.
   proof_copy_text: העתק למטה
   your_selected_text: הטקסט שסומן
@@ -523,7 +543,7 @@ he:
   profile_image: תמונת פרופיל
   upload_new_image: העלאת תמונה חדשה
   current_image: תמונה נוכחית
-  download_footer_html: "את הטקסט לעיל הפיקו מתנדבי <a href=\"https://benyehuda.org/\">פרויקט בן־יהודה באינטרנט</a>.  הוא זמין תמיד בכתובת הבאה:<br /><a href=\"%{url}\">%{url}</a>"
+  download_footer_html: "את הטקסט[ים] לעיל הפיקו מתנדבי <a href=\"https://benyehuda.org/\">פרויקט בן־יהודה באינטרנט</a>.  <br />הכל זמין תמיד בכתובת הבאה:<br /><a href=\"%{url}\">%{url}</a>"
   proof_please_select_something: "מצוין, אבל ראשית נא לסמן (להאיר, לבחור) את הפיסקה השגויה (או כמה שורות, אם מדובר בשורות קצרצרות), כדי שנדע איפה לתקן.  אחרי הסימון, יש ללחוץ שוב על לחצן זה."
   like: אהבתי
   our_own_content: 'תוכן משלנו:'
@@ -573,6 +593,7 @@ he:
   search_results: תוצאות חיפוש
   search_total: סך תוצאות החיפוש
   items: פריטים
+  x_words: "%{x} מילים"
   search_terms: מה חיפשת
   internal_search: חיפוש במנוע שלנו
   welcome_title: "ברוכים הבאים לפרויקט בן־יהודה!"
@@ -580,6 +601,7 @@ he:
   welcome_stats_html: "כיום כלולות בפרויקט <b>%{works}</b> יצירות, מאת כ-<b>%{authors}</b> יוצרים, ו-<b>%{headwords}</b> ערכים מילוניים."
   total_manifestations: "סה\"כ יצירות: %{total}"
   additional_content: 'תוכן נוסף:'
+  additional_items: פריטים נוספים
   authors_of: יוצרי
   sample_authors_of: מבחר יוצרי
   sample_works_of: מבחר יצירות
@@ -605,6 +627,7 @@ he:
   file_can_be_skipped: ניתן גם לדלג על העלאת קובץ וליצור רשומה עם טקסט ריק, למשל כדי להדביק טקסט.
   empty_markdown_template: קובץ ריק נוצר.  הדבק כאן טקסט במקום המלים הללו.
   upload_file: העלאת מסמך DOCX
+  new_ingestible: העלאת מסמך DOCX – שיטה חדשה!
   conversion_actions: פעולות הסבה
   split_work_mode: מצב פיצול יצירות
   careful_with_splits: " זהירות! \\n\\nלחיצה נוספת על לחצן זה תיצור ישויות עבור כל היצירות שפוצלו לעיל! \\n\\nיש לבדוק בזהירות שהיצירות פוצלו כשורה, ושלכולן יש כותרת תקינה.  אם אין זה המצב, יש לתקן את הכותרות או מיקום הפיצולים. \\n\\nכמו כן, יד לבדוק שכולן שייכות לאותה סוגה ולאותו מחבר ומתרגם. אם אין זה כך, יש לפצל את הקובץ *חיצונית* (בוורד או משהו) ליחידות אחידות מבחינת סוגה ואישים מקושרים.  \\n\\nעכשיו משקראת אזהרה זו, לחיצה נוספת על הלחצן תפעיל את הפיצול ותיצור ישויות קטלוגיות."
@@ -679,7 +702,7 @@ he:
   thedate: תאריך
   upload: העלאה
   creation: יצירה
-  publication: הוצאה
+  publication: כותר
   comments: הערות
   popular_work_tags: תגיות נפוצות ליצירות
   no_tags_yet: "%{taggee} טרם הוצעו תגיות"
@@ -891,6 +914,7 @@ he:
   anth_share_tt: שיתוף המקראה
   anth_access_tt: 'בחירת רמת גישה: מי יכול לגשת למקראה'
   anth_drag_tt: איזור גרירה לשינוי סדר הפריטים במקראה
+  coll_drag_tt: איזור גרירה לשינוי סדר הפריטים באסופה
   anth_add_work_tt: הוספת היצירה שממנה נפתח חלון המקראות
   anth_add_works_tt: הוספת יצירות מעמוד רשימת היצירות
   anth_add_curated_tt: "הוספת טקסט מלווה מטעמך כגון שער, הערות, שיעורי בית, וכו'"
@@ -919,6 +943,7 @@ he:
   confirm_block: נא לאשר חסימה
   delete_photo: מחיקת תמונה (לצמיתות!)
   delete_link: הסרת קישורית
+  delete: מחיקה
   cancel_focus_on_this_tag: ביטול מיקוד בתגית זו
   anth_text_deletion: מחיקת פריט מהמקראה
   anth_text_deletion_p1: 'פעולה זו תמחק ללא אפשרות חזרה את הפריט:'
@@ -1069,6 +1094,7 @@ he:
   add: הוסף את
   add_linked_person: הוסף איש/ה מקושר/ת
   in_role: בתפקיד
+  add_person_in_role: "הוסף את %{author} בתפקיד: "
   recommendation_for: המלצה עבור הקובץ
   back_to_top: לראש הדף
   confirmed_person_as_author: היוצר %{author} אושר כיוצר היצירה הזו.
@@ -1211,6 +1237,7 @@ he:
   norwegian: נורווגית
   swedish: שוודית
   dutch: הולנדית
+  default: ברירת מחדל
   translator: מתרגם
   translator_f: מתרגמת
   translated_by: בתרגום
@@ -1263,6 +1290,12 @@ he:
   temporary_worklist: רשימת יצירות (זמנית)
   improvements_soon: דף זה טרם עוצב. בקרוב נכניס בו שיפורים, אבל רצינו שבינתיים תוכלו לגשת ליצירות עצמן.
   primary: יצירה עיקרית
+  group_in_collections: קיבוץ לאוספים
+  collection_item_type: סוג פריט
+  skipped_x_items: דילגנו על %{x} פריטים שטרם עלו לאתר.
+  parent_collections: "שייך לאוספים:"
+  collection_circular_reference: אוסף מקושר לעצמו!
+  uncollected_works_collection_title: יצירות שלא כונסו
 
   notifications:
     proof_fixed:
@@ -1327,6 +1360,73 @@ he:
       columns:
         db_intellectual_property: מצב זכויות יוצרים במערכת
         has_non_public_domain_authority: זכויות הישות טרם פקעו
+  ingestibles:
+    ingestible_locked: ההעלאה נעולה לטיפול מידֵי %{user}
+    # _authorities partial
+    authorities:
+      or_new_person: או הקלידו שם יוצר/ת חדש/ה
+    new:
+      title: העלאה חדשה
+    create:
+      success: ההעלאה נוצרה
+      failure: אירעה שגיאה בפתיחת ההעלאה
+    edit:
+      title: עדכון העלאה
+    form:
+      general: כל ההעלאה
+      texts: טקסטים
+      full_markdown: מארקדאון מלא
+      toc: תוכן עניינים
+      review: סקירה לקראת אישור העלאה
+      problem: תיאור בעיה
+    update:
+      success: ההעלאה עודכנה
+    ingest:
+      ingestion_now_pending: ההעלאה ממתינה עכשיו ליצירת אישים
+      failures: אירעו שגיאות. ראו בשדה תיאור בעיה בלשונית הראשונה.
+      success: הידד! היצירות עלו וההעלאה הסתיימה בהצלחה.
+    review:
+      title: "סקירת העלאה: %{title}"
+      statistics: סטטיסטיקה
+      text_information: מידע על יצירות
+      affected_authorities: מידע על יוצרים
+      ingest: סיים העלאה וצור ישויות!
+      pending_ingest: העבר ליצירת ישויות אישים. ההעלאה תושלם לאחר יצירת האישים החסרים.
+      additions: תוספות
+      volume_information: פרטי כותר
+      no_volume: העלאת יצירות לא מקובצות – ללא כותר כלל
+      adding_to_existing_volume: הוספת יצירות לכותר קיים
+      new_volume: יצירת כותר חדש שטרם אותר בסדנה
+      new_volume_by_workshop: יצירת כותר חדש על סמך רשומה ביבליוגרפית קיימת
+      placeholder: '--- שומר מקום ---'
+      texts: יצירות שיעלו
+      placeholders: שומרי מקום
+      already_in_collection: כבר קיים בכותר
+      back_to_editing: חזרה לעריכת ההעלאה
+      missing_in_markdown: 'הכותרות הבאות חסרות במארקדאון:'
+      extraneous_markdown: 'הכותרות הבאות מופיעות במארקדאון ולא נכללו בהעלאה:'
+      missing_genre: 'ליצירות הבאות לא הוגדרה סוגה:'
+      missing_origlang: 'ליצירות הבאות לא הוגדרה שפת מקור:'
+      missing_authority: 'ליצירות הבאות לא קושר אף אדם או ארגון:'
+      missing_publisher_info: לא הוזנו פרטי הוצאה על אף שהוגדר כותר
+      errors: שגיאות!
+      cannot_ingest_with_errors: יש לתקן את השגיאות המתוארות בראש הדף כדי שלחצן ההעלאה יהיה זמין.
+      authorities_tbd: אחד או יותר מהאישים המקושרים טרם מוכר במערכת. אם כל השאר מוכן, אפשר להעביר את ההעלאה למצב המתנה ליצירת האישים, והיא תעלה מייד לאחר יצירת הישויות החסרות.
+      awaiting_authorities: "ההעלאה מוכנה פרט לישויות חסרות:"
+      awaiting_authorities_resolved: ההעלאה במצב המתנה לישויות, אבל כל הישויות כבר סודרו. אפשר לסיים את ההעלאה!
+      problem_is_not_empty: שדה הבעיות אינו ריק!
+    destroy:
+      success: ההעלאה נמחקה
+  ingestible_texts:
+    edit:
+      text_x_of_total: טקסט %{index} מתוך %{total}
+      next: הטקסט הבא
+      previous: הטקסט הקודם
+      not_in_toc: הטקסט לא סומן ככלול בהעלאה!
+
+  involved_authorities:
+    list:
+      select_authority: נא לבחור ישות אחראית
   shared:
     filters:
       pagination:
@@ -1374,6 +1474,23 @@ he:
       ziburit_failed: לא השתכנענו שאינך רובוט.
       email_missing: נא לציין כתובת דואל, כדי שנוכל להשיב לך.
   manifestation:
+  collection:
+    type:
+      volume: כותר
+      anthology: אסופה
+      periodical: כתב עת
+      periodical_issue: גליון
+      series: סדרה, מחזור, או שער
+      root: כלל היצירה של אדם או גוף
+      other: אחר
+      uncollected: יצירות שלא כונסו
+    up_link:
+      volume: לתצוגת הכותר
+      anthology: לתצוגת האסופה
+      periodical: לתצוגת כתב העת
+      periodical_issue: לתצוגת הגליון
+      series: לתצוגת המחזור/שער כולו
+
   intellectual_property:
     public_domain: נחלת הכלל
     by_permission: מוגש ברשות פרסום
@@ -1382,6 +1499,7 @@ he:
     permission_for_all: כלל היצירה מוגש ברשות
     permission_for_selected: כותרים מסוימים מונגשים ברשות
     unknown: לא ידוע
+    
   involved_authority:
     role:
       author: יוצר
@@ -1392,7 +1510,47 @@ he:
       designer: מעצב
       contributor: משתתף
       other: אחר
+  ingestible:
+    scenario:
+      single: יצירה בודדת
+      multiple: מספר יצירות עם אותם מאפיינים
+      mixed: יצירות בעלות מחברים או מאפיינים שונים
+    status:
+      draft: העלאה בעבודה
+      ingested: העלאה הושלמה
+      failed: העלאה נכשלה
+      awaiting_authorities: בהמתנה ליצירת ישויות אישים חסרות
+    title: כותרת פנימית להעלאה
+    new_title: כותרת חדשה ליצירה
+    invalid: 'שמירת הקובץ נמנעה בגלל:'
+    current_file: קובץ נוכחי
+    or_replace_file: 'או החלפת הקובץ בהעלאה מחדש:'
+    any_volume: איתור כותר מכלל המאגר
+    no_volume: לא מתוך כותר
+    volume: כותר
+    included_in_upload: נכלל בהעלאה?
+    new_volume: צור כותר חדש! – 
+    start_upload_block: סמן תחילת יצירות להעלאה
+    end_upload_block:  סמן סיום יצירות להעלאה
+    defaults: שדות לכל היצירות בהעלאה זו
+    included_works: עריכת רשימת היצירות בהעלאה זו
+    attach_photos: צירוף תמונות
+    volume_by_author: איתור כותר מאת יוצר
+    no_volume_explanation: יצירות לא מקובצות
+    attach_photos_explanation: יש לסמן כדי להעלות תמונות בהמשך
+    create_new_volume: צור כותר חדש שלא מתוך כותרים ידועים לסדנה הביבליוגרפית
+    matched_in_markdown: תואם כותרת במארקדאון?
+    pick_periodical: בחירת כתב עת
+    pick_issue: בחירת גליון
+    add_new_issue: (הוספת גליון חדש)
+    new_issue_title: 'כותרת הגליון החדש (לדוגמה: "חדרים 4" או "גליון 56")'
+    need_to_save: יש לשמור את ההעלאה לאחר עדכון כותר
+    need_to_save_explanation: השמירה תעדכן אישים מקושרים להעלאה (לפי הכותר)
+    translator_missing: שפת המקור אינה עברית ולא הוגדר מתרגם!
+    author_missing: לא הוגדר יוצר (אפילו אלמוני)
 
   # This block of strings below should be removed when we finish work. Grouped them together to make it easier to find them again
   public_domain: נחלת הכלל
   viaf_id: "מזהה במאגר VIAF‏"
+  text_n_of_m: "טקסט %{n} מתוך %{m}"
+  and_n_placeholders: "ועוד %{n} שומרי מקום"

@@ -52,6 +52,9 @@ Style/HashSyntax:
 Style/IfUnlessModifier:
   Enabled: false
 
+Style/MultilineBlockChain:
+  Enabled: false
+
 Style/NumericPredicate:
   Enabled: false
 
@@ -71,6 +74,9 @@ Style/UnlessElse:
   Enabled: false
 
 Rails/ActionOrder: # TODO: temporary disabled. it would be good to enable in future
+  Enabled: false
+
+Rails/OutputSafety: # we actively use such output
   Enabled: false
 
 RSpec/ExampleLength:

@@ -10,6 +10,8 @@ class AdminController < ApplicationController
   autocomplete :manifestation, :title, display_value: :title_and_authors, extra_data: [:expression_id] # TODO: also search alternate titles!
   autocomplete :authority, :name, full: true
   autocomplete :person, :name, scopes: :with_name, full: true
+  autocomplete :collection, :title, full: true, display_value: :title_and_authors
+  autocomplete :publication, :title
 
   layout false, only: [:merge_tag, :merge_tagging, :confirm_with_comment] # popups
   layout 'backend', only: [:tag_moderation, :tag_review, :tagging_review] # eventually change to except: [<popups>]
@@ -129,7 +131,8 @@ class AdminController < ApplicationController
                                  select 1 from
                                    involved_authorities iat
                                  where
-                                   iat.expression_id = expressions.id
+                                   iat.item_id = expressions.id
+                                   and iat.item_type = 'Expression'
                                    and iat.authority_id = involved_authorities.authority_id
                                    and iat.role = ?
                                )
@@ -263,7 +266,11 @@ class AdminController < ApplicationController
     @authors = []
 
     # Getting list of authors, who wrote works in more than one language
-    translatees = Authority.joins(involved_authorities: :work)
+    translatees = Authority.joins(:involved_authorities)
+                           .joins(
+                             'join works on involved_authorities.item_id = works.id ' \
+                             "and involved_authorities.item_type = 'Work'"
+                           )
                            .merge(InvolvedAuthority.role_author)
                            .group('authorities.id')
                            .select('authorities.id, authorities.name')
@@ -290,7 +297,8 @@ class AdminController < ApplicationController
           authorities a
           join involved_authorities ia on a.id = ia.authority_id
         where
-          ia.work_id = works.id
+          ia.item_id = works.id
+          and ia.item_type = 'Work'
           and a.intellectual_property <> #{PUBLIC_DOMAIN_TYPE}
       )
       or exists (
@@ -298,7 +306,8 @@ class AdminController < ApplicationController
           authorities a
           join involved_authorities ia on a.id = ia.authority_id
         where
-          ia.expression_id = expressions.id
+          ia.item_id = expressions.id
+          and ia.item_type = 'Expression'
           and a.intellectual_property <> #{PUBLIC_DOMAIN_TYPE}
       )
     )

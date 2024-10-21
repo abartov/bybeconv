@@ -1,5 +1,5 @@
 != "<script src=\"https://unpkg.com/stackedit-js@1.0.5/docs/lib/stackedit.min.js\"></script>"
-.backend
+.backend#edit_markdown
   = form_tag(action: 'edit_markdown', id: @text.id) do
     .container-fluid
       .row
@@ -78,6 +78,8 @@
             %p
             %h3.by-button-v02.surprise-btn-v02.headline-2-v02#frbrize_button{style:'float:unset;width:max-content;padding-top:10px;'}!= t(:accept_conversion_and) + t(:frbrize)
 
+= render partial: 'shared/markdown_utils', locals: { container_id: 'edit_markdown', element_id: 'markdown' }
+
 :javascript
   var somethingChanged=false;
   function highlight_in_red(buf) {
@@ -88,79 +90,6 @@
       $('#frbrize_button').css('background-color','gray');
       $('#frbrize_button').css('cursor','not-allowed');
     }
-    // highlight suspicious angled brackets in rendered HTML
-    $("#preview p:contains('> ')").each(function(){
-      $(this).html(highlight_in_red($(this).html()));
-    });
-    $("#preview blockquote:contains('> ')").each(function(){
-      $(this).html(highlight_in_red($(this).html()));
-    });
-    $('#add_stanza_break').click(function() {
-      var $txt = jQuery("#markdown");
-      var caretPos = $txt[0].selectionStart;
-      var textAreaTxt = $txt.val();
-      var txtToAdd = "\n>\n<br />\n>\n";
-      $txt.val(textAreaTxt.substring(0, caretPos) + txtToAdd + textAreaTxt.substring(caretPos) );
-      $txt.focus();
-      $txt.caretTo(caretPos+txtToAdd.length);
-    });
-    $('#add_angled_brackets').click(function(e) {
-      e.preventDefault();
-      if($('#markdown').selection() == '') {
-        alert("#{t(:select_text_to_add_to)}");
-      }
-      else
-      {
-        var buf = $('#markdown').selection();
-        buf = buf.replace(/\n([^#])/g, "\n> $1");
-        $('#markdown').selection('replace', {text: buf});
-      }
-    });
-    $('#remove_angled_brackets').click(function(e) {
-      e.preventDefault();
-      if($('#markdown').selection() == '') {
-        alert("#{t(:select_text_to_remove_from)}");
-      }
-      else
-      {
-        var buf = $('#markdown').selection();
-        buf = buf.split(/\n> */).join("\n");
-        $('#markdown').selection('replace', {text: buf});
-      }
-    });
-    $('#tidy_footnote_dirs').click(function(e) {
-      e.preventDefault();
-      var buf = $('#markdown').val();
-      replaced = 0;
-      buf = buf.replace(/(\[.*?]: )(.*)/g, function(occurrence, p1, p2){
-        if(occurrence.match(/[\u0590-\u05FF]/)) {
-          return occurrence;
-        } else {
-          if(occurrence.match(/dir="ltr"/)) {
-            return occurrence;
-          }
-          replaced += 1;
-          return p1 + '<div dir="ltr" align="left">' + p2 + '</div>';
-        }
-      });
-      $('#markdown').val(buf);
-      alert('בוצעו '+replaced.toString()+' החלפות.');
-    });
-    $('#minuses_to_makafim').click(function(e) {
-      e.preventDefault();
-      var buf = $('#markdown').val();
-      replaced = 0;
-      buf = buf.replace(/\S(-|‑)\S/g, function(occurrence){
-        if((occurrence[0].match(/[A-Za-z]/i)) || (occurrence[2].match(/[A-Za-z]/i)) || occurrence[0] == '-' || occurrence[2] == '-' || (occurrence[0].match(/[0-9]/) && occurrence[2].match(/[0-9]/))) {
-          return occurrence;
-        } else {
-          replaced += 1;
-          return occurrence.replace('-','־').replace('‑','־');
-        }
-      });
-      $('#markdown').val(buf);
-      alert('בוצעו '+replaced.toString()+' החלפות.');
-    });
     $('form').submit(function() {
       $(window).unbind('beforeunload');
     });

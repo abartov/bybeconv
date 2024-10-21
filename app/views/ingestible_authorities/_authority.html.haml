@@ -1,0 +1,9 @@
+%li{ id: "ia#{authority['seqno']}" }
+  - if authority['authority_id']
+    = link_to authority['authority_name'], authors_show_path(id: authority['authority_id'])
+  - else
+    = authority['new_person']
+  (#{textify_authority_role(authority['role'])})
+  - if editable
+    = link_to t(:destroy), ingestible_authority_path(@ingestible, authority['seqno']),
+              remote: true, method: :delete, data: { confirm: t(:are_you_sure) }

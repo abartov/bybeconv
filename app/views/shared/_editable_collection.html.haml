@@ -1,0 +1,113 @@
+.container-fluid{ style: 'position:relative;', id: "coll_container_#{collection.id}" }
+  - if collection
+    .button_series
+      .collection-btn.delete-collection
+        = link_to t(:delete),
+                  collection_path(collection.id),
+                  method: :delete,
+                  data: { confirm: t(:confirm_delete_collection) },
+                  class: 'by-button-v02 by-button-secondary-v02'
+      .collection_action_btns
+        - unless focused
+          .collection_insert_all_siblings.by-button-v02
+            %b.white= '⇇'
+          .collection_focus_button.by-button-v02
+            %b= link_to '⤝', collection_manage_path(collection.id), class: 'white'
+    .collection.connectable.collapse.show{ id: "coll_#{collection.id}", style: 'min-height:40px' }
+      - collection.collection_items.each do |ci|
+        .collection_draggable_item{ id: "collitem_#{ci.id}" }
+          .by-card-v02
+            .drag-handle{ title: t(:coll_drag_tt) }
+              .handle
+            .draggable-content{ 'data-collection-id': (ci.item.kind_of?(Collection) ? ci.item_id : collection.id) }
+              - if ci.paratext? # a paratext (with markdown)
+                %b #{t(:paratext)}:
+                %span{ id: "ci_title_#{ci.id}" }= ci.alt_title
+                %br
+                .editable{ id: "editable_#{ci.id}" }
+                  != MultiMarkdown.new(ci.markdown).to_html
+                .editable_edit{ style: 'display:none;' }
+                  = form_for ci, url: collection_item_path(ci.id), method: :put, remote: true do |f|
+                    = f.label :alt_title, t(:title_only_if_needed)
+                    = f.text_field :alt_title, class: 'form-control'
+                    = f.text_area :markdown, class: 'form-control', rows: 4
+                    = f.submit t(:save), class: 'by-button-v02', style: 'display:inline-block;'
+                    .by-button-v02.cancel_editable_edit{ style: 'width:100px; display:inline-block;' }= t(:cancel)
+              - elsif ci.item.nil? # a placeholder (no markdown)
+                .editable{ id: "editable_#{ci.id}", style: 'margin-bottom: 10px;' }
+                  %b #{t(:placeholder_item)}:
+                  %span{ id: "ci_title_#{ci.id}" }= ci.alt_title
+                .editable_edit{ style: 'display:none;' }
+                  = form_for ci, url: collection_item_path(ci.id), method: :put, remote: true do |f|
+                    = f.label :alt_title, t(:title)
+                    = f.text_field :alt_title, class: 'form-control'
+                    = f.submit t(:save), class: 'by-button-v02', style: 'display:inline-block;'
+                    .by-button-v02.cancel_editable_edit{ style: 'width:100px; display:inline-block;' }= t(:cancel)
+              - elsif ci.item.kind_of?(Collection)
+                .headline-2-v02
+                  #{textify_collection_type(ci.item.collection_type)}:
+                  = collection_item_string(ci)
+                  - if ci.item.collection_type == 'volume' && ci.item.publication.present?
+                    %br
+                    #{ci.item.publication.publisher_line} #{ci.item.publication.pub_year}
+                  .button_series
+                    .collection_insert_button.by-button-v02
+                      %b.white= '+'
+                    .coll_toggle.by-button-v02{ data: { target: "#coll_#{ci.item_id}", toggle: :collapse } }
+                      %b.white= '↕'
+                %div{ style: 'margin-right: 25px;' }
+                  - if @colls_traversed.include?(ci.item.id)
+                    %b= t(:collection_circular_reference)
+                  - else
+                    - @colls_traversed << ci.item.id
+                    = render partial: 'shared/editable_collection', locals: { collection: ci.item, focused: false }
+              - else
+                .headline-3-v02
+                  #{t(:text)}:
+                  = link_to collection_item_string(ci), default_link_by_class(ci.item.class, ci.item.id)
+
+:javascript
+  $(document).ready(function(){
+    $("#coll_#{collection.id}").sortable({
+      handle: '.drag-handle',
+      connectWith: '.collection.connectable',
+      dropOnEmpty: true,
+      start: function(e, ui) {
+        // creates a temporary attribute on the element with the old index
+        $(this).attr('data-previndex', ui.item.index());
+        ui.item.attr('data-previndex', ui.item.index());
+      },
+      update: function(e, ui) {
+        // gets the new and old index then removes the temporary attribute
+        var newIndex = ui.item.index() + 1;
+        var oldIndex = parseInt($(this).attr('data-previndex')) + 1;
+        var element_id = ui.item.attr('id').replace('collitem_','');
+        $(this).removeAttr('data-previndex');
+
+        ///code to pass the data using AJAX
+        if (newIndex != oldIndex) {
+          $.post(
+            '#{collection_apply_drag_path(collection.id)}',
+            {
+              coll_item_id: element_id,
+              old_pos: oldIndex,
+              new_pos: newIndex
+            }
+          );
+        }
+      },
+      receive: function(event, ui) {
+        $.post(
+          '#{collection_transplant_item_path(collection.id)}',
+          {
+            dest_coll_id: this.id.replace('coll_',''),
+            src_coll_id: ui.sender[0].id.replace('coll_',''),
+            item_id: ui.item[0].id.replace('collitem_',''),
+            old_pos: parseInt(ui.item.attr('data-previndex')) + 1,
+            new_pos: ui.item.index() + 1
+          }
+        );
+        event.stopPropagation();
+      }
+    });
+  });

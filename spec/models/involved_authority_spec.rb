@@ -7,16 +7,16 @@ describe InvolvedAuthority do
     subject { record.valid? }
 
     let(:role) { :author }
-    let(:work) { nil }
-    let(:expression) { nil }
-    let(:record) { build(:involved_authority, role: role, work: work, expression: expression) }
+    let(:record) { build(:involved_authority, role: role, item: item) }
 
-    context 'when nor work nor expression are specified' do
+    context 'when item is not specified' do
+      let(:item) { nil }
+
       it { is_expected.to be false }
     end
 
     context 'when expression is specified' do
-      let(:expression) { create(:expression) }
+      let(:item) { create(:expression) }
 
       context 'when work-level role is specified' do
         it { is_expected.to be false }
@@ -30,7 +30,7 @@ describe InvolvedAuthority do
     end
 
     context 'when work is specified' do
-      let(:work) { create(:work) }
+      let(:item) { create(:work) }
 
       context 'when work-level role is specified' do
         it { is_expected.to be_truthy }
@@ -41,13 +41,6 @@ describe InvolvedAuthority do
 
         it { is_expected.to be false }
       end
-    end
-
-    context 'when both work and expression are specified' do
-      let(:work) { create(:work) }
-      let(:expression) { create(:expression) }
-
-      it { is_expected.to be false }
     end
   end
 end

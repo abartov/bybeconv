@@ -1,0 +1,125 @@
+- if collection.parent_collections.count > 0
+  = t(:parent_collections)
+  %ol
+  - collection.parent_collections.each do |pc|
+    %li{style: 'list-style-type: decimal; font-size:120%;'}= link_to "🢁 🢁 🢁 #{pc.title}", collection_manage_path(pc.id)
+.editable{id: "editable_collection_details"}
+  %h1
+    %span{id: 'editable_ctype'}= textify_collection_type(collection.collection_type)+': '
+    %span{id: "editable_coll_title"}= title
+.editable_edit{style: 'display:none;'}
+  = form_for collection, url: collection_path(collection.id), method: :put, remote: true do |f|
+    %b= t(:collection_item_type)+': '
+    = f.select 'collection_type', options_for_select(collection_types_options, collection.collection_type)
+    = f.label :title, t(:title)
+    = f.text_field :title, class: 'form-control'
+    = f.submit t(:save), class: 'by-button-v02', style: 'display:inline-block;'
+    .by-button-v02.cancel_editable_edit{style:'width:100px; display:inline-block;'}= t(:cancel)
+
+.headline-2-v02{'data-collection-id': collection.id}
+  .button_series
+    .collection_insert_button.by-button-v02
+      %b.white= '+'
+
+%div{style: 'margin-right: 10px;'}
+  - @colls_traversed = [collection.id]
+  = render partial: 'shared/editable_collection', locals: {collection: collection, focused: true}
+
+#collection_insert_section{style: 'display: none; border: 1px solid #660248; background-color: rgb(157 157 241); padding: 10px;'}
+  = hidden_field_tag :collection_id, '', id: 'collection_id'
+  .admin_container
+    %b= t(:collection_item_type)+': '
+    = select_tag :insert, options_for_select(collection_item_types_options)
+    %b= t(:title)+': '
+    = text_field_tag :insert_title, '', type: 'text', id: 'insert_title', style: 'background-color: #ffffff;'
+  %br
+  .admin_container
+    %b= t(:or_search_term)
+    = autocomplete_field_tag :qterm, '', autocomplete_manifestation_title_path, 'data-noMatchesLabel' => t(:no_matches_found), id: 'qterm', style: 'background-color: #ffffff;', id_element: '#insert_mid'
+
+    = hidden_field_tag :insert_mid, '', id: 'insert_mid'
+  %br
+  .admin_container
+    %b= t(:or_search_for_collection)
+    = autocomplete_field_tag :cterm, '', autocomplete_collection_title_path, 'data-noMatchesLabel' => t(:no_matches_found), id: 'cterm', style: 'background-color: #ffffff;', id_element: '#insert_cid'
+    = hidden_field_tag :insert_cid, '', id: 'insert_cid'
+  %br
+  .admin_container
+    .collection_do_insert.by-button-v02{style: 'width: 50px; justify-content: center;font-weight: bold;'}= t(:perform_add)
+
+:javascript
+  $(document).ready(function(){
+    $('body').on('click', '.collection_insert_button', function(){
+    //$('.collection_insert_button').click(function(){
+      $(this).parent().parent().append($('#collection_insert_section'));
+      $('#collection_insert_section').show();
+      $('#collection_id').val($(this).parent().parent().parent().attr('data-collection-id'));
+      if($('#collection_id').val() == '') {
+        $('#collection_id').val($(this).parent().parent().attr('data-collection-id'));
+      }
+      //$('#generalDlg').load(collection_insert_popup_path, function(){
+      //  $('#generalDlg').dialog('open');
+      //}
+    });
+    $('body').on('dblclick', '.editable', function(){
+      $(this).hide();
+      $(this).parent().find('.editable_edit').show();
+    });
+    $('body').on('click', '.cancel_editable_edit', function(){
+      $(this).parent().parent().hide();
+      $(this).parent().parent().parent().find('.editable').show();
+    });
+    $('#qterm').on('railsAutocomplete.select', function(event, data){
+      event.preventDefault();
+      $('#insert').val('Manifestation');
+      mid = data.item.id;
+      $('#insert_mid').val( mid );
+    });
+    $('#cterm').on('railsAutocomplete.select', function(event, data){
+      event.preventDefault();
+      $('#insert').val('Collection');
+      cid = data.item.id;
+      $('#insert_cid').val( cid );
+    });
+
+    $('.collection_do_insert').click(function(e){
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      var item_type = $(this).parent().parent().find('#insert').val();
+      var collection_id = $(this).parent().parent().find('#collection_id').val();
+      var item_id = (item_type == 'Manifestation') ? $(this).parent().parent().find('#insert_mid').val() : (item_type == 'Collection') ? $(this).parent().parent().find('#insert_cid').val() : '';
+      var new_title = $(this).parent().parent().find('#insert_title').val();
+      $.ajax({
+        url: '/collection_items',
+        type: 'POST',
+        dataType: "script",
+        data: {collection_item: {collection_id: collection_id, item_type: item_type, item_id: item_id, alt_title: new_title}},
+        success: function(data){
+          $('#collection_insert_section').hide();
+          $('html, body').animate({scrollTop: $('#coll_container_'+collection_id).offset().top + $('#coll_container_'+collection_id).outerHeight() - $('header').height() - 180}, 500);
+        }
+      });
+    });
+    $('.collection_insert_all_siblings').click(function(){
+      var collection_id = $('#collection_id').val();
+      
+      $.ajax({
+        url: '/collection_items',
+        type: 'POST',
+        dataType: "script",
+        data: {collection_item: {collection_id: collection_id, item_type: 'Collection', item_id: collection_id, alt_title: ''}},
+        success: function(data){
+          $('#collection_insert_section').hide();
+          $('html, body').animate({scrollTop: $('#coll_container_'+collection_id).offset().top + $('#coll_container_'+collection_id).outerHeight() - $('header').height() - 180}, 500);
+        }
+      });
+    });
+    $('#insert').change(function(){
+      if($(this).val() == 'Manifestation' && $('#insert_mid').val() == '') {
+        $('.collection_do_insert').css('background-color', 'grey');
+      }
+      else {
+        $('.collection_do_insert').css('background-color', '#660248');
+      }
+    });
+  });

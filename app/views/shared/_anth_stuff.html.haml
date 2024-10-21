@@ -8,7 +8,7 @@
     .rotate#folded_anth_title= @anthology.nil? ? '' : @anthology.title
 - if current_user.anthologies.count > 0
   #downloadAnthologyDlg.modal{'aria-hidden' => 'true', role: 'dialog', style:'z-index:1900', tabindex: '-1'}
-    = render partial: 'shared/download', locals: {anthology: @anthology}
+    = render partial: 'shared/download', locals: {entity: @anthology}
   #shareAnthologyDlg.modal{'aria-hidden' => 'true', role: 'dialog', style:'z-index:1900', tabindex: '-1'}
     = render partial: 'shared/share_controls', locals: {anthology: @anthology, url: request.base_url+anthology_path(@anthology.id)}
   #anthErrorDlg.modal{'aria-hidden' => 'true', role: 'dialog', style:'z-index:1900', tabindex: '-1'}

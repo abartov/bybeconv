@@ -7,7 +7,6 @@ class Expression < ApplicationRecord
 
   belongs_to :work, inverse_of: :expressions
   has_many :manifestations, inverse_of: :expression, dependent: :destroy
-  has_many :involved_authorities, dependent: :destroy, inverse_of: :expression
   has_many :aboutnesses, as: :aboutable, dependent: :destroy
   has_many :taggings, as: :taggable, dependent: :destroy
   has_many :tags, through: :taggings, class_name: 'Tag'

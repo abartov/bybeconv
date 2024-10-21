@@ -22,8 +22,8 @@ class Manifestation < ApplicationRecord
   has_many :proofs, dependent: :destroy
   has_many :anthology_texts, dependent: :destroy
   has_many_attached :images, dependent: :destroy
-
-  before_save :update_sort_title
+  has_many :collection_items, as: :item
+  before_save :update_sort_title!
 
   enum status: { published: 0, nonpd: 1, unpublished: 2, deprecated: 3 }
 
@@ -43,6 +43,10 @@ class Manifestation < ApplicationRecord
   LONG_LENGTH = 15_000 # kind of arbitrary...
 
   update_index('manifestations') { self } # update ManifestationsIndex when entity is updated
+
+  def involved_authorities
+    (expression.involved_authorities + expression.work.involved_authorities).uniq
+  end
 
   def involved_authorities_by_role(role)
     (expression.involved_authorities_by_role(role) + expression.work.involved_authorities_by_role(role)).uniq
@@ -125,6 +129,25 @@ class Manifestation < ApplicationRecord
     return html2txt(MultiMarkdown.new(markdown).to_html.force_encoding('UTF-8').gsub(%r{<figcaption>.*?</figcaption>}, '')).gsub("\n\n\n", "\n\n").gsub(
       "\n\n\n", "\n\n"
     )
+  end
+
+  # return containing collections of collectin_type volume or periodical_issue
+  def volumes
+    ret = []
+    containers = collection_items.includes(:collection).map(&:collection)
+    containers.each do |c|
+      if %w(volume periodical_issue).include?(c.collection_type)
+        ret << c
+      else
+        pc = c.parent_volume_or_isssue
+        ret << pc unless pc.nil?
+      end
+    end
+    return ret.flatten
+  end
+
+  def to_html
+    return MultiMarkdown.new(markdown).to_html.force_encoding('UTF-8').gsub(%r{<figcaption>.*?</figcaption>}, '')
   end
 
   def title_and_authors
