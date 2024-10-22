@@ -34,6 +34,9 @@ class CollectionsController < ApplicationController
   def add_periodical_issue
     @collection = Collection.find(params[:collection_id])
     @issue = Collection.create!(title: params[:title], sort_title: params[:title], collection_type: 'periodical_issue')
+    @collection.involved_authorities.each do |ia| # copy authorities from parent collection as defaults
+      @issue.involved_authorities.create!(authority_id: ia.authority.id, role: ia.role)
+    end
     @collection.append_item(@issue)
   end
 
