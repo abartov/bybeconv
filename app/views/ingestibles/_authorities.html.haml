@@ -1,7 +1,7 @@
 - if @ingestible.try(:id)
   %h3= t(:associated_persons)
   %ul#authorities
-    - if authorities
+    - if authorities.present?
       = render partial: 'ingestible_authorities/authority', collection: JSON.parse(authorities), locals: {editable: true, toc: false}
   = t(:add)
   = select_tag :add_authority,
