@@ -186,7 +186,7 @@ class CollectionsController < ApplicationController
     i = 1
     if @collection.periodical? # we don't want to show an entire periodical's run in a single Web page; instead, we show the complete TOC of all issues
       @collection.collection_items.each do |ci|
-        next unless ci.item.present? && ci.item.collection_type == 'periodical_issue'
+        next unless ci.item.present? && ci.item_type == 'Collection' && ci.item.collection_type == 'periodical_issue'
         html = ci.item.toc_html
         @htmls << [ci.item.title, ci.item.editors, html, false, ci.genre, i, ci]
       end
