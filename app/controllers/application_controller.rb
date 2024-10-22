@@ -232,11 +232,12 @@ class ApplicationController < ActionController::Base
   end
 
   def generate_toc
-    @works = @author.cached_original_works_by_genre
-    @translations = @author.cached_translations_by_genre
-    @genres_present = []
-    @works.each_key { |k| @genres_present << k unless @works[k].size == 0 || @genres_present.include?(k) }
-    @translations.each_key { |k| @genres_present << k unless @works[k].size == 0 || @genres_present.include?(k) }
+    ## legacy code below
+    #@works = @author.cached_original_works_by_genre
+    #@translations = @author.cached_translations_by_genre
+    #@genres_present = []
+    #@works.each_key { |k| @genres_present << k unless @works[k].size == 0 || @genres_present.include?(k) }
+    #@translations.each_key { |k| @genres_present << k unless @works[k].size == 0 || @genres_present.include?(k) }
   end
 
   def is_spider?
