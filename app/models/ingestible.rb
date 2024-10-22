@@ -19,8 +19,8 @@ class Ingestible < ApplicationRecord
   validates :locked_at, presence: true, if: -> { locked_by_user.present? }
   validates :locked_at, absence: true, unless: -> { locked_by_user.present? }
   validate :volume_decision
-#  validates :scenario, presence: true
-#  validates :scenario, inclusion: { in: scenarios.keys }
+  #  validates :scenario, presence: true
+  #  validates :scenario, inclusion: { in: scenarios.keys }
 
   has_one_attached :docx # ActiveStorage
 
@@ -120,6 +120,7 @@ class Ingestible < ApplicationRecord
       end
     end
     return unless aus.present?
+
     self.default_authorities = aus.to_json
     save!
   end
@@ -232,6 +233,12 @@ class Ingestible < ApplicationRecord
           else
             [{ title: self.title, content: markdown }]
           end
+    if multiple_works? && markdown =~ /\[\^\d+\]/ # if there are footnotes in the text
+      footnotes_fixed_buffers = relocate_footnotes.map { |k, v| v }
+      buf.each_index do |i|
+        buf[i][:content] = footnotes_fixed_buffers[i]
+      end
+    end
     self.works_buffer = buf.to_json
     self.works_buffer_updated_at = Time.current
     save
@@ -240,6 +247,62 @@ class Ingestible < ApplicationRecord
   def texts
     # TODO: invalidate memoized value
     @texts ||= works_buffer.nil? ? [] : JSON.parse(works_buffer).map { |json| IngestibleText.new(json) }
+  end
+
+  # iterate through texts and move the footnotes belonging to each segment over to where they belong
+  # it seems a waste to do on each load, but because of possibly *changing* boundaries of texts
+  # (as mistakes are discovered and the full markdown is manually edited), it's best to do it on each load.
+  # this implementation is copied from HtmlFile.rb; had no time to harmonize with update_buffers above
+  def relocate_footnotes
+    return if markdown.blank?
+
+    prev_key = nil
+    titles_order = []
+    ret = {}
+    footbuf = ''
+    i = 1
+    markdown.split(/^(&&& .*)/).each do |bit|
+      if bit[0..3] == '&&& '
+        prev_key = "#{bit[4..-1].strip}_ZZ#{i}" # remember next section's title
+        stop = false
+        begin
+          if prev_key =~ /\[\^\d+\]/ # if the title line has a footnote
+            footbuf += ::Regexp.last_match(0) # store the footnote
+            prev_key.sub!(::Regexp.last_match(0), '').strip! # and remove it from the title
+          else
+            stop = true
+          end
+        end until stop # handle multiple footnotes if they exist.
+      else
+        ret[prev_key] = footbuf + bit unless prev_key.nil? # buffer the text to be put in the prev_key next iteration
+        titles_order << prev_key unless prev_key.nil?
+        footbuf = ''
+      end
+      i += 1
+    end
+    # great! now we have the different pieces sorted, *but* any footnotes are *only* in the last piece, even if they belong in earlier pieces. So we need to fix that.
+    footnotes_by_key = {}
+    ret.keys.map { |k| footnotes_by_key[k] = ret[k].scan(/\[\^\d+\][^:]/).map { |line| line[0..-2] } }
+    # now that we know which ones belong where, we can move them over
+    titles_order.each do |key|
+      next if key == titles_order[-1] # last one needs no handling
+      next if footnotes_by_key[key].nil?
+
+      buf = ''
+      footnotes_by_key[key].each do |foot|
+        ret[titles_order[-1]] =~ /(#{Regexp.quote(foot.strip)}:.*?)\[\^\d+\]/m # grab the entire footnote, right up to the next one, into $1
+        unless ::Regexp.last_match(1)
+          # okay, it may *be* the last/only one...
+          ret[titles_order[-1]] =~ /(#{Regexp.quote(foot.strip)}:.*)/m # grab the rest of the doc
+        end
+        next unless ::Regexp.last_match(1) # shouldn't happen in DOCX conversion, but with manual markdown, anything is possible
+
+        buf += ::Regexp.last_match(1) # and buffer it
+        ret[titles_order[-1]].sub!(::Regexp.last_match(1), '') # and remove it from the final chunk's footnotes, where it does not belong
+      end
+      ret[key] += "\n" + buf
+    end
+    return ret
   end
 
   def locked?
