@@ -4,6 +4,8 @@
   - collection.parent_collections.each do |pc|
     %li{style: 'list-style-type: decimal; font-size:120%;'}= link_to "🢁 🢁 🢁 #{pc.title}", collection_manage_path(pc.id)
 .editable{id: "editable_collection_details"}
+  = link_to collection_path(collection.id), {style:'color:white; float:left;'} do
+    %span.by-button-v02.pointer{style: 'width: auto;'}= t(:back_to_public_view)
   %h1
     %span{id: 'editable_ctype'}= textify_collection_type(collection.collection_type)+': '
     %span{id: "editable_coll_title"}= title

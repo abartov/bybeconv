@@ -26,6 +26,7 @@
                 %br
                 .editable{ id: "editable_#{ci.id}" }
                   != MultiMarkdown.new(ci.markdown).to_html
+                  = link_to t(:delete), collection_item_path(ci.id), method: :delete, remote: true, data: { confirm: t(:confirm_delete_collection_item) }, class: 'collection-btn', style: 'float: left;'
                 .editable_edit{ style: 'display:none;' }
                   = form_for ci, url: collection_item_path(ci.id), method: :put, remote: true do |f|
                     = f.label :alt_title, t(:title_only_if_needed)
@@ -33,10 +34,12 @@
                     = f.text_area :markdown, class: 'form-control', rows: 4
                     = f.submit t(:save), class: 'by-button-v02', style: 'display:inline-block;'
                     .by-button-v02.cancel_editable_edit{ style: 'width:100px; display:inline-block;' }= t(:cancel)
+
               - elsif ci.item.nil? # a placeholder (no markdown)
                 .editable{ id: "editable_#{ci.id}", style: 'margin-bottom: 10px;' }
                   %b #{t(:placeholder_item)}:
                   %span{ id: "ci_title_#{ci.id}" }= ci.alt_title
+                  = link_to t(:delete), collection_item_path(ci.id), method: :delete, remote: true, data: { confirm: t(:confirm_delete_collection_item) }, class: 'collection-btn', style: 'float: left;'
                 .editable_edit{ style: 'display:none;' }
                   = form_for ci, url: collection_item_path(ci.id), method: :put, remote: true do |f|
                     = f.label :alt_title, t(:title)
@@ -62,6 +65,7 @@
                     - @colls_traversed << ci.item.id
                     = render partial: 'shared/editable_collection', locals: { collection: ci.item, focused: false }
               - else
+                = link_to t(:delete), collection_item_path(ci.id), method: :delete, remote: true, data: { confirm: t(:confirm_delete_collection_item) }, class: 'collection-btn', style: 'float: left;'
                 .headline-3-v02
                   #{t(:text)}:
                   = link_to collection_item_string(ci), default_link_by_class(ci.item.class, ci.item.id)

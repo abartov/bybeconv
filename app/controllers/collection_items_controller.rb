@@ -3,11 +3,6 @@
 class CollectionItemsController < ApplicationController
   before_action :set_collection_item, only: %i(show edit update destroy)
 
-  # GET /collection_items or /collection_items.json
-  def index
-    @collection_items = CollectionItem.all
-  end
-
   # GET /collection_items/1 or /collection_items/1.json
   def show; end
 
@@ -49,7 +44,7 @@ class CollectionItemsController < ApplicationController
     respond_to do |format|
       if success
         format.html do
-          redirect_to collection_item_url(@collection_item), notice: 'Collection item was successfully created.'
+          redirect_to collection_item_url(@collection_item), notice: t(:created_successfully)
         end
         format.js
       else
@@ -80,11 +75,13 @@ class CollectionItemsController < ApplicationController
 
   # DELETE /collection_items/1 or /collection_items/1.json
   def destroy
+    @collection = @collection_item.collection
+    @deleted_id = @collection_item.id # used in the js response
     @collection_item.destroy
 
     respond_to do |format|
-      format.html { redirect_to collection_items_url, notice: 'Collection item was successfully destroyed.' }
-      format.json { head :no_content }
+      format.html { redirect_to collection_manage_path(@collection.id), notice: t(:deleted_successfully) }
+      format.js
     end
   end
 
