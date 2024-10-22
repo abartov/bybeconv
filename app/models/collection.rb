@@ -105,9 +105,12 @@ class Collection < ApplicationRecord
   def toc_html
     ret = '<div class="collection_toc"><ul>'
     flatten_items.each do |ci|
-      next if ci.item.nil? && ci.markdown.blank?
-
-      ret += '<li>' + ci.title_and_authors
+      next if ci.item.nil? && ci.markdown.blank? && ci.alt_title.blank?
+      if ci.item.nil? && ci.alt_title.present?
+        ret += '<li>' + ci.alt_title
+      else
+        ret += '<li>' + ci.title_and_authors
+      end
     end
     ret += '</div>'
     return ret
