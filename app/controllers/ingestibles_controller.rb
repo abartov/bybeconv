@@ -85,7 +85,7 @@ class IngestiblesController < ApplicationController
   def create
     # TODO: use params to set defaults (callable from the tasks system, which means we can populate the title (=task name), genre, credits)
     @ingestible = Ingestible.new(ingestible_params)
-
+    @ingestible.update_authorities_and_metadata_from_volume if @ingestible.prospective_volume_id.present?
     if @ingestible.save
       redirect_to edit_ingestible_url(@ingestible), notice: t('.success')
     else
