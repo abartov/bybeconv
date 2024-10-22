@@ -1,9 +1,9 @@
-%h1 Listing ingestibles
+%h1= t('.title')
 
 %table
   %thead
     %tr
-      %th= t(:title)
+      %th= t('.internal_title')
       %th= t(:status)
       %th= t(:edition_details)
       %th= t(:comments)
@@ -26,4 +26,4 @@
 
 %br
 
-= link_to 'New Ingestible', new_ingestible_path
+= link_to t('.start_new'), new_ingestible_path, class: 'btn btn-primary'
