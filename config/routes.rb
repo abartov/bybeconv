@@ -26,7 +26,7 @@ Bybeconv::Application.routes.draw do
     end
   end
 
-  resources :collection_items
+  resources :collection_items, only: %i(create show edit update destroy)
   resources :collections do
     post 'apply_drag'
     post 'transplant_item'
