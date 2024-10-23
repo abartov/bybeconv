@@ -19,7 +19,7 @@
   = hidden_field_tag "#{prefix}_authority_id"
   = t(:in_role)
   = select_tag "#{prefix}_role",
-              options_for_select(InvolvedAuthority.roles.map { |role| [textify_authority_role(role), role] })
+              options_for_select(role_options)
   = button_tag t(:add), id: "#{prefix}_add_button", type: :button
   %br
   :javascript
