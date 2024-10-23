@@ -1,5 +1,9 @@
 include BybeUtils
 Bybeconv::Application.routes.draw do
+  get 'collections_migration/index'
+  get 'collections_migration/person'
+  post 'collections_migration/migrate'
+  post 'collections_migration/create_collection'
   namespace :admin do
     resources :featured_contents do
       resources :features, controller: 'featured_content_features', only: %i(create)

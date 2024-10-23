@@ -1429,7 +1429,17 @@ he:
       next: הטקסט הבא
       previous: הטקסט הקודם
       not_in_toc: הטקסט לא סומן ככלול בהעלאה!
-
+  collections_migration:
+    index:
+      title: תהליך המרת דפי יוצר לדפים אוטומטיים עם כותרים
+      explanation: 'להלן רשימת יוצרים בסדר פופולריות יורד, שעדיין יש להם דף יוצר ידני:'
+    person:
+      title: המרת דף יוצר
+      explanation: ליד כל כותרת בדף היוצר הקיים יש לחצן יצירת כותר.
+      collections_area: דף היוצר המתהווה, בשיטה החדשה
+      make_collection: צור כותר ושייך יצירות להלן
+    migrate:
+      title: ''
   involved_authorities:
     list:
       select_authority: נא לבחור ישות אחראית

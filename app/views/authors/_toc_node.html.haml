@@ -34,5 +34,5 @@
       - children = toc_node.children_by_role(role, authority_id)
       - unless children.empty?
         %ol
-          = render partial: 'toc_node', collection: children,
+          = render partial: 'authors/toc_node', collection: children,
                   locals: { role: role, authority_id: authority_id, editable: editable }

@@ -1,0 +1,12 @@
+%h1= t('.title')
+%p= t('.explanation')
+%table
+  %thead
+    %tr
+      %th= t(:name)
+      %th= Authority.human_attribute_name(:bib_done)
+  %tbody
+    - @authorities.each do |au|
+      %tr
+        %td= link_to au.name, collections_migration_person_path(id: au.id)
+        %td{style: "background-color: #{au.bib_done ? 'lightgreen' : 'lightcoral'}"}= au.bib_done ? t(:yes) : t(:no)
