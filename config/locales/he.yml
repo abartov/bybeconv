@@ -219,6 +219,7 @@ he:
   newest_works: היצירות החדשות ביותר
   table_of_contents: תוכן עניינים
   x_of_y_items_available: "%{x}/%{y} פריטים מתוך %{ctype} זה הועלו למאגר"
+  full_collection_available: כל פריטי %{ctype} זה זמינים להלן
   x_issues_available: "%{x} גליונות מצויים במאגר"
   issue_of: גליון של כתב העת
   author_table_of_contents: דף יוצר
