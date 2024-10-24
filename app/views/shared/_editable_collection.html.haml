@@ -1,19 +1,19 @@
-.container-fluid{ style: 'position:relative;', id: "coll_container_#{collection.id}" }
-  - if collection
-    .button_series
-      .collection-btn.delete-collection
-        = link_to t(:delete),
-                  collection_path(collection.id),
-                  method: :delete,
-                  data: { confirm: t(:confirm_delete_collection) },
-                  class: 'by-button-v02 by-button-secondary-v02'
-      .collection_action_btns
-        - unless focused
-          .collection_insert_all_siblings.by-button-v02
-            %b.white= '⇇'
-          .collection_focus_button.by-button-v02
-            %b= link_to '⤝', collection_manage_path(collection.id), class: 'white'
-    .collection.connectable.collapse.show{ id: "coll_#{collection.id}", style: 'min-height:40px' }
+.button_series
+  .collection-btn.delete-collection
+    = link_to t(:delete),
+              collection_path(collection.id),
+              method: :delete,
+              data: { confirm: t(:confirm_delete_collection) },
+              class: 'by-button-v02 by-button-secondary-v02'
+  .collection_action_btns
+    - unless focused
+      .collection_insert_all_siblings.by-button-v02
+        %b.white= '⇇'
+      .collection_focus_button.by-button-v02
+        %b= link_to '⤝', collection_manage_path(collection.id), class: 'white'
+- if collection
+  .container-fluid{ style: 'position:relative;', id: "coll_container_#{collection.id}" }
+    .collection.connectable.collapse.show{ id: "coll_#{collection.id}", style: 'min-height:40px;background-color: #e0e0e0;' }
       - collection.collection_items.each do |ci|
         .collection_draggable_item{ id: "collitem_#{ci.id}" }
           .by-card-v02
@@ -26,7 +26,7 @@
                 %br
                 .editable{ id: "editable_#{ci.id}" }
                   != MultiMarkdown.new(ci.markdown).to_html
-                  = link_to t(:delete), collection_item_path(ci.id), method: :delete, remote: true, data: { confirm: t(:confirm_delete_collection_item) }, class: 'collection-btn', style: 'float: left;'
+                  = link_to t(:delete), collection_item_path(ci.id), method: :delete, remote: true, data: { confirm: t(:confirm_delete_collection_item) }, class: 'collection-btn', style: 'float: left;top:-40px;left:5px;position:relative;z-index:5;'
                 .editable_edit{ style: 'display:none;' }
                   = form_for ci, url: collection_item_path(ci.id), method: :put, remote: true do |f|
                     = f.label :alt_title, t(:title_only_if_needed)
@@ -43,7 +43,10 @@
                 .editable_edit{ style: 'display:none;' }
                   = form_for ci, url: collection_item_path(ci.id), method: :put, remote: true do |f|
                     = f.label :alt_title, t(:title)
-                    = f.text_field :alt_title, class: 'form-control'
+                    - if ci.item_type == 'paratext'
+                      = f.text_area :markdown, class: 'form-control', rows: 4
+                    - else
+                      = f.text_field :alt_title, class: 'form-control'
                     = f.submit t(:save), class: 'by-button-v02', style: 'display:inline-block;'
                     .by-button-v02.cancel_editable_edit{ style: 'width:100px; display:inline-block;' }= t(:cancel)
               - elsif ci.item.kind_of?(Collection)

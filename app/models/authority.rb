@@ -92,6 +92,12 @@ class Authority < ApplicationRecord
     Collection.joins(:involved_authorities).where(collection_type: 'volume', involved_authorities: { authority_id: id })
   end
 
+  # return all manifestation IDs that are included in collections (useful for migrating legacy TOCs)
+  def collected_manifestation_ids
+    ids = published_manifestations.pluck(:id)
+    collected_ids = CollectionItem.joins(:collection).where(item_id: ids).where.not(collection: {collection_type: :uncollected }).pluck(:item_id)
+  end
+
   # returns all volumes that are items of this authority's root collection
   def volumes_by_root_collection
     return [] unless root_collection

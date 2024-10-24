@@ -99,7 +99,8 @@ class CollectionsController < ApplicationController
         @collection.involved_authorities.create!(authority_id: params['authority']['id'].to_i,
                                                  role: params['authority']['role'])
       end
-      redirect_to collection_url(@collection), notice: t(:created_successfully)
+      # redirect_to collection_url(@collection), notice: t(:created_successfully)
+      render json: @collection
     else
       render :new, status: :unprocessable_entity
     end

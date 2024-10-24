@@ -1,0 +1,144 @@
+%div#spinnerdiv{style: 'display: none; top: 50%; left: 50%;'}
+  #floatingCirclesG
+    #frotateG_01.f_circleG
+    #frotateG_02.f_circleG
+    #frotateG_03.f_circleG
+    #frotateG_04.f_circleG
+    #frotateG_05.f_circleG
+    #frotateG_06.f_circleG
+    #frotateG_07.f_circleG
+    #frotateG_08.f_circleG
+
+%h1= t('.title')
+%p= t('.explanation')
+.button_series
+  .newcoll_insert_button.by-button-v02
+    %b.white= '+'
+#newcoll_section{style: 'display: none; border: 1px solid #660248; background-color: rgb(157 157 241); padding: 10px;'}
+  .admin_container
+    %b= t(:collection_item_type)+': '
+    = select_tag :insert, options_for_select(collection_item_types_options)
+  .admin_container
+    %b= "#{t(:title)}: "
+    = text_field_tag :insert_title, '', type: 'text', id: 'insert_title', style: 'background-color: #ffffff; width:600px;'
+  %br
+  .admin_container
+    %b= t(:add_person_in_role, author: @author.name)
+    = select_tag :role, options_for_select(role_options)
+
+  .admin_container
+    .newcoll_do_insert.by-button-v02{style: 'width: 50px; justify-content: center;font-weight: bold;'}= t(:perform_add)
+
+%div{style: 'display: flex; flex-direction: row; gap:10px;'}
+  .collection_area
+    .by-card-v02{id: 'collections-card', role: 'tabpanel'}
+      .by-card-header-v02
+        %span.headline-1-v02= t('.collections_area')
+      .by-card-content-v02{:style => "padding-top: 12px;"}
+        .mainlist#coll_toc
+          = render partial: 'gentoc'
+  .toc#maintext
+    .mainlist#browse_mainlist
+    - @htmls.each do |genre, h|
+      .by-card-v02{id: 'works-'+genre, role: 'tabpanel'}
+        .by-card-header-v02
+          %span.by-icon-header-v02= glyph_for_genre(genre)
+          %span.headline-1-v02= textify_genre(genre)
+        .by-card-content-v02{:style => "padding-top: 12px;"}
+          != h
+
+:javascript
+  var already_collected_ids = [ #{@already_collected_ids.join(',')} ];
+  $(document).ready(function() {
+    // decorate the legacy TOC with controls
+    // h3 tags are volume titles
+      // they may be links themselves, meaning single-text volumes
+    // p tags containing a tags are texts 
+    // p tags without a tags are publisher details or other metadata
+
+    $('.toc h3').each(function(h) {
+      $(this).append('&nbsp;&nbsp;&nbsp;<button class="make-volume">#{ t(".make_collection") }</button>');
+    });
+    $('.toc a').each(function(h) {
+      try {
+        var text_id = $(this).attr('href').split('/').pop();
+        if(already_collected_ids.includes(parseInt(text_id))) {
+          $(this).css('text-decoration', 'line-through');
+          $(this).css('color', 'gray');
+        }
+      } catch(error) {}
+    });
+    $('.make-volume').click(function() {
+      vol = $(this);
+      $('<form>#{t("ingestible.volume_by_author")}<select id="publication">#{options_for_select(@pub_options).gsub("\n","")}</select> <br/>#{t(:collection_item_type)}<select id="ctype">#{options_for_select(collection_types_options).gsub("\n","")}</select> <br/>#{t(:in_role)}<select id="role" style="z-index:10000">#{options_for_select(role_options).gsub("\n","")}</select></form>').dialog({
+        modal: true,
+        buttons: {
+          'OK': function () {
+            var author = "#{@author.id}";
+            var role = $('#role').val();
+            var ctype = $('#ctype').val();
+            $(this).dialog('close');
+            var volume = vol.parent();
+            var texts = volume.nextUntil('h3');
+            $(vol).remove();
+            var title = volume.text();
+            var text_ids = [];
+            texts.each(function() {
+              var text = $(this);
+              var link = text.find('a');
+              if(link.length == 0) return;
+              var text_id = link.attr('href').split('/').pop();
+              text_ids.push(text_id);
+            });
+            if(text_ids.length == 0) {
+              text = volume.find('a');
+              if(text.length > 0) {
+                var text_id = text.attr('href').split('/').pop();
+                text_ids.push(text_id);
+              }
+            }
+
+            startModal('spinnerDiv');
+            $.ajax({
+              url: "#{collections_migration_create_collection_path}",
+              type: 'POST',
+              data: {
+                authority: author,
+                collection_type: ctype,
+                publication: $('#publication').val(),
+                title: title,
+                text_ids: text_ids,
+                role: role
+              }
+            }).done(function(data) {
+              location.reload();
+            }).fail(function(data) {
+              stopModal('spinnerDiv');
+              alert('Collection creation failed');
+            });
+          },
+          'Cancel': function () {
+            $(this).dialog('close');
+          }
+        }
+      });
+    });
+    $('body').on('click', '.newcoll_insert_button', function(){
+      $('#newcoll_section').show();
+    });
+    $('.newcoll_do_insert').click(function(){
+      var item_type = $('#insert').val();
+      var new_title = $('#insert_title').val();
+      $.ajax({
+        url: '/collections',
+        type: 'POST',
+        dataType: "json",
+        data: {collection: { collection_type: item_type, title: new_title}, authority: { id: #{@author.id } , role: $('#role').val()}},
+        success: function(data) {
+          alert("data['title'] is " + data['title']);
+          $('#newcoll_section').hide();
+          $('html, body').animate({scrollTop: $('#coll_container_'+data.collection_id).offset().top + $('#coll_container_'+data.collection_id).outerHeight() - $('header').height() - 180}, 500);
+        }
+      });
+    });
+  });
