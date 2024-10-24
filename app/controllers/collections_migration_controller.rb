@@ -29,7 +29,7 @@ class CollectionsMigrationController < ApplicationController
         ids = params[:text_ids].map(&:to_i)
         mm = Manifestation.where(id: ids)
         sorted_mm = mm.sort_by { |m| ids.index(m.id) }
-        mm.each do |m|
+        sorted_mm.each do |m|
           @collection.append_item(m)
         end
       end
