@@ -6,15 +6,27 @@
 .editable{id: "editable_collection_details"}
   = link_to collection_path(collection.id), {style:'color:white; float:left;'} do
     %span.by-button-v02.pointer{style: 'width: auto;'}= t(:back_to_public_view)
-  %h1
+  %h1{style: 'cursor:pointer;'}
     %span{id: 'editable_ctype'}= textify_collection_type(collection.collection_type)+': '
     %span{id: "editable_coll_title"}= title
+    %span{style: 'font-size: 50%; color:blue;'}= t(:edit)
 .editable_edit{style: 'display:none;'}
   = form_for collection, url: collection_path(collection.id), method: :put, remote: true do |f|
     %b= t(:collection_item_type)+': '
     = f.select 'collection_type', options_for_select(collection_types_options, collection.collection_type)
+    %br
     = f.label :title, t(:title)
-    = f.text_field :title, class: 'form-control'
+    = f.text_field :title, class: 'form-control', style: 'width: 75%;'
+    = f.label :sort_title, t(:sort_title)
+    = f.text_field :sort_title, class: 'form-control', style: 'width: 75%;'
+    = f.label :subtitle, t(:subtitle)
+    = f.text_field :subtitle, class: 'form-control', style: 'width: 75%;'
+    %br
+    = f.label :publisher, t(:edition_details)
+    = f.text_field :publisher_line, class: 'form-control', style: 'width: 65%;'
+    = f.label :pub_year, t(:year_published)
+    = f.text_field :pub_year, class: 'form-control', style: 'width: 10%;'
+    %br
     = f.submit t(:save), class: 'by-button-v02', style: 'display:inline-block;'
     .by-button-v02.cancel_editable_edit{style:'width:100px; display:inline-block;'}= t(:cancel)
 

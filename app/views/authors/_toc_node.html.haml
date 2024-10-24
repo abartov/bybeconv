@@ -1,4 +1,4 @@
-%li
+%li{ style: toc_node.is_a?(Manifestation) ? '' : 'margin-top: 15px; margin-bottom: 10px;'}
   - if toc_node.is_a?(Manifestation)
     - genre = toc_node.expression.work.genre
     %span.by-icon-v02{ title: t(genre) }>= glyph_for_genre(genre)
@@ -26,13 +26,16 @@
   - else
     -# Collection node
     - collection = toc_node.item
-    - type_prefix = collection.collection_type == 'uncollected' ? '' : "#{textify_collection_type(collection.collection_type)}: "
-    %span{style:'font-size:120%;'}= link_to "#{type_prefix}#{collection.title}", collection_path(collection)
-    - if editable
+    - type_prefix = collection.collection_type == 'uncollected' ? '' : textify_collection_type(collection.collection_type)
+    %span{style:'font-size:120%;'}
+      = link_to collection.title, collection_path(collection)
+      - if type_prefix.present?
+        = " (#{type_prefix})"
+    - if editable && (collection.collection_type == 'uncollected' || collection.involved_authorities.where(authority_id: authority_id).present?) # only show editable collections for collections where this particular author is a principal contributor
       = render partial: 'shared/manage_collection', locals: { collection: collection, title: collection.title }
     - else
       - children = toc_node.children_by_role(role, authority_id)
       - unless children.empty?
-        %ol
+        %ul.toclist
           = render partial: 'authors/toc_node', collection: children,
                   locals: { role: role, authority_id: authority_id, editable: editable }

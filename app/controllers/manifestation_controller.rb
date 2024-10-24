@@ -919,5 +919,6 @@ class ManifestationController < ApplicationController
     end
     @containments = @m.collection_items
     @volumes = @m.volumes
+    @single_text_volume = @containments.count == 1 && @containments.first.collection.has_single_text?
   end
 end

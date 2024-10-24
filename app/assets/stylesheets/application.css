@@ -906,3 +906,9 @@ small p{
   font-size: 130%;
   line-height: 1.2;
 }
+
+.mainlist .toclist {
+  list-style-type:none;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}

@@ -6,5 +6,5 @@
     .by-card-header-v02
       %span.headline-1-v02= title
     .by-card-content-v02.mainlist{:style => "padding-top: 12px;"}
-      %ol
+      %ul.toclist
         = render partial: 'authors/toc_node', collection: top_level_by_role, locals: { role: role, authority_id: authority_id, editable: editable }
