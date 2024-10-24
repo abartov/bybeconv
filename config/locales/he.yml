@@ -872,6 +872,8 @@ he:
   anthology_explanation: היא גרסה מתקדמת של רשימת קריאה ומיועדת בעיקר לשיתוף עם הקוראים שלכם כדי שיוכלו לצרוך את הטקסטים הכלולים בה. היא מאפשרת סידור פנימי מדויק של כל יצירה ויצירה לפי רצונכם וכן הוספת קטעי טקסט מעשירים שנכתבו על ידכם - כגון עמוד שער, הערות, דגשים וכו׳.
   create_new_list_or_anthology: יצירת רשימת קריאה / מקראה חדשה
   anthology_name: שם המקראה
+  sort_title: שם לצורך מיון
+  subtitle: כותרת משנה
   manage_people: ניהול אישים
   to_manage_people: אם האיש/ה אינו/ה ברשימה, יש ליצור רשומה חדשה בניהול אישים (השינויים לא יישמרו אם לא בוצעה "שמירה ועדכון")
   how_to_help: 'התנדבות בפרויקט'
@@ -1441,7 +1443,7 @@ he:
       make_collection: צור כותר ושייך יצירות להלן
       mark_migrated: סיים הסבה והפעל את דף היוצר החדש ליוצר/ת זה/זו
     migrate:
-      title: ''
+      migrated_html: '<a href="%{link}" style="color:blue; text-decoration:underline; cursor:pointer;">דף היוצר החדש הופעל!</a>'
   involved_authorities:
     list:
       select_authority: נא לבחור ישות אחראית

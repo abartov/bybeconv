@@ -36,5 +36,11 @@ class CollectionsMigrationController < ApplicationController
     end
   end
 
-  def migrate; end
+  def migrate
+    @author = Authority.find(params[:id])
+    @author.legacy_toc_id = @author.toc_id
+    @author.toc_id = nil
+    @author.save!
+    redirect_to collections_migration_index_path, notice: t('.migrated_html', link: authority_url(@author))
+  end
 end

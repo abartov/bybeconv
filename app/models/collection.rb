@@ -89,6 +89,10 @@ class Collection < ApplicationRecord
     end
   end
 
+  def has_single_text?
+    collection_items.where(item_type: 'Manifestation').count == 1
+  end
+
   def title_and_authors_html
     ret = "<h1>#{title}</h1>"
     if authors.present?

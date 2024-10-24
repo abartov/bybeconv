@@ -146,7 +146,7 @@
         <%= render partial: 'shared/tabs' %>
         <% unless @print
           flash.each do |name, msg| -%>
-            <%= content_tag :div, msg, class: name %>
+            <%= content_tag :div, msg.html_safe, class: name %>
         <% end -%>
       <% end -%>
     

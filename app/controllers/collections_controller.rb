@@ -13,6 +13,10 @@ class CollectionsController < ApplicationController
 
   # GET /collections/1 or /collections/1.json
   def show
+    if @collection.has_single_text?
+      redirect_to manifestation_path(@collection.collection_items.where(item_type: 'Manifestation').first.item.id)
+      return
+    end
     @header_partial = 'shared/collection_top'
     @scrollspy_target = 'chapternav'
     @colls_traversed = [@collection.id]
@@ -109,7 +113,10 @@ class CollectionsController < ApplicationController
   # PATCH/PUT /collections/1 or /collections/1.json
   def update
     if @collection.update(collection_params)
-      redirect_to collection_url(@collection), notice: t(:updated_successfully)
+      respond_to do |format|
+        format.html { redirect_to collection_url(@collection), notice: t(:updated_successfully) }
+        format.js
+      end
     else
       render :edit, status: :unprocessable_entity
     end

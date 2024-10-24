@@ -49,7 +49,7 @@
 %hr
 %strong
   = button_to t('.mark_migrated'), url_for(action: :migrate, id: @author.id), {method: :post, class: 'by-button-v02'}
-= button_to t(:back), url_for(action: :index), {method: :get, class: 'btn'}
+= button_to t(:back), url_for(action: :index), {method: :get, class: 'btn-small-outline-v02'}
 :javascript
   var already_collected_ids = [ #{@already_collected_ids.join(',')} ];
   $(document).ready(function() {
