@@ -46,7 +46,10 @@
           %span.headline-1-v02= textify_genre(genre)
         .by-card-content-v02{:style => "padding-top: 12px;"}
           != h
-
+%hr
+%strong
+  = button_to t('.mark_migrated'), url_for(action: :migrate, id: @author.id), {method: :post, class: 'by-button-v02'}
+= button_to t(:back), url_for(action: :index), {method: :get, class: 'btn'}
 :javascript
   var already_collected_ids = [ #{@already_collected_ids.join(',')} ];
   $(document).ready(function() {
@@ -70,12 +73,12 @@
     });
     $('.make-volume').click(function() {
       vol = $(this);
-      $('<form>#{t("ingestible.volume_by_author")}<select id="publication">#{options_for_select(@pub_options).gsub("\n","")}</select> <br/>#{t(:collection_item_type)}<select id="ctype">#{options_for_select(collection_types_options).gsub("\n","")}</select> <br/>#{t(:in_role)}<select id="role" style="z-index:10000">#{options_for_select(role_options).gsub("\n","")}</select></form>').dialog({
+      $('<form>#{t("ingestible.volume_by_author")}<select id="publication">#{options_for_select(@pub_options).gsub("\n","")}</select> <br/>#{t(:collection_item_type)}<select id="ctype">#{options_for_select(collection_types_options).gsub("\n","")}</select> <br/>#{t(:in_role)}<select id="prole" style="z-index:10000">#{options_for_select(role_options).gsub("\n","")}</select></form>').dialog({
         modal: true,
         buttons: {
           'OK': function () {
             var author = "#{@author.id}";
-            var role = $('#role').val();
+            var role = $('#prole').val();
             var ctype = $('#ctype').val();
             var publication = $('#publication').val();
             $(this).dialog('close');
