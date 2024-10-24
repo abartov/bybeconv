@@ -1439,6 +1439,7 @@ he:
       explanation: ליד כל כותרת בדף היוצר הקיים יש לחצן יצירת כותר.
       collections_area: דף היוצר המתהווה, בשיטה החדשה
       make_collection: צור כותר ושייך יצירות להלן
+      mark_migrated: סיים הסבה והפעל את דף היוצר החדש ליוצר/ת זה/זו
     migrate:
       title: ''
   involved_authorities:
