@@ -15,6 +15,8 @@ class CollectionsMigrationController < ApplicationController
     # refresh uncollected works to reflect any changes we may have just made
     RefreshUncollectedWorksCollection.call(@author)
     prep_toc
+    @top_nodes = GenerateTocTree.call(@author)
+
   end
 
   def create_collection
@@ -26,6 +28,7 @@ class CollectionsMigrationController < ApplicationController
       if params[:text_ids].present?
         ids = params[:text_ids].map(&:to_i)
         mm = Manifestation.where(id: ids)
+        sorted_mm = mm.sort_by { |m| ids.index(m.id) }
         mm.each do |m|
           @collection.append_item(m)
         end

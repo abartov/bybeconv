@@ -77,6 +77,7 @@
             var author = "#{@author.id}";
             var role = $('#role').val();
             var ctype = $('#ctype').val();
+            var publication = $('#publication').val();
             $(this).dialog('close');
             var volume = vol.parent();
             var texts = volume.nextUntil('h3');
@@ -105,7 +106,7 @@
               data: {
                 authority: author,
                 collection_type: ctype,
-                publication: $('#publication').val(),
+                publication_id: publication,
                 title: title,
                 text_ids: text_ids,
                 role: role
@@ -135,7 +136,6 @@
         dataType: "json",
         data: {collection: { collection_type: item_type, title: new_title}, authority: { id: #{@author.id } , role: $('#role').val()}},
         success: function(data) {
-          alert("data['title'] is " + data['title']);
           $('#newcoll_section').hide();
           $('html, body').animate({scrollTop: $('#coll_container_'+data.collection_id).offset().top + $('#coll_container_'+data.collection_id).outerHeight() - $('header').height() - 180}, 500);
         }
