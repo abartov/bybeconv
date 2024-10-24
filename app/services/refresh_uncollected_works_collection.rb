@@ -50,7 +50,8 @@ class RefreshUncollectedWorksCollection < ApplicationService
       # The only possible item type in uncollected works collection is Manifestation
       manifestation = collection_item.item
       # NOTE: same work can be in several different uncollected works collection related to different authorities
-      if manifestation.collection_items.any? { |ci| !ci.collection.uncollected? }
+
+      if manifestation.blank? || manifestation.collection_items.any? { |ci| !ci.collection.uncollected? }
         collection_item.destroy!
       end
     end
