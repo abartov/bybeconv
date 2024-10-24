@@ -11,6 +11,23 @@
 
 %h1= t('.title')
 %p= t('.explanation')
+.button_series
+  .newcoll_insert_button.by-button-v02
+    %b.white= '+'
+#newcoll_section{style: 'display: none; border: 1px solid #660248; background-color: rgb(157 157 241); padding: 10px;'}
+  .admin_container
+    %b= t(:collection_item_type)+': '
+    = select_tag :insert, options_for_select(collection_item_types_options)
+  .admin_container
+    %b= "#{t(:title)}: "
+    = text_field_tag :insert_title, '', type: 'text', id: 'insert_title', style: 'background-color: #ffffff; width:600px;'
+  %br
+  .admin_container
+    %b= t(:add_person_in_role, author: @author.name)
+    = select_tag :role, options_for_select(role_options)
+
+  .admin_container
+    .newcoll_do_insert.by-button-v02{style: 'width: 50px; justify-content: center;font-weight: bold;'}= t(:perform_add)
 
 %div{style: 'display: flex; flex-direction: row; gap:10px;'}
   .collection_area
@@ -103,6 +120,24 @@
           'Cancel': function () {
             $(this).dialog('close');
           }
+        }
+      });
+    });
+    $('body').on('click', '.newcoll_insert_button', function(){
+      $('#newcoll_section').show();
+    });
+    $('.newcoll_do_insert').click(function(){
+      var item_type = $('#insert').val();
+      var new_title = $('#insert_title').val();
+      $.ajax({
+        url: '/collections',
+        type: 'POST',
+        dataType: "json",
+        data: {collection: { collection_type: item_type, title: new_title}, authority: { id: #{@author.id } , role: $('#role').val()}},
+        success: function(data) {
+          alert("data['title'] is " + data['title']);
+          $('#newcoll_section').hide();
+          $('html, body').animate({scrollTop: $('#coll_container_'+data.collection_id).offset().top + $('#coll_container_'+data.collection_id).outerHeight() - $('header').height() - 180}, 500);
         }
       });
     });

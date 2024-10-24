@@ -9,7 +9,7 @@ class CollectionsMigrationController < ApplicationController
 
   def person
     @author = Authority.find(params[:id])
-    @publications = @author.publications.no_volume
+    @publications = @author.publications.no_volume.order(:title)
     @pub_options = @publications.map { |pub| [pub.title, pub.id] }
     @already_collected_ids = @author.collected_manifestation_ids
     # refresh uncollected works to reflect any changes we may have just made

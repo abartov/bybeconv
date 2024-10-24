@@ -79,15 +79,16 @@
           - @htmls.each do |title, authors, html, is_curated, genre, i, ci|
             %a{ name: "collitem_text_#{i}" }
             .by-card-v02
-              .by-card-header-v02
-                .by-icon-v02
-                .headline-1-v02
-                  - link = url_for_collection_item(ci)
-                  - tstr = eauthors[title].present? ? "#{title} / #{eauthors[title]}" : title
-                  - if link.present?
-                    = link_to tstr, link
-                  - else
-                    = tstr
+              - if title.present?
+                .by-card-header-v02
+                  .by-icon-v02
+                  .headline-1-v02
+                    - link = url_for_collection_item(ci)
+                    - tstr = eauthors[title].present? ? "#{title} / #{eauthors[title]}" : title
+                    - if link.present?
+                      = link_to tstr, link
+                    - else
+                      = tstr
               .by-card-content-v02#actualtext
                 != html
     .col-12.col-lg-4
