@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_10_18_012458) do
+ActiveRecord::Schema.define(version: 2024_10_24_050409) do
 
   create_table "aboutnesses", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -159,6 +159,7 @@ ActiveRecord::Schema.define(version: 2024_10_18_012458) do
     t.integer "corporate_body_id"
     t.integer "root_collection_id"
     t.integer "uncollected_works_collection_id"
+    t.integer "legacy_toc_id"
     t.index ["corporate_body_id"], name: "index_authorities_on_corporate_body_id", unique: true
     t.index ["impressions_count"], name: "index_authorities_on_impressions_count"
     t.index ["intellectual_property"], name: "index_authorities_on_intellectual_property"
