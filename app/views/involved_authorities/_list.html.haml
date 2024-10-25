@@ -15,12 +15,12 @@
 - if edit
   = t(:add)
   = autocomplete_field_tag "#{prefix}_autocomplete", '', autocomplete_authority_name_path,
-                          id_element: "##{prefix}_authority_id"
+                          id_element: "##{prefix}_authority_id", style: 'background-color:white;'
   = hidden_field_tag "#{prefix}_authority_id"
   = t(:in_role)
   = select_tag "#{prefix}_role",
               options_for_select(role_options)
-  = button_tag t(:add), id: "#{prefix}_add_button", type: :button
+  = button_tag t(:perform_add), id: "#{prefix}_add_button", type: :button
   %br
   :javascript
     $(function() {
