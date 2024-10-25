@@ -10,7 +10,7 @@
     %span{id: 'editable_ctype'}= textify_collection_type(collection.collection_type)+': '
     %span{id: "editable_coll_title"}= title
     %span{style: 'font-size: 50%; color:blue;'}= t(:edit)
-.editable_edit{style: 'display:none;'}
+.editable_edit{style: 'display:none;background-color:lightyellow;'}
   = form_for collection, url: collection_path(collection.id), method: :put, remote: true do |f|
     %b= t(:collection_item_type)+': '
     = f.select 'collection_type', options_for_select(collection_types_options, collection.collection_type)
@@ -29,6 +29,7 @@
     %br
     = f.submit t(:save), class: 'by-button-v02', style: 'display:inline-block;'
     .by-button-v02.cancel_editable_edit{style:'width:100px; display:inline-block;'}= t(:cancel)
+    = render partial: 'involved_authorities/list', locals: { item: collection, edit: true }
 
 .headline-2-v02{'data-collection-id': collection.id}
   .button_series
