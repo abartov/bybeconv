@@ -413,7 +413,7 @@ class AuthorsController < ApplicationController
     # TODO: pagination
     @authorities = Authority.left_joins(:toc)
                             .page(params[:page])
-                            .order(params[:order].nil? ? ['tocs.status, sort_name'] : params[:order])
+                            .order(params[:order].nil? ? ['tocs.status, sort_name'] : sanitize_sql_for_order(params[:order]))
 
     @q = params[:q]
     return if @q.blank?
