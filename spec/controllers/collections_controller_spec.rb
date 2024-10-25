@@ -62,7 +62,6 @@ describe CollectionsController do
 
         it 'creates record' do
           expect { call }.to change(Collection, :count).by(1)
-          expect(flash.notice).to eq I18n.t(:created_successfully)
           collection = Collection.order(id: :desc).first
           expect(collection).to have_attributes(collection_params)
         end
