@@ -1421,7 +1421,9 @@ he:
       awaiting_authorities_resolved: ההעלאה במצב המתנה לישויות, אבל כל הישויות כבר סודרו. אפשר לסיים את ההעלאה!
       problem_is_not_empty: שדה הבעיות אינו ריק!
     index:
-      title: רשימת העלאות
+      my_title: העלאות נעולות על ידי כרגע
+      locked_title: העלאות נעולות על ידי אחרים כרגע
+      other_title: רשימת העלאות נוספות
       start_new: התחלת העלאה חדשה
       internal_title: כותרת פנימית להעלאה כולה
     destroy:
