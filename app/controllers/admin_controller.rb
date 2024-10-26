@@ -38,6 +38,10 @@ class AdminController < ApplicationController
     end
   end
 
+  def autocomplete_authority_name_and_aliases
+    wildcard = "%#{params[:term]}%"
+    render json: Authority.where('name like ? OR other_designation like ?', wildcard, wildcard).map{|au| { id: au.id, label: au.name, value: au.name }}
+  end
   ##############################################
   ## Reports
   def raw_tocs

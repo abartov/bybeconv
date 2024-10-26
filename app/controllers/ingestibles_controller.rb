@@ -78,7 +78,7 @@ class IngestiblesController < ApplicationController
   # GET /ingestibles/1/edit
   def edit
     @ingestible.update_parsing # refresh markdown or text buffers if necessary
-    prep
+    prep(true) # rendering of HTML needed for editing screen
   end
 
   # POST /ingestibles or /ingestibles.json
@@ -134,8 +134,7 @@ class IngestiblesController < ApplicationController
     toc_params = params.permit(%i(title new_title genre orig_lang intellectual_property authority_id authority_name role new_person_tbd rmauth seqno))
     cur_toc = @ingestible.decode_toc
     updated = false
-    prep
-  
+    prep(false) # prepare the markdown titles for the view
     cur_toc.each do |x|
       next unless x[1] == params[:title] # update the existing entry
       x[1] = toc_params[:new_title] if toc_params[:new_title].present? # allow changing the title
@@ -171,7 +170,6 @@ class IngestiblesController < ApplicationController
     end
     return unless updated
 
-    prep
     @ingestible.update_columns(toc_buffer: @ingestible.encode_toc(cur_toc))
 
   end
@@ -213,10 +211,10 @@ class IngestiblesController < ApplicationController
     @ingestible = Ingestible.find(params[:id])
   end
 
-  def prep
+  def prep(render_html = false)
     markdown = @ingestible.markdown.presence || ''
-    @html = MarkdownToHtml.call(markdown)
     @markdown_titles = markdown.scan(/^&&&\s+(.+?)\s*\n/).map(&:first)
+    @html = MarkdownToHtml.call(markdown) if render_html
   end
 
   # this method prepares the ingestible for ingestion:

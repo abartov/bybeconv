@@ -43,6 +43,7 @@ Bybeconv::Application.routes.draw do
 
   get 'autocomplete_publication_title' => 'admin#autocomplete_publication_title', as: 'autocomplete_publication_title'
   get 'autocomplete_collection_title' => 'admin#autocomplete_collection_title', as: 'autocomplete_collection_title'
+  get 'autocomplete_authority_name_and_aliases' => 'admin#autocomplete_authority_name_and_aliases', as: 'autocomplete_authority_name_and_aliases'
   match 'author/:id/manage_toc' => 'authors#manage_toc', as: 'authors_manage_toc', via: %i(get post)
 
   resources :involved_authorities, only: %i(index create destroy)

@@ -1,4 +1,4 @@
-%table
+%table.ingestible_toc_table
   %thead
     %tr
       %th= t('ingestible.included_in_upload')
@@ -48,14 +48,16 @@
             .lredbg
               = t('ingestible.translator_missing')
           = t(:add)
-          = select_tag :add_authority,
-                      options_from_collection_for_select(Authority.order(:name), 'id', 'name'),
-                      include_blank: true
+          = autocomplete_field_tag 'add_authority', '', autocomplete_authority_name_and_aliases_path,
+                                  id_element: "authority_id", style: 'background-color:white;', class: 'add_authority'
+
           = t('ingestibles.authorities.or_new_person')
           = text_field_tag :new_person, '', {style: 'width: 150px;'}
           = t(:in_role)
           = select_tag :role,
                       options_for_select(role_options)
+          = hidden_field_tag :authority_id
+          = hidden_field_tag :add_authority_name
           = button_tag t(:perform_add), class: 'do_add_authority'
         %td
           = select_tag :tgenre, options_for_select(get_genres.map {|x| [I18n.t(x), x]}, genre), {include_blank: true, class: 'toc-genre'}
@@ -113,8 +115,11 @@
     $('.do_add_authority').click(function(e) {
       e.preventDefault();
       e.stopImmediatePropagation();
-      var new_au = $(this).closest('tr').find('select[name=add_authority]').val();
-      var new_name = $(this).closest('tr').find('select[name=add_authority] option:selected').text();
+
+      //var new_au = $(this).closest('tr').find('select[name=add_authority]').val();
+      //var new_name = $(this).closest('tr').find('select[name=add_authority] option:selected').text();
+      var new_au = $(this).closest('tr').find('input[name=authority_id]').val();
+      var new_name = $(this).closest('tr').find('input[name=add_authority_name]').val();
       var new_role = $(this).closest('tr').find('select[name=role]').val();
       var new_person_tbd = $(this).closest('tr').find('input[name=new_person]').val();
 
@@ -153,4 +158,10 @@
          });
       }
     });
+    $('.add_authority').bind('railsAutocomplete.select', function(event, data){
+      event.stopImmediatePropagation();
+      $(this).closest('tr').find('input[name=authority_id]').val(data.item.id);
+      $(this).closest('tr').find('input[name=add_authority_name]').val(data.item.value);
+    });
+
   });
