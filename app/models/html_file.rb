@@ -682,7 +682,7 @@ class HtmlFile < ApplicationRecord
             # the author of the Expression and Manifestation is the translator, if one exists
             em_author = (translator_id.nil? ? p : translator)
 
-            pub_status = if pub_status.nil?
+            pub_status = if pub_status.blank?
                            # default to uploading new works in unpublished status when author/translator is unpublished
                            em_author.published? && p.published? ? :published : :unpublished
                          else
