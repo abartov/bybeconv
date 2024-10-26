@@ -912,3 +912,8 @@ small p{
   margin-top: 5px;
   margin-bottom: 5px;
 }
+
+.ingestible_toc_table tr {
+  border-bottom: 1px solid #ccc;
+
+}
