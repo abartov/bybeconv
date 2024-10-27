@@ -13,7 +13,7 @@
         %a.popup-x-v02{'data-dismiss'=>'modal'} -
       .by-card-content-v02
         #marked-error-text.field-label= t(:your_selected_text)
-        = text_area_tag(:highlight, '', id: 'proof_selected_text', rows: 7, cols:40, readonly:true, class: 'field-v02')
+        = text_area_tag(:highlight, '', id: 'proof_selected_text', rows: 4, cols:40, readonly:true)
         /%input.field-v02{:type => "text"}/
         %div.pointer#copy_proof
           %span.right-side-icon )
@@ -22,7 +22,7 @@
           %span.right-side-icon -
           %span{:style => "font-weight: bold"}= t(:clear_text_and_reset_proof)
         #error-correction-suggestion.field-label= t(:proof_your_proofs)
-        = text_area_tag(:what, '', id: 'prooftext', required: true, rows: 7, cols: 40, class: 'field-v02')
+        = text_area_tag(:what, '', id: 'prooftext', required: true, rows: 4, cols: 40)
         /#error-notes.field-label הערות
         /%input.field-v02{:type => "text"}/
         #error-e-mail.field-label= t(:email_just_for_proof)
@@ -64,6 +64,9 @@
       if(document.getSelection().toString() == '') {
         e.preventDefault();
         alert("#{t(:proof_please_select_something)}");
+      } else if(document.getSelection().toString().length < 40) {
+        e.preventDefault();
+        alert("#{t(:proof_too_short)}");
       }
       else
       {
