@@ -432,6 +432,8 @@ module BybeUtils
       return I18n.t(:swedish)
     when 'lad'
       return I18n.t(:ladino)
+    when 'sa'
+      return I18n.t(:sanskrit)
     else
       return I18n.t(:unknown)
     end
@@ -686,7 +688,7 @@ module BybeUtils
 
   def get_langs
     return %w(he en fr de ru yi pl ar el la grc hu cs da no sv nl it pt fa fi
-              is es ro arc lad zh ka bg unk)
+              is es ro arc lad zh ka bg sa unk)
   end
 
   def get_genres_by_row(row) # just one row at a time
