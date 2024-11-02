@@ -187,7 +187,7 @@ module BybeUtils
       else
         section_texts = html.split(%r{<h2.*?</h2>})
         offset = entity.expression.translation? ? 2 : 1
-        if sections.count - section_titles.count == 1
+        if sections_texts.count - section_titles.count == 1
           section_titles.unshift('*') # no title
         end
         section_texts.shift(offset) # skip the header and the author/translator lines
