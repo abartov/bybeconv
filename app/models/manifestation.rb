@@ -147,7 +147,7 @@ class Manifestation < ApplicationRecord
   end
 
   def to_html
-    return MultiMarkdown.new(markdown).to_html.force_encoding('UTF-8').gsub(%r{<figcaption>.*?</figcaption>}, '')
+    published? ? MultiMarkdown.new(markdown).to_html.force_encoding('UTF-8').gsub(%r{<figcaption>.*?</figcaption>}, '') : t(:not_public_yet)
   end
 
   def title_and_authors

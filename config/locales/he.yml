@@ -2,6 +2,7 @@
 
 he:
   inside: 'בתוך: '
+  not_public_yet: '(עדיין לא פומבי)'
   author_list: רשימת היוצרים
   first_last_name: "שם פרטי / משפחה"
   to_latest_x_works: הצג %{x} יצירות אחרונות
