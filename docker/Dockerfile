@@ -1,7 +1,8 @@
-FROM ruby:3.2.1-buster
+FROM ruby:3.3.5-bullseye
 
 RUN apt-get update -qq && apt-get install -y \
     curl \
+    cmake \
     wkhtmltopdf \
     pandoc \
     yaz \

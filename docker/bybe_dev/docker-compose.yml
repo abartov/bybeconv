@@ -1,5 +1,3 @@
-version: '3'
-
 volumes:
   mysql_data:
   bundler_data:
