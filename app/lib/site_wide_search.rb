@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 require 'multi_index_search_request'
-class ManifestationsSearch
+# Class representing request to search whole website (texts, people, etc.) by string query
+class SiteWideSearch
   include ActiveData::Model
 
   attribute :query, type: String
@@ -21,12 +22,12 @@ class ManifestationsSearch
   end
 
   def index
-    MultiIndexSearchRequest.new(AuthoritiesIndex, ManifestationsIndex, DictIndex)
+    MultiIndexSearchRequest.new(AuthoritiesIndex, ManifestationsIndex, DictIndex, CollectionsIndex)
   end
 
   def search
     # We can merge multiple scopes
-    [query_string, genre_filter, orig_pub_year_filter, tags_filter, highlight, index_order].compact.reduce(:merge)
+    [query_string, genre_filter, orig_pub_year_filter, tags_filter, highlight].compact.reduce(:merge)
   end
 
   # Using query_string advanced query for the main query input
@@ -38,11 +39,13 @@ class ManifestationsSearch
         fields: [
           'title^10',
           'alternate_titles^5',
+          'subtitle^4',
           'defhead^7',
           'aliases^4',
           :name,
           :other_designation,
           :author_string,
+          :involved_authorities_string,
           :fulltext,
           :deftext
         ],
@@ -54,16 +57,19 @@ class ManifestationsSearch
         {
           '_script' => {
             type: :number,
-            # we want search results to be shown in following order: Authorities, Manifestations, Dicts
+            # we want search results to be shown in following order:
+            # Authorities, [Manifestations and Collections], Dicts
             script: {
               lang: :painless,
               source: <<~SORT_SCRIPT.squish
                 def index_name = doc._index[0];
-                if (index_name.indexOf('authorities') == 0) {
+                if (index_name.indexOf('authorities') >= 0) {
                   return 1;
-                } else if (index_name.indexOf('manifestations') == 0) {
+                } else if (index_name.indexOf('manifestations') >= 0) {
                   return 2;
-                } else if (index_name.indexOf('dict') == 0) {
+                } else if (index_name.indexOf('collections') >= 0) {
+                  return 2;
+                } else if (index_name.indexOf('dict') >= 0) {
                   return 3;
                 } else {
                   return 100;
@@ -72,7 +78,9 @@ class ManifestationsSearch
             },
             order: :asc
           }
-        }
+        },
+        '_score',
+        'id'
       ]
     )
   end
@@ -100,9 +108,5 @@ class ManifestationsSearch
 
   def highlight
     index.highlight(max_analyzed_offset: 999_000, fields: { fulltext: {}, deftext: {} })
-  end
-
-  def index_order
-    index.order(['_index' => { order: :desc }, '_score' => { order: :desc }]) # people before works, then by score
   end
 end

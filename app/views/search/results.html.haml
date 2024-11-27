@@ -27,6 +27,9 @@
             - unless result._data.nil? or result._data['highlight'].nil?
               %br
               != result._data['highlight']['fulltext'].join("<br />").gsub('<em>','<b>').gsub('</em>','</b>')
+          - elsif result.instance_of?(CollectionsIndex)
+            %b= Collection.model_name
+            %b= link_to([result.title, result.subtitle].compact_blank.join(' / '), collection_path(result.id))
           - elsif result.instance_of?(AuthoritiesIndex)
             %b= t(:author)
             %br

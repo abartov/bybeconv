@@ -7,11 +7,8 @@ class SearchController < ApplicationController
   def results
     begin
       @searchterm = params[:search].nil? ? sanitize_term(params[:q]) : sanitize_term(params[:search])
-      unless params[:search].nil?
-        @search = ManifestationsSearch.new(@searchterm)
-      else
-        @search = ManifestationsSearch.new(query: @searchterm)
-      end
+      @search = params[:search].present? ? SiteWideSearch.new(@searchterm) : SiteWideSearch.new(query: @searchterm)
+
       @results = @search.search.page(params[:page])
       page = (params[:page] || 1).to_i
       @offset = (page - 1) * Kaminari.config.default_per_page
