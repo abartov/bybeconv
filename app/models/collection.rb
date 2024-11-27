@@ -6,6 +6,8 @@ class Collection < ApplicationRecord
 
   include RecordWithInvolvedAuthorities
 
+  update_index('collections') { self }
+
   before_save :update_sort_title!
 
   validates :collection_type, presence: true
