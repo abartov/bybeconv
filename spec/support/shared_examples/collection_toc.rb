@@ -14,7 +14,17 @@ RSpec.shared_context 'when authority has several collections' do
   end
   let!(:uncollected_collection) { create(:collection, collection_type: :uncollected) }
   let!(:nested_edited_collection) { create(:collection, editors: [authority]) }
-  let!(:nested_translated_collection) { create(:collection, translators: [authority]) }
+  let!(:nested_translated_collection) do
+    create(:collection, translators: [authority], included_collections: [nested_translated_subcollection])
+  end
+  let!(:nested_translated_subcollection) do
+    create(
+      :collection,
+      title_placeholders: ['Title placeholder'],
+      markdown_placeholders: ['Markdown placeholder']
+    )
+  end
+
   let!(:edited_manifestations) do
     create_list(
       :manifestation,
