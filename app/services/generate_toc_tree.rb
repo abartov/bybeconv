@@ -6,8 +6,8 @@ class GenerateTocTree < ApplicationService
   class Node
     attr_accessor :item, :children, :new
 
-    # Item is an collection
-    # Children is an array of [x, seqno] where x is a manifestations or other node (representing subcollection)
+    # Item is a collection
+    # Children is an array of [x, seqno] where x is a manifestations or other node (representing sub-collection)
     def initialize(item)
       @item = item
       @children = []
@@ -29,7 +29,7 @@ class GenerateTocTree < ApplicationService
       end
     end
 
-    # Returns array of child elements (Manifestations or Nodes) where given author is invovled with given role
+    # Returns array of child elements (Manifestations or Nodes) where given author is involved with given role
     def children_by_role(role, authority_id)
       @children_by_role ||= {}
       @children_by_role[role] ||= sorted_children.select do |child|
