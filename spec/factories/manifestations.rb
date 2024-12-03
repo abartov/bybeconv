@@ -50,7 +50,11 @@ FactoryBot.define do
 
     collection_items do
       collections.map do |c|
-        build(:collection_item, collection: c)
+        build(
+          :collection_item,
+          collection: c,
+          seqno: (c.collection_items.maximum(:seqno) || 0) + 1
+        )
       end
     end
 
