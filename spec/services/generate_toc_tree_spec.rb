@@ -32,7 +32,7 @@ describe GenerateTocTree do
                            nested_edited_collection
 
       expect(nested_edited_node.children.map(&:first)).to match_array edited_manifestations
-      expect(nested_translated_node.children).to be_empty
+      expect(nested_translated_node.children.map(&:first)).to match_array translated_manifestations
     end
   end
 
