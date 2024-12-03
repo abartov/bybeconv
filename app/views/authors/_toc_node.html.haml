@@ -23,7 +23,7 @@
       = link_to label, manifestation_path(toc_node)
     - else
       = label
-  - else
+  - elsif toc_node.is_a?(GenerateTocTree::Node)
     -# Collection node
     - collection = toc_node.item
     - type_prefix = collection.collection_type == 'uncollected' ? '' : textify_collection_type(collection.collection_type)
@@ -39,3 +39,6 @@
         %ul.toclist
           = render partial: 'authors/toc_node', collection: children,
                   locals: { role: role, authority_id: authority_id, editable: editable }
+  - else
+    -# Placeholder, toc_node should be a String with HTML layout
+    != toc_node

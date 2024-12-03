@@ -21,6 +21,7 @@ describe GenerateTocTree do
     let(:uncollected_node) { find_node(result, uncollected_collection) }
     let(:nested_edited_node) { find_child_node(top_level_with_nested_node, nested_edited_collection) }
     let(:nested_translated_node) { find_child_node(top_level_with_nested_node, nested_translated_collection) }
+    let(:nested_translated_subnode) { find_child_node(nested_translated_node, nested_translated_subcollection) }
 
     it 'runs successfully' do
       expect(result).to contain_exactly top_level_node, top_level_with_nested_node, uncollected_node
@@ -32,7 +33,12 @@ describe GenerateTocTree do
                            nested_edited_collection
 
       expect(nested_edited_node.children.map(&:first)).to match_array edited_manifestations
-      expect(nested_translated_node.children).to be_empty
+      expect(nested_translated_node.children.map(&:first)).to match_array(
+        translated_manifestations + [nested_translated_subnode]
+      )
+      expect(nested_translated_subnode.children.map(&:first)).to match_array(
+        ['Title placeholder', "<p>Markdown placeholder</p>\n"]
+      )
     end
   end
 

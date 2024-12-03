@@ -14,6 +14,8 @@ FactoryBot.define do
       editors { [] }
       included_collections { [] }
       manifestations { [] }
+      title_placeholders { [] }
+      markdown_placeholders { [] }
     end
 
     involved_authorities do
@@ -31,7 +33,10 @@ FactoryBot.define do
     end
 
     collection_items do
-      (included_collections + manifestations).map { |item| build(:collection_item, item: item) }
+      i = 0
+      (included_collections + manifestations).map { |item| build(:collection_item, item: item, seqno: ++i) } +
+        title_placeholders.map { |title| build(:collection_item, alt_title: title, seqno: ++i) } +
+        markdown_placeholders.map { |markdown| build(:collection_item, markdown: markdown, seqno: ++i) }
     end
   end
 end
