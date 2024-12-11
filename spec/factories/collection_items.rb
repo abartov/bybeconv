@@ -3,7 +3,8 @@
 FactoryBot.define do
   factory :collection_item do
     collection { create(:collection) }
-    alt_title { 'MyString' }
+    alt_title { nil }
+    markdown { nil }
 
     seqno { 1 }
     item { nil }
