@@ -20,6 +20,7 @@ RSpec.shared_context 'when authority has several collections' do
   let!(:nested_translated_subcollection) do
     create(
       :collection,
+      translators: [authority],
       title_placeholders: ['Title placeholder'],
       markdown_placeholders: ['Markdown placeholder']
     )
