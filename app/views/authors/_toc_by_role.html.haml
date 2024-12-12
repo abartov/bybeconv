@@ -1,6 +1,6 @@
 :ruby
   top_level_by_role = top_nodes.select { |node| node.visible?(role, authority_id) }
-                               .sort_by { |node| [node.item.uncollected? ? 1 : 0, node.item.created_at] }
+                               .sort_by { |node| [node.collection.uncollected? ? 1 : 0, node.collection.created_at] }
 - if top_level_by_role.present?
   .by-card-v02{id: 'works-'+role.to_s, role: 'tabpanel'}
     .by-card-header-v02

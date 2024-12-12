@@ -7,6 +7,8 @@ class DictionaryEntry < ApplicationRecord
   has_many :incoming_links, class_name: :DictionaryEntry, through: :from_links, source: :to_entry
   has_many :outgoing_links, class_name: :DictionaryEntry, through: :to_links, source: :from_entry
 
+  update_index('dict') { self }
+
   def get_next_defs(quantity)
     get_neighboring_defs(quantity, true)
   end

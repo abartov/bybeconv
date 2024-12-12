@@ -1,31 +1,33 @@
-%li{ style: toc_node.is_a?(Manifestation) ? '' : 'margin-top: 15px; margin-bottom: 10px;'}
-  - if toc_node.is_a?(Manifestation)
-    - genre = toc_node.expression.work.genre
+-# rubocop:disable Style/CaseLikeIf
+%li{ style: toc_node.is_a?(TocTree::ManifestationNode) ? '' : 'margin-top: 15px; margin-bottom: 10px;' }
+  - if toc_node.is_a?(TocTree::ManifestationNode)
+    - m = toc_node.manifestation
+    - genre = m.expression.work.genre
     %span.by-icon-v02{ title: t(genre) }>= glyph_for_genre(genre)
     &nbsp;
     :ruby
-      label = toc_node.title
+      label = m.title
       case role
       when :editor
-        label += " / #{toc_node.author_string}"
+        label += " / #{m.author_string}"
       when :translator
-        label += " / #{authorities_string(toc_node, :author)}"
-        if toc_node.translators.size > 1
-          label += " / #{authorities_string(toc_node, :translator, exclude_authority_id: authority_id)}"
+        label += " / #{authorities_string(m, :author)}"
+        if m.translators.size > 1
+          label += " / #{authorities_string(m, :translator, exclude_authority_id: authority_id)}"
         end
       when :author
-        if toc_node.authors.size > 1
-          label += " / #{authorities_string(toc_node, :author, exclude_authority_id: authority_id)}"
+        if m.authors.size > 1
+          label += " / #{authorities_string(m, :author, exclude_authority_id: authority_id)}"
         end
       end
 
-    - if toc_node.published?
-      = link_to label, manifestation_path(toc_node)
+    - if m.published?
+      = link_to label, manifestation_path(m)
     - else
       = label
-  - else
+  - elsif toc_node.is_a?(TocTree::CollectionNode)
     -# Collection node
-    - collection = toc_node.item
+    - collection = toc_node.collection
     - type_prefix = collection.collection_type == 'uncollected' ? '' : textify_collection_type(collection.collection_type)
     %span{style:'font-size:120%;'}
       = link_to collection.title, collection_path(collection)
@@ -38,4 +40,12 @@
       - unless children.empty?
         %ul.toclist
           = render partial: 'authors/toc_node', collection: children,
-                  locals: { role: role, authority_id: authority_id, editable: editable }
+                   locals: { role: role, authority_id: authority_id, editable: editable }
+  - elsif toc_node.is_a?(TocTree::PlaceholderNode)
+    -# Placeholder, toc_node should be a String with HTML layout
+    - ci = toc_node.collection_item
+    - if toc_node.markdown.present?
+      != MultiMarkdown.new(ci.markdown).to_html
+    - else
+      = ci.alt_title
+-# rubocop:enable Style/CaseLikeIf

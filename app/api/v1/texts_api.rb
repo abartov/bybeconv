@@ -47,7 +47,7 @@ class V1::TextsAPI < V1::ApplicationApi
       post do
         ids = params[:ids]
         records = ManifestationsIndex.find(ids)
-        # If ids contains one one value, Chewy returns single object instead of array, so explicitely convert
+        # If ids contains only single value, Chewy returns single object instead of array, so explicitely convert
         # it to single-element array
         if ids.size == 1
           records = [records]

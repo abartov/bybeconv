@@ -265,7 +265,7 @@ describe V1::TextsAPI do
           m.expression.intellectual_property_public_domain? || m.expression.intellectual_property_unknown?
         end
 
-        expect(data_ids).to eq matched.sort_by(&:impressions_count).map(&:id)[0..24]
+        expect(data_ids).to eq matched.sort_by { |rec| [rec.impressions_count, rec.id] }.map(&:id)[0..24]
       end
     end
 
