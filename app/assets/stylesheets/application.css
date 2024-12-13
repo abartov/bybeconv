@@ -917,3 +917,7 @@ small p{
   border-bottom: 1px solid #ccc;
 
 }
+
+.make-volume{
+  cursor: pointer;
+}
