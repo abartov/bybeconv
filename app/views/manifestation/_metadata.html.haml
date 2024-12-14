@@ -43,7 +43,7 @@
       %span{:style => "font-weight:bold"}= t(:source_edition)+': '
       - edition = @e.source_edition.strip
       - unless @e.date.nil? || @e.date.empty?
-        - edition += '; '+@e.date
+        - edition += ', '+@e.date
       = edition
 
   -# tags and recommendations
