@@ -149,17 +149,17 @@ class CollectionsController < ApplicationController
     @collection = Collection.find(params[:collection_id])
     @dest_coll = Collection.find(params[:dest_coll_id].to_i)
     @src_coll = Collection.find(params[:src_coll_id].to_i)
-    @item = CollectionItem.find(params[:item_id].to_i)
+    @old_item_id = params[:item_id].to_i
+    @item = CollectionItem.find(@old_item_id)
     if @dest_coll.nil? || @src_coll.nil? || @item.nil?
       flash[:error] = t(:no_such_item)
       head :not_found
       return
     end
     ActiveRecord::Base.transaction do
-      @dest_coll.insert_item_at(@item, params[:new_pos].to_i)
+      @new_item_id = @dest_coll.insert_item_at(@item, params[:new_pos].to_i)
       @src_coll.remove_item(@item)
     end
-    head :ok
   end
 
   def manage
@@ -195,15 +195,16 @@ class CollectionsController < ApplicationController
     if @collection.periodical? # we don't want to show an entire periodical's run in a single Web page; instead, we show the complete TOC of all issues
       @collection.collection_items.each do |ci|
         next unless ci.item.present? && ci.item_type == 'Collection' && ci.item.collection_type == 'periodical_issue'
+
         html = ci.item.toc_html
         @htmls << [ci.item.title, ci.item.editors, html, false, ci.genre, i, ci]
       end
     else
       @collection.collection_items.each do |ci|
         html = ci.to_html
-        #next unless html.present?
+        # next unless html.present?
         @htmls << [ci.title, ci.authors, html.present? ? footnotes_noncer(ci.to_html, i) : '', false, ci.genre,
-                  i, ci]
+                   i, ci]
         i += 1
       end
     end
