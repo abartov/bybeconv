@@ -30,14 +30,14 @@
     .newcoll_do_insert.by-button-v02{style: 'width: 50px; justify-content: center;font-weight: bold;'}= t(:perform_add)
 
 %div{style: 'display: flex; flex-direction: row; gap:10px;'}
-  .collection_area{style: 'height:80vh;overflow-y: scroll;'}
+  .collection_area{style: 'height:65vh;overflow-y: scroll;'}
     .by-card-v02{id: 'collections-card', role: 'tabpanel'}
       .by-card-header-v02
         %span.headline-1-v02= t('.collections_area')
       .by-card-content-v02{:style => "padding-top: 12px;"}
         .mainlist#coll_toc
           = render partial: 'gentoc'
-  .toc#maintext{style: 'height:80vh;overflow-y: scroll;'}
+  .toc#maintext{style: 'height:65vh;overflow-y: scroll;'}
     .mainlist#browse_mainlist
     - @htmls.each do |genre, h|
       .by-card-v02{id: 'works-'+genre, role: 'tabpanel'}

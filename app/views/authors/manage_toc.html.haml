@@ -46,17 +46,17 @@
                 locals: { top_nodes: @top_nodes,
                           title: t(:original_works),
                           role: :author,
-                          authority_id: @author.id, editable: true }
+                          authority_id: @author.id, editable: true, nonce: 'a' }
       = render partial: 'toc_by_role',
                 locals: { top_nodes: @top_nodes,
                           title: t(:translations),
                           role: :translator,
-                          authority_id: @author.id, editable: true }
+                          authority_id: @author.id, editable: true, nonce: 't' }
       = render partial: 'toc_by_role',
                 locals: { top_nodes: @top_nodes,
                           title: t(:edited_works, gender_letter: @author.gender_letter),
                           role: :editor,
-                          authority_id: @author.id, editable: true }
+                          authority_id: @author.id, editable: true, nonce: 'e' }
 
       -#= render partial: 'shared/manage_collection',
       -#         locals: { top_nodes: @top_nodes, title: "#{@author.name} #{t(:current_toc)}" }
