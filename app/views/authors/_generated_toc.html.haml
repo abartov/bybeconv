@@ -5,14 +5,14 @@
               locals: { top_nodes: top_nodes,
                         title: t(:original_works),
                         role: :author,
-                        authority_id: @author.id, editable: false }
+                        authority_id: @author.id, editable: false, nonce: 'a' }
     = render partial: 'authors/toc_by_role',
               locals: { top_nodes: top_nodes,
                         title: t(:translations),
                         role: :translator,
-                        authority_id: @author.id, editable: false }
+                        authority_id: @author.id, editable: false, nonce: 't' }
     = render partial: 'authors/toc_by_role',
               locals: { top_nodes: top_nodes,
                         title: t(:edited_works, gender_letter: @author.gender_letter),
                         role: :editor,
-                        authority_id: @author.id, editable: false }
+                        authority_id: @author.id, editable: false, nonce: 'e' }
