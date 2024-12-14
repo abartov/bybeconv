@@ -19,6 +19,9 @@
         if m.authors.size > 1
           label += " / #{authorities_string(m, :author, exclude_authority_id: authority_id)}"
         end
+        if m.translators.size > 0
+          label += " #{t(:translated_by)} #{authorities_string(m, :translator)}"
+        end
       end
 
     - if m.published?
