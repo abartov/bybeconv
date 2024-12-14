@@ -41,6 +41,7 @@ class CollectionItemsController < ApplicationController
     @collection = Collection.find(@collection_id)
     @collection_item.seqno = @collection.collection_items.maximum(:seqno).to_i + 1 unless @collection.nil?
     @colls_traversed = []
+    @nonce = params[:nonce]
     success = @collection_item.save if success
     respond_to do |format|
       if success
@@ -79,6 +80,7 @@ class CollectionItemsController < ApplicationController
     @collection = @collection_item.collection
     @deleted_id = @collection_item.id # used in the js response
     @collection_item.destroy
+    @nonce = params[:nonce]
 
     respond_to do |format|
       format.html { redirect_to collection_manage_path(@collection.id), notice: t(:deleted_successfully) }

@@ -12,19 +12,19 @@
       .collection_focus_button.by-button-v02
         %b= link_to '⤝', collection_manage_path(collection.id), class: 'white'
 - if collection
-  .container-fluid{ style: 'position:relative;', id: "coll_container_#{collection.id}" }
-    .collection.connectable.collapse.show{ id: "coll_#{collection.id}", style: 'min-height:40px;background-color: #e0e0e0;' }
+  .container-fluid{ style: 'position:relative;', id: "#{nonce}_coll_container_#{collection.id}" }
+    .collection.connectable.collapse.show{ id: "#{nonce}_coll_#{collection.id}", style: 'min-height:40px;background-color: #e0e0e0;', 'data-nonce': nonce }
       - collection.collection_items.each do |ci|
-        .collection_draggable_item{ id: "collitem_#{ci.id}" }
+        .collection_draggable_item{ id: "#{nonce}_collitem_#{ci.id}" }
           .by-card-v02
             .drag-handle{ title: t(:coll_drag_tt) }
               .handle
             .draggable-content{ 'data-collection-id': (ci.item.kind_of?(Collection) ? ci.item_id : collection.id) }
               - if ci.paratext? # a paratext (with markdown)
                 %b #{t(:paratext)}:
-                %span{ id: "ci_title_#{ci.id}" }= ci.alt_title
+                %span{ id: "#{nonce}_ci_title_#{ci.id}" }= ci.alt_title
                 %br
-                .editable{ id: "editable_#{ci.id}" }
+                .editable{ id: "#{nonce}_editable_#{ci.id}" }
                   != MultiMarkdown.new(ci.markdown).to_html
                   = link_to t(:delete), collection_item_path(ci.id), method: :delete, remote: true, data: { confirm: t(:confirm_delete_collection_item) }, class: 'collection-btn', style: 'float: left;top:-40px;left:5px;position:relative;z-index:5;'
                 .editable_edit{ style: 'display:none;' }
@@ -36,9 +36,9 @@
                     .by-button-v02.cancel_editable_edit{ style: 'width:100px; display:inline-block;' }= t(:cancel)
 
               - elsif ci.item.nil? # a placeholder (no markdown)
-                .editable{ id: "editable_#{ci.id}", style: 'margin-bottom: 10px;' }
+                .editable{ id: "#{nonce}_editable_#{ci.id}", style: 'margin-bottom: 10px;' }
                   %b #{t(:placeholder_item)}:
-                  %span{ id: "ci_title_#{ci.id}" }= ci.alt_title
+                  %span{ id: "#{nonce}_ci_title_#{ci.id}" }= ci.alt_title
                   = link_to t(:delete), collection_item_path(ci.id), method: :delete, remote: true, data: { confirm: t(:confirm_delete_collection_item) }, class: 'collection-btn', style: 'float: left;'
                 .editable_edit{ style: 'display:none;' }
                   = form_for ci, url: collection_item_path(ci.id), method: :put, remote: true do |f|
@@ -66,7 +66,7 @@
                     %b= t(:collection_circular_reference)
                   - else
                     - @colls_traversed << ci.item.id
-                    = render partial: 'shared/editable_collection', locals: { collection: ci.item, focused: false }
+                    = render partial: 'shared/editable_collection', locals: { collection: ci.item, focused: false, nonce: nonce }
               - else
                 = link_to t(:delete), collection_item_path(ci.id), method: :delete, remote: true, data: { confirm: t(:confirm_delete_collection_item) }, class: 'collection-btn', style: 'float: left;'
                 .headline-3-v02
@@ -75,7 +75,7 @@
 
 :javascript
   $(document).ready(function(){
-    $("#coll_#{collection.id}").sortable({
+    $("##{nonce}_coll_#{collection.id}").sortable({
       handle: '.drag-handle',
       connectWith: '.collection.connectable',
       dropOnEmpty: true,
@@ -85,31 +85,37 @@
         ui.item.attr('data-previndex', ui.item.index());
       },
       update: function(e, ui) {
-        // gets the new and old index then removes the temporary attribute
-        var newIndex = ui.item.index() + 1;
-        var oldIndex = parseInt($(this).attr('data-previndex')) + 1;
-        var element_id = ui.item.attr('id').replace('collitem_','');
-        $(this).removeAttr('data-previndex');
+        var draggedOut = this !== ui.item.parent()[0] && !$.contains(this, ui.item.parent()[0]);
+        var draggedIn = ui.sender !== null;
+        var sameList = !draggedOut && !draggedIn;
 
-        ///code to pass the data using AJAX
-        if (newIndex != oldIndex) {
-          $.post(
-            '#{collection_apply_drag_path(collection.id)}',
-            {
-              coll_item_id: element_id,
-              old_pos: oldIndex,
-              new_pos: newIndex
-            }
-          );
-        }
+        if (sameList) {
+          // gets the new and old index then removes the temporary attribute
+          var newIndex = ui.item.index() + 1;
+          var oldIndex = parseInt($(this).attr('data-previndex')) + 1;
+          var element_id = ui.item.attr('id').replace('#{nonce}_collitem_','');
+          $(this).removeAttr('data-previndex');
+
+          ///code to pass the data using AJAX
+          if (newIndex != oldIndex) {
+            $.post(
+              '#{collection_apply_drag_path(collection.id)}',
+              {
+                coll_item_id: element_id,
+                old_pos: oldIndex,
+                new_pos: newIndex
+              }
+            );
+          }
+        } // inter-list drag is handled by the receive event
       },
       receive: function(event, ui) {
         $.post(
           '#{collection_transplant_item_path(collection.id)}',
           {
-            dest_coll_id: this.id.replace('coll_',''),
-            src_coll_id: ui.sender[0].id.replace('coll_',''),
-            item_id: ui.item[0].id.replace('collitem_',''),
+            dest_coll_id: this.id.replace('#{nonce}_coll_',''),
+            src_coll_id: ui.sender[0].id.replace('#{nonce}_coll_',''),
+            item_id: ui.item[0].id.replace('#{nonce}_collitem_',''),
             old_pos: parseInt(ui.item.attr('data-previndex')) + 1,
             new_pos: ui.item.index() + 1
           }

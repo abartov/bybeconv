@@ -295,6 +295,10 @@ class Collection < ApplicationRecord
     super
   end
 
+  def collection_items_by_role(role, authority_id)
+    collection_items.select { |ci| ci.item.present? && ci.item.involved_authorities_by_role(role).any? { |a| a.id == authority_id } }
+  end
+
   def editors_string
     auths = involved_authorities.where(role: 'editor')
     return auths.map(&:authority).map(&:name).join(', ') if auths.count > 0
@@ -335,6 +339,7 @@ class Collection < ApplicationRecord
     ci = collection_item_from_anything(item)
     ci.seqno = collection_items.maximum(:seqno).to_i + 1
     ci.save!
+    return ci.id
   end
 
   def append_collection_item(item)
@@ -353,7 +358,7 @@ class Collection < ApplicationRecord
   # pos is effective 1-based position in the list, not the seqno (which is not necessarily contiguous!)
   def insert_item_at(item, pos)
     if pos > collection_items.count + 1
-      append_item(item)
+      ret = append_item(item)
     else
       before_seqno = pos - 2 < 0 ? 0 : collection_items[pos - 2].seqno
       ci = collection_item_from_anything(item)
@@ -363,7 +368,9 @@ class Collection < ApplicationRecord
         coli.save!
       end
       ci.save!
+      ret = ci.id
     end
+    return ret
   end
 
   def apply_drag(coll_item_id, old_pos, new_pos)

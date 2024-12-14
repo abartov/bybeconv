@@ -1,2 +1,2 @@
-var markup = "<%= j(render partial: 'shared/editable_collection', locals: {collection: @collection, focused: true}) %>";
+var markup = "<%= j(render partial: 'shared/editable_collection', locals: {collection: @collection, focused: true, nonce: @nonce}) %>";
 $("#coll_container_<%= @collection_id %>").replaceWith(markup);

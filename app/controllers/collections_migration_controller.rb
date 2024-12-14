@@ -22,7 +22,7 @@ class CollectionsMigrationController < ApplicationController
   def create_collection
     au = Authority.find(params[:authority])
     if au.present?
-      @collection = Collection.create!(title: params[:title], collection_type: params[:collection_type], publication_id: params[:publication_id])
+      @collection = Collection.create!(title: params[:title].strip, collection_type: params[:collection_type], publication_id: params[:publication_id])
       @collection.involved_authorities.create!(authority_id: au.id, role: params[:role])
       # associate specified manifestation IDs with the collection
       if params[:text_ids].present?
