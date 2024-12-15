@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_10_24_050409) do
+ActiveRecord::Schema.define(version: 2024_12_15_192851) do
 
   create_table "aboutnesses", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -46,7 +46,14 @@ ActiveRecord::Schema.define(version: 2024_10_24_050409) do
     t.bigint "byte_size", null: false
     t.string "checksum", null: false
     t.datetime "created_at", null: false
+    t.string "service_name", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "active_storage_variant_records", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.bigint "blob_id", null: false
+    t.string "variation_digest", null: false
+    t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
   create_table "ahoy_events", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -153,6 +160,8 @@ ActiveRecord::Schema.define(version: 2024_10_24_050409) do
     t.integer "root_collection_id"
     t.integer "uncollected_works_collection_id"
     t.integer "legacy_toc_id"
+    t.text "legacy_credits"
+    t.text "cached_credits"
     t.index ["corporate_body_id"], name: "index_authorities_on_corporate_body_id", unique: true
     t.index ["impressions_count"], name: "index_authorities_on_impressions_count"
     t.index ["intellectual_property"], name: "index_authorities_on_intellectual_property"
@@ -292,6 +301,7 @@ ActiveRecord::Schema.define(version: 2024_10_24_050409) do
     t.string "publisher_line"
     t.string "pub_year"
     t.integer "normalized_pub_year"
+    t.text "credits"
     t.index ["inception_year"], name: "index_collections_on_inception_year"
     t.index ["publication_id"], name: "index_collections_on_publication_id"
     t.index ["sort_title"], name: "index_collections_on_sort_title"
@@ -580,7 +590,10 @@ ActiveRecord::Schema.define(version: 2024_10_24_050409) do
     t.integer "periodical_id"
     t.string "intellectual_property"
     t.text "ingested_changes"
+    t.text "credits"
+    t.string "originating_task"
     t.index ["locked_by_user_id"], name: "index_ingestibles_on_locked_by_user_id"
+    t.index ["originating_task"], name: "index_ingestibles_on_originating_task"
     t.index ["status"], name: "index_ingestibles_on_status"
     t.index ["title"], name: "index_ingestibles_on_title"
     t.index ["user_id"], name: "index_ingestibles_on_user_id"
@@ -653,6 +666,7 @@ ActiveRecord::Schema.define(version: 2024_10_24_050409) do
     t.boolean "sefaria_linker"
     t.integer "expression_id", null: false
     t.string "alternate_titles", limit: 512
+    t.text "credits"
     t.index ["conv_counter"], name: "index_manifestations_on_conv_counter"
     t.index ["created_at"], name: "index_manifestations_on_created_at"
     t.index ["expression_id"], name: "index_manifestations_on_expression_id"
@@ -731,7 +745,7 @@ ActiveRecord::Schema.define(version: 2024_10_24_050409) do
     t.index ["task_id"], name: "index_publications_on_task_id"
   end
 
-  create_table "reading_lists", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+  create_table "reading_lists", charset: "latin1", force: :cascade do |t|
     t.string "title"
     t.integer "user_id"
     t.integer "access"
@@ -937,6 +951,7 @@ ActiveRecord::Schema.define(version: 2024_10_24_050409) do
 
   add_foreign_key "aboutnesses", "users"
   add_foreign_key "aboutnesses", "works"
+  add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "anthologies", "users"
   add_foreign_key "anthology_texts", "anthologies"
   add_foreign_key "anthology_texts", "manifestations"
