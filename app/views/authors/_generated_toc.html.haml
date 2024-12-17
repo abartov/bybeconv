@@ -16,3 +16,9 @@
                         title: t(:edited_works, gender_letter: @author.gender_letter),
                         role: :editor,
                         authority_id: @author.id, editable: false, nonce: 'e' }
+  .by-card-v02#text-volunteers-desktop
+    .by-card-header-v02
+      .headline-1-v02= t(:volunteers_who_helped, author: @author.name, gender_letter: @author.gender_letter)
+    .by-card-content-v02
+      .credits
+        != @credits

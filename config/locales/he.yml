@@ -1572,9 +1572,12 @@ he:
     need_to_save_explanation: השמירה תעדכן אישים מקושרים להעלאה (לפי הכותר)
     translator_missing: שפת המקור אינה עברית ולא הוגדר מתרגם!
     author_missing: לא הוגדר יוצר (אפילו אלמוני)
-
+    originating_task: משימת מקור
+    already_being_ingested: משימה זו כבר בתהליך העלאה :)
+    credits: קרדיטים
   # This block of strings below should be removed when we finish work. Grouped them together to make it easier to find them again
   public_domain: נחלת הכלל
   viaf_id: "מזהה במאגר VIAF‏"
   text_n_of_m: "טקסט %{n} מתוך %{m}"
   and_n_placeholders: "ועוד %{n} שומרי מקום"
+  convert_to_new_method: המרה לשיטה החדשה

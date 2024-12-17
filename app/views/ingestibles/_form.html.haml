@@ -24,6 +24,10 @@
         .field
           = f.label t('ingestible.title')
           %b= f.text_field :title, style: 'width:80%'
+        .field
+          - if @ingestible.originating_task.present?
+            %b= link_to t('ingestible.originating_task'), @ingestible.originating_task, style: 'width:80%'
+          
         .field{style: 'border: 1px solid #ccc; padding: 10px;'}
           %h3= t('ingestible.volume')
           - vid = @ingestible.volume_id.present? ? @ingestible.volume_id : @ingestible.prospective_volume_id
@@ -89,6 +93,9 @@
         = render partial: 'authorities', locals: {authorities: @ingestible.default_authorities}
         %hr
         .field
+          = f.label t('ingestible.credits')
+          = f.text_area :credits
+        .field
           = f.label :comments
           = f.text_area :comments
         .field
@@ -99,9 +106,9 @@
 
         - if @ingestible.docx.present?
           %p
-            = t('.current_file')
+            = t('ingestible.current_file')
             = link_to @ingestible.docx.filename.to_s, url_for(@ingestible.docx)
-            = t('.or_replace_file')
+            = t('ingestible.or_replace_file')
         - else
           %b= t(:upload_file)
           = t(:file_can_be_skipped)

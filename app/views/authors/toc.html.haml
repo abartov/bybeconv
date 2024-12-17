@@ -49,6 +49,10 @@
               - if current_user && current_user.editor?
                 %p{style:'text-align:left'}
                   != '&nbsp;&nbsp;&nbsp;'
+                  - unless @author.legacy_toc_id.present? || @author.toc.nil?
+                    %span.static-btn
+                      %b= link_to t(:convert_to_new_method), collections_migration_person_path(id: @author.id)
+                      != "&nbsp;&nbsp;&nbsp;"
                   - unless @author.toc.nil?
                     %span.static-btn
                       %b= link_to t(:edit_toc), authors_edit_toc_path(@author)
