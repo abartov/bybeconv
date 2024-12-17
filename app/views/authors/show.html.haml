@@ -73,6 +73,9 @@
         %br
         %b= t(:comments)
         = @author.comment
+        %br
+        %b= Authority.human_attribute_name(:legacy_credits)
+        = @author.legacy_credits
       %td
         -# ===== Identifiers =====
         %b= Authority.human_attribute_name(:nli_id)

@@ -312,6 +312,7 @@ he:
   about_the_author: על היוצר
   their_most_read_works: "יצירותי%{gender_letter} הנקראות ביותר"
   volunteers_who_helped: "מתנדבים שנטלו חלק בהנגשת יצירותי%{gender_letter} של %{author}"
+  volunteers_who_helped_collection: "מתנדבים שנטלו חלק בהנגשת היצירות לעיל"
   html_file_published: הקובץ מהמערכת הישנה פורסם עתה במערכת החדשה, ונוסף לקטלוג המערכת!
   most_popular_authors: היוצרים הנקראים ביותר
   to_all_authors_tagged: לכל היוצרים/ות שתויגו "%{tag}"
