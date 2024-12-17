@@ -13,12 +13,14 @@ en:
   save: Save
   update: Update
   destroy: Destroy
+  delete: Delete
   created_successfully: Created Successfully
   updated_successfully: Updated Successfully
   deleted_successfully: Deleted Successfully
   original_works: Original Works
   translations: Translations
   edited_works: Edited Works
+  text: Text
   alefbet: Alphabetical
   alefbet_asc: 'Alphabetical: A-Z'
   alefbet_desc: 'Alphabetical: Z-A'
