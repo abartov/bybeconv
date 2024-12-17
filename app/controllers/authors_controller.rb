@@ -468,6 +468,7 @@ class AuthorsController < ApplicationController
       end
       @taggings = @author.taggings
 
+      @credits = render_to_string(partial: 'authors/credits', locals: { author: @author })
       if @author.toc.present?
         prep_toc
       else

@@ -1580,3 +1580,4 @@ he:
   viaf_id: "מזהה במאגר VIAF‏"
   text_n_of_m: "טקסט %{n} מתוך %{m}"
   and_n_placeholders: "ועוד %{n} שומרי מקום"
+  convert_to_new_method: המרה לשיטה החדשה
