@@ -38,9 +38,24 @@ class CollectionsMigrationController < ApplicationController
 
   def migrate
     @author = Authority.find(params[:id])
-    @author.legacy_toc_id = @author.toc_id
+    @author.legacy_credits = migrate_credits(@author.toc.credit_section)
+    @author.legacy_toc_id = @author.toc_id # deliberately not destroying the legacy Toc entity for now
     @author.toc_id = nil
     @author.save!
     redirect_to collections_migration_index_path, notice: t('.migrated_html', link: authority_url(@author))
+  end
+
+  protected
+
+  def migrate_credits(buf)
+    return '' if buf.blank?
+    credits = []
+    buf.split("\n").each do |line|
+      next if line.blank?
+      next if line =~ /הקלידו/ || line =~ /הקלידה/ || line =~ /הקליד/ || line =~ /הגיהו/ || line =~ /horizontal/ || line =~ /##/
+
+      credits << line.sub(/^\*\s+/, '').strip
+    end
+    credits.uniq.sort.join("\n")
   end
 end

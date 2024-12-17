@@ -95,7 +95,7 @@ class Authority < ApplicationRecord
   # return all manifestation IDs that are included in collections (useful for migrating legacy TOCs)
   def collected_manifestation_ids
     ids = published_manifestations.pluck(:id)
-    collected_ids = CollectionItem.joins(:collection).where(item_id: ids).where.not(collection: {collection_type: :uncollected }).pluck(:item_id)
+    collected_ids = CollectionItem.joins(:collection).where(item_id: ids).where.not(collection: { collection_type: :uncollected }).pluck(:item_id)
   end
 
   # returns all volumes that are items of this authority's root collection
@@ -127,6 +127,26 @@ class Authority < ApplicationRecord
         )
       SQL
     )
+  end
+
+  def fetch_credits
+    return cached_credits if cached_credits.present?
+
+    credits = []
+    credits += legacy_credits.lines if legacy_credits.present?
+    published_manifestations.each do |m|
+      credits += m.credits.lines if m.credits.present?
+    end
+    credits.map!(&:strip)
+    credits.uniq!
+    self.cached_credits = credits.join("\n")
+    save!
+    return cached_credits
+  end
+
+  def invalidate_cached_credits!
+    self.cached_credits = nil
+    save!
   end
 
   # @param roles [String / Symbol] optional, if provided will only return Manifestations where authority has

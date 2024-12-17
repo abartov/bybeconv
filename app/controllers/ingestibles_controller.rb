@@ -2,6 +2,7 @@
 
 class IngestiblesController < ApplicationController
   include LockIngestibleConcern
+  skip_before_action :verify_authenticity_token, only: :create # to allow starting ingestions directly from the task system
 
   before_action { |c| c.require_editor('edit_catalog') }
   before_action :set_ingestible,
@@ -89,7 +90,20 @@ class IngestiblesController < ApplicationController
   def create
     # TODO: use params to set defaults (callable from the tasks system, which means we can populate the title (=task name), genre, credits)
     @ingestible = Ingestible.new(ingestible_params)
+    @ingestible.credits.gsub!(/\s*;\s*/, "\n") if @ingestible.credits.present?
     @ingestible.update_authorities_and_metadata_from_volume if @ingestible.prospective_volume_id.present?
+    if params[:ingestible][:originating_task].present?
+      existing = Ingestible.where(originating_task: params[:ingestible][:originating_task])
+      if existing.present?
+        redirect_to edit_ingestible_url(existing.first), notice: t('ingestible.already_being_ingested')
+        return
+      end
+    end
+    if params[:docx].present?
+      file = URI.open(params[:docx])
+      uri = URI.parse(params[:docx])
+      @ingestible.docx.attach(io: file, filename: CGI.unescape(File.basename(uri.path)))
+    end
     if @ingestible.save
       redirect_to edit_ingestible_url(@ingestible), notice: t('.success')
     else
@@ -295,7 +309,9 @@ class IngestiblesController < ApplicationController
       :prospective_volume_title,
       :pub_link,
       :pub_link_text,
-      :toc_buffer
+      :toc_buffer,
+      :credits,
+      :originating_task
     )
   end
 
@@ -319,6 +335,10 @@ class IngestiblesController < ApplicationController
                                        pub_year: @ingestible.year_published, publisher_line: @ingestible.publisher)
       created_volume = true
     end
+    creds = @collection.credits.presence || ''
+    creds += "\n" + @ingestible.credits if @ingestible.credits.present?
+    credits = creds.lines.map(&:strip).uniq.join("\n")
+    @collection.update!(credits: credits)
     @changes[:collections] << [@collection.id, @collection.title, created_volume ? 'created' : 'updated'] # record the new volume for the post-ingestion screen
     return unless created_volume
 
@@ -413,20 +433,25 @@ class IngestiblesController < ApplicationController
           publication_place: Rails.configuration.constants['our_place_of_publication'],
           publication_date: Time.zone.today,
           markdown: @ingestible.texts[index].content,
-          status: pub_status
+          status: pub_status,
+          credits: @ingestible.credits.lines.map(&:strip).uniq.join("\n")
         )
         w.save!
-
+        auths = []
         # associate authorities
         Authority.find(author_ids).each do |a|
           w.involved_authorities.create!(authority: a, role: :author)
+          auths << a
         end
         Authority.find(translator_ids).each do |a|
           e.involved_authorities.create!(authority: a, role: :translator)
+          auths << a
         end
         Authority.find(other_authorities.map(&:first)).each_with_index do |auth, i|
           e.involved_authorities.create!(authority: auth, role: other_authorities[i][1])
+          auths << auth
         end
+        auths.uniq.each { |a| a.invalidate_cached_credits! }
         @changes[:texts] << [m.id, m.title, m.responsibility_statement]
         m.recalc_cached_people!
         if @ingestible.pub_link.present? && @ingestible.pub_link_text.present?

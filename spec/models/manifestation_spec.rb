@@ -221,4 +221,21 @@ describe Manifestation do
 
     it { is_expected.to contain_exactly(approved_tag) }
   end
+
+  describe '.to_html' do
+    subject { manifestation.to_html }
+    let(:manifestation) { create(:manifestation, markdown: "## Test", status: status) }
+
+    context 'when published' do
+      let(:status) { :published }
+
+      it { is_expected.to eq "<h2 id=\"test\">Test</h2>\n" }
+    end
+
+    context 'when unpublished' do
+      let(:status) { :unpublished }
+
+      it { is_expected.to eq I18n.t(:not_public_yet) }
+    end
+  end
 end
