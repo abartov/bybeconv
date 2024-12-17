@@ -568,6 +568,7 @@ class AuthorsController < ApplicationController
       :bib_done,
       :sort_name,
       :status,
+      :legacy_credits,
       person_attributes: %i(id gender period birthdate deathdate),
       corporate_body_attributes: %i(id location inception inception_year dissolution dissolution_year)
     )

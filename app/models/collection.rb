@@ -355,6 +355,26 @@ class Collection < ApplicationRecord
     ci.destroy!
   end
 
+  def fetch_credits
+    return cached_credits if cached_credits.present?
+
+    ret = []
+    ret += credits.lines if credits.present?
+    collection_items.each do |ci|
+      next if ci.item.nil?
+      ret += ci.item.credits.lines if ci.item.credits.present?
+    end
+    ret = ret.map(&:strip).uniq.reject(&:empty?)
+    self.cached_credits = ret.join("\n")
+    save!
+    return cached_credits
+  end
+
+  def invalidate_cached_credits!
+    self.cached_credits = nil
+    save!
+  end
+
   # pos is effective 1-based position in the list, not the seqno (which is not necessarily contiguous!)
   def insert_item_at(item, pos)
     if pos > collection_items.count + 1

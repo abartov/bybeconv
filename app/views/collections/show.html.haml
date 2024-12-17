@@ -93,6 +93,16 @@
                       = tstr
               .by-card-content-v02#actualtext
                 != html
+          - credit_lines = @collection.fetch_credits.lines
+          - if credit_lines.present?
+            .by-card-v02
+              .by-card-header-v02
+                .by-icon-v02
+                .headline-1-v02= t(:volunteers_who_helped_collection)
+              .by-card-content-v02
+                %ul
+                  - credit_lines.each do |line|
+                    %li= line
     .col-12.col-lg-4
       .row
         .col

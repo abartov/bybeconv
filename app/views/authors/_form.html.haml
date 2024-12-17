@@ -17,6 +17,7 @@
     = f.input :wikidata_uri, type: :url
     = f.input :wikipedia_url, type: :url
     = f.input :wikipedia_snippet, as: :text
+    = f.input :legacy_credits, as: :text
 
     - if authority.person.present?
       = f.simple_fields_for :person do |pf|

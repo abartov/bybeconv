@@ -25,6 +25,7 @@ class CollectionsController < ApplicationController
     @taggings = @collection.taggings
     @included_recs = @collection.included_recommendations.count
     @total_recs = @collection.recommendations.count + @included_recs
+    @credits = render_to_string(partial: 'collections/credits', locals: { collection: @collection })
     prep_for_show
     prep_user_content(:collection) # user anthologies, bookmarks
   end

@@ -44,6 +44,7 @@ he:
         blog_category_url: קישורית לקטגוריה על היוצר/ת ביומן הרשת
         wikipedia_snippet: תקציר מויקיפדיה
         wikipedia_url: קישורית לויקיפדיה
+        legacy_credits: קרדיטים ידניים
       corporate_body:
         location: מיקום
         inception: תאריך ייסוד
@@ -62,6 +63,8 @@ he:
         birthdate: תאריך לידה
         deathdate: תאריך פטירה
         gender: מגדר
+      collection:
+        credits: קרדיטים ידניים
       ingestible:
         defaults: שדות לכל היצירות
         title: כותרת להעלאה
