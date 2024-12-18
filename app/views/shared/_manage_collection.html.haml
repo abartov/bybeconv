@@ -60,7 +60,7 @@
     = hidden_field_tag :insert_cid, '', id: 'insert_cid'
   %br
   .admin_container
-    .collection_do_insert.by-button-v02{style: 'width: 50px; justify-content: center;font-weight: bold;'}= t(:perform_add)
+    .collection_do_insert.by-button-v02{style: 'width: 50px; justify-content: center;font-weight: bold;', 'data-nonce' => nonce}= t(:perform_add)
 
 :javascript
   $(document).ready(function(){
@@ -104,7 +104,7 @@
       var collection_id = $(this).parent().parent().find('#collection_id').val();
       var item_id = (item_type == 'Manifestation') ? $(this).parent().parent().find('#insert_mid').val() : (item_type == 'Collection') ? $(this).parent().parent().find('#insert_cid').val() : '';
       var new_title = $(this).parent().parent().find('#insert_title').val();
-      var nonce = $(this).parent().parent().find('.collection')[0].attr('data-nonce');
+      var nonce = $(this).attr('data-nonce');
       $.ajax({
         url: '/collection_items',
         type: 'POST',
@@ -112,7 +112,7 @@
         data: {collection_item: {collection_id: collection_id, item_type: item_type, item_id: item_id, alt_title: new_title}, nonce: nonce},
         success: function(data){
           $('#collection_insert_section').hide();
-          $('html, body').animate({scrollTop: $('#coll_container_'+collection_id).offset().top + $('#coll_container_'+collection_id).outerHeight() - $('header').height() - 180}, 500);
+          $('html, body').animate({scrollTop: $('##{nonce}_coll_container_'+collection_id).offset().top + $('##{nonce}_coll_container_'+collection_id).outerHeight() - $('header').height() - 180}, 500);
         }
       });
     });
@@ -126,7 +126,7 @@
         data: {collection_item: {collection_id: collection_id, item_type: 'Collection', item_id: collection_id, alt_title: ''}},
         success: function(data){
           $('#collection_insert_section').hide();
-          $('html, body').animate({scrollTop: $('#coll_container_'+collection_id).offset().top + $('#coll_container_'+collection_id).outerHeight() - $('header').height() - 180}, 500);
+          $('html, body').animate({scrollTop: $('##{nonce}_coll_container_'+collection_id).offset().top + $('##{nonce}_coll_container_'+collection_id).outerHeight() - $('header').height() - 180}, 500);
         }
       });
     });

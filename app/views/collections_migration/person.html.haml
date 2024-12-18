@@ -140,7 +140,7 @@
         data: {collection: { collection_type: item_type, title: new_title}, authority: { id: #{@author.id } , role: $('#role').val()}},
         success: function(data) {
           $('#newcoll_section').hide();
-          $('html, body').animate({scrollTop: $('#coll_container_'+data.collection_id).offset().top + $('#coll_container_'+data.collection_id).outerHeight() - $('header').height() - 180}, 500);
+          $('html, body').animate({scrollTop: $('##{nonce}_coll_container_'+data.collection_id).offset().top + $('##{nonce}_coll_container_'+data.collection_id).outerHeight() - $('header').height() - 180}, 500);
         }
       });
     });
