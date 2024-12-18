@@ -1,5 +1,6 @@
+
+
 ! Fix A-B BAR!
-- migrate from Impressionist to Ahoy for Manifestation/Author/Anthology tracking (Impressionist is abandoned, and not Rails 7.x compatible)
 אסף האם ניתן להוסיף לטופס הבקשה להתנדב שאלה ״היכן שמעת על הפרויקט? ״
 יהיה נחמד לדעת אילו מהאמצים שלנו נושאים פרי (נניח רחל מדווחת שהיו הרבה אנשים בהרצאה הבוקר ושהתגובות היו נלהבות. מעניין אם מוביל לפעולה).
 - refactor header views into single files (author_top -> toc) using https://guides.rubyonrails.org/layouts_and_rendering.html#structuring-layouts
@@ -160,8 +161,6 @@ check HtmlFile id 4291 in production (Sokolov) -- currently(??) crashing on char
 - kabak's ToC didn't update
 - parallel with original in render_html
 
-- make public_domain non-boolean, to allow "published after failing to identify owners"
-
 Conversion system
 -----------------
 - detect indentation? (poetry, letter signatures, etc.)
@@ -205,4 +204,3 @@ Proof and Recommendation feature
 
 == Epics ==
 * Add TESTS
-* Upgrade to Rails 6.x
