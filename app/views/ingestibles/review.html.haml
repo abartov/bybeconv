@@ -33,6 +33,8 @@
   .lredbg
     %h2= t('.problem_is_not_empty')
     %p= @ingestible.problem
+- if @ingestible.originating_task.present?
+  %h2= link_to t('.to_originating_task'), @ingestible.originating_task
 %div{style: 'display: flex;flex-wrap: wrap;'}
   .admin_dashboard_item
     %h2= t('.volume_information')

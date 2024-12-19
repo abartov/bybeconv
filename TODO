@@ -1,5 +1,15 @@
+== Ingestion ==
+- in ingestible review screen, add UNDO INGESTION button, with confirmation
+- treat TOC buffer as implicitly start-to-finish if no explicit start or finish is given
+- show text splits in full-markdown pane with thick horizontal border like the legacy HtmlFile ingestion
+- allow creating a new periodical
+- allow creating the first issue of a new periodical
 
+== collection management ==
+- in insertion, re-enable the submit button after a work is selected
+- upon text insertion, an extraneous delete button appears
 
+== older stuff, some outdated ==
 ! Fix A-B BAR!
 אסף האם ניתן להוסיף לטופס הבקשה להתנדב שאלה ״היכן שמעת על הפרויקט? ״
 יהיה נחמד לדעת אילו מהאמצים שלנו נושאים פרי (נניח רחל מדווחת שהיו הרבה אנשים בהרצאה הבוקר ושהתגובות היו נלהבות. מעניין אם מוביל לפעולה).
@@ -17,7 +27,7 @@ ignore illustrators in gen_toc
   - work aboutnesses
   - incoming aboutnesses for work!
 
-- code to find probably typos:
+- code to find probably-typos:
   - digits within words
   - finals within words
   - what else?
