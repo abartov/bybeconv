@@ -1484,6 +1484,11 @@ he:
         permission_for_all: על אף שהיצירה עדיין מוגנת בזכויות יוצרים, פרויקט בן־יהודה קיבל *רשות מפורשת לפרסם* את היצירה במאגר היצירה של פרויקט בן־יהודה, לשימוש הקהל הרחב לקריאה ומחקר.  שימושים אחרים (כגון המחזה, הלחנה, או ביצוע מסחרי) עדיין *טעונים אישור מפורש* מאת בעלי הזכויות.
         permission_for_selected: על אף שהיצירה עדיין מוגנת בזכויות יוצרים, פרויקט בן־יהודה קיבל *רשות מפורשת לפרסם* את היצירה במאגר היצירה של פרויקט בן־יהודה, לשימוש הקהל הרחב לקריאה ומחקר.  שימושים אחרים (כגון המחזה, הלחנה, או ביצוע מסחרי) עדיין *טעונים אישור מפורש* מאת בעלי הזכויות.
         unknown: "על אף כל המאמצים, לא ניתן לקבוע מה מצב זכויות היוצרים, בדרך כלל בשל מידע חסר לגבי זהות או מועד פטירת המחבר[ים] או המתרגם[ים]."
+    manage_collection:
+      selection_hint: Click on item to select it. Hold Ctrl to select multiple items.
+      x_items_selected: "X items selected"
+      remove_selected: Remove them
+      confirm_remove_selected: Are you sure you want to remove all selected items from collection?
   welcome:
     submit_contact:
       ziburit_failed: לא השתכנענו שאינך רובוט.

@@ -15,7 +15,7 @@
   .container-fluid{ style: 'position:relative;', id: "#{nonce}_coll_container_#{collection.id}" }
     .collection.connectable.collapse.show{ id: "#{nonce}_coll_#{collection.id}", style: 'min-height:40px;background-color: #e0e0e0;', 'data-nonce': nonce }
       - collection.collection_items.each do |ci|
-        .collection_draggable_item{ id: "#{nonce}_collitem_#{ci.id}" }
+        .collection_draggable_item{ id: "#{nonce}_collitem_#{ci.id}", data: { collection_item_id: ci.id } }
           .by-card-v02
             .drag-handle{ title: t(:coll_drag_tt) }
               .handle
@@ -26,7 +26,6 @@
                 %br
                 .editable{ id: "#{nonce}_editable_#{ci.id}" }
                   != MultiMarkdown.new(ci.markdown).to_html
-                  = link_to t(:delete), collection_item_path(ci.id), method: :delete, remote: true, data: { confirm: t(:confirm_delete_collection_item) }, class: 'collection-btn', style: 'float: left;top:-40px;left:5px;position:relative;z-index:5;'
                 .editable_edit{ style: 'display:none;' }
                   = form_for ci, url: collection_item_path(ci.id), method: :put, remote: true do |f|
                     = f.label :alt_title, t(:title_only_if_needed)
@@ -39,7 +38,6 @@
                 .editable{ id: "#{nonce}_editable_#{ci.id}", style: 'margin-bottom: 10px;' }
                   %b #{t(:placeholder_item)}:
                   %span{ id: "#{nonce}_ci_title_#{ci.id}" }= ci.alt_title
-                  = link_to t(:delete), collection_item_path(ci.id), method: :delete, remote: true, data: { confirm: t(:confirm_delete_collection_item) }, class: 'collection-btn', style: 'float: left;'
                 .editable_edit{ style: 'display:none;' }
                   = form_for ci, url: collection_item_path(ci.id), method: :put, remote: true do |f|
                     = f.label :alt_title, t(:title)
@@ -68,7 +66,6 @@
                     - @colls_traversed << ci.item.id
                     = render partial: 'shared/editable_collection', locals: { collection: ci.item, focused: false, nonce: nonce }
               - else
-                = link_to t(:delete), collection_item_path(ci.id), method: :delete, remote: true, data: { confirm: t(:confirm_delete_collection_item) }, class: 'collection-btn', style: 'float: left;'
                 .headline-3-v02
                   #{t(:text)}:
                   = link_to collection_item_string(ci), default_link_by_class(ci.item.class, ci.item.id)
@@ -122,5 +119,42 @@
         );
         event.stopPropagation();
       }
+    });
+
+    $("##{nonce}_coll_#{collection.id} button").click(function(e) {
+      // We need this to prevent click handler below (used for item selection) from being called when we click
+      // on buttons inside an item
+      e.stopPropagation();
+    });
+
+    $("##{nonce}_coll_#{collection.id} > .collection_draggable_item > .by-card-v02 > .draggable-content").
+        click(function(e) {
+      const itemNode = $(this).parent().parent();
+      const selected = $(itemNode).hasClass('ci-selected'); // current state of item (before click)
+
+      if (e.ctrlKey) {
+        // If Ctrl is pressed we're adding/removing additional items to selection
+        // deselecting all nested collection items (if any) as parent item (this one) has changed status
+        $(this).find('.collection_draggable_item').removeClass('ci-selected');
+
+        const selectedParents = $(this).parents('.ci-selected');
+        if (selectedParents.length > 0) {
+          // if we clicked on sub-item of already selected item we should deselect parent item
+          selectedParents.removeClass('ci-selected');
+        }
+        $(itemNode).toggleClass('ci-selected', !selected);
+      } else {
+        // If Ctrl is not pressed we're selecting single element, so we need to deselect all previously selected items
+        $('.collection_draggable_item').removeClass('ci-selected');
+        $(itemNode).toggleClass('ci-selected', !selected);
+      }
+
+      // Is some items are selected we should display batch editing actions panel
+      const selectedCount = $('.ci-selected').length;
+      $('#selected-collection-items-actions').toggle(selectedCount > 0);
+      $('#selected-collection-items-actions > .actions-label').text(
+        '#{t('shared.manage_collection.x_items_selected')}'.replace('X', selectedCount)
+      );
+      e.stopPropagation(); // to prevent click handler on parent item (if any)
     });
   });
