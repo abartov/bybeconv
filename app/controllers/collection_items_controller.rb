@@ -77,15 +77,8 @@ class CollectionItemsController < ApplicationController
 
   # DELETE /collection_items/1 or /collection_items/1.json
   def destroy
-    @collection = @collection_item.collection
-    @deleted_id = @collection_item.id # used in the js response
     @collection_item.destroy
-    @nonce = params[:nonce]
-
-    respond_to do |format|
-      format.html { redirect_to collection_manage_path(@collection.id), notice: t(:deleted_successfully) }
-      format.js
-    end
+    head :ok
   end
 
   private

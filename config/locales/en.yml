@@ -119,6 +119,11 @@ en:
         permission_for_all: TBD description for 'permission_for_all'
         permission_for_selected: TBD description for 'permission_for_selected'
         unknown: TBD description for 'unknown'
+    manage_collection:
+      selection_hint: Click on item to select it. Hold Ctrl to select multiple items.
+      x_items_selected: "X items selected"
+      remove_selected: Remove them
+      confirm_remove_selected: Are you sure you want to remove all selected items from collection?
   welcome:
     submit_contact:
       ziburit_failed: Control question failed
