@@ -16,7 +16,7 @@ class CollectionsMigrationController < ApplicationController
     RefreshUncollectedWorksCollection.call(@author)
     prep_toc
     @top_nodes = GenerateTocTree.call(@author)
-
+    @nonce = 'top'
   end
 
   def create_collection
