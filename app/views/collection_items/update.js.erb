@@ -1,7 +1,7 @@
 $('.cancel_editable_edit').parent().parent().hide();
 var is_html = <%= @html.present? ? 'true' : 'false' %>;
 if (is_html) {
-  $('<%= @element_id %>').html("<%= raw j @html %>");
+  $('<%= @element_id %> .paramarkdown').html("<%= raw j @html %>");
 }
 $('<%= @title_id %>').text("<%= raw j @title %>");
 $('<%= @element_id %>').show();

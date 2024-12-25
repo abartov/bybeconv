@@ -23,6 +23,7 @@ class CollectionItemsController < ApplicationController
       unless params[:collection_item][:item_type] == 'Manifestation' # can't create manifestations from here
         if params[:collection_item][:item_type] == 'paratext'
           @collection_item.markdown = @collection_item.alt_title
+          @collection_item.paratext = true
           @collection_item.alt_title = nil
           @collection_item.item_type = nil
         elsif params[:collection_item][:item_type] == 'placeholder_item'
@@ -61,9 +62,9 @@ class CollectionItemsController < ApplicationController
   def update
     respond_to do |format|
       if @collection_item.update(collection_item_params)
-        @element_id = "#editable_#{@collection_item.id}"
+        @element_id = "##{@nonce}_editable_#{@collection_item.id}"
         @html = MultiMarkdown.new(@collection_item.markdown).to_html if params[:collection_item][:markdown].present?
-        @title_id = "#ci_title_#{@collection_item.id}"
+        @title_id = "##{@nonce}_ci_title_#{@collection_item.id}"
         @title = @collection_item.alt_title
         format.html do
           redirect_to collection_item_url(@collection_item), notice: 'Collection item was successfully updated.'
@@ -98,6 +99,10 @@ class CollectionItemsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def collection_item_params
+    if params[:collection_item][:nonce].present?
+      @nonce = params[:collection_item][:nonce]
+      params[:collection_item].delete(:nonce)
+    end
     params.require(:collection_item).permit(:collection_id, :alt_title, :context, :seqno, :item_id, :item_type,
                                             :markdown)
   end

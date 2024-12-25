@@ -209,7 +209,7 @@ class CollectionsController < ApplicationController
         i += 1
       end
     end
-    @collection_total_items = @collection.collection_items.reject { |ci| ci.item_type == 'paratext' }.count
+    @collection_total_items = @collection.collection_items.reject { |ci| ci.paratext }.count
     @collection_minus_placeholders = @collection.collection_items.reject { |ci| ci.item.nil? }.count
     @authority_for_image = if @collection.authors.present?
                              @collection.authors.first

@@ -12,7 +12,7 @@
         .collection_draggable_item{ id: "collitem_#{ci.id}" }
           .by-card-v02
             .draggable-content{ 'data-collection-id': (ci.item.instance_of?(Collection) ? ci.item_id : collection.id) }
-              - if ci.paratext? # a paratext (with markdown)
+              - if ci.paratext # a paratext (with markdown)
                 - if label_ci_types
                   %b= "#{t(:paratext)}: "
                 %span{ id: "ci_title_#{ci.id}" }= ci.alt_title

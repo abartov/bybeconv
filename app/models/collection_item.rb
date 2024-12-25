@@ -38,6 +38,7 @@ class CollectionItem < ApplicationRecord
   def title_and_authors_html
     ret = "<h1>#{title}</h1>"
     return ret if item.blank?
+
     if item.authors.present?
       as = item.authors_string
       ret += "#{I18n.t(:by)}<h2>#{as}</h2>" if as.present?
@@ -96,10 +97,6 @@ class CollectionItem < ApplicationRecord
     return item.included_recommendations if item.respond_to?(:included_recommendations) # sub-collections
 
     return []
-  end
-
-  def paratext?
-    item.nil? && markdown.present?
   end
 
   def next_sibling
