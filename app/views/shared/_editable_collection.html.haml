@@ -20,22 +20,22 @@
             .drag-handle{ title: t(:coll_drag_tt) }
               .handle
             .draggable-content{ 'data-collection-id': (ci.item.kind_of?(Collection) ? ci.item_id : collection.id) }
-              - if ci.paratext? # a paratext (with markdown)
-                %b #{t(:paratext)}:
-                %span{ id: "#{nonce}_ci_title_#{ci.id}" }= ci.alt_title
-                %br
+              - if ci.paratext # a paratext (with markdown)
                 .editable{ id: "#{nonce}_editable_#{ci.id}" }
-                  != MultiMarkdown.new(ci.markdown).to_html
-                  = link_to t(:delete), collection_item_path(ci.id), method: :delete, remote: true, data: { confirm: t(:confirm_delete_collection_item) }, class: 'collection-btn', style: 'float: left;top:-40px;left:5px;position:relative;z-index:5;'
+                  %b #{t(:paratext)}:
+                  %span{ id: "#{nonce}_ci_title_#{ci.id}" }= ci.alt_title
+                  = link_to t(:delete), collection_item_path(ci.id), method: :delete, remote: true, data: { confirm: t(:confirm_delete_collection_item) }, class: 'collection-btn', style: 'float: left;z-index:5;'
+                  .paramarkdown!= MultiMarkdown.new(ci.markdown).to_html
                 .editable_edit{ style: 'display:none;' }
                   = form_for ci, url: collection_item_path(ci.id), method: :put, remote: true do |f|
                     = f.label :alt_title, t(:title_only_if_needed)
                     = f.text_field :alt_title, class: 'form-control'
                     = f.text_area :markdown, class: 'form-control', rows: 4
+                    = f.hidden_field :nonce, value: nonce
                     = f.submit t(:save), class: 'by-button-v02', style: 'display:inline-block;'
                     .by-button-v02.cancel_editable_edit{ style: 'width:100px; display:inline-block;' }= t(:cancel)
 
-              - elsif ci.item.nil? # a placeholder (no markdown)
+              - elsif ci.item.nil? # a placeholder or paratext (no markdown)
                 .editable{ id: "#{nonce}_editable_#{ci.id}", style: 'margin-bottom: 10px;' }
                   %b #{t(:placeholder_item)}:
                   %span{ id: "#{nonce}_ci_title_#{ci.id}" }= ci.alt_title
@@ -43,10 +43,11 @@
                 .editable_edit{ style: 'display:none;' }
                   = form_for ci, url: collection_item_path(ci.id), method: :put, remote: true do |f|
                     = f.label :alt_title, t(:title)
-                    - if ci.item_type == 'paratext'
+                    - if ci.paratext
                       = f.text_area :markdown, class: 'form-control', rows: 4
                     - else
                       = f.text_field :alt_title, class: 'form-control'
+                    = f.hidden_field :nonce, value: nonce
                     = f.submit t(:save), class: 'by-button-v02', style: 'display:inline-block;'
                     .by-button-v02.cancel_editable_edit{ style: 'width:100px; display:inline-block;' }= t(:cancel)
               - elsif ci.item.kind_of?(Collection)

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_12_17_163027) do
+ActiveRecord::Schema.define(version: 2024_12_25_221154) do
 
   create_table "aboutnesses", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -278,9 +278,10 @@ ActiveRecord::Schema.define(version: 2024_12_17_163027) do
     t.integer "seqno"
     t.string "item_type"
     t.bigint "item_id"
-    t.string "markdown", limit: 2048
+    t.text "markdown"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "paratext"
     t.index ["collection_id"], name: "index_collection_items_on_collection_id"
     t.index ["item_type", "item_id"], name: "index_collection_items_on_item"
   end
