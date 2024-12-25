@@ -1,0 +1,8 @@
+$selected-background: navy;
+$selected-text: white;
+
+.ci-selected { color: $selected-text; background-color: $selected-background; }
+.ci-selected a { color: $selected-text; }
+.ci-selected .draggable-content  { background-color: $selected-background; }
+.ci-selected .by-card-v02 { background-color: $selected-background; }
+.ci-selected .handle { background-color: $selected-background; border-color: $selected-text; }

@@ -37,6 +37,11 @@
       %b.white= '+'
 
 %div{style: 'margin-right: 10px;'}
+  .hint= t('.selection_hint')
+  #selected-collection-items-actions{ style: 'display: none;' }
+    %span.actions-label= t('.x_items_selected')
+    %button.btn.btn-sm.btn-danger#remove-selected= t('.remove_selected')
+
   - @colls_traversed = [collection.id]
   = render partial: 'shared/editable_collection', locals: {collection: collection, focused: true, nonce: nonce}
 
@@ -116,7 +121,7 @@
         }
       });
     });
-    $('.collection_insert_all_siblings').click(function(){
+    $('.collection_insert_all_siblings').click(function(e){
       var collection_id = $('#collection_id').val();
       
       $.ajax({
@@ -137,5 +142,24 @@
       else {
         $('.collection_do_insert').css('background-color', '#660248');
       }
+    });
+    $('#remove-selected').click(function(e) {
+      e.preventDefault();
+      if (!confirm("#{t('.confirm_remove_selected')}")) {
+        return;
+      }
+      const ids = $('.ci-selected').map(function() { return $(this).data('collectionItemId'); }).get();
+      $.each(ids, function(_index, id) {
+        $.ajax({
+          url: '/collection_items/' + id,
+          type: 'DELETE',
+          success: function() {
+            const ele = $('div[id*="collitem_' + id + '"]');
+            ele.removeClass('ci-selected');
+            ele.find('.by-card-v02').css('background-color', 'orangered');
+            ele.fadeOut(1500);
+          }
+        });
+      });
     });
   });
