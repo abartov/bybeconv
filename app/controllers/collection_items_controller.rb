@@ -24,6 +24,7 @@ class CollectionItemsController < ApplicationController
         if params[:collection_item][:item_type] == 'paratext'
           @collection_item.markdown = @collection_item.alt_title
           @collection_item.alt_title = nil
+          @collection_item.item_type = nil
         elsif params[:collection_item][:item_type] == 'placeholder_item'
           @collection_item.item_id = nil
           @collection_item.item_type = nil
