@@ -327,7 +327,6 @@ module ApplicationHelper
               .map { |k, _v| [textify_collection_type(k), k] } +
       [
         [t(:work), 'Manifestation'],
-        [Collection.model_name, 'Collection'],
         [t(:paratext), 'paratext'],
         [t(:placeholder_item), 'placeholder_item']
       ]
