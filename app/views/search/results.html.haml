@@ -28,7 +28,8 @@
               %br
               != result._data['highlight']['fulltext'].join("<br />").gsub('<em>','<b>').gsub('</em>','</b>')
           - elsif result.instance_of?(CollectionsIndex)
-            %b= Collection.model_name
+            %b= textify_collection_type(result.collection_type)
+            %br
             %b= link_to([result.title, result.subtitle].compact_blank.join(' / '), collection_path(result.id))
           - elsif result.instance_of?(AuthoritiesIndex)
             %b= t(:author)
