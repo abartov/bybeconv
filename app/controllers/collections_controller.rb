@@ -199,6 +199,7 @@ class CollectionsController < ApplicationController
 
         html = ci.item.toc_html
         @htmls << [ci.item.title, ci.item.editors, html, false, ci.genre, i, ci]
+        i += 1
       end
     else
       @collection.collection_items.each do |ci|

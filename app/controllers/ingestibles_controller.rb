@@ -335,10 +335,15 @@ class IngestiblesController < ApplicationController
                                        pub_year: @ingestible.year_published, publisher_line: @ingestible.publisher)
       created_volume = true
     end
+    if @ingestible.publisher.present? && @collection.publisher_line.blank? # populate publisher info if not already set (e.g. in new periodical issue)
+      @collection.publisher_line = @ingestible.publisher
+      @collection.pub_year = @ingestible.year_published
+    end
     creds = @collection.credits.presence || ''
     creds += "\n" + @ingestible.credits if @ingestible.credits.present?
     credits = creds.lines.map(&:strip).uniq.join("\n")
-    @collection.update!(credits: credits)
+    @collection.credits = credits
+    @collection.save!
     @changes[:collections] << [@collection.id, @collection.title, created_volume ? 'created' : 'updated'] # record the new volume for the post-ingestion screen
     return unless created_volume
 
