@@ -60,6 +60,10 @@ class Manifestation < ApplicationRecord
     self.sort_title = ::Regexp.last_match.post_match if sort_title =~ /^\d+\. /
   end
 
+  def genre
+    expression.work.genre
+  end
+
   def like_count
     return likers.count
   end

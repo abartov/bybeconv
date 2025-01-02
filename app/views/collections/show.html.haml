@@ -71,6 +71,7 @@
                       %li
                         - if html.present?
                           %a.side-menu-item{href: "#collitem_text_#{i}", 'data-target' => "collitem_text_#{i}"}
+                            %span.by-icon-v02{title: textify_genre(genre) }= glyph_for_genre(genre)
                             - if eauthors[title].present?
                               = "#{title} / #{eauthors[title]}"
                             - else
@@ -88,6 +89,7 @@
                     - link = url_for_collection_item(ci)
                     - tstr = eauthors[title].present? ? "#{title} / #{eauthors[title]}" : title
                     - if link.present?
+                      %span.by-icon-v02{title: textify_genre(genre)}= glyph_for_genre(genre)
                       = link_to tstr, link
                     - else
                       = tstr
