@@ -143,7 +143,7 @@ class Ingestible < ApplicationRecord
       doc.save(tmpfile_pp.path) # save modified version
 
       # limit memory use in production; otherwise severe server hangs possible
-      mem_limit = Rails.env.development? ? '' : ' -M1200m '
+      mem_limit = Rails.env.development? ? '' : ' -M2200m '
       markdown = `pandoc +RTS #{mem_limit} -RTS -f docx -t markdown_mmd #{tmpfile_pp.path} 2>&1`
       raise 'Heap exhausted' if markdown =~ /pandoc: Heap exhausted/
 
