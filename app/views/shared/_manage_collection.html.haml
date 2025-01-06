@@ -3,7 +3,7 @@
   %ol
   - collection.parent_collections.each do |pc|
     %li{style: 'list-style-type: decimal; font-size:120%;'}= link_to "🢁 🢁 🢁 #{pc.title}", collection_manage_path(pc.id)
-.editable{id: "editable_collection_details"}
+%div{id: "editable_collection_details"}
   = link_to collection_path(collection.id), {style:'color:white; float:left;'} do
     %span.by-button-v02.pointer{style: 'width: auto;'}= t(:back_to_public_view)
   %h1
@@ -29,7 +29,7 @@
     = f.text_field :pub_year, class: 'form-control', style: 'width: 10%;'
     %br
     = f.submit t(:save), class: 'by-button-v02', style: 'display:inline-block;'
-    %span.by-button-v02.cancel_editable_edit{style:'display:inline-block;'}= t(:cancel)
+    %span.by-button-v02.cancel_editable_edit{style:'padding-top:7px;display:inline-block;'}= t(:cancel)
     = render partial: 'involved_authorities/list', locals: { item: collection, edit: true }
 
 .headline-2-v02{'data-collection-id': collection.id}
@@ -77,10 +77,10 @@
       //  $('#generalDlg').dialog('open');
       //}
     });
-    //$('body').on('dblclick', '.editable', function(){
-    //  $(this).hide();
-    //  $(this).parent().find('.editable_edit').show();
-    //});
+    $('body').on('dblclick', '.editable', function(){
+      $(this).hide();
+      $(this).parent().find('.editable_edit').show();
+    });
     $('body').on('click', '.editcolbutton', function(){
       $(this).parent().parent().parent().find('.editable').hide();
       $(this).parent().parent().parent().find('.editable_edit').show();
