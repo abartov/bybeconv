@@ -47,7 +47,7 @@
     %b= t(:collection_item_type)+': '
     = select_tag :insert, options_for_select(collection_item_types_options)
     %b= t(:title)+': '
-    = text_field_tag :insert_title, '', type: 'text', id: 'insert_title', style: 'background-color: #ffffff;'
+    = text_field_tag :insert_title, '', type: 'text', id: 'insert_title', style: 'background-color: #ffffff; width:auto;min-width:350px;'
   %br
   .admin_container
     %b= t(:or_search_term)
