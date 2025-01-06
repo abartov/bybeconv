@@ -63,7 +63,7 @@
                       %b.white= '+'
                     .coll_toggle.by-button-v02{ data: { target: "#coll_#{ci.item_id}", toggle: :collapse } }
                       %b.white= '↕'
-                %div{ id: "cwrapper_#{ci.item.id}", style: 'margin-right: 25px;' }
+                %div{ style: 'margin-right: 25px;' }
                   - if @colls_traversed.include?(ci.item.id)
                     %b= t(:collection_circular_reference)
                   - else

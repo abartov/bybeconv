@@ -32,18 +32,19 @@
     -# Collection node
     - collection = toc_node.collection
     - type_prefix = collection.collection_type == 'uncollected' ? '' : textify_collection_type(collection.collection_type)
-    %span{style:'font-size:120%;'}
-      = link_to collection.title, collection_path(collection)
-      - if type_prefix.present?
-        = " (#{type_prefix})"
-    - if editable && (collection.collection_type == 'uncollected' || collection.involved_authorities.where(authority_id: authority_id).present?) # only show editable collections for collections where this particular author is a principal contributor
-      = render partial: 'shared/manage_collection', locals: { collection: collection, title: collection.title, nonce: nonce }
-    - else
-      - children = toc_node.children_by_role(role, authority_id)
-      - unless children.empty?
-        %ul.toclist
-          = render partial: 'authors/toc_node', collection: children,
-                   locals: { role: role, authority_id: authority_id, editable: editable }
+    %div{ id: "cwrapper_#{collection.id}" }
+      %span{style:'font-size:120%;'}
+        = link_to collection.title, collection_path(collection)
+        - if type_prefix.present?
+          = " (#{type_prefix})"
+      - if editable && (collection.collection_type == 'uncollected' || collection.involved_authorities.where(authority_id: authority_id).present?) # only show editable collections for collections where this particular author is a principal contributor
+        = render partial: 'shared/manage_collection', locals: { collection: collection, title: collection.title, nonce: nonce }
+      - else
+        - children = toc_node.children_by_role(role, authority_id)
+        - unless children.empty?
+          %ul.toclist
+            = render partial: 'authors/toc_node', collection: children,
+                    locals: { role: role, authority_id: authority_id, editable: editable }
   - elsif toc_node.is_a?(TocTree::PlaceholderNode)
     -# Placeholder, toc_node should be a String with HTML layout
     - ci = toc_node.collection_item

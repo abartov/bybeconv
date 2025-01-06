@@ -2,7 +2,7 @@
 
 class CollectionsMigrationController < ApplicationController
   before_action { |c| c.require_editor('edit_catalog') }
-
+  layout 'backend', only: [:person]
   def index
     @authorities = Authority.has_toc.order(impressions_count: :desc).limit(50)
   end
