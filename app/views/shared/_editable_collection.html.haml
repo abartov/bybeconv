@@ -3,6 +3,7 @@
     = link_to t(:delete),
               collection_path(collection.id),
               method: :delete,
+              remote: true,
               data: { confirm: t(:confirm_delete_collection) },
               class: 'by-button-v02 by-button-secondary-v02'
   .collection_action_btns
@@ -24,7 +25,7 @@
                 .editable{ id: "#{nonce}_editable_#{ci.id}" }
                   %b #{t(:paratext)}:
                   %span{ id: "#{nonce}_ci_title_#{ci.id}" }= ci.alt_title
-                  = link_to t(:delete), collection_item_path(ci.id), method: :delete, remote: true, data: { confirm: t(:confirm_delete_collection_item) }, class: 'collection-btn', style: 'float: left;z-index:5;'
+                  = link_to t(:remove), collection_item_path(ci.id), method: :delete, remote: true, data: { confirm: t(:confirm_delete_collection_item) }, class: 'collection-btn', style: 'float: left;z-index:5;'
                   .paramarkdown!= MultiMarkdown.new(ci.markdown).to_html
                 .editable_edit{ style: 'display:none;' }
                   = form_for ci, url: collection_item_path(ci.id), method: :put, remote: true do |f|
@@ -39,7 +40,7 @@
                 .editable{ id: "#{nonce}_editable_#{ci.id}", style: 'margin-bottom: 10px;' }
                   %b #{t(:placeholder_item)}:
                   %span{ id: "#{nonce}_ci_title_#{ci.id}" }= ci.alt_title
-                  = link_to t(:delete), collection_item_path(ci.id), method: :delete, remote: true, data: { confirm: t(:confirm_delete_collection_item) }, class: 'collection-btn', style: 'float: left;'
+                  = link_to t(:remove), collection_item_path(ci.id), method: :delete, remote: true, data: { confirm: t(:confirm_delete_collection_item) }, class: 'collection-btn', style: 'float: left;'
                 .editable_edit{ style: 'display:none;' }
                   = form_for ci, url: collection_item_path(ci.id), method: :put, remote: true do |f|
                     = f.label :alt_title, t(:title)
@@ -69,7 +70,7 @@
                     - @colls_traversed << ci.item.id
                     = render partial: 'shared/editable_collection', locals: { collection: ci.item, focused: false, nonce: nonce }
               - else
-                = link_to t(:delete), collection_item_path(ci.id), method: :delete, remote: true, data: { confirm: t(:confirm_delete_collection_item) }, class: 'collection-btn', style: 'float: left;'
+                = link_to t(:remove), collection_item_path(ci.id), method: :delete, remote: true, data: { confirm: t(:confirm_delete_collection_item) }, class: 'collection-btn', style: 'float: left;'
                 .headline-3-v02
                   #{t(:text)}:
                   = link_to collection_item_string(ci), default_link_by_class(ci.item.class, ci.item.id)

@@ -2,7 +2,7 @@
 
 class CollectionsMigrationController < ApplicationController
   before_action { |c| c.require_editor('edit_catalog') }
-
+  layout 'backend', only: [:person]
   def index
     @authorities = Authority.has_toc.order(impressions_count: :desc).limit(50)
   end
@@ -22,15 +22,18 @@ class CollectionsMigrationController < ApplicationController
   def create_collection
     au = Authority.find(params[:authority])
     if au.present?
-      @collection = Collection.create!(title: params[:title].strip, collection_type: params[:collection_type], publication_id: params[:publication_id])
+      title = params[:pub_title].present? ? params[:pub_title] : params[:title]
+      @collection = Collection.create!(title: title.strip, collection_type: params[:collection_type], publication_id: params[:publication_id], publisher_line: params[:guessed_publisher], pub_year: params[:guessed_year])
       @collection.involved_authorities.create!(authority_id: au.id, role: params[:role])
       # associate specified manifestation IDs with the collection
       if params[:text_ids].present?
-        ids = params[:text_ids].map(&:to_i)
-        mm = Manifestation.where(id: ids)
-        sorted_mm = mm.sort_by { |m| ids.index(m.id) }
-        sorted_mm.each do |m|
-          @collection.append_item(m)
+        params[:text_ids].each do |id|
+          if id =~ /\D/ # placeholder text
+            @collection.append_collection_item(CollectionItem.new(alt_title: id))
+          else
+            m = Manifestation.find(id)
+            @collection.append_item(m)
+          end
         end
       end
     end

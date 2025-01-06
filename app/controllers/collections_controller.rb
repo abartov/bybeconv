@@ -125,9 +125,13 @@ class CollectionsController < ApplicationController
 
   # DELETE /collections/1 or /collections/1.json
   def destroy
+    @destroyed_id = @collection.id
     @collection.destroy
 
-    redirect_to collections_url, notice: t(:deleted_successfully)
+    respond_to do |format|
+      format.html { redirect_to collections_url, notice: t(:deleted_successfully) }
+      format.js
+    end
   end
 
   # POST /collections/1/apply_drag

@@ -1,0 +1,4 @@
+$('*[id*=_coll_container_<%= @destroyed_id %>]:visible').each(function() {
+    $(this).remove();
+});
+$('#cwrapper_<%= @destroyed_id %>').remove();
