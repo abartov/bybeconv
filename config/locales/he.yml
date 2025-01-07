@@ -1449,7 +1449,7 @@ he:
       make_collection: צור כותר ושייך יצירות להלן
       mark_migrated: סיים הסבה והפעל את דף היוצר החדש ליוצר/ת זה/זו
       verify_publisher_line: פרטי הוצאה לאור – לתקן או למחוק אם שגוי!
-      city_and_publisher:
+      city_and_publisher: "עיר: מוציא לאור"
       year: שנת הוצאה לאור
     migrate:
       migrated_html: '<a href="%{link}" style="color:blue; text-decoration:underline; cursor:pointer;">דף היוצר החדש הופעל!</a>'
