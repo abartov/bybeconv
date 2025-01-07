@@ -53,11 +53,7 @@
 :javascript
   var already_collected_ids = [ #{@already_collected_ids.join(',')} ];
   $(document).ready(function() {
-    // decorate the legacy TOC with controls
-    // h3 tags are volume titles
-      // they may be links themselves, meaning single-text volumes
-    // p tags containing a tags are texts 
-    // p tags without a tags are publisher details or other metadata
+    var pub_details = JSON.parse('#{j(@pub_details)}');
 
     $('.toc h3').each(function(h) {
       $(this).append('&nbsp;&nbsp;&nbsp;<button class="make-volume">#{ t(".make_collection") }</button>');
@@ -75,29 +71,39 @@
       vol = $(this);
       nextuntil = vol.parent().nextUntil('h3');
       if(nextuntil.length > 0) {
-        guessed_pub_details = vol.parent().nextUntil('h3')[0].innerText;
+        guessed_pub_details = nextuntil[0].innerText;
         r = guessed_pub_details.lastIndexOf(',');
         if(r > 0) {
           second_part = guessed_pub_details.substring(r+1);
-          if(second_part.match(/\d+/) || second_part.match('"')) {
+          if(second_part.match(/\d+/) || second_part.match(/["”]/)) {
             guessed_publisher = guessed_pub_details.substring(0, r).trim();
             guessed_year = second_part.trim();
           } else {
             guessed_publisher = guessed_pub_details.trim();
             guessed_year = '';
           }
+        } else {
+          guessed_publisher = guessed_pub_details.trim();
+          guessed_year = '';
         }
       } else {
         guessed_publisher = '';
         guessed_year = '';
       }
-      $('<form>#{t("ingestible.volume_by_author")}<select id="publication"><option></option>#{options_for_select(@pub_options).gsub("\n","")}</select> <p/> #{t(:or)} #{t(:title)} <input id="pub_title" name="pub_title" style="background-color: #cccccc;"> <p />#{t(:collection_item_type)}<select id="ctype">#{options_for_select(collection_types_options).gsub("\n","")}</select> <p/>#{t(:in_role)}<select id="prole" style="z-index:10000">#{options_for_select(role_options).gsub("\n","")}</select><p/>#{t(".verify_publisher_line")}<input id="guessed_publisher" name="guessed_publisher" style="background-color: #cccccc; width:50%;">#{t(".year")}<input id="guessed_year" name="guessed_year" style="background-color: #cccccc; width: 150px;"></form>').dialog({
+      $('<form>#{t("ingestible.volume_by_author")}<select id="publication"><option></option>#{options_for_select(@pub_options).gsub("\n","")}</select> <p/> #{t(:or)} #{t(:title)} <input id="pub_title" name="pub_title" style="background-color: #cccccc;"> <p />#{t(:collection_item_type)}<select id="ctype">#{options_for_select(collection_types_options).gsub("\n","")}</select> <p/>#{t(:in_role)}<select id="prole" style="z-index:10000">#{options_for_select(role_options).gsub("\n","")}</select><p/>#{t(".verify_publisher_line")}: <p/>#{t(".city_and_publisher")}<input id="guessed_publisher" name="guessed_publisher" style="background-color: #cccccc; width:50%;">#{t(".year")}<input id="guessed_year" name="guessed_year" style="background-color: #cccccc; width: 150px;"></form>').dialog({
         modal: true,
         width: '100%',
         position: { my: 'top+15', at: 'top', of: window },
         open: function() {
           $('#guessed_publisher').val(guessed_publisher);
           $('#guessed_year').val(guessed_year);
+          $('#publication').on('change',function() {
+            idx = this.selectedIndex;
+            if(idx > 0) {
+              $('#guessed_publisher').val(pub_details[idx - 1].publisher);
+              $('#guessed_year').val(pub_details[idx - 1].year);
+            }
+          });
         },
         buttons: {
           'OK': function () {

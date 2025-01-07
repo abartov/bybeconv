@@ -10,7 +10,13 @@ class CollectionsMigrationController < ApplicationController
   def person
     @author = Authority.find(params[:id])
     @publications = @author.publications.no_volume.order(:title)
-    @pub_options = @publications.map { |pub| [pub.title, pub.id] }
+    @pub_options = []
+    pub_details = []
+    @publications.each do |pub|
+      @pub_options << [pub.title, pub.id]
+      pub_details << { id: pub.id, title: pub.title, year: pub.pub_year, publisher: pub.publisher_line }
+    end
+    @pub_details = pub_details.to_json
     @already_collected_ids = @author.collected_manifestation_ids
     # refresh uncollected works to reflect any changes we may have just made
     RefreshUncollectedWorksCollection.call(@author)
