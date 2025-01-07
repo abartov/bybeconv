@@ -214,7 +214,9 @@ class ApplicationController < ActionController::Base
   end
 
   def prep_toc
-    @toc = @author.toc
+    return unless @author.toc.present? || @author.legacy_toc_id.present?
+
+    @toc = @author.toc || Toc.find(@author.legacy_toc_id)
     unless @toc.cached_toc.present?
       @toc.update_cached_toc
       @toc.save
@@ -223,7 +225,7 @@ class ApplicationController < ActionController::Base
     toc_parts = divide_by_genre(markdown_toc)
     @genres_present = toc_parts.shift # first element is the genres array
     @htmls = toc_parts.map { |genre, tocpart| [genre, MultiMarkdown.new(tocpart).to_html.force_encoding('UTF-8')] }
-    credits = @author.toc.credit_section || ''
+    credits = @toc.credit_section || ''
     unless credits =~ /by-horizontal/
       credits.sub!('## הגיהו',
                    "<div class=\"by-horizontal-seperator-light\"></div>\n\n## הגיהו")
@@ -231,13 +233,28 @@ class ApplicationController < ActionController::Base
     @credits = MultiMarkdown.new(credits).to_html.force_encoding('UTF-8')
   end
 
+  # prepare the overall collection-based TOC management view for a given Authority
+  def prep_manage_toc
+    @publications = @author.publications.no_volume.order(:title)
+    @pub_options = []
+    pub_details = []
+    @publications.each do |pub|
+      @pub_options << [pub.title, pub.id]
+      pub_details << { id: pub.id, title: pub.title, year: pub.pub_year, publisher: pub.publisher_line }
+    end
+    @pub_details = pub_details.to_json
+    @already_collected_ids = @author.collected_manifestation_ids
+    # refresh uncollected works to reflect any changes we may have just made
+    RefreshUncollectedWorksCollection.call(@author)
+  end
+
   def generate_toc
     ## legacy code below
-    #@works = @author.cached_original_works_by_genre
-    #@translations = @author.cached_translations_by_genre
-    #@genres_present = []
-    #@works.each_key { |k| @genres_present << k unless @works[k].size == 0 || @genres_present.include?(k) }
-    #@translations.each_key { |k| @genres_present << k unless @works[k].size == 0 || @genres_present.include?(k) }
+    # @works = @author.cached_original_works_by_genre
+    # @translations = @author.cached_translations_by_genre
+    # @genres_present = []
+    # @works.each_key { |k| @genres_present << k unless @works[k].size == 0 || @genres_present.include?(k) }
+    # @translations.each_key { |k| @genres_present << k unless @works[k].size == 0 || @genres_present.include?(k) }
   end
 
   def is_spider?

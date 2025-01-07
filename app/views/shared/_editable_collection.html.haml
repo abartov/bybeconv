@@ -52,23 +52,24 @@
                     = f.submit t(:save), class: 'by-button-v02', style: 'display:inline-block;'
                     .by-button-v02.cancel_editable_edit{ style: 'width:100px; display:inline-block;' }= t(:cancel)
               - elsif ci.item.kind_of?(Collection)
-                .headline-2-v02
-                  #{textify_collection_type(ci.item.collection_type)}:
-                  = collection_item_string(ci)
-                  - if ci.item.collection_type == 'volume' && ci.item.publication.present?
-                    %br
-                    #{ci.item.publication.publisher_line} #{ci.item.publication.pub_year}
-                  .button_series
-                    .collection_insert_button.by-button-v02
-                      %b.white= '+'
-                    .coll_toggle.by-button-v02{ data: { target: "#coll_#{ci.item_id}", toggle: :collapse } }
-                      %b.white= '↕'
-                %div{ style: 'margin-right: 25px;' }
-                  - if @colls_traversed.include?(ci.item.id)
-                    %b= t(:collection_circular_reference)
-                  - else
-                    - @colls_traversed << ci.item.id
-                    = render partial: 'shared/editable_collection', locals: { collection: ci.item, focused: false, nonce: nonce }
+                %div.cwrapper{id: "cwrapper_#{ci.item.id}"}
+                  .headline-2-v02{ 'data-nonce': nonce }
+                    #{textify_collection_type(ci.item.collection_type)}:
+                    = collection_item_string(ci)
+                    - if ci.item.collection_type == 'volume' && ci.item.publication.present?
+                      %br
+                      #{ci.item.publication.publisher_line} #{ci.item.publication.pub_year}
+                    .button_series
+                      .collection_insert_button.by-button-v02
+                        %b.white= '+'
+                      .coll_toggle.by-button-v02{ data: { target: "#coll_#{ci.item_id}", toggle: :collapse } }
+                        %b.white= '↕'
+                  %div{ style: 'margin-right: 25px;' }
+                    - if @colls_traversed.include?(ci.item.id)
+                      %b= t(:collection_circular_reference)
+                    - else
+                      - @colls_traversed << ci.item.id
+                      = render partial: 'shared/editable_collection', locals: { collection: ci.item, focused: false, nonce: nonce }
               - else
                 = link_to t(:remove), collection_item_path(ci.id), method: :delete, remote: true, data: { confirm: t(:confirm_delete_collection_item) }, class: 'collection-btn', style: 'float: left;'
                 .headline-3-v02

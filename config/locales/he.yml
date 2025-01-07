@@ -1445,18 +1445,19 @@ he:
     person:
       title: המרת דף יוצר
       explanation: ליד כל כותרת בדף היוצר הקיים יש לחצן יצירת כותר.
-      collections_area: דף היוצר המתהווה, בשיטה החדשה
-      make_collection: צור כותר ושייך יצירות להלן
       mark_migrated: סיים הסבה והפעל את דף היוצר החדש ליוצר/ת זה/זו
-      verify_publisher_line: פרטי הוצאה לאור – לתקן או למחוק אם שגוי!
-      city_and_publisher: "עיר: מוציא לאור"
-      year: שנת הוצאה לאור
     migrate:
       migrated_html: '<a href="%{link}" style="color:blue; text-decoration:underline; cursor:pointer;">דף היוצר החדש הופעל!</a>'
   involved_authorities:
     list:
       select_authority: נא לבחור ישות אחראית
   shared:
+    manage_toc:
+      collections_area: דף היוצר בשיטת האוספים
+      verify_publisher_line: פרטי הוצאה לאור – לתקן או למחוק אם שגוי!
+      city_and_publisher: "עיר: מוציא לאור"
+      year: שנת הוצאה לאור
+      make_collection: צור כותר ושייך יצירות להלן    
     filters:
       pagination:
         page_x_of_total: דף %{page} מתוך %{total}
@@ -1586,3 +1587,5 @@ he:
   text_n_of_m: "טקסט %{n} מתוך %{m}"
   and_n_placeholders: "ועוד %{n} שומרי מקום"
   convert_to_new_method: המרה לשיטה החדשה
+  manage_toc: 'ניהול דף יוצר מבוסס אוספים: %{author}'
+  manage_toc_explanation: במסך זה אפשר לערוך את כל האוספים שבם יוצר/ת זה/זו מעורב/ת ברמת האוסף. אפשר גם להוסיף יצירה או אוסף מתוך כלל המאגר לתוך אחד האוספים המופיעים כאן, וגם ליצור אוסף חדש לגמרי ולקשר אותו ליוצר/ת זה/זו. אם היה דף יוצר ידני בעבר, הוא מוצג משמאל.

@@ -14,6 +14,7 @@ class AuthorsController < ApplicationController
                 only: %i(show edit update destroy toc edit_toc prep_for_print print all_links delete_photo
                          whatsnew_popup latest_popup publish to_manual_toc volumes new_toc)
   autocomplete :tag, :name, limit: 2
+  layout 'backend', only: %i(manage_toc)
 
   def publish
     if params[:commit].present?
@@ -545,9 +546,11 @@ class AuthorsController < ApplicationController
 
   def manage_toc
     @author = Authority.find(params[:id])
+    prep_manage_toc
+    prep_toc
+    @top_nodes = GenerateTocTree.call(@author)
+    @nonce = 'top'
     @page_title = "#{t(:edit_toc)}: #{@author.name}"
-    prep_toc_as_collection
-    prep_toc # for the auxiliary view
   end
 
   protected
