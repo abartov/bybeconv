@@ -75,7 +75,7 @@
         guessed_publisher = '';
         guessed_year = '';
       }
-      $('<form>#{t("ingestible.volume_by_author")}<select id="publication"><option></option>#{options_for_select(@pub_options).gsub("\n","")}</select> <p/> #{t(:or)} #{t(:title)} <input id="pub_title" name="pub_title" style="background-color: #cccccc;"> <p />#{t(:collection_item_type)}<select id="ctype">#{options_for_select(collection_types_options).gsub("\n","")}</select> <p/>#{t(:in_role)}<select id="prole" style="z-index:10000">#{options_for_select(role_options).gsub("\n","")}</select><p/>#{t(".verify_publisher_line")}: <p/>#{t(".city_and_publisher")}<input id="guessed_publisher" name="guessed_publisher" style="background-color: #cccccc; width:50%;">#{t(".year")}<input id="guessed_year" name="guessed_year" style="background-color: #cccccc; width: 150px;"></form>').dialog({
+      $('<form>#{t(".choose_between_author_pubs")}<select id="publication"><option></option>#{options_for_select(@pub_options).gsub("\n","")}</select> <p/> #{t(:or)} #{t(:title)} <input id="pub_title" name="pub_title" style="background-color: #cccccc;"> <p />#{t(:collection_item_type)}<select id="ctype">#{options_for_select(collection_types_options).gsub("\n","")}</select> <p/>#{t(:in_role)}<select id="prole" style="z-index:10000">#{options_for_select(role_options).gsub("\n","")}</select><p/>#{t(".verify_publisher_line")}: <p/>#{t(".city_and_publisher")}<input id="guessed_publisher" name="guessed_publisher" style="background-color: #cccccc; width:50%;">#{t(".year")}<input id="guessed_year" name="guessed_year" style="background-color: #cccccc; width: 150px;"></form>').dialog({
         modal: true,
         width: '100%',
         position: { my: 'top+15', at: 'top', of: window },
@@ -107,7 +107,10 @@
               var text = $(this);
               var link = text.find('a');
               if(link.length == 0) { // placeholder
-                text_ids.push(text.text());
+                txt = text.text().trim();
+                if (txt.length > 0) {
+                  text_ids.push(txt);
+                }
               } else {
                 var text_id = link.attr('href').split('/').pop();
                 text_ids.push(text_id);

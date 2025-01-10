@@ -1453,6 +1453,7 @@ he:
       select_authority: נא לבחור ישות אחראית
   shared:
     manage_toc:
+      choose_between_author_pubs: בחירה מתוך כותרים ידועים ליוצר זה
       collections_area: דף היוצר בשיטת האוספים
       verify_publisher_line: פרטי הוצאה לאור – לתקן או למחוק אם שגוי!
       city_and_publisher: "עיר: מוציא לאור"
