@@ -68,19 +68,12 @@
     $('body').on('click', '.collection_insert_button', function(e){
       e.preventDefault();
       e.stopImmediatePropagation();
-    //$('.collection_insert_button').click(function(){
-      $(this).closest('.cwrapper').find('.coll_insert_section').remove();
-      $(this).closest('.cwrapper').append($('#collection_insert_section'));
+      ele = $(e.target);
+      ele.closest('.cwrapper').find('.coll_insert_section').remove();
+      ele.closest('.cwrapper').find('.by-card-v02').prepend($('#collection_insert_section'));
       $('#collection_insert_section').show();
-      cid = $(this).closest('.draggable-content').attr('data-collection-id');
+      cid = ele.closest('.cwrapper').find('.draggable-content').attr('data-collection-id');
       $('#collection_id').val(cid);
-      //$('#collection_id').val($(this).parent().parent().parent().attr('data-collection-id'));
-      //if($('#collection_id').val() == '') {
-      //  $('#collection_id').val($(this).parent().parent().attr('data-collection-id'));
-      //}
-      //$('#generalDlg').load(collection_insert_popup_path, function(){
-      //  $('#generalDlg').dialog('open');
-      //}
     });
     $('body').on('dblclick', '.editable', function(){
       $(this).hide();

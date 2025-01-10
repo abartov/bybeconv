@@ -32,7 +32,7 @@
     -# Collection node
     - collection = toc_node.collection
     - type_prefix = collection.collection_type == 'uncollected' ? '' : textify_collection_type(collection.collection_type)
-    %div{ id: "cwrapper_#{collection.id}" }
+    .cwrapper{ id: "cwrapper_#{collection.id}" }
       %span{style:'font-size:120%;'}
         - if collection.created_at > 2.minutes.ago
           = link_to collection.title, collection_path(collection), {'data-focus-on-me': 'true'}

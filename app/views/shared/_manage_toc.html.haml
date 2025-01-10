@@ -4,7 +4,7 @@
 #newcoll_section{style: 'display: none; border: 1px solid #660248; background-color: rgb(157 157 241); padding: 10px;'}
   .admin_container
     %b= t(:collection_item_type)+': '
-    = select_tag :insert, options_for_select(collection_item_types_options)
+    = select_tag :insert, options_for_select(collection_types_options)
   .admin_container
     %b= "#{t(:title)}: "
     = text_field_tag :insert_title, '', type: 'text', id: 'insert_title', style: 'background-color: #ffffff; width:600px;'
@@ -38,6 +38,10 @@
 :javascript
   var already_collected_ids = [ #{@already_collected_ids.join(',')} ];
   $(document).ready(function() {
+    ele = $('*[data-focus-on-me=true]');
+    if (ele.length > 0) {
+      ele[0].scrollIntoView({behavior: 'smooth'});
+    }
     var pub_details = JSON.parse('#{j(@pub_details)}');
 
     $('.toc h3').each(function(h) {
