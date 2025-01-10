@@ -32,7 +32,7 @@
     %span.by-button-v02.cancel_editable_edit{style:'padding-top:7px;display:inline-block;'}= t(:cancel)
     = render partial: 'involved_authorities/list', locals: { item: collection, edit: true }
 
-.headline-2-v02{'data-collection-id': collection.id}
+.headline-2-v02{'data-collection-id': collection.id, 'data-nonce': nonce}
   .button_series
     .collection_insert_button.by-button-v02
       %b.white= '+'
@@ -41,7 +41,7 @@
   - @colls_traversed = [collection.id]
   = render partial: 'shared/editable_collection', locals: {collection: collection, focused: true, nonce: nonce}
 
-#collection_insert_section{style: 'display: none; border: 1px solid #660248; background-color: rgb(157 157 241); padding: 10px;'}
+#collection_insert_section.coll_insert_section{style: 'display: none; border: 1px solid #660248; background-color: rgb(157 157 241); padding: 10px;'}
   = hidden_field_tag :collection_id, '', id: 'collection_id'
   .admin_container
     %b= t(:collection_item_type)+': '
@@ -61,18 +61,23 @@
     = hidden_field_tag :insert_cid, '', id: 'insert_cid'
   %br
   .admin_container
-    .collection_do_insert.by-button-v02{style: 'width: 50px; justify-content: center;font-weight: bold;', 'data-nonce' => nonce}= t(:perform_add)
+    .collection_do_insert.by-button-v02{style: 'width: 50px; justify-content: center;font-weight: bold;'}= t(:perform_add)
 
 :javascript
   $(document).ready(function(){
-    $('body').on('click', '.collection_insert_button', function(){
+    $('body').on('click', '.collection_insert_button', function(e){
+      e.preventDefault();
+      e.stopImmediatePropagation();
     //$('.collection_insert_button').click(function(){
-      $(this).parent().parent().append($('#collection_insert_section'));
+      $(this).closest('.cwrapper').find('.coll_insert_section').remove();
+      $(this).closest('.cwrapper').append($('#collection_insert_section'));
       $('#collection_insert_section').show();
-      $('#collection_id').val($(this).parent().parent().parent().attr('data-collection-id'));
-      if($('#collection_id').val() == '') {
-        $('#collection_id').val($(this).parent().parent().attr('data-collection-id'));
-      }
+      cid = $(this).closest('.draggable-content').attr('data-collection-id');
+      $('#collection_id').val(cid);
+      //$('#collection_id').val($(this).parent().parent().parent().attr('data-collection-id'));
+      //if($('#collection_id').val() == '') {
+      //  $('#collection_id').val($(this).parent().parent().attr('data-collection-id'));
+      //}
       //$('#generalDlg').load(collection_insert_popup_path, function(){
       //  $('#generalDlg').dialog('open');
       //}
@@ -105,19 +110,20 @@
     $('.collection_do_insert').click(function(e){
       e.preventDefault();
       e.stopImmediatePropagation();
-      var item_type = $(this).parent().parent().find('#insert').val();
-      var collection_id = $(this).parent().parent().find('#collection_id').val();
-      var item_id = (item_type == 'Manifestation') ? $(this).parent().parent().find('#insert_mid').val() : (item_type == 'Collection') ? $(this).parent().parent().find('#insert_cid').val() : '';
-      var new_title = $(this).parent().parent().find('#insert_title').val();
-      var nonce = $(this).attr('data-nonce');
+      par = $(this).closest('.cwrapper');
+      var item_type = par.find('#insert').first().val();
+      var collection_id = par.find('#collection_id').first().val();
+      var item_id = (item_type == 'Manifestation') ? par.find('#insert_mid').first().val() : (item_type == 'Collection') ? par.find('#insert_cid').first().val() : '';
+      var new_title = par.find('#insert_title').first().val();
+      var nonce = par.find('.headline-2-v02').first().attr('data-nonce');
       $.ajax({
         url: '/collection_items',
         type: 'POST',
         dataType: "script",
         data: {collection_item: {collection_id: collection_id, item_type: item_type, item_id: item_id, alt_title: new_title}, nonce: nonce},
         success: function(data){
-          $('#collection_insert_section').hide();
-          $('html, body').animate({scrollTop: $('##{nonce}_coll_container_'+collection_id).offset().top + $('##{nonce}_coll_container_'+collection_id).outerHeight() - $('header').height() - 180}, 500);
+          $('#cwrapper_'+collection_id+' #collection_insert_section').hide();
+          $('html, body').animate({scrollTop: $('#'+nonce+'_coll_container_'+collection_id).offset().top + $('#'+nonce+'_coll_container_'+collection_id).outerHeight() - $('header').height() - 180}, 500);
         }
       });
     });
@@ -130,7 +136,7 @@
         dataType: "script",
         data: {collection_item: {collection_id: collection_id, item_type: 'Collection', item_id: collection_id, alt_title: ''}},
         success: function(data){
-          $('#collection_insert_section').hide();
+          $('#cwrapper_'+collection_id+' #collection_insert_section').hide();
           $('html, body').animate({scrollTop: $('##{nonce}_coll_container_'+collection_id).offset().top + $('##{nonce}_coll_container_'+collection_id).outerHeight() - $('header').height() - 180}, 500);
         }
       });

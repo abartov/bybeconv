@@ -358,9 +358,9 @@ class Authority < ApplicationRecord
     person.present? ? person.gender_letter : 'ו'
   end
 
+  # set all person's works to status published
+  # be cautious about publishing joint works, because the *other* author(s) or translators may yet be unpublished!
   def publish!
-    # set all person's works to status published
-    # be cautious about publishing joint works, because the *other* author(s) or translators may yet be unpublished!
     all_works_including_unpublished.each do |m|
       next if m.published?
 
