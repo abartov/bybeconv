@@ -2,11 +2,3 @@
 %p= t(:manage_toc_explanation)
 = render partial: 'shared/manage_toc'
 = button_to t(:back), url_for(action: :toc, id: @author.id), {method: :get, class: 'btn-small-outline-v02'}
-
-:javascript
-  $(document).ready(function() {
-    ele = $('*[data-focus-on-me=true]');
-    if (ele.length > 0) {
-      ele[0].scrollIntoView({behavior: 'smooth'});
-    }
-  });

@@ -921,3 +921,16 @@ small p{
 .make-volume{
   cursor: pointer;
 }
+
+.collection_draggable_item {
+  scroll-margin-top: 15px;
+}
+.footnotes li {
+  scroll-margin-top: 175px; 
+}
+.footnote {
+  scroll-margin-top: 210px;
+}
+.work-content{
+  scroll-snap-type: y mandatory;
+}

@@ -4,7 +4,7 @@
 #newcoll_section{style: 'display: none; border: 1px solid #660248; background-color: rgb(157 157 241); padding: 10px;'}
   .admin_container
     %b= t(:collection_item_type)+': '
-    = select_tag :insert, options_for_select(collection_item_types_options)
+    = select_tag :insert, options_for_select(collection_types_options)
   .admin_container
     %b= "#{t(:title)}: "
     = text_field_tag :insert_title, '', type: 'text', id: 'insert_title', style: 'background-color: #ffffff; width:600px;'
@@ -35,9 +35,36 @@
           .by-card-content-v02{:style => "padding-top: 12px;"}
             != h
 %hr
+.master_insert_container
+  #collection_insert_section.coll_insert_section{style: 'display: none; border: 1px solid #660248; background-color: rgb(157 157 241); padding: 10px;  scroll-margin-top: 15px;'}
+    = hidden_field_tag :collection_id, '', id: 'collection_id'
+    .admin_container
+      %b= t(:collection_item_type)+': '
+      = select_tag :insert, options_for_select(collection_item_types_options)
+      %b= t(:title)+': '
+      = text_field_tag :insert_title, '', type: 'text', id: 'insert_title', style: 'background-color: #ffffff; width:auto;min-width:350px;'
+    %br
+    .admin_container
+      %b= t(:or_search_term)
+      = autocomplete_field_tag :qterm, '', autocomplete_manifestation_title_path, 'data-noMatchesLabel' => t(:no_matches_found), id: 'qterm', style: 'background-color: #ffffff;', id_element: '#insert_mid'
+
+      = hidden_field_tag :insert_mid, '', id: 'insert_mid'
+    %br
+    .admin_container
+      %b= t(:or_search_for_collection)
+      = autocomplete_field_tag :cterm, '', autocomplete_collection_title_path, 'data-noMatchesLabel' => t(:no_matches_found), id: 'cterm', style: 'background-color: #ffffff;', id_element: '#insert_cid'
+      = hidden_field_tag :insert_cid, '', id: 'insert_cid'
+    %br
+    .admin_container
+      .collection_do_insert.by-button-v02{style: 'width: 50px; justify-content: center;font-weight: bold;'}= t(:perform_add)
+
 :javascript
   var already_collected_ids = [ #{@already_collected_ids.join(',')} ];
   $(document).ready(function() {
+    ele = $('*[data-focus-on-me=true]');
+    if (ele.length > 0) {
+      ele[0].scrollIntoView({behavior: 'smooth'});
+    }
     var pub_details = JSON.parse('#{j(@pub_details)}');
 
     $('.toc h3').each(function(h) {
