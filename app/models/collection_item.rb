@@ -60,6 +60,12 @@ class CollectionItem < ApplicationRecord
     return ''
   end
 
+  def public?
+    return item.status == 'published' if item.present? && item_type == 'Manifestation'
+
+    return true # placeholders, series, paratexts are always public
+  end
+
   def to_html
     if item.present?
       return item.to_html
