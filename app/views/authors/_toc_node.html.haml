@@ -54,7 +54,7 @@
         - unless children.empty?
           %ul.toclist
             = render partial: 'authors/toc_node', collection: children,
-                    locals: { role: role, authority_id: authority_id, editable: editable }
+                    locals: { role: role, authority_id: authority_id, editable: editable, nonce: nonce }
   - elsif toc_node.is_a?(TocTree::PlaceholderNode)
     -# Placeholder, toc_node should be a String with HTML layout
     - ci = toc_node.collection_item
