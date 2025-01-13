@@ -40,7 +40,7 @@
           = link_to collection.title, collection_path(collection)
         - if type_prefix.present?
           = " (#{type_prefix})"
-        - if current_user.editor?
+        - if current_user && current_user.editor?
           != '&nbsp;&nbsp;&nbsp;'
           = link_to t(:edit), collection_manage_path(collection.id), style: 'font-size: 70%;'
         - if collection.publisher_line.present?
