@@ -1,5 +1,5 @@
 .mainlist#browse_mainlist
-  = cache @author, expires_in: 12.hours do
+  = cache_unless current_user&.editor?, @author, expires_in: 12.hours do
     - top_nodes = GenerateTocTree.call(@author)
     = render partial: 'authors/toc_by_role',
               locals: { top_nodes: top_nodes,
