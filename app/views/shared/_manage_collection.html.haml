@@ -47,15 +47,11 @@
     $('body').on('click', '.collection_insert_button', function(e){
       e.preventDefault();
       e.stopImmediatePropagation();
-      console.log(e.target);
       ele = $(e.target);
-      console.log('length of .collection', ele.closest('.cwrapper').find('.collection').length);
-      console.log('closest .cwrapper id', ele.closest('.cwrapper').attr('id'));
       cw = ele.closest('.cwrapper');
       nonce = cw.attr('data-nonce');
       collection_id = cw.attr('data-collection-id');
       col_ele = $('#'+nonce+'_coll_'+collection_id);
-      console.log('calculated col_ele id: #'+nonce+'_coll_'+collection_id);
       $('#collection_insert_section').detach().appendTo(col_ele);
       $('#collection_insert_section').show();
       $('#collection_insert_section')[0].scrollIntoView({behavior: 'smooth'});
