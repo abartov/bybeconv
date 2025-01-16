@@ -163,7 +163,7 @@ module BybeUtils
     section_texts = []
     collection.flatten_items.each do |ci|
       section_titles << ci.title
-      section_texts << (ci.is_collection? ? '<p/>' : ci.to_html)
+      section_texts << (ci.collection? ? '<p/>' : ci.to_html)
     end
     make_epub('https://benyehuda.org/collection/' + collection.id.to_s, collection.title,
               collection.authorities, section_titles, section_texts, "coll_#{collection.id}", "#{Rails.application.routes.url_helpers.root_url}#{Rails.application.routes.url_helpers.collection_path(collection)}")

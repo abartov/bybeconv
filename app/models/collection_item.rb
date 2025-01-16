@@ -10,7 +10,10 @@ class CollectionItem < ApplicationRecord
 
   def title
     if item.nil?
-      alt_title
+      return alt_title if alt_title.present?
+      return first_contentful_markdown if markdown.present?
+
+      return ''
     else
       item.title
     end
@@ -20,6 +23,15 @@ class CollectionItem < ApplicationRecord
     return [] if item.nil?
 
     item.authors
+  end
+
+  def first_contentful_markdown
+    return '' if markdown.blank?
+
+    markdown.split("\n").each do |line|
+      return line if line.present?
+    end
+    ''
   end
 
   def title_and_authors
@@ -48,7 +60,7 @@ class CollectionItem < ApplicationRecord
     ret
   end
 
-  def is_collection?
+  def collection?
     item.is_a?(Collection)
   end
 
