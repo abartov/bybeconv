@@ -207,6 +207,8 @@ class CollectionsController < ApplicationController
       end
     else
       @collection.collection_items.each do |ci|
+        next if ci.item.present? && ci.item.status != 'published' # deleted or unpublished manifestations
+
         html = ci.to_html
         # next unless html.present?
         @htmls << [ci.title, ci.authors, html.present? ? footnotes_noncer(ci.to_html, i) : '', false, ci.genre,
