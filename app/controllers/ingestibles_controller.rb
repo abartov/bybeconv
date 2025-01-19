@@ -23,8 +23,13 @@ class IngestiblesController < ApplicationController
 
   # GET /ingestibles/1 or /ingestibles/1.json
   def show
-    edit
-    render :edit
+    # before ingestion, editing is the meaningful view
+    unless @ingestible.ingested?
+      edit
+      render :edit
+    else
+      @changes = JSON.parse(@ingestible.ingested_changes)
+    end
   end
 
   # GET /ingestibles/new

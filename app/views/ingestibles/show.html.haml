@@ -1,0 +1,34 @@
+%h1
+  = t('.title')
+  - if @ingestible.originating_task.present?
+    %span{style: 'font-size:50%;'}
+      != "&emsp;&emsp;"
+      = link_to t('ingestibles.review.to_originating_task'), @ingestible.originating_task
+
+%h3= @ingestible.title
+%br
+%h2= t('.ingested_changes')
+%h3= t('.collections')
+- if @changes['collections'].empty?
+  %p= t('.no_collection')
+- else
+  %ul
+    - @changes['collections'].each do |collection|
+      %li
+        %b= link_to collection[1], collection_path(collection[0])
+        = " (#{t('.'+collection[2])})"
+
+%h3= t('.texts')
+%ul
+  - @changes['texts'].each do |text|
+    %li
+      %b= link_to text[1], manifestation_path(text[0])
+      = " (#{t(text[2])})"
+
+%h3= t('.placeholders')
+%ul
+  - @changes['placeholders'].each do |placeholder|
+    %li
+      = placeholder
+%hr
+= link_to t(:back), ingestibles_path
