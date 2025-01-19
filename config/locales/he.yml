@@ -1380,6 +1380,14 @@ he:
       failure: אירעה שגיאה בפתיחת ההעלאה
     edit:
       title: עדכון העלאה
+    show:
+      title: פרטי העלאה
+      texts: טקסטים
+      collections: אוספים
+      placeholders: שומרי מקום
+      ingested_changes: פריטים שנקלטו
+      created: נוצר
+      updated: עודכן
     form:
       general: כל ההעלאה
       texts: טקסטים

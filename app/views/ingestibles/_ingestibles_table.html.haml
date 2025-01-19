@@ -27,7 +27,7 @@
               %strong= " (#{t(:x_words, x: ingestible.markdown.split.length)})"
             - else
               %b= t(:none)
-          %td{style: bgstyle}= link_to t(:show), ingestible.draft? ? ingestible : review_ingestible_url(ingestible)
+          %td{style: bgstyle}= link_to t(:show), ingestible
           - if editable
             %td{style: bgstyle}= link_to t(:edit), edit_ingestible_path(ingestible)
             %td{style: bgstyle}= link_to t(:destroy), ingestible, method: :delete, data: { confirm: t(:are_you_sure) }
