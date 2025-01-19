@@ -207,7 +207,7 @@ class CollectionsController < ApplicationController
       end
     else
       @collection.collection_items.each do |ci|
-        next if ci.item.present? && ci.item.status != 'published' # deleted or unpublished manifestations
+        next if ci.item.present? && ci.item_type == 'Manifestation' && ci.item.status != 'published' # deleted or unpublished manifestations
 
         html = ci.to_html
         # next unless html.present?
