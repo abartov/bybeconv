@@ -27,6 +27,7 @@ Bybeconv::Application.routes.draw do
       post :update_toc_list
       get :edit_toc
       post :ingest
+      post :undo
     end
   end
 
