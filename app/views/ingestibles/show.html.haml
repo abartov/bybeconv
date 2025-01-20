@@ -30,5 +30,8 @@
   - @changes['placeholders'].each do |placeholder|
     %li
       = placeholder
+%h3= t('.undo')
+= form_tag undo_ingestible_path(@ingestible), method: :post do
+  = submit_tag t('.undo'), class: 'btn btn-danger'
 %hr
 = link_to t(:back), ingestibles_path

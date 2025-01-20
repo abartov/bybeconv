@@ -6,9 +6,10 @@ class IngestiblesController < ApplicationController
 
   before_action { |c| c.require_editor('edit_catalog') }
   before_action :set_ingestible,
-                only: %i(show edit update update_markdown update_toc destroy review ingest edit_toc update_toc_list)
+                only: %i(show edit update update_markdown update_toc destroy review ingest edit_toc update_toc_list
+                         undo)
   before_action :try_to_lock_ingestible,
-                only: %i(show edit update update_markdown destroy review update_toc update_toc_list edit_toc)
+                only: %i(show edit update update_markdown destroy review update_toc update_toc_list edit_toc undo)
 
   DEFAULTS = { title: '', status: 'draft', orig_lang: 'he', default_authorities: [], metadata: {}, comments: '',
                markdown: '' }.freeze
@@ -41,6 +42,24 @@ class IngestiblesController < ApplicationController
   def review
     @markdown_titles = @ingestible.markdown.scan(/^&&&\s+(.+?)\s*\n/).map(&:first)
     prep_for_ingestion
+  end
+
+  # GET /ingestibles/1/undo
+  def undo
+    changes = JSON.parse(@ingestible.ingested_changes)
+    @collection = changes['collections'].present? ? Collection.find(changes['collections'].first[0]) : nil
+    changes['texts'].each do |id, title, authorstr|
+      m = Manifestation.find(id)
+      @collection.collection_items.where(item: m).destroy_all unless @collection.nil?
+      m.destroy!
+    end
+    changes['placeholders'].each do |x|
+      @collection.collection_items.where(alt_title: x).destroy_all unless @collection.nil?
+    end
+    # delete the collection IF this ingestion created it AND there are no more items in it (now that we have deleted the ones this ingestion added)
+    @collection.destroy! if @collection.present? && changes['collections'].first[2] == 'created' && @collection.collection_items.empty?
+    @ingestible.draft!
+    redirect_to edit_ingestible_url(@ingestible), notice: t('.undone')
   end
 
   # GET /ingestibles/1/ingest
