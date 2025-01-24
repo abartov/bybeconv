@@ -934,3 +934,10 @@ small p{
 .work-content{
   scroll-snap-type: y mandatory;
 }
+
+.hidden {
+  display: none;
+}
+.genre_cbox{
+  display: inline;
+}

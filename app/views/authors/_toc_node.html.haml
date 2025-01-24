@@ -1,8 +1,11 @@
 -# rubocop:disable Style/CaseLikeIf
-%li{ style: toc_node.is_a?(TocTree::ManifestationNode) ? '' : 'margin-top: 15px; margin-bottom: 10px;' }
+%li{ class: toc_node.is_a?(TocTree::ManifestationNode) ? 'manifestation-node' : '', style: toc_node.is_a?(TocTree::ManifestationNode) ? '' : 'margin-top: 15px; margin-bottom: 10px;' }
   - if toc_node.is_a?(TocTree::ManifestationNode)
     - m = toc_node.manifestation
-    - genre = m.expression.work.genre
+    - e = m.expression
+    - w = e.work
+    - genre = w.genre
+    %span.sorting-metadata{ 'data-impressions': m.impressions_count, 'data-title': m.sort_title, 'data-pubdate': e.normalized_pub_date.present? ? e.normalized_pub_date.to_date.jd : nil, 'data-creation-date': w.normalized_creation_date.present? ? w.normalized_creation_date.to_date.jd : nil, 'data-upload-date': m.publication_date.to_date.jd }
     %span.by-icon-v02{ title: t(genre) }>= glyph_for_genre(genre)
     &nbsp;
     :ruby
@@ -26,6 +29,17 @@
 
     - if m.published?
       = link_to label, manifestation_path(m)
+      %span.hidden.metadata-creation-date
+        != "&nbsp;&nbsp;&nbsp;"
+        - if w.date.present?
+          = "(#{w.date})"
+      %span.hidden.metadata-pubdate
+        != "&nbsp;&nbsp;&nbsp;"
+        - if e.date.present?
+          = "(#{e.date})"
+      %span.hidden.metadata-upload-date
+        != "&nbsp;&nbsp;&nbsp;"
+        = "(#{m.publication_date})"
     - else
       = label
   - elsif toc_node.is_a?(TocTree::CollectionNode)
