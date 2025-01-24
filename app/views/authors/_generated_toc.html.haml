@@ -1,3 +1,16 @@
+%p= t(:show_genres)
+-# show a checkbox for each present genre to show/hide items of that genre
+- get_genres.each do |genre|
+  %span.hidden{id: "genre_#{genre}"}
+    = check_box_tag "genre_#{genre}", 1, true, class: 'genre_checkbox'
+    = label_tag "genre_#{genre}", textify_genre(genre)
+%p
+  = t(:sort_by)
+  = select_tag :sort_by, options_for_select([[t(:collections_and_pubdates_asc), 'colls'], [t(:alefbet_asc), 'title'], [t(:popularity_desc), 'popularity_desc'], [t(:popularity_asc), 'popularity_asc'], [t(:pubdate_asc), 'pubdate_asc'], [t(:pubdate_desc), 'pubdate_desc'], [t(:creation_date_asc), 'creation_date_asc'], [t(:creation_date_desc), 'creation_date_desc'], [t(:uploaddate_asc), 'upload_date_asc'], [t(:uploaddate_desc), 'upload_date_desc']  ], params[:sort_by])
+.sorting_caveat{ style: 'display:none' }
+  %p
+    %b= t(:sorting_caveat_title)
+  %p= t(:sorting_caveat)
 .mainlist#browse_mainlist
   = cache_unless current_user&.editor?, @author, expires_in: 12.hours do
     - top_nodes = GenerateTocTree.call(@author)
@@ -22,3 +35,100 @@
     .by-card-content-v02
       .credits
         != @credits
+:javascript
+  $(document).ready(function() {
+    var genres = { #{get_genres.map { |g| "'#{g}': '#{textify_genre(g)}'" }.join(', ') } };
+    for(var genre in genres) {
+      if($('.by-icon-v02[title="' + genres[genre] + '"]').length > 0)
+        $('#genre_'+genre).show();
+    }
+    $('.genre_checkbox').on('change', function(e){
+      genre = this.id.replace('genre_', '');
+      if(this.checked) {
+        $('.by-icon-v02[title="' + genres[genre] + '"]').closest('.manifestation-node').show();
+      } else {
+        $('.by-icon-v02[title="' + genres[genre] + '"]').closest('.manifestation-node').hide();
+      }
+    });
+    $('#sort_by').change(function(){
+      if(this.value == 'colls') {
+        location.reload();
+      } else {
+        $('.sorting_caveat').hide();
+        $('.metadata-creation-date').hide();
+        $('.metadata-pubdate').hide();
+        $('.metadata-upload-date').hide();
+        nodes_to_sort = $('.manifestation-node');
+        var sortval;
+        var sort_asc = true;
+        switch(this.value) {
+          case 'title':
+            sortval = 'data-title';
+            break;
+          case 'popularity_desc':
+            sort_asc = false;
+          case 'popularity_asc':
+            sortval = 'data-impressions';
+            break;
+          case 'pubdate_desc':
+            sort_asc = false;
+          case 'pubdate_asc':
+            sortval = 'data-pubdate';
+            $('.sorting_caveat').show();
+            $('.metadata-pubdate').show();
+            break;
+          case 'creation_date_desc':
+            sort_asc = false;
+          case 'creation_date_asc':
+            sortval = 'data-creation-date';
+            $('.sorting_caveat').show();
+            $('.metadata-creation-date').show();
+            break;
+          case 'upload_date_desc':
+            sort_asc = false;
+          case 'upload_date_asc':
+            sortval = 'data-upload-date';
+            $('.metadata-upload-date').show();
+            break;
+        }
+        if(sort_asc) {
+          nodes_to_sort.sort(function(a, b) {
+            x = $(a).find('.sorting-metadata').attr(sortval);
+            y = $(b).find('.sorting-metadata').attr(sortval);
+            if (x == null) {
+              x = '';
+            }
+            if (y == null) {
+              y = '';
+            }
+            if(x > y) {
+              return 1;
+            } else if(x < y) {
+              return -1;
+            } else {
+              return 0;
+            }
+          });
+        } else {
+          nodes_to_sort.sort(function(a, b) {
+            x = $(a).find('.sorting-metadata').attr(sortval);
+            y = $(b).find('.sorting-metadata').attr(sortval);
+            if (x == null) {
+              x = '';
+            }
+            if (y == null) {
+              y = '';
+            }
+            if(x < y) {
+              return 1;
+            } else if(x > y) {
+              return -1;
+            } else {
+              return 0;
+            }
+          });
+        }
+        $('.mainlist').html(nodes_to_sort);
+      }
+    });
+  });
