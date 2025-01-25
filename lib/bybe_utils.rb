@@ -302,7 +302,16 @@ module BybeUtils
       hd = Hebruby::HebrewDate.new(day, month, hyear)
       return hd.julian_date
     end
-    return nil
+    # no month name -- try treating the whole thing as a Hebrew year
+    year = str.match(/\S+"\S/)
+    return nil if year.nil?
+
+    year = year.to_s.strip.tr('\"\'', '')
+    hyear = parse_hebrew_year(year)
+    return nil if hyear.nil? || hyear == 0
+
+    hd = Hebruby::HebrewDate.new(14, 7, hyear) # mid-year by default
+    return hd.julian_date
   end
 
   def normalize_date(str)
