@@ -136,7 +136,8 @@
             }
           });
         }
-        $('.mainlist').html(nodes_to_sort.detach());
+        nodes_to_sort.detach();
+        $('.mainlist').html(nodes_to_sort);
       }
     });
   });
