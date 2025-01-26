@@ -9,6 +9,7 @@ class Collection < ApplicationRecord
   update_index('collections') { self }
 
   before_save :update_sort_title!
+  before_save :norm_dates
 
   validates :collection_type, presence: true
 
@@ -439,4 +440,10 @@ class Collection < ApplicationRecord
       CollectionItem.new(collection: self, item: item)
     end
   end
+
+  def norm_dates
+    nd = normalize_date(self.pub_year)
+    self.normalized_pub_year = nd.year unless nd.nil?
+  end
+
 end
