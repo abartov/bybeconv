@@ -50,30 +50,34 @@
         $('.by-icon-v02[title="' + genres[genre] + '"]').closest('.manifestation-node').hide();
       }
     });
-    var orig_mainlist = '';
+
+    function prune_collections() {
+      $('.cwrapper').each(function() {
+        manifs = $(this).find('.manifestation-node:visible');
+        if(manifs.length == 1) {
+          $(this).children('.by-icon-v02').remove();
+          $(this).prepend(manifs.find('.by-icon-v02').clone());
+          manifs.hide();
+        }
+      });
+    }
     $('#sort_by').change(function(){
       if(this.value == 'colls') {
-        if(orig_mainlist != '') {
-          $('#browse_mainlist').html(orig_mainlist);
-        }
+        $('#browse_mainlist').html(orig_mainlist);
       } else {
-        if (orig_mainlist == '') {
-          orig_mainlist = $('#browse_mainlist').html();
-        }
         $('.sorting_caveat').hide();
         $('.metadata-creation-date').hide();
         $('.metadata-pubdate').hide();
         $('.metadata-upload-date').hide();
         if (this.value == 'colls_abc') {
-          if (orig_mainlist != '') {
-            $('#browse_mainlist').html(orig_mainlist);
-          }
+          $('#browse_mainlist').html(orig_mainlist);
           nodes_to_sort = $('.cwrapper');
           nodes_to_sort.sort(function(a, b) {
             x = $(a).find('span').text();
             y = $(b).find('span').text();
             return x.localeCompare(y);
           });
+
         } else {
           nodes_to_sort = $('.manifestation-node');
           var sortval;
@@ -158,4 +162,7 @@
         $('#sorted_card').html(nodes_to_sort.detach());
       }
     });
+    prune_collections();
+    var orig_mainlist = $('#browse_mainlist').html();
+
   });
