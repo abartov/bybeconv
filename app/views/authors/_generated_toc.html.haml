@@ -53,9 +53,13 @@
     var orig_mainlist = '';
     $('#sort_by').change(function(){
       if(this.value == 'colls') {
-        //location.reload();
-        location.href = location.href.split('?')[0];
+        if(orig_mainlist != '') {
+          $('#browse_mainlist').html(orig_mainlist);
+        }
       } else {
+        if (orig_mainlist == '') {
+          orig_mainlist = $('#browse_mainlist').html();
+        }
         $('.sorting_caveat').hide();
         $('.metadata-creation-date').hide();
         $('.metadata-pubdate').hide();
@@ -71,9 +75,6 @@
             return x.localeCompare(y);
           });
         } else {
-          if (orig_mainlist == '') {
-            orig_mainlist = $('#browse_mainlist').html();
-          }
           nodes_to_sort = $('.manifestation-node');
           var sortval;
           var sort_asc = true;
