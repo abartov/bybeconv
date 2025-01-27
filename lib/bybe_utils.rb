@@ -306,6 +306,7 @@ module BybeUtils
     year = str.match(/\S+"\S/)
     return nil if year.nil?
 
+    year = year.to_s
     if year =~ /[-־–]/ # range of years
       year = year.split(/[-־–]/)[0] # take the first year
     end
