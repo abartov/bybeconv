@@ -310,7 +310,7 @@ module BybeUtils
     if year =~ /[-־–]/ # range of years
       year = year.split(/[-־–]/)[0] # take the first year
     end
-    year = year.to_s.strip.tr('\"\'', '')
+    year = year.to_s.strip.tr('\"\'[]()', '')
     hyear = parse_hebrew_year(year)
     return nil if hyear.nil? || hyear == 0
 
