@@ -938,6 +938,7 @@ small p{
 .hidden {
   display: none;
 }
-.genre_cbox{
-  display: inline;
+
+.manifestation-node{
+  list-style: none;
 }

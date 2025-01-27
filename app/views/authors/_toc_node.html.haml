@@ -40,12 +40,20 @@
       %span.hidden.metadata-upload-date
         != "&nbsp;&nbsp;&nbsp;"
         = "(#{m.publication_date})"
+      - if uncollected
+        %span.metadata-source-edition
+          %br
+          - edition = e.source_edition.strip
+          - if e.date.present?
+            - edition += ', '+e.date
+          = edition
     - else
       = label
   - elsif toc_node.is_a?(TocTree::CollectionNode)
     -# Collection node
     - collection = toc_node.collection
     - type_prefix = collection.collection_type == 'uncollected' ? '' : textify_collection_type(collection.collection_type)
+    - uncollected = collection.collection_type == 'uncollected'
     .cwrapper{ id: "cwrapper_#{collection.id}", 'data-nonce' => nonce, 'data-collection-id' => collection.id }
       %span{style:'font-size:120%;'}
         - if collection.created_at > 2.minutes.ago
@@ -69,7 +77,8 @@
         - unless children.empty?
           %ul.toclist
             = render partial: 'authors/toc_node', collection: children,
-                    locals: { role: role, authority_id: authority_id, editable: editable, nonce: nonce }
+                    locals: { role: role, authority_id: authority_id, editable: editable, nonce: nonce, uncollected: uncollected }
+      %br
   - elsif toc_node.is_a?(TocTree::PlaceholderNode)
     -# Placeholder, toc_node should be a String with HTML layout
     - ci = toc_node.collection_item
