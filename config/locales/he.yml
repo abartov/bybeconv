@@ -674,6 +674,7 @@ he:
   uploaddate_asc: 'ת. עלייה לאתר: מהישן לחדש'
   uploaddate_desc: 'ת. עלייה לאתר: מהחדש לישן'
   collections_and_pubdates_asc: 'כותרים ותאריכי הוצאה: מהישן לחדש'
+  collections_abc: 'כותרים: בסדר אלפביתי'
   title: כותרת
   title_x: "כותרת: %{x}"
   author_x: "יוצר: %{x}"
