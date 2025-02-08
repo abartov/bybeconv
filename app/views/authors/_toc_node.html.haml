@@ -43,7 +43,8 @@
       - if uncollected
         %span.metadata-source-edition
           %br
-          - edition = e.source_edition.strip
+          - edition = e.source_edition || ''
+          - edition.strip!
           - if e.date.present?
             - edition += ', '+e.date
           = edition
