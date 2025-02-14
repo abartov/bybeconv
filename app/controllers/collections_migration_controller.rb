@@ -19,7 +19,10 @@ class CollectionsMigrationController < ApplicationController
     au = Authority.find(params[:authority])
     if au.present?
       title = params[:pub_title].present? ? params[:pub_title] : params[:title]
-      @collection = Collection.create!(title: title.strip, collection_type: params[:collection_type], publication_id: params[:publication_id], publisher_line: params[:guessed_publisher], pub_year: params[:guessed_year])
+      title.gsub!(' :', ':') # Publications tend to have spaces before colons due to antiquated real-world bibliographic standards
+      pub_line = params[:guessed_publisher]
+      pub_line.gsub!(' :', ':') if pub_line.present? # ditto
+      @collection = Collection.create!(title: title.strip, collection_type: params[:collection_type], publication_id: params[:publication_id], publisher_line: pub_line, pub_year: params[:guessed_year])
       @collection.involved_authorities.create!(authority_id: au.id, role: params[:role])
       # associate specified manifestation IDs with the collection
       if params[:text_ids].present?
