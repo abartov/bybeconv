@@ -266,7 +266,7 @@ module BybeUtils
       i += 4000
       s = str[1..-1]
     end
-    s.each_char { |c| i += HEB_LETTER_VALUE[c] }
+    s.each_char { |c| i += HEB_LETTER_VALUE[c] if HEB_LETTER_VALUE[c] }
     i += 5000 if i < 1000 and i != 0 # assume current Hebrew millennium if no other one is specified
     return i
   end

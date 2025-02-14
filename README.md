@@ -1,8 +1,15 @@
 This codebase runs https://benyehuda.org -- the Project Ben-Yehuda digital library of works in Hebrew.
 
-I make little effort to make the code general, but if you're looking to do something similar (e.g. a digital library in Yiddish), maybe you can adapt some of my code.
+We make little effort to make the code general, but if you're looking to do something similar (e.g. a digital library in Yiddish), maybe you can adapt some of our code.
 
-External (i.e. hosting system) dependencies:
+Development environment setup
+-----------------------------
+
+To set up a development environment, ensure you have a modern docker compose setup (e.g. run ```sudo apt-get install docker-compose-v2``` on Debian-like systems) and inside docker/bybe_dev run ```docker compose up -d``` to get started. See the README file in that folder for more.
+
+External (i.e. hosting system) dependencies
+-------------------------------------------
+
 * Pandoc 2.10 or higher for generating ebooks and other formats. (previous versions skip SmartTag tags in DOCX files, causing random letters to disappear in certain DOCXes with extraneous mark-up.
 * wkhtmltopdf for PDF generation
 * ElasticSearch for search
