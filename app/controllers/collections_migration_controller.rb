@@ -20,9 +20,9 @@ class CollectionsMigrationController < ApplicationController
     if au.present?
       title = params[:pub_title].present? ? params[:pub_title] : params[:title]
       title.gsub!(' :', ':') # Publications tend to have spaces before colons due to antiquated real-world bibliographic standards
-      title.strip!.gsub!(/\p{Space}*$/, '') # strip is insufficient as it doesn't remove nbsps, which are sometimes coming from bibliographic data
+      title = title.strip.gsub(/\p{Space}*$/, '') # strip is insufficient as it doesn't remove nbsps, which are sometimes coming from bibliographic data
       pub_line = params[:guessed_publisher]
-      pub_line.gsub!(' :', ':').gsub!(' ;',';').gsub!(/\p{Space}*$/, '') if pub_line.present? # ditto
+      pub_line = pub_line.gsub(' :', ':').gsub(' ;',';').gsub(/\p{Space}*$/, '') if pub_line.present? # ditto
       @collection = Collection.create!(title: title.strip, collection_type: params[:collection_type], publication_id: params[:publication_id], publisher_line: pub_line, pub_year: params[:guessed_year])
       @collection.involved_authorities.create!(authority_id: au.id, role: params[:role])
       # associate specified manifestation IDs with the collection
