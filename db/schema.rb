@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_02_15_011548) do
+ActiveRecord::Schema.define(version: 2025_02_15_020904) do
 
   create_table "aboutnesses", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -273,7 +273,7 @@ ActiveRecord::Schema.define(version: 2025_02_15_011548) do
 
   create_table "collection_items", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "collection_id"
-    t.string "alt_title"
+    t.string "alt_title", limit: 2048
     t.text "context"
     t.integer "seqno"
     t.string "item_type"
