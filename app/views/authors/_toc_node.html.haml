@@ -61,9 +61,9 @@
           = link_to collection.title, collection_path(collection), {'data-focus-on-me': 'true'}
         - else
           = link_to collection.title, collection_path(collection)
-        - if type_prefix.present?
-          = " (#{type_prefix})"
         - if current_user && current_user.editor?
+          - if type_prefix.present?
+            = " (#{type_prefix})"
           != '&nbsp;&nbsp;&nbsp;'
           = link_to t(:edit), collection_manage_path(collection.id), style: 'font-size: 70%;'
         - collection.involved_authorities.reject{|x| x.authority_id == authority_id}.each do |ia|
