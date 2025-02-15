@@ -214,6 +214,24 @@ class Collection < ApplicationRecord
     return []
   end
 
+  # return true if any of the collection items are original works. 
+  # This does not traverse sub-collections because it is intended to be used with 
+  # uncollected works collections, which are expected to be flat, by definition.
+  def any_original_works?
+    collection_items.each do |ci|
+      return true if ci.item.present? && ci.item_type == 'Manifestation' && ci.item.expression.translation == false
+    end
+    return false
+  end
+
+  # return true if any of the collection items are translations
+  def any_translations?
+    collection_items.each do |ci|
+      return true if ci.item.present? && ci.item_type == 'Manifestation' && ci.item.expression.translation
+    end
+    return false
+  end
+
   # return list of genres in included items
   def included_genres
     genres = []

@@ -1,5 +1,7 @@
 %h1= t('.title')
-%p= t('.explanation')
+%p
+  = t('.explanation')
+  = " (#{t(:total_x_records, count: @total)})"
 %table
   %thead
     %tr
