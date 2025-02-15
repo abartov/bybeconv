@@ -89,11 +89,21 @@ module ApplicationHelper
   end
 
   def textify_role(role, gender)
-    case role
-    when :author
+    case role.to_s
+    when 'author'
       return gender == 'female' ? t(:author_f) : t(:author)
-    when :translator
+    when 'translator'
       return gender == 'female' ? t(:translator_f) : t(:translator)
+    when 'editor'
+      return gender == 'female' ? t(:editor_f) : t(:editor)
+    when 'illustrator'
+      return gender == 'female' ? t(:illustrator_f) : t(:illustrator)
+    when 'photographer'
+      return gender == 'female' ? t(:photographer_f) : t(:photographer)
+    when 'publisher'
+      return t(:mlbhd)
+    when 'contributor'
+      return gender == 'female' ? t(:contributor_f) : t(:contributor)
     else
       return t(:unknown)
     end
