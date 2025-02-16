@@ -353,6 +353,12 @@ class Authority < ApplicationRecord
     return false # TODO: implement when user prefs implemented
   end
 
+  def gender
+    return nil if person.nil?
+
+    return person.gender
+  end
+
   def gender_letter
     # TODO: refactor this. Added this method to reduce amount of code to be changed during Authorities refactoring
     person.present? ? person.gender_letter : 'ו'

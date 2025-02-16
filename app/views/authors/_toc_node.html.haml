@@ -67,7 +67,7 @@
           != '&nbsp;&nbsp;&nbsp;'
           = link_to t(:edit), collection_manage_path(collection.id), style: 'font-size: 70%;'
         - collection.involved_authorities.reject{|x| x.authority_id == authority_id}.each do |ia|
-          %p= "#{ia.authority.name} (#{textify_role(ia.role, ia.authority.try(:gender))})"
+          %p= "#{ia.authority.name} (#{textify_role(ia.role, ia.authority.gender)})"
         - if collection.publisher_line.present?
           %p
             - pyear = collection.pub_year.present? ? ", #{collection.pub_year}" : ''
