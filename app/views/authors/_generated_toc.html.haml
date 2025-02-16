@@ -53,11 +53,13 @@
 
     function prune_collections() {
       $('.cwrapper').each(function() {
-        manifs = $(this).find('.manifestation-node:visible');
-        if(manifs.length == 1) {
-          $(this).children('.by-icon-v02').remove();
-          $(this).prepend(manifs.find('.by-icon-v02').clone());
-          manifs.hide();
+        if !$(this).hasClass('uncollected') {
+          manifs = $(this).find('.manifestation-node:visible');
+          if(manifs.length == 1) {
+            $(this).children('.by-icon-v02').remove();
+            $(this).prepend(manifs.find('.by-icon-v02').clone());
+            manifs.hide();
+          }
         }
       });
     }
