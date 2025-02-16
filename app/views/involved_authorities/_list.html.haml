@@ -13,6 +13,8 @@
       end
     %br
 - if edit
+  - unless item.involved_authorities.any?
+    %h3= t(:associated_persons)
   = t(:add)
   = autocomplete_field_tag "#{prefix}_autocomplete", '', autocomplete_authority_name_path,
                           id_element: "##{prefix}_authority_id", style: 'background-color:white;'
