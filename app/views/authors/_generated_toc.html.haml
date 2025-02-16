@@ -53,7 +53,7 @@
 
     function prune_collections() {
       $('.cwrapper').each(function() {
-        if $(this).hasClass('uncollected') == false {
+        if($(this).hasClass('uncollected') == false) {
           manifs = $(this).find('.manifestation-node:visible');
           if(manifs.length == 1) {
             $(this).children('.by-icon-v02').remove();
