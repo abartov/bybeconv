@@ -38,7 +38,10 @@ class CollectionItemsController < ApplicationController
       else
         success = false
       end
+    elsif params[:collection_item][:item_type] == 'other' # adding an existing collection
+      @collection_item.item = Collection.find(params[:collection_item][:item_id])
     end
+
     @collection_id = params[:collection_item][:collection_id]
     @collection = Collection.find(@collection_id)
     @collection_item.seqno = @collection.collection_items.maximum(:seqno).to_i + 1 unless @collection.nil?

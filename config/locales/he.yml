@@ -1477,6 +1477,8 @@ he:
     list:
       select_authority: נא לבחור ישות אחראית
   shared:
+    manage_collection:
+      select_manifestation: יש לבחור יצירה להלן
     manage_toc:
       choose_between_author_pubs: בחירה מתוך כותרים ידועים ליוצר זה
       collections_area: דף היוצר בשיטת האוספים

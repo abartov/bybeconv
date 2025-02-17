@@ -70,13 +70,13 @@
     });
     $('#qterm').on('railsAutocomplete.select', function(event, data){
       event.preventDefault();
-      $('#insert').val('Manifestation');
+      $(this).parent().parent().find('#insert').val('Manifestation');
       mid = data.item.id;
       $('#insert_mid').val( mid );
     });
     $('#cterm').on('railsAutocomplete.select', function(event, data){
       event.preventDefault();
-      $('#insert').val('Collection');
+      $(this).parent().parent().find('#insert').val('other');
       cid = data.item.id;
       $('#insert_cid').val( cid );
     });
@@ -84,12 +84,17 @@
     $('.collection_do_insert').click(function(e){
       e.preventDefault();
       e.stopImmediatePropagation();
+      insert = $(this).parent().parent().find('#insert');
+      if($(insert).val() == 'Manifestation' && $('#insert_mid').val() == '') {
+        alert("#{t('.select_manifestation')}");
+        return;
+      }
       par = $(this).closest('.cwrapper');
-      var item_type = par.find('#insert').first().val();
-      var collection_id = par.attr('data-collection-id');
-      var item_id = (item_type == 'Manifestation') ? par.find('#insert_mid').first().val() : (item_type == 'Collection') ? par.find('#insert_cid').first().val() : '';
-      var new_title = par.find('#insert_title').first().val();
-      var nonce = par.find('.headline-2-v02').first().attr('data-nonce');
+      var item_type = $(par).find('#insert').first().val();
+      var collection_id = $(par).attr('data-collection-id');
+      var item_id = (item_type == 'Manifestation') ? $(par).find('#insert_mid').first().val() : (item_type == 'other') ? $(par).find('#insert_cid').first().val() : '';
+      var new_title = $(par).find('#insert_title').first().val();
+      var nonce = $(par).find('.headline-2-v02').first().attr('data-nonce');
       $.ajax({
         url: '/collection_items',
         type: 'POST',
@@ -98,13 +103,13 @@
         success: function(data){
           $('#collection_insert_section').hide();
           //$('#'+nonce+'_coll_container_'+collection_id).scrollIntoView({behavior: 'smooth'})
-          par.find('*[data-focus-on-me=true]')[0].scrollIntoView({behavior: 'smooth'});
+          $(par).find('*[data-focus-on-me=true]')[0].scrollIntoView({behavior: 'smooth'});
         }
       });
     });
     $('.collection_insert_all_siblings').click(function(){
       par = $(this).closest('.cwrapper');
-      var collection_id = par.attr('data-collection-id');
+      var collection_id = $(par).attr('data-collection-id');
 
       // TODO: loop over siblings and insert them      
       $.ajax({
@@ -114,7 +119,7 @@
         data: {collection_item: {collection_id: collection_id, item_type: 'Collection', item_id: collection_id, alt_title: ''}},
         success: function(data){
           $('#collection_insert_section').hide();
-          par.find('*[data-focus-on-me=true]')[0].scrollIntoView({behavior: 'smooth'});
+          $(par).find('*[data-focus-on-me=true]')[0].scrollIntoView({behavior: 'smooth'});
           $('html, body').animate({scrollTop: $('##{nonce}_coll_container_'+collection_id).offset().top + $('##{nonce}_coll_container_'+collection_id).outerHeight() - $('header').height() - 180}, 500);
         }
       });
