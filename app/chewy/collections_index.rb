@@ -6,6 +6,7 @@ class CollectionsIndex < Chewy::Index
                         .preload(involved_authorities: :authority)
   field :id, type: :integer
   field :title
+  field :alternate_titles
   field :subtitle
   field :collection_type
   field :involved_authorities_string, value: lambda { |c|

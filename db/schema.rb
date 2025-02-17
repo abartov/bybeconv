@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_02_15_020904) do
+ActiveRecord::Schema.define(version: 2025_02_17_033359) do
 
   create_table "aboutnesses", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -304,6 +304,7 @@ ActiveRecord::Schema.define(version: 2025_02_15_020904) do
     t.integer "normalized_pub_year"
     t.text "credits"
     t.text "cached_credits"
+    t.string "alternate_titles", limit: 1024
     t.index ["inception_year"], name: "index_collections_on_inception_year"
     t.index ["publication_id"], name: "index_collections_on_publication_id"
     t.index ["sort_title"], name: "index_collections_on_sort_title"
