@@ -7,4 +7,4 @@
       %span.headline-1-v02= title
     .by-card-content-v02.mainlist{:style => "padding-top: 12px;"}
       %ul.toclist
-        = render partial: 'authors/toc_node', collection: top_level_by_role, locals: { role: role, authority_id: authority_id, editable: editable, nonce: nonce, uncollected: false }
+        = render partial: 'authors/toc_node', collection: top_level_by_role, locals: { role: role, authority_id: authority_id, editable: editable, nonce: nonce, uncollected: false, full_toc: false }
