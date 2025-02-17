@@ -1,5 +1,6 @@
 -# rubocop:disable Style/CaseLikeIf
-%li{ class: toc_node.is_a?(TocTree::ManifestationNode) ? 'manifestation-node' : '', style: toc_node.is_a?(TocTree::ManifestationNode) ? '' : 'margin-top: 15px; margin-bottom: 10px;' }
+- nodeclass = case when toc_node.is_a?(TocTree::ManifestationNode) then 'manifestation-node' when toc_node.is_a?(TocTree::PlaceholderNode) then 'ph-node' else '' end
+%li{ class: nodeclass, style: toc_node.is_a?(TocTree::ManifestationNode) ? '' : 'margin-top: 12px; margin-bottom: 10px;' }
   - if toc_node.is_a?(TocTree::ManifestationNode)
     - m = toc_node.manifestation
     - e = m.expression
