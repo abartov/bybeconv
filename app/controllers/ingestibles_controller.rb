@@ -365,7 +365,7 @@ class IngestiblesController < ApplicationController
     end
     creds = @collection.credits.presence || ''
     creds += "\n" + @ingestible.credits if @ingestible.credits.present?
-    credits = creds.lines.map(&:strip).uniq.join("\n")
+    credits = creds.lines.map(&:strip).uniq.reject { |x| x == '...' }.join("\n")
     @collection.credits = credits
     @collection.save!
     @changes[:collections] << [@collection.id, @collection.title, created_volume ? 'created' : 'updated'] # record the new volume for the post-ingestion screen
