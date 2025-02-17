@@ -55,7 +55,7 @@ class CollectionsMigrationController < ApplicationController
     return '' if buf.blank?
     credits = []
     buf.split("\n").each do |line|
-      next if line.blank?
+      next if line.blank? || line =~ /^\s*\.\.\.\s*$/
       next if line =~ /הקלידו/ || line =~ /הקלידה/ || line =~ /הקליד/ || line =~ /הגיהו/ || line =~ /horizontal/ || line =~ /##/
 
       credits << line.sub(/^\*\s+/, '').strip
