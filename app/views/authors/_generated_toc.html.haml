@@ -55,7 +55,8 @@
       $('.cwrapper').each(function() {
         if($(this).hasClass('uncollected') == false) {
           manifs = $(this).find('.manifestation-node:visible');
-          if(manifs.length == 1) {
+          placeholders = $(this).find('.ph-node:visible');
+          if(manifs.length == 1 && placeholders.length == 0) {
             $(this).children('.by-icon-v02').remove();
             $(this).prepend(manifs.find('.by-icon-v02').clone());
             manifs.hide();
