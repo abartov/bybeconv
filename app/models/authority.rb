@@ -223,7 +223,7 @@ class Authority < ApplicationRecord
   end
 
   def cached_works_count
-    Rails.cache.fetch("au_#{id}_work_count", expires_in: 24.hours) do
+    Rails.cache.fetch("au_#{id}_work_count", expires_in: 12.hours) do
       published_manifestations.count
     end
   end
@@ -233,13 +233,13 @@ class Authority < ApplicationRecord
   end
 
   def self.cached_count
-    Rails.cache.fetch('au_total_count', expires_in: 24.hours) do
+    Rails.cache.fetch('au_total_count', expires_in: 12.hours) do
       count
     end
   end
 
   def self.cached_toc_count
-    Rails.cache.fetch('au_toc_count', expires_in: 24.hours) do
+    Rails.cache.fetch('au_toc_count', expires_in: 12.hours) do
       has_toc.count
     end
   end
