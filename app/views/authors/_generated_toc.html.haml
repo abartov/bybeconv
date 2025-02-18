@@ -57,9 +57,11 @@
           manifs = $(this).find('.manifestation-node:visible');
           placeholders = $(this).find('.ph-node:visible');
           if(manifs.length == 1 && placeholders.length == 0) {
-            $(this).children('.by-icon-v02').remove();
-            $(this).prepend(manifs.find('.by-icon-v02').clone());
-            manifs.hide();
+            if($(manifs[0]).find('.mtitle').text().trim() == $(this).find('.ctitle').text().trim()) {
+              $(this).children('.by-icon-v02').remove();
+              $(this).prepend(manifs.find('.by-icon-v02').clone());
+              manifs.hide();
+            }
           }
         }
       });
