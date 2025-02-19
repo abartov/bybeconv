@@ -5,7 +5,8 @@ class CollectionsMigrationController < ApplicationController
   layout 'backend', only: [:person]
   def index
     @total = Authority.has_toc.count
-    @authorities = Authority.has_toc.order(impressions_count: :desc).limit(100)
+    #@authorities = Authority.has_toc.order(impressions_count: :desc).limit(100)
+    @authorities = Authority.has_toc.sort_by{|x| x.cached_works_count}
   end
 
   def person
