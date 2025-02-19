@@ -445,6 +445,16 @@ class Collection < ApplicationRecord
     CollectionItem.where(item: self)
   end
 
+  # update status of ALL manifestations included in this collection, including in nested collections
+  def change_all_manifestations_status(new_status)
+    flatten_items.each do |ci|
+      next if ci.item.nil? || ci.item_type != 'Manifestation'
+
+      ci.item.status = new_status
+      ci.item.save!
+    end
+  end
+
   protected
 
   def collection_item_from_anything(item)
