@@ -9,9 +9,9 @@
                 class: 'by-button-v02 by-button-secondary-v02'
     .collection_action_btns
       - unless focused
-        .collection_insert_all_siblings.by-button-v02
+        .collection_insert_all_siblings.by-button-v02{title: t(:insert_all_siblings)}
           %b.white= '⇇'
-        .collection_focus_button.by-button-v02
+        .collection_focus_button.by-button-v02{title: t(:focus_on_this_collection)}
           %b= link_to '⤝', collection_manage_path(collection.id), class: 'white'
   - if collection
     .container-fluid{ style: 'position:relative;', id: "#{nonce}_coll_container_#{collection.id}" }
@@ -66,7 +66,7 @@
                       .button_series
                         .collection_insert_button.by-button-v02
                           %b.white= '+'
-                        .coll_toggle.by-button-v02{ data: { target: "#coll_#{ci.item_id}", toggle: :collapse } }
+                        .coll_toggle.by-button-v02{ data: { target: "##{nonce}_coll_#{ci.item_id}", toggle: :collapse }, title: t(:collapse_collection) }
                           %b.white= '↕'
                     %div{ style: 'margin-right: 25px;' }
                       - if @colls_traversed.include?(ci.item.id)

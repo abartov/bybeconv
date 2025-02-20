@@ -728,6 +728,9 @@ he:
   latest_facebook: עדכונים אחרונים בעמוד הפייסבוק
   latest_updates: עדכונים אחרונים
   latest_added_works: יצירותי%{gender_letter} האחרונות שראו אור בפרויקט
+  insert_all_siblings: הכנסת כל הפריטים האחים מרמה זו פנימה
+  focus_on_this_collection: ניהול אוסף זה
+  collapse_collection: קיפול/פריסת האוסף
   background: רקע
   placeholder_image: "צללית יוצר/ת"
   new_works: יצירות חדשות במאגר

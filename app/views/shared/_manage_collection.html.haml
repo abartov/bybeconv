@@ -38,6 +38,8 @@
   .button_series
     .collection_insert_button.by-button-v02
       %b.white= '+'
+    .coll_toggle.by-button-v02{ title: t(:collapse_collection), data: { target: "##{nonce}_coll_#{collection.id}", toggle: :collapse } }
+      %b.white= '↕'
 
 %div{style: 'margin-right: 10px;'}
   - @colls_traversed = [collection.id]
