@@ -217,7 +217,7 @@ class CollectionsController < ApplicationController
       end
     end
     @collection_total_items = @collection.collection_items.reject { |ci| ci.paratext }.count
-    @collection_minus_placeholders = @collection.collection_items.reject { |ci| !ci.public? }.count
+    @collection_minus_placeholders = @collection.collection_items.reject { |ci| !ci.public? || ci.paratext }.count
     @authority_for_image = if @collection.authors.present?
                              @collection.authors.first
                            elsif @collection.translators.present?
