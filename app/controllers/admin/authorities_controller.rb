@@ -9,7 +9,7 @@ module Admin
 
     def refresh_uncollected_works_collection
       RefreshUncollectedWorksCollection.call(@authority)
-      redirect_to authority_new_toc_path(@authority), notice: t(:updated_successfully)
+      redirect_to authority_path(@authority.id), notice: t(:updated_successfully)
     end
 
     private
