@@ -65,7 +65,7 @@ class CollectionsController < ApplicationController
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
         <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="he" lang="he" dir="rtl">
         <head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
-        <body dir='rtl' align='right'><div dir="rtl" align="right">
+        <body dir='rtl'><div dir="rtl" align="right">
         <div style="font-size:300%; font-weight: bold;">#{@collection.title}</div>
         #{@htmls.map { |h| "<h1>#{h[0]}</h1>\n#{I18n.t(:by)}<h2>#{h[1].map { |p| "<a href=\"/author/#{p.id}\">#{p.name}</a>" }.join(', ')}</h2>#{h[2]}" }.join("\n").force_encoding('UTF-8')}
 
