@@ -30,11 +30,11 @@ class CollectionsMigrationController < ApplicationController
       # associate specified manifestation IDs with the collection
       if params[:text_ids].present?
         params[:text_ids].each do |id|
-          if id =~ /\D/ # placeholder text
-            @collection.append_collection_item(CollectionItem.new(alt_title: id))
-          else
-            m = Manifestation.find(id)
+          if id =~ /^ZZID:/ # a manifestation
+            m = Manifestation.find($')
             @collection.append_item(m)
+          else # placeholder text
+            @collection.append_collection_item(CollectionItem.new(alt_title: id))
           end
         end
       end
