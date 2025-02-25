@@ -15,6 +15,9 @@
               .work-title.name-under-btn
                 .headline-1-v02
                   = @collection.title
+                  - if @collection.subtitle.present?
+                    %br
+                    %span{style:'font-size:80%;'}= @collection.subtitle
                   %span.metadata-link-icon.binder-icon G
                 - if current_user && current_user.editor?
                   = link_to collection_manage_path(@collection.id), {style:'color:white;'} do

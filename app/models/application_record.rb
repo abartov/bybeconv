@@ -12,6 +12,7 @@ class ApplicationRecord < ActiveRecord::Base
   end
 
   def update_sort_title!
+    self.title = title.strip.gsub(/\p{Space}*$/, '') if title.present? # strip is insufficient as it doesn't remove nbsps, which are sometimes coming from bibliographic data
     return unless sort_title.blank? || (title_changed? && !sort_title_changed?)
 
     self.sort_title = title.strip_nikkud.tr('[]()*"\'', '').tr('-־', ' ').strip

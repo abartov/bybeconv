@@ -26,7 +26,7 @@
       != @editors.map { |t| link_to(t.name, authority_path(t)) }.join(', ')
   - if @volumes.present? && !@single_text_volume
     - @volumes.each do |v|
-      = link_to "#{t(:inside)} #{v.title}", collection_path(v)
+      = link_to "#{t(:inside)} #{v.title}#{v.subtitle.present? ? ': '+v.subtitle : ''}", collection_path(v)
 
 %div
   .metadata
