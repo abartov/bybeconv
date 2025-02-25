@@ -16,7 +16,11 @@
   %tbody
     - @collections.each do |collection|
       %tr
-        %td= collection.title
+        %td
+          = collection.title
+          - if collection.subtitle.present?
+            %br
+            = collection.subtitle
         %td= collection.issn
         %td= collection.collection_type
         %td= collection.inception

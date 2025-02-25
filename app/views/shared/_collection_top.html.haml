@@ -15,6 +15,9 @@
       .work-and-author-names-mobile
         .headline-1-v02
           #{textify_collection_type(@collection.collection_type)}: #{@collection.title}
+          - if @collection.subtitle.present?
+            %br
+            %span{style:'font-size:80%;'}= @collection.subtitle
         .headline-3-v02
           - if @collection.authors.present?
             #{t(:by)}:
@@ -27,6 +30,9 @@
           .work-and-author-names-desktop
             .headline-1-v02
               #{textify_collection_type(@collection.collection_type)}: #{@collection.title}
+              - if @collection.subtitle.present?
+                %br
+                %span{style:'font-size:80%;'}= @collection.subtitle
             .headline-3-v02
               - if @collection.authors.present?
                 #{t(:by)}:
