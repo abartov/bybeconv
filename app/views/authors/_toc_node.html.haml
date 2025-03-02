@@ -72,7 +72,8 @@
         - if collection.publisher_line.present?
           %p
             - pyear = collection.pub_year.present? ? ", #{collection.pub_year}" : ''
-            = "#{collection.publisher_line}#{pyear}"
+            - unless pyear.strip == ', 0' # special case to suppress year of a collection we want to place at the head of the page
+              = "#{collection.publisher_line}#{pyear}"
       - is_involved = collection.involved_authorities.where(authority_id: authority_id).present?
       - if editable && (collection.collection_type == 'uncollected' || is_involved) # only show editable collections for collections where this particular author is a principal contributor
         = render partial: 'shared/manage_collection', locals: { collection: collection, title: collection.title, nonce: nonce }
