@@ -30,6 +30,8 @@
           %td{style: bgstyle}= link_to t(:show), ingestible
           - if editable
             %td{style: bgstyle}= link_to t(:edit), edit_ingestible_path(ingestible)
+            - if unlockable
+              %td{style: bgstyle}= link_to t(:unlock), unlock_ingestible_path(ingestible), method: :patch
             %td{style: bgstyle}= link_to t(:destroy), ingestible, method: :delete, data: { confirm: t(:are_you_sure) }
 
 %br

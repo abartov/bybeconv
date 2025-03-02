@@ -286,6 +286,7 @@ he:
   scanning: סריקת ספרים
   donation: תרומה כספית
   unlisted: בהזמנה בלבד
+  unlock: שחרר נעילת העלאה
   curated_text_bit: טקסט מלווה
   curated_text_bits: טקסטים מלווים
   word_count: מספר מילים
@@ -1417,6 +1418,9 @@ he:
       success: ההעלאה עודכנה
     undo:
       undone: ההעלאה בוטלה. היצירות נמחקו, ואם נוצר כותר ולא נוספו לו פריטים מעבר להעלאה זו, גם הכותר נמחק.
+    unlock:
+      success: שוחרר בהצלחה!
+      not_locked_by_you: לא נעול על ידך!
     ingest:
       ingestion_now_pending: ההעלאה ממתינה עכשיו ליצירת אישים
       failures: אירעו שגיאות. ראו בשדה תיאור בעיה בלשונית הראשונה.

@@ -320,7 +320,7 @@ class Ingestible < ApplicationRecord
     return true
   end
 
-  def release_lock
+  def release_lock!
     update_columns(locked_at: nil, locked_by_user_id: nil) # we deliberately skip validations here # rubocop:disable Rails/SkipsModelValidations
   end
 end
