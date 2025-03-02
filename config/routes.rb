@@ -28,6 +28,7 @@ Bybeconv::Application.routes.draw do
       get :edit_toc
       post :ingest
       post :undo
+      patch :unlock
     end
   end
 

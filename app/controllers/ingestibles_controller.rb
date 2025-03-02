@@ -7,7 +7,7 @@ class IngestiblesController < ApplicationController
   before_action { |c| c.require_editor('edit_catalog') }
   before_action :set_ingestible,
                 only: %i(show edit update update_markdown update_toc destroy review ingest edit_toc update_toc_list
-                         undo)
+                         undo unlock)
   before_action :try_to_lock_ingestible,
                 only: %i(show edit update update_markdown destroy review update_toc update_toc_list edit_toc undo)
 
@@ -60,6 +60,16 @@ class IngestiblesController < ApplicationController
     @collection.destroy! if @collection.present? && changes['collections'].first[2] == 'created' && @collection.collection_items.empty?
     @ingestible.draft!
     redirect_to edit_ingestible_url(@ingestible), notice: t('.undone')
+  end
+
+  # PATCH /ingestibles/1/unlock
+  def unlock
+    if @ingestible.locked_by_user == current_user
+      @ingestible.release_lock!
+      redirect_to ingestibles_url, notice: t('.success')
+    else
+      redirect_to ingestibles_url, error: t('.not_locked_by_you')
+    end
   end
 
   # GET /ingestibles/1/ingest
