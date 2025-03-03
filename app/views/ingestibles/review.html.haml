@@ -90,7 +90,7 @@
             - if text[0] == 'no'
               %td{colspan: 3, align: 'center'}
                 = t('.placeholder')
-                - if @collection.blank? || (@collection.present? && @collection.placeholders.map(&:alt_title).include?(text[1]))
+                - if @collection.present? && @collection.placeholders.map(&:alt_title).include?(text[1])
                   %span{style: 'font-size:70%;'}!= t('.already_in_collection')
             - else
               - authorities_string = authorities_including_implicit(text[2])
