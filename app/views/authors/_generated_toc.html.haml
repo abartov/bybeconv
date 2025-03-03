@@ -1,9 +1,10 @@
-%p= t(:show_genres)
--# show a checkbox for each present genre to show/hide items of that genre
-- get_genres.each do |genre|
-  %span.hidden{id: "genre_#{genre}"}
-    = check_box_tag "genre_#{genre}", 1, true, class: 'genre_checkbox'
-    = label_tag "genre_#{genre}", textify_genre(genre)
+#genre_filtering{style: 'display: none';}
+  %h3= t(:show_genres)
+  -# show a checkbox for each present genre to show/hide items of that genre
+  - get_genres.each do |genre|
+    %span.hidden{id: "genre_#{genre}"}
+      = check_box_tag "genre_#{genre}", 1, true, class: 'genre_checkbox'
+      = label_tag "genre_#{genre}", textify_genre(genre)
 %p
   = t(:sort_by)
   = select_tag :sort_by, options_for_select([[t(:collections_and_pubdates_asc), 'colls'], [t(:collections_abc),'colls_abc'], [t(:alefbet_asc), 'title'], [t(:popularity_desc), 'popularity_desc'], [t(:popularity_asc), 'popularity_asc'], [t(:pubdate_asc), 'pubdate_asc'], [t(:pubdate_desc), 'pubdate_desc'], [t(:creation_date_asc), 'creation_date_asc'], [t(:creation_date_desc), 'creation_date_desc'], [t(:uploaddate_asc), 'upload_date_asc'], [t(:uploaddate_desc), 'upload_date_desc']  ], params[:sort_by])
@@ -69,6 +70,7 @@
     $('#sort_by').change(function(){
       if(this.value == 'colls') {
         $('#browse_mainlist').html(orig_mainlist);
+        $('#genre_filtering').hide();
       } else {
         $('.sorting_caveat').hide();
         $('.metadata-creation-date').hide();
@@ -76,15 +78,16 @@
         $('.metadata-upload-date').hide();
         if (this.value == 'colls_abc') {
           $('#browse_mainlist').html(orig_mainlist);
+          $('#genre_filtering').hide();
           nodes_to_sort = $('.cwrapper');
           nodes_to_sort.sort(function(a, b) {
             x = $(a).find('span').text();
             y = $(b).find('span').text();
             return x.localeCompare(y);
           });
-
         } else {
           $('.metadata-source-edition').hide();
+          $('#genre_filtering').show();
           nodes_to_sort = $('.manifestation-node');
           var sortval;
           var sort_asc = true;
