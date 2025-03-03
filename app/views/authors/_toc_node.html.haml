@@ -90,8 +90,9 @@
   - elsif toc_node.is_a?(TocTree::PlaceholderNode)
     -# Placeholder, toc_node should be a String with HTML layout
     - ci = toc_node.collection_item
-    - if toc_node.markdown.present?
-      != MultiMarkdown.new(ci.markdown).to_html
-    - else
+    - if ci.alt_title.present?
       = ci.alt_title
+    - if toc_node.markdown.present?
+      %br
+      != MultiMarkdown.new(ci.markdown).to_html
 -# rubocop:enable Style/CaseLikeIf
