@@ -23,7 +23,7 @@
   - @changes['texts'].each do |text|
     %li
       %b= link_to text[1], manifestation_path(text[0])
-      = " (#{t(text[2])})"
+      = " (#{text[2]})"
 
 %h3= t('.placeholders')
 %ul
