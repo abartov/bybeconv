@@ -168,7 +168,7 @@ GEM
     capistrano3-puma (1.2.1)
       capistrano (~> 3.0)
       puma (>= 2.6)
-    cgi (0.4.1)
+    cgi (0.4.2)
     character_set (1.8.0)
     chartkick (5.1.2)
     chewy (7.6.0)
