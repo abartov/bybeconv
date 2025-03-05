@@ -118,6 +118,7 @@ class IngestiblesController < ApplicationController
   def edit
     @ingestible.update_parsing # refresh markdown or text buffers if necessary
     prep(true) # rendering of HTML needed for editing screen
+    @tab = params[:tab]
   end
 
   # POST /ingestibles or /ingestibles.json
@@ -179,7 +180,7 @@ class IngestiblesController < ApplicationController
   def update_markdown
     markdown_params = params.require(:ingestible).permit(:markdown)
     @ingestible.update!(markdown_params)
-    redirect_to edit_ingestible_url(@ingestible), notice: t(:updated_successfully)
+    redirect_to edit_ingestible_url(@ingestible, tab: 'full_markdown'), notice: t(:updated_successfully)
   end
 
   def update_toc
@@ -248,7 +249,7 @@ class IngestiblesController < ApplicationController
              end
     end
     @ingestible.update_columns(toc_buffer: ret.join("\n"))
-    redirect_to edit_ingestible_url(@ingestible), notice: t('updated_successfully'), status: :see_other
+    redirect_to edit_ingestible_url(@ingestible, tab: 'toc'), notice: t('updated_successfully'), status: :see_other
   end
 
   # DELETE /ingestibles/1 or /ingestibles/1.json
