@@ -12,9 +12,9 @@
     %a.nav-link.active{ href: '#general', 'data-toggle': 'tab', style: 'width: unset;' }= t('.general')
   - unless @ingestible.new_record?
     %li.nav-item
-      %a.nav-link{href: '#full_markdown', 'data-toggle': 'tab', style: 'width: unset;'}= t('.full_markdown')
+      %a.nav-link#full_markdown_header{href: '#full_markdown', 'data-toggle': 'tab', style: 'width: unset;'}= t('.full_markdown')
     %li.nav-item
-      %a.nav-link{href: '#toc', 'data-toggle': 'tab', style: 'width: unset;'}= t('.toc')
+      %a.nav-link#toc_header{href: '#toc', 'data-toggle': 'tab', style: 'width: unset;'}= t('.toc')
     %li.nav-item
       %a.nav-link#texts_header{ href: '#texts', 'data-toggle': 'tab', style: 'width: unset;' }= t('.texts')
 .tab-content
@@ -166,6 +166,8 @@
   $(function() {
     if (#{params[:text_index].present?}) {
       $('#texts_header').click();
+    } else if (#{@tab.present?}) {
+      $("##{@tab}_header").click();
     }
 
     $('#explain_no_volume').popover({content:
