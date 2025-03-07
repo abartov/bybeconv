@@ -817,7 +817,7 @@ module BybeUtils
      8233, 8239, 8287, 12_288].include?(cp)
   end
 
-  def a(id)
+  def au(id)
     Authority.find(id)
   end
 
