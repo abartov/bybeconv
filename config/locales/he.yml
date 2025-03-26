@@ -291,6 +291,7 @@ he:
   curated_text_bits: טקסטים מלווים
   word_count: מספר מילים
   page_count: מספר עמודים
+  ingestibles_system: מערכת ההעלאות
   total_result_pages: "סך עמודי תוצאות: %{x}"
   contact_form_title: יצירת קשר עם פרויקט בן־יהודה
   volunteer_form_title: איך תרצו לעזור?
