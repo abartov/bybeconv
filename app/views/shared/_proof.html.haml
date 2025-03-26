@@ -64,7 +64,7 @@
       if(document.getSelection().toString() == '') {
         e.preventDefault();
         alert("#{t(:proof_please_select_something)}");
-      } else if(document.getSelection().toString().length < 40) {
+      } else if(document.getSelection().toString().length < 20) {
         e.preventDefault();
         alert("#{t(:proof_too_short)}");
       }
