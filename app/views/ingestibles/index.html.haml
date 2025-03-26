@@ -1,8 +1,8 @@
+= link_to t('.start_new'), new_ingestible_path, class: 'btn btn-primary'
+%p
 = render partial: 'ingestibles_table', locals: { title: t('.my_title'), ingestibles: @my_ingestibles, editable: true, unlockable: true }
 = render partial: 'ingestibles_table', locals: { title: t('.locked_title'),ingestibles: @locked_ingestibles, editable: false, unlockable: false }
 = render partial: 'ingestibles_table', locals: { title: t('.other_title'),ingestibles: @other_ingestibles, editable: true, unlockable: false }
 %br
 
-= link_to t('.start_new'), new_ingestible_path, class: 'btn btn-primary'
-%p
 != paginate @other_ingestibles
