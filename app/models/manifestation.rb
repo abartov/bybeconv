@@ -135,7 +135,29 @@ class Manifestation < ApplicationRecord
     )
   end
 
-  # return containing collections of collectin_type volume or periodical_issue
+  # check whether the manifestation is included in a collection of type uncollected
+  def uncollected?
+    return true if collection_items.empty?
+
+    collection_items.each do |ci|
+      return true if ci.collection.collection_type == 'uncollected'
+    end
+    return false
+  end
+
+  # async update the uncollected collection this text was still in
+  def trigger_uncollected_recalculation 
+    return if collection_items.empty?
+    collection_items.joins(:collection).where(collection: {collection_type: 'uncollected'}).each do |ci|
+      au = Authority.where(uncollected_works_collection_id: ci.collection.id) 
+      if au.present?
+        # RefreshUncollectedWorksJob.perform_async(au.first.id) # must be at most one
+        RefreshUncollectedWorksCollection.call(au.first)
+      end
+    end
+  end
+
+  # return containing collections of collection_type volume or periodical_issue
   def volumes
     ret = []
     containers = collection_items.includes(:collection).map(&:collection)
