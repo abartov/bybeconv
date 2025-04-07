@@ -3,8 +3,10 @@ module IngestibleHelper
     return ptitle if ptitle.present?
     return nil if prospective_volume_id.nil?
 
-    return Collection.find(prospective_volume_id).title_and_authors unless prospective_volume_id[0] == 'P'
-
+    unless prospective_volume_id[0] == 'P'
+      c = Collection.find(prospective_volume_id)
+      return c.title_and_authors if c.present?
+    end
     pub = Publication.find(prospective_volume_id[1..-1])
     return "#{pub.authority.name} – #{pub.title} (#{t(:new)}!)"
   end
