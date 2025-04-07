@@ -179,6 +179,7 @@ class IngestiblesController < ApplicationController
 
   def update_markdown
     markdown_params = params.require(:ingestible).permit(:markdown)
+    markdown_params['markdown'].gsub!(/^\s*/,'') # get rid of leading whitespace
     @ingestible.update!(markdown_params)
     redirect_to edit_ingestible_url(@ingestible, tab: 'full_markdown'), notice: t(:updated_successfully)
   end
