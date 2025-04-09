@@ -11,7 +11,7 @@ class CollectionItem < ApplicationRecord
   def title
     if item.nil?
       return alt_title if alt_title.present?
-      return first_contentful_markdown if markdown.present?
+      # return first_contentful_markdown if markdown.present?
 
       return ''
     else
