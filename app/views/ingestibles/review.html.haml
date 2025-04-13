@@ -4,7 +4,7 @@
     %h2= t('.errors')
     - if @missing_publisher_info
       %p= t('.missing_publisher_info')
-    - [[@missing_genre, '.missing_genre'], [@missing_origlang, '.missing_origlang'], [@missing_authority, '.missing_authority'], [@missing_authors, 'ingestible.author_missing'], [@missing_translators, 'ingestible.translator_missing'], [@missing_in_markdown, '.missing_in_markdown'], [@extraneous_markdown, '.extraneous_markdown']].each do |missing, label|
+    - [[@missing_genre, '.missing_genre'], [@missing_origlang, '.missing_origlang'], [@missing_authority, '.missing_authority'], [@missing_authors, 'ingestible.author_missing'], [@missing_translators, 'ingestible.translator_missing'], [@missing_in_markdown, '.missing_in_markdown'], [@extraneous_markdown, '.extraneous_markdown'], [@empty_texts, '.empty_texts']].each do |missing, label|
       - if missing.present?
         %p= t(label)
         %ul
