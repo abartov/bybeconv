@@ -524,6 +524,7 @@ he:
   override_validation: דלג על בדיקת שדות
   title_ends_with_period: הכותרת מסתיימת בנקודה
   title_starts_with_ordinals: הכותרת מתחילה עם סודר
+  empty_work_title_or_no_content: יצירה ללא כותרת או ריקה מתוכן
   translation_must_have_translator: שפת המקור אינה עברית אך לא צוין מתרגם
   translation_must_have_original_language: צוין מתרגם אך לא צוינה שפת מקור
   reading_mode: טקסט בלבד
@@ -1446,6 +1447,7 @@ he:
       back_to_editing: חזרה לעריכת ההעלאה
       missing_in_markdown: 'הכותרות הבאות חסרות במארקדאון:'
       extraneous_markdown: 'הכותרות הבאות מופיעות במארקדאון ולא נכללו בהעלאה:'
+      empty_texts: 'ליצירות הבאות לא הוזן תוכן:'
       missing_genre: 'ליצירות הבאות לא הוגדרה סוגה:'
       missing_origlang: 'ליצירות הבאות לא הוגדרה שפת מקור:'
       missing_authority: 'ליצירות הבאות לא קושר אף אדם או ארגון:'

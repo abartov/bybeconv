@@ -78,6 +78,7 @@ class Ingestible < ApplicationRecord
   end
 
   def update_parsing
+    debugger
     if docx.attached? && (markdown.blank? || docx.attachment.created_at > markdown_updated_at)
       self.markdown = convert_to_markdown
     end
@@ -213,26 +214,19 @@ class Ingestible < ApplicationRecord
   # split markdown into sections and populate or update the works_buffer
   def update_buffers
     return if markdown.blank?
+    buf = []
+    sections = markdown.split(/^&&& /)
 
-    buf = if multiple_works?
-            sections = markdown.split('&&& ')
-            # this would skip the first match if no text appeared before the first &&&
-            sections.map do |section|
-              title = section.lines.first # may be nil - handle in view
-              title.strip! if title.present?
-              content = section.lines[1].nil? ? [] : section.lines[1..].map(&:strip)
-              # the file may have multiple works but also some words (e.g. a dedication) before
-              # the first work. This should be treated as text without a title, and is handled
-              # later, in the works_buffers.
-              if content.join.blank? && title.present?
-                content = [title]
-                title = nil
-              end
-              { title: title, content: content.join("\n") } if content.present?
-            end.compact
-          else
-            [{ title: self.title, content: markdown }]
-          end
+    sections.each do |section|
+      # skip the first match if no text appeared before the first &&&
+      next if section.blank?
+      lines = section.lines
+      title = lines.first
+      title.strip! if title.present?
+      content = lines[1].nil? ? [] : lines[1..].map(&:strip)
+      buf << { title: title, content: content.present? ? content.join("\n") : '' } if title.present?
+    end
+
     if multiple_works? && markdown =~ /\[\^\d+\]/ # if there are footnotes in the text
       footnotes_fixed_buffers = relocate_footnotes.map { |k, v| v }
       buf.each_index do |i|

@@ -179,7 +179,10 @@ class IngestiblesController < ApplicationController
 
   def update_markdown
     markdown_params = params.require(:ingestible).permit(:markdown)
-    markdown_params['markdown'].gsub!(/^\s*/,'') # get rid of leading whitespace
+    # get rid of leading whitespace
+    pos = markdown_params['markdown'].index(/\S/)
+    markdown_params['markdown'] = markdown_params['markdown'][pos..-1] if pos.present? && pos > 0
+
     @ingestible.update!(markdown_params)
     redirect_to edit_ingestible_url(@ingestible, tab: 'full_markdown'), notice: t(:updated_successfully)
   end
@@ -268,8 +271,34 @@ class IngestiblesController < ApplicationController
 
   def prep(render_html = false)
     markdown = @ingestible.markdown.presence || ''
-    @markdown_titles = markdown.scan(/^&&&\s+(.+?)\s*\n/).map(&:first)
-    @html = MarkdownToHtml.call(markdown) if render_html
+    @html = ''
+    @disable_submit = false
+    @markdown_titles = []
+
+    sections = JSON.parse(@ingestible.works_buffer)
+    sections.each do |section|
+      title = section['title']
+      @markdown_titles << title
+      content = section['content']
+
+      if render_html
+        #markdown_texts = split_parts.map(&:last)
+        if title.present? && content.present?
+          validator = TitleValidator.new
+          dummy = Work.new(title: title.sub(/_ZZ\d+/, ''))
+          if validator.validate(dummy)
+            doctored_title = title
+          else
+            doctored_title = "<span style='color:red'>#{title}</span><br><span style='color:red'>#{dummy.errors.full_messages.join('<br />')}</span>"
+            @disable_submit = true
+          end
+        else
+          doctored_title = "<span style='color:red'>#{title} #{t(:empty_work_title_or_no_content)}</span>"
+        end
+        @html += "<hr style='border-color:#2b0d22;border-width:20px;margin-top:40px'/><h1>#{doctored_title.sub(/_ZZ\d+/,
+                                                                                                              '')}</h1>" +  MarkdownToHtml.call(content)
+      end
+    end
   end
 
   # this method prepares the ingestible for ingestion:
@@ -320,7 +349,13 @@ class IngestiblesController < ApplicationController
       @missing_origlang << x[1] if x[4].blank? || (x[4] == 'he' && seen_translator)
       @missing_authors << x[1] unless seen_author
     end
-    @errors = @missing_in_markdown.present? || @extraneous_markdown.present? || @missing_genre.present? || @missing_origlang.present? || @missing_authority.present? || @missing_translators.present? || @missing_authors.present? || @missing_publisher_info
+    @empty_texts = []
+    @ingestible.texts.each do |t|
+      next if t.content.present? && t.content.strip.length > 0
+      @empty_texts << t.title
+    end
+
+    @errors = @missing_in_markdown.present? || @extraneous_markdown.present? || @missing_genre.present? || @missing_origlang.present? || @missing_authority.present? || @missing_translators.present? || @missing_authors.present? || @missing_publisher_info || @empty_texts
   end
 
   # Only allow a list of trusted parameters through.
