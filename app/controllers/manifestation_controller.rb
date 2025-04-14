@@ -269,7 +269,17 @@ class ManifestationController < ApplicationController
 
   def readmode
     @readmode = true
-    prep_for_read
+    @m = Manifestation.find(params[:id])
+    if @m.nil?
+      head :not_found
+    else
+      unless @m.published?
+        flash[:notice] = t(:work_not_available)
+        redirect_to '/'
+      else
+        prep_for_read
+      end
+    end
   end
 
   def print
