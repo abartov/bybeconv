@@ -1,5 +1,5 @@
 %h1= t('.title', title: @ingestible.title)
-- if @errors
+- if @errors.present?
   .lredbg
     %h2= t('.errors')
     - if @missing_publisher_info
