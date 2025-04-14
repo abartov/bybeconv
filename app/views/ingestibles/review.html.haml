@@ -116,7 +116,7 @@
                     = title
                     %br
 
-- if @errors
+- if @errors.present?
   %h2.redbg= t('.cannot_ingest_with_errors')
 - else
   - if @authorities_tbd.present?
