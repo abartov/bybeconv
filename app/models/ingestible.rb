@@ -78,7 +78,6 @@ class Ingestible < ApplicationRecord
   end
 
   def update_parsing
-    debugger
     if docx.attached? && (markdown.blank? || docx.attachment.created_at > markdown_updated_at)
       self.markdown = convert_to_markdown
     end
