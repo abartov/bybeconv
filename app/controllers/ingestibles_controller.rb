@@ -75,7 +75,7 @@ class IngestiblesController < ApplicationController
   # GET /ingestibles/1/ingest
   def ingest
     prep_for_ingestion
-    if @errors
+    if @errors.present?
       @ingestible.draft! unless @ingestible.draft?
       redirect_to review_ingestible_url(@ingestible), alert: t('.errors')
     elsif @authorities_tbd.present?
