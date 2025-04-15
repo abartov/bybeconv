@@ -299,6 +299,7 @@ class IngestiblesController < ApplicationController
                                                                                                               '')}</h1>" +  MarkdownToHtml.call(content)
       end
     end
+    @html = highlight_suspicious_markdown(@html) # highlight suspicious markdown in backend
   end
 
   # this method prepares the ingestible for ingestion:
