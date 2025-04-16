@@ -274,32 +274,33 @@ class IngestiblesController < ApplicationController
     @html = ''
     @disable_submit = false
     @markdown_titles = []
+    if @ingestible.works_buffer.present?
+      sections = JSON.parse(@ingestible.works_buffer)
+      sections.each do |section|
+        title = section['title']
+        @markdown_titles << title
+        content = section['content']
 
-    sections = JSON.parse(@ingestible.works_buffer)
-    sections.each do |section|
-      title = section['title']
-      @markdown_titles << title
-      content = section['content']
-
-      if render_html
-        #markdown_texts = split_parts.map(&:last)
-        if title.present? && content.present?
-          validator = TitleValidator.new
-          dummy = Work.new(title: title.sub(/_ZZ\d+/, ''))
-          if validator.validate(dummy)
-            doctored_title = title
+        if render_html
+          #markdown_texts = split_parts.map(&:last)
+          if title.present? && content.present?
+            validator = TitleValidator.new
+            dummy = Work.new(title: title.sub(/_ZZ\d+/, ''))
+            if validator.validate(dummy)
+              doctored_title = title
+            else
+              doctored_title = "<span style='color:red'>#{title}</span><br><span style='color:red'>#{dummy.errors.full_messages.join('<br />')}</span>"
+              @disable_submit = true
+            end
           else
-            doctored_title = "<span style='color:red'>#{title}</span><br><span style='color:red'>#{dummy.errors.full_messages.join('<br />')}</span>"
-            @disable_submit = true
+            doctored_title = "<span style='color:red'>#{title} #{t(:empty_work_title_or_no_content)}</span>"
           end
-        else
-          doctored_title = "<span style='color:red'>#{title} #{t(:empty_work_title_or_no_content)}</span>"
+          @html += "<hr style='border-color:#2b0d22;border-width:20px;margin-top:40px'/><h1>#{doctored_title.sub(/_ZZ\d+/,
+                                                                                                                '')}</h1>" +  MarkdownToHtml.call(content)
         end
-        @html += "<hr style='border-color:#2b0d22;border-width:20px;margin-top:40px'/><h1>#{doctored_title.sub(/_ZZ\d+/,
-                                                                                                              '')}</h1>" +  MarkdownToHtml.call(content)
       end
+      @html = highlight_suspicious_markdown(@html) # highlight suspicious markdown in backend
     end
-    @html = highlight_suspicious_markdown(@html) # highlight suspicious markdown in backend
   end
 
   # this method prepares the ingestible for ingestion:
