@@ -9,6 +9,10 @@
     = link_to t('.show_open'), proofs_path(status: 'new')
   %p
     = link_to t('.show_escalated'), proofs_path(status: 'escalated')
+  %p
+    = link_to t('.show_fixed'), proofs_path(status: 'fixed')
+  %p
+    = link_to t('.show_wontfix'), proofs_path(status: 'wontfix')
   %h2= t(:statistics)
   %p
     - ['all', 'new', 'assigned', 'fixed', 'escalated', 'wontfix', 'spam'].each do |st|
