@@ -1538,6 +1538,8 @@ he:
       show_all: הצג את כל ההגהות
       show_open: הצג הגהות חדשות
       show_escalated: הצג הגהות טעונות עיון נוסף
+      show_fixed: הצג הגהות שתוקנו
+      show_wontfix: הצג הגהות שהוחלט לא לתקן
       purge_spam: מחק הגהות זבל
     create:
       ziburit_failed: לא השתכנענו שאינך רובוט.
