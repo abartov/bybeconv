@@ -942,3 +942,8 @@ small p{
 .manifestation-node{
   list-style: none;
 }
+
+#buffer_preview{
+  min-height: 600px;
+  max-height: 800px;
+}
