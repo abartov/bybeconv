@@ -14,21 +14,15 @@
   - if @authorities_tbd.present?
     .yellowbg
       %h3= t('.awaiting_authorities')
-      %ol
-        - @authorities_tbd.each do |authority|
-          %li
-            = "#{authority['new_person']} (#{textify_authority_role(authority['role'])})"
-            != "&emsp;&emsp;"
-            = link_to t(:new_person), authors_new_path(type: :person, name: authority['new_person'])
-            != "&emsp;&emsp;"
-            = link_to t(:new_corporate_body), authors_new_path(type: :corporate_body, name: authority['new_person'])
+      = render partial: 'authorities_tbd', locals: { authorities_tbd: @authorities_tbd }
   - else
     .greenbg{style: 'color:yellow;'}
       %h3= t('.awaiting_authorities_resolved')
       = button_to t('.ingest'), ingest_ingestible_path(@ingestible), method: :post, id: 'extra_ingest_button', class: 'btn btn-primary'
-- elsif @authorities_tbd.present?
+- if @authorities_tbd.present?
   .yellowbg
     %h3= t('.authorities_tbd')
+    = render partial: 'authorities_tbd', locals: { authorities_tbd: @authorities_tbd }
 - if @ingestible.problem.present?
   .lredbg
     %h2= t('.problem_is_not_empty')
