@@ -324,13 +324,20 @@ class IngestiblesController < ApplicationController
     @authorities_tbd = []
     @missing_translators = []
     @missing_authors = []
+    # report on missing authority in default_authorities
+    if @ingestible.default_authorities.present?
+      @def_aus = JSON.parse(@ingestible.default_authorities)
+      @def_aus.each do |ia|
+        @authorities_tbd << ia if ia['new_person'].present?
+      end
+    end
     @texts_to_upload.each do |x|
       @missing_in_markdown << x[1] unless @markdown_titles.include?(x[1])
       @missing_genre << x[1] if x[3].blank?
       aus = if x[2].present?
               JSON.parse(x[2])
             elsif @ingestible.default_authorities.present?
-              JSON.parse(@ingestible.default_authorities)
+              @def_aus
             else
               []
             end
