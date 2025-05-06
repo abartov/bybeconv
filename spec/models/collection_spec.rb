@@ -8,6 +8,17 @@ describe Collection do
     expect { build(:collection, collection_type: 'made_up') }.to raise_error(ArgumentError)
   end
 
+  it 'validates suppress_download_and_print field' do
+    collection = build(:collection, suppress_download_and_print: true)
+    expect(collection).to be_valid
+
+    collection.suppress_download_and_print = false
+    expect(collection).to be_valid
+
+    collection.suppress_download_and_print = nil
+    expect(collection).not_to be_valid
+  end
+
   it 'iterates over its collection_items in order' do
     c = create(:collection)
     i1 = create(:collection_item, collection: c, seqno: 1)

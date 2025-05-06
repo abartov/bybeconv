@@ -48,43 +48,63 @@ class CollectionsController < ApplicationController
   # GET /collections/1/download
   def download
     @collection = Collection.find(params[:collection_id])
-    format = params[:format]
-    unless Downloadable.doctypes.include?(format)
-      flash[:error] = t(:unrecognized_format)
-      redirect_to @collection
-      return
-    end
+    if @collection.present?
+      if @collection.suppress_download_and_print
+        flash[:error] = t(:download_disabled)
+        redirect_to @collection
+        return
+      end
+      format = params[:format]
+      unless Downloadable.doctypes.include?(format)
+        flash[:error] = t(:unrecognized_format)
+        redirect_to @collection
+        return
+      end
 
-    dl = @collection.fresh_downloadable_for(format)
-    if dl.nil?
-      prep_for_show # TODO
-      # impressionist(@m) unless is_spider? # TODO: enable impressionist for collections
-      filename = "#{@collection.title.gsub(/[^0-9א-תA-Za-z.\-]/, '_')}.#{format}"
-      html = <<~WRAPPER
-        <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-        <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="he" lang="he" dir="rtl">
-        <head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
-        <body dir='rtl'><div dir="rtl" align="right">
-        <div style="font-size:300%; font-weight: bold;">#{@collection.title}</div>
-        #{@htmls.map { |h| "<h1>#{h[0]}</h1>\n#{I18n.t(:by)}<h2>#{h[1].map { |p| "<a href=\"/author/#{p.id}\">#{p.name}</a>" }.join(', ')}</h2>#{h[2]}" }.join("\n").force_encoding('UTF-8')}
+      dl = @collection.fresh_downloadable_for(format)
+      if dl.nil?
+        prep_for_show # TODO
+        # impressionist(@m) unless is_spider? # TODO: enable impressionist for collections
+        filename = "#{@collection.title.gsub(/[^0-9א-תA-Za-z.\-]/, '_')}.#{format}"
+        html = <<~WRAPPER
+          <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+          <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="he" lang="he" dir="rtl">
+          <head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
+          <body dir='rtl'><div dir="rtl" align="right">
+          <div style="font-size:300%; font-weight: bold;">#{@collection.title}</div>
+          #{@htmls.map { |h| "<h1>#{h[0]}</h1>\n#{I18n.t(:by)}<h2>#{h[1].map { |p| "<a href=\"/author/#{p.id}\">#{p.name}</a>" }.join(', ')}</h2>#{h[2]}" }.join("\n").force_encoding('UTF-8')}
 
-        <hr />
-        #{I18n.t(:download_footer_html, url: url_for(@collection))}
-        </div></body></html>
-      WRAPPER
-      austr = textify_authorities_and_roles(@collection.involved_authorities)
-      dl = MakeFreshDownloadable.call(params[:format], filename, html, @collection, austr)
+          <hr />
+          #{I18n.t(:download_footer_html, url: url_for(@collection))}
+          </div></body></html>
+        WRAPPER
+        austr = textify_authorities_and_roles(@collection.involved_authorities)
+        dl = MakeFreshDownloadable.call(params[:format], filename, html, @collection, austr)
+      end
+      redirect_to rails_blob_url(dl.stored_file, disposition: :attachment)
+    else
+      flash[:error] = t(:no_such_item)
+      redirect_to '/'
     end
-    redirect_to rails_blob_url(dl.stored_file, disposition: :attachment)
   end
 
   # GET /collections/1/print
   def print
     @print = true
     @collection = Collection.find(params[:collection_id])
-    prep_for_show
-    @footer_url = url_for(@collection)
+    if @collection.present? 
+      if @collection.suppress_download_and_print
+        flash[:error] = t(:print_disabled)
+        redirect_to @collection
+        return
+      end
+      prep_for_show
+      @footer_url = url_for(@collection)
+    else
+      flash[:error] = t(:no_such_item)
+      redirect_to '/'
+    end
   end
 
   # GET /collections/new
