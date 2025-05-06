@@ -63,6 +63,7 @@ class Collection < ApplicationRecord
                        }
 
   validates :title, presence: true
+  validates :suppress_download_and_print, inclusion: { in: [true, false] }
 
   # Checks if collection is a system-managed collection. We cannot change type of system collection (maybe some
   # other limitations will be added in future)

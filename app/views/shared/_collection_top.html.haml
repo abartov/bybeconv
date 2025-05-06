@@ -50,15 +50,17 @@
             .top-left-icons-group
               .icons-group-v02
                 .by-icon-v02.pointer.linkcolor.bookmark-status.notyet
-                .by-icon-v02.pointer.linkcolor.printbutton= 9
-                .by-icon-v02.pointer.linkcolor.download{ data: { 'downloadable-id' => @collection.id, toggle: :modal, target: '#downloadDlg' } }= 3
+                - unless @collection.suppress_download_and_print
+                  .by-icon-v02.pointer.linkcolor.printbutton= 9
+                  .by-icon-v02.pointer.linkcolor.download{ data: { 'downloadable-id' => @collection.id, toggle: :modal, target: '#downloadDlg' } }= 3
           .chapters-and-icons-mobile
             .work-page-top-icons-mobile
               .top-left-icons-group
                 .icons-group-v02
                   .by-icon-v02.pointer.linkcolor.bookmark-status.notyet
-                  .by-icon-v02.pointer.linkcolor.printbutton= 9
-                  .by-icon-v02.pointer.linkcolor.download{ data: { 'downloadable-id' => @collection.id, toggle: :modal, target: '#downloadDlg' } }= 3
+                  - unless @collection.suppress_download_and_print
+                    .by-icon-v02.pointer.linkcolor.printbutton= 9
+                    .by-icon-v02.pointer.linkcolor.download{ data: { 'downloadable-id' => @collection.id, toggle: :modal, target: '#downloadDlg' } }= 3
 
   .row.error-found-row
     .side-nav-col
