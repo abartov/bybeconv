@@ -7,7 +7,7 @@ source 'http://rubygems.org'
 gem 'actionview'
 gem 'rails', '~> 6.1.7.7'
 gem 'rails-i18n', '~> 6.0' # version should match major version of Rails
-
+gem 'concurrent-ruby', '1.3.4' # 1.3.5 and later yields an error with Logger. Fixed in Rails 7.1
 gem 'sass-rails', '~> 6.0.0'
 gem 'sprockets', '~> 4.2.1'
 
@@ -151,7 +151,7 @@ group :test, :development do
   gem 'dotenv', '~> 3.1.2'
   gem 'factory_bot_rails', '~> 6.2.0'
   gem 'rspec-rails', '~> 5.0.2'
-  gem 'spring'
+  gem 'spring', '4.2.1' # later version yields https://github.com/rails/spring/issues/734
   gem 'spring-commands-rspec'
 end
 
