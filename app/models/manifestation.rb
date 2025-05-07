@@ -38,6 +38,7 @@ class Manifestation < ApplicationRecord
   scope :with_involved_authorities, lambda {
     preload(expression: { involved_authorities: :authority, work: { involved_authorities: :authority } })
   }
+  scope :indexable, -> { where(exclude_from_index: false) }
 
   SHORT_LENGTH = 1500 # kind of arbitrary...
   LONG_LENGTH = 15_000 # kind of arbitrary...

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_05_05_222504) do
+ActiveRecord::Schema.define(version: 2025_05_08_003800) do
 
   create_table "aboutnesses", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -671,6 +671,7 @@ ActiveRecord::Schema.define(version: 2025_05_05_222504) do
     t.integer "expression_id", null: false
     t.string "alternate_titles", limit: 512
     t.text "credits"
+    t.boolean "exclude_from_index", default: false, null: false
     t.index ["conv_counter"], name: "index_manifestations_on_conv_counter"
     t.index ["created_at"], name: "index_manifestations_on_created_at"
     t.index ["expression_id"], name: "index_manifestations_on_expression_id"
