@@ -72,6 +72,8 @@
             = " (#{type_prefix})"
           != '&nbsp;&nbsp;&nbsp;'
           = link_to t(:edit), collection_manage_path(collection.id), style: 'font-size: 70%;'
+        - if uncollected
+          %p{style: 'font-size: 0.8rem; color: #222222;'}= t(:uncollected_works_collection_explanation)
         - collection.involved_authorities.reject{|x| x.authority_id == authority_id}.each do |ia|
           %p= "#{ia.authority.name} (#{textify_role(ia.role, ia.authority.gender)})"
         - if collection.publisher_line.present?
