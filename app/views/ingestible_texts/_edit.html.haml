@@ -47,7 +47,8 @@
       .col-sm-9
         %h2= t(:display_text)
         #buffer_preview{ style: 'padding-left:10px;padding-right:15px;background:#d2cfcf; overflow-y:auto' }
-          != raw(MarkdownToHtml.call(text.content))
+          - texthtml = highlight_suspicious_markdown(MarkdownToHtml.call(text.content)) # highlight suspicious markdown in backend
+          != raw(texthtml)
     .actions
       = f.submit t(:save), class: 'btn btn-primary btn-sm', remote: true
 = render partial: 'shared/markdown_utils', locals: { container_id: 'ingestible_edit_texts', element_id: 'ingestible_text_content' }
