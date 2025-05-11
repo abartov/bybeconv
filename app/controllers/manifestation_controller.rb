@@ -327,8 +327,13 @@ class ManifestationController < ApplicationController
   def genre
     @pagetype = :works
     @works_list_title = t(:works_by_genre) + ': ' + helpers.textify_genre(params[:genre])
-    @genres = [params[:genre]]
-    browse
+    if params[:genre].present?
+      @genres = [params[:genre]]
+      browse
+    else
+      flash[:error] = t(:no_such_item)
+      redirect_to '/'
+    end
   end
 
   # this one is called via AJAX
@@ -932,7 +937,10 @@ class ManifestationController < ApplicationController
     if @volumes.count > 0 && @m.uncollected? # if the text is in a volume, its inclusion in an uncollected collection is stale
 
       @m.trigger_uncollected_recalculation # async update the uncollected collection this text was still in
-      @containments = @containments.reject{|ci| ci.collection.collection_type == 'uncollected' } # and exclude it from display right now
+      @containments = # and exclude it from display right now
+        @containments.reject do |ci|
+          ci.collection.collection_type == 'uncollected'
+        end
     end
     @single_text_volume = @containments.count == 1 && @containments.first.collection.has_single_text?
   end
