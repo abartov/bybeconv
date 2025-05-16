@@ -93,10 +93,6 @@ class Collection < ApplicationRecord
     end
   end
 
-  def has_single_text?
-    collection_items.where(item_type: 'Manifestation').count == 1
-  end
-
   def title_and_authors_html
     ret = "<h1>#{title}</h1>"
     if authors.present?
@@ -107,6 +103,23 @@ class Collection < ApplicationRecord
       ret += "#{I18n.t(:edited_by)}<h2>#{es}</h2>" if es.present?
     end
     ret
+  end
+
+  def has_multiple_manifestations?
+    stack = collection_items.to_a
+    manifestation_count = 0
+
+    while stack.any?
+      current_item = stack.pop
+      if current_item.item_type == 'Manifestation'
+        manifestation_count += 1
+        return true if manifestation_count > 1
+      elsif current_item.item_type == 'Collection' && current_item.item.present?
+        stack.concat(current_item.item.collection_items.to_a)
+      end
+    end
+
+    false
   end
 
   # produce HTML for a table of contents of the collection

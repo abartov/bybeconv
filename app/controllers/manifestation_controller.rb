@@ -942,6 +942,6 @@ class ManifestationController < ApplicationController
           ci.collection.collection_type == 'uncollected'
         end
     end
-    @single_text_volume = @containments.count == 1 && @containments.first.collection.has_single_text?
+    @single_text_volume = @containments.count == 1 && !@containments.first.collection.has_multiple_manifestations?
   end
 end

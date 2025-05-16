@@ -13,7 +13,7 @@ class CollectionsController < ApplicationController
 
   # GET /collections/1 or /collections/1.json
   def show
-    if @collection.has_single_text?
+    unless @collection.has_multiple_manifestations?
       redirect_to manifestation_path(@collection.collection_items.where(item_type: 'Manifestation').first.item.id)
       return
     end
