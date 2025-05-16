@@ -58,7 +58,7 @@
           manifs = $(this).find('.manifestation-node:visible');
           placeholders = $(this).find('.ph-node:visible');
           if(manifs.length == 1 && placeholders.length == 0) {
-            if($(manifs[0]).find('.mtitle').text().trim() == $(this).find('.ctitle').text().trim()) {
+            if($(manifs[0]).find('.mtitle').text().trim() == $(this).find('.ctitle_only').text().trim()) {
               $(this).children('.by-icon-v02').remove();
               $(this).prepend(manifs.find('.by-icon-v02').clone());
               manifs.hide();

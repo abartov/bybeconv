@@ -64,6 +64,7 @@
     - children.reject!{ |child| child.is_a?(TocTree::ManifestationNode) && child.manifestation.status != 'published' } # don't show deleted or unpublished manifestations in the TOC
     .cwrapper{ id: "cwrapper_#{collection.id}", 'data-nonce' => nonce, 'data-collection-id' => collection.id, class: uncollected ? 'uncollected' : '' }
       %span{style:'font-size:120%;'}
+        %span.ctitle_only{ style: 'display:none;' }= collection.title
         %span.ctitle
           - extra_data = collection.created_at > 2.minutes.ago ? { 'data-focus-on-me': 'true' } : {}
           = link_to "#{collection.title}#{collection.subtitle.present? ? ': '+collection.subtitle : '' }", collection_path(collection), extra_data
