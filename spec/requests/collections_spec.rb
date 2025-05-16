@@ -18,11 +18,11 @@ RSpec.describe '/collections' do
   # Collection. As you add validations to Collection, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) do
-    skip('Add a hash of attributes valid for your model')
+    { title: 'MyString', sort_title: 'MyString', collection_type: 'series', suppress_download_and_print: false }
   end
 
   let(:invalid_attributes) do
-    skip('Add a hash of attributes invalid for your model')
+    { title: 'MyString', sort_title: 'MyString', collection_type: 'invalid_type', suppress_download_and_print: nil }
   end
 
   describe 'GET /index' do
@@ -88,14 +88,17 @@ RSpec.describe '/collections' do
   describe 'PATCH /update' do
     context 'with valid parameters' do
       let(:new_attributes) do
-        skip('Add a hash of attributes valid for your model')
+        { title: 'MyNewString', sort_title: 'new_sort_title', collection_type: 'series', suppress_download_and_print: false }
       end
 
       it 'updates the requested collection' do
         collection = Collection.create! valid_attributes
         patch collection_url(collection), params: { collection: new_attributes }
         collection.reload
-        skip('Add assertions for updated state')
+        expect(collection.title).to eq('MyNewString')
+        expect(collection.sort_title).to eq('new_sort_title')
+        expect(collection.collection_type).to eq('series')
+        expect(collection.suppress_download_and_print).to eq(false)
       end
 
       it 'redirects to the collection' do
@@ -129,4 +132,25 @@ RSpec.describe '/collections' do
       expect(response).to redirect_to(collections_url)
     end
   end
+
+  describe 'POST /collections/:id/download' do
+    let(:collection) { create(:collection, suppress_download_and_print: true) }
+
+    it 'redirects with an error if downloads are suppressed' do
+      post collection_download_path(collection)
+      expect(response).to redirect_to(collection_path(collection))
+      expect(flash[:error]).to eq(I18n.t(:download_disabled))
+    end
+  end
+
+  describe 'GET /collections/:id/print' do
+    let(:collection) { create(:collection, suppress_download_and_print: true) }
+
+    it 'redirects with an error if printing is suppressed' do
+      get collection_print_path(collection)
+      expect(response).to redirect_to(collection_path(collection))
+      expect(flash[:error]).to eq(I18n.t(:print_disabled))
+    end
+  end
+
 end
