@@ -139,6 +139,8 @@ class Authority < ApplicationRecord
     end
     credits.map!(&:strip)
     credits.uniq!
+    credits.reject! { |c| c == '...' }
+    credits.sort!
     self.cached_credits = credits.join("\n")
     save!
     return cached_credits
