@@ -14,7 +14,7 @@ class CollectionsController < ApplicationController
   # GET /collections/1 or /collections/1.json
   def show
     unless @collection.has_multiple_manifestations?
-      ci = @collection.collection_items.where(item_type: 'Manifestation').first
+      ci = @collection.flatten_items.select{|x| x.item_type == 'Manifestation'}.first
       if ci.nil?
         flash[:error] = t(:no_such_item)
         redirect_to '/'
