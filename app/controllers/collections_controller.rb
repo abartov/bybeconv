@@ -14,7 +14,13 @@ class CollectionsController < ApplicationController
   # GET /collections/1 or /collections/1.json
   def show
     unless @collection.has_multiple_manifestations?
-      redirect_to manifestation_path(@collection.collection_items.where(item_type: 'Manifestation').first.item.id)
+      ci = @collection.collection_items.where(item_type: 'Manifestation').first
+      if ci.nil?
+        flash[:error] = t(:no_such_item)
+        redirect_to '/'
+      else
+        redirect_to manifestation_path(ci.item.id)
+      end
       return
     end
     @header_partial = 'shared/collection_top'
