@@ -10,3 +10,5 @@ Crawl-delay: 10
 User-Agent: Semrushbot
 Disallow: /
 
+User-agent: GPTBot
+Disallow: /
