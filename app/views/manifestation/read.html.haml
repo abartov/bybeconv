@@ -17,8 +17,8 @@
           .by-card-content-v02
             = render partial: 'metadata', locals: {tags_etc: true}
           - unless @single_text_volume
-            .author-works-nav
-              - @containments.each do |ci|
+            - @containments.each do |ci|
+              .author-works-nav
                 .topNavEntry
                   .link-nav
                     - prev = ci.prev_sibling_item
