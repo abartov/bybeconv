@@ -86,11 +86,9 @@ class Ingestible < ApplicationRecord
     save if changed?
   end
 
-  def update_authorities_and_metadata_from_volume
+  def update_authorities_and_metadata_from_volume(replace_publisher = false)
     # reset *default* authorities and metadata on any volume change, to avoid accidental carryover
     self.default_authorities = ''
-    self.publisher = ''
-    self.year_published = ''
     aus = []
     seqno = 1
     if volume_id.present?
@@ -99,15 +97,19 @@ class Ingestible < ApplicationRecord
         aus << { seqno: seqno, authority_id: ia.authority.id, authority_name: ia.authority.name, role: ia.role }
         seqno += 1
       end
-      self.publisher = volume.publisher_line
-      self.year_published = volume.pub_year
+      if replace_publisher
+        self.publisher = volume.publisher_line
+        self.year_published = volume.pub_year
+      end
     elsif prospective_volume_id.present?
       if prospective_volume_id[0] == 'P'
         pub = Publication.find(prospective_volume_id[1..-1])
-        self.publisher = pub.publisher_line
-        self.year_published = pub.pub_year
-        # populate with default role of author, though this would be false when the Hebrew author
-        # is the translator of a foreign work. Such cases would need to be corrected manually.
+        if replace_publisher || self.publisher.blank?
+          self.publisher = pub.publisher_line
+          self.year_published = pub.pub_year
+        end
+          # populate with default role of author, though this would be false when the Hebrew author
+          # is the translator of a foreign work. Such cases would need to be corrected manually.
         aus << { seqno: seqno, authority_id: pub.authority.id, authority_name: pub.authority.name, role: 'author' }
       else
         volume = Collection.find(prospective_volume_id)

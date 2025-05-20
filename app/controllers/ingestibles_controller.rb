@@ -126,7 +126,7 @@ class IngestiblesController < ApplicationController
     # TODO: use params to set defaults (callable from the tasks system, which means we can populate the title (=task name), genre, credits)
     @ingestible = Ingestible.new(ingestible_params)
     @ingestible.credits.gsub!(/\s*;\s*/, "\n") if @ingestible.credits.present?
-    @ingestible.update_authorities_and_metadata_from_volume if @ingestible.prospective_volume_id.present?
+    @ingestible.update_authorities_and_metadata_from_volume(false) if @ingestible.prospective_volume_id.present?
     if params[:ingestible][:originating_task].present?
       existing = Ingestible.where(originating_task: params[:ingestible][:originating_task])
       if existing.present?
@@ -169,7 +169,7 @@ class IngestiblesController < ApplicationController
     existing_prospective_volume_id = @ingestible.prospective_volume_id
     if @ingestible.update(ingestible_params)
       if existing_volume_id != @ingestible.volume_id || existing_prospective_volume_id != @ingestible.prospective_volume_id
-        @ingestible.update_authorities_and_metadata_from_volume
+        @ingestible.update_authorities_and_metadata_from_volume(true)
       end
       redirect_to edit_ingestible_url(@ingestible), notice: t('.success')
     else
@@ -402,9 +402,11 @@ class IngestiblesController < ApplicationController
         @publication = Publication.find(@ingestible.prospective_volume_id[1..-1])
         @collection = Collection.find_by(publication: @publication) # might have been created by another ingestion while we we working on this, after identifying the publication...
         if @collection.nil? # new volume from known Publication
+          publine = @ingestible.publisher.presence || @publication.publisher_line
+          pubyear = @ingestible.year_published.presence || @publication.pub_year
           @collection = Collection.create!(title: @publication.title,
                                            collection_type: 'volume', publication: @publication,
-                                           publisher_line: @publication.publisher_line, pub_year: @publication.pub_year)
+                                           publisher_line: publine, pub_year: pubyear)
           created_volume = true
         end
       else # existing volume
