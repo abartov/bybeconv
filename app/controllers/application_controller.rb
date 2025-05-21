@@ -471,7 +471,9 @@ class ApplicationController < ActionController::Base
   end
 
   def mention_skipped
-    flash[:notice] = I18n.t(:skipped_x_items, x: params[:skipped]) if params[:skipped].present?
+    return unless params[:skipped].present?
+
+    flash.now[:notice] = I18n.t(:skipped_x_items, x: params[:skipped]) # the .now avoid showing the flash on the next page
   end
 
   helper_method :current_user, :html_entities_coder
