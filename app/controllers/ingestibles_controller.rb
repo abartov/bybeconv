@@ -122,6 +122,7 @@ class IngestiblesController < ApplicationController
     @ingestible.update_parsing # refresh markdown or text buffers if necessary
     prep(true) # rendering of HTML needed for editing screen
     @tab = params[:tab]
+    @authority_by_name = Authority.all.map { |a| [a.name, a.id] }.to_h
   end
 
   # POST /ingestibles or /ingestibles.json
@@ -164,6 +165,7 @@ class IngestiblesController < ApplicationController
       toc_buf << x[1]
     end
     @toc_list = toc_buf.join("\n")
+    @authority_by_name = Authority.all.map { |a| [a.name, a.id] }.to_h
   end
 
   # PATCH/PUT /ingestibles/1 or /ingestibles/1.json
@@ -204,8 +206,13 @@ class IngestiblesController < ApplicationController
       x[4] = toc_params[:orig_lang] if toc_params[:orig_lang].present?
       x[5] = toc_params[:intellectual_property] if toc_params[:intellectual_property].present?
 
-      if params[:new_person_tbd].present? or params[:authority_id].present?
+      if params[:replaceauth].present?
         authorities = x[2].present? ? JSON.parse(x[2]) : []
+        authorities.reject! { |a| a['seqno'] == params[:seqno].to_i }
+        x[2] = authorities.to_json
+      end
+      if params[:new_person_tbd].present? or params[:authority_id].present?
+          authorities = x[2].present? ? JSON.parse(x[2]) : []
         highest_seqno = authorities.pluck('seqno').max || 0
         new_authority = { 'seqno' => highest_seqno + 1, 'role' => params[:role] }
         if params[:new_person_tbd].present?
@@ -231,6 +238,8 @@ class IngestiblesController < ApplicationController
       break
     end
     return unless updated
+
+    @authority_by_name = Authority.all.map { |a| [a.name, a.id] }.to_h
 
     @ingestible.update_columns(toc_buffer: @ingestible.encode_toc(cur_toc))
   end

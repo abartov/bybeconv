@@ -26,11 +26,14 @@
               - seen_translator = true if authority['role'] == 'translator'
               - seen_author = true if authority['role'] == 'author'
               %ul
-                %li{ id: "ia#{authority['seqno']}" }
+                %li{ id: "ia#{authority['seqno']}", data: {role: "#{authority['role']}" } }
                   - if authority['authority_id']
                     = link_to authority['authority_name'], authors_show_path(id: authority['authority_id'])
                   - else
                     = authority['new_person']
+                    - if @authority_by_name[authority['new_person']]
+                      - # show a button to replace the new_person with the authority
+                      = button_tag t('ingestibles.replace_with_authority'), class: 'replace_authority lgreenbg', data: { authorityid: @authority_by_name[authority['new_person']], newperson: authority['new_person'] }
                   (#{textify_authority_role(authority['role'])})
                   = button_tag t(:destroy), class: 'delete_toc_authority'
           - elsif @ingestible.default_authorities.present?
@@ -124,6 +127,28 @@
       var new_person_tbd = $(this).closest('tr').find('input[name=new_person]').val();
 
       update_toc($(this), new_au, new_name, new_role, new_person_tbd);
+    });
+    $('.replace_authority').click(function(e) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      var new_authority_id = $(this).data('authorityid');
+      var new_name = $(this).data('newperson');
+      var new_role = $(this).closest('li').attr('data-role');
+      startModal('spinnerdiv');
+      var seqno = $(this).closest('li').attr('id').substring(2);
+      var title = $(this).closest('tr').find('.toc-title').text();
+      $.ajax({
+        url: "#{update_toc_ingestible_path(@ingestible)}",
+        type: 'PATCH',
+        data: {
+          title: title,
+          replaceauth: true,
+          seqno: seqno,
+          authority_id: new_authority_id,
+          authority_name: new_name,
+          role: new_role
+        },
+      });
     });
     $('.delete_toc_authority').click(function(e) {
       e.preventDefault();
