@@ -18,7 +18,11 @@ Bybeconv::Application.routes.draw do
   end
 
   resources :ingestibles do
-    resources :authorities, controller: :ingestible_authorities, only: %i(create destroy)
+    resources :authorities, controller: :ingestible_authorities, only: %i(create destroy) do
+      member do
+        post :replace
+      end
+    end
     resources :texts, controller: :ingestible_texts, only: %i(edit update)
     member do
       get :review
@@ -45,7 +49,8 @@ Bybeconv::Application.routes.draw do
 
   get 'autocomplete_publication_title' => 'admin#autocomplete_publication_title', as: 'autocomplete_publication_title'
   get 'autocomplete_collection_title' => 'admin#autocomplete_collection_title', as: 'autocomplete_collection_title'
-  get 'autocomplete_authority_name_and_aliases' => 'admin#autocomplete_authority_name_and_aliases', as: 'autocomplete_authority_name_and_aliases'
+  get 'autocomplete_authority_name_and_aliases' => 'admin#autocomplete_authority_name_and_aliases',
+      as: 'autocomplete_authority_name_and_aliases'
   match 'author/:id/manage_toc' => 'authors#manage_toc', as: 'authors_manage_toc', via: %i(get post)
 
   resources :involved_authorities, only: %i(index create destroy)

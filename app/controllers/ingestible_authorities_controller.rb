@@ -26,6 +26,7 @@ class IngestibleAuthoritiesController < ApplicationController
     end
 
     @authorities << new_authority
+    @authority_by_name = Authority.all.map { |a| [a.name, a.id] }.to_h
     @ingestible.update!(default_authorities: @authorities.to_json)
   end
 
@@ -34,6 +35,25 @@ class IngestibleAuthoritiesController < ApplicationController
     @authorities.reject! { |auth| auth['seqno'] == params[:id].to_i }
     @ingestible.update!(default_authorities: @authorities.to_json)
     @li_id = "#ia#{params[:id]}"
+  end
+
+  def replace
+    @authorities.each do |auth|
+      next unless auth['seqno'] == params[:seqno].to_i
+
+      auth['role'] = params[:role]
+      if params[:new_person].present?
+        # Authority not yet present in database
+        auth['new_person'] = params[:new_person]
+      elsif params[:authority_id].present?
+        # Existing authority from database
+        auth['authority_id'] = params[:authority_id].to_i
+        auth['authority_name'] = params[:authority_name]
+        auth['new_person'] = nil
+      end
+    end
+    @authority_by_name = Authority.all.map { |a| [a.name, a.id] }.to_h
+    @ingestible.update!(default_authorities: @authorities.to_json)
   end
 
   private
