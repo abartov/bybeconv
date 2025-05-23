@@ -15,11 +15,14 @@ class IngestiblesController < ApplicationController
                markdown: '' }.freeze
   # GET /ingestibles or /ingestibles.json
   def index
-    @locked_ingestibles = Ingestible.where('locked_at > ?', 1.hour.ago)
+    show_all = params[:show_all] == '1'
+    scope = show_all ? Ingestible.all : Ingestible.where.not(status: 'ingested')
+
+    @locked_ingestibles = scope.where('locked_at > ?', 1.hour.ago)
     @my_ingestibles = @locked_ingestibles.where(locked_by_user_id: current_user.id)
     @locked_ingestibles = @locked_ingestibles.where.not(id: @my_ingestibles)
 
-    @other_ingestibles = Ingestible.where.not(id: @locked_ingestibles.pluck(:id)).order(updated_at: :desc).page(params[:page])
+    @other_ingestibles = scope.where.not(id: @locked_ingestibles.pluck(:id)).order(updated_at: :desc).page(params[:page])
   end
 
   # GET /ingestibles/1 or /ingestibles/1.json
@@ -274,33 +277,33 @@ class IngestiblesController < ApplicationController
     @html = ''
     @disable_submit = false
     @markdown_titles = []
-    if @ingestible.works_buffer.present?
-      sections = JSON.parse(@ingestible.works_buffer)
-      sections.each do |section|
-        title = section['title']
-        @markdown_titles << title
-        content = section['content']
+    return unless @ingestible.works_buffer.present?
 
-        if render_html
-          #markdown_texts = split_parts.map(&:last)
-          if title.present? && content.present?
-            validator = TitleValidator.new
-            dummy = Work.new(title: title.sub(/_ZZ\d+/, ''))
-            if validator.validate(dummy)
-              doctored_title = title
-            else
-              doctored_title = "<span style='color:red'>#{title}</span><br><span style='color:red'>#{dummy.errors.full_messages.join('<br />')}</span>"
-              @disable_submit = true
-            end
-          else
-            doctored_title = "<span style='color:red'>#{title} #{t(:empty_work_title_or_no_content)}</span>"
-          end
-          @html += "<hr style='border-color:#2b0d22;border-width:20px;margin-top:40px'/><h1>#{doctored_title.sub(/_ZZ\d+/,
-                                                                                                                '')}</h1>" +  MarkdownToHtml.call(content)
+    sections = JSON.parse(@ingestible.works_buffer)
+    sections.each do |section|
+      title = section['title']
+      @markdown_titles << title
+      content = section['content']
+
+      next unless render_html
+
+      # markdown_texts = split_parts.map(&:last)
+      if title.present? && content.present?
+        validator = TitleValidator.new
+        dummy = Work.new(title: title.sub(/_ZZ\d+/, ''))
+        if validator.validate(dummy)
+          doctored_title = title
+        else
+          doctored_title = "<span style='color:red'>#{title}</span><br><span style='color:red'>#{dummy.errors.full_messages.join('<br />')}</span>"
+          @disable_submit = true
         end
+      else
+        doctored_title = "<span style='color:red'>#{title} #{t(:empty_work_title_or_no_content)}</span>"
       end
-      @html = highlight_suspicious_markdown(@html) # highlight suspicious markdown in backend
+      @html += "<hr style='border-color:#2b0d22;border-width:20px;margin-top:40px'/><h1>#{doctored_title.sub(/_ZZ\d+/,
+                                                                                                             '')}</h1>" + MarkdownToHtml.call(content)
     end
+    @html = highlight_suspicious_markdown(@html) # highlight suspicious markdown in backend
   end
 
   # this method prepares the ingestible for ingestion:
@@ -361,6 +364,7 @@ class IngestiblesController < ApplicationController
     @empty_texts = []
     @ingestible.texts.each do |t|
       next if t.content.present? && t.content.strip.length > 0
+
       @empty_texts << t.title
     end
 
