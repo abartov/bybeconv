@@ -131,21 +131,21 @@
                     .metadata-link-icon.small-icon.pointer &amp;
                     %div= t(:suggest_new_tag)
 
-          .by-card-v02.left-side-card-v02#recs
-            - ctype = textify_collection_type(@collection.collection_type)
-            .by-card-header-left-v02
-              %span.headline-1-v02= t(:recommendations_for_collection, ctype: ctype)
-            .by-card-content-v02
-              - if @collection.like_count.present?
-                = t(:x_liked_ctype, x: @collection.like_count, ctype: ctype)
-                %br
-              - if @total_recs > 0
-                -# TODO: add recs for the collection itself, after Recommendations are made polymorphic
-                - if @included_recs > 0
-                  = t(:works_in_this_collection_have_x_recommendations, x: @included_recs, ctype: ctype)
-              - else
-                = t(:no_recommendations_yet)
-              -# TODO: add add-a-recommendation UI
+          -#.by-card-v02.left-side-card-v02#recs
+          -#  - ctype = textify_collection_type(@collection.collection_type)
+          -#  .by-card-header-left-v02
+          -#    %span.headline-1-v02= t(:recommendations_for_collection, ctype: ctype)
+          -#  .by-card-content-v02
+          -#    - if @collection.like_count.present?
+          -#      = t(:x_liked_ctype, x: @collection.like_count, ctype: ctype)
+          -#      %br
+          -#    - if @total_recs > 0
+          -#      -# TODO: add recs for the collection itself, after Recommendations are made polymorphic
+          -#      - if @included_recs > 0
+          -#        = t(:works_in_this_collection_have_x_recommendations, x: @included_recs, ctype: ctype)
+          -#    - else
+          -#      = t(:no_recommendations_yet)
+          -#    -# TODO: add add-a-recommendation UI
 
           -#/ יצירות על אודות
           -#.by-card-v02.left-side-card-v02
