@@ -275,6 +275,22 @@ class Collection < ApplicationRecord
     return recs.flatten
   end
 
+  # return true if there are any manifestations that are in status 'published' in this collection or any of its sub-collections, searching breadth-first.
+  def any_published_manifestations?
+    stack = collection_items.to_a
+
+    while stack.any?
+      current_item = stack.pop
+      if current_item.item_type == 'Manifestation' && current_item.item.status == 'published'
+        return true
+      elsif current_item.item_type == 'Collection' && current_item.item.present?
+        stack.concat(current_item.item.collection_items.to_a)
+      end
+    end
+
+    return false
+  end
+
   def like_count
     return 0
     # TODO: enable after implementing the likings table
@@ -432,6 +448,7 @@ class Collection < ApplicationRecord
     return ret
   end
 
+  # old_pos and new_pos are 1-based positions in the list, not the seqno (which is not necessarily contiguous!)
   def apply_drag(coll_item_id, old_pos, new_pos)
     ci = CollectionItem.find(coll_item_id)
     return false if ci.nil?
