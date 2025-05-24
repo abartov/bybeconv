@@ -23,16 +23,21 @@ class IngestiblesController < ApplicationController
     @locked_ingestibles = @locked_ingestibles.where.not(id: @my_ingestibles)
 
     @other_ingestibles = scope.where.not(id: @locked_ingestibles.pluck(:id)).order(updated_at: :desc).page(params[:page])
+    @ingestibles_pending = scope.where(status: 'awaiting_authorities').order(updated_at: :desc)
   end
 
   # GET /ingestibles/1 or /ingestibles/1.json
   def show
     # before ingestion, editing is the meaningful view
-    unless @ingestible.ingested?
-      edit
-      render :edit
+    if @ingestible.awaiting_authorities?
+      redirect_to review_ingestible_url(@ingestible)
     else
-      @changes = JSON.parse(@ingestible.ingested_changes)
+      unless @ingestible.ingested?
+        edit
+        render :edit
+      else
+        @changes = JSON.parse(@ingestible.ingested_changes)
+      end
     end
   end
 
@@ -212,7 +217,7 @@ class IngestiblesController < ApplicationController
         x[2] = authorities.to_json
       end
       if params[:new_person_tbd].present? or params[:authority_id].present?
-          authorities = x[2].present? ? JSON.parse(x[2]) : []
+        authorities = x[2].present? ? JSON.parse(x[2]) : []
         highest_seqno = authorities.pluck('seqno').max || 0
         new_authority = { 'seqno' => highest_seqno + 1, 'role' => params[:role] }
         if params[:new_person_tbd].present?

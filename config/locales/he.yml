@@ -1472,6 +1472,7 @@ he:
       internal_title: כותרת פנימית להעלאה כולה
       show_uningested_only: הצג רק העלאות שלא הושלמו
       show_all: הצג את כל ההעלאות
+      pending_ingestibles: ישנן %{count} העלאות ממתינות ליצירת ישויות
     destroy:
       success: ההעלאה נמחקה
   ingestible_texts:

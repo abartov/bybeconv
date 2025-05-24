@@ -25,6 +25,9 @@ class AdminController < ApplicationController
       if current_user.has_bit?('edit_catalog')
         @current_uploads = HtmlFile.where(assignee: current_user, status: 'Uploaded')
       end
+      if current_user.has_bit?('edit_people')
+        @ingestibles_pending = Ingestible.where(status: 'awaiting_authorities')
+      end
       if current_user.has_bit?('moderate_tags')
         @pending_tags = Tag.where(status: :pending).count
         @pending_taggings = Tagging.where(status: :pending).count
