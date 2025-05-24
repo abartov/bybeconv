@@ -67,7 +67,11 @@
         %span.ctitle_only{ style: 'display:none;' }= collection.title
         %span.ctitle
           - extra_data = collection.created_at > 2.minutes.ago ? { 'data-focus-on-me': 'true' } : {}
-          = link_to "#{collection.title}#{collection.subtitle.present? ? ': '+collection.subtitle : '' }", collection_path(collection), extra_data
+          - ctitle = "#{collection.title}#{collection.subtitle.present? ? ': '+collection.subtitle : '' }"
+          - if collection.any_published_manifestations?
+            = link_to ctitle, collection_path(collection), extra_data
+          - else
+            = ctitle
         - if current_user && current_user.editor?
           - if type_prefix.present?
             = " (#{type_prefix})"
