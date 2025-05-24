@@ -15,6 +15,7 @@
           %b= link_to '⤝', collection_manage_path(collection.id), class: 'white'
   - if collection
     .container-fluid{ style: 'position:relative;', id: "#{nonce}_coll_container_#{collection.id}" }
+      .collection-mask{ style: 'display:none;position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(255,255,255,0.7);z-index:1000;' }
       .collection.connectable.collapse.show{ id: "#{nonce}_coll_#{collection.id}", style: 'min-height:40px;background-color: #e0e0e0;', 'data-nonce': nonce, 'data-collection-id': collection.id }
         - collection.collection_items.each do |ci|
           - should_focus_on_fresh_item = (fresh.present? && fresh.id == ci.id) ? 'true' : 'false'
@@ -82,6 +83,9 @@
 
 :javascript
   $(document).ready(function(){
+    var $container = $("##{nonce}_coll_container_#{collection.id}");
+    var $mask = $container.find('.collection-mask');
+
     $("##{nonce}_coll_#{collection.id}").sortable({
       handle: '.drag-handle',
       connectWith: '.collection.connectable',
@@ -105,6 +109,8 @@
 
           ///code to pass the data using AJAX
           if (newIndex != oldIndex) {
+            $mask.show();
+
             $.post(
               '#{collection_apply_drag_path(collection.id)}',
               {
@@ -112,11 +118,14 @@
                 old_pos: oldIndex,
                 new_pos: newIndex
               }
-            );
+            ).always(function() {
+              $mask.hide();
+            });
           }
         } // inter-list drag is handled by the receive event
       },
       receive: function(event, ui) {
+        $mask.show();
         $.post(
           '#{collection_transplant_item_path(collection.id)}',
           {
@@ -126,7 +135,9 @@
             old_pos: parseInt(ui.item.attr('data-previndex')) + 1,
             new_pos: ui.item.index() + 1
           }
-        );
+        ).always(function() {
+          $mask.hide();
+        });
         event.stopPropagation();
       }
     });

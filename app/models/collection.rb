@@ -127,11 +127,12 @@ class Collection < ApplicationRecord
     ret = '<div class="collection_toc"><ul>'
     flatten_items.each do |ci|
       next if ci.item.nil? && ci.markdown.blank? && ci.alt_title.blank?
-      if ci.item.nil? && ci.alt_title.present?
-        ret += '<li>' + ci.alt_title
-      else
-        ret += '<li>' + ci.title_and_authors
-      end
+
+      ret += if ci.item.nil? && ci.alt_title.present?
+               '<li>' + ci.alt_title
+             else
+               '<li>' + ci.title_and_authors
+             end
     end
     ret += '</div>'
     return ret
@@ -169,6 +170,7 @@ class Collection < ApplicationRecord
     i = 0
     collection_items.each do |ci|
       next if ci.item.nil? && ci.markdown.blank?
+
       html += '<hr/><p/>' + ci.title_and_authors_html
       inner_nonce = "#{nonce}_#{i}"
       html += footnotes_noncer(ci.to_html, inner_nonce)
@@ -228,8 +230,8 @@ class Collection < ApplicationRecord
     return []
   end
 
-  # return true if any of the collection items are original works. 
-  # This does not traverse sub-collections because it is intended to be used with 
+  # return true if any of the collection items are original works.
+  # This does not traverse sub-collections because it is intended to be used with
   # uncollected works collections, which are expected to be flat, by definition.
   def any_original_works?
     collection_items.each do |ci|
@@ -320,16 +322,19 @@ class Collection < ApplicationRecord
     return ret.presence || I18n.t(:nil)
   end
 
-  def destroy
+  def before_destroy
     collection_items.each do |ci|
       ci.destroy!
     end
     CollectionItem.where(item: self).each { |ci| ci.destroy! } # destroy all references to this collection
-    super
   end
 
   def collection_items_by_role(role, authority_id)
-    collection_items.select { |ci| ci.item.present? && ci.item.involved_authorities_by_role(role).any? { |a| a.id == authority_id } }
+    collection_items.select do |ci|
+      ci.item.present? && ci.item.involved_authorities_by_role(role).any? do |a|
+        a.id == authority_id
+      end
+    end
   end
 
   def editors_string
@@ -395,6 +400,7 @@ class Collection < ApplicationRecord
     ret += credits.lines if credits.present?
     collection_items.each do |ci|
       next if ci.item.nil?
+
       ret += ci.item.credits.lines if ci.item.credits.present?
     end
     ret = ret.map(&:strip).uniq.reject(&:empty?)
@@ -484,8 +490,7 @@ class Collection < ApplicationRecord
   end
 
   def norm_dates
-    nd = normalize_date(self.pub_year)
+    nd = normalize_date(pub_year)
     self.normalized_pub_year = nd.year unless nd.nil?
   end
-
 end
