@@ -947,3 +947,7 @@ small p{
   min-height: 600px;
   max-height: 800px;
 }
+
+#actualtext img {
+  max-width: 100%;
+}
