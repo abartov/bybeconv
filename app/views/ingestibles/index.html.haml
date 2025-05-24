@@ -1,7 +1,8 @@
 - show_all = params[:show_all] == '1'
 = link_to t('.start_new'), new_ingestible_path, class: 'btn btn-primary'
 = link_to(show_all ? t('.show_uningested_only') : t('.show_all'), ingestibles_path(show_all: show_all ? nil : 1), class: 'btn btn-secondary')
-%p
+- if current_user.has_bit?('edit_people') && @ingestibles_pending.any?
+  %h3{style:'color:purple'}= t('.pending_ingestibles', count: @ingestibles_pending.count)
 = render partial: 'ingestibles_table', locals: { title: t('.my_title'), ingestibles: @my_ingestibles, editable: true, unlockable: true }
 = render partial: 'ingestibles_table', locals: { title: t('.locked_title'),ingestibles: @locked_ingestibles, editable: false, unlockable: false }
 = render partial: 'ingestibles_table', locals: { title: t('.other_title'),ingestibles: @other_ingestibles, editable: true, unlockable: false }

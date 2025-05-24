@@ -5,6 +5,10 @@
     - if current_user.has_bit?('edit_people')
       %b
         %p= link_to t(:manage_people), authors_list_path
+        - if @ingestibles_pending.any?
+          %p{style:'color:purple'}
+            != "&nbsp;&nbsp;&nbsp;"
+            = link_to t('ingestibles.index.pending_ingestibles', count: @ingestibles_pending.count), ingestibles_path
     - if current_user.has_bit?('edit_catalog')
       %b
         %p= link_to t(:catalog_dashboard), manifestation_list_path
