@@ -1,6 +1,8 @@
 class ProofsController < ApplicationController
-  protect_from_forgery :except => :submit # allow submission from outside the app
-  before_action :only => [:index, :show, :resolve, :purge] do |c| c.require_editor('handle_proofs') end
+  protect_from_forgery except: :submit # allow submission from outside the app
+  before_action only: %i(index show resolve purge) do |c|
+    c.require_editor('handle_proofs')
+  end
 
   # impressionist # log actions for pageview stats
 
@@ -39,13 +41,13 @@ class ProofsController < ApplicationController
     }
 
     @status = params[:status]
-    if @status.nil?
-      @proofs = Proof.where.not(status: :spam)
-    else
-      @proofs = Proof.where(status: @status)
-    end
+    @proofs = if @status.nil?
+                Proof.where.not(status: :spam).order(:manifestation_id)
+              else
+                Proof.where(status: @status).order('updated_at DESC')
+              end
 
-    @proofs = @proofs.page(params[:page]).order(:manifestation_id)
+    @proofs = @proofs.page(params[:page])
   end
 
   def show
@@ -54,16 +56,16 @@ class ProofsController < ApplicationController
     if @p.manifestation
       @m = Manifestation.find(@p.manifestation_id)
     else
-      h = HtmlFile.find_by_url(@p.about.sub(/http:\/\/benyehuda\.org/,''))
-      unless h.nil?
-        @m = h.manifestations[0] if h.status == 'Published'
+      h = HtmlFile.find_by_url(@p.about.sub('http://benyehuda.org', ''))
+      if !h.nil? && (h.status == 'Published')
+        @m = h.manifestations[0]
       end
     end
     unless @m.nil?
-      @html = MultiMarkdown.new(@m.markdown).to_html.force_encoding('UTF-8').gsub(/<figcaption>.*?<\/figcaption>/,'') # remove MMD's automatic figcaptions
+      @html = MultiMarkdown.new(@m.markdown).to_html.force_encoding('UTF-8').gsub(%r{<figcaption>.*?</figcaption>}, '') # remove MMD's automatic figcaptions
       @translation = @m.expression.translation
     else
-      @html =''
+      @html = ''
     end
   end
 
@@ -78,9 +80,9 @@ class ProofsController < ApplicationController
         else
           Notifications.proof_fixed(@p, manifestation_path(@p.manifestation_id), @p.manifestation, explanation).deliver
         end
-    		fix_text = 'תוקן (ונשלח דואל)'
+        fix_text = 'תוקן (ונשלח דואל)'
       else
-	      fix_text = 'תוקן, בלי לשלוח דואל'
+        fix_text = 'תוקן, בלי לשלוח דואל'
       end
     elsif params[:fixed] == 'no'
       if params[:escalate] == 'yes'
@@ -93,11 +95,12 @@ class ProofsController < ApplicationController
           if @p.manifestation_id.nil?
             Notifications.proof_wontfix(@p, @p.about, nil, @explanation).deliver
           else
-            Notifications.proof_wontfix(@p, manifestation_path(@p.manifestation_id), @p.manifestation, @explanation).deliver
+            Notifications.proof_wontfix(@p, manifestation_path(@p.manifestation_id), @p.manifestation,
+                                        @explanation).deliver
           end
           fix_text = 'כבר תקין (ונשלח דואל)'
         else
-  	      fix_text = 'כבר תקין, בלי לשלוח דואל'
+          fix_text = 'כבר תקין, בלי לשלוח דואל'
         end
       end
     else # spam, just ignore
