@@ -88,13 +88,13 @@
               - pyear = collection.pub_year.present? ? ", #{collection.pub_year}" : ''
               - unless pyear.strip == ', 0' # special case to suppress year of a collection we want to place at the head of the page
                 = "#{collection.publisher_line}#{pyear}"
-      - if editable && (collection.collection_type == 'uncollected' || is_involved) # only show editable collections for collections where this particular author is a principal contributor
-        = render partial: 'shared/manage_collection', locals: { collection: collection, title: collection.title, nonce: nonce }
-      - else
-        - unless children.empty?
-          %ul.toclist
-            = render partial: 'authors/toc_node', collection: children,
-                    locals: { role: role, authority_id: authority_id, editable: editable, nonce: nonce, uncollected: uncollected, full_toc: full_toc }
+        - if editable && (collection.collection_type == 'uncollected' || is_involved) # only show editable collections for collections where this particular author is a principal contributor
+          = render partial: 'shared/manage_collection', locals: { collection: collection, title: collection.title, nonce: nonce }
+        - else
+          - unless children.empty?
+            %ul.toclist
+              = render partial: 'authors/toc_node', collection: children,
+                      locals: { role: role, authority_id: authority_id, editable: editable, nonce: nonce, uncollected: uncollected, full_toc: full_toc }
       %br
   - elsif toc_node.is_a?(TocTree::PlaceholderNode)
     -# Placeholder, toc_node should be a String with HTML layout
