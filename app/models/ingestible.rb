@@ -11,6 +11,7 @@ class Ingestible < ApplicationRecord
 
   belongs_to :user
   belongs_to :locked_by_user, class_name: 'User', optional: true
+  belongs_to :last_editor, class_name: 'User', optional: true
   belongs_to :volume, optional: true, class_name: 'Collection'
 
   DEFAULTS_SCHEMA = {}.freeze
@@ -104,12 +105,12 @@ class Ingestible < ApplicationRecord
     elsif prospective_volume_id.present?
       if prospective_volume_id[0] == 'P'
         pub = Publication.find(prospective_volume_id[1..-1])
-        if replace_publisher || self.publisher.blank?
+        if replace_publisher || publisher.blank?
           self.publisher = pub.publisher_line
           self.year_published = pub.pub_year
         end
-          # populate with default role of author, though this would be false when the Hebrew author
-          # is the translator of a foreign work. Such cases would need to be corrected manually.
+        # populate with default role of author, though this would be false when the Hebrew author
+        # is the translator of a foreign work. Such cases would need to be corrected manually.
         aus << { seqno: seqno, authority_id: pub.authority.id, authority_name: pub.authority.name, role: 'author' }
       else
         volume = Collection.find(prospective_volume_id)
@@ -215,12 +216,14 @@ class Ingestible < ApplicationRecord
   # split markdown into sections and populate or update the works_buffer
   def update_buffers
     return if markdown.blank?
+
     buf = []
     sections = markdown.split(/^&&& /)
 
     sections.each do |section|
       # skip the first match if no text appeared before the first &&&
       next if section.blank?
+
       lines = section.lines
       title = lines.first
       title.strip! if title.present?
@@ -309,7 +312,7 @@ class Ingestible < ApplicationRecord
 
     # To avoid excessive updates we only refresh lock if more than 10 seconds passed since previous lock refresh
     if locked_at.nil? || locked_at < 10.seconds.ago
-      update_columns(locked_at: Time.zone.now, locked_by_user_id: user.id) # we deliberately skip validations here # rubocop:disable Rails/SkipsModelValidations
+      update_columns(locked_at: Time.zone.now, locked_by_user_id: user.id, last_editor_id: user.id) # we deliberately skip validations here # rubocop:disable Rails/SkipsModelValidations
     end
 
     return true

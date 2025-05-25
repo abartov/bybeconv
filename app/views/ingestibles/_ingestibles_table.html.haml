@@ -11,7 +11,8 @@
         %th= t(:edition_details)
         %th= t(:comments)
         %th= t(:markdown)
-        %th{colspan: 3}= t(:actions)
+        %th= t('ingestibles.index.last_editor')
+        %th{colspan: 4}= t(:actions)
 
     %tbody
       - ingestibles.each do |ingestible|
@@ -27,6 +28,7 @@
               %strong= " (#{t(:x_words, x: ingestible.markdown.split.length)})"
             - else
               %b= t(:none)
+          %td{style: bgstyle}= ingestible.last_editor&.name || t(:unknown)
           %td{style: bgstyle}= link_to t(:show), ingestible
           - if editable
             %td{style: bgstyle}= link_to t(:edit), edit_ingestible_path(ingestible)
