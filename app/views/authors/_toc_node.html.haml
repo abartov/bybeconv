@@ -58,12 +58,12 @@
     - type_prefix = collection.collection_type == 'uncollected' ? '' : textify_collection_type(collection.collection_type)
     - uncollected = collection.collection_type == 'uncollected'
     - any_published = collection.any_published_manifestations?
+    - is_involved = collection.involved_authorities.where(authority_id: authority_id).present?
+    - unless full_toc
+      - full_toc = is_involved # only show full TOC for collections where this particular author is a principal contributor
     - children = full_toc ? toc_node.sorted_children : toc_node.children_by_role(role, authority_id)
     - children.reject!{ |child| child.is_a?(TocTree::ManifestationNode) && child.manifestation.status != 'published' } # don't show deleted or unpublished manifestations in the TOC
     - if !uncollected || children.present?
-      - is_involved = collection.involved_authorities.where(authority_id: authority_id).present?
-      - unless full_toc
-        - full_toc = is_involved # only show full TOC for collections where this particular author is a principal contributor
       .cwrapper{ id: "cwrapper_#{collection.id}", 'data-nonce' => nonce, 'data-collection-id' => collection.id, class: uncollected ? 'uncollected' : '' }
         %span{style:'font-size:120%;'}
           %span.ctitle_only{ style: 'display:none;' }= collection.title
