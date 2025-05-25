@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_05_08_003800) do
+ActiveRecord::Schema.define(version: 2025_05_25_092929) do
 
   create_table "aboutnesses", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -596,6 +596,8 @@ ActiveRecord::Schema.define(version: 2025_05_08_003800) do
     t.text "ingested_changes"
     t.text "credits"
     t.string "originating_task"
+    t.integer "last_editor_id"
+    t.index ["last_editor_id"], name: "index_ingestibles_on_last_editor_id"
     t.index ["locked_by_user_id"], name: "index_ingestibles_on_locked_by_user_id"
     t.index ["originating_task"], name: "index_ingestibles_on_originating_task"
     t.index ["status"], name: "index_ingestibles_on_status"
@@ -987,6 +989,7 @@ ActiveRecord::Schema.define(version: 2025_05_08_003800) do
   add_foreign_key "holdings", "bib_sources"
   add_foreign_key "holdings", "publications"
   add_foreign_key "ingestibles", "collections", column: "volume_id"
+  add_foreign_key "ingestibles", "users", column: "last_editor_id"
   add_foreign_key "ingestibles", "users", column: "locked_by_user_id"
   add_foreign_key "involved_authorities", "authorities"
   add_foreign_key "list_items", "users"

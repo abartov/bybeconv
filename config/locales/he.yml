@@ -1473,6 +1473,7 @@ he:
       show_uningested_only: הצג רק העלאות שלא הושלמו
       show_all: הצג את כל ההעלאות
       pending_ingestibles: ישנן %{count} העלאות ממתינות ליצירת ישויות
+      last_editor: עורך/ת אחרון/ה
     destroy:
       success: ההעלאה נמחקה
   ingestible_texts:
