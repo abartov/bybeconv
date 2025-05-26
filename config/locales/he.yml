@@ -218,7 +218,7 @@ he:
   most_read_works: רשימת היצירות הנקראות ביותר
   newest_works: היצירות החדשות ביותר
   table_of_contents: תוכן עניינים
-  x_of_y_items_available: "%{x}/%{y} פריטים מתוך %{ctype} זה הועלו למאגר"
+  x_of_y_items_available: "%{x} מתוך %{y} פריטים מ%{ctype} זה הועלו למאגר"
   full_collection_available: כל פריטי %{ctype} זה זמינים להלן
   x_issues_available: "%{x} גליונות מצויים במאגר"
   issue_of: גליון של כתב העת

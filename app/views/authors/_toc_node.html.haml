@@ -17,11 +17,11 @@
       when :translator
         label += " / #{authorities_string(m, :author)}"
         if m.translators.size > 1
-          label += " / #{authorities_string(m, :translator, exclude_authority_id: authority_id)}"
+          label += " / #{authorities_string(m, :translator)}"
         end
       when :author
-        if m.authors.size > 1
-          label += " / #{authorities_string(m, :author, exclude_authority_id: authority_id)}"
+        if m.authors.size > 1 || m.authors.pluck(:id) != [authority_id] # when the author is not the only author or not the author in a volume he is generally the author of (e.g. someone else's preface to this author's book)
+          label += " / #{authorities_string(m, :author)}"
         end
         if m.translators.size > 0
           label += " #{t(:translated_by)} #{authorities_string(m, :translator)}"
