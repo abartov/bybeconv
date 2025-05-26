@@ -58,7 +58,7 @@
     - type_prefix = collection.collection_type == 'uncollected' ? '' : textify_collection_type(collection.collection_type)
     - uncollected = collection.collection_type == 'uncollected'
     - any_published = collection.any_published_manifestations?
-    - is_involved = collection.involved_authorities.where(authority_id: authority_id).present?
+    - is_involved = collection.involved_authorities.where(authority_id: authority_id, role: role).present?
     - unless full_toc
       - full_toc = is_involved # only show full TOC for collections where this particular author is a principal contributor
     - children = full_toc ? toc_node.sorted_children : toc_node.children_by_role(role, authority_id)
@@ -71,6 +71,8 @@
             - extra_data = collection.created_at > 2.minutes.ago ? { 'data-focus-on-me': 'true' } : {}
             - ctitle = "#{collection.title}#{collection.subtitle.present? ? ': '+collection.subtitle : '' }"
             - if children.present?
+              - unless full_toc
+                = t(:out_of)
               = link_to ctitle, collection_path(collection), extra_data
             - else
               = ctitle
