@@ -14,7 +14,7 @@ class CollectionsController < ApplicationController
   # GET /collections/1 or /collections/1.json
   def show
     unless @collection.has_multiple_manifestations?
-      ci = @collection.flatten_items.select{|x| x.item_type == 'Manifestation'}.first
+      ci = @collection.flatten_items.select { |x| x.item_type == 'Manifestation' }.first
       if ci.nil?
         flash[:error] = t(:no_such_item)
         redirect_to '/'
@@ -99,7 +99,7 @@ class CollectionsController < ApplicationController
   def print
     @print = true
     @collection = Collection.find(params[:collection_id])
-    if @collection.present? 
+    if @collection.present?
       if @collection.suppress_download_and_print
         flash[:error] = t(:print_disabled)
         redirect_to @collection
@@ -243,7 +243,9 @@ class CollectionsController < ApplicationController
       end
     end
     @collection_total_items = @collection.collection_items.reject { |ci| ci.paratext }.count
-    @collection_minus_placeholders = @collection.collection_items.reject { |ci| !ci.public? || ci.paratext }.count
+    @collection_minus_placeholders = @collection.collection_items.reject do |ci|
+      !ci.public? || ci.paratext.present? || ci.alt_title.present?
+    end.count
     @authority_for_image = if @collection.authors.present?
                              @collection.authors.first
                            elsif @collection.translators.present?
