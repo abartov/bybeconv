@@ -9,7 +9,7 @@ class IngestiblesController < ApplicationController
                 only: %i(show edit update update_markdown update_toc destroy review ingest edit_toc update_toc_list
                          undo unlock)
   before_action :try_to_lock_ingestible,
-                only: %i(show edit update update_markdown destroy review update_toc update_toc_list edit_toc undo)
+                only: %i(edit update update_markdown destroy review update_toc update_toc_list edit_toc undo)
 
   DEFAULTS = { title: '', status: 'draft', orig_lang: 'he', default_authorities: [], metadata: {}, comments: '',
                markdown: '' }.freeze
