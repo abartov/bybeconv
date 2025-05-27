@@ -83,8 +83,24 @@
             = link_to t(:edit), collection_manage_path(collection.id), style: 'font-size: 70%;'
           - if uncollected
             %p{style: 'font-size: 0.8rem; color: #222222;'}= t(:uncollected_works_collection_explanation)
-          - collection.involved_authorities.reject{|x| x.authority_id == authority_id}.each do |ia|
-            %p= "#{ia.authority.name} (#{textify_role(ia.role, ia.authority.gender)})"
+          - # if the collection's involved authorities number more than one for any given role, return all for that role. Otherwise, return only authorities that aren't the authority_id.
+          - ias = collection.involved_authorities
+          - authorities = {}
+          - ias.each do |ia|
+            - if authorities[ia.role].present?
+              - authorities[ia.role] << ia.authority
+            - else
+              - authorities[ia.role] = [ia.authority]
+          - %w[ author illustrator translator editor photographer designer contributor other ].each do |r|
+            - next unless authorities[r].present?
+            - if authorities[r].size > 1
+              - authorities[r].each do |authority|
+                %p= "#{authority.name} (#{textify_role(r, authority.gender)})"
+            - else
+              - authority = authorities[r].first
+              - if authority.id == authority_id # if the single authority is the same as the one whose page we are on
+                - next if r.to_sym == role # this is implicit
+              %p= "#{authority.name} (#{textify_role(r, authority.gender)})" # author X may have a work in which they are both an author and an illustrator, for example.
           - if collection.publisher_line.present?
             %p
               - pyear = collection.pub_year.present? ? ", #{collection.pub_year}" : ''
