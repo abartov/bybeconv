@@ -147,10 +147,11 @@ class Manifestation < ApplicationRecord
   end
 
   # async update the uncollected collection this text was still in
-  def trigger_uncollected_recalculation 
+  def trigger_uncollected_recalculation
     return if collection_items.empty?
-    collection_items.joins(:collection).where(collection: {collection_type: 'uncollected'}).each do |ci|
-      au = Authority.where(uncollected_works_collection_id: ci.collection.id) 
+
+    collection_items.joins(:collection).where(collection: { collection_type: 'uncollected' }).each do |ci|
+      au = Authority.where(uncollected_works_collection_id: ci.collection.id)
       if au.present?
         # RefreshUncollectedWorksJob.perform_async(au.first.id) # must be at most one
         RefreshUncollectedWorksCollection.call(au.first)
@@ -194,6 +195,7 @@ class Manifestation < ApplicationRecord
   end
 
   def manual_delete
+    collection_items.destroy_all # this will remove the manifestation from all collections
     destroy!
     expression.involved_authorities.each(&:destroy!)
     w = expression.work
