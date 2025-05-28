@@ -10,7 +10,7 @@ To set up a development environment, ensure you have a modern docker compose set
 External (i.e. hosting system) dependencies
 -------------------------------------------
 
-* Pandoc 2.10 or higher for generating ebooks and other formats. (previous versions skip SmartTag tags in DOCX files, causing random letters to disappear in certain DOCXes with extraneous mark-up.
+* Pandoc 3.x for converting to markdown and generating ebooks and other formats. (previous versions skip SmartTag tags in DOCX files, causing random letters to disappear in certain DOCXes with extraneous mark-up.
 * wkhtmltopdf for PDF generation
 * ElasticSearch for search
 ** https://github.com/synhershko/elasticsearch-analysis-hebrew for the Hebrew analyzer for ElasticSearch

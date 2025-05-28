@@ -67,7 +67,7 @@
         %td
           = select_tag :orig_lang, options_for_select(get_langs.map {|lang| [textify_lang(lang), lang]}, orig_lang), {class: 'toc-lang'}
         %td
-          = select_tag :intellectual_property, options_for_select(Expression.intellectual_properties.keys.map { |code| [textify_intellectual_property(code), code] }, intellectual_property), {class: 'toc-intellectual-property'}
+          = select_tag :intellectual_property, options_for_select(Expression.intellectual_properties.keys.reject{|x| x == 'copyrighted' || x == 'unknown'}.map { |code| [textify_intellectual_property(code), code] }, intellectual_property), {class: 'toc-intellectual-property'}
       - else
         %td
         %td

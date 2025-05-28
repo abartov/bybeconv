@@ -3,7 +3,13 @@ class Expression < ApplicationRecord
 
   before_save :set_translation
   before_save :norm_dates
-  enum period: %i(ancient medieval enlightenment revival modern)
+  enum period: {
+    ancient: 0,
+    medieval: 1,
+    enlightenment: 2,
+    revival: 3,
+    modern: 4
+  }
 
   belongs_to :work, inverse_of: :expressions
   has_many :manifestations, inverse_of: :expression, dependent: :destroy
@@ -30,7 +36,7 @@ class Expression < ApplicationRecord
   end
 
   def self.cached_translations_count
-    Rails.cache.fetch("e_translations", expires_in: 24.hours) do
+    Rails.cache.fetch('e_translations', expires_in: 24.hours) do
       Expression.where(translation: true).count
     end
   end
@@ -38,7 +44,7 @@ class Expression < ApplicationRecord
   # Returns total count of published works by each period
   # @return hash where keys are period names and value is a number of works from the given period
   def self.cached_work_count_by_periods
-    Rails.cache.fetch("e_works_by_periods", expires_in: 24.hours) do
+    Rails.cache.fetch('e_works_by_periods', expires_in: 24.hours) do
       Expression.joins(:manifestations).merge(Manifestation.all_published).group(:period).count
     end
   end
@@ -51,7 +57,7 @@ class Expression < ApplicationRecord
   end
 
   def norm_dates
-    nd = normalize_date(self.date)
+    nd = normalize_date(date)
     self.normalized_pub_date = nd unless nd.nil?
   end
 end
