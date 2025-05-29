@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe AdminController do
@@ -190,8 +192,9 @@ describe AdminController do
   end
 
   describe '#missing_languages' do
-    include_context 'Admin user logged in'
     subject(:request) { get :missing_languages }
+
+    include_context 'Admin user logged in'
 
     before do
       create_list(:manifestation, 60, language: 'ru', orig_lang: 'he')
@@ -207,9 +210,8 @@ describe AdminController do
 
     let!(:suspicious_titles) do
       [
-        create(:manifestation, title: 'קבוצה '),
-        create(:manifestation, title: 'Trailing dot.'),
-        create(:manifestation, title: 'ab')
+        create(:manifestation, title: 'קבוצה א'),
+        create(:manifestation, title: 'Trailing dot.')
       ]
     end
 
@@ -285,7 +287,7 @@ describe AdminController do
       expect(authors.length).to eq 1
       expect(authors[0][0]).to eq author
       expect(authors[0][1]).to match_array %w(he ru de)
-      expect(authors[0][2]).to eq ({ 'he' => hebrew_works, 'ru' => russian_works, 'de' => german_works })
+      expect(authors[0][2]).to eq({ 'he' => hebrew_works, 'ru' => russian_works, 'de' => german_works })
     end
   end
 
