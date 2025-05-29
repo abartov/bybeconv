@@ -114,7 +114,7 @@ describe IngestiblesController do
       it_behaves_like 'redirects to show page if record cannot be locked'
 
       it 'updates record and re-renders edit page' do
-        expect(call).to redirect_to edit_ingestible_path(ingestible)
+        expect(call).to redirect_to "#{edit_ingestible_path(ingestible)}?tab=full_markdown"
         ingestible.reload
         expect(ingestible.markdown).to eq new_markdown
         expect(flash.notice).to eq I18n.t(:updated_successfully)

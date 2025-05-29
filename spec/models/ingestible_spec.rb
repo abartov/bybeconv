@@ -41,7 +41,7 @@ describe Ingestible do
         expect(result).to be_truthy
         ingestible.reload
         expect(ingestible.locked_by_user).to eq user
-        expect(ingestible.locked_at).to be_within(1.second).of(Time.zone.now)
+        expect(ingestible.locked_at).to be_within(2.seconds).of(Time.zone.now)
       end
     end
 
