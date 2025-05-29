@@ -329,7 +329,7 @@ class IngestiblesController < ApplicationController
     @decoded_toc = @ingestible.decode_toc
     @texts_to_upload = @ingestible.texts_to_upload
     @placeholders = @ingestible.placeholders
-    @markdown_titles = @ingestible.markdown.scan(/^&&&\s+(.+?)\s*\n/).map(&:first)
+    @markdown_titles = @ingestible.markdown.present? ? @ingestible.markdown.scan(/^&&&\s+(.+?)\s*\n/).map(&:first) : []
     @collection = @ingestible.volume # would be nil for new volumes
     @authority_changes = {}
     @missing_in_markdown = []
