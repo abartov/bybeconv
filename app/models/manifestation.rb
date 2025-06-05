@@ -237,6 +237,10 @@ class Manifestation < ApplicationRecord
     return expression.translators
   end
 
+  def editors
+    return []
+  end
+
   def author_and_translator_ids
     ret = []
     au = authors
