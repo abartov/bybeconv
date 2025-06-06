@@ -459,7 +459,7 @@ class HtmlFileController < ApplicationController
         in_footnotes = true if lines[i] =~ /^\[\^\d+\]:/ # once reached the footnotes section, set the footnotes mode to properly handle multiline footnotes with tabs
         if nikkud
           # make full-nikkud lines PRE
-          lines[i] = '> ' + lines[i] + "\n" unless lines[i] =~ /\[\^\d+/ # produce a blockquote (PRE would ignore bold and other markup)
+          lines[i] = '> ' + lines[i] unless lines[i] =~ /\[\^\d+/ # produce a blockquote (PRE would ignore bold and other markup)
           prev_nikkud = true
         else
           prev_nikkud = false

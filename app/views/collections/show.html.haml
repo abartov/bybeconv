@@ -58,9 +58,9 @@
                   .metadata= t(:full_collection_available, ctype: textify_collection_type(@collection.collection_type))
                 - else
                   .metadata= t(:x_of_y_items_available, x: @collection_minus_placeholders, y: @collection_total_items, ctype: textify_collection_type(@collection.collection_type))
-                .metadata.mobile-work-details
-                  %span{style: "font-weight:bold"} המלצות:
-                  %a{href: "#"} 3 המלצות קוראים
+                -#.metadata.mobile-work-details
+                -#  %span{style: "font-weight:bold"} המלצות:
+                -#  %a{href: "#"} 3 המלצות קוראים
 
           :ruby
             eauthors = {}
