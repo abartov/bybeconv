@@ -15,7 +15,7 @@ module ApplicationHelper
 
   def about_the_author(au)
     ret = I18n.t(:about_the_author)
-    return au.gender == 'female' ? ret + 'ת' : ret
+    return au&.gender == 'female' ? ret + 'ת' : ret
   end
 
   def to_the_author_page(au)

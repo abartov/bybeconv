@@ -133,7 +133,7 @@ class CollectionsController < ApplicationController
       # redirect_to collection_url(@collection), notice: t(:created_successfully)
       render json: @collection
     else
-      render :new, status: :unprocessable_entity
+      head :unprocessable_entity
     end
   end
 
@@ -145,7 +145,7 @@ class CollectionsController < ApplicationController
         format.js
       end
     else
-      render :edit, status: :unprocessable_entity
+      head :unprocessable_entity
     end
   end
 
