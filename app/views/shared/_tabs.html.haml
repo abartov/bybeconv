@@ -108,7 +108,7 @@
               %a{href: t(:blog_url)}
                 %span.by-icon-v02 ~
                 = t(:to_the_blog)
-              %a.linkcolor.pointer.contact_btn{href: '/contact'}
+              %a.linkcolor.pointer.contact_btn{href: '#'}
                 %span.by-icon-v02 R
                 = t(:contact_us)
     #mySidenav.sidenav-v02
@@ -228,7 +228,7 @@
                 %span.by-icon-v02.iconInMenu ~
                 = t(:to_the_blog)
             %li
-              %a.linkcolor.pointer.contact_btn{href: '/contact'}
+              %a.linkcolor.pointer.contact_btn{href: '#'}
                 %span.by-icon-v02.iconInMenu R
                 = t(:contact_us)
     .menuButton-v02#mobileMenu= ','
@@ -279,7 +279,7 @@
             %span.by-icon-v02 ~
             = t(:to_the_blog)
           = render partial: 'shared/share', locals: {element: :mobile_button}
-          %a.dropdown-item.linkcolor.contact_btn{href: '/contact'}
+          %a.dropdown-item.linkcolor.contact_btn{href: '#'}
             %span.by-icon-v02 R
             = t(:contact_us)
           - if current_user
