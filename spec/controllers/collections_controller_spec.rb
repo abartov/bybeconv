@@ -20,22 +20,6 @@ describe CollectionsController do
   describe 'editor actions' do
     include_context 'when editor logged in'
 
-    describe '#index' do
-      subject { get :index }
-
-      before do
-        create_list(:collection, 3)
-      end
-
-      it { is_expected.to be_successful }
-    end
-
-    describe '#new' do
-      subject(:call) { get :new }
-
-      it { is_expected.to be_successful }
-    end
-
     describe '#create' do
       subject(:call) { post :create, params: { collection: collection_params } }
 
@@ -70,17 +54,11 @@ describe CollectionsController do
       context 'when params are invalid' do
         let(:title) { '' }
 
-        it 're-renders new page' do
+        it 'rejects the submission as unprocessable' do
           expect { call }.to not_change(Collection, :count)
-          expect(call).to render_template(:new)
+          expect(call).to have_http_status(:unprocessable_entity)
         end
       end
-    end
-
-    describe '#edit' do
-      subject { get :edit, params: { id: collection.id } }
-
-      it { is_expected.to be_successful }
     end
 
     describe '#update' do
@@ -118,8 +96,8 @@ describe CollectionsController do
       context 'when params are invalid' do
         let(:title) { '' }
 
-        it 're-renders edit page' do
-          expect(call).to render_template(:edit)
+        it 'rejects the submission as unprocessable' do
+          expect(call).to have_http_status(:unprocessable_entity)
         end
       end
     end

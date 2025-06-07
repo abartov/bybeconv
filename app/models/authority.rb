@@ -95,7 +95,8 @@ class Authority < ApplicationRecord
   # return all manifestation IDs that are included in collections (useful for migrating legacy TOCs)
   def collected_manifestation_ids
     ids = published_manifestations.pluck(:id)
-    collected_ids = CollectionItem.joins(:collection).where(item_id: ids, item_type: 'Manifestation').where.not(collection: { collection_type: :uncollected }).pluck(:item_id)
+    collected_ids = CollectionItem.joins(:collection).where(item_id: ids,
+                                                            item_type: 'Manifestation').where.not(collection: { collection_type: :uncollected }).pluck(:item_id)
   end
 
   # returns all volumes that are items of this authority's root collection
@@ -228,6 +229,10 @@ class Authority < ApplicationRecord
     Rails.cache.fetch("au_#{id}_work_count", expires_in: 12.hours) do
       published_manifestations.count
     end
+  end
+
+  def invalidate_cached_works_count!
+    Rails.cache.delete("au_#{id}_work_count")
   end
 
   def any_bibs?
