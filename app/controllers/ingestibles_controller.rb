@@ -556,7 +556,10 @@ class IngestiblesController < ApplicationController
           e.involved_authorities.create!(authority: auth, role: other_authorities[i][1])
           auths << auth
         end
-        auths.uniq.each { |a| a.invalidate_cached_credits! }
+        auths.uniq.each do |a|
+          a.invalidate_cached_credits!
+          a.invalidate_cached_works_count!
+        end
         @changes[:texts] << [m.id, m.title, m.responsibility_statement]
         m.recalc_cached_people!
         if @ingestible.pub_link.present? && @ingestible.pub_link_text.present?
