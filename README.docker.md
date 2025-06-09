@@ -1,29 +1,28 @@
-This folder contains docker-compose configuration for development environment.
+This document describes our development docker configuration.
 
-Docker Compose v2 syntax is used in examples, if you use older version simply replace `docker compose` 
-with `docker-compose`. 
+> Instruction below are written for Debian linux. For other distros/OSes it can require some changes
 
-## Preparing development environment for using docker
+We assume that application itself will be run in host system natively, docker is used to only host services used by app:
+database, elasticsearch, cache, etc.
 
-NOTE: all `docker-compose` calls commands should be done from folder containing `docker-compose.yml` file.
+## Preparing development environment with docker
 
-### 1 .Setting file permissions
-We mount project directory into a docker image, so it will write some files there (e.g. server pids or logs).
-By default docker would write them with root permissions and this can cause some problems.
-You can override permissions used by docker service by providing proper user and group ids to docker-compose.
+> all `docker compose` calls commands should be done from folder containing `docker-compose.yml` file.
 
-To achieve this simply copy `docker-compose.override.example.yml` file to `docker-compose.override.yml` and fill `user`
-attribute with `UID:GID` of desired host user, e.g.:
-```
-  app:
-    user: '1000:1000'
+### 1. Installing docker
+Don't use docker packages shipped with your distro. Install docker, as described on [official website](https://docs.docker.com/engine/install/debian/).
+
+Next create a group named docker:
+```shell
+$ sudo groupadd docker
 ```
 
-NOTE: You can find your uid and gid using `id` command:
+Add your user to this group:
+```shell
+$ sudo usermod -aG docker $USER
 ```
-# id
-uid=1000(myuser) gid=1000(myuser) groups=1000(myuser),1001(docker)
-```
+
+You'll need to re-login to apply those changes. Afterwards you'll be able to run docker commands without using `sudo/su`.
 
 ### 2. Updating memory preferences
 
@@ -35,49 +34,50 @@ vm.max_map_count=262144
 
 ### 3. Update configuration files
 
-You need to update set of configuration files in `config` folder:
+To use docker-magaed services you need to update set of configuration files in `config` folder:
 - `chewy.yml` - just copy content of `chewy.yml.docker`
 - `database.yml` - just copy content of `database.yml.docker`
 - `constants.yml` and `storage.yml` - simply copy content of `constants.yml.sample` and `storage.yml.sample`
 - `s3.yml` - you can copy content of `s3.yml.sample` but to have images properly loaded you'll need real keys for our server. 
 
+### 4. Start services
 
-### 4. Install required gems
-
+Simply run
+```shell
+docker compose up -d
 ```
-# docker compose run --rm app bundle install
-```
+This command will start all services defined in `docker-compose.yml`
 
 ### 5. Prepare databases
 At first you need to create databases:
-```
-# docker compose run --rm app rails db:create
+```shell
+$ rails db:create
 ```
 
 You'll probably want to use snapshot of production db for development. So you need to restore it from dump:
-```
-# cat <PATH_TO_DUMP_FILE> | docker exec -i bybe_dev-mysql-1 mysql -u root --password=root bybe_dev
+```shell
+$ cat <PATH_TO_DUMP_FILE> | docker exec -i bybeconv-mysql-1 mysql -u root --password=root bybe_dev
 ```
 
 Now we need to migrate this db:
-```
-# docker compose run --rm app rails db:migrate
+```shell
+$ rails db:migrate
 ```
 And migrate test database as well:
-```
-# docker compose run --rm app rails db:migrate RAILS_ENV=test
+```shell
+$ rails db:migrate RAILS_ENV=test
 ```
 
 ### 6. Rebuild Elasticsearch indices
-```
-# docker compose run --rm app rake chewy:reset
+```shell
+$ rake chewy:reset
 ```
 
 ### 7. Running tests
 
 Now you can try to run specs to check your setup 
-```
-# docker compose run --rm app rspec
+```shell
+$ rspec
 ```
 
 ### 8. Staring app
