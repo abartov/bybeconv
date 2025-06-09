@@ -1,5 +1,0 @@
-test:
-  host: 'elasticsearch:9200'
-  prefix: 'test'
-development:
-  host: 'elasticsearch:9200'
