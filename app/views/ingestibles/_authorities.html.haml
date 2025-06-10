@@ -5,9 +5,9 @@
   %ul#authorities
     - if authorities.present?
       = render partial: 'ingestible_authorities/authority', collection: JSON.parse(authorities), locals: {editable: true, toc: false}
-  = t(:add)
+  = t(:add_via_autocomplete)
   = autocomplete_field_tag 'add_authority', '', autocomplete_authority_name_and_aliases_path,
-                          id_element: '#authority_id', style: 'background-color:white;', class: 'add_authority'
+                          id_element: '#authority_id', class: 'add_authority'
   = hidden_field_tag :authority_id
   = hidden_field_tag :add_authority_name
   = t('.or_new_person')
