@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-ruby '3.3.6'
+ruby '3.3.8'
 
 source 'http://rubygems.org'
 
 gem 'actionview'
+gem 'concurrent-ruby', '1.3.4' # 1.3.5 and later yields an error with Logger. Fixed in Rails 7.1
 gem 'rails', '~> 6.1.7.7'
 gem 'rails-i18n', '~> 6.0' # version should match major version of Rails
-gem 'concurrent-ruby', '1.3.4' # 1.3.5 and later yields an error with Logger. Fixed in Rails 7.1
 gem 'sass-rails', '~> 6.0.0'
 gem 'sprockets', '~> 4.2.1'
 
@@ -133,11 +133,8 @@ group :development do
   gem 'bcrypt_pbkdf'
   gem 'debug'
   gem 'ed25519'
-  gem 'immigrant'
-  gem 'ruby-prof' # for profiling
-  gem 'stackprof'
-
   gem 'haml_lint', '~> 0.57.0', require: false
+  gem 'immigrant'
   gem 'pronto', '~> 0.11.2'
   gem 'pronto-haml', '~> 0.11.1', require: false
   gem 'pronto-rubocop', '~> 0.11.5', require: false
@@ -145,6 +142,9 @@ group :development do
   gem 'rubocop-factory_bot', '~> 2.25.1', require: false
   gem 'rubocop-rails', '~> 2.24.1', require: false
   gem 'rubocop-rspec', '~> 2.28.0', require: false
+  gem 'ruby-lsp-rspec', require: false
+  gem 'ruby-prof' # for profiling
+  gem 'stackprof'
 end
 
 group :test, :development do

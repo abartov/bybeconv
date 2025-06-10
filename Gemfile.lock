@@ -590,6 +590,8 @@ GEM
     rb-fsevent (0.11.2)
     rb-inotify (0.11.1)
       ffi (~> 1.0)
+    rbs (3.9.4)
+      logger
     rdoc (6.13.1)
       psych (>= 4.0.0)
     redis-client (0.24.0)
@@ -667,6 +669,13 @@ GEM
       rubocop-rspec_rails (~> 2.28)
     rubocop-rspec_rails (2.29.1)
       rubocop (~> 1.61)
+    ruby-lsp (0.23.23)
+      language_server-protocol (~> 3.17.0)
+      prism (>= 1.2, < 2.0)
+      rbs (>= 3, < 5)
+      sorbet-runtime (>= 0.5.10782)
+    ruby-lsp-rspec (0.1.23)
+      ruby-lsp (~> 0.23.19)
     ruby-prof (1.7.1)
     ruby-progressbar (1.13.0)
     ruby-statistics (4.1.0)
@@ -719,6 +728,7 @@ GEM
     snaky_hash (2.0.1)
       hashie
       version_gem (~> 1.1, >= 1.1.1)
+    sorbet-runtime (0.5.12135)
     spring (4.2.1)
     spring-commands-rspec (1.0.4)
       spring (>= 0.9.1)
@@ -870,6 +880,7 @@ DEPENDENCIES
   rubocop-factory_bot (~> 2.25.1)
   rubocop-rails (~> 2.24.1)
   rubocop-rspec (~> 2.28.0)
+  ruby-lsp-rspec
   ruby-prof
   rufus-scheduler
   rvm1-capistrano3
@@ -888,7 +899,7 @@ DEPENDENCIES
   yt
 
 RUBY VERSION
-   ruby 3.3.6p108
+   ruby 3.3.8p144
 
 BUNDLED WITH
    2.5.23
