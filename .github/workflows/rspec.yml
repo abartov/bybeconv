@@ -43,13 +43,13 @@ jobs:
       - name: Verify MySQL connection from host
         run: |
           mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports[3306] }} -uroot -proot -e "SHOW GRANTS FOR 'root'@'localhost'"
-      - name: Copy Configuration
+      - name: Update Configuration
         run: |
-          cp ./.github/workflows/rspec_config/* ./config
+          cp ./.github/workflows/rspec_config/* ./config && rm .env.test
       - name: Setup DB
         env:
           RAILS_ENV: test
-          MYSQL_PORT: ${{ job.services.mysql.ports[3306] }}
+          DATABASE_URL: mysql2://root:root@127.0.0.1:${{ job.services.mysql.ports[3306] }}/bybe_test
         run: |
           bin/rails db:create
           bin/rails db:migrate
