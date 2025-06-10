@@ -7,19 +7,24 @@ database, elasticsearch, cache, etc.
 
 ## Preparing development environment with docker
 
-> all `docker compose` calls commands should be done from folder containing `docker-compose.yml` file.
-
 ### 1. Installing docker
 Don't use docker packages shipped with your distro. Install docker, as described on [official website](https://docs.docker.com/engine/install/debian/).
 
 Next create a group named docker:
 ```shell
-$ sudo groupadd docker
+ $ sudo groupadd docker
 ```
 
 Add your user to this group:
 ```shell
-$ sudo usermod -aG docker $USER
+ $ sudo usermod -aG docker $USER
+```
+
+As an optional step, you can configure docker to start as a service, so all services will be up and running right after
+reboot. To do so just run:
+```shell
+ $ sudo systemctl enable docker.service
+ $ sudo systemctl enable containerd.service
 ```
 
 You'll need to re-login to apply those changes. Afterwards you'll be able to run docker commands without using `sudo/su`.
@@ -35,54 +40,54 @@ vm.max_map_count=262144
 ### 3. Update configuration files
 
 To use docker-magaed services you need to update set of configuration files in `config` folder:
-- `chewy.yml` - just copy content of `chewy.yml.docker`
-- `database.yml` - just copy content of `database.yml.docker`
 - `constants.yml` and `storage.yml` - simply copy content of `constants.yml.sample` and `storage.yml.sample`
 - `s3.yml` - you can copy content of `s3.yml.sample` but to have images properly loaded you'll need real keys for our server. 
 
 ### 4. Start services
 
+> all `docker compose` calls should be done from the folder containing `docker-compose.yml` file.
+
 Simply run
 ```shell
-docker compose up -d
+ $ docker compose up -d
 ```
 This command will start all services defined in `docker-compose.yml`
 
 ### 5. Prepare databases
 At first you need to create databases:
 ```shell
-$ rails db:create
+ $ rails db:create
 ```
 
 You'll probably want to use snapshot of production db for development. So you need to restore it from dump:
 ```shell
-$ cat <PATH_TO_DUMP_FILE> | docker exec -i bybeconv-mysql-1 mysql -u root --password=root bybe_dev
+ $ cat <PATH_TO_DUMP_FILE> | docker exec -i bybeconv-mysql-1 mysql -u root --password=root bybe_dev
 ```
 
 Now we need to migrate this db:
 ```shell
-$ rails db:migrate
+ $ rails db:migrate
 ```
 And migrate test database as well:
 ```shell
-$ rails db:migrate RAILS_ENV=test
+ $ rails db:migrate RAILS_ENV=test
 ```
 
 ### 6. Rebuild Elasticsearch indices
 ```shell
-$ rake chewy:reset
+ $ rake chewy:reset
 ```
 
 ### 7. Running tests
 
 Now you can try to run specs to check your setup 
 ```shell
-$ rspec
+ $ rspec
 ```
 
 ### 8. Staring app
-```
-# docker compose up -d
+```shell
+ $ docker compose up -d
 ```
 
 App should be available at http://localhost:3001
@@ -93,57 +98,44 @@ And you can connect to MySQL at localhost:3307, using root/root credentials
 
 ### Starting and stopping containers
 
-To create and start containers defined in docker-compose file simply run:
-```
-# docker compose up -d
+To create and start containers defined in `docker-compose.yml` file simply run:
+```shell
+ $ docker compose up -d
 ```
 
 If you have changed docker images config you may need to provide additional keys to force image rebuild:
-```
-# docker compose up --build -d 
+```shell
+ $ docker compose up --build -d 
 ```
 
 To stop containers temporarily run:
-```
-# docker compose stop
+```shell
+ $ docker compose stop
 ```
 
 To start stopped containers run:
-```
-# docker compose start
+```shell
+ $ docker compose start
 ```
 
 To stop and remove all containers
-```
-# docker compose down
+```shell
+ $ docker compose down
 ```
 
 If you also want to remove all volumes used by containers, add `-v' key:
+```shell
+ $ docker compose down -v
 ```
-# docker compose down -v
-```
-NOTE: this will remove all database and elastic search data, as well as bundler cache
-
-### Getting into app's bash
-
-If you need to get bash console on app container use:
-```
-# docker compose run --rm app bash
-```
-
-You can replace `bash`command with any other program you want to run.
-
-NOTE: `run` command creates new container, so `--rm` is added to remove this new container after command is executed.
-
-
+NOTE: this will remove all database and elastic search data, so you'll need to recreate them on a next start.
 
 ### Creating DB dump
-```
-# docker exec bybe_dev-mysql-1 mysqldump -u root --password=root <DB_NAME> | cat > <PATH_TO_DUMP_FILE>
+```shell
+ $ docker exec bybeconv-mysql-1 mysqldump -u root --password=root <DB_NAME> | cat > <PATH_TO_DUMP_FILE>
 ```
 
 ### Restoring DB dump
 
-```
-# cat <PATH_TO_DUMP_FILE> | docker exec -i bybe_dev-mysql-1 mysql -u root --password=root <DB_NAME>
+```shell
+ $ cat <PATH_TO_DUMP_FILE> | docker exec -i bybeconv-mysql-1 mysql -u root --password=root <DB_NAME>
 ```
