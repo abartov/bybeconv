@@ -56,7 +56,7 @@ jobs:
       - name: Run tests
         env:
           RAILS_ENV: test
-          MYSQL_PORT: ${{ job.services.mysql.ports[3306] }}
-          ELASTICSEARCH_PORT: ${{ job.services.elasticsearch.ports[9200] }}
+          ELASTICSEARCH_HOST: localhost:${{ job.services.elasticsearch.ports[9200] }}
+          DATABASE_URL: mysql2://root:root@127.0.0.1:${{ job.services.mysql.ports[3306] }}/bybe_test
         run: |
           bundle exec rspec
