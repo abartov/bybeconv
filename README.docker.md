@@ -85,15 +85,6 @@ Now you can try to run specs to check your setup
  $ rspec
 ```
 
-### 8. Staring app
-```shell
- $ docker compose up -d
-```
-
-App should be available at http://localhost:3001
-Also you should have kibana working at http://localhost:5602
-And you can connect to MySQL at localhost:3307, using root/root credentials
-
 ## Useful hints
 
 ### Starting and stopping containers
