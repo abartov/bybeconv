@@ -32,6 +32,7 @@ class CollectionsController < ApplicationController
     @included_recs = @collection.included_recommendations.count
     @total_recs = @collection.recommendations.count + @included_recs
     @credits = render_to_string(partial: 'collections/credits', locals: { collection: @collection })
+    @page_title = "#{@collection.title} - #{t(:default_page_title)}"
     prep_for_show
     prep_user_content(:collection) # user anthologies, bookmarks
   end
