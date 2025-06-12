@@ -1,0 +1,91 @@
+.modal-dialog
+  .modal-content
+    .flex-popup
+      .modal-header
+        .popup-top
+          .row{style: "padding:15px;margin: 0"}
+            .col-4{style: "padding: 0;"}
+              %button.btn-small-outline-v02{'data-dismiss'=>'modal'}
+                .btn-text-v02
+                  %span.right-arrow 2
+                  %span= t(:back)
+            .col-4{style: "padding: 0;"}
+              .headline-2-v02{:style => "text-align: center;margin: 0; padding-top: 3px;"}= t(:merge_tag_title)
+            .col-4
+      .modal-body
+        .by-popup-v02.narrow-popup
+          .by-card-header-v02.desktop-only
+            %span.headline-1-v02.desktop-only= t(:merge_tag_title)
+            %a.popup-x-v02{'data-dismiss'=>'modal'} -
+          %div
+            .by-card-content-v02
+              .displayMethodLine
+                .BYD-switch{style: 'width:300px;'}
+                  %button.search-mobile-option.active#mergemode_rename= t(:merge_rename)
+                  %button.search-mobile-option#mergemode_list= t(:merge_tag_title)
+              = form_tag(action: :do_merge_tag) do
+                .merge-rename
+                  - if @with_tag.present?
+                    %p= t(:merge_tag_preview_html, tag: @tag.name, src_tag_taggings_count: @tag.taggings_count, dest_tag: @with_tag.name, dest_tag_taggings_count: @with_tag.taggings_count).html_safe
+                  - else
+                    %p= t(:merge_tag_generic_html, tag: @tag.name, src_tag_taggings_count: @tag.taggings_count).html_safe
+                    %p#dest_tag
+                    = autocomplete_field_tag :tag, @tag.name, autocomplete_tag_name_path, {'data-noMatchesLabel' => t(:no_matches_found), class: 'field-v02'}
+                .merge-list#tag_list{style: 'display:none;'}
+                  %p= t(:select_tag_from_list)
+                  .full-tags-list-area
+                %p
+                %p= t(:optional_explanation_of_rejection)
+                %textarea{rows: 3, cols: 40, name: 'reason'}
+                %p
+                %p= t(:taggings_will_be_merged)
+                = hidden_field_tag :id, @tag.id
+                = hidden_field_tag :with_tag, @with_tag.try(:id), id: 'with_tag'
+                = hidden_field_tag :orig_tag_name, @tag.name
+                = hidden_field_tag :last_autocompleted_tag, ''
+                .bottom-button-area.left-buttons
+                  %input.by-button-v02#do_merge_tag{type: :submit, value: t(:confirm_merge_tag), class: @with_tag.present? ? '' : 'disabled'}
+                  %button.by-button-v02.by-button-secondary-v02{'data-dismiss'=>'modal'}
+                    %div= t(:cancel)
+
+:javascript
+  $(document).ready(function() {
+    $('#tag').bind('railsAutocomplete.select', function(event, data){
+      $('#with_tag').val(data.item.tag_id);
+      $('#last_autocompleted_tag').val(data.item.value);
+    });
+    $('#tag').change(function() {
+      if($(this).val() == '' || $(this).val() == null) {
+        $('#do_merge_tag').addClass('disabled');
+        $('#tag_id').val('');
+      } else {
+        $('#do_merge_tag').removeClass('disabled');
+        if($('#last_autocompleted_tag').val() != $(this).val()) {
+          $('#with_tag').val('');
+        }
+      }
+    });
+    $('#tag').keyup(function(){
+      $(this).change();
+    });
+    $('#tag').focus();
+
+    $('#mergemode_list').click(function(e){
+      e.preventDefault();
+      $('#mergemode_rename').removeClass('active');
+      $('#mergemode_list').addClass('active');
+      $('.merge-rename').hide();
+      if($('.full-tags-list-area').children().length == 0) {
+        $('.full-tags-list-area').load("/tags/listall?order=abc");
+      }
+      $('.merge-list').show();
+    });
+    $('#mergemode_rename').click(function(e){
+      e.preventDefault();
+      $('#mergemode_list').removeClass('active');
+      $('#mergemode_rename').addClass('active');
+      $('.merge-list').hide();
+      $('.merge-rename').show();
+    });
+
+  });

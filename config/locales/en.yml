@@ -1,5 +1,179 @@
-# Sample localization file for English. Add more files in this directory for other locales.
-# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
-
 en:
-  hello: "Hello world"
+  edit_metadata: Edit metadata
+  name_starts_with_x: "Name starts with: '%{x}'"
+  title_starts_with_x: "Title starts with: '%{x}'"
+  new_person: New Person
+  new_corporate_body: New Corporate Body
+  "yes": "Yes"
+  "no": "No"
+  are_you_sure: Are you sure?
+  none: None
+  back: Back
+  edit: Edit
+  save: Save
+  update: Update
+  destroy: Destroy
+  created_successfully: Created Successfully
+  updated_successfully: Updated Successfully
+  deleted_successfully: Deleted Successfully
+  original_works: Original Works
+  translations: Translations
+  edited_works: Edited Works
+  alefbet: Alphabetical
+  alefbet_asc: 'Alphabetical: A-Z'
+  alefbet_desc: 'Alphabetical: Z-A'
+  popularity_group: Poplularity
+  popularity_desc: 'Popularity: descending'
+  popularity_asc: 'Popularity: ascending'
+  birthdate_asc: 'Birth date: ascending'
+  birthdate_desc: 'Birth date: descending'
+  deathdate_asc: 'Death date: ascending'
+  deathdate_desc: 'Death date: descending'
+  pubdate_asc: 'Publication date: ascending'
+  pubdate_desc: 'Publication date: descending'
+  creation_date_asc: 'Creation date: ascending'
+  creation_date_desc: 'Creation date: descending'
+  uploaddate_asc: 'Added to site: from old to new'
+  uploaddate_desc: 'Added to site: from new to old'
+  dates: Dates
+  add_feature_date: Add feature date
+  feature_on: Featuring Periods
+  unknown: Unknown
+  sort_by: Sort by
+  uncollected_works_collection_title: Uncollected works
+  add: Add
+  admin:
+    featured_contents:
+      index:
+        title: Featured Content Management
+      new:
+        title: New Featured Content
+    featured_content_features:
+      create:
+        failed: Failed to create feature period, ensure dates are provided
+    index:
+      takes_long_time: Takes long time
+    incongruous_copyright:
+      title: Probably incongruous copyright report
+      columns:
+        db_intellectual_property: Intellectual property in DB
+        has_non_public_domain_authority: Has non public domain authority
+  ingestibles:
+    ingestible_locked: Ingestible locked by user %{user}
+    # _authorities partial
+    authorities:
+      or_new_person: or type a new authority name
+    new:
+      title: New Ingestible
+    create:
+      success: Ingestible was successfully created
+      failure: Failed to create Ingestible
+    edit:
+      title: Edit Ingestible
+    form:
+      general: General
+      texts: Texts
+      full_markdown: Full Markdown
+      toc: TOC
+      review: Review
+    update:
+      success: Ingestible was successfully updated
+    destroy:
+      success: Ingestible was successfully destroyed
+  ingestible_texts:
+    edit:
+      text_x_of_total: Text %{index} of %{total}
+  involved_authorities:
+    list:
+      select_authority: Select authority!
+  shared:
+    filters:
+      pagination:
+        page_x_of_total: Page %{page} of %{total}
+        next_page: Next page
+        previous_page: Previous page
+        first_page: First page
+    surprise_work:
+      explanations:
+        public_domain: not protected by intellectual property laws
+        by_permission: there is an explicit permission for publication from the owner
+        copyrighted: copyrighted
+        orphan: orphan
+        unknown: unknown
+    intellectual_property:
+      about:
+        public_domain: what does it means 'public domain'?
+        by_permission: what does it means 'by permission'?
+        copyrighted: what does it means 'copyrighted'?
+        orphan: what does it means 'orphan'?
+        permission_for_all: what does it means 'permission for all'?
+        permission_for_selected: what does it means 'permission for selected'?
+        unknown: what does it means 'unknown'?
+      popover:
+        public_domain: Copyright Law protects against unauthorized use of works for the duration of its validity (in Israel, seventy years from the end of the year of the creator's death). With the expiry of the rights, the creation becomes 'public domain', that is, the property of the public. This means that the work belongs to all of us, and we are all entitled to make any use of it, including commercial use, without the need to ask permission of anyone.
+        by_permission: Although the work is still copyrighted, the Ben־Yehuda Project has received *explicit permission to publish* The work in the Ben־Yehuda Project database, for the general public to read and research. Other uses (such as play, composition, or commercial performance) still *require express approval* from the rights holders.
+        copyrighted: TBD description for 'copyrighted'
+        orphan: TBD description for 'orphan'
+        permission_for_all: TBD description for 'permission_for_all'
+        permission_for_selected: TBD description for 'permission_for_selected'
+        unknown: TBD description for 'unknown'
+  welcome:
+    submit_contact:
+      ziburit_failed: Control question failed
+      email_missing: Please provide an email address
+  proofs:
+    index:
+      title_all: All proofs
+      title_by_status: Proofs in %{status} status
+      show_all: Show all proofs
+      show_open: Show new proofs
+      show_escalated: Show escalated proofs
+      purge_spam: Purge spam!
+    create:
+      ziburit_failed: Control question failed
+      email_missing: Please provide an email address
+  manifestation:
+  collection:
+    type:
+      volume: Volume
+      anthology: Anthology
+      periodical: Periodical
+      periodical_issue: Periodical Issue
+      series: Series
+      root: Root
+      other: Other
+      uncollected: Uncollected works
+    up_link:
+      volume: to volume
+      anthology: to anthology
+      periodical: to periodical
+      periodical_issue: to issue
+      series: to whole series
+  intellectual_property:
+    public_domain: public domain
+    by_permission: by permission
+    copyrighted: copyrighted
+    orphan: orphan
+    permission_for_all: permission for all
+    permission_for_selected: permission for selected
+    unknown: unknown
+  involved_authority:
+    role:
+      author: Author
+      editor: Editor
+      illustrator: Illustrator
+      translator: Translator
+      photographer: Photographer
+      designer: Designer
+      contributor: Contributor
+      other: Other
+  ingestible:
+    scenario:
+      single: Single piece
+      multiple: Multiple works with same properties
+      mixed: Works with different authors or properties
+    status:
+      draft: Draft
+      ingested: Ingestion Complete
+      failed: Failed to Ingest
+      awaiting_authorities: Awaiting Creation of Missed Authorities

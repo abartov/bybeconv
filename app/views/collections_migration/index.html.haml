@@ -1,0 +1,16 @@
+%h1= t('.title')
+%p
+  = t('.explanation')
+  = " (#{t(:total_x_records, count: @total)})"
+%table
+  %thead
+    %tr
+      %th= t(:name)
+      %th= Authority.human_attribute_name(:bib_done)
+      %th= t(:works)
+  %tbody
+    - @authorities.each do |au|
+      %tr
+        %td= link_to au.name, collections_migration_person_path(id: au.id)
+        %td{style: "background-color: #{au.bib_done ? 'lightgreen' : 'lightcoral'}"}= au.bib_done ? t(:yes) : t(:no)
+        %td= au.cached_works_count

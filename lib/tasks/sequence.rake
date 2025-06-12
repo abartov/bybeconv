@@ -4,7 +4,7 @@ task :sequence => :environment do
     error = false
     # read respective index.html, build a hash of filenames and sequences
     puts "Processing dir: #{d.path}."
-    fname = "#{AppConstants.base_dir}/#{d.path}/index.html"
+    fname = "#{Rails.configuration.constants['base_dir']}/#{d.path}/index.html"
     next unless File.exists? fname
     index = File.open(fname, 'rb').read.gsub(/[\r\n]/,'') # slurp whole thing, lose newlines
     links = index.scan /[A-Za-z\-_0-9]*?\.html/

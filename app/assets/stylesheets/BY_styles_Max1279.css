@@ -40,13 +40,13 @@
 }
 
 }
-@media only screen and (max-width: 1080px) {
+@media only screen and (max-width: 1120px) {
 	.topMenuItem-v02 {
   margin-left: 1px;
   margin-right: 1px;
 }
 	.by-nav-item-v02{
-		font-size: 15px;
+		font-size: 14px;
 	}
 	a .genre-nav{
 	margin-top: 5px;

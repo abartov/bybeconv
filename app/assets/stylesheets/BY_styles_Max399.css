@@ -260,9 +260,6 @@
     padding-right: 0px;
 	padding-top: 2px;}
 	
-	.author-page-top-rights{
-	width: calc(50% - 29px);
- }
 	.reading-mode-icon-btn-v02{
 		padding: 0;
 		line-height: 18px;
@@ -361,16 +358,14 @@
 }
 	.menuButton-v02{
 		font-size: 16px;
-		margin-top: 4px;
 	}
 	
 	.scrolled .logoBY-scroll-mobile-v02{
-		position: absolute;
-		right: calc(100% - 130px);
+		right: 24px;
 	}
 .scrolled .logoBY-scroll-mobile-v02 img{
     max-height: 22px;
-	margin-top: 4px;
+	margin-top: 7px;
 }
 .share-popup{
 	width: 260px;
@@ -524,8 +519,20 @@ width: calc(100% - 75px);
 		width: 60px;
 		margin-top: 4px;
 	}
+	.money-donation-text {
+    width: 102px;
 }
 
+	
+}
+@media only screen and (max-width: 359px){
+	.scrolled .donation-btn-v02{
+		display: none;
+	}
+	.scrolled .donation-icon-only{
+		display: block;
+	}
+}
 @media only screen and (max-width: 319px){
 	.logoBY-v02 {
     max-width: 120px;
@@ -533,9 +540,11 @@ width: calc(100% - 75px);
     padding-right: 0px;
     padding-top: 3px;
 }
+	.scrolled .logoBY-scroll-mobile-v02 {
+    right: 12px;
+}
 	.scrolled .logoBY-scroll-mobile-v02 img{
     max-height: 18px;
-	margin-top: 6px;
 }
 	.statistics-box-v02{
 		float: left;

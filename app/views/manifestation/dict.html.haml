@@ -1,5 +1,4 @@
 %main
-  .top-element
   #content.container-fluid.BYD
     .row
       .col-12.col-lg-4.BYD-welcome
@@ -7,7 +6,7 @@
           .work-area
             .work-content
               .headline-1-v02= t(:welcome_to_ebydict)
-              != t(:dict_help_x_entries, {x: @total_headwords})
+              != t(:dict_help_x_entries, x: @total_headwords)
             .work-side-color
               .work-genre.prose-side-icon
         .by-card-v02.text-sorting#dict_filter_panel{style: "display: #{@filters.empty? ? 'none' : 'show'}"}

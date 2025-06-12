@@ -17,26 +17,29 @@
 //= require moment
 //= require moment/he.js
 //= require tempusdominus-bootstrap-4
+//= require ahoy
+//= require rails.validations
+
 //= require_tree .
 
 var mobileWidth = 767;
 
-function submit_filters() {
-  startModal('spinnerdiv');
-  if(window.innerWidth < mobileWidth) {
-    $('#mobile_filters').submit();
-  } else {
-    $('#works_filters').submit();
-  }
+function isMobile() {
+  return window.innerWidth < mobileWidth;
 }
-
-function submit_author_filters() {
-  startModal('spinnerdiv');
-  if(window.innerWidth < mobileWidth) {
-    window.history.replaceState($('#mobile_filters').serialize(), null, '/authors');
-    $('#mobile_filters').submit();
-  } else {
-    window.history.replaceState($('#works_filters').serialize(), null, '/authors');
-    $('#works_filters').submit();
-  }
+function startModal(id) {
+    $("body").prepend("<div id='PopupMask' style='position:fixed;width:100%;height:100%;z-index:10;background-color:gray;'></div>");
+    $("#PopupMask").css('opacity', 0.5);
+    $("#"+id).data('saveZindex', $("#"+id).css( "z-index"));
+    $("#"+id).data('savePosition', $("#"+id).css( "position"));
+    $("#"+id).css( "z-index" , 11 );
+    $("#"+id).css( "position" , "fixed" );
+    $("#"+id).css( "display" , "block" );
+}
+function stopModal(id) {
+    if ($("#PopupMask") == null) return;
+    $("#PopupMask").remove();
+    $("#"+id).css( "z-index" , $("#"+id).data('saveZindex') );
+    $("#"+id).css( "position" , $("#"+id).data('savePosition') );
+    $("#"+id).css( "display" , "none" );
 }

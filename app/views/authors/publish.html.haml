@@ -1,5 +1,5 @@
-.top-element.backend
-  %h1= t(:publish_person, {author: @author.name})
+.backend
+  %h1= t(:publish_person, author: @author.name)
   %br
   - unless @author.profile_image.file?
     %h2{style:'color:red'}= t(:missing_image)
@@ -8,22 +8,22 @@
   - unless @author.wikipedia_snippet.present? and @author.wikipedia_snippet.length > 10
     %h2{style:'color:red'}= t(:missing_bio)
     %p
-  - unless @author.period.present?
+  - if @author.person.present? && @author.person.period.nil?
     %h2{style:'color:red'}= t(:missing_period)
     %p
   
   %h3= link_to t(:edit), authors_edit_path(id: @author.id)
   %p
-  %h4= t(:publishing_person_explanation, {author: @author.name})
+  %h4= t(:publishing_person_explanation, author: @author.name)
   %ol
     - @manifestations.each do |m|
       %li
         = link_to m.title, manifestation_show_path(id: m.id)
-        = " (#{textify_genre(m.expressions[0].work.genre)}) "
+        = " (#{textify_genre(m.expression.work.genre)}) "
         - if m.published?
           %span{style:'color:green'}= t(:published)
         - else
           = t(:unpublished)
   %p
   = form_tag author_publish_path(@author) do
-    = submit_tag t(:make_published), { class:'by-button-v02 surprise-btn-v02 headline-2-v02', style:'float:unset' }
+    = submit_tag t(:make_published), { class: 'by-button-v02 surprise-btn-v02 headline-2-v02', style: 'float:unset' }

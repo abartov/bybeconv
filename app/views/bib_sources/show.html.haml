@@ -1,4 +1,3 @@
-.top-element
 %p#notice= notice
 
 %h2= textify_bib_source(@bib_source.id)
@@ -17,6 +16,15 @@
 %p
   %b= t(:api_key)
   = @bib_source.api_key
+%p
+  %b= t(:bib_vid)
+  = @bib_source.vid
+%p
+  %b= t(:bib_scope)
+  = @bib_source.scope
+%p 
+  %b= t(:item_pattern)
+  = @bib_source.item_pattern
 %p
   %b= t(:status)
   = t(@bib_source.status)

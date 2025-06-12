@@ -1,5 +1,5 @@
 != "<script src=\"https://unpkg.com/stackedit-js@1.0.5/docs/lib/stackedit.min.js\"></script>"
-.top-element.backend
+.backend#edit_markdown
   = form_tag(action: 'edit_markdown', id: @text.id) do
     .container-fluid
       .row
@@ -21,13 +21,13 @@
               = label_tag(t(:publisher_link_text))
               = text_field_tag(:pub_link_text,@text.pub_link_text, size: 70)
         .col-md-6
-          - unless @text.person.nil?
+          - unless @text.author.nil?
             %h3
               = t(:by)+' '
-              = link_to @text.person.name+' ('+t(:author)+')', author_toc_path(id: @text.person)
+              = link_to "#{@text.author.name} (#{t(:author)})", authority_path(id: @text.author)
               - unless @text.translator.nil?
                 = t(:translated_by)+' '
-                = link_to @text.translator.name+' ('+t(:translator)+')', authors_show_path(id: @text.translator.id)
+                = link_to "#{@text.translator.name} (#{t(:translator)})", authors_show_path(id: @text.translator.id)
             = t(:publisher)+": #{@text.publisher}; #{t(:year_published)}: #{@text.year_published}"
           %b= label_tag t(:orig_lang)
           = select_tag 'orig_lang', options_for_select(get_langs.map {|lang| [textify_lang(lang), lang]}, @text.orig_lang)
@@ -47,6 +47,8 @@
                 %b.btn-text-v02= t(:remove_angled_brackets)
               %button.btn-small-outline-v02#minuses_to_makafim{style:'display:unset'}
                 %b.btn-text-v02= t(:minuses_to_makafim)
+              %button.btn-small-outline-v02#tidy_footnote_dirs{style:'display:unset'}
+                %b.btn-text-v02= t(:tidy_footnote_dirs)
               .markdown= text_area_tag(:markdown, raw(@markdown), class: 'textarea100')
             .col-sm-9
               %h2= t(:display_text)
@@ -76,67 +78,18 @@
             %p
             %h3.by-button-v02.surprise-btn-v02.headline-2-v02#frbrize_button{style:'float:unset;width:max-content;padding-top:10px;'}!= t(:accept_conversion_and) + t(:frbrize)
 
+= render partial: 'shared/markdown_utils', locals: { container_id: 'edit_markdown', element_id: 'markdown' }
+
 :javascript
   var somethingChanged=false;
   function highlight_in_red(buf) {
     return "<span style=\"color:red; font-size: 250%\">"+buf+"</span>";
   }
   jQuery(document).ready(function() {
-    // highlight suspicious angled brackets in rendered HTML
-    $("#preview p:contains('> ')").each(function(){
-      $(this).html(highlight_in_red($(this).html()));
-    });
-    $("#preview blockquote:contains('> ')").each(function(){
-      $(this).html(highlight_in_red($(this).html()));
-    });
-    $('#add_stanza_break').click(function() {
-      var $txt = jQuery("#markdown");
-      var caretPos = $txt[0].selectionStart;
-      var textAreaTxt = $txt.val();
-      var txtToAdd = "\n>\n<br />\n>\n";
-      $txt.val(textAreaTxt.substring(0, caretPos) + txtToAdd + textAreaTxt.substring(caretPos) );
-      $txt.focus();
-      $txt.caretTo(caretPos+txtToAdd.length);
-    });
-    $('#add_angled_brackets').click(function(e) {
-      e.preventDefault();
-      if($('#markdown').selection() == '') {
-        alert("#{t(:select_text_to_add_to)}");
-      }
-      else
-      {
-        var buf = $('#markdown').selection();
-        buf = buf.replace(/\n([^#])/g, "\n> $1");
-        $('#markdown').selection('replace', {text: buf});
-      }
-    });
-    $('#remove_angled_brackets').click(function(e) {
-      e.preventDefault();
-      if($('#markdown').selection() == '') {
-        alert("#{t(:select_text_to_remove_from)}");
-      }
-      else
-      {
-        var buf = $('#markdown').selection();
-        buf = buf.split(/\n> */).join("\n");
-        $('#markdown').selection('replace', {text: buf});
-      }
-    });
-    $('#minuses_to_makafim').click(function(e) {
-      e.preventDefault();
-      var buf = $('#markdown').val();
-      replaced = 0;
-      buf = buf.replace(/\S(-|‑)\S/g, function(occurrence){
-        if((occurrence[0].match(/[a-z]/i)) && (occurrence[2].match(/[a-z]/i))) {
-          return occurrence;
-        } else {
-          replaced += 1;
-          return occurrence.replace('-','־').replace('‑','־');
-        }
-      });
-      $('#markdown').val(buf);
-      alert('בוצעו '+replaced.toString()+' החלפות.');
-    });
+    if("#{@disable_submit}" == 'true') {
+      $('#frbrize_button').css('background-color','gray');
+      $('#frbrize_button').css('cursor','not-allowed');
+    }
     $('form').submit(function() {
       $(window).unbind('beforeunload');
     });
@@ -157,28 +110,29 @@
       location.href = url;
     }
     
-    $('#frbrize_button').click(function(e){
-      if(somethingChanged) {
-        alert("בוצעו שינויים בטקסט והם יאבדו בלי שמירה! האם באמת לעזוב את הדף [במסך הבא]?");
-      }
-    });
-    var warned_about_splits = false;
-    $('#frbrize_button').click(function(e){
-      e.preventDefault();
-      if(#{@text.has_splits ? true : false}) {
-        if((/&&& /.test($('#markdown').val( ))) && (/^\s*\S+\s*&&& /.test($('#markdown').val()))) {
-            alert("#{t(:non_whitespace_before_first_part)}");
-        } else if(!warned_about_splits){
-          alert("#{t(:careful_with_splits)}");
-          warned_about_splits = true;
+    if("#{@disable_submit}" != 'true') {
+      $('#frbrize_button').click(function(e){
+        if(somethingChanged) {
+          alert("בוצעו שינויים בטקסט והם יאבדו בלי שמירה! האם באמת לעזוב את הדף [במסך הבא]?");
+        }
+      });
+      var warned_about_splits = false;
+      $('#frbrize_button').click(function(e){
+        e.preventDefault();
+        if(#{@text.has_splits ? true : false}) {
+          if((/&&& /.test($('#markdown').val( ))) && (/^\s*\S+\s*&&& /.test($('#markdown').val()))) {
+              alert("#{t(:non_whitespace_before_first_part)}");
+          } else if(!warned_about_splits){
+            alert("#{t(:careful_with_splits)}");
+            warned_about_splits = true;
+          } else {
+            submit_frbr();
+          }
         } else {
           submit_frbr();
         }
-      } else {
-        submit_frbr();
-      }
-    });
-
+      });
+    }
     $('#vised').click(function() {
       const el = document.querySelector('#markdown');
       const pv = document.querySelector('#preview');

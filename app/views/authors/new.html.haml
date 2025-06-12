@@ -1,6 +1,6 @@
-.top-element.backend
-  %h1= t(:new_person)
+.backend.container
+  %h1= @author.person.present? ? t(:new_person) : t(:new_corporate_body)
 
-  = render partial: 'form', locals: {action: 'create', person: @person}
+  = render partial: 'form', locals: { action: 'create', authority: @author }
 
   = link_to t(:back), authors_list_path

@@ -6,7 +6,7 @@ module V1
       end
 
       expose :taggings, documentation: { is_array: true } do |manifestation_id|
-        Tag.approved.joins(:taggings).merge(Tagging.where(manifestation_id: manifestation_id)).pluck(:name).sort
+        Tag.approved.joins(:taggings).merge(Tagging.where(taggable_id: manifestation_id, taggable_type: 'Manifestation')).pluck(:name).sort
       end
 
       expose :recommendations, using: V1::Entities::Recommendation, documentation: { is_array: true } do |manifestation_id|

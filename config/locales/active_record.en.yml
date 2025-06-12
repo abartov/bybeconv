@@ -1,0 +1,63 @@
+en:
+  attributes:
+    created_at: Created At
+    updated_at: Updated At
+    name: Name
+    sort_name: Sort Name
+    status: Status
+    country: Country
+    period: Period
+    title: Title
+    fromdate: From Date
+    todate: To Date
+  activerecord:
+    models:
+      authority: Authority
+      collection: Collection
+      collection_item: Collection Item
+      corporate_body: Corporate Body
+      featured_content: Featured Content
+      person: Person
+    errors:
+      models:
+        involved_authority:
+          attributes:
+        authority:
+          attributes:
+            base:
+              no_linked_authority: either Person or CorporateBody object must be specified
+              multiple_linked_authorities: Person and CorporateBody objects cannot be specified together
+          wrong_collection_type: must be of '%{expected_type}' type
+        collection_item:
+          attributes:
+            collection:
+              cycle_found: Cycle found
+    attributes:
+      authority:
+        other_designation: Other designation
+        intellectual_property: Type of intellectual property
+        wikidata_uri: Wikidata URI
+        comment: Comment
+        bib_done: Is bibliography done?
+        nli_id: ID in National Library
+        viaf_id: ID in VIAF database
+        blog_category_url: Link to category about the creator in blog
+        wikipedia_snippet: Snippet from Wikipedia
+        wikipedia_url: Link to the article in Wikipedia
+      corporate_body:
+        location: Location
+        inception: Inception
+        inception_year: Inception Year
+        dissolution: Dissolution
+        dissolution_year: Dissolution Year
+      expression:
+        intellectual_property: Type of intellectual property
+      featured_content:
+        body: Text of Recommendation
+        external_link: External Link
+        manifestation: Linked Creation
+        authority: Linked Authority
+      person:
+        birthdate: Birthdate
+        deathdate: Deathdate
+        gender: Gender

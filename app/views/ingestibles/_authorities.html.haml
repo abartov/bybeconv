@@ -1,0 +1,46 @@
+- if @ingestible.try(:id)
+  - @authority_by_name = Authority.all.map { |a| [a.name, a.id] }.to_h
+
+  %h3= t(:associated_persons)
+  %ul#authorities
+    - if authorities.present?
+      = render partial: 'ingestible_authorities/authority', collection: JSON.parse(authorities), locals: {editable: true, toc: false}
+  = t(:add_via_autocomplete)
+  = autocomplete_field_tag 'add_authority', '', autocomplete_authority_name_and_aliases_path,
+                          id_element: '#authority_id', class: 'add_authority'
+  = hidden_field_tag :authority_id
+  = hidden_field_tag :add_authority_name
+  = t('.or_new_person')
+  = text_field_tag :new_person, '', {style: 'width: 150px;'}
+  = t(:in_role)
+  = select_tag :role,
+               options_for_select(role_options)
+  = button_tag t(:perform_add), id: 'do_add_authority'
+  :javascript
+    $(document).ready(function() {
+      $('.add_authority').bind('railsAutocomplete.select', function(event, data){
+        event.stopImmediatePropagation();
+        $('#authority_id').val(data.item.id);
+        $('#add_authority_name').val(data.item.value);
+      });
+      $('#do_add_authority').click(function(e) {
+        e.preventDefault();
+        $.post('#{ingestible_authorities_path(@ingestible)}', {
+          authority_id: $('#authority_id').val(),
+          authority_name: $('#add_authority_name').val(),
+          new_person: $('#new_person').val(),
+          role: $('#role').val()
+        });
+      });
+      $('.replace_defauth').click(function(e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        $.post('#{replace_ingestible_authority_path(@ingestible)}', {
+          seqno: $(this).data('seqno'),
+          authority_id: $(this).data('authorityid'),
+          authority_name: $(this).data('newperson'),
+          role: $(this).data('role'),
+          new_person_tbd: null
+        });
+      });
+    });

@@ -1,4 +1,4 @@
-require File.expand_path('../boot', __FILE__)
+require_relative "boot"
 
 require 'rails/all'
 require 'active_job'
@@ -50,17 +50,24 @@ module Bybeconv
     # config.active_record.raise_in_transactional_callbacks = true # opting in to new behavior
     #config.active_job.queue_adapter = :inline # scheduler
     #config.active_job.queue_adapter = :delayed_job # scheduler
+    config.active_job.queue_adapter = :sidekiq
+    config.active_job.queue_name_prefix = Rails.env
 
-    # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
-    # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     config.i18n.default_locale = :he
+    config.i18n.available_locales = %i(he en)
     config.i18n.enforce_available_locales = true
+    config.i18n.fallbacks = %i(he)
 
     config.middleware.insert_before 0, Rack::Cors do
       allow do
         origins '*'
         resource '*', headers: :any, methods: [:get, :post, :options]
       end
+    end
+    # BYBE's own configuration
+    config.constants = config_for(:constants)
+    if ENV['PROFILE'] == 'true'
+      config.middleware.use Rack::RubyProf, :path => './tmp/profile'
     end
   end
 end

@@ -1,29 +1,65 @@
-#content.container-fluid.top-element.search_results
+%br
+#content.container-fluid.search_results
   - if @total == -1
     %h1= t(:error)
     %p= @errmsg
   - else
-    %h1= t(:search_results)
-    %p= "#{t(:search_terms)}: #{@search.query}"
-    %p= "#{t(:search_total)}: #{@total}"
+    %h1= "#{t(:search_results)}: #{@search.query}"
+    %h4= "#{t(:search_total)}: #{@total} #{t(:items)}"
     %p
-    %ol
+    %ol{ start: @offset + 1 }
       - @results.each do |result|
         %li
-          - if result.class == ManifestationsIndex::Manifestation
+          - attrs = result.attributes
+          - if result.instance_of?(ManifestationsIndex)
             %b= t(:work)
             %br
-            %b= link_to result.title, manifestation_read_path(result.id)
-            = " / #{result.author_string}"
-            = " (#{textify_genre(result.genre)})"
+            %b= link_to attrs['title'], manifestation_path(attrs['id'])
+            = " / #{attrs['author_string']}"
+            = " (#{textify_genre(attrs['genre'])})"
+            - unless result.tags.empty?
+              %br
+              %div{style: 'line-height: 2.2;'}
+                %b= t(:tags)+':'
+                - result.tags.each do |tag|
+                  %button.tag.pointer
+                    = tag
             - unless result._data.nil? or result._data['highlight'].nil?
               %br
               != result._data['highlight']['fulltext'].join("<br />").gsub('<em>','<b>').gsub('</em>','</b>')
-          - elsif result.class == PeopleIndex::Person
+          - elsif result.instance_of?(CollectionsIndex)
+            %b= textify_collection_type(result.collection_type)
+            %br
+            %b= link_to([result.title, result.subtitle].compact_blank.join(' / '), collection_path(result.id))
+          - elsif result.instance_of?(AuthoritiesIndex)
             %b= t(:author)
             %br
-            %b= link_to result.name, author_toc_path(result.id)
+            %b= link_to attrs['name'], authority_path(attrs['id'])
+            - unless result.tags.empty?
+              %br
+              %b= t(:tags)+':'
+              - result.tags.each do |tag|
+                %button.tag
+                  = tag
             %br
-            %p= result.wikipedia_snippet
+            %p= attrs['wikipedia_snippet']
+          - elsif result.instance_of?(DictIndex)
+            %b= t(:dictionary_definition)
+            %br
+            %b= link_to attrs['defhead'], dict_entry_path(id: attrs['manifestation_id'], entry: attrs['id'])
+            %br
+            - unless result._data.nil? or result._data['highlight'].nil?
+              %br
+              != result._data['highlight']['deftext'].join("<br />").gsub('<em>','<b>').gsub('</em>','</b>')
 
     != paginate @results
+= form_tag tag_by_name_path, method: :post, id: 'tag_by_name' do
+  = hidden_field_tag :name, nil, id: 'tag_by_name_field'
+
+:javascript
+  $(document).ready(function() {
+    $('.tag').click(function() {
+      $('#tag_by_name_field').val($(this).text().trim());
+      $('#tag_by_name').submit();
+    });
+  });

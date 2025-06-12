@@ -1,0 +1,4 @@
+.backend
+  %h1= t('.title')
+  = render partial: 'form', locals: { fc: @fc }
+  = link_to t(:back), admin_featured_contents_path

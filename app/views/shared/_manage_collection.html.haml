@@ -1,0 +1,139 @@
+- if collection.parent_collections.count > 0
+  = t(:parent_collections)
+  %ol
+  - collection.parent_collections.each do |pc|
+    %li{style: 'list-style-type: decimal; font-size:120%;'}= link_to "🢁 🢁 🢁 #{pc.title}", collection_manage_path(pc.id)
+%div{id: "editable_collection_details"}
+  = link_to collection_path(collection.id), {style:'color:white; float:left;'} do
+    %span.by-button-v02.pointer{style: 'width: auto;'}= t(:back_to_public_view)
+  %h1
+    %span{id: 'editable_ctype'}= textify_collection_type(collection.collection_type)+': '
+    %span{id: "editable_coll_title"}= title
+    %span.editcolbutton{style: 'cursor:pointer; font-size: 50%; color:blue;'}= t(:edit)
+.editable_edit{style: 'display:none;background-color:lightyellow;'}
+  = form_for collection, url: collection_path(collection.id), namespace: "coll_#{collection.id}", method: :put, remote: true do |f|
+    %b= t(:collection_item_type)+': '
+    -# the autocomplete-off below is crucial to prevent Firefox from sometimes showing the select box with the last option selected regardless of the SELECTED option passed! https://stackoverflow.com/questions/66728451/html-select-not-showing-selected-option-after-refresh-in-firefox
+    = f.select 'collection_type', options_for_select(collection_types_options, collection.collection_type), {},  {autocomplete: 'off'}
+    %br
+    = f.label :title, t(:title)
+    = f.text_field :title, class: 'form-control', style: 'width: 75%;'
+    = f.label :sort_title, t(:sort_title)
+    = f.text_field :sort_title, class: 'form-control', style: 'width: 75%;'
+    = f.label :subtitle, t(:subtitle)
+    = f.text_field :subtitle, class: 'form-control', style: 'width: 75%;'
+    = f.label :alternate_titles, t(:alternate_titles)
+    = f.text_field :alternate_titles, class: 'form-control', style: 'width: 75%;'
+    %br
+    = f.label :publisher, t(:edition_details)
+    = f.text_field :publisher_line, class: 'form-control', style: 'width: 65%;'
+    = f.label :pub_year, t(:year_published)
+    = f.text_field :pub_year, class: 'form-control', style: 'width: 10%;'
+    %br
+    = f.submit t(:save), class: 'by-button-v02', style: 'display:inline-block;'
+    %span.by-button-v02.cancel_editable_edit{style:'padding-top:7px;display:inline-block;'}= t(:cancel)
+    = render partial: 'involved_authorities/list', locals: { item: collection, edit: true }
+
+.headline-2-v02{'data-collection-id': collection.id, 'data-nonce': nonce}
+  .button_series
+    .collection_insert_button.by-button-v02
+      %b.white= '+'
+    .coll_toggle.by-button-v02{ title: t(:collapse_collection), data: { target: "##{nonce}_coll_#{collection.id}", toggle: :collapse } }
+      %b.white= '↕'
+
+%div{style: 'margin-right: 10px;'}
+  - @colls_traversed = [collection.id]
+  = render partial: 'shared/editable_collection', locals: {collection: collection, focused: true, nonce: nonce, fresh: false}
+
+
+:javascript
+  $(document).ready(function(){
+    $('body').on('click', '.collection_insert_button', function(e){
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      ele = $(e.target);
+      cw = ele.closest('.cwrapper');
+      nonce = cw.attr('data-nonce');
+      collection_id = cw.attr('data-collection-id');
+      col_ele = $('#'+nonce+'_coll_'+collection_id);
+      $('#collection_insert_section').detach().appendTo(col_ele);
+      $('#collection_insert_section').show();
+      $('#collection_insert_section')[0].scrollIntoView({behavior: 'smooth'});
+    });
+    $('body').on('dblclick', '.editable', function(){
+      $(this).hide();
+      $(this).parent().find('.editable_edit').show();
+    });
+    $('body').on('click', '.editcolbutton', function(){
+      $(this).parent().parent().parent().find('.editable').hide();
+      $(this).parent().parent().parent().find('.editable_edit').show();
+    });
+    $('body').on('click', '.cancel_editable_edit', function(){
+      $(this).parent().parent().hide();
+      $(this).parent().parent().parent().find('.editable').show();
+    });
+    $('#qterm').on('railsAutocomplete.select', function(event, data){
+      event.preventDefault();
+      $(this).parent().parent().find('#insert').val('Manifestation');
+      mid = data.item.id;
+      $('#insert_mid').val( mid );
+    });
+    $('#cterm').on('railsAutocomplete.select', function(event, data){
+      event.preventDefault();
+      $(this).parent().parent().find('#insert').val('other');
+      cid = data.item.id;
+      $('#insert_cid').val( cid );
+    });
+
+    $('.collection_do_insert').click(function(e){
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      insert = $(this).parent().parent().find('#insert');
+      if($(insert).val() == 'Manifestation' && $('#insert_mid').val() == '') {
+        alert("#{t('.select_manifestation')}");
+        return;
+      }
+      par = $(this).closest('.cwrapper');
+      var item_type = $(par).find('#insert').first().val();
+      var collection_id = $(par).attr('data-collection-id');
+      var item_id = (item_type == 'Manifestation') ? $(par).find('#insert_mid').first().val() : (item_type == 'other') ? $(par).find('#insert_cid').first().val() : '';
+      var new_title = $(par).find('#insert_title').first().val();
+      var nonce = $(par).find('.headline-2-v02').first().attr('data-nonce');
+      $.ajax({
+        url: '/collection_items',
+        type: 'POST',
+        dataType: "script",
+        data: {collection_item: {collection_id: collection_id, item_type: item_type, item_id: item_id, alt_title: new_title}, nonce: nonce},
+        success: function(data){
+          $('#collection_insert_section').hide();
+          //$('#'+nonce+'_coll_container_'+collection_id).scrollIntoView({behavior: 'smooth'})
+          $(par).find('*[data-focus-on-me=true]')[0].scrollIntoView({behavior: 'smooth'});
+        }
+      });
+    });
+    $('.collection_insert_all_siblings').click(function(){
+      par = $(this).closest('.cwrapper');
+      var collection_id = $(par).attr('data-collection-id');
+
+      // TODO: loop over siblings and insert them      
+      $.ajax({
+        url: '/collection_items',
+        type: 'POST',
+        dataType: "script",
+        data: {collection_item: {collection_id: collection_id, item_type: 'Collection', item_id: collection_id, alt_title: ''}},
+        success: function(data){
+          $('#collection_insert_section').hide();
+          $(par).find('*[data-focus-on-me=true]')[0].scrollIntoView({behavior: 'smooth'});
+          $('html, body').animate({scrollTop: $('##{nonce}_coll_container_'+collection_id).offset().top + $('##{nonce}_coll_container_'+collection_id).outerHeight() - $('header').height() - 180}, 500);
+        }
+      });
+    });
+    $('#insert').change(function(){
+      if($(this).val() == 'Manifestation' && $('#insert_mid').val() == '') {
+        $('.collection_do_insert').css('background-color', 'grey');
+      }
+      else {
+        $('.collection_do_insert').css('background-color', '#660248');
+      }
+    });
+  });

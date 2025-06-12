@@ -1,10 +1,14 @@
-= form_for text, url: {action: action, id: text.id} do |f|
+= form_for text, validate: true, url: {action: action, id: text.id} do |f|
   - if text.errors.any?
     #error_explanation
-      %h2= "#{pluralize(text.errors.count, "error")} prohibited this text from being saved:"
+      %h2= 'שמירת הקובץ נמנעה בגלל:'
       %ul
         - text.errors.full_messages.each do |msg|
-          %li= msg
+          %li.h3.red= msg
+
+  .backend-field
+    = f.label t(:override_validation)
+    = check_box_tag :override_validation, id: 'override_validation'
 
   .backend-field
     = f.label t(:title)
@@ -15,11 +19,15 @@
   .backend-field
     = f.label t(:first_author)
     %br
-    = select_tag 'html_file[person_id]', options_from_collection_for_select(Person.order(:name), 'id','name'), include_blank: true
+    = select_tag 'html_file[author_id]',
+                 options_from_collection_for_select(Authority.order(:name), 'id', 'name'),
+                 include_blank: true
   .backend-field
     = f.label t(:translator)
     %br
-    = select_tag 'html_file[translator_id]', options_from_collection_for_select(Person.order(:name), 'id','name'), include_blank: true
+    = select_tag 'html_file[translator_id]',
+                 options_from_collection_for_select(Authority.order(:name), 'id', 'name'),
+                 include_blank: true
   %br
   = link_to t(:to_manage_people), authors_list_path
   %br
@@ -49,7 +57,9 @@
   %br
 :javascript
   $(document).ready(function() {
-    
-    // form validations
-    // ensure edition details typed
+    $('#override_validation').click(function() {
+      if (this.checked) {
+        $('#html_file_comments').val($('#html_file_comments').val() + ' override');
+      }
+    });
   });

@@ -1,0 +1,121 @@
+%a{ name: 'top' }
+.container-fluid#header-general
+  = render partial: 'shared/breadcrumbs'
+  .top-space
+  - aus = @collection.authors_string
+  - eds = @collection.editors_string
+  - if @collection.parent_collections.count > 0
+    = t(:parent_collections)
+    %ol
+    - @collection.parent_collections.each do |pc|
+      %li{ style: 'list-style-type: decimal; font-size:120%;' }= link_to "🢁 🢁 🢁 #{pc.title}", collection_path(pc)
+
+  .work-page-top
+    .work-page-top-info-card
+      .work-and-author-names-mobile
+        .headline-1-v02
+          #{textify_collection_type(@collection.collection_type)}: #{@collection.title}
+          - if @collection.subtitle.present?
+            %br
+            %span{style:'font-size:80%;'}= @collection.subtitle
+        .headline-3-v02
+          - if @collection.authors.present?
+            #{t(:by)}:
+            %span= aus
+          - elsif eds.present?
+            #{t(:edited_by)}:
+            %span= eds
+      .row
+        .col-12
+          .work-and-author-names-desktop
+            .headline-1-v02
+              #{textify_collection_type(@collection.collection_type)}: #{@collection.title}
+              - if @collection.subtitle.present?
+                %br
+                %span{style:'font-size:80%;'}= @collection.subtitle
+            .headline-3-v02
+              - if @collection.authors.present?
+                #{t(:by)}:
+                %span= aus
+              - elsif eds.present?
+                #{t(:edited_by)}:
+                %span= eds
+          .field-v02.work-chapters-dropdown-field-desktop{style: 'background-color: unset;'}
+            = select_tag 'collitem', options_for_select(@htmls.reject{|x| x[0].blank?}.map{ |title, authors, html, is_curated, genre, i, ci| [title, i] }, 0), class: 'dropdown-v02', id: 'collitem_dropdown', style: 'width: 100%;'
+
+          .work-page-top-icons-desktop.notyet
+            %button.btn-small-outline-v02.btn-text-v02.reading-mode-btn-v02{href: "#"}
+              %span.by-icon-v02= '/'
+              = t(:reading_mode)
+            .top-left-icons-group
+              .icons-group-v02
+                .by-icon-v02.pointer.linkcolor.bookmark-status.notyet
+                - unless @collection.suppress_download_and_print
+                  .by-icon-v02.pointer.linkcolor.printbutton= 9
+                  .by-icon-v02.pointer.linkcolor.download{ data: { 'downloadable-id' => @collection.id, toggle: :modal, target: '#downloadDlg' } }= 3
+          .chapters-and-icons-mobile
+            .work-page-top-icons-mobile
+              .top-left-icons-group
+                .icons-group-v02
+                  .by-icon-v02.pointer.linkcolor.bookmark-status.notyet
+                  - unless @collection.suppress_download_and_print
+                    .by-icon-v02.pointer.linkcolor.printbutton= 9
+                    .by-icon-v02.pointer.linkcolor.download{ data: { 'downloadable-id' => @collection.id, toggle: :modal, target: '#downloadDlg' } }= 3
+
+  .row.error-found-row
+    .side-nav-col
+      .side-menu-headline= t(:table_of_contents)+':'
+      %nav#chapternav.navbar
+        %ul#chapter-nav.navbar-nav.flex-column.by-card-v02{style:'width: unset', "aria-orientation" => "vertical"}
+          - first = true
+          - @htmls.reject{|x| x[0].blank?}.each do |title, authors, html, is_curated, genre, i, ci|
+            %li.nav-item.side-menu-item{ id: "collitem_#{i}_button", 'data-target' => "collitem_text_#{i}"}
+              %a{'class' => 'nav-link nav-chapter-name nav-link-chapter pointer linkcolor '+(first ? ' active' : ''), "aria-controls" => "#", "aria-selected" => "false", 'data-toggle' => 'tooltip', 'title' => title, 'data-placement' => 'top', 'data-delay' => { "show": 500, "hide": 100 }, href: "#"}
+                .nav-chapter-name= title
+                - first = false
+
+    .col{style: "z-order:-1;height:0;"}
+    .col-4.error-found-col
+      %button.error-found-btn.notyet
+        .error-found
+          .error-found-text
+            = t(:found_br_mistake_html)
+          .error-found-icon g
+    .col-lg-4{style: "height:1px"}
+:javascript
+  $(document).ready(function() {
+    $('.side-menu-item').click(function(e) {
+      e.preventDefault();
+      $('.side-menu-item').removeClass('current-menu-item');
+      $(this).addClass('current-menu-item');
+      anchor = $(this).attr('data-target');
+      $('html, body').animate({
+        scrollTop: $('a[name='+anchor+']').offset().top - $('header').height() - 160
+      }, 800);
+      $('header').addClass("scrolled");
+      $('html, body').animate({ // re-adjust, after the header height changed
+        scrollTop: $('a[name='+anchor+']').offset().top - $('header').height() - 160
+      }, 0);
+    });
+
+    $('.by-icon-v02.download').click(function(e) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      $('#downloadDlg').modal('show');
+      $('#downloadable_id').val($(this).attr('data-downloadable-id'));
+    });
+    $('.printbutton').click(function() {
+      window.open("#{@print_url}",'_blank');
+    });
+    $('#collitem_dropdown').change(function() {
+      anchor = 'collitem_text_'+$('#collitem_dropdown').val();
+      $('html, body').animate({
+        scrollTop: $('a[name='+anchor+']').offset().top - $('header').height() - 120
+      }, 800);
+      $('header').addClass("scrolled");
+      $('html, body').animate({ // re-adjust, after the header height changed
+        scrollTop: $('a[name='+anchor+']').offset().top - $('header').height() - 120
+      }, 0);
+    });
+
+  });

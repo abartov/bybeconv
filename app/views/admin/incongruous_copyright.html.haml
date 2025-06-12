@@ -1,18 +1,18 @@
-.top-element.backend
-  %h2= t(:incongruous_copyright_report)
+.backend
+  %h2= t('.title')
   %h3= t(:total_manifestations, total: @incong.length)
   %table{style: 'cell-spacing: 10;'}
     %tr
       %th= t(:title)
       %th= t(:author)
-      %th= t(:calculated_copyright)
-      %th= t(:db_copyright)
+      %th= t('.columns.has_non_public_domain_authority')
+      %th= t('.columns.db_intellectual_property')
       %th
 
-    - @incong.each do |m, title, author, calculated, db|
+    - @incong.each do |m|
       %tr
-        %td= link_to title, manifestation_show_path(m.id)
-        %td= author
-        %td= calculated ? t(:no) : t(:yes)
-        %td= db == true ? t(:no) : (db.nil? ? t(:unknown) : t(:yes))
+        %td= link_to m.title, manifestation_show_path(m.id)
+        %td= m.author_string
+        %td= m.has_non_pd_authority? ? t(:yes) : t(:no)
+        %td= textify_intellectual_property_id(m.intellectual_property)
         %td= link_to t(:edit_metadata), manifestation_edit_metadata_path(m.id)

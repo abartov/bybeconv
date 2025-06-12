@@ -1,28 +1,27 @@
 def clean_tables
-  Tagging.delete_all
-  Tag.delete_all
-  ExternalLink.delete_all
-  Recommendation.delete_all
+  Tagging.destroy_all
+  Tag.destroy_all
+  ExternalLink.destroy_all
+  Recommendation.destroy_all
 
-  Realizer.delete_all
-  Creation.delete_all
+  InvolvedAuthority.destroy_all
 
-  Person.delete_all
+  CorporateBody.destroy_all
+  Person.destroy_all
+  Authority.destroy_all
 
-  Aboutness.delete_all
+  Aboutness.destroy_all
 
-  ListItem.delete_all
-  User.delete_all
+  ListItem.destroy_all
+  User.destroy_all
 
-  ActiveRecord::Base.connection.execute('delete from expressions_manifestations')
+  Manifestation.destroy_all
+  Expression.destroy_all
+  Work.destroy_all
 
-  Manifestation.delete_all
-  Expression.delete_all
-  Work.delete_all
-
-  Publication.delete_all
-  Holding.delete_all
-  BibSource.delete_all
+  Publication.destroy_all
+  Holding.destroy_all
+  BibSource.destroy_all
 
   # Cleaning-up ElasticSearch indices
   Chewy.massacre

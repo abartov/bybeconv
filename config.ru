@@ -1,4 +1,7 @@
 # This file is used by Rack-based servers to start the application.
+ENV['RACK_QUERY_PARSER_BYTESIZE_LIMIT'] = '7000000' # * some works, such as https://benyehuda.org/read/47208, are longer than Rack's default 4M POST limit size.
 
-require ::File.expand_path('../config/environment',  __FILE__)
-run Bybeconv::Application
+require_relative "config/environment"
+
+run Rails.application
+Rails.application.load_server

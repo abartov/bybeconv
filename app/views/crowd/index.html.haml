@@ -1,0 +1,15 @@
+%h1= t(:crowdsourcing)
+%p= t(:crowdsourcing_intro)
+- if current_user.present? && current_user.crowdsourcer?
+  %ul
+    %li
+      %h2= t(:crowdsourcing_populate_edition)
+      %p= t(:todo_x_out_of_y_pct, todo: @todo, total: @total, pct: ((@total - @todo) * 100 / @total))
+      - if current_user
+        - @populate_edition_people.each do |p|
+          = link_to t(:crowdsourcing_continue_work_on, topic: p.name), crowd_populate_edition_id_path(id: p.id)
+          %br
+      %br
+      = link_to t(:crowdsourcing_assign_more_work), crowd_populate_edition_path
+- else
+  %p= t(:crowdsourcing_not_crowdsourcer)

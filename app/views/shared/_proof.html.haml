@@ -1,4 +1,4 @@
-= form_tag('/proof', remote: true, id: 'proof_form') do
+= form_tag(proofs_path, remote: true, id: 'proof_form') do
   .flex-popup
     .popup-top
       %button.btn-small-outline-v02{'data-dismiss'=>'modal'}
@@ -13,7 +13,7 @@
         %a.popup-x-v02{'data-dismiss'=>'modal'} -
       .by-card-content-v02
         #marked-error-text.field-label= t(:your_selected_text)
-        = text_area_tag(:highlight, '', id: 'proof_selected_text', rows: 7, cols:40, readonly:true, class: 'field-v02')
+        = text_area_tag(:highlight, '', id: 'proof_selected_text', rows: 4, cols:40, readonly:true)
         /%input.field-v02{:type => "text"}/
         %div.pointer#copy_proof
           %span.right-side-icon )
@@ -22,11 +22,11 @@
           %span.right-side-icon -
           %span{:style => "font-weight: bold"}= t(:clear_text_and_reset_proof)
         #error-correction-suggestion.field-label= t(:proof_your_proofs)
-        = text_area_tag(:what, '', id: 'prooftext', required: true, rows: 7, cols: 40, class: 'field-v02')
+        = text_area_tag(:what, '', id: 'prooftext', required: true, rows: 4, cols: 40)
         /#error-notes.field-label הערות
         /%input.field-v02{:type => "text"}/
         #error-e-mail.field-label= t(:email_just_for_proof)
-        = email_field_tag 'from', '', {placeholder: t(:email), class: 'field-v02'}
+        = email_field_tag 'from', '', {placeholder: t(:email), required: true, class: 'field-v02'}
         = hidden_field_tag(:manifestation, @m.id)
         .desktop-only.pointer.bottom-right-link{'data-dismiss'=>'modal'}
           %span.right-side-icon -
@@ -43,18 +43,17 @@
 
 :javascript
   $(document).ready(function(){
-    $('#proofSent').dialog({autoOpen:false, height:200, width:500, modal:true,buttons:{"#{t(:close)}": function(){$('#proofSent').dialog('close');}}});
+    $('#proofSent').dialog({autoOpen:false, height:200, width:200, modal:true,buttons:{"#{t(:close)}": function(){$('#proofSent').dialog('close');}}});
 
     $('#proof_form').on('ajax:success', function(e, data, status, xhr) {
       $('#prooftext').val('');
+      $('#proof_status').html('');
       $('#proofDlg').modal("hide");
       $('#proofSent').dialog('open');
     }).on('ajax:error', function(e, xhr, status, error) {
+      alert(JSON.parse(xhr.responseText).join('\n'));
       $('#proof_status').html("<span style='color:red'>#{t(:proof_failed)}</span>");
     });
-    function submitProof() {
-      $('#proof_form').submit(); // TBD
-    };
     $('#copy_proof').click(function() {
       $('#prooftext').val($('#proof_selected_text').text());
     });
@@ -65,6 +64,9 @@
       if(document.getSelection().toString() == '') {
         e.preventDefault();
         alert("#{t(:proof_please_select_something)}");
+      } else if(document.getSelection().toString().length < 20) {
+        e.preventDefault();
+        alert("#{t(:proof_too_short)}");
       }
       else
       {

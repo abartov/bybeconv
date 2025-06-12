@@ -1,94 +1,42 @@
-= form_for person, url: {action: action, id: person.id} do |f|
-  - if person.errors.any?
-    #error_explanation
-      %h2= "#{pluralize(person.errors.count, "error")} prohibited this person from being saved:"
-      %ul
-        - person.errors.full_messages.each do |msg|
-          %li= msg
+= simple_form_for authority, url: { action: action, id: authority.id } do |f|
+  .form-inputs
+    = f.error_notification
+    = f.input :name
+    = f.input :sort_name
+    = f.input :other_designation
+    = f.input :status,
+              collection: Authority.statuses.map { |st| [t(st[0]), st[0]] }
+    = f.input :intellectual_property,
+              collection: Authority.intellectual_properties.keys.map { |ip| [textify_intellectual_property(ip), ip] }
+    = f.input :bib_done, as: :radio_buttons, collection: [[t(:no), false], [t(:yes), true]]
+    = f.input :country, as: :string
+    = f.input :comment, as: :text
+    = f.input :viaf_id
+    = f.input :nli_id
+    = f.input :blog_category_url, type: :url
+    = f.input :wikidata_uri, type: :url
+    = f.input :wikipedia_url, type: :url
+    = f.input :wikipedia_snippet, as: :text
+    = f.input :legacy_credits, as: :text
 
-  .backend-field
-    = f.label t(:name)
-    = f.text_field :name
-  .backend-field
-    = f.label t(:sort_name)
-    = f.text_field :sort_name
-  .backend-field
-    = f.label t(:birthdate)
-    = f.text_field :birthdate
-  .backend-field
-    = f.label t(:deathdate)
-    = f.text_field :deathdate
-  .backend-field
-    = f.label t(:period)
-    = f.select :period, options_for_select(Person.periods.map{|p| [t(p[0]), p[0]]}, person.period), include_blank: true
-  .backend-field
-    = f.label t(:gender)
-    %br
-    = f.radio_button(:gender, :male, checked: person.gender == 'male') # symbols won't do!
-    = f.label t(:male)
-    = f.radio_button(:gender, :female, checked: person.gender == 'female')
-    = f.label t(:female)
-    = f.radio_button(:gender, :other, checked: person.gender == 'other')
-    = f.label t(:other)
-    = f.radio_button(:gender, :unknown, checked: ((person.gender.nil?) or (person.gender == 'unknown')))
-    = f.label t(:unknown)
+    - if authority.person.present?
+      = f.simple_fields_for :person do |pf|
+        = pf.input :birthdate
+        = pf.input :deathdate
+        = pf.input :period, collection: Person.periods.keys.map { |p| [t(p), p] }
+        = pf.input :gender, as: :radio_buttons, collection: Person.genders.keys.map { |g| [t(g), g] }
 
-  .backend-field
-    = f.label t(:copyright_status)
-    %br
-    = f.radio_button(:public_domain, true, checked: person.public_domain && (not person.public_domain.nil?))
-    = f.label t(:public_domain)
-    = f.radio_button(:public_domain, false, checked: (not person.public_domain) && (not person.public_domain.nil?))
-    = f.label t(:by_permission)
-  .backend-field
-    = f.label t(:bib_done)
-    %br
-    = f.radio_button(:bib_done, true, checked: person.bib_done && (not person.bib_done.nil?))
-    = f.label t(:yes)
-    = f.radio_button(:bib_done, false, checked: (not person.bib_done) && (not person.bib_done.nil?))
-    = f.label t(:no)
-  .backend-field
-    = f.label t(:other_designation)
-    = f.text_field :other_designation
-  .backend-field
-    = f.label t(:affiliation)
-    = f.text_field :affiliation
-  .backend-field
-    = f.label t(:country)
-    = f.text_field :country
-  .backend-field
-    = f.label t(:comment)
-    = f.text_area :comment
-  .backend-field
-    = f.label t(:viaf_id)
-    = f.text_field :viaf_id
-  .backend-field
-    = f.label t(:nli_id)
-    = f.text_field :nli_id
-  .backend-field
-    = f.label t(:blog_category_url)
-    = f.text_area :blog_category_url, rows: 3, cols: 50
-  .backend-field
-    = f.label t(:wikidata_id)
-    = f.text_field :wikidata_id, size: 10
-  .backend-field
-    = t(:wikipedia_url)
-    = f.text_area :wikipedia_url, rows: 3, cols: 50
-  %br
-  .backend-field
-    = t(:wikipedia_snippet)
-    = f.text_area :wikipedia_snippet, rows: 8, cols: 50
-  .backend-field
-    = f.label t(:current_image)
-    = image_tag person.profile_image.url(:thumb), alt: person.name
-  .backend-field
-    = f.label t(:upload_new_image)
-    = f.file_field :profile_image
-  .backend-field
-    = f.label t(:metadata_approved)
-    = t(:yes)
-    = f.radio_button(:metadata_approved, true, checked: person.metadata_approved)
-    = t(:no)
-    = f.radio_button(:metadata_approved, false, checked: (not person.metadata_approved))
+    - if authority.corporate_body.present?
+      = f.simple_fields_for :corporate_body do |cbf|
+        = cbf.input :location
+        = cbf.input :inception
+        = cbf.input :inception_year
+        = cbf.input :dissolution
+        = cbf.input :dissolution_year
+
+    = f.input :current_image, label: t(:current_image) do
+      = image_tag authority.profile_image.url(:thumb), alt: authority.name
+
+    = f.input :profile_image, as: :file, label: t(:upload_new_image)
   .actions
     = f.submit t(:save)

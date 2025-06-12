@@ -2,16 +2,21 @@ FactoryBot.define do
   factory :manifestation do
     transient do
       sequence(:manifestation_name) { |n| "Manifestation #{n}" }
-      author { create(:person) }
+      author { create(:authority, toc: create(:toc)) }
       language { 'he' }
       orig_lang { %w(he en ru de it).sample }
       genre { Work::GENRES.sample }
-      translator { orig_lang != language ? create(:person) : nil }
+      period { Expression.periods.keys.sample }
+      translator { orig_lang.to_s == language.to_s ? nil : create(:authority) }
       editor { nil }
       illustrator { nil }
-      copyrighted { false }
+      intellectual_property { :public_domain }
       expression_title { title }
       work_title { title }
+      primary { true }
+      expression_date { '2 ביוני 1960' }
+      work_date { '3 ביוני 1960' }
+      collections { [] }
     end
 
     title { "Title for #{manifestation_name}" }
@@ -23,23 +28,35 @@ FactoryBot.define do
     impressions_count { Random.rand(100) }
     status { :published }
 
-    expressions {
-      [
-        create(
-          :expression,
-          author: author,
-          title: expression_title,
-          work_title: work_title,
-          translator: translator,
-          editor: editor,
-          illustrator: illustrator,
-          language: language,
-          orig_lang: orig_lang,
-          genre: genre,
-          copyrighted: copyrighted
+    expression do
+      create(
+        :expression,
+        author: author,
+        title: expression_title,
+        work_title: work_title,
+        translator: translator,
+        editor: editor,
+        illustrator: illustrator,
+        language: language,
+        orig_lang: orig_lang,
+        genre: genre,
+        period: period,
+        intellectual_property: intellectual_property,
+        primary: primary,
+        date: expression_date,
+        work_date: work_date
+      )
+    end
+
+    collection_items do
+      collections.map do |c|
+        build(
+          :collection_item,
+          collection: c,
+          seqno: (c.collection_items.maximum(:seqno) || 0) + 1
         )
-      ]
-    }
+      end
+    end
 
     trait :with_external_links do
       external_links { build_list(:external_link, 2) }

@@ -1,0 +1,104 @@
+AllCops:
+  TargetRubyVersion: 3.3.6
+  NewCops: enable
+  Exclude:
+    - bin/*
+    - config/environments/*
+    - db/migrate/*
+    - db/schema.rb
+    - config/initializers/simple_form.rb
+    - config/initializers/simple_form_bootstrap.rb
+
+require:
+  - rubocop-rails
+  - rubocop-rspec
+  - rubocop-factory_bot
+
+Metrics/BlockLength:
+  Max: 100
+  Exclude:
+    - 'config/routes.rb'
+
+Metrics/ClassLength:
+  Max: 1000
+
+Metrics/MethodLength:
+  Max: 100
+
+Metrics/ModuleLength:
+  Max: 1000
+
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/CyclomaticComplexity:
+  Enabled: false
+
+Metrics/PerceivedComplexity:
+  Enabled: false
+
+Naming/VariableNumber:
+  Enabled: false
+
+Layout/LineLength:
+  Max: 120
+
+Lint/DuplicateBranch:
+  Enabled: false
+
+Style/HashSyntax:
+  EnforcedShorthandSyntax: never
+
+Style/IfUnlessModifier:
+  Enabled: false
+
+Style/MultilineBlockChain:
+  Enabled: false
+
+Style/NumericPredicate:
+  Enabled: false
+
+Style/PercentLiteralDelimiters:
+  PreferredDelimiters:
+    default: '()'
+    '%w': '()'
+    '%W': '()'
+    '%i': '()'
+    '%I': '()'
+
+Style/RedundantReturn:
+  Enabled: false
+
+# TODO: Re-enable later, currently too hard to fix all places
+Style/UnlessElse:
+  Enabled: false
+
+Rails/ActionOrder: # TODO: temporary disabled. it would be good to enable in future
+  Enabled: false
+
+Rails/OutputSafety: # we actively use such output
+  Enabled: false
+
+RSpec/ExampleLength:
+  Max: 20
+
+RSpec/IndexedLet:
+  Enabled: false
+
+RSpec/LetSetup:
+  Enabled: false
+
+RSpec/MultipleMemoizedHelpers:
+  Max: 20
+
+RSpec/MultipleExpectations:
+  Enabled: false
+
+RSpec/NestedGroups:
+  Max: 6
+
+FactoryBot/ExcessiveCreateList:
+  MaxAmount: 100
+
+FactoryBot/FactoryAssociationWithStrategy:
+  Enabled: false

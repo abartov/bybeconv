@@ -5,6 +5,10 @@ require File.expand_path('../config/environment', __dir__)
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require 'rspec/rails'
+require 'chewy'
+require 'chewy/rspec'
+Chewy.strategy(:bypass)
+
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -64,4 +68,9 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+end
+
+def fake_editor(controller)
+  u = create(:user, editor: true)
+  allow_any_instance_of(controller).to receive(:current_user).and_return(u)
 end

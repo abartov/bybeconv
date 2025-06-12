@@ -1,5 +1,5 @@
 .htmlfile{style: 'margin: 5px'}
-  %h2= t(:converted_output, {fname: @text.path.sub(AppConstants.base_dir,'')})
+  %h2= t(:converted_output, fname: @text.path.sub(Rails.configuration.constants['base_dir'],''))
   / - unless @text.paras_condensed
   /   %button#bPoetry= t(:treat_as_poetry)
   %button#bPoetry= t(:treat_as_poetry)
@@ -8,16 +8,16 @@
     %ul
       %li= link_to t(:chop_and_update_title), action: :chop_title, id: @text.id
       - [1, 2, 3].each do |i|
-        %li= link_to t(:chopN_html, {n: i}), action: "chop#{i}", id: @text.id
-    - unless @text.person.nil?
-      %h2= t(:author)+': '+@text.person.name
+        %li= link_to t(:chopN_html, n: i), action: "chop#{i}", id: @text.id
+    - unless @text.author.nil?
+      %h2 #{t(:author)}: #{@text.author.name}
       - unless @text.translator.nil?
-        %h3= t(:translator)+': '+@text.translator.name
+        %h3 #{t(:translator)}: #{@text.translator.name}
     .markdown_container
       %div{ style:"vertical-align:top; width: 30%;display:flex;flex-direction:column;height:100%;box-sizing:border-box;float:left;padding-right:7px;"}
         #legacy_markdown_link
           %h2= t(:markdown)
-          = t(:raw_markdown_html, {orig_html: AppConstants.base_uri+ @text.url})
+          = t(:raw_markdown_html, orig_html: Rails.configuration.constants['base_uri']+ @text.url)
         .markdown
           = text_area_tag(:markdown, raw(@markdown), class: 'textarea100')
       %div{ style:"vertical-align:top; width: 70%; padding-left:10px;background:#d2cfcf;"}
@@ -28,7 +28,7 @@
       = select_tag(:genre, options_for_select(get_genres.map {|genre| [I18n.t(genre), genre]}, @text.genre), {include_blank: true})
       %br
       %br
-      - if @text.person.nil?
+      - if @text.author.nil?
         = label_tag t(:legacy_guessed_person)
         - if @text.html_dir.person.nil?
           %span{style: 'color:red'}= link_to t(:dir_not_associated), url_for(controller: :html_dirs, action: :edit, id: @text.html_dir.id)
@@ -40,17 +40,19 @@
       - else
         = label_tag t(:associated_persons)
         %br
-        = link_to @text.person.name+' ('+t(:author)+')', authors_show_path(id: @text.person.id)
+        = link_to "#{@text.author.name} (#{t(:author)})", authors_show_path(id: @text.person.id)
         - unless @text.translator.nil?
           %br
-          = link_to @text.translator.name+' ('+t(:translator)+')', authors_show_path(id: @text.translator.id)
+          = link_to "#{@text.translator.name} (#{t(:translator)})", authors_show_path(id: @text.translator.id)
         %br
         - if @text.metadata_ready?
           %b
             %span{style: 'color:green'}= t(:frbr_ready)
       %br
       = t(:add)
-      = select_tag :add_person, options_from_collection_for_select(Person.order(:name), 'id','name'), include_blank: true
+      = select_tag :add_person,
+                   options_from_collection_for_select(Authority.order(:name), 'id', 'name'),
+                   include_blank: true
       = t(:in_role)
       = select_tag :role, options_for_select([[t(:author), HtmlFile::ROLE_AUTHOR], [t(:translator), HtmlFile::ROLE_TRANSLATOR]])
       %br
@@ -68,7 +70,7 @@
   %h3= t(:actions)
   %ul
     / - [1, 2].each do |i|
-    /   %li= link_to t(:choplastN_html, {n: i}), action: "choplast#{i}", id: @text.id
+    /   %li= link_to t(:choplastN_html, n: i), action: "choplast#{i}", id: @text.id
     %li= link_to t(:mark_as_manual), action: :mark_manual, id: @text.id
     %li= link_to t(:mark_as_superseded), action: :mark_superseded, id: @text.id
     %li

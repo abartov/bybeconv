@@ -3,7 +3,7 @@ FactoryBot.define do
   factory :work do
     transient do
       sequence(:work_name) { |n| "Work #{n}" }
-      author { create(:person) }
+      author { create(:authority) }
       illustrator { nil }
     end
 
@@ -15,10 +15,11 @@ FactoryBot.define do
     origlang_title { "Title in original language for #{work_name}" }
     normalized_pub_date {}
     normalized_creation_date { normalize_date(date) }
-    creations do
-      result = [create(:creation, person: author, role: :author)]
+    primary { true }
+    involved_authorities do
+      result = [build(:involved_authority, authority: author, role: :author)]
       if illustrator.present?
-        result << create(:creation, person: illustrator, role: :illustrator)
+        result << build(:involved_authority, authority: illustrator, role: :illustrator)
       end
       result
     end

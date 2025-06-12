@@ -1,6 +1,6 @@
-.top-element.backend
+.backend.container
   %h1= "#{@author.name}: #{t(:edit_metadata)}"
-  = render partial: 'form', locals: {action: :update, person: @author}
+  = render partial: 'form', locals: { action: :update, authority: @author }
   %p
   %h2= t(:external_links)
   - els = @author.external_links
@@ -27,8 +27,6 @@
       $('#add_link_form')[0].reset();
     });
     $('#external_links').on('click', '.delete_link', function(e){
-      e.stopPropagation();
-      e.preventDefault();
       $(this).parent().remove();
     });
   });

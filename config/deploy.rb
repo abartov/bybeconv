@@ -21,15 +21,16 @@ set :deploy_to, "/home/bybe/bybeconv_staging"
 # set :pty, true
 
 # Default value for :linked_files is []
-append :linked_files, "config/database.yml", "config/s3.yml", "config/constants.yml", "config/storage.yml", "config/thin.yml", "config/chewy.yml"
+append :linked_files, "config/database.yml", "config/s3.yml", "config/constants.yml", "config/storage.yml", "config/chewy.yml", "config/puma.rb"
 
 append :linked_dirs, '.bundle', 'log', 'tmp/cache', 'public/system', 'tmp/pids', 'tmp/sockets'
 
+append :rvm1_map_bins, :rake, :gem, :bundle, :ruby
 # Default value for linked_dirs is []
 # append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system"
 
 # Default value for default_env is {}
-# set :default_env, { path: "/opt/ruby/bin:$PATH" }
+# set :default_env, {  }
 
 # Default value for local_user is ENV['USER']
 # set :local_user, -> { `git config user.name`.chomp }
@@ -40,8 +41,15 @@ append :linked_dirs, '.bundle', 'log', 'tmp/cache', 'public/system', 'tmp/pids',
 # Uncomment the following to require manually verifying the host key before first deploy.
 # set :ssh_options, verify_host_key: :secure
 
-set :rvm1_ruby_version, "2.6.6"
-#set :rvm1_ruby_version, "2.5.1"
+set :rvm1_ruby_version, "3.2.1"
 before 'deploy', 'rvm1:alias:create'
-after 'deploy:publishing', 'thin:restart'
+after 'deploy:publishing', 'puma:restart'
 
+namespace :debug do
+  desc 'Print ENV variables'
+  task :env do
+    on roles(:app), in: :sequence, wait: 5 do
+      execute :printenv
+    end
+  end
+end

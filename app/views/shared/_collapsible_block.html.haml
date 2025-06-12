@@ -1,0 +1,7 @@
+- content_class ||= ''
+.sort-type
+  .vertical-expand.fcoll{ data: { target: "#collf#{container_name}", toggle: :collapse } }
+    .sort-type-headline= title
+  .nested.active.collapse.show{ id: "collf#{container_name}" }
+    .nested-content{ class: content_class }
+      = yield

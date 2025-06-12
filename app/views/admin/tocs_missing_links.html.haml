@@ -1,4 +1,4 @@
-.top-element.backend
+.backend
   %h2= t(:tocs_missing_links_report)
   %h3= t(:total)+': '+@author_keys.length.to_s
   %table{style: 'cell-spacing: 10;'}
@@ -8,16 +8,16 @@
       %th= t(:missing_xlat)
 
     - @author_keys.each do |au_id|
-      - author = Person.find(au_id)
+      - author = Authority.find(au_id)
       %tr
         %td= link_to author.name, authors_edit_toc_path(author)
         %td
           - @tocs_missing_links[au_id][:orig].each do |m|
-            = link_to m.title, manifestation_read_path(m)
+            = link_to m.title, manifestation_path(m)
             = '; '
         %td
           - @tocs_missing_links[au_id][:xlat].each do |m|
-            = link_to m.title_and_authors, manifestation_read_path(m)
+            = link_to m.title_and_authors, manifestation_path(m)
             = '; '
   %hr
   %h2= t(:tocs_linking_to_missing_items)

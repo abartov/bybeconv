@@ -1,23 +1,23 @@
 .by-card-v02#authors-surprise-replaced
   %img.surprise-author-card-bookmark-fold-v02{src: '/assets/creator-bookmark-back2.png', width: 168, height: 6}
-  %a{href: author_toc_path(author.id)}
+  %a{ href: authority_path(author) }
     .surprise-author-card-v02
       %img.surprise-author-pic-v02{src: author.profile_image.url(:thumb), alt: author.name}
       .author-name-area
-        .surprise-author-name-v02= t(:to_the_author_page)+(author.gender == 'female' ? 'ת' : '') # TODO: unhardcode
+        .surprise-author-name-v02= to_the_author_page(author.person)
   .by-card-header-v02
     %span.headline-1-v02
-      %a{href: author_toc_path(author.id)}= author.name
-    %span.date-range!= " (#{author.life_years})"
+      %a{ href: authority_path(author.id) }= author.name
+    - if author.person.present?
+      %span.date-range!= "(#{author.person.life_years})"
   .by-card-content-v02.surprise-author-card-content-v02
     .row
       .col-md-6.col-sm-12
         .metadata
           %span.by-icon-v02
             = favorite_glyph(author.favorite_of_user)
-          %span.by-icon-v02= author.rights_icon
-          = textify_copyright_status(! author.public_domain)
-          %span.help{ 'data-toggle' => 'tooltip', title: author.public_domain? ? t(:pd_explain): t(:permission_explain)}= '[?]'
+          = render partial: 'shared/intellectual_property',
+                   locals: { intellectual_property: author.intellectual_property }
 
         - unless author.wikipedia_snippet.nil?
           .surprise-text-container
@@ -33,7 +33,7 @@
         -#    = "#{author.recommendations_count} #{t(:recommendations_for_work)}"
         .metadata
           %b= t(:works_in_the_project)+': '
-          = link_to "#{author.cached_works_count} #{t(:works)}", author_toc_path(author.id)
+          = link_to "#{author.cached_works_count} #{t(:works)}", authority_path(author)
         .text-height-author-2
           %p{style:'font-weight:bold; margin-bottom: 3px'}= t(:their_most_read_works, gender_letter: author.gender_letter)
           %ol
@@ -41,7 +41,7 @@
               - genre = mhash[:genre]
               - genrebit = genre.nil? ? '' : " (#{textify_genre(genre)})"
               %li
-                = link_to mhash[:title], manifestation_read_path(mhash[:id])
+                = link_to mhash[:title], manifestation_path(mhash[:id])
                 - if mhash[:translation]
                   = ' / '+mhash[:author]
                 = ' '+genrebit

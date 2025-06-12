@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 describe Manifestation do
@@ -59,29 +61,30 @@ describe Manifestation do
   end
 
   describe '.manual_delete' do
-    let!(:manifestation) { create(:manifestation, orig_lang: 'de') }
-
     subject(:manual_delete) { manifestation.manual_delete }
 
+    let!(:manifestation) { create(:manifestation, orig_lang: 'de') }
+
     it 'removes record with all dependent subrecords' do
-      expect { manual_delete }.to change { Manifestation.count }.by(-1).
-        and change { Expression.count }.by(-1).
-        and change { Work.count }.by(-1).
-        and change { Realizer.count }.by(-1).  # translator removed
-        and change { Creation.count }.by(-1). # author removed
-        and change { Person.count }.by(0)     # people records are kept
+      expect { manual_delete }.to change(described_class, :count).by(-1)
+                                                                 .and change(Expression, :count).by(-1)
+                                                                 .and change(Work, :count).by(-1)
+                                                                 .and change(InvolvedAuthority, :count).by(-2)
+                                                                 .and not_change(Person, :count)
     end
   end
 
   describe '.authors_string' do
     subject { manifestation.authors_string }
     context 'when authors present' do
-      let(:author_1) { create(:person, name: 'Alpha') }
-      let(:author_2) { create(:person, name: 'Beta') }
-      let(:manifestation) { create(:manifestation, author: author_1) }
-      before do
-        create(:creation, work: manifestation.expressions[0].work, role: :author, person: author_2)
+      let(:author_1) { create(:authority, name: 'Alpha') }
+      let(:author_2) { create(:authority, name: 'Beta') }
+      let(:manifestation) do
+        create(:manifestation, author: author_1).tap do |manifestation|
+          manifestation.expression.work.involved_authorities.create!(role: :author, authority: author_2)
+        end
       end
+
       it { is_expected.to eq 'Alpha, Beta' }
     end
 
@@ -89,7 +92,8 @@ describe Manifestation do
       let(:manifestation) { create(:manifestation) }
 
       before do
-        manifestation.expressions[0].work.creations.delete_all
+        manifestation.expression.work.involved_authorities.delete_all
+        manifestation.reload
       end
 
       it { is_expected.to eq I18n.t(:nil) }
@@ -99,20 +103,23 @@ describe Manifestation do
   describe '.translators_string' do
     subject { manifestation.translators_string }
     context 'when translators present' do
-      let(:translator_1) { create(:person, name: 'Alpha') }
-      let(:translator_2) { create(:person, name: 'Beta') }
-      let(:manifestation) { create(:manifestation, orig_lang: 'de', translator: translator_1) }
-      before do
-        create(:realizer, expression: manifestation.expressions[0], role: :translator, person: translator_2)
+      let(:translator_1) { create(:authority, name: 'Alpha') }
+      let(:translator_2) { create(:authority, name: 'Beta') }
+      let(:manifestation) do
+        create(:manifestation, orig_lang: 'de', translator: translator_1).tap do |manifestation|
+          manifestation.expression.involved_authorities.create!(role: :translator, authority: translator_2)
+        end
       end
+
       it { is_expected.to eq 'Alpha, Beta' }
     end
 
-    context 'when no authors present' do
-      let(:manifestation) { create(:manifestation) }
+    context 'when no translators present' do
+      let(:manifestation) { create(:manifestation, orig_lang: 'de') }
 
       before do
-        manifestation.expressions[0].realizers.delete_all
+        manifestation.expression.involved_authorities.delete_all
+        manifestation.reload
       end
 
       it { is_expected.to eq I18n.t(:nil) }
@@ -122,11 +129,12 @@ describe Manifestation do
   describe '.author_string' do
     subject { manifestation.author_string }
 
-    let(:author_1) { create(:person, name: 'Alpha') }
-    let(:author_2) { create(:person, name: 'Beta') }
+    let(:author_1) { create(:authority, name: 'Alpha') }
+    let(:author_2) { create(:authority, name: 'Beta') }
 
     before do
-      create(:creation, work: manifestation.expressions[0].work, role: :author, person: author_2)
+      create(:involved_authority, item: manifestation.expression.work, role: :author, authority: author_2)
+      manifestation.reload
     end
 
     context 'when work is not a translation' do
@@ -138,21 +146,22 @@ describe Manifestation do
 
       context 'when no authors present' do
         before do
-          manifestation.expressions[0].work.creations.delete_all
-
-          it { is_expected.to eq I18n.t(:nil) }
+          manifestation.expression.work.involved_authorities.delete_all
+          manifestation.reload
         end
+
+        it { is_expected.to eq I18n.t(:nil) }
       end
     end
 
     context 'when work is a translation' do
-      let(:translator_1) { create(:person, name: 'Gamma') }
-      let(:translator_2) { create(:person, name: 'Delta') }
+      let(:translator_1) { create(:authority, name: 'Gamma') }
+      let(:translator_2) { create(:authority, name: 'Delta') }
 
-      let(:manifestation) { create(:manifestation, orig_lang: 'de', author: author_1, translator: translator_1) }
-
-      before do
-        create(:realizer, expression: manifestation.expressions[0], role: :translator, person: translator_2)
+      let(:manifestation) do
+        create(:manifestation, orig_lang: 'de', author: author_1, translator: translator_1).tap do |manifestation|
+          manifestation.expression.involved_authorities.create!(role: :translator, authority: translator_2)
+        end
       end
 
       context 'when both authors and transaltors are present' do
@@ -161,19 +170,72 @@ describe Manifestation do
 
       context 'when no authors present' do
         before do
-          manifestation.expressions[0].work.creations.delete_all
-
-          it { is_expected.to eq I18n.t(:nil) }
+          manifestation.expression.work.involved_authorities.delete_all
+          manifestation.reload
         end
+
+        it { is_expected.to eq I18n.t(:nil) }
       end
 
       context 'when no translators present' do
         before do
-          manifestation.expressions[0].realizers.delete_all
+          manifestation.expression.involved_authorities.delete_all
+          manifestation.reload
         end
 
         it { is_expected.to eq 'Alpha, Beta / ' + I18n.t(:unknown) }
       end
+    end
+  end
+
+  describe '.title_and_authors_html' do
+    subject(:string) { manifestation.title_and_authors_html }
+
+    context 'when work is not a translation' do
+      let(:manifestation) { create(:manifestation, orig_lang: :he) }
+
+      it 'does not include info about translation' do
+        expect(string.include?(I18n.t(:translated_from))).to be false
+      end
+    end
+
+    context 'when work is a translation' do
+      let(:manifestation) { create(:manifestation, orig_lang: :de) }
+
+      it 'includes info about translation' do
+        expect(string.include?(I18n.t(:translated_from))).to be_truthy
+      end
+    end
+  end
+
+  describe '.approved_tags' do
+    subject { manifestation.approved_tags }
+
+    let(:manifestation) { create(:manifestation) }
+    let(:approved_tag) { create(:tag, status: :approved) }
+    let(:pending_tag) { create(:tag, status: :pending) }
+
+    let!(:approved_approved_tagging) { create(:tagging, tag: approved_tag, taggable: manifestation, status: :approved) }
+    let!(:approved_pending_tagging) { create(:tagging, tag: pending_tag, taggable: manifestation, status: :approved) }
+    let!(:pending_approved_tagging) { create(:tagging, tag: approved_tag, taggable: manifestation, status: :pending) }
+
+    it { is_expected.to contain_exactly(approved_tag) }
+  end
+
+  describe '.to_html' do
+    subject { manifestation.to_html }
+    let(:manifestation) { create(:manifestation, markdown: "## Test", status: status) }
+
+    context 'when published' do
+      let(:status) { :published }
+
+      it { is_expected.to eq "<h2 id=\"test\">Test</h2>\n" }
+    end
+
+    context 'when unpublished' do
+      let(:status) { :unpublished }
+
+      it { is_expected.to eq I18n.t(:not_public_yet) }
     end
   end
 end

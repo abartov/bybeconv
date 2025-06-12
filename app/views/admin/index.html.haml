@@ -1,16 +1,24 @@
-.top-element.backend.admin_container
+.backend.admin_container
   / %p= link_to 'עריכת מטא-דאטה', html_file_list_for_editor_path
   .admin_dashboard_item
     %h2= t(:main_catalog_management)
     - if current_user.has_bit?('edit_people')
       %b
         %p= link_to t(:manage_people), authors_list_path
+        - if @ingestibles_pending.any?
+          %p{style:'color:purple'}
+            != "&nbsp;&nbsp;&nbsp;"
+            = link_to t('ingestibles.index.pending_ingestibles', count: @ingestibles_pending.count), ingestibles_path
     - if current_user.has_bit?('edit_catalog')
       %b
         %p= link_to t(:catalog_dashboard), manifestation_list_path
-        %p= link_to t(:upload_file), html_file_new_path
+        %p= link_to t(:ingestibles_system), ingestibles_path
+        %p= link_to t('collections_migration.index.title'), collections_migration_index_path
       %p
-        = link_to t(:html_files_list), html_file_list_path
+      %p
+        %small= link_to t(:upload_file), html_file_new_path
+      %p
+        %small= link_to t(:html_files_list), html_file_list_path
       %h3= t(:current_editing_files)
       %ul
         - @current_uploads.each do |upl|
@@ -24,7 +32,7 @@
       %h2= t(:bibliography)
       %p
         %b= link_to t(:bib_workshop), bib_index_path
-      %p= link_to t(:get_bibs), controller: :bib, action: :pubs_by_person
+      %p= link_to t(:get_bibs), controller: :bib, action: :pubs_by_authority
       %p= link_to t(:review_bibs), publications_path
   .admin_dashboard_item
     %h2= t(:maintenance)
@@ -42,8 +50,11 @@
                 %li{style:'padding-right:10px'}= link_to p.about, proof_path(p)
       = button_to t(:assign_proofs), url_for(action: :assign_proofs), {method: :get}
       - if current_user.admin?
-        %p= link_to 'עיון בהגהות חדשות מן הציבור ('+@open_proofs+')', proof_list_path(:status => 'new')
-        %p= link_to 'עיון בהגהות טעונות עיון נוסף ('+@escalated_proofs+')', proof_list_path(:status => 'escalated')
+        %p= link_to 'עיון בהגהות חדשות מן הציבור ('+@open_proofs+')', proofs_path(:status => 'new')
+        %p= link_to 'עיון בהגהות טעונות עיון נוסף ('+@escalated_proofs+')', proofs_path(:status => 'escalated')
+    - if current_user.has_bit?('moderate_tags')
+      %p= link_to t(:moderate_tags), tag_moderation_path
+      = t(:pending_tags_and_taggings, pending_tags: @pending_tags, pending_taggings: @pending_taggings)
     - if current_user.has_bit?('handle_recommendations')
       %p= link_to 'עיון בהמלצות מן הציבור ('+@open_recommendations+')', legacy_recommendation_list_path(:status => 'new')
     - if current_user.has_bit?('edit_sitenotice')
@@ -52,7 +63,7 @@
     - if current_user.has_bit?('curate_featured_content')
       %div
         %h2= t(:featured_content_heading)
-        %p= link_to t(:featured_content_management), url_for(action: :featured_content_list)
+        %p= link_to t('admin.featured_contents.index.title'), admin_featured_contents_path
         %p= link_to t(:featured_authors_management), url_for(action: :featured_author_list)
         %p= link_to t(:volunteer_profiles), url_for(action: :volunteer_profiles_list)
         %p= link_to t(:static_pages), url_for(action: :static_pages_list)
@@ -68,9 +79,16 @@
     /    = f.submit t(:search)
     .admin_dashboard_item
       %h2= t(:reports)
+      -#%p
+      -#  %b= link_to t(:conversion_verification_report), admin_conversion_verification_path
+      -#  = ' ('+Rails.cache.read('report_conversion_verification').to_s+')'
       %p
-        %b= link_to t(:conversion_verification_report), admin_conversion_verification_path
-        = ' ('+Rails.cache.read('report_conversion_verification').to_s+')'
+        %b= link_to t(:blazer_system), '/blazer'
+      %p
+        %b= link_to t(:texts_between_dates), admin_texts_between_dates_path
+      %p
+        %b= link_to t(:authors_without_works), admin_authors_without_works_path
+        = ' ('+Rails.cache.read('report_authors_without_works').to_s+')'
       %p
         %b= link_to t(:tocs_missing_links_report), admin_tocs_missing_links_path
         = ' ('+Rails.cache.read('report_tocs_missing_links').to_s+')'
@@ -109,26 +127,26 @@
         = ' ('+Rails.cache.read('report_similar_titles').to_s+')'
       %p
         = link_to admin_incongruous_copyright_path do
-          = t(:incongruous_copyright_report)+' '
-          %b= t(:takes_long_time)
-        = ' ('+Rails.cache.read('report_incongruous_copyright').to_s+')'
+          = t('admin.incongruous_copyright.title')
+          %b= t('.takes_long_time')
+        (#{Rails.cache.read('report_incongruous_copyright')})
       %p
         = link_to t(:missing_images), admin_missing_images_path
         = ' ('+Rails.cache.read('report_missing_images').to_s+')'
     .admin_dashboard_item
       %h2= t(:admin_actions)
       %p= link_to t(:user_management), user_list_path
-    .admin_dashboard_item
-      - if current_user.has_bit?('conversion_verification')
-        %h2
-          = t(:conversion_verification)
-          = ' ('+Manifestation.where(conversion_verified: false).count.to_s+')'
-        = button_to t(:conversion_verification), url_for(action: :assign_conversion_verification), {method: :get}
-        %p
-        %p= t(:convs_processed_so_far, {done: ListItem.where(listkey: 'convs_by_user', user: current_user).count, percent_done: number_to_percentage(@conv_percent_done, precision: 2)})
-        %button#show_my_convs= t(:show_my_convs)
-        #my_convs
-        %p= link_to t(:html_dirs_list), html_dirs_path
+    -#.admin_dashboard_item
+    -#  - if current_user.has_bit?('conversion_verification')
+    -#    %h2
+    -#      = t(:conversion_verification)
+    -#      = ' ('+Manifestation.where(conversion_verified: false).count.to_s+')'
+    -#    = button_to t(:conversion_verification), url_for(action: :assign_conversion_verification), {method: :get}
+    -#    %p
+    -#    %p= t(:convs_processed_so_far, done: ListItem.where(listkey: 'convs_by_user', user: current_user).count, percent_done: number_to_percentage(@conv_percent_done, precision: 2))
+    -#    %button#show_my_convs= t(:show_my_convs)
+    -#    #my_convs
+    -#    %p= link_to t(:html_dirs_list), html_dirs_path
   
 :javascript
   $(document).ready(function() {

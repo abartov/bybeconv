@@ -4,12 +4,24 @@ class BibController < ApplicationController
   before_action {|c| c.require_editor('bib_workshop')}
 
   def index
-    @counts = {pubs: Publication.count, holdings: Holding.count , obtained: Publication.where(status: Publication.statuses[:obtained]).count , scanned: Publication.where(status: Publication.statuses[:scanned]).count, copyrighted: Publication.where(status: Publication.statuses[:copyrighted]).count, uploaded: Publication.where(status: Publication.statuses[:uploaded]).count, irrelevant: Publication.where(status: Publication.statuses[:irrelevant]).count, missing: Holding.where(status: Holding.statuses[:missing]).count, authors_done: Person.has_toc.bib_done.count, authors_todo: Person.has_toc.count - Person.has_toc.bib_done.count}
-    @digipubs = Publication.includes(holdings: :bib_source).where(status: Publication.statuses[:scanned]).order('rand()').limit(25)
-    pid = params[:person_id]
-    unless pid.nil?
-      @person_id = pid.to_i
-      @person_name = Person.find(@person_id).name.split(' ')[-1]
+    @counts = {
+      pubs: Publication.count,
+      holdings: Holding.count,
+      obtained: Publication.obtained.count,
+      scanned: Publication.scanned.count,
+      copyrighted: Publication.copyrighted.count,
+      uploaded: Publication.uploaded.count,
+      irrelevant: Publication.irrelevant.count,
+      missing: Holding.missing.count,
+      authors_done: Authority.has_toc.bib_done.count,
+      authors_todo: Authority.has_toc.count - Authority.has_toc.bib_done.count
+    }
+
+    @digipubs = Publication.scanned.includes(holdings: :bib_source).order('rand()').limit(25)
+    pid = params[:authority_id]
+    if pid.present?
+      @authority_id = pid.to_i
+      @authority_name = Authority.find(@authority_id).name.split[-1]
     end
     prepare_pubs
   end
@@ -24,64 +36,56 @@ class BibController < ApplicationController
     end
     render js: "$('.pub#{pub.id}').remove();"
   end
+
   def scans
     @digipubs = Publication.includes(holdings: :bib_source).where(status: Publication.statuses[:scanned]).order('updated_at asc')
   end
 
   def make_author_page
-    @p = Person.find(params[:person_id])
-    if @p.nil?
-      respond_to do |format|
-        format.html { redirect_to action: :index }
-        format.js { render :nothing }
-      end
+    @authority = Authority.find(params[:authority_id])
+    @pubs = @authority.publications
+    gen_toc = ''
+    # make TOC
+    @pubs.each do |pub|
+      gen_toc += "### #{pub.title}\n#{pub.publisher_line}, #{pub.pub_year} \n\n"
+    end
+    gen_toc = gen_toc.gsub(' :', ':').gsub(' ;', ';')
+    # save TOC to person if no TOC yet
+    if @authority.toc.nil?
+      t = Toc.create!(
+        toc: gen_toc,
+        credit_section: "## #{I18n.t(:typed)}\n* ...\n\n## #{I18n.t(:proofed)}\n* ...",
+        status: :raw
+      )
+      @authority.toc = t
+      @authority.save!
     else
-      @pubs = @p.publications
-      gen_toc = ''
-      # make TOC
-      @pubs.each do |pub|
-        gen_toc += "### #{pub.title}\n#{pub.publisher_line}, #{pub.pub_year} \n\n"
-      end
-      gen_toc = gen_toc.gsub(' :',':').gsub(' ;',';')
-      # save TOC to person if no TOC yet
-      if @p.toc.nil?
-        t = Toc.new(toc: gen_toc,  credit_section: "## #{I18n.t(:typed)}\n* ...\n\n## #{I18n.t(:proofed)}\n* ...", status: :raw)
-        t.save!
-        @p.toc = t
-        @p.save!
-      else
-        @gen_toc = gen_toc # set @gen_toc for edit_toc to show
-      end
-      # present TOC if person already has manual TOC
-      flash[:notice] = t(:created_toc)
-      @author = @p
-      prep_toc
-      render 'authors/edit_toc'
+      @gen_toc = gen_toc # set @gen_toc for edit_toc to show
+    end
+    # present TOC if person already has manual TOC
+    flash.now.notice = t(:created_toc)
+    @author = @authority
+    prep_toc
+    prep_edit_toc
+
+    render 'authors/edit_toc'
+  end
+
+  def authority
+    @authority = Authority.find(params[:authority_id])
+    @pubs = @authority.publications.order(:status)
+    respond_to do |format|
+      format.html
+      format.js
     end
   end
 
-  def person
-    @p = Person.find(params[:person_id])
-    if @p.nil?
-      respond_to do |format|
-        format.html { redirect_to action: :index }
-        format.js { render :nothing }
-      end
-    else
-      @pubs = @p.publications.order(:status)
-      respond_to do |format|
-        format.html
-        format.js
-      end
-    end
-  end
-
-  def pubs_by_person
+  def pubs_by_authority
     prepare_pubs
     q = params['q']
-    @person_id = params[:person_id]
-    unless @person_id.nil? || @person_id.empty?
-      @person = Person.find(@person_id)
+    @authority_id = params[:authority_id]
+    if @authority_id.present?
+      @authority = Authority.find(@authority_id)
     end
     @total_pubs = '0'
     unless q.nil? or q.empty?
@@ -105,7 +109,7 @@ class BibController < ApplicationController
     if pub.nil?
       render plain: 'moose'
     else
-      Net::HTTP.start(AppConstants.tasks_system_host, AppConstants.tasks_system_port, :use_ssl => AppConstants.tasks_system_port == 443 ? true : false) do |http|
+      Net::HTTP.start(Rails.configuration.constants['tasks_system_host'], Rails.configuration.constants['tasks_system_port'], :use_ssl => Rails.configuration.constants['tasks_system_port'] == 443 ? true : false) do |http|
         req = Net::HTTP::Post.new('/api/create_task')
         req.set_form_data(title: pub.title, author: pub.author_line, 
           edition_details: "#{pub.publisher_line}, #{pub.pub_year}", extra_info: "#{pub.language}\n#{pub.notes}",
@@ -116,8 +120,8 @@ class BibController < ApplicationController
           pub.status = 'scanned'
           pub.task_id = task_result['task']['id']
           pub.save!
-          portpart = AppConstants.tasks_system_port == 80 ? '' : ":#{AppConstants.tasks_system_port }"
-          taskurl = "#{AppConstants.tasks_system_port == 443 ? 'https://' : 'http://'}#{AppConstants.tasks_system_host}#{portpart}/tasks/#{task_result['task']['id']}"
+          portpart = Rails.configuration.constants['tasks_system_port'] == 80 ? '' : ":#{Rails.configuration.constants['tasks_system_port'] }"
+          taskurl = "#{Rails.configuration.constants['tasks_system_port'] == 443 ? 'https://' : 'http://'}#{Rails.configuration.constants['tasks_system_host']}#{portpart}/tasks/#{task_result['task']['id']}"
           render inline: taskurl
         else
           render inline: 'alert("אירעה שגיאה ביצירת המשימה.");'
@@ -135,28 +139,55 @@ class BibController < ApplicationController
     @pubs = []
     ListItem.includes(:item).where(listkey: 'pubs_maybe_done').each do |pub|
       item = pub.item
-      mm = item.person.all_works_by_title(pub_title_for_comparison(item.title))
+      mm = item.authority.all_works_by_title(pub_title_for_comparison(item.title))
       @pubs << [item, mm]
     end
   end
+
   def shopping
     hh = []
     case
     when params[:pd] == '1' && params[:unique] == '1'
-      pp = Publication.joins(:holdings, :person).group('publications.id').having('COUNT(distinct holdings.bib_source_id) = 1').where("publications.status = 'todo' and people.public_domain = 1 and holdings.bib_source_id = #{params[:source_id]}") # get all publications available in only one source
+      # get all publications available in only one source
+      pp = Publication.joins(:holdings, :authority)
+                      .group('publications.id')
+                      .having('COUNT(distinct holdings.bib_source_id) = 1')
+                      .merge(Authority.intellectual_property_public_domain)
+                      .where("publications.status = 'todo' and holdings.bib_source_id = ?", params[:source_id])
       pp.each{|p| p.holdings.each {|h| hh << h }}
     when params[:pd] == '1' && (params[:unique].nil? || params[:unique] == '0')
-      hh = Holding.to_obtain(params[:source_id]).joins(publication: [:person]).includes(publication: :holdings).where("people.public_domain = 1 AND publications.status = 'todo'").to_a
+      hh = Holding.to_obtain(params[:source_id])
+                  .joins(publication: :authority)
+                  .includes(publication: :holdings)
+                  .merge(Authority.intellectual_property_public_domain)
+                  .where("publications.status = 'todo'").to_a
     when (params[:pd].nil? || params[:pd] == '0') && params[:unique] == '1'
-      pp = Publication.joins(:holdings).group('publications.id').having('COUNT(distinct holdings.bib_source_id) = 1').where('publications.status = "todo"') # get all publications available in only one source
+      # get all publications available in only one source
+      pp = Publication.joins(:holdings).group('publications.id')
+                      .having('COUNT(distinct holdings.bib_source_id) = 1')
+                      .where('publications.status = "todo"')
       pp.each{|p| p.holdings.each {|h| hh << h if h.bib_source_id == params[:source_id].to_i}}
     when params[:nonpd] == '1' && params[:unique] == '1'
-      pp = Publication.joins(:holdings, :person).group('publications.id').having('COUNT(distinct holdings.bib_source_id) = 1').where('publications.status = "todo" and people.public_domain = 0') # get all publications available in only one source
+      # get all publications available in only one source
+      pp = Publication.joins(:holdings, :authority)
+                      .group('publications.id')
+                      .having('COUNT(distinct holdings.bib_source_id) = 1')
+                      .where('publications.status = "todo"')
+                      .where.not(
+                        'authorities.intellectual_property = ?',
+                        Authority.intellectual_properties[:public_domain]
+                      )
       pp.each{|p| p.holdings.each {|h| hh << h if h.bib_source_id == params[:source_id].to_i}}
     when params[:nonpd] == '1' && (params[:unique].nil? || params[:unique] == '0')
-      hh = Holding.to_obtain(params[:source_id]).joins(publication: [:person]).includes(publication: :holdings).where('people.public_domain' => false).to_a
+      hh = Holding.to_obtain(params[:source_id])
+                  .joins(publication: :authority)
+                  .includes(publication: :holdings)
+                  .where.not(
+                    'authorities.intellectual_property = ?',
+                    Authority.intellectual_properties[:public_domain]
+                  ).to_a
     else
-        hh = Holding.to_obtain(params[:source_id]).to_a
+      hh = Holding.to_obtain(params[:source_id]).to_a
     end
 
     @holdings = hh.sort_by!{|h|
@@ -202,13 +233,14 @@ class BibController < ApplicationController
     when 'hebrewbooks'
       provider = Gared::Hebrewbooks.new
     when 'primo'
-      provider = Gared::Primo.new(bib_source.url, bib_source.institution)
+      provider = Gared::Primo.new(bib_source.url, bib_source.vid, bib_source.scope, bib_source.api_key)
     when 'idea'
       provider = Gared::Idea.new(bib_source.url)
     when 'nli_api'
       provider = Gared::Nli_Api.new(bib_source.url, bib_source.api_key)
     end
     ret = []
+    #debugger
     ret = provider.query_publications_by_person(q, bib_source) if provider # bib_source is sent as context, so that the resulting Publication objects would be able to access the linkify logic for their source; should probably be replaced by a proc
     return ret
   end

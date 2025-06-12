@@ -1,5 +1,5 @@
 class UserController < ApplicationController
-  before_action :require_admin, only: [:list, :make_editor, :make_admin, :unmake_editor, :set_editor_bit]
+  before_action :require_admin, only: [:list, :make_crowdsourcer, :unmake_crowdsourcer, :make_editor, :make_admin, :unmake_editor, :set_editor_bit]
   before_action :require_user
 
   def list
@@ -9,6 +9,13 @@ class UserController < ApplicationController
     else
       @user_list = User.page params[:page]
     end
+  end
+  def make_crowdsourcer
+    set_user
+    @q = params[:q]
+    @u.crowdsourcer = true
+    @u.save!
+    redirect_to url_for(action: :list), notice: "#{@u.name} is now a crowdsourcer."
   end
 
   def make_editor
@@ -33,6 +40,13 @@ class UserController < ApplicationController
     @u.editor = false
     @u.save!
     redirect_to url_for(action: :list), notice: "#{@u.name} is no longer an editor."
+  end
+ def unmake_crowdsourcer
+    set_user
+    @q = params[:q]
+    @u.crowdsourcer = false
+    @u.save!
+    redirect_to url_for(action: :list), notice: "#{@u.name} is no longer a crowdsourcer."
   end
 
   def show

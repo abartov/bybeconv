@@ -1,0 +1,140 @@
+.tagging-management-area.tags-content
+  #offered-tag.by-card-v02
+    .by-card-header-v02
+      .headline-1-v02{style: @tag.escalated? ? 'background-color: #f7a7a7' : ''}
+        = "#{t(:suggested_tag)}: #{@tag.name}"
+    %div
+      %div{style: "display:flex"}
+        .by-card-content-v02{style: "width: 50%;"}
+          .headline-2-v02= t(:adjacent_or_similar_tags)
+          - @similar_tags.each do |tag|
+            .flex-container
+              %b{style: 'color:blue'}= t(:similar_to_x, x: tag.name)
+              .by-button-secondary-v02.pointer.pad10rl.merge-btn{'data-tag-id': @tag.id, 'data-with-tag': tag.id}
+                .by2-icon{style: 'display: inline; margin-left: 7px;'}> Q
+                = t(:merge_with_this_tag)
+            %br/
+          .headline-3-v02= t(:adjacent_tags)
+          %ul
+            - @tag.prev_tags_alphabetically.reverse.each do |prev_tag|
+              %li.flex-container
+                = prev_tag.name
+                .by-button-secondary-v02.pointer.pad10rl.merge-btn{'data-tag-id': @tag.id, 'data-with-tag': prev_tag.tag_id}
+                  .by2-icon{style: 'display: inline; margin-left: 7px;'}> Q
+                  = t(:merge_with_this_tag)
+
+            %li{style: 'font-size: 120%;'}
+              %b= @tag.name
+            - @tag.next_tags_alphabetically.each do |next_tag|
+              %li.flex-container
+                = next_tag.name
+                .by-button-secondary-v02.pointer.pad10rl.merge-btn{'data-tag-id': @tag.id, 'data-with-tag': next_tag.tag_id}
+                  .by2-icon{style: 'display: inline; margin-left: 7px;'}> Q
+                  = t(:merge_with_this_tag)
+          %hr
+          .headline-3-v02= t(:actions)
+          .tag-actions-buttons-group
+            = button_to approve_tag_and_next_path(@tag), class: 'by-button-v02 confirmable', form_class: 'approve_tag_form', id: 'approve2_tag_btn', data: { 'confirm-title': t(:confirm_approve), p1: t(:confirm_approve), 'with-comment': false, element_id: 'approve2_tag_btn' } do
+              .by2-icon> N
+              = t(:approve_and_next)
+            = button_to reject_tag_and_next_path(@tag), class: 'by-button-v02 confirmable', form_class: 'reject_tag_form', id: 'reject_tag_btn', data: { 'confirm-title': t(:confirm_reject), p1: t(:confirm_reject), 'with-comment': false, element_id: 'reject_tag_btn' } do
+              .by-icon-v02 -
+              = t(:reject_and_next)
+            = button_to approve_tag_path(@tag), class: 'by-button-v02 confirmable', form_class: 'approve_tag_form', id: 'approve_tag_btn', data: { 'confirm-title': t(:confirm_approve), p1: t(:confirm_approve), 'with-comment': false, element_id: 'approve_tag_btn' } do
+              .by2-icon N
+              = t(:approve_and_review_taggings)
+            = button_to reject_tag_and_next_path(@tag), class: 'by-button-v02 confirmable', form_class: 'reject_tag_form', id: 'reject_tag2_btn', data: { 'confirm-title': t(:confirm_reject), p1: t(:confirm_reject), 'with-comment': true, element_id: 'reject_tag2_btn' } do
+              .by-icon-v02> -
+              = t(:reject_and_explain)
+            .by-button-secondary-v02.pointer.pad10rl.general-merge-btn
+              .by2-icon{style: 'display: inline; margin-left: 7px;'}> Q
+              = t(:change_or_merge)
+          %br/
+          %input{type: 'textarea', id: 'reason', placeholder: t(:explain_rejection), style: 'width: 100%', name: 'reason'}
+          %button.ghost-btn.more-actions-btn= t(:additional_actions)
+          #additional_actions{style: 'display:none'}
+            %p
+            = button_to escalate_tag_path(@tag.id), class: 'by-button-v02', style: 'background-color:lightblue' do
+              .by-icon-v02> -
+              = t(:escalate_to_editor)
+            %p
+            = button_to warn_user_path(@tag.creator.id, return_url: tag_review_path(@tag.id)), class: 'by-button-v02 confirmable', style: 'background-color:orange', id: 'warn_user_btn', data: { 'confirm-title': t(:confirm_warn), p1: t(:confirm_warn), 'with-comment': false, element_id: 'warn_user_btn' } do
+              .by-icon-v02> -
+              = t(:warn_user)
+            %p
+            = button_to block_user_path(@tag.creator.id, return_url: tag_review_path(@tag.id)), class: 'by-button-v02 confirmable', style: 'background-color:red', id: 'block_user_btn', data: { 'confirm-title': t(:confirm_block), p1: t(:confirm_block), 'with-comment': false, element_id: 'block_user_btn' } do
+              .by-icon-v02> -
+              = t(:block_user)
+
+        .by-card-content-v02{style: "width: 50%;"}
+          .headline-3-v02= t(:suggested_by)
+          .offered-by
+            - if @tag.creator.warned?
+              %a.pointer.red{href: '#'}
+                %span.by2-icon> P
+                = @tag.creator.name
+            - else
+              %a.pointer{href: '#'}
+                = @tag.creator.name
+            %p
+              = t(:suggested_tags)+':'
+              - tag_count = Tag.by_user(@tag.creator).count
+              %a{href: "#"}= tag_count
+            %p
+              = t(:acceptance_rate)+':'
+              - additional_class = ''
+              - acceptance_rate = @tag.creator.tag_acceptance_rate
+              - if acceptance_rate && tag_count > 3 && acceptance_rate < 25
+                - additional_class = 'low-approval-rate'
+              - elsif acceptance_rate && tag_count > 3 && acceptance_rate > 75
+                - additional_class = 'high-approval-rate'
+              %span{class: additional_class}= acceptance_rate ? "%.1f%%" % acceptance_rate : '--'
+          .headline-2-v02
+            = t(:items_pending_for_this_tag, tag: @tag.name)
+            %span= "(#{@tag.taggings_count})"
+          %div{href: "#"}
+            %span{style: "font-weight: bold"}= t(:will_open_in_new_tab)
+            %span.open-in-new-tab T
+          #available-tags-list.scrollable-area
+            %ol
+              - @tag.taggings.each do |tagging|
+                %li
+                  - if tagging.taggable_type == 'Manifestation'
+                    %a{href: manifestation_path(tagging.taggable_id), target: "_blank"}
+                      = "#{tagging.taggable.title} / #{tagging.taggable.author_string}"
+                  - elsif tagging.taggable_type == 'Authority'
+                    %a{ href: authority_path(tagging.taggable_id), target: '_blank' }
+                      = tagging.taggable.name
+      .offered-tags-nav
+        .tags-nav-small
+          - if @prev_tag_id.present?
+            = link_to tag_review_path(@prev_tag_id), class: 'ghost-btn' do
+              .right-arrow> 2
+              = t(:to_previous_item)
+          - if @next_tag_id.present?
+            = link_to tag_review_path(@next_tag_id), class: 'ghost-btn' do
+              = t(:to_next_item)
+              .left-arrow 1
+.div{style: 'width:150px;'}
+  = button_to t(:back), tag_moderation_path, class: 'by-button-v02', method: 'get'
+:javascript
+  $(document).ready(function() {
+    $('.merge-btn').click(function(e) {
+      e.stopPropagation();
+      var url = "#{ merge_tag_path(-1, with_tag: -2)}";
+      url = url.replace('-1', $(this).data('tag-id')).replace('-2', $(this).data('with-tag'));
+      $('.modal').modal('hide');
+      $('#generalDlg').load(url);
+      $('#generalDlg').modal('show');
+    });
+    $('.general-merge-btn').click(function(e) {
+      e.stopPropagation();
+      $('.modal').modal('hide');
+      $('#generalDlg').load("#{ merge_tag_path(@tag)}");
+      $('#generalDlg').modal('show');
+    });
+    $('.more-actions-btn').click(function(e) {
+      e.stopPropagation();
+      $('#additional_actions').toggle();
+    });
+  });

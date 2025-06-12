@@ -1,0 +1,81 @@
+he:
+  attributes:
+    created_at: נוצר בתאריך
+    updated_at: עודכן בתאריך
+    name: שם
+    sort_name: שם לצורך מיון
+    status: סטטוס
+    country: מדינה
+    period: תקופה
+    title: כותרת
+    fromdate: מתאריך
+    todate: עד תאריך
+  activerecord:
+    models:
+      authority: מחבר
+      collection: אוסף
+      collection_item: פריט באוסף
+      corporate_body: גוף/מוסד
+      featured_content: תוכן מערכת
+      person: אדם
+    errors:
+      models:
+        involved_authority:
+          attributes:
+        authority:
+          attributes:
+            base:
+              no_linked_authority: יש לקשר או רשומת אישים או רשומת ארגונים
+              multiple_linked_authorities: אי אפשר לקשר גם רשומת אישים וגם רשומת ארגונים
+          wrong_collection_type: חייב להיות מסוג '%{expected_type}'
+        collection_item:
+          attributes:
+            collection:
+              cycle_found: נמצאה מעגליות באוסף!
+    attributes:
+      authority:
+        other_designation: כינויים אחרים
+        intellectual_property: מצב זכויות יוצרים
+        wikidata_uri: כתובת בויקינתונים
+        comment: הערה
+        bib_done: ביבליוגרפיה הושלמה בסדנה?
+        nli_id: מזהה בספרייה הלאומית
+        viaf_id: "מזהה במאגר VIAF‏"
+        blog_category_url: קישורית לקטגוריה על היוצר/ת ביומן הרשת
+        wikipedia_snippet: תקציר מויקיפדיה
+        wikipedia_url: קישורית לויקיפדיה
+        legacy_credits: קרדיטים ידניים
+      corporate_body:
+        location: מיקום
+        inception: תאריך ייסוד
+        inception_year: שנת ייסוד
+        dissolution: תאריך פירוק
+        dissolution_year: שנת פירוק
+      expression:
+        intellectual_property: מצב זכויות יוצרים
+      featured_content:
+        body: תוכן ההמלצה
+        external_link: קישורית חיצונית
+        manifestation: יצירה מקושרת
+        authority: יוצר/ת מקושר/ת
+
+      person:
+        birthdate: תאריך לידה
+        deathdate: תאריך פטירה
+        gender: מגדר
+      collection:
+        credits: קרדיטים ידניים
+      ingestible:
+        defaults: שדות לכל היצירות
+        title: כותרת להעלאה
+        scenario: סוג ההעלאה
+        status: סטטוס
+        metadata: מטא־דאטה
+        comments: הערות
+        markdown: מארקדאון
+        volume_id: כותר
+        statuses:
+          awaiting_authorities: ממתינה ליצירת אישים
+          draft: טיוטה בעבודה
+          ingested: נקלטה בקטלוג
+          failed: ההעלאה נכשלה

@@ -1,4 +1,4 @@
-.top-element.backend
+.backend
 
   .container-fluid
     .row
@@ -6,7 +6,7 @@
         %h1= t(:bib_workshop)+': '+ t(:pubs_maybe_done)
     .row
       .col-md-9
-        %h3= t(:total_x_records, {count: @pubs.count})
+        %h3= t(:total_x_records, count: @pubs.count)
 
         %table#bibs{style: 'font-size:130%; line-height: 130%'}
           %tr
@@ -34,11 +34,11 @@
                 %ol{style:'margin-top:10px; font-size:120%'}
                   - possible_works.each do |m|
                     %li
-                      = link_to m.title, manifestation_read_path(m.id)
+                      = link_to m.title, manifestation_path(m.id)
                       = ' '+t(:by)+': '
                       = m.author_string
-                      = " (#{textify_genre(m.expressions[0].work.genre)}) "
-                      = "– #{(m.expressions[0].source_edition.nil? || m.expressions[0].source_edition.empty?) ? t(:no_source_edition) : m.expressions[0].source_edition}"
+                      = " (#{textify_genre(m.expression.work.genre)}) "
+                      = "– #{(m.expression.source_edition.nil? || m.expression.source_edition.empty?) ? t(:no_source_edition) : m.expression.source_edition}"
                       %br
             %tr{class: 'pub'+pub.id.to_s}
               %td{colspan: 7}
@@ -52,11 +52,11 @@
           = link_to t(:back_to_bib_workshop), action: :index
 :javascript
   $(document).ready(function() {
-    fpurl = '#{publication_mark_false_positive_path(999)}';
+    fpurl = '#{publication_mark_false_positive_path(-1)}';
     $('.mark_false_positive').click(function(e){
       e.stopPropagation();
       e.preventDefault();
       theid = $(this).parent().parent().attr('class').replace('pub','');
-      $.get(fpurl.replace('999',theid));
+      $.get(fpurl.replace('-1',theid));
     });
   });

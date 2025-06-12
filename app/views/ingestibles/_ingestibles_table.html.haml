@@ -1,0 +1,39 @@
+%h2= title
+
+- if ingestibles.empty?
+  %h4= t(:none)
+- else
+  %table
+    %thead
+      %tr
+        %th= t('ingestibles.index.internal_title')
+        %th= t(:status)
+        %th= t(:edition_details)
+        %th= t(:comments)
+        %th= t(:markdown)
+        %th= t('ingestibles.index.last_editor')
+        %th{colspan: 4}= t(:actions)
+
+    %tbody
+      - ingestibles.each do |ingestible|
+        - bgstyle = ingestible.draft? ? 'background-color: lightyellow;' : ''
+        %tr
+          %td{style: bgstyle}= ingestible.title
+          %td{style: bgstyle}= Ingestible.human_enum_name(:status, ingestible.status)
+          %td{style: bgstyle}= ingestible.publisher
+          %td{style: bgstyle}= ingestible.comments
+          %td{style: bgstyle}
+            - if ingestible.markdown.present?
+              = ingestible.markdown[0..[200, ingestible.markdown.length].min]
+              %strong= " (#{t(:x_words, x: ingestible.markdown.split.length)})"
+            - else
+              %b= t(:none)
+          %td{style: bgstyle}= ingestible.last_editor&.name || t(:unknown)
+          %td{style: bgstyle}= link_to t(:show), ingestible
+          - if editable
+            %td{style: bgstyle}= link_to t(:edit), edit_ingestible_path(ingestible)
+            - if unlockable
+              %td{style: bgstyle}= link_to t(:unlock), unlock_ingestible_path(ingestible), method: :patch
+            %td{style: bgstyle}= link_to t(:destroy), ingestible, method: :delete, data: { confirm: t(:are_you_sure) }
+
+%br

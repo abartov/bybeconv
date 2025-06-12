@@ -1,0 +1,17 @@
+%div#spinnerdiv{style: 'display: none; top: 50%; left: 50%;'}
+  #floatingCirclesG
+    #frotateG_01.f_circleG
+    #frotateG_02.f_circleG
+    #frotateG_03.f_circleG
+    #frotateG_04.f_circleG
+    #frotateG_05.f_circleG
+    #frotateG_06.f_circleG
+    #frotateG_07.f_circleG
+    #frotateG_08.f_circleG
+
+%h1= t('.title')+': '+@author.name
+%p= t('.explanation')
+= render partial: 'shared/manage_toc'
+%strong
+  = button_to t('.mark_migrated'), url_for(action: :migrate, id: @author.id), {method: :post, class: 'by-button-v02'}
+= button_to t(:back), url_for(action: :index), {method: :get, class: 'btn-small-outline-v02'}

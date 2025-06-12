@@ -3,20 +3,26 @@
     %span.by-icon-v02= link_to '{', update_param(request.original_url, 'page', '1'), {remote: true, id: 'firstnav', title: t(:worklist_first_page_tt)}
   - else
     %span.by-icon-v02.navdisabled= '{'
-  = link_to_previous_page collection, '2', {class: 'by-icon-v02', remote: true, id: 'prevnav', title: t(:worklist_prev_page_tt), params: {sort_by: @sort}} do
-    %span.by-icon-v02.navdisabled
-      = '2'
+  %span.by-icon-v02
+    - purl = prev_page_url(collection)
+    - if purl.nil?
+      %span.navdisabled= '2'
+    - else
+      = link_to '2', purl, remote: true, id: 'prevnav', title: t(:worklist_prev_page_tt), params: {sort_by: @sort}
   .advanced-pagination#pagination-slider{ title: t(:worklist_pagination_handle_tt)}
-    .page= t(:page_x_of_y, {x: @page, y: @total_pages})
-    %input.slider.progress-handle{'type': 'text', 'data-slider-min': 1, 'data-slider-max': @total_pages, 'data-slider-step':1, 'data-slider-value': @page, 'data-slider-handle': 'custom', title: t(:worklist_pagination_handle_tt)}
+    .page= t(:page_x_of_y, x: @page, y: @total_pages)
+    %input.slider.progress-handle{'type' => 'text', 'data-slider-min': 1, 'data-slider-max': @total_pages, 'data-slider-step':1, 'data-slider-value': @page, 'data-slider-handle': 'custom', title: t(:worklist_pagination_handle_tt)}
   .pageSelectorArea
     .pageSelectorF
       %div= t(:page_colon)
       %input.field-v02.page_selector{:placeholder => @page, :type => "text"}
-      %div= t(:out_of_x, {x: @total_pages})
+      %div= t(:out_of_x, x: @total_pages)
   %span.by-icon-v02
-    = link_to_next_page collection, '1', {remote: true, id: 'nextnav', title: t(:worklist_next_page_tt), params: {sort_by: @sort}} do
-      %span.by-icon-v02.navdisabled= '1'
+    - nurl = next_page_url(collection)
+    - if nurl.nil?
+      %span.navdisabled= '1'
+    - else
+      = link_to '1', nurl, remote: true, id: 'nextnav', title: t(:worklist_next_page_tt), params: {sort_by: @sort}
   - unless @page == @total_pages || @page.to_i == @total_pages
     %span.by-icon-v02= link_to '0', update_param(request.original_url, 'page', @total_pages.to_s), {remote: true, id: 'lastnav', title: t(:worklist_last_page_tt)}
   - else

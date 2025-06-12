@@ -20,6 +20,7 @@
 /tmp
 *.swp
 *.code-workspace
+.vscode
 # ignore symlink
 /by
 
@@ -45,6 +46,9 @@ do_chown.sh
 elastic_un_readonly.sh
 go.sh
 UX/*
+doc/*
+bkk/*
+/lexicon/*
 coverage
 export
 storage
@@ -58,9 +62,19 @@ bin/delayed_job
 *VBox*.log
 ubuntu-*-console.log
 
+# Ignore local dotenv configs (as they should be different for every developer)
+.env.*.local
+
+# Docker-compose config
+docker/bybe_dev/docker-compose.override.yml
+
 # IDE files
 .idea
 
 # Lexicon
 /lexicon
+node_modules
+c
+m
+v
 

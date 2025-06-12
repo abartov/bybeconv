@@ -10,7 +10,9 @@ describe ManifestationController do
       end
     end
 
-    subject { get :browse }
+    let(:browse_params) { {} }
+
+    subject { get :browse, params: browse_params }
 
     context 'when user is not logged in' do
       it { is_expected.to be_successful }
@@ -25,23 +27,113 @@ describe ManifestationController do
       it { is_expected.to be_successful }
     end
 
-    describe 'sorting' do
-      subject { get :browse, params: { sort_by: "#{sort_by}_#{sort_dir}" } }
+    context 'when no params are provided' do
+      it { is_expected.to be_successful }
+    end
 
-      # Simply ensure all sort combinations works
-      %w(alphabetical pupularity creation_date publication_date upload_date).each do | sort_by |
-        %w(asc desc).each do |dir|
-          context "when #{dir} sorting by #{sort_by} is requested" do
-            let(:sort_by) { sort_by }
-            let(:sort_dir) { dir }
+    describe 'passing params to SearchManifestation service' do
+      let(:browse_params) do
+        {
+          ckb_periods: %w(ancient revival),
+          ckb_genres: %w(poetry memoir),
+          ckb_intellectual_property: %w(orphan unknown),
+          ckb_genders: %w(male other),
+          ckb_tgenders: %w(female unknown),
+          authors: '1,2,3',
+          ckb_languages: %w(ru en),
+          fromdate: '1980',
+          todate: '1995',
+          date_type: 'created',
+          sort_by: 'alphabetical_desc'
+        }
+      end
+
+      let(:expected_sort_by) { 'alphabetical' }
+      let(:expected_sort_dir) { 'desc' }
+      let(:expected_filter) do
+        {
+          'periods' => %w(ancient revival),
+          'genres' => %w(poetry memoir),
+          'intellectual_property_types' => %w(orphan unknown),
+          'author_genders' => %w(male other),
+          'translator_genders' => %w(female unknown),
+          'author_ids' => [1, 2, 3],
+          'original_languages' => %w(ru en),
+          'created_between' => { 'from' => 1980, 'to' => 1995 }
+        }
+      end
+
+      before do
+        expect(SearchManifestations).to receive(:call).
+          with(expected_sort_by, expected_sort_dir, expected_filter).and_call_original
+      end
+
+      it { is_expected.to be_successful }
+
+      describe 'search queries' do
+        let(:author_filter) { { 'author' => 'Jack London' } }
+        let(:title_filter) { { 'title' => 'Love to Life' } }
+
+        context 'when title specified' do
+          let(:browse_params) { { search_input: 'Love to Life', search_type: 'workname', sort_by: 'alphabetical_desc' } }
+          let(:expected_filter) { title_filter }
+          it { is_expected.to be_successful }
+        end
+
+        context 'when authorname specified' do
+          let(:browse_params) { { authorstr: 'Jack London', search_type: 'authorname', sort_by: 'alphabetical_desc' } }
+          let(:expected_filter) { author_filter }
+          it { is_expected.to be_successful }
+        end
+
+        context 'when both authorname and title specified' do
+          let(:browse_params) do
+            {
+              search_input: 'Love to Life',
+              authorstr: 'Jack London',
+              search_type: search_type,
+              sort_by: 'alphabetical_desc'
+            }
+          end
+
+          context 'when search_type is authorname' do
+            let(:search_type) { 'authorname' }
+            let(:expected_filter) { author_filter }
             it { is_expected.to be_successful }
+          end
+
+          context 'when search_type is workname' do
+            let(:search_type) { 'workname' }
+            let(:expected_filter) { title_filter }
+            it { is_expected.to be_successful }
+          end
+
+          context 'when search_type is empty' do
+            let(:search_type) { nil }
+            let(:expected_filter) { title_filter }
+            it { is_expected.to be_successful }
+          end
+        end
+      end
+
+      describe 'sorting' do
+        let(:expected_filter) { {} }
+        # Simply ensure all sort combinations works
+        %w(alphabetical popularity creation_date publication_date upload_date).each do | column |
+          %w(asc desc).each do |dir|
+            context "when #{dir} sorting by #{column} is requested" do
+              let(:expected_sort_by) { column }
+              let(:expected_sort_dir) { dir }
+              let(:browse_params) { { sort_by: "#{column}_#{dir}" } }
+              it { is_expected.to be_successful }
+            end
           end
         end
       end
     end
 
     describe 'paging' do
-      subject { get :browse, params: { page: page } }
+      let(:browse_params) { { page: page } }
 
       context 'when page number 0 is requested' do
         let(:page) { 0 }
@@ -55,11 +147,6 @@ describe ManifestationController do
         it 'returns first page' do
           expect(subject).to be_successful
         end
-      end
-
-      context 'when requested page number is greater than total number of pages' do
-        let(:page) { 2 }
-        it { is_expected.to be_not_found }
       end
     end
 
@@ -149,8 +236,10 @@ describe ManifestationController do
     let(:genre) { :memoir }
     let(:title) { 'Some title' }
     let(:orig_lang) { 'he' }
-    let!(:manifestation) { create(:manifestation, title: title, genre: genre, orig_lang: orig_lang) }
-    let(:expression) { manifestation.expressions[0] }
+    let!(:manifestation) do
+      create(:manifestation, title: title, genre: genre, orig_lang: orig_lang, primary: true)
+    end
+    let(:expression) { manifestation.expression }
     let(:work) { expression.work }
 
     describe '#show' do
@@ -173,10 +262,16 @@ describe ManifestationController do
       end
 
       context 'when user is logged in' do
-        let!(:user) { create(:user) }
-        before do
-          session[:user_id] = user.id
-        end
+        include_context 'when user logged in'
+
+        it { is_expected.to be_successful }
+      end
+
+      context 'when it is a translation and work has other translations' do
+        let(:orig_lang) { 'ru' }
+
+        let(:other_translation_expression) { create(:expression, language: 'he', work: manifestation.expression.work) }
+        let!(:other_translation_manifestation) { create(:manifestation, expression: other_translation_expression) }
 
         it { is_expected.to be_successful }
       end
@@ -189,6 +284,14 @@ describe ManifestationController do
 
         it { is_expected.to redirect_to dict_browse_path(manifestation.id) }
       end
+    end
+
+    describe '#readmode' do
+      subject { get :readmode, params: { id: manifestation.id } }
+
+      let(:orig_lang) { 'de' }
+
+      it { is_expected.to be_successful }
     end
 
     describe '#print' do
@@ -229,13 +332,13 @@ describe ManifestationController do
     end
 
     describe '#update' do
+      subject(:call) { put :update, params: params.merge(commit: commit, id: manifestation.id) }
+
       let(:user) { create(:user, :edit_catalog) }
 
       before do
         session[:user_id] = user.id
       end
-
-      subject { put :update, params: params.merge(commit: commit, id: manifestation.id) }
 
       context "when 'save' button pressed" do
         let(:commit) { I18n.t(:save) }
@@ -254,15 +357,25 @@ describe ManifestationController do
         end
 
         context 'when metadata was changed' do
-          let(:params) { { wtitle: 'New Work Title', mtitle: 'New Manifestation Title', etitle: 'New Expression Title', genre: 'fables', wlang: 'ru' } }
+          let(:params) do
+            {
+              wtitle: 'New Work Title',
+              mtitle: 'New Manifestation Title',
+              etitle: 'New Expression Title',
+              genre: 'fables',
+              wlang: 'ru',
+              primary: 'false',
+              intellectual_property: 'by_permission'
+            }
+          end
 
           it 'updates metadata and redirects to show page' do
-            expect(subject).to redirect_to(manifestation_show_path(manifestation))
+            expect(call).to redirect_to(manifestation_show_path(manifestation))
             expect(flash.notice).to eq I18n.t(:updated_successfully)
             manifestation.reload
             expect(manifestation).to have_attributes(title: 'New Manifestation Title')
-            expect(expression).to have_attributes(title: 'New Expression Title')
-            expect(work).to have_attributes(title: 'New Work Title', orig_lang: 'ru', genre: 'fables')
+            expect(expression).to have_attributes(title: 'New Expression Title', intellectual_property: 'by_permission')
+            expect(work).to have_attributes(title: 'New Work Title', orig_lang: 'ru', genre: 'fables', primary: false)
           end
         end
       end
@@ -288,7 +401,7 @@ describe ManifestationController do
       context 'when genre is not a lexicon' do
         let(:genre) { :memoir }
 
-        it { is_expected.to redirect_to manifestation_read_path(manifestation) }
+        it { is_expected.to redirect_to manifestation_path(manifestation) }
       end
     end
 
@@ -375,15 +488,26 @@ describe ManifestationController do
     end
 
     describe '#add_aboutness' do
-      let(:user) { create(:user) }
+      include_context 'when editor logged in'
+
+      let(:user) { create(:user, :edit_catalog) }
 
       before do
         session[:user_id] = user.id
+
+        create(:aboutness, aboutable: create(:authority), work_id: manifestation.expression.work.id)
+        create(:aboutness, aboutable: create(:manifestation).expression.work, work_id: manifestation.expression.work.id)
       end
 
       subject { get :add_aboutnesses, params: { id: manifestation.id } }
 
       it { is_expected.to be_successful }
+    end
+
+    describe '#workshow' do
+      subject { get :workshow, params: { id: manifestation.expression.work.id} }
+
+      it { is_expected.to redirect_to manifestation_path(manifestation) }
     end
   end
 end

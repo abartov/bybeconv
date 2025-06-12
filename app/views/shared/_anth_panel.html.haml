@@ -66,7 +66,7 @@
                               = t(:curated_text_bit)+': '+text.title
                               /%span.by-icon-v02.markdown-icon _
                             - else
-                              = link_to text.manifestation.title + ' / ' + text.manifestation.author_string, manifestation_read_path(text.manifestation_id)
+                              = link_to text.manifestation.title + ' / ' + text.manifestation.author_string, manifestation_path(text.manifestation_id)
                           %button.collapsed.vertical-expand{id: "collat#{text.id}", 'data-toggle' => 'collapse', 'data-target' => "#at#{text.id}"}
                           %button.icon-btn.icon-bydelete.delbutton{id: "del#{text.id}"}
                           - if text.manifestation_id.nil?
@@ -87,20 +87,15 @@
                                 .col-md-4.col-sm-12
                                   %div{:style => "padding-bottom: 12px"}
                                     %span{:style => "font-weight:bold"}= t(:genre)+': '
-                                    %span= textify_genre(text.manifestation.expressions[0].work.genre)
+                                    %span= textify_genre(text.manifestation.expression.work.genre)
                                 .col-md-4.col-sm-12
                                   %div{:style => "padding-bottom: 12px"}
                                     %span{:style => "font-weight:bold"}= t(:page_count)+': '
                                     %span= text.page_count
                               %div
-                                - if text.manifestation.copyright?
-                                  %span.by-icon-v02.copyright-icon> x
-                                  = textify_copyright_status(true)
-                                  = link_to '[?]', '#', 'class' => 'help', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_permission), 'data-content' => t(:permission_popover)
-                                - else
-                                  %span.by-icon-v02.copyright-icon> m
-                                  = textify_copyright_status(false)
-                                  = link_to '[?]', '#', 'class' => 'help', 'data-toggle' => 'popover', 'data-trigger' => 'focus', title: t(:about_public_domain), 'data-content' => t(:public_domain_popover)
+                                - intellectual_property = text.manifestation.expression.intellectual_property
+                                = render partial: 'shared/intellectual_property',
+                                         locals: { intellectual_property: intellectual_property }
         .bottom-right-buttons
           #add_work_block{style: 'display: none'}
             .by-button-v02.by-button-secondary-v02#add_work_btn{title: t(:anth_add_work_tt)}
@@ -198,7 +193,7 @@
     });
     $('.editmdbutton').click(function(){
       text_id = this.id.replace('edit','');
-      $.ajax({type: 'GET', url: "#{edit_anthology_text_path(999)}".replace('999',text_id), dataType: 'script', error: function(xhr, status, error){
+      $.ajax({type: 'GET', url: "#{edit_anthology_text_path(-1)}".replace('-1',text_id), dataType: 'script', error: function(xhr, status, error){
         console.log("Error: "+status+"\n"+error);
       }});
       // ~~~ curated text pop-up updated by server response ~~~

@@ -1,0 +1,256 @@
+.tagging-management-area
+  #tags-mamagement.management
+    .title-area
+      .title-right-side
+        .by2-icon X
+        %p.headline-2-v02= t(:pending_tags)
+        %p= "(#{@pending_tags.count})"
+        - unless session[:tagging_lock]
+          %h3{style: 'color:red'}= t(:tagging_system_locked_by, user: @tagging_lock_owner, ago: @tagging_lock_refreshed)
+      %a.by-icon-v02.pointer#minmax_tags /
+    .by-card-content-v02#tags-card
+      .management-content
+        %table
+          %tr
+            %th
+              %input{name: "#", type: "checkbox", value: "#"}/
+            %th.th-sort{style:'min-width:200px'}
+              = t(:suggested_tag)
+              .by-icon-v02.sort
+            %th.th-sort
+              = t(:linked_taggings)
+              .by-icon-v02.sort
+            %th.th-sort
+              = t(:time_waiting)
+              .by-icon-v02.sort
+                %a{href: "#"} )
+            %th= t(:user)
+            %th= t(:suggested_tags)
+            %th= t(:acceptance_rate)
+            %th= t(:quick_actions)
+          - @pending_tags.each do |tag|
+            - extra_style = tag.escalated? ? 'background-color: #f7a7a7;' : ''
+            %tr
+              %td{style: extra_style}
+                %input{name: "#", type: "checkbox", value: "#"}/
+              %td.label-name{style: extra_style}
+                %a{href: tag_review_path(tag.id)}= tag.name
+                - if @similar_tags[tag.id] && stag = Tag.where(id: @similar_tags[tag.id].split(':')[1].to_i).first
+                  %span.by2-icon{title: t(:similar_to_x, x: stag.name)}> P
+              %td.pending-taggings.pointer.linkcolor{'data-tagid': tag.id, style: extra_style}
+                = tag.taggings_count
+              %td.wait-time{style: extra_style}= distance_of_time_in_words(tag.created_at, Date.today)
+              - if tag.creator.warned?
+                %td.in-td.red{style: extra_style}
+                  %a{href: "#"}
+                    %span.by2-icon> P
+                    = tag.creator.name
+              - else
+                %td{style: extra_style}
+                  %a{href: "#"}= tag.creator.name
+              - tag_count = Tag.by_user(tag.creator).count
+              %td{style: extra_style}
+                %a{href: "#"}= tag_count
+              - additional_class = ''
+              - acceptance_rate = tag.creator.tag_acceptance_rate
+              - if acceptance_rate && tag_count > 3 && acceptance_rate < 25
+                - additional_class = 'low-approval-rate'
+              - elsif acceptance_rate && tag_count > 3 && acceptance_rate > 75
+                - additional_class = 'high-approval-rate'
+              %td{style: extra_style, class: "%-approved #{additional_class}"}= acceptance_rate ? "%.1f%%" % acceptance_rate : '--'
+              %td{style: extra_style}
+                - if session[:tagging_lock]
+                  .quick-actions
+                    = button_to reject_tag_path(tag), method: :post, remote: true, class: 'reject-tag-btn confirmable ghost-btn', form_class: 'reject_tag_form', id: "reject_tag_btn_#{tag.id}", data: { 'confirm-title': t(:confirm_reject), p1: t(:confirm_reject), 'with-comment': false, element_id: "reject_tag_btn_#{tag.id}" } do
+                      .by-icon-v02> -
+                      = t(:reject)
+                    = button_to reject_tag_path(tag), method: :post, remote: true, class: 'reject-tag-btn confirmable ghost-btn', form_class: 'reject_tag_form', id: "reject_tag_with_explanation_btn_#{tag.id}", data: { confirm: t(:confirm_reject), p1: t(:explain_rejection), 'with-comment': true, element_id: "reject_tag_with_explanation_btn_#{tag.id}" } do
+                      .by-icon-v02> -
+                      = t(:reject_and_explain)
+                    .additional_actions_container
+                      %button.ghost-btn.more-actions-btn.tagging-more{style:'height:30px'}= t(:additional_actions)
+                      .additional_actions.show{style: 'display:none; padding-bottom: 15px;'}
+                        - unless tag.escalated?
+                          %p
+                          = button_to escalate_tag_path(tag.id), method: :post, remote: true, id: "esc_tag_#{tag.id}", class: 'by-button-v02 escalate-tag-btn' do
+                            .by-icon-v02> Z
+                            = t(:escalate_to_editor)
+                        %p
+                        = button_to warn_user_path(tag.created_by, return_url: tag_moderation_path), class: 'by-button-v02 confirmable', id: "warn_user_btn_#{tag.id}", data: { 'confirm-title': t(:confirm_warn), p1: t(:confirm_warn), 'with-comment': false, element_id: "warn_user_btn_#{tag.id}" } do
+                          .by-icon-v02> P
+                          = t(:warn_user)
+                        %p
+                        = button_to block_user_path(tag.created_by, return_url: tag_moderation_path), class: 'by-button-v02 confirmable', id: "block_user_btn_#{tag.id}", data: { 'confirm-title': t(:confirm_block), p1: t(:confirm_block), 'with-comment': false, element_id: "block_user_btn_#{tag.id}" } do
+                          .by-icon-v02> R
+                          = t(:block_user)
+
+                - else
+                  = t(:tagging_system_locked)
+  #labels-mamagement.management
+    .title-area
+      .title-right-side
+        .by2-icon Y
+        %p.headline-2-v02
+          = t(:pending_taggings)
+          - if @tag_id.present?
+            %span= " – #{t(:for_tag, tag: @tag.name)}"
+            %p
+              = "(#{@pending_taggings.count}) "
+              = link_to t(:cancel_focus_on_this_tag), tag_moderation_path
+          - else
+            %p= "(#{@pending_taggings.count})"
+      %a.by-icon-v02.pointer#minmax_taggings /
+    .by-card-content-v02#taggings-card
+      .management-content
+        %table
+          %tr
+            %th
+              %input{name: "#", type: "checkbox", value: "#"}/
+            %th.th-sort= t(:suggested_tagging)
+            %th.th-sort= t(:tag)
+            %th.th-sort
+              = t(:time_waiting)
+              .by-icon-v02.sort
+                %a{href: "#"} )
+            %th= t(:user)
+            %th= t(:tagging_suggestions_count)
+            %th= t(:acceptance_rate)
+            %th= t(:quick_actions)
+          - @pending_taggings.each do |tagging|
+            - extra_style = tagging.escalated? ? 'background-color: #f7a7a7;' : ''
+            %tr
+              %td{style: extra_style}
+                %input{name: "#", type: "checkbox", value: "#"}/
+              %td.label-name{style: extra_style}
+                :ruby
+                  if tagging.taggable_type == 'Manifestation'
+                    # taggable_url = manifestation_path(tagging.taggable_id)
+                    taggable_title = "#{tagging.taggable.title} / #{tagging.taggable.author_string}"
+                  elsif tagging.taggable_type == 'Authority'
+                    # taggable_url = person_path(tagging.taggable_id)
+                    taggable_title = tagging.taggable.name
+                  end
+                = link_to taggable_title, tagging_review_path(tagging.id)
+                /= " – "
+                /= link_to t(:to_the_item), taggable_url, target: "_blank"
+              - tagging_count =   tagging.suggester.taggings.count
+              %td.tags-for-labels{style: extra_style}
+                = tagging.tag.name
+                %span
+                  %a.tags-number{href: "#"}
+                    = tagging.tag.approved? ? tagging.tag.taggings_count : t(:new)
+              %td.wait-time{style: extra_style}= distance_of_time_in_words(tagging.created_at, Date.today)
+              - if tagging.suggester.warned?
+                %td.in-td.red{style: extra_style}
+                  %a{href: "#"}
+                    %span.by2-icon> P
+                    = tagging.suggester.name
+              - else
+                %td{style: extra_style}
+                  %a{href: "#"}= tagging.suggester.name
+              %td{style: extra_style}
+                = tagging_count
+              - additional_class = ''
+              - acceptance_rate = tagging.suggester.tagging_acceptance_rate
+              - if acceptance_rate && tagging_count > 3 && acceptance_rate < 25
+                - additional_class = 'low-approval-rate'
+              - elsif acceptance_rate && tagging_count > 3 && acceptance_rate > 75
+                - additional_class = 'high-approval-rate'
+
+              %td{style: extra_style, class: "%-approved #{additional_class}"}= acceptance_rate ? "%.1f%%" % acceptance_rate : '--'
+              %td{style: extra_style}
+                .quick-actions
+                  - if session[:tagging_lock]
+                    = button_to approve_tagging_path(tagging), method: :post, remote: true, class: 'ghost-btn approve-tagging-btn confirmable', form_class: 'approve-tagging-form', id: "approve_tagging_btn_#{tagging.id}", data: { 'confirm-title': t(:confirm_approve), p1: t(:confirm_approve), 'with-comment': false, element_id: "approve_tagging_btn_#{tagging.id}" } do
+                      .by2-icon> N
+                      = t(:approve)
+                    = button_to reject_tagging_path(tagging), method: :post, remote: true, class: 'ghost-btn reject-tagging-btn confirmable', form_class: 'reject-tagging-form', id: "reject_tagging_btn_#{tagging.id}", data: { 'confirm-title': t(:confirm_reject), p1: t(:confirm_reject), 'with-comment': false, element_id: "reject_tagging_btn_#{tagging.id}" } do
+                      .by-icon-v02> -
+                      = t(:reject)
+                    = button_to reject_tagging_path(tagging), method: :post, remote: true, class: 'ghost-btn reject-tagging-btn confirmable', form_class: 'reject-tagging-form', id: "reject_tagging_with_explanation_btn_#{tagging.id}", data: { 'confirm-title': t(:confirm_reject), p1: t(:confirm_reject), 'with-comment': true, element_id: "reject_tagging_with_explanation_btn_#{tagging.id}" } do
+                      .by-icon-v02> -
+                      = t(:reject_and_explain)
+                    .ghost-btn.merge-tagging-btn{'data-tagging-id': tagging.id}
+                      .by-icon-v02> Q
+                      = t(:change_or_merge)
+                    .additional_actions_container
+                      %button.ghost-btn.more-actions-btn.tagging-more{style:'height:30px'}= t(:additional_actions)
+                      .additional_actions.show{style: 'display:none; padding-bottom: 15px;'}
+                        - unless tagging.escalated?
+                          %p
+                          = button_to escalate_tagging_path(tagging.id), method: :post, remote: true, id: "esc_tagg_#{tagging.id}", class: 'by-button-v02 escalate-tagging-btn' do
+                            .by-icon-v02> -
+                            = t(:escalate_to_editor)
+                        %p
+                        = button_to warn_user_path(tagging.suggested_by, return_url: tag_moderation_path), class: 'by-button-v02 confirmable', id: "warn_user2_btn_#{tagging.id}", data: { 'confirm-title': t(:confirm_warn), p1: t(:confirm_warn), 'with-comment': false, element_id: "warn_user2_btn_#{tagging.id}" } do
+                          .by-icon-v02> -
+                          = t(:warn_user)
+                        %p
+                        = button_to block_user_path(tagging.suggested_by, return_url: tag_moderation_path), class: 'by-button-v02 confirmable', id: "block_user2_btn_#{tagging.id}", data: { 'confirm-title': t(:confirm_block), p1: t(:confirm_block), 'with-comment': false, element_id: "block_user2_btn_#{tagging.id}" } do
+                          .by-icon-v02> -
+                          = t(:block_user)
+
+                  - else
+                    = t(:tagging_system_locked)
+          
+:javascript
+  function remove_row(event, color) {
+    row = $(event.target).closest('tr');
+    row.find('td').css('background-color', color);
+    row.fadeOut(2000);
+  }
+  $(document).ready(function() {
+    $('.pending-taggings').click(function(e){
+      e.stopPropagation();
+      url = "#{ pending_taggings_popup_path(tag_id: 999) }";
+      url = url.replace('999', $(this).attr('data-tagid'));
+      $('#generalDlg').load(url);
+      $('#generalDlg').modal('show');
+    });
+    $('.reject_tag_form').on('ajax:complete', function(event, data, status, xhr) {
+      // response will come underneath of ‘data’ variable
+      remove_row(event, '#ff3333');
+    });
+    $('.approve-tag-btn').on('ajax:complete', function(event, data, status, xhr) {
+      // response will come underneath of ‘data’ variable
+      remove_row(event, '#33ff33');
+    });
+    $('.reject-tagging-form').on('ajax:complete', function(event, data, status, xhr) {
+      // response will come underneath of ‘data’ variable
+      remove_row(event, '#f7a7a7');
+    });
+    $('.approve-tagging-form').on('ajax:complete', function(event, data, status, xhr) {
+      // response will come underneath of ‘data’ variable
+      remove_row(event, '#a7f7a7');
+    });
+
+    $('#minmax_taggings').click(function() {
+      if($('#layout-top').hasClass('active')) {
+        $('#layout-same').click();
+      } else {
+        $('#layout-top').click();
+      }
+    });
+    $('#minmax_tags').click(function() {      
+      if($('#layout-bottom').hasClass('active')) {
+        $('#layout-same').click();
+      } else {
+        $('#layout-bottom').click();
+      }
+    });
+    $('.merge-tagging-btn').click(function(e) {
+      e.stopPropagation();
+      $('.modal').modal('hide');
+      url = "#{ merge_tagging_path(-1) }";
+      url = url.replace('-1', $(this).attr('data-tagging-id'));
+      $('#generalDlg').load(url);
+      $('#generalDlg').modal('show');
+    });
+    $('.tagging-more').click(function(e) {
+      e.stopPropagation();
+      $(this).parent().parent().find('.additional_actions').toggle();
+    });
+    if("#{@tag_id}" != "") {
+      $('#minmax_taggings').click();
+    }
+  });

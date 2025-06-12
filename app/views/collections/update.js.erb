@@ -1,0 +1,5 @@
+$('.cancel_editable_edit').parent().parent().css('background-color','lightgreen');
+$('.cancel_editable_edit').parent().parent().fadeOut(1000);
+$('#editable_coll_title').text("<%= @collection.title %>");
+$('#editable_ctype').text("<%= textify_collection_type(@collection.collection_type) %>: ");
+$('#editable_collection_details').show();

@@ -1,0 +1,46 @@
+.backend
+  - if @status.nil?
+    %h1= t('.title_all')
+  - else
+    %h1= t('.title_by_status', status: textify_proof_status(@status))
+    %p
+      = link_to t('.show_all'), proofs_path
+  %p
+    = link_to t('.show_open'), proofs_path(status: 'new')
+  %p
+    = link_to t('.show_escalated'), proofs_path(status: 'escalated')
+  %p
+    = link_to t('.show_fixed'), proofs_path(status: 'fixed')
+  %p
+    = link_to t('.show_wontfix'), proofs_path(status: 'wontfix')
+  %h2= t(:statistics)
+  %p
+    - ['all', 'new', 'assigned', 'fixed', 'escalated', 'wontfix', 'spam'].each do |st|
+      = "#{textify_proof_status(st)}: #{@count[st]}"
+  %table
+    %tr
+      %th= t(:work)
+      %th= t(:email)
+      %th= t(:proof_when)
+      %th= t(:status)
+      %th= t(:assignee)
+    - @proofs.each do |p|
+      %tr
+        %td
+          - if p.manifestation_id
+            = link_to Manifestation.find(p.manifestation_id).title, proof_path(p)
+          - else
+            = link_to p.about, proof_path(p)
+        %td= p.from
+        %td= p.created_at
+        %td= textify_proof_status(p.status)
+        - u = ''
+        - if p.manifestation_id && p.status == 'assigned'
+          - lis = ListItem.where(listkey: 'proofs_by_user', item: p.manifestation)
+          - u = lis[0].user.name unless lis.empty?
+        %td= u
+
+  %p
+    = link_to t('.purge_spam'), purge_proofs_path, method: 'post'
+  %hr
+  != paginate @proofs

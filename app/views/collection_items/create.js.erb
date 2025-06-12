@@ -1,0 +1,3 @@
+var markup = "<%= j(render partial: 'shared/editable_collection', locals: {collection: @collection, focused: true, nonce: @nonce, fresh: @collection_item}) %>";
+$('#collection_insert_section').detach().appendTo($('.master_insert_container'));
+$("#<%= @nonce %>_coll_container_<%= @collection_id %>").parent().replaceWith(markup);

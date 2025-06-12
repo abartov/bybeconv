@@ -1,6 +1,7 @@
-.top-element.backend
+.backend
   %h1= t(:manage_people)
-  = link_to t(:new_person), authors_new_path
+  = link_to t(:new_person), authors_new_path(type: :person)
+  = link_to t(:new_corporate_body), authors_new_path(type: :corporate_body)
   %br
   = form_tag do
     = label_tag(t(:name))
@@ -9,50 +10,48 @@
 
   %table{style: 'cell-spacing: 10;'}
     %tr
-      %th= t(:name)
-      %th= t(:metadata_approved)
+      %th= Authority.human_attribute_name(:name)
       %th= t(:dates)
-      %th= t(:other_designation)
-      %th= t(:status)
-      %th= t(:comment)
-      %th= t(:viaf_id)
-      %th= t(:nli_id)
+      %th= Authority.human_attribute_name(:other_designation)
+      %th= Authority.human_attribute_name(:status)
+      %th= Authority.human_attribute_name(:comment)
+      %th= Authority.human_attribute_name(:viaf_id)
+      %th= Authority.human_attribute_name(:nli_id)
       %th= t(:toc)
       %th
       %th
       %th
       %th
 
-    - @people.each do |person|
+    - @authorities.each do |au|
+      - link = au.any_bibs? ? bib_authority_path(authority_id: au.id) : bib_index_path(authority_id: au.id)
       %tr
-        %td= link_to person.name, authors_show_path(id: person.id)
-        %td= person.metadata_approved ? t(:yes) : t(:no)
-        %td= "#{person.birthdate}  - #{person.deathdate}"
-        %td= person.other_designation
+        %td= link_to au.name, authors_show_path(id: au.id)
+        %td!= au&.person&.life_years
+        %td= au.other_designation
         %td
-          = t(person.status)
-          - if person.unpublished?
+          = t(au.status)
+          - if au.unpublished?
             %br
-            = link_to t(:make_published), author_publish_path(id: person.id)
-        %td= person.has_comment? ? '+' : ''
-        %td= link_to person.viaf_id, "http://viaf.org/viaf/#{person.viaf_id}"
-        %td= person.nli_id
+            = link_to t(:make_published), author_publish_path(id: au.id)
+        %td= au.comment.present? ? '+' : ''
+        %td= link_to au.viaf_id, "http://viaf.org/viaf/#{au.viaf_id}"
+        %td= au.nli_id
         %td
-          - if person.toc.nil?
-            %span{style: 'color: red'}= t(:no_toc_yet)
-          - elsif person.toc.status.nil? || person.toc.status == 'raw'
+          - if au.toc.nil?
+            %span{ style: 'color: red' }= t(:no_toc_yet)
+          - elsif au.toc.status.nil? || au.toc.status == 'raw'
             %span{style: 'color: black'}= t(:raw)
           - else
             %span{style: 'color:green'}= t(:ready)
           %br
-          = link_to t(:show_toc), author_toc_path(person)
-        %td= link_to t(:edit_metadata), authors_edit_path(id: person.id)
+          = link_to t(:show_toc), authority_path(au)
+        %td= link_to t(:edit_metadata), authors_edit_path(id: au.id)
         %td
-          - unless person.toc.nil?
-            = link_to t(:edit_toc), authors_edit_toc_path(person)
-        %td= link_to t(:bibliography), person.has_any_bibs? ? bib_person_path(person_id: person.id) : bib_index_path(person_id: person.id)
-        %td= link_to t(:destroy), authors_destroy_path(id: person.id), :data => { :confirm => t(:are_you_sure) }
-
+          - unless au.toc.nil?
+            = link_to t(:edit_toc), authors_edit_toc_path(au)
+        %td= link_to t(:bibliography), link
+        %td= link_to t(:destroy), authors_destroy_path(id: au.id), data: { confirm: t(:are_you_sure) }
   %br
 
-  != paginate @people
+  != paginate @authorities

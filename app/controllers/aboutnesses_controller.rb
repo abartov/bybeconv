@@ -4,14 +4,14 @@ class AboutnessesController < ApplicationController
   def create
     @ab = Aboutness.new(work_id: params['work_id'], user_id: params['suggested_by'])
     case params['aboutness_type']
-    when 'Person'
-      @ab.aboutable_type = 'Person'
-      @ab.aboutable_id = params['add_person_topic']
+    when 'Authority'
+      @authority = Authority.find(params['add_authority_topic'])
+      @ab.aboutable = @authority
     when 'Work'
       @ab.aboutable_type = 'Work'
       m = Manifestation.find(params['add_work_topic'])
       unless m.nil?
-        w = m.expressions[0].work
+        w = m.expression.work
         @ab.aboutable_id = w.id
       end
     when 'Wikidata'

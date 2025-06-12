@@ -1,0 +1,20 @@
+%h1
+  = t('.title')
+  - if @ingestible.originating_task.present?
+    %span{style: 'font-size:50%;'}
+      != "&emsp;&emsp;"
+      = link_to t('ingestibles.review.to_originating_task'), @ingestible.originating_task
+  = link_to t(:unlock), unlock_ingestible_path(@ingestible), method: :patch, class: 'btn btn-primary' if @ingestible.locked?
+= render 'form'
+
+= link_to t(:back), ingestibles_path
+%div#spinnerdiv{style: 'display: none; top: 50%; left: 50%;'}
+  #floatingCirclesG
+    #frotateG_01.f_circleG
+    #frotateG_02.f_circleG
+    #frotateG_03.f_circleG
+    #frotateG_04.f_circleG
+    #frotateG_05.f_circleG
+    #frotateG_06.f_circleG
+    #frotateG_07.f_circleG
+    #frotateG_08.f_circleG

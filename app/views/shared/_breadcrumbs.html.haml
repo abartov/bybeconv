@@ -4,33 +4,34 @@
   - if @pagetype == :manifestation
     .breadcrumbs-text= link_to t(:authors), authors_path
     .breadcrumbs-arrow= 1
-    - e = @entity.expressions[0]
-    - w = e.work
-    - if e.translators.count > 0
-      - person = e.translators[0]
-    - else
-      - person = w.persons[0]
+    :ruby
+      e = @entity.expression
+      w = e.work
+      authority = e.translators.count > 0 ? e.translators[0] : w.authors[0] # TODO: handle multiple authors
     .breadcrumbs-text
-      - unless person.nil?
-        = link_to person.name, author_toc_path(id: person.id)
+      - unless authority.nil?
+        = link_to authority.name, authority_path(id: authority.id)
       - else
         = '?'
     .breadcrumbs-arrow= 1
     - genre = textify_genre(w.genre)
-    - unless person.nil?
+    - unless authority.nil?
       .breadcrumbs-text
-        = link_to e.translation ? "#{t(:translation)} #{genre}" : genre, :controller => :authors, :action => :toc, :id => person.id, :genre => w.genre
-      /.breadcrumbs-arrow= 1
-      /.breadcrumbs-text
-      /  %b= @entity.title
+        = link_to e.translation ? "#{t(:translation)} #{genre}" : genre,
+                  controller: :authors, action: :toc, id: authority.id, genre: w.genre
+      -#.breadcrumbs-arrow= 1
+      -#.breadcrumbs-text
+      -#  %b= @entity.title
   - elsif @pagetype == :author
     .breadcrumbs-text= link_to t(:authors), authors_path
-    /.breadcrumbs-arrow= 1
-    /.breadcrumbs-text
-    /  %b= @entity.name
+    -#.breadcrumbs-arrow= 1
+    -#.breadcrumbs-text
+    -#  %b= @entity.name
   - elsif @pagetype == :period
     .breadcrumbs-text
       %b= t(:periods)
-    /.breadcrumbs-arrow= 1
-    /.breadcrumbs-text
-    /  %b= @entity.name
+    -#.breadcrumbs-arrow= 1
+    -#.breadcrumbs-text
+    -#  %b= @entity.name
+  - elsif @pagetype == :collection
+    .breadcrumbs-text= link_to t(:works), works_path

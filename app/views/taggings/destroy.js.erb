@@ -1,1 +1,1 @@
-$('#taggings').load("<%= escape_javascript(url_for(controller: :taggings, action: :render_tags, manifestation_id: @manifestation_id))%>");
+$('#taggings').load("<%= raw render_tags_path(taggable_id: @taggable_id, taggable_type: @taggable_type) %>");

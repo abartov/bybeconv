@@ -21,8 +21,8 @@ describe SearchManifestations do
                  else
                    index % 2 == 0 ? 'male' : 'female'
                  end
-        authors << create(:person, name: "#{author_name} #{index}", gender: gender)
-        translators << create(:person, name: "#{translator_name} #{index}", gender: gender)
+        authors << create(:authority, name: "#{author_name} #{index}", gender: gender)
+        translators << create(:authority, name: "#{translator_name} #{index}", gender: gender)
       end
 
       uploaded_at = Time.parse('2010-01-01 12:00:00')
@@ -38,37 +38,21 @@ describe SearchManifestations do
 
         genre = %w(poetry prose drama fables article)[index % 5]
         period = %w(ancient medieval enlightenment revival modern)[index % 5]
-        copyrighted = index % 10 == 0
+        intellectual_property = %w(public_domain copyrighted by_permission unknown)[index % 4]
 
-        realizers = []
-
-        # only translated works have translator
-        unless lang == 'he'
-          realizers << create(:realizer, person: translators[(index  + 7) % translators.length], role: :translator)
-        end
-
-        work = create(
-          :work,
-          orig_lang: lang,
-          genre: genre,
-          author: authors[index % authors.length],
-          date: created_at.strftime('%d.%m.%Y')
-        )
-        expression = create(
-          :expression,
-          period: period,
-          genre: genre,
-          copyrighted: copyrighted,
-          realizers: realizers,
-          date: published_at.strftime('%d.%m.%Y'),
-          work: work
-        )
         create(
           :manifestation,
           title: "#{color} #{vegetable} #{index} title",
           impressions_count: index,
-          expressions: [expression],
-          created_at: uploaded_at
+          created_at: uploaded_at,
+          period: period,
+          genre: genre,
+          orig_lang: lang,
+          intellectual_property: intellectual_property,
+          author: authors[index % authors.length],
+          translator: lang == 'he' ? nil : translators[(index + 7) % translators.length],
+          expression_date: published_at.strftime('%d.%m.%Y'),
+          work_date: created_at.strftime('%d.%m.%Y')
         )
 
         uploaded_at += 1.week
@@ -83,7 +67,10 @@ describe SearchManifestations do
   end
 
   describe 'filtering' do
-    let!(:subject) { SearchManifestations.call('alphabetical', 'asc', filter) }
+    subject!(:result) { described_class.call(sort_by, sort_dir, filter) }
+
+    let(:sort_by) { 'alphabetical' }
+    let(:sort_dir) { 'asc' }
 
     describe 'by genres' do
       let(:filter) { { 'genres' => genres } }
@@ -133,26 +120,14 @@ describe SearchManifestations do
       end
     end
 
-    describe 'by copyright' do
-      let(:filter)  { { 'is_copyrighted' => is_copyrighted } }
+    describe 'by intellectual property types' do
+      let(:types) { %w(public_domain unknown) }
+      let(:filter)  { { 'intellectual_property_types' => types } }
 
-      context 'when copyrighted texts requested' do
-        let(:is_copyrighted) { true }
-        it 'returns all copyrighted texts' do
-          expect(subject.count).to eq 20
-          subject.limit(REC_COUNT).each do |rec|
-            expect(rec.copyright_status).to be_truthy
-          end
-        end
-      end
-
-      context 'when not copyrighted texts requested' do
-        let(:is_copyrighted) { false }
-        it 'returns all not copyrighted texts' do
-          expect(subject.count).to eq 180
-          subject.limit(REC_COUNT).each do |rec|
-            expect(rec.copyright_status).to be_falsey
-          end
+      it 'returns all works with given intellectual property types' do
+        expect(result.count).to eq 100
+        result.limit(REC_COUNT).each do |rec|
+          expect(types).to include(rec.intellectual_property)
         end
       end
     end
@@ -260,17 +235,20 @@ describe SearchManifestations do
 
       context 'when multiple names are provided' do
         let(:author) { 'Alpha Sigma' }
-        it 'returns all texts where author_string includes any of given names' do
-          expect(subject.count).to eq 66
+        it 'returns all texts where author_string includes all of given names' do
+          expect(subject.count).to eq 6
           # it takes in account both authors and translators names
           subject.limit(REC_COUNT).each do |rec|
-            expect(rec.author_string).to match /(Sigma|Alpha)/
+            expect(rec.author_string).to match /Alpha/
+            expect(rec.author_string).to match /Sigma/
           end
         end
       end
     end
 
     describe 'by fulltext' do
+      let(:sort_by) { 'relevance' }
+      let(:sort_dir) { 'desc' }
       let(:filter) { { 'fulltext' => fulltext } }
       let(:result_ids) { subject.limit(REC_COUNT).map(&:id) }
       let(:manifestation_1) { create(:manifestation, markdown: 'The quick brown fox jumps over the lazy dog') }
@@ -313,7 +291,7 @@ describe SearchManifestations do
       let(:filter) { { 'author_ids' => author_ids } }
 
       context 'when author id is provided' do
-        let(:author_id) { Person.find_by(name: 'Beta 1').id }
+        let(:author_id) { Authority.find_by(name: 'Beta 1').id }
         let(:author_ids) { [ author_id ] }
 
         it 'returns all texts written by this author' do
@@ -325,7 +303,7 @@ describe SearchManifestations do
       end
 
       context 'when translator id is provided' do
-        let(:translator_id) { Person.find_by(name: 'Rho 1').id }
+        let(:translator_id) { Authority.find_by(name: 'Rho 1').id }
         let(:author_ids) { [ translator_id ] }
 
         it 'returns all texts translated by this translator' do
@@ -337,11 +315,11 @@ describe SearchManifestations do
       end
     end
 
-    describe 'by original_language' do
-      let(:filter) { { 'original_language' => orig_lang } }
+    describe 'by original_languages' do
+      let(:filter) { { 'original_languages' => orig_langs } }
 
-      context 'when language is provided' do
-        let(:orig_lang) { 'ru' }
+      context 'when single language is provided' do
+        let(:orig_langs) { ['ru'] }
         it 'returns all texts written in given language' do
           expect(subject.count).to eq 50
           subject.limit(REC_COUNT).each do |rec|
@@ -350,13 +328,40 @@ describe SearchManifestations do
         end
       end
 
+      context 'when multiple languages are provided' do
+        let(:orig_langs) { %w(ru he) }
+        it 'returns all texts written in given languages' do
+          expect(subject.count).to eq 100
+          subject.limit(REC_COUNT).each do |rec|
+            expect(%w(ru he).include?(rec.orig_lang)).to be_truthy
+          end
+        end
+      end
+
       context 'when magic constant is provided' do
-        let(:orig_lang) { 'xlat' }
+        let(:orig_langs) { ['xlat'] }
         it 'returns all translated texts' do
           expect(subject.count).to eq 150
           subject.limit(REC_COUNT).each do |rec|
             expect(rec.orig_lang).to_not eq 'he'
           end
+        end
+      end
+
+      context 'when magic constant with specific language is provided' do
+        let(:orig_langs) { %w(xlat ru) }
+        it 'returns all translated texts' do
+          expect(subject.count).to eq 150
+          subject.limit(REC_COUNT).each do |rec|
+            expect(rec.orig_lang).to_not eq 'he'
+          end
+        end
+      end
+
+      context 'when both magic constant and hebrew are provided' do
+        let(:orig_langs) { %w(xlat he) }
+        it 'does no filterting and returns all texts' do
+          expect(subject.count).to eq 200
         end
       end
     end
@@ -504,7 +509,7 @@ describe SearchManifestations do
 
     describe 'publication_date' do
       let(:asc_order) do
-        Manifestation.all_published.joins(:expressions).order('expressions.normalized_pub_date').pluck(:id)
+        Manifestation.all_published.joins(:expression).order('expressions.normalized_pub_date').pluck(:id)
       end
       let(:sorting) { 'publication_date' }
       context 'when default sort direction is requested' do
@@ -523,7 +528,7 @@ describe SearchManifestations do
 
     describe 'creation_date' do
       let(:asc_order) do
-        Manifestation.all_published.joins(expressions: :work).order('works.normalized_creation_date').pluck(:id)
+        Manifestation.all_published.joins(expression: :work).order('works.normalized_creation_date').pluck(:id)
       end
       let(:sorting) { 'creation_date' }
       context 'when default sort direction is requested' do

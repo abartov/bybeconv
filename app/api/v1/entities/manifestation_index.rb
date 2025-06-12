@@ -3,7 +3,7 @@ module V1
     class ManifestationIndex < Grape::Entity
       expose :id, documentation: { type: 'Integer' }
       expose :url, documentation: { desc: 'Canonical URL of the text at Project Ben-Yehuda (useful for giving credit and allowing users to click through)' } do |manifestation|
-        Rails.application.routes.url_helpers.manifestation_read_url(manifestation.id)
+        Rails.application.routes.url_helpers.manifestation_url(manifestation.id)
       end
       expose :metadata do
         expose :title
@@ -20,7 +20,8 @@ module V1
         expose :orig_publication_date
         expose :author_gender, as: :author_genders, documentation: { values: ::Person.genders.keys, is_array: true }
         expose :translator_gender, as: :translator_genders, documentation: { values: ::Person.genders.keys, is_array: true }
-        expose :copyright_status, documentation: { type: 'Boolean' }
+        expose :intellectual_property,
+               documentation: { values: ::Expression.intellectual_properties.keys, is_array: true }
         expose :period, documentation: { values: Expression.periods.keys }
         expose :raw_creation_date
         expose :creation_date
@@ -32,7 +33,12 @@ module V1
         manifestation.id
       end
       expose :snippet, documentation: { desc: 'plaintext snippet of the first few hundred characters of the text, useful for previews and search results' }, if: lambda { |_manifestation, options| options[:snippet] } do |manifestation|
-        snippet(manifestation.fulltext, 500)[0]
+        # if highlight feature was used in request (ATM it only happens if fulltext query was used), then we use highlight text
+        if manifestation._data.present? && manifestation._data['highlight'].present?
+          manifestation._data['highlight']['fulltext']
+        else
+          snippet(manifestation.fulltext, 500)[0]
+        end
       end
       expose :download_url,
              documentation: { desc: 'URL of the full text of the work, in the requested format (HTML by default)' }  do |manifestation|

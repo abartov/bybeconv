@@ -1,0 +1,201 @@
+.button_series
+  .newcoll_insert_button.by-button-v02
+    %b.white= '+'
+#newcoll_section{style: 'display: none; border: 1px solid #660248; background-color: rgb(157 157 241); padding: 10px;'}
+  .admin_container
+    %b= t(:collection_item_type)+': '
+    = select_tag :insert, options_for_select(collection_types_options)
+  .admin_container
+    %b= "#{t(:title)}: "
+    = text_field_tag :insert_title, '', type: 'text', id: 'insert_title', style: 'background-color: #ffffff; width:600px;'
+  %br
+  .admin_container
+    %b= t(:add_person_in_role, author: @author.name)
+    = select_tag :role, options_for_select(role_options)
+
+  .admin_container
+    .newcoll_do_insert.by-button-v02{style: 'width: 50px; justify-content: center;font-weight: bold;'}= t(:perform_add)
+
+%div{style: 'display: flex; flex-direction: row; gap:10px;'}
+  .collection_area{style: "height:65vh;overflow-y: scroll;width: #{@htmls.present? ? '50%' : '100%'};"}
+    .by-card-v02{id: 'collections-card', role: 'tabpanel'}
+      .by-card-header-v02
+        %span.headline-1-v02= t('.collections_area')
+      .by-card-content-v02{:style => "padding-top: 12px;"}
+        .mainlist#coll_toc
+          = render partial: 'collections_migration/gentoc'
+  - if @htmls.present?
+    .toc#maintext{style: 'height:65vh;overflow-y: scroll;width:50%;'}
+      .mainlist#browse_mainlist
+      - @htmls.each do |genre, h|
+        .by-card-v02{id: 'works-'+genre, role: 'tabpanel'}
+          .by-card-header-v02
+            %span.by-icon-header-v02= glyph_for_genre(genre)
+            %span.headline-1-v02= textify_genre(genre)
+          .by-card-content-v02{:style => "padding-top: 12px;"}
+            != h
+%hr
+.master_insert_container
+  #collection_insert_section.coll_insert_section{style: 'display: none; border: 1px solid #660248; background-color: rgb(157 157 241); padding: 10px;  scroll-margin-top: 15px;'}
+    = hidden_field_tag :collection_id, '', id: 'collection_id'
+    .admin_container
+      %b= t(:collection_item_type)+': '
+      = select_tag :insert, options_for_select(collection_item_types_options)
+      %b= t(:title)+': '
+      = text_field_tag :insert_title, '', type: 'text', id: 'insert_title', style: 'background-color: #ffffff; width:auto;min-width:350px;'
+    %br
+    .admin_container
+      %b= t(:or_search_term)
+      = autocomplete_field_tag :qterm, '', autocomplete_manifestation_title_path, 'data-noMatchesLabel' => t(:no_matches_found), id: 'qterm', style: 'background-color: #ffffff;', id_element: '#insert_mid'
+
+      = hidden_field_tag :insert_mid, '', id: 'insert_mid'
+    %br
+    .admin_container
+      %b= t(:or_search_for_collection)
+      = autocomplete_field_tag :cterm, '', autocomplete_collection_title_path, 'data-noMatchesLabel' => t(:no_matches_found), id: 'cterm', style: 'background-color: #ffffff;', id_element: '#insert_cid'
+      = hidden_field_tag :insert_cid, '', id: 'insert_cid'
+    %br
+    .admin_container
+      .collection_do_insert.by-button-v02{style: 'width: 50px; justify-content: center;font-weight: bold;'}= t(:perform_add)
+
+:javascript
+  var already_collected_ids = [ #{@already_collected_ids.join(',')} ];
+  $(document).ready(function() {
+    ele = $('*[data-focus-on-me=true]');
+    if (ele.length > 0) {
+      ele[0].scrollIntoView({behavior: 'smooth'});
+    }
+    var pub_details = JSON.parse('#{j(@pub_details)}');
+
+    $('.toc h3').each(function(h) {
+      $(this).append('&nbsp;&nbsp;&nbsp;<button class="make-volume">#{ t(".make_collection") }</button>');
+    });
+    $('.toc a').each(function(h) {
+      try {
+        var text_id = $(this).attr('href').split('/').pop();
+        if(already_collected_ids.includes(parseInt(text_id))) {
+          $(this).css('text-decoration', 'line-through');
+          $(this).css('color', 'gray');
+        }
+      } catch(error) {}
+    });
+    $('.make-volume').click(function() {
+      vol = $(this);
+      the_title = vol.parent().text().replace(vol.text(),'');
+      nextuntil = vol.parent().nextUntil('h3');
+      if(nextuntil.length > 0) {
+        guessed_pub_details = nextuntil[0].innerText;
+        r = guessed_pub_details.lastIndexOf(',');
+        if(r > 0) {
+          second_part = guessed_pub_details.substring(r+1);
+          if(second_part.match(/\d+/) || second_part.match(/["”]/)) {
+            guessed_publisher = guessed_pub_details.substring(0, r).trim();
+            guessed_year = second_part.trim();
+          } else {
+            guessed_publisher = guessed_pub_details.trim();
+            guessed_year = '';
+          }
+        } else {
+          guessed_publisher = guessed_pub_details.trim();
+          guessed_year = '';
+        }
+      } else {
+        guessed_publisher = '';
+        guessed_year = '';
+      }
+      $('<form><h2>'+the_title+'</h2>#{t(".choose_between_author_pubs")}<select id="publication"><option></option>#{options_for_select(@pub_options).gsub("\n","")}</select> <p/> #{t(:or)} #{t(:title)} <input id="pub_title" name="pub_title" style="background-color: #cccccc;"> <p />#{t(:collection_item_type)}<select id="ctype">#{options_for_select(collection_types_options).gsub("\n","")}</select> <p/>#{t(:in_role)}<select id="prole" style="z-index:10000">#{options_for_select(role_options).gsub("\n","")}</select><p/>#{t(".verify_publisher_line")}: <p/>#{t(".city_and_publisher")}<input id="guessed_publisher" name="guessed_publisher" style="background-color: #cccccc; width:50%;">#{t(".year")}<input id="guessed_year" name="guessed_year" style="background-color: #cccccc; width: 150px;"></form>').dialog({
+        modal: true,
+        width: '100%',
+        position: { my: 'top+15', at: 'top', of: window },
+        open: function() {
+          $('#guessed_publisher').val(guessed_publisher);
+          $('#guessed_year').val(guessed_year);
+          $('#publication').on('change',function() {
+            idx = this.selectedIndex;
+            if(idx > 0) {
+              $('#guessed_publisher').val(pub_details[idx - 1].publisher);
+              $('#guessed_year').val(pub_details[idx - 1].year);
+            }
+          });
+        },
+        buttons: {
+          'OK': function () {
+            var author = "#{@author.id}";
+            var role = $('#prole').val();
+            var ctype = $('#ctype').val();
+            var publication = $('#publication').val();
+            $(this).dialog('close');
+            var volume = vol.parent();
+            var texts = volume.nextUntil('h3');
+            $(vol).remove();
+            var title = volume.text();
+            var text_ids = [];
+            var links = 0;
+            texts.each(function() {
+              var text = $(this);
+              var link = text.find('a');
+              if(link.length == 0) { // placeholder
+                txt = text.text().trim();
+                if (txt.length > 0) {
+                  text_ids.push(txt);
+                }
+              } else {
+                var text_id = link.attr('href').split('/').pop();
+                text_ids.push('ZZID:'+text_id);
+                links += 1;
+              }
+            });
+            if(links == 0) {
+              text = volume.find('a');
+              if(text.length > 0) {
+                var text_id = text.attr('href').split('/').pop();
+                text_ids.push('ZZID:'+text_id);
+              }
+            }
+
+            startModal('spinnerDiv');
+            $.ajax({
+              url: "#{collections_migration_create_collection_path}",
+              type: 'POST',
+              data: {
+                authority: author,
+                collection_type: ctype,
+                publication_id: publication,
+                title: title,
+                text_ids: text_ids,
+                role: role,
+                pub_title: $('#pub_title').val(),
+                guessed_publisher: $('#guessed_publisher').val(),
+                guessed_year: $('#guessed_year').val()
+              }
+            }).done(function(data) {
+              location.reload();
+            }).fail(function(data) {
+              stopModal('spinnerDiv');
+              alert('Collection creation failed');
+            });
+          },
+          'Cancel': function () {
+            $(this).dialog('close');
+          }
+        }
+      });
+    });
+    $('body').on('click', '.newcoll_insert_button', function(){
+      $('#newcoll_section').show();
+    });
+    $('.newcoll_do_insert').click(function(){
+      var item_type = $('#insert').val();
+      var new_title = $('#insert_title').val();
+      $.ajax({
+        url: '/collections',
+        type: 'POST',
+        dataType: "json",
+        data: {collection: { collection_type: item_type, title: new_title}, authority: { id: #{@author.id } , role: $('#role').val()}},
+        success: function(data) {
+          $('#newcoll_section').fadeOut(1500);
+          location.reload();
+        }
+      });
+    });
+  });

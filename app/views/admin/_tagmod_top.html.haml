@@ -1,0 +1,68 @@
+#header.container-fluid
+  #header-text.container-fluid
+    .backend-top-card
+      %div
+        = link_to tag_moderation_path do
+          .headline-1-v02= t(:moderate_tags)
+        - if @dashboards
+          .layout-selection
+            %div= t(:display)
+            %button#layout-same.layout-option.active
+              .layout-option-part.same
+              .layout-option-part.same
+            %button#layout-bottom.layout-option
+              .layout-option-part.large
+              .layout-option-part.small
+            %button#layout-top.layout-option
+              .layout-option-part.small
+              .layout-option-part.large
+      .user-stats
+        .my-edits= t(:my_activity)
+        .next-goals
+          .goal-line
+            .edits-numbers= t(:tags)+':'
+            .goal
+              #labels-goal{style: "width: #{@tags_progress}%; padding: 0;"}
+                %span{style:'padding: 0 8px;'}= @tags_done
+            .nex= t(:next_milestone)+':'
+            %span= @next_tags_milestone
+          .goal-line
+            .edits-numbers= t(:taggings)+':'
+            .goal
+              #tags-goals{style: "width: #{@taggings_progress}%; padding: 0;"}
+                %span{style:'padding: 0 8px'}= @taggings_done
+            %div= t(:next_milestone)+':'
+            %span= @next_taggings_milestone
+:javascript
+  $(document).ready(function() {
+    if($('#tags-card').length > 0) {
+      $('#layout-same').click(function() {
+        $('#minmax_tags').text('/');
+        $('#minmax_taggings').text('/');
+        $('.layout-option').removeClass('active');
+        $(this).addClass('active');
+        $('#tags-card').show();
+        $('#taggings-card').show();
+        //$('.management-content').css('height', 'unset');
+        $('.management-content').css('height', 'calc(50vh - 150px)');
+      });
+      $('#layout-top').click(function() {
+        $('#minmax_tags').text('/');
+        $('#minmax_taggings').text('.');
+        $('.layout-option').removeClass('active');
+        $(this).addClass('active');
+        $('#tags-card').hide();
+        $('#taggings-card').show();
+        $('.management-content').css('height', 'calc(100vh - 270px)');
+      });
+      $('#layout-bottom').click(function() {
+        $('#minmax_tags').text('.');
+        $('#minmax_taggings').text('/');
+        $('.layout-option').removeClass('active');
+        $(this).addClass('active');
+        $('#tags-card').show();
+        $('#taggings-card').hide();
+        $('.management-content').css('height', 'calc(100vh - 270px)');
+      });
+    }
+  });

@@ -7,8 +7,8 @@ class SessionController < ApplicationController
     case params[:commit]
     when 'Google'
       redirect_to '/auth/google_oauth2'
-    when 'Twitter'
-      redirect_to '/auth/twitter'
+    #when 'Twitter'
+    #  redirect_to '/auth/twitter'
     else
       redirect_to '/', flash: { error: 'No such login method' }
     end
@@ -29,7 +29,8 @@ class SessionController < ApplicationController
       else
         # user already has BaseUser record, so we drop BaseUser created for anonymous session if it exists
         if bu.present?
-          # TODO: consider to move data from anonymous BaseUser to user.base_user before deletion
+          current_visit.update!(user_id: @user.base_user.id) if current_visit.present? # assign this visit to the authenticated user
+          # TODO: consider to move prefs from anonymous BaseUser to user.base_user before deletion
           bu.destroy
         end
       end

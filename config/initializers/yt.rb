@@ -1,1 +1,1 @@
-Yt.configuration.api_key = AppConstants.google_api_key
+Yt.configuration.api_key = Rails.configuration.constants['google_api_key']

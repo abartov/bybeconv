@@ -1,0 +1,26 @@
+%div{ style: 'margin-top: 140px !important;' }
+
+.cwrapper{ id: "cwrapper_#{@collection.id}", 'data-nonce' => 'm', 'data-collection-id' => @collection.id }
+  = render partial: 'shared/manage_collection', locals: { collection: @collection, title: @collection.title, nonce: 'm' }
+  .master_insert_container
+    #collection_insert_section.coll_insert_section{style: 'display: none; border: 1px solid #660248; background-color: rgb(157 157 241); padding: 10px;  scroll-margin-top: 15px;'}
+      = hidden_field_tag :collection_id, '', id: 'collection_id'
+      .admin_container
+        %b= t(:collection_item_type)+': '
+        = select_tag :insert, options_for_select(collection_item_types_options)
+        %b= t(:title)+': '
+        = text_field_tag :insert_title, '', type: 'text', id: 'insert_title', style: 'background-color: #ffffff; width:auto;min-width:350px;'
+      %br
+      .admin_container
+        %b= t(:or_search_term)
+        = autocomplete_field_tag :qterm, '', autocomplete_manifestation_title_path, 'data-noMatchesLabel' => t(:no_matches_found), id: 'qterm', style: 'background-color: #ffffff;', id_element: '#insert_mid'
+
+        = hidden_field_tag :insert_mid, '', id: 'insert_mid'
+      %br
+      .admin_container
+        %b= t(:or_search_for_collection)
+        = autocomplete_field_tag :cterm, '', autocomplete_collection_title_path, 'data-noMatchesLabel' => t(:no_matches_found), id: 'cterm', style: 'background-color: #ffffff;', id_element: '#insert_cid'
+        = hidden_field_tag :insert_cid, '', id: 'insert_cid'
+      %br
+      .admin_container
+        .collection_do_insert.by-button-v02{style: 'width: 50px; justify-content: center;font-weight: bold;'}= t(:perform_add)

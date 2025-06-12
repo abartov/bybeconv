@@ -109,6 +109,27 @@ input[type=checkbox].multiselect_checkbox {
   color:   #64150f;
 }
 
+.red {
+  color: red;
+}
+.redbg {
+  background-color: red !important;
+}
+.lredbg {
+  background-color: lightcoral !important;
+}
+.green {
+  color: green;
+}
+.greenbg {
+  background-color: green !important;
+}
+.lgreenbg {
+  background-color: lightgreen !important;
+}
+.yellowbg {
+  background-color: yellow !important;
+}
 /* end dict_top workarounds */
 .navdisabled {
   color: #d9cdd5;
@@ -174,9 +195,6 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
 .error-found-row{
   height: 1px;
 }
-#add-tag-form{
-  display:none;
-}
 #add-rec-form{
   display:none;
 }
@@ -199,11 +217,6 @@ header {overflow-x: hidden;} /* prevent horizontal scrollbar (caused by Slick's 
 .by-dropdown-content-v02 p:hover {
   background-color: #eeeced;
   color: #2b0d22; }
-
-.reading-mode-btn-v02 {
-  padding-top: 3px;
-  display: inline-block;
-}
 
 #moreMobile {
   cursor: pointer;
@@ -405,18 +418,541 @@ body.modal-open{
 .modal{
   padding-right: 0 !important;
 }
-.error, .notice, .success {padding:.8em;margin-bottom:1em;border:2px solid #ddd;}
-.error {background:#FBE3E4;color:#8a1f11;border-color:#FBC2C4;}
+.error, .notice, .success, .alert {padding:.8em;margin-bottom:1em;border:2px solid #ddd;}
+.error, .alert {background:#FBE3E4;color:#8a1f11;border-color:#FBC2C4;}
 .notice {background:#FFF6BF;color:#514721;border-color:#FFD324;}
 .success {background:#E6EFC2;color:#264409;border-color:#C6D880;}
-.error a {color:#8a1f11;}
+.error, .alert a {color:#8a1f11;}
 .notice a {color:#514721;}
 .success a {color:#264409;}
 
-.sort-by-mobile{
-	display: block !important;
+.flex-row {
+  display: flex;
+  /* flex: 1 0 100%; */
 }
+.flex-col{
+  display: flex;
+  flex-wrap: nowrap;
+  flex-grow: 1;
+  flex-basis: 0;
+}
+.flex-break {
+  flex-basis: 100%;
+}
+.ui-menu.ui-autocomplete.ui-front {
+  z-index: 1100;
+}
+
+.ui-state-default{
+	color: #fff;
+	background-color: #660248;
+}
+.ui-state-active{
+	color: #fff;
+	background-color: #660248 !important;
+}
+.tag-suggestion-heuristic {
+  font-size: 0.8rem;
+  color: #999;
+}
+
+.scrolling-200-list {
+  overflow-y: scroll;
+  max-height: 200px; 
+}
+
+.indented {
+  margin-right: 15px !important;
+}
+
+.tags a {
+  color: #fff;
+}
+.tags.pending a {
+	color: #660248;
+}
+.pad10rl {
+  padding: 0 5px 0 5px;
+}
+
+.by-button-v02 a:hover {
+  color: #ffffff;
+}
+.flash-backend {
+  position: fixed;
+  z-index: 9000;
+}
+.additional_actions_container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.tagging-review {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+#pending-tag {
+  min-width: 350px;
+}
+td.label-name{
+	white-space: unset;
+  min-width: 200px;
+}
+.tagging-management-area {
+  width: unset;
+}
+
+small p{
+  font-size: 80% !important;
+}
+
+
+@charset "UTF-8";
+
+@font-face {
+  font-family: "ben-yehuda";
+  src:url("/assets/ben-yehuda2.eot");
+  src:url("/assets/ben-yehuda2.eot?#iefix") format("embedded-opentype"),
+    url("/assets/ben-yehuda2.woff") format("woff"),
+    url("/assets/ben-yehuda2.ttf") format("truetype"),
+    url("/assets/ben-yehuda2.svg#ben-yehuda") format("svg");
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+[data-icon]:before {
+  font-family: "ben-yehuda" !important;
+  content: attr(data-icon);
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+[class^="icon-"]:before,
+[class*=" icon-"]:before {
+  font-family: "ben-yehuda" !important;
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-byerror-found:before {
+  content: "\67";
+}
+.icon-byfigure-outline:before {
+  content: "\68";
+}
+.icon-byfigure-outline-cut:before {
+  content: "\69";
+}
+.icon-bycc-pd:before {
+  content: "\6d";
+}
+.icon-bycco:before {
+  content: "\75";
+}
+.icon-bycopyright:before {
+  content: "\78";
+}
+.icon-bycreative-commons:before {
+  content: "\79";
+}
+.icon-bypublic-domain:before {
+  content: "\41";
+}
+.icon-byopen-book:before {
+  content: "\42";
+}
+.icon-bybookshelf:before {
+  content: "\44";
+}
+.icon-bytranslate:before {
+  content: "\73";
+}
+.icon-byallworks:before {
+  content: "\47";
+}
+.icon-byallwriters:before {
+  content: "\48";
+}
+.icon-byarticle:before {
+  content: "\61";
+}
+.icon-bydrama:before {
+  content: "\6b";
+}
+.icon-byfables-fox:before {
+  content: "\45";
+}
+.icon-byletters:before {
+  content: "\77";
+}
+.icon-bylexicon:before {
+  content: "\66";
+}
+.icon-bymemoir:before {
+  content: "\6a";
+}
+.icon-bypoetry:before {
+  content: "\74";
+}
+.icon-byprose:before {
+  content: "\6c";
+}
+.icon-byreference:before {
+  content: "\76";
+}
+.icon-bysurprise-author:before {
+  content: "\72";
+}
+.icon-bysurprise-work:before {
+  content: "\71";
+}
+.icon-bybookmark:before {
+  content: "\43";
+}
+.icon-bybookmark-add:before {
+  content: "\62";
+}
+.icon-bybookmark-delete:before {
+  content: "\63";
+}
+.icon-bybookmark-go-to:before {
+  content: "\64";
+}
+.icon-bybookmark-move:before {
+  content: "\65";
+}
+.icon-bybookmark-empty:before {
+  content: "\46";
+}
+.icon-bywork:before {
+  content: "\49";
+}
+.icon-bybook:before {
+  content: "\4a";
+}
+.icon-byread:before {
+  content: "\4b";
+}
+.icon-byread-future:before {
+  content: "\6e";
+}
+.icon-byread-past:before {
+  content: "\6f";
+}
+.icon-byread-present:before {
+  content: "\70";
+}
+.icon-byauthor-info:before {
+  content: "\4d";
+}
+.icon-bydonate:before {
+  content: "\7a";
+}
+.icon-byaccess:before {
+  content: "\4c";
+}
+.icon-bybullhorn:before {
+  content: "\4f";
+}
+.icon-bycallendar:before {
+  content: "\50";
+}
+.icon-bylist:before {
+  content: "\54";
+}
+.icon-byvolunteer:before {
+  content: "\56";
+}
+.icon-bymore:before {
+  content: "\59";
+}
+.icon-bytop-ten:before {
+  content: "\4e";
+}
+.icon-byarrow-left:before {
+  content: "\31";
+}
+.icon-byarrow-right:before {
+  content: "\32";
+}
+.icon-byheart-empty:before {
+  content: "\35";
+}
+.icon-bypushpin-empty:before {
+  content: "\37";
+}
+.icon-bysearch:before {
+  content: "\58";
+}
+.icon-bystar-empty:before {
+  content: "\21";
+}
+.icon-byedit:before {
+  content: "\51";
+}
+.icon-byenvelope:before {
+  content: "\52";
+}
+.icon-byfacebook:before {
+  content: "\53";
+}
+.icon-byshare:before {
+  content: "\55";
+}
+.icon-byyoutube:before {
+  content: "\57";
+}
+.icon-bydownload:before {
+  content: "\33";
+}
+.icon-byflag-empty:before {
+  content: "\34";
+}
+.icon-byprint:before {
+  content: "\39";
+}
+.icon-bydrop-down-arrow:before {
+  content: "\23";
+}
+.icon-byflag-full:before {
+  content: "\24";
+}
+.icon-bylink:before {
+  content: "\25";
+}
+.icon-byagain:before {
+  content: "\27";
+}
+.icon-byadd:before {
+  content: "\26";
+}
+.icon-byarrow-down:before {
+  content: "\28";
+}
+.icon-byarrow-up:before {
+  content: "\29";
+}
+.icon-byquote:before {
+  content: "\2a";
+}
+.icon-website:before {
+  content: "\2b";
+}
+.icon-byheart-full:before {
+  content: "\36";
+}
+.icon-bypushpin-full:before {
+  content: "\38";
+}
+.icon-bystar-full:before {
+  content: "\22";
+}
+.icon-byhamburger:before {
+  content: "\2c";
+}
+.icon-byclose:before {
+  content: "\2d";
+}
+.icon-bysettings:before {
+  content: "\3a";
+}
+.icon-bytwitter:before {
+  content: "\3b";
+}
+.icon-bywhatsapp:before {
+  content: "\3e";
+}
+.icon-bycollapse:before {
+  content: "\2e";
+}
+.icon-byexpand:before {
+  content: "\2f";
+}
+.icon-bythank-you:before {
+  content: "\3d";
+}
+.icon-byblog:before {
+  content: "\7e";
+}
+.icon-byarrow-down-double:before {
+  content: "\3c";
+}
+.icon-byarrow-left-double:before {
+  content: "\3f";
+}
+.icon-byarrow-right-copy:before {
+  content: "\40";
+}
+.icon-byarrow-up-double:before {
+  content: "\5b";
+}
+.icon-bycopy:before {
+  content: "\5d";
+}
+.icon-bydelete:before {
+  content: "\5e";
+}
+.icon-bymarkdown:before {
+  content: "\5f";
+}
+.icon-bysave:before {
+  content: "\60";
+}
+.icon-byuser:before {
+  content: "\7b";
+}
+.icon-byuser-area:before {
+  content: "\7c";
+}
+.icon-bylogout-2:before {
+  content: "\5a";
+}
+.icon-byarrow-left-end:before {
+  content: "\30";
+}
+.icon-byarrow-right-end:before {
+  content: "\7d";
+}
+.icon-bymulti-select:before {
+  content: "\5c";
+}
+.icon-bysort-down:before {
+  content: "\e000";
+}
+.icon-bysort-up:before {
+  content: "\e001";
+}
+.icon-bywarning:before {
+  content: "\e002";
+}
+.icon-byadditionals:before {
+  content: "\e003";
+}
+
+
+.button_series {
+  display: flex;
+}
+.collection_action_btns {
+  display: flex;
+  flex-direction: row;
+}
+
+.watermark {
+    /* Used to position the watermark */
+    position: relative;
+}
+
+.watermark__inner {
+    /* Center the content */
+    align-items: center;
+    display: flex;
+    justify-content: center;
+
+    /* Absolute position */
+    left: 0px;
+    position: absolute;
+    top: 0px;
+
+    /* Take full size */
+    height: 100%;
+    width: 100%;
+}
+
+.watermark__body {
+    /* Text color */
+    color: rgba(0, 0, 0, 0.2);
+
+    /* Text styles */
+    font-size: 3rem;
+    font-weight: bold;
+    text-transform: uppercase;
+
+    /* Rotate the text */
+    transform: rotate(-45deg);
+
+    /* Disable the selection */
+    user-select: none;
+}
+
+.draggable-content {
+  margin-right: 15px;
+}
+
+.print .col-12{
+	padding-right: 0px;
+	padding-left: 0px;
+}
+
+.ingestible_edit input {
+  background-color: #e0e0e0;
+}
+
+.collection_toc {
+  font-size: 130%;
+  line-height: 1.2;
+}
+
+.mainlist .toclist {
+  list-style-type:none;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.ingestible_toc_table tr {
+  border-bottom: 1px solid #ccc;
+
+}
+
+.make-volume{
+  cursor: pointer;
+}
+
+.collection_draggable_item {
+  scroll-margin-top: 15px;
+}
+.footnotes li {
+  scroll-margin-top: 175px; 
+}
+.footnote {
+  scroll-margin-top: 210px;
+}
+.work-content{
+  scroll-snap-type: y mandatory;
+}
+
+.hidden {
+  display: none;
+}
+
+.manifestation-node{
+  list-style: none;
+}
+
+#buffer_preview{
+  min-height: 600px;
+  max-height: 800px;
+}
+
+#actualtext img {
+  max-width: 100%;
+}
+
+
 ul.lex {
     list-style-type:disc;
-
 }

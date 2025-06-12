@@ -1,4 +1,4 @@
-.top-element.backend
+.backend
   = form_tag(action: :update, id: @m.id) do
     %h1= @page_title
 
@@ -9,6 +9,9 @@
     %p
       %b= t(:genre) + ': '
       = select_tag :genre, options_for_select(get_genres.map {|genre| [I18n.t(genre), genre]}, @w.genre), {include_blank: true}
+    %p
+      %b= t(:primary) + ': '
+      = select_tag :primary, options_for_select([[t(:yes), 'true'], [t(:false), 'false']], @w.primary.to_s)
     %p
       %b= t(:language) + ': '
       = select_tag :wlang, options_for_select(get_langs.map {|lang| [textify_lang(lang), lang]}, @w.orig_lang.nil? ? 'he' : @w.orig_lang)
@@ -21,7 +24,7 @@
     %p
       %b= t(:comments)+': '
       = text_area_tag :wcomment, @w.comment, rows: 4, cols: 40
-    = render partial: 'shared/associated_people', locals: { which: :work, work: @w, edit: true}
+    = render partial: 'involved_authorities/list', locals: { item: @w, edit: true }
     = render partial: 'aboutnesses', locals: {edit: true, add: true}
     %h2= t(:expression_details)
     %p
@@ -34,7 +37,7 @@
       %b= t(:thedate) + ': '
       = text_field_tag :edate, @e.date
     %p
-      %b= t(:period) + ': '
+      %b #{Manifestation.human_attribute_name(:period)}:
       = select_tag :period, options_for_select(Person.periods.map{|p| [t(p[0]), p[0]]}, @e.period), include_blank: true
     %p
       %b= t(:language) + ': '
@@ -46,23 +49,23 @@
       %b= t(:comments)+': '
       = text_area_tag :ecomment, @e.comment, rows: 4, cols: 40
     %p
-      %h3= t(:copyright_status)
-      = radio_button_tag :public_domain, true, @e.copyrighted.nil? ? false : (not @e.copyrighted)
-      = label_tag t(:public_domain)
-      = radio_button_tag(:public_domain, false, @e.copyrighted.nil? ? false : @e.copyrighted)
-      = label_tag t(:by_permission)
-      / = textify_copyright_status(@e.copyrighted) # TODO: make editable
-    = render partial: 'shared/associated_people', locals: { which: :expression, expression: @e, edit: true}
+      %h3= Expression.human_attribute_name(:intellectual_property)
+      - options = Expression.intellectual_properties.keys.map { |code| [textify_intellectual_property(code), code] }
+      = select_tag :intellectual_property, options_for_select(options, @e.intellectual_property)
+    = render partial: 'involved_authorities/list', locals: { item: @e, edit: true }
 
     %h2= t(:manifestation_details)
     %p
       %b= t(:status)+': '
-      = select_tag :mstatus, options_for_select(Manifestation.statuses.map {|st| [t(st[0]), st[1]]}, @m.status)
+      = select_tag :mstatus, options_for_select(Manifestation.statuses.map {|st| [t(st[0]), st[1]]}, Manifestation.statuses[@m.status])
     %p
       %b= t(:title) + ': '
       = text_field_tag :mtitle, @m.title, size: 75
     %p
-      %b= t(:sort_name) + ': '
+      %b= t(:alternate_titles) + ': '
+      = text_field_tag :alternate_titles, @m.alternate_titles, size: 75
+    %p
+      %b #{Manifestation.human_attribute_name(:sort_name)}:
       = text_field_tag :sort_title, @m.sort_title, size: 75
     %p
       %b= t(:responsibility_statement) + ': '
@@ -85,7 +88,7 @@
     = t(:link_type)
     = select_tag :link_type, options_for_select(ExternalLink.linktypes.map {|lt| [t(lt[0]), lt[1]]})
     %br
-    = t(:description)
+    = t(:link_description)
     = text_field_tag :link_description
     %p
       = submit_tag t(:save)

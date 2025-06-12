@@ -1,0 +1,132 @@
+%h1= t('.title', title: @ingestible.title)
+- if @errors.present?
+  .lredbg
+    %h2= t('.errors')
+    - if @missing_publisher_info
+      %p= t('.missing_publisher_info')
+    - [[@missing_genre, '.missing_genre'], [@missing_origlang, '.missing_origlang'], [@missing_authority, '.missing_authority'], [@missing_authors, 'ingestible.author_missing'], [@missing_translators, 'ingestible.translator_missing'], [@missing_in_markdown, '.missing_in_markdown'], [@extraneous_markdown, '.extraneous_markdown'], [@empty_texts, '.empty_texts']].each do |missing, label|
+      - if missing.present?
+        %p= t(label)
+        %ul
+          - missing.each do |title|
+            %li= title
+- elsif @ingestible.awaiting_authorities?
+  - if @authorities_tbd.present?
+    .yellowbg
+      %h3= t('.awaiting_authorities')
+      = render partial: 'authorities_tbd', locals: { authorities_tbd: @authorities_tbd }
+  - else
+    .greenbg{style: 'color:yellow;'}
+      %h3= t('.awaiting_authorities_resolved')
+      = button_to t('.ingest'), ingest_ingestible_path(@ingestible), method: :post, id: 'extra_ingest_button', class: 'btn btn-primary'
+- if @authorities_tbd.present?
+  .yellowbg
+    %h3= t('.authorities_tbd')
+    = render partial: 'authorities_tbd', locals: { authorities_tbd: @authorities_tbd }
+- if @ingestible.problem.present?
+  .lredbg
+    %h2= t('.problem_is_not_empty')
+    %p= @ingestible.problem
+- if @ingestible.originating_task.present?
+  %h2= link_to t('.to_originating_task'), @ingestible.originating_task
+%div{style: 'display: flex;flex-wrap: wrap;'}
+  .admin_dashboard_item
+    %h2= t('.volume_information')
+    - if @ingestible.no_volume
+      %h3= t('.no_volume')
+    - elsif @ingestible.volume.present?
+      %h3= t('.adding_to_existing_volume')
+      %p= @ingestible.volume.title
+    - elsif @ingestible.prospective_volume_id.present?
+      - if @ingestible.prospective_volume_id[0] == 'P'
+        %h3= t('.new_volume_by_workshop')
+        - pub = Publication.where(id: @ingestible.prospective_volume_id[1..-1].to_i)
+        - if pub.present?
+          %p
+            %b= pub.first.title
+      - else
+        %h3= t('.adding_to_existing_volume')
+        - @collection = Collection.find(@ingestible.prospective_volume_id.to_i)
+        %p= @collection.title
+
+    - elsif @ingestible.prospective_volume_title.present?
+      %h3= t('.new_volume')
+      %p= @ingestible.prospective_volume_title
+  .admin_dashboard_item
+    %h2= t('.statistics')
+    %b= t('.texts')
+    = @texts_to_upload.count.to_s
+    %br
+    %b= t('.placeholders')
+    = @placeholders.count.to_s
+    %br
+
+  .admin_dashboard_item
+    %h2= t(:associated_persons)
+    - if @ingestible.default_authorities.present?
+      %p!= JSON.parse(@ingestible.default_authorities).map{ |ia| "#{ia['authority_name'].presence || ia['new_person']} (#{textify_authority_role(ia['role'])})"}.join('<br />')
+    - else
+      %p= t(:none)
+
+  .admin_dashboard_item
+    %h2= t('.text_information')
+    %table
+      %thead
+        %tr
+          %th= t(:title)
+          %th= t(:associated_persons)
+          %th= t(:genre)
+          %th= t(:orig_lang)
+      %tbody
+        - @decoded_toc.each do |text|
+          %tr
+            %td= text[1]
+            - if text[0] == 'no'
+              %td{colspan: 3, align: 'center'}
+                = t('.placeholder')
+                - if @collection.present? && @collection.placeholders.map(&:alt_title).include?(text[1])
+                  %span{style: 'font-size:70%;'}!= t('.already_in_collection')
+            - else
+              - authorities_string = authorities_including_implicit(text[2])
+              %td!= authorities_string
+              %td= textify_genre(text[3])
+              %td= textify_lang(text[4])
+  .admin_dashboard_item
+    %h2= t('.affected_authorities')
+    %table
+      %thead
+        %tr
+          %th= t(:name)
+          %th= t('.additions')
+      %tbody
+        - @authority_changes.each do |name, roles|
+          %tr
+            %td= name
+            %td
+              - roles.each do |role, titles|
+                %b= textify_authority_role(role)+': '
+                %div{style: 'margin-right: 1em;'}
+                  - titles.each do |title|
+                    = title
+                    %br
+
+- if @errors.present?
+  %h2.redbg= t('.cannot_ingest_with_errors')
+- else
+  - if @authorities_tbd.present?
+    .yellowbg
+      %h3= t('.authorities_tbd')
+  = button_to @authorities_tbd.present? ? t('.pending_ingest') : t('.ingest'), ingest_ingestible_path(@ingestible), method: :post, id: 'ingest_button', class: 'btn btn-primary'
+%br
+= link_to t('.back_to_editing'), edit_ingestible_path(@ingestible), class: 'by-button-v02 btn-secondary-v02'
+= link_to t(:back), ingestibles_path
+%div#spinnerdiv{style: 'display: none; top: 50%; left: 50%;'}
+  #floatingCirclesG
+    #frotateG_01.f_circleG
+    #frotateG_02.f_circleG
+    #frotateG_03.f_circleG
+    #frotateG_04.f_circleG
+    #frotateG_05.f_circleG
+    #frotateG_06.f_circleG
+    #frotateG_07.f_circleG
+    #frotateG_08.f_circleG

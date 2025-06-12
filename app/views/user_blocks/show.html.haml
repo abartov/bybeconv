@@ -1,0 +1,21 @@
+%p#notice= notice
+
+%p
+  %b User:
+  = @user_block.user
+%p
+  %b Context:
+  = @user_block.context
+%p
+  %b Expires at:
+  = @user_block.expires_at
+%p
+  %b Blocker:
+  = @user_block.blocker_id
+%p
+  %b Reason:
+  = @user_block.reason
+
+= link_to 'Edit', edit_user_block_path(@user_block)
+\|
+= link_to 'Back', user_blocks_path

@@ -1,45 +1,68 @@
 include BybeUtils
 class Manifestation < ApplicationRecord
-  is_impressionable :counter_cache => true # for statistics
+  # is_impressionable :counter_cache => true # for statistics
+  is_impressionable # :counter_cache => true # for statistics
+  include CompactedImpressions
   paginates_per 100
-  has_and_belongs_to_many :expressions
+  belongs_to :expression, inverse_of: :manifestations
   has_and_belongs_to_many :html_files
-
   has_and_belongs_to_many :likers, join_table: :work_likes, class_name: :User
-  has_many :taggings, dependent: :destroy
+
+  has_many :taggings, as: :taggable, dependent: :destroy
   has_many :tags, through: :taggings, class_name: 'Tag'
+
   has_many :recommendations, dependent: :destroy
+  has_many :bookmarks, dependent: :destroy
+
   has_many :list_items, as: :item, dependent: :destroy
   has_many :downloadables, as: :object, dependent: :destroy
 
-  has_paper_trail
+  has_paper_trail ignore: %i(impressions_count created_at updated_at)
   has_many :external_links, as: :linkable, dependent: :destroy
+  has_many :proofs, dependent: :destroy
+  has_many :anthology_texts, dependent: :destroy
   has_many_attached :images, dependent: :destroy
+  has_many :collection_items, as: :item
+  before_save :update_sort_title!
 
-  before_save :update_sort_title
+  enum status: { published: 0, nonpd: 1, unpublished: 2, deprecated: 3 }
 
-  enum status: [:published, :nonpd, :unpublished, :deprecated]
+  scope :all_published, -> { where(status: Manifestation.statuses[:published]) }
+  scope :new_since, ->(since) { where('created_at > ?', since) }
+  scope :not_translations, -> { joins(:expression).includes(:expression).where(expressions: { translation: false }) }
+  scope :translations, -> { joins(:expression).includes(:expression).where(expressions: { translation: true }) }
+  scope :genre, ->(genre) { joins(expression: :work).where(works: { genre: genre }) }
+  scope :tagged_with, lambda { |tag_id|
+                        joins(:taggings).where(taggings: { tag_id: tag_id, status: Tagging.statuses[:approved] }).distinct
+                      }
+  scope :with_involved_authorities, lambda {
+    preload(expression: { involved_authorities: :authority, work: { involved_authorities: :authority } })
+  }
+  scope :indexable, -> { where(exclude_from_index: false) }
 
-  scope :all_published, -> { where(status: Manifestation.statuses[:published])}
-  scope :new_since, -> (since) { where('created_at > ?', since)}
-  scope :pd, -> { joins(:expressions).includes(:expressions).where(expressions: {copyrighted: false})}
-  scope :copyrighted, -> { joins(:expressions).includes(:expressions).where(expressions: {copyrighted: true})}
-  scope :not_translations, -> { joins(:expressions).includes(:expressions).where(expressions: {translation: false})}
-  scope :translations, -> { joins(:expressions).includes(:expressions).where(expressions: {translation: true})}
-  scope :genre, -> (genre) { joins(expressions: :work).where(works: {genre: genre})}
-  scope :by_tag, ->(tag_id) {joins(:taggings).where(taggings: {tag_id: tag_id})}
+  SHORT_LENGTH = 1500 # kind of arbitrary...
+  LONG_LENGTH = 15_000 # kind of arbitrary...
 
-  LONG_LENGTH = 15000 # kind of arbitrary...
+  update_index('manifestations') { self } # update ManifestationsIndex when entity is updated
 
-  update_index('manifestations#manifestation'){self} # update ManifestationsIndex when entity is updated
+  def involved_authorities
+    (expression.involved_authorities + expression.work.involved_authorities).uniq
+  end
 
-  # class variable
-  @@popular_works = nil
-  @@tmplock = false
+  def involved_authorities_by_role(role)
+    (expression.involved_authorities_by_role(role) + expression.work.involved_authorities_by_role(role)).uniq
+                                                                                                        .sort_by(&:name)
+  end
 
   def update_sort_title
-    self.sort_title = self.title.strip_nikkud.tr('-־[]()*"\'', '').strip
-    self.sort_title = $' if self.sort_title =~ /^\d+\. /
+    return if changed.include?('sort_title')
+
+    self.sort_title = title.strip_nikkud.tr('[]()*"\'', '').tr('-־', ' ').strip
+    self.sort_title = ::Regexp.last_match.post_match if sort_title =~ /^\d+\. /
+  end
+
+  def genre
+    expression.work.genre
   end
 
   def like_count
@@ -54,7 +77,8 @@ class Manifestation < ApplicationRecord
   def fresh_downloadable_for(doctype)
     dl = downloadables.where(doctype: doctype).first
     return nil if dl.nil?
-    return nil if dl.updated_at < self.updated_at # needs to be re-generated
+    return nil if dl.updated_at < updated_at # needs to be re-generated
+
     return dl
   end
 
@@ -62,26 +86,27 @@ class Manifestation < ApplicationRecord
     markdown.length > LONG_LENGTH
   end
 
-  def copyright?
-    return expressions[0].copyrighted # TODO: implement more generically
+  def not_short?
+    markdown.length > SHORT_LENGTH
   end
 
   def heading_lines
     if cached_heading_lines.nil?
       recalc_heading_lines!
     end
-    cached_heading_lines.split('|').map{|line| line.to_i}
+    cached_heading_lines.split('|').map { |line| line.to_i }
   end
 
   def chapters?
-    return false if (cached_heading_lines.nil? || cached_heading_lines.empty? || cached_heading_lines[1..5].index('|').nil?)
+    return false if cached_heading_lines.nil? || cached_heading_lines.empty? || cached_heading_lines[1..5].index('|').nil?
+
     return true
   end
 
   def recalc_heading_lines
     lines = markdown.lines
     temp_heading_lines = []
-    lines.each_index {|i| temp_heading_lines << i if lines[i][0..1] == '##' && lines[i][2] != '#' }
+    lines.each_index { |i| temp_heading_lines << i if lines[i][0..1] == '##' && lines[i][2] != '#' }
     self.cached_heading_lines = temp_heading_lines.join('|')
   end
 
@@ -91,77 +116,129 @@ class Manifestation < ApplicationRecord
   end
 
   def approved_tags
-    return Tag.find(self.taggings.approved.pluck(:tag_id))
+    taggings.to_a.select { |t| t.approved? && t.tag.approved? }.map(&:tag)
   end
 
   def as_prose?
     # TODO: implement more generically
-    return ['poetry','drama'].include?(expressions[0].work.genre) ? false : true
+    return %w(poetry drama).include?(expression.work.genre) ? false : true
   end
 
   def safe_filename
     # Use manifestation id as a filename to prevent issues with long filename described here
     # https://github.com/abartov/bybeconv/issues/101#issuecomment-1002994205
-    self.id.to_s
+    id.to_s
   end
 
   def to_plaintext
-    return html2txt(MultiMarkdown.new(markdown).to_html.force_encoding('UTF-8').gsub(/<figcaption>.*?<\/figcaption>/,'')).gsub("\n\n\n","\n\n").gsub("\n\n\n","\n\n")
+    return html2txt(MultiMarkdown.new(markdown).to_html.force_encoding('UTF-8').gsub(%r{<figcaption>.*?</figcaption>}, '')).gsub("\n\n\n", "\n\n").gsub(
+      "\n\n\n", "\n\n"
+    )
+  end
+
+  # check whether the manifestation is included in a collection of type uncollected
+  def uncollected?
+    return true if collection_items.empty?
+
+    collection_items.each do |ci|
+      return true if ci.collection.collection_type == 'uncollected'
+    end
+    return false
+  end
+
+  # async update the uncollected collection this text was still in
+  def trigger_uncollected_recalculation
+    return if collection_items.empty?
+
+    collection_items.joins(:collection).where(collection: { collection_type: 'uncollected' }).each do |ci|
+      au = Authority.where(uncollected_works_collection_id: ci.collection.id)
+      if au.present?
+        # RefreshUncollectedWorksJob.perform_async(au.first.id) # must be at most one
+        RefreshUncollectedWorksCollection.call(au.first)
+      end
+    end
+  end
+
+  # return containing collections of collection_type volume or periodical_issue
+  def volumes
+    ret = []
+    containers = collection_items.includes(:collection).map(&:collection)
+    containers.each do |c|
+      if %w(volume periodical_issue).include?(c.collection_type)
+        ret << c
+      else
+        pc = c.parent_volume_or_isssue
+        ret << pc unless pc.nil?
+      end
+    end
+    return ret.flatten
+  end
+
+  def to_html
+    if published?
+      MarkdownToHtml.call(markdown)
+    else
+      I18n.t(:not_public_yet)
+    end
   end
 
   def title_and_authors
-    return title + ' / '+author_string
+    return title + ' / ' + author_string
   end
 
   def title_and_authors_html
     ret = "<h1>#{title}</h1> <h2>#{I18n.t(:by)} #{authors_string}</h2> "
-    if self.expressions[0].translation?
-      ret += "<h2>#{I18n.t(:translated_from)}#{textify_lang(self.expressions[0].work.orig_lang)} #{I18n.t(:by)} #{translators_string}</h2>"
+    if expression.translation?
+      ret += "<h2>#{I18n.t(:translated_from)}#{textify_lang(expression.work.orig_lang)} #{I18n.t(:by)} #{translators_string}</h2>"
     end
     return ret
   end
 
   def manual_delete
-    expressions.each do |e|
-      e.realizers.each(&:destroy!)
-      w = e.work
-      e.destroy!
-      w.creations.each(&:destroy!)
-      w.destroy!
-    end
-    self.destroy!
+    collection_items.destroy_all # this will remove the manifestation from all collections
+    destroy!
+    expression.involved_authorities.each(&:destroy!)
+    w = expression.work
+    expression.destroy!
+    w.involved_authorities.each(&:destroy!)
+    w.destroy!
   end
 
   def snippet_paragraphs(p_count)
-    return MultiMarkdown.new(markdown.lines[0..p_count].join("\n")).to_html.force_encoding('UTF-8').gsub(/<h1.*?<\/h1>/,'').gsub(/<figcaption>.*?<\/figcaption>/,'') # remove MMD's automatic figcaptions, and the initial title
+    return MultiMarkdown.new(markdown.lines[0..p_count].join("\n")).to_html.force_encoding('UTF-8').gsub(%r{<h1.*?</h1>}, '').gsub(%r{<figcaption>.*?</figcaption>}, '') # remove MMD's automatic figcaptions, and the initial title
     # stripping tags -- return ActionController::Base.helpers.strip_tags(MultiMarkdown.new(markdown.lines[0..p_count].join("\n")).to_html.force_encoding('UTF-8').gsub(/<h1.*?<\/h1>/,'').gsub(/<figcaption>.*?<\/figcaption>/,'')) # remove MMD's automatic figcaptions, and the initial title
   end
 
   def authors_string
-    return I18n.t(:nil) if expressions[0].work.authors.empty?
-    return expressions[0].work.authors.map(&:name).join(', ')
+    return I18n.t(:nil) if expression.work.authors.empty?
+
+    return expression.work.authors.map(&:name).join(', ')
   end
 
   def first_hebrew_letter
     ret = '*'
-    self.title.each_char{|ch| return ch if self.title.is_hebrew_codepoint_utf8(ch.codepoints[0])}
+    title.each_char { |ch| return ch if title.is_hebrew_codepoint_utf8(ch.codepoints[0]) }
     return ret
   end
 
   def authors
-    return expressions[0].work.authors
+    return expression.work.authors
   end
 
   def author_gender
-    authors.pluck(:gender).uniq.reject{|x| x.blank?}
+    authors.map { |authority| authority&.person&.gender }.compact.uniq
   end
 
   def translator_gender
-    translators.pluck(:gender).uniq.reject{|x| x.blank?}
+    translators.map { |authority| authority&.person&.gender }.compact.uniq
   end
 
   def translators
-    return expressions[0].translators
+    return expression.translators
+  end
+
+  def editors
+    return []
   end
 
   def author_and_translator_ids
@@ -170,73 +247,80 @@ class Manifestation < ApplicationRecord
     au = [] if au.nil?
     tra = translators
     tra = [] if tra.nil?
-    ret = au.pluck(:id)+tra.pluck(:id)
+    ret = au.pluck(:id) + tra.pluck(:id)
     return ret.uniq
   end
 
   def translators_string
-    return I18n.t(:nil) if expressions[0].translators.empty?
-    return expressions[0].translators.map(&:name).join(', ')
+    return I18n.t(:nil) if expression.translators.empty?
+
+    return expression.translators.map(&:name).join(', ')
   end
 
   def author_string
-    Rails.cache.fetch("m_#{self.id}_author_string", expires_in: 24.hours) do
-      return I18n.t(:nil) if expressions[0].work.authors.empty?
-      ret = expressions[0].work.authors.map(&:name).join(', ')
-      if expressions[0].translation
-        if translators.empty?
-          ret += ' / '+I18n.t(:unknown)
-        else
-          ret += ' / '+translators.map(&:name).join(', ')
-        end
-      end
-      ret # TODO: be less naive
+    Rails.cache.fetch("m_#{id}_author_string", expires_in: 24.hours) do
+      author_string!
     end
+  end
+
+  def author_string!
+    return I18n.t(:nil) if expression.work.authors.empty?
+
+    ret = expression.work.authors.map(&:name).join(', ')
+    if expression.translation
+      ret += if translators.empty?
+               ' / ' + I18n.t(:unknown)
+             else
+               ' / ' + translators.map(&:name).join(', ')
+             end
+    end
+    ret # TODO: be less naive
   end
 
   def legacy_htmlfile
-    hh = HtmlFile.joins(:manifestations).where(manifestations: {id: self.id})
-    if hh.empty?
-      return nil
-    else
-      return hh[0]
-    end
+    hh = HtmlFile.joins(:manifestations).where(manifestations: { id: id })
+    return nil if hh.empty?
+
+    return hh[0]
   end
 
   def markdown_with_metadata
-    metadata = "Title: #{self.title}  \nAuthor: #{self.author_string}  \n\n"
-    return metadata + self.markdown
+    metadata = "Title: #{title}  \nAuthor: #{author_string}  \n\n"
+    return metadata + markdown
   end
 
   def word_count
     # roughly okay, despite the markdown artifacts
-    return self.markdown.split.length
+    return markdown.split.length
   end
 
   def recalc_cached_people
-     pp = []
-     expressions.each {|e|
-       e.persons.each {|p| pp << p unless pp.include?(p) }
-       e.work.persons.each {|p| pp << p unless pp.include?(p) }
-     }
-     self.cached_people = pp.map{|p| "#{p.name} #{p.other_designation}"}.join('; ') # ZZZ
-     # self.cached_people_ids = pp.map{|x| x.id}.join() # this doesn't actually make sense; a normalized query would be way faster
+    # pp = []
+    # expression.persons.each {|p| pp << p unless pp.include?(p) }
+    # expression.work.persons.each {|p| pp << p unless pp.include?(p) }
+    # self.cached_people = pp.map{|p| "#{p.name} #{p.other_designation}"}.join('; ') # ZZZ
+    self.cached_people = author_string!
+    # self.cached_people_ids = pp.map{|x| x.id}.join() # this doesn't actually make sense; a normalized query would be way faster
   end
 
   def recalc_cached_people!
     recalc_cached_people
-     save!
+    save!
   end
 
   # TODO: calculate this by month
   def self.popular_works_by_genre(genre, xlat)
     if xlat
       Rails.cache.fetch("m_pop_xlat_in_#{genre}", expires_in: 24.hours) do # memoize
-        Manifestation.all_published.joins(expressions: :work).includes(:expressions).where(works: {genre: genre}).where("works.orig_lang != expressions.language").order(impressions_count: :desc).limit(10).map{|m| {id: m.id, title: m.title, author: m.author_string}}
+        Manifestation.all_published.joins(expression: :work).includes(:expression).where(works: { genre: genre }).where('works.orig_lang != expressions.language').order(impressions_count: :desc).limit(10).map do |m|
+          { id: m.id, title: m.title, author: m.author_string }
+        end
       end
     else
       Rails.cache.fetch("m_pop_in_#{genre}", expires_in: 24.hours) do # memoize
-        Manifestation.all_published.joins(expressions: :work).where(works: { genre: genre }).where("works.orig_lang = expressions.language").order(impressions_count: :desc).limit(10).map{|m| {id: m.id, title: m.title, author: m.author_string}}
+        Manifestation.all_published.joins(expression: :work).where(works: { genre: genre }).where('works.orig_lang = expressions.language').order(impressions_count: :desc).limit(10).map do |m|
+          { id: m.id, title: m.title, author: m.author_string }
+        end
       end
     end
   end
@@ -256,58 +340,40 @@ class Manifestation < ApplicationRecord
     i = 0
     begin
       candidates = Manifestation.all_published.genre(genre).order('RAND()').limit(15)
-      candidates.each {|au| list << au unless (except.include? au) or (list.include? au) or (list.length == 10)}
+      candidates.each { |au| list << au unless (except.include? au) or (list.include? au) or (list.length == 10) }
       i += 1
     end until list.size >= 10 or i > 10
     return list
   end
 
   def self.first_25
-    Rails.cache.fetch("m_first_25", expires_in: 24.hours) do
+    Rails.cache.fetch('m_first_25', expires_in: 24.hours) do
       Manifestation.all_published.order(:sort_title).limit(25)
     end
   end
 
-  # This method was used in ManifestationController#works which is currently not used, but could be reimplemented in future
-  # def self.cached_last_month_works
-  #   Rails.cache.fetch("m_new_last_month", expires_in: 24.hours) do
-  #     ret = {}
-  #     Manifestation.all_published.new_since(1.month.ago).each {|m|
-  #       e = m.expressions[0]
-  #       genre = e.genre
-  #       person = e.persons[0] # TODO: more nuance
-  #       next if person.nil? || genre.nil? # shouldn't happen, but might in a dev. env.
-  #       ret[genre] = [] if ret[genre].nil?
-  #       ret[genre] << [m.id, m.title, m.author_string]
-  #     }
-  #     ret
-  #   end
-  # end
-
-  def self.recalc_popular
-    @@popular_works = Manifestation.all_published.order(impressions_count: :desc).limit(10) # top 10
-  end
-
   def self.cached_popular_works_by_genre
-    Rails.cache.fetch("m_pop_by_genre", expires_in: 24.hours) do
+    Rails.cache.fetch('m_pop_by_genre', expires_in: 24.hours) do
       ret = {}
       get_genres.each do |g|
         ret[g] = {}
-        ret[g][:orig] = Manifestation.all_published.genre(g).not_translations.distinct.order(impressions_count: :desc).limit(10)
-        ret[g][:xlat] = Manifestation.all_published.genre(g).translations.distinct.order(impressions_count: :desc).limit(10)
+        ret[g][:orig] =
+          Manifestation.all_published.genre(g).not_translations.distinct.order(impressions_count: :desc).limit(10)
+        ret[g][:xlat] =
+          Manifestation.all_published.genre(g).translations.distinct.order(impressions_count: :desc).limit(10)
       end
       ret
     end
   end
 
   def self.cached_count
-    Rails.cache.fetch("m_count", expires_in: 24.hours) do
+    Rails.cache.fetch('m_count', expires_in: 24.hours) do
       Manifestation.all_published.count
     end
   end
 
   def self.cached_work_counts_by_genre
-    Rails.cache.fetch("m_count_by_genre", expires_in: 24.hours) do
+    Rails.cache.fetch('m_count_by_genre', expires_in: 24.hours) do
       ret = {}
       get_genres.each do |g|
         ret[g] = Manifestation.all_published.genre(g).distinct.count
@@ -317,31 +383,38 @@ class Manifestation < ApplicationRecord
   end
 
   def self.cached_translated_count
-    Rails.cache.fetch("m_xlat_count", expires_in: 24.hours) do
+    Rails.cache.fetch('m_xlat_count', expires_in: 24.hours) do
       Manifestation.all_published.translations.count
     end
   end
 
   def self.cached_pd_count
-    Rails.cache.fetch("m_pd_count", expires_in: 24.hours) do
+    Rails.cache.fetch('m_pd_count', expires_in: 24.hours) do
       Manifestation.all_published.pd.count
     end
   end
 
   def self.get_popular_works
-    if @@popular_works == nil # TODO: implement race-condition protect with tmplock
-      self.recalc_popular
+    Rails.cache.fetch('m_popular_works', expires_in: 48.hours) do
+      evs = Ahoy::Event.where(name: 'text read or printed').where('time > ?', 1.month.ago)
+      pop = {}
+      evs.each do |x|
+        mid = x.properties['text_id']
+        pop[mid] = 0 unless pop[mid].present?
+        pop[mid] += 1
+      end
+      sorted_pop_keys = pop.keys.sort_by { |k| pop[k] }.reverse
+      Manifestation.find(sorted_pop_keys[0..9])
     end
-    return @@popular_works
   end
+
   def self.update_suspected_typos_list
     # TODO: implement
-    # code to find probably typos:
-    #- digits within words
-    #- finals within words
-    #- non-final letters that should be finals
-    #- what else?
-    #- non-title paragraphs ending without period, question mark, exclamation point.
-  
+    # code to find probable typos:
+    # - digits within words
+    # - finals within words
+    # - non-final letters that should be finals
+    # - non-title paragraphs ending without period, question mark, exclamation point.
+    # - what else?
   end
 end

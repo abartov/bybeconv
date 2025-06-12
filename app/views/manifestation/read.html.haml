@@ -1,62 +1,89 @@
 -# standard display mode. "reading mode" implemented in readmode.html.haml
 - if @m.sefaria_linker
-  %script{ type: 'text/javascript', charset:'utf-8', src:'https://www.sefaria.org/linker.js'}
+  %script{ type: 'text/javascript', charset:'utf-8', src:'https://www.sefaria.org/linker.v3.js'}
 
-#content.container-fluid.top-element
-  .row.text-page-content
-    .col-12.col-lg-8
-      .logo-for-print
-        %img.logoBY-v02{src: "/assets/logo-byp-mobile.svg", alt:""}
-      .row
-        .col.work-side-menu-area
-          != "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
-        .col.near-side-menu
-          .by-card-v02.work-info-card
-            %img.about-work-card-bookmark-fold-v02{alt: t(:background), src: '/assets/creator-bookmark-back2.png'}/
-            .about-work-author-card-v02
-              %img.about-work-author-pic-v02{alt: @author.name, src: @author.profile_image.url(:thumb)}/
-            .by-card-content-v02
-              = render partial: 'metadata', locals: {tags_etc: true}
-          .by-card-v02
-            .work-area
-              .work-content{"data-spy" => 'scroll', "data-target" => '#chapternav'}
-                -# TODO: more nuanced rendering here
-                - if @m.as_prose?
-                  #actualtext.maintext-prose-body.search-margin
-                    != raw(@html)
-                - else
-                  #actualtext.maintext-poetry-body.search-margin
-                    != raw(@html)
-              .work-side-color
-                %div{'class' => "work-genre", style: "background-image: url(\"/assets/work_side_icons_#{@w.genre}.svg\"); background-repeat: no-repeat; background-size:auto;"}
-    .col-12.col-lg-4
-      .row
-        .col
-          -# Works about this work
-          - if @works_about.count > 0
-            = render partial: 'public_aboutnesses', locals: {edit: false, add: false}
-          -# Recommendations
+.row.text-page-content
+  .col-12.col-lg-8
+    .logo-for-print
+      %img.logoBY-v02{src: "/assets/logo-byp-mobile.svg", alt:""}
+    .row
+      .col.work-side-menu-area
+        != "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+      .col.work-col.near-side-menu
+        .by-card-v02.work-info-card
+          %img.about-work-card-bookmark-fold-v02{alt: t(:background), src: '/assets/creator-bookmark-back2.png'}/
+          .about-work-author-card-v02
+            %img.about-work-author-pic-v02{alt: @author.name, src: @author.profile_image.url(:thumb)}/
+          .by-card-content-v02
+            = render partial: 'metadata', locals: {tags_etc: true}
+          - unless @single_text_volume
+            - @containments.each do |ci|
+              .author-works-nav
+                .topNavEntry
+                  .link-nav
+                    - prev = ci.prev_sibling_item
+                    - if prev.present?
+                      - extra = prev[:skipped] > 0 ? "?skipped=#{prev[:skipped]}" : ''
+                      = link_to "#{default_link_by_class(prev[:item].class, prev[:item].id)}#{extra}" do
+                        %span.right-arrow= '2'
+                        = t(:to_previous_item)
+                .topNavEntry
+                  .link-nav{style: 'margin-left:20px; margin-right:20px;'}
+                    - unless ci.collection.system?
+                      = link_to default_link_by_class(ci.collection.class, ci.collection.id) do
+                        %span.right-arrow= '🢁'
+                        = textify_collection_up_link(ci.collection)
+                        %span.left-arrow= '🢁'
+                .topNavEntry
+                  .link-nav
+                    - nextsib = ci.next_sibling_item
+                    - if nextsib.present?
+                      - extra = nextsib[:skipped] > 0 ? "?skipped=#{nextsib[:skipped]}" : ''
+                      = link_to "#{default_link_by_class(nextsib[:item].class, nextsib[:item].id)}#{extra}" do
+                        = t(:to_next_item)
+                        %span.left-arrow= '1'
+
+        .by-card-v02
+          .work-area
+            .work-content{"data-spy" => 'scroll', "data-target" => '#chapternav'}
+              -# TODO: more nuanced rendering here
+              - if @m.as_prose?
+                #actualtext.maintext-prose-body.search-margin
+                  != raw(@html)
+              - else
+                #actualtext.maintext-poetry-body.search-margin
+                  != raw(@html)
+            .work-side-color
+              .work-genre{ style: "background-image: url(\"/assets/work_side_icons_#{@w.genre}.svg\"); background-repeat: no-repeat; background-size:auto;" }
+
+  .col-12.col-lg-4
+    .row
+      .col
+        = render partial: 'shared/about_pby'
+        = render partial: 'shared/donation_box_negative'
+        -# Works about this work
+        - if @works_about.count > 0
+          = render partial: 'public_aboutnesses', locals: {edit: false, add: false}
+        -# Recommendations
+        - if @total_recs > 0
           .by-card-v02.left-side-card-v02#recs
             .by-card-header-left-v02
               %span.headline-1-v02= t(:recommendations_for_work)
             .by-card-content-v02
               - unless @m.like_count.nil? || @m.like_count == 0
-                = t(:x_liked, {x: @m.like_count})
+                = t(:x_liked, x: @m.like_count)
                 %br
-              - my_pendings = @recommendations.all_pending.where(user: current_user)
-              - app_recs = @recommendations.all_approved
-              - total_recs = app_recs.count + my_pendings.count
-              - unless app_recs.count > 0 || my_pendings.count > 0
+              - unless @total_recs > 0
                 = t(:no_recommendations_yet)
               - else
-                = t(:this_work_has_x_recommendations, {x: total_recs})
+                = t(:this_work_has_x_recommendations, x: @total_recs)
                 %br
                 - apcounter = 1
-                - app_recs.each do |r|
-                  = render partial: 'recommendation', locals: {rec: r, pending: false, last_item: apcounter == total_recs ? true : false}
+                - @app_recs.each do |r|
+                  = render partial: 'recommendation', locals: {rec: r, pending: false, last_item: apcounter == @total_recs ? true : false}
                   - apcounter += 1
-                - my_pendings.each do |r|
-                  = render partial: 'recommendation', locals: {rec: r, pending: true, last_item: apcounter == total_recs ? true : false}
+                - @my_pending_recs.each do |r|
+                  = render partial: 'recommendation', locals: {rec: r, pending: true, last_item: apcounter == @total_recs ? true : false}
                   - apcounter += 1
               -# add recommendation
               - unless current_user.nil?
@@ -80,56 +107,75 @@
                           = hidden_field_tag :manifestation_id, @m.id
                           %input.btn{type: :submit, value: t(:submit), style:'margin-top:2.7rem;margin-left:1.5rem;background-color:#d9cdd5'}
 
+        -# Tags
+        .by-card-v02.left-side-card-v02
+          .by-card-header-left-v02
+            %span.headline-1-v02= t(:tags)
+            .new-tag-teaser= t(:excited_new)
+            .new-tag-teaser-text= t(:new_tag_teaser)
+          .by-card-content-v02.card-with-bottom-links
+            .inline-block#taggings
+              = render partial: 'shared/taggings', locals: {taggings: @taggings, taggable: @m}
+            - unless current_user.nil? || current_user.blocked?
+              = hidden_field_tag :accepted_tag_policy, @bu.present? ? @bu.get_preference(:accepted_tag_policy) : 'false', id: 'accepted_tag_policy'
+            #add-tag.card-bottom
+              .link-to-all-v02
+                %button.by-button-v02.must-login#initiate-add-tag
+                  .metadata-link-icon.small-icon.pointer &amp;
+                  %div= t(:suggest_new_tag)
 
-          -# Tags
+        -# Additional translations of same work
+        - if @e.translation? && (@additional_translations != nil && @additional_translations != [])
           .by-card-v02.left-side-card-v02
             .by-card-header-left-v02
-              %span.headline-1-v02= t(:tags)
+              %span.headline-1-v02= t(:additional_translations)
             .by-card-content-v02
-              .inline-block#taggings
-                = render partial: 'shared/taggings', locals: {taggings: @taggings}
-              - unless current_user.nil?
-                #add-tag.card-bottom
-                  .metadata-link.linkcolor.pointer.notyet#expand-add-tag
-                    %span.right-side-icon &amp;
-                    %span{:style => "font-weight: bold"}= t(:suggest_new_tag)
-
-                #add-tag-form
-                  = form_for @tagging, remote: true do
-                    %div{style: 'display:inline;margin-top:0.6rem;'}
-                      = autocomplete_field_tag :tag, '', autocomplete_tag_name_path, 'data-noMatchesLabel' => t(:no_matches_found)
-                      = hidden_field_tag :manifestation_id, @tagging.manifestation_id
-                      = hidden_field_tag :suggested_by, @tagging.suggested_by
-                    %div{style: 'display:inline'}
-                      %input.btn-small-outline-v02.btn-text-v02{type: :submit, value: t(:suggest_new_tag), style: 'margin-top:0.6rem;width:auto; background-color: #d9cdd5'}
-
-          -# Additional translations of same work
-          - if @e.translation? && (@additional_translations != nil && @additional_translations != [])
-            .by-card-v02.left-side-card-v02
-              .by-card-header-left-v02
-                %span.headline-1-v02= t(:additional_translations)
-              .by-card-content-v02
-                -  @additional_translations.each do |tr|
-                  %div
-                    %span
-                      = link_to tr.title, manifestation_read(id: tr.manifestations[0].id)
-                    %span= ' '+t(:translation)+': '
-                    %span
-                      != tr.translators.map{|t| link_to(t.name, author_toc_path(id: t.id))}.join(', ')
-          -# External links
-          - if @m.external_links.to_a.size > 0
-            .by-card-v02.left-side-card-v02
-              .by-card-header-left-v02
-                %span.headline-1-v02= t(:external_links)
-              .by-card-content-v02
-                %ol
-                - @m.external_links.each do |link|
-                  %li
-                    %span
-                      = link_to link.description.nil? ? link.url : link.description, link.url, 'target': '_new'
+              -  @additional_translations.each do |tr|
+                %div
+                  %span
+                    = link_to tr.title, manifestation_path(id: tr.manifestations[0].id)
+                  %span= ' '+t(:translation)+': '
+                  %span
+                    != tr.translators.map { |t| link_to(t.name, authority_path(id: t.id)) }.join(', ')
+        -# External links
+        - if @m.external_links.to_a.size > 0
+          .by-card-v02.left-side-card-v02
+            .by-card-header-left-v02
+              %span.headline-1-v02= t(:external_links)
+            .by-card-content-v02
+              %ol
+              - @m.external_links.each do |link|
+                %li
+                  %span
+                    = link_to link.description.nil? ? link.url : link.description, link.url, 'target': '_new'
+- if @m.not_short?
+  .row
+    .col-12
+      .by-card-v02.donation-bottom-baner
+        .by-card-content-v02
+          %p.headline-1-v02= t(:don_footer_title)
+          .desktop-only
+            %p
+              = t(:don_footer_desktop_html, total_works: Manifestation.cached_count.to_s,
+                                            total_authors: Authority.cached_count.to_s,
+                                            total_langs: get_langs.count,
+                                            total_headwords: get_total_headwords.to_s)
+            %a.donev#donev_text_footban{href: '/page/donate'}
+              .button-to-full-v02
+                %button.by-button-v02
+                  %span.by-icon-v02> z
+                  = t(:yes_i_would_love_to_help)
+          .mobile-only
+            %p
+              = t(:don_footer_mobile_text)
+            %a.donev#donev_text_footban_mobile{href: '/page/donate'}
+              .button-to-full-v02
+                %button.by-button-v02
+                  %span.by-icon-v02> z
+                  = t(:yes_i_would_love_to_help)
             
 #downloadDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
-  = render partial: 'shared/download', locals: {manifestation: @m}
+  = render partial: 'shared/download', locals: {entity: @m}
 #recommendationDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
   %h2= t(:loading)
 #citeDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
@@ -148,6 +194,8 @@
   = render partial: 'bookmark_panel'
 #bookmarkDeleteDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
   = render partial: 'bookmark_delete'
+#tagPolicyDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
+  = render partial: 'tag_policy'
 -# chapter popup
 - if @m.chapters?
   .modal#chapterDlg{role: 'dialog', tabindex: '-1'}
@@ -183,18 +231,26 @@
         window.scrollTo(0,position);
       }
     });
-    $('#expand-add-tag').click(function() {
-      /*
-      $('#expand-add-tag').css('display','none');
-      $('#add-tag-form').css('display','block');
-      */
+    $('#initiate-add-tag').click(function(e) {
+      if("#{current_user}" != '') {
+        if($('#accepted_tag_policy').val() != 'false') {
+          $('#generalDlg').load("#{ add_tagging_popup_path(taggable_id: @m.id, taggable_type: 'Manifestation') }");
+          $('#generalDlg').modal('show');
+        }
+        else
+          $('#tagPolicyDlg').modal({  backdrop: 'static', keyboard: false, show: true});
+      } else {
+        e.stopPropagation();
+        alert("#{t(:must_login_for_this)}");
+        return;
+      }
     });
-    $('#expand-add-rec').click(function() {
       /*
+    $('#expand-add-rec').click(function() {
       $('#expand-add-rec').css('display','none');
       $('#add-rec-form').css('display','block');
-      */
     });
+      */
     $('.jumpch').click(function(e) {
       e.preventDefault();
       anchor = $(this).attr('data-target');
@@ -207,13 +263,6 @@
         scrollTop: $('a[name='+anchor+']').offset().top - $('header').height() - 45
       }, 0);
       $('#actualtext').focus();
-    });
-    $('.reversefootnote').click(function(e) {
-      e.preventDefault();
-      anchor = $(this).attr('href');
-      $('html, body').animate({
-        scrollTop: $('a[id="'+anchor.slice(1)+'"]').offset().top - $('header').height() - 45
-      }, 800);
     });
     $('#downloadDlg').on('shown.bs.modal', function () {
       $('.download_submitter').removeAttr('disabled');
@@ -235,6 +284,6 @@
       $('#recommendationDlg').modal('show');
     });
     if("#{@m.sefaria_linker}" != '') {
-      sefaria.link({selector: '#actualtext', contentLang: 'hebrew', interfaceLang: 'hebrew'});
+      sefaria.link({whitelistSelector: '#actualtext', contentLang: 'hebrew', interfaceLang: 'hebrew'});
     }
   });

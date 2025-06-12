@@ -1,9 +1,15 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 he:
+  inside: 'בתוך: '
+  not_public_yet: '(עדיין לא פומבי)'
   author_list: רשימת היוצרים
   first_last_name: "שם פרטי / משפחה"
   to_latest_x_works: הצג %{x} יצירות אחרונות
+  don_footer_title: אנו שמחים שאתם משתמשים באתר פרויקט בן־יהודה
+  don_footer_mobile_text: רוב מוחלט של העבודה נעשה בהתנדבות, אולם אנו צריכים לממן שירותי אירוח ואחסון, פיתוח תוכנה, אפיון ממשק משתמש, ועיצוב גרפי. נשמח אם תעזרו לנו להמשיך לשרת אתכם!
+
+  don_footer_desktop_html: עד כה העלינו למאגר %{total_works} יצירות מאת %{total_authors} יוצרים, בעברית ובתרגום מ־%{total_langs} שפות. העלינו גם %{total_headwords} ערכים מילוניים. רוב מוחלט של העבודה נעשה בהתנדבות, אולם אנו צריכים לממן שירותי אירוח ואחסון, פיתוח תוכנה, אפיון ממשק משתמש, ועיצוב גרפי. <br /> <br /> בזכות תרומות מהציבור הוספנו לאחרונה אפשרות ליצירת מקראות הניתנות לשיתוף עם חברים או תלמידים, <a href="/page/api">ממשק API לגישה ממוכנת לאתר</a>, ואנו עובדים על פיתוחים רבים נוספים, כגון הוספת כתבי עת עבריים, לרבות עכשוויים. <br /><br /> נשמח אם תעזרו לנו להמשיך לשרת אתכם!
   contact_name: שם
   contact_email: דואל
   contact_phone: טלפון (לא חובה)
@@ -22,6 +28,7 @@ he:
   contact_form_email_greeting: "התקבל טופס צור קשר. להלן הפרטים:"
   volunteer_form_email_greeting: "התקבל טופס התנדבות. להלן הפרטים:"
   rename_this_anthology: שינוי שם מקראה זו
+  merge_rename: אישור התגית בשם אחר
   authors_select_filter: סינון לפי יוצר - בחירה מרובה
   add_authors_to_filter: הוספת היוצרים שנבחרו לסינון
   back_to_bib_workshop: חזרה לסדנה הביבליוגרפית
@@ -34,7 +41,7 @@ he:
   loading: התוכן נטען...
   work_title: שם יצירה
   what_to_search_for: מה לחפש...
-  author_names: שם(ות) מחבר(ים)
+  author_names: שם(ות) יוצר(ים)
   works_list: רשימת יצירות
   month_year: חודש/שנה
   year: שנה
@@ -43,6 +50,8 @@ he:
   works_by_period: יצירות לפי תקופה
   works_by_genre: יצירות לפי סוגה
   works_by_tag: יצירות לפי תגית
+  authors_by_tag: יוצרים לפי תגית
+  tag_approved_with_different_name: התגית אושרה תוך שינוי השם הרצוי
   notice: הודעה
   sitenotice: הודעת מערכת
   new_sitenotice: הודעת מערכת חדשה
@@ -58,28 +67,31 @@ he:
   to_the_task: אל משימת הסריקה
   type_new_name_below: עדכנו את השם ולחצו על שמירה.
   ziburit: מהו שם המשפחה של המשורר הנחשב המשורר הלאומי? (שאלת אבטחה)
-  from_pby_and_available_at: מתוך פרויקט בן־יהודה.  המקראה זמינה בכתובת
+  from_pby_and_available_at: מתוך פרויקט בן־יהודה. זמין בכתובת
+  about_pby_title: מהו פרויקט בן־יהודה?
+  about_pby_text: "פרויקט בן־יהודה הוא מיזם התנדבותי היוצר מהדורות אלקטרוניות של נכסי הספרות העברית. הפרויקט, שהוקם ב־1999, מנגיש לציבור – חינם וללא פרסומות – יצירות שעליהן פקעו הזכויות זה כבר, או שעבורן ניתנה רשות פרסום, ובונה ספרייה דיגיטלית של יצירה עברית לסוגיה: פרוזה, שירה, מאמרים ומסות, מְשלים, זכרונות ומכתבים, עיון, תרגום, ומילונים."
+  about_pby_learn_more: קִראו עוד על אודות הפרויקט ועל איך לעזור
   welcome_to_works_browsing: ברוכים הבאים לרשימת היצירות
   welcome_to_authors_browsing: ברוכים הבאים לרשימת היוצרים
-  authors_browsing_intro_paging: ברשימת היוצרים בקריטריונים שבחרת ישנן %{total} תוצאות. בגלל אורכה, הרשימה מתחלקת לעמודי משנה המכילים 100 תוצאות כל אחד. ניתן לדפדף ברשימה באמצעות הבקרים הנמצאים מעל ומתחת לרשימה, המאפשרים מעבר עמודים ואיתור האות הראשונה של שם המחבר.
+  authors_browsing_intro_paging: ברשימת היוצרים בקריטריונים שבחרת ישנן %{total} תוצאות. בגלל אורכה, הרשימה מתחלקת לעמודי משנה המכילים 100 תוצאות כל אחד. ניתן לדפדף ברשימה באמצעות הבקרים הנמצאים מעל ומתחת לרשימה, המאפשרים מעבר עמודים ואיתור האות הראשונה של שם היוצר.
   works_browsing_intro_paging: ברשימת היצירות בקריטריונים שבחרת ישנן %{total} יצירות. בגלל אורכה, הרשימה מתחלקת לעמודי משנה המכילים 100 יצירות כל אחד. ניתן לדפדף ברשימה באמצעות הבקרים הנמצאים מעל ומתחת לרשימה, המאפשרים מעבר עמודים ואיתור האות הראשונה של שם היצירה.
-  authors_browsing_intro_html: "<p>הרשימה מכילה גם יוצרים עבריים וגם יוצרים לועזיים אשר יצירותיהם זמינות בפרויקט בתרגום עברי. ניתן להפעיל פעולות סינון מתקדמות המאפשרות צמצום הרשימה על-ידי בחירה בו-זמנית של המאפיינים: סוגה, תקופה, מיגדר, ותאריכים.</p><p><b>  להפעלת אפשרויות סינון מתקדמות יש ללחוץ על המתג בפס העליון.</b></p>"
-  works_browsing_intro_html: "<p> שמות יצירות המופיעים בסוגריים מרובעים מעידים כי ליצירה לא ניתן שם, ואנו משתמשים במילים הראשונות של הטקסט ככותרת לצורכי רשימות וחיפוש. יצירות מנוקדות ישולבו בסדר היצירות הכללי ואילו יצירות באנגלית יופיעו בנפרד.</p><p>
-  בנוסף, ניתן להפעיל פעולות סינון מתקדמות המאפשרות צמצום הרשימה על-ידי בחירה בו-זמנית של מאפיינים כגון: סוגה, תקופה, תאריך ומאפיינים נוספים.</p><p><b>  להפעלת אפשרויות סינון מתקדמות יש ללחוץ על המתג בפס העליון.</b></p>"
+  authors_browsing_intro_html: "<p>הרשימה מכילה גם יוצרים עבריים וגם יוצרים לועזיים אשר יצירותיהם זמינות בפרויקט בתרגום עברי. ניתן להפעיל פעולות סינון מתקדמות המאפשרות צמצום הרשימה על-ידי בחירה בו-זמנית של המאפיינים: סוגה, תקופה, מגדר, ותאריכים.</p><p><b>  להפעלת אפשרויות סינון מתקדמות יש ללחוץ על המתג בפס העליון.</b></p>"
+  works_browsing_intro_html: "<p> שמות יצירות המופיעים בסוגריים מרובעים מעידים כי ליצירה לא ניתן שם, ואנו משתמשים במילים הראשונות של הטקסט ככותרת לצורכי רשימות וחיפוש. יצירות מנוקדות ישולבו בסדר היצירות הכללי ואילו יצירות באנגלית יופיעו בנפרד.</p><p> בנוסף, ניתן להפעיל פעולות סינון מתקדמות המאפשרות צמצום הרשימה על-ידי בחירה בו-זמנית של מאפיינים כגון: סוגה, תקופה, תאריך ומאפיינים נוספים.</p><p><b>  להפעלת אפשרויות סינון מתקדמות יש ללחוץ על המתג בפס העליון.</b></p>"
   must_set_author: חובה לשייך יוצר!
   docx_too_large: אין די זכרון להסב את הקובץ. יש לפצלו או להסב ידנית.
   add_stanza_break: הוספת מעבר בית
   minuses_to_makafim: תיקון למקפים עבריים גאים
+  tidy_footnote_dirs: סידור כיוון הערות
   add_angled_brackets: הוספת סימון שירה לקטע
   remove_angled_brackets: הסרת סימון שירה בקטע
   select_text_to_remove_from: ראשית יש לסמן (להאיר) קטע בטקסט שממנו רוצים להסיר את סימני השירה.
   select_text_to_add_to: ראשית יש לסמן (להאיר) קטע בטקסט שלו רוצים להוסיף את סימני השירה.
-  add_fresh_works: כל היצירות מ-12 השעות האחרונות
+  add_fresh_works: כל היצירות שטרם קושרו מהדף
   converted_output: "תוצאת הסבה אוטומטית של הקובץ הישן %{fname}"
   origlang_title: כותרת בשפת המקור
   treat_as_poetry: מצב שירה
   associated_persons: אישים מקושרים
-  legacy_guessed_person: ניחוש מחבר לפי תיקיה
+  legacy_guessed_person: ניחוש יוצר לפי תיקיה
   legacy_url: היצירה באתר הישן
   to_all_authors: לרשימת כל היוצרים
   to_all_x_items: לכל %{x} הפריטים
@@ -112,21 +124,34 @@ he:
   created_frbr: הישויות הביבליוגרפיות נוצרו!
   cannot_create_frbr: אי אפשר ליצור ישויות ביבליוגרפיות. אולי משום שטרם קושר יוצר.
   editing_dir: עריכת תיקיה ישנה
-  wikipedia_snippet: תקציר מויקיפדיה
-  wikipedia_url: קישורית לויקיפדיה
-
+  # tags and taggings front-end
+  add_tag: הוספת תגית
+  tag_policy_intro_html: "תודה שבחרת להציע תגית ליצירה. תגיות הן דרך נוספת לסווג יצירות ולסייע לאחרים לגלותן. אפשר להציע תגיות משלך או לבחור מרשימת תגיות קיימות.</p><p>לטובת הכלל, יש להקפיד על העקרונות הבאים: התגית לא נועדה להחליף איתור דרך שם יצירה, יוצר, סוגה, ושאר אופני החיפוש הקיימים ממילא; לכן אין טעם לתייג יצירה בשם היוצר, למשל. התגית צריכה להיות עובדתית (שסביר שלא תעורר מחלוקת) ולא התרשמותית. התגית אינה ביקורת או הבעת דיעה; לכן יש להימנע מתגיות כגון ״אהבתי״, ״משעמם״ וכדומה. תגיות מוצעות תיבדקנה בידי צוות האתר לפני שתוצגנה לכלל המשתמשים."
+  to_full_tagging_policy: לפירוט מלא של כללי השימוש בתגיות
+  i_understand_and_accept: הבנתי והסכמתי לעקרונות אלו.
+  can_proceed: אפשר להתקדם
+  suggested_tagging: פריט מוצע לתיוג
+  tagging_suggestions_count: תיוגים שהוצעו
+  new: חדש
+  change_or_merge: "שינוי / מיזוג"
+  items_pending_for_this_tag: "פריטים הממתינים לתיוג בתגית: %{tag}"
+  # end tags and taggings
   none_yet_click_edit_to_associate: טרם קושר. יש ללחוץ על עריכה כדי לקשר.
-  send_to_viaf: חיפוש מחבר במאגר VIAF
-  person_entity: ישות מחבר
+  send_to_viaf: חיפוש יוצר במאגר VIAF
+  person_entity: ישות יוצר
   report_inappropriate_content: דיווח על תוכן בעייתי
   this_work_has_x_recommendations: "ליצירה זו יש %{x} המלצות קוראים"
+  works_in_this_collection_have_x_recommendations: "ליצירות הכלולות ב%{ctype} יש %{x} המלצות קוראים"
+  recommendations_for_collection: המלצות על ה%{ctype} או על היצירות הכלולות
+
   x_liked_y_recommended: "%{x} קוראות וקוראים אהבו את היצירה, %{y} המלצות כתובות"
   x_liked: "%{x} קוראות וקוראים אהבו את היצירה"
+  x_liked_ctype: "%{x} קוראות וקוראים אהבו את ה%{ctype}"
   wait: נא להמתין
   with: "עם "
   associate_with_viaf: קשר את התיקיה לרשומת ה-VIAF הזו
   associated_with_viaf: קושר לרשומה מספר %{viaf} במאגר VIAF
-  nothing_found_try_surname: אין תוצאות.  נסו לעדכן (זמנית!) את שם המחבר לשם המשפחה בלבד וחפשו שוב.
+  nothing_found_try_surname: אין תוצאות.  נסו לעדכן (זמנית!) את שם היוצר לשם המשפחה בלבד וחפשו שוב.
   conversion_stats_html: "סטטיסטיקה -- %{total_texts} סך הכל קבצים ישנים, %{total_known} קבצים אובחנו, %{total_images} עם תמונות, %{total_footnotes} עם הערות שוליים, %{total_tables} עם טבלאות, %{total_nikkud_full} עם ניקוד מלא, %{total_nikkud_some} עם ניקוד חלקי. <p /> מצבים אחרים -- %{total_badenc} עם תקלת קידוד, %{total_fileerr} עם שגיאת קובץ אחרת, %{total_assigned} קבצים מוקצים למסבים,%{total_parsed} קבצים פוענחו, %{total_uploaded} קבצים הועלו ישירות, %{total_superseded} קבצים הוחלפו בהעלאה ישירה, %{total_accepted} קבצים אושרו, %{total_published} ראו אור בקטלוג, %{total_manual} קבצים ממתינים להסבה ידנית."
   assignee: מוקצה ל-
   legacy_text_from_url: מהאתר הישן בכתובת
@@ -145,6 +170,16 @@ he:
   remove_line_nums: הסר מספרי שורות
   fables: משלים
   analyze: אבחן
+  crowdsourcing: העבודה והמלאכה
+  crowdsourcing_intro: את פרויקט בן־יהודה בונות ובונים מתנדבות ומתנדבים כמוך! הנה כמה משימות שבהן אנו זקוקים לעזרה. בכל משימה יש הדרכה מפורטת, והכל בלי התחייבות ובלי הגבלות זמן.
+  crowdsourcing_populate_edition: הוספת פרטי הוצאה ליצירות
+  crowdsourcing_assign_more_work: הקצאת מטלה נוספת
+  crowdsourcing_continue_work_on: המשך עבודה על %{topic}
+  crowdsourcing_not_crowdsourcer: רוצה לעזור לנו בעבודה ובמלאכה? התחבר/י (בצד שמאל למעלה) עם חשבון גוגל וצרי קשר (דרך תפריט על הפרויקט), ונתחיל.
+  for_pasting: טקסט להדבקה
+  paste_to_all: הדבק בכל הפריטים הריקים
+  paste_to_selected: הדבק בפריטים המסומנים
+  todo_x_out_of_y_pct: נותרו %{todo} פריטים מתוך %{total}, כלומר סיימנו %{pct} אחוזים.
   error: שגיאה
   file_error: שגיאת קובץ
   bad_encoding: שגיאת קידוד
@@ -154,15 +189,16 @@ he:
   publish: פרסם באתר
   published: פורסם באתר
   unpublished: טרם פורסם
+  awaiting_first: בהמתנה להעלאת יצירה ראשונה
   nonpd: טרם פקעו הזכויות
   make_published: הפוך לפומבי!
-  publish_person: הפיכת המחבר/ת %{author} לפומבי/ת
-  publishing_person_explanation: להלן רשימת יצירות של %{author}. לחיצה על הלחצן בתחתית הרשימה תהפוך מחבר/ת זה/זו לפומבי/ת!
+  publish_person: הפיכת היוצר/ת %{author} לפומבי/ת
+  publishing_person_explanation: להלן רשימת יצירות של %{author}. לחיצה על הלחצן בתחתית הרשימה תהפוך יוצר/ת זה/זו לפומבי/ת!
   work_not_available: יצירה זו אינה זמינה לפי שעה.
   author_not_available: דף היוצר/ת אינו זמין לפי שעה.
   illustrations_by: איורים מאת
   deprecated: מחוּק
-  pub_status_explanation: ברירת המחדל אם השדה ריק היא שהיצירה תהא פומבית אם המחבר כבר פומבי, ולא פומבית אם לאו.
+  pub_status_explanation: ברירת המחדל אם השדה ריק היא שהיצירה תהא פומבית אם היוצר כבר פומבי, ולא פומבית אם לאו.
   dpublished: פורסם
   duploaded: עלה לאתר
   dcreated: חובר
@@ -181,8 +217,14 @@ he:
   newest_authors: היוצרים החדשים ביותר
   most_read_works: רשימת היצירות הנקראות ביותר
   newest_works: היצירות החדשות ביותר
-  table_of_contents: דף יוצר
-  new_person: "מחבר/ת חדש/ה"
+  table_of_contents: תוכן עניינים
+  x_of_y_items_available: "%{x} מתוך %{y} פריטים מ%{ctype} זה הועלו למאגר"
+  full_collection_available: כל פריטי %{ctype} זה זמינים להלן
+  x_issues_available: "%{x} גליונות מצויים במאגר"
+  issue_of: גליון של כתב העת
+  author_table_of_contents: דף יוצר
+  new_person: "יוצר/ת חדש/ה"
+  new_corporate_body: ארגון חדש
   join_volunteer: התנדבות להפקת תכנים
   donate_money: תרומה כספית
   donate: תרומה
@@ -197,6 +239,8 @@ he:
   copy_of: "עותק של "
   curated_text_title: שם קטע הטקסט
   confirm_clone: נא לאשר שיבוט המקראה
+  confirm_delete_collection: נא לאשר מחיקת כל האוסף על פריטיו! (היצירות עצמן תישארנה, רק הופעתן באוסף תימחק)
+  confirm_delete_collection_item: נא לאשר מחיקת הפריט מן האוסף. הפריט עצמו (אם אינו שומר מקום) יישאר בקטלוג, רק לא באוסף זה.
   public_anthologies: מקראות פומביות
   clone_this_anthology: שיבוט מקראה זו
   curated_text: טקסט מלווה
@@ -242,10 +286,12 @@ he:
   scanning: סריקת ספרים
   donation: תרומה כספית
   unlisted: בהזמנה בלבד
+  unlock: שחרר נעילת העלאה
   curated_text_bit: טקסט מלווה
   curated_text_bits: טקסטים מלווים
   word_count: מספר מילים
   page_count: מספר עמודים
+  ingestibles_system: מערכת ההעלאות
   total_result_pages: "סך עמודי תוצאות: %{x}"
   contact_form_title: יצירת קשר עם פרויקט בן־יהודה
   volunteer_form_title: איך תרצו לעזור?
@@ -257,6 +303,8 @@ he:
   will_open_in_new_tab: "(תיפתחנה בלשונית חדשה)"
   display_anthology_description: המקראה, הכוללת את כל הטקסטים של היצירות שנבחרו וגם טקסטים עצמיים (אם יוצרו). תוצג בשלמותה בדף נפרד שיפתח בלשונית חדשה
   download_description: המקראה, הכוללת את כל הטקסטים של היצירות שנבחרו וגם טקסטים עצמיים (אם יוצרו), תישמר כקובץ עצמאי נפרד בפורמט לבחירה
+  download_disabled: אין לנו רשות לאפשר הורדה של יצירות אלה במרוכז.
+  print_disabled: אין לנו רשות לאפשר הדפסה של יצירות אלה במרוכז.
   print_description: המקראה, הכוללת את כל הטקסטים של היצירות שנבחרו וגם טקסטים עצמיים (אם יוצרו), תוצג מוכנה להדפסה בלשונית חדשה
   copy_description: המקראה, הכוללת את היצירות שנבחרו וגם טקסטים עצמיים (אם יוצרו), תועתק בשלמותה למקראה חדשה
   delete_description: המקראה תימחק בשלמותה, היצירות כמובן תישאר זמינות בפרויקט אך כל טקסט עצמי שנכלל בה ימחק ללא אפשרות חזרה
@@ -268,21 +316,25 @@ he:
   about_the_author: על היוצר
   their_most_read_works: "יצירותי%{gender_letter} הנקראות ביותר"
   volunteers_who_helped: "מתנדבים שנטלו חלק בהנגשת יצירותי%{gender_letter} של %{author}"
+  volunteers_who_helped_collection: "מתנדבים שנטלו חלק בהנגשת היצירות לעיל"
   html_file_published: הקובץ מהמערכת הישנה פורסם עתה במערכת החדשה, ונוסף לקטלוג המערכת!
   most_popular_authors: היוצרים הנקראים ביותר
+  to_all_authors_tagged: לכל היוצרים/ות שתויגו "%{tag}"
+  to_all_works_tagged: לכל היצירות שתויגו "%{tag}"
+  latest_works_tagged: יצירות שתויגו "%{tag}" באחרונה
   most_popular_translated_authors: היוצרים המתורגמים הנקראים ביותר
   most_read_last_month: היצירות הנקראות ביותר בחודש החולף
   most_read_xlat_last_month: היצירות המתורגמות הנקראות ביותר בחודש החולף
   to_all_works_in_this_genre: לכל היצירות בסוגה זו
   most_read_authors_last_month: היוצרים הנקראים ביותר בחודש החולף
-  authors_list: רשימת יוצרים
+  authors_list: רשימת יוצרים ויוצרות
   to_the_full_list: לרשימה המלאה
   whatsnew: "מה חדש?"
   whatsnew_subtitle: יצירות ויוצרים חדשים באתר, אירועים, סרטונים, וחדשות.
   whats_new: מה חדש בפרויקט
   project_ben_yehuda: פרויקט בן־יהודה
-  random_authors: יוצרים אקראיים
-  random_works: יצירות אקראיות
+  random_authors: יוצרים מן המאגר
+  random_works: יצירות מן המאגר
   featured_item: זרקור על יצירה
   edit_markdown: עריכת הטקסט
   edit_markdown_in_new_window: עריכת הטקסט בלשונית חדשה
@@ -291,15 +343,18 @@ he:
   in_current_cursor: במקום הסמן הנוכחי
   markdown: טקסט גולמי
   display_text: טקסט תצוגה
+  back_to_public_view: חזרה לתצוגת קוראים
   save_and_exit: שמירה ויציאה
   save_to_file: שמירת היצירה לקובץ
   save_and_update_display: שמירה ועדכון תצוגה
-  works_about_this_author: "יצירות בַּמאגר על אודות המחבר%{gender_suffix}"
+  works_about_this_author: "יצירות בַּמאגר על אודות היוצר%{gender_suffix}"
   works_about_this_work: יצירות בַּמאגר על אודות יצירה זו
   aboutnesses: נושאי היצירה
   person: אדם
   work: יצירה
   search_term: מונח לחיפוש
+  or_search_term: 'או חיפוש יצירה קיימת בשם: '
+  search_the_dictionary: 'חיפוש במילון: '
   search_wikidata: חיפוש בויקינתונים
   search_the_site: חיפוש באתר
   wikidata_item: פריט ויקינתונים
@@ -311,6 +366,8 @@ he:
   add_url: הוסף את הקישורית
   existing_aboutnesses: נושאים קיימים
   bib_workshop: הסדנה הביבליוגרפית
+  bib_vid: קוד VID
+  bib_scope: קוד scope
   # genre key names are currently hard-coded in ApplicationController
   genres: סוגות
   genres_and_types: סוגות וסוגים
@@ -322,6 +379,7 @@ he:
   letters: מכתבים
   reference: עיון
   lexicon: מילונים ולקסיקונים
+  mixed_genres: סוגות שונות
   # end genres
   lexicon_migration: קליטת לקסיקון גלרון
   lexicon_list_files: רשימת הקבצים
@@ -344,6 +402,7 @@ he:
   unclassified: לא זוהה סוג הערך
   anth_grows: המקראה צומחת!
   most_popular_works_this_month: היצירות הנקראות ביותר החודש
+  most_popular_works: היצירות הנקראות ביותר
   support_the_project: הצטרפו לתומכי הפרויקט!
   remove_final_period: הסרת נקודה מסוף הכותרת
   this_author_has_a_generated_toc: (דף יוצר מחולל אוטומטית!)
@@ -362,8 +421,6 @@ he:
   you_can: באפשרותך
   identifiers: מזהים
   toc_status: מצב דף יוצר
-  nli_id: מזהה בספרייה הלאומית
-  viaf_id: "מזהה במאגר VIAF‏"
   TBD: (בעתיד)
   to_actions: דלג לפעולות למטה
   source_edition: פרטי מהדורת מקור
@@ -376,6 +433,7 @@ he:
   already_done: כבר טופל
   original_works: יצירות מקור
   translation: תרגום
+  edited_works: יצירות בעריכת%{gender_letter}
   toc_order_reminder: 'תזכורת לגבי סדר הסוגות: '
   translations: יצירות מתורגמות
   translator_name: "שם המתרגם/ת"
@@ -401,7 +459,7 @@ he:
   logo: לוגו
   statistics: סטטיסטיקה
   holdings: מצאי
-  bib_stats: ידועים %{pubs} חיבורים ו-%{holdings} רשומות מצאי. מתוך החיבורים, %{obtained} הושגו וטרם נסרקו, %{scanned} נסרקו וטרם עלו למערכת המשימות, %{uploaded} עלו למערכת, %{irrelevant} סומנו כלא רלבנטיים, %{copyrighted} עדיין מוגנים וללא רשות פרסום, ומתוך רשומות המצאי, %{missing} חסרים בפועל.  הביבליוגרפיה של %{authors_done} מחברים הושלמה, ו-%{authors_todo} מחברים נותרו.
+  bib_stats: ידועים %{pubs} חיבורים ו-%{holdings} רשומות מצאי. מתוך החיבורים, %{obtained} הושגו וטרם נסרקו, %{scanned} נסרקו וטרם עלו למערכת המשימות, %{uploaded} עלו למערכת, %{irrelevant} סומנו כלא רלבנטיים, %{copyrighted} עדיין מוגנים וללא רשות פרסום, ומתוך רשומות המצאי, %{missing} חסרים בפועל.  הביבליוגרפיה של %{authors_done} יוצרים הושלמה, ו-%{authors_todo} יוצרים נותרו.
   added_to_group: נוסף/ה לקבוצה
   removed_from_group: נגרע/ה מהקבוצה
   handle_proofs: טיפול בהגהות
@@ -411,10 +469,12 @@ he:
   edit_people: עריכת אישים
   conversion_verification: טיוב יצירות לאחר הסבה
   unmake_editor: ביטול הרשאת עורך/ת
+  make_crowdsourcer: מתן הרשאת מיקור המונים
+  unmake_crowdsourcer: ביטול הרשאת מיקור המונים
   legacy_metadata: עריכת מטא-דאטה אתר ישן
   mark_as_valid: סמן כתקין ואל תציג שוב
-  get_bibs: חיפוש רשומות ביבליוגרפיות לפי מחבר
-  get_bibs_instructions: הזינו שם מחבר (אפשר חלקי; אם מלא, שם משפחה, שם פרטי), והקישו על חיפוש.
+  get_bibs: חיפוש רשומות ביבליוגרפיות לפי יוצר
+  get_bibs_instructions: הזינו שם יוצר (אפשר חלקי; אם מלא, שם משפחה, שם פרטי), והקישו על חיפוש.
   search: חיפוש
   true: כן
   false: לא
@@ -425,7 +485,6 @@ he:
   activate_bit: הוסף תפקיד
   deactivate_bit: בטל תפקיד
   editor_bits: תפקידי עורך
-  proof_thanks_title: קיבלנו, תודה!
   from_project_ben_yehuda: מפרויקט בן־יהודה
   proof_thanks_html: תודה רבה על שטרחת לשלוח אלינו הגהה או הערה!  נעיין בה בקפידה ונתקן את הטקסט במידת הצורך, ונעדכן אותך כשנעשה זאת.
   proof_subscribed: אנו שמחים שברצונך לקבל עדכונים מפרויקט בן־יהודה בעתיד.  נוסיף אותך לרשימת הדיוור שלנו בהקדם, בכתובת %{email}
@@ -436,7 +495,7 @@ he:
   proofstatus_wontfix: לא שגוי
   proofstatus_escalated: טעון בדיקה נוספת
   proofstatus_assigned: מוקצה לטיפול
-  proofs: הגהות
+  blazer_system: מערכת בלייזר לתיחקור מסד הנתונים
 # TODO: add notification e-mail when resolving a proof
   left_todo: נותרו לעשות
   new_static_page: דף סטטי חדש
@@ -445,28 +504,50 @@ he:
   pages: עמודים
   proof_show_text: הצג את הטקסט באתר הישן בחלון נפרד
   show_text: הצג את גוף היצירה
+  text: טקסט
+  paratext: פאראטקסט
+  placeholder_item: פריט לא מקושר
+  title_only_if_needed: "כותרת (רק אם צריך)"
+  or_search_for_collection: 'או חיפוש אוסף קיים בשם: '
   proof_your_proofs: יש להקליד כאן למטה את ההגהות, או ללחוץ על "העתק למטה" כדי להעתיק את הטקסט שנבחר ולתקן אותו ידנית למטה.
   proof_copy_text: העתק למטה
   your_selected_text: הטקסט שסומן
   submit_proof: שליחת הגהה
-  proof: הגהה
+  proof_heading: הגהה
   assign_proofs: הקצה עוד הגהות לטיפולי
   highlighted_passage: הקטע שסומן בדיווח
   find_in_text: איתור בטקסט
+  don_banner_head_happy: אנו שמחים שחזרתם לפרויקט בן־יהודה!
+  don_banner_body_html: האתר משרת את ציבור חובבי ולומדי הספרות העברית, ויהיה <b>לעולם נגיש בחינם וללא פרסומות!</b> הסריקה, ההקלדה, ההגהה, והעריכה הטכנית נעשות בהתנדבות, אולם עלינו לשלם עבור אחסון ופיתוח תוכנה – וכאן אנו זקוקים לעזרתכם.
+  dont_show_again: אין צורך להציג שוב
+  yes_i_would_love_to_help: כן, אשמח לעזור!
+  no_thank_you: תודה, לא הפעם
+  alternate_titles: כותרות נוספות (אפשר להפריד בנקודה־פסיק ורווח)
+  # hate_ads: שונאים פרסומות?
+  # donate_sidebox_html: גם אנחנו! ולכן אנו מתחייבים שאתר הפרויקט לעולם יישאר חופשי בשימוש ונקי מפרסומות.<br/><br/>אנו משלמים עבור שרתים ועבור פעילות פיתוח, ולכן זקוקים לתמיכתך, אם מתאפשר לך.
+  hate_ads: אוהבים את פרויקט בן־יהודה?
+  donate_sidebox_html: אנחנו זקוקים לכם. אנו מתחייבים שאתר הפרויקט לעולם יישאר חופשי בשימוש ונקי מפרסומות.<br/><br/>עם זאת, יש לנו הוצאות פיתוח, ניהול ואירוח בשרתים, ולכן זקוקים לתמיכתך, אם מתאפשר לך.
   download_instructions: נא לבחור את תבנית הקובץ הרצויה (פורמט).  הקובץ ירד מיד עם הלחיצה על לחצן ההורדה, ויישמר בתיקיית ההורדות המוגדרת בדפדפן.
   cite_instructions_html: "ניתן לבצע העתקה והדבקה של הציטוט על פי התבנית הנדרשת.<br /><br /><b>שימו לב: </b>פרויקט בן־יהודה הוא משאב אינטרנט, ויש לצטט בהתאם, ולא לפי המהדורה המודפסת שעליה התבססנו.<br />"
-  not_an_editor: רק בעלי הרשאת עריכה לגשת לדף זה
-  not_an_admin: רק בעלי הרשאת ניהול לגשת לדף זה
+  not_an_editor: רק בעלי הרשאת עריכה רשאים לגשת לדף זה
+  not_an_admin: רק בעלי הרשאת ניהול רשאים לגשת לדף זה
   must_be_logged_in: עליך להיות מחובר/ת כדי לצפות בדף זה
-  must_login_for_this: יש להתחבר לחשבון משתמש (קל וחינם!) כדי לבצע פעולה זו.
+  must_login_for_this: יש להתחבר לחשבון משתמש (קל וחינם! למעלה משמאל.) כדי לבצע פעולה זו.
   pdf_format: לצפייה באקרובט או להדפסה
   doc_format: מסמך לתוכנת וורד
   html_format: דף אינטרנט לצפייה בדפדפן
-  epub_format: לקוראים אלקטרוניים שאינם קינדל
-  mobi_format: לקורא האלקטרוני קינדל
+  epub_format: לקוראים אלקטרוניים כולל קינדל
+  mobi_format: תבנית להתקנים ישנים יותר
   txt_format: טקסט בלבד, ללא הדגשות ועיצוב
   odt_format: מסמך ליברה-אופיס
   no_date: אין תאריך
+  title_not_informative: כותרת היצירה חסרה הֶקשר או מטעה
+  override_validation: דלג על בדיקת שדות
+  title_ends_with_period: הכותרת מסתיימת בנקודה
+  title_starts_with_ordinals: הכותרת מתחילה עם סודר
+  empty_work_title_or_no_content: יצירה ללא כותרת או ריקה מתוכן
+  translation_must_have_translator: שפת המקור אינה עברית אך לא צוין מתרגם
+  translation_must_have_original_language: צוין מתרגם אך לא צוינה שפת מקור
   reading_mode: טקסט בלבד
   mode: סוג תצוגה
   body: גוף הטקסט
@@ -485,21 +566,19 @@ he:
   x_years_ago: לפני %{years} שנים
   dates: תאריכים
   a_date: תאריך
-  other_designation: כינויים אחרים
-  affiliation: השתייכות
   country: מדינה
-  comment: הערה
   edit_person: עריכת רשומת אישים
   profile_image: תמונת פרופיל
   upload_new_image: העלאת תמונה חדשה
   current_image: תמונה נוכחית
-  download_footer_html: "את הטקסט לעיל הפיקו מתנדבי <a href=\"https://benyehuda.org/\">פרויקט בן־יהודה באינטרנט</a>.  הוא זמין תמיד בכתובת הבאה:<br /><a href=\"%{url}\">%{url}</a>"
+  download_footer_html: "את הטקסט[ים] לעיל הפיקו מתנדבי <a href=\"https://benyehuda.org/\">פרויקט בן־יהודה באינטרנט</a>.  <br />הכל זמין תמיד בכתובת הבאה:<br /><a href=\"%{url}\">%{url}</a>"
   proof_please_select_something: "מצוין, אבל ראשית נא לסמן (להאיר, לבחור) את הפיסקה השגויה (או כמה שורות, אם מדובר בשורות קצרצרות), כדי שנדע איפה לתקן.  אחרי הסימון, יש ללחוץ שוב על לחצן זה."
+  proof_too_short: יש להאיר לפחות משפט או שניים, ולא רק את השגיאה עצמה. זאת כדי לסייע לנו לאתר את המקום השגוי בטקסט. אחרי הסימון, לחצו שוב על לחצן זה.
   like: אהבתי
   our_own_content: 'תוכן משלנו:'
   bookshelf: מדפים
   found_mistake: מצאתי שגיאה
-  email_just_for_proof: כתובת דואל (לא חובה) רק לקבלת עדכון על הגהה זו
+  email_just_for_proof: כתובת דואל רק לקבלת עדכון על הגהה זו
   report_found_mistake: דיווח על מציאת שגיאה בדף
   clear_text_and_reset_proof: מחיקת טקסט וניקוי חלון ההגהה
   found_br_mistake_html: מצאתי<BR /> שגיאה
@@ -524,10 +603,9 @@ he:
   publisher_link: קישורית לדף באתר ההוצאה
   publisher_link_text: טקסט תצוגה לקישורית לאתר ההוצאה
   for_publishers_project: ליצירות שעולות במסגרת מיזם המו"לים בלבד
-  gender: מיגדר
-  author_gender: מיגדר המחבר/ת
-  translator_gender: מיגדר המתרגם/ת
-  author_or_translator_gender: מיגדר המחבר/ת או המתרגם/ת
+  author_gender: מגדר המחבר/ת
+  translator_gender: מגדר המתרגם/ת
+  author_or_translator_gender: מגדר המחבר/ת או המתרגם/ת
   orphans: יצירות יתומות
   male: זכר
   female: נקבה
@@ -543,6 +621,8 @@ he:
   search_in_text: חיפוש ביצירה
   search_results: תוצאות חיפוש
   search_total: סך תוצאות החיפוש
+  items: פריטים
+  x_words: "%{x} מילים"
   search_terms: מה חיפשת
   internal_search: חיפוש במנוע שלנו
   welcome_title: "ברוכים הבאים לפרויקט בן־יהודה!"
@@ -550,6 +630,7 @@ he:
   welcome_stats_html: "כיום כלולות בפרויקט <b>%{works}</b> יצירות, מאת כ-<b>%{authors}</b> יוצרים, ו-<b>%{headwords}</b> ערכים מילוניים."
   total_manifestations: "סה\"כ יצירות: %{total}"
   additional_content: 'תוכן נוסף:'
+  additional_items: פריטים נוספים
   authors_of: יוצרי
   sample_authors_of: מבחר יוצרי
   sample_works_of: מבחר יצירות
@@ -566,6 +647,7 @@ he:
   translated_from_multiple_languages: מתורגמים מיותר משפה אחת
   translated_from: תורגם מ
   translation_from: תרגום מ
+  languages: שפות
   new_file: קובץ חדש
   new_works_by_new_authors: יצירות חדשות של יוצרים חדשים בפרויקט
   new_works_by_existing_authors: יצירות חדשות של יוצרים קיימים בפרויקט
@@ -574,8 +656,8 @@ he:
   file_can_be_skipped: ניתן גם לדלג על העלאת קובץ וליצור רשומה עם טקסט ריק, למשל כדי להדביק טקסט.
   empty_markdown_template: קובץ ריק נוצר.  הדבק כאן טקסט במקום המלים הללו.
   upload_file: העלאת מסמך DOCX
+  new_ingestible: העלאת מסמך DOCX – שיטה חדשה!
   conversion_actions: פעולות הסבה
-  create_toc: יצירת דף יוצר ריק
   split_work_mode: מצב פיצול יצירות
   careful_with_splits: " זהירות! \\n\\nלחיצה נוספת על לחצן זה תיצור ישויות עבור כל היצירות שפוצלו לעיל! \\n\\nיש לבדוק בזהירות שהיצירות פוצלו כשורה, ושלכולן יש כותרת תקינה.  אם אין זה המצב, יש לתקן את הכותרות או מיקום הפיצולים. \\n\\nכמו כן, יד לבדוק שכולן שייכות לאותה סוגה ולאותו מחבר ומתרגם. אם אין זה כך, יש לפצל את הקובץ *חיצונית* (בוורד או משהו) ליחידות אחידות מבחינת סוגה ואישים מקושרים.  \\n\\nעכשיו משקראת אזהרה זו, לחיצה נוספת על הלחצן תפעיל את הפיצול ותיצור ישויות קטלוגיות."
   non_whitespace_before_first_part: יש תוכן *לפני* כותרת היצירה הראשונה!  יש לסלקו, או לתת לו כותרת יצירה משלו (ולשמור שינויים), לפני שממשיכים.
@@ -583,11 +665,13 @@ he:
   main_catalog_management: ניהול קטלוג ראשי
   uploaded_directly: הועלה ישירות
   first_author: מחבר (לא מתרגם; אפשר להוסיף אישים אחר-כך, בקטלוג)
-  suspicious_headings_report: "דו\"ח כותרות קרובות זו לזו (לעריכה)"
+  suspicious_headings_report: "דו\"ח כותרות פרקים קרובות זו לזו (לעריכה)"
+  texts_between_dates: יצירות לפי מועד עלייתן
   suspicious_titles_report: "דו\"ח שמות חשודים ליצירות"
-  similar_titles_report: "דו\"ח כותרות דומות (שאולי הן פרקים של יצירה אחת שיש לאחד)"
+  similar_titles_report: "דו\"ח כותרות דומות ליצירות (שאולי הן פרקים של יצירה אחת שיש לאחד)"
   suspicious_translations_report: "דו\"ח יצירות עם מחבר שווה למתרגם"
   most_read_authors_of_genre: יוצרי ה%{genre} הנקראים ביותר החודש
+  authors_without_works: יוצרים ללא יצירות באתר
   most_read_works_of_genre: יצירות ה%{genre} הנקראות ביותר החודש
   most_read_translated_works_of_genre: יצירות ה%{genre} המתורגמות הנקראות ביותר החודש
   surprise_author_in_genre: יוצר/ת %{genre} בהפתעה
@@ -600,23 +684,27 @@ he:
   alefbet: אלפבית
   alefbet_asc: 'אלפבית: א–ת'
   alefbet_desc: 'אלפבית: ת–א'
-  popularity_group: 'כמות צפיות'
-  popularity_desc: 'כמות צפיות באתר: יורדת'
-  popularity_asc: 'כמות צפיות באתר: עולה'
+  popularity_group: 'מספר צפיות'
+  popularity_desc: 'מספר צפיות באתר: יורד'
+  popularity_asc: 'מספר צפיות באתר: עולה'
   birthdate_asc: 'ת. לידה: מהמוקדם למאוחר'
   birthdate_desc: 'ת. לידה: מהמאוחר למוקדם'
   deathdate_asc: 'ת. פטירה: מהמוקדם למאוחר'
   deathdate_desc: 'ת. פטירה: מהמאוחר למוקדם'
   pubdate_asc: 'ת. הוצאה: מהישן לחדש'
   pubdate_desc: 'ת. הוצאה: מהחדש לישן'
-  workdate_asc: 'ת. חיבור: מהישן לחדש'
-  workdate_desc: 'ת. חיבור: מהחדש לישן'
+  creation_date_asc: 'ת. חיבור: מהישן לחדש'
+  creation_date_desc: 'ת. חיבור: מהחדש לישן'
   uploaddate_asc: 'ת. עלייה לאתר: מהישן לחדש'
   uploaddate_desc: 'ת. עלייה לאתר: מהחדש לישן'
+  collections_and_pubdates_asc: 'כותרים ותאריכי הוצאה: מהישן לחדש'
+  collections_abc: 'כותרים: בסדר אלפביתי'
   title: כותרת
   title_x: "כותרת: %{x}"
-  author_x: "מחבר: %{x}"
-  authors_xx: "מחברים: %{xx}"
+  author_x: "יוצר: %{x}"
+  authors_xx: "יוצרים: %{xx}"
+  name_starts_with_x: "שם מתחיל באות '%{x}'"
+  title_starts_with_x: "כותרת מתחילה באות '%{x}'"
   title_already_exists: השם כבר קיים. נא לתת שם אחר.
   text_already_in_anthology: היצירה הנוכחית כבר מופיעה במקראה הזאת.
   anth_x_works_added: "%{x} יצירות נוספו לסוף המקראה. אפשר לשנות את מיקומן בגרירה."
@@ -637,19 +725,23 @@ he:
   linking_entries: ערכים קשורים
   apply_mobile_filters: יישום סינון נבחר
   sort: מיון
-  sort_name: שם לצורך מיון
   actions: פעולות
-  author: מחבר
-  author_f: מחברת
+  author: יוצר
+  author_f: יוצרת
   render: הצגת יצירה
   show: הצגת פרטים
   thedate: תאריך
   upload: העלאה
   creation: יצירה
-  publication: הוצאה
+  publication: כותר
   comments: הערות
   popular_work_tags: תגיות נפוצות ליצירות
-  no_tags_yet: ליצירה זו טרם הוצעו תגיות
+  no_tags_yet: "%{taggee} טרם הוצעו תגיות"
+  this_work: ליצירה זו
+  this_author_m: ליוצר זה 
+  this_author_f: ליוצרת זו
+  this_item: לפריט זה
+  suggested_tag_name: איזו תגית ברצונך להציע?
   no_recommendations_yet: על יצירה זו טרם נכתבו המלצות. נשמח אם תהיו הראשונים לכתוב המלצה.
   to_all_whatsnew: לכל מה שחדש
   added_on: נוסף בתאריך
@@ -660,6 +752,9 @@ he:
   latest_facebook: עדכונים אחרונים בעמוד הפייסבוק
   latest_updates: עדכונים אחרונים
   latest_added_works: יצירותי%{gender_letter} האחרונות שראו אור בפרויקט
+  insert_all_siblings: הכנסת כל הפריטים האחים מרמה זו פנימה
+  focus_on_this_collection: ניהול אוסף זה
+  collapse_collection: קיפול/פריסת האוסף
   background: רקע
   placeholder_image: "צללית יוצר/ת"
   new_works: יצירות חדשות במאגר
@@ -693,10 +788,52 @@ he:
   edition_details: פרטי מהדורה ומידע נוסף
   more_info: מידע נוסף
   tags: תגיות
+  taggings: תיוגים
+  tag: תגית
+  moderate_tags: עיון בתיוגים מהציבור
+  next_milestone: היעד הבא
+  my_activity: הפעילות שלי
+  similar_to_x: "דומה לפריט: %{x}"
+  pending_tags_and_taggings: יש %{pending_tags} תגיות ו־%{pending_taggings} תיוגים ממתינים לאישור
+  pending_tags: תגיות ממתינות לאישור
+  pending_taggings: תיוגים ממתינים לאישור
+  additional_actions: "פעולות נוספות..."
+  adjacent_or_similar_tags: תגיות סמוכות או דומות
+  adjacent_tags: תגיות סמוכות
+  approve_and_next: אישור ומעבר לפריט הבא
+  reject_and_next: דחייה ומעבר לפריט הבא
+  approve_and_review_taggings: אישור ועיון בתיוגים
+  merge_with_this_tag: מיזוג עם תגית זו
+  merge_tag_title: מיזוג עם תווית קיימת
+  merge_tagging_title: העברת תיוג מוצג לתגית קיימת
+  merge_tagging_preview_html: "התיוג <b>יאושר</b> ויועבר מהתגית \"%{tag}\" (שלה יש כרגע %{src_tag_taggings_count} תיוגים, כולל מוצעים, לתגית שתבחר/י:"
+  confirm_merge_tag: אישור מיזוג התגית
+  confirm_merge_tagging: אישור העברת התיוג
+  confirm_escalation: אישור העברה לבדיקה נוספת
+  tag_merged: התגית מוזגה, על תיוגיה הממתינים
+  tag_merged_intro: "התגית שהצעת (%{orig_tag_name}) מוזגה עם תגית קיימת (%{tag}). תודה רבה על ההצעה! מעכשיו יוכלו למצוא את התגית גם דרך השם שהצעת."
+  tag_escalated: התגית הועברה לבדיקה נוספת
+  tagging_escalated: התיוג הועבר לבדיקה נוספת
+  tagging_of: "תיוג של:"
+  to_the_item: לפריט
+  with_the_tag: בתגית
+  tag_rejected: התגית נדחתה
+  tagging_approved: התיוג אושר.
+  tagging_rejected: התיוג נדחה.
+  user_warned: המשתמש/ת הוזהר/ה
+  merge_tag_preview_html: "התגית המוצעת <b>%{tag}</b> (%{src_tag_taggings_count} תיוגים מקושרים) תמוזג עם התגית <b>%{dest_tag}</b> (%{dest_tag_taggings_count} תיוגים מקושרים)."
+  merge_tag_generic_html: "התגית המוצעת <b>%{tag}</b> (%{src_tag_taggings_count} תיוגים מקושרים) <b>תאושר</b> בשם שיוזן להלן, או תמוזג לתגית שתיבחר בהשלמה אוטומטית, או מהרשימה בלשונית השנייה:"
+  taggings_will_be_merged: גם התיוגים המקושרים לתגית יועברו לתגית היעד, ללא שינוי במצב אישורם.
+  no_more_to_review: "אין פריטים נוספים לבדוק! :)"
+  tag_approved: התגית אושרה!
+  approve: אישור
+  reject: דחייה
   another_feature: הצגת זרקור נוסף
   tags_for_work: תגיות ליצירה
   recommendations_for_work: המלצות קוראים
   x_authors: "(%{x} יוצרים)"
+  x_pending_taggings_for_tag: "%{x} תיוגים מוצעים לתגית %{tag}"
+  for_tag: 'לתגית "%{tag}"'
   x_authors_mixed_gender: "%{x} יוצרים ויוצרות"
   writing_language: שפת יצירה
   non_hebrew_languages: שפות אחרות
@@ -711,7 +848,7 @@ he:
   the_blog: יומן הרשת
   to_the_blog: ליומן הרשת
   to_the_youtube: לערוץ היו-טיוב
-  contact_url: "/page/about/יצירתקשר"
+  contact_url: "/page/about"
   blog_url: https://benyehuda.org/blog/
   latest_blog: פרסומים אחרונים ביומן הרשת
   recommendations: המלצות
@@ -719,6 +856,7 @@ he:
   works: יצירות
   dictionary_entries: ערכים מילוניים
   works_en: works
+  to_tagging_instructions: להנחיות התיוג
   dictionary_entries_en: dictionary entries
   authors_neutral_en: authors
   dict_snippets: תקצירי ערכים
@@ -727,6 +865,7 @@ he:
   read_more: קראו עוד
   dict_help_x_entries: "<p>העלאת מילון אליעזר בן־יהודה לרשת היא תהליך ארוך שעדיין נמצא בעיצומו. לאתר פרויקט בן־יהודה הועלו עד עתה %{x} ערכים. <p/>הערכים מוצגים בצורתם המקורית ככל הניתן, תוך שימור הפורמט ההיסטורי הייחודי של המילון.<p/>בעמוד זה מוצגת רשימת הערכים, כאשר ניתן לבחור להציג את שמות הערכים בלבד או רשימת ערכים הכוללת תקצירים של פירושי הערכים.<p/>בגלל אורכה, הרשימה מחולקת לעמודי משנה המכילים עד מאה ערכים כל אחד.<p/>ניתן לדפדף ברשימה באמצעות הבקרים הנמצאים מעל ומתחת לרשימה, המאפשרים מעבר עמודים ואיתור האות הראשונה של כל ערך.<p/>בנוסף, ניתן להפעיל פעולות סינון המאפשרות צמצום הרשימה על ידי בחירה של מאפיינים שונים.<p/>למען הפשטות, העמוד נטען תחילה ללא פקדי סינון, ורק לאחר שהמשתמש בוחר בכך יופיע לוח בקרת הסינון במקום טקסט הסבר זה.<p/>להפעלת אפשרויות הסינון ניתן להפעיל את המתג בבר העליון."
   welcome_to_ebydict: ברוכים הבאים למילון אליעזר בן־יהודה
+  dictionary_definition: הגדרה מילונית
   desktop_missing_entries: "[%{x} ערכים חסרים]"
   mobile_missing_entries: "[%{x} חסרים]"
   prev_entry: 'הקודם:'
@@ -740,20 +879,18 @@ he:
   contact_for_volunteering_prefix: "אם אתם מעוניינים להתנדב, אנא מלאו "
   contact_volunteer_form: טופס התנדבות
   about_author_in_blog: על אודות %{author} ביומן הרשת
-  blog_category_url: קישורית לקטגוריה על היוצר/ת ביומן הרשת
   link: קישורית
-  period: תקופה
   periods: תקופות
-  periodless: מחברים חסרי תקופה
+  periodless: יוצרים חסרי תקופה
   ancient: עת עתיקה ופיוט
   medieval: ימי הביניים והרנסאנס
   enlightenment: ההשכלה
-  revival: התחיה
+  revival: התחייה
   modern: ספרות עברית חדשה
   ancient_long: עת עתיקה ופיוט (עד 900 לספירה)
   medieval_long: ימי הביניים והרנסאנס (900 עד 1700)
   enlightenment_long: ההשכלה (1700 עד 1880)
-  revival_long: התחיה (1880 עד 1948)
+  revival_long: התחייה (1880 עד 1948)
   modern_long: ספרות עברית חדשה (1948 ואילך)
   no_permission: אין הרשאה לך לגשת לדף זה
   to_full_list: לרשימה המלאה
@@ -766,6 +903,8 @@ he:
   anthology_explanation: היא גרסה מתקדמת של רשימת קריאה ומיועדת בעיקר לשיתוף עם הקוראים שלכם כדי שיוכלו לצרוך את הטקסטים הכלולים בה. היא מאפשרת סידור פנימי מדויק של כל יצירה ויצירה לפי רצונכם וכן הוספת קטעי טקסט מעשירים שנכתבו על ידכם - כגון עמוד שער, הערות, דגשים וכו׳.
   create_new_list_or_anthology: יצירת רשימת קריאה / מקראה חדשה
   anthology_name: שם המקראה
+  sort_title: שם לצורך מיון
+  subtitle: כותרת משנה
   manage_people: ניהול אישים
   to_manage_people: אם האיש/ה אינו/ה ברשימה, יש ליצור רשומה חדשה בניהול אישים (השינויים לא יישמרו אם לא בוצעה "שמירה ועדכון")
   how_to_help: 'התנדבות בפרויקט'
@@ -811,6 +950,7 @@ he:
   anth_share_tt: שיתוף המקראה
   anth_access_tt: 'בחירת רמת גישה: מי יכול לגשת למקראה'
   anth_drag_tt: איזור גרירה לשינוי סדר הפריטים במקראה
+  coll_drag_tt: איזור גרירה לשינוי סדר הפריטים באסופה
   anth_add_work_tt: הוספת היצירה שממנה נפתח חלון המקראות
   anth_add_works_tt: הוספת יצירות מעמוד רשימת היצירות
   anth_add_curated_tt: "הוספת טקסט מלווה מטעמך כגון שער, הערות, שיעורי בית, וכו'"
@@ -821,6 +961,7 @@ he:
   youtube_url: https://www.youtube.com/user/ProjectBenYehuda/
   contact_us: יצירת קשר
   show_toc: הצג דף יוצר
+  convert_to_manual_toc: החלפה בדף יוצר ידני
   remember_to_save: לא לשכוח לשמור!
   toc: דף יוצר
   slogan: <strong>שימור</strong>, <strong>הנגשת</strong> ו<strong>חשיפת</strong> יצירות עבריות לציבור הרחב
@@ -831,23 +972,24 @@ he:
   pd_only: רק נחלת הכלל
   nonpd_only: רק רשות פרסום
   are_you_sure: נא לאשר מחיקה
+  confirm_approve: נא לאשר אישור
+  confirm_reject: נא לאשר דחייה
   confirm_hide: נא לאשר הסתרה
+  confirm_warn: נא לאשר אזהרה
+  confirm_block: נא לאשר חסימה
   delete_photo: מחיקת תמונה (לצמיתות!)
   delete_link: הסרת קישורית
+  delete: מחיקה
+  cancel_focus_on_this_tag: ביטול מיקוד בתגית זו
   anth_text_deletion: מחיקת פריט מהמקראה
   anth_text_deletion_p1: 'פעולה זו תמחק ללא אפשרות חזרה את הפריט:'
   anth_text_deletion_p3: מתוך המקראה הנוכחית
   confirm_anth_text_deletion: אישור מחיקת הפריט מהמקראה
   maintenance: תחזוקה
-  public_domain: נחלת הכלל
-  about_public_domain: 'מה פירוש נחלת הכלל?'
-  public_domain_popover: "חוק זכויות יוצרים מגן מפני שימוש בלתי-מורשה ביצירות למשך תקופת תוקפו (בישראל, שבעים שנה מסוף שנת מות היוצר).  עם פקוע הזכויות, הופכת היצירה 'נחלת הכלל', כלומר רכוש הציבור.  פירוש הדבר שהיצירה שייכת לכולנו, וכולנו רשאים לעשות בה כל שימוש, לרבות שימוש מסחרי, מבלי צורך לבקש רשות מאיש."
-  about_permission: 'מה פירוש ברשות פרסום?'
-  permission_popover: "על אף שהיצירה עדיין מוגנת בזכויות יוצרים, פרויקט בן־יהודה קיבל *רשות מפורשת לפרסם* את היצירה במאגר היצירה של פרויקט בן־יהודה, לשימוש הקהל הרחב לקריאה ומחקר.  שימושים אחרים (כגון המחזה, הלחנה, או ביצוע מסחרי) עדיין *טעונים אישור מפורש* מאת בעלי הזכויות."
-  by_permission: מוגש ברשות פרסום
   uploaded_images: נקלטו %{images_added} קבצים נוספים, ועכשיו יש ליצירה %{total} בסך הכל.
   add_image: הוספת תמונה
   add_all_images: הדבקת כל התמונות
+  already_in_toc: "׳ [כבר מקושרת]"
   publisher_details: פרטי הוצאה לאור
   made_available_by: 'מוגש לציבור באדיבות:'
   launch_visual_editor: לעורך החזותי
@@ -885,12 +1027,17 @@ he:
   general: כללי
   generated_toc: דף יוצר גולמי מהסדנה הביבליוגרפית
   generated_toc_explanation: "שימו לב: מה שבתיבה זו לא נשמר בשום מקום, אלא אם תעתיקו אותו לתיבת העריכה הרגילה, למטה."
+  sorting_caveat: לא לכל היצירות יש נתוני תאריך.
+  sorting_caveat_title: "שימו לב:"
   uploaded: עלה למערכת
+  uploaded_to_tasks: כבר במערכת המשימות
   make_author_page: הפק דף יוצר גולמי
   todo: לטיפול
   scanned: סרוק
   obtained: בידינו
   remove: הסרה
+  removing: מסיר
+  removed: הוסר
   mark_as_obtained: סימון כ"בידינו"
   mark_as_scanned: סימון כנסרק
   mark_as_missing: סימון כחסר בספרייה
@@ -901,13 +1048,13 @@ he:
   irrelevant: לא רלבנטי
   copyrighted: עדיין מוגן
   no_matches_found: לא נמצאו תוצאות
+  no_more_items: אין עוד פריטים!
   bibliography: ביבליוגרפיה
-  pubs_by_person_instructions_html: "1. יש להזין שם משפחה (עם או בלי שם פרטי אחריו) לחיפוש ולבחור מאגר לחפש בו.<br />2. אם נמצאו תוצאות מעניינות, יש לקשר מחבר מן המערכת בתיבה משמאל. <br />3. אם הכותר מימין עוד לא מופיע משמאל, אפשר ללחוץ על '+ פריט' ולהוסיפו.<br />4. אם הכותר כבר מופיע, אבל זה עותק ממקור אחר, יש לבחור את העותק המופיע, משמאל, ואז ללחוץ על '+עותק' מימין, כדי לשייך את העותק הנוסף לאותו פריט. <br />5. עם מיצוי החיפוש, אפשר לעבור לדף הביבליוגרפי של היוצר בקישור הסגול בראש הרשימה משמאל. "
-  pubs_by_author: חיבורים מקושרים למחבר/ת
+  pubs_by_person_instructions_html: "1. יש להזין שם משפחה (עם או בלי שם פרטי אחריו) לחיפוש ולבחור מאגר לחפש בו.<br />2. אם נמצאו תוצאות מעניינות, יש לקשר יוצר מן המערכת בתיבה משמאל. <br />3. אם הכותר מימין עוד לא מופיע משמאל, אפשר ללחוץ על '+ פריט' ולהוסיפו.<br />4. אם הכותר כבר מופיע, אבל זה עותק ממקור אחר, יש לבחור את העותק המופיע, משמאל, ואז ללחוץ על '+עותק' מימין, כדי לשייך את העותק הנוסף לאותו פריט. <br />5. עם מיצוי החיפוש, אפשר לעבור לדף הביבליוגרפי של היוצר בקישור הסגול בראש הרשימה משמאל. "
+  pubs_by_author: חיבורים מקושרים ליוצר/ת
   is_scanned: סרוק?
-  bib_done: ביבליוגרפיה הושלמה בסדנה?
   record_source: מקור הרשומה
-  select_person_first: יש לשייך מחבר/ת לפני שיוך פריטים
+  select_person_first: יש לשייך יוצר/ת לפני שיוך פריטים
   select_publication_first: יש ללחוץ על שורת פריט משמאל לפני שיוך עותק
   item_pattern: "תבנית קישור לפריט בקטלוג (המזהה יישתל במקום שבו תכתבו __ID__)"
   add_publication: '+פריט --->'
@@ -921,6 +1068,7 @@ he:
   external_links: קישוריוֹת חיצוניות
   link_type: סוג קישורית
   description: תיאור
+  link_description: "תיאור הקישורית, או מה ייכתב אחרי 'מוגש באדיבות:'"
   "BY blog": 'התייחסויות ביומן הרשת של פב"י'
   Wikipedia: ערך בויקיפדיה
   wikipedia: ערך בויקיפדיה
@@ -930,7 +1078,8 @@ he:
   blog: מאמרים ורשומות בלוג
   dedicated_site: אתרים בנושא
   audio: קטעי שֶמע
-  author_details: פרטי מחבר
+  gnazim: 'מכון "גנזים" – אגודת הסופרים'
+  author_details: פרטי יוצר
   work_entity_details: פרטי ישות יצירה
   work_details: פרטי יצירה
   expression_details: פרטי ביטוי
@@ -952,8 +1101,7 @@ he:
   edit: עריכה
   destroy: מחיקה
   our_volunteers: המתנדבים שלנו
-  featured_content_management: ניהול תוכן מומלץ (זרקור)
-  featured_authors_management: ניהול זרקור על מחברים
+  featured_authors_management: ניהול זרקור על יוצרים
   recommendations_by_volunteer: המלצות עורכים ומתנדבים
   featured_author: זרקור על יוצר/ת
   folder_list: רשימת תיקיות
@@ -966,41 +1114,35 @@ he:
   back: חזרה
   back_to_dashboard: למרכז הפעילות
   dashboard: מרכז הפעילות
-  raw_tocs: מחברים עם דף יוצר שטרם עוּבַּד
+  raw_tocs: יוצרים עם דף יוצר שטרם עוּבַּד
   back_to_homepage: לדף הבית
   make_corrections_below: "תיקונים יש לבצע בתיבת הטקסט להלן:"
   recommendations_by_status: המלצות לפי סטטוס %{status}
   sign_in: התחברות
   sign_in_google_twitter: התחברו באמצעות זהות גוגל או טוויטר
   sign_out: התנתקות
-  show_all_proofs: הצג את כל ההגהות
-  show_open_proofs: הצג הגהות חדשות
-  show_escalated_proofs: הצג הגהות טעונות עיון נוסף
-  purge_spam_proofs: מחק הגהות זבל
-  all_proofs: כל ההגהות
-  proofs_by_status: הגהות לפי סטטוס %{status}
-  welcome: 'שלום '
+  welcome_heading: 'שלום '
   please_log_in: אין מה לראות לפני התחברות למערכת.
   user_management: ניהול משתמשים
   editor_actions: פעולות עורך
   editor: עורך
-  illustrator: מאייר
   admin_actions: פעולות מנהל
   proof_for: הגהה עבור
   or: או
   add: הוסף את
+  add_via_autocomplete: הוספת אדם/ארגון מקושר דרך השלמה אוטומטית
   add_linked_person: הוסף איש/ה מקושר/ת
   in_role: בתפקיד
+  add_person_in_role: "הוסף את %{author} בתפקיד: "
   recommendation_for: המלצה עבור הקובץ
   back_to_top: לראש הדף
-  confirmed_person_as_author: המחבר %{author} אושר כמחבר היצירה הזו.
+  confirmed_person_as_author: היוצר %{author} אושר כיוצר היצירה הזו.
+  please_confirm_action: נא לאשר את הפעולה
   from: מאת
   from_lang: מ
   content: תוכן
-  birthdate: תאריך לידה
   birth_year: שנת לידה
   death_year: שנת פטירה
-  deathdate: תאריך פטירה
   creation_date: תאריך יצירה
   publication_date: תאריך פרסום בדפוס
   alphabetical: 'סדר א"ב'
@@ -1015,6 +1157,7 @@ he:
   resolve_no_email_explanation: אפשרויות הבלי דואל נועדו למקרה של ריבוי דיווחים תקינים, לאחר שליחת דואל עבור הראשון
   resolve_as_fixed: השגיאה תוקנה (שולח דואל!)
   resolve_as_fixed_no_email: השגיאה תוקנה (ללא דואל)
+  resolve_as_fixed_with_explanation: השגיאה תוקנה בצירוף הערות (שולח דואל!)
   resolve_as_wontfix: לא שגיאה, או לא יתוקן (שולח דואל!)
   resolve_as_wontfix_with_explanation: לא שגיאה או לא יתוקן, אבל עם הסבר (שולח דואל!)
   resolve_as_wontfix_no_email: לא שגיאה, או לא יתוקן (בלי דואל)
@@ -1028,7 +1171,9 @@ he:
   resolved_as: טופל ועבר לסטטוס %{fixed}
   no_url_specified: לא צוינה כתובת URL.
   no_such_item: אין פריט כזה.
+  item: פריט
   created_toc: נוצר דף יוצר עם תבנית ריקה
+  already_has_toc: כבר קיים דף יוצר ליוצר/ת
   miscellaneous: שונות
   etext: ספר אלקטרוני
   url: כתובת URL
@@ -1036,16 +1181,73 @@ he:
   hello_x: שלום %{name}
   hello_anon: שלום רב!
   suggest_new_tag: הצעת תגית חדשה
+  click_to_select: לחצו לבחירה
+  select_tag_from_list: 'בחרו מהרשימה את התגית שתרצו להוסיף:'
+  suggest_tag: הצעת תגית
+  suggested_by: הוצע על ידי
+  select_from_full_list: בחירה מהרשימה המלאה
+  i_want_to_suggest_a_tag: אני רוצה להציע תגית
+  autosuggest_tags: הציעו לי תגית
+  last_proposed_tags: "תגיות אחרונות שהצעתי:"
+  acceptance_rate: אחוז התקבלות
+  existing_tags_for_this_item: "תגיות קיימות לפריט זה:"
   add_recommendation: הוספת המלצה
-  email_footer_html: "בברכה, צוות פרויקט בן־יהודה.\n\nאולי תמצא/י ענין ביומן הרשת של פרויקט בן־יהודה: http://benyehuda.org/blog/ \n\n או בערוץ היו-טיוב של פרויקט בן־יהודה: http://www.youtube.com/user/ProjectBenYehuda/videos?flow=grid&view=0"
+  email_footer_html: "בברכה, צוות פרויקט בן־יהודה.\n\nאולי תמצא/י ענין בדף הפייסבוק של פרויקט בן־יהודה: https://www.facebook.com/projectbenyehuda \n\n או בערוץ היו-טיוב של פרויקט בן־יהודה: https://www.youtube.com/user/ProjectBenYehuda/videos?flow=grid&view=0"
   proof_fixed: "תודה רבה על ההגהה ששלחת עבור היצירה בכתובת:\n\n%{url}\n\nלאחר בדיקה, תיקנו את הטקסט באתר.  נשמח לקבל הצעות הגהה גם בעתיד!"
   proof_fixed_m: "תודה רבה על ההגהה ששלחת עבור היצירה %{title} בכתובת:\n\n%{url}\n\nלאחר בדיקה, תיקנו את הטקסט באתר.  נשמח לקבל הצעות הגהה גם בעתיד!"
-  proof_wontfix: "תודה רבה על ההגהה ששלחת עבור היצירה בכתובת:\n\n%{url}\n\nלאחר בדיקה, הגענו למסקנה שאין מדובר בשגיאה, אלא בשימוש לשון בלתי-שכיח, ובכל אופן כך מופיע במקור.  לכן לא נתקן את הטקסט באתר.  נשמח לקבל הצעות הגהה גם בעתיד!"
-  proof_wontfix_m: "תודה רבה על ההגהה ששלחת עבור היצירה %{title} בכתובת:\n\n%{url}\n\nלאחר בדיקה, הגענו למסקנה שאין מדובר בשגיאה, אלא בשימוש לשון בלתי-שכיח, ובכל אופן כך מופיע במקור.  לכן לא נתקן את הטקסט באתר.  נשמח לקבל הצעות הגהה גם בעתיד!"
-  additional_wontfix_explanation: "להלן הערה מטעם העורך/ת שטיפל/ה בהצעת ההגהה שלך: \"%{explanation}\""
+  proof_wontfix: "תודה רבה על ההגהה ששלחת עבור היצירה בכתובת:\n\n%{url}\n\nלאחר בדיקה, החלטנו להשאיר את הטקסט כפי שהוא מופיע באתר. לעתים זה משום שמדובר בשימוש לשון בלתי־שכיח, או משום שאיננו בטוחים אם אומנם מדובר בשגיאה, ולכן מעדיפים לדבוק במקור המודפס. נשמח לקבל הצעות הגהה גם בעתיד!"
+  proof_wontfix_m: "תודה רבה על ההגהה ששלחת עבור היצירה %{title} בכתובת:\n\n%{url}\n\nלאחר בדיקה, החלטנו להשאיר את הטקסט כפי שהוא מופיע באתר. לעתים זה משום שמדובר בשימוש לשון בלתי־שכיח, או משום שאיננו בטוחים אם אומנם מדובר בשגיאה, ולכן מעדיפים לדבוק במקור המודפס. נשמח לקבל הצעות הגהה גם בעתיד!"
+
+  additional_proof_explanation: "להלן הערה מטעם העורך/ת שטיפל/ה בהצעת ההגהה שלך: \"%{explanation}\""
+  additional_tagging_explanation: "להלן הערה מטעם העורך/ת שטיפל/ה בהצעת התיוג שלך: \"%{explanation}\""
   below_is_your_original_email: להלן נוסח הדואל ששלחת אלינו בשעתו, לשם תזכורת.
+  tag_rejected_intro: "לאחר עיון, החלטנו לא להוסיף את התגית \"%{tag}\" שהצעת. התגית אינה מתאימה למדיניות התיוג שלנו, או שהיא נרדפת לתגית קיימת."
+  tag_approved_intro: "לאחר עיון, החלטנו להוסיף את התגית \"%{tag}\" שהצעת. תודה רבה על ההצעה, ונשמח לקבל הצעות לתגיות ולתיוגים של יצירות גם בעתיד!"
+  user_warning_email: "יש להקפיד על תנאי השימוש באתר: על שפה נאותה, על זכויות יוצרים, ועל אי־הפרת חוק לשון הרע. זו אזהרה בלבד; אם תהיינה הפרות נוספות מצדך, חשבונך ייחסם."
+  tagging_approved_email_html: "תודה רבה על התיוג שהצעת עבור הפריט בכתובת:<p/><p/>%{url}.<p/><p/>לאחר בדיקה, הוספנו את התיוג %{tag} לפריט \"%{taggable}\". נשמח לקבל הצעות תיוג גם בעתיד!"
+  tagging_rejected_email_html: "לאחר עיון, החלטנו לא להוסיף את התיוג \"%{tag}\" שהצעת עבור הפריט בכתובת:<p/><p/>%{url}.<p/><p/>התיוג אינו מתאים למדיניות התיוג שלנו, או שהוא נרדף לתיוג קיים. נשמח לקבל הצעות תיוג גם בעתיד!"
+  taggable_item: הפריט לתיוג
+  additional_warning_explanation: "להלן הערה מטעם העורך/ת שזיהה את הבעייה: \"%{msg}\""
   rec_accepted: "קיבלנו בתודה את המלצתך על היצירה:\n\n%{url}\n\nכשנתפנה לעיין בה, נשקול לשלב אותה בפרסום בפייסבוק או ברשומה ביומן הרשת שלנו, כדי שגם אחרים ייהנו."
   rec_published: "המלצתך על היצירה בכתובת:\n\n%{url}\n\nשולבה עתה בטקסט שפרסמנו כאן:\n\n%{published_url}\n"
+  taggings_merged: "התיוגים הועברו לתגית הקיימת '%{toname}'"
+  tagging_merged: התיוג הועבר.
+  tag_renamed: "שם התגית הוחלף לשם '%{newname}'"
+  save_tag_suggestion: שלח הצעת תיוג!
+  suggest_tags: הצע לי תיוגים
+  suggested_tag: התגית המוצעת
+  quick_actions: פעולות מהירות
+  to_next_item: לפריט הבא
+  to_previous_item: לפריט הקודם
+  time_waiting: זמן המתנה
+  block_user: חסימת משתמש
+  warn_user: אזהרת משתמש
+  escalate_to_editor: העברה לעורך ראשי להכרעה
+  reject_and_explain: "דחיה + הסבר"
+  explain_rejection: נא להסביר את סיבת הדחייה
+  optional_explanation_of_rejection: במקרה של קבלה בשם שונה, המציע יקבל הודעת דחייה, ואפשר להזין להלן נימוק.
+  provide_reason: נא להסביר את סיבת הפעולה
+  suggested_tags: תגיות שהוצעו
+  linked_taggings: תיוגים מקושרים
+  used_on_other_works: מיצירות סמוכות
+  excited_new: חדש!
+  awaiting_approval: ממתין לאישור
+  new_tag_teaser: עזרו לנו לחשוף יצירות לקוראים נוספים באמצעות תיוג!
+  tags_are_a_way: תגיות מסייעות לגילוי יצירות ויוצרים לפי נושאים ומכנים משותפים
+  want_to_tag: רוצה לתייג?
+  popular_tags_by_user: הוספת תכופות
+  recent_tags_by_user: הוספת באחרונה
+  popular_tags: נפוצות
+  taggings_count: כמות פריטים מתויגים
+  tag_list: רשימת תגיות
+  tag_page: דף תגית
+  tag_not_found: אין תגית כזו!
+  authors_tagged_with_this: יוצרים/ות שתויגו "%{tag}"
+  works_tagged_with_this: יצירות שתויגו "%{tag}"
+  search_by_tag: לחיפוש פריטים מתויגים בתגית זו בפרויקט
+  recommendations_below: תגיות מוצעות להלן
+  tagging_system_locked_by: מערכת ניטור התגיות בשימוש על ידי %{user}, והפעולה האחרונה בוצעה לפני %{ago} דקות.
+  tagging_system_locked: מערכת הניטור נעולה
   hebrew: עברית
   english: אנגלית
   german: גרמנית
@@ -1056,6 +1258,9 @@ he:
   french: צרפתית
   russian: רוסית
   yiddish: יידיש
+  sanskrit: סנסקריט
+  bulgarian: בולגרית
+  georgian: גאורגית
   ladino: לדינו
   chinese: סינית
   aramaic: ארמית
@@ -1073,17 +1278,26 @@ he:
   norwegian: נורווגית
   swedish: שוודית
   dutch: הולנדית
+  default: ברירת מחדל
   translator: מתרגם
   translator_f: מתרגמת
   translated_by: בתרגום
-  pd_explain: פגו זכויות היוצרים על יצירות אלו
-  permission_explain: התקבלה רשות מפורשת מבעלי הזכויות לפרסום היצירות
+  editor: עורך
+  editor_f: עורכת
+  illustrator: מאייר
+  illustrator_f: מאיירת
+  photographer: צלם
+  photographer_f: צלמת
+  mlbhd: 'מלבה"ד'
+  contributor: משתתף
+  contributor_f: משתתפת
   about_the_author_on_the_blog: רשומות ביומן הרשת
   donate_title: תמיכה כספית בפרויקט
   donate_p1_html: כל עבודת ההקלדה, ההגהה והעריכה בפרויקט נעשית <b>בהתנדבות וללא קבלת תמורה</b>. עם זאת, אנו מזמינים שירותי פיתוח תוכנה, אפיון, ועיצוב מנשק משתמש מקבלנים, ולשם כך אנו מגייסים תרומות.
   donate_p2_html: כספי תרומתכם מועברים לחשבון העמותה למחשוב ספרות עברית (מס״ע), שהקמנו עבור תמיכה בפרויקט, וישמשו אך ורק לצרכים אלו.
   about_amuta: על העמותה למחשוב ספרות עברית
   reports: "דו\"חות"
+  user: משתמש/ת
   tocs_missing_links_report: "דו\"ח יצירות לא מקושרות לדפי יוצר"
   tocs_linking_to_missing_items: "דפי יוצר שמקשרים ליצירות לא קיימות"
   missing_copyright_report: "דו\"ח אישים ויצירות ללא מצב זכויות יוצרים"
@@ -1092,10 +1306,6 @@ he:
   missing_xlat: תרגומים שאינם מוזכרים
   missing_language_report: "דו\"ח יצירות מתורגמות ללא ציון שפת מקור"
   missing_genre_report: "דו\"ח יצירות ללא סוגה"
-  incongruous_copyright_report: "דו\"ח יצירות במצב זכויות יוצרים שגוי (כנראה)"
-  takes_long_time: דורש זמן רב!
-  calculated_copyright: לכאורה קנין הציבור?
-  db_copyright: קנין הציבור במערכת?
   volunteer_profiles: פרופילי מתנדבים
   feature_on: להציג בתאריכים
   featured_content_heading: ניהול תכני מערכת
@@ -1109,12 +1319,8 @@ he:
   add_bookmark: הוספת סימניה
   add_feature_date: הוספת טווח תאריכי הצגה
   featured_content_body: תוכן ההמלצה
-  linked_manifestation: יצירה מקושרת
-  linked_author: מחבר/ת מקושר/ת
-  featured_content: תוכן מערכת
-  new_featured_content: תוכן מערכת חדש
+  linked_author: יוצר/ת מקושר/ת
   new_featured_author: יצירת זרקור חדש על יוצר
-  external_link: קישורית חיצונית
   to_external_content: לתוכן חיצוני
   preview: תצוגה מקדימה ללא שמירה
   new_title_only: כותרת (בלבד) חדשה, אם צריך
@@ -1133,6 +1339,14 @@ he:
   latest_uploads_for: יצירות שנוספו באחרונה מאת %{author}
   temporary_worklist: רשימת יצירות (זמנית)
   improvements_soon: דף זה טרם עוצב. בקרוב נכניס בו שיפורים, אבל רצינו שבינתיים תוכלו לגשת ליצירות עצמן.
+  primary: יצירה עיקרית
+  group_in_collections: קיבוץ לאוספים
+  collection_item_type: סוג פריט
+  skipped_x_items: דילגנו על %{x} פריטים שטרם עלו לאתר.
+  parent_collections: "שייך לאוספים:"
+  collection_circular_reference: אוסף מקושר לעצמו!
+  uncollected_works_collection_title: יצירות שלא כונסו
+  uncollected_works_collection_explanation: יצירות אלו לוקטו ממקורות שונים שאינם מופיעים במאגר בשלמותם, כגון כתבי עת, עיתונות, או עזבונות.
 
   notifications:
     proof_fixed:
@@ -1147,11 +1361,25 @@ he:
       subject: יצירת קשר מהאתר
     volunteer_form_submitted:
       subject: טופס התנדבות מהאתר
+    tag_rejected:
+      subject: הצעת התגית שלך לא התקבלה
+    tagging_rejected:
+      subject: הצעת התיוג שלך לא התקבלה
+    tag_approved:
+      subject: התגית שהצעת התקבלה
+    tagging_approved:
+      subject: התיוג שהצעת התקבל
+    tag_merged:
+      subject: התגית שהצעת אוחדה עם תגית קיימת
+    warn:
+      subject: אזהרה לפני חסימה מפרויקט בן־יהודה
+    block:
+      subject: חסימה מפרויקט בן־יהודה
   api_keys_mailer:
     key_created:
-      subject: Your API key
+      subject: מפתח ה־API שלך
     key_created_to_editor:
-      subject: New API key created
+      subject: נוצר מפתח API חדש
   views:
     pagination:
       next: לדף הבא
@@ -1167,3 +1395,270 @@ he:
       - "day"
       - "month"
       - "year"
+  admin:
+    featured_contents:
+      index:
+        title: ניהול תוכן מומלץ (זרקור)
+      new:
+        title: תוכן מערכת חדש
+    featured_content_features:
+      create:
+        failed: קליטת טווח תאריכי תצוגה נכשלה. יש לבדוק את התאריכים.
+    index:
+      takes_long_time: דורש זמן רב!
+    incongruous_copyright:
+      title: דו\"ח יצירות במצב זכויות יוצרים שגוי (כנראה)
+      columns:
+        db_intellectual_property: מצב זכויות יוצרים במערכת
+        has_non_public_domain_authority: זכויות הישות טרם פקעו
+  ingestibles:
+    ingestible_locked: ההעלאה נעולה לטיפול מידֵי %{user}
+    replace_with_authority: החלף ביישות קיימת!
+    # _authorities partial
+    authorities:
+      or_new_person: או הקלידו שם יוצר/ת נטול/ת ישות
+    new:
+      title: העלאה חדשה
+    create:
+      success: ההעלאה נוצרה
+      failure: אירעה שגיאה בפתיחת ההעלאה
+    edit:
+      title: עדכון העלאה
+    show:
+      title: פרטי העלאה
+      texts: טקסטים
+      collections: אוספים
+      placeholders: שומרי מקום
+      ingested_changes: פריטים שנקלטו
+      created: נוצר
+      updated: עודכן
+      undo: ביטול ההעלאה
+    form:
+      general: כל ההעלאה
+      texts: טקסטים
+      full_markdown: מארקדאון מלא
+      toc: תוכן עניינים
+      review: סקירה לקראת אישור העלאה
+      problem: תיאור בעיה
+    update:
+      success: ההעלאה עודכנה
+    undo:
+      undone: ההעלאה בוטלה. היצירות נמחקו, ואם נוצר כותר ולא נוספו לו פריטים מעבר להעלאה זו, גם הכותר נמחק.
+    unlock:
+      success: שוחרר בהצלחה!
+      not_locked_by_you: לא נעול על ידך!
+    ingest:
+      ingestion_now_pending: ההעלאה ממתינה עכשיו ליצירת אישים
+      failures: אירעו שגיאות. ראו בשדה תיאור בעיה בלשונית הראשונה.
+      success: הידד! היצירות עלו וההעלאה הסתיימה בהצלחה.
+      errors: שגיאות!
+    review:
+      title: "סקירת העלאה: %{title}"
+      statistics: סטטיסטיקה
+      text_information: מידע על יצירות
+      affected_authorities: מידע על יוצרים
+      ingest: סיים העלאה וצור ישויות!
+      pending_ingest: העבר ליצירת ישויות אישים. ההעלאה תושלם לאחר יצירת האישים החסרים.
+      additions: תוספות
+      volume_information: פרטי כותר
+      no_volume: העלאת יצירות לא מקובצות – ללא כותר כלל
+      adding_to_existing_volume: הוספת יצירות לכותר קיים
+      new_volume: יצירת כותר חדש שטרם אותר בסדנה
+      new_volume_by_workshop: יצירת כותר חדש על סמך רשומה ביבליוגרפית קיימת
+      placeholder: '--- שומר מקום ---'
+      texts: יצירות שיעלו
+      placeholders: שומרי מקום
+      already_in_collection: כבר קיים בכותר
+      back_to_editing: חזרה לעריכת ההעלאה
+      missing_in_markdown: 'הכותרות הבאות חסרות במארקדאון:'
+      extraneous_markdown: 'הכותרות הבאות מופיעות במארקדאון ולא נכללו בהעלאה:'
+      empty_texts: 'ליצירות הבאות לא הוזן תוכן:'
+      missing_genre: 'ליצירות הבאות לא הוגדרה סוגה:'
+      missing_origlang: 'ליצירות הבאות לא הוגדרה שפת מקור:'
+      missing_authority: 'ליצירות הבאות לא קושר אף אדם או ארגון:'
+      missing_publisher_info: לא הוזנו פרטי הוצאה על אף שהוגדר כותר
+      errors: שגיאות!
+      cannot_ingest_with_errors: יש לתקן את השגיאות המתוארות בראש הדף כדי שלחצן ההעלאה יהיה זמין.
+      authorities_tbd: אחד או יותר מהאישים המקושרים טרם הוגדר במערכת. אם כל השאר מוכן, אפשר להעביר את ההעלאה למצב המתנה ליצירת האישים, והיא תעלה מייד לאחר יצירת הישויות החסרות.
+      awaiting_authorities: "ההעלאה מוכנה פרט לישויות חסרות:"
+      awaiting_authorities_resolved: ההעלאה במצב המתנה לישויות, אבל כל הישויות כבר סודרו. אפשר לסיים את ההעלאה!
+      problem_is_not_empty: שדה הבעיות אינו ריק!
+      to_originating_task: למקור במערכת המשימות
+    index:
+      my_title: העלאות נעולות על ידי כרגע
+      locked_title: העלאות נעולות על ידי אחרים כרגע
+      other_title: רשימת העלאות נוספות
+      start_new: התחלת העלאה חדשה
+      internal_title: כותרת פנימית להעלאה כולה
+      show_uningested_only: הצג רק העלאות שלא הושלמו
+      show_all: הצג את כל ההעלאות
+      pending_ingestibles: ישנן %{count} העלאות ממתינות ליצירת ישויות
+      last_editor: עורך/ת אחרון/ה
+    destroy:
+      success: ההעלאה נמחקה
+  ingestible_texts:
+    edit:
+      text_x_of_total: טקסט %{index} מתוך %{total}
+      next: הטקסט הבא
+      previous: הטקסט הקודם
+      not_in_toc: הטקסט לא סומן ככלול בהעלאה!
+  collections_migration:
+    index:
+      title: תהליך המרת דפי יוצר לדפים אוטומטיים עם כותרים
+      explanation: 'להלן רשימת יוצרים לפי כמות יצירות בסדר עולה, שעדיין יש להם דף יוצר ידני:'
+    person:
+      title: המרת דף יוצר
+      explanation: ליד כל כותרת בדף היוצר הקיים יש לחצן יצירת כותר.
+      mark_migrated: סיים הסבה והפעל את דף היוצר החדש ליוצר/ת זה/זו
+    migrate:
+      migrated_html: '<a href="%{link}" style="color:blue; text-decoration:underline; cursor:pointer;">דף היוצר החדש הופעל!</a>'
+  involved_authorities:
+    list:
+      select_authority: נא לבחור ישות אחראית
+  shared:
+    manage_collection:
+      select_manifestation: יש לבחור יצירה להלן
+    manage_toc:
+      choose_between_author_pubs: בחירה מתוך כותרים ידועים ליוצר זה
+      collections_area: דף היוצר בשיטת האוספים
+      verify_publisher_line: פרטי הוצאה לאור – לתקן או למחוק אם שגוי!
+      city_and_publisher: "עיר: מוציא לאור"
+      year: שנת הוצאה לאור
+      make_collection: צור כותר ושייך יצירות להלן    
+    filters:
+      pagination:
+        page_x_of_total: דף %{page} מתוך %{total}
+        next_page: לדף הבא
+        previous_page: לדף הקודם
+        first_page: לדף הראשון
+    surprise_work:
+      explanations:
+        public_domain: פגו זכויות היוצרים על יצירות אלו
+        by_permission: התקבלה רשות מפורשת מבעלי הזכויות לפרסום היצירות
+        copyrighted: זכויות היוצרים עודן בתוקף
+        orphan: מוגש לפי סעיף יצירות יתומות בחוק זכויות יוצרים
+        unknown: מצב הזכויות אינו ידוע
+    intellectual_property:
+      about:
+        public_domain: מה פירוש נחלת הכלל?
+        by_permission: מה פירוש ברשות פרסום?
+        copyrighted: מה פירוש הזכויות בתוקף?
+        orphan: מה פירוש יצירות יתומות?
+        permission_for_all: רשות גורפת לכלל היצירות
+        permission_for_selected: רשות לכותרים מסוימים בלבד
+        unknown: מה פירוש מצב הזכויות אינו ידוע?
+      popover:
+        public_domain: חוק זכויות יוצרים מגן מפני שימוש בלתי-מורשה ביצירות למשך תקופת תוקפו (בישראל, שבעים שנה מסוף שנת מות היוצר).  עם פקוע הזכויות, הופכת היצירה 'נחלת הכלל', כלומר רכוש הציבור.  פירוש הדבר שהיצירה שייכת לכולנו, וכולנו רשאים לעשות בה כל שימוש, לרבות שימוש מסחרי, מבלי צורך לבקש רשות מאיש.
+        by_permission: על אף שהיצירה עדיין מוגנת בזכויות יוצרים, פרויקט בן־יהודה קיבל *רשות מפורשת לפרסם* את היצירה במאגר היצירה של פרויקט בן־יהודה, לשימוש הקהל הרחב לקריאה ומחקר.  שימושים אחרים (כגון המחזה, הלחנה, או ביצוע מסחרי) עדיין *טעונים אישור מפורש* מאת בעלי הזכויות.
+        copyrighted: זכויות היוצרים עודן בתוקף, ואין רשות להנגיש את החומר או לעשות בו כל שימוש שלא הותר במפורש, למעט שימוש הוגן כהגדרתו בחוק זכויות יוצרים.
+        orphan: זכויות היוצרים עודן בתוקף, אלא שזהות המחזיקים בזכויות אינה ידועה, או שאין דרך ליצור עמם קשר, ולכן מותר להנגיש את היצירות בתנאים המוגדרים בסעיף יצירות יתומות בחוק זכויות יוצרים.
+        permission_for_all: על אף שהיצירה עדיין מוגנת בזכויות יוצרים, פרויקט בן־יהודה קיבל *רשות מפורשת לפרסם* את היצירה במאגר היצירה של פרויקט בן־יהודה, לשימוש הקהל הרחב לקריאה ומחקר.  שימושים אחרים (כגון המחזה, הלחנה, או ביצוע מסחרי) עדיין *טעונים אישור מפורש* מאת בעלי הזכויות.
+        permission_for_selected: על אף שהיצירה עדיין מוגנת בזכויות יוצרים, פרויקט בן־יהודה קיבל *רשות מפורשת לפרסם* את היצירה במאגר היצירה של פרויקט בן־יהודה, לשימוש הקהל הרחב לקריאה ומחקר.  שימושים אחרים (כגון המחזה, הלחנה, או ביצוע מסחרי) עדיין *טעונים אישור מפורש* מאת בעלי הזכויות.
+        unknown: "על אף כל המאמצים, לא ניתן לקבוע מה מצב זכויות היוצרים, בדרך כלל בשל מידע חסר לגבי זהות או מועד פטירת המחבר[ים] או המתרגם[ים]."
+  welcome:
+    submit_contact:
+      ziburit_failed: לא השתכנענו שאינך רובוט.
+      email_missing: נא לציין כתובת דואל, כדי שנוכל להשיב לך.
+  proofs:
+    index:
+      title_all: כל ההגהות
+      title_by_status: הגהות לפי סטטוס %{status}
+      show_all: הצג את כל ההגהות
+      show_open: הצג הגהות חדשות
+      show_escalated: הצג הגהות טעונות עיון נוסף
+      show_fixed: הצג הגהות שתוקנו
+      show_wontfix: הצג הגהות שהוחלט לא לתקן
+      purge_spam: מחק הגהות זבל
+    create:
+      ziburit_failed: לא השתכנענו שאינך רובוט.
+      email_missing: נא לציין כתובת דואל, כדי שנוכל להשיב לך.
+  manifestation:
+  collection:
+    type:
+      volume: כותר
+      anthology: אסופה
+      periodical: כתב עת
+      periodical_issue: גליון
+      series: סדרה, מחזור, או שער
+      root: כלל היצירה של אדם או גוף
+      other: אחר
+      uncollected: יצירות שלא כונסו
+    up_link:
+      volume: לתצוגת הכותר
+      anthology: לתצוגת האסופה
+      periodical: לתצוגת כתב העת
+      periodical_issue: לתצוגת הגליון
+      series: לתצוגת המחזור/שער כולו
+
+  intellectual_property:
+    public_domain: נחלת הכלל
+    by_permission: מוגש ברשות פרסום
+    copyrighted: מוגן בזכויות
+    orphan: יצירות יתומות
+    permission_for_all: כלל היצירה מוגש ברשות
+    permission_for_selected: יצירות מסוימות מונגשות ברשות
+    unknown: לא ידוע
+    
+  involved_authority:
+    role:
+      author: יוצר
+      editor: עורך
+      illustrator: מאייר
+      translator: מתרגם
+      photographer: צלם
+      designer: מעצב
+      contributor: משתתף
+      other: אחר
+  ingestible:
+    scenario:
+      single: יצירה בודדת
+      multiple: מספר יצירות עם אותם מאפיינים
+      mixed: יצירות בעלות מחברים או מאפיינים שונים
+    status:
+      draft: העלאה בעבודה
+      ingested: העלאה הושלמה
+      failed: העלאה נכשלה
+      awaiting_authorities: בהמתנה ליצירת ישויות אישים חסרות
+    title: כותרת פנימית להעלאה
+    new_title: כותרת חדשה ליצירה
+    invalid: 'שמירת הקובץ נמנעה בגלל:'
+    current_file: קובץ נוכחי
+    or_replace_file: 'או החלפת הקובץ בהעלאה מחדש:'
+    any_volume: איתור כותר מכלל המאגר
+    no_volume: לא מתוך כותר
+    volume: כותר
+    included_in_upload: נכלל בהעלאה?
+    new_volume: צור כותר חדש! – 
+    start_upload_block: סמן תחילת יצירות להעלאה
+    end_upload_block:  סמן סיום יצירות להעלאה
+    defaults: שדות לכל היצירות בהעלאה זו
+    included_works: עריכת רשימת היצירות בהעלאה זו
+    attach_photos: צירוף תמונות
+    volume_by_author: איתור כותר מאת יוצר
+    no_volume_explanation: יצירות לא מקובצות
+    attach_photos_explanation: יש לסמן כדי להעלות תמונות בהמשך
+    create_new_volume: צור כותר חדש שלא מתוך כותרים ידועים לסדנה הביבליוגרפית
+    matched_in_markdown: תואם כותרת במארקדאון?
+    pick_periodical: בחירת כתב עת
+    pick_issue: בחירת גליון
+    add_new_issue: (הוספת גליון חדש)
+    new_issue_title: 'כותרת הגליון החדש (לדוגמה: "חדרים 4" או "גליון 56")'
+    need_to_save: יש לשמור את ההעלאה לאחר עדכון כותר
+    need_to_save_explanation: השמירה תעדכן אישים מקושרים להעלאה (לפי הכותר)
+    translator_missing: שפת המקור אינה עברית ולא הוגדר מתרגם!
+    author_missing: לא הוגדר יוצר (אפילו אלמוני)
+    originating_task: משימת מקור
+    already_being_ingested: משימה זו כבר בתהליך העלאה :)
+    credits: קרדיטים
+  # This block of strings below should be removed when we finish work. Grouped them together to make it easier to find them again
+  public_domain: נחלת הכלל
+  viaf_id: "מזהה במאגר VIAF‏"
+  text_n_of_m: "טקסט %{n} מתוך %{m}"
+  and_n_placeholders: "ועוד %{n} שומרי מקום"
+  convert_to_new_method: המרה לשיטה החדשה
+  manage_toc: 'ניהול דף יוצר מבוסס אוספים: %{author}'
+  manage_toc_link: 'ניהול דף יוצר מבוסס אוספים'
+  manage_toc_explanation: במסך זה אפשר לערוך את כל האוספים שבם יוצר/ת זה/זו מעורב/ת ברמת האוסף. אפשר גם להוסיף יצירה או אוסף מתוך כלל המאגר לתוך אחד האוספים המופיעים כאן, וגם ליצור אוסף חדש לגמרי ולקשר אותו ליוצר/ת זה/זו. אם היה דף יוצר ידני בעבר, הוא מוצג משמאל.
+  show_genres: סינון לפי סוגה
+  refresh_uncollected_works: רענון יצירות שלא כונסו
+  out_of: "מתוך "

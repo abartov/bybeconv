@@ -1,4 +1,4 @@
-.top-element.backend
+.backend
   %h1= t(:user_list)
   = form_tag do
     = label_tag(t(:name))
@@ -30,6 +30,11 @@
               = select_tag :set_to, options_for_select([[t(:activate_bit), 1],[t(:deactivate_bit), 0]])
               = submit_tag t(:submit)
         %td
+          - unless u.crowdsourcer?
+            = link_to t(:make_crowdsourcer), user_make_crowdsourcer_path(u)
+          - else
+            = link_to t(:unmake_crowdsourcer), user_unmake_crowdsourcer_path(u)
+          = ' | '
           - unless u.editor?
             = link_to t(:make_editor), user_make_editor_path(u)
           - else

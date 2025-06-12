@@ -1,37 +1,177 @@
-.mainlist#browse_mainlist
+#genre_filtering{style: 'display: none;'}
+  %h3= t(:show_genres)
+  -# show a checkbox for each present genre to show/hide items of that genre
   - get_genres.each do |genre|
-    - if @works[genre].size > 0 || @translations[genre].size > 0
-      .by-card-v02{id: 'works-'+genre, role: 'tabpanel'}
-        .by-card-header-v02
-          %span.by-icon-header-v02= glyph_for_genre(genre)
-          %span.headline-1-v02= textify_genre(genre)
-          - if @works[genre].size > 0
-            .by-card-content-v02.mainlist{:style => "padding-top: 12px;"}
-              %ol
-                - @works[genre].each do |m|
-                  %li
-                    %p
-                      = link_to m.title, manifestation_read_path(m)
-                      - if m.authors.count > 1
-                        - au_count = m.authors.count - 1
-                        - i = 0
-                        = '('+t(:with)
-                        - add_authors = ''
-                        - m.authors.each do |au|
-                          - next if au == @author
-                          - i += 1
-                          - add_authors += au.name + (i == au_count ? '' : '; ')
-                        = add_authors+')'
-                      - if m.expressions[0].translation
-                        = " #{t(:translated_by)} "
-                        != m.expressions[0].translators.map{|p| link_to(p.name, author_toc_path(p))}.join('; ')
+    %span.hidden{id: "genre_#{genre}"}
+      = check_box_tag "genre_#{genre}", 1, true, class: 'genre_checkbox'
+      = label_tag "genre_#{genre}", textify_genre(genre)
+%p
+  = t(:sort_by)
+  = select_tag :sort_by, options_for_select([[t(:collections_and_pubdates_asc), 'colls'], [t(:collections_abc),'colls_abc'], [t(:alefbet_asc), 'title'], [t(:popularity_desc), 'popularity_desc'], [t(:popularity_asc), 'popularity_asc'], [t(:pubdate_asc), 'pubdate_asc'], [t(:pubdate_desc), 'pubdate_desc'], [t(:creation_date_asc), 'creation_date_asc'], [t(:creation_date_desc), 'creation_date_desc'], [t(:uploaddate_asc), 'upload_date_asc'], [t(:uploaddate_desc), 'upload_date_desc']  ], params[:sort_by])
+.sorting_caveat{ style: 'display:none' }
+  %p
+    %b= t(:sorting_caveat_title)
+  %p= t(:sorting_caveat)
+.mainlist#browse_mainlist
+  = cache_unless current_user&.editor?, @author, expires_in: 12.hours do
+    - top_nodes = GenerateTocTree.call(@author)
+    = render partial: 'authors/toc_by_role',
+              locals: { top_nodes: top_nodes,
+                        title: t(:original_works),
+                        role: :author,
+                        authority_id: @author.id, editable: false, nonce: 'a' }
+    = render partial: 'authors/toc_by_role',
+              locals: { top_nodes: top_nodes,
+                        title: t(:translations),
+                        role: :translator,
+                        authority_id: @author.id, editable: false, nonce: 't' }
+    = render partial: 'authors/toc_by_role',
+              locals: { top_nodes: top_nodes,
+                        title: t(:edited_works, gender_letter: @author.gender_letter),
+                        role: :editor,
+                        authority_id: @author.id, editable: false, nonce: 'e' }
+  .by-card-v02#text-volunteers-desktop
+    .by-card-header-v02
+      .headline-1-v02= t(:volunteers_who_helped, author: @author.name, gender_letter: @author.gender_letter)
+    .by-card-content-v02
+      .credits
+        != @credits
+:javascript
+  $(document).ready(function() {
+    var genres = { #{get_genres.map { |g| "'#{g}': '#{textify_genre(g)}'" }.join(', ') } };
+    for(var genre in genres) {
+      if($('.by-icon-v02[title="' + genres[genre] + '"]').length > 0)
+        $('#genre_'+genre).show();
+    }
+    $('.genre_checkbox').on('change', function(e){
+      genre = this.id.replace('genre_', '');
+      if(this.checked) {
+        $('.by-icon-v02[title="' + genres[genre] + '"]').closest('.manifestation-node').show();
+      } else {
+        $('.by-icon-v02[title="' + genres[genre] + '"]').closest('.manifestation-node').hide();
+      }
+    });
 
-          - if @translations[genre].size > 0
-            .by-card-content-v02{:style => "padding-top: 12px;"}
-              %h3= t(:translation)
-              %ol
-                - @translations[genre].each do |m|
-                  %li
-                    = link_to m.title, manifestation_read_path(m)
-                    = t(:by)
-                    = link_to m.expressions[0].work.first_author.name, author_toc_path(m.expressions[0].work.first_author)
+    function prune_collections() {
+      $('.cwrapper').each(function() {
+        if($(this).hasClass('uncollected') == false) {
+          manifs = $(this).find('.manifestation-node:visible');
+          placeholders = $(this).find('.ph-node:visible');
+          if(manifs.length == 1 && placeholders.length == 0) {
+            if($(manifs[0]).find('.mtitle').text().trim() == $(this).find('.ctitle_only').text().trim()) {
+              $(this).children('.by-icon-v02').remove();
+              $(this).prepend(manifs.find('.by-icon-v02').clone());
+              manifs.hide();
+            }
+          }
+        }
+      });
+    }
+    $('#sort_by').change(function(){
+      if(this.value == 'colls') {
+        $('#browse_mainlist').html(orig_mainlist);
+        $('#genre_filtering').hide();
+      } else {
+        $('.sorting_caveat').hide();
+        $('.metadata-creation-date').hide();
+        $('.metadata-pubdate').hide();
+        $('.metadata-upload-date').hide();
+        if (this.value == 'colls_abc') {
+          $('#browse_mainlist').html(orig_mainlist);
+          $('#genre_filtering').hide();
+          nodes_to_sort = $('.cwrapper');
+          nodes_to_sort.sort(function(a, b) {
+            x = $(a).find('span').text();
+            y = $(b).find('span').text();
+            return x.localeCompare(y);
+          });
+        } else {
+          $('.metadata-source-edition').hide();
+          $('#genre_filtering').show();
+          nodes_to_sort = $('.manifestation-node');
+          var sortval;
+          var sort_asc = true;
+          switch(this.value) {
+            case 'title':
+              sortval = 'data-title';
+              break;
+            case 'popularity_desc':
+              sort_asc = false;
+            case 'popularity_asc':
+              sortval = 'data-impressions';
+              break;
+            case 'pubdate_desc':
+              sort_asc = false;
+            case 'pubdate_asc':
+              sortval = 'data-pubdate';
+              $('.sorting_caveat').show();
+              $('.metadata-pubdate').show();
+              break;
+            case 'creation_date_desc':
+              sort_asc = false;
+            case 'creation_date_asc':
+              sortval = 'data-creation-date';
+              $('.sorting_caveat').show();
+              $('.metadata-creation-date').show();
+              break;
+            case 'upload_date_desc':
+              sort_asc = false;
+            case 'upload_date_asc':
+              sortval = 'data-upload-date';
+              $('.metadata-upload-date').show();
+              break;
+          }
+          if(sort_asc) {
+            nodes_to_sort.sort(function(a, b) {
+              x = $(a).find('.sorting-metadata').attr(sortval);
+              y = $(b).find('.sorting-metadata').attr(sortval);
+              if(sortval == 'data-impressions') {
+                x = parseInt(x);
+                y = parseInt(y);
+              }
+              if (x == null) {
+                x = '';
+              }
+              if (y == null) {
+                y = '';
+              }
+              if(x > y) {
+                return 1;
+              } else if(x < y) {
+                return -1;
+              } else {
+                return 0;
+              }
+            });
+          } else {
+            nodes_to_sort.sort(function(a, b) {
+              x = $(a).find('.sorting-metadata').attr(sortval);
+              y = $(b).find('.sorting-metadata').attr(sortval);
+              if(sortval == 'data-impressions') {
+                x = parseInt(x);
+                y = parseInt(y);
+              }
+              if (x == null) {
+                x = '';
+              }
+              if (y == null) {
+                y = '';
+              }
+              if(x < y) {
+                return 1;
+              } else if(x > y) {
+                return -1;
+              } else {
+                return 0;
+              }
+            });
+          }
+        }
+        $('#browse_mainlist').html('<div class="by-card-v02"><div class="by-card-content-v02" id="sorted_card"></div></div>');
+        $('#sorted_card').html(nodes_to_sort.detach());
+      }
+    });
+    prune_collections();
+    var orig_mainlist = $('#browse_mainlist').html();
+
+  });

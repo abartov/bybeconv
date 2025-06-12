@@ -1,0 +1,127 @@
+-# rubocop:disable Style/CaseLikeIf
+- nodeclass = case when toc_node.is_a?(TocTree::ManifestationNode) then 'manifestation-node' when toc_node.is_a?(TocTree::PlaceholderNode) then 'ph-node' else '' end
+%li{ class: nodeclass, style: toc_node.is_a?(TocTree::ManifestationNode) ? '' : 'margin-top: 12px; margin-bottom: 10px;' }
+  - if toc_node.is_a?(TocTree::ManifestationNode)
+    - m = toc_node.manifestation
+    - e = m.expression
+    - w = e.work
+    - genre = w.genre
+    %span.sorting-metadata{ 'data-impressions': m.impressions_count, 'data-title': m.sort_title, 'data-pubdate': e.normalized_pub_date.present? ? e.normalized_pub_date.to_date.jd : nil, 'data-creation-date': w.normalized_creation_date.present? ? w.normalized_creation_date.to_date.jd : nil, 'data-upload-date': m.publication_date.to_date.jd }
+    %span.by-icon-v02{ title: t(genre) }>= glyph_for_genre(genre)
+    &nbsp;&rlm;
+    :ruby
+      label = m.title
+      case role
+      when :editor
+        label += " / #{m.author_string}"
+      when :translator
+        label += " / #{authorities_string(m, :author)}"
+        if m.translators.size > 1
+          label += " / #{authorities_string(m, :translator)}"
+        end
+      when :author
+        if m.authors.size > 1 || m.authors.pluck(:id) != [authority_id] # when the author is not the only author or not the author in a volume he is generally the author of (e.g. someone else's preface to this author's book)
+          label += " / #{authorities_string(m, :author)}"
+        end
+        if m.translators.size > 0
+          label += " #{t(:translated_by)} #{authorities_string(m, :translator)}"
+        end
+      end
+
+    - if m.published?
+      = link_to label, manifestation_path(m)
+      %span.hidden.metadata-creation-date
+        != "&nbsp;&nbsp;&nbsp;"
+        - if w.date.present?
+          = "(#{w.date})"
+      %span.hidden.metadata-pubdate
+        != "&nbsp;&nbsp;&nbsp;"
+        - if e.date.present?
+          = "(#{e.date})"
+      %span.hidden.metadata-upload-date
+        != "&nbsp;&nbsp;&nbsp;"
+        = "(#{m.publication_date})"
+      - if uncollected
+        %span.metadata-source-edition
+          %br
+          - edition = e.source_edition || ''
+          - edition.strip!
+          - if e.date.present?
+            - edition += ', '+e.date
+          = edition
+    - else
+      = label
+    %span.mtitle{ style: 'display:none' }= m.title
+  - elsif toc_node.is_a?(TocTree::CollectionNode)
+    -# Collection node
+    - collection = toc_node.collection
+    - type_prefix = collection.collection_type == 'uncollected' ? '' : textify_collection_type(collection.collection_type)
+    - uncollected = collection.collection_type == 'uncollected'
+    - any_published = collection.any_published_manifestations?
+    - is_involved = collection.involved_authorities.where(authority_id: authority_id, role: role).present?
+    - unless full_toc
+      - full_toc = is_involved # only show full TOC for collections where this particular author is a principal contributor
+    - children = full_toc ? toc_node.sorted_children : toc_node.children_by_role(role, authority_id)
+    - children.reject!{ |child| child.is_a?(TocTree::ManifestationNode) && child.manifestation.status != 'published' } # don't show deleted or unpublished manifestations in the TOC
+    - if !uncollected || children.present?
+      .cwrapper{ id: "cwrapper_#{collection.id}", 'data-nonce' => nonce, 'data-collection-id' => collection.id, class: uncollected ? 'uncollected' : '' }
+        %span{style:'font-size:120%;'}
+          %span.ctitle_only{ style: 'display:none;' }= collection.title
+          %span.ctitle
+            - extra_data = collection.created_at > 2.minutes.ago ? { 'data-focus-on-me': 'true' } : {}
+            - ctitle = "#{collection.title}#{collection.subtitle.present? ? ': '+collection.subtitle : '' }"
+            - if children.present?
+              - unless full_toc
+                = t(:out_of)
+              = link_to ctitle, collection_path(collection), extra_data
+            - else
+              = ctitle
+          - if current_user && current_user.editor?
+            - if type_prefix.present?
+              = " (#{type_prefix})"
+            != '&nbsp;&nbsp;&nbsp;'
+            = link_to t(:edit), collection_manage_path(collection.id), style: 'font-size: 70%;'
+          - if uncollected
+            %p{style: 'font-size: 0.8rem; color: #222222;'}= t(:uncollected_works_collection_explanation)
+          - # if the collection's involved authorities number more than one for any given role, return all for that role. Otherwise, return only authorities that aren't the authority_id.
+          - ias = collection.involved_authorities
+          - authorities = {}
+          - ias.each do |ia|
+            - if authorities[ia.role].present?
+              - authorities[ia.role] << ia.authority
+            - else
+              - authorities[ia.role] = [ia.authority]
+          - %w[ author illustrator translator editor photographer designer contributor other ].each do |r|
+            - next unless authorities[r].present?
+            - if authorities[r].size > 1
+              - authorities[r].each do |authority|
+                %p= "#{authority.name} (#{textify_role(r, authority.gender)})"
+            - else
+              - authority = authorities[r].first
+              - if authority.id == authority_id # if the single authority is the same as the one whose page we are on
+                - next if r.to_sym == role # this is implicit
+              %p= "#{authority.name} (#{textify_role(r, authority.gender)})" # author X may have a work in which they are both an author and an illustrator, for example.
+          - if collection.publisher_line.present?
+            %p
+              - pyear = collection.pub_year.present? ? ", #{collection.pub_year}" : ''
+              - unless pyear.strip == ', 0' # special case to suppress year of a collection we want to place at the head of the page
+                = "#{collection.publisher_line}#{pyear}"
+        - if editable && (collection.collection_type == 'uncollected' || is_involved) # only show editable collections for collections where this particular author is a principal contributor
+          = render partial: 'shared/manage_collection', locals: { collection: collection, title: collection.title, nonce: nonce }
+        - else
+          - unless children.empty?
+            %ul.toclist
+              = render partial: 'authors/toc_node', collection: children,
+                      locals: { role: role, authority_id: authority_id, editable: editable, nonce: nonce, uncollected: uncollected, full_toc: full_toc }
+      %br
+  - elsif toc_node.is_a?(TocTree::PlaceholderNode)
+    -# Placeholder, toc_node should be a String with HTML layout
+    - ci = toc_node.collection_item
+    - if toc_node.markdown.present?
+      %br
+      - if ci.alt_title.present?
+        %h4= ci.alt_title
+      != MultiMarkdown.new(ci.markdown).to_html
+    - elsif ci.alt_title.present?
+      = ci.alt_title
+-# rubocop:enable Style/CaseLikeIf

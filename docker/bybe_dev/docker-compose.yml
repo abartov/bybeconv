@@ -1,0 +1,62 @@
+volumes:
+  mysql_data:
+  bundler_data:
+  elasticsearch_data:
+services:
+  mysql:
+    image: mysql:8.0.36
+    restart: unless-stopped
+    command: --max_allowed_packet=256M      # Set max_allowed_packet to 256M (or any other value)
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    ports:
+      - 3307:3306
+    volumes:
+      - mysql_data:/var/lib/mysql/:delegated
+  elasticsearch:
+    image: elasticsearch:7.17.8
+    restart: unless-stopped
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - ingest.geoip.downloader.enabled=false
+      - action.destructive_requires_name=false
+      - "ES_JAVA_OPTS=-Xms4096m -Xmx4096m"
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data:delegated
+    ports:
+      - 9201:9200
+      - 9301:9300
+  kibana:
+    image: kibana:7.17.8
+    restart: unless-stopped
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - 5602:5601
+    depends_on:
+      - elasticsearch
+  memcached:
+    image: memcached:1.6.17
+    restart: unless-stopped
+  redis:
+    image: redis:7.2.3
+    restart: unless-stopped
+    ports:
+      - 6380:6379
+  app:
+    build: ..
+    environment:
+      - MEMCACHE_SERVERS=http://memcached:11211
+    ports:
+      - 3001:3000
+    volumes:
+      - ../..:/app
+      - bundler_data:/usr/local/bundle/:delegated
+    tmpfs:
+      - /tmp/pids/
+    depends_on:
+      - mysql
+      - memcached
+      - redis
+      - elasticsearch

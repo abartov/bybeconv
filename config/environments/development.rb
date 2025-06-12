@@ -1,26 +1,45 @@
-Bybeconv::Application.configure do
+Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
   # In the development environment your application's code is reloaded on
   # every request.  This slows down response time but is perfect for development
   # since you don't have to restart the web server when you make code changes.
   config.cache_classes = false
+  #OmniAuth.config.test_mode = true
 
   # Show full error reports and disable caching
   config.consider_all_requests_local       = true
 
-  #config.action_controller.perform_caching = false # generally desirable
-  config.action_controller.perform_caching = true # generally desirable
+    # Enable/disable caching. By default caching is disabled.
+  # Run rails dev:cache to toggle caching.
+  if Rails.root.join('tmp', 'caching-dev.txt').exist?
+    config.action_controller.perform_caching = true
+    config.action_controller.enable_fragment_cache_logging = true
 
-  ## uncomment to test caching
-  #config.action_controller.perform_caching = true # uncomment to test caching
-  # config.cache_store = :mem_cache_store, { 'localhost', AppConstants.cache_nonce
-  config.cache_store = :mem_cache_store, '127.0.0.1', {namespace: ENV['CACHE_NONCE'], value_max_bytes: 40*1024*1024}
-  # temp
-  config.i18n.enforce_available_locales = false
+    config.cache_store = :mem_cache_store, '127.0.0.1', {namespace: ENV['CACHE_NONCE'], value_max_bytes: 40*1024*1024}
+    #config.cache_store = :memory_store
+    config.public_file_server.headers = {
+      'Cache-Control' => "public, max-age=#{2.days.to_i}"
+    }
+  else
+    config.action_controller.perform_caching = false
+
+    config.cache_store = :null_store
+  end
+
+  # In development we allow using of different locales (en for now) for non-hebrew speaking developers
+  config.i18n.default_locale = ENV['BY_LANGUAGE']&.to_sym || :he
 
   # Don't care if the mailer can't send
-  config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.raise_delivery_errors = true
+
+  config.action_mailer.smtp_settings = {
+    address: "localhost",
+    port: 25,
+    domain: "benyehuda.org",
+    openssl_verify_mode: 'none',
+    disable_start_tls: true,
+  }
 
   # Print deprecation notices to the Rails logger
   config.active_support.deprecation = :log
@@ -36,19 +55,48 @@ Bybeconv::Application.configure do
   #config.assets.debug = true
   config.eager_load = false
   # config.public_file_server.enabled = true # Rails 5.x?
-  config.i18n.available_locales = :he
 
   # Store Active Storage files locally.
   config.active_storage.service = :local
   #config.active_storage.service = :amazon
   #config.force_ssl = true # to debug SSL issues
+  require "active_support/core_ext/integer/time"
+
+  config.action_mailer.perform_caching = false
+
+  # Raise exceptions for disallowed deprecations.
+  config.active_support.disallowed_deprecation = :raise
+
+  # Tell Active Support which deprecation messages to disallow.
+  config.active_support.disallowed_deprecation_warnings = []
+
+  # Raise an error on page load if there are pending migrations.
+  config.active_record.migration_error = :page_load
+
+  # Highlight code that triggered database queries in logs.
+  config.active_record.verbose_query_logs = true
+
+  # Debug mode disables concatenation and preprocessing of assets.
+  # This option may cause significant delays in view rendering with a large
+  # number of complex assets.
+  config.assets.debug = true
+
+  # Suppress logger output for asset requests.
+  config.assets.quiet = true
+
+  # Annotate rendered view with file names.
+  # config.action_view.annotate_rendered_view_with_filenames = true
+
+  # Use an evented file watcher to asynchronously detect changes in source code,
+  # routes, locales, etc. This feature depends on the listen gem.
+  config.file_watcher = ActiveSupport::EventedFileUpdateChecker
+
+  # Uncomment if you wish to allow Action Cable access from any origin.
+  # config.action_cable.disable_request_forgery_protection = true
 
   routes.default_url_options[:host] = 'localhost:3000'
+  routes.default_url_options[:protocol] = 'https'
 
-  # checks for the presence of an env variable called PROFILE that
-  # switches several settings to a more "production-like" value for profiling
-  # and benchmarking the application locally. All changes you make to the app
-  # will require restart.
   if ENV['PROFILE']
     config.cache_classes = true
     config.eager_load = true
@@ -71,25 +119,25 @@ Bybeconv::Application.configure do
     config.active_record.verbose_query_logs = false
     config.action_view.cache_template_loading = true
   end
-  #### Bullet settings for performance optimization
-  # config.after_initialize do
-  #   Bullet.enable = true
-  #   #Bullet.sentry = true
-  #   Bullet.alert = true
-  #   Bullet.bullet_logger = true
-  #   Bullet.console = true
-  #   Bullet.growl = false
-  #   #Bullet.xmpp = { :account  => 'bullets_account@jabber.org',                     :password => 'bullets_password_for_jabber',                     :receiver => 'your_account@jabber.org',                     :show_online_status => true }
-  #   Bullet.rails_logger = true
-  #   Bullet.honeybadger = false
-  #   Bullet.bugsnag = false
-  #   Bullet.appsignal = false
-  #   Bullet.airbrake = false
-  #   Bullet.rollbar = false
-  #   Bullet.add_footer = true
-  #   Bullet.skip_html_injection = false
-  #   #Bullet.stacktrace_includes = [ 'your_gem', 'your_middleware' ]
-  #   #Bullet.stacktrace_excludes = [ 'their_gem', 'their_middleware', ['my_file.rb', 'my_method'], ['my_file.rb', 16..20] ]
-  #   #Bullet.slack = { webhook_url: 'http://some.slack.url', channel: '#default', username: 'notifier' }
-  # end
+
+  # disabling some Rails generators to avoid creation of unnecessary files during controller creation
+  config.generators do |g|
+    g.assets false
+    g.helper false
+    g.stylesheets false
+    g.test_framework :rspec,
+                     view_specs: false,
+                     request_specs: false,
+                     routing_specs: false,
+                     controller_specs: true
+  end
+
+  # Applying rubocop-rails autocorrection to generated content
+  # see https://github.com/rubocop/rubocop-rails?tab=readme-ov-file#rails-configuration-tip
+  config.generators.after_generate do |files|
+    parsable_files = files.filter { |file| file.end_with?('.rb') }
+    unless parsable_files.empty?
+      system("bundle exec rubocop -A --fail-level=E #{parsable_files.shelljoin}", exception: true)
+    end
+  end
 end

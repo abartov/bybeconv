@@ -25,5 +25,5 @@
                       = link_to @featured_author.user.name, volunteer_show_path(@featured_author.user)
                   %p!= @featured_author.body.gsub("\n",'<br />')
               .bottom-button-area
-                %a{ href: author_toc_path(id: @featured_author.person.id)}
-                  %button.by-button-v02.link-to-all-v02= t(:to_the_author_page)
+                %a{ href: authority_path(id: @featured_author.person.id) }
+                  %button.by-button-v02.link-to-all-v02= to_the_author_page(@featured_author.person)

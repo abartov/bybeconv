@@ -46,7 +46,7 @@ class ApiKeysController < ApplicationController
   # PUT /api_keys/1
   # PUT /api_keys/1.json
   def update
-    if @api_key.update_attributes(key_params)
+    if @api_key.update(key_params)
       redirect_to api_keys_path, notice: 'Api key was successfully updated.'
     else
       render action: "edit", status: :unprocessable_entity

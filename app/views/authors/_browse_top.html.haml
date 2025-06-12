@@ -4,13 +4,14 @@
   .texts-list-top
     .texts-list-top-info-card
       .flex-container
-        .headline-1-v02= t(:author_list)
+        .headline-1-v02= @authors_list_title
         .author-sort-area#sort_filter_toggle
           .author-page-top-sort-desktop
             = t(:filter_state)
             -#%a.help{:href => "#"} [?]
             .toggle-background-no
               .toggle-button-no
+              .toggle-button-yes{ style: "display:#{@filters.empty? ? 'none' : 'show'}" }
           .author-page-top-sort-mobile
             %button.btn-small-outline-v02.btn-text-v02{:href => "#"} סינון
         .author-page-top-icons-desktop
@@ -39,44 +40,15 @@
             .error-found-icon g
 
 :javascript
-  function startModal(id) {
-      $("body").prepend("<div id='PopupMask' style='position:fixed;width:100%;height:100%;z-index:10;background-color:gray;'></div>");
-      $("#PopupMask").css('opacity', 0.5);
-      $("#"+id).data('saveZindex', $("#"+id).css( "z-index"));
-      $("#"+id).data('savePosition', $("#"+id).css( "position"));
-      $("#"+id).css( "z-index" , 11 );
-      $("#"+id).css( "position" , "fixed" );
-      $("#"+id).css( "display" , "block" );
-  }
-  function stopModal(id) {
-      if ($("#PopupMask") == null) return;
-      $("#PopupMask").remove();
-      $("#"+id).css( "z-index" , $("#"+id).data('saveZindex') );
-      $("#"+id).css( "position" , $("#"+id).data('savePosition') );
-      $("#"+id).css( "display" , "none" );
-  }
   $(document).ready(function(){
     $('#sort_filter_toggle').click(function() {
-      if(window.innerWidth < mobileWidth) {
-        $('#mobileFilterDlg').modal('show');
+      $('#sort_filter_panel').toggle();
+      if (isMobile()) {
+        $('#thelist').toggle();
       } else {
         $('#browse_intro').toggle();
-        $('#sort_filter_panel').toggle();
+        $('.toggle-button-no').toggle();
+        $('.toggle-button-yes').toggle();
       }
-      
-      if($('#filters_panel .temporary').length) { // if filter panel yet to be loaded
-        startModal('spinnerdiv');
-        var url = $('#hurl').val().replace(/page=\d+/,'');
-        if(url.indexOf('?') == -1) {
-          url = url + '?';
-        }
-        else {
-          url = url + '&';
-        }
-        url = url + 'load_filters=true';
-        $.get(url,'',null, 'script');
-      }
-      $('.toggle-button-no').toggle();
-      $('.toggle-button-yes').toggle();
     });
   });

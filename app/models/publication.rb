@@ -1,18 +1,20 @@
 class Publication < ApplicationRecord
-  belongs_to :person
+  belongs_to :authority, inverse_of: :publications
   belongs_to :bib_source
   has_many :holdings, dependent: :destroy
   has_many :list_items, as: :item, dependent: :destroy
+  has_one :volume, dependent: :nullify, class_name: 'Collection'
 
-  enum status: [:todo, :scanned, :obtained, :uploaded, :irrelevant, :copyrighted]
+  enum status: %i(todo scanned obtained uploaded irrelevant copyrighted)
 
   scope :pubs_to_obtain, -> (source_id) { where(status: 'todo', bib_source_id: source_id)}
-  scope :genre, -> (genre) { joins(:expressions).includes(:expressions).where(expressions: {genre: genre})}
   scope :not_uploaded, -> {where.not(status: 'uploaded')}
   scope :maybe_done, -> {joins(:list_items).where(list_items: {listkey: 'pubs_maybe_done'})}
   scope :not_maybe_done, -> {where.not(id: ListItem.select(:item_id).where(listkey: 'pubs_maybe_done'))}
   scope :false_positive_maybe_done, ->{joins(:list_items).where(list_items: {listkey: 'pubs_false_maybe_done'})}
   scope :not_false_positive_maybe_done, -> {where.not(id: ListItem.select(:item_id).where(listkey: 'pubs_false_maybe_done'))}
+  scope :no_volume, -> {where.missing(:volume)}
+  scope :has_volume, -> {joins(:volume)}
 
   after_save :check_lists
 
