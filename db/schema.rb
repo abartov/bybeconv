@@ -44,7 +44,7 @@ ActiveRecord::Schema.define(version: 2025_05_25_092929) do
     t.string "content_type"
     t.text "metadata"
     t.bigint "byte_size", null: false
-    t.string "checksum", limit: 191, null: false
+    t.string "checksum", null: false
     t.datetime "created_at", null: false
     t.string "service_name", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
@@ -194,7 +194,7 @@ ActiveRecord::Schema.define(version: 2025_05_25_092929) do
     t.string "url"
     t.integer "port"
     t.string "api_key"
-    t.text "comments", limit: 16777215
+    t.text "comments"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "status"
@@ -323,8 +323,8 @@ ActiveRecord::Schema.define(version: 2025_05_25_092929) do
   create_table "delayed_jobs", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "priority", default: 0, null: false
     t.integer "attempts", default: 0, null: false
-    t.text "handler", limit: 16777215, null: false
-    t.text "last_error", limit: 16777215
+    t.text "handler", null: false
+    t.text "last_error"
     t.datetime "run_at"
     t.datetime "locked_at"
     t.datetime "failed_at"
@@ -410,8 +410,8 @@ ActiveRecord::Schema.define(version: 2025_05_25_092929) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "description"
-    t.integer "linkable_id"
-    t.string "linkable_type"
+    t.integer "linkable_id", null: false
+    t.string "linkable_type", null: false
     t.index ["linkable_type", "linkable_id"], name: "index_external_links_on_linkable_type_and_linkable_id"
   end
 
@@ -428,7 +428,7 @@ ActiveRecord::Schema.define(version: 2025_05_25_092929) do
     t.string "title"
     t.integer "user_id"
     t.integer "person_id"
-    t.text "body", limit: 16777215
+    t.text "body"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["person_id"], name: "index_featured_authors_on_person_id"
@@ -452,12 +452,10 @@ ActiveRecord::Schema.define(version: 2025_05_25_092929) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "external_link"
-    t.integer "user_id_id"
     t.integer "user_id"
     t.index ["authority_id"], name: "index_featured_contents_on_authority_id"
     t.index ["manifestation_id"], name: "index_featured_contents_on_manifestation_id"
     t.index ["user_id"], name: "index_featured_contents_on_user_id"
-    t.index ["user_id_id"], name: "index_featured_contents_on_user_id_id"
   end
 
   create_table "holdings", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -481,7 +479,6 @@ ActiveRecord::Schema.define(version: 2025_05_25_092929) do
     t.boolean "need_resequence"
     t.boolean "public_domain"
     t.integer "person_id"
-    t.index ["person_id"], name: "html_dirs_person_id_fk"
   end
 
   create_table "html_files", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -633,12 +630,9 @@ ActiveRecord::Schema.define(version: 2025_05_25_092929) do
     t.integer "html_file_id"
     t.integer "recommended_by"
     t.integer "manifestation_id"
-    t.index ["html_file_id"], name: "legacy_recommendations_html_file_id_fk"
-    t.index ["manifestation_id"], name: "legacy_recommendations_manifestation_id_fk"
-    t.index ["recommended_by"], name: "legacy_recommendations_recommended_by_fk"
   end
 
-  create_table "lex_citations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "lex_citations", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "title"
     t.string "from_publication"
     t.string "authors"
@@ -655,21 +649,19 @@ ActiveRecord::Schema.define(version: 2025_05_25_092929) do
     t.index ["title"], name: "index_lex_citations_on_title"
   end
 
-  create_table "lex_entries", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "lex_entries", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "title"
     t.integer "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "lex_item_type"
     t.bigint "lex_item_id"
-    t.string "sort_title"
     t.index ["lex_item_type", "lex_item_id"], name: "index_lex_entries_on_lex_item_type_and_lex_item_id", unique: true
-    t.index ["sort_title"], name: "index_lex_entries_on_sort_title"
     t.index ["status"], name: "index_lex_entries_on_status"
     t.index ["title"], name: "index_lex_entries_on_title"
   end
 
-  create_table "lex_files", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "lex_files", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "fname"
     t.integer "status"
     t.string "title"
@@ -680,12 +672,12 @@ ActiveRecord::Schema.define(version: 2025_05_25_092929) do
     t.bigint "lex_entry_id"
     t.string "full_path"
     t.index ["entrytype"], name: "index_lex_files_on_entrytype"
-    t.index ["fname"], name: "index_lex_files_on_fname"
+    t.index ["fname"], name: "index_lex_files_on_fname", unique: true
     t.index ["lex_entry_id"], name: "index_lex_files_on_lex_entry_id", unique: true
     t.index ["status"], name: "index_lex_files_on_status"
   end
 
-  create_table "lex_issues", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "lex_issues", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "subtitle"
     t.string "volume"
     t.string "issue"
@@ -699,7 +691,7 @@ ActiveRecord::Schema.define(version: 2025_05_25_092929) do
     t.index ["subtitle"], name: "index_lex_issues_on_subtitle"
   end
 
-  create_table "lex_links", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "lex_links", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "url"
     t.string "description"
     t.integer "status"
@@ -710,7 +702,7 @@ ActiveRecord::Schema.define(version: 2025_05_25_092929) do
     t.index ["item_type", "item_id"], name: "index_lex_links_on_item_type_and_item_id"
   end
 
-  create_table "lex_people", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "lex_people", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "aliases"
     t.boolean "copyrighted"
     t.string "birthdate"
@@ -721,7 +713,6 @@ ActiveRecord::Schema.define(version: 2025_05_25_092929) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "person_id"
-    t.text "translations"
     t.index ["aliases"], name: "index_lex_people_on_aliases"
     t.index ["birthdate"], name: "index_lex_people_on_birthdate"
     t.index ["copyrighted"], name: "index_lex_people_on_copyrighted"
@@ -729,7 +720,7 @@ ActiveRecord::Schema.define(version: 2025_05_25_092929) do
     t.index ["person_id"], name: "index_lex_people_on_person_id"
   end
 
-  create_table "lex_people_items", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "lex_people_items", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "lex_person_id"
     t.string "item_type"
     t.bigint "item_id"
@@ -739,7 +730,7 @@ ActiveRecord::Schema.define(version: 2025_05_25_092929) do
     t.index ["lex_person_id"], name: "index_lex_people_items_on_lex_person_id"
   end
 
-  create_table "lex_publications", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "lex_publications", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.text "description"
     t.text "toc"
     t.boolean "az_navbar"
@@ -747,7 +738,7 @@ ActiveRecord::Schema.define(version: 2025_05_25_092929) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "lex_texts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
+  create_table "lex_texts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "title"
     t.string "authors"
     t.string "pages"
@@ -867,7 +858,7 @@ ActiveRecord::Schema.define(version: 2025_05_25_092929) do
     t.string "title", limit: 1024
     t.string "publisher_line"
     t.string "author_line", limit: 1024
-    t.text "notes", limit: 16777215
+    t.text "notes"
     t.string "source_id", limit: 1024
     t.integer "authority_id"
     t.datetime "created_at", null: false
@@ -1041,8 +1032,8 @@ ActiveRecord::Schema.define(version: 2025_05_25_092929) do
 
   create_table "volunteer_profiles", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "name"
-    t.text "bio", limit: 16777215
-    t.text "about", limit: 16777215
+    t.text "bio"
+    t.text "about"
     t.string "profile_image_file_name"
     t.string "profile_image_content_type"
     t.integer "profile_image_file_size"
@@ -1109,8 +1100,6 @@ ActiveRecord::Schema.define(version: 2025_05_25_092929) do
   add_foreign_key "dictionary_links", "dictionary_entries", column: "from_entry_id"
   add_foreign_key "dictionary_links", "dictionary_entries", column: "to_entry_id"
   add_foreign_key "expressions", "works"
-  add_foreign_key "expressions_manifestations", "expressions", name: "expressions_manifestations_expression_id_fk"
-  add_foreign_key "expressions_manifestations", "manifestations", name: "expressions_manifestations_manifestation_id_fk"
   add_foreign_key "featured_author_features", "featured_authors"
   add_foreign_key "featured_authors", "people"
   add_foreign_key "featured_authors", "users"
@@ -1124,6 +1113,14 @@ ActiveRecord::Schema.define(version: 2025_05_25_092929) do
   add_foreign_key "ingestibles", "users", column: "last_editor_id"
   add_foreign_key "ingestibles", "users", column: "locked_by_user_id"
   add_foreign_key "involved_authorities", "authorities"
+  add_foreign_key "lex_citations", "manifestations"
+  add_foreign_key "lex_files", "lex_entries"
+  add_foreign_key "lex_issues", "lex_publications"
+  add_foreign_key "lex_people", "people"
+  add_foreign_key "lex_people_items", "lex_people"
+  add_foreign_key "lex_texts", "lex_issues"
+  add_foreign_key "lex_texts", "lex_publications"
+  add_foreign_key "lex_texts", "manifestations"
   add_foreign_key "list_items", "users"
   add_foreign_key "manifestations", "expressions"
   add_foreign_key "proofs", "html_files", name: "proofs_html_file_id_fk"

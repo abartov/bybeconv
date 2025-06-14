@@ -70,6 +70,8 @@ Bybeconv::Application.routes.draw do
   resources :lex_files
   resources :lex_people
   resources :lex_entries
+  resources :lex_links
+  resources :lex_citations
 
   mount Rswag::Ui::Engine => '/api-docs'
   mount Rswag::Api::Engine => '/api-docs'
