@@ -13,6 +13,7 @@ def clean_tables
   Aboutness.destroy_all
 
   ListItem.destroy_all
+  BaseUser.destroy_all
   User.destroy_all
 
   Manifestation.destroy_all
