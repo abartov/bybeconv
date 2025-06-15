@@ -56,6 +56,7 @@ class ApplicationController < ActionController::Base
     headers['Access-Control-Allow-Origin'] = '*' # TODO: restrict
     headers['Access-Control-Allow-Methods'] = '*'
     headers['Access-Control-Request-Method'] = '*'
+    headers['Access-Control-Allow-Headers'] = 'Origin, X-Requested-With, Content-Type, Accept'
   end
 
   def mobile_search
