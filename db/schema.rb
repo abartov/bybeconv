@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_05_25_092929) do
+ActiveRecord::Schema.define(version: 2025_06_15_125651) do
 
   create_table "aboutnesses", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -656,7 +656,9 @@ ActiveRecord::Schema.define(version: 2025_05_25_092929) do
     t.datetime "updated_at", null: false
     t.string "lex_item_type"
     t.bigint "lex_item_id"
+    t.string "sort_title"
     t.index ["lex_item_type", "lex_item_id"], name: "index_lex_entries_on_lex_item_type_and_lex_item_id", unique: true
+    t.index ["sort_title"], name: "index_lex_entries_on_sort_title"
     t.index ["status"], name: "index_lex_entries_on_status"
     t.index ["title"], name: "index_lex_entries_on_title"
   end
