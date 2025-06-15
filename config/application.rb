@@ -1,14 +1,14 @@
-require_relative "boot"
+require_relative 'boot'
 
 require 'rails/all'
 require 'active_job'
 
-    # temp
-    #ActiveSupport::Deprecation.debug = true
+# temp
+# ActiveSupport::Deprecation.debug = true
 if defined?(Bundler)
   # If you precompile assets before deploying to production, use this line
   Bundler.require(*Rails.groups)
-  #Bundler.require(*Rails.groups(:assets => %w(development test))) # line from Rails 3.2.x
+  # Bundler.require(*Rails.groups(:assets => %w(development test))) # line from Rails 3.2.x
   # If you want your assets lazily compiled in production, use this line
   # Bundler.require(:default, :assets, Rails.env)
 end
@@ -36,7 +36,7 @@ module Bybeconv
     # config.time_zone = 'Central Time (US & Canada)'
 
     # Configure the default encoding used in templates for Ruby 1.9.
-    config.encoding = "utf-8"
+    config.encoding = 'utf-8'
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
@@ -48,8 +48,8 @@ module Bybeconv
     config.assets.version = '1.0'
 
     # config.active_record.raise_in_transactional_callbacks = true # opting in to new behavior
-    #config.active_job.queue_adapter = :inline # scheduler
-    #config.active_job.queue_adapter = :delayed_job # scheduler
+    # config.active_job.queue_adapter = :inline # scheduler
+    # config.active_job.queue_adapter = :delayed_job # scheduler
     config.active_job.queue_adapter = :sidekiq
     config.active_job.queue_name_prefix = Rails.env
 
@@ -61,13 +61,13 @@ module Bybeconv
     config.middleware.insert_before 0, Rack::Cors do
       allow do
         origins '*'
-        resource '*', headers: :any, methods: [:get, :post, :options]
+        resource '*', headers: :any, methods: %i(get post options)
       end
     end
     # BYBE's own configuration
     config.constants = config_for(:constants)
     if ENV['PROFILE'] == 'true'
-      config.middleware.use Rack::RubyProf, :path => './tmp/profile'
+      config.middleware.use Rack::RubyProf, path: './tmp/profile'
     end
   end
 end
