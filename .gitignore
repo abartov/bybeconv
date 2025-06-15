@@ -27,8 +27,6 @@
 /ignore/*
 
 # ignore site-specific config
-/config/chewy.yml
-/config/database.yml
 /config/constants.yml
 /config/storage.yml
 /config/newrelic.yml
@@ -63,10 +61,12 @@ bin/delayed_job
 ubuntu-*-console.log
 
 # Ignore local dotenv configs (as they should be different for every developer)
-.env.*.local
+.env.development.local
+.env.test.local
+.env.development.local
 
 # Docker-compose config
-docker/bybe_dev/docker-compose.override.yml
+docker-compose.override.yml
 
 # IDE files
 .idea
