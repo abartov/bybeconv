@@ -9,7 +9,7 @@ class Ingestible < ApplicationRecord
   enum status: { draft: 0, ingested: 1, failed: 2, awaiting_authorities: 3 }
   enum scenario: { single: 0, multiple: 1, mixed: 2 }
 
-  belongs_to :user
+  belongs_to :user, optional: true
   belongs_to :locked_by_user, class_name: 'User', optional: true
   belongs_to :last_editor, class_name: 'User', optional: true
   belongs_to :volume, optional: true, class_name: 'Collection'

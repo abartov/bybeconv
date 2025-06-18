@@ -6,13 +6,13 @@ source 'http://rubygems.org'
 
 gem 'actionview'
 gem 'concurrent-ruby', '1.3.4' # 1.3.5 and later yields an error with Logger. Fixed in Rails 7.1
-gem 'rails', '~> 6.1.7.7'
-gem 'rails-i18n', '~> 6.0' # version should match major version of Rails
+gem 'rails', '~> 7.0.0'
+gem 'rails-i18n', '~> 7' # version should match major version of Rails
 gem 'sass-rails', '~> 6.0.0'
 gem 'sprockets', '~> 4.2.1'
 
 gem 'damerau-levenshtein' # string distance
-gem 'mysql2' # Rails 5.2 needs a newer one # , '~> 0.3.11'
+gem 'mysql2'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-twitter'
 gem 'rails-ujs'
@@ -140,7 +140,7 @@ group :development do
   gem 'rubocop', '~> 1.61.0', require: false
   gem 'rubocop-factory_bot', '~> 2.25.1', require: false
   gem 'rubocop-rails', '~> 2.24.1', require: false
-  gem 'rubocop-rspec', '~> 2.28.0', require: false
+  gem 'rubocop-rspec', require: false
   gem 'ruby-lsp-rspec', require: false
   gem 'ruby-prof' # for profiling
   gem 'stackprof'
@@ -149,7 +149,7 @@ end
 group :test, :development do
   gem 'dotenv', '~> 3.1.2'
   gem 'factory_bot_rails', '~> 6.2.0'
-  gem 'rspec-rails', '~> 5.0.2'
+  gem 'rspec-rails'
   gem 'spring', '4.2.1' # later version yields https://github.com/rails/spring/issues/734
   gem 'spring-commands-rspec'
 end

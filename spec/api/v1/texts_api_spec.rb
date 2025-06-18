@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe V1::TextsAPI do
+describe V1::TextsApi do
   include_context 'API Spec Helpers'
 
   before do

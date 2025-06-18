@@ -164,8 +164,10 @@ describe Collection do
     let(:manifestation) { create(:manifestation) }
 
     let!(:first_item) { create(:collection_item, collection: collection, seqno: 1) }
-    let!(:second_item) { create(:collection_item, collection: collection, seqno: 3) }
-    let!(:third_item) { create(:collection_item, collection: collection, seqno: 2) }
+    let!(:second_item) { create(:collection_item, collection: collection, seqno: 2) }
+    let!(:third_item) { create(:collection_item, collection: collection, seqno: 3) }
+
+    let(:inserted_item) { CollectionItem.order(id: :desc).first }
 
     before do
       collection.reload
@@ -177,8 +179,9 @@ describe Collection do
       let(:index) { 4 }
 
       it 'inserts successfully' do
-        expect(collection.collection_items.count).to eq 4
-        expect(collection.collection_items.last.item).to eq manifestation
+        expect(inserted_item).to have_attributes(seqno: 4, item: manifestation)
+        expect(collection.collection_items).to eq [first_item, second_item, third_item, inserted_item]
+        expect(collection.collection_items.map(&:seqno)).to eq [1, 2, 3, 4]
       end
     end
 
@@ -186,8 +189,9 @@ describe Collection do
       let(:index) { 1 }
 
       it 'inserts successfully' do
-        expect(collection.collection_items.count).to eq 4
-        expect(collection.collection_items.first.item).to eq manifestation
+        expect(inserted_item).to have_attributes(seqno: 1, item: manifestation)
+        expect(collection.collection_items).to eq [inserted_item, first_item, second_item, third_item]
+        expect(collection.collection_items.map(&:seqno)).to eq [1, 2, 3, 4]
       end
     end
 
@@ -195,10 +199,9 @@ describe Collection do
       let(:index) { 2 }
 
       it 'inserts successfully' do
-        expect(collection.collection_items.count).to eq 4
-        expect(collection.collection_items.map(&:item)).to eq(
-          [first_item.item, manifestation, third_item.item, second_item.item]
-        )
+        expect(inserted_item).to have_attributes(seqno: 2, item: manifestation)
+        expect(collection.collection_items).to eq [first_item, inserted_item, second_item, third_item]
+        expect(collection.collection_items.map(&:seqno)).to eq [1, 2, 3, 4]
       end
     end
   end

@@ -15,8 +15,8 @@ class Collection < ApplicationRecord
 
   validates :collection_type, presence: true
 
-  belongs_to :publication
-  belongs_to :toc
+  belongs_to :publication, optional: true
+  belongs_to :toc, optional: true
   has_many :collection_items, -> { order(:seqno) }, inverse_of: :collection, dependent: :destroy
   has_many :inclusions, class_name: 'CollectionItem', as: :item, dependent: :destroy # inclusions of this collection in other collections
   has_many :aboutnesses, as: :aboutable, dependent: :destroy # works that are ABOUT this collection
@@ -451,20 +451,20 @@ class Collection < ApplicationRecord
 
   # pos is effective 1-based position in the list, not the seqno (which is not necessarily contiguous!)
   def insert_item_at(item, pos)
-    if pos > collection_items.count + 1
-      ret = append_item(item)
-    else
-      before_seqno = pos - 2 < 0 ? 0 : collection_items[pos - 2].seqno
-      ci = collection_item_from_anything(item)
-      ci.seqno = before_seqno + 1
-      collection_items[pos - 1..].each do |coli|
-        coli.seqno += 1
-        coli.save!
-      end
-      ci.save!
-      ret = ci.id
-    end
-    return ret
+    new_seqno = if pos <= 1
+                  1
+                elsif pos > collection_items.size
+                  collection_items.last.seqno + 1
+                else
+                  collection_items[pos - 1].seqno
+                end
+
+    collection_items[(pos - 1)..].each { |coli| coli.increment!(:seqno) }
+
+    ci = collection_item_from_anything(item)
+    ci.seqno = new_seqno
+    ci.save!
+    ci.id
   end
 
   # old_pos and new_pos are 1-based positions in the list, not the seqno (which is not necessarily contiguous!)

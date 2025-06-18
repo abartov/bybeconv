@@ -19,6 +19,8 @@ he:
       featured_content: תוכן מערכת
       person: אדם
     errors:
+      messages:
+        required: required
       models:
         involved_authority:
           attributes:

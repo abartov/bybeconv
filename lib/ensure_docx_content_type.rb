@@ -1,4 +1,7 @@
-module Ensure_docx_content_type
+# frozen_string_literal: true
+
+# Method to set proper content-type for *.docx file attachments
+module EnsureDocxContentType
   module InstanceMethods
     #
     # If the #attachment is set, and the content type is application/zip, but has

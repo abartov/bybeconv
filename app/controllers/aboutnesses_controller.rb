@@ -8,12 +8,8 @@ class AboutnessesController < ApplicationController
       @authority = Authority.find(params['add_authority_topic'])
       @ab.aboutable = @authority
     when 'Work'
-      @ab.aboutable_type = 'Work'
       m = Manifestation.find(params['add_work_topic'])
-      unless m.nil?
-        w = m.expression.work
-        @ab.aboutable_id = w.id
-      end
+      @ab.aboutable = m.expression.work
     when 'Wikidata'
       @ab.wikidata_qid = params['add_external_topic'][1..-1].to_i
       @ab.wikidata_label = params['wikidata_label']

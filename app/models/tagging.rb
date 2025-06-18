@@ -2,16 +2,13 @@
 
 # Maps tags to other system object (Authorities, Manifestations, etc)
 class Tagging < ApplicationRecord
-
-  belongs_to :tag, foreign_key: 'tag_id', counter_cache: true
+  belongs_to :tag, counter_cache: true
   belongs_to :taggable, polymorphic: true # taggable things include Manifestations, People, Anthologies, ...
 
   belongs_to :suggester, foreign_key: 'suggested_by', class_name: 'User'
-  belongs_to :approver, foreign_key: 'approved_by', class_name: 'User'
-  validates :suggester, presence: true
+  belongs_to :approver, foreign_key: 'approved_by', class_name: 'User', optional: true
+
   validates :status, presence: true
-  validates :tag, presence: true
-  validates :taggable, presence: true
   validates :taggable_type, inclusion: { in: %w(Anthology Authority Collection Expression Manifestation Work) }
 
   enum status: [:pending, :approved, :rejected, :semiapproved, :escalated]
