@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe V1::AuthoritiesAPI do
+describe V1::AuthoritiesApi do
   include_context 'API Spec Helpers'
 
   describe 'GET api/v1/people/{id}' do

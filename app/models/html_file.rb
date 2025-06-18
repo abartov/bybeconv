@@ -325,7 +325,7 @@ class TranslationValidator < ActiveModel::Validator
 end
 
 class HtmlFile < ApplicationRecord
-  include Ensure_docx_content_type # fixing docx content-type detection problem, per https://github.com/thoughtbot/paperclip/issues/1713
+  include EnsureDocxContentType # fixing docx content-type detection problem, per https://github.com/thoughtbot/paperclip/issues/1713
   has_paper_trail
   has_and_belongs_to_many :manifestations
 

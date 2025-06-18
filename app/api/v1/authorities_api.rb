@@ -2,7 +2,7 @@
 
 module V1
   # Endpoint to retrieve information about Authorities (people and corporate bodies)
-  class AuthoritiesAPI < V1::ApplicationApi
+  class AuthoritiesApi < V1::ApplicationApi
     resources :authorities do
       route_param :id do
         desc 'Return Authority by ID' do
