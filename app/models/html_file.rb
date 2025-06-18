@@ -325,16 +325,16 @@ class TranslationValidator < ActiveModel::Validator
 end
 
 class HtmlFile < ApplicationRecord
-  include Ensure_docx_content_type # fixing docx content-type detection problem, per https://github.com/thoughtbot/paperclip/issues/1713
+  include EnsureDocxContentType # fixing docx content-type detection problem, per https://github.com/thoughtbot/paperclip/issues/1713
   has_paper_trail
   has_and_belongs_to_many :manifestations
 
   # for simplicity, only a single author considered per HtmlFile
   # additional authors can be added on the WEM entities later
-  belongs_to :author, class_name: 'Authority'
-  belongs_to :translator, class_name: 'Authority'
+  belongs_to :author, class_name: 'Authority', optional: true
+  belongs_to :translator, class_name: 'Authority', optional: true
 
-  belongs_to :assignee, class_name: 'User', foreign_key: 'assignee_id'
+  belongs_to :assignee, class_name: 'User', optional: true
   scope :with_nikkud, -> { where("nikkud IS NOT NULL and nikkud <> 'none'") }
   scope :not_stripped, -> { where('stripped_nikkud IS NULL or stripped_nikkud = 0') }
   # attr_accessible :title, :genre, :markdown, :publisher, :comments, :path, :url, :status, :orig_mtime, :orig_ctime, :person_id, :doc, :translator_id, :orig_lang, :year_published

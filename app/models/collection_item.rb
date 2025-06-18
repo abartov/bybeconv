@@ -3,7 +3,7 @@
 # Collection item
 class CollectionItem < ApplicationRecord
   belongs_to :collection, inverse_of: :collection_items
-  belongs_to :item, polymorphic: true
+  belongs_to :item, polymorphic: true, optional: true
 
   validates :seqno, presence: true
   validate :ensure_no_cycle

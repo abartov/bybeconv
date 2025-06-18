@@ -19,6 +19,8 @@ en:
       featured_content: Featured Content
       person: Person
     errors:
+      messages:
+        required: required
       models:
         involved_authority:
           attributes:

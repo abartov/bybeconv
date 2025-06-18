@@ -69,7 +69,7 @@ describe RefreshUncollectedWorksCollection do
 
       it 'adds missing items to collection and removes items included in other collections' do
         expect { call }.to not_change(Collection, :count)
-        collection = authority.uncollected_works_collection
+        collection = authority.uncollected_works_collection.reload
         expect(collection.collection_items.map(&:item_id)).to match_array(uncollected_manifestation_ids)
       end
     end

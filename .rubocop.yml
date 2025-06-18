@@ -76,6 +76,9 @@ Style/UnlessElse:
 Rails/ActionOrder: # TODO: temporary disabled. it would be good to enable in future
   Enabled: false
 
+Rails/InverseOf:
+  Enabled: false
+
 Rails/OutputSafety: # we actively use such output
   Enabled: false
 
