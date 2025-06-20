@@ -931,6 +931,9 @@ small p{
 .footnote {
   scroll-margin-top: 210px;
 }
+#actualtext .footnote{
+	font-size: 11pt;
+}
 .work-content{
   scroll-snap-type: y mandatory;
 }
