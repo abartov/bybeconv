@@ -31,9 +31,10 @@
                 -# %button.by-button-v02{href: "#"} יוצרים שונים
                 - if @collection.parent_collections.present?
                   - @collection.parent_collections.each do |pc|
-                    = link_to "#{t(:inside)} #{pc.title}#{pc.subtitle.present? ? ': '+pc.subtitle : ''}", collection_path(pc)
-                - if @collection.periodical_issue? && @collection.parent_collections.present?
-                  = link_to "#{t(:issue_of)} #{@collection.parent_collections.first.title}", collection_path(@collection.parent_collections.first)
+                    - if pc.periodical? && @collection.periodical_issue?
+                      = link_to "#{t(:issue_of)} #{pc.title}", collection_path(pc)
+                    - else
+                      = link_to "#{t(:inside)} #{pc.title}#{pc.subtitle.present? ? ': '+pc.subtitle : ''}", collection_path(pc)
 
               %div
                 .edition-details
