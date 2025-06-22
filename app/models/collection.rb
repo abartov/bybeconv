@@ -16,7 +16,7 @@ class Collection < ApplicationRecord
   belongs_to :publication
   belongs_to :toc
   has_many :collection_items, -> { order(:seqno) }, inverse_of: :collection, dependent: :destroy
-
+  has_many :inclusions, class_name: 'CollectionItem', as: :item, dependent: :destroy # inclusions of this collection in other collections
   has_many :aboutnesses, as: :aboutable, dependent: :destroy # works that are ABOUT this collection
   # has_many :topics, class_name: 'Aboutness', dependent: :destroy # topics that this work is ABOUT
   has_many :downloadables, as: :object, dependent: :destroy
