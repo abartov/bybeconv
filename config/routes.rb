@@ -390,4 +390,8 @@ Bybeconv::Application.routes.draw do
   get '*path' => 'html_file#render_by_legacy_url', constraints: lambda { |req|
     is_legacy_url(req.path)
   }
+
+  get 'admin/manifestation_batch_tools' => 'admin#manifestation_batch_tools', as: 'manifestation_batch_tools_admin_index'
+  delete 'admin/destroy_manifestation' => 'admin#destroy_manifestation', as: 'destroy_manifestation_admin_index'
+  post 'admin/unpublish_manifestation' => 'admin#unpublish_manifestation', as: 'unpublish_manifestation_admin_index'
 end

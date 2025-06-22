@@ -147,7 +147,10 @@
     -#    %button#show_my_convs= t(:show_my_convs)
     -#    #my_convs
     -#    %p= link_to t(:html_dirs_list), html_dirs_path
-  
+    .admin_dashboard_item
+      %h2= t(:batch_operations)
+      %p= link_to t(:batch_operations), manifestation_batch_tools_admin_index_path
+
 :javascript
   $(document).ready(function() {
     $('#show_my_convs').click(function(){

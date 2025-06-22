@@ -1,0 +1,26 @@
+-# app/views/admin/manifestation_batch_tools.html.haml
+%h2= t(:batch_operations)
+
+= form_with url: manifestation_batch_tools_admin_index_path, method: :get, local: true do |f|
+  .form-group
+    = f.label :ids, t(:enter_manifestation_ids)
+    = f.text_area :ids, rows: 2, class: 'form-control'
+  = f.submit 'Fetch Manifestations', class: 'btn btn-primary'
+
+- if defined?(@manifestations) && @manifestations.present?
+  %table.table.table-bordered
+    %thead
+      %tr
+        %th t(:id)
+        %th t(:title)
+        %th t(:authors)
+        %th t(:actions)
+    %tbody
+      - @manifestations.each do |m|
+        %tr
+          %td= m.id
+          %td= m.title
+          %td= m.author_string
+          %td
+            = button_to t(:delete), destroy_manifestation_admin_index_path(id: m.id), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm'
+            = button_to t(:unpublish), unpublish_manifestation_admin_index_path(id: m.id), method: :post, class: 'btn btn-warning btn-sm', form: { style: 'display:inline' }
