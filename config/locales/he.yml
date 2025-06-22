@@ -1389,6 +1389,10 @@ he:
     index:
       takes_long_time: דורש זמן רב!
       batch_operations: פעולות באצווה
+    manifestation_batch_tools:
+      title: פעולות באצווה
+      enter_manifestation_ids: "נא להזין מספרי זיהוי של *יצירות* (מופרדים ברווח או במעבר שורה)"
+      fetch: טען יצירות
     incongruous_copyright:
       title: דו\"ח יצירות במצב זכויות יוצרים שגוי (כנראה)
       columns:
@@ -1645,4 +1649,3 @@ he:
   show_genres: סינון לפי סוגה
   refresh_uncollected_works: רענון יצירות שלא כונסו
   out_of: "מתוך "
-  enter_manifestation_ids: "נא להזין מספרי זיהוי של *יצירות* (מופרדים ברווח או במעבר שורה)"
