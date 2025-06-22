@@ -329,6 +329,7 @@ he:
   most_read_authors_last_month: היוצרים הנקראים ביותר בחודש החולף
   authors_list: רשימת יוצרים ויוצרות
   to_the_full_list: לרשימה המלאה
+  unpublish: הסתרה
   whatsnew: "מה חדש?"
   whatsnew_subtitle: יצירות ויוצרים חדשים באתר, אירועים, סרטונים, וחדשות.
   whats_new: מה חדש בפרויקט
@@ -1387,6 +1388,11 @@ he:
         failed: קליטת טווח תאריכי תצוגה נכשלה. יש לבדוק את התאריכים.
     index:
       takes_long_time: דורש זמן רב!
+      batch_operations: פעולות באצווה
+    manifestation_batch_tools:
+      title: פעולות באצווה
+      enter_manifestation_ids: "נא להזין מספרי זיהוי של *יצירות* (מופרדים ברווח או במעבר שורה)"
+      fetch: טען יצירות
     incongruous_copyright:
       title: דו\"ח יצירות במצב זכויות יוצרים שגוי (כנראה)
       columns:

@@ -276,6 +276,15 @@ Bybeconv::Application.routes.draw do
   get 'welcome/volunteer'
   post 'welcome/submit_contact'
   post 'welcome/submit_volunteer'
+  get 'admin/manifestation_batch_tools' => 'admin#manifestation_batch_tools',
+      as: 'manifestation_batch_tools_admin_index'
+  delete 'admin/destroy_manifestation' => 'admin#destroy_manifestation', as: 'destroy_manifestation_admin_index'
+  post 'admin/unpublish_manifestation' => 'admin#unpublish_manifestation', as: 'unpublish_manifestation_admin_index'
+  if Rails.env.test?
+    namespace :test do
+      resource :session, only: :create
+    end
+  end
   get 'session/create'
   get 'session/destroy'
   get 'session/login'

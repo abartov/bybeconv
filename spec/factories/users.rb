@@ -19,5 +19,8 @@ FactoryBot.define do
         create(:list_item, item: user, listkey: :bib_workshop)
       end
     end
+    trait :admin do
+      admin { true }
+    end
   end
 end
