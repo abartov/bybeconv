@@ -215,7 +215,7 @@ class ManifestationController < ApplicationController
   def dict_entry
     @entry = DictionaryEntry.find(params[:entry])
     @m = Manifestation.find(params[:id])
-    if @entry.nil? || @m.nil?
+    if @entry.nil? || @m.nil? || @entry.manifestation_id != @m.id
       head :not_found
     else
       @header_partial = 'manifestation/dict_entry_top'
