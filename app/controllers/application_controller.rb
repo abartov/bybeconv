@@ -83,7 +83,7 @@ class ApplicationController < ActionController::Base
   end
 
   def require_admin
-    u = current_user || User.find(session[:user_id]) # in case current_user is not set
+    u = current_user || (session.present? && session[:user_id].present? ? User.find(session[:user_id]) : nil) # in case current_user is not set
     return true if u && u.admin?
 
     redirect_to '/', flash: { error: I18n.t(:not_an_admin) }
