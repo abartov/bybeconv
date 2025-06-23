@@ -28,6 +28,11 @@
                   - if @collection.editors.present?
                     = t(:edited_by)
                     != @collection.editors.map { |t| link_to(t.name, authority_path(t)) }.join(', ')
+                  - if @collection.illustrators.present?
+                    .headline-3-v02
+                      = "#{t(:illustrations_by)}: "
+                      != @collection.illustrators.map { |t| link_to(t.name, authority_path(t)) }.join(', ')
+
                 -# %button.by-button-v02{href: "#"} יוצרים שונים
                 - if @collection.parent_collections.present?
                   - @collection.parent_collections.each do |pc|
