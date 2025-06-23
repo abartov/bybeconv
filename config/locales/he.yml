@@ -1,6 +1,7 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 he:
+  id: מזהה
   inside: 'בתוך: '
   not_public_yet: '(עדיין לא פומבי)'
   author_list: רשימת היוצרים
