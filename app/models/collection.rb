@@ -230,6 +230,23 @@ class Collection < ApplicationRecord
     return []
   end
 
+  def illustrators
+    ills = involved_authorities_by_role(:illustrator)
+    return ills if ills.count > 0
+
+    seen_colls = []
+    parent_collections.each do |pc| # iterate until we find illustrators
+      next if seen_colls.include?(pc.id)
+
+      ills = pc.illustrators
+      return ills if ills.present?
+
+      seen_colls << pc.id
+    end
+
+    return []
+  end
+
   # return true if any of the collection items are original works.
   # This does not traverse sub-collections because it is intended to be used with
   # uncollected works collections, which are expected to be flat, by definition.
