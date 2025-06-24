@@ -71,7 +71,7 @@ class CollectionsController < ApplicationController
       dl = @collection.fresh_downloadable_for(format)
       if dl.nil?
         prep_for_show # TODO
-        # impressionist(@m) unless is_spider? # TODO: enable impressionist for collections
+        # track_view(@collection) # TODO: enable view tracking for collections
         filename = "#{@collection.title.gsub(/[^0-9א-תA-Za-z.\-]/, '_')}.#{format}"
         html = <<~WRAPPER
           <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"

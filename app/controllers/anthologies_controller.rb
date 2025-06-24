@@ -66,7 +66,7 @@ class AnthologiesController < ApplicationController
       dl = @anthology.fresh_downloadable_for(format)
       if dl.nil?
         prep_for_show
-        # impressionist(@m) unless is_spider? # TODO: enable impressionist for anthologies
+        # track_view(@anthology) # TODO: track views for Anthologies
         filename = "#{@anthology.title.gsub(/[^0-9א-תA-Za-z.\-]/, '_')}.#{format}"
         html = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"><html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"he\" lang=\"he\" dir=\"rtl\"><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" /></head><body dir='rtl'><div dir=\"rtl\" align=\"right\">#{@anthology.title}" + @htmls.map { |h|
                                                                                                                                                                                                                                                                                                                                                                                                                 "<h1>#{h[0]}</h1>\n#{h[1]}"
