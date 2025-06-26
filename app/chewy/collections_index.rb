@@ -12,4 +12,5 @@ class CollectionsIndex < Chewy::Index
   field :involved_authorities_string, value: lambda { |c|
     c.involved_authorities.preload(:authority).map { |ia| ia.authority.name }.join(', ')
   }
+  field :impressions_count, type: :integer
 end

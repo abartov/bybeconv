@@ -31,6 +31,10 @@ module Tracking
     end
   end
 
+  def track_download(record)
+    track_event('download', record)
+  end
+
   private
 
   def track_event(event, record)

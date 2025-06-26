@@ -301,7 +301,7 @@ class ManifestationController < ApplicationController
     # Without this we had situation when Downloadable object was created but attachmnt creation failed
     Downloadable.transaction do
       m = Manifestation.find(params[:id])
-      track_event('download', m)
+      track_download(m)
 
       dl = GetFreshManifestationDownloadable.call(m, format)
       redirect_to rails_blob_url(dl.stored_file, disposition: :attachment)
