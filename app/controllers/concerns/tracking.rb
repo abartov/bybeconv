@@ -28,6 +28,16 @@ module Tracking
     Ahoy::Event.transaction do
       track_event('view', record)
       record.increment!(:impressions_count) # we simply increase impressions_count here
+
+      # increment! method does not triggers Chewy index update so we do it explicitely here
+      # for performance purpose we specify only single field to be updated
+      index_class = case record.class.name
+                    when 'Collection' then CollectionsIndex
+                    when 'Manifestation' then ManifestationsIndex
+                    when 'Authority' then AuthoritiesIndex
+                    end
+
+      index_class&.send(:import, record, import_fields: [:impressions_count])
     end
   end
 
