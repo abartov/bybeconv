@@ -846,8 +846,11 @@ class ManifestationController < ApplicationController
     @e = @m.expression
     @w = @e.work
     @author = @w.authors[0] # TODO: handle multiple authors
+
+    # We track view event for text itself and for all authors and translators
     track_view(@m)
-    track_view(@author)
+    @m.authors.each { |author| track_view(author) }
+    @m.translators.each { |translator| track_view(translator) }
 
     if @author.nil?
       @author = Authority.new(name: '?')
