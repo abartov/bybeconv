@@ -37,10 +37,7 @@ gem 'simple_form', '~> 5.3.0'
 
 gem 'kt-paperclip', git: 'https://github.com/kreeti/kt-paperclip.git' # for Ruby 3.2 compatibility, until https://github.com/kreeti/kt-paperclip/pull/98 is officially released
 # gem 'kt-paperclip', '7.1.1' # , '~>5.2' # for cloud files like author images 6.x requires aws >3.x
-# gem 'impressionist' # latest released gem incompatible with Ruby 3.x
-gem 'impressionist',
-    git: 'https://github.com/charlotte-ruby/impressionist',
-    ref: '46a582ff8cd3496da64f174b30b91f9d97e86643'
+
 gem 'jbuilder', '~> 2.0' # for JSON APIs
 gem 'sqlite3' # for dictionary imports
 # gem 'rollbar' # error reporting. Airbrake replacement.
@@ -86,14 +83,16 @@ gem 'bootstrap4-datetime-picker-rails' # for date picker in filters
 gem 'hebruby' # for Hebrew date handling
 gem 'momentjs-rails' # for date picker in filters
 
+gem 'ahoy_matey' # for recording events
+gem 'blazer' # for exploring Ahoy events
+
 gem 'grape', '1.6.0' # 1.6.1 adds a Validators module damisul's patch isn't ready for
 gem 'grape-entity', '~> 0.10.1'
 # TODO: Replace to standard version of gem after PR will be accepted https://github.com/jagaapple/grape-extra_validators/pull/10
-gem 'ahoy_matey' # for recording events
-gem 'blazer' # for exploring Ahoy events
 gem 'grape-extra_validators', '~> 2.1.0', git: 'https://github.com/damisul/grape-extra_validators'
 gem 'grape-swagger', '~> 1.4.2'
 gem 'grape-swagger-entity', '~> 0.5.1'
+
 gem 'puma'
 gem 'puma_worker_killer' # cycle workers when they bloat
 gem 'rack-attack' # control misbehaving clients

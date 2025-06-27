@@ -1,14 +1,4 @@
 GIT
-  remote: https://github.com/charlotte-ruby/impressionist
-  revision: 46a582ff8cd3496da64f174b30b91f9d97e86643
-  ref: 46a582ff8cd3496da64f174b30b91f9d97e86643
-  specs:
-    impressionist (2.0.0)
-      friendly_id
-      nokogiri (~> 1)
-      rails (>= 3.2.15)
-
-GIT
   remote: https://github.com/damisul/grape-extra_validators
   revision: 26f125aa6d9fa85548b5724ab84d604b7151d13d
   specs:
@@ -268,8 +258,6 @@ GEM
       net-http (>= 0.5.0)
     ffi (1.17.2)
     ffi (1.17.2-x86_64-linux-gnu)
-    friendly_id (5.5.1)
-      activerecord (>= 4.0.0)
     fugit (1.11.1)
       et-orbi (~> 1, >= 1.2.11)
       raabro (~> 1.4)
@@ -836,7 +824,6 @@ DEPENDENCIES
   human_enum_name
   image_processing
   immigrant
-  impressionist!
   jbuilder (~> 2.0)
   jquery-rails
   jquery-slick-rails

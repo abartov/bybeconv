@@ -4,8 +4,6 @@ class ProofsController < ApplicationController
     c.require_editor('handle_proofs')
   end
 
-  # impressionist # log actions for pageview stats
-
   def create
     @errors = []
     unless params[:ziburit] =~ /ביאליק/

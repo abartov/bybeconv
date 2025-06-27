@@ -2,6 +2,8 @@
 
 # Heterogeneous collection
 class Collection < ApplicationRecord
+  include TrackingEvents
+
   SYSTEM_TYPES = %w(uncollected root).freeze
 
   include RecordWithInvolvedAuthorities

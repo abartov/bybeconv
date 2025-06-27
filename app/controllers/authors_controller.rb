@@ -4,6 +4,7 @@ include ApplicationHelper
 
 class AuthorsController < ApplicationController
   include FilteringAndPaginationConcern
+  include Tracking
 
   before_action only: %i(new publish create show edit list add_link delete_link
                          delete_photo edit_toc update to_manual_toc add_link manage_toc volumes) do |c|
@@ -462,7 +463,7 @@ class AuthorsController < ApplicationController
       @header_partial = 'authors/author_top'
       @entity = @author
       @page_title = "#{@author.name} - #{t(:author_table_of_contents)} - #{t(:project_ben_yehuda)}"
-      update_impression
+      track_view(@author)
 
       @og_image = @author.profile_image.url(:thumb)
       @latest = cached_textify_titles(@author.cached_latest_stuff, @author)
@@ -498,7 +499,7 @@ class AuthorsController < ApplicationController
       redirect_to '/'
       return
     end
-    update_impression
+    track_view(@author)
   end
 
   def all_links
@@ -587,31 +588,14 @@ class AuthorsController < ApplicationController
     if @author.nil?
       head :ok
     else
-      unless is_spider?
-        Chewy.strategy(:bypass) do
-          @author.record_timestamps = false # avoid the impression count touching the datestamp
-          impressionist(@author)
-          @author.update_impression
-        end
-      end
+      track_view(@author)
+
       @page_title = "#{@author.name} - #{t(:author_table_of_contents)} - #{t(:project_ben_yehuda)}"
       unless @author.toc.nil?
         prep_toc
       else
         generate_toc
       end
-    end
-  end
-
-  private
-
-  def update_impression
-    return if is_spider?
-
-    Chewy.strategy(:bypass) do
-      @author.record_timestamps = false # avoid the impression count touching the datestamp
-      impressionist(@author) # log actions for pageview stats
-      @author.update_impression
     end
   end
 end

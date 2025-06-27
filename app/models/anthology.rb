@@ -11,7 +11,10 @@ class UserAnthTitleValidator < ActiveModel::Validator
   end
 end
 
+# Anthology is a User-managed collection of texts. Each user can create own anthologies
 class Anthology < ApplicationRecord
+  include TrackingEvents
+
   belongs_to :user
   has_many :texts, class_name: 'AnthologyText', dependent: :destroy
   has_many :downloadables, as: :object, dependent: :destroy

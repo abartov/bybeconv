@@ -2,6 +2,8 @@
 
 # Authority as in authorship, not as in the monopoly-on-force sense that's the ready association for muggles.
 class Authority < ApplicationRecord
+  include TrackingEvents
+
   # NOTE: Wikidata URIs are case-sensitive
   WIKIDATA_URI_PATTERN = %r{\Ahttps://wikidata.org/wiki/Q[0-9]+\z}
 
@@ -68,10 +70,6 @@ class Authority < ApplicationRecord
                                     storage: :s3,
                                     s3_credentials: 'config/s3.yml',
                                     s3_region: 'us-east-1'
-
-  is_impressionable # :counter_cache => true # for statistics
-
-  include CompactedImpressions
 
   # validations
   validates :name, :intellectual_property, presence: true
