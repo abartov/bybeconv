@@ -2,13 +2,28 @@
 
 FactoryBot.define do
   factory :ahoy_event, class: 'Ahoy::Event' do
+    visit { create(:ahoy_visit, started_at: time - 10.seconds) }
+    name { Ahoy::Event::ALLOWED_NAMES.sample }
+    time { Time.now - Random.rand(240).minutes }
+
     transient do
-      record { create(:authority) }
+      controller { 'welcome' }
+      action { 'index' }
     end
 
-    visit { create(:ahoy_visit, started_at: time - 10.seconds) }
-    name { Ahoy::Visit::ALLOWED_NAMES.sample }
-    time { Time.now - Random.rand(240).minutes }
-    properties { { id: record.id, type: record.class.name } }
+    properties { { controller: controller, action: action } }
+
+    trait :with_item do
+      transient do
+        item { create(:authority) }
+      end
+
+      controller { item.class.name.pluralize }
+      action { name }
+
+      properties do
+        { id: item.id, type: item.class.name, controller: controller, action: action }
+      end
+    end
   end
 end

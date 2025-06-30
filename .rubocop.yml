@@ -85,6 +85,9 @@ Rails/SkipsModelValidations:
 Rails/TimeZone:
   Enabled: false
 
+RSpec/BeforeAfterAll:
+  Enabled: false
+
 RSpec/ExampleLength:
   Max: 20
 

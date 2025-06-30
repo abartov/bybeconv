@@ -4,6 +4,7 @@ require 'rails_helper'
 
 describe CompactEvents do
   include ActiveSupport::Testing::TimeHelpers
+  self.use_transactional_tests = false
 
   subject(:call) { described_class.call }
 
@@ -11,26 +12,37 @@ describe CompactEvents do
   let!(:author) { manifestation.authors.first }
   let!(:translator) { manifestation.translators.first }
 
+  # Page view event should not be affected
+  let!(:page_view) do
+    create(
+      :ahoy_event,
+      name: 'page_view',
+      properties: { action: 'index', controller: 'welcome' },
+      time: Time.zone.parse('2024-11-11 23:00:00')
+    )
+  end
+
   # Some events for 2025 (should not be affected)
   let!(:visit_end_of_2024) do
     create(:ahoy_visit, started_at: Time.zone.parse('2024-12-31 23:00:00'))
   end
-
   let!(:view_2025) do
     create(
       :ahoy_event,
+      :with_item,
       visit: visit_end_of_2024,
       name: 'view',
-      record: author,
+      item: author,
       time: Time.zone.parse('2025-01-01 01:00:00')
     )
   end
   let!(:download_2025) do
     create(
       :ahoy_event,
+      :with_item,
       visit: visit_end_of_2024,
       name: 'download',
-      record: manifestation,
+      item: manifestation,
       time: Time.zone.parse('2025-01-01 01:00:00')
     )
   end
@@ -42,13 +54,21 @@ describe CompactEvents do
 
   before do
     # Set of records for 2024
-    create_list(:ahoy_event, 5, name: 'view', record: manifestation, time: Time.zone.parse('2024-12-30 00:00:00'))
-    create_list(:ahoy_event, 3, name: 'download', record: manifestation, time: Time.zone.parse('2024-11-01 00:00:00'))
-    create_list(:ahoy_event, 7, name: 'view', record: author, time: Time.zone.parse('2024-10-01 00:00:00'))
-    create_list(:ahoy_event, 4, name: 'view', record: translator, time: Time.zone.parse('2024-10-01 00:00:00'))
+    create_list(:ahoy_event, 5, :with_item, name: 'view', item: manifestation,
+                                            time: Time.zone.parse('2024-12-30 00:00:00'))
+    create_list(:ahoy_event, 3, :with_item, name: 'download', item: manifestation,
+                                            time: Time.zone.parse('2024-11-01 00:00:00'))
+    create_list(:ahoy_event, 7, :with_item, name: 'view', item: author, time: Time.zone.parse('2024-10-01 00:00:00'))
+    create_list(:ahoy_event, 4, :with_item, name: 'view', item: translator,
+                                            time: Time.zone.parse('2024-10-01 00:00:00'))
 
     # Some records for 2023
-    create_list(:ahoy_event, 2, name: 'view', record: manifestation, time: Time.zone.parse('2023-10-01 00:00:00'))
+    create_list(:ahoy_event, 2, :with_item, name: 'view', item: manifestation,
+                                            time: Time.zone.parse('2023-10-01 00:00:00'))
+  end
+
+  after(:all) do
+    clean_tables
   end
 
   it 'completes successfully' do
@@ -62,6 +82,9 @@ describe CompactEvents do
     expect { view_2025.reload }.not_to raise_error
     expect { download_2025.reload }.not_to raise_error
     expect { visit_end_of_2024.reload }.not_to raise_error
+
+    # Ensuring not-tied to object events are not affected
+    expect { page_view.reload }.not_to raise_error
 
     # Ensuring that already existed records for 2024 was properly updated
     manifestation_download_total.reload
