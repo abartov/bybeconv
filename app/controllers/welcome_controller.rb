@@ -1,5 +1,7 @@
 include BybeUtils
 class WelcomeController < ApplicationController
+  include Tracking
+
   def index
     @tabclass = set_tab('home')
     @pagetype = :homepage
@@ -32,6 +34,8 @@ class WelcomeController < ApplicationController
     @fa_snippet = MultiMarkdown.new(@fa_snippet).to_html.force_encoding('UTF-8') unless @fa_snippet.empty?
     @featured_volunteer = featured_volunteer
     # @popups_by_genre = popups_by_genre # cached, if available # used by older version of homepage
+
+    track_page_view
   end
 
   def featured_popup

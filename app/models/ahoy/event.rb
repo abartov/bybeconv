@@ -1,7 +1,7 @@
 class Ahoy::Event < ApplicationRecord
   include Ahoy::QueryMethods
 
-  ALLOWED_NAMES = %w(view download).freeze
+  ALLOWED_NAMES = %w(view download page_view search).freeze
 
   self.table_name = "ahoy_events"
 
