@@ -13,6 +13,7 @@ def clean_tables
   Aboutness.destroy_all
 
   ListItem.destroy_all
+  ActiveRecord::SessionStore::Session.delete_all
   BaseUser.destroy_all
   User.destroy_all
 
@@ -23,6 +24,9 @@ def clean_tables
   Publication.destroy_all
   Holding.destroy_all
   BibSource.destroy_all
+
+  Ahoy::Event.delete_all
+  Ahoy::Visit.delete_all
 
   # Cleaning-up ElasticSearch indices
   Chewy.massacre
