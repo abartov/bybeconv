@@ -1,4 +1,6 @@
 class SearchController < ApplicationController
+  include Tracking
+
   def index
   end
 
@@ -11,6 +13,8 @@ class SearchController < ApplicationController
       page = (params[:page] || 1).to_i
       @offset = (page - 1) * Kaminari.config.default_per_page
       @total = @results.count
+
+      track_event('search', { term: @searchterm, page: page })
     rescue # Faraday::Error::ConnectionFailed => e
       @total = -1
       @errmsg = $!
