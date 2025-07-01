@@ -28,7 +28,8 @@ module Tracking
     return if spider?
 
     Ahoy::Event.transaction do
-      track_event('view', record)
+      props = object_properties_for_tracking(record)
+      track_event('view', props)
       record.increment!(:impressions_count) # we simply increase impressions_count here
 
       # increment! method does not trigger Chewy index update so we do it explicitly here
@@ -45,8 +46,10 @@ module Tracking
 
   # Download event should be triggered when we download file associated with object
   # @param object being downloaded (Manifestation, Collection, etc)
-  def track_download(record)
-    track_event('download', record)
+  def track_download(record, format)
+    props = object_properties_for_tracking(record)
+    props[:format] = format
+    track_event('download', props)
   end
 
   # Page view event is used to track generic page views
@@ -57,31 +60,25 @@ module Tracking
 
   # Generic method used to track random events
   # @param event Event name to be tracked (Ensure it is included in Ahoy::Events::ALLOWED_NAMES)
-  # @param record can be either ActiveRecord instance or Hash, specifies additional params to be stored in
-  #   event properties. If record is an ActiveRecord it will add `id` and `type` attributes to properties, if record
-  #   is a Hash it will simply use them.
-  # NOTE: this method always adds to `properties` action and controller names, so no need to add them exlicitely
-  def track_event(event, record = nil)
+  # @param properties Hash object containing additional properties to associate with event
+  # NOTE: this method always adds to `properties` action and controller names, so no need to add them explicitely
+  def track_event(event, properties = {})
     raise "Unknown event: #{event}" unless Ahoy::Event::ALLOWED_NAMES.include?(event)
 
     return if spider?
 
-    props = if record.nil?
-              {}
-            elsif record.is_a?(ActiveRecord::Base)
-              {
-                type: record.class.name,
-                id: record.id
-              }
-            elsif record.is_a?(Hash)
-              record
-            else
-              raise 'record must be a Hash or ActiveRecord object'
-            end
+    properties[:controller] = controller_name
+    properties[:action] = action_name
 
-    props[:controller] = controller_name
-    props[:action] = action_name
+    ahoy.track(event, properties)
+  end
 
-    ahoy.track(event, props)
+  def object_properties_for_tracking(object)
+    raise 'Object must be an ActiveRecord object' unless object.is_a?(ActiveRecord::Base)
+
+    {
+      type: object.class.name,
+      id: object.id
+    }
   end
 end

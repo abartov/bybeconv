@@ -82,7 +82,7 @@ class AnthologiesController < ApplicationController
         end
         dl = MakeFreshDownloadable.call(params[:format], filename, html, @anthology, austr)
       end
-      track_download(@anthology)
+      track_download(@anthology, format)
       redirect_to rails_blob_url(dl.stored_file, disposition: :attachment)
     else
       redirect_to '/', error: t(:no_permission)

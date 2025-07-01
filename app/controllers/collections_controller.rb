@@ -92,7 +92,7 @@ class CollectionsController < ApplicationController
       dl = MakeFreshDownloadable.call(params[:format], filename, html, @collection, austr)
     end
 
-    track_download(@collection)
+    track_download(@collection, format)
     redirect_to rails_blob_url(dl.stored_file, disposition: :attachment)
   end
 
