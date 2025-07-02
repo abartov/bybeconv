@@ -51,13 +51,6 @@ class AdminController < ApplicationController
                  }
   end
 
-  def autocomplete_manifestation_title_and_alternate_names
-    wildcard = "%#{params[:term]}%"
-    render json: Manifestation.where('title like ? OR alternate_titles like ?', wildcard, wildcard).map { |m|
-      { id: m.id, label: m.title_and_cached_people, value: m.title_and_cached_people, expression_id: m.expression_id }
-    }
-  end
-
   ##############################################
   ## Reports
   def raw_tocs
@@ -1070,10 +1063,10 @@ class AdminController < ApplicationController
   end
 
   def manifestation_batch_tools
-    return unless params[:ids].present?
-
-    ids = params[:ids].split(/\s+/)
-    @manifestations = Manifestation.where(id: ids)
+    if params[:ids].present?
+      ids = params[:ids].split(/\s+/)
+      @manifestations = Manifestation.where(id: ids)
+    end
   end
 
   def destroy_manifestation
