@@ -183,11 +183,7 @@ class Manifestation < ApplicationRecord
   end
 
   def title_and_authors
-    "#{title} / #{author_string}"
-  end
-
-  def title_and_cached_people
-    "#{title} / #{cached_people}"
+    return title + ' / ' + author_string
   end
 
   def title_and_authors_html
