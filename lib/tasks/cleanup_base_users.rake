@@ -5,5 +5,6 @@
 # So we need to delete BaseUsers linked to deleted sessions too. This enhance will run base_user cleanup right after
 # each db:sessions:trim call
 Rake::Task['db:sessions:trim'].enhance do
+  puts 'Cleaning up base users'
   CleanUpBaseUsers.call
 end

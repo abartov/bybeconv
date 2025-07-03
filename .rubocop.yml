@@ -79,6 +79,15 @@ Rails/ActionOrder: # TODO: temporary disabled. it would be good to enable in fut
 Rails/OutputSafety: # we actively use such output
   Enabled: false
 
+Rails/SkipsModelValidations:
+  Enabled: false
+
+Rails/TimeZone:
+  Enabled: false
+
+RSpec/BeforeAfterAll:
+  Enabled: false
+
 RSpec/ExampleLength:
   Max: 20
 

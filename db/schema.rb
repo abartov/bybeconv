@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_05_25_092929) do
+ActiveRecord::Schema.define(version: 2025_06_25_134320) do
 
   create_table "aboutnesses", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
@@ -46,14 +46,7 @@ ActiveRecord::Schema.define(version: 2025_05_25_092929) do
     t.bigint "byte_size", null: false
     t.string "checksum", null: false
     t.datetime "created_at", null: false
-    t.string "service_name", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
-  end
-
-  create_table "active_storage_variant_records", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
-    t.bigint "blob_id", null: false
-    t.string "variation_digest", null: false
-    t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
   create_table "ahoy_events", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -62,6 +55,9 @@ ActiveRecord::Schema.define(version: 2025_05_25_092929) do
     t.string "name"
     t.json "properties"
     t.datetime "time"
+    t.virtual "item_id", type: :integer, as: "json_unquote(json_extract(`properties`,_utf8mb4'$.id'))"
+    t.virtual "item_type", type: :string, limit: 50, as: "json_unquote(json_extract(`properties`,_utf8mb4'$.type'))"
+    t.index ["item_id", "item_type", "name"], name: "index_ahoy_events_on_item_id_and_item_type_and_name"
     t.index ["name", "time"], name: "index_ahoy_events_on_name_and_time"
     t.index ["user_id"], name: "index_ahoy_events_on_user_id"
     t.index ["visit_id"], name: "index_ahoy_events_on_visit_id"
@@ -105,6 +101,7 @@ ActiveRecord::Schema.define(version: 2025_05_25_092929) do
     t.text "sequence", size: :medium
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "impressions_count", default: 0
     t.index ["user_id"], name: "index_anthologies_on_user_id"
   end
 
@@ -306,6 +303,7 @@ ActiveRecord::Schema.define(version: 2025_05_25_092929) do
     t.text "cached_credits"
     t.string "alternate_titles", limit: 1024
     t.boolean "suppress_download_and_print", default: false, null: false
+    t.integer "impressions_count", default: 0
     t.index ["inception_year"], name: "index_collections_on_inception_year"
     t.index ["publication_id"], name: "index_collections_on_publication_id"
     t.index ["sort_title"], name: "index_collections_on_sort_title"
@@ -534,34 +532,6 @@ ActiveRecord::Schema.define(version: 2025_05_25_092929) do
     t.index ["manifestation_id"], name: "index_html_files_manifestations_on_manifestation_id"
   end
 
-  create_table "impressions", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
-    t.string "impressionable_type"
-    t.integer "impressionable_id"
-    t.integer "user_id"
-    t.string "controller_name"
-    t.string "action_name"
-    t.string "view_name"
-    t.string "request_hash"
-    t.string "ip_address"
-    t.string "session_hash"
-    t.text "message", size: :medium
-    t.text "referrer", size: :medium
-    t.text "params", size: :medium
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.index ["controller_name", "action_name", "ip_address"], name: "controlleraction_ip_index"
-    t.index ["controller_name", "action_name", "request_hash"], name: "controlleraction_request_index"
-    t.index ["controller_name", "action_name", "session_hash"], name: "controlleraction_session_index"
-    t.index ["impressionable_type", "impressionable_id", "ip_address"], name: "poly_ip_index"
-    t.index ["impressionable_type", "impressionable_id", "params"], name: "poly_params_request_index", length: { params: 255 }
-    t.index ["impressionable_type", "impressionable_id", "request_hash"], name: "poly_request_index"
-    t.index ["impressionable_type", "impressionable_id", "session_hash"], name: "poly_session_index"
-    t.index ["impressionable_type", "impressionable_id", "updated_at"], name: "for_compaction"
-    t.index ["impressionable_type", "message", "impressionable_id"], name: "impressionable_type_message_index", length: { message: 255 }
-    t.index ["updated_at"], name: "index_impressions_on_updated_at"
-    t.index ["user_id"], name: "index_impressions_on_user_id"
-  end
-
   create_table "ingestibles", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "title"
     t.integer "status"
@@ -752,7 +722,7 @@ ActiveRecord::Schema.define(version: 2025_05_25_092929) do
     t.index ["task_id"], name: "index_publications_on_task_id"
   end
 
-  create_table "reading_lists", charset: "latin1", force: :cascade do |t|
+  create_table "reading_lists", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.string "title"
     t.integer "user_id"
     t.integer "access"
@@ -952,13 +922,13 @@ ActiveRecord::Schema.define(version: 2025_05_25_092929) do
     t.bigint "item_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["item_type", "item_id", "year"], name: "index_year_total_by_year", unique: true
+    t.string "event"
+    t.index ["item_id", "item_type", "year", "event"], name: "index_year_totals_on_item_id_and_item_type_and_year_and_event", unique: true
     t.index ["item_type", "item_id"], name: "index_year_totals_on_item_type_and_item_id"
   end
 
   add_foreign_key "aboutnesses", "users"
   add_foreign_key "aboutnesses", "works"
-  add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "anthologies", "users"
   add_foreign_key "anthology_texts", "anthologies"
   add_foreign_key "anthology_texts", "manifestations"

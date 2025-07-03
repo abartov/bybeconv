@@ -7,8 +7,6 @@ class ApplicationController < ActionController::Base
   after_action :set_access_control_headers
   autocomplete :tag_name, :name, limit: 15, scopes: [:approved], extra_data: [:tag_id] # TODO: also search alternate titles!
 
-  SPIDERS = ['msnbot', 'yahoo! slurp', 'googlebot', 'bingbot', 'duckduckbot', 'baiduspider', 'yandexbot', 'semrushbot']
-
   # returns BaseUser record associated with current user
   # If user is authenticated it will look for record by user_id, otherwise - by session_id
   # If force_create arg is set to true it will create new BaseUser record for user if it doesn't exists
@@ -162,7 +160,6 @@ class ApplicationController < ActionController::Base
     Rails.cache.fetch('au_by_genre', expires_in: 24.hours) do # memoize
       totals = Work.joins(involved_authorities: :authority)
                    .merge(InvolvedAuthority.role_author)
-                   .merge(Authority.has_toc)
                    .group(:genre)
                    .distinct
                    .count('authorities.id')
@@ -177,7 +174,6 @@ class ApplicationController < ActionController::Base
       get_periods.each do |p|
         ret[p] = Work.joins(:expressions, involved_authorities: :authority)
                      .merge(InvolvedAuthority.role_author)
-                     .merge(Authority.has_toc)
                      .where(expressions: { period: p })
                      .distinct
                      .count('authorities.id')
@@ -257,13 +253,6 @@ class ApplicationController < ActionController::Base
     # @genres_present = []
     # @works.each_key { |k| @genres_present << k unless @works[k].size == 0 || @genres_present.include?(k) }
     # @translations.each_key { |k| @genres_present << k unless @works[k].size == 0 || @genres_present.include?(k) }
-  end
-
-  def is_spider?
-    return false unless request.user_agent.present?
-
-    ua = request.user_agent.downcase
-    return (SPIDERS.detect { |s| ua.include?(s) } ? true : false)
   end
 
   def whatsnew_anonymous

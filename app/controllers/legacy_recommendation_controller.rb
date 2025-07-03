@@ -3,8 +3,6 @@ class LegacyRecommendationController < ApplicationController
   protect_from_forgery :except => :submit # allow submission from outside the app
   before_action :require_editor, :only => [:index, :list, :show, :resolve, :purge]
 
-#  impressionist # log actions for pageview stats
-
   def create
     unless params['what'].nil? or params['what'].empty? # don't bother capturing null submissions
       #if is_blacklisted_ip(client_ip) # filter out spam

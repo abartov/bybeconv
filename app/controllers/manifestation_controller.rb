@@ -2,6 +2,7 @@ require 'pandoc-ruby'
 
 class ManifestationController < ApplicationController
   include FilteringAndPaginationConcern
+  include Tracking
 
   before_action only: %i(list show remove_link edit_metadata add_aboutnesses) do |c|
     c.require_editor('edit_catalog')
@@ -300,14 +301,8 @@ class ManifestationController < ApplicationController
     # Without this we had situation when Downloadable object was created but attachmnt creation failed
     Downloadable.transaction do
       m = Manifestation.find(params[:id])
-      unless is_spider?
-        Chewy.strategy(:bypass) do
-          m.record_timestamps = false # avoid the impression count touching the datestamp
-          impressionist(m)
-          m.update_impression
-        end
-      end
       dl = GetFreshManifestationDownloadable.call(m, format)
+      track_download(m, format)
       redirect_to rails_blob_url(dl.stored_file, disposition: :attachment)
     end
   end
@@ -840,45 +835,34 @@ class ManifestationController < ApplicationController
 
   def prep_for_print
     @m = Manifestation.find(params[:id])
-    if @m.nil?
-      head :ok
-    else
-      unless @m.published?
-        flash[:notice] = t(:work_not_available)
-        redirect_to '/'
-        return
-      end
 
-      @e = @m.expression
-      @w = @e.work
-      @author = @w.authors[0] # TODO: handle multiple authors
-      unless is_spider?
-        Chewy.strategy(:bypass) do
-          @m.record_timestamps = false # avoid the impression count touching the datestamp
-          impressionist(@m)
-          @m.update_impression
-          unless @author.nil?
-            @author.record_timestamps = false # avoid the impression count touching the datestamp
-            impressionist(@author) # also increment the author's popularity counter
-            @author.update_impression
-          end
-        end
-        # log the read, for later recommendation feature using the Disco gem
-        ahoy.track 'text read or printed', text_id: @m.id, title: @m.title, author: @m.author_string
-      end
-      if @author.nil?
-        @author = Authority.new(name: '?')
-      end
-      @translators = @m.translators
-      @illustrators = @m.involved_authorities_by_role(:illustrator)
-      @editors = @m.involved_authorities_by_role(:editor)
-      @page_title = "#{@m.title_and_authors} - #{t(:default_page_title)}"
-      if @print
-        # remove MMD's automatic figcaptions
-        @html = MultiMarkdown.new(@m.markdown).to_html
-                             .force_encoding('UTF-8').gsub(%r{<figcaption>.*?</figcaption>}, '')
-      end
+    unless @m.published?
+      flash[:notice] = t(:work_not_available)
+      redirect_to '/'
+      return
     end
+
+    @e = @m.expression
+    @w = @e.work
+    @author = @w.authors[0] # TODO: handle multiple authors
+
+    # We track view event for text itself and for all authors and translators
+    track_view(@m)
+    @m.authors.each { |author| track_view(author) }
+    @m.translators.each { |translator| track_view(translator) }
+
+    if @author.nil?
+      @author = Authority.new(name: '?')
+    end
+    @translators = @m.translators
+    @illustrators = @m.involved_authorities_by_role(:illustrator)
+    @editors = @m.involved_authorities_by_role(:editor)
+    @page_title = "#{@m.title_and_authors} - #{t(:default_page_title)}"
+    return unless @print
+
+    # remove MMD's automatic figcaptions
+    @html = MultiMarkdown.new(@m.markdown).to_html
+                         .force_encoding('UTF-8').gsub(%r{<figcaption>.*?</figcaption>}, '')
   end
 
   def prep_for_read
