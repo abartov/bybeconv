@@ -160,7 +160,6 @@ class ApplicationController < ActionController::Base
     Rails.cache.fetch('au_by_genre', expires_in: 24.hours) do # memoize
       totals = Work.joins(involved_authorities: :authority)
                    .merge(InvolvedAuthority.role_author)
-                   .merge(Authority.has_toc)
                    .group(:genre)
                    .distinct
                    .count('authorities.id')
@@ -175,7 +174,6 @@ class ApplicationController < ActionController::Base
       get_periods.each do |p|
         ret[p] = Work.joins(:expressions, involved_authorities: :authority)
                      .merge(InvolvedAuthority.role_author)
-                     .merge(Authority.has_toc)
                      .where(expressions: { period: p })
                      .distinct
                      .count('authorities.id')
@@ -256,6 +254,7 @@ class ApplicationController < ActionController::Base
     # @works.each_key { |k| @genres_present << k unless @works[k].size == 0 || @genres_present.include?(k) }
     # @translations.each_key { |k| @genres_present << k unless @works[k].size == 0 || @genres_present.include?(k) }
   end
+
   def whatsnew_anonymous
     Rails.cache.fetch('whatsnew_anonymous', expires_in: 2.hours) do # memoize
       logger.info('cache miss: calculating whatsnew anonymous')
