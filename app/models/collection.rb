@@ -519,7 +519,7 @@ class Collection < ApplicationRecord
       CollectionItem.new(collection: self, alt_title: item)
     elsif item.instance_of?(CollectionItem)
       CollectionItem.new(collection: self, item: item.item, alt_title: item.alt_title, context: item.context,
-                         markdown: item.markdown)
+                         markdown: item.markdown, paratext: item.paratext)
     else
       CollectionItem.new(collection: self, item: item)
     end
