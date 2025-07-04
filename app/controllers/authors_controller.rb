@@ -407,6 +407,9 @@ class AuthorsController < ApplicationController
           Rails.cache.delete('homepage_authors')
           Rails.cache.delete("au_#{@author.id}_work_count")
         end
+        if @author.legacy_credits_changed?
+          @author.invalidate_cached_credits!
+        end
         flash[:notice] = I18n.t(:updated_successfully)
         redirect_to action: :show, id: @author.id
       else
