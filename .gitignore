@@ -60,7 +60,7 @@ ubuntu-*-console.log
 # Ignore local dotenv configs (as they should be different for every developer)
 .env.development.local
 .env.test.local
-.env.development.local
+.env.local
 
 # Docker-compose config
 docker-compose.override.yml

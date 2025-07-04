@@ -129,7 +129,7 @@
                     <div style="padding-left: 0.6rem"><%= t(:welcome_heading) %> <strong><%= current_user.name %></strong>!</div>
                     <div class="dropdown-arrow pointer" style="top: 0.1rem; left: 0"><i class="fa chevron"></i></div>
                   </div>
-                  <div id="user_collapsible" class="collapse"><span id="sign_in" class="linkcolor pointer notyet">כניסה לאזור האישי</a><br/>
+                  <div id="user_collapsible" class="collapse"><span id="sign_in" class="linkcolor pointer notyet">כניסה לאזור האישי</span><br/>
                     <%= link_to t(:sign_out), signout_path, id: "sign_out" %>
                   </div>
                   <% if current_user.editor? %>

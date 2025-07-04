@@ -26,7 +26,7 @@ class Authority < ApplicationRecord
   }, _prefix: true
 
   # relationships
-  belongs_to :toc
+  belongs_to :toc, optional: true
 
   has_many :involved_authorities, inverse_of: :authority, dependent: :destroy
   has_many :featured_contents, inverse_of: :authority, dependent: :destroy
