@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_06_25_134320) do
-
+ActiveRecord::Schema[7.1].define(version: 2025_07_04_110226) do
   create_table "aboutnesses", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
     t.integer "user_id"
@@ -44,9 +43,16 @@ ActiveRecord::Schema.define(version: 2025_06_25_134320) do
     t.string "content_type"
     t.text "metadata"
     t.bigint "byte_size", null: false
-    t.string "checksum", null: false
+    t.string "checksum"
     t.datetime "created_at", null: false
+    t.string "service_name", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "active_storage_variant_records", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
+    t.bigint "blob_id", null: false
+    t.string "variation_digest", null: false
+    t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
   create_table "ahoy_events", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -276,8 +282,8 @@ ActiveRecord::Schema.define(version: 2025_06_25_134320) do
     t.string "item_type"
     t.bigint "item_id"
     t.text "markdown"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.boolean "paratext"
     t.index ["collection_id"], name: "index_collection_items_on_collection_id"
     t.index ["item_type", "item_id"], name: "index_collection_items_on_item"
@@ -294,8 +300,8 @@ ActiveRecord::Schema.define(version: 2025_06_25_134320) do
     t.integer "publication_id"
     t.integer "toc_id"
     t.integer "toc_strategy"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "publisher_line", limit: 2048
     t.string "pub_year"
     t.integer "normalized_pub_year"
@@ -555,8 +561,8 @@ ActiveRecord::Schema.define(version: 2025_06_25_134320) do
     t.text "works_buffer", size: :long
     t.datetime "markdown_updated_at"
     t.datetime "works_buffer_updated_at"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "locked_by_user_id"
     t.timestamp "locked_at"
     t.string "prospective_volume_id"
@@ -579,8 +585,8 @@ ActiveRecord::Schema.define(version: 2025_06_25_134320) do
   create_table "involved_authorities", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "authority_id", null: false
     t.integer "role", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "item_type", null: false
     t.integer "item_id", null: false
     t.index ["authority_id", "item_id", "item_type", "role"], name: "index_involved_authority_uniq", unique: true
@@ -780,8 +786,8 @@ ActiveRecord::Schema.define(version: 2025_06_25_134320) do
   create_table "tag_names", charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "tag_id"
     t.string "name"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["name"], name: "index_tag_names_on_name", unique: true
     t.index ["tag_id"], name: "index_tag_names_on_tag_id"
   end
@@ -831,8 +837,8 @@ ActiveRecord::Schema.define(version: 2025_06_25_134320) do
     t.datetime "expires_at"
     t.integer "blocker_id"
     t.string "reason"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "context_item_type"
     t.bigint "context_item_id"
     t.index ["context"], name: "index_user_blocks_on_context"
@@ -929,6 +935,7 @@ ActiveRecord::Schema.define(version: 2025_06_25_134320) do
 
   add_foreign_key "aboutnesses", "users"
   add_foreign_key "aboutnesses", "works"
+  add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "anthologies", "users"
   add_foreign_key "anthology_texts", "anthologies"
   add_foreign_key "anthology_texts", "manifestations"
