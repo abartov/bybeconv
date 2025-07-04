@@ -7,7 +7,7 @@ class AdminController < ApplicationController
   before_action :require_editor
   before_action :obtain_tagging_lock,
                 only: %i(approve_tag approve_tag_and_next reject_tag escalate_tag reject_tag_and_next merge_tag
-                         merge_tagging approve_tagging reject_tagging escalate_tagging unapprove_tagging unreject_tagging tag_moderation tag_review)
+                         merge_tagging approve_tagging reject_tagging escalate_tagging tag_moderation tag_review)
   before_action :require_admin, only: %i(manifestation_batch_tools destroy_manifestation unpublish_manifestation)
   # before_action :require_admin, only: [:missing_languages, :missing_genres, :incongruous_copyright, :missing_copyright, :similar_titles]
   autocomplete :manifestation, :title, display_value: :title_and_authors, extra_data: [:expression_id] # TODO: also search alternate titles!

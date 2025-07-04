@@ -6,7 +6,7 @@ source 'http://rubygems.org'
 
 gem 'actionview'
 gem 'concurrent-ruby', '1.3.4' # 1.3.5 and later yields an error with Logger. Fixed in Rails 7.1
-gem 'rails', '~> 7.0.0'
+gem 'rails', '~> 7.1.0'
 gem 'rails-i18n', '~> 7' # version should match major version of Rails
 gem 'sass-rails', '~> 6.0.0'
 gem 'sprockets', '~> 4.2.1'
