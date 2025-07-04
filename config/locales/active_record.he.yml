@@ -20,7 +20,7 @@ he:
       person: אדם
     errors:
       messages:
-        required: required
+        required: שדה חובה
       models:
         involved_authority:
           attributes:
