@@ -4,11 +4,11 @@
 
 @font-face {
   font-family: "ben-yehuda-2";
-  src:url("/assets/ben-yehuda-2.eot");
-  src:url("/assets/ben-yehuda-2.eot?#iefix") format("embedded-opentype"),
-    url("/assets/ben-yehuda-2.woff") format("woff"),
-    url("/assets/ben-yehuda-2.ttf") format("truetype"),
-    url("/assets/ben-yehuda-2.svg#ben-yehuda-2") format("svg");
+  src:font-url("ben-yehuda-2.eot");
+  src:font-url("ben-yehuda-2.eot?#iefix") format("embedded-opentype"),
+    font-url("ben-yehuda-2.woff") format("woff"),
+    font-url("ben-yehuda-2.ttf") format("truetype"),
+    font-url("ben-yehuda-2.svg#ben-yehuda-2") format("svg");
   font-weight: normal;
   font-style: normal;
 }
