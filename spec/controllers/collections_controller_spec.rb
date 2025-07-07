@@ -115,5 +115,39 @@ describe CollectionsController do
         expect(flash.notice).to eq I18n.t(:deleted_successfully)
       end
     end
+
+    describe '#drag_item' do
+      subject(:call) { post :drag_item, params: { id: collection.id, old_index: old_index, new_index: new_index } }
+
+      let(:titles) { Array.new(5) { |index| (index + 1).to_s } }
+      let!(:collection) { create(:collection, title_placeholders: titles) }
+      let(:collection_item) { collection.collection_items[old_index] }
+
+      shared_examples 'drags successfully' do
+        it 'moves item to new position' do
+          expect(call).to be_successful
+          expect(collection_item.reload.seqno).to eq(new_index + 1)
+          collection.reload
+          expect(collection.collection_items.pluck(:alt_title)).to eq(expected_order)
+          expect(collection.collection_items.pluck(:seqno)).to eq([1, 2, 3, 4, 5])
+        end
+      end
+
+      context 'when we drag item forwards' do
+        let(:old_index) { 0 }
+        let(:new_index) { 2 }
+        let(:expected_order) { %w(2 3 1 4 5) }
+
+        it_behaves_like 'drags successfully'
+      end
+
+      context 'when we drag item backwards' do
+        let(:old_index) { 2 }
+        let(:new_index) { 0 }
+        let(:expected_order) { %w(3 1 2 4 5) }
+
+        it_behaves_like 'drags successfully'
+      end
+    end
   end
 end
