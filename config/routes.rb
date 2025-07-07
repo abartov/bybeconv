@@ -38,7 +38,10 @@ Bybeconv::Application.routes.draw do
 
   resources :collection_items, only: %i(create show edit update destroy)
   resources :collections do
-    post 'apply_drag'
+    member do
+      post :drag_item
+    end
+
     post 'transplant_item'
     get 'manage'
     post 'download'

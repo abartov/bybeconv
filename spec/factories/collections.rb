@@ -34,9 +34,9 @@ FactoryBot.define do
 
     collection_items do
       i = 0
-      (included_collections + manifestations).map { |item| build(:collection_item, item: item, seqno: ++i) } +
-        title_placeholders.map { |title| build(:collection_item, alt_title: title, seqno: ++i) } +
-        markdown_placeholders.map { |markdown| build(:collection_item, markdown: markdown, seqno: ++i) }
+      (included_collections + manifestations).map { |item| build(:collection_item, item: item, seqno: i += 1) } +
+        title_placeholders.map { |title| build(:collection_item, alt_title: title, seqno: i += 1) } +
+        markdown_placeholders.map { |markdown| build(:collection_item, markdown: markdown, seqno: i += 1) }
     end
   end
 end
