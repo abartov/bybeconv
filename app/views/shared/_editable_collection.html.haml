@@ -102,22 +102,16 @@
 
         if (sameList) {
           // gets the new and old index then removes the temporary attribute
-          var newIndex = ui.item.index() + 1;
-          var oldIndex = parseInt($(this).attr('data-previndex')) + 1;
-          var element_id = ui.item.attr('id').replace('#{nonce}_collitem_','');
+          var newIndex = ui.item.index();
+          var oldIndex = parseInt($(this).attr('data-previndex'));
           $(this).removeAttr('data-previndex');
 
           ///code to pass the data using AJAX
           if (newIndex != oldIndex) {
             $mask.show();
-
             $.post(
-              '#{collection_apply_drag_path(collection.id)}',
-              {
-                coll_item_id: element_id,
-                old_pos: oldIndex,
-                new_pos: newIndex
-              }
+              '#{drag_item_collection_path(collection)}',
+              { old_index: oldIndex, new_index: newIndex }
             ).always(function() {
               $mask.hide();
             });

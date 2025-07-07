@@ -467,31 +467,6 @@ class Collection < ApplicationRecord
     ci.id
   end
 
-  # old_pos and new_pos are 1-based positions in the list, not the seqno (which is not necessarily contiguous!)
-  def apply_drag(coll_item_id, old_pos, new_pos)
-    ci = CollectionItem.find(coll_item_id)
-    return false if ci.nil?
-
-    if new_pos >= collection_items.count
-      ci.seqno = collection_items.maximum(:seqno).to_i + 1
-      ci.save!
-    elsif old_pos == 1 && new_pos == 2
-      old_seqno = ci.seqno
-      ci.seqno = collection_items[1].seqno
-      collection_items[1].seqno = old_seqno
-      ci.save!
-      collection_items[1].save!
-    else
-      before_seqno = new_pos - 2 < 0 ? 0 : collection_items[new_pos - 2].seqno
-      ci.seqno = before_seqno + 1
-      collection_items[new_pos - 1..].each do |coli|
-        coli.seqno += 1
-        coli.save!
-      end
-      ci.save!
-    end
-  end
-
   def parent_collections
     parent_collection_items.preload(:collection).map(&:collection)
   end

@@ -6,7 +6,7 @@ class CollectionsController < ApplicationController
   include Tracking
 
   before_action :require_editor, except: %i(show download print)
-  before_action :set_collection, only: %i(show edit update destroy)
+  before_action :set_collection, only: %i(show edit update destroy drag_item)
 
   # GET /collections or /collections.json
   def index
@@ -158,19 +158,30 @@ class CollectionsController < ApplicationController
     end
   end
 
-  # POST /collections/1/apply_drag
-  def apply_drag
-    @collection = Collection.find(params[:collection_id])
-    if @collection.nil?
-      flash[:error] = t(:no_such_item)
-      head :not_found
-    else
-      if params[:coll_item_id].present? && params[:old_pos].present? && params[:new_pos].present?
-        @collection.apply_drag(params[:coll_item_id].to_i, params[:old_pos].to_i,
-                               params[:new_pos].to_i)
+  # POST /collections/1/drag_item
+  def drag_item
+    # zero-based indexes of item in the list
+    old_index = params.fetch(:old_index).to_i
+    new_index = params.fetch(:new_index).to_i
+
+    Collection.transaction do
+      items = @collection.collection_items.to_a
+      item_to_move = items[old_index]
+      item_to_move.update(seqno: items[new_index].seqno)
+
+      if old_index > new_index
+        # moving item up in the list
+        items[new_index..(old_index - 1)].each do |ci|
+          ci.increment!(:seqno)
+        end
+      elsif old_index < new_index
+        # moving item down in the list
+        items[(old_index + 1)..new_index].each do |ci|
+          ci.decrement!(:seqno)
+        end
       end
-      head :ok
     end
+    head :ok
   end
 
   # POST /collections/1/transplant_item
