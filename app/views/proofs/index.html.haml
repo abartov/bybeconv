@@ -17,6 +17,11 @@
   %p
     - ['all', 'new', 'assigned', 'fixed', 'escalated', 'wontfix', 'spam'].each do |st|
       = "#{textify_proof_status(st)}: #{@count[st]}"
+  %p
+    = form_tag proofs_path, method: :get do
+      = label_tag :search, t('.search_by_title')
+      = text_field_tag :search, params[:search]
+      = submit_tag t(:filter)
   %table
     %tr
       %th= t(:work)
