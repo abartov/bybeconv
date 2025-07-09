@@ -1551,6 +1551,7 @@ he:
     index:
       title_all: כל ההגהות
       title_by_status: הגהות לפי סטטוס %{status}
+      search_by_title: חיפוש לפי כותרת
       show_all: הצג את כל ההגהות
       show_open: הצג הגהות חדשות
       show_escalated: הצג הגהות טעונות עיון נוסף

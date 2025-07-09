@@ -39,11 +39,17 @@ class ProofsController < ApplicationController
     }
 
     @status = params[:status]
+    @search_query = params[:search]
+
     @proofs = if @status.nil?
                 Proof.where.not(status: :spam).order(:manifestation_id)
               else
                 Proof.where(status: @status).order('updated_at DESC')
               end
+
+    if @search_query.present?
+      @proofs = @proofs.joins(:manifestation).where('manifestations.title LIKE ?', "%#{@search_query}%")
+    end
 
     @proofs = @proofs.page(params[:page])
   end
