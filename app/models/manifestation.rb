@@ -18,7 +18,7 @@ class Manifestation < ApplicationRecord
 
   has_paper_trail ignore: %i(impressions_count created_at updated_at)
   has_many :external_links, as: :linkable, dependent: :destroy
-  has_many :proofs, dependent: :destroy
+  has_many :proofs, as: :item, dependent: :destroy
   has_many :anthology_texts, dependent: :destroy
   has_many_attached :images, dependent: :destroy
   has_many :collection_items, as: :item, dependent: :destroy
