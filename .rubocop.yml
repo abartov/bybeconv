@@ -19,6 +19,9 @@ Metrics/BlockLength:
   Exclude:
     - 'config/routes.rb'
 
+Metrics/BlockNesting:
+  Max: 4
+
 Metrics/ClassLength:
   Max: 1000
 
@@ -68,6 +71,9 @@ Style/PercentLiteralDelimiters:
 
 Style/RedundantReturn:
   Enabled: false
+
+Style/StringConcatenation:
+  Enabled: false # as we have many right-to-left texts following this Cop can be tricky
 
 # TODO: Re-enable later, currently too hard to fix all places
 Style/UnlessElse:

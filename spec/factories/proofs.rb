@@ -4,6 +4,6 @@ FactoryBot.define do
     highlight { Faker::Quotes::Shakespeare.hamlet_quote }
     what { Faker::Quotes::Shakespeare.romeo_and_juliet_quote }
     status { Proof::STATUSES.sample }
-    manifestation { create(:manifestation) }
+    item { create(:manifestation) }
   end
 end
