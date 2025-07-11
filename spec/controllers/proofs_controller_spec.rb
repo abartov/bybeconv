@@ -4,11 +4,13 @@ describe ProofsController do
   include_context 'when editor logged in', :handle_proofs
 
   describe '#index' do
-    let!(:new_proof) { create(:proof, status: :new) }
+    let(:manifestation) { create(:manifestation, title: 'Search Term') }
+
+    let!(:new_proof) { create(:proof, status: :new, item: manifestation) }
     let!(:escalated_proof) { create(:proof, status: :escalated) }
-    let!(:fixed_proof) { create(:proof, status: :fixed) }
+    let!(:fixed_proof) { create(:proof, status: :fixed, item: manifestation) }
     let!(:wontfix_proof) { create(:proof, status: :wontfix) }
-    let!(:spam_proof) { create(:proof, status: :spam) }
+    let!(:spam_proof) { create(:proof, status: :spam, item: manifestation) }
 
     subject!(:call) { get :index, params: filter }
 
@@ -17,7 +19,7 @@ describe ProofsController do
 
       it 'shows all proofs except spam' do
         expect(call).to be_successful
-        expect(assigns[:proofs]).to match_array [new_proof, escalated_proof, fixed_proof, wontfix_proof]
+        expect(assigns[:proofs]).to contain_exactly(new_proof, escalated_proof, fixed_proof, wontfix_proof)
       end
     end
 
@@ -26,7 +28,16 @@ describe ProofsController do
 
       it 'shows all proofs of selected status' do
         expect(call).to be_successful
-        expect(assigns[:proofs]).to match_array [new_proof]
+        expect(assigns[:proofs]).to contain_exactly(new_proof)
+      end
+    end
+
+    context 'when search term is given' do
+      let(:filter) { { search: 'SEARCH TERM' } }
+
+      it 'shows all matching proofs except spam' do
+        expect(call).to be_successful
+        expect(assigns[:proofs]).to contain_exactly(new_proof, fixed_proof)
       end
     end
   end
@@ -54,7 +65,7 @@ describe ProofsController do
 
     context 'when proof is for manifestation' do
       let!(:manifestation) { create(:manifestation) }
-      let!(:proof) { create(:proof, manifestation: manifestation) }
+      let!(:proof) { create(:proof, item: manifestation) }
 
       it { is_expected.to be_successful }
     end
@@ -72,7 +83,8 @@ describe ProofsController do
         from: email,
         highlight: 'highlight text',
         what: 'what text',
-        manifestation: manifestation.id,
+        item_type: 'Manifestation',
+        item_id: manifestation.id,
         ziburit: ziburit
       }
     end
@@ -88,7 +100,7 @@ describe ProofsController do
           from: email,
           what: 'what text',
           highlight: 'highlight text',
-          manifestation: manifestation
+          item: manifestation
         )
       end
     end
@@ -117,7 +129,7 @@ describe ProofsController do
 
   describe '#resolve' do
     let!(:manifestation) { create(:manifestation) }
-    let!(:proof) { create(:proof, status: :new, manifestation: manifestation, from: 'test@test.com') }
+    let!(:proof) { create(:proof, status: :new, item: manifestation, from: 'test@test.com') }
 
     subject(:call) { post :resolve, params: { id: proof.id, fixed: fixed }.merge(additional_params) }
 

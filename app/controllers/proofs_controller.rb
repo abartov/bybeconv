@@ -1,22 +1,30 @@
+# frozen_string_literal: true
+
+# Controller to work with Proofs (error reports)
 class ProofsController < ApplicationController
   protect_from_forgery except: :submit # allow submission from outside the app
   before_action only: %i(index show resolve purge) do |c|
     c.require_editor('handle_proofs')
   end
 
+  before_action :set_proof, only: %i(show resolve)
+
   def create
     @errors = []
     unless params[:ziburit] =~ /ביאליק/
       @errors << t('.ziburit_failed')
     end
-    if params[:from].blank?
+
+    email = params[:from]
+    if email.blank?
       @errors << t('.email_missing')
     end
 
     if @errors.empty?
       Proof.create!(
-        from: params[:from],
-        manifestation_id: params['manifestation'].to_i,
+        from: email,
+        item_id: params.fetch(:item_id),
+        item_type: params.fetch(:item_type),
         what: params[:what],
         highlight: params[:highlight],
         status: :new
@@ -42,47 +50,48 @@ class ProofsController < ApplicationController
     @search_query = params[:search]
 
     @proofs = if @status.nil?
-                Proof.where.not(status: :spam).order(:manifestation_id)
+                Proof.where.not(status: :spam)
               else
-                Proof.where(status: @status).order('updated_at DESC')
+                Proof.where(status: @status)
               end
 
     if @search_query.present?
-      @proofs = @proofs.joins(:manifestation).where('manifestations.title LIKE ?', "%#{@search_query}%")
+      @proofs = @proofs.where(
+        <<~SQL.squish,
+          exists (
+            select 1 from
+              manifestations m
+            where
+              m.id = proofs.item_id
+              and proofs.item_type = 'Manifestation'
+              and upper(m.title) like ?
+          )#{'      '}
+        SQL
+        "%#{@search_query.strip.upcase}%"
+      )
     end
 
-    @proofs = @proofs.page(params[:page])
+    @proofs = @proofs.order(updated_at: :desc).page(params[:page])
   end
 
   def show
-    @p = Proof.find(params[:id])
-    @p.what = '' if @p.what.nil?
-    if @p.manifestation
-      @m = Manifestation.find(@p.manifestation_id)
-    else
-      h = HtmlFile.find_by_url(@p.about.sub('http://benyehuda.org', ''))
-      if !h.nil? && (h.status == 'Published')
-        @m = h.manifestations[0]
-      end
-    end
-    unless @m.nil?
-      @html = MultiMarkdown.new(@m.markdown).to_html.force_encoding('UTF-8').gsub(%r{<figcaption>.*?</figcaption>}, '') # remove MMD's automatic figcaptions
-      @translation = @m.expression.translation
-    else
-      @html = ''
-    end
+    @proof.what = '' if @proof.what.nil?
   end
 
   def resolve
-    @p = Proof.find(params[:id])
     if params[:fixed] == 'yes'
-      @p.status = 'fixed'
-      unless params[:email] == 'no' or @p.from.nil? or @p.from !~ /\w+@\w+\.\w+/
+      @proof.status = 'fixed'
+      unless params[:email] == 'no' || @proof.from.nil? || @proof.from !~ /\w+@\w+\.\w+/
         explanation = params[:fixed_explanation]
-        if @p.manifestation_id.nil?
-          Notifications.proof_fixed(@p, @p.about, nil, @explanation).deliver
+        unless @proof.item.is_a?(Manifestation)
+          Notifications.proof_fixed(@proof, @proof.about, nil, @explanation).deliver
         else
-          Notifications.proof_fixed(@p, manifestation_path(@p.manifestation_id), @p.manifestation, explanation).deliver
+          Notifications.proof_fixed(
+            @proof,
+            manifestation_path(@proof.item),
+            @proof.item,
+            explanation
+          ).deliver
         end
         fix_text = 'תוקן (ונשלח דואל)'
       else
@@ -90,17 +99,21 @@ class ProofsController < ApplicationController
       end
     elsif params[:fixed] == 'no'
       if params[:escalate] == 'yes'
-        @p.status = 'escalated'
+        @proof.status = 'escalated'
         fix_text = t(:escalated)
       else
-        @p.status = 'wontfix'
+        @proof.status = 'wontfix'
         @explanation = params[:wontfix_explanation]
-        unless params[:email] == 'no' or @p.from.nil? or @p.from !~ /\w+@\w+\.\w+/
-          if @p.manifestation_id.nil?
-            Notifications.proof_wontfix(@p, @p.about, nil, @explanation).deliver
+        unless params[:email] == 'no' || @proof.from.nil? || @proof.from !~ /\w+@\w+\.\w+/
+          unless @proof.item.is_a?(Manifestation)
+            Notifications.proof_wontfix(@proof, @proof.about, nil, @explanation).deliver
           else
-            Notifications.proof_wontfix(@p, manifestation_path(@p.manifestation_id), @p.manifestation,
-                                        @explanation).deliver
+            Notifications.proof_wontfix(
+              @proof,
+              manifestation_path(@proof.item),
+              @proof.item,
+              @explanation
+            ).deliver
           end
           fix_text = 'כבר תקין (ונשלח דואל)'
         else
@@ -108,13 +121,12 @@ class ProofsController < ApplicationController
         end
       end
     else # spam, just ignore
-      @p.status = 'spam'
+      @proof.status = 'spam'
       fix_text = 'זבל'
     end
-    @p.resolver = current_user
-    @p.save!
-    li = ListItem.where(listkey: 'proofs_by_user', item_id: @p.id)
-    li.destroy_all unless li.nil? # unassign the proof from the user's list
+    @proof.resolver = current_user
+    @proof.save!
+    ListItem.where(listkey: 'proofs_by_user', item_id: @proof.id).destroy_all # unassign the proof from the user's list
     flash[:notice] = t(:resolved_as, fixed: fix_text)
     if current_user.admin?
       redirect_to action: :index, params: { status: :new }
@@ -127,5 +139,11 @@ class ProofsController < ApplicationController
     Proof.where(status: 'spam').delete_all
     flash[:notice] = t(:purged)
     redirect_to action: :index
+  end
+
+  private
+
+  def set_proof
+    @proof = Proof.find(params[:id])
   end
 end

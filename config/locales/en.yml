@@ -11,6 +11,7 @@ en:
   back: Back
   edit: Edit
   save: Save
+  cancel: Cancel
   update: Update
   destroy: Destroy
   created_successfully: Created Successfully
@@ -42,6 +43,13 @@ en:
   sort_by: Sort by
   uncollected_works_collection_title: Uncollected works
   add: Add
+  email: Email
+  ziburit: What is the last name of the most famous poet? (Security question)
+  not_implemented_yet: Not implemented. This function is still in development.
+  report_error_tt: To report error select text on the page and then press here
+  found_br_mistake_html: I have found<br/>mistake
+
+  not_an_editor: This page is only available for editors
   admin:
     featured_contents:
       index:
@@ -117,6 +125,20 @@ en:
         permission_for_all: TBD description for 'permission_for_all'
         permission_for_selected: TBD description for 'permission_for_selected'
         unknown: TBD description for 'unknown'
+    proof:
+      cancel_and_back: Cancel and Go Back
+      found_mistake: Found Mistake
+      report_found_mistake: Report Mistake on Page
+      selected_text: Selected Text
+      copy_text: Copy Below
+      reset_text: Clear Text
+      proof_your_proofs: Type the proofs down here, or click "Copy Below" to copy the selected text and manually correct it below.
+      email_just_for_proof: Email address just for an update on this proofreading
+      submit: Send Proofreading
+      please_select_something: Excellent, but first, please select the wrong paragraph (or a few lines), so that we know where to correct.  After the check, click this button again.
+      too_short: At least a sentence or two should be selected, not just the error itself. This helps us locate the wrong place in the text. After the check, click this button again.
+      select_proper_text: It appears that the selected text does not belong to any work. Please make your selection directly from the work itself.
+      thanks_html: Thank you so much for taking the trouble to send us a proofreading or comment!  We will review it carefully and correct the text if necessary, and will update you as we do so.
   welcome:
     submit_contact:
       ziburit_failed: Control question failed

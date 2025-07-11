@@ -17,6 +17,7 @@ def clean_tables
   BaseUser.destroy_all
   User.destroy_all
 
+  Proof.destroy_all
   Manifestation.destroy_all
   Expression.destroy_all
   Work.destroy_all

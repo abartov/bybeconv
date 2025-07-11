@@ -1,49 +1,68 @@
-= form_tag(proofs_path, remote: true, id: 'proof_form') do
-  .flex-popup
-    .popup-top
-      %button.btn-small-outline-v02{'data-dismiss'=>'modal'}
-        .btn-text-v02
-          %span.right-arrow 2
-          %span= t(:cancel_and_back)
-      .headline-2-v02{:style => "text-align: center;margin: 0; padding-top: 3px;"}= t(:found_mistake)
-      .button-placeholder
-    .by-popup-v02
-      .by-card-header-v02.desktop-only
-        %span.headline-1-v02= t(:report_found_mistake)
-        %a.popup-x-v02{'data-dismiss'=>'modal'} -
-      .by-card-content-v02
-        #marked-error-text.field-label= t(:your_selected_text)
-        = text_area_tag(:highlight, '', id: 'proof_selected_text', rows: 4, cols:40, readonly:true)
-        /%input.field-v02{:type => "text"}/
-        %div.pointer#copy_proof
-          %span.right-side-icon )
-          %span{:style => "font-weight: bold"}= t(:proof_copy_text)
-        %div.pointer#clear_proof
-          %span.right-side-icon -
-          %span{:style => "font-weight: bold"}= t(:clear_text_and_reset_proof)
-        #error-correction-suggestion.field-label= t(:proof_your_proofs)
-        = text_area_tag(:what, '', id: 'prooftext', required: true, rows: 4, cols: 40)
-        /#error-notes.field-label הערות
-        /%input.field-v02{:type => "text"}/
-        #error-e-mail.field-label= t(:email_just_for_proof)
-        = email_field_tag 'from', '', {placeholder: t(:email), required: true, class: 'field-v02'}
-        = hidden_field_tag(:manifestation, @m.id)
-        .desktop-only.pointer.bottom-right-link{'data-dismiss'=>'modal'}
-          %span.right-side-icon -
-          %span{:style => "font-weight: bold"}= t(:cancel)
-        #error-notes.field-label= t(:ziburit)
-        = text_field_tag(:ziburit, nil, {required: true, class: 'field-v02'})
-      .bottom-button-area.left-buttons
-        = submit_tag(t(:submit_proof), {class: 'by-button-v02'})
-        %button.by-button-v02.btn-secondary-v02.desktop-only{'data-dismiss'=>'modal'}
-          %span.right-side-icon= '-'
-          %span{style:'font-weight: bold'}= t(:cancel)
+:ruby
+  # in order to utilize this partial we need to ensure, that text to be proofread is wrapped with
+  # container with the CSS class `proofable` and has two data attributes: item-id and item-type
+  # representing item to be proofread (e.g. Manifestation)
+.modal#proofDlg{ 'aria-hidden' => 'true', role: 'dialog', tabindex: '-1' }
+  = form_tag(proofs_path, remote: true, id: 'proof_form') do
+    .flex-popup
+      .popup-top
+        %button.btn-small-outline-v02{ data: { dismiss: :modal } }
+          .btn-text-v02
+            %span.right-arrow 2
+            %span= t('.cancel_and_back')
+        .headline-2-v02{ style: 'text-align: center;margin: 0; padding-top: 3px;' }
+          = t('.found_mistake')
+        .button-placeholder
+      .by-popup-v02
+        .by-card-header-v02.desktop-only
+          %span.headline-1-v02= t('.report_found_mistake')
+          %a.popup-x-v02{ data: { dismiss: :modal } } -
+        .by-card-content-v02
+          .field-label#marked-error-text= t('.selected_text')
+          = text_area_tag(:highlight, '', id: 'proof_selected_text', rows: 4, cols: 40, readonly: true)
+          /%input.field-v02{:type => "text"}/
+          .pointer#copy_proof
+            %span.right-side-icon )
+            %span{ style: 'font-weight: bold' }= t('.copy_text')
+          .pointer#clear_proof
+            %span.right-side-icon -
+            %span{ style: 'font-weight: bold' }= t('.reset_text')
+          .field-label#error-correction-suggestion= t('.proof_your_proofs')
+          = text_area_tag(:what, '', id: 'prooftext', required: true, rows: 4, cols: 40)
+          /#error-notes.field-label הערות
+          /%input.field-v02{:type => "text"}/
+          .field-label#error-e-mail= t('.email_just_for_proof')
+          = email_field_tag 'from',
+                            current_user&.email || '',
+                            { placeholder: t(:email), required: true, class: 'field-v02' }
+          = hidden_field_tag(:item_type, '', id: :proof_item_type)
+          = hidden_field_tag(:item_id, '', id: :proof_item_id)
+          .desktop-only.pointer.bottom-right-link{ data: { dismiss: :modal } }
+            %span.right-side-icon -
+            %span{ style: 'font-weight: bold' }= t(:cancel)
+          .field-label#error-notes= t(:ziburit)
+          = text_field_tag(:ziburit, nil, { required: true, class: 'field-v02' })
+        .bottom-button-area.left-buttons
+          = submit_tag(t('.submit'), { class: 'by-button-v02' })
+          %button.by-button-v02.btn-secondary-v02.desktop-only{ data: { dismiss: :modal } }
+            %span.right-side-icon= '-'
+            %span{ style: 'font-weight: bold' }= t(:cancel)
 
-#proof_status
+  #proof_status
+#proofSent{ style: 'display:none' }
+  %span{ style: 'color:green' }= t('.thanks_html')
 
 :javascript
-  $(document).ready(function(){
-    $('#proofSent').dialog({autoOpen:false, height:200, width:200, modal:true,buttons:{"#{t(:close)}": function(){$('#proofSent').dialog('close');}}});
+  $(function(){
+    $('#proofSent').dialog({
+      autoOpen: false,
+      height: 200,
+      width: 200,
+      modal: true,
+      buttons: {
+        "#{t(:close)}": function() { $('#proofSent').dialog('close'); }
+      }
+    });
 
     $('#proof_form').on('ajax:success', function(e, data, status, xhr) {
       $('#prooftext').val('');
@@ -61,17 +80,33 @@
       $('#prooftext').val('');
     });
     $('#found_mistake').click(function(e) {
-      if(document.getSelection().toString() == '') {
+      const selection = window.getSelection();
+      if(selection.toString() == '') {
         e.preventDefault();
-        alert("#{t(:proof_please_select_something)}");
-      } else if(document.getSelection().toString().length < 20) {
+        alert("#{t('.please_select_something')}");
+        return;
+      }
+
+      const range = selection.getRangeAt(0);
+      const startNode = range.startContainer;
+      const startElement = startNode.nodeType === Node.TEXT_NODE ? startNode.parentNode : startNode;
+
+      const proofable = $(startElement).closest('.proofable')[0];
+      if (proofable == null || proofable == undefined) {
         e.preventDefault();
-        alert("#{t(:proof_too_short)}");
+        alert("#{t('.select_proper_text')}");
+        return;
       }
-      else
-      {
-        $('#proof_selected_text').text(document.getSelection().toString());
-        $('#proofDlg').modal("show");
+
+      if(document.getSelection().toString().length < 20) {
+        e.preventDefault();
+        alert("#{t('.too_short')}");
+        return;
       }
+
+      $('#proof_item_id').val($(proofable).data('item-id'));
+      $('#proof_item_type').val($(proofable).data('item-type'));
+      $('#proof_selected_text').text(document.getSelection().toString());
+      $('#proofDlg').modal("show");
     });
   });

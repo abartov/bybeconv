@@ -1,12 +1,13 @@
-class Proof < ApplicationRecord
-  STATUSES = %w(new assigned fixed escalated wontfix spam)
+# frozen_string_literal: true
 
-  # TODO: add indexes!
-  belongs_to :html_file, optional: true
-  belongs_to :reporter, foreign_key: 'reported_by', class_name: 'User', optional: true
+# Proof is an user-provided report about found mistakes in documents (Manifestation, Authority, etc)
+class Proof < ApplicationRecord
+  STATUSES = %w(new assigned fixed escalated wontfix spam).freeze
+
+  belongs_to :reporter, foreign_key: 'reported_by', class_name: 'User', optional: true # not used ATM
   belongs_to :resolver, foreign_key: 'resolved_by', class_name: 'User', optional: true
 
-  belongs_to :manifestation, optional: true
+  belongs_to :item, polymorphic: true # item where mistake was found
 
-  validates_inclusion_of :status, in: STATUSES
+  validates :status, inclusion: { in: STATUSES }
 end

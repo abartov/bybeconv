@@ -32,16 +32,16 @@
     - @proofs.each do |p|
       %tr
         %td
-          - if p.manifestation_id
-            = link_to Manifestation.find(p.manifestation_id).title, proof_path(p)
+          - if p.item.is_a?(Manifestation)
+            = link_to p.item.title, proof_path(p)
           - else
             = link_to p.about, proof_path(p)
         %td= p.from
         %td= p.created_at
         %td= textify_proof_status(p.status)
         - u = ''
-        - if p.manifestation_id && p.status == 'assigned'
-          - lis = ListItem.where(listkey: 'proofs_by_user', item: p.manifestation)
+        - if p.item.is_a?(Manifestation) && p.status == 'assigned'
+          - lis = ListItem.where(listkey: 'proofs_by_user', item: p.item)
           - u = lis[0].user.name unless lis.empty?
         %td= u
 
