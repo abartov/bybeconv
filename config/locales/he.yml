@@ -1399,6 +1399,12 @@ he:
       columns:
         db_intellectual_property: מצב זכויות יוצרים במערכת
         has_non_public_domain_authority: זכויות הישות טרם פקעו
+  collections:
+    fix_ordering:
+      no_collisions_found: No problems with ordering found
+      collissions_fixed: "%{fix_count} problems with ordering fixed"
+    manage:
+      fix_ordering: Fix ordering
   ingestibles:
     ingestible_locked: ההעלאה נעולה לטיפול מידֵי %{user}
     replace_with_authority: החלף ביישות קיימת!

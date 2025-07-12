@@ -6,7 +6,7 @@ class CollectionsController < ApplicationController
   include Tracking
 
   before_action :require_editor, except: %i(show download print)
-  before_action :set_collection, only: %i(show edit update destroy drag_item)
+  before_action :set_collection, only: %i(show edit update destroy drag_item fix_ordering)
 
   # GET /collections or /collections.json
   def index
@@ -216,7 +216,43 @@ class CollectionsController < ApplicationController
     end
   end
 
+  # this action ensures all items in collection has unique `seqno` and fix it if necessary, as result all items
+  # in collection will have unique sequential `seqno` values starting from 1 (to resolve collisions it uses sorting
+  # by seqno and id).
+  def fix_ordering
+    Collection.transaction do
+      fix_count = reorder_collection(@collection)
+      redirect_to collection_manage_path(@collection),
+                  notice: (t('.no_collisions_found') if fix_count == 0),
+                  alert: (t('.collissions_fixed', fix_count: fix_count) if fix_count > 0)
+    end
+  end
+
   private
+
+  # This method is used to fix possible collisions in ordering of items inside collection, causing problems
+  # with reordering. It ensures no items with same `seqno` is found inside collection. It also applied recursively
+  # for nested collections.
+  # @param collection - collection to be processed
+  # @return number of fixed collisions (including collisions in nested collections)
+  def reorder_collection(collection)
+    prev_seqno = nil
+    fix_count = 0
+
+    collection.collection_items.order(:seqno, :id).each_with_index do |ci, index|
+      fix_count += 1 if ci.seqno == prev_seqno
+      prev_seqno = ci.seqno
+
+      ci.seqno = index + 1
+      ci.save!
+
+      if ci.item.is_a?(Collection)
+        fix_count += reorder_collection(ci.item)
+      end
+    end
+
+    return fix_count
+  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_collection
