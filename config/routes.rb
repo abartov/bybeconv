@@ -40,6 +40,7 @@ Bybeconv::Application.routes.draw do
   resources :collections do
     member do
       post :drag_item
+      post :fix_ordering
     end
 
     post 'transplant_item'

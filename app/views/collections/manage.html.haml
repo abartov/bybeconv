@@ -1,6 +1,13 @@
 %div{ style: 'margin-top: 140px !important;' }
 
 .cwrapper{ id: "cwrapper_#{@collection.id}", 'data-nonce' => 'm', 'data-collection-id' => @collection.id }
+  .row
+    .btn-group
+      = link_to t('.fix_ordering'),
+                fix_ordering_collection_path(@collection),
+                method: :post,
+                class: 'by-button-v02 by-button-secondary-v02'
+
   = render partial: 'shared/manage_collection', locals: { collection: @collection, title: @collection.title, nonce: 'm' }
   .master_insert_container
     #collection_insert_section.coll_insert_section{style: 'display: none; border: 1px solid #660248; background-color: rgb(157 157 241); padding: 10px;  scroll-margin-top: 15px;'}

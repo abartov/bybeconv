@@ -149,5 +149,58 @@ describe CollectionsController do
         it_behaves_like 'drags successfully'
       end
     end
+
+    describe '#fix_ordering' do
+      subject(:call) { post :fix_ordering, params: { id: collection.id } }
+
+      let!(:collection) { create(:collection) }
+
+      context 'when collection has collisions on seqno' do
+        let!(:nested_collection) { create(:collection) }
+
+        let!(:first_item) { create(:collection_item, collection: collection, alt_title: Faker::Book.title, seqno: 2) }
+        let!(:second_item) { create(:collection_item, collection: collection, alt_title: Faker::Book.title, seqno: 2) }
+        let!(:third_item) { create(:collection_item, collection: collection, item: nested_collection, seqno: 3) }
+        let!(:fourth_item) { create(:collection_item, collection: collection, alt_title: Faker::Book.title, seqno: 3) }
+
+        let!(:first_subitem) do
+          create(:collection_item, collection: nested_collection, alt_title: Faker::Book.title, seqno: 1)
+        end
+
+        let!(:second_subitem) do
+          create(:collection_item, collection: nested_collection, alt_title: Faker::Book.title, seqno: 1)
+        end
+
+        it 'fixes ordering and redirects to manage page with alert message' do
+          expect(call).to redirect_to collection_manage_path(collection)
+
+          expect(first_item.reload.seqno).to eq(1)
+          expect(second_item.reload.seqno).to eq(2)
+          expect(third_item.reload.seqno).to eq(3)
+          expect(fourth_item.reload.seqno).to eq(4)
+
+          expect(first_subitem.reload.seqno).to eq(1)
+          expect(second_subitem.reload.seqno).to eq(2)
+
+          expect(flash.alert).to eq I18n.t('collections.fix_ordering.collissions_fixed', fix_count: 3)
+          expect(flash.notice).to be_nil
+        end
+      end
+
+      context 'when collection has no collisions on seqno' do
+        let!(:first_item) { create(:collection_item, collection: collection, alt_title: Faker::Book.title, seqno: 3) }
+        let!(:second_item) { create(:collection_item, collection: collection, alt_title: Faker::Book.title, seqno: 5) }
+
+        it 'fixes gaps in ordering and redirects to manage page with notice message' do
+          expect(call).to redirect_to collection_manage_path(collection)
+
+          expect(first_item.reload.seqno).to eq(1)
+          expect(second_item.reload.seqno).to eq(2)
+
+          expect(flash.alert).to be_nil
+          expect(flash.notice).to eq I18n.t('collections.fix_ordering.no_collisions_found')
+        end
+      end
+    end
   end
 end
