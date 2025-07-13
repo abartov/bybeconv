@@ -27,6 +27,7 @@
   - if @volumes.present? && !@single_text_volume
     - @volumes.each do |v|
       = link_to "#{t(:inside)} #{v.title}#{v.subtitle.present? ? ': '+v.subtitle : ''}", collection_path(v)
+      %br
 
 %div
   .metadata
