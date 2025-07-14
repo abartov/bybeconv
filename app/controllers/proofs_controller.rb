@@ -50,9 +50,11 @@ class ProofsController < ApplicationController
     @search_query = params[:search]
 
     @proofs = if @status.nil?
-                Proof.where.not(status: :spam)
+                # Display all unresolved proofs. We order them by item, so all unresolved proofs
+                # about same work could be processed together
+                Proof.where.not(status: :spam).order(:item_type, :item_id)
               else
-                Proof.where(status: @status)
+                Proof.where(status: @status).order(updated_at: :desc)
               end
 
     if @search_query.present?
@@ -65,13 +67,13 @@ class ProofsController < ApplicationController
               m.id = proofs.item_id
               and proofs.item_type = 'Manifestation'
               and upper(m.title) like ?
-          )#{'      '}
+          )
         SQL
         "%#{@search_query.strip.upcase}%"
       )
     end
 
-    @proofs = @proofs.order(updated_at: :desc).page(params[:page])
+    @proofs = @proofs.page(params[:page])
   end
 
   def show
