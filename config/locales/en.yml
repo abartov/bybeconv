@@ -94,6 +94,11 @@ en:
   involved_authorities:
     list:
       select_authority: Select authority!
+  collections_mailer:
+    ordering_fixed:
+      subject: Problems with ordering in collections found and fixed
+      intro: "Please check ordering of items in following collections:"
+      n_problems_fixed: "%{n} problems fixed"
   shared:
     filters:
       pagination:

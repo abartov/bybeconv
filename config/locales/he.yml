@@ -1352,6 +1352,11 @@ he:
       subject: מפתח ה־API שלך
     key_created_to_editor:
       subject: נוצר מפתח API חדש
+  collections_mailer:
+    ordering_fixed:
+      subject: Problems with ordering in collections found and fixed
+      intro: "Please check ordering of items in following collections:"
+      n_problems_fixed: "%{n} problems fixed"
   views:
     pagination:
       next: לדף הבא
