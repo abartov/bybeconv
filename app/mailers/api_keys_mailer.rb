@@ -1,8 +1,7 @@
-class ApiKeysMailer < ActionMailer::Base
-  EDITOR_EMAIL = "editor@benyehuda.org" # TODO: un-hardcode
+# frozen_string_literal: true
 
-  default from: EDITOR_EMAIL
-
+# Mailer to send emails about API keys
+class ApiKeysMailer < ApplicationMailer
   # Email sent to email specified in new Api Key request upon creation
   def key_created(api_key)
     @api_key = api_key
@@ -14,5 +13,4 @@ class ApiKeysMailer < ActionMailer::Base
     @api_key = api_key
     mail to: EDITOR_EMAIL, subject: t('api_keys_mailer.key_created_to_editor.subject')
   end
-
 end
