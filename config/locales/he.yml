@@ -1354,9 +1354,9 @@ he:
       subject: נוצר מפתח API חדש
   collections_mailer:
     ordering_fixed:
-      subject: Problems with ordering in collections found and fixed
-      intro: "Please check ordering of items in following collections:"
-      n_problems_fixed: "%{n} problems fixed"
+      subject: נמצאו ותוקנו בעיות רצף באוספים
+      intro: "אלו האוספים שבהם זוהו ותוקנו בעיות רצף – כדאי לבדוק ולוודא שהסדר תקין:"
+      n_problems_fixed: "%{n} בעיות תוקנו"
   views:
     pagination:
       next: לדף הבא
