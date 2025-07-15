@@ -110,6 +110,7 @@ Bybeconv::Application.routes.draw do
   get 'admin/incongruous_copyright'
   get 'admin/suspicious_headings'
   get 'admin/texts_between_dates'
+  get 'admin/authority_records_between_dates'
   get 'admin/suspicious_titles'
   get 'admin/similar_titles'
   get 'admin/periodless'

@@ -355,6 +355,14 @@ class AdminController < ApplicationController
     @total = @texts.count
   end
 
+  def authority_records_between_dates
+    return unless params[:from].present? && params[:to].present?
+
+    @records = Authority.where('created_at > ? and created_at < ?', Date.parse(params[:from]),
+                               Date.parse(params[:to])).order(:created_at)
+    @total = @records.count
+  end
+
   def suspicious_titles
     @suspicious = Manifestation.where('(title like "%קבוצה %") OR (title like "%.")').reject { |x| x.title =~ /\.\.\./ }
     Rails.cache.write('report_suspicious_titles', @suspicious.length)
@@ -1063,10 +1071,10 @@ class AdminController < ApplicationController
   end
 
   def manifestation_batch_tools
-    if params[:ids].present?
-      ids = params[:ids].split(/\s+/)
-      @manifestations = Manifestation.where(id: ids)
-    end
+    return unless params[:ids].present?
+
+    ids = params[:ids].split(/\s+/)
+    @manifestations = Manifestation.where(id: ids)
   end
 
   def destroy_manifestation

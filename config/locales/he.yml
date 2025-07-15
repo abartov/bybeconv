@@ -638,6 +638,7 @@ he:
   first_author: מחבר (לא מתרגם; אפשר להוסיף אישים אחר-כך, בקטלוג)
   suspicious_headings_report: "דו\"ח כותרות פרקים קרובות זו לזו (לעריכה)"
   texts_between_dates: יצירות לפי מועד עלייתן
+  authority_records_between_dates: יוצרים לפי מועד יצירת היישות
   suspicious_titles_report: "דו\"ח שמות חשודים ליצירות"
   similar_titles_report: "דו\"ח כותרות דומות ליצירות (שאולי הן פרקים של יצירה אחת שיש לאחד)"
   suspicious_translations_report: "דו\"ח יצירות עם מחבר שווה למתרגם"
