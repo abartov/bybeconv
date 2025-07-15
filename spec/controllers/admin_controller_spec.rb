@@ -37,6 +37,9 @@ describe AdminController do
       ).each { |bit| ListItem.create!(listkey: bit, item: admin) }
     end
 
+    let(:assigned_proof) { create(:proof, status: :assigned) }
+    let!(:assignment) { create(:list_item, user: admin, listkey: 'proofs_by_user', item: assigned_proof) }
+
     it { is_expected.to be_successful }
   end
 
@@ -450,6 +453,24 @@ describe AdminController do
 
         it { is_expected.to be_successful }
       end
+    end
+  end
+
+  describe '#assign_proofs' do
+    subject(:call) { post :assign_proofs, params: { proof_id: proof.id } }
+
+    include_context 'when editor logged in', :handle_proofs
+
+    let(:manifestation) { create(:manifestation) }
+    let!(:proof) { create(:proof, item: manifestation, status: 'new', created_at: 5.hours.ago) }
+    let!(:other_proofs) { create_list(:proof, 3, status: 'new', created_at: 4.hours.ago) }
+    let!(:second_proof) { create(:proof, item: manifestation, status: 'new', created_at: 2.hours.ago) }
+
+    it 'assigns all proofs related to same work to current user' do
+      expect { call }.to change { ListItem.where(user: current_user, listkey: 'proofs_by_user').count }.by(2)
+      expect(call).to redirect_to admin_index_path
+      expect(proof.reload.status).to eq('assigned')
+      expect(second_proof.reload.status).to eq('assigned')
     end
   end
 end
