@@ -93,7 +93,7 @@
 
           - @htmls.each do |title, authors, html, is_curated, genre, i, ci|
             %a{ name: "collitem_text_#{i}" }
-            .by-card-v02
+            .by-card-v02.proofable{ data: { item_id: ci.item_id, item_type: ci.item_type } }
               - if title.present?
                 .by-card-header-v02
                   .by-icon-v02
@@ -175,6 +175,8 @@
 
 #downloadDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
   = render partial: 'shared/download', locals: {entity: @collection}
+
+= render partial: 'shared/proof'
 
 :javascript
   $(document).ready(function() {

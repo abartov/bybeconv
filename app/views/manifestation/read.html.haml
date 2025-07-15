@@ -43,7 +43,7 @@
                         = t(:to_next_item)
                         %span.left-arrow= '1'
 
-        .by-card-v02
+        .by-card-v02.proofable{ data: { item_id: @m.id, item_type: @m.class.name } }
           .work-area
             .work-content{"data-spy" => 'scroll', "data-target" => '#chapternav'}
               -# TODO: more nuanced rendering here
@@ -181,10 +181,7 @@
 #citeDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
   = render partial: 'shared/cite', locals: {manifestation: @m}
 -# found mistake popup
-#proofDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
-  = render partial: 'shared/proof', locals: {manifestation: @m}
-#proofSent{style:'display:none'}
-  %span{style:'color:green'}= t(:proof_thanks_html)
+= render partial: 'shared/proof'
 - if current_user
   = render partial: 'shared/anth_stuff'
 - if @bookmark != 0 and @jump_to_bookmarks.nil?
