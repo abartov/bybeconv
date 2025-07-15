@@ -1,0 +1,7 @@
+%p= t('.intro')
+
+%ul
+  - @collection_errors_count.each do |collection_id, errors_count|
+    %li
+      = link_to(collection_url(collection_id), collection_url(collection_id))
+      = (t('.n_problems_fixed', n: errors_count))
