@@ -41,8 +41,10 @@
       %ol{style:'margin-right:20px'}
         - proofs.each do |listitem|
           - p = listitem.item
-          - next if p.status != 'assigned'
-
+          - if p.present?
+            - next if p.status != 'assigned'
+          - else
+            .red= t(:proof_for_missing_item)
           %p
             - if p.item.is_a?(Manifestation)
               - m = p.item
