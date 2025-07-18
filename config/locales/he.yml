@@ -1079,6 +1079,7 @@ he:
   folder_list: רשימת תיקיות
   proof_file: קובץ
   proof_when: מתי
+  proof_for_missing_item: הגהה עבור פריט לא קיים – אולי נמחק מאז הדיווח
   all_recommendations: כל ההמלצות
   show_all_recommendations: הצג את כל ההמלצות
   show_open_recommendations: הצג המלצות חדשות
