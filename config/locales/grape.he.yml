@@ -2,4 +2,4 @@ he:
   grape:
     errors:
       messages:
-        length_max: 'is expected to have length less than or equal to %{max}'
+        length_max: 'חייב להיות באורך %{max} תווים או פחות'
