@@ -41,7 +41,7 @@ module V1
         params do
           requires :ids,
                    type: [Integer],
-                   maximum_length: 25,
+                   length: { max: 25 },
                    allow_blank: false,
                    desc: 'array of text IDs to fetch',
                    documentation: { param_type: 'body' }

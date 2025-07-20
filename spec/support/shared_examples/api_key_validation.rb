@@ -1,6 +1,6 @@
 RSpec.shared_examples 'Unauthorized API call' do
   it 'fails with unauthorized status' do
-    expect(subject).to eq 401
+    expect(call).to eq 401
     expect(error_message).to eq 'key not found or disabled'
   end
 end
