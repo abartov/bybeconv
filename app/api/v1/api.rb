@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-Grape::Validations.register_validator('v1_auth_key', V1::Validations::AuthKey)
-
 module V1
   # Rest API v1
   class Api < ApplicationApi

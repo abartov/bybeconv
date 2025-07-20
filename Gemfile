@@ -86,12 +86,10 @@ gem 'momentjs-rails' # for date picker in filters
 gem 'ahoy_matey' # for recording events
 gem 'blazer' # for exploring Ahoy events
 
-gem 'grape', '1.6.0' # 1.6.1 adds a Validators module damisul's patch isn't ready for
-gem 'grape-entity', '~> 0.10.1'
-# TODO: Replace to standard version of gem after PR will be accepted https://github.com/jagaapple/grape-extra_validators/pull/10
-gem 'grape-extra_validators', '~> 2.1.0', git: 'https://github.com/damisul/grape-extra_validators'
-gem 'grape-swagger', '~> 1.4.2'
-gem 'grape-swagger-entity', '~> 0.5.1'
+gem 'grape', '~> 2.4.0'
+gem 'grape-entity', '~> 1.0.1'
+gem 'grape-swagger', '~> 2.1.2'
+gem 'grape-swagger-entity', '~> 0.6.2'
 
 gem 'puma'
 gem 'puma_worker_killer' # cycle workers when they bloat

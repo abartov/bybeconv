@@ -9,17 +9,15 @@ describe V1::AuthoritiesApi do
     subject(:call) { get path }
 
     let(:detail) { 'metadata' }
-    let(:authority_id) { -1 }
+    let(:authority_id) { 100_001 }
     let(:path) { "/api/v1/authorities/#{authority_id}?key=#{key}&author_detail=#{detail}" }
 
     include_context 'API Key Check'
 
     context 'when wrong id provided' do
-      let(:authority_id) { -1 }
-
       it 'fails with Not Found status' do
         expect(call).to eq 404
-        expect(error_message).to eq "Couldn't find Authority with 'id'=-1"
+        expect(error_message).to eq "Couldn't find Authority with 'id'=100001"
       end
     end
 

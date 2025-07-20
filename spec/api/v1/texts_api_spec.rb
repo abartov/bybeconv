@@ -53,19 +53,20 @@ describe V1::TextsApi do
   end
 
   describe 'GET /api/v1/texts/{id}' do
+    subject(:call) { get path }
+
     let(:manifestation_id) { manifestation_1.id }
     let(:additional_params) { '' }
     let(:path) { "/api/v1/texts/#{manifestation_id}?key=#{key}#{additional_params}" }
-    let(:subject) { get path }
 
     include_context 'API Key Check'
 
     context 'when wrong text_id is given' do
-      let(:manifestation_id) { -1 }
+      let(:manifestation_id) { 1_000_001 }
 
       it 'fails with not_found status' do
         expect(subject).to eq 404
-        expect(error_message).to eq 'Could not find documents for ids: -1'
+        expect(error_message).to eq 'Could not find documents for ids: 1000001'
       end
     end
 
@@ -128,6 +129,8 @@ describe V1::TextsApi do
   end
 
   describe 'POST /api/v1/texts/batch' do
+    subject(:call) { post '/api/v1/texts/batch', params: params }
+
     let(:ids) { [manifestation_1.id, manifestation_2.id] }
     let(:params) do
       {
@@ -136,7 +139,6 @@ describe V1::TextsApi do
       }.merge(additional_params)
     end
     let(:additional_params) { {} }
-    let(:subject) { post '/api/v1/texts/batch', params: params }
 
     include_context 'API Key Check'
 
@@ -144,7 +146,7 @@ describe V1::TextsApi do
       let(:ids) { [manifestation_1.id] }
 
       it 'succeed and returns basic view in html format and without snippet' do
-        expect(subject).to eq 201
+        expect(call).to eq 201
         expect(json_response.size).to eq(1)
         assert_manifestation(json_response[0], manifestation_1, 'basic', 'html', false)
       end
@@ -152,7 +154,7 @@ describe V1::TextsApi do
 
     context 'when multiple ids without additional_params specified' do
       it 'succeed and returns basic view in html format and without snippet' do
-        expect(subject).to eq 201
+        expect(call).to eq 201
         expect(json_response.size).to eq(2)
         assert_manifestation(json_response[0], manifestation_1, 'basic', 'html', false)
         assert_manifestation(json_response[1], manifestation_2, 'basic', 'html', false)
@@ -169,7 +171,7 @@ describe V1::TextsApi do
       end
 
       it 'completes successfully' do
-        expect(subject).to eq 201
+        expect(call).to eq 201
         expect(json_response.size).to eq(2)
         assert_manifestation(json_response[0], manifestation_1, 'enriched', 'odt', true)
         assert_manifestation(json_response[1], manifestation_2, 'enriched', 'odt', true)
@@ -180,8 +182,8 @@ describe V1::TextsApi do
       let(:ids) { (1..26).to_a }
 
       it 'fails with bad_request status' do
-        expect(subject).to eq 400
-        expect(error_message).to eq 'ids must have up to 25 items'
+        expect(call).to eq 400
+        expect(error_message).to eq 'ids ' + I18n.t('grape.errors.messages.length_max', max: 25)
       end
     end
 
@@ -189,7 +191,7 @@ describe V1::TextsApi do
       let(:ids) { [manifestation_1.id, manifestation_2.id, unpublished_manifestation.id] }
 
       it 'fails with not_found status' do
-        expect(subject).to eq 404
+        expect(call).to eq 404
         expect(error_message).to eq "Could not find documents for ids: #{unpublished_manifestation.id}"
       end
     end
