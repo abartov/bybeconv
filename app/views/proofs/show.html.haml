@@ -14,8 +14,11 @@
       = ' / '
       != austr
       %br
+    - elsif @proof.item.is_a?(Collection)
+      - c = @proof.item
+      = link_to c.title, collection_path(c), target: '_blank', rel: 'noopener'
     - else
-      = t(:legacy_text_from_url) + ': ' + @proof.about
+      = t(:legacy_text_from_url) + ': ' + @proof.try(:about)
   %p
     %b= t(:status) + ':'
     = textify_proof_status(@proof.status)
