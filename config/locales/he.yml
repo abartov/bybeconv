@@ -169,7 +169,6 @@ he:
   ltr: משמאל לימין
   parse: הסבה
   remove_line_nums: הסר מספרי שורות
-  fables: משלים
   analyze: אבחן
   crowdsourcing: העבודה והמלאכה
   crowdsourcing_intro: את פרויקט בן־יהודה בונות ובונים מתנדבות ומתנדבים כמוך! הנה כמה משימות שבהן אנו זקוקים לעזרה. בכל משימה יש הדרכה מפורטת, והכל בלי התחייבות ובלי הגבלות זמן.
@@ -373,15 +372,6 @@ he:
   # genre key names are currently hard-coded in ApplicationController
   genres: סוגות
   genres_and_types: סוגות וסוגים
-  poetry: שירה
-  prose: פרוזה
-  article: מאמרים ומסות
-  drama: מחזות
-  memoir: זכרונות ויומנים
-  letters: מכתבים
-  reference: עיון
-  lexicon: מילונים ולקסיקונים
-  mixed_genres: סוגות שונות
   # end genres
   anth_grows: המקראה צומחת!
   most_popular_works_this_month: היצירות הנקראות ביותר החודש
@@ -1587,7 +1577,17 @@ he:
       periodical: לתצוגת כתב העת
       periodical_issue: לתצוגת הגליון
       series: לתצוגת המחזור/שער כולו
-
+  genre_values:
+    poetry: שירה
+    prose: פרוזה
+    article: מאמרים ומסות
+    drama: מחזות
+    memoir: זכרונות ויומנים
+    letters: מכתבים
+    reference: עיון
+    lexicon: מילונים ולקסיקונים
+    fables: משלים
+    mixed: סוגות שונות
   intellectual_property:
     public_domain: נחלת הכלל
     by_permission: מוגש ברשות פרסום

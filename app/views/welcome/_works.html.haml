@@ -12,7 +12,7 @@
           %a{href: manifestation_genre_path(genre: 'lexicon')}
             .genre-nav
               %p.by-genre-icon-v02= 'f'
-              %p.by-genre-name-v02.headline-2-v02= t(:lexicon)
+              %p.by-genre-name-v02.headline-2-v02= textify_genre('lexicon')
               %p.by-genre-details-v02= @authors_in_genre['lexicon'].to_s+' '+t(:authors)
               %p.by-genre-details-v02= get_total_headwords.to_s.to_s+' '+t(:entries)
         -#.by-card-content-seapartor

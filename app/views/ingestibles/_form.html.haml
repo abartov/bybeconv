@@ -73,7 +73,7 @@
           = f.hidden_field :status, value: @ingestible.status
         %h2= t('ingestible.defaults')
         = f.label t(:genre)
-        - genres = [[t(:mixed_genres), 'mixed']]+get_genres.map {|genre| [I18n.t(genre), genre]}
+        - genres = (['mixed'] + Work::GENRES).map { |genre| [textify_genre(genre), genre] }
         = f.select :genre, options_for_select(genres, @ingestible.genre), {include_blank: true}
         = f.label t(:publisher)
         = f.text_field :publisher, style: 'width:400px;'
