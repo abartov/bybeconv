@@ -32,7 +32,9 @@
           %b= label_tag t(:orig_lang)
           = select_tag 'orig_lang', options_for_select(get_langs.map {|lang| [textify_lang(lang), lang]}, @text.orig_lang)
           %b= label_tag(:genre, t(:genre))
-          = select_tag(:genre, options_for_select(get_genres.map {|genre| [I18n.t(genre), genre]}, @text.genre), {include_blank: true})
+          = select_tag(:genre,
+                       options_for_select(Work::GENRES.map { |genre| [textify_genre(genre), genre] }, @text.genre),
+                       { include_blank: true })
       .row
         .col-md-12
           .markdown_container.row

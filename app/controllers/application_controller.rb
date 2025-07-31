@@ -360,7 +360,7 @@ class ApplicationController < ActionController::Base
     author.each do |genre|
       next unless genre[1].class == Array # skip the :latest key
 
-      worksbuf = "<strong>#{I18n.t(genre[0])}:</strong> "
+      worksbuf = "<strong>#{textify_genre(genre[0])}:</strong> "
       first = true
       genre[1].each do |m|
         title = m.expression.title

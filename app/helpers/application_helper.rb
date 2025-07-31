@@ -67,7 +67,7 @@ module ApplicationHelper
   def textify_genre(genre)
     return I18n.t(:unknown) if genre.nil? or genre.empty?
 
-    return I18n.t(genre)
+    return I18n.t("genre_values.#{genre}")
   end
 
   def textify_intellectual_property(value)

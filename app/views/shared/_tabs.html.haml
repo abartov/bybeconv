@@ -39,10 +39,10 @@
             %a.by-nav-item-v02#nav-genres{'data-toggle' =>'dropdown', 'data-boundary' => 'ddgenres', tabindex: '3'}= t(:genres)
             .by-dropdown-content-v02.dropdown-menu#menu-genres
               .by-dropdown-header-v02= combined_totals
-              - get_genres.each do |g|
+              - Work::GENRES.each do |g|
                 %a{href: manifestation_genre_path(genre: g)}
                   %span.by-icon-v02= glyph_for_genre(g)
-                  = t(g)
+                  = textify_genre(g)
                   %span{style:'color:black'}= " - #{Manifestation.cached_work_counts_by_genre[g]} #{t(:works)}"
               .by-dropdown-divider
               %a{href: translations_path}
@@ -148,11 +148,11 @@
         %li.topMenuItemMobile-v02
           %span.caret= t(:genres)
           %ul.nested
-            - get_genres.each do |g|
+            - Work::GENRES.each do |g|
               %li
                 %a{href: manifestation_genre_path(genre: g)}
                   %span.by-icon-v02.iconInMenu= glyph_for_genre(g)
-                  = t(g)
+                  = textify_genre(g)
                   %span{style:'color:black; font-weight: normal;'}= " - #{Manifestation.cached_work_counts_by_genre[g]} #{t(:works)}"
             .by-dropdown-divider
             %li
