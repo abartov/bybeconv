@@ -36,7 +36,8 @@
              locals: { group_name: :genre,
                        title: t(:genres),
                        field_name: :ckb_genres,
-                       all_values: get_genres,
+                       all_values: Work::GENRES,
+                       labels: Work::GENRES.index_with { |genre| textify_genre(genre) },
                        selected_values: @genres,
                        facet: @genre_facet,
                        icons: Work::GENRES.index_with { |g| glyph_for_genre(g) } }
