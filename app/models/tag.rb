@@ -7,7 +7,7 @@ class Tag < ApplicationRecord
 
   belongs_to :creator, foreign_key: :created_by, class_name: 'User'
   belongs_to :approver, foreign_key: :approver_id, class_name: 'User', optional: true
-  enum status: [:pending, :approved, :rejected, :escalated]
+  enum :status, { pending: 0, approved: 1, rejected: 2, escalated: 3 }
   validates :name, presence: true
   validates :created_by, presence: true
   validates :status, presence: true
@@ -18,7 +18,9 @@ class Tag < ApplicationRecord
   scope :by_popularity, -> { order('taggings_count DESC') }
 
   scope :by_user, ->(user) { where(created_by: user.id) }
-  scope :by_name, ->(name) { joins(:tag_names).where(tag_names: {name: name}) } # only use this to search for tags, to ensure aliases are searched as well!
+
+  # only use this to search for tags, to ensure aliases are searched as well!
+  scope :by_name, ->(name) { joins(:tag_names).where(tag_names: { name: name }) }
 
   def approve!(approver)
     self.approver = approver

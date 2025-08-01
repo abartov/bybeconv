@@ -1,8 +1,8 @@
 class ApiKey < ApplicationRecord
-  enum status: {
+  enum :status, {
     enabled: 1,
     disabled: 2
-  }, _prefix: true
+  }, prefix: true
 
   validates_presence_of :status, :key, :email
   validates_uniqueness_of :email

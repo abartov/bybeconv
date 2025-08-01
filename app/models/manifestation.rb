@@ -24,7 +24,7 @@ class Manifestation < ApplicationRecord
   has_many :collection_items, as: :item, dependent: :destroy
   before_save :update_sort_title!
 
-  enum status: { published: 0, nonpd: 1, unpublished: 2, deprecated: 3 }
+  enum :status, { published: 0, nonpd: 1, unpublished: 2, deprecated: 3 }
 
   scope :all_published, -> { where(status: Manifestation.statuses[:published]) }
   scope :new_since, ->(since) { where('created_at > ?', since) }

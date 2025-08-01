@@ -1,7 +1,7 @@
 include BybeUtils
 class Person < ApplicationRecord
-  enum gender: %i(male female other unknown)
-  enum period: %i(ancient medieval enlightenment revival modern)
+  enum :gender, { male: 0, female: 1, other: 2, unknown: 3 }
+  enum :period, { ancient: 0, medieval: 1, enlightenment: 2, revival: 3, modern: 4 }
   has_one :authority, inverse_of: :person, dependent: :destroy
 
   scope :with_name, -> { joins(:authority).select('people.*, authorities.name') }
