@@ -9,7 +9,7 @@ Bundler.require(*Rails.groups)
 
 module Bybeconv
   class Application < Rails::Application
-    config.load_defaults 7.1
+    config.load_defaults 7.2
 
     # but use SHA1 for key generation, as in Rails 6.1, because there are links to storage objects embedded in markdown
     config.active_support.key_generator_hash_digest_class = OpenSSL::Digest::SHA1
@@ -39,7 +39,6 @@ module Bybeconv
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
 
-    # config.active_record.raise_in_transactional_callbacks = true # opting in to new behavior
     # config.active_job.queue_adapter = :inline # scheduler
     # config.active_job.queue_adapter = :delayed_job # scheduler
     config.active_job.queue_adapter = :sidekiq
