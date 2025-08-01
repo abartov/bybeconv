@@ -35,7 +35,7 @@ class Collection < ApplicationRecord
   has_many :work_items, through: :collection_items, source: :item, source_type: 'Work'
   has_many :coll_items, through: :collection_items, source: :item, source_type: 'Collection'
 
-  # enum status: [:published, :nonpd, :unpublished, :deprecated]
+  # enum :status, { published: 0, nonpd: 1, unpublished: 2, deprecated: 3 }
 
   # series express anything from a cycle of poems to a multi-volume work or a series of detective novels;
   # anthologies are collections of texts by multiple authors, such as festschrifts, almanacs,
@@ -46,7 +46,7 @@ class Collection < ApplicationRecord
   #   if a book, etc.;
   # other is a catch-all for anything else
   # uncollected is used to group authority's works not belonging to any other collections. Each authority can have one.
-  enum collection_type: {
+  enum :collection_type, {
     volume: 0,
     periodical: 1,
     periodical_issue: 2,
@@ -55,7 +55,7 @@ class Collection < ApplicationRecord
     other: 5,
     uncollected: 100
   }
-  enum toc_strategy: { default: 0, custom_markdown: 1 } # placeholder for future custom ToC-generation strategies
+  enum :toc_strategy, { default: 0, custom_markdown: 1 } # placeholder for future custom ToC-generation strategies
 
   # scope :published, -> { where(status: Collection.statuses[:published]) }
   scope :by_type, ->(thetype) { where(collection_type: thetype) }

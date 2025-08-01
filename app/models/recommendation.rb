@@ -3,7 +3,7 @@ class Recommendation < ApplicationRecord
   belongs_to :approver, foreign_key: 'approved_by', class_name: 'User', optional: true
   belongs_to :manifestation
 
-  enum status: [:pending, :approved]
+  enum :status, { pending: 0, approved: 1 }
 
   scope :all_pending, -> { pending }
   scope :all_approved, -> { approved }

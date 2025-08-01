@@ -1,6 +1,6 @@
 class Toc < ApplicationRecord
   has_paper_trail
-  enum status: { raw: 0, ready: 1, deprecated: 2 }
+  enum :status, { raw: 0, ready: 1, deprecated: 2 }
   before_save :update_cached_toc
 
   def refresh_links

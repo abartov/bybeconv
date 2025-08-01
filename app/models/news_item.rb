@@ -1,6 +1,5 @@
 class NewsItem < ApplicationRecord
-  enum itemtype: { publication: 0, facebook: 1, youtube: 2, blog: 3, announcement: 4,
-                   recommendation: 5 }
+  enum :itemtype, { publication: 0, facebook: 1, youtube: 2, blog: 3, announcement: 4, recommendation: 5 }
 
   scope :new_since, ->(since) { where('created_at > ?', since) }
 

@@ -1,7 +1,7 @@
 class ExternalLink < ApplicationRecord
   belongs_to :linkable, polymorphic: true
 
-  enum linktype: {
+  enum :linktype, {
     wikipedia: 0,
     blog: 1,
     youtube: 2,
@@ -10,13 +10,13 @@ class ExternalLink < ApplicationRecord
     dedicated_site: 5,
     audio: 6,
     gnazim: 7
-  }, _prefix: true
+  }, prefix: true
 
-  enum status: {
+  enum :status, {
     approved: 0,
     submitted: 1,
     rejected: 2
-  }, _prefix: true
+  }, prefix: true
 
   def self.sidebar_link_types # excluding the publisher_site link, which is used in the main area for texts published by permission
     return [:wikipedia, :dedicated_site, :blog, :youtube, :audio, :other, :gnazim]

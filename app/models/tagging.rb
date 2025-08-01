@@ -11,7 +11,7 @@ class Tagging < ApplicationRecord
   validates :status, presence: true
   validates :taggable_type, inclusion: { in: %w(Anthology Authority Collection Expression Manifestation Work) }
 
-  enum status: [:pending, :approved, :rejected, :semiapproved, :escalated]
+  enum :status, { pending: 0, approved: 1, rejected: 2, semiapproved: 3, escalated: 4 }
 
   scope :by_suggester, ->(user) { where(suggested_by: user.id) }
 

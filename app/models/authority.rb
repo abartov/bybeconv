@@ -9,21 +9,21 @@ class Authority < ApplicationRecord
 
   update_index('authorities') { self } # update AuthoritiesIndex when entity is updated
 
-  enum status: {
+  enum :status, {
     published: 0,
     unpublished: 1,
     deprecated: 2,
     awaiting_first: 3
   }
 
-  enum intellectual_property: {
+  enum :intellectual_property, {
     public_domain: 0,
     copyrighted: 2,
     orphan: 3,
     permission_for_all: 4,
     permission_for_selected: 5,
     unknown: 100
-  }, _prefix: true
+  }, prefix: true
 
   # relationships
   belongs_to :toc, optional: true

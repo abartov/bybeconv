@@ -6,8 +6,8 @@ require 'pandoc-ruby' # for generic DOCX-to-HTML conversions
 class Ingestible < ApplicationRecord
   LOCK_TIMEOUT_IN_SECONDS = 60 * 15 # 15 minutes
 
-  enum status: { draft: 0, ingested: 1, failed: 2, awaiting_authorities: 3 }
-  enum scenario: { single: 0, multiple: 1, mixed: 2 }
+  enum :status, { draft: 0, ingested: 1, failed: 2, awaiting_authorities: 3 }
+  enum :scenario, { single: 0, multiple: 1, mixed: 2 }
 
   belongs_to :user, optional: true
   belongs_to :locked_by_user, class_name: 'User', optional: true

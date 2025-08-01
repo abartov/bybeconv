@@ -5,13 +5,13 @@ class Publication < ApplicationRecord
   has_many :list_items, as: :item, dependent: :destroy
   has_one :volume, dependent: :nullify, class_name: 'Collection'
 
-  enum status: %i(todo scanned obtained uploaded irrelevant copyrighted)
+  enum :status, { todo: 0, scanned: 1, obtained: 2, uploaded: 3, irrelevant: 4, copyrighted: 5 }
 
   scope :pubs_to_obtain, -> (source_id) { where(status: 'todo', bib_source_id: source_id)}
   scope :not_uploaded, -> {where.not(status: 'uploaded')}
-  scope :maybe_done, -> {joins(:list_items).where(list_items: {listkey: 'pubs_maybe_done'})}
+  scope :maybe_done, -> { joins(:list_items).where(list_items: { listkey: 'pubs_maybe_done' }) }
   scope :not_maybe_done, -> {where.not(id: ListItem.select(:item_id).where(listkey: 'pubs_maybe_done'))}
-  scope :false_positive_maybe_done, ->{joins(:list_items).where(list_items: {listkey: 'pubs_false_maybe_done'})}
+  scope :false_positive_maybe_done, -> { joins(:list_items).where(list_items: { listkey: 'pubs_false_maybe_done' }) }
   scope :not_false_positive_maybe_done, -> {where.not(id: ListItem.select(:item_id).where(listkey: 'pubs_false_maybe_done'))}
   scope :no_volume, -> {where.missing(:volume)}
   scope :has_volume, -> {joins(:volume)}
