@@ -2,8 +2,8 @@ class StaticPage < ApplicationRecord
   # attr_accessible :tag, :title, :body, :status, :mode, :ltr
 
   has_paper_trail
-  enum status: [:unpublished, :published]
-  enum mode: [:plain_markdown, :cards, :cards_with_shortcuts]
+  enum :status, { unpublished: 0, published: 1 }
+  enum :mode, { plain_markdown: 0, cards: 1, cards_with_shortcuts: 2 }
   has_many_attached :images, dependent: :destroy
   
   def english?

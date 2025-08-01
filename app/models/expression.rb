@@ -3,7 +3,7 @@ class Expression < ApplicationRecord
 
   before_save :set_translation
   before_save :norm_dates
-  enum period: {
+  enum :period, {
     ancient: 0,
     medieval: 1,
     enlightenment: 2,
@@ -18,13 +18,13 @@ class Expression < ApplicationRecord
   has_many :tags, through: :taggings, class_name: 'Tag'
   has_paper_trail # for monitoring crowdsourced inputs
 
-  enum intellectual_property: {
+  enum :intellectual_property, {
     public_domain: 0,
     by_permission: 1,
     copyrighted: 2,
     orphan: 3,
     unknown: 100
-  }, _prefix: true
+  }, prefix: true
 
   # In browse works filters and API we should not show copyrighted works
   PUBLIC_INTELLECTUAL_PROPERTY_TYPES = intellectual_properties.keys - ['copyrighted']
