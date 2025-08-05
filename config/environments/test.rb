@@ -9,7 +9,8 @@ Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
   # While tests run files are not watched, reloading is not necessary.
-  config.enable_reloading = false
+  # But we enable reloading to support spec debugging from IDE
+  config.enable_reloading = true
 
   # Eager loading loads your entire application. When running a single test locally,
   # this is usually not necessary, and can slow down your test suite. However, it's
@@ -19,6 +20,9 @@ Rails.application.configure do
 
   # Configure public file server for tests with Cache-Control for performance.
   config.public_file_server.headers = { "Cache-Control" => "public, max-age=#{1.hour.to_i}" }
+
+  # In test environment we allow using of different locales (en for now) for non-hebrew speaking developers
+  config.i18n.default_locale = ENV['BY_LANGUAGE']&.to_sym || :he
 
   # Show full error reports and disable caching.
   config.consider_all_requests_local = true
