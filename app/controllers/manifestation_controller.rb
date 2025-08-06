@@ -14,7 +14,6 @@ class ManifestationController < ApplicationController
     c.refuse_unreasonable_page
   end
   autocomplete :manifestation, :title, limit: 20, display_value: :title_and_authors, full: true
-  autocomplete :authority, :name, limit: 2, full: true
   autocomplete :tag, :name, limit: 2
 
   # layout false, only: [:print]
@@ -24,6 +23,7 @@ class ManifestationController < ApplicationController
 
   #############################################
   # public actions
+  #############################################
   def all
     @page_title = t(:all_works) + ' ' + t(:project_ben_yehuda)
     @pagetype = :works
@@ -97,6 +97,17 @@ class ManifestationController < ApplicationController
       flash[:error] = t(:no_such_item)
       redirect_to '/'
     end
+  end
+
+  # Endpoint used to select authority in search filters (can be used by not authenticated visitors)
+  # It differs from admin#autocomplete_authority_name_and_aliases by:
+  #   - does not require editor access rights
+  #   - only shows published authors
+  def autocomplete_authority_name
+    wildcard = "%#{params[:term]}%"
+    items = Authority.published.where('name like ? OR other_designation like ?', wildcard, wildcard).limit(10)
+
+    render json: json_for_autocomplete(items, :name, {})
   end
 
   def autocomplete_works_by_author
