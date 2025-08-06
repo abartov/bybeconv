@@ -10,7 +10,6 @@ class AdminController < ApplicationController
                          merge_tagging approve_tagging reject_tagging escalate_tagging tag_moderation tag_review)
   before_action :require_admin, only: %i(manifestation_batch_tools destroy_manifestation unpublish_manifestation)
   # before_action :require_admin, only: [:missing_languages, :missing_genres, :incongruous_copyright, :missing_copyright, :similar_titles]
-  autocomplete :manifestation, :title, display_value: :title_and_authors, extra_data: [:expression_id] # TODO: also search alternate titles!
   autocomplete :person, :name, scopes: :with_name, full: true
   autocomplete :collection, :title, full: true, display_value: :title_and_authors
   autocomplete :publication, :title
@@ -45,9 +44,19 @@ class AdminController < ApplicationController
 
   def autocomplete_authority_name_and_aliases
     wildcard = "%#{params[:term]}%"
-    render json: Authority.where('name like ? OR other_designation like ?', wildcard, wildcard).map { |au|
-                   { id: au.id, label: au.name, value: au.name }
-                 }
+    items = Authority.where('name like ? OR other_designation like ?', wildcard, wildcard).limit(10)
+
+    render json: json_for_autocomplete(items, :name)
+  end
+
+  def autocomplete_manifestation_title
+    wildcard = "%#{params[:term]}%"
+
+    items = Manifestation.where('title like ? or alternate_titles like ?', wildcard, wildcard)
+                         .with_involved_authorities
+                         .limit(10)
+
+    render json: json_for_autocomplete(items, :title_and_authors, [:expression_id])
   end
 
   ##############################################
