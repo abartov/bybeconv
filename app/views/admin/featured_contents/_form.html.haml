@@ -15,7 +15,7 @@
     = f.input :authority do
       = autocomplete_field_tag :authority_autocomplete,
                                fc.authority&.name,
-                               autocomplete_authority_name_path,
+                               autocomplete_authority_name_and_aliases_path,
                                id_element: '#featured_content_authority_id',
                                class: 'form-control',
                                data: { noMatchesLabel: t(:no_matches_found) }

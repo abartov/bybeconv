@@ -162,7 +162,7 @@ Bybeconv::Application.routes.draw do
   get 'autocomplete_manifestation_title' => 'admin#autocomplete_manifestation_title',
       as: 'autocomplete_manifestation_title'
   get 'autocomplete_person_name' => 'admin#autocomplete_person_name', as: 'autocomplete_person_name'
-  get 'autocomplete_authority_name' => 'admin#autocomplete_authority_name', as: 'autocomplete_authority_name'
+
   get 'autocomplete_tag_name' => 'application#autocomplete_tag_name_name', as: 'autocomplete_tag_name'
   get 'autocomplete_dict_entry' => 'manifestation#autocomplete_dict_entry', as: 'autocomplete_dict_entry'
   get 'admin/featured_author_list'
