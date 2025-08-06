@@ -34,7 +34,7 @@
         .backend-field
           = label_tag t(:linked_author)
           = hidden_field_tag :authority_id
-          = autocomplete_field_tag :authority, '', autocomplete_authority_name_path,
+          = autocomplete_field_tag :authority, '', autocomplete_authority_name_and_aliases_path,
                                    id_element: '#authority_id', scopes: [:bib_not_done],
                                    'data-noMatchesLabel' => t(:no_matches_found)
         = link_to t(:new_person), authors_new_path(type: :person)
