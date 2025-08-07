@@ -25,16 +25,15 @@ module Admin
       end
     end
 
-    def show
-      return unless @fc.nil?
-
-      flash[:error] = I18n.t(:no_such_item)
-      redirect_to url_for(action: :index)
-    end
+    def show; end
 
     def edit; end
 
     def update
+      # We have few legacy records in DB where `user` is null, and it caused validation failures during update
+      # To avoid this, we set user to current_user if it is empty
+      @fc.user = current_user if @fc.user.nil?
+
       if @fc.update(fc_params)
         flash.notice = I18n.t(:updated_successfully)
         redirect_to admin_featured_content_path(@fc)
