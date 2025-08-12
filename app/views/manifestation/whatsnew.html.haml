@@ -20,7 +20,7 @@
                       - works.each do |genre|
                         - next if genre[0] == :latest
                         %p
-                          %b= t(genre[0])+': '
+                          %b= textify_genre(genre[0]) + ': '
                           - worksbuf = genre[1].map{ |m| link_to(m.expression.title + (m.expression.translation ? ' / '+m.authors_string : ''), url_for(controller: :manifestation, action: :read, id: m.id))}
                           - worksbuf = worksbuf.join('; ')
                           != worksbuf

@@ -1,0 +1,5 @@
+he:
+  grape:
+    errors:
+      messages:
+        length_max: 'חייב להיות באורך %{max} תווים או פחות'

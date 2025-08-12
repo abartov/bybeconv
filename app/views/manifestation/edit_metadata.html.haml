@@ -8,7 +8,9 @@
       = text_field_tag :wtitle, @w.title, size: 75
     %p
       %b= t(:genre) + ': '
-      = select_tag :genre, options_for_select(get_genres.map {|genre| [I18n.t(genre), genre]}, @w.genre), {include_blank: true}
+      = select_tag :genre,
+                   options_for_select(Work::GENRES.map { |genre| [textify_genre(genre), genre] }, @w.genre),
+                   { include_blank: true }
     %p
       %b= t(:primary) + ': '
       = select_tag :primary, options_for_select([[t(:yes), 'true'], [t(:false), 'false']], @w.primary.to_s)

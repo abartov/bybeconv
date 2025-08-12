@@ -6,7 +6,7 @@ source 'http://rubygems.org'
 
 gem 'actionview'
 gem 'concurrent-ruby', '1.3.4' # 1.3.5 and later yields an error with Logger. Fixed in Rails 7.1
-gem 'rails', '~> 7.0.0'
+gem 'rails', '7.2.2.1'
 gem 'rails-i18n', '~> 7' # version should match major version of Rails
 gem 'sass-rails', '~> 6.0.0'
 gem 'sprockets', '~> 4.2.1'
@@ -86,12 +86,10 @@ gem 'momentjs-rails' # for date picker in filters
 gem 'ahoy_matey' # for recording events
 gem 'blazer' # for exploring Ahoy events
 
-gem 'grape', '1.6.0' # 1.6.1 adds a Validators module damisul's patch isn't ready for
-gem 'grape-entity', '~> 0.10.1'
-# TODO: Replace to standard version of gem after PR will be accepted https://github.com/jagaapple/grape-extra_validators/pull/10
-gem 'grape-extra_validators', '~> 2.1.0', git: 'https://github.com/damisul/grape-extra_validators'
-gem 'grape-swagger', '~> 1.4.2'
-gem 'grape-swagger-entity', '~> 0.5.1'
+gem 'grape', '~> 2.4.0'
+gem 'grape-entity', '~> 1.0.1'
+gem 'grape-swagger', '~> 2.1.2'
+gem 'grape-swagger-entity', '~> 0.6.2'
 
 gem 'puma'
 gem 'puma_worker_killer' # cycle workers when they bloat
@@ -134,12 +132,12 @@ group :development do
   gem 'ed25519'
   gem 'haml_lint', '~> 0.57.0', require: false
   gem 'immigrant'
-  gem 'pronto', '~> 0.11.2'
-  gem 'pronto-haml', '~> 0.11.1', require: false
-  gem 'pronto-rubocop', '~> 0.11.5', require: false
-  gem 'rubocop', '~> 1.61.0', require: false
-  gem 'rubocop-factory_bot', '~> 2.25.1', require: false
-  gem 'rubocop-rails', '~> 2.24.1', require: false
+  gem 'pronto'
+  gem 'pronto-haml', require: false
+  gem 'pronto-rubocop', require: false
+  gem 'rubocop', '1.79.1', require: false
+  gem 'rubocop-factory_bot', require: false
+  gem 'rubocop-rails', require: false
   gem 'rubocop-rspec', require: false
   gem 'ruby-lsp-rspec', require: false
   gem 'ruby-prof' # for profiling

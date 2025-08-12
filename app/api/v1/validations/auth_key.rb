@@ -3,7 +3,7 @@
 module V1
   module Validations
     # Auth key check
-    class AuthKey < Grape::Validations::Base
+    class AuthKey < Grape::Validations::Validators::Base
       class AuthFailed < StandardError; end
 
       def validate_param!(attr_name, params)

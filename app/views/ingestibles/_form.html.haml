@@ -37,7 +37,13 @@
               %b.btn-text-v02= t(:edit)
           .volume-details{style: vid.present? ? 'display:none;' : ''}
             = f.label t('ingestible.volume_by_author')
-            = autocomplete_field_tag :author, '', autocomplete_authority_name_path, 'data-noMatchesLabel' => t(:no_matches_found), id: 'aterm', style: 'width:400px;', id_element: '#authority_id'
+            = autocomplete_field_tag :author,
+                                     '',
+                                     autocomplete_authority_name_and_aliases_path,
+                                     'data-noMatchesLabel' => t(:no_matches_found),
+                                     id: 'aterm',
+                                     style: 'width:400px;',
+                                     id_element: '#authority_id'
             = hidden_field_tag :authority_id, value: '', id: 'authority_id'
             = f.check_box :no_volume
             = f.label t('ingestible.no_volume')
@@ -73,7 +79,7 @@
           = f.hidden_field :status, value: @ingestible.status
         %h2= t('ingestible.defaults')
         = f.label t(:genre)
-        - genres = [[t(:mixed_genres), 'mixed']]+get_genres.map {|genre| [I18n.t(genre), genre]}
+        - genres = (['mixed'] + Work::GENRES).map { |genre| [textify_genre(genre), genre] }
         = f.select :genre, options_for_select(genres, @ingestible.genre), {include_blank: true}
         = f.label t(:publisher)
         = f.text_field :publisher, style: 'width:400px;'

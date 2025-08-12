@@ -15,7 +15,9 @@
     = f.text_field :title, required: true
   .backend-field
     = f.label t(:genre)
-    = select_tag 'html_file[genre]', options_for_select(get_genres.map {|genre| [I18n.t(genre), genre]}, @text.genre), {include_blank: true}
+    = select_tag 'html_file[genre]',
+                 options_for_select(get_genres.map { |genre| [textify_genre(genre), genre] }, @text.genre),
+                 { include_blank: true }
   .backend-field
     = f.label t(:first_author)
     %br

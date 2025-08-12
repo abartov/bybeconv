@@ -204,7 +204,7 @@ class ApplicationController < ActionController::Base
     # @fresh_works = @author.works_since(12.hours.ago, 1000)
     unless @fresh_works.empty?
       @fresh_works_markdown = @fresh_works.map do |m|
-        "\\n&&& פריט: מ#{m.id} &&& כותרת: #{m.title}#{m.expression.translation ? ' / ' + m.authors_string : ''} &&&\\n"
+        "\\n&&& פריט: מ#{m.id} &&& כותרת: #{m.title}#{' / ' + m.authors_string if m.expression.translation} &&&\\n"
       end.join('').html_safe
     else
       @fresh_works_markdown = ''
@@ -360,7 +360,7 @@ class ApplicationController < ActionController::Base
     author.each do |genre|
       next unless genre[1].class == Array # skip the :latest key
 
-      worksbuf = "<strong>#{I18n.t(genre[0])}:</strong> "
+      worksbuf = "<strong>#{helpers.textify_genre(genre[0])}:</strong> "
       first = true
       genre[1].each do |m|
         title = m.expression.title

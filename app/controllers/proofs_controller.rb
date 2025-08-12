@@ -2,7 +2,6 @@
 
 # Controller to work with Proofs (error reports)
 class ProofsController < ApplicationController
-  protect_from_forgery except: :submit # allow submission from outside the app
   before_action only: %i(index show resolve purge) do |c|
     c.require_editor('handle_proofs')
   end

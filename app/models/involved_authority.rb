@@ -6,7 +6,7 @@ class InvolvedAuthority < ApplicationRecord
   belongs_to :authority, inverse_of: :involved_authorities
   belongs_to :item, polymorphic: true, inverse_of: :involved_authorities, optional: false
 
-  enum role: {
+  enum :role, {
     author: 0,
     editor: 1,
     illustrator: 2,
@@ -15,7 +15,7 @@ class InvolvedAuthority < ApplicationRecord
     designer: 5,
     contributor: 6,
     other: 7
-  }, _prefix: true
+  }, prefix: true
 
   WORK_ROLES = (roles.keys - %w(translator)).freeze
   EXPRESSION_ROLES = (roles.keys - %w(author)).freeze

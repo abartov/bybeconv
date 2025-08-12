@@ -1,14 +1,12 @@
 # frozen_string_literal: true
 
-Grape::Validations.register_validator('v1_auth_key', V1::Validations::AuthKey)
-
 # Absrtract base class for all V1 API implementations
 module V1
   # Base class for application APIs v1
   class ApplicationApi < Grape::API
     helpers do
       params :key_param do
-        requires :key, type: String, v1_auth_key: true
+        requires :key, type: String, auth_key: true
       end
     end
 

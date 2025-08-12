@@ -176,6 +176,17 @@ en:
       periodical: to periodical
       periodical_issue: to issue
       series: to whole series
+  genre_values:
+    poetry: Poetry
+    prose: Prose
+    article: Article
+    drama: Drama
+    memoir: Memoir
+    letters: Letters
+    reference: Reference
+    lexicon: Lexicon
+    fables: Fable
+    mixed: Mixed
   intellectual_property:
     public_domain: public domain
     by_permission: by permission

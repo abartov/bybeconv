@@ -19,11 +19,11 @@ module V1
                documentation: { desc: 'semicolon-separated list of additional names or spellings for this authority' }
         expose :intellectual_property, documentation: { values: ::Authority.intellectual_properties.keys }
         expose :person,
-               using: Api::V1::Entities::Person,
+               using: V1::Entities::Person,
                expose_nil: false,
                documentation: { desc: 'person-specific data (omitted for corporate bodies)' }
         expose :corporate_body,
-               using: Api::V1::Entities::CorporateBody,
+               using: V1::Entities::CorporateBody,
                expose_nil: false,
                documentation: { desc: 'corporate bodies-specific data (omitted for people)' }
         expose :wikipedia_snippet, as: :bio_snippet
