@@ -1,9 +1,5 @@
 include BybeUtils
 Bybeconv::Application.routes.draw do
-  get 'collections_migration/index'
-  get 'collections_migration/person'
-  post 'collections_migration/migrate'
-  post 'collections_migration/create_collection'
   namespace :admin do
     resources :featured_contents do
       resources :features, controller: 'featured_content_features', only: %i(create)
@@ -19,14 +15,16 @@ Bybeconv::Application.routes.draw do
 
   namespace :lexicon do
     resources :people
+    resources :publications
+    resources :entries, only: %i(index show)
     resources :files, only: :index do
       member do
         post :migrate_person
+        post :migrate_publication
       end
     end
   end
 
-  resources :lex_entries
   resources :lex_links
   resources :lex_citations
 
