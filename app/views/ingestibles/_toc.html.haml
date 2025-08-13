@@ -63,7 +63,7 @@
           = hidden_field_tag :add_authority_name
           = button_tag t(:perform_add), class: 'do_add_authority'
         %td
-          = select_tag :tgenre, options_for_select(get_genres.map {|x| [I18n.t(x), x]}, genre), {include_blank: true, class: 'toc-genre'}
+          = select_tag :tgenre, options_for_select(get_genres.map {|x| [textify_genre(x), x]}, genre), {include_blank: true, class: 'toc-genre'}
         %td
           = select_tag :orig_lang, options_for_select(get_langs.map {|lang| [textify_lang(lang), lang]}, orig_lang), {class: 'toc-lang'}
         %td
