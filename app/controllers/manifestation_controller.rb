@@ -104,10 +104,19 @@ class ManifestationController < ApplicationController
   #   - does not require editor access rights
   #   - only shows published authors
   def autocomplete_authority_name
-    wildcard = "%#{params[:term]}%"
-    items = Authority.published.where('name like ? OR other_designation like ?', wildcard, wildcard).limit(10)
+    term = "*#{params[:term]}*"
 
-    render json: json_for_autocomplete(items, :name, {})
+    items = AuthoritiesAutocompleteIndex.filter([{ term: { published: true } }]).query(
+      bool: {
+        should: [
+          { wildcard: { name: { value: term, case_insensitive: true } } },
+          { wildcard: { other_designation: { value: term, case_insensitive: true } } }
+        ],
+        minimum_should_match: 1
+      }
+    ).limit(10).to_a
+
+    render json: json_for_autocomplete(items, :name)
   end
 
   def autocomplete_works_by_author
