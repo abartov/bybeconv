@@ -43,18 +43,33 @@ class AdminController < ApplicationController
   end
 
   def autocomplete_authority_name_and_aliases
-    wildcard = "%#{params[:term]}%"
-    items = Authority.where('name like ? OR other_designation like ?', wildcard, wildcard).limit(10)
+    term = "*#{params[:term]}*"
+
+    items = AuthoritiesAutocompleteIndex.query(
+      bool: {
+        should: [
+          { wildcard: { name: { value: term, case_insensitive: true } } },
+          { wildcard: { other_designation: { value: term, case_insensitive: true } } }
+        ],
+        minimum_should_match: 1
+      }
+    ).limit(10).to_a
 
     render json: json_for_autocomplete(items, :name)
   end
 
   def autocomplete_manifestation_title
-    wildcard = "%#{params[:term]}%"
+    term = "*#{params[:term]}*"
 
-    items = Manifestation.where('title like ? or alternate_titles like ?', wildcard, wildcard)
-                         .with_involved_authorities
-                         .limit(10)
+    items = ManifestationsAutocompleteIndex.query(
+      bool: {
+        should: [
+          { wildcard: { title: { value: term, case_insensitive: true } } },
+          { wildcard: { alternate_titles: { value: term, case_insensitive: true } } }
+        ],
+        minimum_should_match: 1
+      }
+    ).limit(10).to_a
 
     render json: json_for_autocomplete(items, :title_and_authors, [:expression_id])
   end
@@ -737,7 +752,7 @@ class AdminController < ApplicationController
     else
       stags = ListItem.where(listkey: 'tag_similarity', item: @tag).pluck(:extra).map do |x|
                 x.split(':')
-              end.sort_by { |score, tag| score }.reverse
+              end.sort_by { |score, _tag| score }.reverse
       @similar_tags = Tag.where(id: stags.map { |x| x[1] })
       calculate_editor_tagging_stats
       @next_tag_id = Tag.where(status: :pending).where('created_at > ?',
@@ -1144,6 +1159,6 @@ class AdminController < ApplicationController
   end
 
   def prepare_similar_tags
-    stags = ListItem.where(listkey: 'tag_similarity').pluck(:item_id, :extra).to_h
+    ListItem.where(listkey: 'tag_similarity').pluck(:item_id, :extra).to_h
   end
 end

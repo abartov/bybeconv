@@ -8,6 +8,7 @@ class Authority < ApplicationRecord
   WIKIDATA_URI_PATTERN = %r{\Ahttps://wikidata.org/wiki/Q[0-9]+\z}
 
   update_index('authorities') { self } # update AuthoritiesIndex when entity is updated
+  update_index('authorities_autocomplete') { self }
 
   enum :status, {
     published: 0,
