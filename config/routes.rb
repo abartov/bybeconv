@@ -14,6 +14,8 @@ Bybeconv::Application.routes.draw do
   end
 
   namespace :lexicon do
+    root to: 'entries#index'
+
     resources :people
     resources :publications
     resources :entries, only: %i(index show)

@@ -26,65 +26,15 @@
                 %div
                   .author-name-years
                     .headline-1-v02= @lex_entry.title
-                    .date-range (1910-2004)
-                  .to-pby
-                    %a{:href => "#"} לדף היוצר בפרויקט בן־יהודה
+                    .date-range!= @lex_person.life_years
+                  - if @lex_person.person.present?
+                    .to-pby
+                      - authority = @lex_person.person.authority
+                      = link_to t(:to_pby_person), authority
                   .metadata
-                    .by-icon-v02> m
-                    נחלת הכלל
-                    %a.help{:href => "#"} [?]
-                  .lexicon-entry-under-construction-mobile
-                    .by-icon-v02> "'"
-                    ערך בהכנה
-              %p
-                שלמה
-                אבן-שושן (רוזנשטיין) נולד במינסק, בלארוס, בא' באדר א' תר"ע, 10 בפברואר 1910
-                %font{:color => "#FF0000"} *
-                לאביו, הסופר
-                = succeed "." do
-                  %a{:href => "02534.php"} חיים דוד רוזנשטיין
-                %br/
-                שלמה אבן-שושן החל מפרסם מיצירותיו, שירה וסיפורת, בעיתון הנוער העובד "במעלה". שיריו הראשונים נדפסו בשנת 1931. בד בבד עם כתיבתו עסק גם בעריכה, והיה בין עורכי העיתונות הקיבוצית, "מבפנים" ו"צרור מכתבים", ובין העורכים הראשונים בהוצאת הקיבוץ המאוחד. בין היתר ערך את כתביהם של פניה ברגשטיין, המשורר יצחק קצנלסון, וכן ערך ספרי זיכרון לאישים ולקהילות ישראל שחרבו.
-                שלמה אבן-שושן מוכר בעיקר כמתרגם מעולה ופורה מאד. הוא תרגם משנות החמישים ואילך מיצירותיהם של גדולי היוצרים היהודים שכתבו רוסית ויידיש, וכן מיצירותיהם של גדולי הספרות הרוסית. הוא גם יצר קשר אישי ראשוני עם כמה מהיוצרים היהודים בברית המועצות, בהם דב גפונוב, דוד מרקיש, כאשר קשרים כאלה עוד היו אסורים.
-                שלח ידו גם בכתיבת ביוגרפיות, ספרי זיכרון, ספרי זיכרונות ושירה ממוארית משלו עצמו, כתב וערך ספרי "תנועה", ספרי קיבוץ וספרים של חברי קיבוצים.
-                אחיו היה המילונאי
-                = succeed "." do
-                  %a{:href => "03444.php"} אברהם אבן שושן
-                %i אברהם אבן-שושן, מחנך ומילונאי
-                (1999).
-                שלמה אבן-שושן
-                = succeed "." do
-                  %a{:href => "02148-files/02148-image003.jpg", :target => "_blank"}
-                    נפטר בקיבוצו שדה-נחום
-                    בכ"ח באלול תשס"ד, 14 בספטמבר 2004
-                %br/
-                %font{:color => "#FF0000"} *
-                %font{:size => "2"}
-                  על פי קרסל נולד בי"ח בשבט
-                  תר"ע, 28 בינואר 1910.
-                %br/
-                %span{:lang => "he"}
-                  %font{:size => "2"}
-                    %br/
-                    נכתב על-ידי
-                    %b
-                      %a{:href => "00353.php"} אלישע פורת
-                    עבור
-                %font{:size => "2"}
-                %i
-                  %span{:lang => "he"}
-                    %font{:size => "2"}
-                      לקסיקון הקשרים לסופרים ישראלים
-                      %br/
-                %font{:size => "2"}
-                  [מקורות
-                  = succeed ":" do
-                    %span{:lang => "he"} נוספים
-                  = succeed "," do
-                    %a{:href => "http://www.tidhar.tourolib.org/tidhar/view/6/2530"} תדהר
-                  = succeed "]" do
-                    %a{:href => "http://he.wikipedia.org/wiki/שלמה_אבן_שושן", :target => "_blank"}
-                      ויקיפדיה
+                    = render partial: 'shared/intellectual_property',
+                             locals: { intellectual_property: @lex_person.intellectual_property }
+              %p!= MarkdownToHtml.call(@lex_person.bio)
           #works.by-card-v02
             .by-card-header-v02#works
               %span.headline-1-v02= t(:works)

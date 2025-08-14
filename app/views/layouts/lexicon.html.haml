@@ -1,0 +1,9 @@
+<% content_for :stylesheets do %>
+  #top_menu {display: none}
+  #right_menu {float: right; background-color: yellow; color: black}
+<% end -%>
+<% content_for :content do %>
+  <div id="right_menu">Right menu items here</div>
+  <%= yield(:news_content) or yield %>
+  <% end -%>
+<% render :file => 'layouts/application' %>
