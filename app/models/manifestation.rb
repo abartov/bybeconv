@@ -43,6 +43,7 @@ class Manifestation < ApplicationRecord
   LONG_LENGTH = 15_000 # kind of arbitrary...
 
   update_index('manifestations') { self } # update ManifestationsIndex when entity is updated
+  update_index('manifestations_autocomplete') { self } # update ManifestationsAutocompleteIndex when entity is updated
 
   def involved_authorities
     (expression.involved_authorities + expression.work.involved_authorities).uniq
