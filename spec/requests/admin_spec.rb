@@ -7,7 +7,7 @@ describe '/admin' do
     subject(:call) { get '/autocomplete_authority_name_and_aliases?term=TeSt' }
 
     let(:match_1) { create(:authority, status: :published, name: 'First Test') }
-    let(:match_2) { create(:authority, status: :published, name: 'X', other_designation: 'second_test') }
+    let(:match_2) { create(:authority, status: :published, name: 'X', other_designation: 'second test') }
     let(:match_3) { create(:authority, status: :unpublished, name: 'test 3') }
     let(:no_match) { create(:authority, status: :published, name: 'Y', other_designation: 'Z') }
 
@@ -47,7 +47,7 @@ describe '/admin' do
 
       it 'returns a list of matching authorities including not published' do
         expect(call).to eq(200)
-        expect(response.parsed_body).to eq(expected_response)
+        expect(response.parsed_body).to match_array(expected_response)
       end
     end
   end
@@ -56,7 +56,7 @@ describe '/admin' do
     subject(:call) { get '/autocomplete_manifestation_title?term=TeSt' }
 
     let(:match_1) { create(:manifestation, status: :published, title: 'First Test') }
-    let(:match_2) { create(:manifestation, status: :published, title: 'X', alternate_titles: 'second_test') }
+    let(:match_2) { create(:manifestation, status: :published, title: 'X', alternate_titles: 'second test') }
     let(:match_3) { create(:manifestation, status: :nonpd, title: 'test 3') }
     let(:no_match) { create(:manifestation, status: :published, title: 'Y', alternate_titles: 'Z') }
 
@@ -111,7 +111,7 @@ describe '/admin' do
 
       it 'returns a list of matching authorities including not published' do
         expect(call).to eq(200)
-        expect(response.parsed_body).to eq(expected_response)
+        expect(response.parsed_body).to match_array(expected_response)
       end
     end
   end

@@ -48,8 +48,8 @@ class AdminController < ApplicationController
     items = AuthoritiesAutocompleteIndex.query(
       bool: {
         should: [
-          { wildcard: { name: { value: term, case_insensitive: true } } },
-          { wildcard: { other_designation: { value: term, case_insensitive: true } } }
+          { match_phrase_prefix: { name: { query: term } } },
+          { match_phrase_prefix: { other_designation: { query: term } } }
         ],
         minimum_should_match: 1
       }
@@ -64,8 +64,8 @@ class AdminController < ApplicationController
     items = ManifestationsAutocompleteIndex.query(
       bool: {
         should: [
-          { wildcard: { title: { value: term, case_insensitive: true } } },
-          { wildcard: { alternate_titles: { value: term, case_insensitive: true } } }
+          { match_phrase_prefix: { title: { query: term } } },
+          { match_phrase_prefix: { alternate_titles: { query: term } } }
         ],
         minimum_should_match: 1
       }

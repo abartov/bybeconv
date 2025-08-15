@@ -4,10 +4,12 @@ require 'rails_helper'
 
 describe '/manifestation' do
   describe 'GET /manifestation/autocomplete_authority_name' do
-    subject(:call) { get '/manifestation/autocomplete_authority_name?term=TeSt' }
+    subject(:call) { get "/manifestation/autocomplete_authority_name?term=#{term}" }
+
+    let(:term) { 'TeSt' }
 
     let(:match_1) { create(:authority, status: :published, name: 'First Test') }
-    let(:match_2) { create(:authority, status: :published, name: 'X', other_designation: 'second_test') }
+    let(:match_2) { create(:authority, status: :published, name: 'X', other_designation: 'second test') }
     let(:no_match_unpublished) { create(:authority, status: :unpublished, name: 'test 3') }
     let(:no_match_published) { create(:authority, status: :published, name: 'Y', other_designation: 'Z') }
 
@@ -33,7 +35,22 @@ describe '/manifestation' do
 
     it 'returns a list of matching published authorities' do
       expect(call).to eq(200)
-      expect(response.parsed_body).to eq(expected_response)
+      expect(response.parsed_body).to match_array(expected_response)
+    end
+
+    context 'when there is a whitespace in term' do
+      let(:term) { 'SECOND tE' }
+
+      let(:expected_response) do
+        [
+          { 'id' => match_2.id.to_s, 'label' => match_2.name, 'value' => match_2.name }
+        ]
+      end
+
+      it 'returns a list of matching published authorities' do
+        expect(call).to eq(200)
+        expect(response.parsed_body).to eq(expected_response)
+      end
     end
   end
 end
