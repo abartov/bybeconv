@@ -17,6 +17,8 @@ en:
       collection_item: Collection Item
       corporate_body: Corporate Body
       featured_content: Featured Content
+      lex_entry: Lexicon Entry
+      lex_person: Lexicon Person
       person: Person
     errors:
       messages:
@@ -63,3 +65,26 @@ en:
         birthdate: Birthdate
         deathdate: Deathdate
         gender: Gender
+      collection:
+        credits: Manual credits
+        ingestible:
+          defaults: fields for all works
+          title: Title to upload
+          scenario: Type of upload
+          status: Status
+          metadata: Metadata
+          comments: Comments
+          markdown: Markdown
+          volume_id: Title
+          statuses:
+            awaiting_authorities: Waiting to create personalities
+            draft: Draft at work
+            ingested: Recorded in the catalogue
+            failed: Upload failed
+      lex_file:
+        fname: File name
+      lex_person:
+        birthdate: Birthdate
+        deathdate: Deathdate
+        bio: Biographical synopsis
+        books: Books

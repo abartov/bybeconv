@@ -1,9 +1,5 @@
 include BybeUtils
 Bybeconv::Application.routes.draw do
-  get 'collections_migration/index'
-  get 'collections_migration/person'
-  post 'collections_migration/migrate'
-  post 'collections_migration/create_collection'
   namespace :admin do
     resources :featured_contents do
       resources :features, controller: 'featured_content_features', only: %i(create)
@@ -16,6 +12,23 @@ Bybeconv::Application.routes.draw do
       end
     end
   end
+
+  namespace :lexicon do
+    root to: 'entries#index'
+
+    resources :people
+    resources :publications
+    resources :entries, only: %i(index show)
+    resources :files, only: :index do
+      member do
+        post :migrate_person
+        post :migrate_publication
+      end
+    end
+  end
+
+  resources :lex_links
+  resources :lex_citations
 
   resources :ingestibles do
     resources :authorities, controller: :ingestible_authorities, only: %i(create destroy) do
@@ -63,7 +76,7 @@ Bybeconv::Application.routes.draw do
   get 'crowd/populate_edition' => 'crowd#populate_edition', as: 'crowd_populate_edition'
   get 'crowd/populate_edition/:id' => 'crowd#populate_edition', as: 'crowd_populate_edition_id'
   post 'crowd/do_populate_edition' => 'crowd#do_populate_edition', as: 'crowd_do_populate_edition'
-  resources :lex_files
+
   mount Rswag::Ui::Engine => '/api-docs'
   mount Rswag::Api::Engine => '/api-docs'
   mount V1::Api => '/'

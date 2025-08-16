@@ -109,8 +109,8 @@ class ManifestationController < ApplicationController
     items = AuthoritiesAutocompleteIndex.filter([{ term: { published: true } }]).query(
       bool: {
         should: [
-          { wildcard: { name: { value: term, case_insensitive: true } } },
-          { wildcard: { other_designation: { value: term, case_insensitive: true } } }
+          { match_phrase_prefix: { name: { query: term } } },
+          { match_phrase_prefix: { other_designation: { query: term } } }
         ],
         minimum_should_match: 1
       }
