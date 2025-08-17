@@ -104,13 +104,13 @@ class ManifestationController < ApplicationController
   #   - does not require editor access rights
   #   - only shows published authors
   def autocomplete_authority_name
-    term = "*#{params[:term]}*"
+    term = params[:term]
 
     items = AuthoritiesAutocompleteIndex.filter([{ term: { published: true } }]).query(
       bool: {
         should: [
-          { wildcard: { name: { value: term, case_insensitive: true } } },
-          { wildcard: { other_designation: { value: term, case_insensitive: true } } }
+          { match_phrase_prefix: { name: { query: term } } },
+          { match_phrase_prefix: { other_designation: { query: term } } }
         ],
         minimum_should_match: 1
       }
