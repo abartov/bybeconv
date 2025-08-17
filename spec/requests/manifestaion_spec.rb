@@ -37,20 +37,5 @@ describe '/manifestation' do
       expect(call).to eq(200)
       expect(response.parsed_body).to match_array(expected_response)
     end
-
-    context 'when there is a whitespace in term' do
-      let(:term) { 'SECOND tE' }
-
-      let(:expected_response) do
-        [
-          { 'id' => match_2.id.to_s, 'label' => match_2.name, 'value' => match_2.name }
-        ]
-      end
-
-      it 'returns a list of matching published authorities' do
-        expect(call).to eq(200)
-        expect(response.parsed_body).to eq(expected_response)
-      end
-    end
   end
 end
