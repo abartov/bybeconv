@@ -104,17 +104,12 @@ class ManifestationController < ApplicationController
   #   - does not require editor access rights
   #   - only shows published authors
   def autocomplete_authority_name
-    term = params[:term]
-
-    items = AuthoritiesAutocompleteIndex.filter([{ term: { published: true } }]).query(
-      bool: {
-        should: [
-          { match_phrase_prefix: { name: { query: term } } },
-          { match_phrase_prefix: { other_designation: { query: term } } }
-        ],
-        minimum_should_match: 1
-      }
-    ).limit(10).to_a
+    items = ElasticsearchAutocomplete.call(
+      params[:term],
+      AuthoritiesAutocompleteIndex,
+      %i(name other_designation),
+      filter: { term: { published: true } }
+    )
 
     render json: json_for_autocomplete(items, :name)
   end

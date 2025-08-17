@@ -43,33 +43,21 @@ class AdminController < ApplicationController
   end
 
   def autocomplete_authority_name_and_aliases
-    term = params[:term]
-
-    items = AuthoritiesAutocompleteIndex.query(
-      bool: {
-        should: [
-          { match_phrase_prefix: { name: { query: term } } },
-          { match_phrase_prefix: { other_designation: { query: term } } }
-        ],
-        minimum_should_match: 1
-      }
-    ).limit(10).to_a
+    items = ElasticsearchAutocomplete.call(
+      params[:term],
+      AuthoritiesAutocompleteIndex,
+      %i(name other_designation)
+    )
 
     render json: json_for_autocomplete(items, :name)
   end
 
   def autocomplete_manifestation_title
-    term = params[:term]
-
-    items = ManifestationsAutocompleteIndex.query(
-      bool: {
-        should: [
-          { match_phrase_prefix: { title: { query: term } } },
-          { match_phrase_prefix: { alternate_titles: { query: term } } }
-        ],
-        minimum_should_match: 1
-      }
-    ).limit(10).to_a
+    items = ElasticsearchAutocomplete.call(
+      params[:term],
+      ManifestationsAutocompleteIndex,
+      %i(title alternate_titles)
+    )
 
     render json: json_for_autocomplete(items, :title_and_authors, [:expression_id])
   end
