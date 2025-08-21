@@ -1,5 +1,9 @@
 include BybeUtils
 Bybeconv::Application.routes.draw do
+  get 'collections_migration/index'
+  get 'collections_migration/person'
+  post 'collections_migration/migrate'
+  post 'collections_migration/create_collection'
   namespace :admin do
     resources :featured_contents do
       resources :features, controller: 'featured_content_features', only: %i(create)
@@ -13,7 +17,7 @@ Bybeconv::Application.routes.draw do
     end
   end
 
-  namespace :lexicon do
+  namespace :lexicon, path: :lex do # use path 'lex' to avoid conflict with old Lexicon hosted on benyehuda.org/lexicon
     root to: 'entries#index'
 
     resources :people
