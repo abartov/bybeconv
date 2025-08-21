@@ -6,10 +6,8 @@ he:
   not_public_yet: '(עדיין לא פומבי)'
   author_list: רשימת היוצרים
   first_last_name: "שם פרטי / משפחה"
-  to_latest_x_works: הצג %{x} יצירות אחרונות
   don_footer_title: אנו שמחים שאתם משתמשים באתר פרויקט בן־יהודה
   don_footer_mobile_text: רוב מוחלט של העבודה נעשה בהתנדבות, אולם אנו צריכים לממן שירותי אירוח ואחסון, פיתוח תוכנה, אפיון ממשק משתמש, ועיצוב גרפי. נשמח אם תעזרו לנו להמשיך לשרת אתכם!
-
   don_footer_desktop_html: עד כה העלינו למאגר %{total_works} יצירות מאת %{total_authors} יוצרים, בעברית ובתרגום מ־%{total_langs} שפות. העלינו גם %{total_headwords} ערכים מילוניים. רוב מוחלט של העבודה נעשה בהתנדבות, אולם אנו צריכים לממן שירותי אירוח ואחסון, פיתוח תוכנה, אפיון ממשק משתמש, ועיצוב גרפי. <br /> <br /> בזכות תרומות מהציבור הוספנו לאחרונה אפשרות ליצירת מקראות הניתנות לשיתוף עם חברים או תלמידים, <a href="/page/api">ממשק API לגישה ממוכנת לאתר</a>, ואנו עובדים על פיתוחים רבים נוספים, כגון הוספת כתבי עת עבריים, לרבות עכשוויים. <br /><br /> נשמח אם תעזרו לנו להמשיך לשרת אתכם!
   contact_name: שם
   contact_email: דואל
@@ -713,7 +711,6 @@ he:
   new_author: יוצר חדש
   latest_facebook: עדכונים אחרונים בעמוד הפייסבוק
   latest_updates: עדכונים אחרונים
-  latest_added_works: יצירותי%{gender_letter} האחרונות שראו אור בפרויקט
   insert_all_siblings: הכנסת כל הפריטים האחים מרמה זו פנימה
   focus_on_this_collection: ניהול אוסף זה
   collapse_collection: קיפול/פריסת האוסף
@@ -1490,6 +1487,9 @@ he:
     list:
       select_authority: נא לבחור ישות אחראית
   shared:
+    latest_works_by_author:
+      latest_added_works: יצירותי%{gender_letter} האחרונות שראו אור בפרויקט
+      to_latest_x_works: הצג %{x} יצירות אחרונות
     manage_collection:
       select_manifestation: יש לבחור יצירה להלן
     manage_toc:
