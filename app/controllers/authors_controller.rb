@@ -78,14 +78,17 @@ class AuthorsController < ApplicationController
   end
 
   def latest_popup
-    pubs = @author.cached_latest_stuff
-    @pubscoll = {}
-    pubs.each do |m|
-      genre = m.expression.work.genre
-      @pubscoll[genre] = [] if @pubscoll[genre].nil?
-      @pubscoll[genre] << m
+    @pubs = Rails.cache.fetch("au_#{@author.id}_latest_popup", expires_in: 12.hours) do
+      pubs = @author.latest_stuff
+      pubscoll = {}
+      pubs.each do |m|
+        genre = m.expression.work.genre
+        pubscoll[genre] = [] if pubscoll[genre].nil?
+        pubscoll[genre] << m
+      end
+      textify_new_pubs(pubscoll)
     end
-    @pubs = textify_new_pubs(@pubscoll)
+
     render partial: 'whatsnew_popup'
   end
 
@@ -470,7 +473,6 @@ class AuthorsController < ApplicationController
       track_view(@author)
 
       @og_image = @author.profile_image.url(:thumb)
-      @latest = cached_textify_titles(@author.cached_latest_stuff, @author)
       @featured = @author.featured_work
       @aboutnesses = @author.aboutnesses
       @external_links = @author.external_links.status_approved

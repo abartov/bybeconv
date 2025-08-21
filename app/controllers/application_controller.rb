@@ -340,21 +340,6 @@ class ApplicationController < ActionController::Base
     authors
   end
 
-  def cached_textify_titles(manifestations, au)
-    Rails.cache.fetch("textify_titles_#{au.id}", expires_in: 12.hours) do # memoize
-      textify_titles(manifestations)
-    end
-  end
-
-  def textify_titles(manifestations)
-    # translations will be marked as translations, without mentioning the author names, for performance reasons
-    titles = Manifestation.preload(:expression).find(manifestations.pluck(:id)).map do |m|
-      appendix = m.expression.translation ? " (#{I18n.t(:translation)})" : ''
-      "<a href=\"#{url_for(controller: :manifestation, action: :read, id: m.id)}\">#{m.title}</a>#{appendix}"
-    end
-    titles.join('; ')
-  end
-
   def textify_new_pubs(author)
     ret = ''
     author.each do |genre|

@@ -287,13 +287,7 @@ class Authority < ApplicationRecord
   end
 
   def latest_stuff
-    published_manifestations(:author, :translator).order(created_at: :desc).limit(20).to_a
-  end
-
-  def cached_latest_stuff
-    Rails.cache.fetch("au_#{id}_latest_stuff", expires_in: 24.hours) do
-      latest_stuff
-    end
+    published_manifestations(:author, :translator).order(created_at: :desc).limit(20)
   end
 
   def cached_original_works_by_genre
