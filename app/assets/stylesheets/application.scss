@@ -954,3 +954,23 @@ small p{
 #actualtext img {
   max-width: 100%;
 }
+
+.unpublished {
+  background-color: yellow;
+}
+
+.unpublished_badge {
+  background:darkred;	
+  white-space:nowrap;
+  position: absolute;
+  left: 0;
+  padding: 5px;
+  min-width: 300px;
+  transform: rotate(-45deg) translate(-37%, 0);
+  color: white;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 12px;
+  top: -20px;
+  box-sizing: border-box;
+}
