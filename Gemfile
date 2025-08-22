@@ -5,9 +5,9 @@ ruby '3.3.8'
 source 'http://rubygems.org'
 
 gem 'actionview'
-gem 'concurrent-ruby', '1.3.4' # 1.3.5 and later yields an error with Logger. Fixed in Rails 7.1
-gem 'rails', '7.2.2.1'
-gem 'rails-i18n', '~> 7' # version should match major version of Rails
+gem 'concurrent-ruby'
+gem 'rails', '8.0.2.1'
+gem 'rails-i18n', '~> 8' # version should match major version of Rails
 gem 'sass-rails', '~> 6.0.0'
 gem 'sprockets', '~> 4.2.1'
 
@@ -35,8 +35,7 @@ gem 'diffy'
 
 gem 'simple_form', '~> 5.3.0'
 
-gem 'kt-paperclip', git: 'https://github.com/kreeti/kt-paperclip.git' # for Ruby 3.2 compatibility, until https://github.com/kreeti/kt-paperclip/pull/98 is officially released
-# gem 'kt-paperclip', '7.1.1' # , '~>5.2' # for cloud files like author images 6.x requires aws >3.x
+gem 'kt-paperclip'
 
 gem 'jbuilder', '~> 2.0' # for JSON APIs
 gem 'sqlite3' # for dictionary imports
@@ -44,8 +43,7 @@ gem 'sqlite3' # for dictionary imports
 
 gem 'activerecord-session_store'
 gem 'jquery-rails'
-gem 'jquery-ui-rails', git: 'https://github.com/jquery-ui-rails/jquery-ui-rails' # v 7.0 has not been pushed to RubyGems yet
-# gem "jquery-ui-rails", "~> 4.0.4"
+gem 'jquery-ui-rails'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
@@ -56,7 +54,6 @@ gem 'execjs'
 gem 'htmlentities'
 gem 'kaminari'
 gem 'mini_racer'
-# gem 'kaminari', '1.1.1' # pagination. Kaminari 1.2.1 seems to have a bug - https://github.com/kaminari/kaminari/issues/1033
 gem 'nokogiri'
 
 gem 'rmultimarkdown' # new wrapper over Fletcher Penney's MultiMarkDown 6 (MMD 6)

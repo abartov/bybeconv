@@ -3,6 +3,7 @@ AllCops:
   NewCops: enable
   Exclude:
     - bin/*
+    - config/boot.rb
     - config/initializers/*
     - config/environments/*
     - db/migrate/*
