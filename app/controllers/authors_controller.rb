@@ -38,7 +38,8 @@ class AuthorsController < ApplicationController
   end
 
   def volumes
-    render json: { volumes: @author.volumes, publications: @author.publications.no_volume }
+    render json: { volumes: @author.volumes.sort_by(&:title),
+                   publications: @author.publications.no_volume.sort_by(&:title) }
   end
 
   def get_random_author
