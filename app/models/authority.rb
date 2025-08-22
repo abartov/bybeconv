@@ -107,7 +107,7 @@ class Authority < ApplicationRecord
   end
 
   def approved_tags
-    approved_taggings.joins(:tag).where(tag: { status: Tag.statuses[:approved] }).map(&:tag)
+    approved_taggings.joins(:tag).preload(:tag).where(tag: { status: Tag.statuses[:approved] }).map(&:tag)
   end
 
   def approved_taggings
