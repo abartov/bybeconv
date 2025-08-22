@@ -2,6 +2,7 @@
 
 class IngestiblesController < ApplicationController
   include LockIngestibleConcern
+
   skip_before_action :verify_authenticity_token, only: :create # to allow starting ingestions directly from the task system
 
   before_action { |c| c.require_editor('edit_catalog') }
@@ -287,7 +288,6 @@ class IngestiblesController < ApplicationController
   end
 
   def prep(render_html = false)
-    markdown = @ingestible.markdown.presence || ''
     @html = ''
     @disable_submit = false
     @markdown_titles = []
