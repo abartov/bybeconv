@@ -124,11 +124,12 @@ class Collection < ApplicationRecord
     false
   end
 
-  # produce HTML for a table of contents of the collection
+  # produce HTML for a table of contents of the collection - used for periodicals, and skips paratexts
   def toc_html
     ret = '<div class="collection_toc"><ul>'
     flatten_items.each do |ci|
       next if ci.item.nil? && ci.markdown.blank? && ci.alt_title.blank?
+      next if ci.paratext # Skip items of type paratext in periodical toc display
 
       ret += if ci.item.nil? && ci.alt_title.present?
                '<li>' + ci.alt_title

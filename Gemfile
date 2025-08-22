@@ -29,6 +29,7 @@ gem 'human_enum_name' # i18n for enums
 gem 'marcel', '~> 1'
 gem 'omniauth-rails_csrf_protection'
 gem 'rack-cors', require: 'rack/cors'
+gem "msgpack", ">= 1.7.0" # required by ActiveSupport:MessagePack
 
 gem 'aws-sdk-s3' # for Active Storage
 gem 'diffy'
