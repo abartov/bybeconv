@@ -480,7 +480,7 @@ class AuthorsController < ApplicationController
       unless @featured.empty?
         (@fc_snippet, @fc_rest) = snippet(@featured[0].body, 500) # prepare snippet for collapsible
       end
-      @taggings = @author.taggings
+      @taggings = @author.taggings.preload(:tag)
 
       @credits = render_to_string(partial: 'authors/credits', locals: { author: @author })
       if @author.toc.present?
