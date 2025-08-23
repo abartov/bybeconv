@@ -1662,3 +1662,5 @@ he:
   show_genres: סינון לפי סוגה
   refresh_uncollected_works: רענון יצירות שלא כונסו
   out_of: "מתוך "
+  full_display: תצוגה מלאה
+  immediate_child_only: הצג רמה אחת בלבד

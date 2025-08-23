@@ -55,7 +55,7 @@
                       = f.submit t(:save), class: 'by-button-v02', style: 'display:inline-block;'
                       .by-button-v02.cancel_editable_edit{ style: 'width:100px; display:inline-block;' }= t(:cancel)
                 - elsif ci.item.kind_of?(Collection)
-                  - if ci.item.collection_type != 'series'
+                  - if ci.item.collection_type != 'series' # what is the reason for this exception?
                     = link_to t(:remove), collection_item_path(ci.id), method: :delete, remote: true, data: { confirm: t(:confirm_delete_collection_item) }, class: 'collection-btn', style: 'float: left;'
                   %div.cwrapper{id: "cwrapper_#{ci.item.id}", 'data-nonce': nonce, 'data-collection-id': ci.item.id}
                     .headline-2-v02{ 'data-nonce': nonce }
@@ -69,7 +69,7 @@
                           %b.white= '+'
                         .coll_toggle.by-button-v02{ data: { target: "##{nonce}_coll_#{ci.item_id}", toggle: :collapse }, title: t(:collapse_collection) }
                           %b.white= '↕'
-                    %div{ style: 'margin-right: 25px;' }
+                    %div.subcollection{ style: 'margin-right: 25px;' }
                       - if @colls_traversed.include?(ci.item.id)
                         %b= t(:collection_circular_reference)
                       - else
