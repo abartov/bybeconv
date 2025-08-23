@@ -3,6 +3,7 @@
   %ol
   - collection.parent_collections.each do |pc|
     %li{style: 'list-style-type: decimal; font-size:120%;'}= link_to "🢁 🢁 🢁 #{pc.title}", collection_manage_path(pc.id)
+
 %div{id: "editable_collection_details"}
   = link_to collection_path(collection.id), {style:'color:white; float:left;'} do
     %span.by-button-v02.pointer{style: 'width: auto;'}= t(:back_to_public_view)
@@ -10,6 +11,11 @@
     %span{id: 'editable_ctype'}= textify_collection_type(collection.collection_type)+': '
     %span{id: "editable_coll_title"}= title
     %span.editcolbutton{style: 'cursor:pointer; font-size: 50%; color:blue;'}= t(:edit)
+  -# Add toggle control for display modes
+  %div{ class: 'display-toggle horizontal-buttonset' }
+    %button{ class: 'toggle-full-display by-button-v02', data: { mode: 'full' } }= t(:full_display)
+    %button{ class: 'toggle-child-only by-button-v02', data: { mode: 'child' } }= t(:immediate_child_only)
+
 .editable_edit{style: 'display:none;background-color:lightyellow;'}
   = form_for collection, url: collection_path(collection.id), namespace: "coll_#{collection.id}", method: :put, remote: true do |f|
     %b= t(:collection_item_type)+': '
@@ -135,5 +141,17 @@
       else {
         $('.collection_do_insert').css('background-color', '#660248');
       }
+    });
+    $('body').on('click', '.display-toggle button', function(e){
+      e.preventDefault();
+      const mode = $(this).data('mode');
+      const displayContainer = $(this).closest('.cwrapper');
+      displayContainer.attr('data-mode', mode);
+      if(mode == 'full'){
+        displayContainer.find('.subcollection').show();
+      } else {
+        displayContainer.find('.subcollection').hide();
+      }
+      // Optionally, trigger an AJAX call to fetch data dynamically based on mode
     });
   });

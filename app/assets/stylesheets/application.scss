@@ -489,6 +489,14 @@ body.modal-open{
   flex-direction: row;
   justify-content: space-between;
 }
+.horizontal-buttonset {
+  display: flex;
+  flex-direction: row;
+  justify-content: normal;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
 #pending-tag {
   min-width: 350px;
 }
