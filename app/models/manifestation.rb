@@ -1,4 +1,5 @@
 include BybeUtils
+
 class Manifestation < ApplicationRecord
   include TrackingEvents
 
@@ -9,6 +10,7 @@ class Manifestation < ApplicationRecord
 
   has_many :taggings, as: :taggable, dependent: :destroy
   has_many :tags, through: :taggings, class_name: 'Tag'
+  has_many :featured_contents, dependent: :destroy
 
   has_many :recommendations, dependent: :destroy
   has_many :bookmarks, dependent: :destroy
