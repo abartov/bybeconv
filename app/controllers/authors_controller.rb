@@ -339,7 +339,6 @@ class AuthorsController < ApplicationController
     @published_xlats = @author.translations.count
     @total_orig_works = @author.manifestations(:author).count
     @total_xlats = @author.manifestations(:translator).count
-    @aboutnesses = @author.aboutnesses
 
     if @author.nil?
       flash[:error] = t(:no_such_item)
@@ -474,9 +473,8 @@ class AuthorsController < ApplicationController
 
       @og_image = @author.profile_image.url(:thumb)
       @featured = @author.featured_work
-      @aboutnesses = @author.aboutnesses
       @external_links = @author.external_links.status_approved
-      @any_curated = @featured.present? || @aboutnesses.count > 0
+      @any_curated = @featured.present? || !@author.aboutnesses.empty?
       unless @featured.empty?
         (@fc_snippet, @fc_rest) = snippet(@featured[0].body, 500) # prepare snippet for collapsible
       end
