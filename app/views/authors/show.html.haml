@@ -126,7 +126,7 @@
         - if @total_xlats != @published_xlats
           = " #{t(:published)} + #{@total_xlats - @published_xlats} #{t(:unpublished)}"
         %br
-        = render partial: 'aboutnesses'
+        = render partial: 'aboutnesses', locals: { author: @author }
       %td
         %p
           = image_tag @author.profile_image.url(:thumb), alt: @author.name

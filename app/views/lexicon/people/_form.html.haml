@@ -1,0 +1,23 @@
+= simple_form_for @lex_person,
+                  url: @lex_person.new_record? ? lexicon_people_path : lexicon_person_path(@lex_person) do |f|
+  = f.simple_fields_for :entry do |ef|
+    = ef.input :title
+    = ef.input :status do
+      .form-control
+        %span.badge.badge-primary= @lex_person.entry.status
+  = f.input :aliases, as: :text
+  = f.input :authority do
+    = autocomplete_field_tag :authority_autocomplete,
+                             @lex_person.authority&.name,
+                             autocomplete_authority_name_and_aliases_path,
+                             id_element: '#lex_person_authority_id',
+                             class: 'form-control'
+  = f.hidden_field :authority_id
+
+  = f.input :copyrighted, as: :boolean
+  = f.input :birthdate
+  = f.input :deathdate
+  = f.input :bio, as: :text, input_html: { rows: 20 }
+  = f.input :works, as: :text, input_html: { rows: 20 }
+  = f.input :about, as: :text, input_html: { rows: 10 }
+  = f.button :submit, class: 'btn btn-primary col-sm-2'

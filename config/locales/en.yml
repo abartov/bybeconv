@@ -14,10 +14,12 @@ en:
   cancel: Cancel
   update: Update
   destroy: Destroy
+  show: Show
   created_successfully: Created Successfully
   updated_successfully: Updated Successfully
   deleted_successfully: Deleted Successfully
   original_works: Original Works
+  translation: Translation
   translations: Translations
   edited_works: Edited Works
   alefbet: Alphabetical
@@ -44,6 +46,9 @@ en:
   uncollected_works_collection_title: Uncollected works
   add: Add
   email: Email
+  title: Title
+  status: Status
+  actions: Actions
   ziburit: What is the last name of the most famous poet? (Security question)
   not_implemented_yet: Not implemented. This function is still in development.
   report_error_tt: To report error select text on the page and then press here
@@ -100,6 +105,9 @@ en:
       intro: "Please check ordering of items in following collections:"
       n_problems_fixed: "%{n} problems fixed"
   shared:
+    latest_works_by_author:
+      latest_added_works: latest works published in the project
+      to_latest_x_works: to latest %{x} works
     filters:
       pagination:
         page_x_of_total: Page %{page} of %{total}
