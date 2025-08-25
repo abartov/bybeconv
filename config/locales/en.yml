@@ -18,6 +18,7 @@ en:
   updated_successfully: Updated Successfully
   deleted_successfully: Deleted Successfully
   original_works: Original Works
+  translation: Translation
   translations: Translations
   edited_works: Edited Works
   alefbet: Alphabetical
@@ -100,6 +101,9 @@ en:
       intro: "Please check ordering of items in following collections:"
       n_problems_fixed: "%{n} problems fixed"
   shared:
+    latest_works_by_author:
+      latest_added_works: latest works published in the project
+      to_latest_x_works: to latest %{x} works
     filters:
       pagination:
         page_x_of_total: Page %{page} of %{total}
