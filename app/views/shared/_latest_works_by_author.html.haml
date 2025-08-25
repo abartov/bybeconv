@@ -1,7 +1,7 @@
 = cache author, expires_in: 12.hours do
   - latest_stuff = author.latest_stuff.preload(:expression).to_a
   .new-card-v02.last-item
-    -#.new-info-v02 !
+    -# .new-info-v02 !
     .new-card-right-v02
       .new-card-type-v02 q
     .new-card-left-v02
@@ -13,9 +13,9 @@
           = link_to manifestation.title, manifestation_path(manifestation)
           = " (#{I18n.t(:translation)})" if manifestation.expression.translation?
           ;
-    .link-to-all-v02#author_latest_popup_link{style: 'display:none'}
+    .link-to-all-v02#author_latest_popup_link{ style: 'display:none;' }
       .author_latest_popup_button.linkcolor.pointer
-        %span{:style => "font-weight: bold"}= t('.to_latest_x_works', x: latest_stuff.count)
+        %span{ style: 'font-weight: bold;' }= t('.to_latest_x_works', x: latest_stuff.count)
         %span.left-arrow 1
 :javascript
   $(function() {
@@ -23,7 +23,7 @@
       $('#author_latest_popup_link').show();
       $('.author_latest_popup_button').click(function(e){
         e.stopPropagation();
-        $('#generalDlg').load("#{ author_latest_popup_path(author) }");
+        $('#generalDlg').load("#{author_latest_popup_path(author)}");
         $('#generalDlg').modal('show');
       });
     }
