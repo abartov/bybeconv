@@ -123,7 +123,6 @@
                 <%= render partial: 'shared/share', locals: {element: :header_button} %>
                 <a class="linkcolor by-icon-v02 pointer contact_btn" href="mailto:editor@benyehuda.org" title="<%= t(:contact_tt) %>">R</a>
                 <div class="icons-seperator"></div>
-                <!-- <span class="pointer" id="visit_info">😃</span> -->
                 <% if current_user %>
                   <div class="collapsed" data-toggle="collapse" data-target="#user_collapsible" style="display:inline-block;" title="<%= t(:usermenu_tt) %>">
                     <div style="padding-left: 0.6rem"><%= t(:welcome_heading) %> <strong><%= current_user.name %></strong>!</div>
@@ -259,9 +258,6 @@
         $.get('<%= session_dismiss_sitenotice_path %>');
       });
     }
-    // $('#visit_info').click(function(){
-    //  alert("שלום שלום! ביקרת כבר <%= @base_user.present? ? @base_user.visits.count.to_s : '-1' %> פעמים באתר, וקראת <%= @base_user.present? ? Ahoy::Event.where(user_id: @base_user.id, name: 'text read or printed').count.to_s : '-1' %> יצירות.");
-    //});
     $('.donev').click(function(e) {
       e.stopPropagation();
       if($('#dont_show_again').length > 0) {
