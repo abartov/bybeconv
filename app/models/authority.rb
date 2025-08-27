@@ -107,7 +107,7 @@ class Authority < ApplicationRecord
   end
 
   def approved_tags
-    approved_taggings.joins(:tag).where(tag: { status: Tag.statuses[:approved] }).map(&:tag)
+    approved_taggings.joins(:tag).preload(:tag).where(tag: { status: Tag.statuses[:approved] }).map(&:tag)
   end
 
   def approved_taggings
@@ -287,13 +287,7 @@ class Authority < ApplicationRecord
   end
 
   def latest_stuff
-    published_manifestations(:author, :translator).order(created_at: :desc).limit(20).to_a
-  end
-
-  def cached_latest_stuff
-    Rails.cache.fetch("au_#{id}_latest_stuff", expires_in: 24.hours) do
-      latest_stuff
-    end
+    published_manifestations(:author, :translator).order(created_at: :desc).limit(20)
   end
 
   def cached_original_works_by_genre

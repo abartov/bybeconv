@@ -376,11 +376,8 @@ class Manifestation < ApplicationRecord
 
   def self.cached_work_counts_by_genre
     Rails.cache.fetch('m_count_by_genre', expires_in: 24.hours) do
-      ret = {}
-      get_genres.each do |g|
-        ret[g] = Manifestation.all_published.genre(g).distinct.count
-      end
-      ret
+      counts = Manifestation.published.joins(expression: :work).group(work: :genre).count
+      Work::GENRES.index_with { |g| counts[g] || 0 }
     end
   end
 

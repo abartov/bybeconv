@@ -78,14 +78,17 @@ class AuthorsController < ApplicationController
   end
 
   def latest_popup
-    pubs = @author.cached_latest_stuff
-    @pubscoll = {}
-    pubs.each do |m|
-      genre = m.expression.work.genre
-      @pubscoll[genre] = [] if @pubscoll[genre].nil?
-      @pubscoll[genre] << m
+    @pubs = Rails.cache.fetch("au_#{@author.id}_latest_popup", expires_in: 12.hours) do
+      pubs = @author.latest_stuff
+      pubscoll = {}
+      pubs.each do |m|
+        genre = m.expression.work.genre
+        pubscoll[genre] = [] if pubscoll[genre].nil?
+        pubscoll[genre] << m
+      end
+      textify_new_pubs(pubscoll)
     end
-    @pubs = textify_new_pubs(@pubscoll)
+
     render partial: 'whatsnew_popup'
   end
 
@@ -336,7 +339,6 @@ class AuthorsController < ApplicationController
     @published_xlats = @author.translations.count
     @total_orig_works = @author.manifestations(:author).count
     @total_xlats = @author.manifestations(:translator).count
-    @aboutnesses = @author.aboutnesses
 
     if @author.nil?
       flash[:error] = t(:no_such_item)
@@ -470,15 +472,13 @@ class AuthorsController < ApplicationController
       track_view(@author)
 
       @og_image = @author.profile_image.url(:thumb)
-      @latest = cached_textify_titles(@author.cached_latest_stuff, @author)
       @featured = @author.featured_work
-      @aboutnesses = @author.aboutnesses
       @external_links = @author.external_links.status_approved
-      @any_curated = @featured.present? || @aboutnesses.count > 0
+      @any_curated = @featured.present? || !@author.aboutnesses.empty?
       unless @featured.empty?
         (@fc_snippet, @fc_rest) = snippet(@featured[0].body, 500) # prepare snippet for collapsible
       end
-      @taggings = @author.taggings
+      @taggings = @author.taggings.preload(:tag)
 
       @credits = render_to_string(partial: 'authors/credits', locals: { author: @author })
       if @author.toc.present?
