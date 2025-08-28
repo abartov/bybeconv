@@ -1,0 +1,21 @@
+%h1= t('.title')
+
+%table.table
+  %thead
+    %tr
+      %th Title
+      %th Status
+      %th Type
+      %th
+
+  %tbody
+    - @lex_entries.each do |lex_entry|
+      - item = lex_entry.lex_item
+      %tr
+        %td= lex_entry.title
+        %td= lex_entry.status
+        %td= item.model_name.human
+        %td
+          = link_to t(:show), lexicon_item_path(item)
+
+= paginate @lex_entries

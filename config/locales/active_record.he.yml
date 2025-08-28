@@ -2,6 +2,7 @@ he:
   attributes:
     created_at: נוצר בתאריך
     updated_at: עודכן בתאריך
+    description: תיאור
     name: שם
     sort_name: שם לצורך מיון
     status: סטטוס
@@ -17,6 +18,8 @@ he:
       collection_item: פריט באוסף
       corporate_body: גוף/מוסד
       featured_content: תוכן מערכת
+      lex_entry: Lexicon Entry
+      lex_person: Lexicon Person
       person: אדם
     errors:
       messages:
@@ -81,3 +84,19 @@ he:
           draft: טיוטה בעבודה
           ingested: נקלטה בקטלוג
           failed: ההעלאה נכשלה
+      lex_file:
+        fname: שם קובץ
+        entrytypes:
+          unknown: לא ידוע
+          person: אדם
+          text: טקסט
+          bib: ביבליוגרפיה
+          other: אחר
+      lex_person:
+        birthdate: תאריך לידה
+        deathdate: תאריך פטירה
+        bio: תקציר ביוגרפי
+        books: ספרים
+      lex_publication:
+        toc: Table of Contents
+        az_navbar: Show AZ navbar?
