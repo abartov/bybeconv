@@ -11,4 +11,6 @@ he:
     error_notification:
       default_message: "נא לתקן את השגיאות להלן:"
     hints:
+      lex_person:
+        authority: דף יוצר בפרויקט בן־יהודה
     placeholders:

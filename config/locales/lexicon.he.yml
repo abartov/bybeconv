@@ -1,0 +1,47 @@
+he:
+  lexicon_migration: קליטת לקסיקון גלרון
+  lexicon_show_person: הצגת ערך
+  lex_prev_entry: לרשומה הקודמת
+  lex_next_entry: לרשומה הבאה
+  author_in_pby: היוצר/ת מופיע/ה בפרויקט בן־יהודה
+  about_the_author_and_their_work: על היוצר/ת ויצירתה/ו
+  migration_results_edit_later: להלן תוצאות ההסבה האוטומטית. אפשר לתקן במסך העריכה.
+  entrytype: סוג הערך
+  ingested: נקלט
+  links: קישוריוֹת
+  text: טקסט
+  bib: ביבליוגרפיה
+  classified: זוהה סוג הערך
+  unclassified: לא זוהה סוג הערך
+  lexicon:
+    entries:
+      index:
+        title: רשימת ערכי הלקסיקון
+    files:
+      index:
+        title: רשימת הקבצים
+      migrate_person:
+        success: הוסב בהצלחה
+        title: הסבת ערך על אדם
+      migrate_publication:
+        success: הוסב בהצלחה
+        title: הסבת חיבור
+    header:
+      title: לקסיקון הספרות העברית החדשה
+      part_of_pby: חלק מפרויקט בן־יהודה
+    people:
+      show:
+        to_pby_person: לדף היוצר בפרויקט בן־יהודה
+      create:
+        success: נוצרה ישות חדשה
+      update:
+        success: עודכן!
+      destroy:
+        success: נמחק!
+    publications:
+      create:
+        success: נוצרה ישות חדשה
+      update:
+        success: עודכן!
+      destroy:
+        success: נמחק!
