@@ -165,20 +165,12 @@ class CollectionsController < ApplicationController
     new_index = params.fetch(:new_index).to_i
 
     Collection.transaction do
-      items = @collection.collection_items.to_a
-      item_to_move = items[old_index]
-      item_to_move.update(seqno: items[new_index].seqno)
+      items = @collection.collection_items.order(:seqno).to_a
+      item_to_move = items.delete_at(old_index)
+      items.insert(new_index, item_to_move)
 
-      if old_index > new_index
-        # moving item up in the list
-        items[new_index..(old_index - 1)].each do |ci|
-          ci.increment!(:seqno)
-        end
-      elsif old_index < new_index
-        # moving item down in the list
-        items[(old_index + 1)..new_index].each do |ci|
-          ci.decrement!(:seqno)
-        end
+      items.each_with_index do |ci, index|
+        ci.update!(seqno: index + 1) unless ci.seqno == index + 1
       end
     end
     head :ok
