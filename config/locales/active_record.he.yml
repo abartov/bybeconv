@@ -67,6 +67,8 @@ he:
         gender: מגדר
       collection:
         credits: קרדיטים ידניים
+      collection_item:
+        item_type: סוג פריט
       ingestible:
         defaults: שדות לכל היצירות
         title: כותרת להעלאה

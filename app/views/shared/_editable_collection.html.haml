@@ -5,13 +5,13 @@
                 collection_path(collection.id),
                 method: :delete,
                 remote: true,
-                data: { confirm: t(:confirm_delete_collection) },
+                data: { confirm: t('.confirm_delete_collection') },
                 class: 'by-button-v02 by-button-secondary-v02'
     .collection_action_btns
       - unless focused
-        .collection_insert_all_siblings.by-button-v02{title: t(:insert_all_siblings)}
+        .collection_insert_all_siblings.by-button-v02{ title: t('.insert_all_siblings') }
           %b.white= '⇇'
-        .collection_focus_button.by-button-v02{title: t(:focus_on_this_collection)}
+        .collection_focus_button.by-button-v02{ title: t('.focus_on_this_collection') }
           %b= link_to '⤝', collection_manage_path(collection.id), class: 'white'
   - if collection
     .container-fluid{ style: 'position:relative;', id: "#{nonce}_coll_container_#{collection.id}" }
