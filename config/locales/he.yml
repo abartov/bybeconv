@@ -237,7 +237,6 @@ he:
   copy_of: "עותק של "
   curated_text_title: שם קטע הטקסט
   confirm_clone: נא לאשר שיבוט המקראה
-  confirm_delete_collection: נא לאשר מחיקת כל האוסף על פריטיו! (היצירות עצמן תישארנה, רק הופעתן באוסף תימחק)
   confirm_delete_collection_item: נא לאשר מחיקת הפריט מן האוסף. הפריט עצמו (אם אינו שומר מקום) יישאר בקטלוג, רק לא באוסף זה.
   public_anthologies: מקראות פומביות
   clone_this_anthology: שיבוט מקראה זו
@@ -711,8 +710,6 @@ he:
   new_author: יוצר חדש
   latest_facebook: עדכונים אחרונים בעמוד הפייסבוק
   latest_updates: עדכונים אחרונים
-  insert_all_siblings: הכנסת כל הפריטים האחים מרמה זו פנימה
-  focus_on_this_collection: ניהול אוסף זה
   collapse_collection: קיפול/פריסת האוסף
   background: רקע
   placeholder_image: "צללית יוצר/ת"
@@ -1490,6 +1487,10 @@ he:
     latest_works_by_author:
       latest_added_works: יצירותי%{gender_letter} האחרונות שראו אור בפרויקט
       to_latest_x_works: הצג %{x} יצירות אחרונות
+    editable_collection:
+      confirm_delete_collection: נא לאשר מחיקת כל האוסף על פריטיו! (היצירות עצמן תישארנה, רק הופעתן באוסף תימחק)
+      focus_on_this_collection: ניהול אוסף זה
+      insert_all_siblings: הכנסת כל הפריטים האחים מרמה זו פנימה
     manage_collection:
       select_manifestation: יש לבחור יצירה להלן
     manage_toc:

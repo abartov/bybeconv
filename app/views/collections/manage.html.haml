@@ -6,9 +6,9 @@
     #collection_insert_section.coll_insert_section{style: 'display: none; border: 1px solid #660248; background-color: rgb(157 157 241); padding: 10px;  scroll-margin-top: 15px;'}
       = hidden_field_tag :collection_id, '', id: 'collection_id'
       .admin_container
-        %b= t(:collection_item_type)+': '
+        %b= CollectionItem.human_attribute_name(:item_type) + ': '
         = select_tag :insert, options_for_select(collection_item_types_options)
-        %b= t(:title)+': '
+        %b= Manifestation.human_attribute_name(:title) + ': '
         = text_field_tag :insert_title, '', type: 'text', id: 'insert_title', style: 'background-color: #ffffff; width:auto;min-width:350px;'
       %br
       .admin_container
