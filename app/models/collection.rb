@@ -452,20 +452,24 @@ class Collection < ApplicationRecord
 
   # pos is effective 1-based position in the list, not the seqno (which is not necessarily contiguous!)
   def insert_item_at(item, pos)
-    new_seqno = if pos <= 1
-                  1
-                elsif pos > collection_items.size
-                  collection_items.last.seqno + 1
-                else
-                  collection_items[pos - 1].seqno
-                end
+    Collection.transaction do
+      new_seqno = if pos <= 1
+                    1
+                  elsif pos > collection_items.size
+                    collection_items.last.seqno + 1
+                  else
+                    collection_items[pos - 1].seqno
+                  end
 
-    collection_items[(pos - 1)..].each { |coli| coli.increment!(:seqno) }
+      collection_items.where('seqno >= ?', new_seqno).order(:seqno).each do |coli|
+        coli.increment!(:seqno)
+      end
 
-    ci = collection_item_from_anything(item)
-    ci.seqno = new_seqno
-    ci.save!
-    ci.id
+      @ci = collection_item_from_anything(item)
+      @ci.seqno = new_seqno
+      @ci.save!
+    end
+    @ci.id
   end
 
   def parent_collections
