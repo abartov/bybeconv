@@ -185,7 +185,7 @@ class Ingestible < ApplicationRecord
         nikkud = is_full_nikkud(lines[i])
         # once reached the footnotes section, set the footnotes mode to properly handle multiline footnotes with tabs
         in_footnotes = true if lines[i] =~ /^\[\^\d+\]:/
-        if nikkud
+        if nikkud and !title_line(lines[i])
           # make full-nikkud lines PRE
           lines[i] = "> #{lines[i]}" unless lines[i] =~ /\[\^\d+/ # produce a blockquote (PRE ignores bold/markup)
           prev_nikkud = true
@@ -211,6 +211,10 @@ class Ingestible < ApplicationRecord
     new_buffer.gsub!(/\n\s*\n> *\n> /, "\n> \n> ") # remove extra newlines before verse lines
     new_buffer.gsub!('> <br />', '<br />') # remove PRE from line-break, which confuses the markdown processor
     return new_buffer
+  end
+
+  def title_line(s)
+    s =~ /^#\s+/ || s =~ /^&&&\s+/
   end
 
   # split markdown into sections and populate or update the works_buffer
@@ -312,13 +316,13 @@ class Ingestible < ApplicationRecord
 
     # To avoid excessive updates we only refresh lock if more than 10 seconds passed since previous lock refresh
     if locked_at.nil? || locked_at < 10.seconds.ago
-      update_columns(locked_at: Time.zone.now, locked_by_user_id: user.id, last_editor_id: user.id) # we deliberately skip validations here # rubocop:disable Rails/SkipsModelValidations
+      update_columns(locked_at: Time.zone.now, locked_by_user_id: user.id, last_editor_id: user.id) # we deliberately skip validations here
     end
 
     return true
   end
 
   def release_lock!
-    update_columns(locked_at: nil, locked_by_user_id: nil) # we deliberately skip validations here # rubocop:disable Rails/SkipsModelValidations
+    update_columns(locked_at: nil, locked_by_user_id: nil) # we deliberately skip validations here
   end
 end
