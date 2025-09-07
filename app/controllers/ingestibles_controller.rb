@@ -3,7 +3,8 @@
 class IngestiblesController < ApplicationController
   include LockIngestibleConcern
 
-  skip_before_action :verify_authenticity_token, only: :create # to allow starting ingestions directly from the task system
+  # to allow starting ingestions directly from the task system
+  skip_before_action :verify_authenticity_token, only: :create
 
   before_action { |c| c.require_editor('edit_catalog') }
   before_action :set_ingestible,
