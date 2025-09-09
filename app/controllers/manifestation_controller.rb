@@ -256,7 +256,7 @@ class ManifestationController < ApplicationController
       head :not_found
     elsif @m.expression.work.genre == 'lexicon' && DictionaryEntry.where(manifestation_id: @m.id).count > 0
       redirect_to action: 'dict', id: @m.id
-    elsif !@m.published? && !current_user.editor?
+    elsif !@m.published? && current_user.present? && !current_user.editor?
       flash[:notice] = t(:work_not_available)
       redirect_to '/'
     else
