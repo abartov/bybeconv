@@ -879,7 +879,7 @@ class ManifestationController < ApplicationController
     return if @m.nil?
 
     # Note that we are accessing an unpublished work, if that's the case
-    @unpublished = true if !@m.published? && (current_user.blank? || !current_user.editor?)
+    @unpublished = true unless @m.published?
 
     lines = @m.markdown.lines
     tmphash = {}
