@@ -46,6 +46,8 @@ en:
         blog_category_url: Link to category about the creator in blog
         wikipedia_snippet: Snippet from Wikipedia
         wikipedia_url: Link to the article in Wikipedia
+      collection_item:
+        item_type: Item Type
       corporate_body:
         location: Location
         inception: Inception

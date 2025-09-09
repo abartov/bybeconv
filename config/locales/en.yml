@@ -14,6 +14,7 @@ en:
   cancel: Cancel
   update: Update
   destroy: Destroy
+  delete: Delete
   created_successfully: Created Successfully
   updated_successfully: Updated Successfully
   deleted_successfully: Deleted Successfully
@@ -49,7 +50,10 @@ en:
   not_implemented_yet: Not implemented. This function is still in development.
   report_error_tt: To report error select text on the page and then press here
   found_br_mistake_html: I have found<br/>mistake
-
+  collapse_collection: Collapse collection
+  or_search_term: "Or search for an existing work called:"
+  or_search_for_collection: "Or search for collection:"
+  perform_add: Add
   not_an_editor: This page is only available for editors
   admin:
     featured_contents:
@@ -104,6 +108,18 @@ en:
     latest_works_by_author:
       latest_added_works: latest works published in the project
       to_latest_x_works: to latest %{x} works
+    editable_collection:
+      confirm_delete_collection: Please confirm deletion of the entire collection! (The works themselves will remain, only their appearance in the collection will be deleted)
+      focus_on_this_collection: Focus on this collection
+      insert_all_siblings: Insert all siblings
+    manage_collection:
+      select_manifestation: Select work
+    manage_toc:
+      choose_between_author_pubs: Select from work, related to this author
+      verify_publisher_line: Publication details, correct or remove if incorrect
+      city_and_publisher: City and Publisher
+      year: Year of Publication
+      make_collection: Create collection from the works below
     filters:
       pagination:
         page_x_of_total: Page %{page} of %{total}
@@ -219,3 +235,17 @@ en:
       ingested: Ingestion Complete
       failed: Failed to Ingest
       awaiting_authorities: Awaiting Creation of Missed Authorities
+  # This block of strings below should be removed when we finish work. Grouped them together to make it easier to find them again
+  public_domain: Public Domain
+  viaf_id: ID in VIAF Database
+  text_n_of_m: Text %{n} of %{m}
+  and_n_placeholders: Plus %{n} placeholders
+  convert_to_new_method: Convert to new method
+  manage_toc: "Collection-based creator's page management: %{author}"
+  manage_toc_link: Collection-based creator's page management
+  manage_toc_explanation:  On this screen you can edit all the collections in which this creator is involved at the collection level. You can also add a work or collection from the entire database into one of the collections listed here, and also create a whole new collection and link it to this creator. If there has been a hand-created page before, it is shown on the left.
+  show_genres: Filter by genres
+  refresh_uncollected_works: Refresh uncollected works
+  out_of: out of
+  full_display: Full View
+  immediate_child_only: Show one level only
