@@ -844,7 +844,7 @@ class ManifestationController < ApplicationController
   def prep_for_print
     @m = Manifestation.find(params[:id])
 
-    if !@m.published? && !current_user.editor?
+    if !@m.published? && current_user.present? && !current_user.editor?
       flash[:notice] = t(:work_not_available)
       redirect_to '/'
       return
