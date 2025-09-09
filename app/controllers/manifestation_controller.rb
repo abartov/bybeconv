@@ -256,7 +256,7 @@ class ManifestationController < ApplicationController
       head :not_found
     elsif @m.expression.work.genre == 'lexicon' && DictionaryEntry.where(manifestation_id: @m.id).count > 0
       redirect_to action: 'dict', id: @m.id
-    elsif !@m.published? && current_user.present? && !current_user.editor?
+    elsif !@m.published? && (current_user.blank? || !current_user.editor?)
       flash[:notice] = t(:work_not_available)
       redirect_to '/'
     else
@@ -284,7 +284,7 @@ class ManifestationController < ApplicationController
   def readmode
     @readmode = true
     @m = Manifestation.find(params[:id])
-    if !@m.published? && !current_user.editor?
+    if !@m.published? && (current_user.blank? || !current_user.editor?)
       flash[:notice] = t(:work_not_available)
       redirect_to '/'
     else
@@ -844,7 +844,7 @@ class ManifestationController < ApplicationController
   def prep_for_print
     @m = Manifestation.find(params[:id])
 
-    if !@m.published? && current_user.present? && !current_user.editor?
+    if !@m.published? && (current_user.blank? || !current_user.editor?)
       flash[:notice] = t(:work_not_available)
       redirect_to '/'
       return
@@ -879,7 +879,7 @@ class ManifestationController < ApplicationController
     return if @m.nil?
 
     # Note that we are accessing an unpublished work, if that's the case
-    @unpublished = true if !@m.published? && current_user.present? && !current_user.editor?
+    @unpublished = true if !@m.published? && (current_user.blank? || !current_user.editor?)
 
     lines = @m.markdown.lines
     tmphash = {}
