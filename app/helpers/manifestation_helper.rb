@@ -4,12 +4,20 @@ module ManifestationHelper
   # all suddenly break if secret_key_base is changed.
   def options_from_images(images)
     # full resolution URL in value, thumbnail URL in imagesrc!
-    actual_images = images.reject{|img| !img.variable?} # skip any non-image attachments that may have been accidentally uploaded
-    return actual_images.map{|img| "<option value=\"#{url_for(img)}\" data-imagesrc=\"#{request.base_url+url_for(img.variant(resize: '150x150'))}\">#{img.blob.filename}</option>"}.join('')
+    actual_images = # skip any non-image attachments that may have been accidentally uploaded
+      images.reject do |img|
+        !img.variable?
+      end
+    return actual_images.map do |img|
+      "<option value=\"#{url_for(img)}\" data-imagesrc=\"#{request.base_url + url_for(img.variant(resize_to_fill: [150,
+                                                                                                                   nil]))}\">#{img.blob.filename}</option>"
+    end.join('')
   end
+
   def all_images_markdown(images)
-    escape_javascript(images.map{|img| "\n![#{img.blob.filename}](#{url_for(img)})\n"}.join)
+    escape_javascript(images.map { |img| "\n![#{img.blob.filename}](#{url_for(img)})\n" }.join)
   end
+
   def authorlist_decorator_by_sort_type(sort_type)
     case sort_type
     when /birth/
@@ -22,17 +30,21 @@ module ManifestationHelper
       return method(:browse_null_decorator)
     end
   end
+
   def author_birth_date_decorator(item)
     thedate = item.person.present? ? item.person['birth_year'] : nil
     return " (#{thedate.nil? ? t(:unknown) : thedate})"
   end
+
   def author_death_date_decorator(item)
     thedate = item.person.present? ? item.person['death_year'] : nil
     return " (#{thedate.nil? ? t(:unknown) : thedate})"
   end
+
   def browse_upload_date(item)
     " (#{item.pby_publication_date&.to_date&.strftime('%d-%m-%Y')})"
   end
+
   def browse_null_decorator(item)
     ''
   end
