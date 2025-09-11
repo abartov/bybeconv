@@ -395,10 +395,12 @@ class Manifestation < ApplicationRecord
 
   def self.get_popular_works
     Rails.cache.fetch('m_popular_works', expires_in: 48.hours) do
-      evs = Ahoy::Event.where(name: 'text read or printed').where('time > ?', 1.month.ago)
+      evs = Ahoy::Event.where(name: 'view').where("JSON_EXTRACT(properties, '$.type') = 'Manifestation'").where(
+        'time > ?', 1.month.ago
+      )
       pop = {}
       evs.each do |x|
-        mid = x.properties['text_id']
+        mid = x.properties['id']
         pop[mid] = 0 unless pop[mid].present?
         pop[mid] += 1
       end
