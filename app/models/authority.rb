@@ -337,7 +337,18 @@ class Authority < ApplicationRecord
   @@popular_authors = nil
 
   def self.recalc_popular
-    # top 10 #TODO: make it actually about *most-read* authors, rather than authors whose *TOC* is most-read
+    evs = Ahoy::Event.where(name: 'view').where("JSON_EXTRACT(properties, '$.type') = 'Authority'").where(
+      'time > ?', 1.month.ago
+    )
+    pop = {}
+    evs.each do |x|
+      au_id = x.properties['id']
+      pop[au_id] = 0 unless pop[au_id].present?
+      pop[au_id] += 1
+    end
+    sorted_pop_keys = pop.keys.sort_by { |k| pop[k] }.reverse
+    Authority.find(sorted_pop_keys[0..9])
+
     @@popular_authors = has_toc.order(impressions_count: :desc).limit(10).all.to_a
   end
   # rubocop:enable Style/ClassVars
