@@ -5,7 +5,7 @@
 // the compiled file.
 //
 //= require jquery
-//= require jquery_ujs
+//= require rails-ujs
 //= require jquery-ui
 //= require jquery.slick
 //= require jquery-ui/widgets/autocomplete
