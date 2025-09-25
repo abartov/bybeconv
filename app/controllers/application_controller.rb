@@ -435,15 +435,6 @@ class ApplicationController < ActionController::Base
 
   def prep_toc_as_collection
     @top_nodes = GenerateTocTree.call(@author)
-
-    # @root_collection = @author.obtain_root_collection
-    # @toc = @author.toc # may be nil
-    # credits = @author.toc.credit_section || ''
-    # credits.sub!(
-    #   '## הגיהו',
-    #   "<div class=\"by-horizontal-seperator-light\"></div>\n\n## הגיהו") unless credits =~ /by-horizontal/
-    # )
-    # @credits = MultiMarkdown.new(credits).to_html.force_encoding('UTF-8')
   end
 
   def mention_skipped
