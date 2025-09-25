@@ -40,7 +40,6 @@ class Authority < ApplicationRecord
 
   belongs_to :person, optional: true
   belongs_to :corporate_body, optional: true
-  belongs_to :root_collection, class_name: 'Collection', optional: true
   belongs_to :uncollected_works_collection, class_name: 'Collection', optional: true
 
   attr_readonly :person, :corporate_body # Should not be modified after creation
@@ -96,14 +95,6 @@ class Authority < ApplicationRecord
     ids = published_manifestations.pluck(:id)
     collected_ids = CollectionItem.joins(:collection).where(item_id: ids,
                                                             item_type: 'Manifestation').where.not(collection: { collection_type: :uncollected }).pluck(:item_id)
-  end
-
-  # returns all volumes that are items of this authority's root collection
-  def volumes_by_root_collection
-    return [] unless root_collection
-
-    # it is assumed all volumes this authority is responsible for are children of the root collection
-    root_collection.coll_items.where(collection_type: :volume)
   end
 
   def approved_tags
@@ -400,51 +391,6 @@ class Authority < ApplicationRecord
     publish! if awaiting_first?
   end
 
-  def obtain_root_collection
-    self.root_collection ||= generate_root_collection!
-  end
-
-  def generate_root_collection!
-    works = toc.present? ? toc.linked_items : []
-    # include any existing collections possibly already defined for this person
-    colls = Collection.by_authority(self).where.not(collection_type: :root)
-    extra_works = all_works_including_unpublished.reject { |m| works.include?(m) }
-    c = nil
-    ActiveRecord::Base.transaction do
-      c = Collection.create!(title: name, collection_type: :root, toc_strategy: :default)
-      self.root_collection_id = c.id
-      save!
-      c.involved_authorities.create!(authority: self, role: :author) # by default
-      # make an empty collection per publication (even if one already exists in some other context).
-      # Later an editor would populate the empty collection according to an existing manual TOC or a scanned TOC
-      pub_colls = []
-      publications.each do |pub|
-        coll = Collection.create!(title: pub.title, collection_type: :volume, toc_strategy: :default)
-        pub_colls << coll
-      end
-      seqno = 0
-      [colls, pub_colls, works].each do |arr|
-        arr.each do |m|
-          CollectionItem.create!(collection: c, item: m, seqno: seqno)
-          seqno += 1
-        end
-      end
-      # make a (technical, to-be-reviewed-and-handled) collection out of the works not already linked from the TOC
-      extra_works_collection = Collection.create!(
-        title: "#{name} - #{I18n.t(:additional_items)}",
-        collection_type: :other,
-        toc_strategy: :default
-      )
-      extra_seqno = 0
-      extra_works.each do |m|
-        CollectionItem.create!(collection: extra_works_collection, item: m, seqno: extra_seqno)
-        extra_seqno += 1
-      end
-      CollectionItem.create!(collection: c, item: extra_works_collection, seqno: seqno)
-    end
-    return c
-  end
-
   protected
 
   def placeholder_image_url
@@ -467,10 +413,6 @@ class Authority < ApplicationRecord
 
   # rubocop:disable Style/GuardClause
   def validate_collection_types
-    if root_collection.present? && !root_collection.root?
-      errors.add(:root_collection, :wrong_collection_type, expected_type: :root)
-    end
-
     if uncollected_works_collection.present? && !uncollected_works_collection.uncollected?
       errors.add(:uncollected_works_collection, :wrong_collection_type, expected_type: :uncollected)
     end

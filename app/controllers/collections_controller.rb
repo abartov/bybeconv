@@ -196,16 +196,6 @@ class CollectionsController < ApplicationController
 
   def manage
     @collection = Collection.find(params[:collection_id])
-    if @collection.nil?
-      flash[:error] = t(:no_such_item)
-      redirect_to admin_index_path
-    elsif @collection.root? # switch to side-by-side view with legacy author TOC for root collections (for now)
-      @author = Authority.find_by(root_collection_id: @collection.id)
-      if @author.present?
-        redirect_to authors_manage_toc_path(id: @author.id)
-        return
-      end
-    end
   end
 
   private

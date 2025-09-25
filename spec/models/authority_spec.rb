@@ -18,33 +18,6 @@ describe Authority do
       expect(a).to be_valid
     end
 
-    describe 'root collection type validation' do
-      let(:authority) { build(:authority, root_collection: root_collection) }
-
-      context 'when root collection is not set' do
-        let(:root_collection) { nil }
-
-        it { expect(authority).to be_valid }
-      end
-
-      context 'when root collection is set and has root type' do
-        let(:root_collection) { create(:collection, collection_type: :root) }
-
-        it { expect(authority).to be_valid }
-      end
-
-      context 'when root collection is set but has wrong type' do
-        let(:root_collection) { create(:collection) }
-
-        it 'fails validation' do
-          expect(authority).not_to be_valid
-          expect(authority.errors[:root_collection]).to eq [
-            I18n.t('activerecord.errors.models.authority.wrong_collection_type', expected_type: :root)
-          ]
-        end
-      end
-    end
-
     describe 'uncollected works collection type validation' do
       let(:authority) { build(:authority, uncollected_works_collection: uncollected_works_collection) }
 

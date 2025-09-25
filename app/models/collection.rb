@@ -4,7 +4,7 @@
 class Collection < ApplicationRecord
   include TrackingEvents
 
-  SYSTEM_TYPES = %w(uncollected root).freeze
+  SYSTEM_TYPES = %w(uncollected).freeze
 
   include RecordWithInvolvedAuthorities
 
@@ -51,7 +51,6 @@ class Collection < ApplicationRecord
     periodical: 1,
     periodical_issue: 2,
     series: 3,
-    root: 4,
     other: 5,
     uncollected: 100
   }
