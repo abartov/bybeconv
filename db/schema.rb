@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_18_074856) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_25_100631) do
   create_table "aboutnesses", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
     t.integer "user_id"
@@ -160,7 +160,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_18_074856) do
     t.string "wikidata_uri"
     t.integer "person_id"
     t.integer "corporate_body_id"
-    t.integer "root_collection_id"
     t.integer "uncollected_works_collection_id"
     t.integer "legacy_toc_id"
     t.text "legacy_credits"
@@ -170,7 +169,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_18_074856) do
     t.index ["intellectual_property"], name: "index_authorities_on_intellectual_property"
     t.index ["name"], name: "index_authorities_on_name"
     t.index ["person_id"], name: "index_authorities_on_person_id", unique: true
-    t.index ["root_collection_id"], name: "index_authorities_on_root_collection_id"
     t.index ["sort_name"], name: "index_authorities_on_sort_name"
     t.index ["status", "published_at"], name: "index_authorities_on_status_and_published_at"
     t.index ["toc_id"], name: "people_toc_id_fk"
@@ -832,15 +830,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_18_074856) do
     t.integer "resolved_by"
     t.text "highlight", size: :medium
     t.integer "reported_by"
-    t.integer "manifestation_id"
     t.string "item_type", null: false
     t.integer "item_id", null: false
     t.index ["item_id", "item_type", "status"], name: "index_proofs_on_item_id_and_item_type_and_status"
     t.index ["item_type"], name: "index_proofs_on_item_type"
-    t.index ["manifestation_id"], name: "proofs_manifestation_id_fk"
     t.index ["resolved_by"], name: "proofs_resolved_by_fk"
     t.index ["status", "created_at"], name: "index_proofs_on_status_and_created_at"
-    t.index ["status", "manifestation_id"], name: "index_proofs_on_status_and_manifestation_id"
   end
 
   create_table "publications", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
@@ -1073,7 +1068,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_18_074856) do
   add_foreign_key "anthologies", "users"
   add_foreign_key "anthology_texts", "anthologies"
   add_foreign_key "anthology_texts", "manifestations"
-  add_foreign_key "authorities", "collections", column: "root_collection_id"
   add_foreign_key "authorities", "collections", column: "uncollected_works_collection_id"
   add_foreign_key "authorities", "corporate_bodies"
   add_foreign_key "authorities", "people"
@@ -1114,7 +1108,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_18_074856) do
   add_foreign_key "lex_texts", "manifestations"
   add_foreign_key "list_items", "users"
   add_foreign_key "manifestations", "expressions"
-  add_foreign_key "proofs", "manifestations", name: "proofs_manifestation_id_fk"
   add_foreign_key "proofs", "users", column: "resolved_by", name: "proofs_resolved_by_fk"
   add_foreign_key "publications", "authorities"
   add_foreign_key "publications", "bib_sources"
