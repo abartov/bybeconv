@@ -13,3 +13,7 @@ linters:
 
   IdNames:
     enabled: false
+
+  RuboCop:
+    ignored_cops:
+      - Layout/SpaceInsideParens # see https://github.com/sds/haml-lint/issues/491
