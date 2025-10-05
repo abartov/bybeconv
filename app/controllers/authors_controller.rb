@@ -462,7 +462,10 @@ class AuthorsController < ApplicationController
   end
 
   def toc
-    if @author.published?
+    if @author.published? || (current_user.present? && current_user.editor?)
+      # Note that we are accessing an unpublished author, if that's the case
+      @unpublished = true unless @author.published?
+
       @tabclass = set_tab('authors')
       @print_url = url_for(action: :print, id: @author.id)
       @pagetype = :author

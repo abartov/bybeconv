@@ -20,7 +20,9 @@
                   = @author.name
                 - if @author.person.present?
                   .author-page-top-years!= "(#{@author.person.life_years})"
-            .by-card-content-v02
+            .by-card-content-v02{class: @unpublished ? 'unpublished' : ''}
+              - if @unpublished
+                .unpublished_badge= t(:unpublished)
               .text-height-author= @author.wikipedia_snippet
               - if @author.wikipedia_url.present?
                 .read-more-v02
