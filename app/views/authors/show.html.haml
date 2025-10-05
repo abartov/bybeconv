@@ -34,7 +34,9 @@
           - person = @author.person
           %b= t(:life_years)
           != person.life_years
-          (#{t(:x_years_ago, years: person.died_years_ago)})
+          - years_ago = person.died_years_ago
+          - unless years_ago.zero?
+            = "(#{t(:x_years_ago, years: person.died_years_ago)})"
           %br
           %b= Person.human_attribute_name(:gender)
           = t(person.gender.nil? ? :unknown : person.gender)

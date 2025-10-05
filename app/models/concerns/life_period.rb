@@ -19,6 +19,7 @@ module LifePeriod
 
   def died_years_ago
     dy = death_year.to_i
+    return 0 if dy.zero?
     return Time.zone.today.year - dy
   rescue StandardError
     return 0
