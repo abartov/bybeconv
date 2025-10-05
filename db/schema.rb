@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_07_10_064800) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_01_092328) do
   create_table "aboutnesses", id: :integer, charset: "utf8mb4", collation: "utf8mb4_bin", force: :cascade do |t|
     t.integer "work_id"
     t.integer "user_id"
@@ -160,7 +160,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_07_10_064800) do
     t.string "wikidata_uri"
     t.integer "person_id"
     t.integer "corporate_body_id"
-    t.integer "root_collection_id"
     t.integer "uncollected_works_collection_id"
     t.integer "legacy_toc_id"
     t.text "legacy_credits"
@@ -170,7 +169,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_07_10_064800) do
     t.index ["intellectual_property"], name: "index_authorities_on_intellectual_property"
     t.index ["name"], name: "index_authorities_on_name"
     t.index ["person_id"], name: "index_authorities_on_person_id", unique: true
-    t.index ["root_collection_id"], name: "index_authorities_on_root_collection_id"
     t.index ["sort_name"], name: "index_authorities_on_sort_name"
     t.index ["status", "published_at"], name: "index_authorities_on_status_and_published_at"
     t.index ["toc_id"], name: "people_toc_id_fk"
@@ -938,7 +936,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_07_10_064800) do
   add_foreign_key "anthologies", "users"
   add_foreign_key "anthology_texts", "anthologies"
   add_foreign_key "anthology_texts", "manifestations"
-  add_foreign_key "authorities", "collections", column: "root_collection_id"
   add_foreign_key "authorities", "collections", column: "uncollected_works_collection_id"
   add_foreign_key "authorities", "corporate_bodies"
   add_foreign_key "authorities", "people"

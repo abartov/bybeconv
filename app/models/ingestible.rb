@@ -50,7 +50,7 @@ class Ingestible < ApplicationRecord
   end
 
   def decode_toc
-    return [] unless toc_buffer.present?
+    return [] if toc_buffer.blank?
 
     return toc_buffer.lines.map(&:strip).reject(&:empty?).map { |x| x.split('||').map(&:strip) }
   end
@@ -104,7 +104,7 @@ class Ingestible < ApplicationRecord
       end
     elsif prospective_volume_id.present?
       if prospective_volume_id[0] == 'P'
-        pub = Publication.find(prospective_volume_id[1..-1])
+        pub = Publication.find(prospective_volume_id[1..])
         if replace_publisher || publisher.blank?
           self.publisher = pub.publisher_line
           self.year_published = pub.pub_year
@@ -122,7 +122,7 @@ class Ingestible < ApplicationRecord
         end
       end
     end
-    return unless aus.present?
+    return if aus.blank?
 
     self.default_authorities = aus.to_json
     save!
@@ -185,9 +185,9 @@ class Ingestible < ApplicationRecord
         nikkud = is_full_nikkud(lines[i])
         # once reached the footnotes section, set the footnotes mode to properly handle multiline footnotes with tabs
         in_footnotes = true if lines[i] =~ /^\[\^\d+\]:/
-        if nikkud and !title_line(lines[i])
+        if nikkud
           # make full-nikkud lines PRE
-          lines[i] = "> #{lines[i]}" unless lines[i] =~ /\[\^\d+/ # produce a blockquote (PRE ignores bold/markup)
+          lines[i] = "> #{lines[i]}" unless (lines[i] =~ /\[\^\d+/) || title_line(lines[i]) # produce a blockquote (PRE ignores bold/markup)
           prev_nikkud = true
         else
           prev_nikkud = false
@@ -202,8 +202,7 @@ class Ingestible < ApplicationRecord
     ['.', ',', ':', ';', '?', '!'].each do |c|
       new_buffer.gsub!(" #{c}", c) # remove spaces before punctuation
     end
-    new_buffer.gsub!('©כל הזכויות', '© כל הזכויות') # fix an artifact of the conversion
-    new_buffer.gsub!(/> (.*?)\n\s*\n\s*\n/, "> \\1\n\n<br>\n") # add <br> tags for poetry to preserve stanza breaks
+    new_buffer.gsub!(/> (.*?)\n\s*\n\s*\n/, "> \\1\n> \n<br />\n> \n") # add <br> tags for poetry to preserve stanza breaks
     new_buffer.gsub!('&&STANZA&&', "\n> \n<br />\n> \n") # sigh
     new_buffer.gsub!('&amp;&amp;STANZA&amp;&amp;', "\n> \n<br />\n> \n") # sigh
     new_buffer.gsub!(%r{(\n\s*)*\n> \n<br />\n> (\n\s*)*}, "\n> \n<br />\n> \n\n") # sigh
@@ -214,7 +213,7 @@ class Ingestible < ApplicationRecord
   end
 
   def title_line(s)
-    s =~ /^#\s+/ || s =~ /^&&&\s+/
+    (s =~ /^#\s+/) || (s =~ /^&&&\s+/)
   end
 
   # split markdown into sections and populate or update the works_buffer
