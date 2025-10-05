@@ -181,6 +181,8 @@ class CollectionsController < ApplicationController
     @collection = Collection.find(params[:collection_id])
     @dest_coll = Collection.find(params[:dest_coll_id].to_i)
     @src_coll = Collection.find(params[:src_coll_id].to_i)
+    @src_coll.debug_dump('Source Collection')
+    @dest_coll.debug_dump("Transplanting item from #{@src_coll.id} to #{@dest_coll.id}")
     @old_item_id = params[:item_id].to_i
     @item = CollectionItem.find(@old_item_id)
     if @dest_coll.nil? || @src_coll.nil? || @item.nil?
@@ -192,6 +194,8 @@ class CollectionsController < ApplicationController
       @new_item_id = @dest_coll.insert_item_at(@item, params[:new_pos].to_i)
       @src_coll.remove_item(@item)
     end
+    @src_coll.debug_dump('Source Collection after transplant')
+    @dest_coll.debug_dump('Destination Collection after transplant')
   end
 
   def manage

@@ -425,7 +425,9 @@ class Collection < ApplicationRecord
     ci = collection_items.where(id: item_id).first
     return false if ci.nil?
 
+    debug_dump("Removing item #{item_id} (#{ci.item_type}, ID: #{ci.item_id})")
     ci.destroy!
+    debug_dump("Removed item #{item_id} (#{ci.item_type}, ID: #{ci.item_id})")
   end
 
   def fetch_credits
@@ -451,6 +453,7 @@ class Collection < ApplicationRecord
 
   # pos is effective 1-based position in the list, not the seqno (which is not necessarily contiguous!)
   def insert_item_at(item, pos)
+    debug_dump("Inserting item #{item.id} (#{item.class}) at position #{pos}")
     Collection.transaction do
       new_seqno = if pos <= 1
                     1
@@ -468,6 +471,7 @@ class Collection < ApplicationRecord
       @ci.seqno = new_seqno
       @ci.save!
     end
+    debug_dump("Inserted item #{item.id} (#{item.class}) at position #{pos} as collection_item #{@ci.id}")
     @ci.id
   end
 
@@ -487,6 +491,19 @@ class Collection < ApplicationRecord
 
       ci.item.status = new_status
       ci.item.save!
+    end
+  end
+
+  def debug_dump(context)
+    File.open('collections_debug.txt', 'a') do |f|
+      f.puts('-------------------------')
+      f.puts "Context: #{context} timestamp: #{Time.now}"
+      f.puts "Collection: #{id}"
+      f.puts "  Title: #{title}"
+      f.puts '  Items:'
+      collection_items.each do |ci|
+        f.puts "    - #{ci.alt_title} (#{ci.item_type}, ID: #{ci.item_id})"
+      end
     end
   end
 
