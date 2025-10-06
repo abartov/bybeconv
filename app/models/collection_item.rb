@@ -26,6 +26,19 @@ class CollectionItem < ApplicationRecord
     item.authors
   end
 
+  def involved_authorities
+    return [] if item.nil?
+
+    ret = item.try(:involved_authorities)
+    return [] if ret.nil?
+
+    ret
+  end
+
+  def involved_authorities_by_role(role)
+    involved_authorities.select { |ia| ia.role == role }
+  end
+
   def first_contentful_markdown
     return '' if markdown.blank?
 

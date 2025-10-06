@@ -31,7 +31,7 @@ describe LifePeriod do
     context 'when deathdate is nil' do
       let(:deathdate) { nil }
 
-      it { is_expected.to eq('?') }
+      it { is_expected.to eq('') }
     end
   end
 
@@ -43,7 +43,7 @@ describe LifePeriod do
     context 'when birthdate is blank' do
       let(:birthdate) { '   ' }
 
-      it { is_expected.to eq('?') }
+      it { is_expected.to eq('') }
     end
   end
 
@@ -55,20 +55,20 @@ describe LifePeriod do
     context 'when deathdate is nil' do
       let(:deathdate) { nil }
 
-      it { is_expected.to eq('1923&rlm;-?') }
+      it { is_expected.to eq('1923&rlm;-') }
     end
 
     context 'when birthdate is nil' do
       let(:birthdate) { nil }
 
-      it { is_expected.to eq('?&rlm;-1976') }
+      it { is_expected.to eq('&rlm;-1976') }
     end
 
     context 'when both dates are nil' do
       let(:birthdate) { nil }
       let(:deathdate) { nil }
 
-      it { is_expected.to eq('?&rlm;-?') }
+      it { is_expected.to eq('&rlm;-') }
     end
   end
 end

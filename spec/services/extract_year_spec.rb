@@ -8,7 +8,7 @@ describe ExtractYear do
   context 'when datestr is blank' do
     let(:datestr) { "  \n\t" }
 
-    it { is_expected.to eq('?') }
+    it { is_expected.to eq('') }
 
     context 'when default value provided' do
       subject(:call) { described_class.call(datestr, 'UNKNOWN') }

@@ -1609,6 +1609,15 @@ he:
       designer: מעצב
       contributor: משתתף
       other: אחר
+    abstract_roles:
+      author: מאת
+      editor: בעריכת
+      illustrator: איורים
+      translator: בתרגום
+      photographer: צילומים
+      designer: עיצוב
+      contributor: בהשתתפות
+      other: וכן
   ingestible:
     scenario:
       single: יצירה בודדת

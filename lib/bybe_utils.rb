@@ -60,13 +60,25 @@ module BybeUtils
     return '' unless ias.present?
 
     ret = ''
-    i = 0
-    ias.each do |ia|
-      ret += ', ' if i > 0
-      ret += ia.authority.name
-      ret += ' (' + textify_authority_role(ia.role) + ')' unless ia.role == 'author'
-      i += 1
+    InvolvedAuthority::ROLES_PRESENTATION_ORDER.each do |role|
+      ras = ias.select { |ia| ia.role == role }
+      next if ras.empty?
+      i = 0
+      ret += I18n.t(role, scope: 'involved_authority.abstract_roles') + ': '
+      ras.each do |ra|
+        ret += ', ' if i > 0
+        ret += "<a href=\"#{authors_path(id: ra.authority.id)}\">#{ra.authority.name}</a>"
+        i += 1
+      end
+      ret += "<br />"
     end
+
+#    ias.each do |ia|
+#      ret += ', ' if i > 0
+#      ret += ia.authority.name
+#      ret += ' (' + textify_authority_role(ia.role) + ')' unless ia.role == 'author'
+#      i += 1
+#    end
     return ret
   end
 
