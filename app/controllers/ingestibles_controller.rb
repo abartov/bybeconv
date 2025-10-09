@@ -173,6 +173,8 @@ class IngestiblesController < ApplicationController
     end
     @toc_list = toc_buf.join("\n")
     @authority_by_name = Authority.all.map { |a| [a.name, a.id] }.to_h
+
+    render layout: false
   end
 
   # PATCH/PUT /ingestibles/1 or /ingestibles/1.json
