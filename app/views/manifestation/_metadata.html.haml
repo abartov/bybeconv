@@ -16,6 +16,13 @@
         != @translators.map { |t| link_to(t.name, authority_path(t)) }.join(', ')
         - linktext = t(:from_lang) + textify_lang(@e.work.orig_lang)
         != " (#{linktext})"
+  - if @e.translation 
+    .origlang_details
+      - if @w.origlang_title.present?
+        %b= t(:origlang_title) + ': '
+        = @w.origlang_title
+        - if @m.external_links.where(linktype: ExternalLink.linktypes[:source_text]).any?
+          = " (#{ @m.external_links.where(linktype: ExternalLink.linktypes[:source_text]).first.url.present? ? link_to(t(:in_orig_lang), @m.external_links.where(linktype: ExternalLink.linktypes[:source_text]).first.url, target: '_blank') : ''})"
   - if @illustrators.size > 0
     .headline-3-v02
       = "#{t(:illustrations_by)}: "
