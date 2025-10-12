@@ -68,7 +68,7 @@ module BybeUtils
       ret += I18n.t(role, scope: 'involved_authority.abstract_roles') + ': '
       ras.each do |ra|
         ret += ', ' if i > 0
-        ret += "<a href=\"#{authority_path(ra.authority)}\">#{ra.authority.name}</a>"
+        ret += "<a href=\"#{Rails.application.routes.url_helpers.authority_path(ra.authority)}\">#{ra.authority.name}</a>"
         i += 1
       end
       ret += '<br />'

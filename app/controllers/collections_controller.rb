@@ -248,7 +248,9 @@ class CollectionsController < ApplicationController
                              Authority.new(name: '')
                            end
   end
+
   protected
+
   def downloadable_html(h)
     title, ias, html, is_curated, genre, i, ci = h
     austr = textify_authorities_and_roles(ias)
