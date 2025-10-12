@@ -7,7 +7,8 @@
         %div
           %ul.ul-inside
             - author.aboutnesses.each do |ab|
-              - m = ab.work.expressions[0].manifestations[0] # TODO: handle multiple expressions/manifestations intelligently
+              - m = ab.try(:work).try(:expressions).try(:[], 0).try(:manifestations).try(:[], 0) # TODO: handle multiple expressions/manifestations intelligently
+              - next if m.nil?
               - if m.published? # Only show published works
                 %li
                   = link_to ab.work.expressions[0].title, work_show_path(id: ab.work_id)
