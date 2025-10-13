@@ -932,11 +932,16 @@ small p{
 }
 .footnotes ol {
   list-style-type: decimal;
-  padding-right: 2em;
+  padding-right: 2.5em;
+  margin-right: 0;
 }
 .footnotes ol li {
   list-style-position: outside;
+  display: list-item;
   scroll-margin-top: 175px;
+  /* Safari-specific fix for RTL list markers */
+  -webkit-margin-start: 0;
+  -webkit-padding-start: 0;
 }
 .footnote {
   scroll-margin-top: 210px;
