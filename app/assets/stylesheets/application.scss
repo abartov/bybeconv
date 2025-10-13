@@ -930,8 +930,13 @@ small p{
 .collection_draggable_item {
   scroll-margin-top: 15px;
 }
-.footnotes li {
-  scroll-margin-top: 175px; 
+.footnotes ol {
+  list-style-type: decimal;
+  padding-right: 2em;
+}
+.footnotes ol li {
+  list-style-position: outside;
+  scroll-margin-top: 175px;
 }
 .footnote {
   scroll-margin-top: 210px;
