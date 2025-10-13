@@ -186,7 +186,7 @@ describe CollectionsController do
       it 'removes the original item from source collection' do
         original_item_id = item_to_move.id
         call
-        expect(CollectionItem.where(id: original_item_id).exists?).to be(false)
+        expect(CollectionItem.where(id: original_item_id).exists?).to be_falsey
       end
     end
   end
