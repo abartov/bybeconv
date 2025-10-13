@@ -933,11 +933,11 @@ small p{
 .footnotes ol {
   list-style-type: decimal;
   padding-right: 2.5em;
-  margin-right: 0; /* Reset margin to ensure proper RTL list rendering */
+  margin-right: 0; /* Reset browser default margin-right for proper RTL list rendering */
 }
 .footnotes ol li {
   list-style-position: outside;
-  display: list-item; /* Explicitly ensure list item rendering in Safari */
+  display: list-item; /* Explicitly set display to ensure Safari renders list markers in RTL context */
   scroll-margin-top: 175px;
   /* Safari-specific fix for RTL list markers */
   -webkit-margin-start: 0;
