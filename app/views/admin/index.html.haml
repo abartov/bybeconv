@@ -120,6 +120,9 @@
         = link_to t(:missing_copyright_report), admin_missing_copyright_path
         = ' ('+Rails.cache.read('report_missing_copyright').to_s+')'
       %p
+        = link_to t(:slash_in_titles_report), admin_slash_in_titles_path
+        = ' ('+Rails.cache.read('report_slash_in_titles').to_s+')'
+      %p
         = link_to t(:suspicious_titles_report), admin_suspicious_titles_path
         = ' ('+Rails.cache.read('report_suspicious_titles').to_s+')'
       %p
