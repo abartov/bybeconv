@@ -32,7 +32,7 @@ jobs:
       - name: Install dependencies
         run: |
           set -euxo pipefail
-          sudo apt-get update && sudo apt-get install -y mysql-client libmysqlclient-dev wkhtmltopdf pandoc yaz libyaz-dev  libmagickwand-dev libpcap-dev memcached cmake
+          sudo apt-get update -yq && sudo apt-get install -yq --no-install-recommends mysql-client libmysqlclient-dev wkhtmltopdf pandoc yaz libyaz-dev  libmagickwand-dev libpcap-dev memcached cmake
 
       # Add or replace dependency steps here
       - name: Install Ruby and gems
