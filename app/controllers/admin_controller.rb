@@ -416,13 +416,13 @@ class AdminController < ApplicationController
     
     item = case item_type
            when 'Collection'
-             Collection.find(item_id)
+             Collection.find_by(id: item_id)
            when 'Work'
-             Work.find(item_id)
+             Work.find_by(id: item_id)
            when 'Expression'
-             Expression.find(item_id)
+             Expression.find_by(id: item_id)
            when 'Manifestation'
-             Manifestation.find(item_id)
+             Manifestation.find_by(id: item_id)
            end
     
     unless item.nil?
