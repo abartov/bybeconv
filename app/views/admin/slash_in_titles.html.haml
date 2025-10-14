@@ -18,7 +18,7 @@
           %td= textify_collection_type(c.collection_type)
           %td= c.authors_string
           %td
-            %b= link_to t(:edit), edit_collection_path(c.id)
+            %b= link_to t(:edit), collection_manage_path(c.id)
             = ' | '
             = link_to t(:mark_as_valid), mark_slash_title_as_okay_path('Collection', c.id), {remote: true, class: 'whitelist_link', "data-done-msg" => t(:confirmed), "data-doing-msg" => t(:confirming)}
 
