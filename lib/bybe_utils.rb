@@ -56,7 +56,7 @@ module BybeUtils
     I18n.t(role, scope: 'involved_authority.role')
   end
 
-  def textify_authorities_and_roles(ias)
+  def textify_authorities_and_roles(ias, full_url = false)
     return '' unless ias.present?
 
     ret = ''
@@ -68,7 +68,8 @@ module BybeUtils
       ret += I18n.t(role, scope: 'involved_authority.abstract_roles') + ': '
       ras.each do |ra|
         ret += ', ' if i > 0
-        ret += "<a href=\"#{Rails.application.routes.url_helpers.authority_path(ra.authority)}\">#{ra.authority.name}</a>"
+        url = full_url ? Rails.application.routes.url_helpers.authority_url(ra.authority) : Rails.application.routes.url_helpers.authority_path(ra.authority)
+        ret += "<a href=\"#{url}\">#{ra.authority.name}</a>"
         i += 1
       end
       ret += '<br />'
@@ -156,7 +157,7 @@ module BybeUtils
     boilerplate_end = '</body></html>'
 
     # add front page instead of graphical cover, for now
-    authorities_html = textify_authorities_and_roles(involved_authorities)
+    authorities_html = textify_authorities_and_roles(involved_authorities, true) # full URLs for epub
     front_page = boilerplate_start + "<h1>#{title}</h1>\n<p/><h2>#{authorities_html}</h2><p/><p/><p/><p/>מעודכן לתאריך: #{Date.today}<p/><p/>#{I18n.t(:from_pby_and_available_at)} #{purl} <p/><h3><a href='https://benyehuda.org/page/volunteer'>(רוצים לעזור?)</a></h3>" + boilerplate_end
     book.ordered do
       book.add_item('0_front.xhtml').add_content(StringIO.new(front_page)).toc_text(title)
