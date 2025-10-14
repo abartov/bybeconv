@@ -27,7 +27,9 @@ This codebase runs https://benyehuda.org -- the Project Ben-Yehuda digital libra
 - Use rubocop-rails, rubocop-rspec, and rubocop-factory_bot plugins
 
 ### Important Style Notes
-- Use hash syntax: `{ key: value }` (EnforcedShorthandSyntax is set to 'never' - do not use symbol-to-proc or hash value omission)
+- Use hash syntax: `{ key: value }` (EnforcedShorthandSyntax is set to 'never')
+  - Always write `{ key: value }`, never `{ key }` (hash value omission)
+  - Avoid symbol-to-proc shorthand like `.map(&:method)`
 - Many legacy parts of the codebase do not follow style guidelines - focus on maintaining consistency within the file you're editing
 - String concatenation is allowed (Style/StringConcatenation disabled) - this is important for right-to-left texts
 - `html_safe` usage is common and accepted in this codebase for rendering Hebrew text
