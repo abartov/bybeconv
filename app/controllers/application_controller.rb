@@ -374,10 +374,10 @@ class ApplicationController < ActionController::Base
   def make_heading_ids_unique(html)
     # Replace MultiMarkdown-generated ids with unique sequential ids to avoid duplicates
     heading_seq = 0
-    html.gsub(%r{<h[23](.*?) id="(.*?)"(.*?)>(.*?)</h[23]>}) do
+    html.gsub(%r{<(h[23])(.*?) id="(.*?)"(.*?)>(.*?)</\1>}) do
       heading_seq += 1
-      tag = ::Regexp.last_match(0)[1..2]
-      "<#{tag}#{::Regexp.last_match(1)} id=\"heading-#{heading_seq}\"#{::Regexp.last_match(3)}>#{::Regexp.last_match(4)}</#{tag}>"
+      tag = ::Regexp.last_match(1)
+      "<#{tag}#{::Regexp.last_match(2)} id=\"heading-#{heading_seq}\"#{::Regexp.last_match(4)}>#{::Regexp.last_match(5)}</#{tag}>"
     end
   end
 
