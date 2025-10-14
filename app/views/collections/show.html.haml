@@ -176,9 +176,6 @@
 -#.by-card-v02
 -#  = render partial: 'collection', locals: { collection: @collection, focused: true, label_ci_types: false }
 
-- if current_user&.editor?
-  = link_to t(:edit), edit_collection_path(@collection)
-
 #downloadDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
   = render partial: 'shared/download', locals: {entity: @collection}
 
