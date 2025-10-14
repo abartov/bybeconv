@@ -1,4 +1,6 @@
 module ApplicationHelper
+  include BybeUtils
+
   def u8(s)
     return s if s.nil?
 
