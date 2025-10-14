@@ -83,7 +83,7 @@ class Ingestible < ApplicationRecord
       self.markdown = convert_to_markdown
     end
 
-    update_buffers if markdown_updated_at > works_buffer_updated_at
+    update_buffers if works_buffer.nil? || markdown_updated_at > works_buffer_updated_at
     save if changed?
   end
 
