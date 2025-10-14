@@ -284,6 +284,37 @@ describe ManifestationController do
 
         it { is_expected.to redirect_to dict_browse_path(manifestation.id) }
       end
+
+      context 'when manifestation has duplicate heading text' do
+        let(:markdown) do
+          <<~MD
+            # Main Title
+
+            ## Chapter 1
+            Content of chapter 1 in part 1
+
+            ## Part 2
+
+            ## Chapter 1
+            Content of chapter 1 in part 2
+          MD
+        end
+        let(:manifestation) { create(:manifestation, markdown: markdown) }
+
+        before { subject }
+
+        it 'generates unique IDs for headings with same text' do
+          html = assigns(:html)
+          # Extract all heading IDs from the HTML
+          heading_ids = html.scan(/id="([^"]+)"/).flatten
+          # Filter to heading-* IDs (our unique sequential IDs)
+          unique_ids = heading_ids.grep(/^heading-\d+$/)
+          # Verify all IDs are unique
+          expect(unique_ids.uniq.length).to eq(unique_ids.length)
+          # Verify we have the expected number of headings (3 H2 tags based on markdown)
+          expect(unique_ids.length).to be >= 3
+        end
+      end
     end
 
     describe '#readmode' do
