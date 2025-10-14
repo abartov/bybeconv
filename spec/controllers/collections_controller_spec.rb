@@ -149,5 +149,45 @@ describe CollectionsController do
         it_behaves_like 'drags successfully'
       end
     end
+
+    describe '#transplant_item' do
+      subject(:call) do
+        post :transplant_item, params: {
+          collection_id: src_collection.id,
+          dest_coll_id: dest_collection.id,
+          src_coll_id: src_collection.id,
+          item_id: item_to_move.id,
+          new_pos: new_pos
+        }
+      end
+
+      let(:src_titles) { %w(A B C D E) }
+      let(:dest_titles) { %w(1 2 3) }
+      let!(:src_collection) { create(:collection, title_placeholders: src_titles) }
+      let!(:dest_collection) { create(:collection, title_placeholders: dest_titles) }
+      let(:item_to_move) { src_collection.collection_items[2] } # Item 'C'
+      let(:new_pos) { 2 } # Insert at position 2 (between '1' and '2')
+
+      it 'moves item from source to destination collection' do
+        expect { call }.to change { src_collection.collection_items.reload.count }.by(-1)
+                       .and change { dest_collection.collection_items.reload.count }.by(1)
+
+        # Verify source collection has correct items and order
+        src_collection.reload
+        expect(src_collection.collection_items.pluck(:alt_title)).to eq(%w(A B D E))
+        expect(src_collection.collection_items.pluck(:seqno)).to eq([1, 2, 4, 5])
+
+        # Verify destination collection has correct items and order
+        dest_collection.reload
+        expect(dest_collection.collection_items.pluck(:alt_title)).to eq(%w(1 C 2 3))
+        expect(dest_collection.collection_items.pluck(:seqno)).to eq([1, 2, 3, 4])
+      end
+
+      it 'removes the original item from source collection' do
+        original_item_id = item_to_move.id
+        call
+        expect(CollectionItem.where(id: original_item_id).exists?).to be_falsey
+      end
+    end
   end
 end
