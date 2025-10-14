@@ -15,8 +15,8 @@ describe IngestibleTextsController do
     end
 
     context 'when text has footnotes' do
-      let(:text_with_footnotes) do
-        IngestibleText.new(title: 'Test Title', content: "Text with footnote[^1].\n\n[^1]: Footnote text")
+      let!(:text_with_footnotes) do
+        IngestibleText.new({ 'title' => 'Test Title', 'content' => "Text with footnote[^1].\n\n[^1]: Footnote text" })
       end
 
       before do
@@ -32,7 +32,7 @@ describe IngestibleTextsController do
         expect(text_html).to include('fn:txt_2_1')
         expect(text_html).to include('fnref:txt_2_1')
         # Ensure the anchors are not left with generic IDs
-        expect(text_html.scan(/id="fn:1"/).count).to eq(0)
+        expect(text_html.scan('id="fn:1"').count).to eq(0)
       end
     end
   end

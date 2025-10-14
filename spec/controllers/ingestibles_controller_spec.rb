@@ -80,10 +80,7 @@ describe IngestiblesController do
       it { is_expected.to be_successful }
 
       context 'when ingestible has works with footnotes' do
-        let(:markdown_with_footnotes) do
-          "&&& כותרת ראשונה\n\nטקסט עם הערת שוליים[^1].\n\n[^1]: הערת שוליים ראשונה\n\n&&& כותרת שנייה\n\nטקסט עם הערת שוליים[^1].\n\n[^1]: הערת שוליים שנייה"
-        end
-        let(:ingestible) { create(:ingestible, markdown: markdown_with_footnotes) }
+        let(:ingestible) { create(:ingestible, :with_footnotes) }
 
         before do
           ingestible.update_parsing
@@ -97,7 +94,7 @@ describe IngestiblesController do
           expect(html).to include('fn:md_0_1') # First section's footnote
           expect(html).to include('fn:md_1_1') # Second section's footnote
           # Ensure the anchors are not duplicated without nonces
-          expect(html.scan(/id="fn:1"/).count).to eq(0)
+          expect(html.scan('id="fn:1"').count).to eq(0)
         end
       end
     end
