@@ -191,8 +191,9 @@ class CollectionsController < ApplicationController
     end
     ActiveRecord::Base.transaction do
       @new_item_id = @dest_coll.insert_item_at(@item, params[:new_pos].to_i)
-      @src_coll.remove_item(@item)
+      @src_coll.remove_item(@old_item_id)
     end
+    head :ok
   end
 
   def manage
