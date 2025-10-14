@@ -96,6 +96,10 @@
       })
       .bind("ajax:success", function(evt, data, status, xhr){
         $(this).html($(this).data('done-msg'));
+        $(this).off('click');
+        $(this).css('pointer-events', 'none').css('cursor', 'default');
+        $(this).css('color', 'black').css('text-decoration', 'none');
+
         $(this).on('click', function(e) {
           e.stopPropagation();
           e.preventDefault();
