@@ -97,7 +97,7 @@ describe AdminController do
       create(:collection, title: 'Collection with \\ backslash')
       create(:work, title: 'Work with / slash')
       create(:expression, title: 'Expression with \\ backslash')
-      create(:manifestation, title: 'Manifestation with / slash')
+      create(:manifestation, title: 'Manifestation with / slash') # also entails creating an Expression with the same title
       # create some without slashes
       create_list(:collection, 2)
       create_list(:work, 2)
@@ -110,10 +110,10 @@ describe AdminController do
       expect(call).to be_successful
       expect(assigns(:collections).count).to eq(2)
       expect(assigns(:works).count).to eq(1)
-      expect(assigns(:expressions).count).to eq(1)
+      expect(assigns(:expressions).count).to eq(2) # one created with Manifestation
       expect(assigns(:manifestations).count).to eq(1)
-      expect(assigns(:total)).to eq(5)
-      expect(Rails.cache).to have_received(:write).with('report_slash_in_titles', 5)
+      expect(assigns(:total)).to eq(6)
+      expect(Rails.cache).to have_received(:write).with('report_slash_in_titles', 6)
     end
 
     context 'with whitelisted items' do
