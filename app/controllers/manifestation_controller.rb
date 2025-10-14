@@ -871,6 +871,8 @@ class ManifestationController < ApplicationController
     # remove MMD's automatic figcaptions
     @html = MultiMarkdown.new(@m.markdown).to_html
                          .force_encoding('UTF-8').gsub(%r{<figcaption>.*?</figcaption>}, '')
+    # Replace MultiMarkdown-generated ids with unique sequential ids to avoid duplicates
+    @html = make_heading_ids_unique(@html)
   end
 
   def prep_for_read
@@ -910,6 +912,8 @@ class ManifestationController < ApplicationController
     tmphash.keys.reverse.map { |k| @chapters << [k[4..].gsub('\[', '[').gsub('\]', ']'), tmphash[k]] }
     @selected_chapter = tmphash.keys.last
     @html = MultiMarkdown.new(lines.join('')).to_html.force_encoding('UTF-8').gsub(%r{<figcaption>.*?</figcaption>}, '').gsub('<table>', '<div style="overflow-x:auto;"><table>').gsub('</table>', '</table></div>') # remove MMD's automatic figcaptions and make tables scroll to avoid breaking narrow mobile devices
+    # Replace MultiMarkdown-generated ids with unique sequential ids to avoid duplicates
+    @html = make_heading_ids_unique(@html)
     # add permalinks
     @html.gsub!(%r{<h2(.*?) id="(.*?)"(.*?)>(.*?)</h2>},
                 "<h2\\1 id=\"\\2\"\\3>\\4 &nbsp;&nbsp; <span style=\"font-size: 50%;\"><a title=\"קישור קבוע\" href=\"#{request.original_url}#\\2\">🔗</a></span></h2>")

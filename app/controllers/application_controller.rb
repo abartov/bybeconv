@@ -371,6 +371,16 @@ class ApplicationController < ActionController::Base
     return h.gsub(/\[\^ftn\d+\]/, '').gsub(/^#+/, '&nbsp;&nbsp;&nbsp;').gsub(/\[\^\d+\]/, '').gsub('\"', '"').strip
   end
 
+  def make_heading_ids_unique(html)
+    # Replace MultiMarkdown-generated ids with unique sequential ids to avoid duplicates
+    heading_seq = 0
+    html.gsub(%r{<h[23](.*?) id="(.*?)"(.*?)>(.*?)</h[23]>}) do
+      heading_seq += 1
+      tag = ::Regexp.last_match(0)[1..2]
+      "<#{tag}#{::Regexp.last_match(1)} id=\"heading-#{heading_seq}\"#{::Regexp.last_match(3)}>#{::Regexp.last_match(4)}</#{tag}>"
+    end
+  end
+
   def current_user
     @current_user ||= User.find(session[:user_id]) if session[:user_id]
   rescue ActiveRecord::RecordNotFound
