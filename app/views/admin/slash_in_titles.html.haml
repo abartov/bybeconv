@@ -1,0 +1,80 @@
+.backend
+  %h2= t(:slash_in_titles_report)
+
+  %h3= t(:total)+': '+@total.to_s
+
+  - unless @collections.empty?
+    %h3= t(:collections)
+    %table{style: 'cell-spacing: 10;'}
+      %tr
+        %th= t(:title)
+        %th= t(:type)
+        %th= t(:author)
+        %th
+
+      - @collections.each do |c|
+        %tr
+          %td= link_to c.title, collection_path(c.id)
+          %td= textify_collection_type(c.collection_type)
+          %td= c.authors_string
+          %td
+            %b= link_to t(:edit), edit_collection_path(c.id)
+
+  - unless @works.empty?
+    %h3= t(:works)
+    %table{style: 'cell-spacing: 10;'}
+      %tr
+        %th= t(:title)
+        %th= t(:author)
+        %th= t(:genre)
+        %th
+
+      - @works.each do |w|
+        %tr
+          %td= link_to w.title, work_show_path(id: w.id)
+          %td= w.authors.map(&:name).join(', ')
+          %td= textify_genre(w.genre)
+          %td
+            - if w.expressions.first && w.expressions.first.manifestations.first
+              %b= link_to t(:edit_metadata), manifestation_edit_metadata_path(w.expressions.first.manifestations.first.id)
+
+  - unless @expressions.empty?
+    %h3= t(:expressions)
+    %table{style: 'cell-spacing: 10;'}
+      %tr
+        %th= t(:title)
+        %th= t(:author)
+        %th= t(:translator)
+        %th
+
+      - @expressions.each do |e|
+        %tr
+          %td
+            - if e.manifestations.first
+              = link_to e.title, manifestation_show_path(e.manifestations.first.id)
+            - else
+              = e.title
+          %td= e.work.authors.map(&:name).join(', ')
+          %td= e.translators.map(&:name).join(', ')
+          %td
+            - if e.manifestations.first
+              %b= link_to t(:edit_metadata), manifestation_edit_metadata_path(e.manifestations.first.id)
+
+  - unless @manifestations.empty?
+    %h3= t(:manifestations)
+    %table{style: 'cell-spacing: 10;'}
+      %tr
+        %th= t(:title)
+        %th= t(:author)
+        %th= t(:genre)
+        %th
+
+      - @manifestations.each do |m|
+        %tr
+          %td= link_to m.title, manifestation_show_path(m.id)
+          %td= m.author_string
+          %td= textify_genre(m.expression.work.genre)
+          %td
+            %b= link_to t(:edit_markdown), manifestation_edit_path(m.id)
+            = ' | '
+            = link_to t(:edit_metadata), manifestation_edit_metadata_path(m.id)
