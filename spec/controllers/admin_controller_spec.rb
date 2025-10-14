@@ -87,6 +87,36 @@ describe AdminController do
     it { is_expected.to be_successful }
   end
 
+  describe '#slash_in_titles' do
+    subject(:call) { get :slash_in_titles }
+
+    include_context 'when editor logged in'
+
+    before do
+      create(:collection, title: 'Collection with / slash')
+      create(:collection, title: 'Collection with \\ backslash')
+      create(:work, title: 'Work with / slash')
+      create(:expression, title: 'Expression with \\ backslash')
+      create(:manifestation, title: 'Manifestation with / slash')
+      # create some without slashes
+      create_list(:collection, 2)
+      create_list(:work, 2)
+      create_list(:expression, 2)
+      create_list(:manifestation, 2)
+      allow(Rails.cache).to receive(:write)
+    end
+
+    it 'completes successfully and finds records with slashes' do
+      expect(call).to be_successful
+      expect(assigns(:collections).count).to eq(2)
+      expect(assigns(:works).count).to eq(1)
+      expect(assigns(:expressions).count).to eq(1)
+      expect(assigns(:manifestations).count).to eq(1)
+      expect(assigns(:total)).to eq(5)
+      expect(Rails.cache).to have_received(:write).with('report_slash_in_titles', 5)
+    end
+  end
+
   describe '#tocs_missing_links' do
     subject { get :tocs_missing_links }
 
