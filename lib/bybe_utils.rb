@@ -49,7 +49,7 @@ module BybeUtils
   def boilerplate(title)
     '<?xml version="1.0" encoding="UTF-8" standalone="no"?>
     <!DOCTYPE html>
-    <html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" xml:lang="he" lang="he"><head><meta http-equiv="content-type" content="text/html; charset=UTF-8" /><title>' + title + '</title></head><body dir="rtl">'
+    <html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" xml:lang="he" lang="he"><head><meta http-equiv="content-type" content="text/html; charset=UTF-8" /><title>' + title + '</title></head><body dir="rtl" style="text-align:right">'
   end
 
   def textify_authority_role(role)
