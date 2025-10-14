@@ -387,6 +387,15 @@ class AdminController < ApplicationController
     Rails.cache.write('report_suspicious_headings', @suspicious.length)
   end
 
+  def slash_in_titles
+    @collections = Collection.where('title like ? OR title like ?', '%/%', '%\\\\%')
+    @works = Work.where('title like ? OR title like ?', '%/%', '%\\\\%')
+    @expressions = Expression.where('title like ? OR title like ?', '%/%', '%\\\\%')
+    @manifestations = Manifestation.where('title like ? OR title like ?', '%/%', '%\\\\%')
+    @total = @collections.count + @works.count + @expressions.count + @manifestations.count
+    Rails.cache.write('report_slash_in_titles', @total)
+  end
+
   #######################################
   ## Static pages management
   def static_pages_list
