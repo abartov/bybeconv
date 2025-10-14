@@ -388,12 +388,48 @@ class AdminController < ApplicationController
   end
 
   def slash_in_titles
+    whitelisted_ids = ListItem.where(listkey: 'title_slashes_okay').pluck(:item_id, :item_type)
+    whitelisted_collections = whitelisted_ids.select { |_, type| type == 'Collection' }.map(&:first)
+    whitelisted_works = whitelisted_ids.select { |_, type| type == 'Work' }.map(&:first)
+    whitelisted_expressions = whitelisted_ids.select { |_, type| type == 'Expression' }.map(&:first)
+    whitelisted_manifestations = whitelisted_ids.select { |_, type| type == 'Manifestation' }.map(&:first)
+
     @collections = Collection.where('title like ? OR title like ?', '%/%', '%\\\\%')
+                             .where.not(id: whitelisted_collections)
+                             .limit(25)
     @works = Work.where('title like ? OR title like ?', '%/%', '%\\\\%')
+                 .where.not(id: whitelisted_works)
+                 .limit(25)
     @expressions = Expression.where('title like ? OR title like ?', '%/%', '%\\\\%')
+                             .where.not(id: whitelisted_expressions)
+                             .limit(25)
     @manifestations = Manifestation.where('title like ? OR title like ?', '%/%', '%\\\\%')
+                                   .where.not(id: whitelisted_manifestations)
+                                   .limit(25)
     @total = @collections.count + @works.count + @expressions.count + @manifestations.count
     Rails.cache.write('report_slash_in_titles', @total)
+  end
+
+  def mark_slash_title_as_okay
+    item_type = params[:item_type]
+    item_id = params[:id]
+    
+    item = case item_type
+           when 'Collection'
+             Collection.find(item_id)
+           when 'Work'
+             Work.find(item_id)
+           when 'Expression'
+             Expression.find(item_id)
+           when 'Manifestation'
+             Manifestation.find(item_id)
+           end
+    
+    unless item.nil?
+      li = ListItem.new(listkey: 'title_slashes_okay', item: item)
+      li.save!
+    end
+    head :ok
   end
 
   #######################################

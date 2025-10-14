@@ -115,6 +115,48 @@ describe AdminController do
       expect(assigns(:total)).to eq(5)
       expect(Rails.cache).to have_received(:write).with('report_slash_in_titles', 5)
     end
+
+    context 'with whitelisted items' do
+      let!(:whitelisted_collection) { create(:collection, title: 'Whitelisted / Collection') }
+      let!(:whitelisted_manifestation) { create(:manifestation, title: 'Whitelisted / Manifestation') }
+
+      before do
+        ListItem.create!(listkey: 'title_slashes_okay', item: whitelisted_collection)
+        ListItem.create!(listkey: 'title_slashes_okay', item: whitelisted_manifestation)
+      end
+
+      it 'excludes whitelisted items from results' do
+        expect(call).to be_successful
+        expect(assigns(:collections)).not_to include(whitelisted_collection)
+        expect(assigns(:manifestations)).not_to include(whitelisted_manifestation)
+      end
+    end
+  end
+
+  describe '#mark_slash_title_as_okay' do
+    subject(:call) { get :mark_slash_title_as_okay, params: { item_type: item_type, id: item.id } }
+
+    include_context 'when editor logged in'
+
+    context 'with a manifestation' do
+      let(:item_type) { 'Manifestation' }
+      let(:item) { create(:manifestation, title: 'Test / Title') }
+
+      it 'creates a whitelist entry' do
+        expect { call }.to change { ListItem.where(listkey: 'title_slashes_okay').count }.by(1)
+        expect(call).to be_successful
+      end
+    end
+
+    context 'with a collection' do
+      let(:item_type) { 'Collection' }
+      let(:item) { create(:collection, title: 'Test / Collection') }
+
+      it 'creates a whitelist entry' do
+        expect { call }.to change { ListItem.where(listkey: 'title_slashes_okay').count }.by(1)
+        expect(call).to be_successful
+      end
+    end
   end
 
   describe '#tocs_missing_links' do
