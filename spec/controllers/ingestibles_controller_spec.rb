@@ -78,6 +78,28 @@ describe IngestiblesController do
       it_behaves_like 'redirects to show page if record cannot be locked'
 
       it { is_expected.to be_successful }
+
+      context 'when ingestible has works with footnotes' do
+        let(:markdown_with_footnotes) do
+          "&&& כותרת ראשונה\n\nטקסט עם הערת שוליים[^1].\n\n[^1]: הערת שוליים ראשונה\n\n&&& כותרת שנייה\n\nטקסט עם הערת שוליים[^1].\n\n[^1]: הערת שוליים שנייה"
+        end
+        let(:ingestible) { create(:ingestible, markdown: markdown_with_footnotes) }
+
+        before do
+          ingestible.update_parsing
+          call
+        end
+
+        it 'generates HTML with unique footnote anchors for each section' do
+          html = controller.instance_variable_get(:@html)
+          expect(html).to be_present
+          # Check that footnote anchors from different sections have different nonces
+          expect(html).to include('fn:md_0_1') # First section's footnote
+          expect(html).to include('fn:md_1_1') # Second section's footnote
+          # Ensure the anchors are not duplicated without nonces
+          expect(html.scan(/id="fn:1"/).count).to eq(0)
+        end
+      end
     end
 
     describe '#update' do
