@@ -205,6 +205,17 @@ describe ProofsController do
           proof.reload
           expect(proof.status).to eq 'wontfix'
         end
+
+        context 'when email is not requested' do
+          let(:additional_params) { { escalate: 'no', email: 'no', wontfix_explanation: 'EXPLANATION' } }
+
+          it 'marks proof as wontfix without sending email' do
+            expect(call).to redirect_to admin_index_path
+            expect(Notifications).not_to have_received(:proof_wontfix)
+            proof.reload
+            expect(proof.status).to eq 'wontfix'
+          end
+        end
       end
     end
   end
