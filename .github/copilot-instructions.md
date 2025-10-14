@@ -29,7 +29,7 @@ This codebase runs https://benyehuda.org -- the Project Ben-Yehuda digital libra
 ### Important Style Notes
 - Use hash syntax: `{ key: value }` (EnforcedShorthandSyntax is set to 'never')
   - Always write `{ key: value }`, never `{ key }` (hash value omission)
-  - Avoid symbol-to-proc shorthand like `.map(&:method)`
+  - Symbol-to-proc like `.map(&:method)` is fine and widely used in the codebase
 - Many legacy parts of the codebase do not follow style guidelines - focus on maintaining consistency within the file you're editing
 - String concatenation is allowed (Style/StringConcatenation disabled) - this is important for right-to-left texts
 - `html_safe` usage is common and accepted in this codebase for rendering Hebrew text
