@@ -627,6 +627,7 @@ he:
   texts_between_dates: יצירות לפי מועד עלייתן
   authority_records_between_dates: יוצרים לפי מועד יצירת היישות
   suspicious_titles_report: "דו\"ח שמות חשודים ליצירות"
+  slash_in_titles_report: "דו\"ח כותרות המכילות קו נטוי (/או\\)"
   similar_titles_report: "דו\"ח כותרות דומות ליצירות (שאולי הן פרקים של יצירה אחת שיש לאחד)"
   suspicious_translations_report: "דו\"ח יצירות עם מחבר שווה למתרגם"
   most_read_authors_of_genre: יוצרי ה%{genre} הנקראים ביותר החודש
@@ -810,6 +811,9 @@ he:
   recommendations: המלצות
   more_recommendations_in_the_blog: המלצות נוספות ביומן הרשת
   works: יצירות
+  expressions: ביטויים
+  manifestations: מימושים
+  collections: אוספים
   dictionary_entries: ערכים מילוניים
   works_en: works
   to_tagging_instructions: להנחיות התיוג

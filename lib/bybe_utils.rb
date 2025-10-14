@@ -56,7 +56,7 @@ module BybeUtils
     I18n.t(role, scope: 'involved_authority.role')
   end
 
-  def textify_authorities_and_roles(ias)
+  def textify_authorities_and_roles(ias, full_url = false)
     return '' unless ias.present?
 
     ret = ''
@@ -68,7 +68,8 @@ module BybeUtils
       ret += I18n.t(role, scope: 'involved_authority.abstract_roles') + ': '
       ras.each do |ra|
         ret += ', ' if i > 0
-        ret += "<a href=\"#{Rails.application.routes.url_helpers.authority_path(ra.authority)}\">#{ra.authority.name}</a>"
+        url = full_url ? Rails.application.routes.url_helpers.authority_url(ra.authority) : Rails.application.routes.url_helpers.authority_path(ra.authority)
+        ret += "<a href=\"#{url}\">#{ra.authority.name}</a>"
         i += 1
       end
       ret += '<br />'
@@ -156,7 +157,7 @@ module BybeUtils
     boilerplate_end = '</body></html>'
 
     # add front page instead of graphical cover, for now
-    authorities_html = textify_authorities_and_roles(involved_authorities)
+    authorities_html = textify_authorities_and_roles(involved_authorities, true) # full URLs for epub
     front_page = boilerplate_start + "<h1>#{title}</h1>\n<p/><h2>#{authorities_html}</h2><p/><p/><p/><p/>מעודכן לתאריך: #{Date.today}<p/><p/>#{I18n.t(:from_pby_and_available_at)} #{purl} <p/><h3><a href='https://benyehuda.org/page/volunteer'>(רוצים לעזור?)</a></h3>" + boilerplate_end
     book.ordered do
       book.add_item('0_front.xhtml').add_content(StringIO.new(front_page)).toc_text(title)
@@ -772,6 +773,16 @@ module BybeUtils
     h.manifestations[0].manual_delete
     h.manifestation_ids << m_id_to_redirect_to
     h.save
+  end
+
+  def make_heading_ids_unique(html)
+    # Replace MultiMarkdown-generated ids with unique sequential ids to avoid duplicates
+    heading_seq = 0
+    html.gsub(%r{<h([23])(.*?) id="(.*?)"(.*?)>(.*?)</h[23]>}) do
+      heading_seq += 1
+      tag = "h#{::Regexp.last_match(1)}"
+      "<#{tag}#{::Regexp.last_match(2)} id=\"heading-#{heading_seq}\"#{::Regexp.last_match(4)}>#{::Regexp.last_match(5)}</#{tag}>"
+    end
   end
 
   def footnotes_noncer(html, nonce) # salt footnote markers and bodies with a nonce, to make them unique in collections/anthologies
