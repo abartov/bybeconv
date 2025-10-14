@@ -777,10 +777,10 @@ module BybeUtils
   def make_heading_ids_unique(html)
     # Replace MultiMarkdown-generated ids with unique sequential ids to avoid duplicates
     heading_seq = 0
-    html.gsub(%r{<h[23](.*?) id="(.*?)"(.*?)>(.*?)</h[23]>}) do
+    html.gsub(%r{<h([23])(.*?) id="(.*?)"(.*?)>(.*?)</h[23]>}) do
       heading_seq += 1
-      tag = ::Regexp.last_match(0)[1..2]
-      "<#{tag}#{::Regexp.last_match(1)} id=\"heading-#{heading_seq}\"#{::Regexp.last_match(3)}>#{::Regexp.last_match(4)}</#{tag}>"
+      tag = "h#{::Regexp.last_match(1)}"
+      "<#{tag}#{::Regexp.last_match(2)} id=\"heading-#{heading_seq}\"#{::Regexp.last_match(4)}>#{::Regexp.last_match(5)}</#{tag}>"
     end
   end
 
