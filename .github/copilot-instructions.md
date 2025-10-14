@@ -27,7 +27,7 @@ This codebase runs https://benyehuda.org -- the Project Ben-Yehuda digital libra
 - Use rubocop-rails, rubocop-rspec, and rubocop-factory_bot plugins
 
 ### Important Style Notes
-- Use hash syntax: `{ key: value }` (never use shorthand syntax)
+- Use hash syntax: `{ key: value }` (EnforcedShorthandSyntax is set to 'never' - do not use symbol-to-proc or hash value omission)
 - Many legacy parts of the codebase do not follow style guidelines - focus on maintaining consistency within the file you're editing
 - String concatenation is allowed (Style/StringConcatenation disabled) - this is important for right-to-left texts
 - `html_safe` usage is common and accepted in this codebase for rendering Hebrew text
@@ -63,8 +63,9 @@ pronto run -c origin/master
 
 ### Hebrew Text Handling
 - Always consider right-to-left (RTL) text direction
-- Use `.reverse` when displaying Hebrew text in generated content (like cover pages)
-- Be cautious with string operations that might break Hebrew characters
+- When using RMagick for image generation (e.g., book covers), Hebrew text needs `.reverse.center()` to display correctly
+- Do NOT use `.reverse` for HTML/web rendering - it will break Hebrew text display
+- Be cautious with string operations that might break Hebrew characters or encoding
 - The `html_safe` method is frequently used for rendering Hebrew content
 
 ### Database and Performance
