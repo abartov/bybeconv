@@ -31,8 +31,8 @@ jobs:
         
       - name: Install dependencies
         run: |
-          sudo apt-get update
-          sudo apt-get install -y mysql-client libmysqlclient-dev wkhtmltopdf pandoc yaz libyaz-dev  libmagickwand-dev libpcap-dev memcached cmake
+          set -euxo pipefail
+          sudo apt-get update && sudo apt-get install -y mysql-client libmysqlclient-dev wkhtmltopdf pandoc yaz libyaz-dev  libmagickwand-dev libpcap-dev memcached cmake
 
       # Add or replace dependency steps here
       - name: Install Ruby and gems
