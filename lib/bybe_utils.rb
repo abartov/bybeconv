@@ -183,7 +183,7 @@ module BybeUtils
               collection.authorities, section_titles, section_texts, "coll_#{collection.id}", "#{Rails.application.routes.url_helpers.root_url}#{Rails.application.routes.url_helpers.collection_path(collection)}")
   end
 
-  def make_epub_from_user_anthology(user_anthology)
+  def make_epub_from_user_anthology(user_anthology, html)
     section_titles = html.scan(%r{<h1.*?>(.*?)</h1}).map { |x| x[0] }
     section_texts = html.split(%r{<h1.*?</h1>})
     section_texts.shift(1) # skip the header
@@ -209,7 +209,7 @@ module BybeUtils
       fname = make_epub('https://benyehuda.org/read/' + entity.id.to_s, entity.title, entity.involved_authorities, [entity.title],
                         [html], entity.id.to_s, "#{Rails.application.routes.url_helpers.root_url}#{Rails.application.routes.url_helpers.manifestation_path(entity)}")
     when 'Anthology'
-      fname = make_epub_from_user_anthology(entity)
+      fname = make_epub_from_user_anthology(entity, html)
     when 'Collection'
       fname = make_epub_from_collection(entity)
     end
