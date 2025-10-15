@@ -293,7 +293,7 @@ describe CollectionsController do
           call
           dest_collection.reload
           expect(dest_collection.collection_items.pluck(:alt_title)).to eq(%w(1 C 2 3))
-          expect(dest_collection.collection_items.pluck(:seqno)).to eq([1, 2, 3, 4))
+          expect(dest_collection.collection_items.pluck(:seqno)).to eq([1, 2, 3, 4])
 
           # Verify source still has its remaining items in correct order
           src_collection.reload

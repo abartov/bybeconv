@@ -162,6 +162,7 @@ describe Collection do
 
     let(:collection) { create(:collection) }
     let(:manifestation) { create(:manifestation) }
+    let(:index) { 1 }
 
     let!(:first_item) { create(:collection_item, collection: collection, seqno: 1) }
     let!(:second_item) { create(:collection_item, collection: collection, seqno: 2) }
@@ -207,9 +208,9 @@ describe Collection do
 
     context 'when association is cached before seqno modification' do
       it 'uses fresh data even with cached association (regression test for issue #635)' do
-        # This test reproduces the bug: association cached with old seqno values, 
+        # This test reproduces the bug: association cached with old seqno values,
         # then seqnos are modified, then insert uses stale cache
-        
+
         collection = create(:collection)
         item_a = create(:collection_item, collection: collection, seqno: 1, alt_title: 'A')
         item_b = create(:collection_item, collection: collection, seqno: 2, alt_title: 'B')
@@ -218,7 +219,7 @@ describe Collection do
         # Pre-load and cache the association with original seqno values [1, 2, 3]
         cached_items = collection.collection_items.to_a
         expect(cached_items.map(&:seqno)).to eq([1, 2, 3])
-        expect(cached_items.map(&:alt_title)).to eq(['A', 'B', 'C'])
+        expect(cached_items.map(&:alt_title)).to eq(%w(A B C))
 
         # Now modify seqnos directly in the database to create gaps
         # WITHOUT reloading the collection
@@ -235,13 +236,13 @@ describe Collection do
 
         # Expected: new item should have seqno 5 (B's current seqno)
         # Buggy behavior: new item gets seqno 2 (B's old cached seqno)
-        
+
         collection.reload
         all_items = collection.collection_items.order(:seqno).to_a
-        
+
         # Verify correct order: A, NEW, B, C
         expect(all_items.map(&:alt_title)).to eq(['A', nil, 'B', 'C'])
-        
+
         # Verify seqno values are correct
         # NEW should have seqno 5, B should be incremented to 6, C to 11
         seqnos = all_items.map(&:seqno)
@@ -261,7 +262,7 @@ describe Collection do
 
         # Load and cache the association
         expect(collection.collection_items.size).to eq(3)
-        expect(collection.collection_items.to_a.map(&:alt_title)).to eq(['Item1', 'Item2', 'Item3'])
+        expect(collection.collection_items.to_a.map(&:alt_title)).to eq(%w(Item1 Item2 Item3))
 
         # First insert without reloading
         first_new = create(:manifestation)
@@ -275,7 +276,7 @@ describe Collection do
         # Verify final order is correct
         collection.reload
         titles = collection.collection_items.pluck(:alt_title)
-        
+
         # Should have 5 items in correct order
         expect(titles.count).to eq(5)
         expect(titles[0]).to eq('Item1')
@@ -283,7 +284,7 @@ describe Collection do
         expect(titles[2]).to be_nil  # second_new
         expect(titles[3]).to eq('Item2')
         expect(titles[4]).to eq('Item3')
-        
+
         # Verify seqnos are in order
         seqnos = collection.collection_items.pluck(:seqno)
         expect(seqnos).to eq(seqnos.sort)
