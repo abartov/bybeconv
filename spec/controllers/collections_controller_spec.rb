@@ -301,56 +301,14 @@ describe CollectionsController do
         end
       end
 
-      context 'when destination collection accessed before transplant (cached association bug)' do
-        let(:new_pos) { 2 }
 
-        it 'correctly inserts item even with pre-loaded association' do
-          # Simulate the collection being displayed/accessed before the transplant
-          # This caches the association in memory
-          dest_collection_items_before = dest_collection.collection_items.to_a
-          expect(dest_collection_items_before.size).to eq(3)
-          expect(dest_collection_items_before.map(&:alt_title)).to eq(%w(1 2 3))
 
-          # Now modify the seqnos to create gaps WITHOUT reloading dest_collection
-          # This simulates concurrent modifications or previous operations
-          dest_collection.collection_items[1].update_column(:seqno, 5)
-          dest_collection.collection_items[2].update_column(:seqno, 10)
-
-          # At this point:
-          # - Database has: 1(seqno:1), 2(seqno:5), 3(seqno:10)
-          # - dest_collection's cached association still thinks: 1(seqno:1), 2(seqno:2), 3(seqno:3)
-
-          # Now transplant - this should use fresh data, not cached
-          call
-
-          # Verify the item was inserted correctly
-          dest_collection.reload
-          titles = dest_collection.collection_items.pluck(:alt_title)
-          seqnos = dest_collection.collection_items.pluck(:seqno)
-
-          # Expected order: '1', 'C', '2', '3'
-          expect(titles).to eq(%w(1 C 2 3))
-
-          # Expected seqnos: C should be at seqno 5 (where '2' was),
-          # '2' should be incremented to 6, '3' to 11
-          expect(seqnos).to eq([1, 5, 6, 11])
-        end
-      end
-
-      context 'when transplanting multiple items rapidly to collection with gaps' do
+      context 'when transplanting multiple items to trigger append beyond stale size' do
         let(:src_titles2) { %w(X Y Z) }
         let!(:src_collection2) { create(:collection, title_placeholders: src_titles2) }
 
-        it 'maintains correct order when association might be cached between operations' do
-          # Create gaps in destination
-          dest_collection.collection_items[1].update_column(:seqno, 5)
-          dest_collection.collection_items[2].update_column(:seqno, 10)
-
-          # Access collection to potentially cache it
-          dest_size = dest_collection.collection_items.size
-          expect(dest_size).to eq(3)
-
-          # First transplant
+        it 'correctly appends when position exceeds size' do
+          # First transplant - adds item to dest
           first_item = src_collection.collection_items[0] # 'A'
           post :transplant_item, params: {
             collection_id: src_collection.id,
@@ -360,35 +318,28 @@ describe CollectionsController do
             new_pos: 2
           }
 
-          # Don't reload dest_collection - simulate keeping it in memory
-
-          # Second transplant immediately after
+          # Second transplant - try to append at position 10 (way beyond size)
+          # If association is cached from first call, this tests pos > cached_size
           second_item = src_collection2.collection_items[0] # 'X'
           post :transplant_item, params: {
             collection_id: src_collection2.id,
             dest_coll_id: dest_collection.id,
             src_coll_id: src_collection2.id,
             item_id: second_item.id,
-            new_pos: 3
+            new_pos: 10  # Way beyond actual size (4)
           }
 
-          # Verify final order is correct
+          # Verify final order
           dest_collection.reload
           titles = dest_collection.collection_items.pluck(:alt_title)
-
-          # Should be: '1', 'A', 'X', '2', '3' (in seqno order)
-          expect(titles).to include('1', 'A', 'X', '2', '3')
-
-          # Verify seqnos are in ascending order
           seqnos = dest_collection.collection_items.pluck(:seqno)
-          expect(seqnos).to eq(seqnos.sort)
 
-          # Verify exact positions
-          expect(titles[0]).to eq('1')
-          expect(titles[1]).to eq('A')
-          expect(titles[2]).to eq('X')
-          expect(titles[3]).to eq('2')
-          expect(titles[4]).to eq('3')
+          # Should have 5 items with sequential seqnos
+          expect(titles.size).to eq(5)
+          expect(seqnos).to eq([1, 2, 3, 4, 5])  # Should be sequential
+
+          # X should be appended at the end
+          expect(titles.last).to eq('X')
         end
       end
     end

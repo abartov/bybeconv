@@ -206,88 +206,107 @@ describe Collection do
       end
     end
 
-    context 'when association is cached before seqno modification' do
-      it 'uses fresh data even with cached association (regression test for issue #635)' do
-        # This test reproduces the bug: association cached with old seqno values,
-        # then seqnos are modified, then insert uses stale cache
+    context 'when calling insert beyond cached size (exposes caching bug)' do
+      it 'correctly inserts at position beyond stale cached size' do
+        collection = create(:collection)
+        create(:collection_item, collection: collection, seqno: 1, alt_title: 'A')
+        create(:collection_item, collection: collection, seqno: 2, alt_title: 'B')
+        create(:collection_item, collection: collection, seqno: 3, alt_title: 'C')
 
+        # First insert loads and caches collection_items (size=3)
+        item1 = create(:manifestation)
+        collection.insert_item_at(item1, 2)
+
+        # DB now has 4 items, but cache still thinks size=3
+        # Insert at position 5 (beyond both cached and actual size)
+        # BUGGY: pos(5) > cached_size(3), uses cached.last.seqno + 1 = 3 + 1 = 4
+        # FIXED: pos(5) > actual_size(4), uses actual.last.seqno + 1 = 4 + 1 = 5
+        item2 = create(:manifestation)
+        collection.insert_item_at(item2, 5)
+
+        # Verify
+        collection.reload
+        seqnos = collection.collection_items.pluck(:seqno)
+
+        # Should be: 1, 2, 3, 4, 5 (item2 appended with seqno 5)
+        expect(seqnos).to eq([1, 2, 3, 4, 5])
+      end
+    end
+
+    context 'when association cached via array indexing before insert' do
+      it 'uses correct seqno despite cached array' do
         collection = create(:collection)
         item_a = create(:collection_item, collection: collection, seqno: 1, alt_title: 'A')
         item_b = create(:collection_item, collection: collection, seqno: 2, alt_title: 'B')
         item_c = create(:collection_item, collection: collection, seqno: 3, alt_title: 'C')
 
-        # Pre-load and cache the association with original seqno values [1, 2, 3]
-        cached_items = collection.collection_items.to_a
-        expect(cached_items.map(&:seqno)).to eq([1, 2, 3])
-        expect(cached_items.map(&:alt_title)).to eq(%w(A B C))
+        # Access via array indexing - this caches the association as an array
+        expect(collection.collection_items[0].alt_title).to eq('A')
+        expect(collection.collection_items[1].alt_title).to eq('B')
 
-        # Now modify seqnos directly in the database to create gaps
-        # WITHOUT reloading the collection
+        # Modify database to create gaps
         item_b.update_column(:seqno, 5)
         item_c.update_column(:seqno, 10)
 
-        # At this point:
-        # - Database has: A(1), B(5), C(10)
-        # - Cached association still thinks: A(1), B(2), C(3)
-
-        # Now try to insert at position 2 (should go between A and B)
+        # Insert should use fresh data, not cached
         new_item = create(:manifestation)
         collection.insert_item_at(new_item, 2)
 
-        # Expected: new item should have seqno 5 (B's current seqno)
-        # Buggy behavior: new item gets seqno 2 (B's old cached seqno)
-
+        # Verify
         collection.reload
-        all_items = collection.collection_items.order(:seqno).to_a
-
-        # Verify correct order: A, NEW, B, C
-        expect(all_items.map(&:alt_title)).to eq(['A', nil, 'B', 'C'])
-
-        # Verify seqno values are correct
-        # NEW should have seqno 5, B should be incremented to 6, C to 11
-        seqnos = all_items.map(&:seqno)
-        expect(seqnos[0]).to eq(1)   # A unchanged
-        expect(seqnos[1]).to eq(5)   # NEW item at B's old position
-        expect(seqnos[2]).to eq(6)   # B incremented
-        expect(seqnos[3]).to eq(11)  # C incremented
+        seqnos = collection.collection_items.order(:seqno).pluck(:seqno)
+        expect(seqnos).to eq([1, 5, 6, 11])  # NEW at 5, B at 6, C at 11
       end
     end
 
-    context 'when performing sequential operations with stale cache' do
-      it 'maintains correct order across multiple inserts with cached association' do
+    context 'with larger collection and multiple appends' do
+      it 'correctly appends when position exceeds stale cached size' do
         collection = create(:collection)
-        create(:collection_item, collection: collection, seqno: 1, alt_title: 'Item1')
-        create(:collection_item, collection: collection, seqno: 2, alt_title: 'Item2')
-        create(:collection_item, collection: collection, seqno: 3, alt_title: 'Item3')
+        5.times do |i|
+          create(:collection_item, collection: collection, seqno: i + 1, alt_title: "Item#{i + 1}")
+        end
 
-        # Load and cache the association
-        expect(collection.collection_items.size).to eq(3)
-        expect(collection.collection_items.to_a.map(&:alt_title)).to eq(%w(Item1 Item2 Item3))
+        # Perform 3 appends at the end without reloading
+        # Each append uses position = current_size + 1
+        # But cache thinks size is always 5
+        3.times do |i|
+          item = create(:manifestation)
+          # Try to append at the end by using a large position
+          collection.insert_item_at(item, 10 + i)  # positions 10, 11, 12 (all > size)
+        end
 
-        # First insert without reloading
-        first_new = create(:manifestation)
-        collection.insert_item_at(first_new, 2)
-
-        # The association is now stale - it doesn't know about first_new
-        # Try another insert without reloading
-        second_new = create(:manifestation)
-        collection.insert_item_at(second_new, 3)
-
-        # Verify final order is correct
+        # Verify all items are in correct order with correct seqnos
         collection.reload
-        titles = collection.collection_items.pluck(:alt_title)
-
-        # Should have 5 items in correct order
-        expect(titles.count).to eq(5)
-        expect(titles[0]).to eq('Item1')
-        expect(titles[1]).to be_nil  # first_new
-        expect(titles[2]).to be_nil  # second_new
-        expect(titles[3]).to eq('Item2')
-        expect(titles[4]).to eq('Item3')
-
-        # Verify seqnos are in order
         seqnos = collection.collection_items.pluck(:seqno)
-        expect(seqnos).to eq(seqnos.sort)
+
+        # Should have 8 items with increasing seqnos
+        expect(seqnos.size).to eq(8)
+        expect(seqnos).to eq([1, 2, 3, 4, 5, 6, 7, 8])
+      end
+    end
+
+    context 'when size checked before modification' do
+      it 'gets correct position despite stale size' do
+        collection = create(:collection)
+        create(:collection_item, collection: collection, seqno: 1, alt_title: 'A')
+        create(:collection_item, collection: collection, seqno: 2, alt_title: 'B')
+        create(:collection_item, collection: collection, seqno: 3, alt_title: 'C')
+
+        # Check size to cache it
+        expect(collection.collection_items.size).to eq(3)
+
+        # Modify seqnos to create gaps
+        collection.collection_items[1].update_column(:seqno, 10)
+        collection.collection_items[2].update_column(:seqno, 20)
+
+        # Insert at position 2 - should use fresh seqno data
+        new_item = create(:manifestation)
+        collection.insert_item_at(new_item, 2)
+
+        # Verify
+        collection.reload
+        seqnos = collection.collection_items.order(:seqno).pluck(:seqno)
+        expect(seqnos).to eq([1, 10, 11, 21])  # NEW at 10, B at 11, C at 21
       end
     end
   end
