@@ -17,6 +17,9 @@
             - @htmls.each do |title, html, is_curated, genre, i|
               %a.jumpch{style:'text-overflow: ellipsis;overflow-x: hidden;', 'data-target' => "title#{i}", href:"#title#{i}"}= title
 
+#downloadAnthologyDlg.modal{'aria-hidden' => 'true', role: 'dialog', tabindex: '-1'}
+  = render partial: 'shared/download', locals: {entity: @anthology}
+
 :javascript
   $(document).ready(function() {
     //$('body').scrollspy('refresh');
