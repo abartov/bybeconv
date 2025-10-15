@@ -504,6 +504,14 @@ class Collection < ApplicationRecord
       collection_items.each do |ci|
         f.puts "    - #{ci.alt_title} (#{ci.item_type}, ID: #{ci.item_id})"
       end
+      f.puts '--> reloading'
+      reload
+      f.puts "Collection: #{id}"
+      f.puts "  Title: #{title}"
+      f.puts '  Items:'
+      collection_items.each do |ci|
+        f.puts "    - #{ci.alt_title} (#{ci.item_type}, ID: #{ci.item_id})"
+      end
     end
   end
 
