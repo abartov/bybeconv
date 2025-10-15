@@ -27,4 +27,7 @@
     $('.printbutton').click(function() {
       window.open("#{@print_url}",'_blank');
     });
+    $('#downloadAnthologyDlg').on('shown.bs.modal', function () {
+      $('.download_submitter').removeAttr('disabled');
+    });
   });
