@@ -68,7 +68,7 @@
       %nav#chapternav.navbar
         %ul#chapter-nav.navbar-nav.flex-column.by-card-v02{style:'width: unset', "aria-orientation" => "vertical"}
           - first = true
-          - @htmls.reject{|x| x[0].blank?}.each do |title, authors, html, is_curated, genre, i, ci|
+          - @htmls.reject{|x| x[0].blank?}.each do |title, ias, html, is_curated, genre, i, ci|
             %li.nav-item.side-menu-item{ id: "collitem_#{i}_button", 'data-target' => "collitem_text_#{i}"}
               %a{'class' => 'nav-link nav-chapter-name nav-link-chapter pointer linkcolor '+(first ? ' active' : ''), "aria-controls" => "#", "aria-selected" => "false", 'data-toggle' => 'tooltip', 'title' => title, 'data-placement' => 'top', 'data-delay' => { "show": 500, "hide": 100 }, href: "#"}
                 .nav-chapter-name= title

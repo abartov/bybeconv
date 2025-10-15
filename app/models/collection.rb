@@ -157,8 +157,8 @@ class Collection < ApplicationRecord
     return nil if dl.nil?
     return nil if dl.updated_at < updated_at # needs to be re-generated
 
-    # also ensure none of the collection items is fresher than the saved downloadable
-    collection_items.each do |ci|
+    # also ensure none of the collection items (including sub-collections) is fresher than the saved downloadable
+    flatten_items.each do |ci|
       return nil if dl.updated_at < ci.updated_at
       return nil if ci.item.present? && (ci.item.updated_at > dl.updated_at)
     end
@@ -182,7 +182,7 @@ class Collection < ApplicationRecord
   end
 
   def authors
-    auths = involved_authorities_by_role(:author)
+    auths = involved_authorities_by_role('author')
     return auths if auths.count > 0
 
     seen_colls = []
@@ -199,7 +199,7 @@ class Collection < ApplicationRecord
   end
 
   def translators
-    auths = involved_authorities_by_role(:translator)
+    auths = involved_authorities_by_role('translator')
     return auths if auths.count > 0
 
     seen_colls = []
@@ -216,7 +216,7 @@ class Collection < ApplicationRecord
   end
 
   def editors
-    eds = involved_authorities_by_role(:editor)
+    eds = involved_authorities_by_role('editor')
     return eds if eds.count > 0
 
     seen_colls = []
@@ -422,6 +422,8 @@ class Collection < ApplicationRecord
   end
 
   def remove_item(item_id)
+    raise 'pass an item ID, not an object' if item_id.instance_of?(CollectionItem)
+
     ci = collection_items.where(id: item_id).first
     return false if ci.nil?
 

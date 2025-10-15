@@ -519,7 +519,7 @@ GEM
       puma (>= 2.7)
     raabro (1.4.0)
     racc (1.8.1)
-    rack (2.2.18)
+    rack (2.2.20)
     rack-attack (6.7.0)
       rack (>= 1.0, < 4)
     rack-cors (2.0.2)
@@ -889,7 +889,7 @@ DEPENDENCIES
   yt
 
 RUBY VERSION
-   ruby 3.3.8p144
+   ruby 3.3.2p78
 
 BUNDLED WITH
    2.5.23

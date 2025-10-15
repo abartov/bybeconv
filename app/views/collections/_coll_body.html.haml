@@ -8,19 +8,19 @@
         .by-card-header-v02
           .headline-1-v02= t(:table_of_contents)
         .by-card-content-v02
-          - @htmls.each do |title, authors, html, is_curated, genre, i, ci|
+          - @htmls.each do |title, ias, html, is_curated, genre, i, ci|
             %p
               %a{href: "#title#{i}"}= title.gsub(/<[^>]*>/, ' ')
               - if is_curated
                 %span= ' ('+t(:curated_text)+')'
                 %span.by-icon-v02 _
               = t(:by)
-              != pub_linkify_people(authors)
+              != pub_linkify_people(ias.select{|ia| ia.role == :author}.map(&:authority))
           %br
           .headline-3-v02= t(:from_pby_and_available_at)+": #{request.base_url+collection_path(@collection.id)}"
       #actualtext
         - first = true
-        - @htmls.each do |title, authors, html, is_curated, genre, i, ci|
+        - @htmls.each do |title, ias, html, is_curated, genre, i, ci|
           %div{id: 'title'+i.to_s}
           %a{name: 'title'+i.to_s}
 
@@ -40,7 +40,7 @@
             .by-card-header-v02
               .headline-1-v02= title.gsub(/<[^>]*>/, ' ')
               = t(:by)
-              != pub_linkify_people(authors)
+              != pub_linkify_people(ias.select{|ia| ia.role == :author}.map(&:authority))
 
             .work-area
               %div{class: is_curated ? 'anthology-self-content' : 'anthology-by-content'}

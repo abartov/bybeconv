@@ -930,8 +930,18 @@ small p{
 .collection_draggable_item {
   scroll-margin-top: 15px;
 }
-.footnotes li {
-  scroll-margin-top: 175px; 
+.footnotes ol {
+  list-style-type: decimal;
+  padding-right: 2.5em;
+  margin-right: 0; /* Reset browser default margin-right for proper RTL list rendering */
+}
+.footnotes ol li {
+  list-style-position: inside; /* for some reason 'outside' doesn't work in Safari in RTL context */
+  display: list-item; 
+  scroll-margin-top: 175px;
+  /* Safari-specific fix for RTL list markers */
+  -webkit-margin-start: 0;
+  -webkit-padding-start: 0;
 }
 .footnote {
   scroll-margin-top: 210px;
@@ -978,4 +988,9 @@ small p{
   font-size: 12px;
   top: -20px;
   box-sizing: border-box;
+}
+
+.origlang_details {
+  margin-top: -5px;
+  font-size: 80%;
 }

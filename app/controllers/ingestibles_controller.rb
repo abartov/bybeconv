@@ -2,6 +2,7 @@
 
 class IngestiblesController < ApplicationController
   include LockIngestibleConcern
+  include BybeUtils
 
   # to allow starting ingestions directly from the task system
   skip_before_action :verify_authenticity_token, only: :create
@@ -173,6 +174,8 @@ class IngestiblesController < ApplicationController
     end
     @toc_list = toc_buf.join("\n")
     @authority_by_name = Authority.all.map { |a| [a.name, a.id] }.to_h
+
+    render layout: false
   end
 
   # PATCH/PUT /ingestibles/1 or /ingestibles/1.json
@@ -295,7 +298,7 @@ class IngestiblesController < ApplicationController
     return unless @ingestible.works_buffer.present?
 
     sections = JSON.parse(@ingestible.works_buffer)
-    sections.each do |section|
+    sections.each_with_index do |section, index|
       title = section['title']
       @markdown_titles << title
       content = section['content']
@@ -315,8 +318,11 @@ class IngestiblesController < ApplicationController
       else
         doctored_title = "<span style='color:red'>#{title} #{t(:empty_work_title_or_no_content)}</span>"
       end
+      section_html = MarkdownToHtml.call(content)
+      # Apply footnote noncer to make footnote anchors unique per section
+      section_html = footnotes_noncer(section_html, "md_#{index}")
       @html += "<hr style='border-color:#2b0d22;border-width:20px;margin-top:40px'/><h1>#{doctored_title.sub(/_ZZ\d+/,
-                                                                                                             '')}</h1>" + MarkdownToHtml.call(content)
+                                                                                                             '')}</h1>" + section_html
     end
     @html = highlight_suspicious_markdown(@html) # highlight suspicious markdown in backend
   end

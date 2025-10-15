@@ -75,6 +75,7 @@ class CollectionsController < ApplicationController
     if dl.nil?
       prep_for_show # TODO
       filename = "#{@collection.title.gsub(/[^0-9א-תA-Za-z.\-]/, '_')}.#{format}"
+      # TODO: implement ias
       html = <<~WRAPPER
         <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -82,7 +83,7 @@ class CollectionsController < ApplicationController
         <head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /></head>
         <body dir='rtl'><div dir="rtl" align="right">
         <div style="font-size:300%; font-weight: bold;">#{@collection.title}</div>
-        #{@htmls.map { |h| "<h1>#{h[0]}</h1>\n#{I18n.t(:by)}<h2>#{h[1].map { |p| "<a href=\"/author/#{p.id}\">#{p.name}</a>" }.join(', ')}</h2>#{h[2]}" }.join("\n").force_encoding('UTF-8')}
+        #{@htmls.map { |h| downloadable_html(h) }.join("\n")}
 
         <hr />
         #{I18n.t(:download_footer_html, url: url_for(@collection))}
@@ -192,10 +193,11 @@ class CollectionsController < ApplicationController
     end
     ActiveRecord::Base.transaction do
       @new_item_id = @dest_coll.insert_item_at(@item, params[:new_pos].to_i)
-      @src_coll.remove_item(@item)
+      @src_coll.remove_item(@old_item_id)
     end
     @src_coll.debug_dump('Source Collection after transplant')
     @dest_coll.debug_dump('Destination Collection after transplant')
+    head :ok
   end
 
   def manage
@@ -223,7 +225,7 @@ class CollectionsController < ApplicationController
         next unless ci.item.present? && ci.item_type == 'Collection' && ci.item.collection_type == 'periodical_issue'
 
         html = ci.item.toc_html
-        @htmls << [ci.item.title, ci.item.editors, html, false, ci.genre, i, ci]
+        @htmls << [ci.item.title, ci.involved_authorities_by_role('editor'), html, false, ci.genre, i, ci]
         i += 1
       end
     else
@@ -232,7 +234,7 @@ class CollectionsController < ApplicationController
 
         html = ci.to_html
         # next unless html.present?
-        @htmls << [ci.title, ci.authors, html.present? ? footnotes_noncer(ci.to_html, i) : '', false, ci.genre,
+        @htmls << [ci.title, ci.involved_authorities, html.present? ? footnotes_noncer(ci.to_html, i) : '', false, ci.genre,
                    i, ci]
         i += 1
       end
@@ -250,5 +252,16 @@ class CollectionsController < ApplicationController
                            else
                              Authority.new(name: '')
                            end
+  end
+
+  protected
+
+  def downloadable_html(h)
+    title, ias, html, is_curated, genre, i, ci = h
+    austr = textify_authorities_and_roles(ias)
+    out = "<h1>#{title}</h1>\n"
+    out += "<h2>#{austr}</h2>" if austr.present?
+    out += html
+    out.force_encoding('UTF-8')
   end
 end

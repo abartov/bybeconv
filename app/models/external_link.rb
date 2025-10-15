@@ -9,7 +9,8 @@ class ExternalLink < ApplicationRecord
     publisher_site: 4,
     dedicated_site: 5,
     audio: 6,
-    gnazim: 7
+    gnazim: 7,
+    source_text: 8
   }, prefix: true
 
   enum :status, {
@@ -19,6 +20,6 @@ class ExternalLink < ApplicationRecord
   }, prefix: true
 
   def self.sidebar_link_types # excluding the publisher_site link, which is used in the main area for texts published by permission
-    return [:wikipedia, :dedicated_site, :blog, :youtube, :audio, :other, :gnazim]
+    return %i(wikipedia dedicated_site blog youtube audio other gnazim)
   end
 end
