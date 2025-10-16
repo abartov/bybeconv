@@ -1,24 +1,27 @@
 class PublicationsController < ApplicationController
   before_action :require_editor
-  before_action :set_publication, only: [:show, :edit, :update, :destroy]
+  before_action :set_publication, only: %i(show edit update destroy)
 
   # GET /publications
   # GET /publications.json
   def index
     query = []
-    if params['title'] && (not params['title'].empty?)
+    if params['title'].present?
       query << "publications.title like '%#{params['title']}%'"
     end
-    if params['author'] && (not params['author'].empty?)
+    if params['author'].present?
       query << "people.name like '%#{params['author']}%'"
     end
-    if params['status'] && (not params['status'].empty?)
+    if params['status'].present?
       query << "publications.status = '#{Publication.statuses[params['status']]}'"
     end
     unless query.empty?
-      @publications = Publication.joins(:person).includes([:person, holdings: :bib_source]).where(query.join(' and ')).order(status: :asc, person_id: :asc).page(params[:page])
+      @publications = Publication.joins(:person).includes([:person, { holdings: :bib_source }]).where(query.join(' and ')).order(
+        status: :asc, person_id: :asc
+      ).page(params[:page])
     else
-      @publications = Publication.includes([:person, holdings: :bib_source]).order(status: :asc, person_id: :asc).page(params[:page])
+      @publications = Publication.includes([:person, { holdings: :bib_source }]).order(status: :asc,
+                                                                                       person_id: :asc).page(params[:page])
     end
   end
 
@@ -63,10 +66,9 @@ class PublicationsController < ApplicationController
         format.json { render :show, status: :created, location: @pub }
       else
         format.html { render :new }
-        format.json { render json: @pub.errors, status: :unprocessable_entity }
+        format.json { render json: @pub.errors, status: :unprocessable_content }
       end
     end
-
   end
 
   # PATCH/PUT /publications/1
@@ -80,7 +82,7 @@ class PublicationsController < ApplicationController
         format.json { render :show, status: :ok, location: @publication }
       else
         format.html { render :edit }
-        format.json { render json: @publication.errors, status: :unprocessable_entity }
+        format.json { render json: @publication.errors, status: :unprocessable_content }
       end
     end
   end
@@ -97,9 +99,11 @@ class PublicationsController < ApplicationController
   end
 
   private
+
   def set_publication
     @publication = Publication.find(params[:id])
   end
+
   def status_by_source_type(stype)
     # TODO: add handling of Primo e-resources once those become available at NLI
     case stype
@@ -109,7 +113,9 @@ class PublicationsController < ApplicationController
       return 'todo'
     end
   end
+
   def publication_params
-    params.require(:publication).permit(:title, :publisher_line, :author_line, :notes, :source_id, :authority_id, :status, :pub_year, :language, :callnum)
+    params.require(:publication).permit(:title, :publisher_line, :author_line, :notes, :source_id, :authority_id,
+                                        :status, :pub_year, :language, :callnum)
   end
 end

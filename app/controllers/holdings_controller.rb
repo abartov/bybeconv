@@ -1,6 +1,6 @@
 class HoldingsController < ApplicationController
   before_action :require_editor
-  before_action :set_holding, only: [:show, :edit, :update, :destroy]
+  before_action :set_holding, only: %i(show edit update destroy)
 
   # GET /holdings
   # GET /holdings.json
@@ -38,10 +38,9 @@ class HoldingsController < ApplicationController
         format.json { render :show, status: :created, location: @holding }
       else
         format.html { render :new }
-        format.json { render json: @holding.errors, status: :unprocessable_entity }
+        format.json { render json: @holding.errors, status: :unprocessable_content }
       end
     end
-
   end
 
   # PATCH/PUT /holdings/1
@@ -52,7 +51,7 @@ class HoldingsController < ApplicationController
     @pub = @holding.publication
     @pub.obtained! if @holding.obtained? and @pub.todo?
     @pub.scanned! if @holding.scanned? and (@pub.todo? or @pub.obtained?)
-      # if the holding is marked as missing, that does not change the publication's status
+    # if the holding is marked as missing, that does not change the publication's status
     respond_to do |format|
       if success
         format.html { redirect_to @holding, notice: 'holding was successfully updated.' }
@@ -60,7 +59,7 @@ class HoldingsController < ApplicationController
         format.json { render :show, status: :ok, location: @holding }
       else
         format.html { render :edit }
-        format.json { render json: @holding.errors, status: :unprocessable_entity }
+        format.json { render json: @holding.errors, status: :unprocessable_content }
       end
     end
   end
@@ -75,11 +74,12 @@ class HoldingsController < ApplicationController
     end
   end
 
-
   private
+
   def set_holding
     @holding = Holding.find(params[:id])
   end
+
   def holding_params
     params.require(:holding).permit(:publication_id, :location, :source_id, :scan_url, :status)
   end

@@ -413,7 +413,7 @@ class AdminController < ApplicationController
   def mark_slash_title_as_okay
     item_type = params[:item_type]
     item_id = params[:id]
-    
+
     item = case item_type
            when 'Collection'
              Collection.find_by(id: item_id)
@@ -424,7 +424,7 @@ class AdminController < ApplicationController
            when 'Manifestation'
              Manifestation.find_by(id: item_id)
            end
-    
+
     unless item.nil?
       li = ListItem.new(listkey: 'title_slashes_okay', item: item)
       li.save!
@@ -455,7 +455,7 @@ class AdminController < ApplicationController
         format.json { render json: @vp, status: :created, location: @vp }
       else
         format.html { render action: 'static_page_new' }
-        format.json { render json: @vp.errors, status: :unprocessable_entity }
+        format.json { render json: @vp.errors, status: :unprocessable_content }
       end
     end
   end
@@ -484,7 +484,7 @@ class AdminController < ApplicationController
       redirect_to action: :static_page_show, id: @vp.id
     else
       format.html { render action: 'static_page_edit' }
-      format.json { render json: @vp.errors, status: :unprocessable_entity }
+      format.json { render json: @vp.errors, status: :unprocessable_content }
     end
   end
 
@@ -512,7 +512,7 @@ class AdminController < ApplicationController
         format.json { render json: @vp, status: :created, location: @vp }
       else
         format.html { render action: 'volunteer_profile_new' }
-        format.json { render json: @vp.errors, status: :unprocessable_entity }
+        format.json { render json: @vp.errors, status: :unprocessable_content }
       end
     end
   end
@@ -539,7 +539,7 @@ class AdminController < ApplicationController
       redirect_to action: :volunteer_profile_show, id: @vp.id
     else
       format.html { render action: 'volunteer_profile_edit' }
-      format.json { render json: @vp.errors, status: :unprocessable_entity }
+      format.json { render json: @vp.errors, status: :unprocessable_content }
     end
   end
 
@@ -608,7 +608,7 @@ class AdminController < ApplicationController
         format.json { render json: @sn, status: :created, location: @sn }
       else
         format.html { render action: 'sitenotice_new' }
-        format.json { render json: @sn.errors, status: :unprocessable_entity }
+        format.json { render json: @sn.errors, status: :unprocessable_content }
       end
     end
   end
@@ -640,7 +640,7 @@ class AdminController < ApplicationController
       redirect_to action: :sitenotice_show, id: @sn.id
     else
       format.html { render action: 'sitenotice_edit' }
-      format.json { render json: @sn.errors, status: :unprocessable_entity }
+      format.json { render json: @sn.errors, status: :unprocessable_content }
     end
   end
 
@@ -678,7 +678,7 @@ class AdminController < ApplicationController
         format.json { render json: @fc, status: :created, location: @fc }
       else
         format.html { render action: 'featured_author_new' }
-        format.json { render json: @fc.errors, status: :unprocessable_entity }
+        format.json { render json: @fc.errors, status: :unprocessable_content }
       end
     end
   end
@@ -714,7 +714,7 @@ class AdminController < ApplicationController
       redirect_to action: :featured_author_show, id: @fc.id
     else
       format.html { render action: 'featured_author_edit' }
-      format.json { render json: @fc.errors, status: :unprocessable_entity }
+      format.json { render json: @fc.errors, status: :unprocessable_content }
     end
   end
 

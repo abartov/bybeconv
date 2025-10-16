@@ -98,7 +98,7 @@ describe CollectionsController do
 
         it 'rejects the submission as unprocessable' do
           expect { call }.to not_change(Collection, :count)
-          expect(call).to have_http_status(:unprocessable_entity)
+          expect(call).to have_http_status(:unprocessable_content)
         end
       end
     end
@@ -139,7 +139,7 @@ describe CollectionsController do
         let(:title) { '' }
 
         it 'rejects the submission as unprocessable' do
-          expect(call).to have_http_status(:unprocessable_entity)
+          expect(call).to have_http_status(:unprocessable_content)
         end
       end
     end

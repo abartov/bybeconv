@@ -374,7 +374,7 @@ class AuthorsController < ApplicationController
         flash.notice = t(:created_successfully)
         redirect_to action: :show, params: { id: @author.id }
       else
-        render action: :new, status: :unprocessable_entity
+        render action: :new, status: :unprocessable_content
       end
     end
   end
@@ -416,7 +416,7 @@ class AuthorsController < ApplicationController
         flash[:notice] = I18n.t(:updated_successfully)
         redirect_to action: :show, id: @author.id
       else
-        render action: 'edit', status: :unprocessable_entity
+        render action: 'edit', status: :unprocessable_content
       end
     end
   end

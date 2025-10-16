@@ -119,7 +119,7 @@ describe IngestiblesController do
         let(:ingestible_params) { attributes_for(:ingestible, title: nil) }
 
         it 're-renders edit form' do
-          expect(call).to have_http_status(:unprocessable_entity)
+          expect(call).to have_http_status(:unprocessable_content)
           expect(call).to render_template(:edit)
         end
       end

@@ -1,15 +1,16 @@
 class HtmlDirsController < ApplicationController
   include BybeUtils
+
   before_action :require_admin
 
   # GET /html_dirs
   # GET /html_dirs.json
   def index
-    unless params[:unassociated].nil?
-      @html_dirs = HtmlDir.order('person_id ASC')
-    else
-      @html_dirs = HtmlDir.order('author ASC')
-    end
+    @html_dirs = unless params[:unassociated].nil?
+                   HtmlDir.order('person_id ASC')
+                 else
+                   HtmlDir.order('author ASC')
+                 end
 
     respond_to do |format|
       format.html # index.html.erb
@@ -55,7 +56,7 @@ class HtmlDirsController < ApplicationController
         format.json { render json: @html_dir, status: :created, location: @html_dir }
       else
         format.html { render action: 'new' }
-        format.json { render json: @html_dir.errors, status: :unprocessable_entity }
+        format.json { render json: @html_dir.errors, status: :unprocessable_content }
       end
     end
   end
@@ -71,7 +72,7 @@ class HtmlDirsController < ApplicationController
         format.json { head :ok }
       else
         format.html { render action: 'edit' }
-        format.json { render json: @html_dir.errors, status: :unprocessable_entity }
+        format.json { render json: @html_dir.errors, status: :unprocessable_content }
       end
     end
   end

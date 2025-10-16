@@ -30,7 +30,7 @@ class ProofsController < ApplicationController
       )
       head :ok
     else
-      render json: @errors, status: :unprocessable_entity
+      render json: @errors, status: :unprocessable_content
     end
   end
 
