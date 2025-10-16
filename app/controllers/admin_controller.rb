@@ -361,6 +361,30 @@ class AdminController < ApplicationController
     @total = @records.count
   end
 
+  def first_manifestations_between_dates
+    return unless params[:from].present? && params[:to].present?
+
+    from_date = Date.parse(params[:from])
+    to_date = Date.parse(params[:to])
+
+    # Find authorities where first published manifestation is within the date range
+    authorities_with_first_manifestations = []
+
+    Authority.find_each do |authority|
+      first_manifestation = authority.published_manifestations.order(:created_at).first
+      next if first_manifestation.nil?
+
+      # Check if first manifestation was created within the date range
+      if first_manifestation.created_at >= from_date && first_manifestation.created_at <= to_date
+        authorities_with_first_manifestations << [authority, first_manifestation]
+      end
+    end
+
+    # Sort by first manifestation date
+    @authorities = authorities_with_first_manifestations.sort_by { |_authority, manifestation| manifestation.created_at }
+    @total = @authorities.count
+  end
+
   def suspicious_titles
     @suspicious = Manifestation.where('(title like "%קבוצה %") OR (title like "%.")').reject { |x| x.title =~ /\.\.\./ }
     Rails.cache.write('report_suspicious_titles', @suspicious.length)
