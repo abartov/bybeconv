@@ -545,4 +545,43 @@ describe AdminController do
       expect(second_proof.reload.status).to eq('assigned')
     end
   end
+
+  describe '#first_manifestations_between_dates' do
+    subject(:call) do
+      get :first_manifestations_between_dates, params: { from: from_date.to_s, to: to_date.to_s }
+    end
+
+    include_context 'when editor logged in'
+
+    let(:from_date) { Date.new(2023, 1, 1) }
+    let(:to_date) { Date.new(2023, 12, 31) }
+
+    let!(:authority_with_first_in_range) { create(:authority) }
+    let!(:authority_with_first_before_range) { create(:authority) }
+    let!(:authority_with_first_after_range) { create(:authority) }
+    let!(:authority_without_manifestations) { create(:authority) }
+
+    before do
+      # Authority with first manifestation in date range
+      travel_to from_date + 3.months do
+        create(:manifestation, author: authority_with_first_in_range)
+      end
+
+      # Authority with first manifestation before date range
+      travel_to from_date - 1.year do
+        create(:manifestation, author: authority_with_first_before_range)
+      end
+
+      # Authority with first manifestation after date range
+      travel_to to_date + 1.month do
+        create(:manifestation, author: authority_with_first_after_range)
+      end
+    end
+
+    it 'returns only authorities with first manifestation in date range' do
+      expect(call).to be_successful
+      expect(assigns(:authorities).map(&:first)).to contain_exactly(authority_with_first_in_range)
+      expect(assigns(:total)).to eq(1)
+    end
+  end
 end
