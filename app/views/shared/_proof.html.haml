@@ -89,12 +89,23 @@
 
       const range = selection.getRangeAt(0);
       const startNode = range.startContainer;
+      const endNode = range.endContainer;
       const startElement = startNode.nodeType === Node.TEXT_NODE ? startNode.parentNode : startNode;
+      const endElement = endNode.nodeType === Node.TEXT_NODE ? endNode.parentNode : endNode;
 
-      const proofable = $(startElement).closest('.proofable')[0];
-      if (proofable == null || proofable == undefined) {
+      const startProofable = $(startElement).closest('.proofable')[0];
+      const endProofable = $(endElement).closest('.proofable')[0];
+      
+      if (startProofable == null || startProofable == undefined) {
         e.preventDefault();
         alert("#{t('.select_proper_text')}");
+        return;
+      }
+
+      // Check if selection spans multiple proofable divs (multiple manifestations)
+      if (startProofable !== endProofable) {
+        e.preventDefault();
+        alert("#{t('.selection_spans_multiple_texts')}");
         return;
       }
 
@@ -104,8 +115,8 @@
         return;
       }
 
-      $('#proof_item_id').val($(proofable).data('item-id'));
-      $('#proof_item_type').val($(proofable).data('item-type'));
+      $('#proof_item_id').val($(startProofable).data('item-id'));
+      $('#proof_item_type').val($(startProofable).data('item-type'));
       $('#proof_selected_text').text(document.getSelection().toString());
       $('#proofDlg').modal("show");
     });
