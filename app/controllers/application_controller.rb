@@ -368,7 +368,13 @@ class ApplicationController < ActionController::Base
   end
 
   def sanitize_heading(h)
-    return h.gsub(/\[\^ftn\d+\]/, '').gsub(/^#+/, '&nbsp;&nbsp;&nbsp;').gsub(/\[\^\d+\]/, '').gsub('\"', '"').strip
+    # Remove footnotes, strip HTML tags, replace leading hashes with spaces, and clean up quotes
+    h.gsub(/\[\^ftn\d+\]/, '')
+     .gsub(/\[\^\d+\]/, '')
+     .then { |s| ActionController::Base.helpers.strip_tags(s) }
+     .gsub(/^#+/, '&nbsp;&nbsp;&nbsp;')
+     .gsub('\"', '"')
+     .strip
   end
 
   def make_heading_ids_unique(html)
