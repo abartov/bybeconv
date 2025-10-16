@@ -96,7 +96,8 @@
 
           - @htmls.each do |title, ias, html, is_curated, genre, i, ci|
             %a{ name: "collitem_text_#{i}" }
-            .by-card-v02.proofable{ data: { item_id: ci.item_id, item_type: ci.item_type } }
+            - proofable_class = ci.item_type == 'Manifestation' ? 'proofable' : ''
+            .by-card-v02{ class: proofable_class, data: { item_id: ci.item_id, item_type: ci.item_type } }
               - if title.present?
                 .by-card-header-v02
                   .by-icon-v02
