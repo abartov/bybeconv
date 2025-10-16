@@ -371,7 +371,7 @@ class ApplicationController < ActionController::Base
     # Remove footnotes, strip HTML tags, replace leading hashes with spaces, and clean up quotes
     h.gsub(/\[\^ftn\d+\]/, '')
      .gsub(/\[\^\d+\]/, '')
-     .then { |s| ActionController::Base.helpers.strip_tags(s) }
+     .then { |s| helpers.strip_tags(s) }
      .gsub(/^#+/, '&nbsp;&nbsp;&nbsp;')
      .gsub('\"', '"')
      .strip
