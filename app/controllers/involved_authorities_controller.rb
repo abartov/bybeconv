@@ -20,7 +20,7 @@ class InvolvedAuthoritiesController < ApplicationController
     if ia.save
       render plain: 'OK'
     else
-      render plain: 'Unprocessable entity', status: :unprocessable_entity
+      render plain: 'Unprocessable entity', status: :unprocessable_content
     end
   end
 

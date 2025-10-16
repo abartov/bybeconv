@@ -1,5 +1,5 @@
 class UserBlocksController < ApplicationController
-  before_action :set_user_block, only: [:show, :edit, :update, :destroy]
+  before_action :set_user_block, only: %i(show edit update destroy)
 
   # GET /user_blocks or /user_blocks.json
   def index
@@ -25,11 +25,11 @@ class UserBlocksController < ApplicationController
 
     respond_to do |format|
       if @user_block.save
-        format.html { redirect_to user_block_url(@user_block), notice: "User block was successfully created." }
+        format.html { redirect_to user_block_url(@user_block), notice: 'User block was successfully created.' }
         format.json { render :show, status: :created, location: @user_block }
       else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @user_block.errors, status: :unprocessable_entity }
+        format.html { render :new, status: :unprocessable_content }
+        format.json { render json: @user_block.errors, status: :unprocessable_content }
       end
     end
   end
@@ -38,11 +38,11 @@ class UserBlocksController < ApplicationController
   def update
     respond_to do |format|
       if @user_block.update(user_block_params)
-        format.html { redirect_to user_block_url(@user_block), notice: "User block was successfully updated." }
+        format.html { redirect_to user_block_url(@user_block), notice: 'User block was successfully updated.' }
         format.json { render :show, status: :ok, location: @user_block }
       else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @user_block.errors, status: :unprocessable_entity }
+        format.html { render :edit, status: :unprocessable_content }
+        format.json { render json: @user_block.errors, status: :unprocessable_content }
       end
     end
   end
@@ -52,19 +52,20 @@ class UserBlocksController < ApplicationController
     @user_block.destroy
 
     respond_to do |format|
-      format.html { redirect_to user_blocks_url, notice: "User block was successfully destroyed." }
+      format.html { redirect_to user_blocks_url, notice: 'User block was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_user_block
-      @user_block = UserBlock.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def user_block_params
-      params.require(:user_block).permit(:user_id, :context, :expires_at, :blocker_id, :reason)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_user_block
+    @user_block = UserBlock.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def user_block_params
+    params.require(:user_block).permit(:user_id, :context, :expires_at, :blocker_id, :reason)
+  end
 end

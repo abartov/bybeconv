@@ -21,7 +21,7 @@ module Admin
       if @fc.save
         redirect_to admin_featured_content_path(@fc), notice: t(:created_successfully)
       else
-        render :new, status: :unprocessable_entity
+        render :new, status: :unprocessable_content
       end
     end
 
@@ -38,7 +38,7 @@ module Admin
         flash.notice = I18n.t(:updated_successfully)
         redirect_to admin_featured_content_path(@fc)
       else
-        render :edit, status: :unprocessable_entity
+        render :edit, status: :unprocessable_content
       end
     end
 

@@ -1,7 +1,7 @@
 class ApiKeysController < ApplicationController
-  before_action :require_admin, except: [:new, :create]
+  before_action :require_admin, except: %i(new create)
 
-  before_action :set_model, only: [:edit, :update, :destroy]
+  before_action :set_model, only: %i(edit update destroy)
 
   # GET /api_keys
   # GET /api_keys.json
@@ -25,7 +25,7 @@ class ApiKeysController < ApplicationController
     # Extremely simple antispam protection
     unless params['ziburit'] =~ /ביאליק/
       flash.now.alert = 'Antispam protection failed'
-      render action: "new", status: :unprocessable_entity
+      render action: 'new', status: :unprocessable_content
       return
     end
 
@@ -33,13 +33,13 @@ class ApiKeysController < ApplicationController
       begin
         ApiKeysMailer.key_created_to_editor(@api_key).deliver
         ApiKeysMailer.key_created(@api_key).deliver
-      rescue => e
+      rescue StandardError => e
         # TODO: add error notification via service like Rollbar
       end
 
       redirect_to '/', notice: 'Api key was successfully created, check email for details'
     else
-      render action: "new", status: :unprocessable_entity
+      render action: 'new', status: :unprocessable_content
     end
   end
 
@@ -49,7 +49,7 @@ class ApiKeysController < ApplicationController
     if @api_key.update(key_params)
       redirect_to api_keys_path, notice: 'Api key was successfully updated.'
     else
-      render action: "edit", status: :unprocessable_entity
+      render action: 'edit', status: :unprocessable_content
     end
   end
 

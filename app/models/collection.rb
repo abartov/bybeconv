@@ -175,7 +175,15 @@ class Collection < ApplicationRecord
 
       html += '<hr/><p/>' + ci.title_and_authors_html
       inner_nonce = "#{nonce}_#{i}"
-      html += footnotes_noncer(ci.to_html, inner_nonce)
+      
+      # Wrap Manifestation content with a marker div for proof submission
+      if ci.item_type == 'Manifestation' && ci.item.present?
+        html += "<div class='nested-manifestation-marker' data-item-id='#{ci.item_id}' data-item-type='Manifestation'>"
+        html += footnotes_noncer(ci.to_html, inner_nonce)
+        html += '</div>'
+      else
+        html += footnotes_noncer(ci.to_html, inner_nonce)
+      end
       i += 1
     end
     return html

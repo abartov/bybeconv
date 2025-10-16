@@ -55,8 +55,8 @@ class CollectionItemsController < ApplicationController
         end
         format.js
       else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @collection_item.errors, status: :unprocessable_entity }
+        format.html { render :new, status: :unprocessable_content }
+        format.json { render json: @collection_item.errors, status: :unprocessable_content }
       end
     end
   end
@@ -74,8 +74,8 @@ class CollectionItemsController < ApplicationController
         end
         format.js
       else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @collection_item.errors, status: :unprocessable_entity }
+        format.html { render :edit, status: :unprocessable_content }
+        format.json { render json: @collection_item.errors, status: :unprocessable_content }
       end
     end
   end
