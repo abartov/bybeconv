@@ -507,7 +507,7 @@ class Collection < ApplicationRecord
       f.puts "  Title: #{title}"
       f.puts '  Items:'
       collection_items.each do |ci|
-        f.puts "    - #{ci.alt_title} (#{ci.item_type}, ID: #{ci.item_id})"
+        f.puts "    - seqno ##{ci.seqno}: #{ci.item.present? ? ci.item.title : ci.alt_title} (#{ci.item_type}, ID: #{ci.item_id})"
       end
       f.puts '--> reloading'
       reload
@@ -515,7 +515,7 @@ class Collection < ApplicationRecord
       f.puts "  Title: #{title}"
       f.puts '  Items:'
       collection_items.each do |ci|
-        f.puts "    - #{ci.alt_title} (#{ci.item_type}, ID: #{ci.item_id})"
+        f.puts "    - seqno ##{ci.seqno}: #{ci.item.present? ? ci.item.title : ci.alt_title} (#{ci.item_type}, ID: #{ci.item_id})"
       end
     end
   end
