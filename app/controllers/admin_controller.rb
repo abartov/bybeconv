@@ -367,10 +367,22 @@ class AdminController < ApplicationController
     from_date = Date.parse(params[:from])
     to_date = Date.parse(params[:to])
 
-    # Find authorities where first published manifestation is within the date range
+    # Step 1: Get all published manifestations within the date range
+    manifestations_in_range = Manifestation.published
+                                          .where('created_at > ? AND created_at < ?', from_date, to_date)
+                                          .includes(expression: { work: :involved_authorities, involved_authorities: :authority })
+
+    # Step 2: Extract unique authorities from these manifestations
+    authority_ids_in_range = []
+    manifestations_in_range.each do |m|
+      authority_ids_in_range.concat(m.involved_authorities.map(&:authority_id))
+    end
+    authority_ids_in_range.uniq!
+
+    # Step 3: For each authority, check if the manifestation in range is their first
     authorities_with_first_manifestations = []
 
-    Authority.find_each do |authority|
+    Authority.where(id: authority_ids_in_range).find_each do |authority|
       first_manifestation = authority.published_manifestations.order(:created_at).first
       next if first_manifestation.nil?
 
