@@ -15,6 +15,48 @@ describe CollectionsController do
     subject { get :show, params: { id: collection.id } }
 
     it { is_expected.to be_successful }
+
+    context 'when collection contains manifestations' do
+      let(:collection) do
+        create(
+          :collection,
+          manifestations: create_list(:manifestation, 2)
+        )
+      end
+
+      it 'marks manifestation divs as proofable' do
+        subject
+        expect(response.body).to have_css('.by-card-v02.proofable', count: 2)
+        collection.collection_items.each do |ci|
+          expect(response.body).to have_css(".proofable[data-item-id='#{ci.item_id}'][data-item-type='Manifestation']")
+        end
+      end
+    end
+
+    context 'when collection contains nested collections with manifestations' do
+      let(:nested_manifestation) { create(:manifestation, title: 'Nested Manifestation') }
+      let(:nested_collection) do
+        create(:collection, title: 'Nested Collection', manifestations: [nested_manifestation])
+      end
+      let(:collection) do
+        create(
+          :collection,
+          included_collections: [nested_collection],
+          manifestations: [create(:manifestation)]
+        )
+      end
+
+      it 'marks all items as proofable and adds markers for nested manifestations' do
+        subject
+        # Both the top-level manifestation and the nested collection should be proofable
+        expect(response.body).to have_css('.by-card-v02.proofable', count: 2)
+        # The nested collection should be proofable
+        collection_item = collection.collection_items.find { |ci| ci.item_type == 'Collection' }
+        expect(response.body).to have_css(".proofable[data-item-id='#{collection_item.item_id}'][data-item-type='Collection']")
+        # The nested manifestation should have a marker div inside the nested collection
+        expect(response.body).to have_css(".nested-manifestation-marker[data-item-id='#{nested_manifestation.id}'][data-item-type='Manifestation']")
+      end
+    end
   end
 
   describe 'editor actions' do
@@ -56,7 +98,7 @@ describe CollectionsController do
 
         it 'rejects the submission as unprocessable' do
           expect { call }.to not_change(Collection, :count)
-          expect(call).to have_http_status(:unprocessable_entity)
+          expect(call).to have_http_status(:unprocessable_content)
         end
       end
     end
@@ -97,7 +139,7 @@ describe CollectionsController do
         let(:title) { '' }
 
         it 'rejects the submission as unprocessable' do
-          expect(call).to have_http_status(:unprocessable_entity)
+          expect(call).to have_http_status(:unprocessable_content)
         end
       end
     end

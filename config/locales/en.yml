@@ -163,6 +163,7 @@ en:
       please_select_something: Excellent, but first, please select the wrong paragraph (or a few lines), so that we know where to correct.  After the check, click this button again.
       too_short: At least a sentence or two should be selected, not just the error itself. This helps us locate the wrong place in the text. After the check, click this button again.
       select_proper_text: It appears that the selected text does not belong to any work. Please make your selection directly from the work itself.
+      selection_spans_multiple_texts: The text you selected spans multiple works. Please select text from a single work only.
       thanks_html: Thank you so much for taking the trouble to send us a proofreading or comment!  We will review it carefully and correct the text if necessary, and will update you as we do so.
   welcome:
     submit_contact:

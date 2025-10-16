@@ -132,7 +132,7 @@ class CollectionsController < ApplicationController
       # redirect_to collection_url(@collection), notice: t(:created_successfully)
       render json: @collection
     else
-      head :unprocessable_entity
+      head :unprocessable_content
     end
   end
 
@@ -144,7 +144,7 @@ class CollectionsController < ApplicationController
         format.js
       end
     else
-      head :unprocessable_entity
+      head :unprocessable_content
     end
   end
 

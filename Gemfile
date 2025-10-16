@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-ruby '3.3.2' # update only when GitHub CI runners support a newer non-head version
+ruby '3.3.8' # update only when GitHub CI runners support a newer non-head version
 
 source 'http://rubygems.org'
 
@@ -27,9 +27,9 @@ gem 'rails-jquery-autocomplete', '>= 1.0.5' # for auto-completion
 # gem "mini_magick", ">= 4.9.4" # now (Rails 6.1) required by image_processing
 gem 'human_enum_name' # i18n for enums
 gem 'marcel', '~> 1'
+gem 'msgpack', '>= 1.7.0' # required by ActiveSupport:MessagePack
 gem 'omniauth-rails_csrf_protection'
 gem 'rack-cors', require: 'rack/cors'
-gem "msgpack", ">= 1.7.0" # required by ActiveSupport:MessagePack
 
 gem 'aws-sdk-s3' # for Active Storage
 gem 'diffy'
@@ -143,11 +143,16 @@ group :development do
 end
 
 group :test, :development do
+  gem 'brakeman'
+  gem 'bundler-audit'
   gem 'dotenv', '~> 3.1.2'
   gem 'factory_bot_rails', '~> 6.2.0'
   gem 'rspec-rails'
   gem 'spring', '4.2.1' # later version yields https://github.com/rails/spring/issues/734
   gem 'spring-commands-rspec'
+
+  gem 'capybara' # for integration tests
+  gem 'webdrivers' # For system tests with a browser driver like Chrome/Firefox
 end
 
 gem 'sidekiq', '~> 7.2'

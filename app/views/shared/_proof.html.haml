@@ -89,13 +89,42 @@
 
       const range = selection.getRangeAt(0);
       const startNode = range.startContainer;
+      const endNode = range.endContainer;
       const startElement = startNode.nodeType === Node.TEXT_NODE ? startNode.parentNode : startNode;
+      const endElement = endNode.nodeType === Node.TEXT_NODE ? endNode.parentNode : endNode;
 
-      const proofable = $(startElement).closest('.proofable')[0];
-      if (proofable == null || proofable == undefined) {
-        e.preventDefault();
-        alert("#{t('.select_proper_text')}");
-        return;
+      // First, check if selection is within a nested manifestation marker (for sub-collections)
+      let startMarker = $(startElement).closest('.nested-manifestation-marker')[0];
+      let endMarker = $(endElement).closest('.nested-manifestation-marker')[0];
+      
+      // If we found nested markers, check they're the same (selection doesn't span manifestations)
+      if (startMarker && endMarker) {
+        if (startMarker !== endMarker) {
+          e.preventDefault();
+          alert("#{t('.selection_spans_multiple_texts')}");
+          return;
+        }
+        // Use the marker's data attributes for the proof
+        var itemElement = startMarker;
+      } else {
+        // Fall back to checking the proofable div (for top-level items)
+        const startProofable = $(startElement).closest('.proofable')[0];
+        const endProofable = $(endElement).closest('.proofable')[0];
+        
+        if (startProofable == null || startProofable == undefined) {
+          e.preventDefault();
+          alert("#{t('.select_proper_text')}");
+          return;
+        }
+
+        // Check if selection spans multiple proofable divs (multiple manifestations)
+        if (startProofable !== endProofable) {
+          e.preventDefault();
+          alert("#{t('.selection_spans_multiple_texts')}");
+          return;
+        }
+        
+        var itemElement = startProofable;
       }
 
       if(document.getSelection().toString().length < 20) {
@@ -104,8 +133,8 @@
         return;
       }
 
-      $('#proof_item_id').val($(proofable).data('item-id'));
-      $('#proof_item_type').val($(proofable).data('item-type'));
+      $('#proof_item_id').val($(itemElement).data('item-id'));
+      $('#proof_item_type').val($(itemElement).data('item-type'));
       $('#proof_selected_text').text(document.getSelection().toString());
       $('#proofDlg').modal("show");
     });

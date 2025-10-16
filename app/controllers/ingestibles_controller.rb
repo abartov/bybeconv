@@ -154,7 +154,7 @@ class IngestiblesController < ApplicationController
     if @ingestible.save
       redirect_to edit_ingestible_url(@ingestible), notice: t('.success')
     else
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 
@@ -188,7 +188,7 @@ class IngestiblesController < ApplicationController
       end
       redirect_to edit_ingestible_url(@ingestible), notice: t('.success')
     else
-      render :edit, status: :unprocessable_entity
+      render :edit, status: :unprocessable_content
     end
   end
 

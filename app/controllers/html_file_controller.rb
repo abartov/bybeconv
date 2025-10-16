@@ -38,14 +38,14 @@ class HtmlFileController < ApplicationController
           format.json { render json: @text, status: :created, location: @text }
         else
           format.html { render action: 'new' }
-          format.json { render json: @text.errors, status: :unprocessable_entity }
+          format.json { render json: @text.errors, status: :unprocessable_content }
         end
       end
     else
       flash[:error] = t(:must_set_author)
       respond_to do |format|
         format.html { render action: 'new' }
-        format.json { render json: @text.errors, status: :unprocessable_entity }
+        format.json { render json: @text.errors, status: :unprocessable_content }
       end
     end
   end
