@@ -35,7 +35,9 @@ describe CollectionsController do
 
     context 'when collection contains nested collections with manifestations' do
       let(:nested_manifestation) { create(:manifestation, title: 'Nested Manifestation') }
-      let(:nested_collection) { create(:collection, title: 'Nested Collection', manifestations: [nested_manifestation]) }
+      let(:nested_collection) do
+        create(:collection, title: 'Nested Collection', manifestations: [nested_manifestation])
+      end
       let(:collection) do
         create(
           :collection,
