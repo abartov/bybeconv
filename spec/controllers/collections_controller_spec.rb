@@ -15,6 +15,46 @@ describe CollectionsController do
     subject { get :show, params: { id: collection.id } }
 
     it { is_expected.to be_successful }
+
+    context 'when collection contains manifestations' do
+      let(:collection) do
+        create(
+          :collection,
+          manifestations: create_list(:manifestation, 2)
+        )
+      end
+
+      it 'marks manifestation divs as proofable' do
+        subject
+        expect(response.body).to have_css('.by-card-v02.proofable', count: 2)
+        collection.collection_items.each do |ci|
+          expect(response.body).to have_css(".proofable[data-item-id='#{ci.item_id}'][data-item-type='Manifestation']")
+        end
+      end
+    end
+
+    context 'when collection contains nested collections' do
+      let(:nested_collection) { create(:collection, title: 'Nested Collection') }
+      let(:collection) do
+        create(
+          :collection,
+          included_collections: [nested_collection],
+          manifestations: [create(:manifestation)]
+        )
+      end
+
+      it 'does not mark nested collection divs as proofable' do
+        subject
+        # Only the manifestation should be proofable
+        expect(response.body).to have_css('.by-card-v02.proofable', count: 1)
+        # The manifestation should be proofable
+        manifestation_item = collection.collection_items.find { |ci| ci.item_type == 'Manifestation' }
+        expect(response.body).to have_css(".proofable[data-item-id='#{manifestation_item.item_id}'][data-item-type='Manifestation']")
+        # The nested collection should not be proofable
+        collection_item = collection.collection_items.find { |ci| ci.item_type == 'Collection' }
+        expect(response.body).not_to have_css(".proofable[data-item-id='#{collection_item.item_id}'][data-item-type='Collection']")
+      end
+    end
   end
 
   describe 'editor actions' do
