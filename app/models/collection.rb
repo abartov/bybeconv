@@ -458,6 +458,7 @@ class Collection < ApplicationRecord
     debug_dump("Inserting item #{item.id} (#{item.class}) at position #{pos}")
     Collection.transaction do
       # Load items explicitly to avoid association caching issues
+      reload
       items = collection_items.order(:seqno).to_a
 
       new_seqno = if pos <= 1
