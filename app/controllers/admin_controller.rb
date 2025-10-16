@@ -374,8 +374,8 @@ class AdminController < ApplicationController
       first_manifestation = authority.published_manifestations.order(:created_at).first
       next if first_manifestation.nil?
 
-      # Check if first manifestation was created within the date range
-      if first_manifestation.created_at >= from_date && first_manifestation.created_at <= to_date
+      # Check if first manifestation was created within the date range (using exclusive bounds for consistency)
+      if first_manifestation.created_at > from_date && first_manifestation.created_at < to_date
         authorities_with_first_manifestations << [authority, first_manifestation]
       end
     end
