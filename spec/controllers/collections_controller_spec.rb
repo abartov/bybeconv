@@ -33,8 +33,9 @@ describe CollectionsController do
       end
     end
 
-    context 'when collection contains nested collections' do
-      let(:nested_collection) { create(:collection, title: 'Nested Collection') }
+    context 'when collection contains nested collections with manifestations' do
+      let(:nested_manifestation) { create(:manifestation, title: 'Nested Manifestation') }
+      let(:nested_collection) { create(:collection, title: 'Nested Collection', manifestations: [nested_manifestation]) }
       let(:collection) do
         create(
           :collection,
@@ -43,16 +44,15 @@ describe CollectionsController do
         )
       end
 
-      it 'does not mark nested collection divs as proofable' do
+      it 'marks all items as proofable and adds markers for nested manifestations' do
         subject
-        # Only the manifestation should be proofable
-        expect(response.body).to have_css('.by-card-v02.proofable', count: 1)
-        # The manifestation should be proofable
-        manifestation_item = collection.collection_items.find { |ci| ci.item_type == 'Manifestation' }
-        expect(response.body).to have_css(".proofable[data-item-id='#{manifestation_item.item_id}'][data-item-type='Manifestation']")
-        # The nested collection should not be proofable
+        # Both the top-level manifestation and the nested collection should be proofable
+        expect(response.body).to have_css('.by-card-v02.proofable', count: 2)
+        # The nested collection should be proofable
         collection_item = collection.collection_items.find { |ci| ci.item_type == 'Collection' }
-        expect(response.body).not_to have_css(".proofable[data-item-id='#{collection_item.item_id}'][data-item-type='Collection']")
+        expect(response.body).to have_css(".proofable[data-item-id='#{collection_item.item_id}'][data-item-type='Collection']")
+        # The nested manifestation should have a marker div inside the nested collection
+        expect(response.body).to have_css(".nested-manifestation-marker[data-item-id='#{nested_manifestation.id}'][data-item-type='Manifestation']")
       end
     end
   end
