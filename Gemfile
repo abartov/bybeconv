@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-ruby '3.3.2' # update only when GitHub CI runners support a newer non-head version
+ruby '3.3.8' # update only when GitHub CI runners support a newer non-head version
 
 source 'http://rubygems.org'
 
@@ -143,6 +143,8 @@ group :development do
 end
 
 group :test, :development do
+  gem 'brakeman'
+  gem 'bundler-audit'
   gem 'dotenv', '~> 3.1.2'
   gem 'factory_bot_rails', '~> 6.2.0'
   gem 'rspec-rails'

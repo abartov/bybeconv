@@ -131,7 +131,12 @@ GEM
       jquery-rails (~> 4.2, >= 4.2.0)
       moment-timezone-rails (~> 1.0)
       momentjs-rails (>= 2.10.5, <= 3.0.0)
+    brakeman (7.1.0)
+      racc
     builder (3.3.0)
+    bundler-audit (0.9.2)
+      bundler (>= 1.2.0, < 3)
+      thor (~> 1.0)
     capistrano (3.19.2)
       airbrussh (>= 1.0.0)
       i18n
@@ -793,6 +798,8 @@ DEPENDENCIES
   better_sjr
   blazer
   bootstrap4-datetime-picker-rails
+  brakeman
+  bundler-audit
   capistrano (~> 3.11)
   capistrano-rails (~> 1.4)
   capistrano-rvm
@@ -889,7 +896,7 @@ DEPENDENCIES
   yt
 
 RUBY VERSION
-   ruby 3.3.2p78
+   ruby 3.3.8p144
 
 BUNDLED WITH
    2.5.23

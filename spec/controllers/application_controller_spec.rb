@@ -22,7 +22,7 @@ describe ApplicationController do
         # Verify all IDs are unique
         expect(heading_ids.uniq.length).to eq(heading_ids.length)
         # Verify IDs follow the expected pattern
-        expect(heading_ids).to match_array(['heading-1', 'heading-2', 'heading-3'])
+        expect(heading_ids).to match_array(%w(heading-1 heading-2 heading-3))
         # Verify heading content is preserved
         expect(result).to include('Chapter 1')
         expect(result).to include('Section')
@@ -38,8 +38,77 @@ describe ApplicationController do
     end
   end
 
+  describe '.sanitize_heading' do
+    subject { @controller.sanitize_heading(heading) }
+
+    context 'when heading contains HTML tags' do
+      let(:heading) { '<b>title</b>' }
+
+      it 'strips HTML tags' do
+        expect(subject).to eq('title')
+      end
+    end
+
+    context 'when heading contains nested HTML tags' do
+      let(:heading) { '<b><i>title</i></b>' }
+
+      it 'strips all HTML tags' do
+        expect(subject).to eq('title')
+      end
+    end
+
+    context 'when heading contains HTML tags and footnotes' do
+      let(:heading) { '<b>title</b>[^ftn1]' }
+
+      it 'strips HTML tags and removes footnotes' do
+        expect(subject).to eq('title')
+      end
+    end
+
+    context 'when heading contains markdown footnotes' do
+      let(:heading) { 'title[^1]' }
+
+      it 'removes footnotes' do
+        expect(subject).to eq('title')
+      end
+    end
+
+    context 'when heading contains leading hashes' do
+      let(:heading) { '## title' }
+
+      it 'replaces leading hashes with spaces' do
+        expect(subject).to eq('&nbsp;&nbsp;&nbsp; title')
+      end
+    end
+
+    context 'when heading contains escaped quotes' do
+      let(:heading) { 'title \"quoted\"' }
+
+      it 'unescapes quotes' do
+        expect(subject).to eq('title "quoted"')
+      end
+    end
+
+    context 'when heading has mixed content' do
+      let(:heading) { '## <b>title</b>[^ftn1] \"text\"[^2]' }
+
+      it 'properly sanitizes all elements' do
+        expect(subject).to eq('&nbsp;&nbsp;&nbsp; title "text"')
+      end
+    end
+
+    context 'when heading is plain text' do
+      let(:heading) { 'simple title' }
+
+      it 'returns the text unchanged' do
+        expect(subject).to eq('simple title')
+      end
+    end
+  end
+
   describe '.base_user' do
     subject { @controller.base_user }
+
     let!(:user) { create(:user) }
 
     context 'when user is not authenticated' do
@@ -47,7 +116,7 @@ describe ApplicationController do
         let!(:base_user) { create(:base_user, session_id: session.id.private_id) }
 
         it 'returns it' do
-          expect { subject }.to_not change { BaseUser.count }
+          expect { subject }.not_to(change { BaseUser.count })
           expect(subject).to eq base_user
         end
       end
@@ -78,7 +147,7 @@ describe ApplicationController do
         let!(:base_user) { create(:base_user, user: user) }
 
         it 'returns it' do
-          expect { subject }.to_not change { BaseUser.count }
+          expect { subject }.not_to(change { BaseUser.count })
           expect(subject).to eq base_user
         end
       end
@@ -88,6 +157,7 @@ describe ApplicationController do
 
         context 'when force_create arg is provided' do
           subject { @controller.base_user(true) }
+
           it 'creates new one' do
             expect { subject }.to change { BaseUser.count }.by(1)
             bu = BaseUser.order(id: :desc).first
