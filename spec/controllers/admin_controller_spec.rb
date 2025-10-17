@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+include ActiveSupport::Testing::TimeHelpers
 
 describe AdminController do
   describe '#authors_without_works' do
@@ -564,17 +565,17 @@ describe AdminController do
     before do
       # Authority with first manifestation in date range
       travel_to from_date + 3.months do
-        create(:manifestation, author: authority_with_first_in_range)
+        create(:manifestation, author: authority_with_first_in_range, orig_lang: 'he')
       end
 
       # Authority with first manifestation before date range
       travel_to from_date - 1.year do
-        create(:manifestation, author: authority_with_first_before_range)
+        create(:manifestation, author: authority_with_first_before_range, orig_lang: 'he')
       end
 
       # Authority with first manifestation after date range
       travel_to to_date + 1.month do
-        create(:manifestation, author: authority_with_first_after_range)
+        create(:manifestation, author: authority_with_first_after_range, orig_lang: 'he')
       end
     end
 
