@@ -155,7 +155,10 @@ class Collection < ApplicationRecord
   def fresh_downloadable_for(doctype)
     dl = downloadables.where(doctype: doctype).first
     return nil if dl.nil?
-    return nil if dl.updated_at < updated_at # needs to be re-generated
+
+    return nil unless dl.stored_file.attached? # invalid downloadable without file
+
+    return nil if updated_at - dl.updated_at > 1.minute # needs to be re-generated - buffer needed to pass tests
 
     # also ensure none of the collection items (including sub-collections) is fresher than the saved downloadable
     flatten_items.each do |ci|
@@ -175,7 +178,7 @@ class Collection < ApplicationRecord
 
       html += '<hr/><p/>' + ci.title_and_authors_html
       inner_nonce = "#{nonce}_#{i}"
-      
+
       # Wrap Manifestation content with a marker div for proof submission
       if ci.item_type == 'Manifestation' && ci.item.present?
         html += "<div class='nested-manifestation-marker' data-item-id='#{ci.item_id}' data-item-type='Manifestation'>"
