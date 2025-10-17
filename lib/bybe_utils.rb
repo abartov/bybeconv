@@ -954,25 +954,27 @@ module BybeUtils
     # Hebrew acronym pattern: one or more word chars, followed by ", followed by one word char
     tokens = []
 
-    # Split on whitespace first to get word candidates
-    text.split(/\s+/).each do |word_candidate|
+    # Split on non-word characters (except quotation marks which we need to check for acronyms)
+    # This regex splits on anything that's not a letter, digit, or quotation mark
+    # It will treat punctuation like ;:;|/ as word boundaries
+    text.split(/[^\p{L}\p{N}"]+/).each do |word_candidate|
       next if word_candidate.empty?
 
-      # Remove leading and trailing punctuation, but preserve quotation marks temporarily
-      # We preserve " here because Hebrew acronyms have " in the penultimate position,
-      # and we need to detect this pattern before removing quotes
-      # Pattern: [^\p{L}\p{N}"] matches any character that is NOT a letter, digit, or quotation mark
-      # Hebrew acronym examples: מפא"י, רמטכ"ל, חט"ב
-      cleaned = word_candidate.gsub(/^[^\p{L}\p{N}"]+|[^\p{L}\p{N}"]+$/, '')
-      next if cleaned.empty?
-
+      # At this point, word_candidate contains only letters, digits, and possibly quotation marks
       # Check if it's a Hebrew acronym (has " in penultimate position)
-      if cleaned.length >= 2 && cleaned[-2] == '"'
-        tokens << cleaned
+      if word_candidate.length >= 2 && word_candidate[-2] == '"'
+        # It's a Hebrew acronym - preserve the quotation mark
+        # Examples: מפא"י, רמטכ"ל, חט"ב
+        tokens << word_candidate
+      elsif word_candidate.include?('"')
+        # Has quotes but not in penultimate position - split on quotes
+        # This handles cases like word"word or "word or word"
+        word_candidate.split('"').each do |part|
+          tokens << part unless part.empty?
+        end
       else
-        # Remove any remaining quotes that aren't part of acronyms
-        cleaned = cleaned.delete('"')
-        tokens << cleaned unless cleaned.empty?
+        # Regular word without quotes
+        tokens << word_candidate
       end
     end
 
