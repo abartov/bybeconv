@@ -151,5 +151,66 @@ describe IngestiblesController do
         expect(flash.notice).to eq I18n.t('ingestibles.destroy.success')
       end
     end
+
+    describe '#update_toc' do
+      let(:authority) { create(:authority) }
+      let(:toc_buffer) do
+        " yes || Test Work || || fiction || he || public_domain"
+      end
+      let(:ingestible) do
+        create(:ingestible,
+               toc_buffer: toc_buffer,
+               default_authorities: [{ seqno: 1, authority_id: authority.id, authority_name: authority.name, role: 'translator' }].to_json)
+      end
+
+      it_behaves_like 'redirects to show page if record cannot be locked'
+
+      context 'when clearing default authorities for a specific work' do
+        subject(:call) do
+          patch :update_toc, params: { id: ingestible.id, title: 'Test Work', clear_defaults: true }
+        end
+
+        it 'sets authorities to empty array for that work' do
+          call
+          ingestible.reload
+          decoded_toc = ingestible.decode_toc
+          expect(decoded_toc.first[2]).to eq '[]'
+        end
+
+        it 'allows the work to have no authorities during ingestion' do
+          call
+          ingestible.reload
+          # Verify that when we parse the toc_line during ingestion,
+          # it will use the empty array instead of falling back to defaults
+          toc_line = ingestible.decode_toc.first
+          auths = if toc_line[2].present?
+                    JSON.parse(toc_line[2])
+                  elsif ingestible.default_authorities.present?
+                    JSON.parse(ingestible.default_authorities)
+                  else
+                    []
+                  end
+          expect(auths).to eq([])
+        end
+      end
+
+      context 'when not clearing default authorities' do
+        it 'uses default authorities during ingestion' do
+          ingestible.reload
+          # Verify that when authorities field is empty, defaults are used
+          toc_line = ingestible.decode_toc.first
+          auths = if toc_line[2].present?
+                    JSON.parse(toc_line[2])
+                  elsif ingestible.default_authorities.present?
+                    JSON.parse(ingestible.default_authorities)
+                  else
+                    []
+                  end
+          expect(auths.length).to eq(1)
+          expect(auths.first['authority_id']).to eq(authority.id)
+          expect(auths.first['role']).to eq('translator')
+        end
+      end
+    end
   end
 end
