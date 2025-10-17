@@ -905,7 +905,7 @@ module BybeUtils
         tokens.each_with_index do |token, token_index|
           # Get context (5 tokens before and 5 tokens after)
           before_tokens = tokens[[0, token_index - 5].max...token_index]
-          after_tokens = tokens[(token_index + 1)..[token_index + 5, tokens.length - 1].min]
+          after_tokens = tokens[(token_index + 1)..[tokens.length - 1, token_index + 5].min]
 
           instance = {
             label: label,
@@ -958,7 +958,10 @@ module BybeUtils
     text.split(/\s+/).each do |word_candidate|
       next if word_candidate.empty?
 
-      # Remove leading and trailing punctuation, but preserve internal punctuation for acronyms
+      # Remove leading and trailing punctuation, but preserve quotation marks temporarily
+      # We preserve " here because Hebrew acronyms have " in the penultimate position,
+      # and we need to detect this pattern before removing quotes
+      # Pattern: [^\p{L}\p{N}"] matches any character that is NOT a letter, digit, or quotation mark
       # Hebrew acronym examples: מפא"י, רמטכ"ל, חט"ב
       cleaned = word_candidate.gsub(/^[^\p{L}\p{N}"]+|[^\p{L}\p{N}"]+$/, '')
       next if cleaned.empty?
