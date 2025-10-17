@@ -56,4 +56,30 @@ describe Anthology do
       end
     end
   end
+
+  describe '#fresh_downloadable_for' do
+    let(:anthology) { create(:anthology) }
+
+    context 'when downloadable has attached file' do
+      let!(:downloadable) { create(:downloadable, :with_file, object: anthology, doctype: :pdf) }
+
+      it 'returns the downloadable' do
+        expect(anthology.fresh_downloadable_for('pdf')).to eq downloadable
+      end
+    end
+
+    context 'when downloadable exists but has no attached file' do
+      let!(:downloadable) { create(:downloadable, :without_file, object: anthology, doctype: :pdf) }
+
+      it 'returns nil' do
+        expect(anthology.fresh_downloadable_for('pdf')).to be_nil
+      end
+    end
+
+    context 'when no downloadable exists' do
+      it 'returns nil' do
+        expect(anthology.fresh_downloadable_for('pdf')).to be_nil
+      end
+    end
+  end
 end
