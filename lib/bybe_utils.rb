@@ -854,4 +854,84 @@ module BybeUtils
   def c(id)
     Collection.find(id)
   end
+
+  # Create a KWIC-style concordance from labelled texts
+  # Input: array of hashes with :label and :buffer keys
+  # Output: array of hashes with :token and :instances keys
+  # Each instance contains :label, :before_context, :after_context, and :paragraph
+  def kwic_concordance(labelled_texts)
+    token_instances = Hash.new { |h, k| h[k] = [] }
+
+    labelled_texts.each do |text_entry|
+      label = text_entry[:label]
+      buffer = text_entry[:buffer]
+
+      # Split buffer into paragraphs (lines)
+      paragraphs = buffer.split("\n")
+
+      paragraphs.each_with_index do |paragraph, para_index|
+        # Tokenize paragraph, preserving Hebrew acronyms
+        tokens = tokenize_with_acronyms(paragraph)
+
+        tokens.each_with_index do |token, token_index|
+          # Get context (5 tokens before and 5 tokens after)
+          before_tokens = tokens[[0, token_index - 5].max...token_index]
+          after_tokens = tokens[(token_index + 1)..[token_index + 5, tokens.length - 1].min]
+
+          instance = {
+            label: label,
+            before_context: before_tokens.join(' '),
+            after_context: after_tokens.join(' '),
+            paragraph: para_index + 1 # 1-indexed paragraphs
+          }
+
+          token_instances[token] << instance
+        end
+      end
+    end
+
+    # Convert hash to array and sort
+    result = token_instances.map do |token, instances|
+      {
+        token: token,
+        instances: instances.sort_by { |i| [i[:label], i[:paragraph]] }
+      }
+    end
+
+    # Sort by token, then by label and paragraph
+    result.sort_by { |entry| entry[:token] }
+  end
+
+  private
+
+  # Tokenize text while preserving Hebrew acronyms (with " in penultimate position)
+  # and removing punctuation at word boundaries
+  def tokenize_with_acronyms(text)
+    # This regex matches:
+    # 1. Words with Hebrew acronym pattern (letters + " + letter)
+    # 2. Regular words (letters and digits)
+    # Hebrew acronym pattern: one or more word chars, followed by ", followed by one word char
+    tokens = []
+
+    # Split on whitespace first to get word candidates
+    text.split(/\s+/).each do |word_candidate|
+      next if word_candidate.empty?
+
+      # Remove leading and trailing punctuation, but preserve internal punctuation for acronyms
+      # Hebrew acronym examples: מפא"י, רמטכ"ל, חט"ב
+      cleaned = word_candidate.gsub(/^[^\p{L}\p{N}"]+|[^\p{L}\p{N}"]+$/, '')
+      next if cleaned.empty?
+
+      # Check if it's a Hebrew acronym (has " in penultimate position)
+      if cleaned.length >= 2 && cleaned[-2] == '"'
+        tokens << cleaned
+      else
+        # Remove any remaining quotes that aren't part of acronyms
+        cleaned = cleaned.delete('"')
+        tokens << cleaned unless cleaned.empty?
+      end
+    end
+
+    tokens
+  end
 end
