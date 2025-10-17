@@ -369,7 +369,7 @@ class AdminController < ApplicationController
 
     # Step 1: Get all published manifestations within the date range
     manifestations_in_range = Manifestation.published
-                                          .where('created_at > ? AND created_at < ?', from_date, to_date)
+                                          .where('created_at >= ? AND created_at <= ?', from_date, to_date)
                                           .includes(expression: { work: :involved_authorities, involved_authorities: :authority })
 
     # Step 2: Extract unique authorities from these manifestations
