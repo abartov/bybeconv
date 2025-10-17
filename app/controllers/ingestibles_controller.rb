@@ -204,7 +204,7 @@ class IngestiblesController < ApplicationController
 
   def update_toc
     toc_params = params.permit(%i(title new_title genre orig_lang intellectual_property authority_id authority_name
-                                  role new_person_tbd rmauth seqno))
+                                  role new_person_tbd rmauth seqno clear_defaults))
     cur_toc = @ingestible.decode_toc
     updated = false
     prep(false) # prepare the markdown titles for the view
@@ -242,6 +242,9 @@ class IngestiblesController < ApplicationController
         authorities = x[2].present? ? JSON.parse(x[2]) : []
         authorities.reject! { |a| a['seqno'] == params[:seqno].to_i }
         x[2] = authorities.to_json
+      elsif params[:clear_defaults].present?
+        # Clear default authorities for this specific work by setting an empty array
+        x[2] = '[]'
       end
 
       updated = true

@@ -44,6 +44,7 @@
               %b= t(:default)
               %br
               = render partial: 'ingestible_authorities/authority', collection: JSON.parse(@ingestible.default_authorities), locals: {editable: false, toc: true}
+              %button.clear_defaults_button{style: 'margin-top: 5px;'}= t('ingestibles.clear_defaults')
           - unless seen_author
             .lredbg
               = t('ingestible.author_missing')
@@ -187,6 +188,20 @@
       event.stopImmediatePropagation();
       $(this).closest('tr').find('input[name=authority_id]').val(data.item.id);
       $(this).closest('tr').find('input[name=add_authority_name]').val(data.item.value);
+    });
+    $('.clear_defaults_button').click(function(e) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      var title = $(this).closest('tr').find('.toc-title').text();
+      startModal('spinnerdiv');
+      $.ajax({
+        url: "#{update_toc_ingestible_path(@ingestible)}",
+        type: 'PATCH',
+        data: {
+          title: title,
+          clear_defaults: true
+        },
+      });
     });
 
   });
