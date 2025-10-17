@@ -155,6 +155,7 @@ class Collection < ApplicationRecord
   def fresh_downloadable_for(doctype)
     dl = downloadables.where(doctype: doctype).first
     return nil if dl.nil?
+    return nil unless dl.stored_file.attached? # invalid downloadable without file
     return nil if dl.updated_at < updated_at # needs to be re-generated
 
     # also ensure none of the collection items (including sub-collections) is fresher than the saved downloadable
