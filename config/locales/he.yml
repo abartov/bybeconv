@@ -1392,6 +1392,7 @@ he:
   ingestibles:
     ingestible_locked: ההעלאה נעולה לטיפול מידֵי %{user}
     replace_with_authority: החלף ביישות קיימת!
+    clear_defaults: הסרת ברירות מחדל
     # _authorities partial
     authorities:
       or_new_person: או הקלידו שם יוצר/ת נטול/ת ישות
