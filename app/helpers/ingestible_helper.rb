@@ -25,13 +25,8 @@ module IngestibleHelper
   end
 
   def authorities_including_implicit(toc_text)
-    aus = if toc_text.present?
-            JSON.parse(toc_text)
-          elsif @ingestible.default_authorities.present?
-            JSON.parse(@ingestible.default_authorities)
-          else
-            []
-          end
+    # Merge per role: specific authorities override defaults for their role only
+    aus = merge_authorities_per_role_helper(toc_text, @ingestible.default_authorities)
 
     if aus.present?
       return aus.map do |ia|
@@ -40,5 +35,32 @@ module IngestibleHelper
     end
 
     return t(:unknown)
+  end
+
+  private
+
+  # Same logic as in controller but for helper
+  def merge_authorities_per_role_helper(work_authorities, default_authorities)
+    # Handle explicit empty array - no defaults should apply
+    return [] if work_authorities == '[]'
+
+    work_auths = work_authorities.present? ? JSON.parse(work_authorities) : []
+    default_auths = default_authorities.present? ? JSON.parse(default_authorities) : []
+
+    # If no defaults, just return work authorities
+    return work_auths if default_auths.empty?
+
+    # Get roles present in work authorities
+    work_roles = work_auths.map { |a| a['role'] }.uniq
+
+    # Start with work authorities, then add defaults for roles not present in work authorities
+    result = work_auths.dup
+    default_auths.each do |default_auth|
+      unless work_roles.include?(default_auth['role'])
+        result << default_auth
+      end
+    end
+
+    result
   end
 end

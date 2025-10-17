@@ -163,17 +163,6 @@ describe IngestiblesController do
                default_authorities: [{ seqno: 1, authority_id: authority.id, authority_name: authority.name, role: 'translator' }].to_json)
       end
 
-      # Helper method to parse authorities like the ingestion controller does
-      def parse_authorities(toc_line, ingestible)
-        if toc_line[2].present?
-          JSON.parse(toc_line[2])
-        elsif ingestible.default_authorities.present?
-          JSON.parse(ingestible.default_authorities)
-        else
-          []
-        end
-      end
-
       it_behaves_like 'redirects to show page if record cannot be locked'
 
       context 'when clearing default authorities for a specific work' do
@@ -192,7 +181,7 @@ describe IngestiblesController do
           call
           ingestible.reload
           toc_line = ingestible.decode_toc.first
-          auths = parse_authorities(toc_line, ingestible)
+          auths = controller.send(:merge_authorities_per_role, toc_line[2], ingestible.default_authorities)
           expect(auths).to eq([])
         end
       end
@@ -201,9 +190,54 @@ describe IngestiblesController do
         it 'uses default authorities during ingestion' do
           ingestible.reload
           toc_line = ingestible.decode_toc.first
-          auths = parse_authorities(toc_line, ingestible)
+          auths = controller.send(:merge_authorities_per_role, toc_line[2], ingestible.default_authorities)
           expect(auths.length).to eq(1)
           expect(auths.first['authority_id']).to eq(authority.id)
+          expect(auths.first['role']).to eq('translator')
+        end
+      end
+
+      context 'when adding specific author with default translator' do
+        let(:author) { create(:authority) }
+
+        before do
+          # Add an author to the work
+          cur_toc = ingestible.decode_toc
+          cur_toc.first[2] = [{ seqno: 1, authority_id: author.id, authority_name: author.name, role: 'author' }].to_json
+          ingestible.update_columns(toc_buffer: ingestible.encode_toc(cur_toc))
+        end
+
+        it 'merges per role: uses specific author and default translator' do
+          ingestible.reload
+          toc_line = ingestible.decode_toc.first
+          auths = controller.send(:merge_authorities_per_role, toc_line[2], ingestible.default_authorities)
+          
+          expect(auths.length).to eq(2)
+          author_auth = auths.find { |a| a['role'] == 'author' }
+          translator_auth = auths.find { |a| a['role'] == 'translator' }
+          
+          expect(author_auth['authority_id']).to eq(author.id)
+          expect(translator_auth['authority_id']).to eq(authority.id)
+        end
+      end
+
+      context 'when overriding default translator with specific translator' do
+        let(:different_translator) { create(:authority) }
+
+        before do
+          # Add a different translator to the work
+          cur_toc = ingestible.decode_toc
+          cur_toc.first[2] = [{ seqno: 1, authority_id: different_translator.id, authority_name: different_translator.name, role: 'translator' }].to_json
+          ingestible.update_columns(toc_buffer: ingestible.encode_toc(cur_toc))
+        end
+
+        it 'uses specific translator instead of default' do
+          ingestible.reload
+          toc_line = ingestible.decode_toc.first
+          auths = controller.send(:merge_authorities_per_role, toc_line[2], ingestible.default_authorities)
+          
+          expect(auths.length).to eq(1)
+          expect(auths.first['authority_id']).to eq(different_translator.id)
           expect(auths.first['role']).to eq('translator')
         end
       end
