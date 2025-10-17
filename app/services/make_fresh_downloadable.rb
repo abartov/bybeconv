@@ -86,7 +86,7 @@ class MakeFreshDownloadable < ApplicationService
       # Verify the attachment was successful
       unless dl.stored_file.attached?
         dl.destroy
-        raise "Failed to attach file to Downloadable"
+        raise StandardError, "Failed to attach file to Downloadable for #{download_entity.class.name} #{download_entity.id}"
       end
     rescue => e
       # If something went wrong, destroy the downloadable record

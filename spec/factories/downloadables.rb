@@ -16,7 +16,7 @@ FactoryBot.define do
     end
 
     trait :without_file do
-      # Downloadable without any attachment
+      # Creates a Downloadable without an attached file to simulate failed generation
     end
   end
 end
