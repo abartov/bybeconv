@@ -626,6 +626,10 @@ he:
   suspicious_headings_report: "דו\"ח כותרות פרקים קרובות זו לזו (לעריכה)"
   texts_between_dates: יצירות לפי מועד עלייתן
   authority_records_between_dates: יוצרים לפי מועד יצירת היישות
+  first_manifestations_between_dates: יוצרים שעלו למאגר (לפי מועד יצירה ראשונה)
+  first_manifestation_date: מועד יצירה ראשונה
+  authority_name: שם היוצר
+  first_manifestation_title: כותרת היצירה הראשונה
   suspicious_titles_report: "דו\"ח שמות חשודים ליצירות"
   slash_in_titles_report: "דו\"ח כותרות המכילות קו נטוי (/או\\)"
   similar_titles_report: "דו\"ח כותרות דומות ליצירות (שאולי הן פרקים של יצירה אחת שיש לאחד)"
