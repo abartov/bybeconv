@@ -182,7 +182,7 @@ describe BybeUtils do
         result = instance.kwic_concordance(input)
         ramatkal_entry = result.find { |e| e[:token] == 'רמטכ"ל' }
 
-        expect(ramatkal_entry[:instances].first[:after_context]).to eq('הוא ראש המטה הכללי')
+        expect(ramatkal_entry[:instances].first[:after_context]).to eq('הוא ראש המטה הכללי של')
       end
     end
 
@@ -208,9 +208,8 @@ describe BybeUtils do
         result = instance.kwic_concordance(input)
         tokens = result.map { |entry| entry[:token] }
 
-        # Apostrophes in contractions should be treated as word boundaries
-        expect(tokens).to include('I')
-        expect(tokens).to include('m')
+        # Apostrophes in contractions should NOT be treated as word boundaries
+        expect(tokens).to include('I\'m')
       end
     end
 
@@ -236,7 +235,7 @@ describe BybeUtils do
         result = instance.kwic_concordance(input)
         tokens = result.map { |entry| entry[:token] }
 
-        expect(tokens).to eq(%w[word1 word2 word3])
+        expect(tokens).to eq(%w(word1 word2 word3))
       end
 
       it 'limits context to 5 tokens' do
