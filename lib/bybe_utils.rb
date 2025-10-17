@@ -855,10 +855,39 @@ module BybeUtils
     Collection.find(id)
   end
 
-  # Create a KWIC-style concordance from labelled texts
-  # Input: array of hashes with :label and :buffer keys
-  # Output: array of hashes with :token and :instances keys
-  # Each instance contains :label, :before_context, :after_context, and :paragraph
+  # Create a KWIC (Key Word In Context) style concordance from labelled texts
+  #
+  # This function processes multiple texts and creates a concordance showing each token's
+  # context across all texts. It properly handles Hebrew acronyms which are marked with
+  # a quotation mark (") in the penultimate position.
+  #
+  # @param labelled_texts [Array<Hash>] Array of text entries, each with :label and :buffer keys
+  #   - :label [String] A label identifying the source text
+  #   - :buffer [String] The text content, with paragraphs separated by newlines
+  #
+  # @return [Array<Hash>] Array of token entries sorted alphabetically, each containing:
+  #   - :token [String] The token (word)
+  #   - :instances [Array<Hash>] Sorted array of occurrences, each with:
+  #     - :label [String] Source text label
+  #     - :before_context [String] Up to 5 tokens appearing before this token
+  #     - :after_context [String] Up to 5 tokens appearing after this token
+  #     - :paragraph [Integer] 1-indexed paragraph number in the source buffer
+  #
+  # @example Basic usage
+  #   texts = [
+  #     { label: 'text A', buffer: "The quick brown fox.\nThe dog runs." },
+  #     { label: 'text B', buffer: 'The brown bear.' }
+  #   ]
+  #   concordance = kwic_concordance(texts)
+  #   # Returns tokens sorted alphabetically, each with their contexts
+  #
+  # @example Hebrew acronyms
+  #   texts = [{ label: 'טקסט', buffer: 'מפא"י היתה מפלגה פוליטית.' }]
+  #   concordance = kwic_concordance(texts)
+  #   # מפא"י is preserved as a single token with the quotation mark
+  #
+  # @note Punctuation at word boundaries is removed, but quotation marks inside
+  #   Hebrew acronyms (in penultimate position) are preserved.
   def kwic_concordance(labelled_texts)
     token_instances = Hash.new { |h, k| h[k] = [] }
 
@@ -906,6 +935,18 @@ module BybeUtils
 
   # Tokenize text while preserving Hebrew acronyms (with " in penultimate position)
   # and removing punctuation at word boundaries
+  #
+  # Hebrew acronyms are identified by a quotation mark in the penultimate character position.
+  # Examples: מפא"י (Mapai), רמטכ"ל (Ramatkal), צה"ל (Tzahal), חט"ב (Hativah)
+  #
+  # @param text [String] The text to tokenize
+  # @return [Array<String>] Array of tokens with punctuation removed from boundaries
+  #
+  # @note This method:
+  #   - Removes leading/trailing punctuation from words
+  #   - Preserves quotation marks in Hebrew acronyms (when in penultimate position)
+  #   - Treats all other quotation marks as word boundaries
+  #   - Preserves letters and numbers as valid token characters
   def tokenize_with_acronyms(text)
     # This regex matches:
     # 1. Words with Hebrew acronym pattern (letters + " + letter)
