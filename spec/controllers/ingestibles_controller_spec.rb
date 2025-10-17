@@ -163,6 +163,17 @@ describe IngestiblesController do
                default_authorities: [{ seqno: 1, authority_id: authority.id, authority_name: authority.name, role: 'translator' }].to_json)
       end
 
+      # Helper method to parse authorities like the ingestion controller does
+      def parse_authorities(toc_line, ingestible)
+        if toc_line[2].present?
+          JSON.parse(toc_line[2])
+        elsif ingestible.default_authorities.present?
+          JSON.parse(ingestible.default_authorities)
+        else
+          []
+        end
+      end
+
       it_behaves_like 'redirects to show page if record cannot be locked'
 
       context 'when clearing default authorities for a specific work' do
@@ -180,16 +191,8 @@ describe IngestiblesController do
         it 'allows the work to have no authorities during ingestion' do
           call
           ingestible.reload
-          # Verify that when we parse the toc_line during ingestion,
-          # it will use the empty array instead of falling back to defaults
           toc_line = ingestible.decode_toc.first
-          auths = if toc_line[2].present?
-                    JSON.parse(toc_line[2])
-                  elsif ingestible.default_authorities.present?
-                    JSON.parse(ingestible.default_authorities)
-                  else
-                    []
-                  end
+          auths = parse_authorities(toc_line, ingestible)
           expect(auths).to eq([])
         end
       end
@@ -197,15 +200,8 @@ describe IngestiblesController do
       context 'when not clearing default authorities' do
         it 'uses default authorities during ingestion' do
           ingestible.reload
-          # Verify that when authorities field is empty, defaults are used
           toc_line = ingestible.decode_toc.first
-          auths = if toc_line[2].present?
-                    JSON.parse(toc_line[2])
-                  elsif ingestible.default_authorities.present?
-                    JSON.parse(ingestible.default_authorities)
-                  else
-                    []
-                  end
+          auths = parse_authorities(toc_line, ingestible)
           expect(auths.length).to eq(1)
           expect(auths.first['authority_id']).to eq(authority.id)
           expect(auths.first['role']).to eq('translator')
