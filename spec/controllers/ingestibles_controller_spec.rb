@@ -303,5 +303,72 @@ describe IngestiblesController do
         end
       end
     end
+
+    describe '#ingest' do
+      let(:author) { create(:authority) }
+      let(:translator) { create(:authority) }
+      let(:editor) { create(:authority) }
+      let(:collection) { create(:collection, title: 'Test Collection') }
+      let(:markdown) { "&&& Work 1\n\nSome content for work 1" }
+      let(:toc_buffer) do
+        " yes || Work 1 || #{[{ seqno: 1, authority_id: author.id, authority_name: author.name,
+                                role: 'author' }].to_json} || prose || he || public_domain"
+      end
+      let(:ingestible) do
+        create(:ingestible,
+               markdown: markdown,
+               toc_buffer: toc_buffer,
+               prospective_volume_id: collection.id.to_s,
+               publisher: 'Test Publisher',
+               year_published: '2023',
+               collection_authorities: [{ seqno: 1, authority_id: editor.id, authority_name: editor.name,
+                                          role: 'editor' }].to_json,
+               default_authorities: [{ seqno: 1, authority_id: translator.id, authority_name: translator.name,
+                                       role: 'translator' }].to_json)
+      end
+
+      before do
+        ingestible.update_parsing
+      end
+
+      it 'uses collection_authorities for collection involved authorities' do
+        post :ingest, params: { id: ingestible.id }
+        collection.reload
+        # Editor should be linked to collection
+        editor_ia = collection.involved_authorities.find_by(authority_id: editor.id, role: 'editor')
+        expect(editor_ia).to be_present
+      end
+
+      it 'uses default_authorities (not collection_authorities) for text involved authorities' do
+        post :ingest, params: { id: ingestible.id }
+        manifestation = Manifestation.order(id: :desc).first
+        expression = manifestation.expression
+        work = expression.work
+
+        # Work should have author (from work-specific)
+        work_author = work.involved_authorities.find_by(authority_id: author.id, role: 'author')
+        expect(work_author).to be_present
+
+        # Expression should have translator (from default_authorities, merged per role)
+        expr_translator = expression.involved_authorities.find_by(authority_id: translator.id, role: 'translator')
+        expect(expr_translator).to be_present
+
+        # Expression should NOT have editor (editor is only for collection)
+        expr_editor = expression.involved_authorities.find_by(authority_id: editor.id, role: 'editor')
+        expect(expr_editor).to be_nil
+      end
+
+      it 'does not duplicate collection authorities if they already exist' do
+        # Pre-create the editor involved authority on collection
+        collection.involved_authorities.create!(authority: editor, role: 'editor')
+        initial_count = collection.involved_authorities.count
+
+        post :ingest, params: { id: ingestible.id }
+        collection.reload
+
+        # Count should not increase
+        expect(collection.involved_authorities.count).to eq(initial_count)
+      end
+    end
   end
 end

@@ -351,6 +351,13 @@ class IngestiblesController < ApplicationController
     @authorities_tbd = []
     @missing_translators = []
     @missing_authors = []
+    # report on missing authority in collection_authorities
+    if @ingestible.collection_authorities.present?
+      @coll_aus = JSON.parse(@ingestible.collection_authorities)
+      @coll_aus.each do |ia|
+        @authorities_tbd << ia if ia['new_person'].present?
+      end
+    end
     # report on missing authority in default_authorities
     if @ingestible.default_authorities.present?
       @def_aus = JSON.parse(@ingestible.default_authorities)
