@@ -29,12 +29,13 @@ RSpec.describe 'copyright_expiration rake task' do
     end
 
     it 'does not update any records' do
-      expect { task.invoke }.not_to change { authority_copyrighted.reload.intellectual_property }
+      expect { task.invoke }.not_to(change { authority_copyrighted.reload.intellectual_property })
     end
 
     it 'reports statistics' do
-      expect { task.invoke }.to output(/Authorities:/).to_stdout
-                            .and output(/Manifestations:/).to_stdout
+      #      expect { task.invoke }.to output(/Authorities:/).to_stdout
+      #                            .and output(/Manifestations:/).to_stdout
+      expect { task.invoke }.to output(include(/Manifestations:/, /Authorities:/)).to_stdout
     end
 
     it 'indicates dry-run mode' do
@@ -159,7 +160,7 @@ RSpec.describe 'copyright_expiration rake task' do
     end
 
     it 'does not update expression if not all authorities are public_domain' do
-      expect { task.invoke('execute') }.not_to change { expression_mixed.reload.intellectual_property }
+      expect { task.invoke('execute') }.not_to(change { expression_mixed.reload.intellectual_property })
     end
 
     it 'still updates the authority that died 71 years ago' do
