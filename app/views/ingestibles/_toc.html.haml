@@ -45,6 +45,12 @@
                   (#{textify_authority_role(authority['role'])})
                   = button_tag t(:destroy), class: 'delete_toc_authority'
           
+          - # Show "Clear all defaults" button if any defaults would apply
+          - if default_authorities.present? && !explicitly_cleared
+            - applicable_defaults = default_authorities.reject { |a| work_roles.include?(a['role']) }
+            - if applicable_defaults.present?
+              %button.clear_defaults_button{style: 'margin-top: 5px;'}= t('ingestibles.clear_defaults')
+            %br
           - # Show default authorities for roles not explicitly set in work authorities
           - unless explicitly_cleared
             - default_authorities.each do |authority|
@@ -58,13 +64,7 @@
                   - if authority['authority_id']
                     = link_to authority['authority_name'], authors_show_path(id: authority['authority_id'])
                   - else
-                    = authority['new_person']
-          
-          - # Show "Clear all defaults" button if any defaults would apply
-          - if default_authorities.present? && !explicitly_cleared
-            - applicable_defaults = default_authorities.reject { |a| work_roles.include?(a['role']) }
-            - if applicable_defaults.present?
-              %button.clear_defaults_button{style: 'margin-top: 5px;'}= t('ingestibles.clear_defaults')
+                    = authority['new_person']          
           
           - unless seen_author
             .lredbg
