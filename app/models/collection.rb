@@ -480,7 +480,7 @@ class Collection < ApplicationRecord
                     items[pos - 1].seqno
                   end
 
-      collection_items.where('seqno >= ?', new_seqno).order(:seqno).each do |coli|
+      collection_items.where('seqno >= ?', new_seqno).order(:seqno).to_a.each do |coli|
         coli.increment!(:seqno)
       end
 
