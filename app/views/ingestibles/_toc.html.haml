@@ -73,8 +73,8 @@
             .lredbg
               = t('ingestible.translator_missing')
           = t(:add)
-          = autocomplete_field_tag 'add_authority', '', autocomplete_authority_name_and_aliases_path,
-                                  id_element: "authority_id", style: 'background-color:white;', class: 'add_authority'
+          = autocomplete_field_tag 'ia_add_authority', '', autocomplete_authority_name_and_aliases_path,
+                                  id_element: "authority_id", style: 'background-color:white;', class: 'ia_add_authority'
 
           = t('ingestibles.authorities.or_new_person')
           = text_field_tag :new_person, '', {style: 'width: 150px;'}
@@ -205,7 +205,7 @@
          });
       }
     });
-    $('.add_authority').bind('railsAutocomplete.select', function(event, data){
+    $('.ia_add_authority').bind('railsAutocomplete.select', function(event, data){
       event.stopImmediatePropagation();
       $(this).closest('tr').find('input[name=authority_id]').val(data.item.id);
       $(this).closest('tr').find('input[name=add_authority_name]').val(data.item.value);
