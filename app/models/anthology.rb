@@ -28,6 +28,7 @@ class Anthology < ApplicationRecord
   def fresh_downloadable_for(doctype)
     dl = downloadables.where(doctype: doctype).first
     return nil if dl.nil?
+    return nil unless dl.stored_file.attached? # invalid downloadable without file
     return nil if dl.updated_at < self.updated_at # needs to be re-generated
     # also ensure none of the *included* texts is fresher than the saved downloadable
     self.texts.where.not(manifestation_id: nil).each do |at|

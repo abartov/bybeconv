@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+include ActiveSupport::Testing::TimeHelpers
 
 describe Collection do
   it 'validates a collection' do
@@ -214,5 +215,31 @@ describe Collection do
     create(:collection_item, collection: p1, seqno: 1, item: c)
     create(:collection_item, collection: p2, seqno: 1, item: c)
     expect(c.parent_collections).to eq [p1, p2]
+  end
+
+  describe '#fresh_downloadable_for' do
+    let(:collection) { create(:collection) }
+
+    context 'when downloadable has attached file' do
+      let!(:downloadable) { create(:downloadable, :with_file, object: collection, doctype: :pdf) }
+
+      it 'returns the downloadable' do
+        expect(collection.fresh_downloadable_for('pdf')).to eq downloadable
+      end
+    end
+
+    context 'when downloadable exists but has no attached file' do
+      let!(:downloadable) { create(:downloadable, :without_file, object: collection, doctype: :pdf) }
+
+      it 'returns nil' do
+        expect(collection.fresh_downloadable_for('pdf')).to be_nil
+      end
+    end
+
+    context 'when no downloadable exists' do
+      it 'returns nil' do
+        expect(collection.fresh_downloadable_for('pdf')).to be_nil
+      end
+    end
   end
 end
