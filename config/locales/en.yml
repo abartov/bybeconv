@@ -73,6 +73,7 @@ en:
         has_non_public_domain_authority: Has non public domain authority
   ingestibles:
     ingestible_locked: Ingestible locked by user %{user}
+    clear_defaults: Clear defaults
     # _authorities partial
     authorities:
       or_new_person: or type a new authority name

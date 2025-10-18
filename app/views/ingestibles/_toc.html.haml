@@ -21,8 +21,16 @@
         %td
           - seen_translator = false
           - seen_author = false
-          - if ias.present?
-            - JSON.parse(ias).each do |authority|
+          - # Get work-specific authorities and roles
+          - work_authorities = ias.present? && ias != '[]' ? JSON.parse(ias) : []
+          - work_roles = work_authorities.map { |a| a['role'] }.uniq
+          - default_authorities = @ingestible.default_authorities.present? ? JSON.parse(@ingestible.default_authorities) : []
+          - # Check if explicitly cleared (empty array)
+          - explicitly_cleared = ias == '[]'
+          
+          - # Show work-specific authorities
+          - if work_authorities.present?
+            - work_authorities.each do |authority|
               - seen_translator = true if authority['role'] == 'translator'
               - seen_author = true if authority['role'] == 'author'
               %ul
@@ -36,14 +44,28 @@
                       = button_tag t('ingestibles.replace_with_authority'), class: 'replace_authority lgreenbg', data: { authorityid: @authority_by_name[authority['new_person']], newperson: authority['new_person'] }
                   (#{textify_authority_role(authority['role'])})
                   = button_tag t(:destroy), class: 'delete_toc_authority'
-          - elsif @ingestible.default_authorities.present?
-            - JSON.parse(@ingestible.default_authorities).each do |authority|
-              - seen_translator = true if authority['role'] == 'translator'
-              - seen_author = true if authority['role'] == 'author'
-            %div{style: 'background: repeating-linear-gradient(45deg,#dddddd,#dedede 10px,#efefef 10px,#eeeeee 20px);'}
-              %b= t(:default)
-              %br
-              = render partial: 'ingestible_authorities/authority', collection: JSON.parse(@ingestible.default_authorities), locals: {editable: false, toc: true}
+          
+          - # Show default authorities for roles not explicitly set in work authorities
+          - unless explicitly_cleared
+            - default_authorities.each do |authority|
+              - unless work_roles.include?(authority['role'])
+                - seen_translator = true if authority['role'] == 'translator'
+                - seen_author = true if authority['role'] == 'author'
+                %div{style: 'background: repeating-linear-gradient(45deg,#dddddd,#dedede 10px,#efefef 10px,#eeeeee 20px); margin-top: 5px; padding: 5px;'}
+                  %b= t(:default)
+                  = "(#{textify_authority_role(authority['role'])})"
+                  %br
+                  - if authority['authority_id']
+                    = link_to authority['authority_name'], authors_show_path(id: authority['authority_id'])
+                  - else
+                    = authority['new_person']
+          
+          - # Show "Clear all defaults" button if any defaults would apply
+          - if default_authorities.present? && !explicitly_cleared
+            - applicable_defaults = default_authorities.reject { |a| work_roles.include?(a['role']) }
+            - if applicable_defaults.present?
+              %button.clear_defaults_button{style: 'margin-top: 5px;'}= t('ingestibles.clear_defaults')
+          
           - unless seen_author
             .lredbg
               = t('ingestible.author_missing')
@@ -51,8 +73,8 @@
             .lredbg
               = t('ingestible.translator_missing')
           = t(:add)
-          = autocomplete_field_tag 'add_authority', '', autocomplete_authority_name_and_aliases_path,
-                                  id_element: "authority_id", style: 'background-color:white;', class: 'add_authority'
+          = autocomplete_field_tag 'ia_add_authority', '', autocomplete_authority_name_and_aliases_path,
+                                  id_element: "authority_id", style: 'background-color:white;', class: 'ia_add_authority'
 
           = t('ingestibles.authorities.or_new_person')
           = text_field_tag :new_person, '', {style: 'width: 150px;'}
@@ -183,10 +205,24 @@
          });
       }
     });
-    $('.add_authority').bind('railsAutocomplete.select', function(event, data){
+    $('.ia_add_authority').bind('railsAutocomplete.select', function(event, data){
       event.stopImmediatePropagation();
       $(this).closest('tr').find('input[name=authority_id]').val(data.item.id);
       $(this).closest('tr').find('input[name=add_authority_name]').val(data.item.value);
+    });
+    $('.clear_defaults_button').click(function(e) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      var title = $(this).closest('tr').find('.toc-title').text();
+      startModal('spinnerdiv');
+      $.ajax({
+        url: "#{update_toc_ingestible_path(@ingestible)}",
+        type: 'PATCH',
+        data: {
+          title: title,
+          clear_defaults: true
+        },
+      });
     });
 
   });
