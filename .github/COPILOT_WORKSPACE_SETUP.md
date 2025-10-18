@@ -10,7 +10,32 @@ The Copilot Agent environment typically has Ruby 3.2.3 by default, but Ruby 3.3.
 
 ## Quick Setup
 
-To set up the environment for running tests and code:
+### Option 1: Use the Setup Script (Recommended)
+
+```bash
+# Source the setup script to configure Ruby 3.3.9
+source .github/setup_copilot_env.sh
+
+# Install system dependencies (required for gems)
+sudo apt-get update
+sudo apt-get install -y \
+  mysql-client \
+  libmysqlclient-dev \
+  wkhtmltopdf \
+  pandoc \
+  yaz \
+  libyaz-dev \
+  libmagickwand-dev \
+  libpcap-dev \
+  cmake
+
+# Install Ruby dependencies
+bundle install
+```
+
+### Option 2: Manual Setup
+
+If the setup script doesn't work or you prefer manual setup:
 
 ```bash
 # Add Ruby 3.3.9 to PATH
