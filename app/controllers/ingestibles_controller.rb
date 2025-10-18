@@ -204,7 +204,7 @@ class IngestiblesController < ApplicationController
 
   def update_toc
     toc_params = params.permit(%i(title new_title genre orig_lang intellectual_property authority_id authority_name
-                                  role new_person_tbd rmauth seqno))
+                                  role new_person_tbd rmauth seqno clear_defaults))
     cur_toc = @ingestible.decode_toc
     updated = false
     prep(false) # prepare the markdown titles for the view
@@ -242,6 +242,9 @@ class IngestiblesController < ApplicationController
         authorities = x[2].present? ? JSON.parse(x[2]) : []
         authorities.reject! { |a| a['seqno'] == params[:seqno].to_i }
         x[2] = authorities.to_json
+      elsif params[:clear_defaults].present?
+        # Clear default authorities for this specific work by setting an empty array
+        x[2] = '[]'
       end
 
       updated = true
@@ -358,13 +361,8 @@ class IngestiblesController < ApplicationController
     @texts_to_upload.each do |x|
       @missing_in_markdown << x[1] unless @markdown_titles.include?(x[1])
       @missing_genre << x[1] if x[3].blank?
-      aus = if x[2].present?
-              JSON.parse(x[2])
-            elsif @ingestible.default_authorities.present?
-              @def_aus
-            else
-              []
-            end
+      # Use per-role merging to compose authorities from explicit and defaults
+      aus = merge_authorities_per_role(x[2], @ingestible.default_authorities)
       @missing_authority << x[1] if aus.empty?
       seen_translator = false
       seen_author = false
@@ -488,6 +486,34 @@ class IngestiblesController < ApplicationController
     @changes[:placeholders] << toc_line[1]
   end
 
+  # Merge work-specific authorities with defaults per role
+  # If a role is specified in work authorities, it overrides the default for that role
+  # If a role is not specified in work authorities, the default for that role is used
+  # If work authorities is '[]', no defaults are used (explicit empty)
+  def merge_authorities_per_role(work_authorities, default_authorities)
+    # Handle explicit empty array - no defaults should apply
+    return [] if work_authorities == '[]'
+
+    work_auths = work_authorities.present? ? JSON.parse(work_authorities) : []
+    default_auths = default_authorities.present? ? JSON.parse(default_authorities) : []
+
+    # If no defaults, just return work authorities
+    return work_auths if default_auths.empty?
+
+    # Get roles present in work authorities
+    work_roles = work_auths.map { |a| a['role'] }.uniq
+
+    # Start with work authorities, then add defaults for roles not present in work authorities
+    result = work_auths.dup
+    default_auths.each do |default_auth|
+      unless work_roles.include?(default_auth['role'])
+        result << default_auth
+      end
+    end
+
+    result
+  end
+
   def upload_text(toc_line, index)
     # create Work, Expression, Manifestation entities
 
@@ -504,13 +530,8 @@ class IngestiblesController < ApplicationController
         translator_names = []
         translator_ids = []
         other_authorities = []
-        auths = if toc_line[2].present?
-                  JSON.parse(toc_line[2])
-                elsif @ingestible.default_authorities.present?
-                  JSON.parse(@ingestible.default_authorities)
-                else
-                  []
-                end
+        # Merge authorities per role: specific authorities override defaults for their role only
+        auths = merge_authorities_per_role(toc_line[2], @ingestible.default_authorities)
         auths.each do |ia|
           if ia['role'] == 'author'
             author_names << ia['authority_name']
