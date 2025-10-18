@@ -96,6 +96,11 @@
         %br
         = f.label t(:publisher_link_text)
         = f.text_field :pub_link_text, style: 'width:400px;'
+        %hr
+        = render partial: 'collection_authorities', locals: {authorities: @ingestible.collection_authorities}
+        %hr
+        %h3= t('ingestible.default_authorities_for_texts')
+        %p.text-muted= t('ingestible.default_authorities_help')
         = render partial: 'authorities', locals: {authorities: @ingestible.default_authorities}
         %hr
         .field

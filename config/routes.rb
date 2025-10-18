@@ -23,6 +23,11 @@ Bybeconv::Application.routes.draw do
         post :replace
       end
     end
+    resources :collection_authorities, controller: :ingestible_collection_authorities, only: %i(create destroy) do
+      member do
+        post :replace
+      end
+    end
     resources :texts, controller: :ingestible_texts, only: %i(edit update)
     member do
       get :review

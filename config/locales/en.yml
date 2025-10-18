@@ -236,6 +236,14 @@ en:
       ingested: Ingestion Complete
       failed: Failed to Ingest
       awaiting_authorities: Awaiting Creation of Missed Authorities
+    collection_level_authorities: Collection-level Involved Authorities
+    collection_authorities_help: "These authorities will be linked to the Collection itself, separate from the individual works. When collection authorities are set and default authorities haven't been explicitly set, the collection authorities will also become the defaults."
+    default_authorities_for_texts: Default Involved Authorities for Texts
+    default_authorities_help: "These authorities will be used as defaults for individual texts when no specific authorities are defined in the Table of Contents below."
+    existing_collection_authorities: Existing Collection Authorities
+    no_existing_authorities: No existing authorities in this collection
+    new_authority: New
+    clear_defaults: Clear Defaults
   # This block of strings below should be removed when we finish work. Grouped them together to make it easier to find them again
   public_domain: Public Domain
   viaf_id: ID in VIAF Database

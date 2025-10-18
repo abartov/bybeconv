@@ -1671,6 +1671,14 @@ he:
     originating_task: משימת מקור
     already_being_ingested: משימה זו כבר בתהליך העלאה :)
     credits: קרדיטים
+    collection_level_authorities: אישים מקושרים לכותר (ללא היצירות)
+    collection_authorities_help: "אישים אלו ייקשרו לכותר (Collection) עצמו, נפרד מהיצירות בו. כאשר הוגדרו אישים לכותר ולא הוגדרו אישים ברירת מחדל באופן מפורש, האישים לכותר יהפכו גם לברירת מחדל."
+    default_authorities_for_texts: אישים מקושרים ברירת מחדל ליצירות
+    default_authorities_help: "אישים אלו ישמשו כברירת מחדל ליצירות במקרה שלא הוגדרו אישים ספציפיים ליצירה בפרק \"דפי התוכן\" למטה."
+    existing_collection_authorities: אישים קיימים בכותר
+    no_existing_authorities: אין אישים קיימים בכותר זה
+    new_authority: חדש
+    clear_defaults: ביטול ברירות מחדל
   # This block of strings below should be removed when we finish work. Grouped them together to make it easier to find them again
   public_domain: נחלת הכלל
   viaf_id: "מזהה במאגר VIAF‏"
