@@ -14,8 +14,8 @@ class IngestiblesController < ApplicationController
   before_action :try_to_lock_ingestible,
                 only: %i(edit update update_markdown destroy review update_toc update_toc_list edit_toc undo)
 
-  DEFAULTS = { title: '', status: 'draft', orig_lang: 'he', default_authorities: [], metadata: {}, comments: '',
-               markdown: '' }.freeze
+  DEFAULTS = { title: '', status: 'draft', orig_lang: 'he', default_authorities: [], collection_authorities: [],
+               metadata: {}, comments: '', markdown: '' }.freeze
   # GET /ingestibles or /ingestibles.json
   def index
     show_all = params[:show_all] == '1'
@@ -450,13 +450,24 @@ class IngestiblesController < ApplicationController
     @collection.credits = credits
     @collection.save!
     @changes[:collections] << [@collection.id, @collection.title, created_volume ? 'created' : 'updated'] # record the new volume for the post-ingestion screen
-    return unless created_volume
-
-    return unless @ingestible.default_authorities
-
-    JSON.parse(@ingestible.default_authorities).each do |auth|
-      @collection.involved_authorities.create!(authority: Authority.find(auth['authority_id']),
-                                               role: auth['role'])
+    
+    # Add collection-level involved authorities (whether new or existing collection)
+    if @ingestible.collection_authorities.present?
+      JSON.parse(@ingestible.collection_authorities).each do |auth|
+        next unless auth['authority_id'].present? # skip authorities not yet in database
+        
+        # Check if this authority+role combination already exists on the collection
+        existing = @collection.involved_authorities.find_by(
+          authority_id: auth['authority_id'],
+          role: auth['role']
+        )
+        next if existing.present?
+        
+        @collection.involved_authorities.create!(
+          authority: Authority.find(auth['authority_id']),
+          role: auth['role']
+        )
+      end
     end
   end
 

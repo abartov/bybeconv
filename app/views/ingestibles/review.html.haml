@@ -62,7 +62,25 @@
     %br
 
   .admin_dashboard_item
-    %h2= t(:associated_persons)
+    %h2= t('ingestible.collection_level_authorities')
+    - if @ingestible.collection_authorities.present?
+      %p!= JSON.parse(@ingestible.collection_authorities).map{ |ia| "#{ia['authority_name'].presence || ia['new_person']} (#{textify_authority_role(ia['role'])})"}.join('<br />')
+    - else
+      %p= t(:none)
+    - if @collection.present? && !@ingestible.no_volume
+      %h3= t('ingestible.existing_collection_authorities')
+      - if @collection.involved_authorities.present?
+        - @collection.involved_authorities.each do |ia|
+          - is_new = @ingestible.collection_authorities.present? && JSON.parse(@ingestible.collection_authorities).any? { |ca| ca['authority_id'] == ia.authority_id && ca['role'] == ia.role }
+          %p{style: is_new ? 'background-color: #d4edda; padding: 2px 5px;' : ''}
+            = link_to ia.authority.name, authors_show_path(id: ia.authority_id)
+            = "(#{textify_authority_role(ia.role)})"
+            - if is_new
+              %span.badge.badge-success= t('ingestible.new_authority')
+      - else
+        %p.text-muted= t('ingestible.no_existing_authorities')
+  .admin_dashboard_item
+    %h2= t('ingestible.default_authorities_for_texts')
     - if @ingestible.default_authorities.present?
       %p!= JSON.parse(@ingestible.default_authorities).map{ |ia| "#{ia['authority_name'].presence || ia['new_person']} (#{textify_authority_role(ia['role'])})"}.join('<br />')
     - else
