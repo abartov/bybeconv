@@ -16,7 +16,7 @@ task :copyright_expiration, [:execute] => :environment do |_task, args|
   # Calculate the target year (71 years ago from current year)
   current_year = Time.zone.today.year
   target_year = current_year - 71
-  
+
   puts "Processing authorities who died in #{target_year} (#{current_year} - 71 years)..."
   puts ""
 
@@ -27,7 +27,7 @@ task :copyright_expiration, [:execute] => :environment do |_task, args|
     manifestations_checked: 0,
     manifestations_updated: 0
   }
-  
+
   # Find all people who died in the target year and are not yet public domain
   Person.find_each do |person|
     next if person.authority.nil?
@@ -35,7 +35,7 @@ task :copyright_expiration, [:execute] => :environment do |_task, args|
 
     death_year = person.death_year.to_i
     next if death_year == 0 || death_year != target_year
-    
+
     authority = person.authority
     stats[:authorities_checked] += 1
 
@@ -57,7 +57,7 @@ task :copyright_expiration, [:execute] => :environment do |_task, args|
       stats[:authorities_updated] += 1
       puts "  [DRY-RUN] Would update"
     end
-    
+
     # Now check manifestations involving this authority
     manifestations = authority.manifestations
 
