@@ -361,13 +361,8 @@ class IngestiblesController < ApplicationController
     @texts_to_upload.each do |x|
       @missing_in_markdown << x[1] unless @markdown_titles.include?(x[1])
       @missing_genre << x[1] if x[3].blank?
-      aus = if x[2].present?
-              JSON.parse(x[2])
-            elsif @ingestible.default_authorities.present?
-              @def_aus
-            else
-              []
-            end
+      # Use per-role merging to compose authorities from explicit and defaults
+      aus = merge_authorities_per_role(x[2], @ingestible.default_authorities)
       @missing_authority << x[1] if aus.empty?
       seen_translator = false
       seen_author = false

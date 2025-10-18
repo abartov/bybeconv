@@ -242,5 +242,62 @@ describe IngestiblesController do
         end
       end
     end
+
+    describe '#review' do
+      let(:translator) { create(:authority) }
+      let(:author1) { create(:authority) }
+      let(:author2) { create(:authority) }
+      let(:markdown) { "&&& Work 1\n\nSome content\n\n&&& Work 2\n\nMore content" }
+      let(:toc_buffer) do
+        # Work 1 has specific author, Work 2 has no specific authorities
+        " yes || Work 1 || #{[{ seqno: 1, authority_id: author1.id, authority_name: author1.name, role: 'author' }].to_json} || fiction || en || public_domain\n yes || Work 2 || || fiction || en || public_domain"
+      end
+      let(:ingestible) do
+        create(:ingestible,
+               markdown: markdown,
+               toc_buffer: toc_buffer,
+               default_authorities: [{ seqno: 1, authority_id: translator.id, authority_name: translator.name, role: 'translator' }].to_json)
+      end
+
+      subject(:call) { get :review, params: { id: ingestible.id } }
+
+      it_behaves_like 'redirects to show page if record cannot be locked'
+
+      it 'is successful' do
+        expect(call).to be_successful
+      end
+
+      it 'uses per-role merging in prep_for_ingestion' do
+        call
+        authority_changes = controller.instance_variable_get(:@authority_changes)
+        
+        # Verify Work 1 has both author and translator (per-role merge)
+        expect(authority_changes[author1.name]['author']).to include('Work 1')
+        expect(authority_changes[translator.name]['translator']).to include('Work 1')
+        
+        # Verify Work 2 has only translator (default)
+        expect(authority_changes[translator.name]['translator']).to include('Work 2')
+      end
+
+      context 'when checking for missing authorities' do
+        it 'does not report missing translator when default translator exists' do
+          call
+          missing_translators = controller.instance_variable_get(:@missing_translators)
+          
+          # Neither work should be missing translator due to per-role merging
+          expect(missing_translators).to be_empty
+        end
+
+        it 'reports missing author when default does not include author' do
+          call
+          missing_authors = controller.instance_variable_get(:@missing_authors)
+          
+          # Work 2 should be missing author (no default author, no specific author)
+          expect(missing_authors).to include('Work 2')
+          # Work 1 should not be missing author (has specific author)
+          expect(missing_authors).not_to include('Work 1')
+        end
+      end
+    end
   end
 end
