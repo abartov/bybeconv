@@ -7,6 +7,8 @@ Development environment setup
 
 To set up a development environment, ensure you have a modern docker compose setup (e.g. run ```sudo apt-get install docker-compose-v2``` on Debian-like systems) and inside docker/bybe_dev run ```docker compose up -d``` to get started. See the README file in that folder for more.
 
+For GitHub Copilot Workspace environments, see [.github/COPILOT_WORKSPACE_SETUP.md](.github/COPILOT_WORKSPACE_SETUP.md).
+
 External (i.e. hosting system) dependencies
 -------------------------------------------
 
