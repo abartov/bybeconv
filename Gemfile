@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-ruby '3.3.8' # update only when GitHub CI runners support a newer non-head version
+ruby '3.3.9' # update only when GitHub CI runners support a newer non-head version
 
-source 'http://rubygems.org'
+source 'https://rubygems.org'
 
 gem 'actionview'
 gem 'concurrent-ruby'
