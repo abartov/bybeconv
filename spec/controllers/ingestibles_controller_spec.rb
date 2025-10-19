@@ -312,7 +312,7 @@ describe IngestiblesController do
       let(:markdown) { "&&& Work 1\n\nSome content for work 1" }
       let(:toc_buffer) do
         " yes || Work 1 || #{[{ seqno: 1, authority_id: author.id, authority_name: author.name,
-                                role: 'author' }].to_json} || prose || he || public_domain"
+                                role: 'author' }].to_json} || prose || fr || public_domain"
       end
       let(:ingestible) do
         create(:ingestible,
