@@ -198,6 +198,7 @@ class CollectionsController < ApplicationController
 
   def manage
     @collection = Collection.find(params[:collection_id])
+    head :forbidden if @collection.collection_type == 'uncollected' # refuse to edit uncollected collections
   end
 
   private
