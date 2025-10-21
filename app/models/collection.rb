@@ -73,6 +73,11 @@ class Collection < ApplicationRecord
     SYSTEM_TYPES.include?(collection_type)
   end
 
+  # Allow system operations (like RefreshUncollectedWorksCollection) to bypass type protection
+  def allow_system_type_change!
+    @allow_system_type_change = true
+  end
+
   def collection_items_by_type(item_type)
     collection_items.where(item_type: item_type)
   end
@@ -525,6 +530,7 @@ class Collection < ApplicationRecord
 
   def prevent_uncollected_type_change
     return true unless collection_type_changed?
+    return true if @allow_system_type_change # Allow bypass for system operations
 
     # Prevent creating new collections with uncollected type (should only be done by RefreshUncollectedWorksCollection)
     if new_record? && uncollected?
