@@ -88,8 +88,8 @@ class Ingestible < ApplicationRecord
   end
 
   def update_authorities_and_metadata_from_volume(replace_publisher = false)
-    # reset *default* authorities and metadata on any volume change, to avoid accidental carryover
-    self.default_authorities = ''
+    # reset *collection* authorities and metadata on any volume change, to avoid accidental carryover
+    self.collection_authorities = ''
     aus = []
     seqno = 1
     if volume_id.present?
@@ -124,8 +124,22 @@ class Ingestible < ApplicationRecord
     end
     return if aus.blank?
 
-    self.default_authorities = aus.to_json
+    self.collection_authorities = aus.to_json
+    # Mirror to default authorities if they haven't been manually changed
+    mirror_collection_to_default_authorities if should_mirror_authorities?
     save!
+  end
+
+  # Check if we should mirror collection authorities to default authorities
+  # Only mirror if default_authorities is blank or hasn't been manually modified
+  def should_mirror_authorities?
+    # If default_authorities is blank or identical to old collection_authorities, allow mirroring
+    default_authorities.blank? || default_authorities == collection_authorities_was
+  end
+
+  # Mirror collection authorities to default authorities
+  def mirror_collection_to_default_authorities
+    self.default_authorities = collection_authorities
   end
 
   def convert_to_markdown

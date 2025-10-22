@@ -1,4 +1,5 @@
 include BybeUtils
+
 Bybeconv::Application.routes.draw do
   get 'collections_migration/index'
   get 'collections_migration/person'
@@ -19,6 +20,11 @@ Bybeconv::Application.routes.draw do
 
   resources :ingestibles do
     resources :authorities, controller: :ingestible_authorities, only: %i(create destroy) do
+      member do
+        post :replace
+      end
+    end
+    resources :collection_authorities, controller: :ingestible_collection_authorities, only: %i(create destroy) do
       member do
         post :replace
       end
@@ -118,7 +124,8 @@ Bybeconv::Application.routes.draw do
   get 'admin/periodless'
   get 'admin/suspicious_translations'
   get 'admin/mark_similar_as_valid/:id' => 'admin#mark_similar_as_valid', as: 'mark_similar_as_valid'
-  get 'admin/mark_slash_title_as_okay/:item_type/:id' => 'admin#mark_slash_title_as_okay', as: 'mark_slash_title_as_okay'
+  get 'admin/mark_slash_title_as_okay/:item_type/:id' => 'admin#mark_slash_title_as_okay',
+      as: 'mark_slash_title_as_okay'
   get 'admin/translated_from_multiple_languages'
   get 'admin/raw_tocs'
   get 'admin/my_convs/:id' => 'admin#my_convs', as: 'my_convs'

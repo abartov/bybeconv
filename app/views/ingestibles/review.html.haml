@@ -62,7 +62,37 @@
     %br
 
   .admin_dashboard_item
-    %h2= t(:associated_persons)
+    %h2= t('ingestible.collection_level_authorities')
+    - if @ingestible.collection_authorities.present?
+      - collection_auths = JSON.parse(@ingestible.collection_authorities)
+      - collection_auths.each do |ia|
+        %p
+          = ia['authority_name'].presence || ia['new_person']
+          = "(#{textify_authority_role(ia['role'])})"
+    - else
+      %p= t(:none)
+    - if @collection.present? && !@ingestible.no_volume
+      %h3= t('ingestible.existing_collection_authorities')
+      - collection_auths = @ingestible.collection_authorities.present? ? JSON.parse(@ingestible.collection_authorities) : []
+      - if @collection.involved_authorities.present? || collection_auths.present?
+        - # First show existing authorities
+        - @collection.involved_authorities.each do |ia|
+          %p
+            = link_to ia.authority.name, authors_show_path(id: ia.authority_id)
+            = "(#{textify_authority_role(ia.role)})"
+        - # Then show new authorities to be added with highlighting
+        - collection_auths.each do |ca|
+          - next unless ca['authority_id'].present?
+          - is_existing = @collection.involved_authorities.any? { |ia| ia.authority_id == ca['authority_id'] && ia.role == ca['role'] }
+          - unless is_existing
+            %p{style: 'background-color: #d4edda; padding: 2px 5px;'}
+              = ca['authority_name']
+              = "(#{textify_authority_role(ca['role'])})"
+              %span.badge.badge-success= t('ingestible.new_authority')
+      - else
+        %p.text-muted= t('ingestible.no_existing_authorities')
+  .admin_dashboard_item
+    %h2= t('ingestible.default_authorities_for_texts')
     - if @ingestible.default_authorities.present?
       %p!= JSON.parse(@ingestible.default_authorities).map{ |ia| "#{ia['authority_name'].presence || ia['new_person']} (#{textify_authority_role(ia['role'])})"}.join('<br />')
     - else

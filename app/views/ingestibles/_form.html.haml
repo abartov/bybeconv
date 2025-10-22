@@ -77,6 +77,12 @@
           = f.label :status
           %b= t("ingestible.status.#{@ingestible.status}")
           = f.hidden_field :status, value: @ingestible.status
+        = render partial: 'collection_authorities', locals: {authorities: @ingestible.collection_authorities}
+        %hr
+        %h3= t('ingestible.default_authorities_for_texts')
+        %p.text-muted= t('ingestible.default_authorities_help')
+        = render partial: 'authorities', locals: {authorities: @ingestible.default_authorities}
+        %hr
         %h2= t('ingestible.defaults')
         = f.label t(:genre)
         - genres = (['mixed'] + Work::GENRES).map { |genre| [textify_genre(genre), genre] }
@@ -96,7 +102,6 @@
         %br
         = f.label t(:publisher_link_text)
         = f.text_field :pub_link_text, style: 'width:400px;'
-        = render partial: 'authorities', locals: {authorities: @ingestible.default_authorities}
         %hr
         .field
           = f.label t('ingestible.credits')
