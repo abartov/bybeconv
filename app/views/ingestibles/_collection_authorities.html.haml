@@ -1,0 +1,47 @@
+- if @ingestible.try(:id)
+  - @authority_by_name = Authority.all.map { |a| [a.name, a.id] }.to_h
+
+  %h3= t('ingestible.collection_level_authorities')
+  %p.text-muted= t('ingestible.collection_authorities_help')
+  %ul#collection_authorities
+    - if authorities.present?
+      = render partial: 'ingestible_collection_authorities/authority', collection: JSON.parse(authorities), locals: {editable: true}
+  = t(:add_via_autocomplete)
+  = autocomplete_field_tag 'add_collection_authority', '', autocomplete_authority_name_and_aliases_path,
+                          id_element: '#collection_authority_id', class: 'add_collection_authority'
+  = hidden_field_tag :collection_authority_id
+  = hidden_field_tag :add_collection_authority_name
+  = t('ingestibles.authorities.or_new_person')
+  = text_field_tag :new_collection_person, '', {style: 'width: 150px;'}
+  = t(:in_role)
+  = select_tag :collection_role,
+               options_for_select(role_options)
+  = button_tag t(:perform_add), id: 'do_add_collection_authority'
+  :javascript
+    $(document).ready(function() {
+      $('.add_collection_authority').bind('railsAutocomplete.select', function(event, data){
+        event.stopImmediatePropagation();
+        $('#collection_authority_id').val(data.item.id);
+        $('#add_collection_authority_name').val(data.item.value);
+      });
+      $('#do_add_collection_authority').click(function(e) {
+        e.preventDefault();
+        $.post('#{ingestible_collection_authorities_path(@ingestible)}', {
+          authority_id: $('#collection_authority_id').val(),
+          authority_name: $('#add_collection_authority_name').val(),
+          new_person: $('#new_collection_person').val(),
+          role: $('#collection_role').val()
+        });
+      });
+      $('.replace_coll_auth').click(function(e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        $.post('#{replace_ingestible_collection_authority_path(@ingestible, 0)}'.replace('/0', ''), {
+          seqno: $(this).data('seqno'),
+          authority_id: $(this).data('authorityid'),
+          authority_name: $(this).data('newperson'),
+          role: $(this).data('role'),
+          new_person_tbd: null
+        });
+      });
+    });

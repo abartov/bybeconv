@@ -5,6 +5,7 @@ FactoryBot.define do
     title { Faker::Book.title }
     status { 'draft' }
     no_volume { true }
+    credits { Faker::Lorem.sentence }
     markdown { "&&& #{Faker::Book.title} \n#{Faker::Lorem.paragraph}" }
     trait :with_volume do
       no_volume { false }

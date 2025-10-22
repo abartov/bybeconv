@@ -3,6 +3,99 @@
 require 'rails_helper'
 
 describe Ingestible do
+  describe 'collection_authorities and default_authorities' do
+    let(:ingestible) { create(:ingestible) }
+    let(:authority1) { create(:authority) }
+    let(:authority2) { create(:authority) }
+
+    describe '#should_mirror_authorities?' do
+      context 'when default_authorities is blank' do
+        it 'returns true' do
+          ingestible.default_authorities = ''
+          ingestible.collection_authorities = [{ seqno: 1, authority_id: authority1.id,
+                                                  authority_name: authority1.name, role: 'author' }].to_json
+          expect(ingestible.should_mirror_authorities?).to be true
+        end
+      end
+
+      context 'when default_authorities matches old collection_authorities' do
+        it 'returns true' do
+          old_coll = [{ seqno: 1, authority_id: authority1.id, authority_name: authority1.name,
+                        role: 'author' }].to_json
+          ingestible.collection_authorities = old_coll
+          ingestible.default_authorities = old_coll
+          ingestible.save!
+          # Now change collection_authorities
+          new_coll = [{ seqno: 1, authority_id: authority2.id, authority_name: authority2.name,
+                        role: 'author' }].to_json
+          ingestible.collection_authorities = new_coll
+          expect(ingestible.should_mirror_authorities?).to be true
+        end
+      end
+
+      context 'when default_authorities has been manually changed' do
+        it 'returns false' do
+          ingestible.collection_authorities = [{ seqno: 1, authority_id: authority1.id,
+                                                 authority_name: authority1.name, role: 'author' }].to_json
+          ingestible.default_authorities = [{ seqno: 1, authority_id: authority2.id,
+                                              authority_name: authority2.name, role: 'translator' }].to_json
+          ingestible.save!
+          # Now change collection_authorities - should not mirror
+          new_coll = [{ seqno: 1, authority_id: authority1.id, authority_name: authority1.name,
+                        role: 'editor' }].to_json
+          ingestible.collection_authorities = new_coll
+          expect(ingestible.should_mirror_authorities?).to be false
+        end
+      end
+    end
+
+    describe '#mirror_collection_to_default_authorities' do
+      it 'copies collection_authorities to default_authorities' do
+        coll_auth = [{ seqno: 1, authority_id: authority1.id, authority_name: authority1.name,
+                       role: 'author' }].to_json
+        ingestible.collection_authorities = coll_auth
+        ingestible.mirror_collection_to_default_authorities
+        expect(ingestible.default_authorities).to eq(coll_auth)
+      end
+    end
+
+    describe '#update_authorities_and_metadata_from_volume' do
+      let(:collection) { create(:collection) }
+      let!(:involved_authority) do
+        collection.involved_authorities.create!(authority: authority1, role: :author)
+      end
+
+      it 'populates collection_authorities from volume' do
+        ingestible.update!(prospective_volume_id: collection.id.to_s)
+        ingestible.update_authorities_and_metadata_from_volume
+        expect(ingestible.collection_authorities).to be_present
+        coll_auths = JSON.parse(ingestible.collection_authorities)
+        expect(coll_auths.length).to eq(1)
+        expect(coll_auths.first['authority_id']).to eq(authority1.id)
+        expect(coll_auths.first['role']).to eq('author')
+      end
+
+      it 'mirrors to default_authorities when appropriate' do
+        ingestible.default_authorities = ''
+        ingestible.update!(prospective_volume_id: collection.id.to_s)
+        ingestible.update_authorities_and_metadata_from_volume
+        expect(ingestible.default_authorities).to eq(ingestible.collection_authorities)
+      end
+
+      it 'does not mirror when default_authorities was manually changed' do
+        manual_default = [{ seqno: 1, authority_id: authority2.id, authority_name: authority2.name,
+                            role: 'translator' }].to_json
+        ingestible.default_authorities = manual_default
+        ingestible.collection_authorities = ''
+        ingestible.save!
+        ingestible.update!(prospective_volume_id: collection.id.to_s)
+        ingestible.update_authorities_and_metadata_from_volume
+        expect(ingestible.default_authorities).to eq(manual_default)
+        expect(ingestible.collection_authorities).not_to eq(manual_default)
+      end
+    end
+  end
+
   describe '.locked?' do
     subject { ingestible.locked? }
 

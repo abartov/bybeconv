@@ -41,7 +41,6 @@ localhost.key
 do_chown.sh
 go.sh
 UX/*
-doc/*
 bkk/*
 /lexicon/*
 coverage
