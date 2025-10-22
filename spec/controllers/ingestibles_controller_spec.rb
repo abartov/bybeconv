@@ -320,6 +320,7 @@ describe IngestiblesController do
                toc_buffer: toc_buffer,
                prospective_volume_id: collection.id.to_s,
                publisher: 'Test Publisher',
+               no_volume: false,
                year_published: '2023',
                collection_authorities: [{ seqno: 1, authority_id: editor.id, authority_name: editor.name,
                                           role: 'editor' }].to_json,
@@ -341,7 +342,7 @@ describe IngestiblesController do
 
       it 'uses default_authorities (not collection_authorities) for text involved authorities' do
         post :ingest, params: { id: ingestible.id }
-        manifestation = Manifestation.order(id: :desc).first
+        manifestation = Manifestation.order(id: :desc).first # load the manifestation we just ingested
         expression = manifestation.expression
         work = expression.work
 
