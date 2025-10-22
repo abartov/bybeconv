@@ -48,16 +48,16 @@ describe IngestibleCollectionAuthoritiesController do
   end
 
   describe '#destroy' do
+    subject(:call) do
+      delete :destroy, params: { ingestible_id: ingestible.id, id: 1 }, xhr: true, format: :js
+    end
+
     let(:coll_auth) do
       [{ seqno: 1, authority_id: authority.id, authority_name: authority.name, role: 'editor' }]
     end
 
     before do
       ingestible.update!(collection_authorities: coll_auth.to_json)
-    end
-
-    subject(:call) do
-      delete :destroy, params: { ingestible_id: ingestible.id, id: 1 }, xhr: true, format: :js
     end
 
     it 'removes authority from collection_authorities' do
@@ -82,17 +82,17 @@ describe IngestibleCollectionAuthoritiesController do
   end
 
   describe '#replace' do
+    subject(:call) do
+      post :replace, params: { ingestible_id: ingestible.id, id: 0, seqno: 1, authority_id: authority.id,
+                               authority_name: authority.name, role: 'editor' }, xhr: true, format: :js
+    end
+
     let(:coll_auth) do
       [{ seqno: 1, new_person: 'Unknown Person', role: 'editor' }]
     end
 
     before do
       ingestible.update!(collection_authorities: coll_auth.to_json)
-    end
-
-    subject(:call) do
-      post :replace, params: { ingestible_id: ingestible.id, seqno: 1, authority_id: authority.id,
-                               authority_name: authority.name, role: 'editor' }, xhr: true, format: :js, member: true
     end
 
     it 'replaces new_person with authority' do
