@@ -10,7 +10,8 @@
   %h1
     %span{id: 'editable_ctype'}= textify_collection_type(collection.collection_type)+': '
     %span{id: "editable_coll_title"}= title
-    %span.editcolbutton{style: 'cursor:pointer; font-size: 50%; color:blue;'}= t(:edit)
+    - unless collection.collection_type == 'uncollected'
+      %span.editcolbutton{style: 'cursor:pointer; font-size: 50%; color:blue;'}= t(:edit)
   -# Add toggle control for display modes
   %div{ class: 'display-toggle horizontal-buttonset' }
     %button{ class: 'toggle-full-display by-button-v02', data: { mode: 'full' } }= t(:full_display)

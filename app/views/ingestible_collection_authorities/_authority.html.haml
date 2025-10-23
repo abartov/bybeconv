@@ -1,0 +1,11 @@
+%li{ id: "coll_ia#{authority['seqno']}", data: {role: "#{authority['role']}" } }
+  - if authority['authority_id']
+    = link_to authority['authority_name'], authors_show_path(id: authority['authority_id'])
+  - else
+    = authority['new_person']
+  (#{textify_authority_role(authority['role'])})
+  - if editable
+    = link_to t(:destroy), ingestible_collection_authority_path(@ingestible, authority['seqno']),
+              remote: true, method: :delete, data: { confirm: t(:are_you_sure) }
+    - if @authority_by_name[authority['new_person']]
+      = button_tag t('ingestibles.replace_with_authority'), class: 'replace_coll_auth lgreenbg', method: :post, remote: true, data: { seqno: authority['seqno'], authorityid: @authority_by_name[authority['new_person']], role: authority['role'], newperson: authority['new_person'] }, style: 'width: unset;'

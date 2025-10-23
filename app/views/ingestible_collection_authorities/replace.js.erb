@@ -1,0 +1,5 @@
+$('#collection_authorities').html('<%= j render(partial: 'ingestible_collection_authorities/authority', collection: @authorities, locals: { editable: true }) %>');
+// If mirroring occurred, also update default authorities display
+<% if @ingestible.default_authorities == @ingestible.collection_authorities %>
+$('#authorities').html('<%= j render(partial: 'ingestible_authorities/authority', collection: @authorities, locals: { editable: true, toc: false }) %>');
+<% end %>
