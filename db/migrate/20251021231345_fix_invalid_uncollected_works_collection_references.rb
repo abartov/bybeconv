@@ -11,7 +11,7 @@ class FixInvalidUncollectedWorksCollectionReferences < ActiveRecord::Migration[8
       collection = Collection.find_by(id: authority.uncollected_works_collection_id)
       
       # If collection doesn't exist or is not of type 'uncollected', clear the reference
-      if collection.nil? || collection.collection_type != 'uncollected'
+      if collection.nil? || collection.collection_type != Collection.collection_types[:uncollected]
         authority.update_column(:uncollected_works_collection_id, nil)
         count += 1
       end
