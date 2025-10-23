@@ -52,6 +52,20 @@ describe '/lexicon/people' do
     end
   end
 
+  describe 'GET /edit' do
+    subject(:call) { get "/lex/people/#{lex_person.id}/edit" }
+
+    context 'with regular request' do
+      it 'renders edit without layout' do
+        expect(call).to eq(200)
+        expect(response).to render_template(:edit)
+        expect(response).not_to render_template('layouts/application')
+      end
+    end
+      end
+    end
+  end
+
   describe 'GET /index' do
     subject { get '/lex/people' }
 

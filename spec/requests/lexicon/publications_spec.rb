@@ -48,6 +48,20 @@ describe '/lexicon/publications' do
 
       it 're-renders the new template' do
         expect { call }.not_to change(LexPublication, :count)
+      end
+    end
+  end
+
+  describe 'GET /edit' do
+    subject(:call) { get "/lex/publications/#{lex_publication.id}/edit" }
+
+    context 'with regular request' do
+      it 'renders edit without layout' do
+        expect(call).to eq(200)
+        expect(response).to render_template(:edit)
+        expect(response).not_to render_template('layouts/application')
+      end
+    end
         expect(call).to render_template(:new)
       end
     end
