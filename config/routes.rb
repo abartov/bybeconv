@@ -23,7 +23,7 @@ Bybeconv::Application.routes.draw do
 
     resources :people, except: %i(show)
     resources :publications, except: %i(show)
-    resources :entries, only: %i(index show) do
+    resources :entries, only: %i(index show edit) do
       resources :attachments, only: %i(index create destroy)
       resources :citations, shallow: true, except: %i(show) do
         member do

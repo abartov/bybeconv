@@ -1,0 +1,17 @@
+.by-card-v02
+  %ul.nav.nav-tabs
+    %li.nav-item
+      %a.nav-link.active{href: "#properties", "data-bs-toggle": "tab"} Properties
+    %li.nav-item
+      %a.nav-link{href: "#attachments", "data-bs-toggle": "tab"} Attachments
+    %li.nav-item
+      %a.nav-link{href: "#citations", "data-bs-toggle": "tab"} Citations
+
+  .tab-content
+    #properties.tab-pane.active
+      - edit_url = @lex_item.is_a?(LexPublication) ? edit_lexicon_publication_path(@lex_item) : edit_lexicon_person_path(@lex_item)
+      = render inline: HTTParty.get("#{request.base_url}#{edit_url}").body
+    #attachments.tab-pane
+      = render 'attachments', lex_entry: @lex_entry
+    #citations.tab-pane
+      = render 'citations', lex_entry: @lex_entry
