@@ -2,9 +2,9 @@ name: Rspec
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, lexicon_new ]
   pull_request:
-    branches: [ master ]
+    branches: [ master, lexicon_new ]
 
 jobs:
   test:
