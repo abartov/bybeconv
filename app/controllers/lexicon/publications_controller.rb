@@ -19,7 +19,9 @@ module Lexicon
     end
 
     # GET /lex_publications/1/edit
-    def edit; end
+    def edit
+      render layout: false if request.xhr?
+    end
 
     # POST /lex_publications or /lex_publications.json
     def create

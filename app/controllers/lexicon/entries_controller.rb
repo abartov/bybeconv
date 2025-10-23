@@ -14,6 +14,11 @@ module Lexicon
 
     def show; end
 
+    def edit
+      @lex_entry = LexEntry.find(params[:id])
+      @lex_item = @lex_entry.lex_item
+    end
+
     private
 
     # Use callbacks to share common setup or constraints between actions.
