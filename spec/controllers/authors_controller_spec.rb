@@ -264,7 +264,7 @@ describe AuthorsController do
         it 're-renders new form' do
           expect { call }.not_to change(Authority, :count)
           expect(call).to render_template(:new)
-          expect(call).to have_http_status(:unprocessable_entity)
+          expect(call).to have_http_status(:unprocessable_content)
         end
       end
     end
@@ -533,7 +533,7 @@ describe AuthorsController do
           let(:new_period) { period }
 
           it 'fails to save and re-renders edit form' do
-            expect(request).to have_http_status(:unprocessable_entity)
+            expect(request).to have_http_status(:unprocessable_content)
             expect(response).to render_template :edit
           end
         end
