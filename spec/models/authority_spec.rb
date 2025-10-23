@@ -30,9 +30,7 @@ describe Authority do
       context 'when uncollected collection is set and has uncollected type' do
         let(:uncollected_works_collection) { create(:collection, :uncollected) }
 
-        it {
-          expect(authority).to be_valid
-        }
+        it { expect(authority).to be_valid }
       end
 
       context 'when uncollected collection is set but has wrong type' do
