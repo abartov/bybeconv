@@ -20,7 +20,7 @@ module Lexicon
 
     # GET /lex_publications/1/edit
     def edit
-      render layout: false if request.xhr?
+      render layout: false
     end
 
     # POST /lex_publications or /lex_publications.json

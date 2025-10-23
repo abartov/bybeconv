@@ -17,6 +17,7 @@ module Lexicon
     def edit
       @lex_entry = LexEntry.find(params[:id])
       @lex_item = @lex_entry.lex_item
+      @active_tab = params[:tab].presence&.to_sym || :properties
     end
 
     private

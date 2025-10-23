@@ -1,17 +1,42 @@
 .by-card-v02
   %ul.nav.nav-tabs
     %li.nav-item
-      %a.nav-link.active{href: "#properties", "data-bs-toggle": "tab"} Properties
+      %a#properties-tab.nav-link{href: "#properties", "data-bs-toggle": "tab", "data-bs-target": "#properties"} Properties
     %li.nav-item
-      %a.nav-link{href: "#attachments", "data-bs-toggle": "tab"} Attachments
+      %a#attachments-tab.nav-link{href: "#attachments", "data-bs-toggle": "tab", "data-bs-target": "#attachments"} Attachments
     %li.nav-item
-      %a.nav-link{href: "#citations", "data-bs-toggle": "tab"} Citations
+      %a#citations-tab.nav-link{href: "#citations", "data-bs-toggle": "tab", "data-bs-target": "#citations"} Citations
 
   .tab-content
-    #properties.tab-pane.active
-      - edit_url = @lex_item.is_a?(LexPublication) ? edit_lexicon_publication_path(@lex_item) : edit_lexicon_person_path(@lex_item)
-      = render inline: HTTParty.get("#{request.base_url}#{edit_url}").body
+    #properties.tab-pane
     #attachments.tab-pane
-      = render 'attachments', lex_entry: @lex_entry
     #citations.tab-pane
-      = render 'citations', lex_entry: @lex_entry
+
+:javascript
+  $(document).ready(function() {
+    var edit_url = "#{@lex_item.is_a?(LexPublication) ? edit_lexicon_publication_path(@lex_item) : edit_lexicon_person_path(@lex_item)}";
+    var attachments_url = "#{lexicon_entry_attachments_path(@lex_entry)}";
+    var citations_url = "#{lexicon_entry_citations_path(@lex_entry)}";
+    
+    // Handle tab changes
+    $('a[data-bs-toggle="tab"]').on('show.bs.tab', function (e) {
+      var target = $(e.target).data('bs-target');
+      
+      if (target === '#properties' && $('#properties').is(':empty')) {
+        $.get(edit_url, function(data) {
+          $('#properties').html(data);
+        });
+      } else if (target === '#attachments' && $('#attachments').is(':empty')) {
+        $.get(attachments_url, function(data) {
+          $('#attachments').html(data);
+        });
+      } else if (target === '#citations' && $('#citations').is(':empty')) {
+        $.get(citations_url, function(data) {
+          $('#citations').html(data);
+        });
+      }
+    });
+
+    // Trigger initial tab
+    $('##{@active_tab}-tab').tab('show');
+  });
