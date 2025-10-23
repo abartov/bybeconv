@@ -1,12 +1,8 @@
 %h1 Editing lex_publication
 
-= render partial: 'lexicon/shared/tabs'
+= render partial: 'lexicon/entries/tabs'
 
 .tab-content
   .tab-pane.fade.show.active#properties
     = render 'form'
-  = render partial: 'lexicon/shared/attachments', locals: { entry: @lex_publication.entry }
-
-= link_to 'Show', lexicon_publication_path(@lex_publication)
-\|
-= link_to 'Back', lexicon_publications_path
+  = render partial: 'lexicon/entries/attachments', locals: { entry: @lex_publication.entry }
