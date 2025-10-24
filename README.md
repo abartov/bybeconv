@@ -9,6 +9,8 @@ To set up a development environment, ensure you have a modern docker compose set
 
 For GitHub Copilot Workspace environments, see [.github/COPILOT_WORKSPACE_SETUP.md](.github/COPILOT_WORKSPACE_SETUP.md).
 
+For GitHub Copilot instructions on how to work with this project (tests, linters, build commands, etc.), see [.github/copilot-instructions.md](.github/copilot-instructions.md). These instructions are automatically read by GitHub Copilot.
+
 External (i.e. hosting system) dependencies
 -------------------------------------------
 

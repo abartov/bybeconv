@@ -1,5 +1,35 @@
 # Project Ben-Yehuda Copilot Instructions
 
+## Quick Reference
+
+### Essential Commands
+```bash
+# Run tests
+bundle exec rspec
+
+# Run linters on changed files
+bundle exec pronto run -c origin/master
+
+# Run RuboCop on a specific file
+bundle exec rubocop -a path/to/file.rb
+
+# Start Rails server
+bundle exec rails server
+
+# Rails console
+bundle exec rails console
+
+# Database setup
+bundle exec rails db:create db:migrate
+
+# View all rake tasks
+bundle exec rake -T
+```
+
+See detailed sections below for more information.
+
+---
+
 ## About This Project
 
 This codebase runs https://benyehuda.org -- the Project Ben-Yehuda digital library of works in Hebrew. The project focuses on preserving and making accessible Hebrew literature, with special handling for right-to-left text and Hebrew-specific features.
@@ -41,16 +71,52 @@ This codebase runs https://benyehuda.org -- the Project Ben-Yehuda digital libra
 - RuboCop integration enabled (except Layout/SpaceInsideParens)
 
 ### Running Linters
+
+#### RuboCop (Ruby Style Guide)
 ```bash
-# Check single file with RuboCop
-rubocop <path_to_file>
+# Check single file
+bundle exec rubocop path/to/file.rb
+
+# Check entire project (will show many warnings - legacy code)
+bundle exec rubocop
 
 # Auto-correct with safe corrections
-rubocop -a <path_to_file>
+bundle exec rubocop -a path/to/file.rb
 
-# Check changes only (via Pronto)
-pronto run -c origin/master
+# Auto-correct with potentially unsafe corrections
+bundle exec rubocop -A path/to/file.rb
+
+# Check specific directories
+bundle exec rubocop app/models/
+bundle exec rubocop spec/
 ```
+
+#### HAML Lint (HAML Template Linter)
+```bash
+# Check single file
+bundle exec haml-lint path/to/file.haml
+
+# Check all HAML files
+bundle exec haml-lint app/views/
+
+# Auto-correct HAML files
+bundle exec haml-lint -a path/to/file.haml
+```
+
+#### Pronto (Check Only Changed Lines)
+Best for checking only the changes you've made:
+```bash
+# Check changes compared to master branch
+bundle exec pronto run -c origin/master
+
+# Check changes with specific formatters (used in CI)
+bundle exec pronto run -f github_pr github_status -c origin/master
+```
+
+**Recommended Workflow**: 
+1. Make your code changes
+2. Run RuboCop on modified files: `bundle exec rubocop -a path/to/modified_file.rb`
+3. Before committing, run Pronto to check only your changes: `bundle exec pronto run -c origin/master`
 
 ## Testing Guidelines
 
@@ -60,6 +126,40 @@ pronto run -c origin/master
 - Maximum example length: 20 lines
 - Maximum nested groups: 6
 - Up to 20 memoized helpers allowed per spec
+
+### Running Tests
+
+```bash
+# Run all tests
+bundle exec rspec
+
+# Run a specific test file
+bundle exec rspec spec/path/to/spec_file.rb
+
+# Run a specific test by line number
+bundle exec rspec spec/path/to/spec_file.rb:42
+
+# Run tests with documentation format
+bundle exec rspec --format documentation
+
+# Run tests matching a pattern
+bundle exec rspec --tag focus  # if you've tagged tests with :focus
+```
+
+### Test Database Setup
+
+Before running tests for the first time, ensure the test database is set up:
+
+```bash
+# Create and migrate test database
+RAILS_ENV=test bundle exec rails db:create
+RAILS_ENV=test bundle exec rails db:migrate
+
+# Or use the combined setup command
+RAILS_ENV=test bundle exec rails db:setup
+```
+
+**Note**: Tests require MySQL and Elasticsearch to be running. In CI, these are provided via GitHub Actions services (see `.github/workflows/rspec.yml`). For local development, use Docker Compose (see `README.docker.md`).
 
 ## Common Patterns and Best Practices
 
@@ -110,9 +210,27 @@ Section titles like "שירה" (poetry), "פרוזה" (prose), "מאמרים ו�
 
 ## Development Environment
 
-- Development uses Docker Compose setup
-- Local development server: `localhost:3000`
+### Docker Setup (Recommended)
+Development typically uses Docker Compose setup with all required services (MySQL, Elasticsearch, Redis, Memcached):
+
+```bash
+# Navigate to docker directory and start services
+cd docker/bybe_dev
+docker compose up -d
+
+# View logs
+docker compose logs -f
+
+# Stop services
+docker compose down
+```
+
+See `README.docker.md` for detailed Docker setup instructions.
+
+### Local Development
+- Local development server runs at: `localhost:3000`
 - Routes use HTTPS in development: `routes.default_url_options[:protocol] = 'https'`
+- Requires MySQL, Elasticsearch, Redis, and Memcached to be running
 
 ## Important Notes
 
@@ -131,12 +249,91 @@ Section titles like "שירה" (poetry), "פרוזה" (prose), "מאמרים ו�
 - libmagickwand-dev for RMagick
 - libmysqlclient-dev for mysql2
 
+## Building and Running the Application
+
+### Rails Server
+```bash
+# Start the Rails server (development mode)
+bundle exec rails server
+
+# Start with specific port
+bundle exec rails server -p 3001
+
+# Start in production mode (not recommended for development)
+RAILS_ENV=production bundle exec rails server
+```
+
+### Database Commands
+```bash
+# Create database
+bundle exec rails db:create
+
+# Run migrations
+bundle exec rails db:migrate
+
+# Rollback last migration
+bundle exec rails db:rollback
+
+# Reset database (drop, create, migrate, seed)
+bundle exec rails db:reset
+
+# Seed database with initial data
+bundle exec rails db:seed
+
+# Check migration status
+bundle exec rails db:migrate:status
+```
+
+### Rake Tasks
+The project has many custom rake tasks in `lib/tasks/`. View all available tasks:
+```bash
+# List all rake tasks
+bundle exec rake -T
+
+# Some useful tasks:
+bundle exec rake count:all              # Count various entities
+bundle exec rake collections:refresh    # Refresh collections
+bundle exec rake whatsnew:since_date    # Show what's new since date
+```
+
+### Console Access
+```bash
+# Rails console for development
+bundle exec rails console
+
+# Rails console for specific environment
+bundle exec rails console test
+bundle exec rails console production
+```
+
+### Background Jobs (Sidekiq)
+```bash
+# Start Sidekiq worker (processes background jobs)
+bundle exec sidekiq
+
+# Start Sidekiq with specific configuration
+bundle exec sidekiq -C config/sidekiq.yml
+```
+
+### Assets
+```bash
+# Precompile assets (typically for production)
+bundle exec rails assets:precompile
+
+# Clean compiled assets
+bundle exec rails assets:clean
+
+# Clear all compiled assets
+bundle exec rails assets:clobber
+```
+
 ## When Making Changes
 
-1. Run RuboCop on files you modify: `rubocop <path_to_file>`
-2. Use RuboCop auto-correct when appropriate: `rubocop -a <path_to_file>`
+1. Run RuboCop on files you modify: `bundle exec rubocop path/to/file.rb`
+2. Use RuboCop auto-correct when appropriate: `bundle exec rubocop -a path/to/file.rb`
 3. Write RSpec tests for new functionality
-4. Consider the impact on Hebrew text rendering and RTL layout
-5. Check for N+1 queries when adding database queries
-6. Update related tests when modifying existing functionality
-7. Use Pronto to check only your changes: `pronto run -c origin/master`
+4. Run tests to verify your changes: `bundle exec rspec spec/path/to/related_spec.rb`
+5. Consider the impact on Hebrew text rendering and RTL layout
+6. Check for N+1 queries when adding database queries
+7. Update related tests when modifying existing functionality
+8. Use Pronto to check only your changes: `bundle exec pronto run -c origin/master`
